@@ -157,13 +157,22 @@ class MarkdownImpl <: Markdown {
     }
 
     public override func toMarkdown(input: String): NodeView {
-        let spanned: NodeView = render(parse(input))
-
-        // // if spanned is empty, we are configured to use raw input and input is not empty
-        // if (TextUtils.isEmpty(spanned) && fallbackToRawInputWhenEmpty && !TextUtils.isEmpty(input)) {
-        //     // let's use SpannableStringBuilder in order to keep backward-compatibility
-        //     return SpannableStringBuilder(input)
-        // }
+        let spanned: NodeView = try {
+            let tree = parse(input)
+            render(tree)
+        } catch (e: Exception) {
+            // if spanned is empty, we are configured to use raw input and input is not empty
+            if (fallbackToRawInputWhenEmpty) {
+                let text = Text(input)
+                let p = Paragraph()
+                p.appendChild(text)
+                let doc = Document()
+                doc.appendChild(p)
+                render(doc)
+            } else {
+                throw e
+            }
+        }
 
         return spanned
     }
