@@ -14,7 +14,13 @@
 
 Markdown是一种轻量级标记语言，排版语法简洁，让人们更多地关注内容本身而非排版。
 
-本库是一个用仓颉 + 仓颉UI编写的适用于鸿蒙系统的 Markdown 库。
+Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库。
+
+## 优势
+
+- 使用高效便捷
+- 扩展性强，用户可自定义Markdown显示样式
+- 符合 Markdown 规范
 
 ### 特性
 
@@ -49,11 +55,11 @@ Markdown是一种轻量级标记语言，排版语法简洁，让人们更多地
 
 ## 软件架构
 
+![img.png](doc/assets/img.png)
+
 ### 源码目录
 
 ```shell
-├─.gitee
-│  └─PULL_REQUEST_TEMPLATE.zh-CN.md
 ├─AppScope
 ├─doc
 ├─entry
@@ -74,7 +80,6 @@ Markdown是一种轻量级标记语言，排版语法简洁，让人们更多地
 
 ```
 
-- `.gitee` gitee提交PR模板目录
 - `AppScope` 全局资源存放目录和应用全局信息配置目录
 - `doc` API文档和使用手册存放目录
 - `entry` 工程模块 - 编译生成一个HAP
@@ -122,21 +127,19 @@ Markdown是一种轻量级标记语言，排版语法简洁，让人们更多地
       [dependencies]
           markdown = {path = "../../../../markdown/src/main/cangjie", version = "1.0.0"}
       ```
-   5. 在项目中使用 from markdown import components.* 引用markdown项目
+   5. 在项目中使用 import markdown.components.* 引用markdown项目
       ```cangjie
-      from markdown import components.*
+      import markdown.components.*
       ```
 
 ### 功能示例
 
-**entry -> src -> main -> cangjie -> src 目录下**
-
 ```cangjie
-from ohos import base.*
-from ohos import component.*
-from ohos import state_manage.*
-from ohos import state_macro_manage.*
-from markdown import components.*
+import ohos.base.*
+import ohos.component.*
+import ohos.state_manage.*
+import ohos.state_macro_manage.*
+import markdown.components.*
 
 @Entry
 @Component

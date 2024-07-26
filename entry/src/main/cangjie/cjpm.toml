@@ -6,7 +6,7 @@
   markdown = {path = "../../../../markdown/src/main/cangjie", version = "1.0.0"}
 
 [package]
-  cjc-version = "0.52.4"
+  cjc-version = "0.53.4"
   compile-option = ""
   description = "CangjieUI Application"
   link-option = ""
