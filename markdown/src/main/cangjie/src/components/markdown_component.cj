@@ -9,11 +9,6 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 全局锁
- */
-let latexReentrantMutex: ReentrantMutex = ReentrantMutex()
-
-/**
  * Markdown预览自定义控件
  */
 @Component
@@ -225,22 +220,26 @@ public class MarkdownComponent {
     func stringToNodes(){
         spawn {
             try {
-                let markdown: Markdown = Markdown.builder()
-                    // 任务列表插件
-                    .usePlugin(TaskListPlugin.create())
-                    // TOC列表插件
-                    .usePlugin(TocPlugin.create())
-                    // 删除线插件
-                    .usePlugin(StrikethroughPlugin.create())
-                    // 表格插件
-                    .usePlugin(TablePlugin.create())
-                    // 幻灯片、视频、ImageStyle插件
-                    .usePlugin(ImagePlugin.create())
-                    // 代码标签
-                    .usePlugin(CodeListPlugin.create())
-                    // 数学公式
-                    .usePlugin(LatexMathPlugin.create())
-                    .build()
+                let markdown: Markdown = if (let Some(v) <- markdownConfiguration.markdownTheme.markdownParser) {
+                    v
+                } else {
+                    Markdown.builder()
+                        // 任务列表插件
+                        .usePlugin(TaskListPlugin.create())
+                        // TOC列表插件
+                        .usePlugin(TocPlugin.create())
+                        // 删除线插件
+                        .usePlugin(StrikethroughPlugin.create())
+                        // 表格插件
+                        .usePlugin(TablePlugin.create())
+                        // 幻灯片、视频、ImageStyle插件
+                        .usePlugin(ImagePlugin.create())
+                        // 代码标签
+                        .usePlugin(CodeListPlugin.create())
+                        // 数学公式
+                        .usePlugin(LatexMathPlugin.create())
+                        .build()
+                }
                 let node: CommonmarkNode = markdown.parse(mdStr)
                 let nodeView: NodeView = markdown.render(node)
                 launch {
@@ -251,8 +250,9 @@ public class MarkdownComponent {
                 let paragraph: Paragraph  = Paragraph()
                 let commonmarkText: CommonmarkText = CommonmarkText(mdStr)
                 paragraph.appendChild(commonmarkText)
-                let nodeView: NodeView = NodeView(paragraph)
-                arrayListNodeView.append(nodeView)
+                let paragraphNodeView: NodeView = NodeView(paragraph)
+                let textNodeView: NodeView = NodeView(commonmarkText, paragraphNodeView)
+                arrayListNodeView.append(paragraphNodeView)
                 launch {
                     nodeViews = arrayListNodeView
                 }

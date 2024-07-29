@@ -303,7 +303,7 @@ class MarkdownParagraphComponent {
      */
     func latexMathImagePixelmap(strLatexMath: String, idx: Int64) : Int64{
         spawn {
-            let allData = latexMathStrToPixelMapRow(strLatexMath,  markdownConfiguration.markdownTheme.resPath, markdownConfiguration, componentWidth)
+            let allData = MarkdownLatexImageUtil.latexMathStrToPixelMapRow(strLatexMath,  markdownConfiguration.markdownTheme.resPath, markdownConfiguration, componentWidth)
             launch{
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: allData[0], height: allData[1], width: allData[2], arrayUint8: allData[3]))
             }
