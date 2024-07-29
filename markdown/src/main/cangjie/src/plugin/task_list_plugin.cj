@@ -107,8 +107,12 @@ class TaskListVisitor <: AbstractVisitor {
                     listItem.insertBefore(taskListItem)
 
                     // append the rest of matched text (can be empty)
-                    let group2 = data.matchPosition(2)
-                    let restMatchedText: String = text[group2.start..group2.end]
+                    let restMatchedText: String = if (data.groupNumber() == 2) {
+                        let group2 = data.matchPosition(2)
+                        text[group2.start..group2.end]
+                    } else {
+                        ""
+                    }
                     if (restMatchedText.size != 0) {
                         paragraph.appendChild(Text(restMatchedText))
                     }
