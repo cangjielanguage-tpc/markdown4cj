@@ -59,7 +59,7 @@ public class NodeView <: ToString {
         setView(currentNode)
     }
 
-    init(currentNode: Node, parentView: NodeView) {
+    public init(currentNode: Node, parentView: NodeView) {
         this.node = currentNode
         mergeView(parentView)
         setView(currentNode)

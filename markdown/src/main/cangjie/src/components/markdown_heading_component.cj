@@ -192,17 +192,6 @@ class MarkdownHeadingComponent {
     }
 
     /**
-     * 图片
-     */
-    @Builder
-    func headingImageComponent(commonmarkImage: CommonmarkImage) {
-        // 网络图片
-        if (commonmarkImage.getDestination().toAsciiLower().startsWith("http") || commonmarkImage.getDestination().toAsciiLower().startsWith("ftp")) {
-            MarkdownImageComponent(commonmarkImage: commonmarkImage, markdownConfiguration: markdownConfiguration)
-        }
-    }
-
-    /**
      * 本地图片
      */
     @Builder
@@ -309,7 +298,7 @@ class MarkdownHeadingComponent {
      */
     func latexMathImagePixelmap(strLatexMath: String, idx: Int64) : Int64{
         spawn {
-            let allData = latexMathStrToPixelMapRow(strLatexMath,  markdownConfiguration.markdownTheme.resPath, markdownConfiguration, componentWidth)
+            let allData = MarkdownLatexImageUtil.latexMathStrToPixelMapRow(strLatexMath,  markdownConfiguration.markdownTheme.resPath, markdownConfiguration, componentWidth)
             launch{
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: allData[0], height: allData[1], width: allData[2], arrayUint8: allData[3]))
             }

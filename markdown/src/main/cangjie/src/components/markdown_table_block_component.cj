@@ -181,7 +181,7 @@ class MarkdownTableBlockComponent {
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
                         tableComponentLatexMath(
-                            latexMathStrToPixelMap((item.node as LatexMathNode)().latex,
+                            MarkdownLatexImageUtil.latexMathStrToPixelMap((item.node as LatexMathNode)().latex,
                             markdownConfiguration.markdownTheme.resPath, markdownConfiguration))
                     } else {
                         // TODO 其他节点

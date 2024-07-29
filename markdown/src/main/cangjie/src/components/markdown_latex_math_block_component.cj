@@ -105,7 +105,7 @@ class MarkdownLatexMathBlockComponent {
     func latexMathStrToPixelMap() : Int64{
         let strLatexMath = markdownConfiguration.latexStrCallback(latexStr)
         spawn {
-            let allData = latexMathStrToPixelMap(strLatexMath, markdownConfiguration.markdownTheme.resPath, markdownConfiguration)
+            let allData = MarkdownLatexImageUtil.latexMathStrToPixelMap(strLatexMath, markdownConfiguration.markdownTheme.resPath, markdownConfiguration)
             let pixelMap = allData[0]
             let lengthHeightLength = if (let Some(v) <- allData[1]) {
                 if (let Some(m) <- px2vp(v)) {
