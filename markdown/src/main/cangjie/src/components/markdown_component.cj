@@ -238,6 +238,8 @@ public class MarkdownComponent {
                         .usePlugin(CodeListPlugin.create())
                         // 数学公式
                         .usePlugin(LatexMathPlugin.create())
+                        // 链接
+                        .usePlugin(LinkifyPlugin.create())
                         .build()
                 }
                 let node: CommonmarkNode = markdown.parse(mdStr)

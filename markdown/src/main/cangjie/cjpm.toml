@@ -10,7 +10,7 @@
 [package]
   cjc-version = "0.53.4"
   compile-option = ""
-  description = "CangjieUI Application"
+  description = "Markdown"
   link-option = ""
   name = "markdown"
   output-type = "dynamic"
