@@ -66,6 +66,8 @@ class MarkdownTableBlockComponent {
             .fontStyle(spanFontStyle(nodeView))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            // 设置文本字符间距
+            .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
@@ -89,6 +91,8 @@ class MarkdownTableBlockComponent {
             .fontStyle(spanFontStyle(nodeView))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
+            // 设置文本字符间距
+            .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用

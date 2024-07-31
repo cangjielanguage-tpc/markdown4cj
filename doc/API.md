@@ -187,18 +187,19 @@ Markdown用户可设置的样式
 ```cangjie
 /**
  * Markdown用户可设置的样式
- * 0: 每个模块之间上下间距，上下文
+ * 0: 上下文，每个模块之间上下间距
  * 1：链接（连接颜色，是否显示链接下划线）
  * 2：块引用、有序列表、无序列表、任务列表、TOC列表（左边距，块引用左边线条宽度，块引用左边线条颜色，有序列表项的颜色，有序列表项的大小，无序列表项的颜色，无序列表项的大小，任务列表项的宽高）
  * 3：内联代码、缩进代码、围栏代码、组合代码（内联代码文本颜色，内联代码背景颜色，内联代码文本字体，内联代码文本大小，代码块系列（缩进代码、围栏代码、组合代码）文本颜色，代码块系列（缩进代码、围栏代码、组合代码）背景颜色，代码块系列（缩进代码、围栏代码、组合代码）左边距，代码块系列（缩进代码、围栏代码、组合代码）字体，代码块系列（缩进代码、围栏代码、组合代码）文本大小，是否显示代码全屏按钮，代码全屏按钮和代码复制按钮的宽高，代码全屏按钮默认图标，代码复制按钮默认图标，组合代码标题文本大小，组合代码标题选中文本颜色，组合代码标题未选中文本颜色，组合代码标题选中背景颜色，组合代码标题未选中背景颜色）
- * 4：标题（一级标题二级标题下划线高度，一级标题二级标题下划线颜色，标题文字字体，标题文字大小，标题文字颜色）
- * 5：段落（段落字体大小，段落字体颜色）
+ * 4：标题（一级标题二级标题下划线高度，一级标题二级标题下划线颜色，标题文字字体，标题文字大小，标题文字颜色，标题字间距）
+ * 5：段落（段落字体大小，段落字体颜色，段落字间距）
  * 6：分割线（分割线高度，分割线颜色）
  * 7：软换行（软换行是否换行）
  * 8：数学公式（数学公式文字大小，数学公式行距，数学公式背景色，数学公式字体颜色，数学公式图片格式，数学公式资源目录路径）
  * 9：视频（视频默认占位图，视频播放按钮默认图标）
  * 10：图片Banner（图片banner默认占位图）
  * 11：图片（图片宽度边距 - 计算屏幕宽度需要减去padding的宽度单位vp，图片默认占位图，图片是否压缩）
+ * 12：markdown插件化
  */
 public class MarkdownTheme {
     /**
@@ -515,6 +516,14 @@ public class MarkdownThemeBuilder {
     public func setHeadingTextColor(headingTextColor: Color): MarkdownThemeBuilder
 
     /**
+     * 设置标题字体字间距
+     *
+     * @param headingTextWordSpace 标题字体字间距。默认0.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextWordSpace(headingTextWordSpace: Float64): MarkdownThemeBuilder
+
+    /**
      * 设置段落字体大小
      *
      * @param paragraphTextSize 段落字体大小。默认14.0
@@ -529,6 +538,14 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setParagraphTextColor(paragraphTextColor: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置段落文本字间距
+     *
+     * @param paragraphTextWordSpace 段落字体字间距。默认0.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setParagraphTextWordSpace(paragraphTextWordSpace: Float64): MarkdownThemeBuilder
 
     /**
      * 设置分割线颜色
@@ -649,6 +666,14 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setIsAutoResize(isAutoResize: Bool): MarkdownThemeBuilder
+
+    /**
+     * 设置markdown插件
+     *
+     * @param markdownPlugin markdown插件
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setMarkdownParser(markdownParser: Markdown): MarkdownThemeBuilder
 
     /**
      * 返回Theme对象

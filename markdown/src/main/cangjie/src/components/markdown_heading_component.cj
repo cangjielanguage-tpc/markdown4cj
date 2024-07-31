@@ -102,6 +102,8 @@ class MarkdownHeadingComponent {
             .fontStyle(spanFontStyle(nodeView))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            // 设置文本字符间距
+            .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
@@ -125,6 +127,8 @@ class MarkdownHeadingComponent {
             .fontStyle(spanFontStyle(nodeView))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true))
+            // 设置文本字符间距
+            .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
@@ -192,7 +196,7 @@ class MarkdownHeadingComponent {
     }
 
     /**
-     * 本地图片
+     * 图片
      */
     @Builder
     func headingImageSpanPixelMapComponent(ret: Int64, destination: String) {
@@ -220,7 +224,7 @@ class MarkdownHeadingComponent {
     }
 
     /**
-     * 图片 - 本地图片
+     * 图片
      */
     @Builder
     func headingImageSpanComponent(commonmarkImage: CommonmarkImage, idx: Int64) {

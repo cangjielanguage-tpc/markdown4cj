@@ -130,6 +130,8 @@ class MarkdownCodeBlockListComponent {
                         Span(item.getText())
                             // 设置文本颜色
                             .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+                            // 设置文本字符间距
+                            .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
                 }
             )
         }
