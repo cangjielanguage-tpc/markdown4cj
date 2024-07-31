@@ -34,7 +34,6 @@ class MarkdownLatexImageUtil {
                 var imageSource: ImageSource = createImageSource(arr)
                 var pixelMap: PixelMap = imageSource.createPixelMap()
                 imageSource.release()
-                latex.release()
                 return (pixelMap, Length(Int64(g2.height), unitType: LengthType.px), Length(Int64(g2.width), unitType: LengthType.px), arr, strLatexMath)
             } catch (e: Exception) {
                 return (None, None, None, None, strLatexMath)
@@ -74,7 +73,6 @@ class MarkdownLatexImageUtil {
                 }
                 var height: Float64 = width * aspectRatio
                 pixelMap.scale(Float32(width/imageWidth), Float32(height/imageHeight))
-                latex.release()
                 return (pixelMap, height, width, arr)
             } catch (e: Exception) {
                 return (None, None, None, None)
