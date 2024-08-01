@@ -14,8 +14,6 @@ package markdown.core
  * @see MarkdownPlugin#configureVisitor(Builder)
  */
 public interface MarkdownVisitor <: Visitor {
-    func configuration(): MarkdownConfiguration
-
     func renderProps(): RenderProps
 
     /**
@@ -52,8 +50,6 @@ public type NodeVisitor = (visitor: MarkdownVisitor, n: Node) -> Unit
 /**
  */
 class MarkdownVisitorImpl <: MarkdownVisitor {
-    private let config: MarkdownConfiguration
-
     private let props: RenderProps
 
     private let nodes: Map<String, NodeVisitor>
@@ -61,12 +57,10 @@ class MarkdownVisitorImpl <: MarkdownVisitor {
     private let blockHandler: BlockHandler
 
     init(
-        config: MarkdownConfiguration,
         props: RenderProps,
         nodes: Map<String, NodeVisitor>,
         blockHandler: BlockHandler
     ) {
-        this.config = config
         this.props = props
         this.nodes = nodes
         this.blockHandler = blockHandler
@@ -174,10 +168,6 @@ class MarkdownVisitorImpl <: MarkdownVisitor {
         }
     }
 
-    public override func configuration(): MarkdownConfiguration {
-        return config
-    }
-
     public override func renderProps(): RenderProps {
         return props
     }
@@ -227,7 +217,7 @@ public interface MarkdownVisitorBuilder {
      */
     func blockHandler(blockHandler: BlockHandler): MarkdownVisitorBuilder
 
-    func build(config: MarkdownConfiguration, props: RenderProps): MarkdownVisitor
+    func build(props: RenderProps): MarkdownVisitor
 }
 
 class MarkdownVisitorBuilderImpl <: MarkdownVisitorBuilder {
@@ -250,11 +240,10 @@ class MarkdownVisitorBuilderImpl <: MarkdownVisitorBuilder {
         return this
     }
 
-    public override func build(config: MarkdownConfiguration, props: RenderProps): MarkdownVisitor {
+    public override func build(props: RenderProps): MarkdownVisitor {
         let blockHandler: BlockHandler = this._blockHandler ?? BlockHandlerDef()
 
         return MarkdownVisitorImpl(
-            config,
             props,
             nodes,
             blockHandler
@@ -264,8 +253,8 @@ class MarkdownVisitorBuilderImpl <: MarkdownVisitorBuilder {
 
 type MarkdownVisitorFactory = () -> MarkdownVisitor
 
-func createMarkdownVisitorFactory(builder: MarkdownVisitorBuilder, config: MarkdownConfiguration): MarkdownVisitorFactory {
+func createMarkdownVisitorFactory(builder: MarkdownVisitorBuilder): MarkdownVisitorFactory {
     return {
-        => builder.build(config, RenderProps())
+        => builder.build(RenderProps())
     }
 }

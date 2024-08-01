@@ -220,7 +220,7 @@ public class MarkdownComponent {
     func stringToNodes(){
         spawn {
             try {
-                let markdown: Markdown = if (let Some(v) <- markdownConfiguration.markdownTheme.markdownParser) {
+                let markdown: Markdown = if (let Some(v) <- markdownConfiguration.markdownParser) {
                     v
                 } else {
                     Markdown.builder()

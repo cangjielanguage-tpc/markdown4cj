@@ -97,14 +97,11 @@ public abstract class Markdown {
      * @return a list of registered {@link MarkdownPlugin}
      */
     public func getPlugins(): ArrayList<MarkdownPlugin>
-
-    public func configuration(): MarkdownConfiguration
 }
 
 class MarkdownImpl <: Markdown {
     private let parser: Parser
     private let visitorFactory: MarkdownVisitorFactory
-    private let config: MarkdownConfiguration
     private let plugins: ArrayList<MarkdownPlugin>
 
     private let fallbackToRawInputWhenEmpty: Bool
@@ -112,13 +109,11 @@ class MarkdownImpl <: Markdown {
     init(
         parser: Parser,
         visitorFactory: MarkdownVisitorFactory,
-        config: MarkdownConfiguration,
         plugins: ArrayList<MarkdownPlugin>,
         fallbackToRawInputWhenEmpty: Bool
     ) {
         this.parser = parser
         this.visitorFactory = visitorFactory
-        this.config = config
         this.plugins = plugins
         this.fallbackToRawInputWhenEmpty = fallbackToRawInputWhenEmpty
     }
@@ -206,10 +201,6 @@ class MarkdownImpl <: Markdown {
     public override func getPlugins(): ArrayList<MarkdownPlugin> {
         return plugins
     }
-
-    public override func configuration(): MarkdownConfiguration {
-        return config
-    }
 }
 
 /**
@@ -266,26 +257,19 @@ class MarkdownBuilderImpl <: MarkdownBuilder {
         let plugins: ArrayList<MarkdownPlugin> = preparePlugins(this.plugins)
 
         let parserBuilder: ParserBuilder = ParserBuilder()
-        let themeBuilder: MarkdownThemeBuilder = MarkdownTheme.builderWithDefaults()
-        let configurationBuilder: MarkdownConfigurationBuilder = MarkdownConfigurationBuilder()
         let visitorBuilder: MarkdownVisitorBuilder = MarkdownVisitorBuilderImpl()
 
         for (plugin in plugins) {
             plugin.configureParser(parserBuilder)
-            plugin.configureTheme(themeBuilder)
-            plugin.configureConfiguration(configurationBuilder)
             plugin.configureVisitor(visitorBuilder)
         }
 
-        let configuration: MarkdownConfiguration = configurationBuilder.build(themeBuilder.build())
-
         // do not reuse render-props (each render call should have own render-props)
-        let visitorFactory: MarkdownVisitorFactory = createMarkdownVisitorFactory(visitorBuilder, configuration)
+        let visitorFactory: MarkdownVisitorFactory = createMarkdownVisitorFactory(visitorBuilder)
 
         return MarkdownImpl(
             parserBuilder.build(),
             visitorFactory,
-            configuration,
             plugins,
             _fallbackToRawInputWhenEmpty
         )

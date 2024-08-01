@@ -16,7 +16,6 @@ internal import std.time.DateTime
 internal import std.regex.Matcher
 internal import std.regex.Regex
 
-
 /**
  * 扩展Option，getOrThrow()方法直接用()
  */
