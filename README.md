@@ -251,10 +251,11 @@ Heading level 2
    6. 不支持行内添加图片banner
    7. 不支持行内添加缩进代码块、围栏代码块、围栏代码组合列表块
 6. 列表最多支持嵌套12层
-7. 图文混排只支持本地图片的图文混排
+7. 图文混排支持本地图片和网络图片的图文混排
    1. 本地图片路径格式需要按照应用沙箱目录 https://gitcode.com/openharmony/docs/blob/master/zh-cn/application-dev/file-management/app-sandbox-directory.md 处理
    2. 支持rawfile目录下本地图片，相对路径是基于rawfile的路径
    3. 不支持带style标签的本地图片
+   4. 支持的图片格式包括: png、jpg、bmp、svg和gif
 
 ## 开源协议
 
