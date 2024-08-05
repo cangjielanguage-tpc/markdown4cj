@@ -226,8 +226,6 @@ public class MarkdownComponent {
                     Markdown.builder()
                         // 任务列表插件
                         .usePlugin(TaskListPlugin.create())
-                        // TOC列表插件
-                        .usePlugin(TocPlugin.create())
                         // 删除线插件
                         .usePlugin(StrikethroughPlugin.create())
                         // 表格插件
@@ -240,6 +238,8 @@ public class MarkdownComponent {
                         .usePlugin(LatexMathPlugin.create())
                         // 链接
                         .usePlugin(LinkifyPlugin.create())
+                        // TOC列表插件
+                        .usePlugin(TocPlugin.create())
                         .build()
                 }
                 let node: CommonmarkNode = markdown.parse(mdStr)
@@ -252,8 +252,8 @@ public class MarkdownComponent {
                 let paragraph: Paragraph  = Paragraph()
                 let commonmarkText: CommonmarkText = CommonmarkText(mdStr)
                 paragraph.appendChild(commonmarkText)
-                let paragraphNodeView: NodeView = NodeView(paragraph)
-                let textNodeView: NodeView = NodeView(commonmarkText, paragraphNodeView)
+                let paragraphNodeView: NodeView = buildView(paragraph, true)
+                let textNodeView: NodeView = buildView(commonmarkText, true)
                 arrayListNodeView.append(paragraphNodeView)
                 launch {
                     nodeViews = arrayListNodeView

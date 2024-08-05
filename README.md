@@ -256,6 +256,7 @@ Heading level 2
    2. 支持rawfile目录下本地图片，相对路径是基于rawfile的路径
    3. 不支持带style标签的本地图片
    4. 支持的图片格式包括: png、jpg、bmp、svg和gif
+8. TOC插件应在最后加载, 避免受其他插件影响
 
 ## 开源协议
 
