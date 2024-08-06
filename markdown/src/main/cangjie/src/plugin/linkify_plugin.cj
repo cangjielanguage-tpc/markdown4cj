@@ -4,7 +4,7 @@
 package markdown.plugin
 
 public class LinkifyPlugin <: AbstractMarkdownPlugin {
-    static let urlreg = Regex(#"(?<=^|\s)https?://\S+(?=$|\s)"#)
+    static let urlreg = Regex(#"https?://\S+"#)
     public static func create(): LinkifyPlugin {
         return LinkifyPlugin()
     }

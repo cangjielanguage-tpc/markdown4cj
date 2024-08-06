@@ -110,7 +110,11 @@ class ImageVisitor <: AbstractVisitor {
         visitChildren(p)
 
         var node: ?Node = match (p.getFirstChild()) {
-            case Some(t: Text) where t.getLiteral() == "<" => t.getNext()
+            case Some(t: Text) where t.getLiteral() == "<" => match (t.getNext()) {
+                case Some(_: SoftLineBreak) => return // 如果<后换行 不支持
+                case Some(v) => v
+                case _ => return
+            }
             case _ => return
         }
         let end = match (p.getLastChild()) {
@@ -122,9 +126,16 @@ class ImageVisitor <: AbstractVisitor {
         var wantImg = true
         while (let Some(n) <- node) {
             if (n == end) {
-                break
+                if (wantImg) {
+                    return // 如果是逗号结尾 不支持
+                } else {
+                    break
+                }
             }
             node = n.getNext()
+            if (n is SoftLineBreak) {
+                continue
+            }
             if (wantImg) {
                 // Image node
                 if (n is Image) {
@@ -136,7 +147,7 @@ class ImageVisitor <: AbstractVisitor {
             } else {
                 // Text{,} node
                 match (n) {
-                    case t: Text where t.getLiteral() == "," => wantImg = !wantImg
+                    case t: Text where t.getLiteral().trimAscii() == "," => wantImg = !wantImg
                     case _ => return
                 }
             }
