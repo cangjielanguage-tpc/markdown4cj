@@ -28,22 +28,6 @@ public interface MarkdownPlugin <: Hashable & Equatable<MarkdownPlugin> & ToStri
     func configureParser(builder: ParserBuilder): Unit
 
     /**
-     * Modify {@link MarkdownTheme} that is used for rendering of markdown.
-     *
-     * @see MarkdownTheme
-     * @see MarkdownThemeBuilder
-     */
-    func configureTheme(builder: MarkdownThemeBuilder): Unit
-
-    /**
-     * Configure {@link MarkdownConfiguration}
-     *
-     * @see MarkdownConfiguration
-     * @see MarkdownConfigurationBuilder
-     */
-    func configureConfiguration(builder: MarkdownConfigurationBuilder): Unit
-
-    /**
      * Configure {@link MarkdownVisitor} to accept node types or override already registered nodes.
      *
      * @see MarkdownVisitor
@@ -123,12 +107,6 @@ public abstract class AbstractMarkdownPlugin <: MarkdownPlugin {
     }
 
     public open override func configureParser(_: ParserBuilder): Unit {
-    }
-
-    public open override func configureTheme(_: MarkdownThemeBuilder): Unit {
-    }
-
-    public open override func configureConfiguration(_: MarkdownConfigurationBuilder): Unit {
     }
 
     public open override func configureVisitor(_: MarkdownVisitorBuilder): Unit {

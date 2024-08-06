@@ -43,8 +43,25 @@ class LatexBlockParser <: AbstractBlockParser {
 class LatexBlockParserFactory <: AbstractBlockParserFactory {
     public func tryStart(state: ParserState, _: MatchedBlockParser): ?BlockStart {
         let line: String = state.getLine()
-        if (line.size > 1 && line[0] == UInt8(UInt32(r'$')) && line[1] == UInt8(UInt32(r'$'))) {
-            return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + 2)
+        if (line.size == 2) {
+            if (line == "$$") {
+                return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + 2)
+            }
+        } else {
+            var (flag, lastindex) = (0, -1) // 连续$的个数
+            for (i in 0..line.size) {
+                match (line[i]) {
+                    case b' ' => () // 跳过空格
+                    case b'$' => if (lastindex == -1 || lastindex + 1 == i) {
+                        lastindex = i
+                        flag += 1
+                    }
+                    case _ => break
+                }
+                if (flag == 2) {
+                    return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + line.size)
+                }
+            }
         }
         return BlockStart.none()
     }
@@ -65,12 +82,14 @@ func isLatexLine(line: String): Bool {
     return true
 }
 
-func isLatexEnd(line: String): Bool {
+func isLatexEnd(lineStr: String): Bool {
     // let reg = Regex(#"[^\\]?\$\$$"#)
+    let line = lineStr.trimAscii()
+    let size = line.size
     return match {
-        case line.size < 2 => false
-        case line.size == 2 && line == "$$" => true
-        case line.size > 2 && line[line.size - 1] == UInt8(UInt32(r'$')) && line[line.size - 2] == UInt8(UInt32(r'$')) && line[line.size - 3] != UInt8(UInt32(r'\\')) => true
+        case size < 2 => false
+        case size == 2 && line == "$$" => true
+        case size > 2 && line[size - 1] == b'$' && line[size - 2] == b'$' && line[size - 3] != b'\\' => true
         case _ => false
     }
 }

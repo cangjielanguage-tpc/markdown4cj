@@ -98,6 +98,14 @@ public class MarkdownConfigurationBuilder {
     public func setTableTheme(tableTheme: TableTheme): MarkdownConfigurationBuilder
 
     /**
+     * 设置markdown核心解析器
+     *
+     * @param markdownPlugin markdown核心解析器
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setMarkdownParser(markdownParser: Markdown): MarkdownConfigurationBuilder
+
+    /**
      * 设置链接的点击事件
      *
      * @param linkCallback 链接点击回调接口
@@ -199,7 +207,6 @@ Markdown用户可设置的样式
  * 9：视频（视频默认占位图，视频播放按钮默认图标）
  * 10：图片Banner（图片banner默认占位图）
  * 11：图片（图片宽度边距 - 计算屏幕宽度需要减去padding的宽度单位vp，图片默认占位图，图片是否压缩）
- * 12：markdown插件化
  */
 public class MarkdownTheme {
     /**
@@ -668,14 +675,6 @@ public class MarkdownThemeBuilder {
     public func setIsAutoResize(isAutoResize: Bool): MarkdownThemeBuilder
 
     /**
-     * 设置markdown插件
-     *
-     * @param markdownPlugin markdown插件
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setMarkdownParser(markdownParser: Markdown): MarkdownThemeBuilder
-
-    /**
      * 返回Theme对象
      *
      * @return MarkdownTheme MarkdownTheme对象
@@ -1002,5 +1001,204 @@ public class TableThemeBuilder {
      * 构建 TableTheme 实例
      */
     public func build(): TableTheme
+}
+```
+
+## Markdown 核心解析器
+
+markdown核心解析器通过调用commonmark4cj库进行解析  
+支持对commonmark解析器的扩展  
+同样支持对自身的扩展  
+
+### class Markdown
+
+```cangjie
+public abstract class Markdown {
+    /**
+     * 创建一个 Markdown 实例，并注册 CorePlugin 插件
+     */
+    public static func create(): Markdown {
+        return builder().usePlugin(CorePlugin.create()).build()
+    }
+
+    /**
+     *  创建一个 MarkdownBuilder 实例, 并注册 CorePlugin 插件
+     */
+    public static func builder(): MarkdownBuilder {
+        return MarkdownBuilderImpl().usePlugin(CorePlugin.create())
+    }
+
+    /**
+     * 创建一个 MarkdownBuilder 实例，未注册插件
+     */
+    public static func builderNoCore(): MarkdownBuilder {
+        return MarkdownBuilderImpl()
+    }
+
+    /**
+     * 解析 markdown 字符串
+     * @param input markdown 字符串
+     * @return 返回节点树的根节点
+     */
+    public func parse(input: String): Node
+
+    /**
+     * 将节点树渲染成 NodeView
+     * @param node 节点树的根节点
+     * @return 返回 NodeView
+     */
+    public func render(node: Node): NodeView
+
+    /**
+     * 解析 markdown 字符串，并渲染成 NodeView
+     * @param input markdown 字符串
+     * @return 返回 NodeView
+     */
+    public func toMarkdown(input: String): NodeView
+
+    /**
+     * 是否启用插件
+     * @param plugin 插件id
+     * @return true 启用，false 未启用
+     */
+    public func hasPlugin(plugin: String): Bool
+
+    /**
+     * 获取插件
+     * @param plugin 插件id
+     * @return MarkdownPlugin
+     */
+    public func getPlugin(plugin: String): ?MarkdownPlugin
+
+    /**
+     * 获取插件
+     * @param plugin 插件id
+     * @return MarkdownPlugin
+     * @throws IllegalStateException 插件未找到异常
+     */
+    public func requirePlugin(pluginType: String): MarkdownPlugin
+
+    /**
+     * 获取所有已注册的插件
+     */
+    public func getPlugins(): ArrayList<MarkdownPlugin>
+}
+```
+
+### class MarkdownBuilder
+
+```cangjie
+public interface MarkdownBuilder {
+    /**
+     * 注册插件
+     * @param plugin 插件
+     * @return MarkdownBuilder
+     */
+    func usePlugin(plugin: MarkdownPlugin): MarkdownBuilder
+
+    /**
+     * 注册插件
+     * @param plugins 插件列表
+     * @return MarkdownBuilder
+     */
+    func usePlugins(plugins: Iterable<MarkdownPlugin>): MarkdownBuilder
+
+    /**
+     * 当渲染 NodeView 异常, 是否退化至纯文本, 默认true
+     * @param fallbackToRawInputWhenEmpty true 退化至纯文本，false 抛出异常
+     */
+    func fallbackToRawInputWhenEmpty(fallbackToRawInputWhenEmpty: Bool): MarkdownBuilder
+
+    /**
+     * 构建 Markdown 实例
+     */
+    func build(): Markdown
+}
+```
+
+### Markdown解析器插件
+
+```cangjie
+public interface MarkdownPlugin <: Hashable & Equatable<MarkdownPlugin> & ToString {
+    /**
+     * 插件id
+     */
+    func getClassType(): String
+
+    /**
+     * 配置commonmark解析器 
+     * @param builder commonmark.ParserBuilder
+     */
+    func configureParser(builder: ParserBuilder): Unit
+
+    /**
+     * 配置commonmark遍历器
+     * @param builder commonmark.MarkdownVisitorBuilder
+     */
+    func configureVisitor(builder: MarkdownVisitorBuilder): Unit
+
+    /**
+     * parse前 处理markdown文本
+     * @param markdown markdown文本
+     * @return 处理后的markdown文本
+     */
+    func processMarkdown(markdown: String): String
+
+    /**
+     * parse后/render前 处理Node
+     * @param node node树root节点
+     */
+    func beforeRender(node: Node): Unit
+
+    /**
+     * render后 处理Node
+     * @param node    node树root节点
+     * @param visitor 当前遍历器
+     */
+    func afterRender(node: Node, visitor: MarkdownVisitor): Unit
+}
+```
+
+### 用于渲染Component的NodeView数据结构
+
+```cangjie
+public class NodeView <: ToString {
+    /* BlockQuote深度 -1:无效 >=0:深度 */
+    public var blockQuoteDepth: Int = -1
+    /* 是否被BlockQuote修饰 */
+    public var blockQuote: ?BlockQuote = None
+    /* 是否被Emphasis修饰 */
+    public var emphasis: ?Emphasis = None
+    /* 是否被StrongEmphasis修饰 */
+    public var strongEmphasis: ?StrongEmphasis = None
+    /* 是否被Link修饰 */
+    public var link: ?Link = None
+    /* 是否属于BulletList */
+    public var bulletList: ?BulletList = None
+    /* 属于第几层OrderedListItem -1:无效 >=0:深度 */
+    public var depth: Int = -1
+    /* 属于第几位OrderedListItem -1:无效 >=0:序号 */
+    public var order: Int = -1
+    public var orderedList: ?OrderedList = None
+    /* 属于第几层BulletListItem -1:无效 >=0:深度 */
+    public var bulletListDepth: Int = -1
+    /* ListItem中可包含多个Block，但只有第一个Block有列表符号 */
+    public var listMark: Bool = false
+    // 本身Node节点
+    public let node: Node
+    // Node节点开始结束标志 -1:无效 0:开始 1:结束
+    var startend = -1
+    // 是否为Node开始
+    public prop isNodeStart: Bool
+    // 是否为Node结束
+    public prop isNodeEnd: Bool
+    // 子节点列表
+    public let children: ArrayList<NodeView> = ArrayList<NodeView>()
+    // NodeViewTree中的上级NodeView
+    public var collector: ?NodeView = None
+    // 供插件使用的自定义属性
+    public var props: ?HashMap<String, Any> = None
+    // 所有上级列表节点 用于ListItem中第一个Block前的列表符号绘制
+    public var list: ArrayList<NodeView> = EMPTY_LIST
 }
 ```

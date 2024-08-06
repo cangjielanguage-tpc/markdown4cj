@@ -28,6 +28,11 @@ public class MarkdownConfiguration {
     protected var tableTheme: TableTheme = TableTheme.emptyBuilder().build()
 
     /**
+     * 插件化使用
+     */
+    protected var markdownParser: ?Markdown = None
+
+    /**
      * 链接的点击事件
      */
     protected var linkCallback: ?(String) -> Unit = None
@@ -85,6 +90,8 @@ public class MarkdownConfiguration {
         this.markdownTheme = builder.markdownTheme
         this.prismTheme = builder.prismTheme
         this.tableTheme = builder.tableTheme
+        // 插件化
+        this.markdownParser = builder.markdownParser
         this.linkCallback = builder.linkCallback
         this.imageCallback = builder.imageCallback
         this.videoCallback = builder.videoCallback
@@ -143,6 +150,11 @@ public class MarkdownConfigurationBuilder {
      * markdown表格样式
      */
     protected var tableTheme: TableTheme = TableTheme.emptyBuilder().build()
+
+    /**
+     * 插件化使用
+     */
+    protected var markdownParser: ?Markdown = None
 
     /**
      * 链接的点击事件
@@ -205,6 +217,8 @@ public class MarkdownConfigurationBuilder {
         this.markdownTheme = configuration.markdownTheme
         this.prismTheme = configuration.prismTheme
         this.tableTheme = configuration.tableTheme
+        // 插件化
+        this.markdownParser = configuration.markdownParser
         this.linkCallback = configuration.linkCallback
         this.imageCallback = configuration.imageCallback
         this.videoCallback = configuration.videoCallback
@@ -246,6 +260,17 @@ public class MarkdownConfigurationBuilder {
      */
     public func setTableTheme(tableTheme: TableTheme): MarkdownConfigurationBuilder {
         this.tableTheme = tableTheme
+        return this
+    }
+
+    /**
+     * 设置markdown核心解析器
+     *
+     * @param markdownPlugin markdown核心解析器
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setMarkdownParser(markdownParser: Markdown): MarkdownConfigurationBuilder {
+        this.markdownParser = markdownParser
         return this
     }
 

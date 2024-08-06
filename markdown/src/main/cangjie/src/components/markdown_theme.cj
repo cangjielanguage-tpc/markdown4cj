@@ -22,7 +22,6 @@ import ohos.state_macro_manage.*
  * 9：视频（视频默认占位图，视频播放按钮默认图标）
  * 10：图片Banner（图片banner默认占位图）
  * 11：图片（图片宽度边距 - 计算屏幕宽度需要减去padding的宽度单位vp，图片默认占位图，图片是否压缩）
- * 12：markdown插件化
  */
 public class MarkdownTheme {
     /**
@@ -300,11 +299,6 @@ public class MarkdownTheme {
      */
     protected var isAutoResize: Bool = true
 
-    /**
-     * 插件化使用
-     */
-    protected var markdownParser: ?Markdown = None
-
     protected init(builder: MarkdownThemeBuilder) {
         this.abilityContext = builder.abilityContext
         this.blockTopAndBottomMargins = builder.blockTopAndBottomMargins
@@ -371,8 +365,6 @@ public class MarkdownTheme {
         this.imagePadding = builder.imagePadding
         this.imageResource = builder.imageResource
         this.isAutoResize = builder.isAutoResize
-        // 插件化
-        this.markdownParser = builder.markdownParser
     }
 
     /**
@@ -678,11 +670,6 @@ public class MarkdownThemeBuilder {
      */
     protected var isAutoResize: Bool = true
 
-    /**
-     * 插件化使用
-     */
-    protected var markdownParser: ?Markdown = None
-
     init() {
     }
 
@@ -752,8 +739,6 @@ public class MarkdownThemeBuilder {
         this.imagePadding = theme.imagePadding
         this.imageResource = theme.imageResource
         this.isAutoResize = theme.isAutoResize
-        // 插件化
-        this.markdownParser = theme.markdownParser
     }
 
     /**
@@ -1347,17 +1332,6 @@ public class MarkdownThemeBuilder {
      */
     public func setIsAutoResize(isAutoResize: Bool): MarkdownThemeBuilder {
         this.isAutoResize = isAutoResize
-        return this
-    }
-
-    /**
-     * 设置markdown插件
-     *
-     * @param markdownPlugin markdown插件
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setMarkdownParser(markdownParser: Markdown): MarkdownThemeBuilder {
-        this.markdownParser = markdownParser
         return this
     }
 

@@ -194,8 +194,7 @@ extend Node <: NodeExt {
         if (this is Block) {
             return false
         }
-        return (this is Text || this is Code || this is Image || this is HardLineBreak ||
-            this is SoftLineBreak)
+        return (this is Text || this is Code || this is Image || this is HardLineBreak || this is SoftLineBreak)
     }
 
     public func replaceWith(node: Node): Unit {
