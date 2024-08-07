@@ -33,7 +33,7 @@ class MarkdownLatexImageUtil {
                 var arr: Array<UInt8> = r.toBitmap(g2)
                 var imageSource: ImageSource = createImageSource(arr)
                 var pixelMap: PixelMap = imageSource.createPixelMap()
-                imageSource.release()
+                imageSource.Release()
                 return (pixelMap, Length(Int64(g2.height), unitType: LengthType.px), Length(Int64(g2.width), unitType: LengthType.px), arr, strLatexMath)
             } catch (e: Exception) {
                 return (None, None, None, None, strLatexMath)
@@ -61,7 +61,7 @@ class MarkdownLatexImageUtil {
                 var arr: Array<UInt8> = r.toBitmap(g2)
                 var imageSource: ImageSource = createImageSource(arr)
                 var pixelMap: PixelMap = imageSource.createPixelMap()
-                imageSource.release()
+                imageSource.Release()
                 var size: Size = pixelMap.getImageInfo().size
                 var aspectRatio: Float64  = Float64(size.height)/Float64(size.width)
                 var imageWidth: Float64 = px2vp(Int64(size.width).px)().value

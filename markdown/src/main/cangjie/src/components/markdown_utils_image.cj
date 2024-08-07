@@ -46,7 +46,7 @@ func imageSpanToPixelmap(destination: String, componentWidth: Float64): (?PixelM
     try {
         var imageSource: ImageSource = createImageSource(destination)
         var pixelMap: PixelMap = imageSource.createPixelMap()
-        imageSource.release()
+        imageSource.Release()
         var size: Size = pixelMap.getImageInfo().size
         var aspectRatio: Float64  = Float64(size.height)/Float64(size.width)
         var imageWidth: Float64 = px2vp(Int64(size.width).px)().value
@@ -79,7 +79,7 @@ func rawfileToPixelmap(destination: String, abilityContext: ?AbilityContext, com
             var arrayUInt8: Array<UInt8> = resourceManager.getRawFileContent(destination.replace("./", ""))
             var imageSource: ImageSource = createImageSource(arrayUInt8)
             var pixelMap: PixelMap = imageSource.createPixelMap()
-            imageSource.release()
+            imageSource.Release()
             var size: Size = pixelMap.getImageInfo().size
             var aspectRatio: Float64  = Float64(size.height) / Float64(size.width)
             var imageWidth: Float64 = px2vp(Int64(size.width).px)().value
@@ -127,7 +127,7 @@ func getImageFromHttpClient(path: String, componentWidth: Float64): (?PixelMap, 
         let arrData: Array<UInt8> = listbuf.toArray()
         var imageSource: ImageSource = createImageSource(arrData)
         var pixelMap: PixelMap = imageSource.createPixelMap()
-        imageSource.release()
+        imageSource.Release()
         var size: Size = pixelMap.getImageInfo().size
         var aspectRatio: Float64  = Float64(size.height) / Float64(size.width)
         var imageWidth: Float64 = px2vp(Int64(size.width).px)().value
