@@ -72,7 +72,7 @@ class MarkdownCodeBlockListComponent {
         // 设置外边距属性
         .margin(top: marginTop, bottom: marginBottom)
         // 组件挂载显示时触发此回调
-        .onAppear{=> stringCodeToResLists()}
+        .onAppear {=> stringCodeToResLists()}
     }
 
     /**
@@ -86,20 +86,20 @@ class MarkdownCodeBlockListComponent {
                     strInfos,
                     itemGeneratorFunc: {
                         item: String, idx: Int64 =>
-                            // 设置文本内容
-                            Text(item)
-                                // 设置文本颜色
-                                .fontColor(listCodeTextColor(idxSelect, idx, markdownConfiguration))
-                                // 设置组件的背景色
-                                .backgroundColor(listCodeBackgroupColor(idxSelect, idx, markdownConfiguration))
-                                // 设置文本的最大行数
-                                .maxLines(1)
-                                // 设置文本尺寸
-                                .fontSize(markdownConfiguration.markdownTheme.codeListTitleTextSize)
-                                // 设置内边距属性
-                                .padding(left: 14, right: 14, top: 5, bottom: 5)
-                                // 点击动作触发该方法调用
-                                .onClick {evt => idxSelect = idx}
+                        // 设置文本内容
+                        Text(item)
+                            // 设置文本颜色
+                            .fontColor(listCodeTextColor(idxSelect, idx, markdownConfiguration))
+                            // 设置组件的背景色
+                            .backgroundColor(listCodeBackgroupColor(idxSelect, idx, markdownConfiguration))
+                            // 设置文本的最大行数
+                            .maxLines(1)
+                            // 设置文本尺寸
+                            .fontSize(markdownConfiguration.markdownTheme.codeListTitleTextSize)
+                            // 设置内边距属性
+                            .padding(left: 14, right: 14, top: 5, bottom: 5)
+                            // 点击动作触发该方法调用
+                            .onClick {evt => idxSelect = idx}
                     }
                 )
             }
@@ -126,12 +126,12 @@ class MarkdownCodeBlockListComponent {
                 items,
                 itemGeneratorFunc: {
                     item: PrismNodesParseRes, idx1: Int64 =>
-                        // 设置文本内容
-                        Span(item.getText())
-                            // 设置文本颜色
-                            .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
-                            // 设置文本字符间距
-                            .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
+                    // 设置文本内容
+                    Span(item.getText())
+                        // 设置文本颜色
+                        .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+                        // 设置文本字符间距
+                        .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
                 }
             )
         }
@@ -157,8 +157,8 @@ class MarkdownCodeBlockListComponent {
                 arrayLists,
                 itemGeneratorFunc: {
                     items: ArrayList<PrismNodesParseRes>, idx: Int64 =>
-                        // 组合代码代码内容
-                        codeBlockTextComponent(items, idx)
+                    // 组合代码代码内容
+                    codeBlockTextComponent(items, idx)
                 }
             )
         }
@@ -245,25 +245,15 @@ class MarkdownCodeBlockListComponent {
         .width(100.percent)
     }
 
-    func stringCodeToResLists(){
-        spawn {
-           try {
-                let prismNodesParseResLists: ArrayList<ArrayList<PrismNodesParseRes>> =  stringToResLists(nodeView,  markdownConfiguration)
-                launch {
-                    arrayLists = prismNodesParseResLists
-                }
-           } catch (e: Exception) {
-                let prismNodesParseResLists: ArrayList<ArrayList<PrismNodesParseRes>> =  ArrayList<ArrayList<PrismNodesParseRes>>()
-                for(str in  strText){
-                    let prismNodesParseResList:ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
-                    let prismNodesParseRes:PrismNodesParseRes = PrismNodesParseRes("", str, Option<String>.None, Option<Color>.None)
-                    prismNodesParseResList.append(prismNodesParseRes)
-                    prismNodesParseResLists.append(prismNodesParseResList)
-                }
-                launch {
-                    arrayLists = prismNodesParseResLists
-                }
-           }
+    /**
+     * 代码数据高亮解析
+     */
+    func stringCodeToResLists() {
+        let callback: (ArrayList<ArrayList<PrismNodesParseRes>>) -> Unit = {
+            prismNodesParseResLists => launch {
+                arrayLists = prismNodesParseResLists
+            }
         }
+        stringToResLists(nodeView, markdownConfiguration, strText, callback)
     }
 }

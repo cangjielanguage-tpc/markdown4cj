@@ -35,6 +35,17 @@ class MarkdownTableBlockComponent {
 
     var listPixelMap: ArrayList<?PixelMap> = ArrayList<?PixelMap>()
 
+    /**
+     * 异步加载的图片数据
+     */
+    @State
+    var arrayListPixelMap: ObservedArrayList<ImageData> = ObservedArrayList<ImageData>()
+
+    /**
+     * 控件宽度 - 单位vp
+     */
+    var componentWidth: Float64
+
     func build() {
         Column() {
             renderTableHeaderOrBody()
@@ -119,39 +130,35 @@ class MarkdownTableBlockComponent {
      * 行内数学公式
      */
     @Builder
-    func tableComponentLatexMath(allData: (?PixelMap, ?Length, ?Length, ?Array<UInt8>, String)) {
-        if (allData[0].isSome() && addPixelMap(allData[0])) {
-            // 设置图片的数据源
-            ImageSpan(allData[0]())
-                // 设置组件自身的高度
-                .height(allData[1]())
-                // 设置组件自身的宽度
-                .width(allData[2]())
-                // 设置图片的缩放类型
-                .objectFit(ImageFit.Contain)
-                // 设置约束尺寸
-                .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
-                // 点击动作触发该方法调用
-                .onClick {evt => latexImageOnClick(allData[3](), allData[1](), allData[2](), markdownConfiguration.latexImageCallback)}
-        } else {
-            // 设置文本内容
-            Span(allData[4])
-                // 设置文本尺寸
-                .fontSize(markdownConfiguration.markdownTheme.paragraphTextSize)
-                // 设置文本的字体粗细
-                .fontWeight(FontWeight.W400)
-                // 设置文本的字体样式
-                .fontStyle(FontStyle.Normal)
-                // 设置文本颜色
-                .fontColor(markdownConfiguration.markdownTheme.paragraphTextColor)
-        }
+    func tableComponentLatexMath(ret: Int64, retHead: Int64, retRow: Int64, retCol: Int64) {
+        ForEach(
+            arrayListPixelMap,
+            itemGeneratorFunc: {
+                item: ImageData, idx: Int64 =>
+                    if (item.retRow == retRow && item.retCol == retCol && item.ret == ret && item.retHead == retHead) {
+                        if (isLatexImagePixelMap(item, listPixelMap)) {
+                            ImageSpan(item.pixelMap())
+                                // 设置组件自身的高度
+                                .height(item.height())
+                                // 设置组件自身的宽度
+                                .width(item.width())
+                                // 设置图片的缩放类型
+                                .objectFit(ImageFit.Contain)
+                                // 设置约束尺寸
+                                .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
+                                // 点击动作触发该方法调用
+                                .onClick {evt => latexImageOnClick(item.arrayUint8(), item.height().vp, item.width().vp, markdownConfiguration.latexImageCallback)}
+                        }
+                }
+            }
+        )
     }
 
     /**
      * 表格内容信息
      */
     @Builder
-    func renderTableCell(tableCell: NodeView, idx: Int64) {
+    func renderTableCell(tableCell: NodeView, idHead: Int64, idRow: Int64, idCol: Int64) {
         Text() {
             ForEach(
                 tableCell.children.toArray(),
@@ -185,8 +192,8 @@ class MarkdownTableBlockComponent {
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
                         tableComponentLatexMath(
-                            MarkdownLatexImageUtil.latexMathStrToPixelMap((item.node as LatexMathNode)().latex,
-                            markdownConfiguration.markdownTheme.resPath, markdownConfiguration))
+                            latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx, idRow, idCol, idHead),
+                            idHead, idRow, idCol)
                     } else {
                         // TODO 其他节点
                         Span("")
@@ -203,27 +210,28 @@ class MarkdownTableBlockComponent {
         // 覆盖 Flex 布局容器中 alignItems 默认配置
         .alignSelf(ItemAlign.Stretch)
         // 设置多行文本的文本对齐方式
-        .textAlign(renderTableCellAlign((tableCell.node as TableCell)()))
+        .textAlign(
+        renderTableCellAlign((tableCell.node as TableCell)()))
         // 设置内边距属性
         .padding(markdownConfiguration.tableTheme.tableCellPadding)
         // 设置组件的背景色
-        .backgroundColor(renderTableCellColor((tableCell.node as TableCell)(), markdownConfiguration.tableTheme, idx))
+        .backgroundColor(renderTableCellColor((tableCell.node as TableCell)(), markdownConfiguration.tableTheme, idRow))
         // 统一边框样式设置接口
         .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0), color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
         // 组件卸载消失时触发此回调
-        .onDisAppear({=> delPixelMap()})
+        .onDisAppear({=> delPixelMap(listPixelMap)})
     }
 
     /**
      * 表格行信息
      */
     @Builder
-    func renderTableRow(tableRow: NodeView, idRow: Int64) {
+    func renderTableRow(tableRow: NodeView, idHead: Int64, idRow: Int64) {
         Row() {
             ForEach(
                 tableRow.children,
                 itemGeneratorFunc: {
-                    item: NodeView, idxItem: Int64 => renderTableCell(item, idRow)
+                    item: NodeView, idxItem: Int64 => renderTableCell(item, idHead, idRow, idxItem)
                 }
             )
         }
@@ -240,12 +248,12 @@ class MarkdownTableBlockComponent {
             ForEach(
                 tableNodeView.children,
                 itemGeneratorFunc: {
-                    tableHeaderOrBody: NodeView, idx: Int64 => ForEach(
+                    tableHeaderOrBody: NodeView, idxHead: Int64 => ForEach(
                         tableHeaderOrBody.children,
                         itemGeneratorFunc: {
                             tableRow: NodeView, idRow: Int64 => ListItem() {
                                 // 行信息
-                                renderTableRow(tableRow, idRow)
+                                renderTableRow(tableRow, idxHead, idRow)
                             }
                         }
                     )
@@ -256,17 +264,19 @@ class MarkdownTableBlockComponent {
         .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0), color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
     }
 
-    func addPixelMap(pixelMap: ?PixelMap): Bool{
-        listPixelMap.append(pixelMap)
-        return true
-    }
-
-    func delPixelMap(){
-        for(item in listPixelMap){
-            if(item.isSome()){
-                item().Release()
+    /**
+     * 数学公式数据处理 - 行内数学公式
+     */
+    func latexMathImagePixelmap(strLatexMath: String, idx: Int64, idRow: Int64, idCol: Int64, idHead: Int64): Int64 {
+        let callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit = {
+            pixelMap, height, width, arr => launch {
+                arrayListPixelMap.append(
+                    ImageData(ret: idx, retRow: idRow, retCol: idCol, retHead: idHead, pixelMap: pixelMap,
+                    height: height, width: width, arrayUint8: arr))
             }
         }
-        listPixelMap.clear()
+        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration.markdownTheme.resPath,
+            markdownConfiguration, componentWidth, callback)
+        return idx
     }
 }

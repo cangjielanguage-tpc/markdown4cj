@@ -100,6 +100,24 @@ class ImageData {
     var ret: Int64 = -1
 
     /**
+     * 行标识
+     */
+    @Publish
+    var retRow: Int64 = -1
+
+    /**
+     * 列标识
+     */
+    @Publish
+    var retCol: Int64 = -1
+
+    /**
+     * 表格标题头标识
+     */
+    @Publish
+    var retHead: Int64 = -1
+
+    /**
      * 图片数据
      */
     @Publish

@@ -63,7 +63,8 @@ class MarkdownHeadingComponent {
                         headingVideoComponent((item.node as ImgVideo)())
                     } else if (item.node is StyleImage) {
                         // 图片Style
-                        headingImageStyleComponent((item.node as StyleImage)(), parsePicStyle((item.node as StyleImage)().styles, markdownConfiguration, componentWidth))
+                        headingImageStyleComponent((item.node as StyleImage)(),
+                            parsePicStyle((item.node as StyleImage)().styles, markdownConfiguration, componentWidth))
                     }
                 }
             )
@@ -150,32 +151,31 @@ class MarkdownHeadingComponent {
             // TODO 其他内容，暂时只支持br标签
         }
     }
-    
+
     /**
      * 行内数学公式
      */
     @Builder
     func headingLatexMathComponent(ret: Int64) {
         ForEach(
-                arrayListPixelMap,
-                itemGeneratorFunc: {
-                    item: ImageData, idx: Int64 =>
-                    if(item.ret == ret){
-                        if(isImagePixelMap(item)){
-                            ImageSpan(item.pixelMap())
-                                // 设置组件自身的高度
-                                .height(item.height())
-                                // 设置组件自身的宽度
-                                .width(item.width())
-                                // 设置图片的缩放类型
-                                .objectFit(ImageFit.Contain)
-                                // 设置约束尺寸
-                                .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
-                                // 点击动作触发该方法调用
-                                .onClick {evt => latexImageOnClick(item.arrayUint8(), item.height().vp, item.width().vp, markdownConfiguration.latexImageCallback)}
-                        }
+            arrayListPixelMap,
+            itemGeneratorFunc: {
+                item: ImageData, idx: Int64 => if (item.ret == ret) {
+                    if (isLatexImagePixelMap(item, listPixelMap)) {
+                        ImageSpan(item.pixelMap())
+                            // 设置组件自身的高度
+                            .height(item.height())
+                            // 设置组件自身的宽度
+                            .width(item.width())
+                            // 设置图片的缩放类型
+                            .objectFit(ImageFit.Contain)
+                            // 设置约束尺寸
+                            .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
+                            // 点击动作触发该方法调用
+                            .onClick {evt => latexImageOnClick(item.arrayUint8(), item.height().vp, item.width().vp, markdownConfiguration.latexImageCallback)}
                     }
                 }
+            }
         )
     }
 
@@ -192,7 +192,8 @@ class MarkdownHeadingComponent {
      */
     @Builder
     func headingImageStyleComponent(styleImage: StyleImage, picStyleObj: PicStyleObj) {
-        MarkdownImageStyleComponent(styleImage: styleImage, picStyleObj: picStyleObj, markdownConfiguration: markdownConfiguration)
+        MarkdownImageStyleComponent(styleImage: styleImage, picStyleObj: picStyleObj,
+            markdownConfiguration: markdownConfiguration)
     }
 
     /**
@@ -201,25 +202,24 @@ class MarkdownHeadingComponent {
     @Builder
     func headingImageSpanPixelMapComponent(ret: Int64, destination: String) {
         ForEach(
-                arrayListPixelMap,
-                itemGeneratorFunc: {
-                    item: ImageData, idx: Int64 =>
-                    if(item.ret == ret){
-                        if(isImagePixelMap(item)){
-                            ImageSpan(item.pixelMap())
-                                // 设置组件自身的高度
-                                .height(item.height())
-                                // 设置组件自身的宽度
-                                .width(item.width())
-                                // 设置图片的缩放类型
-                                .objectFit(ImageFit.Contain)
-                                // 设置约束尺寸
-                                .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
-                                // 图片的点击事件
-                                .onClick {evt => imageOnClick(destination, markdownConfiguration.imageCallback)}
-                        }
+            arrayListPixelMap,
+            itemGeneratorFunc: {
+                item: ImageData, idx: Int64 => if (item.ret == ret) {
+                    if (isImagePixelMap(item, listPixelMap)) {
+                        ImageSpan(item.pixelMap())
+                            // 设置组件自身的高度
+                            .height(item.height())
+                            // 设置组件自身的宽度
+                            .width(item.width())
+                            // 设置图片的缩放类型
+                            .objectFit(ImageFit.Contain)
+                            // 设置约束尺寸
+                            .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
+                            // 图片的点击事件
+                            .onClick {evt => imageOnClick(destination, markdownConfiguration.imageCallback)}
                     }
                 }
+            }
         )
     }
 
@@ -230,13 +230,17 @@ class MarkdownHeadingComponent {
     func headingImageSpanComponent(commonmarkImage: CommonmarkImage, idx: Int64) {
         if (commonmarkImage.getDestination().startsWith("file:")) {
             // 沙盒图片
-            headingImageSpanPixelMapComponent(filesPixelmap(commonmarkImage.getDestination(), idx), commonmarkImage.getDestination())
+            headingImageSpanPixelMapComponent(filesPixelmap(commonmarkImage.getDestination(), idx),
+                commonmarkImage.getDestination())
         } else if (commonmarkImage.getDestination().startsWith("./")) {
             // rawfile图片
-            headingImageSpanPixelMapComponent(localRowImageToPixelMap(commonmarkImage.getDestination(), idx), commonmarkImage.getDestination())
-        } else if (commonmarkImage.getDestination().toAsciiLower().startsWith("http") || commonmarkImage.getDestination().toAsciiLower().startsWith("ftp")) {
+            headingImageSpanPixelMapComponent(localRowImageToPixelMap(commonmarkImage.getDestination(), idx),
+                commonmarkImage.getDestination())
+        } else if (commonmarkImage.getDestination().toAsciiLower().startsWith("http") ||
+            commonmarkImage.getDestination().toAsciiLower().startsWith("ftp")) {
             // 网络图片
-            headingImageSpanPixelMapComponent(httpImageToPixelMap(commonmarkImage.getDestination(), idx), commonmarkImage.getDestination())
+            headingImageSpanPixelMapComponent(httpImageToPixelMap(commonmarkImage.getDestination(), idx),
+                commonmarkImage.getDestination())
         }
     }
 
@@ -294,83 +298,59 @@ class MarkdownHeadingComponent {
         // 设置组件自身的宽度
         .width(100.percent)
         // 组件卸载消失时触发此回调
-        .onDisAppear({=> delPixelMap()})
+        .onDisAppear({=> delPixelMap(listPixelMap)})
     }
 
     /**
      * 数学公式数据处理 - 行内数学公式
      */
-    func latexMathImagePixelmap(strLatexMath: String, idx: Int64) : Int64{
-        spawn {
-            let allData = MarkdownLatexImageUtil.latexMathStrToPixelMapRow(strLatexMath,  markdownConfiguration.markdownTheme.resPath, markdownConfiguration, componentWidth)
-            launch{
-                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: allData[0], height: allData[1], width: allData[2], arrayUint8: allData[3]))
+    func latexMathImagePixelmap(strLatexMath: String, idx: Int64): Int64 {
+        let callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit = {
+            pixelMap, height, width, arr => launch {
+                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width,arrayUint8: arr))
             }
         }
+        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration.markdownTheme.resPath,
+            markdownConfiguration, componentWidth, callback)
         return idx
     }
 
     /**
      * 图片数据处理 - 本地沙盒图片
      */
-    func filesPixelmap(destination: String, idx: Int64) : Int64{
-        spawn {
-            let filePixelmap: (?PixelMap, ?Float64, ?Float64) = imageSpanToPixelmap(destination, componentWidth)
-            launch{
-                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: filePixelmap[0], height: filePixelmap[2], width: filePixelmap[1]))
+    func filesPixelmap(destination: String, idx: Int64): Int64 {
+        let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
+            pixelMap, width, height => launch {
+                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
+        imageSpanToPixelmap(destination, componentWidth, callback)
         return idx
     }
 
     /**
      * 图片数据处理 - 本地rawfile图片
      */
-    func localRowImageToPixelMap(destination: String, idx: Int64) : Int64{
-        spawn {
-            let rawfilePixelmap: (?PixelMap, ?Float64, ?Float64) = rawfileToPixelmap(destination, markdownConfiguration.markdownTheme.abilityContext, componentWidth)
-            launch{
-                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: rawfilePixelmap[0], height: rawfilePixelmap[2], width: rawfilePixelmap[1]))
+    func localRowImageToPixelMap(destination: String, idx: Int64): Int64 {
+        let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
+            pixelMap, width, height => launch {
+                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
+        rawfileToPixelmap(destination, markdownConfiguration.markdownTheme.abilityContext, componentWidth, callback)
         return idx
     }
 
     /**
      * 图片数据处理 - 网络图片
      */
-    func httpImageToPixelMap(destination: String, idx: Int64) : Int64{
-        spawn {
-            let httpPixelmap: (?PixelMap, ?Float64, ?Float64) = getImageFromHttpClient(destination, componentWidth)
-            launch{
-                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: httpPixelmap[0], height: httpPixelmap[2], width: httpPixelmap[1]))
+    func httpImageToPixelMap(destination: String, idx: Int64): Int64 {
+        let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
+            pixelMap, width, height => launch {
+                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
+        getImageFromHttpClient(destination, componentWidth, callback)
         return idx
-    }
-
-    /**
-     * 判断是否有图片数据
-     */
-    func isImagePixelMap(imageData: ImageData) : Bool {
-        if(imageData.pixelMap.isSome() && imageData.height.isSome() && imageData.width.isSome()){
-            listPixelMap.append(imageData.pixelMap)
-            return true
-        }
-        return false
-    }
-
-    /**
-     * 释放PixelMap
-     */
-    func delPixelMap(){
-        spawn {
-            for(item in listPixelMap){
-                if(item.isSome()){
-                    item().Release()
-                }
-            }
-            listPixelMap.clear()
-        }
     }
 }

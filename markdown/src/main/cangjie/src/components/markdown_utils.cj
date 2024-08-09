@@ -8,67 +8,11 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
-func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfiguration, callback: (ArrayList<NodeView>) -> Unit){
-    spawn {
-        try {
-            let markdown: Markdown = if (let Some(v) <- markdownConfiguration.markdownParser) {
-                v
-            } else {
-                Markdown.builder()
-                    // 任务列表插件
-                    .usePlugin(TaskListPlugin.create())
-                    // 删除线插件
-                    .usePlugin(StrikethroughPlugin.create())
-                    // 表格插件
-                    .usePlugin(TablePlugin.create())
-                    // 幻灯片、视频、ImageStyle插件
-                    .usePlugin(ImagePlugin.create())
-                    // 代码标签
-                    .usePlugin(CodeListPlugin.create())
-                    // 数学公式
-                    .usePlugin(LatexMathPlugin.create())
-                    // 链接
-                    .usePlugin(LinkifyPlugin.create())
-                    // TOC列表插件
-                    .usePlugin(TocPlugin.create())
-                    .build()
-            }
-            let node: CommonmarkNode = markdown.parse(mdStr)
-            let nodeView: NodeView = markdown.render(node)
-            callback(nodeView.children)
-        } catch (e: Exception) {
-            let arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
-            let paragraph: Paragraph  = Paragraph()
-            let commonmarkText: CommonmarkText = CommonmarkText(mdStr)
-            paragraph.appendChild(commonmarkText)
-            let paragraphNodeView: NodeView = buildView(paragraph, true)
-            let textNodeView: NodeView = buildView(commonmarkText, true)
-            arrayListNodeView.append(paragraphNodeView)
-            callback(arrayListNodeView)
-        }
-    }
-}
-
-/**
- * 将围栏代码转换成带有颜色的列表
- *
- * @param code 传入代码内容
- * @param info 传入代码类型
- * @param prismTheme 传入的高亮样式
- * @return 返回PrismNodesParseRes列表
- */
-func stringToResList(code: String, info: ?String, prismTheme: PrismTheme): ArrayList<PrismNodesParseRes> {
-    var prism: Prism = Prism(GrammarLocatorGrammarUtils())
-    var psh: PrismSyntaxHighlight = PrismSyntaxHighlight.create(prism, prismTheme)
-    let res: ArrayList<PrismNodesParseRes> = psh.highlight(info, code.trimRight("\n"))
-    return res
-}
-
-func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<String>, ArrayList<String>){
+func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<String>, ArrayList<String>) {
     var strText: ArrayList<String> = ArrayList<String>()
     var strInfoText: ArrayList<String> = ArrayList<String>()
     var strInfo: ArrayList<String> = ArrayList<String>()
-    for(nodeView in codeBlockListNodeView.children){
+    for (nodeView in codeBlockListNodeView.children) {
         if (nodeView.node is FencedCodeBlock) {
             strText.append((nodeView.node as FencedCodeBlock)().getLiteral())
             strInfoText.append((nodeView.node as FencedCodeBlock)().getInfo())
@@ -78,27 +22,6 @@ func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<
         strInfo = (codeBlockListNodeView.node as FencedCodeBlockListBlock)().tabs
     }
     return (strInfo, strText, strInfoText)
-}
-
-/**
- * 将围栏代码转换成带有颜色的列表
- *
- * @param codeBlockListNodeView 传入围栏代码列表的NodeView
- * @param markdownConfiguration 传入MarkdownConfiguration
- * @return 返回PrismNodesParseResState列表的列表，返回代码类型的类型，返回代码内容列表，返回第一条数据内容
- */
-func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: MarkdownConfiguration): ArrayList<ArrayList<PrismNodesParseRes>> {
-    var prismNodesParseResLists: ArrayList<ArrayList<PrismNodesParseRes>> = ArrayList<ArrayList<PrismNodesParseRes>>()
-    for (nodeView in codeBlockListNodeView.children) {
-        if (nodeView.node is FencedCodeBlock) {
-            var prism: Prism = Prism(GrammarLocatorGrammarUtils())
-            var psh: PrismSyntaxHighlight = PrismSyntaxHighlight.create(prism, markdownConfiguration.prismTheme)
-            let res: ArrayList<PrismNodesParseRes> = psh.highlight((nodeView.node as FencedCodeBlock)().getInfo(),
-                (nodeView.node as FencedCodeBlock)().getLiteral().trimRight("\n"))
-            prismNodesParseResLists.append(res)
-        }
-    }
-    return prismNodesParseResLists
 }
 
 /**
@@ -386,8 +309,8 @@ func codeTextColor(item: PrismNodesParseRes, markdownTheme: MarkdownTheme, prism
  * @param imagePadding padding宽度 - 单位vp
  * @return 第一层控件宽度 - 单位vp
  */
-func widthPxToVp(screenWidth: Int32, imagePadding: Int64) : Float64 {
-    let length: ?Length= px2vp(Int64(screenWidth).px)
+func widthPxToVp(screenWidth: Int32, imagePadding: Int64): Float64 {
+    let length: ?Length = px2vp(Int64(screenWidth).px)
     let width: Float64 = if (let Some(v) <- length) {
         v.value - Float64(imagePadding)
     } else {
@@ -635,11 +558,11 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownC
             let style = str.replace(" ", "").replace("\"", "").toAsciiLower()
             if (style[..7] == ":width=") {
                 let value = style[7..]
-                if(value.size <= 1){
+                if (value.size <= 1) {
                     let picStyleObjWidth: Length = Length(Int64.parse(value), unitType: LengthType.vp)
-                    picStyleObj.width = if(picStyleObjWidth.value > componentWidth) {
+                    picStyleObj.width = if (picStyleObjWidth.value > componentWidth) {
                         componentWidth.vp
-                    }else {
+                    } else {
                         picStyleObjWidth
                     }
                 }
@@ -652,7 +575,7 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownC
                         } else {
                             picStyleObjWidth
                         }
-                    }else{
+                    } else {
                         picStyleObj.width = picStyleObjWidth
                     }
                 } else if (value[value.size - 1..] == "%") {
@@ -662,15 +585,15 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownC
                     }
                 } else {
                     let picStyleObjWidth: Length = Length(Int64.parse(value), unitType: LengthType.vp)
-                    picStyleObj.width = if(picStyleObjWidth.value > componentWidth) {
+                    picStyleObj.width = if (picStyleObjWidth.value > componentWidth) {
                         componentWidth.vp
-                    }else {
+                    } else {
                         picStyleObjWidth
                     }
                 }
             } else if (style[..8] == ":height=") {
                 let value = style[8..]
-                if(value.size <= 1){
+                if (value.size <= 1) {
                     picStyleObj.height = Length(Int64.parse(value), unitType: LengthType.vp)
                 }
                 if (value[value.size - 2..] == "px") {
