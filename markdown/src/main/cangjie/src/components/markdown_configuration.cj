@@ -86,6 +86,11 @@ public class MarkdownConfiguration {
      */
     protected var tocIndexCallback: ?(?Float64) -> Unit = None
 
+    /**
+     * 超大数据跳转页面显示全部数据
+     */
+    protected var listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit = None
+
     protected init(builder: MarkdownConfigurationBuilder) {
         this.markdownTheme = builder.markdownTheme
         this.prismTheme = builder.prismTheme
@@ -101,6 +106,7 @@ public class MarkdownConfiguration {
         this.latexImageCallback = builder.latexImageCallback
         this.latexStrCallback = builder.latexStrCallback
         this.tocIndexCallback = builder.tocIndexCallback
+        this.listBigDataCallback = builder.listBigDataCallback
     }
 
     /**
@@ -210,6 +216,11 @@ public class MarkdownConfigurationBuilder {
      */
     protected var tocIndexCallback: ?(?Float64) -> Unit = None
 
+    /**
+     * 超大数据跳转页面显示全部数据
+     */
+    protected var listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit = None
+
     init() {
     }
 
@@ -228,6 +239,7 @@ public class MarkdownConfigurationBuilder {
         this.latexImageCallback = configuration.latexImageCallback
         this.latexStrCallback = configuration.latexStrCallback
         this.tocIndexCallback = configuration.tocIndexCallback
+        this.listBigDataCallback = configuration.listBigDataCallback
     }
 
     /**
@@ -277,7 +289,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置链接的点击事件
      *
-     * @param linkCallback 链接点击回调接口
+     * @param linkCallback 链接点击回调接口 (String:链接)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setLinkCallback(linkCallback: (String) -> Unit): MarkdownConfigurationBuilder {
@@ -288,7 +300,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置图片的点击事件
      *
-     * @param imageCallback 图片点击回调接口
+     * @param imageCallback 图片点击回调接口 (String:图片链接)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setImageCallback(imageCallback: (String) -> Unit): MarkdownConfigurationBuilder {
@@ -299,7 +311,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置视频的点击事件
      *
-     * @param videoCallback 视频点击回调接口
+     * @param videoCallback 视频点击回调接口 (String:视频ID)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setVideoCallback(videoCallback: (String) -> Unit): MarkdownConfigurationBuilder {
@@ -321,7 +333,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置代码复制按钮的点击事件
      *
-     * @param codeCopyCallback 代码复制点击回调接口
+     * @param codeCopyCallback 代码复制点击回调接口 (String:代码内容型)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setCodeCopyCallback(codeCopyCallback: (String) -> Unit): MarkdownConfigurationBuilder {
@@ -332,7 +344,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置代码全屏按钮的点击事件
      *
-     * @param codeFullScreenCallback 点吗全屏点击回调接口
+     * @param codeFullScreenCallback 代码全屏点击回调接口 (String:代码内容,Option<String>:代码类型)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setCodeFullScreenCallback(codeFullScreenCallback: (String, Option<String>) -> Unit): MarkdownConfigurationBuilder {
@@ -343,7 +355,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置数学公式图片点击事件
      *
-     * @param latexImageCallback 数学公式图片点击回调接口
+     * @param latexImageCallback 数学公式图片点击回调接口 (Array<UInt8>:图片数据,Length:高度,Length:宽度)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setLatexImageCallbackCallback(latexImageCallback: (Array<UInt8>, Length, Length) -> Unit): MarkdownConfigurationBuilder {
@@ -354,7 +366,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置数学公式数据处理事件
      *
-     * @param latexStrCallback 数学公式数据处理回调接口
+     * @param latexStrCallback 数学公式数据处理回调接口 (参数String:数学公式的内容,返回值String:数学公式处理之后的内容)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setLatexStrCallback(latexStrCallback: (String) -> String): MarkdownConfigurationBuilder {
@@ -365,11 +377,22 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置TOC跳转指定位置
      *
-     * @param tocIndexCallback TOC跳转指定位置接口
+     * @param tocIndexCallback TOC跳转指定位置接口 (?Float64:位置距离)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setTocIndexCallback(tocIndexCallback: (?Float64) -> Unit): MarkdownConfigurationBuilder {
         this.tocIndexCallback = tocIndexCallback
+        return this
+    }
+
+    /**
+     * 设置超大数据跳转页面显示全部数据
+     *
+     * @param listBigDataCallback 超大数据跳转页面显示全部数据接口 (NodeView:NodeView数据,Float64:上外边距,Float64:下外边距,Float64:控件宽度)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setListBigDataCallback(listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit): MarkdownConfigurationBuilder {
+        this.listBigDataCallback = listBigDataCallback
         return this
     }
 

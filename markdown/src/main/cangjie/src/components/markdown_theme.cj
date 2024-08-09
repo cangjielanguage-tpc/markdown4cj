@@ -12,7 +12,7 @@ import ohos.state_macro_manage.*
  * Markdown用户可设置的样式
  * 0: 上下文，每个模块之间上下间距
  * 1：链接（连接颜色，是否显示链接下划线）
- * 2：块引用、有序列表、无序列表、任务列表、TOC列表（左边距，块引用左边线条宽度，块引用左边线条颜色，有序列表项的颜色，有序列表项的大小，无序列表项的颜色，无序列表项的大小，任务列表项的宽高）
+ * 2：块引用、有序列表、无序列表、任务列表、TOC列表（左边距，块引用左边线条宽度，块引用左边线条颜色，有序列表项的颜色，有序列表项的大小，无序列表项的颜色，无序列表项的大小，任务列表项的宽高，所有列表最多展示的数量）
  * 3：内联代码、缩进代码、围栏代码、组合代码（内联代码文本颜色，内联代码背景颜色，内联代码文本字体，内联代码文本大小，代码块系列（缩进代码、围栏代码、组合代码）文本颜色，代码块系列（缩进代码、围栏代码、组合代码）背景颜色，代码块系列（缩进代码、围栏代码、组合代码）左边距，代码块系列（缩进代码、围栏代码、组合代码）字体，代码块系列（缩进代码、围栏代码、组合代码）文本大小，是否显示代码全屏按钮，代码全屏按钮和代码复制按钮的宽高，代码全屏按钮默认图标，代码复制按钮默认图标，组合代码标题文本大小，组合代码标题选中文本颜色，组合代码标题未选中文本颜色，组合代码标题选中背景颜色，组合代码标题未选中背景颜色）
  * 4：标题（一级标题二级标题下划线高度，一级标题二级标题下划线颜色，标题文字字体，标题文字大小，标题文字颜色，标题字间距）
  * 5：段落（段落字体大小，段落字体颜色，段落字间距）
@@ -22,6 +22,7 @@ import ohos.state_macro_manage.*
  * 9：视频（视频默认占位图，视频播放按钮默认图标）
  * 10：图片Banner（图片banner默认占位图）
  * 11：图片（图片宽度边距 - 计算屏幕宽度需要减去padding的宽度单位vp，图片默认占位图，图片是否压缩）
+ * 12：按钮（按钮文字内容，按钮文字字体大小，按钮文字颜色，按钮背景颜色，按钮高度，按钮上下边距）
  */
 public class MarkdownTheme {
     /**
@@ -47,7 +48,7 @@ public class MarkdownTheme {
     /**
      * 有序列表、无序列表、任务列表、块引用左边距
      */
-    protected var blockMargin: Float64 = 24.0
+    protected var blockMargin: Float64 = 8.0
 
     /**
      * 块引用左边线条宽度
@@ -83,6 +84,11 @@ public class MarkdownTheme {
      * 任务列表项的宽高。
      */
     protected var taskListItemLength: Float64 = 15.0
+
+    /**
+     * 列表展示的数量。
+     */
+    protected var listNumber: Int64 = 1000
 
     /**
      * 内联代码文本颜色
@@ -299,6 +305,36 @@ public class MarkdownTheme {
      */
     protected var isAutoResize: Bool = true
 
+    /**
+     * 按钮文字内容
+     */
+    protected var buttonTextStr: String = "加载更多数据"
+
+    /**
+     * 按钮文字字体大小
+     */
+    protected var buttonTextSize: Int64 = 14
+
+    /**
+     * 按钮文字颜色
+     */
+    protected var buttonTextColor: Color = Color(0xFFFFFF)
+
+    /**
+     * 按钮背景颜色
+     */
+    protected var buttonTextBackgroupColor: Color = Color(0xFF0000)
+
+    /**
+     * 按钮高度
+     */
+    protected var buttonTextHeight: Int64 = 30
+
+    /**
+     * 按钮上下边距
+     */
+    protected var buttonTextMargin: Int64 = 14
+
     protected init(builder: MarkdownThemeBuilder) {
         this.abilityContext = builder.abilityContext
         this.blockTopAndBottomMargins = builder.blockTopAndBottomMargins
@@ -314,6 +350,7 @@ public class MarkdownTheme {
         this.bulletListItemColor = builder.bulletListItemColor
         this.bulletListItemSize = builder.bulletListItemSize
         this.taskListItemLength = builder.taskListItemLength
+        this.listNumber = builder.listNumber
         // 内联代码、缩进代码、围栏代码、围栏代码列表
         this.codeTextColor = builder.codeTextColor
         this.codeBackgroundColor = builder.codeBackgroundColor
@@ -365,6 +402,13 @@ public class MarkdownTheme {
         this.imagePadding = builder.imagePadding
         this.imageResource = builder.imageResource
         this.isAutoResize = builder.isAutoResize
+        // 按钮
+        this.buttonTextStr  = builder.buttonTextStr
+        this.buttonTextSize = builder.buttonTextSize
+        this.buttonTextColor = builder.buttonTextColor
+        this.buttonTextBackgroupColor = builder.buttonTextBackgroupColor
+        this.buttonTextHeight = builder.buttonTextHeight
+        this.buttonTextMargin = builder.buttonTextMargin
     }
 
     /**
@@ -423,7 +467,7 @@ public class MarkdownThemeBuilder {
     /**
      * 有序列表、无序列表、任务列表、块引用左边距
      */
-    protected var blockMargin: Float64 = 24.0
+    protected var blockMargin: Float64 = 8.0
 
     /**
      * 块引用左边线条宽度
@@ -459,6 +503,11 @@ public class MarkdownThemeBuilder {
      * 任务列表项的宽高。
      */
     protected var taskListItemLength: Float64 = 15.0
+
+    /**
+     * 列表展示的数量。
+     */
+    protected var listNumber: Int64 = 1000
 
     /**
      * 内联代码文本颜色
@@ -670,6 +719,36 @@ public class MarkdownThemeBuilder {
      */
     protected var isAutoResize: Bool = true
 
+    /**
+     * 按钮文字内容
+     */
+    protected var buttonTextStr: String = "加载更多数据"
+
+    /**
+     * 按钮文字字体大小
+     */
+    protected var buttonTextSize: Int64 = 14
+
+    /**
+     * 按钮文字颜色
+     */
+    protected var buttonTextColor: Color = Color(0xFFFFFF)
+
+    /**
+     * 按钮背景颜色
+     */
+    protected var buttonTextBackgroupColor: Color = Color(0xFF0000)
+
+    /**
+     * 按钮高度
+     */
+    protected var buttonTextHeight: Int64 = 30
+
+    /**
+     * 按钮上下边距
+     */
+    protected var buttonTextMargin: Int64 = 14
+
     init() {
     }
 
@@ -688,6 +767,7 @@ public class MarkdownThemeBuilder {
         this.bulletListItemColor = theme.bulletListItemColor
         this.bulletListItemSize = theme.bulletListItemSize
         this.taskListItemLength = theme.taskListItemLength
+        this.listNumber = theme.listNumber
         // 内联代码、缩进代码、围栏代码、围栏代码列表
         this.codeTextColor = theme.codeTextColor
         this.codeBackgroundColor = theme.codeBackgroundColor
@@ -739,6 +819,13 @@ public class MarkdownThemeBuilder {
         this.imagePadding = theme.imagePadding
         this.imageResource = theme.imageResource
         this.isAutoResize = theme.isAutoResize
+        // 按钮
+        this.buttonTextStr  = theme.buttonTextStr
+        this.buttonTextSize = theme.buttonTextSize
+        this.buttonTextColor = theme.buttonTextColor
+        this.buttonTextBackgroupColor = theme.buttonTextBackgroupColor
+        this.buttonTextHeight = theme.buttonTextHeight
+        this.buttonTextMargin = theme.buttonTextMargin
     }
 
     /**
@@ -788,7 +875,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置有序列表、无序列表、任务列表、块引用左边距
      *
-     * @param blockMargin 左边距。默认24.0
+     * @param blockMargin 左边距。默认8.0
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setBlockMargin(blockMargin: Float64): MarkdownThemeBuilder {
@@ -810,7 +897,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置块引用左边线条颜色
      *
-     * @param blockMargin 块引用左线条颜色。默认0x191919
+     * @param blockQuoteColor 块引用左线条颜色。默认0x191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setBlockQuoteColor(blockQuoteColor: Color): MarkdownThemeBuilder {
@@ -821,7 +908,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置有序列表项的颜色
      *
-     * @param blockMargin 有序列表项的颜色。默认0x191919
+     * @param orderedListItemColor 有序列表项的颜色。默认0x191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setOrderedListItemColor(orderedListItemColor: Color): MarkdownThemeBuilder {
@@ -870,6 +957,17 @@ public class MarkdownThemeBuilder {
      */
     public func setTaskListItemLength(taskListItemLength: Float64): MarkdownThemeBuilder {
         this.taskListItemLength = taskListItemLength
+        return this
+    }
+
+    /**
+     * 设置列表展示的数量
+     *
+     * @param listNumber 列表展示的数量。默认1000
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setListNumber(listNumber: Int64): MarkdownThemeBuilder {
+        this.listNumber = listNumber
         return this
     }
 
@@ -1332,6 +1430,72 @@ public class MarkdownThemeBuilder {
      */
     public func setIsAutoResize(isAutoResize: Bool): MarkdownThemeBuilder {
         this.isAutoResize = isAutoResize
+        return this
+    }
+
+    /**
+     * 设置按钮文字内容
+     *
+     * @param buttonTextStr 按钮文字内容
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setButtonTextStr(buttonTextStr: String): MarkdownThemeBuilder {
+        this.buttonTextStr = buttonTextStr
+        return this
+    }
+
+    /**
+     * 设置按钮文字字体大小
+     *
+     * @param buttonTextSize 按钮文字字体大小
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setButtonTextSize(buttonTextSize: Int64): MarkdownThemeBuilder {
+        this.buttonTextSize = buttonTextSize
+        return this
+    }
+
+    /**
+     * 设置按钮文字颜色
+     *
+     * @param buttonTextColor 按钮文字颜色
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setButtonTextColor(buttonTextColor: Color): MarkdownThemeBuilder {
+        this.buttonTextColor = buttonTextColor
+        return this
+    }
+
+    /**
+     * 设置按钮背景颜色
+     *
+     * @param buttonTextBackgroupColor 按钮背景颜色
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setButtonTextBackgroupColor(buttonTextBackgroupColor: Color): MarkdownThemeBuilder {
+        this.buttonTextBackgroupColor = buttonTextBackgroupColor
+        return this
+    }
+
+    /**
+     * 设置按钮高度
+     *
+     * @param buttonTextHeight 按钮高度
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setButtonTextHeight(buttonTextHeight: Int64): MarkdownThemeBuilder {
+        this.buttonTextHeight = buttonTextHeight
+        return this
+    }
+
+    /**
+     * 设置按钮上下边距
+     *
+     * @param buttonTextMargin 按钮上下边距
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setButtonTextMargine(buttonTextMargin: Int64): MarkdownThemeBuilder {
+        this.buttonTextMargin = buttonTextMargin
         return this
     }
 

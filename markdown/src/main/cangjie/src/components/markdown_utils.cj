@@ -8,6 +8,47 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
+func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfiguration, callback: (ArrayList<NodeView>) -> Unit){
+    spawn {
+        try {
+            let markdown: Markdown = if (let Some(v) <- markdownConfiguration.markdownParser) {
+                v
+            } else {
+                Markdown.builder()
+                    // 任务列表插件
+                    .usePlugin(TaskListPlugin.create())
+                    // 删除线插件
+                    .usePlugin(StrikethroughPlugin.create())
+                    // 表格插件
+                    .usePlugin(TablePlugin.create())
+                    // 幻灯片、视频、ImageStyle插件
+                    .usePlugin(ImagePlugin.create())
+                    // 代码标签
+                    .usePlugin(CodeListPlugin.create())
+                    // 数学公式
+                    .usePlugin(LatexMathPlugin.create())
+                    // 链接
+                    .usePlugin(LinkifyPlugin.create())
+                    // TOC列表插件
+                    .usePlugin(TocPlugin.create())
+                    .build()
+            }
+            let node: CommonmarkNode = markdown.parse(mdStr)
+            let nodeView: NodeView = markdown.render(node)
+            callback(nodeView.children)
+        } catch (e: Exception) {
+            let arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
+            let paragraph: Paragraph  = Paragraph()
+            let commonmarkText: CommonmarkText = CommonmarkText(mdStr)
+            paragraph.appendChild(commonmarkText)
+            let paragraphNodeView: NodeView = buildView(paragraph, true)
+            let textNodeView: NodeView = buildView(commonmarkText, true)
+            arrayListNodeView.append(paragraphNodeView)
+            callback(arrayListNodeView)
+        }
+    }
+}
+
 /**
  * 将围栏代码转换成带有颜色的列表
  *
