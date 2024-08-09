@@ -43,24 +43,21 @@ class LatexBlockParser <: AbstractBlockParser {
 class LatexBlockParserFactory <: AbstractBlockParserFactory {
     public func tryStart(state: ParserState, _: MatchedBlockParser): ?BlockStart {
         let line: String = state.getLine()
-        if (line.size == 2) {
-            if (line == "$$") {
-                return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + 2)
-            }
+        if (line == "$$") {
+            return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + 2)
         } else {
-            var (flag, lastindex) = (0, -1) // 连续$的个数
-            for (i in 0..line.size) {
-                match (line[i]) {
-                    case b' ' => () // 跳过空格
-                    case b'$' => if (lastindex == -1 || lastindex + 1 == i) {
-                        lastindex = i
-                        flag += 1
-                    }
-                    case _ => break
+            var i = 0
+            while (i < line.size) {
+                if (line[i] != b' ') {
+                    break
                 }
-                if (flag == 2) {
-                    return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + line.size)
+                i++
+            }
+            if (line.size > i + 1 && line[i] == b'$' && line[i + 1] == b'$') {
+                if (line.size > i + 2 && line[i + 2] == b'$') {
+                    return BlockStart.none()
                 }
+                return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + i + 2)
             }
         }
         return BlockStart.none()
