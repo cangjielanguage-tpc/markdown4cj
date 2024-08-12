@@ -104,7 +104,8 @@ public class MarkdownListComponent {
      */
     @Builder
     func listParagraphComponent(nodeView: NodeView) {
-        MarkdownParagraphComponent(paragraphNodeView: nodeView, markdownConfiguration: markdownConfiguration, marginTop: 0.0, marginBottom: 0.0, tocListOnClick: tocListOnClick, componentWidth: componentWidth)
+        MarkdownParagraphComponent(paragraphNodeView: nodeView, markdownConfiguration: markdownConfiguration,
+            marginTop: 0.0, marginBottom: 0.0, tocListOnClick: tocListOnClick, componentWidth: componentWidth)
     }
 
     /**
@@ -112,7 +113,8 @@ public class MarkdownListComponent {
      */
     @Builder
     func listHeadingComponent(nodeView: NodeView) {
-        MarkdownHeadingComponent(headingNodeView: nodeView, markdownConfiguration: markdownConfiguration, marginTop: 0.0, marginBottom: 0.0, componentWidth: componentWidth)
+        MarkdownHeadingComponent(headingNodeView: nodeView, markdownConfiguration: markdownConfiguration, marginTop: 0.0,
+            marginBottom: 0.0, componentWidth: componentWidth)
     }
 
     /**
@@ -120,7 +122,8 @@ public class MarkdownListComponent {
      */
     @Builder
     func listCodeBlockComponent(codeText: String, infos: ?String) {
-        MarkdownCodeBlockComponent(markdownConfiguration: markdownConfiguration, codeText: codeText, info: infos, marginTop: 0.0, marginBottom: 0.0)
+        MarkdownCodeBlockComponent(markdownConfiguration: markdownConfiguration, codeText: codeText, info: infos,
+            marginTop: 0.0, marginBottom: 0.0)
     }
 
     /**
@@ -128,7 +131,8 @@ public class MarkdownListComponent {
      */
     @Builder
     func listTableBlockComponent(tableNodeView: NodeView) {
-        MarkdownTableBlockComponent(tableNodeView: tableNodeView, markdownConfiguration: markdownConfiguration, marginTop: 0.0, marginBottom: 0.0)
+        MarkdownTableBlockComponent(tableNodeView: tableNodeView, markdownConfiguration: markdownConfiguration,
+            marginTop: 0.0, marginBottom: 0.0, componentWidth: componentWidth)
     }
 
     /**
@@ -136,15 +140,18 @@ public class MarkdownListComponent {
      */
     @Builder
     func listSlideBlockComponent(slideBlockNodeView: NodeView) {
-        MarkdownImageBannerComponent(slideBlockNodeView: slideBlockNodeView, markdownConfiguration: markdownConfiguration, marginTop: 0.0, marginBottom: 0.0)
+        MarkdownImageBannerComponent(slideBlockNodeView: slideBlockNodeView,
+            markdownConfiguration: markdownConfiguration, marginTop: 0.0, marginBottom: 0.0)
     }
 
     /**
      * 组合代码
      */
     @Builder
-    func listCodeBlockListComponent(nodeView:NodeView, strInfos: ArrayList<String>, strText: ArrayList<String>, strInfoText: ArrayList<String>) {
-        MarkdownCodeBlockListComponent(nodeView: nodeView, strInfos: strInfos, strText: strText, markdownConfiguration: markdownConfiguration, strInfoText: strInfoText, marginTop: 0.0, marginBottom: 0.0)
+    func listCodeBlockListComponent(nodeView: NodeView, strInfos: ArrayList<String>, strText: ArrayList<String>,
+        strInfoText: ArrayList<String>) {
+        MarkdownCodeBlockListComponent(nodeView: nodeView, strInfos: strInfos, strText: strText,
+            markdownConfiguration: markdownConfiguration, strInfoText: strInfoText, marginTop: 0.0, marginBottom: 0.0)
     }
 
     /**
@@ -152,7 +159,8 @@ public class MarkdownListComponent {
      */
     @Builder
     func listLatexMathBlockComponent(latexStr: String) {
-        MarkdownLatexMathBlockComponent(latexStr: latexStr, markdownConfiguration: markdownConfiguration, marginTop: 0.0, marginBottom: 0.0)
+        MarkdownLatexMathBlockComponent(latexStr: latexStr, markdownConfiguration: markdownConfiguration, marginTop: 0.0,
+            marginBottom: 0.0)
     }
 
     @Builder
@@ -185,7 +193,7 @@ public class MarkdownListComponent {
             // 宽度
             .width(100.percent)
             // 点击动作触发该方法调用
-            .onClick { listBigDataOnClick(nodeView, marginTop, marginBottom, componentWidth, markdownConfiguration.listBigDataCallback) }
+            .onClick {listBigDataOnClick(nodeView, marginTop, marginBottom, componentWidth, markdownConfiguration.listBigDataCallback)}
     }
 
     @Builder
@@ -194,85 +202,87 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    bulletListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (bulletListItemComponent.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckbox(bulletListItemComponent)
-                                } else if (bulletListItemComponent.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixText(bulletListItemComponent, false)
-                                }
-                                Column() {
-                                    ForEach(
-                                        bulletListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                listEndComponent()
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                listEndComponent()
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                listEndComponent()
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    bulletListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (bulletListItemComponent.node is TaskListItem) {
+                                // 任务列表
+                                listPrefixCheckbox(bulletListItemComponent)
+                            } else if (bulletListItemComponent.node is CommonmarkListItem) {
+                                // 普通无序列表
+                                listPrefixText(bulletListItemComponent, false)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    bulletListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            listEndComponent()
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            listEndComponent()
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            listEndComponent()
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(bulletListNodeView)
                 }
             }
@@ -289,82 +299,84 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    orderedListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (orderedListItemComponent.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixText(orderedListItemComponent, true)
-                                }
-                                Column() {
-                                    ForEach(
-                                        orderedListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                listEndComponent()
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                listEndComponent()
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                listEndComponent()
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    orderedListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (orderedListItemComponent.node is CommonmarkListItem) {
+                                // 普通有序列表
+                                listPrefixText(orderedListItemComponent, true)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    orderedListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            listEndComponent()
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            listEndComponent()
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            listEndComponent()
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(orderedListNodeView)
                 }
             }
@@ -381,8 +393,7 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    ListItem() {
+                    item: NodeView, idx: Int64 => ListItem() {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
@@ -394,12 +405,14 @@ public class MarkdownListComponent {
                                 // 缩进代码
                                 listCodeBlockComponent(
                                     (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None)
+                                    Option<String>.None
+                                )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 listCodeBlockComponent(
                                     (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo())
+                                    (item.node as FencedCodeBlock)().getInfo()
+                                )
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 listEndComponent()
@@ -421,7 +434,8 @@ public class MarkdownListComponent {
                                     item,
                                     toCodeList(item)[0],
                                     toCodeList(item)[1],
-                                    toCodeList(item)[2])
+                                    toCodeList(item)[2]
+                                )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
@@ -440,8 +454,8 @@ public class MarkdownListComponent {
                     .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(blockQuoteNodeView)
                 }
             }
@@ -460,92 +474,93 @@ public class MarkdownListComponent {
         .alignListItem(ListItemAlign.Start)
     }
 
-
     @Builder
     func bulletListComponent11(dataList: (Int64, NodeViewDataSource), bulletListNodeView: NodeView) {
         List() {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    bulletListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (bulletListItemComponent.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckbox(bulletListItemComponent)
-                                } else if (bulletListItemComponent.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixText(bulletListItemComponent, false)
-                                }
-                                Column() {
-                                    ForEach(
-                                        bulletListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent12(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent12(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent12(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    bulletListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (bulletListItemComponent.node is TaskListItem) {
+                                // 任务列表
+                                listPrefixCheckbox(bulletListItemComponent)
+                            } else if (bulletListItemComponent.node is CommonmarkListItem) {
+                                // 普通无序列表
+                                listPrefixText(bulletListItemComponent, false)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    bulletListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent12(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent12(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent12(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(bulletListNodeView)
                 }
             }
@@ -562,82 +577,84 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    orderedListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (orderedListItemComponent.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixText(orderedListItemComponent, true)
-                                }
-                                Column() {
-                                    ForEach(
-                                        orderedListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent12(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent12(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent12(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
+                    orderedListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (orderedListItemComponent.node is CommonmarkListItem) {
+                                // 普通有序列表
+                                listPrefixText(orderedListItemComponent, true)
+                            }
+                            Column() {
+                                ForEach(
+                                    orderedListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent12(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent12(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent12(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
                                         }
-                                    )
-                                }
+                                    }
+                                )
+                            }
                                 // 设置子组件在水平方向上的对齐格式。
                                 .alignItems(HorizontalAlign.Start)
                                 // 设置子组件在垂直方向上的对齐格式。
                                 .justifyContent(FlexAlign.Start)
                                 // 对子组件进行重新布局
                                 .layoutWeight(1)
-                            }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
-                            // 设置子组件在水平方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(orderedListNodeView)
                 }
             }
@@ -654,8 +671,7 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    ListItem() {
+                    item: NodeView, idx: Int64 => ListItem() {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
@@ -667,12 +683,14 @@ public class MarkdownListComponent {
                                 // 缩进代码
                                 listCodeBlockComponent(
                                     (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None)
+                                    Option<String>.None
+                                )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 listCodeBlockComponent(
                                     (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo())
+                                    (item.node as FencedCodeBlock)().getInfo()
+                                )
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 bulletListComponent12(listNumberData(item), item)
@@ -694,7 +712,8 @@ public class MarkdownListComponent {
                                     item,
                                     toCodeList(item)[0],
                                     toCodeList(item)[1],
-                                    toCodeList(item)[2])
+                                    toCodeList(item)[2]
+                                )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
@@ -713,8 +732,8 @@ public class MarkdownListComponent {
                     .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(blockQuoteNodeView)
                 }
             }
@@ -733,92 +752,93 @@ public class MarkdownListComponent {
         .alignListItem(ListItemAlign.Start)
     }
 
-
     @Builder
     func bulletListComponent10(dataList: (Int64, NodeViewDataSource), bulletListNodeView: NodeView) {
         List() {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    bulletListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (bulletListItemComponent.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckbox(bulletListItemComponent)
-                                } else if (bulletListItemComponent.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixText(bulletListItemComponent, false)
-                                }
-                                Column() {
-                                    ForEach(
-                                        bulletListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent11(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent11(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent11(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    bulletListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (bulletListItemComponent.node is TaskListItem) {
+                                // 任务列表
+                                listPrefixCheckbox(bulletListItemComponent)
+                            } else if (bulletListItemComponent.node is CommonmarkListItem) {
+                                // 普通无序列表
+                                listPrefixText(bulletListItemComponent, false)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    bulletListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent11(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent11(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent11(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(bulletListNodeView)
                 }
             }
@@ -835,82 +855,84 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    orderedListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (orderedListItemComponent.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixText(orderedListItemComponent, true)
-                                }
-                                Column() {
-                                    ForEach(
-                                        orderedListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent11(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent11(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent11(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    orderedListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (orderedListItemComponent.node is CommonmarkListItem) {
+                                // 普通有序列表
+                                listPrefixText(orderedListItemComponent, true)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    orderedListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent11(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent11(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent11(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(orderedListNodeView)
                 }
             }
@@ -927,8 +949,7 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    ListItem() {
+                    item: NodeView, idx: Int64 => ListItem() {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
@@ -940,12 +961,14 @@ public class MarkdownListComponent {
                                 // 缩进代码
                                 listCodeBlockComponent(
                                     (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None)
+                                    Option<String>.None
+                                )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 listCodeBlockComponent(
                                     (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo())
+                                    (item.node as FencedCodeBlock)().getInfo()
+                                )
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 bulletListComponent11(listNumberData(item), item)
@@ -967,7 +990,8 @@ public class MarkdownListComponent {
                                     item,
                                     toCodeList(item)[0],
                                     toCodeList(item)[1],
-                                    toCodeList(item)[2])
+                                    toCodeList(item)[2]
+                                )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
@@ -986,8 +1010,8 @@ public class MarkdownListComponent {
                     .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(blockQuoteNodeView)
                 }
             }
@@ -1006,92 +1030,93 @@ public class MarkdownListComponent {
         .alignListItem(ListItemAlign.Start)
     }
 
-
     @Builder
     func bulletListComponent9(dataList: (Int64, NodeViewDataSource), bulletListNodeView: NodeView) {
         List() {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    bulletListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (bulletListItemComponent.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckbox(bulletListItemComponent)
-                                } else if (bulletListItemComponent.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixText(bulletListItemComponent, false)
-                                }
-                                Column() {
-                                    ForEach(
-                                        bulletListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent10(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent10(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent10(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    bulletListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (bulletListItemComponent.node is TaskListItem) {
+                                // 任务列表
+                                listPrefixCheckbox(bulletListItemComponent)
+                            } else if (bulletListItemComponent.node is CommonmarkListItem) {
+                                // 普通无序列表
+                                listPrefixText(bulletListItemComponent, false)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    bulletListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent10(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent10(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent10(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(bulletListNodeView)
                 }
             }
@@ -1108,82 +1133,84 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    orderedListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (orderedListItemComponent.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixText(orderedListItemComponent, true)
-                                }
-                                Column() {
-                                    ForEach(
-                                        orderedListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent10(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent10(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent10(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    orderedListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (orderedListItemComponent.node is CommonmarkListItem) {
+                                // 普通有序列表
+                                listPrefixText(orderedListItemComponent, true)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    orderedListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent10(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent10(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent10(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(orderedListNodeView)
                 }
             }
@@ -1200,8 +1227,7 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    ListItem() {
+                    item: NodeView, idx: Int64 => ListItem() {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
@@ -1213,12 +1239,14 @@ public class MarkdownListComponent {
                                 // 缩进代码
                                 listCodeBlockComponent(
                                     (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None)
+                                    Option<String>.None
+                                )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 listCodeBlockComponent(
                                     (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo())
+                                    (item.node as FencedCodeBlock)().getInfo()
+                                )
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 bulletListComponent10(listNumberData(item), item)
@@ -1240,7 +1268,8 @@ public class MarkdownListComponent {
                                     item,
                                     toCodeList(item)[0],
                                     toCodeList(item)[1],
-                                    toCodeList(item)[2])
+                                    toCodeList(item)[2]
+                                )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
@@ -1259,8 +1288,8 @@ public class MarkdownListComponent {
                     .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(blockQuoteNodeView)
                 }
             }
@@ -1279,92 +1308,93 @@ public class MarkdownListComponent {
         .alignListItem(ListItemAlign.Start)
     }
 
-
     @Builder
     func bulletListComponent8(dataList: (Int64, NodeViewDataSource), bulletListNodeView: NodeView) {
         List() {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    bulletListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (bulletListItemComponent.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckbox(bulletListItemComponent)
-                                } else if (bulletListItemComponent.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixText(bulletListItemComponent, false)
-                                }
-                                Column() {
-                                    ForEach(
-                                        bulletListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent9(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent9(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent9(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    bulletListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (bulletListItemComponent.node is TaskListItem) {
+                                // 任务列表
+                                listPrefixCheckbox(bulletListItemComponent)
+                            } else if (bulletListItemComponent.node is CommonmarkListItem) {
+                                // 普通无序列表
+                                listPrefixText(bulletListItemComponent, false)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    bulletListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent9(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent9(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent9(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(bulletListNodeView)
                 }
             }
@@ -1381,82 +1411,84 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    orderedListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (orderedListItemComponent.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixText(orderedListItemComponent, true)
-                                }
-                                Column() {
-                                    ForEach(
-                                        orderedListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent9(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent9(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent9(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    orderedListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (orderedListItemComponent.node is CommonmarkListItem) {
+                                // 普通有序列表
+                                listPrefixText(orderedListItemComponent, true)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    orderedListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent9(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent9(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent9(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(orderedListNodeView)
                 }
             }
@@ -1473,8 +1505,7 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    ListItem() {
+                    item: NodeView, idx: Int64 => ListItem() {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
@@ -1486,12 +1517,14 @@ public class MarkdownListComponent {
                                 // 缩进代码
                                 listCodeBlockComponent(
                                     (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None)
+                                    Option<String>.None
+                                )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 listCodeBlockComponent(
                                     (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo())
+                                    (item.node as FencedCodeBlock)().getInfo()
+                                )
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 bulletListComponent9(listNumberData(item), item)
@@ -1513,7 +1546,8 @@ public class MarkdownListComponent {
                                     item,
                                     toCodeList(item)[0],
                                     toCodeList(item)[1],
-                                    toCodeList(item)[2])
+                                    toCodeList(item)[2]
+                                )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
@@ -1532,8 +1566,8 @@ public class MarkdownListComponent {
                     .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(blockQuoteNodeView)
                 }
             }
@@ -1552,92 +1586,93 @@ public class MarkdownListComponent {
         .alignListItem(ListItemAlign.Start)
     }
 
-
     @Builder
     func bulletListComponent7(dataList: (Int64, NodeViewDataSource), bulletListNodeView: NodeView) {
         List() {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    bulletListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (bulletListItemComponent.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckbox(bulletListItemComponent)
-                                } else if (bulletListItemComponent.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixText(bulletListItemComponent, false)
-                                }
-                                Column() {
-                                    ForEach(
-                                        bulletListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent8(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent8(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent8(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    bulletListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (bulletListItemComponent.node is TaskListItem) {
+                                // 任务列表
+                                listPrefixCheckbox(bulletListItemComponent)
+                            } else if (bulletListItemComponent.node is CommonmarkListItem) {
+                                // 普通无序列表
+                                listPrefixText(bulletListItemComponent, false)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    bulletListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent8(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent8(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent8(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(bulletListNodeView)
                 }
             }
@@ -1654,82 +1689,84 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    orderedListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (orderedListItemComponent.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixText(orderedListItemComponent, true)
-                                }
-                                Column() {
-                                    ForEach(
-                                        orderedListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent8(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent8(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent8(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    orderedListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (orderedListItemComponent.node is CommonmarkListItem) {
+                                // 普通有序列表
+                                listPrefixText(orderedListItemComponent, true)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    orderedListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent8(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent8(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent8(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(orderedListNodeView)
                 }
             }
@@ -1746,8 +1783,7 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    ListItem() {
+                    item: NodeView, idx: Int64 => ListItem() {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
@@ -1759,12 +1795,14 @@ public class MarkdownListComponent {
                                 // 缩进代码
                                 listCodeBlockComponent(
                                     (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None)
+                                    Option<String>.None
+                                )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 listCodeBlockComponent(
                                     (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo())
+                                    (item.node as FencedCodeBlock)().getInfo()
+                                )
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 bulletListComponent8(listNumberData(item), item)
@@ -1786,7 +1824,8 @@ public class MarkdownListComponent {
                                     item,
                                     toCodeList(item)[0],
                                     toCodeList(item)[1],
-                                    toCodeList(item)[2])
+                                    toCodeList(item)[2]
+                                )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
@@ -1805,8 +1844,8 @@ public class MarkdownListComponent {
                     .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(blockQuoteNodeView)
                 }
             }
@@ -1825,92 +1864,93 @@ public class MarkdownListComponent {
         .alignListItem(ListItemAlign.Start)
     }
 
-
     @Builder
     func bulletListComponent6(dataList: (Int64, NodeViewDataSource), bulletListNodeView: NodeView) {
         List() {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    bulletListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (bulletListItemComponent.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckbox(bulletListItemComponent)
-                                } else if (bulletListItemComponent.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixText(bulletListItemComponent, false)
-                                }
-                                Column() {
-                                    ForEach(
-                                        bulletListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent7(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent7(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent7(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    bulletListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (bulletListItemComponent.node is TaskListItem) {
+                                // 任务列表
+                                listPrefixCheckbox(bulletListItemComponent)
+                            } else if (bulletListItemComponent.node is CommonmarkListItem) {
+                                // 普通无序列表
+                                listPrefixText(bulletListItemComponent, false)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    bulletListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent7(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent7(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent7(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(bulletListNodeView)
                 }
             }
@@ -1927,82 +1967,84 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    orderedListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (orderedListItemComponent.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixText(orderedListItemComponent, true)
-                                }
-                                Column() {
-                                    ForEach(
-                                        orderedListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent7(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent7(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent7(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    orderedListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (orderedListItemComponent.node is CommonmarkListItem) {
+                                // 普通有序列表
+                                listPrefixText(orderedListItemComponent, true)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    orderedListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent7(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent7(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent7(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(orderedListNodeView)
                 }
             }
@@ -2019,8 +2061,7 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    ListItem() {
+                    item: NodeView, idx: Int64 => ListItem() {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
@@ -2032,12 +2073,14 @@ public class MarkdownListComponent {
                                 // 缩进代码
                                 listCodeBlockComponent(
                                     (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None)
+                                    Option<String>.None
+                                )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 listCodeBlockComponent(
                                     (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo())
+                                    (item.node as FencedCodeBlock)().getInfo()
+                                )
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 bulletListComponent7(listNumberData(item), item)
@@ -2059,7 +2102,8 @@ public class MarkdownListComponent {
                                     item,
                                     toCodeList(item)[0],
                                     toCodeList(item)[1],
-                                    toCodeList(item)[2])
+                                    toCodeList(item)[2]
+                                )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
@@ -2078,8 +2122,8 @@ public class MarkdownListComponent {
                     .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(blockQuoteNodeView)
                 }
             }
@@ -2098,92 +2142,93 @@ public class MarkdownListComponent {
         .alignListItem(ListItemAlign.Start)
     }
 
-
     @Builder
     func bulletListComponent5(dataList: (Int64, NodeViewDataSource), bulletListNodeView: NodeView) {
         List() {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    bulletListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (bulletListItemComponent.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckbox(bulletListItemComponent)
-                                } else if (bulletListItemComponent.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixText(bulletListItemComponent, false)
-                                }
-                                Column() {
-                                    ForEach(
-                                        bulletListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent6(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent6(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent6(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    bulletListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (bulletListItemComponent.node is TaskListItem) {
+                                // 任务列表
+                                listPrefixCheckbox(bulletListItemComponent)
+                            } else if (bulletListItemComponent.node is CommonmarkListItem) {
+                                // 普通无序列表
+                                listPrefixText(bulletListItemComponent, false)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    bulletListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent6(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent6(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent6(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(bulletListNodeView)
                 }
             }
@@ -2200,82 +2245,84 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    orderedListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (orderedListItemComponent.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixText(orderedListItemComponent, true)
-                                }
-                                Column() {
-                                    ForEach(
-                                        orderedListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent6(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent6(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent6(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    orderedListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (orderedListItemComponent.node is CommonmarkListItem) {
+                                // 普通有序列表
+                                listPrefixText(orderedListItemComponent, true)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    orderedListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent6(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent6(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent6(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(orderedListNodeView)
                 }
             }
@@ -2292,8 +2339,7 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    ListItem() {
+                    item: NodeView, idx: Int64 => ListItem() {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
@@ -2305,12 +2351,14 @@ public class MarkdownListComponent {
                                 // 缩进代码
                                 listCodeBlockComponent(
                                     (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None)
+                                    Option<String>.None
+                                )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 listCodeBlockComponent(
                                     (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo())
+                                    (item.node as FencedCodeBlock)().getInfo()
+                                )
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 bulletListComponent6(listNumberData(item), item)
@@ -2332,7 +2380,8 @@ public class MarkdownListComponent {
                                     item,
                                     toCodeList(item)[0],
                                     toCodeList(item)[1],
-                                    toCodeList(item)[2])
+                                    toCodeList(item)[2]
+                                )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
@@ -2351,8 +2400,8 @@ public class MarkdownListComponent {
                     .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(blockQuoteNodeView)
                 }
             }
@@ -2371,92 +2420,93 @@ public class MarkdownListComponent {
         .alignListItem(ListItemAlign.Start)
     }
 
-
     @Builder
     func bulletListComponent4(dataList: (Int64, NodeViewDataSource), bulletListNodeView: NodeView) {
         List() {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    bulletListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (bulletListItemComponent.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckbox(bulletListItemComponent)
-                                } else if (bulletListItemComponent.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixText(bulletListItemComponent, false)
-                                }
-                                Column() {
-                                    ForEach(
-                                        bulletListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent5(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent5(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent5(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    bulletListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (bulletListItemComponent.node is TaskListItem) {
+                                // 任务列表
+                                listPrefixCheckbox(bulletListItemComponent)
+                            } else if (bulletListItemComponent.node is CommonmarkListItem) {
+                                // 普通无序列表
+                                listPrefixText(bulletListItemComponent, false)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    bulletListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent5(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent5(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent5(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(bulletListNodeView)
                 }
             }
@@ -2473,82 +2523,84 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    orderedListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (orderedListItemComponent.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixText(orderedListItemComponent, true)
-                                }
-                                Column() {
-                                    ForEach(
-                                        orderedListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent5(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent5(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent5(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    orderedListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (orderedListItemComponent.node is CommonmarkListItem) {
+                                // 普通有序列表
+                                listPrefixText(orderedListItemComponent, true)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    orderedListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent5(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent5(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent5(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(orderedListNodeView)
                 }
             }
@@ -2565,8 +2617,7 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    ListItem() {
+                    item: NodeView, idx: Int64 => ListItem() {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
@@ -2578,12 +2629,14 @@ public class MarkdownListComponent {
                                 // 缩进代码
                                 listCodeBlockComponent(
                                     (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None)
+                                    Option<String>.None
+                                )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 listCodeBlockComponent(
                                     (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo())
+                                    (item.node as FencedCodeBlock)().getInfo()
+                                )
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 bulletListComponent5(listNumberData(item), item)
@@ -2605,7 +2658,8 @@ public class MarkdownListComponent {
                                     item,
                                     toCodeList(item)[0],
                                     toCodeList(item)[1],
-                                    toCodeList(item)[2])
+                                    toCodeList(item)[2]
+                                )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
@@ -2624,8 +2678,8 @@ public class MarkdownListComponent {
                     .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(blockQuoteNodeView)
                 }
             }
@@ -2644,92 +2698,93 @@ public class MarkdownListComponent {
         .alignListItem(ListItemAlign.Start)
     }
 
-
     @Builder
     func bulletListComponent3(dataList: (Int64, NodeViewDataSource), bulletListNodeView: NodeView) {
         List() {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    bulletListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (bulletListItemComponent.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckbox(bulletListItemComponent)
-                                } else if (bulletListItemComponent.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixText(bulletListItemComponent, false)
-                                }
-                                Column() {
-                                    ForEach(
-                                        bulletListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent4(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent4(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent4(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    bulletListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (bulletListItemComponent.node is TaskListItem) {
+                                // 任务列表
+                                listPrefixCheckbox(bulletListItemComponent)
+                            } else if (bulletListItemComponent.node is CommonmarkListItem) {
+                                // 普通无序列表
+                                listPrefixText(bulletListItemComponent, false)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    bulletListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent4(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent4(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent4(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(bulletListNodeView)
                 }
             }
@@ -2746,82 +2801,84 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    orderedListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (orderedListItemComponent.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixText(orderedListItemComponent, true)
-                                }
-                                Column() {
-                                    ForEach(
-                                        orderedListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent4(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent4(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent4(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    orderedListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (orderedListItemComponent.node is CommonmarkListItem) {
+                                // 普通有序列表
+                                listPrefixText(orderedListItemComponent, true)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    orderedListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent4(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent4(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent4(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(orderedListNodeView)
                 }
             }
@@ -2838,8 +2895,7 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    ListItem() {
+                    item: NodeView, idx: Int64 => ListItem() {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
@@ -2851,12 +2907,14 @@ public class MarkdownListComponent {
                                 // 缩进代码
                                 listCodeBlockComponent(
                                     (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None)
+                                    Option<String>.None
+                                )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 listCodeBlockComponent(
                                     (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo())
+                                    (item.node as FencedCodeBlock)().getInfo()
+                                )
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 bulletListComponent4(listNumberData(item), item)
@@ -2878,7 +2936,8 @@ public class MarkdownListComponent {
                                     item,
                                     toCodeList(item)[0],
                                     toCodeList(item)[1],
-                                    toCodeList(item)[2])
+                                    toCodeList(item)[2]
+                                )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
@@ -2897,8 +2956,8 @@ public class MarkdownListComponent {
                     .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(blockQuoteNodeView)
                 }
             }
@@ -2917,92 +2976,93 @@ public class MarkdownListComponent {
         .alignListItem(ListItemAlign.Start)
     }
 
-
     @Builder
     func bulletListComponent2(dataList: (Int64, NodeViewDataSource), bulletListNodeView: NodeView) {
         List() {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    bulletListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (bulletListItemComponent.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckbox(bulletListItemComponent)
-                                } else if (bulletListItemComponent.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixText(bulletListItemComponent, false)
-                                }
-                                Column() {
-                                    ForEach(
-                                        bulletListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent3(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent3(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent3(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    bulletListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (bulletListItemComponent.node is TaskListItem) {
+                                // 任务列表
+                                listPrefixCheckbox(bulletListItemComponent)
+                            } else if (bulletListItemComponent.node is CommonmarkListItem) {
+                                // 普通无序列表
+                                listPrefixText(bulletListItemComponent, false)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    bulletListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent3(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent3(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent3(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(bulletListNodeView)
                 }
             }
@@ -3019,82 +3079,84 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    orderedListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (orderedListItemComponent.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixText(orderedListItemComponent, true)
-                                }
-                                Column() {
-                                    ForEach(
-                                        orderedListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent3(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent3(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent3(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    orderedListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (orderedListItemComponent.node is CommonmarkListItem) {
+                                // 普通有序列表
+                                listPrefixText(orderedListItemComponent, true)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    orderedListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent3(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent3(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent3(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(orderedListNodeView)
                 }
             }
@@ -3111,8 +3173,7 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    ListItem() {
+                    item: NodeView, idx: Int64 => ListItem() {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
@@ -3124,12 +3185,14 @@ public class MarkdownListComponent {
                                 // 缩进代码
                                 listCodeBlockComponent(
                                     (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None)
+                                    Option<String>.None
+                                )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 listCodeBlockComponent(
                                     (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo())
+                                    (item.node as FencedCodeBlock)().getInfo()
+                                )
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 bulletListComponent3(listNumberData(item), item)
@@ -3151,7 +3214,8 @@ public class MarkdownListComponent {
                                     item,
                                     toCodeList(item)[0],
                                     toCodeList(item)[1],
-                                    toCodeList(item)[2])
+                                    toCodeList(item)[2]
+                                )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
@@ -3170,8 +3234,8 @@ public class MarkdownListComponent {
                     .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(blockQuoteNodeView)
                 }
             }
@@ -3190,92 +3254,93 @@ public class MarkdownListComponent {
         .alignListItem(ListItemAlign.Start)
     }
 
-
     @Builder
     func bulletListComponent1(dataList: (Int64, NodeViewDataSource), bulletListNodeView: NodeView) {
         List() {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    bulletListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (bulletListItemComponent.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckbox(bulletListItemComponent)
-                                } else if (bulletListItemComponent.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixText(bulletListItemComponent, false)
-                                }
-                                Column() {
-                                    ForEach(
-                                        bulletListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent2(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent2(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent2(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    bulletListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (bulletListItemComponent.node is TaskListItem) {
+                                // 任务列表
+                                listPrefixCheckbox(bulletListItemComponent)
+                            } else if (bulletListItemComponent.node is CommonmarkListItem) {
+                                // 普通无序列表
+                                listPrefixText(bulletListItemComponent, false)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    bulletListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent2(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent2(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent2(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(bulletListNodeView)
                 }
             }
@@ -3292,82 +3357,84 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    orderedListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (orderedListItemComponent.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixText(orderedListItemComponent, true)
-                                }
-                                Column() {
-                                    ForEach(
-                                        orderedListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent2(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent2(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent2(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    orderedListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (orderedListItemComponent.node is CommonmarkListItem) {
+                                // 普通有序列表
+                                listPrefixText(orderedListItemComponent, true)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    orderedListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent2(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent2(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent2(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(orderedListNodeView)
                 }
             }
@@ -3384,8 +3451,7 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    ListItem() {
+                    item: NodeView, idx: Int64 => ListItem() {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
@@ -3397,12 +3463,14 @@ public class MarkdownListComponent {
                                 // 缩进代码
                                 listCodeBlockComponent(
                                     (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None)
+                                    Option<String>.None
+                                )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 listCodeBlockComponent(
                                     (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo())
+                                    (item.node as FencedCodeBlock)().getInfo()
+                                )
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 bulletListComponent2(listNumberData(item), item)
@@ -3424,7 +3492,8 @@ public class MarkdownListComponent {
                                     item,
                                     toCodeList(item)[0],
                                     toCodeList(item)[1],
-                                    toCodeList(item)[2])
+                                    toCodeList(item)[2]
+                                )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
@@ -3443,8 +3512,8 @@ public class MarkdownListComponent {
                     .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(blockQuoteNodeView)
                 }
             }
@@ -3469,85 +3538,87 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    bulletListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (bulletListItemComponent.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckbox(bulletListItemComponent)
-                                } else if (bulletListItemComponent.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixText(bulletListItemComponent, false)
-                                }
-                                Column() {
-                                    ForEach(
-                                        bulletListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent1(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent1(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent1(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    bulletListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (bulletListItemComponent.node is TaskListItem) {
+                                // 任务列表
+                                listPrefixCheckbox(bulletListItemComponent)
+                            } else if (bulletListItemComponent.node is CommonmarkListItem) {
+                                // 普通无序列表
+                                listPrefixText(bulletListItemComponent, false)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    bulletListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent1(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent1(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent1(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(bulletListNodeView)
                 }
             }
@@ -3568,82 +3639,84 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    orderedListItemComponent: NodeView, idx: Int64 =>
-                        ListItem() {
-                            Row() {
-                                if (orderedListItemComponent.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixText(orderedListItemComponent, true)
-                                }
-                                Column() {
-                                    ForEach(
-                                        orderedListItemComponent.children,
-                                        itemGeneratorFunc: {
-                                            item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                                                // 段落
-                                                listParagraphComponent(item)
-                                            } else if (item.node is Heading) {
-                                                // 标题
-                                                listHeadingComponent(item)
-                                            } else if (item.node is IndentedCodeBlock) {
-                                                // 缩进代码
-                                                listCodeBlockComponent(
-                                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                                    Option<String>.None)
-                                            } else if (item.node is FencedCodeBlock) {
-                                                // 围栏代码
-                                                listCodeBlockComponent(
-                                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                                    (item.node as FencedCodeBlock)().getInfo())
-                                            } else if (item.node is BulletList) {
-                                                // 无序列表
-                                                bulletListComponent1(listNumberData(item), item)
-                                            } else if (item.node is OrderedList) {
-                                                // 有序列表
-                                                orderedListComponent1(listNumberData(item), item)
-                                            } else if (item.node is BlockQuote) {
-                                                // 块引用
-                                                blockQuoteComponent1(listNumberData(item), item)
-                                            } else if (item.node is TableBlock) {
-                                                // 表格
-                                                listTableBlockComponent(item)
-                                            } else if (item.node is SlideBlock) {
-                                                // 图片banner
-                                                listSlideBlockComponent(item)
-                                            } else if (item.node is FencedCodeBlockListBlock) {
-                                                // 代码列表
-                                                listCodeBlockListComponent(
-                                                    item,
-                                                    toCodeList(item)[0],
-                                                    toCodeList(item)[1],
-                                                    toCodeList(item)[2])
-                                            } else if (item.node is LatexMathBlock) {
-                                                // 数学公式 - 单行
-                                                listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
-                                            } else {
-                                                // TODO 其他节点
-                                            }
-                                        }
-                                    )
-                                }
-                                // 设置子组件在水平方向上的对齐格式。
-                                .alignItems(HorizontalAlign.Start)
-                                // 设置子组件在垂直方向上的对齐格式。
-                                .justifyContent(FlexAlign.Start)
-                                // 对子组件进行重新布局
-                                .layoutWeight(1)
+                    orderedListItemComponent: NodeView, idx: Int64 => ListItem() {
+                        Row() {
+                            if (orderedListItemComponent.node is CommonmarkListItem) {
+                                // 普通有序列表
+                                listPrefixText(orderedListItemComponent, true)
                             }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
+                            Column() {
+                                ForEach(
+                                    orderedListItemComponent.children,
+                                    itemGeneratorFunc: {
+                                        item: NodeView, idx: Int64 => if (item.node is Paragraph) {
+                                            // 段落
+                                            listParagraphComponent(item)
+                                        } else if (item.node is Heading) {
+                                            // 标题
+                                            listHeadingComponent(item)
+                                        } else if (item.node is IndentedCodeBlock) {
+                                            // 缩进代码
+                                            listCodeBlockComponent(
+                                                (item.node as IndentedCodeBlock)().getLiteral(),
+                                                Option<String>.None
+                                            )
+                                        } else if (item.node is FencedCodeBlock) {
+                                            // 围栏代码
+                                            listCodeBlockComponent(
+                                                (item.node as FencedCodeBlock)().getLiteral(),
+                                                (item.node as FencedCodeBlock)().getInfo()
+                                            )
+                                        } else if (item.node is BulletList) {
+                                            // 无序列表
+                                            bulletListComponent1(listNumberData(item), item)
+                                        } else if (item.node is OrderedList) {
+                                            // 有序列表
+                                            orderedListComponent1(listNumberData(item), item)
+                                        } else if (item.node is BlockQuote) {
+                                            // 块引用
+                                            blockQuoteComponent1(listNumberData(item), item)
+                                        } else if (item.node is TableBlock) {
+                                            // 表格
+                                            listTableBlockComponent(item)
+                                        } else if (item.node is SlideBlock) {
+                                            // 图片banner
+                                            listSlideBlockComponent(item)
+                                        } else if (item.node is FencedCodeBlockListBlock) {
+                                            // 代码列表
+                                            listCodeBlockListComponent(
+                                                item,
+                                                toCodeList(item)[0],
+                                                toCodeList(item)[1],
+                                                toCodeList(item)[2]
+                                            )
+                                        } else if (item.node is LatexMathBlock) {
+                                            // 数学公式 - 单行
+                                            listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
+                                        } else {
+                                            // TODO 其他节点
+                                        }
+                                    }
+                                )
+                            }
                             // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
                         }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(orderedListNodeView)
                 }
             }
@@ -3664,8 +3737,7 @@ public class MarkdownListComponent {
             LazyForEach(
                 dataList[1],
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    ListItem() {
+                    item: NodeView, idx: Int64 => ListItem() {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
@@ -3677,12 +3749,14 @@ public class MarkdownListComponent {
                                 // 缩进代码
                                 listCodeBlockComponent(
                                     (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None)
+                                    Option<String>.None
+                                )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 listCodeBlockComponent(
                                     (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo())
+                                    (item.node as FencedCodeBlock)().getInfo()
+                                )
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 bulletListComponent1(listNumberData(item), item)
@@ -3704,7 +3778,8 @@ public class MarkdownListComponent {
                                     item,
                                     toCodeList(item)[0],
                                     toCodeList(item)[1],
-                                    toCodeList(item)[2])
+                                    toCodeList(item)[2]
+                                )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 listLatexMathBlockComponent((item.node as LatexMathBlock)().latex)
@@ -3723,8 +3798,8 @@ public class MarkdownListComponent {
                     .layoutWeight(1)
                 }
             )
-            if(dataList[0] != 0){
-                ListItem(){
+            if (dataList[0] != 0) {
+                ListItem() {
                     listButtonComponent(blockQuoteNodeView)
                 }
             }
@@ -3745,9 +3820,9 @@ public class MarkdownListComponent {
         .alignListItem(ListItemAlign.Start)
     }
 
-    func listNumberData(nodeView: NodeView): (Int64, NodeViewDataSource){
+    func listNumberData(nodeView: NodeView): (Int64, NodeViewDataSource) {
         let bulletListDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
-        if(nodeView.children.size <= markdownConfiguration.markdownTheme.listNumber){
+        if (nodeView.children.size <= markdownConfiguration.markdownTheme.listNumber) {
             bulletListDataSource.clear()
             bulletListDataSource.addDatas(nodeView.children)
             return (0, bulletListDataSource)

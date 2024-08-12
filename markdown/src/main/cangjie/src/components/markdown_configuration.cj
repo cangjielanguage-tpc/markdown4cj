@@ -70,7 +70,8 @@ public class MarkdownConfiguration {
     /**
      * 数学公式数据处理事件
      */
-    protected var latexStrCallback: (String) -> String = {data: String =>
+    protected var latexStrCallback: (String) -> String = {
+        data: String =>
         var dataNew = data.replace("\\\\\\\\", "\\\\\\text{ }\\\\").replace("\\\\\\\\", "\\\\\\text{ }\\\\")
         dataNew = dataNew.replace("{aligned*}", "{aligned}")
         dataNew = dataNew.replace("{align*}", "{align}")
@@ -200,7 +201,8 @@ public class MarkdownConfigurationBuilder {
     /**
      * 数学公式数据处理事件
      */
-    protected var latexStrCallback: (String) -> String = {data: String =>
+    protected var latexStrCallback: (String) -> String = {
+        data: String =>
         var dataNew = data.replace("\\\\\\\\", "\\\\\\text{ }\\\\").replace("\\\\\\\\", "\\\\\\text{ }\\\\")
         dataNew = dataNew.replace("{aligned*}", "{aligned}")
         dataNew = dataNew.replace("{align*}", "{align}")

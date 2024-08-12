@@ -77,8 +77,9 @@ func codeFullScreenOnClick(codeText: String, info: ?String, codeFullScreenCallba
  * @param width 宽度
  * @param latexImageCallback 数学公式图片点击事件
  */
-func latexImageOnClick(lists: Array<UInt8>, height: Length, width: Length, latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit): Unit {
-    if(latexImageCallback.isSome()) {
+func latexImageOnClick(lists: Array<UInt8>, height: Length, width: Length,
+    latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit): Unit {
+    if (latexImageCallback.isSome()) {
         latexImageCallback()(lists, height, width)
     }
 }
@@ -92,8 +93,9 @@ func latexImageOnClick(lists: Array<UInt8>, height: Length, width: Length, latex
  * @param componentWidth 宽度
  * @param listBigDataCallback 超大数据跳转页面显示全部数据点击事件
  */
-func listBigDataOnClick(nodeView: NodeView, marginTop: Float64, marginBottom: Float64, componentWidth: Float64, listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit): Unit {
-    if(listBigDataCallback.isSome()) {
+func listBigDataOnClick(nodeView: NodeView, marginTop: Float64, marginBottom: Float64, componentWidth: Float64,
+    listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit): Unit {
+    if (listBigDataCallback.isSome()) {
         listBigDataCallback()(nodeView, marginTop, marginBottom, componentWidth)
     }
 }

@@ -57,11 +57,13 @@ class MarkdownLatexMathBlockComponent {
     var latexData: ?Array<UInt8> = Option<Array<UInt8>>.None
 
     func build() {
-        Column(){
-            latexMathTextComponent(latexMathStrToPixelMap())
+        Column() {
+            latexMathTextComponent()
         }
         // 设置外边距属性
         .margin(top: markdownConfiguration.markdownTheme.blockTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins)
+        // 组件挂载显示时触发此回调
+        .onAppear {=> latexMathStrToPixelMap()}
     }
 
     /**
@@ -93,46 +95,25 @@ class MarkdownLatexMathBlockComponent {
      * 数学公式
      */
     @Builder
-    func latexMathTextComponent(error :Int64) {
-        if (latexPixelMap.isSome() && latexHeight.isSome() && latexWidth.isSome()) {
+    func latexMathTextComponent() {
+        if (latexPixelMap.isSome() && latexHeight.isSome() && latexWidth.isSome() && latexData.isSome()) {
             latexMathBlockComponent()
         }
     }
 
     /**
-    * 数学公式文本转换成数学公式图片
-    */
-    func latexMathStrToPixelMap() : Int64{
-        let strLatexMath = markdownConfiguration.latexStrCallback(latexStr)
-        spawn {
-            let allData = MarkdownLatexImageUtil.latexMathStrToPixelMap(strLatexMath, markdownConfiguration.markdownTheme.resPath, markdownConfiguration)
-            let pixelMap = allData[0]
-            let lengthHeightLength = if (let Some(v) <- allData[1]) {
-                if (let Some(m) <- px2vp(v)) {
-                    m.value
-                } else {
-                    0.0
-                }
-            } else {
-                0.0
-            }
-            let lengthWidthLength = if (let Some(v) <- allData[2]) {
-                if (let Some(m) <- px2vp(v)) {
-                    m.value
-                } else {
-                    0.0
-                }
-            } else {
-                0.0
-            }
-            let arr = allData[3]
-            launch{=>
+     * 数学公式解析
+     */
+    func latexMathStrToPixelMap() {
+        let callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit = {
+            pixelMap, height, width, arr => launch {
                 latexPixelMap = pixelMap
-                latexHeight = lengthHeightLength
-                latexWidth = lengthWidthLength
+                latexHeight = height
+                latexWidth = width
                 latexData = arr
             }
         }
-        return 0
+        MarkdownParseLatexUtil.latexMathStrToPixelMap(latexStr, markdownConfiguration.markdownTheme.resPath,
+            markdownConfiguration, callback)
     }
 }

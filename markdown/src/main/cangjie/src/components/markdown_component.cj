@@ -139,7 +139,8 @@ public class MarkdownComponent {
                                 tableNodeView: item,
                                 markdownConfiguration: markdownConfiguration,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                componentWidth: widthPxToVp(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
                     } else if (item.node is ThematicBreak) {
@@ -202,15 +203,15 @@ public class MarkdownComponent {
         // 设置组件自身的宽度
         .width(100.percent)
         // 组件挂载显示时触发此回调
-        .onAppear{=> stringToNodes()}
+        .onAppear {=> stringToNodes()}
     }
 
     /**
      * 将String转换成ArrayList<NodeView>，将解析的列表添加到懒加载的数据源中
      */
-    func stringToNodes(){
-        let callback: (ArrayList<NodeView>) -> Unit = { nodeViews =>
-            launch{
+    func stringToNodes() {
+        let callback: (ArrayList<NodeView>) -> Unit = {
+            nodeViews => launch {
                 nodeViewDataSource.clear()
                 nodeViewDataSource.addDatas(nodeViews)
             }

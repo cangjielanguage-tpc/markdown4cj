@@ -403,7 +403,7 @@ public class MarkdownTheme {
         this.imageResource = builder.imageResource
         this.isAutoResize = builder.isAutoResize
         // 按钮
-        this.buttonTextStr  = builder.buttonTextStr
+        this.buttonTextStr = builder.buttonTextStr
         this.buttonTextSize = builder.buttonTextSize
         this.buttonTextColor = builder.buttonTextColor
         this.buttonTextBackgroupColor = builder.buttonTextBackgroupColor
@@ -820,7 +820,7 @@ public class MarkdownThemeBuilder {
         this.imageResource = theme.imageResource
         this.isAutoResize = theme.isAutoResize
         // 按钮
-        this.buttonTextStr  = theme.buttonTextStr
+        this.buttonTextStr = theme.buttonTextStr
         this.buttonTextSize = theme.buttonTextSize
         this.buttonTextColor = theme.buttonTextColor
         this.buttonTextBackgroupColor = theme.buttonTextBackgroupColor

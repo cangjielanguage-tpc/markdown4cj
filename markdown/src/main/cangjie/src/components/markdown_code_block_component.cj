@@ -56,7 +56,7 @@ class MarkdownCodeBlockComponent {
         // 设置外边距属性
         .margin(top: marginTop, bottom: marginBottom)
         // 组件挂载显示时触发此回调
-        .onAppear{=> stringCodeToResList()}
+        .onAppear {=> stringCodeToResList()}
     }
 
     /**
@@ -154,21 +154,15 @@ class MarkdownCodeBlockComponent {
         .margin(top: 8, right: 8)
     }
 
-    func stringCodeToResList(){
-        spawn {
-           try {
-                let prismNodesParseResList:ArrayList<PrismNodesParseRes> =  stringToResList(codeText, info, markdownConfiguration.prismTheme)
-                launch {
-                    arrayList = prismNodesParseResList
-                }
-           } catch (e: Exception) {
-                let prismNodesParseResList:ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
-                let prismNodesParseRes:PrismNodesParseRes = PrismNodesParseRes("", codeText, Option<String>.None, Option<Color>.None)
-                prismNodesParseResList.append(prismNodesParseRes)
-                launch {
-                    arrayList = prismNodesParseResList
-                }
-           }
+    /**
+     * 代码数据高亮解析
+     */
+    func stringCodeToResList() {
+        let callback: (ArrayList<PrismNodesParseRes>) -> Unit = { prismNodesParseResLists =>
+            launch{
+                arrayList = prismNodesParseResLists
+            }
         }
+        stringToResList(codeText, info, markdownConfiguration.prismTheme, callback)
     }
 }
