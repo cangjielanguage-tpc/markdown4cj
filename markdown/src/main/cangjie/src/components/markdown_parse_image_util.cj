@@ -15,28 +15,72 @@ import ohos.state_macro_manage.*
  * @param componentWidth 控件宽度 - 单位vp
  * @param callback PixelMap图片、图片高度、图片宽度 回调接口
  */
-func imageSpanToPixelmap(destination: String, componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64) -> Unit) {
-    spawn {
+func imageSpanToPixelmap(destination: String, componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64) -> Unit): Future<Unit> {
+    let fut: Future<Unit> = spawn {
         try {
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             var imageSource: ImageSource = createImageSource(destination)
+            if (Thread.currentThread.hasPendingCancellation) {
+                imageSource.Release()
+                return
+            }
             var pixelMap: PixelMap = imageSource.createPixelMap()
+            if (Thread.currentThread.hasPendingCancellation) {
+                imageSource.Release()
+                pixelMap.Release()
+                return
+            }
             imageSource.Release()
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             var size: Size = pixelMap.getImageInfo().size
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             var aspectRatio: Float64 = Float64(size.height) / Float64(size.width)
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             var imageWidth: Float64 = px2vp(Int64(size.width).px)().value
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             var imageHeight: Float64 = px2vp(Int64(size.height).px)().value
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             var width: Float64 = if (componentWidth > imageWidth) {
                 imageWidth
             } else {
                 componentWidth
             }
             var height: Float64 = width * aspectRatio
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             pixelMap.scale(Float32(width / imageWidth), Float32(height / imageHeight))
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             callback(pixelMap, width, height)
         } catch (e: Exception) {
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             callback(Option<PixelMap>.None, Option<Float64>.None, Option<Float64>.None)
         }
     }
+    return fut
 }
 
 /**
@@ -48,34 +92,95 @@ func imageSpanToPixelmap(destination: String, componentWidth: Float64, callback:
  * @param callback PixelMap图片、图片高度、图片宽度 回调接口
  */
 func rawfileToPixelmap(destination: String, abilityContext: ?AbilityContext, componentWidth: Float64,
-    callback: (?PixelMap, ?Float64, ?Float64) -> Unit) {
-    spawn {
+    callback: (?PixelMap, ?Float64, ?Float64) -> Unit): Future<Unit> {
+    let fut: Future<Unit> = spawn {
         try {
             if (let Some(v) <- abilityContext) {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
                 let resourceManager = ResourceManager.getResourceManager(getStageContext(v))
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
                 var arrayUInt8: Array<UInt8> = resourceManager.getRawFileContent(destination.replace("./", ""))
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
                 var imageSource: ImageSource = createImageSource(arrayUInt8)
+                if (Thread.currentThread.hasPendingCancellation) {
+                    imageSource.Release()
+                    return
+                }
                 var pixelMap: PixelMap = imageSource.createPixelMap()
+                if (Thread.currentThread.hasPendingCancellation) {
+                    imageSource.Release()
+                    pixelMap.Release()
+                    return
+                }
                 imageSource.Release()
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap.Release()
+                    return
+                }
                 var size: Size = pixelMap.getImageInfo().size
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap.Release()
+                    return
+                }
                 var aspectRatio: Float64 = Float64(size.height) / Float64(size.width)
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap.Release()
+                    return
+                }
                 var imageWidth: Float64 = px2vp(Int64(size.width).px)().value
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap.Release()
+                    return
+                }
                 var imageHeight: Float64 = px2vp(Int64(size.height).px)().value
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap.Release()
+                    return
+                }
                 var width: Float64 = if (componentWidth > imageWidth) {
                     imageWidth
                 } else {
                     componentWidth
                 }
                 var height: Float64 = width * aspectRatio
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap.Release()
+                    return
+                }
                 pixelMap.scale(Float32(width / imageWidth), Float32(height / imageHeight))
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap.Release()
+                    return
+                }
                 callback(pixelMap, width, height)
             } else {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
                 callback(Option<PixelMap>.None, Option<Float64>.None, Option<Float64>.None)
             }
         } catch (e: Exception) {
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             callback(Option<PixelMap>.None, Option<Float64>.None, Option<Float64>.None)
         }
     }
+    return fut
+}
+
+let client: Client = ClientBuilder().readTimeout(Duration.minute * 1).poolSize(2000).tlsConfig(getTlsClientConfig()).build()
+
+func getTlsClientConfig():TlsClientConfig{
+    var tls:TlsClientConfig = TlsClientConfig()
+    tls.verifyMode = CertificateVerifyMode.TrustAll
+    return tls
 }
 
 /**
@@ -85,58 +190,119 @@ func rawfileToPixelmap(destination: String, abilityContext: ?AbilityContext, com
  * @param componentWidth 控件宽度 - 单位vp
  * @param callback PixelMap图片、图片高度、图片宽度 回调接口
  */
-func getImageFromHttpClient(path: String, componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64) -> Unit) {
-    spawn {
+func getImageFromHttpClient(path: String, componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64) -> Unit): Future<Unit> {
+    let fut: Future<Unit> = spawn {
         try {
             let str: String = path.trimAscii()
-            var tls: TlsClientConfig = TlsClientConfig()
-            tls.verifyMode = CertificateVerifyMode.TrustAll
-            var client: Client = ClientBuilder().readTimeout(Duration.minute * 1).tlsConfig(tls).build()
             let resp: HttpResponse = client.get(str)
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             let inputStream: InputStream = resp.body
-            var arrDataTemp: Array<UInt8> = Array<UInt8>(2048, item: 0)
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            let bodySize :Int64 = if(let Some(v)  <- resp.bodySize){
+                if(v > 0){
+                    v
+                } else {
+                    2048
+                }
+            } else {
+                2048
+            }
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            var arrDataTemp: Array<UInt8> = Array<UInt8>(bodySize, item: 0)
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             let listbuf: ArrayList<UInt8> = ArrayList<UInt8>()
             var read: Int64 = 0
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             do {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
                 read = inputStream.read(arrDataTemp)
-                for (j in 0..read) {
-                    listbuf.append(arrDataTemp[j])
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                listbuf.appendAll(arrDataTemp[0..read])
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
                 }
             } while (read > 0)
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             let arrData: Array<UInt8> = listbuf.toArray()
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             var imageSource: ImageSource = createImageSource(arrData)
+            if (Thread.currentThread.hasPendingCancellation) {
+                imageSource.Release()
+                return
+            }
             var pixelMap: PixelMap = imageSource.createPixelMap()
+            if (Thread.currentThread.hasPendingCancellation) {
+                imageSource.Release()
+                pixelMap.Release()
+                return
+            }
             imageSource.Release()
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             var size: Size = pixelMap.getImageInfo().size
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             var aspectRatio: Float64 = Float64(size.height) / Float64(size.width)
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             var imageWidth: Float64 = px2vp(Int64(size.width).px)().value
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             var imageHeight: Float64 = px2vp(Int64(size.height).px)().value
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             var width: Float64 = if (componentWidth > imageWidth) {
                 imageWidth
             } else {
                 componentWidth
             }
             var height: Float64 = width * aspectRatio
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             pixelMap.scale(Float32(width / imageWidth), Float32(height / imageHeight))
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap.Release()
+                return
+            }
             callback(pixelMap, width, height)
         } catch (e: Exception) {
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             callback(Option<PixelMap>.None, Option<Float64>.None, Option<Float64>.None)
         }
     }
-}
-
-/**
- * 释放PixelMap
- */
-func delPixelMap(listPixelMap: ArrayList<?PixelMap>) {
-    spawn {
-        for (item in listPixelMap) {
-            if (item.isSome()) {
-                item().Release()
-            }
-        }
-        listPixelMap.clear()
-    }
+    return fut
 }
 
 /**

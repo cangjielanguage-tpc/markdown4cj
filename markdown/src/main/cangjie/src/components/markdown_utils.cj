@@ -626,3 +626,44 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownC
     }
     return picStyleObj
 }
+
+/**
+ * 释放PixelMap
+ */
+func delPixelMap(listPixelMap: ArrayList<?PixelMap>) {
+    for (item in listPixelMap) {
+        delPixelMap(item)
+    }
+    listPixelMap.clear()
+}
+
+/**
+ * 释放PixelMap
+ */
+func delPixelMap(listPixelMap: ?PixelMap) {
+    spawn {
+        if (listPixelMap.isSome()) {
+            listPixelMap().Release()
+        }
+    }
+}
+
+/**
+ * 取消线程
+ */
+func threadFutureCancel(futs: ArrayList<?Future<Unit>>) {
+    for (fut in futs) {
+        threadFutureCancel(fut)
+    }
+}
+
+/**
+ * 取消线程
+ */
+func threadFutureCancel(fut: ?Future<Unit>) {
+    spawn {
+        if (fut.isSome()) {
+            fut().cancel()
+        }
+    }
+}
