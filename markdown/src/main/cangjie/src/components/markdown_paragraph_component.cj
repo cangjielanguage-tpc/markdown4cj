@@ -54,6 +54,12 @@ class MarkdownParagraphComponent {
     @State
     var arrayListPixelMap: ObservedArrayList<ImageData> = ObservedArrayList<ImageData>()
 
+    /**
+     * 线程列表
+     */
+    @State
+    var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
+
     func build() {
         Column() {
             paragraphOtherComponent()
@@ -292,7 +298,10 @@ class MarkdownParagraphComponent {
         // 设置组件自身的宽度
         .width(100.percent)
         // 组件卸载消失时触发此回调
-        .onDisAppear({=> delPixelMap(listPixelMap)})
+        .onDisAppear({=>
+            threadFutureCancel(futs)
+            delPixelMap(listPixelMap)
+        })
     }
 
     /**
@@ -315,8 +324,9 @@ class MarkdownParagraphComponent {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width,arrayUint8: arr))
             }
         }
-        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration.markdownTheme.resPath,
+        let fut = MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration.markdownTheme.resPath,
             markdownConfiguration, componentWidth, callback)
+        futs.append(fut)
         return idx
     }
 
@@ -329,7 +339,8 @@ class MarkdownParagraphComponent {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
-        imageSpanToPixelmap(destination, componentWidth, callback)
+        let fut = imageSpanToPixelmap(destination, componentWidth, callback)
+        futs.append(fut)
         return idx
     }
 
@@ -342,7 +353,8 @@ class MarkdownParagraphComponent {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
-        rawfileToPixelmap(destination, markdownConfiguration.markdownTheme.abilityContext, componentWidth, callback)
+        let fut = rawfileToPixelmap(destination, markdownConfiguration.markdownTheme.abilityContext, componentWidth, callback)
+        futs.append(fut)
         return idx
     }
 
@@ -355,7 +367,8 @@ class MarkdownParagraphComponent {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
-        getImageFromHttpClient(destination, componentWidth, callback)
+        let fut = getImageFromHttpClient(destination, componentWidth, callback)
+        futs.append(fut)
         return idx
     }
 }

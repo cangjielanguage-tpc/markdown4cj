@@ -15,8 +15,8 @@ import ohos.state_macro_manage.*
  * @param markdownConfiguration MarkdownConfiguration
  * @param callback Node树节点列表回调接口
  */
-func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfiguration, callback: (ArrayList<NodeView>) -> Unit) {
-    spawn {
+func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfiguration, callback: (ArrayList<NodeView>) -> Unit): Future<Unit>{
+    let fut: Future<Unit> = spawn {
         try {
             let markdown: Markdown = if (let Some(v) <- markdownConfiguration.markdownParser) {
                 v
@@ -40,10 +40,22 @@ func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfigurat
                     .usePlugin(TocPlugin.create())
                     .build()
             }
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             let node: CommonmarkNode = markdown.parse(mdStr)
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             let nodeView: NodeView = markdown.render(node)
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             callback(nodeView.children)
         } catch (e: Exception) {
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             let arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
             let paragraph: Paragraph = Paragraph()
             let commonmarkText: CommonmarkText = CommonmarkText(mdStr)
@@ -54,6 +66,7 @@ func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfigurat
             callback(arrayListNodeView)
         }
     }
+    return fut
 }
 
 /**
@@ -64,20 +77,33 @@ func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfigurat
  * @param prismTheme 传入的高亮样式
  * @param callback PrismNodesParseRes列表回调接口
  */
-func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseRes>) -> Unit){
-    spawn {
+func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit>{
+    let fut: Future<Unit> = spawn {
         try {
             var prism: Prism = Prism(GrammarLocatorGrammarUtils())
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             var psh: PrismSyntaxHighlight = PrismSyntaxHighlight.create(prism, prismTheme)
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             let prismNodesParseResList: ArrayList<PrismNodesParseRes> = psh.highlight(info, code.trimRight("\n"))
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             callback(prismNodesParseResList)
         } catch (e: Exception) {
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             let prismNodesParseResList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
             let prismNodesParseRes: PrismNodesParseRes = PrismNodesParseRes("", code, Option<String>.None, Option<Color>.None)
             prismNodesParseResList.append(prismNodesParseRes)
             callback(prismNodesParseResList)
         }
     }
+    return fut
 }
 
 /**
@@ -89,21 +115,33 @@ func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callba
  * @param strText 代码列表数据
  * @return 返回PrismNodesParseResState列表的列表，返回代码类型的类型，返回代码内容列表，返回第一条数据内容
  */
-func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: MarkdownConfiguration, strText: ArrayList<String>, callback: (ArrayList<ArrayList<PrismNodesParseRes>>) -> Unit) {
-    spawn {
+func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: MarkdownConfiguration, strText: ArrayList<String>, callback: (ArrayList<ArrayList<PrismNodesParseRes>>) -> Unit): Future<Unit> {
+    let fut: Future<Unit> = spawn {
        try {
             var prismNodesParseResLists: ArrayList<ArrayList<PrismNodesParseRes>> = ArrayList<ArrayList<PrismNodesParseRes>>()
             for (nodeView in codeBlockListNodeView.children) {
                 if (nodeView.node is FencedCodeBlock) {
                     var prism: Prism = Prism(GrammarLocatorGrammarUtils())
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
                     var psh: PrismSyntaxHighlight = PrismSyntaxHighlight.create(prism, markdownConfiguration.prismTheme)
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
                     let res: ArrayList<PrismNodesParseRes> = psh.highlight((nodeView.node as FencedCodeBlock)().getInfo(),
                         (nodeView.node as FencedCodeBlock)().getLiteral().trimRight("\n"))
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
                     prismNodesParseResLists.append(res)
                 }
             }
             callback(prismNodesParseResLists)
        } catch (e: Exception) {
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             let prismNodesParseResLists: ArrayList<ArrayList<PrismNodesParseRes>> =  ArrayList<ArrayList<PrismNodesParseRes>>()
             for(str in  strText){
                 let prismNodesParseResList:ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
@@ -114,5 +152,6 @@ func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: Ma
             callback(prismNodesParseResLists)
        }
     }
+    return fut
 }
 

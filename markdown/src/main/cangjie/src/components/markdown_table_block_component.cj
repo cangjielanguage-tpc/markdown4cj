@@ -46,6 +46,12 @@ class MarkdownTableBlockComponent {
      */
     var componentWidth: Float64
 
+    /**
+     * 线程列表
+     */
+    @State
+    var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
+
     func build() {
         Column() {
             renderTableHeaderOrBody()
@@ -219,7 +225,10 @@ class MarkdownTableBlockComponent {
         // 统一边框样式设置接口
         .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0), color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
         // 组件卸载消失时触发此回调
-        .onDisAppear({=> delPixelMap(listPixelMap)})
+        .onDisAppear({=>
+            threadFutureCancel(futs)
+            delPixelMap(listPixelMap)
+        })
     }
 
     /**
@@ -275,8 +284,9 @@ class MarkdownTableBlockComponent {
                     height: height, width: width, arrayUint8: arr))
             }
         }
-        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration.markdownTheme.resPath,
+        let fut = MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration.markdownTheme.resPath,
             markdownConfiguration, componentWidth, callback)
+        futs.append(fut)
         return idx
     }
 }

@@ -52,6 +52,12 @@ class MarkdownLatexMathBlockComponent {
     var latexWidth: ?Float64 = Option<Float64>.None
 
     /**
+     * 线程
+     */
+    @State
+    var fut: ?Future<Unit> = Option<Future<Unit>>.None
+
+    /**
      * 数学公式列表数据
      */
     var latexData: ?Array<UInt8> = Option<Array<UInt8>>.None
@@ -64,6 +70,11 @@ class MarkdownLatexMathBlockComponent {
         .margin(top: markdownConfiguration.markdownTheme.blockTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins)
         // 组件挂载显示时触发此回调
         .onAppear {=> latexMathStrToPixelMap()}
+        // 组件卸载消失时触发此回调
+        .onDisAppear({=>
+            threadFutureCancel(fut)
+            delPixelMap(latexPixelMap)
+        })
     }
 
     /**
@@ -80,8 +91,6 @@ class MarkdownLatexMathBlockComponent {
                 .width(latexWidth())
                 // 设置图片的缩放类型
                 .objectFit(ImageFit.Contain)
-                // 组件卸载消失时触发此回调
-                .onDisAppear({=> latexPixelMap().Release()})
                 // 点击动作触发该方法调用
                 .onClick {evt => latexImageOnClick(latexData(), latexHeight().vp, latexWidth().vp, markdownConfiguration.latexImageCallback)}
         }
@@ -113,7 +122,7 @@ class MarkdownLatexMathBlockComponent {
                 latexData = arr
             }
         }
-        MarkdownParseLatexUtil.latexMathStrToPixelMap(latexStr, markdownConfiguration.markdownTheme.resPath,
+        fut = MarkdownParseLatexUtil.latexMathStrToPixelMap(latexStr, markdownConfiguration.markdownTheme.resPath,
             markdownConfiguration, callback)
     }
 }

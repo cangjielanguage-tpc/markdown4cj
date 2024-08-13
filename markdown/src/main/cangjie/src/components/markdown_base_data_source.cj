@@ -8,8 +8,8 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
-public open class BaseDataSource<T> <: IDataSource<T> {
-    public BaseDataSource(let data_: ArrayList<T>) {}
+public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
+    public MarkdownBaseDataSource(let data_: ArrayList<T>) {}
 
     public var listenerOp: ArrayList<DataChangeListener> = ArrayList<DataChangeListener>()
 
@@ -87,7 +87,7 @@ public open class BaseDataSource<T> <: IDataSource<T> {
     }
 }
 
-public class NodeViewDataSource <: BaseDataSource<NodeView> {
+public class NodeViewDataSource <: MarkdownBaseDataSource<NodeView> {
     public NodeViewDataSource(let data: ArrayList<NodeView>) {
         super(data)
     }
