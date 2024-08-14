@@ -190,8 +190,20 @@ public class MarkdownComponent {
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
                             )
                         }
+                    } else if (item.node is LinkReferenceDefinition) {
+                        // 链接引用定义
+                        ListItem() {
+                            Text("")
+                                // 设置外边距属性
+                                .margin(top: markdownConfiguration.markdownTheme.blockTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins)
+                        }
                     } else {
                         // TODO 其他节点
+                        ListItem() {
+                            Text("")
+                                // 设置外边距属性
+                                .margin(top: markdownConfiguration.markdownTheme.blockTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins)
+                        }
                     }
                 }
             )
