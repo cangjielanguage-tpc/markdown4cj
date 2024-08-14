@@ -17,6 +17,7 @@ import ohos.state_macro_manage.*
  */
 func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfiguration, callback: (ArrayList<NodeView>) -> Unit): Future<Unit>{
     let fut: Future<Unit> = spawn {
+        var arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
         try {
             let markdown: Markdown = if (let Some(v) <- markdownConfiguration.markdownParser) {
                 v
@@ -48,22 +49,22 @@ func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfigurat
                 return
             }
             let nodeView: NodeView = markdown.render(node)
-            if (Thread.currentThread.hasPendingCancellation) {
-                return
-            }
-            callback(nodeView.children)
+            arrayListNodeView = nodeView.children
         } catch (e: Exception) {
-            if (Thread.currentThread.hasPendingCancellation) {
-                return
-            }
-            let arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
             let paragraph: Paragraph = Paragraph()
             let commonmarkText: CommonmarkText = CommonmarkText(mdStr)
             paragraph.appendChild(commonmarkText)
             let paragraphNodeView: NodeView = buildView(paragraph, true)
             let textNodeView: NodeView = buildView(commonmarkText, true)
             arrayListNodeView.append(paragraphNodeView)
-            callback(arrayListNodeView)
+        } finally {
+            try {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                callback(arrayListNodeView)
+            } catch (_) {
+            }
         }
     }
     return fut
@@ -79,6 +80,7 @@ func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfigurat
  */
 func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit>{
     let fut: Future<Unit> = spawn {
+        var prismNodesParseResList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
         try {
             if (Thread.currentThread.hasPendingCancellation) {
                 return
@@ -91,19 +93,18 @@ func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callba
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
-            let prismNodesParseResList: ArrayList<PrismNodesParseRes> = psh.highlight(info, code.trimRight("\n"))
-            if (Thread.currentThread.hasPendingCancellation) {
-                return
-            }
-            callback(prismNodesParseResList)
+            prismNodesParseResList = psh.highlight(info, code.trimRight("\n"))
         } catch (e: Exception) {
-            if (Thread.currentThread.hasPendingCancellation) {
-                return
-            }
-            let prismNodesParseResList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
             let prismNodesParseRes: PrismNodesParseRes = PrismNodesParseRes("", code, Option<String>.None, Option<Color>.None)
             prismNodesParseResList.append(prismNodesParseRes)
-            callback(prismNodesParseResList)
+        } finally {
+            try {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                callback(prismNodesParseResList)
+            } catch (_) {
+            }
         }
     }
     return fut
@@ -120,8 +121,8 @@ func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callba
  */
 func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: MarkdownConfiguration, strText: ArrayList<String>, callback: (ArrayList<ArrayList<PrismNodesParseRes>>) -> Unit): Future<Unit> {
     let fut: Future<Unit> = spawn {
+        var prismNodesParseResLists: ArrayList<ArrayList<PrismNodesParseRes>> = ArrayList<ArrayList<PrismNodesParseRes>>()
         try {
-            var prismNodesParseResLists: ArrayList<ArrayList<PrismNodesParseRes>> = ArrayList<ArrayList<PrismNodesParseRes>>()
             for (nodeView in codeBlockListNodeView.children) {
                 if (nodeView.node is FencedCodeBlock) {
                     if (Thread.currentThread.hasPendingCancellation) {
@@ -137,25 +138,24 @@ func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: Ma
                     }
                     let res: ArrayList<PrismNodesParseRes> = psh.highlight((nodeView.node as FencedCodeBlock)().getInfo(),
                         (nodeView.node as FencedCodeBlock)().getLiteral().trimRight("\n"))
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        return
-                    }
                     prismNodesParseResLists.append(res)
                 }
             }
-            callback(prismNodesParseResLists)
         } catch (e: Exception) {
-            if (Thread.currentThread.hasPendingCancellation) {
-                return
-            }
-            let prismNodesParseResLists: ArrayList<ArrayList<PrismNodesParseRes>> =  ArrayList<ArrayList<PrismNodesParseRes>>()
             for(str in  strText){
                 let prismNodesParseResList:ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
                 let prismNodesParseRes:PrismNodesParseRes = PrismNodesParseRes("", str, Option<String>.None, Option<Color>.None)
                 prismNodesParseResList.append(prismNodesParseRes)
                 prismNodesParseResLists.append(prismNodesParseResList)
             }
-            callback(prismNodesParseResLists)
+        } finally {
+            try {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                callback(prismNodesParseResLists)
+            } catch (_) {
+            }
         }
     }
     return fut

@@ -465,7 +465,7 @@ public class MarkdownListComponent {
         // 设置元素的边框宽度(单位为vp)。
         .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
         // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
+        .padding(left: 10.0)
         // 块内容前的起始边距
         .margin(left: markdownConfiguration.markdownTheme.blockMargin)
         // 设置List组件排列方向
@@ -743,7 +743,7 @@ public class MarkdownListComponent {
         // 设置元素的边框宽度(单位为vp)。
         .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
         // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
+        .padding(left: 10.0)
         // 块内容前的起始边距
         .margin(left: markdownConfiguration.markdownTheme.blockMargin)
         // 设置List组件排列方向
@@ -1021,7 +1021,7 @@ public class MarkdownListComponent {
         // 设置元素的边框宽度(单位为vp)。
         .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
         // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
+        .padding(left: 10.0)
         // 块内容前的起始边距
         .margin(left: markdownConfiguration.markdownTheme.blockMargin)
         // 设置List组件排列方向
@@ -1299,7 +1299,7 @@ public class MarkdownListComponent {
         // 设置元素的边框宽度(单位为vp)。
         .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
         // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
+        .padding(left: 10.0)
         // 块内容前的起始边距
         .margin(left: markdownConfiguration.markdownTheme.blockMargin)
         // 设置List组件排列方向
@@ -1577,7 +1577,7 @@ public class MarkdownListComponent {
         // 设置元素的边框宽度(单位为vp)。
         .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
         // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
+        .padding(left: 10.0)
         // 块内容前的起始边距
         .margin(left: markdownConfiguration.markdownTheme.blockMargin)
         // 设置List组件排列方向
@@ -1855,7 +1855,7 @@ public class MarkdownListComponent {
         // 设置元素的边框宽度(单位为vp)。
         .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
         // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
+        .padding(left: 10.0)
         // 块内容前的起始边距
         .margin(left: markdownConfiguration.markdownTheme.blockMargin)
         // 设置List组件排列方向
@@ -2133,7 +2133,7 @@ public class MarkdownListComponent {
         // 设置元素的边框宽度(单位为vp)。
         .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
         // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
+        .padding(left: 10.0)
         // 块内容前的起始边距
         .margin(left: markdownConfiguration.markdownTheme.blockMargin)
         // 设置List组件排列方向
@@ -2411,7 +2411,7 @@ public class MarkdownListComponent {
         // 设置元素的边框宽度(单位为vp)。
         .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
         // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
+        .padding(left: 10.0)
         // 块内容前的起始边距
         .margin(left: markdownConfiguration.markdownTheme.blockMargin)
         // 设置List组件排列方向
@@ -2689,7 +2689,7 @@ public class MarkdownListComponent {
         // 设置元素的边框宽度(单位为vp)。
         .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
         // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
+        .padding(left: 10.0)
         // 块内容前的起始边距
         .margin(left: markdownConfiguration.markdownTheme.blockMargin)
         // 设置List组件排列方向
@@ -2967,7 +2967,7 @@ public class MarkdownListComponent {
         // 设置元素的边框宽度(单位为vp)。
         .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
         // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
+        .padding(left: 10.0)
         // 块内容前的起始边距
         .margin(left: markdownConfiguration.markdownTheme.blockMargin)
         // 设置List组件排列方向
@@ -3245,7 +3245,7 @@ public class MarkdownListComponent {
         // 设置元素的边框宽度(单位为vp)。
         .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
         // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
+        .padding(left: 10.0)
         // 块内容前的起始边距
         .margin(left: markdownConfiguration.markdownTheme.blockMargin)
         // 设置List组件排列方向
@@ -3523,7 +3523,7 @@ public class MarkdownListComponent {
         // 设置元素的边框宽度(单位为vp)。
         .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
         // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
+        .padding(left: 10.0)
         // 块内容前的起始边距
         .margin(left: markdownConfiguration.markdownTheme.blockMargin)
         // 设置List组件排列方向

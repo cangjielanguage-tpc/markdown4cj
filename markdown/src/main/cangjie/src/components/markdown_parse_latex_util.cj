@@ -25,12 +25,16 @@ class MarkdownParseLatexUtil {
     static func latexMathStrToPixelMap(strLatexMath: String, resStr: String,
         markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
-            let strLatexMathNew = markdownConfiguration.latexStrCallback(strLatexMath)
             synchronized(latexReentrantMutex) {
-                if (Thread.currentThread.hasPendingCancellation) {
-                    return
-                }
+                var pixelMap: ?PixelMap = Option<PixelMap>.None
+                var imageHeight: ?Float64 = Option<Float64>.None
+                var imageWidth: ?Float64 = Option<Float64>.None
+                var arr: ?Array<UInt8> = Option<Array<UInt8>>.None
                 try {
+                    let strLatexMathNew = markdownConfiguration.latexStrCallback(strLatexMath)
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
                     var latex = LaTeX(resStr)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
@@ -42,64 +46,41 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r, latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat))
+                    var g2 = Graphic2D(r, latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat)
+                    )
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
                     r.draw(g2, markdownConfiguration.markdownTheme.latexMathBackGroupColor.toUInt32())
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        return
-                    }
                     let height = g2.height
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        return
-                    }
                     let width = g2.width
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var arr: Array<UInt8> = r.toBitmap(g2)
+                    arr = r.toBitmap(g2)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var imageSource: ImageSource = createImageSource(arr)
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        imageSource.Release()
-                        return
-                    }
-                    var pixelMap: PixelMap = imageSource.createPixelMap()
+                    var imageSource: ImageSource = createImageSource(arr())
                     if (Thread.currentThread.hasPendingCancellation) {
                         imageSource.Release()
-                        pixelMap.Release()
                         return
                     }
+                    pixelMap = imageSource.createPixelMap()
                     imageSource.Release()
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap.Release()
-                        return
-                    }
-                    var size: Size = pixelMap.getImageInfo().size
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap.Release()
-                        return
-                    }
-                    var imageWidth: Float64 = px2vp(Int64(size.width).px)().value
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap.Release()
-                        return
-                    }
-                    var imageHeight: Float64 = px2vp(Int64(size.height).px)().value
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap.Release()
-                        return
-                    }
-                    callback(pixelMap, imageHeight, imageWidth, arr)
+                    var size: Size = pixelMap().getImageInfo().size
+                    imageWidth = px2vp(Int64(size.width).px)().value
+                    imageHeight = px2vp(Int64(size.height).px)().value
                 } catch (e: Exception) {
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        return
+                } finally {
+                    try {
+                        if (Thread.currentThread.hasPendingCancellation) {
+                            pixelMap?.Release()
+                            return
+                        }
+                        callback(pixelMap, imageHeight, imageWidth, arr)
+                    } catch (_) {
                     }
-                    callback(Option<PixelMap>.None, Option<Float64>.None, Option<Float64>.None,
-                        Option<Array<UInt8>>.None)
                 }
             }
         }
@@ -119,12 +100,16 @@ class MarkdownParseLatexUtil {
         markdownConfiguration: MarkdownConfiguration, componentWidth: Float64,
         callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
-            let strLatexMathNew = markdownConfiguration.latexStrCallback(strLatexMath)
             synchronized(latexReentrantMutex) {
-                if (Thread.currentThread.hasPendingCancellation) {
-                    return
-                }
+                var pixelMap: ?PixelMap = Option<PixelMap>.None
+                var height: ?Float64 = Option<Float64>.None
+                var width: ?Float64 = Option<Float64>.None
+                var arr: ?Array<UInt8> = Option<Array<UInt8>>.None
                 try {
+                    let strLatexMathNew = markdownConfiguration.latexStrCallback(strLatexMath)
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
                     var latex = LaTeX(resStr)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
@@ -136,7 +121,8 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r, latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat))
+                    var g2 = Graphic2D(r, latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat)
+                    )
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -144,72 +130,42 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var arr: Array<UInt8> = r.toBitmap(g2)
+                    arr = r.toBitmap(g2)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var imageSource: ImageSource = createImageSource(arr)
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        imageSource.Release()
-                        return
-                    }
-                    var pixelMap: PixelMap = imageSource.createPixelMap()
+                    var imageSource: ImageSource = createImageSource(arr())
                     if (Thread.currentThread.hasPendingCancellation) {
                         imageSource.Release()
-                        pixelMap.Release()
                         return
                     }
+                    pixelMap = imageSource.createPixelMap()
                     imageSource.Release()
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap.Release()
-                        return
-                    }
-                    var size: Size = pixelMap.getImageInfo().size
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap.Release()
-                        return
-                    }
+                    var size: Size = pixelMap().getImageInfo().size
                     var aspectRatio: Float64 = Float64(size.height) / Float64(size.width)
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap.Release()
-                        return
-                    }
                     var imageWidth: Float64 = px2vp(Int64(size.width).px)().value
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap.Release()
-                        return
-                    }
                     var imageHeight: Float64 = px2vp(Int64(size.height).px)().value
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap.Release()
-                        return
-                    }
-                    var width: Float64 = if (componentWidth > imageWidth) {
+                    width = if (componentWidth > imageWidth) {
                         imageWidth
                     } else {
                         componentWidth
                     }
+                    height = width() * aspectRatio
                     if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap.Release()
+                        pixelMap?.Release()
                         return
                     }
-                    var height: Float64 = width * aspectRatio
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap.Release()
-                        return
-                    }
-                    pixelMap.scale(Float32(width / imageWidth), Float32(height / imageHeight))
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap.Release()
-                        return
-                    }
-                    callback(pixelMap, height, width, arr)
+                    pixelMap?.scale(Float32(width() / imageWidth), Float32(height() / imageHeight))
                 } catch (e: Exception) {
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        return
+                } finally {
+                    try {
+                        if (Thread.currentThread.hasPendingCancellation) {
+                            pixelMap?.Release()
+                            return
+                        }
+                        callback(pixelMap, height, width, arr)
+                    } catch (_) {
                     }
-                    callback(Option<PixelMap>.None, Option<Float64>.None, Option<Float64>.None,
-                        Option<Array<UInt8>>.None)
                 }
             }
         }
@@ -249,7 +205,8 @@ func latexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): ColorForm
  * 判断是否有数学公式图片数据
  */
 func isLatexImagePixelMap(imageData: ImageData, listPixelMap: ArrayList<?PixelMap>): Bool {
-    if (imageData.pixelMap.isSome() && imageData.height.isSome() && imageData.width.isSome() && imageData.arrayUint8.isSome()) {
+    if (imageData.pixelMap.isSome() && imageData.height.isSome() && imageData.width.isSome() &&
+        imageData.arrayUint8.isSome()) {
         listPixelMap.append(imageData.pixelMap)
         return true
     }
