@@ -80,6 +80,9 @@ func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfigurat
 func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit>{
     let fut: Future<Unit> = spawn {
         try {
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
             var prism: Prism = Prism(GrammarLocatorGrammarUtils())
             if (Thread.currentThread.hasPendingCancellation) {
                 return
@@ -117,10 +120,13 @@ func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callba
  */
 func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: MarkdownConfiguration, strText: ArrayList<String>, callback: (ArrayList<ArrayList<PrismNodesParseRes>>) -> Unit): Future<Unit> {
     let fut: Future<Unit> = spawn {
-       try {
+        try {
             var prismNodesParseResLists: ArrayList<ArrayList<PrismNodesParseRes>> = ArrayList<ArrayList<PrismNodesParseRes>>()
             for (nodeView in codeBlockListNodeView.children) {
                 if (nodeView.node is FencedCodeBlock) {
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
                     var prism: Prism = Prism(GrammarLocatorGrammarUtils())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
@@ -138,7 +144,7 @@ func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: Ma
                 }
             }
             callback(prismNodesParseResLists)
-       } catch (e: Exception) {
+        } catch (e: Exception) {
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
@@ -150,7 +156,7 @@ func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: Ma
                 prismNodesParseResLists.append(prismNodesParseResList)
             }
             callback(prismNodesParseResLists)
-       }
+        }
     }
     return fut
 }
