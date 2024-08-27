@@ -7,7 +7,9 @@ internal import ohos.router.*
 internal import ohos.ability.*
 internal import ohos.window.*
 internal import ohos.prompt_action.*
-internal import ohos.resource_manager.*
+
+internal import ohos.resource_manager.ResourceManager
+
 internal import ohos.file_fs.*
 
 internal import std.collection.*
