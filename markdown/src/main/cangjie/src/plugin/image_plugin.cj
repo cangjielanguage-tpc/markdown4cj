@@ -21,6 +21,11 @@ public class ImagePlugin <: AbstractMarkdownPlugin {
                 buildView(slide, true)
                 visitor.visitChildren(slide)
             }
+        ).on(
+            "Style",
+            {
+                visitor, style => buildView(style, true)
+            }
         )
     }
 
@@ -33,6 +38,9 @@ class Style <: CustomNode {
     Style(let style: String) {}
     public func getNodeType(): String {
         "Style"
+    }
+    protected func toStringAttributes(): String {
+        return "style=${style}"
     }
 }
 
@@ -60,25 +68,32 @@ class StyleDelimiterProcessor <: DelimiterProcessor {
             }
         }
     }
-    public func process(opener: Text, closer: Text): Bool {
-        let image = if (let Some(v: Image) <- opener.getPrevious()) {
-            v
-        } else {
-            return false
-        }
+
+    /*
+     * 处理style
+     * @return true 合法的style转换为Style节点
+     *        false 非法的style降级为Text节点
+     */
+    func process(opener: Text, closer: Text): Bool {
+        // 处理style
         if (let Some(style: Text) <- opener.getNext()) {
             if (style.getNext() != closer) {
                 return false
             }
             let str = style.getLiteral()
             if (reg.matcher(str).find().isSome()) {
-                match (image) {
-                    case v: StyleImage => v.styles.append(str)
-                    case _ =>
-                        let styleImage = StyleImage(str, image)
-                        image.replaceWith(styleImage)
+                // 处理style前的Image
+                if (let Some(image: Image) <- opener.getPrevious()) {
+                    match (image) {
+                        case v: StyleImage => v.styles.append(str)
+                        case _ =>
+                            let styleImage = StyleImage(str, image)
+                            image.replaceWith(styleImage)
+                    }
                 }
-                style.unlink()
+
+                let styleNode = Style(str)
+                style.replaceWith(styleNode)
                 return true
             }
         }
