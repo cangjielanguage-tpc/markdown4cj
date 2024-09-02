@@ -32,11 +32,11 @@ func imageSpanToPixelmap(destination: String, componentWidth: Float64, callback:
             pixelMap = imageSource.createPixelMap()
             imageSource.Release()
             var size: Size = pixelMap().getImageInfo().size
-            var aspectRatio: Float64 = Float64(size.height) / Float64(size.width)
-            var imageWidth: Float64 = px2vp(Int64(size.width).px)().value
-            var imageHeight: Float64 = px2vp(Int64(size.height).px)().value
-            width = if (componentWidth > imageWidth) {
-                imageWidth
+            var sizeWidth: Float64 = Float64(size.width)
+            var sizeHeight: Float64 = Float64(size.height)
+            var aspectRatio: Float64 = sizeHeight / sizeWidth
+            width = if (componentWidth > sizeWidth) {
+                sizeWidth
             } else {
                 componentWidth
             }
@@ -45,7 +45,7 @@ func imageSpanToPixelmap(destination: String, componentWidth: Float64, callback:
                 pixelMap?.Release()
                 return
             }
-            pixelMap?.scale(Float32(width() / imageWidth), Float32(height() / imageHeight))
+            pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
         } catch (e: Exception) {
         } finally {
             try {
@@ -96,11 +96,11 @@ func rawfileToPixelmap(destination: String, abilityContext: ?AbilityContext, com
                 pixelMap = imageSource.createPixelMap()
                 imageSource.Release()
                 var size: Size = pixelMap().getImageInfo().size
-                var aspectRatio: Float64 = Float64(size.height) / Float64(size.width)
-                var imageWidth: Float64 = px2vp(Int64(size.width).px)().value
-                var imageHeight: Float64 = px2vp(Int64(size.height).px)().value
-                width = if (componentWidth > imageWidth) {
-                    imageWidth
+                var sizeWidth: Float64 = Float64(size.width)
+                var sizeHeight: Float64 = Float64(size.height)
+                var aspectRatio: Float64 = sizeHeight / sizeWidth
+                width = if (componentWidth > sizeWidth) {
+                    sizeWidth
                 } else {
                     componentWidth
                 }
@@ -109,7 +109,7 @@ func rawfileToPixelmap(destination: String, abilityContext: ?AbilityContext, com
                     pixelMap?.Release()
                     return
                 }
-                pixelMap?.scale(Float32(width() / imageWidth), Float32(height() / imageHeight))
+                pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
             }
         } catch (e: Exception) {
         } finally {
@@ -185,11 +185,11 @@ func getImageFromHttpClient(path: String, componentWidth: Float64, callback: (?P
             pixelMap = imageSource.createPixelMap()
             imageSource.Release()
             var size: Size = pixelMap().getImageInfo().size
-            var aspectRatio: Float64 = Float64(size.height) / Float64(size.width)
-            var imageWidth: Float64 = px2vp(Int64(size.width).px)().value
-            var imageHeight: Float64 = px2vp(Int64(size.height).px)().value
-            width = if (componentWidth > imageWidth) {
-                imageWidth
+            var sizeWidth: Float64 = Float64(size.width)
+            var sizeHeight: Float64 = Float64(size.height)
+            var aspectRatio: Float64 = sizeHeight / sizeWidth
+            width = if (componentWidth > sizeWidth) {
+                sizeWidth
             } else {
                 componentWidth
             }
@@ -198,7 +198,7 @@ func getImageFromHttpClient(path: String, componentWidth: Float64, callback: (?P
                 pixelMap?.Release()
                 return
             }
-            pixelMap?.scale(Float32(width() / imageWidth), Float32(height() / imageHeight))
+            pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
         } catch (e: Exception) {
         } finally {
             try {

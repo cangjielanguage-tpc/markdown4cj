@@ -20,7 +20,7 @@
 
 [target.aarch64-linux-ohos.bin-dependencies]
   path-option = ["${AARCH64_LIBS}", "${AARCH64_MACRO_LIBS}"]
-package-option = {}
+  package-option = {}
 
 [profile]
   build = {incremental = true, lto = ""}

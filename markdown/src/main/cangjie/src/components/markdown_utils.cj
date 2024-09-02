@@ -320,6 +320,24 @@ func widthPxToVp(screenWidth: Int32, imagePadding: Int64): Float64 {
 }
 
 /**
+ * 获取第一层控件宽度（屏幕宽度 - padding宽度）
+ *
+ * @param screenWidth 屏幕宽度 - 单位px
+ * @param imagePadding padding宽度 - 单位vp
+ * @return 第一层控件宽度 - 单位px
+ */
+func widthVpToPx(screenWidth: Int32, imagePadding: Int64): Float64 {
+    let lengthPadding: ?Length = vp2px(imagePadding.vp)
+    let lengthScreen: Length = Int64(screenWidth).px
+    let width: Float64 = if (let Some(v) <- lengthPadding) {
+        lengthScreen.value - v.value
+    } else {
+        0.0
+    }
+    return width
+}
+
+/**
  * 前缀显示文本内容
  *
  * @param item NodeView
@@ -666,4 +684,8 @@ func threadFutureCancel(fut: ?Future<Unit>) {
             fut().cancel()
         }
     }
+}
+
+func pxToVp(pxFloat64: Float64) :Float64{
+    return px2vp(pxFloat64.px)().value
 }

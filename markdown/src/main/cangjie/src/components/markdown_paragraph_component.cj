@@ -34,7 +34,7 @@ class MarkdownParagraphComponent {
     var marginBottom: Float64
 
     /**
-     * 控件宽度 - 单位vp
+     * 控件宽度 - 单位px
      */
     var componentWidth: Float64
 
@@ -167,15 +167,15 @@ class MarkdownParagraphComponent {
                     if (isLatexImagePixelMap(item, listPixelMap)) {
                         ImageSpan(item.pixelMap())
                             // 设置组件自身的高度
-                            .height(item.height())
+                            .height(pxToVp(item.height()))
                             // 设置组件自身的宽度
-                            .width(item.width())
+                            .width(pxToVp(item.width()))
                             // 设置图片的缩放类型
                             .objectFit(ImageFit.Contain)
                             // 设置约束尺寸
                             .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
                             // 点击动作触发该方法调用
-                            .onClick {evt => latexImageOnClick(item.arrayUint8(), item.height().vp, item.width().vp, markdownConfiguration.latexImageCallback)}
+                            .onClick {evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px, markdownConfiguration.latexImageCallback)}
                     }
                 }
             }
@@ -211,9 +211,9 @@ class MarkdownParagraphComponent {
                     if (isImagePixelMap(item, listPixelMap)) {
                         ImageSpan(item.pixelMap())
                             // 设置组件自身的高度
-                            .height(item.height())
+                            .height(pxToVp(item.height()))
                             // 设置组件自身的宽度
-                            .width(item.width())
+                            .width(pxToVp(item.width()))
                             // 设置图片的缩放类型
                             .objectFit(ImageFit.Contain)
                             // 设置约束尺寸

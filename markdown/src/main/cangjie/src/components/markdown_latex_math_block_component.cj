@@ -86,13 +86,13 @@ class MarkdownLatexMathBlockComponent {
             // 设置图片的数据源
             Image(latexPixelMap())
                 // 设置组件自身的高度
-                .height(latexHeight())
+                .height(pxToVp(latexHeight()))
                 // 设置组件自身的宽度
-                .width(latexWidth())
+                .width(pxToVp(latexWidth()))
                 // 设置图片的缩放类型
                 .objectFit(ImageFit.Contain)
                 // 点击动作触发该方法调用
-                .onClick {evt => latexImageOnClick(latexData(), latexHeight().vp, latexWidth().vp, markdownConfiguration.latexImageCallback)}
+                .onClick {evt => latexImageOnClick(latexData(), latexHeight().px, latexWidth().px, markdownConfiguration.latexImageCallback)}
         }
         // 设置滚动方法
         .scrollable(ScrollDirection.Horizontal)
