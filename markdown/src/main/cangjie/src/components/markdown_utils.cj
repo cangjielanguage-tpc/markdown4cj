@@ -560,11 +560,12 @@ func styleImageRadius(borderRadius: ?Length): Length {
  * @param componentWidth 父布局控件宽度 - 单位vp
  * @return PicStyleObj对象
  */
-func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownConfiguration, componentWidth: Float64): PicStyleObj {
+func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownConfiguration, componentWidthPx: Float64): PicStyleObj {
     let picStyleObj: PicStyleObj = PicStyleObj()
     if (picStyle.isEmpty()) {
         return picStyleObj
     }
+    let componentWidth = px2vp(componentWidthPx.px)().value
     var index = 0
     while (index < picStyle.size) {
         try {
