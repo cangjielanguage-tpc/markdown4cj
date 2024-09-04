@@ -34,7 +34,7 @@ public class MarkdownListComponent {
     var marginBottom: Float64
 
     /**
-     * 控件宽度 - 单位vp
+     * 控件宽度 - 单位px
      */
     var componentWidth: Float64
 

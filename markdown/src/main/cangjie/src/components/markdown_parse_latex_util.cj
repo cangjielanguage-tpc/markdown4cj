@@ -52,8 +52,6 @@ class MarkdownParseLatexUtil {
                         return
                     }
                     r.draw(g2, markdownConfiguration.markdownTheme.latexMathBackGroupColor.toUInt32())
-                    let height = g2.height
-                    let width = g2.width
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -69,8 +67,8 @@ class MarkdownParseLatexUtil {
                     pixelMap = imageSource.createPixelMap()
                     imageSource.Release()
                     var size: Size = pixelMap().getImageInfo().size
-                    imageWidth = px2vp(Int64(size.width).px)().value
-                    imageHeight = px2vp(Int64(size.height).px)().value
+                    imageWidth = Float64(size.width)
+                    imageHeight = Float64(size.height)
                 } catch (e: Exception) {
                 } finally {
                     try {
@@ -142,11 +140,11 @@ class MarkdownParseLatexUtil {
                     pixelMap = imageSource.createPixelMap()
                     imageSource.Release()
                     var size: Size = pixelMap().getImageInfo().size
-                    var aspectRatio: Float64 = Float64(size.height) / Float64(size.width)
-                    var imageWidth: Float64 = px2vp(Int64(size.width).px)().value
-                    var imageHeight: Float64 = px2vp(Int64(size.height).px)().value
-                    width = if (componentWidth > imageWidth) {
-                        imageWidth
+                    var sizeWidth: Float64 = Float64(size.width)
+                    var sizeHeight: Float64 = Float64(size.height)
+                    var aspectRatio: Float64 = sizeHeight / sizeWidth
+                    width = if (componentWidth > sizeWidth) {
+                        sizeWidth
                     } else {
                         componentWidth
                     }
@@ -155,7 +153,7 @@ class MarkdownParseLatexUtil {
                         pixelMap?.Release()
                         return
                     }
-                    pixelMap?.scale(Float32(width() / imageWidth), Float32(height() / imageHeight))
+                    pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
                 } catch (e: Exception) {
                 } finally {
                     try {

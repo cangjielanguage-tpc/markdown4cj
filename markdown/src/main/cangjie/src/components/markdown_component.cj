@@ -57,7 +57,7 @@ public class MarkdownComponent {
                                 markdownConfiguration: markdownConfiguration,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                componentWidth: widthPxToVp(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
                         // 组件区域变化时触发该回调
@@ -71,7 +71,7 @@ public class MarkdownComponent {
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 tocListOnClick: TocListOnClick,
-                                componentWidth: widthPxToVp(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
                     } else if (item.node is BulletList) {
@@ -83,7 +83,7 @@ public class MarkdownComponent {
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 tocListOnClick: TocListOnClick,
-                                componentWidth: widthPxToVp(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
                     } else if (item.node is OrderedList) {
@@ -95,7 +95,7 @@ public class MarkdownComponent {
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 tocListOnClick: TocListOnClick,
-                                componentWidth: widthPxToVp(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
                     } else if (item.node is BlockQuote) {
@@ -107,7 +107,7 @@ public class MarkdownComponent {
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 tocListOnClick: TocListOnClick,
-                                componentWidth: widthPxToVp(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
                     } else if (item.node is FencedCodeBlock) {
@@ -140,7 +140,7 @@ public class MarkdownComponent {
                                 markdownConfiguration: markdownConfiguration,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                componentWidth: widthPxToVp(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
                     } else if (item.node is ThematicBreak) {
