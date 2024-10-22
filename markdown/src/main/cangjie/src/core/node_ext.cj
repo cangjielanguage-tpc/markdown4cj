@@ -70,6 +70,8 @@ public interface NodeExt {
     func iterateLeafChildren(): Iterator<Node>
 
     func isLeafNode(): Bool
+
+    func replaceWith(node: Node): Unit
 }
 /**
  * Node扩展
