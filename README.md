@@ -209,7 +209,7 @@ Heading level 2
 
 ## 约束与限制
 
-当前基于 deveco-studio-5.0.3.500 OHCangjie0.10.0-OH5.0.0.31 版本实现的
+当前基于 DevEco Studio NEXT Release(5.0.3.900) 版本实现的
 
 1. 内联代码暂未支持背景色设置
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
@@ -255,7 +255,7 @@ Heading level 2
    1. 本地图片路径格式需要按照应用沙箱目录 https://gitcode.com/openharmony/docs/blob/master/zh-cn/application-dev/file-management/app-sandbox-directory.md 处理
    2. 支持rawfile目录下本地图片，相对路径是基于rawfile的路径
    3. 不支持带style标签的本地图片
-   4. 支持的图片格式包括: png、jpg、bmp、svg和gif
+   4. 支持的图片格式包括: png、jpg、bmp、svg和gif。注gif图片没有动画效果，只显示第一帧。
 8. TOC插件应在最后加载, 避免受其他插件影响
 
 ## 开源协议
