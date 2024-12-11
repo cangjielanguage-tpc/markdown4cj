@@ -8,9 +8,9 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
-
 class MyAbilityStage <: AbilityStage {
     public override func onCreate(): Unit {
         AppLog.info("MyAbilityStage onCreated.")
     }
 }
+
