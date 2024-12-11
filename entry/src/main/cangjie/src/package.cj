@@ -18,3 +18,5 @@ internal import encoding.json.*
 internal import cj_res_entry.app
 
 internal import markdown.components.*
+internal import markdown.core.*
+internal import markdown.plugin.*
