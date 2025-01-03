@@ -1,9 +1,9 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2023-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
  */
 package markdown.plugin
 
-enum TokenType <: Equatable<TokenType> & ToString {
+public enum TokenType <: Equatable<TokenType> & ToString {
     | DoctypeType
     | StartTagType
     | EndTagType
@@ -36,15 +36,19 @@ func reset(sb: StringBuilder) {
     sb.reset()
 }
 
-abstract class Token <: Equatable<Token> & ToString {
+public abstract class Token <: Equatable<Token> & ToString {
     static let Unset: Int64 = -1
 
-    var typ: ?TokenType = None
+    var typ: TokenType
 
     var _startPos: Int64 = Unset
 
     // position in CharacterReader this token was read from
     var _endPos: Int64 = Unset
+
+    protected init(tokenType: TokenType) {
+        this.typ = tokenType
+    }
 
     public operator func ==(o: Token) {
         refEq(this, o)
@@ -129,7 +133,7 @@ abstract class Token <: Equatable<Token> & ToString {
     }
 }
 
-class DoctypeToken <: Token {
+public class DoctypeToken <: Token {
     let name: StringBuilder = StringBuilder()
 
     var pubSysKey: ?String = ""
@@ -141,7 +145,7 @@ class DoctypeToken <: Token {
     var forceQuirks: Bool = false
 
     init() {
-        typ = TokenType.DoctypeType
+        super(TokenType.DoctypeType)
     }
 
     protected override func reset(): Token {
@@ -179,7 +183,11 @@ class DoctypeToken <: Token {
     }
 }
 
-abstract class TagToken <: Token {
+public abstract class TagToken <: Token {
+    protected init(tokenType: TokenType) {
+        super(tokenType)
+    }
+
     protected var tagName: ?String = None
 
     // lc version of tag name, for case insensitive tree build
@@ -395,10 +403,9 @@ abstract class TagToken <: Token {
     }
 }
 
-class StartTagToken <: TagToken {
+public class StartTagToken <: TagToken {
     init() {
-        super()
-        typ = TokenType.StartTagType
+        super(TokenType.StartTagType)
     }
 
     protected override func reset(): TagToken {
@@ -423,10 +430,9 @@ class StartTagToken <: TagToken {
     }
 }
 
-class EndTagToken <: TagToken {
+public class EndTagToken <: TagToken {
     init() {
-        super()
-        typ = TokenType.EndTagType
+        super(TokenType.EndTagType)
     }
 
     public func toString(): String {
@@ -434,13 +440,13 @@ class EndTagToken <: TagToken {
     }
 }
 
-class CommentToken <: Token {
+public class CommentToken <: Token {
     private let data = StringBuilder()
     private var dataS: ?String = None // try to get in one shot
     var bogus: Bool = false
 
     init() {
-        typ = TokenType.CommentType
+        super(TokenType.CommentType)
     }
 
     protected override func reset(): Token {
@@ -488,12 +494,11 @@ class CommentToken <: Token {
     }
 }
 
-open class CharacterToken <: Token {
+public open class CharacterToken <: Token {
     private var _data: ?String = None
 
     init() {
-        super()
-        super.typ = TokenType.CharacterType
+        super(TokenType.CharacterType)
     }
 
     protected override func reset(): Token {
@@ -516,7 +521,7 @@ open class CharacterToken <: Token {
     }
 }
 
-class CDataToken <: CharacterToken {
+public class CDataToken <: CharacterToken {
     init(data: String) {
         super()
         this.data(data)
@@ -527,9 +532,9 @@ class CDataToken <: CharacterToken {
     }
 }
 
-class EOFToken <: Token {
+public class EOFToken <: Token {
     init() {
-        typ = TokenType.EOFType
+        super(TokenType.EOFType)
     }
 
     protected override func reset(): Token {

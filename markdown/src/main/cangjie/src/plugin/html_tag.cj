@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2023-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
  */
 package markdown.plugin
 
@@ -40,7 +40,7 @@ public interface HtmlTag <: ToString {
     func isClosed(): Bool
 
     //    @NonNull
-    func attributes(): HashMap<String, String>
+    func attributes(): Map<String, String>
 
     /**
      * @see InlineHtmlTag
@@ -89,13 +89,13 @@ public interface BlockHtmlTag <: HtmlTag {
     func isRoot(): Bool
 }
 
-abstract class HtmlTagImpl <: HtmlTag {
+public abstract class HtmlTagImpl <: HtmlTag {
     let _name: String
     let _start: Int
-    let _attributes: HashMap<String, String>
+    let _attributes: Map<String, String>
     var _end: Int = NO_END
 
-    protected HtmlTagImpl(name: String, start: Int, attributes: HashMap<String, String>) {
+    protected HtmlTagImpl(name: String, start: Int, attributes: Map<String, String>) {
         this._name = name
         this._start = start
         this._attributes = attributes
@@ -119,7 +119,7 @@ abstract class HtmlTagImpl <: HtmlTag {
     }
 
     //    @NonNull
-    public open override func attributes(): HashMap<String, String> {
+    public open override func attributes(): Map<String, String> {
         return _attributes
     }
 
@@ -130,8 +130,8 @@ abstract class HtmlTagImpl <: HtmlTag {
     public func closeAt(end: Int): Unit
 }
 
-class InlineImpl <: HtmlTagImpl & InlineHtmlTag {
-    InlineImpl(name: String, start: Int, attributes: HashMap<String, String>) {
+public class InlineImpl <: HtmlTagImpl & InlineHtmlTag {
+    InlineImpl(name: String, start: Int, attributes: Map<String, String>) {
         super(name, start, attributes)
     }
 
@@ -164,7 +164,7 @@ class InlineImpl <: HtmlTagImpl & InlineHtmlTag {
     }
 }
 
-class BlockImpl <: HtmlTagImpl & BlockHtmlTag {
+public class BlockImpl <: HtmlTagImpl & BlockHtmlTag {
     //    @NonNull
     static func root(): BlockImpl {
         return BlockImpl("", 0, HashMap<String, String>(), None)
@@ -174,7 +174,7 @@ class BlockImpl <: HtmlTagImpl & BlockHtmlTag {
     static func create(
         name: String,
         start: Int,
-        attributes: HashMap<String, String>,
+        attributes: Map<String, String>,
         parent: ?BlockImpl
     ): BlockImpl {
         return BlockImpl(name, start, attributes, parent)
@@ -186,7 +186,7 @@ class BlockImpl <: HtmlTagImpl & BlockHtmlTag {
     BlockImpl(
         name: String,
         start: Int,
-        attributes: HashMap<String, String>,
+        attributes: Map<String, String>,
         parent: ?BlockImpl
     ) {
         super(name, start, attributes)
@@ -225,7 +225,7 @@ class BlockImpl <: HtmlTagImpl & BlockHtmlTag {
     }
 
     //    @NonNull
-    public override func attributes(): HashMap<String, String> {
+    public override func attributes(): Map<String, String> {
         return _attributes
     }
 
