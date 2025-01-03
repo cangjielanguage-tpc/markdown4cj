@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2023-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
  */
 package markdown.plugin
 
@@ -367,14 +367,15 @@ class TagOpenState <: TokeniserState {
             case r'?' =>
                 tker.createBogusCommentPending()
                 tker.transition(BogusComment)
-            case _ => if (r.matchesAsciiAlpha()) {
-                tker.createTagPending(true)
-                tker.transition(TagName)
-            } else {
-                tker.error(this)
-                tker.emit(r'<') // char that got us here
-                tker.transition(Data)
-            }
+            case _ =>
+                if (r.matchesAsciiAlpha()) {
+                    tker.createTagPending(true)
+                    tker.transition(TagName)
+                } else {
+                    tker.error(this)
+                    tker.emit(r'<') // char that got us here
+                    tker.transition(Data)
+                }
         }
     }
 }
@@ -487,22 +488,25 @@ class RCDATAEndTagNameState <: TokeniserState {
 
         let c = r.consume()
         match (c) {
-            case r'\t' | r'\n' | r'\r' | r'\f' | r' ' => if (tker.isAppropriateEndTagToken()) {
-                tker.transition(BeforeAttributeName)
-            } else {
-                anythingElse(tker, r)
-            }
-            case r'/' => if (tker.isAppropriateEndTagToken()) {
-                tker.transition(SelfClosingStartTag)
-            } else {
-                anythingElse(tker, r)
-            }
-            case r'>' => if (tker.isAppropriateEndTagToken()) {
-                tker.emitTagPending()
-                tker.transition(Data)
-            } else {
-                anythingElse(tker, r)
-            }
+            case r'\t' | r'\n' | r'\r' | r'\f' | r' ' =>
+                if (tker.isAppropriateEndTagToken()) {
+                    tker.transition(BeforeAttributeName)
+                } else {
+                    anythingElse(tker, r)
+                }
+            case r'/' =>
+                if (tker.isAppropriateEndTagToken()) {
+                    tker.transition(SelfClosingStartTag)
+                } else {
+                    anythingElse(tker, r)
+                }
+            case r'>' =>
+                if (tker.isAppropriateEndTagToken()) {
+                    tker.emitTagPending()
+                    tker.transition(Data)
+                } else {
+                    anythingElse(tker, r)
+                }
             case _ => anythingElse(tker, r)
         }
     }

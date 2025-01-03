@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
  */
 package markdown.plugin
 
@@ -13,10 +13,12 @@ internal import std.collection.LinkedListNode
 internal import std.collection.HashMap
 internal import std.collection.HashSet
 internal import std.collection.Map
+internal import std.collection.collectArray
 internal import std.collection.collectArrayList
 internal import std.collection.collectString
 internal import std.collection.map
 internal import std.collection.forEach
+internal import std.collection.Set
 internal import std.time.DateTime
 internal import std.regex.Matcher
 internal import std.regex.Regex

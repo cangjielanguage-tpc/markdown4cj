@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2023-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
  */
 package markdown.plugin
 
@@ -494,12 +494,14 @@ public class Attributes <: Iterable<Attribute> & Hashable & Equatable<Attributes
             }
             match ((vals[i], that.vals[thatI])) {
                 case (None, None) => ()
-                case (Some(a: ToString), Some(b: ToString)) => if (a.toString() != b.toString()) {
-                    return false
-                }
-                case (Some(a: Object), Some(b: Object)) => if (!refEq(a, b)) {
-                    return false
-                }
+                case (Some(a: ToString), Some(b: ToString)) =>
+                    if (a.toString() != b.toString()) {
+                        return false
+                    }
+                case (Some(a: Object), Some(b: Object)) =>
+                    if (!refEq(a, b)) {
+                        return false
+                    }
                 case _ => return false
             }
         }
