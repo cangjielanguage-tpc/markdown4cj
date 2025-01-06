@@ -57,6 +57,13 @@ public interface HtmlTag <: ToString {
 
     //    @NonNull
     func getAsBlock(): BlockHtmlTag
+
+    mut prop parentTag: ?HtmlTag
+    func getChildren(): ArrayList<HtmlTag>
+    func appendChild(tag: HtmlTag): Unit {
+        getChildren().append(tag)
+        tag.parentTag = this
+    }
 }
 
 /**
@@ -94,6 +101,8 @@ public abstract class HtmlTagImpl <: HtmlTag {
     let _start: Int
     let _attributes: Map<String, String>
     var _end: Int = NO_END
+    var _parentTag: ?HtmlTag = None
+    var childrenTag: ?ArrayList<HtmlTag> = None
 
     protected HtmlTagImpl(name: String, start: Int, attributes: Map<String, String>) {
         this._name = name
@@ -128,9 +137,30 @@ public abstract class HtmlTagImpl <: HtmlTag {
     }
 
     public func closeAt(end: Int): Unit
+
+    public mut override prop parentTag: ?HtmlTag {
+        get() {
+            _parentTag
+        }
+        set(v) {
+            _parentTag = v
+        }
+    }
+    public override func getChildren(): ArrayList<HtmlTag> {
+        childrenTag ?? {
+            =>
+            let arr = ArrayList<HtmlTag>()
+            childrenTag = arr
+            arr
+        }()
+    }
+    public override func appendChild(tag: HtmlTag): Unit {
+        getChildren().append(tag)
+        tag.parentTag = this
+    }
 }
 
-public class InlineImpl <: HtmlTagImpl & InlineHtmlTag {
+public open class InlineImpl <: HtmlTagImpl & InlineHtmlTag {
     InlineImpl(name: String, start: Int, attributes: Map<String, String>) {
         super(name, start, attributes)
     }
@@ -167,7 +197,7 @@ public class InlineImpl <: HtmlTagImpl & InlineHtmlTag {
 public class BlockImpl <: HtmlTagImpl & BlockHtmlTag {
     //    @NonNull
     static func root(): BlockImpl {
-        return BlockImpl("", 0, HashMap<String, String>(), None)
+        return BlockImpl("", 0, HashMap<String, String>(), None, None)
     }
 
     //    @NonNull
@@ -175,9 +205,10 @@ public class BlockImpl <: HtmlTagImpl & BlockHtmlTag {
         name: String,
         start: Int,
         attributes: Map<String, String>,
-        parent: ?BlockImpl
+        parent: ?BlockImpl,
+        parentTag: ?HtmlTag
     ): BlockImpl {
-        return BlockImpl(name, start, attributes, parent)
+        return BlockImpl(name, start, attributes, parent, parentTag)
     }
 
     let _parent: ?BlockImpl
@@ -187,10 +218,14 @@ public class BlockImpl <: HtmlTagImpl & BlockHtmlTag {
         name: String,
         start: Int,
         attributes: Map<String, String>,
-        parent: ?BlockImpl
+        parent: ?BlockImpl,
+        parentTag: ?HtmlTag
     ) {
         super(name, start, attributes)
         this._parent = parent
+        if (let Some(p) <- parentTag) {
+            p.appendChild(this)
+        }
     }
 
     public override func closeAt(end: Int): Unit {
@@ -249,5 +284,38 @@ public class BlockImpl <: HtmlTagImpl & BlockHtmlTag {
 
     public override func toString(): String {
         return "BlockImpl{name='${_name}', start=${_start}, end=${_end}, attributes=${"_attributes"}, parent=${_parent?._name ?? "None"}, children=${_children}"
+    }
+}
+
+/**
+ * html中的Text部分 视为一种叶子节点
+ */
+public class TextTag <: HtmlTagImpl {
+    private static let EMPTY_MAP: Map<String, String> = HashMap<String, String>()
+    let text: String
+    TextTag(text: String) {
+        super("", -1, EMPTY_MAP)
+        this.text = text
+    }
+    public override func closeAt(end: Int): Unit {
+        throw UnsupportedException()
+    }
+    public override func attributes(): Map<String, String> {
+        throw UnsupportedException()
+    }
+    public override func isInline(): Bool {
+        false
+    }
+    public override func isBlock(): Bool {
+        false
+    }
+    public override func getAsInline(): InlineHtmlTag {
+        throw UnsupportedException()
+    }
+    public override func getAsBlock(): BlockHtmlTag {
+        throw UnsupportedException()
+    }
+    public override func toString(): String {
+        text
     }
 }
