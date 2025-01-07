@@ -20,17 +20,23 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
     init() {
         this.builder = MarkdownHtmlRendererImplBuilder()
         if (!builder.excludeDefaultsMethod()) {
-            // builder.addDefaultTagHandler(ImageHandler.create())
-            // builder.addDefaultTagHandler(LinkHandler())
-            // builder.addDefaultTagHandler(BlockquoteHandler())
-            // builder.addDefaultTagHandler(SubScriptHandler())
-            // builder.addDefaultTagHandler(SuperScriptHandler())
-            // builder.addDefaultTagHandler(StrongEmphasisHandler())
-            // builder.addDefaultTagHandler(StrikeHandler())
-            // builder.addDefaultTagHandler(UnderlineHandler())
-            // builder.addDefaultTagHandler(ListHandler())
-            // builder.addDefaultTagHandler(EmphasisHandler())
-            // builder.addDefaultTagHandler(HeadingHandler())
+            builder.addDefaultTagHandler(ImageHandler())
+            builder.addDefaultTagHandler(LinkHandler())
+            builder.addDefaultTagHandler(BlockquoteHandler())
+            //             builder.addDefaultTagHandler(SubScriptHandler())
+            //             builder.addDefaultTagHandler(SuperScriptHandler())
+            builder.addDefaultTagHandler(StrongEmphasisHandler())
+            builder.addDefaultTagHandler(StrikeHandler())
+            //             builder.addDefaultTagHandler(UnderlineHandler())
+            builder.addDefaultTagHandler(ListItemHandler())
+            builder.addDefaultTagHandler(BulletListHandler())
+            builder.addDefaultTagHandler(OrderedListHandler())
+            builder.addDefaultTagHandler(EmphasisHandler())
+            builder.addDefaultTagHandler(HeadingHandler())
+            builder.addDefaultTagHandler(BrHandler())
+            builder.addDefaultTagHandler(ThematicBreakHandler())
+            builder.addDefaultTagHandler(FontHandler())
+            builder.addDefaultTagHandler(HeadingHandler())
         }
         htmlParser = MarkdownHtmlParserImpl.create(_emptyTagReplacement)
         htmlRenderer = builder.build()
@@ -98,17 +104,50 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                     visitHtml(visitor, node, htmlInline.getLiteral())
                 }
             )
+            .on(
+                "ImageHtmlNode",
+                {
+                    visitor, node =>
+                    buildView(node, true)
+                    visitor.visitChildren(node)
+                }
+            )
+            .on(
+                "FontNode",
+                {
+                    visitor, node =>
+                    buildView(node, true)
+                    visitor.visitChildren(node)
+                }
+            )
+            .on(
+                "IgnoreNode",
+                {
+                    visitor, node =>
+                    buildView(node, false)
+                    visitor.visitChildren(node)
+                }
+            )
     }
 
     public func visitHtml(visitor: MarkdownVisitor, node: Node, html: String): Unit {
         let htmlParser = htmlParser.getOrThrow()
         let rootTag = BlockImpl.root()
+
         // htmlString -> HtmlTag
         htmlParser.processFragment(StringBuilder(), html, rootTag)
+
         // HtmlTag ---handler---> CommonMarkNode
         let tagNode = htmlRenderer.getOrThrow().render(visitor, htmlParser, rootTag)
+
+        // replace htmlNode with tagNode
+        node.replaceWith(tagNode)
+
         // CommonMarkNode -> NodeView
-        // buildView(tagNode)
+        buildView(tagNode, false)
+
+        // visit Children
+        visitor.visitChildren(tagNode)
     }
 
     public override func getClassType(): String {

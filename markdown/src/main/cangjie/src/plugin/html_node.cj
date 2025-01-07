@@ -52,3 +52,12 @@ public class FontNode <: CustomNode {
         return "FontNode"
     }
 }
+
+public class IgnoreNode <: CustomNode {
+    public init() {
+    }
+
+    public override func getNodeType(): NodeType {
+        return "IgnoreNode"
+    }
+}

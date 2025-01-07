@@ -114,7 +114,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
             match (tokenType) {
                 case StartTagType =>
                     let startTag = (token as StartTagToken).getOrThrow()
-                    let currentTag = if (isInlineTag(startTag._normalName.getOrThrow())) {
+                    let currentTag = if (isInlineTag(startTag.normalName())) {
                         processInlineTagStart(output, startTag, parentTag)
                     } else {
                         processBlockTagStart(output, startTag, parentTag)
@@ -124,7 +124,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
                     }
                 case EndTagType =>
                     let endTag = (token as EndTagToken).getOrThrow()
-                    let currentTag = if (isInlineTag(endTag._normalName.getOrThrow())) {
+                    let currentTag = if (isInlineTag(endTag.normalName())) {
                         processInlineTagEnd(output, endTag)
                     } else {
                         processBlockTagEnd(output, endTag)
@@ -180,7 +180,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
     }
 
     protected func processInlineTagStart(output: Appendable, startTag: StartTagToken, parent: HtmlTag): HtmlTag {
-        let name = startTag._normalName.getOrThrow()
+        let name = startTag.normalName()
         let inline = InlineImpl(name, -1, extractAttributes(startTag))
         ensureNewLineIfPreviousWasBlock(output)
         if (isVoidTag(name) || startTag.selfClosing) {
@@ -191,12 +191,12 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
             inline.closeAt(-1)
         }
         inlineTags.append(inline)
-        parent.getChildren().append(inline)
+        parent.appendChild(inline)
         inline
     }
 
     protected func processInlineTagEnd(output: Appendable, endTag: EndTagToken): ?HtmlTag {
-        let openInline = findOpenInlineTag(endTag._normalName.getOrThrow())
+        let openInline = findOpenInlineTag(endTag.normalName())
         if (let Some(openInline) <- openInline) {
             if (isEmpty(output, openInline)) {
                 appendEmptyTagReplacement(output, openInline)
@@ -207,13 +207,13 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
     }
 
     protected func processBlockTagStart(output: Appendable, startTag: StartTagToken, parent: HtmlTag): HtmlTag {
-        let name = startTag._normalName.getOrThrow()
-        if (currentBlock?._name == TAG_PARAGRAPH) {
+        let name = startTag.normalName()
+        if (currentBlock?.name() == TAG_PARAGRAPH) {
             currentBlock?.closeAt(output.size)
             AppendableUtils.appendQuietly(output, r'\n')
             currentBlock = currentBlock?._parent ?? None
         } else {
-            if (TAG_LIST_ITEM == name && currentBlock?._name == TAG_LIST_ITEM) {
+            if (TAG_LIST_ITEM == name && currentBlock?.name() == TAG_LIST_ITEM) {
                 currentBlock?.closeAt(output.size)
                 currentBlock = currentBlock?._parent ?? None
             }
@@ -242,8 +242,8 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
     }
 
     protected func processBlockTagEnd(output: Appendable, endTag: EndTagToken): ?HtmlTag {
-        let name = endTag._normalName.getOrThrow()
-        let block = findOpenBlockTag(endTag._normalName.getOrThrow())
+        let name = endTag.normalName()
+        let block = findOpenBlockTag(endTag.normalName())
         if (let Some(block) <- block) {
             if ("pre" == name) {
                 isInsidePreTag = false
@@ -253,7 +253,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
             }
             block.closeAt(output.size)
             if (!block.isEmpty()) {
-                previousIsBlock = isBlockTag(block._name)
+                previousIsBlock = isBlockTag(block.name())
             }
             if (TAG_PARAGRAPH == name) {
                 AppendableUtils.appendQuietly(output, r'\n')
@@ -291,7 +291,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
         var inline: InlineImpl
         for (i in inlineTags.size - 1..=-1 : -1) {
             inline = inlineTags[i]
-            if (name == inline._name && inline._end < 0) {
+            if (name == inline.name() && inline._end < 0) {
                 return inline
             }
         }
@@ -300,7 +300,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
 
     protected func findOpenBlockTag(name: String): ?BlockImpl {
         var blockTag = currentBlock
-        while (blockTag.isSome() && !(blockTag()._name == name) && !blockTag().isClosed()) {
+        while (blockTag.isSome() && !(blockTag().name() == name) && !blockTag().isClosed()) {
             blockTag = blockTag()._parent
         }
         return blockTag
