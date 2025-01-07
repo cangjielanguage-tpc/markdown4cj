@@ -14,14 +14,13 @@ class MarkdownHtmlRendererImpl <: MarkdownHtmlRenderer {
         this.tagHandlers = tagHandlers
     }
 
-    public override func render(visitor: MarkdownVisitor, parser: MarkdownHtmlParser, rootTag: HtmlTag): Node {
-        let node:IgnoreNode = IgnoreNode()
-        TagHandler.visitChildren(visitor, this, rootTag, node)
-        return  node
+    public override func render(visitor: MarkdownVisitor, parser: MarkdownHtmlParser, tag: HtmlTag): Node {
+        let node = TagHandler.visit(visitor, this, tag, None)
+        return node
     }
 
     public override func tagHandler(tagName: String): ?TagHandler {
-        return tagHandlers.get(tagName) ?? None
+        return tagHandlers.get(tagName)
     }
 }
 
@@ -50,7 +49,7 @@ public class MarkdownHtmlRendererImplBuilder {
 
     public func getHandler(tagName: String): ?TagHandler {
         checkState()
-        return tagHandlers.get(tagName) ?? None
+        return tagHandlers.get(tagName)
     }
 
     public func excludeDefaultsMethod(excludeDefaults: Bool): Unit {
@@ -65,7 +64,7 @@ public class MarkdownHtmlRendererImplBuilder {
     public func build(): MarkdownHtmlRenderer {
         checkState()
         isBuilt = true
-        return if (Int64(tagHandlers.size) > 0) {
+        return if (tagHandlers.size > 0) {
             MarkdownHtmlRendererImpl(allowNonClosedTags, tagHandlers)
         } else {
             MarkdownHtmlRendererNoOp()
@@ -74,7 +73,7 @@ public class MarkdownHtmlRendererImplBuilder {
 
     private func checkState(): Unit {
         if (isBuilt) {
-            throw Exception("Builder has been already built")
+            throw IllegalStateException("Builder has been already built")
         }
     }
 

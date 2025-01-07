@@ -19,27 +19,6 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
 
     init() {
         this.builder = MarkdownHtmlRendererImplBuilder()
-        if (!builder.excludeDefaultsMethod()) {
-            builder.addDefaultTagHandler(ImageHandler())
-            builder.addDefaultTagHandler(LinkHandler())
-            builder.addDefaultTagHandler(BlockquoteHandler())
-            //             builder.addDefaultTagHandler(SubScriptHandler())
-            //             builder.addDefaultTagHandler(SuperScriptHandler())
-            builder.addDefaultTagHandler(StrongEmphasisHandler())
-            builder.addDefaultTagHandler(StrikeHandler())
-            //             builder.addDefaultTagHandler(UnderlineHandler())
-            builder.addDefaultTagHandler(ListItemHandler())
-            builder.addDefaultTagHandler(BulletListHandler())
-            builder.addDefaultTagHandler(OrderedListHandler())
-            builder.addDefaultTagHandler(EmphasisHandler())
-            builder.addDefaultTagHandler(HeadingHandler())
-            builder.addDefaultTagHandler(BrHandler())
-            builder.addDefaultTagHandler(ThematicBreakHandler())
-            builder.addDefaultTagHandler(FontHandler())
-            builder.addDefaultTagHandler(HeadingHandler())
-        }
-        htmlParser = MarkdownHtmlParserImpl.create(_emptyTagReplacement)
-        htmlRenderer = builder.build()
     }
 
     /**
@@ -77,13 +56,39 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
         return this
     }
 
-    public override func afterRender(node: Node, visitor: MarkdownVisitor): Unit {
-        /* let htmlRenderer = this.htmlRenderer
-        if (htmlRenderer.isSome()) {
-            htmlRenderer?.render(visitor, htmlParser)
-        } else {
-            throw IllegalStateException("Unexpected state, html-renderer is not defined")
-        } */
+    public override func configureParser(_: ParserBuilder): Unit {
+        if (!builder.excludeDefaultsMethod()) {
+            // builder.addDefaultTagHandler(SubScriptHandler())
+            // builder.addDefaultTagHandler(SuperScriptHandler())
+            // builder.addDefaultTagHandler(UnderlineHandler())
+            builder.addDefaultTagHandler(ImageHandler())
+            builder.addDefaultTagHandler(LinkHandler())
+            builder.addDefaultTagHandler(StrongEmphasisHandler())
+            builder.addDefaultTagHandler(EmphasisHandler())
+            builder.addDefaultTagHandler(StrikeHandler())
+            builder.addDefaultTagHandler(BlockquoteHandler())
+
+            builder.addDefaultTagHandler(BulletListHandler())
+            builder.addDefaultTagHandler(OrderedListHandler())
+            builder.addDefaultTagHandler(ListItemHandler())
+
+            builder.addDefaultTagHandler(HeadingHandler())
+            builder.addDefaultTagHandler(BrHandler())
+            builder.addDefaultTagHandler(ThematicBreakHandler())
+            builder.addDefaultTagHandler(FontHandler())
+
+            builder.addDefaultTagHandler(TableHandler())
+            builder.addDefaultTagHandler(TableHeadHandler())
+            builder.addDefaultTagHandler(TableBodyHandler())
+            builder.addDefaultTagHandler(TableRowHandler())
+            builder.addDefaultTagHandler(TableCellHandler())
+
+            builder.addDefaultTagHandler(CodeHandler())
+            builder.addDefaultTagHandler(IndentedCodeBlockHandler())
+            builder.addDefaultTagHandler(TextHandler())
+        }
+        htmlParser = MarkdownHtmlParserImpl.create(_emptyTagReplacement)
+        htmlRenderer = builder.build()
     }
 
     public override func configureVisitor(builder: MarkdownVisitorBuilder): Unit {
@@ -101,7 +106,7 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 {
                     visitor, node =>
                     let htmlInline = (node as HtmlInline).getOrThrow()
-                    visitHtml(visitor, node, htmlInline.getLiteral())
+                    visitHtmlInline(visitor, htmlInline)
                 }
             )
             .on(
@@ -139,6 +144,7 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
 
         // HtmlTag ---handler---> CommonMarkNode
         let tagNode = htmlRenderer.getOrThrow().render(visitor, htmlParser, rootTag)
+        htmlParser.reset()
 
         // replace htmlNode with tagNode
         node.replaceWith(tagNode)
@@ -148,6 +154,71 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
 
         // visit Children
         visitor.visitChildren(tagNode)
+    }
+
+    public func visitHtmlInline(visitor: MarkdownVisitor, htmlInline: HtmlInline): Unit {
+        let parentNode = Paragraph()
+        htmlInline.insertBefore(parentNode) // 作为定位点
+
+        visitHtmlInline(visitor, StringBuilder(), htmlInline, parentNode, None)
+        let tagNode = parentNode.getFirstChild().getOrThrow()
+
+        htmlParser?.reset()
+
+        // replace htmlNode with tagNode
+        parentNode.replaceWith(tagNode)
+
+        // visit tagNode to build NodeView
+        tagNode.accept(visitor)
+    }
+    /*
+     * html->HtmlTag->Node
+     * 将开闭的tag组合起来
+     */
+    private func visitHtmlInline(visitor: MarkdownVisitor, appender: StringBuilder, node: Node, parent: Node,
+        root: ?HtmlTag): Unit {
+        let htmlParser = htmlParser.getOrThrow()
+        let htmlRenderer = htmlRenderer.getOrThrow()
+        var parentNode = parent
+        var rootTag: ?HtmlTag = root
+        var nextNode: ?Node = node.getNext()
+        // printNode(node)
+        match (node) {
+            case htmlInline: HtmlInline =>
+                let htmlString = htmlInline.getLiteral()
+                let tag = htmlParser.processFragmentInline(appender, htmlString, None)
+                // printTag(tag)
+                // println("1.2 ${tag} ${tag is EndTag} ${tag.isClosed()} ${parentNode}")
+                rootTag = rootTag ?? tag
+                if (tag is EndTag) {
+                    // end tag
+                    parentNode = parentNode.getParent().getOrThrow()
+                } else if (tag.isClosed() == true) {
+                    // self close tag
+                    let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
+                    parentNode.appendChild(tagNode)
+                } else if (tag.isClosed() == false) {
+                    // start tag
+                    let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
+                    parentNode.appendChild(tagNode)
+                    parentNode = tagNode
+                }
+                node.unlink()
+            case _ =>
+                // 普通markdownNode
+                node.unlink()
+                parentNode.appendChild(node)
+        }
+
+        if (rootTag?.isClosed() == true) {
+            // root闭环
+            return
+        }
+
+        if (let Some(n) <- nextNode) {
+            // println("1.5 ${n} ${parentNode}")
+            visitHtmlInline(visitor, appender, n, parentNode, rootTag)
+        }
     }
 
     public override func getClassType(): String {

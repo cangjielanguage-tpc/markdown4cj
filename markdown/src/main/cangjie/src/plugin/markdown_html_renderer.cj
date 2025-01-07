@@ -7,7 +7,7 @@ public abstract class MarkdownHtmlRenderer {
     public func render(
         visitor: MarkdownVisitor,
         parser: MarkdownHtmlParser,
-        rootTag: HtmlTag
+        tag: HtmlTag
     ): Node
 
     public func tagHandler(tagName: String): ?TagHandler
