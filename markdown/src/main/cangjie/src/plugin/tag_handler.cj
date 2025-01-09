@@ -8,18 +8,37 @@ public abstract class TagHandler {
 
     public func supportedTags(): Collection<String>
 
-    protected static func visitChildren(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, block: HtmlTag,
+    protected static func visitChildren(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag,
         nodeParent: Node): Unit {
         var handler: ?TagHandler
+        for (child in tag.getChildren()) {
+            visit(visitor, renderer, child, nodeParent)
+        }
+    }
+
+    protected static func visit(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag,
+        nodeParent: ?Node): Node {
+        var handler: ?TagHandler
+        handler = renderer.tagHandler(tag.name())
+        return if (let Some(v) <- handler) {
+            let node = v.handle(visitor, renderer, tag)
+            nodeParent?.appendChild(node)
+            node
+        } else {
+            let node: Node = IgnoreNode()
+            nodeParent?.appendChild(node)
+            visitChildren(visitor, renderer, tag, node)
+            node
+        }
+    }
+
+    protected static func visitChildrenText(block: HtmlTag, stringBuilder: StringBuilder): Unit {
+        if (block is TextTag) {
+            stringBuilder.append((block as TextTag).getOrThrow().text)
+            return
+        }
         for (child in block.getChildren()) {
-            handler = renderer.tagHandler(child.name())
-            if (let Some(v) <- handler) {
-                nodeParent.appendChild(v.handle(visitor, renderer, child))
-            } else {
-                var node: Node = IgnoreNode()
-                nodeParent.appendChild(node)
-                visitChildren(visitor, renderer, child, node)
-            }
+            visitChildrenText(child, stringBuilder)
         }
     }
 }
@@ -75,7 +94,7 @@ public class HeadingHandler <: TagHandler {
     public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         var level: Int64
         try {
-            level = Int64(tag.name()[1])
+            level = Int64.parse(tag.name()[1..=1])
         } catch (e: Exception) {
             level = 0
         }
@@ -230,9 +249,9 @@ public class OrderedListHandler <: TagHandler {
             visitChildren(visitor, renderer, tag, orderedList)
             return orderedList
         } else {
-            let ignoreNode: IgnoreNode = IgnoreNode()
-            visitChildren(visitor, renderer, tag, ignoreNode)
-            return ignoreNode
+            let orderedList: OrderedList = OrderedList(0, Rune(b'-'))
+            visitChildren(visitor, renderer, tag, orderedList)
+            return orderedList
         }
     }
 
@@ -253,5 +272,128 @@ public class ListItemHandler <: TagHandler {
 
     public override func supportedTags(): Collection<String> {
         return ArrayList<String>(["li"])
+    }
+}
+
+public class TableHandler <: TagHandler {
+    public init() {
+    }
+
+    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let tableBlock: TableBlock = TableBlock()
+        visitChildren(visitor, renderer, tag, tableBlock)
+        return tableBlock
+    }
+
+    public override func supportedTags(): Collection<String> {
+        return ArrayList<String>(["table"])
+    }
+}
+
+public class TableHeadHandler <: TagHandler {
+    public init() {
+    }
+
+    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let tableHead: TableHead = TableHead()
+        visitChildren(visitor, renderer, tag, tableHead)
+        return tableHead
+    }
+
+    public override func supportedTags(): Collection<String> {
+        return ArrayList<String>(["thead"])
+    }
+}
+
+public class TableBodyHandler <: TagHandler {
+    public init() {
+    }
+
+    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let tableBody: TableBody = TableBody()
+        visitChildren(visitor, renderer, tag, tableBody)
+        return tableBody
+    }
+
+    public override func supportedTags(): Collection<String> {
+        return ArrayList<String>(["tbody", "tfoot"])
+    }
+}
+
+public class TableRowHandler <: TagHandler {
+    public init() {
+    }
+
+    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let tableRow: TableRow = TableRow()
+        visitChildren(visitor, renderer, tag, tableRow)
+        return tableRow
+    }
+
+    public override func supportedTags(): Collection<String> {
+        return ArrayList<String>(["tr"])
+    }
+}
+
+public class TableCellHandler <: TagHandler {
+    public init() {
+    }
+
+    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let tableCell: TableCell = TableCell()
+        visitChildren(visitor, renderer, tag, tableCell)
+        return tableCell
+    }
+
+    public override func supportedTags(): Collection<String> {
+        return ArrayList<String>(["th", "td"])
+    }
+}
+
+public class CodeHandler <: TagHandler {
+    public init() {
+    }
+
+    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let sb: StringBuilder = StringBuilder()
+        visitChildrenText(tag, sb)
+        let code: Code = Code(sb.toString())
+        return code
+    }
+
+    public override func supportedTags(): Collection<String> {
+        return ArrayList<String>(["code", "samp", "var", "kbd"])
+    }
+}
+
+public class IndentedCodeBlockHandler <: TagHandler {
+    public init() {
+    }
+
+    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let sb: StringBuilder = StringBuilder()
+        visitChildrenText(tag, sb)
+        let indentedCodeBlock: IndentedCodeBlock = IndentedCodeBlock()
+        indentedCodeBlock.setLiteral(sb.toString())
+        return indentedCodeBlock
+    }
+
+    public override func supportedTags(): Collection<String> {
+        return ArrayList<String>(["pre"])
+    }
+}
+
+public class TextHandler <: TagHandler {
+    public init() {
+    }
+
+    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let textTag: TextTag = (tag as TextTag).getOrThrow()
+        let text: Text = Text(textTag.text)
+        return text
+    }
+
+    public override func supportedTags(): Collection<String> {
+        return ArrayList<String>([""])
     }
 }

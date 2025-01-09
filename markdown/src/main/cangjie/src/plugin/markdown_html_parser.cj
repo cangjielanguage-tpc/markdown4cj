@@ -135,10 +135,37 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
                     }
                 case CharacterType =>
                     let tag = processCharacter(output, (token as CharacterToken).getOrThrow())
-                    parentTag.appendChild(tag)
+                    if (let Some(tag) <- tag) {
+                        parentTag.appendChild(tag)
+                    }
                 case _ => ()
             }
             token.reset()
+        }
+    }
+    public func processFragmentInline(output: Appendable, htmlFragment: String, parent: ?HtmlTag): HtmlTag {
+        var parentTag = parent
+        let tokeniser = Tokeniser(CharacterReader(htmlFragment), ParseErrorList.noTracking())
+        let token = tokeniser.read()
+        let tokenType = token.typ
+        match (tokenType) {
+            case StartTagType =>
+                let startTag = (token as StartTagToken).getOrThrow()
+                let currentTag = if (isInlineTag(startTag.normalName())) {
+                    processInlineTagStart(output, startTag, parentTag)
+                } else {
+                    processBlockTagStart(output, startTag, parentTag)
+                }
+                return currentTag
+            case EndTagType =>
+                let endTag = (token as EndTagToken).getOrThrow()
+                let currentTag = if (isInlineTag(endTag.normalName())) {
+                    processInlineTagEnd(output, endTag)
+                } else {
+                    processBlockTagEnd(output, endTag)
+                }
+                return EndTag(endTag.normalName())
+            case _ => throw IllegalStateException()
         }
     }
 
@@ -179,7 +206,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
         currentBlock = BlockImpl.root()
     }
 
-    protected func processInlineTagStart(output: Appendable, startTag: StartTagToken, parent: HtmlTag): HtmlTag {
+    protected func processInlineTagStart(output: Appendable, startTag: StartTagToken, parent: ?HtmlTag): HtmlTag {
         let name = startTag.normalName()
         let inline = InlineImpl(name, -1, extractAttributes(startTag))
         ensureNewLineIfPreviousWasBlock(output)
@@ -191,7 +218,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
             inline.closeAt(-1)
         }
         inlineTags.append(inline)
-        parent.appendChild(inline)
+        parent?.appendChild(inline)
         inline
     }
 
@@ -206,7 +233,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
         openInline ?? None
     }
 
-    protected func processBlockTagStart(output: Appendable, startTag: StartTagToken, parent: HtmlTag): HtmlTag {
+    protected func processBlockTagStart(output: Appendable, startTag: StartTagToken, parent: ?HtmlTag): HtmlTag {
         let name = startTag.normalName()
         if (currentBlock?.name() == TAG_PARAGRAPH) {
             currentBlock?.closeAt(output.size)
@@ -263,7 +290,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
         block ?? None
     }
 
-    protected func processCharacter(output: Appendable, character: CharacterToken): HtmlTag {
+    protected func processCharacter(output: Appendable, character: CharacterToken): ?HtmlTag {
         /* 
         1. 判断是在Block还是Inline
             - Block -> TextTag
@@ -275,7 +302,12 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
             ensureNewLineIfPreviousWasBlock(output)
             trimmingAppender.append(output, character.getData())
         }
-        TextTag(character.getData())
+        // 去掉前后换行 中间的换行符替换为软换行(空格) TODO:pre标签
+        let str = character.getData().trimAscii()
+        if (str.size > 0) {
+            return TextTag(str.replace("\n", " "))
+        }
+        return None
     }
 
     protected func appendBlockChild(parent: BlockImpl, child: BlockImpl): Unit {

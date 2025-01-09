@@ -9,8 +9,8 @@ class MarkdownHtmlRendererNoOp <: MarkdownHtmlRenderer {
     }
 
     public override func render(visitor: MarkdownVisitor, parser: MarkdownHtmlParser, rootTag: HtmlTag): Node {
-        parser.reset()
-        throw Exception("TODO")
+        let ignoreNode: IgnoreNode = IgnoreNode()
+        return ignoreNode
     }
 
     public override func tagHandler(tagName: String): ?TagHandler {

@@ -6,7 +6,7 @@ package markdown.plugin
 import std.collection.collectArray
 import std.collection.collectArrayList
 
-const NO_END: Int = -1
+const NO_END: Int = -2
 /**
  * @see InlineHtmlTag
  * @see BlockHtmlTag
@@ -38,6 +38,8 @@ public interface HtmlTag <: ToString {
      * @see #NO_END
      */
     func isClosed(): Bool
+
+    func closeAt(end: Int): Unit
 
     //    @NonNull
     func attributes(): Map<String, String>
@@ -135,8 +137,6 @@ public abstract class HtmlTagImpl <: HtmlTag {
     public override func isClosed(): Bool {
         return _end > NO_END
     }
-
-    public func closeAt(end: Int): Unit
 
     public mut override prop parentTag: ?HtmlTag {
         get() {
@@ -296,6 +296,37 @@ public class TextTag <: HtmlTagImpl {
     TextTag(text: String) {
         super("", -1, EMPTY_MAP)
         this.text = text
+        _end = 0
+    }
+    public override func closeAt(end: Int): Unit {
+        _end = end
+    }
+    public override func attributes(): Map<String, String> {
+        throw UnsupportedException()
+    }
+    public override func isInline(): Bool {
+        false
+    }
+    public override func isBlock(): Bool {
+        false
+    }
+    public override func getAsInline(): InlineHtmlTag {
+        throw UnsupportedException()
+    }
+    public override func getAsBlock(): BlockHtmlTag {
+        throw UnsupportedException()
+    }
+    public override func toString(): String {
+        "TextTag{${text.replace("\n","\\n")}}"
+    }
+}
+/**
+ * html中的Text部分 视为一种叶子节点
+ */
+public class EndTag <: HtmlTagImpl {
+    private static let EMPTY_MAP: Map<String, String> = HashMap<String, String>()
+    init(tagName: String) {
+        super(tagName, -1, EMPTY_MAP)
     }
     public override func closeAt(end: Int): Unit {
         throw UnsupportedException()
@@ -316,6 +347,6 @@ public class TextTag <: HtmlTagImpl {
         throw UnsupportedException()
     }
     public override func toString(): String {
-        text
+        "EndTag{${_name}}"
     }
 }
