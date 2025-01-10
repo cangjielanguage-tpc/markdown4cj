@@ -121,7 +121,7 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 "FontNode",
                 {
                     visitor, node =>
-                    buildView(node, true)
+                    buildView(node, false)
                     visitor.visitChildren(node)
                 }
             )
@@ -157,30 +157,33 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
     }
 
     public func visitHtmlInline(visitor: MarkdownVisitor, htmlInline: HtmlInline): Unit {
-        let parentNode = Paragraph()
-        htmlInline.insertBefore(parentNode) // 作为定位点
+        // 保存锚点
+        let anchorNode = Paragraph()
+        htmlInline.insertBefore(anchorNode)
 
-        visitHtmlInline(visitor, StringBuilder(), htmlInline, parentNode, None)
-        let tagNode = parentNode.getFirstChild().getOrThrow()
+        visitHtmlInline(visitor, StringBuilder(), htmlInline, anchorNode)
+        var resNode: ?Node = anchorNode.getFirstChild().getOrThrow()
 
         htmlParser?.reset()
 
-        // replace htmlNode with tagNode
-        parentNode.replaceWith(tagNode)
+        // 保存解析结果
+        anchorNode.flat()
 
-        // visit tagNode to build NodeView
-        tagNode.accept(visitor)
+        // 解析InlineHtml可能破坏后续兄弟节点结构
+        // 手动遍历解析结果构建NodeView
+        while (let Some(n) <- resNode) {
+            n.accept(visitor)
+            resNode = n.getNext()
+        }
     }
     /*
      * html->HtmlTag->Node
      * 将开闭的tag组合起来
      */
-    private func visitHtmlInline(visitor: MarkdownVisitor, appender: StringBuilder, node: Node, parent: Node,
-        root: ?HtmlTag): Unit {
+    private func visitHtmlInline(visitor: MarkdownVisitor, appender: StringBuilder, node: Node, parent: Node): Unit {
         let htmlParser = htmlParser.getOrThrow()
         let htmlRenderer = htmlRenderer.getOrThrow()
         var parentNode = parent
-        var rootTag: ?HtmlTag = root
         var nextNode: ?Node = node.getNext()
         // printNode(node)
         match (node) {
@@ -189,7 +192,6 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 let tag = htmlParser.processFragmentInline(appender, htmlString, None)
                 // printTag(tag)
                 // println("1.2 ${tag} ${tag is EndTag} ${tag.isClosed()} ${parentNode}")
-                rootTag = rootTag ?? tag
                 if (tag is EndTag) {
                     // end tag
                     parentNode = parentNode.getParent().getOrThrow()
@@ -210,14 +212,10 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 parentNode.appendChild(node)
         }
 
-        if (rootTag?.isClosed() == true) {
-            // root闭环
-            return
-        }
-
+        // printNode(node)
+        // println("1.5 ${nextNode} ${parentNode}")
         if (let Some(n) <- nextNode) {
-            // println("1.5 ${n} ${parentNode}")
-            visitHtmlInline(visitor, appender, n, parentNode, rootTag)
+            visitHtmlInline(visitor, appender, n, parentNode)
         }
     }
 
