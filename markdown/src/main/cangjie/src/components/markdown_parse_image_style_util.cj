@@ -15,7 +15,7 @@ import ohos.state_macro_manage.*
  * @param componentWidth 控件宽度 - 单位vp
  * @param callback PixelMap图片、图片高度、图片宽度 回调接口
  */
-func imageSpanToPixelmap(destination: String, componentWidth: Float64, callback: (?Float64, ?Float64) -> Unit): Future<Unit> {
+func imageSpanToPixelmapStyle(destination: String, componentWidth: Float64, w: ?Float64, h: ?Float64, callback: (?Float64, ?Float64) -> Unit): Future<Unit> {
     let fut: Future<Unit> = spawn {
         var height: ?Float64 = Option<Float64>.None
         var width: ?Float64 = Option<Float64>.None
@@ -37,12 +37,54 @@ func imageSpanToPixelmap(destination: String, componentWidth: Float64, callback:
             var sizeWidth: Float64 = Float64(size.width)
             var sizeHeight: Float64 = Float64(size.height)
             var aspectRatio: Float64 = sizeHeight / sizeWidth
-            width = if (componentWidth > sizeWidth) {
+            var sizeWidthNew: Float64 = if(let Some(v) <- w){
+                v
+            }else{
                 sizeWidth
-            } else {
-                componentWidth
             }
-            height = width() * aspectRatio
+            var sizeHeightNew: Float64 = if(let Some(v) <- h){
+                v
+            }else{
+                sizeHeight
+            }
+            if(w.isSome() && h.isSome()){
+
+                width = if (componentWidth > sizeWidthNew) {
+                    sizeWidthNew
+                } else {
+                    componentWidth
+                }
+                height = h()
+            }else if (w.isSome() && h.isNone()){
+                width = if (componentWidth > sizeWidthNew) {
+                    sizeWidthNew
+                } else {
+                    componentWidth
+                }
+                height = if(let Some(v) <- h){
+                    v
+                }else{
+                    width() * aspectRatio
+                }
+            } else if (w.isNone() && h.isSome()){
+                height = h()
+                width = if (componentWidth > height()/aspectRatio) {
+                    height()/aspectRatio
+                } else {
+                    componentWidth
+                }
+            } else {
+                width = if (componentWidth > sizeWidthNew) {
+                    sizeWidthNew
+                } else {
+                    componentWidth
+                }
+                height = if(let Some(v) <- h){
+                    v
+                }else{
+                    width() * aspectRatio
+                }
+            }
         } catch (e: Exception) {
         } finally {
             try {
@@ -62,7 +104,7 @@ func imageSpanToPixelmap(destination: String, componentWidth: Float64, callback:
  * @param componentWidth 控件宽度 - 单位vp
  * @param callback PixelMap图片、图片高度、图片宽度 回调接口
  */
-func rawfileToPixelmap(destination: String, abilityContext: ?AbilityContext, componentWidth: Float64,
+func rawfileToPixelmapStyle(destination: String, abilityContext: ?AbilityContext, componentWidth: Float64, w: ?Float64, h: ?Float64,
     callback: (?PixelMap, ?Float64, ?Float64) -> Unit): Future<Unit> {
     let fut: Future<Unit> = spawn {
         var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -89,15 +131,57 @@ func rawfileToPixelmap(destination: String, abilityContext: ?AbilityContext, com
                 pixelMap = imageSource.createPixelMap()
                 imageSource.Release()
                 var size: Size = pixelMap().getImageInfo().size
-                var sizeWidth: Float64 = Float64(size.width)
-                var sizeHeight: Float64 = Float64(size.height)
-                var aspectRatio: Float64 = sizeHeight / sizeWidth
-                width = if (componentWidth > sizeWidth) {
-                    sizeWidth
+            var sizeWidth: Float64 = Float64(size.width)
+            var sizeHeight: Float64 = Float64(size.height)
+            var aspectRatio: Float64 = sizeHeight / sizeWidth
+            var sizeWidthNew: Float64 = if(let Some(v) <- w){
+                v
+            }else{
+                sizeWidth
+            }
+            var sizeHeightNew: Float64 = if(let Some(v) <- h){
+                v
+            }else{
+                sizeHeight
+            }
+            if(w.isSome() && h.isSome()){
+
+                width = if (componentWidth > sizeWidthNew) {
+                    sizeWidthNew
                 } else {
                     componentWidth
                 }
-                height = width() * aspectRatio
+                height = h()
+            }else if (w.isSome() && h.isNone()){
+                width = if (componentWidth > sizeWidthNew) {
+                    sizeWidthNew
+                } else {
+                    componentWidth
+                }
+                height = if(let Some(v) <- h){
+                    v
+                }else{
+                    width() * aspectRatio
+                }
+            } else if (w.isNone() && h.isSome()){
+                height = h()
+                width = if (componentWidth > height()/aspectRatio) {
+                    height()/aspectRatio
+                } else {
+                    componentWidth
+                }
+            } else {
+                width = if (componentWidth > sizeWidthNew) {
+                    sizeWidthNew
+                } else {
+                    componentWidth
+                }
+                height = if(let Some(v) <- h){
+                    v
+                }else{
+                    width() * aspectRatio
+                }
+            }
                 if (Thread.currentThread.hasPendingCancellation) {
                     pixelMap?.Release()
                     return
@@ -119,15 +203,6 @@ func rawfileToPixelmap(destination: String, abilityContext: ?AbilityContext, com
     return fut
 }
 
-let client: Client = ClientBuilder().readTimeout(Duration.minute * 1).poolSize(2000).tlsConfig(getTlsClientConfig())
-    .build()
-
-func getTlsClientConfig(): TlsClientConfig {
-    var tls: TlsClientConfig = TlsClientConfig()
-    tls.verifyMode = CertificateVerifyMode.TrustAll
-    return tls
-}
-
 /**
  * 网络图片转PixelMap
  *
@@ -135,7 +210,7 @@ func getTlsClientConfig(): TlsClientConfig {
  * @param componentWidth 控件宽度 - 单位vp
  * @param callback PixelMap图片、图片高度、图片宽度 回调接口
  */
-func getImageFromHttpClient(path: String, componentWidth: Float64, callback: (?Float64, ?Float64) -> Unit): Future<Unit> {
+func getImageFromHttpClientStyle(path: String, componentWidth: Float64, w: ?Float64, h: ?Float64, callback: (?Float64, ?Float64) -> Unit): Future<Unit> {
     let fut: Future<Unit> = spawn {
         var height: ?Float64 = Option<Float64>.None
         var width: ?Float64 = Option<Float64>.None
@@ -179,12 +254,54 @@ func getImageFromHttpClient(path: String, componentWidth: Float64, callback: (?F
             var sizeWidth: Float64 = Float64(size.width)
             var sizeHeight: Float64 = Float64(size.height)
             var aspectRatio: Float64 = sizeHeight / sizeWidth
-            width = if (componentWidth > sizeWidth) {
+            var sizeWidthNew: Float64 = if(let Some(v) <- w){
+                v
+            }else{
                 sizeWidth
-            } else {
-                componentWidth
             }
-            height = width() * aspectRatio
+            var sizeHeightNew: Float64 = if(let Some(v) <- h){
+                v
+            }else{
+                sizeHeight
+            }
+            if(w.isSome() && h.isSome()){
+
+                width = if (componentWidth > sizeWidthNew) {
+                    sizeWidthNew
+                } else {
+                    componentWidth
+                }
+                height = h()
+            }else if (w.isSome() && h.isNone()){
+                width = if (componentWidth > sizeWidthNew) {
+                    sizeWidthNew
+                } else {
+                    componentWidth
+                }
+                height = if(let Some(v) <- h){
+                    v
+                }else{
+                    width() * aspectRatio
+                }
+            } else if (w.isNone() && h.isSome()){
+                height = h()
+                width = if (componentWidth > height()/aspectRatio) {
+                    height()/aspectRatio
+                } else {
+                    componentWidth
+                }
+            } else {
+                width = if (componentWidth > sizeWidthNew) {
+                    sizeWidthNew
+                } else {
+                    componentWidth
+                }
+                height = if(let Some(v) <- h){
+                    v
+                }else{
+                    width() * aspectRatio
+                }
+            }
         } catch (e: Exception) {
         } finally {
             try {
@@ -194,37 +311,4 @@ func getImageFromHttpClient(path: String, componentWidth: Float64, callback: (?F
         }
     }
     return fut
-}
-
-/**
- * 判断是否有图片数据
- */
-func isImagePixelMap(imageData: ImageData, listPixelMap: ArrayList<?PixelMap>): Bool {
-    if (imageData.pixelMap.isSome() && imageData.height.isSome() && imageData.width.isSome()) {
-        listPixelMap.append(imageData.pixelMap)
-        return true
-    }
-    return false
-}
-
-let semaphore: Semaphore = Semaphore(50)
-
-class ImageLoadLimiter <: Resource {
-    let closed = AtomicBool(false)
-
-    init() {
-        semaphore.acquire()
-    }
-
-    public override func isClosed(): Bool {
-        return closed.load()
-    }
-
-    public override func close(): Unit {
-        if (isClosed()) {
-            return
-        }
-        semaphore.release()
-        closed.store(true)
-    }
 }
