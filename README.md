@@ -5,7 +5,7 @@
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.53.4-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.53.17-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -108,7 +108,14 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 1. 通过module引入
    1. 克隆下载项目
    2. 将markdown模块拷贝到应用项目下
-   3. 修改自身应用 entry 下的 oh-package.json5 文件，在 dependencies 字段添加 "markdown": "file:../markdown"
+   3. 将markdown模块当module引用，修改项目下的 build-profile.json5 文件，在 modules 字段添加下面代码
+      ```json
+      {
+      "name": "markdown",
+      "srcPath": "./markdown"
+      }
+      ```
+   4. 修改自身应用 entry 下的 oh-package.json5 文件，在 dependencies 字段添加 "markdown": "file:../markdown"
       ```json
       {
          "name": "entry",
@@ -122,12 +129,12 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
         }
       }
       ```
-   4. 修改自身应用 entry/src/main/cangjie 下的 cjpm.toml 文件，在 [dependencies] 字段下添加 markdown = {path = "../../../../markdown/src/main/cangjie", version = "1.0.0"}
+   5. 修改自身应用 entry/src/main/cangjie 下的 cjpm.toml 文件，在 [dependencies] 字段下添加 markdown = {path = "../../../../markdown/src/main/cangjie", version = "1.0.0"}
       ```toml
       [dependencies]
           markdown = {path = "../../../../markdown/src/main/cangjie", version = "1.0.0"}
       ```
-   5. 在项目中使用 import markdown.components.* 引用markdown项目
+   6. 在项目中使用 import markdown.components.* 引用markdown项目
       ```cangjie
       import markdown.components.*
       ```
@@ -144,7 +151,7 @@ import markdown.components.*
 @Entry
 @Component
 class ARHeading1Page {
-    func render() {
+    func build() {
         Scroll() {
             Column {
                 MarkdownComponent(mdStr: mdStr)
@@ -207,9 +214,13 @@ Heading level 2
 }
 ```
 
+### 显示效果
+
+![img1.jpeg](doc/assets/img1.jpeg)
+
 ## 约束与限制
 
-当前基于 DevEco Studio NEXT Release(5.0.3.900) 版本实现的
+当前基于 DevEco Studio 5.0.1 Release 和 DevEco Studio-Cangjie Plugin Beta1(5.0.5.306) 版本实现的
 
 1. 内联代码暂未支持背景色设置
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
@@ -257,6 +268,8 @@ Heading level 2
    3. 不支持带style标签的本地图片
    4. 支持的图片格式包括: png、jpg、bmp、svg和gif。注gif图片没有动画效果，只显示第一帧。
 8. TOC插件应在最后加载, 避免受其他插件影响
+9. 暂未支持稀疏排列和紧密排列
+10. 数学公式背景色暂不支持设置透明色
 
 ## 开源协议
 
