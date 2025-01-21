@@ -121,7 +121,8 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 "FontNode",
                 {
                     visitor, node =>
-                    buildView(node, false)
+                    let view = buildView(node, false, needProps: true)
+                    view.props?.put("FontNode", node)
                     visitor.visitChildren(node)
                 }
             )
