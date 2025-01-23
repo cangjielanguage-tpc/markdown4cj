@@ -84,7 +84,7 @@ public class TaskListPlugin <: AbstractMarkdownPlugin {
 }
 
 class TaskListVisitor <: AbstractVisitor {
-    private static let REGEX_TASK_LIST_ITEM: Regex = Regex(#"^\[([xX\s])]\s+(.*)"#)
+    private static let REGEX_TASK_LIST_ITEM: Regex = Regex(#"^\[[xX\s]\]\s+(.*)"#)
 
     public func visit(listItem: ListItem): Unit {
         // Takes first child and checks if it is Text (we are looking for exact `[xX\s]` without any formatting)
@@ -95,9 +95,8 @@ class TaskListVisitor <: AbstractVisitor {
                 let matcher: Matcher = REGEX_TASK_LIST_ITEM.matcher(text)
 
                 if (let Some(data) <- matcher.find()) {
-                    let group1 = data.matchPosition(1)
-                    let checked: String = text[group1.start..group1.end]
-                    let isChecked: Bool = "x" == checked || "X" == checked
+                    let checked: Byte = text[1]
+                    let isChecked: Bool = (checked == b'x') || (checked == b'X')
 
                     let taskListItem: TaskListItem = TaskListItem(isChecked)
 
@@ -107,8 +106,8 @@ class TaskListVisitor <: AbstractVisitor {
                     listItem.insertBefore(taskListItem)
 
                     // append the rest of matched text (can be empty)
-                    let restMatchedText: String = if (data.groupNumber() == 2) {
-                        let group2 = data.matchPosition(2)
+                    let restMatchedText: String = if (data.groupNumber() == 1) {
+                        let group2 = data.matchPosition(1)
                         text[group2.start..group2.end]
                     } else {
                         ""

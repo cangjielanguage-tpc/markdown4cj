@@ -8,12 +8,12 @@ class MarkdownHtmlRendererNoOp <: MarkdownHtmlRenderer {
         super()
     }
 
-    public override func render(visitor: MarkdownVisitor, parser: MarkdownHtmlParser, rootTag: HtmlTag): Node {
+    public override func render(_: MarkdownVisitor, _: MarkdownHtmlParser, _: HtmlTag): Node {
         let ignoreNode: IgnoreNode = IgnoreNode()
         return ignoreNode
     }
 
-    public override func tagHandler(tagName: String): ?TagHandler {
+    public override func tagHandler(_: String): ?TagHandler {
         return None
     }
 }
