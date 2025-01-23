@@ -47,7 +47,7 @@ public class BrHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(_: MarkdownVisitor, _: MarkdownHtmlRenderer, _: HtmlTag): Node {
         return HardLineBreak()
     }
 
@@ -60,7 +60,7 @@ public class ThematicBreakHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(_: MarkdownVisitor, _: MarkdownHtmlRenderer, _: HtmlTag): Node {
         return ThematicBreak()
     }
 
@@ -354,7 +354,7 @@ public class CodeHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(_: MarkdownVisitor, _: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let sb: StringBuilder = StringBuilder()
         visitChildrenText(tag, sb)
         let code: Code = Code(sb.toString())
@@ -370,7 +370,7 @@ public class IndentedCodeBlockHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(_: MarkdownVisitor, _: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let sb: StringBuilder = StringBuilder()
         visitChildrenText(tag, sb)
         let indentedCodeBlock: IndentedCodeBlock = IndentedCodeBlock()
@@ -387,7 +387,7 @@ public class TextHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(_: MarkdownVisitor, _: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let textTag: TextTag = (tag as TextTag).getOrThrow()
         let text: Text = Text(textTag.text)
         return text

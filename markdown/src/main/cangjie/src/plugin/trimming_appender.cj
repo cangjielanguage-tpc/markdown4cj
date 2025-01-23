@@ -12,7 +12,7 @@ abstract class TrimmingAppender {
 }
 
 class TrimmingAppenderImpl <: TrimmingAppender {
-    public func append(output: Appendable, data: String): Unit {
+    public func append(_: Appendable, _: String): Unit {
         /* let startLength = output.size
         var c: Rune = r'\u{0000}'
         var previousIsWhiteSpace = false

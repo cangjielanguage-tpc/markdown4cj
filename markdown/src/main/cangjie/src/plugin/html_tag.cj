@@ -147,12 +147,13 @@ public abstract class HtmlTagImpl <: HtmlTag {
         }
     }
     public override func getChildren(): ArrayList<HtmlTag> {
-        childrenTag ?? {
-            =>
-            let arr = ArrayList<HtmlTag>()
-            childrenTag = arr
-            arr
-        }()
+        match (childrenTag) {
+            case Some(v) => v
+            case _ =>
+                let arr = ArrayList<HtmlTag>()
+                childrenTag = arr
+                arr
+        }
     }
     public override func appendChild(tag: HtmlTag): Unit {
         getChildren().append(tag)
@@ -328,7 +329,7 @@ public class EndTag <: HtmlTagImpl {
     init(tagName: String) {
         super(tagName, -1, EMPTY_MAP)
     }
-    public override func closeAt(end: Int): Unit {
+    public override func closeAt(_: Int): Unit {
         throw UnsupportedException()
     }
     public override func attributes(): Map<String, String> {
