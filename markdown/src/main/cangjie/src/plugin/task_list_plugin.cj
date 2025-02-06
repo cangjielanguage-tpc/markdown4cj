@@ -66,8 +66,11 @@ public class TaskListPlugin <: AbstractMarkdownPlugin {
             {
                 visitor, taskListItem =>
                 let view = buildView(taskListItem, true, needProps: true)
-                let taskDepth = if (let Some(Some(dep: Int)) <- taskListItem.getParent()?.getView().props?.get(
-                    TaskListItem.TASK_DEPTH)) {
+                let taskDepth = if (let Some(Some(dep: Int)) <- taskListItem
+                    .getParent()?
+                    .getView()
+                    .props?
+                    .get(TaskListItem.TASK_DEPTH)) {
                     dep + 1
                 } else {
                     0

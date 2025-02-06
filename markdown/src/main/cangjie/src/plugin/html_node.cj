@@ -53,7 +53,7 @@ public class FontNode <: CustomNode {
     }
 }
 
-public class IgnoreNode <: CustomNode {
+public class IgnoreNode <: CustomBlock {
     public init() {
     }
 

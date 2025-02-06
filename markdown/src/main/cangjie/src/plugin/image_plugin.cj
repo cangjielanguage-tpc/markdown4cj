@@ -14,19 +14,21 @@ public class ImagePlugin <: AbstractMarkdownPlugin {
     }
 
     public func configureVisitor(builder: MarkdownVisitorBuilder): Unit {
-        builder.on(
-            "SlideBlock",
-            {
-                visitor, slide =>
-                buildView(slide, true)
-                visitor.visitChildren(slide)
-            }
-        ).on(
-            "Style",
-            {
-                visitor, style => buildView(style, true)
-            }
-        )
+        builder
+            .on(
+                "SlideBlock",
+                {
+                    visitor, slide =>
+                    buildView(slide, true)
+                    visitor.visitChildren(slide)
+                }
+            )
+            .on(
+                "Style",
+                {
+                    visitor, style => buildView(style, true)
+                }
+            )
     }
 
     public func getClassType(): String {

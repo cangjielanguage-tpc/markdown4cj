@@ -72,7 +72,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
         INLINE_TAGS = HashSet<String>(
             ["a", "abbr", "acronym", "b", "bdo", "big", "br", "button", "cite", "code", "dfn", "em", "i", "img", "input",
                 "kbd", "label", "map", "object", "q", "samp", "script", "select", "small", "span", "strong", "sub",
-                "sup", "textarea", "time", "tt", "var"])
+                "sup", "textarea", "time", "tt", "var", "font"])
         VOID_TAGS = HashSet<String>(
             ["area", "base", "br", "col", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source",
                 "track", "wbr"])
@@ -159,12 +159,15 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
                 return currentTag
             case EndTagType =>
                 let endTag = (token as EndTagToken).getOrThrow()
+                if (isVoidTag(endTag.normalName())) {
+                    return EndTag(endTag.normalName(), None)
+                }
                 let currentTag = if (isInlineTag(endTag.normalName())) {
                     processInlineTagEnd(output, endTag)
                 } else {
                     processBlockTagEnd(output, endTag)
                 }
-                return EndTag(endTag.normalName())
+                return EndTag(endTag.normalName(), currentTag)
             case _ => throw IllegalStateException()
         }
     }
@@ -321,7 +324,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
 
     protected func findOpenInlineTag(name: String): ?InlineImpl {
         var inline: InlineImpl
-        for (i in inlineTags.size - 1..=-1 : -1) {
+        for (i in inlineTags.size - 1..=0 : -1) {
             inline = inlineTags[i]
             if (name == inline.name() && inline._end < 0) {
                 return inline
