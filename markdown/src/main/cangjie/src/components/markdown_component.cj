@@ -175,11 +175,6 @@ public class MarkdownComponent {
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
                             )
                         }
-                    } else if (item.node is HtmlBlock) {
-                        // HTML标签
-                        ListItem() {
-                            MarkdownHtmlBlockComponent(htmlBlockView: (item.node as HtmlBlock)())
-                        }
                     } else if (item.node is LatexMathBlock) {
                         // 单行的数学公式
                         ListItem() {

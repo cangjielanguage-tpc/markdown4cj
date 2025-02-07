@@ -77,7 +77,35 @@ func spanFontFamily(isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool): 
  * @param level 几级标题
  * @return 返回需要显示的字体大小
  */
-func spanFontSize(isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
+func spanFontSize(nodeView: NodeView,isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
+    if (nodeView.props.isSome() && nodeView.props().get("FontNode").isSome()) {
+        try{
+            let fontNode: FontNode = (nodeView.props().get("FontNode")() as FontNode)()
+            let sizeString:?String = fontNode.getSize()
+            if(sizeString.isSome()){
+                let sizeInt64:Int64 = Int64.parse(sizeString())
+                return Float64(sizeInt64)
+            } else {
+                return spanTextFontSize(isCode,markdownTheme,isTitle,level)
+            }
+        } catch (e:Exception){
+            return spanTextFontSize(isCode,markdownTheme,isTitle,level)
+        }
+    }else{
+        return spanTextFontSize(isCode,markdownTheme,isTitle,level)
+    }
+}
+
+/**
+ * 文字大小设置
+ *
+ * @param isCode 是否是内联代码
+ * @param markdownTheme markdown基础样式
+ * @param isTitle 是否是标题
+ * @param level 几级标题
+ * @return 返回需要显示的字体大小
+ */
+func spanTextFontSize(isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
     if (isCode) {
         // 内联代码情况设置内联代码字体大小
         return markdownTheme.codeTextSize
@@ -135,6 +163,34 @@ func spanFontStyle(nodeView: NodeView): FontStyle {
  * @return 返回需要显示的字体颜色
  */
 func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isHeading: Bool): Color {
+    if (nodeView.props.isSome() && nodeView.props().get("FontNode").isSome()) {
+        try{
+            let fontNode: FontNode = (nodeView.props().get("FontNode")() as FontNode)()
+            let colorString:?String = fontNode.getColor()
+            if(colorString.isSome()){
+                let colorUInt32:UInt32 = UInt32.parse(colorString().replace("#","0x"))
+                return Color(colorUInt32)
+            } else {
+                return spanTextFontColor(nodeView,isCode,markdownTheme,isHeading)
+            }
+        } catch (e:Exception){
+            return spanTextFontColor(nodeView,isCode,markdownTheme,isHeading)
+        }
+    }else{
+        return spanTextFontColor(nodeView,isCode,markdownTheme,isHeading)
+    }
+}
+
+/**
+ * 字体颜色设置 - 优先设置链接颜色，次要设置内联代码颜色
+ *
+ * @param nodeView NodeView
+ * @param isCode 是否是内联代码
+ * @param markdownTheme markdown基础样式
+ * @param isHeading 是否是标题
+ * @return 返回需要显示的字体颜色
+ */
+func spanTextFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isHeading: Bool): Color {
     if (nodeView.link.isSome() || nodeView.node is HeadLink) {
         return markdownTheme.linkColor
     } else {

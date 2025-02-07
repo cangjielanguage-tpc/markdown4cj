@@ -76,7 +76,7 @@ class MarkdownTableBlockComponent {
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView,false, markdownConfiguration.markdownTheme, false, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isHeader))
             // 设置文本的字体样式
@@ -101,7 +101,7 @@ class MarkdownTableBlockComponent {
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(true, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView,true, markdownConfiguration.markdownTheme, false, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isHeader))
             // 设置文本的字体样式
@@ -114,22 +114,6 @@ class MarkdownTableBlockComponent {
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
             .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
-    }
-
-    /**
-     * 内联HTML
-     */
-    @Builder
-    func tableComponentHtmlInline(htmlInline: HtmlInline) {
-        // 文本内容
-        if (htmlInline.getLiteral().toAsciiLower().replace(" ", "") == "<br>" ||
-            htmlInline.getLiteral().toAsciiLower().replace(" ", "") == "</br>" ||
-            htmlInline.getLiteral().toAsciiLower().replace(" ", "") == "<br/>") {
-            // 设置文本内容
-            Span("\n")
-        } else {
-            // TODO 其他内容，暂时只支持br标签
-        }
     }
 
     /**
@@ -183,9 +167,6 @@ class MarkdownTableBlockComponent {
                         } else {
                             tableComponentCode(item, false)
                         }
-                    } else if (item.node is HtmlInline) {
-                        // 内联HTML
-                        tableComponentHtmlInline((item.node as HtmlInline)())
                     } else if (item.node is ImgVideo) {
                         // TODO 视频节点
                         Span("")
@@ -194,6 +175,9 @@ class MarkdownTableBlockComponent {
                         Span("")
                     } else if (item.node is CommonmarkImage) {
                         // TODO 图片节点
+                        Span("")
+                    } else if (item.node is ImageHtmlNode){
+                        // TODO HTML图片
                         Span("")
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点

@@ -211,8 +211,11 @@ public class BlockquoteHandler <: TagHandler {
     }
 
     public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
-        let blockQuote: BlockQuote = BlockQuote()
-        visitChildren(visitor, renderer, tag, blockQuote)
+        let blockQuoteTmp: BlockQuote = BlockQuote()
+        visitChildren(visitor, renderer, tag, blockQuoteTmp)
+        // 添加paragraph层
+        let blockQuote = BlockQuote()
+        nodeCategory(blockQuoteTmp, blockQuote)
         return blockQuote
     }
 

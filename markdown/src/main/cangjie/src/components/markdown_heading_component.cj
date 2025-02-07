@@ -98,7 +98,7 @@ class MarkdownHeadingComponent {
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(false, markdownConfiguration.markdownTheme, true, (headingNodeView.node as Heading)().getLevel()))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, (headingNodeView.node as Heading)().getLevel()))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, true))
             // 设置文本的字体样式
@@ -123,7 +123,7 @@ class MarkdownHeadingComponent {
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(true, markdownConfiguration.markdownTheme, true, 0))
+            .fontSize(spanFontSize(nodeView,true, markdownConfiguration.markdownTheme, true, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, true))
             // 设置文本的字体样式
@@ -136,22 +136,6 @@ class MarkdownHeadingComponent {
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
             .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
-    }
-
-    /**
-     * 内联HTML
-     */
-    @Builder
-    func headingtmlInlineComponent(htmlInline: HtmlInline) {
-        // 文本内容
-        if (htmlInline.getLiteral().toAsciiLower().replace(" ", "") == "<br>" ||
-            htmlInline.getLiteral().toAsciiLower().replace(" ", "") == "</br>" ||
-            htmlInline.getLiteral().toAsciiLower().replace(" ", "") == "<br/>") {
-            // 设置文本内容
-            Span("\n")
-        } else {
-            // TODO 其他内容，暂时只支持br标签
-        }
     }
 
     /**
@@ -212,7 +196,7 @@ class MarkdownHeadingComponent {
                                 // 图片的点击事件
                                 .onClick {evt => imageOnClick(destination, markdownConfiguration.imageCallback)}
                         }
-                    } else  if (item.ret == ret && item.height.isSome()){
+                    } else if (item.ret == ret && item.height.isSome()){
                         ImageSpan(destination)
                             // 设置组件自身的高度
                             .height(pxToVp(item.height()))
@@ -272,6 +256,38 @@ class MarkdownHeadingComponent {
     }
 
     /**
+     * 图片
+     */
+    @Builder
+    func headingHtmlImageSpanComponent(imageHtmlNode: ImageHtmlNode, idx: Int64) {
+        if (imageHtmlNode.getDestination().startsWith("file:")) {
+            // 沙盒图片
+            headingImageSpanPixelMapComponent(filesPixelmapStyle(imageHtmlNode.getDestination(), idx,toPicStyleObj(imageHtmlNode)),
+                imageHtmlNode.getDestination(),0,toPicStyleObj(imageHtmlNode))
+        } else if (imageHtmlNode.getDestination().startsWith("./")) {
+            // rawfile图片
+            headingImageSpanPixelMapComponent(localRowImageToPixelMapStyle(imageHtmlNode.getDestination(), idx,toPicStyleObj(imageHtmlNode)),
+                imageHtmlNode.getDestination(),1,toPicStyleObj(imageHtmlNode))
+        } else if (imageHtmlNode.getDestination().toAsciiLower().startsWith("http") ||
+            imageHtmlNode.getDestination().toAsciiLower().startsWith("ftp")) {
+            // 网络图片
+            headingImageSpanPixelMapComponent(httpImageToPixelMapStyle(imageHtmlNode.getDestination(), idx,toPicStyleObj(imageHtmlNode)),
+                imageHtmlNode.getDestination(), 2,toPicStyleObj(imageHtmlNode))
+        }
+    }
+
+    func toPicStyleObj(imageHtmlNode: ImageHtmlNode):PicStyleObj{
+        let picStyleObj: PicStyleObj = PicStyleObj()
+        if(let Some(v)<- imageHtmlNode.getWidth()){
+            picStyleObj.width = Float64.parse(v).px
+        }
+        if(let Some(v)<- imageHtmlNode.getHeight()){
+            picStyleObj.height = Float64.parse(v).px
+        }
+        return picStyleObj
+    }
+
+    /**
      * 分割线
      */
     @Builder
@@ -298,21 +314,27 @@ class MarkdownHeadingComponent {
                     } else if (item.node is Code) {
                         // 内联代码
                         headingCodeComponent(item)
-                    } else if (item.node is HtmlInline) {
-                        // 内联HTML
-                        headingtmlInlineComponent((item.node as HtmlInline)())
+                    } else if (item.node is HardLineBreak) {
+                        // 硬换行
+                        Span("\n")
+                    } else if (item.node is SoftLineBreak) {
+                        // 软换行
+                        Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
                     } else if (item.node is ImgVideo) {
                         // TODO 视频节点
                         Span("")
                     } else if (item.node is StyleImage) {
-                        // TODO 图片Style节点
+                        // 图片Style节点
                         headingImageSpanStyleComponent((item.node as StyleImage)(),parsePicStyle((item.node as StyleImage)().styles, markdownConfiguration, componentWidth), idx)
                     } else if (item.node is CommonmarkImage) {
-                        // TODO 图片节点
+                        // 图片节点
                         headingImageSpanComponent((item.node as CommonmarkImage)(), idx)
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
                         headingLatexMathComponent(latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx))
+                    } else if (item.node is ImageHtmlNode){
+                        // HTML图片
+                        headingHtmlImageSpanComponent((item.node as ImageHtmlNode)(), idx)
                     } else {
                         // TODO 其他节点
                         Span("")

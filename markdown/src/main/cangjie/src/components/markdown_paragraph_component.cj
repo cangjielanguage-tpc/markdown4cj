@@ -95,7 +95,7 @@ class MarkdownParagraphComponent {
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView,false, markdownConfiguration.markdownTheme, false, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false))
             // 设置文本的字体样式
@@ -120,7 +120,7 @@ class MarkdownParagraphComponent {
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(true, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView,true, markdownConfiguration.markdownTheme, false, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false))
             // 设置文本的字体样式
@@ -133,22 +133,6 @@ class MarkdownParagraphComponent {
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
             .onClick {evt => tocListOnClickFunc(nodeView)}
-    }
-
-    /**
-     * 内联HTML
-     */
-    @Builder
-    func paragraphHtmlInlineComponent(htmlInline: HtmlInline) {
-        // 文本内容
-        if (htmlInline.getLiteral().toAsciiLower().replace(" ", "") == "<br>" ||
-            htmlInline.getLiteral().toAsciiLower().replace(" ", "") == "</br>" ||
-            htmlInline.getLiteral().toAsciiLower().replace(" ", "") == "<br/>") {
-            // 设置文本内容
-            Span("\n")
-        } else {
-            // TODO 其他内容，暂时只支持br标签
-        }
     }
 
     /**
@@ -269,6 +253,38 @@ class MarkdownParagraphComponent {
     }
 
     /**
+     * 图片
+     */
+    @Builder
+    func paragraphHtmlImageSpanComponent(imageHtmlNode: ImageHtmlNode, idx: Int64) {
+        if (imageHtmlNode.getDestination().startsWith("file:")) {
+            // 沙盒图片
+            paragraphImageSpanPixelMapComponent(filesPixelmapStyle(imageHtmlNode.getDestination(), idx,toPicStyleObj(imageHtmlNode)),
+                imageHtmlNode.getDestination(),0,toPicStyleObj(imageHtmlNode))
+        } else if (imageHtmlNode.getDestination().startsWith("./")) {
+            // rawfile图片
+            paragraphImageSpanPixelMapComponent(localRowImageToPixelMapStyle(imageHtmlNode.getDestination(), idx,toPicStyleObj(imageHtmlNode)),
+                imageHtmlNode.getDestination(),1,toPicStyleObj(imageHtmlNode))
+        } else if (imageHtmlNode.getDestination().toAsciiLower().startsWith("http") ||
+            imageHtmlNode.getDestination().toAsciiLower().startsWith("ftp")) {
+            // 网络图片
+            paragraphImageSpanPixelMapComponent(httpImageToPixelMapStyle(imageHtmlNode.getDestination(), idx,toPicStyleObj(imageHtmlNode)),
+                imageHtmlNode.getDestination(), 2,toPicStyleObj(imageHtmlNode))
+        }
+    }
+
+    func toPicStyleObj(imageHtmlNode: ImageHtmlNode):PicStyleObj{
+        let picStyleObj: PicStyleObj = PicStyleObj()
+        if(let Some(v)<- imageHtmlNode.getWidth()){
+            picStyleObj.width = Float64.parse(v).px
+        }
+        if(let Some(v)<- imageHtmlNode.getHeight()){
+            picStyleObj.height = Float64.parse(v).px
+        }
+        return picStyleObj
+    }
+
+    /**
      * 段落文字内容
      */
     @Builder
@@ -286,9 +302,6 @@ class MarkdownParagraphComponent {
                     } else if (item.node is Code) {
                         // 内联代码
                         paragraphCodeComponent(item)
-                    } else if (item.node is HtmlInline) {
-                        // 内联HTML
-                        paragraphHtmlInlineComponent((item.node as HtmlInline)())
                     } else if (item.node is HardLineBreak) {
                         // 硬换行
                         Span("\n")
@@ -299,14 +312,17 @@ class MarkdownParagraphComponent {
                         // TODO 视频节点
                         Span("")
                     } else if (item.node is StyleImage) {
-                        // TODO 图片Style节点
+                        // 图片Style节点
                         paragraphImageSpanStyleComponent((item.node as StyleImage)(),parsePicStyle((item.node as StyleImage)().styles, markdownConfiguration, componentWidth), idx)
                     } else if (item.node is CommonmarkImage) {
-                        // TODO 图片节点
+                        // 图片节点
                         paragraphImageSpanComponent((item.node as CommonmarkImage)(), idx)
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
                         paragraphLatexMathComponent(latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx))
+                    } else if (item.node is ImageHtmlNode){
+                        // HTML图片
+                        paragraphHtmlImageSpanComponent((item.node as ImageHtmlNode)(), idx)
                     } else {
                         // TODO 其他节点
                         Span("")
