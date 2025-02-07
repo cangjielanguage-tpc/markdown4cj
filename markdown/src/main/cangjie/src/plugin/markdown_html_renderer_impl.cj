@@ -14,7 +14,7 @@ class MarkdownHtmlRendererImpl <: MarkdownHtmlRenderer {
         this.tagHandlers = tagHandlers
     }
 
-    public override func render(visitor: MarkdownVisitor, _: MarkdownHtmlParser, tag: HtmlTag): Node {
+    public override func render(visitor: ?MarkdownVisitor, _: MarkdownHtmlParser, tag: HtmlTag): Node {
         let node = TagHandler.visit(visitor, this, tag, None)
         return node
     }

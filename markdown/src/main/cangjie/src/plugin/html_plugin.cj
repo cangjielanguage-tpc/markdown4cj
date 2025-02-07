@@ -86,6 +86,8 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
             builder.addDefaultTagHandler(CodeHandler())
             builder.addDefaultTagHandler(IndentedCodeBlockHandler())
             builder.addDefaultTagHandler(TextHandler())
+
+            builder.addDefaultTagHandler(ParagraphHandler())
         }
         htmlParser = MarkdownHtmlParserImpl.create(_emptyTagReplacement)
         htmlRenderer = builder.build()
@@ -138,10 +140,14 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
 
     public func visitHtml(visitor: MarkdownVisitor, node: Node, html: String): Unit {
         let htmlParser = htmlParser.getOrThrow()
-        let rootTag = BlockImpl.root()
+        var rootTag = BlockImpl.root()
 
         // htmlString -> HtmlTag
         htmlParser.processFragment(StringBuilder(), html, rootTag)
+        // printTag(rootTag) // debug
+
+        // rootTag.children分类
+        rootTag = tagCategory(rootTag)
 
         // HtmlTag ---handler---> CommonMarkNode
         let tagNode = htmlRenderer.getOrThrow().render(visitor, htmlParser, rootTag)
@@ -157,13 +163,34 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
         visitor.visitChildren(tagNode)
     }
 
+    func tagCategory(rootTag: BlockImpl): BlockImpl {
+        let newRoot = BlockImpl.root()
+        var p: ?BlockImpl = None
+        for (tag in rootTag.getChildren()) {
+            if (tag.isBlock()) {
+                newRoot.appendChild(tag)
+                p = None
+            } else if (tag.isInline()) {
+                if (p.isNone()) {
+                    p = BlockImpl.create("p", 0, HashMap<String, String>(), newRoot, newRoot)
+                }
+                p?.appendChild(tag)
+            }
+        }
+        // printTag(newRoot) // debug
+        newRoot
+    }
+
     public func visitHtmlInline(visitor: MarkdownVisitor, htmlInline: HtmlInline): Unit {
+        if (htmlInline.getParent().isNone() && htmlInline.getPrevious().isNone() && htmlInline.getNext().isNone()) {
+            return
+        }
         // 保存锚点
-        let anchorNode = Paragraph()
+        let anchorNode = Paragraph1()
         htmlInline.insertBefore(anchorNode)
 
         visitHtmlInline(visitor, StringBuilder(), htmlInline, anchorNode)
-        var resNode: ?Node = anchorNode.getFirstChild().getOrThrow()
+        var resNode: ?Node = anchorNode.getFirstChild()
 
         htmlParser?.reset()
 
@@ -186,16 +213,17 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
         let htmlRenderer = htmlRenderer.getOrThrow()
         var parentNode = parent
         var nextNode: ?Node = node.getNext()
-        // printNode(node)
+        // printNode(node) // debug
         match (node) {
             case htmlInline: HtmlInline =>
                 let htmlString = htmlInline.getLiteral()
                 let tag = htmlParser.processFragmentInline(appender, htmlString, None)
-                // printTag(tag)
-                // println("1.2 ${tag} ${tag is EndTag} ${tag.isClosed()} ${parentNode}")
-                if (tag is EndTag) {
+                // println("1.2 ${tag} ${tag is EndTag} ${tag.isClosed()} ${parentNode}") // debug
+                if (let Some(end) <- (tag as EndTag)) {
                     // end tag
-                    parentNode = parentNode.getParent().getOrThrow()
+                    if (end.startTag.isSome()) {
+                        parentNode = parentNode.getParent().getOrThrow()
+                    }
                 } else if (tag.isClosed() == true) {
                     // self close tag
                     let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
@@ -207,14 +235,20 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                     parentNode = tagNode
                 }
                 node.unlink()
+            case t: Text =>
+                node.unlink()
+                match (parentNode) {
+                    case v: Code => v.setLiteral(t.getLiteral())
+                    case _ => parentNode.appendChild(node)
+                }
             case _ =>
                 // 普通markdownNode
                 node.unlink()
                 parentNode.appendChild(node)
         }
 
-        // printNode(node)
-        // println("1.5 ${nextNode} ${parentNode}")
+        // printNode(node) // debug
+        // println("1.5 ${nextNode} ${parentNode}") // debug
         if (let Some(n) <- nextNode) {
             visitHtmlInline(visitor, appender, n, parentNode)
         }
@@ -222,5 +256,12 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
 
     public override func getClassType(): String {
         "HtmlPlugin"
+    }
+}
+
+class Paragraph1 <: Paragraph {
+    let hash = DateTime.now().hashCode().toString()
+    protected override func toStringAttributes(): String {
+        return hash
     }
 }

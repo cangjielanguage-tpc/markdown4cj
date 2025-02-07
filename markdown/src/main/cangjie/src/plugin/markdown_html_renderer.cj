@@ -5,7 +5,7 @@ package markdown.plugin
 
 public abstract class MarkdownHtmlRenderer {
     public func render(
-        visitor: MarkdownVisitor,
+        visitor: ?MarkdownVisitor,
         parser: MarkdownHtmlParser,
         tag: HtmlTag
     ): Node

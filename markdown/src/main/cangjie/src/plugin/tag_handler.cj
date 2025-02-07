@@ -4,11 +4,11 @@
 package markdown.plugin
 
 public abstract class TagHandler {
-    public func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node
+    public func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node
 
     public func supportedTags(): Collection<String>
 
-    protected static func visitChildren(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag,
+    protected static func visitChildren(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag,
         nodeParent: Node): Unit {
         var handler: ?TagHandler
         for (child in tag.getChildren()) {
@@ -16,7 +16,7 @@ public abstract class TagHandler {
         }
     }
 
-    protected static func visit(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag,
+    protected static func visit(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag,
         nodeParent: ?Node): Node {
         var handler: ?TagHandler
         handler = renderer.tagHandler(tag.name())
@@ -33,12 +33,11 @@ public abstract class TagHandler {
     }
 
     protected static func visitChildrenText(block: HtmlTag, stringBuilder: StringBuilder): Unit {
-        if (block is TextTag) {
-            stringBuilder.append((block as TextTag).getOrThrow().text)
-            return
-        }
-        for (child in block.getChildren()) {
-            visitChildrenText(child, stringBuilder)
+        match (block) {
+            case v: TextTag => stringBuilder.append(v.text)
+            case _ => for (child in block.getChildren()) {
+                visitChildrenText(child, stringBuilder)
+            }
         }
     }
 }
@@ -47,12 +46,12 @@ public class BrHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(_: MarkdownVisitor, _: MarkdownHtmlRenderer, _: HtmlTag): Node {
+    public override func handle(_: ?MarkdownVisitor, _: MarkdownHtmlRenderer, _: HtmlTag): Node {
         return HardLineBreak()
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["br"])
+        return ["br"]
     }
 }
 
@@ -60,12 +59,12 @@ public class ThematicBreakHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(_: MarkdownVisitor, _: MarkdownHtmlRenderer, _: HtmlTag): Node {
+    public override func handle(_: ?MarkdownVisitor, _: MarkdownHtmlRenderer, _: HtmlTag): Node {
         return ThematicBreak()
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["hr"])
+        return ["hr"]
     }
 }
 
@@ -73,7 +72,7 @@ public class FontHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let attributes: Map<String, String> = tag.attributes()
         let color: ?String = attributes.get("color")
         let size: ?String = attributes.get("size")
@@ -83,7 +82,7 @@ public class FontHandler <: TagHandler {
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["font"])
+        return ["font"]
     }
 }
 
@@ -91,7 +90,7 @@ public class HeadingHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         var level: Int64
         try {
             level = Int64.parse(tag.name()[1..=1])
@@ -108,7 +107,7 @@ public class HeadingHandler <: TagHandler {
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["h1", "h2", "h3", "h4", "h5", "h6"])
+        return ["h1", "h2", "h3", "h4", "h5", "h6"]
     }
 }
 
@@ -116,7 +115,7 @@ public class ImageHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let attributes: Map<String, String> = tag.attributes()
         let src: ?String = attributes.get("src")
         let width: ?String = attributes.get("width")
@@ -134,7 +133,7 @@ public class ImageHandler <: TagHandler {
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["img"])
+        return ["img"]
     }
 }
 
@@ -142,7 +141,7 @@ public class LinkHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let attributes: Map<String, String> = tag.attributes()
         let destination: ?String = attributes.get("href")
         let title: ?String = attributes.get("title")
@@ -158,7 +157,7 @@ public class LinkHandler <: TagHandler {
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["a"])
+        return ["a"]
     }
 }
 
@@ -166,14 +165,14 @@ public class StrongEmphasisHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let strongEmphasis: StrongEmphasis = StrongEmphasis()
         visitChildren(visitor, renderer, tag, strongEmphasis)
         return strongEmphasis
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["b", "strong"])
+        return ["b", "strong"]
     }
 }
 
@@ -181,14 +180,14 @@ public class EmphasisHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let emphasis: Emphasis = Emphasis()
         visitChildren(visitor, renderer, tag, emphasis)
         return emphasis
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["i", "em", "cite", "dfn"])
+        return ["i", "em", "cite", "dfn"]
     }
 }
 
@@ -196,14 +195,14 @@ public class StrikeHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let strikethrough: Strikethrough = Strikethrough()
         visitChildren(visitor, renderer, tag, strikethrough)
         return strikethrough
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["s", "del"])
+        return ["s", "del"]
     }
 }
 
@@ -211,14 +210,14 @@ public class BlockquoteHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let blockQuote: BlockQuote = BlockQuote()
         visitChildren(visitor, renderer, tag, blockQuote)
         return blockQuote
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["blockquote"])
+        return ["blockquote"]
     }
 }
 
@@ -226,14 +225,14 @@ public class BulletListHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
-        let bulletList: BulletList = BulletList(Rune(b'-'))
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let bulletList: BulletList = BulletList(r'-')
         visitChildren(visitor, renderer, tag, bulletList)
         return bulletList
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["ul"])
+        return ["ul"]
     }
 }
 
@@ -241,22 +240,22 @@ public class OrderedListHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let attributes: Map<String, String> = tag.attributes()
         let start: ?String = attributes.get("start")
         if (let Some(v) <- start) {
-            let orderedList: OrderedList = OrderedList(Int64.parse(v), Rune(b'-'))
+            let orderedList: OrderedList = OrderedList(Int64.parse(v), r'-')
             visitChildren(visitor, renderer, tag, orderedList)
             return orderedList
         } else {
-            let orderedList: OrderedList = OrderedList(0, Rune(b'-'))
+            let orderedList: OrderedList = OrderedList(0, r'-')
             visitChildren(visitor, renderer, tag, orderedList)
             return orderedList
         }
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["ol"])
+        return ["ol"]
     }
 }
 
@@ -264,14 +263,17 @@ public class ListItemHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
-        let listItem: ListItem = ListItem()
-        visitChildren(visitor, renderer, tag, listItem)
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let listItemTmp: ListItem = ListItem()
+        visitChildren(visitor, renderer, tag, listItemTmp)
+        // 添加paragraph层
+        let listItem = ListItem()
+        nodeCategory(listItemTmp, listItem)
         return listItem
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["li"])
+        return ["li"]
     }
 }
 
@@ -279,14 +281,14 @@ public class TableHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let tableBlock: TableBlock = TableBlock()
         visitChildren(visitor, renderer, tag, tableBlock)
         return tableBlock
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["table"])
+        return ["table"]
     }
 }
 
@@ -294,14 +296,14 @@ public class TableHeadHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let tableHead: TableHead = TableHead()
         visitChildren(visitor, renderer, tag, tableHead)
         return tableHead
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["thead"])
+        return ["thead"]
     }
 }
 
@@ -309,14 +311,14 @@ public class TableBodyHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let tableBody: TableBody = TableBody()
         visitChildren(visitor, renderer, tag, tableBody)
         return tableBody
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["tbody", "tfoot"])
+        return ["tbody", "tfoot"]
     }
 }
 
@@ -324,14 +326,14 @@ public class TableRowHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let tableRow: TableRow = TableRow()
         visitChildren(visitor, renderer, tag, tableRow)
         return tableRow
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["tr"])
+        return ["tr"]
     }
 }
 
@@ -339,14 +341,14 @@ public class TableCellHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(visitor: MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let tableCell: TableCell = TableCell()
         visitChildren(visitor, renderer, tag, tableCell)
         return tableCell
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["th", "td"])
+        return ["th", "td"]
     }
 }
 
@@ -354,7 +356,7 @@ public class CodeHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(_: MarkdownVisitor, _: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(_: ?MarkdownVisitor, _: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let sb: StringBuilder = StringBuilder()
         visitChildrenText(tag, sb)
         let code: Code = Code(sb.toString())
@@ -362,7 +364,7 @@ public class CodeHandler <: TagHandler {
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["code", "samp", "var", "kbd"])
+        return ["code", "samp", "var", "kbd"]
     }
 }
 
@@ -370,7 +372,7 @@ public class IndentedCodeBlockHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(_: MarkdownVisitor, _: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(_: ?MarkdownVisitor, _: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let sb: StringBuilder = StringBuilder()
         visitChildrenText(tag, sb)
         let indentedCodeBlock: IndentedCodeBlock = IndentedCodeBlock()
@@ -379,7 +381,7 @@ public class IndentedCodeBlockHandler <: TagHandler {
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>(["pre"])
+        return ["pre"]
     }
 }
 
@@ -387,13 +389,46 @@ public class TextHandler <: TagHandler {
     public init() {
     }
 
-    public override func handle(_: MarkdownVisitor, _: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+    public override func handle(_: ?MarkdownVisitor, _: MarkdownHtmlRenderer, tag: HtmlTag): Node {
         let textTag: TextTag = (tag as TextTag).getOrThrow()
         let text: Text = Text(textTag.text)
         return text
     }
 
     public override func supportedTags(): Collection<String> {
-        return ArrayList<String>([""])
+        return [""]
     }
+}
+
+public class ParagraphHandler <: TagHandler {
+    public init() {
+    }
+
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let p = Paragraph()
+        visitChildren(visitor, renderer, tag, p)
+        return p
+    }
+
+    public override func supportedTags(): Collection<String> {
+        return ["p"]
+    }
+}
+
+func nodeCategory(rootNode: Node, newRoot: Node): Node {
+    var p: ?Paragraph = None
+    for (n in rootNode.iterateChildren()) {
+        if (n is Block) {
+            newRoot.appendChild(n)
+            p = None
+        } else {
+            if (p.isNone()) {
+                let pt = Paragraph()
+                p = pt
+                newRoot.appendChild(pt)
+            }
+            p?.appendChild(n)
+        }
+    }
+    newRoot
 }

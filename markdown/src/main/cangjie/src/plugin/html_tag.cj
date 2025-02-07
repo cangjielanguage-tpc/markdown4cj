@@ -198,7 +198,7 @@ public open class InlineImpl <: HtmlTagImpl & InlineHtmlTag {
 public class BlockImpl <: HtmlTagImpl & BlockHtmlTag {
     //    @NonNull
     static func root(): BlockImpl {
-        return BlockImpl("", 0, HashMap<String, String>(), None, None)
+        return BlockImpl("_root_", 0, HashMap<String, String>(), None, None)
     }
 
     //    @NonNull
@@ -306,7 +306,7 @@ public class TextTag <: HtmlTagImpl {
         throw UnsupportedException()
     }
     public override func isInline(): Bool {
-        false
+        true
     }
     public override func isBlock(): Bool {
         false
@@ -322,12 +322,14 @@ public class TextTag <: HtmlTagImpl {
     }
 }
 /**
- * html中的Text部分 视为一种叶子节点
+ * html中的EndTag
  */
 public class EndTag <: HtmlTagImpl {
     private static let EMPTY_MAP: Map<String, String> = HashMap<String, String>()
-    init(tagName: String) {
+    var startTag: ?HtmlTag = None
+    init(tagName: String, startTag: ?HtmlTag) {
         super(tagName, -1, EMPTY_MAP)
+        this.startTag = startTag
     }
     public override func closeAt(_: Int): Unit {
         throw UnsupportedException()
