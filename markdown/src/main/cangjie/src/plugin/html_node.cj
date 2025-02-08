@@ -60,4 +60,8 @@ public class IgnoreNode <: CustomBlock {
     public override func getNodeType(): NodeType {
         return "IgnoreNode"
     }
+    
+    public override func getParent(): ?Node {
+        parent
+    }
 }
