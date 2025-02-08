@@ -23,6 +23,8 @@ func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfigurat
                 v
             } else {
                 Markdown.builder()
+                    // HTML插件
+                    .usePlugin(HtmlPlugin.create())
                     // 任务列表插件
                     .usePlugin(TaskListPlugin.create())
                     // 删除线插件
