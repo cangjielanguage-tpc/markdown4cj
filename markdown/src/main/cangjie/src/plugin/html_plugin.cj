@@ -220,15 +220,18 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 let tag = htmlParser.processFragmentInline(appender, htmlString, None)
                 // println("1.2 ${tag} ${tag is EndTag} ${tag.isClosed()} ${parentNode}") // debug
                 if (let Some(end) <- (tag as EndTag)) {
+                    // println("1.21 ${end.startTag.isSome()}") // debug
                     // end tag
                     if (end.startTag.isSome()) {
                         parentNode = parentNode.getParent().getOrThrow()
                     }
                 } else if (tag.isClosed() == true) {
+                    // println("1.22 ") // debug
                     // self close tag
                     let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
                     parentNode.appendChild(tagNode)
                 } else if (tag.isClosed() == false) {
+                    // println("1.23 ") // debug
                     // start tag
                     let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
                     parentNode.appendChild(tagNode)
@@ -236,18 +239,20 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 }
                 node.unlink()
             case t: Text =>
+                // println("1.24 ") // debug
                 node.unlink()
                 match (parentNode) {
                     case v: Code => v.setLiteral(t.getLiteral())
                     case _ => parentNode.appendChild(node)
                 }
             case _ =>
+                // println("1.25 ") // debug
                 // 普通markdownNode
                 node.unlink()
                 parentNode.appendChild(node)
         }
 
-        // printNode(node) // debug
+        // printNode(parentNode) // debug
         // println("1.5 ${nextNode} ${parentNode}") // debug
         if (let Some(n) <- nextNode) {
             visitHtmlInline(visitor, appender, n, parentNode)
@@ -263,5 +268,8 @@ class Paragraph1 <: Paragraph {
     let hash = DateTime.now().hashCode().toString()
     protected override func toStringAttributes(): String {
         return hash
+    }
+    public override func getParent(): ?Node {
+        parent
     }
 }
