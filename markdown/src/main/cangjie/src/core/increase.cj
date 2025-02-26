@@ -46,85 +46,18 @@ public class IncreaseParser {
             }
         }
 
-        parse()
-
         this.input += inc
+        parse()
     }
     func parse(): Unit {
-        if (input.size == 0) {
-            return parseNewBlock()
-        }
-        let block = doc.getLastChild().getOrThrow()
-        parseBlock(block)
-    }
-    func parseBlock(block: Node): Unit {
-        match (block) {
-            case _: Heading =>
-                if (input.endsWith('\n')) {
-                    parseNewBlock()
-                }
-            case block: FencedCodeBlock =>
-                // 高亮代码块
-                if (input.endsWith("```\n\n")) {
-                    parseNewBlock()
-                } else {
-                    block.setLiteral(block.getLiteral() + inc)
-                }
-            case block: IndentedCodeBlock =>
-                // 缩进代码块
-                if (inc.startsWith("    ")) {
-                    block.setLiteral(block.getLiteral() + inc[4..])
-                } else {
-                    parseNewBlock()
-                }
-            case block: Paragraph =>
-                if (input.endsWith("\n\n")) {
-                    parseNewBlock()
-                } else {
-                    appendNewLine(block)
-                }
-            case block: ListBlock =>
-                if (input.endsWith("\n\n")) {
-                    parseNewBlock()
-                } else {
-                    let newBlock = getNewBlock()
-                    match (newBlock) {
-                        case n: ListItem => block.appendChild(n)
-                        case n: Paragraph =>
-                            if (let Some(Some(p: Paragraph)) <- block.getFirstChild()?.getFirstChild()) {
-                                for (n in newBlock.iterateChildren()) {
-                                    p.appendChild(n)
-                                }
-                            }
-                        case _ => ()
-                    }
-                    md.render(block)
-                }
-            case _: BlockQuote =>
-                // 块引用
-                let lastblock = block.getLastChild().getOrThrow()
-                if (input.endsWith("\n\n")) {
-                    parseNewBlock()
-                }
-            case _ => ()
-        }
-    }
-    func parseNewBlock(): Unit {
-        let block = getNewBlock()
-        doc.appendChild(block)
-        md.render(block)
-    }
-    func appendNewLine(block: Node): Unit {
-        let newBlock = getNewBlock()
-        for (n in newBlock.iterateChildren()) {
-            block.appendChild(n)
-        }
-        md.render(block)
-    }
-    func getNewBlock(): Node {
         let doc1 = md.parse(inc)
-        let block = doc1.getFirstChild().getOrThrow()
-        block.unlink()
-        block
+        let newLastBlock = doc1.getLastChild().getOrThrow()
+        newLastBlock.unlink()
+        if (let Some(oldLastBlock) <- doc.getLastChild()) {
+            oldLastBlock.replaceWith(newLastBlock)
+        } else {
+            doc.appendChild(newLastBlock)
+        }
+        md.render(newLastBlock)
     }
 }
