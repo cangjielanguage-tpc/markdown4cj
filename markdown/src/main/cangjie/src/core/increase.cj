@@ -7,10 +7,19 @@ public class IncreaseParser {
     public IncreaseParser(let md: Markdown) {}
 
     public var input: String = ""
-    public var doc: Node = Document()
-    public var docView: NodeView = NodeView(doc)
+    public var doc: Node = Document() // 最新的Document
+    public var docView: NodeView = NodeView(doc) // 最新的Document NodeView
+
+    /* 是否延迟解析 */
     public var lazy = true
+    /* 缓冲区 不满一行的数据存在这里 满一行则触发解析 并清空缓冲区 */
     public var incBuffer = StringBuilder()
+    /* 是否有新block需要渲染 需配合lazy使用*/
+    public prop hasNew: Bool {
+        get() {
+            incBuffer.size == 0 // 缓冲区清空 说明block有更新
+        }
+    }
     var inc: String = ""
 
     /**
@@ -49,15 +58,9 @@ public class IncreaseParser {
         this.input += inc
         parse()
     }
+    /* 解析当前所有数据 */
     func parse(): Unit {
-        let doc1 = md.parse(inc)
-        let newLastBlock = doc1.getLastChild().getOrThrow()
-        newLastBlock.unlink()
-        if (let Some(oldLastBlock) <- doc.getLastChild()) {
-            oldLastBlock.replaceWith(newLastBlock)
-        } else {
-            doc.appendChild(newLastBlock)
-        }
-        md.render(newLastBlock)
+        doc = md.parse(input)
+        docView = md.render(doc)
     }
 }
