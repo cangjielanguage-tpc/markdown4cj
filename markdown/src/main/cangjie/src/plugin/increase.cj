@@ -1,7 +1,7 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-package markdown.core
+package markdown.plugin
 
 public class IncreaseParser {
     public IncreaseParser(let md: Markdown) {}
@@ -62,5 +62,18 @@ public class IncreaseParser {
     func parse(): Unit {
         doc = md.parse(input)
         docView = md.render(doc)
+        dealLast()
+    }
+    func dealLast(): Unit {
+        var last = docView
+        while (last.children.size > 0) {
+            last = last.children[last.children.size - 1]
+        }
+        match (last.node) {
+            case v: FencedCodeBlock =>
+                let closed = v.getLiteral().size > 0 && input.trimAsciiRight().endsWith("```")
+                last.props?.put("closed", closed)
+            case _ => ()
+        }
     }
 }
