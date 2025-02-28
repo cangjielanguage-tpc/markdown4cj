@@ -72,6 +72,9 @@ public class IncreaseParser {
         match (last.node) {
             case v: FencedCodeBlock =>
                 let closed = v.getLiteral().size > 0 && input.trimAsciiRight().endsWith("```")
+                if(last.props.isNone()) {
+                    last.props = HashMap()
+                }
                 last.props?.put("closed", closed)
             case _ => ()
         }
