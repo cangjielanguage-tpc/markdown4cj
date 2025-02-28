@@ -43,7 +43,7 @@ class LatexBlockParser <: AbstractBlockParser {
 class LatexBlockParserFactory <: AbstractBlockParserFactory {
     public func tryStart(state: ParserState, _: MatchedBlockParser): ?BlockStart {
         let line: String = state.getLine()
-        if (line == "$$") {
+        if (line == "$$" || line == "\\[") {
             return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + 2)
         } else {
             var i = 0
@@ -85,7 +85,7 @@ func isLatexEnd(lineStr: String): Bool {
     let size = line.size
     return match {
         case size < 2 => false
-        case size == 2 && line == "$$" => true
+        case size == 2 && line == "$$" || line == "\\]" => true
         case size > 2 && line[size - 1] == b'$' && line[size - 2] == b'$' && line[size - 3] != b'\\' => true
         case _ => false
     }
