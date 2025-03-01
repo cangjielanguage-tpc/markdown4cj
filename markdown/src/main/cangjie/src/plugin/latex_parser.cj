@@ -59,6 +59,12 @@ class LatexBlockParserFactory <: AbstractBlockParserFactory {
                 }
                 return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + i + 2)
             }
+            if (line.size > i + 1 && line[i] == b'\\' && line[i + 1] == b'[') {
+                if (line.size > i + 2 && line[i + 2] == b'$') {
+                    return BlockStart.none()
+                }
+                return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + i + 2)
+            }
         }
         return BlockStart.none()
     }
@@ -87,6 +93,7 @@ func isLatexEnd(lineStr: String): Bool {
         case size < 2 => false
         case size == 2 && line == "$$" || line == "\\]" => true
         case size > 2 && line[size - 1] == b'$' && line[size - 2] == b'$' && line[size - 3] != b'\\' => true
+        case size > 2 && line[size - 1] == b']' && line[size - 2] == b'\\' && line[size - 3] != b'\\' => true
         case _ => false
     }
 }
