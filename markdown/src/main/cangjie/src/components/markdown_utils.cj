@@ -77,22 +77,22 @@ func spanFontFamily(isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool): 
  * @param level 几级标题
  * @return 返回需要显示的字体大小
  */
-func spanFontSize(nodeView: NodeView,isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
+func spanFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
     if (nodeView.props.isSome() && nodeView.props().get("FontNode").isSome()) {
-        try{
+        try {
             let fontNode: FontNode = (nodeView.props().get("FontNode")() as FontNode)()
-            let sizeString:?String = fontNode.getSize()
-            if(sizeString.isSome()){
-                let sizeInt64:Int64 = Int64.parse(sizeString())
+            let sizeString: ?String = fontNode.getSize()
+            if (sizeString.isSome()) {
+                let sizeInt64: Int64 = Int64.parse(sizeString())
                 return Float64(sizeInt64)
             } else {
-                return spanTextFontSize(isCode,markdownTheme,isTitle,level)
+                return spanTextFontSize(isCode, markdownTheme, isTitle, level)
             }
-        } catch (e:Exception){
-            return spanTextFontSize(isCode,markdownTheme,isTitle,level)
+        } catch (e: Exception) {
+            return spanTextFontSize(isCode, markdownTheme, isTitle, level)
         }
-    }else{
-        return spanTextFontSize(isCode,markdownTheme,isTitle,level)
+    } else {
+        return spanTextFontSize(isCode, markdownTheme, isTitle, level)
     }
 }
 
@@ -164,20 +164,20 @@ func spanFontStyle(nodeView: NodeView): FontStyle {
  */
 func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isHeading: Bool): Color {
     if (nodeView.props.isSome() && nodeView.props().get("FontNode").isSome()) {
-        try{
+        try {
             let fontNode: FontNode = (nodeView.props().get("FontNode")() as FontNode)()
-            let colorString:?String = fontNode.getColor()
-            if(colorString.isSome()){
-                let colorUInt32:UInt32 = UInt32.parse(colorString().replace("#","0x"))
+            let colorString: ?String = fontNode.getColor()
+            if (colorString.isSome()) {
+                let colorUInt32: UInt32 = UInt32.parse(colorString().replace("#", "0x"))
                 return Color(colorUInt32)
             } else {
-                return spanTextFontColor(nodeView,isCode,markdownTheme,isHeading)
+                return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
             }
-        } catch (e:Exception){
-            return spanTextFontColor(nodeView,isCode,markdownTheme,isHeading)
+        } catch (e: Exception) {
+            return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
         }
-    }else{
-        return spanTextFontColor(nodeView,isCode,markdownTheme,isHeading)
+    } else {
+        return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
     }
 }
 
@@ -743,6 +743,13 @@ func threadFutureCancel(fut: ?Future<Unit>) {
     }
 }
 
-func pxToVp(pxFloat64: Float64) :Float64{
+func pxToVp(pxFloat64: Float64): Float64 {
     return px2vp(pxFloat64.px)().value
+}
+
+func getProp<T>(item: NodeView, key: String, default: T): T {
+    match (item.props?.get(key)) {
+        case Some(Some(v: T)) => v
+        case v => default
+    }
 }
