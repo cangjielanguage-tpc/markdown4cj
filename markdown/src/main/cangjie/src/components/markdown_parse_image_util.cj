@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import ohos.ark_interop_helper.*
 
 /**
  * 本地图片路径转换成PixelMap (file:开头)
@@ -58,11 +59,11 @@ func imageSpanToPixelmap(destination: String, componentWidth: Float64, callback:
  * 本地图片路径转换成PixelMap (./开头)
  *
  * @param destination 图片路径
- * @param abilityContext AbilityContext
+ * @param abilityContext StageContext
  * @param componentWidth 控件宽度 - 单位vp
  * @param callback PixelMap图片、图片高度、图片宽度 回调接口
  */
-func rawfileToPixelmap(destination: String, abilityContext: ?AbilityContext, componentWidth: Float64,
+func rawfileToPixelmap(destination: String, abilityContext: ?StageContext, componentWidth: Float64,
     callback: (?PixelMap, ?Float64, ?Float64) -> Unit): Future<Unit> {
     let fut: Future<Unit> = spawn {
         var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -73,7 +74,7 @@ func rawfileToPixelmap(destination: String, abilityContext: ?AbilityContext, com
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                let resourceManager = ResourceManager.getResourceManager(getStageContext(v))
+                let resourceManager = ResourceManager.getResourceManager(v)
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }

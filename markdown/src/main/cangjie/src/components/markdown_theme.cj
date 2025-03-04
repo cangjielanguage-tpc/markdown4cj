@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import ohos.ark_interop_helper.*
 
 /**
  * Markdown用户可设置的样式
@@ -28,7 +29,7 @@ public class MarkdownTheme {
     /**
      * 上下文
      */
-    protected var abilityContext: ?AbilityContext = None
+    protected var abilityContext: ?StageContext = None
 
     /**
      * 每个模块之间上下间距
@@ -447,7 +448,7 @@ public class MarkdownThemeBuilder {
     /**
      * 上下文
      */
-    protected var abilityContext: ?AbilityContext = None
+    protected var abilityContext: ?StageContext = None
 
     /**
      * 每个模块之间上下间距
@@ -834,7 +835,7 @@ public class MarkdownThemeBuilder {
      * @param abilityContext 上下文
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setAbilityContext(abilityContext: AbilityContext): MarkdownThemeBuilder {
+    public func setStageContext(abilityContext: StageContext): MarkdownThemeBuilder {
         this.abilityContext = abilityContext
         return this
     }
