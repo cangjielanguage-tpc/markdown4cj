@@ -5,7 +5,7 @@ package markdown.plugin
 
 class LatexBlockParser <: AbstractBlockParser {
     private let block: LatexMathBlock = LatexMathBlock()
-    private let builder: ArrayList<Byte> = ArrayList<Byte>()
+    private let builder: StringBuilder = StringBuilder()
 
     public func getBlock(): Block {
         block
@@ -16,6 +16,10 @@ class LatexBlockParser <: AbstractBlockParser {
         if (isLatexLine(line)) {
             block.isBroken = true
         }
+        if (isLatexEnd(line)) {
+            block.isClosed = true
+            block.isBroken = false
+        }
         return if (block.isClosed) {
             BlockContinue.finished()
         } else {
@@ -25,18 +29,18 @@ class LatexBlockParser <: AbstractBlockParser {
 
     public func addLine(line: String): Unit {
         if (builder.size > 0) {
-            builder.append(UInt8(UInt32(r'\n')))
+            builder.append('\n')
         }
-        builder.appendAll(line)
-        if (isLatexEnd(line)) {
-            builder.remove(builder.size - 1)
-            builder.remove(builder.size - 1)
-            block.isClosed = true
+        if (block.isClosed) {
+            let str = line.trimAsciiRight()
+            builder.append(str[..str.size - 2])
+        } else {
+            builder.append(line)
         }
     }
 
     public func closeBlock(): Unit {
-        block.latex = unsafe { String.fromUtf8Unchecked(builder.getRawArray()[..builder.size]) }
+        block.latex = builder.toString()
     }
 }
 
