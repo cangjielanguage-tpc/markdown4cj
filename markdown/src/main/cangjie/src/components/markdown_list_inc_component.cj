@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import ohos.eventhub.*
 
 /**
  * Markdown无序列表(任务列表)、有序列表(TOC列表)、块引用自定义控件
@@ -37,13 +38,6 @@ public class MarkdownListINCComponent {
      * 控件宽度 - 单位px
      */
     var componentWidth: Float64
-
-    /**
-     * 外部传入的Markdown文档
-     */
-    @Prop
-    @Watch[onChanged]
-    var output: String
 
     @Prop
     var isFull: Bool
@@ -134,7 +128,6 @@ public class MarkdownListINCComponent {
                                                     .markdownTheme
                                                     .blockTopAndBottomMargins,
                                                 componentWidth: componentWidth,
-                                                output: output,
                                                 isFull: isFull
                                             )
                                         } else if (item.node is OrderedList) {
@@ -147,7 +140,6 @@ public class MarkdownListINCComponent {
                                                     .markdownTheme
                                                     .blockTopAndBottomMargins,
                                                 componentWidth: componentWidth,
-                                                output: output,
                                                 isFull: isFull
                                             )
                                         } else if (item.node is BlockQuote) {
@@ -160,7 +152,6 @@ public class MarkdownListINCComponent {
                                                     .markdownTheme
                                                     .blockTopAndBottomMargins,
                                                 componentWidth: componentWidth,
-                                                output: output,
                                                 isFull: isFull
                                             )
                                         } else if (item.node is TableBlock) {
@@ -168,7 +159,8 @@ public class MarkdownListINCComponent {
                                             listTableBlockINCComponent(
                                                 item,
                                                 markdownConfiguration,
-                                                componentWidth
+                                                componentWidth,
+                                                isFull
                                             )
                                         } else if (item.node is LatexMathBlock) {
                                             // 数学公式 - 单行
@@ -195,19 +187,19 @@ public class MarkdownListINCComponent {
                             // 设置子组件在水平方向上的对齐格式。
                             .justifyContent(FlexAlign.Start)
                     }
-                    // 对子组件进行重新布局
-                    .layoutWeight(1)
+                        // 对子组件进行重新布局
+                        .layoutWeight(1)
                 }
             )
         }
-        // 块内容前的起始边距
-        .margin(top: marginTop, bottom: marginBottom)
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置List组件排列方向
-        .listDirection(Axis.Vertical)
-        // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
-        .alignListItem(ListItemAlign.Start)
+            // 块内容前的起始边距
+            .margin(top: marginTop, bottom: marginBottom)
+            // 设置组件自身的宽度
+            .width(100.percent)
+            // 设置List组件排列方向
+            .listDirection(Axis.Vertical)
+            // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
+            .alignListItem(ListItemAlign.Start)
     }
 
     @Builder
@@ -266,7 +258,6 @@ public class MarkdownListINCComponent {
                                                     .markdownTheme
                                                     .blockTopAndBottomMargins,
                                                 componentWidth: componentWidth,
-                                                output: output,
                                                 isFull: isFull
                                             )
                                         } else if (item.node is OrderedList) {
@@ -279,7 +270,6 @@ public class MarkdownListINCComponent {
                                                     .markdownTheme
                                                     .blockTopAndBottomMargins,
                                                 componentWidth: componentWidth,
-                                                output: output,
                                                 isFull: isFull
                                             )
                                         } else if (item.node is BlockQuote) {
@@ -292,7 +282,6 @@ public class MarkdownListINCComponent {
                                                     .markdownTheme
                                                     .blockTopAndBottomMargins,
                                                 componentWidth: componentWidth,
-                                                output: output,
                                                 isFull: isFull
                                             )
                                         } else if (item.node is TableBlock) {
@@ -300,7 +289,8 @@ public class MarkdownListINCComponent {
                                             listTableBlockINCComponent(
                                                 item,
                                                 markdownConfiguration,
-                                                componentWidth
+                                                componentWidth,
+                                                isFull
                                             )
                                         } else if (item.node is LatexMathBlock) {
                                             // 数学公式 - 单行
@@ -315,31 +305,31 @@ public class MarkdownListINCComponent {
                                     }
                                 )
                             }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
+                                // 设置子组件在水平方向上的对齐格式。
+                                .alignItems(HorizontalAlign.Start)
+                                // 设置子组件在垂直方向上的对齐格式。
+                                .justifyContent(FlexAlign.Start)
+                                // 对子组件进行重新布局
+                                .layoutWeight(1)
                         }
-                        // 在垂直方向上子组件的对齐格式。
-                        .alignItems(VerticalAlign.Top)
-                        // 设置子组件在水平方向上的对齐格式。
-                        .justifyContent(FlexAlign.Start)
+                            // 在垂直方向上子组件的对齐格式。
+                            .alignItems(VerticalAlign.Top)
+                            // 设置子组件在水平方向上的对齐格式。
+                            .justifyContent(FlexAlign.Start)
                     }
-                    // 对子组件进行重新布局
-                    .layoutWeight(1)
+                        // 对子组件进行重新布局
+                        .layoutWeight(1)
                 }
             )
         }
-        // 块内容前的起始边距
-        .margin(top: marginTop, bottom: marginBottom)
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置List组件排列方向
-        .listDirection(Axis.Vertical)
-        // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
-        .alignListItem(ListItemAlign.Start)
+            // 块内容前的起始边距
+            .margin(top: marginTop, bottom: marginBottom)
+            // 设置组件自身的宽度
+            .width(100.percent)
+            // 设置List组件排列方向
+            .listDirection(Axis.Vertical)
+            // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
+            .alignListItem(ListItemAlign.Start)
     }
 
     @Builder
@@ -388,7 +378,6 @@ public class MarkdownListINCComponent {
                                     marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     componentWidth: componentWidth,
-                                    output: output,
                                     isFull: isFull
                                 )
                             } else if (item.node is OrderedList) {
@@ -399,7 +388,6 @@ public class MarkdownListINCComponent {
                                     marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     componentWidth: componentWidth,
-                                    output: output,
                                     isFull: isFull
                                 )
                             } else if (item.node is BlockQuote) {
@@ -410,7 +398,6 @@ public class MarkdownListINCComponent {
                                     marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     componentWidth: componentWidth,
-                                    output: output,
                                     isFull: isFull
                                 )
                             } else if (item.node is TableBlock) {
@@ -418,7 +405,8 @@ public class MarkdownListINCComponent {
                                 listTableBlockINCComponent(
                                     item,
                                     markdownConfiguration,
-                                    componentWidth
+                                    componentWidth,
+                                    isFull
                                 )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
@@ -431,32 +419,32 @@ public class MarkdownListINCComponent {
                                 // TODO 其他节点
                             }
                         }
-                        // 设置子组件在水平方向上的对齐格式。
-                        .alignItems(HorizontalAlign.Start)
-                        // 设置子组件在垂直方向上的对齐格式。
-                        .justifyContent(FlexAlign.Start)
+                            // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
+                            .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
+                    }
                         // 对子组件进行重新布局
                         .layoutWeight(1)
-                    }
-                    // 对子组件进行重新布局
-                    .layoutWeight(1)
                 }
             )
         }
-        // 设置元素的边框颜色。
-        .borderColor(markdownConfiguration.markdownTheme.blockQuoteColor)
-        // 设置元素的边框宽度(单位为vp)。
-        .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
-        // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
-        // 块内容前的起始边距
-        .margin(left: markdownConfiguration.markdownTheme.blockMargin, top: marginTop, bottom: marginBottom)
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置List组件排列方向
-        .listDirection(Axis.Vertical)
-        // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
-        .alignListItem(ListItemAlign.Start)
+            // 设置元素的边框颜色。
+            .borderColor(markdownConfiguration.markdownTheme.blockQuoteColor)
+            // 设置元素的边框宽度(单位为vp)。
+            .borderWidth(EdgeWidths(left: Length(markdownConfiguration.markdownTheme.blockQuoteWidth)))
+            // 文本内容前的起始边距
+            .padding(left: 10.0, right: markdownConfiguration.markdownTheme.blockMargin)
+            // 块内容前的起始边距
+            .margin(left: markdownConfiguration.markdownTheme.blockMargin, top: marginTop, bottom: marginBottom)
+            // 设置组件自身的宽度
+            .width(100.percent)
+            // 设置List组件排列方向
+            .listDirection(Axis.Vertical)
+            // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
+            .alignListItem(ListItemAlign.Start)
     }
 
     func onChanged(): Unit {

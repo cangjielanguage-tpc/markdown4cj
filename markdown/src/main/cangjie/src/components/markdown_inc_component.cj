@@ -35,11 +35,6 @@ public class MarkdownINCComponent {
     var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.create()
 
     /**
-     * toc事件回调数据
-     */
-    var indexHashMap: HashMap<Int64, Float64> = HashMap<Int64, Float64>()
-
-    /**
      * list控制器
      */
     let scroller: Scroller = Scroller()
@@ -73,7 +68,7 @@ public class MarkdownINCComponent {
         .usePlugin(LinkifyPlugin.create())
         .build()
 
-    var incBase: IncreaseParser = IncreaseParser(markdownBase)
+    var incBase: IncreaseParser1 = IncreaseParser1(markdownBase)
 
     protected override func aboutToAppear(): Unit {
         stringToNodes()
@@ -112,43 +107,43 @@ public class MarkdownINCComponent {
                     } else if (item.node is BulletList) {
                         // 无序列表（包含任务列表）
                         ListItem() {
-                            MarkdownListINCComponent(
-                                listNodeView: item,
+                            MarkdownList1INCComponent(
+                                nodeView: item,
                                 markdownConfiguration: markdownConfiguration,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 componentWidth: widthVpToPx(screenWidth,
                                     markdownConfiguration.markdownTheme.imagePadding),
-                                output: output,
-                                isFull: isFull
+                                isFull: isFull,
+                                index: idx
                             )
                         }
                     } else if (item.node is OrderedList) {
                         // 有序列表（包含TOC目录列表）
                         ListItem() {
-                            MarkdownListINCComponent(
-                                listNodeView: item,
+                            MarkdownList1INCComponent(
+                                nodeView: item,
                                 markdownConfiguration: markdownConfiguration,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 componentWidth: widthVpToPx(screenWidth,
                                     markdownConfiguration.markdownTheme.imagePadding),
-                                output: output,
-                                isFull: isFull
+                                isFull: isFull,
+                                index: idx
                             )
                         }
                     } else if (item.node is BlockQuote) {
                         // 块引用
                         ListItem() {
-                            MarkdownListINCComponent(
-                                listNodeView: item,
+                            MarkdownQuote1INCComponent(
+                                nodeView: item,
                                 markdownConfiguration: markdownConfiguration,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 componentWidth: widthVpToPx(screenWidth,
                                     markdownConfiguration.markdownTheme.imagePadding),
-                                output: output,
-                                isFull: isFull
+                                isFull: isFull,
+                                index: idx
                             )
                         }
                     } else if (item.node is FencedCodeBlock) {
@@ -198,13 +193,15 @@ public class MarkdownINCComponent {
                     } else if (item.node is TableBlock) {
                         // 表格
                         ListItem() {
-                            MarkdownTableBlockINCComponent(
-                                tableNodeView: item,
+                            MarkdownTableBlock1INCComponent(
+                                nodeView: item,
                                 markdownConfiguration: markdownConfiguration,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 componentWidth: widthVpToPx(screenWidth,
-                                    markdownConfiguration.markdownTheme.imagePadding)
+                                    markdownConfiguration.markdownTheme.imagePadding),
+                                isFull: isFull,
+                                index: idx
                             )
                         }
                     } else if (item.node is ThematicBreak) {
@@ -239,12 +236,12 @@ public class MarkdownINCComponent {
                 }
             )
         }
-        // 设置List组件排列方向
-        .listDirection(Axis.Vertical)
-        // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
-        .alignListItem(ListItemAlign.Start)
-        // 设置组件自身的宽度
-        .width(100.percent)
+            // 设置List组件排列方向
+            .listDirection(Axis.Vertical)
+            // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
+            .alignListItem(ListItemAlign.Start)
+            // 设置组件自身的宽度
+            .width(100.percent)
     }
 
     func onChanged(): Unit {
@@ -257,90 +254,84 @@ public class MarkdownINCComponent {
      * 将String转换成ArrayList<NodeView>，将解析的列表添加到懒加载的数据源中
      */
     func stringToNodes(): Unit {
-        let callback: (ArrayList<NodeView>) -> Unit = {
-            nodeViews => launch {
-                if (isFull) {
-                    nodeViewDataSource.clear()
-                    nodeViewDataSource.addDatas(nodeViews)
-                } else {
-                    if (nodeViews.size == 0) {
-                        return
+        try {
+            let markdown: Markdown = if (let Some(v) <- markdownConfiguration.markdownParser) {
+                v
+            } else {
+                markdownBase
+            }
+//            incBase.lazy = false
+            incBase.parse(output) // 默认已开启lazy模式
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            let nodeViews = incBase.docView.children
+            if (isFull) {
+                nodeViewDataSource.clear()
+                nodeViewDataSource.addDatas(nodeViews)
+            } else {
+                if (nodeViews.size == 0) {
+                    return
+                }
+                if (nodeViews.size > nodeViewDataSource.totalCount()) {
+                    if (nodeViewDataSource.totalCount() != 0) {
+                        nodeViewDataSource.replaceDate(nodeViewDataSource.totalCount() - 1,
+                            nodeViews[nodeViewDataSource.totalCount() - 1])
                     }
-                    if (nodeViews.size > nodeViewDataSource.totalCount()) {
-                        if (nodeViewDataSource.totalCount() != 0) {
-                            nodeViewDataSource.replaceDate(nodeViewDataSource.totalCount() - 1,
-                                nodeViews[nodeViewDataSource.totalCount() - 1])
+                    for (i in nodeViews.size - nodeViewDataSource.totalCount()..0 : -1) {
+                        nodeViewDataSource.addData(nodeViews[nodeViews.size - i])
+                    }
+                } else if (nodeViews.size == nodeViewDataSource.totalCount()) {
+                    if ((nodeViews[nodeViews.size - 1].node is BulletList &&
+                        nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is BulletList) || (nodeViews[nodeViews
+                            .size - 1]
+                        .node is OrderedList &&
+                        nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is OrderedList)) {
+                        let index: Int64 = nodeViewDataSource.totalCount() - 1
+                        for (data in list1Components) {
+                            if (data.index == index) {
+                                data.component.refreshData(nodeViews[nodeViews.size - 1])
+                            }
                         }
-                        for (i in nodeViews.size - nodeViewDataSource.totalCount()..0 : -1) {
-                            nodeViewDataSource.addData(nodeViews[nodeViews.size - i])
+                    } else if ((nodeViews[nodeViews.size - 1].node is BlockQuote &&
+                        nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is BlockQuote)) {
+                        let index: Int64 = nodeViewDataSource.totalCount() - 1
+                        for (data in quote1Components) {
+                            if (data.index == index) {
+                                data.component.refreshData(nodeViews[nodeViews.size - 1])
+                            }
                         }
-                    } else if (nodeViews.size == nodeViewDataSource.totalCount()) {
+                    } else if ((nodeViews[nodeViews.size - 1].node is TableBlock &&
+                        nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is TableBlock)) {
+                        let index: Int64 = nodeViewDataSource.totalCount() - 1
+                        for (data in tableComponents) {
+                            if (data.index == index) {
+                                data.component.refreshData(nodeViews[nodeViews.size - 1])
+                            }
+                        }
+                    } else {
                         nodeViewDataSource.replaceDate(nodeViewDataSource.totalCount() - 1, nodeViews[nodeViews.size - 1]
                         )
-                    } else {
-                        nodeViewDataSource.replaceDate(nodeViews.size - 1, nodeViews[nodeViews.size - 1])
-                        for (i in nodeViewDataSource.totalCount() - nodeViews.size..0 : -1) {
-                            nodeViewDataSource.deleteData(nodeViewDataSource.totalCount() - i)
-                        }
+                    }
+                } else {
+                    nodeViewDataSource.replaceDate(nodeViews.size - 1, nodeViews[nodeViews.size - 1])
+                    for (i in nodeViewDataSource.totalCount() - nodeViews.size..0 : -1) {
+                        nodeViewDataSource.deleteData(nodeViewDataSource.totalCount() - i)
                     }
                 }
             }
-        }
-        stringToNodesINCUtils(mdStr, markdownConfiguration, callback)
-    }
-
-    /**
-     * 全局锁
-     */
-    private static let parseINCReentrantMutex: ReentrantMutex = ReentrantMutex()
-
-    /**
-     * 通过异步的方式将markdown数据解析成Node树节点列表
-     *
-     * @param mdStr markdown数据
-     * @param markdownConfiguration MarkdownConfiguration
-     * @param callback Node树节点列表回调接口
-     */
-    func stringToNodesINCUtils(mdStr: String, markdownConfiguration: MarkdownConfiguration,
-        callback: (ArrayList<NodeView>) -> Unit): Future<Unit> {
-        let fut: Future<Unit> = spawn {
-            synchronized(parseINCReentrantMutex) {
+        } catch (e: Exception) {
+            if (isFull) {
+                let paragraph: Paragraph = Paragraph()
+                let commonmarkText: CommonmarkText = CommonmarkText(mdStr)
+                paragraph.appendChild(commonmarkText)
+                let paragraphNodeView: NodeView = buildView(paragraph, true)
+                let textNodeView: NodeView = buildView(commonmarkText, true)
                 var arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
-                try {
-                    let markdown: Markdown = if (let Some(v) <- markdownConfiguration.markdownParser) {
-                        v
-                    } else {
-                        markdownBase
-                    }
-                    incBase.lazy = false
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        return
-                    }
-                    incBase.append(mdStr) // 默认已开启lazy模式
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        return
-                    }
-                    arrayListNodeView = incBase.docView.children
-                } catch (e: Exception) {
-                    if (isFull) {
-                        let paragraph: Paragraph = Paragraph()
-                        let commonmarkText: CommonmarkText = CommonmarkText(mdStr)
-                        paragraph.appendChild(commonmarkText)
-                        let paragraphNodeView: NodeView = buildView(paragraph, true)
-                        let textNodeView: NodeView = buildView(commonmarkText, true)
-                        arrayListNodeView.append(paragraphNodeView)
-                    }
-                } finally {
-                    try {
-                        if (Thread.currentThread.hasPendingCancellation) {
-                            return
-                        }
-                        callback(arrayListNodeView)
-                    } catch (_) {
-                    }
-                }
+                arrayListNodeView.append(paragraphNodeView)
+                nodeViewDataSource.clear()
+                nodeViewDataSource.addDatas(arrayListNodeView)
             }
         }
-        return fut
     }
 }

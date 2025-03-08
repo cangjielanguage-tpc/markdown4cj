@@ -8,32 +8,64 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
+let tableComponents: ArrayList<TableIncData> = ArrayList<TableIncData>()
+
+class TableIncData {
+    var component: MarkdownTableBlock1INCComponent
+    var index: Int64
+
+    init(component: MarkdownTableBlock1INCComponent, index: Int64) {
+        this.component = component
+        this.index = index
+    }
+}
+
 /**
  * Markdown表格自定义控件
  */
 @Component
-class MarkdownTableBlockINCComponent {
+class MarkdownTableBlock1INCComponent {
     /**
      * markdown配置
      */
+    @Prop
     var markdownConfiguration: MarkdownConfiguration
 
     /**
      * 表格tableNodeView
      */
-    var tableNodeView: NodeView
+    @Prop
+    var nodeView: NodeView
 
     /**
      * 外边距 - 上面
      */
+    @Prop
     var marginTop: Float64
 
     /**
      * 外边距 - 下面
      */
+    @Prop
     var marginBottom: Float64
 
-    var listPixelMap: ArrayList<?PixelMap> = ArrayList<?PixelMap>()
+    /**
+     * 控件宽度 - 单位px
+     */
+    @Prop
+    var componentWidth: Float64
+
+    /**
+     * 是否全量加载
+     */
+    @Prop
+    var isFull: Bool
+
+    /**
+     * 标识符，第几条表格
+     */
+    @Prop
+    var index: Int64
 
     /**
      * 异步加载的图片数据
@@ -42,29 +74,33 @@ class MarkdownTableBlockINCComponent {
     var arrayListPixelMap: ObservedArrayList<ImageData> = ObservedArrayList<ImageData>()
 
     /**
-     * 控件宽度 - 单位px
+     * 缓存的图片列表
      */
-    var componentWidth: Float64
+    var listPixelMap: ArrayList<?PixelMap> = ArrayList<?PixelMap>()
 
     /**
      * 线程列表
      */
-    @State
     var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
-
-    @Prop
-    var isFull: Bool
 
     /**
      * 懒加载数据源
      */
-    @State
     var nodeViewDataSource: NodeViewDataSourceINC = NodeViewDataSourceINC(ArrayList<NodeView>())
 
-    var isFrist: Bool = true
-
     protected override func aboutToAppear(): Unit {
-        tableNumberData()
+        refreshData(nodeView)
+        tableComponents.append(TableIncData(this, index))
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        tableComponents.removeIf({
+            predicate => if (predicate.index == index) {
+                true
+            } else {
+                false
+            }
+        })
     }
 
     func build() {
@@ -79,6 +115,24 @@ class MarkdownTableBlockINCComponent {
             .margin(top: marginTop, bottom: marginBottom)
             // 设置组件自身的宽度
             .width(100.percent)
+    }
+
+    @Builder
+    func renderTableHeaderOrBody() {
+        List() {
+            LazyForEach(
+                nodeViewDataSource,
+                itemGeneratorFunc: {
+                    nodeView: NodeView, idRow: Int64 => ListItem() {
+                        // 行信息
+                        renderTableRow(nodeView, idRow)
+                    }
+                }
+            )
+        }
+        // 统一边框样式设置接口
+        .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0),
+            color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
     }
 
     /**
@@ -101,8 +155,10 @@ class MarkdownTableBlockINCComponent {
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
-            .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0],
-                color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
+            .decoration(
+                decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0],
+                color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1]
+            )
             // 点击动作触发该方法调用
             .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
     }
@@ -127,8 +183,10 @@ class MarkdownTableBlockINCComponent {
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
-            .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0],
-                color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
+            .decoration(
+                decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0],
+                color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1]
+            )
             // 点击动作触发该方法调用
             .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
     }
@@ -189,8 +247,10 @@ class MarkdownTableBlockINCComponent {
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
                         tableComponentLatexMath(
-                            latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx, idRow, idCol), idRow,
-                            idCol)
+                            latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx, idRow, idCol),
+                            idRow,
+                            idCol
+                        )
                     } else {
                         // TODO 其他节点
                         Span("")
@@ -212,7 +272,12 @@ class MarkdownTableBlockINCComponent {
             .padding(markdownConfiguration.tableTheme.tableCellPadding)
             // 设置组件的背景色
             .backgroundColor(
-                renderTableCellColor((tableCell.node as TableCell)(), markdownConfiguration.tableTheme, idRow))
+                renderTableCellColor(
+                    (tableCell.node as TableCell)(),
+                    markdownConfiguration.tableTheme,
+                    idRow
+                )
+            )
             // 统一边框样式设置接口
             .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0),
                 color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
@@ -245,35 +310,8 @@ class MarkdownTableBlockINCComponent {
             .width(100.percent)
     }
 
-    /**
-     * 表格头或表格体信息
-     */
-    @Builder
-    func renderTableHeaderOrBody() {
-        List() {
-            LazyForEach(
-                nodeViewDataSource,
-                itemGeneratorFunc: {
-                    tableHeaderOrBody: NodeView, idRow: Int64 => ListItem() {
-                        // 行信息
-                        renderTableRow(tableHeaderOrBody, idRow)
-                    }
-                }
-            )
-        }
-            // 统一边框样式设置接口
-            .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0),
-            color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
-    }
-
-    func onChanged(): Unit {
-        if (!isFrist) {
-            tableNumberData()
-        }
-    }
-
-    func tableNumberData() {
-        let list = tableNodeView.children
+    public func refreshData(nodeView: NodeView): Unit {
+        let list = nodeView.children
         let nodeViews = ArrayList<NodeView>()
         for (nodeView in list) {
             if (nodeView.node is TableBody || nodeView.node is TableHead) {

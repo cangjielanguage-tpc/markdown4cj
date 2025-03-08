@@ -92,13 +92,14 @@ func listCodeBlockINCComponent(codeText: String, infos: ?String, nodeView: NodeV
  */
 @Builder
 func listTableBlockINCComponent(tableNodeView: NodeView, markdownConfiguration: MarkdownConfiguration,
-    componentWidth: Float64) {
+    componentWidth: Float64,isFull: Bool) {
     MarkdownTableBlockINCComponent(
         tableNodeView: tableNodeView,
         markdownConfiguration: markdownConfiguration,
         marginTop: 0.0,
         marginBottom: 0.0,
-        componentWidth: componentWidth
+        componentWidth: componentWidth,
+        isFull: isFull
     )
 }
 
