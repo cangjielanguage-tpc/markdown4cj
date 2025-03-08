@@ -63,12 +63,12 @@ class LatexBlockParserFactory <: AbstractBlockParserFactory {
                 }
                 return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + i + 2)
             }
-            if (line.size > i + 1 && line[i] == b'\\' && line[i + 1] == b'[') {
-                if (line.size > i + 2 && line[i + 2] == b'$') {
-                    return BlockStart.none()
-                }
-                return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + i + 2)
-            }
+//            if (line.size > i + 1 && line[i] == b'\\' && line[i + 1] == b'[') {
+//                if (line.size > i + 2 && line[i + 2] == b'$') {
+//                    return BlockStart.none()
+//                }
+//                return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + i + 2)
+//            }
         }
         return BlockStart.none()
     }
