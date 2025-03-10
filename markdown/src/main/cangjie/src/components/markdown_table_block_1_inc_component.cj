@@ -123,7 +123,7 @@ class MarkdownTableBlock1INCComponent {
             LazyForEach(
                 nodeViewDataSource,
                 itemGeneratorFunc: {
-                    nodeView: NodeView, idRow: Int64 => ListItem() {
+                    tableNodeView: NodeView, idRow: Int64 => ListItem() {
                         // 行信息
                         renderTableRow(nodeView, idRow)
                     }
