@@ -42,6 +42,7 @@ public class LatexMathPlugin <: AbstractMarkdownPlugin {
         builder.customBlockParserFactory(LatexBlockParserFactory())
         builder.customDelimiterProcessor(LatexInlineDelimiterProcessor())
         builder.postProcessor(LatexInlineProcessor())
+        needLatexInlineParse[0] = true
     }
 
     public func configureVisitor(builder: MarkdownVisitorBuilder): Unit {
@@ -110,7 +111,7 @@ class LatexInlineProcessor <: PostProcessor {
 }
 
 class LatexInlineVisitor <: AbstractVisitor {
-    //    let reg = Regex(#"\\\(.+?\\\)"#)
+    // let reg = Regex(#"\\\(.+?\\\)"#)
     public func visit(text: CustomNode): Unit {
         if (let Some(text) <- (text as LatexInlineText)) {
             let n = LatexMathNode(text.getLiteral())

@@ -47,7 +47,7 @@ class LatexBlockParser <: AbstractBlockParser {
 class LatexBlockParserFactory <: AbstractBlockParserFactory {
     public func tryStart(state: ParserState, _: MatchedBlockParser): ?BlockStart {
         let line: String = state.getLine()
-        if (line == "$$" || line == "\\[") {
+        if (line == "$$" || line == "\\[" || isLatexInList(line)) {
             return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + 2)
         } else {
             var i = 0
@@ -63,12 +63,12 @@ class LatexBlockParserFactory <: AbstractBlockParserFactory {
                 }
                 return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + i + 2)
             }
-            if (line.size > i + 1 && line[i] == b'\\' && line[i + 1] == b'[') {
-                if (line.size > i + 2 && line[i + 2] == b'$') {
-                    return BlockStart.none()
-                }
-                return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + i + 2)
-            }
+//            if (line.size > i + 1 && line[i] == b'\\' && line[i + 1] == b'[') {
+//                if (line.size > i + 2 && line[i + 2] == b'$') {
+//                    return BlockStart.none()
+//                }
+//                return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + i + 2)
+//            }
         }
         return BlockStart.none()
     }
@@ -100,6 +100,12 @@ func isLatexEnd(lineStr: String): Bool {
         case size > 2 && line[size - 1] == b']' && line[size - 2] == b'\\' && line[size - 3] != b'\\' => true
         case _ => false
     }
+}
+
+let LATEX_IN_LIST = Regex(#"(\d+\.|-|>) (\$\$|\\\[)"#)
+func isLatexInList(line: String): Bool {
+    let str = line.trimAscii()
+    return LATEX_IN_LIST.matches(str).isSome()
 }
 
 type CharSequence = String
