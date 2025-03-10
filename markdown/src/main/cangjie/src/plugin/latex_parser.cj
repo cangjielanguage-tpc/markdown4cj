@@ -49,26 +49,6 @@ class LatexBlockParserFactory <: AbstractBlockParserFactory {
         let line: String = state.getLine()
         if (line == "$$" || line == "\\[" || isLatexInList(line)) {
             return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + 2)
-        } else {
-            var i = 0
-            while (i < line.size) {
-                if (line[i] != b' ') {
-                    break
-                }
-                i++
-            }
-            if (line.size > i + 1 && line[i] == b'$' && line[i + 1] == b'$') {
-                if (line.size > i + 2 && line[i + 2] == b'$') {
-                    return BlockStart.none()
-                }
-                return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + i + 2)
-            }
-//            if (line.size > i + 1 && line[i] == b'\\' && line[i + 1] == b'[') {
-//                if (line.size > i + 2 && line[i + 2] == b'$') {
-//                    return BlockStart.none()
-//                }
-//                return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + i + 2)
-//            }
         }
         return BlockStart.none()
     }
@@ -103,8 +83,12 @@ func isLatexEnd(lineStr: String): Bool {
 }
 
 let LATEX_IN_LIST = Regex(#"(\d+\.|-|>) (\$\$|\\\[)"#)
+
 func isLatexInList(line: String): Bool {
     let str = line.trimAscii()
+    if (str == "$$" || str == "\\[") {
+        return true
+    }
     return LATEX_IN_LIST.matches(str).isSome()
 }
 
