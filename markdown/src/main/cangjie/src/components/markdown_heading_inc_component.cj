@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import cj_res_markdown.sys
 
 /**
  * Markdown标题自定义控件
@@ -94,7 +95,9 @@ class MarkdownHeadingINCComponent {
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            // .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            // 设置系统深浅色
+            .fontColor(@r(sys.color.ohos_id_color_text_primary))
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
             // 设置文本装饰线样式及其颜色

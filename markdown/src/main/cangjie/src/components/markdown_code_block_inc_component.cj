@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import cj_res_markdown.sys
 
 @Component
 class MarkdownCodeBlockINCComponent {
@@ -59,7 +60,9 @@ class MarkdownCodeBlockINCComponent {
     func codeBlockTextComponent() {
         Text(codeText)
             // 设置文本颜色
-            .fontColor(codeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+            //.fontColor(codeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+            // 适配系统深浅色
+            .fontColor(@r(sys.color.ohos_id_color_text_primary))
             // 设置文本尺寸
             .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
             // 设置文本的字体列表

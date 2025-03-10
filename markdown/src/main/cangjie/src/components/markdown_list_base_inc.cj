@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import cj_res_markdown.sys
 
 /**
  * 无序列表和有序列表的前缀文本
@@ -16,7 +17,9 @@ func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownConfigur
     // 设置文本内容
     Text(listPrefixStr(item, isBullet))
         // 设置文本颜色
-        .fontColor(listPrefixColor(markdownConfiguration.markdownTheme, isBullet))
+        //.fontColor(listPrefixColor(markdownConfiguration.markdownTheme, isBullet))
+        // 设置系统深浅色
+        .fontColor(@r(sys.color.ohos_id_color_text_primary))
         // 设置文本尺寸
         .fontSize(listPrefixSize(markdownConfiguration.markdownTheme, isBullet))
         // 设置内边距属性
