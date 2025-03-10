@@ -52,6 +52,8 @@ public class MarkdownINCComponent {
 
     var isFrist: Bool = true
 
+    let markdownListConfiguration: MarkdownListConfiguration = MarkdownListConfiguration()
+
     var markdownBase: Markdown = Markdown
         .builder()
         // HTML插件
@@ -115,7 +117,8 @@ public class MarkdownINCComponent {
                                 componentWidth: widthVpToPx(screenWidth,
                                     markdownConfiguration.markdownTheme.imagePadding),
                                 isFull: isFull,
-                                index: idx
+                                index: idx,
+                                markdownListConfiguration: markdownListConfiguration
                             )
                         }
                     } else if (item.node is OrderedList) {
@@ -129,7 +132,8 @@ public class MarkdownINCComponent {
                                 componentWidth: widthVpToPx(screenWidth,
                                     markdownConfiguration.markdownTheme.imagePadding),
                                 isFull: isFull,
-                                index: idx
+                                index: idx,
+                                markdownListConfiguration: markdownListConfiguration
                             )
                         }
                     } else if (item.node is BlockQuote) {
@@ -143,7 +147,8 @@ public class MarkdownINCComponent {
                                 componentWidth: widthVpToPx(screenWidth,
                                     markdownConfiguration.markdownTheme.imagePadding),
                                 isFull: isFull,
-                                index: idx
+                                index: idx,
+                                markdownListConfiguration: markdownListConfiguration
                             )
                         }
                     } else if (item.node is FencedCodeBlock) {
@@ -201,7 +206,8 @@ public class MarkdownINCComponent {
                                 componentWidth: widthVpToPx(screenWidth,
                                     markdownConfiguration.markdownTheme.imagePadding),
                                 isFull: isFull,
-                                index: idx
+                                index: idx,
+                                markdownListConfiguration: markdownListConfiguration
                             )
                         }
                     } else if (item.node is ThematicBreak) {
@@ -260,7 +266,7 @@ public class MarkdownINCComponent {
             } else {
                 markdownBase
             }
-//            incBase.lazy = false
+            //            incBase.lazy = false
             incBase.parse(output) // 默认已开启lazy模式
             if (Thread.currentThread.hasPendingCancellation) {
                 return
@@ -288,7 +294,7 @@ public class MarkdownINCComponent {
                         .node is OrderedList &&
                         nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is OrderedList)) {
                         let index: Int64 = nodeViewDataSource.totalCount() - 1
-                        for (data in list1Components) {
+                        for (data in markdownListConfiguration.list1Components) {
                             if (data.index == index) {
                                 data.component.refreshData(nodeViews[nodeViews.size - 1])
                             }
@@ -296,7 +302,7 @@ public class MarkdownINCComponent {
                     } else if ((nodeViews[nodeViews.size - 1].node is BlockQuote &&
                         nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is BlockQuote)) {
                         let index: Int64 = nodeViewDataSource.totalCount() - 1
-                        for (data in quote1Components) {
+                        for (data in markdownListConfiguration.quote1Components) {
                             if (data.index == index) {
                                 data.component.refreshData(nodeViews[nodeViews.size - 1])
                             }
@@ -304,7 +310,7 @@ public class MarkdownINCComponent {
                     } else if ((nodeViews[nodeViews.size - 1].node is TableBlock &&
                         nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is TableBlock)) {
                         let index: Int64 = nodeViewDataSource.totalCount() - 1
-                        for (data in tableComponents) {
+                        for (data in markdownListConfiguration.tableComponents) {
                             if (data.index == index) {
                                 data.component.refreshData(nodeViews[nodeViews.size - 1])
                             }

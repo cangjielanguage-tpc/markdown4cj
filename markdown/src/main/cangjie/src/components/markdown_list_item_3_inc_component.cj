@@ -9,8 +9,6 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import ohos.eventhub.*
 
-let listItem3Components: ArrayList<ListItem3IncData> = ArrayList<ListItem3IncData>()
-
 class ListItem3IncData {
     var component: MarkdownListItem3INCComponent
     var index: Int64
@@ -109,6 +107,9 @@ class MarkdownListItem3INCComponent {
     @Prop
     var indexItem3: Int64
 
+    @Prop
+    var markdownListConfiguration: MarkdownListConfiguration
+
     /**
      * 懒加载数据源
      */
@@ -117,20 +118,25 @@ class MarkdownListItem3INCComponent {
 
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
-        listItem3Components.append(ListItem3IncData(this, index, index2, index3, indexItem, indexItem2, indexItem3))
+        markdownListConfiguration
+            .listItem3Components
+            .append(ListItem3IncData(this, index, index2, index3, indexItem, indexItem2, indexItem3))
     }
 
     protected override func aboutToDisappear(): Unit {
-        listItem3Components.removeIf(
-            {
-                predicate => if (predicate.index == index && predicate.index2 == index2
-                    && predicate.index3 == index3 && predicate.indexItem == indexItem
-                    && predicate.indexItem2 == indexItem2 && predicate.indexItem3 == indexItem3 && predicate.component.nodeView.children.size == nodeView.children.size) {
-                    true
-                } else {
-                    false
-                }
-            })
+        markdownListConfiguration
+            .listItem3Components
+            .removeIf(
+                {
+                    predicate => if (predicate.index == index && predicate.index2 == index2
+                        && predicate.index3 == index3 && predicate.indexItem == indexItem
+                        && predicate.indexItem2 == indexItem2 && predicate.indexItem3 == indexItem3 &&
+                        predicate.component.nodeView.children.size == nodeView.children.size) {
+                        true
+                    } else {
+                        false
+                    }
+                })
     }
 
     func build() {

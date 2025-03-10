@@ -9,8 +9,6 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import ohos.eventhub.*
 
-let quote3Components: ArrayList<Quote3IncData> = ArrayList<Quote3IncData>()
-
 class Quote3IncData {
     var component: MarkdownQuote3INCComponent
     var index: Int64
@@ -101,6 +99,9 @@ public class MarkdownQuote3INCComponent {
     @Prop
     var indexItem2: Int64
 
+    @Prop
+    var markdownListConfiguration: MarkdownListConfiguration
+
     /**
      * 懒加载数据源
      */
@@ -109,20 +110,25 @@ public class MarkdownQuote3INCComponent {
 
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
-        quote3Components.append(Quote3IncData(this, index, index2, index3, indexItem, indexItem2))
+        markdownListConfiguration.quote3Components.append(Quote3IncData(this, index, index2, index3, indexItem,
+            indexItem2))
     }
 
     protected override func aboutToDisappear(): Unit {
-        quote3Components.removeIf(
-            {
-                predicate => if (predicate.index == index && predicate.index2 == index2
-                    && predicate.index3 == index3 && predicate.indexItem == indexItem
-                    && predicate.indexItem2 == indexItem2 && predicate.component.nodeView.children.size == nodeView.children.size) {
-                    true
-                } else {
-                    false
-                }
-            })
+        markdownListConfiguration
+            .quote3Components
+            .removeIf(
+                {
+                    predicate => if (predicate.index == index && predicate.index2 == index2
+                        && predicate.index3 == index3 && predicate.indexItem == indexItem
+                        && predicate.indexItem2 == indexItem2 && predicate.component.nodeView.children.size == nodeView
+                        .children
+                        .size) {
+                        true
+                    } else {
+                        false
+                    }
+                })
     }
 
     func build() {

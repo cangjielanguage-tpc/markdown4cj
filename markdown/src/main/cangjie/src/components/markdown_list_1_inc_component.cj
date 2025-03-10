@@ -9,8 +9,6 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import ohos.eventhub.*
 
-let list1Components: ArrayList<List1IncData> = ArrayList<List1IncData>()
-
 class List1IncData {
     var component: MarkdownList1INCComponent
     var index: Int64
@@ -68,6 +66,9 @@ class MarkdownList1INCComponent {
     @Prop
     var index: Int64
 
+    @Prop
+    var markdownListConfiguration: MarkdownListConfiguration
+
     /**
      * 懒加载数据源
      */
@@ -76,17 +77,22 @@ class MarkdownList1INCComponent {
 
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
-        list1Components.append(List1IncData(this, index))
+        markdownListConfiguration.list1Components.append(List1IncData(this, index))
     }
 
     protected override func aboutToDisappear(): Unit {
-        list1Components.removeIf({
-            predicate => if (predicate.index == index && predicate.component.nodeView.children.size == nodeView.children.size) {
-                true
-            } else {
-                false
-            }
-        })
+        markdownListConfiguration
+            .list1Components
+            .removeIf(
+                {
+                    predicate => if (predicate.index == index && predicate.component.nodeView.children.size == nodeView
+                        .children
+                        .size) {
+                        true
+                    } else {
+                        false
+                    }
+                })
     }
 
     func build() {
@@ -124,7 +130,8 @@ class MarkdownList1INCComponent {
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 index: index,
-                                indexItem: idx
+                                indexItem: idx,
+                                markdownListConfiguration: markdownListConfiguration
                             )
                         }
                             // 在垂直方向上子组件的对齐格式。
@@ -167,7 +174,8 @@ class MarkdownList1INCComponent {
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 index: index,
-                                indexItem: idx
+                                indexItem: idx,
+                                markdownListConfiguration: markdownListConfiguration
                             )
                         }
                             // 在垂直方向上子组件的对齐格式。
@@ -209,7 +217,7 @@ class MarkdownList1INCComponent {
                 }
             } else if (nodeViews.size == nodeViewDataSource.totalCount()) {
                 let indexItem: Int64 = nodeViewDataSource.totalCount() - 1
-                for (data in listItem1Components) {
+                for (data in markdownListConfiguration.listItem1Components) {
                     if (data.index == index && data.indexItem == indexItem) {
                         data.component.refreshData(nodeViews[nodeViews.size - 1])
                     }

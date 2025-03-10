@@ -9,8 +9,6 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import ohos.eventhub.*
 
-let quote2Components: ArrayList<Quote2IncData> = ArrayList<Quote2IncData>()
-
 class Quote2IncData {
     var component: MarkdownQuote2INCComponent
     var index: Int64
@@ -84,6 +82,9 @@ public class MarkdownQuote2INCComponent {
     @Prop
     var indexItem: Int64
 
+    @Prop
+    var markdownListConfiguration: MarkdownListConfiguration
+
     /**
      * 懒加载数据源
      */
@@ -92,19 +93,23 @@ public class MarkdownQuote2INCComponent {
 
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
-        quote2Components.append(Quote2IncData(this, index, index2, indexItem))
+        markdownListConfiguration.quote2Components.append(Quote2IncData(this, index, index2, indexItem))
     }
 
     protected override func aboutToDisappear(): Unit {
-        quote2Components.removeIf(
-            {
-                predicate => if (predicate.index == index && predicate.index2 == index2
-                    && predicate.indexItem == indexItem && predicate.component.nodeView.children.size == nodeView.children.size) {
-                    true
-                } else {
-                    false
-                }
-            })
+        markdownListConfiguration
+            .quote2Components
+            .removeIf(
+                {
+                    predicate => if (predicate.index == index && predicate.index2 == index2
+                        && predicate.indexItem == indexItem && predicate.component.nodeView.children.size == nodeView
+                        .children
+                        .size) {
+                        true
+                    } else {
+                        false
+                    }
+                })
     }
 
     func build() {
@@ -157,7 +162,8 @@ public class MarkdownQuote2INCComponent {
                                     index2: index2,
                                     index3: idx,
                                     indexItem: indexItem,
-                                    indexItem2: -1
+                                    indexItem2: -1,
+                                    markdownListConfiguration: markdownListConfiguration
                                 )
                             } else if (item.node is OrderedList) {
                                 // 有序列表
@@ -172,7 +178,8 @@ public class MarkdownQuote2INCComponent {
                                     index2: index2,
                                     index3: idx,
                                     indexItem: indexItem,
-                                    indexItem2: -1
+                                    indexItem2: -1,
+                                    markdownListConfiguration: markdownListConfiguration
                                 )
                             } else if (item.node is BlockQuote) {
                                 // 块引用
@@ -187,7 +194,8 @@ public class MarkdownQuote2INCComponent {
                                     index2: index2,
                                     index3: idx,
                                     indexItem: indexItem,
-                                    indexItem2: -1
+                                    indexItem2: -1,
+                                    markdownListConfiguration: markdownListConfiguration
                                 )
                             } else if (item.node is TableBlock) {
                                 // 表格
@@ -260,7 +268,7 @@ public class MarkdownQuote2INCComponent {
                     .node is OrderedList &&
                     nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is OrderedList)) {
                     let index3: Int64 = nodeViewDataSource.totalCount() - 1
-                    for (data in list3Components) {
+                    for (data in markdownListConfiguration.list3Components) {
                         if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.indexItem ==
                             indexItem && data.indexItem2 == -1) {
                             data.component.refreshData(nodeViews[nodeViews.size - 1])
@@ -269,7 +277,7 @@ public class MarkdownQuote2INCComponent {
                 } else if ((nodeViews[nodeViews.size - 1].node is BlockQuote &&
                     nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is BlockQuote)) {
                     let index3: Int64 = nodeViewDataSource.totalCount() - 1
-                    for (data in quote3Components) {
+                    for (data in markdownListConfiguration.quote3Components) {
                         if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.indexItem ==
                             indexItem && data.indexItem2 == -1) {
                             data.component.refreshData(nodeViews[nodeViews.size - 1])

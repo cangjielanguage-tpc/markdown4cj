@@ -8,8 +8,6 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
-let tableComponents: ArrayList<TableIncData> = ArrayList<TableIncData>()
-
 class TableIncData {
     var component: MarkdownTableBlock1INCComponent
     var index: Int64
@@ -67,6 +65,9 @@ class MarkdownTableBlock1INCComponent {
     @Prop
     var index: Int64
 
+    @Prop
+    var markdownListConfiguration: MarkdownListConfiguration
+
     /**
      * 异步加载的图片数据
      */
@@ -90,17 +91,19 @@ class MarkdownTableBlock1INCComponent {
 
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
-        tableComponents.append(TableIncData(this, index))
+        markdownListConfiguration.tableComponents.append(TableIncData(this, index))
     }
 
     protected override func aboutToDisappear(): Unit {
-        tableComponents.removeIf({
-            predicate => if (predicate.index == index) {
-                true
-            } else {
-                false
-            }
-        })
+        markdownListConfiguration
+            .tableComponents
+            .removeIf({
+                predicate => if (predicate.index == index) {
+                    true
+                } else {
+                    false
+                }
+            })
     }
 
     func build() {
@@ -125,13 +128,13 @@ class MarkdownTableBlock1INCComponent {
                 itemGeneratorFunc: {
                     tableNodeView: NodeView, idRow: Int64 => ListItem() {
                         // 行信息
-                        renderTableRow(nodeView, idRow)
+                        renderTableRow(tableNodeView, idRow)
                     }
                 }
             )
         }
-        // 统一边框样式设置接口
-        .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0),
+            // 统一边框样式设置接口
+            .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0),
             color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
     }
 

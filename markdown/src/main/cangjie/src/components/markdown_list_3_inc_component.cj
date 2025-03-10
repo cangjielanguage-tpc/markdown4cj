@@ -9,8 +9,6 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import ohos.eventhub.*
 
-let list3Components: ArrayList<List3IncData> = ArrayList<List3IncData>()
-
 class List3IncData {
     var component: MarkdownList3INCComponent
     var index: Int64
@@ -101,6 +99,9 @@ class MarkdownList3INCComponent {
     @Prop
     var indexItem2: Int64
 
+    @Prop
+    var markdownListConfiguration: MarkdownListConfiguration
+
     /**
      * 懒加载数据源
      */
@@ -109,20 +110,25 @@ class MarkdownList3INCComponent {
 
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
-        list3Components.append(List3IncData(this, index, index2, index3, indexItem, indexItem2))
+        markdownListConfiguration.list3Components.append(List3IncData(this, index, index2, index3, indexItem, indexItem2
+        ))
     }
 
     protected override func aboutToDisappear(): Unit {
-        list3Components.removeIf(
-            {
-                predicate => if (predicate.index == index && predicate.index2 == index2
-                    && predicate.index3 == index3 && predicate.indexItem == indexItem
-                    && predicate.indexItem2 == indexItem2 && predicate.component.nodeView.children.size == nodeView.children.size) {
-                    true
-                } else {
-                    false
-                }
-            })
+        markdownListConfiguration
+            .list3Components
+            .removeIf(
+                {
+                    predicate => if (predicate.index == index && predicate.index2 == index2
+                        && predicate.index3 == index3 && predicate.indexItem == indexItem
+                        && predicate.indexItem2 == indexItem2 && predicate.component.nodeView.children.size == nodeView
+                        .children
+                        .size) {
+                        true
+                    } else {
+                        false
+                    }
+                })
     }
 
     func build() {
@@ -164,7 +170,8 @@ class MarkdownList3INCComponent {
                                 index3: index3,
                                 indexItem: indexItem,
                                 indexItem2: indexItem2,
-                                indexItem3: idx
+                                indexItem3: idx,
+                                markdownListConfiguration: markdownListConfiguration
                             )
                         }
                             // 在垂直方向上子组件的对齐格式。
@@ -211,7 +218,8 @@ class MarkdownList3INCComponent {
                                 index3: index3,
                                 indexItem: indexItem,
                                 indexItem2: indexItem2,
-                                indexItem3: idx
+                                indexItem3: idx,
+                                markdownListConfiguration: markdownListConfiguration
                             )
                         }
                             // 在垂直方向上子组件的对齐格式。
@@ -253,7 +261,7 @@ class MarkdownList3INCComponent {
                 }
             } else if (nodeViews.size == nodeViewDataSource.totalCount()) {
                 let indexItem3: Int64 = nodeViewDataSource.totalCount() - 1
-                for (data in listItem3Components) {
+                for (data in markdownListConfiguration.listItem3Components) {
                     if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.indexItem ==
                         indexItem && data.indexItem2 == indexItem2 && data.indexItem3 == indexItem3) {
                         data.component.refreshData(nodeViews[nodeViews.size - 1])
