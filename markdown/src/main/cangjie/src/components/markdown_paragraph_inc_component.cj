@@ -7,7 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
-import cj_res_markdown.app
+import cj_res_markdown.sys
 
 /**
  * Markdown段落自定义页面
@@ -113,7 +113,8 @@ class MarkdownParagraphINCComponent {
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
+            //.fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
+            .fontColor(@r(sys.color.ohos_id_color_text_primary))
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色

@@ -83,7 +83,8 @@ class MarkdownCodeBlockINCComponent {
             codeBlockTextComponent()
         }
         // 设置组件的背景色
-        .backgroundColor(codeBackgroundColor(markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+        //.backgroundColor(codeBackgroundColor(markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+        .backgroundColor(@r(sys.color.ohos_fa_component_normal))
         // 设置滚动方法
         .scrollable(ScrollDirection.Horizontal)
         // 设置滚动条状态

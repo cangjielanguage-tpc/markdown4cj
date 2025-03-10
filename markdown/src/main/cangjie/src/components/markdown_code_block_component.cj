@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import cj_res_markdown.sys
 
 /**
  * Markdown围栏代码块、缩进代码块自定义控件
@@ -72,7 +73,8 @@ class MarkdownCodeBlockComponent {
                         // 设置文本内容
                         Span(item.getText())
                             // 设置文本颜色
-                            .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+                            //.fontColor(codeTextColor(item, markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+                            .fontColor(@r(sys.color.ohos_id_color_text_primary))
                             // 设置文本字符间距
                             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
                 }
@@ -98,7 +100,8 @@ class MarkdownCodeBlockComponent {
             codeBlockTextComponent()
         }
         // 设置组件的背景色
-        .backgroundColor(codeBackgroundColor(markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+        //.backgroundColor(codeBackgroundColor(markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+        .backgroundColor(@r(sys.color.ohos_fa_component_normal))
         // 设置滚动方法
         .scrollable(ScrollDirection.Horizontal)
         // 设置滚动条状态

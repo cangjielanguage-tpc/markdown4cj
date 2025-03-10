@@ -122,7 +122,8 @@ class MarkdownHeadingINCComponent {
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true))
+            //.fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true))
+            .fontColor(@r(sys.color.ohos_id_color_text_primary))
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
             // 设置文本装饰线样式及其颜色

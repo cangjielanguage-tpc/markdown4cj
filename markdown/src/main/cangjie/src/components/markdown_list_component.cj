@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import cj_res_markdown.sys
 
 /**
  * Markdown无序列表(任务列表)、有序列表(TOC列表)、块引用自定义控件
@@ -72,7 +73,8 @@ public class MarkdownListComponent {
         // 设置文本内容
         Text(listPrefixStr(item, isBullet))
             // 设置文本颜色
-            .fontColor(listPrefixColor(markdownConfiguration.markdownTheme, isBullet))
+            //.fontColor(listPrefixColor(markdownConfiguration.markdownTheme, isBullet))
+            .fontColor(@r(sys.color.ohos_id_color_text_primary))
             // 设置文本尺寸
             .fontSize(listPrefixSize(markdownConfiguration.markdownTheme, isBullet))
             // 设置内边距属性
@@ -181,9 +183,11 @@ public class MarkdownListComponent {
             // 圆角
             .shape(ShapeType.Capsule)
             // 文本颜色
-            .fontColor(markdownConfiguration.markdownTheme.buttonTextColor)
+            //.fontColor(markdownConfiguration.markdownTheme.buttonTextColor)
+            .fontColor(@r(sys.color.ohos_id_color_text_primary))
             // 背景颜色
-            .backgroundColor(markdownConfiguration.markdownTheme.buttonTextBackgroupColor)
+            .backgroundColor(@r(sys.color.ohos_fa_component_normal))
+            //.backgroundColor(markdownConfiguration.markdownTheme.buttonTextBackgroupColor)
             // 外边距
             .margin(top: markdownConfiguration.markdownTheme.buttonTextMargin, bottom: markdownConfiguration.markdownTheme.buttonTextMargin)
             // 内容对齐方式
