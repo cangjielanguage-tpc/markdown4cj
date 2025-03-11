@@ -86,7 +86,7 @@ public class MarkdownINCComponent {
                         // 标题
                         ListItem() {
                             MarkdownHeading1INCComponent(
-                                nodeView: item,
+                                headingNodeView: item,
                                 markdownConfiguration: markdownConfiguration,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
@@ -101,7 +101,7 @@ public class MarkdownINCComponent {
                         // 段落
                         ListItem() {
                             MarkdownParagraph1INCComponent(
-                                nodeView: item,
+                                paragraphNodeView: item,
                                 markdownConfiguration: markdownConfiguration,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,

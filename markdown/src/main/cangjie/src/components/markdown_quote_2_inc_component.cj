@@ -119,7 +119,7 @@ public class MarkdownQuote2INCComponent {
     func listParagraph3INCComponent(nodeViewParagraph: NodeView, markdownConfiguration: MarkdownConfiguration,
         componentWidth: Float64, idx: Int64) {
         MarkdownParagraph3INCComponent(
-            nodeView: nodeViewParagraph,
+            paragraphNodeView: nodeViewParagraph,
             markdownConfiguration: markdownConfiguration,
             marginTop: 0.0,
             marginBottom: 0.0,
@@ -141,7 +141,7 @@ public class MarkdownQuote2INCComponent {
     func listHeading3INCComponent(nodeViewHeading: NodeView, markdownConfiguration: MarkdownConfiguration,
         componentWidth: Float64, idx: Int64) {
         MarkdownHeading3INCComponent(
-            nodeView: nodeViewHeading,
+            headingNodeView: nodeViewHeading,
             markdownConfiguration: markdownConfiguration,
             marginTop: 0.0,
             marginBottom: 0.0,

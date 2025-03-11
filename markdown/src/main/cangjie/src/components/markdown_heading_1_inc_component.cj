@@ -32,7 +32,7 @@ class MarkdownHeading1INCComponent {
     /**
      * 标题NodeView
      */
-    var nodeView: NodeView
+    var headingNodeView: NodeView
 
     /**
      * 外边距 - 上面
@@ -88,7 +88,7 @@ class MarkdownHeading1INCComponent {
     var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
-        refreshData(nodeView)
+        refreshData(headingNodeView)
         markdownListConfiguration.heading1Components.append(Heading1IncData(this, index))
     }
 
@@ -97,7 +97,7 @@ class MarkdownHeading1INCComponent {
             .heading1Components
             .removeIf(
                 {
-                    predicate => if (predicate.index == index && predicate.component.nodeView.children.size == nodeView
+                    predicate => if (predicate.index == index && predicate.component.headingNodeView.children.size == headingNodeView
                         .children
                         .size) {
                         true
@@ -126,7 +126,7 @@ class MarkdownHeading1INCComponent {
                 }
             } else if (nodeViews.size == nodeViewList.size) {
                 nodeViewList.remove(nodeViewList.size - 1)
-                nodeViewList.append(nodeViews[nodeViewList.size - 1])
+                nodeViewList.append(nodeViews[nodeViews.size - 1])
             } else {
                 nodeViewList.remove(nodeViews.size - 1)
                 nodeViewList.append(nodeViews[nodeViews.size - 1])
@@ -143,7 +143,7 @@ class MarkdownHeading1INCComponent {
             headingTitleComponent()
 
             // 一级二级标题是否显示下划线
-            if ((nodeView.node as Heading)().getLevel() == 1 || (nodeView.node as Heading)().getLevel() ==
+            if ((headingNodeView.node as Heading)().getLevel() == 1 || (headingNodeView.node as Heading)().getLevel() ==
                 2) {
                 if (markdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {
                     headingDividerComponent()
@@ -170,7 +170,7 @@ class MarkdownHeading1INCComponent {
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, (nodeView.node as Heading)().getLevel()))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, (headingNodeView.node as Heading)().getLevel()))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, true))
             // 设置文本的字体样式

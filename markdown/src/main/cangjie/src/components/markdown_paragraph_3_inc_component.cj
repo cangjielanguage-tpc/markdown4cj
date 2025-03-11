@@ -43,7 +43,7 @@ class MarkdownParagraph3INCComponent {
      * 段落NodeView
      */
     @Prop
-    var nodeView: NodeView
+    var paragraphNodeView: NodeView
 
     /**
      * 外边距 - 上面
@@ -126,7 +126,7 @@ class MarkdownParagraph3INCComponent {
     var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
-        refreshData(nodeView)
+        refreshData(paragraphNodeView)
         markdownListConfiguration.paragraph3Components.append(Paragraph3IncData(this, index, index2, index3, indexItem,
             indexItem2))
     }
@@ -138,7 +138,7 @@ class MarkdownParagraph3INCComponent {
                 {
                     predicate => if (predicate.index == index && predicate.index2 == index2
                         && predicate.index3 == index3 && predicate.indexItem == indexItem
-                        && predicate.indexItem2 == indexItem2 && predicate.component.nodeView.children.size == nodeView
+                        && predicate.indexItem2 == indexItem2 && predicate.component.paragraphNodeView.children.size == paragraphNodeView
                         .children
                         .size) {
                         true
@@ -167,7 +167,7 @@ class MarkdownParagraph3INCComponent {
                 }
             } else if (nodeViews.size == nodeViewList.size) {
                 nodeViewList.remove(nodeViewList.size - 1)
-                nodeViewList.append(nodeViews[nodeViewList.size - 1])
+                nodeViewList.append(nodeViews[nodeViews.size - 1])
             } else {
                 nodeViewList.remove(nodeViews.size - 1)
                 nodeViewList.append(nodeViews[nodeViews.size - 1])
