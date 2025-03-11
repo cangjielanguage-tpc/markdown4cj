@@ -23,4 +23,20 @@ public class MarkdownListConfiguration {
     let quote3Components: ArrayList<Quote3IncData> = ArrayList<Quote3IncData>()
 
     let tableComponents: ArrayList<TableIncData> = ArrayList<TableIncData>()
+
+    let paragraph1Components: ArrayList<Paragraph1IncData> = ArrayList<Paragraph1IncData>()
+
+    let paragraph2Components: ArrayList<Paragraph2IncData> = ArrayList<Paragraph2IncData>()
+
+    let paragraph3Components: ArrayList<Paragraph3IncData> = ArrayList<Paragraph3IncData>()
+
+    let paragraph4Components: ArrayList<Paragraph4IncData> = ArrayList<Paragraph4IncData>()
+
+    let heading1Components: ArrayList<Heading1IncData> = ArrayList<Heading1IncData>()
+
+    let heading2Components: ArrayList<Heading2IncData> = ArrayList<Heading2IncData>()
+
+    let heading3Components: ArrayList<Heading3IncData> = ArrayList<Heading3IncData>()
+
+    let heading4Components: ArrayList<Heading4IncData> = ArrayList<Heading4IncData>()
 }

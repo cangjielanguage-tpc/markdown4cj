@@ -9,11 +9,30 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import cj_res_markdown.sys
 
+class Heading3IncData {
+    var component: MarkdownHeading3INCComponent
+    var index: Int64
+    var index2: Int64
+    var index3: Int64
+    var indexItem: Int64
+    var indexItem2: Int64
+
+    init(component: MarkdownHeading3INCComponent, index: Int64, index2: Int64, index3: Int64, indexItem: Int64,
+        indexItem2: Int64) {
+        this.component = component
+        this.index = index
+        this.index2 = index2
+        this.index3 = index3
+        this.indexItem = indexItem
+        this.indexItem2 = indexItem2
+    }
+}
+
 /**
  * Markdown标题自定义控件
  */
 @Component
-class MarkdownHeadingINCComponent {
+class MarkdownHeading3INCComponent {
     /**
      * markdown配置
      */
@@ -22,7 +41,7 @@ class MarkdownHeadingINCComponent {
     /**
      * 标题NodeView
      */
-    var headingNodeView: NodeView
+    var nodeView: NodeView
 
     /**
      * 外边距 - 上面
@@ -38,6 +57,45 @@ class MarkdownHeadingINCComponent {
      * 控件宽度 - 单位px
      */
     var componentWidth: Float64
+
+    /**
+     * 是否全量加载
+     */
+    @Prop
+    var isFull: Bool
+
+    /**
+     * 标识符，第几条块引用
+     */
+    @Prop
+    var index: Int64
+
+    /**
+     * 标识符，第几条块引用
+     */
+    @Prop
+    var index2: Int64
+
+    /**
+     * 标识符，第几条块引用
+     */
+    @Prop
+    var index3: Int64
+
+    /**
+     * 标识符，第几条块引用
+     */
+    @Prop
+    var indexItem: Int64
+
+    /**
+     * 标识符，第几条块引用
+     */
+    @Prop
+    var indexItem2: Int64
+
+    @Prop
+    var markdownListConfiguration: MarkdownListConfiguration
 
     /**
      * 储存的PixelMap，最后需要释放
@@ -56,13 +114,72 @@ class MarkdownHeadingINCComponent {
     @State
     var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
 
+    /**
+     * 懒加载数据源
+     */
+    @State
+    var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+
+    protected override func aboutToAppear(): Unit {
+        refreshData(nodeView)
+        markdownListConfiguration.heading3Components.append(Heading3IncData(this, index, index2, index3, indexItem,
+            indexItem2))
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        markdownListConfiguration
+            .heading3Components
+            .removeIf(
+                {
+                    predicate => if (predicate.index == index && predicate.index2 == index2
+                        && predicate.index3 == index3 && predicate.indexItem == indexItem
+                        && predicate.indexItem2 == indexItem2 && predicate.component.nodeView.children.size == nodeView
+                        .children
+                        .size) {
+                        true
+                    } else {
+                        false
+                    }
+                })
+    }
+
+    public func refreshData(nodeView: NodeView): Unit {
+        let nodeViews = nodeView.children
+        if (isFull) {
+            nodeViewList.clear()
+            nodeViewList.appendAll(nodeViews)
+        } else {
+            if (nodeViews.size == 0) {
+                return
+            }
+            if (nodeViews.size > nodeViewList.size) {
+                if (nodeViewList.size != 0) {
+                    nodeViewList.remove(nodeViewList.size - 1)
+                    nodeViewList.append(nodeViews[nodeViewList.size - 1])
+                }
+                for (i in nodeViews.size - nodeViewList.size..0 : -1) {
+                    nodeViewList.append(nodeViews[nodeViews.size - i])
+                }
+            } else if (nodeViews.size == nodeViewList.size) {
+                nodeViewList.remove(nodeViewList.size - 1)
+                nodeViewList.append(nodeViews[nodeViewList.size - 1])
+            } else {
+                nodeViewList.remove(nodeViews.size - 1)
+                nodeViewList.append(nodeViews[nodeViews.size - 1])
+                for (i in nodeViewList.size - nodeViews.size..0 : -1) {
+                    nodeViewList.remove(nodeViewList.size - i)
+                }
+            }
+        }
+    }
+
     func build() {
         Column() {
             // 标题内容
             headingTitleComponent()
 
             // 一级二级标题是否显示下划线
-            if ((headingNodeView.node as Heading)().getLevel() == 1 || (headingNodeView.node as Heading)().getLevel() ==
+            if ((nodeView.node as Heading)().getLevel() == 1 || (nodeView.node as Heading)().getLevel() ==
                 2) {
                 if (markdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {
                     headingDividerComponent()
@@ -89,7 +206,7 @@ class MarkdownHeadingINCComponent {
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, (headingNodeView.node as Heading)().getLevel()))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, (nodeView.node as Heading)().getLevel()))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, true))
             // 设置文本的字体样式
@@ -297,7 +414,7 @@ class MarkdownHeadingINCComponent {
     func headingTitleComponent() {
         Text() {
             ForEach(
-                headingNodeView.children,
+                nodeViewList,
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本

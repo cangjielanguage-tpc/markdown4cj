@@ -73,8 +73,7 @@ class MarkdownCodeBlockComponent {
                         // 设置文本内容
                         Span(item.getText())
                             // 设置文本颜色
-                            //.fontColor(codeTextColor(item, markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
-                            .fontColor(@r(sys.color.ohos_id_color_text_primary))
+                            .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
                             // 设置文本字符间距
                             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
                 }
@@ -100,8 +99,7 @@ class MarkdownCodeBlockComponent {
             codeBlockTextComponent()
         }
         // 设置组件的背景色
-        //.backgroundColor(codeBackgroundColor(markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
-        .backgroundColor(@r(sys.color.ohos_fa_component_normal))
+        .backgroundColor(codeBackgroundColor(markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
         // 设置滚动方法
         .scrollable(ScrollDirection.Horizontal)
         // 设置滚动条状态

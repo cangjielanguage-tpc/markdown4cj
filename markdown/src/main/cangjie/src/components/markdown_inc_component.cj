@@ -85,25 +85,31 @@ public class MarkdownINCComponent {
                     item: NodeView, idx: Int64 => if (item.node is Heading) {
                         // 标题
                         ListItem() {
-                            MarkdownHeadingINCComponent(
-                                headingNodeView: item,
+                            MarkdownHeading1INCComponent(
+                                nodeView: item,
                                 markdownConfiguration: markdownConfiguration,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 componentWidth: widthVpToPx(screenWidth,
-                                    markdownConfiguration.markdownTheme.imagePadding)
+                                    markdownConfiguration.markdownTheme.imagePadding),
+                                isFull: isFull,
+                                index: idx,
+                                markdownListConfiguration: markdownListConfiguration
                             )
                         }
                     } else if (item.node is Paragraph) {
                         // 段落
                         ListItem() {
-                            MarkdownParagraphINCComponent(
-                                paragraphNodeView: item,
+                            MarkdownParagraph1INCComponent(
+                                nodeView: item,
                                 markdownConfiguration: markdownConfiguration,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 componentWidth: widthVpToPx(screenWidth,
-                                    markdownConfiguration.markdownTheme.imagePadding)
+                                    markdownConfiguration.markdownTheme.imagePadding),
+                                isFull: isFull,
+                                index: idx,
+                                markdownListConfiguration: markdownListConfiguration
                             )
                         }
                     } else if (item.node is BulletList) {
@@ -293,6 +299,7 @@ public class MarkdownINCComponent {
                             .size - 1]
                         .node is OrderedList &&
                         nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is OrderedList)) {
+                        // 有序列表和无序列表
                         let index: Int64 = nodeViewDataSource.totalCount() - 1
                         for (data in markdownListConfiguration.list1Components) {
                             if (data.index == index) {
@@ -301,14 +308,34 @@ public class MarkdownINCComponent {
                         }
                     } else if ((nodeViews[nodeViews.size - 1].node is BlockQuote &&
                         nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is BlockQuote)) {
+                        // 块引用
                         let index: Int64 = nodeViewDataSource.totalCount() - 1
                         for (data in markdownListConfiguration.quote1Components) {
                             if (data.index == index) {
                                 data.component.refreshData(nodeViews[nodeViews.size - 1])
                             }
                         }
+                    } else if ((nodeViews[nodeViews.size - 1].node is Heading &&
+                        nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is Heading)) {
+                        // 标题
+                        let index: Int64 = nodeViewDataSource.totalCount() - 1
+                        for (data in markdownListConfiguration.heading1Components) {
+                            if (data.index == index) {
+                                data.component.refreshData(nodeViews[nodeViews.size - 1])
+                            }
+                        }
+                    } else if ((nodeViews[nodeViews.size - 1].node is Paragraph &&
+                        nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is Paragraph)) {
+                        // 段落
+                        let index: Int64 = nodeViewDataSource.totalCount() - 1
+                        for (data in markdownListConfiguration.paragraph1Components) {
+                            if (data.index == index) {
+                                data.component.refreshData(nodeViews[nodeViews.size - 1])
+                            }
+                        }
                     } else if ((nodeViews[nodeViews.size - 1].node is TableBlock &&
                         nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is TableBlock)) {
+                        // 表格
                         let index: Int64 = nodeViewDataSource.totalCount() - 1
                         for (data in markdownListConfiguration.tableComponents) {
                             if (data.index == index) {

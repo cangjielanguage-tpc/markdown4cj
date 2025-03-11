@@ -17,9 +17,7 @@ func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownConfigur
     // 设置文本内容
     Text(listPrefixStr(item, isBullet))
         // 设置文本颜色
-        //.fontColor(listPrefixColor(markdownConfiguration.markdownTheme, isBullet))
-        // 设置系统深浅色
-        .fontColor(@r(sys.color.ohos_id_color_text_primary))
+        .fontColor(listPrefixColor(markdownConfiguration.markdownTheme, isBullet))
         // 设置文本尺寸
         .fontSize(listPrefixSize(markdownConfiguration.markdownTheme, isBullet))
         // 设置内边距属性

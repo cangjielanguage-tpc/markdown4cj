@@ -155,8 +155,7 @@ class MarkdownTableBlock1INCComponent {
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView))
             // 设置文本颜色
-            //.fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            .fontColor(@r(sys.color.ohos_id_color_text_primary))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
@@ -184,8 +183,7 @@ class MarkdownTableBlock1INCComponent {
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView))
             // 设置文本颜色
-            //.fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
-            .fontColor(@r(sys.color.ohos_id_color_text_primary))
+            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
@@ -278,13 +276,12 @@ class MarkdownTableBlock1INCComponent {
             .padding(markdownConfiguration.tableTheme.tableCellPadding)
             // 设置组件的背景色
             // 设置组件的背景色
-            // .backgroundColor(
-            //    renderTableCellColor(
-            //        (tableCell.node as TableCell)(),
-            //        markdownConfiguration.tableTheme,
-            //        idRow
-            //    )
-            .backgroundColor(@r(sys.color.ohos_fa_component_normal))
+             .backgroundColor(
+                renderTableCellColor(
+                    (tableCell.node as TableCell)(),
+                    markdownConfiguration.tableTheme,
+                    idRow
+                ))
             // 统一边框样式设置接口
             .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0),
                 color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)

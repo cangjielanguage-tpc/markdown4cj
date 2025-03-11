@@ -112,6 +112,50 @@ public class MarkdownQuote2INCComponent {
                 })
     }
 
+    /**
+     * 段落
+     */
+    @Builder
+    func listParagraph3INCComponent(nodeViewParagraph: NodeView, markdownConfiguration: MarkdownConfiguration,
+        componentWidth: Float64, idx: Int64) {
+        MarkdownParagraph3INCComponent(
+            nodeView: nodeViewParagraph,
+            markdownConfiguration: markdownConfiguration,
+            marginTop: 0.0,
+            marginBottom: 0.0,
+            componentWidth: componentWidth,
+            isFull: isFull,
+            index: index,
+            index2: index2,
+            index3: idx,
+            indexItem: indexItem,
+            indexItem2: -1,
+            markdownListConfiguration: markdownListConfiguration
+        )
+    }
+
+    /**
+     * 标题
+     */
+    @Builder
+    func listHeading3INCComponent(nodeViewHeading: NodeView, markdownConfiguration: MarkdownConfiguration,
+        componentWidth: Float64, idx: Int64) {
+        MarkdownHeading3INCComponent(
+            nodeView: nodeViewHeading,
+            markdownConfiguration: markdownConfiguration,
+            marginTop: 0.0,
+            marginBottom: 0.0,
+            componentWidth: componentWidth,
+            isFull: isFull,
+            index: index,
+            index2: index2,
+            index3: idx,
+            indexItem: indexItem,
+            indexItem2: -1,
+            markdownListConfiguration: markdownListConfiguration
+        )
+    }
+
     func build() {
         List() {
             LazyForEach(
@@ -121,17 +165,19 @@ public class MarkdownQuote2INCComponent {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
-                                listParagraphINCComponent(
+                                listParagraph3INCComponent(
                                     item,
                                     markdownConfiguration,
-                                    componentWidth
+                                    componentWidth,
+                                    idx
                                 )
                             } else if (item.node is Heading) {
                                 // 标题
-                                listHeadingINCComponent(
+                                listHeading3INCComponent(
                                     item,
                                     markdownConfiguration,
-                                    componentWidth
+                                    componentWidth,
+                                    idx
                                 )
                             } else if (item.node is IndentedCodeBlock) {
                                 // 缩进代码
@@ -269,6 +315,26 @@ public class MarkdownQuote2INCComponent {
                     nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is OrderedList)) {
                     let index3: Int64 = nodeViewDataSource.totalCount() - 1
                     for (data in markdownListConfiguration.list3Components) {
+                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.indexItem ==
+                            indexItem && data.indexItem2 == -1) {
+                            data.component.refreshData(nodeViews[nodeViews.size - 1])
+                        }
+                    }
+                } else if ((nodeViews[nodeViews.size - 1].node is Heading &&
+                    nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is Heading)) {
+                    // 标题
+                    let index3: Int64 = nodeViewDataSource.totalCount() - 1
+                    for (data in markdownListConfiguration.heading3Components) {
+                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.indexItem ==
+                            indexItem && data.indexItem2 == -1) {
+                            data.component.refreshData(nodeViews[nodeViews.size - 1])
+                        }
+                    }
+                } else if ((nodeViews[nodeViews.size - 1].node is Paragraph &&
+                    nodeViewDataSource.getAllData()[nodeViewDataSource.totalCount() - 1].node is Paragraph)) {
+                    // 段落
+                    let index3: Int64 = nodeViewDataSource.totalCount() - 1
+                    for (data in markdownListConfiguration.paragraph3Components) {
                         if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.indexItem ==
                             indexItem && data.indexItem2 == -1) {
                             data.component.refreshData(nodeViews[nodeViews.size - 1])
