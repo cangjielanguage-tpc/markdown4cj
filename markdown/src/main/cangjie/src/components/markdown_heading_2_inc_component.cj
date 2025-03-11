@@ -135,8 +135,9 @@ class MarkdownHeading2INCComponent {
             }
             if (nodeViews.size > nodeViewList.size) {
                 if (nodeViewList.size != 0) {
-                    nodeViewList.remove(nodeViewList.size - 1)
-                    nodeViewList.append(nodeViews[nodeViewList.size - 1])
+                    let size = nodeViewList.size
+                    nodeViewList.remove(size - 1)
+                    nodeViewList.append(nodeViews[size - 1])
                 }
                 for (i in nodeViews.size - nodeViewList.size..0 : -1) {
                     nodeViewList.append(nodeViews[nodeViews.size - i])
