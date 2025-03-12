@@ -31,7 +31,8 @@ class MarkdownThematicBreakINCComponent {
     func build() {
         Divider()
             // 设置分割线颜色
-            .color(markdownConfiguration.markdownTheme.thematicBreakColor)
+//            .color(markdownConfiguration.markdownTheme.thematicBreakColor)
+            .color(@r(sys.color.ohos_id_color_text_primary))
             // 设置分割线宽度
             .strokeWidth(markdownConfiguration.markdownTheme.thematicBreakHeight)
             // 设置外边距属性

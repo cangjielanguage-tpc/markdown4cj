@@ -60,7 +60,8 @@ class MarkdownCodeBlockINCComponent {
     func codeBlockTextComponent() {
         Text(codeText)
             // 设置文本颜色
-            .fontColor(codeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+//            .fontColor(codeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+            .fontColor(@r(sys.color.ohos_id_color_text_primary))
             // 设置文本尺寸
             .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
             // 设置文本的字体列表
@@ -81,7 +82,8 @@ class MarkdownCodeBlockINCComponent {
             codeBlockTextComponent()
         }
         // 设置组件的背景色
-        .backgroundColor(codeBackgroundColor(markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+//        .backgroundColor(codeBackgroundColor(markdownConfiguration.markdownTheme, markdownConfiguration.prismTheme))
+        .backgroundColor(@r(sys.color.ohos_fa_component_normal))
         // 设置滚动方法
         .scrollable(ScrollDirection.Horizontal)
         // 设置滚动条状态
