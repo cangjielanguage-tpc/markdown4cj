@@ -278,12 +278,13 @@ class MarkdownTableBlock1INCComponent {
             .padding(markdownConfiguration.tableTheme.tableCellPadding)
             // 设置组件的背景色
             // 设置组件的背景色
-             .backgroundColor(
-                renderTableCellColor(
-                    (tableCell.node as TableCell)(),
-                    markdownConfiguration.tableTheme,
-                    idRow
-                ))
+             //.backgroundColor(
+             //   renderTableCellColor(
+             //       (tableCell.node as TableCell)(),
+             //       markdownConfiguration.tableTheme,
+             //       idRow
+             //   ))
+            .backgroundColor(@r(sys.color.ohos_fa_component_normal))
             // 统一边框样式设置接口
             .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0),
                 color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
