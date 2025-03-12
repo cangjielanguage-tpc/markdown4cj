@@ -479,10 +479,10 @@ public class MarkdownAITheme {
      *
      * @return MarkdownAITheme 创建默认的MarkdownAITheme对象
      */
-    public static func createDefault(): MarkdownAITheme {
+    public static func createDefaultBuilder(): MarkdownAIThemeBuilder {
         let markdownAIThemeBuilder: MarkdownAIThemeBuilder = MarkdownAIThemeBuilder()
         // 高亮
-        markdownAIThemeBuilder.setPrismTheme(PrismThemeDefault.create())
+        markdownAIThemeBuilder.setPrismTheme(PrismThemeDarkula.create())
         // 表格
         markdownAIThemeBuilder.setTableHeaderRowBackgroundColor(Color(0xFFFFFF))
         markdownAIThemeBuilder.setTableEvenRowBackgroundColor(Color(0xE0E0E0))
@@ -506,9 +506,6 @@ public class MarkdownAITheme {
         markdownAIThemeBuilder.setCodeListTitleSelectBackgroupColor(Color.GRAY)
         markdownAIThemeBuilder.setCodeListTitleUnSelectTextColor(Color.BLACK)
         markdownAIThemeBuilder.setCodeListTitleSelectTextColor(Color.RED)
-        // 组合代码、缩进代码、围栏代码
-//        markdownAIThemeBuilder.setCodeBlockBackgroundColor(PrismThemeDefault.create())
-//        markdownAIThemeBuilder.setCodeBlockTextColor(PrismThemeDefault.create())
         // 内联代码
         markdownAIThemeBuilder.setCodeBackgroundColor(Color(0xFFFFFF))
         markdownAIThemeBuilder.setCodeTextColor(Color(0x000000))
@@ -520,7 +517,7 @@ public class MarkdownAITheme {
         markdownAIThemeBuilder.setBlockQuoteColor(Color(0x000000))
         // 链接
         markdownAIThemeBuilder.setLinkColor(Color(0x0000FF))
-        return markdownAIThemeBuilder.build()
+        return markdownAIThemeBuilder
     }
 
     /**
@@ -528,13 +525,13 @@ public class MarkdownAITheme {
      *
      * @return MarkdownAITheme 创建暗色的MarkdownAITheme对象
      */
-    public static func createDarkula(): MarkdownAITheme {
+    public static func createDarkulaBuilder(): MarkdownAIThemeBuilder {
         let markdownAIThemeBuilder: MarkdownAIThemeBuilder = MarkdownAIThemeBuilder()
         // 高亮
-        markdownAIThemeBuilder.setPrismTheme(PrismThemeDarkula.create())
+        markdownAIThemeBuilder.setPrismTheme(PrismThemeDefault.create())
         // 表格
         markdownAIThemeBuilder.setTableHeaderRowBackgroundColor(Color(0x000000))
-        markdownAIThemeBuilder.setTableEvenRowBackgroundColor(Color(0xE0E0E0))
+        markdownAIThemeBuilder.setTableEvenRowBackgroundColor(Color(0x333333))
         markdownAIThemeBuilder.setTableOddRowBackgroundColor(Color(0x000000))
         markdownAIThemeBuilder.setTableBorderColor(Color(0xFFFFFF))
         // 按钮
@@ -555,9 +552,6 @@ public class MarkdownAITheme {
         markdownAIThemeBuilder.setCodeListTitleSelectBackgroupColor(Color.GRAY)
         markdownAIThemeBuilder.setCodeListTitleUnSelectTextColor(Color.WHITE)
         markdownAIThemeBuilder.setCodeListTitleSelectTextColor(Color.RED)
-        // 组合代码、缩进代码、围栏代码
-//        markdownAIThemeBuilder.setCodeBlockBackgroundColor(PrismThemeDefault.create())
-//        markdownAIThemeBuilder.setCodeBlockTextColor(PrismThemeDefault.create())
         // 内联代码
         markdownAIThemeBuilder.setCodeBackgroundColor(Color(0x000000))
         markdownAIThemeBuilder.setCodeTextColor(Color(0xFFFFFF))
@@ -569,7 +563,7 @@ public class MarkdownAITheme {
         markdownAIThemeBuilder.setBlockQuoteColor(Color(0xFFFFFF))
         // 链接
         markdownAIThemeBuilder.setLinkColor(Color(0x0000FF))
-        return markdownAIThemeBuilder.build()
+        return markdownAIThemeBuilder
     }
 
     /**
