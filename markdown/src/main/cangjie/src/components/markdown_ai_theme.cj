@@ -1010,6 +1010,96 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
+     * 设置浅色主题整体样式
+     *
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
+     */
+    public func setDefaultTheme(): MarkdownAIThemeBuilder {
+        // 高亮
+        this.prismTheme = PrismThemeDarkula.create()
+        // 表格
+        this.tableHeaderRowBackgroundColor = Color(0xFFFFFF)
+        this.tableEvenRowBackgroundColor = Color(0xE0E0E0)
+        this.tableOddRowBackgroundColor = Color(0xFFFFFF)
+        this.tableBorderColor = Color(0x000000)
+        // 按钮
+        this.buttonTextBackgroupColor = Color(0xFF0000)
+        this.buttonTextColor = Color(0xFFFFFF)
+        // 数学公式
+        this.latexMathTextColor = Color(0xFF000000)
+        this.latexMathBackGroupColor = Color(0x00FFFFFF)
+        // 分割线
+        this.thematicBreakColor = Color(0x000000)
+        // 段落
+        this.paragraphTextColor = Color(0x000000)
+        // 标题
+        this.headingTextColor = Color(0x000000)
+        this.headingBreakColor = Color(0x000000)
+        // 组合代码
+        this.codeListTitleUnSelectBackgroupColor = Color.TRANSPARENT
+        this.codeListTitleSelectBackgroupColor = Color.GRAY
+        this.codeListTitleUnSelectTextColor = Color.BLACK
+        this.codeListTitleSelectTextColor = Color.RED
+        // 内联代码
+        this.codeBackgroundColor = Color(0xFFFFFF)
+        this.codeTextColor = Color(0x000000)
+        // 无序列表
+        this.bulletListItemColor = Color(0x000000)
+        // 有序列表
+        this.orderedListItemColor = Color(0x000000)
+        // 块引用
+        this.blockQuoteColor = Color(0x000000)
+        // 链接
+        this.linkColor = Color(0x0000FF)
+        return this
+    }
+
+    /**
+     * 设置深色主题整体样式
+     *
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
+     */
+    public func setDarkulaTheme(): MarkdownAIThemeBuilder {
+        // 高亮
+        this.prismTheme = PrismThemeDefault.create()
+        // 表格
+        this.tableHeaderRowBackgroundColor = Color(0x000000)
+        this.tableEvenRowBackgroundColor = Color(0x333333)
+        this.tableOddRowBackgroundColor = Color(0x000000)
+        this.tableBorderColor = Color(0xFFFFFF)
+        // 按钮
+        this.buttonTextBackgroupColor = Color(0xFF0000)
+        this.buttonTextColor = Color(0xFFFFFF)
+        // 数学公式
+        this.latexMathTextColor = Color(0xFFFFFFFF)
+        this.latexMathBackGroupColor = Color(0x00000000)
+        // 分割线
+        this.thematicBreakColor = Color(0xFFFFFF)
+        // 段落
+        this.paragraphTextColor = Color(0xFFFFFF)
+        // 标题
+        this.headingTextColor = Color(0xFFFFFF)
+        this.headingBreakColor = Color(0xFFFFFF)
+        // 组合代码
+        this.codeListTitleUnSelectBackgroupColor = Color.TRANSPARENT
+        this.codeListTitleSelectBackgroupColor = Color.GRAY
+        this.codeListTitleUnSelectTextColor = Color.BLACK
+        this.codeListTitleSelectTextColor = Color.RED
+        // 内联代码
+        this.codeBackgroundColor = Color(0x000000)
+        this.codeTextColor = Color(0xFFFFFF)
+        // 无序列表
+        this.bulletListItemColor = Color(0xFFFFFF)
+        // 有序列表
+        this.orderedListItemColor = Color(0xFFFFFF)
+        // 块引用
+        this.blockQuoteColor = Color(0xFFFFFF)
+        // 链接
+        this.linkColor = Color(0x0000FF)
+        return this
+    }
+
+    /**
      * 设置上下文
      *
      * @param stageContext 上下文
