@@ -33,6 +33,20 @@ class MarkdownTableBlockINCComponent {
      */
     var marginBottom: Float64
 
+    /**
+     * 控件宽度 - 单位px
+     */
+    var componentWidth: Float64
+
+    /**
+     * 是否全量加载
+     */
+    @Prop
+    var isFull: Bool
+
+    /**
+     * 缓存的图片列表
+     */
     var listPixelMap: ArrayList<?PixelMap> = ArrayList<?PixelMap>()
 
     /**
@@ -42,18 +56,10 @@ class MarkdownTableBlockINCComponent {
     var arrayListPixelMap: ObservedArrayList<ImageData> = ObservedArrayList<ImageData>()
 
     /**
-     * 控件宽度 - 单位px
-     */
-    var componentWidth: Float64
-
-    /**
      * 线程列表
      */
     @State
     var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
-
-    @Prop
-    var isFull: Bool
 
     /**
      * 懒加载数据源
@@ -61,7 +67,10 @@ class MarkdownTableBlockINCComponent {
     @State
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
-    var isFrist: Bool = true
+    /**
+     * 列表数据
+     */
+    let nodeViews:ArrayList<NodeView> = ArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
         tableNumberData()
@@ -99,7 +108,7 @@ class MarkdownTableBlockINCComponent {
                             // 设置图片的缩放类型
                             .objectFit(ImageFit.Contain)
                             // 设置约束尺寸
-                            .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
+                            .constraintSize(maxWidth: 100.percent)
                             // 点击动作触发该方法调用
                             .onClick {
                                 evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px,
@@ -118,7 +127,7 @@ class MarkdownTableBlockINCComponent {
     func renderTableCell(tableCell: NodeView, idRow: Int64, idCol: Int64) {
         Text() {
             ForEach(
-                tableCell.children.toArray(),
+                tableCell.children,
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
@@ -162,7 +171,7 @@ class MarkdownTableBlockINCComponent {
             .backgroundColor(
                 renderTableCellColor((tableCell.node as TableCell)(), markdownAIConfiguration.markdownAITheme, idRow))
             // 统一边框样式设置接口
-            .border(width: Length(markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0),
+            .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp,
                 color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
             // 组件卸载消失时触发此回调
             .onDisAppear(
@@ -210,24 +219,16 @@ class MarkdownTableBlockINCComponent {
             )
         }
             // 统一边框样式设置接口
-            .border(width: Length(markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0),
+            .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp,
             color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
-    }
-
-    func onChanged(): Unit {
-        if (!isFrist) {
-            tableNumberData()
-        }
     }
 
     func tableNumberData() {
         let list = tableNodeView.children
-        let nodeViews = ArrayList<NodeView>()
+        nodeViews.clear()
         for (nodeView in list) {
             if (nodeView.node is TableBody || nodeView.node is TableHead) {
-                for (nodeViewChildren in nodeView.children) {
-                    nodeViews.append(nodeViewChildren)
-                }
+                nodeViews.appendAll(nodeView.children)
             } else if (nodeView.node is TableRow) {
                 nodeViews.append(nodeView)
             }

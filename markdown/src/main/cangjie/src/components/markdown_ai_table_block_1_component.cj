@@ -89,6 +89,11 @@ class MarkdownAITableBlock1Component {
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
+    /**
+     * 列表数据
+     */
+    let nodeViews: ArrayList<NodeView> = ArrayList<NodeView>()
+
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
         markdownAICacheConfiguration.tableComponents.append(TableAIData(this, index))
@@ -110,14 +115,14 @@ class MarkdownAITableBlock1Component {
         Column() {
             renderTableHeaderOrBody()
         }
-            // 设置元素内容的对齐方式
-            .align(Alignment.Start)
-            // 设置元素水平方向的布局
-            .direction(Direction.Ltr)
-            // 设置外边距属性
-            .margin(top: marginTop, bottom: marginBottom)
-            // 设置组件自身的宽度
-            .width(100.percent)
+        // 设置元素内容的对齐方式
+        .align(Alignment.Start)
+        // 设置元素水平方向的布局
+        .direction(Direction.Ltr)
+        // 设置外边距属性
+        .margin(top: marginTop, bottom: marginBottom)
+        // 设置组件自身的宽度
+        .width(100.percent)
     }
 
     @Builder
@@ -133,9 +138,9 @@ class MarkdownAITableBlock1Component {
                 }
             )
         }
-            // 统一边框样式设置接口
-            .border(width: Length(markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0),
-            color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
+        // 统一边框样式设置接口
+        .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp,
+        color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
     }
 
     /**
@@ -156,7 +161,7 @@ class MarkdownAITableBlock1Component {
                             // 设置图片的缩放类型
                             .objectFit(ImageFit.Contain)
                             // 设置约束尺寸
-                            .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
+                            .constraintSize(maxWidth: 100.percent)
                             // 点击动作触发该方法调用
                             .onClick {
                                 evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px,
@@ -175,21 +180,21 @@ class MarkdownAITableBlock1Component {
     func renderTableCell(tableCell: NodeView, idRow: Int64, idCol: Int64) {
         Text() {
             ForEach(
-                tableCell.children.toArray(),
+                tableCell.children,
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
                         if ((tableCell.node as TableCell)().isHeader()) {
-                            tableComponentText(item, true,markdownAIConfiguration)
+                            tableComponentText(item, true, markdownAIConfiguration)
                         } else {
-                            tableComponentText(item, false,markdownAIConfiguration)
+                            tableComponentText(item, false, markdownAIConfiguration)
                         }
                     } else if (item.node is Code) {
                         // 内联代码
                         if ((tableCell.node as TableCell)().isHeader()) {
-                            tableComponentCode(item, true,markdownAIConfiguration)
+                            tableComponentCode(item, true, markdownAIConfiguration)
                         } else {
-                            tableComponentCode(item, false,markdownAIConfiguration)
+                            tableComponentCode(item, false, markdownAIConfiguration)
                         }
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
@@ -205,31 +210,32 @@ class MarkdownAITableBlock1Component {
                 }
             )
         }
-            // 容器尺寸确定时，元素与兄弟节点主轴布局尺寸按照权重进行分配，忽略本身尺寸设置仅在Row/Column/Flex布局中生效
-            .layoutWeight(1)
-            // 设置父容器的剩余空间分配给此属性所在组件的比例
-            .flexGrow(1)
-            // Flex 容器压缩尺寸分配给此属性所在组件的比例
-            .flexShrink(1)
-            // 覆盖 Flex 布局容器中 alignItems 默认配置
-            .alignSelf(ItemAlign.Stretch)
-            // 设置多行文本的文本对齐方式
-            .textAlign(renderTableCellAlign((tableCell.node as TableCell)()))
-            // 设置内边距属性
-            .padding(markdownAIConfiguration.markdownAITheme.tableCellPadding)
-            // 设置组件的背景色
-            .backgroundColor(renderTableCellColor((tableCell.node as TableCell)(),markdownAIConfiguration.markdownAITheme,idRow))
-            // 统一边框样式设置接口
-            .border(width: Length(markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0),
-                color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
-            // 组件卸载消失时触发此回调
-            .onDisAppear(
-                {
-                    =>
-                    threadFutureCancel(futs)
-                    delPixelMap(listPixelMap)
-                }
-            )
+        // 容器尺寸确定时，元素与兄弟节点主轴布局尺寸按照权重进行分配，忽略本身尺寸设置仅在Row/Column/Flex布局中生效
+        .layoutWeight(1)
+        // 设置父容器的剩余空间分配给此属性所在组件的比例
+        .flexGrow(1)
+        // Flex 容器压缩尺寸分配给此属性所在组件的比例
+        .flexShrink(1)
+        // 覆盖 Flex 布局容器中 alignItems 默认配置
+        .alignSelf(ItemAlign.Stretch)
+        // 设置多行文本的文本对齐方式
+        .textAlign(renderTableCellAlign((tableCell.node as TableCell)()))
+        // 设置内边距属性
+        .padding(markdownAIConfiguration.markdownAITheme.tableCellPadding)
+        // 设置组件的背景色
+        .backgroundColor(
+            renderTableCellColor((tableCell.node as TableCell)(), markdownAIConfiguration.markdownAITheme, idRow))
+        // 统一边框样式设置接口
+        .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp,
+            color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
+        // 组件卸载消失时触发此回调
+        .onDisAppear(
+            {
+                =>
+                threadFutureCancel(futs)
+                delPixelMap(listPixelMap)
+            }
+        )
     }
 
     /**
@@ -247,18 +253,16 @@ class MarkdownAITableBlock1Component {
                 }
             )
         }
-            // 设置组件自身的宽度
-            .width(100.percent)
+        // 设置组件自身的宽度
+        .width(100.percent)
     }
 
     public func refreshData(nodeView: NodeView): Unit {
         let list = nodeView.children
-        let nodeViews = ArrayList<NodeView>()
+        nodeViews.clear()
         for (nodeView in list) {
             if (nodeView.node is TableBody || nodeView.node is TableHead) {
-                for (nodeViewChildren in nodeView.children) {
-                    nodeViews.append(nodeViewChildren)
-                }
+                nodeViews.appendAll(nodeView.children)
             } else if (nodeView.node is TableRow) {
                 nodeViews.append(nodeView)
             }

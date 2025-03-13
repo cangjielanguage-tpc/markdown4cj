@@ -39,7 +39,7 @@ public class MarkdownAITheme {
     /**
      * 链接颜色
      */
-    protected var linkColor: Color = Color(0x0000FF)
+    protected var linkColor: Color = COLOR_0000FF
 
     /**
      * 是否显示链接下划线
@@ -59,12 +59,12 @@ public class MarkdownAITheme {
     /**
      * 块引用左边线条颜色
      */
-    protected var blockQuoteColor: Color = Color(0x191919)
+    protected var blockQuoteColor: Color = COLOR_191919
 
     /**
      * 有序列表列表项的颜色。
      */
-    protected var orderedListItemColor: Color = Color(0x191919)
+    protected var orderedListItemColor: Color = COLOR_191919
 
     /**
      * 有序列表项的文本大小。
@@ -74,7 +74,7 @@ public class MarkdownAITheme {
     /**
      * 无序列表项的颜色。
      */
-    protected var bulletListItemColor: Color = Color(0x191919)
+    protected var bulletListItemColor: Color = COLOR_191919
 
     /**
      * 无序列表项的文本大小。
@@ -94,12 +94,12 @@ public class MarkdownAITheme {
     /**
      * 内联代码文本颜色
      */
-    protected var codeTextColor: Color = Color(0x000000)
+    protected var codeTextColor: Color = COLOR_000000
 
     /**
      * 内联代码背景颜色
      */
-    protected var codeBackgroundColor: Color = Color(0x191919)
+    protected var codeBackgroundColor: Color = COLOR_191919
 
     /**
      * 内联代码文本字体
@@ -194,7 +194,7 @@ public class MarkdownAITheme {
     /**
      * H1、H2标题下分割线颜色
      */
-    protected var headingBreakColor: Color = Color(0x191919)
+    protected var headingBreakColor: Color = COLOR_191919
 
     /**
      * 标题元素字体
@@ -209,7 +209,7 @@ public class MarkdownAITheme {
     /**
      * 标题文本颜色
      */
-    protected var headingTextColor: Color = Color(0x191919)
+    protected var headingTextColor: Color = COLOR_191919
 
     /**
      * 标题文本字间距
@@ -224,7 +224,7 @@ public class MarkdownAITheme {
     /**
      * 段落文本颜色
      */
-    protected var paragraphTextColor: Color = Color(0x191919)
+    protected var paragraphTextColor: Color = COLOR_191919
 
     /**
      * 段落文本字间距
@@ -234,7 +234,7 @@ public class MarkdownAITheme {
     /**
      * 分割线颜色
      */
-    protected var thematicBreakColor: Color = Color(0x191919)
+    protected var thematicBreakColor: Color = COLOR_191919
 
     /**
      * 分割线高度
@@ -259,12 +259,12 @@ public class MarkdownAITheme {
     /**
      * 数学公式背景色
      */
-    protected var latexMathBackGroupColor: Color = Color(0x00FFFFFF)
+    protected var latexMathBackGroupColor: Color = COLOR_00FFFFFF
 
     /**
      * 数学公式字体颜色
      */
-    protected var latexMathTextColor: Color = Color(0xFF000000)
+    protected var latexMathTextColor: Color = COLOR_FF000000
 
     /**
      * 数学公式生成图片格式
@@ -319,12 +319,12 @@ public class MarkdownAITheme {
     /**
      * 按钮文字颜色
      */
-    protected var buttonTextColor: Color = Color(0xFFFFFF)
+    protected var buttonTextColor: Color = COLOR_FFFFFF
 
     /**
      * 按钮背景颜色
      */
-    protected var buttonTextBackgroupColor: Color = Color(0xFF0000)
+    protected var buttonTextBackgroupColor: Color = COLOR_FF0000
 
     /**
      * 按钮高度
@@ -344,7 +344,7 @@ public class MarkdownAITheme {
     /**
      * 表格边框颜色
      */
-    protected var tableBorderColor: Color = Color(0xFF000000)
+    protected var tableBorderColor: Color = COLOR_FF000000
 
     /**
      * 表格边框宽度
@@ -354,17 +354,17 @@ public class MarkdownAITheme {
     /**
      * 表格奇数行背景色
      */
-    protected var tableOddRowBackgroundColor: Color = Color(0xFFFFFFFF)
+    protected var tableOddRowBackgroundColor: Color = COLOR_FFFFFFFF
 
     /**
      * 表格偶数行背景色
      */
-    protected var tableEvenRowBackgroundColor: Color = Color(0xFFE0E0E0)
+    protected var tableEvenRowBackgroundColor: Color = COLOR_FFE0E0E0
 
     /**
      * 表格头背景色
      */
-    protected var tableHeaderRowBackgroundColor: Color = Color(0xFFFFFFFF)
+    protected var tableHeaderRowBackgroundColor: Color = COLOR_FFFFFFFF
 
     /**
      * markdown代码高亮样式
@@ -484,39 +484,39 @@ public class MarkdownAITheme {
         // 高亮
         markdownAIThemeBuilder.setPrismTheme(PrismThemeDarkula.create())
         // 表格
-        markdownAIThemeBuilder.setTableHeaderRowBackgroundColor(Color(0xFFFFFF))
-        markdownAIThemeBuilder.setTableEvenRowBackgroundColor(Color(0xE0E0E0))
-        markdownAIThemeBuilder.setTableOddRowBackgroundColor(Color(0xFFFFFF))
-        markdownAIThemeBuilder.setTableBorderColor(Color(0x000000))
+        markdownAIThemeBuilder.setTableHeaderRowBackgroundColor(COLOR_FFFFFF)
+        markdownAIThemeBuilder.setTableEvenRowBackgroundColor(COLOR_E0E0E0)
+        markdownAIThemeBuilder.setTableOddRowBackgroundColor(COLOR_FFFFFF)
+        markdownAIThemeBuilder.setTableBorderColor(COLOR_000000)
         // 按钮
-        markdownAIThemeBuilder.setButtonTextBackgroupColor(Color(0xFF0000))
-        markdownAIThemeBuilder.setButtonTextColor(Color(0xFFFFFF))
+        markdownAIThemeBuilder.setButtonTextBackgroupColor(COLOR_FF0000)
+        markdownAIThemeBuilder.setButtonTextColor(COLOR_FFFFFF)
         // 数学公式
-        markdownAIThemeBuilder.setLatexMathTextColor(Color(0xFF000000))
-        markdownAIThemeBuilder.setLatexMathBackGroupColor(Color(0x00FFFFFF))
+        markdownAIThemeBuilder.setLatexMathTextColor(COLOR_FF000000)
+        markdownAIThemeBuilder.setLatexMathBackGroupColor(COLOR_00FFFFFF)
         // 分割线
-        markdownAIThemeBuilder.setThematicBreakColor(Color(0x000000))
+        markdownAIThemeBuilder.setThematicBreakColor(COLOR_000000)
         // 段落
-        markdownAIThemeBuilder.setParagraphTextColor(Color(0x000000))
+        markdownAIThemeBuilder.setParagraphTextColor(COLOR_000000)
         // 标题
-        markdownAIThemeBuilder.setHeadingTextColor(Color(0x000000))
-        markdownAIThemeBuilder.setHeadingBreakColor(Color(0x000000))
+        markdownAIThemeBuilder.setHeadingTextColor(COLOR_000000)
+        markdownAIThemeBuilder.setHeadingBreakColor(COLOR_000000)
         // 组合代码
         markdownAIThemeBuilder.setCodeListTitleUnSelectBackgroupColor(Color.TRANSPARENT)
         markdownAIThemeBuilder.setCodeListTitleSelectBackgroupColor(Color.GRAY)
         markdownAIThemeBuilder.setCodeListTitleUnSelectTextColor(Color.BLACK)
         markdownAIThemeBuilder.setCodeListTitleSelectTextColor(Color.RED)
         // 内联代码
-        markdownAIThemeBuilder.setCodeBackgroundColor(Color(0xFFFFFF))
-        markdownAIThemeBuilder.setCodeTextColor(Color(0x000000))
+        markdownAIThemeBuilder.setCodeBackgroundColor(COLOR_FFFFFF)
+        markdownAIThemeBuilder.setCodeTextColor(COLOR_000000)
         // 无序列表
-        markdownAIThemeBuilder.setBulletListItemColor(Color(0x000000))
+        markdownAIThemeBuilder.setBulletListItemColor(COLOR_000000)
         // 有序列表
-        markdownAIThemeBuilder.setOrderedListItemColor(Color(0x000000))
+        markdownAIThemeBuilder.setOrderedListItemColor(COLOR_000000)
         // 块引用
-        markdownAIThemeBuilder.setBlockQuoteColor(Color(0x000000))
+        markdownAIThemeBuilder.setBlockQuoteColor(COLOR_000000)
         // 链接
-        markdownAIThemeBuilder.setLinkColor(Color(0x0000FF))
+        markdownAIThemeBuilder.setLinkColor(COLOR_0000FF)
         return markdownAIThemeBuilder
     }
 
@@ -530,39 +530,39 @@ public class MarkdownAITheme {
         // 高亮
         markdownAIThemeBuilder.setPrismTheme(PrismThemeDefault.create())
         // 表格
-        markdownAIThemeBuilder.setTableHeaderRowBackgroundColor(Color(0x000000))
-        markdownAIThemeBuilder.setTableEvenRowBackgroundColor(Color(0x333333))
-        markdownAIThemeBuilder.setTableOddRowBackgroundColor(Color(0x000000))
-        markdownAIThemeBuilder.setTableBorderColor(Color(0xFFFFFF))
+        markdownAIThemeBuilder.setTableHeaderRowBackgroundColor(COLOR_000000)
+        markdownAIThemeBuilder.setTableEvenRowBackgroundColor(COLOR_333333)
+        markdownAIThemeBuilder.setTableOddRowBackgroundColor(COLOR_000000)
+        markdownAIThemeBuilder.setTableBorderColor(COLOR_FFFFFF)
         // 按钮
-        markdownAIThemeBuilder.setButtonTextBackgroupColor(Color(0xFF0000))
-        markdownAIThemeBuilder.setButtonTextColor(Color(0xFFFFFF))
+        markdownAIThemeBuilder.setButtonTextBackgroupColor(COLOR_FF0000)
+        markdownAIThemeBuilder.setButtonTextColor(COLOR_FFFFFF)
         // 数学公式
-        markdownAIThemeBuilder.setLatexMathTextColor(Color(0xFFFFFFFF))
-        markdownAIThemeBuilder.setLatexMathBackGroupColor(Color(0x00000000))
+        markdownAIThemeBuilder.setLatexMathTextColor(COLOR_FFFFFFFF)
+        markdownAIThemeBuilder.setLatexMathBackGroupColor(COLOR_00000000)
         // 分割线
-        markdownAIThemeBuilder.setThematicBreakColor(Color(0xFFFFFF))
+        markdownAIThemeBuilder.setThematicBreakColor(COLOR_FFFFFF)
         // 段落
-        markdownAIThemeBuilder.setParagraphTextColor(Color(0xFFFFFF))
+        markdownAIThemeBuilder.setParagraphTextColor(COLOR_FFFFFF)
         // 标题
-        markdownAIThemeBuilder.setHeadingTextColor(Color(0xFFFFFF))
-        markdownAIThemeBuilder.setHeadingBreakColor(Color(0xFFFFFF))
+        markdownAIThemeBuilder.setHeadingTextColor(COLOR_FFFFFF)
+        markdownAIThemeBuilder.setHeadingBreakColor(COLOR_FFFFFF)
         // 组合代码
         markdownAIThemeBuilder.setCodeListTitleUnSelectBackgroupColor(Color.TRANSPARENT)
         markdownAIThemeBuilder.setCodeListTitleSelectBackgroupColor(Color.GRAY)
         markdownAIThemeBuilder.setCodeListTitleUnSelectTextColor(Color.WHITE)
         markdownAIThemeBuilder.setCodeListTitleSelectTextColor(Color.RED)
         // 内联代码
-        markdownAIThemeBuilder.setCodeBackgroundColor(Color(0x000000))
-        markdownAIThemeBuilder.setCodeTextColor(Color(0xFFFFFF))
+        markdownAIThemeBuilder.setCodeBackgroundColor(COLOR_000000)
+        markdownAIThemeBuilder.setCodeTextColor(COLOR_FFFFFF)
         // 无序列表
-        markdownAIThemeBuilder.setBulletListItemColor(Color(0xFFFFFF))
+        markdownAIThemeBuilder.setBulletListItemColor(COLOR_FFFFFF)
         // 有序列表
-        markdownAIThemeBuilder.setOrderedListItemColor(Color(0xFFFFFF))
+        markdownAIThemeBuilder.setOrderedListItemColor(COLOR_FFFFFF)
         // 块引用
-        markdownAIThemeBuilder.setBlockQuoteColor(Color(0xFFFFFF))
+        markdownAIThemeBuilder.setBlockQuoteColor(COLOR_FFFFFF)
         // 链接
-        markdownAIThemeBuilder.setLinkColor(Color(0x0000FF))
+        markdownAIThemeBuilder.setLinkColor(COLOR_0000FF)
         return markdownAIThemeBuilder
     }
 
@@ -594,7 +594,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 链接颜色
      */
-    protected var linkColor: Color = Color(0x0000FF)
+    protected var linkColor: Color = COLOR_0000FF
 
     /**
      * 是否显示链接下划线
@@ -614,12 +614,12 @@ public class MarkdownAIThemeBuilder {
     /**
      * 块引用左边线条颜色
      */
-    protected var blockQuoteColor: Color = Color(0x191919)
+    protected var blockQuoteColor: Color = COLOR_191919
 
     /**
      * 有序列表列表项的颜色。
      */
-    protected var orderedListItemColor: Color = Color(0x191919)
+    protected var orderedListItemColor: Color = COLOR_191919
 
     /**
      * 有序列表项的文本大小。
@@ -629,7 +629,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 无序列表项的颜色。
      */
-    protected var bulletListItemColor: Color = Color(0x191919)
+    protected var bulletListItemColor: Color = COLOR_191919
 
     /**
      * 无序列表项的文本大小。
@@ -649,12 +649,12 @@ public class MarkdownAIThemeBuilder {
     /**
      * 内联代码文本颜色
      */
-    protected var codeTextColor: Color = Color(0x000000)
+    protected var codeTextColor: Color = COLOR_000000
 
     /**
      * 内联代码背景颜色
      */
-    protected var codeBackgroundColor: Color = Color(0x191919)
+    protected var codeBackgroundColor: Color = COLOR_191919
 
     /**
      * 内联代码文本字体
@@ -744,7 +744,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * H1、H2标题下分割线颜色
      */
-    protected var headingBreakColor: Color = Color(0x191919)
+    protected var headingBreakColor: Color = COLOR_191919
 
     /**
      * 标题元素字体
@@ -759,7 +759,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 标题文本颜色
      */
-    protected var headingTextColor: Color = Color(0x191919)
+    protected var headingTextColor: Color = COLOR_191919
 
     /**
      * 标题文本字间距
@@ -774,7 +774,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 段落文本颜色
      */
-    protected var paragraphTextColor: Color = Color(0x191919)
+    protected var paragraphTextColor: Color = COLOR_191919
 
     /**
      * 段落文本字间距
@@ -784,7 +784,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 分割线颜色
      */
-    protected var thematicBreakColor: Color = Color(0x191919)
+    protected var thematicBreakColor: Color = COLOR_191919
 
     /**
      * 分割线高度
@@ -809,12 +809,12 @@ public class MarkdownAIThemeBuilder {
     /**
      * 数学公式背景色
      */
-    protected var latexMathBackGroupColor: Color = Color(0x00FFFFFF)
+    protected var latexMathBackGroupColor: Color = COLOR_00FFFFFF
 
     /**
      * 数学公式字体颜色
      */
-    protected var latexMathTextColor: Color = Color(0xFF000000)
+    protected var latexMathTextColor: Color = COLOR_FF000000
 
     /**
      * 数学公式生成图片格式
@@ -869,12 +869,12 @@ public class MarkdownAIThemeBuilder {
     /**
      * 按钮文字颜色
      */
-    protected var buttonTextColor: Color = Color(0xFFFFFF)
+    protected var buttonTextColor: Color = COLOR_FFFFFF
 
     /**
      * 按钮背景颜色
      */
-    protected var buttonTextBackgroupColor: Color = Color(0xFF0000)
+    protected var buttonTextBackgroupColor: Color = COLOR_FF0000
 
     /**
      * 按钮高度
@@ -894,7 +894,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 表格边框颜色
      */
-    protected var tableBorderColor: Color = Color(0xFF000000)
+    protected var tableBorderColor: Color = COLOR_FF000000
 
     /**
      * 表格边框宽度
@@ -904,17 +904,17 @@ public class MarkdownAIThemeBuilder {
     /**
      * 表格奇数行背景色
      */
-    protected var tableOddRowBackgroundColor: Color = Color(0xFFFFFFFF)
+    protected var tableOddRowBackgroundColor: Color = COLOR_FFFFFFFF
 
     /**
      * 表格偶数行背景色
      */
-    protected var tableEvenRowBackgroundColor: Color = Color(0xFFE0E0E0)
+    protected var tableEvenRowBackgroundColor: Color = COLOR_FFE0E0E0
 
     /**
      * 表格头背景色
      */
-    protected var tableHeaderRowBackgroundColor: Color = Color(0xFFFFFFFF)
+    protected var tableHeaderRowBackgroundColor: Color = COLOR_FFFFFFFF
 
     /**
      * markdown代码高亮样式
@@ -1018,39 +1018,39 @@ public class MarkdownAIThemeBuilder {
         // 高亮
         this.prismTheme = PrismThemeDarkula.create()
         // 表格
-        this.tableHeaderRowBackgroundColor = Color(0xFFFFFF)
-        this.tableEvenRowBackgroundColor = Color(0xE0E0E0)
-        this.tableOddRowBackgroundColor = Color(0xFFFFFF)
-        this.tableBorderColor = Color(0x000000)
+        this.tableHeaderRowBackgroundColor = COLOR_FFFFFF
+        this.tableEvenRowBackgroundColor = COLOR_E0E0E0
+        this.tableOddRowBackgroundColor = COLOR_FFFFFF
+        this.tableBorderColor = COLOR_000000
         // 按钮
-        this.buttonTextBackgroupColor = Color(0xFF0000)
-        this.buttonTextColor = Color(0xFFFFFF)
+        this.buttonTextBackgroupColor = COLOR_FF0000
+        this.buttonTextColor = COLOR_FFFFFF
         // 数学公式
-        this.latexMathTextColor = Color(0xFF000000)
-        this.latexMathBackGroupColor = Color(0x00FFFFFF)
+        this.latexMathTextColor = COLOR_FF000000
+        this.latexMathBackGroupColor = COLOR_00FFFFFF
         // 分割线
-        this.thematicBreakColor = Color(0x000000)
+        this.thematicBreakColor = COLOR_000000
         // 段落
-        this.paragraphTextColor = Color(0x000000)
+        this.paragraphTextColor = COLOR_000000
         // 标题
-        this.headingTextColor = Color(0x000000)
-        this.headingBreakColor = Color(0x000000)
+        this.headingTextColor = COLOR_000000
+        this.headingBreakColor = COLOR_000000
         // 组合代码
         this.codeListTitleUnSelectBackgroupColor = Color.TRANSPARENT
         this.codeListTitleSelectBackgroupColor = Color.GRAY
         this.codeListTitleUnSelectTextColor = Color.BLACK
         this.codeListTitleSelectTextColor = Color.RED
         // 内联代码
-        this.codeBackgroundColor = Color(0xFFFFFF)
-        this.codeTextColor = Color(0x000000)
+        this.codeBackgroundColor = COLOR_FFFFFF
+        this.codeTextColor = COLOR_000000
         // 无序列表
-        this.bulletListItemColor = Color(0x000000)
+        this.bulletListItemColor = COLOR_000000
         // 有序列表
-        this.orderedListItemColor = Color(0x000000)
+        this.orderedListItemColor = COLOR_000000
         // 块引用
-        this.blockQuoteColor = Color(0x000000)
+        this.blockQuoteColor = COLOR_000000
         // 链接
-        this.linkColor = Color(0x0000FF)
+        this.linkColor = COLOR_0000FF
         return this
     }
 
@@ -1063,39 +1063,39 @@ public class MarkdownAIThemeBuilder {
         // 高亮
         this.prismTheme = PrismThemeDefault.create()
         // 表格
-        this.tableHeaderRowBackgroundColor = Color(0x000000)
-        this.tableEvenRowBackgroundColor = Color(0x333333)
-        this.tableOddRowBackgroundColor = Color(0x000000)
-        this.tableBorderColor = Color(0xFFFFFF)
+        this.tableHeaderRowBackgroundColor = COLOR_000000
+        this.tableEvenRowBackgroundColor = COLOR_333333
+        this.tableOddRowBackgroundColor = COLOR_000000
+        this.tableBorderColor = COLOR_FFFFFF
         // 按钮
-        this.buttonTextBackgroupColor = Color(0xFF0000)
-        this.buttonTextColor = Color(0xFFFFFF)
+        this.buttonTextBackgroupColor = COLOR_FF0000
+        this.buttonTextColor = COLOR_FFFFFF
         // 数学公式
-        this.latexMathTextColor = Color(0xFFFFFFFF)
-        this.latexMathBackGroupColor = Color(0x00000000)
+        this.latexMathTextColor = COLOR_FFFFFFFF
+        this.latexMathBackGroupColor = COLOR_00000000
         // 分割线
-        this.thematicBreakColor = Color(0xFFFFFF)
+        this.thematicBreakColor = COLOR_FFFFFF
         // 段落
-        this.paragraphTextColor = Color(0xFFFFFF)
+        this.paragraphTextColor = COLOR_FFFFFF
         // 标题
-        this.headingTextColor = Color(0xFFFFFF)
-        this.headingBreakColor = Color(0xFFFFFF)
+        this.headingTextColor = COLOR_FFFFFF
+        this.headingBreakColor = COLOR_FFFFFF
         // 组合代码
         this.codeListTitleUnSelectBackgroupColor = Color.TRANSPARENT
         this.codeListTitleSelectBackgroupColor = Color.GRAY
         this.codeListTitleUnSelectTextColor = Color.BLACK
         this.codeListTitleSelectTextColor = Color.RED
         // 内联代码
-        this.codeBackgroundColor = Color(0x000000)
-        this.codeTextColor = Color(0xFFFFFF)
+        this.codeBackgroundColor = COLOR_000000
+        this.codeTextColor = COLOR_FFFFFF
         // 无序列表
-        this.bulletListItemColor = Color(0xFFFFFF)
+        this.bulletListItemColor = COLOR_FFFFFF
         // 有序列表
-        this.orderedListItemColor = Color(0xFFFFFF)
+        this.orderedListItemColor = COLOR_FFFFFF
         // 块引用
-        this.blockQuoteColor = Color(0xFFFFFF)
+        this.blockQuoteColor = COLOR_FFFFFF
         // 链接
-        this.linkColor = Color(0x0000FF)
+        this.linkColor = COLOR_0000FF
         return this
     }
 

@@ -87,7 +87,7 @@ class MarkdownAIParagraphComponent {
                             // 设置图片的缩放类型
                             .objectFit(ImageFit.Contain)
                             // 设置约束尺寸
-                            .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
+                            .constraintSize(maxWidth: 100.percent)
                             // 点击动作触发该方法调用
                             .onClick {evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px, markdownAIConfiguration.latexImageCallback)}
                     }
@@ -115,7 +115,7 @@ class MarkdownAIParagraphComponent {
                                 // 设置图片的缩放类型
                                 .objectFit(ImageFit.Contain)
                                 // 设置约束尺寸
-                                .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
+                                .constraintSize(maxWidth: 100.percent)
                                 // 图片的点击事件
                                 .onClick {evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)}
                         }
@@ -128,7 +128,7 @@ class MarkdownAIParagraphComponent {
                             // 设置图片的缩放类型
                             .objectFit(ImageFit.Contain)
                             // 设置约束尺寸
-                            .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
+                            .constraintSize(maxWidth: 100.percent)
                             // 图片的点击事件
                             .onClick {evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)}
                     }

@@ -276,7 +276,7 @@ public class MarkdownAIQuote2Component {
             // 设置元素的边框颜色。
             .borderColor(markdownAIConfiguration.markdownAITheme.blockQuoteColor)
             // 设置元素的边框宽度(单位为vp)。
-            .borderWidth(EdgeWidths(left: Length(markdownAIConfiguration.markdownAITheme.blockQuoteWidth)))
+            .borderWidth(EdgeWidths(left: markdownAIConfiguration.markdownAITheme.blockQuoteWidth.vp))
             // 文本内容前的起始边距
             .padding(left: 10.0, right: markdownAIConfiguration.markdownAITheme.blockMargin)
             // 块内容前的起始边距

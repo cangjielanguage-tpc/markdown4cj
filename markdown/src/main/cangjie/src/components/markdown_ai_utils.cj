@@ -8,6 +8,19 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
+let COLOR_191919: Color = Color(0x191919)
+let COLOR_0000FF: Color = Color(0x0000FF)
+let COLOR_FF0000: Color = Color(0xFF0000)
+let COLOR_000000: Color = Color(0x000000)
+let COLOR_00000000: Color = Color(0x00000000)
+let COLOR_FF000000: Color = Color(0xFF000000)
+let COLOR_FFFFFF: Color = Color(0xFFFFFF)
+let COLOR_FFFFFFFF: Color = Color(0xFFFFFFFF)
+let COLOR_00FFFFFF: Color = Color(0x00FFFFFF)
+let COLOR_E0E0E0: Color = Color(0xE0E0E0)
+let COLOR_FFE0E0E0: Color = Color(0xFFE0E0E0)
+let COLOR_333333: Color = Color(0x333333)
+
 func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<String>, ArrayList<String>) {
     var strText: ArrayList<String> = ArrayList<String>()
     var strInfoText: ArrayList<String> = ArrayList<String>()
@@ -219,15 +232,15 @@ func spanDecoration(nodeView: NodeView, markdownAITheme: MarkdownAITheme): (Text
         // 是否是删除线
         if (nodeView.props.isSome() && nodeView.props().get("strikethrough").isSome()) {
             // TODO 需要同时设置下划线和中划线
-            return (TextDecorationType.LineThrough, Color(0x191919))
+            return (TextDecorationType.LineThrough, COLOR_191919)
         }
         return (TextDecorationType.Underline, markdownAITheme.linkColor)
     } else {
         // 是否是删除线
         if (nodeView.props.isSome() && nodeView.props().get("strikethrough").isSome()) {
-            return (TextDecorationType.LineThrough, Color(0x191919))
+            return (TextDecorationType.LineThrough, COLOR_191919)
         }
-        return (TextDecorationType.None, Color(0x191919))
+        return (TextDecorationType.None, COLOR_191919)
     }
 }
 
@@ -583,11 +596,10 @@ func parseColumnCount(tableBlockView: NodeView): String {
  * @return 一行的背景颜色
  */
 func renderTableCellColor(tableCell: TableCell, markdownAITheme: MarkdownAITheme, rowCount: Int64): Color {
-    var row: Int64 = rowCount
     if (tableCell.isHeader()) {
         return markdownAITheme.tableHeaderRowBackgroundColor
     }
-    if (row % 2 == 0) {
+    if (rowCount % 2 == 0) {
         return markdownAITheme.tableOddRowBackgroundColor
     }
     return markdownAITheme.tableEvenRowBackgroundColor
@@ -632,7 +644,8 @@ func styleImageRadius(borderRadius: ?Length): Length {
  * @param componentWidth 父布局控件宽度 - 单位vp
  * @return PicStyleObj对象
  */
-func parsePicStyle(picStyle: ArrayList<String>, markdownAIConfiguration: MarkdownAIConfiguration, componentWidthPx: Float64): PicStyleObj {
+func parsePicStyle(picStyle: ArrayList<String>, markdownAIConfiguration: MarkdownAIConfiguration,
+    componentWidthPx: Float64): PicStyleObj {
     let picStyleObj: PicStyleObj = PicStyleObj()
     if (picStyle.isEmpty()) {
         return picStyleObj
