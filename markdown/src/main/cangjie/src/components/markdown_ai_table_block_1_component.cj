@@ -112,21 +112,6 @@ class MarkdownAITableBlock1Component {
     }
 
     func build() {
-        Column() {
-            renderTableHeaderOrBody()
-        }
-        // 设置元素内容的对齐方式
-        .align(Alignment.Start)
-        // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
-        // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
-        // 设置组件自身的宽度
-        .width(100.percent)
-    }
-
-    @Builder
-    func renderTableHeaderOrBody() {
         List() {
             LazyForEach(
                 nodeViewAIDataSource,
@@ -138,6 +123,14 @@ class MarkdownAITableBlock1Component {
                 }
             )
         }
+        // 设置元素内容的对齐方式
+        .align(Alignment.Start)
+        // 设置元素水平方向的布局
+        .direction(Direction.Ltr)
+        // 设置外边距属性
+        .margin(top: marginTop, bottom: marginBottom)
+        // 设置组件自身的宽度
+        .width(100.percent)
         // 统一边框样式设置接口
         .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp,
         color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)

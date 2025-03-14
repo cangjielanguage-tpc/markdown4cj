@@ -73,21 +73,32 @@ class MarkdownTableBlockINCComponent {
     let nodeViews:ArrayList<NodeView> = ArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
-        tableNumberData()
+        refreshData()
     }
 
     func build() {
-        Column() {
-            renderTableHeaderOrBody()
+        List() {
+            LazyForEach(
+                nodeViewAIDataSource,
+                itemGeneratorFunc: {
+                    tableHeaderOrBody: NodeView, idRow: Int64 => ListItem() {
+                        // 行信息
+                        renderTableRow(tableHeaderOrBody, idRow)
+                    }
+                }
+            )
         }
-            // 设置元素内容的对齐方式
-            .align(Alignment.Start)
-            // 设置元素水平方向的布局
-            .direction(Direction.Ltr)
-            // 设置外边距属性
-            .margin(top: marginTop, bottom: marginBottom)
-            // 设置组件自身的宽度
-            .width(100.percent)
+        // 统一边框样式设置接口
+        .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp,
+        color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
+        // 设置元素内容的对齐方式
+        .align(Alignment.Start)
+        // 设置元素水平方向的布局
+        .direction(Direction.Ltr)
+        // 设置外边距属性
+        .margin(top: marginTop, bottom: marginBottom)
+        // 设置组件自身的宽度
+        .width(100.percent)
     }
 
     /**
@@ -202,28 +213,7 @@ class MarkdownTableBlockINCComponent {
             .width(100.percent)
     }
 
-    /**
-     * 表格头或表格体信息
-     */
-    @Builder
-    func renderTableHeaderOrBody() {
-        List() {
-            LazyForEach(
-                nodeViewAIDataSource,
-                itemGeneratorFunc: {
-                    tableHeaderOrBody: NodeView, idRow: Int64 => ListItem() {
-                        // 行信息
-                        renderTableRow(tableHeaderOrBody, idRow)
-                    }
-                }
-            )
-        }
-            // 统一边框样式设置接口
-            .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp,
-            color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
-    }
-
-    func tableNumberData() {
+    func refreshData() {
         let list = tableNodeView.children
         nodeViews.clear()
         for (nodeView in list) {

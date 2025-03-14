@@ -87,7 +87,7 @@ public class NodeView <: ToString {
         this.collector = parentView.collector
 
         if (let Some(v) <- parentView.props) {
-            this.props = v.clone()
+            this.props = HashMap<String, Any>(v)
         }
     }
 
