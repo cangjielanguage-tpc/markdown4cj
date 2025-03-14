@@ -102,13 +102,16 @@ class MarkdownAITableBlock1Component {
     protected override func aboutToDisappear(): Unit {
         markdownAICacheConfiguration
             .tableComponents
-            .removeIf({
-                predicate => if (predicate.index == index) {
-                    true
-                } else {
-                    false
-                }
-            })
+            .removeIf(
+                {
+                    predicate => if (predicate.index == index && predicate.component.nodeView.children.size == nodeView
+                        .children
+                        .size) {
+                        true
+                    } else {
+                        false
+                    }
+                })
     }
 
     func build() {
