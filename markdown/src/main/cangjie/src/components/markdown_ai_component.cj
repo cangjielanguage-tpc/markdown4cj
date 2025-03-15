@@ -90,7 +90,7 @@ public class MarkdownAIComponent {
     /**
      * 刷新判定
      */
-    let isRefreshData: AtomicBool = AtomicBool(false)
+    let isRefreshData: AtomicBool = AtomicBool(true)
 
     protected override func aboutToAppear(): Unit {
         componentWidth = widthVpToPx(screenWidth, markdownAIConfiguration.markdownAITheme.imagePadding)
@@ -289,15 +289,7 @@ public class MarkdownAIComponent {
      */
     func stringToNodes(): Unit {
         try {
-            let markdown: Markdown = if (let Some(v) <- markdownAIConfiguration.markdownParser) {
-                v
-            } else {
-                markdownBase
-            }
-            incBase.parse(output) // 默认已开启lazy模式
-            if (Thread.currentThread.hasPendingCancellation) {
-                return
-            }
+            incBase.parse(output)
             let nodeViews = incBase.docView.children
             if (isFull) {
                 nodeViewAIDataSource.clear()
