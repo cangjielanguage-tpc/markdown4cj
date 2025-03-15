@@ -109,8 +109,9 @@ public class MarkdownAIQuote3Component {
 
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
-        markdownAICacheConfiguration.quote3Components.append(QuoteAI3Data(this, index, index2, index3, indexItem,
-            indexItem2))
+        markdownAICacheConfiguration
+            .quote3Components
+            .append(QuoteAI3Data(this, index, index2, index3, indexItem, indexItem2))
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -335,7 +336,8 @@ public class MarkdownAIQuote3Component {
                         }
                     }
                 } else {
-                    nodeViewAIDataSource.replaceDate(nodeViewAIDataSource.totalCount() - 1, nodeViews[nodeViews.size - 1])
+                    nodeViewAIDataSource.replaceDate(nodeViewAIDataSource.totalCount() - 1, nodeViews[nodeViews.size - 1]
+                    )
                 }
             } else {
                 nodeViewAIDataSource.replaceDate(nodeViews.size - 1, nodeViews[nodeViews.size - 1])

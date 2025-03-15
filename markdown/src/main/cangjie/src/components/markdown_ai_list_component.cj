@@ -122,7 +122,9 @@ public class MarkdownAIListComponent {
                                             MarkdownAIListComponent(
                                                 listNodeView: item,
                                                 markdownAIConfiguration: markdownAIConfiguration,
-                                                marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                                marginTop: markdownAIConfiguration
+                                                    .markdownAITheme
+                                                    .blockTopAndBottomMargins,
                                                 marginBottom: markdownAIConfiguration
                                                     .markdownAITheme
                                                     .blockTopAndBottomMargins,
@@ -134,7 +136,9 @@ public class MarkdownAIListComponent {
                                             MarkdownAIListComponent(
                                                 listNodeView: item,
                                                 markdownAIConfiguration: markdownAIConfiguration,
-                                                marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                                marginTop: markdownAIConfiguration
+                                                    .markdownAITheme
+                                                    .blockTopAndBottomMargins,
                                                 marginBottom: markdownAIConfiguration
                                                     .markdownAITheme
                                                     .blockTopAndBottomMargins,
@@ -146,7 +150,9 @@ public class MarkdownAIListComponent {
                                             MarkdownAIListComponent(
                                                 listNodeView: item,
                                                 markdownAIConfiguration: markdownAIConfiguration,
-                                                marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                                marginTop: markdownAIConfiguration
+                                                    .markdownAITheme
+                                                    .blockTopAndBottomMargins,
                                                 marginBottom: markdownAIConfiguration
                                                     .markdownAITheme
                                                     .blockTopAndBottomMargins,
@@ -252,7 +258,9 @@ public class MarkdownAIListComponent {
                                             MarkdownAIListComponent(
                                                 listNodeView: item,
                                                 markdownAIConfiguration: markdownAIConfiguration,
-                                                marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                                marginTop: markdownAIConfiguration
+                                                    .markdownAITheme
+                                                    .blockTopAndBottomMargins,
                                                 marginBottom: markdownAIConfiguration
                                                     .markdownAITheme
                                                     .blockTopAndBottomMargins,
@@ -264,7 +272,9 @@ public class MarkdownAIListComponent {
                                             MarkdownAIListComponent(
                                                 listNodeView: item,
                                                 markdownAIConfiguration: markdownAIConfiguration,
-                                                marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                                marginTop: markdownAIConfiguration
+                                                    .markdownAITheme
+                                                    .blockTopAndBottomMargins,
                                                 marginBottom: markdownAIConfiguration
                                                     .markdownAITheme
                                                     .blockTopAndBottomMargins,
@@ -276,7 +286,9 @@ public class MarkdownAIListComponent {
                                             MarkdownAIListComponent(
                                                 listNodeView: item,
                                                 markdownAIConfiguration: markdownAIConfiguration,
-                                                marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                                marginTop: markdownAIConfiguration
+                                                    .markdownAITheme
+                                                    .blockTopAndBottomMargins,
                                                 marginBottom: markdownAIConfiguration
                                                     .markdownAITheme
                                                     .blockTopAndBottomMargins,

@@ -129,8 +129,9 @@ class MarkdownAIParagraph3Component {
 
     protected override func aboutToAppear(): Unit {
         refreshData(paragraphNodeView)
-        markdownAICacheConfiguration.paragraph3Components.append(ParagraphAI3Data(this, index, index2, index3, indexItem,
-            indexItem2))
+        markdownAICacheConfiguration
+            .paragraph3Components
+            .append(ParagraphAI3Data(this, index, index2, index3, indexItem, indexItem2))
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -355,10 +356,10 @@ class MarkdownAIParagraph3Component {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        paragraphTextComponent(item,markdownAIConfiguration)
+                        paragraphTextComponent(item, markdownAIConfiguration)
                     } else if (item.node is Code) {
                         // 内联代码
-                        paragraphCodeComponent(item,markdownAIConfiguration)
+                        paragraphCodeComponent(item, markdownAIConfiguration)
                     } else if (item.node is HardLineBreak) {
                         // 硬换行
                         Span("\n")
@@ -441,8 +442,8 @@ class MarkdownAIParagraph3Component {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
-        let fut = rawfileToPixelmap(destination, markdownAIConfiguration.markdownAITheme.stageContext, componentWidth,
-            callback)
+        let fut = rawfileToPixelmap(destination, markdownAIConfiguration.markdownAITheme.stageContext,
+            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, callback)
         futs.append(fut)
         return idx
     }
@@ -485,8 +486,9 @@ class MarkdownAIParagraph3Component {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
-        let fut = rawfileToPixelmapStyle(destination, markdownAIConfiguration.markdownAITheme.stageContext, componentWidth,
-            length2Float64(picStyleObj.width), length2Float64(picStyleObj.height), callback)
+        let fut = rawfileToPixelmapStyle(destination, markdownAIConfiguration.markdownAITheme.stageContext,
+            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, length2Float64(picStyleObj.width),
+            length2Float64(picStyleObj.height), callback)
         futs.append(fut)
         return idx
     }

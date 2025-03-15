@@ -63,8 +63,8 @@ func imageSpanToPixelmap(destination: String, componentWidth: Float64, callback:
  * @param componentWidth 控件宽度 - 单位vp
  * @param callback PixelMap图片、图片高度、图片宽度 回调接口
  */
-func rawfileToPixelmap(destination: String, stageContext: ?StageContext, componentWidth: Float64,
-    callback: (?PixelMap, ?Float64, ?Float64) -> Unit): Future<Unit> {
+func rawfileToPixelmap(destination: String, stageContext: ?StageContext, abilityContext: ?AbilityContext,
+    componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64) -> Unit): Future<Unit> {
     let fut: Future<Unit> = spawn {
         var pixelMap: ?PixelMap = Option<PixelMap>.None
         var height: ?Float64 = Option<Float64>.None
@@ -75,6 +75,40 @@ func rawfileToPixelmap(destination: String, stageContext: ?StageContext, compone
                     return
                 }
                 let resourceManager = ResourceManager.getResourceManager(v)
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                var arrayUInt8: Array<UInt8> = resourceManager.getRawFileContent(destination.replace("./", ""))
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                var imageSource: ImageSource = createImageSource(arrayUInt8)
+                if (Thread.currentThread.hasPendingCancellation) {
+                    imageSource.Release()
+                    return
+                }
+                pixelMap = imageSource.createPixelMap()
+                imageSource.Release()
+                var size: Size = pixelMap().getImageInfo().size
+                var sizeWidth: Float64 = Float64(size.width)
+                var sizeHeight: Float64 = Float64(size.height)
+                var aspectRatio: Float64 = sizeHeight / sizeWidth
+                width = if (componentWidth > sizeWidth) {
+                    sizeWidth
+                } else {
+                    componentWidth
+                }
+                height = width() * aspectRatio
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap?.Release()
+                    return
+                }
+                pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
+            } else if (let Some(v) <- abilityContext) {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                let resourceManager = ResourceManager.getResourceManager(getStageContext(v))
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
@@ -120,7 +154,10 @@ func rawfileToPixelmap(destination: String, stageContext: ?StageContext, compone
     return fut
 }
 
-let client: Client = ClientBuilder().readTimeout(Duration.minute * 1).poolSize(2000).tlsConfig(getTlsClientConfig())
+let client: Client = ClientBuilder()
+    .readTimeout(Duration.minute * 1)
+    .poolSize(2000)
+    .tlsConfig(getTlsClientConfig())
     .build()
 
 func getTlsClientConfig(): TlsClientConfig {

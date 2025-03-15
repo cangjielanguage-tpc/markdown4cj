@@ -103,8 +103,9 @@ class MarkdownAIListItem2Component {
 
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
-        markdownAICacheConfiguration.listItem2Components.append(ListItemAI2Data(this, index, index2, indexItem, indexItem2
-        ))
+        markdownAICacheConfiguration
+            .listItem2Components
+            .append(ListItemAI2Data(this, index, index2, indexItem, indexItem2))
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -342,7 +343,8 @@ class MarkdownAIListItem2Component {
                         }
                     }
                 } else {
-                    nodeViewAIDataSource.replaceDate(nodeViewAIDataSource.totalCount() - 1, nodeViews[nodeViews.size - 1])
+                    nodeViewAIDataSource.replaceDate(nodeViewAIDataSource.totalCount() - 1, nodeViews[nodeViews.size - 1]
+                    )
                 }
             } else {
                 nodeViewAIDataSource.replaceDate(nodeViews.size - 1, nodeViews[nodeViews.size - 1])

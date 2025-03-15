@@ -155,16 +155,15 @@ class MarkdownAIHeading1Component {
                 }
             }
         }
-        // 设置元素内容的对齐方式
-        .align(Alignment.Start)
-        // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
-        // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
-        // 设置组件自身的宽度
-        .width(100.percent)
+            // 设置元素内容的对齐方式
+            .align(Alignment.Start)
+            // 设置元素水平方向的布局
+            .direction(Direction.Ltr)
+            // 设置外边距属性
+            .margin(top: marginTop, bottom: marginBottom)
+            // 设置组件自身的宽度
+            .width(100.percent)
     }
-
 
     /**
      * 行内数学公式
@@ -325,10 +324,10 @@ class MarkdownAIHeading1Component {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        headingTextComponent(item,markdownAIConfiguration,headingNodeView)
+                        headingTextComponent(item, markdownAIConfiguration, headingNodeView)
                     } else if (item.node is Code) {
                         // 内联代码
-                        headingCodeComponent(item,markdownAIConfiguration)
+                        headingCodeComponent(item, markdownAIConfiguration)
                     } else if (item.node is HardLineBreak) {
                         // 硬换行
                         Span("\n")
@@ -351,10 +350,10 @@ class MarkdownAIHeading1Component {
                 }
             )
         }
-        // 设置多行文本的文本对齐方式
-        .textAlign(TextAlign.Start)
-        // 设置组件自身的宽度
-        .width(100.percent)
+            // 设置多行文本的文本对齐方式
+            .textAlign(TextAlign.Start)
+            // 设置组件自身的宽度
+            .width(100.percent)
     }
 
     /**
@@ -396,8 +395,8 @@ class MarkdownAIHeading1Component {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
-        let fut = rawfileToPixelmap(destination, markdownAIConfiguration.markdownAITheme.stageContext, componentWidth,
-            callback)
+        let fut = rawfileToPixelmap(destination, markdownAIConfiguration.markdownAITheme.stageContext,
+            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, callback)
         futs.append(fut)
         return idx
     }
@@ -440,8 +439,9 @@ class MarkdownAIHeading1Component {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
-        let fut = rawfileToPixelmapStyle(destination, markdownAIConfiguration.markdownAITheme.stageContext, componentWidth,
-            length2Float64(picStyleObj.width), length2Float64(picStyleObj.height), callback)
+        let fut = rawfileToPixelmapStyle(destination, markdownAIConfiguration.markdownAITheme.stageContext,
+            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, length2Float64(picStyleObj.width),
+            length2Float64(picStyleObj.height), callback)
         futs.append(fut)
         return idx
     }

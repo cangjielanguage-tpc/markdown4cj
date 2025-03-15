@@ -18,9 +18,8 @@ class HeadingAI4Data {
     var indexItem2: Int64
     var indexItem3: Int64
 
-    init(component: MarkdownAIHeading4Component, index: Int64, index2: Int64, index3: Int64, index4: Int64, indexItem: Int64,
-        indexItem2: Int64,
-        indexItem3: Int64) {
+    init(component: MarkdownAIHeading4Component, index: Int64, index2: Int64, index3: Int64, index4: Int64,
+        indexItem: Int64, indexItem2: Int64, indexItem3: Int64) {
         this.component = component
         this.index = index
         this.index2 = index2
@@ -141,9 +140,9 @@ class MarkdownAIHeading4Component {
 
     protected override func aboutToAppear(): Unit {
         refreshData(headingNodeView)
-        markdownAICacheConfiguration.heading4Components.append(HeadingAI4Data(this, index, index2, index3, index4, indexItem,
-            indexItem2,
-            indexItem3))
+        markdownAICacheConfiguration
+            .heading4Components
+            .append(HeadingAI4Data(this, index, index2, index3, index4, indexItem, indexItem2, indexItem3))
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -152,10 +151,9 @@ class MarkdownAIHeading4Component {
             .removeIf(
                 {
                     predicate => if (predicate.index == index && predicate.index2 == index2
-                        && predicate.index3 == index3   && predicate.index4 == index4 && predicate.indexItem == indexItem
-                        && predicate.indexItem2 == indexItem2 && predicate.indexItem3 == indexItem3 && predicate.component.headingNodeView.children.size == headingNodeView
-                        .children
-                        .size) {
+                        && predicate.index3 == index3 && predicate.index4 == index4 && predicate.indexItem == indexItem
+                        && predicate.indexItem2 == indexItem2 && predicate.indexItem3 == indexItem3 &&
+                        predicate.component.headingNodeView.children.size == headingNodeView.children.size) {
                         true
                     } else {
                         false
@@ -209,14 +207,14 @@ class MarkdownAIHeading4Component {
                 }
             }
         }
-        // 设置元素内容的对齐方式
-        .align(Alignment.Start)
-        // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
-        // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
-        // 设置组件自身的宽度
-        .width(100.percent)
+            // 设置元素内容的对齐方式
+            .align(Alignment.Start)
+            // 设置元素水平方向的布局
+            .direction(Direction.Ltr)
+            // 设置外边距属性
+            .margin(top: marginTop, bottom: marginBottom)
+            // 设置组件自身的宽度
+            .width(100.percent)
     }
 
     /**
@@ -378,10 +376,10 @@ class MarkdownAIHeading4Component {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        headingTextComponent(item,markdownAIConfiguration,headingNodeView)
+                        headingTextComponent(item, markdownAIConfiguration, headingNodeView)
                     } else if (item.node is Code) {
                         // 内联代码
-                        headingCodeComponent(item,markdownAIConfiguration)
+                        headingCodeComponent(item, markdownAIConfiguration)
                     } else if (item.node is HardLineBreak) {
                         // 硬换行
                         Span("\n")
@@ -404,10 +402,10 @@ class MarkdownAIHeading4Component {
                 }
             )
         }
-        // 设置多行文本的文本对齐方式
-        .textAlign(TextAlign.Start)
-        // 设置组件自身的宽度
-        .width(100.percent)
+            // 设置多行文本的文本对齐方式
+            .textAlign(TextAlign.Start)
+            // 设置组件自身的宽度
+            .width(100.percent)
     }
 
     /**
@@ -449,8 +447,8 @@ class MarkdownAIHeading4Component {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
-        let fut = rawfileToPixelmap(destination, markdownAIConfiguration.markdownAITheme.stageContext, componentWidth,
-            callback)
+        let fut = rawfileToPixelmap(destination, markdownAIConfiguration.markdownAITheme.stageContext,
+            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, callback)
         futs.append(fut)
         return idx
     }
@@ -493,8 +491,9 @@ class MarkdownAIHeading4Component {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
-        let fut = rawfileToPixelmapStyle(destination, markdownAIConfiguration.markdownAITheme.stageContext, componentWidth,
-            length2Float64(picStyleObj.width), length2Float64(picStyleObj.height), callback)
+        let fut = rawfileToPixelmapStyle(destination, markdownAIConfiguration.markdownAITheme.stageContext,
+            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, length2Float64(picStyleObj.width),
+            length2Float64(picStyleObj.height), callback)
         futs.append(fut)
         return idx
     }

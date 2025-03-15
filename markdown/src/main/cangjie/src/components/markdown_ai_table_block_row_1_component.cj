@@ -46,7 +46,7 @@ class MarkdownAITableBlockRow1Component {
                 }
             )
         }
-        // 设置组件自身的宽度
-        .width(100.percent)
+            // 设置组件自身的宽度
+            .width(100.percent)
     }
 }

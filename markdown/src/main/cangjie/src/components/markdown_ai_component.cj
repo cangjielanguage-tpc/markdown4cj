@@ -26,12 +26,12 @@ public class MarkdownAIComponent {
     @Prop
     var isFull: Bool
 
-//    /**
-//     * 增量数据是否结束
-//     */
-//    @Prop
-//    @Watch[refreshData]
-//    var isClosed: Bool
+    //    /**
+    //     * 增量数据是否结束
+    //     */
+    //    @Prop
+    //    @Watch[refreshData]
+    //    var isClosed: Bool
 
     /**
      * markdown配置
@@ -90,7 +90,7 @@ public class MarkdownAIComponent {
     /**
      * 刷新判定
      */
-    let isRefreshData:AtomicBool = AtomicBool(false)
+    let isRefreshData: AtomicBool = AtomicBool(false)
 
     protected override func aboutToAppear(): Unit {
         componentWidth = widthVpToPx(screenWidth, markdownAIConfiguration.markdownAITheme.imagePadding)
@@ -273,7 +273,7 @@ public class MarkdownAIComponent {
     }
 
     func refreshData(): Unit {
-        if(isRefreshData.load()){
+        if (isRefreshData.load()) {
             let fut: Future<Unit> = spawn {
                 synchronized(parseReentrantMutex) {
                     isRefreshData.store(false)
@@ -364,8 +364,8 @@ public class MarkdownAIComponent {
                             }
                         }
                     } else {
-                        nodeViewAIDataSource.replaceDate(nodeViewAIDataSource.totalCount() - 1, nodeViews[nodeViews.size - 1]
-                        )
+                        nodeViewAIDataSource.replaceDate(nodeViewAIDataSource.totalCount() - 1,
+                            nodeViews[nodeViews.size - 1])
                     }
                 } else {
                     nodeViewAIDataSource.replaceDate(nodeViews.size - 1, nodeViews[nodeViews.size - 1])

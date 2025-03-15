@@ -62,10 +62,10 @@ class MarkdownAIFencedCodeBlockComponent {
                 codeBlockButtonComponent()
             }
         }
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
+            // 设置组件自身的宽度
+            .width(100.percent)
+            // 设置外边距属性
+            .margin(top: marginTop, bottom: marginBottom)
     }
 
     /**
@@ -78,23 +78,25 @@ class MarkdownAIFencedCodeBlockComponent {
                 arrayList,
                 itemGeneratorFunc: {
                     item: PrismNodesParseRes, idx: Int64 =>
-                        // 设置文本内容
-                        Span(item.getText())
-                            // 设置文本颜色
-                            .fontColor(codeTextColor(item, markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
-                            // 设置文本字符间距
-                            .letterSpacing(markdownAIConfiguration.markdownAITheme.paragraphTextWordSpace)
+                    // 设置文本内容
+                    Span(item.getText())
+                        // 设置文本颜色
+                        .fontColor(
+                            codeTextColor(item, markdownAIConfiguration.markdownAITheme,
+                                markdownAIConfiguration.markdownAITheme.prismTheme))
+                        // 设置文本字符间距
+                        .letterSpacing(markdownAIConfiguration.markdownAITheme.paragraphTextWordSpace)
                 }
             )
         }
-        // 设置文本尺寸
-        .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
-        // 设置文本的字体列表
-        .fontFamily(markdownAIConfiguration.markdownAITheme.codeBlockTypeface)
-        // 设置多行文本的文本对齐方式
-        .textAlign(TextAlign.Start)
-        // 设置内边距属性
-        .padding(left: markdownAIConfiguration.markdownAITheme.codeMultilineMargin)
+            // 设置文本尺寸
+            .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+            // 设置文本的字体列表
+            .fontFamily(markdownAIConfiguration.markdownAITheme.codeBlockTypeface)
+            // 设置多行文本的文本对齐方式
+            .textAlign(TextAlign.Start)
+            // 设置内边距属性
+            .padding(left: markdownAIConfiguration.markdownAITheme.codeMultilineMargin)
     }
 
     /**
@@ -106,20 +108,22 @@ class MarkdownAIFencedCodeBlockComponent {
             // 代码文本内容
             codeBlockTextComponent()
         }
-        // 设置组件的背景色
-        .backgroundColor(codeBackgroundColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
-        // 设置滚动方法
-        .scrollable(ScrollDirection.Horizontal)
-        // 设置滚动条状态
-        .scrollBar(BarState.Off)
-        // 设置元素内容的对齐方式
-        .align(Alignment.Start)
-        // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置内边距属性
-        .padding(top: 10, bottom: 10)
+            // 设置组件的背景色
+            .backgroundColor(
+                codeBackgroundColor(markdownAIConfiguration.markdownAITheme,
+                    markdownAIConfiguration.markdownAITheme.prismTheme))
+            // 设置滚动方法
+            .scrollable(ScrollDirection.Horizontal)
+            // 设置滚动条状态
+            .scrollBar(BarState.Off)
+            // 设置元素内容的对齐方式
+            .align(Alignment.Start)
+            // 设置元素水平方向的布局
+            .direction(Direction.Ltr)
+            // 设置组件自身的宽度
+            .width(100.percent)
+            // 设置内边距属性
+            .padding(top: 10, bottom: 10)
     }
 
     /**
@@ -156,19 +160,21 @@ class MarkdownAIFencedCodeBlockComponent {
                     // 控制当前组件显示或隐藏
                     .visibility(isVisibility(markdownAIConfiguration.markdownAITheme.isCodeFullScreen))
                     // 点击动作触发该方法调用
-                    .onClick {evt => codeFullScreenOnClick(codeText, info, markdownAIConfiguration.codeFullScreenCallback)}
+                    .onClick {
+                        evt => codeFullScreenOnClick(codeText, info, markdownAIConfiguration.codeFullScreenCallback)
+                    }
             }
         }
-        // 设置外边距属性
-        .margin(top: 8, right: 8)
+            // 设置外边距属性
+            .margin(top: 8, right: 8)
     }
 
     /**
      * 代码数据高亮解析
      */
     func stringCodeToResList() {
-        let callback: (ArrayList<PrismNodesParseRes>) -> Unit = { prismNodesParseResLists =>
-            launch{
+        let callback: (ArrayList<PrismNodesParseRes>) -> Unit = {
+            prismNodesParseResLists => launch {
                 arrayList = prismNodesParseResLists
             }
         }

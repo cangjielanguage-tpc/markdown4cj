@@ -112,8 +112,8 @@ class MarkdownAIList3Component {
 
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
-        markdownAICacheConfiguration.list3Components.append(ListAI3Data(this, index, index2, index3, indexItem, indexItem2
-        ))
+        markdownAICacheConfiguration.list3Components.append(ListAI3Data(this, index, index2, index3, indexItem,
+            indexItem2))
     }
 
     protected override func aboutToDisappear(): Unit {

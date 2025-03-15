@@ -59,14 +59,14 @@ class MarkdownAIParagraphComponent {
         Column() {
             paragraphOtherComponent()
         }
-        // 设置元素内容的对齐方式
-        .align(Alignment.Start)
-        // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
-        // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
-        // 设置组件自身的宽度
-        .width(100.percent)
+            // 设置元素内容的对齐方式
+            .align(Alignment.Start)
+            // 设置元素水平方向的布局
+            .direction(Direction.Ltr)
+            // 设置外边距属性
+            .margin(top: marginTop, bottom: marginBottom)
+            // 设置组件自身的宽度
+            .width(100.percent)
     }
 
     /**
@@ -89,7 +89,10 @@ class MarkdownAIParagraphComponent {
                             // 设置约束尺寸
                             .constraintSize(maxWidth: 100.percent)
                             // 点击动作触发该方法调用
-                            .onClick {evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px, markdownAIConfiguration.latexImageCallback)}
+                            .onClick {
+                                evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px,
+                                    markdownAIConfiguration.latexImageCallback)
+                            }
                     }
                 }
             }
@@ -100,27 +103,14 @@ class MarkdownAIParagraphComponent {
      * 图片
      */
     @Builder
-    func paragraphImageSpanPixelMapComponent(ret: Int64, destination: String, imageType: Int64, picStyleObj: ?PicStyleObj) {
+    func paragraphImageSpanPixelMapComponent(ret: Int64, destination: String, imageType: Int64,
+        picStyleObj: ?PicStyleObj) {
         ForEach(
             arrayListPixelMap,
             itemGeneratorFunc: {
-                item: ImageData, idx: Int64 =>
-                    if (item.ret == ret && imageType == 1) {
-                        if (isImagePixelMap(item, listPixelMap)) {
-                            ImageSpan(item.pixelMap())
-                                // 设置组件自身的高度
-                                .height(pxToVp(item.height()))
-                                // 设置组件自身的宽度
-                                .width(pxToVp(item.width()))
-                                // 设置图片的缩放类型
-                                .objectFit(ImageFit.Contain)
-                                // 设置约束尺寸
-                                .constraintSize(maxWidth: 100.percent)
-                                // 图片的点击事件
-                                .onClick {evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)}
-                        }
-                    } else  if (item.ret == ret && item.height.isSome()){
-                        ImageSpan(destination)
+                item: ImageData, idx: Int64 => if (item.ret == ret && imageType == 1) {
+                    if (isImagePixelMap(item, listPixelMap)) {
+                        ImageSpan(item.pixelMap())
                             // 设置组件自身的高度
                             .height(pxToVp(item.height()))
                             // 设置组件自身的宽度
@@ -132,6 +122,19 @@ class MarkdownAIParagraphComponent {
                             // 图片的点击事件
                             .onClick {evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)}
                     }
+                } else if (item.ret == ret && item.height.isSome()) {
+                    ImageSpan(destination)
+                        // 设置组件自身的高度
+                        .height(pxToVp(item.height()))
+                        // 设置组件自身的宽度
+                        .width(pxToVp(item.width()))
+                        // 设置图片的缩放类型
+                        .objectFit(ImageFit.Contain)
+                        // 设置约束尺寸
+                        .constraintSize(maxWidth: 100.percent)
+                        // 图片的点击事件
+                        .onClick {evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)}
+                }
             }
         )
     }
@@ -143,12 +146,12 @@ class MarkdownAIParagraphComponent {
     func paragraphImageSpanComponent(commonmarkImage: CommonmarkImage, idx: Int64) {
         if (commonmarkImage.getDestination().startsWith("file:")) {
             // 沙盒图片
-            paragraphImageSpanPixelMapComponent(filesPixelmap(commonmarkImage.getDestination(), idx ),
-                commonmarkImage.getDestination(),0, Option<PicStyleObj>.None)
+            paragraphImageSpanPixelMapComponent(filesPixelmap(commonmarkImage.getDestination(), idx),
+                commonmarkImage.getDestination(), 0, Option<PicStyleObj>.None)
         } else if (commonmarkImage.getDestination().startsWith("./")) {
             // rawfile图片
             paragraphImageSpanPixelMapComponent(localRowImageToPixelMap(commonmarkImage.getDestination(), idx),
-                commonmarkImage.getDestination(),1, Option<PicStyleObj>.None)
+                commonmarkImage.getDestination(), 1, Option<PicStyleObj>.None)
         } else if (commonmarkImage.getDestination().toAsciiLower().startsWith("http") ||
             commonmarkImage.getDestination().toAsciiLower().startsWith("ftp")) {
             // 网络图片
@@ -164,17 +167,19 @@ class MarkdownAIParagraphComponent {
     func paragraphImageSpanStyleComponent(commonmarkImage: StyleImage, picStyleObj: PicStyleObj, idx: Int64) {
         if (commonmarkImage.getDestination().startsWith("file:")) {
             // 沙盒图片
-            paragraphImageSpanPixelMapComponent(filesPixelmapStyle(commonmarkImage.getDestination(), idx,picStyleObj),
-                commonmarkImage.getDestination(),0,picStyleObj)
+            paragraphImageSpanPixelMapComponent(filesPixelmapStyle(commonmarkImage.getDestination(), idx, picStyleObj),
+                commonmarkImage.getDestination(), 0, picStyleObj)
         } else if (commonmarkImage.getDestination().startsWith("./")) {
             // rawfile图片
-            paragraphImageSpanPixelMapComponent(localRowImageToPixelMapStyle(commonmarkImage.getDestination(), idx,picStyleObj),
-                commonmarkImage.getDestination(),1,picStyleObj)
+            paragraphImageSpanPixelMapComponent(
+                localRowImageToPixelMapStyle(commonmarkImage.getDestination(), idx, picStyleObj),
+                commonmarkImage.getDestination(), 1, picStyleObj)
         } else if (commonmarkImage.getDestination().toAsciiLower().startsWith("http") ||
             commonmarkImage.getDestination().toAsciiLower().startsWith("ftp")) {
             // 网络图片
-            paragraphImageSpanPixelMapComponent(httpImageToPixelMapStyle(commonmarkImage.getDestination(), idx,picStyleObj),
-                commonmarkImage.getDestination(), 2,picStyleObj)
+            paragraphImageSpanPixelMapComponent(
+                httpImageToPixelMapStyle(commonmarkImage.getDestination(), idx, picStyleObj),
+                commonmarkImage.getDestination(), 2, picStyleObj)
         }
     }
 
@@ -185,26 +190,29 @@ class MarkdownAIParagraphComponent {
     func paragraphHtmlImageSpanComponent(imageHtmlNode: ImageHtmlNode, idx: Int64) {
         if (imageHtmlNode.getDestination().startsWith("file:")) {
             // 沙盒图片
-            paragraphImageSpanPixelMapComponent(filesPixelmapStyle(imageHtmlNode.getDestination(), idx,toPicStyleObj(imageHtmlNode)),
-                imageHtmlNode.getDestination(),0,toPicStyleObj(imageHtmlNode))
+            paragraphImageSpanPixelMapComponent(
+                filesPixelmapStyle(imageHtmlNode.getDestination(), idx, toPicStyleObj(imageHtmlNode)),
+                imageHtmlNode.getDestination(), 0, toPicStyleObj(imageHtmlNode))
         } else if (imageHtmlNode.getDestination().startsWith("./")) {
             // rawfile图片
-            paragraphImageSpanPixelMapComponent(localRowImageToPixelMapStyle(imageHtmlNode.getDestination(), idx,toPicStyleObj(imageHtmlNode)),
-                imageHtmlNode.getDestination(),1,toPicStyleObj(imageHtmlNode))
+            paragraphImageSpanPixelMapComponent(
+                localRowImageToPixelMapStyle(imageHtmlNode.getDestination(), idx, toPicStyleObj(imageHtmlNode)),
+                imageHtmlNode.getDestination(), 1, toPicStyleObj(imageHtmlNode))
         } else if (imageHtmlNode.getDestination().toAsciiLower().startsWith("http") ||
             imageHtmlNode.getDestination().toAsciiLower().startsWith("ftp")) {
             // 网络图片
-            paragraphImageSpanPixelMapComponent(httpImageToPixelMapStyle(imageHtmlNode.getDestination(), idx,toPicStyleObj(imageHtmlNode)),
-                imageHtmlNode.getDestination(), 2,toPicStyleObj(imageHtmlNode))
+            paragraphImageSpanPixelMapComponent(
+                httpImageToPixelMapStyle(imageHtmlNode.getDestination(), idx, toPicStyleObj(imageHtmlNode)),
+                imageHtmlNode.getDestination(), 2, toPicStyleObj(imageHtmlNode))
         }
     }
 
-    func toPicStyleObj(imageHtmlNode: ImageHtmlNode):PicStyleObj{
+    func toPicStyleObj(imageHtmlNode: ImageHtmlNode): PicStyleObj {
         let picStyleObj: PicStyleObj = PicStyleObj()
-        if(let Some(v)<- imageHtmlNode.getWidth()){
+        if (let Some(v) <- imageHtmlNode.getWidth()) {
             picStyleObj.width = Float64.parse(v).px
         }
-        if(let Some(v)<- imageHtmlNode.getHeight()){
+        if (let Some(v) <- imageHtmlNode.getHeight()) {
             picStyleObj.height = Float64.parse(v).px
         }
         return picStyleObj
@@ -221,10 +229,10 @@ class MarkdownAIParagraphComponent {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        paragraphTextComponent(item,markdownAIConfiguration)
+                        paragraphTextComponent(item, markdownAIConfiguration)
                     } else if (item.node is Code) {
                         // 内联代码
-                        paragraphCodeComponent(item,markdownAIConfiguration)
+                        paragraphCodeComponent(item, markdownAIConfiguration)
                     } else if (item.node is HardLineBreak) {
                         // 硬换行
                         Span("\n")
@@ -237,7 +245,7 @@ class MarkdownAIParagraphComponent {
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
                         paragraphLatexMathComponent(latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx))
-                    } else if (item.node is ImageHtmlNode){
+                    } else if (item.node is ImageHtmlNode) {
                         // HTML图片
                         paragraphHtmlImageSpanComponent((item.node as ImageHtmlNode)(), idx)
                     } else {
@@ -247,15 +255,18 @@ class MarkdownAIParagraphComponent {
                 }
             )
         }
-        // 设置多行文本的文本对齐方式
-        .textAlign(TextAlign.Start)
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 组件卸载消失时触发此回调
-        .onDisAppear({=>
-            threadFutureCancel(futs)
-            delPixelMap(listPixelMap)
-        })
+            // 设置多行文本的文本对齐方式
+            .textAlign(TextAlign.Start)
+            // 设置组件自身的宽度
+            .width(100.percent)
+            // 组件卸载消失时触发此回调
+            .onDisAppear(
+                {
+                    =>
+                    threadFutureCancel(futs)
+                    delPixelMap(listPixelMap)
+                }
+            )
     }
 
     /**
@@ -271,11 +282,12 @@ class MarkdownAIParagraphComponent {
     func latexMathImagePixelmap(strLatexMath: String, idx: Int64): Int64 {
         let callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit = {
             pixelMap, height, width, arr => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width,arrayUint8: arr))
+                arrayListPixelMap.append(
+                    ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width, arrayUint8: arr))
             }
         }
-        let fut = MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownAIConfiguration.markdownAITheme.resPath,
-            markdownAIConfiguration, componentWidth, callback)
+        let fut = MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath,
+            markdownAIConfiguration.markdownAITheme.resPath, markdownAIConfiguration, componentWidth, callback)
         futs.append(fut)
         return idx
     }
@@ -303,7 +315,8 @@ class MarkdownAIParagraphComponent {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
-        let fut = rawfileToPixelmap(destination, markdownAIConfiguration.markdownAITheme.stageContext, componentWidth, callback)
+        let fut = rawfileToPixelmap(destination, markdownAIConfiguration.markdownAITheme.stageContext,
+            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, callback)
         futs.append(fut)
         return idx
     }
@@ -331,7 +344,8 @@ class MarkdownAIParagraphComponent {
                 arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
             }
         }
-        let fut = imageSpanToPixelmapStyle(destination, componentWidth,length2Float64(picStyleObj.width),length2Float64(picStyleObj.height),callback)
+        let fut = imageSpanToPixelmapStyle(destination, componentWidth, length2Float64(picStyleObj.width),
+            length2Float64(picStyleObj.height), callback)
         futs.append(fut)
         return idx
     }
@@ -345,7 +359,9 @@ class MarkdownAIParagraphComponent {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
-        let fut = rawfileToPixelmapStyle(destination, markdownAIConfiguration.markdownAITheme.stageContext, componentWidth,length2Float64(picStyleObj.width),length2Float64(picStyleObj.height), callback)
+        let fut = rawfileToPixelmapStyle(destination, markdownAIConfiguration.markdownAITheme.stageContext,
+            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, length2Float64(picStyleObj.width),
+            length2Float64(picStyleObj.height), callback)
         futs.append(fut)
         return idx
     }
@@ -359,20 +375,21 @@ class MarkdownAIParagraphComponent {
                 arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
             }
         }
-        let fut = getImageFromHttpClientStyle(destination, componentWidth,length2Float64(picStyleObj.width),length2Float64(picStyleObj.height), callback)
+        let fut = getImageFromHttpClientStyle(destination, componentWidth, length2Float64(picStyleObj.width),
+            length2Float64(picStyleObj.height), callback)
         futs.append(fut)
         return idx
     }
 
-    func length2Float64(length:?Length):?Float64{
-        if(let Some(v) <- length){
-            return match(v.unitType){
+    func length2Float64(length: ?Length): ?Float64 {
+        if (let Some(v) <- length) {
+            return match (v.unitType) {
                 case LengthType.vp => vp2px(v)().value
                 case LengthType.px => v.value
                 case LengthType.percent => (v.value / 1.0) * componentWidth
                 case _ => v.value
             }
-        }else {
+        } else {
             return None
         }
     }

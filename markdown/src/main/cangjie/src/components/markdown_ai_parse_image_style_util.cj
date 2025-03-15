@@ -16,7 +16,8 @@ import ohos.ark_interop_helper.*
  * @param componentWidth 控件宽度 - 单位vp
  * @param callback PixelMap图片、图片高度、图片宽度 回调接口
  */
-func imageSpanToPixelmapStyle(destination: String, componentWidth: Float64, w: ?Float64, h: ?Float64, callback: (?Float64, ?Float64) -> Unit): Future<Unit> {
+func imageSpanToPixelmapStyle(destination: String, componentWidth: Float64, w: ?Float64, h: ?Float64,
+    callback: (?Float64, ?Float64) -> Unit): Future<Unit> {
     let fut: Future<Unit> = spawn {
         var height: ?Float64 = Option<Float64>.None
         var width: ?Float64 = Option<Float64>.None
@@ -38,39 +39,38 @@ func imageSpanToPixelmapStyle(destination: String, componentWidth: Float64, w: ?
             var sizeWidth: Float64 = Float64(size.width)
             var sizeHeight: Float64 = Float64(size.height)
             var aspectRatio: Float64 = sizeHeight / sizeWidth
-            var sizeWidthNew: Float64 = if(let Some(v) <- w){
+            var sizeWidthNew: Float64 = if (let Some(v) <- w) {
                 v
-            }else{
+            } else {
                 sizeWidth
             }
-            var sizeHeightNew: Float64 = if(let Some(v) <- h){
+            var sizeHeightNew: Float64 = if (let Some(v) <- h) {
                 v
-            }else{
+            } else {
                 sizeHeight
             }
-            if(w.isSome() && h.isSome()){
-
+            if (w.isSome() && h.isSome()) {
                 width = if (componentWidth > sizeWidthNew) {
                     sizeWidthNew
                 } else {
                     componentWidth
                 }
                 height = h()
-            }else if (w.isSome() && h.isNone()){
+            } else if (w.isSome() && h.isNone()) {
                 width = if (componentWidth > sizeWidthNew) {
                     sizeWidthNew
                 } else {
                     componentWidth
                 }
-                height = if(let Some(v) <- h){
+                height = if (let Some(v) <- h) {
                     v
-                }else{
+                } else {
                     width() * aspectRatio
                 }
-            } else if (w.isNone() && h.isSome()){
+            } else if (w.isNone() && h.isSome()) {
                 height = h()
-                width = if (componentWidth > height()/aspectRatio) {
-                    height()/aspectRatio
+                width = if (componentWidth > height() / aspectRatio) {
+                    height() / aspectRatio
                 } else {
                     componentWidth
                 }
@@ -80,9 +80,9 @@ func imageSpanToPixelmapStyle(destination: String, componentWidth: Float64, w: ?
                 } else {
                     componentWidth
                 }
-                height = if(let Some(v) <- h){
+                height = if (let Some(v) <- h) {
                     v
-                }else{
+                } else {
                     width() * aspectRatio
                 }
             }
@@ -105,8 +105,8 @@ func imageSpanToPixelmapStyle(destination: String, componentWidth: Float64, w: ?
  * @param componentWidth 控件宽度 - 单位vp
  * @param callback PixelMap图片、图片高度、图片宽度 回调接口
  */
-func rawfileToPixelmapStyle(destination: String, stageContext: ?StageContext, componentWidth: Float64, w: ?Float64, h: ?Float64,
-    callback: (?PixelMap, ?Float64, ?Float64) -> Unit): Future<Unit> {
+func rawfileToPixelmapStyle(destination: String, stageContext: ?StageContext, abilityContext: ?AbilityContext,
+    componentWidth: Float64, w: ?Float64, h: ?Float64, callback: (?PixelMap, ?Float64, ?Float64) -> Unit): Future<Unit> {
     let fut: Future<Unit> = spawn {
         var pixelMap: ?PixelMap = Option<PixelMap>.None
         var height: ?Float64 = Option<Float64>.None
@@ -132,57 +132,131 @@ func rawfileToPixelmapStyle(destination: String, stageContext: ?StageContext, co
                 pixelMap = imageSource.createPixelMap()
                 imageSource.Release()
                 var size: Size = pixelMap().getImageInfo().size
-            var sizeWidth: Float64 = Float64(size.width)
-            var sizeHeight: Float64 = Float64(size.height)
-            var aspectRatio: Float64 = sizeHeight / sizeWidth
-            var sizeWidthNew: Float64 = if(let Some(v) <- w){
-                v
-            }else{
-                sizeWidth
-            }
-            var sizeHeightNew: Float64 = if(let Some(v) <- h){
-                v
-            }else{
-                sizeHeight
-            }
-            if(w.isSome() && h.isSome()){
-
-                width = if (componentWidth > sizeWidthNew) {
-                    sizeWidthNew
-                } else {
-                    componentWidth
-                }
-                height = h()
-            }else if (w.isSome() && h.isNone()){
-                width = if (componentWidth > sizeWidthNew) {
-                    sizeWidthNew
-                } else {
-                    componentWidth
-                }
-                height = if(let Some(v) <- h){
+                var sizeWidth: Float64 = Float64(size.width)
+                var sizeHeight: Float64 = Float64(size.height)
+                var aspectRatio: Float64 = sizeHeight / sizeWidth
+                var sizeWidthNew: Float64 = if (let Some(v) <- w) {
                     v
-                }else{
-                    width() * aspectRatio
-                }
-            } else if (w.isNone() && h.isSome()){
-                height = h()
-                width = if (componentWidth > height()/aspectRatio) {
-                    height()/aspectRatio
                 } else {
-                    componentWidth
+                    sizeWidth
                 }
-            } else {
-                width = if (componentWidth > sizeWidthNew) {
-                    sizeWidthNew
-                } else {
-                    componentWidth
-                }
-                height = if(let Some(v) <- h){
+                var sizeHeightNew: Float64 = if (let Some(v) <- h) {
                     v
-                }else{
-                    width() * aspectRatio
+                } else {
+                    sizeHeight
                 }
-            }
+                if (w.isSome() && h.isSome()) {
+                    width = if (componentWidth > sizeWidthNew) {
+                        sizeWidthNew
+                    } else {
+                        componentWidth
+                    }
+                    height = h()
+                } else if (w.isSome() && h.isNone()) {
+                    width = if (componentWidth > sizeWidthNew) {
+                        sizeWidthNew
+                    } else {
+                        componentWidth
+                    }
+                    height = if (let Some(v) <- h) {
+                        v
+                    } else {
+                        width() * aspectRatio
+                    }
+                } else if (w.isNone() && h.isSome()) {
+                    height = h()
+                    width = if (componentWidth > height() / aspectRatio) {
+                        height() / aspectRatio
+                    } else {
+                        componentWidth
+                    }
+                } else {
+                    width = if (componentWidth > sizeWidthNew) {
+                        sizeWidthNew
+                    } else {
+                        componentWidth
+                    }
+                    height = if (let Some(v) <- h) {
+                        v
+                    } else {
+                        width() * aspectRatio
+                    }
+                }
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap?.Release()
+                    return
+                }
+                pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
+            } else if (let Some(v) <- abilityContext) {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                let resourceManager = ResourceManager.getResourceManager(getStageContext(v))
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                var arrayUInt8: Array<UInt8> = resourceManager.getRawFileContent(destination.replace("./", ""))
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                var imageSource: ImageSource = createImageSource(arrayUInt8)
+                if (Thread.currentThread.hasPendingCancellation) {
+                    imageSource.Release()
+                    return
+                }
+                pixelMap = imageSource.createPixelMap()
+                imageSource.Release()
+                var size: Size = pixelMap().getImageInfo().size
+                var sizeWidth: Float64 = Float64(size.width)
+                var sizeHeight: Float64 = Float64(size.height)
+                var aspectRatio: Float64 = sizeHeight / sizeWidth
+                var sizeWidthNew: Float64 = if (let Some(v) <- w) {
+                    v
+                } else {
+                    sizeWidth
+                }
+                var sizeHeightNew: Float64 = if (let Some(v) <- h) {
+                    v
+                } else {
+                    sizeHeight
+                }
+                if (w.isSome() && h.isSome()) {
+                    width = if (componentWidth > sizeWidthNew) {
+                        sizeWidthNew
+                    } else {
+                        componentWidth
+                    }
+                    height = h()
+                } else if (w.isSome() && h.isNone()) {
+                    width = if (componentWidth > sizeWidthNew) {
+                        sizeWidthNew
+                    } else {
+                        componentWidth
+                    }
+                    height = if (let Some(v) <- h) {
+                        v
+                    } else {
+                        width() * aspectRatio
+                    }
+                } else if (w.isNone() && h.isSome()) {
+                    height = h()
+                    width = if (componentWidth > height() / aspectRatio) {
+                        height() / aspectRatio
+                    } else {
+                        componentWidth
+                    }
+                } else {
+                    width = if (componentWidth > sizeWidthNew) {
+                        sizeWidthNew
+                    } else {
+                        componentWidth
+                    }
+                    height = if (let Some(v) <- h) {
+                        v
+                    } else {
+                        width() * aspectRatio
+                    }
+                }
                 if (Thread.currentThread.hasPendingCancellation) {
                     pixelMap?.Release()
                     return
@@ -211,7 +285,8 @@ func rawfileToPixelmapStyle(destination: String, stageContext: ?StageContext, co
  * @param componentWidth 控件宽度 - 单位vp
  * @param callback PixelMap图片、图片高度、图片宽度 回调接口
  */
-func getImageFromHttpClientStyle(path: String, componentWidth: Float64, w: ?Float64, h: ?Float64, callback: (?Float64, ?Float64) -> Unit): Future<Unit> {
+func getImageFromHttpClientStyle(path: String, componentWidth: Float64, w: ?Float64, h: ?Float64,
+    callback: (?Float64, ?Float64) -> Unit): Future<Unit> {
     let fut: Future<Unit> = spawn {
         var height: ?Float64 = Option<Float64>.None
         var width: ?Float64 = Option<Float64>.None
@@ -255,39 +330,38 @@ func getImageFromHttpClientStyle(path: String, componentWidth: Float64, w: ?Floa
             var sizeWidth: Float64 = Float64(size.width)
             var sizeHeight: Float64 = Float64(size.height)
             var aspectRatio: Float64 = sizeHeight / sizeWidth
-            var sizeWidthNew: Float64 = if(let Some(v) <- w){
+            var sizeWidthNew: Float64 = if (let Some(v) <- w) {
                 v
-            }else{
+            } else {
                 sizeWidth
             }
-            var sizeHeightNew: Float64 = if(let Some(v) <- h){
+            var sizeHeightNew: Float64 = if (let Some(v) <- h) {
                 v
-            }else{
+            } else {
                 sizeHeight
             }
-            if(w.isSome() && h.isSome()){
-
+            if (w.isSome() && h.isSome()) {
                 width = if (componentWidth > sizeWidthNew) {
                     sizeWidthNew
                 } else {
                     componentWidth
                 }
                 height = h()
-            }else if (w.isSome() && h.isNone()){
+            } else if (w.isSome() && h.isNone()) {
                 width = if (componentWidth > sizeWidthNew) {
                     sizeWidthNew
                 } else {
                     componentWidth
                 }
-                height = if(let Some(v) <- h){
+                height = if (let Some(v) <- h) {
                     v
-                }else{
+                } else {
                     width() * aspectRatio
                 }
-            } else if (w.isNone() && h.isSome()){
+            } else if (w.isNone() && h.isSome()) {
                 height = h()
-                width = if (componentWidth > height()/aspectRatio) {
-                    height()/aspectRatio
+                width = if (componentWidth > height() / aspectRatio) {
+                    height() / aspectRatio
                 } else {
                     componentWidth
                 }
@@ -297,9 +371,9 @@ func getImageFromHttpClientStyle(path: String, componentWidth: Float64, w: ?Floa
                 } else {
                     componentWidth
                 }
-                height = if(let Some(v) <- h){
+                height = if (let Some(v) <- h) {
                     v
-                }else{
+                } else {
                     width() * aspectRatio
                 }
             }

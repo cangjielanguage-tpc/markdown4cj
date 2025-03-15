@@ -46,8 +46,8 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r, latexMathColorFormat(markdownAIConfiguration.markdownAITheme.latexMathColorFormat)
-                    )
+                    var g2 = Graphic2D(r,
+                        latexMathColorFormat(markdownAIConfiguration.markdownAITheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -119,8 +119,8 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r, latexMathColorFormat(markdownAIConfiguration.markdownAITheme.latexMathColorFormat)
-                    )
+                    var g2 = Graphic2D(r,
+                        latexMathColorFormat(markdownAIConfiguration.markdownAITheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }

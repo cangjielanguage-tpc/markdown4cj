@@ -40,7 +40,9 @@ public class MarkdownAIConfiguration {
     /**
      * 视频的图片替换回调
      */
-    protected var videoImageCallback: (String, (String) -> Unit) -> Unit = {url: String, coverCallback: (String) -> Unit => ()}
+    protected var videoImageCallback: (String, (String) -> Unit) -> Unit = {
+        url: String, coverCallback: (String) -> Unit => ()
+    }
 
     /**
      * 代码复制按钮的点击事件
@@ -159,7 +161,9 @@ public class MarkdownAIConfigurationBuilder {
     /**
      * 视频的图片替换回调
      */
-    protected var videoImageCallback: (String, (String) -> Unit) -> Unit = {url: String, coverCallback: (String) -> Unit => ()}
+    protected var videoImageCallback: (String, (String) -> Unit) -> Unit = {
+        url: String, coverCallback: (String) -> Unit => ()
+    }
 
     /**
      * 代码复制按钮的点击事件

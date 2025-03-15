@@ -11,12 +11,9 @@ internal import std.time.*
 internal import std.io.*
 internal import net.http.*
 internal import net.tls.*
-
 internal import markdown.core.*
 internal import markdown.plugin.*
-
 internal import commonmark4cj.strikethrough.*
-
 internal import commonmark4cj.commonmark.BitSet
 internal import commonmark4cj.commonmark.Block
 internal import commonmark4cj.commonmark.BlockQuote
@@ -42,36 +39,28 @@ internal import commonmark4cj.commonmark.SoftLineBreak
 internal import commonmark4cj.commonmark.LinkReferenceDefinition
 internal import commonmark4cj.commonmark.StrongEmphasis
 internal import commonmark4cj.commonmark.Emphasis
-
 internal import commonmark4cj.commonmark.Text as CommonmarkText
 internal import commonmark4cj.commonmark.Image as CommonmarkImage
 internal import commonmark4cj.commonmark.Link as CommonmarkLink
 internal import commonmark4cj.commonmark.State as CommonmarkState
 internal import commonmark4cj.commonmark.ListItem as CommonmarkListItem
 internal import commonmark4cj.commonmark.Node as CommonmarkNode
-
-internal import commonmark4cj.table.TableRow 
+internal import commonmark4cj.table.TableRow
 internal import commonmark4cj.table.TableHead
-internal import commonmark4cj.table.TablesExtension 
-internal import commonmark4cj.table.TableCell 
-internal import commonmark4cj.table.TableBlock  
-internal import commonmark4cj.table.TableBody   
-internal import commonmark4cj.table.TableNodeRenderer   
-
+internal import commonmark4cj.table.TablesExtension
+internal import commonmark4cj.table.TableCell
+internal import commonmark4cj.table.TableBlock
+internal import commonmark4cj.table.TableBody
+internal import commonmark4cj.table.TableNodeRenderer
 internal import commonmark4cj.table.Alignment as TableAlignment
-
 internal import prism4cj.GrammarLocatorGrammarUtils
-
 internal import prism4cj.prism.Prism
 internal import prism4cj.prism.GrammarUtils
 internal import prism4cj.prism.Syntax
-
 internal import prism4cj.prism.Text as PrismText
 internal import prism4cj.prism.Node as PrismNode
 internal import prism4cj.prism.Grammar as PrismGrammar
-
 internal import formula.*
-
 internal import ohos.image.PixelMap
 internal import ohos.image.InitializationOptions
 internal import ohos.image.PixelMapFormat
@@ -81,11 +70,8 @@ internal import ohos.image.PositionArea
 internal import ohos.image.createPixelMap
 internal import ohos.image.createImageSource
 internal import ohos.image.ImageSource
-
 internal import ohos.display.*
 internal import ohos.concurrency.*
 internal import ohos.ability.*
-
 internal import ohos.resource_manager.ResourceManager
-
 internal import ohos.resource_manager.Direction as ResourceManagerDirection

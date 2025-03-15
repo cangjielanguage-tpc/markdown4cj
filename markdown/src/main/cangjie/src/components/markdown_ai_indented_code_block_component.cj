@@ -52,10 +52,10 @@ class MarkdownAIIndentedCodeBlockComponent {
                 codeBlockButtonComponent()
             }
         }
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
+            // 设置组件自身的宽度
+            .width(100.percent)
+            // 设置外边距属性
+            .margin(top: marginTop, bottom: marginBottom)
     }
 
     /**
@@ -65,7 +65,9 @@ class MarkdownAIIndentedCodeBlockComponent {
     func codeBlockTextComponent() {
         Text(codeText)
             // 设置文本颜色
-            .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+            .fontColor(
+                indentedCodeTextColor(markdownAIConfiguration.markdownAITheme,
+                    markdownAIConfiguration.markdownAITheme.prismTheme))
             // 设置文本尺寸
             .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
             // 设置文本的字体列表
@@ -85,20 +87,22 @@ class MarkdownAIIndentedCodeBlockComponent {
             // 代码文本内容
             codeBlockTextComponent()
         }
-        // 设置组件的背景色
-        .backgroundColor(codeBackgroundColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
-        // 设置滚动方法
-        .scrollable(ScrollDirection.Horizontal)
-        // 设置滚动条状态
-        .scrollBar(BarState.Off)
-        // 设置元素内容的对齐方式
-        .align(Alignment.Start)
-        // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置内边距属性
-        .padding(top: 10, bottom: 10)
+            // 设置组件的背景色
+            .backgroundColor(
+                codeBackgroundColor(markdownAIConfiguration.markdownAITheme,
+                    markdownAIConfiguration.markdownAITheme.prismTheme))
+            // 设置滚动方法
+            .scrollable(ScrollDirection.Horizontal)
+            // 设置滚动条状态
+            .scrollBar(BarState.Off)
+            // 设置元素内容的对齐方式
+            .align(Alignment.Start)
+            // 设置元素水平方向的布局
+            .direction(Direction.Ltr)
+            // 设置组件自身的宽度
+            .width(100.percent)
+            // 设置内边距属性
+            .padding(top: 10, bottom: 10)
     }
 
     /**
@@ -135,10 +139,12 @@ class MarkdownAIIndentedCodeBlockComponent {
                     // 控制当前组件显示或隐藏
                     .visibility(isVisibility(markdownAIConfiguration.markdownAITheme.isCodeFullScreen))
                     // 点击动作触发该方法调用
-                    .onClick {evt => codeFullScreenOnClick(codeText, info, markdownAIConfiguration.codeFullScreenCallback)}
+                    .onClick {
+                        evt => codeFullScreenOnClick(codeText, info, markdownAIConfiguration.codeFullScreenCallback)
+                    }
             }
         }
-        // 设置外边距属性
-        .margin(top: 8, right: 8)
+            // 设置外边距属性
+            .margin(top: 8, right: 8)
     }
 }

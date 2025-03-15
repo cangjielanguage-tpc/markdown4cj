@@ -336,10 +336,10 @@ class MarkdownAIParagraph2Component {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        paragraphTextComponent(item,markdownAIConfiguration)
+                        paragraphTextComponent(item, markdownAIConfiguration)
                     } else if (item.node is Code) {
                         // 内联代码
-                        paragraphCodeComponent(item,markdownAIConfiguration)
+                        paragraphCodeComponent(item, markdownAIConfiguration)
                     } else if (item.node is HardLineBreak) {
                         // 硬换行
                         Span("\n")
@@ -422,8 +422,8 @@ class MarkdownAIParagraph2Component {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
-        let fut = rawfileToPixelmap(destination, markdownAIConfiguration.markdownAITheme.stageContext, componentWidth,
-            callback)
+        let fut = rawfileToPixelmap(destination, markdownAIConfiguration.markdownAITheme.stageContext,
+            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, callback)
         futs.append(fut)
         return idx
     }
@@ -466,8 +466,9 @@ class MarkdownAIParagraph2Component {
                 arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
             }
         }
-        let fut = rawfileToPixelmapStyle(destination, markdownAIConfiguration.markdownAITheme.stageContext, componentWidth,
-            length2Float64(picStyleObj.width), length2Float64(picStyleObj.height), callback)
+        let fut = rawfileToPixelmapStyle(destination, markdownAIConfiguration.markdownAITheme.stageContext,
+            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, length2Float64(picStyleObj.width),
+            length2Float64(picStyleObj.height), callback)
         futs.append(fut)
         return idx
     }

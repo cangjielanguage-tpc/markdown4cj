@@ -32,6 +32,11 @@ public class MarkdownAITheme {
     protected var stageContext: ?StageContext = None
 
     /**
+     * 上下文
+     */
+    protected var abilityContext: ?AbilityContext = None
+
+    /**
      * 每个模块之间上下间距
      */
     protected var blockTopAndBottomMargins: Float64 = 8.0
@@ -373,6 +378,7 @@ public class MarkdownAITheme {
 
     protected init(builder: MarkdownAIThemeBuilder) {
         this.stageContext = builder.stageContext
+        this.abilityContext = builder.abilityContext
         this.blockTopAndBottomMargins = builder.blockTopAndBottomMargins
         // 链接
         this.linkColor = builder.linkColor
@@ -585,6 +591,11 @@ public class MarkdownAIThemeBuilder {
      * 上下文
      */
     protected var stageContext: ?StageContext = None
+
+    /**
+     * 上下文
+     */
+    protected var abilityContext: ?AbilityContext = None
 
     /**
      * 每个模块之间上下间距
@@ -926,6 +937,7 @@ public class MarkdownAIThemeBuilder {
 
     init(theme: MarkdownAITheme) {
         this.stageContext = theme.stageContext
+        this.abilityContext = theme.abilityContext
         this.blockTopAndBottomMargins = theme.blockTopAndBottomMargins
         // 链接
         this.linkColor = theme.linkColor
@@ -1107,6 +1119,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setStageContext(stageContext: StageContext): MarkdownAIThemeBuilder {
         this.stageContext = stageContext
+        return this
+    }
+
+    /**
+     * 设置上下文
+     *
+     * @param abilityContext 上下文
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setAbilityContext(abilityContext: AbilityContext): MarkdownAIThemeBuilder {
+        this.abilityContext = abilityContext
         return this
     }
 

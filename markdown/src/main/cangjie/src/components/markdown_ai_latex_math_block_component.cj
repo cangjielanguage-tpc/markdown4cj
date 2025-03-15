@@ -84,8 +84,9 @@ class MarkdownAILatexMathBlockComponent {
                 Text(latexStr)
             }
         }
-        // 设置外边距属性
-        .margin(top: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins, bottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins)
+            // 设置外边距属性
+            .margin(top: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+            bottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins)
     }
 
     /**
@@ -108,10 +109,10 @@ class MarkdownAILatexMathBlockComponent {
                         markdownAIConfiguration.latexImageCallback)
                 }
         }
-        // 设置滚动方法
-        .scrollable(ScrollDirection.Horizontal)
-        // 设置滚动条状态
-        .scrollBar(BarState.Off)
+            // 设置滚动方法
+            .scrollable(ScrollDirection.Horizontal)
+            // 设置滚动条状态
+            .scrollBar(BarState.Off)
     }
 
     /**
@@ -137,8 +138,8 @@ class MarkdownAILatexMathBlockComponent {
                     latexData = arr
                 }
             }
-            fut = MarkdownParseLatexUtil.latexMathStrToPixelMap(latexStr, markdownAIConfiguration.markdownAITheme.resPath,
-                markdownAIConfiguration, callback)
+            fut = MarkdownParseLatexUtil.latexMathStrToPixelMap(latexStr,
+                markdownAIConfiguration.markdownAITheme.resPath, markdownAIConfiguration, callback)
         }
     }
 }
