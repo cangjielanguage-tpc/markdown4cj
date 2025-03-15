@@ -17,7 +17,7 @@ public class MarkdownAIComponent {
      * 外部传入的Markdown文档
      */
     @Prop
-    @Watch[onChanged]
+    @Watch[refreshData]
     var output: String
 
     /**
@@ -25,6 +25,13 @@ public class MarkdownAIComponent {
      */
     @Prop
     var isFull: Bool
+
+//    /**
+//     * 增量数据是否结束
+//     */
+//    @Prop
+//    @Watch[refreshData]
+//    var isClosed: Bool
 
     /**
      * markdown配置
@@ -74,6 +81,16 @@ public class MarkdownAIComponent {
         .build()
 
     var incBase: IncreaseParser1 = IncreaseParser1(markdownBase)
+
+    /**
+     * 锁
+     */
+    let parseReentrantMutex: ReentrantMutex = ReentrantMutex()
+
+    /**
+     * 刷新判定
+     */
+    let isRefreshData:AtomicBool = AtomicBool(false)
 
     protected override func aboutToAppear(): Unit {
         componentWidth = widthVpToPx(screenWidth, markdownAIConfiguration.markdownAITheme.imagePadding)
@@ -255,8 +272,16 @@ public class MarkdownAIComponent {
             .width(100.percent)
     }
 
-    func onChanged(): Unit {
-        stringToNodes()
+    func refreshData(): Unit {
+        if(isRefreshData.load()){
+            let fut: Future<Unit> = spawn {
+                synchronized(parseReentrantMutex) {
+                    isRefreshData.store(false)
+                    stringToNodes()
+                    isRefreshData.store(true)
+                }
+            }
+        }
     }
 
     /**
