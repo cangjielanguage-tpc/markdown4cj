@@ -8,6 +8,20 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
+class TableCellAI1Data {
+    var component: MarkdownAITableBlockCell1Component
+    var index: Int64
+    var indexRow: Int64
+    var indexCell: Int64
+
+    init(component: MarkdownAITableBlockCell1Component, index: Int64,indexRow: Int64,indexCell: Int64) {
+        this.component = component
+        this.index = index
+        this.indexRow = indexRow
+        this.indexCell = indexCell
+    }
+}
+
 /**
  * Markdown表格自定义控件
  */
@@ -31,8 +45,26 @@ class MarkdownAITableBlockCell1Component {
     @Prop
     var componentWidth: Float64
 
+    /**
+     * 是否全量加载
+     */
+    @Prop
+    var isFull: Bool
+
+    /**
+     * 标识符，第几条表格
+     */
+    @Prop
+    var index: Int64
+
     @Prop
     var indexRow: Int64
+
+    @Prop
+    var indexCell: Int64
+
+    @Prop
+    var markdownAICacheConfiguration: MarkdownAICacheConfiguration
 
     /**
      * 异步加载的图片数据
@@ -50,7 +82,30 @@ class MarkdownAITableBlockCell1Component {
      */
     var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
 
+    /**
+     * 懒加载数据源
+     */
+    @State
+    var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+
+    protected override func aboutToAppear(): Unit {
+        refreshData(nodeView)
+        markdownAICacheConfiguration.tableCell1Components.append(TableCellAI1Data(this, index,indexRow,indexCell))
+    }
+
     protected override func aboutToDisappear(): Unit {
+        markdownAICacheConfiguration
+            .tableCell1Components
+            .removeIf(
+                {
+                    predicate => if (predicate.index == index && predicate.indexRow == indexRow && predicate.indexCell == indexCell && predicate.component.nodeView.children.size == nodeView
+                        .children
+                        .size) {
+                        true
+                    } else {
+                        false
+                    }
+                })
         threadFutureCancel(futs)
         delPixelMap(listPixelMap)
     }
@@ -58,7 +113,7 @@ class MarkdownAITableBlockCell1Component {
     func build() {
         Text() {
             ForEach(
-                nodeView.children,
+                nodeViewList,
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
@@ -132,6 +187,38 @@ class MarkdownAITableBlockCell1Component {
                 }
             }
         )
+    }
+
+
+    public func refreshData(nodeView: NodeView): Unit {
+        let nodeViews = nodeView.children
+        if (isFull) {
+            nodeViewList.clear()
+            nodeViewList.appendAll(nodeViews)
+        } else {
+            if (nodeViews.size == 0) {
+                return
+            }
+            let size = nodeViewList.size
+            if (nodeViews.size > size) {
+                if (size != 0) {
+                    nodeViewList.remove(size - 1)
+                    nodeViewList.append(nodeViews[size - 1])
+                }
+                for (i in nodeViews.size - size..0 : -1) {
+                    nodeViewList.append(nodeViews[nodeViews.size - i])
+                }
+            } else if (nodeViews.size == size) {
+                nodeViewList.remove(size - 1)
+                nodeViewList.append(nodeViews[size - 1])
+            } else {
+                nodeViewList.remove(nodeViews.size - 1)
+                nodeViewList.append(nodeViews[nodeViews.size - 1])
+                for (i in size - nodeViews.size..0 : -1) {
+                    nodeViewList.remove(size - i)
+                }
+            }
+        }
     }
 
     /**

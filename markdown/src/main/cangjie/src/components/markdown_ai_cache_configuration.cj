@@ -22,8 +22,6 @@ public class MarkdownAICacheConfiguration {
 
     let quote3Components: ArrayList<QuoteAI3Data> = ArrayList<QuoteAI3Data>()
 
-    let tableComponents: ArrayList<TableAIData> = ArrayList<TableAIData>()
-
     let paragraph1Components: ArrayList<ParagraphAI1Data> = ArrayList<ParagraphAI1Data>()
 
     let paragraph2Components: ArrayList<ParagraphAI2Data> = ArrayList<ParagraphAI2Data>()
@@ -39,4 +37,10 @@ public class MarkdownAICacheConfiguration {
     let heading3Components: ArrayList<HeadingAI3Data> = ArrayList<HeadingAI3Data>()
 
     let heading4Components: ArrayList<HeadingAI4Data> = ArrayList<HeadingAI4Data>()
+
+    let table1Components: ArrayList<TableAI1Data> = ArrayList<TableAI1Data>()
+
+    let tableRow1Components: ArrayList<TableRowAI1Data> = ArrayList<TableRowAI1Data>()
+
+    let tableCell1Components: ArrayList<TableCellAI1Data> = ArrayList<TableCellAI1Data>()
 }

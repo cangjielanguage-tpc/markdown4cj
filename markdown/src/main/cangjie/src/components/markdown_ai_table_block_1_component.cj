@@ -8,7 +8,7 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
-class TableAIData {
+class TableAI1Data {
     var component: MarkdownAITableBlock1Component
     var index: Int64
 
@@ -69,22 +69,6 @@ class MarkdownAITableBlock1Component {
     var markdownAICacheConfiguration: MarkdownAICacheConfiguration
 
     /**
-     * 异步加载的图片数据
-     */
-    @State
-    var arrayListPixelMap: ObservedArrayList<ImageData> = ObservedArrayList<ImageData>()
-
-    /**
-     * 缓存的图片列表
-     */
-    var listPixelMap: ArrayList<?PixelMap> = ArrayList<?PixelMap>()
-
-    /**
-     * 线程列表
-     */
-    var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
-
-    /**
      * 懒加载数据源
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
@@ -96,12 +80,12 @@ class MarkdownAITableBlock1Component {
 
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
-        markdownAICacheConfiguration.tableComponents.append(TableAIData(this, index))
+        markdownAICacheConfiguration.table1Components.append(TableAI1Data(this, index))
     }
 
     protected override func aboutToDisappear(): Unit {
         markdownAICacheConfiguration
-            .tableComponents
+            .table1Components
             .removeIf(
                 {
                     predicate => if (predicate.index == index && predicate.component.nodeView.children.size == nodeView
@@ -121,8 +105,9 @@ class MarkdownAITableBlock1Component {
                 itemGeneratorFunc: {
                     tableNodeView: NodeView, indexRow: Int64 => ListItem() {
                         // 行信息
-                        MarkdownAITableBlockRow1Component(nodeView: tableNodeView, indexRow: indexRow,
-                            markdownAIConfiguration: markdownAIConfiguration, componentWidth: componentWidth)
+                        MarkdownAITableBlockRow1Component(nodeView: tableNodeView, indexRow: indexRow, index: index,
+                            isFull: isFull, markdownAIConfiguration: markdownAIConfiguration,
+                            componentWidth: componentWidth, markdownAICacheConfiguration: markdownAICacheConfiguration)
                     }
                 }
             )
@@ -166,7 +151,12 @@ class MarkdownAITableBlock1Component {
                     nodeViewAIDataSource.addData(nodeViews[nodeViews.size - i])
                 }
             } else if (nodeViews.size == nodeViewAIDataSource.totalCount()) {
-                nodeViewAIDataSource.replaceDate(nodeViewAIDataSource.totalCount() - 1, nodeViews[nodeViews.size - 1])
+                let indexRow: Int64 = nodeViewAIDataSource.totalCount() - 1
+                for (data in markdownAICacheConfiguration.tableRow1Components) {
+                    if (data.index == index && data.indexRow == indexRow) {
+                        data.component.refreshData(nodeViews[nodeViews.size - 1])
+                    }
+                }
             } else {
                 nodeViewAIDataSource.replaceDate(nodeViews.size - 1, nodeViews[nodeViews.size - 1])
                 for (i in nodeViewAIDataSource.totalCount() - nodeViews.size..0 : -1) {

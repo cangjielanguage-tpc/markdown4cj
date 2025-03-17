@@ -353,7 +353,7 @@ public class MarkdownAIComponent {
                             nodeViewAIDataSource.getAllData()[nodeViewAIDataSource.totalCount() - 1].node is TableBlock)) {
                             // 表格
                             let index: Int64 = nodeViewAIDataSource.totalCount() - 1
-                            for (data in markdownAICacheConfiguration.tableComponents) {
+                            for (data in markdownAICacheConfiguration.table1Components) {
                                 if (data.index == index) {
                                     data.component.refreshData(nodeViews[nodeViews.size - 1])
                                 }
