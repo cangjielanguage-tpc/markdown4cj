@@ -92,6 +92,7 @@ class MarkdownAITableBlockCellComponent {
             .flexShrink(1)
             // 覆盖 Flex 布局容器中 alignItems 默认配置
             .alignSelf(ItemAlign.Stretch)
+        .lineHeight(22.0)
             // 设置多行文本的文本对齐方式
             .textAlign(renderTableCellAlign((nodeView.node as TableCell)()))
             // 设置内边距属性

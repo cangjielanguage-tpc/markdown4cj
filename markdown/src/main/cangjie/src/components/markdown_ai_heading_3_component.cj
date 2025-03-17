@@ -389,6 +389,7 @@ class MarkdownAIHeading3Component {
         }
             // 设置多行文本的文本对齐方式
             .textAlign(TextAlign.Start)
+        .lineHeight(22.0)
             // 设置组件自身的宽度
             .width(100.percent)
     }

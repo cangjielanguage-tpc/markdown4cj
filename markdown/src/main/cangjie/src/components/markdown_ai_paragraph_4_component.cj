@@ -401,6 +401,7 @@ class MarkdownAIParagraph4Component {
             .textAlign(TextAlign.Start)
             // 设置组件自身的宽度
             .width(100.percent)
+        .lineHeight(22.0)
             // 组件卸载消失时触发此回调
             .onDisAppear(
                 {

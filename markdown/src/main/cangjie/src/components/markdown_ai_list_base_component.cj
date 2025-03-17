@@ -21,6 +21,8 @@ func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownAIConfig
         .fontSize(listPrefixSize(markdownAIConfiguration.markdownAITheme, isBullet))
         // 设置内边距属性
         .padding(left: markdownAIConfiguration.markdownAITheme.blockMargin, right: 10.0)
+        .lineHeight(22.0)
+        .textAlign(TextAlign.Center)
 }
 
 /**
