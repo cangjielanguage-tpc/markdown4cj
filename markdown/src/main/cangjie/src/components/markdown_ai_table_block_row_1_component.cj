@@ -132,7 +132,7 @@ class MarkdownAITableBlockRow1Component {
                 }
                 for (data in markdownAICacheConfiguration.tableCell1Components) {
                     if (data.index == index && data.indexRow == indexRow && data.indexCell == indexCell) {
-                        data.component.refreshData(nodeViews[nodeViews.size - 1])
+                        data.component.refreshData(nodeViews[indexCell])
                     }
                 }
             } else {

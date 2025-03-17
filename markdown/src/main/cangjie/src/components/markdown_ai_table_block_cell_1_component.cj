@@ -211,7 +211,7 @@ class MarkdownAITableBlockCell1Component {
                 }
             } else if (nodeViews.size == size) {
                 nodeViewList.remove(size - 1)
-                nodeViewList.append(nodeViews[size - 1])
+                nodeViewList.append(nodeViews[nodeViews.size - 1])
             } else {
                 nodeViewList.remove(nodeViews.size - 1)
                 nodeViewList.append(nodeViews[nodeViews.size - 1])
