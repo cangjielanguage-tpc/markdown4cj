@@ -84,7 +84,7 @@ public class MarkdownAITheme {
     /**
      * 无序列表项的文本大小。
      */
-    protected var bulletListItemSize: Float64 = 8.0
+    protected var bulletListItemSize: Float64 = 4.0
 
     /**
      * 任务列表项的宽高。
@@ -645,7 +645,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 无序列表项的文本大小。
      */
-    protected var bulletListItemSize: Float64 = 14.0
+    protected var bulletListItemSize: Float64 = 4.0
 
     /**
      * 任务列表项的宽高。
