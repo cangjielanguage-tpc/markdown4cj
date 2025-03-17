@@ -44,18 +44,19 @@ class MarkdownAIIndentedCodeBlockComponent {
     var codeItem: NodeView
 
     func build() {
-        Stack(Alignment.TopEnd) {
-            // 代码块部分
-            codeBlockComponent()
-            // 复制按钮全屏按钮部分
+        Column() {
             if (getProp<Bool>(codeItem, "closed", true)) {
                 codeBlockButtonComponent()
             }
+            codeBlockComponent()
         }
             // 设置组件自身的宽度
             .width(100.percent)
             // 设置外边距属性
             .margin(top: marginTop, bottom: marginBottom)
+            .backgroundColor(
+                codeBackgroundColor(markdownAIConfiguration.markdownAITheme,
+                    markdownAIConfiguration.markdownAITheme.prismTheme))
     }
 
     /**
@@ -76,6 +77,7 @@ class MarkdownAIIndentedCodeBlockComponent {
             .textAlign(TextAlign.Start)
             // 设置内边距属性
             .padding(left: markdownAIConfiguration.markdownAITheme.codeMultilineMargin)
+            .lineHeight(22)
     }
 
     /**
@@ -87,10 +89,6 @@ class MarkdownAIIndentedCodeBlockComponent {
             // 代码文本内容
             codeBlockTextComponent()
         }
-            // 设置组件的背景色
-            .backgroundColor(
-                codeBackgroundColor(markdownAIConfiguration.markdownAITheme,
-                    markdownAIConfiguration.markdownAITheme.prismTheme))
             // 设置滚动方法
             .scrollable(ScrollDirection.Horizontal)
             // 设置滚动条状态
@@ -102,7 +100,7 @@ class MarkdownAIIndentedCodeBlockComponent {
             // 设置组件自身的宽度
             .width(100.percent)
             // 设置内边距属性
-            .padding(top: 10, bottom: 10)
+            .padding(bottom: 10)
     }
 
     /**
@@ -111,40 +109,75 @@ class MarkdownAIIndentedCodeBlockComponent {
     @Builder
     func codeBlockButtonComponent() {
         Row() {
-            // 复制按钮
-            if (markdownAIConfiguration.markdownAITheme.codeCopyIcon.isSome() && codeText.trimAscii().size > 0) {
+            if (codeText.trimAscii().size > 0) {
                 // 设置图片的数据源
-                Image(markdownAIConfiguration.markdownAITheme.codeCopyIcon())
-                    // 设置组件自身的宽度
-                    .width(markdownAIConfiguration.markdownAITheme.iconWidthAndHeight)
-                    // 设置组件自身的高度
-                    .height(markdownAIConfiguration.markdownAITheme.iconWidthAndHeight)
-                    // 设置图片的缩放类型
-                    .objectFit(ImageFit.Contain)
-                    // 点击动作触发该方法调用
-                    .onClick {evt => codeCopyOnClick(codeText, markdownAIConfiguration.codeCopyCallback)}
-            }
-            // 全屏按钮
-            if (markdownAIConfiguration.markdownAITheme.codeFullScreenIcon.isSome() && codeText.trimAscii().size > 0) {
-                // 设置图片的数据源
-                Image(markdownAIConfiguration.markdownAITheme.codeFullScreenIcon())
-                    // 设置组件自身的宽度
-                    .width(markdownAIConfiguration.markdownAITheme.iconWidthAndHeight)
-                    // 设置组件自身的高度
-                    .height(markdownAIConfiguration.markdownAITheme.iconWidthAndHeight)
-                    // 设置外边距属性
-                    .margin(left: 8)
-                    // 设置图片的缩放类型
-                    .objectFit(ImageFit.Contain)
-                    // 控制当前组件显示或隐藏
-                    .visibility(isVisibility(markdownAIConfiguration.markdownAITheme.isCodeFullScreen))
-                    // 点击动作触发该方法调用
-                    .onClick {
-                        evt => codeFullScreenOnClick(codeText, info, markdownAIConfiguration.codeFullScreenCallback)
+                if (let Some(i) <- info) {
+                    Row() {
+                        Text(i)
+                            .fontColor(
+                                indentedCodeTextColor(markdownAIConfiguration.markdownAITheme,
+                                    markdownAIConfiguration.markdownAITheme.prismTheme))
+                            .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                            .margin(left: 8)
+                    }.width(30.percent).justifyContent(FlexAlign.Start)
+                } else {
+                    Row().width(30.percent).justifyContent(FlexAlign.Start)
+                }
+
+                Row() {
+                    if (markdownAIConfiguration.markdownAITheme.codeCopyIcon.isSome()) {
+                        Image(markdownAIConfiguration.markdownAITheme.codeCopyIcon())
+                            // 设置组件自身的宽度
+                            .width(markdownAIConfiguration.markdownAITheme.iconWidthAndHeight)
+                            // 设置组件自身的高度
+                            .height(markdownAIConfiguration.markdownAITheme.iconWidthAndHeight)
+                            // 设置图片的缩放类型
+                            .objectFit(ImageFit.Contain)
+                            // 点击动作触发该方法调用
+                            .onClick {evt => codeCopyOnClick(codeText, markdownAIConfiguration.codeCopyCallback)}
+
+                        Row().width(5)
+
+                        Text("复制代码")
+                            .fontColor(
+                                indentedCodeTextColor(markdownAIConfiguration.markdownAITheme,
+                                    markdownAIConfiguration.markdownAITheme.prismTheme))
+                            .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                            .align(Alignment.End)
+                            .margin(right: 4)
                     }
+
+                    if (markdownAIConfiguration.markdownAITheme.codeFullScreenIcon.isSome()) {
+                        Image(markdownAIConfiguration.markdownAITheme.codeFullScreenIcon())
+                            // 设置组件自身的宽度
+                            .width(markdownAIConfiguration.markdownAITheme.iconWidthAndHeight)
+                            // 设置组件自身的高度
+                            .height(markdownAIConfiguration.markdownAITheme.iconWidthAndHeight)
+                            // 设置外边距属性
+                            .margin(left: 4)
+                            // 设置图片的缩放类型
+                            .objectFit(ImageFit.Contain)
+                            // 控制当前组件显示或隐藏
+                            .visibility(isVisibility(markdownAIConfiguration.markdownAITheme.isCodeFullScreen))
+                            // 点击动作触发该方法调用
+                            .onClick {
+                                evt => codeFullScreenOnClick(codeText, info,
+                                    markdownAIConfiguration.codeFullScreenCallback)
+                            }
+
+                        Row().width(5)
+
+                        Text("全屏代码")
+                            .fontColor(
+                                indentedCodeTextColor(markdownAIConfiguration.markdownAITheme,
+                                    markdownAIConfiguration.markdownAITheme.prismTheme))
+                            .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                            .align(Alignment.End)
+                            .margin(right: 4)
+                    }
+                }.width(70.percent).justifyContent(FlexAlign.End)
             }
-        }
-            // 设置外边距属性
-            .margin(top: 8, right: 8)
+        } // 设置外边距属性
+            .margin(top: 8, right: 8).alignItems(VerticalAlign.Center)
     }
 }
