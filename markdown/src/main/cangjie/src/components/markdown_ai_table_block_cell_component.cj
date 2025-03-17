@@ -12,7 +12,7 @@ import ohos.state_macro_manage.*
  * Markdown表格自定义控件
  */
 @Component
-class MarkdownAITableBlockCell1Component {
+class MarkdownAITableBlockCellComponent {
     /**
      * markdown配置
      */
@@ -32,7 +32,7 @@ class MarkdownAITableBlockCell1Component {
     var componentWidth: Float64
 
     @Prop
-    var indexRow: Int64
+    var idRow: Int64
 
     /**
      * 异步加载的图片数据
@@ -98,7 +98,7 @@ class MarkdownAITableBlockCell1Component {
             .padding(markdownAIConfiguration.markdownAITheme.tableCellPadding)
             // 设置组件的背景色
             .backgroundColor(
-                renderTableCellColor((nodeView.node as TableCell)(), markdownAIConfiguration.markdownAITheme, indexRow))
+                renderTableCellColor((nodeView.node as TableCell)(), markdownAIConfiguration.markdownAITheme, idRow))
             // 统一边框样式设置接口
             .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp,
                 color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)

@@ -119,9 +119,9 @@ class MarkdownAITableBlock1Component {
             LazyForEach(
                 nodeViewAIDataSource,
                 itemGeneratorFunc: {
-                    tableNodeView: NodeView, idRow: Int64 => ListItem() {
+                    tableNodeView: NodeView, indexRow: Int64 => ListItem() {
                         // 行信息
-                        MarkdownAITableBlockRow1Component(nodeView: tableNodeView, idRow: idRow,
+                        MarkdownAITableBlockRow1Component(nodeView: tableNodeView, indexRow: indexRow,
                             markdownAIConfiguration: markdownAIConfiguration, componentWidth: componentWidth)
                     }
                 }

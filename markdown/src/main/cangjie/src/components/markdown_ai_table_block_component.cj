@@ -66,7 +66,7 @@ class MarkdownTableBlockINCComponent {
                 itemGeneratorFunc: {
                     tableHeaderOrBody: NodeView, idRow: Int64 => ListItem() {
                         // 行信息
-                        MarkdownAITableBlockRow1Component(nodeView: tableHeaderOrBody, idRow: idRow,
+                        MarkdownAITableBlockRowComponent(nodeView: tableHeaderOrBody, idRow: idRow,
                             markdownAIConfiguration: markdownAIConfiguration, componentWidth: componentWidth)
                     }
                 }

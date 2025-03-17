@@ -141,10 +141,10 @@ func spanTextFontSize(isCode: Bool, markdownAITheme: MarkdownAITheme, isTitle: B
 func spanFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
     if (isTitle) {
         // 所有标题默认加粗
-        return FontWeight.W900
+        return FontWeight.W600
     } else {
         if (nodeView.strongEmphasis.isSome()) {
-            return FontWeight.W900
+            return FontWeight.W600
         } else {
             return FontWeight.W400
         }

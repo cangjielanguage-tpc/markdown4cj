@@ -12,7 +12,7 @@ import ohos.state_macro_manage.*
  * Markdown表格自定义控件
  */
 @Component
-class MarkdownAITableBlockRow1Component {
+class MarkdownAITableBlockRowComponent {
     /**
      * markdown配置
      */
@@ -32,7 +32,7 @@ class MarkdownAITableBlockRow1Component {
     var componentWidth: Float64
 
     @Prop
-    var indexRow: Int64
+    var idRow: Int64
 
     func build() {
         Row() {
@@ -40,7 +40,7 @@ class MarkdownAITableBlockRow1Component {
                 nodeView.children,
                 itemGeneratorFunc: {
                     item: NodeView, idxItem: Int64 => if (item.node is TableCell) {
-                        MarkdownAITableBlockCell1Component(nodeView: item, indexRow: indexRow,
+                        MarkdownAITableBlockCellComponent(nodeView: item, idRow: idRow,
                             markdownAIConfiguration: markdownAIConfiguration, componentWidth: componentWidth)
                     }
                 }
