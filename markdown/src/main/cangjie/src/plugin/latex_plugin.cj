@@ -116,6 +116,8 @@ class LatexInlineVisitor <: AbstractVisitor {
         if (let Some(text) <- (text as LatexInlineText)) {
             let n = LatexMathNode(text.getLiteral())
             text.replaceWith(n)
+        } else {
+            visitChildren(text)
         }
     }
 }
