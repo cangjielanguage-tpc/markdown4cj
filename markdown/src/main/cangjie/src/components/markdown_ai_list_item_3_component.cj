@@ -277,12 +277,12 @@ class MarkdownAIListItem3Component {
                 }
             )
         }
-            // 设置子组件在水平方向上的对齐格式。
-            .alignItems(HorizontalAlign.Start)
-            // 设置子组件在垂直方向上的对齐格式。
-            .justifyContent(FlexAlign.Start)
-            // 对子组件进行重新布局
-            .layoutWeight(1)
+        // 设置子组件在水平方向上的对齐格式。
+        .alignItems(HorizontalAlign.Start)
+        // 设置子组件在垂直方向上的对齐格式。
+        .justifyContent(FlexAlign.Start)
+        // 对子组件进行重新布局
+        .layoutWeight(1)
     }
 
     public func refreshData(nodeView: NodeView): Unit {
@@ -308,8 +308,9 @@ class MarkdownAIListItem3Component {
                     // 标题
                     let index4: Int64 = nodeViewAIDataSource.totalCount() - 1
                     for (data in markdownAICacheConfiguration.heading4Components) {
-                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.index4 == index4 && data.indexItem ==
-                            indexItem && data.indexItem2 == indexItem2 && data.indexItem3 == indexItem3) {
+                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.index4 ==
+                            index4 && data.indexItem == indexItem && data.indexItem2 == indexItem2 && data.indexItem3 ==
+                            indexItem3) {
                             data.component.refreshData(nodeViews[nodeViews.size - 1])
                         }
                     }
@@ -318,13 +319,15 @@ class MarkdownAIListItem3Component {
                     // 段落
                     let index4: Int64 = nodeViewAIDataSource.totalCount() - 1
                     for (data in markdownAICacheConfiguration.paragraph4Components) {
-                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.index4 == index4 && data.indexItem ==
-                            indexItem && data.indexItem2 == indexItem2 && data.indexItem3 == indexItem3) {
+                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.index4 ==
+                            index4 && data.indexItem == indexItem && data.indexItem2 == indexItem2 && data.indexItem3 ==
+                            indexItem3) {
                             data.component.refreshData(nodeViews[nodeViews.size - 1])
                         }
                     }
-                }else{
-                   nodeViewAIDataSource.replaceDate(nodeViewAIDataSource.totalCount() - 1, nodeViews[nodeViews.size - 1])
+                } else {
+                    nodeViewAIDataSource.replaceDate(nodeViewAIDataSource.totalCount() - 1, nodeViews[nodeViews.size - 1]
+                    )
                 }
             } else {
                 nodeViewAIDataSource.replaceDate(nodeViews.size - 1, nodeViews[nodeViews.size - 1])

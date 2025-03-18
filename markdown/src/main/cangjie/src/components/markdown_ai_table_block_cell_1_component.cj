@@ -14,7 +14,7 @@ class TableCellAI1Data {
     var indexRow: Int64
     var indexCell: Int64
 
-    init(component: MarkdownAITableBlockCell1Component, index: Int64,indexRow: Int64,indexCell: Int64) {
+    init(component: MarkdownAITableBlockCell1Component, index: Int64, indexRow: Int64, indexCell: Int64) {
         this.component = component
         this.index = index
         this.indexRow = indexRow
@@ -90,7 +90,7 @@ class MarkdownAITableBlockCell1Component {
 
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
-        markdownAICacheConfiguration.tableCell1Components.append(TableCellAI1Data(this, index,indexRow,indexCell))
+        markdownAICacheConfiguration.tableCell1Components.append(TableCellAI1Data(this, index, indexRow, indexCell))
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -98,7 +98,8 @@ class MarkdownAITableBlockCell1Component {
             .tableCell1Components
             .removeIf(
                 {
-                    predicate => if (predicate.index == index && predicate.indexRow == indexRow && predicate.indexCell == indexCell && predicate.component.nodeView.children.size == nodeView
+                    predicate => if (predicate.index == index && predicate.indexRow == indexRow &&
+                        predicate.indexCell == indexCell && predicate.component.nodeView.children.size == nodeView
                         .children
                         .size) {
                         true
@@ -139,25 +140,24 @@ class MarkdownAITableBlockCell1Component {
                 }
             )
         }
-            // 容器尺寸确定时，元素与兄弟节点主轴布局尺寸按照权重进行分配，忽略本身尺寸设置仅在Row/Column/Flex布局中生效
-            .layoutWeight(1)
-            // 设置父容器的剩余空间分配给此属性所在组件的比例
-            .flexGrow(1)
-            // Flex 容器压缩尺寸分配给此属性所在组件的比例
-            .flexShrink(1)
-            // 覆盖 Flex 布局容器中 alignItems 默认配置
-            .alignSelf(ItemAlign.Stretch)
+        // 容器尺寸确定时，元素与兄弟节点主轴布局尺寸按照权重进行分配，忽略本身尺寸设置仅在Row/Column/Flex布局中生效
+        .layoutWeight(1)
+        // 设置父容器的剩余空间分配给此属性所在组件的比例
+        .flexGrow(1)
+        // Flex 容器压缩尺寸分配给此属性所在组件的比例
+        .flexShrink(1)
+        // 覆盖 Flex 布局容器中 alignItems 默认配置
+        .alignSelf(ItemAlign.Stretch)
+        // 设置行高
         .lineHeight(22.0)
-            // 设置多行文本的文本对齐方式
-            .textAlign(renderTableCellAlign((nodeView.node as TableCell)()))
-            // 设置内边距属性
-            .padding(markdownAIConfiguration.markdownAITheme.tableCellPadding)
-            // 设置组件的背景色
-            .backgroundColor(
-                renderTableCellColor((nodeView.node as TableCell)(), markdownAIConfiguration.markdownAITheme, indexRow))
-            // 统一边框样式设置接口
-            .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp,
-                color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
+        // 设置多行文本的文本对齐方式
+        .textAlign(renderTableCellAlign((nodeView.node as TableCell)()))
+        // 设置内边距属性
+        .padding(markdownAIConfiguration.markdownAITheme.tableCellPadding)
+        // 设置组件的背景色
+        .backgroundColor(renderTableCellColor((nodeView.node as TableCell)(), markdownAIConfiguration.markdownAITheme, indexRow))
+        // 统一边框样式设置接口
+        .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp, color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
     }
 
     /**
@@ -189,7 +189,6 @@ class MarkdownAITableBlockCell1Component {
             }
         )
     }
-
 
     public func refreshData(nodeView: NodeView): Unit {
         let nodeViews = nodeView.children

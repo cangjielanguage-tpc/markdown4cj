@@ -24,16 +24,13 @@ func headingDividerComponent(markdownAIConfiguration: MarkdownAIConfiguration) {
  * 标题文本
  */
 @Builder
-func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration,
-    headingNodeView: NodeView) {
+func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, headingNodeView: NodeView) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
         .fontFamily(spanFontFamily(false, markdownAIConfiguration.markdownAITheme, true))
         // 设置文本尺寸
-        .fontSize(
-            spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, true,
-                (headingNodeView.node as Heading)().getLevel()))
+        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, true, (headingNodeView.node as Heading)().getLevel()))
         // 设置文本的字体粗细
         .fontWeight(spanFontWeight(nodeView, true))
         // 设置文本的字体样式
@@ -43,8 +40,7 @@ func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownA
         // 设置文本字符间距
         .letterSpacing(markdownAIConfiguration.markdownAITheme.headingTextWordSpace)
         // 设置文本装饰线样式及其颜色
-        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0],
-            color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
+        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
         .onClick {evt => linkOnClick(nodeView, markdownAIConfiguration.linkCallback)}
 }
@@ -69,8 +65,7 @@ func headingCodeComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownA
         // 设置文本字符间距
         .letterSpacing(markdownAIConfiguration.markdownAITheme.headingTextWordSpace)
         // 设置文本装饰线样式及其颜色
-        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0],
-            color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
+        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
         .onClick {evt => linkOnClick(nodeView, markdownAIConfiguration.linkCallback)}
 }
@@ -95,8 +90,7 @@ func paragraphTextComponent(nodeView: NodeView, markdownAIConfiguration: Markdow
         // 设置文本字符间距
         .letterSpacing(markdownAIConfiguration.markdownAITheme.paragraphTextWordSpace)
         // 设置文本装饰线样式及其颜色
-        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0],
-            color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
+        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
         .onClick {evt => linkOnClick(nodeView, markdownAIConfiguration.linkCallback)}
 }
@@ -121,8 +115,7 @@ func paragraphCodeComponent(nodeView: NodeView, markdownAIConfiguration: Markdow
         // 设置文本字符间距
         .letterSpacing(markdownAIConfiguration.markdownAITheme.paragraphTextWordSpace)
         // 设置文本装饰线样式及其颜色
-        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0],
-            color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
+        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
         .onClick {evt => linkOnClick(nodeView, markdownAIConfiguration.linkCallback)}
 }
@@ -147,8 +140,7 @@ func tableComponentText(nodeView: NodeView, isHeader: Bool, markdownAIConfigurat
         // 设置文本字符间距
         .letterSpacing(markdownAIConfiguration.markdownAITheme.paragraphTextWordSpace)
         // 设置文本装饰线样式及其颜色
-        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0],
-            color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
+        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
         .onClick {evt => linkOnClick(nodeView, markdownAIConfiguration.linkCallback)}
 }
@@ -173,8 +165,7 @@ func tableComponentCode(nodeView: NodeView, isHeader: Bool, markdownAIConfigurat
         // 设置文本字符间距
         .letterSpacing(markdownAIConfiguration.markdownAITheme.paragraphTextWordSpace)
         // 设置文本装饰线样式及其颜色
-        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0],
-            color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
+        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
         .onClick {evt => linkOnClick(nodeView, markdownAIConfiguration.linkCallback)}
 }

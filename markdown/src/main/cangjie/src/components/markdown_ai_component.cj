@@ -26,13 +26,6 @@ public class MarkdownAIComponent {
     @Prop
     var isFull: Bool
 
-    //    /**
-    //     * 增量数据是否结束
-    //     */
-    //    @Prop
-    //    @Watch[refreshData]
-    //    var isClosed: Bool
-
     /**
      * markdown配置
      */
@@ -264,12 +257,12 @@ public class MarkdownAIComponent {
                 }
             )
         }
-            // 设置List组件排列方向
-            .listDirection(Axis.Vertical)
-            // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
-            .alignListItem(ListItemAlign.Start)
-            // 设置组件自身的宽度
-            .width(100.percent)
+        // 设置List组件排列方向
+        .listDirection(Axis.Vertical)
+        // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
+        .alignListItem(ListItemAlign.Start)
+        // 设置组件自身的宽度
+        .width(100.percent)
     }
 
     func refreshData(): Unit {
@@ -292,12 +285,12 @@ public class MarkdownAIComponent {
             incBase.parse(output)
             let nodeViews = incBase.docView.children
             if (isFull) {
-                launch{
+                launch {
                     nodeViewAIDataSource.clear()
                     nodeViewAIDataSource.addDatas(nodeViews)
                 }
             } else {
-                launch{
+                launch {
                     if (nodeViews.size == 0) {
                         return
                     }
@@ -311,9 +304,8 @@ public class MarkdownAIComponent {
                         }
                     } else if (nodeViews.size == nodeViewAIDataSource.totalCount()) {
                         if ((nodeViews[nodeViews.size - 1].node is BulletList &&
-                            nodeViewAIDataSource.getAllData()[nodeViewAIDataSource.totalCount() - 1].node is BulletList) || (nodeViews[nodeViews
-                                .size - 1]
-                            .node is OrderedList &&
+                            nodeViewAIDataSource.getAllData()[nodeViewAIDataSource.totalCount() - 1].node is BulletList) ||
+                            (nodeViews[nodeViews.size - 1].node is OrderedList &&
                             nodeViewAIDataSource.getAllData()[nodeViewAIDataSource.totalCount() - 1].node is OrderedList)) {
                             // 有序列表和无序列表
                             let index: Int64 = nodeViewAIDataSource.totalCount() - 1
@@ -379,7 +371,7 @@ public class MarkdownAIComponent {
                 let textNodeView: NodeView = buildView(commonmarkText, true)
                 let arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
                 arrayListNodeView.append(paragraphNodeView)
-                launch{
+                launch {
                     nodeViewAIDataSource.clear()
                     nodeViewAIDataSource.addDatas(arrayListNodeView)
                 }

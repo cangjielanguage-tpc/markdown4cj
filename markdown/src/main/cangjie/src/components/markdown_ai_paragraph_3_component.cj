@@ -149,6 +149,8 @@ class MarkdownAIParagraph3Component {
                         false
                     }
                 })
+        threadFutureCancel(futs)
+        delPixelMap(listPixelMap)
     }
 
     public func refreshData(nodeView: NodeView): Unit {
@@ -186,14 +188,14 @@ class MarkdownAIParagraph3Component {
         Column() {
             paragraphOtherComponent()
         }
-            // 设置元素内容的对齐方式
-            .align(Alignment.Start)
-            // 设置元素水平方向的布局
-            .direction(Direction.Ltr)
-            // 设置外边距属性
-            .margin(top: marginTop, bottom: marginBottom)
-            // 设置组件自身的宽度
-            .width(100.percent)
+        // 设置元素内容的对齐方式
+        .align(Alignment.Start)
+        // 设置元素水平方向的布局
+        .direction(Direction.Ltr)
+        // 设置外边距属性
+        .margin(top: marginTop, bottom: marginBottom)
+        // 设置组件自身的宽度
+        .width(100.percent)
     }
 
     /**
@@ -382,19 +384,12 @@ class MarkdownAIParagraph3Component {
                 }
             )
         }
-            // 设置多行文本的文本对齐方式
-            .textAlign(TextAlign.Start)
-            // 设置组件自身的宽度
-            .width(100.percent)
+        // 设置多行文本的文本对齐方式
+        .textAlign(TextAlign.Start)
+        // 设置组件自身的宽度
+        .width(100.percent)
+        // 设置行高
         .lineHeight(22.0)
-            // 组件卸载消失时触发此回调
-            .onDisAppear(
-                {
-                    =>
-                    threadFutureCancel(futs)
-                    delPixelMap(listPixelMap)
-                }
-            )
     }
 
     /**

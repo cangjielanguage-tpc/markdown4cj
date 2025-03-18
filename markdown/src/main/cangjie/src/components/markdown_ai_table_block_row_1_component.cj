@@ -13,13 +13,12 @@ class TableRowAI1Data {
     var index: Int64
     var indexRow: Int64
 
-    init(component: MarkdownAITableBlockRow1Component, index: Int64,indexRow: Int64) {
+    init(component: MarkdownAITableBlockRow1Component, index: Int64, indexRow: Int64) {
         this.component = component
         this.index = index
         this.indexRow = indexRow
     }
 }
-
 
 /**
  * Markdown表格自定义控件
@@ -70,7 +69,7 @@ class MarkdownAITableBlockRow1Component {
 
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
-        markdownAICacheConfiguration.tableRow1Components.append(TableRowAI1Data(this, index,indexRow))
+        markdownAICacheConfiguration.tableRow1Components.append(TableRowAI1Data(this, index, indexRow))
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -78,9 +77,8 @@ class MarkdownAITableBlockRow1Component {
             .tableRow1Components
             .removeIf(
                 {
-                    predicate => if (predicate.index == index && predicate.indexRow == indexRow && predicate.component.nodeView.children.size == nodeView
-                        .children
-                        .size) {
+                    predicate => if (predicate.index == index && predicate.indexRow == indexRow &&
+                        predicate.component.nodeView.children.size == nodeView.children.size) {
                         true
                     } else {
                         false
@@ -94,15 +92,22 @@ class MarkdownAITableBlockRow1Component {
                 nodeViewList,
                 itemGeneratorFunc: {
                     item: NodeView, indexCell: Int64 => if (item.node is TableCell) {
-                        MarkdownAITableBlockCell1Component(nodeView: item, indexRow: indexRow, index: index,
-                            indexCell: indexCell, isFull: isFull, markdownAIConfiguration: markdownAIConfiguration,
-                            componentWidth: componentWidth, markdownAICacheConfiguration: markdownAICacheConfiguration)
+                        MarkdownAITableBlockCell1Component(
+                            nodeView: item,
+                            indexRow: indexRow,
+                            index: index,
+                            indexCell: indexCell,
+                            isFull: isFull,
+                            markdownAIConfiguration: markdownAIConfiguration,
+                            componentWidth: componentWidth,
+                            markdownAICacheConfiguration: markdownAICacheConfiguration
+                        )
                     }
                 }
             )
         }
-            // 设置组件自身的宽度
-            .width(100.percent)
+        // 设置组件自身的宽度
+        .width(100.percent)
     }
 
     public func refreshData(nodeView: NodeView): Unit {
@@ -125,8 +130,8 @@ class MarkdownAITableBlockRow1Component {
                 }
             } else if (nodeViews.size == size) {
                 var indexCell: Int64 = 0
-                for(i in 0..nodeViews.size){
-                    if(nodeViews[i].children.size != 0){
+                for (i in 0..nodeViews.size) {
+                    if (nodeViews[i].children.size != 0) {
                         indexCell = i
                     }
                 }

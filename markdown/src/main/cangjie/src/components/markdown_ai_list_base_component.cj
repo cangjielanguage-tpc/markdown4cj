@@ -21,7 +21,9 @@ func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownAIConfig
         .fontSize(listPrefixSize(markdownAIConfiguration.markdownAITheme, isBullet))
         // 设置内边距属性
         .padding(left: markdownAIConfiguration.markdownAITheme.blockMargin, right: 8.0)
+        // 设置行高
         .lineHeight(18.0)
+        // 设置文本段落在水平方向的对齐方式
         .textAlign(TextAlign.Center)
 }
 
@@ -49,8 +51,7 @@ func listPrefixCheckboxINCComponent(item: NodeView, markdownAIConfiguration: Mar
  * 段落
  */
 @Builder
-func listParagraphINCComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration,
-    componentWidth: Float64) {
+func listParagraphINCComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, componentWidth: Float64) {
     MarkdownAIParagraphComponent(
         paragraphNodeView: nodeView,
         markdownAIConfiguration: markdownAIConfiguration,
@@ -64,8 +65,7 @@ func listParagraphINCComponent(nodeView: NodeView, markdownAIConfiguration: Mark
  * 标题
  */
 @Builder
-func listHeadingINCComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration,
-    componentWidth: Float64) {
+func listHeadingINCComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, componentWidth: Float64) {
     MarkdownAIHeadingComponent(
         headingNodeView: nodeView,
         markdownAIConfiguration: markdownAIConfiguration,
@@ -79,8 +79,7 @@ func listHeadingINCComponent(nodeView: NodeView, markdownAIConfiguration: Markdo
  * 围栏代码、缩进代码
  */
 @Builder
-func listCodeBlockINCComponent(codeText: String, infos: ?String, nodeView: NodeView,
-    markdownAIConfiguration: MarkdownAIConfiguration) {
+func listCodeBlockINCComponent(codeText: String, infos: ?String, nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration) {
     MarkdownAIIndentedCodeBlockComponent(
         markdownAIConfiguration: markdownAIConfiguration,
         codeText: codeText,
@@ -95,8 +94,7 @@ func listCodeBlockINCComponent(codeText: String, infos: ?String, nodeView: NodeV
  * 表格
  */
 @Builder
-func listTableBlockINCComponent(tableNodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration,
-    componentWidth: Float64, isFull: Bool) {
+func listTableBlockINCComponent(tableNodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, componentWidth: Float64, isFull: Bool) {
     MarkdownTableBlockINCComponent(
         tableNodeView: tableNodeView,
         markdownAIConfiguration: markdownAIConfiguration,

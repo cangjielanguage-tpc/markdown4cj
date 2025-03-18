@@ -105,24 +105,29 @@ class MarkdownAITableBlock1Component {
                 itemGeneratorFunc: {
                     tableNodeView: NodeView, indexRow: Int64 => ListItem() {
                         // 行信息
-                        MarkdownAITableBlockRow1Component(nodeView: tableNodeView, indexRow: indexRow, index: index,
-                            isFull: isFull, markdownAIConfiguration: markdownAIConfiguration,
-                            componentWidth: componentWidth, markdownAICacheConfiguration: markdownAICacheConfiguration)
+                        MarkdownAITableBlockRow1Component(
+                            nodeView: tableNodeView,
+                            indexRow: indexRow,
+                            index: index,
+                            isFull: isFull,
+                            markdownAIConfiguration: markdownAIConfiguration,
+                            componentWidth: componentWidth,
+                            markdownAICacheConfiguration: markdownAICacheConfiguration
+                        )
                     }
                 }
             )
         }
-            // 设置元素内容的对齐方式
-            .align(Alignment.Start)
-            // 设置元素水平方向的布局
-            .direction(Direction.Ltr)
-            // 设置外边距属性
-            .margin(top: marginTop, bottom: marginBottom)
-            // 设置组件自身的宽度
-            .width(100.percent)
-            // 统一边框样式设置接口
-            .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp,
-                color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
+        // 设置元素内容的对齐方式
+        .align(Alignment.Start)
+        // 设置元素水平方向的布局
+        .direction(Direction.Ltr)
+        // 设置外边距属性
+        .margin(top: marginTop, bottom: marginBottom)
+        // 设置组件自身的宽度
+        .width(100.percent)
+        // 统一边框样式设置接口
+        .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp, color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
     }
 
     public func refreshData(nodeView: NodeView): Unit {

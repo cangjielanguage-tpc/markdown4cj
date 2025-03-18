@@ -40,13 +40,17 @@ class MarkdownAITableBlockRowComponent {
                 nodeView.children,
                 itemGeneratorFunc: {
                     item: NodeView, idxItem: Int64 => if (item.node is TableCell) {
-                        MarkdownAITableBlockCellComponent(nodeView: item, idRow: idRow,
-                            markdownAIConfiguration: markdownAIConfiguration, componentWidth: componentWidth)
+                        MarkdownAITableBlockCellComponent(
+                            nodeView: item,
+                            idRow: idRow,
+                            markdownAIConfiguration: markdownAIConfiguration,
+                            componentWidth: componentWidth
+                        )
                     }
                 }
             )
         }
-            // 设置组件自身的宽度
-            .width(100.percent)
+        // 设置组件自身的宽度
+        .width(100.percent)
     }
 }

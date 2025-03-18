@@ -176,24 +176,24 @@ class MarkdownAIList3Component {
                                 markdownAICacheConfiguration: markdownAICacheConfiguration
                             )
                         }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
-                            // 设置子组件在水平方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
                     }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
         }
-            // 块内容前的起始边距
-            .margin(top: marginTop, bottom: marginBottom)
-            // 设置组件自身的宽度
-            .width(100.percent)
-            // 设置List组件排列方向
-            .listDirection(Axis.Vertical)
-            // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
-            .alignListItem(ListItemAlign.Start)
+        // 块内容前的起始边距
+        .margin(top: marginTop, bottom: marginBottom)
+        // 设置组件自身的宽度
+        .width(100.percent)
+        // 设置List组件排列方向
+        .listDirection(Axis.Vertical)
+        // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
+        .alignListItem(ListItemAlign.Start)
     }
 
     @Builder
@@ -224,24 +224,24 @@ class MarkdownAIList3Component {
                                 markdownAICacheConfiguration: markdownAICacheConfiguration
                             )
                         }
-                            // 在垂直方向上子组件的对齐格式。
-                            .alignItems(VerticalAlign.Top)
-                            // 设置子组件在水平方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
+                        // 在垂直方向上子组件的对齐格式。
+                        .alignItems(VerticalAlign.Top)
+                        // 设置子组件在水平方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
                     }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
         }
-            // 块内容前的起始边距
-            .margin(top: marginTop, bottom: marginBottom)
-            // 设置组件自身的宽度
-            .width(100.percent)
-            // 设置List组件排列方向
-            .listDirection(Axis.Vertical)
-            // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
-            .alignListItem(ListItemAlign.Start)
+        // 块内容前的起始边距
+        .margin(top: marginTop, bottom: marginBottom)
+        // 设置组件自身的宽度
+        .width(100.percent)
+        // 设置List组件排列方向
+        .listDirection(Axis.Vertical)
+        // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
+        .alignListItem(ListItemAlign.Start)
     }
 
     public func refreshData(nodeView: NodeView): Unit {

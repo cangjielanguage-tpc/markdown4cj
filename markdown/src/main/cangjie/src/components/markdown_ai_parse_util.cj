@@ -147,7 +147,8 @@ func stringToResLists(codeBlockListNodeView: NodeView, markdownAIConfiguration: 
                     }
                     let res: ArrayList<PrismNodesParseRes> = psh.highlight(
                         (nodeView.node as FencedCodeBlock)().getInfo(),
-                        (nodeView.node as FencedCodeBlock)().getLiteral().trimRight("\n"))
+                        (nodeView.node as FencedCodeBlock)().getLiteral().trimRight("\n")
+                    )
                     prismNodesParseResLists.append(res)
                 }
             }

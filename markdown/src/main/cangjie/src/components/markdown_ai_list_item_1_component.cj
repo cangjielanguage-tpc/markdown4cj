@@ -246,12 +246,12 @@ class MarkdownAIListItem1Component {
                 }
             )
         }
-            // 设置子组件在水平方向上的对齐格式。
-            .alignItems(HorizontalAlign.Start)
-            // 设置子组件在垂直方向上的对齐格式。
-            .justifyContent(FlexAlign.Start)
-            // 对子组件进行重新布局
-            .layoutWeight(1)
+        // 设置子组件在水平方向上的对齐格式。
+        .alignItems(HorizontalAlign.Start)
+        // 设置子组件在垂直方向上的对齐格式。
+        .justifyContent(FlexAlign.Start)
+        // 对子组件进行重新布局
+        .layoutWeight(1)
     }
 
     public func refreshData(nodeView: NodeView): Unit {
