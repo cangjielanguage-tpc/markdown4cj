@@ -120,11 +120,4 @@ class LatexInlineVisitor <: AbstractVisitor {
             visitChildren(text)
         }
     }
-    public func visit(p: Paragraph): Unit {
-        match ((p.getFirstChild(), p.getLastChild())) {
-            case (Some(a: Image), Some(b: Image)) where refEq(a, b) => p.replaceWith(a)
-//            case (Some(a: StyleImage), Some(b: Style)) where refEq(a.getNext()(), b) => p.replaceWith(a)
-            case _ => ()
-        }
-    }
 }

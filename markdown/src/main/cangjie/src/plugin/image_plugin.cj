@@ -123,6 +123,14 @@ class ImagePostProcessor <: PostProcessor {
 class ImageVisitor <: AbstractVisitor {
     private let collector = ArrayList<Node>()
     public func visit(p: Paragraph): Unit {
+        // 单独的图片提到block级别
+        match ((p.getFirstChild(), p.getLastChild())) {
+            case (Some(a: Image), Some(b: Image)) where refEq(a, b) =>
+                p.replaceWith(a)
+                return
+            case _ => ()
+        }
+
         // for ImageVideo
         visitChildren(p)
 
