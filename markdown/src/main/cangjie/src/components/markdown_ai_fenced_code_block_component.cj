@@ -54,7 +54,6 @@ class MarkdownAIFencedCodeBlockComponent {
     }
 
     func build() {
-
         Column() {
             if (getProp<Bool>(codeItem, "closed", true)) {
                 codeBlockButtonComponent()
@@ -65,6 +64,7 @@ class MarkdownAIFencedCodeBlockComponent {
             .width(100.percent)
             // 设置外边距属性
             .margin(top: marginTop, bottom: marginBottom)
+            .borderRadius(topLeft: 8.vp, topRight: 8.vp, bottomLeft: 8.vp, bottomRight: 8.vp)
             .backgroundColor(
                 codeBackgroundColor(markdownAIConfiguration.markdownAITheme,
                     markdownAIConfiguration.markdownAITheme.prismTheme))
