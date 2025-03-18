@@ -58,16 +58,14 @@ class MarkdownAIFencedCodeBlockComponent {
             codeBlockButtonComponent()
             codeBlockComponent()
         }
-            // 设置组件自身的宽度
-            .width(100.percent)
-            // 设置外边距属性
-            .margin(top: marginTop, bottom: marginBottom)
-            // 设置圆角
-            .borderRadius(topLeft: 8.vp, topRight: 8.vp, bottomLeft: 8.vp, bottomRight: 8.vp)
-            // 设置背景色
-            .backgroundColor(
-                codeBackgroundColor(markdownAIConfiguration.markdownAITheme,
-                    markdownAIConfiguration.markdownAITheme.prismTheme))
+        // 设置组件自身的宽度
+        .width(100.percent)
+        // 设置外边距属性
+        .margin(top: marginTop, bottom: marginBottom)
+        // 设置圆角
+        .borderRadius(topLeft: 8.vp, topRight: 8.vp, bottomLeft: 8.vp, bottomRight: 8.vp)
+        // 设置背景色
+        .backgroundColor(codeBackgroundColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
     }
 
     /**
@@ -83,24 +81,22 @@ class MarkdownAIFencedCodeBlockComponent {
                     // 设置文本内容
                     Span(item.getText())
                         // 设置文本颜色
-                        .fontColor(
-                            codeTextColor(item, markdownAIConfiguration.markdownAITheme,
-                                markdownAIConfiguration.markdownAITheme.prismTheme))
+                        .fontColor(codeTextColor(item, markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
                         // 设置文本字符间距
                         .letterSpacing(markdownAIConfiguration.markdownAITheme.paragraphTextWordSpace)
                 }
             )
         }
-            // 设置文本尺寸
-            .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
-            // 设置文本的字体列表
-            .fontFamily(markdownAIConfiguration.markdownAITheme.codeBlockTypeface)
-            // 设置多行文本的文本对齐方式
-            .textAlign(TextAlign.Start)
-            // 设置内边距属性
-            .padding(left: markdownAIConfiguration.markdownAITheme.codeMultilineMargin)
-            // 设置行高
-            .lineHeight(22)
+        // 设置文本尺寸
+        .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+        // 设置文本的字体列表
+        .fontFamily(markdownAIConfiguration.markdownAITheme.codeBlockTypeface)
+        // 设置多行文本的文本对齐方式
+        .textAlign(TextAlign.Start)
+        // 设置内边距属性
+        .padding(left: markdownAIConfiguration.markdownAITheme.codeMultilineMargin)
+        // 设置行高
+        .lineHeight(22)
     }
 
     /**
@@ -112,18 +108,18 @@ class MarkdownAIFencedCodeBlockComponent {
             // 代码文本内容
             codeBlockTextComponent()
         }
-            // 设置滚动方法
-            .scrollable(ScrollDirection.Horizontal)
-            // 设置滚动条状态
-            .scrollBar(BarState.Off)
-            // 设置元素内容的对齐方式
-            .align(Alignment.Start)
-            // 设置元素水平方向的布局
-            .direction(Direction.Ltr)
-            // 设置组件自身的宽度
-            .width(100.percent)
-            // 设置内边距属性
-            .padding(bottom: 10)
+        // 设置滚动方法
+        .scrollable(ScrollDirection.Horizontal)
+        // 设置滚动条状态
+        .scrollBar(BarState.Off)
+        // 设置元素内容的对齐方式
+        .align(Alignment.Start)
+        // 设置元素水平方向的布局
+        .direction(Direction.Ltr)
+        // 设置组件自身的宽度
+        .width(100.percent)
+        // 设置内边距属性
+        .padding(bottom: 10)
     }
 
     /**
@@ -138,18 +134,16 @@ class MarkdownAIFencedCodeBlockComponent {
                     Row() {
                         Text(i)
                             // 设置字体颜色
-                            .fontColor(
-                                indentedCodeTextColor(markdownAIConfiguration.markdownAITheme,
-                                    markdownAIConfiguration.markdownAITheme.prismTheme))
+                            .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
                             // 设置字体大小
                             .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
                             // 设置外边距
                             .margin(left: 8)
                     }
-                        // 设置宽度
-                        .width(30.percent)
-                        // 设置子组件在水平方向上的对齐格式
-                        .justifyContent(FlexAlign.Start)
+                    // 设置宽度
+                    .width(30.percent)
+                    // 设置子组件在水平方向上的对齐格式
+                    .justifyContent(FlexAlign.Start)
                 } else {
                     Row()
                         // 设置宽度
@@ -177,9 +171,7 @@ class MarkdownAIFencedCodeBlockComponent {
 
                             Text("复制代码")
                                 // 设置字体颜色
-                                .fontColor(
-                                    indentedCodeTextColor(markdownAIConfiguration.markdownAITheme,
-                                        markdownAIConfiguration.markdownAITheme.prismTheme))
+                                .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
                                 // 设置字体大小
                                 .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
                                 // 设置容器元素绘制区域内的子元素的对齐方式
@@ -212,9 +204,7 @@ class MarkdownAIFencedCodeBlockComponent {
 
                             Text("全屏代码")
                                 // 设置字体颜色
-                                .fontColor(
-                                    indentedCodeTextColor(markdownAIConfiguration.markdownAITheme,
-                                        markdownAIConfiguration.markdownAITheme.prismTheme))
+                                .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
                                 // 设置字体大小
                                 .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
                                 // 设置容器元素绘制区域内的子元素的对齐方式
@@ -223,10 +213,10 @@ class MarkdownAIFencedCodeBlockComponent {
                                 .margin(right: 4)
                         }
                     }
-                        // 设置宽度
-                        .width(70.percent)
-                        // 设置子组件在水平方向上的对齐格式
-                        .justifyContent(FlexAlign.End)
+                    // 设置宽度
+                    .width(70.percent)
+                    // 设置子组件在水平方向上的对齐格式
+                    .justifyContent(FlexAlign.End)
                 } else {
                     Row()
                         // 设置宽度
@@ -236,10 +226,10 @@ class MarkdownAIFencedCodeBlockComponent {
                 }
             }
         }
-            // 设置外边距属性
-            .margin(top: 8, right: 8)
-            // 设置子组件在垂直方向上的对齐格式
-            .alignItems(VerticalAlign.Center)
+        // 设置外边距属性
+        .margin(top: 8, right: 8)
+        // 设置子组件在垂直方向上的对齐格式
+        .alignItems(VerticalAlign.Center)
     }
 
     /**

@@ -429,6 +429,22 @@ func widthVpToPx(screenWidth: Int32, imagePadding: Int64): Float64 {
  * @param isBullet 是否是无序列表
  * @return 返回前缀文本内容
  */
+func listPrefixLineHeight(isBullet: Bool): Float64 {
+    if (isBullet) {
+        // 有序列表
+        return 22.0
+    } else {
+        return 18.0
+    }
+}
+
+/**
+ * 前缀显示文本内容
+ *
+ * @param item NodeView
+ * @param isBullet 是否是无序列表
+ * @return 返回前缀文本内容
+ */
 func listPrefixStr(item: NodeView, isBullet: Bool): String {
     if (isBullet) {
         // 有序列表

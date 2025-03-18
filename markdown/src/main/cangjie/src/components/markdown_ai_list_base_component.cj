@@ -22,7 +22,7 @@ func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownAIConfig
         // 设置内边距属性
         .padding(left: markdownAIConfiguration.markdownAITheme.blockMargin, right: 8.0)
         // 设置行高
-        .lineHeight(18.0)
+        .lineHeight(listPrefixLineHeight(isBullet))
         // 设置文本段落在水平方向的对齐方式
         .textAlign(TextAlign.Center)
 }
