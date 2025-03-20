@@ -178,13 +178,15 @@ public class MarkdownAIComponent {
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
                                 )
                             } else {
-                                MarkdownAIIndentedCodeBlockComponent(
+                                MarkdownAIIndentedCodeBlock1Component(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     codeText: (item.node as FencedCodeBlock)().getLiteral(),
-                                    codeItem: item,
                                     info: (item.node as FencedCodeBlock)().getInfo(),
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    isFull: isFull,
+                                    index: idx,
+                                    markdownAICacheConfiguration: markdownAICacheConfiguration
                                 )
                             }
                         }
@@ -201,13 +203,15 @@ public class MarkdownAIComponent {
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
                                 )
                             } else {
-                                MarkdownAIIndentedCodeBlockComponent(
+                                MarkdownAIIndentedCodeBlock1Component(
                                     markdownAIConfiguration: markdownAIConfiguration,
-                                    codeItem: item,
                                     codeText: (item.node as IndentedCodeBlock)().getLiteral(),
                                     info: Option<String>.None,
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    isFull: isFull,
+                                    index: idx,
+                                    markdownAICacheConfiguration: markdownAICacheConfiguration
                                 )
                             }
                         }
@@ -350,6 +354,20 @@ public class MarkdownAIComponent {
                                     data.component.refreshData(nodeViews[nodeViews.size - 1])
                                 }
                             }
+                        } else if ((nodeViews[nodeViews.size - 1].node is FencedCodeBlock &&
+                            nodeViewAIDataSource.getAllData()[nodeViewAIDataSource.totalCount() - 1].node is FencedCodeBlock) ||
+                            (nodeViews[nodeViews.size - 1].node is IndentedCodeBlock &&
+                            nodeViewAIDataSource.getAllData()[nodeViewAIDataSource.totalCount() - 1].node is IndentedCodeBlock)) {
+                            // 围栏代码和缩进代码
+                            let index: Int64 = nodeViewAIDataSource.totalCount() - 1
+                            for (data in markdownAICacheConfiguration.indentedCode1Components) {
+                                if (data.index == index) {
+                                    data
+                                        .component
+                                        .refreshData(getCodeInfo(nodeViews[nodeViews.size - 1])[0],
+                                            getCodeInfo(nodeViews[nodeViews.size - 1])[1])
+                                }
+                            }
                         } else {
                             nodeViewAIDataSource.replaceDate(nodeViewAIDataSource.totalCount() - 1,
                                 nodeViews[nodeViews.size - 1])
@@ -376,6 +394,16 @@ public class MarkdownAIComponent {
                     nodeViewAIDataSource.addDatas(arrayListNodeView)
                 }
             }
+        }
+    }
+
+    func getCodeInfo(nodeView: NodeView): (String, ?String) {
+        return if (nodeView.node is FencedCodeBlock) {
+            ((nodeView.node as IndentedCodeBlock)().getLiteral(), (nodeView.node as IndentedCodeBlock)().getLiteral())
+        } else if (nodeView.node is IndentedCodeBlock) {
+            ((nodeView.node as IndentedCodeBlock)().getLiteral(), None)
+        } else {
+            ("", None)
         }
     }
 }

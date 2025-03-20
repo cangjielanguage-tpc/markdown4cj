@@ -8,31 +8,37 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
+class IndentedCodeAI1Data {
+    var component: MarkdownAIIndentedCodeBlock1Component
+    var index: Int64
+
+    init(component: MarkdownAIIndentedCodeBlock1Component, index: Int64) {
+        this.component = component
+        this.index = index
+    }
+}
+
 /**
- * Markdown围栏代码块自定义控件
+ * Markdown缩进代码块自定义控件
  */
 @Component
-class MarkdownAIFencedCodeBlockComponent {
+class MarkdownAIIndentedCodeBlock1Component {
     /**
      * markdown配置
      */
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 高亮代码列表
-     */
-    @State
-    var arrayList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
-
-    /**
      * 代码内容
      */
-    var codeText: String
+    @State
+    var codeText: String = ""
 
     /**
      * 代码类型
      */
-    var info: ?String
+    @State
+    var info: Option<String> = Option<String>.None
 
     /**
      * 外边距 - 上面
@@ -45,12 +51,43 @@ class MarkdownAIFencedCodeBlockComponent {
     var marginBottom: Float64
 
     /**
-     * 代码块NodeView
+     * 是否全量加载
      */
-    var codeItem: NodeView
+    @Prop
+    var isFull: Bool
+
+    /**
+     * 标识符，第几条块引用
+     */
+    @Prop
+    var index: Int64
+
+    /**
+     * 缓存的数据
+     */
+    @Prop
+    var markdownAICacheConfiguration: MarkdownAICacheConfiguration
 
     protected override func aboutToAppear(): Unit {
-        stringCodeToResList()
+        refreshData(codeText, info)
+        markdownAICacheConfiguration.indentedCode1Components.append(IndentedCodeAI1Data(this, index))
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        markdownAICacheConfiguration
+            .indentedCode1Components
+            .removeIf({
+                predicate => if (predicate.index == index) {
+                    true
+                } else {
+                    false
+                }
+            })
+    }
+
+    public func refreshData(str: String, tp: Option<String>): Unit {
+        codeText = str
+        info = tp
     }
 
     func build() {
@@ -73,30 +110,19 @@ class MarkdownAIFencedCodeBlockComponent {
      */
     @Builder
     func codeBlockTextComponent() {
-        Text() {
-            ForEach(
-                arrayList,
-                itemGeneratorFunc: {
-                    item: PrismNodesParseRes, idx: Int64 =>
-                    // 设置文本内容
-                    Span(item.getText())
-                        // 设置文本颜色
-                        .fontColor(codeTextColor(item, markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
-                        // 设置文本字符间距
-                        .letterSpacing(markdownAIConfiguration.markdownAITheme.paragraphTextWordSpace)
-                }
-            )
-        }
-        // 设置文本尺寸
-        .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
-        // 设置文本的字体列表
-        .fontFamily(markdownAIConfiguration.markdownAITheme.codeBlockTypeface)
-        // 设置多行文本的文本对齐方式
-        .textAlign(TextAlign.Start)
-        // 设置内边距属性
-        .padding(left: markdownAIConfiguration.markdownAITheme.codeMultilineMargin)
-        // 设置行高
-        .lineHeight(22)
+        Text(codeText)
+            // 设置文本颜色
+            .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+            // 设置文本尺寸
+            .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+            // 设置文本的字体列表
+            .fontFamily(markdownAIConfiguration.markdownAITheme.codeBlockTypeface)
+            // 设置多行文本的文本对齐方式
+            .textAlign(TextAlign.Start)
+            // 设置内边距属性
+            .padding(left: markdownAIConfiguration.markdownAITheme.codeMultilineMargin)
+            // 设置行高
+            .lineHeight(22)
     }
 
     /**
@@ -222,17 +248,5 @@ class MarkdownAIFencedCodeBlockComponent {
         .margin(top: 8, right: 8)
         // 设置子组件在垂直方向上的对齐格式
         .alignItems(VerticalAlign.Center)
-    }
-
-    /**
-     * 代码数据高亮解析
-     */
-    func stringCodeToResList() {
-        let callback: (ArrayList<PrismNodesParseRes>) -> Unit = {
-            prismNodesParseResLists => launch {
-                arrayList = prismNodesParseResLists
-            }
-        }
-        stringToResList(codeText, info, markdownAIConfiguration.markdownAITheme.prismTheme, callback)
     }
 }

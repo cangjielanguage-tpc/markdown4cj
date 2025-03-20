@@ -43,4 +43,6 @@ public class MarkdownAICacheConfiguration {
     let tableRow1Components: ArrayList<TableRowAI1Data> = ArrayList<TableRowAI1Data>()
 
     let tableCell1Components: ArrayList<TableCellAI1Data> = ArrayList<TableCellAI1Data>()
+
+    let indentedCode1Components: ArrayList<IndentedCodeAI1Data> = ArrayList<IndentedCodeAI1Data>()
 }

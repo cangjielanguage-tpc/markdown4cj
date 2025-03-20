@@ -107,7 +107,8 @@ public class MarkdownAIListComponent {
                                                 (item.node as IndentedCodeBlock)().getLiteral(),
                                                 Option<String>.None,
                                                 item,
-                                                markdownAIConfiguration
+                                                markdownAIConfiguration,
+                                                isFull
                                             )
                                         } else if (item.node is FencedCodeBlock) {
                                             // 围栏代码
@@ -115,7 +116,8 @@ public class MarkdownAIListComponent {
                                                 (item.node as FencedCodeBlock)().getLiteral(),
                                                 (item.node as FencedCodeBlock)().getInfo(),
                                                 item,
-                                                markdownAIConfiguration
+                                                markdownAIConfiguration,
+                                                isFull
                                             )
                                         } else if (item.node is BulletList) {
                                             // 无序列表
@@ -243,7 +245,8 @@ public class MarkdownAIListComponent {
                                                 (item.node as IndentedCodeBlock)().getLiteral(),
                                                 Option<String>.None,
                                                 item,
-                                                markdownAIConfiguration
+                                                markdownAIConfiguration,
+                                                isFull
                                             )
                                         } else if (item.node is FencedCodeBlock) {
                                             // 围栏代码
@@ -251,7 +254,8 @@ public class MarkdownAIListComponent {
                                                 (item.node as FencedCodeBlock)().getLiteral(),
                                                 (item.node as FencedCodeBlock)().getInfo(),
                                                 item,
-                                                markdownAIConfiguration
+                                                markdownAIConfiguration,
+                                                isFull
                                             )
                                         } else if (item.node is BulletList) {
                                             // 无序列表
@@ -371,7 +375,8 @@ public class MarkdownAIListComponent {
                                     (item.node as IndentedCodeBlock)().getLiteral(),
                                     Option<String>.None,
                                     item,
-                                    markdownAIConfiguration
+                                    markdownAIConfiguration,
+                                    isFull
                                 )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
@@ -379,7 +384,8 @@ public class MarkdownAIListComponent {
                                     (item.node as FencedCodeBlock)().getLiteral(),
                                     (item.node as FencedCodeBlock)().getInfo(),
                                     item,
-                                    markdownAIConfiguration
+                                    markdownAIConfiguration,
+                                    isFull
                                 )
                             } else if (item.node is BulletList) {
                                 // 无序列表

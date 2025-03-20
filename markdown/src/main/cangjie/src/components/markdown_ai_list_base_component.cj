@@ -79,15 +79,37 @@ func listHeadingINCComponent(nodeView: NodeView, markdownAIConfiguration: Markdo
  * 围栏代码、缩进代码
  */
 @Builder
-func listCodeBlockINCComponent(codeText: String, infos: ?String, nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration) {
-    MarkdownAIIndentedCodeBlockComponent(
-        markdownAIConfiguration: markdownAIConfiguration,
-        codeText: codeText,
-        codeItem: nodeView,
-        info: infos,
-        marginTop: 0.0,
-        marginBottom: 0.0
-    )
+func listCodeBlockINCComponent(codeText: String, infos: ?String, nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, isFull: Bool) {
+    if (isFull) {
+        if(nodeView.node is IndentedCodeBlock){
+            MarkdownAIFencedCodeBlockComponent(
+                markdownAIConfiguration: markdownAIConfiguration,
+                codeText: (nodeView.node as IndentedCodeBlock)().getLiteral(),
+                info: Option<String>.None,
+                codeItem: nodeView,
+                marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
+            )
+        } else if(nodeView.node is FencedCodeBlock){
+            MarkdownAIFencedCodeBlockComponent(
+                markdownAIConfiguration: markdownAIConfiguration,
+                codeText: (nodeView.node as FencedCodeBlock)().getLiteral(),
+                info: (nodeView.node as FencedCodeBlock)().getInfo(),
+                codeItem: nodeView,
+                marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
+            )
+        }
+    } else {
+        MarkdownAIIndentedCodeBlockComponent(
+            markdownAIConfiguration: markdownAIConfiguration,
+            codeText: codeText,
+            codeItem: nodeView,
+            info: infos,
+            marginTop: 0.0,
+            marginBottom: 0.0
+        )
+    }
 }
 
 /**
