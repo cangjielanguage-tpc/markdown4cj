@@ -19,17 +19,22 @@ class MarkdownAIHeadingComponent {
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 标题NodeView
+     * 标题内容数据
      */
-    var headingNodeView: NodeView
+    var nodeViews: ArrayList<NodeView>
 
     /**
-     * 外边距 - 上面
+     * 标题等级
+     */
+    var level: Int64
+
+    /**
+     * 上边距 - 单位vp
      */
     var marginTop: Float64
 
     /**
-     * 外边距 - 下面
+     * 下边距 - 单位vp
      */
     var marginBottom: Float64
 
@@ -39,20 +44,20 @@ class MarkdownAIHeadingComponent {
     var componentWidth: Float64
 
     /**
-     * 储存的PixelMap，最后需要释放
+     * 储存的PixelMap，包含图片、数学公式，最后需要释放
      */
     var listPixelMap: ArrayList<?PixelMap> = ArrayList<?PixelMap>()
+
+    /**
+     * 线程列表
+     */
+    var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
 
     /**
      * 异步加载的图片数据
      */
     @State
     var arrayListPixelMap: ObservedArrayList<ImageData> = ObservedArrayList<ImageData>()
-
-    /**
-     * 线程列表
-     */
-    var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
 
     protected override func aboutToDisappear(): Unit {
         threadFutureCancel(futs)
@@ -65,11 +70,8 @@ class MarkdownAIHeadingComponent {
             headingTitleComponent()
 
             // 一级二级标题是否显示下划线
-            if ((headingNodeView.node as Heading)().getLevel() == 1 || (headingNodeView.node as Heading)().getLevel() ==
-                2) {
-                if (markdownAIConfiguration.markdownAITheme.headingBreakHeight > 0.0) {
-                    headingDividerComponent(markdownAIConfiguration)
-                }
+            if ((level == 1 || level == 2) && markdownAIConfiguration.markdownAITheme.headingBreakHeight > 0.0) {
+                headingDividerComponent(markdownAIConfiguration)
             }
         }
         // 设置元素内容的对齐方式
@@ -80,6 +82,51 @@ class MarkdownAIHeadingComponent {
         .margin(top: marginTop, bottom: marginBottom)
         // 设置组件自身的宽度
         .width(100.percent)
+    }
+
+    /**
+     * 标题文字内容
+     */
+    @Builder
+    func headingTitleComponent() {
+        Text() {
+            ForEach(
+                nodeViews,
+                itemGeneratorFunc: {
+                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
+                        // 文本
+                        headingTextComponent(item, markdownAIConfiguration, level)
+                    } else if (item.node is Code) {
+                        // 内联代码
+                        headingCodeComponent(item, markdownAIConfiguration)
+                    } else if (item.node is HardLineBreak) {
+                        // 硬换行
+                        Span("\n")
+                    } else if (item.node is SoftLineBreak) {
+                        // 软换行
+                        Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
+                    } else if (item.node is CommonmarkImage) {
+                        // 图片节点
+                        headingImageSpanComponent((item.node as CommonmarkImage)(), idx)
+                    } else if (item.node is LatexMathNode) {
+                        // 数学公式节点
+                        headingLatexMathComponent(latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx))
+                    } else if (item.node is ImageHtmlNode) {
+                        // HTML图片
+                        headingHtmlImageSpanComponent((item.node as ImageHtmlNode)(), idx)
+                    } else {
+                        // TODO 其他节点
+                        Span("")
+                    }
+                }
+            )
+        }
+        // 设置多行文本的文本对齐方式
+        .textAlign(TextAlign.Start)
+        // 设置组件自身的宽度
+        .width(100.percent)
+        // 设置行高
+        .lineHeight(22.0)
     }
 
     /**
@@ -152,7 +199,7 @@ class MarkdownAIHeadingComponent {
     }
 
     /**
-     * 图片
+     * 普通图片
      */
     @Builder
     func headingImageSpanComponent(commonmarkImage: CommonmarkImage, idx: Int64) {
@@ -173,30 +220,7 @@ class MarkdownAIHeadingComponent {
     }
 
     /**
-     * 图片
-     */
-    @Builder
-    func headingImageSpanStyleComponent(commonmarkImage: StyleImage, picStyleObj: PicStyleObj, idx: Int64) {
-        if (commonmarkImage.getDestination().startsWith("file:")) {
-            // 沙盒图片
-            headingImageSpanPixelMapComponent(filesPixelmapStyle(commonmarkImage.getDestination(), idx, picStyleObj),
-                commonmarkImage.getDestination(), 0, picStyleObj)
-        } else if (commonmarkImage.getDestination().startsWith("./")) {
-            // rawfile图片
-            headingImageSpanPixelMapComponent(
-                localRowImageToPixelMapStyle(commonmarkImage.getDestination(), idx, picStyleObj),
-                commonmarkImage.getDestination(), 1, picStyleObj)
-        } else if (commonmarkImage.getDestination().toAsciiLower().startsWith("http") ||
-            commonmarkImage.getDestination().toAsciiLower().startsWith("ftp")) {
-            // 网络图片
-            headingImageSpanPixelMapComponent(
-                httpImageToPixelMapStyle(commonmarkImage.getDestination(), idx, picStyleObj),
-                commonmarkImage.getDestination(), 2, picStyleObj)
-        }
-    }
-
-    /**
-     * 图片
+     * HTML图片
      */
     @Builder
     func headingHtmlImageSpanComponent(imageHtmlNode: ImageHtmlNode, idx: Int64) {
@@ -228,51 +252,6 @@ class MarkdownAIHeadingComponent {
             picStyleObj.height = Float64.parse(v).px
         }
         return picStyleObj
-    }
-
-    /**
-     * 标题文字内容
-     */
-    @Builder
-    func headingTitleComponent() {
-        Text() {
-            ForEach(
-                headingNodeView.children,
-                itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                        // 文本
-                        headingTextComponent(item, markdownAIConfiguration, headingNodeView)
-                    } else if (item.node is Code) {
-                        // 内联代码
-                        headingCodeComponent(item, markdownAIConfiguration)
-                    } else if (item.node is HardLineBreak) {
-                        // 硬换行
-                        Span("\n")
-                    } else if (item.node is SoftLineBreak) {
-                        // 软换行
-                        Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
-                    } else if (item.node is CommonmarkImage) {
-                        // 图片节点
-                        headingImageSpanComponent((item.node as CommonmarkImage)(), idx)
-                    } else if (item.node is LatexMathNode) {
-                        // 数学公式节点
-                        headingLatexMathComponent(latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx))
-                    } else if (item.node is ImageHtmlNode) {
-                        // HTML图片
-                        headingHtmlImageSpanComponent((item.node as ImageHtmlNode)(), idx)
-                    } else {
-                        // TODO 其他节点
-                        Span("")
-                    }
-                }
-            )
-        }
-        // 设置多行文本的文本对齐方式
-        .textAlign(TextAlign.Start)
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置行高
-        .lineHeight(22.0)
     }
 
     /**
@@ -343,8 +322,8 @@ class MarkdownAIHeadingComponent {
                 arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
             }
         }
-        let fut = imageSpanToPixelmapStyle(destination, componentWidth, length2Float64(picStyleObj.width),
-            length2Float64(picStyleObj.height), callback)
+        let fut = imageSpanToPixelmapStyle(destination, componentWidth, length2Float64(picStyleObj.width, componentWidth
+        ), length2Float64(picStyleObj.height, componentWidth), callback)
         futs.append(fut)
         return idx
     }
@@ -359,8 +338,9 @@ class MarkdownAIHeadingComponent {
             }
         }
         let fut = rawfileToPixelmapStyle(destination, markdownAIConfiguration.markdownAITheme.stageContext,
-            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, length2Float64(picStyleObj.width),
-            length2Float64(picStyleObj.height), callback)
+            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth,
+            length2Float64(picStyleObj.width, componentWidth), length2Float64(picStyleObj.height, componentWidth),
+            callback)
         futs.append(fut)
         return idx
     }
@@ -374,22 +354,10 @@ class MarkdownAIHeadingComponent {
                 arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
             }
         }
-        let fut = getImageFromHttpClientStyle(destination, componentWidth, length2Float64(picStyleObj.width),
-            length2Float64(picStyleObj.height), callback)
+        let fut = getImageFromHttpClientStyle(destination, componentWidth,
+            length2Float64(picStyleObj.width, componentWidth), length2Float64(picStyleObj.height, componentWidth),
+            callback)
         futs.append(fut)
         return idx
-    }
-
-    func length2Float64(length: ?Length): ?Float64 {
-        if (let Some(v) <- length) {
-            return match (v.unitType) {
-                case LengthType.vp => vp2px(v)().value
-                case LengthType.px => v.value
-                case LengthType.percent => (v.value / 1.0) * componentWidth
-                case _ => v.value
-            }
-        } else {
-            return None
-        }
     }
 }

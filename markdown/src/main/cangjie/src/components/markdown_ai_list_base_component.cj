@@ -53,8 +53,8 @@ func listPrefixCheckboxINCComponent(item: NodeView, markdownAIConfiguration: Mar
 @Builder
 func listParagraphINCComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, componentWidth: Float64) {
     MarkdownAIParagraphComponent(
-        paragraphNodeView: nodeView,
         markdownAIConfiguration: markdownAIConfiguration,
+        nodeViews: nodeView.children,
         marginTop: 0.0,
         marginBottom: 0.0,
         componentWidth: componentWidth
@@ -67,8 +67,9 @@ func listParagraphINCComponent(nodeView: NodeView, markdownAIConfiguration: Mark
 @Builder
 func listHeadingINCComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, componentWidth: Float64) {
     MarkdownAIHeadingComponent(
-        headingNodeView: nodeView,
         markdownAIConfiguration: markdownAIConfiguration,
+        nodeViews: nodeView.children,
+        level : (nodeView.node as Heading)().getLevel(),
         marginTop: 0.0,
         marginBottom: 0.0,
         componentWidth: componentWidth

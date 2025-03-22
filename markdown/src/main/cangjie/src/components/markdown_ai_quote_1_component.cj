@@ -85,46 +85,6 @@ public class MarkdownAIQuote1Component {
                 })
     }
 
-    /**
-     * 段落
-     */
-    @Builder
-    func listParagraph2INCComponent(nodeViewParagraph: NodeView, markdownAIConfiguration: MarkdownAIConfiguration,
-        componentWidth: Float64, idx: Int64) {
-        MarkdownAIParagraph2Component(
-            paragraphNodeView: nodeViewParagraph,
-            markdownAIConfiguration: markdownAIConfiguration,
-            marginTop: 0.0,
-            marginBottom: 0.0,
-            componentWidth: componentWidth,
-            isFull: isFull,
-            index: index,
-            index2: idx,
-            indexItem: -1,
-            markdownAICacheConfiguration: markdownAICacheConfiguration
-        )
-    }
-
-    /**
-     * 标题
-     */
-    @Builder
-    func listHeading2INCComponent(nodeViewHeading: NodeView, markdownAIConfiguration: MarkdownAIConfiguration,
-        componentWidth: Float64, idx: Int64) {
-        MarkdownAIHeading2Component(
-            headingNodeView: nodeViewHeading,
-            markdownAIConfiguration: markdownAIConfiguration,
-            marginTop: 0.0,
-            marginBottom: 0.0,
-            componentWidth: componentWidth,
-            isFull: isFull,
-            index: index,
-            index2: idx,
-            indexItem: -1,
-            markdownAICacheConfiguration: markdownAICacheConfiguration
-        )
-    }
-
     func build() {
         List() {
             LazyForEach(
@@ -134,19 +94,32 @@ public class MarkdownAIQuote1Component {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
-                                listParagraph2INCComponent(
-                                    item,
-                                    markdownAIConfiguration,
-                                    componentWidth,
-                                    idx
+                                MarkdownAIParagraph2Component(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    nodeViews: item.children,
+                                    marginTop: 0.0,
+                                    marginBottom: 0.0,
+                                    componentWidth: componentWidth,
+                                    isFull: isFull,
+                                    index: index,
+                                    index2: idx,
+                                    indexItem: -1,
+                                    paragraph2Components: markdownAICacheConfiguration.paragraph2Components
                                 )
                             } else if (item.node is Heading) {
                                 // 标题
-                                listHeading2INCComponent(
-                                    item,
-                                    markdownAIConfiguration,
-                                    componentWidth,
-                                    idx
+                                MarkdownAIHeading2Component(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    nodeViews: item.children,
+                                    level: (item.node as Heading)().getLevel(),
+                                    marginTop: 0.0,
+                                    marginBottom: 0.0,
+                                    componentWidth: componentWidth,
+                                    isFull: isFull,
+                                    index: index,
+                                    index2: idx,
+                                    indexItem: -1,
+                                    heading2Components: markdownAICacheConfiguration.heading2Components
                                 )
                             } else if (item.node is IndentedCodeBlock) {
                                 // 缩进代码
@@ -227,15 +200,15 @@ public class MarkdownAIQuote1Component {
                                 // TODO 其他节点
                             }
                         }
-                        // 设置子组件在水平方向上的对齐格式。
-                        .alignItems(HorizontalAlign.Start)
-                        // 设置子组件在垂直方向上的对齐格式。
-                        .justifyContent(FlexAlign.Start)
+                            // 设置子组件在水平方向上的对齐格式。
+                            .alignItems(HorizontalAlign.Start)
+                            // 设置子组件在垂直方向上的对齐格式。
+                            .justifyContent(FlexAlign.Start)
+                            // 对子组件进行重新布局
+                            .layoutWeight(1)
+                    }
                         // 对子组件进行重新布局
                         .layoutWeight(1)
-                    }
-                    // 对子组件进行重新布局
-                    .layoutWeight(1)
                 }
             )
         }
@@ -290,7 +263,7 @@ public class MarkdownAIQuote1Component {
                     let index2: Int64 = nodeViewAIDataSource.totalCount() - 1
                     for (data in markdownAICacheConfiguration.heading2Components) {
                         if (data.index == index && data.index2 == index2 && data.indexItem == -1) {
-                            data.component.refreshData(nodeViews[nodeViews.size - 1])
+                            data.refreshData(nodeViews[nodeViews.size - 1].children)
                         }
                     }
                 } else if ((nodeViews[nodeViews.size - 1].node is Paragraph &&
@@ -299,7 +272,7 @@ public class MarkdownAIQuote1Component {
                     let index2: Int64 = nodeViewAIDataSource.totalCount() - 1
                     for (data in markdownAICacheConfiguration.paragraph2Components) {
                         if (data.index == index && data.index2 == index2 && data.indexItem == -1) {
-                            data.component.refreshData(nodeViews[nodeViews.size - 1])
+                            data.refreshData(nodeViews[nodeViews.size - 1].children)
                         }
                     }
                 } else if ((nodeViews[nodeViews.size - 1].node is BlockQuote &&

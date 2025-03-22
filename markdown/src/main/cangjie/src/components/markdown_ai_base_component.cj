@@ -24,13 +24,13 @@ func headingDividerComponent(markdownAIConfiguration: MarkdownAIConfiguration) {
  * 标题文本
  */
 @Builder
-func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, headingNodeView: NodeView) {
+func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, level: Int64) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
         .fontFamily(spanFontFamily(false, markdownAIConfiguration.markdownAITheme, true))
         // 设置文本尺寸
-        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, true, (headingNodeView.node as Heading)().getLevel()))
+        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, true, level))
         // 设置文本的字体粗细
         .fontWeight(spanFontWeight(nodeView, true))
         // 设置文本的字体样式

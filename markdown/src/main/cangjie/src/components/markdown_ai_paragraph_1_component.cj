@@ -8,18 +8,8 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
-class ParagraphAI1Data {
-    var component: MarkdownAIParagraph1Component
-    var index: Int64
-
-    init(component: MarkdownAIParagraph1Component, index: Int64) {
-        this.component = component
-        this.index = index
-    }
-}
-
 /**
- * Markdown段落自定义页面
+ * Markdown段落自定义页面 - 第一层的段落
  */
 @Component
 class MarkdownAIParagraph1Component {
@@ -29,17 +19,17 @@ class MarkdownAIParagraph1Component {
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 段落NodeView
+     * 段落内容数据
      */
-    var paragraphNodeView: NodeView
+    var nodeViews: ArrayList<NodeView>
 
     /**
-     * 外边距 - 上面
+     * 上边距 - 单位vp
      */
     var marginTop: Float64
 
     /**
-     * 外边距 - 下面
+     * 下边距 - 单位vp
      */
     var marginBottom: Float64
 
@@ -49,24 +39,29 @@ class MarkdownAIParagraph1Component {
     var componentWidth: Float64
 
     /**
-     * 是否全量加载
+     * 是否全量加载 - true：全量加载，fasle：增量加载
      */
     var isFull: Bool
 
     /**
-     * 标识符，第几条块引用
+     * 第一层的定位标识
      */
     var index: Int64
 
     /**
-     * 缓存的数据
+     * 缓存的第一层段落控件列表
      */
-    var markdownAICacheConfiguration: MarkdownAICacheConfiguration
+    var paragraph1Components: ArrayList<MarkdownAIParagraph1Component>
 
     /**
-     * 储存的PixelMap，最后需要释放
+     * 储存的PixelMap，包含图片、数学公式，最后需要释放
      */
     var listPixelMap: ArrayList<?PixelMap> = ArrayList<?PixelMap>()
+
+    /**
+     * 线程列表
+     */
+    var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
 
     /**
      * 异步加载的图片数据
@@ -75,67 +70,32 @@ class MarkdownAIParagraph1Component {
     var arrayListPixelMap: ObservedArrayList<ImageData> = ObservedArrayList<ImageData>()
 
     /**
-     * 线程列表
-     */
-    var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
-
-    /**
      * 懒加载数据源
      */
     @State
     var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
-        refreshData(paragraphNodeView)
-        markdownAICacheConfiguration.paragraph1Components.append(ParagraphAI1Data(this, index))
+        // 初始化刷新数据
+        refreshData(nodeViews)
+        // 缓存当前控件
+        paragraph1Components.append(this)
     }
 
     protected override func aboutToDisappear(): Unit {
-        markdownAICacheConfiguration
-            .paragraph1Components
-            .removeIf(
-                {
-                    predicate => if (predicate.index == index && predicate.component.paragraphNodeView.children.size == paragraphNodeView
-                        .children
-                        .size) {
-                        true
-                    } else {
-                        false
-                    }
-                })
+        // 清除当前控件
+        paragraph1Components.removeIf(
+            {
+                predicate => if (predicate.index == index && predicate.nodeViews.size == nodeViews.size) {
+                    true
+                } else {
+                    false
+                }
+            })
+        // 清除线程列表
         threadFutureCancel(futs)
+        // 清除PixelMap列表
         delPixelMap(listPixelMap)
-    }
-
-    public func refreshData(nodeView: NodeView): Unit {
-        let nodeViews = nodeView.children
-        if (isFull) {
-            nodeViewList.clear()
-            nodeViewList.appendAll(nodeViews)
-        } else {
-            if (nodeViews.size == 0) {
-                return
-            }
-            if (nodeViews.size > nodeViewList.size) {
-                if (nodeViewList.size != 0) {
-                    let size = nodeViewList.size
-                    nodeViewList.remove(size - 1)
-                    nodeViewList.append(nodeViews[size - 1])
-                }
-                for (i in nodeViews.size - nodeViewList.size..0 : -1) {
-                    nodeViewList.append(nodeViews[nodeViews.size - i])
-                }
-            } else if (nodeViews.size == nodeViewList.size) {
-                nodeViewList.remove(nodeViewList.size - 1)
-                nodeViewList.append(nodeViews[nodeViews.size - 1])
-            } else {
-                nodeViewList.remove(nodeViews.size - 1)
-                nodeViewList.append(nodeViews[nodeViews.size - 1])
-                for (i in nodeViewList.size - nodeViews.size..0 : -1) {
-                    nodeViewList.remove(nodeViewList.size - i)
-                }
-            }
-        }
     }
 
     func build() {
@@ -171,14 +131,14 @@ class MarkdownAIParagraph1Component {
                 }
             )
         }
-        // 设置多行文本的文本对齐方式
-        .textAlign(TextAlign.Start)
-        // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置行高
-        .lineHeight(22.0)
+            // 设置多行文本的文本对齐方式
+            .textAlign(TextAlign.Start)
+            // 设置外边距属性
+            .margin(top: marginTop, bottom: marginBottom)
+            // 设置组件自身的宽度
+            .width(100.percent)
+            // 设置行高
+            .lineHeight(22.0)
     }
 
     /**
@@ -319,6 +279,36 @@ class MarkdownAIParagraph1Component {
         }
     }
 
+    public func refreshData(nodeViews: ArrayList<NodeView>): Unit {
+        if (isFull) {
+            nodeViewList.clear()
+            nodeViewList.appendAll(nodeViews)
+        } else {
+            if (nodeViews.size == 0) {
+                return
+            }
+            if (nodeViews.size > nodeViewList.size) {
+                if (nodeViewList.size != 0) {
+                    let size = nodeViewList.size
+                    nodeViewList.remove(size - 1)
+                    nodeViewList.append(nodeViews[size - 1])
+                }
+                for (i in nodeViews.size - nodeViewList.size..0 : -1) {
+                    nodeViewList.append(nodeViews[nodeViews.size - i])
+                }
+            } else if (nodeViews.size == nodeViewList.size) {
+                nodeViewList.remove(nodeViewList.size - 1)
+                nodeViewList.append(nodeViews[nodeViews.size - 1])
+            } else {
+                nodeViewList.remove(nodeViews.size - 1)
+                nodeViewList.append(nodeViews[nodeViews.size - 1])
+                for (i in nodeViewList.size - nodeViews.size..0 : -1) {
+                    nodeViewList.remove(nodeViewList.size - i)
+                }
+            }
+        }
+    }
+
     func toPicStyleObj(imageHtmlNode: ImageHtmlNode): PicStyleObj {
         let picStyleObj: PicStyleObj = PicStyleObj()
         if (let Some(v) <- imageHtmlNode.getWidth()) {
@@ -328,13 +318,6 @@ class MarkdownAIParagraph1Component {
             picStyleObj.height = Float64.parse(v).px
         }
         return picStyleObj
-    }
-
-    /**
-     * 判断是否是TOC列表还是链接，做不同的点击事件处理
-     */
-    func tocListOnClickFunc(nodeView: NodeView) {
-        linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
     }
 
     /**
@@ -405,8 +388,8 @@ class MarkdownAIParagraph1Component {
                 arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
             }
         }
-        let fut = imageSpanToPixelmapStyle(destination, componentWidth, length2Float64(picStyleObj.width),
-            length2Float64(picStyleObj.height), callback)
+        let fut = imageSpanToPixelmapStyle(destination, componentWidth, length2Float64(picStyleObj.width,componentWidth),
+            length2Float64(picStyleObj.height,componentWidth), callback)
         futs.append(fut)
         return idx
     }
@@ -421,8 +404,8 @@ class MarkdownAIParagraph1Component {
             }
         }
         let fut = rawfileToPixelmapStyle(destination, markdownAIConfiguration.markdownAITheme.stageContext,
-            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, length2Float64(picStyleObj.width),
-            length2Float64(picStyleObj.height), callback)
+            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, length2Float64(picStyleObj.width,componentWidth),
+            length2Float64(picStyleObj.height,componentWidth), callback)
         futs.append(fut)
         return idx
     }
@@ -436,22 +419,9 @@ class MarkdownAIParagraph1Component {
                 arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
             }
         }
-        let fut = getImageFromHttpClientStyle(destination, componentWidth, length2Float64(picStyleObj.width),
-            length2Float64(picStyleObj.height), callback)
+        let fut = getImageFromHttpClientStyle(destination, componentWidth, length2Float64(picStyleObj.width,componentWidth),
+            length2Float64(picStyleObj.height,componentWidth), callback)
         futs.append(fut)
         return idx
-    }
-
-    func length2Float64(length: ?Length): ?Float64 {
-        if (let Some(v) <- length) {
-            return match (v.unitType) {
-                case LengthType.vp => vp2px(v)().value
-                case LengthType.px => v.value
-                case LengthType.percent => (v.value / 1.0) * componentWidth
-                case _ => v.value
-            }
-        } else {
-            return None
-        }
     }
 }

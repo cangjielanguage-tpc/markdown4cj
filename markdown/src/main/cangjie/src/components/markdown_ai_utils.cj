@@ -747,6 +747,19 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownAIConfiguration: Markdow
     return picStyleObj
 }
 
+func length2Float64(length: ?Length, componentWidth: Float64): ?Float64 {
+    if (let Some(v) <- length) {
+        return match (v.unitType) {
+            case LengthType.vp => vp2px(v)().value
+            case LengthType.px => v.value
+            case LengthType.percent => (v.value / 1.0) * componentWidth
+            case _ => v.value
+        }
+    } else {
+        return None
+    }
+}
+
 /**
  * 释放PixelMap
  */

@@ -22,21 +22,21 @@ public class MarkdownAICacheConfiguration {
 
     let quote3Components: ArrayList<QuoteAI3Data> = ArrayList<QuoteAI3Data>()
 
-    let paragraph1Components: ArrayList<ParagraphAI1Data> = ArrayList<ParagraphAI1Data>()
+    let paragraph1Components: ArrayList<MarkdownAIParagraph1Component> = ArrayList<MarkdownAIParagraph1Component>()
 
-    let paragraph2Components: ArrayList<ParagraphAI2Data> = ArrayList<ParagraphAI2Data>()
+    let paragraph2Components: ArrayList<MarkdownAIParagraph2Component> = ArrayList<MarkdownAIParagraph2Component>()
 
-    let paragraph3Components: ArrayList<ParagraphAI3Data> = ArrayList<ParagraphAI3Data>()
+    let paragraph3Components: ArrayList<MarkdownAIParagraph3Component> = ArrayList<MarkdownAIParagraph3Component>()
 
-    let paragraph4Components: ArrayList<ParagraphAI4Data> = ArrayList<ParagraphAI4Data>()
+    let paragraph4Components: ArrayList<MarkdownAIParagraph4Component> = ArrayList<MarkdownAIParagraph4Component>()
 
-    let heading1Components: ArrayList<HeadingAI1Data> = ArrayList<HeadingAI1Data>()
+    let heading1Components: ArrayList<MarkdownAIHeading1Component> = ArrayList<MarkdownAIHeading1Component>()
 
-    let heading2Components: ArrayList<HeadingAI2Data> = ArrayList<HeadingAI2Data>()
+    let heading2Components: ArrayList<MarkdownAIHeading2Component> = ArrayList<MarkdownAIHeading2Component>()
 
-    let heading3Components: ArrayList<HeadingAI3Data> = ArrayList<HeadingAI3Data>()
+    let heading3Components: ArrayList<MarkdownAIHeading3Component> = ArrayList<MarkdownAIHeading3Component>()
 
-    let heading4Components: ArrayList<HeadingAI4Data> = ArrayList<HeadingAI4Data>()
+    let heading4Components: ArrayList<MarkdownAIHeading4Component> = ArrayList<MarkdownAIHeading4Component>()
 
     let table1Components: ArrayList<TableAI1Data> = ArrayList<TableAI1Data>()
 

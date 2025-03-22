@@ -21,7 +21,7 @@ public class MarkdownAIComponent {
     var output: String
 
     /**
-     * 是否全量文档
+     * 是否全量加载 - true：全量加载，fasle：增量加载
      */
     var isFull: Bool
 
@@ -97,28 +97,29 @@ public class MarkdownAIComponent {
                         // 标题
                         ListItem() {
                             MarkdownAIHeading1Component(
-                                headingNodeView: item,
                                 markdownAIConfiguration: markdownAIConfiguration,
+                                nodeViews: item.children,
+                                level : (item.node as Heading)().getLevel(),
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 index: idx,
-                                markdownAICacheConfiguration: markdownAICacheConfiguration
+                                heading1Components: markdownAICacheConfiguration.heading1Components
                             )
                         }
                     } else if (item.node is Paragraph) {
                         // 段落
                         ListItem() {
                             MarkdownAIParagraph1Component(
-                                paragraphNodeView: item,
                                 markdownAIConfiguration: markdownAIConfiguration,
+                                nodeViews: item.children,
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 index: idx,
-                                markdownAICacheConfiguration: markdownAICacheConfiguration
+                                paragraph1Components: markdownAICacheConfiguration.paragraph1Components
                             )
                         }
                     } else if (item.node is BulletList) {
@@ -330,8 +331,8 @@ public class MarkdownAIComponent {
                             // 标题
                             let index: Int64 = nodeViewAIDataSource.totalCount() - 1
                             for (data in markdownAICacheConfiguration.heading1Components) {
-                                if (data.component.index == index) {
-                                    data.component.refreshData(nodeViews[nodeViews.size - 1])
+                                if (data.index == index) {
+                                    data.refreshData(nodeViews[nodeViews.size - 1].children)
                                 }
                             }
                         } else if ((nodeViews[nodeViews.size - 1].node is Paragraph &&
@@ -340,7 +341,7 @@ public class MarkdownAIComponent {
                             let index: Int64 = nodeViewAIDataSource.totalCount() - 1
                             for (data in markdownAICacheConfiguration.paragraph1Components) {
                                 if (data.index == index) {
-                                    data.component.refreshData(nodeViews[nodeViews.size - 1])
+                                    data.refreshData(nodeViews[nodeViews.size - 1].children)
                                 }
                             }
                         } else if ((nodeViews[nodeViews.size - 1].node is TableBlock &&
