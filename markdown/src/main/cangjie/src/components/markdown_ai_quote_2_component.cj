@@ -290,7 +290,7 @@ public class MarkdownAIQuote2Component {
                     for (data in markdownAICacheConfiguration.heading3Components) {
                         if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.indexItem ==
                             indexItem && data.indexItem2 == -1) {
-                            data.refreshData(nodeViews[nodeViews.size - 1].children)
+                            data.refreshData(nodeViews[nodeViews.size - 1].children, (nodeViews[nodeViews.size - 1].node as Heading)().getLevel())
                         }
                     }
                 } else if ((nodeViews[nodeViews.size - 1].node is Paragraph &&

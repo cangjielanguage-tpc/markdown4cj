@@ -71,7 +71,7 @@ public class MarkdownAIComponent {
         .usePlugin(LinkifyPlugin.create())
         .build()
 
-    let incBase: IncreaseParser1 = IncreaseParser1(markdownBase)
+    let incBase: IncreaseParser = IncreaseParser(markdownBase)
 
     /**
      * 锁
@@ -285,7 +285,8 @@ public class MarkdownAIComponent {
      */
     func stringToNodes(): Unit {
         try {
-            incBase.parse(output)
+            incBase.input = output
+            incBase.parse()
             let nodeViews = incBase.docView.children
             if (isFull) {
                 launch {
@@ -297,6 +298,14 @@ public class MarkdownAIComponent {
                     if (nodeViews.size == 0) {
                         return
                     }
+                    let nodeViewsSize= nodeViews.size
+                    let uiSzie = nodeViewAIDataSource.totalCount()
+                    if(nodeViews.size > nodeViewAIDataSource.totalCount()){
+                        for(i in 0..nodeViewAIDataSource.totalCount()-1){
+                            releaseNodeRelation(nodeViewAIDataSource.getData(i))
+                        }
+                    }
+
                     if (nodeViews.size > nodeViewAIDataSource.totalCount()) {
                         if (nodeViewAIDataSource.totalCount() != 0) {
                             nodeViewAIDataSource.replaceDate(nodeViewAIDataSource.totalCount() - 1,
@@ -332,7 +341,7 @@ public class MarkdownAIComponent {
                             let index: Int64 = nodeViewAIDataSource.totalCount() - 1
                             for (data in markdownAICacheConfiguration.heading1Components) {
                                 if (data.index == index) {
-                                    data.refreshData(nodeViews[nodeViews.size - 1].children)
+                                    data.refreshData(nodeViews[nodeViews.size - 1].children, (nodeViews[nodeViews.size - 1].node as Heading)().getLevel())
                                 }
                             }
                         } else if ((nodeViews[nodeViews.size - 1].node is Paragraph &&

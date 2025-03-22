@@ -26,7 +26,8 @@ class MarkdownAIHeading1Component {
     /**
      * 标题等级
      */
-    var level: Int64
+    @State
+    var level: Int64 = 1
 
     /**
      * 上边距 - 单位vp
@@ -82,7 +83,7 @@ class MarkdownAIHeading1Component {
 
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
-        refreshData(nodeViews)
+        refreshData(nodeViews, level)
         // 缓存当前控件
         heading1Components.append(this)
     }
@@ -285,7 +286,7 @@ class MarkdownAIHeading1Component {
     /**
      * 数据刷新
      */
-    public func refreshData(nodeViews: ArrayList<NodeView>): Unit {
+    public func refreshData(nodeViews: ArrayList<NodeView>, level: Int64): Unit {
         if (isFull) {
             nodeViewList.clear()
             nodeViewList.appendAll(nodeViews)
@@ -305,6 +306,7 @@ class MarkdownAIHeading1Component {
             } else if (nodeViews.size == nodeViewList.size) {
                 nodeViewList.remove(nodeViewList.size - 1)
                 nodeViewList.append(nodeViews[nodeViews.size - 1])
+                this.level = level
             } else {
                 nodeViewList.remove(nodeViews.size - 1)
                 nodeViewList.append(nodeViews[nodeViews.size - 1])

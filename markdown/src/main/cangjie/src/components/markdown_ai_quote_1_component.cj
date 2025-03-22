@@ -263,7 +263,7 @@ public class MarkdownAIQuote1Component {
                     let index2: Int64 = nodeViewAIDataSource.totalCount() - 1
                     for (data in markdownAICacheConfiguration.heading2Components) {
                         if (data.index == index && data.index2 == index2 && data.indexItem == -1) {
-                            data.refreshData(nodeViews[nodeViews.size - 1].children)
+                            data.refreshData(nodeViews[nodeViews.size - 1].children, (nodeViews[nodeViews.size - 1].node as Heading)().getLevel())
                         }
                     }
                 } else if ((nodeViews[nodeViews.size - 1].node is Paragraph &&

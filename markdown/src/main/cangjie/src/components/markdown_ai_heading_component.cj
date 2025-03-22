@@ -26,7 +26,8 @@ class MarkdownAIHeadingComponent {
     /**
      * 标题等级
      */
-    var level: Int64
+    @State
+    var level: Int64 = 1
 
     /**
      * 上边距 - 单位vp

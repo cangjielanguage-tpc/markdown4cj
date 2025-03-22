@@ -272,7 +272,7 @@ class MarkdownAIListItem3Component {
                         if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.index4 ==
                             index4 && data.indexItem == indexItem && data.indexItem2 == indexItem2 && data.indexItem3 ==
                             indexItem3) {
-                            data.refreshData(nodeViews[nodeViews.size - 1].children)
+                            data.refreshData(nodeViews[nodeViews.size - 1].children, (nodeViews[nodeViews.size - 1].node as Heading)().getLevel())
                         }
                     }
                 } else if ((nodeViews[nodeViews.size - 1].node is Paragraph &&

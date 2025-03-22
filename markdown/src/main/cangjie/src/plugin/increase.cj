@@ -59,8 +59,9 @@ public class IncreaseParser {
         parse()
     }
     /* 解析当前所有数据 */
-    func parse(): Unit {
+    public func parse(): Unit {
         doc = md.parse(input)
+//        releaseNodeRelation(docView)
         docView = md.render(doc)
         dealLast()
     }
