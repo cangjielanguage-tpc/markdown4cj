@@ -60,3 +60,19 @@ public class IncreaseParser1 {
         }
     }
 }
+
+/*
+ * 打断NodeView上下级关系
+ * 打断Node上下前后关系
+ * 清空NodeView
+ */
+public func releaseNodeRelation(view: NodeView): Unit {
+    for (v in view.children) {
+        releaseNodeRelation(v)
+    }
+    view.children.clear()
+    view.node.unlink()
+
+    // 清空NodeView
+    view.clear()
+}

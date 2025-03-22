@@ -29,7 +29,7 @@ public class NodeView <: ToString {
     /* ListItem中可包含多个Block，但只有第一个Block有列表符号 */
     public var listMark: Bool = false
     // 本身Node节点
-    public let node: Node
+    public var node: Node
     // Node节点开始结束标志 -1:无效 0:开始 1:结束
     var startend = -1
     // 是否为Node开始
@@ -191,6 +191,19 @@ public class NodeView <: ToString {
             ""
         }
         return "view:{${node}${startEndStr}${emphaStr}${strongStr}${linkStr}${bulletStr}${orderListStr}${blockQuoteStr}${propStr}${listStr}}"
+    }
+
+    public func clear(): Unit {
+        this.blockQuote = None
+        this.emphasis = None
+        this.strongEmphasis = None
+        this.link = None
+        this.bulletList = None
+        this.orderedList = None
+        this.collector = None
+        this.props = None
+        this.list = EMPTY_LIST
+        // this.node=unsafe{zeroValue<Node>()}
     }
 }
 
