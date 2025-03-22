@@ -126,8 +126,9 @@ public class MarkdownAIComponent {
                         // 无序列表（包含任务列表）
                         ListItem() {
                             MarkdownAIList1Component(
-                                nodeView: item,
                                 markdownAIConfiguration: markdownAIConfiguration,
+                                nodeViews: item.children,
+                                isOrdered: false,
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 componentWidth: componentWidth,
@@ -140,8 +141,9 @@ public class MarkdownAIComponent {
                         // 有序列表（包含TOC目录列表）
                         ListItem() {
                             MarkdownAIList1Component(
-                                nodeView: item,
                                 markdownAIConfiguration: markdownAIConfiguration,
+                                nodeViews: item.children,
+                                isOrdered: true,
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 componentWidth: componentWidth,
@@ -154,8 +156,8 @@ public class MarkdownAIComponent {
                         // 块引用
                         ListItem() {
                             MarkdownAIQuote1Component(
-                                nodeView: item,
                                 markdownAIConfiguration: markdownAIConfiguration,
+                                nodeViews: item.children,
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 componentWidth: componentWidth,
@@ -185,7 +187,7 @@ public class MarkdownAIComponent {
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     isFull: isFull,
                                     index: idx,
-                                    markdownAICacheConfiguration: markdownAICacheConfiguration
+                                    indentedCode1Components: markdownAICacheConfiguration.indentedCode1Components
                                 )
                             }
                         }
@@ -210,7 +212,7 @@ public class MarkdownAIComponent {
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     isFull: isFull,
                                     index: idx,
-                                    markdownAICacheConfiguration: markdownAICacheConfiguration
+                                    indentedCode1Components: markdownAICacheConfiguration.indentedCode1Components
                                 )
                             }
                         }
@@ -218,14 +220,16 @@ public class MarkdownAIComponent {
                         // 表格
                         ListItem() {
                             MarkdownAITableBlock1Component(
-                                nodeView: item,
                                 markdownAIConfiguration: markdownAIConfiguration,
+                                nodeViews: tableList(item.children),
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 index: idx,
-                                markdownAICacheConfiguration: markdownAICacheConfiguration
+                                table1Components: markdownAICacheConfiguration.table1Components,
+                                tableRow1Components: markdownAICacheConfiguration.tableRow1Components,
+                                tableCell1Components: markdownAICacheConfiguration.tableCell1Components
                             )
                         }
                     } else if (item.node is ThematicBreak) {
@@ -323,7 +327,7 @@ public class MarkdownAIComponent {
                             let index: Int64 = nodeViewAIDataSource.totalCount() - 1
                             for (data in markdownAICacheConfiguration.list1Components) {
                                 if (data.index == index) {
-                                    data.component.refreshData(nodeViews[nodeViews.size - 1])
+                                    data.refreshData(nodeViews[nodeViews.size - 1].children)
                                 }
                             }
                         } else if ((nodeViews[nodeViews.size - 1].node is BlockQuote &&
@@ -332,7 +336,7 @@ public class MarkdownAIComponent {
                             let index: Int64 = nodeViewAIDataSource.totalCount() - 1
                             for (data in markdownAICacheConfiguration.quote1Components) {
                                 if (data.index == index) {
-                                    data.component.refreshData(nodeViews[nodeViews.size - 1])
+                                    data.refreshData(nodeViews[nodeViews.size - 1].children)
                                 }
                             }
                         } else if ((nodeViews[nodeViews.size - 1].node is Heading &&
@@ -359,7 +363,7 @@ public class MarkdownAIComponent {
                             let index: Int64 = nodeViewAIDataSource.totalCount() - 1
                             for (data in markdownAICacheConfiguration.table1Components) {
                                 if (data.index == index) {
-                                    data.component.refreshData(nodeViews[nodeViews.size - 1])
+                                    data.refreshData(tableList(nodeViews[nodeViews.size - 1].children))
                                 }
                             }
                         } else if ((nodeViews[nodeViews.size - 1].node is FencedCodeBlock &&
@@ -370,9 +374,7 @@ public class MarkdownAIComponent {
                             let index: Int64 = nodeViewAIDataSource.totalCount() - 1
                             for (data in markdownAICacheConfiguration.indentedCode1Components) {
                                 if (data.index == index) {
-                                    data
-                                        .component
-                                        .refreshData(getCodeInfo(nodeViews[nodeViews.size - 1])[0],
+                                    data.refreshData(getCodeInfo(nodeViews[nodeViews.size - 1])[0],
                                             getCodeInfo(nodeViews[nodeViews.size - 1])[1])
                                 }
                             }

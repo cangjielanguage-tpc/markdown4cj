@@ -7,17 +7,6 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
-
-class TableAI1Data {
-    var component: MarkdownAITableBlock1Component
-    var index: Int64
-
-    init(component: MarkdownAITableBlock1Component, index: Int64) {
-        this.component = component
-        this.index = index
-    }
-}
-
 /**
  * Markdown表格自定义控件
  */
@@ -29,9 +18,14 @@ class MarkdownAITableBlock1Component {
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 表格tableNodeView
+     * 表格内容数据
      */
-    var nodeView: NodeView
+    var nodeViews: ArrayList<NodeView>
+
+    /**
+     * 长度
+     */
+    var size: Int64 = -1
 
     /**
      * 外边距 - 上面
@@ -58,31 +52,28 @@ class MarkdownAITableBlock1Component {
      */
     var index: Int64
 
-    var markdownAICacheConfiguration: MarkdownAICacheConfiguration
+    var table1Components: ArrayList<MarkdownAITableBlock1Component>
+
+    var tableRow1Components: ArrayList<MarkdownAITableBlockRow1Component>
+
+    var tableCell1Components: ArrayList<MarkdownAITableBlockCell1Component>
 
     /**
      * 懒加载数据源
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
-    /**
-     * 列表数据
-     */
-    let nodeViews: ArrayList<NodeView> = ArrayList<NodeView>()
-
     protected override func aboutToAppear(): Unit {
-        refreshData(nodeView)
-        markdownAICacheConfiguration.table1Components.append(TableAI1Data(this, index))
+        size = nodeViews.size
+        refreshData(nodeViews)
+        table1Components.append(this)
     }
 
     protected override func aboutToDisappear(): Unit {
-        markdownAICacheConfiguration
-            .table1Components
+        table1Components
             .removeIf(
                 {
-                    predicate => if (predicate.index == index && predicate.component.nodeView.children.size == nodeView
-                        .children
-                        .size) {
+                    predicate => if (predicate.index == index && predicate.size == size) {
                         true
                     } else {
                         false
@@ -98,13 +89,14 @@ class MarkdownAITableBlock1Component {
                     tableNodeView: NodeView, indexRow: Int64 => ListItem() {
                         // 行信息
                         MarkdownAITableBlockRow1Component(
-                            nodeView: tableNodeView,
+                            markdownAIConfiguration: markdownAIConfiguration,
+                            nodeViews: tableNodeView.children,
+                            isFull: isFull,
+                            componentWidth: componentWidth,
                             indexRow: indexRow,
                             index: index,
-                            isFull: isFull,
-                            markdownAIConfiguration: markdownAIConfiguration,
-                            componentWidth: componentWidth,
-                            markdownAICacheConfiguration: markdownAICacheConfiguration
+                            tableRow1Components: tableRow1Components,
+                            tableCell1Components: tableCell1Components
                         )
                     }
                 }
@@ -122,16 +114,16 @@ class MarkdownAITableBlock1Component {
         .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp, color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
     }
 
-    public func refreshData(nodeView: NodeView): Unit {
-        let list = nodeView.children
-        nodeViews.clear()
-        for (nodeView in list) {
-            if (nodeView.node is TableBody || nodeView.node is TableHead) {
-                nodeViews.appendAll(nodeView.children)
-            } else if (nodeView.node is TableRow) {
-                nodeViews.append(nodeView)
-            }
-        }
+    public func refreshData(nodeViews: ArrayList<NodeView>): Unit {
+//        let list = nodeView.children
+//        nodeViews.clear()
+//        for (nodeView in list) {
+//            if (nodeView.node is TableBody || nodeView.node is TableHead) {
+//                nodeViews.appendAll(nodeView.children)
+//            } else if (nodeView.node is TableRow) {
+//                nodeViews.append(nodeView)
+//            }
+//        }
         if (isFull) {
             nodeViewAIDataSource.clear()
             nodeViewAIDataSource.addDatas(nodeViews)
@@ -149,9 +141,9 @@ class MarkdownAITableBlock1Component {
                 }
             } else if (nodeViews.size == nodeViewAIDataSource.totalCount()) {
                 let indexRow: Int64 = nodeViewAIDataSource.totalCount() - 1
-                for (data in markdownAICacheConfiguration.tableRow1Components) {
+                for (data in tableRow1Components) {
                     if (data.index == index && data.indexRow == indexRow) {
-                        data.component.refreshData(nodeViews[nodeViews.size - 1])
+                        data.refreshData(nodeViews[nodeViews.size - 1].children)
                     }
                 }
             } else {

@@ -622,6 +622,41 @@ func renderTableCellColor(tableCell: TableCell, markdownAITheme: MarkdownAITheme
 }
 
 /**
+ * 渲染 tableCell 的颜色
+ *
+ * @param tableCell TableCell
+ * @param tableTheme 表格样式
+ * @param rowCount 第几行
+ * @return 一行的背景颜色
+ */
+func renderTableCellColor(isHeader: Bool, markdownAITheme: MarkdownAITheme, rowCount: Int64): Color {
+    if (isHeader) {
+        return markdownAITheme.tableHeaderRowBackgroundColor
+    }
+    if (rowCount % 2 == 0) {
+        return markdownAITheme.tableOddRowBackgroundColor
+    }
+    return markdownAITheme.tableEvenRowBackgroundColor
+}
+
+/**
+ * 获取 tableCell 的对其方式
+ *
+ * @param tableCell TableCell
+ * @return 对其方式
+ */
+func renderTableCellAlign(alignment: ?TableAlignment): TextAlign {
+    if (let Some(v) <- alignment) {
+        match (v) {
+            case LEFT => return TextAlign.Start
+            case CENTER => return TextAlign.Center
+            case RIGHT => return TextAlign.End
+        }
+    }
+    return TextAlign.Start
+}
+
+/**
  * 获取 tableCell 的对其方式
  *
  * @param tableCell TableCell
@@ -745,6 +780,18 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownAIConfiguration: Markdow
         } catch (e: Exception) {}
     }
     return picStyleObj
+}
+
+func tableList(nodeViews: ArrayList<NodeView>):ArrayList<NodeView>{
+    let tableNodeViews = ArrayList<NodeView>()
+    for (nodeView in nodeViews) {
+        if (nodeView.node is TableBody || nodeView.node is TableHead) {
+            tableNodeViews.appendAll(nodeView.children)
+        } else if (nodeView.node is TableRow) {
+            tableNodeViews.append(nodeView)
+        }
+    }
+    return tableNodeViews
 }
 
 func length2Float64(length: ?Length, componentWidth: Float64): ?Float64 {

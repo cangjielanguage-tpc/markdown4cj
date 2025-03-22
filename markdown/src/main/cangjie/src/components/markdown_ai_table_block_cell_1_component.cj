@@ -8,20 +8,6 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
-class TableCellAI1Data {
-    var component: MarkdownAITableBlockCell1Component
-    var index: Int64
-    var indexRow: Int64
-    var indexCell: Int64
-
-    init(component: MarkdownAITableBlockCell1Component, index: Int64, indexRow: Int64, indexCell: Int64) {
-        this.component = component
-        this.index = index
-        this.indexRow = indexRow
-        this.indexCell = indexCell
-    }
-}
-
 /**
  * Markdown表格自定义控件
  */
@@ -33,19 +19,31 @@ class MarkdownAITableBlockCell1Component {
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 表格tableNodeView
+     * 表格内容数据
      */
-    var nodeView: NodeView
+    var nodeViews: ArrayList<NodeView>
 
     /**
-     * 控件宽度 - 单位px
+     * 长度
      */
-    var componentWidth: Float64
+    var size: Int64 = -1
 
     /**
      * 是否全量加载
      */
     var isFull: Bool
+
+    /**
+     *
+     */
+    var isHeader: Bool
+
+    var alignment: ?TableAlignment
+
+    /**
+     * 控件宽度 - 单位px
+     */
+    var componentWidth: Float64
 
     /**
      * 标识符，第几条表格
@@ -56,7 +54,8 @@ class MarkdownAITableBlockCell1Component {
 
     var indexCell: Int64
 
-    var markdownAICacheConfiguration: MarkdownAICacheConfiguration
+
+    var tableCell1Components: ArrayList<MarkdownAITableBlockCell1Component>
 
     /**
      * 异步加载的图片数据
@@ -81,19 +80,17 @@ class MarkdownAITableBlockCell1Component {
     var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
-        refreshData(nodeView)
-        markdownAICacheConfiguration.tableCell1Components.append(TableCellAI1Data(this, index, indexRow, indexCell))
+        size = nodeViews.size
+        refreshData(nodeViews)
+        tableCell1Components.append(this)
     }
 
     protected override func aboutToDisappear(): Unit {
-        markdownAICacheConfiguration
-            .tableCell1Components
+        tableCell1Components
             .removeIf(
                 {
                     predicate => if (predicate.index == index && predicate.indexRow == indexRow &&
-                        predicate.indexCell == indexCell && predicate.component.nodeView.children.size == nodeView
-                        .children
-                        .size) {
+                        predicate.indexCell == indexCell && predicate.size == size) {
                         true
                     } else {
                         false
@@ -110,14 +107,14 @@ class MarkdownAITableBlockCell1Component {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        if ((nodeView.node as TableCell)().isHeader()) {
+                        if (isHeader) {
                             tableComponentText(item, true, markdownAIConfiguration)
                         } else {
                             tableComponentText(item, false, markdownAIConfiguration)
                         }
                     } else if (item.node is Code) {
                         // 内联代码
-                        if ((nodeView.node as TableCell)().isHeader()) {
+                        if (isHeader) {
                             tableComponentCode(item, true, markdownAIConfiguration)
                         } else {
                             tableComponentCode(item, false, markdownAIConfiguration)
@@ -143,11 +140,11 @@ class MarkdownAITableBlockCell1Component {
         // 设置行高
         .lineHeight(22.0)
         // 设置多行文本的文本对齐方式
-        .textAlign(renderTableCellAlign((nodeView.node as TableCell)()))
+        .textAlign(renderTableCellAlign(alignment))
         // 设置内边距属性
         .padding(markdownAIConfiguration.markdownAITheme.tableCellPadding)
         // 设置组件的背景色
-        .backgroundColor(renderTableCellColor((nodeView.node as TableCell)(), markdownAIConfiguration.markdownAITheme, indexRow))
+        .backgroundColor(renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, indexRow))
         // 统一边框样式设置接口
         .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp, color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
     }
@@ -182,8 +179,8 @@ class MarkdownAITableBlockCell1Component {
         )
     }
 
-    public func refreshData(nodeView: NodeView): Unit {
-        let nodeViews = nodeView.children
+    public func refreshData(nodeViews: ArrayList<NodeView>): Unit {
+//        let nodeViews = nodeView.children
         if (isFull) {
             nodeViewList.clear()
             nodeViewList.appendAll(nodeViews)

@@ -8,16 +8,6 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
-class ListAI1Data {
-    var component: MarkdownAIList1Component
-    var index: Int64
-
-    init(component: MarkdownAIList1Component, index: Int64) {
-        this.component = component
-        this.index = index
-    }
-}
-
 /**
  * Markdown无序列表(任务列表)、有序列表(TOC列表)、块引用自定义控件
  */
@@ -29,17 +19,27 @@ class MarkdownAIList1Component {
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 列表listNodeView
+     * 列表内容数据
      */
-    var nodeView: NodeView
+    var nodeViews: ArrayList<NodeView>
 
     /**
-     * 外边距 - 上面
+     * 长度
+     */
+    var size: Int64 = -1
+
+    /**
+     * 是无序列表还是有序列表 - true：无序列表，fasle：有序列表
+     */
+    var isOrdered: Bool
+
+    /**
+     * 上边距 - 单位vp
      */
     var marginTop: Float64
 
     /**
-     * 外边距 - 下面
+     * 下边距 - 单位vp
      */
     var marginBottom: Float64
 
@@ -49,12 +49,12 @@ class MarkdownAIList1Component {
     var componentWidth: Float64
 
     /**
-     * 是否全量加载
+     * 是否全量加载 - true：全量加载，fasle：增量加载
      */
     var isFull: Bool
 
     /**
-     * 标识符，第几条块引用
+     * 第一层的定位标识
      */
     var index: Int64
 
@@ -69,8 +69,9 @@ class MarkdownAIList1Component {
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
     protected override func aboutToAppear(): Unit {
-        refreshData(nodeView)
-        markdownAICacheConfiguration.list1Components.append(ListAI1Data(this, index))
+        size = nodeViews.size
+        refreshData(nodeViews)
+        markdownAICacheConfiguration.list1Components.append(this)
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -78,9 +79,7 @@ class MarkdownAIList1Component {
             .list1Components
             .removeIf(
                 {
-                    predicate => if (predicate.index == index && predicate.component.nodeView.children.size == nodeView
-                        .children
-                        .size) {
+                    predicate => if (predicate.index == index && predicate.nodeViews.size == nodeViews.size) {
                         true
                     } else {
                         false
@@ -89,14 +88,12 @@ class MarkdownAIList1Component {
     }
 
     func build() {
-        if (nodeView.node is BulletList) {
-            // 无序列表
-            bulletListComponent()
-        } else if (nodeView.node is OrderedList) {
+        if (isOrdered) {
             // 有序列表
             orderedListComponent()
-        } else {
-            // 其他节点
+        } else{
+            // 无序列表
+            bulletListComponent()
         }
     }
 
@@ -116,8 +113,8 @@ class MarkdownAIList1Component {
                                 listPrefixTextINCComponent(item, false, markdownAIConfiguration)
                             }
                             MarkdownAIListItem1Component(
-                                nodeView: item,
                                 markdownAIConfiguration: markdownAIConfiguration,
+                                nodeViews: item.children,
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 componentWidth: componentWidth,
@@ -132,8 +129,6 @@ class MarkdownAIList1Component {
                         // 设置子组件在水平方向上的对齐格式。
                         .justifyContent(FlexAlign.Start)
                     }
-                    // 对子组件进行重新布局
-                    .layoutWeight(1)
                 }
             )
         }
@@ -160,8 +155,8 @@ class MarkdownAIList1Component {
                                 listPrefixTextINCComponent(item, true, markdownAIConfiguration)
                             }
                             MarkdownAIListItem1Component(
-                                nodeView: item,
                                 markdownAIConfiguration: markdownAIConfiguration,
+                                nodeViews: item.children,
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 componentWidth: componentWidth,
@@ -191,8 +186,7 @@ class MarkdownAIList1Component {
         .alignListItem(ListItemAlign.Start)
     }
 
-    public func refreshData(nodeView: NodeView): Unit {
-        let nodeViews = nodeView.children
+    public func refreshData(nodeViews: ArrayList<NodeView>): Unit {
         if (isFull) {
             nodeViewAIDataSource.clear()
             nodeViewAIDataSource.addDatas(nodeViews)
@@ -212,7 +206,7 @@ class MarkdownAIList1Component {
                 let indexItem: Int64 = nodeViewAIDataSource.totalCount() - 1
                 for (data in markdownAICacheConfiguration.listItem1Components) {
                     if (data.index == index && data.indexItem == indexItem) {
-                        data.component.refreshData(nodeViews[nodeViews.size - 1])
+                        data.refreshData(nodeViews[nodeViews.size - 1].children)
                     }
                 }
             } else {

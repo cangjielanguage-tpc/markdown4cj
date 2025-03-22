@@ -24,6 +24,11 @@ class MarkdownAIParagraph3Component {
     var nodeViews: ArrayList<NodeView>
 
     /**
+     * 长度
+     */
+    var size: Int64 = -1
+
+    /**
      * 上边距 - 单位vp
      */
     var marginTop: Float64
@@ -96,6 +101,7 @@ class MarkdownAIParagraph3Component {
     var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
+        size = nodeViews.size
         refreshData(nodeViews)
         paragraph3Components.append(this)
     }
@@ -106,7 +112,7 @@ class MarkdownAIParagraph3Component {
                 {
                     predicate => if (predicate.index == index && predicate.index2 == index2
                         && predicate.index3 == index3 && predicate.indexItem == indexItem
-                        && predicate.indexItem2 == indexItem2 && predicate.nodeViews.size == nodeViews.size) {
+                        && predicate.indexItem2 == indexItem2 && predicate.size == size) {
                         true
                     } else {
                         false

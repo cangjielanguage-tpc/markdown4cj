@@ -8,16 +8,6 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
-class IndentedCodeAI1Data {
-    var component: MarkdownAIIndentedCodeBlock1Component
-    var index: Int64
-
-    init(component: MarkdownAIIndentedCodeBlock1Component, index: Int64) {
-        this.component = component
-        this.index = index
-    }
-}
-
 /**
  * Markdown缩进代码块自定义控件
  */
@@ -41,40 +31,39 @@ class MarkdownAIIndentedCodeBlock1Component {
     var info: Option<String> = Option<String>.None
 
     /**
-     * 外边距 - 上面
+     * 上边距 - 单位vp
      */
     var marginTop: Float64
 
     /**
-     * 外边距 - 下面
+     * 下边距 - 单位vp
      */
     var marginBottom: Float64
 
     /**
-     * 是否全量加载
+     * 是否全量加载 - true：全量加载，fasle：增量加载
      */
     var isFull: Bool
 
     /**
-     * 标识符，第几条块引用
+     * 第一层的定位标识
      */
     var index: Int64
 
     /**
-     * 缓存的数据
+     * 缓存的第一层代码块控件列表
      */
-    var markdownAICacheConfiguration: MarkdownAICacheConfiguration
+    var indentedCode1Components: ArrayList<MarkdownAIIndentedCodeBlock1Component>
 
     protected override func aboutToAppear(): Unit {
         refreshData(codeText, info)
-        markdownAICacheConfiguration.indentedCode1Components.append(IndentedCodeAI1Data(this, index))
+        indentedCode1Components.append(this)
     }
 
     protected override func aboutToDisappear(): Unit {
-        markdownAICacheConfiguration
-            .indentedCode1Components
+        indentedCode1Components
             .removeIf({
-                predicate => if (predicate.index == index) {
+                predicate => if (predicate.index == index && predicate.codeText == codeText) {
                     true
                 } else {
                     false

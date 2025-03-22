@@ -4,23 +4,23 @@
 package markdown.components
 
 public class MarkdownAICacheConfiguration {
-    let list1Components: ArrayList<ListAI1Data> = ArrayList<ListAI1Data>()
+    let list1Components: ArrayList<MarkdownAIList1Component> = ArrayList<MarkdownAIList1Component>()
 
-    let list2Components: ArrayList<ListAI2Data> = ArrayList<ListAI2Data>()
+    let list2Components: ArrayList<MarkdownAIList2Component> = ArrayList<MarkdownAIList2Component>()
 
-    let list3Components: ArrayList<ListAI3Data> = ArrayList<ListAI3Data>()
+    let list3Components: ArrayList<MarkdownAIList3Component> = ArrayList<MarkdownAIList3Component>()
 
-    let listItem1Components: ArrayList<ListItemAI1Data> = ArrayList<ListItemAI1Data>()
+    let listItem1Components: ArrayList<MarkdownAIListItem1Component> = ArrayList<MarkdownAIListItem1Component>()
 
-    let listItem2Components: ArrayList<ListItemAI2Data> = ArrayList<ListItemAI2Data>()
+    let listItem2Components: ArrayList<MarkdownAIListItem2Component> = ArrayList<MarkdownAIListItem2Component>()
 
-    let listItem3Components: ArrayList<ListItemAI3Data> = ArrayList<ListItemAI3Data>()
+    let listItem3Components: ArrayList<MarkdownAIListItem3Component> = ArrayList<MarkdownAIListItem3Component>()
 
-    let quote1Components: ArrayList<QuoteAI1Data> = ArrayList<QuoteAI1Data>()
+    let quote1Components: ArrayList<MarkdownAIQuote1Component> = ArrayList<MarkdownAIQuote1Component>()
 
-    let quote2Components: ArrayList<QuoteAI2Data> = ArrayList<QuoteAI2Data>()
+    let quote2Components: ArrayList<MarkdownAIQuote2Component> = ArrayList<MarkdownAIQuote2Component>()
 
-    let quote3Components: ArrayList<QuoteAI3Data> = ArrayList<QuoteAI3Data>()
+    let quote3Components: ArrayList<MarkdownAIQuote3Component> = ArrayList<MarkdownAIQuote3Component>()
 
     let paragraph1Components: ArrayList<MarkdownAIParagraph1Component> = ArrayList<MarkdownAIParagraph1Component>()
 
@@ -38,11 +38,11 @@ public class MarkdownAICacheConfiguration {
 
     let heading4Components: ArrayList<MarkdownAIHeading4Component> = ArrayList<MarkdownAIHeading4Component>()
 
-    let table1Components: ArrayList<TableAI1Data> = ArrayList<TableAI1Data>()
+    let table1Components: ArrayList<MarkdownAITableBlock1Component> = ArrayList<MarkdownAITableBlock1Component>()
 
-    let tableRow1Components: ArrayList<TableRowAI1Data> = ArrayList<TableRowAI1Data>()
+    let tableRow1Components: ArrayList<MarkdownAITableBlockRow1Component> = ArrayList<MarkdownAITableBlockRow1Component>()
 
-    let tableCell1Components: ArrayList<TableCellAI1Data> = ArrayList<TableCellAI1Data>()
+    let tableCell1Components: ArrayList<MarkdownAITableBlockCell1Component> = ArrayList<MarkdownAITableBlockCell1Component>()
 
-    let indentedCode1Components: ArrayList<IndentedCodeAI1Data> = ArrayList<IndentedCodeAI1Data>()
+    let indentedCode1Components: ArrayList<MarkdownAIIndentedCodeBlock1Component> = ArrayList<MarkdownAIIndentedCodeBlock1Component>()
 }

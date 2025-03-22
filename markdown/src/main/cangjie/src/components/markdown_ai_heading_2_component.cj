@@ -30,6 +30,11 @@ class MarkdownAIHeading2Component {
     var level: Int64 = 1
 
     /**
+     * 长度
+     */
+    var size: Int64 = -1
+
+    /**
      * 上边距 - 单位vp
      */
     var marginTop: Float64
@@ -92,6 +97,7 @@ class MarkdownAIHeading2Component {
     var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
+        size = nodeViews.size
         // 初始化刷新数据
         refreshData(nodeViews, level)
         // 缓存当前控件
@@ -103,7 +109,7 @@ class MarkdownAIHeading2Component {
         heading2Components.removeIf(
             {
                 predicate => if (predicate.index == index && predicate.index2 == index2
-                    && predicate.indexItem == indexItem && predicate.nodeViews.size == nodeViews.size) {
+                    && predicate.indexItem == indexItem && predicate.size == size) {
                     true
                 } else {
                     false
@@ -298,6 +304,7 @@ class MarkdownAIHeading2Component {
      * 数据刷新
      */
     public func refreshData(nodeViews: ArrayList<NodeView>, level: Int64): Unit {
+        this.level = level
         if (isFull) {
             nodeViewList.clear()
             nodeViewList.appendAll(nodeViews)

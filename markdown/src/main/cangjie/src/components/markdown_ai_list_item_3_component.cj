@@ -8,27 +8,6 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
-class ListItemAI3Data {
-    var component: MarkdownAIListItem3Component
-    var index: Int64
-    var index2: Int64
-    var index3: Int64
-    var indexItem: Int64
-    var indexItem2: Int64
-    var indexItem3: Int64
-
-    init(component: MarkdownAIListItem3Component, index: Int64, index2: Int64, index3: Int64, indexItem: Int64,
-        indexItem2: Int64, indexItem3: Int64) {
-        this.component = component
-        this.index = index
-        this.index2 = index2
-        this.index3 = index3
-        this.indexItem = indexItem
-        this.indexItem2 = indexItem2
-        this.indexItem3 = indexItem3
-    }
-}
-
 /**
  * Markdown无序列表(任务列表)、有序列表(TOC列表)、块引用自定义控件
  */
@@ -40,9 +19,14 @@ class MarkdownAIListItem3Component {
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 列表listNodeView
+     * 列表内容数据
      */
-    var nodeView: NodeView
+    var nodeViews: ArrayList<NodeView>
+
+    /**
+     * 长度
+     */
+    var size: Int64 = -1
 
     /**
      * 外边距 - 上面
@@ -105,10 +89,9 @@ class MarkdownAIListItem3Component {
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
     protected override func aboutToAppear(): Unit {
-        refreshData(nodeView)
-        markdownAICacheConfiguration
-            .listItem3Components
-            .append(ListItemAI3Data(this, index, index2, index3, indexItem, indexItem2, indexItem3))
+        size = nodeViews.size
+        refreshData(nodeViews)
+        markdownAICacheConfiguration.listItem3Components.append(this)
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -119,7 +102,7 @@ class MarkdownAIListItem3Component {
                     predicate => if (predicate.index == index && predicate.index2 == index2
                         && predicate.index3 == index3 && predicate.indexItem == indexItem
                         && predicate.indexItem2 == indexItem2 && predicate.indexItem3 == indexItem3 &&
-                        predicate.component.nodeView.children.size == nodeView.children.size) {
+                        predicate.size == size) {
                         true
                     } else {
                         false
@@ -246,8 +229,7 @@ class MarkdownAIListItem3Component {
         .layoutWeight(1)
     }
 
-    public func refreshData(nodeView: NodeView): Unit {
-        let nodeViews = nodeView.children
+    public func refreshData(nodeViews: ArrayList<NodeView>): Unit {
         if (isFull) {
             nodeViewAIDataSource.clear()
             nodeViewAIDataSource.addDatas(nodeViews)
