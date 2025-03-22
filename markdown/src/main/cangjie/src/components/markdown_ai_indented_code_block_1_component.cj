@@ -53,19 +53,16 @@ class MarkdownAIIndentedCodeBlock1Component {
     /**
      * 是否全量加载
      */
-    @Prop
     var isFull: Bool
 
     /**
      * 标识符，第几条块引用
      */
-    @Prop
     var index: Int64
 
     /**
      * 缓存的数据
      */
-    @Prop
     var markdownAICacheConfiguration: MarkdownAICacheConfiguration
 
     protected override func aboutToAppear(): Unit {

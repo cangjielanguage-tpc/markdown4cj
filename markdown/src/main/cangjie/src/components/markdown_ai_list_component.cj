@@ -38,13 +38,11 @@ public class MarkdownAIListComponent {
      */
     var componentWidth: Float64
 
-    @Prop
     var isFull: Bool
 
     /**
      * 懒加载数据源
      */
-    @State
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
     var isFrist: Bool = true

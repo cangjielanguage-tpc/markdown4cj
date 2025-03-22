@@ -52,7 +52,6 @@ class MarkdownAIHeadingComponent {
     /**
      * 线程列表
      */
-    @State
     var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
 
     protected override func aboutToDisappear(): Unit {

@@ -55,31 +55,26 @@ class MarkdownAIHeading2Component {
     /**
      * 是否全量加载
      */
-    @Prop
     var isFull: Bool
 
     /**
      * 标识符，第几条块引用
      */
-    @Prop
     var index: Int64
 
     /**
      * 标识符，第几条块引用
      */
-    @Prop
     var index2: Int64
 
     /**
      * 标识符，第几条块引用
      */
-    @Prop
     var indexItem: Int64
 
     /**
      * 缓存的数据
      */
-    @Prop
     var markdownAICacheConfiguration: MarkdownAICacheConfiguration
 
     /**
@@ -96,7 +91,6 @@ class MarkdownAIHeading2Component {
     /**
      * 线程列表
      */
-    @State
     var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
 
     /**

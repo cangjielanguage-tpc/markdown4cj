@@ -26,49 +26,41 @@ class MarkdownAIParagraph1Component {
     /**
      * markdown配置
      */
-    @Prop
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
      * 段落NodeView
      */
-    @Prop
     var paragraphNodeView: NodeView
 
     /**
      * 外边距 - 上面
      */
-    @Prop
     var marginTop: Float64
 
     /**
      * 外边距 - 下面
      */
-    @Prop
     var marginBottom: Float64
 
     /**
      * 控件宽度 - 单位px
      */
-    @Prop
     var componentWidth: Float64
 
     /**
      * 是否全量加载
      */
-    @Prop
     var isFull: Bool
 
     /**
      * 标识符，第几条块引用
      */
-    @Prop
     var index: Int64
 
     /**
      * 缓存的数据
      */
-    @Prop
     var markdownAICacheConfiguration: MarkdownAICacheConfiguration
 
     /**
@@ -85,7 +77,6 @@ class MarkdownAIParagraph1Component {
     /**
      * 线程列表
      */
-    @State
     var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
 
     /**
@@ -148,17 +139,46 @@ class MarkdownAIParagraph1Component {
     }
 
     func build() {
-        Column() {
-            paragraphOtherComponent()
+        Text() {
+            ForEach(
+                nodeViewList,
+                itemGeneratorFunc: {
+                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
+                        // 文本
+                        paragraphTextComponent(item, markdownAIConfiguration)
+                    } else if (item.node is Code) {
+                        // 内联代码
+                        paragraphCodeComponent(item, markdownAIConfiguration)
+                    } else if (item.node is HardLineBreak) {
+                        // 硬换行
+                        Span("\n")
+                    } else if (item.node is SoftLineBreak) {
+                        // 软换行
+                        Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
+                    } else if (item.node is CommonmarkImage) {
+                        // 图片节点
+                        paragraphImageSpanComponent((item.node as CommonmarkImage)(), idx)
+                    } else if (item.node is LatexMathNode) {
+                        // 数学公式节点
+                        paragraphLatexMathComponent(latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx))
+                    } else if (item.node is ImageHtmlNode) {
+                        // HTML图片
+                        paragraphHtmlImageSpanComponent((item.node as ImageHtmlNode)(), idx)
+                    } else {
+                        // TODO 其他节点
+                        Span("")
+                    }
+                }
+            )
         }
-        // 设置元素内容的对齐方式
-        .align(Alignment.Start)
-        // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
+        // 设置多行文本的文本对齐方式
+        .textAlign(TextAlign.Start)
         // 设置外边距属性
         .margin(top: marginTop, bottom: marginBottom)
         // 设置组件自身的宽度
         .width(100.percent)
+        // 设置行高
+        .lineHeight(22.0)
     }
 
     /**
@@ -308,51 +328,6 @@ class MarkdownAIParagraph1Component {
             picStyleObj.height = Float64.parse(v).px
         }
         return picStyleObj
-    }
-
-    /**
-     * 段落文字内容
-     */
-    @Builder
-    func paragraphOtherComponent() {
-        Text() {
-            ForEach(
-                nodeViewList,
-                itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                        // 文本
-                        paragraphTextComponent(item, markdownAIConfiguration)
-                    } else if (item.node is Code) {
-                        // 内联代码
-                        paragraphCodeComponent(item, markdownAIConfiguration)
-                    } else if (item.node is HardLineBreak) {
-                        // 硬换行
-                        Span("\n")
-                    } else if (item.node is SoftLineBreak) {
-                        // 软换行
-                        Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
-                    } else if (item.node is CommonmarkImage) {
-                        // 图片节点
-                        paragraphImageSpanComponent((item.node as CommonmarkImage)(), idx)
-                    } else if (item.node is LatexMathNode) {
-                        // 数学公式节点
-                        paragraphLatexMathComponent(latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx))
-                    } else if (item.node is ImageHtmlNode) {
-                        // HTML图片
-                        paragraphHtmlImageSpanComponent((item.node as ImageHtmlNode)(), idx)
-                    } else {
-                        // TODO 其他节点
-                        Span("")
-                    }
-                }
-            )
-        }
-        // 设置多行文本的文本对齐方式
-        .textAlign(TextAlign.Start)
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置行高
-        .lineHeight(22.0)
     }
 
     /**

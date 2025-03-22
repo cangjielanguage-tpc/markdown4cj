@@ -23,7 +23,6 @@ public class MarkdownAIComponent {
     /**
      * 是否全量文档
      */
-    @Prop
     var isFull: Bool
 
     /**
@@ -49,7 +48,6 @@ public class MarkdownAIComponent {
     /**
      * 懒加载数据源
      */
-    @State
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
     /**
@@ -57,7 +55,7 @@ public class MarkdownAIComponent {
      */
     let markdownAICacheConfiguration: MarkdownAICacheConfiguration = MarkdownAICacheConfiguration()
 
-    var markdownBase: Markdown = Markdown
+    let markdownBase: Markdown = Markdown
         .builder()
         // HTML插件
         .usePlugin(HtmlPlugin.create())
@@ -73,7 +71,7 @@ public class MarkdownAIComponent {
         .usePlugin(LinkifyPlugin.create())
         .build()
 
-    var incBase: IncreaseParser1 = IncreaseParser1(markdownBase)
+    let incBase: IncreaseParser1 = IncreaseParser1(markdownBase)
 
     /**
      * 锁
@@ -332,7 +330,7 @@ public class MarkdownAIComponent {
                             // 标题
                             let index: Int64 = nodeViewAIDataSource.totalCount() - 1
                             for (data in markdownAICacheConfiguration.heading1Components) {
-                                if (data.index == index) {
+                                if (data.component.index == index) {
                                     data.component.refreshData(nodeViews[nodeViews.size - 1])
                                 }
                             }

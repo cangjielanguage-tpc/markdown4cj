@@ -41,13 +41,11 @@ class MarkdownTableBlockINCComponent {
     /**
      * 是否全量加载
      */
-    @Prop
     var isFull: Bool
 
     /**
      * 懒加载数据源
      */
-    @State
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
     /**

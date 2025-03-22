@@ -59,7 +59,6 @@ class MarkdownAILatexMathBlockComponent {
     /**
      * 线程
      */
-    @State
     var fut: ?Future<Unit> = Option<Future<Unit>>.None
 
     /**

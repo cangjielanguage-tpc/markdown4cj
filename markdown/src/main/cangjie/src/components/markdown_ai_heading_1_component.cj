@@ -10,11 +10,9 @@ import ohos.state_macro_manage.*
 
 class HeadingAI1Data {
     var component: MarkdownAIHeading1Component
-    var index: Int64
 
-    init(component: MarkdownAIHeading1Component, index: Int64) {
+    init(component: MarkdownAIHeading1Component) {
         this.component = component
-        this.index = index
     }
 }
 
@@ -51,19 +49,16 @@ class MarkdownAIHeading1Component {
     /**
      * 是否全量加载
      */
-    @Prop
     var isFull: Bool
 
     /**
      * 标识符，第几条块引用
      */
-    @Prop
     var index: Int64
 
     /**
      * 缓存的数据
      */
-    @Prop
     var markdownAICacheConfiguration: MarkdownAICacheConfiguration
 
     /**
@@ -80,7 +75,6 @@ class MarkdownAIHeading1Component {
     /**
      * 线程列表
      */
-    @State
     var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
 
     /**
@@ -91,7 +85,7 @@ class MarkdownAIHeading1Component {
 
     protected override func aboutToAppear(): Unit {
         refreshData(headingNodeView)
-        markdownAICacheConfiguration.heading1Components.append(HeadingAI1Data(this, index))
+        markdownAICacheConfiguration.heading1Components.append(HeadingAI1Data(this))
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -99,7 +93,7 @@ class MarkdownAIHeading1Component {
             .heading1Components
             .removeIf(
                 {
-                    predicate => if (predicate.index == index && predicate.component.headingNodeView.children.size == headingNodeView
+                    predicate => if (predicate.component.index == index && predicate.component.headingNodeView.children.size == headingNodeView
                         .children
                         .size) {
                         true

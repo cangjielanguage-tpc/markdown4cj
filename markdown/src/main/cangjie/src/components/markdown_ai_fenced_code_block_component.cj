@@ -21,7 +21,6 @@ class MarkdownAIFencedCodeBlockComponent {
     /**
      * 高亮代码列表
      */
-    @State
     var arrayList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
 
     /**

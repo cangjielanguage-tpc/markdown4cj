@@ -28,37 +28,30 @@ class MarkdownAITableBlockRow1Component {
     /**
      * markdown配置
      */
-    @Prop
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
      * 表格tableNodeView
      */
-    @Prop
     var nodeView: NodeView
 
     /**
      * 控件宽度 - 单位px
      */
-    @Prop
     var componentWidth: Float64
 
     /**
      * 是否全量加载
      */
-    @Prop
     var isFull: Bool
 
     /**
      * 标识符，第几条表格
      */
-    @Prop
     var index: Int64
 
-    @Prop
     var indexRow: Int64
 
-    @Prop
     var markdownAICacheConfiguration: MarkdownAICacheConfiguration
 
     /**

@@ -16,22 +16,18 @@ class MarkdownAITableBlockCellComponent {
     /**
      * markdown配置
      */
-    @Prop
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
      * 表格tableNodeView
      */
-    @Prop
     var nodeView: NodeView
 
     /**
      * 控件宽度 - 单位px
      */
-    @Prop
     var componentWidth: Float64
 
-    @Prop
     var idRow: Int64
 
     /**
