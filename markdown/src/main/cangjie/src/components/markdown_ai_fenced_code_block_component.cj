@@ -21,7 +21,8 @@ class MarkdownAIFencedCodeBlockComponent {
     /**
      * 高亮代码列表
      */
-    var arrayList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
+    @State
+    var arrayList: ObservedArrayList<PrismNodesParseRes> = ObservedArrayList<PrismNodesParseRes>()
 
     /**
      * 代码内容
@@ -229,7 +230,7 @@ class MarkdownAIFencedCodeBlockComponent {
     func stringCodeToResList() {
         let callback: (ArrayList<PrismNodesParseRes>) -> Unit = {
             prismNodesParseResLists => launch {
-                arrayList = prismNodesParseResLists
+                arrayList.appendAll(prismNodesParseResLists)
             }
         }
         stringToResList(codeText, info, markdownAIConfiguration.markdownAITheme.prismTheme, callback)
