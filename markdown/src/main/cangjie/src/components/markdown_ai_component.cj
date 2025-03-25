@@ -409,7 +409,7 @@ public class MarkdownAIComponent {
 
     func getCodeInfo(nodeView: NodeView): (String, ?String) {
         return if (nodeView.node is FencedCodeBlock) {
-            ((nodeView.node as FencedCodeBlock)().getLiteral(), (nodeView.node as FencedCodeBlock)().getLiteral())
+            ((nodeView.node as FencedCodeBlock)().getLiteral(), (nodeView.node as FencedCodeBlock)().getInfo())
         } else if (nodeView.node is IndentedCodeBlock) {
             ((nodeView.node as IndentedCodeBlock)().getLiteral(), None)
         } else {
