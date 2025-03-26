@@ -143,7 +143,7 @@ func spanFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
         // 所有标题默认加粗
         return FontWeight.W600
     } else {
-        if (nodeView.strongEmphasis.isSome()) {
+        if (nodeView.strongEmphasis) {
             return FontWeight.W600
         } else {
             return FontWeight.W400
@@ -159,7 +159,7 @@ func spanFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
  */
 func spanFontStyle(nodeView: NodeView): FontStyle {
     // 是否需要斜体
-    return if (nodeView.emphasis.isSome()) {
+    return if (nodeView.emphasis) {
         FontStyle.Italic
     } else {
         FontStyle.Normal

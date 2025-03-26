@@ -10,15 +10,15 @@ public class NodeView <: ToString {
     /* BlockQuote深度 -1:无效 >=0:深度 */
     public var blockQuoteDepth: Int = -1
     /* 是否被BlockQuote修饰 */
-    public var blockQuote: ?BlockQuote = None
+    public var blockQuote: Bool = false
     /* 是否被Emphasis修饰 */
-    public var emphasis: ?Emphasis = None
+    public var emphasis: Bool = false
     /* 是否被StrongEmphasis修饰 */
-    public var strongEmphasis: ?StrongEmphasis = None
+    public var strongEmphasis: Bool = false
     /* 是否被Link修饰 */
     public var link: ?Link = None
     /* 是否属于BulletList */
-    public var bulletList: ?BulletList = None
+    public var bulletList: Bool = false
     /* 属于第几层OrderedListItem -1:无效 >=0:深度 */
     public var depth: Int = -1
     /* 属于第几位OrderedListItem -1:无效 >=0:序号 */
@@ -97,16 +97,16 @@ public class NodeView <: ToString {
     func setView(currentNode: Node) {
         if (currentNode is BlockQuote) {
             this.blockQuoteDepth++
-            this.blockQuote = currentNode as BlockQuote
+            this.blockQuote = true
         } else if (currentNode is Emphasis) {
-            this.emphasis = currentNode as Emphasis
+            this.emphasis = true
         } else if (currentNode is StrongEmphasis) {
-            this.strongEmphasis = currentNode as StrongEmphasis
+            this.strongEmphasis = true
         } else if (currentNode is Link) {
             this.link = currentNode as Link
         } else if (currentNode is BulletList) {
             this.bulletListDepth++
-            this.bulletList = currentNode as BulletList
+            this.bulletList = true
         } else if (currentNode is OrderedList) {
             this.depth++
             this.orderedList = currentNode as OrderedList
@@ -155,11 +155,11 @@ public class NodeView <: ToString {
     }
 
     public override func toString(): String {
-        let emphaStr = emphasis?.toString() ?? ""
-        let strongStr = strongEmphasis?.toString() ?? ""
+        let emphaStr = if(emphasis){"emphasis:${emphasis}"}else{""}
+        let strongStr = if(strongEmphasis){"strongEmphasis:${strongEmphasis}"}else{""}
         let linkStr = link?.toString() ?? ""
-        let bulletStr = if (let Some(v) <- bulletList) {
-            "{${v},bulletListDepth:${bulletListDepth}}"
+        let bulletStr = if (bulletList) {
+            "{bulletListDepth:${bulletListDepth}}"
         } else {
             ""
         }
@@ -168,8 +168,8 @@ public class NodeView <: ToString {
         } else {
             ""
         }
-        let blockQuoteStr = if (let Some(v) <- blockQuote) {
-            "{blockQuote:${v},blockQuoteDepth:${blockQuoteDepth}}"
+        let blockQuoteStr = if (blockQuote) {
+            "{blockQuoteDepth:${blockQuoteDepth}}"
         } else {
             ""
         }
@@ -194,11 +194,11 @@ public class NodeView <: ToString {
     }
 
     public func clear(): Unit {
-        this.blockQuote = None
-        this.emphasis = None
-        this.strongEmphasis = None
+//        this.blockQuote = None
+//        this.emphasis = None
+//        this.strongEmphasis = None
         this.link = None
-        this.bulletList = None
+//        this.bulletList = None
         this.orderedList = None
         this.collector = None
         this.props = None
