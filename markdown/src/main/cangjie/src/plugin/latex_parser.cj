@@ -12,7 +12,7 @@ class LatexBlockParser <: AbstractBlockParser {
     }
 
     public func tryContinue(parserState: ParserState): ?BlockContinue {
-        let line = parserState.getLine()
+        let line = parserState.getLine()[parserState.getIndex()..]
         if (isLatexLine(line)) {
             block.isBroken = true
         }
@@ -46,9 +46,12 @@ class LatexBlockParser <: AbstractBlockParser {
 
 class LatexBlockParserFactory <: AbstractBlockParserFactory {
     public func tryStart(state: ParserState, _: MatchedBlockParser): ?BlockStart {
-        let line: String = state.getLine()
-        if (line == "$$" || line == "\\[" || isLatexInList(line)) {
+        let line: String = state.getLine()[state.getIndex()..]
+        if (line == "$$" || line == "\\[") {
             return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + 2)
+        }
+        if (let Some(len) <- isLatexInList(line)) {
+            return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + len)
         }
         return BlockStart.none()
     }
@@ -82,14 +85,10 @@ func isLatexEnd(lineStr: String): Bool {
     }
 }
 
-let LATEX_IN_LIST = Regex(#"(\d+\.|-|>) (\$\$|\\\[)"#)
+let LATEX_IN_LIST = Regex(#"\s{0,3}(\$\$|\\\[)"#)
 
-func isLatexInList(line: String): Bool {
-    let str = line.trimAscii()
-    if (str == "$$" || str == "\\[") {
-        return true
-    }
-    return LATEX_IN_LIST.matches(str).isSome()
+func isLatexInList(line: String): ?Int {
+    return LATEX_IN_LIST.matches(line)?.matchPosition().end
 }
 
 type CharSequence = String
