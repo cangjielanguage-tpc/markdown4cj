@@ -782,6 +782,28 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownAIConfiguration: Markdow
     return picStyleObj
 }
 
+/**
+ * 获取代码内容和代码类型
+ *
+ * @param nodeView NodeView
+ * @return 代码内容和代码类型
+ */
+func getCodeInfo(nodeView: NodeView): (String, ?String) {
+    return if (nodeView.node is FencedCodeBlock) {
+        ((nodeView.node as FencedCodeBlock)().getLiteral(), (nodeView.node as FencedCodeBlock)().getInfo())
+    } else if (nodeView.node is IndentedCodeBlock) {
+        ((nodeView.node as IndentedCodeBlock)().getLiteral(), None)
+    } else {
+        ("", None)
+    }
+}
+
+/**
+ * 对于表格数据进行处理 - 整合处理
+ *
+ * @param nodeViews ArrayList<NodeView>
+ * @return ArrayList<NodeView>
+ */
 func tableList(nodeViews: ArrayList<NodeView>):ArrayList<NodeView>{
     let tableNodeViews = ArrayList<NodeView>()
     for (nodeView in nodeViews) {
@@ -794,6 +816,13 @@ func tableList(nodeViews: ArrayList<NodeView>):ArrayList<NodeView>{
     return tableNodeViews
 }
 
+/**
+ * 将Length转换成Float64
+ *
+ * @param length ?Length
+ * @param componentWidth 控件宽度
+ * @return ?Float64
+ */
 func length2Float64(length: ?Length, componentWidth: Float64): ?Float64 {
     if (let Some(v) <- length) {
         return match (v.unitType) {

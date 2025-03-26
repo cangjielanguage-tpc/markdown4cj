@@ -115,15 +115,6 @@ class MarkdownAITableBlock1Component {
     }
 
     public func refreshData(nodeViews: ArrayList<NodeView>): Unit {
-//        let list = nodeView.children
-//        nodeViews.clear()
-//        for (nodeView in list) {
-//            if (nodeView.node is TableBody || nodeView.node is TableHead) {
-//                nodeViews.appendAll(nodeView.children)
-//            } else if (nodeView.node is TableRow) {
-//                nodeViews.append(nodeView)
-//            }
-//        }
         if (isFull) {
             nodeViewAIDataSource.clear()
             nodeViewAIDataSource.addDatas(nodeViews)

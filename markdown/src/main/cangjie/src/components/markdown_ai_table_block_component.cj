@@ -12,7 +12,7 @@ import ohos.state_macro_manage.*
  * Markdown表格自定义控件
  */
 @Component
-class MarkdownTableBlockINCComponent {
+class MarkdownAITableBlockComponent {
     /**
      * markdown配置
      */

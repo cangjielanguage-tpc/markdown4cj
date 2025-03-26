@@ -169,3 +169,143 @@ func tableComponentCode(nodeView: NodeView, isHeader: Bool, markdownAIConfigurat
         // 点击动作触发该方法调用
         .onClick {evt => linkOnClick(nodeView, markdownAIConfiguration.linkCallback)}
 }
+
+/**
+ * 无序列表和有序列表的前缀文本
+ */
+@Builder
+func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownAIConfiguration: MarkdownAIConfiguration) {
+    // 设置文本内容
+    Text(listPrefixStr(item, isBullet))
+        // 设置文本颜色
+        .fontColor(listPrefixColor(markdownAIConfiguration.markdownAITheme, isBullet))
+        // 设置文本尺寸
+        .fontSize(listPrefixSize(markdownAIConfiguration.markdownAITheme, isBullet))
+        // 设置内边距属性
+        .padding(left: markdownAIConfiguration.markdownAITheme.blockMargin, right: 8.0)
+        // 设置行高
+        .lineHeight(listPrefixLineHeight(isBullet))
+        // 设置文本段落在水平方向的对齐方式
+        .textAlign(TextAlign.Center)
+}
+
+/**
+ * 任务列表的前缀多选框
+ */
+@Builder
+func listPrefixCheckboxINCComponent(item: NodeView, markdownAIConfiguration: MarkdownAIConfiguration) {
+    Checkbox()
+        // 设置组件自身的高度
+        .height(markdownAIConfiguration.markdownAITheme.taskListItemLength)
+        // 设置组件自身的宽度
+        .width(markdownAIConfiguration.markdownAITheme.taskListItemLength)
+        // 设置按钮形状样式
+        .select(taskSelect(item))
+        // 值为 true 表示组件可用，可响应点击等操作；值为 false 时，不响应点击等操作
+        .enabled(false)
+        // 切换CheckBox组件形状
+        .shape(CheckBoxShape.ROUNDED_SQUARE)
+        // 设置外边距属性
+        .margin(left: markdownAIConfiguration.markdownAITheme.blockMargin, right: 10.0)
+}
+
+/**
+ * 单行的数学公式
+ */
+@Builder
+func baseLatexMathBlockComponent(markdownAIConfiguration: MarkdownAIConfiguration, latexStr: String, isClosed: Bool, marginTop: Float64, marginBottom: Float64) {
+    MarkdownAILatexMathBlockComponent(
+        markdownAIConfiguration: markdownAIConfiguration,
+        latexStr: latexStr,
+        isClosed: isClosed,
+        marginTop: marginTop,
+        marginBottom: marginBottom
+    )
+}
+
+/**
+ * 分割线
+ */
+@Builder
+func baseThematicBreakComponent(markdownAIConfiguration: MarkdownAIConfiguration) {
+    Divider()
+        // 设置分割线颜色
+        .color(markdownAIConfiguration.markdownAITheme.thematicBreakColor)
+        // 设置分割线宽度
+        .strokeWidth(markdownAIConfiguration.markdownAITheme.thematicBreakHeight)
+        // 设置外边距属性
+        .margin(top: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins, bottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins)
+}
+
+/**
+ * 表格
+ */
+@Builder
+func baseTableBlockComponent(markdownAIConfiguration: MarkdownAIConfiguration, tableNodeView: NodeView, marginTop: Float64, marginBottom: Float64, componentWidth: Float64, isFull: Bool) {
+    MarkdownAITableBlockComponent(
+        markdownAIConfiguration: markdownAIConfiguration,
+        tableNodeView: tableNodeView,
+        marginTop: marginTop,
+        marginBottom: marginBottom,
+        componentWidth: componentWidth,
+        isFull: isFull
+    )
+}
+
+/**
+ * 围栏代码和缩进代码
+ */
+@Builder
+func baseFencedCodeBlockComponent(markdownAIConfiguration: MarkdownAIConfiguration, codeText: String, info: ?String, marginTop: Float64, marginBottom: Float64) {
+    MarkdownAIFencedCodeBlockComponent(
+        markdownAIConfiguration: markdownAIConfiguration,
+        codeText: codeText,
+        info: info,
+        marginTop: marginTop,
+        marginBottom: marginBottom
+    )
+}
+
+/**
+ * 有序列表、无序列表和块引用
+ */
+@Builder
+func baseListComponent(markdownAIConfiguration: MarkdownAIConfiguration, listNodeView: NodeView, marginTop: Float64, marginBottom: Float64, componentWidth: Float64, isFull: Bool) {
+    MarkdownAIListComponent(
+        markdownAIConfiguration: markdownAIConfiguration,
+        listNodeView: listNodeView,
+        marginTop: marginTop,
+        marginBottom: marginBottom,
+        componentWidth: componentWidth,
+        isFull: isFull
+    )
+}
+
+/**
+ * 段落
+ */
+@Builder
+func baseParagraphComponent(markdownAIConfiguration: MarkdownAIConfiguration, nodeView: NodeView, marginTop: Float64, marginBottom: Float64, componentWidth: Float64) {
+    MarkdownAIParagraphComponent(
+        markdownAIConfiguration: markdownAIConfiguration,
+        nodeViews: nodeView.children,
+        marginTop: marginTop,
+        marginBottom: marginBottom,
+        componentWidth: componentWidth
+    )
+}
+
+/**
+ * 标题
+ */
+@Builder
+func baseHeadingComponent(markdownAIConfiguration: MarkdownAIConfiguration, nodeView: NodeView, marginTop: Float64, marginBottom: Float64, componentWidth: Float64) {
+    MarkdownAIHeadingComponent(
+        markdownAIConfiguration: markdownAIConfiguration,
+        nodeViews: nodeView.children,
+        level: (nodeView.node as Heading)().getLevel(),
+        marginTop: marginTop,
+        marginBottom: marginBottom,
+        componentWidth: componentWidth
+    )
+}

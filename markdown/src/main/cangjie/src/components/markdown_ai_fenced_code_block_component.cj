@@ -19,12 +19,6 @@ class MarkdownAIFencedCodeBlockComponent {
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 高亮代码列表
-     */
-    @State
-    var arrayList: ObservedArrayList<PrismNodesParseRes> = ObservedArrayList<PrismNodesParseRes>()
-
-    /**
      * 代码内容
      */
     var codeText: String
@@ -45,9 +39,10 @@ class MarkdownAIFencedCodeBlockComponent {
     var marginBottom: Float64
 
     /**
-     * 代码块NodeView
+     * 高亮代码列表
      */
-    var codeItem: NodeView
+    @State
+    var arrayList: ObservedArrayList<PrismNodesParseRes> = ObservedArrayList<PrismNodesParseRes>()
 
     protected override func aboutToAppear(): Unit {
         stringCodeToResList()
