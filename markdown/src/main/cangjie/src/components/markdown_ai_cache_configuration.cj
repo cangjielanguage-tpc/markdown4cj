@@ -46,7 +46,7 @@ public class MarkdownAICacheConfiguration {
 
     let indentedCode1Components: ArrayList<MarkdownAIIndentedCodeBlock1Component> = ArrayList<MarkdownAIIndentedCodeBlock1Component>()
 
-    func clear():Unit{
+    func clear(): Unit {
         list1Components.clear()
         list2Components.clear()
         list3Components.clear()
@@ -56,6 +56,21 @@ public class MarkdownAICacheConfiguration {
         quote1Components.clear()
         quote2Components.clear()
         quote3Components.clear()
+        paragraph1Components.clear()
+        paragraph2Components.clear()
+        paragraph3Components.clear()
+        paragraph4Components.clear()
+        heading1Components.clear()
+        heading2Components.clear()
+        heading3Components.clear()
+        heading4Components.clear()
+        table1Components.clear()
+        tableRow1Components.clear()
+        tableCell1Components.clear()
+        indentedCode1Components.clear()
+    }
+
+    func clearList(): Unit {
         paragraph1Components.clear()
         paragraph2Components.clear()
         paragraph3Components.clear()

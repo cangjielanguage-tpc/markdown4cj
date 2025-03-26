@@ -92,11 +92,16 @@ func listTableBlockINCComponent(tableNodeView: NodeView, markdownAIConfiguration
  */
 @Builder
 func listLatexMathBlockINCComponent(latexStr: String, isClosed: Bool, markdownAIConfiguration: MarkdownAIConfiguration) {
-    MarkdownAILatexMathBlockComponent(
-        latexStr: latexStr,
-        isClosed: isClosed,
-        markdownAIConfiguration: markdownAIConfiguration,
-        marginTop: 0.0,
-        marginBottom: 0.0
-    )
+    if (isClosed) {
+        // 结束显示数学公式
+        MarkdownAILatexMathBlockComponent(
+            markdownAIConfiguration: markdownAIConfiguration,
+            latexStr: latexStr,
+            marginTop: 0.0,
+            marginBottom: 0.0
+        )
+    } else {
+        // 没结束显示纯文本
+        Text(latexStr)
+    }
 }

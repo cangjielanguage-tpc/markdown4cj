@@ -214,13 +214,18 @@ func listPrefixCheckboxINCComponent(item: NodeView, markdownAIConfiguration: Mar
  */
 @Builder
 func baseLatexMathBlockComponent(markdownAIConfiguration: MarkdownAIConfiguration, latexStr: String, isClosed: Bool, marginTop: Float64, marginBottom: Float64) {
-    MarkdownAILatexMathBlockComponent(
-        markdownAIConfiguration: markdownAIConfiguration,
-        latexStr: latexStr,
-        isClosed: isClosed,
-        marginTop: marginTop,
-        marginBottom: marginBottom
-    )
+    if (isClosed) {
+        // 结束显示数学公式
+        MarkdownAILatexMathBlockComponent(
+            markdownAIConfiguration: markdownAIConfiguration,
+            latexStr: latexStr,
+            marginTop: marginTop,
+            marginBottom: marginBottom
+        )
+    } else {
+        // 没结束显示纯文本
+        Text(latexStr)
+    }
 }
 
 /**
