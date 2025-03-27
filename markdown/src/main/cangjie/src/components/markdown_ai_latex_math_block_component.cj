@@ -34,11 +34,6 @@ class MarkdownAILatexMathBlockComponent {
     var latexStr: String
 
     /**
-     * 线程
-     */
-    var fut: ?Future<Unit> = Option<Future<Unit>>.None
-
-    /**
      * 数学公式列表数据
      */
     var latexData: ?Array<UInt8> = Option<Array<UInt8>>.None
@@ -66,8 +61,9 @@ class MarkdownAILatexMathBlockComponent {
     }
 
     protected override func aboutToDisappear(): Unit {
-        threadFutureCancel(fut)
-        delPixelMap(latexPixelMap)
+        latexPixelMap?.Release()
+        latexPixelMap = Option<PixelMap>.None
+        latexData = Option<Array<UInt8>>.None
     }
 
     func build() {
@@ -76,9 +72,9 @@ class MarkdownAILatexMathBlockComponent {
                 // 设置图片的数据源
                 Image(latexPixelMap())
                     // 设置组件自身的高度
-                    .height(pxToVp(latexHeight()))
+                    .height(latexHeight().px)
                     // 设置组件自身的宽度
-                    .width(pxToVp(latexWidth()))
+                    .width(latexWidth().px)
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Contain)
                     // 点击动作触发该方法调用
@@ -107,6 +103,6 @@ class MarkdownAILatexMathBlockComponent {
                 latexData = arr
             }
         }
-        fut = MarkdownParseLatexUtil.latexMathStrToPixelMap(latexStr, markdownAIConfiguration.markdownAITheme.resPath, markdownAIConfiguration, callback)
+        MarkdownParseLatexUtil.latexMathStrToPixelMap(latexStr, markdownAIConfiguration.markdownAITheme.resPath, markdownAIConfiguration, callback)
     }
 }

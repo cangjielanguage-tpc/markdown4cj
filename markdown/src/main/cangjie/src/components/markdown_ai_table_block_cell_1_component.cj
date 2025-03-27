@@ -58,22 +58,6 @@ class MarkdownAITableBlockCell1Component {
     var tableCell1Components: ArrayList<MarkdownAITableBlockCell1Component>
 
     /**
-     * 异步加载的图片数据
-     */
-    @State
-    var arrayListPixelMap: ObservedArrayList<ImageData> = ObservedArrayList<ImageData>()
-
-    /**
-     * 缓存的图片列表
-     */
-    var listPixelMap: ArrayList<?PixelMap> = ArrayList<?PixelMap>()
-
-    /**
-     * 线程列表
-     */
-    var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
-
-    /**
      * 懒加载数据源
      */
     @State
@@ -96,8 +80,6 @@ class MarkdownAITableBlockCell1Component {
                         false
                     }
                 })
-        threadFutureCancel(futs)
-        delPixelMap(listPixelMap)
     }
 
     func build() {
@@ -121,7 +103,11 @@ class MarkdownAITableBlockCell1Component {
                         }
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
-                        tableComponentLatexMath(latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx))
+                        MarkdownAILatexImageSpanComponent(
+                            markdownAIConfiguration: markdownAIConfiguration,
+                            componentWidth: componentWidth,
+                            strLatexMath: (item.node as LatexMathNode)().latex
+                        )
                     } else {
                         // TODO 其他节点
                         Span("")
@@ -149,38 +135,7 @@ class MarkdownAITableBlockCell1Component {
         .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp, color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
     }
 
-    /**
-     * 行内数学公式
-     */
-    @Builder
-    func tableComponentLatexMath(ret: Int64) {
-        ForEach(
-            arrayListPixelMap,
-            itemGeneratorFunc: {
-                item: ImageData, idx: Int64 => if (item.ret == ret) {
-                    if (isLatexImagePixelMap(item, listPixelMap)) {
-                        ImageSpan(item.pixelMap())
-                            // 设置组件自身的高度
-                            .height(pxToVp(item.height()))
-                            // 设置组件自身的宽度
-                            .width(pxToVp(item.width()))
-                            // 设置图片的缩放类型
-                            .objectFit(ImageFit.Contain)
-                            // 设置约束尺寸
-                            .constraintSize(maxWidth: 100.percent)
-                            // 点击动作触发该方法调用
-                            .onClick {
-                                evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px,
-                                    markdownAIConfiguration.latexImageCallback)
-                            }
-                    }
-                }
-            }
-        )
-    }
-
     public func refreshData(nodeViews: ArrayList<NodeView>): Unit {
-//        let nodeViews = nodeView.children
         if (isFull) {
             nodeViewList.clear()
             nodeViewList.appendAll(nodeViews)
@@ -208,21 +163,5 @@ class MarkdownAITableBlockCell1Component {
                 }
             }
         }
-    }
-
-    /**
-     * 数学公式数据处理 - 行内数学公式
-     */
-    func latexMathImagePixelmap(strLatexMath: String, idx: Int64): Int64 {
-        let callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit = {
-            pixelMap, height, width, arr => launch {
-                arrayListPixelMap.append(
-                    ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width, arrayUint8: arr))
-            }
-        }
-        let fut = MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath,
-            markdownAIConfiguration.markdownAITheme.resPath, markdownAIConfiguration, componentWidth, callback)
-        futs.append(fut)
-        return idx
     }
 }

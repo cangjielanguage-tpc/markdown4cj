@@ -89,48 +89,27 @@ class MarkdownAIParagraph4Component {
     var paragraph4Components: ArrayList<MarkdownAIParagraph4Component>
 
     /**
-     * 储存的PixelMap，包含图片、数学公式，最后需要释放
-     */
-    var listPixelMap: ArrayList<?PixelMap> = ArrayList<?PixelMap>()
-
-    /**
-     * 线程列表
-     */
-    var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
-
-    /**
-     * 异步加载的图片数据
-     */
-    @State
-    var arrayListPixelMap: ObservedArrayList<ImageData> = ObservedArrayList<ImageData>()
-
-    /**
      * 懒加载数据源
      */
     @State
     var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
-        size = nodeViews.size
         refreshData(nodeViews)
         paragraph4Components.append(this)
     }
 
     protected override func aboutToDisappear(): Unit {
-        paragraph4Components
-            .removeIf(
-                {
-                    predicate => if (predicate.index == index && predicate.index2 == index2
-                        && predicate.index3 == index3 && predicate.index4 == index4 && predicate.indexItem == indexItem
-                        && predicate.indexItem2 == indexItem2 && predicate.indexItem3 == indexItem3 &&
-                        predicate.size == size) {
-                        true
-                    } else {
-                        false
-                    }
-                })
-        threadFutureCancel(futs)
-        delPixelMap(listPixelMap)
+        paragraph4Components.removeIf(
+            {
+                predicate => if (predicate.index == index && predicate.index2 == index2
+                    && predicate.index3 == index3 && predicate.index4 == index4 && predicate.indexItem == indexItem
+                    && predicate.indexItem2 == indexItem2 && predicate.indexItem3 == indexItem3 && predicate.size == size) {
+                    true
+                } else {
+                    false
+                }
+            })
     }
 
     func build() {
@@ -152,13 +131,25 @@ class MarkdownAIParagraph4Component {
                         Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
-                        paragraphImageSpanComponent((item.node as CommonmarkImage)(), idx)
+                        MarkdownAIImageSpanComponent(
+                            markdownAIConfiguration: markdownAIConfiguration,
+                            destination: (item.node as CommonmarkImage)().getDestination()
+                        )
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
-                        paragraphLatexMathComponent(latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx))
+                        MarkdownAILatexImageSpanComponent(
+                            markdownAIConfiguration: markdownAIConfiguration,
+                            componentWidth: componentWidth,
+                            strLatexMath: (item.node as LatexMathNode)().latex
+                        )
                     } else if (item.node is ImageHtmlNode) {
                         // HTML图片
-                        paragraphHtmlImageSpanComponent((item.node as ImageHtmlNode)(), idx)
+                        MarkdownAIHtmlImageSpanComponent(
+                            markdownAIConfiguration: markdownAIConfiguration,
+                            destination: (item.node as ImageHtmlNode)().getDestination(),
+                            strHeight: (item.node as ImageHtmlNode)().getHeight(),
+                            strWidth: (item.node as ImageHtmlNode)().getWidth()
+                        )
                     } else {
                         // TODO 其他节点
                         Span("")
@@ -177,286 +168,60 @@ class MarkdownAIParagraph4Component {
     }
 
     /**
-     * 行内数学公式
+     * 数据刷新
      */
-    @Builder
-    func paragraphLatexMathComponent(ret: Int64) {
-        ForEach(
-            arrayListPixelMap,
-            itemGeneratorFunc: {
-                item: ImageData, idx: Int64 => if (item.ret == ret) {
-                    if (isLatexImagePixelMap(item, listPixelMap)) {
-                        ImageSpan(item.pixelMap())
-                            // 设置组件自身的高度
-                            .height(pxToVp(item.height()))
-                            // 设置组件自身的宽度
-                            .width(pxToVp(item.width()))
-                            // 设置图片的缩放类型
-                            .objectFit(ImageFit.Contain)
-                            // 设置约束尺寸
-                            .constraintSize(maxWidth: 100.percent)
-                            // 点击动作触发该方法调用
-                            .onClick {
-                                evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px,
-                                    markdownAIConfiguration.latexImageCallback)
-                            }
-                    }
-                }
-            }
-        )
-    }
-
-    /**
-     * 图片
-     */
-    @Builder
-    func paragraphImageSpanPixelMapComponent(ret: Int64, destination: String, imageType: Int64,
-        picStyleObj: ?PicStyleObj) {
-        ForEach(
-            arrayListPixelMap,
-            itemGeneratorFunc: {
-                item: ImageData, idx: Int64 => if (item.ret == ret && imageType == 1) {
-                    if (isImagePixelMap(item, listPixelMap)) {
-                        ImageSpan(item.pixelMap())
-                            // 设置组件自身的高度
-                            .height(pxToVp(item.height()))
-                            // 设置组件自身的宽度
-                            .width(pxToVp(item.width()))
-                            // 设置图片的缩放类型
-                            .objectFit(ImageFit.Contain)
-                            // 设置约束尺寸
-                            .constraintSize(maxWidth: 100.percent)
-                            // 图片的点击事件
-                            .onClick {evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)}
-                    }
-                } else if (item.ret == ret && item.height.isSome()) {
-                    ImageSpan(destination)
-                        // 设置组件自身的高度
-                        .height(pxToVp(item.height()))
-                        // 设置组件自身的宽度
-                        .width(pxToVp(item.width()))
-                        // 设置图片的缩放类型
-                        .objectFit(ImageFit.Contain)
-                        // 设置约束尺寸
-                        .constraintSize(maxWidth: 100.percent)
-                        // 图片的点击事件
-                        .onClick {evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)}
-                }
-            }
-        )
-    }
-
-    /**
-     * 图片
-     */
-    @Builder
-    func paragraphImageSpanComponent(commonmarkImage: CommonmarkImage, idx: Int64) {
-        if (commonmarkImage.getDestination().startsWith("file:")) {
-            // 沙盒图片
-            paragraphImageSpanPixelMapComponent(filesPixelmap(commonmarkImage.getDestination(), idx),
-                commonmarkImage.getDestination(), 0, Option<PicStyleObj>.None)
-        } else if (commonmarkImage.getDestination().startsWith("./")) {
-            // rawfile图片
-            paragraphImageSpanPixelMapComponent(localRowImageToPixelMap(commonmarkImage.getDestination(), idx),
-                commonmarkImage.getDestination(), 1, Option<PicStyleObj>.None)
-        } else if (commonmarkImage.getDestination().toAsciiLower().startsWith("http") ||
-            commonmarkImage.getDestination().toAsciiLower().startsWith("ftp")) {
-            // 网络图片
-            paragraphImageSpanPixelMapComponent(httpImageToPixelMap(commonmarkImage.getDestination(), idx),
-                commonmarkImage.getDestination(), 2, Option<PicStyleObj>.None)
-        }
-    }
-
-    /**
-     * 图片
-     */
-    @Builder
-    func paragraphImageSpanStyleComponent(commonmarkImage: StyleImage, picStyleObj: PicStyleObj, idx: Int64) {
-        if (commonmarkImage.getDestination().startsWith("file:")) {
-            // 沙盒图片
-            paragraphImageSpanPixelMapComponent(filesPixelmapStyle(commonmarkImage.getDestination(), idx, picStyleObj),
-                commonmarkImage.getDestination(), 0, picStyleObj)
-        } else if (commonmarkImage.getDestination().startsWith("./")) {
-            // rawfile图片
-            paragraphImageSpanPixelMapComponent(
-                localRowImageToPixelMapStyle(commonmarkImage.getDestination(), idx, picStyleObj),
-                commonmarkImage.getDestination(), 1, picStyleObj)
-        } else if (commonmarkImage.getDestination().toAsciiLower().startsWith("http") ||
-            commonmarkImage.getDestination().toAsciiLower().startsWith("ftp")) {
-            // 网络图片
-            paragraphImageSpanPixelMapComponent(
-                httpImageToPixelMapStyle(commonmarkImage.getDestination(), idx, picStyleObj),
-                commonmarkImage.getDestination(), 2, picStyleObj)
-        }
-    }
-
-    /**
-     * 图片
-     */
-    @Builder
-    func paragraphHtmlImageSpanComponent(imageHtmlNode: ImageHtmlNode, idx: Int64) {
-        if (imageHtmlNode.getDestination().startsWith("file:")) {
-            // 沙盒图片
-            paragraphImageSpanPixelMapComponent(
-                filesPixelmapStyle(imageHtmlNode.getDestination(), idx, toPicStyleObj(imageHtmlNode)),
-                imageHtmlNode.getDestination(), 0, toPicStyleObj(imageHtmlNode))
-        } else if (imageHtmlNode.getDestination().startsWith("./")) {
-            // rawfile图片
-            paragraphImageSpanPixelMapComponent(
-                localRowImageToPixelMapStyle(imageHtmlNode.getDestination(), idx, toPicStyleObj(imageHtmlNode)),
-                imageHtmlNode.getDestination(), 1, toPicStyleObj(imageHtmlNode))
-        } else if (imageHtmlNode.getDestination().toAsciiLower().startsWith("http") ||
-            imageHtmlNode.getDestination().toAsciiLower().startsWith("ftp")) {
-            // 网络图片
-            paragraphImageSpanPixelMapComponent(
-                httpImageToPixelMapStyle(imageHtmlNode.getDestination(), idx, toPicStyleObj(imageHtmlNode)),
-                imageHtmlNode.getDestination(), 2, toPicStyleObj(imageHtmlNode))
-        }
-    }
-
-    public func refreshData(nodeViews: ArrayList<NodeView>): Unit {
+    public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
+        let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
+        let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
         if (isFull) {
+            // 全量加载
             nodeViewList.clear()
-            nodeViewList.appendAll(nodeViews)
+            nodeViewList.appendAll(refreshNodeViews)
         } else {
-            if (nodeViews.size == 0) {
+            // 增量加载
+            if (refreshNodeViewSize == 0) {
                 return
             }
-            if (nodeViews.size > nodeViewList.size) {
-                if (nodeViewList.size != 0) {
-                    let size = nodeViewList.size
-                    nodeViewList.remove(size - 1)
-                    nodeViewList.append(nodeViews[size - 1])
+            if (refreshNodeViewSize > nodeViewListSize) {
+                // 刷新数据的长度大于页面数据长度，需要添加数据
+                if (nodeViewListSize != 0) {
+                    // 更新页面最后一条数据
+                    nodeViewList.remove(nodeViewListSize - 1)
+                    nodeViewList.append(refreshNodeViews[nodeViewListSize - 1])
                 }
-                for (i in nodeViews.size - nodeViewList.size..0 : -1) {
-                    nodeViewList.append(nodeViews[nodeViews.size - i])
+                // 循环添加所有新增数据
+                for (i in refreshNodeViewSize - nodeViewListSize..0 : -1) {
+                    nodeViewList.append(refreshNodeViews[refreshNodeViewSize - i])
                 }
-            } else if (nodeViews.size == nodeViewList.size) {
-                nodeViewList.remove(nodeViewList.size - 1)
-                nodeViewList.append(nodeViews[nodeViews.size - 1])
+            } else if (refreshNodeViewSize == nodeViewListSize) {
+                // 刷新数据的长度等于页面数据长度，需要更新当前数据
+                // 有可能还需要刷新倒数第二条数据内容
+                if (refreshNodeViewSize > 2) {
+                    if (refreshNodeViews[refreshNodeViewSize - 2].node.getNodeType() != nodeViewList[nodeViewListSize - 2].node.getNodeType()) {
+                        nodeViewList.remove(refreshNodeViewSize - 2)
+                        nodeViewList.insert(refreshNodeViewSize - 2, refreshNodeViews[refreshNodeViewSize - 2])
+                    }
+                    if ((refreshNodeViews[refreshNodeViewSize - 2].node is CommonmarkText) && (nodeViewList[nodeViewListSize - 2].node is CommonmarkText)) {
+                        if ((refreshNodeViews[refreshNodeViewSize - 2].node as CommonmarkText)().getLiteral() != (nodeViewList[nodeViewListSize - 2].node as CommonmarkText)().getLiteral()) {
+                            nodeViewList.remove(refreshNodeViewSize - 2)
+                            nodeViewList.insert(refreshNodeViewSize - 2, refreshNodeViews[refreshNodeViewSize - 2])
+                        }
+                    }
+                }
+                // 刷新最后一条数据
+                nodeViewList.remove(nodeViewListSize - 1)
+                nodeViewList.append(refreshNodeViews[refreshNodeViewSize - 1])
             } else {
-                nodeViewList.remove(nodeViews.size - 1)
-                nodeViewList.append(nodeViews[nodeViews.size - 1])
-                for (i in nodeViewList.size - nodeViews.size..0 : -1) {
-                    nodeViewList.remove(nodeViewList.size - i)
+                // 刷新数据小于页面数据长度，需要删除数据
+                // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
+                nodeViewList.remove(refreshNodeViewSize - 1)
+                nodeViewList.append(refreshNodeViews[refreshNodeViewSize - 1])
+                // 循环删除所有多余数据
+                for (i in nodeViewListSize - refreshNodeViewSize..0 : -1) {
+                    nodeViewList.remove(nodeViewListSize - i)
                 }
             }
         }
-    }
-
-    func toPicStyleObj(imageHtmlNode: ImageHtmlNode): PicStyleObj {
-        let picStyleObj: PicStyleObj = PicStyleObj()
-        if (let Some(v) <- imageHtmlNode.getWidth()) {
-            picStyleObj.width = Float64.parse(v).px
-        }
-        if (let Some(v) <- imageHtmlNode.getHeight()) {
-            picStyleObj.height = Float64.parse(v).px
-        }
-        return picStyleObj
-    }
-
-    /**
-     * 数学公式数据处理 - 行内数学公式
-     */
-    func latexMathImagePixelmap(strLatexMath: String, idx: Int64): Int64 {
-        let callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit = {
-            pixelMap, height, width, arr => launch {
-                arrayListPixelMap.append(
-                    ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width, arrayUint8: arr))
-            }
-        }
-        let fut = MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath,
-            markdownAIConfiguration.markdownAITheme.resPath, markdownAIConfiguration, componentWidth, callback)
-        futs.append(fut)
-        return idx
-    }
-
-    /**
-     * 图片数据处理 - 本地沙盒图片
-     */
-    func filesPixelmap(destination: String, idx: Int64): Int64 {
-        let callback: (?Float64, ?Float64) -> Unit = {
-            width, height => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
-            }
-        }
-        let fut = imageSpanToPixelmap(destination, componentWidth, callback)
-        futs.append(fut)
-        return idx
-    }
-
-    /**
-     * 图片数据处理 - 本地rawfile图片
-     */
-    func localRowImageToPixelMap(destination: String, idx: Int64): Int64 {
-        let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
-            pixelMap, width, height => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
-            }
-        }
-        let fut = rawfileToPixelmap(destination, markdownAIConfiguration.markdownAITheme.stageContext,
-            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, callback)
-        futs.append(fut)
-        return idx
-    }
-
-    /**
-     * 图片数据处理 - 网络图片
-     */
-    func httpImageToPixelMap(destination: String, idx: Int64): Int64 {
-        let callback: (?Float64, ?Float64) -> Unit = {
-            width, height => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
-            }
-        }
-        let fut = getImageFromHttpClient(destination, componentWidth, callback)
-        futs.append(fut)
-        return idx
-    }
-
-    /**
-     * 图片数据处理 - 本地沙盒图片
-     */
-    func filesPixelmapStyle(destination: String, idx: Int64, picStyleObj: PicStyleObj): Int64 {
-        let callback: (?Float64, ?Float64) -> Unit = {
-            width, height => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
-            }
-        }
-        let fut = imageSpanToPixelmapStyle(destination, componentWidth, length2Float64(picStyleObj.width,componentWidth),
-            length2Float64(picStyleObj.height,componentWidth), callback)
-        futs.append(fut)
-        return idx
-    }
-
-    /**
-     * 图片数据处理 - 本地rawfile图片
-     */
-    func localRowImageToPixelMapStyle(destination: String, idx: Int64, picStyleObj: PicStyleObj): Int64 {
-        let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
-            pixelMap, width, height => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
-            }
-        }
-        let fut = rawfileToPixelmapStyle(destination, markdownAIConfiguration.markdownAITheme.stageContext,
-            markdownAIConfiguration.markdownAITheme.abilityContext, componentWidth, length2Float64(picStyleObj.width,componentWidth),
-            length2Float64(picStyleObj.height,componentWidth), callback)
-        futs.append(fut)
-        return idx
-    }
-
-    /**
-     * 图片数据处理 - 网络图片
-     */
-    func httpImageToPixelMapStyle(destination: String, idx: Int64, picStyleObj: PicStyleObj): Int64 {
-        let callback: (?Float64, ?Float64) -> Unit = {
-            width, height => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
-            }
-        }
-        let fut = getImageFromHttpClientStyle(destination, componentWidth, length2Float64(picStyleObj.width,componentWidth),
-            length2Float64(picStyleObj.height,componentWidth), callback)
-        futs.append(fut)
-        return idx
+        size = nodeViewList.size // 更新列表长度
     }
 }
