@@ -226,6 +226,8 @@ class MarkdownAIListItem1Component {
         .listDirection(Axis.Vertical)
         // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
         .alignListItem(ListItemAlign.Start)
+        // 对子组件进行重新布局
+        .layoutWeight(1)
     }
 
     public func refreshData(nodeViews: ArrayList<NodeView>): Unit {

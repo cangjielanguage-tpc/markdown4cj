@@ -131,8 +131,8 @@ public class MarkdownAIQuote1Component {
                                 // 围栏代码
                                 MarkdownAIIndentedCodeBlock2Component(
                                     markdownAIConfiguration: markdownAIConfiguration,
-                                    codeText: (item.node as IndentedCodeBlock)().getLiteral(),
-                                    info: Option<String>.None,
+                                    codeText: (item.node as FencedCodeBlock)().getLiteral(),
+                                    info: (item.node as FencedCodeBlock)().getInfo(),
                                     marginTop: 0.0,
                                     marginBottom: 0.0,
                                     isFull: isFull,
@@ -216,7 +216,11 @@ public class MarkdownAIQuote1Component {
                         .alignItems(HorizontalAlign.Start)
                         // 设置子组件在垂直方向上的对齐格式。
                         .justifyContent(FlexAlign.Start)
+                        // 对子组件进行重新布局
+                        .layoutWeight(1)
                     }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
         }
