@@ -40,11 +40,19 @@ public class MarkdownAICacheConfiguration {
 
     let table1Components: ArrayList<MarkdownAITableBlock1Component> = ArrayList<MarkdownAITableBlock1Component>()
 
+    let table2Components: ArrayList<MarkdownAITableBlock2Component> = ArrayList<MarkdownAITableBlock2Component>()
+
     let tableRow1Components: ArrayList<MarkdownAITableBlockRow1Component> = ArrayList<MarkdownAITableBlockRow1Component>()
+
+    let tableRow2Components: ArrayList<MarkdownAITableBlockRow2Component> = ArrayList<MarkdownAITableBlockRow2Component>()
 
     let tableCell1Components: ArrayList<MarkdownAITableBlockCell1Component> = ArrayList<MarkdownAITableBlockCell1Component>()
 
+    let tableCell2Components: ArrayList<MarkdownAITableBlockCell2Component> = ArrayList<MarkdownAITableBlockCell2Component>()
+
     let indentedCode1Components: ArrayList<MarkdownAIIndentedCodeBlock1Component> = ArrayList<MarkdownAIIndentedCodeBlock1Component>()
+
+    let indentedCode2Components: ArrayList<MarkdownAIIndentedCodeBlock2Component> = ArrayList<MarkdownAIIndentedCodeBlock2Component>()
 
     func clear(): Unit {
         list1Components.clear()
@@ -68,6 +76,7 @@ public class MarkdownAICacheConfiguration {
         tableRow1Components.clear()
         tableCell1Components.clear()
         indentedCode1Components.clear()
+        indentedCode2Components.clear()
     }
 
     func clearList(): Unit {
@@ -83,5 +92,6 @@ public class MarkdownAICacheConfiguration {
         tableRow1Components.clear()
         tableCell1Components.clear()
         indentedCode1Components.clear()
+        indentedCode2Components.clear()
     }
 }
