@@ -23,7 +23,7 @@ public class NodeView <: ToString {
     public var depth: Int = -1
     /* 属于第几位OrderedListItem -1:无效 >=0:序号 */
     public var order: Int = -1
-    public var orderedList: ?OrderedList = None
+    public var orderedList: ?Int = None
     /* 属于第几层BulletListItem -1:无效 >=0:深度 */
     public var bulletListDepth: Int = -1
     /* ListItem中可包含多个Block，但只有第一个Block有列表符号 */
@@ -109,13 +109,13 @@ public class NodeView <: ToString {
             this.bulletList = true
         } else if (currentNode is OrderedList) {
             this.depth++
-            this.orderedList = currentNode as OrderedList
+            this.orderedList = (currentNode as OrderedList)?.getStartNumber()
         } else if (currentNode is ListItem) {
             if (let Some(parent) <- this.orderedList) {
                 this.order = if (let Some(previous) <- currentNode.getPrevious()?.getView()) {
                     previous.order + 1
                 } else {
-                    parent.getStartNumber()
+                    parent
                 }
             }
         }
@@ -155,8 +155,16 @@ public class NodeView <: ToString {
     }
 
     public override func toString(): String {
-        let emphaStr = if(emphasis){"emphasis:${emphasis}"}else{""}
-        let strongStr = if(strongEmphasis){"strongEmphasis:${strongEmphasis}"}else{""}
+        let emphaStr = if (emphasis) {
+            "emphasis:${emphasis}"
+        } else {
+            ""
+        }
+        let strongStr = if (strongEmphasis) {
+            "strongEmphasis:${strongEmphasis}"
+        } else {
+            ""
+        }
         let linkStr = link?.toString() ?? ""
         let bulletStr = if (bulletList) {
             "{bulletListDepth:${bulletListDepth}}"
@@ -194,11 +202,11 @@ public class NodeView <: ToString {
     }
 
     public func clear(): Unit {
-//        this.blockQuote = None
-//        this.emphasis = None
-//        this.strongEmphasis = None
+        //        this.blockQuote = None
+        //        this.emphasis = None
+        //        this.strongEmphasis = None
         this.link = None
-//        this.bulletList = None
+        //        this.bulletList = None
         this.orderedList = None
         this.collector = None
         this.props = None
