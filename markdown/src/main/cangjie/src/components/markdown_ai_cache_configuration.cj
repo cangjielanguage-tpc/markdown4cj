@@ -79,19 +79,22 @@ public class MarkdownAICacheConfiguration {
         indentedCode2Components.clear()
     }
 
-    func clearList(): Unit {
-        paragraph1Components.clear()
+    func clearList1(): Unit {
+        list2Components.clear()
+        list3Components.clear()
+        listItem2Components.clear()
+        listItem3Components.clear()
+        quote2Components.clear()
+        quote3Components.clear()
         paragraph2Components.clear()
         paragraph3Components.clear()
         paragraph4Components.clear()
-        heading1Components.clear()
         heading2Components.clear()
         heading3Components.clear()
         heading4Components.clear()
-        table1Components.clear()
-        tableRow1Components.clear()
-        tableCell1Components.clear()
-        indentedCode1Components.clear()
+        table2Components.clear()
+        tableRow2Components.clear()
+        tableCell2Components.clear()
         indentedCode2Components.clear()
     }
 }
