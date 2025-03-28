@@ -20,6 +20,7 @@ let COLOR_00FFFFFF: Color = Color(0x00FFFFFF)
 let COLOR_E0E0E0: Color = Color(0xE0E0E0)
 let COLOR_FFE0E0E0: Color = Color(0xFFE0E0E0)
 let COLOR_333333: Color = Color(0x333333)
+let null:NodeView = unsafe{zeroValue()}
 
 func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<String>, ArrayList<String>) {
     var strText: ArrayList<String> = ArrayList<String>()

@@ -150,6 +150,15 @@ public open class MarkdownAIBaseDataSource<T> <: IDataSource<T> {
     }
 
     /**
+     * 删除一条数据,并刷新页面
+     *
+     * @param index 一条数据
+     */
+    public func removeData(index: Int): Unit {
+        data_.remove(index)
+    }
+
+    /**
      * 在index位置更新数据,并刷新页面
      *
      * @param index 位置

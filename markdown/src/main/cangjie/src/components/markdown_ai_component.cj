@@ -93,7 +93,7 @@ public class MarkdownAIComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除缓存数据
-        markdownAICacheConfiguration.clear()
+        markdownAICacheConfiguration.clearAll()
     }
 
     func build() {
@@ -363,11 +363,13 @@ public class MarkdownAIComponent {
             let nodeViewsSize = nodeViews.size // 刷新进来的数据长度
             let nodeViewListSize = nodeViewAIDataSource.totalCount() // 页面缓存的数据长度
             if (isFull) {
+                // 全量加载
                 launch {
                     nodeViewAIDataSource.clear()
                     nodeViewAIDataSource.addDatas(nodeViews)
                 }
             } else {
+                // 增量加载
                 launch {
                     if (nodeViewsSize == 0) {
                         return
@@ -381,7 +383,7 @@ public class MarkdownAIComponent {
                     if (nodeViewsSize > nodeViewListSize) {
                         // 刷新数据的长度大于页面数据长度，需要添加数据
                         // 清除缓存数据
-                        markdownAICacheConfiguration.clear()
+                        markdownAICacheConfiguration.clearAll()
                         if (nodeViewListSize != 0) {
                             // 更新页面最后一条数据
                             nodeViewAIDataSource.replaceDate(nodeViewListSize - 1, nodeViews[nodeViewListSize - 1])
@@ -389,6 +391,11 @@ public class MarkdownAIComponent {
                         // 循环添加所有新增数据
                         for (i in nodeViewsSize - nodeViewListSize..0 : -1) {
                             nodeViewAIDataSource.addData(nodeViews[nodeViewsSize - i])
+                        }
+
+                        // 清空列表数据
+                        if (nodeViewAIDataSource.totalCount() >= 3) {
+                            nodeViewAIDataSource.updata(nodeViewAIDataSource.totalCount() - 3, null)
                         }
                     } else if (nodeViewsSize == nodeViewListSize) {
                         // 刷新数据的长度等于页面数据长度，需要更新当前数据
@@ -442,7 +449,7 @@ public class MarkdownAIComponent {
                     } else {
                         // 刷新数据小于页面数据长度，需要删除数据
                         // 清除缓存数据
-                        markdownAICacheConfiguration.clear()
+                        markdownAICacheConfiguration.clearAll()
                         // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
                         nodeViewAIDataSource.replaceDate(nodeViewsSize - 1, nodeViews[nodeViewsSize - 1])
                         // 循环删除所有多余数据
@@ -453,6 +460,7 @@ public class MarkdownAIComponent {
                 }
             }
         } catch (e: Exception) {
+            // 解析异常，全量展示纯文本，增量不做处理
             if (isFull) {
                 let paragraph: Paragraph = Paragraph()
                 let commonmarkText: CommonmarkText = CommonmarkText(output)

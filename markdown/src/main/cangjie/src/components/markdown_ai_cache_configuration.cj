@@ -54,7 +54,7 @@ public class MarkdownAICacheConfiguration {
 
     let indentedCode2Components: ArrayList<MarkdownAIIndentedCodeBlock2Component> = ArrayList<MarkdownAIIndentedCodeBlock2Component>()
 
-    func clear(): Unit {
+    func clearAll(): Unit {
         list1Components.clear()
         list2Components.clear()
         list3Components.clear()
@@ -80,6 +80,45 @@ public class MarkdownAICacheConfiguration {
     }
 
     func clearList1(): Unit {
+        list2Components.clear()
+        list3Components.clear()
+        listItem1Components.clear()
+        listItem2Components.clear()
+        listItem3Components.clear()
+        quote2Components.clear()
+        quote3Components.clear()
+        paragraph2Components.clear()
+        paragraph3Components.clear()
+        paragraph4Components.clear()
+        heading2Components.clear()
+        heading3Components.clear()
+        heading4Components.clear()
+        table2Components.clear()
+        tableRow2Components.clear()
+        tableCell2Components.clear()
+        indentedCode2Components.clear()
+    }
+
+    func clearListItem1(): Unit {
+        list2Components.clear()
+        list3Components.clear()
+        listItem2Components.clear()
+        listItem3Components.clear()
+        quote2Components.clear()
+        quote3Components.clear()
+        paragraph2Components.clear()
+        paragraph3Components.clear()
+        paragraph4Components.clear()
+        heading2Components.clear()
+        heading3Components.clear()
+        heading4Components.clear()
+        table2Components.clear()
+        tableRow2Components.clear()
+        tableCell2Components.clear()
+        indentedCode2Components.clear()
+    }
+
+    func clearQuote1(): Unit {
         list2Components.clear()
         list3Components.clear()
         listItem2Components.clear()
