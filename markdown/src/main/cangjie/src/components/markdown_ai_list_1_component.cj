@@ -165,7 +165,7 @@ class MarkdownAIList1Component {
                 markdownAICacheConfiguration.clearList1()
                 if (dataSourceSize != 0) {
                     // 更新页面最后一条数据
-                    nodeViewAIDataSource.replaceDate(dataSourceSize - 1, refreshNodeViews[dataSourceSize - 1])
+                    nodeViewAIDataSource.replaceData(dataSourceSize - 1, refreshNodeViews[dataSourceSize - 1])
                 }
                 // 循环添加所有新增数据
                 for (i in refreshNodeViewSize - dataSourceSize..0 : -1) {
@@ -173,7 +173,7 @@ class MarkdownAIList1Component {
                 }
                 // 清空列表数据
                 if (nodeViewAIDataSource.totalCount() >= 3) {
-                    nodeViewAIDataSource.updata(nodeViewAIDataSource.totalCount() - 3, null)
+                    nodeViewAIDataSource.update(nodeViewAIDataSource.totalCount() - 3, null)
                 }
             } else if (refreshNodeViewSize == dataSourceSize) {
                 // 刷新数据的长度等于页面数据长度，需要更新当前数据
@@ -188,7 +188,7 @@ class MarkdownAIList1Component {
                 // 清除缓存数据
                 markdownAICacheConfiguration.clearList1()
                 // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
-                nodeViewAIDataSource.replaceDate(refreshNodeViewSize - 1, refreshNodeViews[refreshNodeViewSize - 1])
+                nodeViewAIDataSource.replaceData(refreshNodeViewSize - 1, refreshNodeViews[refreshNodeViewSize - 1])
                 // 循环删除所有多余数据
                 for (i in dataSourceSize - refreshNodeViewSize..0 : -1) {
                     nodeViewAIDataSource.deleteData(dataSourceSize - i)

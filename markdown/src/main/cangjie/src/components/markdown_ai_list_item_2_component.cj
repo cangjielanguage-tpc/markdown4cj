@@ -244,7 +244,7 @@ class MarkdownAIListItem2Component {
             }
             if (nodeViews.size > nodeViewAIDataSource.totalCount()) {
                 if (nodeViewAIDataSource.totalCount() != 0) {
-                    nodeViewAIDataSource.replaceDate(nodeViewAIDataSource.totalCount() - 1,
+                    nodeViewAIDataSource.replaceData(nodeViewAIDataSource.totalCount() - 1,
                         nodeViews[nodeViewAIDataSource.totalCount() - 1])
                 }
                 for (i in nodeViews.size - nodeViewAIDataSource.totalCount()..0 : -1) {
@@ -293,11 +293,11 @@ class MarkdownAIListItem2Component {
                         }
                     }
                 } else {
-                    nodeViewAIDataSource.replaceDate(nodeViewAIDataSource.totalCount() - 1, nodeViews[nodeViews.size - 1]
+                    nodeViewAIDataSource.replaceData(nodeViewAIDataSource.totalCount() - 1, nodeViews[nodeViews.size - 1]
                     )
                 }
             } else {
-                nodeViewAIDataSource.replaceDate(nodeViews.size - 1, nodeViews[nodeViews.size - 1])
+                nodeViewAIDataSource.replaceData(nodeViews.size - 1, nodeViews[nodeViews.size - 1])
                 for (i in nodeViewAIDataSource.totalCount() - nodeViews.size..0 : -1) {
                     nodeViewAIDataSource.deleteData(nodeViewAIDataSource.totalCount() - i)
                 }

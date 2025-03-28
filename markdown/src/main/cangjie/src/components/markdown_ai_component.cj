@@ -386,7 +386,7 @@ public class MarkdownAIComponent {
                         markdownAICacheConfiguration.clearAll()
                         if (nodeViewListSize != 0) {
                             // 更新页面最后一条数据
-                            nodeViewAIDataSource.replaceDate(nodeViewListSize - 1, nodeViews[nodeViewListSize - 1])
+                            nodeViewAIDataSource.replaceData(nodeViewListSize - 1, nodeViews[nodeViewListSize - 1])
                         }
                         // 循环添加所有新增数据
                         for (i in nodeViewsSize - nodeViewListSize..0 : -1) {
@@ -395,7 +395,7 @@ public class MarkdownAIComponent {
 
                         // 清空列表数据
                         if (nodeViewAIDataSource.totalCount() >= 3) {
-                            nodeViewAIDataSource.updata(nodeViewAIDataSource.totalCount() - 3, null)
+                            nodeViewAIDataSource.update(nodeViewAIDataSource.totalCount() - 3, null)
                         }
                     } else if (nodeViewsSize == nodeViewListSize) {
                         // 刷新数据的长度等于页面数据长度，需要更新当前数据
@@ -444,14 +444,14 @@ public class MarkdownAIComponent {
                             }
                         } else {
                             // 其他节点
-                            nodeViewAIDataSource.replaceDate(nodeViewListSize - 1, nodeViews[nodeViewsSize - 1])
+                            nodeViewAIDataSource.replaceData(nodeViewListSize - 1, nodeViews[nodeViewsSize - 1])
                         }
                     } else {
                         // 刷新数据小于页面数据长度，需要删除数据
                         // 清除缓存数据
                         markdownAICacheConfiguration.clearAll()
                         // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
-                        nodeViewAIDataSource.replaceDate(nodeViewsSize - 1, nodeViews[nodeViewsSize - 1])
+                        nodeViewAIDataSource.replaceData(nodeViewsSize - 1, nodeViews[nodeViewsSize - 1])
                         // 循环删除所有多余数据
                         for (i in nodeViewListSize - nodeViewsSize..0 : -1) {
                             nodeViewAIDataSource.deleteData(nodeViewListSize - i)

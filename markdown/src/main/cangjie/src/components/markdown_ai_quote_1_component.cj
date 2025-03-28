@@ -258,7 +258,7 @@ public class MarkdownAIQuote1Component {
                 markdownAICacheConfiguration.clearList1()
                 if (nodeViewListSize != 0) {
                     // 更新页面最后一条数据
-                    nodeViewAIDataSource.replaceDate(nodeViewListSize - 1, nodeViews[nodeViewListSize - 1])
+                    nodeViewAIDataSource.replaceData(nodeViewListSize - 1, nodeViews[nodeViewListSize - 1])
                 }
                 // 循环添加所有新增数据
                 for (i in nodeViewsSize - nodeViewListSize..0 : -1) {
@@ -311,14 +311,14 @@ public class MarkdownAIQuote1Component {
                     }
                 } else {
                     // 其他节点
-                    nodeViewAIDataSource.replaceDate(nodeViewListSize - 1, nodeViews[nodeViewsSize - 1])
+                    nodeViewAIDataSource.replaceData(nodeViewListSize - 1, nodeViews[nodeViewsSize - 1])
                 }
             } else {
                 // 刷新数据小于页面数据长度，需要删除数据
                 // 清除缓存数据
                 markdownAICacheConfiguration.clearList1()
                 // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
-                nodeViewAIDataSource.replaceDate(nodeViewsSize - 1, nodeViews[nodeViewsSize - 1])
+                nodeViewAIDataSource.replaceData(nodeViewsSize - 1, nodeViews[nodeViewsSize - 1])
                 // 循环删除所有多余数据
                 for (i in nodeViewListSize - nodeViewsSize..0 : -1) {
                     nodeViewAIDataSource.deleteData(nodeViewListSize - i)

@@ -164,7 +164,7 @@ public open class MarkdownAIBaseDataSource<T> <: IDataSource<T> {
      * @param index 位置
      * @param data 一条数据
      */
-    public func replaceDate(index: Int, data: T): Unit {
+    public func replaceData(index: Int, data: T): Unit {
         data_.set(index, data)
         notifyDataChange(index)
     }
@@ -175,7 +175,7 @@ public open class MarkdownAIBaseDataSource<T> <: IDataSource<T> {
      * @param index 位置
      * @param data 一条数据
      */
-    public func updata(index: Int, data: T): Unit {
+    public func update(index: Int, data: T): Unit {
         data_.set(index, data)
     }
 

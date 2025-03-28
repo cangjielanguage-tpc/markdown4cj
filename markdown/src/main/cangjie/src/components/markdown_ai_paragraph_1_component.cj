@@ -168,7 +168,7 @@ class MarkdownAIParagraph1Component {
                 }
 //                // 清空列表数据
 //                if (nodeViewList.size >= 3) {
-//                    nodeViewList.updata(nodeViewList.size - 3, null)
+//                    nodeViewList.update(nodeViewList.size - 3, null)
 //                }
             } else if (refreshNodeViewSize == nodeViewListSize) {
                 // 刷新数据的长度等于页面数据长度，需要更新当前数据
