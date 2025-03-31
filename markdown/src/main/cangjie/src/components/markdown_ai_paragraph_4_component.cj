@@ -95,11 +95,16 @@ class MarkdownAIParagraph4Component {
     var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
+        // 初始化刷新数据
         refreshData(nodeViews)
+        // 缓存当前控件
         paragraph4Components.append(this)
+        // 清除缓存数据
+        nodeViews.clear()
     }
 
     protected override func aboutToDisappear(): Unit {
+        // 清除当前控件
         paragraph4Components.removeIf(
             {
                 predicate => if (predicate.index == index && predicate.index2 == index2

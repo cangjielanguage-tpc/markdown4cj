@@ -57,12 +57,16 @@ class MarkdownAITableBlockRow1Component {
     var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
-        size = nodeViews.size
+        // 初始化刷新数据
         refreshData(nodeViews)
+        // 缓存当前控件
         tableRow1Components.append(this)
+        // 清除缓存数据
+        nodeViews.clear()
     }
 
     protected override func aboutToDisappear(): Unit {
+        // 清除当前控件
         tableRow1Components
             .removeIf(
                 {
@@ -101,42 +105,56 @@ class MarkdownAITableBlockRow1Component {
         .width(100.percent)
     }
 
-    public func refreshData(nodeViews: ArrayList<NodeView>): Unit {
+    /**
+     * 数据刷新
+     */
+    public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
+        let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
+        let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
         if (isFull) {
+            // 全量加载
             nodeViewList.clear()
-            nodeViewList.appendAll(nodeViews)
+            nodeViewList.appendAll(refreshNodeViews)
         } else {
-            if (nodeViews.size == 0) {
+            // 增量加载
+            if (refreshNodeViewSize == 0) {
                 return
             }
-            let size = nodeViewList.size
-            if (nodeViews.size > size) {
-                if (size != 0) {
-                    nodeViewList.remove(size - 1)
-                    nodeViewList.append(nodeViews[size - 1])
+            if (refreshNodeViewSize > nodeViewListSize) {
+                // 刷新数据的长度大于页面数据长度，需要添加数据
+                if (nodeViewListSize != 0) {
+                    // 更新页面最后一条数据
+                    nodeViewList.remove(nodeViewListSize - 1)
+                    nodeViewList.append(refreshNodeViews[nodeViewListSize - 1])
                 }
-                for (i in nodeViews.size - size..0 : -1) {
-                    nodeViewList.append(nodeViews[nodeViews.size - i])
+                // 循环添加所有新增数据
+                for (i in refreshNodeViewSize - nodeViewListSize..0 : -1) {
+                    nodeViewList.append(refreshNodeViews[refreshNodeViewSize - i])
                 }
-            } else if (nodeViews.size == size) {
+            } else if (refreshNodeViewSize == nodeViewListSize) {
+                // 刷新数据的长度等于页面数据长度，需要更新当前数据
                 var indexCell: Int64 = 0
-                for (i in 0..nodeViews.size) {
-                    if (nodeViews[i].children.size != 0) {
+                for (i in 0..refreshNodeViewSize) {
+                    if (refreshNodeViews[i].children.size != 0) {
                         indexCell = i
                     }
                 }
                 for (data in tableCell1Components) {
                     if (data.index == index && data.indexRow == indexRow && data.indexCell == indexCell) {
-                        data.refreshData(nodeViews[indexCell].children)
+                        data.refreshData(refreshNodeViews[indexCell].children)
                     }
                 }
             } else {
-                nodeViewList.remove(nodeViews.size - 1)
-                nodeViewList.append(nodeViews[nodeViews.size - 1])
-                for (i in size - nodeViews.size..0 : -1) {
-                    nodeViewList.remove(size - i)
+                // 刷新数据小于页面数据长度，需要删除数据
+                // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
+                nodeViewList.remove(refreshNodeViewSize - 1)
+                nodeViewList.append(refreshNodeViews[refreshNodeViewSize - 1])
+                // 循环删除所有多余数据
+                for (i in nodeViewListSize - refreshNodeViewSize..0 : -1) {
+                    nodeViewList.remove(nodeViewListSize - i)
                 }
             }
         }
+        size = nodeViewList.size // 更新列表长度
     }
 }

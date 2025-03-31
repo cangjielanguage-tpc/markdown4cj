@@ -233,6 +233,9 @@ class MarkdownAIListItem3Component {
         .layoutWeight(1)
     }
 
+    /**
+     * 数据刷新
+     */
     public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
         let refreshNodeViewSize = refreshNodeViews.size // 刷新进来的数据长度
         let dataSourceSize = nodeViewAIDataSource.totalCount() // 页面缓存的数据长度
