@@ -253,7 +253,7 @@ class MarkdownAIListItem1Component {
             if (refreshNodeViewSize > dataSourceSize) {
                 // 刷新数据的长度大于页面数据长度，需要添加数据
                 // 清除缓存数据
-                markdownAICacheConfiguration.clearList1()
+                markdownAICacheConfiguration.clearListItem1()
                 if (dataSourceSize != 0) {
                     // 更新页面最后一条数据
                     nodeViewAIDataSource.replaceData(dataSourceSize - 1, refreshNodeViews[dataSourceSize - 1])
@@ -280,16 +280,14 @@ class MarkdownAIListItem1Component {
                     // 围栏代码和缩进代码
                     for (data in markdownAICacheConfiguration.indentedCode2Components) {
                         if (data.index == index && data.index2 == index2 && data.indexItem == indexItem) {
-                            data.refreshData(getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[0],
-                                getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[1])
+                            data.refreshData(getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[0], getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[1])
                         }
                     }
                 } else if (refreshNodeViews[refreshNodeViewSize - 1].node is Heading && nodeViewAIDataSource.getData(dataSourceSize - 1).node is Heading) {
                     // 标题
                     for (data in markdownAICacheConfiguration.heading2Components) {
                         if (data.index == index && data.index2 == index2 && data.indexItem == indexItem) {
-                            data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children,
-                                (refreshNodeViews[refreshNodeViewSize - 1].node as Heading)().getLevel())
+                            data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children, (refreshNodeViews[refreshNodeViewSize - 1].node as Heading)().getLevel())
                         }
                     }
                 } else if (refreshNodeViews[refreshNodeViewSize - 1].node is Paragraph && nodeViewAIDataSource.getData(dataSourceSize - 1).node is Paragraph) {
@@ -320,7 +318,7 @@ class MarkdownAIListItem1Component {
             } else {
                 // 刷新数据小于页面数据长度，需要删除数据
                 // 清除缓存数据
-                markdownAICacheConfiguration.clearList1()
+                markdownAICacheConfiguration.clearListItem1()
                 // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
                 nodeViewAIDataSource.replaceData(refreshNodeViewSize - 1, refreshNodeViews[refreshNodeViewSize - 1])
                 // 循环删除所有多余数据

@@ -83,7 +83,7 @@ class MarkdownAIList1Component {
             .list1Components
             .removeIf(
                 {
-                    predicate => if (predicate.index == index && predicate.nodeViews.size == nodeViews.size) {
+                    predicate => if (predicate.index == index && predicate.size == size) {
                         true
                     } else {
                         false
