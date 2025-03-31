@@ -166,10 +166,6 @@ class MarkdownAIParagraph1Component {
                 for (i in refreshNodeViewSize - nodeViewListSize..0 : -1) {
                     nodeViewList.append(refreshNodeViews[refreshNodeViewSize - i])
                 }
-//                // 清空列表数据
-//                if (nodeViewList.size >= 3) {
-//                    nodeViewList.update(nodeViewList.size - 3, null)
-//                }
             } else if (refreshNodeViewSize == nodeViewListSize) {
                 // 刷新数据的长度等于页面数据长度，需要更新当前数据
                 // 有可能还需要刷新倒数第二条数据内容

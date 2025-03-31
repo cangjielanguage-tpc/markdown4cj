@@ -102,7 +102,6 @@ class MarkdownAITableBlockRow1Component {
     }
 
     public func refreshData(nodeViews: ArrayList<NodeView>): Unit {
-//        let nodeViews = nodeView.children
         if (isFull) {
             nodeViewList.clear()
             nodeViewList.appendAll(nodeViews)

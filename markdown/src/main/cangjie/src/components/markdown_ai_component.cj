@@ -394,48 +394,48 @@ public class MarkdownAIComponent {
                         }
 
                         // 清空列表数据
-                        if (nodeViewAIDataSource.totalCount() >= 3) {
-                            nodeViewAIDataSource.update(nodeViewAIDataSource.totalCount() - 3, null)
-                        }
+//                        if (nodeViewAIDataSource.totalCount() >= 3) {
+//                            nodeViewAIDataSource.update(nodeViewAIDataSource.totalCount() - 3, null)
+//                        }
                     } else if (nodeViewsSize == nodeViewListSize) {
                         // 刷新数据的长度等于页面数据长度，需要更新当前数据
                         let index: Int64 = nodeViewListSize - 1
-                        if ((nodeViews[nodeViewsSize - 1].node is BulletList && nodeViewAIDataSource.getAllData()[nodeViewListSize - 1].node is BulletList) || (nodeViews[nodeViewsSize - 1].node is OrderedList && nodeViewAIDataSource.getAllData()[nodeViewListSize - 1].node is OrderedList)) {
+                        if ((nodeViews[nodeViewsSize - 1].node is BulletList && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is BulletList) || (nodeViews[nodeViewsSize - 1].node is OrderedList && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is OrderedList)) {
                             // 有序列表和无序列表
                             for (data in markdownAICacheConfiguration.list1Components) {
                                 if (data.index == index) {
                                     data.refreshData(nodeViews[nodeViewsSize - 1].children)
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is BlockQuote && nodeViewAIDataSource.getAllData()[nodeViewListSize - 1].node is BlockQuote)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is BlockQuote && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is BlockQuote)) {
                             // 块引用
                             for (data in markdownAICacheConfiguration.quote1Components) {
                                 if (data.index == index) {
                                     data.refreshData(nodeViews[nodeViewsSize - 1].children)
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is Heading && nodeViewAIDataSource.getAllData()[nodeViewListSize - 1].node is Heading)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is Heading && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is Heading)) {
                             // 标题
                             for (data in markdownAICacheConfiguration.heading1Components) {
                                 if (data.index == index) {
                                     data.refreshData(nodeViews[nodeViewsSize - 1].children, (nodeViews[nodeViewsSize - 1].node as Heading)().getLevel())
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is Paragraph && nodeViewAIDataSource.getAllData()[nodeViewListSize - 1].node is Paragraph)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is Paragraph && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is Paragraph)) {
                             // 段落
                             for (data in markdownAICacheConfiguration.paragraph1Components) {
                                 if (data.index == index) {
                                     data.refreshData(nodeViews[nodeViewsSize - 1].children)
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is TableBlock && nodeViewAIDataSource.getAllData()[nodeViewListSize - 1].node is TableBlock)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is TableBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is TableBlock)) {
                             // 表格
                             for (data in markdownAICacheConfiguration.table1Components) {
                                 if (data.index == index) {
                                     data.refreshData(tableList(nodeViews[nodeViewsSize - 1].children))
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is FencedCodeBlock && nodeViewAIDataSource.getAllData()[nodeViewListSize - 1].node is FencedCodeBlock) || (nodeViews[nodeViewsSize - 1].node is IndentedCodeBlock && nodeViewAIDataSource.getAllData()[nodeViewListSize - 1].node is IndentedCodeBlock)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is FencedCodeBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is FencedCodeBlock) || (nodeViews[nodeViewsSize - 1].node is IndentedCodeBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is IndentedCodeBlock)) {
                             // 围栏代码和缩进代码
                             for (data in markdownAICacheConfiguration.indentedCode1Components) {
                                 if (data.index == index) {

@@ -172,9 +172,9 @@ class MarkdownAIList1Component {
                     nodeViewAIDataSource.addData(refreshNodeViews[refreshNodeViewSize - i])
                 }
                 // 清空列表数据
-                if (nodeViewAIDataSource.totalCount() >= 3) {
-                    nodeViewAIDataSource.update(nodeViewAIDataSource.totalCount() - 3, null)
-                }
+//                if (nodeViewAIDataSource.totalCount() >= 3) {
+//                    nodeViewAIDataSource.update(nodeViewAIDataSource.totalCount() - 3, null)
+//                }
             } else if (refreshNodeViewSize == dataSourceSize) {
                 // 刷新数据的长度等于页面数据长度，需要更新当前数据
                 let indexItem: Int64 = dataSourceSize - 1

@@ -81,12 +81,16 @@ public class MarkdownAIQuote3Component {
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
     protected override func aboutToAppear(): Unit {
-        size = nodeViews.size
+        // 初始化刷新数据
         refreshData(nodeViews)
+        // 缓存当前控件
         markdownAICacheConfiguration.quote3Components.append(this)
+        // 清除缓存数据
+        nodeViews.clear()
     }
 
     protected override func aboutToDisappear(): Unit {
+        // 清除当前控件
         markdownAICacheConfiguration
             .quote3Components
             .removeIf(
@@ -240,55 +244,59 @@ public class MarkdownAIQuote3Component {
         .alignListItem(ListItemAlign.Start)
     }
 
-    public func refreshData(nodeViews: ArrayList<NodeView>): Unit {
+    public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
+        let refreshNodeViewSize = refreshNodeViews.size // 刷新进来的数据长度
+        let dataSourceSize = nodeViewAIDataSource.totalCount() // 页面缓存的数据长度
         if (isFull) {
+            // 全量加载
             nodeViewAIDataSource.clear()
-            nodeViewAIDataSource.addDatas(nodeViews)
+            nodeViewAIDataSource.addDatas(refreshNodeViews)
         } else {
-            if (nodeViews.size == 0) {
+            // 增量加载
+            if (refreshNodeViewSize == 0) {
                 return
             }
-            if (nodeViews.size > nodeViewAIDataSource.totalCount()) {
-                if (nodeViewAIDataSource.totalCount() != 0) {
-                    nodeViewAIDataSource.replaceData(nodeViewAIDataSource.totalCount() - 1,
-                        nodeViews[nodeViewAIDataSource.totalCount() - 1])
+            if (refreshNodeViewSize > dataSourceSize) {
+                // 刷新数据的长度大于页面数据长度，需要添加数据
+                if (dataSourceSize != 0) {
+                    // 更新页面最后一条数据
+                    nodeViewAIDataSource.replaceData(dataSourceSize - 1, refreshNodeViews[dataSourceSize - 1])
                 }
-                for (i in nodeViews.size - nodeViewAIDataSource.totalCount()..0 : -1) {
-                    nodeViewAIDataSource.addData(nodeViews[nodeViews.size - i])
+                // 循环添加所有新增数据
+                for (i in refreshNodeViewSize - dataSourceSize..0 : -1) {
+                    nodeViewAIDataSource.addData(refreshNodeViews[refreshNodeViewSize - i])
                 }
-            } else if (nodeViews.size == nodeViewAIDataSource.totalCount()) {
-                if ((nodeViews[nodeViews.size - 1].node is Heading &&
-                    nodeViewAIDataSource.getAllData()[nodeViewAIDataSource.totalCount() - 1].node is Heading)) {
+            } else if (refreshNodeViewSize == dataSourceSize) {
+                // 刷新数据的长度等于页面数据长度，需要更新当前数据
+                    let index4: Int64 = dataSourceSize - 1
+                if (refreshNodeViews[refreshNodeViewSize - 1].node is Heading && nodeViewAIDataSource.getData(dataSourceSize - 1).node is Heading) {
                     // 标题
-                    let index4: Int64 = nodeViewAIDataSource.totalCount() - 1
                     for (data in markdownAICacheConfiguration.heading4Components) {
-                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.index4 ==
-                            index4 && data.indexItem == indexItem && data.indexItem2 == indexItem2 && data.indexItem3 ==
-                            -1) {
-                            data.refreshData(nodeViews[nodeViews.size - 1].children, (nodeViews[nodeViews.size - 1].node as Heading)().getLevel())
+                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.index4 == index4 && data.indexItem == indexItem && data.indexItem2 == indexItem2 && data.indexItem3 == -1) {
+                            data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children, (refreshNodeViews[refreshNodeViewSize - 1].node as Heading)().getLevel())
                         }
                     }
-                } else if ((nodeViews[nodeViews.size - 1].node is Paragraph &&
-                    nodeViewAIDataSource.getAllData()[nodeViewAIDataSource.totalCount() - 1].node is Paragraph)) {
+                } else if (refreshNodeViews[refreshNodeViewSize - 1].node is Paragraph && nodeViewAIDataSource.getData(dataSourceSize - 1).node is Paragraph) {
                     // 段落
-                    let index4: Int64 = nodeViewAIDataSource.totalCount() - 1
                     for (data in markdownAICacheConfiguration.paragraph4Components) {
-                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.index4 ==
-                            index4 && data.indexItem == indexItem && data.indexItem2 == indexItem2 && data.indexItem3 ==
-                            -1) {
-                            data.refreshData(nodeViews[nodeViews.size - 1].children)
+                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.index4 == index4 && data.indexItem == indexItem && data.indexItem2 == indexItem2 && data.indexItem3 == -1) {
+                            data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
                         }
                     }
                 } else {
-                    nodeViewAIDataSource.replaceData(nodeViewAIDataSource.totalCount() - 1, nodeViews[nodeViews.size - 1]
-                    )
+                    // 其他节点
+                    nodeViewAIDataSource.replaceData(dataSourceSize - 1, refreshNodeViews[refreshNodeViewSize - 1])
                 }
             } else {
-                nodeViewAIDataSource.replaceData(nodeViews.size - 1, nodeViews[nodeViews.size - 1])
-                for (i in nodeViewAIDataSource.totalCount() - nodeViews.size..0 : -1) {
-                    nodeViewAIDataSource.deleteData(nodeViewAIDataSource.totalCount() - i)
+                // 刷新数据小于页面数据长度，需要删除数据
+                // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
+                nodeViewAIDataSource.replaceData(refreshNodeViewSize - 1, refreshNodeViews[refreshNodeViewSize - 1])
+                // 循环删除所有多余数据
+                for (i in dataSourceSize - refreshNodeViewSize..0 : -1) {
+                    nodeViewAIDataSource.deleteData(dataSourceSize - i)
                 }
             }
         }
+        size = nodeViewAIDataSource.totalCount() // 更新列表长度
     }
 }
