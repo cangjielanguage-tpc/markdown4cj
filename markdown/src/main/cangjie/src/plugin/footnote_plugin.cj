@@ -103,13 +103,13 @@ class FootnotePostProcessor <: PostProcessor {
 
 /* 生成Footnode 关联FootnodeBlock FootnodeBlock生成定位序号 */
 class FootnoteVisitor <: AbstractVisitor {
-    let noteMap = HashMap<String, Footnote>()
+    let notes = ArrayList<Footnote>()
     let blockMap = HashMap<String, FootnoteBlock>()
     static let FOOTNOTE = Regex(#"\[\^.+?\]"#)
     public func visit(n: Document): Unit {
         visitChildren(n)
-        for ((noteid, footnote) in noteMap) {
-            let block = blockMap.get(noteid) ?? continue
+        for (footnote in notes) {
+            let block = blockMap.get(footnote.noteid) ?? continue
             footnote.block = block
         }
     }
@@ -126,6 +126,7 @@ class FootnoteVisitor <: AbstractVisitor {
                 blockMap.put(f.noteid, f)
             case _ => ()
         }
+        visitChildren(n)
     }
     public func visit(n: Text): Unit {
         let line = n.getLiteral()
@@ -137,7 +138,7 @@ class FootnoteVisitor <: AbstractVisitor {
                 n.insertBefore(text)
                 let footnote = Footnote(line[pos.start + 2..pos.end - 1])
                 n.insertBefore(footnote)
-                noteMap.put(footnote.noteid, footnote)
+                notes.append(footnote)
                 i = pos.end
             }
             n.setLiteral(line[i..])
