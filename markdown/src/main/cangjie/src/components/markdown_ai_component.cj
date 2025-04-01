@@ -107,12 +107,13 @@ public class MarkdownAIComponent {
                         // 标题
                         ListItem() {
                             if (isFull) {
-                                baseHeadingComponent(
-                                    markdownAIConfiguration,
-                                    item,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    componentWidth
+                                MarkdownAIHeadingComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    nodeViews: item.children,
+                                    level: (item.node as Heading)().getLevel(),
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    componentWidth: componentWidth
                                 )
                             } else {
                                 MarkdownAIHeading1Component(
@@ -132,17 +133,19 @@ public class MarkdownAIComponent {
                         // 段落
                         ListItem() {
                             if (isFull) {
-                                baseParagraphComponent(
-                                    markdownAIConfiguration,
-                                    item,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    componentWidth
+                                MarkdownAIParagraphComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    nodeViews: item.children,
+                                    footnoteBlock: Option<FootnoteBlock>.None,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    componentWidth: componentWidth
                                 )
                             } else {
                                 MarkdownAIParagraph1Component(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeViews: item.children,
+                                    footnoteBlock: Option<FootnoteBlock>.None,
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     componentWidth: componentWidth,
@@ -156,13 +159,13 @@ public class MarkdownAIComponent {
                         // 无序列表（包含任务列表）
                         ListItem() {
                             if (isFull) {
-                                baseListComponent(
-                                    markdownAIConfiguration,
-                                    item,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    componentWidth,
-                                    isFull
+                                MarkdownAIListComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    listNodeView: item,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    componentWidth: componentWidth,
+                                    isFull: isFull
                                 )
                             } else {
                                 MarkdownAIList1Component(
@@ -182,13 +185,13 @@ public class MarkdownAIComponent {
                         // 有序列表（包含TOC目录列表）
                         ListItem() {
                             if (isFull) {
-                                baseListComponent(
-                                    markdownAIConfiguration,
-                                    item,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    componentWidth,
-                                    isFull
+                                MarkdownAIListComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    listNodeView: item,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    componentWidth: componentWidth,
+                                    isFull: isFull
                                 )
                             } else {
                                 MarkdownAIList1Component(
@@ -208,13 +211,13 @@ public class MarkdownAIComponent {
                         // 块引用
                         ListItem() {
                             if (isFull) {
-                                baseListComponent(
-                                    markdownAIConfiguration,
-                                    item,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    componentWidth,
-                                    isFull
+                                MarkdownAIListComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    listNodeView: item,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    componentWidth: componentWidth,
+                                    isFull: isFull
                                 )
                             } else {
                                 MarkdownAIQuote1Component(
@@ -233,12 +236,12 @@ public class MarkdownAIComponent {
                         // 围栏代码块
                         ListItem() {
                             if (isFull) {
-                                baseFencedCodeBlockComponent(
-                                    markdownAIConfiguration,
-                                    (item.node as FencedCodeBlock)().getLiteral(),
-                                    (item.node as FencedCodeBlock)().getInfo(),
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
+                                MarkdownAIFencedCodeBlockComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    codeText: (item.node as FencedCodeBlock)().getLiteral(),
+                                    info: (item.node as FencedCodeBlock)().getInfo(),
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
                                 )
                             } else {
                                 MarkdownAIIndentedCodeBlock1Component(
@@ -257,12 +260,12 @@ public class MarkdownAIComponent {
                         // 缩进代码块
                         ListItem() {
                             if (isFull) {
-                                baseFencedCodeBlockComponent(
-                                    markdownAIConfiguration,
-                                    (item.node as IndentedCodeBlock)().getLiteral(),
-                                    Option<String>.None,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
+                                MarkdownAIFencedCodeBlockComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    codeText: (item.node as IndentedCodeBlock)().getLiteral(),
+                                    info: Option<String>.None,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
                                 )
                             } else {
                                 MarkdownAIIndentedCodeBlock1Component(
@@ -281,13 +284,13 @@ public class MarkdownAIComponent {
                         // 表格
                         ListItem() {
                             if (isFull) {
-                                baseTableBlockComponent(
-                                    markdownAIConfiguration,
-                                    item,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    componentWidth,
-                                    isFull
+                                MarkdownAITableBlockComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    tableNodeView: item,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    componentWidth: componentWidth,
+                                    isFull: isFull
                                 )
                             } else {
                                 MarkdownAITableBlock1Component(
@@ -307,35 +310,48 @@ public class MarkdownAIComponent {
                     } else if (item.node is ThematicBreak) {
                         // 分割线
                         ListItem() {
-                            baseThematicBreakComponent(markdownAIConfiguration)
+                            Divider()
+                                // 设置分割线颜色
+                                .color(markdownAIConfiguration.markdownAITheme.thematicBreakColor)
+                                // 设置分割线宽度
+                                .strokeWidth(markdownAIConfiguration.markdownAITheme.thematicBreakHeight)
+                                // 设置外边距属性
+                                .margin(top: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins, bottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins)
                         }
                     } else if (item.node is LatexMathBlock) {
                         // 单行的数学公式
                         ListItem() {
-                            baseLatexMathBlockComponent(
-                                markdownAIConfiguration,
-                                (item.node as LatexMathBlock)().latex,
-                                (item.node as LatexMathBlock)().isClosed,
-                                markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
-                            )
+                            if ((item.node as LatexMathBlock)().isClosed) {
+                                // 结束显示数学公式
+                                MarkdownAILatexMathBlockComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    latexStr: (item.node as LatexMathBlock)().latex,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
+                                )
+                            } else {
+                                // 没结束显示纯文本
+                                Text((item.node as LatexMathBlock)().latex)
+                            }
                         }
                     } else if (item.node is FootnoteBlock) {
                         // 脚注内容
                         ListItem() {
-                            if(item.children.size > 0 && item.children[0].node is Paragraph){
+                            if (item.children.size > 0 && item.children[0].node is Paragraph) {
                                 if (isFull) {
-                                    baseParagraphComponent(
-                                        markdownAIConfiguration,
-                                        item.children[0],
-                                        markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                        markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                        componentWidth
+                                    MarkdownAIParagraphComponent(
+                                        markdownAIConfiguration: markdownAIConfiguration,
+                                        nodeViews: item.children[0].children,
+                                        footnoteBlock: (item.node as FootnoteBlock)(),
+                                        marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                        marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                        componentWidth: componentWidth
                                     )
                                 } else {
                                     MarkdownAIParagraph1Component(
                                         markdownAIConfiguration: markdownAIConfiguration,
                                         nodeViews: item.children[0].children,
+                                        footnoteBlock: (item.node as FootnoteBlock)(),
                                         marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                         marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                         componentWidth: componentWidth,
@@ -344,7 +360,7 @@ public class MarkdownAIComponent {
                                         paragraph1Components: markdownAICacheConfiguration.paragraph1Components
                                     )
                                 }
-                            }else {
+                            } else {
                                 Text("")
                             }
                         }
@@ -423,53 +439,65 @@ public class MarkdownAIComponent {
                             nodeViewAIDataSource.addData(nodeViews[nodeViewsSize - i])
                         }
 
-                        // 清空列表数据
-//                        if (nodeViewAIDataSource.totalCount() >= 3) {
-//                            nodeViewAIDataSource.update(nodeViewAIDataSource.totalCount() - 3, null)
-//                        }
+                    // 清空列表数据
+                    //                        if (nodeViewAIDataSource.totalCount() >= 3) {
+                    //                            nodeViewAIDataSource.update(nodeViewAIDataSource.totalCount() - 3, null)
+                    //                        }
                     } else if (nodeViewsSize == nodeViewListSize) {
                         // 刷新数据的长度等于页面数据长度，需要更新当前数据
                         let index: Int64 = nodeViewListSize - 1
-                        if ((nodeViews[nodeViewsSize - 1].node is BulletList && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is BulletList) || (nodeViews[nodeViewsSize - 1].node is OrderedList && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is OrderedList)) {
+                        if ((nodeViews[nodeViewsSize - 1].node is BulletList &&
+                            nodeViewAIDataSource.getData(nodeViewListSize - 1).node is BulletList) || (nodeViews[nodeViewsSize -
+                                1].node is OrderedList &&
+                            nodeViewAIDataSource.getData(nodeViewListSize - 1).node is OrderedList)) {
                             // 有序列表和无序列表
                             for (data in markdownAICacheConfiguration.list1Components) {
                                 if (data.index == index) {
                                     data.refreshData(nodeViews[nodeViewsSize - 1].children)
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is BlockQuote && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is BlockQuote)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is BlockQuote &&
+                            nodeViewAIDataSource.getData(nodeViewListSize - 1).node is BlockQuote)) {
                             // 块引用
                             for (data in markdownAICacheConfiguration.quote1Components) {
                                 if (data.index == index) {
                                     data.refreshData(nodeViews[nodeViewsSize - 1].children)
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is Heading && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is Heading)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is Heading &&
+                            nodeViewAIDataSource.getData(nodeViewListSize - 1).node is Heading)) {
                             // 标题
                             for (data in markdownAICacheConfiguration.heading1Components) {
                                 if (data.index == index) {
-                                    data.refreshData(nodeViews[nodeViewsSize - 1].children, (nodeViews[nodeViewsSize - 1].node as Heading)().getLevel())
+                                    data.refreshData(nodeViews[nodeViewsSize - 1].children,
+                                        (nodeViews[nodeViewsSize - 1].node as Heading)().getLevel())
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is Paragraph && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is Paragraph)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is Paragraph &&
+                            nodeViewAIDataSource.getData(nodeViewListSize - 1).node is Paragraph)) {
                             // 段落
                             for (data in markdownAICacheConfiguration.paragraph1Components) {
                                 if (data.index == index) {
                                     data.refreshData(nodeViews[nodeViewsSize - 1].children)
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is TableBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is TableBlock)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is TableBlock &&
+                            nodeViewAIDataSource.getData(nodeViewListSize - 1).node is TableBlock)) {
                             // 表格
                             for (data in markdownAICacheConfiguration.table1Components) {
                                 if (data.index == index) {
                                     data.refreshData(tableList(nodeViews[nodeViewsSize - 1].children))
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is FencedCodeBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is FencedCodeBlock) || (nodeViews[nodeViewsSize - 1].node is IndentedCodeBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is IndentedCodeBlock)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is FencedCodeBlock &&
+                            nodeViewAIDataSource.getData(nodeViewListSize - 1).node is FencedCodeBlock) || (nodeViews[nodeViewsSize -
+                                1].node is IndentedCodeBlock &&
+                            nodeViewAIDataSource.getData(nodeViewListSize - 1).node is IndentedCodeBlock)) {
                             // 围栏代码和缩进代码
                             for (data in markdownAICacheConfiguration.indentedCode1Components) {
                                 if (data.index == index) {
-                                    data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1])
+                                    data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0],
+                                        getCodeInfo(nodeViews[nodeViewsSize - 1])[1])
                                 }
                             }
                         } else {

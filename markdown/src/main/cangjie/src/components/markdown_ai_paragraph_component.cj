@@ -24,6 +24,11 @@ class MarkdownAIParagraphComponent {
     var nodeViews: ArrayList<NodeView>
 
     /**
+     * 脚注
+     */
+    var footnoteBlock: Option<FootnoteBlock> = Option<FootnoteBlock>.None
+
+    /**
      * 上边距 - 单位vp
      */
     var marginTop: Float64
@@ -40,6 +45,15 @@ class MarkdownAIParagraphComponent {
 
     func build() {
         Text() {
+            if(footnoteBlock.isSome()){
+                Span("[^${footnoteBlock().noteid}]")
+                    // 设置文本尺寸
+                    .fontSize(markdownAIConfiguration.markdownAITheme.paragraphTextSize)
+                    // 设置文本的字体粗细
+                    .fontWeight(FontWeight.W400)
+                    // 设置文本颜色
+                    .fontColor(markdownAIConfiguration.markdownAITheme.paragraphTextColor)
+            }
             ForEach(
                 nodeViews,
                 itemGeneratorFunc: {
