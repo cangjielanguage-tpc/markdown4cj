@@ -28,8 +28,8 @@ public class FootnotePlugin <: AbstractMarkdownPlugin {
 }
 
 public class Footnote <: CustomNode {
-    Footnote(let noteid: String) {}
-    var block: ?FootnoteBlock = None
+    Footnote(public let noteid: String) {}
+    public var block: ?FootnoteBlock = None
     public func getNodeType(): String {
         "Footnote"
     }
@@ -39,7 +39,7 @@ public class Footnote <: CustomNode {
 }
 
 public class FootnoteBlock <: CustomBlock {
-    FootnoteBlock(let noteid: String) {}
+    FootnoteBlock(public let noteid: String) {}
     public var blockIndex = -1
     public func getNodeType(): String {
         "FootnoteBlock"
