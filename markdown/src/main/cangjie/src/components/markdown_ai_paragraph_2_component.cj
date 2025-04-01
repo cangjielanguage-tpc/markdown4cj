@@ -101,8 +101,8 @@ class MarkdownAIParagraph2Component {
             ForEach(
                 nodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                        // 文本
+                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText || item.node is Footnote) {
+                        // 文本或者脚注
                         paragraphTextComponent(item, markdownAIConfiguration)
                     } else if (item.node is Code) {
                         // 内联代码

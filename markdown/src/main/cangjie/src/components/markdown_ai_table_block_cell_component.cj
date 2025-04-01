@@ -35,8 +35,8 @@ class MarkdownAITableBlockCellComponent {
             ForEach(
                 nodeView.children,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                        // 文本
+                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText || item.node is Footnote) {
+                        // 文本或者脚注
                         if ((nodeView.node as TableCell)().isHeader()) {
                             tableComponentText(item, true, markdownAIConfiguration)
                         } else {

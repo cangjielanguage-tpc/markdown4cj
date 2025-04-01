@@ -42,7 +42,13 @@ func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownA
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
-        .onClick {evt => linkOnClick(nodeView, markdownAIConfiguration.linkCallback)}
+        .onClick {evt =>
+            if(nodeView.link.isSome()){
+                linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
+            } else if(nodeView.node is Footnote){
+
+            }
+        }
 }
 
 /**
@@ -92,7 +98,13 @@ func paragraphTextComponent(nodeView: NodeView, markdownAIConfiguration: Markdow
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
-        .onClick {evt => linkOnClick(nodeView, markdownAIConfiguration.linkCallback)}
+        .onClick {evt =>
+            if(nodeView.link.isSome()){
+                linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
+            } else if(nodeView.node is Footnote){
+
+            }
+        }
 }
 
 /**
@@ -142,7 +154,13 @@ func tableComponentText(nodeView: NodeView, isHeader: Bool, markdownAIConfigurat
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
-        .onClick {evt => linkOnClick(nodeView, markdownAIConfiguration.linkCallback)}
+        .onClick {evt =>
+            if(nodeView.link.isSome()){
+                linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
+            } else if(nodeView.node is Footnote){
+
+            }
+        }
 }
 
 /**

@@ -54,6 +54,9 @@ func spanText(nodeView: NodeView): String {
     } else if (nodeView.node is HeadLink) {
         // TOC列表，title不可能为None
         return (nodeView.node as HeadLink)().getTitle()()
+    } else if (nodeView.node is Footnote) {
+        // 脚注
+        return (nodeView.node as Footnote)().noteid
     } else {
         return ""
     }
@@ -205,7 +208,7 @@ func spanFontColor(nodeView: NodeView, isCode: Bool, markdownAITheme: MarkdownAI
  * @return 返回需要显示的字体颜色
  */
 func spanTextFontColor(nodeView: NodeView, isCode: Bool, markdownAITheme: MarkdownAITheme, isHeading: Bool): Color {
-    if (nodeView.link.isSome() || nodeView.node is HeadLink) {
+    if (nodeView.link.isSome() || nodeView.node is HeadLink || nodeView.node is Footnote) {
         return markdownAITheme.linkColor
     } else {
         if (isCode) {
@@ -229,7 +232,7 @@ func spanTextFontColor(nodeView: NodeView, isCode: Bool, markdownAITheme: Markdo
  */
 func spanDecoration(nodeView: NodeView, markdownAITheme: MarkdownAITheme): (TextDecorationType, Color) {
     // 是否是链接并且样式是否设置下划线
-    if (nodeView.link.isSome() && markdownAITheme.isLinkUnderlined) {
+    if ((nodeView.link.isSome() || nodeView.node is Footnote) && markdownAITheme.isLinkUnderlined) {
         // 是否是删除线
         if (nodeView.props.isSome() && nodeView.props().get("strikethrough").isSome()) {
             // TODO 需要同时设置下划线和中划线

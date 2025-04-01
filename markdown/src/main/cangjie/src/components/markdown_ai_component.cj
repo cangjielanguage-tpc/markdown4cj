@@ -62,6 +62,8 @@ public class MarkdownAIComponent {
         .usePlugin(LatexMathPlugin.create())
         // 链接
         .usePlugin(LinkifyPlugin.create())
+        // 脚注
+        .usePlugin(FootnotePlugin.create())
         .build()
 
     /**
@@ -317,6 +319,34 @@ public class MarkdownAIComponent {
                                 markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
                             )
+                        }
+                    } else if (item.node is FootnoteBlock) {
+                        // 脚注内容
+                        ListItem() {
+                            if(item.children.size > 0 && item.children[0].node is Paragraph){
+                                if (isFull) {
+                                    baseParagraphComponent(
+                                        markdownAIConfiguration,
+                                        item.children[0],
+                                        markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                        markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                        componentWidth
+                                    )
+                                } else {
+                                    MarkdownAIParagraph1Component(
+                                        markdownAIConfiguration: markdownAIConfiguration,
+                                        nodeViews: item.children[0].children,
+                                        marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                        marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                        componentWidth: componentWidth,
+                                        isFull: isFull,
+                                        index: idx,
+                                        paragraph1Components: markdownAICacheConfiguration.paragraph1Components
+                                    )
+                                }
+                            }else {
+                                Text("")
+                            }
                         }
                     } else {
                         // TODO 其他节点
