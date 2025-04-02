@@ -153,7 +153,7 @@ class MarkdownAIListItemComponent {
                             } else {
                                 MarkdownAIIndentedCodeBlockComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
-                                    codeText: (item.node as IndentedCodeBlock)().getLiteral(),
+                                    codeText: (item.node as FencedCodeBlock)().getLiteral(),
                                     info: (item.node as FencedCodeBlock)().getInfo(),
                                     marginTop: 0.0,
                                     marginBottom: 0.0,
