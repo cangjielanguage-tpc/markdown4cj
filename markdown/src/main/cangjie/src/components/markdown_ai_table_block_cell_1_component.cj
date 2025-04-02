@@ -99,9 +99,9 @@ class MarkdownAITableBlockCell1Component {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText || item.node is Footnote) {
                         // 文本或者脚注
                         if (isHeader) {
-                            tableComponentText(item, true, markdownAIConfiguration)
+                            tableComponentText(item, true, markdownAIConfiguration, fontCallback)
                         } else {
-                            tableComponentText(item, false, markdownAIConfiguration)
+                            tableComponentText(item, false, markdownAIConfiguration, fontCallback)
                         }
                     } else if (item.node is Code) {
                         // 内联代码

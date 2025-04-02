@@ -98,7 +98,7 @@ class MarkdownAIParagraph1Component {
     func build() {
         Text() {
             if(footnoteBlock.isSome()){
-                Span("[^${footnoteBlock().noteid}]")
+                Span("[^${footnoteBlock().noteid}]: ")
                     // 设置文本尺寸
                     .fontSize(markdownAIConfiguration.markdownAITheme.paragraphTextSize)
                     // 设置文本的字体粗细
@@ -111,7 +111,7 @@ class MarkdownAIParagraph1Component {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText || item.node is Footnote) {
                         // 文本或者脚注
-                        paragraphTextComponent(item, markdownAIConfiguration)
+                        paragraphTextComponent(item, markdownAIConfiguration, fontCallback)
                     } else if (item.node is Code) {
                         // 内联代码
                         paragraphCodeComponent(item, markdownAIConfiguration)

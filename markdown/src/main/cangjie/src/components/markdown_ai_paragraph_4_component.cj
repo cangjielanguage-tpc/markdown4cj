@@ -129,7 +129,7 @@ class MarkdownAIParagraph4Component {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText || item.node is Footnote) {
                         // 文本或者脚注
-                        paragraphTextComponent(item, markdownAIConfiguration)
+                        paragraphTextComponent(item, markdownAIConfiguration, fontCallback)
                     } else if (item.node is Code) {
                         // 内联代码
                         paragraphCodeComponent(item, markdownAIConfiguration)

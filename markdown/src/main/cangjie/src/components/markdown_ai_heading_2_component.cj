@@ -142,7 +142,7 @@ class MarkdownAIHeading2Component {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText || item.node is Footnote) {
                         // 文本或者脚注
-                        headingTextComponent(item, markdownAIConfiguration, level)
+                        headingTextComponent(item, markdownAIConfiguration, level, fontCallback)
                     } else if (item.node is Code) {
                         // 内联代码
                         headingCodeComponent(item, markdownAIConfiguration)

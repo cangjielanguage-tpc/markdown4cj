@@ -360,7 +360,7 @@ public class MarkdownAIComponent {
                         // 脚注内容
                         ListItem() {
                             if (item.children.size > 0 && item.children[0].node is Paragraph) {
-                                if (isFull) {
+                                if (isFull && addMap(idx, (item.node as FootnoteBlock)().noteid)) {
                                     MarkdownAIParagraphComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
                                         nodeViews: item.children[0].children,
@@ -403,6 +403,11 @@ public class MarkdownAIComponent {
         .alignListItem(ListItemAlign.Start)
         // 设置组件自身的宽度
         .width(100.percent)
+    }
+
+    func addMap(index:Int64,noteid:String):Bool{
+        indexHashMap.put(noteid, index)
+        return true
     }
 
     /**

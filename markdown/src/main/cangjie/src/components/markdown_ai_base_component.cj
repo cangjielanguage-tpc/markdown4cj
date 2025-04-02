@@ -12,7 +12,7 @@ import ohos.state_macro_manage.*
  * 标题文本
  */
 @Builder
-func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, level: Int64) {
+func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, level: Int64, fontCallback: (String) -> Unit) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -34,7 +34,7 @@ func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownA
             if(nodeView.link.isSome()){
                 linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
             } else if(nodeView.node is Footnote){
-
+                fontCallback((nodeView.node as Footnote)().noteid)
             }
         }
 }
@@ -68,7 +68,7 @@ func headingCodeComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownA
  * 段落文本
  */
 @Builder
-func paragraphTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration) {
+func paragraphTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, fontCallback: (String) -> Unit) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -90,7 +90,7 @@ func paragraphTextComponent(nodeView: NodeView, markdownAIConfiguration: Markdow
             if(nodeView.link.isSome()){
                 linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
             } else if(nodeView.node is Footnote){
-
+                fontCallback((nodeView.node as Footnote)().noteid)
             }
         }
 }
@@ -124,7 +124,7 @@ func paragraphCodeComponent(nodeView: NodeView, markdownAIConfiguration: Markdow
  * 表格文本
  */
 @Builder
-func tableComponentText(nodeView: NodeView, isHeader: Bool, markdownAIConfiguration: MarkdownAIConfiguration) {
+func tableComponentText(nodeView: NodeView, isHeader: Bool, markdownAIConfiguration: MarkdownAIConfiguration, fontCallback: (String) -> Unit) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -146,7 +146,7 @@ func tableComponentText(nodeView: NodeView, isHeader: Bool, markdownAIConfigurat
             if(nodeView.link.isSome()){
                 linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
             } else if(nodeView.node is Footnote){
-
+                fontCallback((nodeView.node as Footnote)().noteid)
             }
         }
 }
