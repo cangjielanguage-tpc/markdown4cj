@@ -404,7 +404,7 @@ public class MarkdownAIComponent {
                             // 表格
                             for (data in markdownAICacheConfiguration.tableComponents) {
                                 if (isListItem(indexList, data.indexList, index)) {
-                                    data.refreshData(nodeViews[nodeViewsSize - 1].children)
+                                    data.refreshData(tableList(nodeViews[nodeViewsSize - 1].children))
                                 }
                             }
                         } else if ((nodeViews[nodeViewsSize - 1].node is FencedCodeBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is FencedCodeBlock) || (nodeViews[nodeViewsSize - 1].node is IndentedCodeBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is IndentedCodeBlock)) {
