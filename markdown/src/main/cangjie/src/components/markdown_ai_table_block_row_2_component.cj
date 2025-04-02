@@ -61,6 +61,11 @@ class MarkdownAITableBlockRow2Component {
     var tableCell2Components: ArrayList<MarkdownAITableBlockCell2Component>
 
     /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     @State
@@ -99,6 +104,7 @@ class MarkdownAITableBlockRow2Component {
                         MarkdownAITableBlockCell2Component(
                             markdownAIConfiguration: markdownAIConfiguration,
                             nodeViews: item.children,
+                            fontCallback: fontCallback,
                             isFull: isFull,
                             isHeader:(item.node as TableCell)().isHeader(),
                             alignment:(item.node as TableCell)().getAlignment(),

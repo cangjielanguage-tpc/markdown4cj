@@ -74,6 +74,11 @@ class MarkdownAIList2Component {
     var markdownAICacheConfiguration: MarkdownAICacheConfiguration
 
     /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
@@ -128,6 +133,7 @@ class MarkdownAIList2Component {
                                 nodeViews: item.children,
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                fontCallback: fontCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 index: index,

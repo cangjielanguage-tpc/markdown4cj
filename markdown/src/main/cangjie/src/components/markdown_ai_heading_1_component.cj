@@ -65,6 +65,11 @@ class MarkdownAIHeading1Component {
     var heading1Components: ArrayList<MarkdownAIHeading1Component>
 
     /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     @State
@@ -98,7 +103,11 @@ class MarkdownAIHeading1Component {
 
             // 一级二级标题是否显示下划线
             if ((level == 1 || level == 2) && markdownAIConfiguration.markdownAITheme.headingBreakHeight > 0.0) {
-                headingDividerComponent(markdownAIConfiguration)
+                Divider()
+                    // 设置分割线颜色
+                    .color(markdownAIConfiguration.markdownAITheme.headingBreakColor)
+                    // 设置分割线宽度
+                    .strokeWidth(markdownAIConfiguration.markdownAITheme.headingBreakHeight)
             }
         }
         // 设置元素内容的对齐方式

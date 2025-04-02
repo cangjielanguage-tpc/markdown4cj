@@ -64,6 +64,11 @@ class MarkdownAIParagraph1Component {
     var paragraph1Components: ArrayList<MarkdownAIParagraph1Component>
 
     /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     @State

@@ -44,6 +44,11 @@ class MarkdownAITableBlockComponent {
     var isFull: Bool
 
     /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
@@ -62,6 +67,7 @@ class MarkdownAITableBlockComponent {
                         // 行信息
                         MarkdownAITableBlockRowComponent(
                             nodeView: tableHeaderOrBody,
+                            fontCallback: fontCallback,
                             idRow: idRow,
                             markdownAIConfiguration: markdownAIConfiguration,
                             componentWidth: componentWidth

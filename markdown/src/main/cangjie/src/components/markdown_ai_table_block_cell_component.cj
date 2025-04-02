@@ -30,6 +30,11 @@ class MarkdownAITableBlockCellComponent {
 
     var idRow: Int64
 
+    /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
+
     func build() {
         Text() {
             ForEach(

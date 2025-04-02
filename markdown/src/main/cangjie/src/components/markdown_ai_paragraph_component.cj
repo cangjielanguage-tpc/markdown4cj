@@ -43,6 +43,11 @@ class MarkdownAIParagraphComponent {
      */
     var componentWidth: Float64
 
+    /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
+
     func build() {
         Text() {
             if(footnoteBlock.isSome()){

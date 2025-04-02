@@ -44,6 +44,11 @@ class MarkdownAIHeadingComponent {
      */
     var componentWidth: Float64
 
+    /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
+
     func build() {
         Column() {
             // 标题内容
@@ -51,7 +56,11 @@ class MarkdownAIHeadingComponent {
 
             // 一级二级标题是否显示下划线
             if ((level == 1 || level == 2) && markdownAIConfiguration.markdownAITheme.headingBreakHeight > 0.0) {
-                headingDividerComponent(markdownAIConfiguration)
+                Divider()
+                    // 设置分割线颜色
+                    .color(markdownAIConfiguration.markdownAITheme.headingBreakColor)
+                    // 设置分割线宽度
+                    .strokeWidth(markdownAIConfiguration.markdownAITheme.headingBreakHeight)
             }
         }
         // 设置元素内容的对齐方式

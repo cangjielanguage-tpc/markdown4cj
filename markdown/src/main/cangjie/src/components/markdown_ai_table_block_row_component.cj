@@ -30,6 +30,11 @@ class MarkdownAITableBlockRowComponent {
 
     var idRow: Int64
 
+    /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
+
     func build() {
         Row() {
             ForEach(
@@ -38,6 +43,7 @@ class MarkdownAITableBlockRowComponent {
                     item: NodeView, idxItem: Int64 => if (item.node is TableCell) {
                         MarkdownAITableBlockCellComponent(
                             nodeView: item,
+                            fontCallback: fontCallback,
                             idRow: idRow,
                             markdownAIConfiguration: markdownAIConfiguration,
                             componentWidth: componentWidth

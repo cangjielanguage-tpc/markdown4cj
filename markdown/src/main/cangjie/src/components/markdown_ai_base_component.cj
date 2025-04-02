@@ -9,18 +9,6 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 标题一级二级分割线
- */
-@Builder
-func headingDividerComponent(markdownAIConfiguration: MarkdownAIConfiguration) {
-    Divider()
-        // 设置分割线颜色
-        .color(markdownAIConfiguration.markdownAITheme.headingBreakColor)
-        // 设置分割线宽度
-        .strokeWidth(markdownAIConfiguration.markdownAITheme.headingBreakHeight)
-}
-
-/**
  * 标题文本
  */
 @Builder

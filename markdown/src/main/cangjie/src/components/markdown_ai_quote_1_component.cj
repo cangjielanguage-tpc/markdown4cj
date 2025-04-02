@@ -56,6 +56,11 @@ public class MarkdownAIQuote1Component {
     var markdownAICacheConfiguration: MarkdownAICacheConfiguration
 
     /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
@@ -96,6 +101,7 @@ public class MarkdownAIQuote1Component {
                                     nodeViews: item.children,
                                     marginTop: 0.0,
                                     marginBottom: 0.0,
+                                    fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     index: index,
@@ -111,6 +117,7 @@ public class MarkdownAIQuote1Component {
                                     level: (item.node as Heading)().getLevel(),
                                     marginTop: 0.0,
                                     marginBottom: 0.0,
+                                    fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     index: index,
@@ -154,6 +161,7 @@ public class MarkdownAIQuote1Component {
                                     isOrdered: false,
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     index: index,
@@ -169,6 +177,7 @@ public class MarkdownAIQuote1Component {
                                     isOrdered: true,
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     index: index,
@@ -183,6 +192,7 @@ public class MarkdownAIQuote1Component {
                                     nodeViews: item.children,
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     index: index,
@@ -197,6 +207,7 @@ public class MarkdownAIQuote1Component {
                                     nodeViews: tableList(item.children),
                                     marginTop: 0.0,
                                     marginBottom: 0.0,
+                                    fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     index: index,
@@ -208,11 +219,18 @@ public class MarkdownAIQuote1Component {
                                 )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
-                                listLatexMathBlockINCComponent(
-                                    (item.node as LatexMathBlock)().latex,
-                                    (item.node as LatexMathBlock)().isClosed,
-                                    markdownAIConfiguration
-                                )
+                                if ((item.node as LatexMathBlock)().isClosed) {
+                                    // 结束显示数学公式
+                                    MarkdownAILatexMathBlockComponent(
+                                        markdownAIConfiguration: markdownAIConfiguration,
+                                        latexStr: (item.node as LatexMathBlock)().latex,
+                                        marginTop: 0.0,
+                                        marginBottom: 0.0
+                                    )
+                                } else {
+                                    // 没结束显示纯文本
+                                    Text((item.node as LatexMathBlock)().latex)
+                                }
                             } else {
                                 // TODO 其他节点
                             }

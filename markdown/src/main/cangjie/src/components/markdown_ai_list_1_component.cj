@@ -64,6 +64,11 @@ class MarkdownAIList1Component {
     var markdownAICacheConfiguration: MarkdownAICacheConfiguration
 
     /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
@@ -117,6 +122,7 @@ class MarkdownAIList1Component {
                                 nodeViews: item.children,
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                fontCallback: fontCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 index: index,
@@ -171,10 +177,6 @@ class MarkdownAIList1Component {
                 for (i in refreshNodeViewSize - dataSourceSize..0 : -1) {
                     nodeViewAIDataSource.addData(refreshNodeViews[refreshNodeViewSize - i])
                 }
-                // 清空列表数据
-//                if (nodeViewAIDataSource.totalCount() >= 3) {
-//                    nodeViewAIDataSource.update(nodeViewAIDataSource.totalCount() - 3, null)
-//                }
             } else if (refreshNodeViewSize == dataSourceSize) {
                 // 刷新数据的长度等于页面数据长度，需要更新当前数据
                 let indexItem: Int64 = dataSourceSize - 1
