@@ -846,3 +846,27 @@ func getProp<T>(item: NodeView, key: String, default: T): T {
         case v => default
     }
 }
+
+func indexAdd(indexList: ArrayList<Int64>,index:Int64):ArrayList<Int64>{
+    let indexListNew: ArrayList<Int64> = ArrayList<Int64>()
+    indexListNew.appendAll(indexList)
+    indexListNew.append(index)
+    return indexListNew
+}
+
+func isListItem(indexListOne: ArrayList<Int64>,indexListTwo: ArrayList<Int64>,index:Int64):Bool{
+    if(indexListTwo.size <= 0){
+        return false
+    }
+    if(indexListOne.size + 1 != indexListTwo.size || indexListTwo[indexListTwo.size-1] != index){
+        return false
+    }
+    var isBool:Bool = true
+    for(i in 0..indexListOne.size){
+        if(indexListOne[i] != indexListTwo[i]){
+            isBool = false
+        }
+    }
+    return isBool
+}
+

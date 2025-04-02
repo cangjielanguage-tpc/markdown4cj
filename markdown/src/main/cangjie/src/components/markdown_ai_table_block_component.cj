@@ -19,9 +19,19 @@ class MarkdownAITableBlockComponent {
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 表格tableNodeView
+     * 表格内容数据
      */
-    var tableNodeView: NodeView
+    var nodeViews: ArrayList<NodeView>
+
+    /**
+     * 定位需要的数组
+     */
+    var indexList: ArrayList<Int64> = ArrayList<Int64>()
+
+    /**
+     * 长度
+     */
+    var size: Int64 = -1
 
     /**
      * 外边距 - 上面
@@ -49,13 +59,45 @@ class MarkdownAITableBlockComponent {
     var fontCallback: (String) -> Unit
 
     /**
+     * 表格
+     */
+    var tableComponents: ArrayList<MarkdownAITableBlockComponent>
+
+    /**
+     * 表格行
+     */
+    var tableRowComponents: ArrayList<MarkdownAITableBlockRowComponent>
+
+    /**
+     * 表格行内格子
+     */
+    var tableCellComponents: ArrayList<MarkdownAITableBlockCellComponent>
+
+    /**
      * 懒加载数据源
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
-        refreshData()
+        refreshData(nodeViews)
+        // 缓存当前控件
+        tableComponents.append(this)
+        // 清除缓存数据
+        nodeViews.clear()
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        // 清除当前控件
+        tableComponents
+            .removeIf(
+                {
+                    predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                        true
+                    } else {
+                        false
+                    }
+                })
     }
 
     func build() {
@@ -66,11 +108,15 @@ class MarkdownAITableBlockComponent {
                     tableHeaderOrBody: NodeView, idRow: Int64 => ListItem() {
                         // 行信息
                         MarkdownAITableBlockRowComponent(
-                            nodeView: tableHeaderOrBody,
-                            fontCallback: fontCallback,
-                            idRow: idRow,
                             markdownAIConfiguration: markdownAIConfiguration,
-                            componentWidth: componentWidth
+                            nodeViews: tableHeaderOrBody.children,
+                            fontCallback: fontCallback,
+                            componentWidth: componentWidth,
+                            isFull: isFull,
+                            idRow: idRow,
+                            indexList: indexAdd(indexList, idRow),
+                            tableRowComponents: tableRowComponents,
+                            tableCellComponents: tableCellComponents
                         )
                     }
                 }
@@ -91,41 +137,46 @@ class MarkdownAITableBlockComponent {
     /**
      * 数据刷新
      */
-    func refreshData() {
-        let nodeViews: ArrayList<NodeView> = tableList(tableNodeView.children)
-        let nodeViewsSize = nodeViews.size // 刷新进来的数据长度
+    public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
+        let refreshNodeViewSize = refreshNodeViews.size // 刷新进来的数据长度
         let dataSourceSize = nodeViewAIDataSource.totalCount() // 页面缓存的数据长度
         if (isFull) {
-            // 增量加载
+            // 全量加载
             nodeViewAIDataSource.clear()
-            nodeViewAIDataSource.addDatas(nodeViews)
+            nodeViewAIDataSource.addDatas(refreshNodeViews)
         } else {
-            // 刷新数据的长度大于页面数据长度，需要添加数据
-            if (nodeViewsSize== 0) {
+            // 增量加载
+            if (refreshNodeViewSize == 0) {
                 return
             }
-            if (nodeViewsSize> dataSourceSize) {
+            if (refreshNodeViewSize > dataSourceSize) {
                 // 刷新数据的长度大于页面数据长度，需要添加数据
                 if (dataSourceSize != 0) {
                     // 更新页面最后一条数据
-                    nodeViewAIDataSource.replaceData(dataSourceSize - 1, nodeViews[dataSourceSize - 1])
+                    nodeViewAIDataSource.replaceData(dataSourceSize - 1, refreshNodeViews[dataSourceSize - 1])
                 }
                 // 循环添加所有新增数据
-                for (i in nodeViewsSize- dataSourceSize..0 : -1) {
-                    nodeViewAIDataSource.addData(nodeViews[nodeViewsSize- i])
+                for (i in refreshNodeViewSize - dataSourceSize..0 : -1) {
+                    nodeViewAIDataSource.addData(refreshNodeViews[refreshNodeViewSize - i])
                 }
-            } else if (nodeViewsSize== dataSourceSize) {
+            } else if (refreshNodeViewSize == dataSourceSize) {
                 // 刷新数据的长度等于页面数据长度，需要更新当前数据
-                nodeViewAIDataSource.replaceData(dataSourceSize - 1, nodeViews[nodeViewsSize- 1])
+                let indexRow: Int64 = dataSourceSize - 1
+                for (data in tableRowComponents) {
+                    if(isListItem(indexList,data.indexList,indexRow)){
+                        data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
+                    }
+                }
             } else {
                 // 刷新数据小于页面数据长度，需要删除数据
                 // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
-                nodeViewAIDataSource.replaceData(nodeViewsSize- 1, nodeViews[nodeViewsSize- 1])
+                nodeViewAIDataSource.replaceData(refreshNodeViewSize - 1, refreshNodeViews[refreshNodeViewSize - 1])
                 // 循环删除所有多余数据
-                for (i in dataSourceSize - nodeViews.size..0 : -1) {
+                for (i in dataSourceSize - refreshNodeViewSize..0 : -1) {
                     nodeViewAIDataSource.deleteData(dataSourceSize - i)
                 }
             }
         }
+        size = nodeViewAIDataSource.totalCount() // 更新列表长度
     }
 }

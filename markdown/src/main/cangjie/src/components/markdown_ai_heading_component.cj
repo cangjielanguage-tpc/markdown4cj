@@ -24,10 +24,20 @@ class MarkdownAIHeadingComponent {
     var nodeViews: ArrayList<NodeView>
 
     /**
+     * 定位需要的数组
+     */
+    var indexList: ArrayList<Int64> = ArrayList<Int64>()
+
+    /**
      * 标题等级
      */
     @State
     var level: Int64 = 1
+
+    /**
+     * 长度
+     */
+    var size: Int64 = -1
 
     /**
      * 上边距 - 单位vp
@@ -48,6 +58,43 @@ class MarkdownAIHeadingComponent {
      * 脚注点击事件
      */
     var fontCallback: (String) -> Unit
+
+    /**
+     * 是否全量加载 - true：全量加载，fasle：增量加载
+     */
+    var isFull: Bool
+
+    /**
+     * 缓存的标题控件列表
+     */
+    var headingComponents: ArrayList<MarkdownAIHeadingComponent>
+
+    /**
+     * 懒加载数据源
+     */
+    @State
+    var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+
+    protected override func aboutToAppear(): Unit {
+        // 初始化刷新数据
+        refreshData(nodeViews, level)
+        // 缓存当前控件
+        headingComponents.append(this)
+        // 清除缓存数据
+        nodeViews.clear()
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        // 清除当前控件
+        headingComponents.removeIf(
+            {
+                predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                    true
+                } else {
+                    false
+                }
+            })
+    }
 
     func build() {
         Column() {
@@ -80,7 +127,7 @@ class MarkdownAIHeadingComponent {
     func headingTitleComponent() {
         Text() {
             ForEach(
-                nodeViews,
+                nodeViewList,
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText || item.node is Footnote) {
                         // 文本或者脚注
@@ -128,5 +175,64 @@ class MarkdownAIHeadingComponent {
         .width(100.percent)
         // 设置行高
         .lineHeight(22.0)
+    }
+
+    /**
+     * 数据刷新
+     */
+    public func refreshData(refreshNodeViews: ArrayList<NodeView>, level: Int64): Unit {
+        this.level = level // 等级
+        let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
+        let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
+        if (isFull) {
+            // 全量加载
+            nodeViewList.clear()
+            nodeViewList.appendAll(refreshNodeViews)
+        } else {
+            // 增量加载
+            if (refreshNodeViewSize == 0) {
+                return
+            }
+            if (refreshNodeViewSize > nodeViewListSize) {
+                // 刷新数据的长度大于页面数据长度，需要添加数据
+                if (nodeViewListSize != 0) {
+                    // 更新页面最后一条数据
+                    nodeViewList.remove(nodeViewListSize - 1)
+                    nodeViewList.append(refreshNodeViews[nodeViewListSize - 1])
+                }
+                // 循环添加所有新增数据
+                for (i in refreshNodeViewSize - nodeViewListSize..0 : -1) {
+                    nodeViewList.append(refreshNodeViews[refreshNodeViewSize - i])
+                }
+            } else if (refreshNodeViewSize == nodeViewListSize) {
+                // 刷新数据的长度等于页面数据长度，需要更新当前数据
+                // 有可能还需要刷新倒数第二条数据内容
+                if (refreshNodeViewSize > 2) {
+                    if (refreshNodeViews[refreshNodeViewSize - 2].node.getNodeType() != nodeViewList[nodeViewListSize - 2].node.getNodeType()) {
+                        nodeViewList.remove(refreshNodeViewSize - 2)
+                        nodeViewList.insert(refreshNodeViewSize - 2, refreshNodeViews[refreshNodeViewSize - 2])
+                    }
+                    if ((refreshNodeViews[refreshNodeViewSize - 2].node is CommonmarkText) && (nodeViewList[nodeViewListSize - 2].node is CommonmarkText)) {
+                        if ((refreshNodeViews[refreshNodeViewSize - 2].node as CommonmarkText)().getLiteral() != (nodeViewList[nodeViewListSize - 2].node as CommonmarkText)().getLiteral()) {
+                            nodeViewList.remove(refreshNodeViewSize - 2)
+                            nodeViewList.insert(refreshNodeViewSize - 2, refreshNodeViews[refreshNodeViewSize - 2])
+                        }
+                    }
+                }
+                // 刷新最后一条数据
+                nodeViewList.remove(nodeViewListSize - 1)
+                nodeViewList.append(refreshNodeViews[refreshNodeViewSize - 1])
+            } else {
+                // 刷新数据小于页面数据长度，需要删除数据
+                // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
+                nodeViewList.remove(refreshNodeViewSize - 1)
+                nodeViewList.append(refreshNodeViews[refreshNodeViewSize - 1])
+                // 循环删除所有多余数据
+                for (i in nodeViewListSize - refreshNodeViewSize..0 : -1) {
+                    nodeViewList.remove(nodeViewListSize - i)
+                }
+            }
+        }
+        size = nodeViewList.size // 更新列表长度
     }
 }

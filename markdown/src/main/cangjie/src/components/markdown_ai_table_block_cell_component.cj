@@ -19,37 +19,97 @@ class MarkdownAITableBlockCellComponent {
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 表格tableNodeView
+     * 表格内容数据
      */
-    var nodeView: NodeView
+    var nodeViews: ArrayList<NodeView>
+
+    /**
+     * 定位需要的数组
+     */
+    var indexList: ArrayList<Int64> = ArrayList<Int64>()
+
+    /**
+     * 长度
+     */
+    var size: Int64 = -1
+
+    /**
+     * 是否全量加载
+     */
+    var isFull: Bool
+
+    /**
+     * 是否是标题
+     */
+    var isHeader: Bool
+
+    /**
+     * 对齐方式
+     */
+    var alignment: ?TableAlignment
 
     /**
      * 控件宽度 - 单位px
      */
     var componentWidth: Float64
 
+    /**
+     * 内容第几条
+     */
     var idRow: Int64
+
+    /**
+     * 缓存的表格的Cell列表
+     */
+    var tableCellComponents: ArrayList<MarkdownAITableBlockCellComponent>
 
     /**
      * 脚注点击事件
      */
     var fontCallback: (String) -> Unit
 
+    /**
+     * 懒加载数据源
+     */
+    @State
+    var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+
+    protected override func aboutToAppear(): Unit {
+        // 初始化刷新数据
+        refreshData(nodeViews)
+        // 缓存当前控件
+        tableCellComponents.append(this)
+        // 清除缓存数据
+        nodeViews.clear()
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        // 清除当前控件
+        tableCellComponents.removeIf(
+            {
+                predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                    true
+                } else {
+                    false
+                }
+            })
+    }
+
     func build() {
         Text() {
             ForEach(
-                nodeView.children,
+                nodeViewList,
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText || item.node is Footnote) {
                         // 文本或者脚注
-                        if ((nodeView.node as TableCell)().isHeader()) {
+                        if (isHeader) {
                             tableComponentText(item, true, markdownAIConfiguration, fontCallback)
                         } else {
                             tableComponentText(item, false, markdownAIConfiguration, fontCallback)
                         }
                     } else if (item.node is Code) {
                         // 内联代码
-                        if ((nodeView.node as TableCell)().isHeader()) {
+                        if (isHeader) {
                             tableComponentCode(item, true, markdownAIConfiguration)
                         } else {
                             tableComponentCode(item, false, markdownAIConfiguration)
@@ -79,12 +139,56 @@ class MarkdownAITableBlockCellComponent {
         // 设置行高
         .lineHeight(22.0)
         // 设置多行文本的文本对齐方式
-        .textAlign(renderTableCellAlign((nodeView.node as TableCell)()))
+        .textAlign(renderTableCellAlign(alignment))
         // 设置内边距属性
         .padding(markdownAIConfiguration.markdownAITheme.tableCellPadding)
         // 设置组件的背景色
-        .backgroundColor(renderTableCellColor((nodeView.node as TableCell)(), markdownAIConfiguration.markdownAITheme, idRow))
+        .backgroundColor(renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow))
         // 统一边框样式设置接口
         .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp, color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
+    }
+
+    /**
+     * 数据刷新
+     */
+    public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
+        let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
+        let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
+        if (isFull) {
+            // 全量加载
+            nodeViewList.clear()
+            nodeViewList.appendAll(refreshNodeViews)
+        } else {
+            // 增量加载
+            if (refreshNodeViewSize == 0) {
+                return
+            }
+            if (refreshNodeViewSize > nodeViewListSize) {
+                // 刷新数据的长度大于页面数据长度，需要添加数据
+                if (nodeViewListSize != 0) {
+                    // 更新页面最后一条数据
+                    nodeViewList.remove(nodeViewListSize - 1)
+                    nodeViewList.append(refreshNodeViews[nodeViewListSize - 1])
+                }
+                // 循环添加所有新增数据
+                for (i in refreshNodeViewSize - nodeViewListSize..0 : -1) {
+                    nodeViewList.append(refreshNodeViews[refreshNodeViewSize - i])
+                }
+            } else if (refreshNodeViewSize == nodeViewListSize) {
+                // 刷新数据的长度等于页面数据长度，需要更新当前数据
+                nodeViewList.remove(nodeViewListSize - 1)
+                nodeViewList.append(refreshNodeViews[refreshNodeViewSize - 1])
+            } else {
+                // 刷新数据小于页面数据长度，需要删除数据
+                // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
+                nodeViewList.remove(refreshNodeViewSize - 1)
+                nodeViewList.append(refreshNodeViews[refreshNodeViewSize - 1])
+                // 循环删除所有多余数据
+                for (i in nodeViewListSize - refreshNodeViewSize..0 : -1) {
+                    nodeViewList.remove(nodeViewListSize - i)
+                }
+            }
+        }
+        size = nodeViewList.size // 更新列表长度
     }
 }

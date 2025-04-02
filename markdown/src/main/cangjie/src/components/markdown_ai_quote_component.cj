@@ -12,7 +12,7 @@ import ohos.state_macro_manage.*
  * Markdown无序列表(任务列表)、有序列表(TOC列表)、块引用自定义控件
  */
 @Component
-public class MarkdownAIQuote2Component {
+public class MarkdownAIQuoteComponent {
     /**
      * markdown配置
      */
@@ -22,6 +22,11 @@ public class MarkdownAIQuote2Component {
      * 列表内容数据
      */
     var nodeViews: ArrayList<NodeView>
+
+    /**
+     * 定位需要的数组
+     */
+    var indexList: ArrayList<Int64> = ArrayList<Int64>()
 
     /**
      * 长度
@@ -48,21 +53,6 @@ public class MarkdownAIQuote2Component {
      */
     var isFull: Bool
 
-    /**
-     * 标识符，第几条块引用
-     */
-    var index: Int64
-
-    /**
-     * 标识符，第几条块引用
-     */
-    var index2: Int64
-
-    /**
-     * 标识符，第几条块引用
-     */
-    var indexItem: Int64
-
     var markdownAICacheConfiguration: MarkdownAICacheConfiguration
 
     /**
@@ -79,7 +69,7 @@ public class MarkdownAIQuote2Component {
         // 初始化刷新数据
         refreshData(nodeViews)
         // 缓存当前控件
-        markdownAICacheConfiguration.quote2Components.append(this)
+        markdownAICacheConfiguration.quoteComponents.append(this)
         // 清除缓存数据
         nodeViews.clear()
     }
@@ -87,16 +77,14 @@ public class MarkdownAIQuote2Component {
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
         markdownAICacheConfiguration
-            .quote2Components
-            .removeIf(
-                {
-                    predicate => if (predicate.index == index && predicate.index2 == index2
-                        && predicate.indexItem == indexItem && predicate.size == size) {
-                        true
-                    } else {
-                        false
-                    }
-                })
+            .quoteComponents
+            .removeIf({
+                predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                    true
+                } else {
+                    false
+                }
+            })
     }
 
     func build() {
@@ -108,7 +96,7 @@ public class MarkdownAIQuote2Component {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
-                                MarkdownAIParagraph3Component(
+                                MarkdownAIParagraphComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeViews: item.children,
                                     marginTop: 0.0,
@@ -116,16 +104,12 @@ public class MarkdownAIQuote2Component {
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
-                                    index: index,
-                                    index2: index2,
-                                    index3: idx,
-                                    indexItem: indexItem,
-                                    indexItem2: -1,
-                                    paragraph3Components: markdownAICacheConfiguration.paragraph3Components
+                                    indexList: indexAdd(indexList, idx),
+                                    paragraphComponents: markdownAICacheConfiguration.paragraphComponents
                                 )
                             } else if (item.node is Heading) {
                                 // 标题
-                                MarkdownAIHeading3Component(
+                                MarkdownAIHeadingComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeViews: item.children,
                                     level: (item.node as Heading)().getLevel(),
@@ -134,12 +118,8 @@ public class MarkdownAIQuote2Component {
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
-                                    index: index,
-                                    index2: index2,
-                                    index3: idx,
-                                    indexItem: indexItem,
-                                    indexItem2: -1,
-                                    heading3Components: markdownAICacheConfiguration.heading3Components
+                                    indexList: indexAdd(indexList, idx),
+                                    headingComponents: markdownAICacheConfiguration.headingComponents
                                 )
                             } else if (item.node is IndentedCodeBlock) {
                                 // 缩进代码
@@ -147,23 +127,35 @@ public class MarkdownAIQuote2Component {
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     codeText: (item.node as IndentedCodeBlock)().getLiteral(),
                                     info: Option<String>.None,
-                                    codeItem: item,
                                     marginTop: 0.0,
-                                    marginBottom: 0.0
+                                    marginBottom: 0.0,
+                                    indexList: indexAdd(indexList, idx),
+                                    indentedCodeComponents: markdownAICacheConfiguration.indentedCodeComponents
                                 )
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
-                                MarkdownAIIndentedCodeBlockComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    codeText: (item.node as FencedCodeBlock)().getLiteral(),
-                                    info: (item.node as FencedCodeBlock)().getInfo(),
-                                    codeItem: item,
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0
-                                )
+                                if (isFull) {
+                                    MarkdownAIFencedCodeBlockComponent(
+                                        markdownAIConfiguration: markdownAIConfiguration,
+                                        codeText: (item.node as FencedCodeBlock)().getLiteral(),
+                                        info: (item.node as FencedCodeBlock)().getInfo(),
+                                        marginTop: 0.0,
+                                        marginBottom: 0.0
+                                    )
+                                } else {
+                                    MarkdownAIIndentedCodeBlockComponent(
+                                        markdownAIConfiguration: markdownAIConfiguration,
+                                        codeText: (item.node as IndentedCodeBlock)().getLiteral(),
+                                        info: (item.node as FencedCodeBlock)().getInfo(),
+                                        marginTop: 0.0,
+                                        marginBottom: 0.0,
+                                        indexList: indexAdd(indexList, idx),
+                                        indentedCodeComponents: markdownAICacheConfiguration.indentedCodeComponents
+                                    )
+                                }
                             } else if (item.node is BulletList) {
                                 // 无序列表
-                                MarkdownAIList3Component(
+                                MarkdownAIListComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeViews: item.children,
                                     isOrdered: false,
@@ -172,16 +164,12 @@ public class MarkdownAIQuote2Component {
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
-                                    index: index,
-                                    index2: index2,
-                                    index3: idx,
-                                    indexItem: indexItem,
-                                    indexItem2: -1,
+                                    indexList: indexAdd(indexList, idx),
                                     markdownAICacheConfiguration: markdownAICacheConfiguration
                                 )
                             } else if (item.node is OrderedList) {
                                 // 有序列表
-                                MarkdownAIList3Component(
+                                MarkdownAIListComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeViews: item.children,
                                     isOrdered: true,
@@ -190,16 +178,12 @@ public class MarkdownAIQuote2Component {
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
-                                    index: index,
-                                    index2: index2,
-                                    index3: idx,
-                                    indexItem: indexItem,
-                                    indexItem2: -1,
+                                    indexList: indexAdd(indexList, idx),
                                     markdownAICacheConfiguration: markdownAICacheConfiguration
                                 )
                             } else if (item.node is BlockQuote) {
                                 // 块引用
-                                MarkdownAIQuote3Component(
+                                MarkdownAIQuoteComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeViews: item.children,
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
@@ -207,23 +191,23 @@ public class MarkdownAIQuote2Component {
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
-                                    index: index,
-                                    index2: index2,
-                                    index3: idx,
-                                    indexItem: indexItem,
-                                    indexItem2: -1,
+                                    indexList: indexAdd(indexList, idx),
                                     markdownAICacheConfiguration: markdownAICacheConfiguration
                                 )
                             } else if (item.node is TableBlock) {
                                 // 表格
                                 MarkdownAITableBlockComponent(
-                                    tableNodeView: item,
                                     markdownAIConfiguration: markdownAIConfiguration,
+                                    nodeViews: tableList(item.children),
                                     marginTop: 0.0,
                                     marginBottom: 0.0,
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
-                                    isFull: isFull
+                                    isFull: isFull,
+                                    indexList: indexAdd(indexList, idx),
+                                    tableComponents: markdownAICacheConfiguration.tableComponents,
+                                    tableRowComponents: markdownAICacheConfiguration.tableRowComponents,
+                                    tableCellComponents: markdownAICacheConfiguration.tableCellComponents
                                 )
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
@@ -243,15 +227,15 @@ public class MarkdownAIQuote2Component {
                                 // TODO 其他节点
                             }
                         }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                    }
+                        // 设置子组件在水平方向上的对齐格式。
+                        .alignItems(HorizontalAlign.Start)
+                        // 设置子组件在垂直方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
                         // 对子组件进行重新布局
                         .layoutWeight(1)
+                    }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
                 }
             )
         }
@@ -298,32 +282,46 @@ public class MarkdownAIQuote2Component {
                 }
             } else if (refreshNodeViewSize == dataSourceSize) {
                 // 刷新数据的长度等于页面数据长度，需要更新当前数据
-                let index3: Int64 = dataSourceSize - 1
-                if ((refreshNodeViews[refreshNodeViewSize - 1].node is BulletList &&nodeViewAIDataSource.getData(dataSourceSize - 1).node is BulletList) || (refreshNodeViews[refreshNodeViews.size - 1].node is OrderedList && nodeViewAIDataSource.getData(dataSourceSize - 1).node is OrderedList)) {
-                    // 有序列表和无序列表
-                    for (data in markdownAICacheConfiguration.list3Components) {
-                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.indexItem == indexItem && data.indexItem2 == -1) {
+                let index: Int64 = dataSourceSize - 1
+                if ((refreshNodeViews[refreshNodeViewSize - 1].node is BulletList && nodeViewAIDataSource.getData(dataSourceSize - 1).node is BulletList) || (refreshNodeViews[refreshNodeViews.size - 1].node is OrderedList && nodeViewAIDataSource.getData(dataSourceSize - 1).node is OrderedList)) {
+                    // 无序列表和有序列表
+                    for (data in markdownAICacheConfiguration.listComponents) {
+                        if(isListItem(indexList,data.indexList,index)){
                             data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
+                        }
+                    }
+                } else if ((refreshNodeViews[refreshNodeViewSize - 1].node is FencedCodeBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is FencedCodeBlock) || (refreshNodeViews[refreshNodeViewSize - 1].node is IndentedCodeBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is IndentedCodeBlock)) {
+                    // 围栏代码和缩进代码
+                    for (data in markdownAICacheConfiguration.indentedCodeComponents) {
+                        if(isListItem(indexList,data.indexList,index)){
+                            data.refreshData(getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[0], getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[1])
                         }
                     }
                 } else if (refreshNodeViews[refreshNodeViewSize - 1].node is Heading && nodeViewAIDataSource.getData(dataSourceSize - 1).node is Heading) {
                     // 标题
-                    for (data in markdownAICacheConfiguration.heading3Components) {
-                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.indexItem == indexItem && data.indexItem2 == -1) {
+                    for (data in markdownAICacheConfiguration.headingComponents) {
+                        if(isListItem(indexList,data.indexList,index)){
                             data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children, (refreshNodeViews[refreshNodeViewSize - 1].node as Heading)().getLevel())
                         }
                     }
                 } else if (refreshNodeViews[refreshNodeViewSize - 1].node is Paragraph && nodeViewAIDataSource.getData(dataSourceSize - 1).node is Paragraph) {
                     // 段落
-                    for (data in markdownAICacheConfiguration.paragraph3Components) {
-                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.indexItem == indexItem && data.indexItem2 == -1) {
+                    for (data in markdownAICacheConfiguration.paragraphComponents) {
+                        if(isListItem(indexList,data.indexList,index)){
                             data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
+                        }
+                    }
+                } else if (refreshNodeViews[refreshNodeViewSize - 1].node is TableBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is TableBlock) {
+                    // 表格
+                    for (data in markdownAICacheConfiguration.tableComponents) {
+                        if(isListItem(indexList,data.indexList,index)){
+                            data.refreshData(tableList(refreshNodeViews[refreshNodeViewSize - 1].children))
                         }
                     }
                 } else if (refreshNodeViews[refreshNodeViewSize - 1].node is BlockQuote && nodeViewAIDataSource.getData(dataSourceSize - 1).node is BlockQuote) {
                     // 块引用
-                    for (data in markdownAICacheConfiguration.quote3Components) {
-                        if (data.index == index && data.index2 == index2 && data.index3 == index3 && data.indexItem == indexItem && data.indexItem2 == -1) {
+                    for (data in markdownAICacheConfiguration.quoteComponents) {
+                        if(isListItem(indexList,data.indexList,index)){
                             data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
                         }
                     }
