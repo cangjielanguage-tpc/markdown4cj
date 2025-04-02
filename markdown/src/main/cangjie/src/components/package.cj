@@ -3,6 +3,7 @@
  */
 package markdown.components
 
+// 标准库
 internal import std.collection.*
 internal import std.convert.*
 internal import std.regex.*
@@ -11,8 +12,12 @@ internal import std.time.*
 internal import std.io.*
 internal import net.http.*
 internal import net.tls.*
+
+// 内部其他包
 internal import markdown.core.*
 internal import markdown.plugin.*
+
+// commonmark
 internal import commonmark4cj.strikethrough.*
 internal import commonmark4cj.commonmark.BitSet
 internal import commonmark4cj.commonmark.Block
@@ -53,6 +58,8 @@ internal import commonmark4cj.table.TableBlock
 internal import commonmark4cj.table.TableBody
 internal import commonmark4cj.table.TableNodeRenderer
 internal import commonmark4cj.table.Alignment as TableAlignment
+
+// prism
 internal import prism4cj.GrammarLocatorGrammarUtils
 internal import prism4cj.prism.Prism
 internal import prism4cj.prism.GrammarUtils
@@ -60,7 +67,11 @@ internal import prism4cj.prism.Syntax
 internal import prism4cj.prism.Text as PrismText
 internal import prism4cj.prism.Node as PrismNode
 internal import prism4cj.prism.Grammar as PrismGrammar
+
+// formula
 internal import formula.*
+
+// 系统UI
 internal import ohos.image.PixelMap
 internal import ohos.image.InitializationOptions
 internal import ohos.image.PixelMapFormat

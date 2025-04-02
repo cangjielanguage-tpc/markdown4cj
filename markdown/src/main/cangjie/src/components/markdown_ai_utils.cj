@@ -840,51 +840,6 @@ func length2Float64(length: ?Length, componentWidth: Float64): ?Float64 {
     }
 }
 
-/**
- * 释放PixelMap
- */
-func delPixelMap(listPixelMap: ArrayList<?PixelMap>) {
-    for (item in listPixelMap) {
-        delPixelMap(item)
-    }
-    listPixelMap.clear()
-}
-
-/**
- * 释放PixelMap
- */
-func delPixelMap(listPixelMap: ?PixelMap) {
-    spawn {
-        if (listPixelMap.isSome()) {
-            listPixelMap().Release()
-        }
-    }
-}
-
-/**
- * 取消线程
- */
-func threadFutureCancel(futs: ArrayList<?Future<Unit>>) {
-    for (fut in futs) {
-        threadFutureCancel(fut)
-    }
-}
-
-/**
- * 取消线程
- */
-func threadFutureCancel(fut: ?Future<Unit>) {
-    spawn {
-        if (fut.isSome()) {
-            fut().cancel()
-        }
-    }
-}
-
-func pxToVp(pxFloat64: Float64): Float64 {
-    return px2vp(pxFloat64.px)().value
-}
-
 func getProp<T>(item: NodeView, key: String, default: T): T {
     match (item.props?.get(key)) {
         case Some(Some(v: T)) => v

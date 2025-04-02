@@ -230,4 +230,45 @@ class MarkdownAIFencedCodeBlockComponent {
         }
         stringToResList(codeText, info, markdownAIConfiguration.markdownAITheme.prismTheme, callback)
     }
+
+    /**
+     * 通过异步的方式将代码转换成带有颜色的列表 - 围栏代码、缩进代码
+     *
+     * @param code 传入代码内容
+     * @param info 传入代码类型
+     * @param prismTheme 传入的高亮样式
+     * @param callback PrismNodesParseRes列表回调接口
+     */
+    func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit> {
+        let fut: Future<Unit> = spawn {
+            var prismNodesParseResList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
+            try {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                var prism: Prism = Prism(GrammarLocatorGrammarUtils())
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                var psh: PrismSyntaxHighlight = PrismSyntaxHighlight.create(prism, prismTheme)
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                prismNodesParseResList = psh.highlight(info, code.trimRight("\n"))
+            } catch (e: Exception) {
+                let prismNodesParseRes: PrismNodesParseRes = PrismNodesParseRes("", code, Option<String>.None,
+                    Option<Color>.None)
+                prismNodesParseResList.append(prismNodesParseRes)
+            } finally {
+                try {
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
+                    callback(prismNodesParseResList)
+                } catch (_) {
+                }
+            }
+        }
+        return fut
+    }
 }

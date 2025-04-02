@@ -8,54 +8,57 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
-
 /**
-    prism 主题接口
-*/
+ * prism 主题接口
+ */
 public interface PrismTheme {
-
     /**
      * 获取背景色
+     *
      * @return UInt32 返回背景色
      */
     func background(): Color
 
     /**
      * 设置背景色
+     *
      * @param bg 背景色值
      */
     func setBackground(bg: Color): Unit
 
     /**
      * 获取文本颜色
+     *
      * @return UInt32 返回文本颜色
      */
     func textColor(): Color
 
     /**
      * 设置文本颜色
+     *
      * @param text 文本颜色
      */
     func setTextColor(text: Color): Unit
 
     /**
      * 获取字段颜色存储集合
+     *
      * @return HashMap<String, Color> 返回颜色存储集合
      */
     func getColorMap(): HashMap<String, Color>
 
     /**
      * 自定义设置字段颜色存储集合
+     *
      * @param HashMap<String, Color> 颜色存储集合
      */
     func setColorMap(colorMap: HashMap<String, Color>): Unit
 }
 
 /**
-    prism 主题抽象基类
-*/
+ * prism 主题抽象基类
+ */
 public abstract open class PrismThemeBase <: PrismTheme {
-
     static func applyAlpha(alpha: UInt32, color: UInt32): UInt32 {
         // 清除原有的 alpha 通道值，保留原有的 RGB 通道值
         let colorWithoutAlpha: UInt32 = color & 0x00FFFFFF
@@ -74,13 +77,16 @@ public abstract open class PrismThemeBase <: PrismTheme {
     }
 
     static func isOfType(expected: String, types: String, alias: ?String): Bool {
-        return expected == types || expected == match(alias) {case Some(v) => v case None=> ""}
+        return expected == types || expected == match (alias) {
+            case Some(v) => v
+            case None => ""
+        }
     }
 }
 
 /**
-    prism 默认主题类
-*/
+ *  prism 默认主题类
+ */
 public class PrismThemeDefault <: PrismThemeBase {
 
     // 背景颜色
@@ -106,8 +112,8 @@ public class PrismThemeDefault <: PrismThemeBase {
 
     /**
      * 创建 PrismThemeDarkula 对象的静态方法
-     * @param 传入背景色
      *
+     * @param 传入背景色
      * @return 返回自定义背景色的主题
      */
     static func create(background: Color, text: Color): PrismThemeDefault {
@@ -125,6 +131,7 @@ public class PrismThemeDefault <: PrismThemeBase {
 
     /**
      * 设置背景色
+     *
      * @param bg 背景色值
      */
     public func setBackground(bg: Color): Unit {
@@ -142,6 +149,7 @@ public class PrismThemeDefault <: PrismThemeBase {
 
     /**
      * 设置文本颜色
+     *
      * @param text 文本颜色
      */
     public func setTextColor(text: Color): Unit {
@@ -150,24 +158,26 @@ public class PrismThemeDefault <: PrismThemeBase {
 
     /**
      * 获取颜色存储集合
+     *
      * @return HashMap<String, Color> 返回颜色存储集合
      */
-    public override open func getColorMap(): HashMap<String, Color> {
+    public open override func getColorMap(): HashMap<String, Color> {
         return this.colorMap
     }
 
     /**
      * 自定义设置颜色存储集合
+     *
      * @param HashMap<String, Color> 颜色存储集合
      */
-    public override open func setColorMap(colorMap: HashMap<String, Color>): Unit {
+    public open override func setColorMap(colorMap: HashMap<String, Color>): Unit {
         this.colorMap = colorMap
     }
 }
 
 /**
-    prism 暗黑主题类
-*/
+ *  prism 暗黑主题类
+ */
 public class PrismThemeDarkula <: PrismThemeBase {
     // 背景颜色
     var bg: Color
@@ -199,8 +209,8 @@ public class PrismThemeDarkula <: PrismThemeBase {
 
     /**
      * 创建 PrismThemeDarkula 对象的静态方法
-     * @param 传入背景色
      *
+     * @param 传入背景色
      * @return 返回自定义背景色的暗黑主题
      */
     static func create(background: Color, text: Color): PrismThemeDarkula {
@@ -218,6 +228,7 @@ public class PrismThemeDarkula <: PrismThemeBase {
 
     /**
      * 设置背景色
+     *
      * @param bg 背景色值
      */
     public func setBackground(bg: Color): Unit {
@@ -235,6 +246,7 @@ public class PrismThemeDarkula <: PrismThemeBase {
 
     /**
      * 设置文本颜色
+     *
      * @param text 文本颜色
      */
     public func setTextColor(text: Color): Unit {
@@ -243,17 +255,19 @@ public class PrismThemeDarkula <: PrismThemeBase {
 
     /**
      * 获取颜色存储集合
+     *
      * @return HashMap<String, Color> 返回颜色存储集合
      */
-    public override open func getColorMap(): HashMap<String, Color> {
+    public open override func getColorMap(): HashMap<String, Color> {
         return this.colorMap
     }
 
     /**
      * 自定义设置颜色存储集合
+     *
      * @param HashMap<String, Color> 颜色存储集合
      */
-    public override open func setColorMap(colorMap: HashMap<String, Color>): Unit {
+    public open override func setColorMap(colorMap: HashMap<String, Color>): Unit {
         this.colorMap = colorMap
     }
 }
@@ -348,7 +362,6 @@ public class ColorHashMap {
 
     /**
      * 获取 colormap 属性
-     *
      */
     public func getColorMap(): HashMap<String, Color> {
         return this.colorMap

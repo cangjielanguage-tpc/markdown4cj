@@ -198,15 +198,3 @@ func latexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): ColorForm
         case LatexMathColorFormat.COLOR_FORMAT_BGRA_8888 => ColorFormat.COLOR_FORMAT_BGRA_8888
     }
 }
-
-/**
- * 判断是否有数学公式图片数据
- */
-func isLatexImagePixelMap(imageData: ImageData, listPixelMap: ArrayList<?PixelMap>): Bool {
-    if (imageData.pixelMap.isSome() && imageData.height.isSome() && imageData.width.isSome() &&
-        imageData.arrayUint8.isSome()) {
-        listPixelMap.append(imageData.pixelMap)
-        return true
-    }
-    return false
-}
