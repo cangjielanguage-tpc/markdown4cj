@@ -53,7 +53,7 @@ public class MarkdownAIComponent {
     /**
      * 注脚事件回调数据
      */
-    var indexHashMap: HashMap<String, Int64> = HashMap<String, Int64>()
+    var indexHashMap: HashMap<String, Float64> = HashMap<String, Float64>()
 
     /**
      * list控制器
@@ -278,7 +278,7 @@ public class MarkdownAIComponent {
                     } else if (item.node is FootnoteBlock) {
                         // 脚注内容
                         ListItem() {
-                            if (item.children.size > 0 && item.children[0].node is Paragraph && addMap(idx, (item.node as FootnoteBlock)().noteid)) {
+                            if (item.children.size > 0 && item.children[0].node is Paragraph) {
                                 MarkdownAIParagraphComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeViews: item.children[0].children,
@@ -294,6 +294,12 @@ public class MarkdownAIComponent {
                             } else {
                                 Text("")
                             }
+                        }
+                        // 组件区域变化时触发该回调
+                        .onAreaChange {oldValue, newValue =>
+                                if (isFull) {
+                                    indexHashMap.put((item.node as FootnoteBlock)().noteid, newValue.position.y)
+                                }
                         }
                     } else {
                         // TODO 其他节点
@@ -448,21 +454,15 @@ public class MarkdownAIComponent {
             }
         }
     }
-
-    /**
-     * 添加脚注数据的定位
-     */
-    func addMap(index: Int64, noteid: String): Bool {
-        indexHashMap.put(noteid, index)
-        return true
-    }
-
+    
     /**
      * 脚注点击回调
      */
     func FontCallback(noteid: String): Unit {
         if (let Some(v) <- indexHashMap.get(noteid)) {
-            scroller.scrollToIndex(Int32(v))
+            if(let Some(w) <- markdownAIConfiguration.tocIndexCallback){
+                w(v)
+            }
         }
     }
 }
