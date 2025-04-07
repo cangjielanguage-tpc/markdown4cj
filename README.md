@@ -24,34 +24,33 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 特性
 
-1. 支持标题语法展示
-2. 支持段落语法展示
-3. 支持分割线语法展示
-4. 支持内联代码语法显示
-5. 支持缩进代码块显示
-6. 支持围栏代码块显示
-7. 支持图片语法显示
-8. 支持加粗语法
-9. 支持斜体语法
-10. 支持删除线语法
-11. 支持链接语法
-12. 支持围栏代码语法高亮显示
-13. 支持html语法显示
-14. 支持软换行和硬换行语法显示
-15. 支持表格语法显示
-16. 支持有序列表语法显示
-17. 支持无序列表显示
-18. 支持任务列表显示
-19. 支持块引用语法显示
-20. 支持列表中嵌套其他元素显示
-21. 支持Toc目录显示扩展功能
-22. 支持视频播放扩展功能
-23. 支持图片幻灯片扩展功能
-24. 支持组合代码模式扩展功能
-25. 支持数学公式展示的功能扩展
-26. 支持markdown文本样式设置功能
-27. 支持表格样式设置功能
-28. 支持代码语法高亮样式设置功能
+1. 支持增量加载功能
+2. 支持标题语法展示
+3. 支持段落语法展示
+4. 支持分割线语法展示
+5. 支持内联代码语法显示
+6. 支持缩进代码块显示
+7. 支持围栏代码块显示
+8. 支持图片语法显示
+9. 支持加粗语法
+10. 支持斜体语法
+11. 支持删除线语法
+12. 支持链接语法
+13. 支持围栏代码语法高亮显示
+14. 支持html语法显示
+15. 支持软换行和硬换行语法显示
+16. 支持表格语法显示
+17. 支持有序列表语法显示
+18. 支持无序列表显示
+19. 支持任务列表显示
+20. 支持块引用语法显示
+21. 支持列表中嵌套其他元素显示
+22. 支持脚注显示扩展功能
+23. 支持数学公式展示的功能扩展
+24. 支持markdown文本样式设置功能
+25. 支持表格样式设置功能
+26. 支持代码语法高亮样式设置功能
+27. 支持深浅主题色整体设置功能
 
 ## 软件架构
 
@@ -129,10 +128,10 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
         }
       }
       ```
-   5. 修改自身应用 entry/src/main/cangjie 下的 cjpm.toml 文件，在 [dependencies] 字段下添加 markdown = {path = "../../../../markdown/src/main/cangjie", version = "1.0.0"}
+   5. 修改自身应用 entry/src/main/cangjie 下的 cjpm.toml 文件，在 [dependencies] 字段下添加
       ```toml
-      [dependencies]
-          markdown = {path = "../../../../markdown/src/main/cangjie", version = "1.0.0"}
+      [dependencies.markdown]
+        path = "../../../../markdown/src/main/cangjie"
       ```
    6. 在项目中使用 import markdown.components.* 引用markdown项目
       ```cangjie
@@ -154,7 +153,7 @@ class ARHeading1Page {
     func build() {
         Scroll() {
             Column {
-                MarkdownComponent(mdStr: mdStr)
+                MarkdownAIComponent(output: mdStr, isFull:true)
             }
         }
         // 设置滚动方法
@@ -220,7 +219,7 @@ Heading level 2
 
 ## 约束与限制
 
-当前基于 DevEco Studio 5.0.2 Beta1 和 DevEco Studio-Cangjie Plugin 5.0.7.100 Beta1 版本实现的
+当前基于 DevEco Studio for Windows 5.0.9.300 和 DevEco Studio Cangjie Plugin Beta1 for Windows 5.0.9.300 版本实现的
 
 1. 内联代码暂未支持背景色设置
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
@@ -252,51 +251,45 @@ Heading level 2
    25. yaml
    26. cangjie、cj
    27. rust
-4. 视频只支持特定的视频格式
-5. 表格限制：
+4. 表格限制：
    1. 不支持行内添加标题
    2. 不支持行内添加块引用
    3. 不支持行内添加有序、无序、任务列表
    4. 不支持行内添加图片
-   5. 不支持行内添加视频
-   6. 不支持行内添加图片banner
-   7. 不支持行内添加缩进代码块、围栏代码块、围栏代码组合列表块
-6. 列表最多支持嵌套12层
-7. 图文混排支持本地图片和网络图片的图文混排
-   1. 本地图片路径格式需要按照应用沙箱目录 https://gitcode.com/openharmony/docs/blob/master/zh-cn/application-dev/file-management/app-sandbox-directory.md 处理
-   2. 支持rawfile目录下本地图片，相对路径是基于rawfile的路径
-   3. 不支持带style标签的本地图片
-   4. 支持的图片格式包括: png、jpg、bmp、svg和gif。注gif图片没有动画效果，只显示第一帧。
-8. TOC插件应在最后加载, 避免受其他插件影响
-9. 暂未支持稀疏排列和紧密排列
-10. 数学公式背景色暂不支持设置透明色
-11. HTML支持的标签
-    1. 块元素
-       1. hr标签 - 分割线
-       2. h1~h6标签 - 标题
-       3. blockquote标签 - 块引用
-       4. ul、ol、li标签 - 有序列表和无序列表
-       5. table、thead、tbody、tfoot、tr、th、td标签 - 表格
-       6. pre标签 - 缩进代码块
-       7. p标签 - 段落标签
-    2. 行内元素
-       1. font标签 - 文本样式
-          * color属性
-          * size属性
-       2. a标签 - 链接
-          * href属性 - 必选属性
-          * title属性
-       3. b、strong标签 - 加粗
-       4. i、em、cite、dfn标签 - 斜体
-       5. s、del标签 - 删除
-       6. code、samp、var、kbd标签 - 内联代码
-    3. 行内块元素
-       1. br标签 -  换行符
-       2. img标签 - 图片
-          * src属性 - 必选属性
-          * title属性
-          * width属性
-          * height属性
+   5. 不支持行内添加缩进代码块、围栏代码块
+5. 图文混排支持本地图片和网络图片的图文混排
+   1. 不支持沙盒路径下的本地图片
+   2. 不支持rawfile目录下本地图片
+   3. 不支持带style标签的图片
+6. 暂未支持稀疏排列和紧密排列
+7. 数学公式背景色暂不支持设置透明色
+8. HTML支持的标签
+   1. 块元素
+      1. hr标签 - 分割线
+      2. h1~h6标签 - 标题
+      3. blockquote标签 - 块引用
+      4. ul、ol、li标签 - 有序列表和无序列表
+      5. table、thead、tbody、tfoot、tr、th、td标签 - 表格
+      6. pre标签 - 缩进代码块
+      7. p标签 - 段落标签
+   2. 行内元素
+      1. font标签 - 文本样式
+         * color属性
+         * size属性
+      2. a标签 - 链接
+         * href属性 - 必选属性
+         * title属性
+      3. b、strong标签 - 加粗
+      4. i、em、cite、dfn标签 - 斜体
+      5. s、del标签 - 删除
+      6. code、samp、var、kbd标签 - 内联代码
+   3. 行内块元素
+      1. br标签 -  换行符
+      2. img标签 - 图片
+         * src属性 - 必选属性
+         * title属性
+         * width属性
+         * height属性
 
 ## 开源协议
 
