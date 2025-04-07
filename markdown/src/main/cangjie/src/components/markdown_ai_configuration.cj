@@ -102,6 +102,7 @@ public class MarkdownAIConfiguration {
         this.latexImageCallback = builder.latexImageCallback
         this.latexStrCallback = builder.latexStrCallback
         this.tocIndexCallback = builder.tocIndexCallback
+        this.footnoteCallback = builder.footnoteCallback
         this.listBigDataCallback = builder.listBigDataCallback
     }
 
@@ -206,6 +207,11 @@ public class MarkdownAIConfigurationBuilder {
     protected var tocIndexCallback: ?(?Float64) -> Unit = None
 
     /**
+     * 脚注跳转指定位置
+     */
+    protected var footnoteCallback: ?(?Float64) -> Unit = None
+
+    /**
      * 超大数据跳转页面显示全部数据
      */
     protected var listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit = None
@@ -226,6 +232,7 @@ public class MarkdownAIConfigurationBuilder {
         this.latexImageCallback = configuration.latexImageCallback
         this.latexStrCallback = configuration.latexStrCallback
         this.tocIndexCallback = configuration.tocIndexCallback
+        this.footnoteCallback = configuration.footnoteCallback
         this.listBigDataCallback = configuration.listBigDataCallback
     }
 
@@ -347,6 +354,17 @@ public class MarkdownAIConfigurationBuilder {
      */
     public func setTocIndexCallback(tocIndexCallback: (?Float64) -> Unit): MarkdownAIConfigurationBuilder {
         this.tocIndexCallback = tocIndexCallback
+        return this
+    }
+
+    /**
+     * 设置脚注跳转指定位置
+     *
+     * @param footnoteCallback 脚注跳转指定位置接口 (?Float64:位置距离)
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
+     */
+    public func setFootnoteCallback(footnoteCallback: (?Float64) -> Unit): MarkdownAIConfigurationBuilder {
+        this.footnoteCallback = footnoteCallback
         return this
     }
 
