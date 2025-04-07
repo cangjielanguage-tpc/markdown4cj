@@ -188,8 +188,7 @@ class MarkdownAIFencedCodeBlockComponent {
                             .visibility(isVisibility(markdownAIConfiguration.markdownAITheme.isCodeFullScreen))
                             // 点击动作触发该方法调用
                             .onClick {
-                                evt => codeFullScreenOnClick(codeText, info,
-                                    markdownAIConfiguration.codeFullScreenCallback)
+                                evt => codeFullScreenOnClick(codeText, info, markdownAIConfiguration.codeFullScreenCallback)
                             }
 
                         Row()

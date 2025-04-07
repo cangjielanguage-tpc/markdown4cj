@@ -248,12 +248,12 @@ class MarkdownAIListItemComponent {
                 }
             )
         }
-            // 设置List组件排列方向
-            .listDirection(Axis.Vertical)
-            // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
-            .alignListItem(ListItemAlign.Start)
-            // 对子组件进行重新布局
-            .layoutWeight(1)
+        // 设置List组件排列方向
+        .listDirection(Axis.Vertical)
+        // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
+        .alignListItem(ListItemAlign.Start)
+        // 对子组件进行重新布局
+        .layoutWeight(1)
     }
 
     /**
@@ -284,61 +284,45 @@ class MarkdownAIListItemComponent {
             } else if (refreshNodeViewSize == dataSourceSize) {
                 // 刷新数据的长度等于页面数据长度，需要更新当前数据
                 let index: Int64 = dataSourceSize - 1
-                if ((refreshNodeViews[refreshNodeViewSize - 1].node is BulletList &&
-                    nodeViewAIDataSource.getData(dataSourceSize - 1).node is BulletList) || (refreshNodeViews[refreshNodeViewSize -
-                        1].node is OrderedList && nodeViewAIDataSource.getData(dataSourceSize - 1).node is OrderedList)) {
+                if ((refreshNodeViews[refreshNodeViewSize - 1].node is BulletList && nodeViewAIDataSource.getData(dataSourceSize - 1).node is BulletList) || (refreshNodeViews[refreshNodeViewSize - 1].node is OrderedList && nodeViewAIDataSource.getData(dataSourceSize - 1).node is OrderedList)) {
                     // 有序列表和无序列表
                     for (data in markdownAICacheConfiguration.listComponents) {
-//
                         if(isListItem(indexList,data.indexList,index)){
                             data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
                         }
                     }
-                } else if ((refreshNodeViews[refreshNodeViewSize - 1].node is FencedCodeBlock &&
-                    nodeViewAIDataSource.getData(dataSourceSize - 1).node is FencedCodeBlock) || (refreshNodeViews[refreshNodeViewSize -
-                        1].node is IndentedCodeBlock &&
-                    nodeViewAIDataSource.getData(dataSourceSize - 1).node is IndentedCodeBlock)) {
+                } else if ((refreshNodeViews[refreshNodeViewSize - 1].node is FencedCodeBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is FencedCodeBlock) || (refreshNodeViews[refreshNodeViewSize - 1].node is IndentedCodeBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is IndentedCodeBlock)) {
                     // 围栏代码和缩进代码
                     for (data in markdownAICacheConfiguration.indentedCodeComponents) {
-//
                         if(isListItem(indexList,data.indexList,index)){
-                            data.refreshData(getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[0],
-                                getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[1])
+                            data.refreshData(getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[0], getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[1])
                         }
                     }
-                } else if (refreshNodeViews[refreshNodeViewSize - 1].node is Heading &&
-                    nodeViewAIDataSource.getData(dataSourceSize - 1).node is Heading) {
+                } else if (refreshNodeViews[refreshNodeViewSize - 1].node is Heading && nodeViewAIDataSource.getData(dataSourceSize - 1).node is Heading) {
                     // 标题
                     for (data in markdownAICacheConfiguration.headingComponents) {
-//
                         if(isListItem(indexList,data.indexList,index)){
-                            data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children,
-                                (refreshNodeViews[refreshNodeViewSize - 1].node as Heading)().getLevel())
+                            data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children, (refreshNodeViews[refreshNodeViewSize - 1].node as Heading)().getLevel())
                         }
                     }
                 } else if (refreshNodeViews[refreshNodeViewSize - 1].node is Paragraph &&
                     nodeViewAIDataSource.getData(dataSourceSize - 1).node is Paragraph) {
                     // 段落
                     for (data in markdownAICacheConfiguration.paragraphComponents) {
-//
                         if(isListItem(indexList,data.indexList,index)){
                             data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
                         }
                     }
-                } else if (refreshNodeViews[refreshNodeViewSize - 1].node is TableBlock &&
-                    nodeViewAIDataSource.getData(dataSourceSize - 1).node is TableBlock) {
+                } else if (refreshNodeViews[refreshNodeViewSize - 1].node is TableBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is TableBlock) {
                     // 表格
                     for (data in markdownAICacheConfiguration.tableComponents) {
-//
                         if(isListItem(indexList,data.indexList,index)){
                             data.refreshData(tableList(refreshNodeViews[refreshNodeViewSize - 1].children))
                         }
                     }
-                } else if (refreshNodeViews[refreshNodeViewSize - 1].node is BlockQuote &&
-                    nodeViewAIDataSource.getData(dataSourceSize - 1).node is BlockQuote) {
+                } else if (refreshNodeViews[refreshNodeViewSize - 1].node is BlockQuote && nodeViewAIDataSource.getData(dataSourceSize - 1).node is BlockQuote) {
                     // 块引用
                     for (data in markdownAICacheConfiguration.quoteComponents) {
-//
                         if(isListItem(indexList,data.indexList,index)){
                             data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
                         }

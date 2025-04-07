@@ -21,18 +21,6 @@ func linkOnClick(nodeView: NodeView, linkCallback: ?(String) -> Unit): Unit {
 }
 
 /**
- * 脚注的点击事件
- *
- * @param nodeView NodeView
- * @param footCallback 脚注点击事件的回调事件
- */
-func footOnClick(nodeView: NodeView, footCallback: ?(String) -> Unit): Unit {
-//    if (linkCallback.isSome() && nodeView.link.isSome()) {
-//        linkCallback()(nodeView.link().getDestination())
-//    }
-}
-
-/**
  * 图片的点击事件
  *
  * @param commonmarkImageStr 图片链接

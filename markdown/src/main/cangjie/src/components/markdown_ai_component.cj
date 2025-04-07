@@ -454,13 +454,13 @@ public class MarkdownAIComponent {
             }
         }
     }
-    
+
     /**
      * 脚注点击回调
      */
     func FontCallback(noteid: String): Unit {
         if (let Some(v) <- indexHashMap.get(noteid)) {
-            if(let Some(w) <- markdownAIConfiguration.tocIndexCallback){
+            if(let Some(w) <- markdownAIConfiguration.footnoteCallback){
                 w(v)
             }
         }

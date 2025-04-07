@@ -80,6 +80,11 @@ public class MarkdownAIConfiguration {
     protected var tocIndexCallback: ?(?Float64) -> Unit = None
 
     /**
+     * 脚注跳转指定位置
+     */
+    protected var footnoteCallback: ?(?Float64) -> Unit = None
+
+    /**
      * 超大数据跳转页面显示全部数据
      */
     protected var listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit = None
