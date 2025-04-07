@@ -129,10 +129,10 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
         }
       }
       ```
-   5. 修改自身应用 entry/src/main/cangjie 下的 cjpm.toml 文件，在 [dependencies] 字段下添加 markdown = {path = "../../../../markdown/src/main/cangjie", version = "1.0.0"}
+   5. 修改自身应用 entry/src/main/cangjie 下的 cjpm.toml 文件，在 [dependencies] 字段下添加
       ```toml
-      [dependencies]
-          markdown = {path = "../../../../markdown/src/main/cangjie", version = "1.0.0"}
+      [dependencies.markdown]
+      path = "../../../../markdown/src/main/cangjie"
       ```
    6. 在项目中使用 import markdown.components.* 引用markdown项目
       ```cangjie
@@ -220,7 +220,7 @@ Heading level 2
 
 ## 约束与限制
 
-当前基于 DevEco Studio 5.0.2 Beta1 和 DevEco Studio-Cangjie Plugin 5.0.7.100 Beta1 版本实现的
+当前基于 DevEco Studio for Windows 5.0.9.300 和 DevEco Studio Cangjie Plugin Beta1 for Windows 5.0.9.300 版本实现的
 
 1. 内联代码暂未支持背景色设置
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
@@ -272,31 +272,31 @@ Heading level 2
 10. 数学公式背景色暂不支持设置透明色
 11. HTML支持的标签
     1. 块元素
-       1. hr标签 - 分割线
-       2. h1~h6标签 - 标题
-       3. blockquote标签 - 块引用
-       4. ul、ol、li标签 - 有序列表和无序列表
-       5. table、thead、tbody、tfoot、tr、th、td标签 - 表格
-       6. pre标签 - 缩进代码块
-       7. p标签 - 段落标签
+        1. hr标签 - 分割线
+        2. h1~h6标签 - 标题
+        3. blockquote标签 - 块引用
+        4. ul、ol、li标签 - 有序列表和无序列表
+        5. table、thead、tbody、tfoot、tr、th、td标签 - 表格
+        6. pre标签 - 缩进代码块
+        7. p标签 - 段落标签
     2. 行内元素
-       1. font标签 - 文本样式
-          * color属性
-          * size属性
-       2. a标签 - 链接
-          * href属性 - 必选属性
-          * title属性
-       3. b、strong标签 - 加粗
-       4. i、em、cite、dfn标签 - 斜体
-       5. s、del标签 - 删除
-       6. code、samp、var、kbd标签 - 内联代码
+        1. font标签 - 文本样式
+            * color属性
+            * size属性
+        2. a标签 - 链接
+            * href属性 - 必选属性
+            * title属性
+        3. b、strong标签 - 加粗
+        4. i、em、cite、dfn标签 - 斜体
+        5. s、del标签 - 删除
+        6. code、samp、var、kbd标签 - 内联代码
     3. 行内块元素
-       1. br标签 -  换行符
-       2. img标签 - 图片
-          * src属性 - 必选属性
-          * title属性
-          * width属性
-          * height属性
+        1. br标签 -  换行符
+        2. img标签 - 图片
+            * src属性 - 必选属性
+            * title属性
+            * width属性
+            * height属性
 
 ## 开源协议
 
