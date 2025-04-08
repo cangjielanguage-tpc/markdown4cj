@@ -72,7 +72,7 @@ func headingFootnoteComponent(nodeView: NodeView, markdownAIConfiguration: Markd
         // 设置文本的字体列表
         .fontFamily(spanFontFamily(false, markdownAIConfiguration.markdownAITheme, true))
         // 设置文本尺寸
-        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, true, level)/2.0)
+        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, true, level))
         // 设置文本的字体粗细
         .fontWeight(spanFontWeight(nodeView, true))
         // 设置文本的字体样式
@@ -155,7 +155,7 @@ func paragraphFootnoteComponent(nodeView: NodeView, markdownAIConfiguration: Mar
         // 设置文本的字体列表
         .fontFamily(spanFontFamily(false, markdownAIConfiguration.markdownAITheme, false))
         // 设置文本尺寸
-        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, false, 0)/2.0)
+        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, false, 0))
         // 设置文本的字体粗细
         .fontWeight(spanFontWeight(nodeView, false))
         // 设置文本的字体样式
@@ -238,7 +238,7 @@ func tableComponentFootnote(nodeView: NodeView, isHeader: Bool, markdownAIConfig
         // 设置文本的字体列表
         .fontFamily(spanFontFamily(false, markdownAIConfiguration.markdownAITheme, false))
         // 设置文本尺寸
-        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, false, 0)/2.0)
+        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, false, 0))
         // 设置文本的字体粗细
         .fontWeight(spanFontWeight(nodeView, isHeader))
         // 设置文本的字体样式

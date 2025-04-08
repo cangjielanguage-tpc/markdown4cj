@@ -134,7 +134,7 @@ class MarkdownAIHeadingComponent {
                         headingTextComponent(item, markdownAIConfiguration, level, fontCallback)
                     } else if (item.node is Footnote) {
                         // 脚注
-                        headingTextComponent(item, markdownAIConfiguration, level, fontCallback)
+                        headingFootnoteComponent(item, markdownAIConfiguration, level, fontCallback)
                     } else if (item.node is Code) {
                         // 内联代码
                         headingCodeComponent(item, markdownAIConfiguration)

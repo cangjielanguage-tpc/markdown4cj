@@ -114,7 +114,7 @@ class MarkdownAIParagraphComponent {
                         paragraphTextComponent(item, markdownAIConfiguration, fontCallback)
                     } else if (item.node is Footnote) {
                         // 脚注
-                        paragraphTextComponent(item, markdownAIConfiguration, fontCallback)
+                        paragraphFootnoteComponent(item, markdownAIConfiguration, fontCallback)
                     } else if (item.node is Code) {
                         // 内联代码
                         paragraphCodeComponent(item, markdownAIConfiguration)

@@ -100,7 +100,7 @@ class MarkdownAITableBlockCellComponent {
             ForEach(
                 nodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText || item.node is Footnote) {
+                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
                         if (isHeader) {
                             tableComponentText(item, true, markdownAIConfiguration, fontCallback)
@@ -110,9 +110,9 @@ class MarkdownAITableBlockCellComponent {
                     } else if (item.node is Footnote) {
                         // 脚注
                         if (isHeader) {
-                            tableComponentText(item, true, markdownAIConfiguration, fontCallback)
+                            tableComponentFootnote(item, true, markdownAIConfiguration, fontCallback)
                         } else {
-                            tableComponentText(item, false, markdownAIConfiguration, fontCallback)
+                            tableComponentFootnote(item, false, markdownAIConfiguration, fontCallback)
                         }
                     } else if (item.node is Code) {
                         // 内联代码
