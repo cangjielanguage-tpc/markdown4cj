@@ -129,8 +129,11 @@ class MarkdownAIHeadingComponent {
             ForEach(
                 nodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText || item.node is Footnote) {
-                        // 文本或者脚注
+                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
+                        // 文本
+                        headingTextComponent(item, markdownAIConfiguration, level, fontCallback)
+                    } else if (item.node is Footnote) {
+                        // 脚注
                         headingTextComponent(item, markdownAIConfiguration, level, fontCallback)
                     } else if (item.node is Code) {
                         // 内联代码

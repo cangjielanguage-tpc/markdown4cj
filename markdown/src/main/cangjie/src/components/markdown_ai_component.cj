@@ -298,7 +298,7 @@ public class MarkdownAIComponent {
                         // 组件区域变化时触发该回调
                         .onAreaChange {oldValue, newValue =>
                                 if (isFull) {
-                                    indexHashMap.put((item.node as FootnoteBlock)().noteid, newValue.position.y)
+                                    indexHashMap.put((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
                                 }
                         }
                     } else {

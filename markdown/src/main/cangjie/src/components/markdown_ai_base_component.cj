@@ -33,8 +33,6 @@ func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownA
         .onClick {evt =>
             if(nodeView.link.isSome()){
                 linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
-            } else if(nodeView.node is Footnote){
-                fontCallback((nodeView.node as Footnote)().noteid)
             }
         }
 }
@@ -74,7 +72,7 @@ func headingFootnoteComponent(nodeView: NodeView, markdownAIConfiguration: Markd
         // 设置文本的字体列表
         .fontFamily(spanFontFamily(false, markdownAIConfiguration.markdownAITheme, true))
         // 设置文本尺寸
-        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, true, level))
+        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, true, level)/2.0)
         // 设置文本的字体粗细
         .fontWeight(spanFontWeight(nodeView, true))
         // 设置文本的字体样式
@@ -87,9 +85,7 @@ func headingFootnoteComponent(nodeView: NodeView, markdownAIConfiguration: Markd
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
         .onClick {evt =>
-            if(nodeView.link.isSome()){
-                linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
-            } else if(nodeView.node is Footnote){
+            if(nodeView.node is Footnote){
                 fontCallback((nodeView.node as Footnote)().noteid)
             }
         }
@@ -120,8 +116,6 @@ func paragraphTextComponent(nodeView: NodeView, markdownAIConfiguration: Markdow
         .onClick {evt =>
             if(nodeView.link.isSome()){
                 linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
-            } else if(nodeView.node is Footnote){
-                fontCallback((nodeView.node as Footnote)().noteid)
             }
         }
 }
@@ -161,7 +155,7 @@ func paragraphFootnoteComponent(nodeView: NodeView, markdownAIConfiguration: Mar
         // 设置文本的字体列表
         .fontFamily(spanFontFamily(false, markdownAIConfiguration.markdownAITheme, false))
         // 设置文本尺寸
-        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, false, 0))
+        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, false, 0)/2.0)
         // 设置文本的字体粗细
         .fontWeight(spanFontWeight(nodeView, false))
         // 设置文本的字体样式
@@ -174,9 +168,7 @@ func paragraphFootnoteComponent(nodeView: NodeView, markdownAIConfiguration: Mar
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
         .onClick {evt =>
-            if(nodeView.link.isSome()){
-                linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
-            } else if(nodeView.node is Footnote){
+            if(nodeView.node is Footnote){
                 fontCallback((nodeView.node as Footnote)().noteid)
             }
         }
@@ -207,8 +199,6 @@ func tableComponentText(nodeView: NodeView, isHeader: Bool, markdownAIConfigurat
         .onClick {evt =>
             if(nodeView.link.isSome()){
                 linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
-            } else if(nodeView.node is Footnote){
-                fontCallback((nodeView.node as Footnote)().noteid)
             }
         }
 }
@@ -248,7 +238,7 @@ func tableComponentFootnote(nodeView: NodeView, isHeader: Bool, markdownAIConfig
         // 设置文本的字体列表
         .fontFamily(spanFontFamily(false, markdownAIConfiguration.markdownAITheme, false))
         // 设置文本尺寸
-        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, false, 0))
+        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, false, 0)/2.0)
         // 设置文本的字体粗细
         .fontWeight(spanFontWeight(nodeView, isHeader))
         // 设置文本的字体样式
@@ -261,9 +251,7 @@ func tableComponentFootnote(nodeView: NodeView, isHeader: Bool, markdownAIConfig
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
         .onClick {evt =>
-            if(nodeView.link.isSome()){
-                linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
-            } else if(nodeView.node is Footnote){
+            if(nodeView.node is Footnote){
                 fontCallback((nodeView.node as Footnote)().noteid)
             }
         }

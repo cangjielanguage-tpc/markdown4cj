@@ -101,7 +101,14 @@ class MarkdownAITableBlockCellComponent {
                 nodeViewList,
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText || item.node is Footnote) {
-                        // 文本或者脚注
+                        // 文本
+                        if (isHeader) {
+                            tableComponentText(item, true, markdownAIConfiguration, fontCallback)
+                        } else {
+                            tableComponentText(item, false, markdownAIConfiguration, fontCallback)
+                        }
+                    } else if (item.node is Footnote) {
+                        // 脚注
                         if (isHeader) {
                             tableComponentText(item, true, markdownAIConfiguration, fontCallback)
                         } else {
