@@ -52,6 +52,11 @@ public class MarkdownAITheme {
     protected var linkSize: Float64 = 14.0
 
     /**
+     * 链接背景颜色
+     */
+    protected var linkBackGroupColor: Color = COLOR_000000
+
+    /**
      * 是否显示链接下划线
      */
     protected var isLinkUnderlined: Bool = true
@@ -393,6 +398,7 @@ public class MarkdownAITheme {
         // 链接
         this.linkColor = builder.linkColor
         this.linkSize = builder.linkSize
+        this.linkBackGroupColor = builder.linkBackGroupColor
         this.isLinkUnderlined = builder.isLinkUnderlined
         // 块引用、有序列表，无序列表、任务列表、TOC列表
         this.blockMargin = builder.blockMargin
@@ -533,8 +539,10 @@ public class MarkdownAITheme {
         markdownAIThemeBuilder.setOrderedListItemColor(COLOR_000000)
         // 块引用
         markdownAIThemeBuilder.setBlockQuoteColor(COLOR_000000)
+        markdownAIThemeBuilder.setBlockQuoteBackGroupColor(COLOR_FFFFFF)
         // 链接
         markdownAIThemeBuilder.setLinkColor(COLOR_0000FF)
+        markdownAIThemeBuilder.setLinkBackGroupColor(COLOR_FFFFFF)
         return markdownAIThemeBuilder
     }
 
@@ -579,8 +587,10 @@ public class MarkdownAITheme {
         markdownAIThemeBuilder.setOrderedListItemColor(COLOR_FFFFFF)
         // 块引用
         markdownAIThemeBuilder.setBlockQuoteColor(COLOR_FFFFFF)
+        markdownAIThemeBuilder.setBlockQuoteBackGroupColor(COLOR_000000)
         // 链接
         markdownAIThemeBuilder.setLinkColor(COLOR_0000FF)
+        markdownAIThemeBuilder.setLinkBackGroupColor(COLOR_000000)
         return markdownAIThemeBuilder
     }
 
@@ -623,6 +633,11 @@ public class MarkdownAIThemeBuilder {
      * 链接文字大小
      */
     protected var linkSize: Float64 = 14.0
+
+    /**
+     * 链接背景颜色
+     */
+    protected var linkBackGroupColor: Color = COLOR_000000
 
     /**
      * 是否显示链接下划线
@@ -964,6 +979,7 @@ public class MarkdownAIThemeBuilder {
         // 链接
         this.linkColor = theme.linkColor
         this.linkSize = theme.linkSize
+        this.linkBackGroupColor = theme.linkBackGroupColor
         this.isLinkUnderlined = theme.isLinkUnderlined
         // 块引用、有序列表，无序列表、任务列表、TOC列表
         this.blockMargin = theme.blockMargin
@@ -1088,6 +1104,7 @@ public class MarkdownAIThemeBuilder {
         this.blockQuoteBackGroupClor = COLOR_FFFFFF
         // 链接
         this.linkColor = COLOR_0000FF
+        this.linkBackGroupColor = COLOR_FFFFFF
         return this
     }
 
@@ -1134,6 +1151,7 @@ public class MarkdownAIThemeBuilder {
         this.blockQuoteBackGroupClor = COLOR_000000
         // 链接
         this.linkColor = COLOR_0000FF
+        this.linkBackGroupColor = COLOR_000000
         return this
     }
 
@@ -1189,6 +1207,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setLinkSize(linkSize: Float64): MarkdownAIThemeBuilder {
         this.linkSize = linkSize
+        return this
+    }
+
+    /**
+     * 设置链接背景颜色
+     *
+     * @param linkBackGroupColor 链接的背景颜色。默认0x000000
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkBackGroupColor(linkBackGroupColor: Color): MarkdownAIThemeBuilder {
+        this.linkBackGroupColor = linkBackGroupColor
         return this
     }
 
