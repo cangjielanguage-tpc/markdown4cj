@@ -47,6 +47,11 @@ public class MarkdownAITheme {
     protected var linkColor: Color = COLOR_0000FF
 
     /**
+     * 链接文字大小
+     */
+    protected var linkSize: Float64 = 14.0
+
+    /**
      * 是否显示链接下划线
      */
     protected var isLinkUnderlined: Bool = true
@@ -65,6 +70,11 @@ public class MarkdownAITheme {
      * 块引用左边线条颜色
      */
     protected var blockQuoteColor: Color = COLOR_191919
+
+    /**
+     * 块引用背景颜色
+     */
+    protected var blockQuoteBackGroupClor: Color = COLOR_FFFFFF
 
     /**
      * 有序列表列表项的颜色。
@@ -382,11 +392,13 @@ public class MarkdownAITheme {
         this.blockTopAndBottomMargins = builder.blockTopAndBottomMargins
         // 链接
         this.linkColor = builder.linkColor
+        this.linkSize = builder.linkSize
         this.isLinkUnderlined = builder.isLinkUnderlined
         // 块引用、有序列表，无序列表、任务列表、TOC列表
         this.blockMargin = builder.blockMargin
         this.blockQuoteWidth = builder.blockQuoteWidth
         this.blockQuoteColor = builder.blockQuoteColor
+        this.blockQuoteBackGroupClor = builder.blockQuoteBackGroupClor
         this.orderedListItemColor = builder.orderedListItemColor
         this.orderedListItemSize = builder.orderedListItemSize
         this.bulletListItemColor = builder.bulletListItemColor
@@ -608,6 +620,11 @@ public class MarkdownAIThemeBuilder {
     protected var linkColor: Color = COLOR_0000FF
 
     /**
+     * 链接文字大小
+     */
+    protected var linkSize: Float64 = 14.0
+
+    /**
      * 是否显示链接下划线
      */
     protected var isLinkUnderlined: Bool = true
@@ -626,6 +643,11 @@ public class MarkdownAIThemeBuilder {
      * 块引用左边线条颜色
      */
     protected var blockQuoteColor: Color = COLOR_191919
+
+    /**
+     * 块引用背景颜色
+     */
+    protected var blockQuoteBackGroupClor: Color = COLOR_FFFFFF
 
     /**
      * 有序列表列表项的颜色。
@@ -941,11 +963,13 @@ public class MarkdownAIThemeBuilder {
         this.blockTopAndBottomMargins = theme.blockTopAndBottomMargins
         // 链接
         this.linkColor = theme.linkColor
+        this.linkSize = theme.linkSize
         this.isLinkUnderlined = theme.isLinkUnderlined
         // 块引用、有序列表，无序列表、任务列表、TOC列表
         this.blockMargin = theme.blockMargin
         this.blockQuoteWidth = theme.blockQuoteWidth
         this.blockQuoteColor = theme.blockQuoteColor
+        this.blockQuoteBackGroupClor = theme.blockQuoteBackGroupClor
         this.orderedListItemColor = theme.orderedListItemColor
         this.orderedListItemSize = theme.orderedListItemSize
         this.bulletListItemColor = theme.bulletListItemColor
@@ -1061,6 +1085,7 @@ public class MarkdownAIThemeBuilder {
         this.orderedListItemColor = COLOR_000000
         // 块引用
         this.blockQuoteColor = COLOR_000000
+        this.blockQuoteBackGroupClor = COLOR_FFFFFF
         // 链接
         this.linkColor = COLOR_0000FF
         return this
@@ -1106,6 +1131,7 @@ public class MarkdownAIThemeBuilder {
         this.orderedListItemColor = COLOR_FFFFFF
         // 块引用
         this.blockQuoteColor = COLOR_FFFFFF
+        this.blockQuoteBackGroupClor = COLOR_000000
         // 链接
         this.linkColor = COLOR_0000FF
         return this
@@ -1156,6 +1182,17 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
+     * 设置链接文字大小
+     *
+     * @param LinkSize 链接文字大小，单位默认vp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkSize(linkSize: Float64): MarkdownAIThemeBuilder {
+        this.linkSize = linkSize
+        return this
+    }
+
+    /**
      * 设置是否显示链接下划线
      *
      * @param isLinkUnderlined 是否显示链接的下划线。true：显示链接下划线，false：不显示链接下划线。默认显示链接下划线
@@ -1196,6 +1233,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setBlockQuoteColor(blockQuoteColor: Color): MarkdownAIThemeBuilder {
         this.blockQuoteColor = blockQuoteColor
+        return this
+    }
+
+    /**
+     * 设置块引用背景颜色
+     *
+     * @param blockQuoteBackGroupClor 块引用左线条颜色。默认0xFFFFFF
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setBlockQuoteBackGroupColor(blockQuoteBackGroupClor: Color): MarkdownAIThemeBuilder {
+        this.blockQuoteBackGroupClor = blockQuoteBackGroupClor
         return this
     }
 

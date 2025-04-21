@@ -236,6 +236,7 @@ public class MarkdownAIQuoteComponent {
                     }
                     // 对子组件进行重新布局
                     .layoutWeight(1)
+                    .backgroundColor(markdownAIConfiguration.markdownAITheme.blockQuoteBackGroupClor)
                 }
             )
         }

@@ -103,13 +103,13 @@ func spanFontSize(nodeView: NodeView, isCode: Bool, markdownAITheme: MarkdownAIT
                 let sizeInt64: Int64 = Int64.parse(sizeString())
                 return Float64(sizeInt64)
             } else {
-                return spanTextFontSize(isCode, markdownAITheme, isTitle, level)
+                return spanTextFontSize(nodeView, isCode, markdownAITheme, isTitle, level)
             }
         } catch (e: Exception) {
-            return spanTextFontSize(isCode, markdownAITheme, isTitle, level)
+            return spanTextFontSize(nodeView, isCode, markdownAITheme, isTitle, level)
         }
     } else {
-        return spanTextFontSize(isCode, markdownAITheme, isTitle, level)
+        return spanTextFontSize(nodeView, isCode, markdownAITheme, isTitle, level)
     }
 }
 
@@ -122,15 +122,19 @@ func spanFontSize(nodeView: NodeView, isCode: Bool, markdownAITheme: MarkdownAIT
  * @param level 几级标题
  * @return 返回需要显示的字体大小
  */
-func spanTextFontSize(isCode: Bool, markdownAITheme: MarkdownAITheme, isTitle: Bool, level: Int64): Float64 {
+func spanTextFontSize(nodeView: NodeView, isCode: Bool, markdownAITheme: MarkdownAITheme, isTitle: Bool, level: Int64): Float64 {
     if (isCode) {
         // 内联代码情况设置内联代码字体大小
         return markdownAITheme.codeTextSize
     } else {
-        if (isTitle) {
-            return markdownAITheme.headingTextSizeMultipliers[level - 1]
+        if(nodeView.node is CommonmarkLink){
+            return markdownAITheme.linkSize
         } else {
-            return markdownAITheme.paragraphTextSize
+            if (isTitle) {
+                return markdownAITheme.headingTextSizeMultipliers[level - 1]
+            } else {
+                return markdownAITheme.paragraphTextSize
+            }
         }
     }
 }
