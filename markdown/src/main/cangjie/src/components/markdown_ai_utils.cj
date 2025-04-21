@@ -127,7 +127,7 @@ func spanTextFontSize(nodeView: NodeView, isCode: Bool, markdownAITheme: Markdow
         // 内联代码情况设置内联代码字体大小
         return markdownAITheme.codeTextSize
     } else {
-        if(nodeView.node is CommonmarkLink){
+        if(nodeView.link.isSome()){
             return markdownAITheme.linkSize
         } else {
             if (isTitle) {
