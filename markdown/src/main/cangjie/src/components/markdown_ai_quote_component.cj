@@ -236,7 +236,10 @@ public class MarkdownAIQuoteComponent {
                     }
                     // 对子组件进行重新布局
                     .layoutWeight(1)
+                    // 背景色设置
                     .backgroundColor(markdownAIConfiguration.markdownAITheme.blockQuoteBackGroupClor)
+                    // 内边距
+                    .padding(left: markdownAIConfiguration.markdownAITheme.blockMargin)
                 }
             )
         }
@@ -244,8 +247,6 @@ public class MarkdownAIQuoteComponent {
         .borderColor(markdownAIConfiguration.markdownAITheme.blockQuoteColor)
         // 设置元素的边框宽度(单位为vp)。
         .borderWidth(EdgeWidths(left: markdownAIConfiguration.markdownAITheme.blockQuoteWidth.vp))
-        // 文本内容前的起始边距
-        .padding(left: 10.0, right: markdownAIConfiguration.markdownAITheme.blockMargin)
         // 块内容前的起始边距
         .margin(left: markdownAIConfiguration.markdownAITheme.blockMargin, top: marginTop, bottom: marginBottom)
         // 设置组件自身的宽度
