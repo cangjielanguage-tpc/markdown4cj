@@ -102,25 +102,13 @@ class MarkdownAITableBlockCellComponent {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        if (isHeader) {
-                            tableComponentText(item, true, markdownAIConfiguration, fontCallback)
-                        } else {
-                            tableComponentText(item, false, markdownAIConfiguration, fontCallback)
-                        }
+                        tableComponentText(item, isHeader, markdownAIConfiguration, fontCallback)
                     } else if (item.node is Footnote) {
                         // 脚注
-                        if (isHeader) {
-                            tableComponentFootnote(item, true, markdownAIConfiguration, fontCallback)
-                        } else {
-                            tableComponentFootnote(item, false, markdownAIConfiguration, fontCallback)
-                        }
+                        tableComponentFootnote(item, isHeader, markdownAIConfiguration, fontCallback)
                     } else if (item.node is Code) {
                         // 内联代码
-                        if (isHeader) {
-                            tableComponentCode(item, true, markdownAIConfiguration)
-                        } else {
-                            tableComponentCode(item, false, markdownAIConfiguration)
-                        }
+                        tableComponentCode(item, isHeader, markdownAIConfiguration)
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
                         MarkdownAILatexImageSpanComponent(
