@@ -74,7 +74,7 @@ public class MarkdownAIComponent {
         // 表格插件
         .usePlugin(TablePlugin.create())
         // 数学公式
-        .usePlugin(LatexMathPlugin.create())
+        .usePlugin(LatexMathPluginV2.create())
         // 链接
         .usePlugin(LinkifyPlugin.create())
         // 脚注

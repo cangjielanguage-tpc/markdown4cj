@@ -257,6 +257,7 @@ class MarkdownBuilderImpl <: MarkdownBuilder {
         let plugins: ArrayList<MarkdownPlugin> = preparePlugins(this.plugins)
 
         let parserBuilder: ParserBuilder = ParserBuilder()
+        parserBuilder.inlineParserFactory(InlineParserV2Factory()) // 使用v2版本的InlineParser
         let visitorBuilder: MarkdownVisitorBuilder = MarkdownVisitorBuilderImpl()
 
         for (plugin in plugins) {
