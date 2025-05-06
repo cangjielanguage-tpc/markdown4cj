@@ -63,28 +63,12 @@ public class MarkdownAIComponent {
     /**
      * markdown插件
      */
-    let markdownBase: Markdown = Markdown
-        .builder()
-        // HTML插件
-        .usePlugin(HtmlPlugin.create())
-        // 任务列表插件
-        .usePlugin(TaskListPlugin.create())
-        // 删除线插件
-        .usePlugin(StrikethroughPlugin.create())
-        // 表格插件
-        .usePlugin(TablePlugin.create())
-        // 数学公式
-        .usePlugin(LatexMathPluginV2.create())
-        // 链接
-        .usePlugin(LinkifyPlugin.create())
-        // 脚注
-        .usePlugin(FootnotePlugin.create())
-        .build()
+    var markdownBase: ?Markdown = Option<Markdown>.None
 
     /**
      * markdown解析器
      */
-    let incBase: IncreaseParser = IncreaseParser(markdownBase)
+    var incBase: ?IncreaseParser = Option<IncreaseParser>.None
 
     /**
      * 锁
@@ -102,10 +86,36 @@ public class MarkdownAIComponent {
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
     protected override func aboutToAppear(): Unit {
+        markdownBase =  Markdown
+            .builder()
+            // HTML插件
+            .usePlugin(HtmlPlugin.create())
+            // 任务列表插件
+            .usePlugin(TaskListPlugin.create())
+            // 删除线插件
+            .usePlugin(StrikethroughPlugin.create())
+            // 表格插件
+            .usePlugin(TablePlugin.create())
+            // 数学公式
+            .usePlugin(if1111(true))
+            // 链接
+            .usePlugin(LinkifyPlugin.create())
+            // 脚注
+            .usePlugin(FootnotePlugin.create())
+            .build()
+        incBase = IncreaseParser(markdownBase())
         // 控件宽度 = 屏幕宽度 - padding
         componentWidth = widthVpToPx(screenWidth, markdownAIConfiguration.markdownAITheme.imagePadding)
         // 首次加载
         stringToNodes()
+    }
+
+    func if1111(t:Bool):MarkdownPlugin{
+        return if(t){
+            LatexMathPluginV2.create()
+        }else {
+            LatexMathPluginV2.create()
+        }
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -340,9 +350,9 @@ public class MarkdownAIComponent {
      */
     func stringToNodes(): Unit {
         try {
-            incBase.input = output
-            incBase.parse()
-            let nodeViews = incBase.docView.children
+            incBase().input = output
+            incBase().parse()
+            let nodeViews = incBase().docView.children
             let nodeViewsSize = nodeViews.size // 刷新进来的数据长度
             let nodeViewListSize = nodeViewAIDataSource.totalCount() // 页面缓存的数据长度
             if (isFull) {
