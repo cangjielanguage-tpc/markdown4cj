@@ -15,7 +15,9 @@ public class LinkViewPlugin <: AbstractMarkdownPlugin {
         builder.on(
             "Link",
             {
-                visitor, node => buildView(node, true)
+                visitor, node =>
+                buildView(node, true)
+                visitor.visitChildren(node)
             }
         )
     }
