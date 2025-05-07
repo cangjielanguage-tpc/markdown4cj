@@ -119,24 +119,30 @@ class MarkdownAIParagraphComponent {
                         // 内联代码
                         paragraphCodeComponent(item, markdownAIConfiguration)
                     } else if (item.node is CommonmarkLink) {
-                        // 链接
-                        if((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")){
-                            if((item.node as CommonmarkLink)().getTitle().isSome()){
-                                if ((item.node as CommonmarkLink)().getTitle()().size > 1) {
-                                    MarkdownAILinkRectImageComponent(
-                                        markdownAIConfiguration: markdownAIConfiguration,
-                                        strUrl: (item.node as CommonmarkLink)().getDestination()
-                                    )
-                                } else {
-                                    MarkdownAILinkCircleImageComponent(
-                                        markdownAIConfiguration: markdownAIConfiguration,
-                                        strUrl: (item.node as CommonmarkLink)().getDestination()
-                                    )
-                                }
-                            }
-                        } else {
+                        ForEach(
+                            item.children,
+                            itemGeneratorFunc: {
+                                itemText: NodeView, idxText: Int64 =>
+                                    // 链接
+                                    if((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")){
+                                        if(itemText.node is CommonmarkText){
+                                            if ((itemText.node as CommonmarkText)().getLiteral().size > 1) {
+                                                MarkdownAILinkRectImageComponent(
+                                                    markdownAIConfiguration: markdownAIConfiguration,
+                                                    strUrl: (itemText.node as CommonmarkText)().getLiteral()
+                                                )
+                                            } else {
+                                                MarkdownAILinkCircleImageComponent(
+                                                    markdownAIConfiguration: markdownAIConfiguration,
+                                                    strUrl: (itemText.node as CommonmarkText)().getLiteral()
+                                                )
+                                            }
+                                        }
+                                    } else {
 
-                        }
+                                    }
+                        })
+
                     } else if (item.node is HardLineBreak) {
                         // 硬换行
                         Span("\n")

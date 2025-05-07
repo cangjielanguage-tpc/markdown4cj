@@ -208,6 +208,7 @@ OH_Drawing_Bitmap *initGraphics2D_ffi(uint32_t w, uint32_t h, OH_Drawing_ColorFo
  * @param fontSize              字体大小
  * @param fontColor             字体颜色
  * @param fontBackGroupColor    背景颜色
+ * @param backGroupColor        主题背景颜色
  * @param textHeight            控件高度
  * @param colorFormat           图片格式
  *
@@ -257,6 +258,7 @@ UInt8Data drawCircleImage(char *str, float fontSize, uint32_t fontColor, uint32_
  * @param fontSize              字体大小
  * @param fontColor             字体颜色
  * @param fontBackGroupColor    背景颜色
+ * @param backGroupColor        主题背景颜色
  * @param textHeight            控件高度
  * @param colorFormat           图片格式
  * @param padding               左右边距
@@ -305,6 +307,7 @@ UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t 
  * @param fontSize              字体大小
  * @param fontColor             字体颜色
  * @param fontBackGroupColor    背景颜色
+ * @param backGroupColor        主题背景颜色
  * @param textHeight            控件高度
  * @param borderColor           边框颜色
  * @param borderWidth           边框宽度
