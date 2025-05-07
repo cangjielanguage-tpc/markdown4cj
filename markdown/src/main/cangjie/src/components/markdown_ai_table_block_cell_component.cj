@@ -112,16 +112,16 @@ class MarkdownAITableBlockCellComponent {
                     } else if (item.node is CommonmarkLink) {
                         // 链接
                         if((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")){
-                            if((item.node as CommonmarkLink)().getTitle().isSome()){
-                                if ((item.node as CommonmarkLink)().getTitle()().size > 1) {
+                            if(item.node.getFirstChild().isSome() &&  item.node.getFirstChild()() is CommonmarkText){
+                                if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().size > 1) {
                                     MarkdownAILinkRectImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
-                                        strUrl: (item.node as CommonmarkLink)().getDestination()
+                                        strUrl: (item.node.getFirstChild()() as CommonmarkText)().getLiteral()
                                     )
                                 } else {
                                     MarkdownAILinkCircleImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
-                                        strUrl: (item.node as CommonmarkLink)().getDestination()
+                                        strUrl: (item.node.getFirstChild()() as CommonmarkText)().getLiteral()
                                     )
                                 }
                             }

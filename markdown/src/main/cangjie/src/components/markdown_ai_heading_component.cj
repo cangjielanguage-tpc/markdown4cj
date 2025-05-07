@@ -139,29 +139,24 @@ class MarkdownAIHeadingComponent {
                         // 内联代码
                         headingCodeComponent(item, markdownAIConfiguration)
                     } else if (item.node is CommonmarkLink) {
-                        ForEach(
-                            item.children,
-                            itemGeneratorFunc: {
-                                itemText: NodeView, idxText: Int64 =>
-                                    // 链接
-                                    if((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")){
-                                        if(itemText.node is CommonmarkText){
-                                            if ((itemText.node as CommonmarkText)().getLiteral().size > 1) {
-                                                MarkdownAILinkRectImageComponent(
-                                                    markdownAIConfiguration: markdownAIConfiguration,
-                                                    strUrl: (itemText.node as CommonmarkText)().getLiteral()
-                                                )
-                                            } else {
-                                                MarkdownAILinkCircleImageComponent(
-                                                    markdownAIConfiguration: markdownAIConfiguration,
-                                                    strUrl: (itemText.node as CommonmarkText)().getLiteral()
-                                                )
-                                            }
-                                        }
-                                    } else {
+                        // 链接
+                        if((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")){
+                            if(item.node.getFirstChild().isSome() &&  item.node.getFirstChild()() is CommonmarkText){
+                                if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().size > 1) {
+                                    MarkdownAILinkRectImageComponent(
+                                        markdownAIConfiguration: markdownAIConfiguration,
+                                        strUrl: (item.node.getFirstChild()() as CommonmarkText)().getLiteral()
+                                    )
+                                } else {
+                                    MarkdownAILinkCircleImageComponent(
+                                        markdownAIConfiguration: markdownAIConfiguration,
+                                        strUrl: (item.node.getFirstChild()() as CommonmarkText)().getLiteral()
+                                    )
+                                }
+                            }
+                        } else {
 
-                                    }
-                        })
+                        }
                     } else if (item.node is HardLineBreak) {
                         // 硬换行
                         Span("\n")
