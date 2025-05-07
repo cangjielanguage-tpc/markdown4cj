@@ -53,7 +53,7 @@ typedef struct {
     int64_t len;
 } UInt8Data;
 
-static UInt8Data toBitmapRGB_565(OH_Drawing_Bitmap *bitmap) {
+static UInt8Data toBitmapRGB565(OH_Drawing_Bitmap *bitmap) {
     BitMapFileHeader bmfHdr; // 定义文件头
     BitMapInfoHeader bmiHdr; // 定义信息头
     RgbQuad bmiClr[3];       // 定义调色板
@@ -123,7 +123,7 @@ static UInt8Data toBitmapRGB_565(OH_Drawing_Bitmap *bitmap) {
     return u8data;
 }
 
-static UInt8Data toBitmapBGRA_8888(OH_Drawing_Bitmap *bitmap) {
+static UInt8Data toBitmapBGRA8888(OH_Drawing_Bitmap *bitmap) {
     BitMapFileHeader bmfHdr; // 定义文件头
     BitMapInfoHeader bmiHdr; // 定义信息头
 
@@ -177,11 +177,11 @@ static UInt8Data toBitmapBGRA_8888(OH_Drawing_Bitmap *bitmap) {
  *
  * @return 图片数组数据
  */
-UInt8Data TeXRender_toBitmap(OH_Drawing_Bitmap *bitmap, OH_Drawing_ColorFormat colorFormat) {
+UInt8Data TeXRenderToBitmap(OH_Drawing_Bitmap *bitmap, OH_Drawing_ColorFormat colorFormat) {
     if (colorFormat == COLOR_FORMAT_RGB_565) {
-        return toBitmapRGB_565(bitmap);
+        return toBitmapRGB565(bitmap);
     } else {
-        return toBitmapBGRA_8888(bitmap);
+        return toBitmapBGRA8888(bitmap);
     }
 }
 
@@ -193,7 +193,7 @@ UInt8Data TeXRender_toBitmap(OH_Drawing_Bitmap *bitmap, OH_Drawing_ColorFormat c
  *
  * @return bitmap对象
  */
-OH_Drawing_Bitmap *initGraphics2D_ffi(uint32_t w, uint32_t h, OH_Drawing_ColorFormat colorFormat) {
+OH_Drawing_Bitmap *initGraphics2D(uint32_t w, uint32_t h, OH_Drawing_ColorFormat colorFormat) {
     OH_Drawing_Bitmap *bitmap = OH_Drawing_BitmapCreate();
     // 定义bitmap的像素格式
     OH_Drawing_BitmapFormat cFormat{colorFormat, ALPHA_FORMAT_PREMUL};
@@ -216,7 +216,7 @@ OH_Drawing_Bitmap *initGraphics2D_ffi(uint32_t w, uint32_t h, OH_Drawing_ColorFo
  */
 UInt8Data drawCircleImage(char *str, float fontSize, uint32_t fontColor, uint32_t fontBackGroupColor,
                           uint32_t backGroupColor, float textHeight, OH_Drawing_ColorFormat colorFormat) {
-    OH_Drawing_Bitmap *bitmap = initGraphics2D_ffi(textHeight, textHeight, colorFormat); // 初始化bitmap
+    OH_Drawing_Bitmap *bitmap = initGraphics2D(textHeight, textHeight, colorFormat); // 初始化bitmap
     OH_Drawing_Canvas *bitmapCanvas = OH_Drawing_CanvasCreate();                         // 创建一个画布对象
     OH_Drawing_CanvasBind(bitmapCanvas, bitmap); // 将Canvas与bitmap绑定，Canvas绘制的内容会输出到绑定的bitmap内存中
     OH_Drawing_CanvasClear(bitmapCanvas, backGroupColor); // 使用透明色去清空画布
@@ -249,7 +249,7 @@ UInt8Data drawCircleImage(char *str, float fontSize, uint32_t fontColor, uint32_
     OH_Drawing_BrushSetColor(brush, fontColor);                             // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                      // 画背景
     OH_Drawing_CanvasDrawTextBlob(bitmapCanvas, textBlob, textX, textY);    // 画文字
-    return TeXRender_toBitmap(bitmap, colorFormat);                         // pixmap数组数据
+    return TeXRenderToBitmap(bitmap, colorFormat);                         // pixmap数组数据
 }
 
 /**
@@ -276,7 +276,7 @@ UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t 
     OH_Drawing_FontMeasureText(font, str, strlen(str), TEXT_ENCODING_UTF8, bounds, textWidth); // 获取文本宽度和边界
     // 画圆和背景颜色
     float rectWidth = w + 2 * padding;                                                  // 矩形宽度
-    OH_Drawing_Bitmap *bitmap = initGraphics2D_ffi(rectWidth, textHeight, colorFormat); // 初始化bitmap
+    OH_Drawing_Bitmap *bitmap = initGraphics2D(rectWidth, textHeight, colorFormat); // 初始化bitmap
     OH_Drawing_Canvas *bitmapCanvas = OH_Drawing_CanvasCreate();                        // 创建一个画布对象
     OH_Drawing_CanvasBind(bitmapCanvas, bitmap); // 将Canvas与bitmap绑定，Canvas绘制的内容会输出到绑定的bitmap内存中
     OH_Drawing_CanvasClear(bitmapCanvas, backGroupColor);                               // 使用透明色去清空画布
@@ -297,7 +297,7 @@ UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t 
     OH_Drawing_BrushSetColor(brush, fontColor);                             // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                      // 画背景
     OH_Drawing_CanvasDrawTextBlob(bitmapCanvas, textBlob, textX, textY);    // 画文字
-    return TeXRender_toBitmap(bitmap, colorFormat);                         // pixmap数组数据
+    return TeXRenderToBitmap(bitmap, colorFormat);                         // pixmap数组数据
 }
 
 /**
@@ -342,7 +342,7 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
     float rectWidth = w1 + 2 * padding + dividingLineWidth + w2 + 2 * padding + 2 * borderWidth; // 矩形宽度
     float internalRectWidth = w1 + 2 * padding + dividingLineWidth + w2 + 2 * padding;           // 内部矩形宽度
     float internalRectHeight = textHeight - 2 * borderWidth;                                     // 内部矩形高度
-    OH_Drawing_Bitmap *bitmap = initGraphics2D_ffi(rectWidth, textHeight, colorFormat);          // 初始化bitmap
+    OH_Drawing_Bitmap *bitmap = initGraphics2D(rectWidth, textHeight, colorFormat);          // 初始化bitmap
     OH_Drawing_Canvas *bitmapCanvas = OH_Drawing_CanvasCreate(); // 创建一个画布对象
     OH_Drawing_CanvasBind(bitmapCanvas, bitmap); // 将Canvas与bitmap绑定，Canvas绘制的内容会输出到绑定的bitmap内存中
     OH_Drawing_CanvasClear(bitmapCanvas, backGroupColor);                               // 使用透明色去清空画布
@@ -388,7 +388,7 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
     OH_Drawing_BrushSetColor(brush, dividingLineColor);                                // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                                 // 画背景
     OH_Drawing_CanvasDrawRect(bitmapCanvas, lineRect);                                 // 画矩形
-    return TeXRender_toBitmap(bitmap, colorFormat);                                    // pixmap数组数据
+    return TeXRenderToBitmap(bitmap, colorFormat);                                    // pixmap数组数据
 }
 
 #ifdef __cplusplus

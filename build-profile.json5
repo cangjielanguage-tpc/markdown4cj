@@ -40,6 +40,10 @@
     {
       "name": "markdown",
       "srcPath": "./markdown"
+    },
+    {
+      "name": "library",
+      "srcPath": "./library"
     }
   ]
 }

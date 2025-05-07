@@ -1,11 +1,10 @@
 {
-  "name": "markdown",
+  "name": "library",
   "version": "1.0.0",
   "description": "Please describe the basic information.",
   "main": "",
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "library": "file:../library"
   }
 }
