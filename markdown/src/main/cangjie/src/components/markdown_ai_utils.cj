@@ -873,4 +873,3 @@ func isListItem(indexListOne: ArrayList<Int64>,indexListTwo: ArrayList<Int64>,in
     }
     return isBool
 }
-

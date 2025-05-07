@@ -235,15 +235,10 @@ UInt8Data drawCircleImage(char *str, float fontSize, uint32_t fontColor, uint32_
     float w = 0.0;                                                                             // 文本宽度
     float *textWidth = &w;                                                                     // 文本宽度
     OH_Drawing_FontMeasureText(font, str, strlen(str), TEXT_ENCODING_UTF8, bounds, textWidth); // 获取文本宽度和边界
-    float left = OH_Drawing_RectGetLeft(bounds);     // 用于获取给矩形设置的左上角的横坐标
-    float top = OH_Drawing_RectGetTop(bounds);       // 用于获取给矩形设置的左上角的纵坐标
-    float right = OH_Drawing_RectGetRight(bounds);   // 用于获取给矩形设置的右下角的横坐标
-    float bottom = OH_Drawing_RectGetBottom(bounds); // 用于获取给矩形设置的右下角的纵坐标
-    float r = textHeight / 2;                        // 圆的半径
-    float textH = bottom - top;                      // 文本高度
-    float textW = right - left;                      // 文本宽度
-    float textX = (2 * r - textW) / 2;               // 居中文本左下角X坐标
-    float textY = (2 * r - textH) / 2 + textH;       // 居中文本左下角Y坐标
+    float textH = OH_Drawing_RectGetHeight(bounds); // 获取矩形对象高度
+    float textW = w;                      // 文本宽度
+    float textX = (textHeight - textW) / 2;               // 居中文本左下角X坐标
+    float textY = (textHeight - textH) / 2 + textH;       // 居中文本左下角Y坐标
     OH_Drawing_TextBlob *textBlob =
         OH_Drawing_TextBlobCreateFromString(str, font, TEXT_ENCODING_UTF8); // 通过字符串创建文本对象
     OH_Drawing_BrushSetColor(brush, fontColor);                             // 设置画刷颜色
@@ -287,9 +282,7 @@ UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t 
     OH_Drawing_BrushSetColor(brush, fontBackGroupColor);                  // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                    // 画背景
     OH_Drawing_CanvasDrawRoundRect(bitmapCanvas, roundRect);              // 画圆角矩形
-    float top = OH_Drawing_RectGetTop(bounds);       // 用于获取给矩形设置的左上角的纵坐标
-    float bottom = OH_Drawing_RectGetBottom(bounds); // 用于获取给矩形设置的右下角的纵坐标
-    float textH = bottom - top;                      // 文本高度
+    float textH = OH_Drawing_RectGetHeight(bounds); // 获取矩形对象高度
     float textX = padding;                           // 居中文本左下角X坐标
     float textY = (textHeight - textH) / 2 + textH;  // 居中文本左下角Y坐标
     OH_Drawing_TextBlob *textBlob =
@@ -360,9 +353,7 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
     OH_Drawing_BrushSetColor(brush, fontBackGroupColor);                                          // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                                            // 画背景
     OH_Drawing_CanvasDrawRoundRect(bitmapCanvas, internalRoundRect);                              // 画圆角矩形
-    float top1 = OH_Drawing_RectGetTop(bounds1);       // 用于获取给矩形设置的左上角的纵坐标
-    float bottom1 = OH_Drawing_RectGetBottom(bounds1); // 用于获取给矩形设置的右下角的纵坐标
-    float textH1 = bottom1 - top1;                     // 文本高度
+    float textH1 = OH_Drawing_RectGetHeight(bounds1); // 获取矩形对象高度
     float textX1 = padding + borderWidth;              // 居中文本左下角X坐标
     float textY1 = (textHeight - textH1) / 2 + textH1; // 居中文本左下角Y坐标
     OH_Drawing_TextBlob *textBlob1 =
@@ -374,9 +365,7 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
         OH_Drawing_TextBlobCreateFromString(str2, font2, TEXT_ENCODING_UTF8); // 通过字符串创建文本对象
     OH_Drawing_BrushSetColor(brush, fontColor);                               // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                        // 画背景
-    float top2 = OH_Drawing_RectGetTop(bounds2);       // 用于获取给矩形设置的左上角的纵坐标
-    float bottom2 = OH_Drawing_RectGetBottom(bounds2); // 用于获取给矩形设置的右下角的纵坐标
-    float textH2 = bottom2 - top2;                     // 文本高度
+    float textH2 = OH_Drawing_RectGetHeight(bounds2); // 获取矩形对象高度
     float textX2 = padding + borderWidth + w1 + padding + dividingLineWidth + padding; // 居中文本左下角X坐标
     float textY2 = (textHeight - textH2) / 2 + textH2;                                 // 居中文本左下角Y坐标
     OH_Drawing_CanvasDrawTextBlob(bitmapCanvas, textBlob2, textX2, textY2);            // 画文字

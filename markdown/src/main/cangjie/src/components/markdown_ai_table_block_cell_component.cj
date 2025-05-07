@@ -113,7 +113,7 @@ class MarkdownAITableBlockCellComponent {
                         // 链接
                         if((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")){
                             if(item.node.getFirstChild().isSome() &&  item.node.getFirstChild()() is CommonmarkText){
-                                if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().size > 1) {
+                                if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().toRuneArray().size > 1) {
                                     MarkdownAILinkRectImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
                                         strUrl: (item.node.getFirstChild()() as CommonmarkText)().getLiteral()
