@@ -22,7 +22,7 @@ struct UInt8Data {
     var len: Int64 = 0
 }
 
-public enum ColorFormat {
+public enum ColorFormatEnum {
     | COLOR_FORMAT_RGB_565
     | COLOR_FORMAT_BGRA_8888
 }
@@ -34,15 +34,16 @@ let BGRA_8888: Int32 = 5
  * 画圆形图标
  *
  * @param str 文本内容
- * @param fontSize 文本大小 - 单位fp
+ * @param fontSize 文本大小 - 单位px
  * @param fontColor 文本颜色
  * @param fontBackGroupColor 控件背景颜色
- * @param textHeight 控件高度 - 单位vp
+ * @param backGroupColor 背景颜色
+ * @param textHeight 控件高度 - 单位px
  * @param colorFormat 图片格式
  * @return 图片数组数据
  */
 public func drawCircleImageButton(str: String, fontSize: Float64, fontColor: UInt32, fontBackGroupColor: UInt32,
-    backGroupColor: UInt32, textHeight: Float64, colorFormat: ColorFormat): Array<UInt8> {
+    backGroupColor: UInt32, textHeight: Float64, colorFormat: ColorFormatEnum): Array<UInt8> {
     unsafe {
         // 文本
         var cstr = LibC.mallocCString(str)
@@ -71,16 +72,17 @@ public func drawCircleImageButton(str: String, fontSize: Float64, fontColor: UIn
  * 画圆角矩形图标
  *
  * @param str 文本内容
- * @param fontSize 文本大小 - 单位fp
+ * @param fontSize 文本大小 - 单位px
  * @param fontColor 文本颜色
  * @param fontBackGroupColor 控件背景颜色
- * @param textHeight 控件高度 - 单位vp
+ * @param backGroupColor 背景颜色
+ * @param textHeight 控件高度 - 单位px
  * @param colorFormat 图片格式
- * @param padding 左右边距
+ * @param padding 左右边距 - 单位px
  * @return 图片数组数据
  */
 public func drawRectImageButton(str: String, fontSize: Float64, fontColor: UInt32, fontBackGroupColor: UInt32,
-    backGroupColor: UInt32, textHeight: Float64, colorFormat: ColorFormat, padding: Float64): Array<UInt8> {
+    backGroupColor: UInt32, textHeight: Float64, colorFormat: ColorFormatEnum, padding: Float64): Array<UInt8> {
     unsafe {
         // 文本
         var cstr = LibC.mallocCString(str)
@@ -108,20 +110,25 @@ public func drawRectImageButton(str: String, fontSize: Float64, fontColor: UInt3
 }
 
 /**
- * 画圆角矩形图标
+ * 画空心圆角矩形图标
  *
  * @param str 文本内容
- * @param fontSize 文本大小 - 单位fp
+ * @param fontSize 文本大小 - 单位px
  * @param fontColor 文本颜色
  * @param fontBackGroupColor 控件背景颜色
- * @param textHeight 控件高度 - 单位vp
+ * @param backGroupColor 背景颜色
+ * @param borderColor 边框颜色
+ * @param borderWidth 边框宽度 - 单位px
+ * @param dividingLineColor 分割线颜色
+ * @param dividingLineWidth 分割线宽度 - 单位px
+ * @param textHeight 控件高度 - 单位px
  * @param colorFormat 图片格式
- * @param padding 左右边距
+ * @param padding 左右边距 - 单位px
  * @return 图片数组数据
  */
 public func drawRectToolImageButton(str1: String, str2: String, fontSize: Float64, fontColor: UInt32,
     fontBackGroupColor: UInt32, backGroupColor: UInt32, borderColor: UInt32, borderWidth: Float64,
-    dividingLineColor: UInt32, dividingLineWidth: Float64, textHeight: Float64, colorFormat: ColorFormat,
+    dividingLineColor: UInt32, dividingLineWidth: Float64, textHeight: Float64, colorFormat: ColorFormatEnum,
     padding: Float64): Array<UInt8> {
     unsafe {
         // 文本

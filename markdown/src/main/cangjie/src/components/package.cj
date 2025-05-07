@@ -71,6 +71,9 @@ internal import prism4cj.prism.Grammar as PrismGrammar
 // formula
 internal import formula.*
 
+// texttoimg4cj
+internal import texttoimg4cj.*
+
 // 系统UI
 internal import ohos.image.PixelMap
 internal import ohos.image.InitializationOptions

@@ -118,6 +118,25 @@ class MarkdownAIParagraphComponent {
                     } else if (item.node is Code) {
                         // 内联代码
                         paragraphCodeComponent(item, markdownAIConfiguration)
+                    } else if (item.node is CommonmarkLink) {
+                        // 链接
+                        if((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")){
+                            if((item.node as CommonmarkLink)().getTitle().isSome()){
+                                if ((item.node as CommonmarkLink)().getTitle()().size > 1) {
+                                    MarkdownAILinkRectImageComponent(
+                                        markdownAIConfiguration: markdownAIConfiguration,
+                                        strUrl: (item.node as CommonmarkLink)().getDestination()
+                                    )
+                                } else {
+                                    MarkdownAILinkCircleImageComponent(
+                                        markdownAIConfiguration: markdownAIConfiguration,
+                                        strUrl: (item.node as CommonmarkLink)().getDestination()
+                                    )
+                                }
+                            }
+                        } else {
+
+                        }
                     } else if (item.node is HardLineBreak) {
                         // 硬换行
                         Span("\n")

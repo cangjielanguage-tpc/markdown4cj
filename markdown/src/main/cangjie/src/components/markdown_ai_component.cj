@@ -97,9 +97,9 @@ public class MarkdownAIComponent {
             // 表格插件
             .usePlugin(TablePlugin.create())
             // 数学公式
-            .usePlugin(if1111(true))
+            .usePlugin(LatexMathPluginV2.create())
             // 链接
-            .usePlugin(LinkifyPlugin.create())
+            .usePlugin(linkButton())
             // 脚注
             .usePlugin(FootnotePlugin.create())
             .build()
@@ -110,11 +110,11 @@ public class MarkdownAIComponent {
         stringToNodes()
     }
 
-    func if1111(t:Bool):MarkdownPlugin{
-        return if(t){
-            LatexMathPluginV2.create()
-        }else {
-            LatexMathPluginV2.create()
+    func linkButton(): MarkdownPlugin {
+        return if (markdownAIConfiguration.markdownAITheme.isLinkStyle) {
+            LinkViewPlugin.create()
+        } else {
+            LinkifyPlugin.create()
         }
     }
 

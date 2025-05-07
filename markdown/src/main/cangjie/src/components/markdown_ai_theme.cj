@@ -37,7 +37,7 @@ public class MarkdownAITheme {
     protected var abilityContext: ?AbilityContext = None
 
     /**
-     * 每个模块之间上下间距
+     * 每个模块之间上下间距 - 单位vp
      */
     protected var blockTopAndBottomMargins: Float64 = 8.0
 
@@ -47,7 +47,7 @@ public class MarkdownAITheme {
     protected var linkColor: Color = COLOR_0000FF
 
     /**
-     * 链接文字大小
+     * 链接文字大小 - 单位vp
      */
     protected var linkSize: Float64 = 14.0
 
@@ -60,6 +60,116 @@ public class MarkdownAITheme {
      * 是否显示链接下划线
      */
     protected var isLinkUnderlined: Bool = true
+
+    /**
+     * 链接是否是图片显示
+     */
+    protected var isLinkStyle: Bool = false
+
+    /**
+     * 圆形链接主题背景颜色
+     */
+    protected var linkCircleImageBackGroupColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 圆形链接控件背景颜色
+     */
+    protected var linkCircleImageButtonBackGroupColor: Color = COLOR_FF000000
+
+    /**
+     * 圆形链接文字大小 - 单位px
+     */
+    protected var linkCircleImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+
+    /**
+     * 圆形链接文字颜色
+     */
+    protected var linkCircleImageTextColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 圆形链接半径 - 单位px
+     */
+    protected var linkCircleImageRadius: Float64 = vp2px(20.0.vp).getOrThrow().value
+
+    /**
+     * 圆角矩形链接主题背景颜色
+     */
+    protected var linkRectImageBackGroupColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 圆角矩形链接控件背景颜色
+     */
+    protected var linkRectImageButtonBackGroupColor: Color = COLOR_FF000000
+
+    /**
+     * 圆角矩形链接文字大小 - 单位px
+     */
+    protected var linkRectImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+
+    /**
+     * 圆角矩形链接文字颜色
+     */
+    protected var linkRectImageTextColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 圆角矩形链接控件高度 - 单位px
+     */
+    protected var linkRectImageHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
+
+    /**
+     * 圆角矩形链接左右边距 - 单位px
+     */
+    protected var linkRectImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
+
+    /**
+     * 空心圆角矩形链接主题背景颜色
+     */
+    protected var linkRectToolImageBackGroupColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 空心圆角矩形链接控件背景颜色
+     */
+    protected var linkRectToolImageButtonBackGroupColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 空心圆角矩形链接控件边框颜色
+     */
+    protected var linkRectToolImageButtonBorderColor: Color = COLOR_FF000000
+
+    /**
+     * 空心圆角矩形链接控件分割线颜色
+     */
+    protected var linkRectToolImageButtonDividingLineColor: Color = COLOR_FF000000
+
+    /**
+     * 空心圆角矩形链接文字大小 - 单位px
+     */
+    protected var linkRectToolImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+
+    /**
+     * 空心圆角矩形链接文字颜色
+     */
+    protected var linkRectToolImageTextColor: Color = COLOR_FF000000
+
+    /**
+     * 空心圆角矩形链接控件高度 - 单位px
+     */
+    protected var linkRectToolImageHeight: Float64 = vp2px(21.0.vp).getOrThrow().value
+
+    /**
+     * 空心圆角矩形链接左右边距 - 单位px
+     */
+    protected var linkRectToolImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
+
+    /**
+     * 空心圆角矩形链接边框宽度 - 单位px
+     */
+    protected var linkRectToolImageBorderWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
+
+    /**
+     * 空心圆角矩形链接分割线宽度 - 单位px
+     */
+    protected var linkRectToolImageDividingLineWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
 
     /**
      * 有序列表、无序列表、任务列表、块引用左边距
@@ -400,6 +510,33 @@ public class MarkdownAITheme {
         this.linkSize = builder.linkSize
         this.linkBackGroupColor = builder.linkBackGroupColor
         this.isLinkUnderlined = builder.isLinkUnderlined
+
+        this.isLinkStyle = builder.isLinkStyle
+
+        this.linkCircleImageBackGroupColor = builder.linkCircleImageBackGroupColor
+        this.linkCircleImageButtonBackGroupColor = builder.linkCircleImageButtonBackGroupColor
+        this.linkCircleImageTextSize = builder.linkCircleImageTextSize
+        this.linkCircleImageTextColor = builder.linkCircleImageTextColor
+        this.linkCircleImageRadius = builder.linkCircleImageRadius
+
+        this.linkRectImageBackGroupColor = builder.linkRectImageBackGroupColor
+        this.linkRectImageButtonBackGroupColor = builder.linkRectImageButtonBackGroupColor
+        this.linkRectImageTextSize = builder.linkRectImageTextSize
+        this.linkRectImageTextColor = builder.linkRectImageTextColor
+        this.linkRectImageHeight = builder.linkRectImageHeight
+        this.linkRectImagePadding = builder.linkRectImagePadding
+
+        this.linkRectToolImageBackGroupColor = builder.linkRectToolImageBackGroupColor
+        this.linkRectToolImageButtonBackGroupColor = builder.linkRectToolImageButtonBackGroupColor
+        this.linkRectToolImageButtonBorderColor = builder.linkRectToolImageButtonBorderColor
+        this.linkRectToolImageButtonDividingLineColor = builder.linkRectToolImageButtonDividingLineColor
+        this.linkRectToolImageTextSize = builder.linkRectToolImageTextSize
+        this.linkRectToolImageTextColor = builder.linkRectToolImageTextColor
+        this.linkRectToolImageHeight = builder.linkRectToolImageHeight
+        this.linkRectToolImagePadding = builder.linkRectToolImagePadding
+        this.linkRectToolImageBorderWidth = builder.linkRectToolImageBorderWidth
+        this.linkRectToolImageDividingLineWidth = builder.linkRectToolImageDividingLineWidth
+
         // 块引用、有序列表，无序列表、任务列表、TOC列表
         this.blockMargin = builder.blockMargin
         this.blockQuoteWidth = builder.blockQuoteWidth
@@ -643,6 +780,116 @@ public class MarkdownAIThemeBuilder {
      * 是否显示链接下划线
      */
     protected var isLinkUnderlined: Bool = true
+
+    /**
+     * 链接是否是图片显示
+     */
+    protected var isLinkStyle: Bool = false
+
+    /**
+     * 圆形链接主题背景颜色
+     */
+    protected var linkCircleImageBackGroupColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 圆形链接控件背景颜色
+     */
+    protected var linkCircleImageButtonBackGroupColor: Color = COLOR_FF000000
+
+    /**
+     * 圆形链接文字大小 - 单位px
+     */
+    protected var linkCircleImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+
+    /**
+     * 圆形链接文字颜色
+     */
+    protected var linkCircleImageTextColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 圆形链接半径 - 单位px
+     */
+    protected var linkCircleImageRadius: Float64 = vp2px(20.0.vp).getOrThrow().value
+
+    /**
+     * 圆角矩形链接主题背景颜色
+     */
+    protected var linkRectImageBackGroupColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 圆角矩形链接控件背景颜色
+     */
+    protected var linkRectImageButtonBackGroupColor: Color = COLOR_FF000000
+
+    /**
+     * 圆角矩形链接文字大小 - 单位px
+     */
+    protected var linkRectImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+
+    /**
+     * 圆角矩形链接文字颜色
+     */
+    protected var linkRectImageTextColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 圆角矩形链接控件高度 - 单位px
+     */
+    protected var linkRectImageHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
+
+    /**
+     * 圆角矩形链接左右边距 - 单位px
+     */
+    protected var linkRectImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
+
+    /**
+     * 空心圆角矩形链接主题背景颜色
+     */
+    protected var linkRectToolImageBackGroupColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 空心圆角矩形链接控件背景颜色
+     */
+    protected var linkRectToolImageButtonBackGroupColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 空心圆角矩形链接控件边框颜色
+     */
+    protected var linkRectToolImageButtonBorderColor: Color = COLOR_FF000000
+
+    /**
+     * 空心圆角矩形链接控件分割线颜色
+     */
+    protected var linkRectToolImageButtonDividingLineColor: Color = COLOR_FF000000
+
+    /**
+     * 空心圆角矩形链接文字大小 - 单位px
+     */
+    protected var linkRectToolImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+
+    /**
+     * 空心圆角矩形链接文字颜色
+     */
+    protected var linkRectToolImageTextColor: Color = COLOR_FF000000
+
+    /**
+     * 空心圆角矩形链接控件高度 - 单位px
+     */
+    protected var linkRectToolImageHeight: Float64 = vp2px(21.0.vp).getOrThrow().value
+
+    /**
+     * 空心圆角矩形链接左右边距 - 单位px
+     */
+    protected var linkRectToolImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
+
+    /**
+     * 空心圆角矩形链接边框宽度 - 单位px
+     */
+    protected var linkRectToolImageBorderWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
+
+    /**
+     * 空心圆角矩形链接分割线宽度 - 单位px
+     */
+    protected var linkRectToolImageDividingLineWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
 
     /**
      * 有序列表、无序列表、任务列表、块引用左边距
@@ -981,6 +1228,33 @@ public class MarkdownAIThemeBuilder {
         this.linkSize = theme.linkSize
         this.linkBackGroupColor = theme.linkBackGroupColor
         this.isLinkUnderlined = theme.isLinkUnderlined
+
+        this.isLinkStyle = theme.isLinkStyle
+
+        this.linkCircleImageBackGroupColor = theme.linkCircleImageBackGroupColor
+        this.linkCircleImageButtonBackGroupColor = theme.linkCircleImageButtonBackGroupColor
+        this.linkCircleImageTextSize = theme.linkCircleImageTextSize
+        this.linkCircleImageTextColor = theme.linkCircleImageTextColor
+        this.linkCircleImageRadius = theme.linkCircleImageRadius
+
+        this.linkRectImageBackGroupColor = theme.linkRectImageBackGroupColor
+        this.linkRectImageButtonBackGroupColor = theme.linkRectImageButtonBackGroupColor
+        this.linkRectImageTextSize = theme.linkRectImageTextSize
+        this.linkRectImageTextColor = theme.linkRectImageTextColor
+        this.linkRectImageHeight = theme.linkRectImageHeight
+        this.linkRectImagePadding = theme.linkRectImagePadding
+
+        this.linkRectToolImageBackGroupColor = theme.linkRectToolImageBackGroupColor
+        this.linkRectToolImageButtonBackGroupColor = theme.linkRectToolImageButtonBackGroupColor
+        this.linkRectToolImageButtonBorderColor = theme.linkRectToolImageButtonBorderColor
+        this.linkRectToolImageButtonDividingLineColor = theme.linkRectToolImageButtonDividingLineColor
+        this.linkRectToolImageTextSize = theme.linkRectToolImageTextSize
+        this.linkRectToolImageTextColor = theme.linkRectToolImageTextColor
+        this.linkRectToolImageHeight = theme.linkRectToolImageHeight
+        this.linkRectToolImagePadding = theme.linkRectToolImagePadding
+        this.linkRectToolImageBorderWidth = theme.linkRectToolImageBorderWidth
+        this.linkRectToolImageDividingLineWidth = theme.linkRectToolImageDividingLineWidth
+
         // 块引用、有序列表，无序列表、任务列表、TOC列表
         this.blockMargin = theme.blockMargin
         this.blockQuoteWidth = theme.blockQuoteWidth
@@ -1229,6 +1503,248 @@ public class MarkdownAIThemeBuilder {
      */
     public func setIsLinkUnderlined(isLinkUnderlined: Bool): MarkdownAIThemeBuilder {
         this.isLinkUnderlined = isLinkUnderlined
+        return this
+    }
+
+    /**
+     * 设置链接是否是图片显示
+     *
+     * @param isLinkStyle 链接是否是图片显示。true：图片显示，false：文本显示
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setIsLinkStyle(isLinkStyle: Bool): MarkdownAIThemeBuilder {
+        this.isLinkStyle = isLinkStyle
+        return this
+    }
+
+    /**
+     * 设置圆形链接主题背景颜色
+     *
+     * @param linkCircleImageBackGroupColor 圆形链接主题背景颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: Color): MarkdownAIThemeBuilder {
+        this.linkCircleImageBackGroupColor = linkCircleImageBackGroupColor
+        return this
+    }
+
+    /**
+     * 设置圆形链接控件背景颜色
+     *
+     * @param linkCircleImageButtonBackGroupColor 圆形链接控件背景颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: Color): MarkdownAIThemeBuilder {
+        this.linkCircleImageButtonBackGroupColor = linkCircleImageButtonBackGroupColor
+        return this
+    }
+
+    /**
+     * 设置圆形链接文字大小 - 单位fp
+     *
+     * @param linkCircleImageTextSize 圆形链接文字大小 - 单位fp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkCircleImageTextSize(linkCircleImageTextSize: Float64): MarkdownAIThemeBuilder {
+        this.linkCircleImageTextSize = fp2px(linkCircleImageTextSize.fp).getOrThrow().value
+        return this
+    }
+
+    /**
+     * 设置圆形链接文字颜色
+     *
+     * @param linkCircleImageTextColor 圆形链接文字颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkCircleImageTextColor(linkCircleImageTextColor: Color): MarkdownAIThemeBuilder {
+        this.linkCircleImageTextColor = linkCircleImageTextColor
+        return this
+    }
+
+    /**
+     * 设置圆形链接半径 - 单位vp
+     *
+     * @param linkCircleImageRadius 圆形链接半径 - 单位vp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkCircleImageRadius(linkCircleImageRadius: Float64): MarkdownAIThemeBuilder {
+        this.linkCircleImageRadius = vp2px(linkCircleImageRadius.vp).getOrThrow().value
+        return this
+    }
+
+    /**
+     * 设置圆角矩形链接主题背景颜色
+     *
+     * @param linkRectImageBackGroupColor 圆角矩形链接主题背景颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: Color): MarkdownAIThemeBuilder {
+        this.linkRectImageBackGroupColor = linkRectImageBackGroupColor
+        return this
+    }
+
+    /**
+     * 设置圆角矩形链接控件背景颜色
+     *
+     * @param linkRectImageButtonBackGroupColor 圆角矩形链接控件背景颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: Color): MarkdownAIThemeBuilder {
+        this.linkRectImageButtonBackGroupColor = linkRectImageButtonBackGroupColor
+        return this
+    }
+
+    /**
+     * 设置圆角矩形链接文字大小 - 单位fp
+     *
+     * @param linkRectImageTextSize 圆角矩形链接文字大小 - 单位fp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectImageTextSize(linkRectImageTextSize: Float64): MarkdownAIThemeBuilder {
+        this.linkRectImageTextSize = fp2px(linkRectImageTextSize.fp).getOrThrow().value
+        return this
+    }
+
+    /**
+     * 设置圆角矩形链接文字颜色
+     *
+     * @param linkRectImageTextColor 圆角矩形链接文字颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectImageTextColor(linkRectImageTextColor: Color): MarkdownAIThemeBuilder {
+        this.linkRectImageTextColor = linkRectImageTextColor
+        return this
+    }
+
+    /**
+     * 设置圆角矩形链接控件高度 - 单位vp
+     *
+     * @param linkRectImageHeight 圆角矩形链接控件高度 - 单位vp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectImageHeight(linkRectImageHeight: Float64): MarkdownAIThemeBuilder {
+        this.linkRectImageHeight = vp2px(linkRectImageHeight.vp).getOrThrow().value
+        return this
+    }
+
+    /**
+     * 设置圆角矩形链接左右边距 - 单位vp
+     *
+     * @param linkRectImagePadding 圆角矩形链接左右边距 - 单位vp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectImagePadding(linkRectImagePadding: Float64): MarkdownAIThemeBuilder {
+        this.linkRectImagePadding = vp2px(linkRectImagePadding.vp).getOrThrow().value
+        return this
+    }
+
+    /**
+     * 设置空心圆角矩形链接主题背景颜色
+     *
+     * @param linkRectToolImageBackGroupColor 空心圆角矩形链接主题背景颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: Color): MarkdownAIThemeBuilder {
+        this.linkRectToolImageBackGroupColor = linkRectToolImageBackGroupColor
+        return this
+    }
+
+    /**
+     * 设置空心圆角矩形链接控件背景颜色
+     *
+     * @param linkRectToolImageButtonBackGroupColor 空心圆角矩形链接控件背景颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: Color): MarkdownAIThemeBuilder {
+        this.linkRectToolImageButtonBackGroupColor = linkRectToolImageButtonBackGroupColor
+        return this
+    }
+
+    /**
+     * 设置空心圆角矩形链接控件边框颜色
+     *
+     * @param linkRectToolImageButtonBorderColor 空心圆角矩形链接控件边框颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectToolImageButtonBorderColor(linkRectToolImageButtonBorderColor: Color): MarkdownAIThemeBuilder {
+        this.linkRectToolImageButtonBorderColor = linkRectToolImageButtonBorderColor
+        return this
+    }
+
+    /**
+     * 设置空心圆角矩形链接控件分割线颜色
+     *
+     * @param linkRectToolImageButtonDividingLineColor 空心圆角矩形链接控件分割线颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectToolImageButtonDividingLineColor(linkRectToolImageButtonDividingLineColor: Color): MarkdownAIThemeBuilder {
+        this.linkRectToolImageButtonDividingLineColor = linkRectToolImageButtonDividingLineColor
+        return this
+    }
+
+    /**
+     * 设置空心圆角矩形链接文字大小 - 单位fp
+     *
+     * @param linkRectToolImageTextSize 空心圆角矩形链接文字大小 - 单位fp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectToolImageTextSize(linkRectToolImageTextSize: Float64): MarkdownAIThemeBuilder {
+        this.linkRectToolImageTextSize = fp2px(linkRectToolImageTextSize.fp).getOrThrow().value
+        return this
+    }
+
+    /**
+     * 设置空心圆角矩形链接文字颜色
+     *
+     * @param linkRectToolImageTextColor 空心圆角矩形链接文字颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectToolImageTextColor(linkRectToolImageTextColor: Color): MarkdownAIThemeBuilder {
+        this.linkRectToolImageTextColor = linkRectToolImageTextColor
+        return this
+    }
+
+    /**
+     * 设置空心圆角矩形链接控件高度 - 单位vp
+     *
+     * @param linkRectToolImageHeight 空心圆角矩形链接控件高度 - 单位vp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectToolImageHeight(linkRectToolImageHeight: Float64): MarkdownAIThemeBuilder {
+        this.linkRectToolImageHeight = vp2px(linkRectToolImageHeight.vp).getOrThrow().value
+        return this
+    }
+
+    /**
+     * 设置空心圆角矩形链接左右边距 - 单位vp
+     *
+     * @param linkRectToolImagePadding 空心圆角矩形链接左右边距 - 单位vp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectToolImagePadding(linkRectToolImagePadding: Float64): MarkdownAIThemeBuilder {
+        this.linkRectToolImagePadding = vp2px(linkRectToolImagePadding.vp).getOrThrow().value
+        return this
+    }
+
+    /**
+     * 设置空心圆角矩形链接边框宽度 - 单位vp
+     *
+     * @param linkRectToolImageBorderWidth 空心圆角矩形链接边框宽度 - 单位vp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setlinkRectToolImageBorderWidth(linkRectToolImageBorderWidth: Float64): MarkdownAIThemeBuilder {
+        this.linkRectToolImageBorderWidth = vp2px(linkRectToolImageBorderWidth.vp).getOrThrow().value
+        return this
+    }
+
+    /**
+     * 设置空心圆角矩形链接分割线宽度 - 单位vp
+     *
+     * @param linkRectToolImageDividingLineWidth 空心圆角矩形链接分割线宽度 - 单位vp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectToolImageDividingLineWidth(linkRectToolImageDividingLineWidth: Float64): MarkdownAIThemeBuilder {
+        this.linkRectToolImageDividingLineWidth = vp2px(linkRectToolImageDividingLineWidth.vp).getOrThrow().value
         return this
     }
 

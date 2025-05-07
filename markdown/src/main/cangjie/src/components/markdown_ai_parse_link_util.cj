@@ -1,0 +1,120 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ */
+package markdown.components
+
+import ohos.base.*
+import ohos.component.*
+import ohos.state_manage.*
+import ohos.state_macro_manage.*
+
+class MarkdownParseLinkUtil {
+    static func linkStrToCirclePixelMap(strUrl: String, markdownAIConfiguration: MarkdownAIConfiguration,
+        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+        let fut: Future<Unit> = spawn {
+            var pixelMap: ?PixelMap = Option<PixelMap>.None
+            var imageHeight: ?Float64 = Option<Float64>.None
+            var imageWidth: ?Float64 = Option<Float64>.None
+            var arr: ?Array<UInt8> = Option<Array<UInt8>>.None
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            arr = drawCircleImageButton(strUrl, markdownAIConfiguration.markdownAITheme.linkCircleImageTextSize,
+                markdownAIConfiguration.markdownAITheme.linkCircleImageTextColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkCircleImageButtonBackGroupColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkCircleImageRadius, ColorFormatEnum.COLOR_FORMAT_BGRA_8888)
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            var imageSource: ImageSource = createImageSource(arr())
+            if (Thread.currentThread.hasPendingCancellation) {
+                imageSource.Release()
+                return
+            }
+            pixelMap = imageSource.createPixelMap()
+            imageSource.Release()
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            var size: Size = pixelMap().getImageInfo().size
+            imageWidth = Float64(size.width)
+            imageHeight = Float64(size.height)
+            callback(pixelMap, imageHeight, imageWidth, arr)
+        }
+        return fut
+    }
+
+    static func linkStrToRectPixelMap(strUrl: String, markdownAIConfiguration: MarkdownAIConfiguration,
+        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+        let fut: Future<Unit> = spawn {
+            var pixelMap: ?PixelMap = Option<PixelMap>.None
+            var imageHeight: ?Float64 = Option<Float64>.None
+            var imageWidth: ?Float64 = Option<Float64>.None
+            var arr: ?Array<UInt8> = Option<Array<UInt8>>.None
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            arr = drawRectImageButton(strUrl, markdownAIConfiguration.markdownAITheme.linkRectImageTextSize,
+                markdownAIConfiguration.markdownAITheme.linkRectImageTextColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkRectImageButtonBackGroupColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkRectImageHeight, ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
+                markdownAIConfiguration.markdownAITheme.linkRectImagePadding)
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            var imageSource: ImageSource = createImageSource(arr())
+            if (Thread.currentThread.hasPendingCancellation) {
+                imageSource.Release()
+                return
+            }
+            pixelMap = imageSource.createPixelMap()
+            imageSource.Release()
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            var size: Size = pixelMap().getImageInfo().size
+            imageWidth = Float64(size.width)
+            imageHeight = Float64(size.height)
+            callback(pixelMap, imageHeight, imageWidth, arr)
+        }
+        return fut
+    }
+
+    static func linkStrToRectToolPixelMap(strUrl: String, markdownAIConfiguration: MarkdownAIConfiguration,
+        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+        let fut: Future<Unit> = spawn {
+            var pixelMap: ?PixelMap = Option<PixelMap>.None
+            var imageHeight: ?Float64 = Option<Float64>.None
+            var imageWidth: ?Float64 = Option<Float64>.None
+            var arr: ?Array<UInt8> = Option<Array<UInt8>>.None
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            arr = drawCircleImageButton(strUrl, markdownAIConfiguration.markdownAITheme.linkCircleImageTextSize,
+                markdownAIConfiguration.markdownAITheme.linkCircleImageTextColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkCircleImageButtonBackGroupColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkCircleImageRadius, ColorFormatEnum.COLOR_FORMAT_BGRA_8888)
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            var imageSource: ImageSource = createImageSource(arr())
+            if (Thread.currentThread.hasPendingCancellation) {
+                imageSource.Release()
+                return
+            }
+            pixelMap = imageSource.createPixelMap()
+            imageSource.Release()
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            var size: Size = pixelMap().getImageInfo().size
+            imageWidth = Float64(size.width)
+            imageHeight = Float64(size.height)
+            callback(pixelMap, imageHeight, imageWidth, arr)
+        }
+        return fut
+    }
+}
