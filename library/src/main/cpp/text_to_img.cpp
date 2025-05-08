@@ -235,12 +235,11 @@ UInt8Data drawCircleImage(char *str, float fontSize, uint32_t fontColor, uint32_
     float w = 0.0;                                                                             // 文本宽度
     float *textWidth = &w;                                                                     // 文本宽度
     OH_Drawing_FontMeasureText(font, str, strlen(str), TEXT_ENCODING_UTF8, bounds, textWidth); // 获取文本宽度和边界
-    OH_Drawing_Font_Metrics metrics;                                                           // 字体度量信息
-    OH_Drawing_FontGetMetrics(font, &metrics);      // 获取字体度量信息
-    float textH = -metrics.ascent;                  // 获取矩形对象高度 - 文本基于基线上偏移量
-    float textW = w;                                // 文本宽度
-    float textX = (textHeight - textW) / 2;         // 居中文本左下角X坐标
-    float textY = (textHeight - textH) / 2 + textH; // 居中文本左下角Y坐标
+    float h = OH_Drawing_RectGetHeight(bounds);                                                // 文本真实高度
+    float top = OH_Drawing_RectGetTop(bounds);   // 文本真实高度基于基线上边界高度
+    float imageTopHeight = (textHeight - h) / 2; // 居中文本距离图片上边界高度
+    float textY = imageTopHeight - top;          // 居中文本左下角Y坐标
+    float textX = (textHeight - w) / 2;          // 居中文本左下角X坐标
     OH_Drawing_TextBlob *textBlob =
         OH_Drawing_TextBlobCreateFromString(str, font, TEXT_ENCODING_UTF8); // 通过字符串创建文本对象
     OH_Drawing_BrushSetColor(brush, fontColor);                             // 设置画刷颜色
@@ -264,7 +263,8 @@ UInt8Data drawCircleImage(char *str, float fontSize, uint32_t fontColor, uint32_
  * @return 图片数组数据
  */
 UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t fontBackGroupColor,
-                        uint32_t backGroupColor, float textHeight, OH_Drawing_ColorFormat colorFormat, float padding,float radius) {
+                        uint32_t backGroupColor, float textHeight, OH_Drawing_ColorFormat colorFormat, float padding,
+                        float radius) {
     // 画文本和文本颜色
     OH_Drawing_Font *font = OH_Drawing_FontCreate();                                           // 创建font字体对象
     OH_Drawing_FontSetTextSize(font, fontSize);                                                // 设置字体大小
@@ -280,15 +280,15 @@ UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t 
     OH_Drawing_CanvasClear(bitmapCanvas, backGroupColor);                           // 使用透明色去清空画布
     OH_Drawing_Rect *rect = OH_Drawing_RectCreate(0.0, 0.0, rectWidth, textHeight); // 创建矩形对象
     OH_Drawing_RoundRect *roundRect = OH_Drawing_RoundRectCreate(rect, radius, radius); // 创建圆角矩形对象
-    OH_Drawing_Brush *brush = OH_Drawing_BrushCreate();                   // 创建画刷对象
-    OH_Drawing_BrushSetColor(brush, fontBackGroupColor);                  // 设置画刷颜色
-    OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                    // 画背景
-    OH_Drawing_CanvasDrawRoundRect(bitmapCanvas, roundRect);              // 画圆角矩形
-    OH_Drawing_Font_Metrics metrics;                                      // 字体度量信息
-    OH_Drawing_FontGetMetrics(font, &metrics);                            // 获取字体度量信息
-    float textH = -metrics.ascent;                  // 获取矩形对象高度 - 文本基于基线上偏移量
-    float textX = padding;                          // 居中文本左下角X坐标
-    float textY = (textHeight - textH) / 2 + textH; // 居中文本左下角Y坐标
+    OH_Drawing_Brush *brush = OH_Drawing_BrushCreate();                                 // 创建画刷对象
+    OH_Drawing_BrushSetColor(brush, fontBackGroupColor);                                // 设置画刷颜色
+    OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                                  // 画背景
+    OH_Drawing_CanvasDrawRoundRect(bitmapCanvas, roundRect);                            // 画圆角矩形
+    float h = OH_Drawing_RectGetHeight(bounds);                                         // 文本真实高度
+    float top = OH_Drawing_RectGetTop(bounds);   // 文本真实高度基于基线上边界高度
+    float imageTopHeight = (textHeight - h) / 2; // 居中文本距离图片上边界高度
+    float textY = imageTopHeight - top;          // 居中文本左下角Y坐标
+    float textX = padding;                       // 居中文本左下角X坐标
     OH_Drawing_TextBlob *textBlob =
         OH_Drawing_TextBlobCreateFromString(str, font, TEXT_ENCODING_UTF8); // 通过字符串创建文本对象
     OH_Drawing_BrushSetColor(brush, fontColor);                             // 设置画刷颜色
@@ -350,18 +350,18 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
     OH_Drawing_BrushSetColor(brush, borderColor);                         // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                    // 画背景
     OH_Drawing_CanvasDrawRoundRect(bitmapCanvas, roundRect);              // 画圆角矩形
-    OH_Drawing_Rect *internalRect =
-        OH_Drawing_RectCreate(borderWidth, borderWidth, internalRectWidth + borderWidth, internalRectHeight + borderWidth); // 创建矩形对象
+    OH_Drawing_Rect *internalRect = OH_Drawing_RectCreate(borderWidth, borderWidth, internalRectWidth + borderWidth,
+                                                          internalRectHeight + borderWidth); // 创建矩形对象
     OH_Drawing_RoundRect *internalRoundRect =
         OH_Drawing_RoundRectCreate(internalRect, internalRectHeight / 2, internalRectHeight / 2); // 创建圆角矩形对象
     OH_Drawing_BrushSetColor(brush, fontBackGroupColor);                                          // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                                            // 画背景
     OH_Drawing_CanvasDrawRoundRect(bitmapCanvas, internalRoundRect);                              // 画圆角矩形
-    OH_Drawing_Font_Metrics metrics1;                                                             // 字体度量信息
-    OH_Drawing_FontGetMetrics(font1, &metrics1);       // 获取字体度量信息
-    float textH1 = -metrics1.ascent;                   // 获取矩形对象高度 - 文本基于基线上偏移量
-    float textX1 = padding + borderWidth;              // 居中文本左下角X坐标
-    float textY1 = (textHeight - textH1) / 2 + textH1; // 居中文本左下角Y坐标
+    float h1 = OH_Drawing_RectGetHeight(bounds1);                                                 // 文本真实高度
+    float top1 = OH_Drawing_RectGetTop(bounds1);   // 文本真实高度基于基线上边界高度
+    float imageTopHeight1 = (textHeight - h1) / 2; // 居中文本距离图片上边界高度
+    float textY1 = imageTopHeight1 - top1;         // 居中文本左下角Y坐标
+    float textX1 = padding + borderWidth;          // 居中文本左下角X坐标
     OH_Drawing_TextBlob *textBlob1 =
         OH_Drawing_TextBlobCreateFromString(str1, font1, TEXT_ENCODING_UTF8); // 通过字符串创建文本对象
     OH_Drawing_BrushSetColor(brush, fontColor);                               // 设置画刷颜色
@@ -371,16 +371,16 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
         OH_Drawing_TextBlobCreateFromString(str2, font2, TEXT_ENCODING_UTF8); // 通过字符串创建文本对象
     OH_Drawing_BrushSetColor(brush, fontColor);                               // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                        // 画背景
-    OH_Drawing_Font_Metrics metrics2;                                         // 字体度量信息
-    OH_Drawing_FontGetMetrics(font2, &metrics2);                              // 获取字体度量信息
-    float textH2 = -metrics2.ascent; // 获取矩形对象高度 - 文本基于基线上偏移量
+    float h2 = OH_Drawing_RectGetHeight(bounds2);                             // 文本真实高度
+    float top2 = OH_Drawing_RectGetTop(bounds2);   // 文本真实高度基于基线上边界高度
+    float imageTopHeight2 = (textHeight - h2) / 2; // 居中文本距离图片上边界高度
+    float textY2 = imageTopHeight2 - top2;         // 居中文本左下角Y坐标
     float textX2 = padding + borderWidth + w1 + padding + dividingLineWidth + padding; // 居中文本左下角X坐标
-    float textY2 = (textHeight - textH2) / 2 + textH2;                                 // 居中文本左下角Y坐标
     OH_Drawing_CanvasDrawTextBlob(bitmapCanvas, textBlob2, textX2, textY2);            // 画文字
     float lineX1 = padding + borderWidth + w1 + padding;
-    float lineY1 = (textHeight - textH2) / 2;
     float lineX2 = padding + borderWidth + w1 + padding + dividingLineWidth;
-    float lineY2 = (textHeight - textH2) / 2 + textH2;
+    float lineY1 = padding;
+    float lineY2 = textHeight - padding;
     OH_Drawing_Rect *lineRect = OH_Drawing_RectCreate(lineX1, lineY1, lineX2, lineY2); // 创建矩形对象
     OH_Drawing_BrushSetColor(brush, dividingLineColor);                                // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                                 // 画背景
