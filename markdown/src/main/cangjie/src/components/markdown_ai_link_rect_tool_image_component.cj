@@ -19,9 +19,19 @@ public class MarkdownAILinkRectToolImageComponent {
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 链接内容
+     * 链接
      */
     var strUrl: String
+
+    /**
+     * 链接内容
+     */
+    var strText: String
+
+    /**
+     * 链接类型
+     */
+    var strType: String
 
     /**
      * 链接高度
@@ -71,7 +81,10 @@ public class MarkdownAILinkRectToolImageComponent {
                 .constraintSize(maxWidth: 100.percent)
                 // 点击动作触发该方法调用
                 .onClick {
-                    evt => latexImageOnClick(arrayUint8(), imageHeight().px, imageWidth().px, markdownAIConfiguration.latexImageCallback)
+                    evt =>
+                        if (markdownAIConfiguration.linkCallback.isSome() ) {
+                            markdownAIConfiguration.linkCallback()(strUrl)
+                        }
                 }
         }
     }
@@ -88,7 +101,7 @@ public class MarkdownAILinkRectToolImageComponent {
                 arrayUint8 = arr
             }
         }
-//        // 解析链接
-//        MarkdownParseLinkUtil.latexMathStrToPixelMapRow(strUrl, markdownAIConfiguration.markdownAITheme.resPath, markdownAIConfiguration, componentWidth, callback)
+        // 解析链接
+        MarkdownParseLinkUtil.linkStrToRectToolPixelMap(strText,strType, markdownAIConfiguration, callback)
     }
 }

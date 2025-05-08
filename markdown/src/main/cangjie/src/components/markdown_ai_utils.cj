@@ -553,7 +553,7 @@ func taskSelect(item: NodeView): Bool {
 func solidCircleToUnicode(): Rune {
     // ●
     let solidDots: Rune = '\u{25CF}'
-    return solidDots;
+    return solidDots
 }
 
 /**
@@ -564,7 +564,7 @@ func solidCircleToUnicode(): Rune {
 func hollowCircleToUnicode(): Rune {
     // ○
     let hollowCircle: Rune = '\u{25CB}'
-    return hollowCircle;
+    return hollowCircle
 }
 
 /**
@@ -575,7 +575,7 @@ func hollowCircleToUnicode(): Rune {
 func solidSquareToUnicode(): Rune {
     // ■
     let solidSquare: Rune = '\u{25A0}'
-    return solidSquare;
+    return solidSquare
 }
 
 /**
@@ -781,7 +781,7 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownAIConfiguration: Markdow
                 let value = style[15..style.size - 2]
                 picStyleObj.borderRadius = Length(Int64.parse(value), unitType: LengthType.px)
             } else if (style[..7] == ":style=") {
-                for (s in style[7..].split(";")) {
+                for (s in style[7..].split("")) {
                     picStyle.append(":${s.replace(":","=")}")
                 }
             }
@@ -872,4 +872,28 @@ func isListItem(indexListOne: ArrayList<Int64>,indexListTwo: ArrayList<Int64>,in
         }
     }
     return isBool
+}
+
+func urlSafeBase64Decode(v: String):String {
+    var vNew = v.replace("_", "/").replace("-", "+")
+    var arr:?Array<Byte> = fromBase64String(vNew)
+    if(arr.isNone()){
+        return ""
+    }
+    var arrStr:String = String.fromUtf8(arr.getOrThrow())
+    var regex: Regex = Regex("file-name=([^&]+)");
+    var matcher: Matcher = Matcher(regex, arrStr);
+    var matchData: ?MatchData = matcher.find()
+    match (matchData) {
+    	case Some(v) =>
+            var str: String = v.matchStr()
+            var arrSplit:Array<String> = URL.parse(str).toString().split('.')
+            if(arrSplit.size>1){
+                return arrSplit[0].toAsciiUpper()
+            }else{
+                return ""
+            }
+        case None => return ""
+    }
+    return ""
 }

@@ -19,9 +19,14 @@ public class MarkdownAILinkRectImageComponent {
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 链接内容
+     * 链接
      */
     var strUrl: String
+
+    /**
+     * 链接内容
+     */
+    var strText: String
 
     /**
      * 链接高度
@@ -72,6 +77,9 @@ public class MarkdownAILinkRectImageComponent {
                 // 点击动作触发该方法调用
                 .onClick {
                     evt =>
+                        if (markdownAIConfiguration.linkCallback.isSome() ) {
+                            markdownAIConfiguration.linkCallback()(strUrl)
+                        }
                 }
         }
     }
@@ -89,6 +97,6 @@ public class MarkdownAILinkRectImageComponent {
             }
         }
         // 解析链接
-        MarkdownParseLinkUtil.linkStrToRectPixelMap(strUrl, markdownAIConfiguration, callback)
+        MarkdownParseLinkUtil.linkStrToRectPixelMap(strText, markdownAIConfiguration, callback)
     }
 }

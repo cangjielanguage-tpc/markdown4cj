@@ -12,6 +12,8 @@ internal import std.time.*
 internal import std.io.*
 internal import net.http.*
 internal import net.tls.*
+internal import encoding.base64.*
+internal import encoding.url.*
 
 // 内部其他包
 internal import markdown.core.*

@@ -9,7 +9,7 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 class MarkdownParseLinkUtil {
-    static func linkStrToCirclePixelMap(strUrl: String, markdownAIConfiguration: MarkdownAIConfiguration,
+    static func linkStrToCirclePixelMap(strText: String, markdownAIConfiguration: MarkdownAIConfiguration,
         callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -19,7 +19,7 @@ class MarkdownParseLinkUtil {
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
-            arr = drawCircleImageButton(strUrl, markdownAIConfiguration.markdownAITheme.linkCircleImageTextSize,
+            arr = drawCircleImageButton(strText, markdownAIConfiguration.markdownAITheme.linkCircleImageTextSize,
                 markdownAIConfiguration.markdownAITheme.linkCircleImageTextColor.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkCircleImageButtonBackGroupColor.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor.toUInt32(),
@@ -45,7 +45,7 @@ class MarkdownParseLinkUtil {
         return fut
     }
 
-    static func linkStrToRectPixelMap(strUrl: String, markdownAIConfiguration: MarkdownAIConfiguration,
+    static func linkStrToRectPixelMap(strText: String, markdownAIConfiguration: MarkdownAIConfiguration,
         callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -55,7 +55,7 @@ class MarkdownParseLinkUtil {
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
-            arr = drawRectImageButton(strUrl, markdownAIConfiguration.markdownAITheme.linkRectImageTextSize,
+            arr = drawRectImageButton(strText, markdownAIConfiguration.markdownAITheme.linkRectImageTextSize,
                 markdownAIConfiguration.markdownAITheme.linkRectImageTextColor.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectImageButtonBackGroupColor.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor.toUInt32(),
@@ -82,7 +82,7 @@ class MarkdownParseLinkUtil {
         return fut
     }
 
-    static func linkStrToRectToolPixelMap(strUrl: String, markdownAIConfiguration: MarkdownAIConfiguration,
+    static func linkStrToRectToolPixelMap(strText: String, strType: String, markdownAIConfiguration: MarkdownAIConfiguration,
         callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -92,11 +92,17 @@ class MarkdownParseLinkUtil {
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
-            arr = drawCircleImageButton(strUrl, markdownAIConfiguration.markdownAITheme.linkCircleImageTextSize,
-                markdownAIConfiguration.markdownAITheme.linkCircleImageTextColor.toUInt32(),
-                markdownAIConfiguration.markdownAITheme.linkCircleImageButtonBackGroupColor.toUInt32(),
-                markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor.toUInt32(),
-                markdownAIConfiguration.markdownAITheme.linkCircleImageRadius, ColorFormatEnum.COLOR_FORMAT_BGRA_8888)
+            arr = drawRectToolImageButton(strText,strType,
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageTextSize,
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageTextColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageButtonBackGroupColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageButtonBorderColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageBorderWidth,
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageButtonDividingLineColor.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageDividingLineWidth,
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageHeight, ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
+                markdownAIConfiguration.markdownAITheme.linkRectToolImagePadding)
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }

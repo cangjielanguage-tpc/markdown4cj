@@ -116,17 +116,26 @@ class MarkdownAITableBlockCellComponent {
                                 if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().toRuneArray().size > 1) {
                                     MarkdownAILinkRectImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
-                                        strUrl: (item.node.getFirstChild()() as CommonmarkText)().getLiteral()
+                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
+                                        strUrl: (item.node as CommonmarkLink)().getDestination()
                                     )
                                 } else {
                                     MarkdownAILinkCircleImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
-                                        strUrl: (item.node.getFirstChild()() as CommonmarkText)().getLiteral()
+                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
+                                        strUrl: (item.node as CommonmarkLink)().getDestination()
                                     )
                                 }
                             }
                         } else {
-
+                           if(item.node.getFirstChild().isSome() &&  item.node.getFirstChild()() is CommonmarkText){
+                                MarkdownAILinkRectToolImageComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
+                                    strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                    strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination())
+                                )
+                           }
                         }
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
