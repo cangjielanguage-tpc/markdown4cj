@@ -122,6 +122,11 @@ public class MarkdownAITheme {
     protected var linkRectImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
 
     /**
+     * 圆角矩形链接圆角半径 - 单位px
+     */
+    protected var linkRectImageRadius: Float64 = vp2px(6.0.vp).getOrThrow().value
+
+    /**
      * 空心圆角矩形链接主题背景颜色
      */
     protected var linkRectToolImageBackGroupColor: Color = COLOR_FFFFFFFF
@@ -525,6 +530,7 @@ public class MarkdownAITheme {
         this.linkRectImageTextColor = builder.linkRectImageTextColor
         this.linkRectImageHeight = builder.linkRectImageHeight
         this.linkRectImagePadding = builder.linkRectImagePadding
+        this.linkRectImageRadius = builder.linkRectImageRadius
 
         this.linkRectToolImageBackGroupColor = builder.linkRectToolImageBackGroupColor
         this.linkRectToolImageButtonBackGroupColor = builder.linkRectToolImageButtonBackGroupColor
@@ -840,6 +846,11 @@ public class MarkdownAIThemeBuilder {
      * 圆角矩形链接左右边距 - 单位px
      */
     protected var linkRectImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
+
+    /**
+     * 圆角矩形链接圆角半径 - 单位px
+     */
+    protected var linkRectImageRadius: Float64 = vp2px(6.0.vp).getOrThrow().value
 
     /**
      * 空心圆角矩形链接主题背景颜色
@@ -1243,6 +1254,7 @@ public class MarkdownAIThemeBuilder {
         this.linkRectImageTextColor = theme.linkRectImageTextColor
         this.linkRectImageHeight = theme.linkRectImageHeight
         this.linkRectImagePadding = theme.linkRectImagePadding
+        this.linkRectImageRadius = theme.linkRectImageRadius
 
         this.linkRectToolImageBackGroupColor = theme.linkRectToolImageBackGroupColor
         this.linkRectToolImageButtonBackGroupColor = theme.linkRectToolImageButtonBackGroupColor
@@ -1635,6 +1647,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setLinkRectImagePadding(linkRectImagePadding: Float64): MarkdownAIThemeBuilder {
         this.linkRectImagePadding = vp2px(linkRectImagePadding.vp).getOrThrow().value
+        return this
+    }
+
+    /**
+     * 设置圆角矩形链接圆角半径 - 单位vp
+     *
+     * @param linkRectImageRadius 圆角矩形链接圆角半径 - 单位vp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectImageRadius(linkRectImageRadius: Float64): MarkdownAIThemeBuilder {
+        this.linkRectImageRadius = vp2px(linkRectImageRadius.vp).getOrThrow().value
         return this
     }
 

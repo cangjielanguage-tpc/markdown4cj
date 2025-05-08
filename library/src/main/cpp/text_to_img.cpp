@@ -259,11 +259,12 @@ UInt8Data drawCircleImage(char *str, float fontSize, uint32_t fontColor, uint32_
  * @param textHeight            控件高度
  * @param colorFormat           图片格式
  * @param padding               左右边距
+ * @param radius                圆角半径
  *
  * @return 图片数组数据
  */
 UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t fontBackGroupColor,
-                        uint32_t backGroupColor, float textHeight, OH_Drawing_ColorFormat colorFormat, float padding) {
+                        uint32_t backGroupColor, float textHeight, OH_Drawing_ColorFormat colorFormat, float padding,float radius) {
     // 画文本和文本颜色
     OH_Drawing_Font *font = OH_Drawing_FontCreate();                                           // 创建font字体对象
     OH_Drawing_FontSetTextSize(font, fontSize);                                                // 设置字体大小
@@ -278,8 +279,7 @@ UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t 
     OH_Drawing_CanvasBind(bitmapCanvas, bitmap); // 将Canvas与bitmap绑定，Canvas绘制的内容会输出到绑定的bitmap内存中
     OH_Drawing_CanvasClear(bitmapCanvas, backGroupColor);                           // 使用透明色去清空画布
     OH_Drawing_Rect *rect = OH_Drawing_RectCreate(0.0, 0.0, rectWidth, textHeight); // 创建矩形对象
-    OH_Drawing_RoundRect *roundRect =
-        OH_Drawing_RoundRectCreate(rect, textHeight / 2, textHeight / 2); // 创建圆角矩形对象
+    OH_Drawing_RoundRect *roundRect = OH_Drawing_RoundRectCreate(rect, radius, radius); // 创建圆角矩形对象
     OH_Drawing_Brush *brush = OH_Drawing_BrushCreate();                   // 创建画刷对象
     OH_Drawing_BrushSetColor(brush, fontBackGroupColor);                  // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                    // 画背景

@@ -142,16 +142,16 @@ class MarkdownAIHeadingComponent {
                         // 链接
                         if((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")){
                             if(item.node.getFirstChild().isSome() &&  item.node.getFirstChild()() is CommonmarkText){
-                                if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().toRuneArray().size > 1) {
+                                if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
                                     MarkdownAILinkRectImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
-                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
+                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination()
                                     )
                                 } else {
                                     MarkdownAILinkCircleImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
-                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
+                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination()
                                     )
                                 }

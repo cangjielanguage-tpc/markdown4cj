@@ -60,7 +60,8 @@ class MarkdownParseLinkUtil {
                 markdownAIConfiguration.markdownAITheme.linkRectImageButtonBackGroupColor.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectImageHeight, ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
-                markdownAIConfiguration.markdownAITheme.linkRectImagePadding)
+                markdownAIConfiguration.markdownAITheme.linkRectImagePadding,
+                markdownAIConfiguration.markdownAITheme.linkRectImageRadius)
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
