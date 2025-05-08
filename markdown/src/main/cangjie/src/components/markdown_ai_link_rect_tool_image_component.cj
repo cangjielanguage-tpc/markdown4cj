@@ -81,10 +81,9 @@ public class MarkdownAILinkRectToolImageComponent {
                 .constraintSize(maxWidth: 100.percent)
                 // 点击动作触发该方法调用
                 .onClick {
-                    evt =>
-                        if (markdownAIConfiguration.linkCallback.isSome() ) {
-                            markdownAIConfiguration.linkCallback()(strUrl)
-                        }
+                    evt => if (markdownAIConfiguration.linkCallback.isSome()) {
+                        markdownAIConfiguration.linkCallback()(strUrl)
+                    }
                 }
         }
     }
@@ -102,6 +101,17 @@ public class MarkdownAILinkRectToolImageComponent {
             }
         }
         // 解析链接
-        MarkdownParseLinkUtil.linkStrToRectToolPixelMap(strText,strType, markdownAIConfiguration, callback)
+        MarkdownParseLinkUtil.linkStrToRectToolPixelMap(strText, strType, markdownAIConfiguration, callback)
+    }
+}
+
+func typeStringColor(str: String): (Color, Color) {
+    match (str) {
+        case "PDF" => return (Color(0xFFB41700), Color(180, 23, 0, alpha: 0.2))
+        case "DOC" => return (Color(0xFF3D73CF), Color(61, 115, 207, alpha: 0.2))
+        case "DOCX" => return (Color(0xFF3D73CF), Color(61, 115, 207, alpha: 0.2))
+        case "TXT" => return (Color(0xFF000000), Color(0, 0, 0, alpha: 0.2))
+        case "DEFAULT" => return (Color(0xFF000000), Color(0, 0, 0, alpha: 0.2))
+        case _ => return (Color(0xFF000000), Color(0, 0, 0, alpha: 0.2))
     }
 }

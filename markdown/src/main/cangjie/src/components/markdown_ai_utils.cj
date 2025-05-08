@@ -889,7 +889,7 @@ func urlSafeBase64Decode(v: String):String {
             var str: String = v.matchStr()
             var arrSplit:Array<String> = URL.parse(str).toString().split('.')
             if(arrSplit.size>1){
-                return arrSplit[0].toAsciiUpper()
+                return arrSplit[arrSplit.size - 1].toAsciiUpper()
             }else{
                 return ""
             }

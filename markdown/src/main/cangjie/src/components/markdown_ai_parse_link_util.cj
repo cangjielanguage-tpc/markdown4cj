@@ -93,14 +93,16 @@ class MarkdownParseLinkUtil {
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
+            var c1 = typeStringColor(strText)[0]
+            var c2 = typeStringColor(strText)[1]
             arr = drawRectToolImageButton(strText,strType,
                 markdownAIConfiguration.markdownAITheme.linkRectToolImageTextSize,
-                markdownAIConfiguration.markdownAITheme.linkRectToolImageTextColor.toUInt32(),
+                c1.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectToolImageButtonBackGroupColor.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor.toUInt32(),
-                markdownAIConfiguration.markdownAITheme.linkRectToolImageButtonBorderColor.toUInt32(),
+                c2.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectToolImageBorderWidth,
-                markdownAIConfiguration.markdownAITheme.linkRectToolImageButtonDividingLineColor.toUInt32(),
+                c2.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectToolImageDividingLineWidth,
                 markdownAIConfiguration.markdownAITheme.linkRectToolImageHeight, ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
                 markdownAIConfiguration.markdownAITheme.linkRectToolImagePadding)
