@@ -83,8 +83,8 @@ class MarkdownParseLinkUtil {
         return fut
     }
 
-    static func linkStrToRectToolPixelMap(strText: String, strType: String, markdownAIConfiguration: MarkdownAIConfiguration,
-        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func linkStrToRectToolPixelMap(strText: String, strType: String,
+        markdownAIConfiguration: MarkdownAIConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
             var imageHeight: ?Float64 = Option<Float64>.None
@@ -93,16 +93,13 @@ class MarkdownParseLinkUtil {
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
-            var c1 = typeStringColor(strText)[0]
-            var c2 = typeStringColor(strText)[1]
-            arr = drawRectToolImageButton(strText,strType,
-                markdownAIConfiguration.markdownAITheme.linkRectToolImageTextSize,
-                c1.toUInt32(),
+            var c1 = typeStringColor(strType)[0]
+            var c2 = typeStringColor(strType)[1]
+            arr = drawRectToolImageButton(strText, strType,
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageTextSize, c1.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectToolImageButtonBackGroupColor.toUInt32(),
-                markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor.toUInt32(),
-                c2.toUInt32(),
-                markdownAIConfiguration.markdownAITheme.linkRectToolImageBorderWidth,
-                c2.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor.toUInt32(), c2.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageBorderWidth, c2.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectToolImageDividingLineWidth,
                 markdownAIConfiguration.markdownAITheme.linkRectToolImageHeight, ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
                 markdownAIConfiguration.markdownAITheme.linkRectToolImagePadding)
