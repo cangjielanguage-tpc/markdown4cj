@@ -79,6 +79,8 @@ public class MarkdownAILinkRectToolImageComponent {
                 .objectFit(ImageFit.Contain)
                 // 设置约束尺寸
                 .constraintSize(maxWidth: 100.percent)
+                // 左右外边距
+                .margin(right: markdownAIConfiguration.markdownAITheme.linkRectToolImageMargin, left: markdownAIConfiguration.markdownAITheme.linkRectToolImageMargin)
                 // 点击动作触发该方法调用
                 .onClick {
                     evt => if (markdownAIConfiguration.linkCallback.isSome()) {

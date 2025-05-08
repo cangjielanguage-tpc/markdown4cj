@@ -19,11 +19,15 @@ class MarkdownParseLinkUtil {
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
-            arr = drawCircleImageButton(strText, markdownAIConfiguration.markdownAITheme.linkCircleImageTextSize,
+            arr = drawCircleImageButton(
+                strText,
+                markdownAIConfiguration.markdownAITheme.linkCircleImageTextSize,
                 markdownAIConfiguration.markdownAITheme.linkCircleImageTextColor.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkCircleImageButtonBackGroupColor.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor.toUInt32(),
-                markdownAIConfiguration.markdownAITheme.linkCircleImageRadius, ColorFormatEnum.COLOR_FORMAT_BGRA_8888)
+                markdownAIConfiguration.markdownAITheme.linkCircleImageRadius,
+                ColorFormatEnum.COLOR_FORMAT_BGRA_8888
+            )
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
@@ -55,13 +59,17 @@ class MarkdownParseLinkUtil {
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
-            arr = drawRectImageButton(strText, markdownAIConfiguration.markdownAITheme.linkRectImageTextSize,
+            arr = drawRectImageButton(
+                strText,
+                markdownAIConfiguration.markdownAITheme.linkRectImageTextSize,
                 markdownAIConfiguration.markdownAITheme.linkRectImageTextColor.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectImageButtonBackGroupColor.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor.toUInt32(),
-                markdownAIConfiguration.markdownAITheme.linkRectImageHeight, ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
+                markdownAIConfiguration.markdownAITheme.linkRectImageHeight,
+                ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
                 markdownAIConfiguration.markdownAITheme.linkRectImagePadding,
-                markdownAIConfiguration.markdownAITheme.linkRectImageRadius)
+                markdownAIConfiguration.markdownAITheme.linkRectImageRadius
+            )
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
@@ -95,14 +103,21 @@ class MarkdownParseLinkUtil {
             }
             var c1 = typeStringColor(strType)[0]
             var c2 = typeStringColor(strType)[1]
-            arr = drawRectToolImageButton(strText, strType,
-                markdownAIConfiguration.markdownAITheme.linkRectToolImageTextSize, c1.toUInt32(),
+            arr = drawRectToolImageButton(
+                strText,
+                strType,
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageTextSize,
+                c1.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectToolImageButtonBackGroupColor.toUInt32(),
-                markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor.toUInt32(), c2.toUInt32(),
-                markdownAIConfiguration.markdownAITheme.linkRectToolImageBorderWidth, c2.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor.toUInt32(),
+                c1.toUInt32(),
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageBorderWidth,
+                c2.toUInt32(),
                 markdownAIConfiguration.markdownAITheme.linkRectToolImageDividingLineWidth,
-                markdownAIConfiguration.markdownAITheme.linkRectToolImageHeight, ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
-                markdownAIConfiguration.markdownAITheme.linkRectToolImagePadding)
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageHeight,
+                ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
+                markdownAIConfiguration.markdownAITheme.linkRectToolImagePadding
+            )
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }

@@ -92,6 +92,11 @@ public class MarkdownAITheme {
     protected var linkCircleImageRadius: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
+     * 圆形链接左右边距 - 单位px
+     */
+    protected var linkCircleImageMargin: Float64 = 6.0
+
+    /**
      * 圆角矩形链接主题背景颜色
      */
     protected var linkRectImageBackGroupColor: Color = COLOR_FFFFFFFF
@@ -125,6 +130,11 @@ public class MarkdownAITheme {
      * 圆角矩形链接圆角半径 - 单位px
      */
     protected var linkRectImageRadius: Float64 = vp2px(6.0.vp).getOrThrow().value
+
+    /**
+     * 圆角矩形链接左右边距 - 单位px
+     */
+    protected var linkRectImageMargin: Float64 = 6.0
 
     /**
      * 空心圆角矩形链接主题背景颜色
@@ -175,6 +185,11 @@ public class MarkdownAITheme {
      * 空心圆角矩形链接分割线宽度 - 单位px
      */
     protected var linkRectToolImageDividingLineWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
+
+    /**
+     * 空心圆角矩形链接左右边距 - 单位px
+     */
+    protected var linkRectToolImageMargin: Float64 = 6.0
 
     /**
      * 有序列表、无序列表、任务列表、块引用左边距
@@ -523,6 +538,7 @@ public class MarkdownAITheme {
         this.linkCircleImageTextSize = builder.linkCircleImageTextSize
         this.linkCircleImageTextColor = builder.linkCircleImageTextColor
         this.linkCircleImageRadius = builder.linkCircleImageRadius
+        this.linkCircleImageMargin = builder.linkCircleImageMargin
 
         this.linkRectImageBackGroupColor = builder.linkRectImageBackGroupColor
         this.linkRectImageButtonBackGroupColor = builder.linkRectImageButtonBackGroupColor
@@ -531,6 +547,7 @@ public class MarkdownAITheme {
         this.linkRectImageHeight = builder.linkRectImageHeight
         this.linkRectImagePadding = builder.linkRectImagePadding
         this.linkRectImageRadius = builder.linkRectImageRadius
+        this.linkRectImageMargin = builder.linkRectImageMargin
 
         this.linkRectToolImageBackGroupColor = builder.linkRectToolImageBackGroupColor
         this.linkRectToolImageButtonBackGroupColor = builder.linkRectToolImageButtonBackGroupColor
@@ -542,6 +559,7 @@ public class MarkdownAITheme {
         this.linkRectToolImagePadding = builder.linkRectToolImagePadding
         this.linkRectToolImageBorderWidth = builder.linkRectToolImageBorderWidth
         this.linkRectToolImageDividingLineWidth = builder.linkRectToolImageDividingLineWidth
+        this.linkRectToolImageMargin = builder.linkRectToolImageMargin
 
         // 块引用、有序列表，无序列表、任务列表、TOC列表
         this.blockMargin = builder.blockMargin
@@ -818,6 +836,11 @@ public class MarkdownAIThemeBuilder {
     protected var linkCircleImageRadius: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
+     * 圆形链接左右边距 - 单位px
+     */
+    protected var linkCircleImageMargin: Float64 = 6.0
+
+    /**
      * 圆角矩形链接主题背景颜色
      */
     protected var linkRectImageBackGroupColor: Color = COLOR_FFFFFFFF
@@ -851,6 +874,11 @@ public class MarkdownAIThemeBuilder {
      * 圆角矩形链接圆角半径 - 单位px
      */
     protected var linkRectImageRadius: Float64 = vp2px(6.0.vp).getOrThrow().value
+
+    /**
+     * 圆角矩形链接左右边距 - 单位px
+     */
+    protected var linkRectImageMargin: Float64 = 6.0
 
     /**
      * 空心圆角矩形链接主题背景颜色
@@ -901,6 +929,11 @@ public class MarkdownAIThemeBuilder {
      * 空心圆角矩形链接分割线宽度 - 单位px
      */
     protected var linkRectToolImageDividingLineWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
+
+    /**
+     * 空心圆角矩形链接左右边距 - 单位px
+     */
+    protected var linkRectToolImageMargin: Float64 = 6.0
 
     /**
      * 有序列表、无序列表、任务列表、块引用左边距
@@ -1247,6 +1280,7 @@ public class MarkdownAIThemeBuilder {
         this.linkCircleImageTextSize = theme.linkCircleImageTextSize
         this.linkCircleImageTextColor = theme.linkCircleImageTextColor
         this.linkCircleImageRadius = theme.linkCircleImageRadius
+        this.linkCircleImageMargin = theme.linkCircleImageMargin
 
         this.linkRectImageBackGroupColor = theme.linkRectImageBackGroupColor
         this.linkRectImageButtonBackGroupColor = theme.linkRectImageButtonBackGroupColor
@@ -1255,6 +1289,7 @@ public class MarkdownAIThemeBuilder {
         this.linkRectImageHeight = theme.linkRectImageHeight
         this.linkRectImagePadding = theme.linkRectImagePadding
         this.linkRectImageRadius = theme.linkRectImageRadius
+        this.linkRectImageMargin = theme.linkRectImageMargin
 
         this.linkRectToolImageBackGroupColor = theme.linkRectToolImageBackGroupColor
         this.linkRectToolImageButtonBackGroupColor = theme.linkRectToolImageButtonBackGroupColor
@@ -1266,6 +1301,7 @@ public class MarkdownAIThemeBuilder {
         this.linkRectToolImagePadding = theme.linkRectToolImagePadding
         this.linkRectToolImageBorderWidth = theme.linkRectToolImageBorderWidth
         this.linkRectToolImageDividingLineWidth = theme.linkRectToolImageDividingLineWidth
+        this.linkRectToolImageMargin = theme.linkRectToolImageMargin
 
         // 块引用、有序列表，无序列表、任务列表、TOC列表
         this.blockMargin = theme.blockMargin
@@ -1585,6 +1621,17 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
+     * 设置圆形链接左右边距 - 单位vp
+     *
+     * @param linkCircleImageMargin 圆形链接半径 - 单位vp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkCircleImageMargin(linkCircleImageMargin: Float64): MarkdownAIThemeBuilder {
+        this.linkCircleImageMargin = linkCircleImageMargin
+        return this
+    }
+
+    /**
      * 设置圆角矩形链接主题背景颜色
      *
      * @param linkRectImageBackGroupColor 圆角矩形链接主题背景颜色
@@ -1658,6 +1705,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setLinkRectImageRadius(linkRectImageRadius: Float64): MarkdownAIThemeBuilder {
         this.linkRectImageRadius = vp2px(linkRectImageRadius.vp).getOrThrow().value
+        return this
+    }
+
+    /**
+     * 设置圆角矩形链接左右边距 - 单位vp
+     *
+     * @param linkRectImageMargin 圆形链接半径 - 单位vp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectImageMargin(linkRectImageMargin: Float64): MarkdownAIThemeBuilder {
+        this.linkRectImageMargin = linkRectImageMargin
         return this
     }
 
@@ -1768,6 +1826,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setLinkRectToolImageDividingLineWidth(linkRectToolImageDividingLineWidth: Float64): MarkdownAIThemeBuilder {
         this.linkRectToolImageDividingLineWidth = vp2px(linkRectToolImageDividingLineWidth.vp).getOrThrow().value
+        return this
+    }
+
+    /**
+     * 设置空心圆角矩形链接左右边距 - 单位vp
+     *
+     * @param linkRectToolImageMargin 圆形链接半径 - 单位vp
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLinkRectToolImageMargin(linkRectToolImageMargin: Float64): MarkdownAIThemeBuilder {
+        this.linkRectToolImageMargin = linkRectToolImageMargin
         return this
     }
 
