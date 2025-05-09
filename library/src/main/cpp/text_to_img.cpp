@@ -386,10 +386,10 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
     float textX2 =
         borderWidth + padding + w1 + lineLeftPadding + dividingLineWidth + lineRightPadding; // 居中文本左下角X坐标
     OH_Drawing_CanvasDrawTextBlob(bitmapCanvas, textBlob2, textX2, textY2);                  // 画文字
-    float lineX1 = padding + borderWidth + w1 + padding;
-    float lineX2 = padding + borderWidth + w1 + lineLeftPadding + dividingLineWidth;
-    float lineY1 = padding;
-    float lineY2 = textHeight - padding;
+    float lineX1 = borderWidth + padding + w1 + lineLeftPadding;
+    float lineX2 = borderWidth + padding + w1 + lineLeftPadding + dividingLineWidth;
+    float lineY1 = borderWidth + padding;
+    float lineY2 = textHeight - padding - borderWidth;
     OH_Drawing_Rect *lineRect = OH_Drawing_RectCreate(lineX1, lineY1, lineX2, lineY2); // 创建矩形对象
     OH_Drawing_BrushSetColor(brush, dividingLineColor);                                // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                                 // 画背景
