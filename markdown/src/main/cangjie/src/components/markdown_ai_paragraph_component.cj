@@ -187,7 +187,7 @@ class MarkdownAIParagraphComponent {
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置行高
-        .lineHeight(22.0)
+        .lineHeight(markdownAIConfiguration.markdownAITheme.paragraphTextLineheight)
     }
 
     /**

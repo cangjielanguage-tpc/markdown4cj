@@ -205,7 +205,19 @@ class MarkdownAIHeadingComponent {
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置行高
-        .lineHeight(22.0)
+        .lineHeight(tableLineHeight())
+    }
+
+    func tableLineHeight():Float64{
+        return match (level) {
+        	case 1 => markdownAIConfiguration.markdownAITheme.headingTextLineheight1
+        	case 2 => markdownAIConfiguration.markdownAITheme.headingTextLineheight2
+        	case 3 => markdownAIConfiguration.markdownAITheme.headingTextLineheight3
+        	case 4 => markdownAIConfiguration.markdownAITheme.headingTextLineheight4
+        	case 5 => markdownAIConfiguration.markdownAITheme.headingTextLineheight5
+        	case 6 => markdownAIConfiguration.markdownAITheme.headingTextLineheight6
+        	case _ => markdownAIConfiguration.markdownAITheme.headingTextLineheight6
+        }
     }
 
     /**

@@ -91,7 +91,7 @@ class MarkdownAIFencedCodeBlockComponent {
         // 设置内边距属性
         .padding(left: markdownAIConfiguration.markdownAITheme.codeMultilineMargin)
         // 设置行高
-        .lineHeight(22)
+        .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineheight)
     }
 
     /**

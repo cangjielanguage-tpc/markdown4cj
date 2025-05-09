@@ -437,12 +437,12 @@ func widthVpToPx(screenWidth: Int32, imagePadding: Int64): Float64 {
  * @param isBullet 是否是无序列表
  * @return 返回前缀文本内容
  */
-func listPrefixLineHeight(isBullet: Bool): Float64 {
+func listPrefixLineHeight(isBullet: Bool, markdownAIConfiguration: MarkdownAIConfiguration): Float64 {
     if (isBullet) {
         // 有序列表
-        return 22.0
+        return markdownAIConfiguration.markdownAITheme.orderedListItemLineheight
     } else {
-        return 18.0
+        return markdownAIConfiguration.markdownAITheme.bulletListItemLineheight
     }
 }
 

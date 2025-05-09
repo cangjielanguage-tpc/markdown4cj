@@ -116,7 +116,9 @@ class MarkdownParseLinkUtil {
                 markdownAIConfiguration.markdownAITheme.linkRectToolImageDividingLineWidth,
                 markdownAIConfiguration.markdownAITheme.linkRectToolImageHeight,
                 ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
-                markdownAIConfiguration.markdownAITheme.linkRectToolImagePadding
+                markdownAIConfiguration.markdownAITheme.linkRectToolImagePadding,
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageLineLeftPadding,
+                markdownAIConfiguration.markdownAITheme.linkRectToolImageLineRightPadding
             )
             if (Thread.currentThread.hasPendingCancellation) {
                 return

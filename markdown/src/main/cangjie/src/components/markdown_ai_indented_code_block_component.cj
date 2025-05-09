@@ -100,7 +100,7 @@ class MarkdownAIIndentedCodeBlockComponent {
                 // 设置内边距属性
                 .padding(left: markdownAIConfiguration.markdownAITheme.codeMultilineMargin)
                 // 设置行高
-                .lineHeight(22)
+                .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineheight)
         }
         // 设置滚动方法
         .scrollable(ScrollDirection.Horizontal)
