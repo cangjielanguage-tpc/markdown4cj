@@ -74,6 +74,8 @@ public class MarkdownAILinkRectImageComponent {
                 .objectFit(ImageFit.Contain)
                 // 设置约束尺寸
                 .constraintSize(maxWidth: 100.percent)
+                // 设置图片基于文本的对齐方式
+                .verticalAlign(ImageSpanAlignment.CENTER)
                 // 左右外边距
                 .margin(right: markdownAIConfiguration.markdownAITheme.linkRectImageMargin, left: markdownAIConfiguration.markdownAITheme.linkRectImageMargin)
                 // 点击动作触发该方法调用
