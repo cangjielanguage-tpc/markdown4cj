@@ -13,7 +13,8 @@ foreign {
 
     func drawRectToolImage(str1: CString, str2: CString, fontSize: Float32, fontColor: UInt32,
         fontBackGroupColor: UInt32, backGroupColor: UInt32, borderColor: UInt32, borderWidth: Float32,
-        dividingLineColor: UInt32, dividingLineWidth: Float32, textHeight: Float32, colorFormat: Int32, padding: Float32): UInt8Data
+        dividingLineColor: UInt32, dividingLineWidth: Float32, textHeight: Float32, colorFormat: Int32,
+        padding: Float32, lineLeftPadding: Float32, lineRightPadding: Float32): UInt8Data
 }
 
 @C
@@ -131,7 +132,7 @@ public func drawRectImageButton(str: String, fontSize: Float64, fontColor: UInt3
 public func drawRectToolImageButton(str1: String, str2: String, fontSize: Float64, fontColor: UInt32,
     fontBackGroupColor: UInt32, backGroupColor: UInt32, borderColor: UInt32, borderWidth: Float64,
     dividingLineColor: UInt32, dividingLineWidth: Float64, textHeight: Float64, colorFormat: ColorFormatEnum,
-    padding: Float64): Array<UInt8> {
+    padding: Float64, lineLeftPadding: Float64, lineRightPadding: Float64): Array<UInt8> {
     unsafe {
         // 文本
         var cstr1 = LibC.mallocCString(str1)
@@ -147,6 +148,10 @@ public func drawRectToolImageButton(str1: String, str2: String, fontSize: Float6
         var textHeightFloat32: Float32 = Float32(textHeight)
         // 左右边距
         var paddingFloat32: Float32 = Float32(padding)
+        // 左右边距
+        var lineLeftPaddingFloat32: Float32 = Float32(lineLeftPadding)
+        // 左右边距
+        var lineRightPaddingFloat32: Float32 = Float32(lineRightPadding)
         // 图片格式
         let format = match (colorFormat) {
             case COLOR_FORMAT_RGB_565 => RGB_565
@@ -154,7 +159,7 @@ public func drawRectToolImageButton(str1: String, str2: String, fontSize: Float6
         }
         var data: UInt8Data = drawRectToolImage(cstr1, cstr2, fontSizeFloat32, fontColor, fontBackGroupColor,
             backGroupColor, borderColor, borderWidthFloat32, dividingLineColor, dividingLineWidthFloat32,
-            textHeightFloat32, format, paddingFloat32)
+            textHeightFloat32, format, paddingFloat32, lineLeftPaddingFloat32, lineRightPaddingFloat32)
         var arr = Array<UInt8>(data.len, item: 0)
         for (i in 0..data.len) {
             arr[i] = data.data.read(i)

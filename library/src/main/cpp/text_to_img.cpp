@@ -312,13 +312,16 @@ UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t 
  * @param dividingLineWidth     分割线宽度
  * @param colorFormat           图片格式
  * @param padding               左右边距
+ * @param lineLeftPadding       分割线和文本左边距
+ * @param lineRightPadding      分割线和文本右边距
  *
  * @return 图片数组数据
  */
 UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fontColor, uint32_t fontBackGroupColor,
                             uint32_t backGroupColor, uint32_t borderColor, float borderWidth,
                             uint32_t dividingLineColor, float dividingLineWidth, float textHeight,
-                            OH_Drawing_ColorFormat colorFormat, float padding) {
+                            OH_Drawing_ColorFormat colorFormat, float padding, float lineLeftPadding,
+                            float lineRightPadding) {
     // 画文本1和文本1颜色
     OH_Drawing_Font *font1 = OH_Drawing_FontCreate();                     // 创建font字体对象
     OH_Drawing_FontSetTextSize(font1, fontSize);                          // 设置字体大小
@@ -336,10 +339,12 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
     OH_Drawing_FontMeasureText(font2, str2, strlen(str2), TEXT_ENCODING_UTF8, bounds2,
                                textWidth2); // 获取文本宽度和边界
     // 画圆和背景颜色
-    float rectWidth = w1 + 2 * padding + dividingLineWidth + w2 + 2 * padding + 2 * borderWidth; // 矩形宽度
-    float internalRectWidth = w1 + 2 * padding + dividingLineWidth + w2 + 2 * padding;           // 内部矩形宽度
-    float internalRectHeight = textHeight - 2 * borderWidth;                                     // 内部矩形高度
-    OH_Drawing_Bitmap *bitmap = initGraphics2D(rectWidth, textHeight, colorFormat);              // 初始化bitmap
+    float rectWidth = borderWidth + padding + w1 + lineLeftPadding + dividingLineWidth + lineRightPadding + w2 +
+                      padding + borderWidth; // 矩形宽度
+    float internalRectWidth =
+        padding + w1 + lineLeftPadding + dividingLineWidth + lineRightPadding + w2 + padding; // 内部矩形宽度
+    float internalRectHeight = textHeight - 2 * borderWidth;                                  // 内部矩形高度
+    OH_Drawing_Bitmap *bitmap = initGraphics2D(rectWidth, textHeight, colorFormat);           // 初始化bitmap
     OH_Drawing_Canvas *bitmapCanvas = OH_Drawing_CanvasCreate(); // 创建一个画布对象
     OH_Drawing_CanvasBind(bitmapCanvas, bitmap); // 将Canvas与bitmap绑定，Canvas绘制的内容会输出到绑定的bitmap内存中
     OH_Drawing_CanvasClear(bitmapCanvas, backGroupColor);                           // 使用透明色去清空画布
@@ -375,10 +380,11 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
     float top2 = OH_Drawing_RectGetTop(bounds2);   // 文本真实高度基于基线上边界高度
     float imageTopHeight2 = (textHeight - h2) / 2; // 居中文本距离图片上边界高度
     float textY2 = imageTopHeight2 - top2;         // 居中文本左下角Y坐标
-    float textX2 = padding + borderWidth + w1 + padding + dividingLineWidth + padding; // 居中文本左下角X坐标
-    OH_Drawing_CanvasDrawTextBlob(bitmapCanvas, textBlob2, textX2, textY2);            // 画文字
+    float textX2 =
+        borderWidth + padding + w1 + lineLeftPadding + dividingLineWidth + lineRightPadding; // 居中文本左下角X坐标
+    OH_Drawing_CanvasDrawTextBlob(bitmapCanvas, textBlob2, textX2, textY2);                  // 画文字
     float lineX1 = padding + borderWidth + w1 + padding;
-    float lineX2 = padding + borderWidth + w1 + padding + dividingLineWidth;
+    float lineX2 = padding + borderWidth + w1 + lineLeftPadding + dividingLineWidth;
     float lineY1 = padding;
     float lineY2 = textHeight - padding;
     OH_Drawing_Rect *lineRect = OH_Drawing_RectCreate(lineX1, lineY1, lineX2, lineY2); // 创建矩形对象
