@@ -225,6 +225,7 @@ UInt8Data drawCircleImage(char *str, float fontSize, uint32_t fontColor, uint32_
     OH_Drawing_RoundRect *roundRect =
         OH_Drawing_RoundRectCreate(rect, textHeight / 2, textHeight / 2); // 创建圆角矩形对象
     OH_Drawing_Brush *brush = OH_Drawing_BrushCreate();                   // 创建画刷对象
+    OH_Drawing_BrushSetAntiAlias(brush, true);                            // 设置画刷抗锯齿
     OH_Drawing_BrushSetColor(brush, fontBackGroupColor);                  // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                    // 画背景
     OH_Drawing_CanvasDrawRoundRect(bitmapCanvas, roundRect);              // 画圆角矩形
@@ -281,6 +282,7 @@ UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t 
     OH_Drawing_Rect *rect = OH_Drawing_RectCreate(0.0, 0.0, rectWidth, textHeight); // 创建矩形对象
     OH_Drawing_RoundRect *roundRect = OH_Drawing_RoundRectCreate(rect, radius, radius); // 创建圆角矩形对象
     OH_Drawing_Brush *brush = OH_Drawing_BrushCreate();                                 // 创建画刷对象
+    OH_Drawing_BrushSetAntiAlias(brush, true);                                          // 设置画刷抗锯齿
     OH_Drawing_BrushSetColor(brush, fontBackGroupColor);                                // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                                  // 画背景
     OH_Drawing_CanvasDrawRoundRect(bitmapCanvas, roundRect);                            // 画圆角矩形
@@ -352,6 +354,7 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
     OH_Drawing_RoundRect *roundRect =
         OH_Drawing_RoundRectCreate(rect, textHeight / 2, textHeight / 2); // 创建圆角矩形对象
     OH_Drawing_Brush *brush = OH_Drawing_BrushCreate();                   // 创建画刷对象
+    OH_Drawing_BrushSetAntiAlias(brush, true);                            // 设置画刷抗锯齿
     OH_Drawing_BrushSetColor(brush, borderColor);                         // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                    // 画背景
     OH_Drawing_CanvasDrawRoundRect(bitmapCanvas, roundRect);              // 画圆角矩形
