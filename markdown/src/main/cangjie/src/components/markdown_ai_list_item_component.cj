@@ -142,25 +142,15 @@ class MarkdownAIListItemComponent {
                     } else if (item.node is FencedCodeBlock) {
                         // 围栏代码
                         ListItem() {
-                            if (isFull) {
-                                MarkdownAIFencedCodeBlockComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    codeText: (item.node as FencedCodeBlock)().getLiteral(),
-                                    info: (item.node as FencedCodeBlock)().getInfo(),
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0
-                                )
-                            } else {
-                                MarkdownAIIndentedCodeBlockComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    codeText: (item.node as FencedCodeBlock)().getLiteral(),
-                                    info: (item.node as FencedCodeBlock)().getInfo(),
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
-                                    indexList: indexAdd(indexList, idx),
-                                    indentedCodeComponents: markdownAICacheConfiguration.indentedCodeComponents
-                                )
-                            }
+                            MarkdownAIFencedCodeBlockComponent(
+                                markdownAIConfiguration: markdownAIConfiguration,
+                                codeText: (item.node as FencedCodeBlock)().getLiteral(),
+                                info: (item.node as FencedCodeBlock)().getInfo(),
+                                marginTop: 0.0,
+                                marginBottom: 0.0,
+                                indexList: indexAdd(indexList, idx),
+                                fencedCodeComponents: markdownAICacheConfiguration.fencedCodeComponents
+                            )
                         }
                     } else if (item.node is BulletList) {
                         // 无序列表
@@ -291,8 +281,15 @@ class MarkdownAIListItemComponent {
                             data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
                         }
                     }
-                } else if ((refreshNodeViews[refreshNodeViewSize - 1].node is FencedCodeBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is FencedCodeBlock) || (refreshNodeViews[refreshNodeViewSize - 1].node is IndentedCodeBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is IndentedCodeBlock)) {
-                    // 围栏代码和缩进代码
+                } else if ((refreshNodeViews[refreshNodeViewSize - 1].node is IndentedCodeBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is IndentedCodeBlock)) {
+                    // 缩进代码
+                    for (data in markdownAICacheConfiguration.indentedCodeComponents) {
+                        if(isListItem(indexList,data.indexList,index)){
+                            data.refreshData(getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[0], getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[1])
+                        }
+                    }
+                } else if ((refreshNodeViews[refreshNodeViewSize - 1].node is FencedCodeBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is FencedCodeBlock)) {
+                    // 围栏代码
                     for (data in markdownAICacheConfiguration.indentedCodeComponents) {
                         if(isListItem(indexList,data.indexList,index)){
                             data.refreshData(getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[0], getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[1])

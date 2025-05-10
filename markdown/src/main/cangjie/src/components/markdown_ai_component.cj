@@ -210,25 +210,15 @@ public class MarkdownAIComponent {
                     } else if (item.node is FencedCodeBlock) {
                         // 围栏代码块
                         ListItem() {
-                            if (isFull) {
-                                MarkdownAIFencedCodeBlockComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    codeText: (item.node as FencedCodeBlock)().getLiteral(),
-                                    info: (item.node as FencedCodeBlock)().getInfo(),
-                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
-                                )
-                            } else {
-                                MarkdownAIIndentedCodeBlockComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    codeText: (item.node as FencedCodeBlock)().getLiteral(),
-                                    info: (item.node as FencedCodeBlock)().getInfo(),
-                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    indexList: indexAdd(indexList, idx),
-                                    indentedCodeComponents: markdownAICacheConfiguration.indentedCodeComponents
-                                )
-                            }
+                            MarkdownAIFencedCodeBlockComponent(
+                                markdownAIConfiguration: markdownAIConfiguration,
+                                codeText: (item.node as FencedCodeBlock)().getLiteral(),
+                                info: (item.node as FencedCodeBlock)().getInfo(),
+                                marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                indexList: indexAdd(indexList, idx),
+                                fencedCodeComponents: markdownAICacheConfiguration.fencedCodeComponents
+                            )
                         }
                     } else if (item.node is IndentedCodeBlock) {
                         // 缩进代码块
@@ -423,9 +413,16 @@ public class MarkdownAIComponent {
                                     data.refreshData(tableList(nodeViews[nodeViewsSize - 1].children))
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is FencedCodeBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is FencedCodeBlock) || (nodeViews[nodeViewsSize - 1].node is IndentedCodeBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is IndentedCodeBlock)) {
-                            // 围栏代码和缩进代码
+                        } else if ((nodeViews[nodeViewsSize - 1].node is IndentedCodeBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is IndentedCodeBlock)) {
+                            // 缩进代码
                             for (data in markdownAICacheConfiguration.indentedCodeComponents) {
+                                if (isListItem(indexList, data.indexList, index)) {
+                                    data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1])
+                                }
+                            }
+                        } else if ((nodeViews[nodeViewsSize - 1].node is FencedCodeBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is FencedCodeBlock)) {
+                            // 围栏代码
+                            for (data in markdownAICacheConfiguration.fencedCodeComponents) {
                                 if (isListItem(indexList, data.indexList, index)) {
                                     data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1])
                                 }

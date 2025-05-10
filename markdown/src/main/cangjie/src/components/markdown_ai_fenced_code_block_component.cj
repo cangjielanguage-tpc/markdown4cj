@@ -19,6 +19,11 @@ class MarkdownAIFencedCodeBlockComponent {
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
+     * 定位需要的数组
+     */
+    var indexList: ArrayList<Int64> = ArrayList<Int64>()
+
+    /**
      * 代码内容
      */
     var codeText: String
@@ -26,7 +31,8 @@ class MarkdownAIFencedCodeBlockComponent {
     /**
      * 代码类型
      */
-    var info: ?String
+    @State
+    var info: Option<String> = Option<String>.None
 
     /**
      * 外边距 - 上面
@@ -44,8 +50,25 @@ class MarkdownAIFencedCodeBlockComponent {
     @State
     var arrayList: ObservedArrayList<PrismNodesParseRes> = ObservedArrayList<PrismNodesParseRes>()
 
+    /**
+     * 缓存的第一层代码块控件列表
+     */
+    var fencedCodeComponents: ArrayList<MarkdownAIFencedCodeBlockComponent>
+
     protected override func aboutToAppear(): Unit {
-        stringCodeToResList()
+        refreshData(codeText, info)
+        fencedCodeComponents.append(this)
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        fencedCodeComponents.removeIf(
+            {
+                predicate => if (predicate.indexList == indexList && predicate.codeText == codeText) {
+                    true
+                } else {
+                    false
+                }
+            })
     }
 
     func build() {
@@ -219,11 +242,20 @@ class MarkdownAIFencedCodeBlockComponent {
     }
 
     /**
+     * 数据刷新
+     */
+    public func refreshData(str: String, tp: Option<String>): Unit {
+        info = tp
+        stringCodeToResList(codeText)
+    }
+
+    /**
      * 代码数据高亮解析
      */
-    func stringCodeToResList() {
+    func stringCodeToResList(codeText: String) {
         let callback: (ArrayList<PrismNodesParseRes>) -> Unit = {
             prismNodesParseResLists => launch {
+                arrayList.clear()
                 arrayList.appendAll(prismNodesParseResLists)
             }
         }
