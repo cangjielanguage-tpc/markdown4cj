@@ -150,7 +150,7 @@ public class PrismNodesParseRes <: ToString {
 class PrismNodeParse {
     static let glg: GrammarLocatorGrammarUtils = GrammarLocatorGrammarUtils()
 
-    static func textToArrayList(prism: Prism, colorMap: HashMap<String, Color>, info: ?String, literal: String): ArrayList<PrismNodesParseRes> {
+    static func textToArrayList(prism: Prism, colorMap: HashMap<PrismColor, Color>, info: ?String, literal: String): ArrayList<PrismNodesParseRes> {
         if (let None <- info) {
             return ArrayList<PrismNodesParseRes>(PrismNodesParseRes("", literal, None, None))
         }
@@ -187,12 +187,12 @@ class PrismNodeParse {
         }
     }
 
-    static func renderColor(map: HashMap<String, Color>, obj: PrismNodesParseRes): ?Color {
+    static func renderColor(map: HashMap<PrismColor, Color>, obj: PrismNodesParseRes): ?Color {
         let types: String = obj.getType()
         let alias: ?String = obj.getAlias()
-        var color: ?Color = map.get(types)
+        var color: ?Color = map.get(PrismColor.fromString(types.toAsciiLower()))
         if (color.isNone() && alias.isSome()) {
-            color = map.get(alias.getOrThrow())
+            color = map.get(PrismColor.fromString(alias.getOrThrow().toAsciiLower()))
         }
         if (color.isSome()) {
             return color
