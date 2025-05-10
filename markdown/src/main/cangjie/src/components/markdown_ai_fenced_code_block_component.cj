@@ -26,7 +26,8 @@ class MarkdownAIFencedCodeBlockComponent {
     /**
      * 代码内容
      */
-    var codeText: String
+    @State
+    var codeText: String = ""
 
     /**
      * 代码类型
@@ -246,20 +247,21 @@ class MarkdownAIFencedCodeBlockComponent {
      */
     public func refreshData(str: String, tp: Option<String>): Unit {
         info = tp
-        stringCodeToResList(codeText)
+        codeText = str
+        stringCodeToResList(str)
     }
 
     /**
      * 代码数据高亮解析
      */
-    func stringCodeToResList(codeText: String) {
+    func stringCodeToResList(str: String) {
         let callback: (ArrayList<PrismNodesParseRes>) -> Unit = {
             prismNodesParseResLists => launch {
                 arrayList.clear()
                 arrayList.appendAll(prismNodesParseResLists)
             }
         }
-        stringToResList(codeText, info, markdownAIConfiguration.markdownAITheme.prismTheme, callback)
+        stringToResList(str, info, markdownAIConfiguration.markdownAITheme.prismTheme, callback)
     }
 
     /**
