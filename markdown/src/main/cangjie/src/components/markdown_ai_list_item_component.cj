@@ -290,7 +290,7 @@ class MarkdownAIListItemComponent {
                     }
                 } else if ((refreshNodeViews[refreshNodeViewSize - 1].node is FencedCodeBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is FencedCodeBlock)) {
                     // 围栏代码
-                    for (data in markdownAICacheConfiguration.indentedCodeComponents) {
+                    for (data in markdownAICacheConfiguration.fencedCodeComponents) {
                         if(isListItem(indexList,data.indexList,index)){
                             data.refreshData(getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[0], getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[1])
                         }
