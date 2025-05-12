@@ -51,6 +51,11 @@ public class MarkdownAILatexImageSpanComponent {
      */
     var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None
 
+    /**
+     * 图片背景颜色
+     */
+    var backGroupColor: Color
+
     protected override func aboutToAppear(): Unit {
         // 数学公式解析
         latexMathImagePixelmap()
@@ -94,6 +99,6 @@ public class MarkdownAILatexImageSpanComponent {
             }
         }
         // 解析数学公式
-        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownAIConfiguration.markdownAITheme.resPath, markdownAIConfiguration, componentWidth, callback)
+        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownAIConfiguration.markdownAITheme.resPath, markdownAIConfiguration, componentWidth, callback, backGroupColor)
     }
 }

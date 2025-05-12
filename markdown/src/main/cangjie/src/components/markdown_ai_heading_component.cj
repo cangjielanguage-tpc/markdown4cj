@@ -146,13 +146,15 @@ class MarkdownAIHeadingComponent {
                                     MarkdownAILinkRectImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
                                         strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
-                                        strUrl: (item.node as CommonmarkLink)().getDestination()
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        backGroupColor: markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor
                                     )
                                 } else {
                                     MarkdownAILinkCircleImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
                                         strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
-                                        strUrl: (item.node as CommonmarkLink)().getDestination()
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        backGroupColor: markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor
                                     )
                                 }
                             }
@@ -162,7 +164,8 @@ class MarkdownAIHeadingComponent {
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
                                     strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                    strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination())
+                                    strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
+                                    backGroupColor: markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor
                                 )
                            }
                         }
@@ -183,7 +186,8 @@ class MarkdownAIHeadingComponent {
                         MarkdownAILatexImageSpanComponent(
                             markdownAIConfiguration: markdownAIConfiguration,
                             componentWidth: componentWidth,
-                            strLatexMath: (item.node as LatexMathNode)().latex
+                            strLatexMath: (item.node as LatexMathNode)().latex,
+                            backGroupColor: markdownAIConfiguration.markdownAITheme.latexMathBackGroupColor
                         )
                     } else if (item.node is ImageHtmlNode) {
                         // HTML图片

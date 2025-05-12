@@ -56,6 +56,11 @@ public class MarkdownAILinkRectToolImageComponent {
      */
     var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None
 
+    /**
+     * 图片背景颜色
+     */
+    var backGroupColor: Color
+
     protected override func aboutToAppear(): Unit {
         // 链接解析
         latexMathImagePixelmap()
@@ -105,7 +110,7 @@ public class MarkdownAILinkRectToolImageComponent {
             }
         }
         // 解析链接
-        MarkdownParseLinkUtil.linkStrToRectToolPixelMap(strText, strType, markdownAIConfiguration, callback)
+        MarkdownParseLinkUtil.linkStrToRectToolPixelMap(strText, strType, markdownAIConfiguration, callback, backGroupColor)
     }
 }
 

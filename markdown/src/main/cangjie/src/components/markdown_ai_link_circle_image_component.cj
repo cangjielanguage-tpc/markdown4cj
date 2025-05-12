@@ -51,6 +51,11 @@ public class MarkdownAILinkCircleImageComponent {
      */
     var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None
 
+    /**
+     * 图片背景颜色
+     */
+    var backGroupColor: Color
+
     protected override func aboutToAppear(): Unit {
         // 链接解析
         linkImagePixelmap()
@@ -101,6 +106,6 @@ public class MarkdownAILinkCircleImageComponent {
             }
         }
         // 解析链接
-        MarkdownParseLinkUtil.linkStrToCirclePixelMap(strText, markdownAIConfiguration, callback)
+        MarkdownParseLinkUtil.linkStrToCirclePixelMap(strText, markdownAIConfiguration, callback, backGroupColor)
     }
 }

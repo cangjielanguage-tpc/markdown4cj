@@ -51,6 +51,11 @@ public class MarkdownAILinkRectImageComponent {
      */
     var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None
 
+    /**
+     * 图片背景颜色
+     */
+    var backGroupColor: Color
+
     protected override func aboutToAppear(): Unit {
         // 链接解析
         linkImagePixelmap()
@@ -101,6 +106,6 @@ public class MarkdownAILinkRectImageComponent {
             }
         }
         // 解析链接
-        MarkdownParseLinkUtil.linkStrToRectPixelMap(strText, markdownAIConfiguration, callback)
+        MarkdownParseLinkUtil.linkStrToRectPixelMap(strText, markdownAIConfiguration, callback, backGroupColor)
     }
 }

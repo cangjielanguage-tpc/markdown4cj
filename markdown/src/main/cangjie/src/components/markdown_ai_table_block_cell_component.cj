@@ -117,13 +117,15 @@ class MarkdownAITableBlockCellComponent {
                                     MarkdownAILinkRectImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
                                         strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
-                                        strUrl: (item.node as CommonmarkLink)().getDestination()
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow)
                                     )
                                 } else {
                                     MarkdownAILinkCircleImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
                                         strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
-                                        strUrl: (item.node as CommonmarkLink)().getDestination()
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow)
                                     )
                                 }
                             }
@@ -133,7 +135,8 @@ class MarkdownAITableBlockCellComponent {
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
                                     strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                    strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination())
+                                    strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
+                                    backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow)
                                 )
                            }
                         }
@@ -142,7 +145,8 @@ class MarkdownAITableBlockCellComponent {
                         MarkdownAILatexImageSpanComponent(
                             markdownAIConfiguration: markdownAIConfiguration,
                             componentWidth: componentWidth,
-                            strLatexMath: (item.node as LatexMathNode)().latex
+                            strLatexMath: (item.node as LatexMathNode)().latex,
+                            backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow)
                         )
                     } else {
                         // TODO 其他节点

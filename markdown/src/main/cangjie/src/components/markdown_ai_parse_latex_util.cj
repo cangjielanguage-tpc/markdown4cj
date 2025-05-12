@@ -96,7 +96,7 @@ class MarkdownParseLatexUtil {
      */
     static func latexMathStrToPixelMapRow(strLatexMath: String, resStr: String,
         markdownAIConfiguration: MarkdownAIConfiguration, componentWidth: Float64,
-        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit, backGroupColor: Color): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -124,7 +124,7 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    r.draw(g2, markdownAIConfiguration.markdownAITheme.latexMathBackGroupColor.toUInt32())
+                    r.draw(g2, backGroupColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
