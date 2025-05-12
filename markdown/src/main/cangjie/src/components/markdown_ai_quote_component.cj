@@ -105,7 +105,8 @@ public class MarkdownAIQuoteComponent {
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
-                                    paragraphComponents: markdownAICacheConfiguration.paragraphComponents
+                                    paragraphComponents: markdownAICacheConfiguration.paragraphComponents,
+                                    blockQuoteBackGroupClor: markdownAIConfiguration.markdownAITheme.blockQuoteBackGroupClor
                                 )
                             } else if (item.node is Heading) {
                                 // 标题
@@ -119,7 +120,8 @@ public class MarkdownAIQuoteComponent {
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
-                                    headingComponents: markdownAICacheConfiguration.headingComponents
+                                    headingComponents: markdownAICacheConfiguration.headingComponents,
+                                    blockQuoteBackGroupClor: markdownAIConfiguration.markdownAITheme.blockQuoteBackGroupClor
                                 )
                             } else if (item.node is IndentedCodeBlock) {
                                 // 缩进代码

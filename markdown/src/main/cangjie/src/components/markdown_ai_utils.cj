@@ -897,3 +897,11 @@ func urlSafeBase64Decode(v: String):String {
     }
     return ""
 }
+
+func markdownbackGroupColor(blockQuoteBackGroupClor: Option<Color>, backGroupColor: Color): Color{
+    if(let Some(v) <- blockQuoteBackGroupClor){
+        return v
+    } else {
+        return backGroupColor
+    }
+}
