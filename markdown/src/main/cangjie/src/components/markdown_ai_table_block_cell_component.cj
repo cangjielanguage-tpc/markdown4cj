@@ -59,6 +59,21 @@ class MarkdownAITableBlockCellComponent {
     var idRow: Int64
 
     /**
+     * 一行的第几条
+     */
+    var idxItem: Int64
+
+    /**
+     * 表格有几行
+     */
+    var dataRowSize: Int64
+
+    /**
+     * 表格有几列
+     */
+    var dataCellSize: Int64
+
+    /**
      * 缓存的表格的Cell列表
      */
     var tableCellComponents: ArrayList<MarkdownAITableBlockCellComponent>
@@ -111,26 +126,26 @@ class MarkdownAITableBlockCellComponent {
                         tableComponentCode(item, isHeader, markdownAIConfiguration)
                     } else if (item.node is CommonmarkLink) {
                         // 链接
-                        if((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")){
-                            if(item.node.getFirstChild().isSome() &&  item.node.getFirstChild()() is CommonmarkText){
+                        if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
                                 if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
                                     MarkdownAILinkRectImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
-                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                        strText: (item .node .getFirstChild()() as CommonmarkText)() .getLiteral() .trimAscii(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
                                         backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow)
                                     )
                                 } else {
                                     MarkdownAILinkCircleImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
-                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                        strText: (item .node .getFirstChild()() as CommonmarkText)() .getLiteral() .trimAscii(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
                                         backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow)
                                     )
                                 }
                             }
                         } else {
-                           if(item.node.getFirstChild().isSome() &&  item.node.getFirstChild()() is CommonmarkText){
+                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
                                 MarkdownAILinkRectToolImageComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
@@ -138,7 +153,7 @@ class MarkdownAITableBlockCellComponent {
                                     strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
                                     backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow)
                                 )
-                           }
+                            }
                         }
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
@@ -155,24 +170,26 @@ class MarkdownAITableBlockCellComponent {
                 }
             )
         }
-        // 容器尺寸确定时，元素与兄弟节点主轴布局尺寸按照权重进行分配，忽略本身尺寸设置仅在Row/Column/Flex布局中生效
-        .layoutWeight(1)
-        // 设置父容器的剩余空间分配给此属性所在组件的比例
-        .flexGrow(1)
-        // Flex 容器压缩尺寸分配给此属性所在组件的比例
-        .flexShrink(1)
-        // 覆盖 Flex 布局容器中 alignItems 默认配置
-        .alignSelf(ItemAlign.Stretch)
-        // 设置行高
-        .lineHeight(markdownAIConfiguration.markdownAITheme.tableTextLineheight)
-        // 设置多行文本的文本对齐方式
-        .textAlign(renderTableCellAlign(alignment))
-        // 设置内边距属性
-        .padding(markdownAIConfiguration.markdownAITheme.tableCellPadding)
-        // 设置组件的背景色
-        .backgroundColor(renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow))
-        // 统一边框样式设置接口
-        .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp, color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
+            // 容器尺寸确定时，元素与兄弟节点主轴布局尺寸按照权重进行分配，忽略本身尺寸设置仅在Row/Column/Flex布局中生效
+            .layoutWeight(1)
+            // 设置父容器的剩余空间分配给此属性所在组件的比例
+            .flexGrow(1)
+            // Flex 容器压缩尺寸分配给此属性所在组件的比例
+            .flexShrink(1)
+            // 覆盖 Flex 布局容器中 alignItems 默认配置
+            .alignSelf(ItemAlign.Stretch)
+            // 设置行高
+            .lineHeight(markdownAIConfiguration.markdownAITheme.tableTextLineheight)
+            // 设置多行文本的文本对齐方式
+            .textAlign(renderTableCellAlign(alignment))
+            // 设置内边距属性
+            .padding(markdownAIConfiguration.markdownAITheme.tableCellPadding)
+            // 设置组件的背景色
+            .backgroundColor(renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow))
+            // 统一边框样式设置接口
+            .borderWidth(EdgeWidths(left: leftWidths().vp, right: rightWidths().vp, top: topWidths().vp, bottom: bottomWidths().vp))
+            .borderStyle(BorderStyle.Solid)
+            .borderColor(markdownAIConfiguration.markdownAITheme.tableBorderColor)
     }
 
     /**
@@ -217,5 +234,37 @@ class MarkdownAITableBlockCellComponent {
             }
         }
         size = nodeViewList.size // 更新列表长度
+    }
+
+    func leftWidths(): Float64 {
+        return if (idxItem == 0) {
+            0.0
+        } else {
+            markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0
+        }
+    }
+
+    func rightWidths(): Float64 {
+        return if (idxItem == dataCellSize - 1) {
+            0.0
+        } else {
+            markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0
+        }
+    }
+
+    func topWidths(): Float64 {
+        return if (idRow == 0) {
+            0.0
+        } else {
+            markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0
+        }
+    }
+
+    func bottomWidths(): Float64 {
+        return if (idRow == dataRowSize - 1) {
+            0.0
+        } else {
+            markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0
+        }
     }
 }

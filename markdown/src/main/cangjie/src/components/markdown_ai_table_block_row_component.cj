@@ -48,6 +48,11 @@ class MarkdownAITableBlockRowComponent {
      */
     var idRow: Int64
 
+    /**
+     * 表格有几行
+     */
+    var dataRowSize: Int64
+
     var tableRowComponents: ArrayList<MarkdownAITableBlockRowComponent>
 
     var tableCellComponents: ArrayList<MarkdownAITableBlockCellComponent>
@@ -100,7 +105,10 @@ class MarkdownAITableBlockRowComponent {
                             componentWidth: componentWidth,
                             indexList: indexAdd(indexList, idxItem),
                             idRow: idRow,
-                            tableCellComponents: tableCellComponents
+                            tableCellComponents: tableCellComponents,
+                            dataRowSize: dataRowSize,
+                            idxItem: idxItem,
+                            dataCellSize: nodeViewList.size
                         )
                     }
                 }

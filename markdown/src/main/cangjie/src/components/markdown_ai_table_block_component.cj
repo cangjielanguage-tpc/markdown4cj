@@ -116,14 +116,15 @@ class MarkdownAITableBlockComponent {
                             idRow: idRow,
                             indexList: indexAdd(indexList, idRow),
                             tableRowComponents: tableRowComponents,
-                            tableCellComponents: tableCellComponents
+                            tableCellComponents: tableCellComponents,
+                            dataRowSize: nodeViewAIDataSource.totalCount()
                         )
                     }
                 }
             )
         }
         // 统一边框样式设置接口
-        .border(width: (markdownAIConfiguration.markdownAITheme.tableBorderWidth / 2.0).vp, color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid)
+        .border(width: markdownAIConfiguration.markdownAITheme.tableBorderWidth .vp, color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid, radius: markdownAIConfiguration.markdownAITheme.tableRadius.vp)
         // 设置元素内容的对齐方式
         .align(Alignment.Start)
         // 设置元素水平方向的布局
