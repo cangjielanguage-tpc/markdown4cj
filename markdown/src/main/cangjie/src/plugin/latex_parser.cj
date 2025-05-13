@@ -5,7 +5,8 @@ package markdown.plugin
 
 class LatexBlockParser <: AbstractBlockParser {
     private let block: LatexMathBlock = LatexMathBlock()
-    private let builder: StringBuilder = StringBuilder()
+    let builder: StringBuilder = StringBuilder()
+    var isSingleLineLatex = false // 处理单行的情况 ^\[latex\]$
 
     public func getBlock(): Block {
         block
@@ -13,6 +14,11 @@ class LatexBlockParser <: AbstractBlockParser {
 
     public func tryContinue(parserState: ParserState): ?BlockContinue {
         let line = parserState.getLine()[parserState.getIndex()..]
+        if (isSingleLineLatex) {
+            block.isClosed = true
+            block.isBroken = false
+            return BlockContinue.none()
+        }
         if (isLatexLine(line)) {
             block.isBroken = true
         }
@@ -28,6 +34,9 @@ class LatexBlockParser <: AbstractBlockParser {
     }
 
     public func addLine(line: String): Unit {
+        if (isSingleLineLatex) {
+            return
+        }
         if (builder.size > 0) {
             builder.append('\n')
         }
@@ -52,6 +61,12 @@ class LatexBlockParserFactory <: AbstractBlockParserFactory {
         }
         if (let Some(len) <- isLatexInList(line)) {
             return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + len)
+        }
+        if (line.startsWith(#"\["#) && line.endsWith(#"\]"#)) {
+            let parser = LatexBlockParser()
+            parser.builder.append(line[2..line.size - 2])
+            parser.isSingleLineLatex = true
+            return BlockStart.of4Cj(parser).atIndex(state.getIndex() + 2)
         }
         return BlockStart.none()
     }
