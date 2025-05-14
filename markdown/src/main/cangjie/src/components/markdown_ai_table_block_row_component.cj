@@ -68,6 +68,9 @@ class MarkdownAITableBlockRowComponent {
     @State
     var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
+    @Prop
+    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeViews)
@@ -108,14 +111,13 @@ class MarkdownAITableBlockRowComponent {
                             tableCellComponents: tableCellComponents,
                             dataRowSize: dataRowSize,
                             idxItem: idxItem,
-                            dataCellSize: nodeViewList.size
+                            dataCellSize: nodeViewList.size,
+                            cellWidthArrayIndexed: cellWidthArrayIndexed
                         )
                     }
                 }
             )
         }
-        // 设置组件自身的宽度
-        .width(100.percent)
     }
 
     /**

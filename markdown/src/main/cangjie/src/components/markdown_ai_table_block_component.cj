@@ -78,6 +78,9 @@ class MarkdownAITableBlockComponent {
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
+    @State
+    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> = ObservedArrayList<CellWidthArrayIndexedClass>()
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeViews)
@@ -85,6 +88,13 @@ class MarkdownAITableBlockComponent {
         tableComponents.append(this)
         // 清除缓存数据
         nodeViews.clear()
+        var cellSize:Int64 = 0
+        if(nodeViewAIDataSource.totalCount()>0){
+            cellSize = nodeViewAIDataSource.getData(0).children.size
+        }
+        for(i in 0..cellSize){
+            cellWidthArrayIndexed.append(CellWidthArrayIndexedClass(minWidth: 50.0, index: i))
+        }
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -101,38 +111,43 @@ class MarkdownAITableBlockComponent {
     }
 
     func build() {
-        List() {
-            LazyForEach(
-                nodeViewAIDataSource,
-                itemGeneratorFunc: {
-                    tableHeaderOrBody: NodeView, idRow: Int64 => ListItem() {
-                        // 行信息
-                        MarkdownAITableBlockRowComponent(
-                            markdownAIConfiguration: markdownAIConfiguration,
-                            nodeViews: tableHeaderOrBody.children,
-                            fontCallback: fontCallback,
-                            componentWidth: componentWidth,
-                            isFull: isFull,
-                            idRow: idRow,
-                            indexList: indexAdd(indexList, idRow),
-                            tableRowComponents: tableRowComponents,
-                            tableCellComponents: tableCellComponents,
-                            dataRowSize: nodeViewAIDataSource.totalCount()
-                        )
+        Scroll(){
+            List() {
+                LazyForEach(
+                    nodeViewAIDataSource,
+                    itemGeneratorFunc: {
+                        tableHeaderOrBody: NodeView, idRow: Int64 => ListItem() {
+                            // 行信息
+                            MarkdownAITableBlockRowComponent(
+                                markdownAIConfiguration: markdownAIConfiguration,
+                                nodeViews: tableHeaderOrBody.children,
+                                fontCallback: fontCallback,
+                                componentWidth: componentWidth,
+                                isFull: isFull,
+                                idRow: idRow,
+                                indexList: indexAdd(indexList, idRow),
+                                tableRowComponents: tableRowComponents,
+                                tableCellComponents: tableCellComponents,
+                                dataRowSize: nodeViewAIDataSource.totalCount(),
+                                cellWidthArrayIndexed: cellWidthArrayIndexed
+                            )
+                        }
                     }
-                }
-            )
+                )
+            }
+            // 统一边框样式设置接口
+            .border(width: markdownAIConfiguration.markdownAITheme.tableBorderWidth.vp, color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid, radius: markdownAIConfiguration.markdownAITheme.tableRadius.vp)
+            // 设置元素内容的对齐方式
+            .align(Alignment.Start)
+            // 设置元素水平方向的布局
+            .direction(Direction.Ltr)
+            // 设置外边距属性
+            .margin(top: marginTop, bottom: marginBottom)
         }
-        // 统一边框样式设置接口
-        .border(width: markdownAIConfiguration.markdownAITheme.tableBorderWidth .vp, color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid, radius: markdownAIConfiguration.markdownAITheme.tableRadius.vp)
-        // 设置元素内容的对齐方式
-        .align(Alignment.Start)
-        // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
-        // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
-        // 设置组件自身的宽度
-        .width(100.percent)
+        // 设置滚动方向
+        .scrollable(ScrollDirection.Horizontal)
+        // 设置滚动条状态
+        .scrollBar(BarState.Off)
     }
 
     /**
