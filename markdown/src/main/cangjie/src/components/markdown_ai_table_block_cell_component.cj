@@ -7,7 +7,6 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
-import ohos.hilog.Hilog
 
 /**
  * Markdown表格自定义控件
@@ -292,10 +291,8 @@ class MarkdownAITableBlockCellComponent {
                 // 刷新数据小于页面数据长度，需要删除数据
                 // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
                 nodeViewList[refreshNodeViewSize - 1] = refreshNodeViews[refreshNodeViewSize - 1]
-                Hilog.error(1,"1", "----nodeViewListSize:${nodeViewListSize},refreshNodeViewSize:${refreshNodeViewSize}")
                 // 循环删除所有多余数据
                 for (i in 1..=(nodeViewListSize - refreshNodeViewSize)) {
-                    Hilog.error(1,"1", "----nodeViewListSize - i:${nodeViewListSize - i}")
                     nodeViewList.remove(nodeViewListSize - i)
                 }
             }
