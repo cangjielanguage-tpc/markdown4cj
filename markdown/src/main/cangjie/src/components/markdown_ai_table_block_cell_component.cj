@@ -117,6 +117,13 @@ class MarkdownAITableBlockCellComponent {
         tableCellComponents.append(this)
         // 清除缓存数据
         nodeViews.clear()
+        if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
+            if (v.index == idxItem && v.minWidth > minTextWidth) {
+                minTextWidth = v.minWidth
+            }
+        } else {
+            minTextWidth = 50.0
+        }
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -272,8 +279,7 @@ class MarkdownAITableBlockCellComponent {
                 // 刷新数据的长度大于页面数据长度，需要添加数据
                 if (nodeViewListSize != 0) {
                     // 更新页面最后一条数据
-                    nodeViewList.remove(nodeViewListSize - 1)
-                    nodeViewList.append(refreshNodeViews[nodeViewListSize - 1])
+                    nodeViewList[nodeViewListSize - 1] = refreshNodeViews[nodeViewListSize - 1]
                 }
                 // 循环添加所有新增数据
                 for (i in refreshNodeViewSize - nodeViewListSize..0 : -1) {
@@ -281,15 +287,15 @@ class MarkdownAITableBlockCellComponent {
                 }
             } else if (refreshNodeViewSize == nodeViewListSize) {
                 // 刷新数据的长度等于页面数据长度，需要更新当前数据
-                nodeViewList.remove(nodeViewListSize - 1)
-                nodeViewList.append(refreshNodeViews[refreshNodeViewSize - 1])
+                nodeViewList[nodeViewListSize - 1] = refreshNodeViews[refreshNodeViewSize - 1]
             } else {
                 // 刷新数据小于页面数据长度，需要删除数据
                 // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
-                nodeViewList.remove(refreshNodeViewSize - 1)
-                nodeViewList.append(refreshNodeViews[refreshNodeViewSize - 1])
+                nodeViewList[refreshNodeViewSize - 1] = refreshNodeViews[refreshNodeViewSize - 1]
+                Hilog.error(1,"1", "----nodeViewListSize:${nodeViewListSize},refreshNodeViewSize:${refreshNodeViewSize}")
                 // 循环删除所有多余数据
-                for (i in nodeViewListSize - refreshNodeViewSize..0 : -1) {
+                for (i in 1..=(nodeViewListSize - refreshNodeViewSize)) {
+                    Hilog.error(1,"1", "----nodeViewListSize - i:${nodeViewListSize - i}")
                     nodeViewList.remove(nodeViewListSize - i)
                 }
             }
@@ -336,5 +342,4 @@ class CellWidthArrayIndexedClass {
     var minWidth: Float64 = 0.0
     @Publish
     var index: Int64 = -1
-//    var
 }

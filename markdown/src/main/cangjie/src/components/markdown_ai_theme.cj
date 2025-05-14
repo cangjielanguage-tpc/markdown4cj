@@ -41,7 +41,7 @@ import ohos.ark_interop_helper.*
  * 12：图片Banner - 图片banner默认占位图
  * 13：图片 - 图片宽度边距、图片默认占位图、网络图片是否压缩
  * 14：按钮 - 按钮文字内容、按钮文字字体大小、按钮文字颜色、按钮背景颜色、按钮高度、按钮上下边距
- * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高
+ * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高、表格圆角
  * 16：代码高亮 - markdown代码高亮样式
  */
 public class MarkdownAITheme {
@@ -2742,9 +2742,9 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置按钮文字字体大小
+     * 设置按钮文字字体大小 - 单位fp
      *
-     * @param buttonTextSize 按钮文字字体大小
+     * @param buttonTextSize 按钮文字字体大小 - 单位fp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
     public func setButtonTextSize(buttonTextSize: Int64): MarkdownAIThemeBuilder {
@@ -2775,9 +2775,9 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置按钮高度
+     * 设置按钮高度 - 单位vp
      *
-     * @param buttonTextHeight 按钮高度
+     * @param buttonTextHeight 按钮高度 - 单位vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
     public func setButtonTextHeight(buttonTextHeight: Int64): MarkdownAIThemeBuilder {
@@ -2786,9 +2786,9 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置按钮上下边距
+     * 设置按钮上下边距 - 单位vp
      *
-     * @param buttonTextMargin 按钮上下边距
+     * @param buttonTextMargin 按钮上下边距 - 单位vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
     public func setButtonTextMargine(buttonTextMargin: Int64): MarkdownAIThemeBuilder {
@@ -2797,7 +2797,10 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置表格内容内边距
+     * 设置表格内容内边距 - 单位vp
+     *
+     * @param tableCellPadding 表格内容内边距 - 单位vp
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
     public func setTableCellPadding(tableCellPadding: Float64): MarkdownAIThemeBuilder {
         this.tableCellPadding = tableCellPadding
@@ -2806,6 +2809,9 @@ public class MarkdownAIThemeBuilder {
 
     /**
      * 设置表格边框颜色
+     *
+     * @param tableBorderColor 表格边框颜色
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
     public func setTableBorderColor(tableBorderColor: Color): MarkdownAIThemeBuilder {
         this.tableBorderColor = tableBorderColor
@@ -2813,7 +2819,10 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置表格边框宽度
+     * 设置表格边框宽度 -单位vp
+     *
+     * @param tableBorderWidth 表格边框宽度 -单位vp
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
     public func setTableBorderWidth(tableBorderWidth: Float64): MarkdownAIThemeBuilder {
         this.tableBorderWidth = tableBorderWidth
@@ -2822,6 +2831,9 @@ public class MarkdownAIThemeBuilder {
 
     /**
      * 设置表格奇数行背景色
+     *
+     * @param tableOddRowBackgroundColor 表格奇数行背景色
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
     public func setTableOddRowBackgroundColor(tableOddRowBackgroundColor: Color): MarkdownAIThemeBuilder {
         this.tableOddRowBackgroundColor = tableOddRowBackgroundColor
@@ -2830,6 +2842,9 @@ public class MarkdownAIThemeBuilder {
 
     /**
      * 设置表格偶数行背景色
+     *
+     * @param tableEvenRowBackgroundColor 表格偶数行背景色
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
     public func setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: Color): MarkdownAIThemeBuilder {
         this.tableEvenRowBackgroundColor = tableEvenRowBackgroundColor
@@ -2838,6 +2853,9 @@ public class MarkdownAIThemeBuilder {
 
     /**
      * 设置表格头背景色
+     *
+     * @param tableHeaderRowBackgroundColor 表格头背景色
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
     public func setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: Color): MarkdownAIThemeBuilder {
         this.tableHeaderRowBackgroundColor = tableHeaderRowBackgroundColor
@@ -2846,6 +2864,9 @@ public class MarkdownAIThemeBuilder {
 
     /**
      * 设置表格行高
+     *
+     * @param tableTextLineheight 行高 - 单位vp
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
     public func setTableTextLineheight(tableTextLineheight: Float64): MarkdownAIThemeBuilder {
         this.tableTextLineheight = tableTextLineheight
@@ -2853,7 +2874,10 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置表格圆角
+     * 设置表格圆角 - 单位vp
+     *
+     * @param tableRadius 表格圆角 - 单位vp
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
     public func setTableRadius(tableRadius: Float64): MarkdownAIThemeBuilder {
         this.tableRadius = tableRadius
