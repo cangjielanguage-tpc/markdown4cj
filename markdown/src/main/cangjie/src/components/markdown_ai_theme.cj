@@ -27,7 +27,7 @@ import ohos.ark_interop_helper.*
  *          任务列表项的宽高
  * 5：代码 - 代码包含（内联代码、缩进代码、围栏代码、组合代码）（代码块有缩进代码、围栏代码、组合代码）
  *          内联代码文本颜色、内联代码背景颜色、内联代码文本字体、内联代码文本大小、
- *          代码块系列文本颜色、代码块系列背景颜色、代码块系列左边距、代码块系列字体、代码块系列文本大小、代码块系列行高
+ *          代码块系列文本颜色、代码块系列背景颜色、代码块系列左边距、代码块系列字体、代码块系列文本大小、代码块系列行高、代码块圆角
  *          是否显示代码全屏按钮、代码全屏按钮和代码复制按钮的宽高、代码全屏按钮默认图标、代码复制按钮默认图标
  *          组合代码标题字体大小、组合代码标题字体大小、组合代码标题选中文本颜色、组合代码标题未选中文本颜色、组合代码标题选中背景颜色、组合代码标题未选中背景颜色
  * 6：标题 - （1-6级标题）
@@ -331,6 +331,11 @@ public class MarkdownAITheme {
     protected var codeBlockLineheight: Float64 = 22.0
 
     /**
+     * 代码块系列（缩进代码、围栏代码、组合代码）圆角 - 单位vp
+     */
+    protected var codeBlockRadius: Float64 = 8.0
+
+    /**
      * 是否显示代码全屏按钮
      */
     protected var isCodeFullScreen: Bool = true
@@ -608,7 +613,7 @@ public class MarkdownAITheme {
     /**
      * markdown代码高亮样式
      */
-    protected var prismTheme: PrismTheme = PrismThemeDefault.create()
+    protected var prismTheme: PrismTheme = PrismThemeDarkula.create()
 
     protected init(builder: MarkdownAIThemeBuilder) {
         // 上下文
@@ -673,6 +678,7 @@ public class MarkdownAITheme {
         this.codeTextSize = builder.codeTextSize
         this.codeBlockTextSize = builder.codeBlockTextSize
         this.codeBlockLineheight = builder.codeBlockLineheight
+        this.codeBlockRadius = builder.codeBlockRadius
         this.isCodeFullScreen = builder.isCodeFullScreen
         this.iconWidthAndHeight = builder.iconWidthAndHeight
         this.codeFullScreenIcon = builder.codeFullScreenIcon
@@ -1156,6 +1162,11 @@ public class MarkdownAIThemeBuilder {
     protected var codeBlockLineheight: Float64 = 22.0
 
     /**
+     * 代码块系列（缩进代码、围栏代码、组合代码）圆角 - 单位vp
+     */
+    protected var codeBlockRadius: Float64 = 8.0
+
+    /**
      * 是否显示代码全屏按钮
      */
     protected var isCodeFullScreen: Bool = true
@@ -1433,7 +1444,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * markdown代码高亮样式
      */
-    protected var prismTheme: PrismTheme = PrismThemeDefault.create()
+    protected var prismTheme: PrismTheme = PrismThemeDarkula.create()
 
     init() {
     }
@@ -1501,6 +1512,7 @@ public class MarkdownAIThemeBuilder {
         this.codeTextSize = theme.codeTextSize
         this.codeBlockTextSize = theme.codeBlockTextSize
         this.codeBlockLineheight = theme.codeBlockLineheight
+        this.codeBlockRadius = theme.codeBlockRadius
         this.isCodeFullScreen = theme.isCodeFullScreen
         this.iconWidthAndHeight = theme.iconWidthAndHeight
         this.codeFullScreenIcon = theme.codeFullScreenIcon
@@ -2287,6 +2299,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setCodeBlockLineheight(codeBlockLineheight: Float64): MarkdownAIThemeBuilder {
         this.codeBlockLineheight = codeBlockLineheight
+        return this
+    }
+
+    /**
+     * 设置代码块系列（缩进代码、围栏代码、组合代码）圆角
+     *
+     * @param codeBlockRadius 代码块系列（缩进代码、围栏代码、组合代码）圆角
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setCodeBlockRadius(codeBlockRadius: Float64): MarkdownAIThemeBuilder {
+        this.codeBlockRadius = codeBlockRadius
         return this
     }
 

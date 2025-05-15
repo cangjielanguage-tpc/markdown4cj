@@ -56,6 +56,19 @@ class MarkdownAIFencedCodeBlockComponent {
      */
     var fencedCodeComponents: ArrayList<MarkdownAIFencedCodeBlockComponent>
 
+    /**
+     * 代码行数
+     */
+    @State
+    @Watch[refreshLines]
+    var lines: Int64 = 0
+
+    /**
+     * 代码行数显示数据列表
+     */
+    @State
+    var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>()
+
     protected override func aboutToAppear(): Unit {
         refreshData(codeText, info)
         fencedCodeComponents.append(this)
@@ -75,14 +88,46 @@ class MarkdownAIFencedCodeBlockComponent {
     func build() {
         Column() {
             codeBlockButtonComponent()
-            codeBlockComponent()
+            Row() {
+                Column() {
+                    ForEach(
+                        lineArray,
+                        itemGeneratorFunc: {
+                            item: Int64, idx: Int64 => Text((idx + 1).toString())
+                                // 设置文本颜色
+                                .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+                                // 设置文本尺寸
+                                .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                                // 设置行高
+                                .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineheight)
+                                // 设置文本的最大行数
+                                .maxLines(1)
+                                // 设置文本超长时的显示方式
+                                .textOverflow(TextOverflow.Ellipsis)
+                        }
+                    )
+                }
+                // 设置外边距属性
+                .margin(bottom: 10)
+                // 设置内边距属性
+                .padding(left: 8, right: 8)
+                // 设置 Column 子组件在水平方向上的对齐格式
+                .alignItems(HorizontalAlign.End)
+                // 设置边框的宽度
+                .borderWidth(EdgeWidths(right: markdownAIConfiguration.markdownAITheme.thematicBreakHeight.vp))
+                // 设置元素的边框样式
+                .borderStyle(BorderStyle.Solid)
+                // 设置边框的颜色
+                .borderColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+                codeBlockComponent()
+            }
         }
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置外边距属性
         .margin(top: marginTop, bottom: marginBottom)
         // 设置圆角
-        .borderRadius(topLeft: 8.vp, topRight: 8.vp, bottomLeft: 8.vp, bottomRight: 8.vp)
+        .borderRadius(markdownAIConfiguration.markdownAITheme.codeBlockRadius)
         // 设置背景色
         .backgroundColor(codeBackgroundColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
     }
@@ -242,12 +287,18 @@ class MarkdownAIFencedCodeBlockComponent {
         .alignItems(VerticalAlign.Center)
     }
 
+    func refreshLines(): Unit {
+        lineArray.set(Array<Int64>(lines, item: 0))
+    }
+
     /**
      * 数据刷新
      */
     public func refreshData(str: String, tp: Option<String>): Unit {
         info = tp
         codeText = str
+        lines = codeText.lines().count()
+        lineArray.set(Array<Int64>(lines, item: 0))
         stringCodeToResList(str)
     }
 
@@ -272,7 +323,8 @@ class MarkdownAIFencedCodeBlockComponent {
      * @param prismTheme 传入的高亮样式
      * @param callback PrismNodesParseRes列表回调接口
      */
-    func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit> {
+    func stringToResList(code: String, info: ?String, prismTheme: PrismTheme,
+        callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var prismNodesParseResList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
             try {
@@ -289,8 +341,7 @@ class MarkdownAIFencedCodeBlockComponent {
                 }
                 prismNodesParseResList = psh.highlight(info, code.trimRight("\n"))
             } catch (e: Exception) {
-                let prismNodesParseRes: PrismNodesParseRes = PrismNodesParseRes("", code, Option<String>.None,
-                    Option<Color>.None)
+                let prismNodesParseRes: PrismNodesParseRes = PrismNodesParseRes("", code, Option<String>.None, Option<Color>.None)
                 prismNodesParseResList.append(prismNodesParseRes)
             } finally {
                 try {
