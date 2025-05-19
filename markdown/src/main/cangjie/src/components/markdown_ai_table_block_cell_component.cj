@@ -151,40 +151,29 @@ class MarkdownAITableBlockCellComponent {
                     } else if (item.node is Code) {
                         // 内联代码
                         tableComponentCode(item, isHeader, markdownAIConfiguration)
+                    } else if (item.node is HardLineBreak) {
+                        // 硬换行
+                        Span("\n")
+                    } else if (item.node is SoftLineBreak) {
+                        // 软换行
+                        Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
                     } else if (item.node is CommonmarkLink) {
                         // 链接
-                        if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") ||
-                            (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                        if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
                             if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
-                                if ((item
-                                    .node
-                                    .getFirstChild()() as CommonmarkText)()
-                                    .getLiteral()
-                                    .trimAscii()
-                                    .toRuneArray()
-                                    .size > 1) {
+                                if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
                                     MarkdownAILinkRectImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
-                                        strText: (item
-                                            .node
-                                            .getFirstChild()() as CommonmarkText)()
-                                            .getLiteral()
-                                            .trimAscii(),
+                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        backGroupColor: renderTableCellColor(isHeader,
-                                            markdownAIConfiguration.markdownAITheme, idRow)
+                                        backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow)
                                     )
                                 } else {
                                     MarkdownAILinkCircleImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
-                                        strText: (item
-                                            .node
-                                            .getFirstChild()() as CommonmarkText)()
-                                            .getLiteral()
-                                            .trimAscii(),
+                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        backGroupColor: renderTableCellColor(isHeader,
-                                            markdownAIConfiguration.markdownAITheme, idRow)
+                                        backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow)
                                     )
                                 }
                             }
@@ -195,8 +184,7 @@ class MarkdownAITableBlockCellComponent {
                                     strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
                                     strUrl: (item.node as CommonmarkLink)().getDestination(),
                                     strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                    backGroupColor: renderTableCellColor(isHeader,
-                                        markdownAIConfiguration.markdownAITheme, idRow)
+                                    backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow)
                                 )
                             }
                         }
@@ -206,8 +194,7 @@ class MarkdownAITableBlockCellComponent {
                             markdownAIConfiguration: markdownAIConfiguration,
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
-                            backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme,
-                                idRow)
+                            backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow)
                         )
                     } else {
                         // TODO 其他节点
@@ -216,47 +203,45 @@ class MarkdownAITableBlockCellComponent {
                 }
             )
         }
-            // 覆盖 Flex 布局容器中 alignItems 默认配置
-            .alignSelf(ItemAlign.Stretch)
-            // 设置行高
-            .lineHeight(markdownAIConfiguration.markdownAITheme.tableTextLineheight)
-            // 设置多行文本的文本对齐方式
-            .textAlign(renderTableCellAlign(alignment))
-            // 设置内边距属性
-            .padding(markdownAIConfiguration.markdownAITheme.tableCellPadding)
-            // 设置组件的背景色
-            .backgroundColor(renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow))
-            // 设置边框的宽度
-            .borderWidth(
-                EdgeWidths(left: leftWidths().vp, right: rightWidths().vp, top: topWidths().vp,
-                    bottom: bottomWidths().vp))
-            // 设置元素的边框样式
-            .borderStyle(BorderStyle.Solid)
-            // 设置边框的颜色
-            .borderColor(markdownAIConfiguration.markdownAITheme.tableBorderColor)
-            // 设置约束尺寸，组件布局时，进行尺寸范围限制
-            .constraintSize(minWidth: minTextWidth.vp, maxWidth: 300.vp)
-            // 组件区域变化时触发该回调
-            .onAreaChange(
-                {
-                    old, new =>
-                    if (old.width == new.width) {
-                        return
-                    }
-                    let oldWidth: Float64 = px2vp(old.width.px)().value
-                    let newWidth: Float64 = px2vp(new.width.px)().value
-                    let max: Float64 = if (newWidth > oldWidth) {
-                        newWidth
-                    } else {
-                        oldWidth
-                    }
-                    if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
-                        if (v.index == idxItem && newWidth > v.minWidth) {
-                            cellWidthArrayIndexed[idxItem] = CellWidthArrayIndexedClass(minWidth: newWidth, index: idxItem)
-                        }
+        // 覆盖 Flex 布局容器中 alignItems 默认配置
+        .alignSelf(ItemAlign.Stretch)
+        // 设置行高
+        .lineHeight(markdownAIConfiguration.markdownAITheme.tableTextLineheight)
+        // 设置多行文本的文本对齐方式
+        .textAlign(renderTableCellAlign(alignment))
+        // 设置内边距属性
+        .padding(markdownAIConfiguration.markdownAITheme.tableCellPadding)
+        // 设置组件的背景色
+        .backgroundColor(renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow))
+        // 设置边框的宽度
+        .borderWidth(EdgeWidths(left: leftWidths().vp, right: rightWidths().vp, top: topWidths().vp, bottom: bottomWidths().vp))
+        // 设置元素的边框样式
+        .borderStyle(BorderStyle.Solid)
+        // 设置边框的颜色
+        .borderColor(markdownAIConfiguration.markdownAITheme.tableBorderColor)
+        // 设置约束尺寸，组件布局时，进行尺寸范围限制
+        .constraintSize(minWidth: minTextWidth.vp, maxWidth: 300.vp)
+        // 组件区域变化时触发该回调
+        .onAreaChange(
+            {
+                old, new =>
+                if (old.width == new.width) {
+                    return
+                }
+                let oldWidth: Float64 = px2vp(old.width.px)().value
+                let newWidth: Float64 = px2vp(new.width.px)().value
+                let max: Float64 = if (newWidth > oldWidth) {
+                    newWidth
+                } else {
+                    oldWidth
+                }
+                if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
+                    if (v.index == idxItem && newWidth > v.minWidth) {
+                        cellWidthArrayIndexed[idxItem] = CellWidthArrayIndexedClass(minWidth: newWidth, index: idxItem)
                     }
                 }
-            )
+            }
+        )
     }
 
     /**

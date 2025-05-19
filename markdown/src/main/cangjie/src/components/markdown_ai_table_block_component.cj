@@ -88,30 +88,29 @@ class MarkdownAITableBlockComponent {
         tableComponents.append(this)
         // 清除缓存数据
         nodeViews.clear()
-        var cellSize:Int64 = 0
-        if(nodeViewAIDataSource.totalCount()>0){
+        var cellSize: Int64 = 0
+        if (nodeViewAIDataSource.totalCount() > 0) {
             cellSize = nodeViewAIDataSource.getData(0).children.size
         }
-        for(i in 0..cellSize){
+        for (i in 0..cellSize) {
             cellWidthArrayIndexed.append(CellWidthArrayIndexedClass(minWidth: 50.0, index: i))
         }
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        tableComponents
-            .removeIf(
-                {
-                    predicate => if (predicate.indexList == indexList && predicate.size == size) {
-                        true
-                    } else {
-                        false
-                    }
-                })
+        tableComponents.removeIf(
+            {
+                predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                    true
+                } else {
+                    false
+                }
+            })
     }
 
     func build() {
-        Scroll(){
+        Scroll() {
             List() {
                 LazyForEach(
                     nodeViewAIDataSource,
@@ -179,7 +178,7 @@ class MarkdownAITableBlockComponent {
                 // 刷新数据的长度等于页面数据长度，需要更新当前数据
                 let indexRow: Int64 = dataSourceSize - 1
                 for (data in tableRowComponents) {
-                    if(isListItem(indexList,data.indexList,indexRow)){
+                    if (isListItem(indexList, data.indexList, indexRow)) {
                         data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
                     }
                 }

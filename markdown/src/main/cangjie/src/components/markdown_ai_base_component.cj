@@ -30,8 +30,8 @@ func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownA
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
-        .onClick {evt =>
-            if(nodeView.link.isSome()){
+        .onClick {
+            evt => if (nodeView.link.isSome()) {
                 linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
             }
         }
@@ -84,8 +84,8 @@ func headingFootnoteComponent(nodeView: NodeView, markdownAIConfiguration: Markd
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
-        .onClick {evt =>
-            if(nodeView.node is Footnote){
+        .onClick {
+            evt => if (nodeView.node is Footnote) {
                 fontCallback((nodeView.node as Footnote)().noteid)
             }
         }
@@ -113,8 +113,8 @@ func paragraphTextComponent(nodeView: NodeView, markdownAIConfiguration: Markdow
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
-        .onClick {evt =>
-            if(nodeView.link.isSome()){
+        .onClick {
+            evt => if (nodeView.link.isSome()) {
                 linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
             }
         }
@@ -167,8 +167,8 @@ func paragraphFootnoteComponent(nodeView: NodeView, markdownAIConfiguration: Mar
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
-        .onClick {evt =>
-            if(nodeView.node is Footnote){
+        .onClick {
+            evt => if (nodeView.node is Footnote) {
                 fontCallback((nodeView.node as Footnote)().noteid)
             }
         }
@@ -196,8 +196,8 @@ func tableComponentText(nodeView: NodeView, isHeader: Bool, markdownAIConfigurat
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
-        .onClick {evt =>
-            if(nodeView.link.isSome()){
+        .onClick {
+            evt => if (nodeView.link.isSome()) {
                 linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
             }
         }
@@ -250,8 +250,8 @@ func tableComponentFootnote(nodeView: NodeView, isHeader: Bool, markdownAIConfig
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
-        .onClick {evt =>
-            if(nodeView.node is Footnote){
+        .onClick {
+            evt => if (nodeView.node is Footnote) {
                 fontCallback((nodeView.node as Footnote)().noteid)
             }
         }

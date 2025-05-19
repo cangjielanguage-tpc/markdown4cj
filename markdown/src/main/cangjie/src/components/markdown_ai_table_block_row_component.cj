@@ -155,7 +155,7 @@ class MarkdownAITableBlockRowComponent {
                     }
                 }
                 for (data in tableCellComponents) {
-                    if(isListItem(indexList,data.indexList,indexCell)){
+                    if (isListItem(indexList, data.indexList, indexCell)) {
                         data.refreshData(refreshNodeViews[indexCell].children)
                     }
                 }

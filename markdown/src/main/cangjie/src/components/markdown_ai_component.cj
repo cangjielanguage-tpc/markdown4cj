@@ -86,7 +86,7 @@ public class MarkdownAIComponent {
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
     protected override func aboutToAppear(): Unit {
-        markdownBase =  Markdown
+        markdownBase = Markdown
             .builder()
             // HTML插件
             .usePlugin(HtmlPlugin.create())
@@ -296,10 +296,10 @@ public class MarkdownAIComponent {
                             }
                         }
                         // 组件区域变化时触发该回调
-                        .onAreaChange {oldValue, newValue =>
-                                if (isFull) {
-                                    indexHashMap.put((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
-                                }
+                        .onAreaChange {
+                            oldValue, newValue => if (isFull) {
+                                indexHashMap.put((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
+                            }
                         }
                     } else {
                         // TODO 其他节点
@@ -467,7 +467,7 @@ public class MarkdownAIComponent {
      */
     func FontCallback(noteid: String): Unit {
         if (let Some(v) <- indexHashMap.get(noteid)) {
-            if(let Some(w) <- markdownAIConfiguration.footnoteCallback){
+            if (let Some(w) <- markdownAIConfiguration.footnoteCallback) {
                 w(v)
             }
         }
