@@ -295,3 +295,75 @@ func listPrefixCheckboxINCComponent(item: NodeView, markdownAIConfiguration: Mar
         // 设置外边距属性
         .margin(left: markdownAIConfiguration.markdownAITheme.blockMargin, right: 10.0)
 }
+
+/**
+ * 普通图片
+ */
+@Builder
+func imageSpanComponent(destination: String, markdownAIConfiguration: MarkdownAIConfiguration) {
+    ImageSpan(destination)
+        // 设置图片的缩放类型
+        .objectFit(ImageFit.Contain)
+        // 设置约束尺寸
+        .constraintSize(maxWidth: 100.percent)
+        // 点击动作触发该方法调用
+        .onClick {
+            evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+        }
+}
+
+/**
+ * HTML图片
+ */
+@Builder
+func htmlImageSpanComponent(destination: String, imageHeight: ?Float64, imageWidth: ?Float64, markdownAIConfiguration: MarkdownAIConfiguration) {
+    if (imageHeight.isSome() && imageWidth.isSome()) {
+        ImageSpan(destination)
+            // 设置组件自身的高度
+            .height(imageHeight().px)
+            // 设置组件自身的宽度
+            .width(imageWidth())
+            // 设置图片的缩放类型
+            .objectFit(ImageFit.Contain)
+            // 设置约束尺寸
+            .constraintSize(maxWidth: 100.percent)
+            // 点击动作触发该方法调用
+            .onClick {
+                evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+            }
+    } else if (imageHeight.isSome() && !imageWidth.isSome()) {
+        ImageSpan(destination)
+            // 设置组件自身的高度
+            .height(imageHeight().px)
+            // 设置图片的缩放类型
+            .objectFit(ImageFit.Contain)
+            // 设置约束尺寸
+            .constraintSize(maxWidth: 100.percent)
+            // 点击动作触发该方法调用
+            .onClick {
+                evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+            }
+    } else if (!imageHeight.isSome() && imageWidth.isSome()) {
+        ImageSpan(destination)
+            // 设置组件自身的宽度
+            .width(imageWidth().px)
+            // 设置图片的缩放类型
+            .objectFit(ImageFit.Contain)
+            // 设置约束尺寸
+            .constraintSize(maxWidth: 100.percent)
+            // 点击动作触发该方法调用
+            .onClick {
+                evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+            }
+    } else if (!imageHeight.isSome() && !imageWidth.isSome()) {
+        ImageSpan(destination)
+            // 设置图片的缩放类型
+            .objectFit(ImageFit.Contain)
+            // 设置约束尺寸
+            .constraintSize(maxWidth: 100.percent)
+            // 点击动作触发该方法调用
+            .onClick {
+                evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+            }
+    }
+}

@@ -93,7 +93,7 @@ class MarkdownAITableBlockComponent {
             cellSize = nodeViewAIDataSource.getData(0).children.size
         }
         for (i in 0..cellSize) {
-            cellWidthArrayIndexed.append(CellWidthArrayIndexedClass(minWidth: 50.0, index: i))
+            cellWidthArrayIndexed.append(CellWidthArrayIndexedClass(minWidth: markdownAIConfiguration.markdownAITheme.tableMinTextWidth, index: i))
         }
     }
 

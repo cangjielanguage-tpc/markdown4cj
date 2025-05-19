@@ -85,10 +85,9 @@ public class MarkdownAILinkRectImageComponent {
                 .margin(right: markdownAIConfiguration.markdownAITheme.linkRectImageMargin, left: markdownAIConfiguration.markdownAITheme.linkRectImageMargin)
                 // 点击动作触发该方法调用
                 .onClick {
-                    evt =>
-                        if (markdownAIConfiguration.linkCallback.isSome() ) {
-                            markdownAIConfiguration.linkCallback()(strUrl)
-                        }
+                    evt => if (markdownAIConfiguration.linkCallback.isSome()) {
+                        markdownAIConfiguration.linkCallback()(strUrl)
+                    }
                 }
         }
     }

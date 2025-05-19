@@ -905,3 +905,14 @@ func markdownbackGroupColor(blockQuoteBackGroupClor: Option<Color>, backGroupCol
         return backGroupColor
     }
 }
+
+func strToFloat64(str: ?String): ?Float64 {
+    var f: ?Float64 = Option<Float64>.None
+    if (let Some(v) <- str) {
+        try {
+            f = Float64.parse(v)
+        } catch (e: IllegalArgumentException) {
+        }
+    }
+    return f
+}

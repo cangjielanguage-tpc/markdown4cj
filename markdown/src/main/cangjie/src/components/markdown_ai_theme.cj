@@ -41,7 +41,7 @@ import ohos.ark_interop_helper.*
  * 12：图片Banner - 图片banner默认占位图
  * 13：图片 - 图片宽度边距、图片默认占位图、网络图片是否压缩
  * 14：按钮 - 按钮文字内容、按钮文字字体大小、按钮文字颜色、按钮背景颜色、按钮高度、按钮上下边距
- * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高、表格圆角
+ * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高、表格圆角、表格一格最小宽度、表格一格最大宽度
  * 16：代码高亮 - markdown代码高亮样式
  */
 public class MarkdownAITheme {
@@ -611,6 +611,16 @@ public class MarkdownAITheme {
     protected var tableRadius: Float64 = 5.0
 
     /**
+     * 表格最小宽度 - 单位vp
+     */
+    protected var tableMinTextWidth: Float64 = 50.0
+
+    /**
+     * 表格最大宽度 - 单位vp
+     */
+    protected var tableMaxTextWidth: Float64 = 300.0
+
+    /**
      * markdown代码高亮样式
      */
     protected var prismTheme: PrismTheme = PrismThemeDarkula.create()
@@ -743,6 +753,8 @@ public class MarkdownAITheme {
         this.tableHeaderRowBackgroundColor = builder.tableHeaderRowBackgroundColor
         this.tableTextLineheight = builder.tableTextLineheight
         this.tableRadius = builder.tableRadius
+        this.tableMinTextWidth = builder.tableMinTextWidth
+        this.tableMaxTextWidth = builder.tableMaxTextWidth
         // 代码高亮
         this.prismTheme = builder.prismTheme
     }
@@ -1442,6 +1454,16 @@ public class MarkdownAIThemeBuilder {
     protected var tableRadius: Float64 = 5.0
 
     /**
+     * 表格最小宽度 - 单位vp
+     */
+    protected var tableMinTextWidth: Float64 = 50.0
+
+    /**
+     * 表格最大宽度 - 单位vp
+     */
+    protected var tableMaxTextWidth: Float64 = 300.0
+
+    /**
      * markdown代码高亮样式
      */
     protected var prismTheme: PrismTheme = PrismThemeDarkula.create()
@@ -1577,6 +1599,8 @@ public class MarkdownAIThemeBuilder {
         this.tableHeaderRowBackgroundColor = theme.tableHeaderRowBackgroundColor
         this.tableTextLineheight = theme.tableTextLineheight
         this.tableRadius = theme.tableRadius
+        this.tableMinTextWidth = theme.tableMinTextWidth
+        this.tableMaxTextWidth = theme.tableMaxTextWidth
         // 代码高亮
         this.prismTheme = theme.prismTheme
     }
@@ -2904,6 +2928,28 @@ public class MarkdownAIThemeBuilder {
      */
     public func setTableRadius(tableRadius: Float64): MarkdownAIThemeBuilder {
         this.tableRadius = tableRadius
+        return this
+    }
+
+    /**
+     * 设置表格最小宽度 - 单位vp
+     *
+     * @param tableMinTextWidth 表格最小宽度 - 单位vp
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
+     */
+    public func setTableMinTextWidth(tableMinTextWidth: Float64): MarkdownAIThemeBuilder {
+        this.tableMinTextWidth = tableMinTextWidth
+        return this
+    }
+
+    /**
+     * 设置表格最大宽度 - 单位vp
+     *
+     * @param tableMaxTextWidth 表格最大宽度 - 单位vp
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
+     */
+    public func setTableMaxTextWidth(tableMaxTextWidth: Float64): MarkdownAIThemeBuilder {
+        this.tableMaxTextWidth = tableMaxTextWidth
         return this
     }
 

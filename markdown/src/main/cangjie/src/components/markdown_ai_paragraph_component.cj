@@ -162,10 +162,7 @@ class MarkdownAIParagraphComponent {
                         Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
-                        MarkdownAIImageSpanComponent(
-                            markdownAIConfiguration: markdownAIConfiguration,
-                            destination: (item.node as CommonmarkImage)().getDestination()
-                        )
+                        imageSpanComponent((item.node as CommonmarkImage)().getDestination(),markdownAIConfiguration)
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
                         MarkdownAILatexImageSpanComponent(
@@ -176,12 +173,7 @@ class MarkdownAIParagraphComponent {
                         )
                     } else if (item.node is ImageHtmlNode) {
                         // HTML图片
-                        MarkdownAIHtmlImageSpanComponent(
-                            markdownAIConfiguration: markdownAIConfiguration,
-                            destination: (item.node as ImageHtmlNode)().getDestination(),
-                            strHeight: (item.node as ImageHtmlNode)().getHeight(),
-                            strWidth: (item.node as ImageHtmlNode)().getWidth()
-                        )
+                        htmlImageSpanComponent((item.node as ImageHtmlNode)().getDestination(), strToFloat64((item.node as ImageHtmlNode)().getHeight()), strToFloat64((item.node as ImageHtmlNode)().getWidth()), markdownAIConfiguration)
                     } else {
                         // TODO 其他节点
                         Span("")

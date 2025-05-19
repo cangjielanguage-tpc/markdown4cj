@@ -85,10 +85,9 @@ public class MarkdownAILinkCircleImageComponent {
                 .margin(right: markdownAIConfiguration.markdownAITheme.linkCircleImageMargin, left: markdownAIConfiguration.markdownAITheme.linkCircleImageMargin)
                 // 点击动作触发该方法调用
                 .onClick {
-                    evt =>
-                        if (markdownAIConfiguration.linkCallback.isSome() ) {
-                            markdownAIConfiguration.linkCallback()(strUrl)
-                        }
+                    evt => if (markdownAIConfiguration.linkCallback.isSome()) {
+                        markdownAIConfiguration.linkCallback()(strUrl)
+                    }
                 }
         }
     }

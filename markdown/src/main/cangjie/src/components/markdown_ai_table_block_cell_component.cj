@@ -93,7 +93,7 @@ class MarkdownAITableBlockCellComponent {
      *
      */
     @State
-    var minTextWidth: Float64 = 50.0
+    var minTextWidth: Float64 = 0.0
 
     @Prop
     @Watch[refreshTextWidth]
@@ -105,7 +105,7 @@ class MarkdownAITableBlockCellComponent {
                 minTextWidth = v.minWidth
             }
         } else {
-            minTextWidth = 50.0
+            minTextWidth = markdownAIConfiguration.markdownAITheme.tableMinTextWidth
         }
     }
 
@@ -121,7 +121,7 @@ class MarkdownAITableBlockCellComponent {
                 minTextWidth = v.minWidth
             }
         } else {
-            minTextWidth = 50.0
+            minTextWidth = markdownAIConfiguration.markdownAITheme.tableMinTextWidth
         }
     }
 
@@ -220,7 +220,7 @@ class MarkdownAITableBlockCellComponent {
         // 设置边框的颜色
         .borderColor(markdownAIConfiguration.markdownAITheme.tableBorderColor)
         // 设置约束尺寸，组件布局时，进行尺寸范围限制
-        .constraintSize(minWidth: minTextWidth.vp, maxWidth: 300.vp)
+        .constraintSize(minWidth: minTextWidth.vp, maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp)
         // 组件区域变化时触发该回调
         .onAreaChange(
             {
