@@ -56,6 +56,11 @@ public class MarkdownAILatexImageSpanComponent {
      */
     var backGroupColor: Color
 
+    /**
+     * 图片最大宽度
+     */
+    var maxWidth: Length = 100.percent
+
     protected override func aboutToAppear(): Unit {
         // 数学公式解析
         latexMathImagePixelmap()
@@ -73,12 +78,10 @@ public class MarkdownAILatexImageSpanComponent {
             ImageSpan(imagePixelMap())
                 // 设置组件自身的高度
                 .height(imageHeight().px)
-                // 设置组件自身的宽度
-                .width(imageWidth().px)
                 // 设置图片的缩放类型
                 .objectFit(ImageFit.Contain)
                 // 设置约束尺寸
-                .constraintSize(maxWidth: 100.percent)
+                .constraintSize(maxWidth: maxWidth)
                 // 点击动作触发该方法调用
                 .onClick {
                     evt => latexImageOnClick(arrayUint8(), imageHeight().px, imageWidth().px, markdownAIConfiguration.latexImageCallback)
