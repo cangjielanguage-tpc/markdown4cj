@@ -138,81 +138,85 @@ class MarkdownAITableBlockCellComponent {
     }
 
     func build() {
-        Text() {
-            ForEach(
-                nodeViewList,
-                itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                        // 文本
-                        tableComponentText(item, isHeader, markdownAIConfiguration, fontCallback)
-                    } else if (item.node is Footnote) {
-                        // 脚注
-                        tableComponentFootnote(item, isHeader, markdownAIConfiguration, fontCallback)
-                    } else if (item.node is Code) {
-                        // 内联代码
-                        tableComponentCode(item, isHeader, markdownAIConfiguration)
-                    } else if (item.node is HardLineBreak) {
-                        // 硬换行
-                        Span("\n")
-                    } else if (item.node is SoftLineBreak) {
-                        // 软换行
-                        Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
-                    } else if (item.node is CommonmarkLink) {
-                        // 链接
-                        if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
-                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
-                                if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
-                                    MarkdownAILinkRectImageComponent(
+        Column(){
+            Text() {
+                ForEach(
+                    nodeViewList,
+                    itemGeneratorFunc: {
+                        item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
+                            // 文本
+                            tableComponentText(item, isHeader, markdownAIConfiguration, fontCallback)
+                        } else if (item.node is Footnote) {
+                            // 脚注
+                            tableComponentFootnote(item, isHeader, markdownAIConfiguration, fontCallback)
+                        } else if (item.node is Code) {
+                            // 内联代码
+                            tableComponentCode(item, isHeader, markdownAIConfiguration)
+                        } else if (item.node is HardLineBreak) {
+                            // 硬换行
+                            Span("\n")
+                        } else if (item.node is SoftLineBreak) {
+                            // 软换行
+                            Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
+                        } else if (item.node is CommonmarkLink) {
+                            // 链接
+                            if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
+                                    if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
+                                        MarkdownAILinkRectImageComponent(
+                                            markdownAIConfiguration: markdownAIConfiguration,
+                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
+                                            maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp
+                                        )
+                                    } else {
+                                        MarkdownAILinkCircleImageComponent(
+                                            markdownAIConfiguration: markdownAIConfiguration,
+                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
+                                            maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp
+                                        )
+                                    }
+                                }
+                            } else {
+                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
+                                    MarkdownAILinkRectToolImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
-                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
-                                        maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp
-                                    )
-                                } else {
-                                    MarkdownAILinkCircleImageComponent(
-                                        markdownAIConfiguration: markdownAIConfiguration,
-                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
-                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
                                         backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
                                         maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp
                                     )
                                 }
                             }
+                        } else if (item.node is LatexMathNode) {
+                            // 数学公式节点
+                            MarkdownAILatexImageSpanComponent(
+                                markdownAIConfiguration: markdownAIConfiguration,
+                                componentWidth: componentWidth,
+                                strLatexMath: (item.node as LatexMathNode)().latex,
+                                backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
+                                maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp
+                            )
                         } else {
-                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
-                                MarkdownAILinkRectToolImageComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
-                                    strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                    strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                    backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
-                                    maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp
-                                )
-                            }
+                            // TODO 其他节点
+                            Span("")
                         }
-                    } else if (item.node is LatexMathNode) {
-                        // 数学公式节点
-                        MarkdownAILatexImageSpanComponent(
-                            markdownAIConfiguration: markdownAIConfiguration,
-                            componentWidth: componentWidth,
-                            strLatexMath: (item.node as LatexMathNode)().latex,
-                            backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
-                            maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp
-                        )
-                    } else {
-                        // TODO 其他节点
-                        Span("")
                     }
-                }
-            )
+                )
+            }
+            // 设置行高
+            .lineHeight(markdownAIConfiguration.markdownAITheme.tableTextLineheight)
         }
+        // 设置 Column 子组件在水平方向上的对齐格式
+        .alignItems(renderTableCellColumnAlign(alignment))
+        // 设置 Column 子组件在垂直方向上的对齐格式
+        .justifyContent(FlexAlign.Center)
         // 覆盖 Flex 布局容器中 alignItems 默认配置
         .alignSelf(ItemAlign.Stretch)
-        // 设置行高
-        .lineHeight(markdownAIConfiguration.markdownAITheme.tableTextLineheight)
-        // 设置多行文本的文本对齐方式
-        .textAlign(renderTableCellAlign(alignment))
         // 设置内边距属性
         .padding(markdownAIConfiguration.markdownAITheme.tableCellPadding)
         // 设置组件的背景色

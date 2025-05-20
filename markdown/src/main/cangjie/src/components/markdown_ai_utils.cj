@@ -670,6 +670,23 @@ func renderTableCellAlign(alignment: ?TableAlignment): TextAlign {
  * @param tableCell TableCell
  * @return 对其方式
  */
+func renderTableCellColumnAlign(alignment: ?TableAlignment): HorizontalAlign {
+    if (let Some(v) <- alignment) {
+        match (v) {
+            case LEFT => return HorizontalAlign.Start
+            case CENTER => return HorizontalAlign.Center
+            case RIGHT => return HorizontalAlign.End
+        }
+    }
+    return HorizontalAlign.Start
+}
+
+/**
+ * 获取 tableCell 的对其方式
+ *
+ * @param tableCell TableCell
+ * @return 对其方式
+ */
 func renderTableCellAlign(tableCell: TableCell): TextAlign {
     if (let Some(alignment) <- tableCell.getAlignment()) {
         match (alignment) {
