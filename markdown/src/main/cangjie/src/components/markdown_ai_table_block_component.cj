@@ -140,13 +140,15 @@ class MarkdownAITableBlockComponent {
             .align(Alignment.Start)
             // 设置元素水平方向的布局
             .direction(Direction.Ltr)
-            // 设置外边距属性
-            .margin(top: marginTop, bottom: marginBottom)
         }
         // 设置滚动方向
         .scrollable(ScrollDirection.Horizontal)
         // 设置滚动条状态
         .scrollBar(BarState.Off)
+        // 设置外边距属性
+        .margin(top: marginTop, bottom: marginBottom)
+        // 设置内边距属性
+        .padding(left: markdownAIConfiguration.markdownAITheme.tableBorderWidth, right: markdownAIConfiguration.markdownAITheme.tableBorderWidth)
     }
 
     /**

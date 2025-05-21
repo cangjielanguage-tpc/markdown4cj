@@ -168,7 +168,7 @@ class MarkdownAITableBlockCellComponent {
                                             strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
                                             backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
-                                            maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp
+                                            maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
                                         )
                                     } else {
                                         MarkdownAILinkCircleImageComponent(
@@ -176,7 +176,7 @@ class MarkdownAITableBlockCellComponent {
                                             strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
                                             backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
-                                            maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp
+                                            maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
                                         )
                                     }
                                 }
@@ -188,7 +188,7 @@ class MarkdownAITableBlockCellComponent {
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
                                         strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
                                         backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
-                                        maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp
+                                        maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
                                     )
                                 }
                             }
@@ -199,7 +199,7 @@ class MarkdownAITableBlockCellComponent {
                                 componentWidth: componentWidth,
                                 strLatexMath: (item.node as LatexMathNode)().latex,
                                 backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
-                                maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp
+                                maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
                             )
                         } else {
                             // TODO 其他节点
