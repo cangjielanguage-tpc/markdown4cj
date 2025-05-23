@@ -84,6 +84,8 @@ public class MarkdownAILatexImageSpanComponent {
                 .objectFit(ImageFit.Contain)
                 // 设置约束尺寸
                 .constraintSize(maxWidth: maxWidth)
+                // 设置图片基于文本的对齐方式
+                .verticalAlign(ImageSpanAlignment.CENTER)
                 // 点击动作触发该方法调用
                 .onClick {
                     evt => latexImageOnClick(arrayUint8(), imageHeight().px, imageWidth().px, markdownAIConfiguration.latexImageCallback)
