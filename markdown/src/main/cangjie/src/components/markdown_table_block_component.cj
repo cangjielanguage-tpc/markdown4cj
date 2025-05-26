@@ -19,9 +19,19 @@ class MarkdownTableBlockComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 表格tableNodeView
+     * 表格内容数据
      */
-    var tableNodeView: NodeView
+    var nodeViews: ArrayList<NodeView>
+
+    /**
+     * 定位需要的数组
+     */
+    var indexList: ArrayList<Int64> = ArrayList<Int64>()
+
+    /**
+     * 长度
+     */
+    var size: Int64 = -1
 
     /**
      * 外边距 - 上面
@@ -33,244 +43,158 @@ class MarkdownTableBlockComponent {
      */
     var marginBottom: Float64
 
-    var listPixelMap: ArrayList<?PixelMap> = ArrayList<?PixelMap>()
-
-    /**
-     * 异步加载的图片数据
-     */
-    @State
-    var arrayListPixelMap: ObservedArrayList<ImageData> = ObservedArrayList<ImageData>()
-
     /**
      * 控件宽度 - 单位px
      */
     var componentWidth: Float64
 
     /**
-     * 线程列表
+     * 是否全量加载
+     */
+    var isFull: Bool
+
+    /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
+
+    /**
+     * 表格
+     */
+    var tableComponents: ArrayList<MarkdownTableBlockComponent>
+
+    /**
+     * 表格行
+     */
+    var tableRowComponents: ArrayList<MarkdownTableBlockRowComponent>
+
+    /**
+     * 表格行内格子
+     */
+    var tableCellComponents: ArrayList<MarkdownTableBlockCellComponent>
+
+    /**
+     * 懒加载数据源
      */
     @State
-    var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
+    var nodeViewDataSource: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+
+    @State
+    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> = ObservedArrayList<CellWidthArrayIndexedClass>()
+
+    protected override func aboutToAppear(): Unit {
+        // 初始化刷新数据
+        refreshData(nodeViews)
+        // 缓存当前控件
+        tableComponents.append(this)
+        // 清除缓存数据
+        nodeViews.clear()
+        var cellSize: Int64 = 0
+        if (nodeViewDataSource.size > 0) {
+            cellSize = nodeViewDataSource[0].children.size
+        }
+        for (i in 0..cellSize) {
+            cellWidthArrayIndexed.append(CellWidthArrayIndexedClass(minWidth: markdownConfiguration.markdownTheme.tableMinTextWidth, index: i))
+        }
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        // 清除当前控件
+        tableComponents.removeIf(
+            {
+                predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                    true
+                } else {
+                    false
+                }
+            })
+    }
 
     func build() {
-        Column() {
-            renderTableHeaderOrBody()
+        Scroll() {
+            List() {
+                ForEach(
+                    nodeViewDataSource,
+                    itemGeneratorFunc: {
+                        tableHeaderOrBody: NodeView, idRow: Int64 => ListItem() {
+                            // 行信息
+                            MarkdownTableBlockRowComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                nodeViews: tableHeaderOrBody.children,
+                                fontCallback: fontCallback,
+                                componentWidth: componentWidth,
+                                isFull: isFull,
+                                idRow: idRow,
+                                indexList: indexAdd(indexList, idRow),
+                                tableRowComponents: tableRowComponents,
+                                tableCellComponents: tableCellComponents,
+                                dataRowSize: nodeViewDataSource.size,
+                                cellWidthArrayIndexed: cellWidthArrayIndexed
+                            )
+                        }
+                    }
+                )
+            }
+            // 设置元素内容的对齐方式
+            .align(Alignment.Start)
+            // 设置元素水平方向的布局
+            .direction(Direction.Ltr)
+            // 统一边框样式设置接口
+            .border(width: markdownConfiguration.markdownTheme.tableBorderWidth.vp, color: markdownConfiguration.markdownTheme.tableBorderColor, style: BorderStyle.Solid, radius: markdownConfiguration.markdownTheme.tableRadius.vp)
         }
-        // 设置元素内容的对齐方式
-        .align(Alignment.Start)
-        // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
+        // 设置滚动方向
+        .scrollable(ScrollDirection.Horizontal)
+        // 设置滚动条状态
+        .scrollBar(BarState.Off)
+        // 设置内边距属性
+        .padding(left:markdownConfiguration.markdownTheme.tableBorderWidth, right:markdownConfiguration.markdownTheme.tableBorderWidth)
         // 设置外边距属性
         .margin(top: marginTop, bottom: marginBottom)
-        // 设置组件自身的宽度
-        .width(100.percent)
     }
 
     /**
-     * 文本
+     * 数据刷新
      */
-    @Builder
-    func tableComponentText(nodeView: NodeView, isHeader: Bool) {
-        // 设置文本内容
-        Span(spanText(nodeView))
-            // 设置文本的字体列表
-            .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
-            // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView,false, markdownConfiguration.markdownTheme, false, 0))
-            // 设置文本的字体粗细
-            .fontWeight(spanFontWeight(nodeView, isHeader))
-            // 设置文本的字体样式
-            .fontStyle(spanFontStyle(nodeView))
-            // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置文本字符间距
-            .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
-            // 设置文本装饰线样式及其颜色
-            .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
-            // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
-    }
-
-    /**
-     * 内联代码
-     */
-    @Builder
-    func tableComponentCode(nodeView: NodeView, isHeader: Bool) {
-        // 设置文本内容
-        Span(spanText(nodeView))
-            // 设置文本的字体列表
-            .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, false))
-            // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView,true, markdownConfiguration.markdownTheme, false, 0))
-            // 设置文本的字体粗细
-            .fontWeight(spanFontWeight(nodeView, isHeader))
-            // 设置文本的字体样式
-            .fontStyle(spanFontStyle(nodeView))
-            // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
-            // 设置文本字符间距
-            .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
-            // 设置文本装饰线样式及其颜色
-            .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
-            // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
-    }
-
-    /**
-     * 行内数学公式
-     */
-    @Builder
-    func tableComponentLatexMath(ret: Int64, retHead: Int64, retRow: Int64, retCol: Int64) {
-        ForEach(
-            arrayListPixelMap,
-            itemGeneratorFunc: {
-                item: ImageData, idx: Int64 =>
-                    if (item.retRow == retRow && item.retCol == retCol && item.ret == ret && item.retHead == retHead) {
-                        if (isLatexImagePixelMap(item, listPixelMap)) {
-                            ImageSpan(item.pixelMap())
-                                // 设置组件自身的高度
-                                .height(pxToVp(item.height()))
-                                // 设置组件自身的宽度
-                                .width(pxToVp(item.width()))
-                                // 设置图片的缩放类型
-                                .objectFit(ImageFit.Contain)
-                                // 设置约束尺寸
-                                .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
-                                // 点击动作触发该方法调用
-                                .onClick {evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px, markdownConfiguration.latexImageCallback)}
-                        }
-                }
+    public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
+        let refreshNodeViewSize = refreshNodeViews.size // 刷新进来的数据长度
+        let dataSourceSize = nodeViewDataSource.size // 页面缓存的数据长度
+        if (isFull) {
+            // 全量加载
+            nodeViewDataSource.clear()
+            nodeViewDataSource.appendAll(refreshNodeViews)
+        } else {
+            // 增量加载
+            if (refreshNodeViewSize == 0) {
+                return
             }
-        )
-    }
-
-    /**
-     * 表格内容信息
-     */
-    @Builder
-    func renderTableCell(tableCell: NodeView, idHead: Int64, idRow: Int64, idCol: Int64) {
-        Text() {
-            ForEach(
-                tableCell.children.toArray(),
-                itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                        // 文本
-                        if ((tableCell.node as TableCell)().isHeader()) {
-                            tableComponentText(item, true)
-                        } else {
-                            tableComponentText(item, false)
-                        }
-                    } else if (item.node is Code) {
-                        // 内联代码
-                        if ((tableCell.node as TableCell)().isHeader()) {
-                            tableComponentCode(item, true)
-                        } else {
-                            tableComponentCode(item, false)
-                        }
-                    } else if (item.node is ImgVideo) {
-                        // TODO 视频节点
-                        Span("")
-                    } else if (item.node is StyleImage) {
-                        // TODO 图片Style节点
-                        Span("")
-                    } else if (item.node is CommonmarkImage) {
-                        // TODO 图片节点
-                        Span("")
-                    } else if (item.node is ImageHtmlNode){
-                        // TODO HTML图片
-                        Span("")
-                    } else if (item.node is LatexMathNode) {
-                        // 数学公式节点
-                        tableComponentLatexMath(
-                            latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx, idRow, idCol, idHead),
-                            idHead, idRow, idCol)
-                    } else {
-                        // TODO 其他节点
-                        Span("")
+            if (refreshNodeViewSize > dataSourceSize) {
+                // 刷新数据的长度大于页面数据长度，需要添加数据
+                if (dataSourceSize != 0) {
+                    // 更新页面最后一条数据
+                    nodeViewDataSource[dataSourceSize - 1] = refreshNodeViews[dataSourceSize - 1]
+                }
+                // 循环添加所有新增数据
+                for (i in refreshNodeViewSize - dataSourceSize..0 : -1) {
+                    nodeViewDataSource.append(refreshNodeViews[refreshNodeViewSize - i])
+                }
+            } else if (refreshNodeViewSize == dataSourceSize) {
+                // 刷新数据的长度等于页面数据长度，需要更新当前数据
+                let indexRow: Int64 = dataSourceSize - 1
+                for (data in tableRowComponents) {
+                    if (isListItem(indexList, data.indexList, indexRow)) {
+                        data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
                     }
                 }
-            )
-        }
-        // 容器尺寸确定时，元素与兄弟节点主轴布局尺寸按照权重进行分配，忽略本身尺寸设置仅在Row/Column/Flex布局中生效
-        .layoutWeight(1)
-        // 设置父容器的剩余空间分配给此属性所在组件的比例
-        .flexGrow(1)
-        // Flex 容器压缩尺寸分配给此属性所在组件的比例
-        .flexShrink(1)
-        // 覆盖 Flex 布局容器中 alignItems 默认配置
-        .alignSelf(ItemAlign.Stretch)
-        // 设置多行文本的文本对齐方式
-        .textAlign(
-        renderTableCellAlign((tableCell.node as TableCell)()))
-        // 设置内边距属性
-        .padding(markdownConfiguration.tableTheme.tableCellPadding)
-        // 设置组件的背景色
-        .backgroundColor(renderTableCellColor((tableCell.node as TableCell)(), markdownConfiguration.tableTheme, idRow))
-        // 统一边框样式设置接口
-        .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0), color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
-        // 组件卸载消失时触发此回调
-        .onDisAppear({=>
-            threadFutureCancel(futs)
-            delPixelMap(listPixelMap)
-        })
-    }
-
-    /**
-     * 表格行信息
-     */
-    @Builder
-    func renderTableRow(tableRow: NodeView, idHead: Int64, idRow: Int64) {
-        Row() {
-            ForEach(
-                tableRow.children,
-                itemGeneratorFunc: {
-                    item: NodeView, idxItem: Int64 => renderTableCell(item, idHead, idRow, idxItem)
+            } else {
+                // 刷新数据小于页面数据长度，需要删除数据
+                // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
+                nodeViewDataSource[refreshNodeViewSize - 1] = refreshNodeViews[refreshNodeViewSize - 1]
+                // 循环删除所有多余数据
+                for (i in dataSourceSize - refreshNodeViewSize..0 : -1) {
+                    nodeViewDataSource.remove(dataSourceSize - i)
                 }
-            )
-        }
-        // 设置组件自身的宽度
-        .width(100.percent)
-    }
-
-    /**
-     * 表格头或表格体信息
-     */
-    @Builder
-    func renderTableHeaderOrBody() {
-        List() {
-            ForEach(
-                tableNodeView.children,
-                itemGeneratorFunc: {
-                    tableHeaderOrBody: NodeView, idxHead: Int64 => ForEach(
-                        tableHeaderOrBody.children,
-                        itemGeneratorFunc: {
-                            tableRow: NodeView, idRow: Int64 => ListItem() {
-                                // 行信息
-                                renderTableRow(tableRow, idxHead, idRow)
-                            }
-                        }
-                    )
-                }
-            )
-        }
-        // 统一边框样式设置接口
-        .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0), color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
-    }
-
-    /**
-     * 数学公式数据处理 - 行内数学公式
-     */
-    func latexMathImagePixelmap(strLatexMath: String, idx: Int64, idRow: Int64, idCol: Int64, idHead: Int64): Int64 {
-        let callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit = {
-            pixelMap, height, width, arr => launch {
-                arrayListPixelMap.append(
-                    ImageData(ret: idx, retRow: idRow, retCol: idCol, retHead: idHead, pixelMap: pixelMap,
-                    height: height, width: width, arrayUint8: arr))
             }
         }
-        let fut = MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration.markdownTheme.resPath,
-            markdownConfiguration, componentWidth, callback)
-        futs.append(fut)
-        return idx
+        size = nodeViewDataSource.size // 更新列表长度
     }
 }

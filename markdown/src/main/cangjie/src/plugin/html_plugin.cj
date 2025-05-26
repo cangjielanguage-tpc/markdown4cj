@@ -259,6 +259,19 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
         }
     }
 
+    public override func afterRender(doc: Node, _: MarkdownVisitor): Unit {
+        let docView = doc.getView()
+        for (i in 0..docView.children.size) {
+            let nv = docView.children[i]
+            if(nv.node is Block){
+                continue
+            }
+            let pv = NodeView(Paragraph())
+            pv.children.append(nv)
+            docView.children[i] = pv
+        }
+    }
+
     public override func getClassType(): String {
         "HtmlPlugin"
     }

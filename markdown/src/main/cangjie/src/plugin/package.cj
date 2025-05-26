@@ -108,3 +108,10 @@ func binarySearch<T>(arr: Array<T>, key: T): Int64 where T <: Comparable<T> {
     // key not found.
     return -(low + 1)
 }
+
+/*
+BlockParser
+tryStart
+addline
+tryContinue ? addline : {closeBlock;parseInlines}
+ */

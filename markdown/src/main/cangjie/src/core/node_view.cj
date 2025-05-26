@@ -10,26 +10,26 @@ public class NodeView <: ToString {
     /* BlockQuote深度 -1:无效 >=0:深度 */
     public var blockQuoteDepth: Int = -1
     /* 是否被BlockQuote修饰 */
-    public var blockQuote: ?BlockQuote = None
+    public var blockQuote: Bool = false
     /* 是否被Emphasis修饰 */
-    public var emphasis: ?Emphasis = None
+    public var emphasis: Bool = false
     /* 是否被StrongEmphasis修饰 */
-    public var strongEmphasis: ?StrongEmphasis = None
+    public var strongEmphasis: Bool = false
     /* 是否被Link修饰 */
     public var link: ?Link = None
     /* 是否属于BulletList */
-    public var bulletList: ?BulletList = None
+    public var bulletList: Bool = false
     /* 属于第几层OrderedListItem -1:无效 >=0:深度 */
     public var depth: Int = -1
     /* 属于第几位OrderedListItem -1:无效 >=0:序号 */
     public var order: Int = -1
-    public var orderedList: ?OrderedList = None
+    public var orderedList: ?Int = None
     /* 属于第几层BulletListItem -1:无效 >=0:深度 */
     public var bulletListDepth: Int = -1
     /* ListItem中可包含多个Block，但只有第一个Block有列表符号 */
     public var listMark: Bool = false
     // 本身Node节点
-    public let node: Node
+    public var node: Node
     // Node节点开始结束标志 -1:无效 0:开始 1:结束
     var startend = -1
     // 是否为Node开始
@@ -87,7 +87,7 @@ public class NodeView <: ToString {
         this.collector = parentView.collector
 
         if (let Some(v) <- parentView.props) {
-            this.props = v.clone()
+            this.props = HashMap<String, Any>(v)
         }
     }
 
@@ -97,25 +97,25 @@ public class NodeView <: ToString {
     func setView(currentNode: Node) {
         if (currentNode is BlockQuote) {
             this.blockQuoteDepth++
-            this.blockQuote = currentNode as BlockQuote
+            this.blockQuote = true
         } else if (currentNode is Emphasis) {
-            this.emphasis = currentNode as Emphasis
+            this.emphasis = true
         } else if (currentNode is StrongEmphasis) {
-            this.strongEmphasis = currentNode as StrongEmphasis
+            this.strongEmphasis = true
         } else if (currentNode is Link) {
             this.link = currentNode as Link
         } else if (currentNode is BulletList) {
             this.bulletListDepth++
-            this.bulletList = currentNode as BulletList
+            this.bulletList = true
         } else if (currentNode is OrderedList) {
             this.depth++
-            this.orderedList = currentNode as OrderedList
+            this.orderedList = (currentNode as OrderedList)?.getStartNumber()
         } else if (currentNode is ListItem) {
             if (let Some(parent) <- this.orderedList) {
                 this.order = if (let Some(previous) <- currentNode.getPrevious()?.getView()) {
                     previous.order + 1
                 } else {
-                    parent.getStartNumber()
+                    parent
                 }
             }
         }
@@ -155,11 +155,19 @@ public class NodeView <: ToString {
     }
 
     public override func toString(): String {
-        let emphaStr = emphasis?.toString() ?? ""
-        let strongStr = strongEmphasis?.toString() ?? ""
+        let emphaStr = if (emphasis) {
+            "emphasis:${emphasis}"
+        } else {
+            ""
+        }
+        let strongStr = if (strongEmphasis) {
+            "strongEmphasis:${strongEmphasis}"
+        } else {
+            ""
+        }
         let linkStr = link?.toString() ?? ""
-        let bulletStr = if (let Some(v) <- bulletList) {
-            "{${v},bulletListDepth:${bulletListDepth}}"
+        let bulletStr = if (bulletList) {
+            "{bulletListDepth:${bulletListDepth}}"
         } else {
             ""
         }
@@ -168,8 +176,8 @@ public class NodeView <: ToString {
         } else {
             ""
         }
-        let blockQuoteStr = if (let Some(v) <- blockQuote) {
-            "{blockQuote:${v},blockQuoteDepth:${blockQuoteDepth}}"
+        let blockQuoteStr = if (blockQuote) {
+            "{blockQuoteDepth:${blockQuoteDepth}}"
         } else {
             ""
         }
@@ -191,6 +199,19 @@ public class NodeView <: ToString {
             ""
         }
         return "view:{${node}${startEndStr}${emphaStr}${strongStr}${linkStr}${bulletStr}${orderListStr}${blockQuoteStr}${propStr}${listStr}}"
+    }
+
+    public func clear(): Unit {
+        //        this.blockQuote = None
+        //        this.emphasis = None
+        //        this.strongEmphasis = None
+        this.link = None
+        //        this.bulletList = None
+        this.orderedList = None
+        this.collector = None
+        this.props = None
+        this.list = EMPTY_LIST
+        // this.node=unsafe{zeroValue<Node>()}
     }
 }
 

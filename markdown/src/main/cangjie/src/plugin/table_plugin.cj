@@ -25,7 +25,11 @@ public class TablePlugin <: AbstractMarkdownPlugin {
                     visitor.visitChildren(node)
                     view.props?.put("rowCount", count[0])
                     view.props?.put("cellCount", count[1])
-                    view.props?.put("columnCount", count[1] / count[0])
+                    view.props?.put("columnCount", if (count[0] == 0) {
+                        0
+                    } else {
+                        count[1] / count[0]
+                    })
                 }
             )
             .on(

@@ -30,7 +30,6 @@ class MarkdownVideoComponent {
     var imageUrl: String = ""
 
     func build() {
-        // TODO ImageSpan缺少String入参，网络图片只能用Image接收
         Stack(Alignment.Center) {
             imgVideoComponent()
         }

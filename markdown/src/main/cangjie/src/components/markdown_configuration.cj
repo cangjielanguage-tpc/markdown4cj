@@ -18,16 +18,6 @@ public class MarkdownConfiguration {
     protected var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build()
 
     /**
-     * markdown代码高亮样式
-     */
-    protected var prismTheme: PrismTheme = PrismThemeDefault.create()
-
-    /**
-     * markdown表格样式
-     */
-    protected var tableTheme: TableTheme = TableTheme.emptyBuilder().build()
-
-    /**
      * 插件化使用
      */
     protected var markdownParser: ?Markdown = None
@@ -50,7 +40,9 @@ public class MarkdownConfiguration {
     /**
      * 视频的图片替换回调
      */
-    protected var videoImageCallback: (String, (String) -> Unit) -> Unit = {url: String, coverCallback: (String) -> Unit => ()}
+    protected var videoImageCallback: (String, (String) -> Unit) -> Unit = {
+        url: String, coverCallback: (String) -> Unit => ()
+    }
 
     /**
      * 代码复制按钮的点击事件
@@ -88,14 +80,17 @@ public class MarkdownConfiguration {
     protected var tocIndexCallback: ?(?Float64) -> Unit = None
 
     /**
+     * 脚注跳转指定位置
+     */
+    protected var footnoteCallback: ?(?Float64) -> Unit = None
+
+    /**
      * 超大数据跳转页面显示全部数据
      */
     protected var listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit = None
 
     protected init(builder: MarkdownConfigurationBuilder) {
         this.markdownTheme = builder.markdownTheme
-        this.prismTheme = builder.prismTheme
-        this.tableTheme = builder.tableTheme
         // 插件化
         this.markdownParser = builder.markdownParser
         this.linkCallback = builder.linkCallback
@@ -107,6 +102,7 @@ public class MarkdownConfiguration {
         this.latexImageCallback = builder.latexImageCallback
         this.latexStrCallback = builder.latexStrCallback
         this.tocIndexCallback = builder.tocIndexCallback
+        this.footnoteCallback = builder.footnoteCallback
         this.listBigDataCallback = builder.listBigDataCallback
     }
 
@@ -149,16 +145,6 @@ public class MarkdownConfigurationBuilder {
     protected var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build()
 
     /**
-     * markdown代码高亮样式
-     */
-    protected var prismTheme: PrismTheme = PrismThemeDefault.create()
-
-    /**
-     * markdown表格样式
-     */
-    protected var tableTheme: TableTheme = TableTheme.emptyBuilder().build()
-
-    /**
      * 插件化使用
      */
     protected var markdownParser: ?Markdown = None
@@ -181,7 +167,9 @@ public class MarkdownConfigurationBuilder {
     /**
      * 视频的图片替换回调
      */
-    protected var videoImageCallback: (String, (String) -> Unit) -> Unit = {url: String, coverCallback: (String) -> Unit => ()}
+    protected var videoImageCallback: (String, (String) -> Unit) -> Unit = {
+        url: String, coverCallback: (String) -> Unit => ()
+    }
 
     /**
      * 代码复制按钮的点击事件
@@ -219,6 +207,11 @@ public class MarkdownConfigurationBuilder {
     protected var tocIndexCallback: ?(?Float64) -> Unit = None
 
     /**
+     * 脚注跳转指定位置
+     */
+    protected var footnoteCallback: ?(?Float64) -> Unit = None
+
+    /**
      * 超大数据跳转页面显示全部数据
      */
     protected var listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit = None
@@ -228,8 +221,6 @@ public class MarkdownConfigurationBuilder {
 
     init(configuration: MarkdownConfiguration) {
         this.markdownTheme = configuration.markdownTheme
-        this.prismTheme = configuration.prismTheme
-        this.tableTheme = configuration.tableTheme
         // 插件化
         this.markdownParser = configuration.markdownParser
         this.linkCallback = configuration.linkCallback
@@ -241,6 +232,7 @@ public class MarkdownConfigurationBuilder {
         this.latexImageCallback = configuration.latexImageCallback
         this.latexStrCallback = configuration.latexStrCallback
         this.tocIndexCallback = configuration.tocIndexCallback
+        this.footnoteCallback = configuration.footnoteCallback
         this.listBigDataCallback = configuration.listBigDataCallback
     }
 
@@ -252,28 +244,6 @@ public class MarkdownConfigurationBuilder {
      */
     public func setMarkdownTheme(markdownTheme: MarkdownTheme): MarkdownConfigurationBuilder {
         this.markdownTheme = markdownTheme
-        return this
-    }
-
-    /**
-     * 设置markdown代码高亮样式
-     *
-     * @param PrismTheme 高亮样式
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
-     */
-    public func setPrismTheme(prismTheme: PrismTheme): MarkdownConfigurationBuilder {
-        this.prismTheme = prismTheme
-        return this
-    }
-
-    /**
-     * 设置markdown表格样式
-     *
-     * @param tableTheme 表格样式
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
-     */
-    public func setTableTheme(tableTheme: TableTheme): MarkdownConfigurationBuilder {
-        this.tableTheme = tableTheme
         return this
     }
 
@@ -384,6 +354,17 @@ public class MarkdownConfigurationBuilder {
      */
     public func setTocIndexCallback(tocIndexCallback: (?Float64) -> Unit): MarkdownConfigurationBuilder {
         this.tocIndexCallback = tocIndexCallback
+        return this
+    }
+
+    /**
+     * 设置脚注跳转指定位置
+     *
+     * @param footnoteCallback 脚注跳转指定位置接口 (?Float64:位置距离)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setFootnoteCallback(footnoteCallback: (?Float64) -> Unit): MarkdownConfigurationBuilder {
+        this.footnoteCallback = footnoteCallback
         return this
     }
 

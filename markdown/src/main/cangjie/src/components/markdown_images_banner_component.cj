@@ -39,9 +39,21 @@ class MarkdownImageBannerComponent {
     var controller: SwiperController = SwiperController()
 
     func build() {
-        Column() {
-            imageBannerComponent()
+        Swiper(controller) {
+            ForEach(
+                slideBlockNodeView.children,
+                itemGeneratorFunc: {
+                    item: NodeView, idx: Int64 => if (item.node is CommonmarkImage) {
+                        // 图片节点
+                        imageBannerCommonmarkComponent((item.node as CommonmarkImage)())
+                    } else {
+                        // 其他节点
+                    }
+                }
+            )
         }
+        // 子组件是否自动播放，自动播放状态下，导航点不可操作
+        .autoPlay(false)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置外边距属性
@@ -81,22 +93,5 @@ class MarkdownImageBannerComponent {
      */
     @Builder
     func imageBannerComponent() {
-        Swiper(controller) {
-            ForEach(
-                slideBlockNodeView.children,
-                itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkImage) {
-                        // 图片节点
-                        imageBannerCommonmarkComponent((item.node as CommonmarkImage)())
-                    } else {
-                        // 其他节点
-                    }
-                }
-            )
-        }
-        // 子组件是否自动播放，自动播放状态下，导航点不可操作
-        .autoPlay(false)
-        // 设置组件自身的宽度
-        .width(100.percent)
     }
 }
