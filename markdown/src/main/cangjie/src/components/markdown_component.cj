@@ -16,7 +16,14 @@ public class MarkdownComponent {
     /**
      * 外部传入的Markdown文档
      */
-    var mdStr: String = ""
+    @Prop
+    @Watch[refreshData]
+    var output: String
+
+    /**
+     * 是否全量加载 - true：全量加载，fasle：增量加载
+     */
+    var isFull: Bool = true
 
     /**
      * markdown配置
@@ -24,14 +31,9 @@ public class MarkdownComponent {
     var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.create()
 
     /**
-     * toc事件回调数据
+     * 定位需要的数组
      */
-    var indexHashMap: HashMap<Int64, Float64> = HashMap<Int64, Float64>()
-
-    /**
-     * list控制器
-     */
-    let scroller: Scroller = Scroller()
+    var indexList: ArrayList<Int64> = ArrayList<Int64>()
 
     /**
      * 屏幕宽度 - 单位px
@@ -39,118 +41,281 @@ public class MarkdownComponent {
     let screenWidth: Int32 = getDefaultDisplaySync().width
 
     /**
+     * 控件宽度 - 单位px，（控件宽度 = 屏幕宽度 - padding）
+     */
+    var componentWidth: Float64 = 0.0
+
+    /**
+     * 缓存的数据
+     */
+    let markdownCacheConfiguration: MarkdownCacheConfiguration = MarkdownCacheConfiguration()
+
+    /**
+     * 注脚事件回调数据
+     */
+    var indexFootnoteHashMap: HashMap<String, Float64> = HashMap<String, Float64>()
+
+    /**
+     * toc事件回调数据
+     */
+    var indexTocHashMap: HashMap<Int64, Float64> = HashMap<Int64, Float64>()
+
+    /**
+     * list控制器
+     */
+    let scroller: Scroller = Scroller()
+
+    /**
+     * markdown插件
+     */
+    var markdownBase: Markdown = Markdown.builder()
+            // HTML插件
+            .usePlugin(HtmlPlugin.create())
+            // 任务列表插件
+            .usePlugin(TaskListPlugin.create())
+            // 删除线插件
+            .usePlugin(StrikethroughPlugin.create())
+            // 表格插件
+            .usePlugin(TablePlugin.create())
+            // 数学公式
+            .usePlugin(LatexMathPluginV2.create())
+            // 自动网址链接
+            .usePlugin(LinkifyPlugin.create())
+            // 脚注
+            .usePlugin(FootnotePlugin.create())
+            // 幻灯片、视频、ImageStyle插件
+            .usePlugin(ImagePlugin.create())
+            // 代码列表标签
+            .usePlugin(CodeListPlugin.create())
+            // 链接图片化插件
+            .usePlugin(LinkViewPlugin.create())
+            // TOC列表插件
+            .usePlugin(TocPlugin.create())
+            .build()
+
+    /**
+     * markdown解析器
+     */
+    var incBase: IncreaseParser = IncreaseParser(markdownBase)
+
+    /**
+     * 锁
+     */
+    let parseReentrantMutex: ReentrantMutex = ReentrantMutex()
+
+    /**
+     * 刷新判定
+     */
+    let isRefreshData: AtomicBool = AtomicBool(true)
+
+    /**
      * 懒加载数据源
      */
     @State
-    var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
+    var nodeViewDataSource: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+
+    protected override func aboutToAppear(): Unit {
+        if(markdownConfiguration.markdownParser.isSome()){
+            markdownBase = markdownConfiguration.markdownParser()
+            incBase = IncreaseParser(markdownBase)
+        }
+        // 控件宽度 = 屏幕宽度 - padding
+        componentWidth = widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+        // 首次加载
+        stringToNodes()
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        // 清除缓存数据
+        markdownCacheConfiguration.clearAll()
+    }
 
     func build() {
         List(scroller: scroller) {
-            LazyForEach(
+            ForEach(
                 nodeViewDataSource,
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is Heading) {
                         // 标题
                         ListItem() {
                             MarkdownHeadingComponent(
-                                headingNodeView: item,
                                 markdownConfiguration: markdownConfiguration,
+                                nodeViews: item.children,
+                                level: (item.node as Heading)().getLevel(),
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                fontCallback: FontCallback,
+                                componentWidth: componentWidth,
+                                isFull: isFull,
+                                indexList: indexAdd(indexList, idx),
+                                headingComponents: markdownCacheConfiguration.headingComponents
                             )
                         }
                         // 组件区域变化时触发该回调
-                        .onAreaChange {oldValue, newValue => indexHashMap.put(idx, newValue.position.y)}
+                        .onAreaChange {oldValue, newValue => indexTocHashMap.put(idx, newValue.globalPosition.y)}
                     } else if (item.node is Paragraph) {
                         // 段落
                         ListItem() {
                             MarkdownParagraphComponent(
-                                paragraphNodeView: item,
                                 markdownConfiguration: markdownConfiguration,
+                                nodeViews: item.children,
+                                footnoteBlock: Option<FootnoteBlock>.None,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                fontCallback: FontCallback,
                                 tocListOnClick: TocListOnClick,
-                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: componentWidth,
+                                isFull: isFull,
+                                indexList: indexAdd(indexList, idx),
+                                paragraphComponents: markdownCacheConfiguration.paragraphComponents
                             )
                         }
                     } else if (item.node is BulletList) {
                         // 无序列表（包含任务列表）
                         ListItem() {
                             MarkdownListComponent(
-                                listNodeView: item,
                                 markdownConfiguration: markdownConfiguration,
+                                nodeViews: item.children,
+                                isOrdered: false,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                fontCallback: FontCallback,
                                 tocListOnClick: TocListOnClick,
-                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: componentWidth,
+                                isFull: isFull,
+                                indexList: indexAdd(indexList, idx),
+                                markdownCacheConfiguration: markdownCacheConfiguration
                             )
                         }
                     } else if (item.node is OrderedList) {
-                        // 有序列表（包含TOC目录列表）
+                        // 有序列表
                         ListItem() {
                             MarkdownListComponent(
-                                listNodeView: item,
                                 markdownConfiguration: markdownConfiguration,
+                                nodeViews: item.children,
+                                isOrdered: true,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                fontCallback: FontCallback,
                                 tocListOnClick: TocListOnClick,
-                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: componentWidth,
+                                isFull: isFull,
+                                indexList: indexAdd(indexList, idx),
+                                markdownCacheConfiguration: markdownCacheConfiguration
                             )
                         }
                     } else if (item.node is BlockQuote) {
                         // 块引用
                         ListItem() {
-                            MarkdownListComponent(
-                                listNodeView: item,
+                            MarkdownQuoteComponent(
                                 markdownConfiguration: markdownConfiguration,
+                                nodeViews: item.children,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                fontCallback: FontCallback,
                                 tocListOnClick: TocListOnClick,
-                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: componentWidth,
+                                isFull: isFull,
+                                indexList: indexAdd(indexList, idx),
+                                markdownCacheConfiguration: markdownCacheConfiguration
                             )
                         }
                     } else if (item.node is FencedCodeBlock) {
                         // 围栏代码块
                         ListItem() {
-                            MarkdownCodeBlockComponent(
+                            MarkdownFencedCodeBlockComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 codeText: (item.node as FencedCodeBlock)().getLiteral(),
                                 info: (item.node as FencedCodeBlock)().getInfo(),
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                indexList: indexAdd(indexList, idx),
+                                fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
                             )
                         }
                     } else if (item.node is IndentedCodeBlock) {
                         // 缩进代码块
                         ListItem() {
-                            MarkdownCodeBlockComponent(
+                            MarkdownIndentedCodeBlockComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 codeText: (item.node as IndentedCodeBlock)().getLiteral(),
                                 info: Option<String>.None,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                indexList: indexAdd(indexList, idx),
+                                indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
                             )
                         }
                     } else if (item.node is TableBlock) {
                         // 表格
                         ListItem() {
                             MarkdownTableBlockComponent(
-                                tableNodeView: item,
                                 markdownConfiguration: markdownConfiguration,
+                                nodeViews: tableList(item.children),
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                fontCallback: FontCallback,
+                                componentWidth: componentWidth,
+                                isFull: isFull,
+                                indexList: indexAdd(indexList, idx),
+                                tableComponents: markdownCacheConfiguration.tableComponents,
+                                tableRowComponents: markdownCacheConfiguration.tableRowComponents,
+                                tableCellComponents: markdownCacheConfiguration.tableCellComponents
                             )
                         }
                     } else if (item.node is ThematicBreak) {
                         // 分割线
                         ListItem() {
-                            MarkdownThematicBreakComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            )
+                            Divider()
+                                // 设置分割线颜色
+                                .color(markdownConfiguration.markdownTheme.thematicBreakColor)
+                                // 设置分割线宽度
+                                .strokeWidth(markdownConfiguration.markdownTheme.thematicBreakHeight)
+                                // 设置外边距属性
+                                .margin(top: markdownConfiguration.markdownTheme.blockTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins)
+                        }
+                    } else if (item.node is LatexMathBlock) {
+                        // 单行的数学公式
+                        ListItem() {
+                            if ((item.node as LatexMathBlock)().isClosed) {
+                                // 结束显示数学公式
+                                MarkdownLatexMathBlockComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    latexStr: (item.node as LatexMathBlock)().latex,
+                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                                )
+                            } else {
+                                // 没结束显示纯文本
+                                Text((item.node as LatexMathBlock)().latex)
+                            }
+                        }
+                    } else if (item.node is FootnoteBlock) {
+                        // 脚注内容
+                        ListItem() {
+                            if (item.children.size > 0 && item.children[0].node is Paragraph) {
+                                MarkdownParagraphComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    nodeViews: item.children[0].children,
+                                    footnoteBlock: (item.node as FootnoteBlock)(),
+                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                    fontCallback: FontCallback,
+                                    tocListOnClick: TocListOnClick,
+                                    componentWidth: componentWidth,
+                                    isFull: isFull,
+                                    indexList: indexAdd(indexList, idx),
+                                    paragraphComponents: markdownCacheConfiguration.paragraphComponents
+                                )
+                            } else {
+                                Text("")
+                            }
+                        }
+                        // 组件区域变化时触发该回调
+                        .onAreaChange {
+                            oldValue, newValue => if (isFull) {
+                                indexFootnoteHashMap.put((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
+                            }
                         }
                     } else if (item.node is SlideBlock) {
                         // 图片幻灯片
@@ -175,29 +340,10 @@ public class MarkdownComponent {
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
                             )
                         }
-                    } else if (item.node is LatexMathBlock) {
-                        // 单行的数学公式
-                        ListItem() {
-                            MarkdownLatexMathBlockComponent(
-                                latexStr: (item.node as LatexMathBlock)().latex,
-                                markdownConfiguration: markdownConfiguration,
-                                marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            )
-                        }
-                    } else if (item.node is LinkReferenceDefinition) {
-                        // 链接引用定义
-                        ListItem() {
-                            Text("")
-                                // 设置外边距属性
-                                .margin(top: markdownConfiguration.markdownTheme.blockTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins)
-                        }
                     } else {
                         // TODO 其他节点
                         ListItem() {
                             Text("")
-                                // 设置外边距属性
-                                .margin(top: markdownConfiguration.markdownTheme.blockTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins)
                         }
                     }
                 }
@@ -209,30 +355,171 @@ public class MarkdownComponent {
         .alignListItem(ListItemAlign.Start)
         // 设置组件自身的宽度
         .width(100.percent)
-        // 组件挂载显示时触发此回调
-        .onAppear {=> stringToNodes()}
+    }
+
+    /**
+     * 刷新数据
+     */
+    func refreshData(): Unit {
+        // 上一步解析完成才继续解析
+        if (isRefreshData.load()) {
+            let fut: Future<Unit> = spawn {
+                // 异步解析，加锁
+                synchronized(parseReentrantMutex) {
+                    isRefreshData.store(false)
+                    stringToNodes()
+                    isRefreshData.store(true)
+                }
+            }
+        }
     }
 
     /**
      * 将String转换成ArrayList<NodeView>，将解析的列表添加到懒加载的数据源中
      */
-    func stringToNodes() {
-        let callback: (ArrayList<NodeView>) -> Unit = {
-            nodeViews => launch {
-                nodeViewDataSource.clear()
-                nodeViewDataSource.addDatas(nodeViews)
+    func stringToNodes(): Unit {
+        try {
+            incBase.input = output
+            incBase.parse()
+            let nodeViews = incBase.docView.children
+            let nodeViewsSize = nodeViews.size // 刷新进来的数据长度
+            let nodeViewListSize = nodeViewDataSource.size // 页面缓存的数据长度
+            if (isFull) {
+                // 全量加载
+                launch {
+                    nodeViewDataSource.clear()
+                    nodeViewDataSource.appendAll(nodeViews)
+                }
+            } else {
+                // 增量加载
+                launch {
+                    if (nodeViewsSize == 0) {
+                        return
+                    }
+                    // 清除缓存引用
+                    if (nodeViewsSize > nodeViewListSize) {
+                        for (i in 0..nodeViewListSize - 1) {
+                            releaseNodeRelation(nodeViewDataSource[i])
+                        }
+                    }
+                    if (nodeViewsSize > nodeViewListSize) {
+                        // 刷新数据的长度大于页面数据长度，需要添加数据
+                        // 清除缓存数据
+                        markdownCacheConfiguration.clearAll()
+                        if (nodeViewListSize != 0) {
+                            // 更新页面最后一条数据
+                            nodeViewDataSource[nodeViewListSize - 1] = nodeViews[nodeViewListSize - 1]
+                        }
+                        // 循环添加所有新增数据
+                        for (i in nodeViewsSize - nodeViewListSize..0 : -1) {
+                            nodeViewDataSource.append(nodeViews[nodeViewsSize - i])
+                        }
+                    } else if (nodeViewsSize == nodeViewListSize) {
+                        // 刷新数据的长度等于页面数据长度，需要更新当前数据
+                        let index: Int64 = nodeViewListSize - 1
+                        if ((nodeViews[nodeViewsSize - 1].node is BulletList && nodeViewDataSource[nodeViewListSize - 1].node is BulletList) || (nodeViews[nodeViewsSize - 1].node is OrderedList && nodeViewDataSource[nodeViewListSize - 1].node is OrderedList)) {
+                            // 有序列表和无序列表
+                            for (data in markdownCacheConfiguration.listComponents) {
+                                if (isListItem(indexList, data.indexList, index)) {
+                                    data.refreshData(nodeViews[nodeViewsSize - 1].children)
+                                }
+                            }
+                        } else if ((nodeViews[nodeViewsSize - 1].node is BlockQuote && nodeViewDataSource[nodeViewListSize - 1].node is BlockQuote)) {
+                            // 块引用
+                            for (data in markdownCacheConfiguration.quoteComponents) {
+                                if (isListItem(indexList, data.indexList, index)) {
+                                    data.refreshData(nodeViews[nodeViewsSize - 1].children)
+                                }
+                            }
+                        } else if ((nodeViews[nodeViewsSize - 1].node is Heading && nodeViewDataSource[nodeViewListSize - 1].node is Heading)) {
+                            // 标题
+                            for (data in markdownCacheConfiguration.headingComponents) {
+                                if (isListItem(indexList, data.indexList, index)) {
+                                    data.refreshData(nodeViews[nodeViewsSize - 1].children, (nodeViews[nodeViewsSize - 1].node as Heading)().getLevel())
+                                }
+                            }
+                        } else if ((nodeViews[nodeViewsSize - 1].node is Paragraph && nodeViewDataSource[nodeViewListSize - 1].node is Paragraph)) {
+                            // 段落
+                            for (data in markdownCacheConfiguration.paragraphComponents) {
+                                if (isListItem(indexList, data.indexList, index)) {
+                                    data.refreshData(nodeViews[nodeViewsSize - 1].children)
+                                }
+                            }
+                        } else if ((nodeViews[nodeViewsSize - 1].node is TableBlock && nodeViewDataSource[nodeViewListSize - 1].node is TableBlock)) {
+                            // 表格
+                            for (data in markdownCacheConfiguration.tableComponents) {
+                                if (isListItem(indexList, data.indexList, index)) {
+                                    data.refreshData(tableList(nodeViews[nodeViewsSize - 1].children))
+                                }
+                            }
+                        } else if ((nodeViews[nodeViewsSize - 1].node is IndentedCodeBlock && nodeViewDataSource[nodeViewListSize - 1].node is IndentedCodeBlock)) {
+                            // 缩进代码
+                            for (data in markdownCacheConfiguration.indentedCodeComponents) {
+                                if (isListItem(indexList, data.indexList, index)) {
+                                    data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1])
+                                }
+                            }
+                        } else if ((nodeViews[nodeViewsSize - 1].node is FencedCodeBlock && nodeViewDataSource[nodeViewListSize - 1].node is FencedCodeBlock)) {
+                            // 围栏代码
+                            for (data in markdownCacheConfiguration.fencedCodeComponents) {
+                                if (isListItem(indexList, data.indexList, index)) {
+                                    data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1])
+                                }
+                            }
+                        } else {
+                            // 其他节点
+                            nodeViewDataSource[nodeViewListSize - 1] = nodeViews[nodeViewsSize - 1]
+                        }
+                    } else {
+                        // 刷新数据小于页面数据长度，需要删除数据
+                        // 清除缓存数据
+                        markdownCacheConfiguration.clearAll()
+                        // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
+                        nodeViewDataSource[nodeViewsSize - 1] = nodeViews[nodeViewsSize - 1]
+                        // 循环删除所有多余数据
+                        for (i in nodeViewListSize - nodeViewsSize..0 : -1) {
+                            nodeViewDataSource.remove(nodeViewListSize - i)
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            // 解析异常，全量展示纯文本，增量不做处理
+            if (isFull) {
+                let paragraph: Paragraph = Paragraph()
+                let commonmarkText: CommonmarkText = CommonmarkText(output)
+                paragraph.appendChild(commonmarkText)
+                let paragraphNodeView: NodeView = buildView(paragraph, true)
+                let textNodeView: NodeView = buildView(commonmarkText, true)
+                let arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
+                arrayListNodeView.append(paragraphNodeView)
+                launch {
+                    nodeViewDataSource.clear()
+                    nodeViewDataSource.appendAll(arrayListNodeView)
+                }
             }
         }
-        stringToNodesUtils(mdStr, markdownConfiguration, callback)
     }
 
     /**
      * TOC列表点击事件回调
      */
     func TocListOnClick(index: Int64): Unit {
-        match (markdownConfiguration.tocIndexCallback) {
-            case Some(v) => v(indexHashMap.get(index))
-            case _ => ()
+        if (let Some(v) <- indexTocHashMap.get(index)) {
+            if (let Some(w) <- markdownConfiguration.tocIndexCallback) {
+                w(v)
+            }
+        }
+    }
+
+    /**
+     * 脚注点击回调
+     */
+    func FontCallback(noteid: String): Unit {
+        if (let Some(v) <- indexFootnoteHashMap.get(noteid)) {
+            if (let Some(w) <- markdownConfiguration.footnoteCallback) {
+                w(v)
+            }
         }
     }
 }

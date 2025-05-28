@@ -19,17 +19,33 @@ class MarkdownHeadingComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 标题NodeView
+     * 标题内容数据
      */
-    var headingNodeView: NodeView
+    var nodeViews: ArrayList<NodeView>
 
     /**
-     * 外边距 - 上面
+     * 定位需要的数组
+     */
+    var indexList: ArrayList<Int64> = ArrayList<Int64>()
+
+    /**
+     * 标题等级
+     */
+    @State
+    var level: Int64 = 1
+
+    /**
+     * 长度
+     */
+    var size: Int64 = -1
+
+    /**
+     * 上边距 - 单位vp
      */
     var marginTop: Float64
 
     /**
-     * 外边距 - 下面
+     * 下边距 - 单位vp
      */
     var marginBottom: Float64
 
@@ -39,43 +55,64 @@ class MarkdownHeadingComponent {
     var componentWidth: Float64
 
     /**
-     * 储存的PixelMap，最后需要释放
+     * 脚注点击事件
      */
-    var listPixelMap: ArrayList<?PixelMap> = ArrayList<?PixelMap>()
+    var fontCallback: (String) -> Unit
 
     /**
-     * 异步加载的图片数据
+     * 是否全量加载 - true：全量加载，fasle：增量加载
      */
-    @State
-    var arrayListPixelMap: ObservedArrayList<ImageData> = ObservedArrayList<ImageData>()
+    var isFull: Bool
 
     /**
-     * 线程列表
+     * 缓存的标题控件列表
+     */
+    var headingComponents: ArrayList<MarkdownHeadingComponent>
+
+    /**
+     * 懒加载数据源
      */
     @State
-    var futs: ArrayList<?Future<Unit>> = ArrayList<?Future<Unit>>()
+    var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+
+    /**
+     * 块引用背景颜色
+     */
+    var blockQuoteBackGroupClor: Option<Color> = Option<Color>.None
+
+    protected override func aboutToAppear(): Unit {
+        // 初始化刷新数据
+        refreshData(nodeViews, level)
+        // 缓存当前控件
+        headingComponents.append(this)
+        // 清除缓存数据
+        nodeViews.clear()
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        // 清除当前控件
+        headingComponents.removeIf(
+            {
+                predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                    true
+                } else {
+                    false
+                }
+            })
+    }
 
     func build() {
         Column() {
             // 标题内容
             headingTitleComponent()
 
-            // TODO 图片单独用image处理,图文混排暂时未处理
-            ForEach(
-                headingNodeView.children,
-                itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is ImgVideo) {
-                        // 视频图片
-                        headingVideoComponent((item.node as ImgVideo)())
-                    }
-                }
-            )
-
             // 一级二级标题是否显示下划线
-            if ((headingNodeView.node as Heading)().getLevel() == 1 || (headingNodeView.node as Heading)().getLevel() == 2) {
-                if (markdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {
-                    headingDividerComponent()
-                }
+            if ((level == 1 || level == 2) && markdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {
+                Divider()
+                    // 设置分割线颜色
+                    .color(markdownConfiguration.markdownTheme.headingBreakColor)
+                    // 设置分割线宽度
+                    .strokeWidth(markdownConfiguration.markdownTheme.headingBreakHeight)
             }
         }
         // 设置元素内容的对齐方式
@@ -89,252 +126,110 @@ class MarkdownHeadingComponent {
     }
 
     /**
-     * 文本
-     */
-    @Builder
-    func headingTextComponent(nodeView: NodeView) {
-        // 设置文本内容
-        Span(spanText(nodeView))
-            // 设置文本的字体列表
-            .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
-            // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, (headingNodeView.node as Heading)().getLevel()))
-            // 设置文本的字体粗细
-            .fontWeight(spanFontWeight(nodeView, true))
-            // 设置文本的字体样式
-            .fontStyle(spanFontStyle(nodeView))
-            // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
-            // 设置文本字符间距
-            .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
-            // 设置文本装饰线样式及其颜色
-            .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
-            // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
-    }
-
-    /**
-     * 内联代码
-     */
-    @Builder
-    func headingCodeComponent(nodeView: NodeView) {
-        // 设置文本内容
-        Span(spanText(nodeView))
-            // 设置文本的字体列表
-            .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, true))
-            // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView,true, markdownConfiguration.markdownTheme, true, 0))
-            // 设置文本的字体粗细
-            .fontWeight(spanFontWeight(nodeView, true))
-            // 设置文本的字体样式
-            .fontStyle(spanFontStyle(nodeView))
-            // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true))
-            // 设置文本字符间距
-            .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
-            // 设置文本装饰线样式及其颜色
-            .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
-            // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
-    }
-
-    /**
-     * 行内数学公式
-     */
-    @Builder
-    func headingLatexMathComponent(ret: Int64) {
-        ForEach(
-            arrayListPixelMap,
-            itemGeneratorFunc: {
-                item: ImageData, idx: Int64 => if (item.ret == ret) {
-                    if (isLatexImagePixelMap(item, listPixelMap)) {
-                        ImageSpan(item.pixelMap())
-                            // 设置组件自身的高度
-                            .height(pxToVp(item.height()))
-                            // 设置组件自身的宽度
-                            .width(pxToVp(item.width()))
-                            // 设置图片的缩放类型
-                            .objectFit(ImageFit.Contain)
-                            // 设置约束尺寸
-                            .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
-                            // 点击动作触发该方法调用
-                            .onClick {evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px, markdownConfiguration.latexImageCallback)}
-                    }
-                }
-            }
-        )
-    }
-
-    /**
-     * 视频
-     */
-    @Builder
-    func headingVideoComponent(imgVideo: ImgVideo) {
-        MarkdownVideoComponent(imgVideo: imgVideo, markdownConfiguration: markdownConfiguration)
-    }
-
-    /**
-     * 图片
-     */
-    @Builder
-    func headingImageSpanPixelMapComponent(ret: Int64, destination: String, imageType: Int64, picStyleObj: ?PicStyleObj) {
-        ForEach(
-            arrayListPixelMap,
-            itemGeneratorFunc: {
-                item: ImageData, idx: Int64 =>
-                    if (item.ret == ret && imageType == 1) {
-                        if (isImagePixelMap(item, listPixelMap)) {
-                            ImageSpan(item.pixelMap())
-                                // 设置组件自身的高度
-                                .height(pxToVp(item.height()))
-                                // 设置组件自身的宽度
-                                .width(pxToVp(item.width()))
-                                // 设置图片的缩放类型
-                                .objectFit(ImageFit.Contain)
-                                // 设置约束尺寸
-                                .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
-                                // 图片的点击事件
-                                .onClick {evt => imageOnClick(destination, markdownConfiguration.imageCallback)}
-                        }
-                    } else if (item.ret == ret && item.height.isSome()){
-                        ImageSpan(destination)
-                            // 设置组件自身的高度
-                            .height(pxToVp(item.height()))
-                            // 设置组件自身的宽度
-                            .width(pxToVp(item.width()))
-                            // 设置图片的缩放类型
-                            .objectFit(ImageFit.Contain)
-                            // 设置约束尺寸
-                            .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
-                            // 图片的点击事件
-                            .onClick {evt => imageOnClick(destination, markdownConfiguration.imageCallback)}
-                    }
-            }
-        )
-    }
-
-    /**
-     * 图片
-     */
-    @Builder
-    func headingImageSpanComponent(commonmarkImage: CommonmarkImage, idx: Int64) {
-        if (commonmarkImage.getDestination().startsWith("file:")) {
-            // 沙盒图片
-            headingImageSpanPixelMapComponent(filesPixelmap(commonmarkImage.getDestination(), idx ),
-                commonmarkImage.getDestination(),0, Option<PicStyleObj>.None)
-        } else if (commonmarkImage.getDestination().startsWith("./")) {
-            // rawfile图片
-            headingImageSpanPixelMapComponent(localRowImageToPixelMap(commonmarkImage.getDestination(), idx),
-                commonmarkImage.getDestination(),1, Option<PicStyleObj>.None)
-        } else if (commonmarkImage.getDestination().toAsciiLower().startsWith("http") ||
-            commonmarkImage.getDestination().toAsciiLower().startsWith("ftp")) {
-            // 网络图片
-            headingImageSpanPixelMapComponent(httpImageToPixelMap(commonmarkImage.getDestination(), idx),
-                commonmarkImage.getDestination(), 2, Option<PicStyleObj>.None)
-        }
-    }
-
-    /**
-     * 图片
-     */
-    @Builder
-    func headingImageSpanStyleComponent(commonmarkImage: StyleImage, picStyleObj: PicStyleObj, idx: Int64) {
-        if (commonmarkImage.getDestination().startsWith("file:")) {
-            // 沙盒图片
-            headingImageSpanPixelMapComponent(filesPixelmapStyle(commonmarkImage.getDestination(), idx,picStyleObj),
-                commonmarkImage.getDestination(),0,picStyleObj)
-        } else if (commonmarkImage.getDestination().startsWith("./")) {
-            // rawfile图片
-            headingImageSpanPixelMapComponent(localRowImageToPixelMapStyle(commonmarkImage.getDestination(), idx,picStyleObj),
-                commonmarkImage.getDestination(),1,picStyleObj)
-        } else if (commonmarkImage.getDestination().toAsciiLower().startsWith("http") ||
-            commonmarkImage.getDestination().toAsciiLower().startsWith("ftp")) {
-            // 网络图片
-            headingImageSpanPixelMapComponent(httpImageToPixelMapStyle(commonmarkImage.getDestination(), idx,picStyleObj),
-                commonmarkImage.getDestination(), 2,picStyleObj)
-        }
-    }
-
-    /**
-     * 图片
-     */
-    @Builder
-    func headingHtmlImageSpanComponent(imageHtmlNode: ImageHtmlNode, idx: Int64) {
-        if (imageHtmlNode.getDestination().startsWith("file:")) {
-            // 沙盒图片
-            headingImageSpanPixelMapComponent(filesPixelmapStyle(imageHtmlNode.getDestination(), idx,toPicStyleObj(imageHtmlNode)),
-                imageHtmlNode.getDestination(),0,toPicStyleObj(imageHtmlNode))
-        } else if (imageHtmlNode.getDestination().startsWith("./")) {
-            // rawfile图片
-            headingImageSpanPixelMapComponent(localRowImageToPixelMapStyle(imageHtmlNode.getDestination(), idx,toPicStyleObj(imageHtmlNode)),
-                imageHtmlNode.getDestination(),1,toPicStyleObj(imageHtmlNode))
-        } else if (imageHtmlNode.getDestination().toAsciiLower().startsWith("http") ||
-            imageHtmlNode.getDestination().toAsciiLower().startsWith("ftp")) {
-            // 网络图片
-            headingImageSpanPixelMapComponent(httpImageToPixelMapStyle(imageHtmlNode.getDestination(), idx,toPicStyleObj(imageHtmlNode)),
-                imageHtmlNode.getDestination(), 2,toPicStyleObj(imageHtmlNode))
-        }
-    }
-
-    func toPicStyleObj(imageHtmlNode: ImageHtmlNode):PicStyleObj{
-        let picStyleObj: PicStyleObj = PicStyleObj()
-        if(let Some(v)<- imageHtmlNode.getWidth()){
-            picStyleObj.width = Float64.parse(v).px
-        }
-        if(let Some(v)<- imageHtmlNode.getHeight()){
-            picStyleObj.height = Float64.parse(v).px
-        }
-        return picStyleObj
-    }
-
-    /**
-     * 分割线
-     */
-    @Builder
-    func headingDividerComponent() {
-        Divider()
-            // 设置分割线颜色
-            .color(markdownConfiguration.markdownTheme.headingBreakColor)
-            // 设置分割线宽度
-            .strokeWidth(markdownConfiguration.markdownTheme.headingBreakHeight)
-    }
-
-    /**
      * 标题文字内容
      */
     @Builder
     func headingTitleComponent() {
         Text() {
             ForEach(
-                headingNodeView.children,
+                nodeViewList,
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        headingTextComponent(item)
+                        headingTextComponent(item, markdownConfiguration, level, fontCallback)
+                    } else if (item.node is Footnote) {
+                        // 脚注
+                        headingFootnoteComponent(item, markdownConfiguration, level, fontCallback)
                     } else if (item.node is Code) {
                         // 内联代码
-                        headingCodeComponent(item)
+                        headingCodeComponent(item, markdownConfiguration)
+                    } else if (item.node is CommonmarkLink) {
+                        // 链接
+                        if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
+                                if ((item.node
+                                    .getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
+                                    MarkdownLinkRectImageComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownConfiguration.markdownTheme.linkRectImageBackGroupColor)
+                                    )
+                                } else {
+                                    MarkdownLinkCircleImageComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownConfiguration.markdownTheme.linkCircleImageBackGroupColor)
+                                    )
+                                }
+                            }
+                        } else {
+                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
+                                MarkdownLinkRectToolImageComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
+                                    strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                    strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
+                                    backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownConfiguration.markdownTheme.linkRectToolImageBackGroupColor)
+                                )
+                            }
+                        }
                     } else if (item.node is HardLineBreak) {
                         // 硬换行
                         Span("\n")
                     } else if (item.node is SoftLineBreak) {
                         // 软换行
                         Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
-                    } else if (item.node is ImgVideo) {
-                        // TODO 视频节点
-                        Span("")
-                    } else if (item.node is StyleImage) {
-                        // 图片Style节点
-                        headingImageSpanStyleComponent((item.node as StyleImage)(),parsePicStyle((item.node as StyleImage)().styles, markdownConfiguration, componentWidth), idx)
-                    } else if (item.node is CommonmarkImage) {
-                        // 图片节点
-                        headingImageSpanComponent((item.node as CommonmarkImage)(), idx)
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
-                        headingLatexMathComponent(latexMathImagePixelmap((item.node as LatexMathNode)().latex, idx))
-                    } else if (item.node is ImageHtmlNode){
+                        MarkdownLatexImageSpanComponent(
+                            markdownConfiguration: markdownConfiguration,
+                            componentWidth: componentWidth,
+                            strLatexMath: (item.node as LatexMathNode)().latex,
+                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownConfiguration.markdownTheme.latexMathBackGroupColor)
+                        )
+                    } else if (item.node is ImageHtmlNode) {
                         // HTML图片
-                        headingHtmlImageSpanComponent((item.node as ImageHtmlNode)(), idx)
+                        MarkdownHtmlImageSpanComponent(
+                            markdownConfiguration: markdownConfiguration,
+                            destination: (item.node as ImageHtmlNode)().getDestination(),
+                            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                                componentWidth:componentWidth
+                        )
+                    } else if (item.node is StyleImage) {
+                        //  图片Style节点
+                        if((item.node as StyleImage)().getDestination().startsWith("./")){
+                            MarkdownImageStyleSpanRawFileComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                destination: (item.node as StyleImage)().getDestination(),
+                                picStyle: (item.node as StyleImage)().styles,
+                                componentWidth:componentWidth
+                            )
+                        }else{
+                            MarkdownImageStyleSpanComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                destination: (item.node as StyleImage)().getDestination(),
+                                picStyle: (item.node as StyleImage)().styles,
+                                componentWidth:componentWidth
+                            )
+                        }
+                    } else if (item.node is CommonmarkImage) {
+                        // 图片节点
+                        if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                            MarkdownImageSpanRawFileComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                componentWidth:componentWidth
+                            )
+                        }else{
+                            MarkdownImageSpanComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                componentWidth:componentWidth
+                            )
+                        }
                     } else {
                         // TODO 其他节点
                         Span("")
@@ -346,122 +241,73 @@ class MarkdownHeadingComponent {
         .textAlign(TextAlign.Start)
         // 设置组件自身的宽度
         .width(100.percent)
-        // 组件卸载消失时触发此回调
-        .onDisAppear({=>
-            threadFutureCancel(futs)
-            delPixelMap(listPixelMap)
-        })
+        // 设置行高
+        .lineHeight(tableLineHeight())
+    }
+
+    func tableLineHeight(): Float64 {
+        return match (level) {
+            case 1 => markdownConfiguration.markdownTheme.headingTextLineheight1
+            case 2 => markdownConfiguration.markdownTheme.headingTextLineheight2
+            case 3 => markdownConfiguration.markdownTheme.headingTextLineheight3
+            case 4 => markdownConfiguration.markdownTheme.headingTextLineheight4
+            case 5 => markdownConfiguration.markdownTheme.headingTextLineheight5
+            case 6 => markdownConfiguration.markdownTheme.headingTextLineheight6
+            case _ => markdownConfiguration.markdownTheme.headingTextLineheight6
+        }
     }
 
     /**
-     * 数学公式数据处理 - 行内数学公式
+     * 数据刷新
      */
-    func latexMathImagePixelmap(strLatexMath: String, idx: Int64): Int64 {
-        let callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit = {
-            pixelMap, height, width, arr => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width,arrayUint8: arr))
+    public func refreshData(refreshNodeViews: ArrayList<NodeView>, level: Int64): Unit {
+        this.level = level // 等级
+        let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
+        let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
+        if (isFull) {
+            // 全量加载
+            nodeViewList.clear()
+            nodeViewList.appendAll(refreshNodeViews)
+        } else {
+            // 增量加载
+            if (refreshNodeViewSize == 0) {
+                return
+            }
+            if (refreshNodeViewSize > nodeViewListSize) {
+                // 刷新数据的长度大于页面数据长度，需要添加数据
+                if (nodeViewListSize != 0) {
+                    // 更新页面最后一条数据
+                    nodeViewList[nodeViewListSize - 1] = refreshNodeViews[nodeViewListSize - 1]
+                }
+                // 循环添加所有新增数据
+                for (i in refreshNodeViewSize - nodeViewListSize..0 : -1) {
+                    nodeViewList.append(refreshNodeViews[refreshNodeViewSize - i])
+                }
+            } else if (refreshNodeViewSize == nodeViewListSize) {
+                // 刷新数据的长度等于页面数据长度，需要更新当前数据
+                // 有可能还需要刷新倒数第二条数据内容
+                if (refreshNodeViewSize > 2) {
+                    if (refreshNodeViews[refreshNodeViewSize - 2].node.getNodeType() != nodeViewList[nodeViewListSize - 2].node.getNodeType()) {
+                        nodeViewList[refreshNodeViewSize - 2] = refreshNodeViews[refreshNodeViewSize - 2]
+                    }
+                    if ((refreshNodeViews[refreshNodeViewSize - 2].node is CommonmarkText) && (nodeViewList[nodeViewListSize - 2].node is CommonmarkText)) {
+                        if ((refreshNodeViews[refreshNodeViewSize - 2].node as CommonmarkText)().getLiteral() != (nodeViewList[nodeViewListSize - 2].node as CommonmarkText)().getLiteral()) {
+                            nodeViewList[refreshNodeViewSize - 2] = refreshNodeViews[refreshNodeViewSize - 2]
+                        }
+                    }
+                }
+                // 刷新最后一条数据
+                nodeViewList[nodeViewListSize - 1] = refreshNodeViews[refreshNodeViewSize - 1]
+            } else {
+                // 刷新数据小于页面数据长度，需要删除数据
+                // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
+                nodeViewList[refreshNodeViewSize - 1] = refreshNodeViews[refreshNodeViewSize - 1]
+                // 循环删除所有多余数据
+                for (i in 1..=(nodeViewListSize - refreshNodeViewSize)) {
+                    nodeViewList.remove(nodeViewListSize - i)
+                }
             }
         }
-        let fut = MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration.markdownTheme.resPath,
-            markdownConfiguration, componentWidth, callback)
-        futs.append(fut)
-        return idx
-    }
-
-    /**
-     * 图片数据处理 - 本地沙盒图片
-     */
-    func filesPixelmap(destination: String, idx: Int64): Int64 {
-        let callback: (?Float64, ?Float64) -> Unit = {
-            width, height => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
-            }
-        }
-        let fut = imageSpanToPixelmap(destination, componentWidth, callback)
-        futs.append(fut)
-        return idx
-    }
-
-    /**
-     * 图片数据处理 - 本地rawfile图片
-     */
-    func localRowImageToPixelMap(destination: String, idx: Int64): Int64 {
-        let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
-            pixelMap, width, height => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
-            }
-        }
-        let fut = rawfileToPixelmap(destination, markdownConfiguration.markdownTheme.abilityContext, componentWidth, callback)
-        futs.append(fut)
-        return idx
-    }
-
-    /**
-     * 图片数据处理 - 网络图片
-     */
-    func httpImageToPixelMap(destination: String, idx: Int64): Int64 {
-        let callback: (?Float64, ?Float64) -> Unit = {
-            width, height => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
-            }
-        }
-        let fut = getImageFromHttpClient(destination, componentWidth, callback)
-        futs.append(fut)
-        return idx
-    }
-
-    /**
-     * 图片数据处理 - 本地沙盒图片
-     */
-    func filesPixelmapStyle(destination: String, idx: Int64, picStyleObj: PicStyleObj): Int64 {
-        let callback: (?Float64, ?Float64) -> Unit = {
-            width, height => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
-            }
-        }
-        let fut = imageSpanToPixelmapStyle(destination, componentWidth,length2Float64(picStyleObj.width),length2Float64(picStyleObj.height),callback)
-        futs.append(fut)
-        return idx
-    }
-
-    /**
-     * 图片数据处理 - 本地rawfile图片
-     */
-    func localRowImageToPixelMapStyle(destination: String, idx: Int64, picStyleObj: PicStyleObj): Int64 {
-        let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
-            pixelMap, width, height => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, pixelMap: pixelMap, height: height, width: width))
-            }
-        }
-        let fut = rawfileToPixelmapStyle(destination, markdownConfiguration.markdownTheme.abilityContext, componentWidth,length2Float64(picStyleObj.width),length2Float64(picStyleObj.height), callback)
-        futs.append(fut)
-        return idx
-    }
-
-    /**
-     * 图片数据处理 - 网络图片
-     */
-    func httpImageToPixelMapStyle(destination: String, idx: Int64, picStyleObj: PicStyleObj): Int64 {
-        let callback: (?Float64, ?Float64) -> Unit = {
-            width, height => launch {
-                arrayListPixelMap.append(ImageData(ret: idx, height: height, width: width))
-            }
-        }
-        let fut = getImageFromHttpClientStyle(destination, componentWidth,length2Float64(picStyleObj.width),length2Float64(picStyleObj.height), callback)
-        futs.append(fut)
-        return idx
-    }
-
-    func length2Float64(length:?Length):?Float64{
-        if(let Some(v) <- length){
-            return match(v.unitType){
-                case LengthType.vp => vp2px(v)().value
-                case LengthType.px => v.value
-                case LengthType.percent => (v.value / 1.0) * componentWidth
-                case _ => v.value
-            }
-        }else {
-            return None
-        }
+        size = nodeViewList.size // 更新列表长度
     }
 }

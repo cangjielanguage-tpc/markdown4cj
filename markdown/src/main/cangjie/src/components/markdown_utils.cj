@@ -8,6 +8,20 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
+let COLOR_191919: Color = Color(0x191919)
+let COLOR_0000FF: Color = Color(0x0000FF)
+let COLOR_FF0000: Color = Color(0xFF0000)
+let COLOR_000000: Color = Color(0x000000)
+let COLOR_00000000: Color = Color(0x00000000)
+let COLOR_FF000000: Color = Color(0xFF000000)
+let COLOR_FFFFFF: Color = Color(0xFFFFFF)
+let COLOR_FFFFFFFF: Color = Color(0xFFFFFFFF)
+let COLOR_00FFFFFF: Color = Color(0x00FFFFFF)
+let COLOR_E0E0E0: Color = Color(0xE0E0E0)
+let COLOR_FFE0E0E0: Color = Color(0xFFE0E0E0)
+let COLOR_333333: Color = Color(0x333333)
+let null:NodeView = unsafe{zeroValue()}
+
 func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<String>, ArrayList<String>) {
     var strText: ArrayList<String> = ArrayList<String>()
     var strInfoText: ArrayList<String> = ArrayList<String>()
@@ -40,6 +54,9 @@ func spanText(nodeView: NodeView): String {
     } else if (nodeView.node is HeadLink) {
         // TOC列表，title不可能为None
         return (nodeView.node as HeadLink)().getTitle()()
+    } else if (nodeView.node is Footnote) {
+        // 脚注
+        return (nodeView.node as Footnote)().noteid
     } else {
         return ""
     }
@@ -77,22 +94,22 @@ func spanFontFamily(isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool): 
  * @param level 几级标题
  * @return 返回需要显示的字体大小
  */
-func spanFontSize(nodeView: NodeView,isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
+func spanFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
     if (nodeView.props.isSome() && nodeView.props().get("FontNode").isSome()) {
-        try{
+        try {
             let fontNode: FontNode = (nodeView.props().get("FontNode")() as FontNode)()
-            let sizeString:?String = fontNode.getSize()
-            if(sizeString.isSome()){
-                let sizeInt64:Int64 = Int64.parse(sizeString())
+            let sizeString: ?String = fontNode.getSize()
+            if (sizeString.isSome()) {
+                let sizeInt64: Int64 = Int64.parse(sizeString())
                 return Float64(sizeInt64)
             } else {
-                return spanTextFontSize(isCode,markdownTheme,isTitle,level)
+                return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
             }
-        } catch (e:Exception){
-            return spanTextFontSize(isCode,markdownTheme,isTitle,level)
+        } catch (e: Exception) {
+            return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
         }
-    }else{
-        return spanTextFontSize(isCode,markdownTheme,isTitle,level)
+    } else {
+        return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
     }
 }
 
@@ -105,15 +122,19 @@ func spanFontSize(nodeView: NodeView,isCode: Bool, markdownTheme: MarkdownTheme,
  * @param level 几级标题
  * @return 返回需要显示的字体大小
  */
-func spanTextFontSize(isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
+func spanTextFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
     if (isCode) {
         // 内联代码情况设置内联代码字体大小
         return markdownTheme.codeTextSize
     } else {
-        if (isTitle) {
-            return markdownTheme.headingTextSizeMultipliers[level - 1]
+        if(nodeView.link.isSome()){
+            return markdownTheme.linkSize
         } else {
-            return markdownTheme.paragraphTextSize
+            if (isTitle) {
+                return markdownTheme.headingTextSizeMultipliers[level - 1]
+            } else {
+                return markdownTheme.paragraphTextSize
+            }
         }
     }
 }
@@ -128,10 +149,10 @@ func spanTextFontSize(isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool,
 func spanFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
     if (isTitle) {
         // 所有标题默认加粗
-        return FontWeight.W900
+        return FontWeight.W600
     } else {
-        if (nodeView.strongEmphasis.isSome()) {
-            return FontWeight.W900
+        if (nodeView.strongEmphasis) {
+            return FontWeight.W600
         } else {
             return FontWeight.W400
         }
@@ -146,7 +167,7 @@ func spanFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
  */
 func spanFontStyle(nodeView: NodeView): FontStyle {
     // 是否需要斜体
-    return if (nodeView.emphasis.isSome()) {
+    return if (nodeView.emphasis) {
         FontStyle.Italic
     } else {
         FontStyle.Normal
@@ -164,20 +185,20 @@ func spanFontStyle(nodeView: NodeView): FontStyle {
  */
 func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isHeading: Bool): Color {
     if (nodeView.props.isSome() && nodeView.props().get("FontNode").isSome()) {
-        try{
+        try {
             let fontNode: FontNode = (nodeView.props().get("FontNode")() as FontNode)()
-            let colorString:?String = fontNode.getColor()
-            if(colorString.isSome()){
-                let colorUInt32:UInt32 = UInt32.parse(colorString().replace("#","0x"))
+            let colorString: ?String = fontNode.getColor()
+            if (colorString.isSome()) {
+                let colorUInt32: UInt32 = UInt32.parse(colorString().replace("#", "0x"))
                 return Color(colorUInt32)
             } else {
-                return spanTextFontColor(nodeView,isCode,markdownTheme,isHeading)
+                return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
             }
-        } catch (e:Exception){
-            return spanTextFontColor(nodeView,isCode,markdownTheme,isHeading)
+        } catch (e: Exception) {
+            return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
         }
-    }else{
-        return spanTextFontColor(nodeView,isCode,markdownTheme,isHeading)
+    } else {
+        return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
     }
 }
 
@@ -191,7 +212,7 @@ func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownThem
  * @return 返回需要显示的字体颜色
  */
 func spanTextFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isHeading: Bool): Color {
-    if (nodeView.link.isSome() || nodeView.node is HeadLink) {
+    if (nodeView.link.isSome() || nodeView.node is HeadLink || nodeView.node is Footnote) {
         return markdownTheme.linkColor
     } else {
         if (isCode) {
@@ -215,19 +236,19 @@ func spanTextFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: Markdown
  */
 func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDecorationType, Color) {
     // 是否是链接并且样式是否设置下划线
-    if (nodeView.link.isSome() && markdownTheme.isLinkUnderlined) {
+    if ((nodeView.link.isSome() || nodeView.node is Footnote) && markdownTheme.isLinkUnderlined) {
         // 是否是删除线
         if (nodeView.props.isSome() && nodeView.props().get("strikethrough").isSome()) {
             // TODO 需要同时设置下划线和中划线
-            return (TextDecorationType.LineThrough, Color(0x191919))
+            return (TextDecorationType.LineThrough, COLOR_191919)
         }
         return (TextDecorationType.Underline, markdownTheme.linkColor)
     } else {
         // 是否是删除线
         if (nodeView.props.isSome() && nodeView.props().get("strikethrough").isSome()) {
-            return (TextDecorationType.LineThrough, Color(0x191919))
+            return (TextDecorationType.LineThrough, COLOR_191919)
         }
-        return (TextDecorationType.None, Color(0x191919))
+        return (TextDecorationType.None, COLOR_191919)
     }
 }
 
@@ -359,6 +380,22 @@ func codeTextColor(item: PrismNodesParseRes, markdownTheme: MarkdownTheme, prism
 }
 
 /**
+ * 代码块文字颜色
+ *
+ * @param item PrismNodesParseRes
+ * @param markdownTheme markdown基础样式
+ * @param prismTheme 代码高亮样式
+ * @return 文字颜色
+ */
+func indentedCodeTextColor(markdownTheme: MarkdownTheme, prismTheme: PrismTheme): Color {
+    if (markdownTheme.codeBlockTextColor.isSome()) {
+        return markdownTheme.codeBlockTextColor()
+    } else {
+        return prismTheme.textColor()
+    }
+}
+
+/**
  * 获取第一层控件宽度（屏幕宽度 - padding宽度）
  *
  * @param screenWidth 屏幕宽度 - 单位px
@@ -391,6 +428,22 @@ func widthVpToPx(screenWidth: Int32, imagePadding: Int64): Float64 {
         0.0
     }
     return width
+}
+
+/**
+ * 前缀显示文本内容
+ *
+ * @param item NodeView
+ * @param isBullet 是否是无序列表
+ * @return 返回前缀文本内容
+ */
+func listPrefixLineHeight(isBullet: Bool, markdownConfiguration: MarkdownConfiguration): Float64 {
+    if (isBullet) {
+        // 有序列表
+        return markdownConfiguration.markdownTheme.orderedListItemLineheight
+    } else {
+        return markdownConfiguration.markdownTheme.bulletListItemLineheight
+    }
 }
 
 /**
@@ -500,7 +553,7 @@ func taskSelect(item: NodeView): Bool {
 func solidCircleToUnicode(): Rune {
     // ●
     let solidDots: Rune = '\u{25CF}'
-    return solidDots;
+    return solidDots
 }
 
 /**
@@ -511,7 +564,7 @@ func solidCircleToUnicode(): Rune {
 func hollowCircleToUnicode(): Rune {
     // ○
     let hollowCircle: Rune = '\u{25CB}'
-    return hollowCircle;
+    return hollowCircle
 }
 
 /**
@@ -522,7 +575,7 @@ func hollowCircleToUnicode(): Rune {
 func solidSquareToUnicode(): Rune {
     // ■
     let solidSquare: Rune = '\u{25A0}'
-    return solidSquare;
+    return solidSquare
 }
 
 /**
@@ -566,15 +619,66 @@ func parseColumnCount(tableBlockView: NodeView): String {
  * @param rowCount 第几行
  * @return 一行的背景颜色
  */
-func renderTableCellColor(tableCell: TableCell, tableTheme: TableTheme, rowCount: Int64): Color {
-    var row: Int64 = rowCount
+func renderTableCellColor(tableCell: TableCell, markdownTheme: MarkdownTheme, rowCount: Int64): Color {
     if (tableCell.isHeader()) {
-        return tableTheme.tableHeaderRowBackgroundColor
+        return markdownTheme.tableHeaderRowBackgroundColor
     }
-    if (row % 2 == 0) {
-        return tableTheme.tableOddRowBackgroundColor
+    if (rowCount % 2 == 0) {
+        return markdownTheme.tableOddRowBackgroundColor
     }
-    return tableTheme.tableEvenRowBackgroundColor
+    return markdownTheme.tableEvenRowBackgroundColor
+}
+
+/**
+ * 渲染 tableCell 的颜色
+ *
+ * @param tableCell TableCell
+ * @param tableTheme 表格样式
+ * @param rowCount 第几行
+ * @return 一行的背景颜色
+ */
+func renderTableCellColor(isHeader: Bool, markdownTheme: MarkdownTheme, rowCount: Int64): Color {
+    if (isHeader) {
+        return markdownTheme.tableHeaderRowBackgroundColor
+    }
+    if (rowCount % 2 == 0) {
+        return markdownTheme.tableOddRowBackgroundColor
+    }
+    return markdownTheme.tableEvenRowBackgroundColor
+}
+
+/**
+ * 获取 tableCell 的对其方式
+ *
+ * @param tableCell TableCell
+ * @return 对其方式
+ */
+func renderTableCellAlign(alignment: ?TableAlignment): TextAlign {
+    if (let Some(v) <- alignment) {
+        match (v) {
+            case LEFT => return TextAlign.Start
+            case CENTER => return TextAlign.Center
+            case RIGHT => return TextAlign.End
+        }
+    }
+    return TextAlign.Start
+}
+
+/**
+ * 获取 tableCell 的对其方式
+ *
+ * @param tableCell TableCell
+ * @return 对其方式
+ */
+func renderTableCellColumnAlign(alignment: ?TableAlignment): HorizontalAlign {
+    if (let Some(v) <- alignment) {
+        match (v) {
+            case LEFT => return HorizontalAlign.Start
+            case CENTER => return HorizontalAlign.Center
+            case RIGHT => return HorizontalAlign.End
+        }
+    }
+    return HorizontalAlign.Start
 }
 
 /**
@@ -613,15 +717,15 @@ func styleImageRadius(borderRadius: ?Length): Length {
  *
  * @param picStyle 图片样式集合
  * @param markdownConfiguration markdownConfiguration
- * @param componentWidth 父布局控件宽度 - 单位vp
+ * @param componentWidth 父布局控件宽度 - 单位px
  * @return PicStyleObj对象
  */
-func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownConfiguration, componentWidthPx: Float64): PicStyleObj {
+func parsePicStyle(picStyle: ArrayList<String>, componentWidth: Float64): PicStyleObj {
     let picStyleObj: PicStyleObj = PicStyleObj()
     if (picStyle.isEmpty()) {
         return picStyleObj
     }
-    let componentWidth = px2vp(componentWidthPx.px)().value
+    let componentWidthVp: Float64 = px2vp(componentWidth.px)().value
     var index = 0
     while (index < picStyle.size) {
         try {
@@ -634,16 +738,16 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownC
             if (style[..7] == ":width=") {
                 let value = style[7..]
                 if (value.size <= 1) {
-                    let picStyleObjWidth: Length = Length(Int64.parse(value), unitType: LengthType.vp)
-                    picStyleObj.width = if (picStyleObjWidth.value > componentWidth) {
-                        componentWidth.vp
+                    let picStyleObjWidth: Length = Int64.parse(value).vp
+                    picStyleObj.width = if (picStyleObjWidth.value > componentWidthVp) {
+                        componentWidthVp.vp
                     } else {
                         picStyleObjWidth
                     }
                 }
                 if (value[value.size - 2..] == "px") {
-                    let picStyleObjWidth: Length = Length(Int64.parse(value[..value.size - 2]), unitType: LengthType.px)
-                    let componentWidthLength: ?Length = vp2px(componentWidth.vp)
+                    let picStyleObjWidth: Length = Int64.parse(value[..value.size - 2]).px
+                    let componentWidthLength: ?Length = vp2px(componentWidthVp.vp)
                     if (let Some(v) <- componentWidthLength) {
                         picStyleObj.width = if (picStyleObjWidth.value > v.value) {
                             v
@@ -656,12 +760,14 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownC
                 } else if (value[value.size - 1..] == "%") {
                     let opt = Int64.parse(value[..value.size - 1])
                     if (opt <= 100) {
-                        picStyleObj.width = Length(opt, unitType: LengthType.percent)
+                        picStyleObj.width = opt.percent
+                    } else {
+                        picStyleObj.width = 100.percent
                     }
                 } else {
-                    let picStyleObjWidth: Length = Length(Int64.parse(value), unitType: LengthType.vp)
-                    picStyleObj.width = if (picStyleObjWidth.value > componentWidth) {
-                        componentWidth.vp
+                    let picStyleObjWidth: Length = Int64.parse(value).vp
+                    picStyleObj.width = if (picStyleObjWidth.value > componentWidthVp) {
+                        componentWidthVp.vp
                     } else {
                         picStyleObjWidth
                     }
@@ -669,17 +775,19 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownC
             } else if (style[..8] == ":height=") {
                 let value = style[8..]
                 if (value.size <= 1) {
-                    picStyleObj.height = Length(Int64.parse(value), unitType: LengthType.vp)
+                    picStyleObj.height = Int64.parse(value).vp
                 }
                 if (value[value.size - 2..] == "px") {
-                    picStyleObj.height = Length(Int64.parse(value[..value.size - 2]), unitType: LengthType.px)
+                    picStyleObj.height = Int64.parse(value[..value.size - 2]).px
                 } else if (value[value.size - 1..] == "%") {
                     let opt = Int64.parse(value[..value.size - 1])
                     if (opt <= 100) {
-                        picStyleObj.height = Length(opt, unitType: LengthType.percent)
+                        picStyleObj.height = opt.percent
+                    }else{
+                        picStyleObj.height = 100.percent
                     }
                 } else {
-                    picStyleObj.height = Length(Int64.parse(value), unitType: LengthType.vp)
+                    picStyleObj.height = Int64.parse(value).vp
                 }
             } else if (style[..7] == ":align=") {
                 let value = style[7..]
@@ -691,9 +799,9 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownC
                 }
             } else if (style.size > 15 && style[..15] == ":border-radius=") {
                 let value = style[15..style.size - 2]
-                picStyleObj.borderRadius = Length(Int64.parse(value), unitType: LengthType.px)
+                picStyleObj.borderRadius = Int64.parse(value).px
             } else if (style[..7] == ":style=") {
-                for (s in style[7..].split(";")) {
+                for (s in style[7..].split("")) {
                     picStyle.append(":${s.replace(":","=")}")
                 }
             }
@@ -703,46 +811,128 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownC
 }
 
 /**
- * 释放PixelMap
+ * 获取代码内容和代码类型
+ *
+ * @param nodeView NodeView
+ * @return 代码内容和代码类型
  */
-func delPixelMap(listPixelMap: ArrayList<?PixelMap>) {
-    for (item in listPixelMap) {
-        delPixelMap(item)
+func getCodeInfo(nodeView: NodeView): (String, ?String) {
+    return if (nodeView.node is FencedCodeBlock) {
+        ((nodeView.node as FencedCodeBlock)().getLiteral(), (nodeView.node as FencedCodeBlock)().getInfo())
+    } else if (nodeView.node is IndentedCodeBlock) {
+        ((nodeView.node as IndentedCodeBlock)().getLiteral(), None)
+    } else {
+        ("", None)
     }
-    listPixelMap.clear()
 }
 
 /**
- * 释放PixelMap
+ * 对于表格数据进行处理 - 整合处理
+ *
+ * @param nodeViews ArrayList<NodeView>
+ * @return ArrayList<NodeView>
  */
-func delPixelMap(listPixelMap: ?PixelMap) {
-    spawn {
-        if (listPixelMap.isSome()) {
-            listPixelMap().Release()
+func tableList(nodeViews: ArrayList<NodeView>):ArrayList<NodeView>{
+    let tableNodeViews = ArrayList<NodeView>()
+    for (nodeView in nodeViews) {
+        if (nodeView.node is TableBody || nodeView.node is TableHead) {
+            tableNodeViews.appendAll(nodeView.children)
+        } else if (nodeView.node is TableRow) {
+            tableNodeViews.append(nodeView)
         }
     }
+    return tableNodeViews
 }
 
 /**
- * 取消线程
+ * 将Length转换成Float64
+ *
+ * @param length ?Length
+ * @param componentWidth 控件宽度
+ * @return ?Float64
  */
-func threadFutureCancel(futs: ArrayList<?Future<Unit>>) {
-    for (fut in futs) {
-        threadFutureCancel(fut)
+func length2Float64(length: ?Length, componentWidth: Float64): ?Float64 {
+    if (let Some(v) <- length) {
+        return match (v.unitType) {
+            case LengthType.vp => vp2px(v)().value
+            case LengthType.px => v.value
+            case LengthType.percent => v.value * componentWidth
+            case _ => v.value
+        }
+    } else {
+        return None
     }
 }
 
-/**
- * 取消线程
- */
-func threadFutureCancel(fut: ?Future<Unit>) {
-    spawn {
-        if (fut.isSome()) {
-            fut().cancel()
+func getProp<T>(item: NodeView, key: String, default: T): T {
+    match (item.props?.get(key)) {
+        case Some(Some(v: T)) => v
+        case v => default
+    }
+}
+
+func indexAdd(indexList: ArrayList<Int64>,index:Int64):ArrayList<Int64>{
+    let indexListNew: ArrayList<Int64> = ArrayList<Int64>()
+    indexListNew.appendAll(indexList)
+    indexListNew.append(index)
+    return indexListNew
+}
+
+func isListItem(indexListOne: ArrayList<Int64>,indexListTwo: ArrayList<Int64>,index:Int64):Bool{
+    if(indexListTwo.size <= 0){
+        return false
+    }
+    if(indexListOne.size + 1 != indexListTwo.size || indexListTwo[indexListTwo.size-1] != index){
+        return false
+    }
+    var isBool:Bool = true
+    for(i in 0..indexListOne.size){
+        if(indexListOne[i] != indexListTwo[i]){
+            isBool = false
         }
     }
+    return isBool
 }
 
-func pxToVp(pxFloat64: Float64) :Float64{
-    return px2vp(pxFloat64.px)().value
+func urlSafeBase64Decode(v: String):String {
+    var vNew = v.replace("_", "/").replace("-", "+")
+    var arr:?Array<Byte> = fromBase64String(vNew)
+    if(arr.isNone()){
+        return ""
+    }
+    var arrStr:String = String.fromUtf8(arr.getOrThrow())
+    var regex: Regex = Regex("file-name=([^&]+)");
+    var matcher: Matcher = Matcher(regex, arrStr);
+    var matchData: ?MatchData = matcher.find()
+    match (matchData) {
+    	case Some(v) =>
+            var str: String = v.matchStr()
+            var arrSplit:Array<String> = URL.parse(str).toString().split('.')
+            if(arrSplit.size>1){
+                return arrSplit[arrSplit.size - 1].toAsciiUpper()
+            }else{
+                return ""
+            }
+        case None => return ""
+    }
+    return ""
+}
+
+func markdownbackGroupColor(blockQuoteBackGroupClor: Option<Color>, backGroupColor: Color): Color{
+    if(let Some(v) <- blockQuoteBackGroupClor){
+        return v
+    } else {
+        return backGroupColor
+    }
+}
+
+func strToFloat64(str: ?String): ?Float64 {
+    var f: ?Float64 = Option<Float64>.None
+    if (let Some(v) <- str) {
+        try {
+            f = Float64.parse(v)
+        } catch (e: IllegalArgumentException) {
+        }
+    }
+    return f
 }

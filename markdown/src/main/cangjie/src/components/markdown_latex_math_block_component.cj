@@ -9,7 +9,7 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * Markdown数学公式自定义控件
+ * Markdown数学公式自定义控件 - 单行
  */
 @Component
 class MarkdownLatexMathBlockComponent {
@@ -34,6 +34,11 @@ class MarkdownLatexMathBlockComponent {
     var latexStr: String
 
     /**
+     * 数学公式列表数据
+     */
+    var latexData: ?Array<UInt8> = Option<Array<UInt8>>.None
+
+    /**
      * 数学公式PixelMap
      */
     @State
@@ -51,62 +56,38 @@ class MarkdownLatexMathBlockComponent {
     @State
     var latexWidth: ?Float64 = Option<Float64>.None
 
-    /**
-     * 线程
-     */
-    @State
-    var fut: ?Future<Unit> = Option<Future<Unit>>.None
+    protected override func aboutToAppear(): Unit {
+        latexMathStrToPixelMap()
+    }
 
-    /**
-     * 数学公式列表数据
-     */
-    var latexData: ?Array<UInt8> = Option<Array<UInt8>>.None
+    protected override func aboutToDisappear(): Unit {
+        latexPixelMap?.Release()
+        latexPixelMap = Option<PixelMap>.None
+        latexData = Option<Array<UInt8>>.None
+    }
 
     func build() {
-        Column() {
-            latexMathTextComponent()
-        }
-        // 设置外边距属性
-        .margin(top: markdownConfiguration.markdownTheme.blockTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins)
-        // 组件挂载显示时触发此回调
-        .onAppear {=> latexMathStrToPixelMap()}
-        // 组件卸载消失时触发此回调
-        .onDisAppear({=>
-            threadFutureCancel(fut)
-            delPixelMap(latexPixelMap)
-        })
-    }
-
-    /**
-     * 数学公式解析成功
-     */
-    @Builder
-    func latexMathBlockComponent() {
-        Scroll() {
-            // 设置图片的数据源
-            Image(latexPixelMap())
-                // 设置组件自身的高度
-                .height(pxToVp(latexHeight()))
-                // 设置组件自身的宽度
-                .width(pxToVp(latexWidth()))
-                // 设置图片的缩放类型
-                .objectFit(ImageFit.Contain)
-                // 点击动作触发该方法调用
-                .onClick {evt => latexImageOnClick(latexData(), latexHeight().px, latexWidth().px, markdownConfiguration.latexImageCallback)}
-        }
-        // 设置滚动方法
-        .scrollable(ScrollDirection.Horizontal)
-        // 设置滚动条状态
-        .scrollBar(BarState.Off)
-    }
-
-    /**
-     * 数学公式
-     */
-    @Builder
-    func latexMathTextComponent() {
         if (latexPixelMap.isSome() && latexHeight.isSome() && latexWidth.isSome() && latexData.isSome()) {
-            latexMathBlockComponent()
+            Scroll() {
+                // 设置图片的数据源
+                Image(latexPixelMap())
+                    // 设置组件自身的高度
+                    .height(latexHeight().px)
+                    // 设置组件自身的宽度
+                    .width(latexWidth().px)
+                    // 设置图片的缩放类型
+                    .objectFit(ImageFit.Contain)
+                    // 点击动作触发该方法调用
+                    .onClick {
+                        evt => latexImageOnClick(latexData(), latexHeight().px, latexWidth().px, markdownConfiguration.latexImageCallback)
+                    }
+            }
+            // 设置滚动方法
+            .scrollable(ScrollDirection.Horizontal)
+            // 设置滚动条状态
+            .scrollBar(BarState.Off)
+            // 设置外边距属性
+            .margin(top: marginTop, bottom: marginBottom)
         }
     }
 
@@ -122,7 +103,6 @@ class MarkdownLatexMathBlockComponent {
                 latexData = arr
             }
         }
-        fut = MarkdownParseLatexUtil.latexMathStrToPixelMap(latexStr, markdownConfiguration.markdownTheme.resPath,
-            markdownConfiguration, callback)
+        MarkdownParseLatexUtil.latexMathStrToPixelMap(latexStr, markdownConfiguration.markdownTheme.resPath, markdownConfiguration, callback)
     }
 }

@@ -39,7 +39,7 @@ extend<T> Option<T> where T <: Equatable<T> {
 /**
  * 图片Style使用的实体类
  */
-class PicStyleObj {
+public class PicStyleObj {
     /**
      * 图片高度
      */
@@ -53,7 +53,7 @@ class PicStyleObj {
     /**
      * 对齐方式
      */
-    var align: FlexAlign = FlexAlign.Center
+    var align: FlexAlign = FlexAlign.Start
 
     /**
      * 图片圆角
@@ -86,57 +86,4 @@ public enum LatexMathColorFormat <: Equatable<LatexMathColorFormat> {
     public operator func !=(that: LatexMathColorFormat): Bool {
         return !(this == that)
     }
-}
-
-/**
- * 图片数据源
- */
-@Observed
-class ImageData {
-    /**
-     * 标识
-     */
-    @Publish
-    var ret: Int64 = -1
-
-    /**
-     * 行标识
-     */
-    @Publish
-    var retRow: Int64 = -1
-
-    /**
-     * 列标识
-     */
-    @Publish
-    var retCol: Int64 = -1
-
-    /**
-     * 表格标题头标识
-     */
-    @Publish
-    var retHead: Int64 = -1
-
-    /**
-     * 图片数据
-     */
-    @Publish
-    var pixelMap: ?PixelMap = Option<PixelMap>.None
-
-    /**
-     * 图片高度
-     */
-    @Publish
-    var height: ?Float64 = Option<Float64>.None
-
-    /**
-     * 图片宽度
-     */
-    @Publish
-    var width: ?Float64 = Option<Float64>.None
-
-    /**
-     * 图片数组数据
-     */
-    var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None
 }

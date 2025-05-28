@@ -46,8 +46,8 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r, latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat)
-                    )
+                    var g2 = Graphic2D(r,
+                        latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -96,7 +96,7 @@ class MarkdownParseLatexUtil {
      */
     static func latexMathStrToPixelMapRow(strLatexMath: String, resStr: String,
         markdownConfiguration: MarkdownConfiguration, componentWidth: Float64,
-        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit, backGroupColor: Color): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -119,12 +119,12 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r, latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat)
-                    )
+                    var g2 = Graphic2D(r,
+                        latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    r.draw(g2, markdownConfiguration.markdownTheme.latexMathBackGroupColor.toUInt32())
+                    r.draw(g2, backGroupColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -197,16 +197,4 @@ func latexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): ColorForm
         case LatexMathColorFormat.COLOR_FORMAT_RGB_565 => ColorFormat.COLOR_FORMAT_RGB_565
         case LatexMathColorFormat.COLOR_FORMAT_BGRA_8888 => ColorFormat.COLOR_FORMAT_BGRA_8888
     }
-}
-
-/**
- * 判断是否有数学公式图片数据
- */
-func isLatexImagePixelMap(imageData: ImageData, listPixelMap: ArrayList<?PixelMap>): Bool {
-    if (imageData.pixelMap.isSome() && imageData.height.isSome() && imageData.width.isSome() &&
-        imageData.arrayUint8.isSome()) {
-        listPixelMap.append(imageData.pixelMap)
-        return true
-    }
-    return false
 }

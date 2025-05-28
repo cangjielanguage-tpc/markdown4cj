@@ -9,70 +9,6 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 通过异步的方式将markdown数据解析成Node树节点列表
- *
- * @param mdStr markdown数据
- * @param markdownConfiguration MarkdownConfiguration
- * @param callback Node树节点列表回调接口
- */
-func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfiguration, callback: (ArrayList<NodeView>) -> Unit): Future<Unit>{
-    let fut: Future<Unit> = spawn {
-        var arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
-        try {
-            let markdown: Markdown = if (let Some(v) <- markdownConfiguration.markdownParser) {
-                v
-            } else {
-                Markdown.builder()
-                    // HTML插件
-                    .usePlugin(HtmlPlugin.create())
-                    // 任务列表插件
-                    .usePlugin(TaskListPlugin.create())
-                    // 删除线插件
-                    .usePlugin(StrikethroughPlugin.create())
-                    // 表格插件
-                    .usePlugin(TablePlugin.create())
-                    // 幻灯片、视频、ImageStyle插件
-                    .usePlugin(ImagePlugin.create())
-                    // 代码标签
-                    .usePlugin(CodeListPlugin.create())
-                    // 数学公式
-                    .usePlugin(LatexMathPlugin.create())
-                    // 链接
-                    .usePlugin(LinkifyPlugin.create())
-                    // TOC列表插件
-                    .usePlugin(TocPlugin.create())
-                    .build()
-            }
-            if (Thread.currentThread.hasPendingCancellation) {
-                return
-            }
-            let node: CommonmarkNode = markdown.parse(mdStr)
-            if (Thread.currentThread.hasPendingCancellation) {
-                return
-            }
-            let nodeView: NodeView = markdown.render(node)
-            arrayListNodeView = nodeView.children
-        } catch (e: Exception) {
-            let paragraph: Paragraph = Paragraph()
-            let commonmarkText: CommonmarkText = CommonmarkText(mdStr)
-            paragraph.appendChild(commonmarkText)
-            let paragraphNodeView: NodeView = buildView(paragraph, true)
-            let textNodeView: NodeView = buildView(commonmarkText, true)
-            arrayListNodeView.append(paragraphNodeView)
-        } finally {
-            try {
-                if (Thread.currentThread.hasPendingCancellation) {
-                    return
-                }
-                callback(arrayListNodeView)
-            } catch (_) {
-            }
-        }
-    }
-    return fut
-}
-
-/**
  * 通过异步的方式将代码转换成带有颜色的列表 - 围栏代码、缩进代码
  *
  * @param code 传入代码内容
@@ -80,7 +16,8 @@ func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfigurat
  * @param prismTheme 传入的高亮样式
  * @param callback PrismNodesParseRes列表回调接口
  */
-func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit>{
+func stringToResList(code: String, info: ?String, prismTheme: PrismTheme,
+    callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit> {
     let fut: Future<Unit> = spawn {
         var prismNodesParseResList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
         try {
@@ -112,6 +49,7 @@ func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callba
     return fut
 }
 
+
 /**
  * 通过异步的方式将代码转换成带有颜色的列表 - 组合代码
  *
@@ -134,12 +72,11 @@ func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: Ma
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var psh: PrismSyntaxHighlight = PrismSyntaxHighlight.create(prism, markdownConfiguration.prismTheme)
+                    var psh: PrismSyntaxHighlight = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    let res: ArrayList<PrismNodesParseRes> = psh.highlight((nodeView.node as FencedCodeBlock)().getInfo(),
-                        (nodeView.node as FencedCodeBlock)().getLiteral().trimRight("\n"))
+                    let res: ArrayList<PrismNodesParseRes> = psh.highlight((nodeView.node as FencedCodeBlock)().getInfo(), (nodeView.node as FencedCodeBlock)().getLiteral().trimRight("\n"))
                     prismNodesParseResLists.append(res)
                 }
             }
@@ -162,4 +99,3 @@ func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: Ma
     }
     return fut
 }
-

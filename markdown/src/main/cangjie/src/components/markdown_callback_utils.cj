@@ -83,19 +83,3 @@ func latexImageOnClick(lists: Array<UInt8>, height: Length, width: Length,
         latexImageCallback()(lists, height, width)
     }
 }
-
-/**
- * 超大数据跳转页面显示全部数据点击事件
- *
- * @param nodeView 数学公式数据
- * @param marginTop 间距
- * @param marginBottom 间距
- * @param componentWidth 宽度
- * @param listBigDataCallback 超大数据跳转页面显示全部数据点击事件
- */
-func listBigDataOnClick(nodeView: NodeView, marginTop: Float64, marginBottom: Float64, componentWidth: Float64,
-    listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit): Unit {
-    if (listBigDataCallback.isSome()) {
-        listBigDataCallback()(nodeView, marginTop, marginBottom, componentWidth)
-    }
-}

@@ -9,8 +9,8 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
-    prism 句法高亮类
-*/
+ * prism 句法高亮类
+ */
 public class PrismSyntaxHighlight {
     let prism: Prism
     let theme: PrismTheme
@@ -40,7 +40,7 @@ public class PrismSyntaxHighlight {
      */
     public func highlight(info: ?String, code: String): ArrayList<PrismNodesParseRes> {
         if (code.isEmpty() || info.isNone()) {
-        	return highlightNoLanguageInfo(code)
+            return highlightNoLanguageInfo(code)
         }
         return highlightWithLanguageInfo(this.prism, this.theme, info.getOrThrow(), code)
     }
@@ -49,7 +49,7 @@ public class PrismSyntaxHighlight {
         return ArrayList<PrismNodesParseRes>(PrismNodesParseRes("", code, None, None))
     }
 
-   func highlightWithLanguageInfo(prism: Prism, theme: PrismTheme, info: String, code: String): ArrayList<PrismNodesParseRes> {
+    func highlightWithLanguageInfo(prism: Prism, theme: PrismTheme, info: String, code: String): ArrayList<PrismNodesParseRes> {
         return PrismNodeParse.textToArrayList(prism, theme.getColorMap(), info, code)
     }
 
@@ -63,10 +63,9 @@ public class PrismSyntaxHighlight {
 }
 
 /**
-    prism 解析 Node 对象返回的结果集
-*/
+ * prism 解析 Node 对象返回的结果集
+ */
 public class PrismNodesParseRes <: ToString {
-
     var types: String = ""
     var text: String = ""
     var alias: ?String = None
@@ -133,22 +132,25 @@ public class PrismNodesParseRes <: ToString {
      */
     public func toString(): String {
         if (alias.isSome() && color.isSome()) {
-        	return "PrismNodesParseRes{" + "types=" + types.toString() + ", text=\'" + text + "\'" + ", alias=\'" + alias.getOrThrow() + "}"
+            return "PrismNodesParseRes{" + "types=" + types.toString() + ", text=\'" + text + "\'" + ", alias=\'" +
+                alias.getOrThrow() + "}"
         } else if (alias.isSome()) {
-        	return "PrismNodesParseRes{" + "types=" + types.toString() + ", text=\'" + text + "\'" + ", alias=\'" + alias.getOrThrow() + "}"
+            return "PrismNodesParseRes{" + "types=" + types.toString() + ", text=\'" + text + "\'" + ", alias=\'" +
+                alias.getOrThrow() + "}"
         } else if (color.isSome()) {
-        	return "PrismNodesParseRes{" + "types=" + types.toString() + ", text=\'" + text + "\'" + ", alias=\'" + "None" + "}"
+            return "PrismNodesParseRes{" + "types=" + types.toString() + ", text=\'" + text + "\'" + ", alias=\'" +
+                "None" + "}"
         } else {
-            return "PrismNodesParseRes{" + "types=" + types.toString() + ", text=\'" + text + "\'" + ", alias=\'" + "None" + "}"
+            return "PrismNodesParseRes{" + "types=" + types.toString() + ", text=\'" + text + "\'" + ", alias=\'" +
+                "None" + "}"
         }
     }
 }
 
 class PrismNodeParse {
-
     static let glg: GrammarLocatorGrammarUtils = GrammarLocatorGrammarUtils()
 
-    static func textToArrayList(prism: Prism, colorMap: HashMap<String, Color>, info: ?String, literal: String): ArrayList<PrismNodesParseRes> {
+    static func textToArrayList(prism: Prism, colorMap: HashMap<PrismColor, Color>, info: ?String, literal: String): ArrayList<PrismNodesParseRes> {
         if (let None <- info) {
             return ArrayList<PrismNodesParseRes>(PrismNodesParseRes("", literal, None, None))
         }
@@ -157,15 +159,15 @@ class PrismNodeParse {
         grammar = glg.grammar(prism, realInfo)
         var list: ArrayList<PrismNode> = try {
             prism.tokenize(literal, grammar.getOrThrow())
-        } catch(e: NoneValueException) {
+        } catch (e: NoneValueException) {
             return ArrayList<PrismNodesParseRes>(PrismNodesParseRes("", literal, None, None))
         }
-        let listPrismNodesParseRes : ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
+        let listPrismNodesParseRes: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
         for (i in 0..list.size) {
             PrismNodeParse.iterCurrent(list[i], Option.None, listPrismNodesParseRes)
         }
         for (prismNodesParseRes in listPrismNodesParseRes) {
-        	prismNodesParseRes.color = PrismNodeParse.renderColor(colorMap, prismNodesParseRes)
+            prismNodesParseRes.color = PrismNodeParse.renderColor(colorMap, prismNodesParseRes)
         }
         return listPrismNodesParseRes
     }
@@ -185,14 +187,14 @@ class PrismNodeParse {
         }
     }
 
-    static func renderColor(map: HashMap<String, Color>, obj: PrismNodesParseRes): ?Color {
+    static func renderColor(map: HashMap<PrismColor, Color>, obj: PrismNodesParseRes): ?Color {
         let types: String = obj.getType()
         let alias: ?String = obj.getAlias()
-        var color: ?Color = map.get(types)
+        var color: ?Color = map.get(PrismColor.fromString(types.toAsciiLower()))
         if (color.isNone() && alias.isSome()) {
-            color = map.get(alias.getOrThrow())
+            color = map.get(PrismColor.fromString(alias.getOrThrow().toAsciiLower()))
         }
-        if(color.isSome()) {
+        if (color.isSome()) {
             return color
         } else {
             return None
