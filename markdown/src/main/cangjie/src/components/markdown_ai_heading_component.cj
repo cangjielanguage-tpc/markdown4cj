@@ -239,6 +239,17 @@ class MarkdownAIHeadingComponent {
             }
             if (refreshNodeViewSize > nodeViewListSize) {
                 // 刷新数据的长度大于页面数据长度，需要添加数据
+
+                if (nodeViewListSize > 2) {
+                    if (refreshNodeViews[nodeViewListSize - 2].node.getNodeType() != nodeViewList[nodeViewListSize - 2].node.getNodeType()) {
+                        nodeViewList[nodeViewListSize - 2] = refreshNodeViews[nodeViewListSize - 2]
+                    }
+                    if ((refreshNodeViews[nodeViewListSize - 2].node is CommonmarkText) && (nodeViewList[nodeViewListSize - 2].node is CommonmarkText)) {
+                        if ((refreshNodeViews[nodeViewListSize - 2].node as CommonmarkText)().getLiteral() != (nodeViewList[nodeViewListSize - 2].node as CommonmarkText)().getLiteral()) {
+                            nodeViewList[nodeViewListSize - 2] = refreshNodeViews[nodeViewListSize - 2]
+                        }
+                    }
+                }
                 if (nodeViewListSize != 0) {
                     // 更新页面最后一条数据
                     nodeViewList[nodeViewListSize - 1] = refreshNodeViews[nodeViewListSize - 1]
@@ -265,6 +276,17 @@ class MarkdownAIHeadingComponent {
             } else {
                 // 刷新数据小于页面数据长度，需要删除数据
                 // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
+
+                if (refreshNodeViewSize > 2) {
+                    if (refreshNodeViews[refreshNodeViewSize - 2].node.getNodeType() != nodeViewList[refreshNodeViewSize - 2].node.getNodeType()) {
+                        nodeViewList[refreshNodeViewSize - 2] = refreshNodeViews[refreshNodeViewSize - 2]
+                    }
+                    if ((refreshNodeViews[refreshNodeViewSize - 2].node is CommonmarkText) && (nodeViewList[refreshNodeViewSize - 2].node is CommonmarkText)) {
+                        if ((refreshNodeViews[refreshNodeViewSize - 2].node as CommonmarkText)().getLiteral() != (nodeViewList[refreshNodeViewSize - 2].node as CommonmarkText)().getLiteral()) {
+                            nodeViewList[refreshNodeViewSize - 2] = refreshNodeViews[refreshNodeViewSize - 2]
+                        }
+                    }
+                }
                 nodeViewList[refreshNodeViewSize - 1] = refreshNodeViews[refreshNodeViewSize - 1]
                 // 循环删除所有多余数据
                 for (i in 1..=(nodeViewListSize - refreshNodeViewSize)) {
