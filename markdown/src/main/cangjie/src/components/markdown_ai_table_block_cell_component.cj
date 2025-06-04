@@ -237,7 +237,11 @@ class MarkdownAITableBlockCellComponent {
                     return
                 }
                 let oldWidth: Float64 = px2vp(old.width.px)().value
-                let newWidth: Float64 = px2vp(new.width.px)().value
+                let newWidth: Float64 = if (DeviceInfo.majorVersion <= 5 && DeviceInfo.seniorVersion <= 0 && DeviceInfo.featureVersion <= 0 && DeviceInfo.buildVersion <= 103 ) {
+                    new.width
+                } else{
+                    px2vp(new.width.px)().value
+                }
                 let max: Float64 = if (newWidth > oldWidth) {
                     newWidth
                 } else {
