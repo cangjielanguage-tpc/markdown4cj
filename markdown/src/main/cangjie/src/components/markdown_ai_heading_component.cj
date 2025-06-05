@@ -240,7 +240,7 @@ class MarkdownAIHeadingComponent {
             if (refreshNodeViewSize > nodeViewListSize) {
                 // 刷新数据的长度大于页面数据长度，需要添加数据
 
-                if (nodeViewListSize > 2) {
+                if (nodeViewListSize >= 2) {
                     if (refreshNodeViews[nodeViewListSize - 2].node.getNodeType() != nodeViewList[nodeViewListSize - 2].node.getNodeType()) {
                         nodeViewList[nodeViewListSize - 2] = refreshNodeViews[nodeViewListSize - 2]
                     }
@@ -261,7 +261,7 @@ class MarkdownAIHeadingComponent {
             } else if (refreshNodeViewSize == nodeViewListSize) {
                 // 刷新数据的长度等于页面数据长度，需要更新当前数据
                 // 有可能还需要刷新倒数第二条数据内容
-                if (refreshNodeViewSize > 2) {
+                if (refreshNodeViewSize >= 2) {
                     if (refreshNodeViews[refreshNodeViewSize - 2].node.getNodeType() != nodeViewList[nodeViewListSize - 2].node.getNodeType()) {
                         nodeViewList[refreshNodeViewSize - 2] = refreshNodeViews[refreshNodeViewSize - 2]
                     }
@@ -277,7 +277,7 @@ class MarkdownAIHeadingComponent {
                 // 刷新数据小于页面数据长度，需要删除数据
                 // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
 
-                if (refreshNodeViewSize > 2) {
+                if (refreshNodeViewSize >= 2) {
                     if (refreshNodeViews[refreshNodeViewSize - 2].node.getNodeType() != nodeViewList[refreshNodeViewSize - 2].node.getNodeType()) {
                         nodeViewList[refreshNodeViewSize - 2] = refreshNodeViews[refreshNodeViewSize - 2]
                     }
