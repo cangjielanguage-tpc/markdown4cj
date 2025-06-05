@@ -105,8 +105,8 @@ public class MarkdownQuoteComponent {
                                 MarkdownParagraphComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeViews: item.children,
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
+                                    marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     tocListOnClick: tocListOnClick,
                                     componentWidth: componentWidth,
@@ -121,8 +121,8 @@ public class MarkdownQuoteComponent {
                                     markdownConfiguration: markdownConfiguration,
                                     nodeViews: item.children,
                                     level: (item.node as Heading)().getLevel(),
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
+                                    marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
@@ -136,8 +136,8 @@ public class MarkdownQuoteComponent {
                                     markdownConfiguration: markdownConfiguration,
                                     codeText: (item.node as IndentedCodeBlock)().getLiteral(),
                                     info: Option<String>.None,
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
+                                    marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     indexList: indexAdd(indexList, idx),
                                     indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
                                 )
@@ -147,8 +147,8 @@ public class MarkdownQuoteComponent {
                                     markdownConfiguration: markdownConfiguration,
                                     codeText: (item.node as FencedCodeBlock)().getLiteral(),
                                     info: (item.node as FencedCodeBlock)().getInfo(),
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
+                                    marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     indexList: indexAdd(indexList, idx),
                                     fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
                                 )
@@ -158,8 +158,8 @@ public class MarkdownQuoteComponent {
                                     markdownConfiguration: markdownConfiguration,
                                     nodeViews: item.children,
                                     isOrdered: false,
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
+                                    marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     tocListOnClick: tocListOnClick,
                                     componentWidth: componentWidth,
@@ -173,8 +173,8 @@ public class MarkdownQuoteComponent {
                                     markdownConfiguration: markdownConfiguration,
                                     nodeViews: item.children,
                                     isOrdered: true,
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
+                                    marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     tocListOnClick: tocListOnClick,
                                     componentWidth: componentWidth,
@@ -187,8 +187,8 @@ public class MarkdownQuoteComponent {
                                 MarkdownQuoteComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeViews: item.children,
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
+                                    marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     tocListOnClick: tocListOnClick,
                                     componentWidth: componentWidth,
@@ -201,8 +201,8 @@ public class MarkdownQuoteComponent {
                                 MarkdownTableBlockComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeViews: tableList(item.children),
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
+                                    marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
@@ -218,8 +218,8 @@ public class MarkdownQuoteComponent {
                                     MarkdownLatexMathBlockComponent(
                                         markdownConfiguration: markdownConfiguration,
                                         latexStr: (item.node as LatexMathBlock)().latex,
-                                        marginTop: 0.0,
-                                        marginBottom: 0.0
+                                        marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                        marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     )
                                 } else {
                                     // 没结束显示纯文本
@@ -230,8 +230,8 @@ public class MarkdownQuoteComponent {
                                 MarkdownImageBannerComponent(
                                     slideBlockNodeView: item,
                                     markdownConfiguration: markdownConfiguration,
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0
+                                    marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                 )
                             } else if (item.node is FencedCodeBlockListBlock) {
                                 // 组合代码
@@ -241,8 +241,8 @@ public class MarkdownQuoteComponent {
                                     strText: toCodeList(item)[1],
                                     strInfoText: toCodeList(item)[2],
                                     markdownConfiguration: markdownConfiguration,
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0
+                                    marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                 )
                             } else {
                                 // TODO 其他节点

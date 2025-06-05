@@ -301,6 +301,8 @@ func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownConfigur
         .lineHeight(listPrefixLineHeight(isBullet, markdownConfiguration))
         // 设置文本段落在水平方向的对齐方式
         .textAlign(TextAlign.Center)
+        // 设置外边距属性
+        .margin(top: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins)
 }
 
 /**
@@ -320,7 +322,7 @@ func listPrefixCheckboxINCComponent(item: NodeView, markdownConfiguration: Markd
         // 切换CheckBox组件形状
         .shape(CheckBoxShape.ROUNDED_SQUARE)
         // 设置外边距属性
-        .margin(left: markdownConfiguration.markdownTheme.blockMargin, right: 10.0)
+        .margin(left: markdownConfiguration.markdownTheme.blockMargin, right: 10.0, top: markdownConfiguration.markdownTheme.taskListTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.taskListTopAndBottomMargins)
 }
 
 /**

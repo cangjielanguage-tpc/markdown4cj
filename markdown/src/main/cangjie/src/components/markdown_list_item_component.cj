@@ -107,8 +107,8 @@ class MarkdownListItemComponent {
                             MarkdownParagraphComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeViews: item.children,
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 componentWidth: componentWidth,
@@ -124,8 +124,8 @@ class MarkdownListItemComponent {
                                 markdownConfiguration: markdownConfiguration,
                                 nodeViews: item.children,
                                 level: (item.node as Heading)().getLevel(),
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
@@ -140,8 +140,8 @@ class MarkdownListItemComponent {
                                 markdownConfiguration: markdownConfiguration,
                                 codeText: (item.node as IndentedCodeBlock)().getLiteral(),
                                 info: Option<String>.None,
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 indexList: indexAdd(indexList, idx),
                                 indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
                             )
@@ -153,8 +153,8 @@ class MarkdownListItemComponent {
                                 markdownConfiguration: markdownConfiguration,
                                 codeText: (item.node as FencedCodeBlock)().getLiteral(),
                                 info: (item.node as FencedCodeBlock)().getInfo(),
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 indexList: indexAdd(indexList, idx),
                                 fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
                             )
@@ -166,8 +166,8 @@ class MarkdownListItemComponent {
                                 markdownConfiguration: markdownConfiguration,
                                 nodeViews: item.children,
                                 isOrdered: false,
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 componentWidth: componentWidth,
@@ -183,8 +183,8 @@ class MarkdownListItemComponent {
                                 markdownConfiguration: markdownConfiguration,
                                 nodeViews: item.children,
                                 isOrdered: true,
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 componentWidth: componentWidth,
@@ -199,8 +199,8 @@ class MarkdownListItemComponent {
                             MarkdownQuoteComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeViews: item.children,
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 componentWidth: componentWidth,
@@ -215,8 +215,8 @@ class MarkdownListItemComponent {
                             MarkdownTableBlockComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeViews: tableList(item.children),
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
@@ -234,8 +234,8 @@ class MarkdownListItemComponent {
                                 MarkdownLatexMathBlockComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     latexStr: (item.node as LatexMathBlock)().latex,
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0
+                                    marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 )
                             } else {
                                 // 没结束显示纯文本
@@ -248,8 +248,8 @@ class MarkdownListItemComponent {
                             MarkdownImageBannerComponent(
                                 slideBlockNodeView: item,
                                 markdownConfiguration: markdownConfiguration,
-                                marginTop: 0.0,
-                                marginBottom: 0.0
+                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                             )
                         }
                     } else if (item.node is FencedCodeBlockListBlock) {
@@ -261,8 +261,8 @@ class MarkdownListItemComponent {
                                 strText: toCodeList(item)[1],
                                 strInfoText: toCodeList(item)[2],
                                 markdownConfiguration: markdownConfiguration,
-                                marginTop: 0.0,
-                                marginBottom: 0.0
+                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                             )
                         }
                     } else {

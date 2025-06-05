@@ -245,6 +245,11 @@ public class MarkdownTheme {
     protected var blockQuoteBackGroupClor: Color = COLOR_FFFFFF
 
     /**
+     * 块引用每个模块之间上下间距 - 单位vp
+     */
+    protected var blockQuoteTopAndBottomMargins: Float64 = 0.0
+
+    /**
      * 有序列表列表项的颜色
      */
     protected var orderedListItemColor: Color = COLOR_191919
@@ -258,6 +263,11 @@ public class MarkdownTheme {
      * 有序列表项文本行高 - 单位vp
      */
     protected var orderedListItemLineheight: Float64 = 22.0
+
+    /**
+     * 有序列表有序列表任务列表每个模块之间上下间距 - 单位vp
+     */
+    protected var blockOrderedAndBulletTopAndBottomMargins: Float64 = 0.0
 
     /**
      * 无序列表项的颜色
@@ -278,6 +288,11 @@ public class MarkdownTheme {
      * 任务列表项的宽高 - 单位vp
      */
     protected var taskListItemLength: Float64 = 15.0
+
+    /**
+     * 任务列表项的上下间距 - 单位vp
+     */
+    protected var taskListTopAndBottomMargins: Float64 = 0.0
 
     /**
      * 列表展示的数量
@@ -675,13 +690,16 @@ public class MarkdownTheme {
         this.blockQuoteWidth = builder.blockQuoteWidth
         this.blockQuoteColor = builder.blockQuoteColor
         this.blockQuoteBackGroupClor = builder.blockQuoteBackGroupClor
+        this.blockQuoteTopAndBottomMargins = builder.blockQuoteTopAndBottomMargins
         this.orderedListItemColor = builder.orderedListItemColor
         this.orderedListItemSize = builder.orderedListItemSize
         this.orderedListItemLineheight = builder.orderedListItemLineheight
+        this.blockOrderedAndBulletTopAndBottomMargins = builder.blockOrderedAndBulletTopAndBottomMargins
         this.bulletListItemColor = builder.bulletListItemColor
         this.bulletListItemSize = builder.bulletListItemSize
         this.bulletListItemLineheight = builder.bulletListItemLineheight
         this.taskListItemLength = builder.taskListItemLength
+        this.taskListTopAndBottomMargins = builder.taskListTopAndBottomMargins
         this.listNumber = builder.listNumber
         // 代码
         this.codeTextColor = builder.codeTextColor
@@ -1095,6 +1113,11 @@ public class MarkdownThemeBuilder {
     protected var blockQuoteBackGroupClor: Color = COLOR_FFFFFF
 
     /**
+     * 块引用每个模块之间上下间距 - 单位vp
+     */
+    protected var blockQuoteTopAndBottomMargins: Float64 = 0.0
+
+    /**
      * 有序列表列表项的颜色
      */
     protected var orderedListItemColor: Color = COLOR_191919
@@ -1108,6 +1131,11 @@ public class MarkdownThemeBuilder {
      * 有序列表项文本行高 - 单位vp
      */
     protected var orderedListItemLineheight: Float64 = 22.0
+
+    /**
+     * 有序列表有序列表任务列表每个模块之间上下间距 - 单位vp
+     */
+    protected var blockOrderedAndBulletTopAndBottomMargins: Float64 = 0.0
 
     /**
      * 无序列表项的颜色
@@ -1128,6 +1156,11 @@ public class MarkdownThemeBuilder {
      * 任务列表项的宽高 - 单位vp
      */
     protected var taskListItemLength: Float64 = 15.0
+
+    /**
+     * 任务列表项的上下间距 - 单位vp
+     */
+    protected var taskListTopAndBottomMargins: Float64 = 0.0
 
     /**
      * 列表展示的数量
@@ -1528,13 +1561,16 @@ public class MarkdownThemeBuilder {
         this.blockQuoteWidth = theme.blockQuoteWidth
         this.blockQuoteColor = theme.blockQuoteColor
         this.blockQuoteBackGroupClor = theme.blockQuoteBackGroupClor
+        this.blockQuoteTopAndBottomMargins = theme.blockQuoteTopAndBottomMargins
         this.orderedListItemColor = theme.orderedListItemColor
         this.orderedListItemSize = theme.orderedListItemSize
         this.orderedListItemLineheight = theme.orderedListItemLineheight
+        this.blockOrderedAndBulletTopAndBottomMargins = theme.blockOrderedAndBulletTopAndBottomMargins
         this.bulletListItemColor = theme.bulletListItemColor
         this.bulletListItemSize = theme.bulletListItemSize
         this.bulletListItemLineheight = theme.bulletListItemLineheight
         this.taskListItemLength = theme.taskListItemLength
+        this.taskListTopAndBottomMargins = theme.taskListTopAndBottomMargins
         this.listNumber = theme.listNumber
         // 代码
         this.codeTextColor = theme.codeTextColor
@@ -2153,6 +2189,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置块引用模块间距
+     *
+     * @param blockQuoteTopAndBottomMargins 模块间距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setBlockQuoteTopAndBottomMargins(blockQuoteTopAndBottomMargins: Float64): MarkdownThemeBuilder {
+        this.blockQuoteTopAndBottomMargins = blockQuoteTopAndBottomMargins
+        return this
+    }
+
+    /**
      * 设置有序列表项的颜色
      *
      * @param orderedListItemColor 有序列表项的颜色默认0x191919
@@ -2182,6 +2229,17 @@ public class MarkdownThemeBuilder {
      */
     public func setOrderedListItemLineheight(orderedListItemLineheight: Float64): MarkdownThemeBuilder {
         this.orderedListItemLineheight = orderedListItemLineheight
+        return this
+    }
+
+    /**
+     * 设置有序列表无序列表任务列表模块间距
+     *
+     * @param blockOrderedAndBulletTopAndBottomMargins 模块间距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setBlockOrderedAndBulletTopAndBottomMargins(blockOrderedAndBulletTopAndBottomMargins: Float64): MarkdownThemeBuilder {
+        this.blockOrderedAndBulletTopAndBottomMargins = blockOrderedAndBulletTopAndBottomMargins
         return this
     }
 
@@ -2226,6 +2284,17 @@ public class MarkdownThemeBuilder {
      */
     public func setTaskListItemLength(taskListItemLength: Float64): MarkdownThemeBuilder {
         this.taskListItemLength = taskListItemLength
+        return this
+    }
+
+    /**
+     * 设置任务列表前缀间距
+     *
+     * @param taskListTopAndBottomMargins 任务列表前缀间距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setTaskListTopAndBottomMargins(taskListTopAndBottomMargins: Float64): MarkdownThemeBuilder {
+        this.taskListTopAndBottomMargins = taskListTopAndBottomMargins
         return this
     }
 
