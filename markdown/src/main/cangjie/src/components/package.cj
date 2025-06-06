@@ -77,6 +77,7 @@ internal import formula.*
 internal import texttoimg4cj.*
 
 // 系统UI
+internal import ohos.device_info.*
 internal import ohos.image.PixelMap
 internal import ohos.image.InitializationOptions
 internal import ohos.image.PixelMapFormat
