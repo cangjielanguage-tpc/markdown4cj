@@ -99,8 +99,8 @@ public class MarkdownAIQuoteComponent {
                                 MarkdownAIParagraphComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeViews: item.children,
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
@@ -114,8 +114,8 @@ public class MarkdownAIQuoteComponent {
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeViews: item.children,
                                     level: (item.node as Heading)().getLevel(),
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
@@ -129,8 +129,8 @@ public class MarkdownAIQuoteComponent {
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     codeText: (item.node as IndentedCodeBlock)().getLiteral(),
                                     info: Option<String>.None,
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     indexList: indexAdd(indexList, idx),
                                     indentedCodeComponents: markdownAICacheConfiguration.indentedCodeComponents
                                 )
@@ -140,8 +140,8 @@ public class MarkdownAIQuoteComponent {
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     codeText: (item.node as FencedCodeBlock)().getLiteral(),
                                     info: (item.node as FencedCodeBlock)().getInfo(),
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     indexList: indexAdd(indexList, idx),
                                     fencedCodeComponents: markdownAICacheConfiguration.fencedCodeComponents
                                 )
@@ -151,8 +151,8 @@ public class MarkdownAIQuoteComponent {
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeViews: item.children,
                                     isOrdered: false,
-                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
@@ -165,8 +165,8 @@ public class MarkdownAIQuoteComponent {
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeViews: item.children,
                                     isOrdered: true,
-                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
@@ -178,8 +178,8 @@ public class MarkdownAIQuoteComponent {
                                 MarkdownAIQuoteComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeViews: item.children,
-                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
@@ -191,8 +191,8 @@ public class MarkdownAIQuoteComponent {
                                 MarkdownAITableBlockComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeViews: tableList(item.children),
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
@@ -208,8 +208,8 @@ public class MarkdownAIQuoteComponent {
                                     MarkdownAILatexMathBlockComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
                                         latexStr: (item.node as LatexMathBlock)().latex,
-                                        marginTop: 0.0,
-                                        marginBottom: 0.0
+                                        marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
+                                        marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins
                                     )
                                 } else {
                                     // 没结束显示纯文本
@@ -225,6 +225,8 @@ public class MarkdownAIQuoteComponent {
                         .justifyContent(FlexAlign.Start)
                         // 对子组件进行重新布局
                         .layoutWeight(1)
+                        // 外边距
+                        .margin(right: markdownAIConfiguration.markdownAITheme.blockMargin)
                     }
                     // 对子组件进行重新布局
                     .layoutWeight(1)

@@ -101,8 +101,8 @@ class MarkdownAIListItemComponent {
                             MarkdownAIParagraphComponent(
                                 markdownAIConfiguration: markdownAIConfiguration,
                                 nodeViews: item.children,
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
@@ -117,8 +117,8 @@ class MarkdownAIListItemComponent {
                                 markdownAIConfiguration: markdownAIConfiguration,
                                 nodeViews: item.children,
                                 level: (item.node as Heading)().getLevel(),
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
@@ -133,8 +133,8 @@ class MarkdownAIListItemComponent {
                                 markdownAIConfiguration: markdownAIConfiguration,
                                 codeText: (item.node as IndentedCodeBlock)().getLiteral(),
                                 info: Option<String>.None,
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 indexList: indexAdd(indexList, idx),
                                 indentedCodeComponents: markdownAICacheConfiguration.indentedCodeComponents
                             )
@@ -146,8 +146,8 @@ class MarkdownAIListItemComponent {
                                 markdownAIConfiguration: markdownAIConfiguration,
                                 codeText: (item.node as FencedCodeBlock)().getLiteral(),
                                 info: (item.node as FencedCodeBlock)().getInfo(),
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 indexList: indexAdd(indexList, idx),
                                 fencedCodeComponents: markdownAICacheConfiguration.fencedCodeComponents
                             )
@@ -159,8 +159,8 @@ class MarkdownAIListItemComponent {
                                 markdownAIConfiguration: markdownAIConfiguration,
                                 nodeViews: item.children,
                                 isOrdered: false,
-                                marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
@@ -175,8 +175,8 @@ class MarkdownAIListItemComponent {
                                 markdownAIConfiguration: markdownAIConfiguration,
                                 nodeViews: item.children,
                                 isOrdered: true,
-                                marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
@@ -190,8 +190,8 @@ class MarkdownAIListItemComponent {
                             MarkdownAIQuoteComponent(
                                 markdownAIConfiguration: markdownAIConfiguration,
                                 nodeViews: item.children,
-                                marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
@@ -205,8 +205,8 @@ class MarkdownAIListItemComponent {
                             MarkdownAITableBlockComponent(
                                 markdownAIConfiguration: markdownAIConfiguration,
                                 nodeViews: tableList(item.children),
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
@@ -224,8 +224,8 @@ class MarkdownAIListItemComponent {
                                 MarkdownAILatexMathBlockComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     latexStr: (item.node as LatexMathBlock)().latex,
-                                    marginTop: 0.0,
-                                    marginBottom: 0.0
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins
                                 )
                             } else {
                                 // 没结束显示纯文本
