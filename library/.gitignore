@@ -6,3 +6,5 @@
 /.test
 BuildProfile.ets
 /libs
+src/main/cangjie/build-script-cache
+src/main/cangjie/build.cj.bak
