@@ -18,6 +18,7 @@ internal import encoding.url.*
 // 内部其他包
 internal import markdown.core.*
 internal import markdown.plugin.*
+internal import markdown.texttoimg4cj.*
 
 // commonmark
 internal import commonmark4cj.strikethrough.*
@@ -72,9 +73,6 @@ internal import prism4cj.prism.Grammar as PrismGrammar
 
 // formula
 internal import formula.*
-
-// texttoimg4cj
-internal import texttoimg4cj.*
 
 // 系统UI
 internal import ohos.device_info.*

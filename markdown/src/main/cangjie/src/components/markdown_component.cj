@@ -112,7 +112,7 @@ public class MarkdownComponent {
      * 懒加载数据源
      */
     @State
-    var nodeViewDataSource: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+    var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
     protected override func aboutToAppear(): Unit {
         if(markdownConfiguration.markdownParser.isSome()){
@@ -132,7 +132,7 @@ public class MarkdownComponent {
 
     func build() {
         List(scroller: scroller) {
-            ForEach(
+            LazyForEach(
                 nodeViewDataSource,
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is Heading) {
@@ -383,12 +383,12 @@ public class MarkdownComponent {
             incBase.parse()
             let nodeViews = incBase.docView.children
             let nodeViewsSize = nodeViews.size // 刷新进来的数据长度
-            let nodeViewListSize = nodeViewDataSource.size // 页面缓存的数据长度
+            let nodeViewListSize = nodeViewDataSource.totalCount() // 页面缓存的数据长度
             if (isFull) {
                 // 全量加载
                 launch {
                     nodeViewDataSource.clear()
-                    nodeViewDataSource.appendAll(nodeViews)
+                    nodeViewDataSource.addDatas(nodeViews)
                 }
             } else {
                 // 增量加载
@@ -399,7 +399,7 @@ public class MarkdownComponent {
                     // 清除缓存引用
                     if (nodeViewsSize > nodeViewListSize) {
                         for (i in 0..nodeViewListSize - 1) {
-                            releaseNodeRelation(nodeViewDataSource[i])
+                            releaseNodeRelation(nodeViewDataSource.getData(i))
                         }
                     }
                     if (nodeViewsSize > nodeViewListSize) {
@@ -408,58 +408,58 @@ public class MarkdownComponent {
                         markdownCacheConfiguration.clearAll()
                         if (nodeViewListSize != 0) {
                             // 更新页面最后一条数据
-                            nodeViewDataSource[nodeViewListSize - 1] = nodeViews[nodeViewListSize - 1]
+                            nodeViewDataSource.replaceData(nodeViewListSize - 1,nodeViews[nodeViewListSize - 1])
                         }
                         // 循环添加所有新增数据
                         for (i in nodeViewsSize - nodeViewListSize..0 : -1) {
-                            nodeViewDataSource.append(nodeViews[nodeViewsSize - i])
+                            nodeViewDataSource.addData(nodeViews[nodeViewsSize - i])
                         }
                     } else if (nodeViewsSize == nodeViewListSize) {
                         // 刷新数据的长度等于页面数据长度，需要更新当前数据
                         let index: Int64 = nodeViewListSize - 1
-                        if ((nodeViews[nodeViewsSize - 1].node is BulletList && nodeViewDataSource[nodeViewListSize - 1].node is BulletList) || (nodeViews[nodeViewsSize - 1].node is OrderedList && nodeViewDataSource[nodeViewListSize - 1].node is OrderedList)) {
+                        if ((nodeViews[nodeViewsSize - 1].node is BulletList && nodeViewDataSource.getData(nodeViewListSize - 1).node is BulletList) || (nodeViews[nodeViewsSize - 1].node is OrderedList && nodeViewDataSource.getData(nodeViewListSize - 1).node is OrderedList)) {
                             // 有序列表和无序列表
                             for (data in markdownCacheConfiguration.listComponents) {
                                 if (isListItem(indexList, data.indexList, index)) {
                                     data.refreshData(nodeViews[nodeViewsSize - 1].children)
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is BlockQuote && nodeViewDataSource[nodeViewListSize - 1].node is BlockQuote)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is BlockQuote && nodeViewDataSource.getData(nodeViewListSize - 1).node is BlockQuote)) {
                             // 块引用
                             for (data in markdownCacheConfiguration.quoteComponents) {
                                 if (isListItem(indexList, data.indexList, index)) {
                                     data.refreshData(nodeViews[nodeViewsSize - 1].children)
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is Heading && nodeViewDataSource[nodeViewListSize - 1].node is Heading)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is Heading && nodeViewDataSource.getData(nodeViewListSize - 1).node is Heading)) {
                             // 标题
                             for (data in markdownCacheConfiguration.headingComponents) {
                                 if (isListItem(indexList, data.indexList, index)) {
                                     data.refreshData(nodeViews[nodeViewsSize - 1].children, (nodeViews[nodeViewsSize - 1].node as Heading)().getLevel())
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is Paragraph && nodeViewDataSource[nodeViewListSize - 1].node is Paragraph)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is Paragraph && nodeViewDataSource.getData(nodeViewListSize - 1).node is Paragraph)) {
                             // 段落
                             for (data in markdownCacheConfiguration.paragraphComponents) {
                                 if (isListItem(indexList, data.indexList, index)) {
                                     data.refreshData(nodeViews[nodeViewsSize - 1].children)
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is TableBlock && nodeViewDataSource[nodeViewListSize - 1].node is TableBlock)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is TableBlock && nodeViewDataSource.getData(nodeViewListSize - 1).node is TableBlock)) {
                             // 表格
                             for (data in markdownCacheConfiguration.tableComponents) {
                                 if (isListItem(indexList, data.indexList, index)) {
                                     data.refreshData(tableList(nodeViews[nodeViewsSize - 1].children))
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is IndentedCodeBlock && nodeViewDataSource[nodeViewListSize - 1].node is IndentedCodeBlock)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is IndentedCodeBlock && nodeViewDataSource.getData(nodeViewListSize - 1).node is IndentedCodeBlock)) {
                             // 缩进代码
                             for (data in markdownCacheConfiguration.indentedCodeComponents) {
                                 if (isListItem(indexList, data.indexList, index)) {
                                     data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1])
                                 }
                             }
-                        } else if ((nodeViews[nodeViewsSize - 1].node is FencedCodeBlock && nodeViewDataSource[nodeViewListSize - 1].node is FencedCodeBlock)) {
+                        } else if ((nodeViews[nodeViewsSize - 1].node is FencedCodeBlock && nodeViewDataSource.getData(nodeViewListSize - 1).node is FencedCodeBlock)) {
                             // 围栏代码
                             for (data in markdownCacheConfiguration.fencedCodeComponents) {
                                 if (isListItem(indexList, data.indexList, index)) {
@@ -468,17 +468,17 @@ public class MarkdownComponent {
                             }
                         } else {
                             // 其他节点
-                            nodeViewDataSource[nodeViewListSize - 1] = nodeViews[nodeViewsSize - 1]
+                            nodeViewDataSource.replaceData(nodeViewListSize - 1,nodeViews[nodeViewsSize - 1])
                         }
                     } else {
                         // 刷新数据小于页面数据长度，需要删除数据
                         // 清除缓存数据
                         markdownCacheConfiguration.clearAll()
                         // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
-                        nodeViewDataSource[nodeViewsSize - 1] = nodeViews[nodeViewsSize - 1]
+                        nodeViewDataSource.replaceData(nodeViewsSize - 1,nodeViews[nodeViewsSize - 1])
                         // 循环删除所有多余数据
                         for (i in nodeViewListSize - nodeViewsSize..0 : -1) {
-                            nodeViewDataSource.remove(nodeViewListSize - i)
+                            nodeViewDataSource.deleteData(nodeViewListSize - i)
                         }
                     }
                 }
@@ -495,7 +495,7 @@ public class MarkdownComponent {
                 arrayListNodeView.append(paragraphNodeView)
                 launch {
                     nodeViewDataSource.clear()
-                    nodeViewDataSource.appendAll(arrayListNodeView)
+                    nodeViewDataSource.addDatas(arrayListNodeView)
                 }
             }
         }
