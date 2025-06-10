@@ -5,3 +5,5 @@
 /.cxx
 /.test
 src/main/cangjie/build-script-cache
+/libs
+src/main/cangjie/build.cj.bak

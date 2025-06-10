@@ -1,5 +1,4 @@
 // build.cj
-package texttoimg4cj
 
 import std.os.*
 import std.fs.*

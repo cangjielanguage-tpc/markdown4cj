@@ -254,6 +254,8 @@ public class MarkdownQuoteComponent {
                         .justifyContent(FlexAlign.Start)
                         // 对子组件进行重新布局
                         .layoutWeight(1)
+                        // 外边距
+                        .margin(right: markdownConfiguration.markdownTheme.blockMargin)
                     }
                     // 对子组件进行重新布局
                     .layoutWeight(1)

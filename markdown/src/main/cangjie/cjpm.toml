@@ -26,8 +26,11 @@
   [dependencies.formula]
     tag = "cjc_0.53.18"
     git = "https://gitcode.com/Cangjie-TPC/formula-ffi.git"
-  [dependencies.texttoimg4cj]
-    path = "../../../../library/src/main/cangjie"
+
+[ffi]
+  [ffi.c]
+    [ffi.c.text_to_img]
+      path = "../../../libs/${ABI}"
 
 [package]
   cjc-version = "0.53.18"
