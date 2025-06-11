@@ -79,16 +79,16 @@ public class MarkdownComponent {
             .usePlugin(TablePlugin.create())
             // 数学公式
             .usePlugin(LatexMathPluginV2.create())
-            // 自动网址链接
-            .usePlugin(LinkifyPlugin.create())
             // 脚注
             .usePlugin(FootnotePlugin.create())
-            // 幻灯片、视频、ImageStyle插件
-            .usePlugin(ImagePlugin.create())
+            // 幻灯片
+            .usePlugin(ImageSlidePlugin.create())
+            // ImageStyle插件
+            .usePlugin(ImageStylePlugin.create())
             // 代码列表标签
             .usePlugin(CodeListPlugin.create())
-            // 链接图片化插件
-            .usePlugin(LinkViewPlugin.create())
+            // 链接是否需要单独block、自动网址链接 - 链接图片化
+            .usePlugin(if (markdownConfiguration.markdownTheme.isLinkStyle) { LinkViewPlugin.create() } else { LinkifyPlugin.create() })
             // TOC列表插件
             .usePlugin(TocPlugin.create())
             .build()

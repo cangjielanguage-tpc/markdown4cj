@@ -514,7 +514,7 @@ public enum PrismColor <: Hashable & Equatable<PrismColor> {
         return !(this == that)
     }
 
-    protected static func fromString(str: String): PrismColor {
+    public static func fromString(str: String): PrismColor {
         return match (str) {
         	case "comment" => PrismColor.COMMENT
         	case "prolog" => PrismColor.PROLOG
