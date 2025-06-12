@@ -130,6 +130,8 @@ class MarkdownAIFencedCodeBlockComponent {
         .borderRadius(markdownAIConfiguration.markdownAITheme.codeBlockRadius)
         // 设置背景色
         .backgroundColor(codeBackgroundColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+        // 布局约束
+        .constraintSize(minHeight: constraintSizeMinWidth(markdownAIConfiguration))
     }
 
     /**
@@ -293,6 +295,8 @@ class MarkdownAIFencedCodeBlockComponent {
         .margin(top: 8, right: 8)
         // 设置子组件在垂直方向上的对齐格式
         .alignItems(VerticalAlign.Center)
+        // 是否隐藏
+        .visibility(isVisibility(!markdownAIConfiguration.markdownAITheme.isSeparateCodeBlock))
     }
 
     func refreshLines(): Unit {

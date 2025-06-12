@@ -401,6 +401,11 @@ public class MarkdownAITheme {
     protected var codeListTitleUnSelectBackgroupColor: Color = Color.TRANSPARENT
 
     /**
+     * 是否单独代码块
+     */
+    protected var isSeparateCodeBlock = false
+
+    /**
      * H1、H2标题下分割线高度 - 单位vp
      */
     protected var headingBreakHeight: Float64 = 0.5
@@ -716,6 +721,7 @@ public class MarkdownAITheme {
         this.codeListTitleUnSelectTextColor = builder.codeListTitleUnSelectTextColor
         this.codeListTitleSelectBackgroupColor = builder.codeListTitleSelectBackgroupColor
         this.codeListTitleUnSelectBackgroupColor = builder.codeListTitleUnSelectBackgroupColor
+        this.isSeparateCodeBlock = builder.isSeparateCodeBlock
         // 标题
         this.headingBreakHeight = builder.headingBreakHeight
         this.headingBreakColor = builder.headingBreakColor
@@ -1262,6 +1268,11 @@ public class MarkdownAIThemeBuilder {
     protected var codeListTitleUnSelectBackgroupColor: Color = Color.TRANSPARENT
 
     /**
+     * 是否单独代码块
+     */
+    protected var isSeparateCodeBlock = false
+
+    /**
      * H1、H2标题下分割线高度 - 单位vp
      */
     protected var headingBreakHeight: Float64 = 0.5
@@ -1580,6 +1591,7 @@ public class MarkdownAIThemeBuilder {
         this.codeListTitleUnSelectTextColor = theme.codeListTitleUnSelectTextColor
         this.codeListTitleSelectBackgroupColor = theme.codeListTitleSelectBackgroupColor
         this.codeListTitleUnSelectBackgroupColor = theme.codeListTitleUnSelectBackgroupColor
+        this.isSeparateCodeBlock = theme.isSeparateCodeBlock
         // 标题
         this.headingBreakHeight = theme.headingBreakHeight
         this.headingBreakColor = theme.headingBreakColor
@@ -2502,6 +2514,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setCodeListTitleUnSelectBackgroupColor(codeListTitleUnSelectBackgroupColor: Color): MarkdownAIThemeBuilder {
         this.codeListTitleUnSelectBackgroupColor = codeListTitleUnSelectBackgroupColor
+        return this
+    }
+
+    /**
+     * 设置是否单独代码块
+     *
+     * @param isSeparateCodeBlock 是否单独代码块
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setIsSeparateCodeBlock(isSeparateCodeBlock: Bool): MarkdownAIThemeBuilder {
+        this.isSeparateCodeBlock = isSeparateCodeBlock
         return this
     }
 

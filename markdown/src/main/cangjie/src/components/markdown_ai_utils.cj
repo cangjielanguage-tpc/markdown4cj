@@ -933,3 +933,11 @@ func strToFloat64(str: ?String): ?Float64 {
     }
     return f
 }
+
+func constraintSizeMinWidth(markdownAIConfiguration: MarkdownAIConfiguration):Length{
+    return if(markdownAIConfiguration.markdownAITheme.isSeparateCodeBlock){
+        100.percent
+    } else {
+        0.vp
+    }
+}
