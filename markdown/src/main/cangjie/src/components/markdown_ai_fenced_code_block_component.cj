@@ -205,6 +205,8 @@ class MarkdownAIFencedCodeBlockComponent {
                             .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
                             // 设置外边距
                             .margin(left: 8)
+                            // 是否隐藏
+                            .visibility(isVisibility(!markdownAIConfiguration.markdownAITheme.isSeparateCodeBlock))
                     }
                     // 设置宽度
                     .width(30.percent)
@@ -295,8 +297,6 @@ class MarkdownAIFencedCodeBlockComponent {
         .margin(top: 8, right: 8)
         // 设置子组件在垂直方向上的对齐格式
         .alignItems(VerticalAlign.Center)
-        // 是否隐藏
-        .visibility(isVisibility(!markdownAIConfiguration.markdownAITheme.isSeparateCodeBlock))
     }
 
     func refreshLines(): Unit {
