@@ -111,7 +111,13 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 编译构建
 
-1. 通过module引入
+1. 通过中心仓下载安装
+
+   ```sh
+   ohpm install @cangjie-tpc/markdown
+   ```
+
+2. 通过module引入
    1. 克隆下载项目
    2. 将markdown模块拷贝到应用项目下
    3. 将markdown模块当module引用，修改项目下的 build-profile.json5 文件，在 modules 字段添加下面代码
@@ -140,10 +146,11 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
       [dependencies.markdown]
         path = "../../../../markdown/src/main/cangjie"
       ```
-   6. 在项目中使用 import markdown.components.* 引用markdown项目
-      ```cangjie
-      import markdown.components.*
-      ```
+
+3. 在项目中使用markdown项目
+   ```cangjie
+   import markdown.components.*
+   ```
 
 ### 功能示例
 
