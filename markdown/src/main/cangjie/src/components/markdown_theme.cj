@@ -20,15 +20,15 @@ import ohos.state_macro_manage.*
  *          空心圆角矩形链接主题背景颜色、空心圆角矩形链接控件背景颜色、空心圆角矩形链接控件边框颜色、空心圆角矩形链接控件分割线颜色、空心圆角矩形链接文字大小、空心圆角矩形链接文字颜色、空心圆角矩形链接控件高度、空心圆角矩形链接左右内边距、空心圆角矩形链接边框宽度、空心圆角矩形链接分割线宽度、空心圆角矩形链接左右外边距、空心圆角矩形链接分割线和文本左边距、空心圆角矩形链接分割线和文本右边距
  * 4：列表 - 列表包含（块引用、有序列表、无序列表、任务列表、TOC列表）
  *          列表左边距、列表展示的数量
- *          块引用左边线条宽度、块引用左边线条颜色、块引用背景颜色、
- *          有序列表列表项的颜色、有序列表项的文本大小、有序列表项文本行高、
+ *          块引用左边线条宽度、块引用左边线条颜色、块引用背景颜色、块引用每个模块之间上下间距、
+ *          有序列表列表项的颜色、有序列表项的文本大小、有序列表项文本行高、有序列表无序列表任务列表每个模块之间上下间距
  *          无序列表项的颜色、无序列表项的文本大小、无列表项文本行高、
- *          任务列表项的宽高
+ *          任务列表项的宽高、任务列表项的上下间距
  * 5：代码 - 代码包含（内联代码、缩进代码、围栏代码、组合代码）（代码块有缩进代码、围栏代码、组合代码）
  *          内联代码文本颜色、内联代码背景颜色、内联代码文本字体、内联代码文本大小、
  *          代码块系列文本颜色、代码块系列背景颜色、代码块系列左边距、代码块系列字体、代码块系列文本大小、代码块系列行高、代码块圆角
  *          是否显示代码全屏按钮、代码全屏按钮和代码复制按钮的宽高、代码全屏按钮默认图标、代码复制按钮默认图标
- *          组合代码标题字体大小、组合代码标题字体大小、组合代码标题选中文本颜色、组合代码标题未选中文本颜色、组合代码标题选中背景颜色、组合代码标题未选中背景颜色
+ *          组合代码未选中标题字体大小、组合代码选中标题字体大小、组合代码标题选中文本颜色、组合代码标题未选中文本颜色、组合代码标题选中背景颜色、组合代码标题未选中背景颜色
  * 6：标题 - （1-6级标题）
  *          H1和H2标题下分割线高度、H1和H2标题下分割线颜色、标题元素字体、标题文本大小数组、标题文本颜色、标题文本字间距、
  *          一级标题文本行高、二级标题文本行高、三级标题文本行高、四级标题文本行高、五级标题文本行高、六级标题文本行高
@@ -53,11 +53,6 @@ public class MarkdownTheme {
      * 上下文
      */
     protected var abilityContext: ?AbilityContext = None
-
-    /**
-     * 是否图文混排 - true:图文混排，false:不图文混排。默认true
-     */
-    protected var isWord: Bool = true
 
     /**
      * 每个模块之间上下间距 - 单位vp
@@ -265,7 +260,7 @@ public class MarkdownTheme {
     protected var orderedListItemLineheight: Float64 = 22.0
 
     /**
-     * 有序列表有序列表任务列表每个模块之间上下间距 - 单位vp
+     * 有序列表无序列表任务列表每个模块之间上下间距 - 单位vp
      */
     protected var blockOrderedAndBulletTopAndBottomMargins: Float64 = 0.0
 
@@ -375,12 +370,12 @@ public class MarkdownTheme {
     protected var codeCopyIcon: ?CJResource = None
 
     /**
-     * 组合代码标题字体大小 - 单位fp
+     * 组合代码未选中标题字体大小 - 单位fp
      */
     protected var codeListTitleTextSize: Float64 = 13.0
 
     /**
-     * 组合代码标题字体大小 - 单位fp
+     * 组合代码选中标题字体大小 - 单位fp
      */
     protected var codeListTitleSelectTextSize: Float64 = 13.0
 
@@ -648,8 +643,6 @@ public class MarkdownTheme {
         // 上下文
         this.stageContext = builder.stageContext
         this.abilityContext = builder.abilityContext
-        //是否图文混排
-        this.isWord = builder.isWord
         // 模块间距
         this.blockTopAndBottomMargins = builder.blockTopAndBottomMargins
         // 链接
@@ -921,11 +914,6 @@ public class MarkdownThemeBuilder {
      * 上下文
      */
     protected var abilityContext: ?AbilityContext = None
-
-    /**
-     * 是否图文混排 - true:图文混排，false:不图文混排。默认true
-     */
-    protected var isWord: Bool = true
 
     /**
      * 每个模块之间上下间距 - 单位vp
@@ -1519,8 +1507,6 @@ public class MarkdownThemeBuilder {
         // 上下文
         this.stageContext = theme.stageContext
         this.abilityContext = theme.abilityContext
-        //是否图文混排
-        this.isWord = theme.isWord
         // 模块间距
         this.blockTopAndBottomMargins = theme.blockTopAndBottomMargins
         // 链接
@@ -1767,17 +1753,6 @@ public class MarkdownThemeBuilder {
      */
     public func setAbilityContext(abilityContext: AbilityContext): MarkdownThemeBuilder {
         this.abilityContext = abilityContext
-        return this
-    }
-
-    /**
-     * 设置是否图文混排
-     *
-     * @param isWord 是否图文混排
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setIsWord(isWord: Bool): MarkdownThemeBuilder {
-        this.isWord = isWord
         return this
     }
 

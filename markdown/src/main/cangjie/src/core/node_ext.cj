@@ -80,9 +80,9 @@ extend Node <: NodeExt {
     public func getListChildren(): ArrayList<Node> {
         let list: ArrayList<Node> = ArrayList<Node>()
         var node: ?Node = getFirstChild()
-        while (!node.isNone()) {
-            list.append(node.getOrThrow())
-            node = node.getOrThrow().getNext()
+        while(let Some(v)<- node){
+            list.append(v)
+            node = v.getNext()
         }
         return list
     }
