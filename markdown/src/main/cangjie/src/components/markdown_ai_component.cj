@@ -23,7 +23,7 @@ public class MarkdownAIComponent {
     /**
      * 是否全量加载 - true：全量加载，fasle：增量加载
      */
-    var isFull: Bool
+    var isFull: Bool = true
 
     /**
      * markdown配置

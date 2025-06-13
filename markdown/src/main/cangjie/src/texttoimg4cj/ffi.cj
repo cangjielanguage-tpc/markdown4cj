@@ -2,7 +2,7 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 
-package texttoimg4cj
+package markdown.texttoimg4cj
 
 foreign {
     func drawCircleImage(str: CString, fontSize: Float32, fontColor: UInt32, fontBackGroupColor: UInt32,
