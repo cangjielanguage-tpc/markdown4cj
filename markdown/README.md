@@ -111,43 +111,44 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 编译构建
 
-1. 通过中心仓下载安装
+1. 下载安装
+   1. 通过中心仓下载安装
 
-   ```sh
-   ohpm install @cangjie-tpc/markdown
-   ```
+      ```sh
+      ohpm install @cangjie-tpc/markdown
+      ```
 
-2. 通过module引入
-   1. 克隆下载项目
-   2. 将markdown模块拷贝到应用项目下
-   3. 将markdown模块当module引用，修改项目下的 build-profile.json5 文件，在 modules 字段添加下面代码
-      ```json
-      {
-      "name": "markdown",
-      "srcPath": "./markdown"
-      }
-      ```
-   4. 修改自身应用 entry 下的 oh-package.json5 文件，在 dependencies 字段添加 "markdown": "file:../markdown"
-      ```json
-      {
-         "name": "entry",
-         "version": "1.0.0",
-         "description": "Please describe the basic information.",
-         "main": "",
-         "author": "",
-         "license": "",
-        "dependencies": {
-            "markdown": "file:../markdown"
-        }
-      }
-      ```
-   5. 修改自身应用 entry/src/main/cangjie 下的 cjpm.toml 文件，在 [dependencies] 字段下添加
-      ```toml
-      [dependencies.markdown]
-        path = "../../../../markdown/src/main/cangjie"
-      ```
-      
-3. 在项目中使用markdown项目
+   2. 通过module引入
+      1. 克隆下载项目
+      2. 将markdown模块拷贝到应用项目下
+      3. 将markdown模块当module引用，修改项目下的 build-profile.json5 文件，在 modules 字段添加下面代码
+         ```json
+         {
+         "name": "markdown",
+         "srcPath": "./markdown"
+         }
+         ```
+      4. 修改自身应用 entry 下的 oh-package.json5 文件，在 dependencies 字段添加 "@cangjie-tpc/markdown": "file:../markdown"
+         ```json
+         {
+            "name": "entry",
+            "version": "1.0.0",
+            "description": "Please describe the basic information.",
+            "main": "",
+            "author": "",
+            "license": "",
+           "dependencies": {
+               "@cangjie-tpc/markdown": "file:../markdown"
+           }
+         }
+         ```
+      5. 修改自身应用 entry/src/main/cangjie 下的 cjpm.toml 文件，在 [dependencies] 字段下添加
+         ```toml
+         [dependencies.markdown]
+           path = "../../../../markdown/src/main/cangjie"
+         ```
+
+2. 在项目中使用markdown项目
    ```cangjie
    import markdown.components.*
    ```
