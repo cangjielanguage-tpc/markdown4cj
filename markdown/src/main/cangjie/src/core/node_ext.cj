@@ -177,7 +177,10 @@ extend Node <: NodeExt {
     }
 
     public func getView(): NodeView {
-        (this.custom as NodeView)()
+        match (this.custom) {
+        	case v:NodeView => return v
+            case _ => throw UnsupportedException()
+        }
     }
 
     public func toViewString(): String {
