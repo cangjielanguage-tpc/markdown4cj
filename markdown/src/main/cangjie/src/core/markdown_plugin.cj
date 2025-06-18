@@ -62,33 +62,6 @@ public interface MarkdownPlugin <: Hashable & Equatable<MarkdownPlugin> & ToStri
      * @param visitor {@link MarkdownVisitor} instance used to render markdown
      */
     func afterRender(node: Node, visitor: MarkdownVisitor): Unit
-
-    /**
-     * This method will be called <strong>before</strong> calling <code>TextView#setText</code>.
-     * <p>
-     * It can be useful to prepare a TextView for markdown. For example {@code markdown.image.ImagesPlugin}
-     * uses this method to unregister previously registered {@link AsyncDrawableSpan}
-     * (if there are such spans in this TextView at this point). Or {@link CorePlugin}
-     * which measures ordered list numbers
-     *
-     * @param textView:TextView to which <code>markdown</code> will be applied
-     * @param markdown Parsed markdown
-     */
-    // func beforeSetText(textView: TextView, markdown: Spanned): Unit
-
-    /**
-     * This method will be called <strong>after</strong> markdown was applied.
-     * <p>
-     * It can be useful to trigger certain action on spans/textView. For example {@code markdown.image.ImagesPlugin}
-     * uses this method to register {@link AsyncDrawableSpan} and start
-     * asynchronously loading images.
-     * <p>
-     * Unlike {@link #beforeSetText(TextView, Spanned)} this method does not receive parsed markdown
-     * as at this point spans must be queried by calling <code>TextView#getText#getSpans</code>.
-     *
-     * @param textView:TextView to which markdown was applied
-     */
-    // func afterSetText(textView: TextView): Unit
 }
 
 /**
@@ -121,12 +94,6 @@ public abstract class AbstractMarkdownPlugin <: MarkdownPlugin {
 
     public open override func afterRender(_: Node, _: MarkdownVisitor): Unit {
     }
-
-    // public override func beforeSetText(textView: TextView, markdown: Spanned): Unit {
-    // }
-
-    // public override func afterSetText(textView: TextView): Unit {
-    // }
 
     public open operator func ==(other: MarkdownPlugin): Bool {
         return refEq(this, (other as AbstractMarkdownPlugin)())

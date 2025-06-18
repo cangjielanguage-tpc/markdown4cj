@@ -8,7 +8,6 @@
 
 #include <native_drawing/drawing_bitmap.h>
 
-#include "ohos_log.h"
 #include "utils.h"
 #include <cstring>
 #include <iostream>
