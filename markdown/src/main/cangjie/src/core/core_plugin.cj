@@ -19,8 +19,7 @@ public class CorePlugin <: AbstractMarkdownPlugin {
      * @return a set with enabled by default block types
      * Set<Class<? <: Block>>
      */
-    public static func enabledBlockTypes(): HashSet<String> {
-        return HashSet<String>(
+    public static let enabledBlockTypes: HashSet<String> = HashSet<String>(
             [
                 "BlockQuote",
                 "Heading",
@@ -31,7 +30,6 @@ public class CorePlugin <: AbstractMarkdownPlugin {
                 "IndentedCodeBlock"
             ]
         )
-    }
 
     private let onTextAddedListeners: ArrayList<OnTextAddedListener> = ArrayList<OnTextAddedListener>(0)
 
