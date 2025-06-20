@@ -24,6 +24,10 @@ public class MarkdownAICacheConfiguration {
 
     let fencedCodeComponents: ArrayList<MarkdownAIFencedCodeBlockComponent> = ArrayList<MarkdownAIFencedCodeBlockComponent>()
 
+    let aiCodeComponents: ArrayList<MarkdownAICodeComponent> = ArrayList<MarkdownAICodeComponent>()
+
+    let aiCodeTextComponents: ArrayList<MarkdownAICodeTextComponent> = ArrayList<MarkdownAICodeTextComponent>()
+
     func clearAll(): Unit {
         listComponents.clear()
         listItemComponents.clear()
@@ -35,5 +39,7 @@ public class MarkdownAICacheConfiguration {
         tableCellComponents.clear()
         indentedCodeComponents.clear()
         fencedCodeComponents.clear()
+        aiCodeComponents.clear()
+        aiCodeTextComponents.clear()
     }
 }

@@ -1,5 +1,5 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+/**
+ * Created on 2025/6/12
  */
 package ohos_app_cangjie_entry
 
@@ -13,55 +13,57 @@ import std.sync.sleep
 import std.time.*
 import ohos.hilog.Hilog
 
+/**
+ * 超大代码块增量加载
+ */
 @Entry
 @Component
-class Table {
-    let mdStr: String = ###"
-# 最美数学公式 Top 100
-
-| 题号 | 标题 | 难易度 |
-| :--- | ---:| :---: |
-| 1 | $aaaaaaaaaaaaaaaaaaaaa + bbbbbbbbbbbbbbbbbbbbbbb = c$ | 简单 |
-| 15 | 三数之和 | [链接链接链接链接链接链接链接链接链接链接链接链接链接链接链接链接链接11](https://baidu.com) |
-| 262 | 行程和用户 | 困难 |
-
-# 最美数学公式 Top 100
-
-| 序号 | 公式名称              | 数学公式                          | 描述                                                                 |
-|------|-----------------------|-----------------------------------|----------------------------------------------------------------------|
-| 101  | 同伦群长正合列            | $\cdots \to \pi_n(F) \to \pi_n(E) \to \pi_n(B) \to \pi_{n-1}(F) \to \cdots$ | 纤维丛拓扑结构的代数刻画                                             |
-
----
-
-"###
+class BigCodeBlockIncrementPage {
+    var mdStr: String = ""
 
     @State
     var output: String = ""
 
     var scroller: Scroller = Scroller()
 
+    protected override func aboutToAppear(): Unit {
+        mdStr = getFileContextStr("code.md")
+    }
+
     func build() {
         Column() {
-            Text("点击").onClick(
-                {
-                    e => spawn {
-                        let arr = mdStr.toRuneArray()
-                        for (i in 0..arr.size) {
-                            sleep(Duration.millisecond * 50)
-                            launch {
-                                output = output + arr[i].toString()
-                                scroller.scrollEdge(Edge.Bottom)
+            Text("点击")
+                .onClick(
+                    {
+                        e => spawn {
+                            let arr: Array<Rune> = mdStr.toRuneArray()
+                            let num = 100
+                            for (i in 0..arr.size : num) {
+                                sleep(Duration.millisecond * 50)
+                                launch {
+                                    let size = if (arr.size > i + num) {
+                                        i + num
+                                    } else {
+                                        arr.size
+                                    }
+                                    output += String(arr[i..size])
+                                    scroller.scrollEdge(Edge.Bottom)
+                                }
                             }
                         }
                     }
-                })
+                )
             Scroll(scroller) {
                 Column {
                     MarkdownAIComponent(output: output, isFull: false, markdownAIConfiguration: setConfig())
-                //                    MarkdownAIComponent(output: mdStr,isFull:true,markdownAIConfiguration:setConfig())
                 }
-                .margin(right: 10, left: 10)
             }
+            // 左右外边距
+            .margin(right: 10, left: 10)
+            // 高度
+            .height(100.percent)
+            // 圆角
+            .borderRadius(8)
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
         }
@@ -128,6 +130,13 @@ class Table {
             .setLinkRectToolImageTextSize(11.0)
             .setLinkRectToolImageMargin(2.0)
             .setImagePadding(20)
+
+            // 是否单独代码块
+            .setIsSeparateCodeBlock(true)
+            // 代码块边框圆角
+            .setCodeBlockRadius(0.0)
+            // 模块上下边距
+            .setBlockTopAndBottomMargins(0.0)
             .build()
         return MarkdownAITheme
     }

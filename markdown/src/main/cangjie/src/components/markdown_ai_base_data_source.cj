@@ -196,3 +196,21 @@ public class NodeViewAIDataSource <: MarkdownAIBaseDataSource<NodeView> {
         super(data)
     }
 }
+
+/**
+ * String DataSource
+ */
+public class StringDataSource <: MarkdownAIBaseDataSource<String> {
+    public StringDataSource(let data: ArrayList<String>) {
+        super(data)
+    }
+}
+
+/**
+ * Int64 DataSource
+ */
+public class Int64DataSource <: MarkdownAIBaseDataSource<Int64> {
+    public Int64DataSource(let data: ArrayList<Int64>) {
+        super(data)
+    }
+}

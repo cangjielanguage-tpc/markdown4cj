@@ -403,7 +403,12 @@ public class MarkdownAITheme {
     /**
      * 是否单独代码块
      */
-    protected var isSeparateCodeBlock = false
+    protected var isSeparateCodeBlock: Bool = false
+
+    /**
+     * 单独代码块行号宽度
+     */
+    protected var separateCodeBlockWidth: Float64 = 50.0
 
     /**
      * H1、H2标题下分割线高度 - 单位vp
@@ -722,6 +727,7 @@ public class MarkdownAITheme {
         this.codeListTitleSelectBackgroupColor = builder.codeListTitleSelectBackgroupColor
         this.codeListTitleUnSelectBackgroupColor = builder.codeListTitleUnSelectBackgroupColor
         this.isSeparateCodeBlock = builder.isSeparateCodeBlock
+        this.separateCodeBlockWidth = builder.separateCodeBlockWidth
         // 标题
         this.headingBreakHeight = builder.headingBreakHeight
         this.headingBreakColor = builder.headingBreakColor
@@ -1273,6 +1279,11 @@ public class MarkdownAIThemeBuilder {
     protected var isSeparateCodeBlock = false
 
     /**
+     * 单独代码块行号宽度
+     */
+    protected var separateCodeBlockWidth: Float64 = 50.0
+
+    /**
      * H1、H2标题下分割线高度 - 单位vp
      */
     protected var headingBreakHeight: Float64 = 0.5
@@ -1592,6 +1603,7 @@ public class MarkdownAIThemeBuilder {
         this.codeListTitleSelectBackgroupColor = theme.codeListTitleSelectBackgroupColor
         this.codeListTitleUnSelectBackgroupColor = theme.codeListTitleUnSelectBackgroupColor
         this.isSeparateCodeBlock = theme.isSeparateCodeBlock
+        this.separateCodeBlockWidth = theme.separateCodeBlockWidth
         // 标题
         this.headingBreakHeight = theme.headingBreakHeight
         this.headingBreakColor = theme.headingBreakColor
@@ -2525,6 +2537,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setIsSeparateCodeBlock(isSeparateCodeBlock: Bool): MarkdownAIThemeBuilder {
         this.isSeparateCodeBlock = isSeparateCodeBlock
+        return this
+    }
+
+    /**
+     * 单独代码块行号宽度
+     *
+     * @param separateCodeBlockWidth 单独代码块行号宽度
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setSeparateCodeBlockWidth(separateCodeBlockWidth: Float64): MarkdownAIThemeBuilder {
+        this.separateCodeBlockWidth = separateCodeBlockWidth
         return this
     }
 

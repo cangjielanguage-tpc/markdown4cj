@@ -13,9 +13,12 @@ import std.sync.sleep
 import std.time.*
 import ohos.hilog.Hilog
 
+/**
+ * 全量数据增量加载
+ */
 @Entry
 @Component
-class All {
+class AllIncrementPage {
     let mdStr: String = ###"
 > 以上信息均整理[1111](https://ssssss.com)
 > 以上信息均整理[1111](https://ssssss.com)
@@ -178,7 +181,6 @@ Hello World!
             Scroll(scroller) {
                 Column {
                     MarkdownAIComponent(output: output, isFull: false, markdownAIConfiguration: setConfig())
-                //                    MarkdownAIComponent(output: mdStr,isFull:true,markdownAIConfiguration:setConfig())
                 }
                 .margin(right: 10, left: 10)
             }

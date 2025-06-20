@@ -9,11 +9,11 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 标题
+ * 标题全量加载
  */
 @Entry
 @Component
-class TitlePage {
+class TitleCompletePage {
     let mdStr: String = """
 ### 标题1
 

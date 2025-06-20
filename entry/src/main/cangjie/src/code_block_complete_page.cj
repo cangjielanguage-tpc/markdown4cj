@@ -13,9 +13,12 @@ import std.sync.sleep
 import std.time.*
 import ohos.hilog.Hilog
 
+/**
+ * 小代码块全量加载
+ */
 @Entry
 @Component
-class CodeBlock {
+class CodeBlockCompletePage {
     let mdStr: String = ###"
 ```cangjie
 // Java
@@ -32,67 +35,8 @@ public class Main {
         System.out.println(2 + 2);
     }
 }
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
 ```
 "###
-
-    @State
-    var output: String = ""
 
     var scroller: Scroller = Scroller()
 

@@ -130,8 +130,6 @@ class MarkdownAIFencedCodeBlockComponent {
         .borderRadius(markdownAIConfiguration.markdownAITheme.codeBlockRadius)
         // 设置背景色
         .backgroundColor(codeBackgroundColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
-        // 布局约束
-        .constraintSize(minHeight: constraintSizeMinWidth(markdownAIConfiguration))
     }
 
     /**
@@ -205,8 +203,6 @@ class MarkdownAIFencedCodeBlockComponent {
                             .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
                             // 设置外边距
                             .margin(left: 8)
-                            // 是否隐藏
-                            .visibility(isVisibility(!markdownAIConfiguration.markdownAITheme.isSeparateCodeBlock))
                     }
                     // 设置宽度
                     .width(30.percent)

@@ -1,0 +1,369 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
+ */
+package markdown.components
+
+import ohos.base.*
+import ohos.component.*
+import ohos.state_manage.*
+import ohos.state_macro_manage.*
+import ohos.hilog.Hilog
+
+/**
+ * 单独代码块自定义控件
+ */
+@Component
+class MarkdownAICodeComponent {
+    /**
+     * markdown配置
+     */
+    var markdownAIConfiguration: MarkdownAIConfiguration
+
+    /**
+     * 代码内容
+     */
+    @State
+    var codeText: String = ""
+
+    /**
+     * 代码类型
+     */
+    @State
+    var info: Option<String> = Option<String>.None
+
+    /**
+     * 是否全量加载
+     */
+    var isFull: Bool
+
+    /**
+     * 定位需要的数组
+     */
+    var indexList: ArrayList<Int64> = ArrayList<Int64>()
+
+    /**
+     * 代码列表
+     */
+    @State
+    var lineStrArray: StringDataSource = StringDataSource(ArrayList<String>())
+
+    /**
+     * 代码列表
+     */
+    @State
+    var lineInt64Array: StringDataSource = StringDataSource(ArrayList<String>())
+
+    /**
+     * list控制器
+     */
+    let scroller1: Scroller = Scroller()
+
+    /**
+     * list控制器
+     */
+    let scroller2: Scroller = Scroller()
+
+    var aiCodeComponents: ArrayList<MarkdownAICodeComponent>
+
+    var aiCodeTextComponents: ArrayList<MarkdownAICodeTextComponent>
+
+    /**
+     * 长度
+     */
+    var size: Int64 = -1
+
+    protected override func aboutToAppear(): Unit {
+        refreshData(codeText, info)
+        aiCodeComponents.append(this)
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        aiCodeComponents.removeIf(
+            {
+                predicate => if (predicate.indexList == indexList && predicate.codeText == codeText) {
+                    true
+                } else {
+                    false
+                }
+            })
+    }
+
+    /**
+     * 数据刷新
+     */
+    public func refreshData(codeText: String,info: Option<String>): Unit {
+        this.codeText = codeText
+        this.info = info
+        let arr = ArrayList<String>()
+        codeText.lines().forEach(
+            {
+                s =>
+                arr.append(s)
+            }
+        )
+        let refreshNodeViewSize = arr.size // 刷新进来的数据长度
+        let dataSourceSize = lineStrArray.totalCount() // 页面缓存的数据长度
+        Hilog.error(1,"1","------------arr.size=${arr.size}")
+        if (isFull) {
+            // 全量加载
+            lineStrArray.clear()
+            lineStrArray.addDatas(arr)
+            lineInt64Array.clear()
+            lineInt64Array.addDatas(arr)
+        } else {
+            scroller2.scrollEdge(Edge.Bottom)
+            // 增量加载
+            if (refreshNodeViewSize == 0) {
+                return
+            }
+            if (refreshNodeViewSize > dataSourceSize) {
+                // 刷新数据的长度大于页面数据长度，需要添加数据
+                if (dataSourceSize != 0) {
+                    // 更新页面最后一条数据
+                    lineStrArray.replaceData(dataSourceSize - 1, arr[dataSourceSize - 1])
+                    lineInt64Array.replaceData(dataSourceSize - 1, arr[dataSourceSize - 1])
+                }
+                // 循环添加所有新增数据
+                for (i in refreshNodeViewSize - dataSourceSize..0 : -1) {
+                    lineStrArray.addData(arr[refreshNodeViewSize - i])
+                    lineInt64Array.addData(arr[refreshNodeViewSize - i])
+                }
+            } else if (refreshNodeViewSize == dataSourceSize) {
+                // 刷新数据的长度等于页面数据长度，需要更新当前数据
+                lineStrArray.replaceData(dataSourceSize - 1, arr[dataSourceSize - 1])
+                lineInt64Array.replaceData(dataSourceSize - 1, arr[dataSourceSize - 1])
+            } else {
+                // 刷新数据小于页面数据长度，需要删除数据
+                // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
+                lineStrArray.replaceData(refreshNodeViewSize - 1, arr[refreshNodeViewSize - 1])
+                lineInt64Array.replaceData(refreshNodeViewSize - 1, arr[refreshNodeViewSize - 1])
+                // 循环删除所有多余数据
+                for (i in dataSourceSize - refreshNodeViewSize..0 : -1) {
+                    lineStrArray.deleteData(dataSourceSize - i)
+                    lineInt64Array.deleteData(dataSourceSize - i)
+                }
+            }
+        }
+        size = lineStrArray.totalCount() // 更新列表长度
+    }
+
+    func build() {
+        Column() {
+            codeBlockButtonComponent()
+            Row() {
+                List(scroller:scroller1){
+                    LazyForEach(
+                        lineInt64Array,
+                        itemGeneratorFunc: {
+                            item: String, idx: Int64 => ListItem(){
+                                Text((idx + 1).toString())
+                                    // 设置文本颜色
+                                    .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+                                    // 设置文本尺寸
+                                    .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                                    // 设置行高
+                                    .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineheight)
+                                    // 设置多行文本的文本对齐方式
+                                    .textAlign(TextAlign.End)
+                                    // 设置文本的最大行数
+                                    .maxLines(1)
+                                    // 设置文本超长时的显示方式
+                                    .textOverflow(TextOverflow.Ellipsis)
+                            }
+                        }
+                    )
+                }
+                // 设置组件自身的宽度
+                .height(100.percent)
+                // 设置内边距属性
+                .padding(left: 8, right: 8)
+                // 设置组件自身的宽度
+                .width(markdownAIConfiguration.markdownAITheme.separateCodeBlockWidth)
+                // 设置边框的宽度
+                .borderWidth(EdgeWidths(right: markdownAIConfiguration.markdownAITheme.thematicBreakHeight.vp))
+                // 设置元素的边框样式
+                .borderStyle(BorderStyle.Solid)
+                // 设置边框的颜色
+                .borderColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+                // 设置滚动条状态
+                .scrollBar(BarState.Off)
+                // 设置ListItem在List交叉轴方向的布局方式
+                .alignListItem(ListItemAlign.End)
+                // 设置组件是否可交
+                .enabled(false)
+                Scroll() {
+                    Column(){
+                        List(scroller:scroller2){
+                            LazyForEach(
+                                lineStrArray,
+                                itemGeneratorFunc: {
+                                    item: String, idx: Int64 =>
+                                        ListItem(){
+                                            MarkdownAICodeTextComponent(
+                                                markdownAIConfiguration:markdownAIConfiguration,
+                                                codeText:item,
+                                                info:info,
+                                                idx:idx,
+                                                isFull: isFull,
+                                                indexList: indexAdd(indexList, idx),
+                                                aiCodeTextComponents:aiCodeTextComponents
+                                            )
+                                        }
+                                }
+                            )
+                        }
+                        // 设置组件自身的宽度
+                        .height(100.percent)
+                        // 设置滚动条状态
+                        .scrollBar(BarState.Off)
+                        .edgeEffect(EdgeEffect.None)
+                        .onScroll(
+                            {
+                                y,state=> scroller1.scrollTo(xOffset: 0.0, yOffset: scroller2.currentOffset().yOffset)
+                            }
+                        )
+                    }
+                    // 设置组件自身的宽度
+                    .height(100.percent)
+                }
+                // 设置滚动方法
+                .scrollable(ScrollDirection.Horizontal)
+                // 设置滚动条状态
+                .scrollBar(BarState.Off)
+                // 设置元素内容的对齐方式
+                .align(Alignment.Start)
+                // 设置元素水平方向的布局
+                .direction(Direction.Ltr)
+                // 设置组件自身的宽度
+                .width(100.percent)
+                // 设置组件自身的宽度
+                .height(100.percent)
+            }
+            // 设置组件自身的宽度
+            .width(100.percent)
+            // 设置组件自身的宽度
+            .height(100.percent)
+        }
+        // 设置组件自身的宽度
+        .width(100.percent)
+        // 设置组件自身的宽度
+        .height(100.percent)
+        // 设置内边距属性
+        .padding(bottom :50)
+        // 设置圆角
+        .borderRadius(markdownAIConfiguration.markdownAITheme.codeBlockRadius)
+        // 设置背景色
+        .backgroundColor(codeBackgroundColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+    }
+
+    /**
+     * 复制按钮和全屏按钮部分
+     */
+    @Builder
+    func codeBlockButtonComponent() {
+        Row() {
+            if (codeText.trimAscii().size > 0) {
+                // 设置图片的数据源
+                if (let Some(i) <- info) {
+                    Row() {
+                        Text(i)
+                            // 设置字体颜色
+                            .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+                            // 设置字体大小
+                            .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                            // 设置外边距
+                            .margin(left: 8)
+                            // 是否隐藏
+                            .visibility(isVisibility(!markdownAIConfiguration.markdownAITheme.isSeparateCodeBlock))
+                    }
+                    // 设置宽度
+                    .width(30.percent)
+                    // 设置子组件在水平方向上的对齐格式
+                    .justifyContent(FlexAlign.Start)
+                } else {
+                    Row()
+                        // 设置宽度
+                        .width(30.percent)
+                        // 设置子组件在水平方向上的对齐格式
+                        .justifyContent(FlexAlign.Start)
+                }
+
+                Row() {
+                    if (markdownAIConfiguration.markdownAITheme.codeCopyIcon.isSome()) {
+                        Row() {
+                            Image(markdownAIConfiguration.markdownAITheme.codeCopyIcon())
+                                // 设置组件自身的宽度
+                                .width(markdownAIConfiguration.markdownAITheme.iconWidthAndHeight)
+                                // 设置组件自身的高度
+                                .height(markdownAIConfiguration.markdownAITheme.iconWidthAndHeight)
+                                // 设置图片的缩放类型
+                                .objectFit(ImageFit.Contain)
+
+                            Row()
+                                // 设置宽度
+                                .width(5)
+
+                            Text("复制代码")
+                                // 设置字体颜色
+                                .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+                                // 设置字体大小
+                                .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                                // 设置容器元素绘制区域内的子元素的对齐方式
+                                .align(Alignment.End)
+                                // 设置外边距
+                                .margin(right: 4)
+                        }
+                        // 设置子组件在水平方向上的对齐格式
+                        .justifyContent(FlexAlign.End)
+                        // 点击动作触发该方法调用
+                        .onClick {evt => codeCopyOnClick(codeText, markdownAIConfiguration.codeCopyCallback)}
+                    }
+
+                    if (markdownAIConfiguration.markdownAITheme.codeFullScreenIcon.isSome()) {
+                        Row() {
+                            Image(markdownAIConfiguration.markdownAITheme.codeFullScreenIcon())
+                                // 设置组件自身的宽度
+                                .width(markdownAIConfiguration.markdownAITheme.iconWidthAndHeight)
+                                // 设置组件自身的高度
+                                .height(markdownAIConfiguration.markdownAITheme.iconWidthAndHeight)
+                                // 设置外边距属性
+                                .margin(left: 4)
+                                // 设置图片的缩放类型
+                                .objectFit(ImageFit.Contain)
+                                // 控制当前组件显示或隐藏
+                                .visibility(isVisibility(markdownAIConfiguration.markdownAITheme.isCodeFullScreen))
+
+                            Row()
+                                // 设置宽度
+                                .width(5)
+
+                            Text("全屏代码")
+                                // 设置字体颜色
+                                .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+                                // 设置字体大小
+                                .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                                // 设置容器元素绘制区域内的子元素的对齐方式
+                                .align(Alignment.End)
+                                // 设置外边距
+                                .margin(right: 4)
+                        }
+                        // 设置子组件在水平方向上的对齐格式
+                        .justifyContent(FlexAlign.End)
+                        // 点击动作触发该方法调用
+                        .onClick {
+                            evt => codeFullScreenOnClick(codeText, info, markdownAIConfiguration.codeFullScreenCallback)
+                        }
+                    }
+                }
+                // 设置宽度
+                .width(70.percent)
+                // 设置子组件在水平方向上的对齐格式
+                .justifyContent(FlexAlign.End)
+            }
+        }
+        // 设置外边距属性
+        .margin(top: 8, right: 8)
+        // 设置子组件在垂直方向上的对齐格式
+        .alignItems(VerticalAlign.Center)
+    }
+}

@@ -27,7 +27,7 @@ class MainAbility <: Ability {
 
     public override func onWindowStageCreate(windowStage: WindowStage): Unit {
         AppLog.info("MainAbility onWindowStageCreate.")
-        windowStage.loadContent("Index")
+        windowStage.loadContent("IndexPage")
     }
 }
 
