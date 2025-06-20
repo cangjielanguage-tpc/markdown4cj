@@ -7,7 +7,6 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
-import ohos.hilog.Hilog
 
 /**
  * 单独代码块自定义控件
@@ -72,6 +71,10 @@ class MarkdownAICodeComponent {
      */
     var size: Int64 = -1
 
+    @State var reachBottom: Bool = true
+
+    var chatTouch: Bool = false
+
     protected override func aboutToAppear(): Unit {
         refreshData(codeText, info)
         aiCodeComponents.append(this)
@@ -103,7 +106,6 @@ class MarkdownAICodeComponent {
         )
         let refreshNodeViewSize = arr.size // 刷新进来的数据长度
         let dataSourceSize = lineStrArray.totalCount() // 页面缓存的数据长度
-        Hilog.error(1,"1","------------arr.size=${arr.size}")
         if (isFull) {
             // 全量加载
             lineStrArray.clear()
@@ -111,7 +113,7 @@ class MarkdownAICodeComponent {
             lineInt64Array.clear()
             lineInt64Array.addDatas(arr)
         } else {
-            scroller2.scrollEdge(Edge.Bottom)
+            scrollChatIfAtBottom()
             // 增量加载
             if (refreshNodeViewSize == 0) {
                 return
@@ -216,12 +218,21 @@ class MarkdownAICodeComponent {
                         .height(100.percent)
                         // 设置滚动条状态
                         .scrollBar(BarState.Off)
+                        // 设置组件的滑动效果
                         .edgeEffect(EdgeEffect.None)
-                        .onScroll(
-                            {
-                                y,state=> scroller1.scrollTo(xOffset: 0.0, yOffset: scroller2.currentOffset().yOffset)
-                            }
-                        )
+                        // 列表到底末尾位置时触发
+                        .onReachEnd { =>
+                            reachBottom = true
+                        }
+                        // 列表滑动时触发
+                        .onScroll {offset, _ =>
+                            scroller1.scrollTo(xOffset: 0.0, yOffset: scroller2.currentOffset().yOffset)
+                            checkScroll(offset)
+                        }
+                        // 触摸动作触发该事件
+                        .onTouch { evt =>
+                            chatOnTouch(evt)
+                        }
                     }
                     // 设置组件自身的宽度
                     .height(100.percent)
@@ -365,5 +376,29 @@ class MarkdownAICodeComponent {
         .margin(top: 8, right: 8)
         // 设置子组件在垂直方向上的对齐格式
         .alignItems(VerticalAlign.Center)
+    }
+
+    func scrollChatIfAtBottom() {
+        if (reachBottom) {
+            scroll2Bottom()
+        }
+    }
+
+    func scroll2Bottom() {
+        scroller2.scrollEdge(Edge.Bottom)
+    }
+
+    func checkScroll(offset: Float64) {
+        if (offset < -0.5 && chatTouch) {
+            reachBottom = false
+        }
+    }
+
+    func chatOnTouch(evt: TouchEvent) {
+        if (let TouchType.Down <- evt.eventType) {
+            chatTouch = true
+        } else if (let TouchType.Up <- evt.eventType) {
+            chatTouch = false
+        }
     }
 }
