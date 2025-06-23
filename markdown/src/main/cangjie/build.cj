@@ -11,8 +11,8 @@ func stagePreBuild(): Int64 {
     // process before "cjpm build"
     let sourcePathArm64 = "../../../libs/arm64-v8a/libtext_to_img.so"
     let sourcePathX86 = "../../../libs/x86_64/libtext_to_img.so"
-    while (!File.exists(sourcePathArm64) || !File.exists(sourcePathX86)) {
-    }
+//    while (!File.exists(sourcePathArm64) || !File.exists(sourcePathX86)) {
+//    }
     0
 }
 
