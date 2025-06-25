@@ -1,5 +1,5 @@
-/**
- * Created on 2025/6/12
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
  */
 package ohos_app_cangjie_entry
 
@@ -14,70 +14,87 @@ import std.time.*
 import ohos.hilog.Hilog
 
 /**
- * 小代码块增量加载
+ * 全量数据全量加载
  */
 @Entry
 @Component
-class CodeBlockIncrementPage {
-    let mdStr: String = ###"
-```cangjie
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
-```
-"###
+class Test1CompletePage {
 
-    @State
-    var output: String = ""
+    var mdStr: String = ""
 
     var scroller: Scroller = Scroller()
 
+    protected override func aboutToAppear(): Unit {
+        mdStr = getFileContextStr("test1.md")
+        scroller.scrollEdge(Edge.Bottom)
+    }
+
+    @State var reachBottom: Bool = true
+
+    var chatTouch: Bool = false
+
     func build() {
         Column() {
-            Text("点击")
-                .onClick(
-                    {
-                        e => spawn {
-                            let arr: Array<Rune> = mdStr.toRuneArray()
-                            for (i in 0..arr.size : 10) {
-                                sleep(Duration.millisecond * 50)
-                                launch {
-                                    let size = if (arr.size > i + 10) {
-                                        i + 10
-                                    } else {
-                                        arr.size
-                                    }
-                                    output += String(arr[i..size])
-                                    scroller.scrollEdge(Edge.Bottom)
-                                }
-                            }
-                        }
-                    }
-                )
             Scroll(scroller) {
                 Column {
-                    MarkdownAIComponent(output: output, isFull: false, markdownAIConfiguration: setConfig())
+                    MarkdownAIComponent(output: mdStr, isFull: true, markdownAIConfiguration: setConfig())
                 }
+                .margin(right: 10, left: 10)
             }
-            // 左右外边距
-            .margin(right: 10, left: 10)
-            // 高度
-            .height(100.percent)
-            // 圆角
-            .borderRadius(8)
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
+//            .onAppear({=>
+//
+//                scrollChatIfAtBottom()
+//            })
+            .onScrollEdge({edge=>
+                match (edge) {
+                	case Edge.Bottom=> reachBottom = true
+                        case _ =>()
+                }
+            })
+//            // 列表到底末尾位置时触发
+//            .onReachEnd { =>
+//                reachBottom = true
+//            }
+//            // 列表滑动时触发
+            .onScroll {offset =>
+//                scroller.scrollTo(xOffset: 0.0, yOffset: scroller.currentOffset().yOffset)
+                checkScroll(offset.yOffset)
+            }
+            // 触摸动作触发该事件
+            .onTouch { evt =>
+                chatOnTouch(evt)
+            }
+            .onAreaChange({v, w=>
+               scrollChatIfAtBottom()
+            })
+
+        }
+    }
+
+
+    func scrollChatIfAtBottom() {
+        if (reachBottom) {
+            scroll2Bottom()
+        }
+    }
+
+    func scroll2Bottom() {
+        scroller.scrollEdge(Edge.Bottom)
+    }
+
+    func checkScroll(offset: Float64) {
+        if (offset < -0.5 && chatTouch) {
+            reachBottom = false
+        }
+    }
+
+    func chatOnTouch(evt: TouchEvent) {
+        if (let TouchType.Down <- evt.eventType) {
+            chatTouch = true
+        } else if (let TouchType.Up <- evt.eventType) {
+            chatTouch = false
         }
     }
 
@@ -142,13 +159,6 @@ public class Main {
             .setLinkRectToolImageTextSize(11.0)
             .setLinkRectToolImageMargin(2.0)
             .setImagePadding(20)
-
-            // 是否单独代码块
-            .setIsSeparateCodeBlock(true)
-            // 代码块边框圆角
-            .setCodeBlockRadius(0.0)
-            // 模块上下边距
-            .setBlockTopAndBottomMargins(0.0)
             .build()
         return MarkdownAITheme
     }

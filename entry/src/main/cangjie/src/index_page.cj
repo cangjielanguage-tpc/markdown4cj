@@ -365,6 +365,122 @@ class IndexPage {
                                 .width(40)
                         }
                     }
+                    ListItem() {
+                        Row() {
+                            Text("")
+                                // 宽度
+                                .width(40)
+                            Button("13、音频视频全量加载")
+                                // 高度
+                                .height(40)
+                                // 容器尺寸确定时，元素与兄弟节点主轴布局尺寸按照权重进行分配，忽略本身尺寸设置仅在Row/Column/Flex布局中生效
+                                .layoutWeight(1)
+                                // 圆角
+                                .shape(ShapeType.Capsule)
+                                // 文本颜色
+                                .fontColor(0xFFFFFF)
+                                // 背景颜色
+                                .backgroundColor(0xFF0000)
+                                // 外边距
+                                .margin(top: 5, bottom: 5)
+                                // 内容对齐方式
+                                .align(Alignment.Center)
+                                // 字体大小
+                                .fontSize(16)
+                                // 点击动作触发该方法调用
+                                .onClick {Router.push(url: "AudioAndVideoCompletePage")}
+                            Text("")
+                                // 宽度
+                                .width(40)
+                        }
+                    }
+                    ListItem() {
+                        Row() {
+                            Text("")
+                                // 宽度
+                                .width(40)
+                            Button("14、音频视频增量加载")
+                                // 高度
+                                .height(40)
+                                // 容器尺寸确定时，元素与兄弟节点主轴布局尺寸按照权重进行分配，忽略本身尺寸设置仅在Row/Column/Flex布局中生效
+                                .layoutWeight(1)
+                                // 圆角
+                                .shape(ShapeType.Capsule)
+                                // 文本颜色
+                                .fontColor(0xFFFFFF)
+                                // 背景颜色
+                                .backgroundColor(0xFF0000)
+                                // 外边距
+                                .margin(top: 5, bottom: 5)
+                                // 内容对齐方式
+                                .align(Alignment.Center)
+                                // 字体大小
+                                .fontSize(16)
+                                // 点击动作触发该方法调用
+                                .onClick {Router.push(url: "AudioAndVideoIncrementPage")}
+                            Text("")
+                                // 宽度
+                                .width(40)
+                        }
+                    }
+                    ListItem() {
+                        Row() {
+                            Text("")
+                                // 宽度
+                                .width(40)
+                            Button("15、测试1全量加载")
+                                // 高度
+                                .height(40)
+                                // 容器尺寸确定时，元素与兄弟节点主轴布局尺寸按照权重进行分配，忽略本身尺寸设置仅在Row/Column/Flex布局中生效
+                                .layoutWeight(1)
+                                // 圆角
+                                .shape(ShapeType.Capsule)
+                                // 文本颜色
+                                .fontColor(0xFFFFFF)
+                                // 背景颜色
+                                .backgroundColor(0xFF0000)
+                                // 外边距
+                                .margin(top: 5, bottom: 5)
+                                // 内容对齐方式
+                                .align(Alignment.Center)
+                                // 字体大小
+                                .fontSize(16)
+                                // 点击动作触发该方法调用
+                                .onClick {Router.push(url: "Test1CompletePage")}
+                            Text("")
+                                // 宽度
+                                .width(40)
+                        }
+                    }
+                    ListItem() {
+                        Row() {
+                            Text("")
+                                // 宽度
+                                .width(40)
+                            Button("16、测试1增量加载")
+                                // 高度
+                                .height(40)
+                                // 容器尺寸确定时，元素与兄弟节点主轴布局尺寸按照权重进行分配，忽略本身尺寸设置仅在Row/Column/Flex布局中生效
+                                .layoutWeight(1)
+                                // 圆角
+                                .shape(ShapeType.Capsule)
+                                // 文本颜色
+                                .fontColor(0xFFFFFF)
+                                // 背景颜色
+                                .backgroundColor(0xFF0000)
+                                // 外边距
+                                .margin(top: 5, bottom: 5)
+                                // 内容对齐方式
+                                .align(Alignment.Center)
+                                // 字体大小
+                                .fontSize(16)
+                                // 点击动作触发该方法调用
+                                .onClick {Router.push(url: "Test1IncrementPage")}
+                            Text("")
+                                // 宽度
+                                .width(40)
+                        }
+                    }
                 }
                 // 设置List组件排列方向
                 .listDirection(Axis.Vertical)

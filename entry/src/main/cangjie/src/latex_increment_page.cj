@@ -68,8 +68,8 @@ class LatexIncrementPage {
     func setConfig(): MarkdownAIConfiguration {
         let MarkdownAIConfigurationBuilder: MarkdownAIConfigurationBuilder = MarkdownAIConfiguration.emptyBuilder()
         MarkdownAIConfigurationBuilder.setMarkdownAITheme(setMarkdownAITheme())
-        MarkdownAIConfigurationBuilder.setImageCallback(imageCallback)
-        MarkdownAIConfigurationBuilder.setVideoCallback(videoCallback)
+//        MarkdownAIConfigurationBuilder.setImageCallback(imageCallback)
+//        MarkdownAIConfigurationBuilder.setVideoCallback(videoCallback)
         MarkdownAIConfigurationBuilder.setVideoImageCallback(videoImageCallback)
         MarkdownAIConfigurationBuilder.setLinkCallback(linkCallback)
         MarkdownAIConfigurationBuilder.setCodeCopyCallback(codeCopyCallback)

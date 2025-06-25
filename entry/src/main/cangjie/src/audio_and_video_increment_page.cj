@@ -1,5 +1,5 @@
 /**
- * Created on 2025/6/12
+ * Created on 2025/6/23
  */
 package ohos_app_cangjie_entry
 
@@ -14,34 +14,22 @@ import std.time.*
 import ohos.hilog.Hilog
 
 /**
- * 小代码块增量加载
+ * 超大代码块全量加载
  */
+
 @Entry
 @Component
-class CodeBlockIncrementPage {
-    let mdStr: String = ###"
-```cangjie
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
-```
-"###
+class AudioAndVideoIncrementPage {
+    var mdStr: String = ""
 
     @State
     var output: String = ""
 
     var scroller: Scroller = Scroller()
+
+    protected override func aboutToAppear(): Unit {
+        mdStr = getFileContextStr("audio_video.md")
+    }
 
     func build() {
         Column() {
@@ -50,11 +38,12 @@ public class Main {
                     {
                         e => spawn {
                             let arr: Array<Rune> = mdStr.toRuneArray()
-                            for (i in 0..arr.size : 10) {
+                            let num = 100
+                            for (i in 0..arr.size : num) {
                                 sleep(Duration.millisecond * 50)
                                 launch {
-                                    let size = if (arr.size > i + 10) {
-                                        i + 10
+                                    let size = if (arr.size > i + num) {
+                                        i + num
                                     } else {
                                         arr.size
                                     }
@@ -142,13 +131,6 @@ public class Main {
             .setLinkRectToolImageTextSize(11.0)
             .setLinkRectToolImageMargin(2.0)
             .setImagePadding(20)
-
-            // 是否单独代码块
-            .setIsSeparateCodeBlock(true)
-            // 代码块边框圆角
-            .setCodeBlockRadius(0.0)
-            // 模块上下边距
-            .setBlockTopAndBottomMargins(0.0)
             .build()
         return MarkdownAITheme
     }

@@ -6,6 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
+//    "@cangjie-tpc/markdown": "file:./har/markdown.har"
     "@cangjie-tpc/markdown": "file:../markdown"
   }
 }
