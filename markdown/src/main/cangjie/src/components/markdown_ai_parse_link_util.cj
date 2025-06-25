@@ -154,7 +154,7 @@ class MarkdownParseLinkUtil {
     }
 }
 
-let semaphore: Semaphore = Semaphore(10)
+let semaphore: Semaphore = Semaphore(1)
 
 class LinkLoadLimiter <: Resource {
     let closed = AtomicBool(false)
