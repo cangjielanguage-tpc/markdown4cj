@@ -83,8 +83,6 @@ public class MarkdownAIListComponent {
         refreshData(nodeViews)
         // 缓存当前控件
         markdownAICacheConfiguration.listComponents.append(this)
-        // 清除缓存数据
-        nodeViews.clear()
     }
 
     protected override func aboutToDisappear(): Unit {

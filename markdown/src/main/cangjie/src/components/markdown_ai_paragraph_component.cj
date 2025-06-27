@@ -89,8 +89,6 @@ class MarkdownAIParagraphComponent {
         refreshData(nodeViews)
         // 缓存当前控件
         paragraphComponents.append(this)
-        // 清除缓存数据
-        nodeViews.clear()
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -175,15 +173,18 @@ class MarkdownAIParagraphComponent {
                     } else if (item.node is SoftLineBreak) {
                         // 软换行
                         Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
+                    } else if (item.node is ImageHtmlNode) {
+                        // HTML图片
+                        MarkdownAIHtmlImageSpanComponent(
+                            destination: (item.node as ImageHtmlNode)().getDestination(),
+                            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                            componentWidth:componentWidth,
+                            imageCallback: imageCallback
+                        )
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
-//                        imageSpanComponent(
-//                            (item.node as CommonmarkImage)().getDestination(),
-//                            markdownAIConfiguration,
-//                            imageCallback
-//                        )
                         MarkdownAIImageSpanComponent(
-                            markdownAIConfiguration: markdownAIConfiguration,
                              destination:(item.node as CommonmarkImage)().getDestination(),
                             componentWidth: componentWidth,
                             imageCallback:imageCallback
@@ -195,14 +196,6 @@ class MarkdownAIParagraphComponent {
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
                             backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor,markdownAIConfiguration.markdownAITheme.latexMathBackGroupColor)
-                        )
-                    } else if (item.node is ImageHtmlNode) {
-                        // HTML图片
-                        htmlImageSpanComponent(
-                            (item.node as ImageHtmlNode)().getDestination(),
-                            strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-                            strToFloat64((item.node as ImageHtmlNode)().getWidth()),
-                            imageCallback
                         )
                     } else {
                         // TODO 其他节点

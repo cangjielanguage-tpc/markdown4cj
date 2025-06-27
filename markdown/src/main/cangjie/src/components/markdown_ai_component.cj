@@ -91,6 +91,11 @@ public class MarkdownAIComponent {
      */
     var imageAndVideoList: ArrayList<String> = ArrayList<String>()
 
+    @State
+    var reachBottom: Bool = true
+
+    var chatTouch: Bool = false
+
     protected override func aboutToAppear(): Unit {
         markdownBase = Markdown
             .builder()
@@ -132,7 +137,7 @@ public class MarkdownAIComponent {
     }
 
     func build() {
-        if(!markdownAIConfiguration.markdownAITheme.isSeparateCodeBlock){
+        if (!markdownAIConfiguration.markdownAITheme.isSeparateCodeBlock) {
             List(scroller: scroller) {
                 LazyForEach(
                     nodeViewAIDataSource,
@@ -332,36 +337,92 @@ public class MarkdownAIComponent {
             .alignListItem(ListItemAlign.Start)
             // 设置组件自身的宽度
             .width(100.percent)
-        } else{
+            // 对子组件进行重新布局
+            .layoutWeight(1)
+            // 设置滚动条状态
+            .scrollBar(BarState.Off)
+            // 设置组件的滑动效果
+            .edgeEffect(EdgeEffect.None)
+            // 设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动
+            .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
+            // 列表到底末尾位置时触发
+            .onReachEnd {
+                => reachBottom = true
+            }
+            // 列表滑动时触发
+            .onScroll {
+                offset, _ =>
+                checkScroll(offset)
+            }
+            // 触摸动作触发该事件
+            .onTouch {
+                evt => chatOnTouch(evt)
+            }
+        } else {
             List(scroller: scroller) {
                 LazyForEach(
                     nodeViewAIDataSource,
                     itemGeneratorFunc: {
-                        item: NodeView, idx: Int64 =>
-                            if(item.node is FencedCodeBlock){
-                                MarkdownAICodeComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    codeText: (item.node as FencedCodeBlock)().getLiteral(),
-                                    info: (item.node as FencedCodeBlock)().getInfo(),
-                                    indexList: indexAdd(indexList, idx),
-                                    isFull: isFull,
-                                    aiCodeComponents: markdownAICacheConfiguration.aiCodeComponents,
-                                    aiCodeTextComponents: markdownAICacheConfiguration.aiCodeTextComponents
-                                )
-                            }else if(item.node is IndentedCodeBlock){
-                                MarkdownAICodeComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    codeText: (item.node as IndentedCodeBlock)().getLiteral(),
-                                    info: Option<String>.None,
-                                    indexList: indexAdd(indexList, idx),
-                                    isFull: isFull,
-                                    aiCodeComponents: markdownAICacheConfiguration.aiCodeComponents,
-                                    aiCodeTextComponents: markdownAICacheConfiguration.aiCodeTextComponents
-                                )
-                            }
+                        item: NodeView, idx: Int64 => if (item.node is FencedCodeBlock) {
+                            MarkdownAICodeComponent(
+                                markdownAIConfiguration: markdownAIConfiguration,
+                                codeText: (item.node as FencedCodeBlock)().getLiteral(),
+                                info: (item.node as FencedCodeBlock)().getInfo(),
+                                indexList: indexAdd(indexList, idx),
+                                isFull: isFull,
+                                aiCodeComponents: markdownAICacheConfiguration.aiCodeComponents,
+                                aiCodeTextComponents: markdownAICacheConfiguration.aiCodeTextComponents
+                            )
+                        } else if (item.node is IndentedCodeBlock) {
+                            MarkdownAICodeComponent(
+                                markdownAIConfiguration: markdownAIConfiguration,
+                                codeText: (item.node as IndentedCodeBlock)().getLiteral(),
+                                info: Option<String>.None,
+                                indexList: indexAdd(indexList, idx),
+                                isFull: isFull,
+                                aiCodeComponents: markdownAICacheConfiguration.aiCodeComponents,
+                                aiCodeTextComponents: markdownAICacheConfiguration.aiCodeTextComponents
+                            )
+                        }
                     }
                 )
             }
+        }
+    }
+
+    /**
+     * 是否滑动到底部
+     */
+    func scrollChatIfAtBottom() {
+        if (reachBottom) {
+            scroll2Bottom()
+        }
+    }
+
+    /**
+     * 滑动到底部
+     */
+    func scroll2Bottom() {
+        scroller.scrollEdge(Edge.Bottom)
+    }
+
+    /**
+     * 判断滑动距离和是否手指触摸
+     */
+    func checkScroll(offset: Float64) {
+        if (offset < -0.5 && chatTouch) {
+            reachBottom = false
+        }
+    }
+
+    /**
+     * 手指触摸判断
+     */
+    func chatOnTouch(evt: TouchEvent) {
+        if (let TouchType.Down <- evt.eventType) {
+            chatTouch = true
+        } else if (let TouchType.Up <- evt.eventType) {
+            chatTouch = false
         }
     }
 
@@ -404,6 +465,7 @@ public class MarkdownAIComponent {
             } else {
                 // 增量加载
                 launch {
+                    scrollChatIfAtBottom()
                     if (nodeViewsSize == 0) {
                         return
                     }
@@ -422,7 +484,7 @@ public class MarkdownAIComponent {
                     } else if (nodeViewsSize == nodeViewListSize) {
                         // 刷新数据的长度等于页面数据长度，需要更新当前数据
                         let index: Int64 = nodeViewListSize - 1
-                        if(!markdownAIConfiguration.markdownAITheme.isSeparateCodeBlock){
+                        if (!markdownAIConfiguration.markdownAITheme.isSeparateCodeBlock) {
                             if ((nodeViews[nodeViewsSize - 1].node is BulletList && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is BulletList) || (nodeViews[nodeViewsSize - 1].node is OrderedList && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is OrderedList)) {
                                 // 有序列表和无序列表
                                 for (data in markdownAICacheConfiguration.listComponents) {
@@ -543,7 +605,7 @@ public class MarkdownAIComponent {
      */
     func imageCallback(url: String): Unit {
         if (let Some(v) <- markdownAIConfiguration.imageCallback) {
-            v(url,imageAndVideoList)
+            v(url, imageAndVideoList)
         }
     }
 
@@ -552,7 +614,7 @@ public class MarkdownAIComponent {
      */
     func videoCallback(url: String): Unit {
         if (let Some(v) <- markdownAIConfiguration.videoCallback) {
-            v(url,imageAndVideoList)
+            v(url, imageAndVideoList)
         }
     }
 }

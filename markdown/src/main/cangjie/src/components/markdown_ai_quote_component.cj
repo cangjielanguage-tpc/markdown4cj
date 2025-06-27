@@ -75,8 +75,6 @@ public class MarkdownAIQuoteComponent {
         refreshData(nodeViews)
         // 缓存当前控件
         markdownAICacheConfiguration.quoteComponents.append(this)
-        // 清除缓存数据
-        nodeViews.clear()
     }
 
     protected override func aboutToDisappear(): Unit {

@@ -3,6 +3,9 @@
  */
 package markdown.components
 
+/**
+ * 缓存控件列表数据
+ */
 public class MarkdownAICacheConfiguration {
     let headingComponents: ArrayList<MarkdownAIHeadingComponent> = ArrayList<MarkdownAIHeadingComponent>()
 

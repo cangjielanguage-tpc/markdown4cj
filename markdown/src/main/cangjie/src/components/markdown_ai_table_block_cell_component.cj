@@ -119,8 +119,6 @@ class MarkdownAITableBlockCellComponent {
         refreshData(nodeViews)
         // 缓存当前控件
         tableCellComponents.append(this)
-        // 清除缓存数据
-        nodeViews.clear()
         if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
             if (v.index == idxItem && v.minWidth > minTextWidth) {
                 minTextWidth = v.minWidth

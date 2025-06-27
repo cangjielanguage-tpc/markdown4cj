@@ -90,8 +90,6 @@ class MarkdownAIHeadingComponent {
         refreshData(nodeViews, level)
         // 缓存当前控件
         headingComponents.append(this)
-        // 清除缓存数据
-        nodeViews.clear()
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -162,34 +160,34 @@ class MarkdownAIHeadingComponent {
                         )
                     } else if (item.node is CommonmarkLink) {
                         // 链接
-                        if((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")){
-                            if(item.node.getFirstChild().isSome() &&  item.node.getFirstChild()() is CommonmarkText){
+                        if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
                                 if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
                                     MarkdownAILinkRectImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
                                         strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor,markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor)
+                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor)
                                     )
                                 } else {
                                     MarkdownAILinkCircleImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
                                         strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor,markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor)
+                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor)
                                     )
                                 }
                             }
                         } else {
-                           if(item.node.getFirstChild().isSome() &&  item.node.getFirstChild()() is CommonmarkText){
+                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
                                 MarkdownAILinkRectToolImageComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
                                     strUrl: (item.node as CommonmarkLink)().getDestination(),
                                     strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                    backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor,markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor)
+                                    backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor)
                                 )
-                           }
+                            }
                         }
                     } else if (item.node is HardLineBreak) {
                         // 硬换行
@@ -197,18 +195,21 @@ class MarkdownAIHeadingComponent {
                     } else if (item.node is SoftLineBreak) {
                         // 软换行
                         Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
+                    } else if (item.node is ImageHtmlNode) {
+                        // HTML图片
+                        MarkdownAIHtmlImageSpanComponent(
+                            destination: (item.node as ImageHtmlNode)().getDestination(),
+                            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                            componentWidth:componentWidth,
+                            imageCallback: imageCallback
+                        )
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
-//                        imageSpanComponent(
-//                            (item.node as CommonmarkImage)().getDestination(),
-//                            markdownAIConfiguration,
-//                            imageCallback
-//                        )
                         MarkdownAIImageSpanComponent(
-                            markdownAIConfiguration: markdownAIConfiguration,
-                             destination:(item.node as CommonmarkImage)().getDestination(),
+                            destination: (item.node as CommonmarkImage)().getDestination(),
                             componentWidth: componentWidth,
-                            imageCallback:imageCallback
+                            imageCallback: imageCallback
                         )
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
@@ -216,15 +217,7 @@ class MarkdownAIHeadingComponent {
                             markdownAIConfiguration: markdownAIConfiguration,
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
-                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor,markdownAIConfiguration.markdownAITheme.latexMathBackGroupColor)
-                        )
-                    } else if (item.node is ImageHtmlNode) {
-                        // HTML图片
-                        htmlImageSpanComponent(
-                            (item.node as ImageHtmlNode)().getDestination(),
-                            strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-                            strToFloat64((item.node as ImageHtmlNode)().getWidth()),
-                            imageCallback
+                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.latexMathBackGroupColor)
                         )
                     } else {
                         // TODO 其他节点
@@ -241,15 +234,15 @@ class MarkdownAIHeadingComponent {
         .lineHeight(tableLineHeight())
     }
 
-    func tableLineHeight():Float64{
+    func tableLineHeight(): Float64 {
         return match (level) {
-        	case 1 => markdownAIConfiguration.markdownAITheme.headingTextLineheight1
-        	case 2 => markdownAIConfiguration.markdownAITheme.headingTextLineheight2
-        	case 3 => markdownAIConfiguration.markdownAITheme.headingTextLineheight3
-        	case 4 => markdownAIConfiguration.markdownAITheme.headingTextLineheight4
-        	case 5 => markdownAIConfiguration.markdownAITheme.headingTextLineheight5
-        	case 6 => markdownAIConfiguration.markdownAITheme.headingTextLineheight6
-        	case _ => markdownAIConfiguration.markdownAITheme.headingTextLineheight6
+            case 1 => markdownAIConfiguration.markdownAITheme.headingTextLineheight1
+            case 2 => markdownAIConfiguration.markdownAITheme.headingTextLineheight2
+            case 3 => markdownAIConfiguration.markdownAITheme.headingTextLineheight3
+            case 4 => markdownAIConfiguration.markdownAITheme.headingTextLineheight4
+            case 5 => markdownAIConfiguration.markdownAITheme.headingTextLineheight5
+            case 6 => markdownAIConfiguration.markdownAITheme.headingTextLineheight6
+            case _ => markdownAIConfiguration.markdownAITheme.headingTextLineheight6
         }
     }
 

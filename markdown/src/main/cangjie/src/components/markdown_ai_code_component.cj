@@ -71,7 +71,8 @@ class MarkdownAICodeComponent {
      */
     var size: Int64 = -1
 
-    @State var reachBottom: Bool = true
+    @State
+    var reachBottom: Bool = true
 
     var chatTouch: Bool = false
 
@@ -94,16 +95,13 @@ class MarkdownAICodeComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(codeText: String,info: Option<String>): Unit {
+    public func refreshData(codeText: String, info: Option<String>): Unit {
         this.codeText = codeText
         this.info = info
         let arr = ArrayList<String>()
-        codeText.lines().forEach(
-            {
-                s =>
-                arr.append(s)
-            }
-        )
+        codeText.lines().forEach({
+            s => arr.append(s)
+        })
         let refreshNodeViewSize = arr.size // 刷新进来的数据长度
         let dataSourceSize = lineStrArray.totalCount() // 页面缓存的数据长度
         if (isFull) {
@@ -153,11 +151,11 @@ class MarkdownAICodeComponent {
         Column() {
             codeBlockButtonComponent()
             Row() {
-                List(scroller:scroller1){
+                List(scroller: scroller1) {
                     LazyForEach(
                         lineInt64Array,
                         itemGeneratorFunc: {
-                            item: String, idx: Int64 => ListItem(){
+                            item: String, idx: Int64 => ListItem() {
                                 Text((idx + 1).toString())
                                     // 设置文本颜色
                                     .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
@@ -194,23 +192,22 @@ class MarkdownAICodeComponent {
                 // 设置组件是否可交
                 .enabled(false)
                 Scroll() {
-                    Column(){
-                        List(scroller:scroller2){
+                    Column() {
+                        List(scroller: scroller2) {
                             LazyForEach(
                                 lineStrArray,
                                 itemGeneratorFunc: {
-                                    item: String, idx: Int64 =>
-                                        ListItem(){
-                                            MarkdownAICodeTextComponent(
-                                                markdownAIConfiguration:markdownAIConfiguration,
-                                                codeText:item,
-                                                info:info,
-                                                idx:idx,
-                                                isFull: isFull,
-                                                indexList: indexAdd(indexList, idx),
-                                                aiCodeTextComponents:aiCodeTextComponents
-                                            )
-                                        }
+                                    item: String, idx: Int64 => ListItem() {
+                                        MarkdownAICodeTextComponent(
+                                            markdownAIConfiguration: markdownAIConfiguration,
+                                            codeText: item,
+                                            info: info,
+                                            idx: idx,
+                                            isFull: isFull,
+                                            indexList: indexAdd(indexList, idx),
+                                            aiCodeTextComponents: aiCodeTextComponents
+                                        )
+                                    }
                                 }
                             )
                         }
@@ -221,17 +218,18 @@ class MarkdownAICodeComponent {
                         // 设置组件的滑动效果
                         .edgeEffect(EdgeEffect.None)
                         // 列表到底末尾位置时触发
-                        .onReachEnd { =>
-                            reachBottom = true
+                        .onReachEnd {
+                            => reachBottom = true
                         }
                         // 列表滑动时触发
-                        .onScroll {offset, _ =>
+                        .onScroll {
+                            offset, _ =>
                             scroller1.scrollTo(xOffset: 0.0, yOffset: scroller2.currentOffset().yOffset)
                             checkScroll(offset)
                         }
                         // 触摸动作触发该事件
-                        .onTouch { evt =>
-                            chatOnTouch(evt)
+                        .onTouch {
+                            evt => chatOnTouch(evt)
                         }
                     }
                     // 设置组件自身的宽度
@@ -260,7 +258,7 @@ class MarkdownAICodeComponent {
         // 设置组件自身的宽度
         .height(100.percent)
         // 设置内边距属性
-        .padding(bottom :50)
+        .padding(bottom: 50)
         // 设置圆角
         .borderRadius(markdownAIConfiguration.markdownAITheme.codeBlockRadius)
         // 设置背景色
@@ -378,22 +376,34 @@ class MarkdownAICodeComponent {
         .alignItems(VerticalAlign.Center)
     }
 
+    /**
+     * 是否滑动到底部
+     */
     func scrollChatIfAtBottom() {
         if (reachBottom) {
             scroll2Bottom()
         }
     }
 
+    /**
+     * 滑动到底部
+     */
     func scroll2Bottom() {
         scroller2.scrollEdge(Edge.Bottom)
     }
 
+    /**
+     * 判断滑动距离和是否手指触摸
+     */
     func checkScroll(offset: Float64) {
         if (offset < -0.5 && chatTouch) {
             reachBottom = false
         }
     }
 
+    /**
+     * 手指触摸判断
+     */
     func chatOnTouch(evt: TouchEvent) {
         if (let TouchType.Down <- evt.eventType) {
             chatTouch = true

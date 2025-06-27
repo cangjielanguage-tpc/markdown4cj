@@ -91,8 +91,6 @@ class MarkdownAITableBlockComponent {
         refreshData(nodeViews)
         // 缓存当前控件
         tableComponents.append(this)
-        // 清除缓存数据
-        nodeViews.clear()
         var cellSize: Int64 = 0
         if (nodeViewAIDataSource.totalCount() > 0) {
             cellSize = nodeViewAIDataSource.getData(0).children.size

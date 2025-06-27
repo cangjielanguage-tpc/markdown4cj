@@ -14,11 +14,6 @@ import ohos.state_macro_manage.*
 @Component
 public class MarkdownAIImageSpanComponent {
     /**
-     * markdown配置
-     */
-    var markdownAIConfiguration: MarkdownAIConfiguration
-
-    /**
      * 图片链接
      */
     var destination: String
@@ -57,8 +52,7 @@ public class MarkdownAIImageSpanComponent {
             .constraintSize(maxWidth: 100.percent)
             // 点击动作触发该方法调用
             .onClick {
-                evt =>
-                 imageOnClick(destination, imageCallback)
+                evt => imageOnClick(destination, imageCallback)
             }
             // 图片成功加载时触发该回调，返回成功加载的图片尺寸
             .onComplete(

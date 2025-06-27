@@ -331,8 +331,7 @@ class MarkdownAIFencedCodeBlockComponent {
      * @param prismTheme 传入的高亮样式
      * @param callback PrismNodesParseRes列表回调接口
      */
-    func stringToResList(code: String, info: ?String, prismTheme: PrismTheme,
-        callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit> {
+    func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var prismNodesParseResList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
             try {

@@ -70,12 +70,11 @@ class MarkdownAICodeTextComponent {
             })
     }
 
-    func refreshData(codeText: String,info: Option<String>): Unit {
+    func refreshData(codeText: String, info: Option<String>): Unit {
         this.codeText = codeText
         this.info = info
         let callback: (ArrayList<PrismNodesParseRes>) -> Unit = {
-            prismNodesParseResLists =>
-                launch {
+            prismNodesParseResLists => launch {
                 arrayList.clear()
                 arrayList.appendAll(prismNodesParseResLists)
             }
@@ -141,8 +140,7 @@ class MarkdownAICodeTextComponent {
      * @param prismTheme 传入的高亮样式
      * @param callback PrismNodesParseRes列表回调接口
      */
-    func stringToResList(code: String, info: ?String, prismTheme: PrismTheme,
-        callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit> {
+    func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var prismNodesParseResList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
             try {
