@@ -64,6 +64,11 @@ public class MarkdownAIListComponent {
     var fontCallback: (String) -> Unit
 
     /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
+    /**
      * 缓存的数据
      */
     var markdownAICacheConfiguration: MarkdownAICacheConfiguration
@@ -123,6 +128,7 @@ public class MarkdownAIListComponent {
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 fontCallback: fontCallback,
+                                imageCallback: imageCallback,
                                 componentWidth: componentWidth,
                                 indexList:indexAdd(indexList, idx),
                                 isFull: isFull,

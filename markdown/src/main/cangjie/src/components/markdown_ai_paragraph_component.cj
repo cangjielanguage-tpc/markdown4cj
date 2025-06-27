@@ -69,6 +69,11 @@ class MarkdownAIParagraphComponent {
     var fontCallback: (String) -> Unit
 
     /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     @State
@@ -116,13 +121,23 @@ class MarkdownAIParagraphComponent {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        paragraphTextComponent(item, markdownAIConfiguration, fontCallback)
+                        paragraphTextComponent(
+                            item,
+                            markdownAIConfiguration
+                        )
                     } else if (item.node is Footnote) {
                         // 脚注
-                        paragraphFootnoteComponent(item, markdownAIConfiguration, fontCallback)
+                        paragraphFootnoteComponent(
+                            item,
+                            markdownAIConfiguration,
+                            fontCallback
+                        )
                     } else if (item.node is Code) {
                         // 内联代码
-                        paragraphCodeComponent(item, markdownAIConfiguration)
+                        paragraphCodeComponent(
+                            item,
+                            markdownAIConfiguration
+                        )
                     } else if (item.node is CommonmarkLink) {
                         // 链接
                         if((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")){
@@ -162,7 +177,17 @@ class MarkdownAIParagraphComponent {
                         Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
-                        imageSpanComponent((item.node as CommonmarkImage)().getDestination(),markdownAIConfiguration)
+//                        imageSpanComponent(
+//                            (item.node as CommonmarkImage)().getDestination(),
+//                            markdownAIConfiguration,
+//                            imageCallback
+//                        )
+                        MarkdownAIImageSpanComponent(
+                            markdownAIConfiguration: markdownAIConfiguration,
+                             destination:(item.node as CommonmarkImage)().getDestination(),
+                            componentWidth: componentWidth,
+                            imageCallback:imageCallback
+                        )
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
                         MarkdownAILatexImageSpanComponent(
@@ -173,7 +198,12 @@ class MarkdownAIParagraphComponent {
                         )
                     } else if (item.node is ImageHtmlNode) {
                         // HTML图片
-                        htmlImageSpanComponent((item.node as ImageHtmlNode)().getDestination(), strToFloat64((item.node as ImageHtmlNode)().getHeight()), strToFloat64((item.node as ImageHtmlNode)().getWidth()), markdownAIConfiguration)
+                        htmlImageSpanComponent(
+                            (item.node as ImageHtmlNode)().getDestination(),
+                            strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                            strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                            imageCallback
+                        )
                     } else {
                         // TODO 其他节点
                         Span("")

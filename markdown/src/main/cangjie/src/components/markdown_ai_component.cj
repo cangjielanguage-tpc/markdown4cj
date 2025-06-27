@@ -86,6 +86,11 @@ public class MarkdownAIComponent {
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
 
+    /**
+     * 所有图片视频的url
+     */
+    var imageAndVideoList: ArrayList<String> = ArrayList<String>()
+
     protected override func aboutToAppear(): Unit {
         markdownBase = Markdown
             .builder()
@@ -103,6 +108,8 @@ public class MarkdownAIComponent {
             .usePlugin(linkButton())
             // 脚注
             .usePlugin(FootnotePlugin.create())
+            // 图片列表
+            .usePlugin(ImageCollectPlugin.create())
             .build()
         incBase = IncreaseParser(markdownBase())
         // 控件宽度 = 屏幕宽度 - padding
@@ -139,7 +146,8 @@ public class MarkdownAIComponent {
                                     level: (item.node as Heading)().getLevel(),
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    fontCallback: FontCallback,
+                                    fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
@@ -155,7 +163,8 @@ public class MarkdownAIComponent {
                                     footnoteBlock: Option<FootnoteBlock>.None,
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    fontCallback: FontCallback,
+                                    fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
@@ -171,7 +180,8 @@ public class MarkdownAIComponent {
                                     isOrdered: false,
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    fontCallback: FontCallback,
+                                    fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
@@ -187,7 +197,8 @@ public class MarkdownAIComponent {
                                     isOrdered: true,
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    fontCallback: FontCallback,
+                                    fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
@@ -202,7 +213,8 @@ public class MarkdownAIComponent {
                                     nodeViews: item.children,
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    fontCallback: FontCallback,
+                                    fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
@@ -242,7 +254,8 @@ public class MarkdownAIComponent {
                                 nodeViews: tableList(item.children),
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                fontCallback: FontCallback,
+                                fontCallback: fontCallback,
+                                imageCallback: imageCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
@@ -287,7 +300,8 @@ public class MarkdownAIComponent {
                                         footnoteBlock: (item.node as FootnoteBlock)(),
                                         marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                         marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                        fontCallback: FontCallback,
+                                        fontCallback: fontCallback,
+                                        imageCallback: imageCallback,
                                         componentWidth: componentWidth,
                                         isFull: isFull,
                                         indexList: indexAdd(indexList, idx),
@@ -375,9 +389,12 @@ public class MarkdownAIComponent {
         try {
             incBase().input = output
             incBase().parse()
-            let nodeViews = incBase().docView.children
-            let nodeViewsSize = nodeViews.size // 刷新进来的数据长度
-            let nodeViewListSize = nodeViewAIDataSource.totalCount() // 页面缓存的数据长度
+            let doc: NodeView = incBase().docView
+            let nodeViews: ArrayList<NodeView> = doc.children
+            let nodeViewsSize: Int64 = nodeViews.size // 刷新进来的数据长度
+            let nodeViewListSize: Int64 = nodeViewAIDataSource.totalCount() // 页面缓存的数据长度
+            imageAndVideoList.clear()
+            imageAndVideoList.appendAll(getProp<ArrayList<String>>(doc, "links", ArrayList<String>()))
             if (isFull) {
                 // 全量加载
                 launch {
@@ -389,12 +406,6 @@ public class MarkdownAIComponent {
                 launch {
                     if (nodeViewsSize == 0) {
                         return
-                    }
-                    // 清除缓存引用
-                    if (nodeViewsSize > nodeViewListSize) {
-                        for (i in 0..nodeViewListSize - 1) {
-                            releaseNodeRelation(nodeViewAIDataSource.getData(i))
-                        }
                     }
                     if (nodeViewsSize > nodeViewListSize) {
                         // 刷新数据的长度大于页面数据长度，需要添加数据
@@ -519,11 +530,29 @@ public class MarkdownAIComponent {
     /**
      * 脚注点击回调
      */
-    func FontCallback(noteid: String): Unit {
+    func fontCallback(noteid: String): Unit {
         if (let Some(v) <- indexHashMap.get(noteid)) {
             if (let Some(w) <- markdownAIConfiguration.footnoteCallback) {
                 w(v)
             }
+        }
+    }
+
+    /**
+     * 图片点击回调
+     */
+    func imageCallback(url: String): Unit {
+        if (let Some(v) <- markdownAIConfiguration.imageCallback) {
+            v(url,imageAndVideoList)
+        }
+    }
+
+    /**
+     * 视频点击回调
+     */
+    func videoCallback(url: String): Unit {
+        if (let Some(v) <- markdownAIConfiguration.videoCallback) {
+            v(url,imageAndVideoList)
         }
     }
 }

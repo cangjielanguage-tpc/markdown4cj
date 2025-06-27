@@ -61,6 +61,11 @@ public class MarkdownAIQuoteComponent {
     var fontCallback: (String) -> Unit
 
     /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
@@ -102,6 +107,7 @@ public class MarkdownAIQuoteComponent {
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
@@ -117,6 +123,7 @@ public class MarkdownAIQuoteComponent {
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
@@ -154,6 +161,7 @@ public class MarkdownAIQuoteComponent {
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
@@ -168,6 +176,7 @@ public class MarkdownAIQuoteComponent {
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
@@ -181,6 +190,7 @@ public class MarkdownAIQuoteComponent {
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
@@ -194,6 +204,7 @@ public class MarkdownAIQuoteComponent {
                                     marginTop: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),

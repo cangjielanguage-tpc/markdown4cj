@@ -34,6 +34,11 @@ public class MarkdownAIHtmlImageSpanComponent {
     var strWidth: ?String
 
     /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
+    /**
      * 图片高度
      */
     @State
@@ -69,7 +74,8 @@ public class MarkdownAIHtmlImageSpanComponent {
                 .constraintSize(maxWidth: 100.percent)
                 // 点击动作触发该方法调用
                 .onClick {
-                    evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+                    evt =>
+                    imageOnClick(destination, imageCallback)
                 }
         } else if (imageHeight.isSome() && !imageWidth.isSome()) {
             ImageSpan(destination)
@@ -81,7 +87,8 @@ public class MarkdownAIHtmlImageSpanComponent {
                 .constraintSize(maxWidth: 100.percent)
                 // 点击动作触发该方法调用
                 .onClick {
-                    evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+                    evt =>
+                    imageOnClick(destination, imageCallback)
                 }
         } else if (!imageHeight.isSome() && imageWidth.isSome()) {
             ImageSpan(destination)
@@ -93,7 +100,8 @@ public class MarkdownAIHtmlImageSpanComponent {
                 .constraintSize(maxWidth: 100.percent)
                 // 点击动作触发该方法调用
                 .onClick {
-                    evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+                    evt =>
+                    imageOnClick(destination, imageCallback)
                 }
         } else if (!imageHeight.isSome() && !imageWidth.isSome()) {
             ImageSpan(destination)
@@ -103,7 +111,8 @@ public class MarkdownAIHtmlImageSpanComponent {
                 .constraintSize(maxWidth: 100.percent)
                 // 点击动作触发该方法调用
                 .onClick {
-                    evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+                    evt =>
+                    imageOnClick(destination, imageCallback)
                 }
         }
     }

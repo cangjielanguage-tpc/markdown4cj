@@ -59,6 +59,11 @@ class MarkdownAITableBlockComponent {
     var fontCallback: (String) -> Unit
 
     /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
+    /**
      * 表格
      */
     var tableComponents: ArrayList<MarkdownAITableBlockComponent>
@@ -121,6 +126,7 @@ class MarkdownAITableBlockComponent {
                                 markdownAIConfiguration: markdownAIConfiguration,
                                 nodeViews: tableHeaderOrBody.children,
                                 fontCallback: fontCallback,
+                                imageCallback: imageCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 idRow: idRow,

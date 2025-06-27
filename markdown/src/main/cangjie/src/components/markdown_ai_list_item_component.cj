@@ -64,6 +64,11 @@ class MarkdownAIListItemComponent {
     var fontCallback: (String) -> Unit
 
     /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
@@ -104,6 +109,7 @@ class MarkdownAIListItemComponent {
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
+                                imageCallback: imageCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
@@ -120,6 +126,7 @@ class MarkdownAIListItemComponent {
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
+                                imageCallback: imageCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
@@ -162,6 +169,7 @@ class MarkdownAIListItemComponent {
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
+                                imageCallback: imageCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
@@ -178,6 +186,7 @@ class MarkdownAIListItemComponent {
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
+                                imageCallback: imageCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
@@ -193,6 +202,7 @@ class MarkdownAIListItemComponent {
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
+                                imageCallback: imageCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
@@ -208,6 +218,7 @@ class MarkdownAIListItemComponent {
                                 marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
+                                imageCallback: imageCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 indexList: indexAdd(indexList, idx),

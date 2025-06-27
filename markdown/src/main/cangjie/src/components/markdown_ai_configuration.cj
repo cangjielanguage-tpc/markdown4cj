@@ -30,12 +30,12 @@ public class MarkdownAIConfiguration {
     /**
      * 图片的点击事件
      */
-    protected var imageCallback: ?(String) -> Unit = None
+    protected var imageCallback: ?(String,ArrayList<String>) -> Unit = None
 
     /**
      * 视频的点击事件
      */
-    protected var videoCallback: ?(String) -> Unit = None
+    protected var videoCallback: ?(String,ArrayList<String>) -> Unit = None
 
     /**
      * 视频的图片替换回调
@@ -157,12 +157,12 @@ public class MarkdownAIConfigurationBuilder {
     /**
      * 图片的点击事件
      */
-    protected var imageCallback: ?(String) -> Unit = None
+    protected var imageCallback: ?(String,ArrayList<String>) -> Unit = None
 
     /**
      * 视频的点击事件
      */
-    protected var videoCallback: ?(String) -> Unit = None
+    protected var videoCallback: ?(String,ArrayList<String>) -> Unit = None
 
     /**
      * 视频的图片替换回调
@@ -275,7 +275,7 @@ public class MarkdownAIConfigurationBuilder {
      * @param imageCallback 图片点击回调接口 (String:图片链接)
      * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
-    public func setImageCallback(imageCallback: (String) -> Unit): MarkdownAIConfigurationBuilder {
+    public func setImageCallback(imageCallback: (String,ArrayList<String>) -> Unit): MarkdownAIConfigurationBuilder {
         this.imageCallback = imageCallback
         return this
     }
@@ -286,7 +286,7 @@ public class MarkdownAIConfigurationBuilder {
      * @param videoCallback 视频点击回调接口 (String:视频ID)
      * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
-    public func setVideoCallback(videoCallback: (String) -> Unit): MarkdownAIConfigurationBuilder {
+    public func setVideoCallback(videoCallback: (String,ArrayList<String>) -> Unit): MarkdownAIConfigurationBuilder {
         this.videoCallback = videoCallback
         return this
     }

@@ -12,7 +12,7 @@ import ohos.state_macro_manage.*
  * 标题文本
  */
 @Builder
-func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, level: Int64, fontCallback: (String) -> Unit) {
+func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, level: Int64) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -63,7 +63,7 @@ func headingCodeComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownA
 }
 
 /**
- * 标题脚注
+ * 标题脚注文本
  */
 @Builder
 func headingFootnoteComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, level: Int64, fontCallback: (String) -> Unit) {
@@ -95,7 +95,7 @@ func headingFootnoteComponent(nodeView: NodeView, markdownAIConfiguration: Markd
  * 段落文本
  */
 @Builder
-func paragraphTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, fontCallback: (String) -> Unit) {
+func paragraphTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -146,7 +146,7 @@ func paragraphCodeComponent(nodeView: NodeView, markdownAIConfiguration: Markdow
 }
 
 /**
- * 段落文本
+ * 段落脚注文本
  */
 @Builder
 func paragraphFootnoteComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, fontCallback: (String) -> Unit) {
@@ -178,7 +178,7 @@ func paragraphFootnoteComponent(nodeView: NodeView, markdownAIConfiguration: Mar
  * 表格文本
  */
 @Builder
-func tableComponentText(nodeView: NodeView, isHeader: Bool, markdownAIConfiguration: MarkdownAIConfiguration, fontCallback: (String) -> Unit) {
+func tableComponentText(nodeView: NodeView, isHeader: Bool, markdownAIConfiguration: MarkdownAIConfiguration) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -229,7 +229,7 @@ func tableComponentCode(nodeView: NodeView, isHeader: Bool, markdownAIConfigurat
 }
 
 /**
- * 表格文本
+ * 表格脚注文本
  */
 @Builder
 func tableComponentFootnote(nodeView: NodeView, isHeader: Bool, markdownAIConfiguration: MarkdownAIConfiguration, fontCallback: (String) -> Unit) {
@@ -302,7 +302,7 @@ func listPrefixCheckboxINCComponent(item: NodeView, markdownAIConfiguration: Mar
  * 普通图片
  */
 @Builder
-func imageSpanComponent(destination: String, markdownAIConfiguration: MarkdownAIConfiguration) {
+func imageSpanComponent(destination: String, markdownAIConfiguration: MarkdownAIConfiguration, imageCallback: (String) -> Unit) {
     ImageSpan(destination)
         // 设置图片的缩放类型
         .objectFit(ImageFit.Contain)
@@ -310,7 +310,8 @@ func imageSpanComponent(destination: String, markdownAIConfiguration: MarkdownAI
         .constraintSize(maxWidth: 100.percent)
         // 点击动作触发该方法调用
         .onClick {
-            evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+            evt =>
+            imageOnClick(destination, imageCallback)
         }
 }
 
@@ -318,7 +319,7 @@ func imageSpanComponent(destination: String, markdownAIConfiguration: MarkdownAI
  * HTML图片
  */
 @Builder
-func htmlImageSpanComponent(destination: String, imageHeight: ?Float64, imageWidth: ?Float64, markdownAIConfiguration: MarkdownAIConfiguration) {
+func htmlImageSpanComponent(destination: String, imageHeight: ?Float64, imageWidth: ?Float64, imageCallback: (String) -> Unit) {
     if (imageHeight.isSome() && imageWidth.isSome()) {
         ImageSpan(destination)
             // 设置组件自身的高度
@@ -331,7 +332,8 @@ func htmlImageSpanComponent(destination: String, imageHeight: ?Float64, imageWid
             .constraintSize(maxWidth: 100.percent)
             // 点击动作触发该方法调用
             .onClick {
-                evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+                evt =>
+                imageOnClick(destination, imageCallback)
             }
     } else if (imageHeight.isSome() && !imageWidth.isSome()) {
         ImageSpan(destination)
@@ -343,7 +345,8 @@ func htmlImageSpanComponent(destination: String, imageHeight: ?Float64, imageWid
             .constraintSize(maxWidth: 100.percent)
             // 点击动作触发该方法调用
             .onClick {
-                evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+                evt =>
+                imageOnClick(destination, imageCallback)
             }
     } else if (!imageHeight.isSome() && imageWidth.isSome()) {
         ImageSpan(destination)
@@ -355,7 +358,8 @@ func htmlImageSpanComponent(destination: String, imageHeight: ?Float64, imageWid
             .constraintSize(maxWidth: 100.percent)
             // 点击动作触发该方法调用
             .onClick {
-                evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+                evt =>
+                imageOnClick(destination, imageCallback)
             }
     } else if (!imageHeight.isSome() && !imageWidth.isSome()) {
         ImageSpan(destination)
@@ -365,7 +369,8 @@ func htmlImageSpanComponent(destination: String, imageHeight: ?Float64, imageWid
             .constraintSize(maxWidth: 100.percent)
             // 点击动作触发该方法调用
             .onClick {
-                evt => imageOnClick(destination, markdownAIConfiguration.imageCallback)
+                evt =>
+                imageOnClick(destination, imageCallback)
             }
     }
 }

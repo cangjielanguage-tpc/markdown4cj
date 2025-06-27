@@ -84,6 +84,11 @@ class MarkdownAITableBlockCellComponent {
     var fontCallback: (String) -> Unit
 
     /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     @State
@@ -145,13 +150,26 @@ class MarkdownAITableBlockCellComponent {
                     itemGeneratorFunc: {
                         item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                             // 文本
-                            tableComponentText(item, isHeader, markdownAIConfiguration, fontCallback)
+                            tableComponentText(
+                                item,
+                                isHeader,
+                                markdownAIConfiguration
+                            )
                         } else if (item.node is Footnote) {
                             // 脚注
-                            tableComponentFootnote(item, isHeader, markdownAIConfiguration, fontCallback)
+                            tableComponentFootnote(
+                                item,
+                                isHeader,
+                                markdownAIConfiguration,
+                                fontCallback
+                            )
                         } else if (item.node is Code) {
                             // 内联代码
-                            tableComponentCode(item, isHeader, markdownAIConfiguration)
+                            tableComponentCode(
+                                item,
+                                isHeader,
+                                markdownAIConfiguration
+                            )
                         } else if (item.node is HardLineBreak) {
                             // 硬换行
                             Span("\n")

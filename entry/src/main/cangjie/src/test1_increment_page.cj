@@ -27,7 +27,7 @@ class Test1IncrementPage {
     var scroller: Scroller = Scroller()
 
     protected override func aboutToAppear(): Unit {
-        mdStr = getFileContextStr("test1.md")
+        mdStr = getFileContextStr("test2.md")
     }
 
     func build() {
@@ -65,8 +65,8 @@ class Test1IncrementPage {
     func setConfig(): MarkdownAIConfiguration {
         let MarkdownAIConfigurationBuilder: MarkdownAIConfigurationBuilder = MarkdownAIConfiguration.emptyBuilder()
         MarkdownAIConfigurationBuilder.setMarkdownAITheme(setMarkdownAITheme())
-//        MarkdownAIConfigurationBuilder.setImageCallback(imageCallback)
-//        MarkdownAIConfigurationBuilder.setVideoCallback(videoCallback)
+        MarkdownAIConfigurationBuilder.setImageCallback(imageCallback)
+        MarkdownAIConfigurationBuilder.setVideoCallback(videoCallback)
         MarkdownAIConfigurationBuilder.setVideoImageCallback(videoImageCallback)
         MarkdownAIConfigurationBuilder.setLinkCallback(linkCallback)
         MarkdownAIConfigurationBuilder.setCodeCopyCallback(codeCopyCallback)
@@ -132,14 +132,14 @@ class Test1IncrementPage {
         Hilog.error(1, "2", "------------------------footnoteCallback:f:${f}")
     }
 
-    func imageCallback(url: String) {
+    func imageCallback(url: String,arr:ArrayList<String>) {
         PromptAction.showToast(message: url)
-        AppLog.error("------------------------LinkCallback:${url}")
+        Hilog.error(1,"1","------------------------LinkCallback:${url},arr:${arr}")
     }
 
-    func videoCallback(url: String) {
+    func videoCallback(url: String,arr:ArrayList<String>) {
         PromptAction.showToast(message: url)
-        AppLog.error("------------------------videoCallback:${url}")
+        Hilog.error(1,"1","------------------------videoCallback:${url},arr:${arr}")
     }
 
     func videoImageCallback(url: String, videoImageCallbackCallback: (String) -> Unit) {
@@ -148,28 +148,28 @@ class Test1IncrementPage {
         } else {
             videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477067-itHyLr-file_1614477069388")
         }
-        AppLog.error("------------------------videoImageCallback:${url}")
+        Hilog.error(1,"1","------------------------videoImageCallback:${url}")
     }
 
     func linkCallback(url: String) {
         PromptAction.showToast(message: url)
-        AppLog.error("------------------------LinkCallback:${url}")
+        Hilog.error(1,"1","------------------------LinkCallback:${url}")
     }
 
     func codeCopyCallback(url: String) {
         PromptAction.showToast(message: url)
-        AppLog.error("------------------------codeCopyCallback:${url}")
+        Hilog.error(1,"1","------------------------codeCopyCallback:${url}")
     }
 
     func codeFullScreenCallback(url: String, infos: ?String) {
         PromptAction.showToast(message: "${url}${infos}")
-        AppLog.error("------------------------codeFullScreenCallback:${url}")
-        AppLog.error("------------------------codeFullScreenCallback:${infos}")
+        Hilog.error(1,"1","------------------------codeFullScreenCallback:${url}")
+        Hilog.error(1,"1","------------------------codeFullScreenCallback:${infos}")
     }
 
     func latexImageCallbackCallback(data: Array<UInt8>, height: Length, width: Length) {
-        AppLog.error("------------------------data:${data}")
-        AppLog.error("------------------------height:${height.value}")
-        AppLog.error("------------------------width:${width.value}")
+        Hilog.error(1,"1","------------------------data:${data}")
+        Hilog.error(1,"1","------------------------height:${height.value}")
+        Hilog.error(1,"1","------------------------width:${width.value}")
     }
 }
