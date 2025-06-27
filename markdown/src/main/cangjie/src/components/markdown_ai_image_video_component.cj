@@ -8,6 +8,9 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
+/**
+ * 视频
+ */
 @Component
 public class MarkdownAIImageVideoComponent {
     /**
