@@ -105,7 +105,7 @@ class MarkdownAIParagraphComponent {
 
     func build() {
         Text() {
-            if(footnoteBlock.isSome()){
+            if (footnoteBlock.isSome()) {
                 Span("[^${footnoteBlock().noteid}]: ")
                     // 设置文本尺寸
                     .fontSize(markdownAIConfiguration.markdownAITheme.paragraphTextSize)
@@ -138,34 +138,34 @@ class MarkdownAIParagraphComponent {
                         )
                     } else if (item.node is CommonmarkLink) {
                         // 链接
-                        if((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")){
-                            if(item.node.getFirstChild().isSome() &&  item.node.getFirstChild()() is CommonmarkText){
+                        if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
                                 if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
                                     MarkdownAILinkRectImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
                                         strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor,markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor)
+                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor)
                                     )
                                 } else {
                                     MarkdownAILinkCircleImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
                                         strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor,markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor)
+                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor)
                                     )
                                 }
                             }
                         } else {
-                           if(item.node.getFirstChild().isSome() &&  item.node.getFirstChild()() is CommonmarkText){
+                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
                                 MarkdownAILinkRectToolImageComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
                                     strUrl: (item.node as CommonmarkLink)().getDestination(),
                                     strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                    backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor,markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor)
+                                    backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor)
                                 )
-                           }
+                            }
                         }
                     } else if (item.node is HardLineBreak) {
                         // 硬换行
@@ -179,15 +179,15 @@ class MarkdownAIParagraphComponent {
                             destination: (item.node as ImageHtmlNode)().getDestination(),
                             imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
                             imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-                            componentWidth:componentWidth,
+                            componentWidth: componentWidth,
                             imageCallback: imageCallback
                         )
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         MarkdownAIImageSpanComponent(
-                             destination:(item.node as CommonmarkImage)().getDestination(),
+                            destination: (item.node as CommonmarkImage)().getDestination(),
                             componentWidth: componentWidth,
-                            imageCallback:imageCallback
+                            imageCallback: imageCallback
                         )
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
@@ -195,7 +195,7 @@ class MarkdownAIParagraphComponent {
                             markdownAIConfiguration: markdownAIConfiguration,
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
-                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor,markdownAIConfiguration.markdownAITheme.latexMathBackGroupColor)
+                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.latexMathBackGroupColor)
                         )
                     } else {
                         // TODO 其他节点

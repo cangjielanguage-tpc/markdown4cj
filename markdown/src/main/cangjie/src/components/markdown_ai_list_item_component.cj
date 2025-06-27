@@ -286,50 +286,49 @@ class MarkdownAIListItemComponent {
                 if ((refreshNodeViews[refreshNodeViewSize - 1].node is BulletList && nodeViewAIDataSource.getData(dataSourceSize - 1).node is BulletList) || (refreshNodeViews[refreshNodeViewSize - 1].node is OrderedList && nodeViewAIDataSource.getData(dataSourceSize - 1).node is OrderedList)) {
                     // 有序列表和无序列表
                     for (data in markdownAICacheConfiguration.listComponents) {
-                        if(isListItem(indexList,data.indexList,index)){
+                        if (isListItem(indexList, data.indexList, index)) {
                             data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
                         }
                     }
                 } else if ((refreshNodeViews[refreshNodeViewSize - 1].node is IndentedCodeBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is IndentedCodeBlock)) {
                     // 缩进代码
                     for (data in markdownAICacheConfiguration.indentedCodeComponents) {
-                        if(isListItem(indexList,data.indexList,index)){
+                        if (isListItem(indexList, data.indexList, index)) {
                             data.refreshData(getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[0], getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[1])
                         }
                     }
                 } else if ((refreshNodeViews[refreshNodeViewSize - 1].node is FencedCodeBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is FencedCodeBlock)) {
                     // 围栏代码
                     for (data in markdownAICacheConfiguration.fencedCodeComponents) {
-                        if(isListItem(indexList,data.indexList,index)){
+                        if (isListItem(indexList, data.indexList, index)) {
                             data.refreshData(getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[0], getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[1])
                         }
                     }
                 } else if (refreshNodeViews[refreshNodeViewSize - 1].node is Heading && nodeViewAIDataSource.getData(dataSourceSize - 1).node is Heading) {
                     // 标题
                     for (data in markdownAICacheConfiguration.headingComponents) {
-                        if(isListItem(indexList,data.indexList,index)){
+                        if (isListItem(indexList, data.indexList, index)) {
                             data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children, (refreshNodeViews[refreshNodeViewSize - 1].node as Heading)().getLevel())
                         }
                     }
-                } else if (refreshNodeViews[refreshNodeViewSize - 1].node is Paragraph &&
-                    nodeViewAIDataSource.getData(dataSourceSize - 1).node is Paragraph) {
+                } else if (refreshNodeViews[refreshNodeViewSize - 1].node is Paragraph && nodeViewAIDataSource.getData(dataSourceSize - 1).node is Paragraph) {
                     // 段落
                     for (data in markdownAICacheConfiguration.paragraphComponents) {
-                        if(isListItem(indexList,data.indexList,index)){
+                        if (isListItem(indexList, data.indexList, index)) {
                             data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
                         }
                     }
                 } else if (refreshNodeViews[refreshNodeViewSize - 1].node is TableBlock && nodeViewAIDataSource.getData(dataSourceSize - 1).node is TableBlock) {
                     // 表格
                     for (data in markdownAICacheConfiguration.tableComponents) {
-                        if(isListItem(indexList,data.indexList,index)){
+                        if (isListItem(indexList, data.indexList, index)) {
                             data.refreshData(tableList(refreshNodeViews[refreshNodeViewSize - 1].children))
                         }
                     }
                 } else if (refreshNodeViews[refreshNodeViewSize - 1].node is BlockQuote && nodeViewAIDataSource.getData(dataSourceSize - 1).node is BlockQuote) {
                     // 块引用
                     for (data in markdownAICacheConfiguration.quoteComponents) {
-                        if(isListItem(indexList,data.indexList,index)){
+                        if (isListItem(indexList, data.indexList, index)) {
                             data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
                         }
                     }

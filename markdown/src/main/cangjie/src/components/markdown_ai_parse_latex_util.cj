@@ -22,8 +22,7 @@ class MarkdownParseLatexUtil {
      * @param markdownAIConfiguration Markdown Configuration
      * @param callback PixelMap图片、图片高度、图片宽度、图片数组数据 回调接口
      */
-    static func latexMathStrToPixelMap(strLatexMath: String, resStr: String,
-        markdownAIConfiguration: MarkdownAIConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func latexMathStrToPixelMap(strLatexMath: String, resStr: String, markdownAIConfiguration: MarkdownAIConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -39,15 +38,11 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew),
-                        Float32(markdownAIConfiguration.markdownAITheme.latexMathTextSize),
-                        Float32(markdownAIConfiguration.markdownAITheme.latexMathTextLineSpacing),
-                        markdownAIConfiguration.markdownAITheme.latexMathTextColor.toUInt32())
+                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownAIConfiguration.markdownAITheme.latexMathTextSize), Float32(markdownAIConfiguration.markdownAITheme.latexMathTextLineSpacing), markdownAIConfiguration.markdownAITheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r,
-                        latexMathColorFormat(markdownAIConfiguration.markdownAITheme.latexMathColorFormat))
+                    var g2 = Graphic2D(r, latexMathColorFormat(markdownAIConfiguration.markdownAITheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -94,9 +89,7 @@ class MarkdownParseLatexUtil {
      * @param componentWidth 控件宽度 - 单位vp
      * @param callback PixelMap图片、图片高度、图片宽度、图片数组数据 回调接口
      */
-    static func latexMathStrToPixelMapRow(strLatexMath: String, resStr: String,
-        markdownAIConfiguration: MarkdownAIConfiguration, componentWidth: Float64,
-        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit, backGroupColor: Color): Future<Unit> {
+    static func latexMathStrToPixelMapRow(strLatexMath: String, resStr: String, markdownAIConfiguration: MarkdownAIConfiguration, componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit, backGroupColor: Color): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -112,15 +105,11 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew),
-                        Float32(markdownAIConfiguration.markdownAITheme.latexMathTextSize),
-                        Float32(markdownAIConfiguration.markdownAITheme.latexMathTextLineSpacing),
-                        markdownAIConfiguration.markdownAITheme.latexMathTextColor.toUInt32())
+                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownAIConfiguration.markdownAITheme.latexMathTextSize), Float32(markdownAIConfiguration.markdownAITheme.latexMathTextLineSpacing), markdownAIConfiguration.markdownAITheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r,
-                        latexMathColorFormat(markdownAIConfiguration.markdownAITheme.latexMathColorFormat))
+                    var g2 = Graphic2D(r, latexMathColorFormat(markdownAIConfiguration.markdownAITheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -178,8 +167,7 @@ class MarkdownParseLatexUtil {
  * @return 宽度
  */
 func getLatexmathWidth(strLatexMath: String): Int32 {
-    if (strLatexMath.contains("aligned") || strLatexMath.contains("align") || strLatexMath.contains("flalign") ||
-        strLatexMath.contains("gather") || strLatexMath.contains("multline") || strLatexMath.contains("eqnarray")) {
+    if (strLatexMath.contains("aligned") || strLatexMath.contains("align") || strLatexMath.contains("flalign") || strLatexMath.contains("gather") || strLatexMath.contains("multline") || strLatexMath.contains("eqnarray")) {
         Int32(10)
     } else {
         Int32(2000)

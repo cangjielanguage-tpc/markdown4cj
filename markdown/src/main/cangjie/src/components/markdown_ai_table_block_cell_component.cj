@@ -141,7 +141,7 @@ class MarkdownAITableBlockCellComponent {
     }
 
     func build() {
-        Column(){
+        Column() {
             Text() {
                 ForEach(
                     nodeViewList,
@@ -191,7 +191,7 @@ class MarkdownAITableBlockCellComponent {
                                             markdownAIConfiguration: markdownAIConfiguration,
                                             strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
+                                            backGroupColor: renderTableCellColor(isHeader,markdownAIConfiguration.markdownAITheme, idRow),
                                             maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
                                         )
                                     }
@@ -253,9 +253,9 @@ class MarkdownAITableBlockCellComponent {
                     return
                 }
                 let oldWidth: Float64 = px2vp(old.width.px)().value
-                let newWidth: Float64 = if (DeviceInfo.majorVersion <= 5 && DeviceInfo.seniorVersion <= 0 && DeviceInfo.featureVersion <= 0 && DeviceInfo.buildVersion <= 103 ) {
+                let newWidth: Float64 = if (DeviceInfo.majorVersion <= 5 && DeviceInfo.seniorVersion <= 0 && DeviceInfo.featureVersion <= 0 && DeviceInfo.buildVersion <= 103) {
                     new.width
-                } else{
+                } else {
                     px2vp(new.width.px)().value
                 }
                 let max: Float64 = if (newWidth > oldWidth) {

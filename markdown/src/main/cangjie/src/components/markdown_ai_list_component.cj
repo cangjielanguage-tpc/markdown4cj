@@ -89,14 +89,13 @@ public class MarkdownAIListComponent {
         // 清除当前控件
         markdownAICacheConfiguration
             .listComponents
-            .removeIf(
-                {
-                    predicate => if (predicate.indexList == indexList && predicate.size == size) {
-                        true
-                    } else {
-                        false
-                    }
-                })
+            .removeIf({
+                predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                    true
+                } else {
+                    false
+                }
+            })
     }
 
     func build() {
@@ -128,7 +127,7 @@ public class MarkdownAIListComponent {
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
-                                indexList:indexAdd(indexList, idx),
+                                indexList: indexAdd(indexList, idx),
                                 isFull: isFull,
                                 markdownAICacheConfiguration: markdownAICacheConfiguration
                             )
@@ -182,7 +181,7 @@ public class MarkdownAIListComponent {
                 // 刷新数据的长度等于页面数据长度，需要更新当前数据
                 let indexItem: Int64 = dataSourceSize - 1
                 for (data in markdownAICacheConfiguration.listItemComponents) {
-                    if(isListItem(indexList,data.indexList,indexItem)){
+                    if (isListItem(indexList, data.indexList, indexItem)) {
                         data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
                     }
                 }
