@@ -480,6 +480,11 @@ public class MarkdownTheme {
     protected var paragraphTextLineheight: Float64 = 22.0
 
     /**
+     * 段落元素字体
+     */
+    protected var paragraphTypeface: String = "HarmonyOS Sans"
+
+    /**
      * 分割线颜色
      */
     protected var thematicBreakColor: Color = COLOR_191919
@@ -733,6 +738,7 @@ public class MarkdownTheme {
         this.paragraphTextColor = builder.paragraphTextColor
         this.paragraphTextWordSpace = builder.paragraphTextWordSpace
         this.paragraphTextLineheight = builder.paragraphTextLineheight
+        this.paragraphTypeface = builder.paragraphTypeface
         // 分割线
         this.thematicBreakColor = builder.thematicBreakColor
         this.thematicBreakHeight = builder.thematicBreakHeight
@@ -1341,6 +1347,11 @@ public class MarkdownThemeBuilder {
     protected var paragraphTextLineheight: Float64 = 22.0
 
     /**
+     * 段落元素字体
+     */
+    protected var paragraphTypeface: String = "HarmonyOS Sans"
+
+    /**
      * 分割线颜色
      */
     protected var thematicBreakColor: Color = COLOR_191919
@@ -1597,6 +1608,7 @@ public class MarkdownThemeBuilder {
         this.paragraphTextColor = theme.paragraphTextColor
         this.paragraphTextWordSpace = theme.paragraphTextWordSpace
         this.paragraphTextLineheight = theme.paragraphTextLineheight
+        this.paragraphTypeface = theme.paragraphTypeface
         // 分割线
         this.thematicBreakColor = theme.thematicBreakColor
         this.thematicBreakHeight = theme.thematicBreakHeight
@@ -2677,6 +2689,17 @@ public class MarkdownThemeBuilder {
      */
     public func setParagraphTextLineheight(paragraphTextLineheight: Float64): MarkdownThemeBuilder {
         this.paragraphTextLineheight = paragraphTextLineheight
+        return this
+    }
+
+    /**
+     * 设置段落文本字体
+     *
+     * @param paragraphTypeface 段落文本字体
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setParagraphTypeface(paragraphTypeface: String): MarkdownThemeBuilder {
+        this.paragraphTypeface = paragraphTypeface
         return this
     }
 

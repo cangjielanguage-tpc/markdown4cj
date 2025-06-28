@@ -3,9 +3,9 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.1.2-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.53.20-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v0.53.18-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -61,96 +61,50 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ## 软件架构
 
-![](doc/assets/img.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/blobs/5a5352e79bdc3af5dc6907686876b5cf7f4ca53e/img.png)
 
 ### 源码目录
 
 ```shell
-├─AppScope
-├─doc
-├─entry
-│  └─src
-│      └─main
-│          ├─cangjie
-│          └─resources
-├─markdown
-│  └─src
-│      └─main
-│          ├─cangjie
-│          │  └─src
-│          │      ├─components
-│          │      ├─core
-│          │      ├─plugin
-│          │      └─texttoimg4cj
-│          ├─cpp
-│          └─resources
-└─hvigor
+─markdown
+  └─src
+      └─main
+          ├─cangjie
+          │  └─src
+          │      ├─components
+          │      ├─core
+          │      ├─texttoimg4cj
+          │      └─plugin
+          ├─cpp
+          └─resources
 
 ```
 
-- `AppScope` 全局资源存放目录和应用全局信息配置目录
-- `doc` API文档和使用手册存放目录
-- `entry` 工程模块 - 编译生成一个HAP
-- `entry src` APP代码目录
-- `entry src main` APP项目目录
-- `entry src main cangjie` 仓颉代码目录
-- `entry src main resources` 资源文件目录
 - `markdown` 工程模块 - 编译生成一个har包
 - `markdown src` 模块代码目录
 - `markdown src main` 模块项目目录
 - `markdown src main cangjie` 仓颉代码目录
+- `markdown src main cpp` cpp代码目录
 - `markdown src main resources` 资源文件目录
 - `markdown src main cangjie src components` markdown UI页面目录
 - `markdown src main cangjie src core` markdown 数据解析处理目录
+- `markdown src main cangjie src texttoimg4cj` markdown 文本转图片模块
 - `markdown src main cangjie src plugin` markdown 插件化目录
-- `markdown src main cangjie src texttoimg4cj` markdown 文字图片化目录
-- `markdown src main cpp` c代码目录
-- `hvigor` 构建工具目录
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](doc/API.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/develop/doc/API.md)
 
 ## 使用说明
 
 ### 编译构建
 
 1. 下载安装
-   1. 通过中心仓下载安装
+   通过中心仓下载安装
 
       ```sh
       ohpm install @cangjie-tpc/markdown
       ```
-
-   2. 通过module引入
-      1. 克隆下载项目
-      2. 将markdown模块和library模块拷贝到应用项目下
-      3. 将markdown模块当module引用，修改项目下的 build-profile.json5 文件，在 modules 字段添加下面代码
-         ```json
-         {
-         "name": "markdown",
-         "srcPath": "./markdown"
-         }
-         ```
-      4. 修改自身应用 entry 下的 oh-package.json5 文件，在 dependencies 字段添加 "@cangjie-tpc/markdown": "file:../markdown"
-         ```json
-         {
-            "name": "entry",
-            "version": "1.0.0",
-            "description": "Please describe the basic information.",
-            "main": "",
-            "author": "",
-            "license": "",
-           "dependencies": {
-               "@cangjie-tpc/markdown": "file:../markdown"
-           }
-         }
-         ```
-      5. 修改自身应用 entry/src/main/cangjie 下的 cjpm.toml 文件，在 [dependencies] 字段下添加
-         ```toml
-         [dependencies.markdown]
-         path = "../../../../markdown/src/main/cangjie"
-         ```
 
 2. 在项目中使用markdown项目
    ```cangjie
@@ -234,7 +188,7 @@ Heading level 2
 
 ### 显示效果
 
-![](doc/assets/img1.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/blobs/c2964f6d5916d7cbeac768b7967062e76ab67a5a/img1.png)
 
 ## 约束与限制
 
@@ -312,7 +266,7 @@ Heading level 2
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](./LICENSE) ，请自由的享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/develop/markdown/LICENSE) ，请自由的享受和参与开源。
 
 ## 参与贡献
 

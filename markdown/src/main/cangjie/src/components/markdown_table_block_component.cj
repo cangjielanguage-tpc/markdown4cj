@@ -87,8 +87,6 @@ class MarkdownTableBlockComponent {
         refreshData(nodeViews)
         // 缓存当前控件
         tableComponents.append(this)
-        // 清除缓存数据
-        nodeViews.clear()
         var cellSize: Int64 = 0
         if (nodeViewDataSource.size > 0) {
             cellSize = nodeViewDataSource[0].children.size

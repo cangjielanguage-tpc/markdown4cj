@@ -80,7 +80,7 @@ func spanFontFamily(isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool): 
             return markdownTheme.headingTypeface
         } else {
             // 段落设置默认字体
-            return "HarmonyOS Sans"
+            return markdownTheme.paragraphTypeface
         }
     }
 }

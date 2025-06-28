@@ -1,9 +1,9 @@
 {
-  "name": "markdown",
-  "version": "1.0.0",
-  "description": "Please describe the basic information.",
+  "name": "@cangjie-tpc/markdown",
+  "version": "1.1.2",
+  "description": "Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库。",
   "main": "",
-  "author": "",
+  "author": "cangjie-tpc",
   "license": "Apache-2.0",
   "dependencies": {
   }
