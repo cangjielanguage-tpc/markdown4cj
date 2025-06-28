@@ -109,6 +109,10 @@ public class MarkdownAIComponent {
             .usePlugin(TablePlugin.create())
             // 数学公式
             .usePlugin(LatexMathPluginV2.create())
+            // 音频
+            .usePlugin(BlockAudioPlugin.create())
+            // 视频
+            .usePlugin(BlockVideoPlugin.create())
             // 链接
             .usePlugin(linkButton())
             // 脚注
@@ -278,6 +282,27 @@ public class MarkdownAIComponent {
                                     .strokeWidth(markdownAIConfiguration.markdownAITheme.thematicBreakHeight)
                                     // 设置外边距属性
                                     .margin(top: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins, bottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins)
+                            }
+                        } else if (item.node is BlockAudio) {
+                            // 音频
+                            ListItem() {
+                                MarkdownAIImageAudioComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    nodeView: item,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
+                                )
+                            }
+                        } else if (item.node is BlockVideo) {
+                            // 视频
+                            ListItem() {
+                                MarkdownAIImageVideoComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    nodeView: item,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    videoCallback: videoCallback
+                                )
                             }
                         } else if (item.node is LatexMathBlock) {
                             // 单行的数学公式

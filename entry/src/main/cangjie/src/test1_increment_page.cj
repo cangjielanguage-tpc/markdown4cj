@@ -81,6 +81,12 @@ class Test1IncrementPage {
             .emptyBuilder()
             // 代码复制按钮默认图
             .setCodeCopyIcon(@r(app.media.app_icon))
+            // 音频icon
+            .setAudioIcon(@r(app.media.app_icon))
+            // 视频占位图
+            .setVideoImage(@r(app.media.place_holder))
+            // 视频占位图
+            .setPlayCircleFillIcon(@r(app.media.play_circle_fill))
             // 设置一级二级标题下划线高度
             .setHeadingBreakHeight(0.0)
             .setHeadingTextSizeMultipliers([15.0, 15.0, 15.0, 15.0, 15.0, 15.0]) // fp
@@ -142,12 +148,12 @@ class Test1IncrementPage {
         Hilog.error(1,"1","------------------------videoCallback:${url},arr:${arr}")
     }
 
-    func videoImageCallback(url: String, videoImageCallbackCallback: (String) -> Unit) {
-        if (url == "562986b1-46d8-48ef-bac6-82685bcedcd8") {
-            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477066-YeEeWg-file_1614477068523")
-        } else {
-            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477067-itHyLr-file_1614477069388")
-        }
+    func videoImageCallback(url: String, videoImageCallbackCallback: (String,Float64,Int64) -> Unit) {
+//        if (url == "562986b1-46d8-48ef-bac6-82685bcedcd8") {
+//            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477066-YeEeWg-file_1614477068523",0.0,0)
+//        } else {
+//            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477067-itHyLr-file_1614477069388",0.0,0)
+//        }
         Hilog.error(1,"1","------------------------videoImageCallback:${url}")
     }
 

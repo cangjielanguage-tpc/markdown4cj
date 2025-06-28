@@ -20,7 +20,7 @@ let COLOR_00FFFFFF: Color = Color(0x00FFFFFF)
 let COLOR_E0E0E0: Color = Color(0xE0E0E0)
 let COLOR_FFE0E0E0: Color = Color(0xFFE0E0E0)
 let COLOR_333333: Color = Color(0x333333)
-let null:NodeView = unsafe{zeroValue()}
+let null: NodeView = unsafe { zeroValue() }
 
 func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<String>, ArrayList<String>) {
     var strText: ArrayList<String> = ArrayList<String>()
@@ -80,7 +80,7 @@ func spanFontFamily(isCode: Bool, markdownAITheme: MarkdownAITheme, isTitle: Boo
             return markdownAITheme.headingTypeface
         } else {
             // 段落设置默认字体
-            return "HarmonyOS Sans"
+            return markdownAITheme.paragraphTypeface
         }
     }
 }
@@ -127,7 +127,7 @@ func spanTextFontSize(nodeView: NodeView, isCode: Bool, markdownAITheme: Markdow
         // 内联代码情况设置内联代码字体大小
         return markdownAITheme.codeTextSize
     } else {
-        if(nodeView.link.isSome()){
+        if (nodeView.link.isSome()) {
             return markdownAITheme.linkSize
         } else {
             if (isTitle) {
@@ -829,7 +829,7 @@ func getCodeInfo(nodeView: NodeView): (String, ?String) {
  * @param nodeViews ArrayList<NodeView>
  * @return ArrayList<NodeView>
  */
-func tableList(nodeViews: ArrayList<NodeView>):ArrayList<NodeView>{
+func tableList(nodeViews: ArrayList<NodeView>): ArrayList<NodeView> {
     let tableNodeViews = ArrayList<NodeView>()
     for (nodeView in nodeViews) {
         if (nodeView.node is TableBody || nodeView.node is TableHead) {
@@ -868,46 +868,46 @@ func getProp<T>(item: NodeView, key: String, default: T): T {
     }
 }
 
-func indexAdd(indexList: ArrayList<Int64>,index:Int64):ArrayList<Int64>{
+func indexAdd(indexList: ArrayList<Int64>, index: Int64): ArrayList<Int64> {
     let indexListNew: ArrayList<Int64> = ArrayList<Int64>()
     indexListNew.appendAll(indexList)
     indexListNew.append(index)
     return indexListNew
 }
 
-func isListItem(indexListOne: ArrayList<Int64>,indexListTwo: ArrayList<Int64>,index:Int64):Bool{
-    if(indexListTwo.size <= 0){
+func isListItem(indexListOne: ArrayList<Int64>, indexListTwo: ArrayList<Int64>, index: Int64): Bool {
+    if (indexListTwo.size <= 0) {
         return false
     }
-    if(indexListOne.size + 1 != indexListTwo.size || indexListTwo[indexListTwo.size-1] != index){
+    if (indexListOne.size + 1 != indexListTwo.size || indexListTwo[indexListTwo.size - 1] != index) {
         return false
     }
-    var isBool:Bool = true
-    for(i in 0..indexListOne.size){
-        if(indexListOne[i] != indexListTwo[i]){
+    var isBool: Bool = true
+    for (i in 0..indexListOne.size) {
+        if (indexListOne[i] != indexListTwo[i]) {
             isBool = false
         }
     }
     return isBool
 }
 
-func urlSafeBase64Decode(v: String):String {
+func urlSafeBase64Decode(v: String): String {
     var vNew = v.replace("_", "/").replace("-", "+")
-    var arr:?Array<Byte> = fromBase64String(vNew)
-    if(arr.isNone()){
+    var arr: ?Array<Byte> = fromBase64String(vNew)
+    if (arr.isNone()) {
         return ""
     }
-    var arrStr:String = String.fromUtf8(arr.getOrThrow())
+    var arrStr: String = String.fromUtf8(arr.getOrThrow())
     var regex: Regex = Regex("file-name=([^&]+)");
     var matcher: Matcher = Matcher(regex, arrStr);
     var matchData: ?MatchData = matcher.find()
     match (matchData) {
-    	case Some(v) =>
+        case Some(v) =>
             var str: String = v.matchStr()
-            var arrSplit:Array<String> = URL.parse(str).toString().split('.')
-            if(arrSplit.size>1){
+            var arrSplit: Array<String> = URL.parse(str).toString().split('.')
+            if (arrSplit.size > 1) {
                 return arrSplit[arrSplit.size - 1].toAsciiUpper()
-            }else{
+            } else {
                 return ""
             }
         case None => return ""
@@ -915,8 +915,8 @@ func urlSafeBase64Decode(v: String):String {
     return ""
 }
 
-func markdownbackGroupColor(blockQuoteBackGroupClor: Option<Color>, backGroupColor: Color): Color{
-    if(let Some(v) <- blockQuoteBackGroupClor){
+func markdownbackGroupColor(blockQuoteBackGroupClor: Option<Color>, backGroupColor: Color): Color {
+    if (let Some(v) <- blockQuoteBackGroupClor) {
         return v
     } else {
         return backGroupColor
@@ -934,10 +934,49 @@ func strToFloat64(str: ?String): ?Float64 {
     return f
 }
 
-func constraintSizeMinWidth(markdownAIConfiguration: MarkdownAIConfiguration):Length{
-    return if(markdownAIConfiguration.markdownAITheme.isSeparateCodeBlock){
+func constraintSizeMinWidth(markdownAIConfiguration: MarkdownAIConfiguration): Length {
+    return if (markdownAIConfiguration.markdownAITheme.isSeparateCodeBlock) {
         100.percent
     } else {
         0.vp
     }
+}
+
+let SECONDS_PER_HOUR: Int64 = 3600
+let SECONDS_PER_MINUTE: Int64 = 60
+
+/**
+ * 将秒转换成时分秒并以HH:MM:SS 格式输出
+ *
+ * @param totalSeconds 秒数
+ * @return 返回时分秒文本
+ */
+func formatTime(totalSeconds: Int64): String {
+    if (totalSeconds <= 0) {
+        return "00:00:00"
+    }
+    var hours: Int64 = totalSeconds / SECONDS_PER_HOUR // 时
+    var remainingSeconds: Int64 = totalSeconds % SECONDS_PER_HOUR
+    var minutes: Int64 = remainingSeconds / SECONDS_PER_MINUTE // 分
+    var seconds: Int64 = remainingSeconds % SECONDS_PER_MINUTE // 秒
+    let sb: StringBuilder = StringBuilder(8) // 预分配足够长度
+    appendTwoDigits(sb, hours).append(':')
+    appendTwoDigits(sb, minutes).append(':')
+    appendTwoDigits(sb, seconds)
+    return sb.toString()
+}
+
+/**
+ * 将小于10的时分秒补齐十位
+ *
+ * @param sb StringBuilder
+ * @param value 需要添加数据的数字
+ * @return 返回StringBuilder
+ */
+func appendTwoDigits(sb: StringBuilder, value: Int64): StringBuilder {
+    if (value < 10) {
+        sb.append('0')
+    }
+    sb.append(value)
+    return sb
 }

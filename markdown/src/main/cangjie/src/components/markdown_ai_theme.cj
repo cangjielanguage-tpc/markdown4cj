@@ -491,6 +491,11 @@ public class MarkdownAITheme {
     protected var paragraphTextLineheight: Float64 = 22.0
 
     /**
+     * 段落元素字体
+     */
+    protected var paragraphTypeface: String = "HarmonyOS Sans"
+
+    /**
      * 分割线颜色
      */
     protected var thematicBreakColor: Color = COLOR_191919
@@ -536,6 +541,96 @@ public class MarkdownAITheme {
     protected var resPath: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
 
     /**
+     * 音频图标
+     */
+    protected var audioIcon: ?CJResource = None
+
+    /**
+     * 音频边框颜色
+     */
+    protected var audioBorderColor: Color = Color.BLACK
+
+    /**
+     * 音频边框粗细
+     */
+    protected var audioBorderWidth: Float64 = 1.0
+
+    /**
+     * 音频边框圆角
+     */
+    protected var audioBorderRdius: Float64 = 12.0
+
+    /**
+     * 音频按钮背景颜色
+     */
+    protected var audioButtonBackgroundColor: Color = Color.BLACK
+
+    /**
+     * 音频按钮文字颜色
+     */
+    protected var audioButtonTextColor: Color = Color.WHITE
+
+    /**
+     * 音频按钮文字大小
+     */
+    protected var audioButtonTextSize: Float64 = 14.0
+
+    /**
+     * 音频按钮文字内容
+     */
+    protected var audioButtonText: String = "立即播放"
+
+    /**
+     * 音频按钮圆角
+     */
+    protected var audioButtonBorderRadius: Float64 = 16.0
+
+    /**
+     * 音频标题文字大小
+     */
+    protected var audioTitleTextSize: Float64 = 15.0
+
+    /**
+     * 音频标题文字颜色
+     */
+    protected var audioTitleTextColor: Color = Color.BLACK
+
+    /**
+     * 音频标题文字行高
+     */
+    protected var audioTitleTextLineHeight: Float64 = 20.0
+
+    /**
+     * 音频类型文字大小
+     */
+    protected var audioTypeTextSize: Float64 = 11.0
+
+    /**
+     * 音频类型文字颜色
+     */
+    protected var audioTypeTextColor: Color = Color(0x80000000)
+
+    /**
+     * 音频类型文字行高
+     */
+    protected var audioTypeTextLineHeight: Float64 = 15.0
+
+    /**
+     * 音频文件大小文字大小
+     */
+    protected var audioFileSizeTextSize: Float64 = 11.0
+
+    /**
+     * 音频文件大小文字颜色
+     */
+    protected var audioFileSizeTextColor: Color = Color(0x80000000)
+
+    /**
+     * 音频文件大小文字行高
+     */
+    protected var audioFileSizeTextLineHeight: Float64 = 15.0
+
+    /**
      * 视频默认占位图
      */
     protected var videoImage: ?CJResource = None
@@ -544,6 +639,31 @@ public class MarkdownAITheme {
      * 视频播放按钮默认图标
      */
     protected var playCircleFillIcon: ?CJResource = None
+
+    /**
+     * 视频圆角
+     */
+    protected var videoBorderRadius: Float64 = 10.0
+
+    /**
+     * 视频时间文本颜色
+     */
+    protected var videoTimeTextColor: Color = Color.WHITE
+
+    /**
+     * 视频时间文本大小
+     */
+    protected var videoTimeTextSize: Float64 = 14.0
+
+    /**
+     * 视频时间文本居右边距
+     */
+    protected var videoTimeTextMarginRight: Float64 = 10.0
+
+    /**
+     * 视频时间文本居底边距
+     */
+    protected var videoTimeTextMarginBottom: Float64 = 10.0
 
     /**
      * 图片banner默认占位图
@@ -746,6 +866,7 @@ public class MarkdownAITheme {
         this.paragraphTextColor = builder.paragraphTextColor
         this.paragraphTextWordSpace = builder.paragraphTextWordSpace
         this.paragraphTextLineheight = builder.paragraphTextLineheight
+        this.paragraphTypeface = builder.paragraphTypeface
         // 分割线
         this.thematicBreakColor = builder.thematicBreakColor
         this.thematicBreakHeight = builder.thematicBreakHeight
@@ -758,9 +879,33 @@ public class MarkdownAITheme {
         this.latexMathTextColor = builder.latexMathTextColor
         this.latexMathColorFormat = builder.latexMathColorFormat
         this.resPath = builder.resPath
+        // 音频
+        this.audioIcon = builder.audioIcon
+        this.audioBorderColor = builder.audioBorderColor
+        this.audioBorderWidth = builder.audioBorderWidth
+        this.audioBorderRdius = builder.audioBorderRdius
+        this.audioButtonBackgroundColor = builder.audioButtonBackgroundColor
+        this.audioButtonTextColor = builder.audioButtonTextColor
+        this.audioButtonTextSize = builder.audioButtonTextSize
+        this.audioButtonText = builder.audioButtonText
+        this.audioButtonBorderRadius = builder.audioButtonBorderRadius
+        this.audioTitleTextSize = builder.audioTitleTextSize
+        this.audioTitleTextColor = builder.audioTitleTextColor
+        this.audioTitleTextLineHeight = builder.audioTitleTextLineHeight
+        this.audioTypeTextSize = builder.audioTypeTextSize
+        this.audioTypeTextColor = builder.audioTypeTextColor
+        this.audioTypeTextLineHeight = builder.audioTypeTextLineHeight
+        this.audioFileSizeTextSize = builder.audioFileSizeTextSize
+        this.audioFileSizeTextColor = builder.audioFileSizeTextColor
+        this.audioFileSizeTextLineHeight = builder.audioFileSizeTextLineHeight
         // 视频
         this.videoImage = builder.videoImage
         this.playCircleFillIcon = builder.playCircleFillIcon
+        this.videoBorderRadius = builder.videoBorderRadius
+        this.videoTimeTextColor = builder.videoTimeTextColor
+        this.videoTimeTextSize = builder.videoTimeTextSize
+        this.videoTimeTextMarginRight = builder.videoTimeTextMarginRight
+        this.videoTimeTextMarginBottom = builder.videoTimeTextMarginBottom
         // 图片banner
         this.bannerImage = builder.bannerImage
         // 图片
@@ -1364,6 +1509,11 @@ public class MarkdownAIThemeBuilder {
     protected var paragraphTextLineheight: Float64 = 22.0
 
     /**
+     * 段落元素字体
+     */
+    protected var paragraphTypeface: String = "HarmonyOS Sans"
+
+    /**
      * 分割线颜色
      */
     protected var thematicBreakColor: Color = COLOR_191919
@@ -1409,6 +1559,96 @@ public class MarkdownAIThemeBuilder {
     protected var resPath: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
 
     /**
+     * 音频图标
+     */
+    protected var audioIcon: ?CJResource = None
+
+    /**
+     * 音频边框颜色
+     */
+    protected var audioBorderColor: Color = Color.BLACK
+
+    /**
+     * 音频边框粗细
+     */
+    protected var audioBorderWidth: Float64 = 1.0
+
+    /**
+     * 音频边框圆角
+     */
+    protected var audioBorderRdius: Float64 = 12.0
+
+    /**
+     * 音频按钮背景颜色
+     */
+    protected var audioButtonBackgroundColor: Color = Color.BLACK
+
+    /**
+     * 音频按钮文字颜色
+     */
+    protected var audioButtonTextColor: Color = Color.WHITE
+
+    /**
+     * 音频按钮文字大小
+     */
+    protected var audioButtonTextSize: Float64 = 14.0
+
+    /**
+     * 音频按钮文字内容
+     */
+    protected var audioButtonText: String = "立即播放"
+
+    /**
+     * 音频按钮圆角
+     */
+    protected var audioButtonBorderRadius: Float64 = 16.0
+
+    /**
+     * 音频标题文字大小
+     */
+    protected var audioTitleTextSize: Float64 = 15.0
+
+    /**
+     * 音频标题文字颜色
+     */
+    protected var audioTitleTextColor: Color = Color.BLACK
+
+    /**
+     * 音频标题文字行高
+     */
+    protected var audioTitleTextLineHeight: Float64 = 20.0
+
+    /**
+     * 音频类型文字大小
+     */
+    protected var audioTypeTextSize: Float64 = 11.0
+
+    /**
+     * 音频类型文字颜色
+     */
+    protected var audioTypeTextColor: Color = Color(0x80000000)
+
+    /**
+     * 音频类型文字行高
+     */
+    protected var audioTypeTextLineHeight: Float64 = 15.0
+
+    /**
+     * 音频文件大小文字大小
+     */
+    protected var audioFileSizeTextSize: Float64 = 11.0
+
+    /**
+     * 音频文件大小文字颜色
+     */
+    protected var audioFileSizeTextColor: Color = Color(0x80000000)
+
+    /**
+     * 音频文件大小文字行高
+     */
+    protected var audioFileSizeTextLineHeight: Float64 = 15.0
+
+    /**
      * 视频默认占位图
      */
     protected var videoImage: ?CJResource = None
@@ -1417,6 +1657,31 @@ public class MarkdownAIThemeBuilder {
      * 视频播放按钮默认图标
      */
     protected var playCircleFillIcon: ?CJResource = None
+
+    /**
+     * 视频圆角
+     */
+    protected var videoBorderRadius: Float64 = 10.0
+
+    /**
+     * 视频时间文本颜色
+     */
+    protected var videoTimeTextColor: Color = Color.WHITE
+
+    /**
+     * 视频时间文本大小
+     */
+    protected var videoTimeTextSize: Float64 = 14.0
+
+    /**
+     * 视频时间文本居右边距
+     */
+    protected var videoTimeTextMarginRight: Float64 = 10.0
+
+    /**
+     * 视频时间文本居低边距
+     */
+    protected var videoTimeTextMarginBottom: Float64 = 10.0
 
     /**
      * 图片banner默认占位图
@@ -1622,6 +1887,7 @@ public class MarkdownAIThemeBuilder {
         this.paragraphTextColor = theme.paragraphTextColor
         this.paragraphTextWordSpace = theme.paragraphTextWordSpace
         this.paragraphTextLineheight = theme.paragraphTextLineheight
+        this.paragraphTypeface = theme.paragraphTypeface
         // 分割线
         this.thematicBreakColor = theme.thematicBreakColor
         this.thematicBreakHeight = theme.thematicBreakHeight
@@ -1634,9 +1900,33 @@ public class MarkdownAIThemeBuilder {
         this.latexMathTextColor = theme.latexMathTextColor
         this.latexMathColorFormat = theme.latexMathColorFormat
         this.resPath = theme.resPath
+        // 音频
+        this.audioIcon = theme.audioIcon
+        this.audioBorderColor = theme.audioBorderColor
+        this.audioBorderWidth = theme.audioBorderWidth
+        this.audioBorderRdius = theme.audioBorderRdius
+        this.audioButtonBackgroundColor = theme.audioButtonBackgroundColor
+        this.audioButtonTextColor = theme.audioButtonTextColor
+        this.audioButtonTextSize = theme.audioButtonTextSize
+        this.audioButtonText = theme.audioButtonText
+        this.audioButtonBorderRadius = theme.audioButtonBorderRadius
+        this.audioTitleTextSize = theme.audioTitleTextSize
+        this.audioTitleTextColor = theme.audioTitleTextColor
+        this.audioTitleTextLineHeight = theme.audioTitleTextLineHeight
+        this.audioTypeTextSize = theme.audioTypeTextSize
+        this.audioTypeTextColor = theme.audioTypeTextColor
+        this.audioTypeTextLineHeight = theme.audioTypeTextLineHeight
+        this.audioFileSizeTextSize = theme.audioFileSizeTextSize
+        this.audioFileSizeTextColor = theme.audioFileSizeTextColor
+        this.audioFileSizeTextLineHeight = theme.audioFileSizeTextLineHeight
         // 视频
         this.videoImage = theme.videoImage
         this.playCircleFillIcon = theme.playCircleFillIcon
+        this.videoBorderRadius = theme.videoBorderRadius
+        this.videoTimeTextColor = theme.videoTimeTextColor
+        this.videoTimeTextSize = theme.videoTimeTextSize
+        this.videoTimeTextMarginRight = theme.videoTimeTextMarginRight
+        this.videoTimeTextMarginBottom = theme.videoTimeTextMarginBottom
         // 图片banner
         this.bannerImage = theme.bannerImage
         // 图片
@@ -2728,6 +3018,17 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
+     * 设置段落文本字体
+     *
+     * @param paragraphTypeface 段落文本字体
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setParagraphTypeface(paragraphTypeface: String): MarkdownAIThemeBuilder {
+        this.paragraphTypeface = paragraphTypeface
+        return this
+    }
+
+    /**
      * 设置分割线颜色
      *
      * @param thematicBreakColor 分割线颜色默认0x191919
@@ -2827,6 +3128,204 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
+     * 设置音频icon
+     *
+     * @param audioIcon 音频icon默认None
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioIcon(audioIcon: CJResource): MarkdownAIThemeBuilder {
+        this.audioIcon = audioIcon
+        return this
+    }
+
+    /**
+     * 设置音频边框颜色
+     *
+     * @param audioBorderColor 音频边框颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioBorderColor(audioBorderColor: Color): MarkdownAIThemeBuilder {
+        this.audioBorderColor = audioBorderColor
+        return this
+    }
+
+    /**
+     * 设置音频边框粗细
+     *
+     * @param audioBorderWidth 音频边框粗细
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioBorderWidth(audioBorderWidth: Float64): MarkdownAIThemeBuilder {
+        this.audioBorderWidth = audioBorderWidth
+        return this
+    }
+
+    /**
+     * 设置音频边框圆角
+     *
+     * @param audioBorderRdius 音频边框圆角
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioBorderRdius(audioBorderRdius: Float64): MarkdownAIThemeBuilder {
+        this.audioBorderRdius = audioBorderRdius
+        return this
+    }
+
+    /**
+     * 设置音频按钮背景颜色
+     *
+     * @param audioButtonBackgroundColor 音频按钮背景颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioButtonBackgroundColor(audioButtonBackgroundColor: Color): MarkdownAIThemeBuilder {
+        this.audioButtonBackgroundColor = audioButtonBackgroundColor
+        return this
+    }
+
+    /**
+     * 设置音频按钮文字颜色
+     *
+     * @param audioButtonTextColor 音频按钮文字颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioButtonTextColor(audioButtonTextColor: Color): MarkdownAIThemeBuilder {
+        this.audioButtonTextColor = audioButtonTextColor
+        return this
+    }
+
+    /**
+     * 设置音频按钮文字大小
+     *
+     * @param audioButtonTextSize 音频按钮文字大小
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioButtonTextSize(audioButtonTextSize: Float64): MarkdownAIThemeBuilder {
+        this.audioButtonTextSize = audioButtonTextSize
+        return this
+    }
+
+    /**
+     * 设置音频按钮文字内容
+     *
+     * @param audioButtonText 音频按钮文字内容
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioButtonText(audioButtonText: String): MarkdownAIThemeBuilder {
+        this.audioButtonText = audioButtonText
+        return this
+    }
+
+    /**
+     * 设置音频按钮圆角
+     *
+     * @param audioButtonBorderRadius 音频按钮圆角
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioButtonBorderRadius(audioButtonBorderRadius: Float64): MarkdownAIThemeBuilder {
+        this.audioButtonBorderRadius = audioButtonBorderRadius
+        return this
+    }
+
+    /**
+     * 设置音频标题文字大小
+     *
+     * @param audioTitleTextSize 音频标题文字大小
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioTitleTextSize(audioTitleTextSize: Float64): MarkdownAIThemeBuilder {
+        this.audioTitleTextSize = audioTitleTextSize
+        return this
+    }
+
+    /**
+     * 设置音频标题文字颜色
+     *
+     * @param audioTitleTextColor 音频标题文字颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioTitleTextColor(audioTitleTextColor: Color): MarkdownAIThemeBuilder {
+        this.audioTitleTextColor = audioTitleTextColor
+        return this
+    }
+
+    /**
+     * 设置音频标题文字行高
+     *
+     * @param audioTitleTextLineHeight 音频标题文字行高
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioTitleTextLineHeight(audioTitleTextLineHeight: Float64): MarkdownAIThemeBuilder {
+        this.audioTitleTextLineHeight = audioTitleTextLineHeight
+        return this
+    }
+
+    /**
+     * 设置音频类型文字大小
+     *
+     * @param audioTypeTextSize 音频类型文字大小
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioTypeTextSize(audioTypeTextSize: Float64): MarkdownAIThemeBuilder {
+        this.audioTypeTextSize = audioTypeTextSize
+        return this
+    }
+
+    /**
+     * 设置音频类型文字颜色
+     *
+     * @param audioTypeTextColor 音频类型文字颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioTypeTextColor(audioTypeTextColor: Color): MarkdownAIThemeBuilder {
+        this.audioTypeTextColor = audioTypeTextColor
+        return this
+    }
+
+    /**
+     * 设置音频类型文字行高
+     *
+     * @param audioTypeTextLineHeight 音频类型文字行高
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioTypeTextLineHeight(audioTypeTextLineHeight: Float64): MarkdownAIThemeBuilder {
+        this.audioTypeTextLineHeight = audioTypeTextLineHeight
+        return this
+    }
+
+    /**
+     * 设置音频文件大小文字大小
+     *
+     * @param audioFileSizeTextSize 音频文件大小文字大小
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioFileSizeTextSize(audioFileSizeTextSize: Float64): MarkdownAIThemeBuilder {
+        this.audioFileSizeTextSize = audioFileSizeTextSize
+        return this
+    }
+
+    /**
+     * 设置音频文件大小文字颜色
+     *
+     * @param audioFileSizeTextColor 音频文件大小文字颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioFileSizeTextColor(audioFileSizeTextColor: Color): MarkdownAIThemeBuilder {
+        this.audioFileSizeTextColor = audioFileSizeTextColor
+        return this
+    }
+
+    /**
+     * 设置音频文件大小文字行高
+     *
+     * @param audioFileSizeTextLineHeight 音频文件大小文字行高
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioFileSizeTextLineHeight(audioFileSizeTextLineHeight: Float64): MarkdownAIThemeBuilder {
+        this.audioFileSizeTextLineHeight = audioFileSizeTextLineHeight
+        return this
+    }
+
+    /**
      * 设置视频默认占位图
      *
      * @param videoImage 视频默认占位图默认None
@@ -2845,6 +3344,61 @@ public class MarkdownAIThemeBuilder {
      */
     public func setPlayCircleFillIcon(playCircleFillIcon: CJResource): MarkdownAIThemeBuilder {
         this.playCircleFillIcon = playCircleFillIcon
+        return this
+    }
+
+    /**
+     * 设置视频圆角
+     *
+     * @param videoBorderRadius 视频圆角
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setVideoBorderRadius(videoBorderRadius: Float64): MarkdownAIThemeBuilder {
+        this.videoBorderRadius = videoBorderRadius
+        return this
+    }
+
+    /**
+     * 设置视频时间文本颜色
+     *
+     * @param videoTimeTextColor 视频时间文本颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setVideoTimeTextColor(videoTimeTextColor: Color): MarkdownAIThemeBuilder {
+        this.videoTimeTextColor = videoTimeTextColor
+        return this
+    }
+
+    /**
+     * 设置视频时间文本大小
+     *
+     * @param videoTimeTextSize 视频时间文本大小
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setVideoTimeTextSize(videoTimeTextSize: Float64): MarkdownAIThemeBuilder {
+        this.videoTimeTextSize = videoTimeTextSize
+        return this
+    }
+
+    /**
+     * 设置视频时间文本居右边距
+     *
+     * @param videoTimeTextMarginRight 视频时间文本居右边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setVideoTimeTextMarginRight(videoTimeTextMarginRight: Float64): MarkdownAIThemeBuilder {
+        this.videoTimeTextMarginRight = videoTimeTextMarginRight
+        return this
+    }
+
+    /**
+     * 设置视频时间文本居底边距
+     *
+     * @param videoTimeTextMarginBottom 视频时间文本居底边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setVideoTimeTextMarginBottom(videoTimeTextMarginBottom: Float64): MarkdownAIThemeBuilder {
+        this.videoTimeTextMarginBottom = videoTimeTextMarginBottom
         return this
     }
 

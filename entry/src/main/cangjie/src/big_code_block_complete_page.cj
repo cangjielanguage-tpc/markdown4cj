@@ -132,11 +132,11 @@ class BigCodeBlockCompletePage {
         Hilog.error(1,"1","------------------------videoCallback:${url},arr:${arr}")
     }
 
-    func videoImageCallback(url: String, videoImageCallbackCallback: (String) -> Unit) {
+    func videoImageCallback(url: String, videoImageCallbackCallback: (String,Float64,Int64) -> Unit) {
         if (url == "562986b1-46d8-48ef-bac6-82685bcedcd8") {
-            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477066-YeEeWg-file_1614477068523")
+            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477066-YeEeWg-file_1614477068523",0.0,0)
         } else {
-            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477067-itHyLr-file_1614477069388")
+            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477067-itHyLr-file_1614477069388",0.0,0)
         }
         Hilog.error(1,"1","------------------------videoImageCallback:${url}")
     }

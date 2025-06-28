@@ -19,10 +19,9 @@ public class MarkdownAIImageAudioComponent {
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 音频链接
+     * 音频内容
      */
-    @State
-    var imageAudioUrl: String = ""
+    var nodeView: NodeView
 
     /**
      * 上边距 - 单位vp
@@ -34,45 +33,92 @@ public class MarkdownAIImageAudioComponent {
      */
     var marginBottom: Float64
 
+    /**
+     * 音频链接
+     */
+    @State
+    var imageAudioUrl: String = ""
+
+    /**
+     * 音频标题
+     */
+    @State
+    var audioTitle: String = ""
+
+    /**
+     * 音频类型
+     */
+    @State
+    var audioType: String = ""
+
+    /**
+     * 音频文件大小
+     */
+    @State
+    var audioSize: String = ""
+
+    protected override func aboutToAppear(): Unit {
+        let nodeViews: ArrayList<NodeView> = nodeView.children
+        for (node in nodeViews) {
+            if (node.node is CommonmarkImage) {
+                imageAudioUrl = (node.node as CommonmarkImage)().getDestination()
+                let titleList = imageAudioUrl.split("/")
+                audioTitle = titleList[titleList.size - 1]
+                let typeList = audioTitle.split(".")
+                audioType = typeList[typeList.size - 1]
+            }
+        }
+    }
+
     func build() {
         Row(10) {
-            Image('icon')
-                // 设置组件自身的宽度
-                .width(40)
-                // 设置组件自身的高度
-                .height(40)
-                // 设置圆角
-                .borderRadius(8)
-                // 设置图片的缩放类型
-                .objectFit(ImageFit.Cover)
+            if (markdownAIConfiguration.markdownAITheme.audioIcon.isSome()) {
+                Image(markdownAIConfiguration.markdownAITheme.audioIcon())
+                    // 设置组件自身的宽度
+                    .width(40)
+                    // 设置组件自身的高度
+                    .height(40)
+                    // 设置圆角
+                    .borderRadius(8)
+                    // 设置图片的缩放类型
+                    .objectFit(ImageFit.Cover)
+            } else {
+                Text("")
+                    // 设置组件自身的宽度
+                    .width(40)
+                    // 设置组件自身的高度
+                    .height(40)
+            }
 
             Column(2) {
-                Text('title')
+                Text(audioTitle)
                     // 设置文本尺寸
-                    .fontSize(15)
+                    .fontSize(markdownAIConfiguration.markdownAITheme.audioTitleTextSize)
                     // 设置行高
-                    .lineHeight(20)
+                    .lineHeight(markdownAIConfiguration.markdownAITheme.audioTitleTextLineHeight)
                     // 设置文本的字体粗细
                     .fontWeight(FontWeight.Bold)
                     // 设置文本的最大行数
                     .maxLines(1)
                     // 设置文本超长时的显示方式
                     .textOverflow(TextOverflow.Ellipsis)
+                    // 设置文本颜色
+                    .fontColor(markdownAIConfiguration.markdownAITheme.audioTitleTextColor)
                 Row(8) {
-                    Text('MP3')
+                    Text(audioType)
                         // 设置文本尺寸
-                        .fontSize(11)
+                        .fontSize(markdownAIConfiguration.markdownAITheme.audioTypeTextSize)
                         // 设置行高
-                        .lineHeight(15)
+                        .lineHeight(markdownAIConfiguration.markdownAITheme.audioTypeTextLineHeight)
                         // 设置文本颜色
-                        .fontColor(Color(0x80000000))
-                    Text('100KB')
+                        .fontColor(markdownAIConfiguration.markdownAITheme.audioTypeTextColor)
+                    Text(audioSize)
                         // 设置文本尺寸
-                        .fontSize(11)
+                        .fontSize(markdownAIConfiguration.markdownAITheme.audioFileSizeTextSize)
                         // 设置行高
-                        .lineHeight(15)
+                        .lineHeight(markdownAIConfiguration.markdownAITheme.audioFileSizeTextLineHeight)
                         // 设置文本颜色
-                        .fontColor(Color(0x80000000))
+                        .fontColor(markdownAIConfiguration.markdownAITheme.audioFileSizeTextColor)
                 }
             }
             // 设置子组件在垂直方向上的对齐格式
@@ -81,31 +127,37 @@ public class MarkdownAIImageAudioComponent {
             .layoutWeight(1)
 
             Column() {
-                Text('立即播放')
+                Text(markdownAIConfiguration.markdownAITheme.audioButtonText)
                     // 设置文本颜色
-                    .fontColor(Color.WHITE)
+                    .fontColor(markdownAIConfiguration.markdownAITheme.audioButtonTextColor)
                     // 设置文本尺寸
-                    .fontSize(14)
+                    .fontSize(markdownAIConfiguration.markdownAITheme.audioButtonTextSize)
                     // 设置文本的字体粗细
                     .fontWeight(FontWeight.Medium)
+                    // 组件被点击时触发的事件
+                    .onClick({
+                        event => if (let Some(v) <- markdownAIConfiguration.audioCallback) {
+                            v(imageAudioUrl)
+                        }
+                    })
             }
             // 设置组件自身的宽度
             .width(84)
             // 设置组件自身的高度
             .height(32)
             // 设置圆角
-            .borderRadius(16)
+            .borderRadius(markdownAIConfiguration.markdownAITheme.audioButtonBorderRadius)
             // 设置子组件在水平方向上的对齐格式
             .justifyContent(FlexAlign.Center)
             // 设置背景色
-            .backgroundColor(Color.BLACK)
+            .backgroundColor(markdownAIConfiguration.markdownAITheme.audioButtonBackgroundColor)
         }
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置内边距属性
         .padding(top: 12, right: 16, bottom: 12, left: 12)
         // 边框样式设置接口
-        .border(width: 1.vp, color: Color.BLACK, radius: 12.vp)
+        .border(width: markdownAIConfiguration.markdownAITheme.audioBorderWidth.vp, color: markdownAIConfiguration.markdownAITheme.audioBorderColor, radius: markdownAIConfiguration.markdownAITheme.audioBorderRdius.vp)
         // 设置子组件在水平方向上的对齐格式
         .justifyContent(FlexAlign.SpaceBetween)
         // 设置外边距属性
