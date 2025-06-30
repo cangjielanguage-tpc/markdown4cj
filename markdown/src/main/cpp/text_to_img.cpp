@@ -245,7 +245,18 @@ UInt8Data drawCircleImage(char *str, float fontSize, uint32_t fontColor, uint32_
     OH_Drawing_BrushSetColor(brush, fontColor);                             // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                      // 画背景
     OH_Drawing_CanvasDrawTextBlob(bitmapCanvas, textBlob, textX, textY);    // 画文字
-    return TeXRenderToBitmap(bitmap, colorFormat);                          // pixmap数组数据
+    UInt8Data a = TeXRenderToBitmap(bitmap, colorFormat); // pixmap数组数据
+    
+    OH_Drawing_BitmapDestroy(bitmap); // 用于销毁位图对象并回收该对象占有内存。
+    OH_Drawing_CanvasDestroy(bitmapCanvas); // 用于销毁画布对象并回收该对象占有的内存。
+    OH_Drawing_RectDestroy(rect); // 用于销毁矩形对象并回收该对象占有的内存。
+    OH_Drawing_RoundRectDestroy(roundRect); // 用于销毁圆角矩形对象并回收该对象占有的内存。
+    OH_Drawing_BrushDestroy(brush); // 用于销毁画刷对象并回收该对象占有的内存。
+    OH_Drawing_FontDestroy(font); // 用于销毁字型对象并回收该对象占有的内存。
+    OH_Drawing_RectDestroy(bounds); // 用于销毁矩形对象并回收该对象占有的内存。
+    OH_Drawing_TextBlobDestroy(textBlob); // 用于销毁文本对象并回收该对象占有的内存。
+    
+    return a;
 }
 
 /**
@@ -295,7 +306,18 @@ UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t 
     OH_Drawing_BrushSetColor(brush, fontColor);                             // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                      // 画背景
     OH_Drawing_CanvasDrawTextBlob(bitmapCanvas, textBlob, textX, textY);    // 画文字
-    return TeXRenderToBitmap(bitmap, colorFormat);                          // pixmap数组数据
+    UInt8Data a = TeXRenderToBitmap(bitmap, colorFormat); // pixmap数组数据
+    
+    OH_Drawing_FontDestroy(font); // 用于销毁字型对象并回收该对象占有的内存。
+    OH_Drawing_RectDestroy(bounds); // 用于销毁矩形对象并回收该对象占有的内存。
+    OH_Drawing_BitmapDestroy(bitmap); // 用于销毁位图对象并回收该对象占有内存。
+    OH_Drawing_CanvasDestroy(bitmapCanvas); // 用于销毁画布对象并回收该对象占有的内存。
+    OH_Drawing_RectDestroy(rect); // 用于销毁矩形对象并回收该对象占有的内存。
+    OH_Drawing_RoundRectDestroy(roundRect); // 用于销毁圆角矩形对象并回收该对象占有的内存。
+    OH_Drawing_BrushDestroy(brush); // 用于销毁画刷对象并回收该对象占有的内存。
+    OH_Drawing_TextBlobDestroy(textBlob); // 用于销毁文本对象并回收该对象占有的内存。
+    
+    return a;
 }
 
 /**
@@ -393,7 +415,24 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
     OH_Drawing_BrushSetColor(brush, dividingLineColor);                                // 设置画刷颜色
     OH_Drawing_CanvasAttachBrush(bitmapCanvas, brush);                                 // 画背景
     OH_Drawing_CanvasDrawRect(bitmapCanvas, lineRect);                                 // 画矩形
-    return TeXRenderToBitmap(bitmap, colorFormat);                                     // pixmap数组数据
+    UInt8Data a = TeXRenderToBitmap(bitmap, colorFormat); // pixmap数组数据
+    
+    OH_Drawing_FontDestroy(font1); // 用于销毁字型对象并回收该对象占有的内存。
+    OH_Drawing_RectDestroy(bounds1); // 用于销毁矩形对象并回收该对象占有的内存。
+    OH_Drawing_FontDestroy(font2); // 用于销毁字型对象并回收该对象占有的内存。
+    OH_Drawing_RectDestroy(bounds2); // 用于销毁矩形对象并回收该对象占有的内存。
+    OH_Drawing_BitmapDestroy(bitmap); // 用于销毁位图对象并回收该对象占有内存。
+    OH_Drawing_CanvasDestroy(bitmapCanvas); // 用于销毁画布对象并回收该对象占有的内存。
+    OH_Drawing_RectDestroy(rect); // 用于销毁矩形对象并回收该对象占有的内存。
+    OH_Drawing_RoundRectDestroy(roundRect); // 用于销毁圆角矩形对象并回收该对象占有的内存。
+    OH_Drawing_BrushDestroy(brush); // 用于销毁画刷对象并回收该对象占有的内存。
+    OH_Drawing_RectDestroy(internalRect); // 用于销毁矩形对象并回收该对象占有的内存。
+    OH_Drawing_RoundRectDestroy(internalRoundRect); // 用于销毁圆角矩形对象并回收该对象占有的内存。
+    OH_Drawing_TextBlobDestroy(textBlob1); // 用于销毁文本对象并回收该对象占有的内存。
+    OH_Drawing_TextBlobDestroy(textBlob2); // 用于销毁文本对象并回收该对象占有的内存。
+    OH_Drawing_RectDestroy(lineRect); // 用于销毁矩形对象并回收该对象占有的内存。
+    
+    return a;
 }
 
 #ifdef __cplusplus
