@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import ohos.hilog.Hilog
 
 /**
  * Markdown预览自定义控件
@@ -124,7 +125,7 @@ public class MarkdownAIComponent {
         // 控件宽度 = 屏幕宽度 - padding
         componentWidth = widthVpToPx(screenWidth, markdownAIConfiguration.markdownAITheme.imagePadding)
         // 首次加载
-        stringToNodes()
+        refreshData()
     }
 
     func linkButton(): MarkdownPlugin {
@@ -457,7 +458,7 @@ public class MarkdownAIComponent {
     func refreshData(): Unit {
         // 上一步解析完成才继续解析
         if (isRefreshData.load()) {
-            let fut: Future<Unit> = spawn {
+            spawn {
                 // 异步解析，加锁
                 synchronized(parseReentrantMutex) {
                     isRefreshData.store(false)
@@ -483,15 +484,20 @@ public class MarkdownAIComponent {
             imageAndVideoList.appendAll(getProp<ArrayList<String>>(doc, "links", ArrayList<String>()))
             if (isFull) {
                 // 全量加载
+                let syncCounter:SyncCounter = SyncCounter(1)
                 launch {
                     nodeViewAIDataSource.clear()
                     nodeViewAIDataSource.addDatas(nodeViews)
+                    syncCounter.dec()
                 }
+                syncCounter.waitUntilZero()
             } else {
                 // 增量加载
+                let syncCounter:SyncCounter = SyncCounter(1)
                 launch {
                     scrollChatIfAtBottom()
                     if (nodeViewsSize == 0) {
+                        syncCounter.dec()
                         return
                     }
                     if (nodeViewsSize > nodeViewListSize) {
@@ -594,7 +600,9 @@ public class MarkdownAIComponent {
                             nodeViewAIDataSource.deleteData(nodeViewListSize - i)
                         }
                     }
+                    syncCounter.dec()
                 }
+                syncCounter.waitUntilZero()
             }
         } catch (e: Exception) {
             // 解析异常，全量展示纯文本，增量不做处理
@@ -606,10 +614,13 @@ public class MarkdownAIComponent {
                 let textNodeView: NodeView = buildView(commonmarkText, true)
                 let arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
                 arrayListNodeView.append(paragraphNodeView)
+                let syncCounter:SyncCounter = SyncCounter(1)
                 launch {
                     nodeViewAIDataSource.clear()
                     nodeViewAIDataSource.addDatas(arrayListNodeView)
+                    syncCounter.dec()
                 }
+                syncCounter.waitUntilZero()
             }
         }
     }
