@@ -122,7 +122,7 @@ public class MarkdownComponent {
         // 控件宽度 = 屏幕宽度 - padding
         componentWidth = widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
         // 首次加载
-        stringToNodes()
+        refreshData()
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -386,14 +386,19 @@ public class MarkdownComponent {
             let nodeViewListSize = nodeViewDataSource.totalCount() // 页面缓存的数据长度
             if (isFull) {
                 // 全量加载
+                let syncCounter:SyncCounter = SyncCounter(1)
                 launch {
                     nodeViewDataSource.clear()
                     nodeViewDataSource.addDatas(nodeViews)
+                    syncCounter.dec()
                 }
+                syncCounter.waitUntilZero()
             } else {
                 // 增量加载
+                let syncCounter:SyncCounter = SyncCounter(1)
                 launch {
                     if (nodeViewsSize == 0) {
+                        syncCounter.dec()
                         return
                     }
                     // 清除缓存引用
@@ -481,7 +486,9 @@ public class MarkdownComponent {
                             nodeViewDataSource.deleteData(nodeViewListSize - i)
                         }
                     }
+                    syncCounter.dec()
                 }
+                syncCounter.waitUntilZero()
             }
         } catch (e: Exception) {
             // 解析异常，全量展示纯文本，增量不做处理
@@ -493,10 +500,13 @@ public class MarkdownComponent {
                 let textNodeView: NodeView = buildView(commonmarkText, true)
                 let arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
                 arrayListNodeView.append(paragraphNodeView)
+                let syncCounter:SyncCounter = SyncCounter(1)
                 launch {
                     nodeViewDataSource.clear()
                     nodeViewDataSource.addDatas(arrayListNodeView)
+                    syncCounter.dec()
                 }
+                syncCounter.waitUntilZero()
             }
         }
     }
