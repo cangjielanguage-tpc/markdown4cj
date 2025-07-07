@@ -7,3 +7,5 @@
 src/main/cangjie/build-script-cache
 /libs
 src/main/cangjie/build.cj.bak
+**/IDL_Dependencies_List~
+**/build-script-cache

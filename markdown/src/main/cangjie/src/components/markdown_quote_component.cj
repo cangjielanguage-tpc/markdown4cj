@@ -75,7 +75,7 @@ public class MarkdownQuoteComponent {
         // 初始化刷新数据
         refreshData(nodeViews)
         // 缓存当前控件
-        markdownCacheConfiguration.quoteComponents.append(this)
+        markdownCacheConfiguration.quoteComponents.add(this)
     }
 
     protected override func aboutToDisappear(): Unit {

@@ -46,7 +46,7 @@ public class PrismSyntaxHighlight {
     }
 
     func highlightNoLanguageInfo(code: String): ArrayList<PrismNodesParseRes> {
-        return ArrayList<PrismNodesParseRes>(PrismNodesParseRes("", code, None, None))
+        return ArrayList<PrismNodesParseRes>([PrismNodesParseRes("", code, Option<String>.None, Option<Color>.None)])
     }
 
     func highlightWithLanguageInfo(prism: Prism, theme: PrismTheme, info: String, code: String): ArrayList<PrismNodesParseRes> {
@@ -152,7 +152,7 @@ class PrismNodeParse {
 
     static func textToArrayList(prism: Prism, colorMap: HashMap<PrismColor, Color>, info: ?String, literal: String): ArrayList<PrismNodesParseRes> {
         if (let None <- info) {
-            return ArrayList<PrismNodesParseRes>(PrismNodesParseRes("", literal, None, None))
+            return ArrayList<PrismNodesParseRes>([PrismNodesParseRes("", literal, Option<String>.None, Option<Color>.None)])
         }
         let realInfo: String = info.getOrThrow().toAsciiLower()
         var grammar: ?PrismGrammar = None
@@ -160,7 +160,7 @@ class PrismNodeParse {
         var list: ArrayList<PrismNode> = try {
             prism.tokenize(literal, grammar.getOrThrow())
         } catch (e: NoneValueException) {
-            return ArrayList<PrismNodesParseRes>(PrismNodesParseRes("", literal, None, None))
+            return ArrayList<PrismNodesParseRes>([PrismNodesParseRes("", literal, Option<String>.None, Option<Color>.None)])
         }
         let listPrismNodesParseRes: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
         for (i in 0..list.size) {
@@ -183,7 +183,7 @@ class PrismNodeParse {
             obj.types = parent?.syntaxType() ?? ""
             obj.alias = parent?.alias() ?? None
             obj.text = (node as PrismText).getOrThrow().literal()
-            objList.append(obj)
+            objList.add(obj)
         }
     }
 

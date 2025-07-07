@@ -39,7 +39,7 @@ class CharacterReader {
     private static let stringCacheSize: Int64 = 512
 
     // holds reused strings in this doc, to lessen garbage
-    private var stringCache: Array<String> = Array(stringCacheSize, item: "")
+    private var stringCache: Array<String> = Array(stringCacheSize, repeat: "")
 
     // optionally track the pos() position of newlines - scans during bufferUp()
     private var newlinePositions: ?ArrayList<Int64> = None
@@ -52,7 +52,7 @@ class CharacterReader {
 
     init(input: StringReader, sz: Int64) {
         reader = input
-        charBuf = Array<Rune>(min(sz, maxBufferLen), item: TokeniserState.nullChar)
+        charBuf = Array<Rune>(min(sz, maxBufferLen), repeat: TokeniserState.nullChar)
         bufferUp()
     }
 
@@ -230,12 +230,12 @@ class CharacterReader {
             let linePos = newlinePositions()[index]
             lineNumberOffset += index // the num lines we've read up to
             newlinePositions().clear()
-            newlinePositions().append(linePos) // roll the last read pos to first, for cursor num after buffer
+            newlinePositions().add(linePos) // roll the last read pos to first, for cursor num after buffer
         }
 
         for (i in bufPos..bufLength) {
             if (charBuf[i] == r'\n') {
-                newlinePositions?.append(1 + readerPos + i)
+                newlinePositions?.add(1 + readerPos + i)
             }
         }
     }
@@ -553,7 +553,7 @@ class CharacterReader {
         let start = bufPos
         while (bufPos < bufLength) {
             let c = charBuf[bufPos]
-            if ((c >= r'A' && c <= r'Z') || (c >= r'a' && c <= r'z') || c.isLetter()) {
+            if ((c >= r'A' && c <= r'Z') || (c >= r'a' && c <= r'z') || c.isAsciiLetter()) {
                 bufPos++
             } else {
                 break
@@ -567,7 +567,7 @@ class CharacterReader {
         let start = bufPos
         while (bufPos < bufLength) {
             let c = charBuf[bufPos]
-            if ((c >= r'A' && c <= r'Z') || (c >= r'a' && c <= r'z') || c.isLetter()) {
+            if ((c >= r'A' && c <= r'Z') || (c >= r'a' && c <= r'z') || c.isAsciiLetter()) {
                 bufPos++
             } else {
                 break
@@ -639,8 +639,8 @@ class CharacterReader {
             return false
         }
         for (offset in 0..scanLength) {
-            let upScan = seq[offset].toUpperCase()
-            let upTarget = charBuf[bufPos + offset].toUpperCase()
+            let upScan = seq[offset].toAsciiUpperCase()
+            let upTarget = charBuf[bufPos + offset].toAsciiUpperCase()
             if (upScan != upTarget) {
                 return false
             }
@@ -673,7 +673,7 @@ class CharacterReader {
             return false
         }
         let c = charBuf[bufPos]
-        return (c >= r'A' && c <= r'Z') || (c >= r'a' && c <= r'z') || c.isLetter()
+        return (c >= r'A' && c <= r'Z') || (c >= r'a' && c <= r'z') || c.isAsciiLetter()
     }
 
     /**

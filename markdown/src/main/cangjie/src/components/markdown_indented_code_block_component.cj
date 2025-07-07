@@ -65,7 +65,7 @@ class MarkdownIndentedCodeBlockComponent {
 
     protected override func aboutToAppear(): Unit {
         refreshData(codeText, info)
-        indentedCodeComponents.append(this)
+        indentedCodeComponents.add(this)
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -154,7 +154,7 @@ class MarkdownIndentedCodeBlockComponent {
         // 设置元素内容的对齐方式
         .align(Alignment.Start)
         // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
+//        .direction(Direction.Ltr)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置内边距属性
@@ -268,16 +268,16 @@ class MarkdownIndentedCodeBlockComponent {
     }
 
     func refreshLines(): Unit {
-        lineArray.set(Array<Int64>(lines, item: 0))
+        lineArray.set(Array<Int64>(lines, repeat: 0))
     }
 
     /**
      * 数据刷新
      */
     public func refreshData(str: String, tp: Option<String>): Unit {
-        codeText = str.trimRight("\n")
+        codeText = str.trimEnd("\n")
         lines = codeText.lines().count()
-        lineArray.set(Array<Int64>(lines, item: 0))
+        lineArray.set(Array<Int64>(lines, repeat: 0))
         info = tp
     }
 }

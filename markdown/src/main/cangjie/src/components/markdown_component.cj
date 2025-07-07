@@ -152,7 +152,7 @@ public class MarkdownComponent {
                             )
                         }
                         // 组件区域变化时触发该回调
-                        .onAreaChange {oldValue, newValue => indexTocHashMap.put(idx, newValue.globalPosition.y)}
+                        .onAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
                     } else if (item.node is Paragraph) {
                         // 段落
                         ListItem() {
@@ -314,7 +314,7 @@ public class MarkdownComponent {
                         // 组件区域变化时触发该回调
                         .onAreaChange {
                             oldValue, newValue => if (isFull) {
-                                indexFootnoteHashMap.put((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
+                                indexFootnoteHashMap.add((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
                             }
                         }
                     } else if (item.node is SlideBlock) {
@@ -499,7 +499,7 @@ public class MarkdownComponent {
                 let paragraphNodeView: NodeView = buildView(paragraph, true)
                 let textNodeView: NodeView = buildView(commonmarkText, true)
                 let arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
-                arrayListNodeView.append(paragraphNodeView)
+                arrayListNodeView.add(paragraphNodeView)
                 let syncCounter:SyncCounter = SyncCounter(1)
                 launch {
                     nodeViewDataSource.clear()

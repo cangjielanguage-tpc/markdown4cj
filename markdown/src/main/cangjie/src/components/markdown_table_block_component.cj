@@ -86,7 +86,7 @@ class MarkdownTableBlockComponent {
         // 初始化刷新数据
         refreshData(nodeViews)
         // 缓存当前控件
-        tableComponents.append(this)
+        tableComponents.add(this)
         var cellSize: Int64 = 0
         if (nodeViewDataSource.size > 0) {
             cellSize = nodeViewDataSource[0].children.size
@@ -136,7 +136,7 @@ class MarkdownTableBlockComponent {
             // 设置元素内容的对齐方式
             .align(Alignment.Start)
             // 设置元素水平方向的布局
-            .direction(Direction.Ltr)
+//            .direction(Direction.Ltr)
             // 统一边框样式设置接口
             .border(width: markdownConfiguration.markdownTheme.tableBorderWidth.vp, color: markdownConfiguration.markdownTheme.tableBorderColor, style: BorderStyle.Solid, radius: markdownConfiguration.markdownTheme.tableRadius.vp)
         }

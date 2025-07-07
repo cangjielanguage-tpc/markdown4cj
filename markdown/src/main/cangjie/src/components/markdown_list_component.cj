@@ -83,7 +83,7 @@ public class MarkdownListComponent {
         // 初始化刷新数据
         refreshData(nodeViews)
         // 缓存当前控件
-        markdownCacheConfiguration.listComponents.append(this)
+        markdownCacheConfiguration.listComponents.add(this)
     }
 
     protected override func aboutToDisappear(): Unit {

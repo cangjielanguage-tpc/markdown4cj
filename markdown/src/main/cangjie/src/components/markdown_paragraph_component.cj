@@ -88,7 +88,7 @@ class MarkdownParagraphComponent {
         // 初始化刷新数据
         refreshData(nodeViews)
         // 缓存当前控件
-        paragraphComponents.append(this)
+        paragraphComponents.add(this)
     }
 
     protected override func aboutToDisappear(): Unit {

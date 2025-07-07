@@ -116,7 +116,7 @@ class MarkdownCodeBlockListComponent {
                             .onClick {evt =>
                                 idxSelect = idx
                                 lines = strText[idxSelect].lines().count()
-                                lineArray.set(Array<Int64>(lines, item: 0))
+                                lineArray.set(Array<Int64>(lines, repeat: 0))
                             }
                     }
                 )
@@ -200,7 +200,7 @@ class MarkdownCodeBlockListComponent {
         // 设置元素内容的对齐方式
         .align(Alignment.Start)
         // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
+//        .direction(Direction.Ltr)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置内边距属性
@@ -362,7 +362,7 @@ class MarkdownCodeBlockListComponent {
             }
         }
         lines = strText[idxSelect].lines().count()
-        lineArray.set(Array<Int64>(lines, item: 0))
+        lineArray.set(Array<Int64>(lines, repeat: 0))
         stringToResLists(nodeView, markdownConfiguration, strText, callback)
     }
 }

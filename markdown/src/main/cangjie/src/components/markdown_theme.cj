@@ -362,12 +362,12 @@ public class MarkdownTheme {
     /**
      * 代码全屏按钮默认图标
      */
-    protected var codeFullScreenIcon: ?CJResource = None
+    protected var codeFullScreenIcon: ?AppResource = None
 
     /**
      * 代码复制按钮默认图标
      */
-    protected var codeCopyIcon: ?CJResource = None
+    protected var codeCopyIcon: ?AppResource = None
 
     /**
      * 组合代码未选中标题字体大小 - 单位fp
@@ -532,17 +532,17 @@ public class MarkdownTheme {
     /**
      * 视频默认占位图
      */
-    protected var videoImage: ?CJResource = None
+    protected var videoImage: ?AppResource = None
 
     /**
      * 视频播放按钮默认图标
      */
-    protected var playCircleFillIcon: ?CJResource = None
+    protected var playCircleFillIcon: ?AppResource = None
 
     /**
      * 图片banner默认占位图
      */
-    protected var bannerImage: ?CJResource = None
+    protected var bannerImage: ?AppResource = None
 
     /**
      * 图片宽度边距 - 计算屏幕宽度需要减去padding的宽度，单位vp
@@ -552,7 +552,7 @@ public class MarkdownTheme {
     /**
      * 图片默认占位图
      */
-    protected var imageResource: ?CJResource = None
+    protected var imageResource: ?AppResource = None
 
     /**
      * 网络图片是否压缩
@@ -1229,12 +1229,12 @@ public class MarkdownThemeBuilder {
     /**
      * 代码全屏按钮默认图标
      */
-    protected var codeFullScreenIcon: ?CJResource = None
+    protected var codeFullScreenIcon: ?AppResource = None
 
     /**
      * 代码复制按钮默认图标
      */
-    protected var codeCopyIcon: ?CJResource = None
+    protected var codeCopyIcon: ?AppResource = None
 
     /**
      * 组合代码标题字体大小 - 单位fp
@@ -1399,17 +1399,17 @@ public class MarkdownThemeBuilder {
     /**
      * 视频默认占位图
      */
-    protected var videoImage: ?CJResource = None
+    protected var videoImage: ?AppResource = None
 
     /**
      * 视频播放按钮默认图标
      */
-    protected var playCircleFillIcon: ?CJResource = None
+    protected var playCircleFillIcon: ?AppResource = None
 
     /**
      * 图片banner默认占位图
      */
-    protected var bannerImage: ?CJResource = None
+    protected var bannerImage: ?AppResource = None
 
     /**
      * 图片宽度边距 - 计算屏幕宽度需要减去padding的宽度，单位vp
@@ -1419,7 +1419,7 @@ public class MarkdownThemeBuilder {
     /**
      * 图片默认占位图
      */
-    protected var imageResource: ?CJResource = None
+    protected var imageResource: ?AppResource = None
 
     /**
      * 网络图片是否压缩
@@ -2445,7 +2445,7 @@ public class MarkdownThemeBuilder {
      * @param codeFullScreenIcon 代码全屏按钮图标默认None
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setCodeFullScreenIcon(codeFullScreenIcon: CJResource): MarkdownThemeBuilder {
+    public func setCodeFullScreenIcon(codeFullScreenIcon: AppResource): MarkdownThemeBuilder {
         this.codeFullScreenIcon = codeFullScreenIcon
         return this
     }
@@ -2456,7 +2456,7 @@ public class MarkdownThemeBuilder {
      * @param codeCopyIcon 代码复制按钮图标默认None
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setCodeCopyIcon(codeCopyIcon: CJResource): MarkdownThemeBuilder {
+    public func setCodeCopyIcon(codeCopyIcon: AppResource): MarkdownThemeBuilder {
         this.codeCopyIcon = codeCopyIcon
         return this
     }
@@ -2808,7 +2808,7 @@ public class MarkdownThemeBuilder {
      * @param videoImage 视频默认占位图默认None
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setVideoImage(videoImage: CJResource): MarkdownThemeBuilder {
+    public func setVideoImage(videoImage: AppResource): MarkdownThemeBuilder {
         this.videoImage = videoImage
         return this
     }
@@ -2819,7 +2819,7 @@ public class MarkdownThemeBuilder {
      * @param playCircleFillIcon 视频播放按钮图标默认None
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setPlayCircleFillIcon(playCircleFillIcon: CJResource): MarkdownThemeBuilder {
+    public func setPlayCircleFillIcon(playCircleFillIcon: AppResource): MarkdownThemeBuilder {
         this.playCircleFillIcon = playCircleFillIcon
         return this
     }
@@ -2830,7 +2830,7 @@ public class MarkdownThemeBuilder {
      * @param bannerImage 图片banner占位图默认None
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setBannerImage(bannerImage: CJResource): MarkdownThemeBuilder {
+    public func setBannerImage(bannerImage: AppResource): MarkdownThemeBuilder {
         this.bannerImage = bannerImage
         return this
     }
@@ -2852,7 +2852,7 @@ public class MarkdownThemeBuilder {
      * @param imageResource 图片占位图默认None
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setImageResource(imageResource: CJResource): MarkdownThemeBuilder {
+    public func setImageResource(imageResource: AppResource): MarkdownThemeBuilder {
         this.imageResource = imageResource
         return this
     }

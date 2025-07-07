@@ -84,7 +84,7 @@ class MarkdownHeadingComponent {
         // 初始化刷新数据
         refreshData(nodeViews, level)
         // 缓存当前控件
-        headingComponents.append(this)
+        headingComponents.add(this)
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -116,7 +116,7 @@ class MarkdownHeadingComponent {
         // 设置元素内容的对齐方式
         .align(Alignment.Start)
         // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
+//        .direction(Direction.Ltr)
         // 设置外边距属性
         .margin(top: marginTop, bottom: marginBottom)
         // 设置组件自身的宽度
