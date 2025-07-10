@@ -54,16 +54,19 @@ public class LatexInlineParser <: InlineContentParser {
         let scanner: Scanner = inlineParserState.scanner()
         let p0: SourcePosition = scanner.position()
 
-        if (scanner.next('$')) {
+        let open = scanner.matchMultiple(r'$')
+        if (open > 0) {
             let p1 = scanner.position()
             if (scanner.find(r'$') > 0) {
                 let p2 = scanner.position()
-                let content = scanner.getSource(p1, p2).getContent()
-                scanner.next()
-                return ParsedInline.of(LatexMathNode(content), scanner.position())
+                let close = scanner.matchMultiple(r'$')
+                if (close > 0) {
+                    let content = scanner.getSource(p1, p2).getContent()
+                    // scanner.next()
+                    return ParsedInline.of(LatexMathNode(content), scanner.position())
+                }
             }
-        }
-        if (scanner.next('\\(') || scanner.next('\\[')) {
+        } else if (scanner.next('\\(') || scanner.next('\\[')) {
             let p1 = scanner.position()
             var p2 = scanner.position()
             while (scanner.hasNext()) {
