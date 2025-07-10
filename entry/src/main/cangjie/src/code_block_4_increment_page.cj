@@ -1,5 +1,5 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+/**
+ * Created on 2025/6/12
  */
 package ohos_app_cangjie_entry
 
@@ -14,49 +14,51 @@ import std.time.*
 import ohos.hilog.Hilog
 
 /**
- * 全量数据增量加载
+ * 小代码块增量加载
  */
 @Entry
 @Component
-class Test1IncrementPage {
-    var mdStr: String = ""
+class CodeBlock4IncrementPage {
+    let mdStr: String = getFileContextStr("code_4.md")
 
     @State
     var output: String = ""
 
     var scroller: Scroller = Scroller()
 
-    protected override func aboutToAppear(): Unit {
-        mdStr = getFileContextStr("test2.md")
-    }
-
     func build() {
         Column() {
-            Text("点击").onClick(
-                {
-                    e => spawn {
-                        let arr: Array<Rune> = mdStr.toRuneArray()
-                        let num = 50
-                        for (i in 0..arr.size : num) {
-                            sleep(Duration.millisecond * 50)
-                            launch {
-                                let size = if (arr.size > i + num) {
-                                    i + num
-                                } else {
-                                    arr.size
+            Text("点击")
+                .onClick(
+                    {
+                        e => spawn {
+                            let arr: Array<Rune> = mdStr.toRuneArray()
+                            for (i in 0..arr.size : 10) {
+                                sleep(Duration.millisecond * 50)
+                                launch {
+                                    let size = if (arr.size > i + 10) {
+                                        i + 10
+                                    } else {
+                                        arr.size
+                                    }
+                                    output += String(arr[i..size])
+                                    scroller.scrollEdge(Edge.Bottom)
                                 }
-                                output += String(arr[i..size])
-                                scroller.scrollEdge(Edge.Bottom)
                             }
                         }
                     }
-                })
+                )
             Scroll(scroller) {
                 Column {
                     MarkdownAIComponent(output: output, isFull: false, markdownAIConfiguration: setConfig())
                 }
-                .margin(right: 10, left: 10)
             }
+            // 左右外边距
+            .margin(right: 10, left: 10)
+            // 高度
+            .height(100.percent)
+            // 圆角
+            .borderRadius(8)
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
         }
@@ -81,12 +83,6 @@ class Test1IncrementPage {
             .emptyBuilder()
             // 代码复制按钮默认图
             .setCodeCopyIcon(@r(app.media.app_icon))
-            // 音频icon
-            .setAudioIcon(@r(app.media.app_icon))
-            // 视频占位图
-            .setVideoImage(@r(app.media.place_holder))
-            // 视频占位图
-            .setPlayCircleFillIcon(@r(app.media.play_circle_fill))
             // 设置一级二级标题下划线高度
             .setHeadingBreakHeight(0.0)
             .setHeadingTextSizeMultipliers([15.0, 15.0, 15.0, 15.0, 15.0, 15.0]) // fp
@@ -129,6 +125,13 @@ class Test1IncrementPage {
             .setLinkRectToolImageTextSize(11.0)
             .setLinkRectToolImageMargin(2.0)
             .setImagePadding(20)
+
+            // 是否单独代码块
+            .setIsSeparateCodeBlock(true)
+            // 代码块边框圆角
+            .setCodeBlockRadius(0.0)
+            // 模块上下边距
+            .setBlockTopAndBottomMargins(0.0)
             .build()
         return MarkdownAITheme
     }
@@ -149,11 +152,11 @@ class Test1IncrementPage {
     }
 
     func videoImageCallback(url: String, videoImageCallbackCallback: (String,Float64,Int64) -> Unit) {
-//        if (url == "562986b1-46d8-48ef-bac6-82685bcedcd8") {
-//            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477066-YeEeWg-file_1614477068523",0.0,0)
-//        } else {
-//            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477067-itHyLr-file_1614477069388",0.0,0)
-//        }
+        if (url == "562986b1-46d8-48ef-bac6-82685bcedcd8") {
+            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477066-YeEeWg-file_1614477068523",0.0,0)
+        } else {
+            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477067-itHyLr-file_1614477069388",0.0,0)
+        }
         Hilog.error(1,"1","------------------------videoImageCallback:${url}")
     }
 

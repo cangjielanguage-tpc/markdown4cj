@@ -14,9 +14,8 @@ import std.time.*
 import ohos.hilog.Hilog
 
 /**
- * 超大代码块全量加载
+ * 音视频全量加载
  */
-
 @Entry
 @Component
 class AudioAndVideoCompletePage {

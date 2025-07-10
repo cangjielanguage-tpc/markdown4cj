@@ -92,11 +92,6 @@ public class MarkdownAIComponent {
      */
     var imageAndVideoList: ArrayList<String> = ArrayList<String>()
 
-    @State
-    var reachBottom: Bool = true
-
-    var chatTouch: Bool = false
-
     protected override func aboutToAppear(): Unit {
         markdownBase = Markdown
             .builder()
@@ -363,27 +358,6 @@ public class MarkdownAIComponent {
             .alignListItem(ListItemAlign.Start)
             // 设置组件自身的宽度
             .width(100.percent)
-            // 对子组件进行重新布局
-            .layoutWeight(1)
-            // 设置滚动条状态
-            .scrollBar(BarState.Off)
-            // 设置组件的滑动效果
-            .edgeEffect(EdgeEffect.None)
-            // 设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动
-            .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
-            // 列表到底末尾位置时触发
-            .onReachEnd {
-                => reachBottom = true
-            }
-            // 列表滑动时触发
-            .onScroll {
-                offset, _ =>
-                checkScroll(offset)
-            }
-            // 触摸动作触发该事件
-            .onTouch {
-                evt => chatOnTouch(evt)
-            }
         } else {
             List(scroller: scroller) {
                 LazyForEach(
@@ -413,42 +387,6 @@ public class MarkdownAIComponent {
                     }
                 )
             }
-        }
-    }
-
-    /**
-     * 是否滑动到底部
-     */
-    func scrollChatIfAtBottom() {
-        if (reachBottom) {
-            scroll2Bottom()
-        }
-    }
-
-    /**
-     * 滑动到底部
-     */
-    func scroll2Bottom() {
-        scroller.scrollEdge(Edge.Bottom)
-    }
-
-    /**
-     * 判断滑动距离和是否手指触摸
-     */
-    func checkScroll(offset: Float64) {
-        if (offset < -0.5 && chatTouch) {
-            reachBottom = false
-        }
-    }
-
-    /**
-     * 手指触摸判断
-     */
-    func chatOnTouch(evt: TouchEvent) {
-        if (let TouchType.Down <- evt.eventType) {
-            chatTouch = true
-        } else if (let TouchType.Up <- evt.eventType) {
-            chatTouch = false
         }
     }
 
@@ -495,7 +433,6 @@ public class MarkdownAIComponent {
                 // 增量加载
                 let syncCounter:SyncCounter = SyncCounter(1)
                 launch {
-                    scrollChatIfAtBottom()
                     if (nodeViewsSize == 0) {
                         syncCounter.dec()
                         return

@@ -19,19 +19,7 @@ import ohos.hilog.Hilog
 @Entry
 @Component
 class LatexCompletePage {
-    let mdStr: String = ###"
-# 数学公式$a+b=c$
-
-数学公式$a+b=c$
-
-数学公式$a+b=c$ 数学公式 数学公式$a+b=c$ 数学公式 数学公式$a+b=c$ 数学公式 数学公式$a+b=c$ 数学公式 数学公式$a+b=c$ 数学公式
-
-# 数学公式/[a+b=c/]
-
-数学公式/[a+b=c/]
-
-数学公式/[a+b=c/] 数学公式 数学公式/[a+b=c/] 数学公式 数学公式/[a+b=c/] 数学公式 数学公式/[a+b=c/] 数学公式 数学公式/[a+b=c/] 数学公式
-"###
+    let mdStr: String = getFileContextStr("latex.md")
 
     var scroller: Scroller = Scroller()
 

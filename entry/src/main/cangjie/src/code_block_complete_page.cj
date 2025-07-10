@@ -19,24 +19,7 @@ import ohos.hilog.Hilog
 @Entry
 @Component
 class CodeBlockCompletePage {
-    let mdStr: String = ###"
-```cangjie
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
-// Java
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, Java!");
-        System.out.println(2 + 2);
-    }
-}
-```
-"###
+    let mdStr: String = getFileContextStr("code.md")
 
     var scroller: Scroller = Scroller()
 

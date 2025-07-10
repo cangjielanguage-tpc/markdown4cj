@@ -1,5 +1,5 @@
 /**
- * Created on 2025/5/23
+ * Created on 2025/6/23
  */
 package ohos_app_cangjie_entry
 
@@ -14,40 +14,56 @@ import std.time.*
 import ohos.hilog.Hilog
 
 /**
- * 数学公式增量加载
+ * 音视频增量加载
  */
 @Entry
 @Component
-class LatexIncrementPage {
-    let mdStr: String = getFileContextStr("latex.md")
+class AudioAndVideo1IncrementPage {
+    var mdStr: String = ""
 
     @State
     var output: String = ""
 
     var scroller: Scroller = Scroller()
 
+    protected override func aboutToAppear(): Unit {
+        mdStr = getFileContextStr("audio_video_1.md")
+    }
+
     func build() {
         Column() {
-            Text("点击").onClick(
-                {
-                    e => spawn {
-                        let arr = mdStr.toRuneArray()
-                        for (i in 0..arr.size) {
-                            sleep(Duration.millisecond * 50)
-                            launch {
-                                output = output + arr[i].toString()
-                                Hilog.error(1, "1", "----output:${output}")
-                                scroller.scrollEdge(Edge.Bottom)
+            Text("点击")
+                .onClick(
+                    {
+                        e => spawn {
+                            let arr: Array<Rune> = mdStr.toRuneArray()
+                            let num = 100
+                            for (i in 0..arr.size : num) {
+                                sleep(Duration.millisecond * 50)
+                                launch {
+                                    let size = if (arr.size > i + num) {
+                                        i + num
+                                    } else {
+                                        arr.size
+                                    }
+                                    output += String(arr[i..size])
+                                    scroller.scrollEdge(Edge.Bottom)
+                                }
                             }
                         }
                     }
-                })
+                )
             Scroll(scroller) {
                 Column {
                     MarkdownAIComponent(output: output, isFull: false, markdownAIConfiguration: setConfig())
                 }
-                .margin(right: 10, left: 10)
             }
+            // 左右外边距
+            .margin(right: 10, left: 10)
+            // 高度
+            .height(100.percent)
+            // 圆角
+            .borderRadius(8)
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
         }
@@ -64,7 +80,6 @@ class LatexIncrementPage {
         MarkdownAIConfigurationBuilder.setCodeFullScreenCallback(codeFullScreenCallback)
         MarkdownAIConfigurationBuilder.setLatexImageCallbackCallback(latexImageCallbackCallback)
         MarkdownAIConfigurationBuilder.setFootnoteCallback(footnoteCallback)
-        MarkdownAIConfigurationBuilder.setTocIndexCallback(tocCallback)
         return MarkdownAIConfigurationBuilder.build()
     }
 
@@ -73,6 +88,12 @@ class LatexIncrementPage {
             .emptyBuilder()
             // 代码复制按钮默认图
             .setCodeCopyIcon(@r(app.media.app_icon))
+            // 音频icon
+            .setAudioIcon(@r(app.media.app_icon))
+            // 视频占位图
+            .setVideoImage(@r(app.media.place_holder))
+            // 视频占位图
+            .setPlayCircleFillIcon(@r(app.media.play_circle_fill))
             // 设置一级二级标题下划线高度
             .setHeadingBreakHeight(0.0)
             .setHeadingTextSizeMultipliers([15.0, 15.0, 15.0, 15.0, 15.0, 15.0]) // fp
@@ -81,14 +102,13 @@ class LatexIncrementPage {
             // 字体大小
             .setParagraphTextSize(15.0)
             // 行高
-            .setParagraphTextLineheight(22.0)
+            .setParagraphTextLineheight(25.0)
             // 内联代码颜色
             .setCodeTextColor(Color(0xFFFF5722))
             // 标题
             .setHeadingTextColor(Color(0xFF222222))
             // 链接颜色
             .setLinkColor(Color(0xFF000000))
-            .setLinkSize(15.0)
             // 数学公式
             .setLatexMathBackGroupColor(Color(0xFFFBFBFB))
             // 表格
@@ -120,11 +140,6 @@ class LatexIncrementPage {
         return MarkdownAITheme
     }
 
-    func tocCallback(f: ?Float64) {
-        scroller.scrollBy(xOffset: 0.0, yOffset: (px2vp(f.getOrThrow().px).getOrThrow().value - 50.0))
-        Hilog.error(1, "2", "------------------------footnoteCallback:f:${f}")
-    }
-
     func footnoteCallback(f: ?Float64) {
         scroller.scrollBy(xOffset: 0.0, yOffset: f.getOrThrow())
         Hilog.error(1, "2", "------------------------footnoteCallback:f:${f}")
@@ -141,11 +156,11 @@ class LatexIncrementPage {
     }
 
     func videoImageCallback(url: String, videoImageCallbackCallback: (String,Float64,Int64) -> Unit) {
-        if (url == "562986b1-46d8-48ef-bac6-82685bcedcd8") {
-            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477066-YeEeWg-file_1614477068523",0.0,0)
-        } else {
-            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477067-itHyLr-file_1614477069388",0.0,0)
-        }
+//        if (url == "562986b1-46d8-48ef-bac6-82685bcedcd8") {
+//            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477066-YeEeWg-file_1614477068523",16.0/9.0,100)
+//        } else {
+//            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477067-itHyLr-file_1614477069388",16.0/9.0,100)
+//        }
         Hilog.error(1,"1","------------------------videoImageCallback:${url}")
     }
 

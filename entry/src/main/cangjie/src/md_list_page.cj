@@ -1,5 +1,5 @@
-/**
- * Created on 2025/5/23
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 package ohos_app_cangjie_entry
 
@@ -14,49 +14,46 @@ import std.time.*
 import ohos.hilog.Hilog
 
 /**
- * 数学公式增量加载
+ * markdown外层是list
  */
 @Entry
 @Component
-class LatexIncrementPage {
-    let mdStr: String = getFileContextStr("latex.md")
+class MDListPage {
+    let mdStr0: String = getFileContextStr("all.md")
+    let mdStr1: String = getFileContextStr("audio_video.md")
+    let mdStr4: String = getFileContextStr("big_data.md")
+    let mdStr2: String = getFileContextStr("latex.md")
+    let mdStr3: String = getFileContextStr("table.md")
+    let mdStr5: String = getFileContextStr("title.md")
 
-    @State
-    var output: String = ""
-
-    var scroller: Scroller = Scroller()
+    let arr = [mdStr0, mdStr1, mdStr2, mdStr3, mdStr4, mdStr5]
 
     func build() {
-        Column() {
-            Text("点击").onClick(
-                {
-                    e => spawn {
-                        let arr = mdStr.toRuneArray()
-                        for (i in 0..arr.size) {
-                            sleep(Duration.millisecond * 50)
-                            launch {
-                                output = output + arr[i].toString()
-                                Hilog.error(1, "1", "----output:${output}")
-                                scroller.scrollEdge(Edge.Bottom)
+        List() {
+            ForEach(
+                arr,
+                itemGeneratorFunc: {
+                    str: String, index: Int64 =>
+                        ListItem(){
+                            Column(){
+                                MarkdownAIComponent(output: str, isFull: true, markdownAIConfiguration: setConfig())
                             }
+//                            .margin(20)
+                            .borderColor(Color.BLACK)
+                            .borderWidth(1)
+                            .backgroundColor(Color.WHITE)
                         }
-                    }
-                })
-            Scroll(scroller) {
-                Column {
-                    MarkdownAIComponent(output: output, isFull: false, markdownAIConfiguration: setConfig())
                 }
-                .margin(right: 10, left: 10)
-            }
-            // 设置滚动方法
-            .scrollable(ScrollDirection.Vertical)
+            )
         }
+        .backgroundColor(Color.GRAY)
     }
 
     func setConfig(): MarkdownAIConfiguration {
         let MarkdownAIConfigurationBuilder: MarkdownAIConfigurationBuilder = MarkdownAIConfiguration.emptyBuilder()
         MarkdownAIConfigurationBuilder.setMarkdownAITheme(setMarkdownAITheme())
         MarkdownAIConfigurationBuilder.setImageCallback(imageCallback)
+        MarkdownAIConfigurationBuilder.setAudioCallback(audioCallback)
         MarkdownAIConfigurationBuilder.setVideoCallback(videoCallback)
         MarkdownAIConfigurationBuilder.setVideoImageCallback(videoImageCallback)
         MarkdownAIConfigurationBuilder.setLinkCallback(linkCallback)
@@ -64,7 +61,6 @@ class LatexIncrementPage {
         MarkdownAIConfigurationBuilder.setCodeFullScreenCallback(codeFullScreenCallback)
         MarkdownAIConfigurationBuilder.setLatexImageCallbackCallback(latexImageCallbackCallback)
         MarkdownAIConfigurationBuilder.setFootnoteCallback(footnoteCallback)
-        MarkdownAIConfigurationBuilder.setTocIndexCallback(tocCallback)
         return MarkdownAIConfigurationBuilder.build()
     }
 
@@ -73,22 +69,28 @@ class LatexIncrementPage {
             .emptyBuilder()
             // 代码复制按钮默认图
             .setCodeCopyIcon(@r(app.media.app_icon))
+            // 音频icon
+            .setAudioIcon(@r(app.media.app_icon))
+            // 视频占位图
+            .setVideoImage(@r(app.media.place_holder))
+            // 视频占位图
+            .setPlayCircleFillIcon(@r(app.media.play_circle_fill))
             // 设置一级二级标题下划线高度
             .setHeadingBreakHeight(0.0)
+            // 标题字体大小
             .setHeadingTextSizeMultipliers([15.0, 15.0, 15.0, 15.0, 15.0, 15.0]) // fp
             // 字体颜色
             .setParagraphTextColor(Color(0xFF222222))
             // 字体大小
             .setParagraphTextSize(15.0)
             // 行高
-            .setParagraphTextLineheight(22.0)
+            .setParagraphTextLineheight(25.0)
             // 内联代码颜色
             .setCodeTextColor(Color(0xFFFF5722))
             // 标题
             .setHeadingTextColor(Color(0xFF222222))
             // 链接颜色
             .setLinkColor(Color(0xFF000000))
-            .setLinkSize(15.0)
             // 数学公式
             .setLatexMathBackGroupColor(Color(0xFFFBFBFB))
             // 表格
@@ -120,19 +122,19 @@ class LatexIncrementPage {
         return MarkdownAITheme
     }
 
-    func tocCallback(f: ?Float64) {
-        scroller.scrollBy(xOffset: 0.0, yOffset: (px2vp(f.getOrThrow().px).getOrThrow().value - 50.0))
-        Hilog.error(1, "2", "------------------------footnoteCallback:f:${f}")
-    }
-
     func footnoteCallback(f: ?Float64) {
-        scroller.scrollBy(xOffset: 0.0, yOffset: f.getOrThrow())
+        //scroller.scrollBy(xOffset: 0.0, yOffset: f.getOrThrow())
         Hilog.error(1, "2", "------------------------footnoteCallback:f:${f}")
     }
 
     func imageCallback(url: String,arr:ArrayList<String>) {
         PromptAction.showToast(message: url)
         Hilog.error(1,"1","------------------------LinkCallback:${url},arr:${arr}")
+    }
+
+    func audioCallback(url: String) {
+        PromptAction.showToast(message: url)
+        Hilog.error(1,"1","------------------------LinkCallback:${url}")
     }
 
     func videoCallback(url: String,arr:ArrayList<String>) {
@@ -142,9 +144,9 @@ class LatexIncrementPage {
 
     func videoImageCallback(url: String, videoImageCallbackCallback: (String,Float64,Int64) -> Unit) {
         if (url == "562986b1-46d8-48ef-bac6-82685bcedcd8") {
-            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477066-YeEeWg-file_1614477068523",0.0,0)
+            videoImageCallbackCallback("",16.0/9.0,100)
         } else {
-            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477067-itHyLr-file_1614477069388",0.0,0)
+            videoImageCallbackCallback("",16.0/9.0,100)
         }
         Hilog.error(1,"1","------------------------videoImageCallback:${url}")
     }

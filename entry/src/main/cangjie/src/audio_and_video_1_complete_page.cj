@@ -1,5 +1,5 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+/**
+ * Created on 2025/6/23
  */
 package ohos_app_cangjie_entry
 
@@ -14,24 +14,18 @@ import std.time.*
 import ohos.hilog.Hilog
 
 /**
- * 全量数据全量加载
+ * 音视频全量加载
  */
 @Entry
 @Component
-class Test1CompletePage {
-
+class AudioAndVideo1CompletePage {
     var mdStr: String = ""
 
     var scroller: Scroller = Scroller()
 
     protected override func aboutToAppear(): Unit {
-        mdStr = getFileContextStr("test2.md")
-        scroller.scrollEdge(Edge.Bottom)
+        mdStr = getFileContextStr("audio_video_1.md")
     }
-
-//    @State var reachBottom: Bool = true
-
-//    var chatTouch: Bool = false
 
     func build() {
         Column() {
@@ -39,69 +33,23 @@ class Test1CompletePage {
                 Column {
                     MarkdownAIComponent(output: mdStr, isFull: true, markdownAIConfiguration: setConfig())
                 }
-                .margin(right: 10, left: 10)
             }
+            // 左右外边距
+            .margin(right: 10, left: 10)
+            // 高度
+            .height(100.percent)
+            // 圆角
+            .borderRadius(8)
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
-//            .onAppear({=>
-//
-//                scrollChatIfAtBottom()
-//            })
-//            .onScrollEdge({edge=>
-//                match (edge) {
-//                	case Edge.Bottom=> reachBottom = true
-//                        case _ =>()
-//                }
-//            })
-//            // 列表到底末尾位置时触发
-//            .onReachEnd { =>
-//                reachBottom = true
-//            }
-//            // 列表滑动时触发
-//            .onScroll {offset =>
-////                scroller.scrollTo(xOffset: 0.0, yOffset: scroller.currentOffset().yOffset)
-//                checkScroll(offset.yOffset)
-//            }
-//            // 触摸动作触发该事件
-//            .onTouch { evt =>
-//                chatOnTouch(evt)
-//            }
-//            .onAreaChange({v, w=>
-//               scrollChatIfAtBottom()
-//            })
-
         }
     }
-
-
-//    func scrollChatIfAtBottom() {
-//        if (reachBottom) {
-//            scroll2Bottom()
-//        }
-//    }
-//
-//    func scroll2Bottom() {
-//        scroller.scrollEdge(Edge.Bottom)
-//    }
-//
-//    func checkScroll(offset: Float64) {
-//        if (offset < -0.5 && chatTouch) {
-//            reachBottom = false
-//        }
-//    }
-//
-//    func chatOnTouch(evt: TouchEvent) {
-//        if (let TouchType.Down <- evt.eventType) {
-//            chatTouch = true
-//        } else if (let TouchType.Up <- evt.eventType) {
-//            chatTouch = false
-//        }
-//    }
 
     func setConfig(): MarkdownAIConfiguration {
         let MarkdownAIConfigurationBuilder: MarkdownAIConfigurationBuilder = MarkdownAIConfiguration.emptyBuilder()
         MarkdownAIConfigurationBuilder.setMarkdownAITheme(setMarkdownAITheme())
         MarkdownAIConfigurationBuilder.setImageCallback(imageCallback)
+        MarkdownAIConfigurationBuilder.setAudioCallback(audioCallback)
         MarkdownAIConfigurationBuilder.setVideoCallback(videoCallback)
         MarkdownAIConfigurationBuilder.setVideoImageCallback(videoImageCallback)
         MarkdownAIConfigurationBuilder.setLinkCallback(linkCallback)
@@ -125,6 +73,7 @@ class Test1CompletePage {
             .setPlayCircleFillIcon(@r(app.media.play_circle_fill))
             // 设置一级二级标题下划线高度
             .setHeadingBreakHeight(0.0)
+            // 标题字体大小
             .setHeadingTextSizeMultipliers([15.0, 15.0, 15.0, 15.0, 15.0, 15.0]) // fp
             // 字体颜色
             .setParagraphTextColor(Color(0xFF222222))
@@ -179,17 +128,22 @@ class Test1CompletePage {
         Hilog.error(1,"1","------------------------LinkCallback:${url},arr:${arr}")
     }
 
+    func audioCallback(url: String) {
+        PromptAction.showToast(message: url)
+        Hilog.error(1,"1","------------------------LinkCallback:${url}")
+    }
+
     func videoCallback(url: String,arr:ArrayList<String>) {
         PromptAction.showToast(message: url)
         Hilog.error(1,"1","------------------------videoCallback:${url},arr:${arr}")
     }
 
     func videoImageCallback(url: String, videoImageCallbackCallback: (String,Float64,Int64) -> Unit) {
-//        if (url == "562986b1-46d8-48ef-bac6-82685bcedcd8") {
-//            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477066-YeEeWg-file_1614477068523",0.0,0)
-//        } else {
-//            videoImageCallbackCallback("https://pic.leetcode-cn.com/1614477067-itHyLr-file_1614477069388",0.0,0)
-//        }
+        if (url == "562986b1-46d8-48ef-bac6-82685bcedcd8") {
+            videoImageCallbackCallback("",16.0/9.0,100)
+        } else {
+            videoImageCallbackCallback("",16.0/9.0,100)
+        }
         Hilog.error(1,"1","------------------------videoImageCallback:${url}")
     }
 

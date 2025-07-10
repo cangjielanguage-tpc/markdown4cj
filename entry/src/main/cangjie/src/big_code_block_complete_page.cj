@@ -24,7 +24,7 @@ class BigCodeBlockCompletePage {
     var scroller: Scroller = Scroller()
 
     protected override func aboutToAppear(): Unit {
-        mdStr = getFileContextStr("code.md")
+        mdStr = getFileContextStr("big_code.md")
     }
 
     func build() {
