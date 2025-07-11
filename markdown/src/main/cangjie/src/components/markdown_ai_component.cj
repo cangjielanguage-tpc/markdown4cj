@@ -45,6 +45,7 @@ public class MarkdownAIComponent {
     /**
      * 控件宽度 - 单位px，（控件宽度 = 屏幕宽度 - padding）
      */
+    @State
     var componentWidth: Float64 = 0.0
 
     /**
@@ -153,7 +154,9 @@ public class MarkdownAIComponent {
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
-                                    componentWidth: componentWidth,
+                                    componentWidth: px2vp(componentWidth.px).getOrThrow().value,
+                                    imageMarginTop: markdownAIConfiguration.markdownAITheme.imageMarginTop,
+                                    imageMarginBottom: markdownAIConfiguration.markdownAITheme.imageMarginBottom,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
                                     headingComponents: markdownAICacheConfiguration.headingComponents
@@ -170,7 +173,9 @@ public class MarkdownAIComponent {
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
-                                    componentWidth: componentWidth,
+                                    componentWidth: px2vp(componentWidth.px).getOrThrow().value,
+                                    imageMarginTop: markdownAIConfiguration.markdownAITheme.imageMarginTop,
+                                    imageMarginBottom: markdownAIConfiguration.markdownAITheme.imageMarginBottom,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
                                     paragraphComponents: markdownAICacheConfiguration.paragraphComponents
@@ -187,7 +192,7 @@ public class MarkdownAIComponent {
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
-                                    componentWidth: componentWidth,
+                                    componentWidth: px2vp(componentWidth.px).getOrThrow().value,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
                                     markdownAICacheConfiguration: markdownAICacheConfiguration
@@ -204,7 +209,7 @@ public class MarkdownAIComponent {
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
-                                    componentWidth: componentWidth,
+                                    componentWidth: px2vp(componentWidth.px).getOrThrow().value,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
                                     markdownAICacheConfiguration: markdownAICacheConfiguration
@@ -220,7 +225,7 @@ public class MarkdownAIComponent {
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
-                                    componentWidth: componentWidth,
+                                    componentWidth: px2vp(componentWidth.px).getOrThrow().value,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
                                     markdownAICacheConfiguration: markdownAICacheConfiguration
@@ -261,7 +266,7 @@ public class MarkdownAIComponent {
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
-                                componentWidth: componentWidth,
+                                componentWidth: px2vp(componentWidth.px).getOrThrow().value,
                                 isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
                                 tableComponents: markdownAICacheConfiguration.tableComponents,
@@ -328,7 +333,7 @@ public class MarkdownAIComponent {
                                         marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
                                         fontCallback: fontCallback,
                                         imageCallback: imageCallback,
-                                        componentWidth: componentWidth,
+                                        componentWidth: px2vp(componentWidth.px).getOrThrow().value,
                                         isFull: isFull,
                                         indexList: indexAdd(indexList, idx),
                                         paragraphComponents: markdownAICacheConfiguration.paragraphComponents
@@ -358,6 +363,14 @@ public class MarkdownAIComponent {
             .alignListItem(ListItemAlign.Start)
             // 设置组件自身的宽度
             .width(100.percent)
+            // 组件区域变化事件
+            .onAreaChange {
+                old, new =>
+                    if(componentWidth != new.width){
+                        Hilog.error(1,"1","----------------px2vp(new.width.px).getOrThrow().value:${px2vp(new.width.px).getOrThrow().value}")
+                        componentWidth = new.width
+                    }
+            }
         } else {
             List(scroller: scroller) {
                 LazyForEach(

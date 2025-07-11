@@ -21,6 +21,7 @@ public class MarkdownAIImageSpanComponent {
     /**
      * 控件宽度 - 单位px
      */
+    @Prop
     var componentWidth: Float64
 
     /**
@@ -36,40 +37,91 @@ public class MarkdownAIImageSpanComponent {
     var height: Float64 = 0.0
 
     /**
+     * 图片上边距
+     */
+    var imageMarginTop: Float64 = 0.0
+
+    /**
+     * 图片下边距
+     */
+    var imageMarginBottom: Float64 = 0.0
+
+    /**
      * 图片点击事件
      */
     var imageCallback: (String) -> Unit
 
+    /**
+     * 图片加载完成
+     */
+    @State
+    var isCompleted: Bool = false
+
+    /**
+     * 图片加载异常
+     */
+    @State
+    var isError: Bool = false
+
+    /**
+     * 图片默认占位图
+     */
+    var imagePlaceholder: ?String = None
+
     func build() {
-        ImageSpan(destination)
-            // 设置组件自身的宽度
-            .width(width.px)
-            // 设置组件自身的高度
-            .height(height.px)
-            // 设置图片的缩放类型
-            .objectFit(ImageFit.Contain)
-            // 设置约束尺寸
-            .constraintSize(maxWidth: 100.percent)
-            // 点击动作触发该方法调用
-            .onClick {
-                evt => imageOnClick(destination, imageCallback)
+        if (!isCompleted && !isError) {
+            if (imagePlaceholder.isSome()) {
+                ImageSpan(imagePlaceholder())
+                    // 设置外边距属性
+                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
+                    // 设置组件自身的宽度
+                    .width(100.percent)
+                    // 设置组件自身的高度
+                    .height(componentWidth / (16.0 / 9.0))
+                    // 设置图片的缩放类型
+                    .objectFit(ImageFit.Cover)
+            } else {
+                Span("")
             }
-            // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-            .onComplete(
-                {
-                    imageLoadResult =>
-                    var aspectRatio: Float64 = imageLoadResult.height / imageLoadResult.width
-                    width = if (componentWidth > imageLoadResult.width) {
-                        imageLoadResult.width
-                    } else {
-                        componentWidth
+            ImageSpan(destination)
+                // 是否隐藏
+                .visibility(Visibility.None)
+                // 图片成功加载时触发该回调，返回成功加载的图片尺寸
+                .onComplete({
+                    imageLoadResult => isCompleted = true
+                })
+                // 图片加载出现异常时触发该回调
+                .onError(
+                    {
+                        imageError =>
+                        isError = true
+                        isCompleted = true
                     }
-                    height = width * aspectRatio
+                )
+        } else if (isCompleted && !isError) {
+            ImageSpan(destination)
+                // 设置外边距属性
+                .margin(top: imageMarginTop, bottom: imageMarginBottom)
+                // 设置组件自身的宽度
+                .width(100.percent)
+                // 设置组件自身的高度
+                .height(componentWidth / (16.0 / 9.0))
+                // 设置图片的缩放类型
+                .objectFit(ImageFit.Cover)
+                // 点击动作触发该方法调用
+                .onClick {
+                    evt => imageOnClick(destination, imageCallback)
                 }
-            )
-            // 图片加载出现异常时触发该回调
-            .onError({
-                imageError =>
-            })
+                // 图片成功加载时触发该回调，返回成功加载的图片尺寸
+                .onComplete({
+                    imageLoadResult => isCompleted = true
+                })
+                // 图片加载出现异常时触发该回调
+                .onError({
+                    imageError =>
+                })
+        } else {
+            Span("")
+        }
     }
 }

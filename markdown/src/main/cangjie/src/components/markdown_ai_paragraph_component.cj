@@ -51,6 +51,7 @@ class MarkdownAIParagraphComponent {
     /**
      * 控件宽度 - 单位px
      */
+    @Prop
     var componentWidth: Float64
 
     /**
@@ -83,6 +84,16 @@ class MarkdownAIParagraphComponent {
      * 块引用背景颜色
      */
     var blockQuoteBackGroupClor: Option<Color> = Option<Color>.None
+
+    /**
+     * 图片上边距
+     */
+    var imageMarginTop: Float64 = 0.0
+
+    /**
+     * 图片下边距
+     */
+    var imageMarginBottom: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
@@ -177,16 +188,22 @@ class MarkdownAIParagraphComponent {
                         // HTML图片
                         MarkdownAIHtmlImageSpanComponent(
                             destination: (item.node as ImageHtmlNode)().getDestination(),
+                            imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
                             imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
                             imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
                             componentWidth: componentWidth,
+                            imageMarginTop: imageMarginTop,
+                            imageMarginBottom: imageMarginBottom,
                             imageCallback: imageCallback
                         )
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         MarkdownAIImageSpanComponent(
                             destination: (item.node as CommonmarkImage)().getDestination(),
+                            imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
                             componentWidth: componentWidth,
+                            imageMarginTop: imageMarginTop,
+                            imageMarginBottom: imageMarginBottom,
                             imageCallback: imageCallback
                         )
                     } else if (item.node is LatexMathNode) {
@@ -207,11 +224,27 @@ class MarkdownAIParagraphComponent {
         // 设置多行文本的文本对齐方式
         .textAlign(TextAlign.Start)
         // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
+        .margin(top: isMarginTop(), bottom: isMarginBottom())
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置行高
         .lineHeight(markdownAIConfiguration.markdownAITheme.paragraphTextLineheight)
+    }
+
+    func isMarginTop():Float64{
+        if(nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
+            return 0.0
+        }else{
+            return marginTop
+        }
+    }
+
+    func isMarginBottom():Float64{
+        if(nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
+            return 0.0
+        }else{
+            return marginBottom
+        }
     }
 
     /**

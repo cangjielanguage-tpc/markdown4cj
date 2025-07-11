@@ -54,7 +54,7 @@ public class MarkdownAIImageVideoComponent {
      * 图片宽高比
      */
     @State
-    var aspectRatio: Float64 = 0.0
+    var aspectRatio: Float64 = 16.0 / 9.0
 
     /**
      * 视频时长
@@ -115,8 +115,9 @@ public class MarkdownAIImageVideoComponent {
                 Image(markdownAIConfiguration.markdownAITheme.videoImage())
                     // 设置组件自身的宽度
                     .width(100.percent)
+                    .aspectRatio(aspectRatio)
                     // 设置图片的缩放类型
-                    .objectFit(ImageFit.Contain)
+                    .objectFit(ImageFit.Cover)
                     // 设置圆角
                     .borderRadius(markdownAIConfiguration.markdownAITheme.videoBorderRadius)
             }
@@ -128,7 +129,7 @@ public class MarkdownAIImageVideoComponent {
                 // 指定当前组件的宽高比
                 .aspectRatio(aspectRatio)
                 // 设置图片的缩放类型
-                .objectFit(ImageFit.Contain)
+                .objectFit(ImageFit.Cover)
                 // 设置圆角
                 .borderRadius(markdownAIConfiguration.markdownAITheme.videoBorderRadius)
         }

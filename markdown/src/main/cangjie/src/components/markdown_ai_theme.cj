@@ -681,9 +681,24 @@ public class MarkdownAITheme {
     protected var imageResource: ?CJResource = None
 
     /**
+     * 图片默认占位图
+     */
+    protected var imagePlaceholder: ?String = None
+
+    /**
      * 网络图片是否压缩
      */
     protected var isAutoResize: Bool = true
+
+    /**
+     * 图片下边距
+     */
+    protected var imageMarginTop: Float64 = 10.0
+
+    /**
+     * 图片下边距
+     */
+    protected var imageMarginBottom: Float64 = 10.0
 
     /**
      * 按钮文字内容
@@ -911,7 +926,11 @@ public class MarkdownAITheme {
         // 图片
         this.imagePadding = builder.imagePadding
         this.imageResource = builder.imageResource
+
+        this.imagePlaceholder = builder.imagePlaceholder
         this.isAutoResize = builder.isAutoResize
+        this.imageMarginTop = builder.imageMarginTop
+        this.imageMarginBottom = builder.imageMarginBottom
         // 按钮
         this.buttonTextStr = builder.buttonTextStr
         this.buttonTextSize = builder.buttonTextSize
@@ -1699,9 +1718,24 @@ public class MarkdownAIThemeBuilder {
     protected var imageResource: ?CJResource = None
 
     /**
+     * 图片默认占位图
+     */
+    protected var imagePlaceholder: ?String = None
+
+    /**
      * 网络图片是否压缩
      */
     protected var isAutoResize: Bool = true
+
+    /**
+     * 图片上边距
+     */
+    protected var imageMarginTop: Float64 = 10.0
+
+    /**
+     * 图片下边距
+     */
+    protected var imageMarginBottom: Float64 = 10.0
 
     /**
      * 按钮文字内容
@@ -1932,7 +1966,10 @@ public class MarkdownAIThemeBuilder {
         // 图片
         this.imagePadding = theme.imagePadding
         this.imageResource = theme.imageResource
+        this.imagePlaceholder = theme.imagePlaceholder
         this.isAutoResize = theme.isAutoResize
+        this.imageMarginTop = theme.imageMarginTop
+        this.imageMarginBottom = theme.imageMarginBottom
         // 按钮
         this.buttonTextStr = theme.buttonTextStr
         this.buttonTextSize = theme.buttonTextSize
@@ -3436,6 +3473,17 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
+     * 设置图片默认占位图
+     *
+     * @param imagePlaceholder 图片占位图默认None
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setImagePlaceholder(imagePlaceholder: String): MarkdownAIThemeBuilder {
+        this.imagePlaceholder = imagePlaceholder
+        return this
+    }
+
+    /**
      * 设置是否压缩图片
      *
      * @param isAutoResize 是否压缩图片true：压缩，false：不压缩默认压缩
@@ -3443,6 +3491,28 @@ public class MarkdownAIThemeBuilder {
      */
     public func setIsAutoResize(isAutoResize: Bool): MarkdownAIThemeBuilder {
         this.isAutoResize = isAutoResize
+        return this
+    }
+
+    /**
+     * 设置图片上边距
+     *
+     * @param imageMarginTop 图片上边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setImageMarginTop(imageMarginTop: Float64): MarkdownAIThemeBuilder {
+        this.imageMarginTop = imageMarginTop
+        return this
+    }
+
+    /**
+     * 设置图片下边距
+     *
+     * @param imageMarginBottom 图片下边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setImageMarginBottom(imageMarginBottom: Float64): MarkdownAIThemeBuilder {
+        this.imageMarginBottom = imageMarginBottom
         return this
     }
 
