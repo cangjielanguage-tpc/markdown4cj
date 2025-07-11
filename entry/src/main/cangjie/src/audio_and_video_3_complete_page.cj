@@ -69,6 +69,8 @@ class AudioAndVideo3CompletePage {
             .setAudioIcon(@r(app.media.app_icon))
             // 视频占位图
             .setVideoImage(@r(app.media.place_holder))
+            // 图片默认占位图
+            .setImagePlaceholder("https://qcdn2.zhaomi.cn/d/ptyGRnnvhwP_vlyRrwOPHhp_mark.png")
             // 视频占位图
             .setPlayCircleFillIcon(@r(app.media.play_circle_fill))
             // 设置一级二级标题下划线高度

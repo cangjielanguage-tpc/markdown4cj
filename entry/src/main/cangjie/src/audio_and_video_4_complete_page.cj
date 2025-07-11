@@ -66,10 +66,10 @@ class AudioAndVideo4CompletePage {
             .emptyBuilder()
             // 代码复制按钮默认图
             .setCodeCopyIcon(@r(app.media.app_icon))
-            // 代码复制按钮默认图
+            // 图片默认占位图
             .setImageResource(@r(app.media.app_icon))
-            // 代码复制按钮默认图
-            .setImagePlaceholder("https://qcdn3.zhaomi.cn/d/I2wUX6ipXBi_wUQzjKpWBQA_origin.png")
+            // 图片默认占位图
+            .setImagePlaceholder("https://qcdn2.zhaomi.cn/d/ptyGRnnvhwP_vlyRrwOPHhp_mark.png")
             // 音频icon
             .setAudioIcon(@r(app.media.app_icon))
             // 视频占位图
