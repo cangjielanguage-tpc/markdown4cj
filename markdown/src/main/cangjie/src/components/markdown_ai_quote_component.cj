@@ -66,6 +66,11 @@ public class MarkdownAIQuoteComponent {
     var imageCallback: (String) -> Unit
 
     /**
+     * 视频点击事件
+     */
+    var videoCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
@@ -160,6 +165,7 @@ public class MarkdownAIQuoteComponent {
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
+                                    videoCallback: videoCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
@@ -175,6 +181,7 @@ public class MarkdownAIQuoteComponent {
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
+                                    videoCallback: videoCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
@@ -189,6 +196,7 @@ public class MarkdownAIQuoteComponent {
                                     marginBottom: markdownAIConfiguration.markdownAITheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
+                                    videoCallback: videoCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
@@ -224,8 +232,26 @@ public class MarkdownAIQuoteComponent {
                                     // 没结束显示纯文本
                                     Text((item.node as LatexMathBlock)().latex)
                                 }
+                            } else if (item.node is BlockAudio) {
+                                // 音频
+                                MarkdownAIImageAudioComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    nodeView: item,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                )
+                            } else if (item.node is BlockVideo) {
+                                // 视频
+                                MarkdownAIImageVideoComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    nodeView: item,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                    videoCallback: videoCallback
+                                )
                             } else {
                                 // TODO 其他节点
+                                Text("")
                             }
                         }
                         // 设置子组件在水平方向上的对齐格式。

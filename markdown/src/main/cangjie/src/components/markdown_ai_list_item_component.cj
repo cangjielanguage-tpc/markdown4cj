@@ -69,6 +69,11 @@ class MarkdownAIListItemComponent {
     var imageCallback: (String) -> Unit
 
     /**
+     * 视频点击事件
+     */
+    var videoCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     var nodeViewAIDataSource: NodeViewAIDataSource = NodeViewAIDataSource(ArrayList<NodeView>())
@@ -168,6 +173,7 @@ class MarkdownAIListItemComponent {
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
+                                videoCallback: videoCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
@@ -185,6 +191,7 @@ class MarkdownAIListItemComponent {
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
+                                videoCallback: videoCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
@@ -201,6 +208,7 @@ class MarkdownAIListItemComponent {
                                 marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
+                                videoCallback: videoCallback,
                                 componentWidth: componentWidth,
                                 isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
@@ -241,8 +249,32 @@ class MarkdownAIListItemComponent {
                                 Text((item.node as LatexMathBlock)().latex)
                             }
                         }
+                    } else if (item.node is BlockAudio) {
+                        // 音频
+                        ListItem() {
+                            MarkdownAIImageAudioComponent(
+                                markdownAIConfiguration: markdownAIConfiguration,
+                                nodeView: item,
+                                marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                            )
+                        }
+                    } else if (item.node is BlockVideo) {
+                        // 视频
+                        ListItem() {
+                            MarkdownAIImageVideoComponent(
+                                markdownAIConfiguration: markdownAIConfiguration,
+                                nodeView: item,
+                                marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                videoCallback: videoCallback
+                            )
+                        }
                     } else {
                         // TODO 其他节点
+                        ListItem() {
+                            Text("")
+                        }
                     }
                 }
             )
