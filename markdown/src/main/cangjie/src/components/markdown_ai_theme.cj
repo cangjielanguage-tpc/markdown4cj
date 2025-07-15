@@ -546,14 +546,19 @@ public class MarkdownAITheme {
     protected var audioIcon: ?CJResource = None
 
     /**
+     * 音频阴影颜色值
+     */
+    protected var audioShadowColor: Color = COLOR_1A000000
+
+    /**
      * 音频边框颜色
      */
-    protected var audioBorderColor: Color = Color.BLACK
+    protected var audioBorderColor: Color = COLOR_33000000
 
     /**
      * 音频边框粗细
      */
-    protected var audioBorderWidth: Float64 = 1.0
+    protected var audioBorderWidth: Float64 = 0.5
 
     /**
      * 音频边框圆角
@@ -896,6 +901,7 @@ public class MarkdownAITheme {
         this.resPath = builder.resPath
         // 音频
         this.audioIcon = builder.audioIcon
+        this.audioShadowColor = builder.audioShadowColor
         this.audioBorderColor = builder.audioBorderColor
         this.audioBorderWidth = builder.audioBorderWidth
         this.audioBorderRdius = builder.audioBorderRdius
@@ -1583,14 +1589,19 @@ public class MarkdownAIThemeBuilder {
     protected var audioIcon: ?CJResource = None
 
     /**
+     * 音频阴影颜色值
+     */
+    protected var audioShadowColor: Color = COLOR_1A000000
+
+    /**
      * 音频边框颜色
      */
-    protected var audioBorderColor: Color = Color.BLACK
+    protected var audioBorderColor: Color = COLOR_33000000
 
     /**
      * 音频边框粗细
      */
-    protected var audioBorderWidth: Float64 = 1.0
+    protected var audioBorderWidth: Float64 = 0.5
 
     /**
      * 音频边框圆角
@@ -1936,6 +1947,7 @@ public class MarkdownAIThemeBuilder {
         this.resPath = theme.resPath
         // 音频
         this.audioIcon = theme.audioIcon
+        this.audioShadowColor = theme.audioShadowColor
         this.audioBorderColor = theme.audioBorderColor
         this.audioBorderWidth = theme.audioBorderWidth
         this.audioBorderRdius = theme.audioBorderRdius
@@ -3172,6 +3184,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setAudioIcon(audioIcon: CJResource): MarkdownAIThemeBuilder {
         this.audioIcon = audioIcon
+        return this
+    }
+
+    /**
+     * 设置音频阴影颜色
+     *
+     * @param audioShadowColor 音频阴影颜色
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioShadowColor(audioShadowColor: Color): MarkdownAIThemeBuilder {
+        this.audioShadowColor = audioShadowColor
         return this
     }
 
