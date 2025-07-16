@@ -38,6 +38,35 @@ func headingTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownA
 }
 
 /**
+ * 链接文本
+ */
+@Builder
+func headingLinkComponent(nodeView: NodeView, link:String, markdownAIConfiguration: MarkdownAIConfiguration, level: Int64) {
+    // 设置文本内容
+    Span(link)
+        // 设置文本的字体列表
+        .fontFamily(spanFontFamily(false, markdownAIConfiguration.markdownAITheme, true))
+        // 设置文本尺寸
+        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, true, level))
+        // 设置文本的字体粗细
+        .fontWeight(spanFontWeight(nodeView, true))
+        // 设置文本的字体样式
+        .fontStyle(spanFontStyle(nodeView))
+        // 设置文本颜色
+        .fontColor(spanFontColor(nodeView, false, markdownAIConfiguration.markdownAITheme, true))
+        // 设置文本字符间距
+        .letterSpacing(markdownAIConfiguration.markdownAITheme.headingTextWordSpace)
+        // 设置文本装饰线样式及其颜色
+        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
+        // 点击动作触发该方法调用
+        .onClick {
+            evt => if (nodeView.link.isSome()) {
+                linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
+            }
+        }
+}
+
+/**
  * 标题内联代码
  */
 @Builder
@@ -98,6 +127,35 @@ func headingFootnoteComponent(nodeView: NodeView, markdownAIConfiguration: Markd
 func paragraphTextComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownAIConfiguration) {
     // 设置文本内容
     Span(spanText(nodeView))
+        // 设置文本的字体列表
+        .fontFamily(spanFontFamily(false, markdownAIConfiguration.markdownAITheme, false))
+        // 设置文本尺寸
+        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, false, 0))
+        // 设置文本的字体粗细
+        .fontWeight(spanFontWeight(nodeView, false))
+        // 设置文本的字体样式
+        .fontStyle(spanFontStyle(nodeView))
+        // 设置文本颜色
+        .fontColor(spanFontColor(nodeView, false, markdownAIConfiguration.markdownAITheme, false))
+        // 设置文本字符间距
+        .letterSpacing(markdownAIConfiguration.markdownAITheme.paragraphTextWordSpace)
+        // 设置文本装饰线样式及其颜色
+        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
+        // 点击动作触发该方法调用
+        .onClick {
+            evt => if (nodeView.link.isSome()) {
+                linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
+            }
+        }
+}
+
+/**
+ * 段落链接
+ */
+@Builder
+func paragraphLinkComponent(nodeView: NodeView, link:String, markdownAIConfiguration: MarkdownAIConfiguration) {
+    // 设置文本内容
+    Span(link)
         // 设置文本的字体列表
         .fontFamily(spanFontFamily(false, markdownAIConfiguration.markdownAITheme, false))
         // 设置文本尺寸

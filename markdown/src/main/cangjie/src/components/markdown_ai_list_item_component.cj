@@ -116,6 +116,7 @@ class MarkdownAIListItemComponent {
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
+                                isListTo:true,
                                 isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
                                 paragraphComponents: markdownAICacheConfiguration.paragraphComponents
@@ -135,6 +136,7 @@ class MarkdownAIListItemComponent {
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
+                                isListTo:true,
                                 isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
                                 headingComponents: markdownAICacheConfiguration.headingComponents

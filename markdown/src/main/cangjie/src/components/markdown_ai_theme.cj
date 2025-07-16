@@ -86,6 +86,11 @@ public class MarkdownAITheme {
     protected var isLinkStyle: Bool = false
 
     /**
+     * 列表中的链接是否是图片显示
+     */
+    protected var isListLinkStyle: Bool = false
+
+    /**
      * 圆形链接主题背景颜色
      */
     protected var linkCircleImageBackGroupColor: Color = COLOR_FFFFFFFF
@@ -802,6 +807,7 @@ public class MarkdownAITheme {
         this.linkBackGroupColor = builder.linkBackGroupColor
         this.isLinkUnderlined = builder.isLinkUnderlined
         this.isLinkStyle = builder.isLinkStyle
+        this.isListLinkStyle = builder.isListLinkStyle
         this.linkCircleImageBackGroupColor = builder.linkCircleImageBackGroupColor
         this.linkCircleImageButtonBackGroupColor = builder.linkCircleImageButtonBackGroupColor
         this.linkCircleImageTextSize = builder.linkCircleImageTextSize
@@ -1127,6 +1133,11 @@ public class MarkdownAIThemeBuilder {
      * 链接是否是图片显示
      */
     protected var isLinkStyle: Bool = false
+
+    /**
+     * 列表中的链接是否是图片显示
+     */
+    protected var isListLinkStyle: Bool = false
 
     /**
      * 圆形链接主题背景颜色
@@ -1848,6 +1859,7 @@ public class MarkdownAIThemeBuilder {
         this.linkBackGroupColor = theme.linkBackGroupColor
         this.isLinkUnderlined = theme.isLinkUnderlined
         this.isLinkStyle = theme.isLinkStyle
+        this.isListLinkStyle = theme.isListLinkStyle
         this.linkCircleImageBackGroupColor = theme.linkCircleImageBackGroupColor
         this.linkCircleImageButtonBackGroupColor = theme.linkCircleImageButtonBackGroupColor
         this.linkCircleImageTextSize = theme.linkCircleImageTextSize
@@ -2183,6 +2195,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setIsLinkStyle(isLinkStyle: Bool): MarkdownAIThemeBuilder {
         this.isLinkStyle = isLinkStyle
+        return this
+    }
+
+    /**
+     * 设置链接是否是图片显示
+     *
+     * @param isListLinkStyle 列表中的链接是否是图片显示true：图片显示，false：文本显示
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setIsListLinkStyle(isListLinkStyle: Bool): MarkdownAIThemeBuilder {
+        this.isListLinkStyle = isListLinkStyle
         return this
     }
 

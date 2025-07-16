@@ -115,6 +115,7 @@ public class MarkdownAIQuoteComponent {
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
+                                    isListTo:true,
                                     indexList: indexAdd(indexList, idx),
                                     paragraphComponents: markdownAICacheConfiguration.paragraphComponents,
                                     blockQuoteBackGroupClor: markdownAIConfiguration.markdownAITheme.blockQuoteBackGroupClor
@@ -133,6 +134,7 @@ public class MarkdownAIQuoteComponent {
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isFull: isFull,
+                                    isListTo:true,
                                     indexList: indexAdd(indexList, idx),
                                     headingComponents: markdownAICacheConfiguration.headingComponents,
                                     blockQuoteBackGroupClor: markdownAIConfiguration.markdownAITheme.blockQuoteBackGroupClor

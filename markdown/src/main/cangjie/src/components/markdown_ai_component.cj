@@ -158,6 +158,7 @@ public class MarkdownAIComponent {
                                     imageMarginTop: markdownAIConfiguration.markdownAITheme.imageMarginTop,
                                     imageMarginBottom: markdownAIConfiguration.markdownAITheme.imageMarginBottom,
                                     isFull: isFull,
+                                    isListTo:false,
                                     indexList: indexAdd(indexList, idx),
                                     headingComponents: markdownAICacheConfiguration.headingComponents
                                 )
@@ -177,6 +178,7 @@ public class MarkdownAIComponent {
                                     imageMarginTop: markdownAIConfiguration.markdownAITheme.imageMarginTop,
                                     imageMarginBottom: markdownAIConfiguration.markdownAITheme.imageMarginBottom,
                                     isFull: isFull,
+                                    isListTo:false,
                                     indexList: indexAdd(indexList, idx),
                                     paragraphComponents: markdownAICacheConfiguration.paragraphComponents
                                 )
@@ -338,6 +340,7 @@ public class MarkdownAIComponent {
                                         imageCallback: imageCallback,
                                         componentWidth: px2vp(componentWidth.px).getOrThrow().value,
                                         isFull: isFull,
+                                        isListTo:false,
                                         indexList: indexAdd(indexList, idx),
                                         paragraphComponents: markdownAICacheConfiguration.paragraphComponents
                                     )
@@ -403,6 +406,8 @@ public class MarkdownAIComponent {
                     }
                 )
             }
+            // 嵌套滚动选项。设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
+            .nestedScroll(NestedScrollOptions(NestedScrollMode.PARENT_FIRST, NestedScrollMode.PARENT_FIRST))
         }
     }
 

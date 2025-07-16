@@ -95,6 +95,11 @@ class MarkdownAIParagraphComponent {
      */
     var imageMarginBottom: Float64 = 0.0
 
+    /**
+     * 是否列表中的段落
+     */
+    var isListTo: Bool = false
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeViews)
@@ -149,33 +154,45 @@ class MarkdownAIParagraphComponent {
                         )
                     } else if (item.node is CommonmarkLink) {
                         // 链接
-                        if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
-                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
-                                if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
-                                    MarkdownAILinkRectImageComponent(
-                                        markdownAIConfiguration: markdownAIConfiguration,
-                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
-                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor)
-                                    )
-                                } else {
-                                    MarkdownAILinkCircleImageComponent(
-                                        markdownAIConfiguration: markdownAIConfiguration,
-                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
-                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor)
-                                    )
-                                }
+                        if (isListTo && !markdownAIConfiguration.markdownAITheme.isListLinkStyle) {
+                            if(getLinkString(item).isSome()){
+                                paragraphLinkComponent(
+                                    item,
+                                    getLinkString(item)(),
+                                    markdownAIConfiguration
+                                )
+                            }else{
+                                Span("")
                             }
                         } else {
-                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
-                                MarkdownAILinkRectToolImageComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
-                                    strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                    strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                    backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor)
-                                )
+                            if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
+                                    if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
+                                        MarkdownAILinkRectImageComponent(
+                                            markdownAIConfiguration: markdownAIConfiguration,
+                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor)
+                                        )
+                                    } else {
+                                        MarkdownAILinkCircleImageComponent(
+                                            markdownAIConfiguration: markdownAIConfiguration,
+                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor)
+                                        )
+                                    }
+                                }
+                            } else {
+                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
+                                    MarkdownAILinkRectToolImageComponent(
+                                        markdownAIConfiguration: markdownAIConfiguration,
+                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
+                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor)
+                                    )
+                                }
                             }
                         }
                     } else if (item.node is HardLineBreak) {

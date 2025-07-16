@@ -982,3 +982,20 @@ func appendTwoDigits(sb: StringBuilder, value: Int64): StringBuilder {
     sb.append(value)
     return sb
 }
+
+func getLinkString(nodeView: NodeView): ?String{
+    if(nodeView.children.size == 0){
+        return Option<String>.None
+    }
+    var s = ""
+    for(childrenNodeView in nodeView.children){
+        if (childrenNodeView.node is CommonmarkText) {
+            s = s + (childrenNodeView.node as CommonmarkText)().getLiteral()
+        } else if (childrenNodeView.node is Footnote) {
+            s = s + (childrenNodeView.node as Footnote)().noteid
+        } else if (childrenNodeView.node is Code) {
+            s = s + (childrenNodeView.node as Code)().getLiteral()
+        }
+    }
+    return s
+}

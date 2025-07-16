@@ -191,6 +191,8 @@ class MarkdownAICodeComponent {
                 .alignListItem(ListItemAlign.End)
                 // 设置组件是否可交
                 .enabled(false)
+                // 嵌套滚动选项。设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
+                .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
                 Scroll() {
                     Column() {
                         List(scroller: scroller2) {
@@ -231,6 +233,8 @@ class MarkdownAICodeComponent {
                         .onTouch {
                             evt => chatOnTouch(evt)
                         }
+                        // 嵌套滚动选项。设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
+                        .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
                     }
                     // 设置组件自身的宽度
                     .height(100.percent)
@@ -247,6 +251,8 @@ class MarkdownAICodeComponent {
                 .width(100.percent)
                 // 设置组件自身的宽度
                 .height(100.percent)
+                // 嵌套滚动选项。设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
+                .nestedScroll(NestedScrollOptions(NestedScrollMode.PARENT_FIRST, NestedScrollMode.PARENT_FIRST))
             }
             // 设置组件自身的宽度
             .width(100.percent)
