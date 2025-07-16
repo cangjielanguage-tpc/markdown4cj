@@ -100,11 +100,21 @@ class MarkdownAIParagraphComponent {
      */
     var isListTo: Bool = false
 
+    /**
+     * 是否只有一条链接数据
+     */
+    var isOneLink: Bool = false
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeViews)
         // 缓存当前控件
         paragraphComponents.append(this)
+        if(nodeViewList.size==1 && nodeViewList[0].node is CommonmarkLink){
+            isOneLink = true
+        }else{
+            isOneLink = false
+        }
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -154,7 +164,7 @@ class MarkdownAIParagraphComponent {
                         )
                     } else if (item.node is CommonmarkLink) {
                         // 链接
-                        if (isListTo && !markdownAIConfiguration.markdownAITheme.isListLinkStyle) {
+                        if (isListTo && !markdownAIConfiguration.markdownAITheme.isListLinkStyle && isOneLink) {
                             if(getLinkString(item).isSome()){
                                 paragraphLinkComponent(
                                     item,
