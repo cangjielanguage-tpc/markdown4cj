@@ -682,6 +682,16 @@ public class MarkdownAITheme {
     protected var audioTypeTextLineHeight: Float64 = 15.0
 
     /**
+     * 音频下边距
+     */
+    protected var audioMarginTop: Float64 = 10.0
+
+    /**
+     * 音频下边距
+     */
+    protected var audioMarginBottom: Float64 = 10.0
+
+    /**
      * 视频默认占位图
      */
     protected var videoImage: ?CJResource = None
@@ -715,6 +725,16 @@ public class MarkdownAITheme {
      * 视频时间文本居底边距
      */
     protected var videoTimeTextMarginBottom: Float64 = 10.0
+
+    /**
+     * 视频下边距
+     */
+    protected var videoMarginTop: Float64 = 10.0
+
+    /**
+     * 视频下边距
+     */
+    protected var videoMarginBottom: Float64 = 10.0
 
     /**
      * 图片banner默认占位图
@@ -951,6 +971,8 @@ public class MarkdownAITheme {
         this.audioTypeTextSize = builder.audioTypeTextSize
         this.audioTypeTextColor = builder.audioTypeTextColor
         this.audioTypeTextLineHeight = builder.audioTypeTextLineHeight
+        this.audioMarginTop = builder.audioMarginTop
+        this.audioMarginBottom = builder.audioMarginBottom
         // 视频
         this.videoImage = builder.videoImage
         this.playCircleFillIcon = builder.playCircleFillIcon
@@ -959,6 +981,8 @@ public class MarkdownAITheme {
         this.videoTimeTextSize = builder.videoTimeTextSize
         this.videoTimeTextMarginRight = builder.videoTimeTextMarginRight
         this.videoTimeTextMarginBottom = builder.videoTimeTextMarginBottom
+        this.videoMarginTop = builder.videoMarginTop
+        this.videoMarginBottom = builder.videoMarginBottom
         // 图片banner
         this.bannerImage = builder.bannerImage
         // 图片
@@ -1668,6 +1692,16 @@ public class MarkdownAIThemeBuilder {
     protected var audioTypeTextLineHeight: Float64 = 15.0
 
     /**
+     * 音频下边距
+     */
+    protected var audioMarginTop: Float64 = 10.0
+
+    /**
+     * 音频下边距
+     */
+    protected var audioMarginBottom: Float64 = 10.0
+
+    /**
      * 视频默认占位图
      */
     protected var videoImage: ?CJResource = None
@@ -1701,6 +1735,16 @@ public class MarkdownAIThemeBuilder {
      * 视频时间文本居底边距
      */
     protected var videoTimeTextMarginBottom: Float64 = 10.0
+
+    /**
+     * 视频下边距
+     */
+    protected var videoMarginTop: Float64 = 10.0
+
+    /**
+     * 视频下边距
+     */
+    protected var videoMarginBottom: Float64 = 10.0
 
     /**
      * 图片banner默认占位图
@@ -1940,6 +1984,8 @@ public class MarkdownAIThemeBuilder {
         this.audioTypeTextSize = theme.audioTypeTextSize
         this.audioTypeTextColor = theme.audioTypeTextColor
         this.audioTypeTextLineHeight = theme.audioTypeTextLineHeight
+        this.audioMarginTop = theme.audioMarginTop
+        this.audioMarginBottom = theme.audioMarginBottom
         // 视频
         this.videoImage = theme.videoImage
         this.playCircleFillIcon = theme.playCircleFillIcon
@@ -1948,6 +1994,8 @@ public class MarkdownAIThemeBuilder {
         this.videoTimeTextSize = theme.videoTimeTextSize
         this.videoTimeTextMarginRight = theme.videoTimeTextMarginRight
         this.videoTimeTextMarginBottom = theme.videoTimeTextMarginBottom
+        this.videoMarginTop = theme.videoMarginTop
+        this.videoMarginBottom = theme.videoMarginBottom
         // 图片banner
         this.bannerImage = theme.bannerImage
         // 图片
@@ -3367,6 +3415,28 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
+     * 设置音频上边距
+     *
+     * @param audioMarginTop 音频上边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioMarginTop(audioMarginTop: Float64): MarkdownAIThemeBuilder {
+        this.audioMarginTop = audioMarginTop
+        return this
+    }
+
+    /**
+     * 设置音频下边距
+     *
+     * @param audioMarginBottom 音频下边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setAudioMarginBottom(audioMarginBottom: Float64): MarkdownAIThemeBuilder {
+        this.audioMarginBottom = audioMarginBottom
+        return this
+    }
+
+    /**
      * 设置视频默认占位图
      *
      * @param videoImage 视频默认占位图默认None
@@ -3440,6 +3510,28 @@ public class MarkdownAIThemeBuilder {
      */
     public func setVideoTimeTextMarginBottom(videoTimeTextMarginBottom: Float64): MarkdownAIThemeBuilder {
         this.videoTimeTextMarginBottom = videoTimeTextMarginBottom
+        return this
+    }
+
+    /**
+     * 设置视频上边距
+     *
+     * @param videoMarginTop 视频上边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setVideoMarginTop(videoMarginTop: Float64): MarkdownAIThemeBuilder {
+        this.videoMarginTop = videoMarginTop
+        return this
+    }
+
+    /**
+     * 设置视频下边距
+     *
+     * @param videoMarginBottom 视频下边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setVideoMarginBottom(videoMarginBottom: Float64): MarkdownAIThemeBuilder {
+        this.videoMarginBottom = videoMarginBottom
         return this
     }
 

@@ -49,6 +49,13 @@ class CustomizationCompleteDetailsPage {
 
     func build() {
         Column() {
+            Text("")
+                // 高度
+                .height(50)
+                // 宽度
+                .width(100.percent)
+                // 背景颜色
+                .backgroundColor(0xFF0000)
             Text("${params}")
                 // 高度
                 .height(40)
@@ -76,7 +83,9 @@ class CustomizationCompleteDetailsPage {
                 }
             }
             // 外边距
-            .margin(right: 10, left: 10, bottom: 50)
+            .margin(right: 10, left: 10)
+            // 内边距
+            .padding(bottom: 100)
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
         }
@@ -150,8 +159,8 @@ class CustomizationCompleteDetailsPage {
         markdownAIThemeBuilder.setLinkRectToolImageMargin(2.0) // 设置空心圆角矩形链接左右边距
 
         // 4、列表
-        markdownAIThemeBuilder.setBlockOrderedAndBulletTopAndBottomMargins(10.0) // 设置列表子模块间距
-        markdownAIThemeBuilder.setBlockQuoteTopAndBottomMargins(10.0) // // 设置块引用子模块间距
+        markdownAIThemeBuilder.setBlockOrderedAndBulletTopAndBottomMargins(0.0) // 设置列表子模块间距
+        markdownAIThemeBuilder.setBlockQuoteTopAndBottomMargins(0.0) // // 设置块引用子模块间距
         // 块引用
         markdownAIThemeBuilder.setBlockQuoteColor(Color.RED) // 设置块引用左边线条颜色
         markdownAIThemeBuilder.setBlockQuoteBackGroupColor(Color.GRAY) // 设置块引用背景颜色

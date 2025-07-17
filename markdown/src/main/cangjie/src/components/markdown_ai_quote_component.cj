@@ -243,16 +243,16 @@ public class MarkdownAIQuoteComponent {
                                 MarkdownAIImageAudioComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeView: item,
-                                    marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.audioMarginTop,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.audioMarginBottom
                                 )
                             } else if (item.node is BlockVideo) {
                                 // 视频
                                 MarkdownAIImageVideoComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeView: item,
-                                    marginTop: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.videoMarginTop,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.videoMarginBottom,
                                     videoCallback: videoCallback
                                 )
                             } else {

@@ -43,6 +43,13 @@ class IncrementPage {
 
     func build() {
         Column {
+            Text("")
+                // 高度
+                .height(50)
+                // 宽度
+                .width(100.percent)
+                // 背景颜色
+                .backgroundColor(0xFF0000)
             Text("全量加载")
                 // 高度
                 .height(40)
@@ -97,8 +104,8 @@ class IncrementPage {
             .align(Alignment.TopStart)
             // 高度
             .height(100.percent)
-            // 外边距
-            .margin(bottom: 40)
+            // 内边距
+            .padding(bottom: 100)
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
         }

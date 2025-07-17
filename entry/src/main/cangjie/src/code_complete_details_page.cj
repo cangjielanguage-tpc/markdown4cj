@@ -49,6 +49,13 @@ class CodeCompleteDetailsPage {
 
     func build() {
         Column() {
+            Text("")
+                // 高度
+                .height(50)
+                // 宽度
+                .width(100.percent)
+                // 背景颜色
+                .backgroundColor(0xFF0000)
             Text("${params}")
                 // 高度
                 .height(40)
@@ -76,7 +83,9 @@ class CodeCompleteDetailsPage {
                 }
             }
             // 外边距
-            .margin(right: 10, left: 10, bottom: 50)
+            .margin(right: 10, left: 10)
+            // 内边距
+            .padding(bottom: 100)
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
         }

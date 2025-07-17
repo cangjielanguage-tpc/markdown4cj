@@ -20,6 +20,13 @@ class IndexPage {
 
     func build() {
         Column {
+            Text("")
+                // 高度
+                .height(50)
+                // 宽度
+                .width(100.percent)
+                // 背景颜色
+                .backgroundColor(0xFF0000)
             Text("Markdown测试用例")
                 // 高度
                 .height(40)
@@ -200,6 +207,8 @@ class IndexPage {
                     }
                 }
             }
+            // 内边距
+            .padding(bottom: 100)
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
         }

@@ -295,8 +295,8 @@ public class MarkdownAIComponent {
                                 MarkdownAIImageAudioComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeView: item,
-                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins
+                                    marginTop: markdownAIConfiguration.markdownAITheme.audioMarginTop,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.audioMarginBottom
                                 )
                             }
                         } else if (item.node is BlockVideo) {
@@ -305,8 +305,8 @@ public class MarkdownAIComponent {
                                 MarkdownAIImageVideoComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     nodeView: item,
-                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.videoMarginTop,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.videoMarginBottom,
                                     videoCallback: videoCallback
                                 )
                             }
