@@ -1,5 +1,5 @@
-/**
- * Created on 2025/6/23
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 package ohos_app_cangjie_entry
 
@@ -14,35 +14,39 @@ import std.time.*
 import ohos.hilog.Hilog
 
 /**
- * 音视频全量加载
+ * markdown外层是list
  */
 @Entry
 @Component
-class AudioAndVideo3CompletePage {
-    var mdStr: String = ""
+class ListMarkdownPage {
+    let mdStr0: String = getFileContextStr("all.md")
+    let mdStr1: String = getFileContextStr("audio_video.md")
+    let mdStr4: String = getFileContextStr("big_data.md")
+    let mdStr2: String = getFileContextStr("latex.md")
+    let mdStr3: String = getFileContextStr("table.md")
+    let mdStr5: String = getFileContextStr("title.md")
 
-    var scroller: Scroller = Scroller()
-
-    protected override func aboutToAppear(): Unit {
-        mdStr = getFileContextStr("audio_video_3.md")
-    }
+    let arr = [mdStr0, mdStr1, mdStr2, mdStr3, mdStr4, mdStr5]
 
     func build() {
-        Column() {
-            Scroll(scroller) {
-                Column {
-                    MarkdownAIComponent(output: mdStr, isFull: true, markdownAIConfiguration: setConfig())
+        List() {
+            ForEach(
+                arr,
+                itemGeneratorFunc: {
+                    str: String, index: Int64 =>
+                        ListItem(){
+                            Column(){
+                                MarkdownAIComponent(output: str, isFull: true, markdownAIConfiguration: setConfig())
+                            }
+//                            .margin(20)
+                            .borderColor(Color.BLACK)
+                            .borderWidth(1)
+                            .backgroundColor(Color.WHITE)
+                        }
                 }
-            }
-            // 左右外边距
-            .margin(right: 10, left: 10)
-            // 高度
-            .height(100.percent)
-            // 圆角
-            .borderRadius(8)
-            // 设置滚动方法
-            .scrollable(ScrollDirection.Vertical)
+            )
         }
+        .backgroundColor(Color.GRAY)
     }
 
     func setConfig(): MarkdownAIConfiguration {
@@ -69,8 +73,6 @@ class AudioAndVideo3CompletePage {
             .setAudioIcon(@r(app.media.app_icon))
             // 视频占位图
             .setVideoImage(@r(app.media.place_holder))
-            // 图片默认占位图
-            .setImagePlaceholder("https://qcdn2.zhaomi.cn/d/ptyGRnnvhwP_vlyRrwOPHhp_mark.png")
             // 视频占位图
             .setPlayCircleFillIcon(@r(app.media.play_circle_fill))
             // 设置一级二级标题下划线高度
@@ -121,7 +123,7 @@ class AudioAndVideo3CompletePage {
     }
 
     func footnoteCallback(f: ?Float64) {
-        scroller.scrollBy(xOffset: 0.0, yOffset: f.getOrThrow())
+        //scroller.scrollBy(xOffset: 0.0, yOffset: f.getOrThrow())
         Hilog.error(1, "2", "------------------------footnoteCallback:f:${f}")
     }
 
