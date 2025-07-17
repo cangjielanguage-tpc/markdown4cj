@@ -93,6 +93,8 @@ class IncrementPage {
                     )
                 }
             }
+            // 设置容器元素绘制区域内的子元素的对齐方式。
+            .align(Alignment.TopStart)
             // 高度
             .height(100.percent)
             // 外边距

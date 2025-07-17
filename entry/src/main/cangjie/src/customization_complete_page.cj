@@ -14,11 +14,11 @@ import std.time.*
 import ohos.hilog.*
 
 /**
- * 全量加载
+ * 定制化全量加载
  */
 @Entry
 @Component
-class CompletePage {
+class CustomizationCompletePage {
     /**
      * markdown文本内容
      */
@@ -37,11 +37,7 @@ class CompletePage {
     var folderList: ObservedArrayList<String> = ObservedArrayList<String>()
 
     protected override func aboutToAppear(): Unit {
-        let arr1: Array<String> = getFileListStr("")
-        Hilog.error(1,"1","------------arr1")
-
-        let arr: Array<String> = getFileListStr("001_测试用例/")
-        Hilog.error(1,"1","------------arr")
+        let arr: Array<String> = getFileListStr("003_定制化数据/")
         folderList.appendAll(arr)
     }
 
@@ -87,7 +83,7 @@ class CompletePage {
                                         // 字体大小
                                         .fontSize(16)
                                         // 点击动作触发该方法调用
-                                        .onClick {Router.push(url: "CompleteDetailsPage", params: "001_测试用例/${str}")}
+                                        .onClick {Router.push(url: "CustomizationCompleteDetailsPage", params: "003_定制化数据/${str}")}
                                 }
                             }
                         },
