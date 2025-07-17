@@ -51,12 +51,6 @@ public class MarkdownAIImageAudioComponent {
     @State
     var audioType: String = ""
 
-    /**
-     * 音频文件大小
-     */
-    @State
-    var audioSize: String = ""
-
     protected override func aboutToAppear(): Unit {
         let nodeViews: ArrayList<NodeView> = nodeView.children
         for (node in nodeViews) {
@@ -112,13 +106,6 @@ public class MarkdownAIImageAudioComponent {
                         .lineHeight(markdownAIConfiguration.markdownAITheme.audioTypeTextLineHeight)
                         // 设置文本颜色
                         .fontColor(markdownAIConfiguration.markdownAITheme.audioTypeTextColor)
-                    Text(audioSize)
-                        // 设置文本尺寸
-                        .fontSize(markdownAIConfiguration.markdownAITheme.audioFileSizeTextSize)
-                        // 设置行高
-                        .lineHeight(markdownAIConfiguration.markdownAITheme.audioFileSizeTextLineHeight)
-                        // 设置文本颜色
-                        .fontColor(markdownAIConfiguration.markdownAITheme.audioFileSizeTextColor)
                 }
             }
             // 设置子组件在垂直方向上的对齐格式

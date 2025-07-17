@@ -287,7 +287,7 @@ public class MarkdownAIComponent {
                                     // 设置分割线宽度
                                     .strokeWidth(markdownAIConfiguration.markdownAITheme.thematicBreakHeight)
                                     // 设置外边距属性
-                                    .margin(top: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins, bottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins)
+                                    .margin(top: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins + markdownAIConfiguration.markdownAITheme.thematicBreakTopMargin, bottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins + markdownAIConfiguration.markdownAITheme.thematicBreakBottomMargin)
                             }
                         } else if (item.node is BlockAudio) {
                             // 音频

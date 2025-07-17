@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 package markdown.components
 
@@ -9,52 +9,47 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 行内数学公式
+ * 内联代码
  */
 @Component
-public class MarkdownAILatexImageSpanComponent {
+public class MarkdownAICodeLineImageSpanComponent {
     /**
      * markdown配置
      */
     var markdownAIConfiguration: MarkdownAIConfiguration
 
     /**
-     * 控件宽度 - 单位px
+     * 内联代码
      */
-    var componentWidth: Float64
+    var strCode: String
 
     /**
-     * 数学公示内容
+     * 链接
      */
-    var strLatexMath: String
+    var strUrl: ?String
 
     /**
-     * 数学公式高度
+     * 内联代码高度
      */
     @State
     var imageHeight: ?Float64 = Option<Float64>.None
 
     /**
-     * 数学公式宽度
+     * 内联代码宽度
      */
     @State
     var imageWidth: ?Float64 = Option<Float64>.None
 
     /**
-     * 数学公式图片信息
+     * 内联代码图片信息
      */
     @State
     var imagePixelMap: ?PixelMap = Option<PixelMap>.None
 
     /**
-     * 数学公式数组信息
+     * 内联代码数组信息
      */
     var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None
-
-    /**
-     * 图片背景颜色
-     */
-    var backGroupColor: Color
 
     /**
      * 图片最大宽度
@@ -62,8 +57,8 @@ public class MarkdownAILatexImageSpanComponent {
     var maxWidth: Length = 100.percent
 
     protected override func aboutToAppear(): Unit {
-        // 数学公式解析
-        latexMathImagePixelmap()
+        // 链接解析
+        codeLinePixelmap()
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -88,15 +83,17 @@ public class MarkdownAILatexImageSpanComponent {
                 .verticalAlign(ImageSpanAlignment.CENTER)
                 // 点击动作触发该方法调用
                 .onClick {
-                    evt => latexImageOnClick(arrayUint8(), imageHeight().px, imageWidth().px, markdownAIConfiguration.latexImageCallback)
+                    evt => if (markdownAIConfiguration.linkCallback.isSome() && strUrl.isSome()) {
+                        markdownAIConfiguration.linkCallback()(strUrl())
+                    }
                 }
         }
     }
 
     /**
-     * 数学公式数据处理 - 行内数学公式
+     * 链接数据处理
      */
-    func latexMathImagePixelmap(): Unit {
+    func codeLinePixelmap(): Unit {
         let callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit = {
             pixelMap, height, width, arr => launch {
                 imageHeight = height
@@ -105,7 +102,7 @@ public class MarkdownAILatexImageSpanComponent {
                 arrayUint8 = arr
             }
         }
-        // 解析数学公式
-        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownAIConfiguration, vp2px(componentWidth.vp)().value, callback, backGroupColor)
+        // 解析内联代码
+        MarkdownParseCodeUtil.codeStrToRectPixelMap(strCode, markdownAIConfiguration, callback)
     }
 }

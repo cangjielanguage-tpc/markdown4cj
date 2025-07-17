@@ -173,7 +173,7 @@ class MarkdownAIIndentedCodeBlockComponent {
                     Row() {
                         Text(i)
                             // 设置字体颜色
-                            .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+                            .fontColor(indentedCodeodeBlockTypeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
                             // 设置字体大小
                             .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
                             // 设置外边距
@@ -205,15 +205,18 @@ class MarkdownAIIndentedCodeBlockComponent {
                                 // 设置宽度
                                 .width(5)
 
-                            Text("复制代码")
-                                // 设置字体颜色
-                                .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
-                                // 设置字体大小
-                                .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
-                                // 设置容器元素绘制区域内的子元素的对齐方式
-                                .align(Alignment.End)
-                                // 设置外边距
-                                .margin(right: 4)
+
+                            if(markdownAIConfiguration.markdownAITheme.codeBlockIconTextHide){
+                                Text("复制代码")
+                                    // 设置字体颜色
+                                    .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+                                    // 设置字体大小
+                                    .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                                    // 设置容器元素绘制区域内的子元素的对齐方式
+                                    .align(Alignment.End)
+                                    // 设置外边距
+                                    .margin(right: 4)
+                            }
                         }
                         // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)
@@ -239,15 +242,17 @@ class MarkdownAIIndentedCodeBlockComponent {
                                 // 设置宽度
                                 .width(5)
 
-                            Text("全屏代码")
-                                // 设置字体颜色
-                                .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
-                                // 设置字体大小
-                                .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
-                                // 设置容器元素绘制区域内的子元素的对齐方式
-                                .align(Alignment.End)
-                                // 设置外边距
-                                .margin(right: 4)
+                            if(markdownAIConfiguration.markdownAITheme.codeBlockIconTextHide){
+                                Text("全屏代码")
+                                    // 设置字体颜色
+                                    .fontColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+                                    // 设置字体大小
+                                    .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                                    // 设置容器元素绘制区域内的子元素的对齐方式
+                                    .align(Alignment.End)
+                                    // 设置外边距
+                                    .margin(right: 4)
+                            }
                         }
                         // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)

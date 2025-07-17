@@ -150,24 +150,32 @@ class MarkdownAITableBlockCellComponent {
                             // 文本
                             tableComponentText(
                                 item,
-                                isHeader,
+                                isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold),
                                 markdownAIConfiguration
                             )
                         } else if (item.node is Footnote) {
                             // 脚注
                             tableComponentFootnote(
                                 item,
-                                isHeader,
+                                isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold),
                                 markdownAIConfiguration,
                                 fontCallback
                             )
                         } else if (item.node is Code) {
                             // 内联代码
-                            tableComponentCode(
-                                item,
-                                isHeader,
-                                markdownAIConfiguration
-                            )
+                            if (markdownAIConfiguration.markdownAITheme.isCodeStyle) {
+                                MarkdownAICodeLineImageSpanComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    strCode: (item.node as Code)().getLiteral(),
+                                    strUrl: linkUrl(item)
+                                )
+                            } else {
+                                tableComponentCode(
+                                    item,
+                                    isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold),
+                                    markdownAIConfiguration
+                                )
+                            }
                         } else if (item.node is HardLineBreak) {
                             // 硬换行
                             Span("\n")

@@ -158,10 +158,18 @@ class MarkdownAIParagraphComponent {
                         )
                     } else if (item.node is Code) {
                         // 内联代码
-                        paragraphCodeComponent(
-                            item,
-                            markdownAIConfiguration
-                        )
+                        if (markdownAIConfiguration.markdownAITheme.isCodeStyle) {
+                            MarkdownAICodeLineImageSpanComponent(
+                                markdownAIConfiguration: markdownAIConfiguration,
+                                strCode: (item.node as Code)().getLiteral(),
+                                strUrl: linkUrl(item)
+                            )
+                        } else {
+                            paragraphCodeComponent(
+                                item,
+                                markdownAIConfiguration
+                            )
+                        }
                     } else if (item.node is CommonmarkLink) {
                         // 链接
                         if (isListTo && !markdownAIConfiguration.markdownAITheme.isListLinkStyle && isOneLink) {

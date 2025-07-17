@@ -22,6 +22,8 @@ let COLOR_FFE0E0E0: Color = Color(0xFFE0E0E0)
 let COLOR_333333: Color = Color(0x333333)
 let COLOR_1A000000: Color = Color(0x1A000000)
 let COLOR_33000000: Color = Color(0x33000000)
+let COLOR_FF0000FF: Color = Color(0xFF0000FF)
+
 let null: NodeView = unsafe { zeroValue() }
 
 func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<String>, ArrayList<String>) {
@@ -127,7 +129,7 @@ func spanFontSize(nodeView: NodeView, isCode: Bool, markdownAITheme: MarkdownAIT
 func spanTextFontSize(nodeView: NodeView, isCode: Bool, markdownAITheme: MarkdownAITheme, isTitle: Bool, level: Int64): Float64 {
     if (isCode) {
         // 内联代码情况设置内联代码字体大小
-        return markdownAITheme.codeTextSize
+        return px2vp(markdownAITheme.codeTextSize.px)().value
     } else {
         if (nodeView.link.isSome()) {
             return markdownAITheme.linkSize
@@ -149,6 +151,26 @@ func spanTextFontSize(nodeView: NodeView, isCode: Bool, markdownAITheme: Markdow
  * @return 返回需要显示的字体粗细
  */
 func spanFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
+    if (isTitle) {
+        // 所有标题默认加粗
+        return FontWeight.W600
+    } else {
+        if (nodeView.strongEmphasis) {
+            return FontWeight.W600
+        } else {
+            return FontWeight.W400
+        }
+    }
+}
+
+/**
+ * 表格文字粗细设置
+ *
+ * @param nodeView NodeView
+ * @param isTitle 是否是标题
+ * @return 返回需要显示的字体粗细
+ */
+func spanTableFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
     if (isTitle) {
         // 所有标题默认加粗
         return FontWeight.W600
@@ -999,3 +1021,39 @@ func getLinkString(nodeView: NodeView): ?String{
     }
     return s
 }
+
+func isFontWeight(b:Bool):FontWeight{
+    if(b){
+        FontWeight.W600
+    }else {
+        FontWeight.W400
+    }
+}
+
+func isAlignItems(b:Bool):Alignment{
+    if(b){
+        Alignment.Center
+    }else{
+        Alignment.Start
+    }
+}
+
+func indentedCodeodeBlockTypeTextColor(markdownAITheme: MarkdownAITheme, prismTheme: PrismTheme): Color {
+    if(markdownAITheme.codeBlockTypeTextColor.isSome()){
+        return markdownAITheme.codeBlockTypeTextColor()
+    }
+    if (markdownAITheme.codeBlockTextColor.isSome()) {
+        return markdownAITheme.codeBlockTextColor()
+    }
+    return prismTheme.textColor()
+}
+
+func linkUrl(nodeView: NodeView):?String{
+    return if(nodeView.link.isSome()){
+        nodeView.link().getDestination()
+    }else{
+        Option<String>.None
+    }
+}
+
+

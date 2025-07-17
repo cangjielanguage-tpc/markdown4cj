@@ -20,28 +20,34 @@ import ohos.ark_interop_helper.*
  *          圆角矩形链接主题背景颜色、圆角矩形链接控件背景颜色、圆角矩形链接文字大小、圆角矩形链接文字颜色、圆角矩形链接控件高度、圆角矩形链接左右内边距、圆角矩形链接圆角半径、圆角矩形链接左右外边距、
  *          空心圆角矩形链接主题背景颜色、空心圆角矩形链接控件背景颜色、空心圆角矩形链接控件边框颜色、空心圆角矩形链接控件分割线颜色、空心圆角矩形链接文字大小、空心圆角矩形链接文字颜色、空心圆角矩形链接控件高度、空心圆角矩形链接左右内边距、空心圆角矩形链接边框宽度、空心圆角矩形链接分割线宽度、空心圆角矩形链接左右外边距、空心圆角矩形链接分割线和文本左边距、空心圆角矩形链接分割线和文本右边距
  * 4：列表 - 列表包含（块引用、有序列表、无序列表、任务列表、TOC列表）
- *          列表左边距、列表展示的数量
- *          块引用左边线条宽度、块引用左边线条颜色、块引用背景颜色、
- *          有序列表列表项的颜色、有序列表项的文本大小、有序列表项文本行高、
+ *          列表左边距、列表右边距、列表展示的数量
+ *          块引用左边线条宽度、块引用左边线条颜色、块引用背景颜色、块引用子模块间距
+ *          有序列表前缀是否加粗、有序列表列表项的颜色、有序列表项的文本大小、有序列表项文本行高、有序列表无序列表任务列表子模块间距
  *          无序列表项的颜色、无序列表项的文本大小、无列表项文本行高、
  *          任务列表项的宽高
  * 5：代码 - 代码包含（内联代码、缩进代码、围栏代码、组合代码）（代码块有缩进代码、围栏代码、组合代码）
  *          内联代码文本颜色、内联代码背景颜色、内联代码文本字体、内联代码文本大小、
- *          代码块系列文本颜色、代码块系列背景颜色、代码块系列左边距、代码块系列字体、代码块系列文本大小、代码块系列行高、代码块圆角
+ *          代码块系列文本颜色、代码块系列类型文本颜色、代码块系列图片文字是否显示隐藏、代码块系列代码行是否显示隐藏、代码块系列背景颜色、代码块系列左边距、代码块系列字体、代码块系列文本大小、代码块系列行高、代码块圆角
  *          是否显示代码全屏按钮、代码全屏按钮和代码复制按钮的宽高、代码全屏按钮默认图标、代码复制按钮默认图标
  *          组合代码标题字体大小、组合代码标题字体大小、组合代码标题选中文本颜色、组合代码标题未选中文本颜色、组合代码标题选中背景颜色、组合代码标题未选中背景颜色
+ *          是否单独代码块、单独代码块行号宽度、
  * 6：标题 - （1-6级标题）
  *          H1和H2标题下分割线高度、H1和H2标题下分割线颜色、标题元素字体、标题文本大小数组、标题文本颜色、标题文本字间距、
  *          一级标题文本行高、二级标题文本行高、三级标题文本行高、四级标题文本行高、五级标题文本行高、六级标题文本行高
- * 7：段落 - 段落文本大小、段落文本颜色、段落文本字间距、段落文本行高
- * 8：分割线 - 分割线颜色、分割线高度
+ * 7：段落 - 段落文本大小、段落文本颜色、段落文本字间距、段落文本行高、段落元素字体
+ * 8：分割线 - 分割线颜色、分割线高度、分割线上部外边距、分割线下部外边距
  * 9：软换行 - 软换行是否换行
- * 10：数学公式 - 数学公式文字大小、数学公式行距、数学公式背景色、数学公式字体颜色、数学公式生成图片格式、数学公式资源目录路径
- * 11：视频 - 视频默认占位图、视频播放按钮默认图标
- * 12：图片Banner - 图片banner默认占位图
- * 13：图片 - 图片宽度边距、图片默认占位图、网络图片是否压缩
- * 14：按钮 - 按钮文字内容、按钮文字字体大小、按钮文字颜色、按钮背景颜色、按钮高度、按钮上下边距
- * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高、表格圆角、表格一格最小宽度、表格一格最大宽度
+ * 10：数学公式 - 数学公式文字大小、数学公式行距、数学公式背景色、数学公式字体颜色、数学公式生成图片格式、块结构的数学公式是否居中
+ * 11：音频 - 音频图标、
+ *           音频边框颜色、音频边框粗细、音频边框圆角、
+ *           音频按钮背景颜色、音频按钮文字颜色、音频按钮文字大小、音频按钮文字内容、音频按钮圆角
+ *           音频标题文字大小、音频标题文字颜色、音频标题文字行高
+ *           音频类型文字大小、音频类型文字颜色、音频类型文字行高
+ * 12：视频 - 视频默认占位图、视频播放按钮默认图标、视频圆角
+ *           视频时间文本颜色、视频时间文本大小、视频时间文本居右边距、视频时间文本居底边距
+ * 13：图片Banner - 图片banner默认占位图
+ * 14：图片 - 图片宽度边距、图片默认占位图、网络图片是否压缩
+ * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高、表格圆角、表格一格最小宽度、表格一格最大宽度、表格第一列是否加粗
  * 16：代码高亮 - markdown代码高亮样式
  */
 public class MarkdownAITheme {
@@ -226,9 +232,24 @@ public class MarkdownAITheme {
     protected var linkRectToolImageLineRightPadding: Float64 = vp2px(3.0.vp).getOrThrow().value
 
     /**
-     * 有序列表、无序列表、任务列表、块引用左边距 - 单位vp
+     * 有序列表、无序列表、任务列表左边距 - 单位vp
      */
-    protected var blockMargin: Float64 = 8.0
+    protected var blockLeftMargin: Float64 = 8.0
+
+    /**
+     * 有序列表、无序列表、任务列表右边距 - 单位vp
+     */
+    protected var blockRightMargin: Float64 = 8.0
+
+    /**
+     * 块引用左边距 - 单位vp
+     */
+    protected var blockQuoteLeftMargin: Float64 = 8.0
+
+    /**
+     * 块引用右边距 - 单位vp
+     */
+    protected var blockQuoteRightMargin: Float64 = 8.0
 
     /**
      * 块引用左边线条宽度 - 单位vp
@@ -251,6 +272,11 @@ public class MarkdownAITheme {
     protected var blockQuoteTopAndBottomMargins: Float64 = 0.0
 
     /**
+     * 有序列表前缀是否加粗
+     */
+    protected var orderedListItemPrefixBold: Bool = false
+
+    /**
      * 有序列表列表项的颜色
      */
     protected var orderedListItemColor: Color = COLOR_191919
@@ -266,7 +292,7 @@ public class MarkdownAITheme {
     protected var orderedListItemLineheight: Float64 = 22.0
 
     /**
-     * 有序列表有序列表任务列表每个模块之间上下间距 - 单位vp
+     * 有序列表无序列表任务列表每个模块之间上下间距 - 单位vp
      */
     protected var blockOrderedAndBulletTopAndBottomMargins: Float64 = 0.0
 
@@ -291,14 +317,9 @@ public class MarkdownAITheme {
     protected var taskListItemLength: Float64 = 15.0
 
     /**
-     * 任务列表项的上下间距 - 单位vp
+     * 内联代码图片化
      */
-    protected var taskListTopAndBottomMargins: Float64 = 0.0
-
-    /**
-     * 列表展示的数量
-     */
-    protected var listNumber: Int64 = 1000
+    protected var isCodeStyle: Bool = false
 
     /**
      * 内联代码文本颜色
@@ -318,12 +339,37 @@ public class MarkdownAITheme {
     /**
      * 内联代码文本大小 - 单位fp
      */
-    protected var codeTextSize: Float64 = 13.0
+    protected var codeTextSize: Float64 = fp2px(13.0.fp).getOrThrow().value
+
+    /**
+     * 内联代码文本左右边距 - 单位vp
+     */
+    protected var codeLeftAndRightPadding: Float64 = vp2px(4.0.vp).getOrThrow().value
+
+    /**
+     * 内联代码文本高度 - 单位vp
+     */
+    protected var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
      * 代码块系列（缩进代码、围栏代码、组合代码）文本颜色
      */
     protected var codeBlockTextColor: ?Color = None
+
+    /**
+     * 代码块系列（缩进代码、围栏代码、组合代码）代码类型文本颜色
+     */
+    protected var codeBlockTypeTextColor: ?Color = None
+
+    /**
+     * 代码块系列（缩进代码、围栏代码、组合代码）图片文字是否显示隐藏
+     */
+    protected var codeBlockIconTextHide: Bool = true
+
+    /**
+     * 代码块系列（缩进代码、围栏代码、组合代码）代码行号是否显示隐藏
+     */
+    protected var codeBlockLineNumberHide: Bool = true
 
     /**
      * 代码块系列（缩进代码、围栏代码、组合代码）背景颜色
@@ -511,6 +557,16 @@ public class MarkdownAITheme {
     protected var thematicBreakHeight: Float64 = 0.5
 
     /**
+     * 分割线上部外边距 - 单位vp
+     */
+    protected var thematicBreakTopMargin: Float64 = 0.0
+
+    /**
+     * 分割线下部外边距 - 单位vp
+     */
+    protected var thematicBreakBottomMargin: Float64 = 0.0
+
+    /**
      * 软换行是否换行
      */
     protected var isLineBreak: Bool = false
@@ -518,7 +574,7 @@ public class MarkdownAITheme {
     /**
      * 数学公式文字大小 - 单位px
      */
-    protected var latexMathTextSize: Float64 = 48.0
+    protected var latexMathTextSize: Float64 = vp2px(16.0.vp)().value
 
     /**
      * 数学公式行距 - 单位px
@@ -541,9 +597,9 @@ public class MarkdownAITheme {
     protected var latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
 
     /**
-     * 数学公式资源目录路径
+     * 块结构的数学公式是否居中
      */
-    protected var resPath: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
+    protected var latexMathBlockCenter: Bool = false
 
     /**
      * 音频图标
@@ -626,21 +682,6 @@ public class MarkdownAITheme {
     protected var audioTypeTextLineHeight: Float64 = 15.0
 
     /**
-     * 音频文件大小文字大小
-     */
-    protected var audioFileSizeTextSize: Float64 = 11.0
-
-    /**
-     * 音频文件大小文字颜色
-     */
-    protected var audioFileSizeTextColor: Color = Color(0x80000000)
-
-    /**
-     * 音频文件大小文字行高
-     */
-    protected var audioFileSizeTextLineHeight: Float64 = 15.0
-
-    /**
      * 视频默认占位图
      */
     protected var videoImage: ?CJResource = None
@@ -711,36 +752,6 @@ public class MarkdownAITheme {
     protected var imageMarginBottom: Float64 = 10.0
 
     /**
-     * 按钮文字内容
-     */
-    protected var buttonTextStr: String = "加载更多数据"
-
-    /**
-     * 按钮文字字体大小 - 单位fp
-     */
-    protected var buttonTextSize: Int64 = 14
-
-    /**
-     * 按钮文字颜色
-     */
-    protected var buttonTextColor: Color = COLOR_FFFFFF
-
-    /**
-     * 按钮背景颜色
-     */
-    protected var buttonTextBackgroupColor: Color = COLOR_FF0000
-
-    /**
-     * 按钮高度 - 单位vp
-     */
-    protected var buttonTextHeight: Int64 = 30
-
-    /**
-     * 按钮上下边距 - 单位vp
-     */
-    protected var buttonTextMargin: Int64 = 14
-
-    /**
      * 表格内容内边距 - 单位vp
      */
     protected var tableCellPadding: Float64 = 4.0
@@ -791,6 +802,11 @@ public class MarkdownAITheme {
     protected var tableMaxTextWidth: Float64 = 300.0
 
     /**
+     * 表格第一列是否加粗
+     */
+    protected var tableFirstColumnBold: Bool = false
+
+    /**
      * markdown代码高亮样式
      */
     protected var prismTheme: PrismTheme = PrismThemeDarkula.create()
@@ -836,11 +852,15 @@ public class MarkdownAITheme {
         this.linkRectToolImageLineLeftPadding = builder.linkRectToolImageLineLeftPadding
         this.linkRectToolImageLineRightPadding = builder.linkRectToolImageLineRightPadding
         // 列表
-        this.blockMargin = builder.blockMargin
+        this.blockLeftMargin = builder.blockLeftMargin
+        this.blockRightMargin = builder.blockRightMargin
+        this.blockQuoteLeftMargin = builder.blockQuoteLeftMargin
+        this.blockQuoteRightMargin = builder.blockQuoteRightMargin
         this.blockQuoteWidth = builder.blockQuoteWidth
         this.blockQuoteColor = builder.blockQuoteColor
         this.blockQuoteBackGroupClor = builder.blockQuoteBackGroupClor
         this.blockQuoteTopAndBottomMargins = builder.blockQuoteTopAndBottomMargins
+        this.orderedListItemPrefixBold = builder.orderedListItemPrefixBold
         this.orderedListItemColor = builder.orderedListItemColor
         this.orderedListItemSize = builder.orderedListItemSize
         this.orderedListItemLineheight = builder.orderedListItemLineheight
@@ -849,12 +869,19 @@ public class MarkdownAITheme {
         this.bulletListItemSize = builder.bulletListItemSize
         this.bulletListItemLineheight = builder.bulletListItemLineheight
         this.taskListItemLength = builder.taskListItemLength
-        this.taskListTopAndBottomMargins = builder.taskListTopAndBottomMargins
-        this.listNumber = builder.listNumber
         // 代码
+        this.isCodeStyle = builder.isCodeStyle
         this.codeTextColor = builder.codeTextColor
         this.codeBackgroundColor = builder.codeBackgroundColor
+        this.codeTypeface = builder.codeTypeface
+        this.codeTextSize = builder.codeTextSize
+        this.codeLeftAndRightPadding = builder.codeLeftAndRightPadding
+        this.codeHeight = builder.codeHeight
+
         this.codeBlockTextColor = builder.codeBlockTextColor
+        this.codeBlockTypeTextColor = builder.codeBlockTypeTextColor
+        this.codeBlockIconTextHide = builder.codeBlockIconTextHide
+        this.codeBlockLineNumberHide = builder.codeBlockLineNumberHide
         this.codeBlockBackgroundColor = builder.codeBlockBackgroundColor
         this.codeMultilineMargin = builder.codeMultilineMargin
         this.codeTypeface = builder.codeTypeface
@@ -896,6 +923,8 @@ public class MarkdownAITheme {
         // 分割线
         this.thematicBreakColor = builder.thematicBreakColor
         this.thematicBreakHeight = builder.thematicBreakHeight
+        this.thematicBreakTopMargin = builder.thematicBreakTopMargin
+        this.thematicBreakBottomMargin = builder.thematicBreakBottomMargin
         // 软换行
         this.isLineBreak = builder.isLineBreak
         // 数学公式
@@ -904,7 +933,7 @@ public class MarkdownAITheme {
         this.latexMathBackGroupColor = builder.latexMathBackGroupColor
         this.latexMathTextColor = builder.latexMathTextColor
         this.latexMathColorFormat = builder.latexMathColorFormat
-        this.resPath = builder.resPath
+        this.latexMathBlockCenter = builder.latexMathBlockCenter
         // 音频
         this.audioIcon = builder.audioIcon
         this.audioShadowColor = builder.audioShadowColor
@@ -922,9 +951,6 @@ public class MarkdownAITheme {
         this.audioTypeTextSize = builder.audioTypeTextSize
         this.audioTypeTextColor = builder.audioTypeTextColor
         this.audioTypeTextLineHeight = builder.audioTypeTextLineHeight
-        this.audioFileSizeTextSize = builder.audioFileSizeTextSize
-        this.audioFileSizeTextColor = builder.audioFileSizeTextColor
-        this.audioFileSizeTextLineHeight = builder.audioFileSizeTextLineHeight
         // 视频
         this.videoImage = builder.videoImage
         this.playCircleFillIcon = builder.playCircleFillIcon
@@ -938,18 +964,10 @@ public class MarkdownAITheme {
         // 图片
         this.imagePadding = builder.imagePadding
         this.imageResource = builder.imageResource
-
         this.imagePlaceholder = builder.imagePlaceholder
         this.isAutoResize = builder.isAutoResize
         this.imageMarginTop = builder.imageMarginTop
         this.imageMarginBottom = builder.imageMarginBottom
-        // 按钮
-        this.buttonTextStr = builder.buttonTextStr
-        this.buttonTextSize = builder.buttonTextSize
-        this.buttonTextColor = builder.buttonTextColor
-        this.buttonTextBackgroupColor = builder.buttonTextBackgroupColor
-        this.buttonTextHeight = builder.buttonTextHeight
-        this.buttonTextMargin = builder.buttonTextMargin
         // 表格
         this.tableCellPadding = builder.tableCellPadding
         this.tableBorderColor = builder.tableBorderColor
@@ -961,6 +979,7 @@ public class MarkdownAITheme {
         this.tableRadius = builder.tableRadius
         this.tableMinTextWidth = builder.tableMinTextWidth
         this.tableMaxTextWidth = builder.tableMaxTextWidth
+        this.tableFirstColumnBold = builder.tableFirstColumnBold
         // 代码高亮
         this.prismTheme = builder.prismTheme
     }
@@ -990,44 +1009,6 @@ public class MarkdownAITheme {
      */
     public static func createDefaultBuilder(): MarkdownAIThemeBuilder {
         let markdownAIThemeBuilder: MarkdownAIThemeBuilder = MarkdownAIThemeBuilder()
-        // 高亮
-        markdownAIThemeBuilder.setPrismTheme(PrismThemeDarkula.create())
-        // 表格
-        markdownAIThemeBuilder.setTableHeaderRowBackgroundColor(COLOR_FFFFFF)
-        markdownAIThemeBuilder.setTableEvenRowBackgroundColor(COLOR_E0E0E0)
-        markdownAIThemeBuilder.setTableOddRowBackgroundColor(COLOR_FFFFFF)
-        markdownAIThemeBuilder.setTableBorderColor(COLOR_000000)
-        // 按钮
-        markdownAIThemeBuilder.setButtonTextBackgroupColor(COLOR_FF0000)
-        markdownAIThemeBuilder.setButtonTextColor(COLOR_FFFFFF)
-        // 数学公式
-        markdownAIThemeBuilder.setLatexMathTextColor(COLOR_FF000000)
-        markdownAIThemeBuilder.setLatexMathBackGroupColor(COLOR_00FFFFFF)
-        // 分割线
-        markdownAIThemeBuilder.setThematicBreakColor(COLOR_000000)
-        // 段落
-        markdownAIThemeBuilder.setParagraphTextColor(COLOR_000000)
-        // 标题
-        markdownAIThemeBuilder.setHeadingTextColor(COLOR_000000)
-        markdownAIThemeBuilder.setHeadingBreakColor(COLOR_000000)
-        // 组合代码
-        markdownAIThemeBuilder.setCodeListTitleUnSelectBackgroupColor(Color.TRANSPARENT)
-        markdownAIThemeBuilder.setCodeListTitleSelectBackgroupColor(Color.GRAY)
-        markdownAIThemeBuilder.setCodeListTitleUnSelectTextColor(Color.BLACK)
-        markdownAIThemeBuilder.setCodeListTitleSelectTextColor(Color.RED)
-        // 内联代码
-        markdownAIThemeBuilder.setCodeBackgroundColor(COLOR_FFFFFF)
-        markdownAIThemeBuilder.setCodeTextColor(COLOR_000000)
-        // 无序列表
-        markdownAIThemeBuilder.setBulletListItemColor(COLOR_000000)
-        // 有序列表
-        markdownAIThemeBuilder.setOrderedListItemColor(COLOR_000000)
-        // 块引用
-        markdownAIThemeBuilder.setBlockQuoteColor(COLOR_000000)
-        markdownAIThemeBuilder.setBlockQuoteBackGroupColor(COLOR_FFFFFF)
-        // 链接
-        markdownAIThemeBuilder.setLinkColor(COLOR_0000FF)
-        markdownAIThemeBuilder.setLinkBackGroupColor(COLOR_FFFFFF)
         return markdownAIThemeBuilder
     }
 
@@ -1038,44 +1019,6 @@ public class MarkdownAITheme {
      */
     public static func createDarkulaBuilder(): MarkdownAIThemeBuilder {
         let markdownAIThemeBuilder: MarkdownAIThemeBuilder = MarkdownAIThemeBuilder()
-        // 高亮
-        markdownAIThemeBuilder.setPrismTheme(PrismThemeDefault.create())
-        // 表格
-        markdownAIThemeBuilder.setTableHeaderRowBackgroundColor(COLOR_000000)
-        markdownAIThemeBuilder.setTableEvenRowBackgroundColor(COLOR_333333)
-        markdownAIThemeBuilder.setTableOddRowBackgroundColor(COLOR_000000)
-        markdownAIThemeBuilder.setTableBorderColor(COLOR_FFFFFF)
-        // 按钮
-        markdownAIThemeBuilder.setButtonTextBackgroupColor(COLOR_FF0000)
-        markdownAIThemeBuilder.setButtonTextColor(COLOR_FFFFFF)
-        // 数学公式
-        markdownAIThemeBuilder.setLatexMathTextColor(COLOR_FFFFFFFF)
-        markdownAIThemeBuilder.setLatexMathBackGroupColor(COLOR_00000000)
-        // 分割线
-        markdownAIThemeBuilder.setThematicBreakColor(COLOR_FFFFFF)
-        // 段落
-        markdownAIThemeBuilder.setParagraphTextColor(COLOR_FFFFFF)
-        // 标题
-        markdownAIThemeBuilder.setHeadingTextColor(COLOR_FFFFFF)
-        markdownAIThemeBuilder.setHeadingBreakColor(COLOR_FFFFFF)
-        // 组合代码
-        markdownAIThemeBuilder.setCodeListTitleUnSelectBackgroupColor(Color.TRANSPARENT)
-        markdownAIThemeBuilder.setCodeListTitleSelectBackgroupColor(Color.GRAY)
-        markdownAIThemeBuilder.setCodeListTitleUnSelectTextColor(Color.WHITE)
-        markdownAIThemeBuilder.setCodeListTitleSelectTextColor(Color.RED)
-        // 内联代码
-        markdownAIThemeBuilder.setCodeBackgroundColor(COLOR_000000)
-        markdownAIThemeBuilder.setCodeTextColor(COLOR_FFFFFF)
-        // 无序列表
-        markdownAIThemeBuilder.setBulletListItemColor(COLOR_FFFFFF)
-        // 有序列表
-        markdownAIThemeBuilder.setOrderedListItemColor(COLOR_FFFFFF)
-        // 块引用
-        markdownAIThemeBuilder.setBlockQuoteColor(COLOR_FFFFFF)
-        markdownAIThemeBuilder.setBlockQuoteBackGroupColor(COLOR_000000)
-        // 链接
-        markdownAIThemeBuilder.setLinkColor(COLOR_0000FF)
-        markdownAIThemeBuilder.setLinkBackGroupColor(COLOR_000000)
         return markdownAIThemeBuilder
     }
 
@@ -1275,9 +1218,24 @@ public class MarkdownAIThemeBuilder {
     protected var linkRectToolImageLineRightPadding: Float64 = vp2px(3.0.vp).getOrThrow().value
 
     /**
-     * 有序列表、无序列表、任务列表、块引用左边距 - 单位vp
+     * 有序列表、无序列表、任务列表左边距 - 单位vp
      */
-    protected var blockMargin: Float64 = 8.0
+    protected var blockLeftMargin: Float64 = 8.0
+
+    /**
+     * 有序列表、无序列表、任务列表右边距 - 单位vp
+     */
+    protected var blockRightMargin: Float64 = 8.0
+
+    /**
+     * 块引用左边距 - 单位vp
+     */
+    protected var blockQuoteLeftMargin: Float64 = 8.0
+
+    /**
+     * 块引用右边距 - 单位vp
+     */
+    protected var blockQuoteRightMargin: Float64 = 8.0
 
     /**
      * 块引用左边线条宽度 - 单位vp
@@ -1300,6 +1258,11 @@ public class MarkdownAIThemeBuilder {
     protected var blockQuoteTopAndBottomMargins: Float64 = 0.0
 
     /**
+     * 有序列表前缀是否加粗
+     */
+    protected var orderedListItemPrefixBold: Bool = false
+
+    /**
      * 有序列表列表项的颜色
      */
     protected var orderedListItemColor: Color = COLOR_191919
@@ -1315,7 +1278,7 @@ public class MarkdownAIThemeBuilder {
     protected var orderedListItemLineheight: Float64 = 22.0
 
     /**
-     * 有序列表有序列表任务列表每个模块之间上下间距 - 单位vp
+     * 有序列表无序列表任务列表每个模块之间上下间距 - 单位vp
      */
     protected var blockOrderedAndBulletTopAndBottomMargins: Float64 = 0.0
 
@@ -1340,14 +1303,9 @@ public class MarkdownAIThemeBuilder {
     protected var taskListItemLength: Float64 = 15.0
 
     /**
-     * 任务列表项的上下间距 - 单位vp
+     * 内联代码图片化
      */
-    protected var taskListTopAndBottomMargins: Float64 = 0.0
-
-    /**
-     * 列表展示的数量
-     */
-    protected var listNumber: Int64 = 1000
+    protected var isCodeStyle: Bool = false
 
     /**
      * 内联代码文本颜色
@@ -1367,12 +1325,37 @@ public class MarkdownAIThemeBuilder {
     /**
      * 内联代码文本大小 - 单位fp
      */
-    protected var codeTextSize: Float64 = 13.0
+    protected var codeTextSize: Float64 = fp2px(13.0.fp).getOrThrow().value
+
+    /**
+     * 内联代码文本左右边距 - 单位vp
+     */
+    protected var codeLeftAndRightPadding: Float64 = vp2px(4.0.vp).getOrThrow().value
+
+    /**
+     * 内联代码文本高度 - 单位vp
+     */
+    protected var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
      * 代码块系列（缩进代码、围栏代码、组合代码）文本颜色
      */
     protected var codeBlockTextColor: ?Color = None
+
+    /**
+     * 代码块系列（缩进代码、围栏代码、组合代码）代码类型文本颜色
+     */
+    protected var codeBlockTypeTextColor: ?Color = None
+
+    /**
+     * 代码块系列（缩进代码、围栏代码、组合代码）图片文字是否显示隐藏
+     */
+    protected var codeBlockIconTextHide: Bool = true
+
+    /**
+     * 代码块系列（缩进代码、围栏代码、组合代码）代码行号是否显示隐藏
+     */
+    protected var codeBlockLineNumberHide: Bool = true
 
     /**
      * 代码块系列（缩进代码、围栏代码、组合代码）背景颜色
@@ -1457,7 +1440,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 是否单独代码块
      */
-    protected var isSeparateCodeBlock = false
+    protected var isSeparateCodeBlock: Bool = false
 
     /**
      * 单独代码块行号宽度
@@ -1560,6 +1543,16 @@ public class MarkdownAIThemeBuilder {
     protected var thematicBreakHeight: Float64 = 0.5
 
     /**
+     * 分割线上部外边距 - 单位vp
+     */
+    protected var thematicBreakTopMargin: Float64 = 0.0
+
+    /**
+     * 分割线下部外边距 - 单位vp
+     */
+    protected var thematicBreakBottomMargin: Float64 = 0.0
+
+    /**
      * 软换行是否换行
      */
     protected var isLineBreak: Bool = false
@@ -1567,7 +1560,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 数学公式文字大小 - 单位px
      */
-    protected var latexMathTextSize: Float64 = 48.0
+    protected var latexMathTextSize: Float64 = vp2px(16.0.vp)().value
 
     /**
      * 数学公式行距 - 单位px
@@ -1590,9 +1583,9 @@ public class MarkdownAIThemeBuilder {
     protected var latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
 
     /**
-     * 数学公式资源目录路径
+     * 块结构的数学公式是否居中
      */
-    protected var resPath: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
+    protected var latexMathBlockCenter: Bool = false
 
     /**
      * 音频图标
@@ -1675,21 +1668,6 @@ public class MarkdownAIThemeBuilder {
     protected var audioTypeTextLineHeight: Float64 = 15.0
 
     /**
-     * 音频文件大小文字大小
-     */
-    protected var audioFileSizeTextSize: Float64 = 11.0
-
-    /**
-     * 音频文件大小文字颜色
-     */
-    protected var audioFileSizeTextColor: Color = Color(0x80000000)
-
-    /**
-     * 音频文件大小文字行高
-     */
-    protected var audioFileSizeTextLineHeight: Float64 = 15.0
-
-    /**
      * 视频默认占位图
      */
     protected var videoImage: ?CJResource = None
@@ -1720,7 +1698,7 @@ public class MarkdownAIThemeBuilder {
     protected var videoTimeTextMarginRight: Float64 = 10.0
 
     /**
-     * 视频时间文本居低边距
+     * 视频时间文本居底边距
      */
     protected var videoTimeTextMarginBottom: Float64 = 10.0
 
@@ -1750,7 +1728,7 @@ public class MarkdownAIThemeBuilder {
     protected var isAutoResize: Bool = true
 
     /**
-     * 图片上边距
+     * 图片下边距
      */
     protected var imageMarginTop: Float64 = 10.0
 
@@ -1758,36 +1736,6 @@ public class MarkdownAIThemeBuilder {
      * 图片下边距
      */
     protected var imageMarginBottom: Float64 = 10.0
-
-    /**
-     * 按钮文字内容
-     */
-    protected var buttonTextStr: String = "加载更多数据"
-
-    /**
-     * 按钮文字字体大小 - 单位fp
-     */
-    protected var buttonTextSize: Int64 = 14
-
-    /**
-     * 按钮文字颜色
-     */
-    protected var buttonTextColor: Color = COLOR_FFFFFF
-
-    /**
-     * 按钮背景颜色
-     */
-    protected var buttonTextBackgroupColor: Color = COLOR_FF0000
-
-    /**
-     * 按钮高度 - 单位vp
-     */
-    protected var buttonTextHeight: Int64 = 30
-
-    /**
-     * 按钮上下边距 - 单位vp
-     */
-    protected var buttonTextMargin: Int64 = 14
 
     /**
      * 表格内容内边距 - 单位vp
@@ -1840,6 +1788,11 @@ public class MarkdownAIThemeBuilder {
     protected var tableMaxTextWidth: Float64 = 300.0
 
     /**
+     * 表格第一列是否加粗
+     */
+    protected var tableFirstColumnBold: Bool = false
+
+    /**
      * markdown代码高亮样式
      */
     protected var prismTheme: PrismTheme = PrismThemeDarkula.create()
@@ -1888,11 +1841,15 @@ public class MarkdownAIThemeBuilder {
         this.linkRectToolImageLineLeftPadding = theme.linkRectToolImageLineLeftPadding
         this.linkRectToolImageLineRightPadding = theme.linkRectToolImageLineRightPadding
         // 列表
-        this.blockMargin = theme.blockMargin
+        this.blockLeftMargin = theme.blockLeftMargin
+        this.blockRightMargin = theme.blockRightMargin
+        this.blockQuoteLeftMargin = theme.blockQuoteLeftMargin
+        this.blockQuoteRightMargin = theme.blockQuoteRightMargin
         this.blockQuoteWidth = theme.blockQuoteWidth
         this.blockQuoteColor = theme.blockQuoteColor
         this.blockQuoteBackGroupClor = theme.blockQuoteBackGroupClor
         this.blockQuoteTopAndBottomMargins = theme.blockQuoteTopAndBottomMargins
+        this.orderedListItemPrefixBold = theme.orderedListItemPrefixBold
         this.orderedListItemColor = theme.orderedListItemColor
         this.orderedListItemSize = theme.orderedListItemSize
         this.orderedListItemLineheight = theme.orderedListItemLineheight
@@ -1901,12 +1858,19 @@ public class MarkdownAIThemeBuilder {
         this.bulletListItemSize = theme.bulletListItemSize
         this.bulletListItemLineheight = theme.bulletListItemLineheight
         this.taskListItemLength = theme.taskListItemLength
-        this.taskListTopAndBottomMargins = theme.taskListTopAndBottomMargins
-        this.listNumber = theme.listNumber
         // 代码
+        this.isCodeStyle = theme.isCodeStyle
         this.codeTextColor = theme.codeTextColor
         this.codeBackgroundColor = theme.codeBackgroundColor
+        this.codeTypeface = theme.codeTypeface
+        this.codeTextSize = theme.codeTextSize
+        this.codeLeftAndRightPadding = theme.codeLeftAndRightPadding
+        this.codeHeight = theme.codeHeight
+
         this.codeBlockTextColor = theme.codeBlockTextColor
+        this.codeBlockTypeTextColor = theme.codeBlockTypeTextColor
+        this.codeBlockIconTextHide = theme.codeBlockIconTextHide
+        this.codeBlockLineNumberHide = theme.codeBlockLineNumberHide
         this.codeBlockBackgroundColor = theme.codeBlockBackgroundColor
         this.codeMultilineMargin = theme.codeMultilineMargin
         this.codeTypeface = theme.codeTypeface
@@ -1948,6 +1912,8 @@ public class MarkdownAIThemeBuilder {
         // 分割线
         this.thematicBreakColor = theme.thematicBreakColor
         this.thematicBreakHeight = theme.thematicBreakHeight
+        this.thematicBreakTopMargin = theme.thematicBreakTopMargin
+        this.thematicBreakBottomMargin = theme.thematicBreakBottomMargin
         // 软换行
         this.isLineBreak = theme.isLineBreak
         // 数学公式
@@ -1956,7 +1922,7 @@ public class MarkdownAIThemeBuilder {
         this.latexMathBackGroupColor = theme.latexMathBackGroupColor
         this.latexMathTextColor = theme.latexMathTextColor
         this.latexMathColorFormat = theme.latexMathColorFormat
-        this.resPath = theme.resPath
+        this.latexMathBlockCenter = theme.latexMathBlockCenter
         // 音频
         this.audioIcon = theme.audioIcon
         this.audioShadowColor = theme.audioShadowColor
@@ -1974,9 +1940,6 @@ public class MarkdownAIThemeBuilder {
         this.audioTypeTextSize = theme.audioTypeTextSize
         this.audioTypeTextColor = theme.audioTypeTextColor
         this.audioTypeTextLineHeight = theme.audioTypeTextLineHeight
-        this.audioFileSizeTextSize = theme.audioFileSizeTextSize
-        this.audioFileSizeTextColor = theme.audioFileSizeTextColor
-        this.audioFileSizeTextLineHeight = theme.audioFileSizeTextLineHeight
         // 视频
         this.videoImage = theme.videoImage
         this.playCircleFillIcon = theme.playCircleFillIcon
@@ -1994,13 +1957,6 @@ public class MarkdownAIThemeBuilder {
         this.isAutoResize = theme.isAutoResize
         this.imageMarginTop = theme.imageMarginTop
         this.imageMarginBottom = theme.imageMarginBottom
-        // 按钮
-        this.buttonTextStr = theme.buttonTextStr
-        this.buttonTextSize = theme.buttonTextSize
-        this.buttonTextColor = theme.buttonTextColor
-        this.buttonTextBackgroupColor = theme.buttonTextBackgroupColor
-        this.buttonTextHeight = theme.buttonTextHeight
-        this.buttonTextMargin = theme.buttonTextMargin
         // 表格
         this.tableCellPadding = theme.tableCellPadding
         this.tableBorderColor = theme.tableBorderColor
@@ -2012,6 +1968,7 @@ public class MarkdownAIThemeBuilder {
         this.tableRadius = theme.tableRadius
         this.tableMinTextWidth = theme.tableMinTextWidth
         this.tableMaxTextWidth = theme.tableMaxTextWidth
+        this.tableFirstColumnBold = theme.tableFirstColumnBold
         // 代码高亮
         this.prismTheme = theme.prismTheme
     }
@@ -2022,44 +1979,6 @@ public class MarkdownAIThemeBuilder {
      * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
     public func setDefaultTheme(): MarkdownAIThemeBuilder {
-        // 高亮
-        this.prismTheme = PrismThemeDarkula.create()
-        // 表格
-        this.tableHeaderRowBackgroundColor = COLOR_FFFFFF
-        this.tableEvenRowBackgroundColor = COLOR_E0E0E0
-        this.tableOddRowBackgroundColor = COLOR_FFFFFF
-        this.tableBorderColor = COLOR_000000
-        // 按钮
-        this.buttonTextBackgroupColor = COLOR_FF0000
-        this.buttonTextColor = COLOR_FFFFFF
-        // 数学公式
-        this.latexMathTextColor = COLOR_FF000000
-        this.latexMathBackGroupColor = COLOR_00FFFFFF
-        // 分割线
-        this.thematicBreakColor = COLOR_000000
-        // 段落
-        this.paragraphTextColor = COLOR_000000
-        // 标题
-        this.headingTextColor = COLOR_000000
-        this.headingBreakColor = COLOR_000000
-        // 组合代码
-        this.codeListTitleUnSelectBackgroupColor = Color.TRANSPARENT
-        this.codeListTitleSelectBackgroupColor = Color.GRAY
-        this.codeListTitleUnSelectTextColor = Color.BLACK
-        this.codeListTitleSelectTextColor = Color.RED
-        // 内联代码
-        this.codeBackgroundColor = COLOR_FFFFFF
-        this.codeTextColor = COLOR_000000
-        // 无序列表
-        this.bulletListItemColor = COLOR_000000
-        // 有序列表
-        this.orderedListItemColor = COLOR_000000
-        // 块引用
-        this.blockQuoteColor = COLOR_000000
-        this.blockQuoteBackGroupClor = COLOR_FFFFFF
-        // 链接
-        this.linkColor = COLOR_0000FF
-        this.linkBackGroupColor = COLOR_FFFFFF
         return this
     }
 
@@ -2069,44 +1988,6 @@ public class MarkdownAIThemeBuilder {
      * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
     public func setDarkulaTheme(): MarkdownAIThemeBuilder {
-        // 高亮
-        this.prismTheme = PrismThemeDefault.create()
-        // 表格
-        this.tableHeaderRowBackgroundColor = COLOR_000000
-        this.tableEvenRowBackgroundColor = COLOR_333333
-        this.tableOddRowBackgroundColor = COLOR_000000
-        this.tableBorderColor = COLOR_FFFFFF
-        // 按钮
-        this.buttonTextBackgroupColor = COLOR_FF0000
-        this.buttonTextColor = COLOR_FFFFFF
-        // 数学公式
-        this.latexMathTextColor = COLOR_FFFFFFFF
-        this.latexMathBackGroupColor = COLOR_00000000
-        // 分割线
-        this.thematicBreakColor = COLOR_FFFFFF
-        // 段落
-        this.paragraphTextColor = COLOR_FFFFFF
-        // 标题
-        this.headingTextColor = COLOR_FFFFFF
-        this.headingBreakColor = COLOR_FFFFFF
-        // 组合代码
-        this.codeListTitleUnSelectBackgroupColor = Color.TRANSPARENT
-        this.codeListTitleSelectBackgroupColor = Color.GRAY
-        this.codeListTitleUnSelectTextColor = Color.BLACK
-        this.codeListTitleSelectTextColor = Color.RED
-        // 内联代码
-        this.codeBackgroundColor = COLOR_000000
-        this.codeTextColor = COLOR_FFFFFF
-        // 无序列表
-        this.bulletListItemColor = COLOR_FFFFFF
-        // 有序列表
-        this.orderedListItemColor = COLOR_FFFFFF
-        // 块引用
-        this.blockQuoteColor = COLOR_FFFFFF
-        this.blockQuoteBackGroupClor = COLOR_000000
-        // 链接
-        this.linkColor = COLOR_0000FF
-        this.linkBackGroupColor = COLOR_000000
         return this
     }
 
@@ -2199,7 +2080,7 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置链接是否是图片显示
+     * 设置列表链接是否是图片显示
      *
      * @param isListLinkStyle 列表中的链接是否是图片显示true：图片显示，false：文本显示
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
@@ -2507,13 +2388,46 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置有序列表、无序列表、任务列表、块引用左边距
+     * 设置有序列表、无序列表、任务列表左边距 - 单位vp
      *
-     * @param blockMargin 左边距默认8.0
+     * @param blockLeftMargin 有序列表、无序列表、任务列表、块引用左边距
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setBlockMargin(blockMargin: Float64): MarkdownAIThemeBuilder {
-        this.blockMargin = blockMargin
+    public func setBlockLeftMargin(blockLeftMargin: Float64): MarkdownAIThemeBuilder {
+        this.blockLeftMargin = blockLeftMargin
+        return this
+    }
+
+    /**
+     * 设置有序列表、无序列表、任务列表右边距 - 单位vp
+     *
+     * @param blockRightMargin 有序列表、无序列表、任务列表、块引用右边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setBlockRightMargin(blockRightMargin: Float64): MarkdownAIThemeBuilder {
+        this.blockRightMargin = blockRightMargin
+        return this
+    }
+
+    /**
+     * 设置块引用左边距 - 单位vp
+     *
+     * @param blockQuoteLeftMargin 块引用左边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setBlockQuoteLeftMargin(blockQuoteLeftMargin: Float64): MarkdownAIThemeBuilder {
+        this.blockQuoteLeftMargin = blockQuoteLeftMargin
+        return this
+    }
+
+    /**
+     * 设置块引用右边距 - 单位vp
+     *
+     * @param blockQuoteRightMargin 块引用右边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setBlockQuoteRightMargin(blockQuoteRightMargin: Float64): MarkdownAIThemeBuilder {
+        this.blockQuoteRightMargin = blockQuoteRightMargin
         return this
     }
 
@@ -2558,6 +2472,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setBlockQuoteTopAndBottomMargins(blockQuoteTopAndBottomMargins: Float64): MarkdownAIThemeBuilder {
         this.blockQuoteTopAndBottomMargins = blockQuoteTopAndBottomMargins
+        return this
+    }
+
+    /**
+     * 设置有序列表前缀是否加粗
+     *
+     * @param orderedListItemPrefixBold 模块间距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setOrderedListItemPrefixBold(orderedListItemPrefixBold: Bool): MarkdownAIThemeBuilder {
+        this.orderedListItemPrefixBold = orderedListItemPrefixBold
         return this
     }
 
@@ -2628,24 +2553,13 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置无列表项文本行高
+     * 设置无序列表项文本行高
      *
      * @param bulletListItemLineheight 无列表项文本行高默认18.0
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
     public func setBulletListItemLineheight(bulletListItemLineheight: Float64): MarkdownAIThemeBuilder {
         this.bulletListItemLineheight = bulletListItemLineheight
-        return this
-    }
-
-    /**
-     * 设置任务列表前缀间距
-     *
-     * @param taskListTopAndBottomMargins 任务列表前缀间距
-     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
-     */
-    public func setTaskListTopAndBottomMargins(taskListTopAndBottomMargins: Float64): MarkdownAIThemeBuilder {
-        this.taskListTopAndBottomMargins = taskListTopAndBottomMargins
         return this
     }
 
@@ -2661,13 +2575,13 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置列表展示的数量
+     * 设置内联代码图片化
      *
-     * @param listNumber 列表展示的数量默认1000
+     * @param isCodeStyle 内联代码图片化
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setListNumber(listNumber: Int64): MarkdownAIThemeBuilder {
-        this.listNumber = listNumber
+    public func setIsCodeStyle(isCodeStyle: Bool): MarkdownAIThemeBuilder {
+        this.isCodeStyle = isCodeStyle
         return this
     }
 
@@ -2711,7 +2625,29 @@ public class MarkdownAIThemeBuilder {
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
     public func setCodeTextSize(codeTextSize: Float64): MarkdownAIThemeBuilder {
-        this.codeTextSize = codeTextSize
+        this.codeTextSize = fp2px(codeTextSize.fp)().value
+        return this
+    }
+
+    /**
+     * 设置内联代码文本左右边距
+     *
+     * @param codeLeftAndRightPadding 内联代码文本左右边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setCodeLeftAndRightPadding(codeLeftAndRightPadding: Float64): MarkdownAIThemeBuilder {
+        this.codeLeftAndRightPadding = vp2px(codeLeftAndRightPadding.vp)().value
+        return this
+    }
+
+    /**
+     * 设置内联代码文本高度
+     *
+     * @param codeHeight 内联代码文本高度
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setCodeHeight(codeHeight: Float64): MarkdownAIThemeBuilder {
+        this.codeHeight = vp2px(codeHeight.vp)().value
         return this
     }
 
@@ -2723,6 +2659,39 @@ public class MarkdownAIThemeBuilder {
      */
     public func setCodeBlockTextColor(codeBlockTextColor: Color): MarkdownAIThemeBuilder {
         this.codeBlockTextColor = codeBlockTextColor
+        return this
+    }
+
+    /**
+     * 设置代码块系列（缩进代码、围栏代码、组合代码）代码类型文本颜色
+     *
+     * @param codeBlockTypeTextColor 代码块系列（缩进代码、围栏代码、组合代码）代码类型文本颜色默认None
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setCodeBlockTypeTextColor(codeBlockTypeTextColor: Color): MarkdownAIThemeBuilder {
+        this.codeBlockTypeTextColor = codeBlockTypeTextColor
+        return this
+    }
+
+    /**
+     * 设置代码块系列（缩进代码、围栏代码、组合代码）图片文字是否显示隐藏
+     *
+     * @param codeBlockIconTextHide 代码块系列（缩进代码、围栏代码、组合代码）图片文字是否显示隐藏
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setCodeBlockIconTextHide(codeBlockIconTextHide: Bool): MarkdownAIThemeBuilder {
+        this.codeBlockIconTextHide = codeBlockIconTextHide
+        return this
+    }
+
+    /**
+     * 设置代码块系列（缩进代码、围栏代码、组合代码）代码行号是否显示隐藏
+     *
+     * @param codeBlockLineNumberHide 代码块系列（缩进代码、围栏代码、组合代码）代码行号是否显示隐藏
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setCodeBlockLineNumberHide(codeBlockLineNumberHide: Bool): MarkdownAIThemeBuilder {
+        this.codeBlockLineNumberHide = codeBlockLineNumberHide
         return this
     }
 
@@ -3123,6 +3092,28 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
+     * 设置分割线上部外边距 - 单位vp
+     *
+     * @param thematicBreakTopMargin 分割线上部外边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setThematicBreakTopMargin(thematicBreakTopMargin: Float64): MarkdownAIThemeBuilder {
+        this.thematicBreakTopMargin = thematicBreakTopMargin
+        return this
+    }
+
+    /**
+     * 设置分割线下部外边距 - 单位vp
+     *
+     * @param thematicBreakBottomMargin 分割线下部外边距
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setThematicBreakBottomMargin(thematicBreakBottomMargin: Float64): MarkdownAIThemeBuilder {
+        this.thematicBreakBottomMargin = thematicBreakBottomMargin
+        return this
+    }
+
+    /**
      * 设置软换行是否换行
      *
      * @param isLineBreak 软换行是否换行true：软换行换行，false：软换行不换行默认软换行不换行
@@ -3134,13 +3125,13 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置数学公式文字大小(px)
+     * 设置数学公式文字大小vp
      *
-     * @param latexMathTextSize 数学公式文字大小(px)默认48.0
+     * @param latexMathTextSize 数学公式文字大小 默认16.0.vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
     public func setLatexMathTextSize(latexMathTextSize: Float64): MarkdownAIThemeBuilder {
-        this.latexMathTextSize = latexMathTextSize
+        this.latexMathTextSize = vp2px(latexMathTextSize.vp)().value
         return this
     }
 
@@ -3189,13 +3180,13 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置数学公式资源路径
+     * 设置块结构的数学公式是否居中
      *
-     * @param resPath 数学公式资源路径默认"/data/storage/el1/bundle/entry/resources/resfile/res"
+     * @param latexMathBlockCenter 块结构的数学公式是否居中 - 默认false不居中
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setResPath(resPath: String): MarkdownAIThemeBuilder {
-        this.resPath = resPath
+    public func setLatexMathBlockCenter(latexMathBlockCenter: Bool): MarkdownAIThemeBuilder {
+        this.latexMathBlockCenter = latexMathBlockCenter
         return this
     }
 
@@ -3376,39 +3367,6 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置音频文件大小文字大小
-     *
-     * @param audioFileSizeTextSize 音频文件大小文字大小
-     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
-     */
-    public func setAudioFileSizeTextSize(audioFileSizeTextSize: Float64): MarkdownAIThemeBuilder {
-        this.audioFileSizeTextSize = audioFileSizeTextSize
-        return this
-    }
-
-    /**
-     * 设置音频文件大小文字颜色
-     *
-     * @param audioFileSizeTextColor 音频文件大小文字颜色
-     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
-     */
-    public func setAudioFileSizeTextColor(audioFileSizeTextColor: Color): MarkdownAIThemeBuilder {
-        this.audioFileSizeTextColor = audioFileSizeTextColor
-        return this
-    }
-
-    /**
-     * 设置音频文件大小文字行高
-     *
-     * @param audioFileSizeTextLineHeight 音频文件大小文字行高
-     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
-     */
-    public func setAudioFileSizeTextLineHeight(audioFileSizeTextLineHeight: Float64): MarkdownAIThemeBuilder {
-        this.audioFileSizeTextLineHeight = audioFileSizeTextLineHeight
-        return this
-    }
-
-    /**
      * 设置视频默认占位图
      *
      * @param videoImage 视频默认占位图默认None
@@ -3561,73 +3519,6 @@ public class MarkdownAIThemeBuilder {
         this.imageMarginBottom = imageMarginBottom
         return this
     }
-
-    /**
-     * 设置按钮文字内容
-     *
-     * @param buttonTextStr 按钮文字内容
-     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
-     */
-    public func setButtonTextStr(buttonTextStr: String): MarkdownAIThemeBuilder {
-        this.buttonTextStr = buttonTextStr
-        return this
-    }
-
-    /**
-     * 设置按钮文字字体大小 - 单位fp
-     *
-     * @param buttonTextSize 按钮文字字体大小 - 单位fp
-     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
-     */
-    public func setButtonTextSize(buttonTextSize: Int64): MarkdownAIThemeBuilder {
-        this.buttonTextSize = buttonTextSize
-        return this
-    }
-
-    /**
-     * 设置按钮文字颜色
-     *
-     * @param buttonTextColor 按钮文字颜色
-     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
-     */
-    public func setButtonTextColor(buttonTextColor: Color): MarkdownAIThemeBuilder {
-        this.buttonTextColor = buttonTextColor
-        return this
-    }
-
-    /**
-     * 设置按钮背景颜色
-     *
-     * @param buttonTextBackgroupColor 按钮背景颜色
-     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
-     */
-    public func setButtonTextBackgroupColor(buttonTextBackgroupColor: Color): MarkdownAIThemeBuilder {
-        this.buttonTextBackgroupColor = buttonTextBackgroupColor
-        return this
-    }
-
-    /**
-     * 设置按钮高度 - 单位vp
-     *
-     * @param buttonTextHeight 按钮高度 - 单位vp
-     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
-     */
-    public func setButtonTextHeight(buttonTextHeight: Int64): MarkdownAIThemeBuilder {
-        this.buttonTextHeight = buttonTextHeight
-        return this
-    }
-
-    /**
-     * 设置按钮上下边距 - 单位vp
-     *
-     * @param buttonTextMargin 按钮上下边距 - 单位vp
-     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
-     */
-    public func setButtonTextMargine(buttonTextMargin: Int64): MarkdownAIThemeBuilder {
-        this.buttonTextMargin = buttonTextMargin
-        return this
-    }
-
     /**
      * 设置表格内容内边距 - 单位vp
      *
@@ -3735,6 +3626,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setTableMaxTextWidth(tableMaxTextWidth: Float64): MarkdownAIThemeBuilder {
         this.tableMaxTextWidth = tableMaxTextWidth
+        return this
+    }
+
+    /**
+     * 设置表格第一列是否加粗
+     *
+     * @param tableFirstColumnBold 表格第一列是否加粗 - 默认false不加粗
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
+     */
+    public func setTableFirstColumnBold(tableFirstColumnBold: Bool): MarkdownAIThemeBuilder {
+        this.tableFirstColumnBold = tableFirstColumnBold
         return this
     }
 

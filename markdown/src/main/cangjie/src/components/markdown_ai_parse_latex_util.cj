@@ -7,6 +7,9 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import ohos.hilog.Hilog
+
+let resPath: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
 
 class MarkdownParseLatexUtil {
     /**
@@ -22,7 +25,7 @@ class MarkdownParseLatexUtil {
      * @param markdownAIConfiguration Markdown Configuration
      * @param callback PixelMap图片、图片高度、图片宽度、图片数组数据 回调接口
      */
-    static func latexMathStrToPixelMap(strLatexMath: String, resStr: String, markdownAIConfiguration: MarkdownAIConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func latexMathStrToPixelMap(strLatexMath: String, markdownAIConfiguration: MarkdownAIConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -34,7 +37,7 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex = LaTeX(resStr)
+                    var latex = LaTeX(resPath)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -64,6 +67,7 @@ class MarkdownParseLatexUtil {
                     var size: Size = pixelMap().getImageInfo().size
                     imageWidth = Float64(size.width)
                     imageHeight = Float64(size.height)
+                    Hilog.error(1,"1","-------------imageWidth:${imageWidth},imageHeight:${imageHeight}")
                 } catch (e: Exception) {
                 } finally {
                     try {
@@ -89,7 +93,7 @@ class MarkdownParseLatexUtil {
      * @param componentWidth 控件宽度 - 单位vp
      * @param callback PixelMap图片、图片高度、图片宽度、图片数组数据 回调接口
      */
-    static func latexMathStrToPixelMapRow(strLatexMath: String, resStr: String, markdownAIConfiguration: MarkdownAIConfiguration, componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit, backGroupColor: Color): Future<Unit> {
+    static func latexMathStrToPixelMapRow(strLatexMath: String, markdownAIConfiguration: MarkdownAIConfiguration, componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit, backGroupColor: Color): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -101,7 +105,7 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex = LaTeX(resStr)
+                    var latex = LaTeX(resPath)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -143,6 +147,7 @@ class MarkdownParseLatexUtil {
                         return
                     }
                     pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
+                    Hilog.error(1,"1","-------------height:${height},width:${width}")
                 } catch (e: Exception) {
                 } finally {
                     try {

@@ -327,11 +327,13 @@ func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownAIConfig
         // 设置文本尺寸
         .fontSize(listPrefixSize(markdownAIConfiguration.markdownAITheme, isBullet))
         // 设置内边距属性
-        .padding(left: markdownAIConfiguration.markdownAITheme.blockMargin, right: 8.0)
+        .padding(left: markdownAIConfiguration.markdownAITheme.blockLeftMargin, right: markdownAIConfiguration.markdownAITheme.blockRightMargin)
         // 设置行高
         .lineHeight(listPrefixLineHeight(isBullet, markdownAIConfiguration))
         // 设置文本段落在水平方向的对齐方式
         .textAlign(TextAlign.Center)
+        // 设置文本的字体粗细
+        .fontWeight(isFontWeight(markdownAIConfiguration.markdownAITheme.orderedListItemPrefixBold))
         // 块内容前的起始边距
         .margin(top: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins, bottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins)
 }
@@ -353,5 +355,5 @@ func listPrefixCheckboxINCComponent(item: NodeView, markdownAIConfiguration: Mar
         // 切换CheckBox组件形状
         .shape(CheckBoxShape.ROUNDED_SQUARE)
         // 设置外边距属性
-        .margin(left: markdownAIConfiguration.markdownAITheme.blockMargin, right: 10.0, top: markdownAIConfiguration.markdownAITheme.taskListTopAndBottomMargins, bottom: markdownAIConfiguration.markdownAITheme.taskListTopAndBottomMargins)
+        .margin(left: markdownAIConfiguration.markdownAITheme.blockLeftMargin, right: markdownAIConfiguration.markdownAITheme.blockRightMargin, top: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins, bottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins)
 }
