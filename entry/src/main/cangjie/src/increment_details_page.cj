@@ -67,30 +67,10 @@ class IncrementDetailsPage {
 
     func build() {
         Column() {
-            Text("")
-                // 高度
-                .height(50)
-                // 宽度
-                .width(100.percent)
-                // 背景颜色
-                .backgroundColor(0xFF0000)
-            Text("${params}")
-                // 高度
-                .height(40)
-                // 宽度
-                .width(100.percent)
-                // 文本颜色
-                .fontColor(0xFFFFFF)
-                // 背景颜色
-                .backgroundColor(0xFF0000)
-                // 设置容器元素绘制区域内的子元素的对齐方式
-                .align(Alignment.Center)
-                // 设置文本段落在水平方向的对齐方式
-                .textAlign(TextAlign.Center)
-                // 字体大小
-                .fontSize(16)
-                // 外边距
-                .margin(bottom: 10)
+            titleComponent(
+                params,
+                true
+            )
             Button("点击加载markdown")
                 // 高度
                 .height(40)
@@ -111,21 +91,21 @@ class IncrementDetailsPage {
                 // 点击动作触发该方法调用
                 .onClick {
                     => spawn {
-                            let arr: Array<Rune> = mdStr.toRuneArray()
-                            for (i in 0..arr.size : number) {
-                                sleep(Duration.millisecond * sleepTime)
-                                launch {
-                                    let size = if (arr.size > i + number) {
-                                        i + number
-                                    } else {
-                                        arr.size
-                                    }
-                                    output += String(arr[i..size])
-                                    Hilog.error(1,"1","--------output:${output}")
-                                    scroller.scrollEdge(Edge.Bottom)
+                        let arr: Array<Rune> = mdStr.toRuneArray()
+                        for (i in 0..arr.size : number) {
+                            sleep(Duration.millisecond * sleepTime)
+                            launch {
+                                let size = if (arr.size > i + number) {
+                                    i + number
+                                } else {
+                                    arr.size
                                 }
+                                output += String(arr[i..size])
+                                Hilog.error(1, "1", "--------output:${output}")
+                                scroller.scrollEdge(Edge.Bottom)
                             }
                         }
+                    }
                 }
             Scroll(scroller) {
                 Column {

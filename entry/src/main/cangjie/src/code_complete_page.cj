@@ -37,65 +37,27 @@ class CodeCompletePage {
     var folderList: ObservedArrayList<String> = ObservedArrayList<String>()
 
     protected override func aboutToAppear(): Unit {
-        let arr1: Array<String> = getFileListStr("")
-        Hilog.error(1,"1","------------arr1")
-
         let arr: Array<String> = getFileListStr("002_单独代码块测试用例/")
-        Hilog.error(1,"1","------------arr")
         folderList.appendAll(arr)
     }
 
     func build() {
         Column {
-            Text("")
-                // 高度
-                .height(50)
-                // 宽度
-                .width(100.percent)
-                // 背景颜色
-                .backgroundColor(0xFF0000)
-            Text("全量加载")
-                // 高度
-                .height(40)
-                // 宽度
-                .width(100.percent)
-                // 文本颜色
-                .fontColor(0xFFFFFF)
-                // 背景颜色
-                .backgroundColor(0xFF0000)
-                // 设置容器元素绘制区域内的子元素的对齐方式
-                .align(Alignment.Center)
-                // 设置文本段落在水平方向的对齐方式
-                .textAlign(TextAlign.Center)
-                // 字体大小
-                .fontSize(16)
+            titleComponent(
+                "全量加载",
+                true
+            )
             Scroll(scroller) {
                 List() {
                     ForEach(
                         folderList,
                         itemGeneratorFunc: {
                             str: String, index: Int64 => ListItem() {
-                                Row() {
-                                    Button("${index+1}、${str}")
-                                        // 高度
-                                        .height(40)
-                                        // 容器尺寸确定时，元素与兄弟节点主轴布局尺寸按照权重进行分配，忽略本身尺寸设置仅在Row/Column/Flex布局中生效
-                                        .layoutWeight(1)
-                                        // 圆角
-                                        .shape(ShapeType.Capsule)
-                                        // 文本颜色
-                                        .fontColor(0xFFFFFF)
-                                        // 背景颜色
-                                        .backgroundColor(0xFF0000)
-                                        // 外边距
-                                        .margin(top: 5, bottom: 5, right: 40, left: 40)
-                                        // 内容对齐方式
-                                        .align(Alignment.Center)
-                                        // 字体大小
-                                        .fontSize(16)
-                                        // 点击动作触发该方法调用
-                                        .onClick {Router.push(url: "CodeCompleteDetailsPage", params: "002_单独代码块测试用例/${str}")}
-                                }
+                                itemListComponent(
+                                    "${index+1}、${str}",
+                                    "CodeCompleteDetailsPage",
+                                    "002_单独代码块测试用例/${str}"
+                                )
                             }
                         },
                         keyGeneratorFunc: {
@@ -103,6 +65,8 @@ class CodeCompletePage {
                         }
                     )
                 }
+                // 设置ListItem在List交叉轴方向的布局方式
+                .alignListItem(ListItemAlign.Center)
             }
             // 设置容器元素绘制区域内的子元素的对齐方式。
             .align(Alignment.TopStart)

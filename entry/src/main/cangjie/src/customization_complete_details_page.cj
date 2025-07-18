@@ -49,30 +49,10 @@ class CustomizationCompleteDetailsPage {
 
     func build() {
         Column() {
-            Text("")
-                // 高度
-                .height(50)
-                // 宽度
-                .width(100.percent)
-                // 背景颜色
-                .backgroundColor(0xFF0000)
-            Text("${params}")
-                // 高度
-                .height(40)
-                // 宽度
-                .width(100.percent)
-                // 文本颜色
-                .fontColor(0xFFFFFF)
-                // 背景颜色
-                .backgroundColor(0xFF0000)
-                // 设置容器元素绘制区域内的子元素的对齐方式
-                .align(Alignment.Center)
-                // 设置文本段落在水平方向的对齐方式
-                .textAlign(TextAlign.Center)
-                // 字体大小
-                .fontSize(16)
-                // 外边距
-                .margin(bottom: 10)
+            titleComponent(
+                params,
+                true
+            )
             Scroll(scroller) {
                 Column {
                     MarkdownAIComponent(

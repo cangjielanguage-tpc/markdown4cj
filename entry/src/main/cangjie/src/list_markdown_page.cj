@@ -29,147 +29,258 @@ class ListMarkdownPage {
     let arr = [mdStr0, mdStr1, mdStr2, mdStr3, mdStr4, mdStr5]
 
     func build() {
-        List() {
-            ForEach(
-                arr,
-                itemGeneratorFunc: {
-                    str: String, index: Int64 =>
-                        ListItem(){
-                            Column(){
+        Column() {
+            titleComponent(
+                "列表嵌套markdown",
+                true
+            )
+            List() {
+                ForEach(
+                    arr,
+                    itemGeneratorFunc: {
+                        str: String, index: Int64 => ListItem() {
+                            Column() {
                                 MarkdownAIComponent(output: str, isFull: true, markdownAIConfiguration: setConfig())
                             }
-//                            .margin(20)
+                            // 边框颜色
                             .borderColor(Color.BLACK)
+                            // 边框宽度
                             .borderWidth(1)
+                            // 背景颜色
                             .backgroundColor(Color.WHITE)
                         }
-                }
-            )
+                    }
+                )
+            }
+            // 背景颜色
+            .backgroundColor(Color.GRAY)
         }
-        .backgroundColor(Color.GRAY)
     }
 
+    /**
+     * 设置MarkdownAIConfiguration
+     *
+     * @return MarkdownAIConfiguration
+     */
     func setConfig(): MarkdownAIConfiguration {
         let MarkdownAIConfigurationBuilder: MarkdownAIConfigurationBuilder = MarkdownAIConfiguration.emptyBuilder()
+        // 设置markdown默认样式
         MarkdownAIConfigurationBuilder.setMarkdownAITheme(setMarkdownAITheme())
-        MarkdownAIConfigurationBuilder.setImageCallback(imageCallback)
-        MarkdownAIConfigurationBuilder.setAudioCallback(audioCallback)
-        MarkdownAIConfigurationBuilder.setVideoCallback(videoCallback)
-        MarkdownAIConfigurationBuilder.setVideoImageCallback(videoImageCallback)
+        // 设置链接的点击事件
         MarkdownAIConfigurationBuilder.setLinkCallback(linkCallback)
+        // 设置图片的点击事件
+        MarkdownAIConfigurationBuilder.setImageCallback(imageCallback)
+        // 设置音频的点击事件
+        MarkdownAIConfigurationBuilder.setAudioCallback(audioCallback)
+        // 设置视频的点击事件
+        MarkdownAIConfigurationBuilder.setVideoCallback(videoCallback)
+        // 设置视频的图片替换回调
+        MarkdownAIConfigurationBuilder.setVideoImageCallback(videoImageCallback)
+        // 设置代码复制按钮的点击事件
         MarkdownAIConfigurationBuilder.setCodeCopyCallback(codeCopyCallback)
+        // 设置代码全屏按钮的点击事件
         MarkdownAIConfigurationBuilder.setCodeFullScreenCallback(codeFullScreenCallback)
+        // 设置数学公式图片点击事件
         MarkdownAIConfigurationBuilder.setLatexImageCallbackCallback(latexImageCallbackCallback)
-        MarkdownAIConfigurationBuilder.setFootnoteCallback(footnoteCallback)
         return MarkdownAIConfigurationBuilder.build()
     }
 
+    /**
+     * 设置MarkdownAITheme
+     *
+     * @return MarkdownAITheme
+     */
     func setMarkdownAITheme(): MarkdownAITheme {
-        let MarkdownAITheme: MarkdownAITheme = MarkdownAITheme
-            .emptyBuilder()
-            // 代码复制按钮默认图
-            .setCodeCopyIcon(@r(app.media.app_icon))
-            // 音频icon
-            .setAudioIcon(@r(app.media.app_icon))
-            // 视频占位图
-            .setVideoImage(@r(app.media.place_holder))
-            // 视频占位图
-            .setPlayCircleFillIcon(@r(app.media.play_circle_fill))
-            // 设置一级二级标题下划线高度
-            .setHeadingBreakHeight(0.0)
-            // 标题字体大小
-            .setHeadingTextSizeMultipliers([15.0, 15.0, 15.0, 15.0, 15.0, 15.0]) // fp
-            // 字体颜色
-            .setParagraphTextColor(Color(0xFF222222))
-            // 字体大小
-            .setParagraphTextSize(15.0)
-            // 行高
-            .setParagraphTextLineheight(25.0)
-            // 内联代码颜色
-            .setCodeTextColor(Color(0xFFFF5722))
-            // 标题
-            .setHeadingTextColor(Color(0xFF222222))
-            // 链接颜色
-            .setLinkColor(Color(0xFF000000))
-            // 数学公式
-            .setLatexMathBackGroupColor(Color(0xFFFBFBFB))
-            // 表格
-            .setTableHeaderRowBackgroundColor(Color(0xFFF5F7FA))
-            .setTableOddRowBackgroundColor(Color(0xFFFAFAFA))
-            .setTableEvenRowBackgroundColor(Color(0xFFFFFFFF))
-            .setTableBorderWidth(2.0)
-            .setTableBorderColor(Color.RED)
-            // 设置上下文
-            .setAbilityContext(getGlobalAbilityContext())
-            // 链接样式 button 或 文字
-            .setIsLinkStyle(true)
-            // 链接相关样式
-            .setLinkCircleImageRadius(16.0)
-            .setLinkCircleImageTextSize(10.0)
-            .setLinkCircleImageMargin(2.0)
-            .setLinkCircleImageBackGroupColor(Color.WHITE)
-            .setLinkCircleImageButtonBackGroupColor(Color.BLACK)
-            .setLinkCircleImageTextColor(Color.WHITE)
-            .setLinkRectImageRadius(16.0)
-            .setLinkRectImageMargin(2.0)
-            .setLinkRectImageHeight(16.0)
-            .setLinkRectImageTextSize(10.0)
-            .setLinkRectToolImageDividingLineWidth(1.0)
-            .setLinkRectToolImageTextSize(11.0)
-            .setLinkRectToolImageMargin(2.0)
-            .setImagePadding(20)
-            .build()
-        return MarkdownAITheme
+        let markdownAIThemeBuilder: MarkdownAIThemeBuilder = MarkdownAITheme.emptyBuilder()
+
+        // 1、上下文
+        markdownAIThemeBuilder.setAbilityContext(getGlobalAbilityContext()) // 设置上下文
+
+        // 2、模块间距
+        markdownAIThemeBuilder.setBlockTopAndBottomMargins(10.0) // 设置每个模块之间上下间距
+
+        // 3、链接
+        markdownAIThemeBuilder.setIsLinkStyle(true) // 设置链接是否是图片显示
+        // 文本格式
+        markdownAIThemeBuilder.setLinkColor(Color.RED) // 设置文本格式链接的文本颜色
+        markdownAIThemeBuilder.setLinkSize(15.0) // 设置文本格式链接文字大小
+        markdownAIThemeBuilder.setIsLinkUnderlined(false) // 设置是否显示文本格式链接下划线
+        // 圆形图片
+        markdownAIThemeBuilder.setLinkCircleImageRadius(16.0) // 设置圆形链接半径
+        markdownAIThemeBuilder.setLinkCircleImageTextSize(10.0) // 设置圆形链接文字大小
+        markdownAIThemeBuilder.setLinkCircleImageMargin(2.0) // 设置圆形链接左右边距
+        markdownAIThemeBuilder.setLinkCircleImageBackGroupColor(Color.WHITE) // 设置圆形链接主题背景颜色
+        markdownAIThemeBuilder.setLinkCircleImageButtonBackGroupColor(Color.BLACK) // 设置圆形链接控件背景颜色
+        markdownAIThemeBuilder.setLinkCircleImageTextColor(Color.WHITE) // 设置圆形链接文字颜色
+        // 圆角图片
+        markdownAIThemeBuilder.setLinkRectImageRadius(16.0) // 设置圆角矩形链接圆角半径
+        markdownAIThemeBuilder.setLinkRectImageMargin(2.0) // 设置圆角矩形链接左右边距
+        markdownAIThemeBuilder.setLinkRectImageHeight(16.0) // 设置圆角矩形链接控件高度
+        markdownAIThemeBuilder.setLinkRectImageTextSize(10.0) // 设置圆角矩形链接文字大小
+        // 空心圆角图片
+        markdownAIThemeBuilder.setLinkRectToolImageDividingLineWidth(1.0) // 设置空心圆角矩形链接分割线宽度
+        markdownAIThemeBuilder.setLinkRectToolImageTextSize(11.0) // 设置空心圆角矩形链接文字大小
+        markdownAIThemeBuilder.setLinkRectToolImageMargin(2.0) // 设置空心圆角矩形链接左右边距
+
+        // 4、列表
+        markdownAIThemeBuilder.setBlockOrderedAndBulletTopAndBottomMargins(0.0) // 设置列表子模块间距
+        markdownAIThemeBuilder.setBlockQuoteTopAndBottomMargins(0.0) // // 设置块引用子模块间距
+        // 块引用
+        markdownAIThemeBuilder.setBlockQuoteColor(Color.RED) // 设置块引用左边线条颜色
+        markdownAIThemeBuilder.setBlockQuoteBackGroupColor(Color.GRAY) // 设置块引用背景颜色
+        // 有序列表
+        markdownAIThemeBuilder.setOrderedListItemSize(15.0) // 设置有序列表项的字体大小
+        markdownAIThemeBuilder.setOrderedListItemLineheight(25.0) // 设置有序列表项文本行高
+        // 无序列表
+        markdownAIThemeBuilder.setBulletListItemColor(Color.GREEN) // 设置无序列表项的颜色
+        markdownAIThemeBuilder.setBulletListItemLineheight(22.0) // 设置无序列表项文本行高
+        // 任务列表
+
+        // 5、代码
+        // 内联代码
+        markdownAIThemeBuilder.setCodeTextColor(Color(0xFFFF5722)) // 设置内联代码文本颜色
+        // 代码块
+        markdownAIThemeBuilder.setCodeCopyIcon(@r(app.media.app_icon)) // 设置代码复制按钮默认图标
+        markdownAIThemeBuilder.setCodeBlockRadius(0.0) //  设置代码块圆角
+        // 组合代码
+        // 单独代码块
+        markdownAIThemeBuilder.setIsSeparateCodeBlock(false) // 设置是否单独代码块
+
+        // 6、标题
+        markdownAIThemeBuilder.setHeadingBreakHeight(0.0) // 设置H1、H2标题下分割线高度
+        markdownAIThemeBuilder.setHeadingTextSizeMultipliers([15.0, 15.0, 15.0, 15.0, 15.0, 15.0]) // 设置标题文本大小数组
+        markdownAIThemeBuilder.setHeadingTextColor(Color(0xFF222222)) // 设置标题字体颜色
+        markdownAIThemeBuilder.setHeadingTextLineheight1(25.0) // 设置一级标题文本行高
+        markdownAIThemeBuilder.setHeadingTextLineheight2(25.0) // 设置二级标题文本行高
+        markdownAIThemeBuilder.setHeadingTextLineheight3(25.0) // 设置三级标题文本行高
+        markdownAIThemeBuilder.setHeadingTextLineheight4(25.0) // 设置四级标题文本行高
+        markdownAIThemeBuilder.setHeadingTextLineheight5(25.0) // 设置五级标题文本行高
+        markdownAIThemeBuilder.setHeadingTextLineheight6(25.0) // 设置六级标题文本行高
+
+        // 7、段落
+        markdownAIThemeBuilder.setParagraphTextColor(Color(0xFF222222)) // 设置段落字体颜色
+        markdownAIThemeBuilder.setParagraphTextSize(15.0) // 设置段落字体大小
+        markdownAIThemeBuilder.setParagraphTextLineheight(25.0) // 设置段落文本行高
+
+        // 8、分割线
+        markdownAIThemeBuilder.setThematicBreakColor(Color.BLUE) // 设置分割线颜色
+
+        // 9、软换行
+        markdownAIThemeBuilder.setIsLineBreak(true) // 设置软换行是否换行
+
+        // 10、数学公式
+        markdownAIThemeBuilder.setLatexMathBackGroupColor(Color(0xFFFBFBFB)) // 设置数学公式背景色
+        markdownAIThemeBuilder.setLatexMathTextColor(Color.GREEN) // 设置数学公式字体颜色
+
+        // 11、音频
+        markdownAIThemeBuilder.setAudioIcon(@r(app.media.app_icon)) // 设置音频icon
+
+        // 12、视频
+        markdownAIThemeBuilder.setVideoImage(@r(app.media.place_holder)) // 设置视频默认占位图
+        markdownAIThemeBuilder.setPlayCircleFillIcon(@r(app.media.play_circle_fill)) // 设置视频播放按钮默认图标
+
+        // 13、图片Banner
+
+        // 14、图片
+        markdownAIThemeBuilder.setImagePadding(20) //  设置图片宽度边距
+
+        // 15、表格
+        markdownAIThemeBuilder.setTableHeaderRowBackgroundColor(Color(0xFFF5F7FA)) // 设置表格头背景色
+        markdownAIThemeBuilder.setTableOddRowBackgroundColor(Color(0xFFFAFAFA)) // 设置表格奇数行背景色
+        markdownAIThemeBuilder.setTableEvenRowBackgroundColor(Color(0xFFFFFFFF)) // 设置表格偶数行背景色
+        markdownAIThemeBuilder.setTableBorderWidth(2.0) // 设置表格边框宽度
+        markdownAIThemeBuilder.setTableBorderColor(Color.RED) // 设置表格边框颜色
+
+        // 16、代码高亮
+        markdownAIThemeBuilder.setPrismTheme(PrismThemeDarkula.create()) // 设置markdown代码高亮样式
+
+        return markdownAIThemeBuilder.build()
     }
 
-    func footnoteCallback(f: ?Float64) {
-        //scroller.scrollBy(xOffset: 0.0, yOffset: f.getOrThrow())
-        Hilog.error(1, "2", "------------------------footnoteCallback:f:${f}")
-    }
-
-    func imageCallback(url: String,arr:ArrayList<String>) {
+    /**
+     * 链接的点击事件
+     *
+     * @param url 链接url
+     */
+    func linkCallback(url: String): Unit {
         PromptAction.showToast(message: url)
-        Hilog.error(1,"1","------------------------LinkCallback:${url},arr:${arr}")
+        Hilog.error(1, "1", "------------------------LinkCallback:${url}")
     }
 
-    func audioCallback(url: String) {
+    /**
+     * 图片的点击事件
+     *
+     * @param url 图片url
+     * @param arr 图片和视频的url集合
+     */
+    func imageCallback(url: String, arr: ArrayList<String>): Unit {
         PromptAction.showToast(message: url)
-        Hilog.error(1,"1","------------------------LinkCallback:${url}")
+        Hilog.error(1, "1", "------------------------LinkCallback:${url},arr:${arr}")
     }
 
-    func videoCallback(url: String,arr:ArrayList<String>) {
+    /**
+     * 音频的点击事件
+     *
+     * @param url 音频url
+     */
+    func audioCallback(url: String): Unit {
         PromptAction.showToast(message: url)
-        Hilog.error(1,"1","------------------------videoCallback:${url},arr:${arr}")
+        Hilog.error(1, "1", "------------------------LinkCallback:${url}")
     }
 
-    func videoImageCallback(url: String, videoImageCallbackCallback: (String,Float64,Int64) -> Unit) {
-        if (url == "562986b1-46d8-48ef-bac6-82685bcedcd8") {
-            videoImageCallbackCallback("",16.0/9.0,100)
-        } else {
-            videoImageCallbackCallback("",16.0/9.0,100)
-        }
-        Hilog.error(1,"1","------------------------videoImageCallback:${url}")
-    }
-
-    func linkCallback(url: String) {
+    /**
+     * 视频的点击事件
+     *
+     * @param url 视频url
+     * @param arr 图片和视频的url集合
+     */
+    func videoCallback(url: String, arr: ArrayList<String>): Unit {
         PromptAction.showToast(message: url)
-        Hilog.error(1,"1","------------------------LinkCallback:${url}")
+        Hilog.error(1, "1", "------------------------videoCallback:${url},arr:${arr}")
     }
 
-    func codeCopyCallback(url: String) {
-        PromptAction.showToast(message: url)
-        Hilog.error(1,"1","------------------------codeCopyCallback:${url}")
+    /**
+     * 视频的图片替换回调
+     *
+     * @param url 视频url
+     * @param videoImageCallbackCallback 视频首帧图回调
+     */
+    func videoImageCallback(url: String, videoImageCallbackCallback: (String, Float64, Int64) -> Unit) {
+        Hilog.error(1, "1", "------------------------videoImageCallback:${url}")
     }
 
-    func codeFullScreenCallback(url: String, infos: ?String) {
-        PromptAction.showToast(message: "${url}${infos}")
-        Hilog.error(1,"1","------------------------codeFullScreenCallback:${url}")
-        Hilog.error(1,"1","------------------------codeFullScreenCallback:${infos}")
+    /**
+     * 代码复制按钮的点击事件
+     *
+     * @param code 代码内容
+     */
+    func codeCopyCallback(code: String): Unit {
+        PromptAction.showToast(message: code)
+        Hilog.error(1, "1", "------------------------codeCopyCallback:${code}")
     }
 
-    func latexImageCallbackCallback(data: Array<UInt8>, height: Length, width: Length) {
-        Hilog.error(1,"1","------------------------data:${data}")
-        Hilog.error(1,"1","------------------------height:${height.value}")
-        Hilog.error(1,"1","------------------------width:${width.value}")
+    /**
+     * 代码全屏按钮的点击事件
+     *
+     * @param code 代码内容
+     * @param infos 代码类型
+     */
+    func codeFullScreenCallback(code: String, infos: ?String): Unit {
+        PromptAction.showToast(message: "${code}${infos}")
+        Hilog.error(1, "1", "------------------------codeFullScreenCallback:${code}")
+        Hilog.error(1, "1", "------------------------codeFullScreenCallback:${infos}")
+    }
+
+    /**
+     * 数学公式图片点击事件
+     *
+     * @param data 数学公式图片数组内容
+     * @param height 图片高度
+     * @param width 图片宽度
+     */
+    func latexImageCallbackCallback(data: Array<UInt8>, height: Length, width: Length): Unit {
+        Hilog.error(1, "1", "------------------------data:${data}")
+        Hilog.error(1, "1", "------------------------height:${height.value}")
+        Hilog.error(1, "1", "------------------------width:${width.value}")
     }
 }
