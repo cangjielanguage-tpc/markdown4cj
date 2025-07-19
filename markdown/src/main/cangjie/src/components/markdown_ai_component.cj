@@ -383,25 +383,33 @@ public class MarkdownAIComponent {
                     nodeViewAIDataSource,
                     itemGeneratorFunc: {
                         item: NodeView, idx: Int64 => if (item.node is FencedCodeBlock) {
-                            MarkdownAICodeComponent(
-                                markdownAIConfiguration: markdownAIConfiguration,
-                                codeText: (item.node as FencedCodeBlock)().getLiteral(),
-                                info: (item.node as FencedCodeBlock)().getInfo(),
-                                indexList: indexAdd(indexList, idx),
-                                isFull: isFull,
-                                aiCodeComponents: markdownAICacheConfiguration.aiCodeComponents,
-                                aiCodeTextComponents: markdownAICacheConfiguration.aiCodeTextComponents
-                            )
+                            ListItem(){
+                                MarkdownAICodeComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    codeText: (item.node as FencedCodeBlock)().getLiteral(),
+                                    info: (item.node as FencedCodeBlock)().getInfo(),
+                                    indexList: indexAdd(indexList, idx),
+                                    isFull: isFull,
+                                    aiCodeComponents: markdownAICacheConfiguration.aiCodeComponents,
+                                    aiCodeTextComponents: markdownAICacheConfiguration.aiCodeTextComponents
+                                )
+                            }
                         } else if (item.node is IndentedCodeBlock) {
-                            MarkdownAICodeComponent(
-                                markdownAIConfiguration: markdownAIConfiguration,
-                                codeText: (item.node as IndentedCodeBlock)().getLiteral(),
-                                info: Option<String>.None,
-                                indexList: indexAdd(indexList, idx),
-                                isFull: isFull,
-                                aiCodeComponents: markdownAICacheConfiguration.aiCodeComponents,
-                                aiCodeTextComponents: markdownAICacheConfiguration.aiCodeTextComponents
-                            )
+                            ListItem(){
+                                MarkdownAICodeComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    codeText: (item.node as IndentedCodeBlock)().getLiteral(),
+                                    info: Option<String>.None,
+                                    indexList: indexAdd(indexList, idx),
+                                    isFull: isFull,
+                                    aiCodeComponents: markdownAICacheConfiguration.aiCodeComponents,
+                                    aiCodeTextComponents: markdownAICacheConfiguration.aiCodeTextComponents
+                                )
+                            }
+                        } else {
+                            ListItem(){
+                                Text("")
+                            }
                         }
                     }
                 )

@@ -57,9 +57,10 @@ public class MarkdownAIImageAudioComponent {
             if (node.node is CommonmarkImage) {
                 imageAudioUrl = (node.node as CommonmarkImage)().getDestination()
                 let titleList = imageAudioUrl.split("/")
-                audioTitle = titleList[titleList.size - 1]
-                let typeList = audioTitle.split(".")
+                let audioName = titleList[titleList.size - 1]
+                let typeList = audioName.split(".")
                 audioType = typeList[typeList.size - 1]
+                audioTitle = typeList[0]
             }
         }
     }
@@ -121,6 +122,12 @@ public class MarkdownAIImageAudioComponent {
                     .fontSize(markdownAIConfiguration.markdownAITheme.audioButtonTextSize)
                     // 设置文本的字体粗细
                     .fontWeight(FontWeight.Medium)
+                    // 内边距
+                    .padding(right: 3, left: 3)
+                    // 设置文本的最大行数
+                    .maxLines(1)
+                    // 设置文本超长时的显示方式
+                    .textOverflow(TextOverflow.Ellipsis)
                     // 组件被点击时触发的事件
                     .onClick({
                         event => if (let Some(v) <- markdownAIConfiguration.audioCallback) {

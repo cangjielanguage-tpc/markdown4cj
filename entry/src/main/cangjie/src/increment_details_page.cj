@@ -101,7 +101,6 @@ class IncrementDetailsPage {
                                     arr.size
                                 }
                                 output += String(arr[i..size])
-                                Hilog.error(1, "1", "--------output:${output}")
                                 scroller.scrollEdge(Edge.Bottom)
                             }
                         }

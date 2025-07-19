@@ -264,11 +264,19 @@ class MarkdownAICodeComponent {
         // 设置组件自身的宽度
         .height(100.percent)
         // 设置内边距属性
-        .padding(bottom: 50)
+        .padding(bottom: bottomSize())
         // 设置圆角
         .borderRadius(markdownAIConfiguration.markdownAITheme.codeBlockRadius)
         // 设置背景色
         .backgroundColor(codeBackgroundColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+    }
+
+    func bottomSize():Float64{
+        if (markdownAIConfiguration.markdownAITheme.codeCopyIcon.isSome() || markdownAIConfiguration.markdownAITheme.codeFullScreenIcon.isSome()) {
+            return 50.0
+        }else {
+            return 20.0
+        }
     }
 
     /**
