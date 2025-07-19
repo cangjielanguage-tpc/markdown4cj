@@ -118,8 +118,6 @@ public class MarkdownAIComponent {
             .usePlugin(ImageCollectPlugin.create())
             .build()
         incBase = IncreaseParser(markdownBase())
-        // 控件宽度 = 屏幕宽度 - padding
-        componentWidth = widthVpToPx(screenWidth, markdownAIConfiguration.markdownAITheme.imagePadding)
         // 首次加载
         refreshData()
     }

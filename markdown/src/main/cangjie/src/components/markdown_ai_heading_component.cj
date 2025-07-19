@@ -84,7 +84,7 @@ class MarkdownAIHeadingComponent {
     /**
      * 块引用背景颜色
      */
-    var blockQuoteBackGroupClor: Option<Color> = Option<Color>.None
+    var blockQuoteBackGroupColor: Option<Color> = Option<Color>.None
 
     /**
      * 图片上边距
@@ -213,14 +213,14 @@ class MarkdownAIHeadingComponent {
                                             markdownAIConfiguration: markdownAIConfiguration,
                                             strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor)
+                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor)
                                         )
                                     } else {
                                         MarkdownAILinkCircleImageComponent(
                                             markdownAIConfiguration: markdownAIConfiguration,
                                             strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor)
+                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor)
                                         )
                                     }
                                 }
@@ -231,7 +231,7 @@ class MarkdownAIHeadingComponent {
                                         strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
                                         strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor)
+                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor)
                                     )
                                 }
                             }
@@ -270,7 +270,7 @@ class MarkdownAIHeadingComponent {
                             markdownAIConfiguration: markdownAIConfiguration,
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
-                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownAIConfiguration.markdownAITheme.latexMathBackGroupColor)
+                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownAIConfiguration.markdownAITheme.latexMathBackGroupColor)
                         )
                     } else {
                         // TODO 其他节点

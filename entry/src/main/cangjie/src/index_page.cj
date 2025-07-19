@@ -68,6 +68,18 @@ class IndexPage {
                             "ListMarkdownPage"
                         )
                     }
+                    ListItem() {
+                        itemListComponent(
+                            "8、BUG用例",
+                            "BugPage"
+                        )
+                    }
+                    ListItem() {
+                        itemListComponent(
+                            "9、单独代码块BUG用例",
+                            "BugCodePage"
+                        )
+                    }
                 }
                 // 设置ListItem在List交叉轴方向的布局方式
                 .alignListItem(ListItemAlign.Center)

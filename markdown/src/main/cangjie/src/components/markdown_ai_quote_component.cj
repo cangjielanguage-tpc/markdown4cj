@@ -118,7 +118,7 @@ public class MarkdownAIQuoteComponent {
                                     isListTo:true,
                                     indexList: indexAdd(indexList, idx),
                                     paragraphComponents: markdownAICacheConfiguration.paragraphComponents,
-                                    blockQuoteBackGroupClor: markdownAIConfiguration.markdownAITheme.blockQuoteBackGroupClor
+                                    blockQuoteBackGroupColor: markdownAIConfiguration.markdownAITheme.blockQuoteBackGroupColor
                                 )
                             } else if (item.node is Heading) {
                                 // 标题
@@ -137,7 +137,7 @@ public class MarkdownAIQuoteComponent {
                                     isListTo:true,
                                     indexList: indexAdd(indexList, idx),
                                     headingComponents: markdownAICacheConfiguration.headingComponents,
-                                    blockQuoteBackGroupClor: markdownAIConfiguration.markdownAITheme.blockQuoteBackGroupClor
+                                    blockQuoteBackGroupColor: markdownAIConfiguration.markdownAITheme.blockQuoteBackGroupColor
                                 )
                             } else if (item.node is IndentedCodeBlock) {
                                 // 缩进代码
@@ -272,7 +272,7 @@ public class MarkdownAIQuoteComponent {
                     // 对子组件进行重新布局
                     .layoutWeight(1)
                     // 背景色设置
-                    .backgroundColor(markdownAIConfiguration.markdownAITheme.blockQuoteBackGroupClor)
+                    .backgroundColor(markdownAIConfiguration.markdownAITheme.blockQuoteBackGroupColor)
                     // 内边距
                     .padding(left: markdownAIConfiguration.markdownAITheme.blockQuoteRightMargin)
                 }

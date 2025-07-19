@@ -23,24 +23,11 @@ let COLOR_333333: Color = Color(0x333333)
 let COLOR_1A000000: Color = Color(0x1A000000)
 let COLOR_33000000: Color = Color(0x33000000)
 let COLOR_FF0000FF: Color = Color(0xFF0000FF)
-
+let COLOR_FF191919: Color = Color(0xFF191919)
+let COLOR_80000000: Color = Color(0x80000000)
 let null: NodeView = unsafe { zeroValue() }
-
-func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<String>, ArrayList<String>) {
-    var strText: ArrayList<String> = ArrayList<String>()
-    var strInfoText: ArrayList<String> = ArrayList<String>()
-    var strInfo: ArrayList<String> = ArrayList<String>()
-    for (nodeView in codeBlockListNodeView.children) {
-        if (nodeView.node is FencedCodeBlock) {
-            strText.append((nodeView.node as FencedCodeBlock)().getLiteral())
-            strInfoText.append((nodeView.node as FencedCodeBlock)().getInfo())
-        }
-    }
-    if (codeBlockListNodeView.node is FencedCodeBlockListBlock) {
-        strInfo = (codeBlockListNodeView.node as FencedCodeBlockListBlock)().tabs
-    }
-    return (strInfo, strText, strInfoText)
-}
+let SECONDS_PER_HOUR: Int64 = 3600
+let SECONDS_PER_MINUTE: Int64 = 60
 
 /**
  * 文本内容设置
@@ -885,6 +872,14 @@ func length2Float64(length: ?Length, componentWidth: Float64): ?Float64 {
     }
 }
 
+/**
+ * 获取map数据
+ *
+ * @param item NodeView
+ * @param key key
+ * @param default 默认值
+ * @return T
+ */
 func getProp<T>(item: NodeView, key: String, default: T): T {
     match (item.props?.get(key)) {
         case Some(Some(v: T)) => v
@@ -892,6 +887,13 @@ func getProp<T>(item: NodeView, key: String, default: T): T {
     }
 }
 
+/**
+ * 将布局位置添加进列表
+ *
+ * @param indexList 列表
+ * @param index 位置
+ * @return ArrayList<Int64>
+ */
 func indexAdd(indexList: ArrayList<Int64>, index: Int64): ArrayList<Int64> {
     let indexListNew: ArrayList<Int64> = ArrayList<Int64>()
     indexListNew.appendAll(indexList)
@@ -899,6 +901,14 @@ func indexAdd(indexList: ArrayList<Int64>, index: Int64): ArrayList<Int64> {
     return indexListNew
 }
 
+/**
+ * 是否是当前数据
+ *
+ * @param indexListOne 第一个列表
+ * @param indexListTwo 第二个列表
+ * @param index 当前位置
+ * @return Bool
+ */
 func isListItem(indexListOne: ArrayList<Int64>, indexListTwo: ArrayList<Int64>, index: Int64): Bool {
     if (indexListTwo.size <= 0) {
         return false
@@ -915,6 +925,12 @@ func isListItem(indexListOne: ArrayList<Int64>, indexListTwo: ArrayList<Int64>, 
     return isBool
 }
 
+/**
+ * 解析链接文本
+ *
+ * @param v 加密的链接文本
+ * @return String
+ */
 func urlSafeBase64Decode(v: String): String {
     var vNew = v.replace("_", "/").replace("-", "+")
     var arr: ?Array<Byte> = fromBase64String(vNew)
@@ -939,6 +955,13 @@ func urlSafeBase64Decode(v: String): String {
     return ""
 }
 
+/**
+ * 获取背景色
+ *
+ * @param blockQuoteBackGroupClor 背景色
+ * @param backGroupColor 背景色
+ * @return Color
+ */
 func markdownbackGroupColor(blockQuoteBackGroupClor: Option<Color>, backGroupColor: Color): Color {
     if (let Some(v) <- blockQuoteBackGroupClor) {
         return v
@@ -947,6 +970,12 @@ func markdownbackGroupColor(blockQuoteBackGroupClor: Option<Color>, backGroupCol
     }
 }
 
+/**
+ * 将String转换成Float64
+ *
+ * @param str String
+ * @return ?Float64
+ */
 func strToFloat64(str: ?String): ?Float64 {
     var f: ?Float64 = Option<Float64>.None
     if (let Some(v) <- str) {
@@ -957,17 +986,6 @@ func strToFloat64(str: ?String): ?Float64 {
     }
     return f
 }
-
-func constraintSizeMinWidth(markdownAIConfiguration: MarkdownAIConfiguration): Length {
-    return if (markdownAIConfiguration.markdownAITheme.isSeparateCodeBlock) {
-        100.percent
-    } else {
-        0.vp
-    }
-}
-
-let SECONDS_PER_HOUR: Int64 = 3600
-let SECONDS_PER_MINUTE: Int64 = 60
 
 /**
  * 将秒转换成时分秒并以HH:MM:SS 格式输出
@@ -1005,12 +1023,18 @@ func appendTwoDigits(sb: StringBuilder, value: Int64): StringBuilder {
     return sb
 }
 
-func getLinkString(nodeView: NodeView): ?String{
-    if(nodeView.children.size == 0){
+/**
+ * 获取链接文本
+ *
+ * @param nodeView nodeView
+ * @return 获取链接文本
+ */
+func getLinkString(nodeView: NodeView): ?String {
+    if (nodeView.children.size == 0) {
         return Option<String>.None
     }
     var s = ""
-    for(childrenNodeView in nodeView.children){
+    for (childrenNodeView in nodeView.children) {
         if (childrenNodeView.node is CommonmarkText) {
             s = s + (childrenNodeView.node as CommonmarkText)().getLiteral()
         } else if (childrenNodeView.node is Footnote) {
@@ -1022,24 +1046,43 @@ func getLinkString(nodeView: NodeView): ?String{
     return s
 }
 
-func isFontWeight(b:Bool):FontWeight{
-    if(b){
+/**
+ * 文本是否加粗
+ *
+ * @param b 布尔值
+ * @return FontWeight
+ */
+func isFontWeight(b: Bool): FontWeight {
+    if (b) {
         FontWeight.W600
-    }else {
+    } else {
         FontWeight.W400
     }
 }
 
-func isAlignItems(b:Bool):Alignment{
-    if(b){
+/**
+ * 设置对齐方式
+ *
+ * @param b 布尔值
+ * @return Alignment
+ */
+func isAlignItems(b: Bool): Alignment {
+    if (b) {
         Alignment.Center
-    }else{
+    } else {
         Alignment.Start
     }
 }
 
+/**
+ * 设置代码类型文本颜色
+ *
+ * @param markdownAITheme MarkdownAITheme
+ * @param prismTheme PrismTheme
+ * @return 代码类型文本颜色
+ */
 func indentedCodeodeBlockTypeTextColor(markdownAITheme: MarkdownAITheme, prismTheme: PrismTheme): Color {
-    if(markdownAITheme.codeBlockTypeTextColor.isSome()){
+    if (markdownAITheme.codeBlockTypeTextColor.isSome()) {
         return markdownAITheme.codeBlockTypeTextColor()
     }
     if (markdownAITheme.codeBlockTextColor.isSome()) {
@@ -1048,12 +1091,16 @@ func indentedCodeodeBlockTypeTextColor(markdownAITheme: MarkdownAITheme, prismTh
     return prismTheme.textColor()
 }
 
-func linkUrl(nodeView: NodeView):?String{
-    return if(nodeView.link.isSome()){
+/**
+ * 获取链接url
+ *
+ * @param nodeView NodeView
+ * @return 链接url
+ */
+func linkUrl(nodeView: NodeView): ?String {
+    return if (nodeView.link.isSome()) {
         nodeView.link().getDestination()
-    }else{
+    } else {
         Option<String>.None
     }
 }
-
-
