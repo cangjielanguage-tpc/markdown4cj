@@ -113,6 +113,8 @@ class MarkdownAIIndentedCodeBlockComponent {
                 .borderStyle(BorderStyle.Solid)
                 // 设置边框的颜色
                 .borderColor(indentedCodeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+                // 控件显示和隐藏
+                .visibility(isVisibility(markdownAIConfiguration.markdownAITheme.codeBlockLineNumberHide))
                 codeBlockComponent()
             }
         }

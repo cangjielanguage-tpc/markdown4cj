@@ -7,7 +7,6 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
-import ohos.hilog.Hilog
 
 let resPath: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
 
@@ -67,7 +66,6 @@ class MarkdownParseLatexUtil {
                     var size: Size = pixelMap().getImageInfo().size
                     imageWidth = Float64(size.width)
                     imageHeight = Float64(size.height)
-                    Hilog.error(1,"1","-------------imageWidth:${imageWidth},imageHeight:${imageHeight}")
                 } catch (e: Exception) {
                 } finally {
                     try {
@@ -147,7 +145,6 @@ class MarkdownParseLatexUtil {
                         return
                     }
                     pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
-                    Hilog.error(1,"1","-------------height:${height},width:${width}")
                 } catch (e: Exception) {
                 } finally {
                     try {
