@@ -84,10 +84,14 @@ class MarkdownLatexMathBlockComponent {
             }
             // 设置滚动方法
             .scrollable(ScrollDirection.Horizontal)
+            // 宽度
+            .width(100.percent)
             // 设置滚动条状态
             .scrollBar(BarState.Off)
             // 设置外边距属性
             .margin(top: marginTop, bottom: marginBottom)
+            // 设置 Column 子组件在水平方向上的对齐格式
+            .align(isAlignItems(markdownConfiguration.markdownTheme.latexMathBlockCenter))
         }
     }
 
@@ -103,6 +107,6 @@ class MarkdownLatexMathBlockComponent {
                 latexData = arr
             }
         }
-        MarkdownParseLatexUtil.latexMathStrToPixelMap(latexStr, markdownConfiguration.markdownTheme.resPath, markdownConfiguration, callback)
+        MarkdownParseLatexUtil.latexMathStrToPixelMap(latexStr, markdownConfiguration, callback)
     }
 }

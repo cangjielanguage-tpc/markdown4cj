@@ -106,6 +106,6 @@ public class MarkdownLatexImageSpanComponent {
             }
         }
         // 解析数学公式
-        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration.markdownTheme.resPath, markdownConfiguration, componentWidth, callback, backGroupColor)
+        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration, vp2px(componentWidth.vp)().value, callback, backGroupColor)
     }
 }

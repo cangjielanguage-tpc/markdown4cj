@@ -38,6 +38,11 @@ class MarkdownImageBannerComponent {
      */
     var controller: SwiperController = SwiperController()
 
+    /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
     func build() {
         Swiper(controller) {
             ForEach(
@@ -75,7 +80,7 @@ class MarkdownImageBannerComponent {
                 // 设置图片解码过程中是否对图源自动缩放
                 .autoResize(markdownConfiguration.markdownTheme.isAutoResize)
                 // 图片的点击事件
-                .onClick {evt => imageOnClick(commonmarkImage.getDestination(), markdownConfiguration.imageCallback)}
+                .onClick {evt => imageOnClick(commonmarkImage.getDestination(), imageCallback)}
         } else {
             // 设置图片的数据源
             Image(commonmarkImage.getDestination())
@@ -84,14 +89,7 @@ class MarkdownImageBannerComponent {
                 // 设置图片解码过程中是否对图源自动缩放
                 .autoResize(markdownConfiguration.markdownTheme.isAutoResize)
                 // 图片的点击事件
-                .onClick {evt => imageOnClick(commonmarkImage.getDestination(), markdownConfiguration.imageCallback)}
+                .onClick {evt => imageOnClick(commonmarkImage.getDestination(), imageCallback)}
         }
-    }
-
-    /**
-     * 滑动容器，提供切换子组件显示的能力
-     */
-    @Builder
-    func imageBannerComponent() {
     }
 }

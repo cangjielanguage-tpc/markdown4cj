@@ -3,6 +3,9 @@
  */
 package markdown.components
 
+/**
+ * 缓存控件列表数据
+ */
 public class MarkdownCacheConfiguration {
     let headingComponents: ArrayList<MarkdownHeadingComponent> = ArrayList<MarkdownHeadingComponent>()
 
@@ -24,6 +27,10 @@ public class MarkdownCacheConfiguration {
 
     let fencedCodeComponents: ArrayList<MarkdownFencedCodeBlockComponent> = ArrayList<MarkdownFencedCodeBlockComponent>()
 
+    let codeComponents: ArrayList<MarkdownCodeComponent> = ArrayList<MarkdownCodeComponent>()
+
+    let codeTextComponents: ArrayList<MarkdownCodeTextComponent> = ArrayList<MarkdownCodeTextComponent>()
+
     func clearAll(): Unit {
         listComponents.clear()
         listItemComponents.clear()
@@ -35,5 +42,7 @@ public class MarkdownCacheConfiguration {
         tableCellComponents.clear()
         indentedCodeComponents.clear()
         fencedCodeComponents.clear()
+        codeComponents.clear()
+        codeTextComponents.clear()
     }
 }

@@ -4,6 +4,10 @@
 package markdown.plugin
 
 public class BlockVideoPlugin <: AbstractMarkdownPlugin {
+    public static func create(): BlockVideoPlugin {
+        return BlockVideoPlugin()
+    }
+
     public func getClassType(): String {
         "BlockVideoPlugin"
     }

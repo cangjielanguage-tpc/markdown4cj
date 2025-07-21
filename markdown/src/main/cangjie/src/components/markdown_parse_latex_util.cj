@@ -8,6 +8,8 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
+let resPath: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
+
 class MarkdownParseLatexUtil {
     /**
      * 全局锁
@@ -22,8 +24,7 @@ class MarkdownParseLatexUtil {
      * @param markdownConfiguration Markdown Configuration
      * @param callback PixelMap图片、图片高度、图片宽度、图片数组数据 回调接口
      */
-    static func latexMathStrToPixelMap(strLatexMath: String, resStr: String,
-        markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func latexMathStrToPixelMap(strLatexMath: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -35,19 +36,15 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex = LaTeX(resStr)
+                    var latex = LaTeX(resPath)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew),
-                        Float32(markdownConfiguration.markdownTheme.latexMathTextSize),
-                        Float32(markdownConfiguration.markdownTheme.latexMathTextLineSpacing),
-                        markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
+                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownConfiguration.markdownTheme.latexMathTextSize), Float32(markdownConfiguration.markdownTheme.latexMathTextLineSpacing), markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r,
-                        latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat))
+                    var g2 = Graphic2D(r, latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -94,9 +91,7 @@ class MarkdownParseLatexUtil {
      * @param componentWidth 控件宽度 - 单位vp
      * @param callback PixelMap图片、图片高度、图片宽度、图片数组数据 回调接口
      */
-    static func latexMathStrToPixelMapRow(strLatexMath: String, resStr: String,
-        markdownConfiguration: MarkdownConfiguration, componentWidth: Float64,
-        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit, backGroupColor: Color): Future<Unit> {
+    static func latexMathStrToPixelMapRow(strLatexMath: String, markdownConfiguration: MarkdownConfiguration, componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit, backGroupColor: Color): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -108,19 +103,15 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex = LaTeX(resStr)
+                    var latex = LaTeX(resPath)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew),
-                        Float32(markdownConfiguration.markdownTheme.latexMathTextSize),
-                        Float32(markdownConfiguration.markdownTheme.latexMathTextLineSpacing),
-                        markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
+                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownConfiguration.markdownTheme.latexMathTextSize), Float32(markdownConfiguration.markdownTheme.latexMathTextLineSpacing), markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r,
-                        latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat))
+                    var g2 = Graphic2D(r, latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -178,8 +169,7 @@ class MarkdownParseLatexUtil {
  * @return 宽度
  */
 func getLatexmathWidth(strLatexMath: String): Int32 {
-    if (strLatexMath.contains("aligned") || strLatexMath.contains("align") || strLatexMath.contains("flalign") ||
-        strLatexMath.contains("gather") || strLatexMath.contains("multline") || strLatexMath.contains("eqnarray")) {
+    if (strLatexMath.contains("aligned") || strLatexMath.contains("align") || strLatexMath.contains("flalign") || strLatexMath.contains("gather") || strLatexMath.contains("multline") || strLatexMath.contains("eqnarray")) {
         Int32(10)
     } else {
         Int32(2000)

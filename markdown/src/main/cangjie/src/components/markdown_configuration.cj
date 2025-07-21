@@ -30,18 +30,23 @@ public class MarkdownConfiguration {
     /**
      * 图片的点击事件
      */
-    protected var imageCallback: ?(String) -> Unit = None
+    protected var imageCallback: ?(String, ArrayList<String>) -> Unit = None
+
+    /**
+     * 音频的点击事件
+     */
+    protected var audioCallback: ?(String) -> Unit = None
 
     /**
      * 视频的点击事件
      */
-    protected var videoCallback: ?(String) -> Unit = None
+    protected var videoCallback: ?(String, ArrayList<String>) -> Unit = None
 
     /**
      * 视频的图片替换回调
      */
-    protected var videoImageCallback: (String, (String) -> Unit) -> Unit = {
-        url: String, coverCallback: (String) -> Unit => ()
+    protected var videoImageCallback: (String, (String,Float64,Int64) -> Unit) -> Unit = {
+        url: String, coverCallback: (String,Float64,Int64) -> Unit => ()
     }
 
     /**
@@ -95,6 +100,7 @@ public class MarkdownConfiguration {
         this.markdownParser = builder.markdownParser
         this.linkCallback = builder.linkCallback
         this.imageCallback = builder.imageCallback
+        this.audioCallback = builder.audioCallback
         this.videoCallback = builder.videoCallback
         this.videoImageCallback = builder.videoImageCallback
         this.codeCopyCallback = builder.codeCopyCallback
@@ -157,18 +163,23 @@ public class MarkdownConfigurationBuilder {
     /**
      * 图片的点击事件
      */
-    protected var imageCallback: ?(String) -> Unit = None
+    protected var imageCallback: ?(String, ArrayList<String>) -> Unit = None
+
+    /**
+     * 音频的点击事件
+     */
+    protected var audioCallback: ?(String) -> Unit = None
 
     /**
      * 视频的点击事件
      */
-    protected var videoCallback: ?(String) -> Unit = None
+    protected var videoCallback: ?(String, ArrayList<String>) -> Unit = None
 
     /**
      * 视频的图片替换回调
      */
-    protected var videoImageCallback: (String, (String) -> Unit) -> Unit = {
-        url: String, coverCallback: (String) -> Unit => ()
+    protected var videoImageCallback: (String, (String,Float64,Int64) -> Unit) -> Unit = {
+        url: String, coverCallback: (String,Float64,Int64) -> Unit => ()
     }
 
     /**
@@ -225,6 +236,7 @@ public class MarkdownConfigurationBuilder {
         this.markdownParser = configuration.markdownParser
         this.linkCallback = configuration.linkCallback
         this.imageCallback = configuration.imageCallback
+        this.audioCallback = configuration.audioCallback
         this.videoCallback = configuration.videoCallback
         this.videoImageCallback = configuration.videoImageCallback
         this.codeCopyCallback = configuration.codeCopyCallback
@@ -272,21 +284,32 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置图片的点击事件
      *
-     * @param imageCallback 图片点击回调接口 (String:图片链接)
+     * @param imageCallback 图片点击回调接口 (String:图片链接，图片和视频链接列表)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setImageCallback(imageCallback: (String) -> Unit): MarkdownConfigurationBuilder {
+    public func setImageCallback(imageCallback: (String, ArrayList<String>) -> Unit): MarkdownConfigurationBuilder {
         this.imageCallback = imageCallback
+        return this
+    }
+
+    /**
+     * 设置音频的点击事件
+     *
+     * @param audioCallback 音频点击回调接口 (String:音频链接)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setAudioCallback(audioCallback: (String) -> Unit): MarkdownConfigurationBuilder {
+        this.audioCallback = audioCallback
         return this
     }
 
     /**
      * 设置视频的点击事件
      *
-     * @param videoCallback 视频点击回调接口 (String:视频ID)
+     * @param videoCallback 视频点击回调接口 (String:视频ID，图片和视频链接列表)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setVideoCallback(videoCallback: (String) -> Unit): MarkdownConfigurationBuilder {
+    public func setVideoCallback(videoCallback: (String, ArrayList<String>) -> Unit): MarkdownConfigurationBuilder {
         this.videoCallback = videoCallback
         return this
     }
@@ -294,10 +317,10 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置视频的图片替换回调
      *
-     * @param videoImageCallback 视频的图片替换回调接口
+     * @param videoImageCallback 视频的图片替换回调接口 - 图片url、宽高比、视频时长
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setVideoImageCallback(videoImageCallback: (String, (String) -> Unit) -> Unit): MarkdownConfigurationBuilder {
+    public func setVideoImageCallback(videoImageCallback: (String, (String,Float64,Int64) -> Unit) -> Unit): MarkdownConfigurationBuilder {
         this.videoImageCallback = videoImageCallback
         return this
     }
