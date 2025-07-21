@@ -63,6 +63,11 @@ public class MarkdownImageStyleSpanRawFileComponent {
     @State
     var align: FlexAlign = FlexAlign.Start
 
+    /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
     protected override func aboutToAppear(): Unit {
         localRowImageStyleToPixelMap()
     }
@@ -85,7 +90,7 @@ public class MarkdownImageStyleSpanRawFileComponent {
                 .constraintSize(maxWidth: 100.percent)
                 // 点击动作触发该方法调用
                 .onClick {
-                    evt => imageOnClick(destination, markdownConfiguration.imageCallback)
+                    evt => imageOnClick(destination, imageCallback)
                 }
                 // 图片加载出现异常时触发该回调
                 .onError({

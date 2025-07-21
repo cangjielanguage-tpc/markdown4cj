@@ -53,7 +53,7 @@ public class PicStyleObj {
     /**
      * 对齐方式
      */
-    var align: FlexAlign = FlexAlign.Start
+    var align: FlexAlign = FlexAlign.Center
 
     /**
      * 图片圆角

@@ -119,6 +119,8 @@ class MarkdownFencedCodeBlockComponent {
                 .borderStyle(BorderStyle.Solid)
                 // 设置边框的颜色
                 .borderColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                // 控件显示和隐藏
+                .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockLineNumberHide))
                 codeBlockComponent()
             }
         }
@@ -198,7 +200,7 @@ class MarkdownFencedCodeBlockComponent {
                     Row() {
                         Text(i)
                             // 设置字体颜色
-                            .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                            .fontColor(indentedCodeodeBlockTypeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
                             // 设置字体大小
                             .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
                             // 设置外边距
@@ -231,15 +233,17 @@ class MarkdownFencedCodeBlockComponent {
                                 // 设置宽度
                                 .width(5)
 
-                            Text("复制代码")
-                                // 设置字体颜色
-                                .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                // 设置字体大小
-                                .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                                // 设置容器元素绘制区域内的子元素的对齐方式
-                                .align(Alignment.End)
-                                // 设置外边距
-                                .margin(right: 4)
+                            if(markdownConfiguration.markdownTheme.codeBlockIconTextHide){
+                                Text("复制代码")
+                                    // 设置字体颜色
+                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                                    // 设置字体大小
+                                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                                    // 设置容器元素绘制区域内的子元素的对齐方式
+                                    .align(Alignment.End)
+                                    // 设置外边距
+                                    .margin(right: 4)
+                            }
                         }
                         // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)
@@ -265,15 +269,17 @@ class MarkdownFencedCodeBlockComponent {
                                 // 设置宽度
                                 .width(5)
 
-                            Text("全屏代码")
-                                // 设置字体颜色
-                                .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                // 设置字体大小
-                                .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                                // 设置容器元素绘制区域内的子元素的对齐方式
-                                .align(Alignment.End)
-                                // 设置外边距
-                                .margin(right: 4)
+                            if(markdownConfiguration.markdownTheme.codeBlockIconTextHide){
+                                Text("全屏代码")
+                                    // 设置字体颜色
+                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                                    // 设置字体大小
+                                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                                    // 设置容器元素绘制区域内的子元素的对齐方式
+                                    .align(Alignment.End)
+                                    // 设置外边距
+                                    .margin(right: 4)
+                            }
                         }
                         // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)
@@ -321,5 +327,45 @@ class MarkdownFencedCodeBlockComponent {
             }
         }
         stringToResList(str, info, markdownConfiguration.markdownTheme.prismTheme, callback)
+    }
+
+    /**
+     * 通过异步的方式将代码转换成带有颜色的列表 - 围栏代码、缩进代码
+     *
+     * @param code 传入代码内容
+     * @param info 传入代码类型
+     * @param prismTheme 传入的高亮样式
+     * @param callback PrismNodesParseRes列表回调接口
+     */
+    func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit> {
+        let fut: Future<Unit> = spawn {
+            var prismNodesParseResList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
+            try {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                var prism: Prism = Prism(GrammarLocatorGrammarUtils())
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                var psh: PrismSyntaxHighlight = PrismSyntaxHighlight.create(prism, prismTheme)
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                prismNodesParseResList = psh.highlight(info, code.trimRight("\n"))
+            } catch (e: Exception) {
+                let prismNodesParseRes: PrismNodesParseRes = PrismNodesParseRes("", code, Option<String>.None, Option<Color>.None)
+                prismNodesParseResList.append(prismNodesParseRes)
+            } finally {
+                try {
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
+                    callback(prismNodesParseResList)
+                } catch (_) {
+                }
+            }
+        }
+        return fut
     }
 }

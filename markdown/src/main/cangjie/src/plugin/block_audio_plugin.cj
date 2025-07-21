@@ -4,6 +4,10 @@
 package markdown.plugin
 
 public class BlockAudioPlugin <: AbstractMarkdownPlugin {
+    public static func create(): BlockAudioPlugin {
+        return BlockAudioPlugin()
+    }
+
     public func getClassType(): String {
         "BlockAudioPlugin"
     }

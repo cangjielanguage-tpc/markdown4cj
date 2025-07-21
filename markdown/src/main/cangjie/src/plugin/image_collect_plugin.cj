@@ -4,6 +4,10 @@
 package markdown.plugin
 
 public class ImageCollectPlugin <: AbstractMarkdownPlugin {
+    public static func create(): ImageCollectPlugin {
+        return ImageCollectPlugin()
+    }
+
     public func getClassType(): String {
         "ImageCollectPlugin"
     }

@@ -57,6 +57,11 @@ public class MarkdownImageStyleSpanComponent {
     @State
     var align: FlexAlign = FlexAlign.Start
 
+    /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
     func build() {
         ImageSpan(destination)
             // 设置组件自身的宽度
@@ -71,7 +76,7 @@ public class MarkdownImageStyleSpanComponent {
             .borderRadius(radius)
             // 点击动作触发该方法调用
             .onClick {
-                evt => imageOnClick(destination, markdownConfiguration.imageCallback)
+                evt => imageOnClick(destination, imageCallback)
             }
             // 图片成功加载时触发该回调，返回成功加载的图片尺寸
             .onComplete(
