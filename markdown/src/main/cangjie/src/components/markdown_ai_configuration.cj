@@ -18,11 +18,6 @@ public class MarkdownAIConfiguration {
     protected var markdownAITheme: MarkdownAITheme = MarkdownAITheme.emptyBuilder().build()
 
     /**
-     * 插件化使用
-     */
-    protected var markdownParser: ?Markdown = None
-
-    /**
      * 链接的点击事件
      */
     protected var linkCallback: ?(String) -> Unit = None
@@ -45,8 +40,8 @@ public class MarkdownAIConfiguration {
     /**
      * 视频的图片替换回调
      */
-    protected var videoImageCallback: (String, (String,Float64,Int64) -> Unit) -> Unit = {
-        url: String, coverCallback: (String,Float64,Int64) -> Unit => ()
+    protected var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
+        url: String, coverCallback: (String, Float64, Int64) -> Unit => ()
     }
 
     /**
@@ -89,15 +84,8 @@ public class MarkdownAIConfiguration {
      */
     protected var footnoteCallback: ?(?Float64) -> Unit = None
 
-    /**
-     * 超大数据跳转页面显示全部数据
-     */
-    protected var listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit = None
-
     protected init(builder: MarkdownAIConfigurationBuilder) {
         this.markdownAITheme = builder.markdownAITheme
-        // 插件化
-        this.markdownParser = builder.markdownParser
         this.linkCallback = builder.linkCallback
         this.imageCallback = builder.imageCallback
         this.audioCallback = builder.audioCallback
@@ -109,7 +97,6 @@ public class MarkdownAIConfiguration {
         this.latexStrCallback = builder.latexStrCallback
         this.tocIndexCallback = builder.tocIndexCallback
         this.footnoteCallback = builder.footnoteCallback
-        this.listBigDataCallback = builder.listBigDataCallback
     }
 
     /**
@@ -151,11 +138,6 @@ public class MarkdownAIConfigurationBuilder {
     protected var markdownAITheme: MarkdownAITheme = MarkdownAITheme.emptyBuilder().build()
 
     /**
-     * 插件化使用
-     */
-    protected var markdownParser: ?Markdown = None
-
-    /**
      * 链接的点击事件
      */
     protected var linkCallback: ?(String) -> Unit = None
@@ -178,8 +160,8 @@ public class MarkdownAIConfigurationBuilder {
     /**
      * 视频的图片替换回调
      */
-    protected var videoImageCallback: (String, (String,Float64,Int64) -> Unit) -> Unit = {
-        url: String, coverCallback: (String,Float64,Int64) -> Unit => ()
+    protected var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
+        url: String, coverCallback: (String, Float64, Int64) -> Unit => ()
     }
 
     /**
@@ -222,18 +204,11 @@ public class MarkdownAIConfigurationBuilder {
      */
     protected var footnoteCallback: ?(?Float64) -> Unit = None
 
-    /**
-     * 超大数据跳转页面显示全部数据
-     */
-    protected var listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit = None
-
     init() {
     }
 
     init(configuration: MarkdownAIConfiguration) {
         this.markdownAITheme = configuration.markdownAITheme
-        // 插件化
-        this.markdownParser = configuration.markdownParser
         this.linkCallback = configuration.linkCallback
         this.imageCallback = configuration.imageCallback
         this.audioCallback = configuration.audioCallback
@@ -245,7 +220,6 @@ public class MarkdownAIConfigurationBuilder {
         this.latexStrCallback = configuration.latexStrCallback
         this.tocIndexCallback = configuration.tocIndexCallback
         this.footnoteCallback = configuration.footnoteCallback
-        this.listBigDataCallback = configuration.listBigDataCallback
     }
 
     /**
@@ -256,17 +230,6 @@ public class MarkdownAIConfigurationBuilder {
      */
     public func setMarkdownAITheme(markdownAITheme: MarkdownAITheme): MarkdownAIConfigurationBuilder {
         this.markdownAITheme = markdownAITheme
-        return this
-    }
-
-    /**
-     * 设置markdown核心解析器
-     *
-     * @param markdownPlugin markdown核心解析器
-     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
-     */
-    public func setMarkdownParser(markdownParser: Markdown): MarkdownAIConfigurationBuilder {
-        this.markdownParser = markdownParser
         return this
     }
 
@@ -320,7 +283,7 @@ public class MarkdownAIConfigurationBuilder {
      * @param videoImageCallback 视频的图片替换回调接口 - 图片url、宽高比、视频时长
      * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
-    public func setVideoImageCallback(videoImageCallback: (String, (String,Float64,Int64) -> Unit) -> Unit): MarkdownAIConfigurationBuilder {
+    public func setVideoImageCallback(videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit): MarkdownAIConfigurationBuilder {
         this.videoImageCallback = videoImageCallback
         return this
     }
@@ -388,17 +351,6 @@ public class MarkdownAIConfigurationBuilder {
      */
     public func setFootnoteCallback(footnoteCallback: (?Float64) -> Unit): MarkdownAIConfigurationBuilder {
         this.footnoteCallback = footnoteCallback
-        return this
-    }
-
-    /**
-     * 设置超大数据跳转页面显示全部数据
-     *
-     * @param listBigDataCallback 超大数据跳转页面显示全部数据接口 (NodeView:NodeView数据,Float64:上外边距,Float64:下外边距,Float64:控件宽度)
-     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
-     */
-    public func setListBigDataCallback(listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit): MarkdownAIConfigurationBuilder {
-        this.listBigDataCallback = listBigDataCallback
         return this
     }
 

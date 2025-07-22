@@ -407,54 +407,54 @@ public class ColorHashMap {
  * 围栏代码块高亮枚举类
  */
 public enum PrismColor <: Hashable & Equatable<PrismColor> {
-    COMMENT |
-    PROLOG |
-    DOCTYPE |
-    CDATA |
-    PUNCTUATION |
-    PROPERTY |
-    TAG |
-    BOOLEAN |
-    NUMBER |
-    CONSTANT |
-    SYMBOL |
-    DELETED |
-    SELECTOR |
-    ATTR_NAME |
-    STRING |
-    CHAR |
-    BUILTIN |
-    INSERTED |
-    OPERATOR |
-    URL |
-    ENTITY |
-    ATRULE |
-    ATTR_VALUE |
-    KEYWORD |
-    FUNCTION |
-    CLASS_NAME |
-    REGEX |
-    IMPORTANT |
-    VARIABLE |
-    DELIMITER |
-    ANNOTATION |
-    ESCAPE_SEQ |
-    GENERIC_METHOD |
-    PSEUDO_ELEMENT |
-    PSEUDO_CLASS |
-    CLASS |
-    ID |
-    ATTRIBUTE |
-    HEXCODE |
-    COMMAND |
-    PARAMETER |
-    COORD |
-    COMMIT_SHA1 |
-    SPOCK_BLOCK |
-    NULL |
-    NAMESPACE |
-    SHEBANG |
-    DEFAULT
+    COMMENT | // 注释内容
+    PROLOG | // Prolog 语言中的特定语法结构（如谓词定义）
+    DOCTYPE | // 文档类型声明: 如 HTML 的 <!DOCTYPE html>
+    CDATA | // XML/HTML 中的字符数据块，用于包裹无需解析的原始文本
+    PUNCTUATION | // 标点符号
+    PROPERTY | // CSS/SCSS 中的属性名
+    TAG | // HTML/XML 标签
+    BOOLEAN | // 布尔值（true/false）
+    NUMBER | // 数值内容
+    CONSTANT | // 常量
+    SYMBOL | // 符号或特殊符号
+    DELETED | // 版本控制差异中标记为删除的代码行或片段
+    SELECTOR | // CSS/SCSS 选择器
+    ATTR_NAME | // HTML/XML 属性的名称
+    STRING | // 单引号或双引号包裹的内容
+    CHAR | // 字符字面量，如 char c = 'A'
+    BUILTIN | // 语言内置的函数或类型
+    INSERTED | // 版本控制差异中标记为新增的代码行或片段
+    OPERATOR | // 运算符
+    URL | // 代码中的 URL 字符串
+    ENTITY | // HTML/XML 实体
+    ATRULE | // CSS 预处理器
+    ATTR_VALUE | // HTML/XML 属性的值
+    KEYWORD | // 语言的关键字
+    FUNCTION | // 函数名或方法名
+    CLASS_NAME | // 类名
+    REGEX | // 正则表达式模式
+    IMPORTANT | // CSS 中的 !important 关键字
+    VARIABLE | // 变量名
+    DELIMITER | // 代码中的分隔符号
+    ANNOTATION | // 代码中的注解或装饰性标记
+    ESCAPE_SEQ | // 转义序列
+    GENERIC_METHOD | // 泛型方法声明
+    PSEUDO_ELEMENT | // CSS 伪元素
+    PSEUDO_CLASS | // CSS 伪类
+    CLASS | // HTML/CSS/TypeScript 等的类名
+    ID | // CSS 中的 ID 选择器
+    ATTRIBUTE | // 属性名称(如 HTML 的 id="main" 或 XML 的 attr="value")
+    HEXCODE | // 十六进制颜色值
+    COMMAND | // 命令行工具指令
+    PARAMETER | // 函数或方法的参数名
+    COORD | // 坐标数值，SVG/XML 或图形处理代码
+    COMMIT_SHA1 | // 版本控制中的提交哈希值
+    SPOCK_BLOCK | // Groovy 的 Spock 测试框架中的测试块
+    NULL | // 空值标识
+    NAMESPACE | // 命名空间
+    SHEBANG | // 脚本文件开头的 #! 行
+    DEFAULT // 其它值
 
     public operator func ==(that: PrismColor): Bool {
         match ((this, that)) {
@@ -514,7 +514,7 @@ public enum PrismColor <: Hashable & Equatable<PrismColor> {
         return !(this == that)
     }
 
-    protected static func fromString(str: String): PrismColor {
+    public static func fromString(str: String): PrismColor {
         return match (str) {
         	case "comment" => PrismColor.COMMENT
         	case "prolog" => PrismColor.PROLOG
