@@ -213,6 +213,16 @@ public class NodeView <: ToString {
         this.list = EMPTY_LIST
         // this.node=unsafe{zeroValue<Node>()}
     }
+
+    public func addProp(k: String, v: Any): Unit {
+        let p = this.props ?? {
+            =>
+            let m = HashMap<String, Any>()
+            this.props = m
+            m
+        }()
+        p.put(k, v)
+    }
 }
 
 public func buildView(node: Node, needCollect: Bool, needProps!: Bool = false): NodeView {
