@@ -186,11 +186,19 @@ class MarkdownAIIndentedCodeBlockComponent {
                     // 设置子组件在水平方向上的对齐格式
                     .justifyContent(FlexAlign.Start)
                 } else {
-                    Row()
-                        // 设置宽度
-                        .width(30.percent)
-                        // 设置子组件在水平方向上的对齐格式
-                        .justifyContent(FlexAlign.Start)
+                    Row() {
+                        Text(markdownAIConfiguration.markdownAITheme.codeBlockTypeTextStr)
+                            // 设置字体颜色
+                            .fontColor(indentedCodeodeBlockTypeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+                            // 设置字体大小
+                            .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                            // 设置外边距
+                            .margin(left: 8)
+                    }
+                    // 设置宽度
+                    .width(30.percent)
+                    // 设置子组件在水平方向上的对齐格式
+                    .justifyContent(FlexAlign.Start)
                 }
                 Row() {
                     if (markdownAIConfiguration.markdownAITheme.codeCopyIcon.isSome()) {
@@ -277,7 +285,7 @@ class MarkdownAIIndentedCodeBlockComponent {
             }
         }
         // 设置外边距属性
-        .margin(top: 8, right: 8)
+        .margin(top: 8.0, right: 8.0, bottom: markdownAIConfiguration.markdownAITheme.codeBlockTypeTextPadding)
         // 设置子组件在垂直方向上的对齐格式
         .alignItems(VerticalAlign.Center)
     }

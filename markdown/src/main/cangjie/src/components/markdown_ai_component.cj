@@ -524,7 +524,7 @@ public class MarkdownAIComponent {
                                 // 围栏代码
                                 for (data in markdownAICacheConfiguration.fencedCodeComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
-                                        data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1])
+                                        data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1]())
                                     }
                                 }
                             } else {

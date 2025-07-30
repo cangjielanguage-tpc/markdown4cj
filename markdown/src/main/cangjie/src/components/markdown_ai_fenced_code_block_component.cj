@@ -33,7 +33,7 @@ class MarkdownAIFencedCodeBlockComponent {
      * 代码类型
      */
     @State
-    var info: Option<String> = Option<String>.None
+    var info: String = ""
 
     /**
      * 外边距 - 上面
@@ -196,9 +196,9 @@ class MarkdownAIFencedCodeBlockComponent {
         Row() {
             if (codeText.trimAscii().size > 0) {
                 // 设置图片的数据源
-                if (let Some(i) <- info) {
+                if (info != "") {
                     Row() {
-                        Text(i)
+                        Text(info)
                             // 设置字体颜色
                             .fontColor(indentedCodeodeBlockTypeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
                             // 设置字体大小
@@ -211,11 +211,19 @@ class MarkdownAIFencedCodeBlockComponent {
                     // 设置子组件在水平方向上的对齐格式
                     .justifyContent(FlexAlign.Start)
                 } else {
-                    Row()
-                        // 设置宽度
-                        .width(30.percent)
-                        // 设置子组件在水平方向上的对齐格式
-                        .justifyContent(FlexAlign.Start)
+                    Row() {
+                        Text(markdownAIConfiguration.markdownAITheme.codeBlockTypeTextStr)
+                            // 设置字体颜色
+                            .fontColor(indentedCodeodeBlockTypeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
+                            // 设置字体大小
+                            .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                            // 设置外边距
+                            .margin(left: 8)
+                    }
+                    // 设置宽度
+                    .width(30.percent)
+                    // 设置子组件在水平方向上的对齐格式
+                    .justifyContent(FlexAlign.Start)
                 }
 
                 Row() {
@@ -296,7 +304,7 @@ class MarkdownAIFencedCodeBlockComponent {
             }
         }
         // 设置外边距属性
-        .margin(top: 8, right: 8)
+        .margin(top: 8.0, right: 8.0, bottom: markdownAIConfiguration.markdownAITheme.codeBlockTypeTextPadding)
         // 设置子组件在垂直方向上的对齐格式
         .alignItems(VerticalAlign.Center)
     }
@@ -308,7 +316,7 @@ class MarkdownAIFencedCodeBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(str: String, tp: Option<String>): Unit {
+    public func refreshData(str: String, tp: String): Unit {
         info = tp
         codeText = str
         lines = codeText.lines().count()

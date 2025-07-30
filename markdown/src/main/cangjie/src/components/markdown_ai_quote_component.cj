@@ -338,7 +338,7 @@ public class MarkdownAIQuoteComponent {
                     // 围栏代码
                     for (data in markdownAICacheConfiguration.fencedCodeComponents) {
                         if (isListItem(indexList, data.indexList, index)) {
-                            data.refreshData(getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[0], getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[1])
+                            data.refreshData(getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[0], getCodeInfo(refreshNodeViews[refreshNodeViewSize - 1])[1]())
                         }
                     }
                 } else if (refreshNodeViews[refreshNodeViewSize - 1].node is Heading && nodeViewAIDataSource.getData(dataSourceSize - 1).node is Heading) {

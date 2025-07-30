@@ -385,7 +385,7 @@ class MarkdownAICodeComponent {
             }
         }
         // 设置外边距属性
-        .margin(top: 8, right: 8)
+        .margin(top: 8.0, right: 8.0, bottom: markdownAIConfiguration.markdownAITheme.codeBlockTypeTextPadding)
         // 设置子组件在垂直方向上的对齐格式
         .alignItems(VerticalAlign.Center)
     }

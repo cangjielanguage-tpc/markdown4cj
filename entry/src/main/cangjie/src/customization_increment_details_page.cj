@@ -216,6 +216,8 @@ class CustomizationIncrementDetailsPage {
         markdownAIThemeBuilder.setCodeBlockTypeTextColor(Color.RED) // 设置代码块代码类型文本颜色
         markdownAIThemeBuilder.setCodeBlockIconTextHide(false) // 设置代码块图片文字是否显示隐藏
         markdownAIThemeBuilder.setCodeBlockLineNumberHide(false) // 设置代码块代码行号是否显示隐藏
+        markdownAIThemeBuilder.setCodeBlockTypeTextStr("代码") // 设置代码块代码类型默认文本
+        markdownAIThemeBuilder.setCodeBlockTypeTextPadding(10.0) // 设置代码类型和代码块距离
         // 组合代码
         // 单独代码块
         markdownAIThemeBuilder.setIsSeparateCodeBlock(false) // 设置是否单独代码块
