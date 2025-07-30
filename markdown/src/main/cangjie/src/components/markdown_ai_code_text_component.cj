@@ -94,7 +94,7 @@ class MarkdownAICodeTextComponent {
                 // 设置文本颜色
                 .fontColor(Color.TRANSPARENT)
                 // 设置行高
-                .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineheight)
+                .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineHeight)
                 // 设置文本尺寸
                 .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
                 // 设置文本的字体列表
@@ -128,7 +128,7 @@ class MarkdownAICodeTextComponent {
             // 设置内边距属性
             .padding(left: markdownAIConfiguration.markdownAITheme.codeMultilineMargin, right: markdownAIConfiguration.markdownAITheme.codeMultilineMargin + markdownAIConfiguration.markdownAITheme.separateCodeBlockWidth)
             // 设置行高
-            .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineheight)
+            .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineHeight)
         }
     }
 

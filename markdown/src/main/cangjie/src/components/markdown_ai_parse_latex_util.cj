@@ -8,8 +8,6 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
-let resPath: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
-
 class MarkdownParseLatexUtil {
     /**
      * 全局锁
@@ -36,7 +34,7 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex = LaTeX(resPath)
+                    var latex = LaTeX(markdownAIConfiguration.markdownAITheme.latexMathResStr)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -103,7 +101,7 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex = LaTeX(resPath)
+                    var latex = LaTeX(markdownAIConfiguration.markdownAITheme.latexMathResStr)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }

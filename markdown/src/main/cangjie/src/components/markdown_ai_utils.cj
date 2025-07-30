@@ -333,9 +333,9 @@ func listCodeTextColor(idxSelect: Int64, idx: Int64, markdownAIConfiguration: Ma
  */
 func listCodeBackgroupColor(idxSelect: Int64, idx: Int64, markdownAIConfiguration: MarkdownAIConfiguration): Color {
     if (idxSelect == idx) {
-        return markdownAIConfiguration.markdownAITheme.codeListTitleSelectBackgroupColor
+        return markdownAIConfiguration.markdownAITheme.codeListTitleSelectBackGroupColor
     } else {
-        return markdownAIConfiguration.markdownAITheme.codeListTitleUnSelectBackgroupColor
+        return markdownAIConfiguration.markdownAITheme.codeListTitleUnSelectBackGroupColor
     }
 }
 
@@ -451,9 +451,9 @@ func widthVpToPx(screenWidth: Int32, imagePadding: Int64): Float64 {
 func listPrefixLineHeight(isBullet: Bool, markdownAIConfiguration: MarkdownAIConfiguration): Float64 {
     if (isBullet) {
         // 有序列表
-        return markdownAIConfiguration.markdownAITheme.orderedListItemLineheight
+        return markdownAIConfiguration.markdownAITheme.orderedListItemLineHeight
     } else {
-        return markdownAIConfiguration.markdownAITheme.bulletListItemLineheight
+        return markdownAIConfiguration.markdownAITheme.bulletListItemLineHeight
     }
 }
 

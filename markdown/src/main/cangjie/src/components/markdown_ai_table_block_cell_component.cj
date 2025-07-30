@@ -233,7 +233,7 @@ class MarkdownAITableBlockCellComponent {
                 )
             }
             // 设置行高
-            .lineHeight(markdownAIConfiguration.markdownAITheme.tableTextLineheight)
+            .lineHeight(markdownAIConfiguration.markdownAITheme.tableTextLineHeight)
         }
         // 设置 Column 子组件在水平方向上的对齐格式
         .alignItems(renderTableCellColumnAlign(alignment))

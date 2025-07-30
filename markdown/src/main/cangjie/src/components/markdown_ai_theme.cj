@@ -294,7 +294,7 @@ public class MarkdownAITheme {
     /**
      * 有序列表前缀文本行高
      */
-    protected var orderedListItemLineheight: Float64 = 22.0
+    protected var orderedListItemLineHeight: Float64 = 22.0
 
     /**
      * 无序列表前缀文本颜色
@@ -309,7 +309,7 @@ public class MarkdownAITheme {
     /**
      * 无序列表前缀文本行高
      */
-    protected var bulletListItemLineheight: Float64 = 18.0
+    protected var bulletListItemLineHeight: Float64 = 18.0
 
     /**
      * 任务列表选择框宽高
@@ -362,6 +362,16 @@ public class MarkdownAITheme {
     protected var codeBlockTypeTextColor: ?Color = None
 
     /**
+     * 代码块代码类型默认文本
+     */
+    protected var codeBlockTypeTextStr: String = ""
+
+    /**
+     * 代码类型和代码块距离
+     */
+    protected var codeBlockTypeTextPadding: Float64 = 0.0
+
+    /**
      * 代码块复制、全屏图片文字是否显示
      */
     protected var codeBlockIconTextHide: Bool = true
@@ -394,7 +404,7 @@ public class MarkdownAITheme {
     /**
      * 代码块代码文本行高
      */
-    protected var codeBlockLineheight: Float64 = 22.0
+    protected var codeBlockLineHeight: Float64 = 22.0
 
     /**
      * 代码块控件圆角大小
@@ -444,12 +454,12 @@ public class MarkdownAITheme {
     /**
      * 组合代码选中标题背景颜色
      */
-    protected var codeListTitleSelectBackgroupColor: Color = Color.GRAY
+    protected var codeListTitleSelectBackGroupColor: Color = Color.GRAY
 
     /**
      * 组合代码未选中标题背景颜色
      */
-    protected var codeListTitleUnSelectBackgroupColor: Color = Color.TRANSPARENT
+    protected var codeListTitleUnSelectBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 是否单独代码块显示
@@ -494,32 +504,32 @@ public class MarkdownAITheme {
     /**
      * 一级标题文本行高
      */
-    protected var headingTextLineheight1: Float64 = 22.0
+    protected var headingTextLineHeight1: Float64 = 22.0
 
     /**
      * 二级标题文本行高
      */
-    protected var headingTextLineheight2: Float64 = 22.0
+    protected var headingTextLineHeight2: Float64 = 22.0
 
     /**
      * 三级标题文本行高
      */
-    protected var headingTextLineheight3: Float64 = 22.0
+    protected var headingTextLineHeight3: Float64 = 22.0
 
     /**
      * 四级标题文本行高
      */
-    protected var headingTextLineheight4: Float64 = 22.0
+    protected var headingTextLineHeight4: Float64 = 22.0
 
     /**
      * 五级标题文本行高
      */
-    protected var headingTextLineheight5: Float64 = 22.0
+    protected var headingTextLineHeight5: Float64 = 22.0
 
     /**
      * 六级标题文本行高
      */
-    protected var headingTextLineheight6: Float64 = 22.0
+    protected var headingTextLineHeight6: Float64 = 22.0
 
     /**
      * 段落文本大小
@@ -539,7 +549,7 @@ public class MarkdownAITheme {
     /**
      * 段落文本行高
      */
-    protected var paragraphTextLineheight: Float64 = 22.0
+    protected var paragraphTextLineHeight: Float64 = 22.0
 
     /**
      * 段落文本字体
@@ -602,6 +612,11 @@ public class MarkdownAITheme {
     protected var latexMathBlockCenter: Bool = false
 
     /**
+     * 数学公式字体路径
+     */
+    protected var latexMathResStr: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
+
+    /**
      * 音频图标
      */
     protected var audioIcon: ?CJResource = None
@@ -624,7 +639,7 @@ public class MarkdownAITheme {
     /**
      * 音频边框圆角
      */
-    protected var audioBorderRdius: Float64 = 12.0
+    protected var audioBorderRadius: Float64 = 12.0
 
     /**
      * 音频按钮背景颜色
@@ -742,6 +757,11 @@ public class MarkdownAITheme {
     protected var bannerImage: ?CJResource = None
 
     /**
+     * 图片文字是否需要图文混排
+     */
+    protected var isWord: Bool = true
+
+    /**
      * 图片默认占位图 - CJResource
      */
     protected var imageResource: ?CJResource = None
@@ -799,7 +819,7 @@ public class MarkdownAITheme {
     /**
      * 表格文本行高
      */
-    protected var tableTextLineheight: Float64 = 22.0
+    protected var tableTextLineHeight: Float64 = 22.0
 
     /**
      * 表格圆角
@@ -889,11 +909,11 @@ public class MarkdownAITheme {
         this.orderedListItemPrefixBold = builder.orderedListItemPrefixBold
         this.orderedListItemColor = builder.orderedListItemColor
         this.orderedListItemSize = builder.orderedListItemSize
-        this.orderedListItemLineheight = builder.orderedListItemLineheight
+        this.orderedListItemLineHeight = builder.orderedListItemLineHeight
         // 4.4、无序列表
         this.bulletListItemColor = builder.bulletListItemColor
         this.bulletListItemSize = builder.bulletListItemSize
-        this.bulletListItemLineheight = builder.bulletListItemLineheight
+        this.bulletListItemLineHeight = builder.bulletListItemLineHeight
         // 4.5、任务列表
         this.taskListItemLength = builder.taskListItemLength
 
@@ -909,6 +929,8 @@ public class MarkdownAITheme {
         // 5.2、代码块
         this.codeBlockTextColor = builder.codeBlockTextColor
         this.codeBlockTypeTextColor = builder.codeBlockTypeTextColor
+        this.codeBlockTypeTextStr = builder.codeBlockTypeTextStr
+        this.codeBlockTypeTextPadding = builder.codeBlockTypeTextPadding
         this.codeBlockIconTextHide = builder.codeBlockIconTextHide
         this.codeBlockLineNumberHide = builder.codeBlockLineNumberHide
         this.codeBlockBackgroundColor = builder.codeBlockBackgroundColor
@@ -917,7 +939,7 @@ public class MarkdownAITheme {
         this.codeBlockTypeface = builder.codeBlockTypeface
         this.codeTextSize = builder.codeTextSize
         this.codeBlockTextSize = builder.codeBlockTextSize
-        this.codeBlockLineheight = builder.codeBlockLineheight
+        this.codeBlockLineHeight = builder.codeBlockLineHeight
         this.codeBlockRadius = builder.codeBlockRadius
         this.isCodeFullScreen = builder.isCodeFullScreen
         this.iconWidthAndHeight = builder.iconWidthAndHeight
@@ -927,8 +949,8 @@ public class MarkdownAITheme {
         this.codeListTitleTextSize = builder.codeListTitleTextSize
         this.codeListTitleSelectTextColor = builder.codeListTitleSelectTextColor
         this.codeListTitleUnSelectTextColor = builder.codeListTitleUnSelectTextColor
-        this.codeListTitleSelectBackgroupColor = builder.codeListTitleSelectBackgroupColor
-        this.codeListTitleUnSelectBackgroupColor = builder.codeListTitleUnSelectBackgroupColor
+        this.codeListTitleSelectBackGroupColor = builder.codeListTitleSelectBackGroupColor
+        this.codeListTitleUnSelectBackGroupColor = builder.codeListTitleUnSelectBackGroupColor
         // 5.4、单独代码块
         this.isSeparateCodeBlock = builder.isSeparateCodeBlock
         this.separateCodeBlockWidth = builder.separateCodeBlockWidth
@@ -940,18 +962,18 @@ public class MarkdownAITheme {
         this.headingTextSizeMultipliers = builder.headingTextSizeMultipliers
         this.headingTextColor = builder.headingTextColor
         this.headingTextWordSpace = builder.headingTextWordSpace
-        this.headingTextLineheight1 = builder.headingTextLineheight1
-        this.headingTextLineheight2 = builder.headingTextLineheight2
-        this.headingTextLineheight3 = builder.headingTextLineheight3
-        this.headingTextLineheight4 = builder.headingTextLineheight4
-        this.headingTextLineheight5 = builder.headingTextLineheight5
-        this.headingTextLineheight6 = builder.headingTextLineheight6
+        this.headingTextLineHeight1 = builder.headingTextLineHeight1
+        this.headingTextLineHeight2 = builder.headingTextLineHeight2
+        this.headingTextLineHeight3 = builder.headingTextLineHeight3
+        this.headingTextLineHeight4 = builder.headingTextLineHeight4
+        this.headingTextLineHeight5 = builder.headingTextLineHeight5
+        this.headingTextLineHeight6 = builder.headingTextLineHeight6
 
         // 7、段落
         this.paragraphTextSize = builder.paragraphTextSize
         this.paragraphTextColor = builder.paragraphTextColor
         this.paragraphTextWordSpace = builder.paragraphTextWordSpace
-        this.paragraphTextLineheight = builder.paragraphTextLineheight
+        this.paragraphTextLineHeight = builder.paragraphTextLineHeight
         this.paragraphTypeface = builder.paragraphTypeface
 
         // 8、分割线
@@ -970,13 +992,14 @@ public class MarkdownAITheme {
         this.latexMathTextColor = builder.latexMathTextColor
         this.latexMathColorFormat = builder.latexMathColorFormat
         this.latexMathBlockCenter = builder.latexMathBlockCenter
+        this.latexMathResStr = builder.latexMathResStr
 
         // 11、音频
         this.audioIcon = builder.audioIcon
         this.audioShadowColor = builder.audioShadowColor
         this.audioBorderColor = builder.audioBorderColor
         this.audioBorderWidth = builder.audioBorderWidth
-        this.audioBorderRdius = builder.audioBorderRdius
+        this.audioBorderRadius = builder.audioBorderRadius
         this.audioButtonBackgroundColor = builder.audioButtonBackgroundColor
         this.audioButtonTextColor = builder.audioButtonTextColor
         this.audioButtonTextSize = builder.audioButtonTextSize
@@ -1006,6 +1029,7 @@ public class MarkdownAITheme {
         this.bannerImage = builder.bannerImage
 
         // 14、图片
+        this.isWord = builder.isWord
         this.imageResource = builder.imageResource
         this.imagePlaceholder = builder.imagePlaceholder
         this.isAutoResize = builder.isAutoResize
@@ -1019,7 +1043,7 @@ public class MarkdownAITheme {
         this.tableOddRowBackgroundColor = builder.tableOddRowBackgroundColor
         this.tableEvenRowBackgroundColor = builder.tableEvenRowBackgroundColor
         this.tableHeaderRowBackgroundColor = builder.tableHeaderRowBackgroundColor
-        this.tableTextLineheight = builder.tableTextLineheight
+        this.tableTextLineHeight = builder.tableTextLineHeight
         this.tableRadius = builder.tableRadius
         this.tableMinTextWidth = builder.tableMinTextWidth
         this.tableMaxTextWidth = builder.tableMaxTextWidth
@@ -1099,8 +1123,8 @@ public class MarkdownAITheme {
         // 5.3、组合代码
         markdownAIThemeBuilder.setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
         markdownAIThemeBuilder.setCodeListTitleUnSelectTextColor(Color.BLACK) // 组合代码未选中标题文本颜色
-        markdownAIThemeBuilder.setCodeListTitleSelectBackgroupColor(Color.GRAY) // 组合代码选中标题背景颜色
-        markdownAIThemeBuilder.setCodeListTitleUnSelectBackgroupColor(Color.TRANSPARENT) // 组合代码未选中标题背景颜色
+        markdownAIThemeBuilder.setCodeListTitleSelectBackGroupColor(Color.GRAY) // 组合代码选中标题背景颜色
+        markdownAIThemeBuilder.setCodeListTitleUnSelectBackGroupColor(Color.TRANSPARENT) // 组合代码未选中标题背景颜色
         // 5.4、单独代码块
 
         // 6、标题
@@ -1195,8 +1219,8 @@ public class MarkdownAITheme {
         // 5.3、组合代码
         markdownAIThemeBuilder.setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
         markdownAIThemeBuilder.setCodeListTitleUnSelectTextColor(Color.BLACK) // 组合代码未选中标题文本颜色
-        markdownAIThemeBuilder.setCodeListTitleSelectBackgroupColor(Color.GRAY) // 组合代码选中标题背景颜色
-        markdownAIThemeBuilder.setCodeListTitleUnSelectBackgroupColor(Color.TRANSPARENT) // 组合代码未选中标题背景颜色
+        markdownAIThemeBuilder.setCodeListTitleSelectBackGroupColor(Color.GRAY) // 组合代码选中标题背景颜色
+        markdownAIThemeBuilder.setCodeListTitleUnSelectBackGroupColor(Color.TRANSPARENT) // 组合代码未选中标题背景颜色
         // 5.4、单独代码块
 
         // 6、标题
@@ -1500,7 +1524,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 有序列表前缀文本行高
      */
-    protected var orderedListItemLineheight: Float64 = 22.0
+    protected var orderedListItemLineHeight: Float64 = 22.0
 
     /**
      * 无序列表前缀文本颜色
@@ -1515,7 +1539,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 无序列表前缀文本行高
      */
-    protected var bulletListItemLineheight: Float64 = 18.0
+    protected var bulletListItemLineHeight: Float64 = 18.0
 
     /**
      * 任务列表选择框宽高
@@ -1583,6 +1607,16 @@ public class MarkdownAIThemeBuilder {
     protected var codeBlockBackgroundColor: ?Color = None
 
     /**
+     * 代码块代码类型默认文本
+     */
+    protected var codeBlockTypeTextStr: String = ""
+
+    /**
+     * 代码类型和代码块距离
+     */
+    protected var codeBlockTypeTextPadding: Float64 = 0.0
+
+    /**
      * 代码块左边距
      */
     protected var codeMultilineMargin: Float64 = 8.0
@@ -1600,7 +1634,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 代码块代码文本行高
      */
-    protected var codeBlockLineheight: Float64 = 22.0
+    protected var codeBlockLineHeight: Float64 = 22.0
 
     /**
      * 代码块控件圆角大小
@@ -1650,12 +1684,12 @@ public class MarkdownAIThemeBuilder {
     /**
      * 组合代码选中标题背景颜色
      */
-    protected var codeListTitleSelectBackgroupColor: Color = Color.GRAY
+    protected var codeListTitleSelectBackGroupColor: Color = Color.GRAY
 
     /**
      * 组合代码未选中标题背景颜色
      */
-    protected var codeListTitleUnSelectBackgroupColor: Color = Color.TRANSPARENT
+    protected var codeListTitleUnSelectBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 是否单独代码块显示
@@ -1700,32 +1734,32 @@ public class MarkdownAIThemeBuilder {
     /**
      * 一级标题文本行高
      */
-    protected var headingTextLineheight1: Float64 = 22.0
+    protected var headingTextLineHeight1: Float64 = 22.0
 
     /**
      * 二级标题文本行高
      */
-    protected var headingTextLineheight2: Float64 = 22.0
+    protected var headingTextLineHeight2: Float64 = 22.0
 
     /**
      * 三级标题文本行高
      */
-    protected var headingTextLineheight3: Float64 = 22.0
+    protected var headingTextLineHeight3: Float64 = 22.0
 
     /**
      * 四级标题文本行高
      */
-    protected var headingTextLineheight4: Float64 = 22.0
+    protected var headingTextLineHeight4: Float64 = 22.0
 
     /**
      * 五级标题文本行高
      */
-    protected var headingTextLineheight5: Float64 = 22.0
+    protected var headingTextLineHeight5: Float64 = 22.0
 
     /**
      * 六级标题文本行高
      */
-    protected var headingTextLineheight6: Float64 = 22.0
+    protected var headingTextLineHeight6: Float64 = 22.0
 
     /**
      * 段落文本大小
@@ -1745,7 +1779,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 段落文本行高
      */
-    protected var paragraphTextLineheight: Float64 = 22.0
+    protected var paragraphTextLineHeight: Float64 = 22.0
 
     /**
      * 段落文本字体
@@ -1808,6 +1842,11 @@ public class MarkdownAIThemeBuilder {
     protected var latexMathBlockCenter: Bool = false
 
     /**
+     * 数学公式字体路径
+     */
+    protected var latexMathResStr: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
+
+    /**
      * 音频图标
      */
     protected var audioIcon: ?CJResource = None
@@ -1830,7 +1869,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 音频边框圆角
      */
-    protected var audioBorderRdius: Float64 = 12.0
+    protected var audioBorderRadius: Float64 = 12.0
 
     /**
      * 音频按钮背景颜色
@@ -1948,6 +1987,11 @@ public class MarkdownAIThemeBuilder {
     protected var bannerImage: ?CJResource = None
 
     /**
+     * 图片文字是否需要图文混排
+     */
+    protected var isWord: Bool = true
+
+    /**
      * 图片默认占位图 - CJResource
      */
     protected var imageResource: ?CJResource = None
@@ -2005,7 +2049,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 表格文本行高
      */
-    protected var tableTextLineheight: Float64 = 22.0
+    protected var tableTextLineHeight: Float64 = 22.0
 
     /**
      * 表格圆角
@@ -2098,11 +2142,11 @@ public class MarkdownAIThemeBuilder {
         this.orderedListItemPrefixBold = theme.orderedListItemPrefixBold
         this.orderedListItemColor = theme.orderedListItemColor
         this.orderedListItemSize = theme.orderedListItemSize
-        this.orderedListItemLineheight = theme.orderedListItemLineheight
+        this.orderedListItemLineHeight = theme.orderedListItemLineHeight
         // 4.4、无序列表
         this.bulletListItemColor = theme.bulletListItemColor
         this.bulletListItemSize = theme.bulletListItemSize
-        this.bulletListItemLineheight = theme.bulletListItemLineheight
+        this.bulletListItemLineHeight = theme.bulletListItemLineHeight
         // 4.5、任务列表
         this.taskListItemLength = theme.taskListItemLength
 
@@ -2118,6 +2162,8 @@ public class MarkdownAIThemeBuilder {
         // 5.2、代码块
         this.codeBlockTextColor = theme.codeBlockTextColor
         this.codeBlockTypeTextColor = theme.codeBlockTypeTextColor
+        this.codeBlockTypeTextStr = theme.codeBlockTypeTextStr
+        this.codeBlockTypeTextPadding = theme.codeBlockTypeTextPadding
         this.codeBlockIconTextHide = theme.codeBlockIconTextHide
         this.codeBlockLineNumberHide = theme.codeBlockLineNumberHide
         this.codeBlockBackgroundColor = theme.codeBlockBackgroundColor
@@ -2126,7 +2172,7 @@ public class MarkdownAIThemeBuilder {
         this.codeBlockTypeface = theme.codeBlockTypeface
         this.codeTextSize = theme.codeTextSize
         this.codeBlockTextSize = theme.codeBlockTextSize
-        this.codeBlockLineheight = theme.codeBlockLineheight
+        this.codeBlockLineHeight = theme.codeBlockLineHeight
         this.codeBlockRadius = theme.codeBlockRadius
         this.isCodeFullScreen = theme.isCodeFullScreen
         this.iconWidthAndHeight = theme.iconWidthAndHeight
@@ -2136,8 +2182,8 @@ public class MarkdownAIThemeBuilder {
         this.codeListTitleTextSize = theme.codeListTitleTextSize
         this.codeListTitleSelectTextColor = theme.codeListTitleSelectTextColor
         this.codeListTitleUnSelectTextColor = theme.codeListTitleUnSelectTextColor
-        this.codeListTitleSelectBackgroupColor = theme.codeListTitleSelectBackgroupColor
-        this.codeListTitleUnSelectBackgroupColor = theme.codeListTitleUnSelectBackgroupColor
+        this.codeListTitleSelectBackGroupColor = theme.codeListTitleSelectBackGroupColor
+        this.codeListTitleUnSelectBackGroupColor = theme.codeListTitleUnSelectBackGroupColor
         // 5.4、单独代码块
         this.isSeparateCodeBlock = theme.isSeparateCodeBlock
         this.separateCodeBlockWidth = theme.separateCodeBlockWidth
@@ -2149,18 +2195,18 @@ public class MarkdownAIThemeBuilder {
         this.headingTextSizeMultipliers = theme.headingTextSizeMultipliers
         this.headingTextColor = theme.headingTextColor
         this.headingTextWordSpace = theme.headingTextWordSpace
-        this.headingTextLineheight1 = theme.headingTextLineheight1
-        this.headingTextLineheight2 = theme.headingTextLineheight2
-        this.headingTextLineheight3 = theme.headingTextLineheight3
-        this.headingTextLineheight4 = theme.headingTextLineheight4
-        this.headingTextLineheight5 = theme.headingTextLineheight5
-        this.headingTextLineheight6 = theme.headingTextLineheight6
+        this.headingTextLineHeight1 = theme.headingTextLineHeight1
+        this.headingTextLineHeight2 = theme.headingTextLineHeight2
+        this.headingTextLineHeight3 = theme.headingTextLineHeight3
+        this.headingTextLineHeight4 = theme.headingTextLineHeight4
+        this.headingTextLineHeight5 = theme.headingTextLineHeight5
+        this.headingTextLineHeight6 = theme.headingTextLineHeight6
 
         // 7、段落
         this.paragraphTextSize = theme.paragraphTextSize
         this.paragraphTextColor = theme.paragraphTextColor
         this.paragraphTextWordSpace = theme.paragraphTextWordSpace
-        this.paragraphTextLineheight = theme.paragraphTextLineheight
+        this.paragraphTextLineHeight = theme.paragraphTextLineHeight
         this.paragraphTypeface = theme.paragraphTypeface
 
         // 8、分割线
@@ -2179,13 +2225,14 @@ public class MarkdownAIThemeBuilder {
         this.latexMathTextColor = theme.latexMathTextColor
         this.latexMathColorFormat = theme.latexMathColorFormat
         this.latexMathBlockCenter = theme.latexMathBlockCenter
+        this.latexMathResStr = theme.latexMathResStr
 
         // 11、音频
         this.audioIcon = theme.audioIcon
         this.audioShadowColor = theme.audioShadowColor
         this.audioBorderColor = theme.audioBorderColor
         this.audioBorderWidth = theme.audioBorderWidth
-        this.audioBorderRdius = theme.audioBorderRdius
+        this.audioBorderRadius = theme.audioBorderRadius
         this.audioButtonBackgroundColor = theme.audioButtonBackgroundColor
         this.audioButtonTextColor = theme.audioButtonTextColor
         this.audioButtonTextSize = theme.audioButtonTextSize
@@ -2215,6 +2262,7 @@ public class MarkdownAIThemeBuilder {
         this.bannerImage = theme.bannerImage
 
         // 14、图片
+        this.isWord = theme.isWord
         this.imageResource = theme.imageResource
         this.imagePlaceholder = theme.imagePlaceholder
         this.isAutoResize = theme.isAutoResize
@@ -2228,7 +2276,7 @@ public class MarkdownAIThemeBuilder {
         this.tableOddRowBackgroundColor = theme.tableOddRowBackgroundColor
         this.tableEvenRowBackgroundColor = theme.tableEvenRowBackgroundColor
         this.tableHeaderRowBackgroundColor = theme.tableHeaderRowBackgroundColor
-        this.tableTextLineheight = theme.tableTextLineheight
+        this.tableTextLineHeight = theme.tableTextLineHeight
         this.tableRadius = theme.tableRadius
         this.tableMinTextWidth = theme.tableMinTextWidth
         this.tableMaxTextWidth = theme.tableMaxTextWidth
@@ -2285,8 +2333,8 @@ public class MarkdownAIThemeBuilder {
         // 5.3、组合代码
         setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
         setCodeListTitleUnSelectTextColor(Color.BLACK) // 组合代码未选中标题文本颜色
-        setCodeListTitleSelectBackgroupColor(Color.GRAY) // 组合代码选中标题背景颜色
-        setCodeListTitleUnSelectBackgroupColor(Color.TRANSPARENT) // 组合代码未选中标题背景颜色
+        setCodeListTitleSelectBackGroupColor(Color.GRAY) // 组合代码选中标题背景颜色
+        setCodeListTitleUnSelectBackGroupColor(Color.TRANSPARENT) // 组合代码未选中标题背景颜色
         // 5.4、单独代码块
 
         // 6、标题
@@ -2379,8 +2427,8 @@ public class MarkdownAIThemeBuilder {
         // 5.3、组合代码
         setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
         setCodeListTitleUnSelectTextColor(Color.BLACK) // 组合代码未选中标题文本颜色
-        setCodeListTitleSelectBackgroupColor(Color.GRAY) // 组合代码选中标题背景颜色
-        setCodeListTitleUnSelectBackgroupColor(Color.TRANSPARENT) // 组合代码未选中标题背景颜色
+        setCodeListTitleSelectBackGroupColor(Color.GRAY) // 组合代码选中标题背景颜色
+        setCodeListTitleUnSelectBackGroupColor(Color.TRANSPARENT) // 组合代码未选中标题背景颜色
         // 5.4、单独代码块
 
         // 6、标题
@@ -2441,7 +2489,7 @@ public class MarkdownAIThemeBuilder {
      * 设置markdown上下文 - 仓颉
      *
      * @param abilityContext markdown上下文 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
     public func setAbilityContext(abilityContext: AbilityContext): MarkdownAIThemeBuilder {
         this.abilityContext = abilityContext
@@ -2773,7 +2821,7 @@ public class MarkdownAIThemeBuilder {
      * @param linkRectToolImageBorderWidth 空心圆角矩形图片格式链接边框宽度 - 默认1.0vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setlinkRectToolImageBorderWidth(linkRectToolImageBorderWidth: Float64): MarkdownAIThemeBuilder {
+    public func setLinkRectToolImageBorderWidth(linkRectToolImageBorderWidth: Float64): MarkdownAIThemeBuilder {
         this.linkRectToolImageBorderWidth = vp2px(linkRectToolImageBorderWidth.vp).getOrThrow().value
         return this
     }
@@ -2957,11 +3005,11 @@ public class MarkdownAIThemeBuilder {
     /**
      * 设置有序列表前缀文本行高
      *
-     * @param orderedListItemLineheight 有序列表前缀文本行高 - 默认22.0vp
+     * @param orderedListItemLineHeight 有序列表前缀文本行高 - 默认22.0vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setOrderedListItemLineheight(orderedListItemLineheight: Float64): MarkdownAIThemeBuilder {
-        this.orderedListItemLineheight = orderedListItemLineheight
+    public func setOrderedListItemLineHeight(orderedListItemLineHeight: Float64): MarkdownAIThemeBuilder {
+        this.orderedListItemLineHeight = orderedListItemLineHeight
         return this
     }
 
@@ -2990,11 +3038,11 @@ public class MarkdownAIThemeBuilder {
     /**
      * 设置无序列表前缀文本行高
      *
-     * @param bulletListItemLineheight 无序列表前缀文本行高 - 默认18.0vp
+     * @param bulletListItemLineHeight 无序列表前缀文本行高 - 默认18.0vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setBulletListItemLineheight(bulletListItemLineheight: Float64): MarkdownAIThemeBuilder {
-        this.bulletListItemLineheight = bulletListItemLineheight
+    public func setBulletListItemLineHeight(bulletListItemLineHeight: Float64): MarkdownAIThemeBuilder {
+        this.bulletListItemLineHeight = bulletListItemLineHeight
         return this
     }
 
@@ -3109,6 +3157,28 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
+     * 设置代码块代码类型默认文本
+     *
+     * @param codeBlockTypeTextStr 代码块代码类型默认文本 - 默认""
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setCodeBlockTypeTextStr(codeBlockTypeTextStr: String): MarkdownAIThemeBuilder {
+        this.codeBlockTypeTextStr = codeBlockTypeTextStr
+        return this
+    }
+
+    /**
+     * 设置代码类型和代码块距离
+     *
+     * @param codeBlockTypeTextPadding 代码类型和代码块距离 - 默认0.0
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setCodeBlockTypeTextPadding(codeBlockTypeTextPadding: Float64): MarkdownAIThemeBuilder {
+        this.codeBlockTypeTextPadding = codeBlockTypeTextPadding
+        return this
+    }
+
+    /**
      * 设置代码块复制、全屏图片文字是否显示
      *
      * @param codeBlockIconTextHide 代码块复制、全屏图片文字是否显示 - true：显示；false：不显示。默认true
@@ -3177,11 +3247,11 @@ public class MarkdownAIThemeBuilder {
     /**
      * 设置代码块代码文本行高
      *
-     * @param codeBlockLineheight 代码块代码文本行高 - 默认22.0vp
+     * @param codeBlockLineHeight 代码块代码文本行高 - 默认22.0vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setCodeBlockLineheight(codeBlockLineheight: Float64): MarkdownAIThemeBuilder {
-        this.codeBlockLineheight = codeBlockLineheight
+    public func setCodeBlockLineHeight(codeBlockLineHeight: Float64): MarkdownAIThemeBuilder {
+        this.codeBlockLineHeight = codeBlockLineHeight
         return this
     }
 
@@ -3287,22 +3357,22 @@ public class MarkdownAIThemeBuilder {
     /**
      * 设置组合代码选中标题背景颜色
      *
-     * @param codeListTitleSelectBackgroupColor 组合代码选中标题背景颜色 - 默认Color.GRAY
+     * @param codeListTitleSelectBackGroupColor 组合代码选中标题背景颜色 - 默认Color.GRAY
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setCodeListTitleSelectBackgroupColor(codeListTitleSelectBackgroupColor: Color): MarkdownAIThemeBuilder {
-        this.codeListTitleSelectBackgroupColor = codeListTitleSelectBackgroupColor
+    public func setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: Color): MarkdownAIThemeBuilder {
+        this.codeListTitleSelectBackGroupColor = codeListTitleSelectBackGroupColor
         return this
     }
 
     /**
      * 设置组合代码未选中标题背景颜色
      *
-     * @param codeListTitleUnSelectBackgroupColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
+     * @param codeListTitleUnSelectBackGroupColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setCodeListTitleUnSelectBackgroupColor(codeListTitleUnSelectBackgroupColor: Color): MarkdownAIThemeBuilder {
-        this.codeListTitleUnSelectBackgroupColor = codeListTitleUnSelectBackgroupColor
+    public func setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: Color): MarkdownAIThemeBuilder {
+        this.codeListTitleUnSelectBackGroupColor = codeListTitleUnSelectBackGroupColor
         return this
     }
 
@@ -3397,66 +3467,66 @@ public class MarkdownAIThemeBuilder {
     /**
      * 设置一级标题文本行高
      *
-     * @param headingTextLineheight1 一级标题文本行高 - 默认22.0vp
+     * @param headingTextLineHeight1 一级标题文本行高 - 默认22.0vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setHeadingTextLineheight1(headingTextLineheight1: Float64): MarkdownAIThemeBuilder {
-        this.headingTextLineheight1 = headingTextLineheight1
+    public func setHeadingTextLineHeight1(headingTextLineHeight1: Float64): MarkdownAIThemeBuilder {
+        this.headingTextLineHeight1 = headingTextLineHeight1
         return this
     }
 
     /**
      * 设置二级标题文本行高
      *
-     * @param headingTextLineheight2 二级标题文本行高 - 默认22.0vp
+     * @param headingTextLineHeight2 二级标题文本行高 - 默认22.0vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setHeadingTextLineheight2(headingTextLineheight2: Float64): MarkdownAIThemeBuilder {
-        this.headingTextLineheight2 = headingTextLineheight2
+    public func setHeadingTextLineHeight2(headingTextLineHeight2: Float64): MarkdownAIThemeBuilder {
+        this.headingTextLineHeight2 = headingTextLineHeight2
         return this
     }
 
     /**
      * 设置三级标题文本行高
      *
-     * @param headingTextLineheight3 三级标题文本行高 - 默认22.0vp
+     * @param headingTextLineHeight3 三级标题文本行高 - 默认22.0vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setHeadingTextLineheight3(headingTextLineheight3: Float64): MarkdownAIThemeBuilder {
-        this.headingTextLineheight3 = headingTextLineheight3
+    public func setHeadingTextLineHeight3(headingTextLineHeight3: Float64): MarkdownAIThemeBuilder {
+        this.headingTextLineHeight3 = headingTextLineHeight3
         return this
     }
 
     /**
      * 设置四级标题文本行高
      *
-     * @param headingTextLineheight4 四级标题文本行高 - 默认22.0vp
+     * @param headingTextLineHeight4 四级标题文本行高 - 默认22.0vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setHeadingTextLineheight4(headingTextLineheight4: Float64): MarkdownAIThemeBuilder {
-        this.headingTextLineheight4 = headingTextLineheight4
+    public func setHeadingTextLineHeight4(headingTextLineHeight4: Float64): MarkdownAIThemeBuilder {
+        this.headingTextLineHeight4 = headingTextLineHeight4
         return this
     }
 
     /**
      * 设置五级标题文本行高
      *
-     * @param headingTextLineheight5 五级标题文本行高 - 默认22.0vp
+     * @param headingTextLineHeight5 五级标题文本行高 - 默认22.0vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setHeadingTextLineheight5(headingTextLineheight5: Float64): MarkdownAIThemeBuilder {
-        this.headingTextLineheight5 = headingTextLineheight5
+    public func setHeadingTextLineHeight5(headingTextLineHeight5: Float64): MarkdownAIThemeBuilder {
+        this.headingTextLineHeight5 = headingTextLineHeight5
         return this
     }
 
     /**
      * 设置六级标题文本行高
      *
-     * @param headingTextLineheight1 六级标题文本行高 - 默认22.0vp
+     * @param headingTextLineHeight1 六级标题文本行高 - 默认22.0vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setHeadingTextLineheight6(headingTextLineheight6: Float64): MarkdownAIThemeBuilder {
-        this.headingTextLineheight6 = headingTextLineheight6
+    public func setHeadingTextLineHeight6(headingTextLineHeight6: Float64): MarkdownAIThemeBuilder {
+        this.headingTextLineHeight6 = headingTextLineHeight6
         return this
     }
 
@@ -3496,11 +3566,11 @@ public class MarkdownAIThemeBuilder {
     /**
      * 设置段落文本行高
      *
-     * @param paragraphTextLineheight 段落文本行高 - 默认22.0vp
+     * @param paragraphTextLineHeight 段落文本行高 - 默认22.0vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setParagraphTextLineheight(paragraphTextLineheight: Float64): MarkdownAIThemeBuilder {
-        this.paragraphTextLineheight = paragraphTextLineheight
+    public func setParagraphTextLineHeight(paragraphTextLineHeight: Float64): MarkdownAIThemeBuilder {
+        this.paragraphTextLineHeight = paragraphTextLineHeight
         return this
     }
 
@@ -3577,7 +3647,7 @@ public class MarkdownAIThemeBuilder {
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
     public func setLatexMathTextSize(latexMathTextSize: Float64): MarkdownAIThemeBuilder {
-        this.latexMathTextSize = vp2px(latexMathTextSize.vp)().value
+        this.latexMathTextSize = fp2px(latexMathTextSize.fp)().value
         return this
     }
 
@@ -3637,6 +3707,17 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
+     * 设置数学公式字体路径
+     *
+     * @param latexMathResStr 数学公式字体路径 默认 "/data/storage/el1/bundle/entry/resources/resfile/res"
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setLatexMathResStr(latexMathResStr: String): MarkdownAIThemeBuilder {
+        this.latexMathResStr = latexMathResStr
+        return this
+    }
+
+    /**
      * 设置音频图标
      *
      * @param audioIcon 音频图标 - 默认None
@@ -3683,11 +3764,11 @@ public class MarkdownAIThemeBuilder {
     /**
      * 设置音频边框圆角
      *
-     * @param audioBorderRdius 音频边框圆角 - 默认12.0vp
+     * @param audioBorderRadius 音频边框圆角 - 默认12.0vp
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setAudioBorderRdius(audioBorderRdius: Float64): MarkdownAIThemeBuilder {
-        this.audioBorderRdius = audioBorderRdius
+    public func setAudioBorderRadius(audioBorderRadius: Float64): MarkdownAIThemeBuilder {
+        this.audioBorderRadius = audioBorderRadius
         return this
     }
 
@@ -3945,6 +4026,17 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
+     * 设置图片文字是否需要图文混排
+     *
+     * @param isWord 图片文字是否需要图文混排 - true:图文混排；false:不图文混排。默认true
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setIsWord(isWord: Bool): MarkdownAIThemeBuilder {
+        this.isWord = isWord
+        return this
+    }
+
+    /**
      * 设置图片默认占位图 - CJResource
      *
      * @param imageResource 图片默认占位图 - CJResource - 默认None
@@ -4078,11 +4170,11 @@ public class MarkdownAIThemeBuilder {
     /**
      * 设置表格文本行高
      *
-     * @param tableTextLineheight 表格文本行高 - 默认22.0vp
+     * @param tableTextLineHeight 表格文本行高 - 默认22.0vp
      * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
-    public func setTableTextLineheight(tableTextLineheight: Float64): MarkdownAIThemeBuilder {
-        this.tableTextLineheight = tableTextLineheight
+    public func setTableTextLineHeight(tableTextLineHeight: Float64): MarkdownAIThemeBuilder {
+        this.tableTextLineHeight = tableTextLineHeight
         return this
     }
 

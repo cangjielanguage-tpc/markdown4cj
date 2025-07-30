@@ -162,7 +162,7 @@ class MarkdownAICodeComponent {
                                     // 设置文本尺寸
                                     .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
                                     // 设置行高
-                                    .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineheight)
+                                    .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineHeight)
                                     // 设置多行文本的文本对齐方式
                                     .textAlign(TextAlign.End)
                                     // 设置文本的最大行数

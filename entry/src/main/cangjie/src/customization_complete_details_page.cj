@@ -147,11 +147,11 @@ class CustomizationCompleteDetailsPage {
         markdownAIThemeBuilder.setBlockQuoteRightMargin(0.0) // 设置块引用右边距
         // 有序列表
         markdownAIThemeBuilder.setOrderedListItemSize(15.0) // 设置有序列表项的字体大小
-        markdownAIThemeBuilder.setOrderedListItemLineheight(25.0) // 设置有序列表项文本行高
+        markdownAIThemeBuilder.setOrderedListItemLineHeight(25.0) // 设置有序列表项文本行高
         markdownAIThemeBuilder.setOrderedListItemPrefixBold(true) // 设置有序列表前缀是否加粗
         // 无序列表
         markdownAIThemeBuilder.setBulletListItemColor(Color.GREEN) // 设置无序列表项的颜色
-        markdownAIThemeBuilder.setBulletListItemLineheight(22.0) // 设置无序列表项文本行高
+        markdownAIThemeBuilder.setBulletListItemLineHeight(22.0) // 设置无序列表项文本行高
         // 任务列表
 
         // 5、代码
@@ -171,17 +171,17 @@ class CustomizationCompleteDetailsPage {
         markdownAIThemeBuilder.setHeadingBreakHeight(0.0) // 设置H1、H2标题下分割线高度
         markdownAIThemeBuilder.setHeadingTextSizeMultipliers([15.0, 15.0, 15.0, 15.0, 15.0, 15.0]) // 设置标题文本大小数组
         markdownAIThemeBuilder.setHeadingTextColor(Color(0xFF222222)) // 设置标题字体颜色
-        markdownAIThemeBuilder.setHeadingTextLineheight1(25.0) // 设置一级标题文本行高
-        markdownAIThemeBuilder.setHeadingTextLineheight2(25.0) // 设置二级标题文本行高
-        markdownAIThemeBuilder.setHeadingTextLineheight3(25.0) // 设置三级标题文本行高
-        markdownAIThemeBuilder.setHeadingTextLineheight4(25.0) // 设置四级标题文本行高
-        markdownAIThemeBuilder.setHeadingTextLineheight5(25.0) // 设置五级标题文本行高
-        markdownAIThemeBuilder.setHeadingTextLineheight6(25.0) // 设置六级标题文本行高
+        markdownAIThemeBuilder.setHeadingTextLineHeight1(25.0) // 设置一级标题文本行高
+        markdownAIThemeBuilder.setHeadingTextLineHeight2(25.0) // 设置二级标题文本行高
+        markdownAIThemeBuilder.setHeadingTextLineHeight3(25.0) // 设置三级标题文本行高
+        markdownAIThemeBuilder.setHeadingTextLineHeight4(25.0) // 设置四级标题文本行高
+        markdownAIThemeBuilder.setHeadingTextLineHeight5(25.0) // 设置五级标题文本行高
+        markdownAIThemeBuilder.setHeadingTextLineHeight6(25.0) // 设置六级标题文本行高
 
         // 7、段落
         markdownAIThemeBuilder.setParagraphTextColor(Color(0xFF222222)) // 设置段落字体颜色
         markdownAIThemeBuilder.setParagraphTextSize(15.0) // 设置段落字体大小
-        markdownAIThemeBuilder.setParagraphTextLineheight(25.0) // 设置段落文本行高
+        markdownAIThemeBuilder.setParagraphTextLineHeight(25.0) // 设置段落文本行高
 
         // 8、分割线
         markdownAIThemeBuilder.setThematicBreakColor(Color.BLUE) // 设置分割线颜色

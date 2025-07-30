@@ -93,7 +93,7 @@ class MarkdownAIIndentedCodeBlockComponent {
                                 // 设置文本尺寸
                                 .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
                                 // 设置行高
-                                .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineheight)
+                                .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineHeight)
                                 // 设置文本的最大行数
                                 .maxLines(1)
                                 // 设置文本超长时的显示方式
@@ -147,7 +147,7 @@ class MarkdownAIIndentedCodeBlockComponent {
                 // 设置内边距属性
                 .padding(left: markdownAIConfiguration.markdownAITheme.codeMultilineMargin)
                 // 设置行高
-                .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineheight)
+                .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineHeight)
         }
         // 设置滚动方法
         .scrollable(ScrollDirection.Horizontal)

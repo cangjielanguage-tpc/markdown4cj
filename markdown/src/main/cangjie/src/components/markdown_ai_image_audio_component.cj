@@ -151,9 +151,9 @@ public class MarkdownAIImageAudioComponent {
         // 设置内边距属性
         .padding(top: 12, right: 16, bottom: 12, left: 12)
         // 为组件添加阴影效果。
-        .shadow(radius:markdownAIConfiguration.markdownAITheme.audioBorderRdius, offsetX: 0.0, offsetY: 2.0, color: markdownAIConfiguration.markdownAITheme.audioShadowColor)
+        .shadow(radius:markdownAIConfiguration.markdownAITheme.audioBorderRadius, offsetX: 0.0, offsetY: 2.0, color: markdownAIConfiguration.markdownAITheme.audioShadowColor)
         // 边框样式设置接口
-        .border(width: markdownAIConfiguration.markdownAITheme.audioBorderWidth.vp, color: markdownAIConfiguration.markdownAITheme.audioBorderColor, radius: markdownAIConfiguration.markdownAITheme.audioBorderRdius.vp)
+        .border(width: markdownAIConfiguration.markdownAITheme.audioBorderWidth.vp, color: markdownAIConfiguration.markdownAITheme.audioBorderColor, radius: markdownAIConfiguration.markdownAITheme.audioBorderRadius.vp)
         // 设置子组件在水平方向上的对齐格式
         .justifyContent(FlexAlign.SpaceBetween)
         // 设置外边距属性

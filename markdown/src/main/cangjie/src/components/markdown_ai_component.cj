@@ -364,8 +364,6 @@ public class MarkdownAIComponent {
             .listDirection(Axis.Vertical)
             // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
             .alignListItem(ListItemAlign.Start)
-            // 设置组件自身的宽度
-            .width(100.percent)
             // 组件区域变化事件
             .onAreaChange {
                 old, new =>
@@ -373,6 +371,8 @@ public class MarkdownAIComponent {
                         componentWidth = new.width
                     }
             }
+            // 设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
+            .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
         } else {
             List(scroller: scroller) {
                 LazyForEach(
