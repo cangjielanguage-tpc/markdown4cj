@@ -4,8 +4,11 @@
 /build
 /.cxx
 /.test
-src/main/cangjie/build-script-cache
-/libs
-src/main/cangjie/build.cj.bak
 **/IDL_Dependencies_List~
 **/build-script-cache
+/libs
+cjpm.lock
+BuildProfile.ets
+/src/main/cangjie/ark_interop_api
+src/main/cangjie/build-script-cache
+/src/main/cangjie/types

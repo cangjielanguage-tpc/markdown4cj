@@ -1,0 +1,150 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
+ */
+import { titleComponent } from './BaseComponent'
+import { router } from '@kit.ArkUI'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown'
+import { getFileContextStr } from './FileUtils'
+import { CodeListData } from './CodeListPage'
+
+@Entry
+@Component
+struct CodeListDetailsPage {
+  /**
+   * 滑动控制器
+   */
+  scroller: Scroller = new Scroller()
+  /**
+   * 顶部导航栏高度
+   */
+  @StorageProp('safeTop') safeTop: number = 0
+  /**
+   * 文件文本
+   */
+  @State
+  fileStr: string = ""
+  /**
+   * markdown文本
+   */
+  @State
+  mdStr: string = ""
+  /**
+   * 是否全量加载
+   */
+  @State
+  isFull: boolean = true
+  /**
+   * 组合代码未选中标题字体大小
+   */
+  codeListTitleTextSize: number = 13
+  /**
+   * 组合代码选中标题字体大小
+   */
+  codeListTitleSelectTextSize: number = 13
+  /**
+   * 组合代码选中标题文本颜色
+   */
+  codeListTitleSelectTextColor: number = 0xFFFF0000
+  /**
+   * 组合代码未选中标题文本颜色
+   */
+  codeListTitleUnSelectTextColor: number = 0xFF000000
+  /**
+   * 组合代码选中标题背景颜色
+   */
+  codeListTitleSelectBackGroupColor: number = 0xFF191919
+  /**
+   * 组合代码未选中标题背景颜色
+   */
+  codeListTitleUnSelectBackGroupColor: number = 0x00FFFFFF
+  /**
+   * 增量加载延迟
+   */
+  time: number = 50
+
+  aboutToAppear(): void {
+    try {
+      let codeListData: CodeListData = router.getParams() as CodeListData
+      this.fileStr = getFileContextStr(codeListData._pagePath)
+      this.isFull = codeListData._isFull
+      this.codeListTitleTextSize = codeListData._codeListTitleTextSize
+      this.codeListTitleSelectTextSize = codeListData._codeListTitleSelectTextSize
+      this.codeListTitleSelectTextColor = codeListData._codeListTitleSelectTextColor
+      this.codeListTitleUnSelectTextColor = codeListData._codeListTitleUnSelectTextColor
+      this.codeListTitleSelectBackGroupColor = codeListData._codeListTitleSelectBackGroupColor
+      this.codeListTitleUnSelectBackGroupColor = codeListData._codeListTitleUnSelectBackGroupColor
+    } catch (e) {
+    }
+  }
+
+  build() {
+    Column() {
+      titleComponent(
+        "组合代码块测试用例",
+        0xFF317AFF,
+        true,
+        this.safeTop
+      )
+      Button("点击加载markdown")
+        .height(40)// 高度
+        .width("80%")// 宽度
+        .type(ButtonType.Capsule)// 圆角
+        .margin({ top: 5, bottom: 5 })// 外边距
+        .fontColor(0xFFFFFFFF)// 文本颜色
+        .backgroundColor(0xFF317AFF)// 背景颜色
+        .align(Alignment.Center)// 内容对齐方式
+        .fontSize(16)// 字体大小
+        .onClick(
+          () => {
+            // 点击动作触发该方法调用
+            if (this.isFull) {
+              this.mdStr = this.fileStr
+            } else {
+              let index = 0
+              let id = setInterval(() => {
+                this.mdStr = this.mdStr + this.fileStr[index]
+                this.scroller.scrollEdge(Edge.Bottom)
+                if (index === this.fileStr.length - 1) {
+                  clearInterval(id)
+                }
+                index++
+              }, this.time)
+            }
+          }
+        )
+      Scroll(this.scroller) {
+        Column() {
+          CJMarkdown({
+            mdStr: this.mdStr,
+            isFull: this.isFull,
+            cfg: this.setMarkdownConfig(),
+            plugin: this.setPlugin()
+          })
+        }
+      }
+      .padding({ bottom: 200 })
+    }
+    .alignItems(HorizontalAlign.Center)
+  }
+
+  setMarkdownConfig(): MarkdownConfiguration {
+    let config = new MarkdownConfiguration()
+    let theme = new MarkdownTheme()
+    theme.setCodeListTitleTextSize(this.codeListTitleTextSize)
+    theme.setCodeListTitleSelectTextSize(this.codeListTitleSelectTextSize)
+    theme.setCodeListTitleSelectTextColor(this.codeListTitleSelectTextColor)
+    theme.setCodeListTitleUnSelectTextColor(this.codeListTitleUnSelectTextColor)
+    theme.setCodeListTitleSelectBackGroupColor(this.codeListTitleSelectBackGroupColor)
+    theme.setCodeListTitleUnSelectBackGroupColor(this.codeListTitleUnSelectBackGroupColor)
+    theme.setCodeFullScreenIcon($r('app.media.startIcon'))
+    theme.setCodeCopyIcon($r('app.media.startIcon'))
+    config.setMarkdownTheme(theme)
+    return config
+  }
+
+  setPlugin(): MarkdownPlugin {
+    let plugin: MarkdownPlugin = new MarkdownPlugin()
+    plugin.setIsCodeListPlugin(true) // 代码块列表
+    return plugin
+  }
+}
