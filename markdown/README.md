@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.1.2-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.1.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v1.0.0-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
@@ -51,13 +51,16 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 25. 支持图片Style语法
 26. 支持图片幻灯片语法
 27. 支持组合代码块语法
-28. ~~支持视频语法~~
-29. 支持围栏代码块高亮功能
-30. 支持列表嵌套功能
-31. 支持文本样式设置
-32. 支持表格样式设置
-33. 支持超链接图片化设置
-34. 支持深浅主题色设置
+28. 支持视频语法
+29. 支持音频语法
+30. 支持单独代码块功能
+31. 支持围栏代码块高亮功能
+32. 支持列表嵌套功能
+33. 支持文本样式设置
+34. 支持表格样式设置
+35. 支持内联代码图片化设置
+36. 支持超链接图片化设置
+37. 支持深浅主题色设置
 
 ## 软件架构
 
@@ -70,14 +73,9 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
   └─src
       └─main
           ├─cangjie
-          │  └─src
-          │      ├─components
-          │      ├─core
-          │      ├─texttoimg4cj
-          │      └─plugin
           ├─cpp
+          ├─ets
           └─resources
-
 ```
 
 - `markdown` 工程模块 - 编译生成一个har包
@@ -85,15 +83,12 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 - `markdown src main` 模块项目目录
 - `markdown src main cangjie` 仓颉代码目录
 - `markdown src main cpp` cpp代码目录
+- `markdown src main ets` ets代码目录
 - `markdown src main resources` 资源文件目录
-- `markdown src main cangjie src components` markdown UI页面目录
-- `markdown src main cangjie src core` markdown 数据解析处理目录
-- `markdown src main cangjie src texttoimg4cj` markdown 文本转图片模块
-- `markdown src main cangjie src plugin` markdown 插件化目录
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/develop/doc/API.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown_hybrid_cangjie_plugin_5.1.0.828/doc/API.md)
 
 ## 使用说明
 
@@ -107,92 +102,99 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
       ```
 
 2. 在项目中使用markdown项目
-   ```cangjie
-   import markdown.components.*
+   ```arkts
+   import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown'
    ```
 
 ### 功能示例
 
 ```cangjie
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
-import markdown.components.*
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
+ */
+import { CJMarkdown} from '@cangjie-tpc/markdown'
 
 @Entry
 @Component
-class ARHeading1Page {
-    func build() {
-        Scroll() {
-            Column {
-                MarkdownComponent(output: mdStr)
-            }
-        }
-        // 设置滚动方法
-        .scrollable(ScrollDirection.Vertical)
+struct DemoPage {
+  /**
+   * 顶部导航栏高度
+   */
+  @StorageProp('safeTop') safeTop: number = 0
+  /**
+   * md文本
+   */
+  @State message: string = '### 标题1\n' +
+    '\n' +
+    '# 1级标题\n' +
+    '\n' +
+    '### 标题2\n' +
+    '\n' +
+    '## 2级标题\n' +
+    '\n' +
+    '### 标题3\n' +
+    '\n' +
+    '### 3级标题\n' +
+    '\n' +
+    '### 标题4\n' +
+    '\n' +
+    '#### 4级标题\n' +
+    '\n' +
+    '### 标题5\n' +
+    '\n' +
+    '##### 5级标题\n' +
+    '\n' +
+    '### 标题6\n' +
+    '\n' +
+    '###### 6级标题\n' +
+    '\n' +
+    '### 标题7\n' +
+    '\n' +
+    '### 正常标题\n' +
+    '\n' +
+    '### 标题8\n' +
+    '\n' +
+    'Heading level 1\n' +
+    '===============\n' +
+    '\n' +
+    '### 标题9\n' +
+    '\n' +
+    'Heading level 2\n' +
+    '---------------\n' +
+    '\n' +
+    '### 标题10\n' +
+    '\n' +
+    'Heading level 1\n' +
+    '=\n' +
+    '\n' +
+    '### 标题11\n' +
+    '\n' +
+    'Heading level 2\n' +
+    '-\n';
+
+  build() {
+    Column() {
+      Column() {
+        CJMarkdown({
+          mdStr: this.message,
+          isFull: true
+        })
+      }
     }
-
-    let mdStr: String = """
-### 标题1
-
-# 1级标题
-
-### 标题2
-
-## 2级标题
-
-### 标题3
-
-### 3级标题
-
-### 标题4
-
-#### 4级标题
-
-### 标题5
-
-##### 5级标题
-
-### 标题6
-
-###### 6级标题
-
-### 标题7
-
-### 正常标题
-
-### 标题8
-
-Heading level 1
-===============
-
-### 标题9
-
-Heading level 2
----------------
-
-### 标题10
-
-Heading level 1
-=
-
-### 标题11
-
-Heading level 2
--
-
-"""
+    .padding({ left: 10, right: 10, top: this.safeTop })
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
 }
 ```
 
 ### 显示效果
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/blobs/c2964f6d5916d7cbeac768b7967062e76ab67a5a/img1.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/blobs/f8bd803f49ccef3af657bfeb77b6d5292eca5c61/img1.png)
 
 ## 约束与限制
 
-当前基于 DevEco Studio for Windows 5.1.0.828 和 DevEco Studio Cangjie Plugin Canary for Windows 5.1.0.828 版本实现的
+当前基于 DevEco Studio for Windows 5.1.1.823 和 DevEco Studio Cangjie Plugin Canary for Windows 5.1.0.828 版本实现的
 
 1. 内联代码暂未支持背景色设置
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
@@ -216,7 +218,7 @@ Heading level 2
    17. latex
    18. makefile
    19. markdown、md
-   20. markup、svg
+   20. markup、svg、html、xml
    21. python、python3、py、py3、Python ML、pythonml、pandas、pythondata
    22. scala
    23. sql、mysql、oracle、oraclesql、sqlserver、MS SQL Server、mssql、postgresql、pgsql
@@ -233,10 +235,9 @@ Heading level 2
    6. 不支持行内添加图片banner
    7. 不支持行内添加缩进代码块、围栏代码块、围栏代码组合列表块
 5. ImageStyle只支持宽高样式设置，暂不支持圆角和对齐方式设置
-6. TOC插件应在最后加载, 避免受其他插件影响
-7. 暂未支持稀疏排列和紧密排列
-8. 数学公式背景色暂不支持设置透明色
-9. HTML支持的标签
+6. 暂未支持稀疏排列和紧密排列
+7. 数学公式背景色暂不支持设置透明色
+8. HTML支持的标签
    1. 块元素
        1. hr标签 - 分割线
        2. h1~h6标签 - 标题
@@ -263,6 +264,11 @@ Heading level 2
            * title属性
            * width属性
            * height属性
+9. 视频支持的格式 `mp4, mov, avi, mkv, wmv, flv, webm, m4v, 3gp`
+10. 音频支持的格式 `mp3, wav, aac, flac, ogg, m4a, wma, amr`
+11. `setIsAutoResize`、`setImageMarginTop`、`setImageMarginBottom`、`setImagePlaceholder`、`setImageResource` 接口暂不生效
+12. `setLatexMathResStr` 接口默认字段是 `/data/storage/el1/bundle/entry/resources/resfile/res`。用户修改项目默认名称entry需要设置 `/data/storage/el1/bundle/xxx/resources/resfile/res` 数学公式才能正常显示
+13. `setIsLinkStyle` 接口前置条件需要设置链接块状化插件 `setIsLinkViewPlugin`。 `setIsListLinkStyle` 接口前置条件 `setIsLinkStyle` 接口设置 `true`。
 
 ## 开源协议
 
