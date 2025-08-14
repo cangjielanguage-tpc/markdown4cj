@@ -65,7 +65,15 @@ func codeCopyOnClick(codeText: String, codeCopyCallback: ?(String) -> Unit): Uni
  */
 func codeFullScreenOnClick(codeText: String, info: ?String, codeFullScreenCallback: ?(String, ?String) -> Unit): Unit {
     if (codeFullScreenCallback.isSome()) {
-        codeFullScreenCallback()(codeText.trimEnd("\n"), info)
+        match (info) {
+            case Some(v) =>
+                if (v == "") {
+                    codeFullScreenCallback()(codeText.trimEnd("\n"), Option<String>.None)
+                } else {
+                    codeFullScreenCallback()(codeText.trimEnd("\n"), v)
+                }
+            case None => codeFullScreenCallback()(codeText.trimEnd("\n"), Option<String>.None)
+        }
     }
 }
 

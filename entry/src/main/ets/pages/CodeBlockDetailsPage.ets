@@ -206,6 +206,7 @@ struct CodeBlockDetailsPage {
     theme.setCodeBlockRadius(this.codeBlockRadius)
     theme.setIsCodeFullScreen(this.isCodeFullScreen)
     theme.setIconWidthAndHeight(this.iconWidthAndHeight)
+    theme.setIsDark(this.isDark)
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
     config.setMarkdownTheme(theme)

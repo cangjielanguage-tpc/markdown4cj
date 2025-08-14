@@ -472,11 +472,13 @@ struct Index {
 
     a.setCodeCopyCallback(this.setCodeCopyCallback)
     a.setLinkCallback(this.setLinkCallback)
+    a.setCodeFullScreenCallback(this.setCodeFullScreenCallback)
 
     let b = new MarkdownTheme()
 
     b.setCodeTextColor(0xFFFF0000)
     b.setCodeCopyIcon($r('app.media.app_icon'))
+    b.setCodeFullScreenIcon($r('app.media.app_icon'))
 
     b.setHeadingTextColor(0xFF0000FF)
     b.setHeadingBreakColor(0xFF0000FF)
@@ -512,14 +514,18 @@ struct Index {
   }
 
   setCodeCopyCallback(str: string): void {
-    hilog.error(1, "1", `---------------setCodeCopyCallback.str:${str}`)
     promptAction.showToast({
       message: str
     })
   }
 
+  setCodeFullScreenCallback(str: string,info:string | undefined): void {
+    promptAction.showToast({
+      message: str +"\n" + info
+    })
+  }
+
   setLinkCallback(str: string): void {
-    hilog.error(1, "1", `---------------setLinkCallback.str:${str}`)
     promptAction.showToast({
       message: str
     })

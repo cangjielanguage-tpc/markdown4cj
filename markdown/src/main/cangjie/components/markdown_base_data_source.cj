@@ -165,7 +165,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
      * @param data 一条数据
      */
     public func replaceData(index: Int, data: T): Unit {
-        data_.add(data, at: index)
+        data_[index] = data
         notifyDataChange(index)
     }
 
@@ -176,7 +176,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
      * @param data 一条数据
      */
     public func update(index: Int, data: T): Unit {
-        data_.add(data, at: index)
+        data_[index] = data
     }
 
     /**

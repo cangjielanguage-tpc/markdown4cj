@@ -146,8 +146,6 @@ class MarkdownHeadingComponent {
         }
         // 设置元素内容的对齐方式
         .align(Alignment.Start)
-        // 设置元素水平方向的布局
-//        .direction(Direction.Ltr)
         // 设置外边距属性
         .margin(top: isMarginTop(), bottom: isMarginBottom())
         // 设置组件自身的宽度

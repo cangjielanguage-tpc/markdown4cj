@@ -294,13 +294,11 @@ public class MarkdownComponent {
                         } else if (item.node is ThematicBreak) {
                             // 分割线
                             ListItem() {
-                                Divider()
-                                    // 设置分割线颜色
-                                    .color(markdownConfiguration.markdownTheme.thematicBreakColor)
-                                    // 设置分割线宽度
-                                    .strokeWidth(markdownConfiguration.markdownTheme.thematicBreakHeight)
-                                    // 设置外边距属性
-                                    .margin(top: markdownConfiguration.markdownTheme.blockTopAndBottomMargins + markdownConfiguration.markdownTheme.thematicBreakTopMargin, bottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins + markdownConfiguration.markdownTheme.thematicBreakBottomMargin)
+                                MarkdownThematicBreakComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins + markdownConfiguration.markdownTheme.thematicBreakTopMargin,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins + markdownConfiguration.markdownTheme.thematicBreakBottomMargin
+                                )
                             }
                         } else if (item.node is BlockAudio) {
                             // 音频
@@ -436,7 +434,7 @@ public class MarkdownComponent {
                 LazyForEach(
                     nodeViewDataSource,
                     itemGeneratorFunc: {
-                        item: NodeView, idx: Int64 => if (item.node is FencedCodeBlock) {
+                        item: NodeView, idx: Int64 => if (idx == 0 && item.node is FencedCodeBlock) {
                             ListItem(){
                                 MarkdownCodeComponent(
                                     markdownConfiguration: markdownConfiguration,
@@ -448,7 +446,7 @@ public class MarkdownComponent {
                                     codeTextComponents: markdownCacheConfiguration.codeTextComponents
                                 )
                             }
-                        } else if (item.node is IndentedCodeBlock) {
+                        } else if (idx == 0 && item.node is IndentedCodeBlock) {
                             ListItem(){
                                 MarkdownCodeComponent(
                                     markdownConfiguration: markdownConfiguration,
