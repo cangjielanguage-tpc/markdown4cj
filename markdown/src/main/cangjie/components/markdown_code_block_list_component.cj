@@ -109,7 +109,7 @@ class MarkdownCodeBlockListComponent {
                             // 设置文本的最大行数
                             .maxLines(1)
                             // 设置文本尺寸
-                            .fontSize(markdownConfiguration.markdownTheme.codeListTitleTextSize)
+                            .fontSize(if (idxSelect == idx) { markdownConfiguration.markdownTheme.codeListTitleSelectTextSize } else { markdownConfiguration.markdownTheme.codeListTitleTextSize })
                             // 设置内边距属性
                             .padding(left: 14, right: 14, top: 5, bottom: 5)
                             // 点击动作触发该方法调用

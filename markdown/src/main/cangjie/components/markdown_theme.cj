@@ -946,6 +946,7 @@ public class MarkdownTheme {
         this.codeCopyIcon = builder.codeCopyIcon
         // 5.3、组合代码
         this.codeListTitleTextSize = builder.codeListTitleTextSize
+        this.codeListTitleSelectTextSize = builder.codeListTitleSelectTextSize
         this.codeListTitleSelectTextColor = builder.codeListTitleSelectTextColor
         this.codeListTitleUnSelectTextColor = builder.codeListTitleUnSelectTextColor
         this.codeListTitleSelectBackGroupColor = builder.codeListTitleSelectBackGroupColor
@@ -2179,6 +2180,7 @@ public class MarkdownThemeBuilder {
         this.codeCopyIcon = theme.codeCopyIcon
         // 5.3、组合代码
         this.codeListTitleTextSize = theme.codeListTitleTextSize
+        this.codeListTitleSelectTextSize = theme.codeListTitleSelectTextSize
         this.codeListTitleSelectTextColor = theme.codeListTitleSelectTextColor
         this.codeListTitleUnSelectTextColor = theme.codeListTitleUnSelectTextColor
         this.codeListTitleSelectBackGroupColor = theme.codeListTitleSelectBackGroupColor

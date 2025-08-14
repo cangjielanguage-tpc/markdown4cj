@@ -177,7 +177,7 @@ struct CodeListPage {
 
           Column() {
             Row() {
-              Text(`组合代码选中标题字体大小(未使用) - `)
+              Text(`组合代码选中标题字体大小 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
               Text(`${this.codeListTitleSelectTextSize}`)
