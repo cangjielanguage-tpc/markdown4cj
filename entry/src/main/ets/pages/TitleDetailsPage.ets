@@ -4,7 +4,7 @@
 import { titleComponent } from './BaseComponent'
 import { router } from '@kit.ArkUI'
 import { TitleData } from './TitlePage'
-import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown'
+import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
 
 @Entry

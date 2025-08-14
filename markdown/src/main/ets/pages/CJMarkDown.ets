@@ -128,6 +128,9 @@ export struct CJMarkdown {
         if (this.cfg.markdownTheme.linkColor !== undefined) {
           cjMarkdownTheme.setLinkColor(this.cfg.markdownTheme.linkColor)
         }
+        if (this.cfg.markdownTheme.isLinkSize !== undefined) {
+          cjMarkdownTheme.setIsLinkSize(this.cfg.markdownTheme.isLinkSize)
+        }
         if (this.cfg.markdownTheme.linkSize !== undefined) {
           cjMarkdownTheme.setLinkSize(this.cfg.markdownTheme.linkSize)
         }
@@ -812,6 +815,10 @@ export class MarkdownTheme {
    * 文本格式链接文本颜色
    */
   linkColor?: number = undefined
+  /**
+   * 文本格式链接文字大小
+   */
+  isLinkSize?: boolean = undefined
   /**
    * 文本格式链接文字大小
    */
@@ -1502,9 +1509,18 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置是否按照链接文本自己大小显示文本
+   *
+   * @param isLinkSize 是否按照链接文本自己大小显示文本 - true：显示链接自己文本大小；false：跟随标题段落大小显示。默认true
+   */
+  setIsLinkSize(isLinkSize: boolean): void {
+    this.isLinkSize = isLinkSize
+  }
+
+  /**
    * 设置文本格式链接文字大小
    *
-   * @param LinkSize 文本格式链接文字大小 - 默认14.0fp
+   * @param linkSize 文本格式链接文字大小 - 默认14.0fp
    */
   setLinkSize(linkSize: number): void {
     this.linkSize = linkSize

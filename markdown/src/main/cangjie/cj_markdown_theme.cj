@@ -40,6 +40,11 @@ public class CJMarkdownTheme {
     /**
      * 文本格式链接文字大小
      */
+    var isLinkSize: ?Bool = None
+
+    /**
+     * 文本格式链接文字大小
+     */
     var linkSize: ?Float64 = None
 
     /**
@@ -801,9 +806,18 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置是否按照链接文本自己大小显示文本
+     *
+     * @param isLinkSize 是否按照链接文本自己大小显示文本 - true：显示链接自己文本大小；false：跟随标题段落大小显示。默认true
+     */
+    public func setIsLinkSize(isLinkSize: Bool): Unit {
+        this.isLinkSize = isLinkSize
+    }
+
+    /**
      * 设置文本格式链接文字大小
      *
-     * @param LinkSize 文本格式链接文字大小 - 默认14.0fp
+     * @param linkSize 文本格式链接文字大小 - 默认14.0fp
      */
     public func setLinkSize(linkSize: Float64): Unit {
         this.linkSize = linkSize

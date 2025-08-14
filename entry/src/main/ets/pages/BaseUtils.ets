@@ -1,7 +1,7 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { LatexMathColorFormat } from "@cangjie-tpc/markdown";
+import { LatexMathColorFormat } from "@cangjie-tpc/markdown_hybrid";
 import { util } from "@kit.ArkTS";
 
 /**

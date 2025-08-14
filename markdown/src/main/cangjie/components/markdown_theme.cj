@@ -81,6 +81,11 @@ public class MarkdownTheme {
     protected var linkColor: Color = COLOR_FF0000FF
 
     /**
+     * 是否按照链接文字自己大小显示文本
+     */
+    protected var isLinkSize: Bool = true
+
+    /**
      * 文本格式链接文字大小
      */
     protected var linkSize: Float64 = 14.0
@@ -858,6 +863,7 @@ public class MarkdownTheme {
         this.isListLinkStyle = builder.isListLinkStyle
         // 3.1、文本格式链接
         this.linkColor = builder.linkColor
+        this.isLinkSize = builder.isLinkSize
         this.linkSize = builder.linkSize
         this.linkBackGroupColor = builder.linkBackGroupColor
         this.isLinkUnderlined = builder.isLinkUnderlined
@@ -1310,6 +1316,11 @@ public class MarkdownThemeBuilder {
      * 文本格式链接文本颜色
      */
     protected var linkColor: Color = COLOR_FF0000FF
+
+    /**
+     * 是否按照链接文字自己大小显示文本
+     */
+    protected var isLinkSize: Bool = true
 
     /**
      * 文本格式链接文字大小
@@ -2092,6 +2103,7 @@ public class MarkdownThemeBuilder {
         this.isListLinkStyle = theme.isListLinkStyle
         // 3.1、文本格式链接
         this.linkColor = theme.linkColor
+        this.isLinkSize = theme.isLinkSize
         this.linkSize = theme.linkSize
         this.linkBackGroupColor = theme.linkBackGroupColor
         this.isLinkUnderlined = theme.isLinkUnderlined
@@ -2542,9 +2554,20 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置是否按照链接文本自己大小显示文本
+     *
+     * @param isLinkSize 是否按照链接文本自己大小显示文本 - true：显示链接自己文本大小；false：跟随标题段落大小显示。默认true
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsLinkSize(isLinkSize: Bool): MarkdownThemeBuilder {
+        this.isLinkSize = isLinkSize
+        return this
+    }
+
+    /**
      * 设置文本格式链接文字大小
      *
-     * @param LinkSize 文本格式链接文字大小 - 默认14.0fp
+     * @param linkSize 文本格式链接文字大小 - 默认14.0fp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkSize(linkSize: Float64): MarkdownThemeBuilder {

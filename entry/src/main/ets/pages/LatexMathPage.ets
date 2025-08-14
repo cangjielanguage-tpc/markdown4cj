@@ -5,7 +5,7 @@ import { titleComponent } from './BaseComponent'
 import { getFileListStr } from './FileUtils'
 import { booleanToString, enumToString, numberToColorString, stringToBoolean } from './BaseUtils'
 import { router } from '@kit.ArkUI'
-import { LatexMathColorFormat } from '@cangjie-tpc/markdown'
+import { LatexMathColorFormat } from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component

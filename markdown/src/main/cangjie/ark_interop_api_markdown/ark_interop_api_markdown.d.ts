@@ -24,6 +24,7 @@ export declare class CJMarkdownTheme {
     setIsLinkStyle(isLinkStyle: boolean): void
     setIsListLinkStyle(isListLinkStyle: boolean): void
     setLinkColor(linkColor: number): void
+    setIsLinkSize(isLinkSize: boolean): void
     setLinkSize(linkSize: number): void
     setLinkBackGroupColor(linkBackGroupColor: number): void
     setIsLinkUnderlined(isLinkUnderlined: boolean): void

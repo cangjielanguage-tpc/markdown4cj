@@ -191,6 +191,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.linkColor) {
                 markdownThemeBuilder.setLinkColor(v) // 设置文本格式链接文本颜色
             }
+            if (let Some(v) <- w.cjMarkdownTheme.isLinkSize) {
+                markdownThemeBuilder.setIsLinkSize(v) // 设置文本格式链接文字大小
+            }
             if (let Some(v) <- w.cjMarkdownTheme.linkSize) {
                 markdownThemeBuilder.setLinkSize(v) // 设置文本格式链接文字大小
             }

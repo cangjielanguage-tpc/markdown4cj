@@ -90,6 +90,15 @@ struct LinkPage {
   @State
   isLinkUnderlined: boolean = true
   /**
+   * 文本格式是否显示链接下划线列表
+   */
+  isLinkSizeList: Array<boolean> = [true, false]
+  /**
+   * 文本格式是否显示链接下划线
+   */
+  @State
+  isLinkSize: boolean = true
+  /**
    * 圆形图片格式链接主题背景颜色列表
    */
   linkCircleImageBackGroupColorList: Array<number> =
@@ -577,6 +586,37 @@ struct LinkPage {
                   .onClick(() => {
                     this.isLinkUnderlined = item
                     this.linkData.isLinkUnderlined = this.isLinkUnderlined
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`是否按照链接文本自己大小显示文本 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.isLinkSize}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.isLinkSizeList, (item: boolean, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.isLinkSize = item
+                    this.linkData.isLinkSize = this.isLinkSize
                   })
               })
             }
@@ -1478,6 +1518,7 @@ export class LinkData {
   _isLinkStyle: boolean = false
   _isListLinkStyle: boolean = false
   _linkColor: number = 0xFF0000FF
+  _isLinkSize: boolean = true
   _linkSize: number = 14
   _linkBackGroupColor: number = 0xFF000000
   _isLinkUnderlined: boolean = true
@@ -1524,6 +1565,10 @@ export class LinkData {
 
   public set linkColor(value: number) {
     this._linkColor = value
+  }
+
+  public set isLinkSize(value: boolean) {
+    this._isLinkSize = value
   }
 
   public set linkSize(value: number) {

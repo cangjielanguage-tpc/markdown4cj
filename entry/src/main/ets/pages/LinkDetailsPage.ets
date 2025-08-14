@@ -3,7 +3,7 @@
  */
 import { titleComponent } from './BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
 import { LinkData } from './LinkPage'
 import { hilog } from '@kit.PerformanceAnalysisKit'
@@ -46,6 +46,10 @@ struct LinkDetailsPage {
    * 文本格式链接文本颜色
    */
   linkColor: number = 0xFF0000FF
+  /**
+   * 文本格式链接文字大小
+   */
+  isLinkSize: boolean = true
   /**
    * 文本格式链接文字大小
    */
@@ -179,6 +183,7 @@ struct LinkDetailsPage {
       this.isLinkStyle = linkData._isLinkStyle
       this.isListLinkStyle = linkData._isListLinkStyle
       this.linkColor = linkData._linkColor
+      this.isLinkSize = linkData._isLinkSize
       this.linkSize = linkData._linkSize
       this.linkBackGroupColor = linkData._linkBackGroupColor
       this.isLinkUnderlined = linkData._isLinkUnderlined
@@ -270,6 +275,7 @@ struct LinkDetailsPage {
     theme.setIsLinkStyle(this.isLinkStyle)
     theme.setIsListLinkStyle(this.isListLinkStyle)
     theme.setLinkColor(this.linkColor)
+    theme.setIsLinkSize(this.isLinkSize)
     theme.setLinkSize(this.linkSize)
     theme.setLinkBackGroupColor(this.linkBackGroupColor)
     theme.setIsLinkUnderlined(this.isLinkUnderlined)

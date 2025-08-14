@@ -9,7 +9,7 @@ import {
   MarkdownConfiguration,
   MarkdownPlugin,
   MarkdownTheme
-} from '@cangjie-tpc/markdown'
+} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
 import { LatexMathData } from './LatexMathPage'
 import hilog from '@ohos.hilog'

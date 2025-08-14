@@ -194,6 +194,10 @@ class MarkdownIndentedCodeBlockComponent {
                             .fontColor(indentedCodeodeBlockTypeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
                             // 设置字体大小
                             .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                            // 设置文本的最大行数
+                            .maxLines(1)
+                            // 设置文本超长时的显示方式
+                            .textOverflow(TextOverflow.Ellipsis)
                             // 设置外边距
                             .margin(left: 8)
                     }
