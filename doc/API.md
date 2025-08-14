@@ -182,7 +182,7 @@ export class MarkdownTheme {
   setBannerImage(bannerImage: Resource): void
 
   /**
-   * 设置图片占位图
+   * 设置图片占位图 - todo:暂未实现
    *
    * @param imageResource 图片占位图
    */
@@ -231,7 +231,7 @@ export class MarkdownTheme {
   setLinkSize(linkSize: number): void
 
   /**
-   * 设置文本格式链接背景颜色
+   * 设置文本格式链接背景颜色 - todo:暂未实现
    *
    * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0XFF000000
    */
@@ -567,7 +567,7 @@ export class MarkdownTheme {
   setCodeTextColor(codeTextColor: number): void
 
   /**
-   * 设置文本、图片格式内联代码背景颜色
+   * 设置文本、图片格式内联代码背景颜色 - todo:文本背景颜色暂未实现
    *
    * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFF191919
    */
@@ -1127,28 +1127,28 @@ export class MarkdownTheme {
   setVideoMarginBottom(videoMarginBottom: number): void
 
   /**
-   * 设置图片默认占位图 - String
+   * 设置图片默认占位图 - String - todo:暂未实现
    *
    * @param imagePlaceholder 图片默认占位图 - String - 默认None
    */
   setImagePlaceholder(imagePlaceholder: string): void
 
   /**
-   * 设置网络图片是否压缩
+   * 设置网络图片是否压缩 - todo:暂未实现
    *
    * @param isAutoResize 网络图片是否压缩 - true：压缩；false：不压缩。默认true
    */
   setIsAutoResize(isAutoResize: boolean): void
 
   /**
-   * 设置图片上边距
+   * 设置图片上边距 - todo:暂未实现
    *
    * @param imageMarginTop 图片上边距 - 默认10.0vp
    */
   setImageMarginTop(imageMarginTop: number): void
 
   /**
-   * 设置图片下边距
+   * 设置图片下边距 - todo:暂未实现
    *
    * @param imageMarginBottom 图片下边距 - 默认10.0vp
    */
