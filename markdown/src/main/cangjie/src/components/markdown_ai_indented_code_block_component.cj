@@ -178,6 +178,10 @@ class MarkdownAIIndentedCodeBlockComponent {
                             .fontColor(indentedCodeodeBlockTypeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
                             // 设置字体大小
                             .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                            // 设置文本的最大行数
+                            .maxLines(1)
+                            // 设置文本超长时的显示方式
+                            .textOverflow(TextOverflow.Ellipsis)
                             // 设置外边距
                             .margin(left: 8)
                     }
@@ -192,6 +196,10 @@ class MarkdownAIIndentedCodeBlockComponent {
                             .fontColor(indentedCodeodeBlockTypeTextColor(markdownAIConfiguration.markdownAITheme, markdownAIConfiguration.markdownAITheme.prismTheme))
                             // 设置字体大小
                             .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
+                            // 设置文本的最大行数
+                            .maxLines(1)
+                            // 设置文本超长时的显示方式
+                            .textOverflow(TextOverflow.Ellipsis)
                             // 设置外边距
                             .margin(left: 8)
                     }
@@ -224,6 +232,10 @@ class MarkdownAIIndentedCodeBlockComponent {
                                     .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
                                     // 设置容器元素绘制区域内的子元素的对齐方式
                                     .align(Alignment.End)
+                                    // 设置文本的最大行数
+                                    .maxLines(1)
+                                    // 设置文本超长时的显示方式
+                                    .textOverflow(TextOverflow.Ellipsis)
                                     // 设置外边距
                                     .margin(right: 4)
                             }
@@ -245,8 +257,6 @@ class MarkdownAIIndentedCodeBlockComponent {
                                 .margin(left: 4)
                                 // 设置图片的缩放类型
                                 .objectFit(ImageFit.Contain)
-                                // 控制当前组件显示或隐藏
-                                .visibility(isVisibility(markdownAIConfiguration.markdownAITheme.isCodeFullScreen))
 
                             Row()
                                 // 设置宽度
@@ -260,12 +270,18 @@ class MarkdownAIIndentedCodeBlockComponent {
                                     .fontSize(markdownAIConfiguration.markdownAITheme.codeBlockTextSize)
                                     // 设置容器元素绘制区域内的子元素的对齐方式
                                     .align(Alignment.End)
+                                    // 设置文本的最大行数
+                                    .maxLines(1)
+                                    // 设置文本超长时的显示方式
+                                    .textOverflow(TextOverflow.Ellipsis)
                                     // 设置外边距
                                     .margin(right: 4)
                             }
                         }
                         // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)
+                        // 控制当前组件显示或隐藏
+                        .visibility(isVisibility(markdownAIConfiguration.markdownAITheme.isCodeFullScreen))
                         // 点击动作触发该方法调用
                         .onClick {
                             evt => codeFullScreenOnClick(codeText, info, markdownAIConfiguration.codeFullScreenCallback)

@@ -116,7 +116,8 @@ class CustomizationCompleteDetailsPage {
         markdownAIThemeBuilder.setBlockTopAndBottomMargins(10.0) // 设置每个模块之间上下间距
 
         // 3、链接
-        markdownAIThemeBuilder.setIsLinkStyle(true) // 设置链接是否是图片显示
+        markdownAIThemeBuilder.setIsLinkSize(false) // 设置链接是否是图片显示
+        markdownAIThemeBuilder.setIsLinkStyle(false) // 设置链接是否是图片显示
         // 文本格式
         markdownAIThemeBuilder.setLinkColor(Color.RED) // 设置文本格式链接的文本颜色
         markdownAIThemeBuilder.setLinkSize(15.0) // 设置文本格式链接文字大小
@@ -171,7 +172,7 @@ class CustomizationCompleteDetailsPage {
 
         // 6、标题
         markdownAIThemeBuilder.setHeadingBreakHeight(0.0) // 设置H1、H2标题下分割线高度
-        markdownAIThemeBuilder.setHeadingTextSizeMultipliers([15.0, 15.0, 15.0, 15.0, 15.0, 15.0]) // 设置标题文本大小数组
+        markdownAIThemeBuilder.setHeadingTextSizeMultipliers([20.0, 15.0, 15.0, 15.0, 15.0, 10.0]) // 设置标题文本大小数组
         markdownAIThemeBuilder.setHeadingTextColor(Color(0xFF222222)) // 设置标题字体颜色
         markdownAIThemeBuilder.setHeadingTextLineHeight1(25.0) // 设置一级标题文本行高
         markdownAIThemeBuilder.setHeadingTextLineHeight2(25.0) // 设置二级标题文本行高
