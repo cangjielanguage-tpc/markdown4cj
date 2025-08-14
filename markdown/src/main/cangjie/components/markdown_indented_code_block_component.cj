@@ -155,8 +155,6 @@ class MarkdownIndentedCodeBlockComponent {
         .scrollBar(BarState.Off)
         // 设置元素内容的对齐方式
         .align(Alignment.Start)
-        // 设置元素水平方向的布局
-//        .direction(Direction.Ltr)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置内边距属性
@@ -178,6 +176,10 @@ class MarkdownIndentedCodeBlockComponent {
                             .fontColor(indentedCodeodeBlockTypeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
                             // 设置字体大小
                             .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                            // 设置文本的最大行数
+                            .maxLines(1)
+                            // 设置文本超长时的显示方式
+                            .textOverflow(TextOverflow.Ellipsis)
                             // 设置外边距
                             .margin(left: 8)
                     }
@@ -224,6 +226,10 @@ class MarkdownIndentedCodeBlockComponent {
                                     .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
                                     // 设置容器元素绘制区域内的子元素的对齐方式
                                     .align(Alignment.End)
+                                    // 设置文本的最大行数
+                                    .maxLines(1)
+                                    // 设置文本超长时的显示方式
+                                    .textOverflow(TextOverflow.Ellipsis)
                                     // 设置外边距
                                     .margin(right: 4)
                             }
@@ -245,8 +251,6 @@ class MarkdownIndentedCodeBlockComponent {
                                 .margin(left: 4)
                                 // 设置图片的缩放类型
                                 .objectFit(ImageFit.Contain)
-                                // 控制当前组件显示或隐藏
-                                .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
 
                             Row()
                                 // 设置宽度
@@ -260,12 +264,18 @@ class MarkdownIndentedCodeBlockComponent {
                                     .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
                                     // 设置容器元素绘制区域内的子元素的对齐方式
                                     .align(Alignment.End)
+                                    // 设置文本的最大行数
+                                    .maxLines(1)
+                                    // 设置文本超长时的显示方式
+                                    .textOverflow(TextOverflow.Ellipsis)
                                     // 设置外边距
                                     .margin(right: 4)
                             }
                         }
                         // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)
+                        // 控制当前组件显示或隐藏
+                        .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
                         // 点击动作触发该方法调用
                         .onClick {
                             evt => codeFullScreenOnClick(codeText, info, markdownConfiguration.codeFullScreenCallback)
