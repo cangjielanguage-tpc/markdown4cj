@@ -312,20 +312,44 @@ class MarkdownListItemComponent {
                     } else if (item.node is ImageSingleBlock) {
                         // 单独图片block
                         ListItem() {
-                            if(item.children.size  > 0 && item.children[0].node is CommonmarkImage){
-                                Image((item.children[0].node as CommonmarkImage)().getDestination())
-                                    // 设置约束尺寸
-                                    .constraintSize(maxWidth: 100.percent)
-                                    // 设置图片的缩放类型
-                                    .objectFit(ImageFit.Contain)
-                                    // 点击动作触发该方法调用
-                                    .onClick {
-                                        evt => imageOnClick((item.children[0].node as CommonmarkImage)().getDestination(), imageCallback)
+                                if(item.children.size  > 0 && item.children[0].node is StyleImage){
+                                    //  图片Style节点
+                                    if((item.children[0].node as StyleImage)().getDestination().startsWith("./")){
+                                        MarkdownImageStyleRawFileComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            destination: (item.children[0].node as StyleImage)().getDestination(),
+                                            picStyle: (item.children[0].node as StyleImage)().styles,
+                                            componentWidth:versionAdaptation(componentWidth),
+                                            imageCallback: imageCallback
+                                        )
+                                    }else{
+                                        MarkdownImageStyleComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            destination: (item.children[0].node as StyleImage)().getDestination(),
+                                            picStyle: (item.children[0].node as StyleImage)().styles,
+                                            componentWidth:versionAdaptation(componentWidth),
+                                            imageCallback: imageCallback
+                                        )
                                     }
-                            }else{
-                                Text("")
+                                }else if(item.children.size  > 0 && item.children[0].node is CommonmarkImage){
+                                    if((item.children[0].node as CommonmarkImage)().getDestination().startsWith("./")){
+                                        MarkdownImageRawFileComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            destination: (item.children[0].node as CommonmarkImage)().getDestination(),
+                                            componentWidth:versionAdaptation(componentWidth),
+                                            imageCallback: imageCallback
+                                        )
+                                    }else{
+                                        // 图片节点
+                                        MarkdownImageComponent(
+                                            destination: (item.children[0].node as CommonmarkImage)().getDestination(),
+                                            imageCallback: imageCallback
+                                        )
+                                    }
+                                }else{
+                                    Text("")
+                                }
                             }
-                        }
                     } else {
                         // TODO 其他节点
                         ListItem() {

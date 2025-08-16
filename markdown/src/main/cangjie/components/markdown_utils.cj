@@ -1138,9 +1138,5 @@ func linkUrl(nodeView: NodeView): ?String {
  * @return 返回的数据 - 单位px
  */
 func versionAdaptation(componentWidth: Float64): Float64 {
-    if(majorVersion >= 5 && seniorVersion >= 1) {
-        // 5.1版本以上都是单位vp
-        return vp2px(componentWidth.vp).getOrThrow().value
-    }
-    return componentWidth
+    return vp2px(componentWidth.vp).getOrThrow().value
 }
