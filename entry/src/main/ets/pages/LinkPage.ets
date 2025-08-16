@@ -363,7 +363,7 @@ struct LinkPage {
   build() {
     Column() {
       titleComponent(
-        "标题配置页面",
+        "链接配置页面",
         0xFF317AFF,
         true,
         this.safeTop

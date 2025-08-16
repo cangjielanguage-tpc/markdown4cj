@@ -75,10 +75,6 @@ public class MarkdownImageSpanRawFileComponent {
                 .onClick {
                     evt => imageOnClick(destination, imageCallback)
                 }
-                // 图片加载出现异常时触发该回调
-                .onError({
-                    imageError =>
-                })
         }
     }
 

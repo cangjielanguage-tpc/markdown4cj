@@ -58,18 +58,14 @@ public class MarkdownImageSpanComponent {
             .onComplete(
                 {
                     imageLoadResult =>
-                    var aspectRatio: Float64 = imageLoadResult.height / imageLoadResult.width
-                    width = if (componentWidth > imageLoadResult.width) {
-                        imageLoadResult.width
-                    } else {
-                        componentWidth
-                    }
-                    height = width * aspectRatio
+                        var aspectRatio: Float64 = imageLoadResult.height / imageLoadResult.width
+                        width = if (componentWidth > imageLoadResult.width) {
+                            imageLoadResult.width
+                        } else {
+                            componentWidth
+                        }
+                        height = width * aspectRatio
                 }
             )
-            // 图片加载出现异常时触发该回调
-            .onError({
-                imageError =>
-            })
     }
 }

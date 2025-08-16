@@ -92,10 +92,6 @@ public class MarkdownImageStyleSpanRawFileComponent {
                 .onClick {
                     evt => imageOnClick(destination, imageCallback)
                 }
-                // 图片加载出现异常时触发该回调
-                .onError({
-                    imageError =>
-                })
         }
     }
 
@@ -117,6 +113,6 @@ public class MarkdownImageStyleSpanRawFileComponent {
         align = picStyleObj.align
         let picStyleObjWidth: ?Float64 = length2Float64(picStyleObj.width, componentWidth)
         let picStyleObjHeight: ?Float64 = length2Float64(picStyleObj.height, componentWidth)
-        let fut = rawfileToPixelmapStyle(destination, markdownConfiguration.markdownTheme.abilityContext, markdownConfiguration.markdownTheme.stageContext,componentWidth,picStyleObjWidth,picStyleObjHeight, callback)
+        let fut = rawfileToPixelmapStyle(destination, markdownConfiguration.markdownTheme.abilityContext, markdownConfiguration.markdownTheme.stageContext, componentWidth, picStyleObjWidth, picStyleObjHeight, callback)
     }
 }

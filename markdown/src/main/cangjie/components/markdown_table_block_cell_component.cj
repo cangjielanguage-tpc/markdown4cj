@@ -260,13 +260,7 @@ class MarkdownTableBlockCellComponent {
                 if (old.width == new.width) {
                     return
                 }
-                let oldWidth: Float64 = old.width
-                let newWidth: Float64 = new.width
-                let max: Float64 = if (newWidth > oldWidth) {
-                    newWidth
-                } else {
-                    oldWidth
-                }
+                let newWidth: Float64 = px2vp(versionAdaptation(new.width).px).getOrThrow().value
                 if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
                     if (v.index == idxItem && newWidth > v.minWidth) {
                         cellWidthArrayIndexed[idxItem] = CellWidthArrayIndexedClass(minWidth: newWidth, index: idxItem)

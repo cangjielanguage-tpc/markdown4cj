@@ -150,7 +150,7 @@ struct TablePage {
   build() {
     Column() {
       titleComponent(
-        "标题配置页面",
+        "表格配置页面",
         0xFF317AFF,
         true,
         this.safeTop

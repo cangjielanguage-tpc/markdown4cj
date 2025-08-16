@@ -82,51 +82,47 @@ public class MarkdownImageStyleSpanComponent {
             .onComplete(
                 {
                     imageLoadResult =>
-                    let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentWidth)
-                    let aspectRatio: Float64 = imageLoadResult.height / imageLoadResult.width
-                    let widthNew = if (componentWidth > imageLoadResult.width) {
-                        imageLoadResult.width
-                    } else {
-                        componentWidth
-                    }
-                    let heightNew = widthNew * aspectRatio
-                    let picStyleObjWidth: ?Float64 = length2Float64(picStyleObj.width, componentWidth)
-                    let picStyleObjHeight: ?Float64 = length2Float64(picStyleObj.height, componentWidth)
-                    if (picStyleObjWidth.isSome() && picStyleObjHeight.isSome()) {
-                        let aspectRatioNew: Float64 = picStyleObjHeight() / picStyleObjWidth()
-                        width = if (componentWidth > picStyleObjWidth()) {
-                            picStyleObjWidth()
+                        let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentWidth)
+                        let aspectRatio: Float64 = imageLoadResult.height / imageLoadResult.width
+                        let widthNew = if (componentWidth > imageLoadResult.width) {
+                            imageLoadResult.width
                         } else {
                             componentWidth
                         }
-                        height = width * aspectRatioNew
-                    } else if (picStyleObjWidth.isSome() && picStyleObjHeight.isNone()) {
-                        width = if (componentWidth > picStyleObjWidth()) {
-                            picStyleObjWidth()
+                        let heightNew = widthNew * aspectRatio
+                        let picStyleObjWidth: ?Float64 = length2Float64(picStyleObj.width, componentWidth)
+                        let picStyleObjHeight: ?Float64 = length2Float64(picStyleObj.height, componentWidth)
+                        if (picStyleObjWidth.isSome() && picStyleObjHeight.isSome()) {
+                            let aspectRatioNew: Float64 = picStyleObjHeight() / picStyleObjWidth()
+                            width = if (componentWidth > picStyleObjWidth()) {
+                                picStyleObjWidth()
+                            } else {
+                                componentWidth
+                            }
+                            height = width * aspectRatioNew
+                        } else if (picStyleObjWidth.isSome() && picStyleObjHeight.isNone()) {
+                            width = if (componentWidth > picStyleObjWidth()) {
+                                picStyleObjWidth()
+                            } else {
+                                componentWidth
+                            }
+                            height = width * aspectRatio
+                        } else if (picStyleObjWidth.isNone() && picStyleObjHeight.isSome()) {
+                            width = if (componentWidth > picStyleObjHeight() / aspectRatio) {
+                                picStyleObjHeight() / aspectRatio
+                            } else {
+                                componentWidth
+                            }
+                            height = width * aspectRatio
                         } else {
-                            componentWidth
+                            width = widthNew
+                            height = heightNew
                         }
-                        height = width * aspectRatio
-                    } else if (picStyleObjWidth.isNone() && picStyleObjHeight.isSome()) {
-                        width = if (componentWidth > picStyleObjHeight() / aspectRatio) {
-                            picStyleObjHeight() / aspectRatio
-                        } else {
-                            componentWidth
+                        if (picStyleObj.borderRadius.isSome()) {
+                            radius = picStyleObj.borderRadius()
                         }
-                        height = width * aspectRatio
-                    } else {
-                        width = widthNew
-                        height = heightNew
-                    }
-                    if (picStyleObj.borderRadius.isSome()) {
-                        radius = picStyleObj.borderRadius()
-                    }
-                    align = picStyleObj.align
+                        align = picStyleObj.align
                 }
             )
-            // 图片加载出现异常时触发该回调
-            .onError({
-                imageError =>
-            })
     }
 }

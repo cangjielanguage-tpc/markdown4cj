@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import ohos.hilog.Hilog
 
 let COLOR_191919: Color = Color(0x191919)
 let COLOR_0000FF: Color = Color(0x0000FF)
@@ -28,6 +29,11 @@ let COLOR_80000000: Color = Color(0x80000000)
 let null: NodeView = unsafe { zeroValue() }
 let SECONDS_PER_HOUR: Int64 = 3600
 let SECONDS_PER_MINUTE: Int64 = 60
+
+let majorVersion = DeviceInfo.majorVersion
+let seniorVersion = DeviceInfo.seniorVersion
+let featureVersion = DeviceInfo.featureVersion
+let buildVersion = DeviceInfo.buildVersion
 
 /**
  * 组合代码解析
@@ -1123,4 +1129,18 @@ func linkUrl(nodeView: NodeView): ?String {
     } else {
         Option<String>.None
     }
+}
+
+/**
+ * 对单位进行版本适配
+ *
+ * @param componentWidth 通过系统获取的数据
+ * @return 返回的数据 - 单位px
+ */
+func versionAdaptation(componentWidth: Float64): Float64 {
+    if(majorVersion >= 5 && seniorVersion >= 1) {
+        // 5.1版本以上都是单位vp
+        return vp2px(componentWidth.vp).getOrThrow().value
+    }
+    return componentWidth
 }
