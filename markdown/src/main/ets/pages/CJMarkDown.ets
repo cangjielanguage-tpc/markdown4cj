@@ -38,16 +38,15 @@ class CJNodeController extends NodeController {
   }
 }
 
-@ComponentV2
+@Component
 export struct CJMarkdown {
-  @Param mdStr: string = ''
-  @Param isFull: boolean = true
-  @Param cfg?: MarkdownConfiguration = undefined
-  @Param plugin?: MarkdownPlugin = undefined
+  @Prop @Watch('onMarkDownChange') mdStr: string = ''
+  @State isFull: boolean = true
+  @State cfg?: MarkdownConfiguration = undefined
+  @State plugin?: MarkdownPlugin = undefined
   private markdownNode: CJNodeController | null = null
 
-  @Monitor('mdStr')
-  onMarkDownChange(monitor: IMonitor) {
+  onMarkDownChange():void {
     this.markdownNode?.freshCJ(this.mdStr)
   }
 
