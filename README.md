@@ -98,7 +98,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
    通过中心仓下载安装
 
       ```sh
-      ohpm install @cangjie-tpc/markdown
+      ohpm install @cangjie-tpc/markdown_hybrid
       ```
 
 2. 在项目中使用markdown项目
@@ -194,7 +194,7 @@ struct DemoPage {
 
 ## 约束与限制
 
-当前基于 DevEco Studio for Windows 5.1.1.823 和 DevEco Studio Cangjie Plugin Canary for Windows 5.1.0.828 版本实现的
+当前基于 DevEco Studio for Windows 5.1.1.823 和 DevEco Studio Cangjie Plugin Canary for Windows 5.1.1.823 版本实现的
 
 1. 内联代码暂未支持背景色设置
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线

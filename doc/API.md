@@ -217,9 +217,9 @@ export class MarkdownTheme {
   setLinkColor(linkColor: number): void
 
   /**
-   * 设置是否按照链接文本自己大小显示文本
+   * 设置是否按照链接文本字体大小显示文本
    *
-   * @param isLinkSize 是否按照链接文本自己大小显示文本 - true：显示链接自己文本大小；false：跟随标题段落大小显示。默认true
+   * @param isLinkSize 是否按照链接文本字体大小显示文本 - true：显示链接字体文本大小；false：跟随标题段落大小显示。默认true
    */
   setIsLinkSize(isLinkSize: boolean): void
 
