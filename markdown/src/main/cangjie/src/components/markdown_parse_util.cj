@@ -56,7 +56,7 @@ func stringToNodesUtils(mdStr: String, markdownConfiguration: MarkdownConfigurat
             paragraph.appendChild(commonmarkText)
             let paragraphNodeView: NodeView = buildView(paragraph, true)
             let textNodeView: NodeView = buildView(commonmarkText, true)
-            arrayListNodeView.append(paragraphNodeView)
+            arrayListNodeView.add(paragraphNodeView)
         } finally {
             try {
                 if (Thread.currentThread.hasPendingCancellation) {
@@ -93,10 +93,10 @@ func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callba
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
-            prismNodesParseResList = psh.highlight(info, code.trimRight("\n"))
+            prismNodesParseResList = psh.highlight(info, code.trimEnd("\n"))
         } catch (e: Exception) {
             let prismNodesParseRes: PrismNodesParseRes = PrismNodesParseRes("", code, Option<String>.None, Option<Color>.None)
-            prismNodesParseResList.append(prismNodesParseRes)
+            prismNodesParseResList.add(prismNodesParseRes)
         } finally {
             try {
                 if (Thread.currentThread.hasPendingCancellation) {
@@ -137,16 +137,16 @@ func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: Ma
                         return
                     }
                     let res: ArrayList<PrismNodesParseRes> = psh.highlight((nodeView.node as FencedCodeBlock)().getInfo(),
-                        (nodeView.node as FencedCodeBlock)().getLiteral().trimRight("\n"))
-                    prismNodesParseResLists.append(res)
+                        (nodeView.node as FencedCodeBlock)().getLiteral().trimEnd("\n"))
+                    prismNodesParseResLists.add(res)
                 }
             }
         } catch (e: Exception) {
             for(str in  strText){
                 let prismNodesParseResList:ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
                 let prismNodesParseRes:PrismNodesParseRes = PrismNodesParseRes("", str, Option<String>.None, Option<Color>.None)
-                prismNodesParseResList.append(prismNodesParseRes)
-                prismNodesParseResLists.append(prismNodesParseResList)
+                prismNodesParseResList.add(prismNodesParseRes)
+                prismNodesParseResLists.add(prismNodesParseResList)
             }
         } finally {
             try {

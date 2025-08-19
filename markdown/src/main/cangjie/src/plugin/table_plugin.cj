@@ -22,9 +22,9 @@ public class TablePlugin <: AbstractMarkdownPlugin {
                 count[1] = 0
                 let view = buildView(node, true, needProps: true)
                 visitor.visitChildren(node)
-                view.props?.put("rowCount", count[0])
-                view.props?.put("cellCount", count[1])
-                view.props?.put("columnCount", count[1] / count[0])
+                view.props?.add("rowCount", count[0])
+                view.props?.add("cellCount", count[1])
+                view.props?.add("columnCount", count[1] / count[0])
             }
         ).on(
             "TableRow",

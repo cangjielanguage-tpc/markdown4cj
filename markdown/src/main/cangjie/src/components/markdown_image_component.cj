@@ -29,7 +29,7 @@ class MarkdownImageComponent {
             imageComponent()
         }
         // 设置约束尺寸
-        .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
+        .constraintSize(maxWidth: 100.percent)
     }
 
     /**

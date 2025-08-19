@@ -52,7 +52,7 @@ func videoOnClick(imgVideoStr: String, videoCallback: ?(String) -> Unit): Unit {
  */
 func codeCopyOnClick(codeText: String, codeCopyCallback: ?(String) -> Unit): Unit {
     if (codeCopyCallback.isSome()) {
-        codeCopyCallback()(codeText.trimRight("\n"))
+        codeCopyCallback()(codeText.trimEnd("\n"))
     }
 }
 
@@ -65,7 +65,7 @@ func codeCopyOnClick(codeText: String, codeCopyCallback: ?(String) -> Unit): Uni
  */
 func codeFullScreenOnClick(codeText: String, info: ?String, codeFullScreenCallback: ?(String, ?String) -> Unit): Unit {
     if (codeFullScreenCallback.isSome()) {
-        codeFullScreenCallback()(codeText.trimRight("\n"), info)
+        codeFullScreenCallback()(codeText.trimEnd("\n"), info)
     }
 }
 

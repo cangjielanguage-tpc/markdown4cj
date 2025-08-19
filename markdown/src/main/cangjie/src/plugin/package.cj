@@ -54,8 +54,6 @@ let NULL_CHAR: Rune = '\u{0}'
 let EMPTY_STRING: String = ""
 let EMPTY_MAP: Map<String, String> = HashMap()
 
-extend<T> Array<T> where T <: Rune {}
-
 public type Runnable = () -> Unit
 
 extend StringBuilder {

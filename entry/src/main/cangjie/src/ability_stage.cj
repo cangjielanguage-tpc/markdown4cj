@@ -4,9 +4,6 @@
 package ohos_app_cangjie_entry
 
 import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
 
 class MyAbilityStage <: AbilityStage {
     public override func onCreate(): Unit {

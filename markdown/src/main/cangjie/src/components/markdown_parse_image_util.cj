@@ -163,7 +163,7 @@ func getImageFromHttpClient(path: String, componentWidth: Float64, callback: (?P
             } else {
                 2048
             }
-            var arrDataTemp: Array<UInt8> = Array<UInt8>(bodySize, item: 0)
+            var arrDataTemp: Array<UInt8> = Array<UInt8>(bodySize, repeat: 0)
             let listbuf: ArrayList<UInt8> = ArrayList<UInt8>()
             var read: Int64 = 0
             do {
@@ -171,7 +171,7 @@ func getImageFromHttpClient(path: String, componentWidth: Float64, callback: (?P
                     return
                 }
                 read = inputStream.read(arrDataTemp)
-                listbuf.appendAll(arrDataTemp[0..read])
+                listbuf.add(all: arrDataTemp[0..read])
             } while (read > 0)
             let arrData: Array<UInt8> = listbuf.toArray()
             if (Thread.currentThread.hasPendingCancellation) {
@@ -219,7 +219,7 @@ func getImageFromHttpClient(path: String, componentWidth: Float64, callback: (?P
  */
 func isImagePixelMap(imageData: ImageData, listPixelMap: ArrayList<?PixelMap>): Bool {
     if (imageData.pixelMap.isSome() && imageData.height.isSome() && imageData.width.isSome()) {
-        listPixelMap.append(imageData.pixelMap)
+        listPixelMap.add(imageData.pixelMap)
         return true
     }
     return false
