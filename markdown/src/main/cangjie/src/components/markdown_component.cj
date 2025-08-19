@@ -61,7 +61,7 @@ public class MarkdownComponent {
                             )
                         }
                         // 组件区域变化时触发该回调
-                        .onAreaChange {oldValue, newValue => indexHashMap.put(idx, newValue.position.y)}
+                        .onAreaChange {oldValue, newValue => indexHashMap.add(idx, newValue.position.y)}
                     } else if (item.node is Paragraph) {
                         // 段落
                         ListItem() {

@@ -70,6 +70,8 @@ public interface NodeExt {
     func iterateLeafChildren(): Iterator<Node>
 
     func isLeafNode(): Bool
+
+    func replaceWith(node: Node): Unit
 }
 /**
  * Node扩展
@@ -79,7 +81,7 @@ extend Node <: NodeExt {
         let list: ArrayList<Node> = ArrayList<Node>()
         var node: ?Node = getFirstChild()
         while (!node.isNone()) {
-            list.append(node.getOrThrow())
+            list.add(node.getOrThrow())
             node = node.getOrThrow().getNext()
         }
         return list

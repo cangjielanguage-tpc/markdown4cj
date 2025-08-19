@@ -27,7 +27,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
                 return
             }
         }
-        listenerOp.append(listener)
+        listenerOp.add(listener)
     }
 
     public func onUnregisterDataChangeListener(listener: DataChangeListener): Unit {
@@ -35,7 +35,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
         while (index < listenerOp.size) {
             let listeneritem = listenerOp[index]
             if (refEq(listeneritem, listener)) {
-                listenerOp.remove(index)
+                listenerOp.remove(at: index)
             } else {
                 index++
             }
@@ -62,7 +62,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
 
     public func addData(data: T): Unit {
         let index = totalCount()
-        data_.append(data)
+        data_.add(data)
         for (listeneritem in listenerOp) {
             listeneritem.onDataAdd(index)
         }
@@ -75,7 +75,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
     }
 
     public func deleteData(index: Int): Unit {
-        data_.remove(index)
+        data_.remove(at: index)
         for (listeneritem in listenerOp) {
             listeneritem.onDataDelete(index)
         }

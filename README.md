@@ -5,7 +5,7 @@
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.53.18-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v1.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -135,6 +135,11 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 ### 功能示例
 
 ```cangjie
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights resvered.
+ */
+package ohos_app_cangjie_entry
+
 import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
@@ -143,8 +148,8 @@ import markdown.components.*
 
 @Entry
 @Component
-class ARHeading1Page {
-    func render() {
+class Index {
+    func build() {
         Scroll() {
             Column {
                 MarkdownComponent(mdStr: mdStr)
@@ -207,9 +212,14 @@ Heading level 2
 }
 ```
 
+### 显示效果
+
+![](./doc/assets/img1.png)
+
+
 ## 约束与限制
 
-当前基于 DevEco Studio for Windows 5.0.9.300 和 DevEco Studio Cangjie Plugin Beta1 for Windows 5.0.9.300 版本实现的
+当前基于 DevEco Studio for Windows 5.1.1.823 和 DevEco Studio Cangjie Plugin Windows 5.1.1.823 版本实现的
 
 1. 内联代码暂未支持背景色设置
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线

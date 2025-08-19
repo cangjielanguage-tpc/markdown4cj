@@ -59,7 +59,7 @@ class MarkdownTableBlockComponent {
         // 设置元素内容的对齐方式
         .align(Alignment.Start)
         // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
+//        .direction(Direction.Ltr)
         // 设置外边距属性
         .margin(top: marginTop, bottom: marginBottom)
         // 设置组件自身的宽度
@@ -151,7 +151,7 @@ class MarkdownTableBlockComponent {
                                 // 设置图片的缩放类型
                                 .objectFit(ImageFit.Contain)
                                 // 设置约束尺寸
-                                .constraintSize(maxWidth: Length(100, unitType: LengthType.percent))
+                                .constraintSize(maxWidth: 100.percent)
                                 // 点击动作触发该方法调用
                                 .onClick {evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px, markdownConfiguration.latexImageCallback)}
                         }
@@ -223,7 +223,7 @@ class MarkdownTableBlockComponent {
         // 设置组件的背景色
         .backgroundColor(renderTableCellColor((tableCell.node as TableCell)(), markdownConfiguration.tableTheme, idRow))
         // 统一边框样式设置接口
-        .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0), color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
+        .border(width: (markdownConfiguration.tableTheme.tableBorderWidth / 2.0), color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
         // 组件卸载消失时触发此回调
         .onDisAppear({=>
             threadFutureCancel(futs)
@@ -270,7 +270,7 @@ class MarkdownTableBlockComponent {
             )
         }
         // 统一边框样式设置接口
-        .border(width: Length(markdownConfiguration.tableTheme.tableBorderWidth / 2.0), color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
+        .border(width: (markdownConfiguration.tableTheme.tableBorderWidth / 2.0), color: markdownConfiguration.tableTheme.tableBorderColor, style: BorderStyle.Solid)
     }
 
     /**
@@ -286,7 +286,7 @@ class MarkdownTableBlockComponent {
         }
         let fut = MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration.markdownTheme.resPath,
             markdownConfiguration, componentWidth, callback)
-        futs.append(fut)
+        futs.add(fut)
         return idx
     }
 }

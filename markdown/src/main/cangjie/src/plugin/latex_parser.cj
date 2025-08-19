@@ -25,12 +25,12 @@ class LatexBlockParser <: AbstractBlockParser {
 
     public func addLine(line: String): Unit {
         if (builder.size > 0) {
-            builder.append(UInt8(UInt32(r'\n')))
+            builder.add(UInt8(UInt32(r'\n')))
         }
-        builder.appendAll(line)
+        builder.add(all: line)
         if (isLatexEnd(line)) {
-            builder.remove(builder.size - 1)
-            builder.remove(builder.size - 1)
+            builder.remove(at: builder.size - 1)
+            builder.remove(at: builder.size - 1)
             block.isClosed = true
         }
     }

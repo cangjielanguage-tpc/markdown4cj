@@ -205,7 +205,7 @@ func latexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): ColorForm
 func isLatexImagePixelMap(imageData: ImageData, listPixelMap: ArrayList<?PixelMap>): Bool {
     if (imageData.pixelMap.isSome() && imageData.height.isSome() && imageData.width.isSome() &&
         imageData.arrayUint8.isSome()) {
-        listPixelMap.append(imageData.pixelMap)
+        listPixelMap.add(imageData.pixelMap)
         return true
     }
     return false
