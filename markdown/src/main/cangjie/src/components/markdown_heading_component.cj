@@ -52,12 +52,18 @@ class MarkdownHeadingComponent {
     /**
      * 控件宽度 - 单位px
      */
+    @Prop
     var componentWidth: Float64
 
     /**
      * 脚注点击事件
      */
     var fontCallback: (String) -> Unit
+
+    /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
 
     /**
      * 是否全量加载 - true：全量加载，fasle：增量加载
@@ -78,13 +84,38 @@ class MarkdownHeadingComponent {
     /**
      * 块引用背景颜色
      */
-    var blockQuoteBackGroupClor: Option<Color> = Option<Color>.None
+    var blockQuoteBackGroupColor: Option<Color> = Option<Color>.None
+
+    /**
+     * 图片上边距
+     */
+    var imageMarginTop: Float64 = 0.0
+
+    /**
+     * 图片下边距
+     */
+    var imageMarginBottom: Float64 = 0.0
+
+    /**
+     * 是否列表中的标题
+     */
+    var isListTo: Bool = false
+
+    /**
+     * 是否只有一条链接数据
+     */
+    var isOneLink: Bool = false
 
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeViews, level)
         // 缓存当前控件
         headingComponents.add(this)
+        if(nodeViewList.size==1 && nodeViewList[0].node is CommonmarkLink){
+            isOneLink = true
+        }else{
+            isOneLink = false
+        }
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -115,10 +146,8 @@ class MarkdownHeadingComponent {
         }
         // 设置元素内容的对齐方式
         .align(Alignment.Start)
-        // 设置元素水平方向的布局
-//        .direction(Direction.Ltr)
         // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
+        .margin(top: isMarginTop(), bottom: isMarginBottom())
         // 设置组件自身的宽度
         .width(100.percent)
     }
@@ -134,43 +163,75 @@ class MarkdownHeadingComponent {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        headingTextComponent(item, markdownConfiguration, level, fontCallback)
+                        headingTextComponent(
+                            item,
+                            markdownConfiguration,
+                            level
+                        )
                     } else if (item.node is Footnote) {
                         // 脚注
-                        headingFootnoteComponent(item, markdownConfiguration, level, fontCallback)
+                        headingFootnoteComponent(
+                            item,
+                            markdownConfiguration,
+                            level,
+                            fontCallback
+                        )
                     } else if (item.node is Code) {
                         // 内联代码
-                        headingCodeComponent(item, markdownConfiguration)
+                        if(markdownConfiguration.markdownTheme.isCodeStyle){
+                            MarkdownCodeLineImageSpanComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                strCode: (item.node as Code)().getLiteral(),
+                                strUrl: linkUrl(item)
+                            )
+                        }else{
+                            headingCodeComponent(
+                                item,
+                                markdownConfiguration
+                            )
+                        }
                     } else if (item.node is CommonmarkLink) {
                         // 链接
-                        if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
-                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
-                                if ((item.node
-                                    .getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
-                                    MarkdownLinkRectImageComponent(
-                                        markdownConfiguration: markdownConfiguration,
-                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
-                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownConfiguration.markdownTheme.linkRectImageBackGroupColor)
-                                    )
-                                } else {
-                                    MarkdownLinkCircleImageComponent(
-                                        markdownConfiguration: markdownConfiguration,
-                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
-                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownConfiguration.markdownTheme.linkCircleImageBackGroupColor)
-                                    )
-                                }
+                        if (isListTo && !markdownConfiguration.markdownTheme.isListLinkStyle && isOneLink) {
+                            if(getLinkString(item).isSome()){
+                                headingLinkComponent(
+                                    item,
+                                    getLinkString(item)(),
+                                    markdownConfiguration,
+                                    level
+                                )
+                            }else{
+                                Span("")
                             }
                         } else {
-                            if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
-                                MarkdownLinkRectToolImageComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
-                                    strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                    strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                    backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownConfiguration.markdownTheme.linkRectToolImageBackGroupColor)
-                                )
+                            if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
+                                    if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
+                                        MarkdownLinkRectImageComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectImageBackGroupColor)
+                                        )
+                                    } else {
+                                        MarkdownLinkCircleImageComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkCircleImageBackGroupColor)
+                                        )
+                                    }
+                                }
+                            } else {
+                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
+                                    MarkdownLinkRectToolImageComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
+                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectToolImageBackGroupColor)
+                                    )
+                                }
                             }
                         }
                     } else if (item.node is HardLineBreak) {
@@ -185,16 +246,16 @@ class MarkdownHeadingComponent {
                             markdownConfiguration: markdownConfiguration,
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
-                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupClor, markdownConfiguration.markdownTheme.latexMathBackGroupColor)
+                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.latexMathBackGroupColor)
                         )
                     } else if (item.node is ImageHtmlNode) {
                         // HTML图片
                         MarkdownHtmlImageSpanComponent(
-                            markdownConfiguration: markdownConfiguration,
                             destination: (item.node as ImageHtmlNode)().getDestination(),
                             imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
                             imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-                                componentWidth:componentWidth
+                            componentWidth:componentWidth,
+                            imageCallback: imageCallback
                         )
                     } else if (item.node is StyleImage) {
                         //  图片Style节点
@@ -203,29 +264,32 @@ class MarkdownHeadingComponent {
                                 markdownConfiguration: markdownConfiguration,
                                 destination: (item.node as StyleImage)().getDestination(),
                                 picStyle: (item.node as StyleImage)().styles,
-                                componentWidth:componentWidth
+                                componentWidth:componentWidth,
+                                imageCallback: imageCallback
                             )
                         }else{
                             MarkdownImageStyleSpanComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 destination: (item.node as StyleImage)().getDestination(),
                                 picStyle: (item.node as StyleImage)().styles,
-                                componentWidth:componentWidth
+                                componentWidth:componentWidth,
+                                imageCallback: imageCallback
                             )
                         }
                     } else if (item.node is CommonmarkImage) {
-                        // 图片节点
                         if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
                             MarkdownImageSpanRawFileComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 destination: (item.node as CommonmarkImage)().getDestination(),
-                                componentWidth:componentWidth
+                                componentWidth:componentWidth,
+                                imageCallback: imageCallback
                             )
                         }else{
+                            // 图片节点
                             MarkdownImageSpanComponent(
-                                markdownConfiguration: markdownConfiguration,
                                 destination: (item.node as CommonmarkImage)().getDestination(),
-                                componentWidth:componentWidth
+                                componentWidth: componentWidth,
+                                imageCallback: imageCallback
                             )
                         }
                     } else {
@@ -243,15 +307,31 @@ class MarkdownHeadingComponent {
         .lineHeight(tableLineHeight())
     }
 
+    func isMarginTop():Float64{
+        if(nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
+            return 0.0
+        }else{
+            return marginTop
+        }
+    }
+
+    func isMarginBottom():Float64{
+        if(nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
+            return 0.0
+        }else{
+            return marginBottom
+        }
+    }
+
     func tableLineHeight(): Float64 {
         return match (level) {
-            case 1 => markdownConfiguration.markdownTheme.headingTextLineheight1
-            case 2 => markdownConfiguration.markdownTheme.headingTextLineheight2
-            case 3 => markdownConfiguration.markdownTheme.headingTextLineheight3
-            case 4 => markdownConfiguration.markdownTheme.headingTextLineheight4
-            case 5 => markdownConfiguration.markdownTheme.headingTextLineheight5
-            case 6 => markdownConfiguration.markdownTheme.headingTextLineheight6
-            case _ => markdownConfiguration.markdownTheme.headingTextLineheight6
+            case 1 => markdownConfiguration.markdownTheme.headingTextLineHeight1
+            case 2 => markdownConfiguration.markdownTheme.headingTextLineHeight2
+            case 3 => markdownConfiguration.markdownTheme.headingTextLineHeight3
+            case 4 => markdownConfiguration.markdownTheme.headingTextLineHeight4
+            case 5 => markdownConfiguration.markdownTheme.headingTextLineHeight5
+            case 6 => markdownConfiguration.markdownTheme.headingTextLineHeight6
+            case _ => markdownConfiguration.markdownTheme.headingTextLineHeight6
         }
     }
 

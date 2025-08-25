@@ -69,6 +69,16 @@ public class MarkdownListComponent {
     let tocListOnClick: (Int64) -> Unit
 
     /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
+    /**
+     * 视频点击事件
+     */
+    var videoCallback: (String) -> Unit
+
+    /**
      * 缓存的数据
      */
     var markdownCacheConfiguration: MarkdownCacheConfiguration
@@ -76,8 +86,7 @@ public class MarkdownListComponent {
     /**
      * 懒加载数据源
      */
-    @State
-    var nodeViewDataSource: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+    var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
@@ -90,19 +99,18 @@ public class MarkdownListComponent {
         // 清除当前控件
         markdownCacheConfiguration
             .listComponents
-            .removeIf(
-                {
-                    predicate => if (predicate.indexList == indexList && predicate.size == size) {
-                        true
-                    } else {
-                        false
-                    }
-                })
+            .removeIf({
+                predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                    true
+                } else {
+                    false
+                }
+            })
     }
 
     func build() {
         List() {
-            ForEach(
+            LazyForEach(
                 nodeViewDataSource,
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => ListItem() {
@@ -124,12 +132,14 @@ public class MarkdownListComponent {
                             MarkdownListItemComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeViews: item.children,
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
+                                marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
+                                imageCallback: imageCallback,
+                                videoCallback: videoCallback,
                                 componentWidth: componentWidth,
-                                indexList:indexAdd(indexList, idx),
+                                indexList: indexAdd(indexList, idx),
                                 isFull: isFull,
                                 markdownCacheConfiguration: markdownCacheConfiguration
                             )
@@ -159,11 +169,11 @@ public class MarkdownListComponent {
      */
     public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
         let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
-        let dataSourceSize: Int64 = nodeViewDataSource.size // 页面缓存的数据长度
+        let dataSourceSize: Int64 = nodeViewDataSource.totalCount() // 页面缓存的数据长度
         if (isFull) {
             // 全量加载
             nodeViewDataSource.clear()
-            nodeViewDataSource.appendAll(refreshNodeViews)
+            nodeViewDataSource.addDatas(refreshNodeViews)
         } else {
             // 增量加载
             if (refreshNodeViewSize == 0) {
@@ -173,30 +183,30 @@ public class MarkdownListComponent {
                 // 刷新数据的长度大于页面数据长度，需要添加数据
                 if (dataSourceSize != 0) {
                     // 更新页面最后一条数据
-                    nodeViewDataSource[dataSourceSize - 1] = refreshNodeViews[dataSourceSize - 1]
+                    nodeViewDataSource.replaceData(dataSourceSize - 1, refreshNodeViews[dataSourceSize - 1])
                 }
                 // 循环添加所有新增数据
                 for (i in refreshNodeViewSize - dataSourceSize..0 : -1) {
-                    nodeViewDataSource.append(refreshNodeViews[refreshNodeViewSize - i])
+                    nodeViewDataSource.addData(refreshNodeViews[refreshNodeViewSize - i])
                 }
             } else if (refreshNodeViewSize == dataSourceSize) {
                 // 刷新数据的长度等于页面数据长度，需要更新当前数据
                 let indexItem: Int64 = dataSourceSize - 1
                 for (data in markdownCacheConfiguration.listItemComponents) {
-                    if(isListItem(indexList,data.indexList,indexItem)){
+                    if (isListItem(indexList, data.indexList, indexItem)) {
                         data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
                     }
                 }
             } else {
                 // 刷新数据小于页面数据长度，需要删除数据
                 // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
-                nodeViewDataSource[refreshNodeViewSize - 1] = refreshNodeViews[refreshNodeViewSize - 1]
+                nodeViewDataSource.replaceData(refreshNodeViewSize - 1, refreshNodeViews[refreshNodeViewSize - 1])
                 // 循环删除所有多余数据
                 for (i in dataSourceSize - refreshNodeViewSize..0 : -1) {
-                    nodeViewDataSource.remove(dataSourceSize - i)
+                    nodeViewDataSource.deleteData(dataSourceSize - i)
                 }
             }
         }
-        size = nodeViewDataSource.size // 更新列表长度
+        size = nodeViewDataSource.totalCount() // 更新列表长度
     }
 }

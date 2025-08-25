@@ -4,6 +4,10 @@
 package markdown.plugin
 
 public class BlockAudioPlugin <: AbstractMarkdownPlugin {
+    public static func create(): BlockAudioPlugin {
+        return BlockAudioPlugin()
+    }
+
     public func getClassType(): String {
         "BlockAudioPlugin"
     }
@@ -29,8 +33,14 @@ func isAudio(destination: String): Bool {
 }
 
 class BlockAudioVisitor <: AbstractVisitor {
-    public func visit(paragraph: Paragraph): Unit {
-        var p = paragraph
+    public func visit(p: Heading): Unit {
+        visit(p, {=> Heading()})
+    }
+    public func visit(p: Paragraph): Unit {
+        visit(p, {=> Paragraph()})
+    }
+    public func visit(blockNode: Node, newBlock: () -> Node): Unit {
+        var p = blockNode
         var current: ?Node = p.getFirstChild()
         while (let Some(n) <- current) {
             current = n.getNext()
@@ -44,7 +54,7 @@ class BlockAudioVisitor <: AbstractVisitor {
                     p.insertAfter(block)
                     // 分割后续paragraph.children
                     if (let Some(c) <- current) {
-                        let newp = Paragraph()
+                        let newp = newBlock()
                         var n1: ?Node = current
                         while (let Some(n11) <- n1) {
                             n1 = n11.getNext()

@@ -9,10 +9,10 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 网络图片、沙盒图片
+ * 单独block图片
  */
 @Component
-public class MarkdownImageStyleSpanComponent {
+public class MarkdownImageStyleComponent {
     /**
      * markdown配置
      */
@@ -63,7 +63,7 @@ public class MarkdownImageStyleSpanComponent {
     var imageCallback: (String) -> Unit
 
     func build() {
-        ImageSpan(destination)
+        Image(destination)
             // 设置组件自身的宽度
             .width(width.px)
             // 设置组件自身的高度

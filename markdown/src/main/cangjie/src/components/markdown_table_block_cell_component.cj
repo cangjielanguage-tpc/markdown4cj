@@ -84,6 +84,11 @@ class MarkdownTableBlockCellComponent {
     var fontCallback: (String) -> Unit
 
     /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     @State
@@ -136,20 +141,41 @@ class MarkdownTableBlockCellComponent {
     }
 
     func build() {
-        Column(){
+        Column() {
             Text() {
                 ForEach(
                     nodeViewList,
                     itemGeneratorFunc: {
                         item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                             // 文本
-                            tableComponentText(item, isHeader, markdownConfiguration, fontCallback)
+                            tableComponentText(
+                                item,
+                                isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
+                                markdownConfiguration
+                            )
                         } else if (item.node is Footnote) {
                             // 脚注
-                            tableComponentFootnote(item, isHeader, markdownConfiguration, fontCallback)
+                            tableComponentFootnote(
+                                item,
+                                isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
+                                markdownConfiguration,
+                                fontCallback
+                            )
                         } else if (item.node is Code) {
                             // 内联代码
-                            tableComponentCode(item, isHeader, markdownConfiguration)
+                            if (markdownConfiguration.markdownTheme.isCodeStyle) {
+                                MarkdownCodeLineImageSpanComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    strCode: (item.node as Code)().getLiteral(),
+                                    strUrl: linkUrl(item)
+                                )
+                            } else {
+                                tableComponentCode(
+                                    item,
+                                    isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
+                                    markdownConfiguration
+                                )
+                            }
                         } else if (item.node is HardLineBreak) {
                             // 硬换行
                             Span("\n")
@@ -207,7 +233,7 @@ class MarkdownTableBlockCellComponent {
                 )
             }
             // 设置行高
-            .lineHeight(markdownConfiguration.markdownTheme.tableTextLineheight)
+            .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
         }
         // 设置 Column 子组件在水平方向上的对齐格式
         .alignItems(renderTableCellColumnAlign(alignment))
@@ -234,17 +260,7 @@ class MarkdownTableBlockCellComponent {
                 if (old.width == new.width) {
                     return
                 }
-                let oldWidth: Float64 = px2vp(old.width.px)().value
-                let newWidth: Float64 = if (DeviceInfo.majorVersion <= 5 && DeviceInfo.seniorVersion <= 0 && DeviceInfo.featureVersion <= 0 && DeviceInfo.buildVersion <= 103 ) {
-                    new.width
-                } else {
-                    px2vp(new.width.px)().value
-                }
-                let max: Float64 = if (newWidth > oldWidth) {
-                    newWidth
-                } else {
-                    oldWidth
-                }
+                let newWidth: Float64 = new.width
                 if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
                     if (v.index == idxItem && newWidth > v.minWidth) {
                         cellWidthArrayIndexed[idxItem] = CellWidthArrayIndexedClass(minWidth: newWidth, index: idxItem)

@@ -12,7 +12,7 @@ import ohos.state_macro_manage.*
  * 本地图片 - rawfile路径下图片
  */
 @Component
-public class MarkdownImageStyleSpanRawFileComponent {
+public class MarkdownImageStyleRawFileComponent {
     /**
      * markdown配置
      */
@@ -79,7 +79,7 @@ public class MarkdownImageStyleSpanRawFileComponent {
 
     func build() {
         if (imagePixelMap.isSome() && imageHeight.isSome() && imageWidth.isSome()) {
-            ImageSpan(imagePixelMap())
+            Image(imagePixelMap())
                 // 设置组件自身的宽度
                 .width(imageWidth().px)
                 // 设置组件自身的高度

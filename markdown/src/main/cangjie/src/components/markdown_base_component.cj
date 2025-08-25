@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
  */
 package markdown.components
 
@@ -12,9 +12,38 @@ import ohos.state_macro_manage.*
  * 标题文本
  */
 @Builder
-func headingTextComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, level: Int64, fontCallback: (String) -> Unit) {
+func headingTextComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, level: Int64) {
     // 设置文本内容
     Span(spanText(nodeView))
+        // 设置文本的字体列表
+        .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
+        // 设置文本尺寸
+        .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
+        // 设置文本的字体粗细
+        .fontWeight(spanFontWeight(nodeView, true))
+        // 设置文本的字体样式
+        .fontStyle(spanFontStyle(nodeView))
+        // 设置文本颜色
+        .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+        // 设置文本字符间距
+        .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
+        // 设置文本装饰线样式及其颜色
+        .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
+        // 点击动作触发该方法调用
+        .onClick {
+            evt => if (nodeView.link.isSome()) {
+                linkOnClick(nodeView, markdownConfiguration.linkCallback)
+            }
+        }
+}
+
+/**
+ * 链接文本
+ */
+@Builder
+func headingLinkComponent(nodeView: NodeView, link:String, markdownConfiguration: MarkdownConfiguration, level: Int64) {
+    // 设置文本内容
+    Span(link)
         // 设置文本的字体列表
         .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
         // 设置文本尺寸
@@ -63,7 +92,7 @@ func headingCodeComponent(nodeView: NodeView, markdownConfiguration: MarkdownCon
 }
 
 /**
- * 标题脚注
+ * 标题脚注文本
  */
 @Builder
 func headingFootnoteComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, level: Int64, fontCallback: (String) -> Unit) {
@@ -95,7 +124,7 @@ func headingFootnoteComponent(nodeView: NodeView, markdownConfiguration: Markdow
  * 段落文本
  */
 @Builder
-func paragraphTextComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, fontCallback: (String) -> Unit) {
+func paragraphTextComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -121,7 +150,7 @@ func paragraphTextComponent(nodeView: NodeView, markdownConfiguration: MarkdownC
 }
 
 /**
- * 段落文本
+ * 段落Toc
  */
 @Builder
 func paragraphTocComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, tocListOnClick: (Int64) -> Unit) {
@@ -144,6 +173,35 @@ func paragraphTocComponent(nodeView: NodeView, markdownConfiguration: MarkdownCo
         // 点击动作触发该方法调用
         .onClick {
             evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)
+        }
+}
+
+/**
+ * 段落链接
+ */
+@Builder
+func paragraphLinkComponent(nodeView: NodeView, link:String, markdownConfiguration: MarkdownConfiguration) {
+    // 设置文本内容
+    Span(link)
+        // 设置文本的字体列表
+        .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
+        // 设置文本尺寸
+        .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+        // 设置文本的字体粗细
+        .fontWeight(spanFontWeight(nodeView, false))
+        // 设置文本的字体样式
+        .fontStyle(spanFontStyle(nodeView))
+        // 设置文本颜色
+        .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+        // 设置文本字符间距
+        .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
+        // 设置文本装饰线样式及其颜色
+        .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
+        // 点击动作触发该方法调用
+        .onClick {
+            evt => if (nodeView.link.isSome()) {
+                linkOnClick(nodeView, markdownConfiguration.linkCallback)
+            }
         }
 }
 
@@ -173,7 +231,7 @@ func paragraphCodeComponent(nodeView: NodeView, markdownConfiguration: MarkdownC
 }
 
 /**
- * 段落文本
+ * 段落脚注文本
  */
 @Builder
 func paragraphFootnoteComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, fontCallback: (String) -> Unit) {
@@ -205,7 +263,7 @@ func paragraphFootnoteComponent(nodeView: NodeView, markdownConfiguration: Markd
  * 表格文本
  */
 @Builder
-func tableComponentText(nodeView: NodeView, isHeader: Bool, markdownConfiguration: MarkdownConfiguration, fontCallback: (String) -> Unit) {
+func tableComponentText(nodeView: NodeView, isHeader: Bool, markdownConfiguration: MarkdownConfiguration) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -256,7 +314,7 @@ func tableComponentCode(nodeView: NodeView, isHeader: Bool, markdownConfiguratio
 }
 
 /**
- * 表格文本
+ * 表格脚注文本
  */
 @Builder
 func tableComponentFootnote(nodeView: NodeView, isHeader: Bool, markdownConfiguration: MarkdownConfiguration, fontCallback: (String) -> Unit) {
@@ -296,12 +354,14 @@ func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownConfigur
         // 设置文本尺寸
         .fontSize(listPrefixSize(markdownConfiguration.markdownTheme, isBullet))
         // 设置内边距属性
-        .padding(left: markdownConfiguration.markdownTheme.blockMargin, right: 8.0)
+        .padding(left: markdownConfiguration.markdownTheme.blockLeftMargin, right: markdownConfiguration.markdownTheme.blockRightMargin)
         // 设置行高
         .lineHeight(listPrefixLineHeight(isBullet, markdownConfiguration))
         // 设置文本段落在水平方向的对齐方式
         .textAlign(TextAlign.Center)
-        // 设置外边距属性
+        // 设置文本的字体粗细
+        .fontWeight(isFontWeight(markdownConfiguration.markdownTheme.orderedListItemPrefixBold))
+        // 块内容前的起始边距
         .margin(top: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins)
 }
 
@@ -322,77 +382,5 @@ func listPrefixCheckboxINCComponent(item: NodeView, markdownConfiguration: Markd
         // 切换CheckBox组件形状
         .shape(CheckBoxShape.ROUNDED_SQUARE)
         // 设置外边距属性
-        .margin(left: markdownConfiguration.markdownTheme.blockMargin, right: 10.0, top: markdownConfiguration.markdownTheme.taskListTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.taskListTopAndBottomMargins)
-}
-
-/**
- * 普通图片
- */
-@Builder
-func imageSpanComponent(destination: String, markdownConfiguration: MarkdownConfiguration) {
-    ImageSpan(destination)
-        // 设置图片的缩放类型
-        .objectFit(ImageFit.Contain)
-        // 设置约束尺寸
-        .constraintSize(maxWidth: 100.percent)
-        // 点击动作触发该方法调用
-        .onClick {
-            evt => imageOnClick(destination, markdownConfiguration.imageCallback)
-        }
-}
-
-/**
- * HTML图片
- */
-@Builder
-func htmlImageSpanComponent(destination: String, imageHeight: ?Float64, imageWidth: ?Float64, markdownConfiguration: MarkdownConfiguration) {
-    if (imageHeight.isSome() && imageWidth.isSome()) {
-        ImageSpan(destination)
-            // 设置组件自身的高度
-            .height(imageHeight().px)
-            // 设置组件自身的宽度
-            .width(imageWidth())
-            // 设置图片的缩放类型
-            .objectFit(ImageFit.Contain)
-            // 设置约束尺寸
-            .constraintSize(maxWidth: 100.percent)
-            // 点击动作触发该方法调用
-            .onClick {
-                evt => imageOnClick(destination, markdownConfiguration.imageCallback)
-            }
-    } else if (imageHeight.isSome() && !imageWidth.isSome()) {
-        ImageSpan(destination)
-            // 设置组件自身的高度
-            .height(imageHeight().px)
-            // 设置图片的缩放类型
-            .objectFit(ImageFit.Contain)
-            // 设置约束尺寸
-            .constraintSize(maxWidth: 100.percent)
-            // 点击动作触发该方法调用
-            .onClick {
-                evt => imageOnClick(destination, markdownConfiguration.imageCallback)
-            }
-    } else if (!imageHeight.isSome() && imageWidth.isSome()) {
-        ImageSpan(destination)
-            // 设置组件自身的宽度
-            .width(imageWidth().px)
-            // 设置图片的缩放类型
-            .objectFit(ImageFit.Contain)
-            // 设置约束尺寸
-            .constraintSize(maxWidth: 100.percent)
-            // 点击动作触发该方法调用
-            .onClick {
-                evt => imageOnClick(destination, markdownConfiguration.imageCallback)
-            }
-    } else if (!imageHeight.isSome() && !imageWidth.isSome()) {
-        ImageSpan(destination)
-            // 设置图片的缩放类型
-            .objectFit(ImageFit.Contain)
-            // 设置约束尺寸
-            .constraintSize(maxWidth: 100.percent)
-            // 点击动作触发该方法调用
-            .onClick {
-                evt => imageOnClick(destination, markdownConfiguration.imageCallback)
-            }
-    }
+        .margin(left: markdownConfiguration.markdownTheme.blockLeftMargin, right: markdownConfiguration.markdownTheme.blockRightMargin, top: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins)
 }

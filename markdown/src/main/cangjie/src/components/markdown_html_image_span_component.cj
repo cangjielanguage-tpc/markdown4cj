@@ -14,11 +14,6 @@ import ohos.state_macro_manage.*
 @Component
 public class MarkdownHtmlImageSpanComponent {
     /**
-     * markdown配置
-     */
-    var markdownConfiguration: MarkdownConfiguration
-
-    /**
      * 图片内容
      */
     var destination: String
@@ -50,6 +45,11 @@ public class MarkdownHtmlImageSpanComponent {
     @State
     var height: Float64 = 0.0
 
+    /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
     func build() {
         ImageSpan(destination)
             // 设置组件自身的宽度
@@ -62,7 +62,7 @@ public class MarkdownHtmlImageSpanComponent {
             .constraintSize(maxWidth: 100.percent)
             // 点击动作触发该方法调用
             .onClick {
-                evt => imageOnClick(destination, markdownConfiguration.imageCallback)
+                evt => imageOnClick(destination, imageCallback)
             }
             // 图片成功加载时触发该回调，返回成功加载的图片尺寸
             .onComplete(

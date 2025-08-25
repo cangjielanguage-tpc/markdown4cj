@@ -33,7 +33,7 @@ class MarkdownFencedCodeBlockComponent {
      * 代码类型
      */
     @State
-    var info: Option<String> = Option<String>.None
+    var info: String = ""
 
     /**
      * 外边距 - 上面
@@ -99,7 +99,7 @@ class MarkdownFencedCodeBlockComponent {
                                 // 设置文本尺寸
                                 .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
                                 // 设置行高
-                                .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineheight)
+                                .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
                                 // 设置文本的最大行数
                                 .maxLines(1)
                                 // 设置文本超长时的显示方式
@@ -119,6 +119,8 @@ class MarkdownFencedCodeBlockComponent {
                 .borderStyle(BorderStyle.Solid)
                 // 设置边框的颜色
                 .borderColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                // 控件显示和隐藏
+                .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockLineNumberHide))
                 codeBlockComponent()
             }
         }
@@ -160,7 +162,7 @@ class MarkdownFencedCodeBlockComponent {
         // 设置内边距属性
         .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin)
         // 设置行高
-        .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineheight)
+        .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
     }
 
     /**
@@ -178,12 +180,10 @@ class MarkdownFencedCodeBlockComponent {
         .scrollBar(BarState.Off)
         // 设置元素内容的对齐方式
         .align(Alignment.Start)
-        // 设置元素水平方向的布局
-//        .direction(Direction.Ltr)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置内边距属性
-        .padding(bottom: 10)
+        .padding(bottom: 10, right: 50)
     }
 
     /**
@@ -194,13 +194,17 @@ class MarkdownFencedCodeBlockComponent {
         Row() {
             if (codeText.trimAscii().size > 0) {
                 // 设置图片的数据源
-                if (let Some(i) <- info) {
+                if (info != "") {
                     Row() {
-                        Text(i)
+                        Text(info)
                             // 设置字体颜色
-                            .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                            .fontColor(indentedCodeodeBlockTypeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
                             // 设置字体大小
                             .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                            // 设置文本的最大行数
+                            .maxLines(1)
+                            // 设置文本超长时的显示方式
+                            .textOverflow(TextOverflow.Ellipsis)
                             // 设置外边距
                             .margin(left: 8)
                     }
@@ -209,11 +213,23 @@ class MarkdownFencedCodeBlockComponent {
                     // 设置子组件在水平方向上的对齐格式
                     .justifyContent(FlexAlign.Start)
                 } else {
-                    Row()
-                        // 设置宽度
-                        .width(30.percent)
-                        // 设置子组件在水平方向上的对齐格式
-                        .justifyContent(FlexAlign.Start)
+                    Row() {
+                        Text(markdownConfiguration.markdownTheme.codeBlockTypeTextStr)
+                            // 设置字体颜色
+                            .fontColor(indentedCodeodeBlockTypeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                            // 设置字体大小
+                            .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                            // 设置文本的最大行数
+                            .maxLines(1)
+                            // 设置文本超长时的显示方式
+                            .textOverflow(TextOverflow.Ellipsis)
+                            // 设置外边距
+                            .margin(left: 8)
+                    }
+                    // 设置宽度
+                    .width(30.percent)
+                    // 设置子组件在水平方向上的对齐格式
+                    .justifyContent(FlexAlign.Start)
                 }
 
                 Row() {
@@ -231,15 +247,21 @@ class MarkdownFencedCodeBlockComponent {
                                 // 设置宽度
                                 .width(5)
 
-                            Text("复制代码")
-                                // 设置字体颜色
-                                .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                // 设置字体大小
-                                .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                                // 设置容器元素绘制区域内的子元素的对齐方式
-                                .align(Alignment.End)
-                                // 设置外边距
-                                .margin(right: 4)
+                            if(markdownConfiguration.markdownTheme.codeBlockIconTextHide){
+                                Text("复制代码")
+                                    // 设置字体颜色
+                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                                    // 设置字体大小
+                                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                                    // 设置容器元素绘制区域内的子元素的对齐方式
+                                    .align(Alignment.End)
+                                    // 设置文本的最大行数
+                                    .maxLines(1)
+                                    // 设置文本超长时的显示方式
+                                    .textOverflow(TextOverflow.Ellipsis)
+                                    // 设置外边距
+                                    .margin(right: 4)
+                            }
                         }
                         // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)
@@ -258,25 +280,31 @@ class MarkdownFencedCodeBlockComponent {
                                 .margin(left: 4)
                                 // 设置图片的缩放类型
                                 .objectFit(ImageFit.Contain)
-                                // 控制当前组件显示或隐藏
-                                .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
 
                             Row()
                                 // 设置宽度
                                 .width(5)
 
-                            Text("全屏代码")
-                                // 设置字体颜色
-                                .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                // 设置字体大小
-                                .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                                // 设置容器元素绘制区域内的子元素的对齐方式
-                                .align(Alignment.End)
-                                // 设置外边距
-                                .margin(right: 4)
+                            if(markdownConfiguration.markdownTheme.codeBlockIconTextHide){
+                                Text("全屏代码")
+                                    // 设置字体颜色
+                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                                    // 设置字体大小
+                                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                                    // 设置容器元素绘制区域内的子元素的对齐方式
+                                    .align(Alignment.End)
+                                    // 设置文本的最大行数
+                                    .maxLines(1)
+                                    // 设置文本超长时的显示方式
+                                    .textOverflow(TextOverflow.Ellipsis)
+                                    // 设置外边距
+                                    .margin(right: 4)
+                            }
                         }
                         // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)
+                        // 控制当前组件显示或隐藏
+                        .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
                         // 点击动作触发该方法调用
                         .onClick {
                             evt => codeFullScreenOnClick(codeText, info, markdownConfiguration.codeFullScreenCallback)
@@ -290,7 +318,7 @@ class MarkdownFencedCodeBlockComponent {
             }
         }
         // 设置外边距属性
-        .margin(top: 8, right: 8)
+        .margin(top: 8.0, right: 8.0, bottom: markdownConfiguration.markdownTheme.codeBlockTypeTextPadding)
         // 设置子组件在垂直方向上的对齐格式
         .alignItems(VerticalAlign.Center)
     }
@@ -302,7 +330,7 @@ class MarkdownFencedCodeBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(str: String, tp: Option<String>): Unit {
+    public func refreshData(str: String, tp: String): Unit {
         info = tp
         codeText = str
         lines = codeText.lines().count()
@@ -321,5 +349,45 @@ class MarkdownFencedCodeBlockComponent {
             }
         }
         stringToResList(str, info, markdownConfiguration.markdownTheme.prismTheme, callback)
+    }
+
+    /**
+     * 通过异步的方式将代码转换成带有颜色的列表 - 围栏代码、缩进代码
+     *
+     * @param code 传入代码内容
+     * @param info 传入代码类型
+     * @param prismTheme 传入的高亮样式
+     * @param callback PrismNodesParseRes列表回调接口
+     */
+    func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit> {
+        let fut: Future<Unit> = spawn {
+            var prismNodesParseResList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
+            try {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                var prism: Prism = Prism(GrammarLocatorGrammarUtils())
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                var psh: PrismSyntaxHighlight = PrismSyntaxHighlight.create(prism, prismTheme)
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                prismNodesParseResList = psh.highlight(info, code.trimEnd("\n"))
+            } catch (e: Exception) {
+                let prismNodesParseRes: PrismNodesParseRes = PrismNodesParseRes("", code, Option<String>.None, Option<Color>.None)
+                prismNodesParseResList.add(prismNodesParseRes)
+            } finally {
+                try {
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
+                    callback(prismNodesParseResList)
+                } catch (_) {
+                }
+            }
+        }
+        return fut
     }
 }

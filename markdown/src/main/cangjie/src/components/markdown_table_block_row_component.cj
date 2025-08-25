@@ -63,6 +63,11 @@ class MarkdownTableBlockRowComponent {
     var fontCallback: (String) -> Unit
 
     /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
+    /**
      * 懒加载数据源
      */
     @State
@@ -100,6 +105,7 @@ class MarkdownTableBlockRowComponent {
                             markdownConfiguration: markdownConfiguration,
                             nodeViews: item.children,
                             fontCallback: fontCallback,
+                            imageCallback: imageCallback,
                             isFull: isFull,
                             isHeader: (item.node as TableCell)().isHeader(),
                             alignment: (item.node as TableCell)().getAlignment(),

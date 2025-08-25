@@ -9,10 +9,10 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 本地图片 - rawfile路径下图片
+ * 单独block本地图片
  */
 @Component
-public class MarkdownImageStyleSpanRawFileComponent {
+public class MarkdownImageRawFileComponent {
     /**
      * markdown配置
      */
@@ -22,11 +22,6 @@ public class MarkdownImageStyleSpanRawFileComponent {
      * 图片链接
      */
     var destination: String
-
-    /**
-     * 图片样式
-     */
-    var picStyle: ArrayList<String>
 
     /**
      * 控件宽度 - 单位px
@@ -52,24 +47,12 @@ public class MarkdownImageStyleSpanRawFileComponent {
     var imagePixelMap: Option<PixelMap> = Option<PixelMap>.None
 
     /**
-     * 图片高度 - 单位px
-     */
-    @State
-    var radius: Length = 0.0.vp
-
-    /**
-     * 对齐方式
-     */
-    @State
-    var align: FlexAlign = FlexAlign.Start
-
-    /**
      * 图片点击事件
      */
     var imageCallback: (String) -> Unit
 
     protected override func aboutToAppear(): Unit {
-        localRowImageStyleToPixelMap()
+        localRowImageToPixelMap()
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -79,7 +62,7 @@ public class MarkdownImageStyleSpanRawFileComponent {
 
     func build() {
         if (imagePixelMap.isSome() && imageHeight.isSome() && imageWidth.isSome()) {
-            ImageSpan(imagePixelMap())
+            Image(imagePixelMap())
                 // 设置组件自身的宽度
                 .width(imageWidth().px)
                 // 设置组件自身的高度
@@ -98,7 +81,7 @@ public class MarkdownImageStyleSpanRawFileComponent {
     /**
      * 图片数据处理 - 本地rawfile图片
      */
-    func localRowImageStyleToPixelMap() {
+    func localRowImageToPixelMap() {
         let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
             pixelMap, width, height => launch {
                 this.imagePixelMap = pixelMap
@@ -106,13 +89,6 @@ public class MarkdownImageStyleSpanRawFileComponent {
                 this.imageHeight = height
             }
         }
-        let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentWidth)
-        if (picStyleObj.borderRadius.isSome()) {
-            radius = picStyleObj.borderRadius()
-        }
-        align = picStyleObj.align
-        let picStyleObjWidth: ?Float64 = length2Float64(picStyleObj.width, componentWidth)
-        let picStyleObjHeight: ?Float64 = length2Float64(picStyleObj.height, componentWidth)
-        let fut = rawfileToPixelmapStyle(destination, markdownConfiguration.markdownTheme.abilityContext, markdownConfiguration.markdownTheme.stageContext, componentWidth, picStyleObjWidth, picStyleObjHeight, callback)
+        let fut = rawfileToPixelmap(destination, markdownConfiguration.markdownTheme.abilityContext, markdownConfiguration.markdownTheme.stageContext, componentWidth, callback)
     }
 }
