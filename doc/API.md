@@ -16,10 +16,10 @@ public class MarkdownComponent {
     * 初始化Markdown自定义控件
     *
     * @param output 传入markdown文档内容
-    * @param isFull 是否全量加载模式 - true：全量加载，false：增量加载。默认全量加载
+    * @param isFull 是否全量加载模式 - true：全量加载，false：增量加载
     * @param markdownConfiguration 传入markdown配置选项
     */
-    MarkdownComponent(output: String, isFull!: Bool, markdownConfiguration!: MarkdownConfiguration)
+    MarkdownComponent(output: String, isFull: Bool, markdownConfiguration!: MarkdownConfiguration)
 }
 ```
 
