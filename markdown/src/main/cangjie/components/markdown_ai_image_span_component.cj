@@ -77,7 +77,7 @@ public class MarkdownAIImageSpanComponent {
                     // 设置组件自身的宽度
                     .width(100.percent)
                     // 设置组件自身的高度
-                    .height(componentWidth / (16.0 / 9.0))
+                    .height(px2vp(componentWidth.px).getOrThrow().value / (16.0 / 9.0))
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Cover)
             } else {
@@ -96,7 +96,7 @@ public class MarkdownAIImageSpanComponent {
                         imageError =>
                         isError = true
                         isCompleted = true
-                    }
+                    }componentWidth
                 )
         } else if (isCompleted && !isError) {
             ImageSpan(destination)
@@ -105,7 +105,7 @@ public class MarkdownAIImageSpanComponent {
                 // 设置组件自身的宽度
                 .width(100.percent)
                 // 设置组件自身的高度
-                .height(componentWidth / (16.0 / 9.0))
+                .height(px2vp(componentWidth.px).getOrThrow().value / (16.0 / 9.0))
                 // 设置图片的缩放类型
                 .objectFit(ImageFit.Cover)
                 // 点击动作触发该方法调用
