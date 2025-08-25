@@ -719,7 +719,7 @@ func styleImageRadius(borderRadius: ?Length): Length {
     if (borderRadius.isSome()) {
         return borderRadius()
     } else {
-        return Length(0, unitType: LengthType.px)
+        return 0.px
     }
 }
 
@@ -750,7 +750,7 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownAIConfiguration: Markdow
             if (style[..7] == ":width=") {
                 let value = style[7..]
                 if (value.size <= 1) {
-                    let picStyleObjWidth: Length = Length(Int64.parse(value), unitType: LengthType.vp)
+                    let picStyleObjWidth: Length = Int64.parse(value).vp
                     picStyleObj.width = if (picStyleObjWidth.value > componentWidth) {
                         componentWidth.vp
                     } else {
@@ -758,7 +758,7 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownAIConfiguration: Markdow
                     }
                 }
                 if (value[value.size - 2..] == "px") {
-                    let picStyleObjWidth: Length = Length(Int64.parse(value[..value.size - 2]), unitType: LengthType.px)
+                    let picStyleObjWidth: Length = Int64.parse(value[..value.size - 2]).px
                     let componentWidthLength: ?Length = vp2px(componentWidth.vp)
                     if (let Some(v) <- componentWidthLength) {
                         picStyleObj.width = if (picStyleObjWidth.value > v.value) {
@@ -772,10 +772,11 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownAIConfiguration: Markdow
                 } else if (value[value.size - 1..] == "%") {
                     let opt = Int64.parse(value[..value.size - 1])
                     if (opt <= 100) {
-                        picStyleObj.width = Length(opt, unitType: LengthType.percent)
+                        picStyleObj.width = opt.percent
+
                     }
                 } else {
-                    let picStyleObjWidth: Length = Length(Int64.parse(value), unitType: LengthType.vp)
+                    let picStyleObjWidth: Length = Int64.parse(value).vp
                     picStyleObj.width = if (picStyleObjWidth.value > componentWidth) {
                         componentWidth.vp
                     } else {
@@ -785,17 +786,17 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownAIConfiguration: Markdow
             } else if (style[..8] == ":height=") {
                 let value = style[8..]
                 if (value.size <= 1) {
-                    picStyleObj.height = Length(Int64.parse(value), unitType: LengthType.vp)
+                    picStyleObj.height = Int64.parse(value).vp
                 }
                 if (value[value.size - 2..] == "px") {
-                    picStyleObj.height = Length(Int64.parse(value[..value.size - 2]), unitType: LengthType.px)
+                    picStyleObj.height = Int64.parse(value[..value.size - 2]).px
                 } else if (value[value.size - 1..] == "%") {
                     let opt = Int64.parse(value[..value.size - 1])
                     if (opt <= 100) {
-                        picStyleObj.height = Length(opt, unitType: LengthType.percent)
+                        picStyleObj.height = opt.percent
                     }
                 } else {
-                    picStyleObj.height = Length(Int64.parse(value), unitType: LengthType.vp)
+                    picStyleObj.height = Int64.parse(value).vp
                 }
             } else if (style[..7] == ":align=") {
                 let value = style[7..]
@@ -807,10 +808,10 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownAIConfiguration: Markdow
                 }
             } else if (style.size > 15 && style[..15] == ":border-radius=") {
                 let value = style[15..style.size - 2]
-                picStyleObj.borderRadius = Length(Int64.parse(value), unitType: LengthType.px)
+                picStyleObj.borderRadius = Int64.parse(value).px
             } else if (style[..7] == ":style=") {
                 for (s in style[7..].split("")) {
-                    picStyle.append(":${s.replace(":","=")}")
+                    picStyle.add(":${s.replace(":","=")}")
                 }
             }
         } catch (e: Exception) {}
@@ -844,9 +845,9 @@ func tableList(nodeViews: ArrayList<NodeView>): ArrayList<NodeView> {
     let tableNodeViews = ArrayList<NodeView>()
     for (nodeView in nodeViews) {
         if (nodeView.node is TableBody || nodeView.node is TableHead) {
-            tableNodeViews.appendAll(nodeView.children)
+            tableNodeViews.add(all:nodeView.children)
         } else if (nodeView.node is TableRow) {
-            tableNodeViews.append(nodeView)
+            tableNodeViews.add(nodeView)
         }
     }
     return tableNodeViews
@@ -862,9 +863,9 @@ func tableList(nodeViews: ArrayList<NodeView>): ArrayList<NodeView> {
 func length2Float64(length: ?Length, componentWidth: Float64): ?Float64 {
     if (let Some(v) <- length) {
         return match (v.unitType) {
-            case LengthType.vp => vp2px(v)().value
-            case LengthType.px => v.value
-            case LengthType.percent => (v.value / 1.0) * componentWidth
+            case LengthType.vp(v) => vp2px(v)().value
+            case LengthType.px(v) => v.value
+            case LengthType.percent(v) => v.value* componentWidth
             case _ => v.value
         }
     } else {
@@ -896,8 +897,8 @@ func getProp<T>(item: NodeView, key: String, default: T): T {
  */
 func indexAdd(indexList: ArrayList<Int64>, index: Int64): ArrayList<Int64> {
     let indexListNew: ArrayList<Int64> = ArrayList<Int64>()
-    indexListNew.appendAll(indexList)
-    indexListNew.append(index)
+    indexListNew.add(all:indexList)
+    indexListNew.add(index)
     return indexListNew
 }
 
@@ -943,7 +944,7 @@ func urlSafeBase64Decode(v: String): String {
     var matchData: ?MatchData = matcher.find()
     match (matchData) {
         case Some(v) =>
-            var str: String = v.matchStr()
+            var str: String = v.matchString()
             var arrSplit: Array<String> = URL.parse(str).toString().split('.')
             if (arrSplit.size > 1) {
                 return arrSplit[arrSplit.size - 1].toAsciiUpper()

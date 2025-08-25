@@ -348,7 +348,7 @@ public class MarkdownAIComponent {
                             // 组件区域变化时触发该回调
                             .onAreaChange {
                                 oldValue, newValue => if (isFull) {
-                                    indexHashMap.put((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
+                                    indexHashMap.add((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
                                 }
                             }
                         } else {
@@ -444,7 +444,7 @@ public class MarkdownAIComponent {
             let nodeViewsSize: Int64 = nodeViews.size // 刷新进来的数据长度
             let nodeViewListSize: Int64 = nodeViewAIDataSource.totalCount() // 页面缓存的数据长度
             imageAndVideoList.clear()
-            imageAndVideoList.appendAll(getProp<ArrayList<String>>(doc, "links", ArrayList<String>()))
+            imageAndVideoList.add(all:getProp<ArrayList<String>>(doc, "links", ArrayList<String>()))
             if (isFull) {
                 // 全量加载
                 let syncCounter:SyncCounter = SyncCounter(1)
@@ -575,7 +575,7 @@ public class MarkdownAIComponent {
                 let paragraphNodeView: NodeView = buildView(paragraph, true)
                 let textNodeView: NodeView = buildView(commonmarkText, true)
                 let arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
-                arrayListNodeView.append(paragraphNodeView)
+                arrayListNodeView.add(paragraphNodeView)
                 let syncCounter:SyncCounter = SyncCounter(1)
                 launch {
                     nodeViewAIDataSource.clear()

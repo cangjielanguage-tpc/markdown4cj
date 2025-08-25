@@ -27,10 +27,6 @@ class MainAbility <: Ability {
 
     public override func onWindowStageCreate(windowStage: WindowStage): Unit {
         AppLog.info("MainAbility onWindowStageCreate.")
-        // 1.获取应用主窗口。
-        let windowClass = windowStage.getMainWindow()
-        windowClass.setWindowLayoutFullScreen(true)
-        windowClass.setWindowSystemBarProperties(SystemBarProperties(isStatusBarLightIcon: true, isNavigationBarLightIcon: true))
         windowStage.loadContent("IndexPage")
     }
 }

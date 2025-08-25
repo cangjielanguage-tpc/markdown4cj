@@ -5,6 +5,15 @@
   "main": "",
   "author": "cangjie-tpc",
   "license": "Apache-2.0",
+  "repository": "https://gitcode.com/Cangjie-TPC/markdown4cj.git",
+  "homepage": "https://gitcode.com/Cangjie-TPC",
+  "keywords": [
+    "Markdown",
+    "仓颉",
+    "OpenHarmony",
+    "HarmonyOS",
+    "Latex"
+  ],
   "dependencies": {
   }
 }

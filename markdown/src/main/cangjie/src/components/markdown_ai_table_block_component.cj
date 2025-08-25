@@ -90,7 +90,7 @@ class MarkdownAITableBlockComponent {
         // 初始化刷新数据
         refreshData(nodeViews)
         // 缓存当前控件
-        tableComponents.append(this)
+        tableComponents.add(this)
         var cellSize: Int64 = 0
         if (nodeViewAIDataSource.totalCount() > 0) {
             cellSize = nodeViewAIDataSource.getData(0).children.size
@@ -143,7 +143,7 @@ class MarkdownAITableBlockComponent {
             // 设置元素内容的对齐方式
             .align(Alignment.Start)
             // 设置元素水平方向的布局
-            .direction(Direction.Ltr)
+//            .direction(Direction.Ltr)
         }
         // 设置滚动方向
         .scrollable(ScrollDirection.Horizontal)

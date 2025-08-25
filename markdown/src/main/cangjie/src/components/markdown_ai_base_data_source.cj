@@ -135,7 +135,7 @@ public open class MarkdownAIBaseDataSource<T> <: IDataSource<T> {
      */
     public func addData(data: T): Unit {
         let index = totalCount()
-        data_.append(data)
+        data_.add(data)
         notifyDataAddChange(index)
     }
 
@@ -145,7 +145,7 @@ public open class MarkdownAIBaseDataSource<T> <: IDataSource<T> {
      * @param index 一条数据
      */
     public func deleteData(index: Int): Unit {
-        data_.remove(index)
+        data_.remove(at:index)
         notifyDataDeleteChange(index)
     }
 
@@ -155,7 +155,7 @@ public open class MarkdownAIBaseDataSource<T> <: IDataSource<T> {
      * @param index 一条数据
      */
     public func removeData(index: Int): Unit {
-        data_.remove(index)
+        data_.remove(at:index)
     }
 
     /**
@@ -165,7 +165,7 @@ public open class MarkdownAIBaseDataSource<T> <: IDataSource<T> {
      * @param data 一条数据
      */
     public func replaceData(index: Int, data: T): Unit {
-        data_.set(index, data)
+        data_[index] = data
         notifyDataChange(index)
     }
 
@@ -176,7 +176,7 @@ public open class MarkdownAIBaseDataSource<T> <: IDataSource<T> {
      * @param data 一条数据
      */
     public func update(index: Int, data: T): Unit {
-        data_.set(index, data)
+        data_[index] = data
     }
 
     /**

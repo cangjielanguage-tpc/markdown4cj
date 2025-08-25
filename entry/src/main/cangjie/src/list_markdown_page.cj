@@ -9,7 +9,6 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import ohos.concurrency.*
 import markdown.components.*
-import std.sync.sleep
 import std.time.*
 import ohos.hilog.Hilog
 

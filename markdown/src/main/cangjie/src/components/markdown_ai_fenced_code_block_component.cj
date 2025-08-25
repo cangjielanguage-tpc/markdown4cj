@@ -71,7 +71,7 @@ class MarkdownAIFencedCodeBlockComponent {
 
     protected override func aboutToAppear(): Unit {
         refreshData(codeText, info)
-        fencedCodeComponents.append(this)
+        fencedCodeComponents.add(this)
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -181,7 +181,7 @@ class MarkdownAIFencedCodeBlockComponent {
         // 设置元素内容的对齐方式
         .align(Alignment.Start)
         // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
+//        .direction(Direction.Ltr)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置内边距属性
@@ -326,7 +326,7 @@ class MarkdownAIFencedCodeBlockComponent {
     }
 
     func refreshLines(): Unit {
-        lineArray.set(Array<Int64>(lines, item: 0))
+        lineArray.set(Array<Int64>(lines, repeat: 0))
     }
 
     /**
@@ -336,7 +336,7 @@ class MarkdownAIFencedCodeBlockComponent {
         info = tp
         codeText = str
         lines = codeText.lines().count()
-        lineArray.set(Array<Int64>(lines, item: 0))
+        lineArray.set(Array<Int64>(lines, repeat: 0))
         stringCodeToResList(str)
     }
 
@@ -376,10 +376,10 @@ class MarkdownAIFencedCodeBlockComponent {
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                prismNodesParseResList = psh.highlight(info, code.trimRight("\n"))
+                prismNodesParseResList = psh.highlight(info, code.trimEnd("\n"))
             } catch (e: Exception) {
                 let prismNodesParseRes: PrismNodesParseRes = PrismNodesParseRes("", code, Option<String>.None, Option<Color>.None)
-                prismNodesParseResList.append(prismNodesParseRes)
+                prismNodesParseResList.add(prismNodesParseRes)
             } finally {
                 try {
                     if (Thread.currentThread.hasPendingCancellation) {

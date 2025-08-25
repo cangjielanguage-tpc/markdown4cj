@@ -79,7 +79,7 @@ public class MarkdownAIQuoteComponent {
         // 初始化刷新数据
         refreshData(nodeViews)
         // 缓存当前控件
-        markdownAICacheConfiguration.quoteComponents.append(this)
+        markdownAICacheConfiguration.quoteComponents.add(this)
     }
 
     protected override func aboutToDisappear(): Unit {

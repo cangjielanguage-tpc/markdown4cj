@@ -56,7 +56,7 @@ class MarkdownAICodeTextComponent {
 
     protected override func aboutToAppear(): Unit {
         refreshData(codeText, info)
-        aiCodeTextComponents.append(this)
+        aiCodeTextComponents.add(this)
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -155,10 +155,10 @@ class MarkdownAICodeTextComponent {
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                prismNodesParseResList = psh.highlight(info, code.trimRight("\n"))
+                prismNodesParseResList = psh.highlight(info, code.trimEnd("\n"))
             } catch (e: Exception) {
                 let prismNodesParseRes: PrismNodesParseRes = PrismNodesParseRes("", code, Option<String>.None, Option<Color>.None)
-                prismNodesParseResList.append(prismNodesParseRes)
+                prismNodesParseResList.add(prismNodesParseRes)
             } finally {
                 try {
                     if (Thread.currentThread.hasPendingCancellation) {

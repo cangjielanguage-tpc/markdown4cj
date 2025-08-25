@@ -429,12 +429,12 @@ public class MarkdownAITheme {
     /**
      * 代码块代码全屏按钮默认图标
      */
-    protected var codeFullScreenIcon: ?CJResource = None
+    protected var codeFullScreenIcon: ?AppResource = None
 
     /**
      * 代码块代码复制按钮默认图标
      */
-    protected var codeCopyIcon: ?CJResource = None
+    protected var codeCopyIcon: ?AppResource = None
 
     /**
      * 组合代码未选中标题字体大小
@@ -624,7 +624,7 @@ public class MarkdownAITheme {
     /**
      * 音频图标
      */
-    protected var audioIcon: ?CJResource = None
+    protected var audioIcon: ?AppResource = None
 
     /**
      * 音频阴影颜色值
@@ -714,12 +714,12 @@ public class MarkdownAITheme {
     /**
      * 视频默认占位图
      */
-    protected var videoImage: ?CJResource = None
+    protected var videoImage: ?AppResource = None
 
     /**
      * 视频播放按钮默认图标
      */
-    protected var playCircleFillIcon: ?CJResource = None
+    protected var playCircleFillIcon: ?AppResource = None
 
     /**
      * 视频圆角
@@ -759,7 +759,7 @@ public class MarkdownAITheme {
     /**
      * 图片banner默认占位图
      */
-    protected var bannerImage: ?CJResource = None
+    protected var bannerImage: ?AppResource = None
 
     /**
      * 图片文字是否需要图文混排
@@ -767,9 +767,9 @@ public class MarkdownAITheme {
     protected var isWord: Bool = true
 
     /**
-     * 图片默认占位图 - CJResource
+     * 图片默认占位图 - AppResource
      */
-    protected var imageResource: ?CJResource = None
+    protected var imageResource: ?AppResource = None
 
     /**
      * 图片默认占位图 - String
@@ -1665,12 +1665,12 @@ public class MarkdownAIThemeBuilder {
     /**
      * 代码块代码全屏按钮默认图标
      */
-    protected var codeFullScreenIcon: ?CJResource = None
+    protected var codeFullScreenIcon: ?AppResource = None
 
     /**
      * 代码块代码复制按钮默认图标
      */
-    protected var codeCopyIcon: ?CJResource = None
+    protected var codeCopyIcon: ?AppResource = None
 
     /**
      * 组合代码未选中标题字体大小
@@ -1860,7 +1860,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 音频图标
      */
-    protected var audioIcon: ?CJResource = None
+    protected var audioIcon: ?AppResource = None
 
     /**
      * 音频阴影颜色值
@@ -1950,12 +1950,12 @@ public class MarkdownAIThemeBuilder {
     /**
      * 视频默认占位图
      */
-    protected var videoImage: ?CJResource = None
+    protected var videoImage: ?AppResource = None
 
     /**
      * 视频播放按钮默认图标
      */
-    protected var playCircleFillIcon: ?CJResource = None
+    protected var playCircleFillIcon: ?AppResource = None
 
     /**
      * 视频圆角
@@ -1995,7 +1995,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 图片banner默认占位图
      */
-    protected var bannerImage: ?CJResource = None
+    protected var bannerImage: ?AppResource = None
 
     /**
      * 图片文字是否需要图文混排
@@ -2003,9 +2003,9 @@ public class MarkdownAIThemeBuilder {
     protected var isWord: Bool = true
 
     /**
-     * 图片默认占位图 - CJResource
+     * 图片默认占位图 - AppResource
      */
-    protected var imageResource: ?CJResource = None
+    protected var imageResource: ?AppResource = None
 
     /**
      * 图片默认占位图 - String
@@ -3317,7 +3317,7 @@ public class MarkdownAIThemeBuilder {
      * @param codeFullScreenIcon 代码块代码全屏按钮默认图标 - 默认None
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setCodeFullScreenIcon(codeFullScreenIcon: CJResource): MarkdownAIThemeBuilder {
+    public func setCodeFullScreenIcon(codeFullScreenIcon: AppResource): MarkdownAIThemeBuilder {
         this.codeFullScreenIcon = codeFullScreenIcon
         return this
     }
@@ -3328,7 +3328,7 @@ public class MarkdownAIThemeBuilder {
      * @param codeCopyIcon 代码块代码复制按钮默认图标 - 默认None
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setCodeCopyIcon(codeCopyIcon: CJResource): MarkdownAIThemeBuilder {
+    public func setCodeCopyIcon(codeCopyIcon: AppResource): MarkdownAIThemeBuilder {
         this.codeCopyIcon = codeCopyIcon
         return this
     }
@@ -3746,7 +3746,7 @@ public class MarkdownAIThemeBuilder {
      * @param audioIcon 音频图标 - 默认None
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setAudioIcon(audioIcon: CJResource): MarkdownAIThemeBuilder {
+    public func setAudioIcon(audioIcon: AppResource): MarkdownAIThemeBuilder {
         this.audioIcon = audioIcon
         return this
     }
@@ -3944,7 +3944,7 @@ public class MarkdownAIThemeBuilder {
      * @param videoImage 视频默认占位图 - 默认None
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setVideoImage(videoImage: CJResource): MarkdownAIThemeBuilder {
+    public func setVideoImage(videoImage: AppResource): MarkdownAIThemeBuilder {
         this.videoImage = videoImage
         return this
     }
@@ -3955,7 +3955,7 @@ public class MarkdownAIThemeBuilder {
      * @param playCircleFillIcon 视频播放按钮默认图标 - 默认None
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setPlayCircleFillIcon(playCircleFillIcon: CJResource): MarkdownAIThemeBuilder {
+    public func setPlayCircleFillIcon(playCircleFillIcon: AppResource): MarkdownAIThemeBuilder {
         this.playCircleFillIcon = playCircleFillIcon
         return this
     }
@@ -4043,7 +4043,7 @@ public class MarkdownAIThemeBuilder {
      * @param bannerImage 图片banner占位图 - 默认None
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setBannerImage(bannerImage: CJResource): MarkdownAIThemeBuilder {
+    public func setBannerImage(bannerImage: AppResource): MarkdownAIThemeBuilder {
         this.bannerImage = bannerImage
         return this
     }
@@ -4060,12 +4060,12 @@ public class MarkdownAIThemeBuilder {
     }
 
     /**
-     * 设置图片默认占位图 - CJResource
+     * 设置图片默认占位图 - AppResource
      *
-     * @param imageResource 图片默认占位图 - CJResource - 默认None
+     * @param imageResource 图片默认占位图 - AppResource - 默认None
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
-    public func setImageResource(imageResource: CJResource): MarkdownAIThemeBuilder {
+    public func setImageResource(imageResource: AppResource): MarkdownAIThemeBuilder {
         this.imageResource = imageResource
         return this
     }

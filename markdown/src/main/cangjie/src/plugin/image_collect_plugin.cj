@@ -22,14 +22,14 @@ public class ImageCollectPlugin <: AbstractMarkdownPlugin {
         }()
         let visitor = ImageCollectVisitor()
         doc.accept(visitor)
-        props.put("links", visitor.links)
+        props.add("links", visitor.links)
     }
 }
 
 class ImageCollectVisitor <: AbstractVisitor {
     let links = ArrayList<String>()
     public func visit(n: Image): Unit {
-        links.append(n.getDestination())
+        links.add(n.getDestination())
     }
     public func visit(b: CustomBlock): Unit {
         if (b is BlockAudio) {

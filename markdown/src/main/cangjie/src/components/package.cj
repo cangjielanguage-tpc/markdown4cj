@@ -4,16 +4,17 @@
 package markdown.components
 
 // 标准库
-internal import std.collection.*
+internal import std.collection.ArrayList
+internal import std.collection.HashMap
 internal import std.convert.*
 internal import std.regex.*
 internal import std.sync.*
 internal import std.time.*
 internal import std.io.*
-internal import net.http.*
-internal import net.tls.*
-internal import encoding.base64.*
-internal import encoding.url.*
+internal import stdx.net.http.*
+internal import stdx.net.tls.*
+internal import stdx.encoding.base64.*
+internal import stdx.encoding.url.*
 
 // 内部其他包
 internal import markdown.core.*
@@ -76,6 +77,7 @@ internal import formula.*
 
 // 系统UI
 internal import ohos.device_info.*
+internal import kit.LocalizationKit.*
 internal import ohos.image.PixelMap
 internal import ohos.image.InitializationOptions
 internal import ohos.image.PixelMapFormat

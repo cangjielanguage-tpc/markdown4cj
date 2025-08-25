@@ -59,7 +59,7 @@ public func drawCircleImageButton(str: String, fontSize: Float64, fontColor: UIn
         }
         var data: UInt8Data = drawCircleImage(cstr, fontSizeFloat32, fontColor, fontBackGroupColor, backGroupColor,
             textHeightFloat32, format)
-        var arr = Array<UInt8>(data.len, item: 0)
+        var arr = Array<UInt8>(data.len, repeat: 0)
         for (i in 0..data.len) {
             arr[i] = data.data.read(i)
         }
@@ -102,7 +102,7 @@ public func drawRectImageButton(str: String, fontSize: Float64, fontColor: UInt3
         }
         var data: UInt8Data = drawRectImage(cstr, fontSizeFloat32, fontColor, fontBackGroupColor, backGroupColor,
             textHeightFloat32, format, paddingFloat32, radiusFloat32)
-        var arr = Array<UInt8>(data.len, item: 0)
+        var arr = Array<UInt8>(data.len, repeat: 0)
         for (i in 0..data.len) {
             arr[i] = data.data.read(i)
         }
@@ -160,7 +160,7 @@ public func drawRectToolImageButton(str1: String, str2: String, fontSize: Float6
         var data: UInt8Data = drawRectToolImage(cstr1, cstr2, fontSizeFloat32, fontColor, fontBackGroupColor,
             backGroupColor, borderColor, borderWidthFloat32, dividingLineColor, dividingLineWidthFloat32,
             textHeightFloat32, format, paddingFloat32, lineLeftPaddingFloat32, lineRightPaddingFloat32)
-        var arr = Array<UInt8>(data.len, item: 0)
+        var arr = Array<UInt8>(data.len, repeat: 0)
         for (i in 0..data.len) {
             arr[i] = data.data.read(i)
         }

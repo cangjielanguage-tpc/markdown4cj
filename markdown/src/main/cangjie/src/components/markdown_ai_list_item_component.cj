@@ -82,7 +82,7 @@ class MarkdownAIListItemComponent {
         // 初始化刷新数据
         refreshData(nodeViews)
         // 缓存当前控件
-        markdownAICacheConfiguration.listItemComponents.append(this)
+        markdownAICacheConfiguration.listItemComponents.add(this)
     }
 
     protected override func aboutToDisappear(): Unit {

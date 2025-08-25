@@ -13,11 +13,6 @@ import markdown.components.*
 @Builder
 func titleComponent(title: String, isBack: Bool) {
     Column() {
-        Text("")
-            // 高度
-            .height(50)
-            // 宽度
-            .width(100.percent)
         Row() {
             if (isBack) {
                 Image(@r(app.media.return_icon))

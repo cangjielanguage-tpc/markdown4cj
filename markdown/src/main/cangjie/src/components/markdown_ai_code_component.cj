@@ -78,7 +78,7 @@ class MarkdownAICodeComponent {
 
     protected override func aboutToAppear(): Unit {
         refreshData(codeText, info)
-        aiCodeComponents.append(this)
+        aiCodeComponents.add(this)
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -100,7 +100,7 @@ class MarkdownAICodeComponent {
         this.info = info
         let arr = ArrayList<String>()
         codeText.lines().forEach({
-            s => arr.append(s)
+            s => arr.add(s)
         })
         let refreshNodeViewSize = arr.size // 刷新进来的数据长度
         let dataSourceSize = lineStrArray.totalCount() // 页面缓存的数据长度
@@ -246,7 +246,7 @@ class MarkdownAICodeComponent {
                 // 设置元素内容的对齐方式
                 .align(Alignment.Start)
                 // 设置元素水平方向的布局
-                .direction(Direction.Ltr)
+//                .direction(Direction.Ltr)
                 // 设置组件自身的宽度
                 .width(100.percent)
                 // 设置组件自身的宽度

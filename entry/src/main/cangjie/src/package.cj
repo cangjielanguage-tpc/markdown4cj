@@ -12,9 +12,11 @@ internal import ohos.resource_manager.ResourceManager
 
 internal import ohos.file_fs.*
 
-internal import std.collection.*
-internal import encoding.json.*
+//internal import std.collection.*
 
-internal import cj_res_entry.app
+
+internal import kit.LocalizationKit.*
+
+internal import std.collection.ArrayList
 
 internal import markdown.components.*

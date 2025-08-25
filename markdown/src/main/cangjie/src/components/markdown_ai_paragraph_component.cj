@@ -109,7 +109,7 @@ class MarkdownAIParagraphComponent {
         // 初始化刷新数据
         refreshData(nodeViews)
         // 缓存当前控件
-        paragraphComponents.append(this)
+        paragraphComponents.add(this)
         if(nodeViewList.size==1 && nodeViewList[0].node is CommonmarkLink){
             isOneLink = true
         }else{
