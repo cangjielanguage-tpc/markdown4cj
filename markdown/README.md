@@ -61,7 +61,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ## 软件架构
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/blobs/5a5352e79bdc3af5dc6907686876b5cf7f4ca53e/img.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_cangjie-plugin_5.1.1.823/doc/assets/img.png)
 
 ### 源码目录
 
@@ -93,7 +93,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/develop/doc/API.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_cangjie-plugin_5.1.1.823/doc/API.md)
 
 ## 使用说明
 
@@ -188,7 +188,7 @@ Heading level 2
 
 ### 显示效果
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/blobs/c2964f6d5916d7cbeac768b7967062e76ab67a5a/img1.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_cangjie-plugin_5.1.1.823/doc/assets/img1.png)
 
 ## 约束与限制
 
@@ -238,35 +238,35 @@ Heading level 2
 8. 数学公式背景色暂不支持设置透明色
 9. HTML支持的标签
    1. 块元素
-       1. hr标签 - 分割线
-       2. h1~h6标签 - 标题
-       3. blockquote标签 - 块引用
-       4. ul、ol、li标签 - 有序列表和无序列表
-       5. table、thead、tbody、tfoot、tr、th、td标签 - 表格
-       6. pre标签 - 缩进代码块
-       7. p标签 - 段落标签
+      1. hr标签 - 分割线
+      2. h1~h6标签 - 标题
+      3. blockquote标签 - 块引用
+      4. ul、ol、li标签 - 有序列表和无序列表
+      5. table、thead、tbody、tfoot、tr、th、td标签 - 表格
+      6. pre标签 - 缩进代码块
+      7. p标签 - 段落标签
    2. 行内元素
-       1. font标签 - 文本样式
-           * color属性
-           * size属性
-       2. a标签 - 链接
-           * href属性 - 必选属性
-           * title属性
-       3. b、strong标签 - 加粗
-       4. i、em、cite、dfn标签 - 斜体
-       5. s、del标签 - 删除
-       6. code、samp、var、kbd标签 - 内联代码
+      1. font标签 - 文本样式
+         * color属性
+         * size属性
+      2. a标签 - 链接
+         * href属性 - 必选属性
+         * title属性
+      3. b、strong标签 - 加粗
+      4. i、em、cite、dfn标签 - 斜体
+      5. s、del标签 - 删除
+      6. code、samp、var、kbd标签 - 内联代码
    3. 行内块元素
-       1. br标签 -  换行符
-       2. img标签 - 图片
-           * src属性 - 必选属性
-           * title属性
-           * width属性
-           * height属性
+      1. br标签 -  换行符
+      2. img标签 - 图片
+         * src属性 - 必选属性
+         * title属性
+         * width属性
+         * height属性
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/develop/markdown/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_cangjie-plugin_5.1.1.823/LICENSE) ，请自由的享受和参与开源。
 
 ## 参与贡献
 

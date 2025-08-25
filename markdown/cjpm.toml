@@ -31,22 +31,18 @@
 
 [package]
   cjc-version = "0.53.18"
-  compile-option = ""
+  compile-option = "--dy-std --cfg=\"${COMPILE_CONDITION}\""
   description = "Markdown"
   link-option = ""
   name = "markdown"
   output-type = "dynamic"
-  src-dir = "./src/main/cangjie/src"
+  src-dir = "./src/main/cangjie"
   target-dir = ""
   version = "1.0.0"
-  [package.package-configuration]
-  [package.scripts]
+  package-configuration = {}
+  scripts = {}
 
 [profile]
-  [profile.build]
-    incremental = true
-    lto = ""
-  [profile.customized-option]
-    debug = "-g -Woff all"
-    release = "--fast-math -O2 -Woff all"
-  [profile.test]
+  build = {incremental = true, lto = ""}
+  customized-option = {debug = "-g -Woff all -Won apilevel-check", release = "--fast-math -O2 -s -Woff all -Won apilevel-check"}
+  test = {}
