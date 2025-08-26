@@ -64,7 +64,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ## 软件架构
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown_hybrid_cangjie-plugin_5.1.1.823/doc/assets/img.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin_5.1.1.823/doc/assets/img.png)
 
 ### 源码目录
 
@@ -88,7 +88,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown_hybrid_cangjie-plugin_5.1.1.823/doc/API.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin_5.1.1.823/doc/API.md)
 
 ## 使用说明
 
@@ -190,7 +190,7 @@ struct DemoPage {
 
 ### 显示效果
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown_hybrid_cangjie-plugin_5.1.1.823/doc/assets/img1.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin_5.1.1.823/doc/assets/img1.png)
 
 ## 约束与限制
 
@@ -272,7 +272,7 @@ struct DemoPage {
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown_hybrid_cangjie-plugin_5.1.1.823/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin_5.1.1.823/LICENSE) ，请自由的享受和参与开源。
 
 ## 参与贡献
 

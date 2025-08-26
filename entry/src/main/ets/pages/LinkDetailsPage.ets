@@ -203,10 +203,7 @@ struct LinkDetailsPage {
       this.linkRectImageMargin = linkData._linkRectImageMargin
       this.linkRectToolImageBackGroupColor = linkData._linkRectToolImageBackGroupColor
       this.linkRectToolImageButtonBackGroupColor = linkData._linkRectToolImageButtonBackGroupColor
-      this.linkRectToolImageButtonBorderColor = linkData._linkRectToolImageButtonBorderColor
-      this.linkRectToolImageButtonDividingLineColor = linkData._linkRectToolImageButtonDividingLineColor
       this.linkRectToolImageTextSize = linkData._linkRectToolImageTextSize
-      this.linkRectToolImageTextColor = linkData._linkRectToolImageTextColor
       this.linkRectToolImageHeight = linkData._linkRectToolImageHeight
       this.linkRectToolImagePadding = linkData._linkRectToolImagePadding
       this.linkRectToolImageBorderWidth = linkData._linkRectToolImageBorderWidth
@@ -295,10 +292,7 @@ struct LinkDetailsPage {
     theme.setLinkRectImageMargin(this.linkRectImageMargin)
     theme.setLinkRectToolImageBackGroupColor(this.linkRectToolImageBackGroupColor)
     theme.setLinkRectToolImageButtonBackGroupColor(this.linkRectToolImageButtonBackGroupColor)
-    theme.setLinkRectToolImageButtonBorderColor(this.linkRectToolImageButtonBorderColor)
-    theme.setLinkRectToolImageButtonDividingLineColor(this.linkRectToolImageButtonDividingLineColor)
     theme.setLinkRectToolImageTextSize(this.linkRectToolImageTextSize)
-    theme.setLinkRectToolImageTextColor(this.linkRectToolImageTextColor)
     theme.setLinkRectToolImageHeight(this.linkRectToolImageHeight)
     theme.setLinkRectToolImagePadding(this.linkRectToolImagePadding)
     theme.setLinkRectToolImageBorderWidth(this.linkRectToolImageBorderWidth)

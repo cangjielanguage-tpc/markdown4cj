@@ -44,10 +44,7 @@ export declare class CJMarkdownTheme {
     setLinkRectImageMargin(linkRectImageMargin: number): void
     setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: number): void
     setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: number): void
-    setLinkRectToolImageButtonBorderColor(linkRectToolImageButtonBorderColor: number): void
-    setLinkRectToolImageButtonDividingLineColor(linkRectToolImageButtonDividingLineColor: number): void
     setLinkRectToolImageTextSize(linkRectToolImageTextSize: number): void
-    setLinkRectToolImageTextColor(linkRectToolImageTextColor: number): void
     setLinkRectToolImageHeight(linkRectToolImageHeight: number): void
     setLinkRectToolImagePadding(linkRectToolImagePadding: number): void
     setLinkRectToolImageBorderWidth(linkRectToolImageBorderWidth: number): void
@@ -124,7 +121,6 @@ export declare class CJMarkdownTheme {
     setThematicBreakBottomMargin(thematicBreakBottomMargin: number): void
     setIsLineBreak(isLineBreak: boolean): void
     setLatexMathTextSize(latexMathTextSize: number): void
-    setLatexMathTextLineSpacing(latexMathTextLineSpacing: number): void
     setLatexMathBackGroupColor(latexMathBackGroupColor: number): void
     setLatexMathTextColor(latexMathTextColor: number): void
     setLatexMathColorFormat(latexMathColorFormat: number): void

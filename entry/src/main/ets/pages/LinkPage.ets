@@ -249,26 +249,6 @@ struct LinkPage {
   @State
   linkRectToolImageButtonBackGroupColor: number = 0xFFFFFFFF
   /**
-   * 空心圆角矩形图片格式链接控件边框颜色列表
-   */
-  linkRectToolImageButtonBorderColorList: Array<number> =
-    [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
-  /**
-   * 空心圆角矩形图片格式链接控件边框颜色
-   */
-  @State
-  linkRectToolImageButtonBorderColor: number = 0xFF000000
-  /**
-   * 空心圆角矩形图片格式链接控件分割线颜色列表
-   */
-  linkRectToolImageButtonDividingLineColorList: Array<number> =
-    [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
-  /**
-   * 空心圆角矩形图片格式链接控件分割线颜色
-   */
-  @State
-  linkRectToolImageButtonDividingLineColor: number = 0xFF000000
-  /**
    * 空心圆角矩形图片格式链接文字大小列表
    */
   linkRectToolImageTextSizeList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
@@ -277,16 +257,6 @@ struct LinkPage {
    */
   @State
   linkRectToolImageTextSize: number = 14
-  /**
-   * 空心圆角矩形图片格式链接文字颜色列表
-   */
-  linkRectToolImageTextColorList: Array<number> =
-    [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
-  /**
-   * 空心圆角矩形图片格式链接文字颜色
-   */
-  @State
-  linkRectToolImageTextColor: number = 0xFF000000
   /**
    * 空心圆角矩形图片格式链接控件高度列表
    */
@@ -1136,73 +1106,6 @@ struct LinkPage {
 
           Column() {
             Row() {
-              Text(`空心圆角矩形图片格式链接控件边框颜色(内置颜色不生效) - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.linkRectToolImageButtonBorderColor))
-                .fontSize(16)
-                .fontColor(this.linkRectToolImageButtonBorderColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.linkRectToolImageButtonBorderColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.linkRectToolImageButtonBorderColor = item
-                    this.linkData.linkRectToolImageButtonBorderColor = this.linkRectToolImageButtonBorderColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`空心圆角矩形图片格式链接控件分割线颜色(内置颜色不生效) - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.linkRectToolImageButtonDividingLineColor))
-                .fontSize(16)
-                .fontColor(this.linkRectToolImageButtonDividingLineColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.linkRectToolImageButtonDividingLineColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.linkRectToolImageButtonDividingLineColor = item
-                    this.linkData.linkRectToolImageButtonDividingLineColor =
-                      this.linkRectToolImageButtonDividingLineColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
               Text(`空心圆角矩形图片格式链接文字大小 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
@@ -1227,39 +1130,6 @@ struct LinkPage {
                   .onClick(() => {
                     this.linkRectToolImageTextSize = item
                     this.linkData.linkRectToolImageTextSize = this.linkRectToolImageTextSize
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`空心圆角矩形图片格式链接文字颜色(内置颜色不生效) - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.linkRectToolImageTextColor))
-                .fontSize(16)
-                .fontColor(this.linkRectToolImageTextColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.linkRectToolImageTextColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.linkRectToolImageTextColor = item
-                    this.linkData.linkRectToolImageTextColor = this.linkRectToolImageTextColor
                   })
               })
             }
@@ -1538,10 +1408,7 @@ export class LinkData {
   _linkRectImageMargin: number = 6
   _linkRectToolImageBackGroupColor: number = 0xFFFFFFFF
   _linkRectToolImageButtonBackGroupColor: number = 0xFFFFFFFF
-  _linkRectToolImageButtonBorderColor: number = 0xFF000000
-  _linkRectToolImageButtonDividingLineColor: number = 0xFF000000
   _linkRectToolImageTextSize: number = 14
-  _linkRectToolImageTextColor: number = 0xFF000000
   _linkRectToolImageHeight: number = 21
   _linkRectToolImagePadding: number = 6
   _linkRectToolImageBorderWidth: number = 1
@@ -1647,20 +1514,8 @@ export class LinkData {
     this._linkRectToolImageButtonBackGroupColor = value
   }
 
-  public set linkRectToolImageButtonBorderColor(value: number) {
-    this._linkRectToolImageButtonBorderColor = value
-  }
-
-  public set linkRectToolImageButtonDividingLineColor(value: number) {
-    this._linkRectToolImageButtonDividingLineColor = value
-  }
-
   public set linkRectToolImageTextSize(value: number) {
     this._linkRectToolImageTextSize = value
-  }
-
-  public set linkRectToolImageTextColor(value: number) {
-    this._linkRectToolImageTextColor = value
   }
 
   public set linkRectToolImageHeight(value: number) {

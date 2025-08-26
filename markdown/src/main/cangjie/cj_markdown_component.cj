@@ -251,17 +251,8 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.linkRectToolImageButtonBackGroupColor) {
                 markdownThemeBuilder.setLinkRectToolImageButtonBackGroupColor(v) // 设置空心圆角矩形图片格式链接控件背景颜色
             }
-            if (let Some(v) <- w.cjMarkdownTheme.linkRectToolImageButtonBorderColor) {
-                markdownThemeBuilder.setLinkRectToolImageButtonBorderColor(v) // 设置空心圆角矩形图片格式链接控件边框颜色
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.linkRectToolImageButtonDividingLineColor) {
-                markdownThemeBuilder.setLinkRectToolImageButtonDividingLineColor(v) // 设置空心圆角矩形图片格式链接控件分割线颜色
-            }
             if (let Some(v) <- w.cjMarkdownTheme.linkRectToolImageTextSize) {
                 markdownThemeBuilder.setLinkRectToolImageTextSize(v) // 设置空心圆角矩形图片格式链接文字大小
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.linkRectToolImageTextColor) {
-                markdownThemeBuilder.setLinkRectToolImageTextColor(v) // 设置空心圆角矩形图片格式链接文字颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.linkRectToolImageHeight) {
                 markdownThemeBuilder.setLinkRectToolImageHeight(v) // 设置空心圆角矩形图片格式链接控件高度
@@ -490,9 +481,6 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.latexMathTextSize) {
                 markdownThemeBuilder.setLatexMathTextSize(v) // 设置数学公式文本大小
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.latexMathTextLineSpacing) {
-                markdownThemeBuilder.setLatexMathTextLineSpacing(v) // 设置数学公式文本行距
             }
             if (let Some(v) <- w.cjMarkdownTheme.latexMathBackGroupColor) {
                 markdownThemeBuilder.setLatexMathBackGroupColor(v) // 设置数学公式背景色

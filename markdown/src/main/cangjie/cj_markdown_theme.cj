@@ -138,24 +138,9 @@ public class CJMarkdownTheme {
     var linkRectToolImageButtonBackGroupColor: ?Color = None
 
     /**
-     * 空心圆角矩形图片格式链接控件边框颜色
-     */
-    var linkRectToolImageButtonBorderColor: ?Color = None
-
-    /**
-     * 空心圆角矩形图片格式链接控件分割线颜色
-     */
-    var linkRectToolImageButtonDividingLineColor: ?Color = None
-
-    /**
      * 空心圆角矩形图片格式链接文字大小
      */
     var linkRectToolImageTextSize: ?Float64 = None
-
-    /**
-     * 空心圆角矩形图片格式链接文字颜色
-     */
-    var linkRectToolImageTextColor: ?Color = None
 
     /**
      * 空心圆角矩形图片格式链接控件高度
@@ -536,11 +521,6 @@ public class CJMarkdownTheme {
      * 数学公式文本大小
      */
     var latexMathTextSize: ?Float64 = None
-
-    /**
-     * 数学公式文本行距
-     */
-    var latexMathTextLineSpacing: ?Float64 = None
 
     /**
      * 数学公式背景色
@@ -986,39 +966,12 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置空心圆角矩形图片格式链接控件边框颜色
-     *
-     * @param linkRectToolImageButtonBorderColor 空心圆角矩形图片格式链接控件边框颜色 - 默认OXFF000000
-     */
-    public func setLinkRectToolImageButtonBorderColor(linkRectToolImageButtonBorderColor: UInt32): Unit {
-        this.linkRectToolImageButtonBorderColor = Color(linkRectToolImageButtonBorderColor)
-    }
-
-    /**
-     * 设置空心圆角矩形图片格式链接控件分割线颜色
-     *
-     * @param linkRectToolImageButtonDividingLineColor 空心圆角矩形图片格式链接控件分割线颜色 - 默认OXFF000000
-     */
-    public func setLinkRectToolImageButtonDividingLineColor(linkRectToolImageButtonDividingLineColor: UInt32): Unit {
-        this.linkRectToolImageButtonDividingLineColor = Color(linkRectToolImageButtonDividingLineColor)
-    }
-
-    /**
      * 设置空心圆角矩形图片格式链接文字大小
      *
      * @param linkRectToolImageTextSize 空心圆角矩形图片格式链接文字大小 - 默认14.0fp
      */
     public func setLinkRectToolImageTextSize(linkRectToolImageTextSize: Float64): Unit {
         this.linkRectToolImageTextSize = linkRectToolImageTextSize
-    }
-
-    /**
-     * 设置空心圆角矩形图片格式链接文字颜色
-     *
-     * @param linkRectToolImageTextColor 空心圆角矩形图片格式链接文字颜色 - 默认OXFF000000
-     */
-    public func setLinkRectToolImageTextColor(linkRectToolImageTextColor: UInt32): Unit {
-        this.linkRectToolImageTextColor = Color(linkRectToolImageTextColor)
     }
 
     /**
@@ -1703,15 +1656,6 @@ public class CJMarkdownTheme {
      */
     public func setLatexMathTextSize(latexMathTextSize: Float64): Unit {
         this.latexMathTextSize = latexMathTextSize
-    }
-
-    /**
-     * 设置数学公式文本行距
-     *
-     * @param latexMathTextLineSpacing 数学公式文本行距 - 默认10.0vp
-     */
-    public func setLatexMathTextLineSpacing(latexMathTextLineSpacing: Float64): Unit {
-        this.latexMathTextLineSpacing = latexMathTextLineSpacing
     }
 
     /**

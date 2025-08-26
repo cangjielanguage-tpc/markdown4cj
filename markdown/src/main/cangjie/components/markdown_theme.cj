@@ -10,43 +10,36 @@ import ohos.state_macro_manage.*
 
 /**
  * Markdown用户可设置的样式
- * 1：上下文 - 本地图片rawfile需要上下文混合项目是stageContext，仓颉项目是abilityContext
+ * 1：上下文 - 本地图片rawfile需要上下文。混合项目是stageContext，仓颉项目是abilityContext
  * 2：每个模块之间上下间距
- * 3：链接 - 链接包含（纯文本显示、图片显示）
- *          链接文本颜色、链接字体大小、链接背景颜色、是否显示链接下划线、
- *          链接是否是图片显示、
- *          圆形链接主题背景颜色、圆形链接控件背景颜色、圆形链接文字大小、圆形链接文字颜色、圆形链接半径、圆形链接左右外边距、
- *          圆角矩形链接主题背景颜色、圆角矩形链接控件背景颜色、圆角矩形链接文字大小、圆角矩形链接文字颜色、圆角矩形链接控件高度、圆角矩形链接左右内边距、圆角矩形链接圆角半径、圆角矩形链接左右外边距、
- *          空心圆角矩形链接主题背景颜色、空心圆角矩形链接控件背景颜色、空心圆角矩形链接控件边框颜色、空心圆角矩形链接控件分割线颜色、空心圆角矩形链接文字大小、空心圆角矩形链接文字颜色、空心圆角矩形链接控件高度、空心圆角矩形链接左右内边距、空心圆角矩形链接边框宽度、空心圆角矩形链接分割线宽度、空心圆角矩形链接左右外边距、空心圆角矩形链接分割线和文本左边距、空心圆角矩形链接分割线和文本右边距
- * 4：列表 - 列表包含（块引用、有序列表、无序列表、任务列表、TOC列表）
- *          列表左边距、列表右边距、列表展示的数量
- *          块引用左边线条宽度、块引用左边线条颜色、块引用背景颜色、块引用子模块间距
- *          有序列表前缀是否加粗、有序列表列表项的颜色、有序列表项的文本大小、有序列表项文本行高、有序列表无序列表任务列表子模块间距
- *          无序列表项的颜色、无序列表项的文本大小、无列表项文本行高、
- *          任务列表项的宽高
- * 5：代码 - 代码包含（内联代码、缩进代码、围栏代码、组合代码）（代码块有缩进代码、围栏代码、组合代码）
- *          内联代码文本颜色、内联代码背景颜色、内联代码文本字体、内联代码文本大小、
- *          代码块系列文本颜色、代码块系列类型文本颜色、代码块系列图片文字是否显示隐藏、代码块系列代码行是否显示隐藏、代码块系列背景颜色、代码块系列左边距、代码块系列字体、代码块系列文本大小、代码块系列行高、代码块圆角
- *          是否显示代码全屏按钮、代码全屏按钮和代码复制按钮的宽高、代码全屏按钮默认图标、代码复制按钮默认图标
- *          组合代码标题字体大小、组合代码标题字体大小、组合代码标题选中文本颜色、组合代码标题未选中文本颜色、组合代码标题选中背景颜色、组合代码标题未选中背景颜色
- *          是否单独代码块、单独代码块行号宽度、
- * 6：标题 - （1-6级标题）
- *          H1和H2标题下分割线高度、H1和H2标题下分割线颜色、标题元素字体、标题文本大小数组、标题文本颜色、标题文本字间距、
- *          一级标题文本行高、二级标题文本行高、三级标题文本行高、四级标题文本行高、五级标题文本行高、六级标题文本行高
- * 7：段落 - 段落文本大小、段落文本颜色、段落文本字间距、段落文本行高、段落元素字体
+ * 3：链接 - 链接是否是图片显示、列表中的单行链接是否是图片显示
+ *          文本链接：文本格式链接文本颜色、是否按照链接文字字体大小显示文本、文本格式链接文字大小、文本格式链接背景颜色、文本格式是否显示链接下划线
+ *          圆形图片链接：圆形图片格式链接主题背景颜色、圆形图片格式链接控件背景颜色、圆形图片格式链接文字大小、圆形图片格式链接文字颜色、圆形图片格式链接半径、圆形图片格式链接左右外边距
+ *          圆角矩形图片链接：圆角矩形图片格式链接主题背景颜色、圆角矩形图片格式链接控件背景颜色、圆角矩形图片格式链接文字大小、圆角矩形图片格式链接文字颜色、圆角矩形图片格式链接控件高度、圆角矩形图片格式链接左右内边距、圆角矩形图片格式链接圆角半径、圆角矩形图片格式链接左右外边距
+ *          空心圆角矩形图片链接：空心圆角矩形图片格式链接主题背景颜色、空心圆角矩形图片格式链接控件背景颜色、空心圆角矩形图片格式链接控件边框颜色、空心圆角矩形图片格式链接控件分割线颜色、空心圆角矩形图片格式链接文字大小、空心圆角矩形图片格式链接文字颜色、空心圆角矩形图片格式链接控件高度、空心圆角矩形图片格式链接左右内边距、空心圆角矩形图片格式链接边框宽度、空心圆角矩形图片格式链接分割线宽度、空心圆角矩形图片格式链接左右外边距、空心圆角矩形图片格式分割线和文本左边距、空心圆角矩形图片格式分割线和文本右边距
+ * 4：列表 - 块引用：块引用左边距、块引用右边距、块引用左边线条宽度、块引用左边线条颜色、块引用背景颜色、块引用子模块上下间距
+ *          有序/无序/任务列表子模块上下间距、有序/无序/任务列表左边距、有序/无序/任务列表右边距
+ *          有序列表：有序列表前缀文本是否加粗、有序列表前缀文本颜色、有序列表前缀文本大小、有序列表前缀文本行高
+ *          无序列表：无序列表前缀文本颜色、无序列表前缀文本大小、无序列表前缀文本行高
+ *          任务列表：任务列表选择框宽高
+ * 5：代码 - 内联代码是否是图片显示
+ *          文本/图片格式内联代码文本颜色、文本/图片格式内联代码背景颜色、文本/图片格式内联代码文本大小
+ *          文本格式内联代码：文本格式内联代码文本字体
+ *          图片格式内联代码：图片格式内联代码文本左右边距、图片格式内联代码文本高度
+ *          缩进/围栏/组合/单独代码块代码文本颜色、缩进/围栏/组合/单独代码块代码类型文本颜色、缩进/围栏/组合/单独代码块代码类型文本、缩进/围栏/组合/单独代码块代码类型和代码块距离、缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示、缩进/围栏/组合/单独代码块代码行号是否显示、缩进/围栏/组合/单独代码块背景颜色、缩进/围栏/组合/单独代码块左边距、缩进/围栏/组合/单独代码块字体、缩进/围栏/组合/单独代码块代码文本大小、缩进/围栏/组合/单独代码块代码文本行高、缩进/围栏/组合/单独代码块圆角大小、缩进/围栏/组合/单独代码块代码全屏按钮是否显示、缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高、缩进/围栏/组合/单独代码块代码全屏按钮默认图标、缩进/围栏/组合/单独代码块代码复制按钮默认图标
+ *          组合代码块：组合代码块未选中标题字体大小、组合代码块选中标题字体大小、组合代码块选中标题文本颜色、组合代码块未选中标题文本颜色、组合代码块选中标题背景颜色、组合代码块未选中标题背景颜色
+ *          单独代码块：是否单独代码块显示、单独代码块行号宽度
+ * 6：标题 - H1/H2标题下分割线高度、H1/H2标题下分割线颜色
+ *          标题文本字体、标题文本大小数组、标题文本颜色、标题文本字间距、一级标题文本行高、二级标题文本行高、三级标题文本行高、四级标题文本行高、五级标题文本行高、六级标题文本行高
+ * 7：段落 - 段落文本大小、段落文本颜色、段落文本字间距、段落文本行高、段落文本字体
  * 8：分割线 - 分割线颜色、分割线高度、分割线上部外边距、分割线下部外边距
  * 9：软换行 - 软换行是否换行
- * 10：数学公式 - 数学公式文字大小、数学公式行距、数学公式背景色、数学公式字体颜色、数学公式生成图片格式、块结构的数学公式是否居中
- * 11：音频 - 音频图标、
- *           音频边框颜色、音频边框粗细、音频边框圆角、
- *           音频按钮背景颜色、音频按钮文字颜色、音频按钮文字大小、音频按钮文字内容、音频按钮圆角
- *           音频标题文字大小、音频标题文字颜色、音频标题文字行高
- *           音频类型文字大小、音频类型文字颜色、音频类型文字行高
- * 12：视频 - 视频默认占位图、视频播放按钮默认图标、视频圆角
- *           视频时间文本颜色、视频时间文本大小、视频时间文本居右边距、视频时间文本居底边距
+ * 10：数学公式 - 数学公式文本大小、数学公式背景色、数学公式文本颜色、数学公式生成图片格式、块结构的数学公式是否居中、数学公式字体路径
+ * 11：音频 - 音频图标、音频阴影颜色值、音频边框颜色、音频边框粗细、音频边框圆角、音频按钮背景颜色、音频按钮文字颜色、音频按钮文字大小、音频按钮文字内容、音频按钮圆角大小、音频标题文字大小、音频标题文字颜色、音频标题文字行高、音频类型文字大小、音频类型文字颜色、音频类型文字行高、音频上边距、音频下边距
+ * 12：视频 - 视频默认占位图、视频播放按钮默认图标、视频圆角大小、视频时间文本颜色、视频时间文本大小、视频时间文本居右边距、视频时间文本居底边距、视频上边距、视频下边距
  * 13：图片Banner - 图片banner默认占位图
- * 14：图片 - 图片宽度边距、图片默认占位图、网络图片是否压缩
- * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高、表格圆角、表格一格最小宽度、表格一格最大宽度、表格第一列是否加粗
+ * 14：图片 - 图片文字是否需要图文混排、图片默认占位图（AppResource）、图片默认占位图（String）、网络图片是否压缩、图片上边距、图片下边距
+ * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高、表格圆角大小、表格一格最小宽度、表格一格最大宽度、表格第一列是否加粗
  * 16：代码高亮 - markdown代码高亮样式
  */
 public class MarkdownTheme {
@@ -181,24 +174,9 @@ public class MarkdownTheme {
     protected var linkRectToolImageButtonBackGroupColor: Color = COLOR_FFFFFFFF
 
     /**
-     * 空心圆角矩形图片格式链接控件边框颜色
-     */
-    protected var linkRectToolImageButtonBorderColor: Color = COLOR_FF000000
-
-    /**
-     * 空心圆角矩形图片格式链接控件分割线颜色
-     */
-    protected var linkRectToolImageButtonDividingLineColor: Color = COLOR_FF000000
-
-    /**
      * 空心圆角矩形图片格式链接文字大小
      */
     protected var linkRectToolImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
-
-    /**
-     * 空心圆角矩形图片格式链接文字颜色
-     */
-    protected var linkRectToolImageTextColor: Color = COLOR_FF000000
 
     /**
      * 空心圆角矩形图片格式链接控件高度
@@ -266,17 +244,17 @@ public class MarkdownTheme {
     protected var blockQuoteTopAndBottomMargins: Float64 = 0.0
 
     /**
-     * 有序列表、无序列表、任务列表子模块上下间距
+     * 有序/无序/任务列表子模块上下间距
      */
     protected var blockOrderedAndBulletTopAndBottomMargins: Float64 = 0.0
 
     /**
-     * 有序列表、无序列表、任务列表左边距
+     * 有序/无序/任务列表左边距
      */
     protected var blockLeftMargin: Float64 = 8.0
 
     /**
-     * 有序列表、无序列表、任务列表右边距
+     * 有序/无序/任务列表右边距
      */
     protected var blockRightMargin: Float64 = 8.0
 
@@ -326,17 +304,17 @@ public class MarkdownTheme {
     protected var isCodeStyle: Bool = false
 
     /**
-     * 文本、图片格式内联代码文本颜色
+     * 文本/图片格式内联代码文本颜色
      */
     protected var codeTextColor: Color = COLOR_FF000000
 
     /**
-     * 文本、图片格式内联代码背景颜色
+     * 文本/图片格式内联代码背景颜色
      */
     protected var codeBackgroundColor: Color = COLOR_FF191919
 
     /**
-     * 文本、图片格式内联代码文本大小
+     * 文本/图片格式内联代码文本大小
      */
     protected var codeTextSize: Float64 = fp2px(13.0.fp).getOrThrow().value
 
@@ -356,112 +334,112 @@ public class MarkdownTheme {
     protected var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
-     * 代码块代码文本颜色
+     * 缩进/围栏/组合/单独代码块代码文本颜色
      */
     protected var codeBlockTextColor: ?Color = None
 
     /**
-     * 代码块代码类型文本颜色
+     * 缩进/围栏/组合/单独代码块代码类型文本颜色
      */
     protected var codeBlockTypeTextColor: ?Color = None
 
     /**
-     * 代码块代码类型文本
+     * 缩进/围栏/组合/单独代码块代码类型文本
      */
     protected var codeBlockTypeTextStr: String = ""
 
     /**
-     * 代码类型和代码块距离
+     * 缩进/围栏/组合/单独代码块代码类型和代码块距离
      */
     protected var codeBlockTypeTextPadding: Float64 = 0.0
 
     /**
-     * 代码块复制、全屏图片文字是否显示
+     * 缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示
      */
     protected var codeBlockIconTextHide: Bool = true
 
     /**
-     * 代码块代码行号是否显示
+     * 缩进/围栏/组合/单独代码块代码行号是否显示
      */
     protected var codeBlockLineNumberHide: Bool = true
 
     /**
-     * 代码块背景颜色
+     * 缩进/围栏/组合/单独代码块背景颜色
      */
     protected var codeBlockBackgroundColor: ?Color = None
 
     /**
-     * 代码块左边距
+     * 缩进/围栏/组合/单独代码块左边距
      */
     protected var codeMultilineMargin: Float64 = 8.0
 
     /**
-     * 代码块字体
+     * 缩进/围栏/组合/单独代码块字体
      */
     protected var codeBlockTypeface: String = "HarmonyOS Sans"
 
     /**
-     * 代码块代码文本大小
+     * 缩进/围栏/组合/单独代码块代码文本大小
      */
     protected var codeBlockTextSize: Float64 = 13.0
 
     /**
-     * 代码块代码文本行高
+     * 缩进/围栏/组合/单独代码块代码文本行高
      */
     protected var codeBlockLineHeight: Float64 = 22.0
 
     /**
-     * 代码块控件圆角大小
+     * 缩进/围栏/组合/单独代码块控件圆角大小
      */
     protected var codeBlockRadius: Float64 = 8.0
 
     /**
-     * 代码块代码全屏按钮是否显示
+     * 缩进/围栏/组合/单独代码块代码全屏按钮是否显示
      */
     protected var isCodeFullScreen: Bool = true
 
     /**
-     * 代码块代码全屏、代码复制按钮宽高
+     * 缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高
      */
     protected var iconWidthAndHeight: Float64 = 24.0
 
     /**
-     * 代码块代码全屏按钮默认图标
+     * 缩进/围栏/组合/单独代码块代码全屏按钮默认图标
      */
     protected var codeFullScreenIcon: ?AppResource = None
 
     /**
-     * 代码块代码复制按钮默认图标
+     * 缩进/围栏/组合/单独代码块代码复制按钮默认图标
      */
     protected var codeCopyIcon: ?AppResource = None
 
     /**
-     * 组合代码未选中标题字体大小
+     * 组合代码块未选中标题字体大小
      */
     protected var codeListTitleTextSize: Float64 = 13.0
 
     /**
-     * 组合代码选中标题字体大小
+     * 组合代码块选中标题字体大小
      */
     protected var codeListTitleSelectTextSize: Float64 = 13.0
 
     /**
-     * 组合代码选中标题文本颜色
+     * 组合代码块选中标题文本颜色
      */
     protected var codeListTitleSelectTextColor: Color = Color.RED
 
     /**
-     * 组合代码未选中标题文本颜色
+     * 组合代码块未选中标题文本颜色
      */
     protected var codeListTitleUnSelectTextColor: Color = Color.BLACK
 
     /**
-     * 组合代码选中标题背景颜色
+     * 组合代码块选中标题背景颜色
      */
     protected var codeListTitleSelectBackGroupColor: Color = Color.GRAY
 
     /**
-     * 组合代码未选中标题背景颜色
+     * 组合代码块未选中标题背景颜色
      */
     protected var codeListTitleUnSelectBackGroupColor: Color = Color.TRANSPARENT
 
@@ -476,12 +454,12 @@ public class MarkdownTheme {
     protected var separateCodeBlockWidth: Float64 = 50.0
 
     /**
-     * H1、H2标题下分割线高度
+     * H1/H2标题下分割线高度
      */
     protected var headingBreakHeight: Float64 = 0.5
 
     /**
-     * H1、H2标题下分割线颜色
+     * H1/H2标题下分割线颜色
      */
     protected var headingBreakColor: Color = COLOR_FF191919
 
@@ -591,11 +569,6 @@ public class MarkdownTheme {
     protected var latexMathTextSize: Float64 = fp2px(16.0.fp)().value
 
     /**
-     * 数学公式文本行距
-     */
-    protected var latexMathTextLineSpacing: Float64 = 10.0
-
-    /**
      * 数学公式背景色
      */
     protected var latexMathBackGroupColor: Color = COLOR_FFFFFFFF
@@ -666,7 +639,7 @@ public class MarkdownTheme {
     protected var audioButtonText: String = "立即播放"
 
     /**
-     * 音频按钮圆角
+     * 音频按钮圆角大小
      */
     protected var audioButtonBorderRadius: Float64 = 16.0
 
@@ -721,7 +694,7 @@ public class MarkdownTheme {
     protected var playCircleFillIcon: ?AppResource = None
 
     /**
-     * 视频圆角
+     * 视频圆角大小
      */
     protected var videoBorderRadius: Float64 = 10.0
 
@@ -826,17 +799,17 @@ public class MarkdownTheme {
     protected var tableTextLineHeight: Float64 = 22.0
 
     /**
-     * 表格圆角
+     * 表格圆角大小
      */
     protected var tableRadius: Float64 = 5.0
 
     /**
-     * 表格最小宽度
+     * 表格一格最小宽度
      */
     protected var tableMinTextWidth: Float64 = 50.0
 
     /**
-     * 表格最大宽度
+     * 表格一格最大宽度
      */
     protected var tableMaxTextWidth: Float64 = 300.0
 
@@ -886,10 +859,7 @@ public class MarkdownTheme {
         // 3.4、空心圆角矩形图片格式链接
         this.linkRectToolImageBackGroupColor = builder.linkRectToolImageBackGroupColor
         this.linkRectToolImageButtonBackGroupColor = builder.linkRectToolImageButtonBackGroupColor
-        this.linkRectToolImageButtonBorderColor = builder.linkRectToolImageButtonBorderColor
-        this.linkRectToolImageButtonDividingLineColor = builder.linkRectToolImageButtonDividingLineColor
         this.linkRectToolImageTextSize = builder.linkRectToolImageTextSize
-        this.linkRectToolImageTextColor = builder.linkRectToolImageTextColor
         this.linkRectToolImageHeight = builder.linkRectToolImageHeight
         this.linkRectToolImagePadding = builder.linkRectToolImagePadding
         this.linkRectToolImageBorderWidth = builder.linkRectToolImageBorderWidth
@@ -993,7 +963,6 @@ public class MarkdownTheme {
 
         // 10、数学公式
         this.latexMathTextSize = builder.latexMathTextSize
-        this.latexMathTextLineSpacing = builder.latexMathTextLineSpacing
         this.latexMathBackGroupColor = builder.latexMathBackGroupColor
         this.latexMathTextColor = builder.latexMathTextColor
         this.latexMathColorFormat = builder.latexMathColorFormat
@@ -1108,9 +1077,6 @@ public class MarkdownTheme {
         // 3.4、空心圆角矩形图片格式链接
         markdownThemeBuilder.setLinkRectToolImageBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接主题背景颜色
         markdownThemeBuilder.setLinkRectToolImageButtonBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接控件背景颜色
-        markdownThemeBuilder.setLinkRectToolImageButtonBorderColor(COLOR_FF000000) // 空心圆角矩形图片链接控件边框颜色
-        markdownThemeBuilder.setLinkRectToolImageButtonDividingLineColor(COLOR_FF000000) // 空心圆角矩形图片链接控件分割线颜色
-        markdownThemeBuilder.setLinkRectToolImageTextColor(COLOR_FF000000) // 空心圆角矩形图片链接文字颜色
 
         // 4、列表
         // 4.1、块引用
@@ -1204,9 +1170,6 @@ public class MarkdownTheme {
         // 3.4、空心圆角矩形图片格式链接
         markdownThemeBuilder.setLinkRectToolImageBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接主题背景颜色
         markdownThemeBuilder.setLinkRectToolImageButtonBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接控件背景颜色
-        markdownThemeBuilder.setLinkRectToolImageButtonBorderColor(COLOR_FF000000) // 空心圆角矩形图片链接控件边框颜色
-        markdownThemeBuilder.setLinkRectToolImageButtonDividingLineColor(COLOR_FF000000) // 空心圆角矩形图片链接控件分割线颜色
-        markdownThemeBuilder.setLinkRectToolImageTextColor(COLOR_FF000000) // 空心圆角矩形图片链接文字颜色
 
         // 4、列表
         // 4.1、块引用
@@ -1418,24 +1381,9 @@ public class MarkdownThemeBuilder {
     protected var linkRectToolImageButtonBackGroupColor: Color = COLOR_FFFFFFFF
 
     /**
-     * 空心圆角矩形图片格式链接控件边框颜色
-     */
-    protected var linkRectToolImageButtonBorderColor: Color = COLOR_FF000000
-
-    /**
-     * 空心圆角矩形图片格式链接控件分割线颜色
-     */
-    protected var linkRectToolImageButtonDividingLineColor: Color = COLOR_FF000000
-
-    /**
      * 空心圆角矩形图片格式链接文字大小
      */
     protected var linkRectToolImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
-
-    /**
-     * 空心圆角矩形图片格式链接文字颜色
-     */
-    protected var linkRectToolImageTextColor: Color = COLOR_FF000000
 
     /**
      * 空心圆角矩形图片格式链接控件高度
@@ -1503,17 +1451,17 @@ public class MarkdownThemeBuilder {
     protected var blockQuoteTopAndBottomMargins: Float64 = 0.0
 
     /**
-     * 有序列表、无序列表、任务列表子模块上下间距
+     * 有序/无序/任务列表子模块上下间距
      */
     protected var blockOrderedAndBulletTopAndBottomMargins: Float64 = 0.0
 
     /**
-     * 有序列表、无序列表、任务列表左边距
+     * 有序/无序/任务列表左边距
      */
     protected var blockLeftMargin: Float64 = 8.0
 
     /**
-     * 有序列表、无序列表、任务列表右边距
+     * 有序/无序/任务列表右边距
      */
     protected var blockRightMargin: Float64 = 8.0
 
@@ -1563,17 +1511,17 @@ public class MarkdownThemeBuilder {
     protected var isCodeStyle: Bool = false
 
     /**
-     * 文本、图片格式内联代码文本颜色
+     * 文本/图片格式内联代码文本颜色
      */
     protected var codeTextColor: Color = COLOR_FF000000
 
     /**
-     * 文本、图片格式内联代码背景颜色
+     * 文本/图片格式内联代码背景颜色
      */
     protected var codeBackgroundColor: Color = COLOR_FF191919
 
     /**
-     * 文本、图片格式内联代码文本大小
+     * 文本/图片格式内联代码文本大小
      */
     protected var codeTextSize: Float64 = fp2px(13.0.fp).getOrThrow().value
 
@@ -1593,112 +1541,112 @@ public class MarkdownThemeBuilder {
     protected var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
-     * 代码块代码文本颜色
+     * 缩进/围栏/组合/单独代码块代码文本颜色
      */
     protected var codeBlockTextColor: ?Color = None
 
     /**
-     * 代码块代码类型文本颜色
+     * 缩进/围栏/组合/单独代码块代码类型文本颜色
      */
     protected var codeBlockTypeTextColor: ?Color = None
 
     /**
-     * 代码块复制、全屏图片文字是否显示
-     */
-    protected var codeBlockIconTextHide: Bool = true
-
-    /**
-     * 代码块代码行号是否显示
-     */
-    protected var codeBlockLineNumberHide: Bool = true
-
-    /**
-     * 代码块背景颜色
-     */
-    protected var codeBlockBackgroundColor: ?Color = None
-
-    /**
-     * 代码块代码类型文本
+     * 缩进/围栏/组合/单独代码块代码类型文本
      */
     protected var codeBlockTypeTextStr: String = ""
 
     /**
-     * 代码类型和代码块距离
+     * 缩进/围栏/组合/单独代码块代码类型和代码块距离
      */
     protected var codeBlockTypeTextPadding: Float64 = 0.0
 
     /**
-     * 代码块左边距
+     * 缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示
+     */
+    protected var codeBlockIconTextHide: Bool = true
+
+    /**
+     * 缩进/围栏/组合/单独代码块代码行号是否显示
+     */
+    protected var codeBlockLineNumberHide: Bool = true
+
+    /**
+     * 缩进/围栏/组合/单独代码块背景颜色
+     */
+    protected var codeBlockBackgroundColor: ?Color = None
+
+    /**
+     * 缩进/围栏/组合/单独代码块左边距
      */
     protected var codeMultilineMargin: Float64 = 8.0
 
     /**
-     * 代码块字体
+     * 缩进/围栏/组合/单独代码块字体
      */
     protected var codeBlockTypeface: String = "HarmonyOS Sans"
 
     /**
-     * 代码块代码文本大小
+     * 缩进/围栏/组合/单独代码块代码文本大小
      */
     protected var codeBlockTextSize: Float64 = 13.0
 
     /**
-     * 代码块代码文本行高
+     * 缩进/围栏/组合/单独代码块代码文本行高
      */
     protected var codeBlockLineHeight: Float64 = 22.0
 
     /**
-     * 代码块控件圆角大小
+     * 缩进/围栏/组合/单独代码块控件圆角大小
      */
     protected var codeBlockRadius: Float64 = 8.0
 
     /**
-     * 代码块代码全屏按钮是否显示
+     * 缩进/围栏/组合/单独代码块代码全屏按钮是否显示
      */
     protected var isCodeFullScreen: Bool = true
 
     /**
-     * 代码块代码全屏、代码复制按钮宽高
+     * 缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高
      */
     protected var iconWidthAndHeight: Float64 = 24.0
 
     /**
-     * 代码块代码全屏按钮默认图标
+     * 缩进/围栏/组合/单独代码块代码全屏按钮默认图标
      */
     protected var codeFullScreenIcon: ?AppResource = None
 
     /**
-     * 代码块代码复制按钮默认图标
+     * 缩进/围栏/组合/单独代码块代码复制按钮默认图标
      */
     protected var codeCopyIcon: ?AppResource = None
 
     /**
-     * 组合代码未选中标题字体大小
+     * 组合代码块未选中标题字体大小
      */
     protected var codeListTitleTextSize: Float64 = 13.0
 
     /**
-     * 组合代码选中标题字体大小
+     * 组合代码块选中标题字体大小
      */
     protected var codeListTitleSelectTextSize: Float64 = 13.0
 
     /**
-     * 组合代码选中标题文本颜色
+     * 组合代码块选中标题文本颜色
      */
     protected var codeListTitleSelectTextColor: Color = Color.RED
 
     /**
-     * 组合代码未选中标题文本颜色
+     * 组合代码块未选中标题文本颜色
      */
     protected var codeListTitleUnSelectTextColor: Color = Color.BLACK
 
     /**
-     * 组合代码选中标题背景颜色
+     * 组合代码块选中标题背景颜色
      */
     protected var codeListTitleSelectBackGroupColor: Color = Color.GRAY
 
     /**
-     * 组合代码未选中标题背景颜色
+     * 组合代码块未选中标题背景颜色
      */
     protected var codeListTitleUnSelectBackGroupColor: Color = Color.TRANSPARENT
 
@@ -1713,12 +1661,12 @@ public class MarkdownThemeBuilder {
     protected var separateCodeBlockWidth: Float64 = 50.0
 
     /**
-     * H1、H2标题下分割线高度
+     * H1/H2标题下分割线高度
      */
     protected var headingBreakHeight: Float64 = 0.5
 
     /**
-     * H1、H2标题下分割线颜色
+     * H1/H2标题下分割线颜色
      */
     protected var headingBreakColor: Color = COLOR_FF191919
 
@@ -1828,11 +1776,6 @@ public class MarkdownThemeBuilder {
     protected var latexMathTextSize: Float64 = fp2px(16.0.fp)().value
 
     /**
-     * 数学公式文本行距
-     */
-    protected var latexMathTextLineSpacing: Float64 = 10.0
-
-    /**
      * 数学公式背景色
      */
     protected var latexMathBackGroupColor: Color = COLOR_FFFFFFFF
@@ -1903,7 +1846,7 @@ public class MarkdownThemeBuilder {
     protected var audioButtonText: String = "立即播放"
 
     /**
-     * 音频按钮圆角
+     * 音频按钮圆角大小
      */
     protected var audioButtonBorderRadius: Float64 = 16.0
 
@@ -1958,7 +1901,7 @@ public class MarkdownThemeBuilder {
     protected var playCircleFillIcon: ?AppResource = None
 
     /**
-     * 视频圆角
+     * 视频圆角大小
      */
     protected var videoBorderRadius: Float64 = 10.0
 
@@ -2063,17 +2006,17 @@ public class MarkdownThemeBuilder {
     protected var tableTextLineHeight: Float64 = 22.0
 
     /**
-     * 表格圆角
+     * 表格圆角大小
      */
     protected var tableRadius: Float64 = 5.0
 
     /**
-     * 表格最小宽度
+     * 表格一格最小宽度
      */
     protected var tableMinTextWidth: Float64 = 50.0
 
     /**
-     * 表格最大宽度
+     * 表格一格最大宽度
      */
     protected var tableMaxTextWidth: Float64 = 300.0
 
@@ -2126,10 +2069,7 @@ public class MarkdownThemeBuilder {
         // 3.4、空心圆角矩形图片格式链接
         this.linkRectToolImageBackGroupColor = theme.linkRectToolImageBackGroupColor
         this.linkRectToolImageButtonBackGroupColor = theme.linkRectToolImageButtonBackGroupColor
-        this.linkRectToolImageButtonBorderColor = theme.linkRectToolImageButtonBorderColor
-        this.linkRectToolImageButtonDividingLineColor = theme.linkRectToolImageButtonDividingLineColor
         this.linkRectToolImageTextSize = theme.linkRectToolImageTextSize
-        this.linkRectToolImageTextColor = theme.linkRectToolImageTextColor
         this.linkRectToolImageHeight = theme.linkRectToolImageHeight
         this.linkRectToolImagePadding = theme.linkRectToolImagePadding
         this.linkRectToolImageBorderWidth = theme.linkRectToolImageBorderWidth
@@ -2233,7 +2173,6 @@ public class MarkdownThemeBuilder {
 
         // 10、数学公式
         this.latexMathTextSize = theme.latexMathTextSize
-        this.latexMathTextLineSpacing = theme.latexMathTextLineSpacing
         this.latexMathBackGroupColor = theme.latexMathBackGroupColor
         this.latexMathTextColor = theme.latexMathTextColor
         this.latexMathColorFormat = theme.latexMathColorFormat
@@ -2325,9 +2264,6 @@ public class MarkdownThemeBuilder {
         // 3.4、空心圆角矩形图片格式链接
         setLinkRectToolImageBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接主题背景颜色
         setLinkRectToolImageButtonBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接控件背景颜色
-        setLinkRectToolImageButtonBorderColor(COLOR_FF000000) // 空心圆角矩形图片链接控件边框颜色
-        setLinkRectToolImageButtonDividingLineColor(COLOR_FF000000) // 空心圆角矩形图片链接控件分割线颜色
-        setLinkRectToolImageTextColor(COLOR_FF000000) // 空心圆角矩形图片链接文字颜色
 
         // 4、列表
         // 4.1、块引用
@@ -2419,9 +2355,6 @@ public class MarkdownThemeBuilder {
         // 3.4、空心圆角矩形图片格式链接
         setLinkRectToolImageBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接主题背景颜色
         setLinkRectToolImageButtonBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接控件背景颜色
-        setLinkRectToolImageButtonBorderColor(COLOR_FF000000) // 空心圆角矩形图片链接控件边框颜色
-        setLinkRectToolImageButtonDividingLineColor(COLOR_FF000000) // 空心圆角矩形图片链接控件分割线颜色
-        setLinkRectToolImageTextColor(COLOR_FF000000) // 空心圆角矩形图片链接文字颜色
 
         // 4、列表
         // 4.1、块引用
@@ -2774,28 +2707,6 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置空心圆角矩形图片格式链接控件边框颜色
-     *
-     * @param linkRectToolImageButtonBorderColor 空心圆角矩形图片格式链接控件边框颜色 - 默认OXFF000000
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setLinkRectToolImageButtonBorderColor(linkRectToolImageButtonBorderColor: Color): MarkdownThemeBuilder {
-        this.linkRectToolImageButtonBorderColor = linkRectToolImageButtonBorderColor
-        return this
-    }
-
-    /**
-     * 设置空心圆角矩形图片格式链接控件分割线颜色
-     *
-     * @param linkRectToolImageButtonDividingLineColor 空心圆角矩形图片格式链接控件分割线颜色 - 默认OXFF000000
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setLinkRectToolImageButtonDividingLineColor(linkRectToolImageButtonDividingLineColor: Color): MarkdownThemeBuilder {
-        this.linkRectToolImageButtonDividingLineColor = linkRectToolImageButtonDividingLineColor
-        return this
-    }
-
-    /**
      * 设置空心圆角矩形图片格式链接文字大小
      *
      * @param linkRectToolImageTextSize 空心圆角矩形图片格式链接文字大小 - 默认14.0fp
@@ -2803,17 +2714,6 @@ public class MarkdownThemeBuilder {
      */
     public func setLinkRectToolImageTextSize(linkRectToolImageTextSize: Float64): MarkdownThemeBuilder {
         this.linkRectToolImageTextSize = fp2px(linkRectToolImageTextSize.fp).getOrThrow().value
-        return this
-    }
-
-    /**
-     * 设置空心圆角矩形图片格式链接文字颜色
-     *
-     * @param linkRectToolImageTextColor 空心圆角矩形图片格式链接文字颜色 - 默认OXFF000000
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setLinkRectToolImageTextColor(linkRectToolImageTextColor: Color): MarkdownThemeBuilder {
-        this.linkRectToolImageTextColor = linkRectToolImageTextColor
         return this
     }
 
@@ -3676,17 +3576,6 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置数学公式文本行距
-     *
-     * @param latexMathTextLineSpacing 数学公式文本行距 - 默认10.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setLatexMathTextLineSpacing(latexMathTextLineSpacing: Float64): MarkdownThemeBuilder {
-        this.latexMathTextLineSpacing = latexMathTextLineSpacing
-        return this
-    }
-
-    /**
      * 设置数学公式背景色
      *
      * @param latexMathBackGroupColor 数学公式背景色 - 默认0xFFFFFFFF
@@ -4112,16 +4001,6 @@ public class MarkdownThemeBuilder {
      */
     public func setImageMarginBottom(imageMarginBottom: Float64): MarkdownThemeBuilder {
         this.imageMarginBottom = imageMarginBottom
-        return this
-    }
-
-    /**
-     * 设置图片边距 - TODO:已废弃，控件自动计算宽度
-     *
-     * @param imageMarginBottom 图片边距
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setImagePadding(imagePadding: Int64): MarkdownThemeBuilder {
         return this
     }
 

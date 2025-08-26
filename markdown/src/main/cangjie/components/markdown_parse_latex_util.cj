@@ -39,7 +39,7 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownConfiguration.markdownTheme.latexMathTextSize), Float32(markdownConfiguration.markdownTheme.latexMathTextLineSpacing), markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
+                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownConfiguration.markdownTheme.latexMathTextSize), Float32(10.0), markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -106,7 +106,7 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownConfiguration.markdownTheme.latexMathTextSize), Float32(markdownConfiguration.markdownTheme.latexMathTextLineSpacing), markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
+                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownConfiguration.markdownTheme.latexMathTextSize), Float32(10.0), markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }

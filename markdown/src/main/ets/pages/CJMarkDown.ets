@@ -187,17 +187,8 @@ export struct CJMarkdown {
         if (this.cfg.markdownTheme.linkRectToolImageButtonBackGroupColor !== undefined) {
           cjMarkdownTheme.setLinkRectToolImageButtonBackGroupColor(this.cfg.markdownTheme.linkRectToolImageButtonBackGroupColor)
         }
-        if (this.cfg.markdownTheme.linkRectToolImageButtonBorderColor !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageButtonBorderColor(this.cfg.markdownTheme.linkRectToolImageButtonBorderColor)
-        }
-        if (this.cfg.markdownTheme.linkRectToolImageButtonDividingLineColor !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageButtonDividingLineColor(this.cfg.markdownTheme.linkRectToolImageButtonDividingLineColor)
-        }
         if (this.cfg.markdownTheme.linkRectToolImageTextSize !== undefined) {
           cjMarkdownTheme.setLinkRectToolImageTextSize(this.cfg.markdownTheme.linkRectToolImageTextSize)
-        }
-        if (this.cfg.markdownTheme.linkRectToolImageTextColor !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageTextColor(this.cfg.markdownTheme.linkRectToolImageTextColor)
         }
         if (this.cfg.markdownTheme.linkRectToolImageHeight !== undefined) {
           cjMarkdownTheme.setLinkRectToolImageHeight(this.cfg.markdownTheme.linkRectToolImageHeight)
@@ -430,9 +421,6 @@ export struct CJMarkdown {
         }
         if (this.cfg.markdownTheme.latexMathTextSize !== undefined) {
           cjMarkdownTheme.setLatexMathTextSize(this.cfg.markdownTheme.latexMathTextSize)
-        }
-        if (this.cfg.markdownTheme.latexMathTextLineSpacing !== undefined) {
-          cjMarkdownTheme.setLatexMathTextLineSpacing(this.cfg.markdownTheme.latexMathTextLineSpacing)
         }
         if (this.cfg.markdownTheme.latexMathBackGroupColor !== undefined) {
           cjMarkdownTheme.setLatexMathBackGroupColor(this.cfg.markdownTheme.latexMathBackGroupColor)
@@ -895,21 +883,9 @@ export class MarkdownTheme {
    */
   linkRectToolImageButtonBackGroupColor?: number = undefined
   /**
-   * 空心圆角矩形图片格式链接控件边框颜色
-   */
-  linkRectToolImageButtonBorderColor?: number = undefined
-  /**
-   * 空心圆角矩形图片格式链接控件分割线颜色
-   */
-  linkRectToolImageButtonDividingLineColor?: number = undefined
-  /**
    * 空心圆角矩形图片格式链接文字大小
    */
   linkRectToolImageTextSize?: number = undefined
-  /**
-   * 空心圆角矩形图片格式链接文字颜色
-   */
-  linkRectToolImageTextColor?: number = undefined
   /**
    * 空心圆角矩形图片格式链接控件高度
    */
@@ -1214,10 +1190,6 @@ export class MarkdownTheme {
    * 数学公式文本大小
    */
   latexMathTextSize?: number = undefined
-  /**
-   * 数学公式文本行距
-   */
-  latexMathTextLineSpacing?: number = undefined
   /**
    * 数学公式背景色
    */
@@ -1688,39 +1660,12 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置空心圆角矩形图片格式链接控件边框颜色
-   *
-   * @param linkRectToolImageButtonBorderColor 空心圆角矩形图片格式链接控件边框颜色 - 默认OXFF000000
-   */
-  setLinkRectToolImageButtonBorderColor(linkRectToolImageButtonBorderColor: number): void {
-    this.linkRectToolImageButtonBorderColor = linkRectToolImageButtonBorderColor
-  }
-
-  /**
-   * 设置空心圆角矩形图片格式链接控件分割线颜色
-   *
-   * @param linkRectToolImageButtonDividingLineColor 空心圆角矩形图片格式链接控件分割线颜色 - 默认OXFF000000
-   */
-  setLinkRectToolImageButtonDividingLineColor(linkRectToolImageButtonDividingLineColor: number): void {
-    this.linkRectToolImageButtonDividingLineColor = linkRectToolImageButtonDividingLineColor
-  }
-
-  /**
    * 设置空心圆角矩形图片格式链接文字大小
    *
    * @param linkRectToolImageTextSize 空心圆角矩形图片格式链接文字大小 - 默认14.0fp
    */
   setLinkRectToolImageTextSize(linkRectToolImageTextSize: number): void {
     this.linkRectToolImageTextSize = linkRectToolImageTextSize
-  }
-
-  /**
-   * 设置空心圆角矩形图片格式链接文字颜色
-   *
-   * @param linkRectToolImageTextColor 空心圆角矩形图片格式链接文字颜色 - 默认OXFF000000
-   */
-  setLinkRectToolImageTextColor(linkRectToolImageTextColor: number): void {
-    this.linkRectToolImageTextColor = linkRectToolImageTextColor
   }
 
   /**
@@ -2405,15 +2350,6 @@ export class MarkdownTheme {
    */
   setLatexMathTextSize(latexMathTextSize: number): void {
     this.latexMathTextSize = latexMathTextSize
-  }
-
-  /**
-   * 设置数学公式文本行距
-   *
-   * @param latexMathTextLineSpacing 数学公式文本行距 - 默认10.0vp
-   */
-  setLatexMathTextLineSpacing(latexMathTextLineSpacing: number): void {
-    this.latexMathTextLineSpacing = latexMathTextLineSpacing
   }
 
   /**
