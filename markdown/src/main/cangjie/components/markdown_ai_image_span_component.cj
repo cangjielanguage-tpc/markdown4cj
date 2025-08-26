@@ -96,7 +96,7 @@ public class MarkdownAIImageSpanComponent {
                         imageError =>
                         isError = true
                         isCompleted = true
-                    }componentWidth
+                    }
                 )
         } else if (isCompleted && !isError) {
             ImageSpan(destination)
