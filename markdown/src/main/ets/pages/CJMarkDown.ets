@@ -13,9 +13,11 @@ export interface CJLib {
 
 class CJNodeController extends NodeController {
   rootNode?: FrameNode = undefined
-  public freshCJ: (input: string) => void = (input: string) => {
-    this.mdStr = input
-  } // 持续输出调用
+  // public freshCJ: (input: string) => void = (input: string) => {
+  //   this.mdStr = input
+  // } // 持续输出调用
+
+  public callbackCJ: (methodName: methodType, input: string) => void = (methodName: string, input: string) => {this.mdStr = input}  // 持续输出调用
   mdStr: string
   isFull: boolean
   cfg?: CJMarkdownConfig
@@ -32,11 +34,13 @@ class CJNodeController extends NodeController {
   makeNode(ctx: UIContext): FrameNode | null {
     if (this.rootNode === undefined) {
       this.rootNode = new FrameNode(ctx)
-      this.freshCJ = global_customLib.getLoadCJPage(this.mdStr, this.isFull, this.cfg, this.plugin)
+      this.callbackCJ = global_customLib.getLoadCJPage(this.mdStr, this.isFull, this.cfg, this.plugin)
     }
     return this.rootNode
   }
 }
+
+export type methodType = "fresh" | "reuse" | "recycle"
 
 @Component
 export struct CJMarkdown {
@@ -47,7 +51,15 @@ export struct CJMarkdown {
   private markdownNode: CJNodeController | null = null
 
   onMarkDownChange():void {
-    this.markdownNode?.freshCJ(this.mdStr)
+    this.markdownNode?.callbackCJ("fresh", this.mdStr)
+  }
+
+  aboutToReuse(): void {
+    this.markdownNode?.callbackCJ("reuse", this.mdStr)
+  }
+
+  aboutToRecycle(): void {
+    this.markdownNode?.callbackCJ("recycle", this.mdStr)
   }
 
   aboutToAppear(): void {

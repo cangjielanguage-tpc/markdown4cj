@@ -53,9 +53,15 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
         .function(
             {
                 ctx1: JSContext, callInfo1: JSCallInfo =>
-                let input = callInfo1[0].asString().toString()
-                comp.updateMarkDown(input)
-                return ctx.undefined().toJSValue()
+                let methodName = String.fromJSValue(ctx1, callInfo1[0])
+                if (methodName == 'fresh') {
+                    comp.updateMarkDown(callInfo1[1].toString())
+                } else if (methodName == 'reuse') {
+                    comp.aboutToCJReuse(callInfo1[1].toString())
+                } else if (methodName == 'recycle') {
+                    comp.aboutToCJRecycle(callInfo1[1].toString())
+                }
+                return ctx1.undefined().toJSValue()
             }
         )
         .toJSValue()

@@ -188,5 +188,5 @@ export declare interface CustomLib {
     CJMarkdownTheme: {new (): CJMarkdownTheme}
     CJMarkdownPlugin: {new (): CJMarkdownPlugin}
     setGlobalContext(context: Context): void
-    getLoadCJPage(mdStr: string,isFull: boolean, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin): (input: string) => void
+    getLoadCJPage(mdStr: string,isFull: boolean, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin): (methodName: string, input: string) => void
 }

@@ -55,6 +55,14 @@ class CJMarkdownComponent {
         mdStr = input
     }
 
+    public func aboutToCJReuse(input: String) {
+        mdStr = input
+    }
+
+    public func aboutToCJRecycle(input: String) {
+        mdStr = input
+    }
+
     func setPlugin():Markdown{
         let markdownBuilder:MarkdownBuilder = Markdown.builder()
         if(let Some(v) <- plugin){

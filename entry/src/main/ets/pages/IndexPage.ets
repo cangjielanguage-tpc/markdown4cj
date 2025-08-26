@@ -184,6 +184,14 @@ struct IndexPage {
               "pages/DemoPage"
             )
           }
+
+          ListItem() {
+            itemListComponent(
+              "18、bug样例",
+              0xFFFF0000,
+              "pages/CJpage"
+            )
+          }
         }
         // 设置ListItem在List交叉轴方向的布局方式
         .alignListItem(ListItemAlign.Center)
