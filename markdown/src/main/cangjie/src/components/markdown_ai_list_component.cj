@@ -197,7 +197,7 @@ public class MarkdownAIListComponent {
                 nodeViewAIDataSource.replaceData(refreshNodeViewSize - 1, refreshNodeViews[refreshNodeViewSize - 1])
                 // 循环删除所有多余数据
                 for (i in dataSourceSize - refreshNodeViewSize..0 : -1) {
-                    nodeViewAIDataSource.deleteData(dataSourceSize - i)
+                    nodeViewAIDataSource.deleteData(i)
                 }
             }
         }
