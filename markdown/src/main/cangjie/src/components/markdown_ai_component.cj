@@ -367,8 +367,13 @@ public class MarkdownAIComponent {
             // 组件区域变化事件
             .onAreaChange {
                 old, new =>
-                    if(componentWidth != new.width){
-                        componentWidth = new.width
+                    let newWidth: Float64 = if (DeviceInfo.majorVersion <= 5 && DeviceInfo.seniorVersion <= 0 && DeviceInfo.featureVersion <= 0 && DeviceInfo.buildVersion <= 103) {
+                        vp2px(new.width.vp).getOrThrow().value
+                    } else {
+                        new.width
+                    }
+                    if(componentWidth != newWidth){
+                        componentWidth = newWidth
                     }
             }
             // 设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
