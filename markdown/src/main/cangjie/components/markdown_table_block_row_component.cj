@@ -170,7 +170,7 @@ class MarkdownTableBlockRowComponent {
                 nodeViewList.append(refreshNodeViews[refreshNodeViewSize - 1])
                 // 循环删除所有多余数据
                 for (i in nodeViewListSize - refreshNodeViewSize..0 : -1) {
-                    nodeViewList.remove(nodeViewListSize - i)
+                    nodeViewList.remove(i)
                 }
             }
         }

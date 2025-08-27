@@ -37,6 +37,7 @@
     "pages/AllPage",
     "pages/AllDetailsPage",
     "pages/DemoPage",
-    "pages/CJpage"
+    "pages/CJpage",
+    "pages/CJpage1"
   ]
 }

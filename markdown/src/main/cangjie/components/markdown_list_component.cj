@@ -203,7 +203,7 @@ public class MarkdownListComponent {
                 nodeViewDataSource.replaceData(refreshNodeViewSize - 1, refreshNodeViews[refreshNodeViewSize - 1])
                 // 循环删除所有多余数据
                 for (i in dataSourceSize - refreshNodeViewSize..0 : -1) {
-                    nodeViewDataSource.deleteData(dataSourceSize - i)
+                    nodeViewDataSource.deleteData(i)
                 }
             }
         }

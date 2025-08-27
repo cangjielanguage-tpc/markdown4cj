@@ -9,17 +9,19 @@ class MyDataSource implements IDataSource {
   unregisterDataChangeListener(listener: DataChangeListener): void {
   }
 
-  public dataArray: string[] = []
+  public dataArray: TextData[] = []
 
   public totalCount(): number {
     return this.dataArray.length;
   }
 
-  public getData(index: number): string {
+  public getData(index: number): TextData {
     return this.dataArray[index];
   }
 
-  public pushData(data: string): void {
+  public pushData(str: string): void {
+    const data = new TextData();
+    data.text = str
     this.dataArray.push(data);
   }
 }
@@ -37,40 +39,40 @@ struct CJpage {
   private data: MyDataSource = new MyDataSource();
   prefix:string ="哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈。\n"
   aboutToAppear(): void {
-      // let fileData = getContext().resourceManager.getRawFileContentSync('big-markdown.txt')
-      // let decoder = new util.TextDecoder('utf-8');
-      // let output = decoder.decode(fileData);
-      //this.data.pushData(output + "1")
+      let fileData = getContext().resourceManager.getRawFileContentSync('big-markdown.txt')
+      let decoder = new util.TextDecoder('utf-8');
+      let output = decoder.decode(fileData);
+      this.data.pushData(output + "1")
       this.data.pushData(this.prefix+"test1")
       this.data.pushData(this.prefix+"test2")
-      this.data.pushData(this.prefix+"test3")
-      this.data.pushData(this.prefix+"test4")
-      this.data.pushData(this.prefix+"test5")
-    this.data.pushData("哈哈")
-    this.data.pushData(this.prefix+"test6")
-      this.data.pushData(this.prefix+"test7")
-      this.data.pushData(this.prefix+"test8")
-      this.data.pushData(this.prefix+"test9")
-      this.data.pushData(this.prefix+"test10")
-      this.data.pushData(this.prefix+"test11")
-      this.data.pushData(this.prefix+"test12")
-      this.data.pushData(this.prefix+"test13")
-      this.data.pushData(this.prefix+"test14")
-      this.data.pushData(this.prefix+"test15")
-      this.data.pushData(this.prefix+"test16")
-      this.data.pushData(this.prefix+"test17")
-      this.data.pushData(this.prefix+"test18")
-      this.data.pushData(this.prefix+"test19")
-      this.data.pushData(this.prefix+"test20")
-      this.data.pushData(this.prefix+"test21")
-      this.data.pushData(this.prefix+"test22")
-    this.data.pushData(this.prefix+"test23")
-    this.data.pushData(this.prefix+"test24")
-    this.data.pushData(this.prefix+"test25")
-    this.data.pushData(this.prefix+"test26")
-    this.data.pushData(this.prefix+"test27")
-    this.data.pushData(this.prefix+"test28")
-    this.data.pushData(this.prefix+"test29")
+    //   this.data.pushData(this.prefix+"test3")
+    //   this.data.pushData(this.prefix+"test4")
+    //   this.data.pushData(this.prefix+"test5")
+    // this.data.pushData("哈哈")
+    // this.data.pushData(this.prefix+"test6")
+    //   this.data.pushData(this.prefix+"test7")
+    //   this.data.pushData(this.prefix+"test8")
+    //   this.data.pushData(this.prefix+"test9")
+    //   this.data.pushData(this.prefix+"test10")
+    //   this.data.pushData(this.prefix+"test11")
+    //   this.data.pushData(this.prefix+"test12")
+    //   this.data.pushData(this.prefix+"test13")
+    //   this.data.pushData(this.prefix+"test14")
+    //   this.data.pushData(this.prefix+"test15")
+    //   this.data.pushData(this.prefix+"test16")
+    //   this.data.pushData(this.prefix+"test17")
+    //   this.data.pushData(this.prefix+"test18")
+    //   this.data.pushData(this.prefix+"test19")
+    //   this.data.pushData(this.prefix+"test20")
+    //   this.data.pushData(this.prefix+"test21")
+    //   this.data.pushData(this.prefix+"test22")
+    // this.data.pushData(this.prefix+"test23")
+    // this.data.pushData(this.prefix+"test24")
+    // this.data.pushData(this.prefix+"test25")
+    // this.data.pushData(this.prefix+"test26")
+    // this.data.pushData(this.prefix+"test27")
+    // this.data.pushData(this.prefix+"test28")
+    // this.data.pushData(this.prefix+"test29")
 
 
     // fileData = getContext().resourceManager.getRawFileContentSync('001_图片.md')
@@ -117,8 +119,8 @@ struct CJpage {
     // this.data.pushData("test77")
   }
 
-  @State textData:TextData= new TextData()
-  index = 0
+  @State textData: TextData = new TextData();
+   index: number = 0
 
   build() {
     Column(){
@@ -128,41 +130,40 @@ struct CJpage {
         true,
         this.safeTop
       )
-      List() {
-        LazyForEach(this.data, (item: string) => {
-          ListItem() {
-            MyComponent({text: item})
-          }
-        }
-        // ,
-        // (item: string,idx:number) => {
-        //   return `${idx} - ${item}`
-        // }
-        )
-      }
-      .height('100%')
-      .width("100%")
-      .cachedCount(2)
-      .divider({strokeWidth: 10})
-      // Text("点击切换文本")
-      //   .alignSelf(ItemAlign.Center)
-      //   .fontSize(40)
-      //   .onClick(()=>{
-      //     // this.textData.text = ""
-      //     // setTimeout(()=>{
-      //     //   this.textData.text = this.data.getData(this.index)
-      //     // },50)
-      //     this.textData.text = this.data.getData(this.index)
-      //     this.index++
-      //     if (this.index >= this.data.totalCount()) {
-      //       this.index = 0
+      // List() {
+      //   LazyForEach(this.data, (item: TextData) => {
+      //     ListItem() {
+      //       MyComponent({data: item})
       //     }
       //   })
-      // Column() {
-      //   CJMarkdown({mdStr: this.textData.text,
-      //     theme: {copyIcon: $r('app.media.startIcon'),
-      //       isFull:false}})
-      // }.width("50%")
+      // }
+      // .width("100%")
+      // .cachedCount(2)
+      // .divider({strokeWidth: 10})
+      Text("点击切换文本")
+        .alignSelf(ItemAlign.Center)
+        .fontSize(40)
+        .onClick(()=>{
+          // this.textData.text = ""
+          // setTimeout(()=>{
+          //   this.textData.text = this.data.getData(this.index)
+          // },50)
+          this.textData = this.data.getData(this.index)
+          this.index++
+          if (this.index >= this.data.totalCount()) {
+            this.index = 0
+          }
+        })
+      Column() {
+        // CJMarkdown({mdStr: this.textData.text,
+        //   theme: {copyIcon: $r('app.media.startIcon'),
+        //     isFull:false}})
+
+        CJMarkdown({mdStr: this.textData.text,
+          isFull:false,
+          cfg: setMarkdownConfig(),
+          plugin: setPlugin()})
+      }.width("50%")
     }.width("100%")
     .alignItems(HorizontalAlign.Center)
 
@@ -172,14 +173,11 @@ struct CJpage {
   // itemView(text: string) {
   //   Column() {
   //     CJMarkdown({mdStr: text,
-  //       isFull:false,
-  //       cfg: setMarkdownConfig(),
-  //       plugin: setPlugin()})
+  //       theme: {copyIcon: $r('app.media.startIcon'),
+  //         isFull:false}})
   //   }.width("50%")
   // }
 }
-
-
 
 function setMarkdownConfig(): MarkdownConfiguration {
   let config = new MarkdownConfiguration()
@@ -202,30 +200,24 @@ function setPlugin(): MarkdownPlugin {
   return plugin
 }
 
-@Reusable
-@Component
-struct MyComponent {
-  @State
-  text: string = ""
-  aboutToAppear(): void {
-    console.log(this.text + " aboutToAppear")
-  }
-  aboutToReuse(params:Record<string,string>): void {
-    // this.text = params
-
-    // console.log(this.text + " aboutToReuse")
-
-    console.log(params.text + " aboutToReuse")
-    this.text = params.text
-
-  }
-  build() {
-    Column() {
-      // Text(this.text)
-      CJMarkdown({mdStr: this.text,
-      isFull:false,
-      cfg: setMarkdownConfig(),
-      plugin: setPlugin()})
-    }.width("50%")
-  }
-}     
+// @Reusable
+// @Component
+// struct MyComponent {
+//   @Prop data: TextData
+//   aboutToAppear(): void {
+//     console.log("aboutToCJAppear HM " + this.data.text)
+//   }
+//   aboutToReuse(): void {
+//     console.log("aboutToCJReuse HM " + this.data.text)
+//   }
+//   build() {
+//     Column() { CJMarkdown({mdStr: this.data.text,
+//       isFull:false,
+//       cfg: setMarkdownConfig(),
+//       plugin: setPlugin()})
+//       // CJMarkdown({mdStr: this.data.text,
+//       //   theme: {copyIcon: $r('app.media.startIcon'),
+//       //     isFull:false}})
+//     }.width("50%")
+//   }
+// }

@@ -187,9 +187,17 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "18、bug样例",
+              "19、bug样例",
               0xFFFF0000,
               "pages/CJpage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "20、bug样例",
+              0xFFFF0000,
+              "pages/CJpage1"
             )
           }
         }
