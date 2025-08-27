@@ -639,7 +639,7 @@ public class MarkdownComponent {
                         nodeViewDataSource.replaceData(nodeViewsSize - 1, nodeViews[nodeViewsSize - 1])
                         // 循环删除所有多余数据
                         for (i in nodeViewListSize - nodeViewsSize..0 : -1) {
-                            nodeViewDataSource.deleteData(nodeViewListSize - i)
+                            nodeViewDataSource.deleteData(i)
                         }
                     }
                     syncCounter.dec()

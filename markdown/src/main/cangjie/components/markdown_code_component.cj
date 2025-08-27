@@ -139,8 +139,8 @@ class MarkdownCodeComponent {
                 lineInt64Array.replaceData(refreshNodeViewSize - 1, arr[refreshNodeViewSize - 1])
                 // 循环删除所有多余数据
                 for (i in dataSourceSize - refreshNodeViewSize..0 : -1) {
-                    lineStrArray.deleteData(dataSourceSize - i)
-                    lineInt64Array.deleteData(dataSourceSize - i)
+                    lineStrArray.deleteData(i)
+                    lineInt64Array.deleteData(i)
                 }
             }
         }
