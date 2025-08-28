@@ -34,7 +34,15 @@ func isAudio(destination: String): Bool {
 
 class BlockAudioVisitor <: AbstractVisitor {
     public func visit(p: Heading): Unit {
-        visit(p, {=> Heading()})
+        visit(
+            p,
+            {
+                =>
+                let h = Heading()
+                h.setLevel(p.getLevel())
+                return h
+            }
+        )
     }
     public func visit(p: Paragraph): Unit {
         visit(p, {=> Paragraph()})
