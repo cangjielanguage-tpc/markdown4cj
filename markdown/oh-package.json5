@@ -1,6 +1,6 @@
 {
   "name": "@cangjie-tpc/markdown",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库。",
   "main": "Index.ets",
   "author": "cangjie-tpc",
