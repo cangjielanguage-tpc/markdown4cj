@@ -143,8 +143,7 @@ class MarkdownAITableBlockRowComponent {
                 // 刷新数据的长度大于页面数据长度，需要添加数据
                 if (nodeViewListSize != 0) {
                     // 更新页面最后一条数据
-                    nodeViewList.remove(nodeViewListSize - 1)
-                    nodeViewList.append(refreshNodeViews[nodeViewListSize - 1])
+                    nodeViewList[nodeViewListSize - 1] = refreshNodeViews[nodeViewListSize - 1]
                 }
                 // 循环添加所有新增数据
                 for (i in refreshNodeViewSize - nodeViewListSize..0 : -1) {
@@ -166,11 +165,10 @@ class MarkdownAITableBlockRowComponent {
             } else {
                 // 刷新数据小于页面数据长度，需要删除数据
                 // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
-                nodeViewList.remove(refreshNodeViewSize - 1)
-                nodeViewList.append(refreshNodeViews[refreshNodeViewSize - 1])
+                nodeViewList[refreshNodeViewSize - 1] = refreshNodeViews[refreshNodeViewSize - 1]
                 // 循环删除所有多余数据
                 for (i in nodeViewListSize - refreshNodeViewSize..0 : -1) {
-                    nodeViewList.remove(nodeViewListSize - i)
+                    nodeViewList.remove(i)
                 }
             }
         }

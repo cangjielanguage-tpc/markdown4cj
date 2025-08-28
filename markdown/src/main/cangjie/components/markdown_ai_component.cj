@@ -559,7 +559,7 @@ public class MarkdownAIComponent {
                         nodeViewAIDataSource.replaceData(nodeViewsSize - 1, nodeViews[nodeViewsSize - 1])
                         // 循环删除所有多余数据
                         for (i in nodeViewListSize - nodeViewsSize..0 : -1) {
-                            nodeViewAIDataSource.deleteData(nodeViewListSize - i)
+                            nodeViewAIDataSource.deleteData(i)
                         }
                     }
                     syncCounter.dec()
