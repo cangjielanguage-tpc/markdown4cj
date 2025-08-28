@@ -18,12 +18,12 @@ import ohos.hilog.Hilog
 @Entry
 @Component
 class ListMarkdownPage {
-    let mdStr0: String = getFileContextStr("all.md")
-    let mdStr1: String = getFileContextStr("audio_video.md")
-    let mdStr4: String = getFileContextStr("big_data.md")
-    let mdStr2: String = getFileContextStr("latex.md")
-    let mdStr3: String = getFileContextStr("table.md")
-    let mdStr5: String = getFileContextStr("title.md")
+    let mdStr0: String = getFileContextStr("001_测试用例/超大数据.md")
+    let mdStr1: String = getFileContextStr("001_测试用例/002_标题.md")
+    let mdStr4: String = getFileContextStr("001_测试用例/003_段落.md")
+    let mdStr2: String = getFileContextStr("001_测试用例/004_分割线.md")
+    let mdStr3: String = getFileContextStr("001_测试用例/005_表格.md")
+    let mdStr5: String = getFileContextStr("001_测试用例/006_数学公式.md")
 
     let arr = [mdStr0, mdStr1, mdStr2, mdStr3, mdStr4, mdStr5]
 
@@ -41,6 +41,7 @@ class ListMarkdownPage {
                             Column() {
                                 MarkdownAIComponent(output: str, isFull: true, markdownAIConfiguration: setConfig())
                             }
+                            .height(500.percent)
                             // 边框颜色
                             .borderColor(Color.BLACK)
                             // 边框宽度
