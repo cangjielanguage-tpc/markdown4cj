@@ -1,3 +1,9 @@
+# 1.3.4
+
+1. 修复偶现数组越界
+2. 修复标题中包含音频视频闪退
+3. aboutToReuse和aboutToRecycle适配
+
 # 1.3.3
 
 1. 修改readme文档中错误链接
