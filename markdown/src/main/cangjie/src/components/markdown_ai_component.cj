@@ -92,6 +92,9 @@ public class MarkdownAIComponent {
      */
     var imageAndVideoList: ArrayList<String> = ArrayList<String>()
 
+    @BuilderParam
+    var ad: (NodeView) -> Unit = ADBuilder
+
     protected override func aboutToAppear(): Unit {
         markdownBase = Markdown
             .builder()
@@ -350,6 +353,10 @@ public class MarkdownAIComponent {
                                 oldValue, newValue => if (isFull) {
                                     indexHashMap.put((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
                                 }
+                            }
+                        } else if (item.node is BlockAD) {
+                            ListItem() {
+                                ad(item)
                             }
                         } else {
                             // TODO 其他节点
@@ -620,4 +627,9 @@ public class MarkdownAIComponent {
             v(url, imageAndVideoList)
         }
     }
+}
+
+@Builder
+func ADBuilder(item: NodeView){
+    Text("")
 }
