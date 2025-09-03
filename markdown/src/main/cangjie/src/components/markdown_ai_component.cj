@@ -120,6 +120,8 @@ public class MarkdownAIComponent {
             .usePlugin(ImageCollectPlugin.create())
             .build()
         incBase = IncreaseParser(markdownBase())
+        // 控件宽度 = 屏幕宽度
+        componentWidth = Float64(screenWidth)
         // 首次加载
         refreshData()
     }

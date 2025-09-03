@@ -262,7 +262,10 @@ class MarkdownAIHeadingComponent {
                             componentWidth: componentWidth,
                             imageMarginTop: imageMarginTop,
                             imageMarginBottom: imageMarginBottom,
-                            imageCallback: imageCallback
+                            imageCallback: imageCallback,
+                            linkCallback: markdownAIConfiguration.linkCallback,
+                            isLink: item.link.isSome(),
+                            linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None}
                         )
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
