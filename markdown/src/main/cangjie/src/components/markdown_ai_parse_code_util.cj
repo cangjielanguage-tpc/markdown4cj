@@ -9,7 +9,7 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 class MarkdownParseCodeUtil {
-    static func codeStrToRectPixelMap(strText: String, markdownAIConfiguration: MarkdownAIConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func codeStrToRectPixelMap(strText: String, markdownAIConfiguration: MarkdownAIConfiguration, isFakeBoldText: Bool, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
             var imageHeight: ?Float64 = Option<Float64>.None
@@ -28,7 +28,8 @@ class MarkdownParseCodeUtil {
                     markdownAIConfiguration.markdownAITheme.codeHeight,
                     ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
                     markdownAIConfiguration.markdownAITheme.codeLeftAndRightPadding,
-                    0.0
+                    0.0,
+                    isFakeBoldText
                 )
                 if (Thread.currentThread.hasPendingCancellation) {
                     return

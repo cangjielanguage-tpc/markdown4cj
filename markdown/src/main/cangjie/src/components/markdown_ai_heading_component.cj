@@ -184,7 +184,8 @@ class MarkdownAIHeadingComponent {
                             MarkdownAICodeLineImageSpanComponent(
                                 markdownAIConfiguration: markdownAIConfiguration,
                                 strCode: (item.node as Code)().getLiteral(),
-                                strUrl: linkUrl(item)
+                                strUrl: linkUrl(item),
+                                isFakeBoldText: true
                             )
                         }else{
                             headingCodeComponent(

@@ -162,7 +162,8 @@ class MarkdownAIParagraphComponent {
                             MarkdownAICodeLineImageSpanComponent(
                                 markdownAIConfiguration: markdownAIConfiguration,
                                 strCode: (item.node as Code)().getLiteral(),
-                                strUrl: linkUrl(item)
+                                strUrl: linkUrl(item),
+                                isFakeBoldText: item.strongEmphasis
                             )
                         } else {
                             paragraphCodeComponent(

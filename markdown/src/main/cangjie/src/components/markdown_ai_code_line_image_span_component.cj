@@ -56,6 +56,8 @@ public class MarkdownAICodeLineImageSpanComponent {
      */
     var maxWidth: Length = 100.percent
 
+    var isFakeBoldText: Bool = false
+
     protected override func aboutToAppear(): Unit {
         // 链接解析
         codeLinePixelmap()
@@ -103,6 +105,6 @@ public class MarkdownAICodeLineImageSpanComponent {
             }
         }
         // 解析内联代码
-        MarkdownParseCodeUtil.codeStrToRectPixelMap(strCode, markdownAIConfiguration, callback)
+        MarkdownParseCodeUtil.codeStrToRectPixelMap(strCode, markdownAIConfiguration, isFakeBoldText, callback)
     }
 }

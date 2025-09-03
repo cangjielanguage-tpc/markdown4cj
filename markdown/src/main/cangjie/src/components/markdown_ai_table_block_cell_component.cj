@@ -168,7 +168,8 @@ class MarkdownAITableBlockCellComponent {
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     strCode: (item.node as Code)().getLiteral(),
                                     strUrl: linkUrl(item),
-                                    maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
+                                    maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp,
+                                    isFakeBoldText: isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold) || item.strongEmphasis
                                 )
                             } else {
                                 tableComponentCode(

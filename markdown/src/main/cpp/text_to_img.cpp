@@ -275,9 +275,10 @@ UInt8Data drawCircleImage(char *str, float fontSize, uint32_t fontColor, uint32_
  */
 UInt8Data drawRectImage(char *str, float fontSize, uint32_t fontColor, uint32_t fontBackGroupColor,
                         uint32_t backGroupColor, float textHeight, OH_Drawing_ColorFormat colorFormat, float padding,
-                        float radius) {
+                        float radius, bool isFakeBoldText) {
     // 画文本和文本颜色
     OH_Drawing_Font *font = OH_Drawing_FontCreate();                                           // 创建font字体对象
+    OH_Drawing_FontSetFakeBoldText(font, isFakeBoldText);                                      // 用于设置增加描边宽度以近似粗体字体效果。
     OH_Drawing_FontSetTextSize(font, fontSize);                                                // 设置字体大小
     OH_Drawing_Rect *bounds = OH_Drawing_RectCreate(0.0, 0.0, 0.0, 0.0);                       // 创建矩形对象
     float w = 0.0;                                                                             // 文本宽度

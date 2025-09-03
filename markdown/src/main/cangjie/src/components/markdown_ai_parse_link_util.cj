@@ -71,7 +71,8 @@ class MarkdownParseLinkUtil {
                     markdownAIConfiguration.markdownAITheme.linkRectImageHeight,
                     ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
                     markdownAIConfiguration.markdownAITheme.linkRectImagePadding,
-                    markdownAIConfiguration.markdownAITheme.linkRectImageRadius
+                    markdownAIConfiguration.markdownAITheme.linkRectImageRadius,
+                    false
                 )
                 if (Thread.currentThread.hasPendingCancellation) {
                     return

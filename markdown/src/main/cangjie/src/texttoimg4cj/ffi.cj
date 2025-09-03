@@ -9,7 +9,7 @@ foreign {
         backGroupColor: UInt32, textHeight: Float32, colorFormat: Int32): UInt8Data
 
     func drawRectImage(str: CString, fontSize: Float32, fontColor: UInt32, fontBackGroupColor: UInt32,
-        backGroupColor: UInt32, textHeight: Float32, colorFormat: Int32, padding: Float32, radius: Float32): UInt8Data
+        backGroupColor: UInt32, textHeight: Float32, colorFormat: Int32, padding: Float32, radius: Float32, isFakeBoldText: Bool): UInt8Data
 
     func drawRectToolImage(str1: CString, str2: CString, fontSize: Float32, fontColor: UInt32,
         fontBackGroupColor: UInt32, backGroupColor: UInt32, borderColor: UInt32, borderWidth: Float32,
@@ -83,7 +83,7 @@ public func drawCircleImageButton(str: String, fontSize: Float64, fontColor: UIn
  * @return 图片数组数据
  */
 public func drawRectImageButton(str: String, fontSize: Float64, fontColor: UInt32, fontBackGroupColor: UInt32,
-    backGroupColor: UInt32, textHeight: Float64, colorFormat: ColorFormatEnum, padding: Float64, radius: Float64): Array<UInt8> {
+    backGroupColor: UInt32, textHeight: Float64, colorFormat: ColorFormatEnum, padding: Float64, radius: Float64, isFakeBoldText: Bool): Array<UInt8> {
     unsafe {
         // 文本
         var cstr = LibC.mallocCString(str)
@@ -101,7 +101,7 @@ public func drawRectImageButton(str: String, fontSize: Float64, fontColor: UInt3
             case COLOR_FORMAT_BGRA_8888 => BGRA_8888
         }
         var data: UInt8Data = drawRectImage(cstr, fontSizeFloat32, fontColor, fontBackGroupColor, backGroupColor,
-            textHeightFloat32, format, paddingFloat32, radiusFloat32)
+            textHeightFloat32, format, paddingFloat32, radiusFloat32, isFakeBoldText)
         var arr = Array<UInt8>(data.len, item: 0)
         for (i in 0..data.len) {
             arr[i] = data.data.read(i)
