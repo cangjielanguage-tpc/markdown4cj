@@ -118,6 +118,8 @@ public class MarkdownAIComponent {
             .usePlugin(FootnotePlugin.create())
             // 图片列表
             .usePlugin(ImageCollectPlugin.create())
+            // ID
+            .usePlugin(BlockIdPlugin.create())
             .build()
         incBase = IncreaseParser(markdownBase())
         // 控件宽度 = 屏幕宽度
@@ -366,6 +368,9 @@ public class MarkdownAIComponent {
                                 Text("")
                             }
                         }
+                    },
+                    keyGeneratorFunc:{
+                         item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
                     }
                 )
             }
