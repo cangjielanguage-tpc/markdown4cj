@@ -92,8 +92,23 @@ public class MarkdownAIComponent {
      */
     var imageAndVideoList: ArrayList<String> = ArrayList<String>()
 
+    /**
+     * 广告布局
+     */
     @BuilderParam
     var ad: (NodeView) -> Unit = ADBuilder
+
+    /**
+     * 视频布局
+     */
+    @BuilderParam
+    var videoBuilder: (NodeView, MarkdownAIConfiguration, (String) -> Unit) -> Unit = VideoBuilder
+
+    /**
+     * 音频布局
+     */
+    @BuilderParam
+    var audioBuilder: (NodeView, MarkdownAIConfiguration) -> Unit = AudioBuilder
 
     protected override func aboutToAppear(): Unit {
         markdownBase = Markdown
@@ -296,23 +311,12 @@ public class MarkdownAIComponent {
                         } else if (item.node is BlockAudio) {
                             // 音频
                             ListItem() {
-                                MarkdownAIImageAudioComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    nodeView: item,
-                                    marginTop: markdownAIConfiguration.markdownAITheme.audioMarginTop,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.audioMarginBottom
-                                )
+                                audioBuilder(item, markdownAIConfiguration)
                             }
                         } else if (item.node is BlockVideo) {
                             // 视频
                             ListItem() {
-                                MarkdownAIImageVideoComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    nodeView: item,
-                                    marginTop: markdownAIConfiguration.markdownAITheme.videoMarginTop,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.videoMarginBottom,
-                                    videoCallback: videoCallback
-                                )
+                                videoBuilder(item, markdownAIConfiguration, videoCallback)
                             }
                         } else if (item.node is LatexMathBlock) {
                             // 单行的数学公式
@@ -639,4 +643,25 @@ public class MarkdownAIComponent {
 @Builder
 func ADBuilder(item: NodeView){
     Text("")
+}
+
+@Builder
+func VideoBuilder(item: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, videoCallback: (String) -> Unit){
+    MarkdownAIImageVideoComponent(
+        markdownAIConfiguration: markdownAIConfiguration,
+        nodeView: item,
+        marginTop: markdownAIConfiguration.markdownAITheme.videoMarginTop,
+        marginBottom: markdownAIConfiguration.markdownAITheme.videoMarginBottom,
+        videoCallback: videoCallback
+    )
+}
+
+@Builder
+func AudioBuilder(item: NodeView, markdownAIConfiguration: MarkdownAIConfiguration){
+    MarkdownAIImageAudioComponent(
+        markdownAIConfiguration: markdownAIConfiguration,
+        nodeView: item,
+        marginTop: markdownAIConfiguration.markdownAITheme.audioMarginTop,
+        marginBottom: markdownAIConfiguration.markdownAITheme.audioMarginBottom
+    )
 }
