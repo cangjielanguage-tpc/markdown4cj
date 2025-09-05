@@ -32,6 +32,53 @@ public class MarkdownAIComponent {
     var markdownAIConfiguration: MarkdownAIConfiguration = MarkdownAIConfiguration.create()
 
     /**
+     * markdown插件
+     */
+    var markdownPlugin: Markdown = Markdown
+            .builder()
+            // HTML插件
+            .usePlugin(HtmlPlugin.create())
+            // 任务列表插件
+            .usePlugin(TaskListPlugin.create())
+            // 删除线插件
+            .usePlugin(StrikethroughPlugin.create())
+            // 表格插件
+            .usePlugin(TablePlugin.create())
+            // 数学公式插件
+            .usePlugin(LatexMathPluginV2.create())
+            // 音频插件
+            .usePlugin(BlockAudioPlugin.create())
+            // 视频插件
+            .usePlugin(BlockVideoPlugin.create())
+            // 自动链接插件
+            .usePlugin(LinkifyPlugin.create())
+            // 脚注插件
+            .usePlugin(FootnotePlugin.create())
+            // 图片列表插件
+            .usePlugin(ImageCollectPlugin.create())
+            // 唯一ID标识插件
+            .usePlugin(BlockIdPlugin.create())
+            .build()
+
+    /**
+     * 广告布局
+     */
+    @BuilderParam
+    var adBuilder: (NodeView) -> Unit = ADBuilder
+
+    /**
+     * 视频布局
+     */
+    @BuilderParam
+    var videoBuilder: (NodeView, MarkdownAIConfiguration, (String) -> Unit) -> Unit = VideoBuilder
+
+    /**
+     * 音频布局
+     */
+    @BuilderParam
+    var audioBuilder: (NodeView, MarkdownAIConfiguration) -> Unit = AudioBuilder
+
+    /**
      * 定位需要的数组
      */
     var indexList: ArrayList<Int64> = ArrayList<Int64>()
@@ -42,7 +89,7 @@ public class MarkdownAIComponent {
     let screenWidth: Int32 = getDefaultDisplaySync().width
 
     /**
-     * 控件宽度 - 单位px，（控件宽度 = 屏幕宽度 - padding）
+     * 控件宽度 - 单位vp
      */
     @State
     var componentWidth: Float64 = 0.0
@@ -63,11 +110,6 @@ public class MarkdownAIComponent {
     let scroller: Scroller = Scroller()
 
     /**
-     * markdown插件
-     */
-    var markdownBase: ?Markdown = Option<Markdown>.None
-
-    /**
      * markdown解析器
      */
     var incBase: ?IncreaseParser = Option<IncreaseParser>.None
@@ -75,7 +117,7 @@ public class MarkdownAIComponent {
     /**
      * 锁
      */
-    let parseReentrantMutex: ReentrantMutex = ReentrantMutex()
+    let parseReentrantMutex: Mutex = Mutex()
 
     /**
      * 刷新判定
@@ -93,40 +135,12 @@ public class MarkdownAIComponent {
     var imageAndVideoList: ArrayList<String> = ArrayList<String>()
 
     protected override func aboutToAppear(): Unit {
-        markdownBase = Markdown
-            .builder()
-            // HTML插件
-            .usePlugin(HtmlPlugin.create())
-            // 任务列表插件
-            .usePlugin(TaskListPlugin.create())
-            // 删除线插件
-            .usePlugin(StrikethroughPlugin.create())
-            // 表格插件
-            .usePlugin(TablePlugin.create())
-            // 数学公式
-            .usePlugin(LatexMathPluginV2.create())
-            // 音频
-            .usePlugin(BlockAudioPlugin.create())
-            // 视频
-            .usePlugin(BlockVideoPlugin.create())
-            // 链接
-            .usePlugin(linkButton())
-            // 脚注
-            .usePlugin(FootnotePlugin.create())
-            // 图片列表
-            .usePlugin(ImageCollectPlugin.create())
-            .build()
-        incBase = IncreaseParser(markdownBase())
+        // 加载插件
+        incBase = IncreaseParser(markdownPlugin)
+        // 默认控件宽度等于屏幕宽度
+        componentWidth = px2vp(Float64(screenWidth).px).getOrThrow().value
         // 首次加载
         refreshData()
-    }
-
-    func linkButton(): MarkdownPlugin {
-        return if (markdownAIConfiguration.markdownAITheme.isLinkStyle) {
-            LinkViewPlugin.create()
-        } else {
-            LinkifyPlugin.create()
-        }
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -289,23 +303,12 @@ public class MarkdownAIComponent {
                         } else if (item.node is BlockAudio) {
                             // 音频
                             ListItem() {
-                                MarkdownAIImageAudioComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    nodeView: item,
-                                    marginTop: markdownAIConfiguration.markdownAITheme.audioMarginTop,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.audioMarginBottom
-                                )
+                                audioBuilder(item, markdownAIConfiguration)
                             }
                         } else if (item.node is BlockVideo) {
                             // 视频
                             ListItem() {
-                                MarkdownAIImageVideoComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    nodeView: item,
-                                    marginTop: markdownAIConfiguration.markdownAITheme.videoMarginTop,
-                                    marginBottom: markdownAIConfiguration.markdownAITheme.videoMarginBottom,
-                                    videoCallback: videoCallback
-                                )
+                                videoBuilder(item, markdownAIConfiguration, videoCallback)
                             }
                         } else if (item.node is LatexMathBlock) {
                             // 单行的数学公式
@@ -350,6 +353,11 @@ public class MarkdownAIComponent {
                                 oldValue, newValue => if (isFull) {
                                     indexHashMap.add((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
                                 }
+                            }
+                        } else if (item.node is BlockAD) {
+                            // 广告
+                            ListItem() {
+                                adBuilder(item)
                             }
                         } else {
                             // TODO 其他节点
@@ -615,4 +623,30 @@ public class MarkdownAIComponent {
             v(url, imageAndVideoList)
         }
     }
+}
+
+@Builder
+func ADBuilder(item: NodeView){
+    Text("")
+}
+
+@Builder
+func VideoBuilder(item: NodeView, markdownAIConfiguration: MarkdownAIConfiguration, videoCallback: (String) -> Unit){
+    MarkdownAIImageVideoComponent(
+        markdownAIConfiguration: markdownAIConfiguration,
+        nodeView: item,
+        marginTop: markdownAIConfiguration.markdownAITheme.videoMarginTop,
+        marginBottom: markdownAIConfiguration.markdownAITheme.videoMarginBottom,
+        videoCallback: videoCallback
+    )
+}
+
+@Builder
+func AudioBuilder(item: NodeView, markdownAIConfiguration: MarkdownAIConfiguration){
+    MarkdownAIImageAudioComponent(
+        markdownAIConfiguration: markdownAIConfiguration,
+        nodeView: item,
+        marginTop: markdownAIConfiguration.markdownAITheme.audioMarginTop,
+        marginBottom: markdownAIConfiguration.markdownAITheme.audioMarginBottom
+    )
 }
