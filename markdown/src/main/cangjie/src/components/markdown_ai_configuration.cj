@@ -76,6 +76,7 @@ public class MarkdownAIConfiguration {
         dataNew = dataNew.replace("{gather*}", "{gather}")
         dataNew = dataNew.replace("{multline*}", "{multline}")
         dataNew = dataNew.replace("{eqnarray*}", "{eqnarray}")
+        dataNew = dataNew.replace("\\\\frac", "\\frac")
         return dataNew
     }
 
@@ -202,6 +203,7 @@ public class MarkdownAIConfigurationBuilder {
         dataNew = dataNew.replace("{gather*}", "{gather}")
         dataNew = dataNew.replace("{multline*}", "{multline}")
         dataNew = dataNew.replace("{eqnarray*}", "{eqnarray}")
+        dataNew = dataNew.replace("\\\\frac", "\\frac")
         return dataNew
     }
 
