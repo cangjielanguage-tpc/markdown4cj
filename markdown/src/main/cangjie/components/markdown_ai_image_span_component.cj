@@ -52,6 +52,11 @@ public class MarkdownAIImageSpanComponent {
     var imageCallback: (String) -> Unit
 
     /**
+     * 链接点击事件
+     */
+    var linkCallback: ?(String) -> Unit
+
+    /**
      * 图片加载完成
      */
     @State
@@ -67,6 +72,10 @@ public class MarkdownAIImageSpanComponent {
      * 图片默认占位图
      */
     var imagePlaceholder: ?String = None
+
+    var isLink: Bool = false
+
+    var linkUrl: ?String = Option<String>.None
 
     func build() {
         if (!isCompleted && !isError) {
@@ -103,14 +112,21 @@ public class MarkdownAIImageSpanComponent {
                 // 设置外边距属性
                 .margin(top: imageMarginTop, bottom: imageMarginBottom)
                 // 设置组件自身的宽度
-                .width(100.percent)
+                .width(componentWidth.px)
                 // 设置组件自身的高度
                 .height(px2vp(componentWidth.px).getOrThrow().value / (16.0 / 9.0))
                 // 设置图片的缩放类型
                 .objectFit(ImageFit.Cover)
                 // 点击动作触发该方法调用
                 .onClick {
-                    evt => imageOnClick(destination, imageCallback)
+                    evt =>
+                    if(isLink){
+                        if(linkCallback.isSome() && linkUrl.isSome()){
+                            linkCallback()(linkUrl())
+                        }
+                    } else {
+                        imageOnClick(destination, imageCallback)
+                    }
                 }
                 // 图片成功加载时触发该回调，返回成功加载的图片尺寸
                 .onComplete({

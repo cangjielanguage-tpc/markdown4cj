@@ -167,7 +167,8 @@ class MarkdownAITableBlockCellComponent {
                                 MarkdownAICodeLineImageSpanComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
                                     strCode: (item.node as Code)().getLiteral(),
-                                    strUrl: linkUrl(item)
+                                    strUrl: linkUrl(item),
+                                    maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
                                 )
                             } else {
                                 tableComponentCode(
@@ -216,6 +217,19 @@ class MarkdownAITableBlockCellComponent {
                                     )
                                 }
                             }
+                        } else if (item.node is CommonmarkImage) {
+                            // 图片节点
+                            MarkdownAIImageSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
+                                componentWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth),
+                                imageMarginTop: 0.0,
+                                imageMarginBottom: 0.0,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownAIConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None}
+                            )
                         } else if (item.node is LatexMathNode) {
                             // 数学公式节点
                             MarkdownAILatexImageSpanComponent(
