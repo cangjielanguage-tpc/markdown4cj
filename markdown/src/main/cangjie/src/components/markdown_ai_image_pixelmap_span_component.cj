@@ -21,20 +21,30 @@ public class MarkdownAIImagePixelmapSpanComponent {
     /**
      * 控件宽度 - 单位px
      */
-    @Prop
     var componentWidth: Float64
 
     /**
      * 图片宽度 - 单位px
      */
     @State
-    var width: Float64 = 0.0
+    var imageWidth: ?Float64 = Option<Float64>.None
 
     /**
      * 图片高度 - 单位px
      */
     @State
-    var height: Float64 = 0.0
+    var imageHeight: ?Float64 = Option<Float64>.None
+
+    /**
+     * 图片数据
+     */
+    @State
+    var imagePixelMap: Option<PixelMap> = Option<PixelMap>.None
+
+    /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
 
     /**
      * 图片上边距
@@ -45,11 +55,6 @@ public class MarkdownAIImagePixelmapSpanComponent {
      * 图片下边距
      */
     var imageMarginBottom: Float64 = 0.0
-
-    /**
-     * 图片点击事件
-     */
-    var imageCallback: (String) -> Unit
 
     /**
      * 链接点击事件
@@ -76,6 +81,10 @@ public class MarkdownAIImagePixelmapSpanComponent {
     var isLink: Bool = false
 
     var linkUrl: ?String = Option<String>.None
+
+    protected override func aboutToAppear(): Unit {
+
+    }
 
     func build() {
         if (!isCompleted && !isError) {

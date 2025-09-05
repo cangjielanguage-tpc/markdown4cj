@@ -18,11 +18,19 @@ public class MarkdownComponent {
     * @param output 传入markdown文档内容
     * @param isFull 是否全量加载 - true：全量加载，fasle：增量加载。默认true
     * @param markdownAIConfiguration 传入markdown配置选项
+    * @param markdownPlugin 传入markdown插件选项
+    * @param adBuilder 传入自定义广告布局
+    * @param videoBuilder 传入自定义视频布局
+    * @param audioBuilder 传入自定义音频布局
     */
     MarkdownComponent(
         output: String,
         isFull: Bool,
-        markdownAIConfiguration!: MarkdownAIConfiguration
+        markdownAIConfiguration!: MarkdownAIConfiguration,
+        markdownPlugin!: Markdown,
+        @BuilderParam adBuilder!: (NodeView) -> Unit,
+        @BuilderParam videoBuilder!: (NodeView, MarkdownAIConfiguration, (String) -> Unit) -> Unit,
+        @BuilderParam audioBuilder!: (NodeView, MarkdownAIConfiguration) -> Unit
     )
 }
 ```
