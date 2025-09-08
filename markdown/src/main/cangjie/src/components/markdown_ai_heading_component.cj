@@ -257,7 +257,7 @@ class MarkdownAIHeadingComponent {
                         )
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
-                        MarkdownAIImageSpanComponent(
+                        MarkdownAIImagePixelmapSpanComponent(
                             destination: (item.node as CommonmarkImage)().getDestination(),
                             imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
                             componentWidth: componentWidth,
@@ -266,7 +266,8 @@ class MarkdownAIHeadingComponent {
                             imageCallback: imageCallback,
                             linkCallback: markdownAIConfiguration.linkCallback,
                             isLink: item.link.isSome(),
-                            linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None}
+                            linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                            imageCallbackCallback : markdownAIConfiguration.imageCallbackCallback
                         )
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点

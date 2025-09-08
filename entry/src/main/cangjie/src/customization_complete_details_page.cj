@@ -12,6 +12,10 @@ import markdown.components.*
 import std.sync.*
 import std.time.*
 import ohos.hilog.*
+import ohos.image.createImageSource
+import ohos.image.ImageSource
+import ohos.image.PixelMap
+import ohos.resource_manager.*
 
 /**
  * 定制化全量加载详情页面
@@ -41,6 +45,8 @@ class CustomizationCompleteDetailsPage {
      */
     @State
     var folderList: ObservedArrayList<String> = ObservedArrayList<String>()
+
+    var pixelMap:?PixelMap = None
 
     protected override func aboutToAppear(): Unit {
         params = (Router.getParams().getOrThrow() as String).getOrThrow()
@@ -80,6 +86,7 @@ class CustomizationCompleteDetailsPage {
         let markdownConfigurationBuilder: MarkdownAIConfigurationBuilder = MarkdownAIConfiguration.emptyBuilder()
         markdownConfigurationBuilder.setMarkdownAITheme(setMarkdownAITheme())
         markdownConfigurationBuilder.setImageCallback(imageCallback)
+        markdownConfigurationBuilder.setImageCallbackCallback(imageCallbackCallback)
         markdownConfigurationBuilder.setVideoCallback(videoCallback)
         markdownConfigurationBuilder.setVideoImageCallback(videoImageCallback)
         markdownConfigurationBuilder.setLinkCallback(linkCallback)
@@ -232,6 +239,11 @@ class CustomizationCompleteDetailsPage {
     func imageCallback(url: String, urls: ArrayList<String>) {
         Hilog.error(1,"1","------------------------imageCallback:${url}")
 //        arkLinkCallback(url,1)
+    }
+
+    func imageCallbackCallback(url: String):?Array<UInt8> {
+        var arrayUInt8: Array<UInt8> =  ResourceManager.getResourceManager(getStageContext(getGlobalAbilityContext())).getRawFileContent("startIcon.png")
+        return arrayUInt8
     }
 
     func videoCallback(url: String, urls: ArrayList<String>) {

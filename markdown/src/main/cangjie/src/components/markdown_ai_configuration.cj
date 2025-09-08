@@ -30,7 +30,7 @@ public class MarkdownAIConfiguration {
     /**
      * 图片替换事件
      */
-    protected var imageCallbackCallback: ?(String) -> (?Array<UInt8>, ?Float64, ?Float64) = None
+    protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
 
     /**
      * 音频的点击事件
@@ -157,7 +157,7 @@ public class MarkdownAIConfigurationBuilder {
     /**
      * 图片替换事件
      */
-    protected var imageCallbackCallback: ?(String) -> (?Array<UInt8>, ?Float64, ?Float64) = None
+    protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
 
     /**
      * 音频的点击事件
@@ -275,7 +275,7 @@ public class MarkdownAIConfigurationBuilder {
      * @param imageCallbackCallback 图片替换回调接口 (String:图片链接 -> ?Array<UInt8>:图片数据,?Float64:图片宽度,?Float64:图片高度)
      * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
-    public func setImageCallbackCallback(imageCallbackCallback: (String) -> (?Array<UInt8>, ?Float64, ?Float64)): MarkdownAIConfigurationBuilder {
+    public func setImageCallbackCallback(imageCallbackCallback: (String) -> ?Array<UInt8>): MarkdownAIConfigurationBuilder {
         this.imageCallbackCallback = imageCallbackCallback
         return this
     }
