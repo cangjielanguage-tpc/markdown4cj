@@ -28,6 +28,11 @@ public class MarkdownAIConfiguration {
     protected var imageCallback: ?(String, ArrayList<String>) -> Unit = None
 
     /**
+     * 图片替换事件
+     */
+    protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
+
+    /**
      * 音频的点击事件
      */
     protected var audioCallback: ?(String) -> Unit = None
@@ -89,6 +94,7 @@ public class MarkdownAIConfiguration {
         this.markdownAITheme = builder.markdownAITheme
         this.linkCallback = builder.linkCallback
         this.imageCallback = builder.imageCallback
+        this.imageCallbackCallback = builder.imageCallbackCallback
         this.audioCallback = builder.audioCallback
         this.videoCallback = builder.videoCallback
         this.videoImageCallback = builder.videoImageCallback
@@ -147,6 +153,11 @@ public class MarkdownAIConfigurationBuilder {
      * 图片的点击事件
      */
     protected var imageCallback: ?(String, ArrayList<String>) -> Unit = None
+
+    /**
+     * 图片替换事件
+     */
+    protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
 
     /**
      * 音频的点击事件
@@ -213,6 +224,7 @@ public class MarkdownAIConfigurationBuilder {
         this.markdownAITheme = configuration.markdownAITheme
         this.linkCallback = configuration.linkCallback
         this.imageCallback = configuration.imageCallback
+        this.imageCallbackCallback = configuration.imageCallbackCallback
         this.audioCallback = configuration.audioCallback
         this.videoCallback = configuration.videoCallback
         this.videoImageCallback = configuration.videoImageCallback
@@ -254,6 +266,17 @@ public class MarkdownAIConfigurationBuilder {
      */
     public func setImageCallback(imageCallback: (String, ArrayList<String>) -> Unit): MarkdownAIConfigurationBuilder {
         this.imageCallback = imageCallback
+        return this
+    }
+
+    /**
+     * 设置图片替换事件
+     *
+     * @param imageCallbackCallback 图片替换回调接口 (String:图片链接 -> ?Array<UInt8>:图片数据)
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
+     */
+    public func setImageCallbackCallback(imageCallbackCallback: (String) -> ?Array<UInt8>): MarkdownAIConfigurationBuilder {
+        this.imageCallbackCallback = imageCallbackCallback
         return this
     }
 

@@ -80,6 +80,7 @@ class CustomizationCompleteDetailsPage {
         let markdownConfigurationBuilder: MarkdownAIConfigurationBuilder = MarkdownAIConfiguration.emptyBuilder()
         markdownConfigurationBuilder.setMarkdownAITheme(setMarkdownAITheme())
         markdownConfigurationBuilder.setImageCallback(imageCallback)
+        markdownConfigurationBuilder.setImageCallbackCallback(imageCallbackCallback)
         markdownConfigurationBuilder.setVideoCallback(videoCallback)
         markdownConfigurationBuilder.setVideoImageCallback(videoImageCallback)
         markdownConfigurationBuilder.setLinkCallback(linkCallback)
@@ -231,39 +232,34 @@ class CustomizationCompleteDetailsPage {
 
     func imageCallback(url: String, urls: ArrayList<String>) {
         Hilog.error(1,"1","------------------------imageCallback:${url}")
-//        arkLinkCallback(url,1)
     }
 
     func videoCallback(url: String, urls: ArrayList<String>) {
         Hilog.error(1,"1","------------------------videoCallback:${url}")
-//        arkLinkCallback(url,2)
     }
 
     func videoImageCallback(url: String, videoImageCallbackCallback: (String, Float64, Int64) -> Unit) {
         Hilog.error(1,"1","------------------------videoImageCallback:${url}")
-//        arkLinkCallback(url,3)
+    }
+
+    func imageCallbackCallback(url: String):?Array<UInt8> {
+        var arrayUInt8: Array<UInt8> =  ResourceManager.getResourceManager(getStageContext(getGlobalAbilityContext())).getRawFileContent("startIcon.png")
+        return arrayUInt8
     }
 
     func linkCallback(url: String) {
         Hilog.error(1,"1","------------------------LinkCallback:${url}")
-//        arkLinkCallback(url,4)
     }
 
     func codeCopyCallback(url: String) {
-//        let sysBoard = getSystemPasteboard()
-//        sysBoard.setData(createData("text/plain", url))
-//        arkShowToast("复制成功")
         Hilog.error(1,"1","------------------------codeCopyCallback:${url}")
-//        arkLinkCallback(url,5)
     }
 
     func codeFullScreenCallback(url: String, infos: ?String) {
         Hilog.error(1,"1","------------------------codeFullScreenCallback:${url} ${infos}")
-//        arkLinkCallback(url,6)
     }
 
     func latexImageCallbackCallback(data: Array<UInt8>, height: Length, width: Length) {
         Hilog.error(1,"1","------------------------latexImageCallbackCallback:${data.size} ${height.value} ${width.value}")
-        //arkLinkCallback(url,7)
     }
 }

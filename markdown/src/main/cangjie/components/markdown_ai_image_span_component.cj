@@ -77,6 +77,10 @@ public class MarkdownAIImageSpanComponent {
 
     var linkUrl: ?String = Option<String>.None
 
+    protected override func aboutToAppear(): Unit {
+        componentWidth = px2vp(componentWidth.px).getOrThrow().value
+    }
+
     func build() {
         if (!isCompleted && !isError) {
             if (imagePlaceholder.isSome()) {
