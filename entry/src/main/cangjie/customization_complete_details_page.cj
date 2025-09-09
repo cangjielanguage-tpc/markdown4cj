@@ -71,253 +71,199 @@ class CustomizationCompleteDetailsPage {
         }
     }
 
-    /**
-     * 设置MarkdownAIConfiguration
-     *
-     * @return MarkdownAIConfiguration
-     */
     func setConfig(): MarkdownAIConfiguration {
-        let MarkdownAIConfigurationBuilder: MarkdownAIConfigurationBuilder = MarkdownAIConfiguration.emptyBuilder()
-        // 设置markdown默认样式
-        MarkdownAIConfigurationBuilder.setMarkdownAITheme(setMarkdownAITheme())
-        // 设置链接的点击事件
-        MarkdownAIConfigurationBuilder.setLinkCallback(linkCallback)
-        // 设置图片的点击事件
-        MarkdownAIConfigurationBuilder.setImageCallback(imageCallback)
-        // 设置音频的点击事件
-        MarkdownAIConfigurationBuilder.setAudioCallback(audioCallback)
-        // 设置视频的点击事件
-        MarkdownAIConfigurationBuilder.setVideoCallback(videoCallback)
-        // 设置视频的图片替换回调
-        MarkdownAIConfigurationBuilder.setVideoImageCallback(videoImageCallback)
-        // 设置代码复制按钮的点击事件
-        MarkdownAIConfigurationBuilder.setCodeCopyCallback(codeCopyCallback)
-        // 设置代码全屏按钮的点击事件
-        MarkdownAIConfigurationBuilder.setCodeFullScreenCallback(codeFullScreenCallback)
-        // 设置数学公式图片点击事件
-        MarkdownAIConfigurationBuilder.setLatexImageCallbackCallback(latexImageCallbackCallback)
-        // 设置脚注跳转指定位置
-        MarkdownAIConfigurationBuilder.setFootnoteCallback(footnoteCallback)
-        return MarkdownAIConfigurationBuilder.build()
+//        AppLog.error("CJMarkDown fontSize " + (if (let Some(v) <- fontSize) {v} else {15.0}).toString())
+//        AppLog.error("CJMarkDown fontColor " + (if (let Some(v) <- fontColor) {v} else {UInt32(0xFF222222)}).toString())
+//        AppLog.error("CJMarkDown lineHeight " + (if (let Some(v) <- lineHeight) {v} else { 0.0 }).toString())
+//        AppLog.error("CJMarkDown lineStyle " + (if (let Some(v) <- linkStyle) {v} else { "button" }).toString())
+//        AppLog.error("CJMarkDown copyIcon " + (if (let Some(v) <- copyIcon) {v.id} else { 404 }).toString())
+        let markdownConfigurationBuilder: MarkdownAIConfigurationBuilder = MarkdownAIConfiguration.emptyBuilder()
+        markdownConfigurationBuilder.setMarkdownAITheme(setMarkdownAITheme())
+        markdownConfigurationBuilder.setImageCallback(imageCallback)
+        markdownConfigurationBuilder.setVideoCallback(videoCallback)
+        markdownConfigurationBuilder.setVideoImageCallback(videoImageCallback)
+        markdownConfigurationBuilder.setLinkCallback(linkCallback)
+        markdownConfigurationBuilder.setCodeCopyCallback(codeCopyCallback)
+        markdownConfigurationBuilder.setCodeFullScreenCallback(codeFullScreenCallback)
+        markdownConfigurationBuilder.setLatexImageCallbackCallback(latexImageCallbackCallback)
+        return markdownConfigurationBuilder.build()
     }
 
-    /**
-     * 设置MarkdownAITheme
-     *
-     * @return MarkdownAITheme
-     */
     func setMarkdownAITheme(): MarkdownAITheme {
-        let markdownAIThemeBuilder: MarkdownAIThemeBuilder = MarkdownAITheme.emptyBuilder()
+        let markdownTheme: MarkdownAITheme = MarkdownAITheme
+            .emptyBuilder()
 
-        // 1、上下文
-        markdownAIThemeBuilder.setAbilityContext(getGlobalAbilityContext()) // 设置上下文
+             .setIsLinkSize(false)
+             //设置每个模块之间上下间距
+             .setBlockTopAndBottomMargins(6.0)
 
-        // 2、模块间距
-        markdownAIThemeBuilder.setBlockTopAndBottomMargins(10.0) // 设置每个模块之间上下间距
+             // 设置段落字体颜色
+//            .setParagraphTextColor(if (let Some(v) <- fontColor) {Color(v)} else {Color(0xFF000000)})
+            .setParagraphTextColor(Color(0xFF000000))
+             // 设置段落字体大小
+//            .setParagraphTextSize(if (let Some(v) <- fontSize) {v} else {16.0})
+             // 设置段落字体大小
+            .setParagraphTextSize(16.0)
+             // 设置段落文本行高
+//            .setParagraphTextLineHeight(if (let Some(v) <- lineHeight) {v} else {22.0})
+            .setParagraphTextLineHeight(22.0)
+            // 设置段落文本字间距
+            .setParagraphTextWordSpace(0.5)
 
-        // 3、链接
-        markdownAIThemeBuilder.setIsLinkSize(false) // 设置链接是否是图片显示
-        markdownAIThemeBuilder.setIsLinkStyle(false) // 设置链接是否是图片显示
-        // 文本格式
-        markdownAIThemeBuilder.setLinkColor(Color.RED) // 设置文本格式链接的文本颜色
-        markdownAIThemeBuilder.setLinkSize(15.0) // 设置文本格式链接文字大小
-        markdownAIThemeBuilder.setIsLinkUnderlined(false) // 设置是否显示文本格式链接下划线
-        // 圆形图片
-        markdownAIThemeBuilder.setLinkCircleImageRadius(16.0) // 设置圆形链接半径
-        markdownAIThemeBuilder.setLinkCircleImageTextSize(10.0) // 设置圆形链接文字大小
-        markdownAIThemeBuilder.setLinkCircleImageMargin(2.0) // 设置圆形链接左右边距
-        markdownAIThemeBuilder.setLinkCircleImageBackGroupColor(Color.WHITE) // 设置圆形链接主题背景颜色
-        markdownAIThemeBuilder.setLinkCircleImageButtonBackGroupColor(Color.BLACK) // 设置圆形链接控件背景颜色
-        markdownAIThemeBuilder.setLinkCircleImageTextColor(Color.WHITE) // 设置圆形链接文字颜色
-        // 圆角图片
-        markdownAIThemeBuilder.setLinkRectImageRadius(16.0) // 设置圆角矩形链接圆角半径
-        markdownAIThemeBuilder.setLinkRectImageMargin(2.0) // 设置圆角矩形链接左右边距
-        markdownAIThemeBuilder.setLinkRectImageHeight(16.0) // 设置圆角矩形链接控件高度
-        markdownAIThemeBuilder.setLinkRectImageTextSize(10.0) // 设置圆角矩形链接文字大小
-        // 空心圆角图片
-        markdownAIThemeBuilder.setLinkRectToolImageDividingLineWidth(1.0) // 设置空心圆角矩形链接分割线宽度
-        markdownAIThemeBuilder.setLinkRectToolImageTextSize(11.0) // 设置空心圆角矩形链接文字大小
-        markdownAIThemeBuilder.setLinkRectToolImageMargin(2.0) // 设置空心圆角矩形链接左右边距
+            // 设置一级二级标题下划线高度
+            .setHeadingBreakHeight(0.0)
+            // 设置标题字体大小
+            .setHeadingTextSizeMultipliers([20.0, 18.0, 17.0, 16.0, 15.0, 14.0]) // fp
+            // 标题颜色
+            .setHeadingTextColor(Color(0xFF000000))
 
-        // 4、列表
-        markdownAIThemeBuilder.setBlockOrderedAndBulletTopAndBottomMargins(0.0) // 设置列表子模块间距
-        markdownAIThemeBuilder.setBlockQuoteTopAndBottomMargins(0.0) // // 设置块引用子模块间距
-        // 块引用
-        markdownAIThemeBuilder.setBlockQuoteColor(Color.RED) // 设置块引用左边线条颜色
-        markdownAIThemeBuilder.setBlockQuoteBackGroupColor(Color.GRAY) // 设置块引用背景颜色
-        markdownAIThemeBuilder.setBlockQuoteRightMargin(0.0) // 设置块引用右边距
-        // 有序列表
-        markdownAIThemeBuilder.setOrderedListItemSize(15.0) // 设置有序列表项的字体大小
-        markdownAIThemeBuilder.setOrderedListItemLineHeight(25.0) // 设置有序列表项文本行高
-        markdownAIThemeBuilder.setOrderedListItemPrefixBold(true) // 设置有序列表前缀是否加粗
-        // 无序列表
-        markdownAIThemeBuilder.setBulletListItemColor(Color.GREEN) // 设置无序列表项的颜色
-        markdownAIThemeBuilder.setBulletListItemLineHeight(22.0) // 设置无序列表项文本行高
-        // 任务列表
+            //块引用左边距
+            .setBlockQuoteLeftMargin(3.0)
+            //块引用竖线和文字的间隔
+            .setBlockQuoteRightMargin(10.0)
+            //设置块引用左边线条宽度
+            .setBlockQuoteWidth(3.0)
+             //设置块引用左边线条颜色
+            .setBlockQuoteColor(Color(0xFFE7E7E9))
 
-        // 5、代码
-        // 内联代码
-        markdownAIThemeBuilder.setCodeTextColor(Color(0xFFFF5722)) // 设置内联代码文本颜色
-        // 代码块
-        markdownAIThemeBuilder.setCodeCopyIcon(@r(app.media.app_icon)) // 设置代码复制按钮默认图标
-        markdownAIThemeBuilder.setCodeBlockRadius(0.0) //  设置代码块圆角
-        markdownAIThemeBuilder.setCodeBlockTypeTextColor(Color.RED) // 设置代码块代码类型文本颜色
-        markdownAIThemeBuilder.setCodeBlockIconTextHide(false) // 设置代码块图片文字是否显示隐藏
-        markdownAIThemeBuilder.setCodeBlockLineNumberHide(false) // 设置代码块代码行号是否显示隐藏
-        markdownAIThemeBuilder.setCodeBlockTypeTextStr("代码") // 设置代码块代码类型默认文本
-        markdownAIThemeBuilder.setCodeBlockTypeTextPadding(10.0) // 设置代码类型和代码块距离
-        // 组合代码
-        // 单独代码块
-        markdownAIThemeBuilder.setIsSeparateCodeBlock(false) // 设置是否单独代码块
 
-        // 6、标题
-        markdownAIThemeBuilder.setHeadingBreakHeight(0.0) // 设置H1、H2标题下分割线高度
-        markdownAIThemeBuilder.setHeadingTextSizeMultipliers([20.0, 15.0, 15.0, 15.0, 15.0, 10.0]) // 设置标题文本大小数组
-        markdownAIThemeBuilder.setHeadingTextColor(Color(0xFF222222)) // 设置标题字体颜色
-        markdownAIThemeBuilder.setHeadingTextLineHeight1(25.0) // 设置一级标题文本行高
-        markdownAIThemeBuilder.setHeadingTextLineHeight2(25.0) // 设置二级标题文本行高
-        markdownAIThemeBuilder.setHeadingTextLineHeight3(25.0) // 设置三级标题文本行高
-        markdownAIThemeBuilder.setHeadingTextLineHeight4(25.0) // 设置四级标题文本行高
-        markdownAIThemeBuilder.setHeadingTextLineHeight5(25.0) // 设置五级标题文本行高
-        markdownAIThemeBuilder.setHeadingTextLineHeight6(25.0) // 设置六级标题文本行高
+             //设置有序列表项的字体大小(实际是开头序号大小)
+            .setOrderedListItemSize(16.0)
+             // 有序列表是否加粗
+            .setOrderedListItemPrefixBold(true)
+            //设置无序列表项的字体大小（实际是左边小圆点的大小）
+            .setBulletListItemSize(8.0)
+            //设置无序列表项行高(配合无序列表字体大小可以让圆点居中)
+            .setBulletListItemLineHeight(20.0)
 
-        // 7、段落
-        markdownAIThemeBuilder.setParagraphTextColor(Color(0xFF222222)) // 设置段落字体颜色
-        markdownAIThemeBuilder.setParagraphTextSize(15.0) // 设置段落字体大小
-        markdownAIThemeBuilder.setParagraphTextLineHeight(25.0) // 设置段落文本行高
 
-        // 8、分割线
-        markdownAIThemeBuilder.setThematicBreakColor(Color.BLUE) // 设置分割线颜色
-        markdownAIThemeBuilder.setThematicBreakTopMargin(20.0) // 设置分割线上部外边距
+            //设置链接颜色
+            .setLinkColor(Color(0xFF1B539A))
+            //设置是否显示链接下划线
+            .setIsLinkUnderlined(false)
+            //设置链接文字大小
+            .setLinkSize(16.0)
 
-        // 9、软换行
-        markdownAIThemeBuilder.setIsLineBreak(true) // 设置软换行是否换行
+            //分割线颜色
+            .setThematicBreakColor(Color(0xFFE7E7E9))
+            //分割线上部外边距
+            .setThematicBreakTopMargin(10.0)
+            //分割线下部外边距
+            .setThematicBreakBottomMargin(10.0)
 
-        // 10、数学公式
-        markdownAIThemeBuilder.setLatexMathBackGroupColor(Color(0xFFFBFBFB)) // 设置数学公式背景色
-        markdownAIThemeBuilder.setLatexMathTextColor(Color.GREEN) // 设置数学公式字体颜色
-        markdownAIThemeBuilder.setLatexMathBlockCenter(true) // 设置块结构的数学公式是否居中
+            //设置表格内容内边距 - 单位vp
+            .setTableCellPadding(6.0)
+            //设置表格边框颜色
+            .setTableBorderColor(Color(0xFFE6E7E8))
+            //设置表格最大宽度，宽度超过屏幕可以左右滑动
+            .setTableMaxTextWidth(100.0)
+            //设置表格最小宽度，宽度超过屏幕可以左右滑动
+            .setTableMinTextWidth(100.0)
+            //表格第一列字体加粗
+            .setTableFirstColumnBold(true)
+            //设置表格奇数行背景色
+            .setTableOddRowBackgroundColor(Color.TRANSPARENT)
+            //设置表格偶数行背景色
+            .setTableEvenRowBackgroundColor(Color.TRANSPARENT)
 
-        // 11、音频
-        markdownAIThemeBuilder.setAudioIcon(@r(app.media.app_icon)) // 设置音频icon
+            //设置内联代码文本颜色
+            .setCodeTextColor(Color(0xFF000000))
+            //设置内联代码背景颜色，需要内联代码图片显示选项
+            .setIsCodeStyle(true)
+            .setCodeBackgroundColor(Color(0xFFF2F3F4))
+            //设置内联代码文本大小
+            .setCodeTextSize(16.0)
 
-        // 12、视频
-        markdownAIThemeBuilder.setVideoImage(@r(app.media.place_holder)) // 设置视频默认占位图
-        markdownAIThemeBuilder.setPlayCircleFillIcon(@r(app.media.play_circle_fill)) // 设置视频播放按钮默认图标
+            //设置代码块系列（缩进代码、围栏代码、组合代码）文本大小
+            .setCodeBlockTextSize(14.0)
+            //设置代码块系列（缩进代码、围栏代码、组合代码）文本颜色
+            .setCodeBlockTextColor(Color(0xFF000000))
+            //设置代码块系列（缩进代码、围栏代码、组合代码）背景颜色
+            .setCodeBlockBackgroundColor(Color(0xFFF2F3F4))
+            //代码块语言类型文本颜色
+            .setCodeBlockTypeTextColor(Color(0xFF686c72))
+            // 代码复制按钮默认图
+//            .setCodeCopyIcon(if (let Some(v) <- copyIcon) {v} else {@r(app.media.startIcon)})
+            // 代码复制按钮默认图
+            .setCodeCopyIcon(@r(app.media.startIcon))
+            // 代码复制按钮隐藏
+            .setCodeBlockIconTextHide(false)
+            //设置代码全屏按钮和代码复制按钮宽高
+            .setIconWidthAndHeight(15.0)
+            //设置代码块系列（缩进代码、围栏代码、组合代码）圆角
+            .setCodeBlockRadius(6.0)
+            //代码块行号是否显示
+            .setCodeBlockLineNumberHide(false)
+            // 块结构公式居中
+            .setLatexMathBlockCenter(true)
+            // 公式资源路径
+//            .setLatexMathResStr("/data/storage/el1/bundle/entry/resources/resfile/res")
+            //代码块代码类型默认文本
+//            .setCodeBlockTypeTextStr(if (let Some(v) <- defaultCodeTitle) {v} else { "" })
+            //代码块代码类型默认文本
+            .setCodeBlockTypeTextStr("")
+            //代码类型和代码块距离
+            .setCodeBlockTypeTextPadding(10.0)
 
-        // 13、图片Banner
-
-        // 14、图片
-        markdownAIThemeBuilder.setImagePadding(20) //  设置图片宽度边距
-
-        // 15、表格
-        markdownAIThemeBuilder.setTableHeaderRowBackgroundColor(Color(0xFFF5F7FA)) // 设置表格头背景色
-        markdownAIThemeBuilder.setTableOddRowBackgroundColor(Color(0xFFFAFAFA)) // 设置表格奇数行背景色
-        markdownAIThemeBuilder.setTableEvenRowBackgroundColor(Color(0xFFFFFFFF)) // 设置表格偶数行背景色
-        markdownAIThemeBuilder.setTableBorderWidth(2.0) // 设置表格边框宽度
-        markdownAIThemeBuilder.setTableBorderColor(Color.RED) // 设置表格边框颜色
-        markdownAIThemeBuilder.setTableFirstColumnBold(true) // 设置表格第一列是否加粗
-
-        // 16、代码高亮
-        markdownAIThemeBuilder.setPrismTheme(PrismThemeDarkula.create()) // 设置markdown代码高亮样式
-
-        return markdownAIThemeBuilder.build()
+////            // 代码块背景色
+//            .setCodeBlockBackgroundColor(Color(0xFF282C35))
+//            .setCodeBlockTextColor(Color(0xFFF5F5F5))
+//            // 数学公式
+//            .setLatexMathBackGroupColor(Color(0xFFFBFBFB))
+//            // 设置上下文
+//            .setStageContext(GlobalContext.getContext().getOrThrow())
+//            // 链接样式 button 或 文字
+//            .setIsLinkStyle(if (let Some(v) <- linkStyle) { if (v == "button") { true } else { false }} else { true })
+//            // 链接相关样式
+//            .setLinkCircleImageRadius(16.0)
+//            .setLinkCircleImageTextSize(10.0)
+//            .setLinkCircleImageMargin(2.0)
+//            .setLinkRectImageRadius(16.0)
+//            .setLinkRectImageMargin(2.0)
+//            .setLinkRectImageHeight(16.0)
+//            .setLinkRectImageTextSize(10.0)
+//            .setLinkRectToolImageDividingLineWidth(1.0)
+//            .setLinkRectToolImageTextSize(11.0)
+//            .setLinkRectToolImageMargin(2.0)
+            .build()
+        return markdownTheme
     }
 
-    /**
-     * 链接的点击事件
-     *
-     * @param url 链接url
-     */
-    func linkCallback(url: String): Unit {
-        PromptAction.showToast(message: url)
-        Hilog.error(1, "1", "------------------------LinkCallback:${url}")
+    func imageCallback(url: String, urls: ArrayList<String>) {
+        Hilog.error(1,"1","------------------------imageCallback:${url}")
+//        arkLinkCallback(url,1)
     }
 
-    /**
-     * 图片的点击事件
-     *
-     * @param url 图片url
-     * @param arr 图片和视频的url集合
-     */
-    func imageCallback(url: String, arr: ArrayList<String>): Unit {
-        PromptAction.showToast(message: url)
-        Hilog.error(1, "1", "------------------------LinkCallback:${url},arr:${arr}")
+    func videoCallback(url: String, urls: ArrayList<String>) {
+        Hilog.error(1,"1","------------------------videoCallback:${url}")
+//        arkLinkCallback(url,2)
     }
 
-    /**
-     * 音频的点击事件
-     *
-     * @param url 音频url
-     */
-    func audioCallback(url: String): Unit {
-        PromptAction.showToast(message: url)
-        Hilog.error(1, "1", "------------------------LinkCallback:${url}")
-    }
-
-    /**
-     * 视频的点击事件
-     *
-     * @param url 视频url
-     * @param arr 图片和视频的url集合
-     */
-    func videoCallback(url: String, arr: ArrayList<String>): Unit {
-        PromptAction.showToast(message: url)
-        Hilog.error(1, "1", "------------------------videoCallback:${url},arr:${arr}")
-    }
-
-    /**
-     * 视频的图片替换回调
-     *
-     * @param url 视频url
-     * @param videoImageCallbackCallback 视频首帧图回调
-     */
     func videoImageCallback(url: String, videoImageCallbackCallback: (String, Float64, Int64) -> Unit) {
-        Hilog.error(1, "1", "------------------------videoImageCallback:${url}")
+        Hilog.error(1,"1","------------------------videoImageCallback:${url}")
+//        arkLinkCallback(url,3)
     }
 
-    /**
-     * 代码复制按钮的点击事件
-     *
-     * @param code 代码内容
-     */
-    func codeCopyCallback(code: String): Unit {
-        PromptAction.showToast(message: code)
-        Hilog.error(1, "1", "------------------------codeCopyCallback:${code}")
+    func linkCallback(url: String) {
+        Hilog.error(1,"1","------------------------LinkCallback:${url}")
+//        arkLinkCallback(url,4)
     }
 
-    /**
-     * 代码全屏按钮的点击事件
-     *
-     * @param code 代码内容
-     * @param infos 代码类型
-     */
-    func codeFullScreenCallback(code: String, infos: ?String): Unit {
-        PromptAction.showToast(message: "${code}${infos}")
-        Hilog.error(1, "1", "------------------------codeFullScreenCallback:${code}")
-        Hilog.error(1, "1", "------------------------codeFullScreenCallback:${infos}")
+    func codeCopyCallback(url: String) {
+//        let sysBoard = getSystemPasteboard()
+//        sysBoard.setData(createData("text/plain", url))
+//        arkShowToast("复制成功")
+        Hilog.error(1,"1","------------------------codeCopyCallback:${url}")
+//        arkLinkCallback(url,5)
     }
 
-    /**
-     * 数学公式图片点击事件
-     *
-     * @param data 数学公式图片数组内容
-     * @param height 图片高度
-     * @param width 图片宽度
-     */
-    func latexImageCallbackCallback(data: Array<UInt8>, height: Length, width: Length): Unit {
-        Hilog.error(1, "1", "------------------------data:${data}")
-        Hilog.error(1, "1", "------------------------height:${height.value}")
-        Hilog.error(1, "1", "------------------------width:${width.value}")
+    func codeFullScreenCallback(url: String, infos: ?String) {
+        Hilog.error(1,"1","------------------------codeFullScreenCallback:${url} ${infos}")
+//        arkLinkCallback(url,6)
     }
 
-    /**
-     * 脚注跳转指定位置
-     *
-     * @param f 指定位置
-     */
-    func footnoteCallback(f: ?Float64): Unit {
-        scroller.scrollBy(xOffset: 0.0, yOffset: f.getOrThrow())
-        Hilog.error(1, "2", "------------------------footnoteCallback:f:${f}")
+    func latexImageCallbackCallback(data: Array<UInt8>, height: Length, width: Length) {
+        Hilog.error(1,"1","------------------------latexImageCallbackCallback:${data.size} ${height.value} ${width.value}")
+        //arkLinkCallback(url,7)
     }
 }
