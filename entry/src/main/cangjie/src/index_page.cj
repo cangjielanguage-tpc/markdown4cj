@@ -86,6 +86,12 @@ class IndexPage {
                             "ListMarkdownPage1"
                         )
                     }
+                    ListItem() {
+                        itemListComponent(
+                            "11、连续输入数学公式闪退",
+                            "TestErrorPage"
+                        )
+                    }
                 }
                 // 设置ListItem在List交叉轴方向的布局方式
                 .alignListItem(ListItemAlign.Center)

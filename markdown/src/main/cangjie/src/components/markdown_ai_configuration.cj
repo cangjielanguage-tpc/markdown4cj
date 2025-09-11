@@ -272,7 +272,7 @@ public class MarkdownAIConfigurationBuilder {
     /**
      * 设置图片替换事件
      *
-     * @param imageCallbackCallback 图片替换回调接口 (String:图片链接 -> ?Array<UInt8>:图片数据,?Float64:图片宽度,?Float64:图片高度)
+     * @param imageCallbackCallback 图片替换回调接口 (String:图片链接 -> ?Array<UInt8>:图片数据)
      * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
      */
     public func setImageCallbackCallback(imageCallbackCallback: (String) -> ?Array<UInt8>): MarkdownAIConfigurationBuilder {
