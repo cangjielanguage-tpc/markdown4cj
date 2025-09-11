@@ -25,6 +25,7 @@ let COLOR_33000000: Color = Color(0x33000000)
 let COLOR_FF0000FF: Color = Color(0xFF0000FF)
 let COLOR_FF191919: Color = Color(0xFF191919)
 let COLOR_80000000: Color = Color(0x80000000)
+let COLOR_01000000: Color = Color(0x01000000)
 let null: NodeView = unsafe { zeroValue() }
 let SECONDS_PER_HOUR: Int64 = 3600
 let SECONDS_PER_MINUTE: Int64 = 60
@@ -280,7 +281,7 @@ func spanBackgroundColor(isCode: Bool, isLink: Bool, markdownAITheme: MarkdownAI
     } else {
         // 不需要背景色设置
 //        Color.TRANSPARENT
-        Color.WHITE
+        COLOR_01000000
     }
 }
 

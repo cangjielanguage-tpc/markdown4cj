@@ -46,7 +46,12 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    r.draw(g2, markdownAIConfiguration.markdownAITheme.latexMathBackGroupColor.toUInt32())
+                    let latexMathBackGroupColor:UInt32 = if(markdownAIConfiguration.markdownAITheme.latexMathBackGroupColor.toUInt32() == Color.TRANSPARENT.toUInt32()){
+                        0x01000000
+                    } else {
+                        markdownAIConfiguration.markdownAITheme.latexMathBackGroupColor.toUInt32()
+                    }
+                    r.draw(g2, latexMathBackGroupColor)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -113,7 +118,12 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    r.draw(g2, backGroupColor.toUInt32())
+                    let latexMathBackGroupColor:UInt32 = if(backGroupColor.toUInt32() == Color.TRANSPARENT.toUInt32()){
+                        0xFFFFFFFF
+                    } else {
+                        backGroupColor.toUInt32()
+                    }
+                    r.draw(g2, latexMathBackGroupColor)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
