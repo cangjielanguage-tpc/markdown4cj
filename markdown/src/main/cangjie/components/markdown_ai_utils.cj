@@ -264,17 +264,22 @@ func spanDecoration(nodeView: NodeView, markdownAITheme: MarkdownAITheme): (Text
 }
 
 /**
- * TODO 内联代码背景色设置
+ * 文本背景色设置
  *
  * @param isCode 是否是内联代码
  * @param markdownAITheme markdown基础样式
  * @return 返回需要显示的背景颜色
  */
-func spanBackgroundColor(isCode: Bool, markdownAITheme: MarkdownAITheme): Color {
-    // 内联代码情况需要设置背景色
+func spanBackgroundColor(isCode: Bool, isLink: Bool, markdownAITheme: MarkdownAITheme): Color {
     return if (isCode) {
+        // 内联代码情况需要设置背景色
         markdownAITheme.codeBackgroundColor
+    } else if(isLink) {
+        // 链接情况需要设置背景色
+        markdownAITheme.linkBackGroupColor
     } else {
+        // 不需要背景色设置
+//        Color.TRANSPARENT
         Color.WHITE
     }
 }

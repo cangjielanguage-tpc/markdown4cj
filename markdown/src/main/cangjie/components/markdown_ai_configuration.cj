@@ -18,6 +18,11 @@ public class MarkdownAIConfiguration {
     protected var markdownAITheme: MarkdownAITheme = MarkdownAITheme.emptyBuilder().build()
 
     /**
+     * 文本复制的点击事件
+     */
+    protected var textCopyCallback: ?(String) -> Unit = None
+
+    /**
      * 链接的点击事件
      */
     protected var linkCallback: ?(String) -> Unit = None
@@ -92,6 +97,7 @@ public class MarkdownAIConfiguration {
 
     protected init(builder: MarkdownAIConfigurationBuilder) {
         this.markdownAITheme = builder.markdownAITheme
+        this.textCopyCallback = builder.textCopyCallback
         this.linkCallback = builder.linkCallback
         this.imageCallback = builder.imageCallback
         this.imageCallbackCallback = builder.imageCallbackCallback
@@ -143,6 +149,11 @@ public class MarkdownAIConfigurationBuilder {
      * markdown默认样式
      */
     protected var markdownAITheme: MarkdownAITheme = MarkdownAITheme.emptyBuilder().build()
+
+    /**
+     * 文本复制的点击事件
+     */
+    protected var textCopyCallback: ?(String) -> Unit = None
 
     /**
      * 链接的点击事件
@@ -222,6 +233,7 @@ public class MarkdownAIConfigurationBuilder {
 
     init(configuration: MarkdownAIConfiguration) {
         this.markdownAITheme = configuration.markdownAITheme
+        this.textCopyCallback = configuration.textCopyCallback
         this.linkCallback = configuration.linkCallback
         this.imageCallback = configuration.imageCallback
         this.imageCallbackCallback = configuration.imageCallbackCallback
@@ -244,6 +256,17 @@ public class MarkdownAIConfigurationBuilder {
      */
     public func setMarkdownAITheme(markdownAITheme: MarkdownAITheme): MarkdownAIConfigurationBuilder {
         this.markdownAITheme = markdownAITheme
+        return this
+    }
+
+    /**
+     * 设置文本复制的点击事件
+     *
+     * @param textCopyCallback 文本复制的点击事件 (String:复制文本)
+     * @return MarkdownAIConfigurationBuilder MarkdownAIConfigurationBuilder对象
+     */
+    public func setTextCopyCallback(textCopyCallback: (String) -> Unit): MarkdownAIConfigurationBuilder {
+        this.textCopyCallback = textCopyCallback
         return this
     }
 

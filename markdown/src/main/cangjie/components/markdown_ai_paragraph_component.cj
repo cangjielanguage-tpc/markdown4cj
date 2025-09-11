@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import ohos.hilog.Hilog
 
 /**
  * Markdown段落自定义页面
@@ -130,6 +131,24 @@ class MarkdownAIParagraphComponent {
     }
 
     func build() {
+        Column(){
+            paragraphComponent()
+        }
+        // 设置外边距属性
+        .margin(top: isMarginTop(), bottom: isMarginBottom())
+        // 设置组件自身的宽度
+        .width(100.percent)
+        // 设置子组件在水平方向上的对齐格式
+        .alignItems(HorizontalAlign.Start)
+        // 设置子组件在垂直方向上的对齐格式
+        .justifyContent(FlexAlign.Center)
+    }
+
+    /**
+     * 段落文字内容
+     */
+    @Builder
+    func paragraphComponent18() {
         Text() {
             if (footnoteBlock.isSome()) {
                 Span("[^${footnoteBlock().noteid}]: ")
@@ -263,12 +282,171 @@ class MarkdownAIParagraphComponent {
         }
         // 设置多行文本的文本对齐方式
         .textAlign(TextAlign.Start)
-        // 设置外边距属性
-        .margin(top: isMarginTop(), bottom: isMarginBottom())
-        // 设置组件自身的宽度
-        .width(100.percent)
         // 设置行高
         .lineHeight(markdownAIConfiguration.markdownAITheme.paragraphTextLineHeight)
+    }
+
+    /**
+     * 段落文字内容
+     */
+    @Builder
+    func paragraphComponent19() {
+        Text() {
+            if (footnoteBlock.isSome()) {
+                Span("[^${footnoteBlock().noteid}]: ")
+                    // 设置文本尺寸
+                    .fontSize(markdownAIConfiguration.markdownAITheme.paragraphTextSize)
+                    // 设置文本的字体粗细
+                    .fontWeight(FontWeight.W400)
+                    // 设置文本颜色
+                    .fontColor(markdownAIConfiguration.markdownAITheme.paragraphTextColor)
+            }
+            ForEach(
+                nodeViewList,
+                itemGeneratorFunc: {
+                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
+                        // 文本
+                        paragraphTextComponent(
+                            item,
+                            markdownAIConfiguration
+                        )
+                    } else if (item.node is Footnote) {
+                        // 脚注
+                        paragraphFootnoteComponent(
+                            item,
+                            markdownAIConfiguration,
+                            fontCallback
+                        )
+                    } else if (item.node is Code) {
+                        // 内联代码
+                        if (markdownAIConfiguration.markdownAITheme.isCodeStyle) {
+                            MarkdownAICodeLineImageSpanComponent(
+                                markdownAIConfiguration: markdownAIConfiguration,
+                                strCode: (item.node as Code)().getLiteral(),
+                                strUrl: linkUrl(item),
+                                isFakeBoldText: item.strongEmphasis
+                            )
+                        } else {
+                            paragraphCodeComponent(
+                                item,
+                                markdownAIConfiguration
+                            )
+                        }
+                    } else if (item.node is CommonmarkLink) {
+                        // 链接
+                        if (isListTo && !markdownAIConfiguration.markdownAITheme.isListLinkStyle && isOneLink) {
+                            if(getLinkString(item).isSome()){
+                                paragraphLinkComponent(
+                                    item,
+                                    getLinkString(item)(),
+                                    markdownAIConfiguration
+                                )
+                            }else{
+                                Span("")
+                            }
+                        } else {
+                            if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
+                                    if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
+                                        MarkdownAILinkRectImageComponent(
+                                            markdownAIConfiguration: markdownAIConfiguration,
+                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownAIConfiguration.markdownAITheme.linkRectImageBackGroupColor)
+                                        )
+                                    } else {
+                                        MarkdownAILinkCircleImageComponent(
+                                            markdownAIConfiguration: markdownAIConfiguration,
+                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownAIConfiguration.markdownAITheme.linkCircleImageBackGroupColor)
+                                        )
+                                    }
+                                }
+                            } else {
+                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
+                                    MarkdownAILinkRectToolImageComponent(
+                                        markdownAIConfiguration: markdownAIConfiguration,
+                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
+                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownAIConfiguration.markdownAITheme.linkRectToolImageBackGroupColor)
+                                    )
+                                }
+                            }
+                        }
+                    } else if (item.node is HardLineBreak) {
+                        // 硬换行
+                        Span("\n")
+                    } else if (item.node is SoftLineBreak) {
+                        // 软换行
+                        Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
+                    } else if (item.node is ImageHtmlNode) {
+                        // HTML图片
+                        MarkdownAIHtmlImageSpanComponent(
+                            destination: (item.node as ImageHtmlNode)().getDestination(),
+                            imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
+                            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                            componentWidth: componentWidth,
+                            imageMarginTop: imageMarginTop,
+                            imageMarginBottom: imageMarginBottom,
+                            imageCallback: imageCallback
+                        )
+                    } else if (item.node is CommonmarkImage) {
+                        // 图片节点
+                        MarkdownAIImagePixelmapSpanComponent(
+                            destination: (item.node as CommonmarkImage)().getDestination(),
+                            imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
+                            componentWidth: componentWidth,
+                            imageMarginTop: imageMarginTop,
+                            imageMarginBottom: imageMarginBottom,
+                            imageCallback: imageCallback,
+                            linkCallback: markdownAIConfiguration.linkCallback,
+                            isLink: item.link.isSome(),
+                            linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                            imageCallbackCallback : markdownAIConfiguration.imageCallbackCallback
+                        )
+                    } else if (item.node is LatexMathNode) {
+                        // 数学公式节点
+                        MarkdownAILatexImageSpanComponent(
+                            markdownAIConfiguration: markdownAIConfiguration,
+                            componentWidth: componentWidth,
+                            strLatexMath: (item.node as LatexMathNode)().latex,
+                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownAIConfiguration.markdownAITheme.latexMathBackGroupColor)
+                        )
+                    } else {
+                        // TODO 其他节点
+                        Span("")
+                    }
+                }
+            )
+        }
+        // 设置多行文本的文本对齐方式
+        .textAlign(TextAlign.Start)
+        // 设置行高
+        .lineHeight(markdownAIConfiguration.markdownAITheme.paragraphTextLineHeight)
+        // 支持设备内复制
+        .copyOption(CopyOptions.LocalDevice)
+        // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
+        .onCopy({
+            str =>
+                if(markdownAIConfiguration.textCopyCallback.isSome()){
+                   markdownAIConfiguration.textCopyCallback()(str)
+                }
+        })
+    }
+
+    /**
+     * 段落文字内容
+     */
+    @Builder
+    func paragraphComponent() {
+        if(DeviceInfo.sdkApiVersion >=19){
+            paragraphComponent19()
+        } else {
+            paragraphComponent18()
+        }
     }
 
     func isMarginTop():Float64{

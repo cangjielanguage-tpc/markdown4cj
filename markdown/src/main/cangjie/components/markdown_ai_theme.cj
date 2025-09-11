@@ -94,7 +94,7 @@ public class MarkdownAITheme {
     /**
      * 文本格式链接背景颜色
      */
-    protected var linkBackGroupColor: Color = COLOR_FF000000
+    protected var linkBackGroupColor: Color = COLOR_FFFFFFFF
 
     /**
      * 文本格式是否显示链接下划线
