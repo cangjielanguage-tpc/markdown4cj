@@ -9,6 +9,8 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import ohos.concurrency.*
 import markdown.components.*
+import markdown.plugin.*
+import markdown.core.*
 import std.sync.*
 import std.time.*
 import ohos.hilog.*
@@ -58,7 +60,8 @@ class CompleteDetailsPage {
                     MarkdownAIComponent(
                         output: mdStr,
                         isFull: true,
-                        markdownAIConfiguration: setConfig()
+                        markdownAIConfiguration: setConfig(),
+                        markdownPlugin: setPlugin()
                     )
                 }
             }
@@ -211,6 +214,40 @@ class CompleteDetailsPage {
         markdownAIThemeBuilder.setPrismTheme(PrismThemeDarkula.create()) // 设置markdown代码高亮样式
 
         return markdownAIThemeBuilder.build()
+    }
+
+    /**
+     * 设置MarkdownAIConfiguration
+     *
+     * @return MarkdownAIConfiguration
+     */
+    func setPlugin(): Markdown {
+        var markdownPlugin: Markdown = Markdown
+            .builder()
+            // HTML插件
+            .usePlugin(HtmlPlugin.create())
+            // 任务列表插件
+            .usePlugin(TaskListPlugin.create())
+            // 删除线插件
+            .usePlugin(StrikethroughPlugin.create())
+            // 表格插件
+            .usePlugin(TablePlugin.create())
+            // 数学公式插件
+            .usePlugin(LatexMathPluginV2.create())
+            // 音频插件
+            .usePlugin(BlockAudioPlugin.create())
+            // 视频插件
+            .usePlugin(BlockVideoPlugin.create())
+            // 自动链接插件
+            .usePlugin(LinkViewPlugin.create())
+            // 脚注插件
+            .usePlugin(FootnotePlugin.create())
+            // 图片列表插件
+            .usePlugin(ImageCollectPlugin.create())
+            // 唯一ID标识插件
+            .usePlugin(BlockIdPlugin.create())
+            .build()
+        return markdownPlugin
     }
 
     /**
