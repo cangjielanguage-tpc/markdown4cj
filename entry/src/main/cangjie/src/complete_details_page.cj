@@ -128,10 +128,13 @@ class CompleteDetailsPage {
         markdownAIThemeBuilder.setLinkCircleImageRadius(16.0) // 设置圆形链接半径
         markdownAIThemeBuilder.setLinkCircleImageTextSize(10.0) // 设置圆形链接文字大小
         markdownAIThemeBuilder.setLinkCircleImageMargin(2.0) // 设置圆形链接左右边距
-        markdownAIThemeBuilder.setLinkCircleImageBackGroupColor(Color.WHITE) // 设置圆形链接主题背景颜色
+        markdownAIThemeBuilder.setLinkCircleImageBackGroupColor(Color.TRANSPARENT) // 设置圆形链接主题背景颜色
         markdownAIThemeBuilder.setLinkCircleImageButtonBackGroupColor(Color.BLACK) // 设置圆形链接控件背景颜色
         markdownAIThemeBuilder.setLinkCircleImageTextColor(Color.WHITE) // 设置圆形链接文字颜色
         // 圆角图片
+        markdownAIThemeBuilder.setLinkRectImageBackGroupColor(Color.TRANSPARENT) // 设置圆角链接主题背景颜色
+        markdownAIThemeBuilder.setLinkRectImageButtonBackGroupColor(Color.BLACK) // 设置圆角链接控件背景颜色
+        markdownAIThemeBuilder.setLinkRectImageTextColor(Color.WHITE) // 设置圆角链接文字颜色
         markdownAIThemeBuilder.setLinkRectImageRadius(16.0) // 设置圆角矩形链接圆角半径
         markdownAIThemeBuilder.setLinkRectImageMargin(2.0) // 设置圆角矩形链接左右边距
         markdownAIThemeBuilder.setLinkRectImageHeight(16.0) // 设置圆角矩形链接控件高度
