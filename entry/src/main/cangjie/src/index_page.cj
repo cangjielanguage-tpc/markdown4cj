@@ -92,6 +92,12 @@ class IndexPage {
                             "TestErrorPage"
                         )
                     }
+                    ListItem() {
+                        itemListComponent(
+                            "12、整体切换数据源",
+                            "TestError1Page"
+                        )
+                    }
                 }
                 // 设置ListItem在List交叉轴方向的布局方式
                 .alignListItem(ListItemAlign.Center)
