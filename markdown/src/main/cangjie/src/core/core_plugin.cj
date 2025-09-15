@@ -19,8 +19,7 @@ public class CorePlugin <: AbstractMarkdownPlugin {
      * @return a set with enabled by default block types
      * Set<Class<? <: Block>>
      */
-    public static func enabledBlockTypes(): HashSet<String> {
-        return HashSet<String>(
+    public static let enabledBlockTypes: HashSet<String> = HashSet<String>(
             [
                 "BlockQuote",
                 "Heading",
@@ -31,7 +30,6 @@ public class CorePlugin <: AbstractMarkdownPlugin {
                 "IndentedCodeBlock"
             ]
         )
-    }
 
     private let onTextAddedListeners: ArrayList<OnTextAddedListener> = ArrayList<OnTextAddedListener>(0)
 
@@ -73,26 +71,6 @@ public class CorePlugin <: AbstractMarkdownPlugin {
         text(builder)
         thematicBreak(builder)
     }
-
-    // public override func beforeSetText(textView: TextView, markdown: Spanned): Unit {
-    //     OrderedListItemSpan.measure(textView, markdown)
-
-    //     // we do not break API compatibility, instead we introduce the `instance of` check
-    //     if (markdown is Spannable) {
-    //         let spannable: Spannable = (markdown as Spannable)()
-    //         TextViewSpan.applyTo(spannable, textView)
-    //     }
-    // }
-
-    // public override func afterSetText(textView: TextView): Unit {
-    //     // let's ensure that there is a movement method applied
-    //     // we do it `afterSetText` so any user-defined movement method won't be
-    //     // replaced (it should be done in `beforeSetText` or manually on a TextView)
-    //     // we additionally check if we should apply _implicit_ movement method
-    //     if (!_hasExplicitMovementMethod && textView.getMovementMethod().isNone()) {
-    //         textView.setMovementMethod(LinkMovementMethod.getInstance())
-    //     }
-    // }
 
     private func text(builder: MarkdownVisitorBuilder): Unit {
         builder.on(
