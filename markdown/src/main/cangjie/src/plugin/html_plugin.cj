@@ -218,24 +218,19 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
             case htmlInline: HtmlInline =>
                 let htmlString = htmlInline.getLiteral()
                 let tag = htmlParser.processFragmentInline(appender, htmlString, None)
-                // println("1.2 ${tag} ${tag is EndTag} ${tag.isClosed()} ${parentNode}") // debug
-                if (let Some(end) <- (tag as EndTag)) {
-                    // println("1.21 ${end.startTag.isSome()}") // debug
-                    // end tag
-                    if (end.startTag.isSome()) {
-                        parentNode = parentNode.getParent().getOrThrow()
-                    }
-                } else if (tag.isClosed() == true) {
-                    // println("1.22 ") // debug
-                    // self close tag
-                    let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
-                    parentNode.appendChild(tagNode)
-                } else if (tag.isClosed() == false) {
-                    // println("1.23 ") // debug
-                    // start tag
-                    let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
-                    parentNode.appendChild(tagNode)
-                    parentNode = tagNode
+                match(tag){
+                    case Some(end:EndTag) => 
+                        if (end.startTag.isSome()) {
+                            parentNode = parentNode.getParent().getOrThrow()
+                        }
+                    case Some(tag) where tag.isClosed() => 
+                        let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
+                        parentNode.appendChild(tagNode)
+                    case Some(tag) where !tag.isClosed() => 
+                        let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
+                        parentNode.appendChild(tagNode)
+                        parentNode = tagNode
+                    case _ => ()
                 }
                 node.unlink()
             case t: Text =>
