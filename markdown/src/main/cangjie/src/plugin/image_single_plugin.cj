@@ -35,9 +35,18 @@ class ImageSingleVisitor <: AbstractVisitor {
         // 单独的图片提到block级别
         match ((p.getFirstChild(), p.getLastChild())) {
             case (Some(a: Image), Some(b: Image)) where refEq(a, b) =>
-                p.replaceWith(a)
+                let newBlock = ImageSingleBlock()
+                a.unlink()
+                newBlock.appendChild(a)
+                p.replaceWith(newBlock)
                 return
             case _ => ()
         }
+    }
+}
+
+public class ImageSingleBlock <: CustomBlock {
+    public func getNodeType(): String {
+        "ImageSingleBlock"
     }
 }
