@@ -85,6 +85,8 @@ func headingCodeComponent(nodeView: NodeView, markdownAIConfiguration: MarkdownA
         .fontColor(spanFontColor(nodeView, true, markdownAIConfiguration.markdownAITheme, true))
         // 设置文本字符间距
         .letterSpacing(markdownAIConfiguration.markdownAITheme.headingTextWordSpace)
+        // 自定义背景色
+        .interopStyle(true, markdownAIConfiguration.markdownAITheme.codeBackgroundColor)
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
@@ -197,6 +199,8 @@ func paragraphCodeComponent(nodeView: NodeView, markdownAIConfiguration: Markdow
         .fontColor(spanFontColor(nodeView, true, markdownAIConfiguration.markdownAITheme, false))
         // 设置文本字符间距
         .letterSpacing(markdownAIConfiguration.markdownAITheme.paragraphTextWordSpace)
+        // 自定义背景色
+        .interopStyle(true, markdownAIConfiguration.markdownAITheme.codeBackgroundColor)
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用
@@ -280,6 +284,8 @@ func tableComponentCode(nodeView: NodeView, isHeader: Bool, markdownAIConfigurat
         .fontColor(spanFontColor(nodeView, true, markdownAIConfiguration.markdownAITheme, false))
         // 设置文本字符间距
         .letterSpacing(markdownAIConfiguration.markdownAITheme.paragraphTextWordSpace)
+        // 自定义背景色
+        .interopStyle(true, markdownAIConfiguration.markdownAITheme.codeBackgroundColor)
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
         // 点击动作触发该方法调用

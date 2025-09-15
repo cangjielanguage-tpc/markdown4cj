@@ -37,7 +37,7 @@ class CustomizationIncrementPage {
     var folderList: ObservedArrayList<String> = ObservedArrayList<String>()
 
     protected override func aboutToAppear(): Unit {
-        let arr: Array<String> = getFileListStr("003_定制化数据/")
+        let arr: Array<String> = getFileListStr("003_特性设置/")
         folderList.appendAll(arr)
     }
 
@@ -56,7 +56,7 @@ class CustomizationIncrementPage {
                                 itemListComponent(
                                     "${index+1}、${str}",
                                     "CustomizationIncrementDetailsPage",
-                                    "003_定制化数据/${str}"
+                                    "003_特性设置/${str}"
                                 )
                             }
                         },
