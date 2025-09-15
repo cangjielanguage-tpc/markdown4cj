@@ -29,12 +29,14 @@ extend Span {
     func interopStyle(isBool: Bool, backgroundColor: Color): Span {
         if (isBool) {
             try {
+                let colorUInt32: UInt32 = backgroundColor.toUInt32()
+                let str: String =  colorUInt32.format("08X")
                 let global = context.getOrThrow().global
                 let ctx = context.getOrThrow()
                 let list = global["Span"].asObject(ctx)
                 let textBackgroundStyle = list["textBackgroundStyle"].asFunction(ctx)
                 let param: JSObject = ctx.object()
-                param["color"] = ctx.string("#7F007dff").toJSValue()
+                param["color"] = ctx.string("#${str}").toJSValue()
                 param["radius"] = ctx.string("0vp").toJSValue()
                 textBackgroundStyle.call(param.toJSValue())
             } catch (e: Exception) {

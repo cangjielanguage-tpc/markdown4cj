@@ -94,7 +94,7 @@ public class MarkdownAITheme {
     /**
      * 文本格式链接背景颜色
      */
-    protected var linkBackGroupColor: Color = COLOR_FF000000
+    protected var linkBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 文本格式是否显示链接下划线
@@ -1330,7 +1330,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 文本格式链接背景颜色
      */
-    protected var linkBackGroupColor: Color = COLOR_FF000000
+    protected var linkBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 文本格式是否显示链接下划线
@@ -2577,7 +2577,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 设置文本格式链接背景颜色
      *
-     * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0XFF000000
+     * @param linkBackGroupColor 文本格式链接背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
     public func setLinkBackGroupColor(linkBackGroupColor: Color): MarkdownAIThemeBuilder {

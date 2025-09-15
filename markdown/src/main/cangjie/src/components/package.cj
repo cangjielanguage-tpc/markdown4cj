@@ -14,6 +14,7 @@ internal import net.http.*
 internal import net.tls.*
 internal import encoding.base64.*
 internal import encoding.url.*
+internal import std.format.*
 
 // 内部其他包
 internal import markdown.core.*
