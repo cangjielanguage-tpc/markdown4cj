@@ -80,9 +80,9 @@ extend Node <: NodeExt {
     public func getListChildren(): ArrayList<Node> {
         let list: ArrayList<Node> = ArrayList<Node>()
         var node: ?Node = getFirstChild()
-        while(let Some(v)<- node){
-            list.append(v)
-            node = v.getNext()
+        while (!node.isNone()) {
+            list.append(node.getOrThrow())
+            node = node.getOrThrow().getNext()
         }
         return list
     }
@@ -177,10 +177,7 @@ extend Node <: NodeExt {
     }
 
     public func getView(): NodeView {
-        match (this.custom) {
-        	case v:NodeView => return v
-            case _ => throw UnsupportedException()
-        }
+        (this.custom as NodeView)()
     }
 
     public func toViewString(): String {
