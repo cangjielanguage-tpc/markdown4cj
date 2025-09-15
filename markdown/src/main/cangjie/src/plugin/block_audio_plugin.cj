@@ -25,8 +25,10 @@ class BlockAudioProcessor <: PostProcessor {
 }
 
 func isAudio(destination: String): Bool {
-    let i = destination.lastIndexOf(b'.') ?? return false
-    return match (destination[i..]) {
+    var k = destination.lastIndexOf(b'?') ?? destination.size
+    let dest = destination[..k]
+    let i = dest.lastIndexOf(b'.') ?? return false
+    return match (dest[i..]) {
         case '.mp3' | '.wav' | '.aac' | '.flac' | '.ogg' | '.m4a' | '.wma' | '.amr' => return true
         case _ => false
     }
