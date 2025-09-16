@@ -278,6 +278,36 @@ func tableComponentText(nodeView: NodeView, isHeader: Bool, markdownAIConfigurat
             }
         }
 }
+/**
+ * 表格链接文本
+ */
+@Builder
+func tableLinkComponent(nodeView: NodeView, isHeader: Bool, link: String, markdownAIConfiguration: MarkdownAIConfiguration) {
+    // 设置文本内容
+    Span(link)
+        // 设置文本的字体列表
+        .fontFamily(spanFontFamily(false, markdownAIConfiguration.markdownAITheme, false))
+        // 设置文本尺寸
+        .fontSize(spanFontSize(nodeView, false, markdownAIConfiguration.markdownAITheme, false, 0))
+        // 设置文本的字体粗细
+        .fontWeight(spanFontWeight(nodeView, isHeader))
+        // 设置文本的字体样式
+        .fontStyle(spanFontStyle(nodeView))
+        // 设置文本颜色
+        .fontColor(spanFontColor(nodeView, false, markdownAIConfiguration.markdownAITheme, false))
+        // 自定义背景色
+        .interopStyle(nodeView.link.isSome(), markdownAIConfiguration.markdownAITheme.linkBackGroupColor)
+        // 设置文本字符间距
+        .letterSpacing(markdownAIConfiguration.markdownAITheme.paragraphTextWordSpace)
+        // 设置文本装饰线样式及其颜色
+        .decoration(decorationType: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[0], color: spanDecoration(nodeView, markdownAIConfiguration.markdownAITheme)[1])
+        // 点击动作触发该方法调用
+        .onClick {
+            evt => if (nodeView.link.isSome()) {
+                linkOnClick(nodeView, markdownAIConfiguration.linkCallback)
+            }
+        }
+}
 
 /**
  * 表格内联代码
