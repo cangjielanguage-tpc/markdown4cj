@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 package markdown.plugin
 
@@ -134,14 +134,19 @@ class FootnoteVisitor <: AbstractVisitor {
         if (let Some(ds) <- FOOTNOTE.matcher(line).findAll()) {
             for (data in ds) {
                 let pos = data.matchPosition()
-                let text = Text(line[i..data.matchPosition().start])
-                n.insertBefore(text)
+                if (i < pos.start) {
+                    let text = Text(line[i..pos.start])
+                    n.insertBefore(text)
+                }
                 let footnote = Footnote(line[pos.start + 2..pos.end - 1])
                 n.insertBefore(footnote)
                 notes.add(footnote)
                 i = pos.end
             }
             n.setLiteral(line[i..])
+        }
+        if (n.getLiteral().isEmpty()) {
+            n.unlink()
         }
     }
 }

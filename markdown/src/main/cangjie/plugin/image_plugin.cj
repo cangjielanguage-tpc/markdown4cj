@@ -94,8 +94,7 @@ class StyleDelimiterProcessor <: DelimiterProcessor {
                     }
                 }
 
-                let styleNode = Style(str)
-                style.replaceWith(styleNode)
+                style.unlink()
                 return true
             }
         }

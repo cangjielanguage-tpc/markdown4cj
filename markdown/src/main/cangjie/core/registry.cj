@@ -3,15 +3,6 @@
  */
 package markdown.core
 
-/**
- * @see #configure(Registry)
- */
-// public interface Registry {
-//     func require(plugin: String): MarkdownPlugin
-
-//     func require(plugin: String, action: Action): Unit
-// }
-
 public class Registry {
     private let origin: ArrayList<MarkdownPlugin>
     private let plugins: ArrayList<MarkdownPlugin>
