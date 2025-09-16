@@ -30,7 +30,7 @@ import ohos.ark_interop_helper.*
  *          代码块系列文本颜色、代码块系列类型文本颜色、代码块系列图片文字是否显示隐藏、代码块系列代码行是否显示隐藏、代码块系列背景颜色、代码块系列左边距、代码块系列字体、代码块系列文本大小、代码块系列行高、代码块圆角
  *          是否显示代码全屏按钮、代码全屏按钮和代码复制按钮的宽高、代码全屏按钮默认图标、代码复制按钮默认图标
  *          组合代码标题字体大小、组合代码标题字体大小、组合代码标题选中文本颜色、组合代码标题未选中文本颜色、组合代码标题选中背景颜色、组合代码标题未选中背景颜色
- *          是否单独代码块、单独代码块行号宽度、
+ *          是否单独代码块、单独代码块行号宽度、单独代码块是否居底显示
  * 6：标题 - （1-6级标题）
  *          H1和H2标题下分割线高度、H1和H2标题下分割线颜色、标题元素字体、标题文本大小数组、标题文本颜色、标题文本字间距、
  *          一级标题文本行高、二级标题文本行高、三级标题文本行高、四级标题文本行高、五级标题文本行高、六级标题文本行高
@@ -94,7 +94,7 @@ public class MarkdownAITheme {
     /**
      * 文本格式链接背景颜色
      */
-    protected var linkBackGroupColor: Color = COLOR_01000000
+    protected var linkBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 文本格式是否显示链接下划线
@@ -475,6 +475,11 @@ public class MarkdownAITheme {
      * 单独代码块行号宽度
      */
     protected var separateCodeBlockWidth: Float64 = 50.0
+
+    /**
+     * 单独代码块是否居底显示
+     */
+    protected var separateCodeIsBottom: Bool = false
 
     /**
      * H1、H2标题下分割线高度
@@ -960,6 +965,7 @@ public class MarkdownAITheme {
         // 5.4、单独代码块
         this.isSeparateCodeBlock = builder.isSeparateCodeBlock
         this.separateCodeBlockWidth = builder.separateCodeBlockWidth
+        this.separateCodeIsBottom = builder.separateCodeIsBottom
 
         // 6、标题
         this.headingBreakHeight = builder.headingBreakHeight
@@ -1330,7 +1336,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 文本格式链接背景颜色
      */
-    protected var linkBackGroupColor: Color = COLOR_FF000000
+    protected var linkBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 文本格式是否显示链接下划线
@@ -1711,6 +1717,11 @@ public class MarkdownAIThemeBuilder {
      * 单独代码块行号宽度
      */
     protected var separateCodeBlockWidth: Float64 = 50.0
+
+    /**
+     * 单独代码块是否居底显示
+     */
+    protected var separateCodeIsBottom: Bool = false
 
     /**
      * H1、H2标题下分割线高度
@@ -2199,6 +2210,7 @@ public class MarkdownAIThemeBuilder {
         // 5.4、单独代码块
         this.isSeparateCodeBlock = theme.isSeparateCodeBlock
         this.separateCodeBlockWidth = theme.separateCodeBlockWidth
+        this.separateCodeIsBottom = theme.separateCodeIsBottom
 
         // 6、标题
         this.headingBreakHeight = theme.headingBreakHeight
@@ -2577,7 +2589,7 @@ public class MarkdownAIThemeBuilder {
     /**
      * 设置文本格式链接背景颜色
      *
-     * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0XFF000000
+     * @param linkBackGroupColor 文本格式链接背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
      */
     public func setLinkBackGroupColor(linkBackGroupColor: Color): MarkdownAIThemeBuilder {
@@ -3418,6 +3430,17 @@ public class MarkdownAIThemeBuilder {
      */
     public func setSeparateCodeBlockWidth(separateCodeBlockWidth: Float64): MarkdownAIThemeBuilder {
         this.separateCodeBlockWidth = separateCodeBlockWidth
+        return this
+    }
+
+    /**
+     * 设置单独代码块是否居底显示
+     *
+     * @param separateCodeIsBottom 单独代码块是否居底显示 - 默认false
+     * @return MarkdownAIThemeBuilder MarkdownAIThemeBuilder对象
+     */
+    public func setSeparateCodeIsBottom(separateCodeIsBottom: Bool): MarkdownAIThemeBuilder {
+        this.separateCodeIsBottom = separateCodeIsBottom
         return this
     }
 
