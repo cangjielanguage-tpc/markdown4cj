@@ -80,6 +80,24 @@ class IndexPage {
                             "BugCodePage"
                         )
                     }
+                    ListItem() {
+                        itemListComponent(
+                            "10、List懒加载",
+                            "ListMarkdownPage1"
+                        )
+                    }
+                    ListItem() {
+                        itemListComponent(
+                            "11、连续输入数学公式闪退",
+                            "TestErrorPage"
+                        )
+                    }
+                    ListItem() {
+                        itemListComponent(
+                            "12、整体切换数据源",
+                            "TestError1Page"
+                        )
+                    }
                 }
                 // 设置ListItem在List交叉轴方向的布局方式
                 .alignListItem(ListItemAlign.Center)

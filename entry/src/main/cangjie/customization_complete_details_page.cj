@@ -170,7 +170,7 @@ class CustomizationCompleteDetailsPage {
             //设置内联代码文本颜色
             .setCodeTextColor(Color(0xFF000000))
             //设置内联代码背景颜色，需要内联代码图片显示选项
-            .setIsCodeStyle(true)
+//            .setIsCodeStyle(true)
             .setCodeBackgroundColor(Color(0xFFF2F3F4))
             //设置内联代码文本大小
             .setCodeTextSize(16.0)

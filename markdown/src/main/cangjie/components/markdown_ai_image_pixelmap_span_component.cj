@@ -110,7 +110,6 @@ public class MarkdownAIImagePixelmapSpanComponent {
                 imageSource.Release()
                 if(data.isSome()){
                     launch{
-                        Hilog.error(1,"1","--------------aboutToAppear")
                         pixelMap = pixelMap1
                         var size: Size = pixelMap().getImageInfo().size
                         imageWidth = Float64(size.width)
@@ -193,6 +192,16 @@ public class MarkdownAIImagePixelmapSpanComponent {
                     .width(imageWidth().px)
                     // 设置组件自身的高度
                     .height(imageHeight().px)
+                    // 点击动作触发该方法调用
+                    .onClick {
+                        evt => if (isLink) {
+                            if (linkCallback.isSome() && linkUrl.isSome()) {
+                                linkCallback()(linkUrl())
+                            }
+                        } else {
+                            imageOnClick(destination, imageCallback)
+                        }
+                    }
         }
     }
 }
