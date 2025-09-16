@@ -280,8 +280,7 @@ func spanBackgroundColor(isCode: Bool, isLink: Bool, markdownAITheme: MarkdownAI
         markdownAITheme.linkBackGroupColor
     } else {
         // 不需要背景色设置
-//        Color.TRANSPARENT
-        COLOR_01000000
+        Color.TRANSPARENT
     }
 }
 
@@ -1110,14 +1109,4 @@ func linkUrl(nodeView: NodeView): ?String {
     } else {
         Option<String>.None
     }
-}
-
-/**
- * 对单位进行版本适配
- *
- * @param componentWidth 通过系统获取的数据
- * @return 返回的数据 - 单位px
- */
-func versionAdaptation(componentWidth: Float64): Float64 {
-    return vp2px(componentWidth.vp).getOrThrow().value
 }

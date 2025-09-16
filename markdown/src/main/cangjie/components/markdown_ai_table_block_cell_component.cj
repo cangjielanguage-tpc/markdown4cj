@@ -235,51 +235,55 @@ class MarkdownAITableBlockCellComponent {
                         Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
                     } else if (item.node is CommonmarkLink) {
                         // 链接
-                        if (!markdownAIConfiguration.markdownAITheme.isListLinkStyle) {
-                            if(getLinkString(item).isSome()){
-                                tableLinkComponent(
-                                    item,
-                                    isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold),
-                                    getLinkString(item)(),
-                                    markdownAIConfiguration
-                                )
-                            }else{
-                                Span("")
-                            }
-                        } else {
-                            if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
-                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
-                                    if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
-                                        MarkdownAILinkRectImageComponent(
+                            if (!markdownAIConfiguration.markdownAITheme.isLinkStyle) {
+                                if(getLinkString(item).isSome()){
+                                    tableLinkComponent(
+                                        item,
+                                        isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold),
+                                        getLinkString(item)(),
+                                        markdownAIConfiguration
+                                    )
+                                }else{
+                                    Span("")
+                                }
+                            } else {
+                                if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                                    if(getLinkString(item).isSome()){
+                                        if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
+                                            MarkdownAILinkRectImageComponent(
+                                                markdownAIConfiguration: markdownAIConfiguration,
+                                                strText: getLinkString(item)().trimAscii(),
+                                                strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                                backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
+                                                maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
+                                            )
+                                        }else{
+                                            MarkdownAILinkCircleImageComponent(
+                                                markdownAIConfiguration: markdownAIConfiguration,
+                                                strText: getLinkString(item)().trimAscii(),
+                                                strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                                backGroupColor: renderTableCellColor(isHeader,markdownAIConfiguration.markdownAITheme, idRow),
+                                                maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
+                                            )
+                                        }
+                                    }else{
+                                        Span("")
+                                    }
+                                } else {
+                                    if(getLinkString(item).isSome()){
+                                        MarkdownAILinkRectToolImageComponent(
                                             markdownAIConfiguration: markdownAIConfiguration,
-                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                            strText: getLinkString(item)(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
                                             backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
                                             maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
                                         )
-                                    } else {
-                                        MarkdownAILinkCircleImageComponent(
-                                            markdownAIConfiguration: markdownAIConfiguration,
-                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
-                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: renderTableCellColor(isHeader,markdownAIConfiguration.markdownAITheme, idRow),
-                                            maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
-                                        )
+                                    }else{
+                                        Span("")
                                     }
                                 }
-                            } else {
-                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
-                                    MarkdownAILinkRectToolImageComponent(
-                                        markdownAIConfiguration: markdownAIConfiguration,
-                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
-                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                        backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
-                                        maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
-                                    )
-                                }
                             }
-                        }
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         MarkdownAIImagePixelmapSpanComponent(
@@ -363,7 +367,7 @@ class MarkdownAITableBlockCellComponent {
                         Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
                     } else if (item.node is CommonmarkLink) {
                         // 链接
-                        if (!markdownAIConfiguration.markdownAITheme.isListLinkStyle) {
+                        if (!markdownAIConfiguration.markdownAITheme.isLinkStyle) {
                             if(getLinkString(item).isSome()){
                                 tableLinkComponent(
                                     item,
@@ -376,35 +380,39 @@ class MarkdownAITableBlockCellComponent {
                             }
                         } else {
                             if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
-                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
-                                    if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
+                                if(getLinkString(item).isSome()){
+                                    if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
                                         MarkdownAILinkRectImageComponent(
                                             markdownAIConfiguration: markdownAIConfiguration,
-                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                            strText: getLinkString(item)().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
                                             backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
                                             maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
                                         )
-                                    } else {
+                                    }else{
                                         MarkdownAILinkCircleImageComponent(
                                             markdownAIConfiguration: markdownAIConfiguration,
-                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
+                                            strText: getLinkString(item)().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
                                             backGroupColor: renderTableCellColor(isHeader,markdownAIConfiguration.markdownAITheme, idRow),
                                             maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
                                         )
                                     }
+                                }else{
+                                    Span("")
                                 }
                             } else {
-                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
+                                if(getLinkString(item).isSome()){
                                     MarkdownAILinkRectToolImageComponent(
                                         markdownAIConfiguration: markdownAIConfiguration,
-                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
+                                        strText: getLinkString(item)(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
                                         strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
                                         backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
                                         maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
                                     )
+                                }else{
+                                    Span("")
                                 }
                             }
                         }
