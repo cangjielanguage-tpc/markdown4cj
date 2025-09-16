@@ -31,11 +31,6 @@ class MarkdownAICodeTextComponent {
     var info: Option<String> = Option<String>.None
 
     /**
-     * 是否全量加载
-     */
-    var isFull: Bool
-
-    /**
      * 定位需要的数组
      */
     var indexList: ArrayList<Int64> = ArrayList<Int64>()
@@ -68,18 +63,6 @@ class MarkdownAICodeTextComponent {
                     false
                 }
             })
-    }
-
-    func refreshData(codeText: String, info: Option<String>): Unit {
-        this.codeText = codeText
-        this.info = info
-        let callback: (ArrayList<PrismNodesParseRes>) -> Unit = {
-            prismNodesParseResLists => launch {
-                arrayList.clear()
-                arrayList.appendAll(prismNodesParseResLists)
-            }
-        }
-        stringToResList(codeText, info, markdownAIConfiguration.markdownAITheme.prismTheme, callback)
     }
 
     func build() {
@@ -130,6 +113,18 @@ class MarkdownAICodeTextComponent {
             // 设置行高
             .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineHeight)
         }
+    }
+
+    func refreshData(codeText: String, info: Option<String>): Unit {
+        this.codeText = codeText
+        this.info = info
+        let callback: (ArrayList<PrismNodesParseRes>) -> Unit = {
+            prismNodesParseResLists => launch {
+                arrayList.clear()
+                arrayList.appendAll(prismNodesParseResLists)
+            }
+        }
+        stringToResList(codeText, info, markdownAIConfiguration.markdownAITheme.prismTheme, callback)
     }
 
     /**

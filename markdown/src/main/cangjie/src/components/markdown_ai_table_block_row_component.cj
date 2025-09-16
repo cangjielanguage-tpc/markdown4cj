@@ -39,11 +39,6 @@ class MarkdownAITableBlockRowComponent {
     var componentWidth: Float64
 
     /**
-     * 是否全量加载
-     */
-    var isFull: Bool
-
-    /**
      * 内容第几条
      */
     var idRow: Int64
@@ -106,7 +101,6 @@ class MarkdownAITableBlockRowComponent {
                             nodeViews: item.children,
                             fontCallback: fontCallback,
                             imageCallback: imageCallback,
-                            isFull: isFull,
                             isHeader: (item.node as TableCell)().isHeader(),
                             alignment: (item.node as TableCell)().getAlignment(),
                             componentWidth: componentWidth,

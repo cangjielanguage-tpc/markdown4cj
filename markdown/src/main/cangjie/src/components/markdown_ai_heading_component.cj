@@ -66,11 +66,6 @@ class MarkdownAIHeadingComponent {
     var imageCallback: (String) -> Unit
 
     /**
-     * 是否全量加载 - true：全量加载，fasle：增量加载
-     */
-    var isFull: Bool
-
-    /**
      * 缓存的标题控件列表
      */
     var headingComponents: ArrayList<MarkdownAIHeadingComponent>

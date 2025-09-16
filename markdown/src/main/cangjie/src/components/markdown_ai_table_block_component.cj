@@ -49,11 +49,6 @@ class MarkdownAITableBlockComponent {
     var componentWidth: Float64
 
     /**
-     * 是否全量加载
-     */
-    var isFull: Bool
-
-    /**
      * 脚注点击事件
      */
     var fontCallback: (String) -> Unit
@@ -126,7 +121,6 @@ class MarkdownAITableBlockComponent {
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
-                                isFull: isFull,
                                 idRow: idRow,
                                 indexList: indexAdd(indexList, idRow),
                                 tableRowComponents: tableRowComponents,

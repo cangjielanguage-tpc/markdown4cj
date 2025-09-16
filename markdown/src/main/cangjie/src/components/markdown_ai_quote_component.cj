@@ -48,11 +48,6 @@ public class MarkdownAIQuoteComponent {
      */
     var componentWidth: Float64
 
-    /**
-     * 是否全量加载 - true：全量加载，fasle：增量加载
-     */
-    var isFull: Bool
-
     var markdownAICacheConfiguration: MarkdownAICacheConfiguration
 
     /**
@@ -114,7 +109,6 @@ public class MarkdownAIQuoteComponent {
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
-                                    isFull: isFull,
                                     isListTo:true,
                                     indexList: indexAdd(indexList, idx),
                                     paragraphComponents: markdownAICacheConfiguration.paragraphComponents,
@@ -133,7 +127,6 @@ public class MarkdownAIQuoteComponent {
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
-                                    isFull: isFull,
                                     isListTo:true,
                                     indexList: indexAdd(indexList, idx),
                                     headingComponents: markdownAICacheConfiguration.headingComponents,
@@ -173,7 +166,6 @@ public class MarkdownAIQuoteComponent {
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
                                     componentWidth: componentWidth,
-                                    isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
                                     markdownAICacheConfiguration: markdownAICacheConfiguration
                                 )
@@ -189,7 +181,6 @@ public class MarkdownAIQuoteComponent {
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
                                     componentWidth: componentWidth,
-                                    isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
                                     markdownAICacheConfiguration: markdownAICacheConfiguration
                                 )
@@ -204,7 +195,6 @@ public class MarkdownAIQuoteComponent {
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
                                     componentWidth: componentWidth,
-                                    isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
                                     markdownAICacheConfiguration: markdownAICacheConfiguration
                                 )
@@ -218,7 +208,6 @@ public class MarkdownAIQuoteComponent {
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
-                                    isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
                                     tableComponents: markdownAICacheConfiguration.tableComponents,
                                     tableRowComponents: markdownAICacheConfiguration.tableRowComponents,

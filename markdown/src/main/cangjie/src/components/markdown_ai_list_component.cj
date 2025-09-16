@@ -54,11 +54,6 @@ public class MarkdownAIListComponent {
     var componentWidth: Float64
 
     /**
-     * 是否全量加载 - true：全量加载，fasle：增量加载
-     */
-    var isFull: Bool
-
-    /**
      * 脚注点击事件
      */
     var fontCallback: (String) -> Unit
@@ -134,7 +129,6 @@ public class MarkdownAIListComponent {
                                 videoCallback: videoCallback,
                                 componentWidth: componentWidth,
                                 indexList: indexAdd(indexList, idx),
-                                isFull: isFull,
                                 markdownAICacheConfiguration: markdownAICacheConfiguration
                             )
                         }

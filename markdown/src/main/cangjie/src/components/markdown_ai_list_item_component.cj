@@ -49,11 +49,6 @@ class MarkdownAIListItemComponent {
     var componentWidth: Float64
 
     /**
-     * 是否全量加载 - true：全量加载，fasle：增量加载
-     */
-    var isFull: Bool
-
-    /**
      * 缓存的数据
      */
     var markdownAICacheConfiguration: MarkdownAICacheConfiguration
@@ -117,7 +112,6 @@ class MarkdownAIListItemComponent {
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
                                 isListTo:true,
-                                isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
                                 paragraphComponents: markdownAICacheConfiguration.paragraphComponents
                             )
@@ -137,7 +131,6 @@ class MarkdownAIListItemComponent {
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
                                 isListTo:true,
-                                isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
                                 headingComponents: markdownAICacheConfiguration.headingComponents
                             )
@@ -181,7 +174,6 @@ class MarkdownAIListItemComponent {
                                 imageCallback: imageCallback,
                                 videoCallback: videoCallback,
                                 componentWidth: componentWidth,
-                                isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
                                 markdownAICacheConfiguration: markdownAICacheConfiguration
                             )
@@ -199,7 +191,6 @@ class MarkdownAIListItemComponent {
                                 imageCallback: imageCallback,
                                 videoCallback: videoCallback,
                                 componentWidth: componentWidth,
-                                isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
                                 markdownAICacheConfiguration: markdownAICacheConfiguration
                             )
@@ -216,7 +207,6 @@ class MarkdownAIListItemComponent {
                                 imageCallback: imageCallback,
                                 videoCallback: videoCallback,
                                 componentWidth: componentWidth,
-                                isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
                                 markdownAICacheConfiguration: markdownAICacheConfiguration
                             )
@@ -232,7 +222,6 @@ class MarkdownAIListItemComponent {
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
-                                isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
                                 tableComponents: markdownAICacheConfiguration.tableComponents,
                                 tableRowComponents: markdownAICacheConfiguration.tableRowComponents,

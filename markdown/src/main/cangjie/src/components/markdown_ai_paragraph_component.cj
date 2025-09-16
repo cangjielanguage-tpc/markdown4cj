@@ -55,11 +55,6 @@ class MarkdownAIParagraphComponent {
     var componentWidth: Float64
 
     /**
-     * 是否全量加载 - true：全量加载，fasle：增量加载
-     */
-    var isFull: Bool
-
-    /**
      * 缓存的第一层段落控件列表
      */
     var paragraphComponents: ArrayList<MarkdownAIParagraphComponent>

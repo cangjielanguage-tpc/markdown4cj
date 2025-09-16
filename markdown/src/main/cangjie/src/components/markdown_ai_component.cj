@@ -169,7 +169,6 @@ public class MarkdownAIComponent {
                                     componentWidth: px2vp(componentWidth.px).getOrThrow().value,
                                     imageMarginTop: markdownAIConfiguration.markdownAITheme.imageMarginTop,
                                     imageMarginBottom: markdownAIConfiguration.markdownAITheme.imageMarginBottom,
-                                    isFull: isFull,
                                     isListTo:false,
                                     indexList: indexAdd(indexList, idx),
                                     headingComponents: markdownAICacheConfiguration.headingComponents
@@ -189,7 +188,6 @@ public class MarkdownAIComponent {
                                     componentWidth: px2vp(componentWidth.px).getOrThrow().value,
                                     imageMarginTop: markdownAIConfiguration.markdownAITheme.imageMarginTop,
                                     imageMarginBottom: markdownAIConfiguration.markdownAITheme.imageMarginBottom,
-                                    isFull: isFull,
                                     isListTo:false,
                                     indexList: indexAdd(indexList, idx),
                                     paragraphComponents: markdownAICacheConfiguration.paragraphComponents
@@ -208,7 +206,6 @@ public class MarkdownAIComponent {
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
                                     componentWidth: px2vp(componentWidth.px).getOrThrow().value,
-                                    isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
                                     markdownAICacheConfiguration: markdownAICacheConfiguration
                                 )
@@ -226,7 +223,6 @@ public class MarkdownAIComponent {
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
                                     componentWidth: px2vp(componentWidth.px).getOrThrow().value,
-                                    isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
                                     markdownAICacheConfiguration: markdownAICacheConfiguration
                                 )
@@ -243,7 +239,6 @@ public class MarkdownAIComponent {
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
                                     componentWidth: px2vp(componentWidth.px).getOrThrow().value,
-                                    isFull: isFull,
                                     indexList: indexAdd(indexList, idx),
                                     markdownAICacheConfiguration: markdownAICacheConfiguration
                                 )
@@ -284,7 +279,6 @@ public class MarkdownAIComponent {
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 componentWidth: px2vp(componentWidth.px).getOrThrow().value,
-                                isFull: isFull,
                                 indexList: indexAdd(indexList, idx),
                                 tableComponents: markdownAICacheConfiguration.tableComponents,
                                 tableRowComponents: markdownAICacheConfiguration.tableRowComponents,
@@ -340,7 +334,6 @@ public class MarkdownAIComponent {
                                         fontCallback: fontCallback,
                                         imageCallback: imageCallback,
                                         componentWidth: px2vp(componentWidth.px).getOrThrow().value,
-                                        isFull: isFull,
                                         isListTo:false,
                                         indexList: indexAdd(indexList, idx),
                                         paragraphComponents: markdownAICacheConfiguration.paragraphComponents
@@ -351,9 +344,7 @@ public class MarkdownAIComponent {
                             }
                             // 组件区域变化时触发该回调
                             .onAreaChange {
-                                oldValue, newValue => if (isFull) {
-                                    indexHashMap.put((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
-                                }
+                                oldValue, newValue => indexHashMap.put((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
                             }
                         } else if (item.node is BlockAD) {
                             ListItem() {
@@ -401,7 +392,6 @@ public class MarkdownAIComponent {
                                     codeText: (item.node as FencedCodeBlock)().getLiteral(),
                                     info: (item.node as FencedCodeBlock)().getInfo(),
                                     indexList: indexAdd(indexList, idx),
-                                    isFull: isFull,
                                     aiCodeComponents: markdownAICacheConfiguration.aiCodeComponents,
                                     aiCodeTextComponents: markdownAICacheConfiguration.aiCodeTextComponents
                                 )
@@ -413,7 +403,6 @@ public class MarkdownAIComponent {
                                     codeText: (item.node as IndentedCodeBlock)().getLiteral(),
                                     info: Option<String>.None,
                                     indexList: indexAdd(indexList, idx),
-                                    isFull: isFull,
                                     aiCodeComponents: markdownAICacheConfiguration.aiCodeComponents,
                                     aiCodeTextComponents: markdownAICacheConfiguration.aiCodeTextComponents
                                 )
@@ -549,23 +538,23 @@ public class MarkdownAIComponent {
                                 nodeViewAIDataSource.replaceData(index, nodeViews[index])
                             }
                         } else {
-                            if ((nodeViews[nodeViewsSize - 1].node is IndentedCodeBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is IndentedCodeBlock)) {
+                            if ((nodeViews[index].node is IndentedCodeBlock && nodeViewAIDataSource.getData(index).node is IndentedCodeBlock)) {
                                 // 缩进代码
                                 for (data in markdownAICacheConfiguration.aiCodeComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
-                                        data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1])
+                                        data.refreshData(getCodeInfo(nodeViews[index])[0], getCodeInfo(nodeViews[index])[1])
                                     }
                                 }
-                            } else if ((nodeViews[nodeViewsSize - 1].node is FencedCodeBlock && nodeViewAIDataSource.getData(nodeViewListSize - 1).node is FencedCodeBlock)) {
+                            } else if ((nodeViews[index].node is FencedCodeBlock && nodeViewAIDataSource.getData(index).node is FencedCodeBlock)) {
                                 // 围栏代码
                                 for (data in markdownAICacheConfiguration.aiCodeComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
-                                        data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1])
+                                        data.refreshData(getCodeInfo(nodeViews[index])[0], getCodeInfo(nodeViews[index])[1])
                                     }
                                 }
                             } else {
                                 // 其他节点
-                                nodeViewAIDataSource.replaceData(nodeViewListSize - 1, nodeViews[nodeViewsSize - 1])
+                                nodeViewAIDataSource.replaceData(index, nodeViews[index])
                             }
                         }
                     }
@@ -588,22 +577,6 @@ public class MarkdownAIComponent {
             syncCounter.waitUntilZero()
         } catch (e: Exception) {
             // 解析异常，全量展示纯文本，增量不做处理
-            if (isFull) {
-                let paragraph: Paragraph = Paragraph()
-                let commonmarkText: CommonmarkText = CommonmarkText(output)
-                paragraph.appendChild(commonmarkText)
-                let paragraphNodeView: NodeView = buildView(paragraph, true)
-                let textNodeView: NodeView = buildView(commonmarkText, true)
-                let arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
-                arrayListNodeView.append(paragraphNodeView)
-                let syncCounter:SyncCounter = SyncCounter(1)
-                launch {
-                    nodeViewAIDataSource.clear()
-                    nodeViewAIDataSource.addDatas(arrayListNodeView)
-                    syncCounter.dec()
-                }
-                syncCounter.waitUntilZero()
-            }
         }
     }
 

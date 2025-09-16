@@ -34,11 +34,6 @@ class MarkdownAITableBlockCellComponent {
     var size: Int64 = -1
 
     /**
-     * 是否全量加载
-     */
-    var isFull: Bool
-
-    /**
      * 是否是标题
      */
     var isHeader: Bool
