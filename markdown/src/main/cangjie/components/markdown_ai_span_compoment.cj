@@ -78,11 +78,6 @@ public class MarkdownAISpanComponent {
      */
     var fontCallback: (String) -> Unit
 
-    /**
-     * 是否全量加载 - true：全量加载，fasle：增量加载
-     */
-    var isFull: Bool
-
     func build() {
         // 设置文本内容
         Span(text)
@@ -105,7 +100,7 @@ public class MarkdownAISpanComponent {
                 evt => if (linkCallback.isSome() && linkString.isSome()) {
                     // 链接点击事件
                     linkCallback()(linkString())
-                } else if (noteid.isSome() && isFull) {
+                } else if (noteid.isSome()) {
                     // 脚注点击事件
                     fontCallback(noteid())
                 }

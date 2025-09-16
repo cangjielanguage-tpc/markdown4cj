@@ -31,11 +31,6 @@ class MarkdownAICodeTextComponent {
     var info: Option<String> = Option<String>.None
 
     /**
-     * 是否全量加载
-     */
-    var isFull: Bool
-
-    /**
      * 定位需要的数组
      */
     var indexList: ArrayList<Int64> = ArrayList<Int64>()
