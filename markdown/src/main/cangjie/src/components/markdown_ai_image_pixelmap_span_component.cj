@@ -179,6 +179,16 @@ public class MarkdownAIImagePixelmapSpanComponent {
                     .width(imageWidth().px)
                     // 设置组件自身的高度
                     .height(imageHeight().px)
+                    // 点击动作触发该方法调用
+                    .onClick {
+                        evt => if (isLink) {
+                            if (linkCallback.isSome() && linkUrl.isSome()) {
+                                linkCallback()(linkUrl())
+                            }
+                        } else {
+                            imageOnClick(destination, imageCallback)
+                        }
+                    }
         }
     }
 }

@@ -294,7 +294,7 @@ class CustomizationIncrementDetailsPage {
      */
     func imageCallback(url: String, arr: ArrayList<String>): Unit {
         PromptAction.showToast(message: url)
-        Hilog.error(1, "1", "------------------------LinkCallback:${url},arr:${arr}")
+        Hilog.error(1, "1", "------------------------imageCallback:${url},arr:${arr}")
     }
 
     /**
@@ -304,7 +304,7 @@ class CustomizationIncrementDetailsPage {
      */
     func audioCallback(url: String): Unit {
         PromptAction.showToast(message: url)
-        Hilog.error(1, "1", "------------------------LinkCallback:${url}")
+        Hilog.error(1, "1", "------------------------audioCallback:${url}")
     }
 
     /**
