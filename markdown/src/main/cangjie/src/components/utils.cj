@@ -39,7 +39,7 @@ extend<T> Option<T> where T <: Equatable<T> {
 /**
  * 图片Style使用的实体类
  */
-class PicStyleObj {
+public class PicStyleObj {
     /**
      * 图片高度
      */

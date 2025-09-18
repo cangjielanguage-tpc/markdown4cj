@@ -727,12 +727,10 @@ func styleImageRadius(borderRadius: ?Length): Length {
  * 对每张图片的 style 进行解析
  *
  * @param picStyle 图片样式集合
- * @param markdownAIConfiguration markdownAIConfiguration
  * @param componentWidth 父布局控件宽度 - 单位vp
  * @return PicStyleObj对象
  */
-func parsePicStyle(picStyle: ArrayList<String>, markdownAIConfiguration: MarkdownAIConfiguration,
-    componentWidthPx: Float64): PicStyleObj {
+func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicStyleObj {
     let picStyleObj: PicStyleObj = PicStyleObj()
     if (picStyle.isEmpty()) {
         return picStyleObj

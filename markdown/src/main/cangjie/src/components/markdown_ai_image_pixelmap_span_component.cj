@@ -79,12 +79,24 @@ public class MarkdownAIImagePixelmapSpanComponent {
      */
     var imagePlaceholder: ?String = None
 
+    /**
+     * 是否是连接中的图片
+     */
     var isLink: Bool = false
 
+    /**
+     * 链接点击事件
+     */
     var linkUrl: ?String = Option<String>.None
 
+    /**
+     * 图片预处理回调事件
+     */
     var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
 
+    /**
+     *  图片预处理回调图片
+     */
     @State
     var pixelMap: ?PixelMap = Option<PixelMap>.None
 
@@ -105,6 +117,11 @@ public class MarkdownAIImagePixelmapSpanComponent {
                 }
             }
         }
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        // 清除缓存数据
+        pixelMap?.Release()
     }
 
     func build() {
