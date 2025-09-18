@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 package markdown.components
 
@@ -106,6 +106,6 @@ public class MarkdownAILatexImageSpanComponent {
             }
         }
         // 解析数学公式
-        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownAIConfiguration, vp2px(componentWidth.vp)().value, callback, backGroupColor)
+        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownAIConfiguration, componentWidth, callback, backGroupColor)
     }
 }
