@@ -152,13 +152,13 @@ class MarkdownParseLinkUtil {
     }
 }
 
-let semaphore: Semaphore = Semaphore(1)
+let semaphoreLink: Semaphore = Semaphore(1)
 
 class LinkLoadLimiter <: Resource {
     let closed = AtomicBool(false)
 
     init() {
-        semaphore.acquire()
+        semaphoreLink.acquire()
     }
 
     public override func isClosed(): Bool {
@@ -169,7 +169,7 @@ class LinkLoadLimiter <: Resource {
         if (isClosed()) {
             return
         }
-        semaphore.release()
+        semaphoreLink.release()
         closed.store(true)
     }
 }
