@@ -82,7 +82,7 @@ public class MarkdownAITheme {
     protected var linkColor: Color = COLOR_FF0000FF
 
     /**
-     * 是否按照链接文字自己大小显示文本
+     * 是否按照链接文字字体大小显示文本
      */
     protected var isLinkSize: Bool = true
 
@@ -1324,7 +1324,7 @@ public class MarkdownAIThemeBuilder {
     protected var linkColor: Color = COLOR_FF0000FF
 
     /**
-     * 是否按照链接文字自己大小显示文本
+     * 是否按照链接文字字体大小显示文本
      */
     protected var isLinkSize: Bool = true
 

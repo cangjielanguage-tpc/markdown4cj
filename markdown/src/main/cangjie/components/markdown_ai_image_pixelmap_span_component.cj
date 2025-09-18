@@ -120,6 +120,11 @@ public class MarkdownAIImagePixelmapSpanComponent {
         }
     }
 
+    protected override func aboutToDisappear(): Unit {
+        // 清除缓存数据
+        pixelMap?.Release()
+    }
+
     func build() {
         if (imageCallbackCallback.isNone() || pixelMap.isNone() || imageWidth.isNone() || imageHeight.isNone()) {
             if (!isCompleted && !isError) {
