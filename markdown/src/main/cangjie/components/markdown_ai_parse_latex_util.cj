@@ -113,11 +113,6 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    let latexMathBackGroupColor:UInt32 = if(backGroupColor.toUInt32() == Color.TRANSPARENT.toUInt32()){
-                        0xFFFFFFFF
-                    } else {
-                        backGroupColor.toUInt32()
-                    }
                     r.draw(g2, backGroupColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return

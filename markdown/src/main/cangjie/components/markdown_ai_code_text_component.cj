@@ -65,18 +65,6 @@ class MarkdownAICodeTextComponent {
             })
     }
 
-    func refreshData(codeText: String, info: Option<String>): Unit {
-        this.codeText = codeText
-        this.info = info
-        let callback: (ArrayList<PrismNodesParseRes>) -> Unit = {
-            prismNodesParseResLists => launch {
-                arrayList.clear()
-                arrayList.appendAll(prismNodesParseResLists)
-            }
-        }
-        stringToResList(codeText, info, markdownAIConfiguration.markdownAITheme.prismTheme, callback)
-    }
-
     func build() {
         Row() {
             Text((idx + 1).toString())
@@ -125,6 +113,18 @@ class MarkdownAICodeTextComponent {
             // 设置行高
             .lineHeight(markdownAIConfiguration.markdownAITheme.codeBlockLineHeight)
         }
+    }
+
+    func refreshData(codeText: String, info: Option<String>): Unit {
+        this.codeText = codeText
+        this.info = info
+        let callback: (ArrayList<PrismNodesParseRes>) -> Unit = {
+            prismNodesParseResLists => launch {
+                arrayList.clear()
+                arrayList.appendAll(prismNodesParseResLists)
+            }
+        }
+        stringToResList(codeText, info, markdownAIConfiguration.markdownAITheme.prismTheme, callback)
     }
 
     /**
