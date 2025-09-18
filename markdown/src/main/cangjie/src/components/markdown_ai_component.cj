@@ -7,7 +7,6 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
-import ohos.hilog.Hilog
 
 /**
  * Markdown预览自定义控件
@@ -90,7 +89,7 @@ public class MarkdownAIComponent {
     let screenWidth: Int32 = getDefaultDisplaySync().width
 
     /**
-     * 控件宽度 - 单位px，（控件宽度 = 屏幕宽度 - padding）
+     * 控件宽度 - 单位px
      */
     @State
     var componentWidth: Float64 = 0.0
@@ -287,13 +286,11 @@ public class MarkdownAIComponent {
                         } else if (item.node is ThematicBreak) {
                             // 分割线
                             ListItem() {
-                                Divider()
-                                    // 设置分割线颜色
-                                    .color(markdownAIConfiguration.markdownAITheme.thematicBreakColor)
-                                    // 设置分割线宽度
-                                    .strokeWidth(markdownAIConfiguration.markdownAITheme.thematicBreakHeight)
-                                    // 设置外边距属性
-                                    .margin(top: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins + markdownAIConfiguration.markdownAITheme.thematicBreakTopMargin, bottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins + markdownAIConfiguration.markdownAITheme.thematicBreakBottomMargin)
+                                MarkdownAIThematicBreakComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins + markdownAIConfiguration.markdownAITheme.thematicBreakTopMargin,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins + markdownAIConfiguration.markdownAITheme.thematicBreakBottomMargin
+                                )
                             }
                         } else if (item.node is BlockAudio) {
                             // 音频
@@ -347,6 +344,7 @@ public class MarkdownAIComponent {
                                 oldValue, newValue => indexHashMap.put((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
                             }
                         } else if (item.node is BlockAD) {
+                            // 广告
                             ListItem() {
                                 adBuilder(item)
                             }
