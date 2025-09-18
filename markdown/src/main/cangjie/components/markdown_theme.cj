@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import ohos.ark_interop_helper.*
 
 /**
  * Markdown用户可设置的样式
@@ -28,7 +29,7 @@ import ohos.state_macro_manage.*
  *          图片格式内联代码：图片格式内联代码文本左右边距、图片格式内联代码文本高度
  *          缩进/围栏/组合/单独代码块代码文本颜色、缩进/围栏/组合/单独代码块代码类型文本颜色、缩进/围栏/组合/单独代码块代码类型文本、缩进/围栏/组合/单独代码块代码类型和代码块距离、缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示、缩进/围栏/组合/单独代码块代码行号是否显示、缩进/围栏/组合/单独代码块背景颜色、缩进/围栏/组合/单独代码块左边距、缩进/围栏/组合/单独代码块字体、缩进/围栏/组合/单独代码块代码文本大小、缩进/围栏/组合/单独代码块代码文本行高、缩进/围栏/组合/单独代码块圆角大小、缩进/围栏/组合/单独代码块代码全屏按钮是否显示、缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高、缩进/围栏/组合/单独代码块代码全屏按钮默认图标、缩进/围栏/组合/单独代码块代码复制按钮默认图标
  *          组合代码块：组合代码块未选中标题字体大小、组合代码块选中标题字体大小、组合代码块选中标题文本颜色、组合代码块未选中标题文本颜色、组合代码块选中标题背景颜色、组合代码块未选中标题背景颜色
- *          单独代码块：是否单独代码块显示、单独代码块行号宽度
+ *          单独代码块：是否单独代码块显示、单独代码块行号宽度、单独代码块是否居底显示
  * 6：标题 - H1/H2标题下分割线高度、H1/H2标题下分割线颜色
  *          标题文本字体、标题文本大小数组、标题文本颜色、标题文本字间距、一级标题文本行高、二级标题文本行高、三级标题文本行高、四级标题文本行高、五级标题文本行高、六级标题文本行高
  * 7：段落 - 段落文本大小、段落文本颜色、段落文本字间距、段落文本行高、段落文本字体
@@ -86,7 +87,7 @@ public class MarkdownTheme {
     /**
      * 文本格式链接背景颜色
      */
-    protected var linkBackGroupColor: Color = COLOR_FF000000
+    protected var linkBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 文本格式是否显示链接下划线
@@ -452,6 +453,11 @@ public class MarkdownTheme {
      * 单独代码块行号宽度
      */
     protected var separateCodeBlockWidth: Float64 = 50.0
+
+    /**
+     * 单独代码块是否居底显示
+     */
+    protected var separateCodeIsBottom: Bool = false
 
     /**
      * H1/H2标题下分割线高度
@@ -930,6 +936,7 @@ public class MarkdownTheme {
         // 5.4、单独代码块
         this.isSeparateCodeBlock = builder.isSeparateCodeBlock
         this.separateCodeBlockWidth = builder.separateCodeBlockWidth
+        this.separateCodeIsBottom = builder.separateCodeIsBottom
 
         // 6、标题
         this.headingBreakHeight = builder.headingBreakHeight
@@ -1293,7 +1300,7 @@ public class MarkdownThemeBuilder {
     /**
      * 文本格式链接背景颜色
      */
-    protected var linkBackGroupColor: Color = COLOR_FF000000
+    protected var linkBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 文本格式是否显示链接下划线
@@ -1659,6 +1666,11 @@ public class MarkdownThemeBuilder {
      * 单独代码块行号宽度
      */
     protected var separateCodeBlockWidth: Float64 = 50.0
+
+    /**
+     * 单独代码块是否居底显示
+     */
+    protected var separateCodeIsBottom: Bool = false
 
     /**
      * H1/H2标题下分割线高度
@@ -2140,6 +2152,7 @@ public class MarkdownThemeBuilder {
         // 5.4、单独代码块
         this.isSeparateCodeBlock = theme.isSeparateCodeBlock
         this.separateCodeBlockWidth = theme.separateCodeBlockWidth
+        this.separateCodeIsBottom = theme.separateCodeIsBottom
 
         // 6、标题
         this.headingBreakHeight = theme.headingBreakHeight
@@ -2511,7 +2524,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置文本格式链接背景颜色
      *
-     * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0XFF000000
+     * @param linkBackGroupColor 文本格式链接背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkBackGroupColor(linkBackGroupColor: Color): MarkdownThemeBuilder {
@@ -3319,6 +3332,17 @@ public class MarkdownThemeBuilder {
      */
     public func setSeparateCodeBlockWidth(separateCodeBlockWidth: Float64): MarkdownThemeBuilder {
         this.separateCodeBlockWidth = separateCodeBlockWidth
+        return this
+    }
+
+    /**
+     * 设置单独代码块是否居底显示
+     *
+     * @param separateCodeIsBottom 单独代码块是否居底显示 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setSeparateCodeIsBottom(separateCodeIsBottom: Bool): MarkdownThemeBuilder {
+        this.separateCodeIsBottom = separateCodeIsBottom
         return this
     }
 

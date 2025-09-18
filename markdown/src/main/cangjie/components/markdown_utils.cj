@@ -7,7 +7,6 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
-import ohos.hilog.Hilog
 
 let COLOR_191919: Color = Color(0x191919)
 let COLOR_0000FF: Color = Color(0x0000FF)
@@ -26,14 +25,10 @@ let COLOR_33000000: Color = Color(0x33000000)
 let COLOR_FF0000FF: Color = Color(0xFF0000FF)
 let COLOR_FF191919: Color = Color(0xFF191919)
 let COLOR_80000000: Color = Color(0x80000000)
+let COLOR_01000000: Color = Color(0x01000000)
 let null: NodeView = unsafe { zeroValue() }
 let SECONDS_PER_HOUR: Int64 = 3600
 let SECONDS_PER_MINUTE: Int64 = 60
-
-let majorVersion = DeviceInfo.majorVersion
-let seniorVersion = DeviceInfo.seniorVersion
-let featureVersion = DeviceInfo.featureVersion
-let buildVersion = DeviceInfo.buildVersion
 
 /**
  * 组合代码解析
@@ -292,18 +287,22 @@ func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDeco
 }
 
 /**
- * TODO 内联代码背景色设置
+ * 文本背景色设置
  *
  * @param isCode 是否是内联代码
  * @param markdownTheme markdown基础样式
  * @return 返回需要显示的背景颜色
  */
-func spanBackgroundColor(isCode: Bool, markdownTheme: MarkdownTheme): Color {
-    // 内联代码情况需要设置背景色
+func spanBackgroundColor(isCode: Bool, isLink: Bool, markdownTheme: MarkdownTheme): Color {
     return if (isCode) {
+        // 内联代码情况需要设置背景色
         markdownTheme.codeBackgroundColor
+    } else if(isLink) {
+        // 链接情况需要设置背景色
+        markdownTheme.linkBackGroupColor
     } else {
-        Color.WHITE
+        // 不需要背景色设置
+        Color.TRANSPARENT
     }
 }
 
@@ -1129,14 +1128,4 @@ func linkUrl(nodeView: NodeView): ?String {
     } else {
         Option<String>.None
     }
-}
-
-/**
- * 对单位进行版本适配
- *
- * @param componentWidth 通过系统获取的数据
- * @return 返回的数据 - 单位px
- */
-func versionAdaptation(componentWidth: Float64): Float64 {
-    return vp2px(componentWidth.vp).getOrThrow().value
 }
