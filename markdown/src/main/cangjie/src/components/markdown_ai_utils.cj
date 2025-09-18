@@ -25,6 +25,7 @@ let COLOR_33000000: Color = Color(0x33000000)
 let COLOR_FF0000FF: Color = Color(0xFF0000FF)
 let COLOR_FF191919: Color = Color(0xFF191919)
 let COLOR_80000000: Color = Color(0x80000000)
+let COLOR_01000000: Color = Color(0x01000000)
 let null: NodeView = unsafe { zeroValue() }
 let SECONDS_PER_HOUR: Int64 = 3600
 let SECONDS_PER_MINUTE: Int64 = 60
@@ -264,18 +265,22 @@ func spanDecoration(nodeView: NodeView, markdownAITheme: MarkdownAITheme): (Text
 }
 
 /**
- * TODO 内联代码背景色设置
+ * 文本背景色设置
  *
  * @param isCode 是否是内联代码
  * @param markdownAITheme markdown基础样式
  * @return 返回需要显示的背景颜色
  */
-func spanBackgroundColor(isCode: Bool, markdownAITheme: MarkdownAITheme): Color {
-    // 内联代码情况需要设置背景色
+func spanBackgroundColor(isCode: Bool, isLink: Bool, markdownAITheme: MarkdownAITheme): Color {
     return if (isCode) {
+        // 内联代码情况需要设置背景色
         markdownAITheme.codeBackgroundColor
+    } else if(isLink) {
+        // 链接情况需要设置背景色
+        markdownAITheme.linkBackGroupColor
     } else {
-        Color.WHITE
+        // 不需要背景色设置
+        Color.TRANSPARENT
     }
 }
 
@@ -719,7 +724,7 @@ func styleImageRadius(borderRadius: ?Length): Length {
     if (borderRadius.isSome()) {
         return borderRadius()
     } else {
-        return Length(0, unitType: LengthType.px)
+        return 0.px
     }
 }
 
@@ -748,7 +753,7 @@ func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicS
             if (style[..7] == ":width=") {
                 let value = style[7..]
                 if (value.size <= 1) {
-                    let picStyleObjWidth: Length = Length(Int64.parse(value), unitType: LengthType.vp)
+                    let picStyleObjWidth: Length = Int64.parse(value).vp
                     picStyleObj.width = if (picStyleObjWidth.value > componentWidth) {
                         componentWidth.vp
                     } else {
@@ -756,7 +761,7 @@ func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicS
                     }
                 }
                 if (value[value.size - 2..] == "px") {
-                    let picStyleObjWidth: Length = Length(Int64.parse(value[..value.size - 2]), unitType: LengthType.px)
+                    let picStyleObjWidth: Length = Int64.parse(value[..value.size - 2]).px
                     let componentWidthLength: ?Length = vp2px(componentWidth.vp)
                     if (let Some(v) <- componentWidthLength) {
                         picStyleObj.width = if (picStyleObjWidth.value > v.value) {
@@ -770,10 +775,10 @@ func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicS
                 } else if (value[value.size - 1..] == "%") {
                     let opt = Int64.parse(value[..value.size - 1])
                     if (opt <= 100) {
-                        picStyleObj.width = Length(opt, unitType: LengthType.percent)
+                        picStyleObj.width = opt.percent
                     }
                 } else {
-                    let picStyleObjWidth: Length = Length(Int64.parse(value), unitType: LengthType.vp)
+                    let picStyleObjWidth: Length = Int64.parse(value).vp
                     picStyleObj.width = if (picStyleObjWidth.value > componentWidth) {
                         componentWidth.vp
                     } else {
@@ -783,17 +788,17 @@ func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicS
             } else if (style[..8] == ":height=") {
                 let value = style[8..]
                 if (value.size <= 1) {
-                    picStyleObj.height = Length(Int64.parse(value), unitType: LengthType.vp)
+                    picStyleObj.height = Int64.parse(value).vp
                 }
                 if (value[value.size - 2..] == "px") {
-                    picStyleObj.height = Length(Int64.parse(value[..value.size - 2]), unitType: LengthType.px)
+                    picStyleObj.height = Int64.parse(value[..value.size - 2]).px
                 } else if (value[value.size - 1..] == "%") {
                     let opt = Int64.parse(value[..value.size - 1])
                     if (opt <= 100) {
-                        picStyleObj.height = Length(opt, unitType: LengthType.percent)
+                        picStyleObj.height = opt.percent
                     }
                 } else {
-                    picStyleObj.height = Length(Int64.parse(value), unitType: LengthType.vp)
+                    picStyleObj.height = Int64.parse(value).vp
                 }
             } else if (style[..7] == ":align=") {
                 let value = style[7..]
@@ -805,7 +810,7 @@ func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicS
                 }
             } else if (style.size > 15 && style[..15] == ":border-radius=") {
                 let value = style[15..style.size - 2]
-                picStyleObj.borderRadius = Length(Int64.parse(value), unitType: LengthType.px)
+                picStyleObj.borderRadius = Int64.parse(value).px
             } else if (style[..7] == ":style=") {
                 for (s in style[7..].split("")) {
                     picStyle.append(":${s.replace(":","=")}")

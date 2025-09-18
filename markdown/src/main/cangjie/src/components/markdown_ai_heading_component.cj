@@ -135,10 +135,10 @@ class MarkdownAIHeadingComponent {
                     .strokeWidth(markdownAIConfiguration.markdownAITheme.headingBreakHeight)
             }
         }
-        // 设置元素内容的对齐方式
-        .align(Alignment.Start)
-        // 设置元素水平方向的布局
-        .direction(Direction.Ltr)
+        // 设置子组件在水平方向上的对齐格式
+        .alignItems(HorizontalAlign.Start)
+        // 设置子组件在垂直方向上的对齐格式
+        .justifyContent(FlexAlign.Center)
         // 设置外边距属性
         .margin(top: isMarginTop(), bottom: isMarginBottom())
         // 设置组件自身的宽度
