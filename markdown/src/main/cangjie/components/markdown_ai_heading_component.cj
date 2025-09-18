@@ -99,6 +99,7 @@ class MarkdownAIHeadingComponent {
     /**
      * 是否只有一条链接数据
      */
+    @State
     var isOneLink: Bool = false
 
     protected override func aboutToAppear(): Unit {

@@ -134,10 +134,8 @@ class MarkdownAITableBlockComponent {
             }
             // 统一边框样式设置接口
             .border(width: markdownAIConfiguration.markdownAITheme.tableBorderWidth.vp, color: markdownAIConfiguration.markdownAITheme.tableBorderColor, style: BorderStyle.Solid, radius: markdownAIConfiguration.markdownAITheme.tableRadius.vp)
-            // 设置元素内容的对齐方式
-            .align(Alignment.Start)
-            // 设置元素水平方向的布局
-//            .direction(Direction.Ltr)
+            // 设置ListItem在List交叉轴方向的布局方式
+            .alignListItem(ListItemAlign.Start)
         }
         // 设置滚动方向
         .scrollable(ScrollDirection.Horizontal)

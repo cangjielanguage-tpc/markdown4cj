@@ -98,6 +98,7 @@ class MarkdownAIParagraphComponent {
     /**
      * 是否只有一条链接数据
      */
+    @State
     var isOneLink: Bool = false
 
     protected override func aboutToAppear(): Unit {
@@ -105,11 +106,6 @@ class MarkdownAIParagraphComponent {
         refreshData(nodeViews)
         // 缓存当前控件
         paragraphComponents.add(this)
-        if(nodeViewList.size==1 && nodeViewList[0].node is CommonmarkLink){
-            isOneLink = true
-        }else{
-            isOneLink = false
-        }
     }
 
     protected override func aboutToDisappear(): Unit {

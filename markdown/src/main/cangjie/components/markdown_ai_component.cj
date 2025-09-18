@@ -354,6 +354,9 @@ public class MarkdownAIComponent {
                                 Text("")
                             }
                         }
+                    },
+                    keyGeneratorFunc:{
+                         item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
                     }
                 )
             }
@@ -426,7 +429,6 @@ public class MarkdownAIComponent {
             }
         }
     }
-
 
     /**
      * 将String转换成ArrayList<NodeView>，将解析的列表添加到懒加载的数据源中
