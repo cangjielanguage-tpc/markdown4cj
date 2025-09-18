@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 package markdown.components
 
@@ -101,7 +101,7 @@ func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: Ma
 }
 
 class MarkdownParseCodeUtil {
-    static func codeStrToRectPixelMap(strText: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func codeStrToRectPixelMap(strText: String, markdownConfiguration: MarkdownConfiguration, isFakeBoldText: Bool, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
             var imageHeight: ?Float64 = Option<Float64>.None
@@ -120,7 +120,8 @@ class MarkdownParseCodeUtil {
                     markdownConfiguration.markdownTheme.codeHeight,
                     ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
                     markdownConfiguration.markdownTheme.codeLeftAndRightPadding,
-                    0.0
+                    0.0,
+                    isFakeBoldText
                 )
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
@@ -168,4 +169,3 @@ class CodeLoadLimiter <: Resource {
         closed.store(true)
     }
 }
-
