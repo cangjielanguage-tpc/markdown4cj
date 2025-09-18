@@ -50,4 +50,3 @@ public class ImageSingleBlock <: CustomBlock {
         "ImageSingleBlock"
     }
 }
-

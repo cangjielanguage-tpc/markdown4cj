@@ -29,7 +29,7 @@ public class IncreaseParser1 {
             let node = md.parse(str[safeInputSize..])
             let view = md.render(node)
             docView.children.remove(safeViewSize..docView.children.size)
-            docView.children.add(all: view.children)
+            docView.children.add(all:view.children)
         } else {
             doc = md.parse(str)
             docView = md.render(doc)

@@ -25,8 +25,10 @@ class BlockVideoProcessor <: PostProcessor {
 }
 
 func isVideo(destination: String): Bool {
-    let i = destination.lastIndexOf(b'.') ?? return false
-    return match (destination[i..]) {
+    var k = destination.lastIndexOf(b'?') ?? destination.size
+    let dest = destination[..k]
+    let i = dest.lastIndexOf(b'.') ?? return false
+    return match (dest[i..]) {
         case '.mp4' | '.mov' | '.avi' | '.mkv' | '.wmv' | '.flv' | '.webm' | '.m4v' | '.3gp' => return true
         case _ => false
     }

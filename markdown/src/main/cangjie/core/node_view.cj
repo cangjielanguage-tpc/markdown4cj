@@ -141,7 +141,7 @@ public class NodeView <: ToString {
         while (let Some(n) <- tmp) {
             let isListNode = n is BlockQuote || n is OrderedList || n is BulletList
             if (isListNode && (list.size == 0 || n.getNodeType() != list[0].node.getNodeType())) {
-                list.add(n.getView(), at: 0)
+                list.add(n.getView(),at:0)
             }
             if (n == end) {
                 break
@@ -212,6 +212,16 @@ public class NodeView <: ToString {
         this.props = None
         this.list = EMPTY_LIST
         // this.node=unsafe{zeroValue<Node>()}
+    }
+
+    public func addProp(k: String, v: Any): Unit {
+        let p = this.props ?? {
+            =>
+            let m = HashMap<String, Any>()
+            this.props = m
+            m
+        }()
+        p.add(k, v)
     }
 }
 

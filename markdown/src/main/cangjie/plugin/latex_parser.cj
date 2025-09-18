@@ -59,7 +59,7 @@ class LatexBlockParserFactory <: AbstractBlockParserFactory {
         if (line == "$$" || line == "\\[") {
             return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + 2)
         }
-        line = line.trimAscii()
+        line = line.trim()
         if (line.startsWith(#"\["#) && line.endsWith(#"\]"#) ||
             (line.startsWith(#"$$"#) && line.size > 3 && line.endsWith(#"$$"#))) {
             let parser = LatexBlockParser()

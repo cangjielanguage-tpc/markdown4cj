@@ -143,7 +143,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
             token.reset()
         }
     }
-    public func processFragmentInline(output: Appendable, htmlFragment: String, parent: ?HtmlTag): HtmlTag {
+    public func processFragmentInline(output: Appendable, htmlFragment: String, parent: ?HtmlTag): ?HtmlTag {
         var parentTag = parent
         let tokeniser = Tokeniser(CharacterReader(htmlFragment), ParseErrorList.noTracking())
         let token = tokeniser.read()
@@ -168,7 +168,7 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
                     processBlockTagEnd(output, endTag)
                 }
                 return EndTag(endTag.normalName(), currentTag)
-            case _ => throw IllegalStateException()
+            case _ => None
         }
     }
 

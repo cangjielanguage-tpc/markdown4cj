@@ -3,15 +3,6 @@
  */
 package markdown.core
 
-/**
- * @see #configure(Registry)
- */
-// public interface Registry {
-//     func require(plugin: String): MarkdownPlugin
-
-//     func require(plugin: String, action: Action): Unit
-// }
-
 public class Registry {
     private let origin: ArrayList<MarkdownPlugin>
     private let plugins: ArrayList<MarkdownPlugin>
@@ -63,7 +54,7 @@ public class Registry {
             if (!plugins.contains(plugin)) {
                 // core-plugin must always be the first one (if it's present)
                 if (plugin is CorePlugin) {
-                    plugins.add(plugin, at: 0)
+                    plugins.add(plugin,at:0)
                 } else {
                     plugins.add(plugin)
                 }
