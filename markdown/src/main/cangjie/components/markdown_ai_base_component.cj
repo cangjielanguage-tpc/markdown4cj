@@ -890,7 +890,7 @@ func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownAIConfig
         // 设置文本的字体粗细
         .fontWeight(isFontWeight(markdownAIConfiguration.markdownAITheme.orderedListItemPrefixBold))
         // 块内容前的起始边距
-        .margin(top: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins,bottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins)
+        .margin(top: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins, bottom: markdownAIConfiguration.markdownAITheme.blockOrderedAndBulletTopAndBottomMargins)
 }
 
 /**

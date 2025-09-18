@@ -29,12 +29,16 @@ class MarkdownAIThematicBreakComponent {
     var marginBottom: Float64
 
     func build() {
-        Divider()
-            // 设置分割线颜色
-            .color(markdownAIConfiguration.markdownAITheme.thematicBreakColor)
-            // 设置分割线宽度
-            .strokeWidth(markdownAIConfiguration.markdownAITheme.thematicBreakHeight)
-            // 设置外边距属性
-            .margin(top: marginTop, bottom: marginBottom)
+        Column(){
+            if (markdownAIConfiguration.markdownAITheme.thematicBreakHeight > 0.0) {
+                Divider()
+                    // 设置分割线颜色
+                    .color(markdownAIConfiguration.markdownAITheme.thematicBreakColor)
+                    // 设置分割线宽度
+                    .strokeWidth(markdownAIConfiguration.markdownAITheme.thematicBreakHeight)
+            }
+        }
+        // 设置外边距属性
+        .margin(top: marginTop, bottom: marginBottom)
     }
 }

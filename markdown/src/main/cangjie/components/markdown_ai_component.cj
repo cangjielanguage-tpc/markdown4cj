@@ -286,13 +286,11 @@ public class MarkdownAIComponent {
                         } else if (item.node is ThematicBreak) {
                             // 分割线
                             ListItem() {
-                                Divider()
-                                    // 设置分割线颜色
-                                    .color(markdownAIConfiguration.markdownAITheme.thematicBreakColor)
-                                    // 设置分割线宽度
-                                    .strokeWidth(markdownAIConfiguration.markdownAITheme.thematicBreakHeight)
-                                    // 设置外边距属性
-                                    .margin(top: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins + markdownAIConfiguration.markdownAITheme.thematicBreakTopMargin, bottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins + markdownAIConfiguration.markdownAITheme.thematicBreakBottomMargin)
+                                MarkdownAIThematicBreakComponent(
+                                    markdownAIConfiguration: markdownAIConfiguration,
+                                    marginTop: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins + markdownAIConfiguration.markdownAITheme.thematicBreakTopMargin,
+                                    marginBottom: markdownAIConfiguration.markdownAITheme.blockTopAndBottomMargins + markdownAIConfiguration.markdownAITheme.thematicBreakBottomMargin
+                                )
                             }
                         } else if (item.node is BlockAudio) {
                             // 音频
