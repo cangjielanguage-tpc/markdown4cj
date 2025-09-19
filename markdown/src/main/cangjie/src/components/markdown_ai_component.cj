@@ -383,7 +383,7 @@ public class MarkdownAIComponent {
                 LazyForEach(
                     nodeViewAIDataSource,
                     itemGeneratorFunc: {
-                        item: NodeView, idx: Int64 => if (item.node is FencedCodeBlock) {
+                        item: NodeView, idx: Int64 => if (idx == 0 && item.node is FencedCodeBlock) {
                             ListItem(){
                                 MarkdownAICodeComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
@@ -394,7 +394,7 @@ public class MarkdownAIComponent {
                                     aiCodeTextComponents: markdownAICacheConfiguration.aiCodeTextComponents
                                 )
                             }
-                        } else if (item.node is IndentedCodeBlock) {
+                        } else if (idx == 0 && item.node is IndentedCodeBlock) {
                             ListItem(){
                                 MarkdownAICodeComponent(
                                     markdownAIConfiguration: markdownAIConfiguration,
