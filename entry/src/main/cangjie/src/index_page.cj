@@ -52,32 +52,32 @@ class IndexPage {
                     }
                     ListItem() {
                         itemListComponent(
-                            "5、定制化设置全量加载",
+                            "5、特性设置全量加载",
                             "CustomizationCompletePage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "6、定制化设置增量加载",
+                            "6、特性设置增量加载",
                             "CustomizationIncrementPage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "7、列表嵌套markdown",
-                            "ListMarkdownPage"
-                        )
-                    }
-                    ListItem() {
-                        itemListComponent(
-                            "8、BUG用例",
+                            "7、BUG用例",
                             "BugPage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "9、单独代码块BUG用例",
+                            "8、单独代码块BUG用例",
                             "BugCodePage"
+                        )
+                    }
+                    ListItem() {
+                        itemListComponent(
+                            "9、列表嵌套markdown",
+                            "ListMarkdownPage"
                         )
                     }
                     ListItem() {
@@ -96,6 +96,12 @@ class IndexPage {
                         itemListComponent(
                             "12、整体切换数据源",
                             "TestError1Page"
+                        )
+                    }
+                    ListItem() {
+                        itemListComponent(
+                            "13、超大数据源加载",
+                            "BigCompletePage"
                         )
                     }
                 }

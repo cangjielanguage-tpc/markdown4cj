@@ -204,7 +204,7 @@ class CompleteDetailsPage {
         // 13、图片Banner
 
         // 14、图片
-        markdownAIThemeBuilder.setImagePadding(20) //  设置图片宽度边距
+//        markdownAIThemeBuilder.setImagePadding(20) //  设置图片宽度边距
 
         // 15、表格
         markdownAIThemeBuilder.setTableHeaderRowBackgroundColor(Color(0xFFF5F7FA)) // 设置表格头背景色
