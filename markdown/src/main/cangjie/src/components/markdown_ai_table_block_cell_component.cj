@@ -95,6 +95,16 @@ class MarkdownAITableBlockCellComponent {
     @State
     var minTextWidth: Float64 = 0.0
 
+    /**
+     *
+     */
+    @State
+    var minTextHeight: Float64 = 0.0
+
+    @Link
+    @Watch[refreshTextHeight]
+    var maxHeight:Float64
+
     @Prop
     @Watch[refreshTextWidth]
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
@@ -107,6 +117,10 @@ class MarkdownAITableBlockCellComponent {
         } else {
             minTextWidth = markdownAIConfiguration.markdownAITheme.tableMinTextWidth
         }
+    }
+
+    func refreshTextHeight(): Unit {
+        minTextHeight = maxHeight
     }
 
     protected override func aboutToAppear(): Unit {
@@ -143,8 +157,6 @@ class MarkdownAITableBlockCellComponent {
         .alignItems(renderTableCellColumnAlign(alignment))
         // 设置 Column 子组件在垂直方向上的对齐格式
         .justifyContent(FlexAlign.Center)
-        // 覆盖 Flex 布局容器中 alignItems 默认配置
-        .alignSelf(ItemAlign.Stretch)
         // 设置内边距属性
         .padding(markdownAIConfiguration.markdownAITheme.tableCellPadding)
         // 设置组件的背景色
@@ -156,11 +168,20 @@ class MarkdownAITableBlockCellComponent {
         // 设置边框的颜色
         .borderColor(markdownAIConfiguration.markdownAITheme.tableBorderColor)
         // 设置约束尺寸，组件布局时，进行尺寸范围限制
-        .constraintSize(minWidth: minTextWidth.vp, maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp)
+        .constraintSize(minWidth: minTextWidth.vp, maxWidth: markdownAIConfiguration.markdownAITheme.tableMaxTextWidth.vp, minHeight: minTextHeight.vp)
         // 组件区域变化时触发该回调
         .onAreaChange(
             {
                 old, new =>
+                let newHeight: Float64 = if (DeviceInfo.majorVersion <= 5 && DeviceInfo.seniorVersion <= 0 && DeviceInfo.featureVersion <= 0 && DeviceInfo.buildVersion <= 103) {
+                    new.height
+                } else {
+                    px2vp(new.height.px)().value
+                }
+                if (maxHeight < newHeight) {
+                    maxHeight = newHeight
+                }
+
                 if (old.width == new.width) {
                     return
                 }
@@ -169,11 +190,6 @@ class MarkdownAITableBlockCellComponent {
                     new.width
                 } else {
                     px2vp(new.width.px)().value
-                }
-                let max: Float64 = if (newWidth > oldWidth) {
-                    newWidth
-                } else {
-                    oldWidth
                 }
                 if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
                     if (v.index == idxItem && newWidth > v.minWidth) {
