@@ -271,6 +271,9 @@ class MarkdownAIListItemComponent {
                             Text("")
                         }
                     }
+                },
+                keyGeneratorFunc:{
+                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
                 }
             )
         }

@@ -280,18 +280,32 @@ class MarkdownAITableBlockCellComponent {
                             }
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
-                        MarkdownAIImagePixelmapSpanComponent(
-                            destination: (item.node as CommonmarkImage)().getDestination(),
-                            imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
-                            componentWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth),
-                            imageMarginTop: 0.0,
-                            imageMarginBottom: 0.0,
-                            imageCallback: imageCallback,
-                            linkCallback: markdownAIConfiguration.linkCallback,
-                            isLink: item.link.isSome(),
-                            linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                            imageCallbackCallback : markdownAIConfiguration.imageCallbackCallback
-                        )
+                        if (markdownAIConfiguration.imageCallbackCallback.isNone()) {
+                            MarkdownAIImageSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
+                                componentWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth),
+                                imageMarginTop: 0.0,
+                                imageMarginBottom: 0.0,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownAIConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                            )
+                        } else {
+                            MarkdownAIImagePixelmapSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
+                                componentWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth),
+                                imageMarginTop: 0.0,
+                                imageMarginBottom: 0.0,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownAIConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                imageCallbackCallback : markdownAIConfiguration.imageCallbackCallback()
+                            )
+                        }
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
                         MarkdownAILatexImageSpanComponent(
@@ -305,6 +319,9 @@ class MarkdownAITableBlockCellComponent {
                         // TODO 其他节点
                         Span("")
                     }
+                },
+                keyGeneratorFunc:{
+                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
                 }
             )
         }
@@ -412,18 +429,32 @@ class MarkdownAITableBlockCellComponent {
                         }
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
-                        MarkdownAIImagePixelmapSpanComponent(
-                            destination: (item.node as CommonmarkImage)().getDestination(),
-                            imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
-                            componentWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth),
-                            imageMarginTop: 0.0,
-                            imageMarginBottom: 0.0,
-                            imageCallback: imageCallback,
-                            linkCallback: markdownAIConfiguration.linkCallback,
-                            isLink: item.link.isSome(),
-                            linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                            imageCallbackCallback : markdownAIConfiguration.imageCallbackCallback
-                        )
+                        if (markdownAIConfiguration.imageCallbackCallback.isNone()) {
+                            MarkdownAIImageSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
+                                componentWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth),
+                                imageMarginTop: 0.0,
+                                imageMarginBottom: 0.0,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownAIConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                            )
+                        } else {
+                            MarkdownAIImagePixelmapSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
+                                componentWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth),
+                                imageMarginTop: 0.0,
+                                imageMarginBottom: 0.0,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownAIConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                imageCallbackCallback : markdownAIConfiguration.imageCallbackCallback()
+                            )
+                        }
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
                         MarkdownAILatexImageSpanComponent(
@@ -437,6 +468,9 @@ class MarkdownAITableBlockCellComponent {
                         // TODO 其他节点
                         Span("")
                     }
+                },
+                keyGeneratorFunc:{
+                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
                 }
             )
         }

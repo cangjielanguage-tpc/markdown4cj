@@ -264,6 +264,9 @@ public class MarkdownAIQuoteComponent {
                     .backgroundColor(markdownAIConfiguration.markdownAITheme.blockQuoteBackGroupColor)
                     // 内边距
                     .padding(left: markdownAIConfiguration.markdownAITheme.blockQuoteRightMargin)
+                },
+                keyGeneratorFunc:{
+                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
                 }
             )
         }
