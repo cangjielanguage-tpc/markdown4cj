@@ -137,131 +137,7 @@ class MarkdownAITableBlockCellComponent {
 
     func build() {
         Column() {
-            Text() {
-                ForEach(
-                    nodeViewList,
-                    itemGeneratorFunc: {
-                        item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                            // 文本
-                            tableComponentText(
-                                item,
-                                isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold),
-                                markdownAIConfiguration
-                            )
-                        } else if (item.node is Footnote) {
-                            // 脚注
-                            tableComponentFootnote(
-                                item,
-                                isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold),
-                                markdownAIConfiguration,
-                                fontCallback
-                            )
-                        } else if (item.node is Code) {
-                            // 内联代码
-                            if (markdownAIConfiguration.markdownAITheme.isCodeStyle) {
-                                MarkdownAICodeLineImageSpanComponent(
-                                    markdownAIConfiguration: markdownAIConfiguration,
-                                    strCode: (item.node as Code)().getLiteral(),
-                                    strUrl: linkUrl(item),
-                                    maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp,
-                                    isFakeBoldText: isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold) || item.strongEmphasis
-                                )
-                            } else {
-                                tableComponentCode(
-                                    item,
-                                    isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold),
-                                    markdownAIConfiguration
-                                )
-                            }
-                        } else if (item.node is HardLineBreak) {
-                            // 硬换行
-                            Span("\n")
-                        } else if (item.node is SoftLineBreak) {
-                            // 软换行
-                            Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
-                        } else if (item.node is CommonmarkLink) {
-                            // 链接
-                            if (!markdownAIConfiguration.markdownAITheme.isLinkStyle) {
-                                if(getLinkString(item).isSome()){
-                                    tableLinkComponent(
-                                        item,
-                                        isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold),
-                                        getLinkString(item)(),
-                                        markdownAIConfiguration
-                                    )
-                                }else{
-                                    Span("")
-                                }
-                            } else {
-                                if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
-                                    if(getLinkString(item).isSome()){
-                                        if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
-                                            MarkdownAILinkRectImageComponent(
-                                                markdownAIConfiguration: markdownAIConfiguration,
-                                                strText: getLinkString(item)().trimAscii(),
-                                                strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                                backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
-                                                maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
-                                            )
-                                        }else{
-                                            MarkdownAILinkCircleImageComponent(
-                                                markdownAIConfiguration: markdownAIConfiguration,
-                                                strText: getLinkString(item)().trimAscii(),
-                                                strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                                backGroupColor: renderTableCellColor(isHeader,markdownAIConfiguration.markdownAITheme, idRow),
-                                                maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
-                                            )
-                                        }
-                                    }else{
-                                        Span("")
-                                    }
-                                } else {
-                                    if(getLinkString(item).isSome()){
-                                        MarkdownAILinkRectToolImageComponent(
-                                            markdownAIConfiguration: markdownAIConfiguration,
-                                            strText: getLinkString(item)(),
-                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                            backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
-                                            maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
-                                        )
-                                    }else{
-                                        Span("")
-                                    }
-                                }
-                            }
-                        } else if (item.node is CommonmarkImage) {
-                            // 图片节点
-                            MarkdownAIImagePixelmapSpanComponent(
-                                destination: (item.node as CommonmarkImage)().getDestination(),
-                                imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
-                                componentWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth),
-                                imageMarginTop: 0.0,
-                                imageMarginBottom: 0.0,
-                                imageCallback: imageCallback,
-                                linkCallback: markdownAIConfiguration.linkCallback,
-                                isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                                imageCallbackCallback : markdownAIConfiguration.imageCallbackCallback
-                            )
-                        } else if (item.node is LatexMathNode) {
-                            // 数学公式节点
-                            MarkdownAILatexImageSpanComponent(
-                                markdownAIConfiguration: markdownAIConfiguration,
-                                componentWidth: componentWidth,
-                                strLatexMath: (item.node as LatexMathNode)().latex,
-                                backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
-                                maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
-                            )
-                        } else {
-                            // TODO 其他节点
-                            Span("")
-                        }
-                    }
-                )
-            }
-            // 设置行高
-            .lineHeight(markdownAIConfiguration.markdownAITheme.tableTextLineHeight)
+            tableBlockCellComponent()
         }
         // 设置 Column 子组件在水平方向上的对齐格式
         .alignItems(renderTableCellColumnAlign(alignment))
@@ -306,6 +182,152 @@ class MarkdownAITableBlockCellComponent {
                 }
             }
         )
+    }
+
+    @Builder
+    func tableBlockCellComponent(){
+        Text() {
+            ForEach(
+                nodeViewList,
+                itemGeneratorFunc: {
+                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
+                        // 文本
+                        tableComponentText(
+                            item,
+                            isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold),
+                            markdownAIConfiguration
+                        )
+                    } else if (item.node is Footnote) {
+                        // 脚注
+                        tableComponentFootnote(
+                            item,
+                            isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold),
+                            markdownAIConfiguration,
+                            fontCallback
+                        )
+                    } else if (item.node is Code) {
+                        // 内联代码
+                        if (markdownAIConfiguration.markdownAITheme.isCodeStyle) {
+                            MarkdownAICodeLineImageSpanComponent(
+                                markdownAIConfiguration: markdownAIConfiguration,
+                                strCode: (item.node as Code)().getLiteral(),
+                                strUrl: linkUrl(item),
+                                maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp,
+                                isFakeBoldText: isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold) || item.strongEmphasis
+                            )
+                        } else {
+                            tableComponentCode(
+                                item,
+                                isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold),
+                                markdownAIConfiguration
+                            )
+                        }
+                    } else if (item.node is HardLineBreak) {
+                        // 硬换行
+                        Span("\n")
+                    } else if (item.node is SoftLineBreak) {
+                        // 软换行
+                        Span(spanSoftLineBreak(markdownAIConfiguration.markdownAITheme.isLineBreak))
+                    } else if (item.node is CommonmarkLink) {
+                        // 链接
+                        if (!markdownAIConfiguration.markdownAITheme.isLinkStyle) {
+                            if(getLinkString(item).isSome()){
+                                tableLinkComponent(
+                                    item,
+                                    isHeader || (idxItem == 0 && markdownAIConfiguration.markdownAITheme.tableFirstColumnBold),
+                                    getLinkString(item)(),
+                                    markdownAIConfiguration
+                                )
+                            }else{
+                                Span("")
+                            }
+                        } else {
+                            if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                                if(getLinkString(item).isSome()){
+                                    if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
+                                        MarkdownAILinkRectImageComponent(
+                                            markdownAIConfiguration: markdownAIConfiguration,
+                                            strText: getLinkString(item)().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
+                                            maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
+                                        )
+                                    }else{
+                                        MarkdownAILinkCircleImageComponent(
+                                            markdownAIConfiguration: markdownAIConfiguration,
+                                            strText: getLinkString(item)().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: renderTableCellColor(isHeader,markdownAIConfiguration.markdownAITheme, idRow),
+                                            maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
+                                        )
+                                    }
+                                }else{
+                                    Span("")
+                                }
+                            } else {
+                                if(getLinkString(item).isSome()){
+                                    MarkdownAILinkRectToolImageComponent(
+                                        markdownAIConfiguration: markdownAIConfiguration,
+                                        strText: getLinkString(item)(),
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
+                                        backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
+                                        maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
+                                    )
+                                }else{
+                                    Span("")
+                                }
+                            }
+                        }
+                    } else if (item.node is CommonmarkImage) {
+                        // 图片节点
+                        if (markdownAIConfiguration.imageCallbackCallback.isNone()) {
+                            MarkdownAIImageSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
+                                componentWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth),
+                                imageMarginTop: 0.0,
+                                imageMarginBottom: 0.0,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownAIConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                            )
+                        } else {
+                            MarkdownAIImagePixelmapSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownAIConfiguration.markdownAITheme.imagePlaceholder,
+                                componentWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth),
+                                imageMarginTop: 0.0,
+                                imageMarginBottom: 0.0,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownAIConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                imageCallbackCallback : markdownAIConfiguration.imageCallbackCallback()
+                            )
+                        }
+                    } else if (item.node is LatexMathNode) {
+                        // 数学公式节点
+                        MarkdownAILatexImageSpanComponent(
+                            markdownAIConfiguration: markdownAIConfiguration,
+                            componentWidth: componentWidth,
+                            strLatexMath: (item.node as LatexMathNode)().latex,
+                            backGroupColor: renderTableCellColor(isHeader, markdownAIConfiguration.markdownAITheme, idRow),
+                            maxWidth: (markdownAIConfiguration.markdownAITheme.tableMaxTextWidth - 2.0 * markdownAIConfiguration.markdownAITheme.tableCellPadding - 2.0 * markdownAIConfiguration.markdownAITheme.tableBorderWidth).vp
+                        )
+                    } else {
+                        // TODO 其他节点
+                        Span("")
+                    }
+                },
+                keyGeneratorFunc:{
+                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
+                }
+            )
+        }
+        // 设置行高
+        .lineHeight(markdownAIConfiguration.markdownAITheme.tableTextLineHeight)
     }
 
     /**

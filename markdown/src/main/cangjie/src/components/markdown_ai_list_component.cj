@@ -139,6 +139,9 @@ public class MarkdownAIListComponent {
                     }
                     // 对子组件进行重新布局
                     .layoutWeight(1)
+                },
+                keyGeneratorFunc:{
+                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
                 }
             )
         }
