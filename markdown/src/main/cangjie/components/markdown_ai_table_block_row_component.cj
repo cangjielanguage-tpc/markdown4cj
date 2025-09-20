@@ -71,6 +71,9 @@ class MarkdownAITableBlockRowComponent {
     @Prop
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
 
+    @State
+    var maxHeight:Float64 = 0.0
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeViews)
@@ -110,7 +113,8 @@ class MarkdownAITableBlockRowComponent {
                             dataRowSize: dataRowSize,
                             idxItem: idxItem,
                             dataCellSize: nodeViewList.size,
-                            cellWidthArrayIndexed: cellWidthArrayIndexed
+                            cellWidthArrayIndexed: cellWidthArrayIndexed,
+                            maxHeight: maxHeight
                         )
                     }
                 },
