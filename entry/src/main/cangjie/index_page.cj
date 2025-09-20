@@ -52,13 +52,13 @@ class IndexPage {
                     }
                     ListItem() {
                         itemListComponent(
-                            "5、定制化设置全量加载",
+                            "5、特性设置全量加载",
                             "CustomizationCompletePage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "6、定制化设置增量加载",
+                            "6、特性设置增量加载",
                             "CustomizationIncrementPage"
                         )
                     }
@@ -96,6 +96,12 @@ class IndexPage {
                         itemListComponent(
                             "12、整体切换数据源",
                             "TestError1Page"
+                        )
+                    }
+                    ListItem() {
+                        itemListComponent(
+                            "13、超大数据源加载",
+                            "BigCompletePage"
                         )
                     }
                 }

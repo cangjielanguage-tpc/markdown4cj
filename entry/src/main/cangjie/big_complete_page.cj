@@ -14,11 +14,11 @@ import std.time.*
 import ohos.hilog.*
 
 /**
- * 定制化增量加载
+ * 定制化全量加载
  */
 @Entry
 @Component
-class CustomizationIncrementPage {
+class BigCompletePage {
     /**
      * markdown文本内容
      */
@@ -37,14 +37,14 @@ class CustomizationIncrementPage {
     var folderList: ObservedArrayList<String> = ObservedArrayList<String>()
 
     protected override func aboutToAppear(): Unit {
-        let arr: Array<String> = getFileListStr("003_特性设置/")
+        let arr: Array<String> = getFileListStr("006_超大数据/")
         folderList.appendAll(arr)
     }
 
     func build() {
         Column {
             titleComponent(
-                "增量加载",
+                "全量加载",
                 true
             )
             Scroll(scroller) {
@@ -55,8 +55,8 @@ class CustomizationIncrementPage {
                             str: String, index: Int64 => ListItem() {
                                 itemListComponent(
                                     "${index+1}、${str}",
-                                    "CustomizationIncrementDetailsPage",
-                                    "003_特性设置/${str}"
+                                    "BigCompleteDetailsPage",
+                                    "006_超大数据/${str}"
                                 )
                             }
                         },
