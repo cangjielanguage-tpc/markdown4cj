@@ -115,7 +115,7 @@ struct QuoteDetailsPage {
         )
       Scroll(this.scroller) {
         Column() {
-          CJMarkdown({ mdStr: this.mdStr, isFull: this.isFull, cfg: this.setMarkdownConfig() })
+          CJMarkdown({ mdStr: this.mdStr, cfg: this.setMarkdownConfig() })
         }
       }
       .padding({ bottom: 200 })

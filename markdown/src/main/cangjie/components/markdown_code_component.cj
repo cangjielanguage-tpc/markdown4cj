@@ -31,11 +31,6 @@ class MarkdownCodeComponent {
     var info: Option<String> = Option<String>.None
 
     /**
-     * 是否全量加载
-     */
-    var isFull: Bool
-
-    /**
      * 定位需要的数组
      */
     var indexList: ArrayList<Int64> = ArrayList<Int64>()
@@ -90,61 +85,6 @@ class MarkdownCodeComponent {
                     false
                 }
             })
-    }
-
-    /**
-     * 数据刷新
-     */
-    public func refreshData(codeText: String, info: Option<String>): Unit {
-        this.codeText = codeText
-        this.info = info
-        let arr = ArrayList<String>()
-        codeText.lines().forEach({
-            s => arr.add(s)
-        })
-        let refreshNodeViewSize = arr.size // 刷新进来的数据长度
-        let dataSourceSize = lineStrArray.totalCount() // 页面缓存的数据长度
-        if (isFull) {
-            // 全量加载
-            lineStrArray.clear()
-            lineStrArray.addDatas(arr)
-            lineInt64Array.clear()
-            lineInt64Array.addDatas(arr)
-        } else {
-            scrollChatIfAtBottom()
-            // 增量加载
-            if (refreshNodeViewSize == 0) {
-                return
-            }
-            if (refreshNodeViewSize > dataSourceSize) {
-                // 刷新数据的长度大于页面数据长度，需要添加数据
-                if (dataSourceSize != 0) {
-                    // 更新页面最后一条数据
-                    lineStrArray.replaceData(dataSourceSize - 1, arr[dataSourceSize - 1])
-                    lineInt64Array.replaceData(dataSourceSize - 1, arr[dataSourceSize - 1])
-                }
-                // 循环添加所有新增数据
-                for (i in refreshNodeViewSize - dataSourceSize..0 : -1) {
-                    lineStrArray.addData(arr[refreshNodeViewSize - i])
-                    lineInt64Array.addData(arr[refreshNodeViewSize - i])
-                }
-            } else if (refreshNodeViewSize == dataSourceSize) {
-                // 刷新数据的长度等于页面数据长度，需要更新当前数据
-                lineStrArray.replaceData(dataSourceSize - 1, arr[dataSourceSize - 1])
-                lineInt64Array.replaceData(dataSourceSize - 1, arr[dataSourceSize - 1])
-            } else {
-                // 刷新数据小于页面数据长度，需要删除数据
-                // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
-                lineStrArray.replaceData(refreshNodeViewSize - 1, arr[refreshNodeViewSize - 1])
-                lineInt64Array.replaceData(refreshNodeViewSize - 1, arr[refreshNodeViewSize - 1])
-                // 循环删除所有多余数据
-                for (i in dataSourceSize - refreshNodeViewSize..0 : -1) {
-                    lineStrArray.deleteData(i)
-                    lineInt64Array.deleteData(i)
-                }
-            }
-        }
-        size = lineStrArray.totalCount() // 更新列表长度
     }
 
     func build() {
@@ -205,7 +145,6 @@ class MarkdownCodeComponent {
                                             codeText: item,
                                             info: info,
                                             idx: idx,
-                                            isFull: isFull,
                                             indexList: indexAdd(indexList, idx),
                                             codeTextComponents: codeTextComponents
                                         )
@@ -245,8 +184,6 @@ class MarkdownCodeComponent {
                 .scrollBar(BarState.Off)
                 // 设置元素内容的对齐方式
                 .align(Alignment.Start)
-                // 设置元素水平方向的布局
-//                .direction(Direction.Ltr)
                 // 设置组件自身的宽度
                 .width(100.percent)
                 // 设置组件自身的宽度
@@ -436,5 +373,63 @@ class MarkdownCodeComponent {
         } else if (let TouchType.Up <- evt.eventType) {
             chatTouch = false
         }
+    }
+
+    /**
+     * 数据刷新
+     */
+    public func refreshData(codeText: String, info: Option<String>): Unit {
+        this.codeText = codeText
+        this.info = info
+        let arr = ArrayList<String>()
+        codeText.lines().forEach({
+            s => arr.add(s)
+        })
+        let refreshNodeViewSize = arr.size // 刷新进来的数据长度
+        let dataSourceSize = lineStrArray.totalCount() // 页面缓存的数据长度
+        if (markdownConfiguration.markdownTheme.separateCodeIsBottom) {
+            scrollChatIfAtBottom()
+        }
+        if (refreshNodeViewSize == 0) {
+            return
+        }
+        if (refreshNodeViewSize > dataSourceSize) {
+            // 新数据大于页面数据
+            // 循环判断历史数据有没有做过修改
+            for(i in 0..dataSourceSize){
+                if(lineStrArray.getData(i) != arr[i]){
+                    lineStrArray.replaceData(i, arr[i])
+                    lineInt64Array.replaceData(i, arr[i])
+                }
+            }
+            // 循环添加新数据
+            for(i in dataSourceSize..refreshNodeViewSize){
+                lineStrArray.addData(arr[i])
+                lineInt64Array.addData(arr[i])
+            }
+        } else if (refreshNodeViewSize == dataSourceSize) {
+            // 新数据等于页面数据
+            for(i in 0..dataSourceSize){
+                if(lineStrArray.getData(i) != arr[i]){
+                    lineStrArray.replaceData(i, arr[i])
+                    lineInt64Array.replaceData(i, arr[i])
+                }
+            }
+        } else {
+            // 新数据小于页面数据
+            // 循环判断历史数据有没有做过修改
+            for(i in 0..refreshNodeViewSize){
+                if(lineStrArray.getData(i) != arr[i]){
+                    lineStrArray.replaceData(i, arr[i])
+                    lineInt64Array.replaceData(i, arr[i])
+                }
+            }
+            // 循环删除多余的旧数据
+            for(i in dataSourceSize - 1..=refreshNodeViewSize : -1){
+                lineStrArray.deleteData(i)
+                lineInt64Array.deleteData(i)
+            }
+        }
+        size = lineStrArray.totalCount() // 更新列表长度
     }
 }

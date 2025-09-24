@@ -65,8 +65,7 @@ struct DemoPage {
     Column() {
       Column() {
         CJMarkdown({
-          mdStr: this.message,
-          isFull: true
+          mdStr: this.message
         })
       }
     }

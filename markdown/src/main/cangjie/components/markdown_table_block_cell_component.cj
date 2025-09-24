@@ -34,11 +34,6 @@ class MarkdownTableBlockCellComponent {
     var size: Int64 = -1
 
     /**
-     * 是否全量加载
-     */
-    var isFull: Bool
-
-    /**
      * 是否是标题
      */
     var isHeader: Bool
@@ -100,6 +95,16 @@ class MarkdownTableBlockCellComponent {
     @State
     var minTextWidth: Float64 = 0.0
 
+    /**
+     *
+     */
+    @State
+    var minTextHeight: Float64 = 0.0
+
+    @Link
+    @Watch[refreshTextHeight]
+    var maxHeight:Float64
+
     @Prop
     @Watch[refreshTextWidth]
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
@@ -112,6 +117,10 @@ class MarkdownTableBlockCellComponent {
         } else {
             minTextWidth = markdownConfiguration.markdownTheme.tableMinTextWidth
         }
+    }
+
+    func refreshTextHeight(): Unit {
+        minTextHeight = maxHeight
     }
 
     protected override func aboutToAppear(): Unit {
@@ -142,105 +151,12 @@ class MarkdownTableBlockCellComponent {
 
     func build() {
         Column() {
-            Text() {
-                ForEach(
-                    nodeViewList,
-                    itemGeneratorFunc: {
-                        item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                            // 文本
-                            tableComponentText(
-                                item,
-                                isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
-                                markdownConfiguration
-                            )
-                        } else if (item.node is Footnote) {
-                            // 脚注
-                            tableComponentFootnote(
-                                item,
-                                isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
-                                markdownConfiguration,
-                                fontCallback
-                            )
-                        } else if (item.node is Code) {
-                            // 内联代码
-                            if (markdownConfiguration.markdownTheme.isCodeStyle) {
-                                MarkdownCodeLineImageSpanComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    strCode: (item.node as Code)().getLiteral(),
-                                    strUrl: linkUrl(item)
-                                )
-                            } else {
-                                tableComponentCode(
-                                    item,
-                                    isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
-                                    markdownConfiguration
-                                )
-                            }
-                        } else if (item.node is HardLineBreak) {
-                            // 硬换行
-                            Span("\n")
-                        } else if (item.node is SoftLineBreak) {
-                            // 软换行
-                            Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
-                        } else if (item.node is CommonmarkLink) {
-                            // 链接
-                            if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
-                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
-                                    if ((item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii().toRuneArray().size > 1) {
-                                        MarkdownLinkRectImageComponent(
-                                            markdownConfiguration: markdownConfiguration,
-                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
-                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
-                                            maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
-                                        )
-                                    } else {
-                                        MarkdownLinkCircleImageComponent(
-                                            markdownConfiguration: markdownConfiguration,
-                                            strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral().trimAscii(),
-                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
-                                            maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
-                                        )
-                                    }
-                                }
-                            } else {
-                                if (item.node.getFirstChild().isSome() && item.node.getFirstChild()() is CommonmarkText) {
-                                    MarkdownLinkRectToolImageComponent(
-                                        markdownConfiguration: markdownConfiguration,
-                                        strText: (item.node.getFirstChild()() as CommonmarkText)().getLiteral(),
-                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                        backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
-                                        maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
-                                    )
-                                }
-                            }
-                        } else if (item.node is LatexMathNode) {
-                            // 数学公式节点
-                            MarkdownLatexImageSpanComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                componentWidth: componentWidth,
-                                strLatexMath: (item.node as LatexMathNode)().latex,
-                                backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
-                                maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
-                            )
-                        } else {
-                            // TODO 其他节点
-                            Span("")
-                        }
-                    }
-                )
-            }
-            // 设置行高
-            .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
+            tableBlockCellComponent()
         }
         // 设置 Column 子组件在水平方向上的对齐格式
         .alignItems(renderTableCellColumnAlign(alignment))
         // 设置 Column 子组件在垂直方向上的对齐格式
         .justifyContent(FlexAlign.Center)
-        // 覆盖 Flex 布局容器中 alignItems 默认配置
-        .alignSelf(ItemAlign.Stretch)
         // 设置内边距属性
         .padding(markdownConfiguration.markdownTheme.tableCellPadding)
         // 设置组件的背景色
@@ -252,11 +168,15 @@ class MarkdownTableBlockCellComponent {
         // 设置边框的颜色
         .borderColor(markdownConfiguration.markdownTheme.tableBorderColor)
         // 设置约束尺寸，组件布局时，进行尺寸范围限制
-        .constraintSize(minWidth: minTextWidth.vp, maxWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth.vp)
+        .constraintSize(minWidth: minTextWidth.vp, maxWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth.vp, minHeight: minTextHeight.vp)
         // 组件区域变化时触发该回调
         .onAreaChange(
             {
                 old, new =>
+                let newHeight: Float64 = new.height
+                if (maxHeight < newHeight) {
+                    maxHeight = newHeight
+                }
                 if (old.width == new.width) {
                     return
                 }
@@ -271,41 +191,363 @@ class MarkdownTableBlockCellComponent {
     }
 
     /**
+     * 表格文字内容
+     */
+    @Builder
+    func tableBlockCellComponent18() {
+        Text() {
+            ForEach(
+                nodeViewList,
+                itemGeneratorFunc: {
+                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
+                        // 文本
+                        tableComponentText(
+                            item,
+                            isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
+                            markdownConfiguration
+                        )
+                    } else if (item.node is Footnote) {
+                        // 脚注
+                        tableComponentFootnote(
+                            item,
+                            isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
+                            markdownConfiguration,
+                            fontCallback
+                        )
+                    } else if (item.node is Code) {
+                        // 内联代码
+                        if (markdownConfiguration.markdownTheme.isCodeStyle) {
+                            MarkdownCodeLineImageSpanComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                strCode: (item.node as Code)().getLiteral(),
+                                strUrl: linkUrl(item),
+                                maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp,
+                                isFakeBoldText: isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold) || item.strongEmphasis
+                            )
+                        } else {
+                            tableComponentCode(
+                                item,
+                                isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
+                                markdownConfiguration
+                            )
+                        }
+                    } else if (item.node is HardLineBreak) {
+                        // 硬换行
+                        Span("\n")
+                    } else if (item.node is SoftLineBreak) {
+                        // 软换行
+                        Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
+                    } else if (item.node is CommonmarkLink) {
+                        // 链接
+                            if (!markdownConfiguration.markdownTheme.isLinkStyle) {
+                                if(getLinkString(item).isSome()){
+                                    tableLinkComponent(
+                                        item,
+                                        isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
+                                        getLinkString(item)(),
+                                        markdownConfiguration
+                                    )
+                                }else{
+                                    Span("")
+                                }
+                            } else {
+                                if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                                    if(getLinkString(item).isSome()){
+                                        if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
+                                            MarkdownLinkRectImageComponent(
+                                                markdownConfiguration: markdownConfiguration,
+                                                strText: getLinkString(item)().trimAscii(),
+                                                strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                                backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
+                                                maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                                            )
+                                        }else{
+                                            MarkdownLinkCircleImageComponent(
+                                                markdownConfiguration: markdownConfiguration,
+                                                strText: getLinkString(item)().trimAscii(),
+                                                strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                                backGroupColor: renderTableCellColor(isHeader,markdownConfiguration.markdownTheme, idRow),
+                                                maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                                            )
+                                        }
+                                    }else{
+                                        Span("")
+                                    }
+                                } else {
+                                    if(getLinkString(item).isSome()){
+                                        MarkdownLinkRectToolImageComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            strText: getLinkString(item)(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
+                                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
+                                            maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                                        )
+                                    }else{
+                                        Span("")
+                                    }
+                                }
+                            }
+                    } else if (item.node is CommonmarkImage) {
+                        // 图片节点
+                        if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                            MarkdownImageSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                componentWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth),
+                                imageMarginTop: 0.0,
+                                imageMarginBottom: 0.0,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                            )
+                        } else {
+                            MarkdownImagePixelmapSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                componentWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth),
+                                imageMarginTop: 0.0,
+                                imageMarginBottom: 0.0,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
+                            )
+                        }
+                    } else if (item.node is LatexMathNode) {
+                        // 数学公式节点
+                        MarkdownLatexImageSpanComponent(
+                            markdownConfiguration: markdownConfiguration,
+                            componentWidth: componentWidth,
+                            strLatexMath: (item.node as LatexMathNode)().latex,
+                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
+                            maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                        )
+                    } else {
+                        // TODO 其他节点
+                        Span("")
+                    }
+                },
+                keyGeneratorFunc:{
+                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
+                }
+            )
+        }
+        // 设置行高
+        .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
+    }
+
+    /**
+     * 表格文字内容
+     */
+    @Builder
+    func tableBlockCellComponent19() {
+        Text() {
+            ForEach(
+                nodeViewList,
+                itemGeneratorFunc: {
+                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
+                        // 文本
+                        tableComponentText(
+                            item,
+                            isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
+                            markdownConfiguration
+                        )
+                    } else if (item.node is Footnote) {
+                        // 脚注
+                        tableComponentFootnote(
+                            item,
+                            isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
+                            markdownConfiguration,
+                            fontCallback
+                        )
+                    } else if (item.node is Code) {
+                        // 内联代码
+                        if (markdownConfiguration.markdownTheme.isCodeStyle) {
+                            MarkdownCodeLineImageSpanComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                strCode: (item.node as Code)().getLiteral(),
+                                strUrl: linkUrl(item),
+                                maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp,
+                                isFakeBoldText: isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold) || item.strongEmphasis
+                            )
+                        } else {
+                            tableComponentCode(
+                                item,
+                                isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
+                                markdownConfiguration
+                            )
+                        }
+                    } else if (item.node is HardLineBreak) {
+                        // 硬换行
+                        Span("\n")
+                    } else if (item.node is SoftLineBreak) {
+                        // 软换行
+                        Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
+                    } else if (item.node is CommonmarkLink) {
+                        // 链接
+                        if (!markdownConfiguration.markdownTheme.isLinkStyle) {
+                            if(getLinkString(item).isSome()){
+                                tableLinkComponent(
+                                    item,
+                                    isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
+                                    getLinkString(item)(),
+                                    markdownConfiguration
+                                )
+                            }else{
+                                Span("")
+                            }
+                        } else {
+                            if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                                if(getLinkString(item).isSome()){
+                                    if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
+                                        MarkdownLinkRectImageComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            strText: getLinkString(item)().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
+                                            maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                                        )
+                                    }else{
+                                        MarkdownLinkCircleImageComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            strText: getLinkString(item)().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: renderTableCellColor(isHeader,markdownConfiguration.markdownTheme, idRow),
+                                            maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                                        )
+                                    }
+                                }else{
+                                    Span("")
+                                }
+                            } else {
+                                if(getLinkString(item).isSome()){
+                                    MarkdownLinkRectToolImageComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        strText: getLinkString(item)(),
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
+                                        backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
+                                        maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                                    )
+                                }else{
+                                    Span("")
+                                }
+                            }
+                        }
+                    } else if (item.node is CommonmarkImage) {
+                        // 图片节点
+                        if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                            MarkdownImageSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                componentWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth),
+                                imageMarginTop: 0.0,
+                                imageMarginBottom: 0.0,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                            )
+                        } else {
+                            MarkdownImagePixelmapSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                componentWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth),
+                                imageMarginTop: 0.0,
+                                imageMarginBottom: 0.0,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
+                            )
+                        }
+                    } else if (item.node is LatexMathNode) {
+                        // 数学公式节点
+                        MarkdownLatexImageSpanComponent(
+                            markdownConfiguration: markdownConfiguration,
+                            componentWidth: componentWidth,
+                            strLatexMath: (item.node as LatexMathNode)().latex,
+                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
+                            maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                        )
+                    } else {
+                        // TODO 其他节点
+                        Span("")
+                    }
+                },
+                keyGeneratorFunc:{
+                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
+                }
+            )
+        }
+        // 设置行高
+        .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
+        // 支持设备内复制
+        .copyOption(CopyOptions.LocalDevice)
+        // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
+        .onCopy({
+            str =>
+                if(markdownConfiguration.textCopyCallback.isSome()){
+                   markdownConfiguration.textCopyCallback()(str)
+                }
+        })
+    }
+
+    /**
+     * 表格文字内容
+     */
+    @Builder
+    func tableBlockCellComponent() {
+        if(DeviceInfo.sdkApiVersion >=19){
+            tableBlockCellComponent19()
+        } else {
+            tableBlockCellComponent18()
+        }
+    }
+
+    /**
      * 数据刷新
      */
     public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
         let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
         let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
-        if (isFull) {
-            // 全量加载
-            nodeViewList.clear()
-            nodeViewList.appendAll(refreshNodeViews)
-        } else {
-            // 增量加载
-            if (refreshNodeViewSize == 0) {
-                return
+        if (refreshNodeViewSize == 0) {
+            return
+        }
+        if (refreshNodeViewSize > nodeViewListSize) {
+            // 新数据大于页面数据
+            // 循环判断历史数据有没有做过修改
+            for(i in 0..nodeViewListSize){
+                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+                    nodeViewList[i] = refreshNodeViews[i]
+                }
             }
-            if (refreshNodeViewSize > nodeViewListSize) {
-                // 刷新数据的长度大于页面数据长度，需要添加数据
-                if (nodeViewListSize != 0) {
-                    // 更新页面最后一条数据
-                    nodeViewList[nodeViewListSize - 1] = refreshNodeViews[nodeViewListSize - 1]
+            // 循环添加新数据
+            for(i in nodeViewListSize..refreshNodeViewSize){
+                nodeViewList.append(refreshNodeViews[i])
+            }
+        } else if (refreshNodeViewSize == nodeViewListSize) {
+            // 新数据等于页面数据
+            for(i in 0..nodeViewListSize){
+                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+                    nodeViewList[i] = refreshNodeViews[i]
                 }
-                // 循环添加所有新增数据
-                for (i in refreshNodeViewSize - nodeViewListSize..0 : -1) {
-                    nodeViewList.append(refreshNodeViews[refreshNodeViewSize - i])
+            }
+        } else {
+            // 新数据小于页面数据
+            // 循环判断历史数据有没有做过修改
+            for(i in 0..refreshNodeViewSize){
+                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+                    nodeViewList[i] = refreshNodeViews[i]
                 }
-            } else if (refreshNodeViewSize == nodeViewListSize) {
-                // 刷新数据的长度等于页面数据长度，需要更新当前数据
-                nodeViewList[nodeViewListSize - 1] = refreshNodeViews[refreshNodeViewSize - 1]
-            } else {
-                // 刷新数据小于页面数据长度，需要删除数据
-                // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
-                nodeViewList[refreshNodeViewSize - 1] = refreshNodeViews[refreshNodeViewSize - 1]
-                // 循环删除所有多余数据
-                for (i in 1..=(nodeViewListSize - refreshNodeViewSize)) {
-                    nodeViewList.remove(nodeViewListSize - i)
-                }
+            }
+            // 循环删除多余的旧数据
+            for(i in nodeViewListSize - 1..=refreshNodeViewSize : -1){
+                nodeViewList.remove(i)
             }
         }
         size = nodeViewList.size // 更新列表长度

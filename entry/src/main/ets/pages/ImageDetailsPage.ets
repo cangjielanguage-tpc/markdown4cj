@@ -86,7 +86,6 @@ struct ImageDetailsPage {
         Column() {
           CJMarkdown({
             mdStr: this.mdStr,
-            isFull: this.isFull,
             cfg: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })

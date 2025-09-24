@@ -160,7 +160,6 @@ struct CJpage {
         //     isFull:false}})
 
         CJMarkdown({mdStr: this.textData.text,
-          isFull:false,
           cfg: setMarkdownConfig(),
           plugin: setPlugin()})
       }.width("50%")

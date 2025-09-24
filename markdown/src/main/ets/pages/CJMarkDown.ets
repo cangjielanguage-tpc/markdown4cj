@@ -17,16 +17,14 @@ class CJNodeController extends NodeController {
   //   this.mdStr = input
   // } // 持续输出调用
 
-  public callbackCJ: (methodName: methodType, input: string) => void = (methodName: string, input: string) => {this.mdStr = input}  // 持续输出调用
+  public callbackCJ: (input: string) => void = (input: string) => {this.mdStr = input}  // 持续输出调用
   mdStr: string
-  isFull: boolean
   cfg?: CJMarkdownConfig
   plugin?: CJMarkdownPlugin
 
-  constructor(input: string, isFull: boolean, cfg?: CJMarkdownConfig, plugin?: CJMarkdownPlugin) {
+  constructor(input: string, cfg?: CJMarkdownConfig, plugin?: CJMarkdownPlugin) {
     super()
     this.mdStr = input
-    this.isFull = isFull
     this.cfg = cfg
     this.plugin = plugin
   }
@@ -34,36 +32,25 @@ class CJNodeController extends NodeController {
   makeNode(ctx: UIContext): FrameNode | null {
     if (this.rootNode === undefined) {
       this.rootNode = new FrameNode(ctx)
-      this.callbackCJ = global_customLib.getLoadCJPage(this.mdStr, this.isFull, this.cfg, this.plugin)
+      this.callbackCJ = global_customLib.getLoadCJPage(this.mdStr, this.cfg, this.plugin)
     }
     return this.rootNode
   }
 }
 
-export type methodType = "fresh" | "reuse" | "recycle"
-
 @Component
 export struct CJMarkdown {
   @Prop @Watch('onMarkDownChange') mdStr: string = ''
-  @State isFull: boolean = true
   @State cfg?: MarkdownConfiguration = undefined
   @State plugin?: MarkdownPlugin = undefined
   private markdownNode: CJNodeController | null = null
 
   onMarkDownChange():void {
-    this.markdownNode?.callbackCJ("fresh", this.mdStr)
-  }
-
-  aboutToReuse(): void {
-    this.markdownNode?.callbackCJ("reuse", this.mdStr)
-  }
-
-  aboutToRecycle(): void {
-    this.markdownNode?.callbackCJ("recycle", this.mdStr)
+    this.markdownNode?.callbackCJ(this.mdStr)
   }
 
   aboutToAppear(): void {
-    this.markdownNode = new CJNodeController(this.mdStr, this.isFull, this.getConfig(), this.getPlugin())
+    this.markdownNode = new CJNodeController(this.mdStr, this.getConfig(), this.getPlugin())
   }
 
   build() {

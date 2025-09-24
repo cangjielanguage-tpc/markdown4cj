@@ -6,6 +6,7 @@ import { router } from '@kit.ArkUI'
 import { TitleData } from './TitlePage'
 import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
+import hilog from '@ohos.hilog'
 
 @Entry
 @Component
@@ -140,6 +141,7 @@ struct TitleDetailsPage {
           () => {
             // 点击动作触发该方法调用
             if (this.isFull) {
+              hilog.error(1,"1",`---------this.fileStr:${this.fileStr}`)
               this.mdStr = this.fileStr
             } else {
               let index = 0
@@ -156,7 +158,7 @@ struct TitleDetailsPage {
         )
       Scroll(this.scroller) {
         Column() {
-          CJMarkdown({ mdStr: this.mdStr, isFull: this.isFull, cfg: this.setMarkdownConfig() })
+          CJMarkdown({ mdStr: this.mdStr, cfg: this.setMarkdownConfig() })
         }
       }
       .padding({ bottom: 200 })

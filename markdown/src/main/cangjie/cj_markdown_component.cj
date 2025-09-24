@@ -25,11 +25,6 @@ class CJMarkdownComponent {
     var mdStr: String = ''
 
     /**
-     * 是否全量加载 - true：全量加载，fasle：增量加载
-     */
-    var isFull: Bool = true
-
-    /**
      * 配置
      */
     var cfg: ?CJMarkdownConfig
@@ -44,7 +39,7 @@ class CJMarkdownComponent {
 
     func build() {
         Column() {
-            MarkdownComponent(output: mdStr, isFull: isFull, markdownConfiguration: setConfig(), markdownBase:setPlugin())
+            MarkdownComponent(output: mdStr, markdownConfiguration: setConfig(), markdownPlugin: setPlugin())
         }
     }
 
@@ -115,6 +110,8 @@ class CJMarkdownComponent {
                 markdownBuilder.usePlugin(ImageCollectPlugin.create())
             }
         }
+        // 唯一ID标识插件
+        markdownBuilder.usePlugin(BlockIdPlugin.create())
         return markdownBuilder.build()
     }
 

@@ -21,18 +21,17 @@ import ohos.resource_manager.AppResource
  */
 public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     let mdStr: String = callInfo[0].asString().toString()
-    let isFull: Bool = callInfo[1].asBoolean().toBool()
     var cfg: ?CJMarkdownConfig = None
-    if (callInfo[2].typeof() != JSType.UNDEFINED) {
-        let cfgObj: JSObject = callInfo[2].asObject(ctx)
+    if (callInfo[1].typeof() != JSType.UNDEFINED) {
+        let cfgObj: JSObject = callInfo[1].asObject(ctx)
         let cfgExt: Option<JSExternal> = cfgObj.getAttachInfo()
         if (let Some(v) <- cfgExt) {
             cfg = v.cast<CJMarkdownConfig>()
         }
     }
     var plugin: ?CJMarkdownPlugin = None
-    if (callInfo[3].typeof() != JSType.UNDEFINED) {
-        let cfgObj: JSObject = callInfo[3].asObject(ctx)
+    if (callInfo[2].typeof() != JSType.UNDEFINED) {
+        let cfgObj: JSObject = callInfo[2].asObject(ctx)
         let cfgExt: Option<JSExternal> = cfgObj.getAttachInfo()
         if (let Some(v) <- cfgExt) {
             plugin = v.cast<CJMarkdownPlugin>()
@@ -43,7 +42,6 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     let comp = CJMarkdownComponent(
         Option<CustomView>.None,
         mdStr: ObservedProperty<String>("", mdStr),
-        isFull: ObservedProperty<Bool>("", isFull),
         cfg: ObservedProperty<Option<CJMarkdownConfig>>("", cfg),
         plugin: ObservedProperty<Option<CJMarkdownPlugin>>("", plugin)
     )
@@ -53,14 +51,8 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
         .function(
             {
                 ctx1: JSContext, callInfo1: JSCallInfo =>
-                let methodName = String.fromJSValue(ctx1, callInfo1[0])
-                if (methodName == 'fresh') {
-                    comp.updateMarkDown(callInfo1[1].toString())
-                } else if (methodName == 'reuse') {
-                    comp.aboutToCJReuse(callInfo1[1].toString())
-                } else if (methodName == 'recycle') {
-                    comp.aboutToCJRecycle(callInfo1[1].toString())
-                }
+                let input = String.fromJSValue(ctx1, callInfo1[0])
+                comp.updateMarkDown(input)
                 return ctx1.undefined().toJSValue()
             }
         )

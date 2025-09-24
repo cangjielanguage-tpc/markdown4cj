@@ -16,11 +16,10 @@ export struct CJMarkdown {
     * 初始化Markdown自定义控件
     *
     * @param mdStr 传入markdown文档内容
-    * @param isFull 是否全量加载模式 - true：全量加载，false：增量加载。默认全量加载
     * @param cfg 传入markdown配置选项
     * @param plugin 传入markdown插件化选项
     */
-    CJMarkdown(mdStr: string, isFull: boolean, cfg?: MarkdownConfiguration, plugin?: MarkdownPlugin)
+    CJMarkdown(mdStr: string, cfg?: MarkdownConfiguration, plugin?: MarkdownPlugin)
 }
 ```
 

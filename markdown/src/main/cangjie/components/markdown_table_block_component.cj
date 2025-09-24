@@ -49,11 +49,6 @@ class MarkdownTableBlockComponent {
     var componentWidth: Float64
 
     /**
-     * 是否全量加载
-     */
-    var isFull: Bool
-
-    /**
      * 脚注点击事件
      */
     var fontCallback: (String) -> Unit
@@ -126,7 +121,6 @@ class MarkdownTableBlockComponent {
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
-                                isFull: isFull,
                                 idRow: idRow,
                                 indexList: indexAdd(indexList, idRow),
                                 tableRowComponents: tableRowComponents,
@@ -135,15 +129,16 @@ class MarkdownTableBlockComponent {
                                 cellWidthArrayIndexed: cellWidthArrayIndexed
                             )
                         }
+                    },
+                    keyGeneratorFunc:{
+                         item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
                     }
                 )
             }
             // 统一边框样式设置接口
             .border(width: markdownConfiguration.markdownTheme.tableBorderWidth.vp, color: markdownConfiguration.markdownTheme.tableBorderColor, style: BorderStyle.Solid, radius: markdownConfiguration.markdownTheme.tableRadius.vp)
-            // 设置元素内容的对齐方式
-            .align(Alignment.Start)
-            // 设置元素水平方向的布局
-//            .direction(Direction.Ltr)
+            // 设置ListItem在List交叉轴方向的布局方式
+            .alignListItem(ListItemAlign.Start)
         }
         // 设置滚动方向
         .scrollable(ScrollDirection.Horizontal)
@@ -161,41 +156,45 @@ class MarkdownTableBlockComponent {
     public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
         let refreshNodeViewSize = refreshNodeViews.size // 刷新进来的数据长度
         let dataSourceSize = nodeViewDataSource.totalCount() // 页面缓存的数据长度
-        if (isFull) {
-            // 全量加载
-            nodeViewDataSource.clear()
-            nodeViewDataSource.addDatas(refreshNodeViews)
-        } else {
-            // 增量加载
-            if (refreshNodeViewSize == 0) {
-                return
+        if (refreshNodeViewSize == 0) {
+            return
+        }
+        if (refreshNodeViewSize > dataSourceSize) {
+            // 新数据大于页面数据
+            // 循环判断历史数据有没有做过修改
+            for(i in 0..dataSourceSize){
+                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewDataSource.getAllData()[i],"nodeid",0)){
+                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
+                }
             }
-            if (refreshNodeViewSize > dataSourceSize) {
-                // 刷新数据的长度大于页面数据长度，需要添加数据
-                if (dataSourceSize != 0) {
-                    // 更新页面最后一条数据
-                    nodeViewDataSource.replaceData(dataSourceSize - 1, refreshNodeViews[dataSourceSize - 1])
+            // 循环添加新数据
+            for(i in dataSourceSize..refreshNodeViewSize){
+                nodeViewDataSource.addData(refreshNodeViews[i])
+            }
+        } else if (refreshNodeViewSize == dataSourceSize) {
+            // 新数据等于页面数据
+            let indexRow: Int64 = dataSourceSize - 1
+            for(i in 0..indexRow){
+                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewDataSource.getAllData()[i],"nodeid",0)){
+                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
                 }
-                // 循环添加所有新增数据
-                for (i in refreshNodeViewSize - dataSourceSize..0 : -1) {
-                    nodeViewDataSource.addData(refreshNodeViews[refreshNodeViewSize - i])
+            }
+            for (data in tableRowComponents) {
+                if (isListItem(indexList, data.indexList, indexRow)) {
+                    data.refreshData(refreshNodeViews[indexRow].children)
                 }
-            } else if (refreshNodeViewSize == dataSourceSize) {
-                // 刷新数据的长度等于页面数据长度，需要更新当前数据
-                let indexRow: Int64 = dataSourceSize - 1
-                for (data in tableRowComponents) {
-                    if (isListItem(indexList, data.indexList, indexRow)) {
-                        data.refreshData(refreshNodeViews[refreshNodeViewSize - 1].children)
-                    }
+            }
+        } else {
+            // 新数据小于页面数据
+            // 循环判断历史数据有没有做过修改
+            for(i in 0..refreshNodeViewSize){
+                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewDataSource.getAllData()[i],"nodeid",0)){
+                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
                 }
-            } else {
-                // 刷新数据小于页面数据长度，需要删除数据
-                // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
-                nodeViewDataSource.replaceData(refreshNodeViewSize - 1, refreshNodeViews[refreshNodeViewSize - 1])
-                // 循环删除所有多余数据
-                for (i in dataSourceSize - refreshNodeViewSize..0 : -1) {
-                    nodeViewDataSource.deleteData(i)
-                }
+            }
+            // 循环删除多余的旧数据
+            for(i in dataSourceSize - 1..=refreshNodeViewSize : -1){
+                nodeViewDataSource.deleteData(i)
             }
         }
         size = nodeViewDataSource.totalCount() // 更新列表长度

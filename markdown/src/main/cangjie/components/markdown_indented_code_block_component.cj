@@ -158,7 +158,7 @@ class MarkdownIndentedCodeBlockComponent {
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置内边距属性
-        .padding(bottom: 10, right: 50)
+        .padding(bottom: 10)
     }
 
     /**

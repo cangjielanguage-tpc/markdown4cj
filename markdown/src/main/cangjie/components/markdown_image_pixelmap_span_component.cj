@@ -7,13 +7,12 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
-import ohos.hilog.Hilog
 
 /**
  * 网络图片、沙盒图片
  */
 @Component
-public class MarkdownAIImagePixelmapSpanComponent {
+public class MarkdownImagePixelmapSpanComponent {
     /**
      * 图片链接
      */
@@ -23,24 +22,6 @@ public class MarkdownAIImagePixelmapSpanComponent {
      * 控件宽度 - 单位px
      */
     var componentWidth: Float64
-
-    /**
-     * 图片宽度 - 单位px
-     */
-    @State
-    var imageWidth: ?Float64 = Option<Float64>.None
-
-    /**
-     * 图片高度 - 单位px
-     */
-    @State
-    var imageHeight: ?Float64 = Option<Float64>.None
-
-    /**
-     * 图片数据
-     */
-    @State
-    var imagePixelMap: Option<PixelMap> = Option<PixelMap>.None
 
     /**
      * 图片点击事件
@@ -63,18 +44,6 @@ public class MarkdownAIImagePixelmapSpanComponent {
     var linkCallback: ?(String) -> Unit
 
     /**
-     * 图片加载完成
-     */
-    @State
-    var isCompleted: Bool = false
-
-    /**
-     * 图片加载异常
-     */
-    @State
-    var isError: Bool = false
-
-    /**
      * 图片默认占位图
      */
     var imagePlaceholder: ?String = None
@@ -92,121 +61,98 @@ public class MarkdownAIImagePixelmapSpanComponent {
     /**
      * 图片预处理回调事件
      */
-    var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
+    var imageCallbackCallback: (String) -> ?Array<UInt8>
 
     /**
-     *  图片预处理回调图片
+     * 图片宽度 - 单位px
      */
     @State
-    var pixelMap: ?PixelMap = Option<PixelMap>.None
+    var imageWidth: ?Float64 = Option<Float64>.None
+
+    /**
+     * 图片高度 - 单位px
+     */
+    @State
+    var imageHeight: ?Float64 = Option<Float64>.None
+
+    /**
+     * 图片数据
+     */
+    @State
+    var imagePixelMap: Option<PixelMap> = Option<PixelMap>.None
 
     protected override func aboutToAppear(): Unit {
-        componentWidth = px2vp(componentWidth.px).getOrThrow().value
-        if (imageCallbackCallback.isSome()) {
-            spawn {
-            	let data:?Array<UInt8> = imageCallbackCallback.getOrThrow()(destination)
-                var imageSource: ImageSource = createImageSource(data())
-                let pixelMap1 = imageSource.createPixelMap()
-                imageSource.Release()
-                if(data.isSome()){
-                    launch{
-                        pixelMap = pixelMap1
-                        var size: Size = pixelMap().getImageInfo().size
-                        imageWidth = Float64(size.width)
-                        imageHeight = Float64(size.height)
-                    }
-                }
-            }
-        }
+        imageCallPixelmap()
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除缓存数据
-        pixelMap?.Release()
+        imagePixelMap?.Release()
     }
 
     func build() {
-        if (imageCallbackCallback.isNone() || pixelMap.isNone() || imageWidth.isNone() || imageHeight.isNone()) {
-            if (!isCompleted && !isError) {
-                if (imagePlaceholder.isSome()) {
-                    ImageSpan(imagePlaceholder())
-                        // 设置外边距属性
-                        .margin(top: imageMarginTop, bottom: imageMarginBottom)
-                        // 设置组件自身的宽度
-                        .width(100.percent)
-                        // 设置组件自身的高度
-                        .height(componentWidth / (16.0 / 9.0))
-                        // 设置图片的缩放类型
-                        .objectFit(ImageFit.Cover)
-                } else {
-                    Span("")
+        if (imagePixelMap.isSome() && imageWidth.isSome() && imageHeight.isSome()) {
+            ImageSpan(imagePixelMap())
+                // 设置组件自身的宽度
+                .width(imageWidth().px)
+                // 设置组件自身的高度
+                .height(imageHeight().px)
+                // 设置图片的缩放类型
+                .objectFit(ImageFit.Contain)
+                // 设置约束尺寸
+                .constraintSize(maxWidth: componentWidth.vp)
+                // 设置图片基于文本的对齐方式
+                .verticalAlign(ImageSpanAlignment.CENTER)
+                // 点击动作触发该方法调用
+                .onClick {
+                    evt =>
+                    if (isLink) {
+                        if (linkCallback.isSome() && linkUrl.isSome()) {
+                            linkCallback()(linkUrl())
+                        }
+                    } else {
+                        imageOnClick(destination, imageCallback)
+                    }
                 }
-                ImageSpan(destination)
-                    // 是否隐藏
-                    .visibility(Visibility.None)
-                    // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-                    .onComplete({
-                        imageLoadResult => isCompleted = true
-                    })
-                    // 图片加载出现异常时触发该回调
-                    .onError(
-                        {
-                            imageError =>
-                            isError = true
-                            isCompleted = true
-                        }
-                    )
-            } else if (isCompleted && !isError) {
-                ImageSpan(destination)
-                    // 设置外边距属性
-                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
-                    // 设置组件自身的宽度
-                    .width(componentWidth)
-                    // 设置组件自身的高度
-                    .height(componentWidth / (16.0 / 9.0))
-                    // 设置图片的缩放类型
-                    .objectFit(ImageFit.Cover)
-                    // 点击动作触发该方法调用
-                    .onClick {
-                        evt => if (isLink) {
-                            if (linkCallback.isSome() && linkUrl.isSome()) {
-                                linkCallback()(linkUrl())
-                            }
-                        } else {
-                            imageOnClick(destination, imageCallback)
-                        }
-                    }
-                    // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-                    .onComplete({
-                        imageLoadResult => isCompleted = true
-                    })
-                    // 图片加载出现异常时触发该回调
-                    .onError({
-                        imageError =>
-                    })
-            } else {
-                Span("")
-            }
         } else {
-             ImageSpan(pixelMap())
-                    // 设置约束尺寸
-                    .constraintSize(maxWidth: 100.percent)
-                    // 设置图片的缩放类型
-                    .objectFit(ImageFit.Cover)
-                    // 设置组件自身的宽度
-                    .width(imageWidth().px)
-                    // 设置组件自身的高度
-                    .height(imageHeight().px)
-                    // 点击动作触发该方法调用
-                    .onClick {
-                        evt => if (isLink) {
-                            if (linkCallback.isSome() && linkUrl.isSome()) {
-                                linkCallback()(linkUrl())
-                            }
-                        } else {
-                            imageOnClick(destination, imageCallback)
+            ImageSpan(destination)
+                // 设置外边距属性
+                .margin(top: imageMarginTop, bottom: imageMarginBottom)
+                // 设置组件自身的宽度
+                .width(componentWidth)
+                // 设置组件自身的高度
+                .height(componentWidth / (16.0 / 9.0))
+                // 设置图片的缩放类型
+                .objectFit(ImageFit.Cover)
+                // 点击动作触发该方法调用
+                .onClick {
+                    evt => if (isLink) {
+                        if (linkCallback.isSome() && linkUrl.isSome()) {
+                            linkCallback()(linkUrl())
                         }
+                    } else {
+                        imageOnClick(destination, imageCallback)
                     }
+                }
+        }
+    }
+
+    func imageCallPixelmap() {
+        spawn {
+            let data: ?Array<UInt8> = imageCallbackCallback(destination)
+            if (data.isSome()) {
+                var imageSource: ImageSource = createImageSource(data())
+                let pixelMap1: PixelMap = imageSource.createPixelMap()
+                var size: Size = pixelMap1.getImageInfo().size
+                let imageWidth1: Float64 = Float64(size.width)
+                let imageHeight1: Float64 = Float64(size.height)
+                imageSource.Release()
+                launch {
+                    imagePixelMap = pixelMap1
+                    imageWidth = imageWidth1
+                    imageHeight = imageHeight1
+                }
+            }
         }
     }
 }

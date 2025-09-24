@@ -223,7 +223,6 @@ struct MyComponent {
     Column() {
       // Text(this.text)
       CJMarkdown({mdStr: this.text,
-      isFull:false,
       cfg: setMarkdownConfig(),
       plugin: setPlugin()})
     }.width("50%")
