@@ -92,3 +92,4 @@ internal import ohos.concurrency.*
 internal import ohos.ability.*
 internal import ohos.resource_manager.ResourceManager
 internal import ohos.resource_manager.Direction as ResourceManagerDirection
+internal import ohos.ark_interop_helper.*
