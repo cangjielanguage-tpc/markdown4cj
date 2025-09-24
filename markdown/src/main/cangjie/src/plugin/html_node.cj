@@ -53,6 +53,22 @@ public class FontNode <: CustomNode {
     }
 }
 
+public class SpanNode <: CustomNode {
+    private var attrs: Map<String,String>
+
+    public init(attrs: Map<String,String>) {
+        this.attrs = attrs
+    }
+
+    public func getAttrs(): Map<String,String> {
+        return attrs
+    }
+
+    public override func getNodeType(): NodeType {
+        return "SpanNode"
+    }
+}
+
 public class IgnoreNode <: CustomBlock {
     public init() {
     }

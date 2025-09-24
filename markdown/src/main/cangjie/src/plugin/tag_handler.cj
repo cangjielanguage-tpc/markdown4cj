@@ -86,6 +86,22 @@ public class FontHandler <: TagHandler {
     }
 }
 
+public class SpanHandler <: TagHandler {
+    public init() {
+    }
+
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let attributes: Map<String, String> = tag.attributes()
+        let spanNode = SpanNode(attributes)
+        visitChildren(visitor, renderer, tag, spanNode)
+        return spanNode
+    }
+
+    public override func supportedTags(): Collection<String> {
+        return ["span"]
+    }
+}
+
 public class HeadingHandler <: TagHandler {
     public init() {
     }

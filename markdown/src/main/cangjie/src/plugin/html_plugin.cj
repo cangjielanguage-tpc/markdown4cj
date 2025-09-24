@@ -76,6 +76,7 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
             builder.addDefaultTagHandler(BrHandler())
             builder.addDefaultTagHandler(ThematicBreakHandler())
             builder.addDefaultTagHandler(FontHandler())
+            builder.addDefaultTagHandler(SpanHandler())
 
             builder.addDefaultTagHandler(TableHandler())
             builder.addDefaultTagHandler(TableHeadHandler())
@@ -125,6 +126,15 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                     visitor, node =>
                     let view = buildView(node, false, needProps: true)
                     view.props?.put("FontNode", node)
+                    visitor.visitChildren(node)
+                }
+            )
+            .on(
+                "SpanNode",
+                {
+                    visitor, node =>
+                    let view = buildView(node, false, needProps: true)
+                    view.props?.put("SpanNode", node)
                     visitor.visitChildren(node)
                 }
             )
