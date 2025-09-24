@@ -27,9 +27,9 @@ public class MarkdownCacheConfiguration {
 
     let fencedCodeComponents: ArrayList<MarkdownFencedCodeBlockComponent> = ArrayList<MarkdownFencedCodeBlockComponent>()
 
-    let CodeComponents: ArrayList<MarkdownCodeComponent> = ArrayList<MarkdownCodeComponent>()
+    let codeComponents: ArrayList<MarkdownCodeComponent> = ArrayList<MarkdownCodeComponent>()
 
-    let CodeTextComponents: ArrayList<MarkdownCodeTextComponent> = ArrayList<MarkdownCodeTextComponent>()
+    let codeTextComponents: ArrayList<MarkdownCodeTextComponent> = ArrayList<MarkdownCodeTextComponent>()
 
     func clearAll(): Unit {
         listComponents.clear()
@@ -42,7 +42,7 @@ public class MarkdownCacheConfiguration {
         tableCellComponents.clear()
         indentedCodeComponents.clear()
         fencedCodeComponents.clear()
-        CodeComponents.clear()
-        CodeTextComponents.clear()
+        codeComponents.clear()
+        codeTextComponents.clear()
     }
 }

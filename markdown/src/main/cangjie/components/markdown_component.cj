@@ -379,8 +379,8 @@ public class MarkdownComponent {
                                     codeText: (item.node as FencedCodeBlock)().getLiteral(),
                                     info: (item.node as FencedCodeBlock)().getInfo(),
                                     indexList: indexAdd(indexList, idx),
-                                    CodeComponents: markdownCacheConfiguration.CodeComponents,
-                                    CodeTextComponents: markdownCacheConfiguration.CodeTextComponents
+                                    codeComponents: markdownCacheConfiguration.codeComponents,
+                                    codeTextComponents: markdownCacheConfiguration.codeTextComponents
                                 )
                             }
                         } else if (idx == 0 && item.node is IndentedCodeBlock) {
@@ -390,8 +390,8 @@ public class MarkdownComponent {
                                     codeText: (item.node as IndentedCodeBlock)().getLiteral(),
                                     info: Option<String>.None,
                                     indexList: indexAdd(indexList, idx),
-                                    CodeComponents: markdownCacheConfiguration.CodeComponents,
-                                    CodeTextComponents: markdownCacheConfiguration.CodeTextComponents
+                                    codeComponents: markdownCacheConfiguration.codeComponents,
+                                    codeTextComponents: markdownCacheConfiguration.codeTextComponents
                                 )
                             }
                         } else {
@@ -527,14 +527,14 @@ public class MarkdownComponent {
                         } else {
                             if ((nodeViews[index].node is IndentedCodeBlock && nodeViewDataSource.getData(index).node is IndentedCodeBlock)) {
                                 // 缩进代码
-                                for (data in markdownCacheConfiguration.CodeComponents) {
+                                for (data in markdownCacheConfiguration.codeComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
                                         data.refreshData(getCodeInfo(nodeViews[index])[0], getCodeInfo(nodeViews[index])[1])
                                     }
                                 }
                             } else if ((nodeViews[index].node is FencedCodeBlock && nodeViewDataSource.getData(index).node is FencedCodeBlock)) {
                                 // 围栏代码
-                                for (data in markdownCacheConfiguration.CodeComponents) {
+                                for (data in markdownCacheConfiguration.codeComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
                                         data.refreshData(getCodeInfo(nodeViews[index])[0], getCodeInfo(nodeViews[index])[1])
                                     }

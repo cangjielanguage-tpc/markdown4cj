@@ -47,15 +47,15 @@ class MarkdownCodeTextComponent {
     @State
     var arrayList: ObservedArrayList<PrismNodesParseRes> = ObservedArrayList<PrismNodesParseRes>()
 
-    var CodeTextComponents: ArrayList<MarkdownCodeTextComponent>
+    var codeTextComponents: ArrayList<MarkdownCodeTextComponent>
 
     protected override func aboutToAppear(): Unit {
         refreshData(codeText, info)
-        CodeTextComponents.add(this)
+        codeTextComponents.add(this)
     }
 
     protected override func aboutToDisappear(): Unit {
-        CodeTextComponents.removeIf(
+        codeTextComponents.removeIf(
             {
                 predicate => if (predicate.indexList == indexList && predicate.codeText == codeText) {
                     true

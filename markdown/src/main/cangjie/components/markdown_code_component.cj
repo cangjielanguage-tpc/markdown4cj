@@ -57,9 +57,9 @@ class MarkdownCodeComponent {
      */
     let scroller2: Scroller = Scroller()
 
-    var CodeComponents: ArrayList<MarkdownCodeComponent>
+    var codeComponents: ArrayList<MarkdownCodeComponent>
 
-    var CodeTextComponents: ArrayList<MarkdownCodeTextComponent>
+    var codeTextComponents: ArrayList<MarkdownCodeTextComponent>
 
     /**
      * 长度
@@ -73,11 +73,11 @@ class MarkdownCodeComponent {
 
     protected override func aboutToAppear(): Unit {
         refreshData(codeText, info)
-        CodeComponents.add(this)
+        codeComponents.add(this)
     }
 
     protected override func aboutToDisappear(): Unit {
-        CodeComponents.removeIf(
+        codeComponents.removeIf(
             {
                 predicate => if (predicate.indexList == indexList && predicate.codeText == codeText) {
                     true
@@ -146,7 +146,7 @@ class MarkdownCodeComponent {
                                             info: info,
                                             idx: idx,
                                             indexList: indexAdd(indexList, idx),
-                                            CodeTextComponents: CodeTextComponents
+                                            codeTextComponents: codeTextComponents
                                         )
                                     }
                                 }
