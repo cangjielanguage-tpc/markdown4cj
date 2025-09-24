@@ -13,8 +13,9 @@ public class BlockIdPlugin <: AbstractMarkdownPlugin {
         return BlockIdPlugin()
     }
 
-    public open override func afterRender(doc: Node, _: MarkdownVisitor): Unit {
-        calcNodeid(doc.getFirstChild(), HashCalcular())
+    public override func afterRender(doc: Node, _: MarkdownVisitor): Unit {
+        let view = doc.getView()
+        calcNodeIdWithLoop(view)
     }
 
     public func getClassType(): String {
@@ -22,41 +23,33 @@ public class BlockIdPlugin <: AbstractMarkdownPlugin {
     }
 }
 
-func calcNodeid(node: ?Node, hasher: HashCalcular): Unit {
-    let current = node ?? return ()
-    // 计算子节点
-    calcNodeid(current.getFirstChild(), hasher)
-    // 计算当前节点 只与children/current相关
-    let currentId = caclNodeId(current)
-    hasher.accumulate(currentId)
-    current.getView().addProp("nodeid", hasher.hashTotal)
-    // 使用新HashCalcular计算next节点
-    let next = current.getNext()
-    let nextHasher = HashCalcular()
-    calcNodeid(next, nextHasher)
-    // 同级节点hash归一
-    hasher.accumulate(nextHasher.hashTotal)
+func calcNodeIdWithLoop(rootNode: NodeView): Unit {
+    let stack = ArrayList<HashCalcular>()
+    stack.add(HashCalcular(rootNode, None))
+
+    while (stack.size > 0) {
+        let parent = stack[stack.size - 1]
+        if (parent.childIndex < parent.node.children.size) {
+            let child = parent.node.children[parent.childIndex]
+            let childHasher = HashCalcular(child, parent)
+            if (child.children.size > 0) {
+                // 保存当前状态，然后处理子节点
+                stack.add(childHasher)
+            } else {
+                // 没有子节点
+                childHasher.finish()
+            }
+        } else {
+            // 所有子节点处理完毕，处理父节点
+            parent.finish()
+            stack.remove(at: stack.size - 1)
+        }
+    }
 }
 
-func caclNodeId(instance: Node): Int {
-    let str = match (instance) {
+func calcNodeId(instance: NodeView): Int {
+    let str = match (instance.node) {
         case v: NodeHash => v.nodeHash()
-        case v: HtmlInline => v.nodeHash()
-        case v: Code => v.nodeHash()
-        case v: LinkReferenceDefinition => v.nodeHash()
-        case v: StrongEmphasis => v.nodeHash()
-        case v: Emphasis => v.nodeHash()
-        case v: HtmlBlock => v.nodeHash()
-        case v: IndentedCodeBlock => v.nodeHash()
-        case v: FencedCodeBlock => v.nodeHash()
-        case v: Heading => v.nodeHash()
-        case v: BulletList => v.nodeHash()
-        case v: OrderedList => v.nodeHash()
-        case v: Strikethrough => v.nodeHash()
-        case v: TableCell => v.nodeHash()
-        case v: ImageHtmlNode => v.nodeHash()
-        case v: FontNode => v.nodeHash()
-        case v: HeadTree => v.nodeHash()
         case _ => instance.toString()
     }
     str.hashCode()
@@ -64,8 +57,20 @@ func caclNodeId(instance: Node): Int {
 
 class HashCalcular {
     var hashTotal = 17
+    var childIndex = 0
+    HashCalcular(let node: NodeView, let parent: ?HashCalcular) {
+        accumulate(calcNodeId(node))
+    }
+
     @OverflowWrapping
     func accumulate(hash: Int): Unit {
         this.hashTotal = this.hashTotal * 31 + hash
+    }
+    func finish(): Unit {
+        node.addProp("nodeid", hashTotal)
+        if (let Some(p) <- parent) {
+            p.accumulate(hashTotal)
+            p.childIndex += 1
+        }
     }
 }
