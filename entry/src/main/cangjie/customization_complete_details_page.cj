@@ -55,10 +55,9 @@ class CustomizationCompleteDetailsPage {
             )
             Scroll(scroller) {
                 Column {
-                    MarkdownAIComponent(
+                    MarkdownComponent(
                         output: mdStr,
-                        isFull: true,
-                        markdownAIConfiguration: setConfig()
+                        markdownConfiguration: setConfig()
                     )
                 }
             }
@@ -71,14 +70,14 @@ class CustomizationCompleteDetailsPage {
         }
     }
 
-    func setConfig(): MarkdownAIConfiguration {
+    func setConfig(): MarkdownConfiguration {
 //        AppLog.error("CJMarkDown fontSize " + (if (let Some(v) <- fontSize) {v} else {15.0}).toString())
 //        AppLog.error("CJMarkDown fontColor " + (if (let Some(v) <- fontColor) {v} else {UInt32(0xFF222222)}).toString())
 //        AppLog.error("CJMarkDown lineHeight " + (if (let Some(v) <- lineHeight) {v} else { 0.0 }).toString())
 //        AppLog.error("CJMarkDown lineStyle " + (if (let Some(v) <- linkStyle) {v} else { "button" }).toString())
 //        AppLog.error("CJMarkDown copyIcon " + (if (let Some(v) <- copyIcon) {v.id} else { 404 }).toString())
-        let markdownConfigurationBuilder: MarkdownAIConfigurationBuilder = MarkdownAIConfiguration.emptyBuilder()
-        markdownConfigurationBuilder.setMarkdownAITheme(setMarkdownAITheme())
+        let markdownConfigurationBuilder: MarkdownConfigurationBuilder = MarkdownConfiguration.emptyBuilder()
+        markdownConfigurationBuilder.setMarkdownTheme(setMarkdownTheme())
         markdownConfigurationBuilder.setImageCallback(imageCallback)
         markdownConfigurationBuilder.setImageCallbackCallback(imageCallbackCallback)
         markdownConfigurationBuilder.setVideoCallback(videoCallback)
@@ -90,8 +89,8 @@ class CustomizationCompleteDetailsPage {
         return markdownConfigurationBuilder.build()
     }
 
-    func setMarkdownAITheme(): MarkdownAITheme {
-        let markdownTheme: MarkdownAITheme = MarkdownAITheme
+    func setMarkdownTheme(): MarkdownTheme {
+        let markdownTheme: MarkdownTheme = MarkdownTheme
             .emptyBuilder()
 
              .setIsLinkSize(false)

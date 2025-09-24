@@ -55,10 +55,9 @@ class BugCodeDetailsPage {
             )
             Scroll(scroller) {
                 Column {
-                    MarkdownAIComponent(
+                    MarkdownComponent(
                         output: mdStr,
-                        isFull: true,
-                        markdownAIConfiguration: setConfig()
+                        markdownConfiguration: setConfig()
                     )
                 }
             }
@@ -72,29 +71,29 @@ class BugCodeDetailsPage {
     }
 
     /**
-     * 设置MarkdownAIConfiguration
+     * 设置MarkdownConfiguration
      *
-     * @return MarkdownAIConfiguration
+     * @return MarkdownConfiguration
      */
-    func setConfig(): MarkdownAIConfiguration {
-        let MarkdownAIConfigurationBuilder: MarkdownAIConfigurationBuilder = MarkdownAIConfiguration.emptyBuilder()
+    func setConfig(): MarkdownConfiguration {
+        let MarkdownConfigurationBuilder: MarkdownConfigurationBuilder = MarkdownConfiguration.emptyBuilder()
         // 设置markdown默认样式
-        MarkdownAIConfigurationBuilder.setMarkdownAITheme(setMarkdownAITheme())
-        return MarkdownAIConfigurationBuilder.build()
+        MarkdownConfigurationBuilder.setMarkdownTheme(setMarkdownTheme())
+        return MarkdownConfigurationBuilder.build()
     }
 
     /**
-     * 设置MarkdownAITheme
+     * 设置MarkdownTheme
      *
-     * @return MarkdownAITheme
+     * @return MarkdownTheme
      */
-    func setMarkdownAITheme(): MarkdownAITheme {
-        let markdownAIThemeBuilder: MarkdownAIThemeBuilder = MarkdownAITheme.emptyBuilder()
+    func setMarkdownTheme(): MarkdownTheme {
+        let markdownThemeBuilder: MarkdownThemeBuilder = MarkdownTheme.emptyBuilder()
 
         // 1、代码
-        markdownAIThemeBuilder.setIsSeparateCodeBlock(true) //设置是否单独代码块
+        markdownThemeBuilder.setIsSeparateCodeBlock(true) //设置是否单独代码块
 
-        return markdownAIThemeBuilder.build()
+        return markdownThemeBuilder.build()
     }
 }
 

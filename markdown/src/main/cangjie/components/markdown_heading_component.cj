@@ -1,0 +1,564 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ */
+package markdown.components
+
+import ohos.base.*
+import ohos.component.*
+import ohos.state_manage.*
+import ohos.state_macro_manage.*
+
+/**
+ * Markdown标题自定义控件
+ */
+@Component
+class MarkdownHeadingComponent {
+    /**
+     * markdown配置
+     */
+    var markdownConfiguration: MarkdownConfiguration
+
+    /**
+     * 标题内容数据
+     */
+    var nodeViews: ArrayList<NodeView>
+
+    /**
+     * 定位需要的数组
+     */
+    var indexList: ArrayList<Int64> = ArrayList<Int64>()
+
+    /**
+     * 标题等级
+     */
+    @State
+    var level: Int64 = 1
+
+    /**
+     * 长度
+     */
+    var size: Int64 = -1
+
+    /**
+     * 上边距 - 单位vp
+     */
+    var marginTop: Float64
+
+    /**
+     * 下边距 - 单位vp
+     */
+    var marginBottom: Float64
+
+    /**
+     * 控件宽度 - 单位px
+     */
+    @Prop
+    var componentWidth: Float64
+
+    /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
+
+    /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
+
+    /**
+     * 缓存的标题控件列表
+     */
+    var headingComponents: ArrayList<MarkdownHeadingComponent>
+
+    /**
+     * 懒加载数据源
+     */
+    @State
+    var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+
+    /**
+     * 块引用背景颜色
+     */
+    var blockQuoteBackGroupColor: Option<Color> = Option<Color>.None
+
+    /**
+     * 图片上边距
+     */
+    var imageMarginTop: Float64 = 0.0
+
+    /**
+     * 图片下边距
+     */
+    var imageMarginBottom: Float64 = 0.0
+
+    /**
+     * 是否列表中的标题
+     */
+    var isListTo: Bool = false
+
+    /**
+     * 是否只有一条链接数据
+     */
+    @State
+    var isOneLink: Bool = false
+
+    protected override func aboutToAppear(): Unit {
+        // 初始化刷新数据
+        refreshData(nodeViews, level)
+        // 缓存当前控件
+        headingComponents.add(this)
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        // 清除当前控件
+        headingComponents.removeIf(
+            {
+                predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                    true
+                } else {
+                    false
+                }
+            })
+    }
+
+    func build() {
+        Column() {
+            // 标题内容
+            headingTitleComponent()
+
+            // 一级二级标题是否显示下划线
+            if ((level == 1 || level == 2) && markdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {
+                Divider()
+                    // 设置分割线颜色
+                    .color(markdownConfiguration.markdownTheme.headingBreakColor)
+                    // 设置分割线宽度
+                    .strokeWidth(markdownConfiguration.markdownTheme.headingBreakHeight)
+            }
+        }
+        // 设置子组件在水平方向上的对齐格式
+        .alignItems(HorizontalAlign.Start)
+        // 设置子组件在垂直方向上的对齐格式
+        .justifyContent(FlexAlign.Center)
+        // 设置外边距属性
+        .margin(top: isMarginTop(), bottom: isMarginBottom())
+        // 设置组件自身的宽度
+        .width(100.percent)
+    }
+
+    /**
+     * 标题文字内容
+     */
+    @Builder
+    func headingTitleComponent18() {
+        Text() {
+            ForEach(
+                nodeViewList,
+                itemGeneratorFunc: {
+                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
+                        // 文本
+                        headingTextComponent(
+                            item,
+                            markdownConfiguration,
+                            level
+                        )
+                    } else if (item.node is Footnote) {
+                        // 脚注
+                        headingFootnoteComponent(
+                            item,
+                            markdownConfiguration,
+                            level,
+                            fontCallback
+                        )
+                    } else if (item.node is Code) {
+                        // 内联代码
+                        if(markdownConfiguration.markdownTheme.isCodeStyle){
+                            MarkdownCodeLineImageSpanComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                strCode: (item.node as Code)().getLiteral(),
+                                strUrl: linkUrl(item),
+                                isFakeBoldText: true
+                            )
+                        }else{
+                            headingCodeComponent(
+                                item,
+                                markdownConfiguration
+                            )
+                        }
+                    } else if (item.node is CommonmarkLink) {
+                        // 链接
+                        if (isListTo && !markdownConfiguration.markdownTheme.isListLinkStyle && isOneLink && !markdownConfiguration.markdownTheme.isLinkStyle) {
+                            if(getLinkString(item).isSome()){
+                                headingLinkComponent(
+                                    item,
+                                    getLinkString(item)(),
+                                    markdownConfiguration,
+                                    level
+                                )
+                            }else{
+                                Span("")
+                            }
+                        } else {
+                            if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                                if(getLinkString(item).isSome()){
+                                    if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
+                                        MarkdownLinkRectImageComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            strText: getLinkString(item)().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectImageBackGroupColor)
+                                        )
+                                    }else{
+                                        MarkdownLinkCircleImageComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            strText: getLinkString(item)().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkCircleImageBackGroupColor)
+                                        )
+                                    }
+                                }else{
+                                    Span("")
+                                }
+                            } else {
+                                if(getLinkString(item).isSome()){
+                                    MarkdownLinkRectToolImageComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        strText: getLinkString(item)(),
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
+                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectToolImageBackGroupColor)
+                                    )
+                                }else{
+                                    Span("")
+                                }
+                            }
+                        }
+                    } else if (item.node is HardLineBreak) {
+                        // 硬换行
+                        Span("\n")
+                    } else if (item.node is SoftLineBreak) {
+                        // 软换行
+                        Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
+                    } else if (item.node is ImageHtmlNode) {
+                        // HTML图片
+                        MarkdownHtmlImageSpanComponent(
+                            destination: (item.node as ImageHtmlNode)().getDestination(),
+                            imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                            componentWidth:componentWidth,
+                            imageMarginTop: imageMarginTop,
+                            imageMarginBottom: imageMarginBottom,
+                            imageCallback: imageCallback
+                        )
+                    } else if (item.node is CommonmarkImage) {
+                        // 图片节点
+                        if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                            MarkdownImageSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                componentWidth: componentWidth,
+                                imageMarginTop: imageMarginTop,
+                                imageMarginBottom: imageMarginBottom,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                            )
+                        } else {
+                            MarkdownImagePixelmapSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                componentWidth: componentWidth,
+                                imageMarginTop: imageMarginTop,
+                                imageMarginBottom: imageMarginBottom,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
+                            )
+                        }
+                    } else if (item.node is LatexMathNode) {
+                        // 数学公式节点
+                        MarkdownLatexImageSpanComponent(
+                            markdownConfiguration: markdownConfiguration,
+                            componentWidth: componentWidth,
+                            strLatexMath: (item.node as LatexMathNode)().latex,
+                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.latexMathBackGroupColor)
+                        )
+                    } else {
+                        // TODO 其他节点
+                        Span("")
+                    }
+                },
+                keyGeneratorFunc:{
+                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
+                }
+            )
+        }
+        // 设置多行文本的文本对齐方式
+        .textAlign(TextAlign.Start)
+        // 设置组件自身的宽度
+        .width(100.percent)
+        // 设置行高
+        .lineHeight(tableLineHeight())
+    }
+
+    /**
+     * 标题文字内容
+     */
+    @Builder
+    func headingTitleComponent19() {
+        Text() {
+            ForEach(
+                nodeViewList,
+                itemGeneratorFunc: {
+                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
+                        // 文本
+                        headingTextComponent(
+                            item,
+                            markdownConfiguration,
+                            level
+                        )
+                    } else if (item.node is Footnote) {
+                        // 脚注
+                        headingFootnoteComponent(
+                            item,
+                            markdownConfiguration,
+                            level,
+                            fontCallback
+                        )
+                    } else if (item.node is Code) {
+                        // 内联代码
+                        if(markdownConfiguration.markdownTheme.isCodeStyle){
+                            MarkdownCodeLineImageSpanComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                strCode: (item.node as Code)().getLiteral(),
+                                strUrl: linkUrl(item),
+                                isFakeBoldText: true
+                            )
+                        }else{
+                            headingCodeComponent(
+                                item,
+                                markdownConfiguration
+                            )
+                        }
+                    } else if (item.node is CommonmarkLink) {
+                        // 链接
+                        if (isListTo && !markdownConfiguration.markdownTheme.isListLinkStyle && isOneLink && !markdownConfiguration.markdownTheme.isLinkStyle) {
+                            if(getLinkString(item).isSome()){
+                                headingLinkComponent(
+                                    item,
+                                    getLinkString(item)(),
+                                    markdownConfiguration,
+                                    level
+                                )
+                            }else{
+                                Span("")
+                            }
+                        } else {
+                            if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                                if(getLinkString(item).isSome()){
+                                    if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
+                                        MarkdownLinkRectImageComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            strText: getLinkString(item)().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectImageBackGroupColor)
+                                        )
+                                    }else{
+                                        MarkdownLinkCircleImageComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            strText: getLinkString(item)().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkCircleImageBackGroupColor)
+                                        )
+                                    }
+                                }else{
+                                    Span("")
+                                }
+                            } else {
+                                if(getLinkString(item).isSome()){
+                                    MarkdownLinkRectToolImageComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        strText: getLinkString(item)(),
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
+                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectToolImageBackGroupColor)
+                                    )
+                                }else{
+                                    Span("")
+                                }
+                            }
+                        }
+                    } else if (item.node is HardLineBreak) {
+                        // 硬换行
+                        Span("\n")
+                    } else if (item.node is SoftLineBreak) {
+                        // 软换行
+                        Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
+                    } else if (item.node is ImageHtmlNode) {
+                        // HTML图片
+                        MarkdownHtmlImageSpanComponent(
+                            destination: (item.node as ImageHtmlNode)().getDestination(),
+                            imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                            componentWidth:componentWidth,
+                            imageMarginTop: imageMarginTop,
+                            imageMarginBottom: imageMarginBottom,
+                            imageCallback: imageCallback
+                        )
+                    } else if (item.node is CommonmarkImage) {
+                        // 图片节点
+                        if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                            MarkdownImageSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                componentWidth: componentWidth,
+                                imageMarginTop: imageMarginTop,
+                                imageMarginBottom: imageMarginBottom,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                            )
+                        } else {
+                            MarkdownImagePixelmapSpanComponent(
+                                destination: (item.node as CommonmarkImage)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                componentWidth: componentWidth,
+                                imageMarginTop: imageMarginTop,
+                                imageMarginBottom: imageMarginBottom,
+                                imageCallback: imageCallback,
+                                linkCallback: markdownConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
+                            )
+                        }
+                    } else if (item.node is LatexMathNode) {
+                        // 数学公式节点
+                        MarkdownLatexImageSpanComponent(
+                            markdownConfiguration: markdownConfiguration,
+                            componentWidth: componentWidth,
+                            strLatexMath: (item.node as LatexMathNode)().latex,
+                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.latexMathBackGroupColor)
+                        )
+                    } else {
+                        // TODO 其他节点
+                        Span("")
+                    }
+                },
+                keyGeneratorFunc:{
+                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
+                }
+            )
+        }
+        // 设置多行文本的文本对齐方式
+        .textAlign(TextAlign.Start)
+        // 设置组件自身的宽度
+        .width(100.percent)
+        // 设置行高
+        .lineHeight(tableLineHeight())
+        // 支持设备内复制
+        .copyOption(CopyOptions.LocalDevice)
+        // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
+        .onCopy({
+            str =>
+                if(markdownConfiguration.textCopyCallback.isSome()){
+                   markdownConfiguration.textCopyCallback()(str)
+                }
+        })
+    }
+
+    /**
+     * 标题文字内容
+     */
+    @Builder
+    func headingTitleComponent() {
+        if(DeviceInfo.sdkApiVersion >=19){
+            headingTitleComponent19()
+        } else {
+            headingTitleComponent18()
+        }
+    }
+
+    func isMarginTop():Float64{
+        if(nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
+            return 0.0
+        }else{
+            return marginTop
+        }
+    }
+
+    func isMarginBottom():Float64{
+        if(nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
+            return 0.0
+        }else{
+            return marginBottom
+        }
+    }
+
+    func tableLineHeight(): Float64 {
+        return match (level) {
+            case 1 => markdownConfiguration.markdownTheme.headingTextLineHeight1
+            case 2 => markdownConfiguration.markdownTheme.headingTextLineHeight2
+            case 3 => markdownConfiguration.markdownTheme.headingTextLineHeight3
+            case 4 => markdownConfiguration.markdownTheme.headingTextLineHeight4
+            case 5 => markdownConfiguration.markdownTheme.headingTextLineHeight5
+            case 6 => markdownConfiguration.markdownTheme.headingTextLineHeight6
+            case _ => markdownConfiguration.markdownTheme.headingTextLineHeight6
+        }
+    }
+
+    /**
+     * 数据刷新
+     */
+    public func refreshData(refreshNodeViews: ArrayList<NodeView>, level: Int64): Unit {
+        this.level = level // 等级
+        let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
+        let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
+        if (refreshNodeViewSize == 0) {
+            return
+        }
+        if (refreshNodeViewSize > nodeViewListSize) {
+            // 新数据大于页面数据
+            // 循环判断历史数据有没有做过修改
+            for(i in 0..nodeViewListSize){
+                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+                    nodeViewList[i] = refreshNodeViews[i]
+                }
+            }
+            // 循环添加新数据
+            for(i in nodeViewListSize..refreshNodeViewSize){
+                nodeViewList.append(refreshNodeViews[i])
+            }
+        } else if (refreshNodeViewSize == nodeViewListSize) {
+            // 新数据等于页面数据
+            for(i in 0..nodeViewListSize){
+                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+                    nodeViewList[i] = refreshNodeViews[i]
+                }
+            }
+        } else {
+            // 新数据小于页面数据
+            // 循环判断历史数据有没有做过修改
+            for(i in 0..refreshNodeViewSize){
+                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+                    nodeViewList[i] = refreshNodeViews[i]
+                }
+            }
+            // 循环删除多余的旧数据
+            for(i in nodeViewListSize - 1..=refreshNodeViewSize : -1){
+                nodeViewList.remove(i)
+            }
+        }
+        size = nodeViewList.size // 更新列表长度
+        if(nodeViewList.size==1 && nodeViewList[0].node is CommonmarkLink){
+            isOneLink = true
+        }else{
+            isOneLink = false
+        }
+    }
+}

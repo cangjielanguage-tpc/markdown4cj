@@ -55,10 +55,9 @@ class BugDetailsPage {
             )
             Scroll(scroller) {
                 Column {
-                    MarkdownAIComponent(
+                    MarkdownComponent(
                         output: mdStr,
-                        isFull: true,
-                        markdownAIConfiguration: setConfig()
+                        markdownConfiguration: setConfig()
                     )
                 }
             }
@@ -72,53 +71,53 @@ class BugDetailsPage {
     }
 
     /**
-     * 设置MarkdownAIConfiguration
+     * 设置MarkdownConfiguration
      *
-     * @return MarkdownAIConfiguration
+     * @return MarkdownConfiguration
      */
-    func setConfig(): MarkdownAIConfiguration {
-        let MarkdownAIConfigurationBuilder: MarkdownAIConfigurationBuilder = MarkdownAIConfiguration.emptyBuilder()
+    func setConfig(): MarkdownConfiguration {
+        let MarkdownConfigurationBuilder: MarkdownConfigurationBuilder = MarkdownConfiguration.emptyBuilder()
         // 设置markdown默认样式
-        MarkdownAIConfigurationBuilder.setMarkdownAITheme(setMarkdownAITheme())
+        MarkdownConfigurationBuilder.setMarkdownTheme(setMarkdownTheme())
         // 设置链接的点击事件
-        MarkdownAIConfigurationBuilder.setLinkCallback(linkCallback)
+        MarkdownConfigurationBuilder.setLinkCallback(linkCallback)
         // 设置图片的点击事件
-        MarkdownAIConfigurationBuilder.setImageCallback(imageCallback)
+        MarkdownConfigurationBuilder.setImageCallback(imageCallback)
         // 设置音频的点击事件
-        MarkdownAIConfigurationBuilder.setAudioCallback(audioCallback)
+        MarkdownConfigurationBuilder.setAudioCallback(audioCallback)
         // 设置视频的点击事件
-        MarkdownAIConfigurationBuilder.setVideoCallback(videoCallback)
+        MarkdownConfigurationBuilder.setVideoCallback(videoCallback)
         // 设置视频的图片替换回调
-        MarkdownAIConfigurationBuilder.setVideoImageCallback(videoImageCallback)
+        MarkdownConfigurationBuilder.setVideoImageCallback(videoImageCallback)
         // 设置代码复制按钮的点击事件
-        MarkdownAIConfigurationBuilder.setCodeCopyCallback(codeCopyCallback)
+        MarkdownConfigurationBuilder.setCodeCopyCallback(codeCopyCallback)
         // 设置代码全屏按钮的点击事件
-        MarkdownAIConfigurationBuilder.setCodeFullScreenCallback(codeFullScreenCallback)
+        MarkdownConfigurationBuilder.setCodeFullScreenCallback(codeFullScreenCallback)
         // 设置数学公式图片点击事件
-        MarkdownAIConfigurationBuilder.setLatexImageCallbackCallback(latexImageCallbackCallback)
+        MarkdownConfigurationBuilder.setLatexImageCallbackCallback(latexImageCallbackCallback)
         // 设置脚注跳转指定位置
-        MarkdownAIConfigurationBuilder.setFootnoteCallback(footnoteCallback)
-        return MarkdownAIConfigurationBuilder.build()
+        MarkdownConfigurationBuilder.setFootnoteCallback(footnoteCallback)
+        return MarkdownConfigurationBuilder.build()
     }
 
     /**
-     * 设置MarkdownAITheme
+     * 设置MarkdownTheme
      *
-     * @return MarkdownAITheme
+     * @return MarkdownTheme
      */
-    func setMarkdownAITheme(): MarkdownAITheme {
-        let markdownAIThemeBuilder: MarkdownAIThemeBuilder = MarkdownAITheme.emptyBuilder()
+    func setMarkdownTheme(): MarkdownTheme {
+        let markdownThemeBuilder: MarkdownThemeBuilder = MarkdownTheme.emptyBuilder()
 
         // 1、音频
-        markdownAIThemeBuilder.setAudioIcon(@r(app.media.app_icon)) // 设置音频icon
-        markdownAIThemeBuilder.setAudioButtonText("超长超长超长音频按钮文字音频按钮文字音频按钮文字音频按钮文字") //设置音频按钮文字内容
-        markdownAIThemeBuilder.setAudioBorderColor(Color.GREEN) //设置音频边框颜色
+        markdownThemeBuilder.setAudioIcon(@r(app.media.app_icon)) // 设置音频icon
+        markdownThemeBuilder.setAudioButtonText("超长超长超长音频按钮文字音频按钮文字音频按钮文字音频按钮文字") //设置音频按钮文字内容
+        markdownThemeBuilder.setAudioBorderColor(Color.GREEN) //设置音频边框颜色
 
         // 2、视频
-        markdownAIThemeBuilder.setVideoImage(@r(app.media.place_holder)) // 设置视频默认占位图
-        markdownAIThemeBuilder.setPlayCircleFillIcon(@r(app.media.play_circle_fill)) // 设置视频播放按钮默认图标
+        markdownThemeBuilder.setVideoImage(@r(app.media.place_holder)) // 设置视频默认占位图
+        markdownThemeBuilder.setPlayCircleFillIcon(@r(app.media.play_circle_fill)) // 设置视频播放按钮默认图标
 
-        return markdownAIThemeBuilder.build()
+        return markdownThemeBuilder.build()
     }
 
     /**

@@ -55,10 +55,9 @@ class CodeCompleteDetailsPage {
             )
             Scroll(scroller) {
                 Column {
-                    MarkdownAIComponent(
+                    MarkdownComponent(
                         output: mdStr,
-                        isFull: true,
-                        markdownAIConfiguration: setConfig()
+                        markdownConfiguration: setConfig()
                     )
                 }
             }
@@ -72,32 +71,32 @@ class CodeCompleteDetailsPage {
     }
 
     /**
-     * 设置MarkdownAIConfiguration
+     * 设置MarkdownConfiguration
      *
-     * @return MarkdownAIConfiguration
+     * @return MarkdownConfiguration
      */
-    func setConfig(): MarkdownAIConfiguration {
-        let MarkdownAIConfigurationBuilder: MarkdownAIConfigurationBuilder = MarkdownAIConfiguration.emptyBuilder()
+    func setConfig(): MarkdownConfiguration {
+        let MarkdownConfigurationBuilder: MarkdownConfigurationBuilder = MarkdownConfiguration.emptyBuilder()
         // 设置markdown默认样式
-        MarkdownAIConfigurationBuilder.setMarkdownAITheme(setMarkdownAITheme())
+        MarkdownConfigurationBuilder.setMarkdownTheme(setMarkdownTheme())
         // 设置代码复制按钮的点击事件
-        MarkdownAIConfigurationBuilder.setCodeCopyCallback(codeCopyCallback)
-        return MarkdownAIConfigurationBuilder.build()
+        MarkdownConfigurationBuilder.setCodeCopyCallback(codeCopyCallback)
+        return MarkdownConfigurationBuilder.build()
     }
 
     /**
-     * 设置MarkdownAITheme
+     * 设置MarkdownTheme
      *
-     * @return MarkdownAITheme
+     * @return MarkdownTheme
      */
-    func setMarkdownAITheme(): MarkdownAITheme {
-        let markdownAIThemeBuilder: MarkdownAIThemeBuilder = MarkdownAITheme.emptyBuilder()
+    func setMarkdownTheme(): MarkdownTheme {
+        let markdownThemeBuilder: MarkdownThemeBuilder = MarkdownTheme.emptyBuilder()
 
         // 单独代码块
-        markdownAIThemeBuilder.setIsSeparateCodeBlock(true) // 设置是否单独代码块
-        markdownAIThemeBuilder.setCodeCopyIcon(@r(app.media.app_icon)) // 设置代码复制按钮默认图标
+        markdownThemeBuilder.setIsSeparateCodeBlock(true) // 设置是否单独代码块
+        markdownThemeBuilder.setCodeCopyIcon(@r(app.media.app_icon)) // 设置代码复制按钮默认图标
 
-        return markdownAIThemeBuilder.build()
+        return markdownThemeBuilder.build()
     }
 
     /**

@@ -340,9 +340,8 @@ _________________
                 }
             Scroll(scroller) {
                 Column {
-                    MarkdownAIComponent(
-                        output: output,
-                        isFull: false
+                    MarkdownComponent(
+                        output: output
                     )
                 }
             }
