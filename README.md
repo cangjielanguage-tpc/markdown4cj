@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.1.2-lite-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.1.2-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v0.53.18-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
@@ -195,8 +195,8 @@ Heading level 2
 
 当前基于 DevEco Studio for Windows 5.0.13.200 和 DevEco Studio Cangjie Plugin Canary for Windows 5.0.13.200 版本实现的
 
-1. 内联代码暂未支持背景色设置
-2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
+1. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
+2. 内联代码/链接背景色只支持互操作版本背景色设置，纯仓颉版本不支持
 3. 围栏代码块高亮语言支持如下(语言类型不区分大小写，每行如有多个则表示该语言支持别名书写)：
    1. brainfuck
    2. c
@@ -217,7 +217,7 @@ Heading level 2
    17. latex
    18. makefile
    19. markdown、md
-   20. markup、svg
+   20. markup、svg、html、xml
    21. python、python3、py、py3、Python ML、pythonml、pandas、pythondata
    22. scala
    23. sql、mysql、oracle、oraclesql、sqlserver、MS SQL Server、mssql、postgresql、pgsql
@@ -226,18 +226,11 @@ Heading level 2
    26. cangjie、cj
    27. rust
 4. 表格限制：
-   1. 不支持行内添加标题
-   2. 不支持行内添加块引用
-   3. 不支持行内添加有序、无序、任务列表
-   4. 不支持行内添加图片
-   5. 不支持行内添加缩进代码块、围栏代码块
-5. 图文混排支持本地图片和网络图片的图文混排
-   1. 不支持沙盒路径下的本地图片
-   2. 不支持rawfile目录下本地图片
-   3. 不支持带style标签的图片
-6. 暂未支持稀疏排列和紧密排列
-7. 数学公式背景色暂不支持设置透明色
-8. HTML支持的标签
+   1. 不支持嵌套标题
+   2. 不支持嵌套块引用/有序列表/无序列表/任务列表
+   3. 不支持嵌套缩进代码块/围栏代码块
+5. 不支持稀疏排列和紧密排列
+6. HTML支持的标签
    1. 块元素
       1. hr标签 - 分割线
       2. h1~h6标签 - 标题
@@ -264,6 +257,8 @@ Heading level 2
          * title属性
          * width属性
          * height属性
+   4. 注释标签
+7. 不支持图文混排
 
 ## 开源协议
 

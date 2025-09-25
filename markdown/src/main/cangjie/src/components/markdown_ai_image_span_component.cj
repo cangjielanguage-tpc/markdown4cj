@@ -73,9 +73,20 @@ public class MarkdownAIImageSpanComponent {
      */
     var imagePlaceholder: ?String = None
 
+    /**
+     * 是否是链接
+     */
     var isLink: Bool = false
 
+    /**
+     * 链接url
+     */
     var linkUrl: ?String = Option<String>.None
+
+    /**
+     * 图片最大宽度
+     */
+    var maxWidth: Length = 100.percent
 
     func build() {
         if (!isCompleted && !isError) {
@@ -87,6 +98,8 @@ public class MarkdownAIImageSpanComponent {
                     .width(100.percent)
                     // 设置组件自身的高度
                     .height(componentWidth / (16.0 / 9.0))
+                    // 设置约束尺寸
+                    .constraintSize(maxWidth: maxWidth)
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Cover)
             } else {
@@ -117,6 +130,8 @@ public class MarkdownAIImageSpanComponent {
                 .height(componentWidth / (16.0 / 9.0))
                 // 设置图片的缩放类型
                 .objectFit(ImageFit.Cover)
+                // 设置约束尺寸
+                .constraintSize(maxWidth: maxWidth)
                 // 点击动作触发该方法调用
                 .onClick {
                     evt =>
