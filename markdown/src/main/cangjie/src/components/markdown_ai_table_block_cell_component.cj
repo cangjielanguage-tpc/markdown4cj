@@ -180,6 +180,8 @@ class MarkdownAITableBlockCellComponent {
                 }
                 if (maxHeight < newHeight) {
                     maxHeight = newHeight
+                } else {
+                    minTextHeight = maxHeight
                 }
 
                 if (old.width == new.width) {
