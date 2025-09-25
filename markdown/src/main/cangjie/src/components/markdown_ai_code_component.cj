@@ -387,9 +387,7 @@ class MarkdownAICodeComponent {
         })
         let refreshNodeViewSize = arr.size // 刷新进来的数据长度
         let dataSourceSize = lineStrArray.totalCount() // 页面缓存的数据长度
-        if (markdownAIConfiguration.markdownAITheme.separateCodeIsBottom) {
-            scrollChatIfAtBottom()
-        }
+        // 增量加载
         if (refreshNodeViewSize == 0) {
             return
         }
@@ -409,10 +407,16 @@ class MarkdownAICodeComponent {
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
-            for(i in 0..dataSourceSize){
+            let indexItem: Int64 = dataSourceSize - 1
+            for(i in 0..indexItem){
                 if(lineStrArray.getData(i) != arr[i]){
                     lineStrArray.replaceData(i, arr[i])
                     lineInt64Array.replaceData(i, arr[i])
+                }
+            }
+            for (data in aiCodeTextComponents) {
+                if (isListItem(indexList, data.indexList, indexItem)) {
+                    data.refreshData(arr[indexItem],info)
                 }
             }
         } else {
