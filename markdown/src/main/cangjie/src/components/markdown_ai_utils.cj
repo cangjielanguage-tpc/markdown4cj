@@ -941,8 +941,8 @@ func urlSafeBase64Decode(v: String): String {
         return ""
     }
     var arrStr: String = String.fromUtf8(arr.getOrThrow())
-    var regex: Regex = Regex("file-name=([^&]+)");
-    var matcher: Matcher = Matcher(regex, arrStr);
+    var regex: Regex = Regex("file-name=([^&]+)")
+    var matcher: Matcher = Matcher(regex, arrStr)
     var matchData: ?MatchData = matcher.find()
     match (matchData) {
         case Some(v) =>

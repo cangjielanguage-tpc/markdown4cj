@@ -87,6 +87,9 @@ public class MarkdownAIImagePixelmapSpanComponent {
      */
     var maxWidth: Length = 100.percent
 
+    /**
+     * 解析是否结束
+     */
     @State
     var isBool: Bool = false
 

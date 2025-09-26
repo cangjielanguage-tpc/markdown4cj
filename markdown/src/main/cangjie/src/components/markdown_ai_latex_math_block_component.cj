@@ -56,6 +56,12 @@ class MarkdownAILatexMathBlockComponent {
     @State
     var latexWidth: ?Float64 = Option<Float64>.None
 
+    /**
+     * 解析是否结束
+     */
+    @State
+    var isBool: Bool = false
+
     protected override func aboutToAppear(): Unit {
         latexMathStrToPixelMap()
     }
@@ -67,31 +73,39 @@ class MarkdownAILatexMathBlockComponent {
     }
 
     func build() {
-        if (latexPixelMap.isSome() && latexHeight.isSome() && latexWidth.isSome() && latexData.isSome()) {
-            Scroll() {
-                // 设置图片的数据源
-                Image(latexPixelMap())
-                    // 设置组件自身的高度
-                    .height(latexHeight().px)
-                    // 设置组件自身的宽度
-                    .width(latexWidth().px)
-                    // 设置图片的缩放类型
-                    .objectFit(ImageFit.Contain)
-                    // 点击动作触发该方法调用
-                    .onClick {
-                        evt => latexImageOnClick(latexData(), latexHeight().px, latexWidth().px, markdownAIConfiguration.latexImageCallback)
-                    }
+        if (isBool) {
+            if (latexPixelMap.isSome() && latexHeight.isSome() && latexWidth.isSome() && latexData.isSome()) {
+                Scroll() {
+                    // 设置图片的数据源
+                    Image(latexPixelMap())
+                        // 设置组件自身的高度
+                        .height(latexHeight().px)
+                        // 设置组件自身的宽度
+                        .width(latexWidth().px)
+                        // 设置图片的缩放类型
+                        .objectFit(ImageFit.Contain)
+                        // 点击动作触发该方法调用
+                        .onClick {
+                            evt => latexImageOnClick(latexData(), latexHeight().px, latexWidth().px, markdownAIConfiguration.latexImageCallback)
+                        }
+                }
+                // 设置滚动方法
+                .scrollable(ScrollDirection.Horizontal)
+                // 宽度
+                .width(100.percent)
+                // 设置滚动条状态
+                .scrollBar(BarState.Off)
+                // 设置外边距属性
+                .margin(top: marginTop, bottom: marginBottom)
+                // 设置 Column 子组件在水平方向上的对齐格式
+                .align(isAlignItems(markdownAIConfiguration.markdownAITheme.latexMathBlockCenter))
+            } else {
+                Text(latexStr)
+                    .fontColor(Color.RED)
             }
-            // 设置滚动方法
-            .scrollable(ScrollDirection.Horizontal)
-            // 宽度
-            .width(100.percent)
-            // 设置滚动条状态
-            .scrollBar(BarState.Off)
-            // 设置外边距属性
-            .margin(top: marginTop, bottom: marginBottom)
-            // 设置 Column 子组件在水平方向上的对齐格式
-            .align(isAlignItems(markdownAIConfiguration.markdownAITheme.latexMathBlockCenter))
+        } else {
+            Text(latexStr)
+                .fontColor(Color.RED)
         }
     }
 
@@ -105,6 +119,7 @@ class MarkdownAILatexMathBlockComponent {
                 latexHeight = height
                 latexWidth = width
                 latexData = arr
+                isBool = true
             }
         }
         MarkdownParseLatexUtil.latexMathStrToPixelMap(latexStr, markdownAIConfiguration, callback)
