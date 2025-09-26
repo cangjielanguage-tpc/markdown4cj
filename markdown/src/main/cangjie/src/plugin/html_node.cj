@@ -54,16 +54,35 @@ public class FontNode <: CustomNode {
 }
 
 public class SpanNode <: CustomNode {
-    private var attrs: Map<String,String>
+    private var attrs: ?HashMap<String, String>
+    private var style: ?HashMap<String, String>
 
-    public init(attrs: Map<String,String>) {
+    public init(attrs: ?HashMap<String, String>, style: ?HashMap<String, String>) {
         this.attrs = attrs
+        this.style = style
     }
-
-    public func getAttrs(): Map<String,String> {
+    /**
+     * 除了style之外的属性
+     */
+    public func getAttrs(): ?HashMap<String, String> {
         return attrs
     }
-
+    /**
+     * 分割后的style内容
+     */
+    public func getStyle(): ?HashMap<String, String> {
+        return style
+    }
+    public func toStringAttributes(): String {
+        var styleString = ""
+        if (let Some(attrs) <- attrs) {
+            styleString += "attrs:${attrs}"
+        }
+        if (let Some(style) <- style) {
+            styleString += "style:${style}"
+        }
+        return styleString
+    }
     public override func getNodeType(): NodeType {
         return "SpanNode"
     }
@@ -76,7 +95,7 @@ public class IgnoreNode <: CustomBlock {
     public override func getNodeType(): NodeType {
         return "IgnoreNode"
     }
-    
+
     public override func getParent(): ?Node {
         parent
     }
