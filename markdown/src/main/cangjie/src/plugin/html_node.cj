@@ -88,15 +88,16 @@ public class SpanNode <: CustomNode {
     }
 }
 
-public class IgnoreNode <: CustomBlock {
-    public init() {
-    }
+public interface IgnoreNode {}
 
+public class IgnoreBlockNode <: CustomBlock & IgnoreNode {
     public override func getNodeType(): NodeType {
-        return "IgnoreNode"
+        return "IgnoreBlockNode"
     }
+}
 
-    public override func getParent(): ?Node {
-        parent
+public class IgnoreInlineNode <: CustomNode & IgnoreNode {
+    public override func getNodeType(): NodeType {
+        return "IgnoreInlineNode"
     }
 }

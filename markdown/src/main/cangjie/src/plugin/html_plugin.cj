@@ -139,7 +139,7 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 }
             )
             .on(
-                "IgnoreNode",
+                "IgnoreInlineNode",
                 {
                     visitor, node =>
                     buildView(node, false)

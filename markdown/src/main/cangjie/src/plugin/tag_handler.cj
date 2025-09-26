@@ -25,7 +25,11 @@ public abstract class TagHandler {
             nodeParent?.appendChild(node)
             node
         } else {
-            let node: Node = IgnoreNode()
+            let node: Node = if (tag.isBlock()) {
+                IgnoreBlockNode()
+            } else {
+                IgnoreInlineNode()
+            }
             nodeParent?.appendChild(node)
             visitChildren(visitor, renderer, tag, node)
             node
@@ -171,7 +175,7 @@ public class HeadingHandler <: TagHandler {
             level = 0
         }
         if (level < 1 || level > 6) {
-            return IgnoreNode()
+            return Paragraph()
         }
         let heading: Heading = Heading()
         heading.setLevel(level)
@@ -199,7 +203,7 @@ public class ImageHandler <: TagHandler {
             visitChildren(visitor, renderer, tag, imageHtmlNode)
             return imageHtmlNode
         } else {
-            let ignoreNode: IgnoreNode = IgnoreNode()
+            let ignoreNode = IgnoreInlineNode()
             visitChildren(visitor, renderer, tag, ignoreNode)
             return ignoreNode
         }
@@ -223,7 +227,7 @@ public class LinkHandler <: TagHandler {
             visitChildren(visitor, renderer, tag, link)
             return link
         } else {
-            let ignoreNode: IgnoreNode = IgnoreNode()
+            let ignoreNode = IgnoreInlineNode()
             visitChildren(visitor, renderer, tag, ignoreNode)
             return ignoreNode
         }
