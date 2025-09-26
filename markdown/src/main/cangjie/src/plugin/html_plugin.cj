@@ -139,6 +139,14 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 }
             )
             .on(
+                "IgnoreBlockNode",
+                {
+                    visitor, node =>
+                    buildView(node, false)
+                    visitor.visitChildren(node)
+                }
+            )
+            .on(
                 "IgnoreInlineNode",
                 {
                     visitor, node =>
