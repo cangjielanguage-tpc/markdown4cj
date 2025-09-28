@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import ohos.hilog.Hilog
 
 /**
  * Markdown表格自定义控件
@@ -181,7 +182,7 @@ class MarkdownAITableBlockCellComponent {
                 if (maxHeight < newHeight) {
                     maxHeight = newHeight
                 } else {
-                    minTextHeight = maxHeight
+                    maxHeight = minTextHeight
                 }
 
                 if (old.width == new.width) {
