@@ -36,7 +36,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 10. 支持转义字符语法
 11. 支持删除线语法
 12. 支持链接语法
-13. ~~支持自动网址链接语法~~
+13. 支持自动网址链接语法
 14. 支持部分html语法
 15. 支持软硬换行语法
 16. 支持表格语法
@@ -62,7 +62,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ## 软件架构
 
-![img.png](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/blobs/5a5352e79bdc3af5dc6907686876b5cf7f4ca53e/img.png)
+![img.png](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/md_v1.1.2/doc/assets/img.png)
 
 ### 源码目录
 
@@ -127,7 +127,7 @@ class ARHeading1Page {
     func build() {
         Scroll() {
             Column {
-                MarkdownAIComponent(output: mdStr, isFull:true)
+                MarkdownAIComponent(output: mdStr)
             }
         }
         // 设置滚动方法
@@ -189,7 +189,7 @@ Heading level 2
 
 ### 显示效果
 
-![img1.png](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/blobs/c2964f6d5916d7cbeac768b7967062e76ab67a5a/img1.png)
+![img1.png](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/md_v1.1.2/doc/assets/img1.png)
 
 ## 约束与限制
 
