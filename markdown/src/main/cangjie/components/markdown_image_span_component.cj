@@ -73,8 +73,14 @@ public class MarkdownImageSpanComponent {
      */
     var imagePlaceholder: ?String = None
 
+    /**
+     * 是否是链接
+     */
     var isLink: Bool = false
 
+    /**
+     * 链接url
+     */
     var linkUrl: ?String = Option<String>.None
 
     protected override func aboutToAppear(): Unit {
@@ -90,7 +96,7 @@ public class MarkdownImageSpanComponent {
                     // 设置组件自身的宽度
                     .width(100.percent)
                     // 设置组件自身的高度
-                    .height(px2vp(componentWidth.px).getOrThrow().value / (16.0 / 9.0))
+                    .height(componentWidth / (16.0 / 9.0))
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Cover)
             } else {
@@ -116,9 +122,9 @@ public class MarkdownImageSpanComponent {
                 // 设置外边距属性
                 .margin(top: imageMarginTop, bottom: imageMarginBottom)
                 // 设置组件自身的宽度
-                .width(componentWidth.px)
+                .width(componentWidth)
                 // 设置组件自身的高度
-                .height(px2vp(componentWidth.px).getOrThrow().value / (16.0 / 9.0))
+                .height(componentWidth / (16.0 / 9.0))
                 // 设置图片的缩放类型
                 .objectFit(ImageFit.Cover)
                 // 点击动作触发该方法调用
