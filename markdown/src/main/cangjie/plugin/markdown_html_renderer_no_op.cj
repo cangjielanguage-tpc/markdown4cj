@@ -9,7 +9,7 @@ class MarkdownHtmlRendererNoOp <: MarkdownHtmlRenderer {
     }
 
     public override func render(_: ?MarkdownVisitor, _: MarkdownHtmlParser, _: HtmlTag): Node {
-        let ignoreNode: IgnoreNode = IgnoreNode()
+        let ignoreNode = IgnoreBlockNode()
         return ignoreNode
     }
 
