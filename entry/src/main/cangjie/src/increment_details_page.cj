@@ -112,7 +112,6 @@ class IncrementDetailsPage {
                 Column {
                     MarkdownAIComponent(
                         output: output,
-                        isFull: false,
                         markdownAIConfiguration: setConfig(),
                         markdownPlugin: setPlugin()
                     )

@@ -59,7 +59,6 @@ class CompleteDetailsPage {
                 Column {
                     MarkdownAIComponent(
                         output: mdStr,
-                        isFull: true,
                         markdownAIConfiguration: setConfig(),
                         markdownPlugin: setPlugin()
                     )

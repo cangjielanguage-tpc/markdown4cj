@@ -64,44 +64,50 @@ class IndexPage {
                     }
                     ListItem() {
                         itemListComponent(
-                            "7、BUG用例",
+                            "7、超大数据源全量加载",
+                            "BigCompletePage"
+                        )
+                    }
+                    ListItem() {
+                        itemListComponent(
+                            "8、超大数据源增量加载",
+                            "BigIncrementPage"
+                        )
+                    }
+                    ListItem() {
+                        itemListComponent(
+                            "9、BUG用例",
                             "BugPage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "8、单独代码块BUG用例",
+                            "10、单独代码块BUG用例",
                             "BugCodePage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "9、列表嵌套markdown",
+                            "11、列表嵌套markdown",
                             "ListMarkdownPage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "10、List懒加载",
+                            "12、List懒加载",
                             "ListMarkdownPage1"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "11、连续输入数学公式闪退",
+                            "13、连续输入数学公式闪退",
                             "TestErrorPage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "12、整体切换数据源",
+                            "14、整体切换数据源",
                             "TestError1Page"
-                        )
-                    }
-                    ListItem() {
-                        itemListComponent(
-                            "13、超大数据源加载",
-                            "BigCompletePage"
                         )
                     }
                 }

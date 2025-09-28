@@ -19,7 +19,7 @@ import ohos.resource_manager.*
  */
 @Entry
 @Component
-class CustomizationCompleteDetailsPage {
+class BigIncrementDetailsPage {
     /**
      * markdown文本
      */
@@ -31,6 +31,24 @@ class CustomizationCompleteDetailsPage {
      */
     @State
     var params = ""
+
+    /**
+     * 流式markdown文本
+     */
+    @State
+    var output: String = ""
+
+    /**
+     * 一次加载文本个数
+     */
+    @State
+    var number: Int64 = 1
+
+    /**
+     * 延时时间
+     */
+    @State
+    var sleepTime: Int64 = 50
 
     /**
      * 滑动控制器
@@ -57,10 +75,11 @@ class CustomizationCompleteDetailsPage {
             Scroll(scroller) {
                 Column {
                     MarkdownAIComponent(
-                        output: mdStr,
+                        output: output,
                         markdownAIConfiguration: setConfig()
                     )
                 }
+                .height(200.percent)
             }
             // 外边距
             .margin(right: 10, left: 10)

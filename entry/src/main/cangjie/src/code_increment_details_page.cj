@@ -109,7 +109,6 @@ class CodeIncrementDetailsPage {
                 Column {
                     MarkdownAIComponent(
                         output: output,
-                        isFull: false,
                         markdownAIConfiguration: setConfig()
                     )
                 }

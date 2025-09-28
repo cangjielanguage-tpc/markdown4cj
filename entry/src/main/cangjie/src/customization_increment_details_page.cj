@@ -110,10 +110,10 @@ class CustomizationIncrementDetailsPage {
                 Column {
                     MarkdownAIComponent(
                         output: output,
-                        isFull: false,
                         markdownAIConfiguration: setConfig()
                     )
                 }
+                .backgroundColor(Color.GRAY)
             }
             // 左右外边距
             .margin(right: 10, left: 10)
@@ -121,6 +121,7 @@ class CustomizationIncrementDetailsPage {
             .padding(bottom: 150)
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
+            .backgroundColor(Color.WHITE)
         }
     }
 
@@ -137,6 +138,8 @@ class CustomizationIncrementDetailsPage {
         MarkdownAIConfigurationBuilder.setLinkCallback(linkCallback)
         // 设置图片的点击事件
         MarkdownAIConfigurationBuilder.setImageCallback(imageCallback)
+        MarkdownAIConfigurationBuilder.setImageCallbackCallback(imageCallbackCallback1)
+//        MarkdownAIConfigurationBuilder.setImageCallbackCallback(imageCallbackCallback)
         // 设置音频的点击事件
         MarkdownAIConfigurationBuilder.setAudioCallback(audioCallback)
         // 设置视频的点击事件
@@ -295,6 +298,15 @@ class CustomizationIncrementDetailsPage {
     func imageCallback(url: String, arr: ArrayList<String>): Unit {
         PromptAction.showToast(message: url)
         Hilog.error(1, "1", "------------------------imageCallback:${url},arr:${arr}")
+    }
+
+    func imageCallbackCallback(url: String):?Array<UInt8> {
+        var arrayUInt8: Array<UInt8> =  ResourceManager.getResourceManager(getStageContext(getGlobalAbilityContext())).getRawFileContent("startIcon.png")
+        return arrayUInt8
+    }
+
+    func imageCallbackCallback1(url: String):?Array<UInt8> {
+        return Option<Array<UInt8>>.None
     }
 
     /**

@@ -37,7 +37,7 @@ class BugCodePage {
     var folderList: ObservedArrayList<String> = ObservedArrayList<String>()
 
     protected override func aboutToAppear(): Unit {
-        let arr: Array<String> = getFileListStr("005_单独代码块bug/")
+        let arr: Array<String> = getFileListStr("006_单独代码块bug/")
         folderList.appendAll(arr)
     }
 
@@ -56,7 +56,7 @@ class BugCodePage {
                                 itemListComponent(
                                     "${index+1}、${str}",
                                     "BugCodeDetailsPage",
-                                    "005_单独代码块bug/${str}"
+                                    "006_单独代码块bug/${str}"
                                 )
                             }
                         },

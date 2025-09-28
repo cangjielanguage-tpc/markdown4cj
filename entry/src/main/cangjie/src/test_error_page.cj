@@ -304,8 +304,7 @@ $$
             Scroll(scroller) {
                 Column {
                     MarkdownAIComponent(
-                        output: output,
-                        isFull: false
+                        output: output
                     )
                 }
             }

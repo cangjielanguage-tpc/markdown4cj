@@ -40,7 +40,7 @@ class ListMarkdownPage {
                     itemGeneratorFunc: {
                         str: String, index: Int64 => ListItem() {
                             Column() {
-                                MarkdownAIComponent(output: str, isFull: true, markdownAIConfiguration: setConfig())
+                                MarkdownAIComponent(output: str, markdownAIConfiguration: setConfig())
                             }
                             // 边框颜色
                             .borderColor(Color.BLACK)

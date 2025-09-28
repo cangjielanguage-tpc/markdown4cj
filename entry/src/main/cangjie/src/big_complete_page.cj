@@ -37,7 +37,7 @@ class BigCompletePage {
     var folderList: ObservedArrayList<String> = ObservedArrayList<String>()
 
     protected override func aboutToAppear(): Unit {
-        let arr: Array<String> = getFileListStr("006_超大数据/")
+        let arr: Array<String> = getFileListStr("004_超大数据/")
         folderList.appendAll(arr)
     }
 
@@ -56,7 +56,7 @@ class BigCompletePage {
                                 itemListComponent(
                                     "${index+1}、${str}",
                                     "BigCompleteDetailsPage",
-                                    "006_超大数据/${str}"
+                                    "004_超大数据/${str}"
                                 )
                             }
                         },

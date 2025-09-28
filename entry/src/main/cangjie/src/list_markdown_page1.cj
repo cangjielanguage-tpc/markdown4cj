@@ -120,7 +120,7 @@ AI数字艺术对山水画的革新需以“笔墨当随时代”为精神内核
                                     .height(200)
                                 }else{
 //                                    Column(){
-                                        MarkdownAIComponent(output: str, isFull: false, markdownAIConfiguration: setConfig())
+                                        MarkdownAIComponent(output: str, markdownAIConfiguration: setConfig())
 //                                    }
                                 }
                             }

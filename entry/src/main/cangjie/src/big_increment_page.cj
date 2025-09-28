@@ -14,11 +14,11 @@ import std.time.*
 import ohos.hilog.*
 
 /**
- * BUG用例
+ * 定制化全量加载
  */
 @Entry
 @Component
-class BugPage {
+class BigIncrementPage {
     /**
      * markdown文本内容
      */
@@ -37,7 +37,7 @@ class BugPage {
     var folderList: ObservedArrayList<String> = ObservedArrayList<String>()
 
     protected override func aboutToAppear(): Unit {
-        let arr: Array<String> = getFileListStr("005_bug/")
+        let arr: Array<String> = getFileListStr("004_超大数据/")
         folderList.appendAll(arr)
     }
 
@@ -55,8 +55,8 @@ class BugPage {
                             str: String, index: Int64 => ListItem() {
                                 itemListComponent(
                                     "${index+1}、${str}",
-                                    "BugDetailsPage",
-                                    "005_bug/${str}"
+                                    "BigIncrementDetailsPage",
+                                    "004_超大数据/${str}"
                                 )
                             }
                         },

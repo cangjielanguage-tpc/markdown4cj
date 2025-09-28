@@ -12,9 +12,6 @@ import markdown.components.*
 import std.sync.*
 import std.time.*
 import ohos.hilog.*
-import ohos.image.createImageSource
-import ohos.image.ImageSource
-import ohos.image.PixelMap
 import ohos.resource_manager.*
 
 /**
@@ -46,8 +43,6 @@ class BigCompleteDetailsPage {
     @State
     var folderList: ObservedArrayList<String> = ObservedArrayList<String>()
 
-    var pixelMap:?PixelMap = None
-
     protected override func aboutToAppear(): Unit {
         params = (Router.getParams().getOrThrow() as String).getOrThrow()
         mdStr = getFileContextStr(params)
@@ -63,7 +58,6 @@ class BigCompleteDetailsPage {
                 Column {
                     MarkdownAIComponent(
                         output: mdStr,
-                        isFull: true,
                         markdownAIConfiguration: setConfig()
                     )
                 }

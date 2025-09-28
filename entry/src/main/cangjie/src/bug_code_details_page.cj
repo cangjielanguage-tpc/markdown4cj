@@ -57,7 +57,6 @@ class BugCodeDetailsPage {
                 Column {
                     MarkdownAIComponent(
                         output: mdStr,
-                        isFull: true,
                         markdownAIConfiguration: setConfig()
                     )
                 }

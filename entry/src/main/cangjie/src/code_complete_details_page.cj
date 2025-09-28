@@ -57,7 +57,6 @@ class CodeCompleteDetailsPage {
                 Column {
                     MarkdownAIComponent(
                         output: mdStr,
-                        isFull: true,
                         markdownAIConfiguration: setConfig()
                     )
                 }
