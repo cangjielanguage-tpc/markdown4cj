@@ -21,12 +21,6 @@ public class MarkdownAIComponent {
     var output: String
 
     /**
-     * 是否全量加载 - true：全量加载，fasle：增量加载
-     */
-    @Prop
-    var isFull: Bool
-
-    /**
      * markdown配置
      */
     var markdownAIConfiguration: MarkdownAIConfiguration = MarkdownAIConfiguration.create()
