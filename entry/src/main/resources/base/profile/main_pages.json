@@ -1,7 +1,8 @@
 {
   "src": [
-    "pages/Index",
     "pages/IndexPage",
+    "pages/DemoPage",
+    "pages/DemoDetailsPage",
     "pages/TitlePage",
     "pages/TitleDetailsPage",
     "pages/ParagraphPage",
@@ -35,9 +36,6 @@
     "pages/ImagePage",
     "pages/ImageDetailsPage",
     "pages/AllPage",
-    "pages/AllDetailsPage",
-    "pages/DemoPage",
-    "pages/CJpage",
-    "pages/CJpage1"
+    "pages/AllDetailsPage"
   ]
 }

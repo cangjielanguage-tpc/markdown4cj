@@ -1,15 +1,15 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from './BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+import { DemoDataMD } from './DemoPage'
 import { getFileContextStr } from './FileUtils'
-import { ThematicData } from './ThematicPage'
 
 @Entry
 @Component
-struct ThematicDetailsPage {
+struct DemoDetailsPage {
   /**
    * 滑动控制器
    */
@@ -34,39 +34,15 @@ struct ThematicDetailsPage {
   @State
   isFull: boolean = true
   /**
-   * 分割线颜色
-   */
-  @State
-  thematicBreakColor: number = 0xFF000000
-  /**
-   * 分割线高度
-   */
-  @State
-  thematicBreakHeight: number = 0.5
-  /**
-   * 分割线上部外边距
-   */
-  @State
-  thematicBreakTopMargin: number = 0.0
-  /**
-   * 分割线下部外边距
-   */
-  @State
-  thematicBreakBottomMargin: number = 0.0
-  /**
    * 增量加载延迟
    */
   time: number = 50
 
   aboutToAppear(): void {
     try {
-      let thematicData: ThematicData = router.getParams() as ThematicData
-      this.fileStr = getFileContextStr(thematicData._pagePath)
-      this.isFull = thematicData._isFull
-      this.thematicBreakColor = thematicData._thematicBreakColor
-      this.thematicBreakHeight = thematicData._thematicBreakHeight
-      this.thematicBreakTopMargin = thematicData._thematicBreakTopMargin
-      this.thematicBreakBottomMargin = thematicData._thematicBreakBottomMargin
+      let imageDataMD: DemoDataMD = router.getParams() as DemoDataMD
+      this.fileStr = getFileContextStr(imageDataMD._pagePath)
+      this.isFull = imageDataMD._isFull
     } catch (e) {
     }
   }
@@ -74,7 +50,7 @@ struct ThematicDetailsPage {
   build() {
     Column() {
       titleComponent(
-        "分割线测试用例",
+        "演示样例测试用例",
         0xFF317AFF,
         true,
         this.safeTop
@@ -108,7 +84,11 @@ struct ThematicDetailsPage {
         )
       Scroll(this.scroller) {
         Column() {
-          CJMarkdown({ content: this.content, config: this.setMarkdownConfig() })
+          CJMarkdown({
+            content: this.content,
+            config: this.setMarkdownConfig(),
+            plugin: this.setPlugin()
+          })
         }
       }
       .padding({ bottom: 200 })
@@ -119,11 +99,29 @@ struct ThematicDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setThematicBreakColor(this.thematicBreakColor)
-    theme.setThematicBreakHeight(this.thematicBreakHeight)
-    theme.setThematicBreakTopMargin(this.thematicBreakTopMargin)
-    theme.setThematicBreakBottomMargin(this.thematicBreakBottomMargin)
+    theme.setContext(getContext(this))
     config.setMarkdownTheme(theme)
     return config
+  }
+
+  setPlugin(): MarkdownPlugin {
+    let plugin: MarkdownPlugin = new MarkdownPlugin()
+    plugin.setIsTablePlugin(true) // 表格插件
+    plugin.setIsLatexMathPlugin(true) // 数学公式插件
+    plugin.setIsStrikethroughPlugin(true) // 删除线插件
+    plugin.setIsTaskListPlugin(true) // 任务列表插件
+    plugin.setIsLinkifyPlugin(true) // 自动链接插件
+    plugin.setIsBlockAudioPlugin(true) // 音频插件
+    plugin.setIsBlockVideoPlugin(true) // 视频插件
+    plugin.setIsImageCollectPlugin(true) // 图片视频列表url集合列表解析插件
+    plugin.setIsImageSinglePlugin(true) // 图片单独提取到block解析插件
+    plugin.setIsImageSlidePlugin(true) // 图片banner
+    plugin.setIsCodeListPlugin(true) // 代码块列表
+    plugin.setIsImageStylePlugin(true) // 图片样式
+    plugin.setIsTocPlugin(true) // TOC插件
+    plugin.setIsFootnotePlugin(true) // 脚注
+    plugin.setIsHtmlPlugin(true) // Html插件
+    plugin.setIsLinkViewPlugin(true) // 链接单独块解析插件
+    return plugin
   }
 }

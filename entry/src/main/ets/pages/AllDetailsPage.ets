@@ -28,7 +28,7 @@ struct AllDetailsPage {
    * markdown文本
    */
   @State
-  mdStr: string = ""
+  content: string = ""
   /**
    * 是否全量加载
    */
@@ -81,11 +81,11 @@ struct AllDetailsPage {
           () => {
             // 点击动作触发该方法调用
             if (this.isFull) {
-              this.mdStr = this.fileStr
+              this.content = this.fileStr
             } else {
               let index = 0
               let id = setInterval(() => {
-                this.mdStr = this.mdStr + this.fileStr[index]
+                this.content = this.content + this.fileStr[index]
                 this.scroller.scrollEdge(Edge.Bottom)
                 if (index === this.fileStr.length - 1) {
                   clearInterval(id)
@@ -98,8 +98,8 @@ struct AllDetailsPage {
       Scroll(this.scroller) {
         Column() {
           CJMarkdown({
-            mdStr: this.mdStr,
-            cfg: this.setMarkdownConfig(),
+            content: this.content,
+            config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
         }

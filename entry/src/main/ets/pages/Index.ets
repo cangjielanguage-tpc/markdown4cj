@@ -455,8 +455,8 @@ struct Index {
     Column() {
       Column() {
         CJMarkdown({
-          mdStr: this.message,
-          cfg: this.setCJMarkdownConfig(),
+          content: this.message,
+          config: this.setCJMarkdownConfig(),
           plugin: this.setPlugin()
         })
       }

@@ -35,9 +35,9 @@ struct IndexPage {
         List() {
           ListItem() {
             itemListComponent(
-              "0、测试",
+              "0、演示样例",
               0xFFFF0000,
-              "pages/Index"
+              "pages/DemoPage"
             )
           }
 
@@ -171,33 +171,9 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "17、综合",
+              "23、综合",
               0xFFFF0000,
               "pages/AllPage"
-            )
-          }
-
-          ListItem() {
-            itemListComponent(
-              "18、Demo演示样例",
-              0xFFFF0000,
-              "pages/DemoPage"
-            )
-          }
-
-          ListItem() {
-            itemListComponent(
-              "19、bug样例",
-              0xFFFF0000,
-              "pages/CJpage"
-            )
-          }
-
-          ListItem() {
-            itemListComponent(
-              "20、bug样例",
-              0xFFFF0000,
-              "pages/CJpage1"
             )
           }
         }
