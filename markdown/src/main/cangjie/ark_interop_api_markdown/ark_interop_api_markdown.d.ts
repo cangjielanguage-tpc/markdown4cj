@@ -191,6 +191,8 @@ export declare class CJMarkdownTheme {
 
   setSeparateCodeBlockWidth(separateCodeBlockWidth: number): void
 
+  setSeparateCodeIsBottom(separateCodeIsBottom: boolean): void
+
   setHeadingBreakHeight(headingBreakHeight: number): void
 
   setHeadingBreakColor(headingBreakColor: number): void
@@ -295,6 +297,8 @@ export declare class CJMarkdownTheme {
 
   setVideoMarginBottom(videoMarginBottom: number): void
 
+  setIsWord(isWord: boolean): void
+
   setImagePlaceholder(imagePlaceholder: string): void
 
   setIsAutoResize(isAutoResize: boolean): void
@@ -332,6 +336,8 @@ export declare class CJMarkdownConfig {
   setLinkCallback(cb: (funcArg0: string) => void): void
 
   setImageCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void
+
+  setImageCallbackCallback(cb: (funcArg0: string) => Array<number> | undefined): void
 
   setAudioCallback(cb: (funcArg0: string) => void): void
 

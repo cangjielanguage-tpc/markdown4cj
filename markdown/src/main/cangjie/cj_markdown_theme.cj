@@ -38,7 +38,7 @@ public class CJMarkdownTheme {
     var linkColor: ?Color = None
 
     /**
-     * 文本格式链接文字大小
+     * 是否按照链接文字字体大小显示文本
      */
     var isLinkSize: ?Bool = None
 
@@ -408,6 +408,11 @@ public class CJMarkdownTheme {
     var separateCodeBlockWidth: ?Float64 = None
 
     /**
+     * 单独代码块是否居底显示
+     */
+    var separateCodeIsBottom: ?Bool = None
+
+    /**
      * H1、H2标题下分割线高度
      */
     var headingBreakHeight: ?Float64 = None
@@ -666,6 +671,11 @@ public class CJMarkdownTheme {
      * 视频下边距
      */
     var videoMarginBottom: ?Float64 = None
+
+    /**
+     * 图片文字是否需要图文混排
+     */
+    var isWord: ?Bool = None
 
     /**
      * 图片默认占位图 - String
@@ -1452,6 +1462,15 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置单独代码块是否居底显示
+     *
+     * @param separateCodeIsBottom 单独代码块是否居底显示 - 默认false
+     */
+    public func setSeparateCodeIsBottom(separateCodeIsBottom: Bool): Unit {
+        this.separateCodeIsBottom = separateCodeIsBottom
+    }
+
+    /**
      * 设置H1、H2标题下分割线高度
      *
      * @param headingBreakHeight H1、H2标题下分割线高度 - 默认0.5vp
@@ -1921,6 +1940,15 @@ public class CJMarkdownTheme {
      */
     public func setVideoMarginBottom(videoMarginBottom: Float64): Unit {
         this.videoMarginBottom = videoMarginBottom
+    }
+
+    /**
+     * 图片文字是否需要图文混排
+     *
+     * @param isWord 图片文字是否需要图文混排 - 默认true
+     */
+    public func setIsWord(isWord: Bool): Unit {
+        this.isWord = isWord
     }
 
     /**

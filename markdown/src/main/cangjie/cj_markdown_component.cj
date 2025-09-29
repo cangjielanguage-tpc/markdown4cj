@@ -125,6 +125,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.imageCallback) {
                 markdownConfigurationBuilder.setImageCallback(v) // 设置图片的点击事件
             }
+            if (let Some(v) <- w.imageCallbackCallback) {
+                markdownConfigurationBuilder.setImageCallbackCallback(v) // 设置图片替换事件
+            }
             if (let Some(v) <- w.audioCallback) {
                 markdownConfigurationBuilder.setAudioCallback(v) // 设置音频的点击事件
             }
@@ -418,6 +421,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.separateCodeBlockWidth) {
                 markdownThemeBuilder.setSeparateCodeBlockWidth(v) // 设置单独代码块行号宽度
             }
+            if (let Some(v) <- w.cjMarkdownTheme.separateCodeIsBottom) {
+                markdownThemeBuilder.setSeparateCodeIsBottom(v) // 设置单独代码块是否居底显示
+            }
             if (let Some(v) <- w.cjMarkdownTheme.headingBreakHeight) {
                 markdownThemeBuilder.setHeadingBreakHeight(v) // 设置H1、H2标题下分割线高度
             }
@@ -573,6 +579,9 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.videoMarginBottom) {
                 markdownThemeBuilder.setVideoMarginBottom(v) // 设置视频下边距
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.isWord) {
+                markdownThemeBuilder.setIsWord(v) // 设置图片文字是否需要图文混排
             }
             if (let Some(v) <- w.cjMarkdownTheme.imagePlaceholder) {
                 markdownThemeBuilder.setImagePlaceholder(v) // 设置图片默认占位图 - String

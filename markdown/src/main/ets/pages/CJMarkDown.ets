@@ -13,10 +13,6 @@ export interface CJLib {
 
 class CJNodeController extends NodeController {
   rootNode?: FrameNode = undefined
-  // public freshCJ: (input: string) => void = (input: string) => {
-  //   this.mdStr = input
-  // } // 持续输出调用
-
   public callbackCJ: (input: string) => void = (input: string) => {this.mdStr = input}  // 持续输出调用
   mdStr: string
   config?: CJMarkdownConfig
@@ -65,6 +61,9 @@ export struct CJMarkdown {
       }
       if (this.config.imageCallback !== undefined) {
         cjMarkdownConfig.setImageCallback(this.config.imageCallback)
+      }
+      if (this.config.imageCallbackCallback !== undefined) {
+        cjMarkdownConfig.setImageCallbackCallback(this.config.imageCallbackCallback)
       }
       if (this.config.audioCallback !== undefined) {
         cjMarkdownConfig.setAudioCallback(this.config.audioCallback)
@@ -348,6 +347,9 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.separateCodeBlockWidth !== undefined) {
           cjMarkdownTheme.setSeparateCodeBlockWidth(this.config.markdownTheme.separateCodeBlockWidth)
         }
+        if (this.config.markdownTheme.separateCodeIsBottom !== undefined) {
+          cjMarkdownTheme.setSeparateCodeIsBottom(this.config.markdownTheme.separateCodeIsBottom)
+        }
         if (this.config.markdownTheme.headingBreakHeight !== undefined) {
           cjMarkdownTheme.setHeadingBreakHeight(this.config.markdownTheme.headingBreakHeight)
         }
@@ -514,6 +516,9 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.videoMarginBottom !== undefined) {
           cjMarkdownTheme.setVideoMarginBottom(this.config.markdownTheme.videoMarginBottom)
         }
+        if (this.config.markdownTheme.isWord !== undefined) {
+          cjMarkdownTheme.setIsWord(this.config.markdownTheme.isWord)
+        }
         if (this.config.markdownTheme.imagePlaceholder !== undefined) {
           cjMarkdownTheme.setImagePlaceholder(this.config.markdownTheme.imagePlaceholder)
         }
@@ -601,6 +606,10 @@ export class MarkdownConfiguration {
    */
   imageCallback?: (funcArg0: string, funcArg1: Array<string>) => void = undefined
   /**
+   * 图片替换事件
+   */
+  imageCallbackCallback?: (funcArg0: string) => Array<number> | undefined = undefined
+  /**
    * 音频的点击事件
    */
   audioCallback?: (funcArg0: string) => void = undefined
@@ -658,6 +667,15 @@ export class MarkdownConfiguration {
    */
   setImageCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void {
     this.imageCallback = cb
+  }
+
+  /**
+   * 设置图片替换事件
+   *
+   * @param cb 图片替换事件。 (funcArg0：图片url 返回值是替换的图片数据)
+   */
+  setImageCallbackCallback(cb: (funcArg0: string) => Array<number> | undefined): void {
+    this.imageCallbackCallback = cb
   }
 
   /**
@@ -1098,6 +1116,10 @@ export class MarkdownTheme {
    */
   separateCodeBlockWidth?: number = undefined
   /**
+   * 单独代码块是否居底显示
+   */
+  separateCodeIsBottom?: boolean = undefined
+  /**
    * H1、H2标题下分割线高度
    */
   headingBreakHeight?: number = undefined
@@ -1305,6 +1327,10 @@ export class MarkdownTheme {
    * 视频下边距
    */
   videoMarginBottom?: number = undefined
+  /**
+   * 图片文字是否需要图文混排
+   */
+  isWord?: boolean = undefined
   /**
    * 图片默认占位图 - String
    */
@@ -2145,6 +2171,15 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置单独代码块是否居底显示
+   *
+   * @param separateCodeIsBottom 单独代码块是否居底显示 - 默认false
+   */
+  setSeparateCodeIsBottom(separateCodeIsBottom: boolean): void {
+    this.separateCodeIsBottom = separateCodeIsBottom
+  }
+
+  /**
    * 设置H1、H2标题下分割线高度
    *
    * @param headingBreakHeight H1、H2标题下分割线高度 - 默认0.5vp
@@ -2610,6 +2645,15 @@ export class MarkdownTheme {
    */
   setVideoMarginBottom(videoMarginBottom: number): void {
     this.videoMarginBottom = videoMarginBottom
+  }
+
+  /**
+   * 设置图片文字是否需要图文混排
+   *
+   * @param isWord 图片文字是否需要图文混排 - 默认true
+   */
+  setIsWord(isWord: boolean): void {
+    this.isWord = isWord
   }
 
   /**
