@@ -76,6 +76,7 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
             builder.addDefaultTagHandler(BrHandler())
             builder.addDefaultTagHandler(ThematicBreakHandler())
             builder.addDefaultTagHandler(FontHandler())
+            builder.addDefaultTagHandler(SpanHandler())
 
             builder.addDefaultTagHandler(TableHandler())
             builder.addDefaultTagHandler(TableHeadHandler())
@@ -129,7 +130,7 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 }
             )
             .on(
-                "IgnoreNode",
+                "IgnoreInlineNode",
                 {
                     visitor, node =>
                     buildView(node, false)

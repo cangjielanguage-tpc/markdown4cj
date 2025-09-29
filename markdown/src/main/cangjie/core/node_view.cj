@@ -141,7 +141,7 @@ public class NodeView <: ToString {
         while (let Some(n) <- tmp) {
             let isListNode = n is BlockQuote || n is OrderedList || n is BulletList
             if (isListNode && (list.size == 0 || n.getNodeType() != list[0].node.getNodeType())) {
-                list.add(n.getView(),at:0)
+                list.add(n.getView(), at: 0)
             }
             if (n == end) {
                 break
