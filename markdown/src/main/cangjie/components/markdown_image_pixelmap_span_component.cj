@@ -29,24 +29,9 @@ public class MarkdownImagePixelmapSpanComponent {
     var imageCallback: (String) -> Unit
 
     /**
-     * 图片上边距
-     */
-    var imageMarginTop: Float64 = 0.0
-
-    /**
-     * 图片下边距
-     */
-    var imageMarginBottom: Float64 = 0.0
-
-    /**
      * 链接点击事件
      */
     var linkCallback: ?(String) -> Unit
-
-    /**
-     * 图片默认占位图
-     */
-    var imagePlaceholder: ?String = None
 
     /**
      * 是否是连接中的图片
@@ -116,8 +101,6 @@ public class MarkdownImagePixelmapSpanComponent {
                 }
         } else {
             ImageSpan(destination)
-                // 设置外边距属性
-                .margin(top: imageMarginTop, bottom: imageMarginBottom)
                 // 设置组件自身的宽度
                 .width(componentWidth)
                 // 设置组件自身的高度

@@ -242,60 +242,64 @@ class MarkdownHeadingComponent {
                         // HTML图片
                         MarkdownHtmlImageSpanComponent(
                             destination: (item.node as ImageHtmlNode)().getDestination(),
-                            imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
                             imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
                             imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
                             componentWidth:componentWidth,
-                            imageMarginTop: imageMarginTop,
-                            imageMarginBottom: imageMarginBottom,
                             imageCallback: imageCallback
                         )
                     } else if (item.node is StyleImage) {
                         //  图片Style节点
-                        if((item.node as StyleImage)().getDestination().startsWith("./")){
-                            MarkdownImageStyleSpanRawFileComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                destination: (item.node as StyleImage)().getDestination(),
-                                picStyle: (item.node as StyleImage)().styles,
-                                componentWidth:componentWidth,
-                                imageCallback: imageCallback
-                            )
-                        }else{
-                            MarkdownImageStyleSpanComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                destination: (item.node as StyleImage)().getDestination(),
-                                picStyle: (item.node as StyleImage)().styles,
-                                componentWidth:componentWidth,
-                                imageCallback: imageCallback
-                            )
+                        if(markdownConfiguration.markdownTheme.isWord){
+                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                                MarkdownImageStyleSpanRawFileComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    picStyle: (item.node as StyleImage)().styles,
+                                    componentWidth:componentWidth,
+                                    imageCallback: imageCallback
+                                )
+                            }else{
+                                MarkdownImageStyleSpanComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    picStyle: (item.node as StyleImage)().styles,
+                                    componentWidth:componentWidth,
+                                    imageCallback: imageCallback
+                                )
+                            }
                         }
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
-                        if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            MarkdownImageSpanComponent(
-                                destination: (item.node as CommonmarkImage)().getDestination(),
-                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                componentWidth: componentWidth,
-                                imageMarginTop: imageMarginTop,
-                                imageMarginBottom: imageMarginBottom,
-                                imageCallback: imageCallback,
-                                linkCallback: markdownConfiguration.linkCallback,
-                                isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                            )
-                        } else {
-                            MarkdownImagePixelmapSpanComponent(
-                                destination: (item.node as CommonmarkImage)().getDestination(),
-                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                componentWidth: componentWidth,
-                                imageMarginTop: imageMarginTop,
-                                imageMarginBottom: imageMarginBottom,
-                                imageCallback: imageCallback,
-                                linkCallback: markdownConfiguration.linkCallback,
-                                isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
-                            )
+                        if(markdownConfiguration.markdownTheme.isWord){
+                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                                MarkdownImageSpanRawFileComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as CommonmarkImage)().getDestination(),
+                                    componentWidth:componentWidth,
+                                    imageCallback: imageCallback
+                                )
+                            }else{
+                                if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                                    MarkdownImageSpanComponent(
+                                        destination: (item.node as CommonmarkImage)().getDestination(),
+                                        componentWidth: componentWidth,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                } else {
+                                    MarkdownImagePixelmapSpanComponent(
+                                        destination: (item.node as CommonmarkImage)().getDestination(),
+                                        componentWidth: componentWidth,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
+                                    )
+                                }
+                            }
                         }
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点
@@ -420,60 +424,64 @@ class MarkdownHeadingComponent {
                         // HTML图片
                         MarkdownHtmlImageSpanComponent(
                             destination: (item.node as ImageHtmlNode)().getDestination(),
-                            imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
                             imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
                             imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
                             componentWidth:componentWidth,
-                            imageMarginTop: imageMarginTop,
-                            imageMarginBottom: imageMarginBottom,
                             imageCallback: imageCallback
                         )
                     } else if (item.node is StyleImage) {
                         //  图片Style节点
-                        if((item.node as StyleImage)().getDestination().startsWith("./")){
-                            MarkdownImageStyleSpanRawFileComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                destination: (item.node as StyleImage)().getDestination(),
-                                picStyle: (item.node as StyleImage)().styles,
-                                componentWidth:componentWidth,
-                                imageCallback: imageCallback
-                            )
-                        }else{
-                            MarkdownImageStyleSpanComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                destination: (item.node as StyleImage)().getDestination(),
-                                picStyle: (item.node as StyleImage)().styles,
-                                componentWidth:componentWidth,
-                                imageCallback: imageCallback
-                            )
+                        if(markdownConfiguration.markdownTheme.isWord){
+                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                                MarkdownImageStyleSpanRawFileComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    picStyle: (item.node as StyleImage)().styles,
+                                    componentWidth:componentWidth,
+                                    imageCallback: imageCallback
+                                )
+                            }else{
+                                MarkdownImageStyleSpanComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    picStyle: (item.node as StyleImage)().styles,
+                                    componentWidth:componentWidth,
+                                    imageCallback: imageCallback
+                                )
+                            }
                         }
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
-                        if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            MarkdownImageSpanComponent(
-                                destination: (item.node as CommonmarkImage)().getDestination(),
-                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                componentWidth: componentWidth,
-                                imageMarginTop: imageMarginTop,
-                                imageMarginBottom: imageMarginBottom,
-                                imageCallback: imageCallback,
-                                linkCallback: markdownConfiguration.linkCallback,
-                                isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                            )
-                        } else {
-                            MarkdownImagePixelmapSpanComponent(
-                                destination: (item.node as CommonmarkImage)().getDestination(),
-                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                componentWidth: componentWidth,
-                                imageMarginTop: imageMarginTop,
-                                imageMarginBottom: imageMarginBottom,
-                                imageCallback: imageCallback,
-                                linkCallback: markdownConfiguration.linkCallback,
-                                isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
-                            )
+                        if(markdownConfiguration.markdownTheme.isWord){
+                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                                MarkdownImageSpanRawFileComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as CommonmarkImage)().getDestination(),
+                                    componentWidth:componentWidth,
+                                    imageCallback: imageCallback
+                                )
+                            }else{
+                                if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                                    MarkdownImageSpanComponent(
+                                        destination: (item.node as CommonmarkImage)().getDestination(),
+                                        componentWidth: componentWidth,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                } else {
+                                    MarkdownImagePixelmapSpanComponent(
+                                        destination: (item.node as CommonmarkImage)().getDestination(),
+                                        componentWidth: componentWidth,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
+                                    )
+                                }
+                            }
                         }
                     } else if (item.node is LatexMathNode) {
                         // 数学公式节点

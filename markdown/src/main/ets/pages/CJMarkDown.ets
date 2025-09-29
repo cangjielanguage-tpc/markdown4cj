@@ -19,20 +19,20 @@ class CJNodeController extends NodeController {
 
   public callbackCJ: (input: string) => void = (input: string) => {this.mdStr = input}  // 持续输出调用
   mdStr: string
-  cfg?: CJMarkdownConfig
+  config?: CJMarkdownConfig
   plugin?: CJMarkdownPlugin
 
-  constructor(input: string, cfg?: CJMarkdownConfig, plugin?: CJMarkdownPlugin) {
+  constructor(input: string, config?: CJMarkdownConfig, plugin?: CJMarkdownPlugin) {
     super()
     this.mdStr = input
-    this.cfg = cfg
+    this.config = config
     this.plugin = plugin
   }
 
   makeNode(ctx: UIContext): FrameNode | null {
     if (this.rootNode === undefined) {
       this.rootNode = new FrameNode(ctx)
-      this.callbackCJ = global_customLib.getLoadCJPage(this.mdStr, this.cfg, this.plugin)
+      this.callbackCJ = global_customLib.getLoadCJPage(this.mdStr, this.config, this.plugin)
     }
     return this.rootNode
   }
@@ -40,17 +40,17 @@ class CJNodeController extends NodeController {
 
 @Component
 export struct CJMarkdown {
-  @Prop @Watch('onMarkDownChange') mdStr: string = ''
-  @State cfg?: MarkdownConfiguration = undefined
+  @Prop @Watch('onMarkDownChange') content: string = ''
+  @State config?: MarkdownConfiguration = undefined
   @State plugin?: MarkdownPlugin = undefined
   private markdownNode: CJNodeController | null = null
 
   onMarkDownChange():void {
-    this.markdownNode?.callbackCJ(this.mdStr)
+    this.markdownNode?.callbackCJ(this.content)
   }
 
   aboutToAppear(): void {
-    this.markdownNode = new CJNodeController(this.mdStr, this.getConfig(), this.getPlugin())
+    this.markdownNode = new CJNodeController(this.content, this.getConfig(), this.getPlugin())
   }
 
   build() {
@@ -59,39 +59,39 @@ export struct CJMarkdown {
 
   getConfig(): CJMarkdownConfig {
     let cjMarkdownConfig: CJMarkdownConfig = new global_customLib.CJMarkdownConfig()
-    if (this.cfg !== undefined) {
-      if (this.cfg.linkCallback !== undefined) {
-        cjMarkdownConfig.setLinkCallback(this.cfg.linkCallback)
+    if (this.config !== undefined) {
+      if (this.config.linkCallback !== undefined) {
+        cjMarkdownConfig.setLinkCallback(this.config.linkCallback)
       }
-      if (this.cfg.imageCallback !== undefined) {
-        cjMarkdownConfig.setImageCallback(this.cfg.imageCallback)
+      if (this.config.imageCallback !== undefined) {
+        cjMarkdownConfig.setImageCallback(this.config.imageCallback)
       }
-      if (this.cfg.audioCallback !== undefined) {
-        cjMarkdownConfig.setAudioCallback(this.cfg.audioCallback)
+      if (this.config.audioCallback !== undefined) {
+        cjMarkdownConfig.setAudioCallback(this.config.audioCallback)
       }
-      if (this.cfg.videoCallback !== undefined) {
-        cjMarkdownConfig.setVideoCallback(this.cfg.videoCallback)
+      if (this.config.videoCallback !== undefined) {
+        cjMarkdownConfig.setVideoCallback(this.config.videoCallback)
       }
-      if (this.cfg.videoImageCallback !== undefined) {
-        cjMarkdownConfig.setVideoImageCallback(this.cfg.videoImageCallback)
+      if (this.config.videoImageCallback !== undefined) {
+        cjMarkdownConfig.setVideoImageCallback(this.config.videoImageCallback)
       }
-      if (this.cfg.codeCopyCallback !== undefined) {
-        cjMarkdownConfig.setCodeCopyCallback(this.cfg.codeCopyCallback)
+      if (this.config.codeCopyCallback !== undefined) {
+        cjMarkdownConfig.setCodeCopyCallback(this.config.codeCopyCallback)
       }
-      if (this.cfg.codeFullScreenCallback !== undefined) {
-        cjMarkdownConfig.setCodeFullScreenCallback(this.cfg.codeFullScreenCallback)
+      if (this.config.codeFullScreenCallback !== undefined) {
+        cjMarkdownConfig.setCodeFullScreenCallback(this.config.codeFullScreenCallback)
       }
-      if (this.cfg.latexImageCallback !== undefined) {
-        cjMarkdownConfig.setLatexImageCallback(this.cfg.latexImageCallback)
+      if (this.config.latexImageCallback !== undefined) {
+        cjMarkdownConfig.setLatexImageCallback(this.config.latexImageCallback)
       }
-      if (this.cfg.latexStrCallback !== undefined) {
-        cjMarkdownConfig.setLatexStrCallback(this.cfg.latexStrCallback)
+      if (this.config.latexStrCallback !== undefined) {
+        cjMarkdownConfig.setLatexStrCallback(this.config.latexStrCallback)
       }
-      if (this.cfg.tocIndexCallback !== undefined) {
-        cjMarkdownConfig.setTocIndexCallback(this.cfg.tocIndexCallback)
+      if (this.config.tocIndexCallback !== undefined) {
+        cjMarkdownConfig.setTocIndexCallback(this.config.tocIndexCallback)
       }
-      if (this.cfg.footnoteCallback !== undefined) {
-        cjMarkdownConfig.setFootnoteCallback(this.cfg.footnoteCallback)
+      if (this.config.footnoteCallback !== undefined) {
+        cjMarkdownConfig.setFootnoteCallback(this.config.footnoteCallback)
       }
     }
     cjMarkdownConfig.setCJMarkdownTheme(this.getTheme())
@@ -100,467 +100,467 @@ export struct CJMarkdown {
 
   getTheme(): CJMarkdownTheme {
     let cjMarkdownTheme: CJMarkdownTheme = new global_customLib.CJMarkdownTheme()
-    if (this.cfg !== undefined) {
-      if (this.cfg.markdownTheme !== undefined) {
-        if (this.cfg.markdownTheme.context !== undefined) {
-          global_customLib.setGlobalContext(this.cfg.markdownTheme.context)
+    if (this.config !== undefined) {
+      if (this.config.markdownTheme !== undefined) {
+        if (this.config.markdownTheme.context !== undefined) {
+          global_customLib.setGlobalContext(this.config.markdownTheme.context)
         }
         global_cjLib.getCJResource(
-          this.cfg.markdownTheme.codeFullScreenIcon,
-          this.cfg.markdownTheme.codeCopyIcon,
-          this.cfg.markdownTheme.audioIcon,
-          this.cfg.markdownTheme.videoImage,
-          this.cfg.markdownTheme.playCircleFillIcon,
-          this.cfg.markdownTheme.bannerImage,
-          this.cfg.markdownTheme.imageResource
+          this.config.markdownTheme.codeFullScreenIcon,
+          this.config.markdownTheme.codeCopyIcon,
+          this.config.markdownTheme.audioIcon,
+          this.config.markdownTheme.videoImage,
+          this.config.markdownTheme.playCircleFillIcon,
+          this.config.markdownTheme.bannerImage,
+          this.config.markdownTheme.imageResource
         )
-        if (this.cfg.markdownTheme.blockTopAndBottomMargins !== undefined) {
-          cjMarkdownTheme.setBlockTopAndBottomMargins(this.cfg.markdownTheme.blockTopAndBottomMargins)
+        if (this.config.markdownTheme.blockTopAndBottomMargins !== undefined) {
+          cjMarkdownTheme.setBlockTopAndBottomMargins(this.config.markdownTheme.blockTopAndBottomMargins)
         }
-        if (this.cfg.markdownTheme.isLinkStyle !== undefined) {
-          cjMarkdownTheme.setIsLinkStyle(this.cfg.markdownTheme.isLinkStyle)
+        if (this.config.markdownTheme.isLinkStyle !== undefined) {
+          cjMarkdownTheme.setIsLinkStyle(this.config.markdownTheme.isLinkStyle)
         }
-        if (this.cfg.markdownTheme.isListLinkStyle !== undefined) {
-          cjMarkdownTheme.setIsListLinkStyle(this.cfg.markdownTheme.isListLinkStyle)
+        if (this.config.markdownTheme.isListLinkStyle !== undefined) {
+          cjMarkdownTheme.setIsListLinkStyle(this.config.markdownTheme.isListLinkStyle)
         }
-        if (this.cfg.markdownTheme.linkColor !== undefined) {
-          cjMarkdownTheme.setLinkColor(this.cfg.markdownTheme.linkColor)
+        if (this.config.markdownTheme.linkColor !== undefined) {
+          cjMarkdownTheme.setLinkColor(this.config.markdownTheme.linkColor)
         }
-        if (this.cfg.markdownTheme.isLinkSize !== undefined) {
-          cjMarkdownTheme.setIsLinkSize(this.cfg.markdownTheme.isLinkSize)
+        if (this.config.markdownTheme.isLinkSize !== undefined) {
+          cjMarkdownTheme.setIsLinkSize(this.config.markdownTheme.isLinkSize)
         }
-        if (this.cfg.markdownTheme.linkSize !== undefined) {
-          cjMarkdownTheme.setLinkSize(this.cfg.markdownTheme.linkSize)
+        if (this.config.markdownTheme.linkSize !== undefined) {
+          cjMarkdownTheme.setLinkSize(this.config.markdownTheme.linkSize)
         }
-        if (this.cfg.markdownTheme.linkBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkBackGroupColor(this.cfg.markdownTheme.linkBackGroupColor)
+        if (this.config.markdownTheme.linkBackGroupColor !== undefined) {
+          cjMarkdownTheme.setLinkBackGroupColor(this.config.markdownTheme.linkBackGroupColor)
         }
-        if (this.cfg.markdownTheme.isLinkUnderlined !== undefined) {
-          cjMarkdownTheme.setIsLinkUnderlined(this.cfg.markdownTheme.isLinkUnderlined)
+        if (this.config.markdownTheme.isLinkUnderlined !== undefined) {
+          cjMarkdownTheme.setIsLinkUnderlined(this.config.markdownTheme.isLinkUnderlined)
         }
-        if (this.cfg.markdownTheme.linkCircleImageBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkCircleImageBackGroupColor(this.cfg.markdownTheme.linkCircleImageBackGroupColor)
+        if (this.config.markdownTheme.linkCircleImageBackGroupColor !== undefined) {
+          cjMarkdownTheme.setLinkCircleImageBackGroupColor(this.config.markdownTheme.linkCircleImageBackGroupColor)
         }
-        if (this.cfg.markdownTheme.linkCircleImageButtonBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkCircleImageButtonBackGroupColor(this.cfg.markdownTheme.linkCircleImageButtonBackGroupColor)
+        if (this.config.markdownTheme.linkCircleImageButtonBackGroupColor !== undefined) {
+          cjMarkdownTheme.setLinkCircleImageButtonBackGroupColor(this.config.markdownTheme.linkCircleImageButtonBackGroupColor)
         }
-        if (this.cfg.markdownTheme.linkCircleImageTextSize !== undefined) {
-          cjMarkdownTheme.setLinkCircleImageTextSize(this.cfg.markdownTheme.linkCircleImageTextSize)
+        if (this.config.markdownTheme.linkCircleImageTextSize !== undefined) {
+          cjMarkdownTheme.setLinkCircleImageTextSize(this.config.markdownTheme.linkCircleImageTextSize)
         }
-        if (this.cfg.markdownTheme.linkCircleImageTextColor !== undefined) {
-          cjMarkdownTheme.setLinkCircleImageTextColor(this.cfg.markdownTheme.linkCircleImageTextColor)
+        if (this.config.markdownTheme.linkCircleImageTextColor !== undefined) {
+          cjMarkdownTheme.setLinkCircleImageTextColor(this.config.markdownTheme.linkCircleImageTextColor)
         }
-        if (this.cfg.markdownTheme.linkCircleImageRadius !== undefined) {
-          cjMarkdownTheme.setLinkCircleImageRadius(this.cfg.markdownTheme.linkCircleImageRadius)
+        if (this.config.markdownTheme.linkCircleImageRadius !== undefined) {
+          cjMarkdownTheme.setLinkCircleImageRadius(this.config.markdownTheme.linkCircleImageRadius)
         }
-        if (this.cfg.markdownTheme.linkCircleImageMargin !== undefined) {
-          cjMarkdownTheme.setLinkCircleImageMargin(this.cfg.markdownTheme.linkCircleImageMargin)
+        if (this.config.markdownTheme.linkCircleImageMargin !== undefined) {
+          cjMarkdownTheme.setLinkCircleImageMargin(this.config.markdownTheme.linkCircleImageMargin)
         }
-        if (this.cfg.markdownTheme.linkRectImageBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkRectImageBackGroupColor(this.cfg.markdownTheme.linkRectImageBackGroupColor)
+        if (this.config.markdownTheme.linkRectImageBackGroupColor !== undefined) {
+          cjMarkdownTheme.setLinkRectImageBackGroupColor(this.config.markdownTheme.linkRectImageBackGroupColor)
         }
-        if (this.cfg.markdownTheme.linkRectImageButtonBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkRectImageButtonBackGroupColor(this.cfg.markdownTheme.linkRectImageButtonBackGroupColor)
+        if (this.config.markdownTheme.linkRectImageButtonBackGroupColor !== undefined) {
+          cjMarkdownTheme.setLinkRectImageButtonBackGroupColor(this.config.markdownTheme.linkRectImageButtonBackGroupColor)
         }
-        if (this.cfg.markdownTheme.linkRectImageTextSize !== undefined) {
-          cjMarkdownTheme.setLinkRectImageTextSize(this.cfg.markdownTheme.linkRectImageTextSize)
+        if (this.config.markdownTheme.linkRectImageTextSize !== undefined) {
+          cjMarkdownTheme.setLinkRectImageTextSize(this.config.markdownTheme.linkRectImageTextSize)
         }
-        if (this.cfg.markdownTheme.linkRectImageTextColor !== undefined) {
-          cjMarkdownTheme.setLinkRectImageTextColor(this.cfg.markdownTheme.linkRectImageTextColor)
+        if (this.config.markdownTheme.linkRectImageTextColor !== undefined) {
+          cjMarkdownTheme.setLinkRectImageTextColor(this.config.markdownTheme.linkRectImageTextColor)
         }
-        if (this.cfg.markdownTheme.linkRectImageHeight !== undefined) {
-          cjMarkdownTheme.setLinkRectImageHeight(this.cfg.markdownTheme.linkRectImageHeight)
+        if (this.config.markdownTheme.linkRectImageHeight !== undefined) {
+          cjMarkdownTheme.setLinkRectImageHeight(this.config.markdownTheme.linkRectImageHeight)
         }
-        if (this.cfg.markdownTheme.linkRectImagePadding !== undefined) {
-          cjMarkdownTheme.setLinkRectImagePadding(this.cfg.markdownTheme.linkRectImagePadding)
+        if (this.config.markdownTheme.linkRectImagePadding !== undefined) {
+          cjMarkdownTheme.setLinkRectImagePadding(this.config.markdownTheme.linkRectImagePadding)
         }
-        if (this.cfg.markdownTheme.linkRectImageRadius !== undefined) {
-          cjMarkdownTheme.setLinkRectImageRadius(this.cfg.markdownTheme.linkRectImageRadius)
+        if (this.config.markdownTheme.linkRectImageRadius !== undefined) {
+          cjMarkdownTheme.setLinkRectImageRadius(this.config.markdownTheme.linkRectImageRadius)
         }
-        if (this.cfg.markdownTheme.linkRectImageMargin !== undefined) {
-          cjMarkdownTheme.setLinkRectImageMargin(this.cfg.markdownTheme.linkRectImageMargin)
+        if (this.config.markdownTheme.linkRectImageMargin !== undefined) {
+          cjMarkdownTheme.setLinkRectImageMargin(this.config.markdownTheme.linkRectImageMargin)
         }
-        if (this.cfg.markdownTheme.linkRectToolImageBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageBackGroupColor(this.cfg.markdownTheme.linkRectToolImageBackGroupColor)
+        if (this.config.markdownTheme.linkRectToolImageBackGroupColor !== undefined) {
+          cjMarkdownTheme.setLinkRectToolImageBackGroupColor(this.config.markdownTheme.linkRectToolImageBackGroupColor)
         }
-        if (this.cfg.markdownTheme.linkRectToolImageButtonBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageButtonBackGroupColor(this.cfg.markdownTheme.linkRectToolImageButtonBackGroupColor)
+        if (this.config.markdownTheme.linkRectToolImageButtonBackGroupColor !== undefined) {
+          cjMarkdownTheme.setLinkRectToolImageButtonBackGroupColor(this.config.markdownTheme.linkRectToolImageButtonBackGroupColor)
         }
-        if (this.cfg.markdownTheme.linkRectToolImageTextSize !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageTextSize(this.cfg.markdownTheme.linkRectToolImageTextSize)
+        if (this.config.markdownTheme.linkRectToolImageTextSize !== undefined) {
+          cjMarkdownTheme.setLinkRectToolImageTextSize(this.config.markdownTheme.linkRectToolImageTextSize)
         }
-        if (this.cfg.markdownTheme.linkRectToolImageHeight !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageHeight(this.cfg.markdownTheme.linkRectToolImageHeight)
+        if (this.config.markdownTheme.linkRectToolImageHeight !== undefined) {
+          cjMarkdownTheme.setLinkRectToolImageHeight(this.config.markdownTheme.linkRectToolImageHeight)
         }
-        if (this.cfg.markdownTheme.linkRectToolImagePadding !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImagePadding(this.cfg.markdownTheme.linkRectToolImagePadding)
+        if (this.config.markdownTheme.linkRectToolImagePadding !== undefined) {
+          cjMarkdownTheme.setLinkRectToolImagePadding(this.config.markdownTheme.linkRectToolImagePadding)
         }
-        if (this.cfg.markdownTheme.linkRectToolImageBorderWidth !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageBorderWidth(this.cfg.markdownTheme.linkRectToolImageBorderWidth)
+        if (this.config.markdownTheme.linkRectToolImageBorderWidth !== undefined) {
+          cjMarkdownTheme.setLinkRectToolImageBorderWidth(this.config.markdownTheme.linkRectToolImageBorderWidth)
         }
-        if (this.cfg.markdownTheme.linkRectToolImageDividingLineWidth !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageDividingLineWidth(this.cfg.markdownTheme.linkRectToolImageDividingLineWidth)
+        if (this.config.markdownTheme.linkRectToolImageDividingLineWidth !== undefined) {
+          cjMarkdownTheme.setLinkRectToolImageDividingLineWidth(this.config.markdownTheme.linkRectToolImageDividingLineWidth)
         }
-        if (this.cfg.markdownTheme.linkRectToolImageMargin !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageMargin(this.cfg.markdownTheme.linkRectToolImageMargin)
+        if (this.config.markdownTheme.linkRectToolImageMargin !== undefined) {
+          cjMarkdownTheme.setLinkRectToolImageMargin(this.config.markdownTheme.linkRectToolImageMargin)
         }
-        if (this.cfg.markdownTheme.linkRectToolImageLineLeftPadding !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageLineLeftPadding(this.cfg.markdownTheme.linkRectToolImageLineLeftPadding)
+        if (this.config.markdownTheme.linkRectToolImageLineLeftPadding !== undefined) {
+          cjMarkdownTheme.setLinkRectToolImageLineLeftPadding(this.config.markdownTheme.linkRectToolImageLineLeftPadding)
         }
-        if (this.cfg.markdownTheme.linkRectToolImageLineRightPadding !== undefined) {
-          cjMarkdownTheme.setLinkRectToolImageLineRightPadding(this.cfg.markdownTheme.linkRectToolImageLineRightPadding)
+        if (this.config.markdownTheme.linkRectToolImageLineRightPadding !== undefined) {
+          cjMarkdownTheme.setLinkRectToolImageLineRightPadding(this.config.markdownTheme.linkRectToolImageLineRightPadding)
         }
-        if (this.cfg.markdownTheme.blockQuoteLeftMargin !== undefined) {
-          cjMarkdownTheme.setBlockQuoteLeftMargin(this.cfg.markdownTheme.blockQuoteLeftMargin)
+        if (this.config.markdownTheme.blockQuoteLeftMargin !== undefined) {
+          cjMarkdownTheme.setBlockQuoteLeftMargin(this.config.markdownTheme.blockQuoteLeftMargin)
         }
-        if (this.cfg.markdownTheme.blockQuoteRightMargin !== undefined) {
-          cjMarkdownTheme.setBlockQuoteRightMargin(this.cfg.markdownTheme.blockQuoteRightMargin)
+        if (this.config.markdownTheme.blockQuoteRightMargin !== undefined) {
+          cjMarkdownTheme.setBlockQuoteRightMargin(this.config.markdownTheme.blockQuoteRightMargin)
         }
-        if (this.cfg.markdownTheme.blockQuoteWidth !== undefined) {
-          cjMarkdownTheme.setBlockQuoteWidth(this.cfg.markdownTheme.blockQuoteWidth)
+        if (this.config.markdownTheme.blockQuoteWidth !== undefined) {
+          cjMarkdownTheme.setBlockQuoteWidth(this.config.markdownTheme.blockQuoteWidth)
         }
-        if (this.cfg.markdownTheme.blockQuoteColor !== undefined) {
-          cjMarkdownTheme.setBlockQuoteColor(this.cfg.markdownTheme.blockQuoteColor)
+        if (this.config.markdownTheme.blockQuoteColor !== undefined) {
+          cjMarkdownTheme.setBlockQuoteColor(this.config.markdownTheme.blockQuoteColor)
         }
-        if (this.cfg.markdownTheme.blockQuoteBackGroupColor !== undefined) {
-          cjMarkdownTheme.setBlockQuoteBackGroupColor(this.cfg.markdownTheme.blockQuoteBackGroupColor)
+        if (this.config.markdownTheme.blockQuoteBackGroupColor !== undefined) {
+          cjMarkdownTheme.setBlockQuoteBackGroupColor(this.config.markdownTheme.blockQuoteBackGroupColor)
         }
-        if (this.cfg.markdownTheme.blockQuoteTopAndBottomMargins !== undefined) {
-          cjMarkdownTheme.setBlockQuoteTopAndBottomMargins(this.cfg.markdownTheme.blockQuoteTopAndBottomMargins)
+        if (this.config.markdownTheme.blockQuoteTopAndBottomMargins !== undefined) {
+          cjMarkdownTheme.setBlockQuoteTopAndBottomMargins(this.config.markdownTheme.blockQuoteTopAndBottomMargins)
         }
-        if (this.cfg.markdownTheme.blockOrderedAndBulletTopAndBottomMargins !== undefined) {
-          cjMarkdownTheme.setBlockOrderedAndBulletTopAndBottomMargins(this.cfg.markdownTheme.blockOrderedAndBulletTopAndBottomMargins)
+        if (this.config.markdownTheme.blockOrderedAndBulletTopAndBottomMargins !== undefined) {
+          cjMarkdownTheme.setBlockOrderedAndBulletTopAndBottomMargins(this.config.markdownTheme.blockOrderedAndBulletTopAndBottomMargins)
         }
-        if (this.cfg.markdownTheme.blockLeftMargin !== undefined) {
-          cjMarkdownTheme.setBlockLeftMargin(this.cfg.markdownTheme.blockLeftMargin)
+        if (this.config.markdownTheme.blockLeftMargin !== undefined) {
+          cjMarkdownTheme.setBlockLeftMargin(this.config.markdownTheme.blockLeftMargin)
         }
-        if (this.cfg.markdownTheme.blockRightMargin !== undefined) {
-          cjMarkdownTheme.setBlockRightMargin(this.cfg.markdownTheme.blockRightMargin)
+        if (this.config.markdownTheme.blockRightMargin !== undefined) {
+          cjMarkdownTheme.setBlockRightMargin(this.config.markdownTheme.blockRightMargin)
         }
-        if (this.cfg.markdownTheme.orderedListItemPrefixBold !== undefined) {
-          cjMarkdownTheme.setOrderedListItemPrefixBold(this.cfg.markdownTheme.orderedListItemPrefixBold)
+        if (this.config.markdownTheme.orderedListItemPrefixBold !== undefined) {
+          cjMarkdownTheme.setOrderedListItemPrefixBold(this.config.markdownTheme.orderedListItemPrefixBold)
         }
-        if (this.cfg.markdownTheme.orderedListItemColor !== undefined) {
-          cjMarkdownTheme.setOrderedListItemColor(this.cfg.markdownTheme.orderedListItemColor)
+        if (this.config.markdownTheme.orderedListItemColor !== undefined) {
+          cjMarkdownTheme.setOrderedListItemColor(this.config.markdownTheme.orderedListItemColor)
         }
-        if (this.cfg.markdownTheme.orderedListItemSize !== undefined) {
-          cjMarkdownTheme.setOrderedListItemSize(this.cfg.markdownTheme.orderedListItemSize)
+        if (this.config.markdownTheme.orderedListItemSize !== undefined) {
+          cjMarkdownTheme.setOrderedListItemSize(this.config.markdownTheme.orderedListItemSize)
         }
-        if (this.cfg.markdownTheme.orderedListItemLineHeight !== undefined) {
-          cjMarkdownTheme.setOrderedListItemLineHeight(this.cfg.markdownTheme.orderedListItemLineHeight)
+        if (this.config.markdownTheme.orderedListItemLineHeight !== undefined) {
+          cjMarkdownTheme.setOrderedListItemLineHeight(this.config.markdownTheme.orderedListItemLineHeight)
         }
-        if (this.cfg.markdownTheme.bulletListItemColor !== undefined) {
-          cjMarkdownTheme.setBulletListItemColor(this.cfg.markdownTheme.bulletListItemColor)
+        if (this.config.markdownTheme.bulletListItemColor !== undefined) {
+          cjMarkdownTheme.setBulletListItemColor(this.config.markdownTheme.bulletListItemColor)
         }
-        if (this.cfg.markdownTheme.bulletListItemSize !== undefined) {
-          cjMarkdownTheme.setBulletListItemSize(this.cfg.markdownTheme.bulletListItemSize)
+        if (this.config.markdownTheme.bulletListItemSize !== undefined) {
+          cjMarkdownTheme.setBulletListItemSize(this.config.markdownTheme.bulletListItemSize)
         }
-        if (this.cfg.markdownTheme.bulletListItemLineHeight !== undefined) {
-          cjMarkdownTheme.setBulletListItemLineHeight(this.cfg.markdownTheme.bulletListItemLineHeight)
+        if (this.config.markdownTheme.bulletListItemLineHeight !== undefined) {
+          cjMarkdownTheme.setBulletListItemLineHeight(this.config.markdownTheme.bulletListItemLineHeight)
         }
-        if (this.cfg.markdownTheme.taskListItemLength !== undefined) {
-          cjMarkdownTheme.setTaskListItemLength(this.cfg.markdownTheme.taskListItemLength)
+        if (this.config.markdownTheme.taskListItemLength !== undefined) {
+          cjMarkdownTheme.setTaskListItemLength(this.config.markdownTheme.taskListItemLength)
         }
-        if (this.cfg.markdownTheme.isCodeStyle !== undefined) {
-          cjMarkdownTheme.setIsCodeStyle(this.cfg.markdownTheme.isCodeStyle)
+        if (this.config.markdownTheme.isCodeStyle !== undefined) {
+          cjMarkdownTheme.setIsCodeStyle(this.config.markdownTheme.isCodeStyle)
         }
-        if (this.cfg.markdownTheme.codeTextColor !== undefined) {
-          cjMarkdownTheme.setCodeTextColor(this.cfg.markdownTheme.codeTextColor)
+        if (this.config.markdownTheme.codeTextColor !== undefined) {
+          cjMarkdownTheme.setCodeTextColor(this.config.markdownTheme.codeTextColor)
         }
-        if (this.cfg.markdownTheme.codeBackgroundColor !== undefined) {
-          cjMarkdownTheme.setCodeBackgroundColor(this.cfg.markdownTheme.codeBackgroundColor)
+        if (this.config.markdownTheme.codeBackgroundColor !== undefined) {
+          cjMarkdownTheme.setCodeBackgroundColor(this.config.markdownTheme.codeBackgroundColor)
         }
-        if (this.cfg.markdownTheme.codeTextSize !== undefined) {
-          cjMarkdownTheme.setCodeTextSize(this.cfg.markdownTheme.codeTextSize)
+        if (this.config.markdownTheme.codeTextSize !== undefined) {
+          cjMarkdownTheme.setCodeTextSize(this.config.markdownTheme.codeTextSize)
         }
-        if (this.cfg.markdownTheme.codeTypeface !== undefined) {
-          cjMarkdownTheme.setCodeTypeface(this.cfg.markdownTheme.codeTypeface)
+        if (this.config.markdownTheme.codeTypeface !== undefined) {
+          cjMarkdownTheme.setCodeTypeface(this.config.markdownTheme.codeTypeface)
         }
-        if (this.cfg.markdownTheme.codeLeftAndRightPadding !== undefined) {
-          cjMarkdownTheme.setCodeLeftAndRightPadding(this.cfg.markdownTheme.codeLeftAndRightPadding)
+        if (this.config.markdownTheme.codeLeftAndRightPadding !== undefined) {
+          cjMarkdownTheme.setCodeLeftAndRightPadding(this.config.markdownTheme.codeLeftAndRightPadding)
         }
-        if (this.cfg.markdownTheme.codeHeight !== undefined) {
-          cjMarkdownTheme.setCodeHeight(this.cfg.markdownTheme.codeHeight)
+        if (this.config.markdownTheme.codeHeight !== undefined) {
+          cjMarkdownTheme.setCodeHeight(this.config.markdownTheme.codeHeight)
         }
-        if (this.cfg.markdownTheme.codeBlockTextColor !== undefined) {
-          cjMarkdownTheme.setCodeBlockTextColor(this.cfg.markdownTheme.codeBlockTextColor)
+        if (this.config.markdownTheme.codeBlockTextColor !== undefined) {
+          cjMarkdownTheme.setCodeBlockTextColor(this.config.markdownTheme.codeBlockTextColor)
         }
-        if (this.cfg.markdownTheme.codeBlockTypeTextColor !== undefined) {
-          cjMarkdownTheme.setCodeBlockTypeTextColor(this.cfg.markdownTheme.codeBlockTypeTextColor)
+        if (this.config.markdownTheme.codeBlockTypeTextColor !== undefined) {
+          cjMarkdownTheme.setCodeBlockTypeTextColor(this.config.markdownTheme.codeBlockTypeTextColor)
         }
-        if (this.cfg.markdownTheme.codeBlockTypeTextStr !== undefined) {
-          cjMarkdownTheme.setCodeBlockTypeTextStr(this.cfg.markdownTheme.codeBlockTypeTextStr)
+        if (this.config.markdownTheme.codeBlockTypeTextStr !== undefined) {
+          cjMarkdownTheme.setCodeBlockTypeTextStr(this.config.markdownTheme.codeBlockTypeTextStr)
         }
-        if (this.cfg.markdownTheme.codeBlockTypeTextPadding !== undefined) {
-          cjMarkdownTheme.setCodeBlockTypeTextPadding(this.cfg.markdownTheme.codeBlockTypeTextPadding)
+        if (this.config.markdownTheme.codeBlockTypeTextPadding !== undefined) {
+          cjMarkdownTheme.setCodeBlockTypeTextPadding(this.config.markdownTheme.codeBlockTypeTextPadding)
         }
-        if (this.cfg.markdownTheme.codeBlockIconTextHide !== undefined) {
-          cjMarkdownTheme.setCodeBlockIconTextHide(this.cfg.markdownTheme.codeBlockIconTextHide)
+        if (this.config.markdownTheme.codeBlockIconTextHide !== undefined) {
+          cjMarkdownTheme.setCodeBlockIconTextHide(this.config.markdownTheme.codeBlockIconTextHide)
         }
-        if (this.cfg.markdownTheme.codeBlockLineNumberHide !== undefined) {
-          cjMarkdownTheme.setCodeBlockLineNumberHide(this.cfg.markdownTheme.codeBlockLineNumberHide)
+        if (this.config.markdownTheme.codeBlockLineNumberHide !== undefined) {
+          cjMarkdownTheme.setCodeBlockLineNumberHide(this.config.markdownTheme.codeBlockLineNumberHide)
         }
-        if (this.cfg.markdownTheme.codeBlockBackgroundColor !== undefined) {
-          cjMarkdownTheme.setCodeBlockBackgroundColor(this.cfg.markdownTheme.codeBlockBackgroundColor)
+        if (this.config.markdownTheme.codeBlockBackgroundColor !== undefined) {
+          cjMarkdownTheme.setCodeBlockBackgroundColor(this.config.markdownTheme.codeBlockBackgroundColor)
         }
-        if (this.cfg.markdownTheme.codeMultilineMargin !== undefined) {
-          cjMarkdownTheme.setCodeMultilineMargin(this.cfg.markdownTheme.codeMultilineMargin)
+        if (this.config.markdownTheme.codeMultilineMargin !== undefined) {
+          cjMarkdownTheme.setCodeMultilineMargin(this.config.markdownTheme.codeMultilineMargin)
         }
-        if (this.cfg.markdownTheme.codeBlockTypeface !== undefined) {
-          cjMarkdownTheme.setCodeBlockTypeface(this.cfg.markdownTheme.codeBlockTypeface)
+        if (this.config.markdownTheme.codeBlockTypeface !== undefined) {
+          cjMarkdownTheme.setCodeBlockTypeface(this.config.markdownTheme.codeBlockTypeface)
         }
-        if (this.cfg.markdownTheme.codeBlockTextSize !== undefined) {
-          cjMarkdownTheme.setCodeBlockTextSize(this.cfg.markdownTheme.codeBlockTextSize)
+        if (this.config.markdownTheme.codeBlockTextSize !== undefined) {
+          cjMarkdownTheme.setCodeBlockTextSize(this.config.markdownTheme.codeBlockTextSize)
         }
-        if (this.cfg.markdownTheme.codeBlockLineHeight !== undefined) {
-          cjMarkdownTheme.setCodeBlockLineHeight(this.cfg.markdownTheme.codeBlockLineHeight)
+        if (this.config.markdownTheme.codeBlockLineHeight !== undefined) {
+          cjMarkdownTheme.setCodeBlockLineHeight(this.config.markdownTheme.codeBlockLineHeight)
         }
-        if (this.cfg.markdownTheme.codeBlockRadius !== undefined) {
-          cjMarkdownTheme.setCodeBlockRadius(this.cfg.markdownTheme.codeBlockRadius)
+        if (this.config.markdownTheme.codeBlockRadius !== undefined) {
+          cjMarkdownTheme.setCodeBlockRadius(this.config.markdownTheme.codeBlockRadius)
         }
-        if (this.cfg.markdownTheme.isCodeFullScreen !== undefined) {
-          cjMarkdownTheme.setIsCodeFullScreen(this.cfg.markdownTheme.isCodeFullScreen)
+        if (this.config.markdownTheme.isCodeFullScreen !== undefined) {
+          cjMarkdownTheme.setIsCodeFullScreen(this.config.markdownTheme.isCodeFullScreen)
         }
-        if (this.cfg.markdownTheme.iconWidthAndHeight !== undefined) {
-          cjMarkdownTheme.setIconWidthAndHeight(this.cfg.markdownTheme.iconWidthAndHeight)
+        if (this.config.markdownTheme.iconWidthAndHeight !== undefined) {
+          cjMarkdownTheme.setIconWidthAndHeight(this.config.markdownTheme.iconWidthAndHeight)
         }
-        if (this.cfg.markdownTheme.codeListTitleTextSize !== undefined) {
-          cjMarkdownTheme.setCodeListTitleTextSize(this.cfg.markdownTheme.codeListTitleTextSize)
+        if (this.config.markdownTheme.codeListTitleTextSize !== undefined) {
+          cjMarkdownTheme.setCodeListTitleTextSize(this.config.markdownTheme.codeListTitleTextSize)
         }
-        if (this.cfg.markdownTheme.codeListTitleSelectTextSize !== undefined) {
-          cjMarkdownTheme.setCodeListTitleSelectTextSize(this.cfg.markdownTheme.codeListTitleSelectTextSize)
+        if (this.config.markdownTheme.codeListTitleSelectTextSize !== undefined) {
+          cjMarkdownTheme.setCodeListTitleSelectTextSize(this.config.markdownTheme.codeListTitleSelectTextSize)
         }
-        if (this.cfg.markdownTheme.codeListTitleSelectTextColor !== undefined) {
-          cjMarkdownTheme.setCodeListTitleSelectTextColor(this.cfg.markdownTheme.codeListTitleSelectTextColor)
+        if (this.config.markdownTheme.codeListTitleSelectTextColor !== undefined) {
+          cjMarkdownTheme.setCodeListTitleSelectTextColor(this.config.markdownTheme.codeListTitleSelectTextColor)
         }
-        if (this.cfg.markdownTheme.codeListTitleUnSelectTextColor !== undefined) {
-          cjMarkdownTheme.setCodeListTitleUnSelectTextColor(this.cfg.markdownTheme.codeListTitleUnSelectTextColor)
+        if (this.config.markdownTheme.codeListTitleUnSelectTextColor !== undefined) {
+          cjMarkdownTheme.setCodeListTitleUnSelectTextColor(this.config.markdownTheme.codeListTitleUnSelectTextColor)
         }
-        if (this.cfg.markdownTheme.codeListTitleSelectBackGroupColor !== undefined) {
-          cjMarkdownTheme.setCodeListTitleSelectBackGroupColor(this.cfg.markdownTheme.codeListTitleSelectBackGroupColor)
+        if (this.config.markdownTheme.codeListTitleSelectBackGroupColor !== undefined) {
+          cjMarkdownTheme.setCodeListTitleSelectBackGroupColor(this.config.markdownTheme.codeListTitleSelectBackGroupColor)
         }
-        if (this.cfg.markdownTheme.codeListTitleUnSelectBackGroupColor !== undefined) {
-          cjMarkdownTheme.setCodeListTitleUnSelectBackGroupColor(this.cfg.markdownTheme.codeListTitleUnSelectBackGroupColor)
+        if (this.config.markdownTheme.codeListTitleUnSelectBackGroupColor !== undefined) {
+          cjMarkdownTheme.setCodeListTitleUnSelectBackGroupColor(this.config.markdownTheme.codeListTitleUnSelectBackGroupColor)
         }
-        if (this.cfg.markdownTheme.isSeparateCodeBlock !== undefined) {
-          cjMarkdownTheme.setIsSeparateCodeBlock(this.cfg.markdownTheme.isSeparateCodeBlock)
+        if (this.config.markdownTheme.isSeparateCodeBlock !== undefined) {
+          cjMarkdownTheme.setIsSeparateCodeBlock(this.config.markdownTheme.isSeparateCodeBlock)
         }
-        if (this.cfg.markdownTheme.separateCodeBlockWidth !== undefined) {
-          cjMarkdownTheme.setSeparateCodeBlockWidth(this.cfg.markdownTheme.separateCodeBlockWidth)
+        if (this.config.markdownTheme.separateCodeBlockWidth !== undefined) {
+          cjMarkdownTheme.setSeparateCodeBlockWidth(this.config.markdownTheme.separateCodeBlockWidth)
         }
-        if (this.cfg.markdownTheme.headingBreakHeight !== undefined) {
-          cjMarkdownTheme.setHeadingBreakHeight(this.cfg.markdownTheme.headingBreakHeight)
+        if (this.config.markdownTheme.headingBreakHeight !== undefined) {
+          cjMarkdownTheme.setHeadingBreakHeight(this.config.markdownTheme.headingBreakHeight)
         }
-        if (this.cfg.markdownTheme.headingBreakColor !== undefined) {
-          cjMarkdownTheme.setHeadingBreakColor(this.cfg.markdownTheme.headingBreakColor)
+        if (this.config.markdownTheme.headingBreakColor !== undefined) {
+          cjMarkdownTheme.setHeadingBreakColor(this.config.markdownTheme.headingBreakColor)
         }
-        if (this.cfg.markdownTheme.headingTypeface !== undefined) {
-          cjMarkdownTheme.setHeadingTypeface(this.cfg.markdownTheme.headingTypeface)
+        if (this.config.markdownTheme.headingTypeface !== undefined) {
+          cjMarkdownTheme.setHeadingTypeface(this.config.markdownTheme.headingTypeface)
         }
-        if (this.cfg.markdownTheme.headingTextSizeMultipliers !== undefined) {
+        if (this.config.markdownTheme.headingTextSizeMultipliers !== undefined) {
           let multipliers: Array<number> = new Array<number>()
-          for (let index = 0; index < this.cfg.markdownTheme.headingTextSizeMultipliers.length; index++) {
-            multipliers.push(this.cfg.markdownTheme.headingTextSizeMultipliers[index])
+          for (let index = 0; index < this.config.markdownTheme.headingTextSizeMultipliers.length; index++) {
+            multipliers.push(this.config.markdownTheme.headingTextSizeMultipliers[index])
           }
           cjMarkdownTheme.setHeadingTextSizeMultipliers(multipliers)
         }
-        if (this.cfg.markdownTheme.headingTextColor !== undefined) {
-          cjMarkdownTheme.setHeadingTextColor(this.cfg.markdownTheme.headingTextColor)
+        if (this.config.markdownTheme.headingTextColor !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor(this.config.markdownTheme.headingTextColor)
         }
-        if (this.cfg.markdownTheme.headingTextWordSpace !== undefined) {
-          cjMarkdownTheme.setHeadingTextWordSpace(this.cfg.markdownTheme.headingTextWordSpace)
+        if (this.config.markdownTheme.headingTextWordSpace !== undefined) {
+          cjMarkdownTheme.setHeadingTextWordSpace(this.config.markdownTheme.headingTextWordSpace)
         }
-        if (this.cfg.markdownTheme.headingTextLineHeight1 !== undefined) {
-          cjMarkdownTheme.setHeadingTextLineHeight1(this.cfg.markdownTheme.headingTextLineHeight1)
+        if (this.config.markdownTheme.headingTextLineHeight1 !== undefined) {
+          cjMarkdownTheme.setHeadingTextLineHeight1(this.config.markdownTheme.headingTextLineHeight1)
         }
-        if (this.cfg.markdownTheme.headingTextLineHeight2 !== undefined) {
-          cjMarkdownTheme.setHeadingTextLineHeight2(this.cfg.markdownTheme.headingTextLineHeight2)
+        if (this.config.markdownTheme.headingTextLineHeight2 !== undefined) {
+          cjMarkdownTheme.setHeadingTextLineHeight2(this.config.markdownTheme.headingTextLineHeight2)
         }
-        if (this.cfg.markdownTheme.headingTextLineHeight3 !== undefined) {
-          cjMarkdownTheme.setHeadingTextLineHeight3(this.cfg.markdownTheme.headingTextLineHeight3)
+        if (this.config.markdownTheme.headingTextLineHeight3 !== undefined) {
+          cjMarkdownTheme.setHeadingTextLineHeight3(this.config.markdownTheme.headingTextLineHeight3)
         }
-        if (this.cfg.markdownTheme.headingTextLineHeight4 !== undefined) {
-          cjMarkdownTheme.setHeadingTextLineHeight4(this.cfg.markdownTheme.headingTextLineHeight4)
+        if (this.config.markdownTheme.headingTextLineHeight4 !== undefined) {
+          cjMarkdownTheme.setHeadingTextLineHeight4(this.config.markdownTheme.headingTextLineHeight4)
         }
-        if (this.cfg.markdownTheme.headingTextLineHeight5 !== undefined) {
-          cjMarkdownTheme.setHeadingTextLineHeight5(this.cfg.markdownTheme.headingTextLineHeight5)
+        if (this.config.markdownTheme.headingTextLineHeight5 !== undefined) {
+          cjMarkdownTheme.setHeadingTextLineHeight5(this.config.markdownTheme.headingTextLineHeight5)
         }
-        if (this.cfg.markdownTheme.headingTextLineHeight6 !== undefined) {
-          cjMarkdownTheme.setHeadingTextLineHeight6(this.cfg.markdownTheme.headingTextLineHeight6)
+        if (this.config.markdownTheme.headingTextLineHeight6 !== undefined) {
+          cjMarkdownTheme.setHeadingTextLineHeight6(this.config.markdownTheme.headingTextLineHeight6)
         }
-        if (this.cfg.markdownTheme.paragraphTextSize !== undefined) {
-          cjMarkdownTheme.setParagraphTextSize(this.cfg.markdownTheme.paragraphTextSize)
+        if (this.config.markdownTheme.paragraphTextSize !== undefined) {
+          cjMarkdownTheme.setParagraphTextSize(this.config.markdownTheme.paragraphTextSize)
         }
-        if (this.cfg.markdownTheme.paragraphTextColor !== undefined) {
-          cjMarkdownTheme.setParagraphTextColor(this.cfg.markdownTheme.paragraphTextColor)
+        if (this.config.markdownTheme.paragraphTextColor !== undefined) {
+          cjMarkdownTheme.setParagraphTextColor(this.config.markdownTheme.paragraphTextColor)
         }
-        if (this.cfg.markdownTheme.paragraphTextWordSpace !== undefined) {
-          cjMarkdownTheme.setParagraphTextWordSpace(this.cfg.markdownTheme.paragraphTextWordSpace)
+        if (this.config.markdownTheme.paragraphTextWordSpace !== undefined) {
+          cjMarkdownTheme.setParagraphTextWordSpace(this.config.markdownTheme.paragraphTextWordSpace)
         }
-        if (this.cfg.markdownTheme.paragraphTextLineHeight !== undefined) {
-          cjMarkdownTheme.setParagraphTextLineHeight(this.cfg.markdownTheme.paragraphTextLineHeight)
+        if (this.config.markdownTheme.paragraphTextLineHeight !== undefined) {
+          cjMarkdownTheme.setParagraphTextLineHeight(this.config.markdownTheme.paragraphTextLineHeight)
         }
-        if (this.cfg.markdownTheme.paragraphTypeface !== undefined) {
-          cjMarkdownTheme.setParagraphTypeface(this.cfg.markdownTheme.paragraphTypeface)
+        if (this.config.markdownTheme.paragraphTypeface !== undefined) {
+          cjMarkdownTheme.setParagraphTypeface(this.config.markdownTheme.paragraphTypeface)
         }
-        if (this.cfg.markdownTheme.thematicBreakColor !== undefined) {
-          cjMarkdownTheme.setThematicBreakColor(this.cfg.markdownTheme.thematicBreakColor)
+        if (this.config.markdownTheme.thematicBreakColor !== undefined) {
+          cjMarkdownTheme.setThematicBreakColor(this.config.markdownTheme.thematicBreakColor)
         }
-        if (this.cfg.markdownTheme.thematicBreakHeight !== undefined) {
-          cjMarkdownTheme.setThematicBreakHeight(this.cfg.markdownTheme.thematicBreakHeight)
+        if (this.config.markdownTheme.thematicBreakHeight !== undefined) {
+          cjMarkdownTheme.setThematicBreakHeight(this.config.markdownTheme.thematicBreakHeight)
         }
-        if (this.cfg.markdownTheme.thematicBreakTopMargin !== undefined) {
-          cjMarkdownTheme.setThematicBreakTopMargin(this.cfg.markdownTheme.thematicBreakTopMargin)
+        if (this.config.markdownTheme.thematicBreakTopMargin !== undefined) {
+          cjMarkdownTheme.setThematicBreakTopMargin(this.config.markdownTheme.thematicBreakTopMargin)
         }
-        if (this.cfg.markdownTheme.thematicBreakBottomMargin !== undefined) {
-          cjMarkdownTheme.setThematicBreakBottomMargin(this.cfg.markdownTheme.thematicBreakBottomMargin)
+        if (this.config.markdownTheme.thematicBreakBottomMargin !== undefined) {
+          cjMarkdownTheme.setThematicBreakBottomMargin(this.config.markdownTheme.thematicBreakBottomMargin)
         }
-        if (this.cfg.markdownTheme.isLineBreak !== undefined) {
-          cjMarkdownTheme.setIsLineBreak(this.cfg.markdownTheme.isLineBreak)
+        if (this.config.markdownTheme.isLineBreak !== undefined) {
+          cjMarkdownTheme.setIsLineBreak(this.config.markdownTheme.isLineBreak)
         }
-        if (this.cfg.markdownTheme.latexMathTextSize !== undefined) {
-          cjMarkdownTheme.setLatexMathTextSize(this.cfg.markdownTheme.latexMathTextSize)
+        if (this.config.markdownTheme.latexMathTextSize !== undefined) {
+          cjMarkdownTheme.setLatexMathTextSize(this.config.markdownTheme.latexMathTextSize)
         }
-        if (this.cfg.markdownTheme.latexMathBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLatexMathBackGroupColor(this.cfg.markdownTheme.latexMathBackGroupColor)
+        if (this.config.markdownTheme.latexMathBackGroupColor !== undefined) {
+          cjMarkdownTheme.setLatexMathBackGroupColor(this.config.markdownTheme.latexMathBackGroupColor)
         }
-        if (this.cfg.markdownTheme.latexMathTextColor !== undefined) {
-          cjMarkdownTheme.setLatexMathTextColor(this.cfg.markdownTheme.latexMathTextColor)
+        if (this.config.markdownTheme.latexMathTextColor !== undefined) {
+          cjMarkdownTheme.setLatexMathTextColor(this.config.markdownTheme.latexMathTextColor)
         }
-        if (this.cfg.markdownTheme.latexMathColorFormat !== undefined) {
-          cjMarkdownTheme.setLatexMathColorFormat(this.cfg.markdownTheme.latexMathColorFormat)
+        if (this.config.markdownTheme.latexMathColorFormat !== undefined) {
+          cjMarkdownTheme.setLatexMathColorFormat(this.config.markdownTheme.latexMathColorFormat)
         }
-        if (this.cfg.markdownTheme.latexMathBlockCenter !== undefined) {
-          cjMarkdownTheme.setLatexMathBlockCenter(this.cfg.markdownTheme.latexMathBlockCenter)
+        if (this.config.markdownTheme.latexMathBlockCenter !== undefined) {
+          cjMarkdownTheme.setLatexMathBlockCenter(this.config.markdownTheme.latexMathBlockCenter)
         }
-        if (this.cfg.markdownTheme.latexMathResStr !== undefined) {
-          cjMarkdownTheme.setLatexMathResStr(this.cfg.markdownTheme.latexMathResStr)
+        if (this.config.markdownTheme.latexMathResStr !== undefined) {
+          cjMarkdownTheme.setLatexMathResStr(this.config.markdownTheme.latexMathResStr)
         }
-        if (this.cfg.markdownTheme.audioShadowColor !== undefined) {
-          cjMarkdownTheme.setAudioShadowColor(this.cfg.markdownTheme.audioShadowColor)
+        if (this.config.markdownTheme.audioShadowColor !== undefined) {
+          cjMarkdownTheme.setAudioShadowColor(this.config.markdownTheme.audioShadowColor)
         }
-        if (this.cfg.markdownTheme.audioBorderColor !== undefined) {
-          cjMarkdownTheme.setAudioBorderColor(this.cfg.markdownTheme.audioBorderColor)
+        if (this.config.markdownTheme.audioBorderColor !== undefined) {
+          cjMarkdownTheme.setAudioBorderColor(this.config.markdownTheme.audioBorderColor)
         }
-        if (this.cfg.markdownTheme.audioBorderWidth !== undefined) {
-          cjMarkdownTheme.setAudioBorderWidth(this.cfg.markdownTheme.audioBorderWidth)
+        if (this.config.markdownTheme.audioBorderWidth !== undefined) {
+          cjMarkdownTheme.setAudioBorderWidth(this.config.markdownTheme.audioBorderWidth)
         }
-        if (this.cfg.markdownTheme.audioBorderRadius !== undefined) {
-          cjMarkdownTheme.setAudioBorderRadius(this.cfg.markdownTheme.audioBorderRadius)
+        if (this.config.markdownTheme.audioBorderRadius !== undefined) {
+          cjMarkdownTheme.setAudioBorderRadius(this.config.markdownTheme.audioBorderRadius)
         }
-        if (this.cfg.markdownTheme.audioButtonBackgroundColor !== undefined) {
-          cjMarkdownTheme.setAudioButtonBackgroundColor(this.cfg.markdownTheme.audioButtonBackgroundColor)
+        if (this.config.markdownTheme.audioButtonBackgroundColor !== undefined) {
+          cjMarkdownTheme.setAudioButtonBackgroundColor(this.config.markdownTheme.audioButtonBackgroundColor)
         }
-        if (this.cfg.markdownTheme.audioButtonTextColor !== undefined) {
-          cjMarkdownTheme.setAudioButtonTextColor(this.cfg.markdownTheme.audioButtonTextColor)
+        if (this.config.markdownTheme.audioButtonTextColor !== undefined) {
+          cjMarkdownTheme.setAudioButtonTextColor(this.config.markdownTheme.audioButtonTextColor)
         }
-        if (this.cfg.markdownTheme.audioButtonTextSize !== undefined) {
-          cjMarkdownTheme.setAudioButtonTextSize(this.cfg.markdownTheme.audioButtonTextSize)
+        if (this.config.markdownTheme.audioButtonTextSize !== undefined) {
+          cjMarkdownTheme.setAudioButtonTextSize(this.config.markdownTheme.audioButtonTextSize)
         }
-        if (this.cfg.markdownTheme.audioButtonText !== undefined) {
-          cjMarkdownTheme.setAudioButtonText(this.cfg.markdownTheme.audioButtonText)
+        if (this.config.markdownTheme.audioButtonText !== undefined) {
+          cjMarkdownTheme.setAudioButtonText(this.config.markdownTheme.audioButtonText)
         }
-        if (this.cfg.markdownTheme.audioButtonBorderRadius !== undefined) {
-          cjMarkdownTheme.setAudioButtonBorderRadius(this.cfg.markdownTheme.audioButtonBorderRadius)
+        if (this.config.markdownTheme.audioButtonBorderRadius !== undefined) {
+          cjMarkdownTheme.setAudioButtonBorderRadius(this.config.markdownTheme.audioButtonBorderRadius)
         }
-        if (this.cfg.markdownTheme.audioTitleTextSize !== undefined) {
-          cjMarkdownTheme.setAudioTitleTextSize(this.cfg.markdownTheme.audioTitleTextSize)
+        if (this.config.markdownTheme.audioTitleTextSize !== undefined) {
+          cjMarkdownTheme.setAudioTitleTextSize(this.config.markdownTheme.audioTitleTextSize)
         }
-        if (this.cfg.markdownTheme.audioTitleTextColor !== undefined) {
-          cjMarkdownTheme.setAudioTitleTextColor(this.cfg.markdownTheme.audioTitleTextColor)
+        if (this.config.markdownTheme.audioTitleTextColor !== undefined) {
+          cjMarkdownTheme.setAudioTitleTextColor(this.config.markdownTheme.audioTitleTextColor)
         }
-        if (this.cfg.markdownTheme.blockTopAndBottomMargins !== undefined) {
-          cjMarkdownTheme.setBlockTopAndBottomMargins(this.cfg.markdownTheme.blockTopAndBottomMargins)
+        if (this.config.markdownTheme.blockTopAndBottomMargins !== undefined) {
+          cjMarkdownTheme.setBlockTopAndBottomMargins(this.config.markdownTheme.blockTopAndBottomMargins)
         }
-        if (this.cfg.markdownTheme.blockTopAndBottomMargins !== undefined) {
-          cjMarkdownTheme.setBlockTopAndBottomMargins(this.cfg.markdownTheme.blockTopAndBottomMargins)
+        if (this.config.markdownTheme.blockTopAndBottomMargins !== undefined) {
+          cjMarkdownTheme.setBlockTopAndBottomMargins(this.config.markdownTheme.blockTopAndBottomMargins)
         }
-        if (this.cfg.markdownTheme.audioTitleTextLineHeight !== undefined) {
-          cjMarkdownTheme.setAudioTitleTextLineHeight(this.cfg.markdownTheme.audioTitleTextLineHeight)
+        if (this.config.markdownTheme.audioTitleTextLineHeight !== undefined) {
+          cjMarkdownTheme.setAudioTitleTextLineHeight(this.config.markdownTheme.audioTitleTextLineHeight)
         }
-        if (this.cfg.markdownTheme.audioTypeTextSize !== undefined) {
-          cjMarkdownTheme.setAudioTypeTextSize(this.cfg.markdownTheme.audioTypeTextSize)
+        if (this.config.markdownTheme.audioTypeTextSize !== undefined) {
+          cjMarkdownTheme.setAudioTypeTextSize(this.config.markdownTheme.audioTypeTextSize)
         }
-        if (this.cfg.markdownTheme.audioTypeTextColor !== undefined) {
-          cjMarkdownTheme.setAudioTypeTextColor(this.cfg.markdownTheme.audioTypeTextColor)
+        if (this.config.markdownTheme.audioTypeTextColor !== undefined) {
+          cjMarkdownTheme.setAudioTypeTextColor(this.config.markdownTheme.audioTypeTextColor)
         }
-        if (this.cfg.markdownTheme.audioTypeTextLineHeight !== undefined) {
-          cjMarkdownTheme.setAudioTypeTextLineHeight(this.cfg.markdownTheme.audioTypeTextLineHeight)
+        if (this.config.markdownTheme.audioTypeTextLineHeight !== undefined) {
+          cjMarkdownTheme.setAudioTypeTextLineHeight(this.config.markdownTheme.audioTypeTextLineHeight)
         }
-        if (this.cfg.markdownTheme.audioMarginTop !== undefined) {
-          cjMarkdownTheme.setAudioMarginTop(this.cfg.markdownTheme.audioMarginTop)
+        if (this.config.markdownTheme.audioMarginTop !== undefined) {
+          cjMarkdownTheme.setAudioMarginTop(this.config.markdownTheme.audioMarginTop)
         }
-        if (this.cfg.markdownTheme.audioMarginBottom !== undefined) {
-          cjMarkdownTheme.setAudioMarginBottom(this.cfg.markdownTheme.audioMarginBottom)
+        if (this.config.markdownTheme.audioMarginBottom !== undefined) {
+          cjMarkdownTheme.setAudioMarginBottom(this.config.markdownTheme.audioMarginBottom)
         }
-        if (this.cfg.markdownTheme.videoBorderRadius !== undefined) {
-          cjMarkdownTheme.setVideoBorderRadius(this.cfg.markdownTheme.videoBorderRadius)
+        if (this.config.markdownTheme.videoBorderRadius !== undefined) {
+          cjMarkdownTheme.setVideoBorderRadius(this.config.markdownTheme.videoBorderRadius)
         }
-        if (this.cfg.markdownTheme.videoTimeTextColor !== undefined) {
-          cjMarkdownTheme.setVideoTimeTextColor(this.cfg.markdownTheme.videoTimeTextColor)
+        if (this.config.markdownTheme.videoTimeTextColor !== undefined) {
+          cjMarkdownTheme.setVideoTimeTextColor(this.config.markdownTheme.videoTimeTextColor)
         }
-        if (this.cfg.markdownTheme.videoTimeTextSize !== undefined) {
-          cjMarkdownTheme.setVideoTimeTextSize(this.cfg.markdownTheme.videoTimeTextSize)
+        if (this.config.markdownTheme.videoTimeTextSize !== undefined) {
+          cjMarkdownTheme.setVideoTimeTextSize(this.config.markdownTheme.videoTimeTextSize)
         }
-        if (this.cfg.markdownTheme.videoTimeTextMarginRight !== undefined) {
-          cjMarkdownTheme.setVideoTimeTextMarginRight(this.cfg.markdownTheme.videoTimeTextMarginRight)
+        if (this.config.markdownTheme.videoTimeTextMarginRight !== undefined) {
+          cjMarkdownTheme.setVideoTimeTextMarginRight(this.config.markdownTheme.videoTimeTextMarginRight)
         }
-        if (this.cfg.markdownTheme.videoTimeTextMarginBottom !== undefined) {
-          cjMarkdownTheme.setVideoTimeTextMarginBottom(this.cfg.markdownTheme.videoTimeTextMarginBottom)
+        if (this.config.markdownTheme.videoTimeTextMarginBottom !== undefined) {
+          cjMarkdownTheme.setVideoTimeTextMarginBottom(this.config.markdownTheme.videoTimeTextMarginBottom)
         }
-        if (this.cfg.markdownTheme.videoMarginTop !== undefined) {
-          cjMarkdownTheme.setVideoMarginTop(this.cfg.markdownTheme.videoMarginTop)
+        if (this.config.markdownTheme.videoMarginTop !== undefined) {
+          cjMarkdownTheme.setVideoMarginTop(this.config.markdownTheme.videoMarginTop)
         }
-        if (this.cfg.markdownTheme.videoMarginBottom !== undefined) {
-          cjMarkdownTheme.setVideoMarginBottom(this.cfg.markdownTheme.videoMarginBottom)
+        if (this.config.markdownTheme.videoMarginBottom !== undefined) {
+          cjMarkdownTheme.setVideoMarginBottom(this.config.markdownTheme.videoMarginBottom)
         }
-        if (this.cfg.markdownTheme.imagePlaceholder !== undefined) {
-          cjMarkdownTheme.setImagePlaceholder(this.cfg.markdownTheme.imagePlaceholder)
+        if (this.config.markdownTheme.imagePlaceholder !== undefined) {
+          cjMarkdownTheme.setImagePlaceholder(this.config.markdownTheme.imagePlaceholder)
         }
-        if (this.cfg.markdownTheme.isAutoResize !== undefined) {
-          cjMarkdownTheme.setIsAutoResize(this.cfg.markdownTheme.isAutoResize)
+        if (this.config.markdownTheme.isAutoResize !== undefined) {
+          cjMarkdownTheme.setIsAutoResize(this.config.markdownTheme.isAutoResize)
         }
-        if (this.cfg.markdownTheme.imageMarginTop !== undefined) {
-          cjMarkdownTheme.setImageMarginTop(this.cfg.markdownTheme.imageMarginTop)
+        if (this.config.markdownTheme.imageMarginTop !== undefined) {
+          cjMarkdownTheme.setImageMarginTop(this.config.markdownTheme.imageMarginTop)
         }
-        if (this.cfg.markdownTheme.imageMarginBottom !== undefined) {
-          cjMarkdownTheme.setImageMarginBottom(this.cfg.markdownTheme.imageMarginBottom)
+        if (this.config.markdownTheme.imageMarginBottom !== undefined) {
+          cjMarkdownTheme.setImageMarginBottom(this.config.markdownTheme.imageMarginBottom)
         }
-        if (this.cfg.markdownTheme.tableCellPadding !== undefined) {
-          cjMarkdownTheme.setTableCellPadding(this.cfg.markdownTheme.tableCellPadding)
+        if (this.config.markdownTheme.tableCellPadding !== undefined) {
+          cjMarkdownTheme.setTableCellPadding(this.config.markdownTheme.tableCellPadding)
         }
-        if (this.cfg.markdownTheme.tableBorderColor !== undefined) {
-          cjMarkdownTheme.setTableBorderColor(this.cfg.markdownTheme.tableBorderColor)
+        if (this.config.markdownTheme.tableBorderColor !== undefined) {
+          cjMarkdownTheme.setTableBorderColor(this.config.markdownTheme.tableBorderColor)
         }
-        if (this.cfg.markdownTheme.tableBorderWidth !== undefined) {
-          cjMarkdownTheme.setTableBorderWidth(this.cfg.markdownTheme.tableBorderWidth)
+        if (this.config.markdownTheme.tableBorderWidth !== undefined) {
+          cjMarkdownTheme.setTableBorderWidth(this.config.markdownTheme.tableBorderWidth)
         }
-        if (this.cfg.markdownTheme.tableOddRowBackgroundColor !== undefined) {
-          cjMarkdownTheme.setTableOddRowBackgroundColor(this.cfg.markdownTheme.tableOddRowBackgroundColor)
+        if (this.config.markdownTheme.tableOddRowBackgroundColor !== undefined) {
+          cjMarkdownTheme.setTableOddRowBackgroundColor(this.config.markdownTheme.tableOddRowBackgroundColor)
         }
-        if (this.cfg.markdownTheme.tableEvenRowBackgroundColor !== undefined) {
-          cjMarkdownTheme.setTableEvenRowBackgroundColor(this.cfg.markdownTheme.tableEvenRowBackgroundColor)
+        if (this.config.markdownTheme.tableEvenRowBackgroundColor !== undefined) {
+          cjMarkdownTheme.setTableEvenRowBackgroundColor(this.config.markdownTheme.tableEvenRowBackgroundColor)
         }
-        if (this.cfg.markdownTheme.tableHeaderRowBackgroundColor !== undefined) {
-          cjMarkdownTheme.setTableHeaderRowBackgroundColor(this.cfg.markdownTheme.tableHeaderRowBackgroundColor)
+        if (this.config.markdownTheme.tableHeaderRowBackgroundColor !== undefined) {
+          cjMarkdownTheme.setTableHeaderRowBackgroundColor(this.config.markdownTheme.tableHeaderRowBackgroundColor)
         }
-        if (this.cfg.markdownTheme.tableTextLineHeight !== undefined) {
-          cjMarkdownTheme.setTableTextLineHeight(this.cfg.markdownTheme.tableTextLineHeight)
+        if (this.config.markdownTheme.tableTextLineHeight !== undefined) {
+          cjMarkdownTheme.setTableTextLineHeight(this.config.markdownTheme.tableTextLineHeight)
         }
-        if (this.cfg.markdownTheme.tableRadius !== undefined) {
-          cjMarkdownTheme.setTableRadius(this.cfg.markdownTheme.tableRadius)
+        if (this.config.markdownTheme.tableRadius !== undefined) {
+          cjMarkdownTheme.setTableRadius(this.config.markdownTheme.tableRadius)
         }
-        if (this.cfg.markdownTheme.tableMinTextWidth !== undefined) {
-          cjMarkdownTheme.setTableMinTextWidth(this.cfg.markdownTheme.tableMinTextWidth)
+        if (this.config.markdownTheme.tableMinTextWidth !== undefined) {
+          cjMarkdownTheme.setTableMinTextWidth(this.config.markdownTheme.tableMinTextWidth)
         }
-        if (this.cfg.markdownTheme.tableMaxTextWidth !== undefined) {
-          cjMarkdownTheme.setTableMaxTextWidth(this.cfg.markdownTheme.tableMaxTextWidth)
+        if (this.config.markdownTheme.tableMaxTextWidth !== undefined) {
+          cjMarkdownTheme.setTableMaxTextWidth(this.config.markdownTheme.tableMaxTextWidth)
         }
-        if (this.cfg.markdownTheme.tableFirstColumnBold !== undefined) {
-          cjMarkdownTheme.setTableFirstColumnBold(this.cfg.markdownTheme.tableFirstColumnBold)
+        if (this.config.markdownTheme.tableFirstColumnBold !== undefined) {
+          cjMarkdownTheme.setTableFirstColumnBold(this.config.markdownTheme.tableFirstColumnBold)
         }
-        if (this.cfg.markdownTheme.isDark !== undefined) {
-          cjMarkdownTheme.setIsDark(this.cfg.markdownTheme.isDark)
+        if (this.config.markdownTheme.isDark !== undefined) {
+          cjMarkdownTheme.setIsDark(this.config.markdownTheme.isDark)
         }
       }
     }
