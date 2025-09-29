@@ -409,10 +409,16 @@ class MarkdownCodeComponent {
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
-            for(i in 0..dataSourceSize){
+            let indexItem: Int64 = dataSourceSize - 1
+            for(i in 0..indexItem){
                 if(lineStrArray.getData(i) != arr[i]){
                     lineStrArray.replaceData(i, arr[i])
                     lineInt64Array.replaceData(i, arr[i])
+                }
+            }
+            for (data in codeTextComponents) {
+                if (isListItem(indexList, data.indexList, indexItem)) {
+                    data.refreshData(arr[indexItem],info)
                 }
             }
         } else {

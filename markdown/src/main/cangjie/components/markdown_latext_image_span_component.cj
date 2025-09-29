@@ -61,6 +61,12 @@ public class MarkdownLatexImageSpanComponent {
      */
     var maxWidth: Length = 100.percent
 
+    /**
+     * 解析是否结束
+     */
+    @State
+    var isBool: Bool = false
+
     protected override func aboutToAppear(): Unit {
         // 数学公式解析
         latexMathImagePixelmap()
@@ -74,22 +80,30 @@ public class MarkdownLatexImageSpanComponent {
     }
 
     func build() {
-        if (imagePixelMap.isSome() && imageHeight.isSome() && imageWidth.isSome()) {
-            ImageSpan(imagePixelMap())
-                // 设置组件自身的宽度
-                .width(imageWidth().px)
-                // 设置组件自身的高度
-                .height(imageHeight().px)
-                // 设置图片的缩放类型
-                .objectFit(ImageFit.Contain)
-                // 设置约束尺寸
-                .constraintSize(maxWidth: maxWidth)
-                // 设置图片基于文本的对齐方式
-                .verticalAlign(ImageSpanAlignment.CENTER)
-                // 点击动作触发该方法调用
-                .onClick {
-                    evt => latexImageOnClick(arrayUint8(), imageHeight().px, imageWidth().px, markdownConfiguration.latexImageCallback)
-                }
+        if (isBool) {
+            if (imagePixelMap.isSome() && imageHeight.isSome() && imageWidth.isSome()) {
+                ImageSpan(imagePixelMap())
+                    // 设置组件自身的宽度
+                    .width(imageWidth().px)
+                    // 设置组件自身的高度
+                    .height(imageHeight().px)
+                    // 设置图片的缩放类型
+                    .objectFit(ImageFit.Contain)
+                    // 设置约束尺寸
+                    .constraintSize(maxWidth: maxWidth)
+                    // 设置图片基于文本的对齐方式
+                    .verticalAlign(ImageSpanAlignment.CENTER)
+                    // 点击动作触发该方法调用
+                    .onClick {
+                        evt => latexImageOnClick(arrayUint8(), imageHeight().px, imageWidth().px, markdownConfiguration.latexImageCallback)
+                    }
+            } else{
+                Span(strLatexMath)
+                    .fontColor(Color.RED)
+            }
+        } else {
+            Span(strLatexMath)
+                .fontColor(Color.RED)
         }
     }
 
@@ -103,9 +117,10 @@ public class MarkdownLatexImageSpanComponent {
                 imageWidth = width
                 imagePixelMap = pixelMap
                 arrayUint8 = arr
+                isBool = true
             }
         }
         // 解析数学公式
-        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration, componentWidth, callback, backGroupColor)
+        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration, vp2px(componentWidth.vp)().value, callback, backGroupColor)
     }
 }

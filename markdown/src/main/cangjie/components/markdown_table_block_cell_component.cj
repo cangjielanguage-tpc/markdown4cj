@@ -176,6 +176,8 @@ class MarkdownTableBlockCellComponent {
                 let newHeight: Float64 = new.height
                 if (maxHeight < newHeight) {
                     maxHeight = newHeight
+                } else {
+                    maxHeight = minTextHeight
                 }
                 if (old.width == new.width) {
                     return

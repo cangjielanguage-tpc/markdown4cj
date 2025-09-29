@@ -122,6 +122,23 @@ func spanFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme
         } catch (e: Exception) {
             return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
         }
+    } else if (nodeView.props.isSome() && nodeView.props().get("SpanNode").isSome()) {
+        try {
+            let spanNode: SpanNode = (nodeView.props().get("SpanNode")() as SpanNode)()
+            let style: ?HashMap<String, String> = spanNode.getStyle()
+            if(let Some(v) <- style){
+                let sizeStr:?String = v.get("font-size")
+                if(let Some(n) <- sizeStr){
+                    let size:?Float64 = sizeStringToSize(n)
+                    if(let Some(m) <- size){
+                        return m
+                    }
+                }
+            }
+            return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
+        } catch (e: Exception) {
+            return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
+        }
     } else {
         return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
     }
@@ -161,15 +178,25 @@ func spanTextFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownT
  * @return 返回需要显示的字体粗细
  */
 func spanFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
-    if (isTitle) {
-        // 所有标题默认加粗
-        return FontWeight.W600
-    } else {
-        if (nodeView.strongEmphasis) {
-            return FontWeight.W600
-        } else {
-            return FontWeight.W400
+    if (nodeView.props.isSome() && nodeView.props().get("SpanNode").isSome()) {
+        try {
+            let spanNode: SpanNode = (nodeView.props().get("SpanNode")() as SpanNode)()
+            let style: ?HashMap<String, String> = spanNode.getStyle()
+            if(let Some(v) <- style){
+                let weightStr:?String = v.get("font-weight")
+                if(let Some(n) <- weightStr){
+                    let weight:?FontWeight = fontWeightToValue(n)
+                    if(let Some(m) <- weight){
+                        return m
+                    }
+                }
+            }
+            return spanTextFontWeight(nodeView, isTitle)
+        } catch (e: Exception) {
+            return spanTextFontWeight(nodeView, isTitle)
         }
+    } else {
+        return spanTextFontWeight(nodeView, isTitle)
     }
 }
 
@@ -180,7 +207,7 @@ func spanFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
  * @param isTitle 是否是标题
  * @return 返回需要显示的字体粗细
  */
-func spanTableFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
+func spanTextFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
     if (isTitle) {
         // 所有标题默认加粗
         return FontWeight.W600
@@ -228,6 +255,26 @@ func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownThem
             } else {
                 return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
             }
+        } catch (e: Exception) {
+            return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
+        }
+    } else if (nodeView.props.isSome() && nodeView.props().get("SpanNode").isSome()) {
+        try {
+            let spanNode: SpanNode = (nodeView.props().get("SpanNode")() as SpanNode)()
+            let style: ?HashMap<String, String> = spanNode.getStyle()
+            if(let Some(v) <- style){
+                let colorStr:?String = v.get("color")
+                if(let Some(n) <- colorStr){
+                    let color:?Color = colorStringToColor(n)
+                    if(let Some(m) <- color){
+                        return m
+                    } else {
+                        let colorUInt32: UInt32 = UInt32.parse(n.replace("#", "0x"))
+                        return Color(colorUInt32)
+                    }
+                }
+            }
+            return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
         } catch (e: Exception) {
             return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
         }
@@ -869,7 +916,7 @@ func tableList(nodeViews: ArrayList<NodeView>): ArrayList<NodeView> {
     let tableNodeViews = ArrayList<NodeView>()
     for (nodeView in nodeViews) {
         if (nodeView.node is TableBody || nodeView.node is TableHead) {
-            tableNodeViews.add(all:nodeView.children)
+            tableNodeViews.add(all: nodeView.children)
         } else if (nodeView.node is TableRow) {
             tableNodeViews.add(nodeView)
         }
@@ -921,7 +968,7 @@ func getProp<T>(item: NodeView, key: String, default: T): T {
  */
 func indexAdd(indexList: ArrayList<Int64>, index: Int64): ArrayList<Int64> {
     let indexListNew: ArrayList<Int64> = ArrayList<Int64>()
-    indexListNew.add(all:indexList)
+    indexListNew.add(all: indexList)
     indexListNew.add(index)
     return indexListNew
 }
@@ -963,8 +1010,8 @@ func urlSafeBase64Decode(v: String): String {
         return ""
     }
     var arrStr: String = String.fromUtf8(arr.getOrThrow())
-    var regex: Regex = Regex("file-name=([^&]+)");
-    var matcher: Matcher = Matcher(regex, arrStr);
+    var regex: Regex = Regex("file-name=([^&]+)")
+    var matcher: Matcher = Matcher(regex, arrStr)
     var matchData: ?MatchData = matcher.find()
     match (matchData) {
         case Some(v) =>
@@ -1129,3 +1176,215 @@ func linkUrl(nodeView: NodeView): ?String {
         Option<String>.None
     }
 }
+
+/**
+ * HTML类型Span标签font-size属性转换数值
+ *
+ * @param weightString font-size属性值
+ * @return 对应的数值（相对值返回null）
+ */
+func sizeStringToSize(sizeString: String): ?Float64 {
+    let sizeStr = sizeString.toAsciiLower().trimAscii()
+    var size: ?Float64 = match (sizeStr) {
+        case "xx-small" => 9.0
+        case "x-small" => 10.0
+        case "small" => 13.0
+        case "medium" => 16.0
+        case "large" => 18.0
+        case "x-large" => 24.0
+        case "xx-large" => 32.0
+        case "xxx-large" => 36.0
+        case _ => if (sizeStr[sizeStr.size - 2..] == "px") {
+            Float64.parse(sizeStr[..sizeStr.size - 2])
+        } else {
+            Float64.parse(sizeStr)
+        }
+    }
+    return size
+}
+
+/**
+ * HTML类型Span标签font-weight属性转换数值
+ *
+ * @param weightString font-weight属性值
+ * @return 对应的数值（相对值返回null）
+ */
+func fontWeightToValue(weightString: String): ?FontWeight {
+    let weightStr = weightString.toAsciiLower().trimAscii()
+    var weight:?FontWeight = match (weightStr) {
+        // 关键字（对应固定数值）
+        case "normal" => FontWeight.Normal
+        case "bold" => FontWeight.Bold
+
+        // 数值型（100-900，整百数）
+        case "100" => FontWeight.W100
+        case "200" => FontWeight.W200
+        case "300" => FontWeight.W300
+        case "400" => FontWeight.W400  // 等同于normal
+        case "500" => FontWeight.W500
+        case "600" => FontWeight.W600
+        case "700" => FontWeight.W700  // 等同于bold
+        case "800" => FontWeight.W800
+        case "900" => FontWeight.W900
+        // 未匹配的情况
+        case _ => Option<FontWeight>.None
+    }
+    return weight
+}
+
+/**
+ * HTML类型Span标签color属性转换Color对象
+ *
+ * @param colorString color属性
+ * @return Color对象
+ */
+func colorStringToColor(colorString: String): ?Color {
+    let colorStr = colorString.toAsciiLower().trimAscii()
+    var color:?Color = match (colorStr) {
+        // 通用16种颜色（CSS基础色）
+        case "black" => Color(0xFF000000)
+        case "silver" => Color(0xFFC0C0C0)
+        case "gray" => Color(0xFF808080)
+        case "white" => Color(0xFFFFFFFF)
+        case "maroon" => Color(0xFF800000)
+        case "red" => Color(0xFFFF0000)
+        case "purple" => Color(0xFF800080)
+        case "fuchsia" => Color(0xFFFF00FF)
+        case "green" => Color(0xFF008000)
+        case "lime" => Color(0xFF00FF00)
+        case "olive" => Color(0xFF808000)
+        case "yellow" => Color(0xFFFFFF00)
+        case "navy" => Color(0xFF000080)
+        case "blue" => Color(0xFF0000FF)
+        case "teal" => Color(0xFF008080)
+        case "aqua" => Color(0xFF00FFFF)
+
+        // 扩展颜色（W3C标准扩展色，已去重）
+        case "aliceblue" => Color(0xFFF0F8FF)
+        case "antiquewhite" => Color(0xFFFAEBD7)
+        case "aquamarine" => Color(0xFF7FFFD4)
+        case "azure" => Color(0xFFF0FFFF)
+        case "beige" => Color(0xFFF5F5DC)
+        case "bisque" => Color(0xFFFFE4C4)
+        case "blueviolet" => Color(0xFF8A2BE2)
+        case "brown" => Color(0xFFA52A2A)
+        case "burlywood" => Color(0xFFDEB887)
+        case "cadetblue" => Color(0xFF5F9EA0)
+        case "chartreuse" => Color(0xFF7FFF00)
+        case "chocolate" => Color(0xFFD2691E)
+        case "coral" => Color(0xFFFF7F50)
+        case "cornflowerblue" => Color(0xFF6495ED)
+        case "cornsilk" => Color(0xFFFFF8DC)
+        case "crimson" => Color(0xFFDC143C)
+        case "cyan" => Color(0xFF00FFFF) // 与aqua等效
+        case "darkblue" => Color(0xFF00008B)
+        case "darkcyan" => Color(0xFF008B8B)
+        case "darkgoldenrod" => Color(0xFFB8860B)
+        case "darkgray" => Color(0xFFA9A9A9)
+        case "darkgreen" => Color(0xFF006400)
+        case "darkkhaki" => Color(0xFFBDB76B)
+        case "darkmagenta" => Color(0xFF8B008B)
+        case "darkolivegreen" => Color(0xFF556B2F)
+        case "darkorange" => Color(0xFFFF8C00)
+        case "darkorchid" => Color(0xFF9932CC)
+        case "darkred" => Color(0xFF8B0000)
+        case "darksalmon" => Color(0xFFE9967A)
+        case "darkseagreen" => Color(0xFF8FBC8F)
+        case "darkslateblue" => Color(0xFF483D8B)
+        case "darkslategray" => Color(0xFF2F4F4F)
+        case "darkturquoise" => Color(0xFF00CED1)
+        case "darkviolet" => Color(0xFF9400D3)
+        case "deeppink" => Color(0xFFFF1493)
+        case "deepskyblue" => Color(0xFF00BFFF)
+        case "dimgray" => Color(0xFF696969)
+        case "dodgerblue" => Color(0xFF1E90FF)
+        case "firebrick" => Color(0xFFB22222)
+        case "floralwhite" => Color(0xFFFFFAF0)
+        case "forestgreen" => Color(0xFF228B22)
+        case "gainsboro" => Color(0xFFDCDCDC)
+        case "ghostwhite" => Color(0xFFF8F8FF)
+        case "gold" => Color(0xFFFFD700)
+        case "goldenrod" => Color(0xFFDAA520)
+        case "greenyellow" => Color(0xFFADFF2F)
+        case "honeydew" => Color(0xFFF0FFF0)
+        case "hotpink" => Color(0xFFFF69B4)
+        case "indianred" => Color(0xFFCD5C5C)
+        case "indigo" => Color(0xFF4B0082)
+        case "ivory" => Color(0xFFFFFFF0)
+        case "khaki" => Color(0xFFF0E68C)
+        case "lavender" => Color(0xFFE6E6FA)
+        case "lavenderblush" => Color(0xFFFFF0F5)
+        case "lawngreen" => Color(0xFF7CFC00)
+        case "lemonchiffon" => Color(0xFFFFFACD)
+        case "lightblue" => Color(0xFFADD8E6)
+        case "lightcoral" => Color(0xFFF08080)
+        case "lightcyan" => Color(0xFFE0FFFF)
+        case "lightgoldenrodyellow" => Color(0xFFFAFAD2)
+        case "lightgray" => Color(0xFFD3D3D3)
+        case "lightgreen" => Color(0xFF90EE90)
+        case "lightpink" => Color(0xFFFFB6C1)
+        case "lightsalmon" => Color(0xFFFFA07A)
+        case "lightseagreen" => Color(0xFF20B2AA)
+        case "lightskyblue" => Color(0xFF87CEFA)
+        case "lightslategray" => Color(0xFF778899)
+        case "lightsteelblue" => Color(0xFFB0C4DE)
+        case "lightyellow" => Color(0xFFFFFFE0)
+        case "limegreen" => Color(0xFF32CD32)
+        case "linen" => Color(0xFFFAF0E6)
+        case "magenta" => Color(0xFFFF00FF) // 与fuchsia等效
+        case "mediumaquamarine" => Color(0xFF66CDAA)
+        case "mediumblue" => Color(0xFF0000CD)
+        case "mediumorchid" => Color(0xFFBA55D3)
+        case "mediumpurple" => Color(0xFF9370DB)
+        case "mediumseagreen" => Color(0xFF3CB371)
+        case "mediumslateblue" => Color(0xFF7B68EE)
+        case "mediumspringgreen" => Color(0xFF00FA9A)
+        case "mediumturquoise" => Color(0xFF48D1CC)
+        case "mediumvioletred" => Color(0xFFC71585)
+        case "midnightblue" => Color(0xFF191970)
+        case "mintcream" => Color(0xFFF5FFFA)
+        case "mistyrose" => Color(0xFFFFE4E1)
+        case "moccasin" => Color(0xFFFFE4B5)
+        case "navajowhite" => Color(0xFFFFDEAD)
+        case "oldlace" => Color(0xFFFDF5E6)
+        case "olivedrab" => Color(0xFF6B8E23)
+        case "orange" => Color(0xFFFFA500)
+        case "orangered" => Color(0xFFFF4500)
+        case "orchid" => Color(0xFFDA70D6)
+        case "palegoldenrod" => Color(0xFFEEE8AA)
+        case "palegreen" => Color(0xFF98FB98)
+        case "paleturquoise" => Color(0xFFAFEEEE)
+        case "palevioletred" => Color(0xFFDB7093)
+        case "papayawhip" => Color(0xFFFFEFD5)
+        case "peachpuff" => Color(0xFFFFDAB9)
+        case "peru" => Color(0xFFCD853F)
+        case "pink" => Color(0xFFFFC0CB)
+        case "plum" => Color(0xFFDDA0DD)
+        case "powderblue" => Color(0xFFB0E0E6)
+        case "rosybrown" => Color(0xFFBC8F8F)
+        case "royalblue" => Color(0xFF4169E1)
+        case "saddlebrown" => Color(0xFF8B4513)
+        case "salmon" => Color(0xFFFA8072)
+        case "sandybrown" => Color(0xFFF4A460)
+        case "seagreen" => Color(0xFF2E8B57)
+        case "seashell" => Color(0xFFFFF5EE)
+        case "sienna" => Color(0xFFA0522D)
+        case "skyblue" => Color(0xFF87CEEB)
+        case "slateblue" => Color(0xFF6A5ACD)
+        case "slategray" => Color(0xFF708090)
+        case "snow" => Color(0xFFFFFAFA)
+        case "springgreen" => Color(0xFF00FF7F)
+        case "steelblue" => Color(0xFF4682B4)
+        case "tan" => Color(0xFFD2B48C)
+        case "thistle" => Color(0xFFD8BFD8)
+        case "tomato" => Color(0xFFFF6347)
+        case "turquoise" => Color(0xFF40E0D0)
+        case "violet" => Color(0xFFEE82EE)
+        case "wheat" => Color(0xFFF5DEB3)
+        case "whitesmoke" => Color(0xFFF5F5F5)
+        case "yellowgreen" => Color(0xFF9ACD32)
+        case _ => Option<Color>.None
+    }
+    return color
+}
+

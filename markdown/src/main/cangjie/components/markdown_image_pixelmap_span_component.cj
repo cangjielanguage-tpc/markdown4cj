@@ -66,8 +66,20 @@ public class MarkdownImagePixelmapSpanComponent {
     @State
     var imagePixelMap: Option<PixelMap> = Option<PixelMap>.None
 
+    /**
+     * 图片最大宽度
+     */
+    var maxWidth: Length = 100.percent
+
+    /**
+     * 解析是否结束
+     */
+    @State
+    var isBool: Bool = false
+
     protected override func aboutToAppear(): Unit {
         imageCallPixelmap()
+        componentWidth = px2vp(componentWidth.px).getOrThrow().value
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -76,35 +88,58 @@ public class MarkdownImagePixelmapSpanComponent {
     }
 
     func build() {
-        if (imagePixelMap.isSome() && imageWidth.isSome() && imageHeight.isSome()) {
-            ImageSpan(imagePixelMap())
-                // 设置组件自身的宽度
-                .width(imageWidth().px)
-                // 设置组件自身的高度
-                .height(imageHeight().px)
-                // 设置图片的缩放类型
-                .objectFit(ImageFit.Contain)
-                // 设置约束尺寸
-                .constraintSize(maxWidth: componentWidth.vp)
-                // 设置图片基于文本的对齐方式
-                .verticalAlign(ImageSpanAlignment.CENTER)
-                // 点击动作触发该方法调用
-                .onClick {
-                    evt =>
-                    if (isLink) {
-                        if (linkCallback.isSome() && linkUrl.isSome()) {
-                            linkCallback()(linkUrl())
+        if (isBool) {
+            if (imagePixelMap.isSome() && imageWidth.isSome() && imageHeight.isSome()) {
+                ImageSpan(imagePixelMap())
+                    // 设置组件自身的宽度
+                    .width(imageWidth().px)
+                    // 设置组件自身的高度
+                    .height(imageHeight().px)
+                    // 设置图片的缩放类型
+                    .objectFit(ImageFit.Contain)
+                    // 设置约束尺寸
+                    .constraintSize(maxWidth: maxWidth)
+                    // 设置图片基于文本的对齐方式
+                    .verticalAlign(ImageSpanAlignment.CENTER)
+                    // 点击动作触发该方法调用
+                    .onClick {
+                        evt => if (isLink) {
+                            if (linkCallback.isSome() && linkUrl.isSome()) {
+                                linkCallback()(linkUrl())
+                            }
+                        } else {
+                            imageOnClick(destination, imageCallback)
                         }
-                    } else {
-                        imageOnClick(destination, imageCallback)
                     }
-                }
+            } else {
+                ImageSpan(destination)
+                    // 设置组件自身的宽度
+                    .width(componentWidth)
+                    // 设置组件自身的高度
+                    .height(componentWidth / (16.0 / 9.0))
+                    // 设置约束尺寸
+                    .constraintSize(maxWidth: maxWidth)
+                    // 设置图片的缩放类型
+                    .objectFit(ImageFit.Cover)
+                    // 点击动作触发该方法调用
+                    .onClick {
+                        evt => if (isLink) {
+                            if (linkCallback.isSome() && linkUrl.isSome()) {
+                                linkCallback()(linkUrl())
+                            }
+                        } else {
+                            imageOnClick(destination, imageCallback)
+                        }
+                    }
+            }
         } else {
             ImageSpan(destination)
                 // 设置组件自身的宽度
                 .width(componentWidth)
                 // 设置组件自身的高度
                 .height(componentWidth / (16.0 / 9.0))
+                // 设置约束尺寸
+                .constraintSize(maxWidth: maxWidth)
                 // 设置图片的缩放类型
                 .objectFit(ImageFit.Cover)
                 // 点击动作触发该方法调用
@@ -123,6 +158,9 @@ public class MarkdownImagePixelmapSpanComponent {
     func imageCallPixelmap() {
         spawn {
             let data: ?Array<UInt8> = imageCallbackCallback(destination)
+            launch {
+                isBool = true
+            }
             if (data.isSome()) {
                 var imageSource: ImageSource = createImageSource(data())
                 let pixelMap1: PixelMap = imageSource.createPixelMap()
