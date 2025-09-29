@@ -387,7 +387,9 @@ class MarkdownCodeComponent {
         })
         let refreshNodeViewSize = arr.size // 刷新进来的数据长度
         let dataSourceSize = lineStrArray.totalCount() // 页面缓存的数据长度
-        // 增量加载
+        if (markdownConfiguration.markdownTheme.separateCodeIsBottom) {
+            scrollChatIfAtBottom()
+        }
         if (refreshNodeViewSize == 0) {
             return
         }

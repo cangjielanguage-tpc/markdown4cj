@@ -174,7 +174,9 @@ public class MarkdownImagePixelmapSpanComponent {
     func imageCallPixelmap() {
         spawn {
             let data: ?Array<UInt8> = imageCallbackCallback(destination)
-            isBool = true
+            launch {
+                isBool = true
+            }
             if (data.isSome()) {
                 var imageSource: ImageSource = createImageSource(data())
                 let pixelMap1: PixelMap = imageSource.createPixelMap()
