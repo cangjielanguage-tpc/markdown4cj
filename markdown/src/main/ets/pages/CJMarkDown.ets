@@ -608,7 +608,7 @@ export class MarkdownConfiguration {
   /**
    * 图片替换事件
    */
-  imageCallbackCallback?: (funcArg0: string) => Array<number> | undefined = undefined
+  imageCallbackCallback?: (funcArg0: string) => ArrayBuffer | undefined = undefined
   /**
    * 音频的点击事件
    */
@@ -674,7 +674,7 @@ export class MarkdownConfiguration {
    *
    * @param cb 图片替换事件。 (funcArg0：图片url 返回值是替换的图片数据)
    */
-  setImageCallbackCallback(cb: (funcArg0: string) => Array<number> | undefined): void {
+  setImageCallbackCallback(cb: (funcArg0: string) => ArrayBuffer | undefined): void {
     this.imageCallbackCallback = cb
   }
 

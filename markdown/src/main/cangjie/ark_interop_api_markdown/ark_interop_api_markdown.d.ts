@@ -337,7 +337,7 @@ export declare class CJMarkdownConfig {
 
   setImageCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void
 
-  setImageCallbackCallback(cb: (funcArg0: string) => Array<number> | undefined): void
+  setImageCallbackCallback(cb: (funcArg0: string) => ArrayBuffer | undefined): void
 
   setAudioCallback(cb: (funcArg0: string) => void): void
 
