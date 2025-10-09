@@ -335,6 +335,8 @@ export declare class CJMarkdownTheme {
 export declare class CJMarkdownConfig {
   setLinkCallback(cb: (funcArg0: string) => void): void
 
+  setTextCopyCallback(cb: (funcArg0: string) => void): void
+
   setImageCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void
 
   setImageCallbackCallback(cb: (funcArg0: string) => ArrayBuffer | undefined): void

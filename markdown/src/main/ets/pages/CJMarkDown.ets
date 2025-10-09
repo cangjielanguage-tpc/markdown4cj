@@ -59,6 +59,9 @@ export struct CJMarkdown {
       if (this.config.linkCallback !== undefined) {
         cjMarkdownConfig.setLinkCallback(this.config.linkCallback)
       }
+      if (this.config.textCopyCallback !== undefined) {
+        cjMarkdownConfig.setTextCopyCallback(this.config.textCopyCallback)
+      }
       if (this.config.imageCallback !== undefined) {
         cjMarkdownConfig.setImageCallback(this.config.imageCallback)
       }
@@ -602,6 +605,10 @@ export class MarkdownConfiguration {
    */
   linkCallback?: (funcArg0: string) => void = undefined
   /**
+   * 文本复制的点击事件
+   */
+  textCopyCallback?: (funcArg0: string) => void = undefined
+  /**
    * 图片的点击事件
    */
   imageCallback?: (funcArg0: string, funcArg1: Array<string>) => void = undefined
@@ -658,6 +665,15 @@ export class MarkdownConfiguration {
    */
   setLinkCallback(cb: (funcArg0: string) => void): void {
     this.linkCallback = cb
+  }
+
+  /**
+   * 设置文本复制的点击事件
+   *
+   * @param cb 文本复制的点击事件(funcArg0：复制的文本)
+   */
+  setTextCopyCallback(cb: (funcArg0: string) => void): void {
+    this.textCopyCallback = cb
   }
 
   /**

@@ -20,6 +20,11 @@ public class CJMarkdownConfig {
     var linkCallback: ?(String) -> Unit = None
 
     /**
+     * 文本复制的点击事件
+     */
+    var textCopyCallback: ?(String) -> Unit = None
+
+    /**
      * 图片的点击事件
      */
     var imageCallback: ?(String, ArrayList<String>) -> Unit = None
@@ -88,6 +93,15 @@ public class CJMarkdownConfig {
      */
     public func setLinkCallback(cb: (String) -> Unit): Unit {
         this.linkCallback = cb
+    }
+
+    /**
+     * 设置文本复制的点击事件
+     *
+     * @param cb 文本复制的点击事件 (复制的文本)
+     */
+    public func setTextCopyCallback(cb: (String) -> Unit): Unit {
+        this.textCopyCallback = cb
     }
 
     /**

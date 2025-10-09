@@ -122,6 +122,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.linkCallback) {
                 markdownConfigurationBuilder.setLinkCallback(v) // 设置链接的点击事件
             }
+            if (let Some(v) <- w.textCopyCallback) {
+                markdownConfigurationBuilder.setTextCopyCallback(v) // 设置文本复制的点击事件
+            }
             if (let Some(v) <- w.imageCallback) {
                 markdownConfigurationBuilder.setImageCallback(v) // 设置图片的点击事件
             }
