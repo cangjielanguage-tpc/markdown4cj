@@ -103,7 +103,7 @@ class MarkdownTableBlockCellComponent {
 
     @Link
     @Watch[refreshTextHeight]
-    var maxHeight:Float64
+    var maxHeight: Float64
 
     @Prop
     @Watch[refreshTextWidth]
@@ -139,14 +139,13 @@ class MarkdownTableBlockCellComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        tableCellComponents.removeIf(
-            {
-                predicate => if (predicate.indexList == indexList && predicate.size == size) {
-                    true
-                } else {
-                    false
-                }
-            })
+        tableCellComponents.removeIf({
+            predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                true
+            } else {
+                false
+            }
+        })
     }
 
     func build() {
@@ -173,21 +172,21 @@ class MarkdownTableBlockCellComponent {
         .onAreaChange(
             {
                 old, new =>
-                let newHeight: Float64 = new.height
-                if (maxHeight < newHeight) {
-                    maxHeight = newHeight
-                } else {
-                    maxHeight = minTextHeight
-                }
-                if (old.width == new.width) {
-                    return
-                }
-                let newWidth: Float64 = new.width
-                if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
-                    if (v.index == idxItem && newWidth > v.minWidth) {
-                        cellWidthArrayIndexed[idxItem] = CellWidthArrayIndexedClass(minWidth: newWidth, index: idxItem)
+                    let newHeight: Float64 = new.height
+                    if (maxHeight < newHeight) {
+                        maxHeight = newHeight
+                    } else {
+                        maxHeight = minTextHeight
                     }
-                }
+                    if (old.width == new.width) {
+                        return
+                    }
+                    let newWidth: Float64 = new.width
+                    if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
+                        if (v.index == idxItem && newWidth > v.minWidth) {
+                            cellWidthArrayIndexed[idxItem] = CellWidthArrayIndexedClass(minWidth: newWidth, index: idxItem)
+                        }
+                    }
             }
         )
     }
@@ -241,55 +240,55 @@ class MarkdownTableBlockCellComponent {
                         Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
                     } else if (item.node is CommonmarkLink) {
                         // 链接
-                            if (!markdownConfiguration.markdownTheme.isLinkStyle) {
-                                if(getLinkString(item).isSome()){
-                                    tableLinkComponent(
-                                        item,
-                                        isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
-                                        getLinkString(item)(),
-                                        markdownConfiguration
-                                    )
-                                }else{
-                                    Span("")
-                                }
+                        if (!markdownConfiguration.markdownTheme.isLinkStyle) {
+                            if (getLinkString(item).isSome()) {
+                                tableLinkComponent(
+                                    item,
+                                    isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
+                                    getLinkString(item)(),
+                                    markdownConfiguration
+                                )
                             } else {
-                                if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
-                                    if(getLinkString(item).isSome()){
-                                        if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
-                                            MarkdownLinkRectImageComponent(
-                                                markdownConfiguration: markdownConfiguration,
-                                                strText: getLinkString(item)().trimAscii(),
-                                                strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                                backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
-                                                maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
-                                            )
-                                        }else{
-                                            MarkdownLinkCircleImageComponent(
-                                                markdownConfiguration: markdownConfiguration,
-                                                strText: getLinkString(item)().trimAscii(),
-                                                strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                                backGroupColor: renderTableCellColor(isHeader,markdownConfiguration.markdownTheme, idRow),
-                                                maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
-                                            )
-                                        }
-                                    }else{
-                                        Span("")
-                                    }
-                                } else {
-                                    if(getLinkString(item).isSome()){
-                                        MarkdownLinkRectToolImageComponent(
+                                Span("")
+                            }
+                        } else {
+                            if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                                if (getLinkString(item).isSome()) {
+                                    if (getLinkString(item)().trimAscii().toRuneArray().size > 1) {
+                                        MarkdownLinkRectImageComponent(
                                             markdownConfiguration: markdownConfiguration,
-                                            strText: getLinkString(item)(),
+                                            strText: getLinkString(item)().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
                                             backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                         )
-                                    }else{
-                                        Span("")
+                                    } else {
+                                        MarkdownLinkCircleImageComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            strText: getLinkString(item)().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
+                                            maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                                        )
                                     }
+                                } else {
+                                    Span("")
+                                }
+                            } else {
+                                if (getLinkString(item).isSome()) {
+                                    MarkdownLinkRectToolImageComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        strText: getLinkString(item)(),
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
+                                        backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
+                                        maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                                    )
+                                } else {
+                                    Span("")
                                 }
                             }
+                        }
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
@@ -302,7 +301,7 @@ class MarkdownTableBlockCellComponent {
                                 imageCallback: imageCallback,
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
                             )
                         } else {
                             MarkdownImagePixelmapSpanComponent(
@@ -314,8 +313,8 @@ class MarkdownTableBlockCellComponent {
                                 imageCallback: imageCallback,
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
+                                linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
+                                imageCallbackCallback: markdownConfiguration.imageCallbackCallback()
                             )
                         }
                     } else if (item.node is LatexMathNode) {
@@ -332,8 +331,8 @@ class MarkdownTableBlockCellComponent {
                         Span("")
                     }
                 },
-                keyGeneratorFunc:{
-                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
+                keyGeneratorFunc: {
+                    item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item, "nodeid", 0)}"
                 }
             )
         }
@@ -391,20 +390,20 @@ class MarkdownTableBlockCellComponent {
                     } else if (item.node is CommonmarkLink) {
                         // 链接
                         if (!markdownConfiguration.markdownTheme.isLinkStyle) {
-                            if(getLinkString(item).isSome()){
+                            if (getLinkString(item).isSome()) {
                                 tableLinkComponent(
                                     item,
                                     isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                                     getLinkString(item)(),
                                     markdownConfiguration
                                 )
-                            }else{
+                            } else {
                                 Span("")
                             }
                         } else {
                             if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
-                                if(getLinkString(item).isSome()){
-                                    if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
+                                if (getLinkString(item).isSome()) {
+                                    if (getLinkString(item)().trimAscii().toRuneArray().size > 1) {
                                         MarkdownLinkRectImageComponent(
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
@@ -412,20 +411,20 @@ class MarkdownTableBlockCellComponent {
                                             backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                         )
-                                    }else{
+                                    } else {
                                         MarkdownLinkCircleImageComponent(
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: renderTableCellColor(isHeader,markdownConfiguration.markdownTheme, idRow),
+                                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                         )
                                     }
-                                }else{
+                                } else {
                                     Span("")
                                 }
                             } else {
-                                if(getLinkString(item).isSome()){
+                                if (getLinkString(item).isSome()) {
                                     MarkdownLinkRectToolImageComponent(
                                         markdownConfiguration: markdownConfiguration,
                                         strText: getLinkString(item)(),
@@ -434,7 +433,7 @@ class MarkdownTableBlockCellComponent {
                                         backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                         maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                     )
-                                }else{
+                                } else {
                                     Span("")
                                 }
                             }
@@ -451,7 +450,7 @@ class MarkdownTableBlockCellComponent {
                                 imageCallback: imageCallback,
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
                             )
                         } else {
                             MarkdownImagePixelmapSpanComponent(
@@ -463,8 +462,8 @@ class MarkdownTableBlockCellComponent {
                                 imageCallback: imageCallback,
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
+                                linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
+                                imageCallbackCallback: markdownConfiguration.imageCallbackCallback()
                             )
                         }
                     } else if (item.node is LatexMathNode) {
@@ -481,8 +480,8 @@ class MarkdownTableBlockCellComponent {
                         Span("")
                     }
                 },
-                keyGeneratorFunc:{
-                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
+                keyGeneratorFunc: {
+                    item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item, "nodeid", 0)}"
                 }
             )
         }
@@ -492,10 +491,9 @@ class MarkdownTableBlockCellComponent {
         .copyOption(CopyOptions.LocalDevice)
         // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
         .onCopy({
-            str =>
-                if(markdownConfiguration.textCopyCallback.isSome()){
-                   markdownConfiguration.textCopyCallback()(str)
-                }
+            str => if (markdownConfiguration.textCopyCallback.isSome()) {
+                markdownConfiguration.textCopyCallback()(str)
+            }
         })
     }
 
@@ -504,7 +502,7 @@ class MarkdownTableBlockCellComponent {
      */
     @Builder
     func tableBlockCellComponent() {
-        if(DeviceInfo.sdkApiVersion >=19){
+        if (DeviceInfo.sdkApiVersion >= 19) {
             tableBlockCellComponent19()
         } else {
             tableBlockCellComponent18()
@@ -523,32 +521,32 @@ class MarkdownTableBlockCellComponent {
         if (refreshNodeViewSize > nodeViewListSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
-            for(i in 0..nodeViewListSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+            for (i in 0..nodeViewListSize) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
             // 循环添加新数据
-            for(i in nodeViewListSize..refreshNodeViewSize){
+            for (i in nodeViewListSize..refreshNodeViewSize) {
                 nodeViewList.append(refreshNodeViews[i])
             }
         } else if (refreshNodeViewSize == nodeViewListSize) {
             // 新数据等于页面数据
-            for(i in 0..nodeViewListSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+            for (i in 0..nodeViewListSize) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
-            for(i in 0..refreshNodeViewSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+            for (i in 0..refreshNodeViewSize) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
             // 循环删除多余的旧数据
-            for(i in nodeViewListSize - 1..=refreshNodeViewSize : -1){
+            for (i in nodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 nodeViewList.remove(i)
             }
         }

@@ -72,7 +72,7 @@ class MarkdownTableBlockRowComponent {
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
 
     @State
-    var maxHeight:Float64 = 0.0
+    var maxHeight: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
@@ -83,14 +83,13 @@ class MarkdownTableBlockRowComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        tableRowComponents.removeIf(
-            {
-                predicate => if (predicate.indexList == indexList && predicate.size == size) {
-                    true
-                } else {
-                    false
-                }
-            })
+        tableRowComponents.removeIf({
+            predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                true
+            } else {
+                false
+            }
+        })
     }
 
     func build() {
@@ -118,8 +117,8 @@ class MarkdownTableBlockRowComponent {
                         )
                     }
                 },
-                keyGeneratorFunc:{
-                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
+                keyGeneratorFunc: {
+                    item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item, "nodeid", 0)}"
                 }
             )
         }
@@ -137,13 +136,13 @@ class MarkdownTableBlockRowComponent {
         if (refreshNodeViewSize > nodeViewListSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
-            for(i in 0..nodeViewListSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+            for (i in 0..nodeViewListSize) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
             // 循环添加新数据
-            for(i in nodeViewListSize..refreshNodeViewSize){
+            for (i in nodeViewListSize..refreshNodeViewSize) {
                 nodeViewList.append(refreshNodeViews[i])
             }
         } else if (refreshNodeViewSize == nodeViewListSize) {
@@ -154,8 +153,8 @@ class MarkdownTableBlockRowComponent {
                     indexCell = i
                 }
             }
-            for(i in 0..indexCell){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+            for (i in 0..indexCell) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
@@ -167,13 +166,13 @@ class MarkdownTableBlockRowComponent {
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
-            for(i in 0..refreshNodeViewSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+            for (i in 0..refreshNodeViewSize) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
             // 循环删除多余的旧数据
-            for(i in nodeViewListSize - 1..=refreshNodeViewSize : -1){
+            for (i in nodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 nodeViewList.remove(i)
             }
         }

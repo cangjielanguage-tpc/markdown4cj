@@ -79,9 +79,7 @@ public class MarkdownQuoteComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        markdownCacheConfiguration
-            .quoteComponents
-            .removeIf({
+        markdownCacheConfiguration.quoteComponents.removeIf({
                 predicate => if (predicate.indexList == indexList && predicate.size == size) {
                     true
                 } else {
@@ -109,7 +107,7 @@ public class MarkdownQuoteComponent {
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
-                                    isListTo:true,
+                                    isListTo: true,
                                     indexList: indexAdd(indexList, idx),
                                     paragraphComponents: markdownCacheConfiguration.paragraphComponents,
                                     blockQuoteBackGroupColor: markdownConfiguration.markdownTheme.blockQuoteBackGroupColor
@@ -127,7 +125,7 @@ public class MarkdownQuoteComponent {
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
-                                    isListTo:true,
+                                    isListTo: true,
                                     indexList: indexAdd(indexList, idx),
                                     headingComponents: markdownCacheConfiguration.headingComponents,
                                     blockQuoteBackGroupColor: markdownConfiguration.markdownTheme.blockQuoteBackGroupColor
@@ -265,8 +263,8 @@ public class MarkdownQuoteComponent {
                     // 内边距
                     .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
                 },
-                keyGeneratorFunc:{
-                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
+                keyGeneratorFunc: {
+                    item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item, "nodeid", 0)}"
                 }
             )
         }
@@ -296,24 +294,24 @@ public class MarkdownQuoteComponent {
         if (refreshNodeViewSize > dataSourceSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
-            for(i in 0..dataSourceSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewDataSource.getAllData()[i],"nodeid",0)){
+            for (i in 0..dataSourceSize) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewDataSource.getAllData()[i], "nodeid", 0)) {
                     nodeViewDataSource.replaceData(i, refreshNodeViews[i])
                 }
             }
             // 循环添加新数据
-            for(i in dataSourceSize..refreshNodeViewSize){
+            for (i in dataSourceSize..refreshNodeViewSize) {
                 nodeViewDataSource.addData(refreshNodeViews[i])
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
             let index: Int64 = dataSourceSize - 1
-            for(i in 0..index){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewDataSource.getAllData()[i],"nodeid",0)){
+            for (i in 0..index) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewDataSource.getAllData()[i], "nodeid", 0)) {
                     nodeViewDataSource.replaceData(i, refreshNodeViews[i])
                 }
             }
-            if(refreshNodeViews[index].node.getNodeType() != nodeViewDataSource.getData(index).node.getNodeType()){
+            if (refreshNodeViews[index].node.getNodeType() != nodeViewDataSource.getData(index).node.getNodeType()) {
                 // 最后一条数据类型不相等
                 nodeViewDataSource.replaceData(index, refreshNodeViews[index])
             } else {
@@ -374,13 +372,13 @@ public class MarkdownQuoteComponent {
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
-            for(i in 0..refreshNodeViewSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewDataSource.getAllData()[i],"nodeid",0)){
+            for (i in 0..refreshNodeViewSize) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewDataSource.getAllData()[i], "nodeid", 0)) {
                     nodeViewDataSource.replaceData(i, refreshNodeViews[i])
                 }
             }
             // 循环删除多余的旧数据
-            for(i in dataSourceSize - 1..=refreshNodeViewSize : -1){
+            for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
                 nodeViewDataSource.deleteData(i)
             }
         }
