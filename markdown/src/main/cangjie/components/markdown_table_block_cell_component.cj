@@ -295,7 +295,7 @@ class MarkdownTableBlockCellComponent {
                             MarkdownImageSpanComponent(
                                 destination: (item.node as CommonmarkImage)().getDestination(),
                                 imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                componentWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth),
+                                componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
                                 imageMarginTop: 0.0,
                                 imageMarginBottom: 0.0,
                                 imageCallback: imageCallback,
@@ -307,7 +307,7 @@ class MarkdownTableBlockCellComponent {
                             MarkdownImagePixelmapSpanComponent(
                                 destination: (item.node as CommonmarkImage)().getDestination(),
                                 imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                componentWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth),
+                                componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
                                 imageMarginTop: 0.0,
                                 imageMarginBottom: 0.0,
                                 imageCallback: imageCallback,
@@ -452,7 +452,7 @@ class MarkdownTableBlockCellComponent {
                             MarkdownImageSpanComponent(
                                 destination: (item.node as CommonmarkImage)().getDestination(),
                                 imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                componentWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth),
+                                componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
                                 imageMarginTop: 0.0,
                                 imageMarginBottom: 0.0,
                                 imageCallback: imageCallback,
@@ -464,7 +464,7 @@ class MarkdownTableBlockCellComponent {
                             MarkdownImagePixelmapSpanComponent(
                                 destination: (item.node as CommonmarkImage)().getDestination(),
                                 imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                componentWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth),
+                                componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
                                 imageMarginTop: 0.0,
                                 imageMarginBottom: 0.0,
                                 imageCallback: imageCallback,
