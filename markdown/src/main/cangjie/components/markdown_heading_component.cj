@@ -302,6 +302,14 @@ class MarkdownHeadingComponent {
         .width(100.percent)
         // 设置行高
         .lineHeight(tableLineHeight())
+        // 自定义设置组件是否支持文本可复制粘贴
+        .interopCopyOption(true)
+        // 自定义长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件
+        .interopOnCopy({
+            str => if (markdownConfiguration.textCopyCallback.isSome()) {
+                markdownConfiguration.textCopyCallback()(str)
+            }
+        })
     }
 
     /**
