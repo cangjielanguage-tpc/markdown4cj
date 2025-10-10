@@ -6,12 +6,12 @@
         "name": "default",
         "signingConfig": "default",
         "targetSdkVersion": "5.1.1(19)",
-        "compatibleSdkVersion": "5.0.3(15)",
+        "compatibleSdkVersion": "5.0.0(12)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
           "strictMode": {
             "caseSensitiveCheck": true,
-            "useNormalizedOHMUrl": true
+            "useNormalizedOHMUrl": false
           }
         }
       }
@@ -40,7 +40,7 @@
     },
     {
       "name": "markdown",
-      "srcPath": "./markdown"
+      "srcPath": "./markdown",
     }
   ]
 }

@@ -240,30 +240,57 @@ class MarkdownHeadingComponent {
                         Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
                     } else if (item.node is ImageHtmlNode) {
                         // HTML图片
-                        MarkdownHtmlImageSpanComponent(
-                            destination: (item.node as ImageHtmlNode)().getDestination(),
-                            imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
-                            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-                            componentWidth:componentWidth,
-                            imageMarginTop: imageMarginTop,
-                            imageMarginBottom: imageMarginBottom,
-                            imageCallback: imageCallback
-                        )
+                        if (DeviceInfo.sdkApiVersion >= 15) {
+                            MarkdownHtmlImageSpanComponent(
+                                destination: (item.node as ImageHtmlNode)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                                imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                                componentWidth:componentWidth,
+                                imageMarginTop: imageMarginTop,
+                                imageMarginBottom: imageMarginBottom,
+                                imageCallback: imageCallback
+                            )
+                        } else {
+                            MarkdownHtmlImageSpan15Component(
+                                destination: (item.node as ImageHtmlNode)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                                imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                                componentWidth:componentWidth,
+                                imageMarginTop: imageMarginTop,
+                                imageMarginBottom: imageMarginBottom,
+                                imageCallback: imageCallback
+                            )
+                        }
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            MarkdownImageSpanComponent(
-                                destination: (item.node as CommonmarkImage)().getDestination(),
-                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                componentWidth: componentWidth,
-                                imageMarginTop: imageMarginTop,
-                                imageMarginBottom: imageMarginBottom,
-                                imageCallback: imageCallback,
-                                linkCallback: markdownConfiguration.linkCallback,
-                                isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                            )
+                            if (DeviceInfo.sdkApiVersion >= 15) {
+                                MarkdownImageSpanComponent(
+                                    destination: (item.node as CommonmarkImage)().getDestination(),
+                                    imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                    componentWidth: componentWidth,
+                                    imageMarginTop: imageMarginTop,
+                                    imageMarginBottom: imageMarginBottom,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
+                            } else {
+                                MarkdownImageSpan15Component(
+                                    destination: (item.node as CommonmarkImage)().getDestination(),
+                                    imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                    componentWidth: componentWidth,
+                                    imageMarginTop: imageMarginTop,
+                                    imageMarginBottom: imageMarginBottom,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
+                            }
                         } else {
                             MarkdownImagePixelmapSpanComponent(
                                 destination: (item.node as CommonmarkImage)().getDestination(),
@@ -485,7 +512,7 @@ class MarkdownHeadingComponent {
      */
     @Builder
     func headingTitleComponent() {
-        if(DeviceInfo.sdkApiVersion >=19){
+        if (DeviceInfo.sdkApiVersion >= 19) {
             headingTitleComponent19()
         } else {
             headingTitleComponent18()

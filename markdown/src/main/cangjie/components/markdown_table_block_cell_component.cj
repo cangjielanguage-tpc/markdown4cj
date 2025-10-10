@@ -292,17 +292,31 @@ class MarkdownTableBlockCellComponent {
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            MarkdownImageSpanComponent(
-                                destination: (item.node as CommonmarkImage)().getDestination(),
-                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
-                                imageMarginTop: 0.0,
-                                imageMarginBottom: 0.0,
-                                imageCallback: imageCallback,
-                                linkCallback: markdownConfiguration.linkCallback,
-                                isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
-                            )
+                            if (DeviceInfo.sdkApiVersion >= 15) {
+                                MarkdownImageSpanComponent(
+                                    destination: (item.node as CommonmarkImage)().getDestination(),
+                                    imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                    componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
+                                    imageMarginTop: 0.0,
+                                    imageMarginBottom: 0.0,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+                                )
+                            } else {
+                                MarkdownImageSpan15Component(
+                                    destination: (item.node as CommonmarkImage)().getDestination(),
+                                    imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                    componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
+                                    imageMarginTop: 0.0,
+                                    imageMarginBottom: 0.0,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+                                )
+                            }
                         } else {
                             MarkdownImagePixelmapSpanComponent(
                                 destination: (item.node as CommonmarkImage)().getDestination(),
