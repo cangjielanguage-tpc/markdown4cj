@@ -130,6 +130,23 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 }
             )
             .on(
+                "SpanNode",
+                {
+                    visitor, node =>
+                    let view = buildView(node, false, needProps: true)
+                    view.props?.add("SpanNode", node)
+                    visitor.visitChildren(node)
+                }
+            )
+            .on(
+                "IgnoreBlockNode",
+                {
+                    visitor, node =>
+                    buildView(node, false)
+                    visitor.visitChildren(node)
+                }
+            )
+            .on(
                 "IgnoreInlineNode",
                 {
                     visitor, node =>
@@ -228,7 +245,10 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                         let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
                         parentNode.appendChild(tagNode)
                     case Some(tag) where !tag.isClosed() => 
-                        let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
+                        var tagNode = htmlRenderer.render(visitor, htmlParser, tag)
+                        if (!(parentNode is Block) && tagNode is Block) {
+                            tagNode = IgnoreInlineNode()
+                        }
                         parentNode.appendChild(tagNode)
                         parentNode = tagNode
                     case _ => ()

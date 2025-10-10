@@ -79,7 +79,7 @@ class CustomizationCompleteDetailsPage {
         let markdownConfigurationBuilder: MarkdownConfigurationBuilder = MarkdownConfiguration.emptyBuilder()
         markdownConfigurationBuilder.setMarkdownTheme(setMarkdownTheme())
         markdownConfigurationBuilder.setImageCallback(imageCallback)
-        markdownConfigurationBuilder.setImageCallbackCallback(imageCallbackCallback)
+//        markdownConfigurationBuilder.setImageCallbackCallback(imageCallbackCallback)
         markdownConfigurationBuilder.setVideoCallback(videoCallback)
         markdownConfigurationBuilder.setVideoImageCallback(videoImageCallback)
         markdownConfigurationBuilder.setLinkCallback(linkCallback)
