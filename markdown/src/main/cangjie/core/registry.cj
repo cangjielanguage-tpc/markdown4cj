@@ -54,7 +54,7 @@ public class Registry {
             if (!plugins.contains(plugin)) {
                 // core-plugin must always be the first one (if it's present)
                 if (plugin is CorePlugin) {
-                    plugins.add(plugin,at:0)
+                    plugins.add(plugin, at: 0)
                 } else {
                     plugins.add(plugin)
                 }
