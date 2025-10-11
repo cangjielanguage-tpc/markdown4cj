@@ -516,18 +516,22 @@ func listPrefixLineHeight(isBullet: Bool, markdownConfiguration: MarkdownConfigu
  * @param isBullet 是否是无序列表
  * @return 返回前缀文本内容
  */
-func listPrefixStr(item: NodeView, isBullet: Bool): String {
+func listPrefixStr(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration): String {
     if (isBullet) {
         // 有序列表
         return "${item.order}."
     } else {
         // 无序列表
-        if (listOverallDepth(item) == 0) {
+        if (markdownConfiguration.markdownTheme.bulletListItemCircle) {
             return "${solidCircleToUnicode()}"
-        } else if (listOverallDepth(item) == 1) {
-            return "${hollowCircleToUnicode()}"
         } else {
-            return "${solidSquareToUnicode()}"
+            if (listOverallDepth(item) == 0) {
+                return "${solidCircleToUnicode()}"
+            } else if (listOverallDepth(item) == 1) {
+                return "${hollowCircleToUnicode()}"
+            } else {
+                return "${solidSquareToUnicode()}"
+            }
         }
     }
 }

@@ -135,6 +135,8 @@ class CustomizationCompleteDetailsPage {
             .setBulletListItemSize(8.0)
             //设置无序列表项行高(配合无序列表字体大小可以让圆点居中)
             .setBulletListItemLineHeight(20.0)
+            // 设置无序列表前缀是否为实心圆型
+            .setBulletListItemCircle(true)
 
 
             //设置链接颜色

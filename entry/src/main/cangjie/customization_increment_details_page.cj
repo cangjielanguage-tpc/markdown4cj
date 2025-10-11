@@ -204,6 +204,8 @@ class CustomizationIncrementDetailsPage {
         // 无序列表
         markdownThemeBuilder.setBulletListItemColor(Color.GREEN) // 设置无序列表项的颜色
         markdownThemeBuilder.setBulletListItemLineHeight(22.0) // 设置无序列表项文本行高
+        // 设置无序列表前缀是否为实心圆型
+        markdownThemeBuilder..setBulletListItemCircle(true)
         // 任务列表
 
         // 5、代码

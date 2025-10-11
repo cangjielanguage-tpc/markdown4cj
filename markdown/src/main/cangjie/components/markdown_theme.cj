@@ -279,6 +279,11 @@ public class MarkdownTheme {
     protected var orderedListItemLineHeight: Float64 = 22.0
 
     /**
+     * 无序列表前缀是否全部是实心圆型
+     */
+    protected var bulletListItemCircle: Bool = false
+
+    /**
      * 无序列表前缀文本颜色
      */
     protected var bulletListItemColor: Color = COLOR_FF191919
@@ -891,6 +896,7 @@ public class MarkdownTheme {
         this.orderedListItemSize = builder.orderedListItemSize
         this.orderedListItemLineHeight = builder.orderedListItemLineHeight
         // 4.4、无序列表
+        this.bulletListItemCircle = builder.bulletListItemCircle
         this.bulletListItemColor = builder.bulletListItemColor
         this.bulletListItemSize = builder.bulletListItemSize
         this.bulletListItemLineHeight = builder.bulletListItemLineHeight
@@ -1490,6 +1496,11 @@ public class MarkdownThemeBuilder {
      * 有序列表前缀文本行高
      */
     protected var orderedListItemLineHeight: Float64 = 22.0
+
+    /**
+     * 无序列表前缀是否全部是实心圆型
+     */
+    protected var bulletListItemCircle: Bool = false
 
     /**
      * 无序列表前缀文本颜色
@@ -2107,6 +2118,7 @@ public class MarkdownThemeBuilder {
         this.orderedListItemSize = theme.orderedListItemSize
         this.orderedListItemLineHeight = theme.orderedListItemLineHeight
         // 4.4、无序列表
+        this.bulletListItemCircle = theme.bulletListItemCircle
         this.bulletListItemColor = theme.bulletListItemColor
         this.bulletListItemSize = theme.bulletListItemSize
         this.bulletListItemLineHeight = theme.bulletListItemLineHeight
@@ -2946,6 +2958,17 @@ public class MarkdownThemeBuilder {
      */
     public func setOrderedListItemLineHeight(orderedListItemLineHeight: Float64): MarkdownThemeBuilder {
         this.orderedListItemLineHeight = orderedListItemLineHeight
+        return this
+    }
+
+    /**
+     * 设置无序列表前缀是否为实心圆型
+     *
+     * @param bulletListItemCircle 无序列表前缀是否为实心圆型 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setBulletListItemCircle(bulletListItemCircle: Bool): MarkdownThemeBuilder {
+        this.bulletListItemCircle = bulletListItemCircle
         return this
     }
 
