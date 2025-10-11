@@ -751,7 +751,7 @@ public class MarkdownTheme {
     /**
      * 图片圆角大小
      */
-    protected var imageBorderRadius: ?Float64 = 0.0
+    protected var imageBorderRadius: Float64 = 0.0
 
     /**
      * 图片默认占位图 - AppResource
@@ -1976,7 +1976,7 @@ public class MarkdownThemeBuilder {
     /**
      * 图片圆角大小
      */
-    protected var imageBorderRadius: ?Float64 = 0.0
+    protected var imageBorderRadius: Float64 = 0.0
 
     /**
      * 图片默认占位图 - AppResource
