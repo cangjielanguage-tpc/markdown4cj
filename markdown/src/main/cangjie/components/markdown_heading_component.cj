@@ -314,7 +314,10 @@ class MarkdownHeadingComponent {
                             markdownConfiguration: markdownConfiguration,
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
-                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.latexMathBackGroupColor)
+                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.latexMathBackGroupColor),
+                            linkCallback: markdownConfiguration.linkCallback,
+                            isLink: item.link.isSome(),
+                            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
                         )
                     } else {
                         // TODO 其他节点
@@ -483,7 +486,10 @@ class MarkdownHeadingComponent {
                             markdownConfiguration: markdownConfiguration,
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
-                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.latexMathBackGroupColor)
+                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.latexMathBackGroupColor),
+                            linkCallback: markdownConfiguration.linkCallback,
+                            isLink: item.link.isSome(),
+                            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
                         )
                     } else {
                         // TODO 其他节点
