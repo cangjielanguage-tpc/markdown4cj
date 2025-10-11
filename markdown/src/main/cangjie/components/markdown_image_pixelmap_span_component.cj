@@ -93,6 +93,11 @@ public class MarkdownImagePixelmapSpanComponent {
     @State
     var isBool: Bool = false
 
+    /**
+     * 图片圆角
+     */
+    var imageBorderRadius: Float64 = 0.0
+
     protected override func aboutToAppear(): Unit {
         imageCallPixelmap()
         componentWidth = px2vp(componentWidth.px).getOrThrow().value
@@ -107,6 +112,8 @@ public class MarkdownImagePixelmapSpanComponent {
         if (isBool) {
             if (imagePixelMap.isSome() && imageWidth.isSome() && imageHeight.isSome()) {
                 ImageSpan(imagePixelMap())
+                    // 自定义图片圆角
+                    .interopBorderRadius(imageBorderRadius)
                     // 设置组件自身的宽度
                     .width(imageWidth().px)
                     // 设置组件自身的高度
@@ -129,6 +136,8 @@ public class MarkdownImagePixelmapSpanComponent {
                     }
             } else {
                 ImageSpan(destination)
+                    // 自定义图片圆角
+                    .interopBorderRadius(imageBorderRadius)
                     // 设置组件自身的宽度
                     .width(componentWidth)
                     // 设置组件自身的高度
@@ -150,6 +159,8 @@ public class MarkdownImagePixelmapSpanComponent {
             }
         } else {
             ImageSpan(destination)
+                // 自定义图片圆角
+                .interopBorderRadius(imageBorderRadius)
                 // 设置组件自身的宽度
                 .width(componentWidth)
                 // 设置组件自身的高度

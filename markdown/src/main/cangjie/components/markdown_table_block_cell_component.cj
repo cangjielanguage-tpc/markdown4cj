@@ -302,7 +302,8 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+                                    linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
+                                    imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius
                                 )
                             } else {
                                 MarkdownImageSpan15Component(
@@ -314,7 +315,8 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+                                    linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
+                                    imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius
                                 )
                             }
                         } else {
@@ -328,7 +330,8 @@ class MarkdownTableBlockCellComponent {
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
                                 linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
-                                imageCallbackCallback: markdownConfiguration.imageCallbackCallback()
+                                imageCallbackCallback: markdownConfiguration.imageCallbackCallback(),
+                                imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius
                             )
                         }
                     } else if (item.node is LatexMathNode) {
@@ -472,7 +475,8 @@ class MarkdownTableBlockCellComponent {
                                 imageCallback: imageCallback,
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+                                linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
+                                imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius
                             )
                         } else {
                             MarkdownImagePixelmapSpanComponent(
@@ -485,7 +489,8 @@ class MarkdownTableBlockCellComponent {
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
                                 linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
-                                imageCallbackCallback: markdownConfiguration.imageCallbackCallback()
+                                imageCallbackCallback: markdownConfiguration.imageCallbackCallback(),
+                                imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius
                             )
                         }
                     } else if (item.node is LatexMathNode) {

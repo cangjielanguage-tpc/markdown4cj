@@ -749,6 +749,11 @@ public class MarkdownTheme {
     protected var isWord: Bool = true
 
     /**
+     * 图片圆角大小
+     */
+    protected var imageBorderRadius: ?Float64 = 0.0
+
+    /**
      * 图片默认占位图 - AppResource
      */
     protected var imageResource: ?AppResource = None
@@ -1017,6 +1022,7 @@ public class MarkdownTheme {
 
         // 14、图片
         this.isWord = builder.isWord
+        this.imageBorderRadius = builder.imageBorderRadius
         this.imageResource = builder.imageResource
         this.imagePlaceholder = builder.imagePlaceholder
         this.isAutoResize = builder.isAutoResize
@@ -1968,6 +1974,11 @@ public class MarkdownThemeBuilder {
     protected var isWord: Bool = true
 
     /**
+     * 图片圆角大小
+     */
+    protected var imageBorderRadius: ?Float64 = 0.0
+
+    /**
      * 图片默认占位图 - AppResource
      */
     protected var imageResource: ?AppResource = None
@@ -2239,6 +2250,7 @@ public class MarkdownThemeBuilder {
 
         // 14、图片
         this.isWord = theme.isWord
+        this.imageBorderRadius = theme.imageBorderRadius
         this.imageResource = theme.imageResource
         this.imagePlaceholder = theme.imagePlaceholder
         this.isAutoResize = theme.isAutoResize
@@ -3992,6 +4004,17 @@ public class MarkdownThemeBuilder {
      */
     public func setIsWord(isWord: Bool): MarkdownThemeBuilder {
         this.isWord = isWord
+        return this
+    }
+
+    /**
+     * 设置图片圆角
+     *
+     * @param imageBorderRadius 图片圆角 - 默认0.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageBorderRadius(imageBorderRadius: Float64): MarkdownThemeBuilder {
+        this.imageBorderRadius = imageBorderRadius
         return this
     }
 

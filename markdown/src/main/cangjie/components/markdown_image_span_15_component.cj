@@ -83,6 +83,11 @@ public class MarkdownImageSpan15Component {
      */
     var linkUrl: ?String = Option<String>.None
 
+    /**
+     * 图片圆角
+     */
+    var imageBorderRadius: Float64 = 0.0
+
     protected override func aboutToAppear(): Unit {
         componentWidth = px2vp(componentWidth.px).getOrThrow().value
     }
@@ -91,6 +96,8 @@ public class MarkdownImageSpan15Component {
         if (!isCompleted && !isError) {
             if (imagePlaceholder.isSome()) {
                 ImageSpan(imagePlaceholder())
+                    // 自定义图片圆角
+                    .interopBorderRadius(imageBorderRadius)
                     // 设置外边距属性
                     .margin(top: imageMarginTop, bottom: imageMarginBottom)
                     // 设置组件自身的宽度
@@ -103,6 +110,8 @@ public class MarkdownImageSpan15Component {
                 Span("")
             }
             ImageSpan(destination)
+                // 自定义图片圆角
+                .interopBorderRadius(imageBorderRadius)
                 // 是否隐藏
                 .visibility(Visibility.None)
                 // 图片成功加载时触发该回调，返回成功加载的图片尺寸
@@ -119,6 +128,8 @@ public class MarkdownImageSpan15Component {
                 )
         } else if (isCompleted && !isError) {
             ImageSpan(destination)
+                // 自定义图片圆角
+                .interopBorderRadius(imageBorderRadius)
                 // 设置外边距属性
                 .margin(top: imageMarginTop, bottom: imageMarginBottom)
                 // 设置组件自身的宽度

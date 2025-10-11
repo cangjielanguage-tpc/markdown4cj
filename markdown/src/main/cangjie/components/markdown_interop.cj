@@ -321,4 +321,16 @@ extend ImageSpan {
         }
         return this
     }
+
+    func interopBorderRadius(value: Float64): ImageSpan {
+        try {
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let imageSpan = global["ImageSpan"].asObject(ctx)
+            let radius = imageSpan["borderRadius"].asFunction(ctx)
+            radius.call(value.toJSValue(ctx))
+        } catch (e: Exception) {
+        }
+        return this
+    }
 }

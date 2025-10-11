@@ -272,6 +272,7 @@ class MarkdownParagraphComponent {
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
                                     linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius
                                 )
                             } else {
                                 MarkdownImageSpan15Component(
@@ -284,6 +285,7 @@ class MarkdownParagraphComponent {
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
                                     linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius
                                 )
                             }
                         } else {
@@ -297,7 +299,8 @@ class MarkdownParagraphComponent {
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
                                 linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
+                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback(),
+                                imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius
                             )
                         }
                     } else if (item.node is LatexMathNode) {
@@ -456,6 +459,7 @@ class MarkdownParagraphComponent {
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
                                 linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius
                             )
                         } else {
                             MarkdownImagePixelmapSpanComponent(
@@ -468,7 +472,8 @@ class MarkdownParagraphComponent {
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
                                 linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
+                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback(),
+                                imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius
                             )
                         }
                     } else if (item.node is LatexMathNode) {
