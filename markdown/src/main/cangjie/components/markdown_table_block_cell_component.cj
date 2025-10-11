@@ -356,7 +356,7 @@ class MarkdownTableBlockCellComponent {
         // 设置行高
         .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
         // 自定义设置组件是否支持文本可复制粘贴
-        .interopCopyOption(true)
+        .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) { true } else { false })
         // 自定义长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件
         .interopOnCopy({
             str => if (markdownConfiguration.textCopyCallback.isSome()) {
@@ -515,7 +515,7 @@ class MarkdownTableBlockCellComponent {
         // 设置行高
         .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
         // 支持设备内复制
-        .copyOption(CopyOptions.LocalDevice)
+        .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) { CopyOptions.LocalDevice } else { CopyOptions.None })
         // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
         .onCopy({
             str => if (markdownConfiguration.textCopyCallback.isSome()) {

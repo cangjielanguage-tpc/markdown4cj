@@ -54,6 +54,11 @@ public class MarkdownTheme {
     protected var abilityContext: ?AbilityContext = None
 
     /**
+     * 是否打开长按复制粘贴
+     */
+    protected var isOnCopy: Bool = true
+
+    /**
      * 模块间上下间距
      */
     protected var blockTopAndBottomMargins: Float64 = 8.0
@@ -843,6 +848,8 @@ public class MarkdownTheme {
         this.stageContext = builder.stageContext
         this.abilityContext = builder.abilityContext
 
+        this.isOnCopy = builder.isOnCopy
+
         // 2、模块间距
         this.blockTopAndBottomMargins = builder.blockTopAndBottomMargins
 
@@ -1277,6 +1284,11 @@ public class MarkdownThemeBuilder {
      * markdown上下文 - 仓颉
      */
     protected var abilityContext: ?AbilityContext = None
+
+    /**
+     * 是否打开长按复制粘贴
+     */
+    protected var isOnCopy: Bool = true
 
     /**
      * 模块间上下间距
@@ -2071,6 +2083,8 @@ public class MarkdownThemeBuilder {
         this.stageContext = theme.stageContext
         this.abilityContext = theme.abilityContext
 
+        this.isOnCopy = theme.isOnCopy
+
         // 2、模块间距
         this.blockTopAndBottomMargins = theme.blockTopAndBottomMargins
 
@@ -2475,6 +2489,17 @@ public class MarkdownThemeBuilder {
      */
     public func setAbilityContext(abilityContext: AbilityContext): MarkdownThemeBuilder {
         this.abilityContext = abilityContext
+        return this
+    }
+
+    /**
+     * 设置是否打开长按复制粘贴
+     *
+     * @param isOnCopy 是否打开长按复制粘贴 - 默认true
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsOnCopy(isOnCopy: Bool): MarkdownThemeBuilder {
+        this.isOnCopy = isOnCopy
         return this
     }
 
