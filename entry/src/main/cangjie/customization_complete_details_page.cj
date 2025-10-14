@@ -79,7 +79,7 @@ class CustomizationCompleteDetailsPage {
         let markdownConfigurationBuilder: MarkdownConfigurationBuilder = MarkdownConfiguration.emptyBuilder()
         markdownConfigurationBuilder.setMarkdownTheme(setMarkdownTheme())
         markdownConfigurationBuilder.setImageCallback(imageCallback)
-//        markdownConfigurationBuilder.setImageCallbackCallback(imageCallbackCallback)
+        markdownConfigurationBuilder.setImageCallbackCallback(imageCallbackCallback)
         markdownConfigurationBuilder.setVideoCallback(videoCallback)
         markdownConfigurationBuilder.setVideoImageCallback(videoImageCallback)
         markdownConfigurationBuilder.setLinkCallback(linkCallback)
@@ -244,8 +244,17 @@ class CustomizationCompleteDetailsPage {
     }
 
     func imageCallbackCallback(url: String):?Array<UInt8> {
-        var arrayUInt8: Array<UInt8> =  ResourceManager.getResourceManager(getStageContext(getGlobalAbilityContext())).getRawFileContent("startIcon.png")
-        return arrayUInt8
+        sleep(Duration.second * 1)
+//        if(url == "https://oimg3.selfimg.com.cn/voguecms/20244/71058e561714044454233.jpg" ||
+//            url =="https://i2.hdslb.com/bfs/archive/51354eed3c0e3784004b4896af2d3138d963873d.jpg" ||
+//            url == "https://images.pexels.com/photos/15286/pexels-photo.jpg" ||
+//            url == "https://markdown.com.cn/images/i-am-svg.svg"){
+//            return Option<Array<UInt8>>.None
+//        }
+//        var arrayUInt8: Array<UInt8> =  ResourceManager.getResourceManager(getStageContext(getGlobalAbilityContext())).getRawFileContent("startIcon.png")
+//        return arrayUInt8
+
+        return Option<Array<UInt8>>.None
     }
 
     func linkCallback(url: String) {

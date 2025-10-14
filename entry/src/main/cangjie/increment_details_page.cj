@@ -250,6 +250,7 @@ class IncrementDetailsPage {
         // 13、图片Banner
 
         // 14、图片
+        markdownThemeBuilder.setImageIsFixedAspectRatio(true)
 //        markdownThemeBuilder.setImagePadding(20) //  设置图片宽度边距
 
         // 15、表格

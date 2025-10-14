@@ -12,7 +12,7 @@ import ohos.state_macro_manage.*
  * 网络图片、沙盒图片
  */
 @Component
-public class MarkdownImagePixelmapSpanComponent {
+public class MarkdownImagePixelmapSpan15Component {
     /**
      * 图片链接
      */
@@ -118,6 +118,8 @@ public class MarkdownImagePixelmapSpanComponent {
         if (isBool) {
             if (imagePixelMap.isSome() && imageWidth.isSome() && imageHeight.isSome()) {
                 ImageSpan(imagePixelMap())
+                    // 设置外边距属性
+                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
                     // 自定义图片圆角
                     .interopBorderRadius(imageBorderRadius)
                     // 设置组件自身的宽度
@@ -140,6 +142,8 @@ public class MarkdownImagePixelmapSpanComponent {
                     }
             } else {
                 ImageSpan(destination)
+                    // 设置外边距属性
+                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
                     // 自定义图片圆角
                     .interopBorderRadius(imageBorderRadius)
                     // 设置组件自身的宽度
@@ -161,7 +165,7 @@ public class MarkdownImagePixelmapSpanComponent {
                         }
                     }
                     // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-                    .onComplete(
+                    .interopOnComplete(
                         {
                             imageLoadResult =>
                                 var aspectRatio: Float64 = imageLoadResult.height / imageLoadResult.width
@@ -176,6 +180,8 @@ public class MarkdownImagePixelmapSpanComponent {
             }
         } else {
             ImageSpan(destination)
+                // 设置外边距属性
+                .margin(top: imageMarginTop, bottom: imageMarginBottom)
                 // 自定义图片圆角
                 .interopBorderRadius(imageBorderRadius)
                 // 设置组件自身的宽度
@@ -197,7 +203,7 @@ public class MarkdownImagePixelmapSpanComponent {
                     }
                 }
                 // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-                .onComplete(
+                .interopOnComplete(
                     {
                         imageLoadResult =>
                             var aspectRatio: Float64 = imageLoadResult.height / imageLoadResult.width

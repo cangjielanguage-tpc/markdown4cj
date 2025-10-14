@@ -41,13 +41,13 @@ class CustomizationIncrementDetailsPage {
      * 一次加载文本个数
      */
     @State
-    var number: Int64 = 1
+    var number: Int64 = 5
 
     /**
      * 延时时间
      */
     @State
-    var sleepTime: Int64 = 50
+    var sleepTime: Int64 = 75
 
     /**
      * 滑动控制器
@@ -136,6 +136,7 @@ class CustomizationIncrementDetailsPage {
         MarkdownConfigurationBuilder.setLinkCallback(linkCallback)
         // 设置图片的点击事件
         MarkdownConfigurationBuilder.setImageCallback(imageCallback)
+        MarkdownConfigurationBuilder.setImageCallbackCallback(imageCallbackCallback)
         // 设置音频的点击事件
         MarkdownConfigurationBuilder.setAudioCallback(audioCallback)
         // 设置视频的点击事件
@@ -327,6 +328,18 @@ class CustomizationIncrementDetailsPage {
      */
     func videoImageCallback(url: String, videoImageCallbackCallback: (String, Float64, Int64) -> Unit) {
         Hilog.error(1, "1", "------------------------videoImageCallback:${url}")
+    }
+
+    func imageCallbackCallback(url: String):?Array<UInt8> {
+        sleep(Duration.second * 1)
+        if(url == "https://oimg3.selfimg.com.cn/voguecms/20244/71058e561714044454233.jpg" ||
+            url =="https://i2.hdslb.com/bfs/archive/51354eed3c0e3784004b4896af2d3138d963873d.jpg" ||
+            url == "https://images.pexels.com/photos/15286/pexels-photo.jpg" ||
+            url == "https://markdown.com.cn/images/i-am-svg.svg"){
+            return Option<Array<UInt8>>.None
+        }
+        var arrayUInt8: Array<UInt8> =  ResourceManager.getResourceManager(getStageContext(getGlobalAbilityContext())).getRawFileContent("startIcon.png")
+        return arrayUInt8
     }
 
     /**

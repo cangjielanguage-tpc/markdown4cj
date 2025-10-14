@@ -12,7 +12,7 @@ import ohos.state_macro_manage.*
  * 网络图片、沙盒图片
  */
 @Component
-public class MarkdownImagePixelmapSpanComponent {
+public class MarkdownImagePixelmapSpanRatioComponent {
     /**
      * 图片链接
      */
@@ -77,18 +77,6 @@ public class MarkdownImagePixelmapSpanComponent {
     var imageHeight: ?Float64 = Option<Float64>.None
 
     /**
-     * 图片宽度 - 单位px
-     */
-    @State
-    var width: Float64 = 0.0
-
-    /**
-     * 图片高度 - 单位px
-     */
-    @State
-    var height: Float64 = 0.0
-
-    /**
      * 图片数据
      */
     @State
@@ -105,8 +93,14 @@ public class MarkdownImagePixelmapSpanComponent {
      */
     var imageBorderRadius: Float64 = 0.0
 
+    /**
+     * 图片固定宽高比
+     */
+    var imageAspectRatioSize: Float64 = 16.0 / 9.0
+
     protected override func aboutToAppear(): Unit {
         imageCallPixelmap()
+        componentWidth = px2vp(componentWidth.px).getOrThrow().value
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -118,6 +112,8 @@ public class MarkdownImagePixelmapSpanComponent {
         if (isBool) {
             if (imagePixelMap.isSome() && imageWidth.isSome() && imageHeight.isSome()) {
                 ImageSpan(imagePixelMap())
+                    // 设置外边距属性
+                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
                     // 自定义图片圆角
                     .interopBorderRadius(imageBorderRadius)
                     // 设置组件自身的宽度
@@ -140,16 +136,16 @@ public class MarkdownImagePixelmapSpanComponent {
                     }
             } else {
                 ImageSpan(destination)
+                    // 设置外边距属性
+                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
                     // 自定义图片圆角
                     .interopBorderRadius(imageBorderRadius)
                     // 设置组件自身的宽度
-                    .width(width.px)
+                    .width(componentWidth)
                     // 设置组件自身的高度
-                    .height(height.px)
+                    .height(componentWidth / imageAspectRatioSize)
                     // 设置图片的缩放类型
-                    .objectFit(ImageFit.Contain)
-                    // 设置图片基于文本的对齐方式
-                    .verticalAlign(ImageSpanAlignment.CENTER)
+                    .objectFit(ImageFit.Cover)
                     // 点击动作触发该方法调用
                     .onClick {
                         evt => if (isLink) {
@@ -160,32 +156,19 @@ public class MarkdownImagePixelmapSpanComponent {
                             imageOnClick(destination, imageCallback)
                         }
                     }
-                    // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-                    .onComplete(
-                        {
-                            imageLoadResult =>
-                                var aspectRatio: Float64 = imageLoadResult.height / imageLoadResult.width
-                                width = if (componentWidth > imageLoadResult.width) {
-                                    imageLoadResult.width
-                                } else {
-                                    componentWidth
-                                }
-                                height = width * aspectRatio
-                        }
-                    )
             }
         } else {
             ImageSpan(destination)
+                // 设置外边距属性
+                .margin(top: imageMarginTop, bottom: imageMarginBottom)
                 // 自定义图片圆角
                 .interopBorderRadius(imageBorderRadius)
                 // 设置组件自身的宽度
-                .width(width.px)
+                .width(componentWidth)
                 // 设置组件自身的高度
-                .height(height.px)
+                .height(componentWidth / imageAspectRatioSize)
                 // 设置图片的缩放类型
-                .objectFit(ImageFit.Contain)
-                // 设置图片基于文本的对齐方式
-                .verticalAlign(ImageSpanAlignment.CENTER)
+                .objectFit(ImageFit.Cover)
                 // 点击动作触发该方法调用
                 .onClick {
                     evt => if (isLink) {
@@ -196,19 +179,6 @@ public class MarkdownImagePixelmapSpanComponent {
                         imageOnClick(destination, imageCallback)
                     }
                 }
-                // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-                .onComplete(
-                    {
-                        imageLoadResult =>
-                            var aspectRatio: Float64 = imageLoadResult.height / imageLoadResult.width
-                            width = if (componentWidth > imageLoadResult.width) {
-                                imageLoadResult.width
-                            } else {
-                                componentWidth
-                            }
-                            height = width * aspectRatio
-                    }
-                )
         }
     }
 
