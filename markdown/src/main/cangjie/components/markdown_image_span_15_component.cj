@@ -88,6 +88,11 @@ public class MarkdownImageSpan15Component {
      */
     var imageBorderRadius: Float64 = 0.0
 
+    /**
+     * 图片最大宽度百分比
+     */
+    var imageMaximumWidth: Float64 = 1.0
+
     func build() {
         ImageSpan(destination)
             // 设置外边距属性
@@ -95,9 +100,9 @@ public class MarkdownImageSpan15Component {
             // 自定义图片圆角
             .interopBorderRadius(imageBorderRadius)
             // 设置组件自身的宽度
-            .width(width.px)
+            .width((width * imageMaximumWidth).px)
             // 设置组件自身的高度
-            .height(height.px)
+            .height((height * imageMaximumWidth).px)
             // 设置图片的缩放类型
             .objectFit(ImageFit.Contain)
             // 设置图片基于文本的对齐方式

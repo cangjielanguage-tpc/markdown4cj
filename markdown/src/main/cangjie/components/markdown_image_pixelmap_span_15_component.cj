@@ -105,6 +105,11 @@ public class MarkdownImagePixelmapSpan15Component {
      */
     var imageBorderRadius: Float64 = 0.0
 
+    /**
+     * 图片最大宽度百分比
+     */
+    var imageMaximumWidth: Float64 = 1.0
+
     protected override func aboutToAppear(): Unit {
         imageCallPixelmap()
     }
@@ -123,9 +128,9 @@ public class MarkdownImagePixelmapSpan15Component {
                     // 自定义图片圆角
                     .interopBorderRadius(imageBorderRadius)
                     // 设置组件自身的宽度
-                    .width(imageWidth().px)
+                    .width((imageWidth() * imageMaximumWidth).px)
                     // 设置组件自身的高度
-                    .height(imageHeight().px)
+                    .height((imageHeight() * imageMaximumWidth).px)
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Contain)
                     // 设置图片基于文本的对齐方式
@@ -147,9 +152,9 @@ public class MarkdownImagePixelmapSpan15Component {
                     // 自定义图片圆角
                     .interopBorderRadius(imageBorderRadius)
                     // 设置组件自身的宽度
-                    .width(width.px)
+                    .width((width * imageMaximumWidth).px)
                     // 设置组件自身的高度
-                    .height(height.px)
+                    .height((height * imageMaximumWidth).px)
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Contain)
                     // 设置图片基于文本的对齐方式
@@ -185,9 +190,9 @@ public class MarkdownImagePixelmapSpan15Component {
                 // 自定义图片圆角
                 .interopBorderRadius(imageBorderRadius)
                 // 设置组件自身的宽度
-                .width(width.px)
+                .width((width * imageMaximumWidth).px)
                 // 设置组件自身的高度
-                .height(height.px)
+                .height((height * imageMaximumWidth).px)
                 // 设置图片的缩放类型
                 .objectFit(ImageFit.Contain)
                 // 设置图片基于文本的对齐方式

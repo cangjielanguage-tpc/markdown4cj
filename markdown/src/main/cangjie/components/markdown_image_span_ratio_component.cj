@@ -93,6 +93,11 @@ public class MarkdownImageSpanRatioComponent {
      */
     var imageAspectRatioSize: Float64 = 16.0 / 9.0
 
+    /**
+     * 图片最大宽度百分比
+     */
+    var imageMaximumWidth: Float64 = 1.0
+
     protected override func aboutToAppear(): Unit {
         componentWidth = px2vp(componentWidth.px).getOrThrow().value
     }
@@ -106,9 +111,9 @@ public class MarkdownImageSpanRatioComponent {
                     // 自定义图片圆角
                     .interopBorderRadius(imageBorderRadius)
                     // 设置组件自身的宽度
-                    .width(100.percent)
+                    .width((100.0 * imageMaximumWidth).percent)
                     // 设置组件自身的高度
-                    .height(componentWidth / imageAspectRatioSize)
+                    .height(componentWidth / imageAspectRatioSize * imageMaximumWidth)
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Cover)
             } else {
@@ -138,9 +143,9 @@ public class MarkdownImageSpanRatioComponent {
                 // 自定义图片圆角
                 .interopBorderRadius(imageBorderRadius)
                 // 设置组件自身的宽度
-                .width(componentWidth)
+                .width(componentWidth * imageMaximumWidth)
                 // 设置组件自身的高度
-                .height(componentWidth / imageAspectRatioSize)
+                .height(componentWidth / imageAspectRatioSize * imageMaximumWidth)
                 // 设置图片的缩放类型
                 .objectFit(ImageFit.Cover)
                 // 点击动作触发该方法调用

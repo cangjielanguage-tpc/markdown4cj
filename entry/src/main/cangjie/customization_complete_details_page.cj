@@ -93,6 +93,10 @@ class CustomizationCompleteDetailsPage {
         let markdownTheme: MarkdownTheme = MarkdownTheme
             .emptyBuilder()
 
+            .setImageMarginTop(10.0)
+            .setImageMarginBottom(10.0)
+            .setImageMaximumWidth(0.5)
+
              .setIsLinkSize(false)
              //设置每个模块之间上下间距
              .setBlockTopAndBottomMargins(6.0)

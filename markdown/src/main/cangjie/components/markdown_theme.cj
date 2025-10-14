@@ -754,6 +754,11 @@ public class MarkdownTheme {
     protected var isWord: Bool = true
 
     /**
+     * 图片最大宽度百分比
+     */
+    protected var imageMaximumWidth: Float64 = 1.0
+
+    /**
      * 图片圆角大小
      */
     protected var imageBorderRadius: Float64 = 0.0
@@ -1039,6 +1044,7 @@ public class MarkdownTheme {
 
         // 14、图片
         this.isWord = builder.isWord
+        this.imageMaximumWidth = builder.imageMaximumWidth
         this.imageBorderRadius = builder.imageBorderRadius
         this.imageIsFixedAspectRatio = builder.imageIsFixedAspectRatio
         this.imageAspectRatioSize = builder.imageAspectRatioSize
@@ -1998,6 +2004,11 @@ public class MarkdownThemeBuilder {
     protected var isWord: Bool = true
 
     /**
+     * 图片最大宽度百分比
+     */
+    protected var imageMaximumWidth: Float64 = 1.0
+
+    /**
      * 图片圆角大小
      */
     protected var imageBorderRadius: Float64 = 0.0
@@ -2286,6 +2297,7 @@ public class MarkdownThemeBuilder {
 
         // 14、图片
         this.isWord = theme.isWord
+        this.imageMaximumWidth = theme.imageMaximumWidth
         this.imageBorderRadius = theme.imageBorderRadius
         this.imageIsFixedAspectRatio = theme.imageIsFixedAspectRatio
         this.imageAspectRatioSize = theme.imageAspectRatioSize
@@ -4053,6 +4065,17 @@ public class MarkdownThemeBuilder {
      */
     public func setIsWord(isWord: Bool): MarkdownThemeBuilder {
         this.isWord = isWord
+        return this
+    }
+
+    /**
+     * 设置图片最大宽度百分比
+     *
+     * @param imageMaximumWidth 图片最大宽度百分比 - 默认1.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageMaximumWidth(imageMaximumWidth: Float64): MarkdownThemeBuilder {
+        this.imageMaximumWidth = imageMaximumWidth
         return this
     }
 
