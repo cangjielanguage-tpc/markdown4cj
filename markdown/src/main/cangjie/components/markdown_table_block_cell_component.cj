@@ -360,7 +360,10 @@ class MarkdownTableBlockCellComponent {
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
                             backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
-                            maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                            maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp,
+                            linkCallback: markdownConfiguration.linkCallback,
+                            isLink: item.link.isSome(),
+                            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
                         )
                     } else {
                         // TODO 其他节点
@@ -552,7 +555,10 @@ class MarkdownTableBlockCellComponent {
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
                             backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
-                            maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                            maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp,
+                            linkCallback: markdownConfiguration.linkCallback,
+                            isLink: item.link.isSome(),
+                            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
                         )
                     } else {
                         // TODO 其他节点

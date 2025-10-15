@@ -67,6 +67,21 @@ public class MarkdownLatexImageSpanComponent {
     @State
     var isBool: Bool = false
 
+    /**
+     * 链接点击事件
+     */
+    var linkCallback: ?(String) -> Unit
+
+    /**
+     * 是否是链接
+     */
+    var isLink: Bool = false
+
+    /**
+     * 链接url
+     */
+    var linkUrl: ?String = Option<String>.None
+
     protected override func aboutToAppear(): Unit {
         // 数学公式解析
         latexMathImagePixelmap()
@@ -95,7 +110,14 @@ public class MarkdownLatexImageSpanComponent {
                     .verticalAlign(ImageSpanAlignment.CENTER)
                     // 点击动作触发该方法调用
                     .onClick {
-                        evt => latexImageOnClick(arrayUint8(), imageHeight().px, imageWidth().px, markdownConfiguration.latexImageCallback)
+                        evt =>
+                            if(isLink){
+                                if(linkCallback.isSome() && linkUrl.isSome()){
+                                    linkCallback()(linkUrl())
+                                }
+                            } else {
+                                latexImageOnClick(arrayUint8(), imageHeight().px, imageWidth().px, markdownConfiguration.latexImageCallback)
+                            }
                     }
             } else{
                 Span(strLatexMath)
