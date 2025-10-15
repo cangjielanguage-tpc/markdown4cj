@@ -371,6 +371,76 @@ func paragraphTextComponent(nodeView: NodeView, markdownConfiguration: MarkdownC
 }
 
 /**
+ * 段落Toc文本
+ */
+@Builder
+func paragraphTocComponent18(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, tocListOnClick: (Int64) -> Unit) {
+    // 设置文本内容
+    Span(spanText(nodeView))
+        // 设置文本的字体列表
+        .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
+        // 设置文本尺寸
+        .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+        // 设置文本的字体粗细
+        .fontWeight(spanFontWeight(nodeView, false))
+        // 设置文本的字体样式
+        .fontStyle(spanFontStyle(nodeView))
+        // 设置文本颜色
+        .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+        // 自定义背景色
+        .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
+        // 设置文本字符间距
+        .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
+        // 设置文本装饰线样式及其颜色
+        .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
+        // 点击动作触发该方法调用
+        .onClick {
+            evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)
+        }
+}
+
+/**
+ * 段落Toc文本
+ */
+@Builder
+func paragraphTocComponent19(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, tocListOnClick: (Int64) -> Unit) {
+    // 设置文本内容
+    Span(spanText(nodeView))
+        // 设置文本的字体列表
+        .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
+        // 设置文本尺寸
+        .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+        // 设置文本的字体粗细
+        .fontWeight(spanFontWeight(nodeView, false))
+        // 设置文本的字体样式
+        .fontStyle(spanFontStyle(nodeView))
+        // 设置文本颜色
+        .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+        // 设置背景样式
+        .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+        // 设置文本字符间距
+        .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
+        // 设置文本装饰线样式及其颜色
+        .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
+        // 点击动作触发该方法调用
+        .onClick {
+            evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)
+        }
+}
+
+/**
+ * 段落Toc文本
+ */
+@Builder
+func paragraphTocComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, tocListOnClick: (Int64) -> Unit) {
+    if (DeviceInfo.sdkApiVersion >= 19) {
+        paragraphTocComponent19(nodeView, markdownConfiguration, tocListOnClick)
+    } else {
+        paragraphTocComponent18(nodeView, markdownConfiguration, tocListOnClick)
+    }
+}
+
+/**
  * 段落链接文本
  */
 @Builder

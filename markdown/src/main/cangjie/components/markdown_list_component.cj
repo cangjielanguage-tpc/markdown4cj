@@ -59,6 +59,11 @@ public class MarkdownListComponent {
     var fontCallback: (String) -> Unit
 
     /**
+     * TOC列表点击事件回调
+     */
+    var tocListOnClick: (Int64) -> Unit
+
+    /**
      * 图片点击事件
      */
     var imageCallback: (String) -> Unit
@@ -125,6 +130,7 @@ public class MarkdownListComponent {
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 fontCallback: fontCallback,
+                                tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
                                 videoCallback: videoCallback,
                                 componentWidth: componentWidth,

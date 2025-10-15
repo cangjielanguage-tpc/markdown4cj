@@ -59,6 +59,11 @@ class MarkdownListItemComponent {
     var fontCallback: (String) -> Unit
 
     /**
+     * TOC列表点击事件回调
+     */
+    var tocListOnClick: (Int64) -> Unit
+
+    /**
      * 图片点击事件
      */
     var imageCallback: (String) -> Unit
@@ -110,6 +115,7 @@ class MarkdownListItemComponent {
                                 imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
+                                tocListOnClick: tocListOnClick,
                                 componentWidth: componentWidth,
                                 isListTo:true,
                                 indexList: indexAdd(indexList, idx),
@@ -172,6 +178,7 @@ class MarkdownListItemComponent {
                                 marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
+                                tocListOnClick: tocListOnClick,
                                 videoCallback: videoCallback,
                                 componentWidth: componentWidth,
                                 indexList: indexAdd(indexList, idx),
@@ -189,6 +196,7 @@ class MarkdownListItemComponent {
                                 marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
+                                tocListOnClick: tocListOnClick,
                                 videoCallback: videoCallback,
                                 componentWidth: componentWidth,
                                 indexList: indexAdd(indexList, idx),
@@ -205,6 +213,7 @@ class MarkdownListItemComponent {
                                 marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
+                                tocListOnClick: tocListOnClick,
                                 videoCallback: videoCallback,
                                 componentWidth: componentWidth,
                                 indexList: indexAdd(indexList, idx),

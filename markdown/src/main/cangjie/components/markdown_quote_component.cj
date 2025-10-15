@@ -56,6 +56,11 @@ public class MarkdownQuoteComponent {
     var fontCallback: (String) -> Unit
 
     /**
+     * TOC列表点击事件回调
+     */
+    var tocListOnClick: (Int64) -> Unit
+
+    /**
      * 图片点击事件
      */
     var imageCallback: (String) -> Unit
@@ -105,6 +110,7 @@ public class MarkdownQuoteComponent {
                                     imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
                                     imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
                                     fontCallback: fontCallback,
+                                    tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isListTo: true,
@@ -161,6 +167,7 @@ public class MarkdownQuoteComponent {
                                     marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
+                                    tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
                                     componentWidth: componentWidth,
@@ -176,6 +183,7 @@ public class MarkdownQuoteComponent {
                                     marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
+                                    tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
                                     componentWidth: componentWidth,
@@ -190,6 +198,7 @@ public class MarkdownQuoteComponent {
                                     marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
                                     fontCallback: fontCallback,
+                                    tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
                                     componentWidth: componentWidth,

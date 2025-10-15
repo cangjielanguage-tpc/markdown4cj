@@ -65,6 +65,11 @@ class MarkdownParagraphComponent {
     var fontCallback: (String) -> Unit
 
     /**
+     * TOC列表点击事件回调
+     */
+    var tocListOnClick: (Int64) -> Unit
+
+    /**
      * 图片点击事件
      */
     var imageCallback: (String) -> Unit
@@ -157,6 +162,13 @@ class MarkdownParagraphComponent {
                         paragraphTextComponent(
                             item,
                             markdownConfiguration
+                        )
+                    } else if (item.node is HeadLink) {
+                        // TOC列表
+                        paragraphTocComponent(
+                            item,
+                            markdownConfiguration,
+                            tocListOnClick
                         )
                     } else if (item.node is Footnote) {
                         // 脚注
@@ -445,6 +457,13 @@ class MarkdownParagraphComponent {
                         paragraphTextComponent(
                             item,
                             markdownConfiguration
+                        )
+                    } else if (item.node is HeadLink) {
+                        // TOC列表
+                        paragraphTocComponent(
+                            item,
+                            markdownConfiguration,
+                            tocListOnClick
                         )
                     } else if (item.node is Footnote) {
                         // 脚注

@@ -48,6 +48,8 @@ public class MarkdownComponent {
             .usePlugin(LinkifyPlugin.create())
             // 脚注插件
             .usePlugin(FootnotePlugin.create())
+            // TOC插件
+            .usePlugin(TocPlugin.create())
             // 图片列表插件
             .usePlugin(ImageCollectPlugin.create())
             // 唯一ID标识插件
@@ -96,7 +98,12 @@ public class MarkdownComponent {
     /**
      * 注脚事件回调数据
      */
-    var indexHashMap: HashMap<String, Float64> = HashMap<String, Float64>()
+    var indexFootnoteHashMap: HashMap<String, Float64> = HashMap<String, Float64>()
+
+    /**
+     * toc事件回调数据
+     */
+    var indexTocHashMap: HashMap<Int64, Float64> = HashMap<Int64, Float64>()
 
     /**
      * list控制器
@@ -167,6 +174,8 @@ public class MarkdownComponent {
                                     headingComponents: markdownCacheConfiguration.headingComponents
                                 )
                             }
+                            // 组件区域变化时触发该回调
+                            .onAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
                         } else if (item.node is Paragraph) {
                             // 段落
                             ListItem() {
@@ -177,6 +186,7 @@ public class MarkdownComponent {
                                     marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
+                                    tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
                                     imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
@@ -196,6 +206,7 @@ public class MarkdownComponent {
                                     marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
+                                    tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
                                     componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
@@ -213,6 +224,7 @@ public class MarkdownComponent {
                                     marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
+                                    tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
                                     componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
@@ -229,6 +241,7 @@ public class MarkdownComponent {
                                     marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
+                                    tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
                                     componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
@@ -323,6 +336,7 @@ public class MarkdownComponent {
                                         marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                         marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                         fontCallback: fontCallback,
+                                        tocListOnClick: tocListOnClick,
                                         imageCallback: imageCallback,
                                         componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
                                         isListTo:false,
@@ -335,7 +349,7 @@ public class MarkdownComponent {
                             }
                             // 组件区域变化时触发该回调
                             .onAreaChange {
-                                oldValue, newValue => indexHashMap.add((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
+                                oldValue, newValue => indexFootnoteHashMap.add((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
                             }
                         } else if (item.node is SlideBlock) {
                             // 图片幻灯片
@@ -592,10 +606,21 @@ public class MarkdownComponent {
     }
 
     /**
+     * TOC列表点击事件回调
+     */
+    func tocListOnClick(index: Int64): Unit {
+        if (let Some(v) <- indexTocHashMap.get(index)) {
+            if (let Some(w) <- markdownConfiguration.tocIndexCallback) {
+                w(v)
+            }
+        }
+    }
+
+    /**
      * 脚注点击回调
      */
     func fontCallback(noteid: String): Unit {
-        if (let Some(v) <- indexHashMap.get(noteid)) {
+        if (let Some(v) <- indexFootnoteHashMap.get(noteid)) {
             if (let Some(w) <- markdownConfiguration.footnoteCallback) {
                 w(v)
             }
