@@ -120,75 +120,14 @@ public class MarkdownImagePixelmapSpan15Component {
     }
 
     func build() {
-        if (isBool) {
-            if (imagePixelMap.isSome() && imageWidth.isSome() && imageHeight.isSome()) {
-                ImageSpan(imagePixelMap())
-                    // 设置外边距属性
-                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
-                    // 自定义图片圆角
-                    .interopBorderRadius(imageBorderRadius)
-                    // 设置组件自身的宽度
-                    .width((imageWidth() * imageMaximumWidth).px)
-                    // 设置组件自身的高度
-                    .height((imageHeight() * imageMaximumWidth).px)
-                    // 设置图片的缩放类型
-                    .objectFit(ImageFit.Contain)
-                    // 设置图片基于文本的对齐方式
-                    .verticalAlign(ImageSpanAlignment.CENTER)
-                    // 点击动作触发该方法调用
-                    .onClick {
-                        evt => if (isLink) {
-                            if (linkCallback.isSome() && linkUrl.isSome()) {
-                                linkCallback()(linkUrl())
-                            }
-                        } else {
-                            imageOnClick(destination, imageCallback)
-                        }
-                    }
-            } else {
-                ImageSpan(destination)
-                    // 设置外边距属性
-                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
-                    // 自定义图片圆角
-                    .interopBorderRadius(imageBorderRadius)
-                    // 设置组件自身的宽度
-                    .width((width * imageMaximumWidth).px)
-                    // 设置组件自身的高度
-                    .height((height * imageMaximumWidth).px)
-                    // 设置图片的缩放类型
-                    .objectFit(ImageFit.Contain)
-                    // 设置图片基于文本的对齐方式
-                    .verticalAlign(ImageSpanAlignment.CENTER)
-                    // 点击动作触发该方法调用
-                    .onClick {
-                        evt => if (isLink) {
-                            if (linkCallback.isSome() && linkUrl.isSome()) {
-                                linkCallback()(linkUrl())
-                            }
-                        } else {
-                            imageOnClick(destination, imageCallback)
-                        }
-                    }
-                    // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-                    .interopOnComplete(
-                        {
-                            imageLoadResult =>
-                                var aspectRatio: Float64 = imageLoadResult.height / imageLoadResult.width
-                                width = if (componentWidth > imageLoadResult.width) {
-                                    imageLoadResult.width
-                                } else {
-                                    componentWidth
-                                }
-                                height = width * aspectRatio
-                        }
-                    )
-            }
-        } else {
+        if (true) {
             ImageSpan(destination)
                 // 设置外边距属性
                 .margin(top: imageMarginTop, bottom: imageMarginBottom)
                 // 自定义图片圆角
                 .interopBorderRadius(imageBorderRadius)
+                // 设置组件的可见性
+                .visibility(if (!(isBool && imagePixelMap.isSome() && imageWidth.isSome() && imageHeight.isSome())) { Visibility.Visible } else { Visibility.None })
                 // 设置组件自身的宽度
                 .width((width * imageMaximumWidth).px)
                 // 设置组件自身的高度
@@ -220,6 +159,31 @@ public class MarkdownImagePixelmapSpan15Component {
                             height = width * aspectRatio
                     }
                 )
+            if (isBool && imagePixelMap.isSome() && imageWidth.isSome() && imageHeight.isSome()) {
+                ImageSpan(imagePixelMap())
+                    // 设置外边距属性
+                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
+                    // 自定义图片圆角
+                    .interopBorderRadius(imageBorderRadius)
+                    // 设置组件自身的宽度
+                    .width((imageWidth() * imageMaximumWidth).px)
+                    // 设置组件自身的高度
+                    .height((imageHeight() * imageMaximumWidth).px)
+                    // 设置图片的缩放类型
+                    .objectFit(ImageFit.Contain)
+                    // 设置图片基于文本的对齐方式
+                    .verticalAlign(ImageSpanAlignment.CENTER)
+                    // 点击动作触发该方法调用
+                    .onClick {
+                        evt => if (isLink) {
+                            if (linkCallback.isSome() && linkUrl.isSome()) {
+                                linkCallback()(linkUrl())
+                            }
+                        } else {
+                            imageOnClick(destination, imageCallback)
+                        }
+                    }
+            }
         }
     }
 
