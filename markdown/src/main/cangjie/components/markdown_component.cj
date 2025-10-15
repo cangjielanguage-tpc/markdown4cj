@@ -337,6 +337,30 @@ public class MarkdownComponent {
                             .onAreaChange {
                                 oldValue, newValue => indexHashMap.add((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
                             }
+                        } else if (item.node is SlideBlock) {
+                            // 图片幻灯片
+                            ListItem() {
+                                MarkdownImageBannerComponent(
+                                    slideBlockNodeView: item,
+                                    markdownConfiguration: markdownConfiguration,
+                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                    imageCallback: imageCallback
+                                )
+                            }
+                        } else if (item.node is FencedCodeBlockListBlock) {
+                            // 组合代码
+                            ListItem() {
+                                MarkdownCodeBlockListComponent(
+                                    nodeView: item,
+                                    strInfos: toCodeList(item)[0],
+                                    strText: toCodeList(item)[1],
+                                    strInfoText: toCodeList(item)[2],
+                                    markdownConfiguration: markdownConfiguration,
+                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                                )
+                            }
                         } else if (item.node is BlockAD) {
                             // 广告
                             ListItem() {

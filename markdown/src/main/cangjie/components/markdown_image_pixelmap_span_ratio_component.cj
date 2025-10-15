@@ -9,7 +9,7 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 网络图片、沙盒图片
+ * 网络图片、沙盒图片 - 固定宽高比、设置图片预处理接口
  */
 @Component
 public class MarkdownImagePixelmapSpanRatioComponent {

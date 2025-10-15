@@ -9,7 +9,7 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 网络图片、沙盒图片
+ * 网络图片、沙盒图片 - API15以下、自适应宽高比、不设置图片预处理接口
  */
 @Component
 public class MarkdownImageSpan15Component {

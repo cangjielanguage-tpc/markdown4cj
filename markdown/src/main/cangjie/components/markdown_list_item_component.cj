@@ -265,6 +265,30 @@ class MarkdownListItemComponent {
                                 videoCallback: videoCallback
                             )
                         }
+                    } else if (item.node is SlideBlock) {
+                        // 图片幻灯片
+                        ListItem() {
+                            MarkdownImageBannerComponent(
+                                slideBlockNodeView: item,
+                                markdownConfiguration: markdownConfiguration,
+                                imageCallback: imageCallback,
+                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                            )
+                        }
+                    } else if (item.node is FencedCodeBlockListBlock) {
+                        // 组合代码
+                        ListItem() {
+                            MarkdownCodeBlockListComponent(
+                                nodeView: item,
+                                strInfos: toCodeList(item)[0],
+                                strText: toCodeList(item)[1],
+                                strInfoText: toCodeList(item)[2],
+                                markdownConfiguration: markdownConfiguration,
+                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                            )
+                        }
                     } else {
                         // TODO 其他节点
                         ListItem() {

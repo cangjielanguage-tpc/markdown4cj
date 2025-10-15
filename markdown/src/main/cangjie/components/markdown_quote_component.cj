@@ -242,6 +242,26 @@ public class MarkdownQuoteComponent {
                                     marginBottom: markdownConfiguration.markdownTheme.videoMarginBottom,
                                     videoCallback: videoCallback
                                 )
+                            } else if (item.node is SlideBlock) {
+                                // 图片幻灯片
+                                MarkdownImageBannerComponent(
+                                    slideBlockNodeView: item,
+                                    markdownConfiguration: markdownConfiguration,
+                                    imageCallback: imageCallback,
+                                    marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                )
+                            } else if (item.node is FencedCodeBlockListBlock) {
+                                // 组合代码
+                                MarkdownCodeBlockListComponent(
+                                    nodeView: item,
+                                    strInfos: toCodeList(item)[0],
+                                    strText: toCodeList(item)[1],
+                                    strInfoText: toCodeList(item)[2],
+                                    markdownConfiguration: markdownConfiguration,
+                                    marginTop: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins,
+                                )
                             } else {
                                 // TODO 其他节点
                                 Text("")

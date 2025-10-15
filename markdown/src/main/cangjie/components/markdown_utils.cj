@@ -31,6 +31,28 @@ let SECONDS_PER_HOUR: Int64 = 3600
 let SECONDS_PER_MINUTE: Int64 = 60
 
 /**
+ * 组合代码解析
+ *
+ * @param codeBlockListNodeView NodeView
+ * @return 返回代码类型列表、代码内容列表、代码真实类型列表
+ */
+func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<String>, ArrayList<String>) {
+    var strText: ArrayList<String> = ArrayList<String>()
+    var strInfoText: ArrayList<String> = ArrayList<String>()
+    var strInfo: ArrayList<String> = ArrayList<String>()
+    for (nodeView in codeBlockListNodeView.children) {
+        if (nodeView.node is FencedCodeBlock) {
+            strText.add((nodeView.node as FencedCodeBlock)().getLiteral())
+            strInfoText.add((nodeView.node as FencedCodeBlock)().getInfo())
+        }
+    }
+    if (codeBlockListNodeView.node is FencedCodeBlockListBlock) {
+        strInfo = (codeBlockListNodeView.node as FencedCodeBlockListBlock)().tabs
+    }
+    return (strInfo, strText, strInfoText)
+}
+
+/**
  * 文本内容设置
  *
  * @param nodeView 文本内容的NodeView（Text、Code、HeadLink）
