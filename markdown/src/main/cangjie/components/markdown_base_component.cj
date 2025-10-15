@@ -946,7 +946,7 @@ func tableComponentFootnote(nodeView: NodeView, isHeader: Bool, markdownConfigur
 @Builder
 func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration) {
     // 设置文本内容
-    Text(listPrefixStr(item, isBullet))
+    Text(listPrefixStr(item, isBullet, markdownConfiguration))
         // 设置文本颜色
         .fontColor(listPrefixColor(markdownConfiguration.markdownTheme, isBullet))
         // 设置文本尺寸

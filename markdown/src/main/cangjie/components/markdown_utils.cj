@@ -269,8 +269,10 @@ func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownThem
                     if(let Some(m) <- color){
                         return m
                     } else {
-                        let colorUInt32: UInt32 = UInt32.parse(n.replace("#", "0x"))
-                        return Color(colorUInt32)
+                        if (n.startsWith("#")) {
+                            let colorUInt32: UInt32 = UInt32.parse(n.replace("#", "0x"))
+                            return Color(colorUInt32)
+                        }
                     }
                 }
             }
@@ -538,18 +540,22 @@ func listPrefixLineHeight(isBullet: Bool, markdownConfiguration: MarkdownConfigu
  * @param isBullet 是否是无序列表
  * @return 返回前缀文本内容
  */
-func listPrefixStr(item: NodeView, isBullet: Bool): String {
+func listPrefixStr(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration): String {
     if (isBullet) {
         // 有序列表
         return "${item.order}."
     } else {
         // 无序列表
-        if (listOverallDepth(item) == 0) {
+        if (markdownConfiguration.markdownTheme.bulletListItemCircle) {
             return "${solidCircleToUnicode()}"
-        } else if (listOverallDepth(item) == 1) {
-            return "${hollowCircleToUnicode()}"
         } else {
-            return "${solidSquareToUnicode()}"
+            if (listOverallDepth(item) == 0) {
+                return "${solidCircleToUnicode()}"
+            } else if (listOverallDepth(item) == 1) {
+                return "${hollowCircleToUnicode()}"
+            } else {
+                return "${solidSquareToUnicode()}"
+            }
         }
     }
 }
@@ -1194,7 +1200,7 @@ func sizeStringToSize(sizeString: String): ?Float64 {
         case "x-large" => 24.0
         case "xx-large" => 32.0
         case "xxx-large" => 36.0
-        case _ => if (sizeStr[sizeStr.size - 2..] == "px") {
+        case _ => if (sizeStr.size > 2 && sizeStr[sizeStr.size - 2..] == "px") {
             Float64.parse(sizeStr[..sizeStr.size - 2])
         } else {
             Float64.parse(sizeStr)
