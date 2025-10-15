@@ -269,8 +269,10 @@ func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownThem
                     if(let Some(m) <- color){
                         return m
                     } else {
-                        let colorUInt32: UInt32 = UInt32.parse(n.replace("#", "0x"))
-                        return Color(colorUInt32)
+                        if (n.startsWith("#")) {
+                            let colorUInt32: UInt32 = UInt32.parse(n.replace("#", "0x"))
+                            return Color(colorUInt32)
+                        }
                     }
                 }
             }
@@ -1198,7 +1200,7 @@ func sizeStringToSize(sizeString: String): ?Float64 {
         case "x-large" => 24.0
         case "xx-large" => 32.0
         case "xxx-large" => 36.0
-        case _ => if (sizeStr[sizeStr.size - 2..] == "px") {
+        case _ => if (sizeStr.size > 2 && sizeStr[sizeStr.size - 2..] == "px") {
             Float64.parse(sizeStr[..sizeStr.size - 2])
         } else {
             Float64.parse(sizeStr)
