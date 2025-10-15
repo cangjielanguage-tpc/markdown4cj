@@ -124,6 +124,8 @@ public class MarkdownImagePixelmapSpanComponent {
             ImageSpan(destination)
                 // 自定义图片圆角
                 .interopBorderRadius(imageBorderRadius)
+                // 设置外边距属性
+                .margin(top: imageMarginTop, bottom: imageMarginBottom)
                 // 设置组件的可见性
                 .visibility(if (!(isBool && imagePixelMap.isSome() && imageWidth.isSome() && imageHeight.isSome())) { Visibility.Visible } else { Visibility.None })
                 // 设置组件自身的宽度
@@ -161,6 +163,8 @@ public class MarkdownImagePixelmapSpanComponent {
                 ImageSpan(imagePixelMap())
                     // 自定义图片圆角
                     .interopBorderRadius(imageBorderRadius)
+                    // 设置外边距属性
+                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
                     // 设置组件自身的宽度
                     .width((imageWidth() * imageMaximumWidth).px)
                     // 设置组件自身的高度
