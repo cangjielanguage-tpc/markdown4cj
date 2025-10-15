@@ -54,6 +54,11 @@ public class MarkdownTheme {
     protected var abilityContext: ?AbilityContext = None
 
     /**
+     * 是否打开长按复制粘贴
+     */
+    protected var isOnCopy: Bool = true
+
+    /**
      * 模块间上下间距
      */
     protected var blockTopAndBottomMargins: Float64 = 8.0
@@ -277,6 +282,11 @@ public class MarkdownTheme {
      * 有序列表前缀文本行高
      */
     protected var orderedListItemLineHeight: Float64 = 22.0
+
+    /**
+     * 无序列表前缀是否全部是实心圆型
+     */
+    protected var bulletListItemCircle: Bool = false
 
     /**
      * 无序列表前缀文本颜色
@@ -744,6 +754,26 @@ public class MarkdownTheme {
     protected var isWord: Bool = true
 
     /**
+     * 图片最大宽度百分比
+     */
+    protected var imageMaximumWidth: Float64 = 1.0
+
+    /**
+     * 图片圆角大小
+     */
+    protected var imageBorderRadius: Float64 = 0.0
+
+    /**
+     * 图片是否固定宽高比
+     */
+    protected var imageIsFixedAspectRatio: Bool = false
+
+    /**
+     * 图片固定宽高比大小
+     */
+    protected var imageAspectRatioSize: Float64 = 16.0 / 9.0
+
+    /**
      * 图片默认占位图 - AppResource
      */
     protected var imageResource: ?AppResource = None
@@ -833,6 +863,8 @@ public class MarkdownTheme {
         this.stageContext = builder.stageContext
         this.abilityContext = builder.abilityContext
 
+        this.isOnCopy = builder.isOnCopy
+
         // 2、模块间距
         this.blockTopAndBottomMargins = builder.blockTopAndBottomMargins
 
@@ -891,6 +923,7 @@ public class MarkdownTheme {
         this.orderedListItemSize = builder.orderedListItemSize
         this.orderedListItemLineHeight = builder.orderedListItemLineHeight
         // 4.4、无序列表
+        this.bulletListItemCircle = builder.bulletListItemCircle
         this.bulletListItemColor = builder.bulletListItemColor
         this.bulletListItemSize = builder.bulletListItemSize
         this.bulletListItemLineHeight = builder.bulletListItemLineHeight
@@ -1011,6 +1044,10 @@ public class MarkdownTheme {
 
         // 14、图片
         this.isWord = builder.isWord
+        this.imageMaximumWidth = builder.imageMaximumWidth
+        this.imageBorderRadius = builder.imageBorderRadius
+        this.imageIsFixedAspectRatio = builder.imageIsFixedAspectRatio
+        this.imageAspectRatioSize = builder.imageAspectRatioSize
         this.imageResource = builder.imageResource
         this.imagePlaceholder = builder.imagePlaceholder
         this.isAutoResize = builder.isAutoResize
@@ -1267,6 +1304,11 @@ public class MarkdownThemeBuilder {
     protected var abilityContext: ?AbilityContext = None
 
     /**
+     * 是否打开长按复制粘贴
+     */
+    protected var isOnCopy: Bool = true
+
+    /**
      * 模块间上下间距
      */
     protected var blockTopAndBottomMargins: Float64 = 8.0
@@ -1490,6 +1532,11 @@ public class MarkdownThemeBuilder {
      * 有序列表前缀文本行高
      */
     protected var orderedListItemLineHeight: Float64 = 22.0
+
+    /**
+     * 无序列表前缀是否全部是实心圆型
+     */
+    protected var bulletListItemCircle: Bool = false
 
     /**
      * 无序列表前缀文本颜色
@@ -1957,6 +2004,26 @@ public class MarkdownThemeBuilder {
     protected var isWord: Bool = true
 
     /**
+     * 图片最大宽度百分比
+     */
+    protected var imageMaximumWidth: Float64 = 1.0
+
+    /**
+     * 图片圆角大小
+     */
+    protected var imageBorderRadius: Float64 = 0.0
+
+    /**
+     * 图片是否固定宽高比
+     */
+    protected var imageIsFixedAspectRatio: Bool = false
+
+    /**
+     * 图片固定宽高比大小
+     */
+    protected var imageAspectRatioSize: Float64 = 16.0 / 9.0
+
+    /**
      * 图片默认占位图 - AppResource
      */
     protected var imageResource: ?AppResource = None
@@ -2049,6 +2116,8 @@ public class MarkdownThemeBuilder {
         this.stageContext = theme.stageContext
         this.abilityContext = theme.abilityContext
 
+        this.isOnCopy = theme.isOnCopy
+
         // 2、模块间距
         this.blockTopAndBottomMargins = theme.blockTopAndBottomMargins
 
@@ -2107,6 +2176,7 @@ public class MarkdownThemeBuilder {
         this.orderedListItemSize = theme.orderedListItemSize
         this.orderedListItemLineHeight = theme.orderedListItemLineHeight
         // 4.4、无序列表
+        this.bulletListItemCircle = theme.bulletListItemCircle
         this.bulletListItemColor = theme.bulletListItemColor
         this.bulletListItemSize = theme.bulletListItemSize
         this.bulletListItemLineHeight = theme.bulletListItemLineHeight
@@ -2227,6 +2297,10 @@ public class MarkdownThemeBuilder {
 
         // 14、图片
         this.isWord = theme.isWord
+        this.imageMaximumWidth = theme.imageMaximumWidth
+        this.imageBorderRadius = theme.imageBorderRadius
+        this.imageIsFixedAspectRatio = theme.imageIsFixedAspectRatio
+        this.imageAspectRatioSize = theme.imageAspectRatioSize
         this.imageResource = theme.imageResource
         this.imagePlaceholder = theme.imagePlaceholder
         this.isAutoResize = theme.isAutoResize
@@ -2451,6 +2525,17 @@ public class MarkdownThemeBuilder {
      */
     public func setAbilityContext(abilityContext: AbilityContext): MarkdownThemeBuilder {
         this.abilityContext = abilityContext
+        return this
+    }
+
+    /**
+     * 设置是否打开长按复制粘贴
+     *
+     * @param isOnCopy 是否打开长按复制粘贴 - 默认true
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsOnCopy(isOnCopy: Bool): MarkdownThemeBuilder {
+        this.isOnCopy = isOnCopy
         return this
     }
 
@@ -2946,6 +3031,17 @@ public class MarkdownThemeBuilder {
      */
     public func setOrderedListItemLineHeight(orderedListItemLineHeight: Float64): MarkdownThemeBuilder {
         this.orderedListItemLineHeight = orderedListItemLineHeight
+        return this
+    }
+
+    /**
+     * 设置无序列表前缀是否为实心圆型
+     *
+     * @param bulletListItemCircle 无序列表前缀是否为实心圆型 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setBulletListItemCircle(bulletListItemCircle: Bool): MarkdownThemeBuilder {
+        this.bulletListItemCircle = bulletListItemCircle
         return this
     }
 
@@ -3969,6 +4065,50 @@ public class MarkdownThemeBuilder {
      */
     public func setIsWord(isWord: Bool): MarkdownThemeBuilder {
         this.isWord = isWord
+        return this
+    }
+
+    /**
+     * 设置图片最大宽度百分比
+     *
+     * @param imageMaximumWidth 图片最大宽度百分比 - 默认1.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageMaximumWidth(imageMaximumWidth: Float64): MarkdownThemeBuilder {
+        this.imageMaximumWidth = imageMaximumWidth
+        return this
+    }
+
+    /**
+     * 设置图片圆角
+     *
+     * @param imageBorderRadius 图片圆角 - 默认0.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageBorderRadius(imageBorderRadius: Float64): MarkdownThemeBuilder {
+        this.imageBorderRadius = imageBorderRadius
+        return this
+    }
+
+    /**
+     * 设置图片是否固定宽高比
+     *
+     * @param imageIsFixedAspectRatio 图片是否固定宽高比 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageIsFixedAspectRatio(imageIsFixedAspectRatio: Bool): MarkdownThemeBuilder {
+        this.imageIsFixedAspectRatio = imageIsFixedAspectRatio
+        return this
+    }
+
+    /**
+     * 设置图片固定宽高比大小
+     *
+     * @param imageAspectRatioSize 图片固定宽高比大小 - 默认16.0 / 9.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageAspectRatioSize(imageAspectRatioSize: Float64): MarkdownThemeBuilder {
+        this.imageAspectRatioSize = imageAspectRatioSize
         return this
     }
 

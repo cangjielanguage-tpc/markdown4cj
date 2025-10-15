@@ -29,7 +29,7 @@ class MarkdownThematicBreakComponent {
     var marginBottom: Float64
 
     func build() {
-        Column(){
+        Column() {
             if (markdownConfiguration.markdownTheme.thematicBreakHeight > 0.0) {
                 Divider()
                     // 设置分割线颜色
