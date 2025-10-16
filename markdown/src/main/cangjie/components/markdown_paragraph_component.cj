@@ -674,7 +674,7 @@ class MarkdownParagraphComponent {
     }
 
     func isMarginTop():Float64{
-        if(!markdownConfiguration.markdownTheme.isWord && nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
+        if(nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
             return 0.0
         }else{
             return marginTop
@@ -682,7 +682,7 @@ class MarkdownParagraphComponent {
     }
 
     func isMarginBottom():Float64{
-        if(!markdownConfiguration.markdownTheme.isWord && nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
+        if(nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
             return 0.0
         }else{
             return marginBottom
