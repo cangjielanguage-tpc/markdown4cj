@@ -48,6 +48,7 @@ public class MarkdownComponent {
             .usePlugin(LinkifyPlugin.create())
             // 脚注插件
             .usePlugin(FootnotePlugin.create())
+            .usePlugin(ImageTextMixPlugin.create())
             // TOC插件
             .usePlugin(TocPlugin.create())
             // 图片列表插件
@@ -374,6 +375,85 @@ public class MarkdownComponent {
                                     marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
                                 )
+                            }
+                        } else if (item.node is ImageSingleBlock) {
+                            // 单独图片block
+                            ListItem() {
+                                if (item.children.size  > 0 && item.children[0].node is CommonmarkImage) {
+                                    if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                                        // 不设置图片预处理接口
+                                        if (markdownConfiguration.markdownTheme.imageIsFixedAspectRatio) {
+                                            // 设置固定宽高比
+                                            MarkdownImgRatioComponent(
+                                                destination: (item.children[0].node as CommonmarkImage)().getDestination(),
+                                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                                componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
+                                                imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
+                                                imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
+                                                imageCallback: imageCallback,
+                                                linkCallback: markdownConfiguration.linkCallback,
+                                                isLink: item.children[0].link.isSome(),
+                                                linkUrl: if (item.children[0].link.isSome()) {item.children[0].link().getDestination()} else {Option<String>.None},
+                                                imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
+                                                imageAspectRatioSize: markdownConfiguration.markdownTheme.imageAspectRatioSize,
+                                                imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                            )
+                                        } else {
+                                            // 自适应宽高比
+                                            MarkdownImgComponent(
+                                                destination: (item.children[0].node as CommonmarkImage)().getDestination(),
+                                                componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
+                                                imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
+                                                imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
+                                                imageCallback: imageCallback,
+                                                linkCallback: markdownConfiguration.linkCallback,
+                                                isLink: item.children[0].link.isSome(),
+                                                linkUrl: if (item.children[0].link.isSome()) {item.children[0].link().getDestination()} else {Option<String>.None},
+                                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                                imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
+                                                imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                            )
+                                        }
+                                    } else {
+                                        // 设置图片预处理接口
+                                        if (markdownConfiguration.markdownTheme.imageIsFixedAspectRatio) {
+                                            // 设置固定宽高比
+                                            MarkdownImgPixelmapRatioComponent(
+                                                destination: (item.children[0].node as CommonmarkImage)().getDestination(),
+                                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                                componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
+                                                imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
+                                                imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
+                                                imageCallback: imageCallback,
+                                                linkCallback: markdownConfiguration.linkCallback,
+                                                isLink: item.children[0].link.isSome(),
+                                                linkUrl: if (item.children[0].link.isSome()) {item.children[0].link().getDestination()} else {Option<String>.None},
+                                                imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
+                                                imageAspectRatioSize: markdownConfiguration.markdownTheme.imageAspectRatioSize,
+                                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback(),
+                                                imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                            )
+                                        } else {
+                                            // 自适应宽高比
+                                            MarkdownImgPixelmapComponent(
+                                                destination: (item.children[0].node as CommonmarkImage)().getDestination(),
+                                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                                componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
+                                                imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
+                                                imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
+                                                imageCallback: imageCallback,
+                                                linkCallback: markdownConfiguration.linkCallback,
+                                                isLink: item.children[0].link.isSome(),
+                                                linkUrl: if (item.children[0].link.isSome()) {item.children[0].link().getDestination()} else {Option<String>.None},
+                                                imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
+                                                imageCallbackCallback : markdownConfiguration.imageCallbackCallback(),
+                                                imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    Text("")
+                                }
                             }
                         } else if (item.node is BlockAD) {
                             // 广告
