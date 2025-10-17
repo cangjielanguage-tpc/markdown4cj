@@ -97,8 +97,8 @@ class CJMarkdownComponent {
             if(v.isImageSlidePlugin){
                 markdownBuilder.usePlugin(ImageSlidePlugin.create())
             }
-            if(v.isImageSinglePlugin){
-                markdownBuilder.usePlugin(ImageSinglePlugin.create())
+            if(v.isImageTextMixPlugin){
+                markdownBuilder.usePlugin(ImageTextMixPlugin.create())
             }
             if(v.isTocPlugin){
                 markdownBuilder.usePlugin(TocPlugin.create())
@@ -582,9 +582,6 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.videoMarginBottom) {
                 markdownThemeBuilder.setVideoMarginBottom(v) // 设置视频下边距
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.isWord) {
-                markdownThemeBuilder.setIsWord(v) // 设置图片文字是否需要图文混排
             }
             if (let Some(v) <- w.cjMarkdownTheme.imagePlaceholder) {
                 markdownThemeBuilder.setImagePlaceholder(v) // 设置图片默认占位图 - String

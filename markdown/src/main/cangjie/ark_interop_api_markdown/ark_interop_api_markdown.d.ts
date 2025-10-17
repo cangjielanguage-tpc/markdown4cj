@@ -29,7 +29,7 @@ export declare class CJMarkdownPlugin {
 
   setIsImageSlidePlugin(isImageSlidePlugin: boolean): void
 
-  setIsImageSinglePlugin(isImageSinglePlugin: boolean): void
+  setIsImageTextMixPlugin(isImageTextMixPlugin: boolean): void
 
   setIsImageCollectPlugin(isImageCollectPlugin: boolean): void
 }
@@ -296,8 +296,6 @@ export declare class CJMarkdownTheme {
   setVideoMarginTop(videoMarginTop: number): void
 
   setVideoMarginBottom(videoMarginBottom: number): void
-
-  setIsWord(isWord: boolean): void
 
   setImagePlaceholder(imagePlaceholder: string): void
 

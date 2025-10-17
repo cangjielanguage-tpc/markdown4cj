@@ -87,7 +87,7 @@ public class CJMarkdownPlugin {
     /**
      * 是否加载图片单独提取到block解析插件
      */
-    var isImageSinglePlugin: Bool = false
+    var isImageTextMixPlugin: Bool = false
 
     /**
      * 是否加载图片视频列表url集合列表解析插件
@@ -225,10 +225,10 @@ public class CJMarkdownPlugin {
     /**
      * 设置是否加载图片banner解析插件
      *
-     * @param isImageSinglePlugin
+     * @param isImageTextMixPlugin
      */
-    public func setIsImageSinglePlugin(isImageSinglePlugin: Bool): Unit {
-        this.isImageSinglePlugin = isImageSinglePlugin
+    public func setIsImageTextMixPlugin(isImageTextMixPlugin: Bool): Unit {
+        this.isImageTextMixPlugin = isImageTextMixPlugin
     }
 
     /**

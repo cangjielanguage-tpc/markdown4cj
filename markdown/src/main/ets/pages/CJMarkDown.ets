@@ -519,9 +519,6 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.videoMarginBottom !== undefined) {
           cjMarkdownTheme.setVideoMarginBottom(this.config.markdownTheme.videoMarginBottom)
         }
-        if (this.config.markdownTheme.isWord !== undefined) {
-          cjMarkdownTheme.setIsWord(this.config.markdownTheme.isWord)
-        }
         if (this.config.markdownTheme.imagePlaceholder !== undefined) {
           cjMarkdownTheme.setImagePlaceholder(this.config.markdownTheme.imagePlaceholder)
         }
@@ -592,7 +589,7 @@ export struct CJMarkdown {
       cjMarkdownPlugin.setIsLatexMathPlugin(this.plugin.isLatexMathPlugin)
       cjMarkdownPlugin.setIsImageStylePlugin(this.plugin.isImageStylePlugin)
       cjMarkdownPlugin.setIsImageSlidePlugin(this.plugin.isImageSlidePlugin)
-      cjMarkdownPlugin.setIsImageSinglePlugin(this.plugin.isImageSinglePlugin)
+      cjMarkdownPlugin.setIsImageTextMixPlugin(this.plugin.isImageTextMixPlugin)
       cjMarkdownPlugin.setIsImageCollectPlugin(this.plugin.isImageCollectPlugin)
     }
     return cjMarkdownPlugin
@@ -1343,10 +1340,6 @@ export class MarkdownTheme {
    * 视频下边距
    */
   videoMarginBottom?: number = undefined
-  /**
-   * 图片文字是否需要图文混排
-   */
-  isWord?: boolean = undefined
   /**
    * 图片默认占位图 - String
    */
@@ -2664,15 +2657,6 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置图片文字是否需要图文混排
-   *
-   * @param isWord 图片文字是否需要图文混排 - 默认true
-   */
-  setIsWord(isWord: boolean): void {
-    this.isWord = isWord
-  }
-
-  /**
    * 设置图片默认占位图 - String
    *
    * @param imagePlaceholder 图片默认占位图 - String - 默认None
@@ -2888,7 +2872,7 @@ export class MarkdownPlugin {
   /**
    * 是否加载图片单独提取到block解析插件
    */
-  isImageSinglePlugin: boolean = false
+  isImageTextMixPlugin: boolean = false
   /**
    * 是否加载图片视频列表url集合列表解析插件
    */
@@ -3023,10 +3007,10 @@ export class MarkdownPlugin {
   /**
    * 设置单独的图片提到块级别插件
    *
-   * @param isImageSinglePlugin 是否设置单独的图片提到块级别插件 - true：设置单独的图片提到块级别插件；false：不设置单独的图片提到块级别插件。默认false
+   * @param isImageTextMixPlugin 是否设置单独的图片提到块级别插件 - true：设置单独的图片提到块级别插件；false：不设置单独的图片提到块级别插件。默认false
    */
-  setIsImageSinglePlugin(isImageSinglePlugin: boolean): void {
-    this.isImageSinglePlugin = isImageSinglePlugin
+  setIsImageTextMixPlugin(isImageTextMixPlugin: boolean): void {
+    this.isImageTextMixPlugin = isImageTextMixPlugin
   }
 
   /**

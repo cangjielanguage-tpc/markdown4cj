@@ -749,11 +749,6 @@ public class MarkdownTheme {
     protected var bannerImage: ?AppResource = None
 
     /**
-     * 图片文字是否需要图文混排
-     */
-    protected var isWord: Bool = true
-
-    /**
      * 图片最大宽度百分比
      */
     protected var imageMaximumWidth: Float64 = 1.0
@@ -1043,7 +1038,6 @@ public class MarkdownTheme {
         this.bannerImage = builder.bannerImage
 
         // 14、图片
-        this.isWord = builder.isWord
         this.imageMaximumWidth = builder.imageMaximumWidth
         this.imageBorderRadius = builder.imageBorderRadius
         this.imageIsFixedAspectRatio = builder.imageIsFixedAspectRatio
@@ -1999,11 +1993,6 @@ public class MarkdownThemeBuilder {
     protected var bannerImage: ?AppResource = None
 
     /**
-     * 图片文字是否需要图文混排
-     */
-    protected var isWord: Bool = true
-
-    /**
      * 图片最大宽度百分比
      */
     protected var imageMaximumWidth: Float64 = 1.0
@@ -2296,7 +2285,6 @@ public class MarkdownThemeBuilder {
         this.bannerImage = theme.bannerImage
 
         // 14、图片
-        this.isWord = theme.isWord
         this.imageMaximumWidth = theme.imageMaximumWidth
         this.imageBorderRadius = theme.imageBorderRadius
         this.imageIsFixedAspectRatio = theme.imageIsFixedAspectRatio
@@ -4054,17 +4042,6 @@ public class MarkdownThemeBuilder {
      */
     public func setBannerImage(bannerImage: AppResource): MarkdownThemeBuilder {
         this.bannerImage = bannerImage
-        return this
-    }
-
-    /**
-     * 设置图片文字是否需要图文混排
-     *
-     * @param isWord 图片文字是否需要图文混排 - true:图文混排；false:不图文混排。默认true
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setIsWord(isWord: Bool): MarkdownThemeBuilder {
-        this.isWord = isWord
         return this
     }
 

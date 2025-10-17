@@ -673,11 +673,6 @@ public class CJMarkdownTheme {
     var videoMarginBottom: ?Float64 = None
 
     /**
-     * 图片文字是否需要图文混排
-     */
-    var isWord: ?Bool = None
-
-    /**
      * 图片默认占位图 - String
      */
     var imagePlaceholder: ?String = None
@@ -1940,15 +1935,6 @@ public class CJMarkdownTheme {
      */
     public func setVideoMarginBottom(videoMarginBottom: Float64): Unit {
         this.videoMarginBottom = videoMarginBottom
-    }
-
-    /**
-     * 图片文字是否需要图文混排
-     *
-     * @param isWord 图片文字是否需要图文混排 - 默认true
-     */
-    public func setIsWord(isWord: Bool): Unit {
-        this.isWord = isWord
     }
 
     /**

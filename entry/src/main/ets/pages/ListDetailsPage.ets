@@ -193,7 +193,7 @@ struct ListDetailsPage {
     plugin.setIsBlockAudioPlugin(true) // 音频插件
     plugin.setIsBlockVideoPlugin(true) // 视频插件
     plugin.setIsImageCollectPlugin(true) // 图片视频列表url集合列表解析插件
-    plugin.setIsImageSinglePlugin(true) // 图片单独提取到block解析插件
+    plugin.setIsImageTextMixPlugin(true) // 图文不混排插件
     plugin.setIsImageSlidePlugin(true) // 图片banner
     plugin.setIsCodeListPlugin(true) // 代码块列表
     plugin.setIsImageStylePlugin(true) // 图片样式
