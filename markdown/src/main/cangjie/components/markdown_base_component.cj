@@ -885,6 +885,8 @@ func tableComponentFootnote18(nodeView: NodeView, isHeader: Bool, markdownConfig
         .fontStyle(spanFontStyle(nodeView))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+        // 自定义背景色
+        .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
         // 设置文本字符间距
         .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
         // 设置文本装饰线样式及其颜色
