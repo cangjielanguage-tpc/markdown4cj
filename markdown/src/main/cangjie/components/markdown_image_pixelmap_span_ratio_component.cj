@@ -103,6 +103,11 @@ public class MarkdownImagePixelmapSpanRatioComponent {
      */
     var imageMaximumWidth: Float64 = 1.0
 
+    /**
+     * 图片固定宽度百分比
+     */
+    var imageFixedRatioWidth: ?Float64 = None
+
     protected override func aboutToAppear(): Unit {
         imageCallPixelmap()
         componentWidth = px2vp(componentWidth.px).getOrThrow().value
@@ -123,9 +128,9 @@ public class MarkdownImagePixelmapSpanRatioComponent {
                 // 设置组件的可见性
                 .visibility(if (!(isBool && imagePixelMap.isSome() && imageWidth.isSome() && imageHeight.isSome())) { Visibility.Visible } else { Visibility.None })
                 // 设置组件自身的宽度
-                .width(componentWidth * imageMaximumWidth)
+                .width(if (imageFixedRatioWidth.isSome()) { componentWidth * imageFixedRatioWidth()} else { componentWidth * imageMaximumWidth })
                 // 设置组件自身的高度
-                .height(componentWidth / imageAspectRatioSize * imageMaximumWidth)
+                .height(if (imageFixedRatioWidth.isSome()) { componentWidth / imageAspectRatioSize * imageFixedRatioWidth() } else { componentWidth / imageAspectRatioSize * imageMaximumWidth })
                 // 设置图片的缩放类型
                 .objectFit(ImageFit.Cover)
                 // 点击动作触发该方法调用
@@ -148,6 +153,10 @@ public class MarkdownImagePixelmapSpanRatioComponent {
                     .width((imageWidth() * imageMaximumWidth).px)
                     // 设置组件自身的高度
                     .height((imageHeight() * imageMaximumWidth).px)
+                    // 设置组件自身的宽度
+                    .width(if (imageFixedRatioWidth.isSome()) { (componentWidth * imageFixedRatioWidth()).px } else { (imageWidth() * imageMaximumWidth).px })
+                    // 设置组件自身的高度
+                    .height(if (imageFixedRatioWidth.isSome()) { (imageHeight() * (componentWidth / imageWidth()) * imageFixedRatioWidth()).px } else { (imageHeight() * imageMaximumWidth).px })
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Contain)
                     // 设置图片基于文本的对齐方式

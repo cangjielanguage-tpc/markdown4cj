@@ -309,7 +309,8 @@ class MarkdownTableBlockCellComponent {
                                         linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
                                         imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
                                         imageAspectRatioSize: markdownConfiguration.markdownTheme.imageAspectRatioSize,
-                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
+                                        imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
                                     )
                                 } else {
                                     // 小于API 15
@@ -325,7 +326,8 @@ class MarkdownTableBlockCellComponent {
                                         linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
                                         imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
                                         imageAspectRatioSize: markdownConfiguration.markdownTheme.imageAspectRatioSize,
-                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
+                                        imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
                                     )
                                 }
                             } else {
@@ -343,7 +345,8 @@ class MarkdownTableBlockCellComponent {
                                         isLink: item.link.isSome(),
                                         linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
                                         imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
+                                        imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
                                     )
                                 } else {
                                     // 小于API 15
@@ -358,7 +361,8 @@ class MarkdownTableBlockCellComponent {
                                         isLink: item.link.isSome(),
                                         linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
                                         imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
+                                        imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
                                     )
                                 }
                             }
@@ -379,7 +383,8 @@ class MarkdownTableBlockCellComponent {
                                     imageCallbackCallback: markdownConfiguration.imageCallbackCallback(),
                                     imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
                                     imageAspectRatioSize: markdownConfiguration.markdownTheme.imageAspectRatioSize,
-                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
+                                    imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
                                 )
                             } else {
                                 // 自适应宽高比
@@ -397,7 +402,8 @@ class MarkdownTableBlockCellComponent {
                                         linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
                                         imageCallbackCallback: markdownConfiguration.imageCallbackCallback(),
                                         imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
+                                        imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
                                     )
                                 } else {
                                     // 小于API 15
@@ -413,7 +419,8 @@ class MarkdownTableBlockCellComponent {
                                         linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
                                         imageCallbackCallback: markdownConfiguration.imageCallbackCallback(),
                                         imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
+                                        imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
                                     )
                                 }
                             }
@@ -568,7 +575,8 @@ class MarkdownTableBlockCellComponent {
                                     linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
                                     imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
                                     imageAspectRatioSize: markdownConfiguration.markdownTheme.imageAspectRatioSize,
-                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
+                                    imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
                                 )
                             } else {
                                 // 自适应宽高比
@@ -583,7 +591,8 @@ class MarkdownTableBlockCellComponent {
                                     isLink: item.link.isSome(),
                                     linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
                                     imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
+                                    imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
                                 )
                             }
                         } else {
@@ -603,7 +612,8 @@ class MarkdownTableBlockCellComponent {
                                     imageCallbackCallback: markdownConfiguration.imageCallbackCallback(),
                                     imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
                                     imageAspectRatioSize: markdownConfiguration.markdownTheme.imageAspectRatioSize,
-                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
+                                    imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
                                 )
                             } else {
                                 // 自适应宽高比
@@ -619,7 +629,8 @@ class MarkdownTableBlockCellComponent {
                                     linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
                                     imageCallbackCallback: markdownConfiguration.imageCallbackCallback(),
                                     imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth
+                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
+                                    imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
                                 )
                             }
                         }

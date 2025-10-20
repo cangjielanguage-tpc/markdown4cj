@@ -12,6 +12,8 @@ import markdown.components.*
 import std.sync.*
 import std.time.*
 import ohos.hilog.*
+import markdown.plugin.*
+import markdown.core.*
 
 /**
  * 定制化全量加载详情页面
@@ -57,7 +59,8 @@ class CustomizationCompleteDetailsPage {
                 Column {
                     MarkdownComponent(
                         output: mdStr,
-                        markdownConfiguration: setConfig()
+                        markdownConfiguration: setConfig(),
+                        markdownPlugin: setPlugin()
                     )
                 }
             }
@@ -68,6 +71,39 @@ class CustomizationCompleteDetailsPage {
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
         }
+    }
+
+    func setPlugin(): Markdown {
+        var markdownPlugin: Markdown = Markdown
+            .builder()
+            // HTML插件
+            .usePlugin(HtmlPlugin.create())
+            // 任务列表插件
+            .usePlugin(TaskListPlugin.create())
+            // 删除线插件
+            .usePlugin(StrikethroughPlugin.create())
+            // 表格插件
+            .usePlugin(TablePlugin.create())
+            // 数学公式插件
+            .usePlugin(LatexMathPluginV2.create())
+            // 音频插件
+            .usePlugin(BlockAudioPlugin.create())
+            // 视频插件
+            .usePlugin(BlockVideoPlugin.create())
+            // 自动链接插件
+            .usePlugin(LinkifyPlugin.create())
+            // 脚注插件
+            .usePlugin(FootnotePlugin.create())
+            // 图片不混排插件
+            .usePlugin(ImageTextMixPlugin.create())
+            // TOC插件
+            .usePlugin(TocPlugin.create())
+            // 图片列表插件
+            .usePlugin(ImageCollectPlugin.create())
+            // 唯一ID标识插件
+            .usePlugin(BlockIdPlugin.create())
+            .build()
+        return markdownPlugin
     }
 
     func setConfig(): MarkdownConfiguration {
@@ -210,6 +246,8 @@ class CustomizationCompleteDetailsPage {
             .setCodeBlockTypeTextStr("")
             //代码类型和代码块距离
             .setCodeBlockTypeTextPadding(10.0)
+            .setStrikethroughColor(Color.RED)
+            .setImageFixedRatioWidth(0.5)
 
 ////            // 代码块背景色
 //            .setCodeBlockBackgroundColor(Color(0xFF282C35))

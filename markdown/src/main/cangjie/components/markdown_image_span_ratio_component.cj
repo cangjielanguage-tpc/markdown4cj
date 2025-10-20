@@ -98,6 +98,11 @@ public class MarkdownImageSpanRatioComponent {
      */
     var imageMaximumWidth: Float64 = 1.0
 
+    /**
+     * 图片固定宽度百分比
+     */
+    var imageFixedRatioWidth: ?Float64 = None
+
     protected override func aboutToAppear(): Unit {
         componentWidth = px2vp(componentWidth.px).getOrThrow().value
     }

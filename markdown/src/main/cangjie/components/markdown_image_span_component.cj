@@ -93,6 +93,11 @@ public class MarkdownImageSpanComponent {
      */
     var imageMaximumWidth: Float64 = 1.0
 
+    /**
+     * 图片固定宽度百分比
+     */
+    var imageFixedRatioWidth: ?Float64 = None
+
     func build() {
         ImageSpan(destination)
             // 设置外边距属性
@@ -100,9 +105,9 @@ public class MarkdownImageSpanComponent {
             // 自定义图片圆角
             .interopBorderRadius(imageBorderRadius)
             // 设置组件自身的宽度
-            .width((width * imageMaximumWidth).px)
+            .width(if (imageFixedRatioWidth.isSome()) { (componentWidth * imageFixedRatioWidth()).px } else { (width * imageMaximumWidth).px })
             // 设置组件自身的高度
-            .height((height * imageMaximumWidth).px)
+            .height(if (imageFixedRatioWidth.isSome()) { (height * (componentWidth / width) * imageFixedRatioWidth()).px } else { (height * imageMaximumWidth).px })
             // 设置图片的缩放类型
             .objectFit(ImageFit.Contain)
             // 设置图片基于文本的对齐方式

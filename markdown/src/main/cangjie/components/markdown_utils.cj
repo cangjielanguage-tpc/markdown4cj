@@ -323,13 +323,13 @@ func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDeco
         // 是否是删除线
         if (nodeView.props.isSome() && nodeView.props().get("strikethrough").isSome()) {
             // TODO 需要同时设置下划线和中划线
-            return (TextDecorationType.LineThrough, COLOR_191919)
+            return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor)
         }
         return (TextDecorationType.Underline, markdownTheme.linkColor)
     } else {
         // 是否是删除线
         if (nodeView.props.isSome() && nodeView.props().get("strikethrough").isSome()) {
-            return (TextDecorationType.LineThrough, COLOR_191919)
+            return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor)
         }
         return (TextDecorationType.None, COLOR_191919)
     }
