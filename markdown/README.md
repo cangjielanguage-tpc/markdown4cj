@@ -126,7 +126,7 @@ class ARHeading1Page {
     func build() {
         Scroll() {
             Column {
-                MarkdownComponent(output: mdStr)
+                MarkdownComponent(output: mdStr, isFull: true)
             }
         }
         // 设置滚动方法
@@ -238,31 +238,31 @@ Heading level 2
 8. 数学公式背景色暂不支持设置透明色
 9. HTML支持的标签
    1. 块元素
-       1. hr标签 - 分割线
-       2. h1~h6标签 - 标题
-       3. blockquote标签 - 块引用
-       4. ul、ol、li标签 - 有序列表和无序列表
-       5. table、thead、tbody、tfoot、tr、th、td标签 - 表格
-       6. pre标签 - 缩进代码块
-       7. p标签 - 段落标签
+      1. hr标签 - 分割线
+      2. h1~h6标签 - 标题
+      3. blockquote标签 - 块引用
+      4. ul、ol、li标签 - 有序列表和无序列表
+      5. table、thead、tbody、tfoot、tr、th、td标签 - 表格
+      6. pre标签 - 缩进代码块
+      7. p标签 - 段落标签
    2. 行内元素
-       1. font标签 - 文本样式
-           * color属性
-           * size属性
-       2. a标签 - 链接
-           * href属性 - 必选属性
-           * title属性
-       3. b、strong标签 - 加粗
-       4. i、em、cite、dfn标签 - 斜体
-       5. s、del标签 - 删除
-       6. code、samp、var、kbd标签 - 内联代码
+      1. font标签 - 文本样式
+         * color属性
+         * size属性
+      2. a标签 - 链接
+         * href属性 - 必选属性
+         * title属性
+      3. b、strong标签 - 加粗
+      4. i、em、cite、dfn标签 - 斜体
+      5. s、del标签 - 删除
+      6. code、samp、var、kbd标签 - 内联代码
    3. 行内块元素
-       1. br标签 -  换行符
-       2. img标签 - 图片
-           * src属性 - 必选属性
-           * title属性
-           * width属性
-           * height属性
+      1. br标签 -  换行符
+      2. img标签 - 图片
+         * src属性 - 必选属性
+         * title属性
+         * width属性
+         * height属性
 
 ## 开源协议
 

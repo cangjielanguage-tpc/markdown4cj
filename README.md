@@ -126,7 +126,7 @@ class ARHeading1Page {
     func build() {
         Scroll() {
             Column {
-                MarkdownComponent(output: mdStr)
+                MarkdownComponent(output: mdStr, isFull: true)
             }
         }
         // 设置滚动方法
