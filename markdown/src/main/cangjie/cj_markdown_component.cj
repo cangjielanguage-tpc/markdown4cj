@@ -190,6 +190,9 @@ class CJMarkdownComponent {
             markdownThemeBuilder.setImageResource(v) // 设置图片默认占位图 - CJResource
         }
         if(let Some(w) <- cfg){
+            if (let Some(v) <- w.cjMarkdownTheme.isOnCopy) {
+                markdownThemeBuilder.setIsOnCopy(v) // 设置是否打开长按复制粘贴
+            }
             if (let Some(v) <- w.cjMarkdownTheme.blockTopAndBottomMargins) {
                 markdownThemeBuilder.setBlockTopAndBottomMargins(v) // 设置模块间上下间距
             }
@@ -324,6 +327,9 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.orderedListItemLineHeight) {
                 markdownThemeBuilder.setOrderedListItemLineHeight(v) // 设置有序列表前缀文本行高
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.bulletListItemCircle) {
+                markdownThemeBuilder.setBulletListItemCircle(v) // 设置无序列表前缀是否全部是实心圆型
             }
             if (let Some(v) <- w.cjMarkdownTheme.bulletListItemColor) {
                 markdownThemeBuilder.setBulletListItemColor(v) // 设置无序列表前缀文本颜色
@@ -583,6 +589,21 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.videoMarginBottom) {
                 markdownThemeBuilder.setVideoMarginBottom(v) // 设置视频下边距
             }
+            if (let Some(v) <- w.cjMarkdownTheme.imageMaximumWidth) {
+                markdownThemeBuilder.setImageMaximumWidth(v) // 设置图片最大宽度百分比
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageFixedRatioWidth) {
+                markdownThemeBuilder.setImageFixedRatioWidth(v) // 设置图片固定宽度百分比
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageBorderRadius) {
+                markdownThemeBuilder.setImageBorderRadius(v) // 设置图片圆角大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageIsFixedAspectRatio) {
+                markdownThemeBuilder.setImageIsFixedAspectRatio(v) // 设置图片是否固定宽高比
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageAspectRatioSize) {
+                markdownThemeBuilder.setImageAspectRatioSize(v) // 设置图片固定宽高比大小
+            }
             if (let Some(v) <- w.cjMarkdownTheme.imagePlaceholder) {
                 markdownThemeBuilder.setImagePlaceholder(v) // 设置图片默认占位图 - String
             }
@@ -635,6 +656,9 @@ class CJMarkdownComponent {
                 }else{
                     markdownThemeBuilder.setPrismTheme(PrismThemeDefault.create()) // 浅色
                 }
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.strikethroughColor) {
+                markdownThemeBuilder.setStrikethroughColor(v) // 设置删除线颜色
             }
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()

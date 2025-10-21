@@ -35,6 +35,8 @@ export declare class CJMarkdownPlugin {
 }
 
 export declare class CJMarkdownTheme {
+  setIsOnCopy(isOnCopy: boolean): void
+
   setBlockTopAndBottomMargins(blockTopAndBottomMargins: number): void
 
   setIsLinkStyle(isLinkStyle: boolean): void
@@ -125,6 +127,8 @@ export declare class CJMarkdownTheme {
 
   setOrderedListItemLineHeight(orderedListItemLineHeight: number): void
 
+  setBulletListItemCircle(bulletListItemCircle: boolean): void
+
   setBulletListItemColor(bulletListItemColor: number): void
 
   setBulletListItemSize(bulletListItemSize: number): void
@@ -151,7 +155,7 @@ export declare class CJMarkdownTheme {
 
   setCodeBlockTypeTextColor(codeBlockTypeTextColor: number): void
 
-  setCodeBlockTypeTextStr(codeBlockTypeTextStr: String): void
+  setCodeBlockTypeTextStr(codeBlockTypeTextStr: string): void
 
   setCodeBlockTypeTextPadding(codeBlockTypeTextPadding: number): void
 
@@ -297,6 +301,16 @@ export declare class CJMarkdownTheme {
 
   setVideoMarginBottom(videoMarginBottom: number): void
 
+  setImageMaximumWidth(imageMaximumWidth: number): void
+
+  setImageFixedRatioWidth(imageFixedRatioWidth: number): void
+
+  setImageBorderRadius(imageBorderRadius: number): void
+
+  setImageIsFixedAspectRatio(imageIsFixedAspectRatio: boolean): void
+
+  setImageAspectRatioSize(imageAspectRatioSize: number): void
+
   setImagePlaceholder(imagePlaceholder: string): void
 
   setIsAutoResize(isAutoResize: boolean): void
@@ -328,6 +342,8 @@ export declare class CJMarkdownTheme {
   setTableFirstColumnBold(tableFirstColumnBold: boolean): void
 
   setIsDark(isDark: boolean): void
+
+  setStrikethroughColor(strikethroughColor: number): void
 }
 
 export declare class CJMarkdownConfig {

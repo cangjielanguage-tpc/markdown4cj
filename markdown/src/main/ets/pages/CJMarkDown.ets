@@ -116,6 +116,9 @@ export struct CJMarkdown {
           this.config.markdownTheme.bannerImage,
           this.config.markdownTheme.imageResource
         )
+        if (this.config.markdownTheme.isOnCopy !== undefined) {
+          cjMarkdownTheme.setIsOnCopy(this.config.markdownTheme.isOnCopy)
+        }
         if (this.config.markdownTheme.blockTopAndBottomMargins !== undefined) {
           cjMarkdownTheme.setBlockTopAndBottomMargins(this.config.markdownTheme.blockTopAndBottomMargins)
         }
@@ -250,6 +253,9 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.orderedListItemLineHeight !== undefined) {
           cjMarkdownTheme.setOrderedListItemLineHeight(this.config.markdownTheme.orderedListItemLineHeight)
+        }
+        if (this.config.markdownTheme.bulletListItemCircle !== undefined) {
+          cjMarkdownTheme.setBulletListItemCircle(this.config.markdownTheme.bulletListItemCircle)
         }
         if (this.config.markdownTheme.bulletListItemColor !== undefined) {
           cjMarkdownTheme.setBulletListItemColor(this.config.markdownTheme.bulletListItemColor)
@@ -519,6 +525,21 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.videoMarginBottom !== undefined) {
           cjMarkdownTheme.setVideoMarginBottom(this.config.markdownTheme.videoMarginBottom)
         }
+        if (this.config.markdownTheme.imageMaximumWidth !== undefined) {
+          cjMarkdownTheme.setImageMaximumWidth(this.config.markdownTheme.imageMaximumWidth)
+        }
+        if (this.config.markdownTheme.imageFixedRatioWidth !== undefined) {
+          cjMarkdownTheme.setImageFixedRatioWidth(this.config.markdownTheme.imageFixedRatioWidth)
+        }
+        if (this.config.markdownTheme.imageBorderRadius !== undefined) {
+          cjMarkdownTheme.setImageBorderRadius(this.config.markdownTheme.imageBorderRadius)
+        }
+        if (this.config.markdownTheme.imageIsFixedAspectRatio !== undefined) {
+          cjMarkdownTheme.setImageIsFixedAspectRatio(this.config.markdownTheme.imageIsFixedAspectRatio)
+        }
+        if (this.config.markdownTheme.imageAspectRatioSize !== undefined) {
+          cjMarkdownTheme.setImageAspectRatioSize(this.config.markdownTheme.imageAspectRatioSize)
+        }
         if (this.config.markdownTheme.imagePlaceholder !== undefined) {
           cjMarkdownTheme.setImagePlaceholder(this.config.markdownTheme.imagePlaceholder)
         }
@@ -566,6 +587,9 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.isDark !== undefined) {
           cjMarkdownTheme.setIsDark(this.config.markdownTheme.isDark)
+        }
+        if (this.config.markdownTheme.strikethroughColor !== undefined) {
+          cjMarkdownTheme.setStrikethroughColor(this.config.markdownTheme.strikethroughColor)
         }
       }
     }
@@ -817,6 +841,10 @@ export class MarkdownTheme {
    */
   imageResource?: Resource = undefined
   /**
+   * 是否打开长按复制粘贴
+   */
+  isOnCopy?: boolean = undefined
+  /**
    * 模块间上下间距
    */
   blockTopAndBottomMargins?: number = undefined
@@ -996,6 +1024,10 @@ export class MarkdownTheme {
    * 有序列表前缀文本行高
    */
   orderedListItemLineHeight?: number = undefined
+  /**
+   * 无序列表前缀是否全部是实心圆型
+   */
+  bulletListItemCircle?: boolean = undefined
   /**
    * 无序列表前缀文本颜色
    */
@@ -1341,6 +1373,26 @@ export class MarkdownTheme {
    */
   videoMarginBottom?: number = undefined
   /**
+   * 图片最大宽度百分比
+   */
+  imageMaximumWidth?: number = undefined
+  /**
+   * 图片固定宽度百分比
+   */
+  imageFixedRatioWidth?: number = undefined
+  /**
+   * 图片圆角大小
+   */
+  imageBorderRadius?: number = undefined
+  /**
+   * 图片是否固定宽高比
+   */
+  imageIsFixedAspectRatio?: boolean = undefined
+  /**
+   * 图片固定宽高比大小
+   */
+  imageAspectRatioSize?: number = undefined
+  /**
    * 图片默认占位图 - String
    */
   imagePlaceholder?: string = undefined
@@ -1404,6 +1456,10 @@ export class MarkdownTheme {
    * 代码深浅色模式
    */
   isDark?: boolean = undefined
+  /**
+   * 删除线颜色
+   */
+  strikethroughColor?: number= undefined
 
   /**
    * 设置上下文
@@ -1475,6 +1531,15 @@ export class MarkdownTheme {
    */
   setImageResource(imageResource: Resource): void {
     this.imageResource = imageResource
+  }
+
+  /**
+   * 设置是否打开长按复制粘贴
+   *
+   * @param isOnCopy 是否打开长按复制粘贴 - 默认true
+   */
+  setIsOnCopy(isOnCopy: boolean): void {
+    this.isOnCopy = isOnCopy
   }
 
   /**
@@ -1880,6 +1945,15 @@ export class MarkdownTheme {
    */
   setOrderedListItemLineHeight(orderedListItemLineHeight: number): void {
     this.orderedListItemLineHeight = orderedListItemLineHeight
+  }
+
+  /**
+   * 设置无序列表前缀是否全部是实心圆型
+   *
+   * @param orderedListItemLineHeight 无序列表前缀是否全部是实心圆型 - 默认false
+   */
+  setBulletListItemCircle(bulletListItemCircle: boolean): void {
+    this.bulletListItemCircle = bulletListItemCircle
   }
 
   /**
@@ -2657,6 +2731,51 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置图片最大宽度百分比
+   *
+   * @param imageMaximumWidth 图片最大宽度百分比 - 默认1.0
+   */
+  setImageMaximumWidth(imageMaximumWidth: number): void {
+    this.imageMaximumWidth = imageMaximumWidth
+  }
+
+  /**
+   * 设置图片固定宽度百分比
+   *
+   * @param imageFixedRatioWidth 图片固定宽度百分比 - 默认None
+   */
+  setImageFixedRatioWidth(imageFixedRatioWidth: number): void {
+    this.imageFixedRatioWidth = imageFixedRatioWidth
+  }
+
+  /**
+   * 设置图片圆角大小
+   *
+   * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
+   */
+  setImageBorderRadius(imageBorderRadius: number): void {
+    this.imageBorderRadius = imageBorderRadius
+  }
+
+  /**
+   * 设置图片是否固定宽高比
+   *
+   * @param imageIsFixedAspectRatio 图片是否固定宽高比 - 默认false
+   */
+  setImageIsFixedAspectRatio(imageIsFixedAspectRatio: boolean): void {
+    this.imageIsFixedAspectRatio = imageIsFixedAspectRatio
+  }
+
+  /**
+   * 设置图片固定宽高比大小
+   *
+   * @param imageAspectRatioSize 图片固定宽高比大小 - 默认16.0/9.0
+   */
+  setImageAspectRatioSize(imageAspectRatioSize: number): void {
+    this.imageAspectRatioSize = imageAspectRatioSize
+  }
+
+  /**
    * 设置图片默认占位图 - String
    *
    * @param imagePlaceholder 图片默认占位图 - String - 默认None
@@ -2798,6 +2917,15 @@ export class MarkdownTheme {
    */
   setIsDark(isDark: boolean): void {
     this.isDark = isDark
+  }
+
+  /**
+   * 设置删除线颜色
+   *
+   * @param strikethroughColor 删除线颜色 - 默认0X191919
+   */
+  setStrikethroughColor(strikethroughColor: number): void {
+    this.strikethroughColor = strikethroughColor
   }
 }
 

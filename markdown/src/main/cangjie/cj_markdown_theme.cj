@@ -18,6 +18,11 @@ import ohos.resource_manager.AppResource
 @Interop[ArkTS]
 public class CJMarkdownTheme {
     /**
+     * 是否打开长按复制粘贴
+     */
+    var isOnCopy: ?Bool = None
+
+    /**
      * 模块间上下间距
      */
     var blockTopAndBottomMargins: ?Float64 = None
@@ -241,6 +246,11 @@ public class CJMarkdownTheme {
      * 有序列表前缀文本行高
      */
     var orderedListItemLineHeight: ?Float64 = None
+
+    /**
+     * 无序列表前缀是否全部是实心圆型
+     */
+    var bulletListItemCircle: ?Bool = None
 
     /**
      * 无序列表前缀文本颜色
@@ -673,6 +683,31 @@ public class CJMarkdownTheme {
     var videoMarginBottom: ?Float64 = None
 
     /**
+     * 图片最大宽度百分比
+     */
+    var imageMaximumWidth: ?Float64 = None
+
+    /**
+     * 图片固定宽度百分比
+     */
+    var imageFixedRatioWidth: ?Float64 = None
+
+    /**
+     * 图片圆角大小
+     */
+    var imageBorderRadius: ?Float64 = None
+
+    /**
+     * 图片是否固定宽高比
+     */
+    var imageIsFixedAspectRatio: ?Bool = None
+
+    /**
+     * 图片固定宽高比大小
+     */
+    var imageAspectRatioSize: ?Float64 = None
+
+    /**
      * 图片默认占位图 - String
      */
     var imagePlaceholder: ?String = None
@@ -752,7 +787,23 @@ public class CJMarkdownTheme {
      */
     var isDark: ?Bool = None
 
+    /**
+     * 删除线颜色
+     */
+    var strikethroughColor: ?Color = None
+
     public init() {}
+
+
+
+    /**
+     * 设置是否打开长按复制粘贴
+     *
+     * @param isOnCopy 是否打开长按复制粘贴 - 默认true
+     */
+    public func setIsOnCopy(isOnCopy: Bool): Unit {
+        this.isOnCopy = isOnCopy
+    }
 
     /**
      * 设置模块间上下间距
@@ -1157,6 +1208,15 @@ public class CJMarkdownTheme {
      */
     public func setOrderedListItemLineHeight(orderedListItemLineHeight: Float64): Unit {
         this.orderedListItemLineHeight = orderedListItemLineHeight
+    }
+
+    /**
+     * 设置无序列表前缀是否全部是实心圆型
+     *
+     * @param bulletListItemCircle 无序列表前缀是否全部是实心圆型 - 默认false
+     */
+    public func setBulletListItemCircle(bulletListItemCircle: Bool): Unit {
+        this.bulletListItemCircle = bulletListItemCircle
     }
 
     /**
@@ -1938,6 +1998,51 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置图片最大宽度百分比
+     *
+     * @param imageMaximumWidth 图片最大宽度百分比 - 默认1.0
+     */
+    public func setImageMaximumWidth(imageMaximumWidth: Float64): Unit {
+        this.imageMaximumWidth = imageMaximumWidth
+    }
+
+    /**
+     * 设置图片固定宽度百分比
+     *
+     * @param imageFixedRatioWidth 图片固定宽度百分比 - 默认None
+     */
+    public func setImageFixedRatioWidth(imageFixedRatioWidth: Float64): Unit {
+        this.imageFixedRatioWidth = imageFixedRatioWidth
+    }
+
+    /**
+     * 设置图片圆角大小
+     *
+     * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
+     */
+    public func setImageBorderRadius(imageBorderRadius: Float64): Unit {
+        this.imageBorderRadius = imageBorderRadius
+    }
+
+    /**
+     * 设置图片是否固定宽高比
+     *
+     * @param imageIsFixedAspectRatio 图片是否固定宽高比 - 默认false
+     */
+    public func setImageIsFixedAspectRatio(imageIsFixedAspectRatio: Bool): Unit {
+        this.imageIsFixedAspectRatio = imageIsFixedAspectRatio
+    }
+
+    /**
+     * 设置图片固定宽高比大小
+     *
+     * @param imageAspectRatioSize 图片固定宽高比大小 - 默认16.0/9.0
+     */
+    public func setImageAspectRatioSize(imageAspectRatioSize: Float64): Unit {
+        this.imageAspectRatioSize = imageAspectRatioSize
+    }
+
+    /**
      * 设置图片默认占位图 - String
      *
      * @param imagePlaceholder 图片默认占位图 - String - 默认None
@@ -2079,5 +2184,14 @@ public class CJMarkdownTheme {
      */
     public func setIsDark(isDark: Bool): Unit {
         this.isDark = isDark
+    }
+
+    /**
+     * 设置删除线颜色
+     *
+     * @param strikethroughColor 删除线颜色 - 默认0X191919
+     */
+    public func setStrikethroughColor(strikethroughColor: UInt32): Unit {
+        this.strikethroughColor = Color(strikethroughColor)
     }
 }
