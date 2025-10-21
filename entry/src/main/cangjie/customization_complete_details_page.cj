@@ -92,10 +92,16 @@ class CustomizationCompleteDetailsPage {
             .usePlugin(BlockVideoPlugin.create())
             // 自动链接插件
             .usePlugin(LinkifyPlugin.create())
-            // 脚注插件
-            .usePlugin(FootnotePlugin.create())
+            // 幻灯片插件
+            .usePlugin(ImageSlidePlugin.create())
+            // ImageStyle插件
+            .usePlugin(ImageStylePlugin.create())
+            // 代码列表标签插件
+            .usePlugin(CodeListPlugin.create())
             // 图片不混排插件
             .usePlugin(ImageTextMixPlugin.create())
+            // 脚注插件
+            .usePlugin(FootnotePlugin.create())
             // TOC插件
             .usePlugin(TocPlugin.create())
             // 图片列表插件
