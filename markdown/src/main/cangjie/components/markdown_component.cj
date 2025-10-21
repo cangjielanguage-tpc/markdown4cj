@@ -63,6 +63,24 @@ public class MarkdownComponent {
             .build()
 
     /**
+     * 广告布局
+     */
+    @BuilderParam
+    var adBuilder: (NodeView) -> Unit = ADBuilder
+
+    /**
+     * 视频布局
+     */
+    @BuilderParam
+    var videoBuilder: (NodeView, MarkdownConfiguration, (String) -> Unit) -> Unit = VideoBuilder
+
+    /**
+     * 音频布局
+     */
+    @BuilderParam
+    var audioBuilder: (NodeView, MarkdownConfiguration) -> Unit = AudioBuilder
+
+    /**
      * 定位需要的数组
      */
     var indexList: ArrayList<Int64> = ArrayList<Int64>()
@@ -362,6 +380,11 @@ public class MarkdownComponent {
                                     marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
                                 )
+                            }
+                        } else if (item.node is BlockAD) {
+                            // 广告
+                            ListItem() {
+                                adBuilder(item)
                             }
                         } else {
                             // TODO 其他节点
