@@ -5,7 +5,7 @@
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v1.3.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v0.53.18-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v1.0.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -36,7 +36,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 10. 支持转义字符语法
 11. 支持删除线语法
 12. 支持链接语法
-13. ~~支持自动网址链接语法~~
+13. 支持自动网址链接语法
 14. 支持部分html语法
 15. 支持软硬换行语法
 16. 支持表格语法
@@ -48,9 +48,9 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 22. 支持数学公式语法
 23. 支持脚注语法
 24. 支持图片语法
-25. ~~支持图片Style语法~~
-26. ~~支持图片幻灯片语法~~
-27. ~~支持组合代码块语法~~
+25. 支持图片Style语法
+26. 支持图片幻灯片语法
+27. 支持组合代码块语法
 28. 支持视频语法
 29. 支持音频语法
 30. 支持围栏代码块高亮功能
@@ -127,7 +127,7 @@ class ARHeading1Page {
     func build() {
         Scroll() {
             Column {
-                MarkdownAIComponent(output: mdStr, isFull:true)
+                MarkdownAIComponent(output: mdStr)
             }
         }
         // 设置滚动方法
@@ -193,7 +193,7 @@ Heading level 2
 
 ## 约束与限制
 
-当前基于 DevEco Studio for Windows 5.0.13.200 和 DevEco Studio Cangjie Plugin Canary for Windows 5.0.13.200 版本实现的
+当前基于 DevEco Studio for Windows 5.1.1.840 和 DevEco Studio Cangjie Plugin Canary for Windows 5.1.1.840 版本实现的
 
 1. 内联代码暂未支持背景色设置
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
