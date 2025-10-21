@@ -754,6 +754,11 @@ public class MarkdownTheme {
     protected var imageMaximumWidth: Float64 = 1.0
 
     /**
+     * 图片固定宽度百分比
+     */
+    protected var imageFixedRatioWidth: ?Float64 = None
+
+    /**
      * 图片圆角大小
      */
     protected var imageBorderRadius: Float64 = 0.0
@@ -852,6 +857,11 @@ public class MarkdownTheme {
      * markdown代码高亮样式
      */
     protected var prismTheme: PrismTheme = PrismThemeDarkula.create()
+
+    /**
+     * 删除线颜色
+     */
+    protected var strikethroughColor: Color = COLOR_191919
 
     protected init(builder: MarkdownThemeBuilder) {
         // 1、上下文
@@ -1039,6 +1049,7 @@ public class MarkdownTheme {
 
         // 14、图片
         this.imageMaximumWidth = builder.imageMaximumWidth
+        this.imageFixedRatioWidth = builder.imageFixedRatioWidth
         this.imageBorderRadius = builder.imageBorderRadius
         this.imageIsFixedAspectRatio = builder.imageIsFixedAspectRatio
         this.imageAspectRatioSize = builder.imageAspectRatioSize
@@ -1063,6 +1074,9 @@ public class MarkdownTheme {
 
         // 16、代码高亮
         this.prismTheme = builder.prismTheme
+
+        // 17、删除线
+        this.strikethroughColor = builder.strikethroughColor
     }
 
     /**
@@ -1998,6 +2012,11 @@ public class MarkdownThemeBuilder {
     protected var imageMaximumWidth: Float64 = 1.0
 
     /**
+     * 图片固定宽度百分比
+     */
+    protected var imageFixedRatioWidth: ?Float64 = None
+
+    /**
      * 图片圆角大小
      */
     protected var imageBorderRadius: Float64 = 0.0
@@ -2096,6 +2115,11 @@ public class MarkdownThemeBuilder {
      * markdown代码高亮样式
      */
     protected var prismTheme: PrismTheme = PrismThemeDarkula.create()
+
+    /**
+     * 删除线颜色
+     */
+    protected var strikethroughColor: Color = COLOR_191919
 
     init() {
     }
@@ -2286,6 +2310,7 @@ public class MarkdownThemeBuilder {
 
         // 14、图片
         this.imageMaximumWidth = theme.imageMaximumWidth
+        this.imageFixedRatioWidth = theme.imageFixedRatioWidth
         this.imageBorderRadius = theme.imageBorderRadius
         this.imageIsFixedAspectRatio = theme.imageIsFixedAspectRatio
         this.imageAspectRatioSize = theme.imageAspectRatioSize
@@ -2310,6 +2335,9 @@ public class MarkdownThemeBuilder {
 
         // 16、代码高亮
         this.prismTheme = theme.prismTheme
+
+        // 17、删除线
+        this.strikethroughColor = theme.strikethroughColor
     }
 
     /**
@@ -4057,6 +4085,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置图片固定宽度百分比
+     *
+     * @param imageFixedRatioWidth 图片宽度百分比 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageFixedRatioWidth(imageFixedRatioWidth: Float64): MarkdownThemeBuilder {
+        this.imageFixedRatioWidth = imageFixedRatioWidth
+        return this
+    }
+
+    /**
      * 设置图片圆角
      *
      * @param imageBorderRadius 图片圆角 - 默认0.0
@@ -4273,6 +4312,17 @@ public class MarkdownThemeBuilder {
      */
     public func setPrismTheme(prismTheme: PrismTheme): MarkdownThemeBuilder {
         this.prismTheme = prismTheme
+        return this
+    }
+
+    /**
+     * 设置删除线颜色
+     *
+     * @param strikethroughColor 删除线颜色 默认COLOR_191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setStrikethroughColor(strikethroughColor: Color): MarkdownThemeBuilder {
+        this.strikethroughColor = strikethroughColor
         return this
     }
 
