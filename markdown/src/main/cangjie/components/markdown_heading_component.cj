@@ -263,6 +263,35 @@ class MarkdownHeadingComponent {
                                 imageCallback: imageCallback
                             )
                         }
+                    } else if (item.node is StyleImage) {
+                        //  图片Style节点
+                        if((item.node as StyleImage)().getDestination().startsWith("./")){
+                            MarkdownImageStyleSpanRawFileComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                destination: (item.node as StyleImage)().getDestination(),
+                                picStyle: (item.node as StyleImage)().styles,
+                                componentWidth:componentWidth,
+                                imageCallback: imageCallback
+                            )
+                        }else{
+                            if (DeviceInfo.sdkApiVersion >= 15) {
+                                MarkdownImageStyleSpanComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    picStyle: (item.node as StyleImage)().styles,
+                                    componentWidth:componentWidth,
+                                    imageCallback: imageCallback
+                                )
+                            } else {
+                                MarkdownImageStyleSpan15Component(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    picStyle: (item.node as StyleImage)().styles,
+                                    componentWidth:componentWidth,
+                                    imageCallback: imageCallback
+                                )
+                            }
+                        }
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
@@ -541,6 +570,25 @@ class MarkdownHeadingComponent {
                             imageMarginBottom: imageMarginBottom,
                             imageCallback: imageCallback
                         )
+                    } else if (item.node is StyleImage) {
+                        //  图片Style节点
+                        if((item.node as StyleImage)().getDestination().startsWith("./")){
+                            MarkdownImageStyleSpanRawFileComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                destination: (item.node as StyleImage)().getDestination(),
+                                picStyle: (item.node as StyleImage)().styles,
+                                componentWidth:componentWidth,
+                                imageCallback: imageCallback
+                            )
+                        }else{
+                            MarkdownImageStyleSpanComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                destination: (item.node as StyleImage)().getDestination(),
+                                picStyle: (item.node as StyleImage)().styles,
+                                componentWidth:componentWidth,
+                                imageCallback: imageCallback
+                            )
+                        }
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {

@@ -79,7 +79,7 @@ public class MarkdownImageStyleSpan15Component {
                 evt => imageOnClick(destination, imageCallback)
             }
             // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-            .onComplete(
+            .interopOnComplete(
                 {
                     imageLoadResult =>
                         let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentWidth)
