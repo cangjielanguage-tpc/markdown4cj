@@ -5,13 +5,16 @@
       "path": "./cjpm.toml",
       "abiFilters": ["arm64-v8a","x86_64"]
     },
+    "arkOptions": {
+      "byteCodeHar": false
+    },
     "externalNativeOptions": {
       "path": "./src/main/cpp/CMakeLists.txt",
       "arguments": "",
       "cppFlags": "",
       "abiFilters": [
         "arm64-v8a","x86_64"
-      ],
+      ]
     }
   },
   "buildOptionSet": [
