@@ -116,9 +116,9 @@ public class MarkdownImageSpanRatio15Component {
                     // 自定义图片圆角
                     .interopBorderRadius(imageBorderRadius)
                     // 设置组件自身的宽度
-                    .width((100.0  * imageMaximumWidth).percent)
+                    .width(if (imageFixedRatioWidth.isSome()) { componentWidth * imageFixedRatioWidth()} else { componentWidth * imageMaximumWidth })
                     // 设置组件自身的高度
-                    .height(componentWidth / imageAspectRatioSize * imageMaximumWidth)
+                    .height(if (imageFixedRatioWidth.isSome()) { componentWidth / imageAspectRatioSize * imageFixedRatioWidth() } else { componentWidth / imageAspectRatioSize * imageMaximumWidth })
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Cover)
             } else {
@@ -148,9 +148,9 @@ public class MarkdownImageSpanRatio15Component {
                 // 自定义图片圆角
                 .interopBorderRadius(imageBorderRadius)
                 // 设置组件自身的宽度
-                .width(componentWidth * imageMaximumWidth)
+                .width(if (imageFixedRatioWidth.isSome()) { componentWidth * imageFixedRatioWidth()} else { componentWidth * imageMaximumWidth })
                 // 设置组件自身的高度
-                .height(componentWidth / imageAspectRatioSize * imageMaximumWidth)
+                .height(if (imageFixedRatioWidth.isSome()) { componentWidth / imageAspectRatioSize * imageFixedRatioWidth() } else { componentWidth / imageAspectRatioSize * imageMaximumWidth })
                 // 设置图片的缩放类型
                 .objectFit(ImageFit.Cover)
                 // 点击动作触发该方法调用

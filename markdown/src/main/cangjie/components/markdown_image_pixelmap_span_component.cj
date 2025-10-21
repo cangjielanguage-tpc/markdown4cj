@@ -169,7 +169,8 @@ public class MarkdownImagePixelmapSpanComponent {
                     // 自定义图片圆角
                     .interopBorderRadius(imageBorderRadius)
                     // 设置外边距属性
-                    .margin(top: imageMarginTop, bottom: imageMarginBottom)                    // 设置组件自身的宽度
+                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
+                    // 设置组件自身的宽度
                     .width(if (imageFixedRatioWidth.isSome()) { (componentWidth * imageFixedRatioWidth()).px } else { (imageWidth() * imageMaximumWidth).px })
                     // 设置组件自身的高度
                     .height(if (imageFixedRatioWidth.isSome()) { (imageHeight() * (componentWidth / imageWidth()) * imageFixedRatioWidth()).px } else { (imageHeight() * imageMaximumWidth).px })
