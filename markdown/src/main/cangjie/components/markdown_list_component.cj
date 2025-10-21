@@ -61,7 +61,7 @@ public class MarkdownListComponent {
     /**
      * TOC列表点击事件回调
      */
-    let tocListOnClick: (Int64) -> Unit
+    var tocListOnClick: (Int64) -> Unit
 
     /**
      * 图片点击事件

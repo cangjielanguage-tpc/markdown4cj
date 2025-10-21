@@ -177,8 +177,8 @@ class MarkdownListItemComponent {
                                 marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
-                                tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
+                                tocListOnClick: tocListOnClick,
                                 videoCallback: videoCallback,
                                 componentWidth: componentWidth,
                                 indexList: indexAdd(indexList, idx),
@@ -195,8 +195,8 @@ class MarkdownListItemComponent {
                                 marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
-                                tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
+                                tocListOnClick: tocListOnClick,
                                 videoCallback: videoCallback,
                                 componentWidth: componentWidth,
                                 indexList: indexAdd(indexList, idx),
@@ -212,8 +212,8 @@ class MarkdownListItemComponent {
                                 marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
-                                tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
+                                tocListOnClick: tocListOnClick,
                                 videoCallback: videoCallback,
                                 componentWidth: componentWidth,
                                 indexList: indexAdd(indexList, idx),
@@ -298,47 +298,6 @@ class MarkdownListItemComponent {
                                 marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                             )
                         }
-                    } else if (item.node is ImageSingleBlock) {
-                        // 单独图片block
-                        ListItem() {
-                                if(item.children.size  > 0 && item.children[0].node is StyleImage){
-                                    //  图片Style节点
-                                    if((item.children[0].node as StyleImage)().getDestination().startsWith("./")){
-                                        MarkdownImageStyleRawFileComponent(
-                                            markdownConfiguration: markdownConfiguration,
-                                            destination: (item.children[0].node as StyleImage)().getDestination(),
-                                            picStyle: (item.children[0].node as StyleImage)().styles,
-                                            componentWidth:componentWidth,
-                                            imageCallback: imageCallback
-                                        )
-                                    }else{
-                                        MarkdownImageStyleComponent(
-                                            markdownConfiguration: markdownConfiguration,
-                                            destination: (item.children[0].node as StyleImage)().getDestination(),
-                                            picStyle: (item.children[0].node as StyleImage)().styles,
-                                            componentWidth:componentWidth,
-                                            imageCallback: imageCallback
-                                        )
-                                    }
-                                }else if(item.children.size  > 0 && item.children[0].node is CommonmarkImage){
-                                    if((item.children[0].node as CommonmarkImage)().getDestination().startsWith("./")){
-                                        MarkdownImageRawFileComponent(
-                                            markdownConfiguration: markdownConfiguration,
-                                            destination: (item.children[0].node as CommonmarkImage)().getDestination(),
-                                            componentWidth:componentWidth,
-                                            imageCallback: imageCallback
-                                        )
-                                    }else{
-                                        // 图片节点
-                                        MarkdownImageComponent(
-                                            destination: (item.children[0].node as CommonmarkImage)().getDestination(),
-                                            imageCallback: imageCallback
-                                        )
-                                    }
-                                }else{
-                                    Text("")
-                                }
-                            }
                     } else {
                         // TODO 其他节点
                         ListItem() {

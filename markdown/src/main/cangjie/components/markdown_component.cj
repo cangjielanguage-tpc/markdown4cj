@@ -46,18 +46,18 @@ public class MarkdownComponent {
             .usePlugin(BlockVideoPlugin.create())
             // 自动链接插件
             .usePlugin(LinkifyPlugin.create())
-            // 脚注插件
-            .usePlugin(FootnotePlugin.create())
             // 幻灯片插件
             .usePlugin(ImageSlidePlugin.create())
             // ImageStyle插件
             .usePlugin(ImageStylePlugin.create())
             // 代码列表标签插件
             .usePlugin(CodeListPlugin.create())
+            // 脚注插件
+            .usePlugin(FootnotePlugin.create())
+            // TOC插件
+            .usePlugin(TocPlugin.create())
             // 图片列表插件
             .usePlugin(ImageCollectPlugin.create())
-            // TOC列表插件
-            .usePlugin(TocPlugin.create())
             // 唯一ID标识插件
             .usePlugin(BlockIdPlugin.create())
             .build()
@@ -290,23 +290,12 @@ public class MarkdownComponent {
                         } else if (item.node is BlockAudio) {
                             // 音频
                             ListItem() {
-                                MarkdownImageAudioComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    marginTop: markdownConfiguration.markdownTheme.audioMarginTop,
-                                    marginBottom: markdownConfiguration.markdownTheme.audioMarginBottom
-                                )
+                                audioBuilder(item, markdownConfiguration)
                             }
                         } else if (item.node is BlockVideo) {
                             // 视频
                             ListItem() {
-                                MarkdownImageVideoComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    marginTop: markdownConfiguration.markdownTheme.videoMarginTop,
-                                    marginBottom: markdownConfiguration.markdownTheme.videoMarginBottom,
-                                    videoCallback: videoCallback
-                                )
+                                videoBuilder(item, markdownConfiguration, videoCallback)
                             }
                         } else if (item.node is LatexMathBlock) {
                             // 单行的数学公式
@@ -373,47 +362,6 @@ public class MarkdownComponent {
                                     marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
                                 )
-                            }
-                        } else if (item.node is ImageSingleBlock) {
-                            // 单独图片block
-                            ListItem() {
-                                if(item.children.size  > 0 && item.children[0].node is StyleImage){
-                                    //  图片Style节点
-                                    if((item.children[0].node as StyleImage)().getDestination().startsWith("./")){
-                                        MarkdownImageStyleRawFileComponent(
-                                            markdownConfiguration: markdownConfiguration,
-                                            destination: (item.children[0].node as StyleImage)().getDestination(),
-                                            picStyle: (item.children[0].node as StyleImage)().styles,
-                                            componentWidth:vp2px(componentWidth.vp).getOrThrow().value,
-                                            imageCallback: imageCallback
-                                        )
-                                    }else{
-                                        MarkdownImageStyleComponent(
-                                            markdownConfiguration: markdownConfiguration,
-                                            destination: (item.children[0].node as StyleImage)().getDestination(),
-                                            picStyle: (item.children[0].node as StyleImage)().styles,
-                                            componentWidth:vp2px(componentWidth.vp).getOrThrow().value,
-                                            imageCallback: imageCallback
-                                        )
-                                    }
-                                }else if(item.children.size  > 0 && item.children[0].node is CommonmarkImage){
-                                    if((item.children[0].node as CommonmarkImage)().getDestination().startsWith("./")){
-                                        MarkdownImageRawFileComponent(
-                                            markdownConfiguration: markdownConfiguration,
-                                            destination: (item.children[0].node as CommonmarkImage)().getDestination(),
-                                            componentWidth:vp2px(componentWidth.vp).getOrThrow().value,
-                                            imageCallback: imageCallback
-                                        )
-                                    }else{
-                                        // 图片节点
-                                        MarkdownImageComponent(
-                                            destination: (item.children[0].node as CommonmarkImage)().getDestination(),
-                                            imageCallback: imageCallback
-                                        )
-                                    }
-                                }else{
-                                    Text("")
-                                }
                             }
                         } else {
                             // TODO 其他节点
