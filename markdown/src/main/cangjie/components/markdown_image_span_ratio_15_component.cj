@@ -108,72 +108,40 @@ public class MarkdownImageSpanRatio15Component {
     }
 
     func build() {
-        if (!isCompleted && !isError) {
-            if (imagePlaceholder.isSome()) {
-                ImageSpan(imagePlaceholder())
-                    // 设置外边距属性
-                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
-                    // 自定义图片圆角
-                    .interopBorderRadius(imageBorderRadius)
-                    // 设置组件自身的宽度
-                    .width(if (imageFixedRatioWidth.isSome()) { componentWidth * imageFixedRatioWidth()} else { componentWidth * imageMaximumWidth })
-                    // 设置组件自身的高度
-                    .height(if (imageFixedRatioWidth.isSome()) { componentWidth / imageAspectRatioSize * imageFixedRatioWidth() } else { componentWidth / imageAspectRatioSize * imageMaximumWidth })
-                    // 设置图片的缩放类型
-                    .objectFit(ImageFit.Cover)
-            } else {
-                Span("")
-            }
-            ImageSpan(destination)
-                // 是否隐藏
-                .visibility(Visibility.None)
-                // 自定义图片圆角
-                .interopBorderRadius(imageBorderRadius)
-                // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-                .interopOnComplete({
-                    imageLoadResult => isCompleted = true
-                })
-                // 图片加载出现异常时触发该回调
-                .interopOnError(
-                    {
-                        imageError =>
-                        isError = true
-                        isCompleted = true
+        ImageSpan(destination)
+            // 设置外边距属性
+            .margin(top: imageMarginTop, bottom: imageMarginBottom)
+            // 自定义图片圆角
+            .interopBorderRadius(imageBorderRadius)
+            // 设置组件自身的宽度
+            .width(if (imageFixedRatioWidth.isSome()) { (componentWidth * imageFixedRatioWidth()).px } else { (width * imageMaximumWidth).px })
+            // 设置组件自身的高度
+            .height(if (imageFixedRatioWidth.isSome()) { (height * (componentWidth / width) * imageFixedRatioWidth()).px } else { (height * imageMaximumWidth).px })
+            // 设置图片的缩放类型
+            .objectFit(ImageFit.Contain)
+            // 设置图片基于文本的对齐方式
+            .verticalAlign(ImageSpanAlignment.CENTER)
+            // 点击动作触发该方法调用
+            .onClick {
+                evt =>
+                if(isLink){
+                    if(linkCallback.isSome() && linkUrl.isSome()){
+                        linkCallback()(linkUrl())
                     }
-                )
-        } else if (isCompleted && !isError) {
-            ImageSpan(destination)
-                // 设置外边距属性
-                .margin(top: imageMarginTop, bottom: imageMarginBottom)
-                // 自定义图片圆角
-                .interopBorderRadius(imageBorderRadius)
-                // 设置组件自身的宽度
-                .width(if (imageFixedRatioWidth.isSome()) { componentWidth * imageFixedRatioWidth()} else { componentWidth * imageMaximumWidth })
-                // 设置组件自身的高度
-                .height(if (imageFixedRatioWidth.isSome()) { componentWidth / imageAspectRatioSize * imageFixedRatioWidth() } else { componentWidth / imageAspectRatioSize * imageMaximumWidth })
-                // 设置图片的缩放类型
-                .objectFit(ImageFit.Cover)
-                // 点击动作触发该方法调用
-                .onClick {
-                    evt =>
-                    if(isLink){
-                        if(linkCallback.isSome() && linkUrl.isSome()){
-                            linkCallback()(linkUrl())
-                        }
-                    } else {
-                        imageOnClick(destination, imageCallback)
-                    }
+                } else {
+                    imageOnClick(destination, imageCallback)
                 }
-                // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-                .interopOnComplete({
-                    imageLoadResult => isCompleted = true
-                })
-                // 图片加载出现异常时触发该回调
-                .interopOnError({
-                    imageError =>
-                })
-        } else {
-            Span("")
-        }
+            }
+            // 图片成功加载时触发该回调，返回成功加载的图片尺寸
+            .interopOnComplete({
+                imageLoadResult =>
+                    var aspectRatio: Float64 = imageLoadResult.height / imageLoadResult.width
+                    width = if (componentWidth > imageLoadResult.width) {
+                        imageLoadResult.width
+                    } else {
+                        componentWidth
+                    }
+                    height = width * aspectRatio
+            })
     }
 }

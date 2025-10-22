@@ -132,7 +132,7 @@ public class MarkdownImagePixelmapSpanRatioComponent {
                 // 设置组件自身的高度
                 .height(if (imageFixedRatioWidth.isSome()) { componentWidth / imageAspectRatioSize * imageFixedRatioWidth() } else { componentWidth / imageAspectRatioSize * imageMaximumWidth })
                 // 设置图片的缩放类型
-                .objectFit(ImageFit.Cover)
+                .objectFit(ImageFit.Contain)
                 // 点击动作触发该方法调用
                 .onClick {
                     evt => if (isLink) {
