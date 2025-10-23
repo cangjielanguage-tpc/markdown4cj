@@ -76,20 +76,26 @@ class IndexPage {
                     }
                     ListItem() {
                         itemListComponent(
-                            "9、连续输入数学公式闪退",
+                            "9、超大数据源加载",
+                            "BigCompletePage"
+                        )
+                    }
+                    ListItem() {
+                        itemListComponent(
+                            "10、UI测试",
+                            "UIPage"
+                        )
+                    }
+                    ListItem() {
+                        itemListComponent(
+                            "11、连续输入数学公式闪退",
                             "ContinuousInputFormulasPage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "10、整体切换数据源",
+                            "12、整体切换数据源",
                             "DataSwitchingPage"
-                        )
-                    }
-                    ListItem() {
-                        itemListComponent(
-                            "11、超大数据源加载",
-                            "BigCompletePage"
                         )
                     }
                 }
