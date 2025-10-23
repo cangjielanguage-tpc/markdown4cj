@@ -50,7 +50,7 @@ class ContinuousInputFormulasPage {
     func build() {
         Column() {
             titleComponent(
-                "11、连续输入数学公式闪退",
+                "12、连续输入数学公式闪退",
                 true
             )
             Button("点击加载markdown")

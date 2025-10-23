@@ -88,13 +88,19 @@ class IndexPage {
                     }
                     ListItem() {
                         itemListComponent(
-                            "11、连续输入数学公式闪退",
+                            "11、UI广告测试",
+                            "UIADPage"
+                        )
+                    }
+                    ListItem() {
+                        itemListComponent(
+                            "12、连续输入数学公式闪退",
                             "ContinuousInputFormulasPage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "12、整体切换数据源",
+                            "13、整体切换数据源",
                             "DataSwitchingPage"
                         )
                     }
