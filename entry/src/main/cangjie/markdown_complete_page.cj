@@ -18,7 +18,7 @@ import ohos.hilog.*
  */
 @Entry
 @Component
-class CompletePage {
+class MarkdownCompletePage {
     /**
      * markdown文本内容
      */
@@ -44,7 +44,7 @@ class CompletePage {
     func build() {
         Column {
             titleComponent(
-                "全量加载",
+                "1、Markdown全量加载",
                 true
             )
             Scroll(scroller) {
@@ -55,7 +55,7 @@ class CompletePage {
                             str: String, index: Int64 => ListItem() {
                                 itemListComponent(
                                     "${index+1}、${str}",
-                                    "CompleteDetailsPage",
+                                    "MarkdownCompleteDetailsPage",
                                     "001_测试用例/${str}"
                                 )
                             }

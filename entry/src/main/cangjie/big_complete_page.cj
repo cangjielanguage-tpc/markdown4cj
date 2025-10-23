@@ -14,7 +14,7 @@ import std.time.*
 import ohos.hilog.*
 
 /**
- * 定制化全量加载
+ * 超大数据加载
  */
 @Entry
 @Component
@@ -44,7 +44,7 @@ class BigCompletePage {
     func build() {
         Column {
             titleComponent(
-                "全量加载",
+                "11、超大数据加载",
                 true
             )
             Scroll(scroller) {

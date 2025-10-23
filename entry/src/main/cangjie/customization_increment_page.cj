@@ -44,7 +44,7 @@ class CustomizationIncrementPage {
     func build() {
         Column {
             titleComponent(
-                "增量加载",
+                "6、特性设置增量加载",
                 true
             )
             Scroll(scroller) {

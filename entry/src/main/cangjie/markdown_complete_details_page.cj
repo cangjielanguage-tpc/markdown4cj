@@ -12,13 +12,15 @@ import markdown.components.*
 import std.sync.*
 import std.time.*
 import ohos.hilog.*
+import markdown.core.*
+import markdown.plugin.*
 
 /**
- * 增量加载详情页面
+ * 全量加载详情页面
  */
 @Entry
 @Component
-class IncrementDetailsPage {
+class MarkdownCompleteDetailsPage {
     /**
      * markdown文本
      */
@@ -30,24 +32,6 @@ class IncrementDetailsPage {
      */
     @State
     var params = ""
-
-    /**
-     * 流式markdown文本
-     */
-    @State
-    var output: String = ""
-
-    /**
-     * 一次加载文本个数
-     */
-    @State
-    var number: Int64 = 10
-
-    /**
-     * 延时时间
-     */
-    @State
-    var sleepTime: Int64 = 100
 
     /**
      * 滑动控制器
@@ -71,53 +55,19 @@ class IncrementDetailsPage {
                 params,
                 true
             )
-            Button("点击加载markdown")
-                // 高度
-                .height(40)
-                // 宽度
-                .width(100.percent)
-                // 圆角
-                .shape(ShapeType.Capsule)
-                // 文本颜色
-                .fontColor(0xFFFFFF)
-                // 背景颜色
-                .backgroundColor(0xFF0000)
-                // 外边距
-                .margin(top: 5, bottom: 5, right: 40, left: 40)
-                // 内容对齐方式
-                .align(Alignment.Center)
-                // 字体大小
-                .fontSize(16)
-                // 点击动作触发该方法调用
-                .onClick {
-                    => spawn {
-                        let arr: Array<Rune> = mdStr.toRuneArray()
-                        for (i in 0..arr.size : number) {
-                            sleep(Duration.millisecond * sleepTime)
-                            launch {
-                                let size = if (arr.size > i + number) {
-                                    i + number
-                                } else {
-                                    arr.size
-                                }
-                                output += String(arr[i..size])
-                                scroller.scrollEdge(Edge.Bottom)
-                            }
-                        }
-                    }
-                }
             Scroll(scroller) {
                 Column {
                     MarkdownComponent(
-                        output: output,
-                        markdownConfiguration: setConfig()
+                        output: mdStr,
+                        markdownConfiguration: setConfig(),
+                        markdownPlugin: setPlugin()
                     )
                 }
             }
-            // 左右外边距
+            // 外边距
             .margin(right: 10, left: 10)
             // 内边距
-            .padding(bottom: 150)
+            .padding(bottom: 100)
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
         }
@@ -206,7 +156,8 @@ class IncrementDetailsPage {
 
         // 5、代码
         // 内联代码
-        markdownThemeBuilder.setCodeTextColor(Color(0xFFFF5722)) // 设置内联代码文本颜色
+        markdownThemeBuilder.setCodeTextColor(Color(0xFF000000)) // 设置内联代码文本颜色
+            markdownThemeBuilder.setCodeBackgroundColor(Color(0xFFE9E9E9)) // 设置内联代码背景颜色
         // 代码块
         markdownThemeBuilder.setCodeCopyIcon(@r(app.media.app_icon)) // 设置代码复制按钮默认图标
         markdownThemeBuilder.setCodeBlockRadius(0.0) //  设置代码块圆角
@@ -251,6 +202,10 @@ class IncrementDetailsPage {
 
         // 14、图片
         markdownThemeBuilder.setImageIsFixedAspectRatio(true)
+        markdownThemeBuilder.setImageMarginTop(10.0)
+        markdownThemeBuilder.setImageMarginBottom(10.0)
+
+
 //        markdownThemeBuilder.setImagePadding(20) //  设置图片宽度边距
 
         // 15、表格
@@ -264,6 +219,40 @@ class IncrementDetailsPage {
         markdownThemeBuilder.setPrismTheme(PrismThemeDarkula.create()) // 设置markdown代码高亮样式
 
         return markdownThemeBuilder.build()
+    }
+
+    /**
+     * 设置MarkdownConfiguration
+     *
+     * @return MarkdownConfiguration
+     */
+    func setPlugin(): Markdown {
+        var markdownPlugin: Markdown = Markdown
+            .builder()
+            // HTML插件
+            .usePlugin(HtmlPlugin.create())
+            // 任务列表插件
+            .usePlugin(TaskListPlugin.create())
+            // 删除线插件
+            .usePlugin(StrikethroughPlugin.create())
+            // 表格插件
+            .usePlugin(TablePlugin.create())
+            // 数学公式插件
+            .usePlugin(LatexMathPluginV2.create())
+            // 音频插件
+            .usePlugin(BlockAudioPlugin.create())
+            // 视频插件
+            .usePlugin(BlockVideoPlugin.create())
+            // 自动链接插件
+            .usePlugin(LinkViewPlugin.create())
+            // 脚注插件
+            .usePlugin(FootnotePlugin.create())
+            // 图片列表插件
+            .usePlugin(ImageCollectPlugin.create())
+            // 唯一ID标识插件
+            .usePlugin(BlockIdPlugin.create())
+            .build()
+        return markdownPlugin
     }
 
     /**

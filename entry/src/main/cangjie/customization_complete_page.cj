@@ -44,7 +44,7 @@ class CustomizationCompletePage {
     func build() {
         Column {
             titleComponent(
-                "全量加载",
+                "5、特性设置全量加载",
                 true
             )
             Scroll(scroller) {

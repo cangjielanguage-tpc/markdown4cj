@@ -44,7 +44,7 @@ class CodeCompletePage {
     func build() {
         Column {
             titleComponent(
-                "全量加载",
+                "3、单独代码块全量加载",
                 true
             )
             Scroll(scroller) {

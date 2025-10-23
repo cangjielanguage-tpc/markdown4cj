@@ -44,7 +44,7 @@ class BugCodePage {
     func build() {
         Column {
             titleComponent(
-                "增量加载",
+                "8、单独代码块BUG用例",
                 true
             )
             Scroll(scroller) {

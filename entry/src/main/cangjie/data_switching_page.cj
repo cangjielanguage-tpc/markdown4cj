@@ -14,11 +14,11 @@ import std.time.*
 import ohos.hilog.*
 
 /**
- *
+ * 数据切换
  */
 @Entry
 @Component
-class TestError1Page {
+class DataSwitchingPage {
     var mdStr: String = ###"$$\begin{align*}
 \tan \theta &= \frac{1}{2 - \sqrt{3}} \cdot \frac{2 + \sqrt{3}}{2 + \sqrt{3}} \
 &= \frac{2 + \sqrt{3}}{(2 - \sqrt{3})(2 + \sqrt{3})} \
@@ -307,7 +307,7 @@ _________________
     func build() {
         Column() {
             titleComponent(
-                "11、连续输入数学公式闪退",
+                "10、整体切换数据源",
                 true
             )
             Button("点击加载markdown")

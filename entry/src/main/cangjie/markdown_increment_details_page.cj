@@ -9,132 +9,118 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import ohos.concurrency.*
 import markdown.components.*
+import std.sync.*
 import std.time.*
-import ohos.hilog.Hilog
+import ohos.hilog.*
 
 /**
- * markdown外层是list
+ * 增量加载详情页面
  */
 @Entry
 @Component
-class ListMarkdownPage1 {
-    let mdStr0: String = ###"
-内容1
-## 以下是白日依山尽的图片:
-"###
-    let mdStr1: String = ###"
-内容2
-## 夕阳西下山水画的艺术表现与创作灵感
+class MarkdownIncrementDetailsPage {
+    /**
+     * markdown文本
+     */
+    @State
+    var mdStr = ""
 
-“夕阳西下”是中国传统山水画中极具诗意的主题之一，常与归舟、晚霞、湖光山色等元素结合，营造出宁静悠远、意境深远的画面氛围。这一主题不仅在古典绘画中广受青睐，也在当代数字艺术和创意设计中持续焕发活力。
+    /**
+     * 文件名
+     */
+    @State
+    var params = ""
 
-### 1. **传统山水画中的“夕阳西下”意境**
+    /**
+     * 流式markdown文本
+     */
+    @State
+    var output: String = ""
 
-在传统文人画中，“夕阳西下”往往象征着归隐、思乡与自然和谐之美。例如，“远浦归帆”作为“潇湘八景”之一，描绘了夕阳西下时江面归航的渔舟、岸边酒旗以及宁静的水村小镇，画面疏朗闲淡，富有动静相宜的美感。这类作品通过淡描勾画而非浓墨重彩，展现出自然朴实的艺术风格，令观者仿佛置身其中，感受江边恬静的世界[[2]]()。
+    /**
+     * 一次加载文本个数
+     */
+    @State
+    var number: Int64 = 10
 
-此外，水墨山水画中也常见“夕阳西下，江山妖娆，羁鸟思归”的构图，通过绚丽的晚霞与倦鸟归巢的细节，强化了画面的情感张力与视觉冲击力，呈现出一幅壮丽而富有哲思的自然图景[[8]]()。
+    /**
+     * 延时时间
+     */
+    @State
+    var sleepTime: Int64 = 100
 
-### 2. **现代艺术与数字创作中的再现**
+    /**
+     * 滑动控制器
+     */
+    var scroller: Scroller = Scroller()
 
-随着数字技术的发展，“夕阳西下”的山水画主题也被广泛应用于AI数字艺术、插画设计与摄影合成中。例如：
-
-- 视觉中国提供了多幅以“AI数字艺术”形式呈现的夕阳山水画，画面中橙红色的天空、云霞缭绕的山峰与碧绿湖水交相辉映，极具视觉冲击力，适用于广告设计、壁纸与创意配图[[1]]()。
-- 天河公园湖心亭在夕阳下的实景被形容“仿佛置身于山水画中”，晚霞洒满天际，映照碧水，展现出自然景观与传统美学的高度契合[[7]]()。
-- 手绘风格的插画素材也大量出现，如绿色手绘风格的小溪流水山水画，结合夕阳西下的光影效果，常用于海报背景、免抠元素等设计场景[[6]]()。
-
-### 3. **绘画教学与创作实践**
-
-对于艺术爱好者而言，“夕阳西下”的小景致也是常见的绘画练习题材。抖音平台上已有简易教程指导如何用橘红、橘黄、中黄、柠檬黄和白色进行渐变涂抹，表现天空与水面的光影变化，并添加小树、芦苇、小鸟等元素增强画面生动性[[5]]()。此类教学强调色彩过渡与倒影处理，帮助初学者掌握山水画的基本技法。
-
-### 4. **摄影与视频中的“山水画意境”**
-
-除了绘画，摄影与视频创作也致力于捕捉“山水画般”的夕阳景象。例如，有创作者在日出前进入颐和园，使用电影机拍摄西堤的夕阳西下场景，力求还原传统山水画的意境，被称为“不可复制的美景”[[4]]()。这类影像作品将自然光影与古典美学结合，拓展了“山水画”的表现边界。
-
----
-
-## 总结
-
-“夕阳西下山水画”不仅是一种视觉艺术形式，更承载着深厚的文化意蕴。从传统水墨到现代AI生成，从绘画教程到摄影创作，这一主题持续激发着创作者的灵感，展现出自然之美与人文情怀的交融。无论是欣赏还是创作，它都为人们提供了一种回归宁静、感悟自然的审美路径。
-
-"###
-    let mdStr2: String = ###"
-内容3
-## AI数字艺术在山水画领域的多维实践探索
-近年来，AI技术与传统山水画的融合成为文化创新的重要方向，其应用不仅体现在艺术创作辅助与风格模拟，更延伸至展览呈现、学术研究及文化传播等多个层面，形成科技赋能传统艺术的全新范式。
-
-### 展览中的科技与艺术深度融合实践
-- **多维度艺术体验空间构建**
-  2025年“笔迹溯源——空天视角下的关山月写生之路”展览开创性地将遥感卫星数据、数字AI技术与传统山水画结合，通过20件经典画作、17件遥感卫星图片、2件高程模型及5件数字艺术作品，构建了“山、水、海”三大主题板块，系统梳理艺术家写生历程与风格生成逻辑[ 1 ](https://news.qq.com/rain/a/20250605A094CV00)。
-- **动态化数字装置创新**
-  展览中的《丹岩流影·九曲霓裳》以关山月作品《漂游伴水声》为灵感，将武夷山山水转化为多媒体光影装置；《碧涛帆影千重幕》则通过动画模拟浪花飞溅、潮起潮落，动态呈现《云龙卧海疆》中的南海意境，实现传统笔墨的时空延伸[ 1 ](https://news.qq.com/rain/a/20250605A094CV00)。
-
-### AI在山水画创作中的技术应用与挑战
-- **风格模拟与元素生成**
-  AI通过学习大量山水画数据（如30幅以上画家作品），可精准提取笔墨技法、构图特征，模拟沈周、黄公望等名家风格，生成兼具传统韵味与现代感的作品。例如“气韵再生”AI绘画模型已训练出100多位艺术大家的“AI化身”，用户可一键生成特定风格的山河湖海意象[ 2 ](https://max.book118.com/html/2024/1114/8142051115006143.shtm)[ 3 ](https://www.njdaily.cn/news/2025/0220/7437769620253722987.html)。
-- **创作辅助与效率提升**
-  AI能自动化处理素材整合、细节优化等基础任务，为画家提供山水元素（如山峰、水流、云雾）参考，并通过智能分析评估作品，提出改进建议，支持二次创作[ 2 ](https://max.book118.com/html/2024/1114/8142051115006143.shtm)。
-- **技术局限性与人文思考**
-  尽管AI可模拟笔墨技法，但难以完全复现画家的情感表达与哲学思考。其生成作品缺乏“气韵生动”的艺术生命力，且对历史文化语境的理解不足，易呈现“科技感有余而人文性不足”的局限[ 2 ](https://max.book118.com/html/2024/1114/8142051115006143.shtm)。
-
-### 跨学科研究与文化传承新路径
-- **空天视角下的学术创新**
-  武汉大学与关山月美术馆合作，利用自研卫星数据与写生数据结合，通过高程模型与遥感影像还原写生场景，揭示山水画在地质真实性框架下的空间表达特征，为美术史研究提供地理信息维度的全新证据[ 1 ](https://news.qq.com/rain/a/20250605A094CV00)。
-- **美育与公众传播拓展**
-  AI技术通过“定制化创作”降低艺术门槛，如南京大学训练营中，学生可训练AI模型再现传统大师笔触；景区AIGC拍照机让游客生成后印象派风格画像，实现传统美学的年轻化传播[ 3 ](https://www.njdaily.cn/news/2025/0220/7437769620253722987.html)。
-
-### 未来发展：平衡技术赋能与人文内核
-AI数字艺术对山水画的革新需以“笔墨当随时代”为精神内核，在技术应用中保留传统艺术的哲学底蕴与情感深度。未来可通过构建更丰富的文化数据集、优化算法对“意境”的理解能力，推动科技与艺术从“形式融合”向“精神协同”演进，让传统山水画在数字时代焕发新生。
-"###
-//    let mdStr2: String = getFileContextStr("latex.md")
-//    let mdStr3: String = getFileContextStr("table.md")
-//    let mdStr5: String = getFileContextStr("title.md")
-
-//    let arr = [mdStr0, mdStr1, mdStr2]
-    
-    var stringDataSource: StringDataSource = StringDataSource(ArrayList<String>())
-
+    /**
+     * rawfile文件夹列表
+     */
+    @State
+    var folderList: ObservedArrayList<String> = ObservedArrayList<String>()
 
     protected override func aboutToAppear(): Unit {
-        stringDataSource.addDatas([mdStr0,"", mdStr1,"",mdStr1,"",mdStr1,"", mdStr2])
+        params = (Router.getParams().getOrThrow() as String).getOrThrow()
+        mdStr = getFileContextStr(params)
     }
 
     func build() {
         Column() {
-//            titleComponent(
-//                "列表嵌套markdown",
-//                true
-//            )
-            List() {
-                LazyForEach(
-                    stringDataSource,
-                    itemGeneratorFunc: {
-                        str: String, index: Int64 => ListItem() {
-                            Row(){
-                               Image(@r(app.media.app_icon))
-                                .height(40)
-                                .width(40)
-                                if(str==""){
-                                  Image("https://markdown.com.cn/assets/img/shiprock.c3b9a023.jpg")
-                                    .width(100.percent)
-                                    .height(200)
-                                }else{
-//                                    Column(){
-                                        MarkdownComponent(output: str, markdownConfiguration: setConfig())
-//                                    }
+            titleComponent(
+                params,
+                true
+            )
+            Button("点击加载markdown")
+                // 高度
+                .height(40)
+                // 宽度
+                .width(100.percent)
+                // 圆角
+                .shape(ShapeType.Capsule)
+                // 文本颜色
+                .fontColor(0xFFFFFF)
+                // 背景颜色
+                .backgroundColor(0xFF0000)
+                // 外边距
+                .margin(top: 5, bottom: 5, right: 40, left: 40)
+                // 内容对齐方式
+                .align(Alignment.Center)
+                // 字体大小
+                .fontSize(16)
+                // 点击动作触发该方法调用
+                .onClick {
+                    => spawn {
+                        let arr: Array<Rune> = mdStr.toRuneArray()
+                        for (i in 0..arr.size : number) {
+                            sleep(Duration.millisecond * sleepTime)
+                            launch {
+                                let size = if (arr.size > i + number) {
+                                    i + number
+                                } else {
+                                    arr.size
                                 }
+                                output += String(arr[i..size])
+                                scroller.scrollEdge(Edge.Bottom)
                             }
-                            .height(100.percent)
-                            .alignItems(VerticalAlign.Top)
                         }
                     }
-                )
+                }
+            Scroll(scroller) {
+                Column {
+                    MarkdownComponent(
+                        output: output,
+                        markdownConfiguration: setConfig()
+                    )
+                }
             }
-            .cachedCount(0)
-            .layoutWeight(1)
-            .scrollBar(BarState.Off)
-            .edgeEffect(EdgeEffect.None)
+            // 左右外边距
+            .margin(right: 10, left: 10)
+            // 内边距
+            .padding(bottom: 150)
+            // 设置滚动方法
+            .scrollable(ScrollDirection.Vertical)
         }
-        .height(100.percent)
     }
 
     /**
@@ -162,6 +148,8 @@ AI数字艺术对山水画的革新需以“笔墨当随时代”为精神内核
         MarkdownConfigurationBuilder.setCodeFullScreenCallback(codeFullScreenCallback)
         // 设置数学公式图片点击事件
         MarkdownConfigurationBuilder.setLatexImageCallbackCallback(latexImageCallbackCallback)
+        // 设置脚注跳转指定位置
+        MarkdownConfigurationBuilder.setFootnoteCallback(footnoteCallback)
         return MarkdownConfigurationBuilder.build()
     }
 
@@ -262,6 +250,7 @@ AI数字艺术对山水画的革新需以“笔墨当随时代”为精神内核
         // 13、图片Banner
 
         // 14、图片
+        markdownThemeBuilder.setImageIsFixedAspectRatio(true)
 //        markdownThemeBuilder.setImagePadding(20) //  设置图片宽度边距
 
         // 15、表格
@@ -362,5 +351,15 @@ AI数字艺术对山水画的革新需以“笔墨当随时代”为精神内核
         Hilog.error(1, "1", "------------------------data:${data}")
         Hilog.error(1, "1", "------------------------height:${height.value}")
         Hilog.error(1, "1", "------------------------width:${width.value}")
+    }
+
+    /**
+     * 脚注跳转指定位置
+     *
+     * @param f 指定位置
+     */
+    func footnoteCallback(f: ?Float64): Unit {
+        scroller.scrollBy(xOffset: 0.0, yOffset: f.getOrThrow())
+        Hilog.error(1, "2", "------------------------footnoteCallback:f:${f}")
     }
 }

@@ -18,7 +18,7 @@ import ohos.hilog.*
  */
 @Entry
 @Component
-class IncrementPage {
+class MarkdownIncrementPage {
     /**
      * markdown文本内容
      */
@@ -44,7 +44,7 @@ class IncrementPage {
     func build() {
         Column {
             titleComponent(
-                "增量加载",
+                "2、Markdown增量加载",
                 true
             )
             Scroll(scroller) {
@@ -55,7 +55,7 @@ class IncrementPage {
                             str: String, index: Int64 => ListItem() {
                                 itemListComponent(
                                     "${index+1}、${str}",
-                                    "IncrementDetailsPage",
+                                    "MarkdownIncrementDetailsPage",
                                     "001_测试用例/${str}"
                                 )
                             }

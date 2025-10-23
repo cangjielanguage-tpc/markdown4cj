@@ -29,13 +29,13 @@ class IndexPage {
                     ListItem() {
                         itemListComponent(
                             "1、Markdown全量加载",
-                            "CompletePage"
+                            "MarkdownCompletePage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
                             "2、Markdown增量加载",
-                            "IncrementPage"
+                            "MarkdownIncrementPage"
                         )
                     }
                     ListItem() {
@@ -64,43 +64,31 @@ class IndexPage {
                     }
                     ListItem() {
                         itemListComponent(
-                            "7、列表嵌套markdown",
-                            "ListMarkdownPage"
-                        )
-                    }
-                    ListItem() {
-                        itemListComponent(
-                            "8、BUG用例",
+                            "7、BUG用例",
                             "BugPage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "9、单独代码块BUG用例",
+                            "8、单独代码块BUG用例",
                             "BugCodePage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "10、List懒加载",
-                            "ListMarkdownPage1"
+                            "9、连续输入数学公式闪退",
+                            "ContinuousInputFormulasPage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "11、连续输入数学公式闪退",
-                            "TestErrorPage"
+                            "10、整体切换数据源",
+                            "DataSwitchingPage"
                         )
                     }
                     ListItem() {
                         itemListComponent(
-                            "12、整体切换数据源",
-                            "TestError1Page"
-                        )
-                    }
-                    ListItem() {
-                        itemListComponent(
-                            "13、超大数据源加载",
+                            "11、超大数据源加载",
                             "BigCompletePage"
                         )
                     }
