@@ -59,10 +59,12 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 33. 支持表格样式设置
 34. 支持超链接图片化设置
 35. 支持深浅主题色设置
+36. 支持文本长按选中复制粘贴
+37. 支持图文混排和图文不混排功能
 
 ## 软件架构
 
-![img.png](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/blobs/5a5352e79bdc3af5dc6907686876b5cf7f4ca53e/img.png)
+![img.png](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/md_v1.3.1/doc%2Fassets%2Fimg.png)
 
 ### 源码目录
 
@@ -94,7 +96,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/md_v1.1.2/doc/API.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/md_v1.3.1/doc/API.md)
 
 ## 使用说明
 
@@ -107,10 +109,30 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
       ohpm install @cangjie-tpc/markdown
       ```
 
-2. 在项目中使用markdown项目
-   ```cangjie
-   import markdown.components.*
-   ```
+      在项目中使用markdown项目
+
+      ```cangjie
+      import markdown.components.*
+      ```
+      
+   2. 本地编译安装
+   
+      ```git
+      git clone https://gitcode.com/Cangjie-TPC/markdown4cj.git
+      git checkout md_v1.3.1
+      ```
+      
+      编译markdown
+      build -> Make Module `markdown`
+      
+      获取har包。har包路径
+      markdown -> build -> outputs -> default -> markdown.har
+
+      在项目中使用markdown项目
+
+      ```cangjie
+      import markdown.components.*
+      ```
 
 ### 功能示例
 
@@ -189,13 +211,13 @@ Heading level 2
 
 ### 显示效果
 
-![img1.png](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/blobs/c2964f6d5916d7cbeac768b7967062e76ab67a5a/img1.png)
+![img1.png](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/md_v1.3.1/doc%2Fassets%2Fimg1.png)
 
 ## 约束与限制
 
 当前基于 DevEco Studio for Windows 5.1.1.840 和 DevEco Studio Cangjie Plugin Canary for Windows 5.1.1.840 版本实现的
 
-1. 内联代码暂未支持背景色设置
+1. 内联代码/链接文字格式背景色。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本。
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
 3. 围栏代码块高亮语言支持如下(语言类型不区分大小写，每行如有多个则表示该语言支持别名书写)：
    1. brainfuck
@@ -226,18 +248,11 @@ Heading level 2
    26. cangjie、cj
    27. rust
 4. 表格限制：
-   1. 不支持行内添加标题
-   2. 不支持行内添加块引用
-   3. 不支持行内添加有序、无序、任务列表
-   4. 不支持行内添加图片
-   5. 不支持行内添加缩进代码块、围栏代码块
-5. 图文混排支持本地图片和网络图片的图文混排
-   1. 不支持沙盒路径下的本地图片
-   2. 不支持rawfile目录下本地图片
-   3. 不支持带style标签的图片
-6. 暂未支持稀疏排列和紧密排列
-7. 数学公式背景色暂不支持设置透明色
-8. HTML支持的标签
+   1. 不支持嵌套标题
+   2. 不支持嵌套块引用/有序列表/无序列表/任务列表
+   3. 不支持嵌套缩进代码块/围栏代码块
+5. 不支持稀疏排列/紧密排列
+6. HTML支持的标签
    1. 块元素
       1. hr标签 - 分割线
       2. h1~h6标签 - 标题
@@ -257,6 +272,10 @@ Heading level 2
       4. i、em、cite、dfn标签 - 斜体
       5. s、del标签 - 删除
       6. code、samp、var、kbd标签 - 内联代码
+      7. span标签 - 文本样式(key不支持中文)
+         * font-size属性 - 文本大小
+         * font-weight属性 - 文本粗细
+         * color属性 - 文本颜色(只支持6位16进制颜色)
    3. 行内块元素
       1. br标签 -  换行符
       2. img标签 - 图片
@@ -264,10 +283,15 @@ Heading level 2
          * title属性
          * width属性
          * height属性
+   4. 注释
+      1. `<!--  -->` - 注释标签
+   5. DOCTYPE
+7. 长按选中复制粘贴功能。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本。
+8. 图片显示功能。纯仓颉项目支持API15及以上版本。互操作项目支持API12及以上版本。
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/md_v1.1.2/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/md_v1.3.1/LICENSE) ，请自由的享受和参与开源。
 
 ## 参与贡献
 
