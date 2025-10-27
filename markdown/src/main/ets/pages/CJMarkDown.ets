@@ -738,8 +738,7 @@ export class MarkdownConfiguration {
    *
    * @param cb 视频视频占位图和宽高比和视频时长回调。 (funcArg0：视频url,funcArg1:视频占位图和宽高比和视频时长回调 (funcArgfuncArg0:视频首帧图,funcArgfuncArg1:图片宽高比,funcArgfuncArg2,视频时长)) --- 需要加载视频解析插件
    */
-  setVideoImageCallback(cb: (funcArg0: string,
-    funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void): void {
+  setVideoImageCallback(cb: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void): void {
     this.videoImageCallback = cb
   }
 
@@ -1579,9 +1578,9 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置是否按照链接文本自己大小显示文本
+   * 设置是否按照链接文本字体大小显示文本
    *
-   * @param isLinkSize 是否按照链接文本自己大小显示文本 - true：显示链接自己文本大小；false：跟随标题段落大小显示。默认true
+   * @param isLinkSize 是否按照链接文本字体大小显示文本 - true：显示链接字体文本大小；false：跟随标题段落大小显示。默认true
    */
   setIsLinkSize(isLinkSize: boolean): void {
     this.isLinkSize = isLinkSize
@@ -3133,9 +3132,9 @@ export class MarkdownPlugin {
   }
 
   /**
-   * 设置单独的图片提到块级别插件
+   * 设置图片不混排插件
    *
-   * @param isImageTextMixPlugin 是否设置单独的图片提到块级别插件 - true：设置单独的图片提到块级别插件；false：不设置单独的图片提到块级别插件。默认false
+   * @param isImageTextMixPlugin 是否图片不混排插件 - true：图片混排；false：图片不混排。默认true
    */
   setIsImageTextMixPlugin(isImageTextMixPlugin: boolean): void {
     this.isImageTextMixPlugin = isImageTextMixPlugin

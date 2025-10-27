@@ -794,8 +794,6 @@ public class CJMarkdownTheme {
 
     public init() {}
 
-
-
     /**
      * 设置是否打开长按复制粘贴
      *

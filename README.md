@@ -5,7 +5,7 @@
 <p align="center">
 <img alt="" src="https://img.shields.io/badge/release-v1.3.4-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v1.0.0-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v1.0.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -53,14 +53,14 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 27. 支持组合代码块语法
 28. 支持视频语法
 29. 支持音频语法
-30. 支持单独代码块功能
-31. 支持围栏代码块高亮功能
-32. 支持列表嵌套功能
-33. 支持文本样式设置
-34. 支持表格样式设置
-35. 支持内联代码图片化设置
-36. 支持超链接图片化设置
-37. 支持深浅主题色设置
+30. 支持围栏代码块高亮功能
+31. 支持列表嵌套功能
+32. 支持文本样式设置
+33. 支持表格样式设置
+34. 支持超链接图片化设置
+35. 支持深浅主题色设置
+36. 支持文本长按选中复制粘贴
+37. 支持图文混排和图文不混排功能
 
 ## 软件架构
 
@@ -94,17 +94,38 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 编译构建
 
+
 1. 下载安装
-   通过中心仓下载安装
+   1. 通过中心仓下载安装
 
       ```sh
-      ohpm install @cangjie-tpc/markdown_hybrid
+      ohpm install @cangjie-tpc/markdown
       ```
 
-2. 在项目中使用markdown项目
-   ```arkts
-   import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-   ```
+      在项目中使用markdown项目
+
+      ```arkts
+      import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+      ```
+
+   2. 本地编译安装
+
+      ```git
+      git clone https://gitcode.com/Cangjie-TPC/markdown4cj.git
+      git checkout markdown4cj_hybrid_cangjie-plugin_5.1.1.823
+      ```
+
+      编译markdown
+      build -> Make Module `markdown`
+
+      获取har包。har包路径
+      markdown -> build -> outputs -> default -> markdown.har
+
+      在项目中使用markdown项目
+
+      ```arkts
+      import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+      ```
 
 ### 功能示例
 
@@ -176,7 +197,7 @@ struct DemoPage {
     Column() {
       Column() {
         CJMarkdown({
-          mdStr: this.message
+          content: this.message
         })
       }
     }
@@ -195,7 +216,7 @@ struct DemoPage {
 
 当前基于 DevEco Studio for Windows 5.1.1.823 和 DevEco Studio Cangjie Plugin Canary for Windows 5.1.1.823 版本实现的
 
-1. 内联代码暂未支持背景色设置
+1. 内联代码/链接文字格式背景色。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
 3. 围栏代码块高亮语言支持如下(语言类型不区分大小写，每行如有多个则表示该语言支持别名书写)：
    1. brainfuck
@@ -217,7 +238,7 @@ struct DemoPage {
    17. latex
    18. makefile
    19. markdown、md
-   20. markup、svg、html、xml
+   20. markup、svg
    21. python、python3、py、py3、Python ML、pythonml、pandas、pythondata
    22. scala
    23. sql、mysql、oracle、oraclesql、sqlserver、MS SQL Server、mssql、postgresql、pgsql
@@ -226,17 +247,11 @@ struct DemoPage {
    26. cangjie、cj
    27. rust
 4. 表格限制：
-   1. 不支持行内添加标题
-   2. 不支持行内添加块引用
-   3. 不支持行内添加有序、无序、任务列表
-   4. 不支持行内添加图片
-   5. 不支持行内添加视频
-   6. 不支持行内添加图片banner
-   7. 不支持行内添加缩进代码块、围栏代码块、围栏代码组合列表块
-5. ImageStyle只支持宽高样式设置，暂不支持圆角和对齐方式设置
-6. 暂未支持稀疏排列和紧密排列
-7. 数学公式背景色暂不支持设置透明色
-8. HTML支持的标签
+   1. 不支持嵌套标题
+   2. 不支持嵌套块引用/有序列表/无序列表/任务列表
+   3. 不支持嵌套缩进代码块/围栏代码块
+5. 不支持稀疏排列/紧密排列
+6. HTML支持的标签
    1. 块元素
       1. hr标签 - 分割线
       2. h1~h6标签 - 标题
@@ -256,6 +271,10 @@ struct DemoPage {
       4. i、em、cite、dfn标签 - 斜体
       5. s、del标签 - 删除
       6. code、samp、var、kbd标签 - 内联代码
+      7. span标签 - 文本样式(key不支持中文)
+         * font-size属性 - 文本大小
+         * font-weight属性 - 文本粗细
+         * color属性 - 文本颜色(只支持6位16进制颜色)
    3. 行内块元素
       1. br标签 -  换行符
       2. img标签 - 图片
@@ -263,11 +282,14 @@ struct DemoPage {
          * title属性
          * width属性
          * height属性
+   4. 注释
+      1. `<!--  -->` - 注释标签
+   5. DOCTYPE
+7. 长按选中复制粘贴功能。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本
+8. 图片显示功能。纯仓颉项目支持API15及以上版本。互操作项目支持API12及以上版本
 9. 视频支持的格式 `mp4, mov, avi, mkv, wmv, flv, webm, m4v, 3gp`
 10. 音频支持的格式 `mp3, wav, aac, flac, ogg, m4a, wma, amr`
-11. `setIsAutoResize`、`setImageMarginTop`、`setImageMarginBottom`、`setImagePlaceholder`、`setImageResource` 接口暂不生效
-12. `setLatexMathResStr` 接口默认字段是 `/data/storage/el1/bundle/entry/resources/resfile/res`。用户修改项目默认名称entry需要设置 `/data/storage/el1/bundle/xxx/resources/resfile/res` 数学公式才能正常显示
-13. `setIsLinkStyle` 接口前置条件需要设置链接块状化插件 `setIsLinkViewPlugin`。 `setIsListLinkStyle` 接口前置条件 `setIsLinkStyle` 接口设置 `true`。
+11. `setLatexMathResStr` 接口默认字段是 `/data/storage/el1/bundle/entry/resources/resfile/res`。用户修改项目默认名称entry需要设置 `/data/storage/el1/bundle/xxx/resources/resfile/res` 数学公式才能正常显示
 
 ## 开源协议
 

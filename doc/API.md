@@ -10,16 +10,16 @@ Markdown预览自定义控件
 /**
  * Markdown预览自定义控件
  */
-@ComponentV2
+@Component
 export struct CJMarkdown {
     /**
     * 初始化Markdown自定义控件
     *
-    * @param mdStr 传入markdown文档内容
-    * @param cfg 传入markdown配置选项
+    * @param content 传入markdown文档内容
+    * @param config 传入markdown配置选项
     * @param plugin 传入markdown插件化选项
     */
-    CJMarkdown(mdStr: string, cfg?: MarkdownConfiguration, plugin?: MarkdownPlugin)
+    CJMarkdown(content: string, config?: MarkdownConfiguration, plugin?: MarkdownPlugin)
 }
 ```
 
@@ -42,11 +42,24 @@ export class MarkdownConfiguration {
   setLinkCallback(cb: (funcArg0: string) => void): void
 
   /**
+   * 设置文本复制的点击事件
+   *
+   * @param cb 文本复制的点击事件(funcArg0：复制的文本)
+   */
+  setTextCopyCallback(cb: (funcArg0: string) => void): void
+  /**
    * 设置图片点击回调
    *
    * @param cb 图片点击回调。 (funcArg0：图片url,funcArg1:所有图片和视频连接集合 --- 需要加载图片视频列表url集合列表解析插件)
    */
   setImageCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void
+
+  /**
+   * 设置图片替换事件
+   *
+   * @param cb 图片替换事件。 (funcArg0：图片url 返回值是替换的图片数据)
+   */
+  setImageCallbackCallback(cb: (funcArg0: string) => ArrayBuffer | undefined): void
 
   /**
    * 设置音频点击回调
@@ -181,11 +194,18 @@ export class MarkdownTheme {
   setBannerImage(bannerImage: Resource): void
 
   /**
-   * 设置图片占位图 - todo:暂未实现
+   * 设置图片占位图
    *
    * @param imageResource 图片占位图
    */
   setImageResource(imageResource: Resource): void
+
+  /**
+   * 设置是否打开长按复制粘贴
+   *
+   * @param isOnCopy 是否打开长按复制粘贴 - 默认true
+   */
+  setIsOnCopy(isOnCopy: boolean): void
 
   /**
    * 设置模块间上下间距
@@ -230,7 +250,7 @@ export class MarkdownTheme {
   setLinkSize(linkSize: number): void
 
   /**
-   * 设置文本格式链接背景颜色 - todo:暂未实现
+   * 设置文本格式链接背景颜色
    *
    * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0XFF000000
    */
@@ -356,32 +376,11 @@ export class MarkdownTheme {
   setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: number): void
 
   /**
-   * 设置空心圆角矩形图片格式链接控件边框颜色
-   *
-   * @param linkRectToolImageButtonBorderColor 空心圆角矩形图片格式链接控件边框颜色 - 默认OXFF000000
-   */
-  setLinkRectToolImageButtonBorderColor(linkRectToolImageButtonBorderColor: number): void
-
-  /**
-   * 设置空心圆角矩形图片格式链接控件分割线颜色
-   *
-   * @param linkRectToolImageButtonDividingLineColor 空心圆角矩形图片格式链接控件分割线颜色 - 默认OXFF000000
-   */
-  setLinkRectToolImageButtonDividingLineColor(linkRectToolImageButtonDividingLineColor: number): void
-
-  /**
    * 设置空心圆角矩形图片格式链接文字大小
    *
    * @param linkRectToolImageTextSize 空心圆角矩形图片格式链接文字大小 - 默认14.0fp
    */
   setLinkRectToolImageTextSize(linkRectToolImageTextSize: number): void
-
-  /**
-   * 设置空心圆角矩形图片格式链接文字颜色
-   *
-   * @param linkRectToolImageTextColor 空心圆角矩形图片格式链接文字颜色 - 默认OXFF000000
-   */
-  setLinkRectToolImageTextColor(linkRectToolImageTextColor: number): void
 
   /**
    * 设置空心圆角矩形图片格式链接控件高度
@@ -524,6 +523,13 @@ export class MarkdownTheme {
   setOrderedListItemLineHeight(orderedListItemLineHeight: number): void
 
   /**
+   * 设置无序列表前缀是否全部是实心圆型
+   *
+   * @param orderedListItemLineHeight 无序列表前缀是否全部是实心圆型 - 默认false
+   */
+  setBulletListItemCircle(bulletListItemCircle: boolean): void
+
+  /**
    * 设置无序列表前缀文本颜色
    *
    * @param bulletListItemColor 无序列表前缀文本颜色 - 默认OXFF191919
@@ -566,7 +572,7 @@ export class MarkdownTheme {
   setCodeTextColor(codeTextColor: number): void
 
   /**
-   * 设置文本、图片格式内联代码背景颜色 - todo:文本背景颜色暂未实现
+   * 设置文本、图片格式内联代码背景颜色
    *
    * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFF191919
    */
@@ -755,6 +761,13 @@ export class MarkdownTheme {
   setSeparateCodeBlockWidth(separateCodeBlockWidth: number): void
 
   /**
+   * 设置单独代码块是否居底显示
+   *
+   * @param separateCodeIsBottom 单独代码块是否居底显示 - 默认false
+   */
+  setSeparateCodeIsBottom(separateCodeIsBottom: boolean): void
+
+  /**
    * 设置H1、H2标题下分割线高度
    *
    * @param headingBreakHeight H1、H2标题下分割线高度 - 默认0.5vp
@@ -914,13 +927,6 @@ export class MarkdownTheme {
    * @param latexMathTextSize 数学公式文本大小 - 默认16.0fp
    */
   setLatexMathTextSize(latexMathTextSize: number): void
-
-  /**
-   * 设置数学公式文本行距
-   *
-   * @param latexMathTextLineSpacing 数学公式文本行距 - 默认10.0vp
-   */
-  setLatexMathTextLineSpacing(latexMathTextLineSpacing: number): void
 
   /**
    * 设置数学公式背景色
@@ -1126,28 +1132,63 @@ export class MarkdownTheme {
   setVideoMarginBottom(videoMarginBottom: number): void
 
   /**
-   * 设置图片默认占位图 - String - todo:暂未实现
+   * 设置图片最大宽度百分比
+   *
+   * @param imageMaximumWidth 图片最大宽度百分比 - 默认1.0
+   */
+  setImageMaximumWidth(imageMaximumWidth: number): void
+
+  /**
+   * 设置图片固定宽度百分比
+   *
+   * @param imageFixedRatioWidth 图片固定宽度百分比 - 默认None
+   */
+  setImageFixedRatioWidth(imageFixedRatioWidth: number): void
+
+  /**
+   * 设置图片圆角大小
+   *
+   * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
+   */
+  setImageBorderRadius(imageBorderRadius: number): void
+
+  /**
+   * 设置图片是否固定宽高比
+   *
+   * @param imageIsFixedAspectRatio 图片是否固定宽高比 - 默认false
+   */
+  setImageIsFixedAspectRatio(imageIsFixedAspectRatio: boolean): void
+
+  /**
+   * 设置图片固定宽高比大小
+   *
+   * @param imageAspectRatioSize 图片固定宽高比大小 - 默认16.0/9.0
+   */
+  setImageAspectRatioSize(imageAspectRatioSize: number): void
+
+  /**
+   * 设置图片默认占位图 - String
    *
    * @param imagePlaceholder 图片默认占位图 - String - 默认None
    */
   setImagePlaceholder(imagePlaceholder: string): void
 
   /**
-   * 设置网络图片是否压缩 - todo:暂未实现
+   * 设置网络图片是否压缩
    *
    * @param isAutoResize 网络图片是否压缩 - true：压缩；false：不压缩。默认true
    */
   setIsAutoResize(isAutoResize: boolean): void
 
   /**
-   * 设置图片上边距 - todo:暂未实现
+   * 设置图片上边距
    *
    * @param imageMarginTop 图片上边距 - 默认10.0vp
    */
   setImageMarginTop(imageMarginTop: number): void
 
   /**
-   * 设置图片下边距 - todo:暂未实现
+   * 设置图片下边距
    *
    * @param imageMarginBottom 图片下边距 - 默认10.0vp
    */
@@ -1236,6 +1277,13 @@ export class MarkdownTheme {
    * @param isDark 是否是深色 - true：深色；false：浅色。默认false
    */
   setIsDark(isDark: boolean): void
+
+  /**
+   * 设置删除线颜色
+   *
+   * @param strikethroughColor 删除线颜色 - 默认0X191919
+   */
+  setStrikethroughColor(strikethroughColor: number): void
 }
 ```
 
@@ -1367,11 +1415,11 @@ export class MarkdownPlugin {
   setIsImageSlidePlugin(isImageSlidePlugin: boolean): void
 
   /**
-   * 设置单独的图片提到块级别插件
+   * 设置图片不混排插件
    *
-   * @param isImageSinglePlugin 是否设置单独的图片提到块级别插件 - true：设置单独的图片提到块级别插件；false：不设置单独的图片提到块级别插件。默认false
+   * @param isImageTextMixPlugin 是否图片不混排插件 - true：图片混排；false：图片不混排。默认true
    */
-  setIsImageSinglePlugin(isImageSinglePlugin: boolean): void
+  setIsImageTextMixPlugin(isImageTextMixPlugin: boolean): void
 
   /**
    * 设置图片视频url集合列表插件
