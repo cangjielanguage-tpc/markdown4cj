@@ -217,7 +217,7 @@ Heading level 2
 
 当前基于 DevEco Studio for Windows 5.1.1.840 和 DevEco Studio Cangjie Plugin Canary for Windows 5.1.1.840 版本实现的
 
-1. 内联代码/链接文字格式背景色。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本。
+1. 内联代码/链接文字格式背景色。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
 3. 围栏代码块高亮语言支持如下(语言类型不区分大小写，每行如有多个则表示该语言支持别名书写)：
    1. brainfuck
@@ -286,8 +286,11 @@ Heading level 2
    4. 注释
       1. `<!--  -->` - 注释标签
    5. DOCTYPE
-7. 长按选中复制粘贴功能。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本。
-8. 图片显示功能。纯仓颉项目支持API15及以上版本。互操作项目支持API12及以上版本。
+7. 长按选中复制粘贴功能。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本
+8. 图片显示功能。纯仓颉项目支持API15及以上版本。互操作项目支持API12及以上版本
+9. 视频支持的格式 `mp4, mov, avi, mkv, wmv, flv, webm, m4v, 3gp`
+10. 音频支持的格式 `mp3, wav, aac, flac, ogg, m4a, wma, amr`
+11. `setLatexMathResStr` 接口默认字段是 `/data/storage/el1/bundle/entry/resources/resfile/res`。用户修改项目默认名称entry需要设置 `/data/storage/el1/bundle/xxx/resources/resfile/res` 数学公式才能正常显示
 
 ## 开源协议
 
