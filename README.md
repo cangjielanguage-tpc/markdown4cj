@@ -114,17 +114,17 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
       ```cangjie
       import markdown.components.*
       ```
-      
+
    2. 本地编译安装
-   
+
       ```git
       git clone https://gitcode.com/Cangjie-TPC/markdown4cj.git
       git checkout md_v1.3.1
       ```
-      
+
       编译markdown
       build -> Make Module `markdown`
-      
+
       获取har包。har包路径
       markdown -> build -> outputs -> default -> markdown.har
 

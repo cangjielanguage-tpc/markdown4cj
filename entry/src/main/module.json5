@@ -4,7 +4,7 @@
     "type": "entry",
     "description": "$string:module_desc",
     "mainElement": "EntryAbility",
-    compressNativeLibs: true,
+    "compressNativeLibs": true,
     "deviceTypes": [
       "phone"
     ],
