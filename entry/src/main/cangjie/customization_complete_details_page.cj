@@ -135,9 +135,13 @@ class CustomizationCompleteDetailsPage {
         let markdownTheme: MarkdownTheme = MarkdownTheme
             .emptyBuilder()
 
+            // 1、上下文
+            .setAbilityContext(getGlobalAbilityContext()) // 设置上下文
+
+
             .setImageMarginTop(10.0)
             .setImageMarginBottom(10.0)
-            .setImageMaximumWidth(0.5)
+//            .setImageMaximumWidth(0.5)
 
              .setIsLinkSize(false)
              //设置每个模块之间上下间距
@@ -253,7 +257,9 @@ class CustomizationCompleteDetailsPage {
             //代码类型和代码块距离
             .setCodeBlockTypeTextPadding(10.0)
             .setStrikethroughColor(Color.RED)
-            .setImageFixedRatioWidth(0.5)
+            .setImageResource(@r(app.media.place_holder))
+
+//            .setImageFixedRatioWidth(0.5)
 
 ////            // 代码块背景色
 //            .setCodeBlockBackgroundColor(Color(0xFF282C35))
@@ -293,16 +299,19 @@ class CustomizationCompleteDetailsPage {
 
     func imageCallbackCallback(url: String):?Array<UInt8> {
         sleep(Duration.second * 1)
-        if(url == "https://oimg3.selfimg.com.cn/voguecms/20244/71058e561714044454233.jpg" ||
-            url =="https://i2.hdslb.com/bfs/archive/51354eed3c0e3784004b4896af2d3138d963873d.jpg" ||
-            url == "https://images.pexels.com/photos/15286/pexels-photo.jpg" ||
-            url == "https://markdown.com.cn/images/i-am-svg.svg"){
-            return Option<Array<UInt8>>.None
-        }
-        var arrayUInt8: Array<UInt8> =  ResourceManager.getResourceManager(getStageContext(getGlobalAbilityContext())).getRawFileContent("test1_1.jpg")
-        return arrayUInt8
+//        if(url == "https://oimg3.selfimg.com.cn/voguecms/20244/71058e561714044454233.jpg" ||
+//            url =="https://i2.hdslb.com/bfs/archive/51354eed3c0e3784004b4896af2d3138d963873d.jpg" ||
+//            url == "https://images.pexels.com/photos/15286/pexels-photo.jpg" ||
+//            url == "https://markdown.com.cn/images/i-am-svg.svg" ||
+//            url == "https://qcdn3.zhaomi.cn/d/I2wUX6ipXBi_wUQzjKpWBQA_origin.png"||
+//            url == "./test1_1.jpg"||
+//            url == "https://qcdn3.zhaomi.cn/d/pBs25HVkcwU_RtwBpromCUY_origin"){
+//            return Option<Array<UInt8>>.None
+//        }
+//        var arrayUInt8: Array<UInt8> =  ResourceManager.getResourceManager(getStageContext(getGlobalAbilityContext())).getRawFileContent("test1_1.jpg")
+//        return arrayUInt8
 
-//        return Option<Array<UInt8>>.None
+        return Option<Array<UInt8>>.None
     }
 
     func linkCallback(url: String) {

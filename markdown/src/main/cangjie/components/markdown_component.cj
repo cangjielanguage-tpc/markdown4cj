@@ -172,7 +172,7 @@ public class MarkdownComponent {
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
-                                    componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
+                                    componentWidth: componentWidth,
                                     imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
                                     imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
                                     isListTo:false,
@@ -194,7 +194,7 @@ public class MarkdownComponent {
                                     fontCallback: fontCallback,
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
-                                    componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
+                                    componentWidth: componentWidth,
                                     imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
                                     imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
                                     isListTo:false,
@@ -215,7 +215,7 @@ public class MarkdownComponent {
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
-                                    componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
+                                    componentWidth: componentWidth,
                                     indexList: indexAdd(indexList, idx),
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
@@ -233,7 +233,7 @@ public class MarkdownComponent {
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
-                                    componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
+                                    componentWidth: componentWidth,
                                     indexList: indexAdd(indexList, idx),
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
@@ -250,7 +250,7 @@ public class MarkdownComponent {
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
-                                    componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
+                                    componentWidth: componentWidth,
                                     indexList: indexAdd(indexList, idx),
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
@@ -290,7 +290,7 @@ public class MarkdownComponent {
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
-                                componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
+                                componentWidth: componentWidth,
                                 indexList: indexAdd(indexList, idx),
                                 tableComponents: markdownCacheConfiguration.tableComponents,
                                 tableRowComponents: markdownCacheConfiguration.tableRowComponents,
@@ -344,7 +344,7 @@ public class MarkdownComponent {
                                         fontCallback: fontCallback,
                                         tocListOnClick: tocListOnClick,
                                         imageCallback: imageCallback,
-                                        componentWidth: vp2px(componentWidth.vp).getOrThrow().value,
+                                        componentWidth: componentWidth,
                                         isListTo:false,
                                         indexList: indexAdd(indexList, idx),
                                         paragraphComponents: markdownCacheConfiguration.paragraphComponents

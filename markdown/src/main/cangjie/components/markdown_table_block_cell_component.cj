@@ -46,6 +46,7 @@ class MarkdownTableBlockCellComponent {
     /**
      * 控件宽度 - 单位px
      */
+    @Prop
     var componentWidth: Float64
 
     /**
@@ -321,135 +322,70 @@ class MarkdownTableBlockCellComponent {
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            // 不设置图片预处理接口
-                            if (markdownConfiguration.markdownTheme.imageIsFixedAspectRatio) {
-                                // 设置固定宽高比
-                                if (DeviceInfo.sdkApiVersion >= 15) {
-                                    // 大于API 15
-                                    MarkdownImageSpanRatioComponent(
-                                        destination: (item.node as CommonmarkImage)().getDestination(),
-                                        imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                        componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
-                                        imageMarginTop: 0.0,
-                                        imageMarginBottom: 0.0,
-                                        imageCallback: imageCallback,
-                                        linkCallback: markdownConfiguration.linkCallback,
-                                        isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
-                                        imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                        imageAspectRatioSize: markdownConfiguration.markdownTheme.imageAspectRatioSize,
-                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
-                                        imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
-                                    )
-                                } else {
-                                    // 小于API 15
-                                    MarkdownImageSpanRatio15Component(
-                                        destination: (item.node as CommonmarkImage)().getDestination(),
-                                        imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                        componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
-                                        imageMarginTop: 0.0,
-                                        imageMarginBottom: 0.0,
-                                        imageCallback: imageCallback,
-                                        linkCallback: markdownConfiguration.linkCallback,
-                                        isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
-                                        imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                        imageAspectRatioSize: markdownConfiguration.markdownTheme.imageAspectRatioSize,
-                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
-                                        imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
-                                    )
-                                }
+                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                                MarkdownImgRawFileComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as CommonmarkImage)().getDestination(),
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
                             } else {
-                                // 自适应宽高比
-                                if (DeviceInfo.sdkApiVersion >= 15) {
-                                    // 大于API 15
-                                    MarkdownImageSpanComponent(
+                                if (DeviceInfo.sdkApiVersion >=15) {
+                                    MarkdownImgUrl15Component(
+                                        markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as CommonmarkImage)().getDestination(),
-                                        imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                        componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
-                                        imageMarginTop: 0.0,
-                                        imageMarginBottom: 0.0,
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
-                                        imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
-                                        imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                     )
                                 } else {
-                                    // 小于API 15
-                                    MarkdownImageSpan15Component(
+                                    MarkdownImgUrl14Component(
+                                        markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as CommonmarkImage)().getDestination(),
-                                        imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                        componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
-                                        imageMarginTop: 0.0,
-                                        imageMarginBottom: 0.0,
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
-                                        imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
-                                        imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                     )
                                 }
                             }
                         } else {
-                            // 设置了图片预处理接口
-                            if (markdownConfiguration.markdownTheme.imageIsFixedAspectRatio) {
-                                // 设置固定宽高比
-                                MarkdownImagePixelmapSpanRatioComponent(
+                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                                MarkdownImgRawFileCallbackComponent(
+                                    markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as CommonmarkImage)().getDestination(),
-                                    imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                    componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
-                                    imageMarginTop: 0.0,
-                                    imageMarginBottom: 0.0,
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
-                                    imageCallbackCallback: markdownConfiguration.imageCallbackCallback(),
-                                    imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                    imageAspectRatioSize: markdownConfiguration.markdownTheme.imageAspectRatioSize,
-                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
-                                    imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                 )
                             } else {
-                                // 自适应宽高比
-                                if (DeviceInfo.sdkApiVersion >= 15) {
-                                    // 大于API 15
-                                    MarkdownImagePixelmapSpanComponent(
+                                if (DeviceInfo.sdkApiVersion >=15) {
+                                    MarkdownImgUrlCallback15Component(
+                                        markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as CommonmarkImage)().getDestination(),
-                                        imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                        componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
-                                        imageMarginTop: 0.0,
-                                        imageMarginBottom: 0.0,
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
-                                        imageCallbackCallback: markdownConfiguration.imageCallbackCallback(),
-                                        imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
-                                        imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                     )
                                 } else {
-                                    // 小于API 15
-                                    MarkdownImagePixelmapSpan15Component(
+                                    MarkdownImgUrlCallback14Component(
+                                        markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as CommonmarkImage)().getDestination(),
-                                        imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                        componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
-                                        imageMarginTop: 0.0,
-                                        imageMarginBottom: 0.0,
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
-                                        imageCallbackCallback: markdownConfiguration.imageCallbackCallback(),
-                                        imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                        imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
-                                        imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                     )
                                 }
                             }
@@ -608,77 +544,47 @@ class MarkdownTableBlockCellComponent {
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            // 不设置图片预处理接口
-                            if (markdownConfiguration.markdownTheme.imageIsFixedAspectRatio) {
-                                // 设置固定宽高比
-                                MarkdownImageSpanRatioComponent(
+                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                                MarkdownImgRawFileComponent(
+                                    markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as CommonmarkImage)().getDestination(),
-                                    imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                    componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
-                                    imageMarginTop: 0.0,
-                                    imageMarginBottom: 0.0,
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
-                                    imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                    imageAspectRatioSize: markdownConfiguration.markdownTheme.imageAspectRatioSize,
-                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
-                                    imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                 )
                             } else {
-                                // 自适应宽高比
-                                MarkdownImageSpanComponent(
+                                MarkdownImgUrl15Component(
+                                    markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as CommonmarkImage)().getDestination(),
-                                    imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                    componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
-                                    imageMarginTop: 0.0,
-                                    imageMarginBottom: 0.0,
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
-                                    imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
-                                    imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                 )
                             }
                         } else {
-                            // 设置了图片预处理接口
-                            if (markdownConfiguration.markdownTheme.imageIsFixedAspectRatio) {
-                                // 设置固定宽高比
-                                MarkdownImagePixelmapSpanRatioComponent(
+                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                                MarkdownImgRawFileCallbackComponent(
+                                    markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as CommonmarkImage)().getDestination(),
-                                    imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                    componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
-                                    imageMarginTop: 0.0,
-                                    imageMarginBottom: 0.0,
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
-                                    imageCallbackCallback: markdownConfiguration.imageCallbackCallback(),
-                                    imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                    imageAspectRatioSize: markdownConfiguration.markdownTheme.imageAspectRatioSize,
-                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
-                                    imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                 )
                             } else {
-                                // 自适应宽高比
-                                MarkdownImagePixelmapSpanComponent(
+                                MarkdownImgUrlCallback15Component(
+                                    markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as CommonmarkImage)().getDestination(),
-                                    imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
-                                    componentWidth: vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp).getOrThrow().value,
-                                    imageMarginTop: 0.0,
-                                    imageMarginBottom: 0.0,
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None },
-                                    imageCallbackCallback: markdownConfiguration.imageCallbackCallback(),
-                                    imageBorderRadius: markdownConfiguration.markdownTheme.imageBorderRadius,
-                                    imageMaximumWidth: markdownConfiguration.markdownTheme.imageMaximumWidth,
-                                    imageFixedRatioWidth: markdownConfiguration.markdownTheme.imageFixedRatioWidth
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                 )
                             }
                         }
