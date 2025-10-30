@@ -272,31 +272,79 @@ class MarkdownParagraphComponent {
                         }
                     } else if (item.node is StyleImage) {
                         //  图片Style节点
-                        if((item.node as StyleImage)().getDestination().startsWith("./")){
-                            MarkdownImageStyleSpanRawFileComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                destination: (item.node as StyleImage)().getDestination(),
-                                picStyle: (item.node as StyleImage)().styles,
-                                componentWidth:componentWidth,
-                                imageCallback: imageCallback
-                            )
-                        }else{
-                            if (DeviceInfo.sdkApiVersion >= 15) {
-                                MarkdownImageStyleSpanComponent(
+                        if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                                MarkdownImgStyleRawFileComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
+                                    componentWidth: componentWidth,
                                     picStyle: (item.node as StyleImage)().styles,
-                                    componentWidth:componentWidth,
-                                    imageCallback: imageCallback
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                 )
                             } else {
-                                MarkdownImageStyleSpan15Component(
+                                if (DeviceInfo.sdkApiVersion >=15) {
+                                    MarkdownImgStyleUrl15Component(
+                                        markdownConfiguration: markdownConfiguration,
+                                        destination: (item.node as StyleImage)().getDestination(),
+                                        componentWidth: componentWidth,
+                                        picStyle: (item.node as StyleImage)().styles,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                } else {
+                                    MarkdownImgStyleUrl14Component(
+                                        markdownConfiguration: markdownConfiguration,
+                                        destination: (item.node as StyleImage)().getDestination(),
+                                        componentWidth: componentWidth,
+                                        picStyle: (item.node as StyleImage)().styles,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                }
+                            }
+                        } else {
+                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                                MarkdownImgStyleRawFileCallbackComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
+                                    componentWidth: componentWidth,
                                     picStyle: (item.node as StyleImage)().styles,
-                                    componentWidth:componentWidth,
-                                    imageCallback: imageCallback
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                 )
+                            } else {
+                                if (DeviceInfo.sdkApiVersion >=15) {
+                                    MarkdownImgStyleUrlCallback15Component(
+                                        markdownConfiguration: markdownConfiguration,
+                                        destination: (item.node as StyleImage)().getDestination(),
+                                        componentWidth: componentWidth,
+                                        picStyle: (item.node as StyleImage)().styles,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                }else{
+                                    MarkdownImgStyleUrlCallback14Component(
+                                        markdownConfiguration: markdownConfiguration,
+                                        destination: (item.node as StyleImage)().getDestination(),
+                                        componentWidth: componentWidth,
+                                        picStyle: (item.node as StyleImage)().styles,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                }
                             }
                         }
                     } else if (item.node is CommonmarkImage) {
@@ -524,23 +572,55 @@ class MarkdownParagraphComponent {
                             imageCallback: imageCallback
                         )
                     } else if (item.node is StyleImage) {
-                        //  图片Style节点
-                        if((item.node as StyleImage)().getDestination().startsWith("./")){
-                            MarkdownImageStyleSpanRawFileComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                destination: (item.node as StyleImage)().getDestination(),
-                                picStyle: (item.node as StyleImage)().styles,
-                                componentWidth:componentWidth,
-                                imageCallback: imageCallback
-                            )
-                        }else{
-                            MarkdownImageStyleSpanComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                destination: (item.node as StyleImage)().getDestination(),
-                                picStyle: (item.node as StyleImage)().styles,
-                                componentWidth:componentWidth,
-                                imageCallback: imageCallback
-                            )
+                        // 图片Style节点
+                        if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                                MarkdownImgStyleRawFileComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    componentWidth: componentWidth,
+                                    picStyle: (item.node as StyleImage)().styles,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
+                            } else {
+                                MarkdownImgStyleUrl15Component(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    componentWidth: componentWidth,
+                                    picStyle: (item.node as StyleImage)().styles,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
+                            }
+                        } else {
+                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                                MarkdownImgStyleRawFileCallbackComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    componentWidth: componentWidth,
+                                    picStyle: (item.node as StyleImage)().styles,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
+                            } else {
+                                MarkdownImgStyleUrlCallback15Component(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    componentWidth: componentWidth,
+                                    picStyle: (item.node as StyleImage)().styles,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
+                            }
                         }
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点

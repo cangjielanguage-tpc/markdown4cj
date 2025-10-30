@@ -240,6 +240,8 @@ class MarkdownCompleteDetailsPage {
             .usePlugin(TablePlugin.create())
             // 数学公式插件
             .usePlugin(LatexMathPluginV2.create())
+            // ImageStyle插件
+            .usePlugin(ImageStylePlugin.create())
             // 音频插件
             .usePlugin(BlockAudioPlugin.create())
             // 视频插件

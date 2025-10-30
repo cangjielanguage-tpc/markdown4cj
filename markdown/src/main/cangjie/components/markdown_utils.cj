@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import ohos.hilog.Hilog
 
 let COLOR_191919: Color = Color(0x191919)
 let COLOR_0000FF: Color = Color(0x0000FF)
@@ -783,9 +784,11 @@ func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicS
     }
     let componentWidth = px2vp(componentWidthPx.px)().value
     var index = 0
+    Hilog.error(1,"1","-------------${picStyle.size}")
     while (index < picStyle.size) {
         try {
             let str = picStyle[index]
+            Hilog.error(1,"1","-------------str:${str}")
             index++
             if (str.size < 7) {
                 continue
@@ -853,12 +856,13 @@ func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicS
                 let value = style[15..style.size - 2]
                 picStyleObj.borderRadius = Int64.parse(value).px
             } else if (style[..7] == ":style=") {
-                for (s in style[7..].split("")) {
+                for (s in style[7..].split(";")) {
                     picStyle.add(":${s.replace(":","=")}")
                 }
             }
         } catch (e: Exception) {}
     }
+    Hilog.error(1,"1","-------------${picStyleObj.width?.value}:${picStyleObj.height?.value}:${picStyleObj.borderRadius?.value}")
     return picStyleObj
 }
 
@@ -894,6 +898,21 @@ func tableList(nodeViews: ArrayList<NodeView>): ArrayList<NodeView> {
         }
     }
     return tableNodeViews
+}
+
+/**
+ * 将Length转换成Float64
+ *
+ * @param length ?Length
+ * @param componentWidth 控件宽度
+ * @return ?Float64
+ */
+func length2Float(length: Length): Float64 {
+    return match (length.unitType) {
+        case LengthType.vp(v) => v.value
+        case LengthType.px(v) => px2vp(v.px)().value
+        case _ => 0.0
+    }
 }
 
 /**
@@ -1358,5 +1377,53 @@ func colorStringToColor(colorString: String): ?Color {
         case _ => Option<Color>.None
     }
     return color
+}
+
+/**
+ * 对style图片做处理
+ *
+ * @param picStyle 图片样式集合
+ * @param componentImageWidth 父布局宽度
+ * @param heightRes 图片自身高度
+ * @param widthRes 图片自身宽度
+ * @return (Float64, Float64, Option<Length>, FlexAlign) 图片宽度，图片高度，图片圆角，图片对齐样式
+ */
+func imageWidthHeight(picStyleObjWidth: ?Float64, picStyleObjHeight: ?Float64, componentImageWidth: Float64, heightRes: Float64, widthRes: Float64): (Float64, Float64) {
+    var width: Float64 = 0.0
+    var height: Float64 = 0.0
+    let aspectRatio: Float64 = heightRes / widthRes
+    let widthNew = if (componentImageWidth > widthRes) {
+        widthRes
+    } else {
+        componentImageWidth
+    }
+    let heightNew = widthNew * aspectRatio
+    if (picStyleObjWidth.isSome() && picStyleObjHeight.isSome()) {
+        let aspectRatioNew: Float64 = picStyleObjHeight() / picStyleObjWidth()
+        width = if (componentImageWidth > picStyleObjWidth()) {
+            picStyleObjWidth()
+        } else {
+            componentImageWidth
+        }
+        height = width * aspectRatioNew
+    } else if (picStyleObjWidth.isSome() && picStyleObjHeight.isNone()) {
+        width = if (componentImageWidth > picStyleObjWidth()) {
+            picStyleObjWidth()
+        } else {
+            componentImageWidth
+        }
+        height = width * aspectRatio
+    } else if (picStyleObjWidth.isNone() && picStyleObjHeight.isSome()) {
+        width = if (componentImageWidth > picStyleObjHeight() / aspectRatio) {
+            picStyleObjHeight() / aspectRatio
+        } else {
+            componentImageWidth
+        }
+        height = width * aspectRatio
+    } else {
+        width = widthNew
+        height = heightNew
+    }
+    return (width, height)
 }
 

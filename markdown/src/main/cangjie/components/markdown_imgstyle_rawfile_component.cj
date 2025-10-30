@@ -9,10 +9,10 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 带样式的网络/沙盒图片、未设置图片预处理接口、API15及以上
+ * 带样式的本地图片、未设置图片预处理接口
  */
 @Component
-public class MarkdownImgStyleUrl15Component {
+public class MarkdownImgStyleRawFileComponent {
     /**
      * markdown配置
      */
@@ -24,7 +24,7 @@ public class MarkdownImgStyleUrl15Component {
     var destination: String
 
     /**
-     * 控件宽度 - 单位vp
+     * 控件宽度 - 单位px
      */
     @Prop
     var componentWidth: Float64
@@ -55,22 +55,28 @@ public class MarkdownImgStyleUrl15Component {
     var linkUrl: ?String = Option<String>.None
 
     /**
-     * 图片加载
+     * 图片加载完成
      */
     @State
-    var imageType: Int64 = 0 // 0：开始加载。1：加载成功完成。2：加载失败
+    var imageType: Int64 = 0 // 0:开始加载。1：加载成功完成。2：加载失败
 
     /**
      * 图片宽度 - 单位px
      */
     @State
-    var width: Float64 = 0.0
+    var width: ?Float64 = Option<Float64>.None
 
     /**
      * 图片高度 - 单位px
      */
     @State
-    var height: Float64 = 0.0
+    var height: ?Float64 = Option<Float64>.None
+
+    /**
+     * 图片数据
+     */
+    @State
+    var imagePixelMap: Option<PixelMap> = Option<PixelMap>.None
 
     /**
      * 图片上边距
@@ -115,22 +121,10 @@ public class MarkdownImgStyleUrl15Component {
     var isImageResource: Bool = false
 
     /**
-     * 图片最大宽度 - 单位px
+     * 控件宽度 - 单位px
      */
     @State
     var componentImageWidth: Float64 = 0.0
-
-    /**
-     *
-     */
-    @State
-    var picStyleObjWidth: ?Float64 = Option<Float64>.None
-
-    /**
-     *
-     */
-    @State
-    var picStyleObjHeight: ?Float64 = Option<Float64>.None
 
     /**
      * 图片圆角
@@ -157,22 +151,18 @@ public class MarkdownImgStyleUrl15Component {
             isImageResource = false
         }
         componentImageWidth = vp2px(componentWidth.vp)().value
-        let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
-        if (picStyleObj.borderRadius.isSome()) {
-            radius = picStyleObj.borderRadius()
-        }
-        align = picStyleObj.align
-        picStyleObjWidth = length2Float64(picStyleObj.width, componentImageWidth)
-        picStyleObjHeight = length2Float64(picStyleObj.height, componentImageWidth)
+        localRowImageStyleToPixelMap()
     }
 
     protected override func aboutToDisappear(): Unit {
+        imagePixelMap?.Release()
+        imagePixelMap = Option<PixelMap>.None
     }
 
     func build() {
         if (true) {
-            if (imageType != 2) {
-                ImageSpan(destination)
+            if (imageType == 1) {
+                ImageSpan(imagePixelMap())
                     // 设置外边距属性
                     .margin(top: imageMarginTop, bottom: imageMarginBottom)
                     // 自定义图片圆角
@@ -185,19 +175,13 @@ public class MarkdownImgStyleUrl15Component {
                     .width(if (imageFixedRatioWidth.isSome()) {
                         (componentImageWidth * imageFixedRatioWidth()).px
                     } else {
-                        (width * imageMaximumWidth).px
+                        (width() * imageMaximumWidth).px
                     })
                     // 设置组件自身的高度
                     .height(if (imageFixedRatioWidth.isSome()) {
-                        (height * (componentImageWidth / width) * imageFixedRatioWidth()).px
+                        (height() * (componentImageWidth / width()) * imageFixedRatioWidth()).px
                     } else {
-                        (height * imageMaximumWidth).px
-                    })
-                    // 设置组件的可见性
-                    .visibility(if (imageType == 1) {
-                        Visibility.Visible
-                    } else {
-                        Visibility.None
+                        (height() * imageMaximumWidth).px
                     })
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Contain)
@@ -214,18 +198,6 @@ public class MarkdownImgStyleUrl15Component {
                         } else {
                             imageOnClick(destination, imageCallback)
                         }
-                    }
-                    // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-                    .onComplete {
-                        imageLoadResult =>
-                            let res = imageWidthHeight(picStyleObjWidth, picStyleObjHeight, componentImageWidth, imageLoadResult.height, imageLoadResult.width)
-                            width = res[0]
-                            height = res[1]
-                            imageType = 1
-                    }
-                    // 图片加载出现异常时触发该回调
-                    .onError {
-                        imageError => imageType = 2
                     }
             }
             if (isImageResource && imageType != 1) {
@@ -247,9 +219,9 @@ public class MarkdownImgStyleUrl15Component {
                     })
                     // 设置组件自身的高度
                     .height(if (imageFixedRatioWidth.isSome()) {
-                        (componentImageWidth * 9.0 / 16.0 * imageFixedRatioWidth()).px
+                        (componentImageWidth * 9.0/16.0 * imageFixedRatioWidth()).px
                     } else {
-                        (componentImageWidth * 9.0 / 16.0 * imageMaximumWidth).px
+                        (componentImageWidth * 9.0/16.0 * imageMaximumWidth).px
                     })
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Cover)
@@ -259,5 +231,31 @@ public class MarkdownImgStyleUrl15Component {
                     .constraintSize(maxWidth: 100.percent)
             }
         }
+    }
+
+    /**
+     *
+     */
+    func localRowImageStyleToPixelMap() {
+        let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
+            pixelMap, width, height => launch {
+                this.imagePixelMap = pixelMap
+                this.width = width
+                this.height = height
+                if (this.imagePixelMap.isSome() && this.width.isSome() && this.height.isSome()) {
+                    imageType = 1
+                } else {
+                    imageType = 2
+                }
+            }
+        }
+        let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
+        if (picStyleObj.borderRadius.isSome()) {
+            radius = picStyleObj.borderRadius()
+        }
+        align = picStyleObj.align
+        let picStyleObjWidth: ?Float64 = length2Float64(picStyleObj.width, componentImageWidth)
+        let picStyleObjHeight: ?Float64 = length2Float64(picStyleObj.height, componentImageWidth)
+        let fut = rawfileToPixelmapStyle(destination, markdownConfiguration.markdownTheme.abilityContext, markdownConfiguration.markdownTheme.stageContext, componentImageWidth, picStyleObjWidth, picStyleObjHeight, callback)
     }
 }
