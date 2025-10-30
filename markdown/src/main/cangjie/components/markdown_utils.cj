@@ -7,7 +7,6 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
-import ohos.hilog.Hilog
 
 let COLOR_191919: Color = Color(0x191919)
 let COLOR_0000FF: Color = Color(0x0000FF)
@@ -784,11 +783,9 @@ func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicS
     }
     let componentWidth = px2vp(componentWidthPx.px)().value
     var index = 0
-    Hilog.error(1,"1","-------------${picStyle.size}")
     while (index < picStyle.size) {
         try {
             let str = picStyle[index]
-            Hilog.error(1,"1","-------------str:${str}")
             index++
             if (str.size < 7) {
                 continue
@@ -862,7 +859,6 @@ func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicS
             }
         } catch (e: Exception) {}
     }
-    Hilog.error(1,"1","-------------${picStyleObj.width?.value}:${picStyleObj.height?.value}:${picStyleObj.borderRadius?.value}")
     return picStyleObj
 }
 

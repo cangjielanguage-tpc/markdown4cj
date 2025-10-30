@@ -7,7 +7,7 @@ package markdown.plugin
  * 节点树纯文本提取
  */
 public class NodeViewStringBuilder <: ToString {
-    NodeViewStringBuilder(let root: NodeView) {}
+    public NodeViewStringBuilder(let root: NodeView) {}
 
     let builder = StringBuilder()
 

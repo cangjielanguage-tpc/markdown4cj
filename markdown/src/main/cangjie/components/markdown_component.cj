@@ -475,7 +475,10 @@ public class MarkdownComponent {
         try {
             incBase().input = output
             incBase().parse()
-            let doc: NodeView = incBase().docView
+            let doc = incBase().docView
+            if (let Some(v) <- markdownConfiguration.nodeString) {
+                v(NodeViewStringBuilder(doc))
+            }
             let nodeViews: ArrayList<NodeView> = doc.children
             let nodeViewsSize: Int64 = nodeViews.size // 刷新进来的数据长度
             let nodeViewListSize: Int64 = nodeViewDataSource.totalCount() // 页面缓存的数据长度

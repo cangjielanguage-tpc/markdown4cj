@@ -71,6 +71,13 @@ class MarkdownCompleteDetailsPage {
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
         }
+//        .onClick{
+//            e =>
+//                if(let Some(v) <- this.nodeViewStringBuilder){
+//                    let a = v.toString()
+//                    Hilog.error(1,"1111","--------------------a:${a}")
+//                }
+//        }
     }
 
     /**
@@ -100,6 +107,8 @@ class MarkdownCompleteDetailsPage {
         MarkdownConfigurationBuilder.setLatexImageCallbackCallback(latexImageCallbackCallback)
         // 设置脚注跳转指定位置
         MarkdownConfigurationBuilder.setFootnoteCallback(footnoteCallback)
+        // 设置视频的点击事件
+        MarkdownConfigurationBuilder.setNodeString(nodeStringCallback)
         return MarkdownConfigurationBuilder.build()
     }
 
@@ -298,6 +307,18 @@ class MarkdownCompleteDetailsPage {
     func videoCallback(url: String, arr: ArrayList<String>): Unit {
         PromptAction.showToast(message: url)
         Hilog.error(1, "1", "------------------------videoCallback:${url},arr:${arr}")
+    }
+
+    var nodeViewStringBuilder: ?NodeViewStringBuilder = None
+
+    /**
+     * 视频的点击事件
+     *
+     * @param url 视频url
+     * @param arr 图片和视频的url集合
+     */
+    func nodeStringCallback(nodeViewStringBuilder: NodeViewStringBuilder): Unit {
+        this.nodeViewStringBuilder = nodeViewStringBuilder
     }
 
     /**
