@@ -44,6 +44,8 @@ class MarkdownCompleteDetailsPage {
     @State
     var folderList: ObservedArrayList<String> = ObservedArrayList<String>()
 
+    var nodeViewStringBuilder: ?NodeViewStringBuilder = None
+
     protected override func aboutToAppear(): Unit {
         params = (Router.getParams().getOrThrow() as String).getOrThrow()
         mdStr = getFileContextStr(params)
@@ -76,6 +78,8 @@ class MarkdownCompleteDetailsPage {
 //                if(let Some(v) <- this.nodeViewStringBuilder){
 //                    let a = v.toString()
 //                    Hilog.error(1,"1111","--------------------a:${a}")
+//                } else {
+//                    Hilog.error(1,"1111","--------------------error")
 //                }
 //        }
     }
@@ -308,8 +312,6 @@ class MarkdownCompleteDetailsPage {
         PromptAction.showToast(message: url)
         Hilog.error(1, "1", "------------------------videoCallback:${url},arr:${arr}")
     }
-
-    var nodeViewStringBuilder: ?NodeViewStringBuilder = None
 
     /**
      * 视频的点击事件
