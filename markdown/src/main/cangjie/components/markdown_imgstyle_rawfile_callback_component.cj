@@ -284,9 +284,9 @@ public class MarkdownImgStyleRawFileCallbackComponent {
                     })
                     // 设置组件自身的高度
                     .height(if (imageFixedRatioWidth.isSome()) {
-                        (componentImageWidth * 9.0/16.0 * imageFixedRatioWidth()).px
+                        (componentImageWidth * 9.0 / 16.0 * imageFixedRatioWidth()).px
                     } else {
-                        (componentImageWidth * 9.0/16.0 * imageMaximumWidth).px
+                        (componentImageWidth * 9.0 / 16.0 * imageMaximumWidth).px
                     })
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Cover)
