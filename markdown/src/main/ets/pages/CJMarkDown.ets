@@ -534,15 +534,6 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.imageBorderRadius !== undefined) {
           cjMarkdownTheme.setImageBorderRadius(this.config.markdownTheme.imageBorderRadius)
         }
-        if (this.config.markdownTheme.imageIsFixedAspectRatio !== undefined) {
-          cjMarkdownTheme.setImageIsFixedAspectRatio(this.config.markdownTheme.imageIsFixedAspectRatio)
-        }
-        if (this.config.markdownTheme.imageAspectRatioSize !== undefined) {
-          cjMarkdownTheme.setImageAspectRatioSize(this.config.markdownTheme.imageAspectRatioSize)
-        }
-        if (this.config.markdownTheme.imagePlaceholder !== undefined) {
-          cjMarkdownTheme.setImagePlaceholder(this.config.markdownTheme.imagePlaceholder)
-        }
         if (this.config.markdownTheme.isAutoResize !== undefined) {
           cjMarkdownTheme.setIsAutoResize(this.config.markdownTheme.isAutoResize)
         }
@@ -1383,18 +1374,6 @@ export class MarkdownTheme {
    * 图片圆角大小
    */
   imageBorderRadius?: number = undefined
-  /**
-   * 图片是否固定宽高比
-   */
-  imageIsFixedAspectRatio?: boolean = undefined
-  /**
-   * 图片固定宽高比大小
-   */
-  imageAspectRatioSize?: number = undefined
-  /**
-   * 图片默认占位图 - String
-   */
-  imagePlaceholder?: string = undefined
   /**
    * 网络图片是否压缩
    */
@@ -2754,33 +2733,6 @@ export class MarkdownTheme {
    */
   setImageBorderRadius(imageBorderRadius: number): void {
     this.imageBorderRadius = imageBorderRadius
-  }
-
-  /**
-   * 设置图片是否固定宽高比
-   *
-   * @param imageIsFixedAspectRatio 图片是否固定宽高比 - 默认false
-   */
-  setImageIsFixedAspectRatio(imageIsFixedAspectRatio: boolean): void {
-    this.imageIsFixedAspectRatio = imageIsFixedAspectRatio
-  }
-
-  /**
-   * 设置图片固定宽高比大小
-   *
-   * @param imageAspectRatioSize 图片固定宽高比大小 - 默认16.0/9.0
-   */
-  setImageAspectRatioSize(imageAspectRatioSize: number): void {
-    this.imageAspectRatioSize = imageAspectRatioSize
-  }
-
-  /**
-   * 设置图片默认占位图 - String
-   *
-   * @param imagePlaceholder 图片默认占位图 - String - 默认None
-   */
-  setImagePlaceholder(imagePlaceholder: string): void {
-    this.imagePlaceholder = imagePlaceholder
   }
 
   /**

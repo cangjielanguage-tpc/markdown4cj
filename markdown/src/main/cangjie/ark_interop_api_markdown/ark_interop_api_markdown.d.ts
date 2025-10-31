@@ -307,12 +307,6 @@ export declare class CJMarkdownTheme {
 
   setImageBorderRadius(imageBorderRadius: number): void
 
-  setImageIsFixedAspectRatio(imageIsFixedAspectRatio: boolean): void
-
-  setImageAspectRatioSize(imageAspectRatioSize: number): void
-
-  setImagePlaceholder(imagePlaceholder: string): void
-
   setIsAutoResize(isAutoResize: boolean): void
 
   setImageMarginTop(imageMarginTop: number): void

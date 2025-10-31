@@ -598,15 +598,6 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.imageBorderRadius) {
                 markdownThemeBuilder.setImageBorderRadius(v) // 设置图片圆角大小
             }
-            if (let Some(v) <- w.cjMarkdownTheme.imageIsFixedAspectRatio) {
-                markdownThemeBuilder.setImageIsFixedAspectRatio(v) // 设置图片是否固定宽高比
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.imageAspectRatioSize) {
-                markdownThemeBuilder.setImageAspectRatioSize(v) // 设置图片固定宽高比大小
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.imagePlaceholder) {
-                markdownThemeBuilder.setImagePlaceholder(v) // 设置图片默认占位图 - String
-            }
             if (let Some(v) <- w.cjMarkdownTheme.isAutoResize) {
                 markdownThemeBuilder.setIsAutoResize(v) // 设置网络图片是否压缩
             }

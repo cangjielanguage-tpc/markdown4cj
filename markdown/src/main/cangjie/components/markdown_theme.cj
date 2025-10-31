@@ -764,24 +764,9 @@ public class MarkdownTheme {
     protected var imageBorderRadius: Float64 = 0.0
 
     /**
-     * 图片是否固定宽高比
-     */
-    protected var imageIsFixedAspectRatio: Bool = false
-
-    /**
-     * 图片固定宽高比大小
-     */
-    protected var imageAspectRatioSize: Float64 = 16.0 / 9.0
-
-    /**
      * 图片默认占位图 - AppResource
      */
     protected var imageResource: ?AppResource = None
-
-    /**
-     * 图片默认占位图 - String
-     */
-    protected var imagePlaceholder: ?String = None
 
     /**
      * 网络图片是否压缩
@@ -1051,10 +1036,7 @@ public class MarkdownTheme {
         this.imageMaximumWidth = builder.imageMaximumWidth
         this.imageFixedRatioWidth = builder.imageFixedRatioWidth
         this.imageBorderRadius = builder.imageBorderRadius
-        this.imageIsFixedAspectRatio = builder.imageIsFixedAspectRatio
-        this.imageAspectRatioSize = builder.imageAspectRatioSize
         this.imageResource = builder.imageResource
-        this.imagePlaceholder = builder.imagePlaceholder
         this.isAutoResize = builder.isAutoResize
         this.imageMarginTop = builder.imageMarginTop
         this.imageMarginBottom = builder.imageMarginBottom
@@ -2022,24 +2004,9 @@ public class MarkdownThemeBuilder {
     protected var imageBorderRadius: Float64 = 0.0
 
     /**
-     * 图片是否固定宽高比
-     */
-    protected var imageIsFixedAspectRatio: Bool = false
-
-    /**
-     * 图片固定宽高比大小
-     */
-    protected var imageAspectRatioSize: Float64 = 16.0 / 9.0
-
-    /**
      * 图片默认占位图 - AppResource
      */
     protected var imageResource: ?AppResource = None
-
-    /**
-     * 图片默认占位图 - String
-     */
-    protected var imagePlaceholder: ?String = None
 
     /**
      * 网络图片是否压缩
@@ -2312,10 +2279,7 @@ public class MarkdownThemeBuilder {
         this.imageMaximumWidth = theme.imageMaximumWidth
         this.imageFixedRatioWidth = theme.imageFixedRatioWidth
         this.imageBorderRadius = theme.imageBorderRadius
-        this.imageIsFixedAspectRatio = theme.imageIsFixedAspectRatio
-        this.imageAspectRatioSize = theme.imageAspectRatioSize
         this.imageResource = theme.imageResource
-        this.imagePlaceholder = theme.imagePlaceholder
         this.isAutoResize = theme.isAutoResize
         this.imageMarginTop = theme.imageMarginTop
         this.imageMarginBottom = theme.imageMarginBottom
@@ -4107,28 +4071,6 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置图片是否固定宽高比
-     *
-     * @param imageIsFixedAspectRatio 图片是否固定宽高比 - 默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setImageIsFixedAspectRatio(imageIsFixedAspectRatio: Bool): MarkdownThemeBuilder {
-        this.imageIsFixedAspectRatio = imageIsFixedAspectRatio
-        return this
-    }
-
-    /**
-     * 设置图片固定宽高比大小
-     *
-     * @param imageAspectRatioSize 图片固定宽高比大小 - 默认16.0 / 9.0
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setImageAspectRatioSize(imageAspectRatioSize: Float64): MarkdownThemeBuilder {
-        this.imageAspectRatioSize = imageAspectRatioSize
-        return this
-    }
-
-    /**
      * 设置图片默认占位图 - AppResource
      *
      * @param imageResource 图片默认占位图 - AppResource - 默认None
@@ -4136,17 +4078,6 @@ public class MarkdownThemeBuilder {
      */
     public func setImageResource(imageResource: AppResource): MarkdownThemeBuilder {
         this.imageResource = imageResource
-        return this
-    }
-
-    /**
-     * 设置图片默认占位图 - String
-     *
-     * @param imagePlaceholder 图片默认占位图 - String - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setImagePlaceholder(imagePlaceholder: String): MarkdownThemeBuilder {
-        this.imagePlaceholder = imagePlaceholder
         return this
     }
 

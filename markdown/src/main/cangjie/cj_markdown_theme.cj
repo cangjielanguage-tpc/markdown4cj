@@ -698,21 +698,6 @@ public class CJMarkdownTheme {
     var imageBorderRadius: ?Float64 = None
 
     /**
-     * 图片是否固定宽高比
-     */
-    var imageIsFixedAspectRatio: ?Bool = None
-
-    /**
-     * 图片固定宽高比大小
-     */
-    var imageAspectRatioSize: ?Float64 = None
-
-    /**
-     * 图片默认占位图 - String
-     */
-    var imagePlaceholder: ?String = None
-
-    /**
      * 网络图片是否压缩
      */
     var isAutoResize: ?Bool = None
@@ -2020,33 +2005,6 @@ public class CJMarkdownTheme {
      */
     public func setImageBorderRadius(imageBorderRadius: Float64): Unit {
         this.imageBorderRadius = imageBorderRadius
-    }
-
-    /**
-     * 设置图片是否固定宽高比
-     *
-     * @param imageIsFixedAspectRatio 图片是否固定宽高比 - 默认false
-     */
-    public func setImageIsFixedAspectRatio(imageIsFixedAspectRatio: Bool): Unit {
-        this.imageIsFixedAspectRatio = imageIsFixedAspectRatio
-    }
-
-    /**
-     * 设置图片固定宽高比大小
-     *
-     * @param imageAspectRatioSize 图片固定宽高比大小 - 默认16.0/9.0
-     */
-    public func setImageAspectRatioSize(imageAspectRatioSize: Float64): Unit {
-        this.imageAspectRatioSize = imageAspectRatioSize
-    }
-
-    /**
-     * 设置图片默认占位图 - String
-     *
-     * @param imagePlaceholder 图片默认占位图 - String - 默认None
-     */
-    public func setImagePlaceholder(imagePlaceholder: String): Unit {
-        this.imagePlaceholder = imagePlaceholder
     }
 
     /**
