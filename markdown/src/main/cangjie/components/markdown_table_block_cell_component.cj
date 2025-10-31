@@ -290,6 +290,27 @@ class MarkdownTableBlockCellComponent {
                                 }
                             }
                         }
+                    } else if (item.node is ImageHtmlNode) {
+                        // HTML图片
+                        if (DeviceInfo.sdkApiVersion >= 15) {
+                            MarkdownHtmlImageSpanComponent(
+                                destination: (item.node as ImageHtmlNode)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                                imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                                componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                imageCallback: imageCallback
+                            )
+                        } else {
+                            MarkdownHtmlImageSpan15Component(
+                                destination: (item.node as ImageHtmlNode)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                                imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                                componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                imageCallback: imageCallback
+                            )
+                        }
                     } else if (item.node is StyleImage) {
                         //  图片Style节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
@@ -297,7 +318,7 @@ class MarkdownTableBlockCellComponent {
                                 MarkdownImgStyleRawFileComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
-                                    componentWidth: componentWidth,
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                     picStyle: (item.node as StyleImage)().styles,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
@@ -309,7 +330,7 @@ class MarkdownTableBlockCellComponent {
                                     MarkdownImgStyleUrl15Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as StyleImage)().getDestination(),
-                                        componentWidth: componentWidth,
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                         picStyle: (item.node as StyleImage)().styles,
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
@@ -320,7 +341,7 @@ class MarkdownTableBlockCellComponent {
                                     MarkdownImgStyleUrl14Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as StyleImage)().getDestination(),
-                                        componentWidth: componentWidth,
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                         picStyle: (item.node as StyleImage)().styles,
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
@@ -334,7 +355,7 @@ class MarkdownTableBlockCellComponent {
                                 MarkdownImgStyleRawFileCallbackComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
-                                    componentWidth: componentWidth,
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                     picStyle: (item.node as StyleImage)().styles,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
@@ -346,7 +367,7 @@ class MarkdownTableBlockCellComponent {
                                     MarkdownImgStyleUrlCallback15Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as StyleImage)().getDestination(),
-                                        componentWidth: componentWidth,
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                         picStyle: (item.node as StyleImage)().styles,
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
@@ -357,7 +378,7 @@ class MarkdownTableBlockCellComponent {
                                     MarkdownImgStyleUrlCallback14Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as StyleImage)().getDestination(),
-                                        componentWidth: componentWidth,
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                         picStyle: (item.node as StyleImage)().styles,
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
@@ -570,6 +591,27 @@ class MarkdownTableBlockCellComponent {
                                 }
                             }
                         }
+                    } else if (item.node is ImageHtmlNode) {
+                        // HTML图片
+                        if (DeviceInfo.sdkApiVersion >= 15) {
+                            MarkdownHtmlImageSpanComponent(
+                                destination: (item.node as ImageHtmlNode)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                                imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                                componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                imageCallback: imageCallback
+                            )
+                        } else {
+                            MarkdownHtmlImageSpan15Component(
+                                destination: (item.node as ImageHtmlNode)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                                imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                                componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                imageCallback: imageCallback
+                            )
+                        }
                     } else if (item.node is StyleImage) {
                         //  图片Style节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
@@ -577,7 +619,7 @@ class MarkdownTableBlockCellComponent {
                                 MarkdownImgStyleRawFileComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
-                                    componentWidth: componentWidth,
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                     picStyle: (item.node as StyleImage)().styles,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
@@ -588,7 +630,7 @@ class MarkdownTableBlockCellComponent {
                                 MarkdownImgStyleUrl15Component(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
-                                    componentWidth: componentWidth,
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                     picStyle: (item.node as StyleImage)().styles,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
@@ -601,7 +643,7 @@ class MarkdownTableBlockCellComponent {
                                 MarkdownImgStyleRawFileCallbackComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
-                                    componentWidth: componentWidth,
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                     picStyle: (item.node as StyleImage)().styles,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
@@ -612,7 +654,7 @@ class MarkdownTableBlockCellComponent {
                                 MarkdownImgStyleUrlCallback15Component(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
-                                    componentWidth: componentWidth,
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                     picStyle: (item.node as StyleImage)().styles,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,

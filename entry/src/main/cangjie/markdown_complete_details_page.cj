@@ -245,6 +245,8 @@ class MarkdownCompleteDetailsPage {
             .builder()
             // HTML插件
             .usePlugin(HtmlPlugin.create())
+            // 定义列表
+            .usePlugin(DescListPlugin.create())
             // 任务列表插件
             .usePlugin(TaskListPlugin.create())
             // 删除线插件
