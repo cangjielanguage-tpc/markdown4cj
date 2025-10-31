@@ -76,6 +76,7 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
             builder.addDefaultTagHandler(BrHandler())
             builder.addDefaultTagHandler(ThematicBreakHandler())
             builder.addDefaultTagHandler(FontHandler())
+            builder.addDefaultTagHandler(SpanHandler())
 
             builder.addDefaultTagHandler(TableHandler())
             builder.addDefaultTagHandler(TableHeadHandler())
@@ -129,7 +130,24 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 }
             )
             .on(
-                "IgnoreNode",
+                "SpanNode",
+                {
+                    visitor, node =>
+                    let view = buildView(node, false, needProps: true)
+                    view.props?.add("SpanNode", node)
+                    visitor.visitChildren(node)
+                }
+            )
+            .on(
+                "IgnoreBlockNode",
+                {
+                    visitor, node =>
+                    buildView(node, false)
+                    visitor.visitChildren(node)
+                }
+            )
+            .on(
+                "IgnoreInlineNode",
                 {
                     visitor, node =>
                     buildView(node, false)
@@ -218,24 +236,22 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
             case htmlInline: HtmlInline =>
                 let htmlString = htmlInline.getLiteral()
                 let tag = htmlParser.processFragmentInline(appender, htmlString, None)
-                // println("1.2 ${tag} ${tag is EndTag} ${tag.isClosed()} ${parentNode}") // debug
-                if (let Some(end) <- (tag as EndTag)) {
-                    // println("1.21 ${end.startTag.isSome()}") // debug
-                    // end tag
-                    if (end.startTag.isSome()) {
-                        parentNode = parentNode.getParent().getOrThrow()
-                    }
-                } else if (tag.isClosed() == true) {
-                    // println("1.22 ") // debug
-                    // self close tag
-                    let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
-                    parentNode.appendChild(tagNode)
-                } else if (tag.isClosed() == false) {
-                    // println("1.23 ") // debug
-                    // start tag
-                    let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
-                    parentNode.appendChild(tagNode)
-                    parentNode = tagNode
+                match(tag){
+                    case Some(end:EndTag) => 
+                        if (end.startTag.isSome()) {
+                            parentNode = parentNode.getParent().getOrThrow()
+                        }
+                    case Some(tag) where tag.isClosed() => 
+                        let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
+                        parentNode.appendChild(tagNode)
+                    case Some(tag) where !tag.isClosed() => 
+                        var tagNode = htmlRenderer.render(visitor, htmlParser, tag)
+                        if (!(parentNode is Block) && tagNode is Block) {
+                            tagNode = IgnoreInlineNode()
+                        }
+                        parentNode.appendChild(tagNode)
+                        parentNode = tagNode
+                    case _ => ()
                 }
                 node.unlink()
             case t: Text =>

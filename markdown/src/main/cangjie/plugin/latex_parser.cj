@@ -16,15 +16,12 @@ class LatexBlockParser <: AbstractBlockParser {
         let line = parserState.getLine()[parserState.getIndex()..]
         if (isSingleLineLatex) {
             block.isClosed = true
-            block.isBroken = false
             return BlockContinue.none()
         }
         if (isLatexLine(line)) {
-            block.isBroken = true
         }
         if (isLatexEnd(line)) {
             block.isClosed = true
-            block.isBroken = false
         }
         return if (block.isClosed) {
             BlockContinue.finished()
@@ -49,6 +46,7 @@ class LatexBlockParser <: AbstractBlockParser {
     }
 
     public func closeBlock(): Unit {
+        block.isClosed = true
         block.latex = builder.toString()
     }
 }
@@ -59,7 +57,7 @@ class LatexBlockParserFactory <: AbstractBlockParserFactory {
         if (line == "$$" || line == "\\[") {
             return BlockStart.of4Cj(LatexBlockParser()).atIndex(state.getIndex() + 2)
         }
-        line = line.trimAscii()
+        line = line.trim()
         if (line.startsWith(#"\["#) && line.endsWith(#"\]"#) ||
             (line.startsWith(#"$$"#) && line.size > 3 && line.endsWith(#"$$"#))) {
             let parser = LatexBlockParser()

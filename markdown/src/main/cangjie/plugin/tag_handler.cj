@@ -25,7 +25,11 @@ public abstract class TagHandler {
             nodeParent?.appendChild(node)
             node
         } else {
-            let node: Node = IgnoreNode()
+            let node: Node = if (tag.isBlock()) {
+                IgnoreBlockNode()
+            } else {
+                IgnoreInlineNode()
+            }
             nodeParent?.appendChild(node)
             visitChildren(visitor, renderer, tag, node)
             node
@@ -86,6 +90,79 @@ public class FontHandler <: TagHandler {
     }
 }
 
+public class SpanHandler <: TagHandler {
+    public init() {
+    }
+
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let attributes: Map<String, String> = tag.attributes()
+        var attrs: ?HashMap<String, String> = None
+        var style: ?HashMap<String, String> = None
+        if (let Some(styleStr) <- attributes.remove("style")) {
+            style = parseStyle(styleStr)
+        }
+        if (attributes.size > 0) {
+            attrs = HashMap(attributes)
+        }
+        let spanNode = SpanNode(attrs, style)
+        visitChildren(visitor, renderer, tag, spanNode)
+        return spanNode
+    }
+
+    func parseStyle(attrs0: String): ?HashMap<String, String> {
+        let attrs = attrs0.trimAscii()
+        if (attrs.isEmpty()) {
+            return None
+        }
+        let map = HashMap<String, String>()
+        let length = attrs.size
+        var i = 0
+        while (i < length) {
+            // 跳过属性名前的空格
+            while (i < length && attrs[i] == b' ') {
+                i++
+            }
+            if (i >= length) {
+                break
+            }
+            // 提取属性名（到冒号为止）
+            let propStart = i
+            while (i < length && attrs[i] != b':') {
+                i++
+            }
+            if (i >= length) {
+                break // 缺少冒号，终止解析
+            }
+            let property = attrs[propStart..i].trimAscii()
+            i++ // 跳过冒号
+
+            // 跳过属性值前的空格
+            while (i < length && attrs[i] == b' ') {
+                i++
+            }
+            if (i >= length) {
+                break
+            }
+            // 提取属性值（到分号或字符串结束）
+            let valueStart = i
+            while (i < length && attrs[i] != b';') {
+                i++
+            }
+            let value = attrs[valueStart..i].trimAscii()
+            // 存入Map
+            if (!property.isEmpty() && !value.isEmpty()) {
+                map.add(property, value)
+            }
+            i++ // 跳过分号
+        }
+        return map
+    }
+
+    public override func supportedTags(): Collection<String> {
+        return ["span"]
+    }
+}
+
 public class HeadingHandler <: TagHandler {
     public init() {
     }
@@ -98,7 +175,7 @@ public class HeadingHandler <: TagHandler {
             level = 0
         }
         if (level < 1 || level > 6) {
-            return IgnoreNode()
+            return Paragraph()
         }
         let heading: Heading = Heading()
         heading.setLevel(level)
@@ -126,7 +203,7 @@ public class ImageHandler <: TagHandler {
             visitChildren(visitor, renderer, tag, imageHtmlNode)
             return imageHtmlNode
         } else {
-            let ignoreNode: IgnoreNode = IgnoreNode()
+            let ignoreNode = IgnoreInlineNode()
             visitChildren(visitor, renderer, tag, ignoreNode)
             return ignoreNode
         }
@@ -150,7 +227,7 @@ public class LinkHandler <: TagHandler {
             visitChildren(visitor, renderer, tag, link)
             return link
         } else {
-            let ignoreNode: IgnoreNode = IgnoreNode()
+            let ignoreNode = IgnoreInlineNode()
             visitChildren(visitor, renderer, tag, ignoreNode)
             return ignoreNode
         }

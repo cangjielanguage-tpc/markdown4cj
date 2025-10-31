@@ -18,9 +18,9 @@ public class MarkdownConfiguration {
     protected var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build()
 
     /**
-     * 插件化使用
+     * 文本复制的点击事件
      */
-    protected var markdownParser: ?Markdown = None
+    protected var textCopyCallback: ?(String) -> Unit = None
 
     /**
      * 链接的点击事件
@@ -31,6 +31,11 @@ public class MarkdownConfiguration {
      * 图片的点击事件
      */
     protected var imageCallback: ?(String, ArrayList<String>) -> Unit = None
+
+    /**
+     * 图片替换事件
+     */
+    protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
 
     /**
      * 音频的点击事件
@@ -45,8 +50,8 @@ public class MarkdownConfiguration {
     /**
      * 视频的图片替换回调
      */
-    protected var videoImageCallback: (String, (String,Float64,Int64) -> Unit) -> Unit = {
-        url: String, coverCallback: (String,Float64,Int64) -> Unit => ()
+    protected var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
+        url: String, coverCallback: (String, Float64, Int64) -> Unit => ()
     }
 
     /**
@@ -69,8 +74,7 @@ public class MarkdownConfiguration {
      */
     protected var latexStrCallback: (String) -> String = {
         data: String =>
-        var dataNew = data.replace("\\\\\\\\", "\\\\\\text{ }\\\\").replace("\\\\\\\\", "\\\\\\text{ }\\\\")
-        dataNew = dataNew.replace("{aligned*}", "{aligned}")
+        var dataNew = data.replace("{aligned*}", "{aligned}")
         dataNew = dataNew.replace("{align*}", "{align}")
         dataNew = dataNew.replace("{flalign*}", "{flalign}")
         dataNew = dataNew.replace("{gather*}", "{gather}")
@@ -90,16 +94,16 @@ public class MarkdownConfiguration {
     protected var footnoteCallback: ?(?Float64) -> Unit = None
 
     /**
-     * 超大数据跳转页面显示全部数据
+     * 全部文本
      */
-    protected var listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit = None
+    protected var nodeString: ?(NodeViewStringBuilder) -> Unit = None
 
     protected init(builder: MarkdownConfigurationBuilder) {
         this.markdownTheme = builder.markdownTheme
-        // 插件化
-        this.markdownParser = builder.markdownParser
+        this.textCopyCallback = builder.textCopyCallback
         this.linkCallback = builder.linkCallback
         this.imageCallback = builder.imageCallback
+        this.imageCallbackCallback = builder.imageCallbackCallback
         this.audioCallback = builder.audioCallback
         this.videoCallback = builder.videoCallback
         this.videoImageCallback = builder.videoImageCallback
@@ -109,7 +113,7 @@ public class MarkdownConfiguration {
         this.latexStrCallback = builder.latexStrCallback
         this.tocIndexCallback = builder.tocIndexCallback
         this.footnoteCallback = builder.footnoteCallback
-        this.listBigDataCallback = builder.listBigDataCallback
+        this.nodeString = builder.nodeString
     }
 
     /**
@@ -151,9 +155,9 @@ public class MarkdownConfigurationBuilder {
     protected var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build()
 
     /**
-     * 插件化使用
+     * 文本复制的点击事件
      */
-    protected var markdownParser: ?Markdown = None
+    protected var textCopyCallback: ?(String) -> Unit = None
 
     /**
      * 链接的点击事件
@@ -164,6 +168,11 @@ public class MarkdownConfigurationBuilder {
      * 图片的点击事件
      */
     protected var imageCallback: ?(String, ArrayList<String>) -> Unit = None
+
+    /**
+     * 图片替换事件
+     */
+    protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
 
     /**
      * 音频的点击事件
@@ -178,8 +187,8 @@ public class MarkdownConfigurationBuilder {
     /**
      * 视频的图片替换回调
      */
-    protected var videoImageCallback: (String, (String,Float64,Int64) -> Unit) -> Unit = {
-        url: String, coverCallback: (String,Float64,Int64) -> Unit => ()
+    protected var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
+        url: String, coverCallback: (String, Float64, Int64) -> Unit => ()
     }
 
     /**
@@ -202,8 +211,7 @@ public class MarkdownConfigurationBuilder {
      */
     protected var latexStrCallback: (String) -> String = {
         data: String =>
-        var dataNew = data.replace("\\\\\\\\", "\\\\\\text{ }\\\\").replace("\\\\\\\\", "\\\\\\text{ }\\\\")
-        dataNew = dataNew.replace("{aligned*}", "{aligned}")
+        var dataNew = data.replace("{aligned*}", "{aligned}")
         dataNew = dataNew.replace("{align*}", "{align}")
         dataNew = dataNew.replace("{flalign*}", "{flalign}")
         dataNew = dataNew.replace("{gather*}", "{gather}")
@@ -223,19 +231,19 @@ public class MarkdownConfigurationBuilder {
     protected var footnoteCallback: ?(?Float64) -> Unit = None
 
     /**
-     * 超大数据跳转页面显示全部数据
+     * 全部文本
      */
-    protected var listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit = None
+    protected var nodeString: ?(NodeViewStringBuilder) -> Unit = None
 
     init() {
     }
 
     init(configuration: MarkdownConfiguration) {
         this.markdownTheme = configuration.markdownTheme
-        // 插件化
-        this.markdownParser = configuration.markdownParser
+        this.textCopyCallback = configuration.textCopyCallback
         this.linkCallback = configuration.linkCallback
         this.imageCallback = configuration.imageCallback
+        this.imageCallbackCallback = configuration.imageCallbackCallback
         this.audioCallback = configuration.audioCallback
         this.videoCallback = configuration.videoCallback
         this.videoImageCallback = configuration.videoImageCallback
@@ -245,7 +253,7 @@ public class MarkdownConfigurationBuilder {
         this.latexStrCallback = configuration.latexStrCallback
         this.tocIndexCallback = configuration.tocIndexCallback
         this.footnoteCallback = configuration.footnoteCallback
-        this.listBigDataCallback = configuration.listBigDataCallback
+        this.nodeString = configuration.nodeString
     }
 
     /**
@@ -260,13 +268,13 @@ public class MarkdownConfigurationBuilder {
     }
 
     /**
-     * 设置markdown核心解析器
+     * 设置文本复制的点击事件
      *
-     * @param markdownPlugin markdown核心解析器
+     * @param textCopyCallback 文本复制的点击事件 (String:复制文本)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setMarkdownParser(markdownParser: Markdown): MarkdownConfigurationBuilder {
-        this.markdownParser = markdownParser
+    public func setTextCopyCallback(textCopyCallback: (String) -> Unit): MarkdownConfigurationBuilder {
+        this.textCopyCallback = textCopyCallback
         return this
     }
 
@@ -289,6 +297,17 @@ public class MarkdownConfigurationBuilder {
      */
     public func setImageCallback(imageCallback: (String, ArrayList<String>) -> Unit): MarkdownConfigurationBuilder {
         this.imageCallback = imageCallback
+        return this
+    }
+
+    /**
+     * 设置图片替换事件
+     *
+     * @param imageCallbackCallback 图片替换回调接口 (String:图片链接 -> ?Array<UInt8>:图片数据)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setImageCallbackCallback(imageCallbackCallback: (String) -> ?Array<UInt8>): MarkdownConfigurationBuilder {
+        this.imageCallbackCallback = imageCallbackCallback
         return this
     }
 
@@ -320,7 +339,7 @@ public class MarkdownConfigurationBuilder {
      * @param videoImageCallback 视频的图片替换回调接口 - 图片url、宽高比、视频时长
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setVideoImageCallback(videoImageCallback: (String, (String,Float64,Int64) -> Unit) -> Unit): MarkdownConfigurationBuilder {
+    public func setVideoImageCallback(videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit): MarkdownConfigurationBuilder {
         this.videoImageCallback = videoImageCallback
         return this
     }
@@ -392,13 +411,13 @@ public class MarkdownConfigurationBuilder {
     }
 
     /**
-     * 设置超大数据跳转页面显示全部数据
+     * 设置全部文本
      *
-     * @param listBigDataCallback 超大数据跳转页面显示全部数据接口 (NodeView:NodeView数据,Float64:上外边距,Float64:下外边距,Float64:控件宽度)
+     * @param nodeString 全部文本
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setListBigDataCallback(listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit): MarkdownConfigurationBuilder {
-        this.listBigDataCallback = listBigDataCallback
+    public func setNodeString(nodeString: (NodeViewStringBuilder) -> Unit): MarkdownConfigurationBuilder {
+        this.nodeString = nodeString
         return this
     }
 

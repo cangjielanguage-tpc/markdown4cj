@@ -31,7 +31,7 @@
 
 [package]
   cjc-version = "0.53.18"
-  compile-option = "--dy-std --cfg=\"${COMPILE_CONDITION}\""
+  compile-option = "--dy-std"
   description = "Markdown"
   link-option = ""
   name = "markdown"

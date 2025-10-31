@@ -1,13 +1,19 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
  */
 
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <stdint.h>
+#include <string.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+//extern int memset_s(void *dest, uint32_t destsz, int ch, uint32_t count);
+//extern int memcpy_s(void *dest, uint32_t destsz, void *src, uint32_t count);
 
 #define BI_RGB 0x0
 #define BI_BITFIELDS 0x3

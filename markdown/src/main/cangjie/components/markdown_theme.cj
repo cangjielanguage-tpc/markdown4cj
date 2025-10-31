@@ -28,7 +28,7 @@ import ohos.state_macro_manage.*
  *          图片格式内联代码：图片格式内联代码文本左右边距、图片格式内联代码文本高度
  *          缩进/围栏/组合/单独代码块代码文本颜色、缩进/围栏/组合/单独代码块代码类型文本颜色、缩进/围栏/组合/单独代码块代码类型文本、缩进/围栏/组合/单独代码块代码类型和代码块距离、缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示、缩进/围栏/组合/单独代码块代码行号是否显示、缩进/围栏/组合/单独代码块背景颜色、缩进/围栏/组合/单独代码块左边距、缩进/围栏/组合/单独代码块字体、缩进/围栏/组合/单独代码块代码文本大小、缩进/围栏/组合/单独代码块代码文本行高、缩进/围栏/组合/单独代码块圆角大小、缩进/围栏/组合/单独代码块代码全屏按钮是否显示、缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高、缩进/围栏/组合/单独代码块代码全屏按钮默认图标、缩进/围栏/组合/单独代码块代码复制按钮默认图标
  *          组合代码块：组合代码块未选中标题字体大小、组合代码块选中标题字体大小、组合代码块选中标题文本颜色、组合代码块未选中标题文本颜色、组合代码块选中标题背景颜色、组合代码块未选中标题背景颜色
- *          单独代码块：是否单独代码块显示、单独代码块行号宽度
+ *          单独代码块：是否单独代码块显示、单独代码块行号宽度、单独代码块是否居底显示
  * 6：标题 - H1/H2标题下分割线高度、H1/H2标题下分割线颜色
  *          标题文本字体、标题文本大小数组、标题文本颜色、标题文本字间距、一级标题文本行高、二级标题文本行高、三级标题文本行高、四级标题文本行高、五级标题文本行高、六级标题文本行高
  * 7：段落 - 段落文本大小、段落文本颜色、段落文本字间距、段落文本行高、段落文本字体
@@ -52,6 +52,11 @@ public class MarkdownTheme {
      * markdown上下文 - 仓颉
      */
     protected var abilityContext: ?AbilityContext = None
+
+    /**
+     * 是否打开长按复制粘贴
+     */
+    protected var isOnCopy: Bool = true
 
     /**
      * 模块间上下间距
@@ -86,7 +91,7 @@ public class MarkdownTheme {
     /**
      * 文本格式链接背景颜色
      */
-    protected var linkBackGroupColor: Color = COLOR_FF000000
+    protected var linkBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 文本格式是否显示链接下划线
@@ -279,6 +284,11 @@ public class MarkdownTheme {
     protected var orderedListItemLineHeight: Float64 = 22.0
 
     /**
+     * 无序列表前缀是否全部是实心圆型
+     */
+    protected var bulletListItemCircle: Bool = false
+
+    /**
      * 无序列表前缀文本颜色
      */
     protected var bulletListItemColor: Color = COLOR_FF191919
@@ -311,7 +321,7 @@ public class MarkdownTheme {
     /**
      * 文本/图片格式内联代码背景颜色
      */
-    protected var codeBackgroundColor: Color = COLOR_FF191919
+    protected var codeBackgroundColor: Color = COLOR_FFEAEAEA
 
     /**
      * 文本/图片格式内联代码文本大小
@@ -452,6 +462,11 @@ public class MarkdownTheme {
      * 单独代码块行号宽度
      */
     protected var separateCodeBlockWidth: Float64 = 50.0
+
+    /**
+     * 单独代码块是否居底显示
+     */
+    protected var separateCodeIsBottom: Bool = false
 
     /**
      * H1/H2标题下分割线高度
@@ -734,19 +749,24 @@ public class MarkdownTheme {
     protected var bannerImage: ?AppResource = None
 
     /**
-     * 图片文字是否需要图文混排
+     * 图片最大宽度百分比
      */
-    protected var isWord: Bool = true
+    protected var imageMaximumWidth: Float64 = 1.0
+
+    /**
+     * 图片固定宽度百分比
+     */
+    protected var imageFixedRatioWidth: ?Float64 = None
+
+    /**
+     * 图片圆角大小
+     */
+    protected var imageBorderRadius: Float64 = 0.0
 
     /**
      * 图片默认占位图 - AppResource
      */
     protected var imageResource: ?AppResource = None
-
-    /**
-     * 图片默认占位图 - String
-     */
-    protected var imagePlaceholder: ?String = None
 
     /**
      * 网络图片是否压缩
@@ -823,10 +843,17 @@ public class MarkdownTheme {
      */
     protected var prismTheme: PrismTheme = PrismThemeDarkula.create()
 
+    /**
+     * 删除线颜色
+     */
+    protected var strikethroughColor: Color = COLOR_191919
+
     protected init(builder: MarkdownThemeBuilder) {
         // 1、上下文
         this.stageContext = builder.stageContext
         this.abilityContext = builder.abilityContext
+
+        this.isOnCopy = builder.isOnCopy
 
         // 2、模块间距
         this.blockTopAndBottomMargins = builder.blockTopAndBottomMargins
@@ -886,6 +913,7 @@ public class MarkdownTheme {
         this.orderedListItemSize = builder.orderedListItemSize
         this.orderedListItemLineHeight = builder.orderedListItemLineHeight
         // 4.4、无序列表
+        this.bulletListItemCircle = builder.bulletListItemCircle
         this.bulletListItemColor = builder.bulletListItemColor
         this.bulletListItemSize = builder.bulletListItemSize
         this.bulletListItemLineHeight = builder.bulletListItemLineHeight
@@ -930,6 +958,7 @@ public class MarkdownTheme {
         // 5.4、单独代码块
         this.isSeparateCodeBlock = builder.isSeparateCodeBlock
         this.separateCodeBlockWidth = builder.separateCodeBlockWidth
+        this.separateCodeIsBottom = builder.separateCodeIsBottom
 
         // 6、标题
         this.headingBreakHeight = builder.headingBreakHeight
@@ -1004,9 +1033,10 @@ public class MarkdownTheme {
         this.bannerImage = builder.bannerImage
 
         // 14、图片
-        this.isWord = builder.isWord
+        this.imageMaximumWidth = builder.imageMaximumWidth
+        this.imageFixedRatioWidth = builder.imageFixedRatioWidth
+        this.imageBorderRadius = builder.imageBorderRadius
         this.imageResource = builder.imageResource
-        this.imagePlaceholder = builder.imagePlaceholder
         this.isAutoResize = builder.isAutoResize
         this.imageMarginTop = builder.imageMarginTop
         this.imageMarginBottom = builder.imageMarginBottom
@@ -1026,6 +1056,9 @@ public class MarkdownTheme {
 
         // 16、代码高亮
         this.prismTheme = builder.prismTheme
+
+        // 17、删除线
+        this.strikethroughColor = builder.strikethroughColor
     }
 
     /**
@@ -1090,7 +1123,7 @@ public class MarkdownTheme {
         // 5、代码
         // 5.1、内联代码
         markdownThemeBuilder.setCodeTextColor(COLOR_FF000000) // 文本、图片格式内联代码文本颜色
-        markdownThemeBuilder.setCodeBackgroundColor(COLOR_FF191919) // 文本、图片格式内联代码背景颜色
+        markdownThemeBuilder.setCodeBackgroundColor(COLOR_FFEAEAEA) // 文本、图片格式内联代码背景颜色
         // 5.2、代码块
         // 5.3、组合代码
         markdownThemeBuilder.setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
@@ -1183,7 +1216,7 @@ public class MarkdownTheme {
         // 5、代码
         // 5.1、内联代码
         markdownThemeBuilder.setCodeTextColor(COLOR_FF000000) // 文本、图片格式内联代码文本颜色
-        markdownThemeBuilder.setCodeBackgroundColor(COLOR_FF191919) // 文本、图片格式内联代码背景颜色
+        markdownThemeBuilder.setCodeBackgroundColor(COLOR_FFEAEAEA) // 文本、图片格式内联代码背景颜色
         // 5.2、代码块
         // 5.3、组合代码
         markdownThemeBuilder.setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
@@ -1261,6 +1294,11 @@ public class MarkdownThemeBuilder {
     protected var abilityContext: ?AbilityContext = None
 
     /**
+     * 是否打开长按复制粘贴
+     */
+    protected var isOnCopy: Bool = true
+
+    /**
      * 模块间上下间距
      */
     protected var blockTopAndBottomMargins: Float64 = 8.0
@@ -1293,7 +1331,7 @@ public class MarkdownThemeBuilder {
     /**
      * 文本格式链接背景颜色
      */
-    protected var linkBackGroupColor: Color = COLOR_FF000000
+    protected var linkBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 文本格式是否显示链接下划线
@@ -1486,6 +1524,11 @@ public class MarkdownThemeBuilder {
     protected var orderedListItemLineHeight: Float64 = 22.0
 
     /**
+     * 无序列表前缀是否全部是实心圆型
+     */
+    protected var bulletListItemCircle: Bool = false
+
+    /**
      * 无序列表前缀文本颜色
      */
     protected var bulletListItemColor: Color = COLOR_FF191919
@@ -1518,7 +1561,7 @@ public class MarkdownThemeBuilder {
     /**
      * 文本/图片格式内联代码背景颜色
      */
-    protected var codeBackgroundColor: Color = COLOR_FF191919
+    protected var codeBackgroundColor: Color = COLOR_FFEAEAEA
 
     /**
      * 文本/图片格式内联代码文本大小
@@ -1659,6 +1702,11 @@ public class MarkdownThemeBuilder {
      * 单独代码块行号宽度
      */
     protected var separateCodeBlockWidth: Float64 = 50.0
+
+    /**
+     * 单独代码块是否居底显示
+     */
+    protected var separateCodeIsBottom: Bool = false
 
     /**
      * H1/H2标题下分割线高度
@@ -1941,19 +1989,24 @@ public class MarkdownThemeBuilder {
     protected var bannerImage: ?AppResource = None
 
     /**
-     * 图片文字是否需要图文混排
+     * 图片最大宽度百分比
      */
-    protected var isWord: Bool = true
+    protected var imageMaximumWidth: Float64 = 1.0
+
+    /**
+     * 图片固定宽度百分比
+     */
+    protected var imageFixedRatioWidth: ?Float64 = None
+
+    /**
+     * 图片圆角大小
+     */
+    protected var imageBorderRadius: Float64 = 0.0
 
     /**
      * 图片默认占位图 - AppResource
      */
     protected var imageResource: ?AppResource = None
-
-    /**
-     * 图片默认占位图 - String
-     */
-    protected var imagePlaceholder: ?String = None
 
     /**
      * 网络图片是否压缩
@@ -2030,6 +2083,11 @@ public class MarkdownThemeBuilder {
      */
     protected var prismTheme: PrismTheme = PrismThemeDarkula.create()
 
+    /**
+     * 删除线颜色
+     */
+    protected var strikethroughColor: Color = COLOR_191919
+
     init() {
     }
 
@@ -2037,6 +2095,8 @@ public class MarkdownThemeBuilder {
         // 1、上下文
         this.stageContext = theme.stageContext
         this.abilityContext = theme.abilityContext
+
+        this.isOnCopy = theme.isOnCopy
 
         // 2、模块间距
         this.blockTopAndBottomMargins = theme.blockTopAndBottomMargins
@@ -2096,6 +2156,7 @@ public class MarkdownThemeBuilder {
         this.orderedListItemSize = theme.orderedListItemSize
         this.orderedListItemLineHeight = theme.orderedListItemLineHeight
         // 4.4、无序列表
+        this.bulletListItemCircle = theme.bulletListItemCircle
         this.bulletListItemColor = theme.bulletListItemColor
         this.bulletListItemSize = theme.bulletListItemSize
         this.bulletListItemLineHeight = theme.bulletListItemLineHeight
@@ -2140,6 +2201,7 @@ public class MarkdownThemeBuilder {
         // 5.4、单独代码块
         this.isSeparateCodeBlock = theme.isSeparateCodeBlock
         this.separateCodeBlockWidth = theme.separateCodeBlockWidth
+        this.separateCodeIsBottom = theme.separateCodeIsBottom
 
         // 6、标题
         this.headingBreakHeight = theme.headingBreakHeight
@@ -2214,9 +2276,10 @@ public class MarkdownThemeBuilder {
         this.bannerImage = theme.bannerImage
 
         // 14、图片
-        this.isWord = theme.isWord
+        this.imageMaximumWidth = theme.imageMaximumWidth
+        this.imageFixedRatioWidth = theme.imageFixedRatioWidth
+        this.imageBorderRadius = theme.imageBorderRadius
         this.imageResource = theme.imageResource
-        this.imagePlaceholder = theme.imagePlaceholder
         this.isAutoResize = theme.isAutoResize
         this.imageMarginTop = theme.imageMarginTop
         this.imageMarginBottom = theme.imageMarginBottom
@@ -2236,6 +2299,9 @@ public class MarkdownThemeBuilder {
 
         // 16、代码高亮
         this.prismTheme = theme.prismTheme
+
+        // 17、删除线
+        this.strikethroughColor = theme.strikethroughColor
     }
 
     /**
@@ -2277,7 +2343,7 @@ public class MarkdownThemeBuilder {
         // 5、代码
         // 5.1、内联代码
         setCodeTextColor(COLOR_FF000000) // 文本、图片格式内联代码文本颜色
-        setCodeBackgroundColor(COLOR_FF191919) // 文本、图片格式内联代码背景颜色
+        setCodeBackgroundColor(COLOR_FFEAEAEA) // 文本、图片格式内联代码背景颜色
         // 5.2、代码块
         // 5.3、组合代码
         setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
@@ -2368,7 +2434,7 @@ public class MarkdownThemeBuilder {
         // 5、代码
         // 5.1、内联代码
         setCodeTextColor(COLOR_FF000000) // 文本、图片格式内联代码文本颜色
-        setCodeBackgroundColor(COLOR_FF191919) // 文本、图片格式内联代码背景颜色
+        setCodeBackgroundColor(COLOR_FFEAEAEA) // 文本、图片格式内联代码背景颜色
         // 5.2、代码块
         // 5.3、组合代码
         setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
@@ -2443,6 +2509,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置是否打开长按复制粘贴
+     *
+     * @param isOnCopy 是否打开长按复制粘贴 - 默认true
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsOnCopy(isOnCopy: Bool): MarkdownThemeBuilder {
+        this.isOnCopy = isOnCopy
+        return this
+    }
+
+    /**
      * 设置模块间上下间距
      *
      * @param blockTopAndBottomMargins 模块间上下间距 - 默认8.0vp
@@ -2511,7 +2588,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置文本格式链接背景颜色
      *
-     * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0XFF000000
+     * @param linkBackGroupColor 文本格式链接背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkBackGroupColor(linkBackGroupColor: Color): MarkdownThemeBuilder {
@@ -2938,6 +3015,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置无序列表前缀是否为实心圆型
+     *
+     * @param bulletListItemCircle 无序列表前缀是否为实心圆型 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setBulletListItemCircle(bulletListItemCircle: Bool): MarkdownThemeBuilder {
+        this.bulletListItemCircle = bulletListItemCircle
+        return this
+    }
+
+    /**
      * 设置无序列表前缀文本颜色
      *
      * @param bulletListItemColor 无序列表前缀文本颜色 - 默认OXFF191919
@@ -3006,7 +3094,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置文本、图片格式内联代码背景颜色
      *
-     * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFF191919
+     * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFFEAEAEA
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeBackgroundColor(codeBackgroundColor: Color): MarkdownThemeBuilder {
@@ -3319,6 +3407,17 @@ public class MarkdownThemeBuilder {
      */
     public func setSeparateCodeBlockWidth(separateCodeBlockWidth: Float64): MarkdownThemeBuilder {
         this.separateCodeBlockWidth = separateCodeBlockWidth
+        return this
+    }
+
+    /**
+     * 设置单独代码块是否居底显示
+     *
+     * @param separateCodeIsBottom 单独代码块是否居底显示 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setSeparateCodeIsBottom(separateCodeIsBottom: Bool): MarkdownThemeBuilder {
+        this.separateCodeIsBottom = separateCodeIsBottom
         return this
     }
 
@@ -3939,13 +4038,35 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置图片文字是否需要图文混排
+     * 设置图片最大宽度百分比
      *
-     * @param isWord 图片文字是否需要图文混排 - true:图文混排；false:不图文混排。默认true
+     * @param imageMaximumWidth 图片最大宽度百分比 - 默认1.0
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setIsWord(isWord: Bool): MarkdownThemeBuilder {
-        this.isWord = isWord
+    public func setImageMaximumWidth(imageMaximumWidth: Float64): MarkdownThemeBuilder {
+        this.imageMaximumWidth = imageMaximumWidth
+        return this
+    }
+
+    /**
+     * 设置图片固定宽度百分比
+     *
+     * @param imageFixedRatioWidth 图片宽度百分比 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageFixedRatioWidth(imageFixedRatioWidth: Float64): MarkdownThemeBuilder {
+        this.imageFixedRatioWidth = imageFixedRatioWidth
+        return this
+    }
+
+    /**
+     * 设置图片圆角
+     *
+     * @param imageBorderRadius 图片圆角 - 默认0.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageBorderRadius(imageBorderRadius: Float64): MarkdownThemeBuilder {
+        this.imageBorderRadius = imageBorderRadius
         return this
     }
 
@@ -3957,17 +4078,6 @@ public class MarkdownThemeBuilder {
      */
     public func setImageResource(imageResource: AppResource): MarkdownThemeBuilder {
         this.imageResource = imageResource
-        return this
-    }
-
-    /**
-     * 设置图片默认占位图 - String
-     *
-     * @param imagePlaceholder 图片默认占位图 - String - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setImagePlaceholder(imagePlaceholder: String): MarkdownThemeBuilder {
-        this.imagePlaceholder = imagePlaceholder
         return this
     }
 
@@ -4133,6 +4243,17 @@ public class MarkdownThemeBuilder {
      */
     public func setPrismTheme(prismTheme: PrismTheme): MarkdownThemeBuilder {
         this.prismTheme = prismTheme
+        return this
+    }
+
+    /**
+     * 设置删除线颜色
+     *
+     * @param strikethroughColor 删除线颜色 默认COLOR_191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setStrikethroughColor(strikethroughColor: Color): MarkdownThemeBuilder {
+        this.strikethroughColor = strikethroughColor
         return this
     }
 

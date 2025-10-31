@@ -67,7 +67,7 @@ Heading level 2
      func build() {
         Scroll() {
             Column {
-                MarkdownComponent(output: mdStr, isFull:true)
+                MarkdownComponent(output: mdStr)
             }
         }
         // 设置滚动方法

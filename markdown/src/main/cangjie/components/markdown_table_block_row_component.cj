@@ -36,12 +36,8 @@ class MarkdownTableBlockRowComponent {
     /**
      * 控件宽度 - 单位px
      */
+    @Prop
     var componentWidth: Float64
-
-    /**
-     * 是否全量加载
-     */
-    var isFull: Bool
 
     /**
      * 内容第几条
@@ -76,6 +72,9 @@ class MarkdownTableBlockRowComponent {
     @Prop
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
 
+    @State
+    var maxHeight: Float64 = 0.0
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeViews)
@@ -85,14 +84,13 @@ class MarkdownTableBlockRowComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        tableRowComponents.removeIf(
-            {
-                predicate => if (predicate.indexList == indexList && predicate.size == size) {
-                    true
-                } else {
-                    false
-                }
-            })
+        tableRowComponents.removeIf({
+            predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                true
+            } else {
+                false
+            }
+        })
     }
 
     func build() {
@@ -106,7 +104,6 @@ class MarkdownTableBlockRowComponent {
                             nodeViews: item.children,
                             fontCallback: fontCallback,
                             imageCallback: imageCallback,
-                            isFull: isFull,
                             isHeader: (item.node as TableCell)().isHeader(),
                             alignment: (item.node as TableCell)().getAlignment(),
                             componentWidth: componentWidth,
@@ -116,9 +113,13 @@ class MarkdownTableBlockRowComponent {
                             dataRowSize: dataRowSize,
                             idxItem: idxItem,
                             dataCellSize: nodeViewList.size,
-                            cellWidthArrayIndexed: cellWidthArrayIndexed
+                            cellWidthArrayIndexed: cellWidthArrayIndexed,
+                            maxHeight: maxHeight
                         )
                     }
+                },
+                keyGeneratorFunc: {
+                    item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item, "nodeid", 0)}"
                 }
             )
         }
@@ -130,48 +131,50 @@ class MarkdownTableBlockRowComponent {
     public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
         let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
         let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
-        if (isFull) {
-            // 全量加载
-            nodeViewList.clear()
-            nodeViewList.appendAll(refreshNodeViews)
-        } else {
-            // 增量加载
-            if (refreshNodeViewSize == 0) {
-                return
+        if (refreshNodeViewSize == 0) {
+            return
+        }
+        if (refreshNodeViewSize > nodeViewListSize) {
+            // 新数据大于页面数据
+            // 循环判断历史数据有没有做过修改
+            for (i in 0..nodeViewListSize) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
+                    nodeViewList[i] = refreshNodeViews[i]
+                }
             }
-            if (refreshNodeViewSize > nodeViewListSize) {
-                // 刷新数据的长度大于页面数据长度，需要添加数据
-                if (nodeViewListSize != 0) {
-                    // 更新页面最后一条数据
-                    nodeViewList.remove(nodeViewListSize - 1)
-                    nodeViewList.append(refreshNodeViews[nodeViewListSize - 1])
+            // 循环添加新数据
+            for (i in nodeViewListSize..refreshNodeViewSize) {
+                nodeViewList.append(refreshNodeViews[i])
+            }
+        } else if (refreshNodeViewSize == nodeViewListSize) {
+            // 刷新数据的长度等于页面数据长度，需要更新当前数据
+            var indexCell: Int64 = 0
+            for (i in 0..refreshNodeViewSize) {
+                if (refreshNodeViews[i].children.size != 0) {
+                    indexCell = i
                 }
-                // 循环添加所有新增数据
-                for (i in refreshNodeViewSize - nodeViewListSize..0 : -1) {
-                    nodeViewList.append(refreshNodeViews[refreshNodeViewSize - i])
+            }
+            for (i in 0..indexCell) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
+                    nodeViewList[i] = refreshNodeViews[i]
                 }
-            } else if (refreshNodeViewSize == nodeViewListSize) {
-                // 刷新数据的长度等于页面数据长度，需要更新当前数据
-                var indexCell: Int64 = 0
-                for (i in 0..refreshNodeViewSize) {
-                    if (refreshNodeViews[i].children.size != 0) {
-                        indexCell = i
-                    }
+            }
+            for (data in tableCellComponents) {
+                if (isListItem(indexList, data.indexList, indexCell)) {
+                    data.refreshData(refreshNodeViews[indexCell].children)
                 }
-                for (data in tableCellComponents) {
-                    if (isListItem(indexList, data.indexList, indexCell)) {
-                        data.refreshData(refreshNodeViews[indexCell].children)
-                    }
+            }
+        } else {
+            // 新数据小于页面数据
+            // 循环判断历史数据有没有做过修改
+            for (i in 0..refreshNodeViewSize) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
+                    nodeViewList[i] = refreshNodeViews[i]
                 }
-            } else {
-                // 刷新数据小于页面数据长度，需要删除数据
-                // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
-                nodeViewList.remove(refreshNodeViewSize - 1)
-                nodeViewList.append(refreshNodeViews[refreshNodeViewSize - 1])
-                // 循环删除所有多余数据
-                for (i in nodeViewListSize - refreshNodeViewSize..0 : -1) {
-                    nodeViewList.remove(i)
-                }
+            }
+            // 循环删除多余的旧数据
+            for (i in nodeViewListSize - 1..=refreshNodeViewSize : -1) {
+                nodeViewList.remove(i)
             }
         }
         size = nodeViewList.size // 更新列表长度

@@ -21,12 +21,6 @@ public class MarkdownComponent {
     var output: String
 
     /**
-     * 是否全量加载 - true：全量加载，fasle：增量加载
-     */
-    @Prop
-    var isFull: Bool
-
-    /**
      * markdown配置
      */
     var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.create()
@@ -34,7 +28,8 @@ public class MarkdownComponent {
     /**
      * markdown插件
      */
-    var markdownBase: Markdown = Markdown.builder()
+    var markdownPlugin: Markdown = Markdown
+            .builder()
             // HTML插件
             .usePlugin(HtmlPlugin.create())
             // 任务列表插件
@@ -43,27 +38,47 @@ public class MarkdownComponent {
             .usePlugin(StrikethroughPlugin.create())
             // 表格插件
             .usePlugin(TablePlugin.create())
-            // 数学公式
+            // 数学公式插件
             .usePlugin(LatexMathPluginV2.create())
-            // 音频
+            // 音频插件
             .usePlugin(BlockAudioPlugin.create())
-            // 视频
+            // 视频插件
             .usePlugin(BlockVideoPlugin.create())
-            // 链接
+            // 自动链接插件
             .usePlugin(LinkifyPlugin.create())
-            // 脚注
-            .usePlugin(FootnotePlugin.create())
-            // 幻灯片
+            // 幻灯片插件
             .usePlugin(ImageSlidePlugin.create())
             // ImageStyle插件
             .usePlugin(ImageStylePlugin.create())
-            // 代码列表标签
+            // 代码列表标签插件
             .usePlugin(CodeListPlugin.create())
-            // 图片列表
-            .usePlugin(ImageCollectPlugin.create())
-            // TOC列表插件
+            // 脚注插件
+            .usePlugin(FootnotePlugin.create())
+            // TOC插件
             .usePlugin(TocPlugin.create())
+            // 图片列表插件
+            .usePlugin(ImageCollectPlugin.create())
+            // 唯一ID标识插件
+            .usePlugin(BlockIdPlugin.create())
             .build()
+
+    /**
+     * 广告布局
+     */
+    @BuilderParam
+    var adBuilder: (NodeView) -> Unit = ADBuilder
+
+    /**
+     * 视频布局
+     */
+    @BuilderParam
+    var videoBuilder: (NodeView, MarkdownConfiguration, (String) -> Unit) -> Unit = VideoBuilder
+
+    /**
+     * 音频布局
+     */
+    @BuilderParam
+    var audioBuilder: (NodeView, MarkdownConfiguration) -> Unit = AudioBuilder
 
     /**
      * 定位需要的数组
@@ -76,7 +91,7 @@ public class MarkdownComponent {
     let screenWidth: Int32 = getDefaultDisplaySync().width
 
     /**
-     * 控件宽度 - 单位px，（控件宽度 = 屏幕宽度 - padding）
+     * 控件宽度 - 单位vp
      */
     @State
     var componentWidth: Float64 = 0.0
@@ -109,7 +124,7 @@ public class MarkdownComponent {
     /**
      * 锁
      */
-    let parseReentrantMutex: ReentrantMutex = ReentrantMutex()
+    let parseReentrantMutex: Mutex = Mutex()
 
     /**
      * 刷新判定
@@ -119,7 +134,6 @@ public class MarkdownComponent {
     /**
      * 懒加载数据源
      */
-    @State
     var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
     /**
@@ -128,13 +142,10 @@ public class MarkdownComponent {
     var imageAndVideoList: ArrayList<String> = ArrayList<String>()
 
     protected override func aboutToAppear(): Unit {
-        if(markdownConfiguration.markdownParser.isSome()){
-            markdownBase = markdownConfiguration.markdownParser()
-            incBase = IncreaseParser(markdownBase)
-        }
-        incBase = IncreaseParser(markdownBase)
-        // 控件宽度 = 屏幕宽度
-        componentWidth = Float64(screenWidth)
+        // 加载插件
+        incBase = IncreaseParser(markdownPlugin)
+        // 默认控件宽度等于屏幕宽度
+        componentWidth = px2vp(Float64(screenWidth).px).getOrThrow().value
         // 首次加载
         refreshData()
     }
@@ -161,10 +172,9 @@ public class MarkdownComponent {
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
-                                    componentWidth: versionAdaptation(componentWidth),
+                                    componentWidth: componentWidth,
                                     imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
                                     imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
-                                    isFull: isFull,
                                     isListTo:false,
                                     indexList: indexAdd(indexList, idx),
                                     headingComponents: markdownCacheConfiguration.headingComponents
@@ -184,10 +194,9 @@ public class MarkdownComponent {
                                     fontCallback: fontCallback,
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
-                                    componentWidth: versionAdaptation(componentWidth),
+                                    componentWidth: componentWidth,
                                     imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
                                     imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
-                                    isFull: isFull,
                                     isListTo:false,
                                     indexList: indexAdd(indexList, idx),
                                     paragraphComponents: markdownCacheConfiguration.paragraphComponents
@@ -206,8 +215,7 @@ public class MarkdownComponent {
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
-                                    componentWidth: versionAdaptation(componentWidth),
-                                    isFull: isFull,
+                                    componentWidth: componentWidth,
                                     indexList: indexAdd(indexList, idx),
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
@@ -225,8 +233,7 @@ public class MarkdownComponent {
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
-                                    componentWidth: versionAdaptation(componentWidth),
-                                    isFull: isFull,
+                                    componentWidth: componentWidth,
                                     indexList: indexAdd(indexList, idx),
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
@@ -243,8 +250,7 @@ public class MarkdownComponent {
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     videoCallback: videoCallback,
-                                    componentWidth: versionAdaptation(componentWidth),
-                                    isFull: isFull,
+                                    componentWidth: componentWidth,
                                     indexList: indexAdd(indexList, idx),
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
@@ -284,8 +290,7 @@ public class MarkdownComponent {
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
-                                componentWidth: versionAdaptation(componentWidth),
-                                isFull: isFull,
+                                componentWidth: componentWidth,
                                 indexList: indexAdd(indexList, idx),
                                 tableComponents: markdownCacheConfiguration.tableComponents,
                                 tableRowComponents: markdownCacheConfiguration.tableRowComponents,
@@ -303,23 +308,12 @@ public class MarkdownComponent {
                         } else if (item.node is BlockAudio) {
                             // 音频
                             ListItem() {
-                                MarkdownImageAudioComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    marginTop: markdownConfiguration.markdownTheme.audioMarginTop,
-                                    marginBottom: markdownConfiguration.markdownTheme.audioMarginBottom
-                                )
+                                audioBuilder(item, markdownConfiguration)
                             }
                         } else if (item.node is BlockVideo) {
                             // 视频
                             ListItem() {
-                                MarkdownImageVideoComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    marginTop: markdownConfiguration.markdownTheme.videoMarginTop,
-                                    marginBottom: markdownConfiguration.markdownTheme.videoMarginBottom,
-                                    videoCallback: videoCallback
-                                )
+                                videoBuilder(item, markdownConfiguration, videoCallback)
                             }
                         } else if (item.node is LatexMathBlock) {
                             // 单行的数学公式
@@ -350,8 +344,7 @@ public class MarkdownComponent {
                                         fontCallback: fontCallback,
                                         tocListOnClick: tocListOnClick,
                                         imageCallback: imageCallback,
-                                        componentWidth: versionAdaptation(componentWidth),
-                                        isFull: isFull,
+                                        componentWidth: componentWidth,
                                         isListTo:false,
                                         indexList: indexAdd(indexList, idx),
                                         paragraphComponents: markdownCacheConfiguration.paragraphComponents
@@ -362,9 +355,7 @@ public class MarkdownComponent {
                             }
                             // 组件区域变化时触发该回调
                             .onAreaChange {
-                                oldValue, newValue => if (isFull) {
-                                    indexFootnoteHashMap.add((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
-                                }
+                                oldValue, newValue => indexFootnoteHashMap.add((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
                             }
                         } else if (item.node is SlideBlock) {
                             // 图片幻灯片
@@ -390,46 +381,10 @@ public class MarkdownComponent {
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
                                 )
                             }
-                        } else if (item.node is ImageSingleBlock) {
-                            // 单独图片block
+                        } else if (item.node is BlockAD) {
+                            // 广告
                             ListItem() {
-                                if(item.children.size  > 0 && item.children[0].node is StyleImage){
-                                    //  图片Style节点
-                                    if((item.children[0].node as StyleImage)().getDestination().startsWith("./")){
-                                        MarkdownImageStyleRawFileComponent(
-                                            markdownConfiguration: markdownConfiguration,
-                                            destination: (item.children[0].node as StyleImage)().getDestination(),
-                                            picStyle: (item.children[0].node as StyleImage)().styles,
-                                            componentWidth:versionAdaptation(componentWidth),
-                                            imageCallback: imageCallback
-                                        )
-                                    }else{
-                                        MarkdownImageStyleComponent(
-                                            markdownConfiguration: markdownConfiguration,
-                                            destination: (item.children[0].node as StyleImage)().getDestination(),
-                                            picStyle: (item.children[0].node as StyleImage)().styles,
-                                            componentWidth:versionAdaptation(componentWidth),
-                                            imageCallback: imageCallback
-                                        )
-                                    }
-                                }else if(item.children.size  > 0 && item.children[0].node is CommonmarkImage){
-                                    if((item.children[0].node as CommonmarkImage)().getDestination().startsWith("./")){
-                                        MarkdownImageRawFileComponent(
-                                            markdownConfiguration: markdownConfiguration,
-                                            destination: (item.children[0].node as CommonmarkImage)().getDestination(),
-                                            componentWidth:versionAdaptation(componentWidth),
-                                            imageCallback: imageCallback
-                                        )
-                                    }else{
-                                        // 图片节点
-                                        MarkdownImageComponent(
-                                            destination: (item.children[0].node as CommonmarkImage)().getDestination(),
-                                            imageCallback: imageCallback
-                                        )
-                                    }
-                                }else{
-                                    Text("")
-                                }
+                                adBuilder(item)
                             }
                         } else {
                             // TODO 其他节点
@@ -437,6 +392,9 @@ public class MarkdownComponent {
                                 Text("")
                             }
                         }
+                    },
+                    keyGeneratorFunc:{
+                         item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
                     }
                 )
             }
@@ -465,7 +423,6 @@ public class MarkdownComponent {
                                     codeText: (item.node as FencedCodeBlock)().getLiteral(),
                                     info: (item.node as FencedCodeBlock)().getInfo(),
                                     indexList: indexAdd(indexList, idx),
-                                    isFull: isFull,
                                     codeComponents: markdownCacheConfiguration.codeComponents,
                                     codeTextComponents: markdownCacheConfiguration.codeTextComponents
                                 )
@@ -477,7 +434,6 @@ public class MarkdownComponent {
                                     codeText: (item.node as IndentedCodeBlock)().getLiteral(),
                                     info: Option<String>.None,
                                     indexList: indexAdd(indexList, idx),
-                                    isFull: isFull,
                                     codeComponents: markdownCacheConfiguration.codeComponents,
                                     codeTextComponents: markdownCacheConfiguration.codeTextComponents
                                 )
@@ -519,151 +475,142 @@ public class MarkdownComponent {
         try {
             incBase().input = output
             incBase().parse()
-            let doc: NodeView = incBase().docView
+            let doc = incBase().docView
+            if (let Some(v) <- markdownConfiguration.nodeString) {
+                v(NodeViewStringBuilder(doc))
+            }
             let nodeViews: ArrayList<NodeView> = doc.children
             let nodeViewsSize: Int64 = nodeViews.size // 刷新进来的数据长度
             let nodeViewListSize: Int64 = nodeViewDataSource.totalCount() // 页面缓存的数据长度
             imageAndVideoList.clear()
             imageAndVideoList.add(all: getProp<ArrayList<String>>(doc, "links", ArrayList<String>()))
-            if (isFull) {
-                // 全量加载
-                let syncCounter:SyncCounter = SyncCounter(1)
-                launch {
-                    nodeViewDataSource.clear()
-                    nodeViewDataSource.addDatas(nodeViews)
+
+            let syncCounter:SyncCounter = SyncCounter(1)
+            launch {
+                if (nodeViewsSize == 0) {
                     syncCounter.dec()
+                    return
                 }
-                syncCounter.waitUntilZero()
-            } else {
-                // 增量加载
-                let syncCounter:SyncCounter = SyncCounter(1)
-                launch {
-                    if (nodeViewsSize == 0) {
-                        syncCounter.dec()
-                        return
+                if (nodeViewsSize > nodeViewListSize) {
+                    // 新数据大于页面数据
+                    markdownCacheConfiguration.clearAll() // 清除缓存数据
+                    // 循环判断历史数据有没有做过修改
+                    for(i in 0..nodeViewListSize){
+                        if(getProp<Int64>(nodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewDataSource.getAllData()[i],"nodeid",0)){
+                            nodeViewDataSource.replaceData(i, nodeViews[i])
+                        }
                     }
-                    if (nodeViewsSize > nodeViewListSize) {
-                        // 刷新数据的长度大于页面数据长度，需要添加数据
-                        // 清除缓存数据
-                        markdownCacheConfiguration.clearAll()
-                        if (nodeViewListSize != 0) {
-                            // 更新页面最后一条数据
-                            nodeViewDataSource.replaceData(nodeViewListSize - 1, nodeViews[nodeViewListSize - 1])
+                    // 循环添加新数据
+                    for(i in nodeViewListSize..nodeViewsSize){
+                        nodeViewDataSource.addData(nodeViews[i])
+                    }
+                } else if (nodeViewsSize == nodeViewListSize) {
+                    // 新数据等于页面数据
+                    let index: Int64 = nodeViewListSize - 1
+                    for(i in 0..index){
+                        if(getProp<Int64>(nodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewDataSource.getAllData()[i],"nodeid",0)){
+                            nodeViewDataSource.replaceData(i, nodeViews[i])
                         }
-                        // 循环添加所有新增数据
-                        for (i in nodeViewsSize - nodeViewListSize..0 : -1) {
-                            nodeViewDataSource.addData(nodeViews[nodeViewsSize - i])
-                        }
-                    } else if (nodeViewsSize == nodeViewListSize) {
-                        // 刷新数据的长度等于页面数据长度，需要更新当前数据
-                        let index: Int64 = nodeViewListSize - 1
+                    }
+                    if(nodeViews[index].node.getNodeType() != nodeViewDataSource.getData(index).node.getNodeType()){
+                        // 最后一条数据类型不相等
+                        nodeViewDataSource.replaceData(index, nodeViews[index])
+                    } else {
+                        // 最后一条数据类型相等
                         if (!markdownConfiguration.markdownTheme.isSeparateCodeBlock) {
-                            if ((nodeViews[nodeViewsSize - 1].node is BulletList && nodeViewDataSource.getData(nodeViewListSize - 1).node is BulletList) || (nodeViews[nodeViewsSize - 1].node is OrderedList && nodeViewDataSource.getData(nodeViewListSize - 1).node is OrderedList)) {
+                            if ((nodeViews[index].node is BulletList && nodeViewDataSource.getData(index).node is BulletList) || (nodeViews[index].node is OrderedList && nodeViewDataSource.getData(index).node is OrderedList)) {
                                 // 有序列表和无序列表
                                 for (data in markdownCacheConfiguration.listComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
-                                        data.refreshData(nodeViews[nodeViewsSize - 1].children)
+                                        data.refreshData(nodeViews[index].children)
                                     }
                                 }
-                            } else if ((nodeViews[nodeViewsSize - 1].node is BlockQuote && nodeViewDataSource.getData(nodeViewListSize - 1).node is BlockQuote)) {
+                            } else if ((nodeViews[index].node is BlockQuote && nodeViewDataSource.getData(index).node is BlockQuote)) {
                                 // 块引用
                                 for (data in markdownCacheConfiguration.quoteComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
-                                        data.refreshData(nodeViews[nodeViewsSize - 1].children)
+                                        data.refreshData(nodeViews[index].children)
                                     }
                                 }
-                            } else if ((nodeViews[nodeViewsSize - 1].node is Heading && nodeViewDataSource.getData(nodeViewListSize - 1).node is Heading)) {
+                            } else if ((nodeViews[index].node is Heading && nodeViewDataSource.getData(index).node is Heading)) {
                                 // 标题
                                 for (data in markdownCacheConfiguration.headingComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
-                                        data.refreshData(nodeViews[nodeViewsSize - 1].children, (nodeViews[nodeViewsSize - 1].node as Heading)().getLevel())
+                                        data.refreshData(nodeViews[index].children, (nodeViews[index].node as Heading)().getLevel())
                                     }
                                 }
-                            } else if ((nodeViews[nodeViewsSize - 1].node is Paragraph && nodeViewDataSource.getData(nodeViewListSize - 1).node is Paragraph)) {
+                            } else if ((nodeViews[index].node is Paragraph && nodeViewDataSource.getData(index).node is Paragraph)) {
                                 // 段落
                                 for (data in markdownCacheConfiguration.paragraphComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
-                                        data.refreshData(nodeViews[nodeViewsSize - 1].children)
+                                        data.refreshData(nodeViews[index].children)
                                     }
                                 }
-                            } else if ((nodeViews[nodeViewsSize - 1].node is TableBlock && nodeViewDataSource.getData(nodeViewListSize - 1).node is TableBlock)) {
+                            } else if ((nodeViews[index].node is TableBlock && nodeViewDataSource.getData(index).node is TableBlock)) {
                                 // 表格
                                 for (data in markdownCacheConfiguration.tableComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
-                                        data.refreshData(tableList(nodeViews[nodeViewsSize - 1].children))
+                                        data.refreshData(tableList(nodeViews[index].children))
                                     }
                                 }
-                            } else if ((nodeViews[nodeViewsSize - 1].node is IndentedCodeBlock && nodeViewDataSource.getData(nodeViewListSize - 1).node is IndentedCodeBlock)) {
+                            } else if ((nodeViews[index].node is IndentedCodeBlock && nodeViewDataSource.getData(index).node is IndentedCodeBlock)) {
                                 // 缩进代码
                                 for (data in markdownCacheConfiguration.indentedCodeComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
-                                        data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1])
+                                        data.refreshData(getCodeInfo(nodeViews[index])[0], getCodeInfo(nodeViews[index])[1])
                                     }
                                 }
-                            } else if ((nodeViews[nodeViewsSize - 1].node is FencedCodeBlock && nodeViewDataSource.getData(nodeViewListSize - 1).node is FencedCodeBlock)) {
+                            } else if ((nodeViews[index].node is FencedCodeBlock && nodeViewDataSource.getData(index).node is FencedCodeBlock)) {
                                 // 围栏代码
                                 for (data in markdownCacheConfiguration.fencedCodeComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
-                                        data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1]())
+                                        data.refreshData(getCodeInfo(nodeViews[index])[0], getCodeInfo(nodeViews[index])[1]())
                                     }
                                 }
                             } else {
                                 // 其他节点
-                                nodeViewDataSource.replaceData(nodeViewListSize - 1, nodeViews[nodeViewsSize - 1])
+                                nodeViewDataSource.replaceData(index, nodeViews[index])
                             }
                         } else {
-                            if ((nodeViews[nodeViewsSize - 1].node is IndentedCodeBlock && nodeViewDataSource.getData(nodeViewListSize - 1).node is IndentedCodeBlock)) {
+                            if ((nodeViews[index].node is IndentedCodeBlock && nodeViewDataSource.getData(index).node is IndentedCodeBlock)) {
                                 // 缩进代码
                                 for (data in markdownCacheConfiguration.codeComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
-                                        data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1])
+                                        data.refreshData(getCodeInfo(nodeViews[index])[0], getCodeInfo(nodeViews[index])[1])
                                     }
                                 }
-                            } else if ((nodeViews[nodeViewsSize - 1].node is FencedCodeBlock && nodeViewDataSource.getData(nodeViewListSize - 1).node is FencedCodeBlock)) {
+                            } else if ((nodeViews[index].node is FencedCodeBlock && nodeViewDataSource.getData(index).node is FencedCodeBlock)) {
                                 // 围栏代码
                                 for (data in markdownCacheConfiguration.codeComponents) {
                                     if (isListItem(indexList, data.indexList, index)) {
-                                        data.refreshData(getCodeInfo(nodeViews[nodeViewsSize - 1])[0], getCodeInfo(nodeViews[nodeViewsSize - 1])[1])
+                                        data.refreshData(getCodeInfo(nodeViews[index])[0], getCodeInfo(nodeViews[index])[1])
                                     }
                                 }
                             } else {
                                 // 其他节点
-                                nodeViewDataSource.replaceData(nodeViewListSize - 1, nodeViews[nodeViewsSize - 1])
+                                nodeViewDataSource.replaceData(index, nodeViews[index])
                             }
                         }
-                    } else {
-                        // 刷新数据小于页面数据长度，需要删除数据
-                        // 清除缓存数据
-                        markdownCacheConfiguration.clearAll()
-                        // 更新页面中间一条数据 - 刷新数据长度的最后一条数据
-                        nodeViewDataSource.replaceData(nodeViewsSize - 1, nodeViews[nodeViewsSize - 1])
-                        // 循环删除所有多余数据
-                        for (i in nodeViewListSize - nodeViewsSize..0 : -1) {
-                            nodeViewDataSource.deleteData(i)
+                    }
+                } else {
+                    // 新数据小于页面数据
+                    markdownCacheConfiguration.clearAll() // 清除缓存数据
+                    // 循环判断历史数据有没有做过修改
+                    for(i in 0..nodeViewsSize){
+                        if(getProp<Int64>(nodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewDataSource.getAllData()[i],"nodeid",0)){
+                            nodeViewDataSource.replaceData(i, nodeViews[i])
                         }
                     }
-                    syncCounter.dec()
+                    // 循环删除多余的旧数据
+                    for(i in nodeViewListSize - 1..=nodeViewsSize : -1){
+                        nodeViewDataSource.deleteData(i)
+                    }
                 }
-                syncCounter.waitUntilZero()
+                syncCounter.dec()
             }
+            syncCounter.waitUntilZero()
         } catch (e: Exception) {
             // 解析异常，全量展示纯文本，增量不做处理
-            if (isFull) {
-                let paragraph: Paragraph = Paragraph()
-                let commonmarkText: CommonmarkText = CommonmarkText(output)
-                paragraph.appendChild(commonmarkText)
-                let paragraphNodeView: NodeView = buildView(paragraph, true)
-                let textNodeView: NodeView = buildView(commonmarkText, true)
-                let arrayListNodeView: ArrayList<NodeView> = ArrayList<NodeView>()
-                arrayListNodeView.add(paragraphNodeView)
-                let syncCounter:SyncCounter = SyncCounter(1)
-                launch {
-                    nodeViewDataSource.clear()
-                    nodeViewDataSource.addDatas(arrayListNodeView)
-                    syncCounter.dec()
-                }
-                syncCounter.waitUntilZero()
-            }
         }
     }
 
@@ -706,4 +653,30 @@ public class MarkdownComponent {
             v(url, imageAndVideoList)
         }
     }
+}
+
+@Builder
+func ADBuilder(item: NodeView){
+    Text("")
+}
+
+@Builder
+func VideoBuilder(item: NodeView, markdownConfiguration: MarkdownConfiguration, videoCallback: (String) -> Unit){
+    MarkdownImageVideoComponent(
+        markdownConfiguration: markdownConfiguration,
+        nodeView: item,
+        marginTop: markdownConfiguration.markdownTheme.videoMarginTop,
+        marginBottom: markdownConfiguration.markdownTheme.videoMarginBottom,
+        videoCallback: videoCallback
+    )
+}
+
+@Builder
+func AudioBuilder(item: NodeView, markdownConfiguration: MarkdownConfiguration){
+    MarkdownImageAudioComponent(
+        markdownConfiguration: markdownConfiguration,
+        nodeView: item,
+        marginTop: markdownConfiguration.markdownTheme.audioMarginTop,
+        marginBottom: markdownConfiguration.markdownTheme.audioMarginBottom
+    )
 }
