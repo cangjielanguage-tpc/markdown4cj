@@ -46,6 +46,7 @@ class MarkdownTableBlockCellComponent {
     /**
      * 控件宽度 - 单位px
      */
+    @Prop
     var componentWidth: Float64
 
     /**
@@ -103,7 +104,7 @@ class MarkdownTableBlockCellComponent {
 
     @Link
     @Watch[refreshTextHeight]
-    var maxHeight:Float64
+    var maxHeight: Float64
 
     @Prop
     @Watch[refreshTextWidth]
@@ -139,14 +140,13 @@ class MarkdownTableBlockCellComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        tableCellComponents.removeIf(
-            {
-                predicate => if (predicate.indexList == indexList && predicate.size == size) {
-                    true
-                } else {
-                    false
-                }
-            })
+        tableCellComponents.removeIf({
+            predicate => if (predicate.indexList == indexList && predicate.size == size) {
+                true
+            } else {
+                false
+            }
+        })
     }
 
     func build() {
@@ -173,21 +173,21 @@ class MarkdownTableBlockCellComponent {
         .onAreaChange(
             {
                 old, new =>
-                let newHeight: Float64 = new.height
-                if (maxHeight < newHeight) {
-                    maxHeight = newHeight
-                } else {
-                    maxHeight = minTextHeight
-                }
-                if (old.width == new.width) {
-                    return
-                }
-                let newWidth: Float64 = new.width
-                if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
-                    if (v.index == idxItem && newWidth > v.minWidth) {
-                        cellWidthArrayIndexed[idxItem] = CellWidthArrayIndexedClass(minWidth: newWidth, index: idxItem)
+                    let newHeight: Float64 = new.height
+                    if (maxHeight < newHeight) {
+                        maxHeight = newHeight
+                    } else {
+                        maxHeight = minTextHeight
                     }
-                }
+                    if (old.width == new.width) {
+                        return
+                    }
+                    let newWidth: Float64 = new.width
+                    if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
+                        if (v.index == idxItem && newWidth > v.minWidth) {
+                            cellWidthArrayIndexed[idxItem] = CellWidthArrayIndexedClass(minWidth: newWidth, index: idxItem)
+                        }
+                    }
             }
         )
     }
@@ -241,112 +241,222 @@ class MarkdownTableBlockCellComponent {
                         Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
                     } else if (item.node is CommonmarkLink) {
                         // 链接
-                            if (!markdownConfiguration.markdownTheme.isLinkStyle) {
-                                if(getLinkString(item).isSome()){
-                                    tableLinkComponent(
-                                        item,
-                                        isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
-                                        getLinkString(item)(),
-                                        markdownConfiguration
-                                    )
-                                }else{
-                                    Span("")
-                                }
+                        if (!markdownConfiguration.markdownTheme.isLinkStyle) {
+                            if (getLinkString(item).isSome()) {
+                                tableLinkComponent(
+                                    item,
+                                    isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
+                                    getLinkString(item)(),
+                                    markdownConfiguration
+                                )
                             } else {
-                                if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
-                                    if(getLinkString(item).isSome()){
-                                        if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
-                                            MarkdownLinkRectImageComponent(
-                                                markdownConfiguration: markdownConfiguration,
-                                                strText: getLinkString(item)().trimAscii(),
-                                                strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                                backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
-                                                maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
-                                            )
-                                        }else{
-                                            MarkdownLinkCircleImageComponent(
-                                                markdownConfiguration: markdownConfiguration,
-                                                strText: getLinkString(item)().trimAscii(),
-                                                strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                                backGroupColor: renderTableCellColor(isHeader,markdownConfiguration.markdownTheme, idRow),
-                                                maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
-                                            )
-                                        }
-                                    }else{
-                                        Span("")
-                                    }
-                                } else {
-                                    if(getLinkString(item).isSome()){
-                                        MarkdownLinkRectToolImageComponent(
+                                Span("")
+                            }
+                        } else {
+                            if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+                                if (getLinkString(item).isSome()) {
+                                    if (getLinkString(item)().trimAscii().toRuneArray().size > 1) {
+                                        MarkdownLinkRectImageComponent(
                                             markdownConfiguration: markdownConfiguration,
-                                            strText: getLinkString(item)(),
+                                            strText: getLinkString(item)().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
                                             backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                         )
-                                    }else{
-                                        Span("")
+                                    } else {
+                                        MarkdownLinkCircleImageComponent(
+                                            markdownConfiguration: markdownConfiguration,
+                                            strText: getLinkString(item)().trimAscii(),
+                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
+                                            maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                                        )
                                     }
+                                } else {
+                                    Span("")
+                                }
+                            } else {
+                                if (getLinkString(item).isSome()) {
+                                    MarkdownLinkRectToolImageComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        strText: getLinkString(item)(),
+                                        strUrl: (item.node as CommonmarkLink)().getDestination(),
+                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
+                                        backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
+                                        maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
+                                    )
+                                } else {
+                                    Span("")
                                 }
                             }
+                        }
                     } else if (item.node is ImageHtmlNode) {
                         // HTML图片
-                        MarkdownHtmlImageSpanComponent(
-                            destination: (item.node as ImageHtmlNode)().getDestination(),
-                            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
-                            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-                            componentWidth:componentWidth,
-                            imageCallback: imageCallback
-                        )
-                    } else if (item.node is StyleImage) {
-                        //  图片Style节点
-                        if((item.node as StyleImage)().getDestination().startsWith("./")){
-                            MarkdownImageStyleSpanRawFileComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                destination: (item.node as StyleImage)().getDestination(),
-                                picStyle: (item.node as StyleImage)().styles,
-                                componentWidth:componentWidth,
+                        if (DeviceInfo.sdkApiVersion >= 15) {
+                            MarkdownHtmlImageSpanComponent(
+                                destination: (item.node as ImageHtmlNode)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                                imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                                componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                 imageCallback: imageCallback
                             )
-                        }else{
-                            MarkdownImageStyleSpanComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                destination: (item.node as StyleImage)().getDestination(),
-                                picStyle: (item.node as StyleImage)().styles,
-                                componentWidth:componentWidth,
+                        } else {
+                            MarkdownHtmlImageSpan15Component(
+                                destination: (item.node as ImageHtmlNode)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                                imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                                componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                 imageCallback: imageCallback
                             )
                         }
-                    } else if (item.node is CommonmarkImage) {
-                        // 图片节点
-                        if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
-                            MarkdownImageSpanRawFileComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                destination: (item.node as CommonmarkImage)().getDestination(),
-                                componentWidth:componentWidth,
-                                imageCallback: imageCallback
-                            )
-                        }else{
-                            if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                                MarkdownImageSpanComponent(
-                                    destination: (item.node as CommonmarkImage)().getDestination(),
-                                    componentWidth: componentWidth,
+                    } else if (item.node is StyleImage) {
+                        //  图片Style节点
+                        if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                                MarkdownImgStyleRawFileComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                    picStyle: (item.node as StyleImage)().styles,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
                                     linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                 )
                             } else {
-                                MarkdownImagePixelmapSpanComponent(
-                                    destination: (item.node as CommonmarkImage)().getDestination(),
-                                    componentWidth: componentWidth,
+                                if (DeviceInfo.sdkApiVersion >=15) {
+                                    MarkdownImgStyleUrl15Component(
+                                        markdownConfiguration: markdownConfiguration,
+                                        destination: (item.node as StyleImage)().getDestination(),
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                        picStyle: (item.node as StyleImage)().styles,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                } else {
+                                    MarkdownImgStyleUrl14Component(
+                                        markdownConfiguration: markdownConfiguration,
+                                        destination: (item.node as StyleImage)().getDestination(),
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                        picStyle: (item.node as StyleImage)().styles,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                }
+                            }
+                        } else {
+                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                                MarkdownImgStyleRawFileCallbackComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                    picStyle: (item.node as StyleImage)().styles,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
                                     linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                                    imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
                                 )
+                            } else {
+                                if (DeviceInfo.sdkApiVersion >=15) {
+                                    MarkdownImgStyleUrlCallback15Component(
+                                        markdownConfiguration: markdownConfiguration,
+                                        destination: (item.node as StyleImage)().getDestination(),
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                        picStyle: (item.node as StyleImage)().styles,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                }else{
+                                    MarkdownImgStyleUrlCallback14Component(
+                                        markdownConfiguration: markdownConfiguration,
+                                        destination: (item.node as StyleImage)().getDestination(),
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                        picStyle: (item.node as StyleImage)().styles,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                }
+                            }
+                        }
+                    } else if (item.node is CommonmarkImage) {
+                        // 图片节点
+                        if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                                MarkdownImgRawFileComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as CommonmarkImage)().getDestination(),
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
+                            } else {
+                                if (DeviceInfo.sdkApiVersion >=15) {
+                                    MarkdownImgUrl15Component(
+                                        markdownConfiguration: markdownConfiguration,
+                                        destination: (item.node as CommonmarkImage)().getDestination(),
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                } else {
+                                    MarkdownImgUrl14Component(
+                                        markdownConfiguration: markdownConfiguration,
+                                        destination: (item.node as CommonmarkImage)().getDestination(),
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                }
+                            }
+                        } else {
+                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                                MarkdownImgRawFileCallbackComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as CommonmarkImage)().getDestination(),
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
+                            } else {
+                                if (DeviceInfo.sdkApiVersion >=15) {
+                                    MarkdownImgUrlCallback15Component(
+                                        markdownConfiguration: markdownConfiguration,
+                                        destination: (item.node as CommonmarkImage)().getDestination(),
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                } else {
+                                    MarkdownImgUrlCallback14Component(
+                                        markdownConfiguration: markdownConfiguration,
+                                        destination: (item.node as CommonmarkImage)().getDestination(),
+                                        componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                        imageCallback: imageCallback,
+                                        linkCallback: markdownConfiguration.linkCallback,
+                                        isLink: item.link.isSome(),
+                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    )
+                                }
                             }
                         }
                     } else if (item.node is LatexMathNode) {
@@ -366,15 +476,15 @@ class MarkdownTableBlockCellComponent {
                         Span("")
                     }
                 },
-                keyGeneratorFunc:{
-                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
+                keyGeneratorFunc: {
+                    item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item, "nodeid", 0)}"
                 }
             )
         }
         // 设置行高
         .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
         // 自定义设置组件是否支持文本可复制粘贴
-        .interopCopyOption(true)
+        .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) { true } else { false })
         // 自定义长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件
         .interopOnCopy({
             str => if (markdownConfiguration.textCopyCallback.isSome()) {
@@ -433,20 +543,20 @@ class MarkdownTableBlockCellComponent {
                     } else if (item.node is CommonmarkLink) {
                         // 链接
                         if (!markdownConfiguration.markdownTheme.isLinkStyle) {
-                            if(getLinkString(item).isSome()){
+                            if (getLinkString(item).isSome()) {
                                 tableLinkComponent(
                                     item,
                                     isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                                     getLinkString(item)(),
                                     markdownConfiguration
                                 )
-                            }else{
+                            } else {
                                 Span("")
                             }
                         } else {
                             if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
-                                if(getLinkString(item).isSome()){
-                                    if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
+                                if (getLinkString(item).isSome()) {
+                                    if (getLinkString(item)().trimAscii().toRuneArray().size > 1) {
                                         MarkdownLinkRectImageComponent(
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
@@ -454,20 +564,20 @@ class MarkdownTableBlockCellComponent {
                                             backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                         )
-                                    }else{
+                                    } else {
                                         MarkdownLinkCircleImageComponent(
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: renderTableCellColor(isHeader,markdownConfiguration.markdownTheme, idRow),
+                                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                         )
                                     }
-                                }else{
+                                } else {
                                     Span("")
                                 }
                             } else {
-                                if(getLinkString(item).isSome()){
+                                if (getLinkString(item).isSome()) {
                                     MarkdownLinkRectToolImageComponent(
                                         markdownConfiguration: markdownConfiguration,
                                         strText: getLinkString(item)(),
@@ -476,67 +586,127 @@ class MarkdownTableBlockCellComponent {
                                         backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                         maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                     )
-                                }else{
+                                } else {
                                     Span("")
                                 }
                             }
                         }
                     } else if (item.node is ImageHtmlNode) {
                         // HTML图片
-                        MarkdownHtmlImageSpanComponent(
-                            destination: (item.node as ImageHtmlNode)().getDestination(),
-                            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
-                            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-                            componentWidth:componentWidth,
-                            imageCallback: imageCallback
-                        )
-                    } else if (item.node is StyleImage) {
-                        //  图片Style节点
-                        if((item.node as StyleImage)().getDestination().startsWith("./")){
-                            MarkdownImageStyleSpanRawFileComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                destination: (item.node as StyleImage)().getDestination(),
-                                picStyle: (item.node as StyleImage)().styles,
-                                componentWidth:componentWidth,
+                        if (DeviceInfo.sdkApiVersion >= 15) {
+                            MarkdownHtmlImageSpanComponent(
+                                destination: (item.node as ImageHtmlNode)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                                imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                                componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                 imageCallback: imageCallback
                             )
-                        }else{
-                            MarkdownImageStyleSpanComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                destination: (item.node as StyleImage)().getDestination(),
-                                picStyle: (item.node as StyleImage)().styles,
-                                componentWidth:componentWidth,
+                        } else {
+                            MarkdownHtmlImageSpan15Component(
+                                destination: (item.node as ImageHtmlNode)().getDestination(),
+                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+                                imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+                                componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
                                 imageCallback: imageCallback
                             )
                         }
-                    } else if (item.node is CommonmarkImage) {
-                        // 图片节点
-                        if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
-                            MarkdownImageSpanRawFileComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                destination: (item.node as CommonmarkImage)().getDestination(),
-                                componentWidth:componentWidth,
-                                imageCallback: imageCallback
-                            )
-                        }else{
-                            if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                                MarkdownImageSpanComponent(
-                                    destination: (item.node as CommonmarkImage)().getDestination(),
-                                    componentWidth: componentWidth,
+                    } else if (item.node is StyleImage) {
+                        //  图片Style节点
+                        if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                                MarkdownImgStyleRawFileComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                    picStyle: (item.node as StyleImage)().styles,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
                                     linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                 )
                             } else {
-                                MarkdownImagePixelmapSpanComponent(
-                                    destination: (item.node as CommonmarkImage)().getDestination(),
-                                    componentWidth: componentWidth,
+                                MarkdownImgStyleUrl15Component(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                    picStyle: (item.node as StyleImage)().styles,
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
                                     linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
-                                    imageCallbackCallback : markdownConfiguration.imageCallbackCallback()
+                                )
+                            }
+                        } else {
+                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                                MarkdownImgStyleRawFileCallbackComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                    picStyle: (item.node as StyleImage)().styles,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
+                            } else {
+                                MarkdownImgStyleUrlCallback15Component(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as StyleImage)().getDestination(),
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                    picStyle: (item.node as StyleImage)().styles,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
+                            }
+                        }
+                    } else if (item.node is CommonmarkImage) {
+                        // 图片节点
+                        if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                                MarkdownImgRawFileComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as CommonmarkImage)().getDestination(),
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
+                            } else {
+                                MarkdownImgUrl15Component(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as CommonmarkImage)().getDestination(),
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
+                            }
+                        } else {
+                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                                MarkdownImgRawFileCallbackComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as CommonmarkImage)().getDestination(),
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                )
+                            } else {
+                                MarkdownImgUrlCallback15Component(
+                                    markdownConfiguration: markdownConfiguration,
+                                    destination: (item.node as CommonmarkImage)().getDestination(),
+                                    componentWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth,
+                                    imageCallback: imageCallback,
+                                    linkCallback: markdownConfiguration.linkCallback,
+                                    isLink: item.link.isSome(),
+                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                                 )
                             }
                         }
@@ -557,21 +727,20 @@ class MarkdownTableBlockCellComponent {
                         Span("")
                     }
                 },
-                keyGeneratorFunc:{
-                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
+                keyGeneratorFunc: {
+                    item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item, "nodeid", 0)}"
                 }
             )
         }
         // 设置行高
         .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
         // 支持设备内复制
-        .copyOption(CopyOptions.LocalDevice)
+        .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) { CopyOptions.LocalDevice } else { CopyOptions.None })
         // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
         .onCopy({
-            str =>
-                if(markdownConfiguration.textCopyCallback.isSome()){
-                   markdownConfiguration.textCopyCallback()(str)
-                }
+            str => if (markdownConfiguration.textCopyCallback.isSome()) {
+                markdownConfiguration.textCopyCallback()(str)
+            }
         })
     }
 
@@ -580,7 +749,7 @@ class MarkdownTableBlockCellComponent {
      */
     @Builder
     func tableBlockCellComponent() {
-        if(DeviceInfo.sdkApiVersion >=19){
+        if (DeviceInfo.sdkApiVersion >= 19) {
             tableBlockCellComponent19()
         } else {
             tableBlockCellComponent18()
@@ -599,32 +768,32 @@ class MarkdownTableBlockCellComponent {
         if (refreshNodeViewSize > nodeViewListSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
-            for(i in 0..nodeViewListSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+            for (i in 0..nodeViewListSize) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
             // 循环添加新数据
-            for(i in nodeViewListSize..refreshNodeViewSize){
+            for (i in nodeViewListSize..refreshNodeViewSize) {
                 nodeViewList.append(refreshNodeViews[i])
             }
         } else if (refreshNodeViewSize == nodeViewListSize) {
             // 新数据等于页面数据
-            for(i in 0..nodeViewListSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+            for (i in 0..nodeViewListSize) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
-            for(i in 0..refreshNodeViewSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+            for (i in 0..refreshNodeViewSize) {
+                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
             // 循环删除多余的旧数据
-            for(i in nodeViewListSize - 1..=refreshNodeViewSize : -1){
+            for (i in nodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 nodeViewList.remove(i)
             }
         }

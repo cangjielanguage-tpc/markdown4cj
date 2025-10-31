@@ -12,7 +12,7 @@ import ohos.state_macro_manage.*
  * HTML图片
  */
 @Component
-public class MarkdownHtmlImageSpanComponent {
+public class MarkdownHtmlImageSpan15Component {
     /**
      * 图片内容
      */
@@ -80,7 +80,7 @@ public class MarkdownHtmlImageSpanComponent {
                 evt => imageOnClick(destination, imageCallback)
             }
             // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-            .onComplete {
+            .interopOnComplete {
                 imageLoadResult =>
                     let aspectRatio: Float64 = imageLoadResult.height / imageLoadResult.width
                     let widthNew = if (componentWidth > imageLoadResult.width) {

@@ -93,6 +93,11 @@ public class MarkdownConfiguration {
      */
     protected var footnoteCallback: ?(?Float64) -> Unit = None
 
+    /**
+     * 全部文本
+     */
+    protected var nodeString: ?(NodeViewStringBuilder) -> Unit = None
+
     protected init(builder: MarkdownConfigurationBuilder) {
         this.markdownTheme = builder.markdownTheme
         this.textCopyCallback = builder.textCopyCallback
@@ -108,6 +113,7 @@ public class MarkdownConfiguration {
         this.latexStrCallback = builder.latexStrCallback
         this.tocIndexCallback = builder.tocIndexCallback
         this.footnoteCallback = builder.footnoteCallback
+        this.nodeString = builder.nodeString
     }
 
     /**
@@ -224,6 +230,11 @@ public class MarkdownConfigurationBuilder {
      */
     protected var footnoteCallback: ?(?Float64) -> Unit = None
 
+    /**
+     * 全部文本
+     */
+    protected var nodeString: ?(NodeViewStringBuilder) -> Unit = None
+
     init() {
     }
 
@@ -242,6 +253,7 @@ public class MarkdownConfigurationBuilder {
         this.latexStrCallback = configuration.latexStrCallback
         this.tocIndexCallback = configuration.tocIndexCallback
         this.footnoteCallback = configuration.footnoteCallback
+        this.nodeString = configuration.nodeString
     }
 
     /**
@@ -395,6 +407,17 @@ public class MarkdownConfigurationBuilder {
      */
     public func setFootnoteCallback(footnoteCallback: (?Float64) -> Unit): MarkdownConfigurationBuilder {
         this.footnoteCallback = footnoteCallback
+        return this
+    }
+
+    /**
+     * 设置全部文本
+     *
+     * @param nodeString 全部文本
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setNodeString(nodeString: (NodeViewStringBuilder) -> Unit): MarkdownConfigurationBuilder {
+        this.nodeString = nodeString
         return this
     }
 

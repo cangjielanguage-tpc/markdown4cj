@@ -51,6 +51,7 @@ public class MarkdownListComponent {
     /**
      * 控件宽度 - 单位px
      */
+    @Prop
     var componentWidth: Float64
 
     /**
