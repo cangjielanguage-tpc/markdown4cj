@@ -234,7 +234,11 @@ public class MarkdownImgStyleUrl14Component {
                     // 设置外边距属性
                     .margin(top: imageMarginTop, bottom: imageMarginBottom)
                     // 自定义图片圆角
-                    .interopBorderRadius(imageBorderRadius)
+                    .interopBorderRadius(if (radius.isSome()) {
+                        length2Float(radius())
+                    } else {
+                        imageBorderRadius
+                    })
                     // 设置组件自身的宽度
                     .width(if (imageFixedRatioWidth.isSome()) {
                         (componentImageWidth * imageFixedRatioWidth()).px

@@ -248,26 +248,28 @@ class MarkdownParagraphComponent {
                     } else if (item.node is ImageHtmlNode) {
                         // HTML图片
                         if (DeviceInfo.sdkApiVersion >= 15) {
-                            MarkdownHtmlImageSpanComponent(
+                            MarkdownImgHtml15Component(
+                                markdownConfiguration: markdownConfiguration,
                                 destination: (item.node as ImageHtmlNode)().getDestination(),
-                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                componentWidth: componentWidth,
                                 imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
                                 imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-                                componentWidth: componentWidth,
-                                imageMarginTop: imageMarginTop,
-                                imageMarginBottom: imageMarginBottom,
-                                imageCallback: imageCallback
+                                imageCallback: imageCallback,
+                                linkCallback: markdownConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                             )
                         } else {
-                            MarkdownHtmlImageSpan15Component(
+                            MarkdownImgHtml14Component(
+                                markdownConfiguration: markdownConfiguration,
                                 destination: (item.node as ImageHtmlNode)().getDestination(),
-                                imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                                componentWidth: componentWidth,
                                 imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
                                 imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-                                componentWidth: componentWidth,
-                                imageMarginTop: imageMarginTop,
-                                imageMarginBottom: imageMarginBottom,
-                                imageCallback: imageCallback
+                                imageCallback: imageCallback,
+                                linkCallback: markdownConfiguration.linkCallback,
+                                isLink: item.link.isSome(),
+                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                             )
                         }
                     } else if (item.node is StyleImage) {
@@ -561,15 +563,16 @@ class MarkdownParagraphComponent {
                         Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
                     } else if (item.node is ImageHtmlNode) {
                         // HTML图片
-                        MarkdownHtmlImageSpanComponent(
+                        MarkdownImgHtml15Component(
+                            markdownConfiguration: markdownConfiguration,
                             destination: (item.node as ImageHtmlNode)().getDestination(),
-                            imagePlaceholder: markdownConfiguration.markdownTheme.imagePlaceholder,
+                            componentWidth: componentWidth,
                             imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
                             imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-                            componentWidth: componentWidth,
-                            imageMarginTop: imageMarginTop,
-                            imageMarginBottom: imageMarginBottom,
-                            imageCallback: imageCallback
+                            imageCallback: imageCallback,
+                            linkCallback: markdownConfiguration.linkCallback,
+                            isLink: item.link.isSome(),
+                            linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
                         )
                     } else if (item.node is StyleImage) {
                         // 图片Style节点
