@@ -8,7 +8,9 @@ public class TocPlugin <: AbstractMarkdownPlugin {
         return TocPlugin()
     }
     public func configureParser(builder: ParserBuilder): Unit {
-        builder.postProcessor(TocPostProcessor())
+        let needReplace = ArrayList<TocBlock>()
+        builder.customBlockParserFactory(TocBlockParserFactory(needReplace))
+        builder.postProcessor(TocPostProcessor(needReplace))
     }
 
     public func configureVisitor(builder: MarkdownVisitorBuilder): Unit {
@@ -26,55 +28,17 @@ public class TocPlugin <: AbstractMarkdownPlugin {
 }
 
 class TocPostProcessor <: PostProcessor {
-    let parser = Parser.builder().build()
+    TocPostProcessor(let needReplace: ArrayList<TocBlock>) {}
     public func process(node: Node): Node {
-        node.accept(TocVisitor())
+        let tocNode = buildToc(node)
+        if (let Some(v) <- needReplace.get(0)) {
+            v.replaceWith(tocNode)
+        }
+        for (i in 1..needReplace.size) {
+            needReplace[i].replaceWith(deepClone(tocNode))
+        }
+        needReplace.clear()
         return node
-    }
-}
-
-class TocVisitor <: AbstractVisitor {
-    let needReplace = ArrayList<Paragraph>()
-
-    public func visit(text: Text): Unit {
-        let p = if (let Some(v: Paragraph) <- text.getParent()) {
-            v
-        } else {
-            return
-        }
-        let str = text.getLiteral().trimAscii().toAsciiLower()
-        if (str == "[toc]" || str.startsWith("[toc] ")) {
-            if (text.getPrevious().isSome()) {
-                let prePart = Paragraph()
-                var n: ?Node = text.getPrevious()
-                while (let Some(v) <- n) {
-                    n = v.getPrevious()
-                    prePart.prependChild(v)
-                }
-                p.insertBefore(prePart)
-            }
-
-            if (text.getNext().isSome()) {
-                let nextPart = Paragraph()
-                var n: ?Node = text.getNext()
-                while (let Some(v) <- n) {
-                    n = v.getNext()
-                    nextPart.appendChild(v)
-                }
-                p.insertAfter(nextPart)
-            }
-
-            needReplace.add(p)
-        }
-    }
-
-    public func visit(doc: Document): Unit {
-        visitChildren(doc)
-        let tocNode = buildToc(doc)
-        for (p in needReplace) {
-            p.insertAfter(deepClone(tocNode))
-            p.unlink()
-        }
     }
 
     func buildToc(root: Node): Node {
@@ -132,9 +96,9 @@ class HeadTextCollector <: AbstractVisitor {
 
 public class HeadLink <: Link {
     static let typeInfo = "HeadLink"
-    public let headIndex: Int
+    public var headIndex: Int
     init(headIndex: Int, dest: String, title: ?String) {
-        super("#${dest}", title)
+        super(dest, title)
         this.headIndex = headIndex
     }
 
@@ -147,15 +111,25 @@ public class HeadLink <: Link {
     }
 }
 
-class HeadTree <: CustomNode {
+class HeadTree <: CustomBlock {
     let item: ListItem = ListItem()
     let item_p = Paragraph()
-    let item_list = OrderedList(1, r'.')
+    var item_list_v: ?OrderedList = None
+    prop item_list: OrderedList {
+        get() {
+            this.item_list_v ?? {
+                =>
+                let v = OrderedList(1, r'.')
+                this.item_list_v = v
+                this.item.appendChild(v)
+                v
+            }()
+        }
+    }
     HeadTree(let head: Heading, let text: String, let headIndex: Int) {
-        let link = HeadLink(headIndex, text, text)
+        let link = HeadLink(headIndex, "#${text}", text)
         item_p.appendChild(link)
         item.appendChild(item_p)
-        item.appendChild(item_list)
     }
     func appendChildTree(n: HeadTree): Unit {
         item_list.appendChild(n.item)
@@ -182,4 +156,41 @@ func deepClone(node: Node): Node {
         clone.appendChild(deepClone(n))
     }
     return clone
+}
+
+class TocBlockParserFactory <: BlockParserFactory {
+    TocBlockParserFactory(let needReplace: ArrayList<TocBlock>) {}
+    public func tryStart(state: ParserState, matchedBlockParser: MatchedBlockParser): Option<BlockStart> {
+        var indent: Int64 = state.getIndent()
+        if (state.getIndent() >= Parsing.CODE_BLOCK_INDENT) {
+            return BlockStart.none()
+        }
+        var line = state.getLine()
+        let index = state.getIndex()
+        line = line[index..]
+        if (line.replace(' ', '').toAsciiUpper() == "[TOC]") {
+            return BlockStart.of4Cj(TocBlockParser(needReplace))
+        }
+        return BlockStart.none()
+    }
+}
+
+class TocBlockParser <: AbstractBlockParser {
+    TocBlockParser(let needReplace: ArrayList<TocBlock>) {}
+    let block = TocBlock()
+    public func getBlock(): Block {
+        return block
+    }
+    public func tryContinue(parserState: ParserState): Option<BlockContinue> {
+        return None
+    }
+    public func closeBlock(): Unit {
+        return needReplace.add(block)
+    }
+}
+
+class TocBlock <: CustomBlock {
+    public func getNodeType(): String {
+        return "TocBlock"
+    }
 }
