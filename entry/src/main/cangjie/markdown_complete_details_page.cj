@@ -214,7 +214,7 @@ class MarkdownCompleteDetailsPage {
         // 13、图片Banner
 
         // 14、图片
-        markdownThemeBuilder.setImageIsFixedAspectRatio(true)
+//        markdownThemeBuilder.setImageIsFixedAspectRatio(true)
         markdownThemeBuilder.setImageMarginTop(10.0)
         markdownThemeBuilder.setImageMarginBottom(10.0)
         markdownThemeBuilder.setImageResource(@r(app.media.place_holder))

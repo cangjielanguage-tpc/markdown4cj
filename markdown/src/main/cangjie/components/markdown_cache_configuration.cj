@@ -31,6 +31,12 @@ public class MarkdownCacheConfiguration {
 
     let codeTextComponents: ArrayList<MarkdownCodeTextComponent> = ArrayList<MarkdownCodeTextComponent>()
 
+    let descListComponent: ArrayList<MarkdownDescListComponent> = ArrayList<MarkdownDescListComponent>()
+
+    let descTermComponent: ArrayList<MarkdownDescTermComponent> = ArrayList<MarkdownDescTermComponent>()
+
+    let descDefComponent: ArrayList<MarkdownDescDefComponent> = ArrayList<MarkdownDescDefComponent>()
+
     func clearAll(): Unit {
         listComponents.clear()
         listItemComponents.clear()
@@ -44,5 +50,8 @@ public class MarkdownCacheConfiguration {
         fencedCodeComponents.clear()
         codeComponents.clear()
         codeTextComponents.clear()
+        descListComponent.clear()
+        descTermComponent.clear()
+        descDefComponent.clear()
     }
 }

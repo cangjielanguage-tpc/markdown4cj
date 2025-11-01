@@ -12,6 +12,8 @@ import markdown.components.*
 import std.sync.*
 import std.time.*
 import ohos.hilog.*
+import markdown.core.*
+import markdown.plugin.*
 
 /**
  * 增量加载详情页面
@@ -110,7 +112,8 @@ class MarkdownIncrementDetailsPage {
                 Column {
                     MarkdownComponent(
                         output: output,
-                        markdownConfiguration: setConfig()
+                        markdownConfiguration: setConfig(),
+                        markdownPlugin: setPlugin()
                     )
                 }
             }
@@ -121,6 +124,44 @@ class MarkdownIncrementDetailsPage {
             // 设置滚动方法
             .scrollable(ScrollDirection.Vertical)
         }
+    }
+
+    /**
+     * 设置MarkdownConfiguration
+     *
+     * @return MarkdownConfiguration
+     */
+    func setPlugin(): Markdown {
+        var markdownPlugin: Markdown = Markdown
+            .builder()
+            // HTML插件
+            .usePlugin(HtmlPlugin.create())
+            // 定义列表
+            .usePlugin(DescListPlugin.create())
+            // 任务列表插件
+            .usePlugin(TaskListPlugin.create())
+            // 删除线插件
+            .usePlugin(StrikethroughPlugin.create())
+            // 表格插件
+            .usePlugin(TablePlugin.create())
+            // 数学公式插件
+            .usePlugin(LatexMathPluginV2.create())
+            // ImageStyle插件
+            .usePlugin(ImageStylePlugin.create())
+            // 音频插件
+            .usePlugin(BlockAudioPlugin.create())
+            // 视频插件
+            .usePlugin(BlockVideoPlugin.create())
+            // 自动链接插件
+            .usePlugin(LinkViewPlugin.create())
+            // 脚注插件
+            .usePlugin(FootnotePlugin.create())
+            // 图片列表插件
+            .usePlugin(ImageCollectPlugin.create())
+            // 唯一ID标识插件
+            .usePlugin(BlockIdPlugin.create())
+            .build()
+        return markdownPlugin
     }
 
     /**
@@ -250,7 +291,7 @@ class MarkdownIncrementDetailsPage {
         // 13、图片Banner
 
         // 14、图片
-        markdownThemeBuilder.setImageIsFixedAspectRatio(true)
+//        markdownThemeBuilder.setImageIsFixedAspectRatio(true)
 //        markdownThemeBuilder.setImagePadding(20) //  设置图片宽度边距
 
         // 15、表格

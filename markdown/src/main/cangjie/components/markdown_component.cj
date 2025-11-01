@@ -305,6 +305,22 @@ public class MarkdownComponent {
                                     marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins + markdownConfiguration.markdownTheme.thematicBreakBottomMargin
                                 )
                             }
+                        } else if (item.node is DescList) {
+                            // 定义列表
+                            ListItem() {
+                                MarkdownDescListComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    nodeViews: item.children,
+                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                    fontCallback: fontCallback,
+                                    tocListOnClick: tocListOnClick,
+                                    imageCallback: imageCallback,
+                                    componentWidth: componentWidth,
+                                    indexList: indexAdd(indexList, idx),
+                                    markdownCacheConfiguration: markdownCacheConfiguration
+                                )
+                            }
                         } else if (item.node is BlockAudio) {
                             // 音频
                             ListItem() {
@@ -528,6 +544,13 @@ public class MarkdownComponent {
                             } else if ((nodeViews[index].node is BlockQuote && nodeViewDataSource.getData(index).node is BlockQuote)) {
                                 // 块引用
                                 for (data in markdownCacheConfiguration.quoteComponents) {
+                                    if (isListItem(indexList, data.indexList, index)) {
+                                        data.refreshData(nodeViews[index].children)
+                                    }
+                                }
+                            } else if ((nodeViews[index].node is DescList && nodeViewDataSource.getData(index).node is DescList)) {
+                                // 定义列表
+                                for (data in markdownCacheConfiguration.descListComponent) {
                                     if (isListItem(indexList, data.indexList, index)) {
                                         data.refreshData(nodeViews[index].children)
                                     }
