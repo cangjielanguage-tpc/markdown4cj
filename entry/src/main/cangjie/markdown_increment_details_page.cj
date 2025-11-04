@@ -156,6 +156,8 @@ class MarkdownIncrementDetailsPage {
             .usePlugin(LinkViewPlugin.create())
             // 脚注插件
             .usePlugin(FootnotePlugin.create())
+            // 标题编号
+            .usePlugin(IdHeadingPlugin.create())
             // 图片列表插件
             .usePlugin(ImageCollectPlugin.create())
             // 唯一ID标识插件

@@ -67,8 +67,12 @@ func spanText(nodeView: NodeView): String {
         // 内联代码
         return " ${(nodeView.node as Code)().getLiteral()} "
     } else if (nodeView.node is HeadLink) {
-        // TOC列表，title不可能为None
-        return (nodeView.node as HeadLink)().getTitle()()
+        // toc链接和标题id链接
+        return if(let Some(v) <- getLinkString(nodeView)){
+            v
+        } else {
+            ""
+        }
     } else if (nodeView.node is Footnote) {
         // 脚注
         return (nodeView.node as Footnote)().noteid

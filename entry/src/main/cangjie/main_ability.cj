@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import ohos.hilog.Hilog
 
 public var globalAbilityContext: ?AbilityContext = None
 
@@ -29,6 +30,8 @@ class MainAbility <: Ability {
         AppLog.info("MainAbility onWindowStageCreate.")
         // 1.获取应用主窗口。
         let windowClass = windowStage.getMainWindow()
+        let top = windowClass.getWindowAvoidArea(AvoidAreaType.TYPE_SYSTEM).topRect.height
+        Hilog.error(1,"1","----------------top:${top}")
         windowClass.setWindowLayoutFullScreen(true)
         windowStage.loadContent("IndexPage")
     }

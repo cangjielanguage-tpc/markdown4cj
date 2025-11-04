@@ -113,6 +113,8 @@ class MarkdownCompleteDetailsPage {
         MarkdownConfigurationBuilder.setFootnoteCallback(footnoteCallback)
         // 设置视频的点击事件
         MarkdownConfigurationBuilder.setNodeString(nodeStringCallback)
+        // toc
+        MarkdownConfigurationBuilder.setTocIndexCallback(setTocIndexCallback)
         return MarkdownConfigurationBuilder.build()
     }
 
@@ -263,6 +265,8 @@ class MarkdownCompleteDetailsPage {
             .usePlugin(BlockVideoPlugin.create())
             // 自动链接插件
             .usePlugin(LinkViewPlugin.create())
+            // 标题编号
+            .usePlugin(IdHeadingPlugin.create())
             // 脚注插件
             .usePlugin(FootnotePlugin.create())
             // 图片列表插件
@@ -377,6 +381,16 @@ class MarkdownCompleteDetailsPage {
      */
     func footnoteCallback(f: ?Float64): Unit {
         scroller.scrollBy(xOffset: 0.0, yOffset: f.getOrThrow())
+        Hilog.error(1, "2", "------------------------footnoteCallback:f:${f}")
+    }
+
+    /**
+     * TOC跳转指定位置
+     *
+     * @param f 指定位置
+     */
+    func setTocIndexCallback(f: ?Float64): Unit {
+        scroller.scrollBy(xOffset: 0.0, yOffset: f.getOrThrow() - 80.0)
         Hilog.error(1, "2", "------------------------footnoteCallback:f:${f}")
     }
 }
