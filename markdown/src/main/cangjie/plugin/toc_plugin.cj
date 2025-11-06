@@ -17,7 +17,9 @@ public class TocPlugin <: AbstractMarkdownPlugin {
         builder.on(
             HeadLink.typeInfo,
             {
-                visitor, node => buildView(node, true)
+                visitor, node =>
+                buildView(node, true)
+                visitor.visitChildren(node)
             }
         )
     }
