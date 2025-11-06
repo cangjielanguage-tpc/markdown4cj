@@ -606,6 +606,8 @@ export struct CJMarkdown {
       cjMarkdownPlugin.setIsImageSlidePlugin(this.plugin.isImageSlidePlugin)
       cjMarkdownPlugin.setIsImageTextMixPlugin(this.plugin.isImageTextMixPlugin)
       cjMarkdownPlugin.setIsImageCollectPlugin(this.plugin.isImageCollectPlugin)
+      cjMarkdownPlugin.setIsDescListPlugin(this.plugin.isDescListPlugin)
+      cjMarkdownPlugin.setIsHeadIDPlugin(this.plugin.isHeadIDPlugin)
     }
     return cjMarkdownPlugin
   }
@@ -2956,6 +2958,14 @@ export class MarkdownPlugin {
    * 是否加载图片视频列表url集合列表解析插件
    */
   isImageCollectPlugin: boolean = false
+  /**
+   * 是否加载定义列表解析插件
+   */
+  isDescListPlugin: boolean = false
+  /**
+   * 是否加载标题ID解析插件
+   */
+  isHeadIDPlugin: boolean = false
 
   /**
    * 设置音频插件
@@ -3099,6 +3109,24 @@ export class MarkdownPlugin {
    */
   setIsImageCollectPlugin(isImageCollectPlugin: boolean): void {
     this.isImageCollectPlugin = isImageCollectPlugin
+  }
+
+  /**
+   * 设置是否加载定义列表解析插件
+   *
+   * @param isDescListPlugin 是否加载定义列表解析插件 - true：设置加载定义列表解析插件；false：不设置加载定义列表解析插件。默认false
+   */
+  setIsDescListPlugin(isDescListPlugin: boolean): void {
+    this.isDescListPlugin = isDescListPlugin
+  }
+
+  /**
+   * 设置是否加载标题ID解析插件
+   *
+   * @param isHeadIDPlugin 是否加载标题ID解析插件 - true：设置加载标题ID解析插件；false：不设置加载标题ID解析插件。默认false
+   */
+  setIsHeadIDPlugin(isHeadIDPlugin: boolean): void {
+    this.isHeadIDPlugin = isHeadIDPlugin
   }
 }
 

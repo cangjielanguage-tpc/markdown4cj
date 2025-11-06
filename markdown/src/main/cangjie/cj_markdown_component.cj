@@ -100,6 +100,12 @@ class CJMarkdownComponent {
             if(v.isImageTextMixPlugin){
                 markdownBuilder.usePlugin(ImageTextMixPlugin.create())
             }
+            if(v.isDescListPlugin){
+                markdownBuilder.usePlugin(DescListPlugin.create())
+            }
+            if(v.isHeadIDPlugin){
+                markdownBuilder.usePlugin(IdHeadingPlugin.create())
+            }
             if(v.isTocPlugin){
                 markdownBuilder.usePlugin(TocPlugin.create())
             }

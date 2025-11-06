@@ -171,7 +171,23 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "23、综合",
+              "23、定义列表",
+              0xFFFF0000,
+              "pages/DescListPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "24、标题ID",
+              0xFFFF0000,
+              "pages/HeadIDPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "25、综合",
               0xFFFF0000,
               "pages/AllPage"
             )

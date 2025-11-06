@@ -32,6 +32,10 @@ export declare class CJMarkdownPlugin {
   setIsImageTextMixPlugin(isImageTextMixPlugin: boolean): void
 
   setIsImageCollectPlugin(isImageCollectPlugin: boolean): void
+
+  setIsDescListPlugin(isDescListPlugin: boolean): void
+
+  setIsHeadIDPlugin(isHeadIDPlugin: boolean): void
 }
 
 export declare class CJMarkdownTheme {

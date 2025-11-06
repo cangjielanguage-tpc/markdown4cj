@@ -35,6 +35,10 @@
     "pages/VideoDetailsPage",
     "pages/ImagePage",
     "pages/ImageDetailsPage",
+    "pages/DescListPage",
+    "pages/DescListDetailsPage",
+    "pages/HeadIDPage",
+    "pages/HeadIDDetailsPage",
     "pages/AllPage",
     "pages/AllDetailsPage"
   ]

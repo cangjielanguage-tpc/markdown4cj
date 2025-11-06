@@ -8,7 +8,7 @@ import { router } from '@kit.ArkUI'
 
 @Entry
 @Component
-struct AllPage {
+struct HeadIDPage {
   /**
    * 滑动控制器
    */
@@ -20,7 +20,7 @@ struct AllPage {
   /**
    * rawfile路径
    */
-  rawFilePath: string = "025_综合"
+  rawFilePath: string = "024_标题ID"
   /**
    * rawfile标题文件夹列表
    */
@@ -36,28 +36,10 @@ struct AllPage {
   @State
   isFull: boolean = true
   /**
-   * 模块间上下间距列表
-   */
-  blockTopAndBottomMarginsList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 代码深浅色模式列表
-   */
-  isDarkList: Array<boolean> = [true, false]
-  /**
-   * 代码深浅色模式
-   */
-  @State
-  isDark: boolean = true
-  /**
    * 配置数据内容
    */
   @State
-  allData: AllData = new AllData()
+  headIDData: HeadIDData = new HeadIDData()
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -66,7 +48,7 @@ struct AllPage {
   build() {
     Column() {
       titleComponent(
-        "综合配置页面",
+        "标题ID配置页面",
         0xFF317AFF,
         true,
         this.safeTop
@@ -98,69 +80,7 @@ struct AllPage {
                   .fontSize(14)
                   .onClick(() => {
                     this.isFull = stringToBoolean(item)
-                    this.allData.isFull = this.isFull
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`模块间上下间距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockTopAndBottomMargins}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockTopAndBottomMarginsList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockTopAndBottomMargins = item
-                    this.allData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`代码深浅色模式 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isDark}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isDarkList, (item: boolean, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isDark = item
-                    this.allData.isDark = this.isDark
+                    this.headIDData.isFull = this.isFull
                   })
               })
             }
@@ -180,8 +100,8 @@ struct AllPage {
                   .fontSize(16)// 字体大小
                   .onClick(() => {
                     // 点击动作触发该方法调用
-                    this.allData.pagePath = `${this.rawFilePath}/${item}`
-                    router.pushUrl({ url: "pages/AllDetailsPage", params: this.allData })
+                    this.headIDData.pagePath = `${this.rawFilePath}/${item}`
+                    router.pushUrl({ url: "pages/HeadIDDetailsPage", params: this.headIDData })
                   })
               }
             })
@@ -197,22 +117,12 @@ struct AllPage {
   }
 }
 
-export class AllData {
+export class HeadIDData {
   _isFull: boolean = true
-  _blockTopAndBottomMargins: number = 8
-  _isDark: boolean = true
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
     this._isFull = value
-  }
-
-  public set blockTopAndBottomMargins(value: number) {
-    this._blockTopAndBottomMargins = value
-  }
-
-  public set isDark(value: boolean) {
-    this._isDark = value
   }
 
   public set pagePath(value: string) {

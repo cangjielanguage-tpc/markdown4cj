@@ -94,6 +94,16 @@ public class CJMarkdownPlugin {
      */
     var isImageCollectPlugin: Bool = false
 
+    /**
+     * 是否加载定义列表解析插件
+     */
+    var isDescListPlugin: Bool = false
+
+    /**
+     * 是否加载标题ID解析插件
+     */
+    var isHeadIDPlugin: Bool = false
+
     public init() {}
 
     /**
@@ -238,5 +248,23 @@ public class CJMarkdownPlugin {
      */
     public func setIsImageCollectPlugin(isImageCollectPlugin: Bool): Unit {
         this.isImageCollectPlugin = isImageCollectPlugin
+    }
+
+    /**
+     * 设置是否加载定义列表解析插件
+     *
+     * @param isDescListPlugin
+     */
+    public func setIsDescListPlugin(isDescListPlugin: Bool): Unit {
+        this.isDescListPlugin = isDescListPlugin
+    }
+
+    /**
+     * 设置是否加载标题ID解析插件
+     *
+     * @param isHeadIDPlugin
+     */
+    public func setIsHeadIDPlugin(isHeadIDPlugin: Bool): Unit {
+        this.isHeadIDPlugin = isHeadIDPlugin
     }
 }
