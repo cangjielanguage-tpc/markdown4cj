@@ -130,6 +130,8 @@ class HeadTree <: CustomBlock {
     }
     HeadTree(let head: Heading, let text: String, let headIndex: Int) {
         let link = HeadLink(headIndex, "#${text}", text)
+        let textNode = Text(text)
+        link.appendChild(textNode)
         item_p.appendChild(link)
         item.appendChild(item_p)
     }
@@ -152,6 +154,7 @@ func deepClone(node: Node): Node {
         case v: ListItem => ListItem()
         case v: Paragraph => Paragraph()
         case v: HeadLink => HeadLink(v.headIndex, v.getDestination(), v.getTitle())
+        case v: Text => Text(v.getLiteral())
         case _ => throw Exception("unsupport")
     }
     for (n in node.iterateChildren()) {
