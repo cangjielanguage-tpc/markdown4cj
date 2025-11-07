@@ -30,11 +30,6 @@ public class CJMarkdownConfig {
     var imageCallback: ?(String, ArrayList<String>) -> Unit = None
 
     /**
-     * 图片替换事件
-     */
-    var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
-
-    /**
      * 音频的点击事件
      */
     var audioCallback: ?(String) -> Unit = None
@@ -112,23 +107,6 @@ public class CJMarkdownConfig {
     public func setImageCallback(cb: (String, JSArrayEx<String>) -> Unit): Unit {
         this.imageCallback = {
             url, list => cb(url, JSArrayEx<String>(list.toArray()))
-        }
-    }
-
-    /**
-     * 设置图片预处理事件
-     *
-     * @param cb 图片预处理回调接口 (图片url -> 处理后的图片数据)
-     */
-    public func setImageCallbackCallback(cb: (String) -> Option<JSArrayEx<UInt8>>): Unit {
-        this.imageCallbackCallback = {
-            url =>
-                let a = cb(url)
-                if(a.isSome()){
-                    a.getOrThrow().toArray()
-                }else{
-                    Option<Array<UInt8>>.None
-                }
         }
     }
 

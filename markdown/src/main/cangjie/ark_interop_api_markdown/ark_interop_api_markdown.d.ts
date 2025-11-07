@@ -351,8 +351,6 @@ export declare class CJMarkdownConfig {
 
   setImageCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void
 
-  setImageCallbackCallback(cb: (funcArg0: string) => ArrayBuffer | undefined): void
-
   setAudioCallback(cb: (funcArg0: string) => void): void
 
   setVideoCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void
@@ -382,4 +380,6 @@ export declare interface CustomLib {
   setGlobalContext(context: Context): void
 
   getLoadCJPage(mdStr: string, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin): (input: string) => void
+
+  registerImgPreprocessCallback(cb: (url: string) => Promise<ArrayBuffer|undefined>): void
 }

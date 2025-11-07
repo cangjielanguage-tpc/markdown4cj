@@ -66,7 +66,7 @@ export struct CJMarkdown {
         cjMarkdownConfig.setImageCallback(this.config.imageCallback)
       }
       if (this.config.imageCallbackCallback !== undefined) {
-        cjMarkdownConfig.setImageCallbackCallback(this.config.imageCallbackCallback)
+        global_customLib.registerImgPreprocessCallback(this.config.imageCallbackCallback)
       }
       if (this.config.audioCallback !== undefined) {
         cjMarkdownConfig.setAudioCallback(this.config.audioCallback)
@@ -629,7 +629,7 @@ export class MarkdownConfiguration {
   /**
    * 图片替换事件
    */
-  imageCallbackCallback?: (funcArg0: string) => ArrayBuffer | undefined = undefined
+  imageCallbackCallback?: (funcArg0: string) => Promise<ArrayBuffer | undefined> = undefined
   /**
    * 音频的点击事件
    */
@@ -704,7 +704,7 @@ export class MarkdownConfiguration {
    *
    * @param cb 图片替换事件。 (funcArg0：图片url 返回值是替换的图片数据)
    */
-  setImageCallbackCallback(cb: (funcArg0: string) => ArrayBuffer | undefined): void {
+  setImageCallbackCallback(cb: (funcArg0: string) => Promise<ArrayBuffer | undefined>): void {
     this.imageCallbackCallback = cb
   }
 

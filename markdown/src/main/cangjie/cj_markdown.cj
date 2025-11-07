@@ -11,6 +11,40 @@ import ohos.ark_interop.*
 import ohos.ark_interop_helper.*
 import std.collection.*
 import ohos.resource_manager.AppResource
+import std.sync.*
+
+var arkImgPreprocessFunc: ?(String)->?Array < Byte >= None
+
+class cbRet {
+    var value: ?Array<UInt8> = None
+    var sem: Semaphore = Semaphore(1)
+}
+
+public func registerImgPreprocessCallback(context: JSContext, callInfo: JSCallInfo): JSValue {
+    let arktsCB = callInfo[0].asFunction(context)
+    arkImgPreprocessFunc = { url =>
+        let ret: cbRet = cbRet()
+        ret.sem.acquire()
+        ctx.getOrThrow().postJSTask {
+            let _url = url.toJSValue(context)
+            let _ret = arktsCB.call([_url]).asPromise()
+            let onFulfilled = context.function{context, callInfo =>
+                let bufferVale = Option<Array<Byte>>.fromJSValue(context, callInfo[0])
+                if(bufferVale.isSome()) {
+                    ret.value = bufferVale.getOrThrow()
+                }
+                ret.sem.release()
+                context.undefined().toJSValue()
+            }
+            _ret.then(onFulfilled)
+        }
+        ret.sem.acquire()
+        let retValue = ret.value
+        ret.sem.release()
+        retValue
+    }
+    context.undefined().toJSValue()
+}
 
 /**
  * 设置markdown属性互操作函数

@@ -123,6 +123,9 @@ class CJMarkdownComponent {
 
     func setConfig(): MarkdownConfiguration {
         let markdownConfigurationBuilder: MarkdownConfigurationBuilder = MarkdownConfiguration.emptyBuilder()
+        if (let Some(v) <- arkImgPreprocessFunc) {
+            markdownConfigurationBuilder.setImageCallbackCallback(v) // 设置图片替换事件
+        }
         if(let Some(w) <- cfg){
             markdownConfigurationBuilder.setMarkdownTheme(setTheme()) // 设置markdown默认样式
             if (let Some(v) <- w.linkCallback) {
@@ -133,9 +136,6 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.imageCallback) {
                 markdownConfigurationBuilder.setImageCallback(v) // 设置图片的点击事件
-            }
-            if (let Some(v) <- w.imageCallbackCallback) {
-                markdownConfigurationBuilder.setImageCallbackCallback(v) // 设置图片替换事件
             }
             if (let Some(v) <- w.audioCallback) {
                 markdownConfigurationBuilder.setAudioCallback(v) // 设置音频的点击事件

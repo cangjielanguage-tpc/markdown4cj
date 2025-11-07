@@ -17,4 +17,5 @@ let EXPORT_MODULE = JSModule.registerModule {
     exports["setGlobalContext"] = runtime.function(setGlobalContext).toJSValue()
     exports["getCJResource"] = runtime.function(getCJResource).toJSValue()
     exports["getLoadCJPage"] = runtime.function(getLoadCJPage).toJSValue()
+    exports["registerImgPreprocessCallback"] = runtime.function(registerImgPreprocessCallback).toJSValue()
 }
