@@ -708,7 +708,7 @@ class MarkdownHeadingComponent {
         if(nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
             return 0.0
         }else{
-            return marginTop
+            return markdownConfiguration.markdownTheme.headingTopMargins
         }
     }
 
@@ -716,7 +716,7 @@ class MarkdownHeadingComponent {
         if(nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
             return 0.0
         }else{
-            return marginBottom
+            return markdownConfiguration.markdownTheme.headingBottomMargins
         }
     }
 

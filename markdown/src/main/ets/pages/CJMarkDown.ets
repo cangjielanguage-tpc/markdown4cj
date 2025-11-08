@@ -368,6 +368,12 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.headingTypeface !== undefined) {
           cjMarkdownTheme.setHeadingTypeface(this.config.markdownTheme.headingTypeface)
         }
+        if (this.config.markdownTheme.headingTopMargins !== undefined) {
+          cjMarkdownTheme.setHeadingTopMargins(this.config.markdownTheme.headingTopMargins)
+        }
+        if (this.config.markdownTheme.headingBottomMargins !== undefined) {
+          cjMarkdownTheme.setHeadingBottomMargins(this.config.markdownTheme.headingBottomMargins)
+        }
         if (this.config.markdownTheme.headingTextSizeMultipliers !== undefined) {
           let multipliers: Array<number> = new Array<number>()
           for (let index = 0; index < this.config.markdownTheme.headingTextSizeMultipliers.length; index++) {
@@ -1168,6 +1174,14 @@ export class MarkdownTheme {
    * 标题文本字体
    */
   headingTypeface?: string = undefined
+  /**
+   * 标题模块上间距
+   */
+  headingTopMargins?: number = undefined
+  /**
+   * 标题模块下间距
+   */
+  headingBottomMargins?: number = undefined
   /**
    * 标题文本大小数组
    */
@@ -2267,6 +2281,24 @@ export class MarkdownTheme {
    */
   setHeadingTypeface(headingTypeface: string): void {
     this.headingTypeface = headingTypeface
+  }
+
+  /**
+   * 设置标题模块上间距
+   *
+   * @param headingTopMargins 标题模块上间距 - 默认8.0
+   */
+  setHeadingTopMargins(headingTopMargins: number): void {
+    this.headingTopMargins = headingTopMargins
+  }
+
+  /**
+   * 设置标题模块下间距
+   *
+   * @param headingBottomMargins 标题模块下间距 - 默认8.0
+   */
+  setHeadingBottomMargins(headingBottomMargins: number): void {
+    this.headingBottomMargins = headingBottomMargins
   }
 
   /**

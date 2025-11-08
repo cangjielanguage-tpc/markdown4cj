@@ -438,6 +438,16 @@ public class CJMarkdownTheme {
     var headingTypeface: ?String = None
 
     /**
+     * 标题模块上间距
+     */
+    var headingTopMargins: ?Float64 = None
+
+    /**
+     * 标题模块下间距
+     */
+    var headingBottomMargins: ?Float64 = None
+
+    /**
      * 标题文本大小数组
      */
     var headingTextSizeMultipliers: ?Array<Float64> = None
@@ -1533,6 +1543,24 @@ public class CJMarkdownTheme {
      */
     public func setHeadingTypeface(headingTypeface: String): Unit {
         this.headingTypeface = headingTypeface
+    }
+
+    /**
+     * 设置标题模块上间距
+     *
+     * @param headingTopMargins 标题模块上间距 - 默认8.0
+     */
+    public func setHeadingTopMargins(headingTopMargins: Float64): Unit {
+        this.headingTopMargins = headingTopMargins
+    }
+
+    /**
+     * 设置标题模块下间距
+     *
+     * @param headingBottomMargins 标题模块下间距 - 默认8.0
+     */
+    public func setHeadingBottomMargins(headingBottomMargins: Float64): Unit {
+        this.headingBottomMargins = headingBottomMargins
     }
 
     /**

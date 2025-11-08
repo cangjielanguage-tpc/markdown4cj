@@ -207,6 +207,10 @@ export declare class CJMarkdownTheme {
 
   setHeadingTypeface(headingTypeface: string): void
 
+  setHeadingTopMargins(headingTopMargins: number): void
+
+  setHeadingBottomMargins(headingBottomMargins: number): void
+
   setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): void
 
   setHeadingTextColor(headingTextColor: number): void

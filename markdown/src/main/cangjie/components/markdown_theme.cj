@@ -484,6 +484,16 @@ public class MarkdownTheme {
     protected var headingTypeface: String = "HarmonyOS Sans"
 
     /**
+     * 标题模块上间距
+     */
+    protected var headingTopMargins: Float64 = 8.0
+
+    /**
+     * 标题模块下间距
+     */
+    protected var headingBottomMargins: Float64 = 8.0
+
+    /**
      * 标题文本大小数组
      */
     protected var headingTextSizeMultipliers: Array<Float64> = [20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
@@ -964,6 +974,8 @@ public class MarkdownTheme {
         this.headingBreakHeight = builder.headingBreakHeight
         this.headingBreakColor = builder.headingBreakColor
         this.headingTypeface = builder.headingTypeface
+        this.headingTopMargins = builder.headingTopMargins
+        this.headingBottomMargins = builder.headingBottomMargins
         this.headingTextSizeMultipliers = builder.headingTextSizeMultipliers
         this.headingTextColor = builder.headingTextColor
         this.headingTextWordSpace = builder.headingTextWordSpace
@@ -1724,6 +1736,16 @@ public class MarkdownThemeBuilder {
     protected var headingTypeface: String = "HarmonyOS Sans"
 
     /**
+     * 标题模块上间距
+     */
+    protected var headingTopMargins: Float64 = 8.0
+
+    /**
+     * 标题模块下间距
+     */
+    protected var headingBottomMargins: Float64 = 8.0
+
+    /**
      * 标题文本大小数组
      */
     protected var headingTextSizeMultipliers: Array<Float64> = [20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
@@ -2207,6 +2229,8 @@ public class MarkdownThemeBuilder {
         this.headingBreakHeight = theme.headingBreakHeight
         this.headingBreakColor = theme.headingBreakColor
         this.headingTypeface = theme.headingTypeface
+        this.headingTopMargins = theme.headingTopMargins
+        this.headingBottomMargins = theme.headingBottomMargins
         this.headingTextSizeMultipliers = theme.headingTextSizeMultipliers
         this.headingTextColor = theme.headingTextColor
         this.headingTextWordSpace = theme.headingTextWordSpace
@@ -3451,6 +3475,28 @@ public class MarkdownThemeBuilder {
      */
     public func setHeadingTypeface(headingTypeface: String): MarkdownThemeBuilder {
         this.headingTypeface = headingTypeface
+        return this
+    }
+
+    /**
+     * 设置标题模块上间距
+     *
+     * @param headingTopMargins 标题模块上间距 - 默认8.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTopMargins(headingTopMargins: Float64): MarkdownThemeBuilder {
+        this.headingTopMargins = headingTopMargins
+        return this
+    }
+
+    /**
+     * 设置标题模块下间距
+     *
+     * @param headingBottomMargins 标题模块下间距 - 默认8.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingBottomMargins(headingBottomMargins: Float64): MarkdownThemeBuilder {
+        this.headingBottomMargins = headingBottomMargins
         return this
     }
 
