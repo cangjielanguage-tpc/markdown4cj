@@ -193,7 +193,7 @@ class CJMarkdownComponent {
             markdownThemeBuilder.setBannerImage(v) // 设置图片banner默认占位图
         }
         if (let Some(v) <- imageResource) {
-            markdownThemeBuilder.setImageResource(v) // 设置图片默认占位图 - CJResource
+            markdownThemeBuilder.setImageResource(v) // 设置图片默认占位图
         }
         if(let Some(w) <- cfg){
             if (let Some(v) <- w.cjMarkdownTheme.isOnCopy) {
@@ -602,10 +602,10 @@ class CJMarkdownComponent {
                 markdownThemeBuilder.setVideoMarginBottom(v) // 设置视频下边距
             }
             if (let Some(v) <- w.cjMarkdownTheme.imageMaximumWidth) {
-                markdownThemeBuilder.setImageMaximumWidth(v) // 设置图片最大宽度百分比
+                markdownThemeBuilder.setImageMaximumWidth(v) // 设置图片基于自身宽度缩放百分比
             }
             if (let Some(v) <- w.cjMarkdownTheme.imageFixedRatioWidth) {
-                markdownThemeBuilder.setImageFixedRatioWidth(v) // 设置图片固定宽度百分比
+                markdownThemeBuilder.setImageFixedRatioWidth(v) // 设置图片基于父布局宽度缩放百分比
             }
             if (let Some(v) <- w.cjMarkdownTheme.imageBorderRadius) {
                 markdownThemeBuilder.setImageBorderRadius(v) // 设置图片圆角大小

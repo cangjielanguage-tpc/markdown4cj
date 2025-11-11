@@ -47,6 +47,7 @@ export class MarkdownConfiguration {
    * @param cb 文本复制的点击事件(funcArg0：复制的文本)
    */
   setTextCopyCallback(cb: (funcArg0: string) => void): void
+
   /**
    * 设置图片点击回调
    *
@@ -59,7 +60,7 @@ export class MarkdownConfiguration {
    *
    * @param cb 图片替换事件。 (funcArg0：图片url 返回值是替换的图片数据)
    */
-  setImageCallbackCallback(cb: (funcArg0: string) => ArrayBuffer | undefined): void
+  setImageCallbackCallback(cb: (funcArg0: string) => Promise<ArrayBuffer | undefined>): void
 
   /**
    * 设置音频点击回调
@@ -789,6 +790,20 @@ export class MarkdownTheme {
   setHeadingTypeface(headingTypeface: string): void
 
   /**
+   * 设置标题模块上间距
+   *
+   * @param headingTopMargins 标题模块上间距 - 默认8.0
+   */
+  setHeadingTopMargins(headingTopMargins: number): void
+
+  /**
+   * 设置标题模块下间距
+   *
+   * @param headingBottomMargins 标题模块下间距 - 默认8.0
+   */
+  setHeadingBottomMargins(headingBottomMargins: number): void
+
+  /**
    * 设置标题文本大小数组
    *
    * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
@@ -1132,16 +1147,16 @@ export class MarkdownTheme {
   setVideoMarginBottom(videoMarginBottom: number): void
 
   /**
-   * 设置图片最大宽度百分比
+   * 设置图片基于自身宽度缩放百分比
    *
-   * @param imageMaximumWidth 图片最大宽度百分比 - 默认1.0
+   * @param imageMaximumWidth 图片基于自身宽度缩放百分比 - 默认1.0
    */
   setImageMaximumWidth(imageMaximumWidth: number): void
 
   /**
-   * 设置图片固定宽度百分比
+   * 设置图片基于父布局宽度缩放百分比
    *
-   * @param imageFixedRatioWidth 图片固定宽度百分比 - 默认None
+   * @param imageFixedRatioWidth 图片基于父布局宽度缩放百分比 - 默认None
    */
   setImageFixedRatioWidth(imageFixedRatioWidth: number): void
 
@@ -1151,27 +1166,6 @@ export class MarkdownTheme {
    * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
    */
   setImageBorderRadius(imageBorderRadius: number): void
-
-  /**
-   * 设置图片是否固定宽高比
-   *
-   * @param imageIsFixedAspectRatio 图片是否固定宽高比 - 默认false
-   */
-  setImageIsFixedAspectRatio(imageIsFixedAspectRatio: boolean): void
-
-  /**
-   * 设置图片固定宽高比大小
-   *
-   * @param imageAspectRatioSize 图片固定宽高比大小 - 默认16.0/9.0
-   */
-  setImageAspectRatioSize(imageAspectRatioSize: number): void
-
-  /**
-   * 设置图片默认占位图 - String
-   *
-   * @param imagePlaceholder 图片默认占位图 - String - 默认None
-   */
-  setImagePlaceholder(imagePlaceholder: string): void
 
   /**
    * 设置网络图片是否压缩
@@ -1427,6 +1421,20 @@ export class MarkdownPlugin {
    * @param isImageCollectPlugin 是否设置图片视频url集合列表插件 - true：设置图片视频url集合列表插件；false：不设置图片视频url集合列表插件。默认false
    */
   setIsImageCollectPlugin(isImageCollectPlugin: boolean): void
+
+  /**
+   * 设置是否加载定义列表解析插件
+   *
+   * @param isDescListPlugin 是否加载定义列表解析插件 - true：设置加载定义列表解析插件；false：不设置加载定义列表解析插件。默认false
+   */
+  setIsDescListPlugin(isDescListPlugin: boolean): void
+
+  /**
+   * 设置是否加载标题ID解析插件
+   *
+   * @param isHeadIDPlugin 是否加载标题ID解析插件 - true：设置加载标题ID解析插件；false：不设置加载标题ID解析插件。默认false
+   */
+  setIsHeadIDPlugin(isHeadIDPlugin: boolean): void
 }
 ```
 

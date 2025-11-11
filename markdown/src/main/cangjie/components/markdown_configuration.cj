@@ -411,9 +411,9 @@ public class MarkdownConfigurationBuilder {
     }
 
     /**
-     * 设置全部文本
+     * 设置获取markdown全部文本
      *
-     * @param nodeString 全部文本
+     * @param nodeString markdown全部文本对象
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setNodeString(nodeString: (NodeViewStringBuilder) -> Unit): MarkdownConfigurationBuilder {

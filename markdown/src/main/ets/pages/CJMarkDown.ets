@@ -2743,18 +2743,18 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置图片最大宽度百分比
+   * 设置图片基于自身宽度缩放百分比
    *
-   * @param imageMaximumWidth 图片最大宽度百分比 - 默认1.0
+   * @param imageMaximumWidth 图片基于自身宽度缩放百分比 - 默认1.0
    */
   setImageMaximumWidth(imageMaximumWidth: number): void {
     this.imageMaximumWidth = imageMaximumWidth
   }
 
   /**
-   * 设置图片固定宽度百分比
+   * 设置图片基于父布局宽度缩放百分比
    *
-   * @param imageFixedRatioWidth 图片固定宽度百分比 - 默认None
+   * @param imageFixedRatioWidth 图片基于父布局宽度缩放百分比 - 默认None
    */
   setImageFixedRatioWidth(imageFixedRatioWidth: number): void {
     this.imageFixedRatioWidth = imageFixedRatioWidth
