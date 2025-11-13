@@ -2195,9 +2195,8 @@ public class CJMarkdownTheme {
      * @param descListTermAndDefMargins 定义列表定义行缩进 默认8.0
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setDescListTermAndDefMargins(descListTermAndDefMargins: Float64): MarkdownThemeBuilder {
+    public func setDescListTermAndDefMargins(descListTermAndDefMargins: Float64): Unit {
         this.descListTermAndDefMargins = descListTermAndDefMargins
-        return this
     }
 
     /**
@@ -2206,8 +2205,7 @@ public class CJMarkdownTheme {
      * @param descListDefIndentation 定义列表定义行缩进 默认8.0
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setDescListDefIndentation(descListDefIndentation: Float64): MarkdownThemeBuilder {
+    public func setDescListDefIndentation(descListDefIndentation: Float64): Unit {
         this.descListDefIndentation = descListDefIndentation
-        return this
     }
 }
