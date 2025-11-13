@@ -1278,6 +1278,20 @@ export class MarkdownTheme {
    * @param strikethroughColor 删除线颜色 - 默认0X191919
    */
   setStrikethroughColor(strikethroughColor: number): void
+
+  /**
+   * 设置定义列表术语和定义行之间间距
+   *
+   * @param descListTermAndDefMargins 定义列表定义行缩进 默认8.0
+   */
+  setDescListTermAndDefMargins(descListTermAndDefMargins: number): void
+
+  /**
+   * 设置定义列表定义行缩进
+   *
+   * @param descListDefIndentation 定义列表定义行缩进 默认8.0
+   */
+  setDescListDefIndentation(descListDefIndentation: number): void
 }
 ```
 

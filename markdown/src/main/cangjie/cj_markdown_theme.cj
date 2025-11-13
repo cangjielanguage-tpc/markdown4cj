@@ -787,6 +787,16 @@ public class CJMarkdownTheme {
      */
     var strikethroughColor: ?Color = None
 
+    /**
+     * 定义列表术语和定义行之间间距
+     */
+    var descListTermAndDefMargins: ?Float64 = None
+
+    /**
+     * 定义列表定义行缩进
+     */
+    var descListDefIndentation: ?Float64 = None
+
     public init() {}
 
     /**
@@ -2177,5 +2187,27 @@ public class CJMarkdownTheme {
      */
     public func setStrikethroughColor(strikethroughColor: UInt32): Unit {
         this.strikethroughColor = Color(strikethroughColor)
+    }
+
+    /**
+     * 设置定义列表术语和定义行之间间距
+     *
+     * @param descListTermAndDefMargins 定义列表定义行缩进 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setDescListTermAndDefMargins(descListTermAndDefMargins: Float64): MarkdownThemeBuilder {
+        this.descListTermAndDefMargins = descListTermAndDefMargins
+        return this
+    }
+
+    /**
+     * 设置定义列表定义行缩进
+     *
+     * @param descListDefIndentation 定义列表定义行缩进 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setDescListDefIndentation(descListDefIndentation: Float64): MarkdownThemeBuilder {
+        this.descListDefIndentation = descListDefIndentation
+        return this
     }
 }

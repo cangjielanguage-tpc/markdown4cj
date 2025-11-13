@@ -588,6 +588,12 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.strikethroughColor !== undefined) {
           cjMarkdownTheme.setStrikethroughColor(this.config.markdownTheme.strikethroughColor)
         }
+        if (this.config.markdownTheme.descListTermAndDefMargins !== undefined) {
+          cjMarkdownTheme.setDescListTermAndDefMargins(this.config.markdownTheme.descListTermAndDefMargins)
+        }
+        if (this.config.markdownTheme.descListDefIndentation !== undefined) {
+          cjMarkdownTheme.setDescListDefIndentation(this.config.markdownTheme.descListDefIndentation)
+        }
       }
     }
     return cjMarkdownTheme
@@ -1454,6 +1460,14 @@ export class MarkdownTheme {
    * 删除线颜色
    */
   strikethroughColor?: number= undefined
+  /**
+   * 定义列表定义行缩进
+   */
+  descListTermAndDefMargins?: number= undefined
+  /**
+   * 定义列表定义行缩进
+   */
+  descListDefIndentation?: number= undefined
 
   /**
    * 设置上下文
@@ -2911,6 +2925,24 @@ export class MarkdownTheme {
    */
   setStrikethroughColor(strikethroughColor: number): void {
     this.strikethroughColor = strikethroughColor
+  }
+
+  /**
+   * 设置定义列表术语和定义行之间间距
+   *
+   * @param descListTermAndDefMargins 定义列表定义行缩进 默认8.0
+   */
+  setDescListTermAndDefMargins(descListTermAndDefMargins: number): void {
+    this.descListTermAndDefMargins = descListTermAndDefMargins
+  }
+
+  /**
+   * 设置定义列表定义行缩进
+   *
+   * @param descListDefIndentation 定义列表定义行缩进 默认8.0
+   */
+  setDescListDefIndentation(descListDefIndentation: number): void {
+    this.descListDefIndentation = descListDefIndentation
   }
 }
 

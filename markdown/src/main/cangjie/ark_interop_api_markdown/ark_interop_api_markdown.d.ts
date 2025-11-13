@@ -346,6 +346,10 @@ export declare class CJMarkdownTheme {
   setIsDark(isDark: boolean): void
 
   setStrikethroughColor(strikethroughColor: number): void
+
+  setDescListTermAndDefMargins(descListTermAndDefMargins: number): void
+
+  setDescListDefIndentation(descListDefIndentation: number): void
 }
 
 export declare class CJMarkdownConfig {

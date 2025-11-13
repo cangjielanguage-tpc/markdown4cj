@@ -663,6 +663,12 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.strikethroughColor) {
                 markdownThemeBuilder.setStrikethroughColor(v) // 设置删除线颜色
             }
+            if (let Some(v) <- w.cjMarkdownTheme.descListTermAndDefMargins) {
+                markdownThemeBuilder.setDescListTermAndDefMargins(v) // 设置定义列表术语和定义行之间间距
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.descListDefIndentation) {
+                markdownThemeBuilder.setDescListDefIndentation(v) // 设置定义列表定义行缩进
+            }
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()
         return markdownTheme
