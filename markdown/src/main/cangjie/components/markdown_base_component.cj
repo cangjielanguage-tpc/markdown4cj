@@ -20,9 +20,9 @@ func headingTextComponent18(nodeView: NodeView, markdownConfiguration: MarkdownC
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, true))
+        .fontWeight(spanFontWeight(nodeView, false, true))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
         // 自定义背景色
@@ -51,9 +51,9 @@ func headingTextComponent19(nodeView: NodeView, markdownConfiguration: MarkdownC
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, true))
+        .fontWeight(spanFontWeight(nodeView, false, true))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
         // 设置背景样式
@@ -71,18 +71,6 @@ func headingTextComponent19(nodeView: NodeView, markdownConfiguration: MarkdownC
 }
 
 /**
- * 标题文本
- */
-@Builder
-func headingTextComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, level: Int64) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        headingTextComponent19(nodeView, markdownConfiguration, level)
-    } else {
-        headingTextComponent18(nodeView, markdownConfiguration, level)
-    }
-}
-
-/**
  * 标题链接文本
  */
 @Builder
@@ -94,9 +82,9 @@ func headingLinkComponent18(nodeView: NodeView, link: String, markdownConfigurat
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, true))
+        .fontWeight(spanFontWeight(nodeView, false, true))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
         // 自定义背景色
@@ -125,9 +113,9 @@ func headingLinkComponent19(nodeView: NodeView, link: String, markdownConfigurat
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, true))
+        .fontWeight(spanFontWeight(nodeView, false, true))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
         // 设置背景样式
@@ -145,18 +133,6 @@ func headingLinkComponent19(nodeView: NodeView, link: String, markdownConfigurat
 }
 
 /**
- * 标题链接文本
- */
-@Builder
-func headingLinkComponent(nodeView: NodeView, link: String, markdownConfiguration: MarkdownConfiguration, level: Int64) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        headingLinkComponent19(nodeView, link, markdownConfiguration, level)
-    } else {
-        headingLinkComponent18(nodeView, link, markdownConfiguration, level)
-    }
-}
-
-/**
  * 标题内联代码
  */
 @Builder
@@ -168,9 +144,9 @@ func headingCodeComponent18(nodeView: NodeView, markdownConfiguration: MarkdownC
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, true, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, true))
+        .fontWeight(spanFontWeight(nodeView, false, true))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true))
         // 自定义背景色
@@ -195,9 +171,9 @@ func headingCodeComponent19(nodeView: NodeView, markdownConfiguration: MarkdownC
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, true, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, true))
+        .fontWeight(spanFontWeight(nodeView, false, true))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true))
         // 设置背景样式
@@ -208,18 +184,6 @@ func headingCodeComponent19(nodeView: NodeView, markdownConfiguration: MarkdownC
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
         .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
-}
-
-/**
- * 标题内联代码
- */
-@Builder
-func headingCodeComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        headingCodeComponent19(nodeView, markdownConfiguration)
-    } else {
-        headingCodeComponent18(nodeView, markdownConfiguration)
-    }
 }
 
 /**
@@ -234,9 +198,9 @@ func headingFootnoteComponent18(nodeView: NodeView, markdownConfiguration: Markd
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, true))
+        .fontWeight(spanFontWeight(nodeView, false, true))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
         // 自定义背景色
@@ -265,9 +229,9 @@ func headingFootnoteComponent19(nodeView: NodeView, markdownConfiguration: Markd
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, true))
+        .fontWeight(spanFontWeight(nodeView, false, true))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
         // 设置背景样式
@@ -285,22 +249,10 @@ func headingFootnoteComponent19(nodeView: NodeView, markdownConfiguration: Markd
 }
 
 /**
- * 标题脚注文本
- */
-@Builder
-func headingFootnoteComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, level: Int64, fontCallback: (String) -> Unit) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        headingFootnoteComponent19(nodeView, markdownConfiguration, level, fontCallback)
-    } else {
-        headingFootnoteComponent18(nodeView, markdownConfiguration, level, fontCallback)
-    }
-}
-
-/**
  * 段落文本
  */
 @Builder
-func paragraphTextComponent18(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration) {
+func paragraphTextComponent18(nodeView: NodeView, isDescList: Bool, markdownConfiguration: MarkdownConfiguration) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -308,9 +260,9 @@ func paragraphTextComponent18(nodeView: NodeView, markdownConfiguration: Markdow
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, false))
+        .fontWeight(spanFontWeight(nodeView, isDescList, false))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, isDescList))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 自定义背景色
@@ -331,7 +283,7 @@ func paragraphTextComponent18(nodeView: NodeView, markdownConfiguration: Markdow
  * 段落文本
  */
 @Builder
-func paragraphTextComponent19(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration) {
+func paragraphTextComponent19(nodeView: NodeView, isDescList: Bool, markdownConfiguration: MarkdownConfiguration) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -339,9 +291,9 @@ func paragraphTextComponent19(nodeView: NodeView, markdownConfiguration: Markdow
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, false))
+        .fontWeight(spanFontWeight(nodeView, isDescList, false))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, isDescList))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 设置背景样式
@@ -359,22 +311,10 @@ func paragraphTextComponent19(nodeView: NodeView, markdownConfiguration: Markdow
 }
 
 /**
- * 段落文本
- */
-@Builder
-func paragraphTextComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        paragraphTextComponent19(nodeView, markdownConfiguration)
-    } else {
-        paragraphTextComponent18(nodeView, markdownConfiguration)
-    }
-}
-
-/**
  * 段落Toc文本
  */
 @Builder
-func paragraphTocComponent18(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, tocListOnClick: (Int64) -> Unit) {
+func paragraphTocComponent18(nodeView: NodeView, isDescList: Bool, markdownConfiguration: MarkdownConfiguration, tocListOnClick: (Int64) -> Unit) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -382,9 +322,9 @@ func paragraphTocComponent18(nodeView: NodeView, markdownConfiguration: Markdown
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, false))
+        .fontWeight(spanFontWeight(nodeView, isDescList, false))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, isDescList))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 自定义背景色
@@ -403,7 +343,7 @@ func paragraphTocComponent18(nodeView: NodeView, markdownConfiguration: Markdown
  * 段落Toc文本
  */
 @Builder
-func paragraphTocComponent19(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, tocListOnClick: (Int64) -> Unit) {
+func paragraphTocComponent19(nodeView: NodeView, isDescList: Bool, markdownConfiguration: MarkdownConfiguration, tocListOnClick: (Int64) -> Unit) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -411,9 +351,9 @@ func paragraphTocComponent19(nodeView: NodeView, markdownConfiguration: Markdown
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, false))
+        .fontWeight(spanFontWeight(nodeView, isDescList, false))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, isDescList))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 设置背景样式
@@ -426,25 +366,13 @@ func paragraphTocComponent19(nodeView: NodeView, markdownConfiguration: Markdown
         .onClick {
             evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)
         }
-}
-
-/**
- * 段落Toc文本
- */
-@Builder
-func paragraphTocComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, tocListOnClick: (Int64) -> Unit) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        paragraphTocComponent19(nodeView, markdownConfiguration, tocListOnClick)
-    } else {
-        paragraphTocComponent18(nodeView, markdownConfiguration, tocListOnClick)
-    }
 }
 
 /**
  * 段落链接文本
  */
 @Builder
-func paragraphLinkComponent18(nodeView: NodeView, link: String, markdownConfiguration: MarkdownConfiguration) {
+func paragraphLinkComponent18(nodeView: NodeView, isDescList: Bool, link: String, markdownConfiguration: MarkdownConfiguration) {
     // 设置文本内容
     Span(link)
         // 设置文本的字体列表
@@ -452,9 +380,9 @@ func paragraphLinkComponent18(nodeView: NodeView, link: String, markdownConfigur
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, false))
+        .fontWeight(spanFontWeight(nodeView, isDescList, false))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, isDescList))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 自定义背景色
@@ -475,7 +403,7 @@ func paragraphLinkComponent18(nodeView: NodeView, link: String, markdownConfigur
  * 段落链接文本
  */
 @Builder
-func paragraphLinkComponent19(nodeView: NodeView, link: String, markdownConfiguration: MarkdownConfiguration) {
+func paragraphLinkComponent19(nodeView: NodeView, isDescList: Bool, link: String, markdownConfiguration: MarkdownConfiguration) {
     // 设置文本内容
     Span(link)
         // 设置文本的字体列表
@@ -483,9 +411,9 @@ func paragraphLinkComponent19(nodeView: NodeView, link: String, markdownConfigur
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, false))
+        .fontWeight(spanFontWeight(nodeView, isDescList, false))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, isDescList))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 设置背景样式
@@ -503,22 +431,10 @@ func paragraphLinkComponent19(nodeView: NodeView, link: String, markdownConfigur
 }
 
 /**
- * 段落链接文本
- */
-@Builder
-func paragraphLinkComponent(nodeView: NodeView, link: String, markdownConfiguration: MarkdownConfiguration) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        paragraphLinkComponent19(nodeView, link, markdownConfiguration)
-    } else {
-        paragraphLinkComponent18(nodeView, link, markdownConfiguration)
-    }
-}
-
-/**
  * 段落内联代码
  */
 @Builder
-func paragraphCodeComponent18(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration) {
+func paragraphCodeComponent18(nodeView: NodeView, isDescList: Bool, markdownConfiguration: MarkdownConfiguration) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -526,9 +442,9 @@ func paragraphCodeComponent18(nodeView: NodeView, markdownConfiguration: Markdow
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, false))
+        .fontWeight(spanFontWeight(nodeView, isDescList, false))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, isDescList))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
         // 自定义背景色
@@ -545,7 +461,7 @@ func paragraphCodeComponent18(nodeView: NodeView, markdownConfiguration: Markdow
  * 段落内联代码
  */
 @Builder
-func paragraphCodeComponent19(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration) {
+func paragraphCodeComponent19(nodeView: NodeView, isDescList: Bool, markdownConfiguration: MarkdownConfiguration) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -553,9 +469,9 @@ func paragraphCodeComponent19(nodeView: NodeView, markdownConfiguration: Markdow
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, false))
+        .fontWeight(spanFontWeight(nodeView, isDescList, false))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, isDescList))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
         // 设置背景样式
@@ -569,22 +485,10 @@ func paragraphCodeComponent19(nodeView: NodeView, markdownConfiguration: Markdow
 }
 
 /**
- * 段落内联代码
- */
-@Builder
-func paragraphCodeComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        paragraphCodeComponent19(nodeView, markdownConfiguration)
-    } else {
-        paragraphCodeComponent18(nodeView, markdownConfiguration)
-    }
-}
-
-/**
  * 段落脚注文本
  */
 @Builder
-func paragraphFootnoteComponent18(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, fontCallback: (String) -> Unit) {
+func paragraphFootnoteComponent18(nodeView: NodeView, isDescList: Bool, markdownConfiguration: MarkdownConfiguration, fontCallback: (String) -> Unit) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -592,9 +496,9 @@ func paragraphFootnoteComponent18(nodeView: NodeView, markdownConfiguration: Mar
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, false))
+        .fontWeight(spanFontWeight(nodeView, isDescList, false))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, isDescList))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 自定义背景色
@@ -615,7 +519,7 @@ func paragraphFootnoteComponent18(nodeView: NodeView, markdownConfiguration: Mar
  * 段落脚注文本
  */
 @Builder
-func paragraphFootnoteComponent19(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, fontCallback: (String) -> Unit) {
+func paragraphFootnoteComponent19(nodeView: NodeView, isDescList: Bool, markdownConfiguration: MarkdownConfiguration, fontCallback: (String) -> Unit) {
     // 设置文本内容
     Span(spanText(nodeView))
         // 设置文本的字体列表
@@ -623,9 +527,9 @@ func paragraphFootnoteComponent19(nodeView: NodeView, markdownConfiguration: Mar
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, false))
+        .fontWeight(spanFontWeight(nodeView, isDescList, false))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, isDescList))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 设置背景样式
@@ -643,18 +547,6 @@ func paragraphFootnoteComponent19(nodeView: NodeView, markdownConfiguration: Mar
 }
 
 /**
- * 段落脚注文本
- */
-@Builder
-func paragraphFootnoteComponent(nodeView: NodeView, markdownConfiguration: MarkdownConfiguration, fontCallback: (String) -> Unit) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        paragraphFootnoteComponent19(nodeView, markdownConfiguration, fontCallback)
-    } else {
-        paragraphFootnoteComponent18(nodeView, markdownConfiguration, fontCallback)
-    }
-}
-
-/**
  * 表格文本
  */
 @Builder
@@ -666,9 +558,9 @@ func tableComponentText18(nodeView: NodeView, isHeader: Bool, markdownConfigurat
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, isHeader))
+        .fontWeight(spanFontWeight(nodeView, false, isHeader))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 自定义背景色
@@ -697,9 +589,9 @@ func tableComponentText19(nodeView: NodeView, isHeader: Bool, markdownConfigurat
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, isHeader))
+        .fontWeight(spanFontWeight(nodeView, false, isHeader))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 设置背景样式
@@ -717,18 +609,6 @@ func tableComponentText19(nodeView: NodeView, isHeader: Bool, markdownConfigurat
 }
 
 /**
- * 表格文本
- */
-@Builder
-func tableComponentText(nodeView: NodeView, isHeader: Bool, markdownConfiguration: MarkdownConfiguration) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        tableComponentText19(nodeView, isHeader, markdownConfiguration)
-    } else {
-        tableComponentText18(nodeView, isHeader, markdownConfiguration)
-    }
-}
-
-/**
  * 表格内联代码
  */
 @Builder
@@ -740,9 +620,9 @@ func tableComponentCode18(nodeView: NodeView, isHeader: Bool, markdownConfigurat
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, isHeader))
+        .fontWeight(spanFontWeight(nodeView, false, isHeader))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
         // 自定义背景色
@@ -767,9 +647,9 @@ func tableComponentCode19(nodeView: NodeView, isHeader: Bool, markdownConfigurat
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, isHeader))
+        .fontWeight(spanFontWeight(nodeView, false, isHeader))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
         // 设置背景样式
@@ -780,18 +660,6 @@ func tableComponentCode19(nodeView: NodeView, isHeader: Bool, markdownConfigurat
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
         .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
-}
-
-/**
- * 表格内联代码
- */
-@Builder
-func tableComponentCode(nodeView: NodeView, isHeader: Bool, markdownConfiguration: MarkdownConfiguration) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        tableComponentCode19(nodeView, isHeader, markdownConfiguration)
-    } else {
-        tableComponentCode18(nodeView, isHeader, markdownConfiguration)
-    }
 }
 
 /**
@@ -806,9 +674,9 @@ func tableLinkComponent18(nodeView: NodeView, isHeader: Bool, link: String, mark
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, isHeader))
+        .fontWeight(spanFontWeight(nodeView, false, isHeader))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 自定义背景色
@@ -837,9 +705,9 @@ func tableLinkComponent19(nodeView: NodeView, isHeader: Bool, link: String, mark
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, isHeader))
+        .fontWeight(spanFontWeight(nodeView, false, isHeader))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 设置背景样式
@@ -857,18 +725,6 @@ func tableLinkComponent19(nodeView: NodeView, isHeader: Bool, link: String, mark
 }
 
 /**
- * 表格链接文本
- */
-@Builder
-func tableLinkComponent(nodeView: NodeView, isHeader: Bool, link: String, markdownConfiguration: MarkdownConfiguration) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        tableLinkComponent19(nodeView, isHeader, link, markdownConfiguration)
-    } else {
-        tableLinkComponent18(nodeView, isHeader, link, markdownConfiguration)
-    }
-}
-
-/**
  * 表格脚注文本
  */
 @Builder
@@ -880,9 +736,9 @@ func tableComponentFootnote18(nodeView: NodeView, isHeader: Bool, markdownConfig
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, isHeader))
+        .fontWeight(spanFontWeight(nodeView, false, isHeader))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 自定义背景色
@@ -911,9 +767,9 @@ func tableComponentFootnote19(nodeView: NodeView, isHeader: Bool, markdownConfig
         // 设置文本尺寸
         .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
         // 设置文本的字体粗细
-        .fontWeight(spanFontWeight(nodeView, isHeader))
+        .fontWeight(spanFontWeight(nodeView, false, isHeader))
         // 设置文本的字体样式
-        .fontStyle(spanFontStyle(nodeView))
+        .fontStyle(spanFontStyle(nodeView, false))
         // 设置文本颜色
         .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
         // 设置背景样式
@@ -928,18 +784,6 @@ func tableComponentFootnote19(nodeView: NodeView, isHeader: Bool, markdownConfig
                 fontCallback((nodeView.node as Footnote)().noteid)
             }
         }
-}
-
-/**
- * 表格脚注文本
- */
-@Builder
-func tableComponentFootnote(nodeView: NodeView, isHeader: Bool, markdownConfiguration: MarkdownConfiguration, fontCallback: (String) -> Unit) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        tableComponentFootnote19(nodeView, isHeader, markdownConfiguration, fontCallback)
-    } else {
-        tableComponentFootnote18(nodeView, isHeader, markdownConfiguration, fontCallback)
-    }
 }
 
 /**

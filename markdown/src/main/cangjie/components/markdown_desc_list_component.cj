@@ -9,7 +9,7 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- *
+ * 定义列表
  */
 @Component
 public class MarkdownDescListComponent {

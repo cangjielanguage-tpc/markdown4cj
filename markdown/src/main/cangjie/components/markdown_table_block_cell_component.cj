@@ -96,16 +96,6 @@ class MarkdownTableBlockCellComponent {
     @State
     var minTextWidth: Float64 = 0.0
 
-    /**
-     *
-     */
-    @State
-    var minTextHeight: Float64 = 0.0
-
-    @Link
-    @Watch[refreshTextHeight]
-    var maxHeight: Float64
-
     @Prop
     @Watch[refreshTextWidth]
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
@@ -118,10 +108,6 @@ class MarkdownTableBlockCellComponent {
         } else {
             minTextWidth = markdownConfiguration.markdownTheme.tableMinTextWidth
         }
-    }
-
-    func refreshTextHeight(): Unit {
-        minTextHeight = maxHeight
     }
 
     protected override func aboutToAppear(): Unit {
@@ -157,28 +143,24 @@ class MarkdownTableBlockCellComponent {
         .alignItems(renderTableCellColumnAlign(alignment))
         // 设置 Column 子组件在垂直方向上的对齐格式
         .justifyContent(FlexAlign.Center)
+        // 覆盖 Flex 布局容器中 alignItems 默认配置
+        .alignSelf(ItemAlign.Stretch)
         // 设置内边距属性
         .padding(markdownConfiguration.markdownTheme.tableCellPadding)
         // 设置组件的背景色
         .backgroundColor(renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow))
         // 设置边框的宽度
-        .borderWidth(EdgeWidths(left: leftWidths().vp, right: rightWidths().vp, top: topWidths().vp, bottom: bottomWidths().vp))
+        .borderWidth(markdownConfiguration.markdownTheme.tableBorderWidth / 2.0)
         // 设置元素的边框样式
         .borderStyle(BorderStyle.Solid)
         // 设置边框的颜色
         .borderColor(markdownConfiguration.markdownTheme.tableBorderColor)
         // 设置约束尺寸，组件布局时，进行尺寸范围限制
-        .constraintSize(minWidth: minTextWidth.vp, maxWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth.vp, minHeight: minTextHeight.vp)
+        .constraintSize(minWidth: minTextWidth.vp, maxWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth.vp)
         // 组件区域变化时触发该回调
         .onAreaChange(
             {
                 old, new =>
-                    let newHeight: Float64 = new.height
-                    if (maxHeight < newHeight) {
-                        maxHeight = newHeight
-                    } else {
-                        maxHeight = minTextHeight
-                    }
                     if (old.width == new.width) {
                         return
                     }
@@ -203,14 +185,14 @@ class MarkdownTableBlockCellComponent {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        tableComponentText(
+                        tableComponentText18(
                             item,
                             isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                             markdownConfiguration
                         )
                     } else if (item.node is Footnote) {
                         // 脚注
-                        tableComponentFootnote(
+                        tableComponentFootnote18(
                             item,
                             isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                             markdownConfiguration,
@@ -227,7 +209,7 @@ class MarkdownTableBlockCellComponent {
                                 isFakeBoldText: isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold) || item.strongEmphasis
                             )
                         } else {
-                            tableComponentCode(
+                            tableComponentCode18(
                                 item,
                                 isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                                 markdownConfiguration
@@ -243,7 +225,7 @@ class MarkdownTableBlockCellComponent {
                         // 链接
                         if (!markdownConfiguration.markdownTheme.isLinkStyle) {
                             if (getLinkString(item).isSome()) {
-                                tableLinkComponent(
+                                tableLinkComponent18(
                                     item,
                                     isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                                     getLinkString(item)(),
@@ -510,14 +492,14 @@ class MarkdownTableBlockCellComponent {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        tableComponentText(
+                        tableComponentText19(
                             item,
                             isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                             markdownConfiguration
                         )
                     } else if (item.node is Footnote) {
                         // 脚注
-                        tableComponentFootnote(
+                        tableComponentFootnote19(
                             item,
                             isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                             markdownConfiguration,
@@ -534,7 +516,7 @@ class MarkdownTableBlockCellComponent {
                                 isFakeBoldText: isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold) || item.strongEmphasis
                             )
                         } else {
-                            tableComponentCode(
+                            tableComponentCode19(
                                 item,
                                 isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                                 markdownConfiguration
@@ -550,7 +532,7 @@ class MarkdownTableBlockCellComponent {
                         // 链接
                         if (!markdownConfiguration.markdownTheme.isLinkStyle) {
                             if (getLinkString(item).isSome()) {
-                                tableLinkComponent(
+                                tableLinkComponent19(
                                     item,
                                     isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                                     getLinkString(item)(),
@@ -796,38 +778,6 @@ class MarkdownTableBlockCellComponent {
             }
         }
         size = nodeViewList.size // 更新列表长度
-    }
-
-    func leftWidths(): Float64 {
-        return if (idxItem == 0) {
-            0.0
-        } else {
-            markdownConfiguration.markdownTheme.tableBorderWidth / 2.0
-        }
-    }
-
-    func rightWidths(): Float64 {
-        return if (idxItem == dataCellSize - 1) {
-            0.0
-        } else {
-            markdownConfiguration.markdownTheme.tableBorderWidth / 2.0
-        }
-    }
-
-    func topWidths(): Float64 {
-        return if (idRow == 0) {
-            0.0
-        } else {
-            markdownConfiguration.markdownTheme.tableBorderWidth / 2.0
-        }
-    }
-
-    func bottomWidths(): Float64 {
-        return if (idRow == dataRowSize - 1) {
-            0.0
-        } else {
-            markdownConfiguration.markdownTheme.tableBorderWidth / 2.0
-        }
     }
 }
 

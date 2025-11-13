@@ -136,7 +136,7 @@ class MarkdownTableBlockComponent {
                 )
             }
             // 统一边框样式设置接口
-            .border(width: markdownConfiguration.markdownTheme.tableBorderWidth.vp, color: markdownConfiguration.markdownTheme.tableBorderColor, style: BorderStyle.Solid, radius: markdownConfiguration.markdownTheme.tableRadius.vp)
+            .border(width: (markdownConfiguration.markdownTheme.tableBorderWidth / 2.0).vp, color: markdownConfiguration.markdownTheme.tableBorderColor, style: BorderStyle.Solid, radius: markdownConfiguration.markdownTheme.tableRadius.vp)
             // 设置ListItem在List交叉轴方向的布局方式
             .alignListItem(ListItemAlign.Start)
         }

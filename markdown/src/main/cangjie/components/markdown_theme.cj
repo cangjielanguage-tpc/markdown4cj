@@ -42,6 +42,7 @@ import ohos.state_macro_manage.*
  * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高、表格圆角大小、表格一格最小宽度、表格一格最大宽度、表格第一列是否加粗
  * 16：代码高亮 - markdown代码高亮样式
  * 17：删除线 - 删除线颜色
+ * 18：定义列表 - 定义列表术语和定义行之间间距、定义列表定义行缩进
  */
 public class MarkdownTheme {
     /**
@@ -859,6 +860,16 @@ public class MarkdownTheme {
      */
     protected var strikethroughColor: Color = COLOR_191919
 
+    /**
+     * 定义列表术语和定义行之间间距
+     */
+    protected var descListTermAndDefMargins: Float64 = 8.0
+
+    /**
+     * 定义列表定义行缩进
+     */
+    protected var descListDefIndentation: Float64 = 8.0
+
     protected init(builder: MarkdownThemeBuilder) {
         // 1、上下文
         this.stageContext = builder.stageContext
@@ -1072,6 +1083,10 @@ public class MarkdownTheme {
 
         // 17、删除线
         this.strikethroughColor = builder.strikethroughColor
+
+        // 18、定义列表
+        this.descListTermAndDefMargins = builder.descListTermAndDefMargins
+        this.descListDefIndentation = builder.descListDefIndentation
     }
 
     /**
@@ -2111,6 +2126,16 @@ public class MarkdownThemeBuilder {
      */
     protected var strikethroughColor: Color = COLOR_191919
 
+    /**
+     * 定义列表术语和定义行之间间距
+     */
+    protected var descListTermAndDefMargins: Float64 = 8.0
+    
+    /**
+     * 定义列表定义行缩进
+     */
+    protected var descListDefIndentation: Float64 = 8.0
+
     init() {
     }
 
@@ -2327,6 +2352,10 @@ public class MarkdownThemeBuilder {
 
         // 17、删除线
         this.strikethroughColor = theme.strikethroughColor
+
+        // 18、定义列表
+        this.descListTermAndDefMargins = theme.descListTermAndDefMargins
+        this.descListDefIndentation = theme.descListDefIndentation
     }
 
     /**
@@ -4301,6 +4330,28 @@ public class MarkdownThemeBuilder {
      */
     public func setStrikethroughColor(strikethroughColor: Color): MarkdownThemeBuilder {
         this.strikethroughColor = strikethroughColor
+        return this
+    }
+
+    /**
+     * 设置定义列表术语和定义行之间间距
+     *
+     * @param descListTermAndDefMargins 定义列表术语和定义行之间间距 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setDescListTermAndDefMargins(descListTermAndDefMargins: Float64): MarkdownThemeBuilder {
+        this.descListTermAndDefMargins = descListTermAndDefMargins
+        return this
+    }
+
+    /**
+     * 设置定义列表定义行缩进
+     *
+     * @param descListDefIndentation 定义列表定义行缩进 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setDescListDefIndentation(descListDefIndentation: Float64): MarkdownThemeBuilder {
+        this.descListDefIndentation = descListDefIndentation
         return this
     }
 

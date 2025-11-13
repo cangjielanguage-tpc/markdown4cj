@@ -72,9 +72,6 @@ class MarkdownTableBlockRowComponent {
     @Prop
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
 
-    @State
-    var maxHeight: Float64 = 0.0
-
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeViews)
@@ -113,8 +110,7 @@ class MarkdownTableBlockRowComponent {
                             dataRowSize: dataRowSize,
                             idxItem: idxItem,
                             dataCellSize: nodeViewList.size,
-                            cellWidthArrayIndexed: cellWidthArrayIndexed,
-                            maxHeight: maxHeight
+                            cellWidthArrayIndexed: cellWidthArrayIndexed
                         )
                     }
                 },

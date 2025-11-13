@@ -9,7 +9,7 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- *
+ * 定义列表术语
  */
 @Component
 public class MarkdownDescTermComponent {
@@ -108,7 +108,8 @@ public class MarkdownDescTermComponent {
                                 imageCallback: imageCallback,
                                 tocListOnClick: tocListOnClick,
                                 componentWidth: componentWidth,
-                                isListTo:true,
+                                isListTo: true,
+                                isDescList: true,
                                 indexList: indexAdd(indexList, idx),
                                 paragraphComponents: markdownCacheConfiguration.paragraphComponents
                             )
@@ -126,6 +127,8 @@ public class MarkdownDescTermComponent {
         .listDirection(Axis.Vertical)
         // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
         .alignListItem(ListItemAlign.Start)
+        // 术语和定义行之间间距
+        .margin(bottom: markdownConfiguration.markdownTheme.descListTermAndDefMargins)
     }
     /**
      * 数据刷新

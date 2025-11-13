@@ -9,7 +9,7 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- *
+ * 定义列表解释
  */
 @Component
 public class MarkdownDescDefComponent {
@@ -126,8 +126,8 @@ public class MarkdownDescDefComponent {
         .listDirection(Axis.Vertical)
         // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
         .alignListItem(ListItemAlign.Start)
-        //
-        .margin(left: 10)
+        // 左边距
+        .margin(left: markdownConfiguration.markdownTheme.descListDefIndentation)
     }
     /**
      * 数据刷新

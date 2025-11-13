@@ -156,14 +156,14 @@ class MarkdownHeadingComponent {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        headingTextComponent(
+                        headingTextComponent18(
                             item,
                             markdownConfiguration,
                             level
                         )
                     } else if (item.node is Footnote) {
                         // 脚注
-                        headingFootnoteComponent(
+                        headingFootnoteComponent18(
                             item,
                             markdownConfiguration,
                             level,
@@ -179,7 +179,7 @@ class MarkdownHeadingComponent {
                                 isFakeBoldText: true
                             )
                         }else{
-                            headingCodeComponent(
+                            headingCodeComponent18(
                                 item,
                                 markdownConfiguration
                             )
@@ -188,7 +188,7 @@ class MarkdownHeadingComponent {
                         // 链接
                         if ((isListTo && !markdownConfiguration.markdownTheme.isListLinkStyle && isOneLink) || !markdownConfiguration.markdownTheme.isLinkStyle) {
                             if(getLinkString(item).isSome()){
-                                headingLinkComponent(
+                                headingLinkComponent18(
                                     item,
                                     getLinkString(item)(),
                                     markdownConfiguration,
@@ -461,14 +461,14 @@ class MarkdownHeadingComponent {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        headingTextComponent(
+                        headingTextComponent19(
                             item,
                             markdownConfiguration,
                             level
                         )
                     } else if (item.node is Footnote) {
                         // 脚注
-                        headingFootnoteComponent(
+                        headingFootnoteComponent19(
                             item,
                             markdownConfiguration,
                             level,
@@ -484,7 +484,7 @@ class MarkdownHeadingComponent {
                                 isFakeBoldText: true
                             )
                         }else{
-                            headingCodeComponent(
+                            headingCodeComponent19(
                                 item,
                                 markdownConfiguration
                             )
@@ -493,7 +493,7 @@ class MarkdownHeadingComponent {
                         // 链接
                         if ((isListTo && !markdownConfiguration.markdownTheme.isListLinkStyle && isOneLink) || !markdownConfiguration.markdownTheme.isLinkStyle) {
                             if(getLinkString(item).isSome()){
-                                headingLinkComponent(
+                                headingLinkComponent19(
                                     item,
                                     getLinkString(item)(),
                                     markdownConfiguration,
