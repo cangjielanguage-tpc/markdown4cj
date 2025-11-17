@@ -19,6 +19,11 @@ class MarkdownCodeComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
+     * 列表节点
+     */
+    var nodeView: NodeView
+
+    /**
      * 代码内容
      */
     @State
@@ -29,11 +34,6 @@ class MarkdownCodeComponent {
      */
     @State
     var info: Option<String> = Option<String>.None
-
-    /**
-     * 定位需要的数组
-     */
-    var indexList: ArrayList<Int64> = ArrayList<Int64>()
 
     /**
      * 代码列表
@@ -57,14 +57,15 @@ class MarkdownCodeComponent {
      */
     let scroller2: Scroller = Scroller()
 
-    var codeComponents: ArrayList<MarkdownCodeComponent>
-
-    var codeTextComponents: ArrayList<MarkdownCodeTextComponent>
+    /**
+     * 缓存的单独代码块控件
+     */
+    var codeComponents: HashMap<Int64, MarkdownCodeComponent>
 
     /**
-     * 长度
+     * 缓存的单独代码块控件
      */
-    var size: Int64 = -1
+    var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent>
 
     @State
     var reachBottom: Bool = true
@@ -72,19 +73,15 @@ class MarkdownCodeComponent {
     var chatTouch: Bool = false
 
     protected override func aboutToAppear(): Unit {
-        refreshData(codeText, info)
-        codeComponents.add(this)
+        // 初始化刷新数据
+        refreshData(nodeView)
+        // 缓存当前控件
+        codeComponents.add(this.nodeView.nodeHash, this)
     }
 
     protected override func aboutToDisappear(): Unit {
-        codeComponents.removeIf(
-            {
-                predicate => if (predicate.indexList == indexList && predicate.codeText == codeText) {
-                    true
-                } else {
-                    false
-                }
-            })
+        // 清除当前控件
+        codeComponents.remove(this.nodeView.nodeHash)
     }
 
     func build() {
@@ -145,7 +142,6 @@ class MarkdownCodeComponent {
                                             codeText: item,
                                             info: info,
                                             idx: idx,
-                                            indexList: indexAdd(indexList, idx),
                                             codeTextComponents: codeTextComponents
                                         )
                                     }
@@ -378,9 +374,11 @@ class MarkdownCodeComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(codeText: String, info: Option<String>): Unit {
-        this.codeText = codeText
-        this.info = info
+    public func refreshData(nodeView: NodeView): Unit {
+        this.nodeView = nodeView
+        let data = getCodeInfo(nodeView)
+        this.codeText = data[0]
+        this.info = data[1]
         let arr = ArrayList<String>()
         codeText.lines().forEach({
             s => arr.add(s)
@@ -416,9 +414,13 @@ class MarkdownCodeComponent {
                     lineInt64Array.replaceData(i, arr[i])
                 }
             }
-            for (data in codeTextComponents) {
-                if (isListItem(indexList, data.indexList, indexItem)) {
-                    data.refreshData(arr[indexItem],info)
+            let cache = codeTextComponents.get(indexItem)
+            if (let Some(v) <- cache) {
+                v.refreshData(arr[indexItem],info)
+            } else {
+                if(lineStrArray.getData(indexItem) != arr[indexItem]){
+                    lineStrArray.replaceData(indexItem, arr[indexItem])
+                    lineInt64Array.replaceData(indexItem, arr[indexItem])
                 }
             }
         } else {
@@ -436,6 +438,5 @@ class MarkdownCodeComponent {
                 lineInt64Array.deleteData(i)
             }
         }
-        size = lineStrArray.totalCount() // 更新列表长度
     }
 }

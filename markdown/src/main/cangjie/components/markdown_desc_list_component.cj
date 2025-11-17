@@ -19,19 +19,9 @@ public class MarkdownDescListComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 列表内容数据
+     * 列表节点
      */
-    var nodeViews: ArrayList<NodeView>
-
-    /**
-     * 定位需要的数组
-     */
-    var indexList: ArrayList<Int64> = ArrayList<Int64>()
-
-    /**
-     * 长度
-     */
-    var size: Int64 = -1
+    var nodeView: NodeView
 
     /**
      * 上边距 - 单位vp
@@ -49,6 +39,9 @@ public class MarkdownDescListComponent {
     @Prop
     var componentWidth: Float64
 
+    /**
+     * 缓存的数据
+     */
     var markdownCacheConfiguration: MarkdownCacheConfiguration
 
     /**
@@ -73,20 +66,14 @@ public class MarkdownDescListComponent {
 
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
-        refreshData(nodeViews)
+        refreshData(nodeView)
         // 缓存当前控件
-        markdownCacheConfiguration.descListComponent.add(this)
+        markdownCacheConfiguration.descListComponent.add(this.nodeView.nodeHash, this)
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        markdownCacheConfiguration.descListComponent.removeIf({
-                predicate => if (predicate.indexList == indexList && predicate.size == size) {
-                    true
-                } else {
-                    false
-                }
-            })
+        markdownCacheConfiguration.descListComponent.remove(this.nodeView.nodeHash)
     }
 
     func build() {
@@ -94,35 +81,33 @@ public class MarkdownDescListComponent {
             LazyForEach(
                 nodeViewDataSource,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if(item.node is DescTerm){
+                    item: NodeView, idx: Int64 => if (item.node is DescTerm) {
                         // 术语
                         ListItem() {
                             MarkdownDescTermComponent(
                                 markdownConfiguration: markdownConfiguration,
-                                nodeViews: item.children,
+                                nodeView: item,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
-                                indexList: indexAdd(indexList, idx),
                                 markdownCacheConfiguration: markdownCacheConfiguration
                             )
                         }
-                    }else if(item.node is DescDef){
+                    } else if (item.node is DescDef) {
                         // 定义
                         ListItem() {
                             MarkdownDescDefComponent(
                                 markdownConfiguration: markdownConfiguration,
-                                nodeViews: item.children,
+                                nodeView: item,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
-                                indexList: indexAdd(indexList, idx),
                                 markdownCacheConfiguration: markdownCacheConfiguration
                             )
                         }
@@ -132,6 +117,9 @@ public class MarkdownDescListComponent {
                             Text("")
                         }
                     }
+                },
+                keyGeneratorFunc: {
+                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
                 }
             )
         }
@@ -148,69 +136,117 @@ public class MarkdownDescListComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
+    public func refreshData(nodeView: NodeView): Unit {
+        this.nodeView = nodeView
+        let refreshNodeViews = nodeView.children
         let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = nodeViewDataSource.totalCount() // 页面缓存的数据长度
-        // 增量加载
         if (refreshNodeViewSize == 0) {
             return
         }
         if (refreshNodeViewSize > dataSourceSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
-            for(i in 0..dataSourceSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewDataSource.getAllData()[i],"nodeid",0)){
+            for (i in 0..dataSourceSize) {
+                let newBlockHash = refreshNodeViews[i].nodeHash
+                let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
+                let newContentHash = refreshNodeViews[i].contentHash
+                let oldContentHash = nodeViewDataSource.getData(i).contentHash
+                // 唯一ID是否相同
+                if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                     nodeViewDataSource.replaceData(i, refreshNodeViews[i])
+                } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
+                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
+                } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+                    if (refreshNodeViews[i].node is DescTerm) {
+                        // 术语
+                        let cache = markdownCacheConfiguration.descTermComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeViews[i])
+                        }
+                    } else if (refreshNodeViews[i].node is DescDef) {
+                        // 解释
+                        let cache = markdownCacheConfiguration.descDefComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeViews[i])
+                        }
+                    } else {
+                        nodeViewDataSource.replaceData(i, refreshNodeViews[i])
+                    }
+                } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
                 }
             }
             // 循环添加新数据
-            for(i in dataSourceSize..refreshNodeViewSize){
+            for (i in dataSourceSize..refreshNodeViewSize) {
                 nodeViewDataSource.addData(refreshNodeViews[i])
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
-            let indexItem: Int64 = dataSourceSize - 1
-            for(i in 0..indexItem){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewDataSource.getAllData()[i],"nodeid",0)){
+            for (i in 0..dataSourceSize) {
+                let newBlockHash = refreshNodeViews[i].nodeHash
+                let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
+                let newContentHash = refreshNodeViews[i].contentHash
+                let oldContentHash = nodeViewDataSource.getData(i).contentHash
+                // 唯一ID是否相同
+                if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                     nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                }
-            }
-            if (refreshNodeViews[indexItem].node.getNodeType() != nodeViewDataSource.getData(indexItem).node.getNodeType()) {
-                // 最后一条数据类型不相等
-                nodeViewDataSource.replaceData(indexItem, refreshNodeViews[indexItem])
-            } else {
-                if ((refreshNodeViews[indexItem].node is DescTerm && nodeViewDataSource.getData(indexItem).node is DescTerm)) {
-                    //
-                    for (data in markdownCacheConfiguration.descTermComponent) {
-                        if (isListItem(indexList, data.indexList, indexItem)) {
-                            data.refreshData(refreshNodeViews[indexItem].children)
+                } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
+                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
+                } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+                    if (refreshNodeViews[i].node is DescTerm) {
+                        // 术语
+                        let cache = markdownCacheConfiguration.descTermComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeViews[i])
                         }
-                    }
-                } else if ((refreshNodeViews[indexItem].node is DescDef && nodeViewDataSource.getData(indexItem).node is DescDef)) {
-                    //
-                    for (data in markdownCacheConfiguration.descDefComponent) {
-                        if (isListItem(indexList, data.indexList, indexItem)) {
-                            data.refreshData(refreshNodeViews[indexItem].children)
+                    } else if (refreshNodeViews[i].node is DescDef) {
+                        // 解释
+                        let cache = markdownCacheConfiguration.descDefComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeViews[i])
                         }
+                    } else {
+                        nodeViewDataSource.replaceData(i, refreshNodeViews[i])
                     }
-                } else {
-                    // 其他节点
-                    nodeViewDataSource.replaceData(indexItem, refreshNodeViews[indexItem])
+                } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
                 }
             }
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
-            for(i in 0..refreshNodeViewSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewDataSource.getAllData()[i],"nodeid",0)){
+            for (i in 0..refreshNodeViewSize) {
+                let newBlockHash = refreshNodeViews[i].nodeHash
+                let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
+                let newContentHash = refreshNodeViews[i].contentHash
+                let oldContentHash = nodeViewDataSource.getData(i).contentHash
+                // 唯一ID是否相同
+                if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                     nodeViewDataSource.replaceData(i, refreshNodeViews[i])
+                } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
+                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
+                } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+                    if (refreshNodeViews[i].node is DescTerm) {
+                        // 术语
+                        let cache = markdownCacheConfiguration.descTermComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeViews[i])
+                        }
+                    } else if (refreshNodeViews[i].node is DescDef) {
+                        // 解释
+                        let cache = markdownCacheConfiguration.descDefComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeViews[i])
+                        }
+                    } else {
+                        nodeViewDataSource.replaceData(i, refreshNodeViews[i])
+                    }
+                } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
                 }
             }
             // 循环删除多余的旧数据
-            for(i in dataSourceSize - 1..=refreshNodeViewSize : -1){
+            for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
                 nodeViewDataSource.deleteData(i)
             }
         }
-        size = nodeViewDataSource.totalCount() // 更新列表长度
     }
 }

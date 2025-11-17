@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 package markdown.components
 
@@ -9,17 +9,17 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 定义列表术语
+ * 脚注
  */
 @Component
-public class MarkdownDescTermComponent {
+public class MarkdownFootnoteComponent {
     /**
      * markdown配置
      */
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 术语节点
+     * 脚注节点
      */
     var nodeView: NodeView
 
@@ -68,12 +68,12 @@ public class MarkdownDescTermComponent {
         // 初始化刷新数据
         refreshData(nodeView)
         // 缓存当前控件
-        markdownCacheConfiguration.descTermComponent.add(this.nodeView.nodeHash, this)
+        markdownCacheConfiguration.footnoteComponent.add(this.nodeView.nodeHash, this)
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        markdownCacheConfiguration.descTermComponent.remove(this.nodeView.nodeHash)
+        markdownCacheConfiguration.footnoteComponent.remove(this.nodeView.nodeHash)
     }
 
     func build() {
@@ -87,16 +87,13 @@ public class MarkdownDescTermComponent {
                             MarkdownParagraphComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
-                                imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
+                                footnoteBlock: (nodeView.node as FootnoteBlock)(),
+                                marginTop: marginTop,
+                                marginBottom: marginBottom,
                                 fontCallback: fontCallback,
-                                imageCallback: imageCallback,
                                 tocListOnClick: tocListOnClick,
+                                imageCallback: imageCallback,
                                 componentWidth: componentWidth,
-                                isListTo: true,
-                                isDescList: true,
                                 paragraphComponents: markdownCacheConfiguration.paragraphComponents
                             )
                         }
@@ -116,8 +113,8 @@ public class MarkdownDescTermComponent {
         .listDirection(Axis.Vertical)
         // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
         .alignListItem(ListItemAlign.Start)
-        // 术语和定义行之间间距
-        .margin(bottom: markdownConfiguration.markdownTheme.descListTermAndDefMargins)
+        // 左边距
+        .margin(left: markdownConfiguration.markdownTheme.descListDefIndentation)
     }
 
     /**

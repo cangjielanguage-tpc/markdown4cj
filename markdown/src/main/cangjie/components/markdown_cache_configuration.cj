@@ -7,35 +7,37 @@ package markdown.components
  * 缓存控件列表数据
  */
 public class MarkdownCacheConfiguration {
-    let headingComponents: ArrayList<MarkdownHeadingComponent> = ArrayList<MarkdownHeadingComponent>()
+    let headingComponents: HashMap<Int64, MarkdownHeadingComponent> = HashMap<Int64, MarkdownHeadingComponent>()
 
-    let paragraphComponents: ArrayList<MarkdownParagraphComponent> = ArrayList<MarkdownParagraphComponent>()
+    let paragraphComponents: HashMap<Int64, MarkdownParagraphComponent> =  HashMap<Int64, MarkdownParagraphComponent>()
 
-    let listComponents: ArrayList<MarkdownListComponent> = ArrayList<MarkdownListComponent>()
+    let listComponents:  HashMap<Int64, MarkdownListComponent> =  HashMap<Int64, MarkdownListComponent>()
 
-    let listItemComponents: ArrayList<MarkdownListItemComponent> = ArrayList<MarkdownListItemComponent>()
+    let listItemComponents:  HashMap<Int64, MarkdownListItemComponent> =  HashMap<Int64, MarkdownListItemComponent>()
 
-    let quoteComponents: ArrayList<MarkdownQuoteComponent> = ArrayList<MarkdownQuoteComponent>()
+    let quoteComponents:  HashMap<Int64, MarkdownQuoteComponent> =  HashMap<Int64, MarkdownQuoteComponent>()
 
-    let tableComponents: ArrayList<MarkdownTableBlockComponent> = ArrayList<MarkdownTableBlockComponent>()
+    let tableComponents:  HashMap<Int64, MarkdownTableBlockComponent> =  HashMap<Int64, MarkdownTableBlockComponent>()
 
-    let tableRowComponents: ArrayList<MarkdownTableBlockRowComponent> = ArrayList<MarkdownTableBlockRowComponent>()
+    let tableRowComponents:  HashMap<Int64, MarkdownTableBlockRowComponent> =  HashMap<Int64, MarkdownTableBlockRowComponent>()
 
-    let tableCellComponents: ArrayList<MarkdownTableBlockCellComponent> = ArrayList<MarkdownTableBlockCellComponent>()
+    let tableCellComponents:  HashMap<Int64, MarkdownTableBlockCellComponent> =  HashMap<Int64, MarkdownTableBlockCellComponent>()
 
-    let indentedCodeComponents: ArrayList<MarkdownIndentedCodeBlockComponent> = ArrayList<MarkdownIndentedCodeBlockComponent>()
+    let indentedCodeComponents:  HashMap<Int64, MarkdownIndentedCodeBlockComponent> =  HashMap<Int64, MarkdownIndentedCodeBlockComponent>()
 
-    let fencedCodeComponents: ArrayList<MarkdownFencedCodeBlockComponent> = ArrayList<MarkdownFencedCodeBlockComponent>()
+    let fencedCodeComponents:  HashMap<Int64, MarkdownFencedCodeBlockComponent> =  HashMap<Int64, MarkdownFencedCodeBlockComponent>()
 
-    let codeComponents: ArrayList<MarkdownCodeComponent> = ArrayList<MarkdownCodeComponent>()
+    let codeComponents:  HashMap<Int64, MarkdownCodeComponent> =  HashMap<Int64, MarkdownCodeComponent>()
 
-    let codeTextComponents: ArrayList<MarkdownCodeTextComponent> = ArrayList<MarkdownCodeTextComponent>()
+    let codeTextComponents:  HashMap<Int64, MarkdownCodeTextComponent> =  HashMap<Int64, MarkdownCodeTextComponent>()
 
-    let descListComponent: ArrayList<MarkdownDescListComponent> = ArrayList<MarkdownDescListComponent>()
+    let descListComponent:  HashMap<Int64, MarkdownDescListComponent> =  HashMap<Int64, MarkdownDescListComponent>()
 
-    let descTermComponent: ArrayList<MarkdownDescTermComponent> = ArrayList<MarkdownDescTermComponent>()
+    let descTermComponent:  HashMap<Int64, MarkdownDescTermComponent> =  HashMap<Int64, MarkdownDescTermComponent>()
 
-    let descDefComponent: ArrayList<MarkdownDescDefComponent> = ArrayList<MarkdownDescDefComponent>()
+    let descDefComponent:  HashMap<Int64, MarkdownDescDefComponent> =  HashMap<Int64, MarkdownDescDefComponent>()
+
+    let footnoteComponent:  HashMap<Int64, MarkdownFootnoteComponent> =  HashMap<Int64, MarkdownFootnoteComponent>()
 
     func clearAll(): Unit {
         listComponents.clear()
@@ -53,5 +55,6 @@ public class MarkdownCacheConfiguration {
         descListComponent.clear()
         descTermComponent.clear()
         descDefComponent.clear()
+        footnoteComponent.clear()
     }
 }

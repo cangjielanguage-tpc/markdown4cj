@@ -19,24 +19,14 @@ class MarkdownParagraphComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 段落内容数据
+     * 段落节点
      */
-    var nodeViews: ArrayList<NodeView>
-
-    /**
-     * 定位需要的数组
-     */
-    var indexList: ArrayList<Int64> = ArrayList<Int64>()
+    var nodeView: NodeView
 
     /**
      * 脚注
      */
     var footnoteBlock: Option<FootnoteBlock> = Option<FootnoteBlock>.None
-
-    /**
-     * 长度
-     */
-    var size: Int64 = -1
 
     /**
      * 上边距 - 单位vp
@@ -57,7 +47,7 @@ class MarkdownParagraphComponent {
     /**
      * 缓存的第一层段落控件列表
      */
-    var paragraphComponents: ArrayList<MarkdownParagraphComponent>
+    var paragraphComponents: HashMap<Int64, MarkdownParagraphComponent>
 
     /**
      * 脚注点击事件
@@ -113,25 +103,18 @@ class MarkdownParagraphComponent {
 
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
-        refreshData(nodeViews)
+        refreshData(nodeView)
         // 缓存当前控件
-        paragraphComponents.add(this)
+        paragraphComponents.add(this.nodeView.nodeHash, this)
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        paragraphComponents.removeIf(
-            {
-                predicate => if (predicate.indexList == indexList && predicate.size == size) {
-                    true
-                } else {
-                    false
-                }
-            })
+        paragraphComponents.remove(this.nodeView.nodeHash)
     }
 
     func build() {
-        Column(){
+        Column() {
             paragraphComponent()
         }
         // 设置外边距属性
@@ -204,27 +187,27 @@ class MarkdownParagraphComponent {
                     } else if (item.node is CommonmarkLink) {
                         // 链接
                         if ((isListTo && !markdownConfiguration.markdownTheme.isListLinkStyle && isOneLink) || !markdownConfiguration.markdownTheme.isLinkStyle) {
-                            if(getLinkString(item).isSome()){
+                            if (getLinkString(item).isSome()) {
                                 paragraphLinkComponent18(
                                     item,
                                     isDescList,
                                     getLinkString(item)(),
                                     markdownConfiguration
                                 )
-                            }else{
+                            } else {
                                 Span("")
                             }
                         } else {
                             if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
-                                if(getLinkString(item).isSome()){
-                                    if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
+                                if (getLinkString(item).isSome()) {
+                                    if (getLinkString(item)().trimAscii().toRuneArray().size > 1) {
                                         MarkdownLinkRectImageComponent(
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
                                             backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectImageBackGroupColor)
                                         )
-                                    }else{
+                                    } else {
                                         MarkdownLinkCircleImageComponent(
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
@@ -232,11 +215,11 @@ class MarkdownParagraphComponent {
                                             backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkCircleImageBackGroupColor)
                                         )
                                     }
-                                }else{
+                                } else {
                                     Span("")
                                 }
                             } else {
-                                if(getLinkString(item).isSome()){
+                                if (getLinkString(item).isSome()) {
                                     MarkdownLinkRectToolImageComponent(
                                         markdownConfiguration: markdownConfiguration,
                                         strText: getLinkString(item)(),
@@ -244,7 +227,7 @@ class MarkdownParagraphComponent {
                                         strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
                                         backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectToolImageBackGroupColor)
                                     )
-                                }else{
+                                } else {
                                     Span("")
                                 }
                             }
@@ -267,7 +250,11 @@ class MarkdownParagraphComponent {
                                 imageCallback: imageCallback,
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                linkUrl: if (item.link.isSome()) {
+                                    item.link().getDestination()
+                                } else {
+                                    Option<String>.None
+                                },
                             )
                         } else {
                             MarkdownImgHtml14Component(
@@ -279,13 +266,17 @@ class MarkdownParagraphComponent {
                                 imageCallback: imageCallback,
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                linkUrl: if (item.link.isSome()) {
+                                    item.link().getDestination()
+                                } else {
+                                    Option<String>.None
+                                },
                             )
                         }
                     } else if (item.node is StyleImage) {
                         //  图片Style节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                            if ((item.node as StyleImage)().getDestination().startsWith("./")) {
                                 MarkdownImgStyleRawFileComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
@@ -294,10 +285,14 @@ class MarkdownParagraphComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
-                                if (DeviceInfo.sdkApiVersion >=15) {
+                                if (DeviceInfo.sdkApiVersion >= 15) {
                                     MarkdownImgStyleUrl15Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as StyleImage)().getDestination(),
@@ -306,7 +301,11 @@ class MarkdownParagraphComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 } else {
                                     MarkdownImgStyleUrl14Component(
@@ -317,12 +316,16 @@ class MarkdownParagraphComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 }
                             }
                         } else {
-                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                            if ((item.node as StyleImage)().getDestination().startsWith("./")) {
                                 MarkdownImgStyleRawFileCallbackComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
@@ -331,10 +334,14 @@ class MarkdownParagraphComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
-                                if (DeviceInfo.sdkApiVersion >=15) {
+                                if (DeviceInfo.sdkApiVersion >= 15) {
                                     MarkdownImgStyleUrlCallback15Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as StyleImage)().getDestination(),
@@ -343,9 +350,13 @@ class MarkdownParagraphComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
-                                }else{
+                                } else {
                                     MarkdownImgStyleUrlCallback14Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as StyleImage)().getDestination(),
@@ -354,7 +365,11 @@ class MarkdownParagraphComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 }
                             }
@@ -362,7 +377,7 @@ class MarkdownParagraphComponent {
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                            if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
                                 MarkdownImgRawFileComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as CommonmarkImage)().getDestination(),
@@ -370,10 +385,14 @@ class MarkdownParagraphComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
-                                if (DeviceInfo.sdkApiVersion >=15) {
+                                if (DeviceInfo.sdkApiVersion >= 15) {
                                     MarkdownImgUrl15Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as CommonmarkImage)().getDestination(),
@@ -381,7 +400,11 @@ class MarkdownParagraphComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 } else {
                                     MarkdownImgUrl14Component(
@@ -391,12 +414,16 @@ class MarkdownParagraphComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 }
                             }
                         } else {
-                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                            if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
                                 MarkdownImgRawFileCallbackComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as CommonmarkImage)().getDestination(),
@@ -404,10 +431,14 @@ class MarkdownParagraphComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
-                                if (DeviceInfo.sdkApiVersion >=15) {
+                                if (DeviceInfo.sdkApiVersion >= 15) {
                                     MarkdownImgUrlCallback15Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as CommonmarkImage)().getDestination(),
@@ -415,7 +446,11 @@ class MarkdownParagraphComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 } else {
                                     MarkdownImgUrlCallback14Component(
@@ -425,7 +460,11 @@ class MarkdownParagraphComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 }
                             }
@@ -439,15 +478,19 @@ class MarkdownParagraphComponent {
                             backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.latexMathBackGroupColor),
                             linkCallback: markdownConfiguration.linkCallback,
                             isLink: item.link.isSome(),
-                            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+                            linkUrl: if (item.link.isSome()) {
+                                item.link().getDestination()
+                            } else {
+                                Option<String>.None
+                            }
                         )
                     } else {
                         // TODO 其他节点
                         Span("")
                     }
                 },
-                keyGeneratorFunc:{
-                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
+                keyGeneratorFunc: {
+                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
                 }
             )
         }
@@ -456,11 +499,15 @@ class MarkdownParagraphComponent {
         // 设置行高
         .lineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
         // 自定义设置组件是否支持文本可复制粘贴
-        .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) { true } else { false })
+        .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
+            true
+        } else {
+            false
+        })
         // 自定义长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件
         .interopOnCopy({
-            str => if (markdownConfiguration.textCopyCallback.isSome()) {
-                markdownConfiguration.textCopyCallback()(str)
+            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
+                v(str)
             }
         })
     }
@@ -525,27 +572,27 @@ class MarkdownParagraphComponent {
                     } else if (item.node is CommonmarkLink) {
                         // 链接
                         if ((isListTo && !markdownConfiguration.markdownTheme.isListLinkStyle && isOneLink) || !markdownConfiguration.markdownTheme.isLinkStyle) {
-                            if(getLinkString(item).isSome()){
+                            if (getLinkString(item).isSome()) {
                                 paragraphLinkComponent19(
                                     item,
                                     isDescList,
                                     getLinkString(item)(),
                                     markdownConfiguration
                                 )
-                            }else{
+                            } else {
                                 Span("")
                             }
                         } else {
                             if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
-                                if(getLinkString(item).isSome()){
-                                    if(getLinkString(item)().trimAscii().toRuneArray().size > 1){
+                                if (getLinkString(item).isSome()) {
+                                    if (getLinkString(item)().trimAscii().toRuneArray().size > 1) {
                                         MarkdownLinkRectImageComponent(
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
                                             backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectImageBackGroupColor)
                                         )
-                                    }else{
+                                    } else {
                                         MarkdownLinkCircleImageComponent(
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
@@ -553,11 +600,11 @@ class MarkdownParagraphComponent {
                                             backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkCircleImageBackGroupColor)
                                         )
                                     }
-                                }else{
+                                } else {
                                     Span("")
                                 }
                             } else {
-                                if(getLinkString(item).isSome()){
+                                if (getLinkString(item).isSome()) {
                                     MarkdownLinkRectToolImageComponent(
                                         markdownConfiguration: markdownConfiguration,
                                         strText: getLinkString(item)(),
@@ -565,7 +612,7 @@ class MarkdownParagraphComponent {
                                         strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
                                         backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectToolImageBackGroupColor)
                                     )
-                                }else{
+                                } else {
                                     Span("")
                                 }
                             }
@@ -587,12 +634,16 @@ class MarkdownParagraphComponent {
                             imageCallback: imageCallback,
                             linkCallback: markdownConfiguration.linkCallback,
                             isLink: item.link.isSome(),
-                            linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                            linkUrl: if (item.link.isSome()) {
+                                item.link().getDestination()
+                            } else {
+                                Option<String>.None
+                            },
                         )
                     } else if (item.node is StyleImage) {
                         // 图片Style节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                            if ((item.node as StyleImage)().getDestination().startsWith("./")) {
                                 MarkdownImgStyleRawFileComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
@@ -601,7 +652,11 @@ class MarkdownParagraphComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
                                 MarkdownImgStyleUrl15Component(
@@ -612,11 +667,15 @@ class MarkdownParagraphComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             }
                         } else {
-                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                            if ((item.node as StyleImage)().getDestination().startsWith("./")) {
                                 MarkdownImgStyleRawFileCallbackComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
@@ -625,7 +684,11 @@ class MarkdownParagraphComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
                                 MarkdownImgStyleUrlCallback15Component(
@@ -636,14 +699,18 @@ class MarkdownParagraphComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             }
                         }
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                            if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
                                 MarkdownImgRawFileComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as CommonmarkImage)().getDestination(),
@@ -651,7 +718,11 @@ class MarkdownParagraphComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
                                 MarkdownImgUrl15Component(
@@ -661,11 +732,15 @@ class MarkdownParagraphComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             }
                         } else {
-                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                            if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
                                 MarkdownImgRawFileCallbackComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as CommonmarkImage)().getDestination(),
@@ -673,7 +748,11 @@ class MarkdownParagraphComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
                                 MarkdownImgUrlCallback15Component(
@@ -683,7 +762,11 @@ class MarkdownParagraphComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             }
                         }
@@ -696,15 +779,19 @@ class MarkdownParagraphComponent {
                             backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.latexMathBackGroupColor),
                             linkCallback: markdownConfiguration.linkCallback,
                             isLink: item.link.isSome(),
-                            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+                            linkUrl: if (item.link.isSome()) {
+                                item.link().getDestination()
+                            } else {
+                                Option<String>.None
+                            }
                         )
                     } else {
                         // TODO 其他节点
                         Span("")
                     }
                 },
-                keyGeneratorFunc:{
-                     item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item,"nodeid",0)}"
+                keyGeneratorFunc: {
+                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
                 }
             )
         }
@@ -713,13 +800,16 @@ class MarkdownParagraphComponent {
         // 设置行高
         .lineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
         // 支持设备内复制
-        .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) { CopyOptions.LocalDevice } else { CopyOptions.None })
+        .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
+            CopyOptions.LocalDevice
+        } else {
+            CopyOptions.None
+        })
         // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
         .onCopy({
-            str =>
-                if(markdownConfiguration.textCopyCallback.isSome()){
-                   markdownConfiguration.textCopyCallback()(str)
-                }
+            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
+                v(str)
+            }
         })
     }
 
@@ -728,25 +818,25 @@ class MarkdownParagraphComponent {
      */
     @Builder
     func paragraphComponent() {
-        if(DeviceInfo.sdkApiVersion >=19){
+        if (DeviceInfo.sdkApiVersion >= 19) {
             paragraphComponent19()
         } else {
             paragraphComponent18()
         }
     }
 
-    func isMarginTop():Float64{
-        if(nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
+    func isMarginTop(): Float64 {
+        if (nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage) {
             return 0.0
-        }else{
+        } else {
             return marginTop
         }
     }
 
-    func isMarginBottom():Float64{
-        if(nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage){
+    func isMarginBottom(): Float64 {
+        if (nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage) {
             return 0.0
-        }else{
+        } else {
             return marginBottom
         }
     }
@@ -754,49 +844,64 @@ class MarkdownParagraphComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
+    public func refreshData(nodeView: NodeView): Unit {
+        this.nodeView = nodeView
+        let refreshNodeViews = nodeView.children
         let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
         let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
-        // 增量加载
         if (refreshNodeViewSize == 0) {
             return
         }
         if (refreshNodeViewSize > nodeViewListSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
-            for(i in 0..nodeViewListSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+            for (i in 0..nodeViewListSize) {
+                let newBlockHash = refreshNodeViews[i].nodeHash
+                let oldBlockHash = nodeViewList[i].nodeHash
+                let newContentHash = refreshNodeViews[i].contentHash
+                let oldContentHash = nodeViewList[i].contentHash
+                // 唯一ID是否相同
+                if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
             // 循环添加新数据
-            for(i in nodeViewListSize..refreshNodeViewSize){
+            for (i in nodeViewListSize..refreshNodeViewSize) {
                 nodeViewList.append(refreshNodeViews[i])
             }
         } else if (refreshNodeViewSize == nodeViewListSize) {
             // 新数据等于页面数据
-            for(i in 0..nodeViewListSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+            for (i in 0..nodeViewListSize) {
+                let newBlockHash = refreshNodeViews[i].nodeHash
+                let oldBlockHash = nodeViewList[i].nodeHash
+                let newContentHash = refreshNodeViews[i].contentHash
+                let oldContentHash = nodeViewList[i].contentHash
+                // 唯一ID是否相同
+                if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
-            for(i in 0..refreshNodeViewSize){
-                if(getProp<Int64>(refreshNodeViews[i],"nodeid",0) != getProp<Int64>(nodeViewList[i],"nodeid",0)){
+            for (i in 0..refreshNodeViewSize) {
+                let newBlockHash = refreshNodeViews[i].nodeHash
+                let oldBlockHash = nodeViewList[i].nodeHash
+                let newContentHash = refreshNodeViews[i].contentHash
+                let oldContentHash = nodeViewList[i].contentHash
+                // 唯一ID是否相同
+                if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
             // 循环删除多余的旧数据
-            for(i in nodeViewListSize - 1..=refreshNodeViewSize : -1){
+            for (i in nodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 nodeViewList.remove(i)
             }
         }
-        size = nodeViewList.size // 更新列表长度
-        if(nodeViewList.size==1 && nodeViewList[0].node is CommonmarkLink){
+        if (nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkLink) {
             isOneLink = true
-        }else{
+        } else {
             isOneLink = false
         }
     }

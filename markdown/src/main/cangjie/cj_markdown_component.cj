@@ -117,7 +117,7 @@ class CJMarkdownComponent {
             }
         }
         // 唯一ID标识插件
-        markdownBuilder.usePlugin(BlockIdPlugin.create())
+        markdownBuilder.usePlugin(NodeIdPlugin.create())
         return markdownBuilder.build()
     }
 

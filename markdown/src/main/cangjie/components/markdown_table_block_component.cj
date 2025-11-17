@@ -19,19 +19,9 @@ class MarkdownTableBlockComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 表格内容数据
+     * 表格节点
      */
-    var nodeViews: ArrayList<NodeView>
-
-    /**
-     * 定位需要的数组
-     */
-    var indexList: ArrayList<Int64> = ArrayList<Int64>()
-
-    /**
-     * 长度
-     */
-    var size: Int64 = -1
+    var nodeView: NodeView
 
     /**
      * 外边距 - 上面
@@ -44,7 +34,7 @@ class MarkdownTableBlockComponent {
     var marginBottom: Float64
 
     /**
-     * 控件宽度 - 单位px
+     * 控件宽度
      */
     @Prop
     var componentWidth: Float64
@@ -60,33 +50,37 @@ class MarkdownTableBlockComponent {
     var imageCallback: (String) -> Unit
 
     /**
-     * 表格
+     * 缓存的表格
      */
-    var tableComponents: ArrayList<MarkdownTableBlockComponent>
+    var tableComponents: HashMap<Int64, MarkdownTableBlockComponent>
 
     /**
-     * 表格行
+     * 缓存的表格行
      */
-    var tableRowComponents: ArrayList<MarkdownTableBlockRowComponent>
+    var tableRowComponents: HashMap<Int64, MarkdownTableBlockRowComponent>
 
     /**
-     * 表格行内格子
+     * 缓存的表格行内格子
      */
-    var tableCellComponents: ArrayList<MarkdownTableBlockCellComponent>
+    var tableCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent>
 
     /**
      * 懒加载数据源
      */
     var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
+    /**
+     * 宽度列表
+     */
     @State
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> = ObservedArrayList<CellWidthArrayIndexedClass>()
 
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
-        refreshData(nodeViews)
+        refreshData(nodeView)
         // 缓存当前控件
-        tableComponents.add(this)
+        tableComponents.add(this.nodeView.nodeHash, this)
+        // 计算多少列
         var cellSize: Int64 = 0
         if (nodeViewDataSource.totalCount() > 0) {
             cellSize = nodeViewDataSource.getData(0).children.size
@@ -98,13 +92,7 @@ class MarkdownTableBlockComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        tableComponents.removeIf({
-            predicate => if (predicate.indexList == indexList && predicate.size == size) {
-                true
-            } else {
-                false
-            }
-        })
+        tableComponents.remove(this.nodeView.nodeHash)
     }
 
     func build() {
@@ -117,12 +105,11 @@ class MarkdownTableBlockComponent {
                             // 行信息
                             MarkdownTableBlockRowComponent(
                                 markdownConfiguration: markdownConfiguration,
-                                nodeViews: tableHeaderOrBody.children,
+                                nodeView: tableHeaderOrBody,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
                                 idRow: idRow,
-                                indexList: indexAdd(indexList, idRow),
                                 tableRowComponents: tableRowComponents,
                                 tableCellComponents: tableCellComponents,
                                 dataRowSize: nodeViewDataSource.totalCount(),
@@ -131,12 +118,12 @@ class MarkdownTableBlockComponent {
                         }
                     },
                     keyGeneratorFunc: {
-                        item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item, "nodeid", 0)}"
+                        item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
                     }
                 )
             }
             // 统一边框样式设置接口
-            .border(width: (markdownConfiguration.markdownTheme.tableBorderWidth / 2.0).vp, color: markdownConfiguration.markdownTheme.tableBorderColor, style: BorderStyle.Solid, radius: markdownConfiguration.markdownTheme.tableRadius.vp)
+            .border(width: markdownConfiguration.markdownTheme.tableBorderWidth.vp, color: markdownConfiguration.markdownTheme.tableBorderColor, style: BorderStyle.Solid, radius: markdownConfiguration.markdownTheme.tableRadius.vp)
             // 设置ListItem在List交叉轴方向的布局方式
             .alignListItem(ListItemAlign.Start)
         }
@@ -153,9 +140,11 @@ class MarkdownTableBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
-        let refreshNodeViewSize = refreshNodeViews.size // 刷新进来的数据长度
-        let dataSourceSize = nodeViewDataSource.totalCount() // 页面缓存的数据长度
+    public func refreshData(nodeView: NodeView): Unit {
+        this.nodeView = nodeView
+        let refreshNodeViews: ArrayList<NodeView> = tableList(nodeView.children)
+        let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
+        let dataSourceSize: Int64 = nodeViewDataSource.totalCount() // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
             return
         }
@@ -163,8 +152,21 @@ class MarkdownTableBlockComponent {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
             for (i in 0..dataSourceSize) {
-                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewDataSource.getAllData()[i], "nodeid", 0)) {
+                let newBlockHash = refreshNodeViews[i].nodeHash
+                let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
+                let newContentHash = refreshNodeViews[i].contentHash
+                let oldContentHash = nodeViewDataSource.getData(i).contentHash
+                // 唯一ID是否相同
+                if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                     nodeViewDataSource.replaceData(i, refreshNodeViews[i])
+                } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
+                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
+                } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+                    let cache = tableRowComponents.get(newBlockHash)
+                    if (let Some(v) <- cache) {
+                        v.refreshData(refreshNodeViews[i])
+                    }
+                } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
                 }
             }
             // 循环添加新数据
@@ -173,23 +175,43 @@ class MarkdownTableBlockComponent {
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
-            let indexRow: Int64 = dataSourceSize - 1
-            for (i in 0..indexRow) {
-                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewDataSource.getAllData()[i], "nodeid", 0)) {
+            for (i in 0..dataSourceSize) {
+                let newBlockHash = refreshNodeViews[i].nodeHash
+                let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
+                let newContentHash = refreshNodeViews[i].contentHash
+                let oldContentHash = nodeViewDataSource.getData(i).contentHash
+                // 唯一ID是否相同
+                if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                     nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                }
-            }
-            for (data in tableRowComponents) {
-                if (isListItem(indexList, data.indexList, indexRow)) {
-                    data.refreshData(refreshNodeViews[indexRow].children)
+                } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
+                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
+                } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+                    let cache = tableRowComponents.get(newBlockHash)
+                    if (let Some(v) <- cache) {
+                        v.refreshData(refreshNodeViews[i])
+                    }
+                } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
                 }
             }
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
             for (i in 0..refreshNodeViewSize) {
-                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewDataSource.getAllData()[i], "nodeid", 0)) {
+                let newBlockHash = refreshNodeViews[i].nodeHash
+                let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
+                let newContentHash = refreshNodeViews[i].contentHash
+                let oldContentHash = nodeViewDataSource.getData(i).contentHash
+                // 唯一ID是否相同
+                if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                     nodeViewDataSource.replaceData(i, refreshNodeViews[i])
+                } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
+                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
+                } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+                    let cache = tableRowComponents.get(newBlockHash)
+                    if (let Some(v) <- cache) {
+                        v.refreshData(refreshNodeViews[i])
+                    }
+                } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
                 }
             }
             // 循环删除多余的旧数据
@@ -197,6 +219,5 @@ class MarkdownTableBlockComponent {
                 nodeViewDataSource.deleteData(i)
             }
         }
-        size = nodeViewDataSource.totalCount() // 更新列表长度
     }
 }

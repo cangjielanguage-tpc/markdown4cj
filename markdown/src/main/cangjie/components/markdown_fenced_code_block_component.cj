@@ -19,9 +19,9 @@ class MarkdownFencedCodeBlockComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 定位需要的数组
+     * 列表节点
      */
-    var indexList: ArrayList<Int64> = ArrayList<Int64>()
+    var nodeView: NodeView
 
     /**
      * 代码内容
@@ -52,16 +52,9 @@ class MarkdownFencedCodeBlockComponent {
     var arrayList: ObservedArrayList<PrismNodesParseRes> = ObservedArrayList<PrismNodesParseRes>()
 
     /**
-     * 缓存的第一层代码块控件列表
+     * 缓存的围栏代码块控件列表
      */
-    var fencedCodeComponents: ArrayList<MarkdownFencedCodeBlockComponent>
-
-    /**
-     * 代码行数
-     */
-    @State
-    @Watch[refreshLines]
-    var lines: Int64 = 0
+    var fencedCodeComponents: HashMap<Int64, MarkdownFencedCodeBlockComponent>
 
     /**
      * 代码行数显示数据列表
@@ -70,19 +63,15 @@ class MarkdownFencedCodeBlockComponent {
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>()
 
     protected override func aboutToAppear(): Unit {
-        refreshData(codeText, info)
-        fencedCodeComponents.add(this)
+        // 初始化刷新数据
+        refreshData(nodeView)
+        // 缓存当前控件
+        fencedCodeComponents.add(this.nodeView.nodeHash, this)
     }
 
     protected override func aboutToDisappear(): Unit {
-        fencedCodeComponents.removeIf(
-            {
-                predicate => if (predicate.indexList == indexList && predicate.codeText == codeText) {
-                    true
-                } else {
-                    false
-                }
-            })
+        // 清除当前控件
+        fencedCodeComponents.remove(this.nodeView.nodeHash)
     }
 
     func build() {
@@ -104,6 +93,9 @@ class MarkdownFencedCodeBlockComponent {
                                 .maxLines(1)
                                 // 设置文本超长时的显示方式
                                 .textOverflow(TextOverflow.Ellipsis)
+                        },
+                        keyGeneratorFunc: {
+                            item: Int64, idx: Int64 => return "${idx}-${item}"
                         }
                     )
                 }
@@ -150,6 +142,9 @@ class MarkdownFencedCodeBlockComponent {
                         .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
                         // 设置文本字符间距
                         .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
+                },
+                keyGeneratorFunc: {
+                    item: PrismNodesParseRes, idx: Int64 => return "${idx}-${item.getText()}"
                 }
             )
         }
@@ -247,7 +242,7 @@ class MarkdownFencedCodeBlockComponent {
                                 // 设置宽度
                                 .width(5)
 
-                            if(markdownConfiguration.markdownTheme.codeBlockIconTextHide){
+                            if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
                                 Text("复制代码")
                                     // 设置字体颜色
                                     .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
@@ -285,10 +280,10 @@ class MarkdownFencedCodeBlockComponent {
                                 // 设置宽度
                                 .width(5)
 
-                            if(markdownConfiguration.markdownTheme.codeBlockIconTextHide){
+                            if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
                                 Text("全屏代码")
                                     // 设置字体颜色
-                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme,markdownConfiguration.markdownTheme.prismTheme))
                                     // 设置字体大小
                                     .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
                                     // 设置容器元素绘制区域内的子元素的对齐方式
@@ -323,19 +318,38 @@ class MarkdownFencedCodeBlockComponent {
         .alignItems(VerticalAlign.Center)
     }
 
-    func refreshLines(): Unit {
-        lineArray.set(Array<Int64>(lines, repeat: 0))
-    }
-
     /**
      * 数据刷新
      */
-    public func refreshData(str: String, tp: String): Unit {
-        info = tp
-        codeText = str
-        lines = codeText.lines().count()
-        lineArray.set(Array<Int64>(lines, repeat: 0))
-        stringCodeToResList(str)
+    public func refreshData(nodeView: NodeView): Unit {
+        this.nodeView = nodeView
+        let data = getCodeInfo(nodeView)
+        this.info = data[1]()
+        this.codeText = data[0]
+        let lines = codeText.lines().count()
+        refreshLines(lines)
+        stringCodeToResList(this.codeText)
+    }
+
+    /**
+     * 行号刷新
+     */
+    func refreshLines(lines: Int64): Unit {
+        let lineList = Array<Int64>(lines, repeat: 0)
+        let newSize = lines
+        let oldSize = lineArray.size
+        if(newSize == oldSize){
+        } else if(newSize > oldSize){
+            // 循环添加新数据
+            for (i in oldSize..newSize) {
+                lineArray.append(lineList[i])
+            }
+        } else {
+            // 循环删除多余的旧数据
+            for (i in oldSize - 1..=newSize : -1) {
+                lineArray.remove(i)
+            }
+        }
     }
 
     /**
@@ -344,8 +358,28 @@ class MarkdownFencedCodeBlockComponent {
     func stringCodeToResList(str: String) {
         let callback: (ArrayList<PrismNodesParseRes>) -> Unit = {
             prismNodesParseResLists => launch {
-                arrayList.clear()
-                arrayList.appendAll(prismNodesParseResLists)
+                let newSize = prismNodesParseResLists.size
+                let oldSize = arrayList.size
+                if(newSize == oldSize){
+                    for(i in 0..oldSize){
+                        arrayList[i] =  prismNodesParseResLists[i]
+                    }
+                } else if(newSize > oldSize){
+                    for (i in 0..oldSize) {
+                        arrayList[i] =  prismNodesParseResLists[i]
+                    }
+                    for (i in oldSize..newSize) {
+                        arrayList.append(prismNodesParseResLists[i])
+                    }
+                } else {
+                    for (i in 0..newSize) {
+                        arrayList[i] =  prismNodesParseResLists[i]
+                    }
+                    // 循环删除多余的旧数据
+                    for (i in oldSize - 1..=newSize : -1) {
+                        arrayList.remove(i)
+                    }
+                }
             }
         }
         stringToResList(str, info, markdownConfiguration.markdownTheme.prismTheme, callback)
