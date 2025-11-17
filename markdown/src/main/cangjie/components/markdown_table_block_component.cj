@@ -80,6 +80,10 @@ class MarkdownTableBlockComponent {
         refreshData(nodeView)
         // 缓存当前控件
         tableComponents.add(this.nodeView.nodeHash, this)
+        cellSizeFunc()
+    }
+
+    func cellSizeFunc(){
         // 计算多少列
         var cellSize: Int64 = 0
         if (nodeViewDataSource.totalCount() > 0) {
@@ -148,6 +152,15 @@ class MarkdownTableBlockComponent {
         if (refreshNodeViewSize == 0) {
             return
         }
+        let cellSize = refreshNodeViews[0].children.size
+        if(cellSize != cellWidthArrayIndexed.size){
+            cellWidthArrayIndexed.clear()
+            nodeViewDataSource.clear()
+            nodeViewDataSource.addDatas(refreshNodeViews)
+            cellSizeFunc()
+            return
+        }
+
         if (refreshNodeViewSize > dataSourceSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
