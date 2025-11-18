@@ -72,7 +72,14 @@ class MarkdownIndentedCodeBlockComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        indentedCodeComponents.remove(this.nodeView.nodeHash)
+        let value = indentedCodeComponents.get(this.nodeView.nodeHash)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                indentedCodeComponents.remove(this.nodeView.nodeHash)
+            }
+        } else {
+            indentedCodeComponents.remove(this.nodeView.nodeHash)
+        }
     }
 
     func build() {

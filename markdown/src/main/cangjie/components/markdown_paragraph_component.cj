@@ -110,7 +110,14 @@ class MarkdownParagraphComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        paragraphComponents.remove(this.nodeView.nodeHash)
+        let value = paragraphComponents.get(this.nodeView.nodeHash)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                paragraphComponents.remove(this.nodeView.nodeHash)
+            }
+        } else {
+            paragraphComponents.remove(this.nodeView.nodeHash)
+        }
     }
 
     func build() {

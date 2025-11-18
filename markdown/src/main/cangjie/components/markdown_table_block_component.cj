@@ -80,7 +80,6 @@ class MarkdownTableBlockComponent {
         refreshData(nodeView)
         // 缓存当前控件
         tableComponents.add(this.nodeView.nodeHash, this)
-        cellSizeFunc()
     }
 
     func cellSizeFunc(){
@@ -96,7 +95,14 @@ class MarkdownTableBlockComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        tableComponents.remove(this.nodeView.nodeHash)
+        let value = tableComponents.get(this.nodeView.nodeHash)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                tableComponents.remove(this.nodeView.nodeHash)
+            }
+        } else {
+            tableComponents.remove(this.nodeView.nodeHash)
+        }
     }
 
     func build() {

@@ -80,7 +80,14 @@ class MarkdownTableBlockRowComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        tableRowComponents.remove(this.nodeView.nodeHash)
+        let value = tableRowComponents.get(this.nodeView.nodeHash)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                tableRowComponents.remove(this.nodeView.nodeHash)
+            }
+        } else {
+            tableRowComponents.remove(this.nodeView.nodeHash)
+        }
     }
 
     func build() {

@@ -71,7 +71,14 @@ class MarkdownFencedCodeBlockComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        fencedCodeComponents.remove(this.nodeView.nodeHash)
+        let value = fencedCodeComponents.get(this.nodeView.nodeHash)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                fencedCodeComponents.remove(this.nodeView.nodeHash)
+            }
+        } else {
+            fencedCodeComponents.remove(this.nodeView.nodeHash)
+        }
     }
 
     func build() {

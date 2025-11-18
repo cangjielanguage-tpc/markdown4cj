@@ -101,7 +101,14 @@ class MarkdownHeadingComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        headingComponents.remove(this.nodeView.nodeHash)
+        let value = headingComponents.get(this.nodeView.nodeHash)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                headingComponents.remove(this.nodeView.nodeHash)
+            }
+        } else {
+            headingComponents.remove(this.nodeView.nodeHash)
+        }
     }
 
     func build() {

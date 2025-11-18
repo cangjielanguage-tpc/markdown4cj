@@ -78,7 +78,14 @@ class MarkdownListItemComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        markdownCacheConfiguration.listItemComponents.remove(this.nodeView.nodeHash)
+        let value = markdownCacheConfiguration.listItemComponents.get(this.nodeView.nodeHash)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                markdownCacheConfiguration.listItemComponents.remove(this.nodeView.nodeHash)
+            }
+        } else {
+            markdownCacheConfiguration.listItemComponents.remove(this.nodeView.nodeHash)
+        }
     }
 
     func build() {
@@ -375,6 +382,7 @@ class MarkdownListItemComponent {
                 let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
                 let newContentHash = refreshNodeViews[i].contentHash
                 let oldContentHash = nodeViewDataSource.getData(i).contentHash
+
                 // 唯一ID是否相同
                 if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                     nodeViewDataSource.replaceData(i, refreshNodeViews[i])

@@ -73,7 +73,14 @@ public class MarkdownDescDefComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        markdownCacheConfiguration.descDefComponent.remove(this.nodeView.nodeHash)
+        let value = markdownCacheConfiguration.descDefComponent.get(this.nodeView.nodeHash)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                markdownCacheConfiguration.descDefComponent.remove(this.nodeView.nodeHash)
+            }
+        } else {
+            markdownCacheConfiguration.descDefComponent.remove(this.nodeView.nodeHash)
+        }
     }
 
     func build() {

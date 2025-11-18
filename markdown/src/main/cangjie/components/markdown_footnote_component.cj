@@ -73,7 +73,14 @@ public class MarkdownFootnoteComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        markdownCacheConfiguration.footnoteComponent.remove(this.nodeView.nodeHash)
+        let value = markdownCacheConfiguration.footnoteComponent.get(this.nodeView.nodeHash)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                markdownCacheConfiguration.footnoteComponent.remove(this.nodeView.nodeHash)
+            }
+        } else {
+            markdownCacheConfiguration.footnoteComponent.remove(this.nodeView.nodeHash)
+        }
     }
 
     func build() {

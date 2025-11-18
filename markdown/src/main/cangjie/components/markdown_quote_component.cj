@@ -78,7 +78,14 @@ public class MarkdownQuoteComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        markdownCacheConfiguration.quoteComponents.remove(this.nodeView.nodeHash)
+        let value = markdownCacheConfiguration.quoteComponents.get(this.nodeView.nodeHash)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                markdownCacheConfiguration.quoteComponents.remove(this.nodeView.nodeHash)
+            }
+        } else {
+            markdownCacheConfiguration.quoteComponents.remove(this.nodeView.nodeHash)
+        }
     }
 
     func build() {
