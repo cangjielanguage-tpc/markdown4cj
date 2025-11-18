@@ -227,6 +227,32 @@ public class CJImageErrorInterop <: InteropObjectBase {
     }
 }
 
+public class CJSizeOptions <: InteropObjectBase {
+    public CJSizeOptions(width: Float64, height: Float64) {
+        super(getCtx().object())
+        setProp("width", width.toJSValue(getCtx()))
+        setProp("height", height.toJSValue(getCtx()))
+    }
+
+    public prop widthCJ: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("width"))
+        }
+    }
+
+    public prop heightCJ: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("height"))
+        }
+    }
+
+    static func fromJSValue(context: JSContext, input: JSValue): CJSizeOptions {
+        let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
+        let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
+        CJSizeOptions(width, height)
+    }
+}
+
 extend Span {
     func interopStyle(isBool: Bool, backgroundColor: Color): Span {
         if (isBool) {
@@ -331,6 +357,20 @@ extend ImageSpan {
             radius.call(value.toJSValue(ctx))
         } catch (e: Exception) {
         }
+        return this
+    }
+}
+
+extend Column {
+    func interopOnSizeChange(callback: (CJSizeOptions, CJSizeOptions) -> Unit): Column {
+        let global = context.getOrThrow().global
+        let ctx = context.getOrThrow()
+        let column = global["Column"].asObject(ctx)
+        let callBackFunc = getCtx().function {
+            ctx, callInfo => callback(CJSizeOptions.fromJSValue(ctx, callInfo[0]),
+                CJSizeOptions.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+        }
+        column.callMethod("onSizeChange", [callBackFunc.toJSValue()])
         return this
     }
 }

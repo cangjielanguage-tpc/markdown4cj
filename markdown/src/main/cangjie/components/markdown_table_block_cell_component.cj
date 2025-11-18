@@ -137,13 +137,14 @@ class MarkdownTableBlockCellComponent {
         // 设置约束尺寸，组件布局时，进行尺寸范围限制
         .constraintSize(minWidth: minTextWidth.vp, maxWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth.vp)
         // 组件区域变化时触发该回调
-        .onAreaChange(
+        .interopOnSizeChange(
             {
                 old, new =>
-                    if (old.width == new.width) {
+                    let oldWidth: Float64 = old.widthCJ
+                    let newWidth: Float64 = new.widthCJ
+                    if(old.widthCJ == new.widthCJ){
                         return
                     }
-                    let newWidth: Float64 = new.width
                     if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
                         if (v.index == idxItem && newWidth > v.minWidth) {
                             cellWidthArrayIndexed[idxItem] = CellWidthArrayIndexedClass(minWidth: newWidth, index: idxItem)
