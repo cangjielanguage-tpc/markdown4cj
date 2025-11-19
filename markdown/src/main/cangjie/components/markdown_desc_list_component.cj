@@ -9,10 +9,10 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * Markdown无序列表(任务列表)、有序列表(TOC列表)自定义控件
+ * 定义列表
  */
 @Component
-public class MarkdownListComponent {
+public class MarkdownDescListComponent {
     /**
      * markdown配置
      */
@@ -24,17 +24,12 @@ public class MarkdownListComponent {
     var nodeView: NodeView
 
     /**
-     * 是无序列表还是有序列表 - true：无序列表，fasle：有序列表
-     */
-    var isOrdered: Bool
-
-    /**
-     * 外边距 - 上面
+     * 上边距 - 单位vp
      */
     var marginTop: Float64
 
     /**
-     * 外边距 - 下面
+     * 下边距 - 单位vp
      */
     var marginBottom: Float64
 
@@ -43,6 +38,11 @@ public class MarkdownListComponent {
      */
     @Prop
     var componentWidth: Float64
+
+    /**
+     * 缓存的数据
+     */
+    var markdownCacheConfiguration: MarkdownCacheConfiguration
 
     /**
      * 脚注点击事件
@@ -60,16 +60,6 @@ public class MarkdownListComponent {
     var imageCallback: (String) -> Unit
 
     /**
-     * 视频点击事件
-     */
-    var videoCallback: (String) -> Unit
-
-    /**
-     * 缓存的数据
-     */
-    var markdownCacheConfiguration: MarkdownCacheConfiguration
-
-    /**
      * 懒加载数据源
      */
     var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
@@ -78,18 +68,18 @@ public class MarkdownListComponent {
         // 初始化刷新数据
         refreshData(nodeView)
         // 缓存当前控件
-        markdownCacheConfiguration.listComponents.add(this.nodeView.nodeHash, this)
+        markdownCacheConfiguration.descListComponent.add(this.nodeView.nodeHash, this)
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        let value = markdownCacheConfiguration.listComponents.get(this.nodeView.nodeHash)
+        let value = markdownCacheConfiguration.descListComponent.get(this.nodeView.nodeHash)
         if (let Some(v) <- value) {
             if (refEq(v, this)) {
-                markdownCacheConfiguration.listComponents.remove(this.nodeView.nodeHash)
+                markdownCacheConfiguration.descListComponent.remove(this.nodeView.nodeHash)
             }
         } else {
-            markdownCacheConfiguration.listComponents.remove(this.nodeView.nodeHash)
+            markdownCacheConfiguration.descListComponent.remove(this.nodeView.nodeHash)
         }
     }
 
@@ -98,23 +88,10 @@ public class MarkdownListComponent {
             LazyForEach(
                 nodeViewDataSource,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => ListItem() {
-                        Row() {
-                            if (isOrdered) {
-                                if (item.node is CommonmarkListItem) {
-                                    // 普通有序列表
-                                    listPrefixTextINCComponent(item, true, markdownConfiguration)
-                                }
-                            } else {
-                                if (item.node is TaskListItem) {
-                                    // 任务列表
-                                    listPrefixCheckboxINCComponent(item, markdownConfiguration)
-                                } else if (item.node is CommonmarkListItem) {
-                                    // 普通无序列表
-                                    listPrefixTextINCComponent(item, false, markdownConfiguration)
-                                }
-                            }
-                            MarkdownListItemComponent(
+                    item: NodeView, idx: Int64 => if (item.node is DescTerm) {
+                        // 术语
+                        ListItem() {
+                            MarkdownDescTermComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
@@ -122,18 +99,31 @@ public class MarkdownListComponent {
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
-                                videoCallback: videoCallback,
                                 componentWidth: componentWidth,
                                 markdownCacheConfiguration: markdownCacheConfiguration
                             )
                         }
-                        // 在垂直方向上子组件的对齐格式。
-                        .alignItems(VerticalAlign.Top)
-                        // 设置子组件在水平方向上的对齐格式。
-                        .justifyContent(FlexAlign.Start)
+                    } else if (item.node is DescDef) {
+                        // 定义
+                        ListItem() {
+                            MarkdownDescDefComponent(
+                                markdownConfiguration: markdownConfiguration,
+                                nodeView: item,
+                                marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                fontCallback: fontCallback,
+                                tocListOnClick: tocListOnClick,
+                                imageCallback: imageCallback,
+                                componentWidth: componentWidth,
+                                markdownCacheConfiguration: markdownCacheConfiguration
+                            )
+                        }
+                    } else {
+                        // TODO 其他节点
+                        ListItem() {
+                            Text("")
+                        }
                     }
-                    // 对子组件进行重新布局
-                    .layoutWeight(1)
                 },
                 keyGeneratorFunc: {
                     item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
@@ -175,9 +165,20 @@ public class MarkdownListComponent {
                 } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
                     nodeViewDataSource.replaceData(i, refreshNodeViews[i])
                 } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                    let cache = markdownCacheConfiguration.listItemComponents.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(refreshNodeViews[i])
+                    if (refreshNodeViews[i].node is DescTerm) {
+                        // 术语
+                        let cache = markdownCacheConfiguration.descTermComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeViews[i])
+                        }
+                    } else if (refreshNodeViews[i].node is DescDef) {
+                        // 解释
+                        let cache = markdownCacheConfiguration.descDefComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeViews[i])
+                        }
+                    } else {
+                        nodeViewDataSource.replaceData(i, refreshNodeViews[i])
                     }
                 } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
                 }
@@ -199,9 +200,20 @@ public class MarkdownListComponent {
                 } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
                     nodeViewDataSource.replaceData(i, refreshNodeViews[i])
                 } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                    let cache = markdownCacheConfiguration.listItemComponents.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(refreshNodeViews[i])
+                    if (refreshNodeViews[i].node is DescTerm) {
+                        // 术语
+                        let cache = markdownCacheConfiguration.descTermComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeViews[i])
+                        }
+                    } else if (refreshNodeViews[i].node is DescDef) {
+                        // 解释
+                        let cache = markdownCacheConfiguration.descDefComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeViews[i])
+                        }
+                    } else {
+                        nodeViewDataSource.replaceData(i, refreshNodeViews[i])
                     }
                 } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
                 }
@@ -220,9 +232,20 @@ public class MarkdownListComponent {
                 } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
                     nodeViewDataSource.replaceData(i, refreshNodeViews[i])
                 } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                    let cache = markdownCacheConfiguration.listItemComponents.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(refreshNodeViews[i])
+                    if (refreshNodeViews[i].node is DescTerm) {
+                        // 术语
+                        let cache = markdownCacheConfiguration.descTermComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeViews[i])
+                        }
+                    } else if (refreshNodeViews[i].node is DescDef) {
+                        // 解释
+                        let cache = markdownCacheConfiguration.descDefComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeViews[i])
+                        }
+                    } else {
+                        nodeViewDataSource.replaceData(i, refreshNodeViews[i])
                     }
                 } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
                 }

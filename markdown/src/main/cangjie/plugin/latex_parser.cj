@@ -46,7 +46,6 @@ class LatexBlockParser <: AbstractBlockParser {
     }
 
     public func closeBlock(): Unit {
-        block.isClosed = true
         block.latex = builder.toString()
     }
 }

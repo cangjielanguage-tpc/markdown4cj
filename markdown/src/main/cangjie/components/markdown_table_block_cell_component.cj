@@ -19,19 +19,9 @@ class MarkdownTableBlockCellComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 表格内容数据
+     * 表格Cell节点
      */
-    var nodeViews: ArrayList<NodeView>
-
-    /**
-     * 定位需要的数组
-     */
-    var indexList: ArrayList<Int64> = ArrayList<Int64>()
-
-    /**
-     * 长度
-     */
-    var size: Int64 = -1
+    var nodeView: NodeView
 
     /**
      * 是否是标题
@@ -72,7 +62,7 @@ class MarkdownTableBlockCellComponent {
     /**
      * 缓存的表格的Cell列表
      */
-    var tableCellComponents: ArrayList<MarkdownTableBlockCellComponent>
+    var tableCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent>
 
     /**
      * 脚注点击事件
@@ -91,62 +81,37 @@ class MarkdownTableBlockCellComponent {
     var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     /**
-     *
+     * 最小宽度
      */
     @State
     var minTextWidth: Float64 = 0.0
 
     /**
-     *
+     * 宽度列表
      */
-    @State
-    var minTextHeight: Float64 = 0.0
-
-    @Link
-    @Watch[refreshTextHeight]
-    var maxHeight: Float64
-
     @Prop
     @Watch[refreshTextWidth]
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
 
-    func refreshTextWidth(): Unit {
-        if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
-            if (v.index == idxItem && v.minWidth > minTextWidth) {
-                minTextWidth = v.minWidth
-            }
-        } else {
-            minTextWidth = markdownConfiguration.markdownTheme.tableMinTextWidth
-        }
-    }
-
-    func refreshTextHeight(): Unit {
-        minTextHeight = maxHeight
-    }
-
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
-        refreshData(nodeViews)
+        refreshData(nodeView)
         // 缓存当前控件
-        tableCellComponents.add(this)
-        if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
-            if (v.index == idxItem && v.minWidth > minTextWidth) {
-                minTextWidth = v.minWidth
-            }
-        } else {
-            minTextWidth = markdownConfiguration.markdownTheme.tableMinTextWidth
-        }
+        tableCellComponents.add(this.nodeView.nodeHash, this)
+        // 宽度刷新
+        refreshTextWidth()
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        tableCellComponents.removeIf({
-            predicate => if (predicate.indexList == indexList && predicate.size == size) {
-                true
-            } else {
-                false
+        let value = tableCellComponents.get(this.nodeView.nodeHash)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                tableCellComponents.remove(this.nodeView.nodeHash)
             }
-        })
+        } else {
+            tableCellComponents.remove(this.nodeView.nodeHash)
+        }
     }
 
     func build() {
@@ -157,6 +122,8 @@ class MarkdownTableBlockCellComponent {
         .alignItems(renderTableCellColumnAlign(alignment))
         // 设置 Column 子组件在垂直方向上的对齐格式
         .justifyContent(FlexAlign.Center)
+        // 覆盖 Flex 布局容器中 alignItems 默认配置
+        .alignSelf(ItemAlign.Stretch)
         // 设置内边距属性
         .padding(markdownConfiguration.markdownTheme.tableCellPadding)
         // 设置组件的背景色
@@ -168,17 +135,11 @@ class MarkdownTableBlockCellComponent {
         // 设置边框的颜色
         .borderColor(markdownConfiguration.markdownTheme.tableBorderColor)
         // 设置约束尺寸，组件布局时，进行尺寸范围限制
-        .constraintSize(minWidth: minTextWidth.vp, maxWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth.vp, minHeight: minTextHeight.vp)
+        .constraintSize(minWidth: minTextWidth.vp, maxWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth.vp)
         // 组件区域变化时触发该回调
         .onAreaChange(
             {
                 old, new =>
-                    let newHeight: Float64 = new.height
-                    if (maxHeight < newHeight) {
-                        maxHeight = newHeight
-                    } else {
-                        maxHeight = minTextHeight
-                    }
                     if (old.width == new.width) {
                         return
                     }
@@ -203,14 +164,14 @@ class MarkdownTableBlockCellComponent {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        tableComponentText(
+                        tableComponentText18(
                             item,
                             isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                             markdownConfiguration
                         )
                     } else if (item.node is Footnote) {
                         // 脚注
-                        tableComponentFootnote(
+                        tableComponentFootnote18(
                             item,
                             isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                             markdownConfiguration,
@@ -227,7 +188,7 @@ class MarkdownTableBlockCellComponent {
                                 isFakeBoldText: isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold) || item.strongEmphasis
                             )
                         } else {
-                            tableComponentCode(
+                            tableComponentCode18(
                                 item,
                                 isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                                 markdownConfiguration
@@ -243,7 +204,7 @@ class MarkdownTableBlockCellComponent {
                         // 链接
                         if (!markdownConfiguration.markdownTheme.isLinkStyle) {
                             if (getLinkString(item).isSome()) {
-                                tableLinkComponent(
+                                tableLinkComponent18(
                                     item,
                                     isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                                     getLinkString(item)(),
@@ -302,7 +263,11 @@ class MarkdownTableBlockCellComponent {
                                 imageCallback: imageCallback,
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                linkUrl: if (item.link.isSome()) {
+                                    item.link().getDestination()
+                                } else {
+                                    Option<String>.None
+                                },
                             )
                         } else {
                             MarkdownImgHtml14Component(
@@ -314,13 +279,17 @@ class MarkdownTableBlockCellComponent {
                                 imageCallback: imageCallback,
                                 linkCallback: markdownConfiguration.linkCallback,
                                 isLink: item.link.isSome(),
-                                linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                linkUrl: if (item.link.isSome()) {
+                                    item.link().getDestination()
+                                } else {
+                                    Option<String>.None
+                                },
                             )
                         }
                     } else if (item.node is StyleImage) {
                         //  图片Style节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                            if ((item.node as StyleImage)().getDestination().startsWith("./")) {
                                 MarkdownImgStyleRawFileComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
@@ -329,10 +298,14 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
-                                if (DeviceInfo.sdkApiVersion >=15) {
+                                if (DeviceInfo.sdkApiVersion >= 15) {
                                     MarkdownImgStyleUrl15Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as StyleImage)().getDestination(),
@@ -341,7 +314,11 @@ class MarkdownTableBlockCellComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 } else {
                                     MarkdownImgStyleUrl14Component(
@@ -352,12 +329,16 @@ class MarkdownTableBlockCellComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 }
                             }
                         } else {
-                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                            if ((item.node as StyleImage)().getDestination().startsWith("./")) {
                                 MarkdownImgStyleRawFileCallbackComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
@@ -366,10 +347,14 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
-                                if (DeviceInfo.sdkApiVersion >=15) {
+                                if (DeviceInfo.sdkApiVersion >= 15) {
                                     MarkdownImgStyleUrlCallback15Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as StyleImage)().getDestination(),
@@ -378,9 +363,13 @@ class MarkdownTableBlockCellComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
-                                }else{
+                                } else {
                                     MarkdownImgStyleUrlCallback14Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as StyleImage)().getDestination(),
@@ -389,7 +378,11 @@ class MarkdownTableBlockCellComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 }
                             }
@@ -397,7 +390,7 @@ class MarkdownTableBlockCellComponent {
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                            if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
                                 MarkdownImgRawFileComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as CommonmarkImage)().getDestination(),
@@ -405,10 +398,14 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
-                                if (DeviceInfo.sdkApiVersion >=15) {
+                                if (DeviceInfo.sdkApiVersion >= 15) {
                                     MarkdownImgUrl15Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as CommonmarkImage)().getDestination(),
@@ -416,7 +413,11 @@ class MarkdownTableBlockCellComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 } else {
                                     MarkdownImgUrl14Component(
@@ -426,12 +427,16 @@ class MarkdownTableBlockCellComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 }
                             }
                         } else {
-                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                            if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
                                 MarkdownImgRawFileCallbackComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as CommonmarkImage)().getDestination(),
@@ -439,10 +444,14 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
-                                if (DeviceInfo.sdkApiVersion >=15) {
+                                if (DeviceInfo.sdkApiVersion >= 15) {
                                     MarkdownImgUrlCallback15Component(
                                         markdownConfiguration: markdownConfiguration,
                                         destination: (item.node as CommonmarkImage)().getDestination(),
@@ -450,7 +459,11 @@ class MarkdownTableBlockCellComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 } else {
                                     MarkdownImgUrlCallback14Component(
@@ -460,7 +473,11 @@ class MarkdownTableBlockCellComponent {
                                         imageCallback: imageCallback,
                                         linkCallback: markdownConfiguration.linkCallback,
                                         isLink: item.link.isSome(),
-                                        linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                        linkUrl: if (item.link.isSome()) {
+                                            item.link().getDestination()
+                                        } else {
+                                            Option<String>.None
+                                        },
                                     )
                                 }
                             }
@@ -475,7 +492,11 @@ class MarkdownTableBlockCellComponent {
                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp,
                             linkCallback: markdownConfiguration.linkCallback,
                             isLink: item.link.isSome(),
-                            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+                            linkUrl: if (item.link.isSome()) {
+                                item.link().getDestination()
+                            } else {
+                                Option<String>.None
+                            }
                         )
                     } else {
                         // TODO 其他节点
@@ -483,18 +504,22 @@ class MarkdownTableBlockCellComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item, "nodeid", 0)}"
+                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
                 }
             )
         }
         // 设置行高
         .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
         // 自定义设置组件是否支持文本可复制粘贴
-        .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) { true } else { false })
+        .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
+            true
+        } else {
+            false
+        })
         // 自定义长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件
         .interopOnCopy({
-            str => if (markdownConfiguration.textCopyCallback.isSome()) {
-                markdownConfiguration.textCopyCallback()(str)
+            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
+                v(str)
             }
         })
     }
@@ -510,14 +535,14 @@ class MarkdownTableBlockCellComponent {
                 itemGeneratorFunc: {
                     item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
                         // 文本
-                        tableComponentText(
+                        tableComponentText19(
                             item,
                             isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                             markdownConfiguration
                         )
                     } else if (item.node is Footnote) {
                         // 脚注
-                        tableComponentFootnote(
+                        tableComponentFootnote19(
                             item,
                             isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                             markdownConfiguration,
@@ -534,7 +559,7 @@ class MarkdownTableBlockCellComponent {
                                 isFakeBoldText: isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold) || item.strongEmphasis
                             )
                         } else {
-                            tableComponentCode(
+                            tableComponentCode19(
                                 item,
                                 isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                                 markdownConfiguration
@@ -550,7 +575,7 @@ class MarkdownTableBlockCellComponent {
                         // 链接
                         if (!markdownConfiguration.markdownTheme.isLinkStyle) {
                             if (getLinkString(item).isSome()) {
-                                tableLinkComponent(
+                                tableLinkComponent19(
                                     item,
                                     isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold),
                                     getLinkString(item)(),
@@ -608,12 +633,16 @@ class MarkdownTableBlockCellComponent {
                             imageCallback: imageCallback,
                             linkCallback: markdownConfiguration.linkCallback,
                             isLink: item.link.isSome(),
-                            linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                            linkUrl: if (item.link.isSome()) {
+                                item.link().getDestination()
+                            } else {
+                                Option<String>.None
+                            },
                         )
                     } else if (item.node is StyleImage) {
                         //  图片Style节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                            if ((item.node as StyleImage)().getDestination().startsWith("./")) {
                                 MarkdownImgStyleRawFileComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
@@ -622,7 +651,11 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
                                 MarkdownImgStyleUrl15Component(
@@ -633,11 +666,15 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             }
                         } else {
-                            if((item.node as StyleImage)().getDestination().startsWith("./")){
+                            if ((item.node as StyleImage)().getDestination().startsWith("./")) {
                                 MarkdownImgStyleRawFileCallbackComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as StyleImage)().getDestination(),
@@ -646,7 +683,11 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
                                 MarkdownImgStyleUrlCallback15Component(
@@ -657,14 +698,18 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             }
                         }
                     } else if (item.node is CommonmarkImage) {
                         // 图片节点
                         if (markdownConfiguration.imageCallbackCallback.isNone()) {
-                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                            if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
                                 MarkdownImgRawFileComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as CommonmarkImage)().getDestination(),
@@ -672,7 +717,11 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
                                 MarkdownImgUrl15Component(
@@ -682,11 +731,15 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             }
                         } else {
-                            if((item.node as CommonmarkImage)().getDestination().startsWith("./")){
+                            if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
                                 MarkdownImgRawFileCallbackComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     destination: (item.node as CommonmarkImage)().getDestination(),
@@ -694,7 +747,11 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             } else {
                                 MarkdownImgUrlCallback15Component(
@@ -704,7 +761,11 @@ class MarkdownTableBlockCellComponent {
                                     imageCallback: imageCallback,
                                     linkCallback: markdownConfiguration.linkCallback,
                                     isLink: item.link.isSome(),
-                                    linkUrl: if (item.link.isSome()) {item.link().getDestination()} else {Option<String>.None},
+                                    linkUrl: if (item.link.isSome()) {
+                                        item.link().getDestination()
+                                    } else {
+                                        Option<String>.None
+                                    },
                                 )
                             }
                         }
@@ -718,7 +779,11 @@ class MarkdownTableBlockCellComponent {
                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp,
                             linkCallback: markdownConfiguration.linkCallback,
                             isLink: item.link.isSome(),
-                            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+                            linkUrl: if (item.link.isSome()) {
+                                item.link().getDestination()
+                            } else {
+                                Option<String>.None
+                            }
                         )
                     } else {
                         // TODO 其他节点
@@ -726,20 +791,48 @@ class MarkdownTableBlockCellComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${getProp<Int64>(item, "nodeid", 0)}"
+                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
                 }
             )
         }
         // 设置行高
         .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
         // 支持设备内复制
-        .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) { CopyOptions.LocalDevice } else { CopyOptions.None })
+        .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
+            CopyOptions.LocalDevice
+        } else {
+            CopyOptions.None
+        })
         // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
         .onCopy({
-            str => if (markdownConfiguration.textCopyCallback.isSome()) {
+            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
                 markdownConfiguration.textCopyCallback()(str)
             }
         })
+    }
+
+    func leftWidths(): Float64 {
+        return 0.0
+    }
+
+    func rightWidths(): Float64 {
+        return if (idxItem == dataCellSize - 1) {
+            0.0
+        } else {
+            markdownConfiguration.markdownTheme.tableBorderWidth
+        }
+    }
+
+    func topWidths(): Float64 {
+        return if (idRow == 0) {
+            0.0
+        } else {
+            markdownConfiguration.markdownTheme.tableBorderWidth
+        }
+    }
+
+    func bottomWidths(): Float64 {
+        return 0.0
     }
 
     /**
@@ -754,10 +847,22 @@ class MarkdownTableBlockCellComponent {
         }
     }
 
+    func refreshTextWidth(): Unit {
+        if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
+            if (v.index == idxItem && v.minWidth > minTextWidth) {
+                minTextWidth = v.minWidth
+            }
+        } else {
+            minTextWidth = markdownConfiguration.markdownTheme.tableMinTextWidth
+        }
+    }
+
     /**
      * 数据刷新
      */
-    public func refreshData(refreshNodeViews: ArrayList<NodeView>): Unit {
+    public func refreshData(nodeView: NodeView): Unit {
+        this.nodeView = nodeView
+        let refreshNodeViews = nodeView.children
         let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
         let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
@@ -767,7 +872,12 @@ class MarkdownTableBlockCellComponent {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
             for (i in 0..nodeViewListSize) {
-                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
+                let newBlockHash = refreshNodeViews[i].nodeHash
+                let oldBlockHash = nodeViewList[i].nodeHash
+                let newContentHash = refreshNodeViews[i].contentHash
+                let oldContentHash = nodeViewList[i].contentHash
+                // 唯一ID是否相同
+                if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
@@ -778,7 +888,12 @@ class MarkdownTableBlockCellComponent {
         } else if (refreshNodeViewSize == nodeViewListSize) {
             // 新数据等于页面数据
             for (i in 0..nodeViewListSize) {
-                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
+                let newBlockHash = refreshNodeViews[i].nodeHash
+                let oldBlockHash = nodeViewList[i].nodeHash
+                let newContentHash = refreshNodeViews[i].contentHash
+                let oldContentHash = nodeViewList[i].contentHash
+                // 唯一ID是否相同
+                if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
@@ -786,7 +901,12 @@ class MarkdownTableBlockCellComponent {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
             for (i in 0..refreshNodeViewSize) {
-                if (getProp<Int64>(refreshNodeViews[i], "nodeid", 0) != getProp<Int64>(nodeViewList[i], "nodeid", 0)) {
+                let newBlockHash = refreshNodeViews[i].nodeHash
+                let oldBlockHash = nodeViewList[i].nodeHash
+                let newContentHash = refreshNodeViews[i].contentHash
+                let oldContentHash = nodeViewList[i].contentHash
+                // 唯一ID是否相同
+                if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
                     nodeViewList[i] = refreshNodeViews[i]
                 }
             }
@@ -794,39 +914,6 @@ class MarkdownTableBlockCellComponent {
             for (i in nodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 nodeViewList.remove(i)
             }
-        }
-        size = nodeViewList.size // 更新列表长度
-    }
-
-    func leftWidths(): Float64 {
-        return if (idxItem == 0) {
-            0.0
-        } else {
-            markdownConfiguration.markdownTheme.tableBorderWidth / 2.0
-        }
-    }
-
-    func rightWidths(): Float64 {
-        return if (idxItem == dataCellSize - 1) {
-            0.0
-        } else {
-            markdownConfiguration.markdownTheme.tableBorderWidth / 2.0
-        }
-    }
-
-    func topWidths(): Float64 {
-        return if (idRow == 0) {
-            0.0
-        } else {
-            markdownConfiguration.markdownTheme.tableBorderWidth / 2.0
-        }
-    }
-
-    func bottomWidths(): Float64 {
-        return if (idRow == dataRowSize - 1) {
-            0.0
-        } else {
-            markdownConfiguration.markdownTheme.tableBorderWidth / 2.0
         }
     }
 }

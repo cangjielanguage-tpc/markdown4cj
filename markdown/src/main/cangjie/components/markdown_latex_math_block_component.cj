@@ -19,6 +19,11 @@ class MarkdownLatexMathBlockComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
+     * 数学公式节点
+     */
+    var nodeView: NodeView
+
+    /**
      * 外边距 - 上面
      */
     var marginTop: Float64
@@ -63,7 +68,7 @@ class MarkdownLatexMathBlockComponent {
     var isBool: Bool = false
 
     protected override func aboutToAppear(): Unit {
-        latexMathStrToPixelMap()
+        refreshData(nodeView)
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -107,6 +112,14 @@ class MarkdownLatexMathBlockComponent {
             Text(latexStr)
                 .fontColor(Color.RED)
         }
+    }
+
+    /**
+     * 数据刷新
+     */
+    public func refreshData(nodeView:NodeView){
+        this.nodeView = nodeView
+        latexMathStrToPixelMap()
     }
 
     /**

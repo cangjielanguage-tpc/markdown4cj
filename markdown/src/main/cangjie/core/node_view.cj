@@ -198,7 +198,12 @@ public class NodeView <: ToString {
         } else {
             ""
         }
-        return "view:{${node}${startEndStr}${emphaStr}${strongStr}${linkStr}${bulletStr}${orderListStr}${blockQuoteStr}${propStr}${listStr}}"
+        let hashStr = if (nodeHash != 0 && contentHash != 0) {
+            "{nodeHash:${nodeHash},contentHash:${contentHash}}"
+        } else {
+            ""
+        }
+        return "view:{${node}${startEndStr}${emphaStr}${strongStr}${linkStr}${bulletStr}${orderListStr}${blockQuoteStr}${propStr}${listStr}${hashStr}}"
     }
 
     public func clear(): Unit {
@@ -223,6 +228,9 @@ public class NodeView <: ToString {
         }()
         p.add(k, v)
     }
+
+    public var nodeHash = 0
+    public var contentHash = 0
 }
 
 public func buildView(node: Node, needCollect: Bool, needProps!: Bool = false): NodeView {

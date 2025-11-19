@@ -19,9 +19,9 @@ class MarkdownIndentedCodeBlockComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 定位需要的数组
+     * 列表节点
      */
-    var indexList: ArrayList<Int64> = ArrayList<Int64>()
+    var nodeView: NodeView
 
     /**
      * 代码内容
@@ -46,9 +46,9 @@ class MarkdownIndentedCodeBlockComponent {
     var marginBottom: Float64
 
     /**
-     * 缓存的第一层代码块控件列表
+     * 缓存的缩进代码块控件列表
      */
-    var indentedCodeComponents: ArrayList<MarkdownIndentedCodeBlockComponent>
+    var indentedCodeComponents: HashMap<Int64, MarkdownIndentedCodeBlockComponent>
 
     /**
      * 代码行数
@@ -64,19 +64,22 @@ class MarkdownIndentedCodeBlockComponent {
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>()
 
     protected override func aboutToAppear(): Unit {
-        refreshData(codeText, info)
-        indentedCodeComponents.add(this)
+        // 初始化刷新数据
+        refreshData(nodeView)
+        // 缓存当前控件
+        indentedCodeComponents.add(this.nodeView.nodeHash, this)
     }
 
     protected override func aboutToDisappear(): Unit {
-        indentedCodeComponents.removeIf(
-            {
-                predicate => if (predicate.indexList == indexList && predicate.codeText == codeText) {
-                    true
-                } else {
-                    false
-                }
-            })
+        // 清除当前控件
+        let value = indentedCodeComponents.get(this.nodeView.nodeHash)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                indentedCodeComponents.remove(this.nodeView.nodeHash)
+            }
+        } else {
+            indentedCodeComponents.remove(this.nodeView.nodeHash)
+        }
     }
 
     func build() {
@@ -221,8 +224,7 @@ class MarkdownIndentedCodeBlockComponent {
                                 // 设置宽度
                                 .width(5)
 
-
-                            if(markdownConfiguration.markdownTheme.codeBlockIconTextHide){
+                            if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
                                 Text("复制代码")
                                     // 设置字体颜色
                                     .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
@@ -260,7 +262,7 @@ class MarkdownIndentedCodeBlockComponent {
                                 // 设置宽度
                                 .width(5)
 
-                            if(markdownConfiguration.markdownTheme.codeBlockIconTextHide){
+                            if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
                                 Text("全屏代码")
                                     // 设置字体颜色
                                     .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
@@ -304,6 +306,9 @@ class MarkdownIndentedCodeBlockComponent {
         .alignItems(VerticalAlign.Center)
     }
 
+    /**
+     * 行号刷新
+     */
     func refreshLines(): Unit {
         lineArray.set(Array<Int64>(lines, repeat: 0))
     }
@@ -311,10 +316,12 @@ class MarkdownIndentedCodeBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(str: String, tp: Option<String>): Unit {
-        codeText = str.trimEnd("\n")
+    public func refreshData(nodeView: NodeView): Unit {
+        this.nodeView = nodeView
+        let data = getCodeInfo(nodeView)
+        this.info = data[1]
+        this.codeText = data[0].trimEnd("\n")
         lines = codeText.lines().count()
         lineArray.set(Array<Int64>(lines, repeat: 0))
-        info = tp
     }
 }

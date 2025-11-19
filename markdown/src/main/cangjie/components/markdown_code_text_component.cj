@@ -31,11 +31,6 @@ class MarkdownCodeTextComponent {
     var info: Option<String> = Option<String>.None
 
     /**
-     * 定位需要的数组
-     */
-    var indexList: ArrayList<Int64> = ArrayList<Int64>()
-
-    /**
      * 第几条
      */
     @State
@@ -47,22 +42,21 @@ class MarkdownCodeTextComponent {
     @State
     var arrayList: ObservedArrayList<PrismNodesParseRes> = ObservedArrayList<PrismNodesParseRes>()
 
-    var codeTextComponents: ArrayList<MarkdownCodeTextComponent>
+    /**
+     * 缓存的单独代码块控件
+     */
+    var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent>
 
     protected override func aboutToAppear(): Unit {
+        // 初始化刷新数据
         refreshData(codeText, info)
-        codeTextComponents.add(this)
+        // 缓存当前控件
+        codeTextComponents.add(idx, this)
     }
 
     protected override func aboutToDisappear(): Unit {
-        codeTextComponents.removeIf(
-            {
-                predicate => if (predicate.indexList == indexList && predicate.codeText == codeText) {
-                    true
-                } else {
-                    false
-                }
-            })
+        // 清除当前控件
+        codeTextComponents.remove(idx)
     }
 
     func build() {

@@ -67,8 +67,12 @@ func spanText(nodeView: NodeView): String {
         // 内联代码
         return " ${(nodeView.node as Code)().getLiteral()} "
     } else if (nodeView.node is HeadLink) {
-        // TOC列表，title不可能为None
-        return (nodeView.node as HeadLink)().getTitle()()
+        // toc链接和标题id链接
+        return if(let Some(v) <- getLinkString(nodeView)){
+            v
+        } else {
+            ""
+        }
     } else if (nodeView.node is Footnote) {
         // 脚注
         return (nodeView.node as Footnote)().noteid
@@ -178,7 +182,7 @@ func spanTextFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownT
  * @param isTitle 是否是标题
  * @return 返回需要显示的字体粗细
  */
-func spanFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
+func spanFontWeight(nodeView: NodeView, isDescList: Bool, isTitle: Bool): FontWeight {
     if (nodeView.props.isSome() && nodeView.props().get("SpanNode").isSome()) {
         try {
             let spanNode: SpanNode = (nodeView.props().get("SpanNode")() as SpanNode)()
@@ -192,12 +196,12 @@ func spanFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
                     }
                 }
             }
-            return spanTextFontWeight(nodeView, isTitle)
+            return spanTextFontWeight(nodeView, isDescList, isTitle)
         } catch (e: Exception) {
-            return spanTextFontWeight(nodeView, isTitle)
+            return spanTextFontWeight(nodeView, isDescList, isTitle)
         }
     } else {
-        return spanTextFontWeight(nodeView, isTitle)
+        return spanTextFontWeight(nodeView, isDescList, isTitle)
     }
 }
 
@@ -208,8 +212,8 @@ func spanFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
  * @param isTitle 是否是标题
  * @return 返回需要显示的字体粗细
  */
-func spanTextFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
-    if (isTitle) {
+func spanTextFontWeight(nodeView: NodeView, isDescList: Bool, isTitle: Bool): FontWeight {
+    if (isTitle || isDescList) {
         // 所有标题默认加粗
         return FontWeight.W600
     } else {
@@ -227,9 +231,9 @@ func spanTextFontWeight(nodeView: NodeView, isTitle: Bool): FontWeight {
  * @param nodeView NodeView
  * @return 返回需要显示的字体样式（斜体）
  */
-func spanFontStyle(nodeView: NodeView): FontStyle {
+func spanFontStyle(nodeView: NodeView, isDescList: Bool): FontStyle {
     // 是否需要斜体
-    return if (nodeView.emphasis) {
+    return if (nodeView.emphasis || isDescList) {
         FontStyle.Italic
     } else {
         FontStyle.Normal
