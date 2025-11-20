@@ -16,11 +16,20 @@ public class MarkdownComponent {
     * 初始化Markdown自定义控件
     *
     * @param output 传入markdown文档内容
-    * @param isFull 是否全量加载模式 - true：全量加载，false：增量加载
-    * @param markdownConfiguration 传入markdown配置选项
-    * @param markdownBase 传入markdown插件选项
+    * @param markdownAIConfiguration 传入markdown配置选项
+    * @param markdownPlugin 传入markdown插件
+    * @param adBuilder 传入广告布局
+    * @param videoBuilder 传入视频布局
+    * @param audioBuilder 传入音频布局
     */
-    MarkdownComponent(output: String, isFull: Bool, markdownConfiguration!: MarkdownConfiguration, markdownBase!: Markdown)
+    MarkdownComponent(
+        output: String,
+        markdownAIConfiguration!: MarkdownAIConfiguration,
+        markdownPlugin: Markdown,
+        @BuilderParam adBuilder: (NodeView) -> Unit,
+        @BuilderParam videoBuilder: (NodeView, MarkdownConfiguration, (String) -> Unit) -> Unit,
+        @BuilderParam audioBuilder: (NodeView, MarkdownConfiguration) -> Unit
+    )
 }
 ```
 
@@ -77,12 +86,12 @@ public class MarkdownConfigurationBuilder {
     public func setMarkdownTheme(markdownTheme: MarkdownTheme): MarkdownConfigurationBuilder
 
     /**
-     * 设置markdown核心解析器
+     * 设置文本复制的点击事件
      *
-     * @param markdownPlugin markdown核心解析器
+     * @param textCopyCallback 文本复制的点击事件 (String:复制文本)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setMarkdownParser(markdownParser: Markdown): MarkdownConfigurationBuilder
+    public func setTextCopyCallback(textCopyCallback: (String) -> Unit): MarkdownConfigurationBuilder
 
     /**
      * 设置链接的点击事件
@@ -99,6 +108,14 @@ public class MarkdownConfigurationBuilder {
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setImageCallback(imageCallback: (String, ArrayList<String>) -> Unit): MarkdownConfigurationBuilder
+
+    /**
+     * 设置图片替换事件
+     *
+     * @param imageCallbackCallback 图片替换回调接口 (String:图片链接 -> ?Array<UInt8>:图片数据)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setImageCallbackCallback(imageCallbackCallback: (String) -> ?Array<UInt8>): MarkdownConfigurationBuilder
 
     /**
      * 设置音频的点击事件
@@ -122,7 +139,7 @@ public class MarkdownConfigurationBuilder {
      * @param videoImageCallback 视频的图片替换回调接口 - 图片url、宽高比、视频时长
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setVideoImageCallback(videoImageCallback: (String, (String,Float64,Int64) -> Unit) -> Unit): MarkdownConfigurationBuilder
+    public func setVideoImageCallback(videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit): MarkdownConfigurationBuilder
 
     /**
      * 设置代码复制按钮的点击事件
@@ -173,12 +190,12 @@ public class MarkdownConfigurationBuilder {
     public func setFootnoteCallback(footnoteCallback: (?Float64) -> Unit): MarkdownConfigurationBuilder
 
     /**
-     * 设置超大数据跳转页面显示全部数据
+     * 设置获取markdown全部文本
      *
-     * @param listBigDataCallback 超大数据跳转页面显示全部数据接口 (NodeView:NodeView数据,Float64:上外边距,Float64:下外边距,Float64:控件宽度)
+     * @param nodeString markdown全部文本对象
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setListBigDataCallback(listBigDataCallback: ?(NodeView, Float64, Float64, Float64) -> Unit): MarkdownConfigurationBuilder
+    public func setNodeString(nodeString: (NodeViewStringBuilder) -> Unit): MarkdownConfigurationBuilder
 
     /**
      * 返回Config对象
@@ -199,16 +216,16 @@ Markdown用户可设置的样式
 /**
  * Markdown用户可设置的样式
  * 1：上下文 - 本地图片rawfile需要上下文。混合项目是stageContext，仓颉项目是abilityContext
- * 2：每个模块之间上下间距
+ * 2：是否打开长按复制粘贴功能、每个模块之间上下间距
  * 3：链接 - 链接是否是图片显示、列表中的单行链接是否是图片显示
  *          文本链接：文本格式链接文本颜色、是否按照链接文字字体大小显示文本、文本格式链接文字大小、文本格式链接背景颜色、文本格式是否显示链接下划线
  *          圆形图片链接：圆形图片格式链接主题背景颜色、圆形图片格式链接控件背景颜色、圆形图片格式链接文字大小、圆形图片格式链接文字颜色、圆形图片格式链接半径、圆形图片格式链接左右外边距
  *          圆角矩形图片链接：圆角矩形图片格式链接主题背景颜色、圆角矩形图片格式链接控件背景颜色、圆角矩形图片格式链接文字大小、圆角矩形图片格式链接文字颜色、圆角矩形图片格式链接控件高度、圆角矩形图片格式链接左右内边距、圆角矩形图片格式链接圆角半径、圆角矩形图片格式链接左右外边距
- *          空心圆角矩形图片链接：空心圆角矩形图片格式链接主题背景颜色、空心圆角矩形图片格式链接控件背景颜色、空心圆角矩形图片格式链接控件边框颜色、空心圆角矩形图片格式链接控件分割线颜色、空心圆角矩形图片格式链接文字大小、空心圆角矩形图片格式链接文字颜色、空心圆角矩形图片格式链接控件高度、空心圆角矩形图片格式链接左右内边距、空心圆角矩形图片格式链接边框宽度、空心圆角矩形图片格式链接分割线宽度、空心圆角矩形图片格式链接左右外边距、空心圆角矩形图片格式分割线和文本左边距、空心圆角矩形图片格式分割线和文本右边距
+ *          空心圆角矩形图片链接：空心圆角矩形图片格式链接主题背景颜色、空心圆角矩形图片格式链接控件背景颜色、空心圆角矩形图片格式链接文字大小、空心圆角矩形图片格式链接控件高度、空心圆角矩形图片格式链接左右内边距、空心圆角矩形图片格式链接边框宽度、空心圆角矩形图片格式链接分割线宽度、空心圆角矩形图片格式链接左右外边距、空心圆角矩形图片格式分割线和文本左边距、空心圆角矩形图片格式分割线和文本右边距
  * 4：列表 - 块引用：块引用左边距、块引用右边距、块引用左边线条宽度、块引用左边线条颜色、块引用背景颜色、块引用子模块上下间距
  *          有序/无序/任务列表子模块上下间距、有序/无序/任务列表左边距、有序/无序/任务列表右边距
  *          有序列表：有序列表前缀文本是否加粗、有序列表前缀文本颜色、有序列表前缀文本大小、有序列表前缀文本行高
- *          无序列表：无序列表前缀文本颜色、无序列表前缀文本大小、无序列表前缀文本行高
+ *          无序列表：无序列表前缀是否全部是实心圆型、无序列表前缀文本颜色、无序列表前缀文本大小、无序列表前缀文本行高
  *          任务列表：任务列表选择框宽高
  * 5：代码 - 内联代码是否是图片显示
  *          文本/图片格式内联代码文本颜色、文本/图片格式内联代码背景颜色、文本/图片格式内联代码文本大小
@@ -216,9 +233,9 @@ Markdown用户可设置的样式
  *          图片格式内联代码：图片格式内联代码文本左右边距、图片格式内联代码文本高度
  *          缩进/围栏/组合/单独代码块代码文本颜色、缩进/围栏/组合/单独代码块代码类型文本颜色、缩进/围栏/组合/单独代码块代码类型文本、缩进/围栏/组合/单独代码块代码类型和代码块距离、缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示、缩进/围栏/组合/单独代码块代码行号是否显示、缩进/围栏/组合/单独代码块背景颜色、缩进/围栏/组合/单独代码块左边距、缩进/围栏/组合/单独代码块字体、缩进/围栏/组合/单独代码块代码文本大小、缩进/围栏/组合/单独代码块代码文本行高、缩进/围栏/组合/单独代码块圆角大小、缩进/围栏/组合/单独代码块代码全屏按钮是否显示、缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高、缩进/围栏/组合/单独代码块代码全屏按钮默认图标、缩进/围栏/组合/单独代码块代码复制按钮默认图标
  *          组合代码块：组合代码块未选中标题字体大小、组合代码块选中标题字体大小、组合代码块选中标题文本颜色、组合代码块未选中标题文本颜色、组合代码块选中标题背景颜色、组合代码块未选中标题背景颜色
- *          单独代码块：是否单独代码块显示、单独代码块行号宽度
+ *          单独代码块：是否单独代码块显示、单独代码块行号宽度、单独代码块是否居底显示
  * 6：标题 - H1/H2标题下分割线高度、H1/H2标题下分割线颜色
- *          标题文本字体、标题文本大小数组、标题文本颜色、标题文本字间距、一级标题文本行高、二级标题文本行高、三级标题文本行高、四级标题文本行高、五级标题文本行高、六级标题文本行高
+ *          标题文本字体、标题模块上间距、标题模块下间距、标题文本大小数组、标题文本颜色、标题文本字间距、一级标题文本行高、二级标题文本行高、三级标题文本行高、四级标题文本行高、五级标题文本行高、六级标题文本行高
  * 7：段落 - 段落文本大小、段落文本颜色、段落文本字间距、段落文本行高、段落文本字体
  * 8：分割线 - 分割线颜色、分割线高度、分割线上部外边距、分割线下部外边距
  * 9：软换行 - 软换行是否换行
@@ -226,9 +243,10 @@ Markdown用户可设置的样式
  * 11：音频 - 音频图标、音频阴影颜色值、音频边框颜色、音频边框粗细、音频边框圆角、音频按钮背景颜色、音频按钮文字颜色、音频按钮文字大小、音频按钮文字内容、音频按钮圆角大小、音频标题文字大小、音频标题文字颜色、音频标题文字行高、音频类型文字大小、音频类型文字颜色、音频类型文字行高、音频上边距、音频下边距
  * 12：视频 - 视频默认占位图、视频播放按钮默认图标、视频圆角大小、视频时间文本颜色、视频时间文本大小、视频时间文本居右边距、视频时间文本居底边距、视频上边距、视频下边距
  * 13：图片Banner - 图片banner默认占位图
- * 14：图片 - 图片文字是否需要图文混排、图片默认占位图（AppResource）、图片默认占位图（String）、网络图片是否压缩、图片上边距、图片下边距
+ * 14：图片 - 图片基于自身宽度缩放百分比、图片基于父布局宽度缩放百分比、图片圆角大小、图片默认占位图、网络图片是否压缩、图片上边距、图片下边距
  * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高、表格圆角大小、表格一格最小宽度、表格一格最大宽度、表格第一列是否加粗
  * 16：代码高亮 - markdown代码高亮样式
+ * 17：删除线 - 删除线颜色
  */
 public class MarkdownTheme {
     /**
@@ -273,6 +291,8 @@ public class MarkdownTheme {
 
 MarkdownTheme Builder
 
+**注：鉴于性能考虑，对builder的非法参数不做处理**
+
 ```cangjie
 /**
  * MarkdownTheme Builder
@@ -307,6 +327,14 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setAbilityContext(abilityContext: AbilityContext): MarkdownThemeBuilder
+
+    /**
+     * 设置是否打开长按复制粘贴
+     *
+     * @param isOnCopy 是否打开长按复制粘贴 - 默认true
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsOnCopy(isOnCopy: Bool): MarkdownThemeBuilder
 
     /**
      * 设置模块间上下间距
@@ -359,7 +387,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置文本格式链接背景颜色
      *
-     * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0XFF000000
+     * @param linkBackGroupColor 文本格式链接背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkBackGroupColor(linkBackGroupColor: Color): MarkdownThemeBuilder
@@ -669,6 +697,14 @@ public class MarkdownThemeBuilder {
     public func setOrderedListItemLineHeight(orderedListItemLineHeight: Float64): MarkdownThemeBuilder
 
     /**
+     * 设置无序列表前缀是否为实心圆型
+     *
+     * @param bulletListItemCircle 无序列表前缀是否为实心圆型 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setBulletListItemCircle(bulletListItemCircle: Bool): MarkdownThemeBuilder
+
+    /**
      * 设置无序列表前缀文本颜色
      *
      * @param bulletListItemColor 无序列表前缀文本颜色 - 默认OXFF191919
@@ -719,7 +755,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置文本、图片格式内联代码背景颜色
      *
-     * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFF191919
+     * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFFEAEAEA
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeBackgroundColor(codeBackgroundColor: Color): MarkdownThemeBuilder
@@ -949,6 +985,14 @@ public class MarkdownThemeBuilder {
     public func setSeparateCodeBlockWidth(separateCodeBlockWidth: Float64): MarkdownThemeBuilder
 
     /**
+     * 设置单独代码块是否居底显示
+     *
+     * @param separateCodeIsBottom 单独代码块是否居底显示 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setSeparateCodeIsBottom(separateCodeIsBottom: Bool): MarkdownThemeBuilder
+
+    /**
      * 设置H1、H2标题下分割线高度
      *
      * @param headingBreakHeight H1、H2标题下分割线高度 - 默认0.5vp
@@ -971,6 +1015,22 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setHeadingTypeface(headingTypeface: String): MarkdownThemeBuilder
+
+    /**
+     * 设置标题模块上间距
+     *
+     * @param headingTopMargins 标题模块上间距 - 默认8.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTopMargins(headingTopMargins: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置标题模块下间距
+     *
+     * @param headingBottomMargins 标题模块下间距 - 默认8.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingBottomMargins(headingBottomMargins: Float64): MarkdownThemeBuilder
 
     /**
      * 设置标题文本大小数组
@@ -1018,10 +1078,7 @@ public class MarkdownThemeBuilder {
      * @param headingTextLineHeight3 三级标题文本行高 - 默认22.0vp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setHeadingTextLineHeight3(headingTextLineHeight3: Float64): MarkdownThemeBuilder {
-        this.headingTextLineHeight3 = headingTextLineHeight3
-        return this
-    }
+    public func setHeadingTextLineHeight3(headingTextLineHeight3: Float64): MarkdownThemeBuilder
 
     /**
      * 设置四级标题文本行高
@@ -1400,28 +1457,36 @@ public class MarkdownThemeBuilder {
     public func setBannerImage(bannerImage: AppResource): MarkdownThemeBuilder
 
     /**
-     * 设置图片文字是否需要图文混排
+     * 设置图片基于自身宽度缩放百分比
      *
-     * @param isWord 图片文字是否需要图文混排 - true:图文混排；false:不图文混排。默认true
+     * @param imageMaximumWidth 图片基于自身宽度缩放百分比 - 默认1.0
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setIsWord(isWord: Bool): MarkdownThemeBuilder
+    public func setImageMaximumWidth(imageMaximumWidth: Float64): MarkdownThemeBuilder
 
     /**
-     * 设置图片默认占位图 - AppResource
+     * 设置图片基于父布局宽度缩放百分比
      *
-     * @param imageResource 图片默认占位图 - AppResource - 默认None
+     * @param imageFixedRatioWidth 图片基于父布局宽度缩放百分比 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageFixedRatioWidth(imageFixedRatioWidth: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置图片圆角
+     *
+     * @param imageBorderRadius 图片圆角 - 默认0.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageBorderRadius(imageBorderRadius: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置图片默认占位图
+     *
+     * @param imageResource 图片默认占位图 - 默认None
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setImageResource(imageResource: AppResource): MarkdownThemeBuilder
-
-    /**
-     * 设置图片默认占位图 - String
-     *
-     * @param imagePlaceholder 图片默认占位图 - String - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setImagePlaceholder(imagePlaceholder: String): MarkdownThemeBuilder
 
     /**
      * 设置网络图片是否压缩
@@ -1544,6 +1609,30 @@ public class MarkdownThemeBuilder {
     public func setPrismTheme(prismTheme: PrismTheme): MarkdownThemeBuilder
 
     /**
+     * 设置删除线颜色
+     *
+     * @param strikethroughColor 删除线颜色 默认COLOR_191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setStrikethroughColor(strikethroughColor: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置定义列表术语和定义行之间间距
+     *
+     * @param descListTermAndDefMargins 定义列表术语和定义行之间间距 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setDescListTermAndDefMargins(descListTermAndDefMargins: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置定义列表定义行缩进
+     *
+     * @param descListDefIndentation 定义列表定义行缩进 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setDescListDefIndentation(descListDefIndentation: Float64): MarkdownThemeBuilder
+
+    /**
      * 返回Theme对象
      *
      * @return MarkdownTheme MarkdownTheme对象
@@ -1604,6 +1693,18 @@ public interface PrismTheme {
      * @param HashMap<PrismColor, Color> 颜色存储集合
      */
     func setColorMap(colorMap: HashMap<PrismColor, Color>): Unit
+}
+```
+
+### class PrismThemeBase
+
+主题抽象基类
+
+```cangjie
+/**
+ * prism 主题抽象基类
+ */
+public abstract open class PrismThemeBase <: PrismTheme {
 }
 ```
 
@@ -1727,63 +1828,63 @@ public class PrismThemeDarkula <: PrismThemeBase {
 }
 ```
 
-### enum PrismColor
+### class PrismColor
 
-标识枚举
+围栏代码块高亮枚举类
 
 ```cangjie
 /**
  * 围栏代码块高亮枚举类
  */
 public enum PrismColor <: Hashable & Equatable<PrismColor> {
-    COMMENT |
-    PROLOG |
-    DOCTYPE |
-    CDATA |
-    PUNCTUATION |
-    PROPERTY |
-    TAG |
-    BOOLEAN |
-    NUMBER |
-    CONSTANT |
-    SYMBOL |
-    DELETED |
-    SELECTOR |
-    ATTR_NAME |
-    STRING |
-    CHAR |
-    BUILTIN |
-    INSERTED |
-    OPERATOR |
-    URL |
-    ENTITY |
-    ATRULE |
-    ATTR_VALUE |
-    KEYWORD |
-    FUNCTION |
-    CLASS_NAME |
-    REGEX |
-    IMPORTANT |
-    VARIABLE |
-    DELIMITER |
-    ANNOTATION |
-    ESCAPE_SEQ |
-    GENERIC_METHOD |
-    PSEUDO_ELEMENT |
-    PSEUDO_CLASS |
-    CLASS |
-    ID |
-    ATTRIBUTE |
-    HEXCODE |
-    COMMAND |
-    PARAMETER |
-    COORD |
-    COMMIT_SHA1 |
-    SPOCK_BLOCK |
-    NULL |
-    NAMESPACE |
-    SHEBANG |
-    DEFAULT
+    COMMENT | // 注释内容
+    PROLOG | // Prolog 语言中的特定语法结构（如谓词定义）
+    DOCTYPE | // 文档类型声明: 如 HTML 的 <!DOCTYPE html>
+    CDATA | // XML/HTML 中的字符数据块，用于包裹无需解析的原始文本
+    PUNCTUATION | // 标点符号
+    PROPERTY | // CSS/SCSS 中的属性名
+    TAG | // HTML/XML 标签
+    BOOLEAN | // 布尔值（true/false）
+    NUMBER | // 数值内容
+    CONSTANT | // 常量
+    SYMBOL | // 符号或特殊符号
+    DELETED | // 版本控制差异中标记为删除的代码行或片段
+    SELECTOR | // CSS/SCSS 选择器
+    ATTR_NAME | // HTML/XML 属性的名称
+    STRING | // 单引号或双引号包裹的内容
+    CHAR | // 字符字面量，如 char c = 'A'
+    BUILTIN | // 语言内置的函数或类型
+    INSERTED | // 版本控制差异中标记为新增的代码行或片段
+    OPERATOR | // 运算符
+    URL | // 代码中的 URL 字符串
+    ENTITY | // HTML/XML 实体
+    ATRULE | // CSS 预处理器
+    ATTR_VALUE | // HTML/XML 属性的值
+    KEYWORD | // 语言的关键字
+    FUNCTION | // 函数名或方法名
+    CLASS_NAME | // 类名
+    REGEX | // 正则表达式模式
+    IMPORTANT | // CSS 中的 !important 关键字
+    VARIABLE | // 变量名
+    DELIMITER | // 代码中的分隔符号
+    ANNOTATION | // 代码中的注解或装饰性标记
+    ESCAPE_SEQ | // 转义序列
+    GENERIC_METHOD | // 泛型方法声明
+    PSEUDO_ELEMENT | // CSS 伪元素
+    PSEUDO_CLASS | // CSS 伪类
+    CLASS | // HTML/CSS/TypeScript 等的类名
+    ID | // CSS 中的 ID 选择器
+    ATTRIBUTE | // 属性名称(如 HTML 的 id="main" 或 XML 的 attr="value")
+    HEXCODE | // 十六进制颜色值
+    COMMAND | // 命令行工具指令
+    PARAMETER | // 函数或方法的参数名
+    COORD | // 坐标数值，SVG/XML 或图形处理代码
+    COMMIT_SHA1 | // 版本控制中的提交哈希值
+    SPOCK_BLOCK | // Groovy 的 Spock 测试框架中的测试块
+    NULL | // 空值标识
+    NAMESPACE | // 命名空间
+    SHEBANG | // 脚本文件开头的 #! 行
+    DEFAULT // 其它值
 
     public operator func ==(that: PrismColor): Bool
 
@@ -1802,11 +1903,16 @@ public enum PrismColor <: Hashable & Equatable<PrismColor> {
 
 markdown核心解析器通过调用commonmark4cj库进行解析  
 支持对commonmark解析器的扩展  
-同样支持对自身的扩展  
+同样支持对自身的扩展
 
 ### class Markdown
 
+解析和呈现markdown
+
 ```cangjie
+/**
+ * 解析和呈现markdown
+ */
 public abstract class Markdown {
     /**
      * 创建一个 Markdown 实例，并注册 CorePlugin 插件
@@ -1814,7 +1920,7 @@ public abstract class Markdown {
     public static func create(): Markdown
 
     /**
-     *  创建一个 MarkdownBuilder 实例, 并注册 CorePlugin 插件
+     * 创建一个 MarkdownBuilder 实例, 并注册 CorePlugin 插件
      */
     public static func builder(): MarkdownBuilder
 
@@ -1875,7 +1981,12 @@ public abstract class Markdown {
 
 ### class MarkdownBuilder
 
+markdown生成器
+
 ```cangjie
+/**
+ * markdown生成器
+ */
 public interface MarkdownBuilder {
     /**
      * 注册插件
@@ -1954,28 +2065,26 @@ public class NodeView <: ToString {
     /* BlockQuote深度 -1:无效 >=0:深度 */
     public var blockQuoteDepth: Int = -1
     /* 是否被BlockQuote修饰 */
-    public var blockQuote: ?BlockQuote = None
+    public var blockQuote: Bool = false
     /* 是否被Emphasis修饰 */
-    public var emphasis: ?Emphasis = None
+    public var emphasis: Bool = false
     /* 是否被StrongEmphasis修饰 */
-    public var strongEmphasis: ?StrongEmphasis = None
+    public var strongEmphasis: Bool = false
     /* 是否被Link修饰 */
     public var link: ?Link = None
     /* 是否属于BulletList */
-    public var bulletList: ?BulletList = None
+    public var bulletList: Bool = false
     /* 属于第几层OrderedListItem -1:无效 >=0:深度 */
     public var depth: Int = -1
     /* 属于第几位OrderedListItem -1:无效 >=0:序号 */
     public var order: Int = -1
-    public var orderedList: ?OrderedList = None
+    public var orderedList: ?Int = None
     /* 属于第几层BulletListItem -1:无效 >=0:深度 */
     public var bulletListDepth: Int = -1
     /* ListItem中可包含多个Block，但只有第一个Block有列表符号 */
     public var listMark: Bool = false
     // 本身Node节点
-    public let node: Node
-    // Node节点开始结束标志 -1:无效 0:开始 1:结束
-    var startend = -1
+    public var node: Node
     // 是否为Node开始
     public prop isNodeStart: Bool
     // 是否为Node结束
@@ -1991,7 +2100,7 @@ public class NodeView <: ToString {
 }
 ```
 
-### 音频解析插件
+### Markdown音频插件
 
 ```cangjie
 public class BlockAudioPlugin <: AbstractMarkdownPlugin {
@@ -1999,7 +2108,15 @@ public class BlockAudioPlugin <: AbstractMarkdownPlugin {
 }
 ```
 
-### 视频解析插件
+### Markdown节点唯一ID插件 - 流式输入显示前置条件
+
+```cangjie
+public class BlockIdPlugin <: AbstractMarkdownPlugin {
+    public static func create(): BlockIdPlugin
+}
+```
+
+### Markdown视频插件
 
 ```cangjie
 public class BlockVideoPlugin <: AbstractMarkdownPlugin {
@@ -2007,7 +2124,7 @@ public class BlockVideoPlugin <: AbstractMarkdownPlugin {
 }
 ```
 
-### 组合代码块解析插件
+### Markdown代码列表插件
 
 ```cangjie
 public class CodeListPlugin <: AbstractMarkdownPlugin {
@@ -2015,7 +2132,15 @@ public class CodeListPlugin <: AbstractMarkdownPlugin {
 }
 ```
 
-### 脚注解析插件
+### Markdown定义列表插件
+
+```cangjie
+public class DescListPlugin <: AbstractMarkdownPlugin {
+    public static func create(): DescListPlugin
+}
+```
+
+### Markdown脚注插件
 
 ```cangjie
 public class FootnotePlugin <: AbstractMarkdownPlugin {
@@ -2023,7 +2148,7 @@ public class FootnotePlugin <: AbstractMarkdownPlugin {
 }
 ```
 
-### Html解析插件
+### MarkdownHTML插件
 
 ```cangjie
 public class HtmlPlugin <: AbstractMarkdownPlugin {
@@ -2031,71 +2156,23 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
 }
 ```
 
-### 表格解析插件
+### Markdown标题ID插件
 
 ```cangjie
-public class TablePlugin <: AbstractMarkdownPlugin {
-    public static func create(): TablePlugin
+public class IdHeadingPlugin <: AbstractMarkdownPlugin {
+    public static func create(): IdHeadingPlugin
 }
 ```
 
-### toc解析插件
+### Markdown图片URL全部添加到图片点击回调集合插件
 
 ```cangjie
-public class TocPlugin <: AbstractMarkdownPlugin {
-    public static func create(): TocPlugin
+public class ImageCollectPlugin <: AbstractMarkdownPlugin {
+    public static func create(): ImageCollectPlugin
 }
 ```
 
-### 任务列表解析插件
-
-```cangjie
-public class TaskListPlugin <: AbstractMarkdownPlugin {
-    public static func create(): TaskListPlugin
-}
-```
-
-### 删除线解析插件
-
-```cangjie
-public class StrikethroughPlugin <: AbstractMarkdownPlugin {
-    public static func create(): StrikethroughPlugin
-}
-```
-
-### 链接自动解析插件
-
-```cangjie
-public class LinkifyPlugin <: AbstractMarkdownPlugin {
-    public static func create(): LinkifyPlugin
-}
-```
-
-### 链接单独解析插件
-
-```cangjie
-public class LinkViewPlugin <: AbstractMarkdownPlugin {
-    public static func create(): LinkViewPlugin
-}
-```
-
-### 数学公式解析插件
-
-```cangjie
-public class LatexMathPluginV2 <: AbstractMarkdownPlugin {
-    public static func create(): LatexMathPluginV2
-}
-```
-
-### 图片自定义样式解析插件
-
-```cangjie
-public class ImageStylePlugin <: AbstractMarkdownPlugin {
-    public static func create(): ImageStylePlugin
-}
-```
-
-### 图片banner解析插件
+### Markdown图片Banner插件
 
 ```cangjie
 public class ImageSlidePlugin <: AbstractMarkdownPlugin {
@@ -2103,18 +2180,90 @@ public class ImageSlidePlugin <: AbstractMarkdownPlugin {
 }
 ```
 
-### 图片单独提取到block解析插件
+### Markdown图片Style插件
 
 ```cangjie
-public class ImageSinglePlugin <: AbstractMarkdownPlugin {
-    public static func create(): ImageSinglePlugin
+public class ImageStylePlugin <: AbstractMarkdownPlugin {
+    public static func create(): ImageStylePlugin
 }
 ```
 
-### 图片视频列表url集合列表解析插件
+### Markdown不图文混排插件 - 加载之后没有图文混排，图片单独一行
 
 ```cangjie
-public class ImageCollectPlugin <: AbstractMarkdownPlugin {
-    public static func create(): ImageCollectPlugin
+public class ImageTextMixPlugin <: AbstractMarkdownPlugin {
+    public static func create(): ImageTextMixPlugin
 }
 ```
+
+### Markdown数学公式插件
+
+```cangjie
+public class LatexMathPluginV2 <: AbstractMarkdownPlugin {
+    public static func create(): LatexMathPluginV2
+}
+```
+
+### Markdown链接作为单独节点不解析插件 - 链接图片化前提条件
+
+```cangjie
+public class LinkViewPlugin <: AbstractMarkdownPlugin {
+    public static func create(): LinkViewPlugin
+}
+```
+
+### Markdown自动网址链接插件
+
+```cangjie
+public class LinkifyPlugin <: AbstractMarkdownPlugin {
+    public static func create(): LinkifyPlugin
+}
+```
+
+### Markdown删除线插件
+
+```cangjie
+public class StrikethroughPlugin <: AbstractMarkdownPlugin {
+    public static func create(): StrikethroughPlugin
+}
+```
+
+### Markdown表格插件
+
+```cangjie
+public class TablePlugin <: AbstractMarkdownPlugin {
+    public static func create(): TablePlugin
+}
+```
+
+### Markdown任务列表插件
+
+```cangjie
+public class TaskListPlugin <: AbstractMarkdownPlugin {
+    public static func create(): TaskListPlugin
+}
+```
+
+### Markdown TOC列表插件
+
+```cangjie
+public class TocPlugin <: AbstractMarkdownPlugin {
+    public static func create(): TocPlugin
+}
+```
+
+### Markdown全量文本对象
+
+```cangjie
+public class NodeViewStringBuilder <: ToString {
+    /**
+     * 提取纯文本
+     * - 处理缩进
+     * - 处理行内节点
+     * - 处理行内节点间隔
+     * - block: 尾插换行
+     */
+    public func toString(): String
+}
+```
+
