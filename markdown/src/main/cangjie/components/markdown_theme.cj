@@ -541,6 +541,16 @@ public class MarkdownTheme {
     protected var headingTextLineHeight6: Float64 = 22.0
 
     /**
+     * 段落模块上间距
+     */
+    protected var paragraphTopMargins: Float64 = 8.0
+
+    /**
+     * 段落模块下间距
+     */
+    protected var paragraphBottomMargins: Float64 = 8.0
+
+    /**
      * 段落文本大小
      */
     protected var paragraphTextSize: Float64 = 14.0
@@ -776,6 +786,11 @@ public class MarkdownTheme {
     protected var imageBorderRadius: Float64 = 0.0
 
     /**
+     * 图片缩放类型
+     */
+    protected var imageFitType: ImageFit = ImageFit.Contain
+
+    /**
      * 图片默认占位图
      */
     protected var imageResource: ?AppResource = None
@@ -869,6 +884,11 @@ public class MarkdownTheme {
      * 定义列表定义行缩进
      */
     protected var descListDefIndentation: Float64 = 8.0
+
+    /**
+     * 定义列表定义行间距
+     */
+    protected var descListDefMargins: Float64 = 8.0
 
     protected init(builder: MarkdownThemeBuilder) {
         // 1、上下文
@@ -999,6 +1019,8 @@ public class MarkdownTheme {
         this.headingTextLineHeight6 = builder.headingTextLineHeight6
 
         // 7、段落
+        this.paragraphTopMargins = builder.paragraphTopMargins
+        this.paragraphBottomMargins = builder.paragraphBottomMargins
         this.paragraphTextSize = builder.paragraphTextSize
         this.paragraphTextColor = builder.paragraphTextColor
         this.paragraphTextWordSpace = builder.paragraphTextWordSpace
@@ -1060,6 +1082,7 @@ public class MarkdownTheme {
         this.imageMaximumWidth = builder.imageMaximumWidth
         this.imageFixedRatioWidth = builder.imageFixedRatioWidth
         this.imageBorderRadius = builder.imageBorderRadius
+        this.imageFitType = builder.imageFitType
         this.imageResource = builder.imageResource
         this.isAutoResize = builder.isAutoResize
         this.imageMarginTop = builder.imageMarginTop
@@ -1087,6 +1110,7 @@ public class MarkdownTheme {
         // 18、定义列表
         this.descListTermAndDefMargins = builder.descListTermAndDefMargins
         this.descListDefIndentation = builder.descListDefIndentation
+        this.descListDefMargins = builder.descListDefMargins
     }
 
     /**
@@ -1807,6 +1831,16 @@ public class MarkdownThemeBuilder {
     protected var headingTextLineHeight6: Float64 = 22.0
 
     /**
+     * 段落模块上间距
+     */
+    protected var paragraphTopMargins: Float64 = 8.0
+
+    /**
+     * 段落模块下间距
+     */
+    protected var paragraphBottomMargins: Float64 = 8.0
+
+    /**
      * 段落文本大小
      */
     protected var paragraphTextSize: Float64 = 14.0
@@ -2042,6 +2076,11 @@ public class MarkdownThemeBuilder {
     protected var imageBorderRadius: Float64 = 0.0
 
     /**
+     * 图片缩放类型
+     */
+    protected var imageFitType: ImageFit = ImageFit.Contain
+
+    /**
      * 图片默认占位图
      */
     protected var imageResource: ?AppResource = None
@@ -2135,6 +2174,11 @@ public class MarkdownThemeBuilder {
      * 定义列表定义行缩进
      */
     protected var descListDefIndentation: Float64 = 8.0
+
+    /**
+     * 定义列表定义行间距
+     */
+    protected var descListDefMargins: Float64 = 8.0
 
     init() {
     }
@@ -2268,6 +2312,8 @@ public class MarkdownThemeBuilder {
         this.headingTextLineHeight6 = theme.headingTextLineHeight6
 
         // 7、段落
+        this.paragraphTopMargins = theme.paragraphTopMargins
+        this.paragraphBottomMargins = theme.paragraphBottomMargins
         this.paragraphTextSize = theme.paragraphTextSize
         this.paragraphTextColor = theme.paragraphTextColor
         this.paragraphTextWordSpace = theme.paragraphTextWordSpace
@@ -2329,6 +2375,7 @@ public class MarkdownThemeBuilder {
         this.imageMaximumWidth = theme.imageMaximumWidth
         this.imageFixedRatioWidth = theme.imageFixedRatioWidth
         this.imageBorderRadius = theme.imageBorderRadius
+        this.imageFitType = theme.imageFitType
         this.imageResource = theme.imageResource
         this.isAutoResize = theme.isAutoResize
         this.imageMarginTop = theme.imageMarginTop
@@ -2356,6 +2403,7 @@ public class MarkdownThemeBuilder {
         // 18、定义列表
         this.descListTermAndDefMargins = theme.descListTermAndDefMargins
         this.descListDefIndentation = theme.descListDefIndentation
+        this.descListDefMargins = theme.descListDefMargins
     }
 
     /**
@@ -3630,6 +3678,28 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置段落模块上间距
+     *
+     * @param paragraphTopMargins 段落模块上间距 - 默认8.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setParagraphTopMargins(paragraphTopMargins: Float64): MarkdownThemeBuilder {
+        this.paragraphTopMargins = paragraphTopMargins
+        return this
+    }
+
+    /**
+     * 设置段落模块下间距
+     *
+     * @param paragraphBottomMargins 段落模块下间距 - 默认8.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setParagraphBottomMargins(paragraphBottomMargins: Float64): MarkdownThemeBuilder {
+        this.paragraphBottomMargins = paragraphBottomMargins
+        return this
+    }
+
+    /**
      * 设置段落文本大小
      *
      * @param paragraphTextSize 段落文本大小 - 默认14.0fp
@@ -4147,6 +4217,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置图片缩放类型
+     *
+     * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageFitType(imageFitType: ImageFit): MarkdownThemeBuilder {
+        this.imageFitType = imageFitType
+        return this
+    }
+
+    /**
      * 设置图片默认占位图
      *
      * @param imageResource 图片默认占位图 - 默认None
@@ -4352,6 +4433,17 @@ public class MarkdownThemeBuilder {
      */
     public func setDescListDefIndentation(descListDefIndentation: Float64): MarkdownThemeBuilder {
         this.descListDefIndentation = descListDefIndentation
+        return this
+    }
+
+    /**
+     * 设置定义列表定义行间距
+     *
+     * @param descListDefMargins 定义列表定义行间距 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setDescListDefMargins(descListDefMargins: Float64): MarkdownThemeBuilder {
+        this.descListDefMargins = descListDefMargins
         return this
     }
 

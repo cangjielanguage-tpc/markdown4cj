@@ -229,6 +229,10 @@ export declare class CJMarkdownTheme {
 
   setHeadingTextLineHeight6(headingTextLineHeight6: number): void
 
+  setParagraphTopMargins(paragraphTopMargins: number): void
+
+  setParagraphBottomMargins(paragraphBottomMargins: number): void
+
   setParagraphTextSize(paragraphTextSize: number): void
 
   setParagraphTextColor(paragraphTextColor: number): void
@@ -309,6 +313,8 @@ export declare class CJMarkdownTheme {
 
   setVideoMarginBottom(videoMarginBottom: number): void
 
+  setImageFitType(imageFitType: number): void
+
   setImageMaximumWidth(imageMaximumWidth: number): void
 
   setImageFixedRatioWidth(imageFixedRatioWidth: number): void
@@ -350,6 +356,8 @@ export declare class CJMarkdownTheme {
   setDescListTermAndDefMargins(descListTermAndDefMargins: number): void
 
   setDescListDefIndentation(descListDefIndentation: number): void
+
+  setDescListDefMargins(descListDefMargins: number): void
 }
 
 export declare class CJMarkdownConfig {

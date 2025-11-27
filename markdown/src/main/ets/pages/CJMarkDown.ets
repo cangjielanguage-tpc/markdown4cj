@@ -405,6 +405,12 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.headingTextLineHeight6 !== undefined) {
           cjMarkdownTheme.setHeadingTextLineHeight6(this.config.markdownTheme.headingTextLineHeight6)
         }
+        if (this.config.markdownTheme.paragraphTopMargins !== undefined) {
+          cjMarkdownTheme.setParagraphTopMargins(this.config.markdownTheme.paragraphTopMargins)
+        }
+        if (this.config.markdownTheme.paragraphBottomMargins !== undefined) {
+          cjMarkdownTheme.setParagraphBottomMargins(this.config.markdownTheme.paragraphBottomMargins)
+        }
         if (this.config.markdownTheme.paragraphTextSize !== undefined) {
           cjMarkdownTheme.setParagraphTextSize(this.config.markdownTheme.paragraphTextSize)
         }
@@ -531,6 +537,9 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.videoMarginBottom !== undefined) {
           cjMarkdownTheme.setVideoMarginBottom(this.config.markdownTheme.videoMarginBottom)
         }
+        if (this.config.markdownTheme.imageFitType !== undefined) {
+          cjMarkdownTheme.setImageFitType(this.config.markdownTheme.imageFitType)
+        }
         if (this.config.markdownTheme.imageMaximumWidth !== undefined) {
           cjMarkdownTheme.setImageMaximumWidth(this.config.markdownTheme.imageMaximumWidth)
         }
@@ -593,6 +602,9 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.descListDefIndentation !== undefined) {
           cjMarkdownTheme.setDescListDefIndentation(this.config.markdownTheme.descListDefIndentation)
+        }
+        if (this.config.markdownTheme.descListDefMargins !== undefined) {
+          cjMarkdownTheme.setDescListDefMargins(this.config.markdownTheme.descListDefMargins)
         }
       }
     }
@@ -1225,6 +1237,14 @@ export class MarkdownTheme {
    */
   headingTextLineHeight6?: number = undefined
   /**
+   * 段落模块上间距
+   */
+  paragraphTopMargins?: number = undefined
+  /**
+   * 段落模块下间距
+   */
+  paragraphBottomMargins?: number = undefined
+  /**
    * 段落文本大小
    */
   paragraphTextSize?: number = undefined
@@ -1385,6 +1405,10 @@ export class MarkdownTheme {
    */
   videoMarginBottom?: number = undefined
   /**
+   * 图片缩放类型
+   */
+  imageFitType?: ImageFitType = undefined
+  /**
    * 图片最大宽度百分比
    */
   imageMaximumWidth?: number = undefined
@@ -1468,6 +1492,11 @@ export class MarkdownTheme {
    * 定义列表定义行缩进
    */
   descListDefIndentation?: number= undefined
+
+  /**
+   * 定义列表定义行间距
+   */
+  descListDefMargins?: number = undefined
 
   /**
    * 设置上下文
@@ -2757,6 +2786,15 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置图片缩放类型
+   *
+   * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
+   */
+  setImageFitType(imageFitType: ImageFitType): void {
+    this.imageFitType = imageFitType
+  }
+
+  /**
    * 设置图片基于自身宽度缩放百分比
    *
    * @param imageMaximumWidth 图片基于自身宽度缩放百分比 - 默认1.0
@@ -2944,6 +2982,15 @@ export class MarkdownTheme {
   setDescListDefIndentation(descListDefIndentation: number): void {
     this.descListDefIndentation = descListDefIndentation
   }
+
+  /**
+   * 设置定义列表定义行间距
+   *
+   * @param descListDefMargins 定义列表定义行间距 默认8.0
+   */
+  setDescListDefMargins(descListDefMargins: number): void {
+    this.descListDefMargins = descListDefMargins
+  }
 }
 
 export enum LatexMathColorFormat {
@@ -2955,6 +3002,21 @@ export enum LatexMathColorFormat {
    * 32位
    */
   COLOR_FORMAT_BGRA_8888
+}
+
+export enum ImageFitType{
+  /**
+   * 保持宽高比进行缩小或者放大，使得图片两边都大于或等于显示边界。
+   */
+  Contain,
+  /**
+   * 保持宽高比进行缩小或者放大，使得图片恰好完全显示在显示边界内。
+   */
+  Cover,
+  /**
+   * 不保持宽高比进行放大缩小，使得图片充满显示边界。
+   */
+  Fill
 }
 
 export class MarkdownPlugin {

@@ -481,6 +481,12 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.headingTextLineHeight6) {
                 markdownThemeBuilder.setHeadingTextLineHeight6(v) // 设置六级标题文本行高
             }
+            if (let Some(v) <- w.cjMarkdownTheme.paragraphTopMargins) {
+                markdownThemeBuilder.setParagraphTopMargins(v) // 设置段落模块上间距
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.paragraphBottomMargins) {
+                markdownThemeBuilder.setParagraphBottomMargins(v) // 设置段落模块下间距
+            }
             if (let Some(v) <- w.cjMarkdownTheme.paragraphTextSize) {
                 markdownThemeBuilder.setParagraphTextSize(v) // 设置段落文本大小
             }
@@ -601,6 +607,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.videoMarginBottom) {
                 markdownThemeBuilder.setVideoMarginBottom(v) // 设置视频下边距
             }
+            if (let Some(v) <- w.cjMarkdownTheme.imageFitType) {
+                markdownThemeBuilder.setImageFitType(v) // 设置图片缩放类型
+            }
             if (let Some(v) <- w.cjMarkdownTheme.imageMaximumWidth) {
                 markdownThemeBuilder.setImageMaximumWidth(v) // 设置图片基于自身宽度缩放百分比
             }
@@ -668,6 +677,9 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.descListDefIndentation) {
                 markdownThemeBuilder.setDescListDefIndentation(v) // 设置定义列表定义行缩进
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.descListDefMargins) {
+                markdownThemeBuilder.setDescListDefMargins(v) // 设置定义列表定义行间距
             }
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()

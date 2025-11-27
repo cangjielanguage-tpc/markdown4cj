@@ -6,6 +6,7 @@ import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
 import { ImageDataMD } from './ImagePage'
+import hilog from '@ohos.hilog'
 
 @Entry
 @Component
@@ -98,6 +99,7 @@ struct ImageDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
+    config.setImageCallback(this.setImageCallback)
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this))
     config.setMarkdownTheme(theme)
@@ -109,5 +111,9 @@ struct ImageDetailsPage {
     // plugin.setIsImageSinglePlugin(true) // 图片单独提取到block解析插件
     plugin.setIsImageStylePlugin(true) // 图片样式
     return plugin
+  }
+
+  setImageCallback(funcArg0: string, funcArg1: Array<string>){
+    hilog.error(1,"1",`-------------funcArg0:${funcArg0}`)
   }
 }

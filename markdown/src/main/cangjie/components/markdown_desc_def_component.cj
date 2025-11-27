@@ -94,8 +94,8 @@ public class MarkdownDescDefComponent {
                             MarkdownParagraphComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginTop: 0.0,
+                                marginBottom: 0.0,
                                 imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
                                 imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
                                 fontCallback: fontCallback,
@@ -123,7 +123,7 @@ public class MarkdownDescDefComponent {
         // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
         .alignListItem(ListItemAlign.Start)
         // 左边距
-        .margin(left: markdownConfiguration.markdownTheme.descListDefIndentation)
+        .margin(left: markdownConfiguration.markdownTheme.descListDefIndentation, bottom: markdownConfiguration.markdownTheme.descListDefMargins, top: markdownConfiguration.markdownTheme.descListDefMargins)
     }
 
     /**

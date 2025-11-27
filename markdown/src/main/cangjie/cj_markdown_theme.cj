@@ -493,6 +493,16 @@ public class CJMarkdownTheme {
     var headingTextLineHeight6: ?Float64 = None
 
     /**
+     * 段落模块上间距
+     */
+    var paragraphTopMargins: ?Float64 = None
+
+    /**
+     * 段落模块下间距
+     */
+    var paragraphBottomMargins: ?Float64 = None
+
+    /**
      * 段落文本大小
      */
     var paragraphTextSize: ?Float64 = None
@@ -693,6 +703,11 @@ public class CJMarkdownTheme {
     var videoMarginBottom: ?Float64 = None
 
     /**
+     * 图片缩放类型
+     */
+    var imageFitType: ?ImageFit = Option<ImageFit>.None
+
+    /**
      * 图片最大宽度百分比
      */
     var imageMaximumWidth: ?Float64 = None
@@ -796,6 +811,11 @@ public class CJMarkdownTheme {
      * 定义列表定义行缩进
      */
     var descListDefIndentation: ?Float64 = None
+
+    /**
+     * 定义列表定义行间距
+     */
+    var descListDefMargins: ?Float64 = None
 
     public init() {}
 
@@ -1655,6 +1675,24 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置段落模块上间距
+     *
+     * @param paragraphTopMargins 段落模块上间距 - 默认8.0
+     */
+    public func setParagraphTopMargins(paragraphTopMargins: Float64): Unit {
+        this.paragraphTopMargins = paragraphTopMargins
+    }
+
+    /**
+     * 设置段落模块下间距
+     *
+     * @param paragraphBottomMargins 段落模块下间距 - 默认8.0
+     */
+    public func setParagraphBottomMargins(paragraphBottomMargins: Float64): Unit {
+        this.paragraphBottomMargins = paragraphBottomMargins
+    }
+
+    /**
      * 设置段落文本大小
      *
      * @param paragraphTextSize 段落文本大小 - 默认14.0fp
@@ -2019,6 +2057,20 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置图片缩放类型
+     *
+     * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
+     */
+    public func setImageFitType(imageFitType: Int64): Unit {
+        this.imageFitType = match (imageFitType) {
+            case 0 => ImageFit.Contain
+            case 1 => ImageFit.Cover
+            case 2 => ImageFit.Fill
+            case _ => ImageFit.Contain
+        }
+    }
+
+    /**
      * 设置图片最大宽度百分比
      *
      * @param imageMaximumWidth 图片最大宽度百分比 - 默认1.0
@@ -2207,5 +2259,15 @@ public class CJMarkdownTheme {
      */
     public func setDescListDefIndentation(descListDefIndentation: Float64): Unit {
         this.descListDefIndentation = descListDefIndentation
+    }
+
+    /**
+     * 设置定义列表定义行间距
+     *
+     * @param descListDefMargins 定义列表定义行间距 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setDescListDefMargins(descListDefMargins: Float64): Unit {
+        this.descListDefMargins = descListDefMargins
     }
 }

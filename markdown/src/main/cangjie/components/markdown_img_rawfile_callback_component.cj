@@ -190,7 +190,7 @@ public class MarkdownImgRawFileCallbackComponent {
                         (imageHeight() * imageMaximumWidth).px
                     })
                     // 设置图片的缩放类型
-                    .objectFit(ImageFit.Contain)
+                    .objectFit(markdownConfiguration.markdownTheme.imageFitType)
                     // 设置图片基于文本的对齐方式
                     .verticalAlign(ImageSpanAlignment.CENTER)
                     // 点击动作触发该方法调用
@@ -223,7 +223,7 @@ public class MarkdownImgRawFileCallbackComponent {
                             (height() * imageMaximumWidth).px
                         })
                         // 设置图片的缩放类型
-                        .objectFit(ImageFit.Contain)
+                        .objectFit(markdownConfiguration.markdownTheme.imageFitType)
                         // 设置图片基于文本的对齐方式
                         .verticalAlign(ImageSpanAlignment.CENTER)
                         // 设置约束尺寸，组件布局时，进行尺寸范围限制
