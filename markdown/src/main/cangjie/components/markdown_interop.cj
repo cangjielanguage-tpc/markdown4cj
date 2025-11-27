@@ -374,3 +374,17 @@ extend Column {
         return this
     }
 }
+
+extend List {
+    func interopOnSizeChange(callback: (CJSizeOptions, CJSizeOptions) -> Unit): List {
+        let global = context.getOrThrow().global
+        let ctx = context.getOrThrow()
+        let column = global["List"].asObject(ctx)
+        let callBackFunc = getCtx().function {
+            ctx, callInfo => callback(CJSizeOptions.fromJSValue(ctx, callInfo[0]),
+                CJSizeOptions.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+        }
+        column.callMethod("onSizeChange", [callBackFunc.toJSValue()])
+        return this
+    }
+}

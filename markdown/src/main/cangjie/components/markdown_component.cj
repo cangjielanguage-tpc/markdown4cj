@@ -400,10 +400,10 @@ public class MarkdownComponent {
             // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
             .alignListItem(ListItemAlign.Start)
             // 组件区域变化事件
-            .onAreaChange {
+            .interopOnSizeChange {
                 old, new =>
-                    if(componentWidth != new.width){
-                        componentWidth = new.width
+                    if(componentWidth != new.widthCJ){
+                       componentWidth = new.widthCJ
                     }
             }
             // 设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
