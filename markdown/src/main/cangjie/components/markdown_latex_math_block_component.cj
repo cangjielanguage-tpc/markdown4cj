@@ -109,8 +109,10 @@ class MarkdownLatexMathBlockComponent {
                     .fontColor(Color.RED)
             }
         } else {
-            Text(latexStr)
-                .fontColor(Color.RED)
+            if (markdownConfiguration.markdownTheme.latexDefaultText) {
+                Text(latexStr)
+                    .fontColor(Color.RED)
+            }
         }
     }
 

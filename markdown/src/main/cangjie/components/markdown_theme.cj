@@ -601,6 +601,11 @@ public class MarkdownTheme {
     protected var isLineBreak: Bool = false
 
     /**
+     * 数学公式未加载状态是否显示文字
+     */
+    protected var latexDefaultText: Bool = true
+
+    /**
      * 数学公式文本大小
      */
     protected var latexMathTextSize: Float64 = fp2px(16.0.fp)().value
@@ -1037,6 +1042,7 @@ public class MarkdownTheme {
         this.isLineBreak = builder.isLineBreak
 
         // 10、数学公式
+        this.latexDefaultText = builder.latexDefaultText
         this.latexMathTextSize = builder.latexMathTextSize
         this.latexMathBackGroupColor = builder.latexMathBackGroupColor
         this.latexMathTextColor = builder.latexMathTextColor
@@ -1891,6 +1897,11 @@ public class MarkdownThemeBuilder {
     protected var isLineBreak: Bool = false
 
     /**
+     * 数学公式未加载状态是否显示文字
+     */
+    protected var latexDefaultText: Bool = true
+
+    /**
      * 数学公式文本大小
      */
     protected var latexMathTextSize: Float64 = fp2px(16.0.fp)().value
@@ -2330,6 +2341,7 @@ public class MarkdownThemeBuilder {
         this.isLineBreak = theme.isLineBreak
 
         // 10、数学公式
+        this.latexDefaultText = theme.latexDefaultText
         this.latexMathTextSize = theme.latexMathTextSize
         this.latexMathBackGroupColor = theme.latexMathBackGroupColor
         this.latexMathTextColor = theme.latexMathTextColor
@@ -3806,6 +3818,17 @@ public class MarkdownThemeBuilder {
      */
     public func setIsLineBreak(isLineBreak: Bool): MarkdownThemeBuilder {
         this.isLineBreak = isLineBreak
+        return this
+    }
+
+    /**
+     * 设置数学公式未加载状态是否显示文字
+     *
+     * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setLatexDefaultText(latexDefaultText: Bool): MarkdownThemeBuilder {
+        this.latexDefaultText = latexDefaultText
         return this
     }
 

@@ -125,8 +125,10 @@ public class MarkdownLatexImageSpanComponent {
                     .fontColor(Color.RED)
             }
         } else {
-            Span(strLatexMath)
-                .fontColor(Color.RED)
+            if (markdownConfiguration.markdownTheme.latexDefaultText) {
+                Span(strLatexMath)
+                    .fontColor(Color.RED)
+            }
         }
     }
 
