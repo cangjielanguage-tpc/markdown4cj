@@ -2429,10 +2429,28 @@ export class MarkdownTheme {
   /**
    * 设置六级标题文本行高
    *
-   * @param headingTextLineHeight1 六级标题文本行高 - 默认22.0vp
+   * @param headingTextLineHeight6 六级标题文本行高 - 默认22.0vp
    */
   setHeadingTextLineHeight6(headingTextLineHeight6: number): void {
     this.headingTextLineHeight6 = headingTextLineHeight6
+  }
+
+  /**
+   * 设置段落模块上间距
+   *
+   * @param paragraphTopMargins 段落模块上间距 - 默认8.0vp
+   */
+  setParagraphTopMargins(paragraphTopMargins: number): void {
+    this.paragraphTopMargins = paragraphTopMargins
+  }
+
+  /**
+   * 设置段落模块下间距
+   *
+   * @param paragraphBottomMargins 段落模块下间距 - 默认8.0vp
+   */
+  setParagraphBottomMargins(paragraphBottomMargins: number): void {
+    this.paragraphBottomMargins = paragraphBottomMargins
   }
 
   /**

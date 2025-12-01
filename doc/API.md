@@ -862,9 +862,23 @@ export class MarkdownTheme {
   /**
    * 设置六级标题文本行高
    *
-   * @param headingTextLineHeight1 六级标题文本行高 - 默认22.0vp
+   * @param headingTextLineHeight6 六级标题文本行高 - 默认22.0vp
    */
   setHeadingTextLineHeight6(headingTextLineHeight6: number): void
+
+  /**
+   * 设置段落模块上间距
+   *
+   * @param paragraphTopMargins 段落模块上间距 - 默认8.0vp
+   */
+  setParagraphTopMargins(paragraphTopMargins: number): void
+
+  /**
+   * 设置段落模块下间距
+   *
+   * @param paragraphBottomMargins 段落模块下间距 - 默认8.0vp
+   */
+  setParagraphBottomMargins(paragraphBottomMargins: number): void
 
   /**
    * 设置段落文本大小
@@ -935,6 +949,13 @@ export class MarkdownTheme {
    * @param isLineBreak 软换行是否换行 - true：换行；false：不换行。默认false
    */
   setIsLineBreak(isLineBreak: boolean): void
+
+  /**
+   * 设置数学公式未加载状态是否显示文字
+   *
+   * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
+   */
+  setLatexDefaultText(latexDefaultText: boolean): void
 
   /**
    * 设置数学公式文本大小
@@ -1147,6 +1168,13 @@ export class MarkdownTheme {
   setVideoMarginBottom(videoMarginBottom: number): void
 
   /**
+   * 设置图片缩放类型
+   *
+   * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
+   */
+  setImageFitType(imageFitType: ImageFitType): void
+
+  /**
    * 设置图片基于自身宽度缩放百分比
    *
    * @param imageMaximumWidth 图片基于自身宽度缩放百分比 - 默认1.0
@@ -1292,6 +1320,13 @@ export class MarkdownTheme {
    * @param descListDefIndentation 定义列表定义行缩进 默认8.0
    */
   setDescListDefIndentation(descListDefIndentation: number): void
+
+  /**
+   * 设置定义列表定义行间距
+   *
+   * @param descListDefMargins 定义列表定义行间距 默认8.0
+   */
+  setDescListDefMargins(descListDefMargins: number): void
 }
 ```
 
