@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
+ */
 import { NodeController, FrameNode } from '@kit.ArkUI';
 import { requireCJLib } from 'libark_interop_loader.so';
 import { CustomLib, CJMarkdownConfig, CJMarkdownTheme, CJMarkdownPlugin } from 'libark_interop_api_markdown.so';
