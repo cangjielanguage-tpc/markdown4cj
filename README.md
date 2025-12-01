@@ -118,10 +118,10 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
       ```
 
       编译markdown
-      build -> Make Module `markdown`
+      build -> Make Module `markdown_hybrid`
 
       获取har包。har包路径
-      markdown -> build -> outputs -> default -> markdown.har
+      markdown -> build -> outputs -> default -> markdown_hybrid.har
 
       在项目中使用markdown项目
 

@@ -39,8 +39,8 @@
       ]
     },
     {
-      "name": "markdown",
-      "srcPath": "./markdown",
+      "name": "markdown_hybrid",
+      "srcPath": "./markdown_hybrid"
     }
   ]
 }
