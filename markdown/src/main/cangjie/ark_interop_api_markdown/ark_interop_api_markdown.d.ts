@@ -253,6 +253,8 @@ export declare class CJMarkdownTheme {
 
   setIsLineBreak(isLineBreak: boolean): void
 
+  setLatexDefaultText(latexMathTextSize: boolean): void
+
   setLatexMathTextSize(latexMathTextSize: number): void
 
   setLatexMathBackGroupColor(latexMathBackGroupColor: number): void

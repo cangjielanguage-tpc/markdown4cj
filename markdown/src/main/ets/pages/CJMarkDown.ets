@@ -441,6 +441,9 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.isLineBreak !== undefined) {
           cjMarkdownTheme.setIsLineBreak(this.config.markdownTheme.isLineBreak)
         }
+        if (this.config.markdownTheme.latexDefaultText !== undefined) {
+          cjMarkdownTheme.setLatexDefaultText(this.config.markdownTheme.latexDefaultText)
+        }
         if (this.config.markdownTheme.latexMathTextSize !== undefined) {
           cjMarkdownTheme.setLatexMathTextSize(this.config.markdownTheme.latexMathTextSize)
         }
@@ -1284,6 +1287,10 @@ export class MarkdownTheme {
    * 软换行是否换行
    */
   isLineBreak?: boolean = undefined
+  /**
+   * 数学公式未加载状态是否显示文字
+   */
+  latexDefaultText?: boolean = undefined
   /**
    * 数学公式文本大小
    */
@@ -2513,6 +2520,15 @@ export class MarkdownTheme {
    */
   setIsLineBreak(isLineBreak: boolean): void {
     this.isLineBreak = isLineBreak
+  }
+
+  /**
+   * 设置数学公式未加载状态是否显示文字
+   *
+   * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
+   */
+  setLatexDefaultText(latexDefaultText: boolean): void {
+    this.latexDefaultText = latexDefaultText
   }
 
   /**

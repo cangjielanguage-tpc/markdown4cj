@@ -517,6 +517,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.isLineBreak) {
                 markdownThemeBuilder.setIsLineBreak(v) // 设置软换行是否换行
             }
+            if (let Some(v) <- w.cjMarkdownTheme.latexDefaultText) {
+                markdownThemeBuilder.setLatexDefaultText(v) // 设置数学公式未加载状态是否显示文字
+            }
             if (let Some(v) <- w.cjMarkdownTheme.latexMathTextSize) {
                 markdownThemeBuilder.setLatexMathTextSize(v) // 设置数学公式文本大小
             }

@@ -553,6 +553,11 @@ public class CJMarkdownTheme {
     var isLineBreak: ?Bool = None
 
     /**
+     * 数学公式未加载状态是否显示文字
+     */
+    var latexDefaultText: ?Bool = None
+
+    /**
      * 数学公式文本大小
      */
     var latexMathTextSize: ?Float64 = None
@@ -1780,6 +1785,15 @@ public class CJMarkdownTheme {
      */
     public func setIsLineBreak(isLineBreak: Bool): Unit {
         this.isLineBreak = isLineBreak
+    }
+
+    /**
+     * 设置数学公式未加载状态是否显示文字
+     *
+     * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
+     */
+    public func setLatexDefaultText(latexDefaultText: Bool): Unit {
+        this.latexDefaultText = latexDefaultText
     }
 
     /**
