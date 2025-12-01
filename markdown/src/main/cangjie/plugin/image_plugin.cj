@@ -92,10 +92,9 @@ class StyleDelimiterProcessor <: DelimiterProcessor {
                             let styleImage = StyleImage(str, image)
                             image.replaceWith(styleImage)
                     }
+                    style.unlink()
+                    return true
                 }
-
-                style.unlink()
-                return true
             }
         }
         return false

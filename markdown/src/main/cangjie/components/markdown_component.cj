@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
  */
 package markdown.components
 
@@ -167,8 +167,8 @@ public class MarkdownComponent {
                                 MarkdownHeadingComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
-                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                    marginTop: markdownConfiguration.markdownTheme.headingTopMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.headingBottomMargins,
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
@@ -187,8 +187,8 @@ public class MarkdownComponent {
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
                                     footnoteBlock: Option<FootnoteBlock>.None,
-                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                    marginTop: markdownConfiguration.markdownTheme.paragraphTopMargins,
+                                    marginBottom: markdownConfiguration.markdownTheme.paragraphBottomMargins,
                                     fontCallback: fontCallback,
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,

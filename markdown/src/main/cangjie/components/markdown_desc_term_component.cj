@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
  */
 package markdown.components
 
@@ -94,8 +94,8 @@ public class MarkdownDescTermComponent {
                             MarkdownParagraphComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                marginTop: 0.0,
+                                marginBottom: 0.0,
                                 imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
                                 imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
                                 fontCallback: fontCallback,

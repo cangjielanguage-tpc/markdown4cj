@@ -31,9 +31,9 @@ class ImageTextMixVisitor <: AbstractVisitor {
     public func visit(heading: Heading): Unit {
         let her: () -> Node = {
             =>
-            let h = Heading()
-            h.setLevel(heading.getLevel())
-            h
+                let h = Heading()
+                h.setLevel(heading.getLevel())
+                h
         }
         splitChildren(heading, {n => n is Image && n.getNodeType().endsWith("Image")}, her, her)
     }
@@ -59,7 +59,8 @@ func splitChildren(
         case _ => ()
     }
     var lastBlock: ?Node = None
-    var splitMatched = false
+    var splitMatched = false // 是否触发切割
+    var lastBlockIsSpliter = false
     var current: ?Node = srcNode.getFirstChild()
     while (let Some(n) <- current) {
         current = n.getNext()
@@ -75,18 +76,19 @@ func splitChildren(
             spliterParent.appendChild(n)
             lastBlock?.insertAfter(spliterParent)
             // 处理lastBlock
-            if (current.isSome()) {
-                let nParent = nodeParentFactory()
-                spliterParent.insertAfter(nParent)
-                lastBlock = nParent
-            }
+            lastBlock = spliterParent
+            lastBlockIsSpliter = true
         } else {
             if (splitMatched) {
                 // 提取非spliter节点
-                if (let Some(lastBlock) <- lastBlock) {
-                    n.unlink()
-                    lastBlock.appendChild(n)
+                if (lastBlockIsSpliter) {
+                    let nodeParent = nodeParentFactory()
+                    lastBlock?.insertAfter(nodeParent)
+                    lastBlock = nodeParent
+                    lastBlockIsSpliter = false
                 }
+                n.unlink()
+                lastBlock?.appendChild(n)
             }
         }
     }

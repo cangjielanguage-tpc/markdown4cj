@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
  */
 package markdown.components
 
@@ -31,18 +31,18 @@ import ohos.state_macro_manage.*
  *          单独代码块：是否单独代码块显示、单独代码块行号宽度、单独代码块是否居底显示
  * 6：标题 - H1/H2标题下分割线高度、H1/H2标题下分割线颜色
  *          标题文本字体、标题模块上间距、标题模块下间距、标题文本大小数组、标题文本颜色、标题文本字间距、一级标题文本行高、二级标题文本行高、三级标题文本行高、四级标题文本行高、五级标题文本行高、六级标题文本行高
- * 7：段落 - 段落文本大小、段落文本颜色、段落文本字间距、段落文本行高、段落文本字体
+ * 7：段落 - 段落模块上间距、段落模块下间距、段落文本大小、段落文本颜色、段落文本字间距、段落文本行高、段落文本字体
  * 8：分割线 - 分割线颜色、分割线高度、分割线上部外边距、分割线下部外边距
  * 9：软换行 - 软换行是否换行
- * 10：数学公式 - 数学公式文本大小、数学公式背景色、数学公式文本颜色、数学公式生成图片格式、块结构的数学公式是否居中、数学公式字体路径
+ * 10：数学公式 - 数学公式未加载状态是否显示文字、数学公式文本大小、数学公式背景色、数学公式文本颜色、数学公式生成图片格式、块结构的数学公式是否居中、数学公式字体路径
  * 11：音频 - 音频图标、音频阴影颜色值、音频边框颜色、音频边框粗细、音频边框圆角、音频按钮背景颜色、音频按钮文字颜色、音频按钮文字大小、音频按钮文字内容、音频按钮圆角大小、音频标题文字大小、音频标题文字颜色、音频标题文字行高、音频类型文字大小、音频类型文字颜色、音频类型文字行高、音频上边距、音频下边距
  * 12：视频 - 视频默认占位图、视频播放按钮默认图标、视频圆角大小、视频时间文本颜色、视频时间文本大小、视频时间文本居右边距、视频时间文本居底边距、视频上边距、视频下边距
  * 13：图片Banner - 图片banner默认占位图
- * 14：图片 - 图片基于自身宽度缩放百分比、图片基于父布局宽度缩放百分比、图片圆角大小、图片默认占位图、网络图片是否压缩、图片上边距、图片下边距
+ * 14：图片 - 图片基于自身宽度缩放百分比、图片基于父布局宽度缩放百分比、图片圆角大小、图片缩放类型、图片默认占位图、网络图片是否压缩、图片上边距、图片下边距
  * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高、表格圆角大小、表格一格最小宽度、表格一格最大宽度、表格第一列是否加粗
  * 16：代码高亮 - markdown代码高亮样式
  * 17：删除线 - 删除线颜色
- * 18：定义列表 - 定义列表术语和定义行之间间距、定义列表定义行缩进
+ * 18：定义列表 - 定义列表术语和定义行之间间距、定义列表定义行缩进、定义列表定义行间距
  */
 public class MarkdownTheme {
     /**
@@ -541,6 +541,16 @@ public class MarkdownTheme {
     protected var headingTextLineHeight6: Float64 = 22.0
 
     /**
+     * 段落模块上间距
+     */
+    protected var paragraphTopMargins: Float64 = 8.0
+
+    /**
+     * 段落模块下间距
+     */
+    protected var paragraphBottomMargins: Float64 = 8.0
+
+    /**
      * 段落文本大小
      */
     protected var paragraphTextSize: Float64 = 14.0
@@ -589,6 +599,11 @@ public class MarkdownTheme {
      * 软换行是否换行
      */
     protected var isLineBreak: Bool = false
+
+    /**
+     * 数学公式未加载状态是否显示文字
+     */
+    protected var latexDefaultText: Bool = true
 
     /**
      * 数学公式文本大小
@@ -776,6 +791,11 @@ public class MarkdownTheme {
     protected var imageBorderRadius: Float64 = 0.0
 
     /**
+     * 图片缩放类型
+     */
+    protected var imageFitType: ImageFit = ImageFit.Contain
+
+    /**
      * 图片默认占位图
      */
     protected var imageResource: ?AppResource = None
@@ -869,6 +889,11 @@ public class MarkdownTheme {
      * 定义列表定义行缩进
      */
     protected var descListDefIndentation: Float64 = 8.0
+
+    /**
+     * 定义列表定义行间距
+     */
+    protected var descListDefMargins: Float64 = 8.0
 
     protected init(builder: MarkdownThemeBuilder) {
         // 1、上下文
@@ -999,6 +1024,8 @@ public class MarkdownTheme {
         this.headingTextLineHeight6 = builder.headingTextLineHeight6
 
         // 7、段落
+        this.paragraphTopMargins = builder.paragraphTopMargins
+        this.paragraphBottomMargins = builder.paragraphBottomMargins
         this.paragraphTextSize = builder.paragraphTextSize
         this.paragraphTextColor = builder.paragraphTextColor
         this.paragraphTextWordSpace = builder.paragraphTextWordSpace
@@ -1015,6 +1042,7 @@ public class MarkdownTheme {
         this.isLineBreak = builder.isLineBreak
 
         // 10、数学公式
+        this.latexDefaultText = builder.latexDefaultText
         this.latexMathTextSize = builder.latexMathTextSize
         this.latexMathBackGroupColor = builder.latexMathBackGroupColor
         this.latexMathTextColor = builder.latexMathTextColor
@@ -1060,6 +1088,7 @@ public class MarkdownTheme {
         this.imageMaximumWidth = builder.imageMaximumWidth
         this.imageFixedRatioWidth = builder.imageFixedRatioWidth
         this.imageBorderRadius = builder.imageBorderRadius
+        this.imageFitType = builder.imageFitType
         this.imageResource = builder.imageResource
         this.isAutoResize = builder.isAutoResize
         this.imageMarginTop = builder.imageMarginTop
@@ -1087,6 +1116,7 @@ public class MarkdownTheme {
         // 18、定义列表
         this.descListTermAndDefMargins = builder.descListTermAndDefMargins
         this.descListDefIndentation = builder.descListDefIndentation
+        this.descListDefMargins = builder.descListDefMargins
     }
 
     /**
@@ -1807,6 +1837,16 @@ public class MarkdownThemeBuilder {
     protected var headingTextLineHeight6: Float64 = 22.0
 
     /**
+     * 段落模块上间距
+     */
+    protected var paragraphTopMargins: Float64 = 8.0
+
+    /**
+     * 段落模块下间距
+     */
+    protected var paragraphBottomMargins: Float64 = 8.0
+
+    /**
      * 段落文本大小
      */
     protected var paragraphTextSize: Float64 = 14.0
@@ -1855,6 +1895,11 @@ public class MarkdownThemeBuilder {
      * 软换行是否换行
      */
     protected var isLineBreak: Bool = false
+
+    /**
+     * 数学公式未加载状态是否显示文字
+     */
+    protected var latexDefaultText: Bool = true
 
     /**
      * 数学公式文本大小
@@ -2042,6 +2087,11 @@ public class MarkdownThemeBuilder {
     protected var imageBorderRadius: Float64 = 0.0
 
     /**
+     * 图片缩放类型
+     */
+    protected var imageFitType: ImageFit = ImageFit.Contain
+
+    /**
      * 图片默认占位图
      */
     protected var imageResource: ?AppResource = None
@@ -2135,6 +2185,11 @@ public class MarkdownThemeBuilder {
      * 定义列表定义行缩进
      */
     protected var descListDefIndentation: Float64 = 8.0
+
+    /**
+     * 定义列表定义行间距
+     */
+    protected var descListDefMargins: Float64 = 8.0
 
     init() {
     }
@@ -2268,6 +2323,8 @@ public class MarkdownThemeBuilder {
         this.headingTextLineHeight6 = theme.headingTextLineHeight6
 
         // 7、段落
+        this.paragraphTopMargins = theme.paragraphTopMargins
+        this.paragraphBottomMargins = theme.paragraphBottomMargins
         this.paragraphTextSize = theme.paragraphTextSize
         this.paragraphTextColor = theme.paragraphTextColor
         this.paragraphTextWordSpace = theme.paragraphTextWordSpace
@@ -2284,6 +2341,7 @@ public class MarkdownThemeBuilder {
         this.isLineBreak = theme.isLineBreak
 
         // 10、数学公式
+        this.latexDefaultText = theme.latexDefaultText
         this.latexMathTextSize = theme.latexMathTextSize
         this.latexMathBackGroupColor = theme.latexMathBackGroupColor
         this.latexMathTextColor = theme.latexMathTextColor
@@ -2329,6 +2387,7 @@ public class MarkdownThemeBuilder {
         this.imageMaximumWidth = theme.imageMaximumWidth
         this.imageFixedRatioWidth = theme.imageFixedRatioWidth
         this.imageBorderRadius = theme.imageBorderRadius
+        this.imageFitType = theme.imageFitType
         this.imageResource = theme.imageResource
         this.isAutoResize = theme.isAutoResize
         this.imageMarginTop = theme.imageMarginTop
@@ -2356,6 +2415,7 @@ public class MarkdownThemeBuilder {
         // 18、定义列表
         this.descListTermAndDefMargins = theme.descListTermAndDefMargins
         this.descListDefIndentation = theme.descListDefIndentation
+        this.descListDefMargins = theme.descListDefMargins
     }
 
     /**
@@ -3630,6 +3690,28 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置段落模块上间距
+     *
+     * @param paragraphTopMargins 段落模块上间距 - 默认8.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setParagraphTopMargins(paragraphTopMargins: Float64): MarkdownThemeBuilder {
+        this.paragraphTopMargins = paragraphTopMargins
+        return this
+    }
+
+    /**
+     * 设置段落模块下间距
+     *
+     * @param paragraphBottomMargins 段落模块下间距 - 默认8.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setParagraphBottomMargins(paragraphBottomMargins: Float64): MarkdownThemeBuilder {
+        this.paragraphBottomMargins = paragraphBottomMargins
+        return this
+    }
+
+    /**
      * 设置段落文本大小
      *
      * @param paragraphTextSize 段落文本大小 - 默认14.0fp
@@ -3736,6 +3818,17 @@ public class MarkdownThemeBuilder {
      */
     public func setIsLineBreak(isLineBreak: Bool): MarkdownThemeBuilder {
         this.isLineBreak = isLineBreak
+        return this
+    }
+
+    /**
+     * 设置数学公式未加载状态是否显示文字
+     *
+     * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setLatexDefaultText(latexDefaultText: Bool): MarkdownThemeBuilder {
+        this.latexDefaultText = latexDefaultText
         return this
     }
 
@@ -4147,6 +4240,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置图片缩放类型
+     *
+     * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageFitType(imageFitType: ImageFit): MarkdownThemeBuilder {
+        this.imageFitType = imageFitType
+        return this
+    }
+
+    /**
      * 设置图片默认占位图
      *
      * @param imageResource 图片默认占位图 - 默认None
@@ -4352,6 +4456,17 @@ public class MarkdownThemeBuilder {
      */
     public func setDescListDefIndentation(descListDefIndentation: Float64): MarkdownThemeBuilder {
         this.descListDefIndentation = descListDefIndentation
+        return this
+    }
+
+    /**
+     * 设置定义列表定义行间距
+     *
+     * @param descListDefMargins 定义列表定义行间距 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setDescListDefMargins(descListDefMargins: Float64): MarkdownThemeBuilder {
+        this.descListDefMargins = descListDefMargins
         return this
     }
 

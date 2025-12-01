@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
  */
 package markdown.components
 
@@ -109,8 +109,10 @@ class MarkdownLatexMathBlockComponent {
                     .fontColor(Color.RED)
             }
         } else {
-            Text(latexStr)
-                .fontColor(Color.RED)
+            if (markdownConfiguration.markdownTheme.latexDefaultText) {
+                Text(latexStr)
+                    .fontColor(Color.RED)
+            }
         }
     }
 
