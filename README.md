@@ -217,7 +217,7 @@ Heading level 2
 
 ## 约束与限制
 
-当前基于 DevEco Studio for Windows 5.1.1.840 和 DevEco Studio Cangjie Plugin Canary for Windows 5.1.1.840 版本实现的
+当前基于 DevEco Studio for Windows 5.1.1.851 和 DevEco Studio Cangjie Plugin Canary for Windows 5.1.1.851 版本实现的
 
 1. 内联代码/链接文字格式背景色。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
