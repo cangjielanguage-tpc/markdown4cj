@@ -67,8 +67,22 @@ class MarkdownLatexMathBlockComponent {
     @State
     var isBool: Bool = false
 
+    /**
+     * 上边距 - 单位vp
+     */
+    @State
+    var latexMarginTop: Float64 = 0.0
+
+    /**
+     * 下边距 - 单位vp
+     */
+    @State
+    var latexMarginBottom: Float64 = 0.0
+
     protected override func aboutToAppear(): Unit {
         refreshData(nodeView)
+        latexMarginTop = marginTop
+        latexMarginBottom = marginBottom
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -101,16 +115,22 @@ class MarkdownLatexMathBlockComponent {
                 // 设置滚动条状态
                 .scrollBar(BarState.Off)
                 // 设置外边距属性
-                .margin(top: marginTop, bottom: marginBottom)
+                .margin(top: latexMarginTop, bottom: latexMarginBottom)
                 // 设置 Column 子组件在水平方向上的对齐格式
                 .align(isAlignItems(markdownConfiguration.markdownTheme.latexMathBlockCenter))
             } else {
                 Text(latexStr)
+                    // 设置外边距属性
+                    .margin(top: latexMarginTop, bottom: latexMarginBottom)
+                    // 设置字体颜色
                     .fontColor(Color.RED)
             }
         } else {
             if (markdownConfiguration.markdownTheme.latexDefaultText) {
                 Text(latexStr)
+                    // 设置外边距属性
+                    .margin(top: latexMarginTop, bottom: latexMarginBottom)
+                    // 设置字体颜色
                     .fontColor(Color.RED)
             }
         }

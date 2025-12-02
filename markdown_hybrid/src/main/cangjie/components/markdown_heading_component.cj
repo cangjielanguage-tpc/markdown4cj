@@ -92,9 +92,23 @@ class MarkdownHeadingComponent {
     @State
     var isOneLink: Bool = false
 
+    /**
+     * 上边距 - 单位vp
+     */
+    @State
+    var headingMarginTop: Float64 = 0.0
+
+    /**
+     * 下边距 - 单位vp
+     */
+    @State
+    var headingMarginBottom: Float64 = 0.0
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(this.nodeView)
+        headingMarginTop = isMarginTop()
+        headingMarginBottom = isMarginBottom()
         // 缓存当前控件
         headingComponents.add(this.nodeView.nodeHash, this)
     }
@@ -130,7 +144,7 @@ class MarkdownHeadingComponent {
         // 设置子组件在垂直方向上的对齐格式
         .justifyContent(FlexAlign.Center)
         // 设置外边距属性
-        .margin(top: isMarginTop(), bottom: isMarginBottom())
+        .margin(top: headingMarginTop, bottom: headingMarginBottom)
         // 设置组件自身的宽度
         .width(100.percent)
     }
@@ -813,7 +827,7 @@ class MarkdownHeadingComponent {
         if (nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage) {
             return 0.0
         } else {
-            return marginTop
+            return marginBottom
         }
     }
 

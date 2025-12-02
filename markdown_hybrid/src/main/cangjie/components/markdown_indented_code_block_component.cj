@@ -63,9 +63,23 @@ class MarkdownIndentedCodeBlockComponent {
     @State
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>()
 
+    /**
+     * 上边距 - 单位vp
+     */
+    @State
+    var indentedCodeMarginTop: Float64 = 0.0
+
+    /**
+     * 下边距 - 单位vp
+     */
+    @State
+    var indentedCodeMarginBottom: Float64 = 0.0
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
+        indentedCodeMarginTop = marginTop
+        indentedCodeMarginBottom = marginBottom
         // 缓存当前控件
         indentedCodeComponents.add(this.nodeView.nodeHash, this)
     }
@@ -124,7 +138,7 @@ class MarkdownIndentedCodeBlockComponent {
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
+        .margin(top: indentedCodeMarginTop, bottom: indentedCodeMarginBottom)
         // 设置圆角
         .borderRadius(markdownConfiguration.markdownTheme.codeBlockRadius)
         // 设置背景色

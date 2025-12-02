@@ -74,9 +74,23 @@ public class MarkdownListComponent {
      */
     var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
+    /**
+     * 上边距 - 单位vp
+     */
+    @State
+    var listMarginTop: Float64 = 0.0
+
+    /**
+     * 下边距 - 单位vp
+     */
+    @State
+    var listMarginBottom: Float64 = 0.0
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
+        listMarginTop = marginTop
+        listMarginBottom = marginBottom
         // 缓存当前控件
         markdownCacheConfiguration.listComponents.add(this.nodeView.nodeHash, this)
     }
@@ -117,8 +131,6 @@ public class MarkdownListComponent {
                             MarkdownListItemComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
@@ -141,7 +153,7 @@ public class MarkdownListComponent {
             )
         }
         // 块内容前的起始边距
-        .margin(top: marginTop, bottom: marginBottom)
+        .margin(top: listMarginTop, bottom: listMarginBottom)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置List组件排列方向

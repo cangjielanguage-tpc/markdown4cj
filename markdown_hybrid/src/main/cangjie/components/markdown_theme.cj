@@ -61,6 +61,16 @@ public class MarkdownTheme {
     protected var isOnCopy: Bool = true
 
     /**
+     * markdown第一个模块上边距
+     */
+    protected var blockFirstTopMargin: Float64 = 8.0
+
+    /**
+     * markdown最后一个模块下边距
+     */
+    protected var blockLastBottomMargin: Float64 = 8.0
+
+    /**
      * 模块间上下间距
      */
     protected var blockTopAndBottomMargins: Float64 = 8.0
@@ -903,6 +913,8 @@ public class MarkdownTheme {
         this.isOnCopy = builder.isOnCopy
 
         // 2、模块间距
+        this.blockFirstTopMargin = builder.blockFirstTopMargin
+        this.blockLastBottomMargin = builder.blockLastBottomMargin
         this.blockTopAndBottomMargins = builder.blockTopAndBottomMargins
 
         // 3、链接
@@ -1355,6 +1367,16 @@ public class MarkdownThemeBuilder {
      * 是否打开长按复制粘贴
      */
     protected var isOnCopy: Bool = true
+
+    /**
+     * markdown第一个模块上边距
+     */
+    protected var blockFirstTopMargin: Float64 = 8.0
+
+    /**
+     * markdown最后一个模块下边距
+     */
+    protected var blockLastBottomMargin: Float64 = 8.0
 
     /**
      * 模块间上下间距
@@ -2202,6 +2224,8 @@ public class MarkdownThemeBuilder {
         this.isOnCopy = theme.isOnCopy
 
         // 2、模块间距
+        this.blockFirstTopMargin = theme.blockFirstTopMargin
+        this.blockLastBottomMargin = theme.blockLastBottomMargin
         this.blockTopAndBottomMargins = theme.blockTopAndBottomMargins
 
         // 3、链接
@@ -2630,6 +2654,28 @@ public class MarkdownThemeBuilder {
      */
     public func setIsOnCopy(isOnCopy: Bool): MarkdownThemeBuilder {
         this.isOnCopy = isOnCopy
+        return this
+    }
+
+    /**
+     * 设置markdown第一个模块上边距
+     *
+     * @param blockFirstTopMargin markdown第一个模块上边距 - 默认8.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setBlockFirstTopMargin(blockFirstTopMargin: Float64): MarkdownThemeBuilder {
+        this.blockFirstTopMargin = blockFirstTopMargin
+        return this
+    }
+
+    /**
+     * 设置markdown最后一个模块下边距
+     *
+     * @param blockLastBottomMargin markdown最后一个模块下边距 - 默认8.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setBlockLastBottomMargin(blockLastBottomMargin: Float64): MarkdownThemeBuilder {
+        this.blockLastBottomMargin = blockLastBottomMargin
         return this
     }
 

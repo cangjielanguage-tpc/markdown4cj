@@ -75,9 +75,23 @@ class MarkdownTableBlockComponent {
     @State
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> = ObservedArrayList<CellWidthArrayIndexedClass>()
 
+    /**
+     * 上边距 - 单位vp
+     */
+    @State
+    var tableMarginTop: Float64 = 0.0
+
+    /**
+     * 下边距 - 单位vp
+     */
+    @State
+    var tableMarginBottom: Float64 = 0.0
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
+        tableMarginTop = marginTop
+        tableMarginBottom = marginBottom
         // 缓存当前控件
         tableComponents.add(this.nodeView.nodeHash, this)
     }
@@ -142,7 +156,7 @@ class MarkdownTableBlockComponent {
         // 设置滚动条状态
         .scrollBar(BarState.Off)
         // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
+        .margin(top: tableMarginTop, bottom: tableMarginBottom)
         // 设置内边距属性
         .padding(left: markdownConfiguration.markdownTheme.tableBorderWidth, right: markdownConfiguration.markdownTheme.tableBorderWidth)
     }

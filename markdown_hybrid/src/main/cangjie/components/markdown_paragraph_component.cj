@@ -101,9 +101,23 @@ class MarkdownParagraphComponent {
     @State
     var isOneLink: Bool = false
 
+    /**
+     * 上边距 - 单位vp
+     */
+    @State
+    var paragraphMarginTop: Float64 = 0.0
+
+    /**
+     * 下边距 - 单位vp
+     */
+    @State
+    var paragraphMarginBottom: Float64 = 0.0
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
+        paragraphMarginTop = isMarginTop()
+        paragraphMarginBottom = isMarginBottom()
         // 缓存当前控件
         paragraphComponents.add(this.nodeView.nodeHash, this)
     }
@@ -125,7 +139,7 @@ class MarkdownParagraphComponent {
             paragraphComponent()
         }
         // 设置外边距属性
-        .margin(top: isMarginTop(), bottom: isMarginBottom())
+        .margin(top: paragraphMarginTop, bottom: paragraphMarginBottom)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置子组件在水平方向上的对齐格式
