@@ -141,6 +141,9 @@ public class MarkdownComponent {
      */
     var imageAndVideoList: ArrayList<String> = ArrayList<String>()
 
+    @State
+    var lastViewIndex: Int64 = 0
+
     protected override func aboutToAppear(): Unit {
         // 加载插件
         incBase = IncreaseParser(markdownPlugin)
@@ -167,17 +170,27 @@ public class MarkdownComponent {
                                 MarkdownHeadingComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
-                                    marginTop: markdownConfiguration.markdownTheme.headingTopMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.headingBottomMargins,
                                     fontCallback: fontCallback,
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
-                                    imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
-                                    imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
-                                    isListTo:false,
                                     headingComponents: markdownCacheConfiguration.headingComponents
                                 )
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                                0.0
+                            } else {
+                                markdownConfiguration.markdownTheme.headingTopMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                                0.0
+                            } else {
+                                markdownConfiguration.markdownTheme.headingBottomMargins
+                            })
                             // 组件区域变化时触发该回调
                             .onAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
                         } else if (item.node is Paragraph) {
@@ -187,26 +200,38 @@ public class MarkdownComponent {
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
                                     footnoteBlock: Option<FootnoteBlock>.None,
-                                    marginTop: markdownConfiguration.markdownTheme.paragraphTopMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.paragraphBottomMargins,
                                     fontCallback: fontCallback,
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
-                                    imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
-                                    imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
                                     paragraphComponents: markdownCacheConfiguration.paragraphComponents
                                 )
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                                0.0
+                            } else {
+                                markdownConfiguration.markdownTheme.paragraphTopMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                                0.0
+                            } else {
+                                markdownConfiguration.markdownTheme.paragraphBottomMargins
+                            })
                         } else if (item.node is BulletList) {
                             // 无序列表（包含任务列表）
                             ListItem() {
                                 MarkdownListComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
+                                    adBuilder: adBuilder,
+                                    videoBuilder: videoBuilder,
+                                    audioBuilder: audioBuilder,
                                     isOrdered: false,
-                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
@@ -215,15 +240,27 @@ public class MarkdownComponent {
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                         } else if (item.node is OrderedList) {
                             // 有序列表
                             ListItem() {
                                 MarkdownListComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
+                                    adBuilder: adBuilder,
+                                    videoBuilder: videoBuilder,
+                                    audioBuilder: audioBuilder,
                                     isOrdered: true,
-                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
@@ -232,14 +269,26 @@ public class MarkdownComponent {
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                         } else if (item.node is BlockQuote) {
                             // 块引用
                             ListItem() {
                                 MarkdownQuoteComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
-                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                    adBuilder: adBuilder,
+                                    videoBuilder: videoBuilder,
+                                    audioBuilder: audioBuilder,
                                     fontCallback: fontCallback,
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
@@ -248,59 +297,106 @@ public class MarkdownComponent {
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                         } else if (item.node is FencedCodeBlock) {
                             // 围栏代码块
                             ListItem() {
                                 MarkdownFencedCodeBlockComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
-                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
                                 )
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                         } else if (item.node is IndentedCodeBlock) {
                             // 缩进代码块
                             ListItem() {
                                 MarkdownIndentedCodeBlockComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
-                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
                                 )
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                         } else if (item.node is TableBlock) {
                             // 表格
-                            MarkdownTableBlockComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                fontCallback: fontCallback,
-                                imageCallback: imageCallback,
-                                componentWidth: componentWidth,
-                                tableComponents: markdownCacheConfiguration.tableComponents,
-                                tableRowComponents: markdownCacheConfiguration.tableRowComponents,
-                                tableCellComponents: markdownCacheConfiguration.tableCellComponents
-                            )
+                            ListItem() {
+                                MarkdownTableBlockComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    nodeView: item,
+                                    fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
+                                    componentWidth: componentWidth,
+                                    tableComponents: markdownCacheConfiguration.tableComponents,
+                                    tableRowComponents: markdownCacheConfiguration.tableRowComponents,
+                                    tableCellComponents: markdownCacheConfiguration.tableCellComponents
+                                )
+                            }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                         } else if (item.node is ThematicBreak) {
                             // 分割线
                             ListItem() {
                                 MarkdownThematicBreakComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins + markdownConfiguration.markdownTheme.thematicBreakTopMargin,
-                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins + markdownConfiguration.markdownTheme.thematicBreakBottomMargin
+                                    markdownConfiguration: markdownConfiguration
                                 )
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins + markdownConfiguration.markdownTheme.thematicBreakTopMargin
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins + markdownConfiguration.markdownTheme.thematicBreakBottomMargin
+                            })
                         } else if (item.node is DescList) {
                             // 定义列表
                             ListItem() {
                                 MarkdownDescListComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
-                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
@@ -308,16 +404,49 @@ public class MarkdownComponent {
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                         } else if (item.node is BlockAudio) {
                             // 音频
                             ListItem() {
                                 audioBuilder(item, markdownConfiguration)
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                         } else if (item.node is BlockVideo) {
                             // 视频
                             ListItem() {
                                 videoBuilder(item, markdownConfiguration, videoCallback)
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                         } else if (item.node is LatexMathBlock) {
                             // 单行的数学公式
                             ListItem() {
@@ -326,23 +455,30 @@ public class MarkdownComponent {
                                     MarkdownLatexMathBlockComponent(
                                         markdownConfiguration: markdownConfiguration,
                                         nodeView: item,
-                                        latexStr: (item.node as LatexMathBlock)().latex,
-                                        marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                        marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                                        latexStr: (item.node as LatexMathBlock)().latex
                                     )
                                 } else {
                                     // 没结束显示纯文本
                                     Text((item.node as LatexMathBlock)().latex)
                                 }
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                         } else if (item.node is FootnoteBlock) {
                             // 脚注内容
                             ListItem() {
                                 MarkdownFootnoteComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
-                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     fontCallback: fontCallback,
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
@@ -350,6 +486,17 @@ public class MarkdownComponent {
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                             // 组件区域变化时触发该回调
                             .onAreaChange {
                                 oldValue, newValue => indexFootnoteHashMap.add((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
@@ -360,11 +507,20 @@ public class MarkdownComponent {
                                 MarkdownImageBannerComponent(
                                     slideBlockNodeView: item,
                                     markdownConfiguration: markdownConfiguration,
-                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                     imageCallback: imageCallback
                                 )
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                         } else if (item.node is FencedCodeBlockListBlock) {
                             // 组合代码
                             ListItem() {
@@ -373,16 +529,36 @@ public class MarkdownComponent {
                                     strInfos: toCodeList(item)[0],
                                     strText: toCodeList(item)[1],
                                     strInfoText: toCodeList(item)[2],
-                                    markdownConfiguration: markdownConfiguration,
-                                    marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                                    markdownConfiguration: markdownConfiguration
                                 )
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                         } else if (item.node is BlockAD) {
                             // 广告
                             ListItem() {
                                 adBuilder(item)
                             }
+                            // 设置外边距属性
+                            .margin(top: if (idx == 0) {
+                                markdownConfiguration.markdownTheme.blockFirstTopMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            }
+                            , bottom: if (idx == lastViewIndex) {
+                                markdownConfiguration.markdownTheme.blockLastBottomMargin
+                            } else {
+                                markdownConfiguration.markdownTheme.blockTopAndBottomMargins
+                            })
                         } else {
                             // TODO 其他节点
                             ListItem() {
@@ -762,6 +938,7 @@ public class MarkdownComponent {
                         nodeViewDataSource.deleteData(i)
                     }
                 }
+                lastViewIndex = nodeViewDataSource.totalCount() - 1 // 页面缓存的数据长度
                 syncCounter.dec()
             }
             syncCounter.waitUntilZero()
@@ -820,8 +997,6 @@ func VideoBuilder(item: NodeView, markdownConfiguration: MarkdownConfiguration, 
     MarkdownImageVideoComponent(
         markdownConfiguration: markdownConfiguration,
         nodeView: item,
-        marginTop: markdownConfiguration.markdownTheme.videoMarginTop,
-        marginBottom: markdownConfiguration.markdownTheme.videoMarginBottom,
         videoCallback: videoCallback
     )
 }
@@ -830,8 +1005,6 @@ func VideoBuilder(item: NodeView, markdownConfiguration: MarkdownConfiguration, 
 func AudioBuilder(item: NodeView, markdownConfiguration: MarkdownConfiguration){
     MarkdownImageAudioComponent(
         markdownConfiguration: markdownConfiguration,
-        nodeView: item,
-        marginTop: markdownConfiguration.markdownTheme.audioMarginTop,
-        marginBottom: markdownConfiguration.markdownTheme.audioMarginBottom
+        nodeView: item
     )
 }

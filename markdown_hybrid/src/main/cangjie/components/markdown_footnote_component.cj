@@ -24,16 +24,6 @@ public class MarkdownFootnoteComponent {
     var nodeView: NodeView
 
     /**
-     * 上边距 - 单位vp
-     */
-    var marginTop: Float64
-
-    /**
-     * 下边距 - 单位vp
-     */
-    var marginBottom: Float64
-
-    /**
      * 控件宽度 - 单位px
      */
     @Prop
@@ -64,23 +54,9 @@ public class MarkdownFootnoteComponent {
      */
     var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
-    /**
-     * 上边距 - 单位vp
-     */
-    @State
-    var footnoteMarginTop: Float64 = 0.0
-
-    /**
-     * 下边距 - 单位vp
-     */
-    @State
-    var footnoteMarginBottom: Float64 = 0.0
-
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
-        footnoteMarginTop = marginTop
-        footnoteMarginBottom = marginBottom
         // 缓存当前控件
         markdownCacheConfiguration.footnoteComponent.add(this.nodeView.nodeHash, this)
     }
@@ -109,8 +85,6 @@ public class MarkdownFootnoteComponent {
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
                                 footnoteBlock: (nodeView.node as FootnoteBlock)(),
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
@@ -135,7 +109,7 @@ public class MarkdownFootnoteComponent {
         // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
         .alignListItem(ListItemAlign.Start)
         // 左边距
-        .margin(left: markdownConfiguration.markdownTheme.descListDefIndentation, top: footnoteMarginTop, bottom: footnoteMarginBottom)
+        .margin(left: markdownConfiguration.markdownTheme.descListDefIndentation)
     }
 
     /**

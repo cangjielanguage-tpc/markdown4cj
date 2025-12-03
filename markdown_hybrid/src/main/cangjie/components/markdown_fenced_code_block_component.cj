@@ -36,16 +36,6 @@ class MarkdownFencedCodeBlockComponent {
     var info: String = ""
 
     /**
-     * 外边距 - 上面
-     */
-    var marginTop: Float64
-
-    /**
-     * 外边距 - 下面
-     */
-    var marginBottom: Float64
-
-    /**
      * 高亮代码列表
      */
     @State
@@ -62,23 +52,9 @@ class MarkdownFencedCodeBlockComponent {
     @State
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>()
 
-    /**
-     * 上边距 - 单位vp
-     */
-    @State
-    var fencedCodeMarginTop: Float64 = 0.0
-
-    /**
-     * 下边距 - 单位vp
-     */
-    @State
-    var fencedCodeMarginBottom: Float64 = 0.0
-
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
-        fencedCodeMarginTop = marginTop
-        fencedCodeMarginBottom = marginBottom
         // 缓存当前控件
         fencedCodeComponents.add(this.nodeView.nodeHash, this)
     }
@@ -139,8 +115,6 @@ class MarkdownFencedCodeBlockComponent {
         }
         // 设置组件自身的宽度
         .width(100.percent)
-        // 设置外边距属性
-        .margin(top: fencedCodeMarginTop, bottom: fencedCodeMarginBottom)
         // 设置圆角
         .borderRadius(markdownConfiguration.markdownTheme.codeBlockRadius)
         // 设置背景色

@@ -29,16 +29,6 @@ class MarkdownParagraphComponent {
     var footnoteBlock: Option<FootnoteBlock> = Option<FootnoteBlock>.None
 
     /**
-     * 上边距 - 单位vp
-     */
-    var marginTop: Float64
-
-    /**
-     * 下边距 - 单位vp
-     */
-    var marginBottom: Float64
-
-    /**
      * 控件宽度 - 单位px
      */
     @Prop
@@ -76,16 +66,6 @@ class MarkdownParagraphComponent {
     var blockQuoteBackGroupColor: Option<Color> = Option<Color>.None
 
     /**
-     * 图片上边距
-     */
-    var imageMarginTop: Float64 = 0.0
-
-    /**
-     * 图片下边距
-     */
-    var imageMarginBottom: Float64 = 0.0
-
-    /**
      * 是否列表中的段落
      */
     var isListTo: Bool = false
@@ -101,23 +81,9 @@ class MarkdownParagraphComponent {
     @State
     var isOneLink: Bool = false
 
-    /**
-     * 上边距 - 单位vp
-     */
-    @State
-    var paragraphMarginTop: Float64 = 0.0
-
-    /**
-     * 下边距 - 单位vp
-     */
-    @State
-    var paragraphMarginBottom: Float64 = 0.0
-
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
-        paragraphMarginTop = isMarginTop()
-        paragraphMarginBottom = isMarginBottom()
         // 缓存当前控件
         paragraphComponents.add(this.nodeView.nodeHash, this)
     }
@@ -138,8 +104,6 @@ class MarkdownParagraphComponent {
         Column() {
             paragraphComponent()
         }
-        // 设置外边距属性
-        .margin(top: paragraphMarginTop, bottom: paragraphMarginBottom)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置子组件在水平方向上的对齐格式
@@ -843,22 +807,6 @@ class MarkdownParagraphComponent {
             paragraphComponent19()
         } else {
             paragraphComponent18()
-        }
-    }
-
-    func isMarginTop(): Float64 {
-        if (nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage) {
-            return 0.0
-        } else {
-            return marginTop
-        }
-    }
-
-    func isMarginBottom(): Float64 {
-        if (nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage) {
-            return 0.0
-        } else {
-            return marginBottom
         }
     }
 

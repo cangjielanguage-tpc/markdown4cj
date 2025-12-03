@@ -84,10 +84,6 @@ public class MarkdownDescTermComponent {
                             MarkdownParagraphComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
-                                imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
-                                imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 tocListOnClick: tocListOnClick,

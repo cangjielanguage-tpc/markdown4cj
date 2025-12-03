@@ -2202,7 +2202,7 @@ public class MarkdownThemeBuilder {
      * 定义列表术语和定义行之间间距
      */
     protected var descListTermAndDefMargins: Float64 = 8.0
-    
+
     /**
      * 定义列表定义行缩进
      */

@@ -68,7 +68,7 @@ func spanText(nodeView: NodeView): String {
         return " ${(nodeView.node as Code)().getLiteral()} "
     } else if (nodeView.node is HeadLink) {
         // toc链接和标题id链接
-        return if(let Some(v) <- getLinkString(nodeView)){
+        return if (let Some(v) <- getLinkString(nodeView)) {
             v
         } else {
             ""
@@ -131,11 +131,11 @@ func spanFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme
         try {
             let spanNode: SpanNode = (nodeView.props().get("SpanNode")() as SpanNode)()
             let style: ?HashMap<String, String> = spanNode.getStyle()
-            if(let Some(v) <- style){
-                let sizeStr:?String = v.get("font-size")
-                if(let Some(n) <- sizeStr){
-                    let size:?Float64 = sizeStringToSize(n)
-                    if(let Some(m) <- size){
+            if (let Some(v) <- style) {
+                let sizeStr: ?String = v.get("font-size")
+                if (let Some(n) <- sizeStr) {
+                    let size: ?Float64 = sizeStringToSize(n)
+                    if (let Some(m) <- size) {
                         return m
                     }
                 }
@@ -187,11 +187,11 @@ func spanFontWeight(nodeView: NodeView, isDescList: Bool, isTitle: Bool): FontWe
         try {
             let spanNode: SpanNode = (nodeView.props().get("SpanNode")() as SpanNode)()
             let style: ?HashMap<String, String> = spanNode.getStyle()
-            if(let Some(v) <- style){
-                let weightStr:?String = v.get("font-weight")
-                if(let Some(n) <- weightStr){
-                    let weight:?FontWeight = fontWeightToValue(n)
-                    if(let Some(m) <- weight){
+            if (let Some(v) <- style) {
+                let weightStr: ?String = v.get("font-weight")
+                if (let Some(n) <- weightStr) {
+                    let weight: ?FontWeight = fontWeightToValue(n)
+                    if (let Some(m) <- weight) {
                         return m
                     }
                 }
@@ -267,11 +267,11 @@ func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownThem
         try {
             let spanNode: SpanNode = (nodeView.props().get("SpanNode")() as SpanNode)()
             let style: ?HashMap<String, String> = spanNode.getStyle()
-            if(let Some(v) <- style){
-                let colorStr:?String = v.get("color")
-                if(let Some(n) <- colorStr){
-                    let color:?Color = colorStringToColor(n)
-                    if(let Some(m) <- color){
+            if (let Some(v) <- style) {
+                let colorStr: ?String = v.get("color")
+                if (let Some(n) <- colorStr) {
+                    let color: ?Color = colorStringToColor(n)
+                    if (let Some(m) <- color) {
                         return m
                     } else {
                         if (n.startsWith("#")) {
@@ -351,7 +351,7 @@ func spanBackgroundColor(isCode: Bool, isLink: Bool, markdownTheme: MarkdownThem
     return if (isCode) {
         // 内联代码情况需要设置背景色
         markdownTheme.codeBackgroundColor
-    } else if(isLink) {
+    } else if (isLink) {
         // 链接情况需要设置背景色
         markdownTheme.linkBackGroupColor
     } else {
@@ -858,7 +858,7 @@ func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicS
                 picStyleObj.borderRadius = Int64.parse(value).px
             } else if (style[..7] == ":style=") {
                 for (s in style[7..].split(";")) {
-                    picStyle.add(":${s.replace(":","=")}")
+                    picStyle.add(":${s.replace(":", "=")}")
                 }
             }
         } catch (e: Exception) {}
@@ -927,7 +927,7 @@ func length2Float64(length: ?Length, componentWidth: Float64): ?Float64 {
         return match (v.unitType) {
             case LengthType.vp(v) => vp2px(v)().value
             case LengthType.px(v) => v.value
-            case LengthType.percent(v) => v.value* componentWidth
+            case LengthType.percent(v) => v.value * componentWidth
             case _ => v.value
         }
     } else {
@@ -1185,11 +1185,12 @@ func sizeStringToSize(sizeString: String): ?Float64 {
         case "x-large" => 24.0
         case "xx-large" => 32.0
         case "xxx-large" => 36.0
-        case _ => if (sizeStr.size > 2 && sizeStr[sizeStr.size - 2..] == "px") {
-            Float64.parse(sizeStr[..sizeStr.size - 2])
-        } else {
-            Float64.parse(sizeStr)
-        }
+        case _ =>
+            if (sizeStr.size > 2 && sizeStr[sizeStr.size - 2..] == "px") {
+                Float64.parse(sizeStr[..sizeStr.size - 2])
+            } else {
+                Float64.parse(sizeStr)
+            }
     }
     return size
 }
@@ -1202,7 +1203,7 @@ func sizeStringToSize(sizeString: String): ?Float64 {
  */
 func fontWeightToValue(weightString: String): ?FontWeight {
     let weightStr = weightString.toAsciiLower().trimAscii()
-    var weight:?FontWeight = match (weightStr) {
+    var weight: ?FontWeight = match (weightStr) {
         // 关键字（对应固定数值）
         case "normal" => FontWeight.Normal
         case "bold" => FontWeight.Bold
@@ -1211,10 +1212,10 @@ func fontWeightToValue(weightString: String): ?FontWeight {
         case "100" => FontWeight.W100
         case "200" => FontWeight.W200
         case "300" => FontWeight.W300
-        case "400" => FontWeight.W400  // 等同于normal
+        case "400" => FontWeight.W400 // 等同于normal
         case "500" => FontWeight.W500
         case "600" => FontWeight.W600
-        case "700" => FontWeight.W700  // 等同于bold
+        case "700" => FontWeight.W700 // 等同于bold
         case "800" => FontWeight.W800
         case "900" => FontWeight.W900
         // 未匹配的情况
@@ -1231,7 +1232,7 @@ func fontWeightToValue(weightString: String): ?FontWeight {
  */
 func colorStringToColor(colorString: String): ?Color {
     let colorStr = colorString.toAsciiLower().trimAscii()
-    var color:?Color = match (colorStr) {
+    var color: ?Color = match (colorStr) {
         // 通用16种颜色（CSS基础色）
         case "black" => Color(0xFF000000)
         case "silver" => Color(0xFFC0C0C0)
@@ -1426,4 +1427,3 @@ func imageWidthHeight(picStyleObjWidth: ?Float64, picStyleObjHeight: ?Float64, c
     }
     return (width, height)
 }
-

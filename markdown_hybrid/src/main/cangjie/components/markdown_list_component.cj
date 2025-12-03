@@ -19,6 +19,24 @@ public class MarkdownListComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
+     * 广告布局
+     */
+    @BuilderParam
+    var adBuilder: (NodeView) -> Unit
+
+    /**
+     * 视频布局
+     */
+    @BuilderParam
+    var videoBuilder: (NodeView, MarkdownConfiguration, (String) -> Unit) -> Unit
+
+    /**
+     * 音频布局
+     */
+    @BuilderParam
+    var audioBuilder: (NodeView, MarkdownConfiguration) -> Unit
+
+    /**
      * 列表节点
      */
     var nodeView: NodeView
@@ -27,16 +45,6 @@ public class MarkdownListComponent {
      * 是无序列表还是有序列表 - true：无序列表，fasle：有序列表
      */
     var isOrdered: Bool
-
-    /**
-     * 外边距 - 上面
-     */
-    var marginTop: Float64
-
-    /**
-     * 外边距 - 下面
-     */
-    var marginBottom: Float64
 
     /**
      * 控件宽度 - 单位px
@@ -74,23 +82,9 @@ public class MarkdownListComponent {
      */
     var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
-    /**
-     * 上边距 - 单位vp
-     */
-    @State
-    var listMarginTop: Float64 = 0.0
-
-    /**
-     * 下边距 - 单位vp
-     */
-    @State
-    var listMarginBottom: Float64 = 0.0
-
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
-        listMarginTop = marginTop
-        listMarginBottom = marginBottom
         // 缓存当前控件
         markdownCacheConfiguration.listComponents.add(this.nodeView.nodeHash, this)
     }
@@ -131,6 +125,9 @@ public class MarkdownListComponent {
                             MarkdownListItemComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
+                                adBuilder: adBuilder,
+                                videoBuilder: videoBuilder,
+                                audioBuilder: audioBuilder,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
@@ -152,8 +149,6 @@ public class MarkdownListComponent {
                 }
             )
         }
-        // 块内容前的起始边距
-        .margin(top: listMarginTop, bottom: listMarginBottom)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置List组件排列方向

@@ -24,16 +24,6 @@ public class MarkdownImageVideoComponent {
     var nodeView: NodeView
 
     /**
-     * 上边距 - 单位vp
-     */
-    var marginTop: Float64
-
-    /**
-     * 下边距 - 单位vp
-     */
-    var marginBottom: Float64
-
-    /**
      * 视频点击事件
      */
     var videoCallback: (String) -> Unit
@@ -98,8 +88,6 @@ public class MarkdownImageVideoComponent {
         }
         // 设置组件自身的宽度
         .width(100.percent)
-        // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
         // 点击动作触发该方法调用
         .onClick {evt => videoOnClick(imageVideoUrl, videoCallback)}
     }

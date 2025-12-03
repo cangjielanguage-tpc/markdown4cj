@@ -19,6 +19,24 @@ class MarkdownListItemComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
+     * 广告布局
+     */
+    @BuilderParam
+    var adBuilder: (NodeView) -> Unit
+
+    /**
+     * 视频布局
+     */
+    @BuilderParam
+    var videoBuilder: (NodeView, MarkdownConfiguration, (String) -> Unit) -> Unit
+
+    /**
+     * 音频布局
+     */
+    @BuilderParam
+    var audioBuilder: (NodeView, MarkdownConfiguration) -> Unit
+
+    /**
      * 列表节点
      */
     var nodeView: NodeView
@@ -89,10 +107,6 @@ class MarkdownListItemComponent {
                             MarkdownParagraphComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
-                                imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 tocListOnClick: tocListOnClick,
@@ -101,16 +115,23 @@ class MarkdownListItemComponent {
                                 paragraphComponents: markdownCacheConfiguration.paragraphComponents
                             )
                         }
+                        // 设置外边距属性
+                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        }
+                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        })
                     } else if (item.node is Heading) {
                         // 标题
                         ListItem() {
                             MarkdownHeadingComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
-                                imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
@@ -118,37 +139,67 @@ class MarkdownListItemComponent {
                                 headingComponents: markdownCacheConfiguration.headingComponents
                             )
                         }
+                        // 设置外边距属性
+                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        }
+                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        })
                     } else if (item.node is IndentedCodeBlock) {
                         // 缩进代码
                         ListItem() {
                             MarkdownIndentedCodeBlockComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
                             )
                         }
+                        // 设置外边距属性
+                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        }
+                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        })
                     } else if (item.node is FencedCodeBlock) {
                         // 围栏代码
                         ListItem() {
                             MarkdownFencedCodeBlockComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
                             )
                         }
+                        // 设置外边距属性
+                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        }
+                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        })
                     } else if (item.node is BulletList) {
                         // 无序列表
                         ListItem() {
                             MarkdownListComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
+                                adBuilder: adBuilder,
+                                videoBuilder: videoBuilder,
+                                audioBuilder: audioBuilder,
                                 isOrdered: false,
-                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 tocListOnClick: tocListOnClick,
@@ -157,15 +208,27 @@ class MarkdownListItemComponent {
                                 markdownCacheConfiguration: markdownCacheConfiguration
                             )
                         }
+                        // 设置外边距属性
+                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        }
+                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        })
                     } else if (item.node is OrderedList) {
                         // 有序列表
                         ListItem() {
                             MarkdownListComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
+                                adBuilder: adBuilder,
+                                videoBuilder: videoBuilder,
+                                audioBuilder: audioBuilder,
                                 isOrdered: true,
-                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 tocListOnClick: tocListOnClick,
@@ -174,14 +237,26 @@ class MarkdownListItemComponent {
                                 markdownCacheConfiguration: markdownCacheConfiguration
                             )
                         }
+                        // 设置外边距属性
+                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        }
+                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        })
                     } else if (item.node is BlockQuote) {
                         // 块引用
                         ListItem() {
                             MarkdownQuoteComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                adBuilder: adBuilder,
+                                videoBuilder: videoBuilder,
+                                audioBuilder: audioBuilder,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 tocListOnClick: tocListOnClick,
@@ -190,14 +265,23 @@ class MarkdownListItemComponent {
                                 markdownCacheConfiguration: markdownCacheConfiguration
                             )
                         }
+                        // 设置外边距属性
+                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        }
+                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        })
                     } else if (item.node is TableBlock) {
                         // 表格
                         ListItem() {
                             MarkdownTableBlockComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
@@ -206,6 +290,17 @@ class MarkdownListItemComponent {
                                 tableCellComponents: markdownCacheConfiguration.tableCellComponents
                             )
                         }
+                        // 设置外边距属性
+                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        }
+                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        })
                     } else if (item.node is LatexMathBlock) {
                         // 数学公式 - 单行
                         ListItem() {
@@ -214,47 +309,76 @@ class MarkdownListItemComponent {
                                 MarkdownLatexMathBlockComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
-                                    latexStr: (item.node as LatexMathBlock)().latex,
-                                    marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                    marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
+                                    latexStr: (item.node as LatexMathBlock)().latex
                                 )
                             } else {
                                 // 没结束显示纯文本
                                 Text((item.node as LatexMathBlock)().latex)
                             }
                         }
+                        // 设置外边距属性
+                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        }
+                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        })
                     } else if (item.node is BlockAudio) {
                         // 音频
                         ListItem() {
-                            MarkdownImageAudioComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.audioMarginTop,
-                                marginBottom: markdownConfiguration.markdownTheme.audioMarginBottom
-                            )
+                            audioBuilder(item, markdownConfiguration)
                         }
+                        // 设置外边距属性
+                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        }
+                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        })
                     } else if (item.node is BlockVideo) {
                         // 视频
                         ListItem() {
-                            MarkdownImageVideoComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.videoMarginTop,
-                                marginBottom: markdownConfiguration.markdownTheme.videoMarginBottom,
-                                videoCallback: videoCallback
-                            )
+                            videoBuilder(item, markdownConfiguration, videoCallback)
                         }
+                        // 设置外边距属性
+                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        }
+                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        })
                     } else if (item.node is SlideBlock) {
                         // 图片幻灯片
                         ListItem() {
                             MarkdownImageBannerComponent(
                                 slideBlockNodeView: item,
                                 markdownConfiguration: markdownConfiguration,
-                                imageCallback: imageCallback,
-                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                imageCallback: imageCallback
                             )
                         }
+                        // 设置外边距属性
+                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        }
+                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        })
                     } else if (item.node is FencedCodeBlockListBlock) {
                         // 组合代码
                         ListItem() {
@@ -263,11 +387,20 @@ class MarkdownListItemComponent {
                                 strInfos: toCodeList(item)[0],
                                 strText: toCodeList(item)[1],
                                 strInfoText: toCodeList(item)[2],
-                                markdownConfiguration: markdownConfiguration,
-                                marginTop: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins,
+                                markdownConfiguration: markdownConfiguration
                             )
                         }
+                        // 设置外边距属性
+                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        }
+                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                            0.0
+                        } else {
+                            markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+                        })
                     } else {
                         // TODO 其他节点
                         ListItem() {

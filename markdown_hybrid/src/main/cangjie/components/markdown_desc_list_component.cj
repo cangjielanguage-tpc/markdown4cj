@@ -24,16 +24,6 @@ public class MarkdownDescListComponent {
     var nodeView: NodeView
 
     /**
-     * 上边距 - 单位vp
-     */
-    var marginTop: Float64
-
-    /**
-     * 下边距 - 单位vp
-     */
-    var marginBottom: Float64
-
-    /**
      * 控件宽度 - 单位px
      */
     @Prop
@@ -64,23 +54,9 @@ public class MarkdownDescListComponent {
      */
     var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
-    /**
-     * 上边距 - 单位vp
-     */
-    @State
-    var descListMarginTop: Float64 = 0.0
-
-    /**
-     * 下边距 - 单位vp
-     */
-    @State
-    var descListMarginBottom: Float64 = 0.0
-
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
-        descListMarginTop = marginTop
-        descListMarginBottom = marginBottom
         // 缓存当前控件
         markdownCacheConfiguration.descListComponent.add(this.nodeView.nodeHash, this)
     }
@@ -140,8 +116,6 @@ public class MarkdownDescListComponent {
                 }
             )
         }
-        // 块内容前的起始边距
-        .margin(top: descListMarginTop, bottom: descListMarginBottom)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置List组件排列方向
