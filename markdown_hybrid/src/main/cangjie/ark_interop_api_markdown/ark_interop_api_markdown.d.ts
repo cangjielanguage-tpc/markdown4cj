@@ -44,6 +44,10 @@ export declare class CJMarkdownPlugin {
 export declare class CJMarkdownTheme {
   setIsOnCopy(isOnCopy: boolean): void
 
+  setBlockFirstTopMargin(blockFirstTopMargin: number): void
+
+  setBlockLastBottomMargin(blockLastBottomMargin: number): void
+
   setBlockTopAndBottomMargins(blockTopAndBottomMargins: number): void
 
   setIsLinkStyle(isLinkStyle: boolean): void

@@ -122,6 +122,12 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.isOnCopy !== undefined) {
           cjMarkdownTheme.setIsOnCopy(this.config.markdownTheme.isOnCopy)
         }
+        if (this.config.markdownTheme.blockFirstTopMargin !== undefined) {
+          cjMarkdownTheme.setBlockFirstTopMargin(this.config.markdownTheme.blockFirstTopMargin)
+        }
+        if (this.config.markdownTheme.blockLastBottomMargin !== undefined) {
+          cjMarkdownTheme.setBlockLastBottomMargin(this.config.markdownTheme.blockLastBottomMargin)
+        }
         if (this.config.markdownTheme.blockTopAndBottomMargins !== undefined) {
           cjMarkdownTheme.setBlockTopAndBottomMargins(this.config.markdownTheme.blockTopAndBottomMargins)
         }
@@ -867,6 +873,14 @@ export class MarkdownTheme {
    */
   isOnCopy?: boolean = undefined
   /**
+   * markdown第一个模块上边距
+   */
+  blockFirstTopMargin?: number = undefined
+  /**
+   * markdown最后一个模块下边距
+   */
+  blockLastBottomMargin?: number = undefined
+  /**
    * 模块间上下间距
    */
   blockTopAndBottomMargins?: number = undefined
@@ -1587,6 +1601,24 @@ export class MarkdownTheme {
    */
   setIsOnCopy(isOnCopy: boolean): void {
     this.isOnCopy = isOnCopy
+  }
+
+  /**
+   * 设置markdown第一个模块上边距
+   *
+   * @param blockFirstTopMargin markdown第一个模块上边距 - 默认8.0vp
+   */
+  setBlockFirstTopMargin(blockFirstTopMargin: number): void {
+    this.blockFirstTopMargin = blockFirstTopMargin
+  }
+
+  /**
+   * 设置markdown最后一个模块下边距
+   *
+   * @param blockLastBottomMargin markdown最后一个模块下边距 - 默认8.0vp
+   */
+  setBlockLastBottomMargin(blockLastBottomMargin: number): void {
+    this.blockLastBottomMargin = blockLastBottomMargin
   }
 
   /**

@@ -23,6 +23,16 @@ public class CJMarkdownTheme {
     var isOnCopy: ?Bool = None
 
     /**
+     * markdown第一个模块上边距
+     */
+    var blockFirstTopMargin: ?Float64 = None
+
+    /**
+     * markdown最后一个模块下边距
+     */
+    var blockLastBottomMargin: ?Float64 = None
+
+    /**
      * 模块间上下间距
      */
     var blockTopAndBottomMargins: ?Float64 = None
@@ -831,6 +841,24 @@ public class CJMarkdownTheme {
      */
     public func setIsOnCopy(isOnCopy: Bool): Unit {
         this.isOnCopy = isOnCopy
+    }
+
+    /**
+     * 设置markdown第一个模块上边距
+     *
+     * @param blockFirstTopMargin markdown第一个模块上边距 - 默认8.0vp
+     */
+    public func setBlockFirstTopMargin(blockFirstTopMargin: Float64): Unit {
+        this.blockFirstTopMargin = blockFirstTopMargin
+    }
+
+    /**
+     * 设置markdown最后一个模块下边距
+     *
+     * @param blockLastBottomMargin markdown最后一个模块下边距 - 默认8.0vp
+     */
+    public func setBlockLastBottomMargin(blockLastBottomMargin: Float64): Unit {
+        this.blockLastBottomMargin = blockLastBottomMargin
     }
 
     /**
