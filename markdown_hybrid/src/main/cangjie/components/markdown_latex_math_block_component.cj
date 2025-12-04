@@ -121,7 +121,7 @@ class MarkdownLatexMathBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(nodeView:NodeView){
+    public func refreshData(nodeView: NodeView) {
         this.nodeView = nodeView
         latexMathStrToPixelMap()
     }

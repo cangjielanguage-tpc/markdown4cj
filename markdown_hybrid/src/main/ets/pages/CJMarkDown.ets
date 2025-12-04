@@ -1664,7 +1664,7 @@ export class MarkdownTheme {
   /**
    * 设置圆形图片格式链接主题背景颜色
    *
-   * @param linkCircleImageBackGroupColor 圆形图片格式链接主题背景颜色 - 默认0XFFFFFFFF
+   * @param linkCircleImageBackGroupColor 圆形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
    */
   setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: number): void {
     this.linkCircleImageBackGroupColor = linkCircleImageBackGroupColor
@@ -1718,7 +1718,7 @@ export class MarkdownTheme {
   /**
    * 设置圆角矩形图片格式链接主题背景颜色
    *
-   * @param linkRectImageBackGroupColor 圆角矩形图片格式链接主题背景颜色 - 默认0XFFFFFFFF
+   * @param linkRectImageBackGroupColor 圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
    */
   setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: number): void {
     this.linkRectImageBackGroupColor = linkRectImageBackGroupColor
@@ -1790,7 +1790,7 @@ export class MarkdownTheme {
   /**
    * 设置空心圆角矩形图片格式链接主题背景颜色
    *
-   * @param linkRectToolImageBackGroupColor 空心圆角矩形图片格式链接主题背景颜色 - 默认OXFFFFFFFF
+   * @param linkRectToolImageBackGroupColor 空心圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
    */
   setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: number): void {
     this.linkRectToolImageBackGroupColor = linkRectToolImageBackGroupColor
@@ -1916,7 +1916,7 @@ export class MarkdownTheme {
   /**
    * 设置块引用背景颜色
    *
-   * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0XFFFFFFFF
+   * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0XFFEAEAEA
    */
   setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: number): void {
     this.blockQuoteBackGroupColor = blockQuoteBackGroupColor
@@ -2060,7 +2060,7 @@ export class MarkdownTheme {
   /**
    * 设置文本、图片格式内联代码背景颜色
    *
-   * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFF191919
+   * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFFEAEAEA
    */
   setCodeBackgroundColor(codeBackgroundColor: number): void {
     this.codeBackgroundColor = codeBackgroundColor
@@ -2564,7 +2564,7 @@ export class MarkdownTheme {
   /**
    * 设置数学公式背景色
    *
-   * @param latexMathBackGroupColor 数学公式背景色 - 默认0xFFFFFFFF
+   * @param latexMathBackGroupColor 数学公式背景色 - 默认Color.TRANSPARENT
    */
   setLatexMathBackGroupColor(latexMathBackGroupColor: number): void {
     this.latexMathBackGroupColor = latexMathBackGroupColor
@@ -2996,7 +2996,7 @@ export class MarkdownTheme {
   /**
    * 设置删除线颜色
    *
-   * @param strikethroughColor 删除线颜色 - 默认0X191919
+   * @param strikethroughColor 删除线颜色 - 默认0XFF191919
    */
   setStrikethroughColor(strikethroughColor: number): void {
     this.strikethroughColor = strikethroughColor

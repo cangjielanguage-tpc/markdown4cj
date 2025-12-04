@@ -101,8 +101,7 @@ public class MarkdownQuoteComponent {
             LazyForEach(
                 nodeViewDataSource,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 =>
-                    if (item.node is Paragraph) {
+                    item: NodeView, idx: Int64 => if (item.node is Paragraph) {
                         // 段落
                         ListItem() {
                             Column() {
@@ -138,8 +137,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
@@ -179,8 +178,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
@@ -215,8 +214,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
@@ -251,8 +250,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
@@ -296,8 +295,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
@@ -341,8 +340,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
@@ -385,8 +384,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
@@ -426,8 +425,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
@@ -468,8 +467,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
@@ -500,8 +499,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
@@ -532,8 +531,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
@@ -568,8 +567,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
@@ -606,8 +605,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
@@ -638,8 +637,8 @@ public class MarkdownQuoteComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        },
+                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins

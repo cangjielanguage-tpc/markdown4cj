@@ -120,8 +120,7 @@ class MarkdownListItemComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        }, bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
@@ -144,8 +143,7 @@ class MarkdownListItemComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        }, bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
@@ -164,8 +162,7 @@ class MarkdownListItemComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        }, bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
@@ -184,8 +181,7 @@ class MarkdownListItemComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        }, bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
@@ -213,8 +209,7 @@ class MarkdownListItemComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        }, bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
@@ -242,8 +237,7 @@ class MarkdownListItemComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        }, bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
@@ -270,8 +264,7 @@ class MarkdownListItemComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        }, bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
@@ -295,8 +288,7 @@ class MarkdownListItemComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        }, bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
@@ -321,8 +313,7 @@ class MarkdownListItemComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        }, bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
@@ -337,8 +328,7 @@ class MarkdownListItemComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        }, bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
@@ -353,8 +343,7 @@ class MarkdownListItemComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        }, bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
@@ -373,8 +362,7 @@ class MarkdownListItemComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        }, bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
@@ -395,8 +383,7 @@ class MarkdownListItemComponent {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-                        }
-                        , bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+                        }, bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                             0.0
                         } else {
                             markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins

@@ -29,38 +29,38 @@ public class MarkdownComponent {
      * markdown插件
      */
     var markdownPlugin: Markdown = Markdown
-            .builder()
-            // HTML插件
-            .usePlugin(HtmlPlugin.create())
-            // 任务列表插件
-            .usePlugin(TaskListPlugin.create())
-            // 删除线插件
-            .usePlugin(StrikethroughPlugin.create())
-            // 表格插件
-            .usePlugin(TablePlugin.create())
-            // 数学公式插件
-            .usePlugin(LatexMathPluginV2.create())
-            // 音频插件
-            .usePlugin(BlockAudioPlugin.create())
-            // 视频插件
-            .usePlugin(BlockVideoPlugin.create())
-            // 自动链接插件
-            .usePlugin(LinkifyPlugin.create())
-            // 幻灯片插件
-            .usePlugin(ImageSlidePlugin.create())
-            // ImageStyle插件
-            .usePlugin(ImageStylePlugin.create())
-            // 代码列表标签插件
-            .usePlugin(CodeListPlugin.create())
-            // 脚注插件
-            .usePlugin(FootnotePlugin.create())
-            // TOC插件
-            .usePlugin(TocPlugin.create())
-            // 图片列表插件
-            .usePlugin(ImageCollectPlugin.create())
-            // 唯一ID标识插件
-            .usePlugin(NodeIdPlugin.create())
-            .build()
+        .builder()
+        // HTML插件
+        .usePlugin(HtmlPlugin.create())
+        // 任务列表插件
+        .usePlugin(TaskListPlugin.create())
+        // 删除线插件
+        .usePlugin(StrikethroughPlugin.create())
+        // 表格插件
+        .usePlugin(TablePlugin.create())
+        // 数学公式插件
+        .usePlugin(LatexMathPluginV2.create())
+        // 音频插件
+        .usePlugin(BlockAudioPlugin.create())
+        // 视频插件
+        .usePlugin(BlockVideoPlugin.create())
+        // 自动链接插件
+        .usePlugin(LinkifyPlugin.create())
+        // 幻灯片插件
+        .usePlugin(ImageSlidePlugin.create())
+        // ImageStyle插件
+        .usePlugin(ImageStylePlugin.create())
+        // 代码列表标签插件
+        .usePlugin(CodeListPlugin.create())
+        // 脚注插件
+        .usePlugin(FootnotePlugin.create())
+        // TOC插件
+        .usePlugin(TocPlugin.create())
+        // 图片列表插件
+        .usePlugin(ImageCollectPlugin.create())
+        // 唯一ID标识插件
+        .usePlugin(NodeIdPlugin.create())
+        .build()
 
     /**
      * 广告布局
@@ -183,8 +183,8 @@ public class MarkdownComponent {
                                 0.0
                             } else {
                                 markdownConfiguration.markdownTheme.headingTopMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            },
+                            bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                                 0.0
@@ -214,8 +214,8 @@ public class MarkdownComponent {
                                 0.0
                             } else {
                                 markdownConfiguration.markdownTheme.paragraphTopMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            },
+                            bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
                                 0.0
@@ -245,8 +245,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -274,8 +273,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -302,8 +300,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -322,8 +319,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -342,8 +338,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -367,8 +362,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -376,17 +370,14 @@ public class MarkdownComponent {
                         } else if (item.node is ThematicBreak) {
                             // 分割线
                             ListItem() {
-                                MarkdownThematicBreakComponent(
-                                    markdownConfiguration: markdownConfiguration
-                                )
+                                MarkdownThematicBreakComponent(markdownConfiguration: markdownConfiguration)
                             }
                             // 设置外边距属性
                             .margin(top: if (idx == 0) {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins + markdownConfiguration.markdownTheme.thematicBreakTopMargin
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins + markdownConfiguration.markdownTheme.thematicBreakBottomMargin
@@ -409,8 +400,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -425,8 +415,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -441,8 +430,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -467,8 +455,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -491,8 +478,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -515,8 +501,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -537,8 +522,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -553,8 +537,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockFirstTopMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
-                            }
-                            , bottom: if (idx == lastViewIndex) {
+                            }, bottom: if (idx == lastViewIndex) {
                                 markdownConfiguration.markdownTheme.blockLastBottomMargin
                             } else {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
@@ -566,8 +549,8 @@ public class MarkdownComponent {
                             }
                         }
                     },
-                    keyGeneratorFunc:{
-                         item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
+                    keyGeneratorFunc: {
+                        item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
                     }
                 )
             }
@@ -577,10 +560,9 @@ public class MarkdownComponent {
             .alignListItem(ListItemAlign.Start)
             // 组件区域变化事件
             .interopOnSizeChange {
-                old, new =>
-                    if(componentWidth != new.width){
-                       componentWidth = new.width
-                    }
+                old, new => if (componentWidth != new.width) {
+                    componentWidth = new.width
+                }
             }
             // 设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
             .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
@@ -590,7 +572,7 @@ public class MarkdownComponent {
                     nodeViewDataSource,
                     itemGeneratorFunc: {
                         item: NodeView, idx: Int64 => if (idx == 0 && item.node is FencedCodeBlock) {
-                            ListItem(){
+                            ListItem() {
                                 MarkdownCodeComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
@@ -599,7 +581,7 @@ public class MarkdownComponent {
                                 )
                             }
                         } else if (idx == 0 && item.node is IndentedCodeBlock) {
-                            ListItem(){
+                            ListItem() {
                                 MarkdownCodeComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
@@ -608,13 +590,13 @@ public class MarkdownComponent {
                                 )
                             }
                         } else {
-                            ListItem(){
+                            ListItem() {
                                 Text("")
                             }
                         }
                     },
-                    keyGeneratorFunc:{
-                         item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
+                    keyGeneratorFunc: {
+                        item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
                     }
                 )
             }
@@ -657,7 +639,7 @@ public class MarkdownComponent {
             imageAndVideoList.clear()
             imageAndVideoList.add(all: getProp<ArrayList<String>>(doc, "links", ArrayList<String>()))
 
-            let syncCounter:SyncCounter = SyncCounter(1)
+            let syncCounter: SyncCounter = SyncCounter(1)
             launch {
                 if (refreshNodeViewSize == 0) {
                     syncCounter.dec()
@@ -988,12 +970,12 @@ public class MarkdownComponent {
 }
 
 @Builder
-func ADBuilder(item: NodeView){
+func ADBuilder(item: NodeView) {
     Text("")
 }
 
 @Builder
-func VideoBuilder(item: NodeView, markdownConfiguration: MarkdownConfiguration, videoCallback: (String) -> Unit){
+func VideoBuilder(item: NodeView, markdownConfiguration: MarkdownConfiguration, videoCallback: (String) -> Unit) {
     MarkdownImageVideoComponent(
         markdownConfiguration: markdownConfiguration,
         nodeView: item,
@@ -1002,7 +984,7 @@ func VideoBuilder(item: NodeView, markdownConfiguration: MarkdownConfiguration, 
 }
 
 @Builder
-func AudioBuilder(item: NodeView, markdownConfiguration: MarkdownConfiguration){
+func AudioBuilder(item: NodeView, markdownConfiguration: MarkdownConfiguration) {
     MarkdownImageAudioComponent(
         markdownConfiguration: markdownConfiguration,
         nodeView: item

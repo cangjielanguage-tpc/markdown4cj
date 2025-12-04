@@ -74,13 +74,13 @@ public class MarkdownConfiguration {
      */
     protected var latexStrCallback: (String) -> String = {
         data: String =>
-        var dataNew = data.replace("{aligned*}", "{aligned}")
-        dataNew = dataNew.replace("{align*}", "{align}")
-        dataNew = dataNew.replace("{flalign*}", "{flalign}")
-        dataNew = dataNew.replace("{gather*}", "{gather}")
-        dataNew = dataNew.replace("{multline*}", "{multline}")
-        dataNew = dataNew.replace("{eqnarray*}", "{eqnarray}")
-        return dataNew
+            var dataNew = data.replace("{aligned*}", "{aligned}")
+            dataNew = dataNew.replace("{align*}", "{align}")
+            dataNew = dataNew.replace("{flalign*}", "{flalign}")
+            dataNew = dataNew.replace("{gather*}", "{gather}")
+            dataNew = dataNew.replace("{multline*}", "{multline}")
+            dataNew = dataNew.replace("{eqnarray*}", "{eqnarray}")
+            return dataNew
     }
 
     /**
@@ -211,13 +211,13 @@ public class MarkdownConfigurationBuilder {
      */
     protected var latexStrCallback: (String) -> String = {
         data: String =>
-        var dataNew = data.replace("{aligned*}", "{aligned}")
-        dataNew = dataNew.replace("{align*}", "{align}")
-        dataNew = dataNew.replace("{flalign*}", "{flalign}")
-        dataNew = dataNew.replace("{gather*}", "{gather}")
-        dataNew = dataNew.replace("{multline*}", "{multline}")
-        dataNew = dataNew.replace("{eqnarray*}", "{eqnarray}")
-        return dataNew
+            var dataNew = data.replace("{aligned*}", "{aligned}")
+            dataNew = dataNew.replace("{align*}", "{align}")
+            dataNew = dataNew.replace("{flalign*}", "{flalign}")
+            dataNew = dataNew.replace("{gather*}", "{gather}")
+            dataNew = dataNew.replace("{multline*}", "{multline}")
+            dataNew = dataNew.replace("{eqnarray*}", "{eqnarray}")
+            return dataNew
     }
 
     /**

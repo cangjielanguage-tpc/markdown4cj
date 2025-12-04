@@ -32,11 +32,7 @@ func headingTextComponent18(nodeView: NodeView, markdownConfiguration: MarkdownC
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => if (nodeView.link.isSome()) {
-                linkOnClick(nodeView, markdownConfiguration.linkCallback)
-            }
-        }
+        .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
 }
 
 /**
@@ -63,11 +59,7 @@ func headingTextComponent19(nodeView: NodeView, markdownConfiguration: MarkdownC
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => if (nodeView.link.isSome()) {
-                linkOnClick(nodeView, markdownConfiguration.linkCallback)
-            }
-        }
+        .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
 }
 
 /**
@@ -94,11 +86,7 @@ func headingLinkComponent18(nodeView: NodeView, link: String, markdownConfigurat
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => if (nodeView.link.isSome()) {
-                linkOnClick(nodeView, markdownConfiguration.linkCallback)
-            }
-        }
+        .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
 }
 
 /**
@@ -125,11 +113,7 @@ func headingLinkComponent19(nodeView: NodeView, link: String, markdownConfigurat
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => if (nodeView.link.isSome()) {
-                linkOnClick(nodeView, markdownConfiguration.linkCallback)
-            }
-        }
+        .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
 }
 
 /**
@@ -272,11 +256,7 @@ func paragraphTextComponent18(nodeView: NodeView, isDescList: Bool, markdownConf
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => if (nodeView.link.isSome()) {
-                linkOnClick(nodeView, markdownConfiguration.linkCallback)
-            }
-        }
+        .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
 }
 
 /**
@@ -303,11 +283,7 @@ func paragraphTextComponent19(nodeView: NodeView, isDescList: Bool, markdownConf
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => if (nodeView.link.isSome()) {
-                linkOnClick(nodeView, markdownConfiguration.linkCallback)
-            }
-        }
+        .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
 }
 
 /**
@@ -334,9 +310,7 @@ func paragraphTocComponent18(nodeView: NodeView, isDescList: Bool, markdownConfi
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)
-        }
+        .onClick {evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)}
 }
 
 /**
@@ -363,9 +337,7 @@ func paragraphTocComponent19(nodeView: NodeView, isDescList: Bool, markdownConfi
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)
-        }
+        .onClick {evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)}
 }
 
 /**
@@ -392,11 +364,7 @@ func paragraphLinkComponent18(nodeView: NodeView, isDescList: Bool, link: String
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => if (nodeView.link.isSome()) {
-                linkOnClick(nodeView, markdownConfiguration.linkCallback)
-            }
-        }
+        .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
 }
 
 /**
@@ -423,11 +391,7 @@ func paragraphLinkComponent19(nodeView: NodeView, isDescList: Bool, link: String
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => if (nodeView.link.isSome()) {
-                linkOnClick(nodeView, markdownConfiguration.linkCallback)
-            }
-        }
+        .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
 }
 
 /**
@@ -570,11 +534,7 @@ func tableComponentText18(nodeView: NodeView, isHeader: Bool, markdownConfigurat
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => if (nodeView.link.isSome()) {
-                linkOnClick(nodeView, markdownConfiguration.linkCallback)
-            }
-        }
+        .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
 }
 
 /**
@@ -601,11 +561,7 @@ func tableComponentText19(nodeView: NodeView, isHeader: Bool, markdownConfigurat
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => if (nodeView.link.isSome()) {
-                linkOnClick(nodeView, markdownConfiguration.linkCallback)
-            }
-        }
+        .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
 }
 
 /**
@@ -686,11 +642,7 @@ func tableLinkComponent18(nodeView: NodeView, isHeader: Bool, link: String, mark
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => if (nodeView.link.isSome()) {
-                linkOnClick(nodeView, markdownConfiguration.linkCallback)
-            }
-        }
+        .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
 }
 
 /**
@@ -717,11 +669,7 @@ func tableLinkComponent19(nodeView: NodeView, isHeader: Bool, link: String, mark
         // 设置文本装饰线样式及其颜色
         .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
         // 点击动作触发该方法调用
-        .onClick {
-            evt => if (nodeView.link.isSome()) {
-                linkOnClick(nodeView, markdownConfiguration.linkCallback)
-            }
-        }
+        .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
 }
 
 /**

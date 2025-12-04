@@ -90,7 +90,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin_5.1.1.823/doc/API.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin_5.1.1.823/doc/feature_api.md)
 
 ## 使用说明
 

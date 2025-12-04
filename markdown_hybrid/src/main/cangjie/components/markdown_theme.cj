@@ -113,7 +113,7 @@ public class MarkdownTheme {
     /**
      * 圆形图片格式链接主题背景颜色
      */
-    protected var linkCircleImageBackGroupColor: Color = COLOR_FFFFFFFF
+    protected var linkCircleImageBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 圆形图片格式链接控件背景颜色
@@ -143,7 +143,7 @@ public class MarkdownTheme {
     /**
      * 圆角矩形图片格式链接主题背景颜色
      */
-    protected var linkRectImageBackGroupColor: Color = COLOR_FFFFFFFF
+    protected var linkRectImageBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 圆角矩形图片格式链接控件背景颜色
@@ -183,7 +183,7 @@ public class MarkdownTheme {
     /**
      * 空心圆角矩形图片格式链接主题背景颜色
      */
-    protected var linkRectToolImageBackGroupColor: Color = COLOR_FFFFFFFF
+    protected var linkRectToolImageBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 空心圆角矩形图片格式链接控件背景颜色
@@ -253,7 +253,7 @@ public class MarkdownTheme {
     /**
      * 块引用背景颜色
      */
-    protected var blockQuoteBackGroupColor: Color = COLOR_FFFFFFFF
+    protected var blockQuoteBackGroupColor: Color = COLOR_FFEAEAEA
 
     /**
      * 块引用子模块上下间距
@@ -623,7 +623,7 @@ public class MarkdownTheme {
     /**
      * 数学公式背景色
      */
-    protected var latexMathBackGroupColor: Color = COLOR_FFFFFFFF
+    protected var latexMathBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 数学公式文本颜色
@@ -888,7 +888,7 @@ public class MarkdownTheme {
     /**
      * 删除线颜色
      */
-    protected var strikethroughColor: Color = COLOR_191919
+    protected var strikethroughColor: Color = COLOR_FF191919
 
     /**
      * 定义列表术语和定义行之间间距
@@ -1164,27 +1164,24 @@ public class MarkdownTheme {
         // 3、链接
         // 3.1、文本格式链接
         markdownThemeBuilder.setLinkColor(COLOR_FF0000FF) // 链接文本颜色
-        markdownThemeBuilder.setLinkBackGroupColor(COLOR_FFFFFFFF) // 链接背景颜色
-
+        markdownThemeBuilder.setLinkBackGroupColor(Color.TRANSPARENT) // 链接背景颜色
         // 3.2、圆形图片格式链接
-        markdownThemeBuilder.setLinkCircleImageBackGroupColor(COLOR_FFFFFFFF) // 圆形图片链接主题背景颜色
+        markdownThemeBuilder.setLinkCircleImageBackGroupColor(Color.TRANSPARENT) // 圆形图片链接主题背景颜色
         markdownThemeBuilder.setLinkCircleImageButtonBackGroupColor(COLOR_FF000000) // 圆形图片链接控件背景颜色
         markdownThemeBuilder.setLinkCircleImageTextColor(COLOR_FFFFFFFF) // 圆形图片链接文字颜色
         markdownThemeBuilder.setLinkCircleImageBackGroupColor(COLOR_FFFFFFFF) // 圆形链接主题背景颜色
-
         // 3.3、圆角矩形图片格式链接
-        markdownThemeBuilder.setLinkRectImageBackGroupColor(COLOR_FFFFFFFF) // 圆角矩形图片链接主题背景颜色
+        markdownThemeBuilder.setLinkRectImageBackGroupColor(Color.TRANSPARENT) // 圆角矩形图片链接主题背景颜色
         markdownThemeBuilder.setLinkRectImageButtonBackGroupColor(COLOR_FF000000) // 圆角矩形图片链接控件背景颜色
         markdownThemeBuilder.setLinkRectImageTextColor(COLOR_FFFFFFFF) // 圆角矩形图片链接文字颜色
-
         // 3.4、空心圆角矩形图片格式链接
-        markdownThemeBuilder.setLinkRectToolImageBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接主题背景颜色
+        markdownThemeBuilder.setLinkRectToolImageBackGroupColor(Color.TRANSPARENT) // 空心圆角矩形图片链接主题背景颜色
         markdownThemeBuilder.setLinkRectToolImageButtonBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接控件背景颜色
 
         // 4、列表
         // 4.1、块引用
         markdownThemeBuilder.setBlockQuoteColor(COLOR_FF191919) // 块引用左边线条颜色
-        markdownThemeBuilder.setBlockQuoteBackGroupColor(COLOR_FFFFFFFF) // 块引用背景颜色
+        markdownThemeBuilder.setBlockQuoteBackGroupColor(COLOR_FFEAEAEA) // 块引用背景颜色
         // 4.2、有序列表
         markdownThemeBuilder.setOrderedListItemColor(COLOR_FF191919) // 有序列表列表项的颜色
         // 4.1、无序列表
@@ -1215,7 +1212,7 @@ public class MarkdownTheme {
         // 9、软换行
 
         // 10、数学公式
-        markdownThemeBuilder.setLatexMathBackGroupColor(COLOR_FFFFFFFF) // 数学公式背景色
+        markdownThemeBuilder.setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
         markdownThemeBuilder.setLatexMathTextColor(COLOR_FF000000) // 数学公式文本颜色
 
         // 11、音频
@@ -1260,24 +1257,24 @@ public class MarkdownTheme {
         // 3、链接
         // 3.1、文本格式链接
         markdownThemeBuilder.setLinkColor(COLOR_FF0000FF) // 链接文本颜色
-        markdownThemeBuilder.setLinkBackGroupColor(COLOR_FFFFFFFF) // 链接背景颜色
+        markdownThemeBuilder.setLinkBackGroupColor(Color.TRANSPARENT) // 链接背景颜色
         // 3.2、圆形图片格式链接
-        markdownThemeBuilder.setLinkCircleImageBackGroupColor(COLOR_FFFFFFFF) // 圆形图片链接主题背景颜色
+        markdownThemeBuilder.setLinkCircleImageBackGroupColor(Color.TRANSPARENT) // 圆形图片链接主题背景颜色
         markdownThemeBuilder.setLinkCircleImageButtonBackGroupColor(COLOR_FF000000) // 圆形图片链接控件背景颜色
         markdownThemeBuilder.setLinkCircleImageTextColor(COLOR_FFFFFFFF) // 圆形图片链接文字颜色
         markdownThemeBuilder.setLinkCircleImageBackGroupColor(COLOR_FFFFFFFF) // 圆形链接主题背景颜色
         // 3.3、圆角矩形图片格式链接
-        markdownThemeBuilder.setLinkRectImageBackGroupColor(COLOR_FFFFFFFF) // 圆角矩形图片链接主题背景颜色
+        markdownThemeBuilder.setLinkRectImageBackGroupColor(Color.TRANSPARENT) // 圆角矩形图片链接主题背景颜色
         markdownThemeBuilder.setLinkRectImageButtonBackGroupColor(COLOR_FF000000) // 圆角矩形图片链接控件背景颜色
         markdownThemeBuilder.setLinkRectImageTextColor(COLOR_FFFFFFFF) // 圆角矩形图片链接文字颜色
         // 3.4、空心圆角矩形图片格式链接
-        markdownThemeBuilder.setLinkRectToolImageBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接主题背景颜色
+        markdownThemeBuilder.setLinkRectToolImageBackGroupColor(Color.TRANSPARENT) // 空心圆角矩形图片链接主题背景颜色
         markdownThemeBuilder.setLinkRectToolImageButtonBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接控件背景颜色
 
         // 4、列表
         // 4.1、块引用
         markdownThemeBuilder.setBlockQuoteColor(COLOR_FF191919) // 块引用左边线条颜色
-        markdownThemeBuilder.setBlockQuoteBackGroupColor(COLOR_FFFFFFFF) // 块引用背景颜色
+        markdownThemeBuilder.setBlockQuoteBackGroupColor(COLOR_FFEAEAEA) // 块引用背景颜色
         // 4.2、有序列表
         markdownThemeBuilder.setOrderedListItemColor(COLOR_FF191919) // 有序列表列表项的颜色
         // 4.1、无序列表
@@ -1308,7 +1305,7 @@ public class MarkdownTheme {
         // 9、软换行
 
         // 10、数学公式
-        markdownThemeBuilder.setLatexMathBackGroupColor(COLOR_FFFFFFFF) // 数学公式背景色
+        markdownThemeBuilder.setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
         markdownThemeBuilder.setLatexMathTextColor(COLOR_FF000000) // 数学公式文本颜色
 
         // 11、音频
@@ -1333,7 +1330,7 @@ public class MarkdownTheme {
         markdownThemeBuilder.setTableHeaderRowBackgroundColor(COLOR_FFFFFFFF) // 表格头背景色
 
         // 16、代码高亮
-        markdownThemeBuilder.setPrismTheme(PrismThemeDarkula.create()) // markdown代码高亮样式
+        markdownThemeBuilder.setPrismTheme(PrismThemeDefault.create()) // markdown代码高亮样式
 
         return markdownThemeBuilder
     }
@@ -1421,7 +1418,7 @@ public class MarkdownThemeBuilder {
     /**
      * 圆形图片格式链接主题背景颜色
      */
-    protected var linkCircleImageBackGroupColor: Color = COLOR_FFFFFFFF
+    protected var linkCircleImageBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 圆形图片格式链接控件背景颜色
@@ -1451,7 +1448,7 @@ public class MarkdownThemeBuilder {
     /**
      * 圆角矩形图片格式链接主题背景颜色
      */
-    protected var linkRectImageBackGroupColor: Color = COLOR_FFFFFFFF
+    protected var linkRectImageBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 圆角矩形图片格式链接控件背景颜色
@@ -1491,7 +1488,7 @@ public class MarkdownThemeBuilder {
     /**
      * 空心圆角矩形图片格式链接主题背景颜色
      */
-    protected var linkRectToolImageBackGroupColor: Color = COLOR_FFFFFFFF
+    protected var linkRectToolImageBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 空心圆角矩形图片格式链接控件背景颜色
@@ -1561,7 +1558,7 @@ public class MarkdownThemeBuilder {
     /**
      * 块引用背景颜色
      */
-    protected var blockQuoteBackGroupColor: Color = COLOR_FFFFFFFF
+    protected var blockQuoteBackGroupColor: Color = COLOR_FFEAEAEA
 
     /**
      * 块引用子模块上下间距
@@ -1931,7 +1928,7 @@ public class MarkdownThemeBuilder {
     /**
      * 数学公式背景色
      */
-    protected var latexMathBackGroupColor: Color = COLOR_FFFFFFFF
+    protected var latexMathBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 数学公式文本颜色
@@ -2196,7 +2193,7 @@ public class MarkdownThemeBuilder {
     /**
      * 删除线颜色
      */
-    protected var strikethroughColor: Color = COLOR_191919
+    protected var strikethroughColor: Color = COLOR_FF191919
 
     /**
      * 定义列表术语和定义行之间间距
@@ -2455,24 +2452,24 @@ public class MarkdownThemeBuilder {
         // 3、链接
         // 3.1、文本格式链接
         setLinkColor(COLOR_FF0000FF) // 链接文本颜色
-        setLinkBackGroupColor(COLOR_FFFFFFFF) // 链接背景颜色
+        setLinkBackGroupColor(Color.TRANSPARENT) // 链接背景颜色
         // 3.2、圆形图片格式链接
-        setLinkCircleImageBackGroupColor(COLOR_FFFFFFFF) // 圆形图片链接主题背景颜色
+        setLinkCircleImageBackGroupColor(Color.TRANSPARENT) // 圆形图片链接主题背景颜色
         setLinkCircleImageButtonBackGroupColor(COLOR_FF000000) // 圆形图片链接控件背景颜色
         setLinkCircleImageTextColor(COLOR_FFFFFFFF) // 圆形图片链接文字颜色
         setLinkCircleImageBackGroupColor(COLOR_FFFFFFFF) // 圆形链接主题背景颜色
         // 3.3、圆角矩形图片格式链接
-        setLinkRectImageBackGroupColor(COLOR_FFFFFFFF) // 圆角矩形图片链接主题背景颜色
+        setLinkRectImageBackGroupColor(Color.TRANSPARENT) // 圆角矩形图片链接主题背景颜色
         setLinkRectImageButtonBackGroupColor(COLOR_FF000000) // 圆角矩形图片链接控件背景颜色
         setLinkRectImageTextColor(COLOR_FFFFFFFF) // 圆角矩形图片链接文字颜色
         // 3.4、空心圆角矩形图片格式链接
-        setLinkRectToolImageBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接主题背景颜色
+        setLinkRectToolImageBackGroupColor(Color.TRANSPARENT) // 空心圆角矩形图片链接主题背景颜色
         setLinkRectToolImageButtonBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接控件背景颜色
 
         // 4、列表
         // 4.1、块引用
         setBlockQuoteColor(COLOR_FF191919) // 块引用左边线条颜色
-        setBlockQuoteBackGroupColor(COLOR_FFFFFFFF) // 块引用背景颜色
+        setBlockQuoteBackGroupColor(COLOR_FFEAEAEA) // 块引用背景颜色
         // 4.2、有序列表
         setOrderedListItemColor(COLOR_FF191919) // 有序列表列表项的颜色
         // 4.1、无序列表
@@ -2503,7 +2500,7 @@ public class MarkdownThemeBuilder {
         // 9、软换行
 
         // 10、数学公式
-        setLatexMathBackGroupColor(COLOR_FFFFFFFF) // 数学公式背景色
+        setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
         setLatexMathTextColor(COLOR_FF000000) // 数学公式文本颜色
 
         // 11、音频
@@ -2546,24 +2543,24 @@ public class MarkdownThemeBuilder {
         // 3、链接
         // 3.1、文本格式链接
         setLinkColor(COLOR_FF0000FF) // 链接文本颜色
-        setLinkBackGroupColor(COLOR_FFFFFFFF) // 链接背景颜色
+        setLinkBackGroupColor(Color.TRANSPARENT) // 链接背景颜色
         // 3.2、圆形图片格式链接
-        setLinkCircleImageBackGroupColor(COLOR_FFFFFFFF) // 圆形图片链接主题背景颜色
+        setLinkCircleImageBackGroupColor(Color.TRANSPARENT) // 圆形图片链接主题背景颜色
         setLinkCircleImageButtonBackGroupColor(COLOR_FF000000) // 圆形图片链接控件背景颜色
         setLinkCircleImageTextColor(COLOR_FFFFFFFF) // 圆形图片链接文字颜色
         setLinkCircleImageBackGroupColor(COLOR_FFFFFFFF) // 圆形链接主题背景颜色
         // 3.3、圆角矩形图片格式链接
-        setLinkRectImageBackGroupColor(COLOR_FFFFFFFF) // 圆角矩形图片链接主题背景颜色
+        setLinkRectImageBackGroupColor(Color.TRANSPARENT) // 圆角矩形图片链接主题背景颜色
         setLinkRectImageButtonBackGroupColor(COLOR_FF000000) // 圆角矩形图片链接控件背景颜色
         setLinkRectImageTextColor(COLOR_FFFFFFFF) // 圆角矩形图片链接文字颜色
         // 3.4、空心圆角矩形图片格式链接
-        setLinkRectToolImageBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接主题背景颜色
+        setLinkRectToolImageBackGroupColor(Color.TRANSPARENT) // 空心圆角矩形图片链接主题背景颜色
         setLinkRectToolImageButtonBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接控件背景颜色
 
         // 4、列表
         // 4.1、块引用
         setBlockQuoteColor(COLOR_FF191919) // 块引用左边线条颜色
-        setBlockQuoteBackGroupColor(COLOR_FFFFFFFF) // 块引用背景颜色
+        setBlockQuoteBackGroupColor(COLOR_FFEAEAEA) // 块引用背景颜色
         // 4.2、有序列表
         setOrderedListItemColor(COLOR_FF191919) // 有序列表列表项的颜色
         // 4.1、无序列表
@@ -2594,7 +2591,7 @@ public class MarkdownThemeBuilder {
         // 9、软换行
 
         // 10、数学公式
-        setLatexMathBackGroupColor(COLOR_FFFFFFFF) // 数学公式背景色
+        setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
         setLatexMathTextColor(COLOR_FF000000) // 数学公式文本颜色
 
         // 11、音频
@@ -2619,7 +2616,7 @@ public class MarkdownThemeBuilder {
         setTableHeaderRowBackgroundColor(COLOR_FFFFFFFF) // 表格头背景色
 
         // 16、代码高亮
-        setPrismTheme(PrismThemeDarkula.create()) // markdown代码高亮样式
+        setPrismTheme(PrismThemeDefault.create()) // markdown代码高亮样式
 
         return this
     }
@@ -2770,7 +2767,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置圆形图片格式链接主题背景颜色
      *
-     * @param linkCircleImageBackGroupColor 圆形图片格式链接主题背景颜色 - 默认0XFFFFFFFF
+     * @param linkCircleImageBackGroupColor 圆形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: Color): MarkdownThemeBuilder {
@@ -2836,7 +2833,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置圆角矩形图片格式链接主题背景颜色
      *
-     * @param linkRectImageBackGroupColor 圆角矩形图片格式链接主题背景颜色 - 默认0XFFFFFFFF
+     * @param linkRectImageBackGroupColor 圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: Color): MarkdownThemeBuilder {
@@ -2924,7 +2921,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置空心圆角矩形图片格式链接主题背景颜色
      *
-     * @param linkRectToolImageBackGroupColor 空心圆角矩形图片格式链接主题背景颜色 - 默认OXFFFFFFFF
+     * @param linkRectToolImageBackGroupColor 空心圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: Color): MarkdownThemeBuilder {
@@ -3078,7 +3075,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置块引用背景颜色
      *
-     * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0XFFFFFFFF
+     * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0XFFEAEAEA
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: Color): MarkdownThemeBuilder {
@@ -3892,7 +3889,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置数学公式背景色
      *
-     * @param latexMathBackGroupColor 数学公式背景色 - 默认0xFFFFFFFF
+     * @param latexMathBackGroupColor 数学公式背景色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLatexMathBackGroupColor(latexMathBackGroupColor: Color): MarkdownThemeBuilder {
@@ -4475,7 +4472,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置删除线颜色
      *
-     * @param strikethroughColor 删除线颜色 默认COLOR_191919
+     * @param strikethroughColor 删除线颜色 默认COLOR_FF191919
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setStrikethroughColor(strikethroughColor: Color): MarkdownThemeBuilder {

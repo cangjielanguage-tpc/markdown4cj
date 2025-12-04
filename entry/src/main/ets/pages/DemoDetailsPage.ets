@@ -100,6 +100,11 @@ struct DemoDetailsPage {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this))
+    theme.setCodeFullScreenIcon($r('app.media.startIcon'))
+    theme.setCodeCopyIcon($r('app.media.startIcon'))
+    theme.setAudioIcon($r('app.media.startIcon'))
+    theme.setVideoImage($r('app.media.place_holder'))
+    theme.setPlayCircleFillIcon($r('app.media.play_circle_fill'))
     config.setMarkdownTheme(theme)
     return config
   }
@@ -122,6 +127,8 @@ struct DemoDetailsPage {
     plugin.setIsFootnotePlugin(true) // 脚注
     plugin.setIsHtmlPlugin(true) // Html插件
     plugin.setIsLinkViewPlugin(true) // 链接单独块解析插件
+    plugin.setIsDescListPlugin(true) // 定义列表解析插件
+    plugin.setIsHeadIDPlugin(true) // 标题ID解析插件
     return plugin
   }
 }

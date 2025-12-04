@@ -134,7 +134,7 @@ public class CJMarkdownPlugin {
     }
 
     /**
-     * 设置
+     * 设置是否加载脚注插件
      *
      * @param isFootnotePlugin
      */
@@ -143,7 +143,7 @@ public class CJMarkdownPlugin {
     }
 
     /**
-     * 设置是否加载脚注解析插件
+     * 设置是否加载HTML解析插件
      *
      * @param isHtmlPlugin
      */
@@ -152,7 +152,7 @@ public class CJMarkdownPlugin {
     }
 
     /**
-     * 设置是否加载html解析插件
+     * 设置是否加载表格解析插件
      *
      * @param isTablePlugin
      */
@@ -161,7 +161,7 @@ public class CJMarkdownPlugin {
     }
 
     /**
-     * 设置是否加载表格解析插件
+     * 设置是否加载TOC解析插件
      *
      * @param isTocPlugin
      */
@@ -170,7 +170,7 @@ public class CJMarkdownPlugin {
     }
 
     /**
-     * 设置是否加载toc解析插件
+     * 设置是否加载任务列表解析插件
      *
      * @param isTaskListPlugin
      */
@@ -179,7 +179,7 @@ public class CJMarkdownPlugin {
     }
 
     /**
-     * 设置是否加载任务列表解析插件
+     * 设置是否加载删除线解析插件
      *
      * @param isStrikethroughPlugin
      */
@@ -188,7 +188,7 @@ public class CJMarkdownPlugin {
     }
 
     /**
-     * 设置是否加载删除线解析插件
+     * 设置是否加载链接自动解析解析插件
      *
      * @param isLinkifyPlugin
      */
@@ -197,7 +197,7 @@ public class CJMarkdownPlugin {
     }
 
     /**
-     * 设置是否加载链接自动解析插件
+     * 设置是否加载链接单独块解析插件
      *
      * @param isLinkViewPlugin
      */
@@ -206,7 +206,7 @@ public class CJMarkdownPlugin {
     }
 
     /**
-     * 设置是否加载链接单独解析插件
+     * 设置是否加载数学公式解析插件
      *
      * @param isLatexMathPlugin
      */
@@ -215,7 +215,7 @@ public class CJMarkdownPlugin {
     }
 
     /**
-     * 设置是否加载数学公式解析插件
+     * 设置是否加载图片自定义样式解析插件
      *
      * @param isImageStylePlugin
      */
@@ -224,7 +224,7 @@ public class CJMarkdownPlugin {
     }
 
     /**
-     * 设置是否加载图片自定义样式解析插件
+     * 设置是否加载图片banner解析插件
      *
      * @param isImageSlidePlugin
      */
@@ -233,7 +233,7 @@ public class CJMarkdownPlugin {
     }
 
     /**
-     * 设置是否加载图片banner解析插件
+     * 设置是否加载不图文混排插件解析插件
      *
      * @param isImageTextMixPlugin
      */
