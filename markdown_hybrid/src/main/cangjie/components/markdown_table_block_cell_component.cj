@@ -140,10 +140,10 @@ class MarkdownTableBlockCellComponent {
         .interopOnSizeChange(
             {
                 old, new =>
-                    if (old.widthCJ == new.widthCJ) {
+                    if (old.width == new.width) {
                         return
                     }
-                    let newWidth: Float64 = new.widthCJ
+                    let newWidth: Float64 = new.width
                     if (let Some(v) <- cellWidthArrayIndexed.get().get(idxItem)) {
                         if (v.index == idxItem && newWidth > v.minWidth) {
                             cellWidthArrayIndexed[idxItem] = CellWidthArrayIndexedClass(minWidth: newWidth, index: idxItem)

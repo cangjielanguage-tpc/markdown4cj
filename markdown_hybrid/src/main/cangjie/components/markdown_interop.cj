@@ -234,13 +234,13 @@ public class CJSizeOptions <: InteropObjectBase {
         setProp("height", height.toJSValue(getCtx()))
     }
 
-    public prop widthCJ: Float64 {
+    public prop width: Float64 {
         get() {
             Float64.fromJSValue(getCtx(), getProp("width"))
         }
     }
 
-    public prop heightCJ: Float64 {
+    public prop height: Float64 {
         get() {
             Float64.fromJSValue(getCtx(), getProp("height"))
         }

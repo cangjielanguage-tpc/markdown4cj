@@ -578,8 +578,8 @@ public class MarkdownComponent {
             // 组件区域变化事件
             .interopOnSizeChange {
                 old, new =>
-                    if(componentWidth != new.widthCJ){
-                       componentWidth = new.widthCJ
+                    if(componentWidth != new.width){
+                       componentWidth = new.width
                     }
             }
             // 设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
