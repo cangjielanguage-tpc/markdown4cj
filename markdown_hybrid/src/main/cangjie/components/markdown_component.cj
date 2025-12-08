@@ -192,7 +192,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.headingBottomMargins
                             })
                             // 组件区域变化时触发该回调
-                            .onAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
+                            .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
                         } else if (item.node is Paragraph) {
                             // 段落
                             ListItem() {
@@ -484,7 +484,7 @@ public class MarkdownComponent {
                                 markdownConfiguration.markdownTheme.blockTopAndBottomMargins
                             })
                             // 组件区域变化时触发该回调
-                            .onAreaChange {
+                            .interopOnAreaChange {
                                 oldValue, newValue => indexFootnoteHashMap.add((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
                             }
                         } else if (item.node is SlideBlock) {
