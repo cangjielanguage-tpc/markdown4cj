@@ -338,6 +338,22 @@ public class MarkdownThemeBuilder {
     public func setIsOnCopy(isOnCopy: Bool): MarkdownThemeBuilder
 
     /**
+     * 设置markdown第一个模块上边距
+     *
+     * @param blockFirstTopMargin markdown第一个模块上边距 - 默认8.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setBlockFirstTopMargin(blockFirstTopMargin: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置markdown最后一个模块下边距
+     *
+     * @param blockLastBottomMargin markdown最后一个模块下边距 - 默认8.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setBlockLastBottomMargin(blockLastBottomMargin: Float64): MarkdownThemeBuilder
+
+    /**
      * 设置模块间上下间距
      *
      * @param blockTopAndBottomMargins 模块间上下间距 - 默认8.0vp
