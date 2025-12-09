@@ -40,7 +40,7 @@ public class Footnote <: CustomNode {
 
 public class FootnoteBlock <: CustomBlock {
     FootnoteBlock(public let noteid: String) {}
-    public var blockIndex = -1
+    public var blockIndex: Int64 = -1
     public func getNodeType(): String {
         "FootnoteBlock"
     }

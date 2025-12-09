@@ -85,7 +85,7 @@ class BlockVideoVisitor <: AbstractVisitor {
 }
 
 public class BlockVideo <: CustomBlock {
-    public func getNodeType() {
+    public func getNodeType(): String {
         "BlockVideo"
     }
 }

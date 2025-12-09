@@ -5,8 +5,8 @@ package markdown.plugin
 
 abstract class TokeniserState <: ToString {
     static let nullChar: Rune = r'\u{0}'
-    public static let attributeNameCharsSorted = [r'\t', r'\n', r'\f', r'\r', r' ', r'"', r'\'', r'/', r'<', r'=', r'>']
-    public static let attributeValueUnquoted = [
+    public static let attributeNameCharsSorted: Array<Rune> = [r'\t', r'\n', r'\f', r'\r', r' ', r'"', r'\'', r'/', r'<', r'=', r'>']
+    public static let attributeValueUnquoted: Array<Rune> = [
         nullChar,
         r'\t',
         r'\n',

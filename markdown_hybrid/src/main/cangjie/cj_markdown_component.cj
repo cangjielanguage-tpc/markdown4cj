@@ -46,15 +46,15 @@ class CJMarkdownComponent {
     func onChanged(): Unit {
     }
 
-    public func updateMarkDown(input: String) {
+    public func updateMarkDown(input: String): Unit {
         mdStr = input
     }
 
-    public func aboutToCJReuse(input: String) {
+    public func aboutToCJReuse(input: String): Unit {
         mdStr = input
     }
 
-    public func aboutToCJRecycle(input: String) {
+    public func aboutToCJRecycle(input: String): Unit {
         mdStr = input
     }
 

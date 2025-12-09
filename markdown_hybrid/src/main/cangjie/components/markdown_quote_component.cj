@@ -101,10 +101,10 @@ public class MarkdownQuoteComponent {
             LazyForEach(
                 nodeViewDataSource,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                        // 段落
-                        ListItem() {
-                            Column() {
+                    item: NodeView, idx: Int64 => ListItem() {
+                        Column() {
+                            if (item.node is Paragraph) {
+                                // 段落
                                 MarkdownParagraphComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
@@ -113,40 +113,10 @@ public class MarkdownQuoteComponent {
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isListTo: true,
-                                    paragraphComponents: markdownCacheConfiguration.paragraphComponents,
-                                    blockQuoteBackGroupColor: markdownConfiguration.markdownTheme.blockQuoteBackGroupColor
+                                    paragraphComponents: markdownCacheConfiguration.paragraphComponents
                                 )
-                            }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
-                    } else if (item.node is Heading) {
-                        // 标题
-                        ListItem() {
-                            Column() {
+                            } else if (item.node is Heading) {
+                                // 标题
                                 MarkdownHeadingComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
@@ -154,112 +124,24 @@ public class MarkdownQuoteComponent {
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
                                     isListTo: true,
-                                    headingComponents: markdownCacheConfiguration.headingComponents,
-                                    blockQuoteBackGroupColor: markdownConfiguration.markdownTheme.blockQuoteBackGroupColor
+                                    headingComponents: markdownCacheConfiguration.headingComponents
                                 )
-                            }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
-                    } else if (item.node is IndentedCodeBlock) {
-                        // 缩进代码
-                        ListItem() {
-                            Column() {
+                            } else if (item.node is IndentedCodeBlock) {
+                                // 缩进代码
                                 MarkdownIndentedCodeBlockComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
                                     indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
                                 )
-                            }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
-                    } else if (item.node is FencedCodeBlock) {
-                        // 围栏代码
-                        ListItem() {
-                            Column() {
+                            } else if (item.node is FencedCodeBlock) {
+                                // 围栏代码
                                 MarkdownFencedCodeBlockComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
                                     fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
                                 )
-                            }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
-                    } else if (item.node is BulletList) {
-                        // 无序列表
-                        ListItem() {
-                            Column() {
+                            } else if (item.node is BulletList) {
+                                // 无序列表
                                 MarkdownListComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
@@ -274,37 +156,8 @@ public class MarkdownQuoteComponent {
                                     componentWidth: componentWidth,
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
-                            }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
-                    } else if (item.node is OrderedList) {
-                        // 有序列表
-                        ListItem() {
-                            Column() {
+                            } else if (item.node is OrderedList) {
+                                // 有序列表
                                 MarkdownListComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
@@ -319,37 +172,8 @@ public class MarkdownQuoteComponent {
                                     componentWidth: componentWidth,
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
-                            }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
-                    } else if (item.node is BlockQuote) {
-                        // 块引用
-                        ListItem() {
-                            Column() {
+                            } else if (item.node is BlockQuote) {
+                                // 块引用
                                 MarkdownQuoteComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
@@ -363,37 +187,8 @@ public class MarkdownQuoteComponent {
                                     componentWidth: componentWidth,
                                     markdownCacheConfiguration: markdownCacheConfiguration
                                 )
-                            }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
-                    } else if (item.node is TableBlock) {
-                        // 表格
-                        ListItem() {
-                            Column() {
+                            } else if (item.node is TableBlock) {
+                                // 表格
                                 MarkdownTableBlockComponent(
                                     markdownConfiguration: markdownConfiguration,
                                     nodeView: item,
@@ -404,37 +199,8 @@ public class MarkdownQuoteComponent {
                                     tableRowComponents: markdownCacheConfiguration.tableRowComponents,
                                     tableCellComponents: markdownCacheConfiguration.tableCellComponents
                                 )
-                            }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
-                    } else if (item.node is LatexMathBlock) {
-                        // 数学公式 - 单行
-                        ListItem() {
-                            Column() {
+                            } else if (item.node is LatexMathBlock) {
+                                // 数学公式 - 单行
                                 if ((item.node as LatexMathBlock)().isClosed) {
                                     // 结束显示数学公式
                                     MarkdownLatexMathBlockComponent(
@@ -446,137 +212,21 @@ public class MarkdownQuoteComponent {
                                     // 没结束显示纯文本
                                     Text((item.node as LatexMathBlock)().latex)
                                 }
-                            }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
-                    } else if (item.node is BlockAudio) {
-                        // 音频
-                        ListItem() {
-                            Column() {
+                            } else if (item.node is BlockAudio) {
+                                // 音频
                                 audioBuilder(item, markdownConfiguration)
-                            }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
-                    } else if (item.node is BlockVideo) {
-                        // 视频
-                        ListItem() {
-                            Column() {
+                            } else if (item.node is BlockVideo) {
+                                // 视频
                                 videoBuilder(item, markdownConfiguration, videoCallback)
-                            }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
-                    } else if (item.node is SlideBlock) {
-                        // 图片幻灯片
-                        ListItem() {
-                            Column() {
+                            } else if (item.node is SlideBlock) {
+                                // 图片幻灯片
                                 MarkdownImageBannerComponent(
                                     slideBlockNodeView: item,
                                     markdownConfiguration: markdownConfiguration,
                                     imageCallback: imageCallback
                                 )
-                            }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
-                    } else if (item.node is FencedCodeBlockListBlock) {
-                        // 组合代码
-                        ListItem() {
-                            Column() {
+                            } else if (item.node is FencedCodeBlockListBlock) {
+                                // 代码列表
                                 MarkdownCodeBlockListComponent(
                                     nodeView: item,
                                     strInfos: toCodeList(item)[0],
@@ -584,66 +234,33 @@ public class MarkdownQuoteComponent {
                                     strInfoText: toCodeList(item)[2],
                                     markdownConfiguration: markdownConfiguration
                                 )
+                            } else if (item.node is BlockAD) {
+                                // 广告
+                                adBuilder(item)
+                            } else {
+                                // 其他节点
+                                Column() {
+                                    Text("")
+                                }
                             }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
                         }
+                        // 设置子组件在水平方向上的对齐格式。
+                        .alignItems(HorizontalAlign.Start)
+                        // 设置子组件在垂直方向上的对齐格式。
+                        .justifyContent(FlexAlign.Start)
                         // 对子组件进行重新布局
                         .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
-                    } else {
-                        // TODO 其他节点
-                        ListItem() {
-                            Column() {
-                                Text("")
-                            }
-                            // 设置子组件在水平方向上的对齐格式。
-                            .alignItems(HorizontalAlign.Start)
-                            // 设置子组件在垂直方向上的对齐格式。
-                            .justifyContent(FlexAlign.Start)
-                            // 对子组件进行重新布局
-                            .layoutWeight(1)
-                            // 外边距
-                            .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        }
-                        // 对子组件进行重新布局
-                        .layoutWeight(1)
-                        // 背景色设置
-                        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-                        // 内边距
-                        .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
-                        // 设置外边距属性
-                        .margin(top: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        },
-                        bottom: if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-                            0.0
-                        } else {
-                            markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-                        })
+                        // 外边距
+                        .margin(right: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
                     }
+                    // 对子组件进行重新布局
+                    .layoutWeight(1)
+                    // 背景色设置
+                    .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
+                    // 内边距
+                    .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
+                    // 设置外边距属性
+                    .margin(top: marginNodeTopAndBottom(1, item, markdownConfiguration), bottom: marginNodeTopAndBottom(1, item, markdownConfiguration))
                 },
                 keyGeneratorFunc: {
                     item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"

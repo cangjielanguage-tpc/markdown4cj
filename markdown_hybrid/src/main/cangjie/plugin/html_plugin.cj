@@ -8,7 +8,7 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
         return HtmlPlugin()
     }
 
-    public static let SCRIPT_DEF_TEXT_SIZE_RATIO = 0.75
+    public static let SCRIPT_DEF_TEXT_SIZE_RATIO: Float64 = 0.75
 
     private let builder: MarkdownHtmlRendererImplBuilder
 

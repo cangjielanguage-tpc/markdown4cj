@@ -27,7 +27,7 @@ public class GlobalContext {
      *
      * @param context StageContext
      */
-    public static func setContext(context: StageContext) {
+    public static func setContext(context: StageContext): Unit {
         _context = context
     }
 

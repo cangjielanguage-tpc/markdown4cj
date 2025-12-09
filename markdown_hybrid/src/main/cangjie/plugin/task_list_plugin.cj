@@ -4,7 +4,7 @@
 package markdown.plugin
 
 public class TaskListItem <: ListItem {
-    public static let TASK_DEPTH = "TaskDepth"
+    public static let TASK_DEPTH: String = "TaskDepth"
     static let typeInfo: String = "TaskListItem"
     private let isdone: Bool
 

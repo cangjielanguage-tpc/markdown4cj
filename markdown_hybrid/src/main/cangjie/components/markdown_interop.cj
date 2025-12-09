@@ -25,12 +25,12 @@ let _ = {
     )
 }()
 
-public func getCtx() {
+public func getCtx(): JSContext {
     let content = context ?? throw JSInteropNativeError("Component InterOp: get global context failed.")
     return content
 }
 
-public func jsObjApiCall(obj: JSObject, funcName: String, args: (JSContext) -> Array<JSValue>) {
+public func jsObjApiCall(obj: JSObject, funcName: String, args: (JSContext) -> Array<JSValue>): Unit {
     try {
         obj.callMethod(funcName, args(getCtx()))
     } catch (e: Exception) {
@@ -38,7 +38,7 @@ public func jsObjApiCall(obj: JSObject, funcName: String, args: (JSContext) -> A
     }
 }
 
-public func jsObjApiCall(obj: JSObject, funcName: String) {
+public func jsObjApiCall(obj: JSObject, funcName: String): Unit {
     try {
         obj.callMethod(funcName)
     } catch (e: JSCodeError) {

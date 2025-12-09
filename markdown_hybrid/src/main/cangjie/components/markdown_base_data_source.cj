@@ -111,7 +111,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
      *
      * @param datas 列表
      */
-    public func addDatas(datas: ArrayList<T>) {
+    public func addDatas(datas: ArrayList<T>): Unit {
         for (item in datas) {
             addData(item)
         }
@@ -122,7 +122,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
      *
      * @param datas 列表
      */
-    public func addDatas(datas: Array<T>) {
+    public func addDatas(datas: Array<T>): Unit {
         for (item in datas) {
             addData(item)
         }
