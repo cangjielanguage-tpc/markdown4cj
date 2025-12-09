@@ -13,7 +13,7 @@ public class LatexMathBlock <: CustomBlock {
             _latex = v
         }
     }
-    public var isClosed = false
+    public var isClosed: Bool = false
     protected func toStringAttributes(): String {
         return "latex=${latex},isClosed=${isClosed}"
     }

@@ -9,7 +9,7 @@ let nullStringReader = StringReader("")
  * CharacterReader consumes tokens off a string. Used internally by jsoup. API subject to changes.
  */
 class CharacterReader {
-    public static let EOF = r'\u{FFFF}'
+    public static let EOF: Rune = r'\u{FFFF}'
 
     private static let maxStringCacheLen: Int64 = 12
 

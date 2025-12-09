@@ -229,8 +229,8 @@ public class NodeView <: ToString {
         p.add(k, v)
     }
 
-    public var nodeHash = 0
-    public var contentHash = 0
+    public var nodeHash: Int64 = 0
+    public var contentHash: Int64 = 0
 }
 
 public func buildView(node: Node, needCollect: Bool, needProps!: Bool = false): NodeView {

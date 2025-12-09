@@ -11,9 +11,9 @@ public class IncreaseParser {
     public var docView: NodeView = NodeView(doc) // 最新的Document NodeView
 
     /* 是否延迟解析 */
-    public var lazy = true
+    public var lazy: Bool = true
     /* 缓冲区 不满一行的数据存在这里 满一行则触发解析 并清空缓冲区 */
-    public var incBuffer = StringBuilder()
+    public var incBuffer: StringBuilder = StringBuilder()
     /* 是否有新block需要渲染 需配合lazy使用*/
     public prop hasNew: Bool {
         get() {

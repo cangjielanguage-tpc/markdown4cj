@@ -121,7 +121,7 @@ class MarkdownLatexMathBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(nodeView: NodeView) {
+    public func refreshData(nodeView: NodeView): Unit {
         this.nodeView = nodeView
         latexMathStrToPixelMap()
     }
@@ -129,7 +129,7 @@ class MarkdownLatexMathBlockComponent {
     /**
      * 数学公式解析
      */
-    func latexMathStrToPixelMap() {
+    func latexMathStrToPixelMap(): Unit {
         let callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit = {
             pixelMap, height, width, arr => launch {
                 latexPixelMap = pixelMap

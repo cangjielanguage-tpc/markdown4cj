@@ -1427,3 +1427,45 @@ func imageWidthHeight(picStyleObjWidth: ?Float64, picStyleObjHeight: ?Float64, c
     }
     return (width, height)
 }
+
+/**
+ * 上下边距
+ *
+ * @param nodeType 类型。0：有序无序列表，1：块引用
+ * @param item nodeView对象
+ * @param markdownConfiguration markdownConfiguration对象
+ * @return Float64 上下边距
+ */
+func marginNodeTopAndBottom(nodeType: Int64, item: NodeView, markdownConfiguration: MarkdownConfiguration): Float64 {
+    return if (item.node is Paragraph) {
+        if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+            0.0
+        } else {
+            marginNodeTopAndBottom(nodeType, markdownConfiguration)
+        }
+    } else if (item.node is Heading) {
+        if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
+            0.0
+        } else {
+            marginNodeTopAndBottom(nodeType, markdownConfiguration)
+        }
+    } else {
+        marginNodeTopAndBottom(nodeType, markdownConfiguration)
+    }
+}
+
+/**
+ * 上下边距
+ *
+ * @param nodeType 类型。0：有序无序列表，1：块引用
+ * @param markdownConfiguration markdownConfiguration对象
+ * @return Float64 上下边距
+ */
+func marginNodeTopAndBottom(nodeType: Int64, markdownConfiguration: MarkdownConfiguration): Float64 {
+    return if (nodeType == 0) {
+        markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
+    } else {
+        markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
+    }
+}
+

@@ -85,7 +85,7 @@ class BlockAudioVisitor <: AbstractVisitor {
 }
 
 public class BlockAudio <: CustomBlock {
-    public func getNodeType() {
+    public func getNodeType(): String {
         "BlockAudio"
     }
 }

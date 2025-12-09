@@ -20,7 +20,7 @@ public open class ADPlugin <: AbstractMarkdownPlugin {
 }
 
 public class BlockAD <: CustomBlock {
-    public func getNodeType() {
+    public func getNodeType(): String {
         "BlockAD"
     }
 }
