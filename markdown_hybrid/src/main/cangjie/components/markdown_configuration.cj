@@ -152,64 +152,64 @@ public class MarkdownConfigurationBuilder {
     /**
      * markdown默认样式
      */
-    protected var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build()
+    var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build()
 
     /**
      * 文本复制的点击事件
      */
-    protected var textCopyCallback: ?(String) -> Unit = None
+    var textCopyCallback: ?(String) -> Unit = None
 
     /**
      * 链接的点击事件
      */
-    protected var linkCallback: ?(String) -> Unit = None
+    var linkCallback: ?(String) -> Unit = None
 
     /**
      * 图片的点击事件
      */
-    protected var imageCallback: ?(String, ArrayList<String>) -> Unit = None
+    var imageCallback: ?(String, ArrayList<String>) -> Unit = None
 
     /**
      * 图片替换事件
      */
-    protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
+    var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
 
     /**
      * 音频的点击事件
      */
-    protected var audioCallback: ?(String) -> Unit = None
+    var audioCallback: ?(String) -> Unit = None
 
     /**
      * 视频的点击事件
      */
-    protected var videoCallback: ?(String, ArrayList<String>) -> Unit = None
+    var videoCallback: ?(String, ArrayList<String>) -> Unit = None
 
     /**
      * 视频的图片替换回调
      */
-    protected var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
+    var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
         url: String, coverCallback: (String, Float64, Int64) -> Unit => ()
     }
 
     /**
      * 代码复制按钮的点击事件
      */
-    protected var codeCopyCallback: ?(String) -> Unit = None
+    var codeCopyCallback: ?(String) -> Unit = None
 
     /**
      * 代码全屏按钮的点击事件
      */
-    protected var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None
+    var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None
 
     /**
      * 数学公式图片点击事件
      */
-    protected var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit = None
+    var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit = None
 
     /**
      * 数学公式数据处理事件
      */
-    protected var latexStrCallback: (String) -> String = {
+    var latexStrCallback: (String) -> String = {
         data: String =>
             var dataNew = data.replace("{aligned*}", "{aligned}")
             dataNew = dataNew.replace("{align*}", "{align}")
@@ -223,17 +223,17 @@ public class MarkdownConfigurationBuilder {
     /**
      * TOC跳转指定位置
      */
-    protected var tocIndexCallback: ?(?Float64) -> Unit = None
+    var tocIndexCallback: ?(?Float64) -> Unit = None
 
     /**
      * 脚注跳转指定位置
      */
-    protected var footnoteCallback: ?(?Float64) -> Unit = None
+    var footnoteCallback: ?(?Float64) -> Unit = None
 
     /**
      * 全部文本
      */
-    protected var nodeString: ?(NodeViewStringBuilder) -> Unit = None
+    var nodeString: ?(NodeViewStringBuilder) -> Unit = None
 
     init() {
     }

@@ -1469,3 +1469,17 @@ func marginNodeTopAndBottom(nodeType: Int64, markdownConfiguration: MarkdownConf
     }
 }
 
+/**
+ * 组件可见性判断
+ *
+ * @param imageType 0：开始加载。1：加载成功完成。2：加载失败
+ * @return Visibility Visibility
+ */
+func visibilityByImageType(imageType: Int64): Visibility {
+    if (imageType == 1) {
+        return Visibility.Visible
+    } else {
+        return Visibility.None
+    }
+}
+
