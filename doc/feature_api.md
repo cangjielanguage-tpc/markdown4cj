@@ -404,7 +404,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置圆形图片格式链接主题背景颜色
      *
-     * @param linkCircleImageBackGroupColor 圆形图片格式链接主题背景颜色 - 默认0XFFFFFFFF
+     * @param linkCircleImageBackGroupColor 圆形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: Color): MarkdownThemeBuilder
@@ -452,7 +452,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置圆角矩形图片格式链接主题背景颜色
      *
-     * @param linkRectImageBackGroupColor 圆角矩形图片格式链接主题背景颜色 - 默认0XFFFFFFFF
+     * @param linkRectImageBackGroupColor 圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: Color): MarkdownThemeBuilder
@@ -516,7 +516,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置空心圆角矩形图片格式链接主题背景颜色
      *
-     * @param linkRectToolImageBackGroupColor 空心圆角矩形图片格式链接主题背景颜色 - 默认OXFFFFFFFF
+     * @param linkRectToolImageBackGroupColor 空心圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: Color): MarkdownThemeBuilder
@@ -628,7 +628,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置块引用背景颜色
      *
-     * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0XFFFFFFFF
+     * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0XFFEAEAEA
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: Color): MarkdownThemeBuilder
@@ -1220,7 +1220,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置数学公式背景色
      *
-     * @param latexMathBackGroupColor 数学公式背景色 - 默认0xFFFFFFFF
+     * @param latexMathBackGroupColor 数学公式背景色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLatexMathBackGroupColor(latexMathBackGroupColor: Color): MarkdownThemeBuilder
@@ -1644,7 +1644,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置删除线颜色
      *
-     * @param strikethroughColor 删除线颜色 默认COLOR_191919
+     * @param strikethroughColor 删除线颜色 默认0XFF191919
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setStrikethroughColor(strikethroughColor: Color): MarkdownThemeBuilder
@@ -2149,11 +2149,11 @@ public class BlockAudioPlugin <: AbstractMarkdownPlugin {
 }
 ```
 
-### Markdown节点唯一ID插件 - 流式输入显示前置条件
+### Markdown节点唯一ID插件 - 流式输入显示前置条件 - 插件需要放在最后加载
 
 ```cangjie
-public class BlockIdPlugin <: AbstractMarkdownPlugin {
-    public static func create(): BlockIdPlugin
+public class NodeIdPlugin <: AbstractMarkdownPlugin {
+    public static func create(): NodeIdPlugin
 }
 ```
 
