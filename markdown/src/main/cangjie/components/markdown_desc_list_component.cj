@@ -24,16 +24,6 @@ public class MarkdownDescListComponent {
     var nodeView: NodeView
 
     /**
-     * 上边距 - 单位vp
-     */
-    var marginTop: Float64
-
-    /**
-     * 下边距 - 单位vp
-     */
-    var marginBottom: Float64
-
-    /**
      * 控件宽度 - 单位px
      */
     @Prop
@@ -94,8 +84,6 @@ public class MarkdownDescListComponent {
                             MarkdownDescTermComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
@@ -109,8 +97,6 @@ public class MarkdownDescListComponent {
                             MarkdownDescDefComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
@@ -130,8 +116,6 @@ public class MarkdownDescListComponent {
                 }
             )
         }
-        // 块内容前的起始边距
-        .margin(top: marginTop, bottom: marginBottom)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置List组件排列方向

@@ -24,16 +24,6 @@ public class MarkdownImageAudioComponent {
     var nodeView: NodeView
 
     /**
-     * 上边距 - 单位vp
-     */
-    var marginTop: Float64
-
-    /**
-     * 下边距 - 单位vp
-     */
-    var marginBottom: Float64
-
-    /**
      * 音频链接
      */
     @State
@@ -156,7 +146,5 @@ public class MarkdownImageAudioComponent {
         .border(width: markdownConfiguration.markdownTheme.audioBorderWidth.vp, color: markdownConfiguration.markdownTheme.audioBorderColor, radius: markdownConfiguration.markdownTheme.audioBorderRadius.vp)
         // 设置子组件在水平方向上的对齐格式
         .justifyContent(FlexAlign.SpaceBetween)
-        // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
     }
 }

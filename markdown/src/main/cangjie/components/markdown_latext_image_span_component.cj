@@ -111,22 +111,23 @@ public class MarkdownLatexImageSpanComponent {
                     .verticalAlign(ImageSpanAlignment.CENTER)
                     // 点击动作触发该方法调用
                     .onClick {
-                        evt =>
-                            if(isLink){
-                                if(linkCallback.isSome() && linkUrl.isSome()){
-                                    linkCallback()(linkUrl())
-                                }
-                            } else {
-                                latexImageOnClick(arrayUint8(), imageHeight().px, imageWidth().px, markdownConfiguration.latexImageCallback)
+                        evt => if (isLink) {
+                            if (linkCallback.isSome() && linkUrl.isSome()) {
+                                linkCallback()(linkUrl())
                             }
+                        } else {
+                            latexImageOnClick(arrayUint8(), imageHeight().px, imageWidth().px, markdownConfiguration.latexImageCallback)
+                        }
                     }
-            } else{
+            } else {
                 Span(strLatexMath)
+                    // 设置字体颜色
                     .fontColor(Color.RED)
             }
         } else {
             if (markdownConfiguration.markdownTheme.latexDefaultText) {
                 Span(strLatexMath)
+                    // 设置字体颜色
                     .fontColor(Color.RED)
             }
         }

@@ -24,16 +24,6 @@ class MarkdownHeadingComponent {
     var nodeView: NodeView
 
     /**
-     * 上边距 - 单位vp
-     */
-    var marginTop: Float64
-
-    /**
-     * 下边距 - 单位vp
-     */
-    var marginBottom: Float64
-
-    /**
      * 控件宽度 - 单位px
      */
     @Prop
@@ -70,16 +60,6 @@ class MarkdownHeadingComponent {
      * 块引用背景颜色
      */
     var blockQuoteBackGroupColor: Option<Color> = Option<Color>.None
-
-    /**
-     * 图片上边距
-     */
-    var imageMarginTop: Float64 = 0.0
-
-    /**
-     * 图片下边距
-     */
-    var imageMarginBottom: Float64 = 0.0
 
     /**
      * 是否列表中的标题
@@ -129,8 +109,6 @@ class MarkdownHeadingComponent {
         .alignItems(HorizontalAlign.Start)
         // 设置子组件在垂直方向上的对齐格式
         .justifyContent(FlexAlign.Center)
-        // 设置外边距属性
-        .margin(top: isMarginTop(), bottom: isMarginBottom())
         // 设置组件自身的宽度
         .width(100.percent)
     }
@@ -798,22 +776,6 @@ class MarkdownHeadingComponent {
             headingTitleComponent19()
         } else {
             headingTitleComponent18()
-        }
-    }
-
-    func isMarginTop(): Float64 {
-        if (nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage) {
-            return 0.0
-        } else {
-            return marginTop
-        }
-    }
-
-    func isMarginBottom(): Float64 {
-        if (nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkImage) {
-            return 0.0
-        } else {
-            return marginTop
         }
     }
 

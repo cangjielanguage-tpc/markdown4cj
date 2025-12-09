@@ -234,13 +234,13 @@ public class CJSizeOptions <: InteropObjectBase {
         setProp("height", height.toJSValue(getCtx()))
     }
 
-    public prop widthCJ: Float64 {
+    public prop width: Float64 {
         get() {
             Float64.fromJSValue(getCtx(), getProp("width"))
         }
     }
 
-    public prop heightCJ: Float64 {
+    public prop height: Float64 {
         get() {
             Float64.fromJSValue(getCtx(), getProp("height"))
         }
@@ -250,6 +250,74 @@ public class CJSizeOptions <: InteropObjectBase {
         let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
         let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
         CJSizeOptions(width, height)
+    }
+}
+
+public class CJPosition <: InteropObjectBase {
+    public CJPosition(x: Float64, y: Float64) {
+        super(getCtx().object())
+        setProp("x", x.toJSValue(getCtx()))
+        setProp("y", y.toJSValue(getCtx()))
+    }
+
+    public prop x: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("x"))
+        }
+    }
+
+    public prop y: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("y"))
+        }
+    }
+
+    static func fromJSValue(context: JSContext, input: JSValue): CJPosition {
+        let x = Float64.fromJSValue(context, input.getProperty(context, "x"))
+        let y = Float64.fromJSValue(context, input.getProperty(context, "y"))
+        CJPosition(x, y)
+    }
+}
+
+public class CJArea <: InteropObjectBase {
+    public CJArea(width: Float64, height: Float64, position: CJPosition, globalPosition: CJPosition) {
+        super(getCtx().object())
+        setProp("width", width.toJSValue(getCtx()))
+        setProp("height", height.toJSValue(getCtx()))
+        setProp("position", position.toJSValue(getCtx()))
+        setProp("globalPosition", globalPosition.toJSValue(getCtx()))
+    }
+
+    public prop width: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("width"))
+        }
+    }
+
+    public prop height: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("height"))
+        }
+    }
+
+    public prop position: CJPosition {
+        get() {
+            CJPosition.fromJSValue(getCtx(), getProp("position"))
+        }
+    }
+
+    public prop globalPosition: CJPosition {
+        get() {
+            CJPosition.fromJSValue(getCtx(), getProp("globalPosition"))
+        }
+    }
+
+    static func fromJSValue(context: JSContext, input: JSValue): CJArea {
+        let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
+        let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
+        let position = CJPosition.fromJSValue(context, input.getProperty(context, "position"))
+        let globalPosition = CJPosition.fromJSValue(context, input.getProperty(context, "globalPosition"))
+        CJArea(width, height, position, globalPosition)
     }
 }
 
@@ -385,6 +453,20 @@ extend List {
                 CJSizeOptions.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
         }
         column.callMethod("onSizeChange", [callBackFunc.toJSValue()])
+        return this
+    }
+}
+
+extend ListItem {
+    func interopOnAreaChange(callback: (CJArea, CJArea) -> Unit): ListItem {
+        let global = context.getOrThrow().global
+        let ctx = context.getOrThrow()
+        let column = global["ListItem"].asObject(ctx)
+        let callBackFunc = getCtx().function {
+            ctx, callInfo => callback(CJArea.fromJSValue(ctx, callInfo[0]),
+                CJArea.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+        }
+        column.callMethod("onAreaChange", [callBackFunc.toJSValue()])
         return this
     }
 }

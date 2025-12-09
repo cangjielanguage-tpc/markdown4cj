@@ -36,16 +36,6 @@ class MarkdownFencedCodeBlockComponent {
     var info: String = ""
 
     /**
-     * 外边距 - 上面
-     */
-    var marginTop: Float64
-
-    /**
-     * 外边距 - 下面
-     */
-    var marginBottom: Float64
-
-    /**
      * 高亮代码列表
      */
     @State
@@ -125,8 +115,6 @@ class MarkdownFencedCodeBlockComponent {
         }
         // 设置组件自身的宽度
         .width(100.percent)
-        // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
         // 设置圆角
         .borderRadius(markdownConfiguration.markdownTheme.codeBlockRadius)
         // 设置背景色

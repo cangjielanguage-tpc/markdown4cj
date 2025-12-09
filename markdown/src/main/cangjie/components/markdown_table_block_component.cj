@@ -24,16 +24,6 @@ class MarkdownTableBlockComponent {
     var nodeView: NodeView
 
     /**
-     * 外边距 - 上面
-     */
-    var marginTop: Float64
-
-    /**
-     * 外边距 - 下面
-     */
-    var marginBottom: Float64
-
-    /**
      * 控件宽度
      */
     @Prop
@@ -82,7 +72,7 @@ class MarkdownTableBlockComponent {
         tableComponents.add(this.nodeView.nodeHash, this)
     }
 
-    func cellSizeFunc(){
+    func cellSizeFunc() {
         // 计算多少列
         var cellSize: Int64 = 0
         if (nodeViewDataSource.totalCount() > 0) {
@@ -141,8 +131,6 @@ class MarkdownTableBlockComponent {
         .scrollable(ScrollDirection.Horizontal)
         // 设置滚动条状态
         .scrollBar(BarState.Off)
-        // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
         // 设置内边距属性
         .padding(left: markdownConfiguration.markdownTheme.tableBorderWidth, right: markdownConfiguration.markdownTheme.tableBorderWidth)
     }
@@ -159,7 +147,7 @@ class MarkdownTableBlockComponent {
             return
         }
         let cellSize = refreshNodeViews[0].children.size
-        if(cellSize != cellWidthArrayIndexed.size){
+        if (cellSize != cellWidthArrayIndexed.size) {
             cellWidthArrayIndexed.clear()
             nodeViewDataSource.clear()
             nodeViewDataSource.addDatas(refreshNodeViews)

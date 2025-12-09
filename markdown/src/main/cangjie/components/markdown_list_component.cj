@@ -19,6 +19,24 @@ public class MarkdownListComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
+     * 广告布局
+     */
+    @BuilderParam
+    var adBuilder: (NodeView) -> Unit
+
+    /**
+     * 视频布局
+     */
+    @BuilderParam
+    var videoBuilder: (NodeView, MarkdownConfiguration, (String) -> Unit) -> Unit
+
+    /**
+     * 音频布局
+     */
+    @BuilderParam
+    var audioBuilder: (NodeView, MarkdownConfiguration) -> Unit
+
+    /**
      * 列表节点
      */
     var nodeView: NodeView
@@ -27,16 +45,6 @@ public class MarkdownListComponent {
      * 是无序列表还是有序列表 - true：无序列表，fasle：有序列表
      */
     var isOrdered: Bool
-
-    /**
-     * 外边距 - 上面
-     */
-    var marginTop: Float64
-
-    /**
-     * 外边距 - 下面
-     */
-    var marginBottom: Float64
 
     /**
      * 控件宽度 - 单位px
@@ -117,8 +125,9 @@ public class MarkdownListComponent {
                             MarkdownListItemComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
+                                adBuilder: adBuilder,
+                                videoBuilder: videoBuilder,
+                                audioBuilder: audioBuilder,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
@@ -140,8 +149,6 @@ public class MarkdownListComponent {
                 }
             )
         }
-        // 块内容前的起始边距
-        .margin(top: marginTop, bottom: marginBottom)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置List组件排列方向

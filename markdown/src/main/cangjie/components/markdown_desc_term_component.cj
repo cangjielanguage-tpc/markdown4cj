@@ -24,16 +24,6 @@ public class MarkdownDescTermComponent {
     var nodeView: NodeView
 
     /**
-     * 上边距 - 单位vp
-     */
-    var marginTop: Float64
-
-    /**
-     * 下边距 - 单位vp
-     */
-    var marginBottom: Float64
-
-    /**
      * 控件宽度 - 单位px
      */
     @Prop
@@ -94,10 +84,6 @@ public class MarkdownDescTermComponent {
                             MarkdownParagraphComponent(
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
-                                marginTop: 0.0,
-                                marginBottom: 0.0,
-                                imageMarginTop: markdownConfiguration.markdownTheme.imageMarginTop,
-                                imageMarginBottom: markdownConfiguration.markdownTheme.imageMarginBottom,
                                 fontCallback: fontCallback,
                                 imageCallback: imageCallback,
                                 tocListOnClick: tocListOnClick,

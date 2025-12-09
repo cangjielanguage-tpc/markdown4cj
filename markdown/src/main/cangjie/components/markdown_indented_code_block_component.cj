@@ -36,16 +36,6 @@ class MarkdownIndentedCodeBlockComponent {
     var info: Option<String> = Option<String>.None
 
     /**
-     * 外边距 - 上面
-     */
-    var marginTop: Float64
-
-    /**
-     * 外边距 - 下面
-     */
-    var marginBottom: Float64
-
-    /**
      * 缓存的缩进代码块控件列表
      */
     var indentedCodeComponents: HashMap<Int64, MarkdownIndentedCodeBlockComponent>
@@ -123,8 +113,6 @@ class MarkdownIndentedCodeBlockComponent {
         }
         // 设置组件自身的宽度
         .width(100.percent)
-        // 设置外边距属性
-        .margin(top: marginTop, bottom: marginBottom)
         // 设置圆角
         .borderRadius(markdownConfiguration.markdownTheme.codeBlockRadius)
         // 设置背景色

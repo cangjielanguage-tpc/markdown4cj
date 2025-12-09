@@ -24,16 +24,6 @@ public class MarkdownFootnoteComponent {
     var nodeView: NodeView
 
     /**
-     * 上边距 - 单位vp
-     */
-    var marginTop: Float64
-
-    /**
-     * 下边距 - 单位vp
-     */
-    var marginBottom: Float64
-
-    /**
      * 控件宽度 - 单位px
      */
     @Prop
@@ -95,8 +85,6 @@ public class MarkdownFootnoteComponent {
                                 markdownConfiguration: markdownConfiguration,
                                 nodeView: item,
                                 footnoteBlock: (nodeView.node as FootnoteBlock)(),
-                                marginTop: marginTop,
-                                marginBottom: marginBottom,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,

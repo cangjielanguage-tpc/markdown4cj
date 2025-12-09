@@ -145,7 +145,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
      * @param index 一条数据
      */
     public func deleteData(index: Int): Unit {
-        data_.remove(at:index)
+        data_.remove(at: index)
         notifyDataDeleteChange(index)
     }
 
@@ -155,7 +155,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
      * @param index 一条数据
      */
     public func removeData(index: Int): Unit {
-        data_.remove(at:index)
+        data_.remove(at: index)
     }
 
     /**

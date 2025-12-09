@@ -516,59 +516,59 @@ public enum PrismColor <: Hashable & Equatable<PrismColor> {
 
     public static func fromString(str: String): PrismColor {
         return match (str) {
-        	case "comment" => PrismColor.COMMENT
-        	case "prolog" => PrismColor.PROLOG
-        	case "doctype" => PrismColor.DOCTYPE
-        	case "cdata" => PrismColor.CDATA
-        	case "punctuation" => PrismColor.PUNCTUATION
-        	case "property" => PrismColor.PROPERTY
-        	case "tag" => PrismColor.TAG
-        	case "boolean" => PrismColor.BOOLEAN
-        	case "number" => PrismColor.NUMBER
-        	case "constant" => PrismColor.CONSTANT
-        	case "symbol" => PrismColor.SYMBOL
-        	case "deleted" => PrismColor.DELETED
-        	case "selector" => PrismColor.SELECTOR
-        	case "attr-name" => PrismColor.ATTR_NAME
-        	case "string" => PrismColor.STRING
-        	case "char" => PrismColor.CHAR
-        	case "builtin" => PrismColor.BUILTIN
-        	case "inserted" => PrismColor.INSERTED
-        	case "operator" => PrismColor.OPERATOR
-        	case "url" => PrismColor.URL
-        	case "entity" => PrismColor.ENTITY
-        	case "atrule" => PrismColor.ATRULE
-        	case "attr-value" => PrismColor.ATTR_VALUE
-        	case "keyword" => PrismColor.KEYWORD
-        	case "function" => PrismColor.FUNCTION
-        	case "class-name" => PrismColor.CLASS_NAME
-        	case "regex" => PrismColor.REGEX
-        	case "important" => PrismColor.IMPORTANT
-        	case "variable" => PrismColor.VARIABLE
-        	case "delimiter" => PrismColor.DELIMITER
-        	case "annotation" => PrismColor.ANNOTATION
-        	case "escape_seq" => PrismColor.ESCAPE_SEQ
-        	case "generic-method" => PrismColor.GENERIC_METHOD
-        	case "pseudo-element" => PrismColor.PSEUDO_ELEMENT
-        	case "pseudo-class" => PrismColor.PSEUDO_CLASS
-        	case "class" => PrismColor.CLASS
-        	case "id" => PrismColor.ID
-        	case "attribute" => PrismColor.ATTRIBUTE
-        	case "hexcode" => PrismColor.HEXCODE
-        	case "command" => PrismColor.COMMAND
-        	case "parameter" => PrismColor.PARAMETER
-        	case "coord" => PrismColor.COORD
-        	case "commit_sha1" => PrismColor.COMMIT_SHA1
-        	case "spock-block" => PrismColor.SPOCK_BLOCK
-        	case "null" => PrismColor.NULL
-        	case "namespace" => PrismColor.NAMESPACE
-        	case "shebang" => PrismColor.SHEBANG
+            case "comment" => PrismColor.COMMENT
+            case "prolog" => PrismColor.PROLOG
+            case "doctype" => PrismColor.DOCTYPE
+            case "cdata" => PrismColor.CDATA
+            case "punctuation" => PrismColor.PUNCTUATION
+            case "property" => PrismColor.PROPERTY
+            case "tag" => PrismColor.TAG
+            case "boolean" => PrismColor.BOOLEAN
+            case "number" => PrismColor.NUMBER
+            case "constant" => PrismColor.CONSTANT
+            case "symbol" => PrismColor.SYMBOL
+            case "deleted" => PrismColor.DELETED
+            case "selector" => PrismColor.SELECTOR
+            case "attr-name" => PrismColor.ATTR_NAME
+            case "string" => PrismColor.STRING
+            case "char" => PrismColor.CHAR
+            case "builtin" => PrismColor.BUILTIN
+            case "inserted" => PrismColor.INSERTED
+            case "operator" => PrismColor.OPERATOR
+            case "url" => PrismColor.URL
+            case "entity" => PrismColor.ENTITY
+            case "atrule" => PrismColor.ATRULE
+            case "attr-value" => PrismColor.ATTR_VALUE
+            case "keyword" => PrismColor.KEYWORD
+            case "function" => PrismColor.FUNCTION
+            case "class-name" => PrismColor.CLASS_NAME
+            case "regex" => PrismColor.REGEX
+            case "important" => PrismColor.IMPORTANT
+            case "variable" => PrismColor.VARIABLE
+            case "delimiter" => PrismColor.DELIMITER
+            case "annotation" => PrismColor.ANNOTATION
+            case "escape_seq" => PrismColor.ESCAPE_SEQ
+            case "generic-method" => PrismColor.GENERIC_METHOD
+            case "pseudo-element" => PrismColor.PSEUDO_ELEMENT
+            case "pseudo-class" => PrismColor.PSEUDO_CLASS
+            case "class" => PrismColor.CLASS
+            case "id" => PrismColor.ID
+            case "attribute" => PrismColor.ATTRIBUTE
+            case "hexcode" => PrismColor.HEXCODE
+            case "command" => PrismColor.COMMAND
+            case "parameter" => PrismColor.PARAMETER
+            case "coord" => PrismColor.COORD
+            case "commit_sha1" => PrismColor.COMMIT_SHA1
+            case "spock-block" => PrismColor.SPOCK_BLOCK
+            case "null" => PrismColor.NULL
+            case "namespace" => PrismColor.NAMESPACE
+            case "shebang" => PrismColor.SHEBANG
             case _ => PrismColor.DEFAULT
         }
     }
 
     public func toString(): String {
-        return match(this) {
+        return match (this) {
             case COMMENT => "comment"
             case PROLOG => "prolog"
             case DOCTYPE => "doctype"
