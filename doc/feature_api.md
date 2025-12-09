@@ -1344,6 +1344,30 @@ export class MarkdownTheme {
 }
 ```
 
+### enum ImageFitType
+
+图片缩放类型的枚举
+
+```cangjie
+/**
+ * 图片缩放类型的枚举
+ */
+export enum ImageFitType{
+  /**
+   * 保持宽高比进行缩小或者放大，使得图片两边都大于或等于显示边界。
+   */
+  Contain,
+  /**
+   * 保持宽高比进行缩小或者放大，使得图片恰好完全显示在显示边界内。
+   */
+  Cover,
+  /**
+   * 不保持宽高比进行放大缩小，使得图片充满显示边界。
+   */
+  Fill
+}
+```
+
 ### enum LatexMathColorFormat
 
 数学公式生成图片格式的枚举
