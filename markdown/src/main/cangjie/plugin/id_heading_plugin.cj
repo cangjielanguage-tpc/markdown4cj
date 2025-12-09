@@ -24,7 +24,7 @@ public class IdHeading <: Heading {
     public func toStringAttributes(): String {
         return "id=${id},level=${getLevel()}"
     }
-    public func getNodeType() {
+    public func getNodeType(): String {
         "IdHeading"
     }
 }

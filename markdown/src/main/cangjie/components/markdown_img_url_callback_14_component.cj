@@ -215,11 +215,7 @@ public class MarkdownImgUrlCallback14Component {
                             (height * imageMaximumWidth).px
                         })
                         // 设置组件的可见性
-                        .visibility(if (imageType == 1) {
-                            Visibility.Visible
-                        } else {
-                            Visibility.None
-                        })
+                        .visibility(visibilityByImageType(imageType))
                         // 设置图片的缩放类型
                         .objectFit(markdownConfiguration.markdownTheme.imageFitType)
                         // 设置图片基于文本的对齐方式
@@ -256,29 +252,7 @@ public class MarkdownImgUrlCallback14Component {
             }
             if (isImageResource && imageType != 1 && imageParse != 1) {
                 // 有占位图
-                ImageSpan(imageResource())
-                    // 设置外边距属性
-                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
-                    // 自定义图片圆角
-                    .interopBorderRadius(imageBorderRadius)
-                    // 设置组件自身的宽度
-                    .width(if (imageFixedRatioWidth.isSome()) {
-                        (componentImageWidth * imageFixedRatioWidth()).px
-                    } else {
-                        (componentImageWidth * imageMaximumWidth).px
-                    })
-                    // 设置组件自身的高度
-                    .height(if (imageFixedRatioWidth.isSome()) {
-                        (componentImageWidth * 9.0 / 16.0 * imageFixedRatioWidth()).px
-                    } else {
-                        (componentImageWidth * 9.0 / 16.0 * imageMaximumWidth).px
-                    })
-                    // 设置图片的缩放类型
-                    .objectFit(ImageFit.Cover)
-                    // 设置图片基于文本的对齐方式
-                    .verticalAlign(ImageSpanAlignment.CENTER)
-                    // 设置约束尺寸，组件布局时，进行尺寸范围限制
-                    .constraintSize(maxWidth: 100.percent)
+                imagePlaceholderComponent(imageResource(), imageMarginTop, imageMarginBottom, imageFixedRatioWidth, imageMaximumWidth, imageBorderRadius, componentImageWidth)
             }
         }
     }

@@ -1353,862 +1353,862 @@ public class MarkdownThemeBuilder {
     /**
      * markdown上下文 - 互操作
      */
-    protected var stageContext: ?StageContext = None
+    var stageContext: ?StageContext = None
 
     /**
      * markdown上下文 - 仓颉
      */
-    protected var abilityContext: ?AbilityContext = None
+    var abilityContext: ?AbilityContext = None
 
     /**
      * 是否打开长按复制粘贴
      */
-    protected var isOnCopy: Bool = true
+    var isOnCopy: Bool = true
 
     /**
      * markdown第一个模块上边距
      */
-    protected var blockFirstTopMargin: Float64 = 8.0
+    var blockFirstTopMargin: Float64 = 8.0
 
     /**
      * markdown最后一个模块下边距
      */
-    protected var blockLastBottomMargin: Float64 = 8.0
+    var blockLastBottomMargin: Float64 = 8.0
 
     /**
      * 模块间上下间距
      */
-    protected var blockTopAndBottomMargins: Float64 = 8.0
+    var blockTopAndBottomMargins: Float64 = 8.0
 
     /**
      * 链接是否是图片显示
      */
-    protected var isLinkStyle: Bool = false
+    var isLinkStyle: Bool = false
 
     /**
      * 列表中的单行链接是否是图片显示
      */
-    protected var isListLinkStyle: Bool = false
+    var isListLinkStyle: Bool = false
 
     /**
      * 文本格式链接文本颜色
      */
-    protected var linkColor: Color = COLOR_FF0000FF
+    var linkColor: Color = COLOR_FF0000FF
 
     /**
      * 是否按照链接文字字体大小显示文本
      */
-    protected var isLinkSize: Bool = true
+    var isLinkSize: Bool = true
 
     /**
      * 文本格式链接文字大小
      */
-    protected var linkSize: Float64 = 14.0
+    var linkSize: Float64 = 14.0
 
     /**
      * 文本格式链接背景颜色
      */
-    protected var linkBackGroupColor: Color = Color.TRANSPARENT
+    var linkBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 文本格式是否显示链接下划线
      */
-    protected var isLinkUnderlined: Bool = true
+    var isLinkUnderlined: Bool = true
 
     /**
      * 圆形图片格式链接主题背景颜色
      */
-    protected var linkCircleImageBackGroupColor: Color = Color.TRANSPARENT
+    var linkCircleImageBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 圆形图片格式链接控件背景颜色
      */
-    protected var linkCircleImageButtonBackGroupColor: Color = COLOR_FF000000
+    var linkCircleImageButtonBackGroupColor: Color = COLOR_FF000000
 
     /**
      * 圆形图片格式链接文字大小
      */
-    protected var linkCircleImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+    var linkCircleImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
 
     /**
      * 圆形图片格式链接文字颜色
      */
-    protected var linkCircleImageTextColor: Color = COLOR_FFFFFFFF
+    var linkCircleImageTextColor: Color = COLOR_FFFFFFFF
 
     /**
      * 圆形图片格式链接半径
      */
-    protected var linkCircleImageRadius: Float64 = vp2px(20.0.vp).getOrThrow().value
+    var linkCircleImageRadius: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
      * 圆形图片格式链接左右外边距
      */
-    protected var linkCircleImageMargin: Float64 = 6.0
+    var linkCircleImageMargin: Float64 = 6.0
 
     /**
      * 圆角矩形图片格式链接主题背景颜色
      */
-    protected var linkRectImageBackGroupColor: Color = Color.TRANSPARENT
+    var linkRectImageBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 圆角矩形图片格式链接控件背景颜色
      */
-    protected var linkRectImageButtonBackGroupColor: Color = COLOR_FF000000
+    var linkRectImageButtonBackGroupColor: Color = COLOR_FF000000
 
     /**
      * 圆角矩形图片格式链接文字大小
      */
-    protected var linkRectImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+    var linkRectImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
 
     /**
      * 圆角矩形图片格式链接文字颜色
      */
-    protected var linkRectImageTextColor: Color = COLOR_FFFFFFFF
+    var linkRectImageTextColor: Color = COLOR_FFFFFFFF
 
     /**
      * 圆角矩形图片格式链接控件高度
      */
-    protected var linkRectImageHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
+    var linkRectImageHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
      * 圆角矩形图片格式链接左右内边距
      */
-    protected var linkRectImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
+    var linkRectImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
 
     /**
      * 圆角矩形图片格式链接圆角半径
      */
-    protected var linkRectImageRadius: Float64 = vp2px(6.0.vp).getOrThrow().value
+    var linkRectImageRadius: Float64 = vp2px(6.0.vp).getOrThrow().value
 
     /**
      * 圆角矩形图片格式链接左右外边距
      */
-    protected var linkRectImageMargin: Float64 = 6.0
+    var linkRectImageMargin: Float64 = 6.0
 
     /**
      * 空心圆角矩形图片格式链接主题背景颜色
      */
-    protected var linkRectToolImageBackGroupColor: Color = Color.TRANSPARENT
+    var linkRectToolImageBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 空心圆角矩形图片格式链接控件背景颜色
      */
-    protected var linkRectToolImageButtonBackGroupColor: Color = COLOR_FFFFFFFF
+    var linkRectToolImageButtonBackGroupColor: Color = COLOR_FFFFFFFF
 
     /**
      * 空心圆角矩形图片格式链接文字大小
      */
-    protected var linkRectToolImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+    var linkRectToolImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
 
     /**
      * 空心圆角矩形图片格式链接控件高度
      */
-    protected var linkRectToolImageHeight: Float64 = vp2px(21.0.vp).getOrThrow().value
+    var linkRectToolImageHeight: Float64 = vp2px(21.0.vp).getOrThrow().value
 
     /**
      * 空心圆角矩形图片格式链接左右内边距
      */
-    protected var linkRectToolImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
+    var linkRectToolImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
 
     /**
      * 空心圆角矩形图片格式链接边框宽度
      */
-    protected var linkRectToolImageBorderWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
+    var linkRectToolImageBorderWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
 
     /**
      * 空心圆角矩形图片格式链接分割线宽度
      */
-    protected var linkRectToolImageDividingLineWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
+    var linkRectToolImageDividingLineWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
 
     /**
      * 空心圆角矩形图片格式链接左右外边距
      */
-    protected var linkRectToolImageMargin: Float64 = 6.0
+    var linkRectToolImageMargin: Float64 = 6.0
 
     /**
      * 空心圆角矩形图片格式分割线和文本左边距
      */
-    protected var linkRectToolImageLineLeftPadding: Float64 = vp2px(3.0.vp).getOrThrow().value
+    var linkRectToolImageLineLeftPadding: Float64 = vp2px(3.0.vp).getOrThrow().value
 
     /**
      * 空心圆角矩形图片格式分割线和文本右边距
      */
-    protected var linkRectToolImageLineRightPadding: Float64 = vp2px(3.0.vp).getOrThrow().value
+    var linkRectToolImageLineRightPadding: Float64 = vp2px(3.0.vp).getOrThrow().value
 
     /**
      * 块引用左边距
      */
-    protected var blockQuoteLeftMargin: Float64 = 8.0
+    var blockQuoteLeftMargin: Float64 = 8.0
 
     /**
      * 块引用右边距
      */
-    protected var blockQuoteRightMargin: Float64 = 8.0
+    var blockQuoteRightMargin: Float64 = 8.0
 
     /**
      * 块引用左边线条宽度
      */
-    protected var blockQuoteWidth: Float64 = 1.0
+    var blockQuoteWidth: Float64 = 1.0
 
     /**
      * 块引用左边线条颜色
      */
-    protected var blockQuoteColor: Color = COLOR_FF191919
+    var blockQuoteColor: Color = COLOR_FF191919
 
     /**
      * 块引用背景颜色
      */
-    protected var blockQuoteBackGroupColor: Color = COLOR_FFEAEAEA
+    var blockQuoteBackGroupColor: Color = COLOR_FFEAEAEA
 
     /**
      * 块引用子模块上下间距
      */
-    protected var blockQuoteTopAndBottomMargins: Float64 = 0.0
+    var blockQuoteTopAndBottomMargins: Float64 = 0.0
 
     /**
      * 有序/无序/任务列表子模块上下间距
      */
-    protected var blockOrderedAndBulletTopAndBottomMargins: Float64 = 0.0
+    var blockOrderedAndBulletTopAndBottomMargins: Float64 = 0.0
 
     /**
      * 有序/无序/任务列表左边距
      */
-    protected var blockLeftMargin: Float64 = 8.0
+    var blockLeftMargin: Float64 = 8.0
 
     /**
      * 有序/无序/任务列表右边距
      */
-    protected var blockRightMargin: Float64 = 8.0
+    var blockRightMargin: Float64 = 8.0
 
     /**
      * 有序列表前缀文本是否加粗
      */
-    protected var orderedListItemPrefixBold: Bool = false
+    var orderedListItemPrefixBold: Bool = false
 
     /**
      * 有序列表前缀文本颜色
      */
-    protected var orderedListItemColor: Color = COLOR_FF191919
+    var orderedListItemColor: Color = COLOR_FF191919
 
     /**
      * 有序列表前缀文本大小
      */
-    protected var orderedListItemSize: Float64 = 14.0
+    var orderedListItemSize: Float64 = 14.0
 
     /**
      * 有序列表前缀文本行高
      */
-    protected var orderedListItemLineHeight: Float64 = 22.0
+    var orderedListItemLineHeight: Float64 = 22.0
 
     /**
      * 无序列表前缀是否全部是实心圆型
      */
-    protected var bulletListItemCircle: Bool = false
+    var bulletListItemCircle: Bool = false
 
     /**
      * 无序列表前缀文本颜色
      */
-    protected var bulletListItemColor: Color = COLOR_FF191919
+    var bulletListItemColor: Color = COLOR_FF191919
 
     /**
      * 无序列表前缀文本大小
      */
-    protected var bulletListItemSize: Float64 = 4.0
+    var bulletListItemSize: Float64 = 4.0
 
     /**
      * 无序列表前缀文本行高
      */
-    protected var bulletListItemLineHeight: Float64 = 18.0
+    var bulletListItemLineHeight: Float64 = 18.0
 
     /**
      * 任务列表选择框宽高
      */
-    protected var taskListItemLength: Float64 = 15.0
+    var taskListItemLength: Float64 = 15.0
 
     /**
      * 内联代码是否是图片显示
      */
-    protected var isCodeStyle: Bool = false
+    var isCodeStyle: Bool = false
 
     /**
      * 文本/图片格式内联代码文本颜色
      */
-    protected var codeTextColor: Color = COLOR_FF000000
+    var codeTextColor: Color = COLOR_FF000000
 
     /**
      * 文本/图片格式内联代码背景颜色
      */
-    protected var codeBackgroundColor: Color = COLOR_FFEAEAEA
+    var codeBackgroundColor: Color = COLOR_FFEAEAEA
 
     /**
      * 文本/图片格式内联代码文本大小
      */
-    protected var codeTextSize: Float64 = fp2px(13.0.fp).getOrThrow().value
+    var codeTextSize: Float64 = fp2px(13.0.fp).getOrThrow().value
 
     /**
      * 文本格式内联代码文本字体
      */
-    protected var codeTypeface: String = "HarmonyOS Sans"
+    var codeTypeface: String = "HarmonyOS Sans"
 
     /**
      * 图片格式内联代码文本左右边距
      */
-    protected var codeLeftAndRightPadding: Float64 = vp2px(4.0.vp).getOrThrow().value
+    var codeLeftAndRightPadding: Float64 = vp2px(4.0.vp).getOrThrow().value
 
     /**
      * 图片格式内联代码文本高度
      */
-    protected var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
+    var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
      * 缩进/围栏/组合/单独代码块代码文本颜色
      */
-    protected var codeBlockTextColor: ?Color = None
+    var codeBlockTextColor: ?Color = None
 
     /**
      * 缩进/围栏/组合/单独代码块代码类型文本颜色
      */
-    protected var codeBlockTypeTextColor: ?Color = None
+    var codeBlockTypeTextColor: ?Color = None
 
     /**
      * 缩进/围栏/组合/单独代码块代码类型文本
      */
-    protected var codeBlockTypeTextStr: String = ""
+    var codeBlockTypeTextStr: String = ""
 
     /**
      * 缩进/围栏/组合/单独代码块代码类型和代码块距离
      */
-    protected var codeBlockTypeTextPadding: Float64 = 0.0
+    var codeBlockTypeTextPadding: Float64 = 0.0
 
     /**
      * 缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示
      */
-    protected var codeBlockIconTextHide: Bool = true
+    var codeBlockIconTextHide: Bool = true
 
     /**
      * 缩进/围栏/组合/单独代码块代码行号是否显示
      */
-    protected var codeBlockLineNumberHide: Bool = true
+    var codeBlockLineNumberHide: Bool = true
 
     /**
      * 缩进/围栏/组合/单独代码块背景颜色
      */
-    protected var codeBlockBackgroundColor: ?Color = None
+    var codeBlockBackgroundColor: ?Color = None
 
     /**
      * 缩进/围栏/组合/单独代码块左边距
      */
-    protected var codeMultilineMargin: Float64 = 8.0
+    var codeMultilineMargin: Float64 = 8.0
 
     /**
      * 缩进/围栏/组合/单独代码块字体
      */
-    protected var codeBlockTypeface: String = "HarmonyOS Sans"
+    var codeBlockTypeface: String = "HarmonyOS Sans"
 
     /**
      * 缩进/围栏/组合/单独代码块代码文本大小
      */
-    protected var codeBlockTextSize: Float64 = 13.0
+    var codeBlockTextSize: Float64 = 13.0
 
     /**
      * 缩进/围栏/组合/单独代码块代码文本行高
      */
-    protected var codeBlockLineHeight: Float64 = 22.0
+    var codeBlockLineHeight: Float64 = 22.0
 
     /**
      * 缩进/围栏/组合/单独代码块控件圆角大小
      */
-    protected var codeBlockRadius: Float64 = 8.0
+    var codeBlockRadius: Float64 = 8.0
 
     /**
      * 缩进/围栏/组合/单独代码块代码全屏按钮是否显示
      */
-    protected var isCodeFullScreen: Bool = true
+    var isCodeFullScreen: Bool = true
 
     /**
      * 缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高
      */
-    protected var iconWidthAndHeight: Float64 = 24.0
+    var iconWidthAndHeight: Float64 = 24.0
 
     /**
      * 缩进/围栏/组合/单独代码块代码全屏按钮默认图标
      */
-    protected var codeFullScreenIcon: ?AppResource = None
+    var codeFullScreenIcon: ?AppResource = None
 
     /**
      * 缩进/围栏/组合/单独代码块代码复制按钮默认图标
      */
-    protected var codeCopyIcon: ?AppResource = None
+    var codeCopyIcon: ?AppResource = None
 
     /**
      * 组合代码块未选中标题字体大小
      */
-    protected var codeListTitleTextSize: Float64 = 13.0
+    var codeListTitleTextSize: Float64 = 13.0
 
     /**
      * 组合代码块选中标题字体大小
      */
-    protected var codeListTitleSelectTextSize: Float64 = 13.0
+    var codeListTitleSelectTextSize: Float64 = 13.0
 
     /**
      * 组合代码块选中标题文本颜色
      */
-    protected var codeListTitleSelectTextColor: Color = Color.RED
+    var codeListTitleSelectTextColor: Color = Color.RED
 
     /**
      * 组合代码块未选中标题文本颜色
      */
-    protected var codeListTitleUnSelectTextColor: Color = Color.BLACK
+    var codeListTitleUnSelectTextColor: Color = Color.BLACK
 
     /**
      * 组合代码块选中标题背景颜色
      */
-    protected var codeListTitleSelectBackGroupColor: Color = Color.GRAY
+    var codeListTitleSelectBackGroupColor: Color = Color.GRAY
 
     /**
      * 组合代码块未选中标题背景颜色
      */
-    protected var codeListTitleUnSelectBackGroupColor: Color = Color.TRANSPARENT
+    var codeListTitleUnSelectBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 是否单独代码块显示
      */
-    protected var isSeparateCodeBlock: Bool = false
+    var isSeparateCodeBlock: Bool = false
 
     /**
      * 单独代码块行号宽度
      */
-    protected var separateCodeBlockWidth: Float64 = 50.0
+    var separateCodeBlockWidth: Float64 = 50.0
 
     /**
      * 单独代码块是否居底显示
      */
-    protected var separateCodeIsBottom: Bool = false
+    var separateCodeIsBottom: Bool = false
 
     /**
      * H1/H2标题下分割线高度
      */
-    protected var headingBreakHeight: Float64 = 0.5
+    var headingBreakHeight: Float64 = 0.5
 
     /**
      * H1/H2标题下分割线颜色
      */
-    protected var headingBreakColor: Color = COLOR_FF191919
+    var headingBreakColor: Color = COLOR_FF191919
 
     /**
      * 标题文本字体
      */
-    protected var headingTypeface: String = "HarmonyOS Sans"
+    var headingTypeface: String = "HarmonyOS Sans"
 
     /**
      * 标题模块上间距
      */
-    protected var headingTopMargins: Float64 = 8.0
+    var headingTopMargins: Float64 = 8.0
 
     /**
      * 标题模块下间距
      */
-    protected var headingBottomMargins: Float64 = 8.0
+    var headingBottomMargins: Float64 = 8.0
 
     /**
      * 标题文本大小数组
      */
-    protected var headingTextSizeMultipliers: Array<Float64> = [20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+    var headingTextSizeMultipliers: Array<Float64> = [20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
 
     /**
      * 标题文本颜色
      */
-    protected var headingTextColor: Color = COLOR_FF191919
+    var headingTextColor: Color = COLOR_FF191919
 
     /**
      * 标题文本字间距
      */
-    protected var headingTextWordSpace: Float64 = 0.0
+    var headingTextWordSpace: Float64 = 0.0
 
     /**
      * 一级标题文本行高
      */
-    protected var headingTextLineHeight1: Float64 = 22.0
+    var headingTextLineHeight1: Float64 = 22.0
 
     /**
      * 二级标题文本行高
      */
-    protected var headingTextLineHeight2: Float64 = 22.0
+    var headingTextLineHeight2: Float64 = 22.0
 
     /**
      * 三级标题文本行高
      */
-    protected var headingTextLineHeight3: Float64 = 22.0
+    var headingTextLineHeight3: Float64 = 22.0
 
     /**
      * 四级标题文本行高
      */
-    protected var headingTextLineHeight4: Float64 = 22.0
+    var headingTextLineHeight4: Float64 = 22.0
 
     /**
      * 五级标题文本行高
      */
-    protected var headingTextLineHeight5: Float64 = 22.0
+    var headingTextLineHeight5: Float64 = 22.0
 
     /**
      * 六级标题文本行高
      */
-    protected var headingTextLineHeight6: Float64 = 22.0
+    var headingTextLineHeight6: Float64 = 22.0
 
     /**
      * 段落模块上间距
      */
-    protected var paragraphTopMargins: Float64 = 8.0
+    var paragraphTopMargins: Float64 = 8.0
 
     /**
      * 段落模块下间距
      */
-    protected var paragraphBottomMargins: Float64 = 8.0
+    var paragraphBottomMargins: Float64 = 8.0
 
     /**
      * 段落文本大小
      */
-    protected var paragraphTextSize: Float64 = 14.0
+    var paragraphTextSize: Float64 = 14.0
 
     /**
      * 段落文本颜色
      */
-    protected var paragraphTextColor: Color = COLOR_FF191919
+    var paragraphTextColor: Color = COLOR_FF191919
 
     /**
      * 段落文本字间距
      */
-    protected var paragraphTextWordSpace: Float64 = 0.0
+    var paragraphTextWordSpace: Float64 = 0.0
 
     /**
      * 段落文本行高
      */
-    protected var paragraphTextLineHeight: Float64 = 22.0
+    var paragraphTextLineHeight: Float64 = 22.0
 
     /**
      * 段落文本字体
      */
-    protected var paragraphTypeface: String = "HarmonyOS Sans"
+    var paragraphTypeface: String = "HarmonyOS Sans"
 
     /**
      * 分割线颜色
      */
-    protected var thematicBreakColor: Color = COLOR_FF191919
+    var thematicBreakColor: Color = COLOR_FF191919
 
     /**
      * 分割线高度
      */
-    protected var thematicBreakHeight: Float64 = 0.5
+    var thematicBreakHeight: Float64 = 0.5
 
     /**
      * 分割线上部外边距
      */
-    protected var thematicBreakTopMargin: Float64 = 0.0
+    var thematicBreakTopMargin: Float64 = 0.0
 
     /**
      * 分割线下部外边距
      */
-    protected var thematicBreakBottomMargin: Float64 = 0.0
+    var thematicBreakBottomMargin: Float64 = 0.0
 
     /**
      * 软换行是否换行
      */
-    protected var isLineBreak: Bool = false
+    var isLineBreak: Bool = false
 
     /**
      * 数学公式未加载状态是否显示文字
      */
-    protected var latexDefaultText: Bool = true
+    var latexDefaultText: Bool = true
 
     /**
      * 数学公式文本大小
      */
-    protected var latexMathTextSize: Float64 = fp2px(16.0.fp)().value
+    var latexMathTextSize: Float64 = fp2px(16.0.fp)().value
 
     /**
      * 数学公式背景色
      */
-    protected var latexMathBackGroupColor: Color = Color.TRANSPARENT
+    var latexMathBackGroupColor: Color = Color.TRANSPARENT
 
     /**
      * 数学公式文本颜色
      */
-    protected var latexMathTextColor: Color = COLOR_FF000000
+    var latexMathTextColor: Color = COLOR_FF000000
 
     /**
      * 数学公式生成图片格式
      */
-    protected var latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
+    var latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
 
     /**
      * 块结构的数学公式是否居中
      */
-    protected var latexMathBlockCenter: Bool = false
+    var latexMathBlockCenter: Bool = false
 
     /**
      * 数学公式字体路径
      */
-    protected var latexMathResStr: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
+    var latexMathResStr: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
 
     /**
      * 音频图标
      */
-    protected var audioIcon: ?AppResource = None
+    var audioIcon: ?AppResource = None
 
     /**
      * 音频阴影颜色值
      */
-    protected var audioShadowColor: Color = COLOR_1A000000
+    var audioShadowColor: Color = COLOR_1A000000
 
     /**
      * 音频边框颜色
      */
-    protected var audioBorderColor: Color = COLOR_33000000
+    var audioBorderColor: Color = COLOR_33000000
 
     /**
      * 音频边框粗细
      */
-    protected var audioBorderWidth: Float64 = 0.5
+    var audioBorderWidth: Float64 = 0.5
 
     /**
      * 音频边框圆角
      */
-    protected var audioBorderRadius: Float64 = 12.0
+    var audioBorderRadius: Float64 = 12.0
 
     /**
      * 音频按钮背景颜色
      */
-    protected var audioButtonBackgroundColor: Color = Color.BLACK
+    var audioButtonBackgroundColor: Color = Color.BLACK
 
     /**
      * 音频按钮文字颜色
      */
-    protected var audioButtonTextColor: Color = Color.WHITE
+    var audioButtonTextColor: Color = Color.WHITE
 
     /**
      * 音频按钮文字大小
      */
-    protected var audioButtonTextSize: Float64 = 14.0
+    var audioButtonTextSize: Float64 = 14.0
 
     /**
      * 音频按钮文字内容
      */
-    protected var audioButtonText: String = "立即播放"
+    var audioButtonText: String = "立即播放"
 
     /**
      * 音频按钮圆角大小
      */
-    protected var audioButtonBorderRadius: Float64 = 16.0
+    var audioButtonBorderRadius: Float64 = 16.0
 
     /**
      * 音频标题文字大小
      */
-    protected var audioTitleTextSize: Float64 = 15.0
+    var audioTitleTextSize: Float64 = 15.0
 
     /**
      * 音频标题文字颜色
      */
-    protected var audioTitleTextColor: Color = Color.BLACK
+    var audioTitleTextColor: Color = Color.BLACK
 
     /**
      * 音频标题文字行高
      */
-    protected var audioTitleTextLineHeight: Float64 = 20.0
+    var audioTitleTextLineHeight: Float64 = 20.0
 
     /**
      * 音频类型文字大小
      */
-    protected var audioTypeTextSize: Float64 = 11.0
+    var audioTypeTextSize: Float64 = 11.0
 
     /**
      * 音频类型文字颜色
      */
-    protected var audioTypeTextColor: Color = COLOR_80000000
+    var audioTypeTextColor: Color = COLOR_80000000
 
     /**
      * 音频类型文字行高
      */
-    protected var audioTypeTextLineHeight: Float64 = 15.0
+    var audioTypeTextLineHeight: Float64 = 15.0
 
     /**
      * 音频上边距
      */
-    protected var audioMarginTop: Float64 = 10.0
+    var audioMarginTop: Float64 = 10.0
 
     /**
      * 音频下边距
      */
-    protected var audioMarginBottom: Float64 = 10.0
+    var audioMarginBottom: Float64 = 10.0
 
     /**
      * 视频默认占位图
      */
-    protected var videoImage: ?AppResource = None
+    var videoImage: ?AppResource = None
 
     /**
      * 视频播放按钮默认图标
      */
-    protected var playCircleFillIcon: ?AppResource = None
+    var playCircleFillIcon: ?AppResource = None
 
     /**
      * 视频圆角大小
      */
-    protected var videoBorderRadius: Float64 = 10.0
+    var videoBorderRadius: Float64 = 10.0
 
     /**
      * 视频时间文本颜色
      */
-    protected var videoTimeTextColor: Color = Color.WHITE
+    var videoTimeTextColor: Color = Color.WHITE
 
     /**
      * 视频时间文本大小
      */
-    protected var videoTimeTextSize: Float64 = 14.0
+    var videoTimeTextSize: Float64 = 14.0
 
     /**
      * 视频时间文本居右边距
      */
-    protected var videoTimeTextMarginRight: Float64 = 10.0
+    var videoTimeTextMarginRight: Float64 = 10.0
 
     /**
      * 视频时间文本居底边距
      */
-    protected var videoTimeTextMarginBottom: Float64 = 10.0
+    var videoTimeTextMarginBottom: Float64 = 10.0
 
     /**
      * 视频上边距
      */
-    protected var videoMarginTop: Float64 = 10.0
+    var videoMarginTop: Float64 = 10.0
 
     /**
      * 视频下边距
      */
-    protected var videoMarginBottom: Float64 = 10.0
+    var videoMarginBottom: Float64 = 10.0
 
     /**
      * 图片banner默认占位图
      */
-    protected var bannerImage: ?AppResource = None
+    var bannerImage: ?AppResource = None
 
     /**
      * 图片基于自身宽度缩放百分比
      */
-    protected var imageMaximumWidth: Float64 = 1.0
+    var imageMaximumWidth: Float64 = 1.0
 
     /**
      * 图片基于父布局宽度缩放百分比
      */
-    protected var imageFixedRatioWidth: ?Float64 = None
+    var imageFixedRatioWidth: ?Float64 = None
 
     /**
      * 图片圆角大小
      */
-    protected var imageBorderRadius: Float64 = 0.0
+    var imageBorderRadius: Float64 = 0.0
 
     /**
      * 图片缩放类型
      */
-    protected var imageFitType: ImageFit = ImageFit.Contain
+    var imageFitType: ImageFit = ImageFit.Contain
 
     /**
      * 图片默认占位图
      */
-    protected var imageResource: ?AppResource = None
+    var imageResource: ?AppResource = None
 
     /**
      * 网络图片是否压缩
      */
-    protected var isAutoResize: Bool = true
+    var isAutoResize: Bool = true
 
     /**
      * 图片上边距
      */
-    protected var imageMarginTop: Float64 = 10.0
+    var imageMarginTop: Float64 = 10.0
 
     /**
      * 图片下边距
      */
-    protected var imageMarginBottom: Float64 = 10.0
+    var imageMarginBottom: Float64 = 10.0
 
     /**
      * 表格内容内边距
      */
-    protected var tableCellPadding: Float64 = 4.0
+    var tableCellPadding: Float64 = 4.0
 
     /**
      * 表格边框颜色
      */
-    protected var tableBorderColor: Color = COLOR_FF000000
+    var tableBorderColor: Color = COLOR_FF000000
 
     /**
      * 表格边框宽度
      */
-    protected var tableBorderWidth: Float64 = 1.0
+    var tableBorderWidth: Float64 = 1.0
 
     /**
      * 表格奇数行背景色
      */
-    protected var tableOddRowBackgroundColor: Color = COLOR_FFFFFFFF
+    var tableOddRowBackgroundColor: Color = COLOR_FFFFFFFF
 
     /**
      * 表格偶数行背景色
      */
-    protected var tableEvenRowBackgroundColor: Color = COLOR_FFE0E0E0
+    var tableEvenRowBackgroundColor: Color = COLOR_FFE0E0E0
 
     /**
      * 表格头背景色
      */
-    protected var tableHeaderRowBackgroundColor: Color = COLOR_FFFFFFFF
+    var tableHeaderRowBackgroundColor: Color = COLOR_FFFFFFFF
 
     /**
      * 表格文本行高
      */
-    protected var tableTextLineHeight: Float64 = 22.0
+    var tableTextLineHeight: Float64 = 22.0
 
     /**
      * 表格圆角大小
      */
-    protected var tableRadius: Float64 = 5.0
+    var tableRadius: Float64 = 5.0
 
     /**
      * 表格一格最小宽度
      */
-    protected var tableMinTextWidth: Float64 = 50.0
+    var tableMinTextWidth: Float64 = 50.0
 
     /**
      * 表格一格最大宽度
      */
-    protected var tableMaxTextWidth: Float64 = 300.0
+    var tableMaxTextWidth: Float64 = 300.0
 
     /**
      * 表格第一列是否加粗
      */
-    protected var tableFirstColumnBold: Bool = false
+    var tableFirstColumnBold: Bool = false
 
     /**
      * markdown代码高亮样式
      */
-    protected var prismTheme: PrismTheme = PrismThemeDarkula.create()
+    var prismTheme: PrismTheme = PrismThemeDarkula.create()
 
     /**
      * 删除线颜色
      */
-    protected var strikethroughColor: Color = COLOR_FF191919
+    var strikethroughColor: Color = COLOR_FF191919
 
     /**
      * 定义列表术语和定义行之间间距
      */
-    protected var descListTermAndDefMargins: Float64 = 8.0
+    var descListTermAndDefMargins: Float64 = 8.0
 
     /**
      * 定义列表定义行缩进
      */
-    protected var descListDefIndentation: Float64 = 8.0
+    var descListDefIndentation: Float64 = 8.0
 
     /**
      * 定义列表定义行间距
      */
-    protected var descListDefMargins: Float64 = 8.0
+    var descListDefMargins: Float64 = 8.0
 
     init() {
     }
