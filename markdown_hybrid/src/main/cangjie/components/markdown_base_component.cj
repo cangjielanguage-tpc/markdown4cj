@@ -1163,5 +1163,122 @@ func inLineCodeSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
     }
 }
 
+/**
+ * 标题
+ */
+@Builder
+func blockHeadingComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, fontCallback: (String) -> Unit, imageCallback: (String) -> Unit, componentWidth: Float64, isListTo: Bool, headingComponents: HashMap<Int64, MarkdownHeadingComponent>) {
+    MarkdownHeadingComponent(
+        markdownConfiguration: markdownConfiguration,
+        nodeView: item,
+        fontCallback: fontCallback,
+        imageCallback: imageCallback,
+        componentWidth: componentWidth,
+        isListTo: isListTo,
+        headingComponents: headingComponents
+    )
+}
 
+/**
+ * 段落
+ */
+@Builder
+func blockParagraphComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, footnoteBlock: Option<FootnoteBlock>, fontCallback: (String) -> Unit, tocListOnClick: (Int64) -> Unit, imageCallback: (String) -> Unit, componentWidth: Float64, isListTo: Bool, paragraphComponents: HashMap<Int64, MarkdownParagraphComponent>) {
+    MarkdownParagraphComponent(
+        markdownConfiguration: markdownConfiguration,
+        nodeView: item,
+        footnoteBlock: footnoteBlock,
+        fontCallback: fontCallback,
+        tocListOnClick: tocListOnClick,
+        imageCallback: imageCallback,
+        componentWidth: componentWidth,
+        isListTo: isListTo,
+        paragraphComponents: paragraphComponents
+    )
+}
+
+/**
+ * 围栏代码
+ */
+@Builder
+func blockFencedCodeComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, fencedCodeComponents: HashMap<Int64, MarkdownFencedCodeBlockComponent>) {
+    MarkdownFencedCodeBlockComponent(
+        markdownConfiguration: markdownConfiguration,
+        nodeView: item,
+        fencedCodeComponents: fencedCodeComponents
+    )
+}
+
+/**
+ * 缩进代码
+ */
+@Builder
+func blockIndentedCodeComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, indentedCodeComponents: HashMap<Int64, MarkdownIndentedCodeBlockComponent>) {
+    MarkdownIndentedCodeBlockComponent(
+        markdownConfiguration: markdownConfiguration,
+        nodeView: item,
+        indentedCodeComponents: indentedCodeComponents
+    )
+}
+
+/**
+ * 表格
+ */
+@Builder
+func blockTableComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, fontCallback: (String) -> Unit, imageCallback: (String) -> Unit, componentWidth: Float64, tableComponents: HashMap<Int64, MarkdownTableBlockComponent>, tableRowComponents: HashMap<Int64, MarkdownTableBlockRowComponent>, tableCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent>) {
+    MarkdownTableBlockComponent(
+        markdownConfiguration: markdownConfiguration,
+        nodeView: item,
+        fontCallback: fontCallback,
+        imageCallback: imageCallback,
+        componentWidth: componentWidth,
+        tableComponents: tableComponents,
+        tableRowComponents: tableRowComponents,
+        tableCellComponents: tableCellComponents
+    )
+}
+
+/**
+ * 数学公式 -单行
+ */
+@Builder
+func blockLatextComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView) {
+    if ((item.node as LatexMathBlock)().isClosed) {
+        // 结束显示数学公式
+        MarkdownLatexMathBlockComponent(
+            markdownConfiguration: markdownConfiguration,
+            nodeView: item,
+            latexStr: (item.node as LatexMathBlock)().latex
+        )
+    } else {
+        // 没结束显示纯文本
+        Text((item.node as LatexMathBlock)().latex)
+    }
+}
+
+/**
+ * 图片幻灯片
+ */
+@Builder
+func blockImageBannerComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, imageCallback: (String) -> Unit) {
+    MarkdownImageBannerComponent(
+        slideBlockNodeView: item,
+        markdownConfiguration: markdownConfiguration,
+        imageCallback: imageCallback
+    )
+}
+
+/**
+ * 组合代码
+ */
+@Builder
+func blockCodeBlockListComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, res: (ArrayList<String>, ArrayList<String>, ArrayList<String>)) {
+    MarkdownCodeBlockListComponent(
+        nodeView: item,
+        strInfos: res[0],
+        strText: res[1],
+        strInfoText: res[2],
+        markdownConfiguration: markdownConfiguration
+    )
+}
 

@@ -167,14 +167,7 @@ public class MarkdownComponent {
                         item: NodeView, idx: Int64 => if (item.node is Heading) {
                             // 标题
                             ListItem() {
-                                MarkdownHeadingComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    fontCallback: fontCallback,
-                                    imageCallback: imageCallback,
-                                    componentWidth: componentWidth,
-                                    headingComponents: markdownCacheConfiguration.headingComponents
-                                )
+                                blockHeadingComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, false, markdownCacheConfiguration.headingComponents)
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 0, item), bottom: marginNodeBottom(idx, lastViewIndex, 0, item))
@@ -183,16 +176,7 @@ public class MarkdownComponent {
                         } else if (item.node is Paragraph) {
                             // 段落
                             ListItem() {
-                                MarkdownParagraphComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    footnoteBlock: Option<FootnoteBlock>.None,
-                                    fontCallback: fontCallback,
-                                    tocListOnClick: tocListOnClick,
-                                    imageCallback: imageCallback,
-                                    componentWidth: componentWidth,
-                                    paragraphComponents: markdownCacheConfiguration.paragraphComponents
-                                )
+                                blockParagraphComponent(markdownConfiguration, item, Option<FootnoteBlock>.None, fontCallback, tocListOnClick, imageCallback, componentWidth, false, markdownCacheConfiguration.paragraphComponents)
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 1, item), bottom: marginNodeBottom(idx, lastViewIndex, 1, item))
@@ -258,38 +242,21 @@ public class MarkdownComponent {
                         } else if (item.node is FencedCodeBlock) {
                             // 围栏代码块
                             ListItem() {
-                                MarkdownFencedCodeBlockComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
-                                )
+                                blockFencedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.fencedCodeComponents)
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
                         } else if (item.node is IndentedCodeBlock) {
                             // 缩进代码块
                             ListItem() {
-                                MarkdownIndentedCodeBlockComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
-                                )
+                                blockIndentedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.indentedCodeComponents)
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
                         } else if (item.node is TableBlock) {
                             // 表格
                             ListItem() {
-                                MarkdownTableBlockComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    fontCallback: fontCallback,
-                                    imageCallback: imageCallback,
-                                    componentWidth: componentWidth,
-                                    tableComponents: markdownCacheConfiguration.tableComponents,
-                                    tableRowComponents: markdownCacheConfiguration.tableRowComponents,
-                                    tableCellComponents: markdownCacheConfiguration.tableCellComponents
-                                )
+                                blockTableComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, markdownCacheConfiguration.tableComponents, markdownCacheConfiguration.tableRowComponents, markdownCacheConfiguration.tableCellComponents)
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
@@ -332,17 +299,7 @@ public class MarkdownComponent {
                         } else if (item.node is LatexMathBlock) {
                             // 单行的数学公式
                             ListItem() {
-                                if ((item.node as LatexMathBlock)().isClosed) {
-                                    // 结束显示数学公式
-                                    MarkdownLatexMathBlockComponent(
-                                        markdownConfiguration: markdownConfiguration,
-                                        nodeView: item,
-                                        latexStr: (item.node as LatexMathBlock)().latex
-                                    )
-                                } else {
-                                    // 没结束显示纯文本
-                                    Text((item.node as LatexMathBlock)().latex)
-                                }
+                                blockLatextComponent(markdownConfiguration, item)
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
@@ -368,24 +325,14 @@ public class MarkdownComponent {
                         } else if (item.node is SlideBlock) {
                             // 图片幻灯片
                             ListItem() {
-                                MarkdownImageBannerComponent(
-                                    slideBlockNodeView: item,
-                                    markdownConfiguration: markdownConfiguration,
-                                    imageCallback: imageCallback
-                                )
+                                blockImageBannerComponent(markdownConfiguration, item, imageCallback)
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
                         } else if (item.node is FencedCodeBlockListBlock) {
                             // 组合代码
                             ListItem() {
-                                MarkdownCodeBlockListComponent(
-                                    nodeView: item,
-                                    strInfos: toCodeList(item)[0],
-                                    strText: toCodeList(item)[1],
-                                    strInfoText: toCodeList(item)[2],
-                                    markdownConfiguration: markdownConfiguration
-                                )
+                                blockCodeBlockListComponent(markdownConfiguration, item, toCodeList(item))
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))

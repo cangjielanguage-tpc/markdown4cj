@@ -105,41 +105,16 @@ public class MarkdownQuoteComponent {
                         Column() {
                             if (item.node is Paragraph) {
                                 // 段落
-                                MarkdownParagraphComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    fontCallback: fontCallback,
-                                    tocListOnClick: tocListOnClick,
-                                    imageCallback: imageCallback,
-                                    componentWidth: componentWidth,
-                                    isListTo: true,
-                                    paragraphComponents: markdownCacheConfiguration.paragraphComponents
-                                )
+                                blockParagraphComponent(markdownConfiguration, item, Option<FootnoteBlock>.None, fontCallback, tocListOnClick, imageCallback, componentWidth, true, markdownCacheConfiguration.paragraphComponents)
                             } else if (item.node is Heading) {
                                 // 标题
-                                MarkdownHeadingComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    fontCallback: fontCallback,
-                                    imageCallback: imageCallback,
-                                    componentWidth: componentWidth,
-                                    isListTo: true,
-                                    headingComponents: markdownCacheConfiguration.headingComponents
-                                )
+                                blockHeadingComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, true, markdownCacheConfiguration.headingComponents)
                             } else if (item.node is IndentedCodeBlock) {
                                 // 缩进代码
-                                MarkdownIndentedCodeBlockComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
-                                )
+                                blockIndentedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.indentedCodeComponents)
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
-                                MarkdownFencedCodeBlockComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
-                                )
+                                blockFencedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.fencedCodeComponents)
                             } else if (item.node is BulletList) {
                                 // 无序列表
                                 MarkdownListComponent(
@@ -189,29 +164,10 @@ public class MarkdownQuoteComponent {
                                 )
                             } else if (item.node is TableBlock) {
                                 // 表格
-                                MarkdownTableBlockComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    fontCallback: fontCallback,
-                                    imageCallback: imageCallback,
-                                    componentWidth: componentWidth,
-                                    tableComponents: markdownCacheConfiguration.tableComponents,
-                                    tableRowComponents: markdownCacheConfiguration.tableRowComponents,
-                                    tableCellComponents: markdownCacheConfiguration.tableCellComponents
-                                )
+                                blockTableComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, markdownCacheConfiguration.tableComponents, markdownCacheConfiguration.tableRowComponents, markdownCacheConfiguration.tableCellComponents)
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
-                                if ((item.node as LatexMathBlock)().isClosed) {
-                                    // 结束显示数学公式
-                                    MarkdownLatexMathBlockComponent(
-                                        markdownConfiguration: markdownConfiguration,
-                                        nodeView: item,
-                                        latexStr: (item.node as LatexMathBlock)().latex
-                                    )
-                                } else {
-                                    // 没结束显示纯文本
-                                    Text((item.node as LatexMathBlock)().latex)
-                                }
+                                blockLatextComponent(markdownConfiguration, item)
                             } else if (item.node is BlockAudio) {
                                 // 音频
                                 audioBuilder(item, markdownConfiguration)
@@ -220,20 +176,10 @@ public class MarkdownQuoteComponent {
                                 videoBuilder(item, markdownConfiguration, videoCallback)
                             } else if (item.node is SlideBlock) {
                                 // 图片幻灯片
-                                MarkdownImageBannerComponent(
-                                    slideBlockNodeView: item,
-                                    markdownConfiguration: markdownConfiguration,
-                                    imageCallback: imageCallback
-                                )
+                                blockImageBannerComponent(markdownConfiguration, item, imageCallback)
                             } else if (item.node is FencedCodeBlockListBlock) {
                                 // 代码列表
-                                MarkdownCodeBlockListComponent(
-                                    nodeView: item,
-                                    strInfos: toCodeList(item)[0],
-                                    strText: toCodeList(item)[1],
-                                    strInfoText: toCodeList(item)[2],
-                                    markdownConfiguration: markdownConfiguration
-                                )
+                                blockCodeBlockListComponent(markdownConfiguration, item, toCodeList(item))
                             } else if (item.node is BlockAD) {
                                 // 广告
                                 adBuilder(item)
