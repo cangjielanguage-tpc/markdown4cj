@@ -1024,21 +1024,6 @@ func urlSafeBase64Decode(v: String): String {
 }
 
 /**
- * 获取背景色
- *
- * @param blockQuoteBackGroupClor 背景色
- * @param backGroupColor 背景色
- * @return Color
- */
-func markdownbackGroupColor(blockQuoteBackGroupClor: Option<Color>, backGroupColor: Color): Color {
-    if (let Some(v) <- blockQuoteBackGroupClor) {
-        return v
-    } else {
-        return backGroupColor
-    }
-}
-
-/**
  * 将String转换成Float64
  *
  * @param str String

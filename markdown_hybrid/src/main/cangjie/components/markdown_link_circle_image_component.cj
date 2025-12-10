@@ -52,11 +52,6 @@ public class MarkdownLinkCircleImageComponent {
     var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None
 
     /**
-     * 图片背景颜色
-     */
-    var backGroupColor: Color
-
-    /**
      * 图片最大宽度
      */
     var maxWidth: Length = 100.percent
@@ -110,6 +105,6 @@ public class MarkdownLinkCircleImageComponent {
             }
         }
         // 解析链接
-        MarkdownParseLinkUtil.linkStrToCirclePixelMap(strText, markdownConfiguration, callback, backGroupColor)
+        MarkdownParseLinkUtil.linkStrToCirclePixelMap(strText, markdownConfiguration, callback)
     }
 }
