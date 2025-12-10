@@ -153,6 +153,52 @@ class MarkdownTableBlockCellComponent {
         )
     }
 
+    @Builder
+    func tableBlockCellListComponent(item: NodeView) {
+        if (item.node is CommonmarkText) {
+            // 文本
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                tableComponentText19(item, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), markdownConfiguration)
+            } else {
+                tableComponentText18(item, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), markdownConfiguration)
+            }
+        } else if (item.node is Footnote) {
+            // 脚注
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                tableComponentFootnote19(item, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), markdownConfiguration, fontCallback)
+            } else {
+                tableComponentFootnote18(item, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), markdownConfiguration, fontCallback)
+            }
+        } else if (item.node is Code) {
+            // 内联代码
+            inLineCodeSpanComponent(item, markdownConfiguration, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold) || item.strongEmphasis, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), false, 2)
+        } else if (item.node is HardLineBreak) {
+            // 硬换行
+            Span("\n")
+        } else if (item.node is SoftLineBreak) {
+            // 软换行
+            Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
+        } else if (item.node is CommonmarkLink) {
+            // 链接
+            linkSpanComponent(false, false, 0, item, markdownConfiguration, componentWidth, imageCallback, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), false, 2, false)
+        } else if (item.node is ImageHtmlNode) {
+            // HTML图片
+            htmlImageSpanComponent(item, markdownConfiguration, markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth, imageCallback)
+        } else if (item.node is StyleImage) {
+            //  图片Style节点
+            styleImageSpanComponent(item, markdownConfiguration, markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth, imageCallback)
+        } else if (item.node is CommonmarkImage) {
+            // 图片节点
+            coreImageSpanComponent(item, markdownConfiguration, markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth, imageCallback)
+        } else if (item.node is LatexMathNode) {
+            // 数学公式节点
+            latexSpanComponent(item, markdownConfiguration, markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth)
+        } else {
+            // TODO 其他节点
+            Span("")
+        }
+    }
+
     /**
      * 表格文字内容
      */
@@ -162,40 +208,7 @@ class MarkdownTableBlockCellComponent {
             ForEach(
                 nodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                        // 文本
-                        tableComponentText18(item, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), markdownConfiguration)
-                    } else if (item.node is Footnote) {
-                        // 脚注
-                        tableComponentFootnote18(item, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), markdownConfiguration, fontCallback)
-                    } else if (item.node is Code) {
-                        // 内联代码
-                        inLineCodeSpanComponent(item, markdownConfiguration, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold) || item.strongEmphasis, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), false, 2)
-                    } else if (item.node is HardLineBreak) {
-                        // 硬换行
-                        Span("\n")
-                    } else if (item.node is SoftLineBreak) {
-                        // 软换行
-                        Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
-                    } else if (item.node is CommonmarkLink) {
-                        // 链接
-                        linkSpanComponent(false, false, 0, item, markdownConfiguration, componentWidth, imageCallback, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), false, 2, false)
-                    } else if (item.node is ImageHtmlNode) {
-                        // HTML图片
-                        htmlImageSpanComponent(item, markdownConfiguration, markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth, imageCallback)
-                    } else if (item.node is StyleImage) {
-                        //  图片Style节点
-                        styleImageSpanComponent(item, markdownConfiguration, markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth, imageCallback)
-                    } else if (item.node is CommonmarkImage) {
-                        // 图片节点
-                        coreImageSpanComponent(item, markdownConfiguration, markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth, imageCallback)
-                    } else if (item.node is LatexMathNode) {
-                        // 数学公式节点
-                        latexSpanComponent(item, markdownConfiguration, markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth)
-                    } else {
-                        // TODO 其他节点
-                        Span("")
-                    }
+                    item: NodeView, idx: Int64 => tableBlockCellListComponent(item)
                 },
                 keyGeneratorFunc: {
                     item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
@@ -227,40 +240,7 @@ class MarkdownTableBlockCellComponent {
             ForEach(
                 nodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                        // 文本
-                        tableComponentText19(item, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), markdownConfiguration)
-                    } else if (item.node is Footnote) {
-                        // 脚注
-                        tableComponentFootnote19(item, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), markdownConfiguration, fontCallback)
-                    } else if (item.node is Code) {
-                        // 内联代码
-                        inLineCodeSpanComponent(item, markdownConfiguration, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold) || item.strongEmphasis, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), false, 2)
-                    } else if (item.node is HardLineBreak) {
-                        // 硬换行
-                        Span("\n")
-                    } else if (item.node is SoftLineBreak) {
-                        // 软换行
-                        Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
-                    } else if (item.node is CommonmarkLink) {
-                        // 链接
-                        linkSpanComponent(false, false, 0, item, markdownConfiguration, componentWidth, imageCallback, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), false, 2, false)
-                    } else if (item.node is ImageHtmlNode) {
-                        // HTML图片
-                        htmlImageSpanComponent(item, markdownConfiguration, markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth, imageCallback)
-                    } else if (item.node is StyleImage) {
-                        //  图片Style节点
-                        styleImageSpanComponent(item, markdownConfiguration, markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth, imageCallback)
-                    } else if (item.node is CommonmarkImage) {
-                        // 图片节点
-                        coreImageSpanComponent(item, markdownConfiguration, markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth, imageCallback)
-                    } else if (item.node is LatexMathNode) {
-                        // 数学公式节点
-                        latexSpanComponent(item, markdownConfiguration, markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth)
-                    } else {
-                        // TODO 其他节点
-                        Span("")
-                    }
+                    item: NodeView, idx: Int64 => tableBlockCellListComponent(item)
                 },
                 keyGeneratorFunc: {
                     item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
@@ -281,6 +261,18 @@ class MarkdownTableBlockCellComponent {
                 markdownConfiguration.textCopyCallback()(str)
             }
         })
+    }
+
+    /**
+     * 表格文字内容
+     */
+    @Builder
+    func tableBlockCellComponent() {
+        if (DeviceInfo.sdkApiVersion >= 19) {
+            tableBlockCellComponent19()
+        } else {
+            tableBlockCellComponent18()
+        }
     }
 
     func leftWidths(): Float64 {
@@ -305,18 +297,6 @@ class MarkdownTableBlockCellComponent {
 
     func bottomWidths(): Float64 {
         return 0.0
-    }
-
-    /**
-     * 表格文字内容
-     */
-    @Builder
-    func tableBlockCellComponent() {
-        if (DeviceInfo.sdkApiVersion >= 19) {
-            tableBlockCellComponent19()
-        } else {
-            tableBlockCellComponent18()
-        }
     }
 
     func refreshTextWidth(): Unit {

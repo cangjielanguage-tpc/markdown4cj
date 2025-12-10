@@ -107,6 +107,59 @@ class MarkdownParagraphComponent {
         .justifyContent(FlexAlign.Center)
     }
 
+    @Builder
+    func paragraphListComponent(item: NodeView) {
+        if (item.node is CommonmarkText) {
+            // 文本
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                paragraphTextComponent19(item, isDescList, markdownConfiguration)
+            } else {
+                paragraphTextComponent18(item, isDescList, markdownConfiguration)
+            }
+        } else if (item.node is HeadLink) {
+            // TOC列表
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                paragraphTocComponent19(item, isDescList, markdownConfiguration, tocListOnClick)
+            } else {
+                paragraphTocComponent18(item, isDescList, markdownConfiguration, tocListOnClick)
+            }
+        } else if (item.node is Footnote) {
+            // 脚注
+            if (DeviceInfo.sdkApiVersion >= 19) {
+               paragraphFootnoteComponent19(item, isDescList, markdownConfiguration, fontCallback)
+            } else {
+                paragraphFootnoteComponent18(item, isDescList, markdownConfiguration, fontCallback)
+            }
+        } else if (item.node is Code) {
+            // 内联代码
+            inLineCodeSpanComponent(item, markdownConfiguration, item.strongEmphasis, false, isDescList, 1)
+        } else if (item.node is CommonmarkLink) {
+            // 链接
+            linkSpanComponent(isOneLink, isListTo, 0, item, markdownConfiguration, componentWidth, imageCallback, false, isDescList, 1, markdownConfiguration.markdownTheme.isListLinkStyle)
+        } else if (item.node is HardLineBreak) {
+            // 硬换行
+            Span("\n")
+        } else if (item.node is SoftLineBreak) {
+            // 软换行
+            Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
+        } else if (item.node is ImageHtmlNode) {
+            // HTML图片
+            htmlImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
+        } else if (item.node is StyleImage) {
+            //  图片Style节点
+            styleImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
+        } else if (item.node is CommonmarkImage) {
+            // 图片节点
+            coreImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
+        } else if (item.node is LatexMathNode) {
+            // 数学公式节点
+            latexSpanComponent(item, markdownConfiguration, componentWidth)
+        } else {
+            // TODO 其他节点
+            Span("")
+        }
+    }
+
     /**
      * 段落文字内容
      */
@@ -125,43 +178,7 @@ class MarkdownParagraphComponent {
             ForEach(
                 nodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                        // 文本
-                        paragraphTextComponent18(item, isDescList, markdownConfiguration)
-                    } else if (item.node is HeadLink) {
-                        // TOC列表
-                        paragraphTocComponent18(item, isDescList, markdownConfiguration, tocListOnClick)
-                    } else if (item.node is Footnote) {
-                        // 脚注
-                        paragraphFootnoteComponent18(item, isDescList, markdownConfiguration, fontCallback)
-                    } else if (item.node is Code) {
-                        // 内联代码
-                        inLineCodeSpanComponent(item, markdownConfiguration, item.strongEmphasis, false, isDescList, 1)
-                    } else if (item.node is CommonmarkLink) {
-                        // 链接
-                        linkSpanComponent(isOneLink, isListTo, 0, item, markdownConfiguration, componentWidth, imageCallback, false, isDescList, 1, markdownConfiguration.markdownTheme.isListLinkStyle)
-                    } else if (item.node is HardLineBreak) {
-                        // 硬换行
-                        Span("\n")
-                    } else if (item.node is SoftLineBreak) {
-                        // 软换行
-                        Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
-                    } else if (item.node is ImageHtmlNode) {
-                        // HTML图片
-                        htmlImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-                    } else if (item.node is StyleImage) {
-                        //  图片Style节点
-                        styleImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-                    } else if (item.node is CommonmarkImage) {
-                        // 图片节点
-                        coreImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-                    } else if (item.node is LatexMathNode) {
-                        // 数学公式节点
-                        latexSpanComponent(item, markdownConfiguration, componentWidth)
-                    } else {
-                        // TODO 其他节点
-                        Span("")
-                    }
+                    item: NodeView, idx: Int64 => paragraphListComponent(item)
                 },
                 keyGeneratorFunc: {
                     item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
@@ -204,43 +221,7 @@ class MarkdownParagraphComponent {
             ForEach(
                 nodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                        // 文本
-                        paragraphTextComponent19(item, isDescList, markdownConfiguration)
-                    } else if (item.node is HeadLink) {
-                        // TOC列表
-                        paragraphTocComponent19(item, isDescList, markdownConfiguration, tocListOnClick)
-                    } else if (item.node is Footnote) {
-                        // 脚注
-                        paragraphFootnoteComponent19(item, isDescList, markdownConfiguration, fontCallback)
-                    } else if (item.node is Code) {
-                        // 内联代码
-                        inLineCodeSpanComponent(item, markdownConfiguration, item.strongEmphasis, false, isDescList, 1)
-                    } else if (item.node is CommonmarkLink) {
-                        // 链接
-                        linkSpanComponent(isOneLink, isListTo, 0, item, markdownConfiguration, componentWidth, imageCallback, false, isDescList, 1, markdownConfiguration.markdownTheme.isListLinkStyle)
-                    } else if (item.node is HardLineBreak) {
-                        // 硬换行
-                        Span("\n")
-                    } else if (item.node is SoftLineBreak) {
-                        // 软换行
-                        Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
-                    } else if (item.node is ImageHtmlNode) {
-                        // HTML图片
-                        htmlImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-                    } else if (item.node is StyleImage) {
-                        //  图片Style节点
-                        styleImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-                    } else if (item.node is CommonmarkImage) {
-                        // 图片节点
-                        coreImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-                    } else if (item.node is LatexMathNode) {
-                        // 数学公式节点
-                        latexSpanComponent(item, markdownConfiguration, componentWidth)
-                    } else {
-                        // TODO 其他节点
-                        Span("")
-                    }
+                    item: NodeView, idx: Int64 => paragraphListComponent(item)
                 },
                 keyGeneratorFunc: {
                     item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
