@@ -23,6 +23,25 @@ func linkOnClick(nodeView: NodeView, linkCallback: ?(String) -> Unit): Unit {
 /**
  * 图片的点击事件
  *
+ * @param isLink 是否是链接
+ * @param imageCallback 图片点击事件
+ * @param linkCallback 链接点击事件
+ * @param linkUrl 链接内容
+ * @param destination 图片url
+ */
+func imageSpanOnClick(isLink: Bool, imageCallback: (String) -> Unit, linkCallback: ?(String) -> Unit, linkUrl: ?String, destination: String): Unit {
+    if (isLink) {
+        if (linkCallback.isSome() && linkUrl.isSome()) {
+            linkCallback()(linkUrl())
+        }
+    } else {
+        imageCallback(destination)
+    }
+}
+
+/**
+ * 图片的点击事件
+ *
  * @param commonmarkImageStr 图片链接
  * @param imageCallback 图片点击事件的回调事件
  */

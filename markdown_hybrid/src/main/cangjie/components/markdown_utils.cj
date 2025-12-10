@@ -27,6 +27,11 @@ let COLOR_FF0000FF: Color = Color(0xFF0000FF)
 let COLOR_FF191919: Color = Color(0xFF191919)
 let COLOR_80000000: Color = Color(0x80000000)
 let COLOR_01000000: Color = Color(0x01000000)
+let COLOR_FF4B4F52: Color = Color(0xFF4B4F52)
+let COLOR_FF2D2D2D: Color = Color(0xFF2D2D2D)
+let COLOR_1AFFFFFF: Color = Color(0x1AFFFFFF)
+let COLOR_33FFFFFF: Color = Color(0x33FFFFFF)
+let COLOR_80FFFFFF: Color = Color(0x80FFFFFF)
 let null: NodeView = unsafe { zeroValue() }
 let SECONDS_PER_HOUR: Int64 = 3600
 let SECONDS_PER_MINUTE: Int64 = 60
@@ -1475,11 +1480,135 @@ func marginNodeTopAndBottom(nodeType: Int64, markdownConfiguration: MarkdownConf
  * @param imageType 0：开始加载。1：加载成功完成。2：加载失败
  * @return Visibility Visibility
  */
-func visibilityByImageType(imageType: Int64): Visibility {
+func visibilityImageSpanType(imageType: Int64): Visibility {
     if (imageType == 1) {
         return Visibility.Visible
     } else {
         return Visibility.None
     }
 }
+
+/**
+ * 计算图片宽度
+ *
+ * @param imageFixedRatioWidth 基于外层控件宽度大小对图片进行百分比缩放比例
+ * @param componentImageWidth 图片最大宽度
+ * @param width 图片宽度
+ * @param imageMaximumWidth 基于图片自身宽度大小对图片进行百分比缩放比例
+ * @return Length 图片宽度
+ */
+func imageSpanWidth(imageFixedRatioWidth: Option<Float64>, componentImageWidth: Float64, width: Float64, imageMaximumWidth: Float64): Length {
+    return if (imageFixedRatioWidth.isSome()) {
+        (componentImageWidth * imageFixedRatioWidth()).px
+    } else {
+        (width * imageMaximumWidth).px
+    }
+}
+
+/**
+ * 计算图片高度
+ *
+ * @param imageFixedRatioWidth 基于外层控件宽度大小对图片进行百分比缩放比例
+ * @param componentImageWidth 图片最大宽度
+ * @param width 图片宽度
+ * @param height 图片高度
+ * @param imageMaximumWidth 基于图片自身宽度大小对图片进行百分比缩放比例
+ * @return Length 图片高度
+ */
+func imageSpanHeight(imageFixedRatioWidth: Option<Float64>, componentImageWidth: Float64, width: Float64, height: Float64, imageMaximumWidth: Float64): Length {
+    return if (imageFixedRatioWidth.isSome()) {
+        (height * (componentImageWidth / width) * imageFixedRatioWidth()).px
+    } else {
+        (height * imageMaximumWidth).px
+    }
+}
+
+/**
+ * 计算图片圆角
+ *
+ * @param radius 图片圆角
+ * @param imageBorderRadius 图片圆角
+ * @return Float64 图片圆角
+ */
+func imageSpanBorderRadius(radius: Option<Length>, imageBorderRadius: Float64): Float64 {
+    return if (radius.isSome()) {
+        length2Float(radius())
+    } else {
+        imageBorderRadius
+    }
+}
+
+/**
+ * HTML图片宽高计算
+ *
+ * @param imageLoadResultHeight
+ * @param imageLoadResultWidth
+ * @param componentImageWidth
+ * @param imageWidth
+ * @param imageHeight
+ * @return (Float64, Float64)
+ */
+func imageSpanHtmlComplete(imageLoadResultHeight: Float64, imageLoadResultWidth: Float64, componentImageWidth: Float64, imageWidth: ?Float64, imageHeight: ?Float64): (Float64, Float64) {
+    let aspectRatio: Float64 = imageLoadResultHeight / imageLoadResultWidth
+    let widthNew = if (componentImageWidth > imageLoadResultWidth) {
+        imageLoadResultWidth
+    } else {
+        componentImageWidth
+    }
+    var width: Float64 = 0.0
+    var height: Float64 = 0.0
+    let heightNew = widthNew * aspectRatio
+    if (imageWidth.isSome() && imageHeight.isSome()) {
+        let aspectRatioNew: Float64 = imageHeight() / imageWidth()
+        width = if (componentImageWidth > imageWidth()) {
+            imageWidth()
+        } else {
+            componentImageWidth
+        }
+        height = width * aspectRatioNew
+    } else if (imageWidth.isSome() && !imageHeight.isSome()) {
+        width = if (componentImageWidth > imageWidth()) {
+            imageWidth()
+        } else {
+            componentImageWidth
+        }
+        height = width * aspectRatio
+    } else if (!imageWidth.isSome() && imageHeight.isSome()) {
+        width = if (componentImageWidth > imageHeight() / aspectRatio) {
+            imageHeight() / aspectRatio
+        } else {
+            componentImageWidth
+        }
+        height = width * aspectRatio
+    } else {
+        width = widthNew
+        height = heightNew
+    }
+    return (width, height)
+}
+
+/**
+ * HTML图片宽高计算
+ *
+ * @param imageLoadResultHeight
+ * @param imageLoadResultWidth
+ * @param componentImageWidth
+ * @param imageWidth
+ * @param imageHeight
+ * @return (Float64, Float64)
+ */
+func imageSpanComplete(imageLoadResultHeight: Float64, imageLoadResultWidth: Float64, componentImageWidth: Float64): (Float64, Float64) {
+    var width: Float64 = 0.0
+    var height: Float64 = 0.0
+    var aspectRatio: Float64 = imageLoadResultHeight / imageLoadResultWidth
+    width = if (componentImageWidth > imageLoadResultWidth) {
+        imageLoadResultWidth
+    } else {
+        componentImageWidth
+    }
+    height = width * aspectRatio
+    return (width, height)
+}
+
+
 

@@ -130,9 +130,6 @@ public class MarkdownImgUrl15Component {
         componentImageWidth = vp2px(componentWidth.vp)().value
     }
 
-    protected override func aboutToDisappear(): Unit {
-    }
-
     func build() {
         if (true) {
             if (imageType != 2) {
@@ -143,19 +140,11 @@ public class MarkdownImgUrl15Component {
                     // 自定义图片圆角
                     .interopBorderRadius(imageBorderRadius)
                     // 设置组件自身的宽度
-                    .width(if (imageFixedRatioWidth.isSome()) {
-                        (componentImageWidth * imageFixedRatioWidth()).px
-                    } else {
-                        (width * imageMaximumWidth).px
-                    })
+                    .width(imageSpanWidth(imageFixedRatioWidth, componentImageWidth, width, imageMaximumWidth))
                     // 设置组件自身的高度
-                    .height(if (imageFixedRatioWidth.isSome()) {
-                        (height * (componentImageWidth / width) * imageFixedRatioWidth()).px
-                    } else {
-                        (height * imageMaximumWidth).px
-                    })
+                    .height(imageSpanHeight(imageFixedRatioWidth, componentImageWidth, width, height, imageMaximumWidth))
                     // 设置组件的可见性
-                    .visibility(visibilityByImageType(imageType))
+                    .visibility(visibilityImageSpanType(imageType))
                     // 设置图片的缩放类型
                     .objectFit(markdownConfiguration.markdownTheme.imageFitType)
                     // 设置图片基于文本的对齐方式
@@ -163,25 +152,13 @@ public class MarkdownImgUrl15Component {
                     // 设置约束尺寸，组件布局时，进行尺寸范围限制
                     .constraintSize(maxWidth: 100.percent)
                     // 点击动作触发该方法调用
-                    .onClick {
-                        evt => if (isLink) {
-                            if (linkCallback.isSome() && linkUrl.isSome()) {
-                                linkCallback()(linkUrl())
-                            }
-                        } else {
-                            imageOnClick(destination, imageCallback)
-                        }
-                    }
+                    .onClick {evt => imageSpanOnClick(isLink, imageCallback, linkCallback, linkUrl, destination)}
                     // 图片成功加载时触发该回调，返回成功加载的图片尺寸
                     .onComplete {
                         imageLoadResult =>
-                            var aspectRatio: Float64 = imageLoadResult.height / imageLoadResult.width
-                            width = if (componentImageWidth > imageLoadResult.width) {
-                                imageLoadResult.width
-                            } else {
-                                componentImageWidth
-                            }
-                            height = width * aspectRatio
+                            let res = imageSpanComplete(imageLoadResult.height, imageLoadResult.width, componentImageWidth)
+                            width = res[0]
+                            height = res[1]
                             imageType = 1
                     }
                     // 图片加载出现异常时触发该回调
