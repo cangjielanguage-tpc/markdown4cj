@@ -53,11 +53,6 @@ public class MarkdownLatexImageSpanComponent {
     var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None
 
     /**
-     * 图片背景颜色
-     */
-    var backGroupColor: Color
-
-    /**
      * 图片最大宽度
      */
     var maxWidth: Length = 100.percent
@@ -147,6 +142,6 @@ public class MarkdownLatexImageSpanComponent {
             }
         }
         // 解析数学公式
-        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration, vp2px(componentWidth.vp)().value, callback, backGroupColor)
+        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration, vp2px(componentWidth.vp)().value, callback)
     }
 }

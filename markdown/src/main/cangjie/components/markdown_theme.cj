@@ -2461,7 +2461,6 @@ public class MarkdownThemeBuilder {
         setLinkCircleImageBackGroupColor(Color.TRANSPARENT) // 圆形图片链接主题背景颜色
         setLinkCircleImageButtonBackGroupColor(COLOR_FF000000) // 圆形图片链接控件背景颜色
         setLinkCircleImageTextColor(COLOR_FFFFFFFF) // 圆形图片链接文字颜色
-        setLinkCircleImageBackGroupColor(COLOR_FFFFFFFF) // 圆形链接主题背景颜色
         // 3.3、圆角矩形图片格式链接
         setLinkRectImageBackGroupColor(Color.TRANSPARENT) // 圆角矩形图片链接主题背景颜色
         setLinkRectImageButtonBackGroupColor(COLOR_FF000000) // 圆角矩形图片链接控件背景颜色

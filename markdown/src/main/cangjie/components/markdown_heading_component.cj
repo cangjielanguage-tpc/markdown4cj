@@ -57,11 +57,6 @@ class MarkdownHeadingComponent {
     var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     /**
-     * 块引用背景颜色
-     */
-    var blockQuoteBackGroupColor: Option<Color> = Option<Color>.None
-
-    /**
      * 是否列表中的标题
      */
     var isListTo: Bool = false
@@ -172,15 +167,13 @@ class MarkdownHeadingComponent {
                                         MarkdownLinkRectImageComponent(
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
-                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectImageBackGroupColor)
+                                            strUrl: (item.node as CommonmarkLink)().getDestination()
                                         )
                                     } else {
                                         MarkdownLinkCircleImageComponent(
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
-                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkCircleImageBackGroupColor)
+                                            strUrl: (item.node as CommonmarkLink)().getDestination()
                                         )
                                     }
                                 } else {
@@ -192,8 +185,7 @@ class MarkdownHeadingComponent {
                                         markdownConfiguration: markdownConfiguration,
                                         strText: getLinkString(item)(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectToolImageBackGroupColor)
+                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination())
                                     )
                                 } else {
                                     Span("")
@@ -443,7 +435,6 @@ class MarkdownHeadingComponent {
                             markdownConfiguration: markdownConfiguration,
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
-                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.latexMathBackGroupColor),
                             linkCallback: markdownConfiguration.linkCallback,
                             isLink: item.link.isSome(),
                             linkUrl: if (item.link.isSome()) {
@@ -541,15 +532,13 @@ class MarkdownHeadingComponent {
                                         MarkdownLinkRectImageComponent(
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
-                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectImageBackGroupColor)
+                                            strUrl: (item.node as CommonmarkLink)().getDestination()
                                         )
                                     } else {
                                         MarkdownLinkCircleImageComponent(
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
-                                            strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkCircleImageBackGroupColor)
+                                            strUrl: (item.node as CommonmarkLink)().getDestination()
                                         )
                                     }
                                 } else {
@@ -561,8 +550,7 @@ class MarkdownHeadingComponent {
                                         markdownConfiguration: markdownConfiguration,
                                         strText: getLinkString(item)(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                        backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor, markdownConfiguration.markdownTheme.linkRectToolImageBackGroupColor)
+                                        strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination())
                                     )
                                 } else {
                                     Span("")
@@ -728,7 +716,6 @@ class MarkdownHeadingComponent {
                             markdownConfiguration: markdownConfiguration,
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
-                            backGroupColor: markdownbackGroupColor(blockQuoteBackGroupColor,markdownConfiguration.markdownTheme.latexMathBackGroupColor),
                             linkCallback: markdownConfiguration.linkCallback,
                             isLink: item.link.isSome(),
                             linkUrl: if (item.link.isSome()) {

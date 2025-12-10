@@ -57,11 +57,6 @@ public class MarkdownLinkRectToolImageComponent {
     var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None
 
     /**
-     * 图片背景颜色
-     */
-    var backGroupColor: Color
-
-    /**
      * 图片最大宽度
      */
     var maxWidth: Length = 100.percent
@@ -117,7 +112,7 @@ public class MarkdownLinkRectToolImageComponent {
             }
         }
         // 解析链接
-        MarkdownParseLinkUtil.linkStrToRectToolPixelMap(strText, strType, markdownConfiguration, callback, backGroupColor)
+        MarkdownParseLinkUtil.linkStrToRectToolPixelMap(strText, strType, markdownConfiguration, callback)
     }
 }
 

@@ -9,7 +9,7 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 class MarkdownParseLinkUtil {
-    static func linkStrToCirclePixelMap(strText: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit, backGroupColor: Color): Future<Unit> {
+    static func linkStrToCirclePixelMap(strText: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
             var imageHeight: ?Float64 = Option<Float64>.None
@@ -24,7 +24,7 @@ class MarkdownParseLinkUtil {
                     markdownConfiguration.markdownTheme.linkCircleImageTextSize,
                     markdownConfiguration.markdownTheme.linkCircleImageTextColor.toUInt32(),
                     markdownConfiguration.markdownTheme.linkCircleImageButtonBackGroupColor.toUInt32(),
-                    backGroupColor.toUInt32(),
+                    markdownConfiguration.markdownTheme.linkCircleImageBackGroupColor.toUInt32(),
                     markdownConfiguration.markdownTheme.linkCircleImageRadius,
                     ColorFormatEnum.COLOR_FORMAT_BGRA_8888
                 )
@@ -52,7 +52,7 @@ class MarkdownParseLinkUtil {
         return fut
     }
 
-    static func linkStrToRectPixelMap(strText: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit, backGroupColor: Color): Future<Unit> {
+    static func linkStrToRectPixelMap(strText: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
             var imageHeight: ?Float64 = Option<Float64>.None
@@ -67,7 +67,7 @@ class MarkdownParseLinkUtil {
                     markdownConfiguration.markdownTheme.linkRectImageTextSize,
                     markdownConfiguration.markdownTheme.linkRectImageTextColor.toUInt32(),
                     markdownConfiguration.markdownTheme.linkRectImageButtonBackGroupColor.toUInt32(),
-                    backGroupColor.toUInt32(),
+                    markdownConfiguration.markdownTheme.linkRectImageBackGroupColor.toUInt32(),
                     markdownConfiguration.markdownTheme.linkRectImageHeight,
                     ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
                     markdownConfiguration.markdownTheme.linkRectImagePadding,
@@ -98,7 +98,7 @@ class MarkdownParseLinkUtil {
         return fut
     }
 
-    static func linkStrToRectToolPixelMap(strText: String, strType: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit, backGroupColor: Color): Future<Unit> {
+    static func linkStrToRectToolPixelMap(strText: String, strType: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
             var imageHeight: ?Float64 = Option<Float64>.None
@@ -116,7 +116,7 @@ class MarkdownParseLinkUtil {
                     markdownConfiguration.markdownTheme.linkRectToolImageTextSize,
                     c1.toUInt32(),
                     markdownConfiguration.markdownTheme.linkRectToolImageButtonBackGroupColor.toUInt32(),
-                    backGroupColor.toUInt32(),
+                    markdownConfiguration.markdownTheme.linkRectToolImageBackGroupColor.toUInt32(),
                     c1.toUInt32(),
                     markdownConfiguration.markdownTheme.linkRectToolImageBorderWidth,
                     c2.toUInt32(),

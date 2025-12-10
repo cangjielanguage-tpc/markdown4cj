@@ -221,7 +221,6 @@ class MarkdownTableBlockCellComponent {
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                         )
                                     } else {
@@ -229,7 +228,6 @@ class MarkdownTableBlockCellComponent {
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                         )
                                     }
@@ -243,7 +241,6 @@ class MarkdownTableBlockCellComponent {
                                         strText: getLinkString(item)(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
                                         strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                        backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                         maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                     )
                                 } else {
@@ -488,7 +485,6 @@ class MarkdownTableBlockCellComponent {
                             markdownConfiguration: markdownConfiguration,
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
-                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp,
                             linkCallback: markdownConfiguration.linkCallback,
                             isLink: item.link.isSome(),
@@ -592,7 +588,6 @@ class MarkdownTableBlockCellComponent {
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                         )
                                     } else {
@@ -600,7 +595,6 @@ class MarkdownTableBlockCellComponent {
                                             markdownConfiguration: markdownConfiguration,
                                             strText: getLinkString(item)().trimAscii(),
                                             strUrl: (item.node as CommonmarkLink)().getDestination(),
-                                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                         )
                                     }
@@ -614,7 +608,6 @@ class MarkdownTableBlockCellComponent {
                                         strText: getLinkString(item)(),
                                         strUrl: (item.node as CommonmarkLink)().getDestination(),
                                         strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination()),
-                                        backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                                         maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp
                                     )
                                 } else {
@@ -775,7 +768,6 @@ class MarkdownTableBlockCellComponent {
                             markdownConfiguration: markdownConfiguration,
                             componentWidth: componentWidth,
                             strLatexMath: (item.node as LatexMathNode)().latex,
-                            backGroupColor: renderTableCellColor(isHeader, markdownConfiguration.markdownTheme, idRow),
                             maxWidth: (markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp,
                             linkCallback: markdownConfiguration.linkCallback,
                             isLink: item.link.isSome(),
