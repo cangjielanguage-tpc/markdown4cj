@@ -1169,7 +1169,6 @@ public class MarkdownTheme {
         markdownThemeBuilder.setLinkCircleImageBackGroupColor(Color.TRANSPARENT) // 圆形图片链接主题背景颜色
         markdownThemeBuilder.setLinkCircleImageButtonBackGroupColor(COLOR_FF000000) // 圆形图片链接控件背景颜色
         markdownThemeBuilder.setLinkCircleImageTextColor(COLOR_FFFFFFFF) // 圆形图片链接文字颜色
-        markdownThemeBuilder.setLinkCircleImageBackGroupColor(COLOR_FFFFFFFF) // 圆形链接主题背景颜色
         // 3.3、圆角矩形图片格式链接
         markdownThemeBuilder.setLinkRectImageBackGroupColor(Color.TRANSPARENT) // 圆角矩形图片链接主题背景颜色
         markdownThemeBuilder.setLinkRectImageButtonBackGroupColor(COLOR_FF000000) // 圆角矩形图片链接控件背景颜色
@@ -1239,6 +1238,9 @@ public class MarkdownTheme {
         // 16、代码高亮
         markdownThemeBuilder.setPrismTheme(PrismThemeDarkula.create()) // markdown代码高亮样式
 
+        // 17、删除线
+        markdownThemeBuilder.setStrikethroughColor(COLOR_FF191919) // 删除线颜色
+
         return markdownThemeBuilder
     }
 
@@ -1260,30 +1262,29 @@ public class MarkdownTheme {
         markdownThemeBuilder.setLinkBackGroupColor(Color.TRANSPARENT) // 链接背景颜色
         // 3.2、圆形图片格式链接
         markdownThemeBuilder.setLinkCircleImageBackGroupColor(Color.TRANSPARENT) // 圆形图片链接主题背景颜色
-        markdownThemeBuilder.setLinkCircleImageButtonBackGroupColor(COLOR_FF000000) // 圆形图片链接控件背景颜色
-        markdownThemeBuilder.setLinkCircleImageTextColor(COLOR_FFFFFFFF) // 圆形图片链接文字颜色
-        markdownThemeBuilder.setLinkCircleImageBackGroupColor(COLOR_FFFFFFFF) // 圆形链接主题背景颜色
+        markdownThemeBuilder.setLinkCircleImageButtonBackGroupColor(COLOR_FFFFFFFF) // 圆形图片链接控件背景颜色
+        markdownThemeBuilder.setLinkCircleImageTextColor(COLOR_FF000000) // 圆形图片链接文字颜色
         // 3.3、圆角矩形图片格式链接
         markdownThemeBuilder.setLinkRectImageBackGroupColor(Color.TRANSPARENT) // 圆角矩形图片链接主题背景颜色
-        markdownThemeBuilder.setLinkRectImageButtonBackGroupColor(COLOR_FF000000) // 圆角矩形图片链接控件背景颜色
-        markdownThemeBuilder.setLinkRectImageTextColor(COLOR_FFFFFFFF) // 圆角矩形图片链接文字颜色
+        markdownThemeBuilder.setLinkRectImageButtonBackGroupColor(COLOR_FFFFFFFF) // 圆角矩形图片链接控件背景颜色
+        markdownThemeBuilder.setLinkRectImageTextColor(COLOR_FF000000) // 圆角矩形图片链接文字颜色
         // 3.4、空心圆角矩形图片格式链接
         markdownThemeBuilder.setLinkRectToolImageBackGroupColor(Color.TRANSPARENT) // 空心圆角矩形图片链接主题背景颜色
-        markdownThemeBuilder.setLinkRectToolImageButtonBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接控件背景颜色
+        markdownThemeBuilder.setLinkRectToolImageButtonBackGroupColor(COLOR_FF000000) // 空心圆角矩形图片链接控件背景颜色
 
         // 4、列表
         // 4.1、块引用
-        markdownThemeBuilder.setBlockQuoteColor(COLOR_FF191919) // 块引用左边线条颜色
-        markdownThemeBuilder.setBlockQuoteBackGroupColor(COLOR_FFEAEAEA) // 块引用背景颜色
+        markdownThemeBuilder.setBlockQuoteColor(COLOR_FFFFFFFF) // 块引用左边线条颜色
+        markdownThemeBuilder.setBlockQuoteBackGroupColor(COLOR_FF191919) // 块引用背景颜色
         // 4.2、有序列表
-        markdownThemeBuilder.setOrderedListItemColor(COLOR_FF191919) // 有序列表列表项的颜色
+        markdownThemeBuilder.setOrderedListItemColor(COLOR_FFFFFFFF) // 有序列表列表项的颜色
         // 4.1、无序列表
-        markdownThemeBuilder.setBulletListItemColor(COLOR_FF191919) // 无序列表列表项的颜色
+        markdownThemeBuilder.setBulletListItemColor(COLOR_FFFFFFFF) // 无序列表列表项的颜色
 
         // 5、代码
         // 5.1、内联代码
-        markdownThemeBuilder.setCodeTextColor(COLOR_FF000000) // 文本、图片格式内联代码文本颜色
-        markdownThemeBuilder.setCodeBackgroundColor(COLOR_FFEAEAEA) // 文本、图片格式内联代码背景颜色
+        markdownThemeBuilder.setCodeTextColor(COLOR_FFFFFFFF) // 文本、图片格式内联代码文本颜色
+        markdownThemeBuilder.setCodeBackgroundColor(COLOR_FF2D2D2D) // 文本、图片格式内联代码背景颜色
         // 5.2、代码块
         // 5.3、组合代码
         markdownThemeBuilder.setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
@@ -1293,44 +1294,47 @@ public class MarkdownTheme {
         // 5.4、单独代码块
 
         // 6、标题
-        markdownThemeBuilder.setHeadingBreakColor(COLOR_FF191919) // H1、H2标题下分割线颜色
-        markdownThemeBuilder.setHeadingTextColor(COLOR_FF191919) // 标题文本颜色
+        markdownThemeBuilder.setHeadingBreakColor(COLOR_FFFFFFFF) // H1、H2标题下分割线颜色
+        markdownThemeBuilder.setHeadingTextColor(COLOR_FFFFFFFF) // 标题文本颜色
 
         // 7、段落
-        markdownThemeBuilder.setParagraphTextColor(COLOR_FF191919) // 段落文本颜色
+        markdownThemeBuilder.setParagraphTextColor(COLOR_FFFFFFFF) // 段落文本颜色
 
         // 8、分割线
-        markdownThemeBuilder.setThematicBreakColor(COLOR_FF191919) // 分割线颜色
+        markdownThemeBuilder.setThematicBreakColor(COLOR_FFFFFFFF) // 分割线颜色
 
         // 9、软换行
 
         // 10、数学公式
         markdownThemeBuilder.setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
-        markdownThemeBuilder.setLatexMathTextColor(COLOR_FF000000) // 数学公式文本颜色
+        markdownThemeBuilder.setLatexMathTextColor(COLOR_FFFFFFFF) // 数学公式文本颜色
 
         // 11、音频
-        markdownThemeBuilder.setAudioShadowColor(COLOR_1A000000) // 音频阴影颜色值
-        markdownThemeBuilder.setAudioBorderColor(COLOR_33000000) // 音频边框颜色
-        markdownThemeBuilder.setAudioButtonBackgroundColor(Color.BLACK) // 音频按钮背景颜色
-        markdownThemeBuilder.setAudioButtonTextColor(Color.WHITE) // 音频按钮文字颜色
-        markdownThemeBuilder.setAudioTitleTextColor(Color.BLACK) // 音频标题文字颜色
-        markdownThemeBuilder.setAudioTypeTextColor(COLOR_80000000) // 音频类型文字颜色
+        markdownThemeBuilder.setAudioShadowColor(COLOR_1AFFFFFF) // 音频阴影颜色值
+        markdownThemeBuilder.setAudioBorderColor(COLOR_33FFFFFF) // 音频边框颜色
+        markdownThemeBuilder.setAudioButtonBackgroundColor(Color.WHITE) // 音频按钮背景颜色
+        markdownThemeBuilder.setAudioButtonTextColor(Color.BLACK) // 音频按钮文字颜色
+        markdownThemeBuilder.setAudioTitleTextColor(Color.WHITE) // 音频标题文字颜色
+        markdownThemeBuilder.setAudioTypeTextColor(COLOR_80FFFFFF) // 音频类型文字颜色
 
         // 12、视频
-        markdownThemeBuilder.setVideoTimeTextColor(Color.WHITE) // 视频时间文本颜色
+        markdownThemeBuilder.setVideoTimeTextColor(Color.BLACK) // 视频时间文本颜色
 
         // 13、图片banner
 
         // 14、图片
 
         // 15、表格
-        markdownThemeBuilder.setTableBorderColor(COLOR_FF000000) // 表格边框颜色
-        markdownThemeBuilder.setTableOddRowBackgroundColor(COLOR_FFFFFFFF) // 表格奇数行背景色
-        markdownThemeBuilder.setTableEvenRowBackgroundColor(COLOR_FFE0E0E0) // 表格偶数行背景色
-        markdownThemeBuilder.setTableHeaderRowBackgroundColor(COLOR_FFFFFFFF) // 表格头背景色
+        markdownThemeBuilder.setTableBorderColor(COLOR_FFFFFFFF) // 表格边框颜色
+        markdownThemeBuilder.setTableOddRowBackgroundColor(COLOR_FF000000) // 表格奇数行背景色
+        markdownThemeBuilder.setTableEvenRowBackgroundColor(COLOR_FF191919) // 表格偶数行背景色
+        markdownThemeBuilder.setTableHeaderRowBackgroundColor(COLOR_FF000000) // 表格头背景色
 
         // 16、代码高亮
         markdownThemeBuilder.setPrismTheme(PrismThemeDefault.create()) // markdown代码高亮样式
+
+        // 17、删除线
+        markdownThemeBuilder.setStrikethroughColor(COLOR_FFFFFFFF) // 删除线颜色
 
         return markdownThemeBuilder
     }
@@ -2527,6 +2531,9 @@ public class MarkdownThemeBuilder {
         // 16、代码高亮
         setPrismTheme(PrismThemeDarkula.create()) // markdown代码高亮样式
 
+        // 17、删除线
+        setStrikethroughColor(COLOR_FF191919) // 删除线颜色
+
         return this
     }
 
@@ -2546,30 +2553,29 @@ public class MarkdownThemeBuilder {
         setLinkBackGroupColor(Color.TRANSPARENT) // 链接背景颜色
         // 3.2、圆形图片格式链接
         setLinkCircleImageBackGroupColor(Color.TRANSPARENT) // 圆形图片链接主题背景颜色
-        setLinkCircleImageButtonBackGroupColor(COLOR_FF000000) // 圆形图片链接控件背景颜色
-        setLinkCircleImageTextColor(COLOR_FFFFFFFF) // 圆形图片链接文字颜色
-        setLinkCircleImageBackGroupColor(COLOR_FFFFFFFF) // 圆形链接主题背景颜色
+        setLinkCircleImageButtonBackGroupColor(COLOR_FFFFFFFF) // 圆形图片链接控件背景颜色
+        setLinkCircleImageTextColor(COLOR_FF000000) // 圆形图片链接文字颜色
         // 3.3、圆角矩形图片格式链接
         setLinkRectImageBackGroupColor(Color.TRANSPARENT) // 圆角矩形图片链接主题背景颜色
-        setLinkRectImageButtonBackGroupColor(COLOR_FF000000) // 圆角矩形图片链接控件背景颜色
-        setLinkRectImageTextColor(COLOR_FFFFFFFF) // 圆角矩形图片链接文字颜色
+        setLinkRectImageButtonBackGroupColor(COLOR_FFFFFFFF) // 圆角矩形图片链接控件背景颜色
+        setLinkRectImageTextColor(COLOR_FF000000) // 圆角矩形图片链接文字颜色
         // 3.4、空心圆角矩形图片格式链接
         setLinkRectToolImageBackGroupColor(Color.TRANSPARENT) // 空心圆角矩形图片链接主题背景颜色
-        setLinkRectToolImageButtonBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接控件背景颜色
+        setLinkRectToolImageButtonBackGroupColor(COLOR_FF000000) // 空心圆角矩形图片链接控件背景颜色
 
         // 4、列表
         // 4.1、块引用
-        setBlockQuoteColor(COLOR_FF191919) // 块引用左边线条颜色
-        setBlockQuoteBackGroupColor(COLOR_FFEAEAEA) // 块引用背景颜色
+        setBlockQuoteColor(COLOR_FFFFFFFF) // 块引用左边线条颜色
+        setBlockQuoteBackGroupColor(COLOR_FF191919) // 块引用背景颜色
         // 4.2、有序列表
-        setOrderedListItemColor(COLOR_FF191919) // 有序列表列表项的颜色
+        setOrderedListItemColor(COLOR_FFFFFFFF) // 有序列表列表项的颜色
         // 4.1、无序列表
-        setBulletListItemColor(COLOR_FF191919) // 无序列表列表项的颜色
+        setBulletListItemColor(COLOR_FFFFFFFF) // 无序列表列表项的颜色
 
         // 5、代码
         // 5.1、内联代码
-        setCodeTextColor(COLOR_FF000000) // 文本、图片格式内联代码文本颜色
-        setCodeBackgroundColor(COLOR_FFEAEAEA) // 文本、图片格式内联代码背景颜色
+        setCodeTextColor(COLOR_FFFFFFFF) // 文本、图片格式内联代码文本颜色
+        setCodeBackgroundColor(COLOR_FF2D2D2D) // 文本、图片格式内联代码背景颜色
         // 5.2、代码块
         // 5.3、组合代码
         setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
@@ -2579,44 +2585,47 @@ public class MarkdownThemeBuilder {
         // 5.4、单独代码块
 
         // 6、标题
-        setHeadingBreakColor(COLOR_FF191919) // H1、H2标题下分割线颜色
-        setHeadingTextColor(COLOR_FF191919) // 标题文本颜色
+        setHeadingBreakColor(COLOR_FFFFFFFF) // H1、H2标题下分割线颜色
+        setHeadingTextColor(COLOR_FFFFFFFF) // 标题文本颜色
 
         // 7、段落
-        setParagraphTextColor(COLOR_FF191919) // 段落文本颜色
+        setParagraphTextColor(COLOR_FFFFFFFF) // 段落文本颜色
 
         // 8、分割线
-        setThematicBreakColor(COLOR_FF191919) // 分割线颜色
+        setThematicBreakColor(COLOR_FFFFFFFF) // 分割线颜色
 
         // 9、软换行
 
         // 10、数学公式
         setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
-        setLatexMathTextColor(COLOR_FF000000) // 数学公式文本颜色
+        setLatexMathTextColor(COLOR_FFFFFFFF) // 数学公式文本颜色
 
         // 11、音频
-        setAudioShadowColor(COLOR_1A000000) // 音频阴影颜色值
-        setAudioBorderColor(COLOR_33000000) // 音频边框颜色
-        setAudioButtonBackgroundColor(Color.BLACK) // 音频按钮背景颜色
-        setAudioButtonTextColor(Color.WHITE) // 音频按钮文字颜色
-        setAudioTitleTextColor(Color.BLACK) // 音频标题文字颜色
-        setAudioTypeTextColor(COLOR_80000000) // 音频类型文字颜色
+        setAudioShadowColor(COLOR_1AFFFFFF) // 音频阴影颜色值
+        setAudioBorderColor(COLOR_33FFFFFF) // 音频边框颜色
+        setAudioButtonBackgroundColor(Color.WHITE) // 音频按钮背景颜色
+        setAudioButtonTextColor(Color.BLACK) // 音频按钮文字颜色
+        setAudioTitleTextColor(Color.WHITE) // 音频标题文字颜色
+        setAudioTypeTextColor(COLOR_80FFFFFF) // 音频类型文字颜色
 
         // 12、视频
-        setVideoTimeTextColor(Color.WHITE) // 视频时间文本颜色
+        setVideoTimeTextColor(Color.BLACK) // 视频时间文本颜色
 
         // 13、图片banner
 
         // 14、图片
 
         // 15、表格
-        setTableBorderColor(COLOR_FF000000) // 表格边框颜色
-        setTableOddRowBackgroundColor(COLOR_FFFFFFFF) // 表格奇数行背景色
-        setTableEvenRowBackgroundColor(COLOR_FFE0E0E0) // 表格偶数行背景色
-        setTableHeaderRowBackgroundColor(COLOR_FFFFFFFF) // 表格头背景色
+        setTableBorderColor(COLOR_FFFFFFFF) // 表格边框颜色
+        setTableOddRowBackgroundColor(COLOR_FF000000) // 表格奇数行背景色
+        setTableEvenRowBackgroundColor(COLOR_FF191919) // 表格偶数行背景色
+        setTableHeaderRowBackgroundColor(COLOR_FF000000) // 表格头背景色
 
         // 16、代码高亮
         setPrismTheme(PrismThemeDefault.create()) // markdown代码高亮样式
+
+        // 17、删除线
+        setStrikethroughColor(COLOR_FFFFFFFF) // 删除线颜色
 
         return this
     }
