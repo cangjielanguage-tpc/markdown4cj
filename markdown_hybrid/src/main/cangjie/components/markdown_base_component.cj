@@ -807,3 +807,361 @@ func imagePlaceholderComponent(imageResource: AppResource, imageMarginTop: Float
         // 设置约束尺寸，组件布局时，进行尺寸范围限制
         .constraintSize(maxWidth: 100.percent)
 }
+
+/**
+ * html图片
+ */
+@Builder
+func htmlImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfiguration, componentWidth: Float64, imageCallback: (String) -> Unit) {
+    if (DeviceInfo.sdkApiVersion >= 15) {
+        MarkdownImgHtml15Component(
+            markdownConfiguration: markdownConfiguration,
+            destination: (item.node as ImageHtmlNode)().getDestination(),
+            componentWidth: componentWidth,
+            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+            imageCallback: imageCallback,
+            linkCallback: markdownConfiguration.linkCallback,
+            isLink: item.link.isSome(),
+            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+        )
+    } else {
+        MarkdownImgHtml14Component(
+            markdownConfiguration: markdownConfiguration,
+            destination: (item.node as ImageHtmlNode)().getDestination(),
+            componentWidth: componentWidth,
+            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+            imageCallback: imageCallback,
+            linkCallback: markdownConfiguration.linkCallback,
+            isLink: item.link.isSome(),
+            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+        )
+    }
+}
+
+/**
+ * style图片
+ */
+@Builder
+func styleImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfiguration, componentWidth: Float64, imageCallback: (String) -> Unit) {
+    if (markdownConfiguration.imageCallbackCallback.isNone()) {
+        if ((item.node as StyleImage)().getDestination().startsWith("./")) {
+            MarkdownImgStyleRawFileComponent(
+                markdownConfiguration: markdownConfiguration,
+                destination: (item.node as StyleImage)().getDestination(),
+                componentWidth: componentWidth,
+                picStyle: (item.node as StyleImage)().styles,
+                imageCallback: imageCallback,
+                linkCallback: markdownConfiguration.linkCallback,
+                isLink: item.link.isSome(),
+                linkUrl: if (item.link.isSome()) {
+                    item.link().getDestination()
+                } else {
+                    Option<String>.None
+                },
+            )
+        } else {
+            if (DeviceInfo.sdkApiVersion >= 15) {
+                MarkdownImgStyleUrl15Component(
+                    markdownConfiguration: markdownConfiguration,
+                    destination: (item.node as StyleImage)().getDestination(),
+                    componentWidth: componentWidth,
+                    picStyle: (item.node as StyleImage)().styles,
+                    imageCallback: imageCallback,
+                    linkCallback: markdownConfiguration.linkCallback,
+                    isLink: item.link.isSome(),
+                    linkUrl: if (item.link.isSome()) {
+                        item.link().getDestination()
+                    } else {
+                        Option<String>.None
+                    },
+                )
+            } else {
+                MarkdownImgStyleUrl14Component(
+                    markdownConfiguration: markdownConfiguration,
+                    destination: (item.node as StyleImage)().getDestination(),
+                    componentWidth: componentWidth,
+                    picStyle: (item.node as StyleImage)().styles,
+                    imageCallback: imageCallback,
+                    linkCallback: markdownConfiguration.linkCallback,
+                    isLink: item.link.isSome(),
+                    linkUrl: if (item.link.isSome()) {
+                        item.link().getDestination()
+                    } else {
+                        Option<String>.None
+                    },
+                )
+            }
+        }
+    } else {
+        if ((item.node as StyleImage)().getDestination().startsWith("./")) {
+            MarkdownImgStyleRawFileCallbackComponent(
+                markdownConfiguration: markdownConfiguration,
+                destination: (item.node as StyleImage)().getDestination(),
+                componentWidth: componentWidth,
+                picStyle: (item.node as StyleImage)().styles,
+                imageCallback: imageCallback,
+                linkCallback: markdownConfiguration.linkCallback,
+                isLink: item.link.isSome(),
+                linkUrl: if (item.link.isSome()) {
+                    item.link().getDestination()
+                } else {
+                    Option<String>.None
+                },
+            )
+        } else {
+            if (DeviceInfo.sdkApiVersion >= 15) {
+                MarkdownImgStyleUrlCallback15Component(
+                    markdownConfiguration: markdownConfiguration,
+                    destination: (item.node as StyleImage)().getDestination(),
+                    componentWidth: componentWidth,
+                    picStyle: (item.node as StyleImage)().styles,
+                    imageCallback: imageCallback,
+                    linkCallback: markdownConfiguration.linkCallback,
+                    isLink: item.link.isSome(),
+                    linkUrl: if (item.link.isSome()) {
+                        item.link().getDestination()
+                    } else {
+                        Option<String>.None
+                    },
+                )
+            } else {
+                MarkdownImgStyleUrlCallback14Component(
+                    markdownConfiguration: markdownConfiguration,
+                    destination: (item.node as StyleImage)().getDestination(),
+                    componentWidth: componentWidth,
+                    picStyle: (item.node as StyleImage)().styles,
+                    imageCallback: imageCallback,
+                    linkCallback: markdownConfiguration.linkCallback,
+                    isLink: item.link.isSome(),
+                    linkUrl: if (item.link.isSome()) {
+                        item.link().getDestination()
+                    } else {
+                        Option<String>.None
+                    },
+                )
+            }
+        }
+    }
+}
+
+/**
+ * 基础图片
+ */
+@Builder
+func coreImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfiguration, componentWidth: Float64, imageCallback: (String) -> Unit) {
+    if (markdownConfiguration.imageCallbackCallback.isNone()) {
+        if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
+            MarkdownImgRawFileComponent(
+                markdownConfiguration: markdownConfiguration,
+                destination: (item.node as CommonmarkImage)().getDestination(),
+                componentWidth: componentWidth,
+                imageCallback: imageCallback,
+                linkCallback: markdownConfiguration.linkCallback,
+                isLink: item.link.isSome(),
+                linkUrl: if (item.link.isSome()) {
+                    item.link().getDestination()
+                } else {
+                    Option<String>.None
+                },
+            )
+        } else {
+            if (DeviceInfo.sdkApiVersion >= 15) {
+                MarkdownImgUrl15Component(
+                    markdownConfiguration: markdownConfiguration,
+                    destination: (item.node as CommonmarkImage)().getDestination(),
+                    componentWidth: componentWidth,
+                    imageCallback: imageCallback,
+                    linkCallback: markdownConfiguration.linkCallback,
+                    isLink: item.link.isSome(),
+                    linkUrl: if (item.link.isSome()) {
+                        item.link().getDestination()
+                    } else {
+                        Option<String>.None
+                    },
+                )
+            } else {
+                MarkdownImgUrl14Component(
+                    markdownConfiguration: markdownConfiguration,
+                    destination: (item.node as CommonmarkImage)().getDestination(),
+                    componentWidth: componentWidth,
+                    imageCallback: imageCallback,
+                    linkCallback: markdownConfiguration.linkCallback,
+                    isLink: item.link.isSome(),
+                    linkUrl: if (item.link.isSome()) {
+                        item.link().getDestination()
+                    } else {
+                        Option<String>.None
+                    },
+                )
+            }
+        }
+    } else {
+        if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
+            MarkdownImgRawFileCallbackComponent(
+                markdownConfiguration: markdownConfiguration,
+                destination: (item.node as CommonmarkImage)().getDestination(),
+                componentWidth: componentWidth,
+                imageCallback: imageCallback,
+                linkCallback: markdownConfiguration.linkCallback,
+                isLink: item.link.isSome(),
+                linkUrl: if (item.link.isSome()) {
+                    item.link().getDestination()
+                } else {
+                    Option<String>.None
+                },
+            )
+        } else {
+            if (DeviceInfo.sdkApiVersion >= 15) {
+                MarkdownImgUrlCallback15Component(
+                    markdownConfiguration: markdownConfiguration,
+                    destination: (item.node as CommonmarkImage)().getDestination(),
+                    componentWidth: componentWidth,
+                    imageCallback: imageCallback,
+                    linkCallback: markdownConfiguration.linkCallback,
+                    isLink: item.link.isSome(),
+                    linkUrl: if (item.link.isSome()) {
+                        item.link().getDestination()
+                    } else {
+                        Option<String>.None
+                    },
+                )
+            } else {
+                MarkdownImgUrlCallback14Component(
+                    markdownConfiguration: markdownConfiguration,
+                    destination: (item.node as CommonmarkImage)().getDestination(),
+                    componentWidth: componentWidth,
+                    imageCallback: imageCallback,
+                    linkCallback: markdownConfiguration.linkCallback,
+                    isLink: item.link.isSome(),
+                    linkUrl: if (item.link.isSome()) {
+                        item.link().getDestination()
+                    } else {
+                        Option<String>.None
+                    },
+                )
+            }
+        }
+    }
+}
+
+/**
+ * 数学公式 - 行内
+ */
+@Builder
+func latexSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfiguration, componentWidth: Float64) {
+    MarkdownLatexImageSpanComponent(
+        markdownConfiguration: markdownConfiguration,
+        componentWidth: componentWidth,
+        strLatexMath: (item.node as LatexMathNode)().latex,
+        linkCallback: markdownConfiguration.linkCallback,
+        isLink: item.link.isSome(),
+        linkUrl: if (item.link.isSome()) {
+            item.link().getDestination()
+        } else {
+            Option<String>.None
+        }
+    )
+}
+
+/**
+ * 链接块
+ */
+@Builder
+func linkSpanComponent(isOneLink: Bool, isListTo: Bool, level: Int64, item: NodeView, markdownConfiguration: MarkdownConfiguration, componentWidth: Float64, imageCallback: (String) -> Unit, isHeader: Bool, isDescList: Bool, nodeType: Int64, isListLinkStyle: Bool) {
+    if ((isListTo && !isListLinkStyle && isOneLink) || !markdownConfiguration.markdownTheme.isLinkStyle) {
+        if (getLinkString(item).isSome()) {
+            if (nodeType == 0) {
+                if (DeviceInfo.sdkApiVersion >= 19) {
+                    headingLinkComponent19(item, getLinkString(item)(), markdownConfiguration, level)
+                } else {
+                    headingLinkComponent18(item, getLinkString(item)(), markdownConfiguration, level)
+                }
+            } else if (nodeType == 1) {
+                if (DeviceInfo.sdkApiVersion >= 19) {
+                    paragraphLinkComponent19(item, isDescList, getLinkString(item)(), markdownConfiguration)
+                } else {
+                    paragraphLinkComponent18(item, isDescList, getLinkString(item)(), markdownConfiguration)
+                }
+            } else if (nodeType == 2) {
+                if (DeviceInfo.sdkApiVersion >= 19) {
+                    tableLinkComponent19(item, isHeader, getLinkString(item)(), markdownConfiguration)
+                } else {
+                    tableLinkComponent18(item, isHeader, getLinkString(item)(), markdownConfiguration)
+                }
+            }
+        } else {
+            Span("")
+        }
+    } else {
+        if ((item.node as CommonmarkLink)().getDestination().startsWith("http://") || (item.node as CommonmarkLink)().getDestination().startsWith("https://")) {
+            if (getLinkString(item).isSome()) {
+                if (getLinkString(item)().trimAscii().toRuneArray().size > 1) {
+                    MarkdownLinkRectImageComponent(
+                        markdownConfiguration: markdownConfiguration,
+                        strText: getLinkString(item)().trimAscii(),
+                        strUrl: (item.node as CommonmarkLink)().getDestination()
+                    )
+                } else {
+                    MarkdownLinkCircleImageComponent(
+                        markdownConfiguration: markdownConfiguration,
+                        strText: getLinkString(item)().trimAscii(),
+                        strUrl: (item.node as CommonmarkLink)().getDestination()
+                    )
+                }
+            } else {
+                Span("")
+            }
+        } else {
+            if (getLinkString(item).isSome()) {
+                MarkdownLinkRectToolImageComponent(
+                    markdownConfiguration: markdownConfiguration,
+                    strText: getLinkString(item)(),
+                    strUrl: (item.node as CommonmarkLink)().getDestination(),
+                    strType: urlSafeBase64Decode((item.node as CommonmarkLink)().getDestination())
+                )
+            } else {
+                Span("")
+            }
+        }
+    }
+}
+
+/**
+ * 内联代码
+ */
+@Builder
+func inLineCodeSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfiguration, isFakeBoldText: Bool, isHeader: Bool, isDescList: Bool, nodeType: Int64) {
+    if (markdownConfiguration.markdownTheme.isCodeStyle) {
+        MarkdownCodeLineImageSpanComponent(
+            markdownConfiguration: markdownConfiguration,
+            strCode: (item.node as Code)().getLiteral(),
+            strUrl: linkUrl(item),
+            isFakeBoldText: isFakeBoldText
+        )
+    } else {
+        if (nodeType == 0) {
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                headingCodeComponent19(item, markdownConfiguration)
+            } else {
+                headingCodeComponent18(item, markdownConfiguration)
+            }
+        } else if (nodeType == 1) {
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                paragraphCodeComponent19(item, isDescList, markdownConfiguration)
+            } else {
+                paragraphCodeComponent18(item, isDescList, markdownConfiguration)
+            }
+        } else if (nodeType == 2) {
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                tableComponentCode19(item, isHeader, markdownConfiguration)
+            } else {
+                tableComponentCode18(item, isHeader, markdownConfiguration)
+            }
+        }
+    }
+}
+
+
+
