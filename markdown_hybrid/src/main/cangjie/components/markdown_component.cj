@@ -176,7 +176,7 @@ public class MarkdownComponent {
                         } else if (item.node is Paragraph) {
                             // 段落
                             ListItem() {
-                                blockParagraphComponent(markdownConfiguration, item, Option<FootnoteBlock>.None, fontCallback, tocListOnClick, imageCallback, componentWidth, false, markdownCacheConfiguration.paragraphComponents)
+                                blockParagraphComponent(markdownConfiguration, item, Option<FootnoteBlock>.None, fontCallback, tocListOnClick, imageCallback, componentWidth, false, false, markdownCacheConfiguration.paragraphComponents)
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 1, item), bottom: marginNodeBottom(idx, lastViewIndex, 1, item))

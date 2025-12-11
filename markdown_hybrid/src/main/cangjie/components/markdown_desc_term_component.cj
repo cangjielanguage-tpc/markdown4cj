@@ -81,17 +81,7 @@ public class MarkdownDescTermComponent {
                     item: NodeView, idx: Int64 => if (item.node is Paragraph) {
                         // 段落
                         ListItem() {
-                            MarkdownParagraphComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                fontCallback: fontCallback,
-                                imageCallback: imageCallback,
-                                tocListOnClick: tocListOnClick,
-                                componentWidth: componentWidth,
-                                isListTo: true,
-                                isDescList: true,
-                                paragraphComponents: markdownCacheConfiguration.paragraphComponents
-                            )
+                            blockParagraphComponent(markdownConfiguration, item, Option<FootnoteBlock>.None, fontCallback, tocListOnClick, imageCallback, componentWidth, true, true, markdownCacheConfiguration.paragraphComponents)
                         }
                     } else {
                         // TODO 其他节点

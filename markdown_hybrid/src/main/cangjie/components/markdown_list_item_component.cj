@@ -104,7 +104,7 @@ class MarkdownListItemComponent {
                     item: NodeView, idx: Int64 => ListItem() {
                         if (item.node is Paragraph) {
                             // 段落
-                            blockParagraphComponent(markdownConfiguration, item, Option<FootnoteBlock>.None, fontCallback, tocListOnClick, imageCallback, componentWidth, true, markdownCacheConfiguration.paragraphComponents)
+                            blockParagraphComponent(markdownConfiguration, item, Option<FootnoteBlock>.None, fontCallback, tocListOnClick, imageCallback, componentWidth, true, false, markdownCacheConfiguration.paragraphComponents)
                         } else if (item.node is Heading) {
                             // 标题
                             blockHeadingComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, true, markdownCacheConfiguration.headingComponents)

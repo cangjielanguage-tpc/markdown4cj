@@ -81,16 +81,7 @@ public class MarkdownDescDefComponent {
                     item: NodeView, idx: Int64 => if (item.node is Paragraph) {
                         // 段落
                         ListItem() {
-                            MarkdownParagraphComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                fontCallback: fontCallback,
-                                imageCallback: imageCallback,
-                                tocListOnClick: tocListOnClick,
-                                componentWidth: componentWidth,
-                                isListTo: true,
-                                paragraphComponents: markdownCacheConfiguration.paragraphComponents
-                            )
+                            blockParagraphComponent(markdownConfiguration, item, Option<FootnoteBlock>.None, fontCallback, tocListOnClick, imageCallback, componentWidth, true, false, markdownCacheConfiguration.paragraphComponents)
                         }
                     } else {
                         // TODO 其他节点

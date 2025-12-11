@@ -81,16 +81,7 @@ public class MarkdownFootnoteComponent {
                     item: NodeView, idx: Int64 => if (item.node is Paragraph) {
                         // 段落
                         ListItem() {
-                            MarkdownParagraphComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                footnoteBlock: (nodeView.node as FootnoteBlock)(),
-                                fontCallback: fontCallback,
-                                tocListOnClick: tocListOnClick,
-                                imageCallback: imageCallback,
-                                componentWidth: componentWidth,
-                                paragraphComponents: markdownCacheConfiguration.paragraphComponents
-                            )
+                            blockParagraphComponent(markdownConfiguration, item, (nodeView.node as FootnoteBlock)(), fontCallback, tocListOnClick, imageCallback, componentWidth, false, false, markdownCacheConfiguration.paragraphComponents)
                         }
                     } else {
                         // TODO 其他节点
