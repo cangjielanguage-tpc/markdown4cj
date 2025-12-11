@@ -30,14 +30,14 @@ public class MarkdownImgUrlCallback14Component {
     var componentWidth: Float64
 
     /**
-     * 图片点击事件
-     */
-    var imageCallback: (String) -> Unit
-
-    /**
      * 链接点击事件
      */
     var linkCallback: ?(String) -> Unit
+
+    /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
 
     /**
      * 是否是链接
@@ -164,21 +164,7 @@ public class MarkdownImgUrlCallback14Component {
     func build() {
         if (true) {
             if (imageParse == 1) {
-                ImageSpan(imagePixelMap())
-                    // 设置外边距属性
-                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
-                    // 自定义图片圆角
-                    .interopBorderRadius(imageBorderRadius)
-                    // 设置组件自身的宽度
-                    .width(imageSpanWidth(imageFixedRatioWidth, componentImageWidth, imageWidth(), imageMaximumWidth))
-                    // 设置组件自身的高度
-                    .height(imageSpanHeight(imageFixedRatioWidth, componentImageWidth, imageWidth(), imageHeight(), imageMaximumWidth))
-                    // 设置图片的缩放类型
-                    .objectFit(markdownConfiguration.markdownTheme.imageFitType)
-                    // 设置图片基于文本的对齐方式
-                    .verticalAlign(ImageSpanAlignment.CENTER)
-                    // 点击动作触发该方法调用
-                    .onClick {evt => imageSpanOnClick(isLink, imageCallback, linkCallback, linkUrl, destination)}
+                imageCallBackComponent(imagePixelMap(), imageMarginTop, imageMarginBottom, imageBorderRadius, imageFixedRatioWidth, componentImageWidth, imageWidth(), imageHeight(), imageMaximumWidth, markdownConfiguration, isLink, imageCallback, linkCallback, linkUrl, destination)
             } else {
                 if (imageType != 2) {
                     ImageSpan(destination)

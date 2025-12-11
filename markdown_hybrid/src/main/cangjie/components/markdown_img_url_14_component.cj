@@ -30,14 +30,14 @@ public class MarkdownImgUrl14Component {
     var componentWidth: Float64
 
     /**
-     * 图片点击事件
-     */
-    var imageCallback: (String) -> Unit
-
-    /**
      * 链接点击事件
      */
     var linkCallback: ?(String) -> Unit
+
+    /**
+     * 图片点击事件
+     */
+    var imageCallback: (String) -> Unit
 
     /**
      * 是否是链接
@@ -56,52 +56,10 @@ public class MarkdownImgUrl14Component {
     var imageType: Int64 = 0 // 0：开始加载。1：加载成功完成。2：加载失败
 
     /**
-     * 图片宽度 - 单位px
+     * 图片最大宽度 - 单位px
      */
     @State
-    var width: Float64 = 0.0
-
-    /**
-     * 图片高度 - 单位px
-     */
-    @State
-    var height: Float64 = 0.0
-
-    /**
-     * 图片上边距
-     */
-    @State
-    var imageMarginTop: Float64 = 10.0
-
-    /**
-     * 图片下边距
-     */
-    @State
-    var imageMarginBottom: Float64 = 10.0
-
-    /**
-     * 图片圆角大小
-     */
-    @State
-    var imageBorderRadius: Float64 = 0.0
-
-    /**
-     * 基于外层控件宽度大小对图片进行百分比缩放比例
-     */
-    @State
-    var imageFixedRatioWidth: Option<Float64> = Option<Float64>.None
-
-    /**
-     * 基于图片自身宽度大小对图片进行百分比缩放比例
-     */
-    @State
-    var imageMaximumWidth: Float64 = 1.0
-
-    /**
-     * 图片占位图
-     */
-    @State
-    var imageResource: Option<AppResource> = Option<AppResource>.None
+    var componentImageWidth: Float64 = 0.0
 
     /**
      * 是否有图片占位图
@@ -110,10 +68,52 @@ public class MarkdownImgUrl14Component {
     var isImageResource: Bool = false
 
     /**
-     * 图片最大宽度 - 单位px
+     * 图片占位图
      */
     @State
-    var componentImageWidth: Float64 = 0.0
+    var imageResource: Option<AppResource> = Option<AppResource>.None
+
+    /**
+     * 基于图片自身宽度大小对图片进行百分比缩放比例
+     */
+    @State
+    var imageMaximumWidth: Float64 = 1.0
+
+    /**
+     * 基于外层控件宽度大小对图片进行百分比缩放比例
+     */
+    @State
+    var imageFixedRatioWidth: Option<Float64> = Option<Float64>.None
+
+    /**
+     * 图片圆角大小
+     */
+    @State
+    var imageBorderRadius: Float64 = 0.0
+
+    /**
+     * 图片下边距
+     */
+    @State
+    var imageMarginBottom: Float64 = 10.0
+
+    /**
+     * 图片上边距
+     */
+    @State
+    var imageMarginTop: Float64 = 10.0
+
+    /**
+     * 图片高度 - 单位px
+     */
+    @State
+    var height: Float64 = 0.0
+
+    /**
+     * 图片宽度 - 单位px
+     */
+    @State
+    var width: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
         imageMarginTop = markdownConfiguration.markdownTheme.imageMarginTop

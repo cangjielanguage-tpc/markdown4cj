@@ -109,77 +109,39 @@ public class MarkdownQuoteComponent {
                             } else if (item.node is Heading) {
                                 // 标题
                                 blockHeadingComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, true, markdownCacheConfiguration.headingComponents)
-                            } else if (item.node is IndentedCodeBlock) {
-                                // 缩进代码
-                                blockIndentedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.indentedCodeComponents)
                             } else if (item.node is FencedCodeBlock) {
                                 // 围栏代码
                                 blockFencedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.fencedCodeComponents)
+                            } else if (item.node is IndentedCodeBlock) {
+                                // 缩进代码
+                                blockIndentedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.indentedCodeComponents)
                             } else if (item.node is BulletList) {
                                 // 无序列表
-                                MarkdownListComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    adBuilder: adBuilder,
-                                    videoBuilder: videoBuilder,
-                                    audioBuilder: audioBuilder,
-                                    isOrdered: false,
-                                    fontCallback: fontCallback,
-                                    tocListOnClick: tocListOnClick,
-                                    imageCallback: imageCallback,
-                                    videoCallback: videoCallback,
-                                    componentWidth: componentWidth,
-                                    markdownCacheConfiguration: markdownCacheConfiguration
-                                )
+                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: false, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
                             } else if (item.node is OrderedList) {
                                 // 有序列表
-                                MarkdownListComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    adBuilder: adBuilder,
-                                    videoBuilder: videoBuilder,
-                                    audioBuilder: audioBuilder,
-                                    isOrdered: true,
-                                    fontCallback: fontCallback,
-                                    tocListOnClick: tocListOnClick,
-                                    imageCallback: imageCallback,
-                                    videoCallback: videoCallback,
-                                    componentWidth: componentWidth,
-                                    markdownCacheConfiguration: markdownCacheConfiguration
-                                )
+                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: true, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
                             } else if (item.node is BlockQuote) {
                                 // 块引用
-                                MarkdownQuoteComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    adBuilder: adBuilder,
-                                    videoBuilder: videoBuilder,
-                                    audioBuilder: audioBuilder,
-                                    fontCallback: fontCallback,
-                                    tocListOnClick: tocListOnClick,
-                                    imageCallback: imageCallback,
-                                    videoCallback: videoCallback,
-                                    componentWidth: componentWidth,
-                                    markdownCacheConfiguration: markdownCacheConfiguration
-                                )
-                            } else if (item.node is TableBlock) {
-                                // 表格
-                                blockTableComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, markdownCacheConfiguration.tableComponents, markdownCacheConfiguration.tableRowComponents, markdownCacheConfiguration.tableCellComponents)
+                                MarkdownQuoteComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 blockLatextComponent(markdownConfiguration, item)
-                            } else if (item.node is BlockAudio) {
-                                // 音频
-                                audioBuilder(item, markdownConfiguration)
+                            } else if (item.node is TableBlock) {
+                                // 表格
+                                blockTableComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, markdownCacheConfiguration.tableComponents, markdownCacheConfiguration.tableRowComponents, markdownCacheConfiguration.tableCellComponents)
                             } else if (item.node is BlockVideo) {
                                 // 视频
                                 videoBuilder(item, markdownConfiguration, videoCallback)
-                            } else if (item.node is SlideBlock) {
-                                // 图片幻灯片
-                                blockImageBannerComponent(markdownConfiguration, item, imageCallback)
+                            } else if (item.node is BlockAudio) {
+                                // 音频
+                                audioBuilder(item, markdownConfiguration)
                             } else if (item.node is FencedCodeBlockListBlock) {
                                 // 代码列表
                                 blockCodeBlockListComponent(markdownConfiguration, item, toCodeList(item))
+                            } else if (item.node is SlideBlock) {
+                                // 图片幻灯片
+                                blockImageBannerComponent(markdownConfiguration, item, imageCallback)
                             } else if (item.node is BlockAD) {
                                 // 广告
                                 adBuilder(item)

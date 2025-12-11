@@ -116,51 +116,13 @@ class MarkdownListItemComponent {
                             blockFencedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.fencedCodeComponents)
                         } else if (item.node is BulletList) {
                             // 无序列表
-                            MarkdownListComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                adBuilder: adBuilder,
-                                videoBuilder: videoBuilder,
-                                audioBuilder: audioBuilder,
-                                isOrdered: false,
-                                fontCallback: fontCallback,
-                                imageCallback: imageCallback,
-                                tocListOnClick: tocListOnClick,
-                                videoCallback: videoCallback,
-                                componentWidth: componentWidth,
-                                markdownCacheConfiguration: markdownCacheConfiguration
-                            )
+                            MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: false, fontCallback: fontCallback, imageCallback: imageCallback, tocListOnClick: tocListOnClick, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
                         } else if (item.node is OrderedList) {
                             // 有序列表
-                            MarkdownListComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                adBuilder: adBuilder,
-                                videoBuilder: videoBuilder,
-                                audioBuilder: audioBuilder,
-                                isOrdered: true,
-                                fontCallback: fontCallback,
-                                imageCallback: imageCallback,
-                                tocListOnClick: tocListOnClick,
-                                videoCallback: videoCallback,
-                                componentWidth: componentWidth,
-                                markdownCacheConfiguration: markdownCacheConfiguration
-                            )
+                            MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: true, fontCallback: fontCallback, imageCallback: imageCallback, tocListOnClick: tocListOnClick, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
                         } else if (item.node is BlockQuote) {
                             // 块引用
-                            MarkdownQuoteComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                adBuilder: adBuilder,
-                                videoBuilder: videoBuilder,
-                                audioBuilder: audioBuilder,
-                                fontCallback: fontCallback,
-                                imageCallback: imageCallback,
-                                tocListOnClick: tocListOnClick,
-                                videoCallback: videoCallback,
-                                componentWidth: componentWidth,
-                                markdownCacheConfiguration: markdownCacheConfiguration
-                            )
+                            MarkdownQuoteComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, fontCallback: fontCallback, imageCallback: imageCallback, tocListOnClick: tocListOnClick, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
                         } else if (item.node is TableBlock) {
                             // 表格
                             blockTableComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, markdownCacheConfiguration.tableComponents, markdownCacheConfiguration.tableRowComponents, markdownCacheConfiguration.tableCellComponents)

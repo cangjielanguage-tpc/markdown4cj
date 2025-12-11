@@ -809,6 +809,28 @@ func imagePlaceholderComponent(imageResource: AppResource, imageMarginTop: Float
 }
 
 /**
+ * 图片替换图片
+ */
+@Builder
+func imageCallBackComponent(imagePixelMap: PixelMap, imageMarginTop: Float64, imageMarginBottom: Float64, imageBorderRadius: Float64, imageFixedRatioWidth: Option<Float64>, componentImageWidth: Float64, imageWidth: Float64, imageHeight: Float64, imageMaximumWidth: Float64, markdownConfiguration: MarkdownConfiguration, isLink: Bool, imageCallback: (String) -> Unit, linkCallback: ?(String) -> Unit, linkUrl: ?String, destination: String) {
+    ImageSpan(imagePixelMap)
+        // 设置外边距属性
+        .margin(top: imageMarginTop, bottom: imageMarginBottom)
+        // 自定义图片圆角
+        .interopBorderRadius(imageBorderRadius)
+        // 设置组件自身的宽度
+        .width(imageSpanWidth(imageFixedRatioWidth, componentImageWidth, imageWidth, imageMaximumWidth))
+        // 设置组件自身的高度
+        .height(imageSpanHeight(imageFixedRatioWidth, componentImageWidth, imageWidth, imageHeight, imageMaximumWidth))
+        // 设置图片的缩放类型
+        .objectFit(markdownConfiguration.markdownTheme.imageFitType)
+        // 设置图片基于文本的对齐方式
+        .verticalAlign(ImageSpanAlignment.CENTER)
+        // 点击动作触发该方法调用
+        .onClick {evt => imageSpanOnClick(isLink, imageCallback, linkCallback, linkUrl, destination)}
+}
+
+/**
  * html图片
  */
 @Builder

@@ -19,15 +19,15 @@ public class MarkdownImgUrlCallback15Component {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 图片链接
-     */
-    var destination: String
-
-    /**
      * 控件宽度 - 单位vp
      */
     @Prop
     var componentWidth: Float64
+
+    /**
+     * 图片链接
+     */
+    var destination: String
 
     /**
      * 图片点击事件
@@ -56,16 +56,16 @@ public class MarkdownImgUrlCallback15Component {
     var imageType: Int64 = 0 // 0：开始加载。1：加载成功完成。2：加载失败
 
     /**
-     * 图片宽度 - 单位px
-     */
-    @State
-    var width: Float64 = 0.0
-
-    /**
      * 图片高度 - 单位px
      */
     @State
     var height: Float64 = 0.0
+
+    /**
+     * 图片宽度 - 单位px
+     */
+    @State
+    var width: Float64 = 0.0
 
     /**
      * 替换之后的图片宽度 - 单位px
@@ -164,21 +164,7 @@ public class MarkdownImgUrlCallback15Component {
     func build() {
         if (true) {
             if (imageParse == 1) {
-                ImageSpan(imagePixelMap())
-                    // 设置外边距属性
-                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
-                    // 自定义图片圆角
-                    .interopBorderRadius(imageBorderRadius)
-                    // 设置组件自身的宽度
-                    .width(imageSpanWidth(imageFixedRatioWidth, componentImageWidth, imageWidth(), imageMaximumWidth))
-                    // 设置组件自身的高度
-                    .height(imageSpanHeight(imageFixedRatioWidth, componentImageWidth, imageWidth(), imageHeight(), imageMaximumWidth))
-                    // 设置图片的缩放类型
-                    .objectFit(markdownConfiguration.markdownTheme.imageFitType)
-                    // 设置图片基于文本的对齐方式
-                    .verticalAlign(ImageSpanAlignment.CENTER)
-                    // 点击动作触发该方法调用
-                    .onClick {evt => imageSpanOnClick(isLink, imageCallback, linkCallback, linkUrl, destination)}
+                imageCallBackComponent(imagePixelMap(), imageMarginTop, imageMarginBottom, imageBorderRadius, imageFixedRatioWidth, componentImageWidth, imageWidth(), imageHeight(), imageMaximumWidth, markdownConfiguration, isLink, imageCallback, linkCallback, linkUrl, destination)
             } else {
                 if (imageType != 2) {
                     ImageSpan(destination)

@@ -183,59 +183,21 @@ public class MarkdownComponent {
                         } else if (item.node is BulletList) {
                             // 无序列表（包含任务列表）
                             ListItem() {
-                                MarkdownListComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    adBuilder: adBuilder,
-                                    videoBuilder: videoBuilder,
-                                    audioBuilder: audioBuilder,
-                                    isOrdered: false,
-                                    fontCallback: fontCallback,
-                                    tocListOnClick: tocListOnClick,
-                                    imageCallback: imageCallback,
-                                    videoCallback: videoCallback,
-                                    componentWidth: componentWidth,
-                                    markdownCacheConfiguration: markdownCacheConfiguration
-                                )
+                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: false, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
                         } else if (item.node is OrderedList) {
                             // 有序列表
                             ListItem() {
-                                MarkdownListComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    adBuilder: adBuilder,
-                                    videoBuilder: videoBuilder,
-                                    audioBuilder: audioBuilder,
-                                    isOrdered: true,
-                                    fontCallback: fontCallback,
-                                    tocListOnClick: tocListOnClick,
-                                    imageCallback: imageCallback,
-                                    videoCallback: videoCallback,
-                                    componentWidth: componentWidth,
-                                    markdownCacheConfiguration: markdownCacheConfiguration
-                                )
+                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: true, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
                         } else if (item.node is BlockQuote) {
                             // 块引用
                             ListItem() {
-                                MarkdownQuoteComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    adBuilder: adBuilder,
-                                    videoBuilder: videoBuilder,
-                                    audioBuilder: audioBuilder,
-                                    fontCallback: fontCallback,
-                                    tocListOnClick: tocListOnClick,
-                                    imageCallback: imageCallback,
-                                    videoCallback: videoCallback,
-                                    componentWidth: componentWidth,
-                                    markdownCacheConfiguration: markdownCacheConfiguration
-                                )
+                                MarkdownQuoteComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
