@@ -62,7 +62,6 @@ public class LatexInlineParser <: InlineContentParser {
                 let close = scanner.matchMultiple(r'$')
                 if (close > 0) {
                     let content = scanner.getSource(p1, p2).getContent()
-                    // scanner.next()
                     return ParsedInline.of(LatexMathNode(content), scanner.position())
                 }
             }

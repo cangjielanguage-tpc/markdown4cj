@@ -15,13 +15,10 @@ public interface BlockHandler {
 
 public class BlockHandlerDef <: BlockHandler {
     public override func blockStart(_: MarkdownVisitor, _: Node): Unit {
-        // visitor.ensureNewLine()
     }
 
     public override func blockEnd(visitor: MarkdownVisitor, node: Node): Unit {
         if (visitor.hasNext(node)) {
-            // visitor.ensureNewLine()
-            // visitor.forceNewLine()
         }
     }
 }

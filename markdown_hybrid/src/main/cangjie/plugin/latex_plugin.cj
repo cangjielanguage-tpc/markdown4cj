@@ -110,7 +110,6 @@ class LatexInlineProcessor <: PostProcessor {
 }
 
 class LatexInlineVisitor <: AbstractVisitor {
-    // let reg = Regex(#"\\\(.+?\\\)"#)
     public func visit(text: CustomNode): Unit {
         if (let Some(text) <- (text as LatexInlineText)) {
             let n = LatexMathNode(text.getLiteral())

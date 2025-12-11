@@ -861,27 +861,27 @@ func imageCallBackComponent(imagePixelMap: PixelMap, imageMarginTop: Float64, im
 func htmlImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfiguration, componentWidth: Float64, imageCallback: (String) -> Unit) {
     if (DeviceInfo.sdkApiVersion >= 15) {
         MarkdownImgHtml15Component(
-            markdownConfiguration: markdownConfiguration,
-            destination: (item.node as ImageHtmlNode)().getDestination(),
-            componentWidth: componentWidth,
-            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
-            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-            imageCallback: imageCallback,
-            linkCallback: markdownConfiguration.linkCallback,
-            isLink: item.link.isSome(),
-            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+            markdownConfigurationHtml15: markdownConfiguration,
+            destinationHtml15: (item.node as ImageHtmlNode)().getDestination(),
+            componentWidthHtml15: componentWidth,
+            imageWidthHtml15: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+            imageHeightHtml15: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+            imageCallbackHtml15: imageCallback,
+            linkCallbackHtml15: markdownConfiguration.linkCallback,
+            isLinkHtml15: item.link.isSome(),
+            linkUrlHtml15: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
         )
     } else {
         MarkdownImgHtml14Component(
-            markdownConfiguration: markdownConfiguration,
-            destination: (item.node as ImageHtmlNode)().getDestination(),
-            componentWidth: componentWidth,
-            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
-            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-            imageCallback: imageCallback,
-            linkCallback: markdownConfiguration.linkCallback,
-            isLink: item.link.isSome(),
-            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+            markdownConfigurationHtml14: markdownConfiguration,
+            destinationHtml14: (item.node as ImageHtmlNode)().getDestination(),
+            componentWidthHtml14: componentWidth,
+            imageWidthHtml14: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+            imageHeightHtml14: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+            imageCallbackHtml14: imageCallback,
+            linkCallbackHtml14: markdownConfiguration.linkCallback,
+            isLinkHtml14: item.link.isSome(),
+            linkUrlHtml14: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
         )
     }
 }
@@ -1015,13 +1015,13 @@ func coreImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfi
         } else {
             if (DeviceInfo.sdkApiVersion >= 15) {
                 MarkdownImgUrl15Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as CommonmarkImage)().getDestination(),
-                    componentWidth: componentWidth,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    markdownConfigurationUrl15: markdownConfiguration,
+                    destinationUrl15: (item.node as CommonmarkImage)().getDestination(),
+                    componentWidthUrl15: componentWidth,
+                    imageCallbackUrl15: imageCallback,
+                    linkCallbackUrl15: markdownConfiguration.linkCallback,
+                    isLinkUrl15: item.link.isSome(),
+                    linkUrlUrl15: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
@@ -1029,13 +1029,13 @@ func coreImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfi
                 )
             } else {
                 MarkdownImgUrl14Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as CommonmarkImage)().getDestination(),
-                    componentWidth: componentWidth,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    markdownConfigurationUrl14: markdownConfiguration,
+                    destinationUrl14: (item.node as CommonmarkImage)().getDestination(),
+                    componentWidthUrl14: componentWidth,
+                    imageCallbackUrl14: imageCallback,
+                    linkCallbackUrl14: markdownConfiguration.linkCallback,
+                    isLinkUrl14: item.link.isSome(),
+                    linkUrlUrl14: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None

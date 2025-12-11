@@ -26,7 +26,6 @@ public abstract class MarkdownHtmlParser {
      *                       can be detected by calling {@link HtmlTag#isClosed()}
      * @param action         {@link FlushAction} to be called with resulting tags ({@link InlineHtmlTag})
      */
-    //    public func flushInlineTags(documentLength: Int, action: FlushAction<InlineHtmlTag>): Unit
 
     /**
      * After this method exists a {@link MarkdownHtmlParser} will clear internal state for stored tags.
@@ -39,10 +38,6 @@ public abstract class MarkdownHtmlParser {
      *                       can be detected by calling {@link HtmlTag#isClosed()}
      * @param action         {@link FlushAction} to be called with resulting tags ({@link BlockHtmlTag})
      */
-    //    public func flushBlockTags(
-    //        documentLength: Int,
-    //        action: FlushAction<BlockHtmlTag>
-    //    ): Unit
 
     public func reset(): Unit
 }
@@ -172,38 +167,6 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
         }
     }
 
-    /* 
-    public func flushInlineTags(documentLength: Int64, action: FlushAction<InlineHtmlTag>): Unit {
-        if (inlineTags.size > 0) {
-            if (documentLength > NO_END) {
-                for (inline in inlineTags) {
-                    inline.closeAt(documentLength)
-                }
-            }
-            let list: Collection<InlineHtmlTag> = inlineTags |> map<InlineImpl, InlineHtmlTag> {v => v} |> collectArray
-            action.apply(list)
-            inlineTags.clear()
-        } else {
-            action.apply([])
-        }
-    }
-    public func flushBlockTags(documentLength: Int64, action: FlushAction<BlockHtmlTag>): Unit {
-        var block = currentBlock.getOrThrow()
-        while (let Some(v) <- block._parent) {
-            block = v
-        }
-        if (documentLength > NO_END) {
-            block.closeAt(documentLength)
-        }
-        let children = block.children()
-        if (children.size > 0) {
-            action.apply(children)
-        } else {
-            action.apply([])
-        }
-        currentBlock = BlockImpl.root()
-    }
-     */
     public override func reset(): Unit {
         inlineTags.clear()
         currentBlock = BlockImpl.root()

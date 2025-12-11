@@ -160,22 +160,7 @@ public class CorePlugin <: AbstractMarkdownPlugin {
         )
     }
 
-    // @VisibleForTesting
     static func visitCodeBlock(_: MarkdownVisitor, _: ?String, _: String, _: Node): Unit {
-        // visitor.blockStart(node)
-
-        // let length: Int = visitor.length()
-
-        // visitor.builder().appends('\u{a0}').appends('\n').appends(
-        //     visitor.configuration().syntaxHighlight().highlight(info, code))
-
-        // visitor.ensureNewLine()
-
-        // visitor.builder().append('\u{a0}')
-
-        // CoreProps.CODE_BLOCK_INFO.set(visitor.renderProps(), info)
-
-        // visitor.blockEnd(node)
     }
 
     private static func bulletList(builder: MarkdownVisitorBuilder): Unit {

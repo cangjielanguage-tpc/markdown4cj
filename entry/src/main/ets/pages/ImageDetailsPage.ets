@@ -110,6 +110,7 @@ struct ImageDetailsPage {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
     // plugin.setIsImageSinglePlugin(true) // 图片单独提取到block解析插件
     plugin.setIsImageStylePlugin(true) // 图片样式
+    plugin.setIsHtmlPlugin(true) // HTML
     return plugin
   }
 

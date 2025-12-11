@@ -58,26 +58,21 @@ class FootnoteBlockParser <: AbstractBlockParser {
     private let paragraph: Paragraph = Paragraph()
 
     public func getBlock(): Block {
-        //        println("FootnoteBlockParser getBlock ")
         block
     }
 
     public func tryContinue(parserState: ParserState): ?BlockContinue {
         let line = parserState.getLine()
-        //        println("FootnoteBlockParser tryContinue ${line}")
         None
     }
 
     public func addLine(line: String): Unit {
-        //        println("FootnoteBlockParser addLine ${line}")
     }
     public func parseInlines(inlineParser: InlineParser): Unit {
-        //        println("FootnoteBlockParser parseInlines ")
         inlineParser.parse(line, paragraph)
     }
 
     public func closeBlock(): Unit {
-        //        println("FootnoteBlockParser closeBlock ")
     }
 }
 

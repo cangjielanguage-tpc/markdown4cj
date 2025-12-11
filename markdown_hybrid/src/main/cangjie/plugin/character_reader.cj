@@ -454,7 +454,6 @@ class CharacterReader {
 
     func consumeData(): String {
         // &, <, None
-        //bufferUp() // no need to bufferUp, just called consume()
         var pos = bufPos
         let start = pos
         let remaining = bufLength
@@ -476,7 +475,6 @@ class CharacterReader {
 
     func consumeAttributeQuoted(_: Bool): String {
         // None, " or ', &
-        //bufferUp() // no need to bufferUp, just called consume()
         var pos = bufPos
         let start = pos
         let remaining = bufLength
@@ -498,7 +496,6 @@ class CharacterReader {
 
     func consumeRawData(): String {
         // <, None
-        //bufferUp() // no need to bufferUp, just called consume()
         var pos = bufPos
         let start = pos
         let remaining = bufLength
@@ -717,7 +714,7 @@ class CharacterReader {
 
     // we maintain a cache of the previously scanned sequence, and return that if applicable on repeated scans.
     // that improves the situation where there is a sequence of <p<p<p<p<p<p<p...</title> and we're bashing on the <p
-    // looking for the </title>. Resets in bufferUp()
+    // looking for the </title>
     private var lastIcSeq: ?String = None // scan cache
     private var lastIcIndex: Int64 = 0 // nearest found indexOf
 
@@ -782,7 +779,6 @@ class CharacterReader {
         let index = hash & stringCacheSize - 1
         var cached = stringCache[index]
 
-        // if (cached != None && rangeEquals(charBuf, start, count, cached)) // positive hit
         if (rangeEqualsNew(charBuf, start, count, cached)) {
             // positive hit
             return cached
