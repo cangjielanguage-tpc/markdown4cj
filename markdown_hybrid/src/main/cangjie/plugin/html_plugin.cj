@@ -58,9 +58,6 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
 
     public override func configureParser(_: ParserBuilder): Unit {
         if (!builder.excludeDefaultsMethod()) {
-            // builder.addDefaultTagHandler(SubScriptHandler())
-            // builder.addDefaultTagHandler(SuperScriptHandler())
-            // builder.addDefaultTagHandler(UnderlineHandler())
             builder.addDefaultTagHandler(ImageHandler())
             builder.addDefaultTagHandler(LinkHandler())
             builder.addDefaultTagHandler(StrongEmphasisHandler())
