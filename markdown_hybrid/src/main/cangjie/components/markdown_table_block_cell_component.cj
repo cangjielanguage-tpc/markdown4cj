@@ -314,59 +314,7 @@ class MarkdownTableBlockCellComponent {
      */
     public func refreshData(nodeView: NodeView): Unit {
         this.nodeView = nodeView
-        let refreshNodeViews = nodeView.children
-        let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
-        let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
-        if (refreshNodeViewSize == 0) {
-            return
-        }
-        if (refreshNodeViewSize > nodeViewListSize) {
-            // 新数据大于页面数据
-            // 循环判断历史数据有没有做过修改
-            for (i in 0..nodeViewListSize) {
-                let newBlockHash = refreshNodeViews[i].nodeHash
-                let oldBlockHash = nodeViewList[i].nodeHash
-                let newContentHash = refreshNodeViews[i].contentHash
-                let oldContentHash = nodeViewList[i].contentHash
-                // 唯一ID是否相同
-                if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
-                    nodeViewList[i] = refreshNodeViews[i]
-                }
-            }
-            // 循环添加新数据
-            for (i in nodeViewListSize..refreshNodeViewSize) {
-                nodeViewList.append(refreshNodeViews[i])
-            }
-        } else if (refreshNodeViewSize == nodeViewListSize) {
-            // 新数据等于页面数据
-            for (i in 0..nodeViewListSize) {
-                let newBlockHash = refreshNodeViews[i].nodeHash
-                let oldBlockHash = nodeViewList[i].nodeHash
-                let newContentHash = refreshNodeViews[i].contentHash
-                let oldContentHash = nodeViewList[i].contentHash
-                // 唯一ID是否相同
-                if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
-                    nodeViewList[i] = refreshNodeViews[i]
-                }
-            }
-        } else {
-            // 新数据小于页面数据
-            // 循环判断历史数据有没有做过修改
-            for (i in 0..refreshNodeViewSize) {
-                let newBlockHash = refreshNodeViews[i].nodeHash
-                let oldBlockHash = nodeViewList[i].nodeHash
-                let newContentHash = refreshNodeViews[i].contentHash
-                let oldContentHash = nodeViewList[i].contentHash
-                // 唯一ID是否相同
-                if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
-                    nodeViewList[i] = refreshNodeViews[i]
-                }
-            }
-            // 循环删除多余的旧数据
-            for (i in nodeViewListSize - 1..=refreshNodeViewSize : -1) {
-                nodeViewList.remove(i)
-            }
-        }
+        refreshnodeViewList(this.nodeView, nodeViewList)
     }
 }
 
