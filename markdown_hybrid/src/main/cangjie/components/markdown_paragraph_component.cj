@@ -263,7 +263,7 @@ class MarkdownParagraphComponent {
      */
     public func refreshData(nodeView: NodeView): Unit {
         this.nodeView = nodeView
-        refreshnodeViewList(this.nodeView, nodeViewList)
+        refreshnodeViewList(this.nodeView, nodeViewList, Option<HashMap<Int64,MarkdownTableBlockCellComponent>>.None)
         if (nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkLink) {
             isOneLink = true
         } else {

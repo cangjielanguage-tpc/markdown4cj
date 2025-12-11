@@ -314,7 +314,7 @@ class MarkdownTableBlockCellComponent {
      */
     public func refreshData(nodeView: NodeView): Unit {
         this.nodeView = nodeView
-        refreshnodeViewList(this.nodeView, nodeViewList)
+        refreshnodeViewList(this.nodeView, nodeViewList, Option<HashMap<Int64,MarkdownTableBlockCellComponent>>.None)
     }
 }
 

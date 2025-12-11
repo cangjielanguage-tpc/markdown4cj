@@ -129,43 +129,7 @@ class MarkdownIndentedCodeBlockComponent {
         Row() {
             if (codeText.trimAscii().size > 0) {
                 // 设置图片的数据源
-                if (let Some(i) <- info) {
-                    Row() {
-                        Text(i)
-                            // 设置字体颜色
-                            .fontColor(indentedCodeodeBlockTypeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                            // 设置字体大小
-                            .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                            // 设置文本的最大行数
-                            .maxLines(1)
-                            // 设置文本超长时的显示方式
-                            .textOverflow(TextOverflow.Ellipsis)
-                            // 设置外边距
-                            .margin(left: 8)
-                    }
-                    // 设置宽度
-                    .width(30.percent)
-                    // 设置子组件在水平方向上的对齐格式
-                    .justifyContent(FlexAlign.Start)
-                } else {
-                    Row() {
-                        Text(markdownConfiguration.markdownTheme.codeBlockTypeTextStr)
-                            // 设置字体颜色
-                            .fontColor(indentedCodeodeBlockTypeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                            // 设置字体大小
-                            .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                            // 设置文本的最大行数
-                            .maxLines(1)
-                            // 设置文本超长时的显示方式
-                            .textOverflow(TextOverflow.Ellipsis)
-                            // 设置外边距
-                            .margin(left: 8)
-                    }
-                    // 设置宽度
-                    .width(30.percent)
-                    // 设置子组件在水平方向上的对齐格式
-                    .justifyContent(FlexAlign.Start)
-                }
+                codeBlockTextComponent(if (info.isSome()) {info()} else{markdownConfiguration.markdownTheme.codeBlockTypeTextStr}, markdownConfiguration)
                 codeImageComponent(markdownConfiguration, codeText, info, "", 0)
             } else {
                 Row()

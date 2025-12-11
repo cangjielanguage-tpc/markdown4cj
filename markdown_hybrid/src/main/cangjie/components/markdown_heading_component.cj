@@ -256,7 +256,7 @@ class MarkdownHeadingComponent {
     public func refreshData(nodeView: NodeView): Unit {
         this.nodeView = nodeView
         this.level = (nodeView.node as Heading)().getLevel() // 等级
-        refreshnodeViewList(this.nodeView, nodeViewList)
+        refreshnodeViewList(this.nodeView, nodeViewList, Option<HashMap<Int64,MarkdownTableBlockCellComponent>>.None)
         if (nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkLink) {
             isOneLink = true
         } else {

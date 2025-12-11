@@ -1598,7 +1598,7 @@ func imageSpanComplete(imageLoadResultHeight: Float64, imageLoadResultWidth: Flo
 /**
  * ObservedArrayList<NodeView>数据刷新
  */
-func refreshnodeViewList(nodeView: NodeView, nodeViewList: ObservedArrayList<NodeView>): Unit {
+func refreshnodeViewList(nodeView: NodeView, nodeViewList: ObservedArrayList<NodeView>, tableCellComponents: ?HashMap<Int64, MarkdownTableBlockCellComponent>): Unit {
     let refreshNodeViews = nodeView.children
     let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
     let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
@@ -1609,14 +1609,7 @@ func refreshnodeViewList(nodeView: NodeView, nodeViewList: ObservedArrayList<Nod
         // 新数据大于页面数据
         // 循环判断历史数据有没有做过修改
         for (i in 0..nodeViewListSize) {
-            let newBlockHash = refreshNodeViews[i].nodeHash
-            let oldBlockHash = nodeViewList[i].nodeHash
-            let newContentHash = refreshNodeViews[i].contentHash
-            let oldContentHash = nodeViewList[i].contentHash
-            // 唯一ID是否相同
-            if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
-                nodeViewList[i] = refreshNodeViews[i]
-            }
+            refreshnodeView(nodeView,nodeViewList,refreshNodeViews,i,tableCellComponents)
         }
         // 循环添加新数据
         for (i in nodeViewListSize..refreshNodeViewSize) {
@@ -1625,31 +1618,40 @@ func refreshnodeViewList(nodeView: NodeView, nodeViewList: ObservedArrayList<Nod
     } else if (refreshNodeViewSize == nodeViewListSize) {
         // 新数据等于页面数据
         for (i in 0..nodeViewListSize) {
-            let newBlockHash = refreshNodeViews[i].nodeHash
-            let oldBlockHash = nodeViewList[i].nodeHash
-            let newContentHash = refreshNodeViews[i].contentHash
-            let oldContentHash = nodeViewList[i].contentHash
-            // 唯一ID是否相同
-            if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
-                nodeViewList[i] = refreshNodeViews[i]
-            }
+            refreshnodeView(nodeView,nodeViewList,refreshNodeViews,i,tableCellComponents)
         }
     } else {
         // 新数据小于页面数据
         // 循环判断历史数据有没有做过修改
         for (i in 0..refreshNodeViewSize) {
-            let newBlockHash = refreshNodeViews[i].nodeHash
-            let oldBlockHash = nodeViewList[i].nodeHash
-            let newContentHash = refreshNodeViews[i].contentHash
-            let oldContentHash = nodeViewList[i].contentHash
-            // 唯一ID是否相同
-            if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
-                nodeViewList[i] = refreshNodeViews[i]
-            }
+            refreshnodeView(nodeView,nodeViewList,refreshNodeViews,i,tableCellComponents)
         }
         // 循环删除多余的旧数据
         for (i in nodeViewListSize - 1..=refreshNodeViewSize : -1) {
             nodeViewList.remove(i)
+        }
+    }
+}
+
+func refreshnodeView(nodeView: NodeView, nodeViewList: ObservedArrayList<NodeView>, refreshNodeViews: ArrayList<NodeView>, i : Int64, tableCellComponents: ?HashMap<Int64, MarkdownTableBlockCellComponent>){
+    let newBlockHash = refreshNodeViews[i].nodeHash
+    let oldBlockHash = nodeViewList[i].nodeHash
+    let newContentHash = refreshNodeViews[i].contentHash
+    let oldContentHash = nodeViewList[i].contentHash
+    // 唯一ID是否相同
+    if(let Some(w) <- tableCellComponents){
+          if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
+            nodeViewList[i] = refreshNodeViews[i]
+        } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
+            nodeViewList[i] = refreshNodeViews[i]
+        } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+            if(let Some(cache) <- w.get(newBlockHash)){
+                cache.refreshData(refreshNodeViews[i])
+            }
+        }
+    }else{
+        if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
+            nodeViewList[i] = refreshNodeViews[i]
         }
     }
 }
@@ -1731,16 +1733,20 @@ func refreshNodeViewDataSource(nodeView: NodeView, refreshNodeViews: ArrayList<N
 func refreshCacheData(nodeView: NodeView, newBlockHash:Int64, compontentType:String, markdownCacheConfiguration:?MarkdownCacheConfiguration, tableRowComponents: ?HashMap<Int64, MarkdownTableBlockRowComponent>):Bool{
     match(compontentType){
         case "list" =>
-                if(let Some(w) <- markdownCacheConfiguration && let Some(cache) <- w.listItemComponents.get(newBlockHash)){
+                if(let Some(w) <- markdownCacheConfiguration &&
+                   let Some(cache) <- w.listItemComponents.get(newBlockHash)
+                ){
                     cache.refreshData(nodeView)
                 }
                 return true
-        case "table" =>
-                if(let Some(w) <- tableRowComponents && let Some(cache) <- w.get(newBlockHash)){
+        case "table"  =>
+                if(let Some(w) <- tableRowComponents &&
+                   let Some(cache) <- w.get(newBlockHash)
+                ){
                     cache.refreshData(nodeView)
                 }
                 return true
-        case "quote" =>
+        case "quote" | "listitem" =>
                 if(let Some(w) <- markdownCacheConfiguration){
                     if (nodeView.node is BulletList || nodeView.node is OrderedList) {
                         // 有序列表和无序列表
@@ -1818,6 +1824,19 @@ func refreshCacheData(nodeView: NodeView, newBlockHash:Int64, compontentType:Str
                         }
                     }else{
                         return false
+                    }
+                }
+                return true
+        case "descterm" | "descdef" =>
+                if(let Some(w) <- markdownCacheConfiguration){
+                    if (nodeView.node is Paragraph) {
+                        // 段落
+                        let cache = w.paragraphComponents.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(nodeView)
+                        }
+                    }else{
+                            return false
                     }
                 }
                 return true
