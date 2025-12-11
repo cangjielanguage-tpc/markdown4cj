@@ -16,38 +16,38 @@ public class MarkdownImgRawFileComponent {
     /**
      * markdown配置
      */
-    var markdownConfiguration: MarkdownConfiguration
+    var markdownConfigurationRawFile: MarkdownConfiguration
 
     /**
      * 图片链接
      */
-    var destination: String
+    var destinationRawFile: String
 
     /**
      * 控件宽度 - 单位px
      */
     @Prop
-    var componentWidth: Float64
+    var componentWidthRawFile: Float64
 
     /**
      * 图片点击事件
      */
-    var imageCallback: (String) -> Unit
+    var imageCallbackRawFile: (String) -> Unit
 
     /**
      * 链接点击事件
      */
-    var linkCallback: ?(String) -> Unit
+    var linkCallbackRawFile: ?(String) -> Unit
 
     /**
      * 是否是链接
      */
-    var isLink: Bool = false
+    var isLinkRawFile: Bool = false
 
     /**
      * 链接url
      */
-    var linkUrl: ?String = Option<String>.None
+    var linkUrlRawFile: ?String = Option<String>.None
 
     /**
      * 图片加载完成
@@ -59,61 +59,19 @@ public class MarkdownImgRawFileComponent {
      * 图片宽度 - 单位px
      */
     @State
-    var width: ?Float64 = Option<Float64>.None
+    var widthRawFile: ?Float64 = Option<Float64>.None
 
     /**
      * 图片高度 - 单位px
      */
     @State
-    var height: ?Float64 = Option<Float64>.None
+    var heightRawFile: ?Float64 = Option<Float64>.None
 
     /**
      * 图片数据
      */
     @State
-    var imagePixelMap: Option<PixelMap> = Option<PixelMap>.None
-
-    /**
-     * 图片上边距
-     */
-    @State
-    var imageMarginTop: Float64 = 10.0
-
-    /**
-     * 图片下边距
-     */
-    @State
-    var imageMarginBottom: Float64 = 10.0
-
-    /**
-     * 图片圆角大小
-     */
-    @State
-    var imageBorderRadius: Float64 = 0.0
-
-    /**
-     * 基于外层控件宽度大小对图片进行百分比缩放比例
-     */
-    @State
-    var imageFixedRatioWidth: Option<Float64> = Option<Float64>.None
-
-    /**
-     * 基于图片自身宽度大小对图片进行百分比缩放比例
-     */
-    @State
-    var imageMaximumWidth: Float64 = 1.0
-
-    /**
-     * 图片占位图
-     */
-    @State
-    var imageResource: Option<AppResource> = Option<AppResource>.None
-
-    /**
-     * 是否有图片占位图
-     */
-    @State
-    var isImageResource: Bool = false
+    var imagePixelMapRawFile: Option<PixelMap> = Option<PixelMap>.None
 
     /**
      * 控件宽度 - 单位px
@@ -122,50 +80,39 @@ public class MarkdownImgRawFileComponent {
     var componentImageWidth: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
-        imageMarginTop = markdownConfiguration.markdownTheme.imageMarginTop
-        imageMarginBottom = markdownConfiguration.markdownTheme.imageMarginBottom
-        imageBorderRadius = markdownConfiguration.markdownTheme.imageBorderRadius
-        imageFixedRatioWidth = markdownConfiguration.markdownTheme.imageFixedRatioWidth
-        imageMaximumWidth = markdownConfiguration.markdownTheme.imageMaximumWidth
-        imageResource = markdownConfiguration.markdownTheme.imageResource
-        if (imageResource.isSome()) {
-            isImageResource = true
-        } else {
-            isImageResource = false
-        }
-        componentImageWidth = vp2px(componentWidth.vp)().value
+        componentImageWidth = vp2px(componentWidthRawFile.vp)().value
         localRowImageToPixelMap()
     }
 
     protected override func aboutToDisappear(): Unit {
-        imagePixelMap?.Release()
-        imagePixelMap = Option<PixelMap>.None
+        imagePixelMapRawFile?.Release()
+        imagePixelMapRawFile = Option<PixelMap>.None
     }
 
     func build() {
         if (true) {
             if (imageType == 1) {
-                ImageSpan(imagePixelMap())
+                ImageSpan(imagePixelMapRawFile())
                     // 设置外边距属性
-                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
+                    .margin(top: markdownConfigurationRawFile.markdownTheme.imageMarginTop, bottom: markdownConfigurationRawFile.markdownTheme.imageMarginBottom)
                     // 自定义图片圆角
-                    .interopBorderRadius(imageBorderRadius)
+                    .interopBorderRadius(markdownConfigurationRawFile.markdownTheme.imageBorderRadius)
                     // 设置组件自身的宽度
-                    .width(imageSpanWidth(imageFixedRatioWidth, componentImageWidth, width(), imageMaximumWidth))
+                    .width(imageSpanWidth(markdownConfigurationRawFile.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthRawFile(), markdownConfigurationRawFile.markdownTheme.imageMaximumWidth))
                     // 设置组件自身的高度
-                    .height(imageSpanHeight(imageFixedRatioWidth, componentImageWidth, width(), height(), imageMaximumWidth))
+                    .height(imageSpanHeight(markdownConfigurationRawFile.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthRawFile(), heightRawFile(), markdownConfigurationRawFile.markdownTheme.imageMaximumWidth))
                     // 设置图片的缩放类型
-                    .objectFit(markdownConfiguration.markdownTheme.imageFitType)
+                    .objectFit(markdownConfigurationRawFile.markdownTheme.imageFitType)
                     // 设置图片基于文本的对齐方式
                     .verticalAlign(ImageSpanAlignment.CENTER)
                     // 设置约束尺寸，组件布局时，进行尺寸范围限制
                     .constraintSize(maxWidth: 100.percent)
                     // 点击动作触发该方法调用
-                    .onClick {evt => imageSpanOnClick(isLink, imageCallback, linkCallback, linkUrl, destination)}
+                    .onClick {evt => imageSpanOnClick(isLinkRawFile, imageCallbackRawFile, linkCallbackRawFile, linkUrlRawFile, destinationRawFile)}
             }
-            if (isImageResource && imageType != 1) {
+            if (markdownConfigurationRawFile.markdownTheme.imageResource.isSome() && imageType != 1) {
                 // 有占位图
-                imagePlaceholderComponent(imageResource(), imageMarginTop, imageMarginBottom, imageFixedRatioWidth, imageMaximumWidth, imageBorderRadius, componentImageWidth)
+                imagePlaceholderComponent(markdownConfigurationRawFile.markdownTheme.imageResource(), markdownConfigurationRawFile.markdownTheme.imageMarginTop, markdownConfigurationRawFile.markdownTheme.imageMarginBottom, markdownConfigurationRawFile.markdownTheme.imageFixedRatioWidth, markdownConfigurationRawFile.markdownTheme.imageMaximumWidth, markdownConfigurationRawFile.markdownTheme.imageBorderRadius, componentImageWidth)
             }
         }
     }
@@ -175,17 +122,17 @@ public class MarkdownImgRawFileComponent {
      */
     func localRowImageToPixelMap() {
         let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
-            pixelMap, width, height => launch {
-                this.imagePixelMap = pixelMap
-                this.width = width
-                this.height = height
-                if (this.imagePixelMap.isSome() && this.width.isSome() && this.height.isSome()) {
+            pixelMap, widthRawFile, heightRawFile => launch {
+                this.imagePixelMapRawFile = pixelMap
+                this.widthRawFile = widthRawFile
+                this.heightRawFile = heightRawFile
+                if (this.imagePixelMapRawFile.isSome() && this.widthRawFile.isSome() && this.heightRawFile.isSome()) {
                     imageType = 1
                 } else {
                     imageType = 2
                 }
             }
         }
-        let fut = rawfileToPixelmap(destination, markdownConfiguration.markdownTheme.abilityContext, markdownConfiguration.markdownTheme.stageContext, componentImageWidth, callback)
+        let fut = rawfileToPixelmap(destinationRawFile, markdownConfigurationRawFile.markdownTheme.abilityContext, markdownConfigurationRawFile.markdownTheme.stageContext, componentImageWidth, callback)
     }
 }

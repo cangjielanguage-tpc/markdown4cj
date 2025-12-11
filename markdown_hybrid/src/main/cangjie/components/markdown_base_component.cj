@@ -1000,13 +1000,13 @@ func coreImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfi
     if (markdownConfiguration.imageCallbackCallback.isNone()) {
         if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
             MarkdownImgRawFileComponent(
-                markdownConfiguration: markdownConfiguration,
-                destination: (item.node as CommonmarkImage)().getDestination(),
-                componentWidth: componentWidth,
-                imageCallback: imageCallback,
-                linkCallback: markdownConfiguration.linkCallback,
-                isLink: item.link.isSome(),
-                linkUrl: if (item.link.isSome()) {
+                markdownConfigurationRawFile: markdownConfiguration,
+                destinationRawFile: (item.node as CommonmarkImage)().getDestination(),
+                componentWidthRawFile: componentWidth,
+                imageCallbackRawFile: imageCallback,
+                linkCallbackRawFile: markdownConfiguration.linkCallback,
+                isLinkRawFile: item.link.isSome(),
+                linkUrlRawFile: if (item.link.isSome()) {
                     item.link().getDestination()
                 } else {
                     Option<String>.None
@@ -1046,13 +1046,13 @@ func coreImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfi
     } else {
         if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
             MarkdownImgRawFileCallbackComponent(
-                markdownConfiguration: markdownConfiguration,
-                destination: (item.node as CommonmarkImage)().getDestination(),
-                componentWidth: componentWidth,
-                imageCallback: imageCallback,
-                linkCallback: markdownConfiguration.linkCallback,
-                isLink: item.link.isSome(),
-                linkUrl: if (item.link.isSome()) {
+                markdownConfigurationRawFileCallback: markdownConfiguration,
+                destinationRawFileCallback: (item.node as CommonmarkImage)().getDestination(),
+                componentWidthRawFileCallback: componentWidth,
+                imageCallbackRawFileCallback: imageCallback,
+                linkCallbackRawFileCallback: markdownConfiguration.linkCallback,
+                isLinkRawFileCallback: item.link.isSome(),
+                linkUrlRawFileCallback: if (item.link.isSome()) {
                     item.link().getDestination()
                 } else {
                     Option<String>.None
@@ -1061,13 +1061,13 @@ func coreImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfi
         } else {
             if (DeviceInfo.sdkApiVersion >= 15) {
                 MarkdownImgUrlCallback15Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as CommonmarkImage)().getDestination(),
-                    componentWidth: componentWidth,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    markdownConfigurationUrlCallback15: markdownConfiguration,
+                    destinationUrlCallback15: (item.node as CommonmarkImage)().getDestination(),
+                    componentWidthUrlCallback15: componentWidth,
+                    imageCallbackUrlCallback15: imageCallback,
+                    linkCallbackUrlCallback15: markdownConfiguration.linkCallback,
+                    isLinkUrlCallback15: item.link.isSome(),
+                    linkUrlUrlCallback15: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
@@ -1075,13 +1075,13 @@ func coreImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfi
                 )
             } else {
                 MarkdownImgUrlCallback14Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as CommonmarkImage)().getDestination(),
-                    componentWidth: componentWidth,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    markdownConfigurationUrlCallback14: markdownConfiguration,
+                    destinationUrlCallback14: (item.node as CommonmarkImage)().getDestination(),
+                    componentWidthUrlCallback14: componentWidth,
+                    imageCallbackUrlCallback14: imageCallback,
+                    linkCallbackUrlCallback14: markdownConfiguration.linkCallback,
+                    isLinkUrlCallback14: item.link.isSome(),
+                    linkUrlUrlCallback14: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None

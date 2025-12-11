@@ -35,6 +35,11 @@ struct ImageDetailsPage {
   @State
   isFull: boolean = true
   /**
+   * 图片默认占位图
+   */
+  @State
+  imageResource: Resource|undefined = undefined
+  /**
    * 增量加载延迟
    */
   time: number = 50
@@ -44,6 +49,7 @@ struct ImageDetailsPage {
       let imageDataMD: ImageDataMD = router.getParams() as ImageDataMD
       this.fileStr = getFileContextStr(imageDataMD._pagePath)
       this.isFull = imageDataMD._isFull
+      this.imageResource = imageDataMD._imageResource
     } catch (e) {
     }
   }
@@ -102,6 +108,9 @@ struct ImageDetailsPage {
     config.setImageCallback(this.setImageCallback)
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this))
+    if(this.imageResource!==undefined){
+      theme.setImageResource(this.imageResource)
+    }
     config.setMarkdownTheme(theme)
     return config
   }

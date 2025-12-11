@@ -36,6 +36,15 @@ struct ImagePage {
   @State
   isFull: boolean = true
   /**
+   * 图片默认占位图选项列表
+   */
+  imageResourceList: Array<Resource | undefined> = [undefined, $r('app.media.startIcon')]
+  /**
+   * 图片默认占位图
+   */
+  @State
+  imageResource?: Resource = undefined
+  /**
    * 网络图片是否压缩列表
    */
   isAutoResizeList: Array<boolean> = [true, false]
@@ -113,6 +122,37 @@ struct ImagePage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`是否设置默认占位图 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${booleanToString(this.isFull)}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageResourceList, (item: Resource | undefined, index: number) => {
+                Button("1")
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageResource = item
+                    this.imageDataMD.imageResource = this.imageResource
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -147,6 +187,7 @@ struct ImagePage {
 export class ImageDataMD {
   _isFull: boolean = true
   _pagePath: string = ""
+  _imageResource: Resource|undefined = undefined
 
   public set isFull(value: boolean) {
     this._isFull = value
@@ -154,6 +195,10 @@ export class ImageDataMD {
 
   public set pagePath(value: string) {
     this._pagePath = value
+  }
+
+  public set imageResource(value: Resource|undefined) {
+    this._imageResource = value
   }
 
   constructor() {
