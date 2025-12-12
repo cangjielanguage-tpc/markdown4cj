@@ -89,7 +89,7 @@ public class MarkdownImgUrlCallback15Component {
      * 解析加载
      */
     @State
-    var imageParse: Int64 = 0 // 0：开始解析。1：解析成功完成。2：解析失败
+    var imageParseUrlCallback15: Int64 = 0 // 0：开始解析。1：解析成功完成。2：解析失败
 
     /**
      * 图片最大宽度 - 单位px
@@ -110,7 +110,7 @@ public class MarkdownImgUrlCallback15Component {
 
     func build() {
         if (true) {
-            if (imageParse == 1) {
+            if (imageParseUrlCallback15 == 1) {
                 imageCallBackComponent(imagePixelMap(), markdownConfigurationUrlCallback15.markdownTheme.imageMarginTop, markdownConfigurationUrlCallback15.markdownTheme.imageMarginBottom, markdownConfigurationUrlCallback15.markdownTheme.imageBorderRadius, markdownConfigurationUrlCallback15.markdownTheme.imageFixedRatioWidth, componentImageWidth, imageWidthUrlCallback15(), imageHeightUrlCallback15(), markdownConfigurationUrlCallback15.markdownTheme.imageMaximumWidth, markdownConfigurationUrlCallback15, isLinkUrlCallback15, imageCallbackUrlCallback15, linkCallbackUrlCallback15, linkUrlUrlCallback15, destinationUrlCallback15)
             } else {
                 if (imageType != 2) {
@@ -147,7 +147,7 @@ public class MarkdownImgUrlCallback15Component {
                         }
                 }
             }
-            if (markdownConfigurationUrlCallback15.markdownTheme.imageResource.isSome() && imageType != 1 && imageParse != 1) {
+            if (markdownConfigurationUrlCallback15.markdownTheme.imageResource.isSome() && imageType != 1 && imageParseUrlCallback15 != 1) {
                 // 有占位图
                 imagePlaceholderComponent(markdownConfigurationUrlCallback15.markdownTheme.imageResource(), markdownConfigurationUrlCallback15.markdownTheme.imageMarginTop, markdownConfigurationUrlCallback15.markdownTheme.imageMarginBottom, markdownConfigurationUrlCallback15.markdownTheme.imageFixedRatioWidth, markdownConfigurationUrlCallback15.markdownTheme.imageMaximumWidth, markdownConfigurationUrlCallback15.markdownTheme.imageBorderRadius, componentImageWidth)
             }
@@ -169,14 +169,14 @@ public class MarkdownImgUrlCallback15Component {
                     this.imageHeightUrlCallback15 = imageHeightUrlCallback15
                     this.imagePixelMap = pixelMap1
                     if (this.imagePixelMap.isSome() && this.imageWidthUrlCallback15.isSome() && this.imageHeightUrlCallback15.isSome()) {
-                        imageParse = 1
+                        imageParseUrlCallback15 = 1
                     } else {
-                        imageParse = 2
+                        imageParseUrlCallback15 = 2
                     }
                 }
             } else {
                 launch {
-                    imageParse = 2
+                    imageParseUrlCallback15 = 2
                 }
             }
         }

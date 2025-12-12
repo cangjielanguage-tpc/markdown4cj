@@ -94,13 +94,19 @@ public class MarkdownImgStyleUrlCallback15Component {
      * 解析加载
      */
     @State
-    var imageParse: Int64 = 0 // 0：开始解析。1：解析成功完成。2：解析失败
+    var imageParseStyleUrlCallback15: Int64 = 0 // 0：开始解析。1：解析成功完成。2：解析失败
 
     /**
      * 图片最大宽度 - 单位px
      */
     @State
     var componentImageWidth: Float64 = 0.0
+
+    /**
+     * 图片圆角
+     */
+    @State
+    var radius: Option<Length> = Option<Length>.None
 
     /**
      *
@@ -115,12 +121,6 @@ public class MarkdownImgStyleUrlCallback15Component {
     var picStyleObjHeight: ?Float64 = Option<Float64>.None
 
     /**
-     * 图片圆角
-     */
-    @State
-    var radius: Option<Length> = Option<Length>.None
-
-    /**
      * 对齐方式 - 暂未支持
      */
     @State
@@ -128,13 +128,13 @@ public class MarkdownImgStyleUrlCallback15Component {
 
     protected override func aboutToAppear(): Unit {
         componentImageWidth = vp2px(componentWidthStyleUrlCallback15.vp)().value
-        let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
-        if (picStyleObj.borderRadius.isSome()) {
-            radius = picStyleObj.borderRadius()
+        let picStyleObjStyleUrlCallback15: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
+        if (picStyleObjStyleUrlCallback15.borderRadius.isSome()) {
+            radius = picStyleObjStyleUrlCallback15.borderRadius()
         }
-        align = picStyleObj.align
-        picStyleObjWidth = length2Float64(picStyleObj.width, componentImageWidth)
-        picStyleObjHeight = length2Float64(picStyleObj.height, componentImageWidth)
+        align = picStyleObjStyleUrlCallback15.align
+        picStyleObjWidth = length2Float64(picStyleObjStyleUrlCallback15.width, componentImageWidth)
+        picStyleObjHeight = length2Float64(picStyleObjStyleUrlCallback15.height, componentImageWidth)
         imageCallPixelmap()
     }
 
@@ -146,7 +146,7 @@ public class MarkdownImgStyleUrlCallback15Component {
 
     func build() {
         if (true) {
-            if (imageParse == 1) {
+            if (imageParseStyleUrlCallback15 == 1) {
                 imageCallBackComponent(imagePixelMap(), markdownConfigurationStyleUrlCallback15.markdownTheme.imageMarginTop, markdownConfigurationStyleUrlCallback15.markdownTheme.imageMarginBottom, markdownConfigurationStyleUrlCallback15.markdownTheme.imageBorderRadius, markdownConfigurationStyleUrlCallback15.markdownTheme.imageFixedRatioWidth, componentImageWidth, imageWidthStyleUrlCallback15(), imageHeightStyleUrlCallback15(), markdownConfigurationStyleUrlCallback15.markdownTheme.imageMaximumWidth, markdownConfigurationStyleUrlCallback15, isLinkStyleUrlCallback15, imageCallbackStyleUrlCallback15, linkCallbackStyleUrlCallback15, linkUrlStyleUrlCallback15, destinationStyleUrlCallback15)
             } else {
                 if (imageType != 2) {
@@ -183,7 +183,7 @@ public class MarkdownImgStyleUrlCallback15Component {
                         }
                 }
             }
-            if (markdownConfigurationStyleUrlCallback15.markdownTheme.imageResource.isSome() && imageType != 1 && imageParse != 1) {
+            if (markdownConfigurationStyleUrlCallback15.markdownTheme.imageResource.isSome() && imageType != 1 && imageParseStyleUrlCallback15 != 1) {
                 // 有占位图
                 imagePlaceholderComponent(markdownConfigurationStyleUrlCallback15.markdownTheme.imageResource(), markdownConfigurationStyleUrlCallback15.markdownTheme.imageMarginTop, markdownConfigurationStyleUrlCallback15.markdownTheme.imageMarginBottom, markdownConfigurationStyleUrlCallback15.markdownTheme.imageFixedRatioWidth, markdownConfigurationStyleUrlCallback15.markdownTheme.imageMaximumWidth, if (radius.isSome()) { length2Float(radius()) } else { markdownConfigurationStyleUrlCallback15.markdownTheme.imageBorderRadius }, componentImageWidth)
             }
@@ -197,22 +197,22 @@ public class MarkdownImgStyleUrlCallback15Component {
                 var imageSource: ImageSource = createImageSource(data())
                 let pixelMap1: PixelMap = imageSource.createPixelMap()
                 var size: Size = pixelMap1.getImageInfo().size
-                let imageHeight1: Float64 = Float64(size.height)
-                let imageWidth1: Float64 = Float64(size.width)
+                let imageHeightStyleUrlCallback15: Float64 = Float64(size.height)
+                let imageWidthStyleUrlCallback15: Float64 = Float64(size.width)
                 imageSource.Release()
                 launch {
-                    this.imageHeightStyleUrlCallback15 = imageHeight1
-                    this.imageWidthStyleUrlCallback15 = imageWidth1
+                    this.imageHeightStyleUrlCallback15 = imageHeightStyleUrlCallback15
+                    this.imageWidthStyleUrlCallback15 = imageWidthStyleUrlCallback15
                     this.imagePixelMap = pixelMap1
                     if (this.imagePixelMap.isSome() && this.imageWidthStyleUrlCallback15.isSome() && this.imageHeightStyleUrlCallback15.isSome()) {
-                        imageParse = 1
+                        imageParseStyleUrlCallback15 = 1
                     } else {
-                        imageParse = 2
+                        imageParseStyleUrlCallback15 = 2
                     }
                 }
             } else {
                 launch {
-                    imageParse = 2
+                    imageParseStyleUrlCallback15 = 2
                 }
             }
         }

@@ -94,7 +94,7 @@ public class MarkdownImgStyleUrlCallback14Component {
      * 解析加载
      */
     @State
-    var imageParse: Int64 = 0 // 0：开始解析。1：解析成功完成。2：解析失败
+    var imageParseStyleUrlCallback14: Int64 = 0 // 0：开始解析。1：解析成功完成。2：解析失败
 
     /**
      * 图片最大宽度 - 单位px
@@ -128,13 +128,13 @@ public class MarkdownImgStyleUrlCallback14Component {
 
     protected override func aboutToAppear(): Unit {
         componentImageWidth = vp2px(componentWidthStyleUrlCallback14.vp)().value
-        let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
-        if (picStyleObj.borderRadius.isSome()) {
-            radius = picStyleObj.borderRadius()
+        let picStyleObjStyleUrlCallback14: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
+        if (picStyleObjStyleUrlCallback14.borderRadius.isSome()) {
+            radius = picStyleObjStyleUrlCallback14.borderRadius()
         }
-        align = picStyleObj.align
-        picStyleObjWidth = length2Float64(picStyleObj.width, componentImageWidth)
-        picStyleObjHeight = length2Float64(picStyleObj.height, componentImageWidth)
+        align = picStyleObjStyleUrlCallback14.align
+        picStyleObjWidth = length2Float64(picStyleObjStyleUrlCallback14.width, componentImageWidth)
+        picStyleObjHeight = length2Float64(picStyleObjStyleUrlCallback14.height, componentImageWidth)
         imageCallPixelmap()
     }
 
@@ -146,7 +146,7 @@ public class MarkdownImgStyleUrlCallback14Component {
 
     func build() {
         if (true) {
-            if (imageParse == 1) {
+            if (imageParseStyleUrlCallback14 == 1) {
                 imageCallBackComponent(imagePixelMap(), markdownConfigurationStyleUrlCallback14.markdownTheme.imageMarginTop, markdownConfigurationStyleUrlCallback14.markdownTheme.imageMarginBottom, markdownConfigurationStyleUrlCallback14.markdownTheme.imageBorderRadius, markdownConfigurationStyleUrlCallback14.markdownTheme.imageFixedRatioWidth, componentImageWidth, imageWidthStyleUrlCallback14(), imageHeightStyleUrlCallback14(), markdownConfigurationStyleUrlCallback14.markdownTheme.imageMaximumWidth, markdownConfigurationStyleUrlCallback14, isLinkStyleUrlCallback14, imageCallbackStyleUrlCallback14, linkCallbackStyleUrlCallback14, linkUrlStyleUrlCallback14, destinationStyleUrlCallback14)
             } else {
                 if (imageType != 2) {
@@ -183,7 +183,7 @@ public class MarkdownImgStyleUrlCallback14Component {
                         }
                 }
             }
-            if (markdownConfigurationStyleUrlCallback14.markdownTheme.imageResource.isSome() && imageType != 1 && imageParse != 1) {
+            if (markdownConfigurationStyleUrlCallback14.markdownTheme.imageResource.isSome() && imageType != 1 && imageParseStyleUrlCallback14 != 1) {
                 // 有占位图
                 imagePlaceholderComponent(markdownConfigurationStyleUrlCallback14.markdownTheme.imageResource(), markdownConfigurationStyleUrlCallback14.markdownTheme.imageMarginTop, markdownConfigurationStyleUrlCallback14.markdownTheme.imageMarginBottom, markdownConfigurationStyleUrlCallback14.markdownTheme.imageFixedRatioWidth, markdownConfigurationStyleUrlCallback14.markdownTheme.imageMaximumWidth, if (radius.isSome()) { length2Float(radius()) } else { markdownConfigurationStyleUrlCallback14.markdownTheme.imageBorderRadius }, componentImageWidth)
             }
@@ -197,22 +197,22 @@ public class MarkdownImgStyleUrlCallback14Component {
                 var imageSource: ImageSource = createImageSource(data())
                 let pixelMap1: PixelMap = imageSource.createPixelMap()
                 var size: Size = pixelMap1.getImageInfo().size
-                let imageWidth1: Float64 = Float64(size.width)
-                let imageHeight1: Float64 = Float64(size.height)
+                let imageWidthStyleUrlCallback14: Float64 = Float64(size.width)
+                let imageHeightStyleUrlCallback14: Float64 = Float64(size.height)
                 imageSource.Release()
                 launch {
-                    this.imageWidthStyleUrlCallback14 = imageWidth1
-                    this.imageHeightStyleUrlCallback14 = imageHeight1
+                    this.imageWidthStyleUrlCallback14 = imageWidthStyleUrlCallback14
+                    this.imageHeightStyleUrlCallback14 = imageHeightStyleUrlCallback14
                     this.imagePixelMap = pixelMap1
                     if (this.imagePixelMap.isSome() && this.imageWidthStyleUrlCallback14.isSome() && this.imageHeightStyleUrlCallback14.isSome()) {
-                        imageParse = 1
+                        imageParseStyleUrlCallback14 = 1
                     } else {
-                        imageParse = 2
+                        imageParseStyleUrlCallback14 = 2
                     }
                 }
             } else {
                 launch {
-                    imageParse = 2
+                    imageParseStyleUrlCallback14 = 2
                 }
             }
         }

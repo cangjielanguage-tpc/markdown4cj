@@ -73,28 +73,28 @@ public class MarkdownImgStyleUrl14Component {
     var heightStyleUrl14: Float64 = 0.0
 
     /**
-     * 图片最大宽度 - 单位px
-     */
-    @State
-    var componentImageWidth: Float64 = 0.0
-
-    /**
      *
      */
     @State
     var picStyleObjWidth: ?Float64 = Option<Float64>.None
 
     /**
-     *
+     * 图片最大宽度 - 单位px
      */
     @State
-    var picStyleObjHeight: ?Float64 = Option<Float64>.None
+    var componentImageWidth: Float64 = 0.0
 
     /**
      * 图片圆角
      */
     @State
     var radius: Option<Length> = Option<Length>.None
+
+    /**
+     *
+     */
+    @State
+    var picStyleObjHeight: ?Float64 = Option<Float64>.None
 
     /**
      * 对齐方式 - 暂未支持
@@ -104,13 +104,13 @@ public class MarkdownImgStyleUrl14Component {
 
     protected override func aboutToAppear(): Unit {
         componentImageWidth = vp2px(componentWidthStyleUrl14.vp)().value
-        let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
-        if (picStyleObj.borderRadius.isSome()) {
-            radius = picStyleObj.borderRadius()
+        let picStyleObjStyleUrl14: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
+        if (picStyleObjStyleUrl14.borderRadius.isSome()) {
+            radius = picStyleObjStyleUrl14.borderRadius()
         }
-        align = picStyleObj.align
-        picStyleObjWidth = length2Float64(picStyleObj.width, componentImageWidth)
-        picStyleObjHeight = length2Float64(picStyleObj.height, componentImageWidth)
+        align = picStyleObjStyleUrl14.align
+        picStyleObjWidth = length2Float64(picStyleObjStyleUrl14.width, componentImageWidth)
+        picStyleObjHeight = length2Float64(picStyleObjStyleUrl14.height, componentImageWidth)
     }
 
     func build() {

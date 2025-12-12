@@ -91,26 +91,26 @@ public class MarkdownImgStyleUrl15Component {
     var radius: Option<Length> = Option<Length>.None
 
     /**
-     *
-     */
-    @State
-    var picStyleObjHeight: ?Float64 = Option<Float64>.None
-
-    /**
      * 对齐方式 - 暂未支持
      */
     @State
     var align: FlexAlign = FlexAlign.Start
 
+    /**
+     *
+     */
+    @State
+    var picStyleObjHeight: ?Float64 = Option<Float64>.None
+
     protected override func aboutToAppear(): Unit {
         componentImageWidth = vp2px(componentWidthStyleUrl15.vp)().value
-        let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
-        if (picStyleObj.borderRadius.isSome()) {
-            radius = picStyleObj.borderRadius()
+        let picStyleObjStyleUrl15: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
+        if (picStyleObjStyleUrl15.borderRadius.isSome()) {
+            radius = picStyleObjStyleUrl15.borderRadius()
         }
-        picStyleObjHeight = length2Float64(picStyleObj.height, componentImageWidth)
-        align = picStyleObj.align
-        picStyleObjWidth = length2Float64(picStyleObj.width, componentImageWidth)
+        picStyleObjHeight = length2Float64(picStyleObjStyleUrl15.height, componentImageWidth)
+        align = picStyleObjStyleUrl15.align
+        picStyleObjWidth = length2Float64(picStyleObjStyleUrl15.width, componentImageWidth)
     }
 
     func build() {

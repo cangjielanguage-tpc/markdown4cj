@@ -100,7 +100,7 @@ public class MarkdownImgStyleRawFileCallbackComponent {
      * 解析加载完成
      */
     @State
-    var imageParse: Int64 = 0 // 0:开始解析。1：解析成功完成。2：解析失败
+    var imageParseStyleRawFileCallback: Int64 = 0 // 0:开始解析。1：解析成功完成。2：解析失败
 
     /**
      * 控件宽度 - 单位px
@@ -135,7 +135,7 @@ public class MarkdownImgStyleRawFileCallbackComponent {
 
     func build() {
         if (true) {
-            if (imageParse == 1) {
+            if (imageParseStyleRawFileCallback == 1) {
                 imageCallBackComponent(imagePixelMap1(), markdownConfigurationStyleRawFileCallback.markdownTheme.imageMarginTop, markdownConfigurationStyleRawFileCallback.markdownTheme.imageMarginBottom, markdownConfigurationStyleRawFileCallback.markdownTheme.imageBorderRadius, markdownConfigurationStyleRawFileCallback.markdownTheme.imageFixedRatioWidth, componentImageWidth, imageWidthStyleRawFileCallback(), imageHeightStyleRawFileCallback(), markdownConfigurationStyleRawFileCallback.markdownTheme.imageMaximumWidth, markdownConfigurationStyleRawFileCallback, isLinkStyleRawFileCallback, imageCallbackStyleRawFileCallback, linkCallbackStyleRawFileCallback, linkUrlStyleRawFileCallback, destinationStyleRawFileCallback)
             } else {
                 if (imageType == 1) {
@@ -158,7 +158,7 @@ public class MarkdownImgStyleRawFileCallbackComponent {
                         .onClick {evt => imageSpanOnClick(isLinkStyleRawFileCallback, imageCallbackStyleRawFileCallback, linkCallbackStyleRawFileCallback, linkUrlStyleRawFileCallback, destinationStyleRawFileCallback)}
                 }
             }
-            if (markdownConfigurationStyleRawFileCallback.markdownTheme.imageResource.isSome() && imageType != 1 && imageParse != 1) {
+            if (markdownConfigurationStyleRawFileCallback.markdownTheme.imageResource.isSome() && imageType != 1 && imageParseStyleRawFileCallback != 1) {
                 // 有占位图
                 imagePlaceholderComponent(markdownConfigurationStyleRawFileCallback.markdownTheme.imageResource(), markdownConfigurationStyleRawFileCallback.markdownTheme.imageMarginTop, markdownConfigurationStyleRawFileCallback.markdownTheme.imageMarginBottom, markdownConfigurationStyleRawFileCallback.markdownTheme.imageFixedRatioWidth, markdownConfigurationStyleRawFileCallback.markdownTheme.imageMaximumWidth, if (radius.isSome()) { length2Float(radius()) } else { markdownConfigurationStyleRawFileCallback.markdownTheme.imageBorderRadius }, componentImageWidth)
             }
@@ -180,14 +180,14 @@ public class MarkdownImgStyleRawFileCallbackComponent {
                     this.imageHeightStyleRawFileCallback = imageHeightStyleRawFileCallback
                     this.imagePixelMap1 = pixelMap1
                     if (this.imagePixelMap1.isSome() && this.imageWidthStyleRawFileCallback.isSome() && this.imageHeightStyleRawFileCallback.isSome()) {
-                        imageParse = 1
+                        imageParseStyleRawFileCallback = 1
                     } else {
-                        imageParse = 2
+                        imageParseStyleRawFileCallback = 2
                     }
                 }
             } else {
                 launch {
-                    imageParse = 2
+                    imageParseStyleRawFileCallback = 2
                 }
             }
         }

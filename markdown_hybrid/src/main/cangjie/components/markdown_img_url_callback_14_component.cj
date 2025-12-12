@@ -89,7 +89,7 @@ public class MarkdownImgUrlCallback14Component {
      * 解析加载
      */
     @State
-    var imageParse: Int64 = 0 // 0：开始解析。1：解析成功完成。2：解析失败
+    var imageParseUrlCallback14: Int64 = 0 // 0：开始解析。1：解析成功完成。2：解析失败
 
     /**
      * 图片最大宽度 - 单位px
@@ -110,7 +110,7 @@ public class MarkdownImgUrlCallback14Component {
 
     func build() {
         if (true) {
-            if (imageParse == 1) {
+            if (imageParseUrlCallback14 == 1) {
                 imageCallBackComponent(imagePixelMap(), markdownConfigurationUrlCallback14.markdownTheme.imageMarginTop, markdownConfigurationUrlCallback14.markdownTheme.imageMarginBottom, markdownConfigurationUrlCallback14.markdownTheme.imageBorderRadius, markdownConfigurationUrlCallback14.markdownTheme.imageFixedRatioWidth, componentImageWidth, imageWidthUrlCallback14(), imageHeightUrlCallback14(), markdownConfigurationUrlCallback14.markdownTheme.imageMaximumWidth, markdownConfigurationUrlCallback14, isLinkUrlCallback14, imageCallbackUrlCallback14, linkCallbackUrlCallback14, linkUrlUrlCallback14, destinationUrlCallback14)
             } else {
                 if (imageType != 2) {
@@ -147,7 +147,7 @@ public class MarkdownImgUrlCallback14Component {
                         }
                 }
             }
-            if (markdownConfigurationUrlCallback14.markdownTheme.imageResource.isSome() && imageType != 1 && imageParse != 1) {
+            if (markdownConfigurationUrlCallback14.markdownTheme.imageResource.isSome() && imageType != 1 && imageParseUrlCallback14 != 1) {
                 // 有占位图
                 imagePlaceholderComponent(markdownConfigurationUrlCallback14.markdownTheme.imageResource(), markdownConfigurationUrlCallback14.markdownTheme.imageMarginTop, markdownConfigurationUrlCallback14.markdownTheme.imageMarginBottom, markdownConfigurationUrlCallback14.markdownTheme.imageFixedRatioWidth, markdownConfigurationUrlCallback14.markdownTheme.imageMaximumWidth, markdownConfigurationUrlCallback14.markdownTheme.imageBorderRadius, componentImageWidth)
             }
@@ -169,14 +169,14 @@ public class MarkdownImgUrlCallback14Component {
                     this.imageHeightUrlCallback14 = imageHeightUrlCallback14
                     this.imagePixelMap = pixelMap1
                     if (this.imagePixelMap.isSome() && this.imageWidthUrlCallback14.isSome() && this.imageHeightUrlCallback14.isSome()) {
-                        imageParse = 1
+                        imageParseUrlCallback14 = 1
                     } else {
-                        imageParse = 2
+                        imageParseUrlCallback14 = 2
                     }
                 }
             } else {
                 launch {
-                    imageParse = 2
+                    imageParseUrlCallback14 = 2
                 }
             }
         }
