@@ -172,12 +172,12 @@ public class MarkdownImgStyleRawFileCallbackComponent {
                 var imageSource: ImageSource = createImageSource(data())
                 let pixelMap1: PixelMap = imageSource.createPixelMap()
                 var size: Size = pixelMap1.getImageInfo().size
-                let imageWidth1: Float64 = Float64(size.width)
-                let imageHeight1: Float64 = Float64(size.height)
+                let imageWidthStyleRawFileCallback: Float64 = Float64(size.width)
+                let imageHeightStyleRawFileCallback: Float64 = Float64(size.height)
                 imageSource.Release()
                 launch {
-                    this.imageWidthStyleRawFileCallback = imageWidth1
-                    this.imageHeightStyleRawFileCallback = imageHeight1
+                    this.imageWidthStyleRawFileCallback = imageWidthStyleRawFileCallback
+                    this.imageHeightStyleRawFileCallback = imageHeightStyleRawFileCallback
                     this.imagePixelMap1 = pixelMap1
                     if (this.imagePixelMap1.isSome() && this.imageWidthStyleRawFileCallback.isSome() && this.imageHeightStyleRawFileCallback.isSome()) {
                         imageParse = 1
@@ -209,13 +209,13 @@ public class MarkdownImgStyleRawFileCallbackComponent {
                 }
             }
         }
-        let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
-        if (picStyleObj.borderRadius.isSome()) {
-            radius = picStyleObj.borderRadius()
+        let picStyleObjStyleRawFileCallback: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
+        if (picStyleObjStyleRawFileCallback.borderRadius.isSome()) {
+            radius = picStyleObjStyleRawFileCallback.borderRadius()
         }
-        align = picStyleObj.align
-        let picStyleObjHeight: ?Float64 = length2Float64(picStyleObj.height, componentImageWidth)
-        let picStyleObjWidth: ?Float64 = length2Float64(picStyleObj.width, componentImageWidth)
+        align = picStyleObjStyleRawFileCallback.align
+        let picStyleObjHeight: ?Float64 = length2Float64(picStyleObjStyleRawFileCallback.height, componentImageWidth)
+        let picStyleObjWidth: ?Float64 = length2Float64(picStyleObjStyleRawFileCallback.width, componentImageWidth)
         let fut = rawfileToPixelmapStyle(destinationStyleRawFileCallback, markdownConfigurationStyleRawFileCallback.markdownTheme.abilityContext, markdownConfigurationStyleRawFileCallback.markdownTheme.stageContext, componentImageWidth, picStyleObjWidth, picStyleObjHeight, callback)
     }
 }

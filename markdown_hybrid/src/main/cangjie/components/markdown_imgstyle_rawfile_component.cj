@@ -140,9 +140,9 @@ public class MarkdownImgStyleRawFileComponent {
     func localRowImageStyleToPixelMap() {
         let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
             pixelMap, widthStyleRawFile, heightStyleRawFile => launch {
+                this.heightStyleRawFile = heightStyleRawFile
                 this.imagePixelMap = pixelMap
                 this.widthStyleRawFile = widthStyleRawFile
-                this.heightStyleRawFile = heightStyleRawFile
                 if (this.imagePixelMap.isSome() && this.widthStyleRawFile.isSome() && this.heightStyleRawFile.isSome()) {
                     imageType = 1
                 } else {
@@ -155,8 +155,8 @@ public class MarkdownImgStyleRawFileComponent {
             radius = picStyleObj.borderRadius()
         }
         align = picStyleObj.align
-        let picStyleObjWidth: ?Float64 = length2Float64(picStyleObj.width, componentImageWidth)
         let picStyleObjHeight: ?Float64 = length2Float64(picStyleObj.height, componentImageWidth)
+        let picStyleObjWidth: ?Float64 = length2Float64(picStyleObj.width, componentImageWidth)
         let fut = rawfileToPixelmapStyle(destinationStyleRawFile, markdownConfigurationStyleRawFile.markdownTheme.abilityContext, markdownConfigurationStyleRawFile.markdownTheme.stageContext, componentImageWidth, picStyleObjWidth, picStyleObjHeight, callback)
     }
 }

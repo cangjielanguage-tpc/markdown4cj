@@ -110,10 +110,10 @@ public class MarkdownImgRawFileCallbackComponent {
     }
 
     protected override func aboutToDisappear(): Unit {
-        imagePixelMap?.Release()
-        imagePixelMap = Option<PixelMap>.None
         imagePixelMap1?.Release()
         imagePixelMap1 = Option<PixelMap>.None
+        imagePixelMap?.Release()
+        imagePixelMap = Option<PixelMap>.None
     }
 
     func build() {
@@ -154,13 +154,13 @@ public class MarkdownImgRawFileCallbackComponent {
             if (data.isSome()) {
                 var imageSource: ImageSource = createImageSource(data())
                 let pixelMap1: PixelMap = imageSource.createPixelMap()
-                var size: Size = pixelMap1.getImageInfo().size
-                let imageWidth1: Float64 = Float64(size.width)
-                let imageHeight1: Float64 = Float64(size.height)
+                var sizeRawFileCallback: Size = pixelMap1.getImageInfo().size
+                let imageWidthRawFileCallback: Float64 = Float64(sizeRawFileCallback.width)
+                let imageHeightRawFileCallback: Float64 = Float64(sizeRawFileCallback.height)
                 imageSource.Release()
                 launch {
-                    this.imageWidthRawFileCallback = imageWidth1
-                    this.imageHeightRawFileCallback = imageHeight1
+                    this.imageWidthRawFileCallback = imageWidthRawFileCallback
+                    this.imageHeightRawFileCallback = imageHeightRawFileCallback
                     this.imagePixelMap1 = pixelMap1
                     if (this.imagePixelMap1.isSome() && this.imageWidthRawFileCallback.isSome() && this.imageHeightRawFileCallback.isSome()) {
                         imageParse = 1

@@ -197,12 +197,12 @@ public class MarkdownImgStyleUrlCallback15Component {
                 var imageSource: ImageSource = createImageSource(data())
                 let pixelMap1: PixelMap = imageSource.createPixelMap()
                 var size: Size = pixelMap1.getImageInfo().size
-                let imageWidth1: Float64 = Float64(size.width)
                 let imageHeight1: Float64 = Float64(size.height)
+                let imageWidth1: Float64 = Float64(size.width)
                 imageSource.Release()
                 launch {
-                    this.imageWidthStyleUrlCallback15 = imageWidth1
                     this.imageHeightStyleUrlCallback15 = imageHeight1
+                    this.imageWidthStyleUrlCallback15 = imageWidth1
                     this.imagePixelMap = pixelMap1
                     if (this.imagePixelMap.isSome() && this.imageWidthStyleUrlCallback15.isSome() && this.imageHeightStyleUrlCallback15.isSome()) {
                         imageParse = 1

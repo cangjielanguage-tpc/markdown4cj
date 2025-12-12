@@ -32,51 +32,6 @@ public class LatexMathNode <: CustomNode {
     }
 }
 
-public class LatexMathPlugin <: AbstractMarkdownPlugin {
-    public static func create(): LatexMathPlugin {
-        return LatexMathPlugin()
-    }
-
-    public func configureParser(builder: ParserBuilder): Unit {
-        builder.customBlockParserFactory(LatexBlockParserFactory())
-        builder.customDelimiterProcessor(LatexInlineDelimiterProcessor())
-        builder.postProcessor(LatexInlineProcessor())
-        needLatexInlineParse[0] = true
-    }
-
-    public func configureVisitor(builder: MarkdownVisitorBuilder): Unit {
-        addBlockVisitor(builder)
-        addInlineVisitor(builder)
-    }
-
-    private func addBlockVisitor(builder: MarkdownVisitorBuilder): Unit {
-        builder.on(
-            "LatexMathBlock",
-            {
-                visitor, node => buildView(node, true)
-            }
-        )
-    }
-
-    private func addInlineVisitor(builder: MarkdownVisitorBuilder): Unit {
-        builder.on(
-            "LatexMathNode",
-            {
-                visitor, node => buildView(node, true)
-            }
-        )
-    }
-
-    // @VisibleForTesting
-    static func prepareLatexTextPlaceholder(latex: String): String {
-        return latex.replace("\n", " ").trimAscii()
-    }
-
-    public func getClassType(): String {
-        "LatexMathPlugin"
-    }
-}
-
 class LatexInlineDelimiterProcessor <: DelimiterProcessor {
     public func getOpeningCharacter(): Rune {
         return r'$'

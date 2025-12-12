@@ -85,16 +85,16 @@ public class MarkdownImgStyleUrl15Component {
     var picStyleObjWidth: ?Float64 = Option<Float64>.None
 
     /**
-     *
-     */
-    @State
-    var picStyleObjHeight: ?Float64 = Option<Float64>.None
-
-    /**
      * 图片圆角
      */
     @State
     var radius: Option<Length> = Option<Length>.None
+
+    /**
+     *
+     */
+    @State
+    var picStyleObjHeight: ?Float64 = Option<Float64>.None
 
     /**
      * 对齐方式 - 暂未支持
