@@ -38,12 +38,12 @@ struct ImagePage {
   /**
    * 图片默认占位图选项列表
    */
-  imageResourceList: Array<Resource | undefined> = [undefined, $r('app.media.startIcon')]
+  imageResourceList: Array<Resource | null> = [null, $r('app.media.startIcon')]
   /**
    * 图片默认占位图
    */
   @State
-  imageResource?: Resource = undefined
+  imageResource: Resource | null = null
   /**
    * 网络图片是否压缩列表
    */
@@ -71,6 +71,33 @@ struct ImagePage {
    */
   @State
   imageMarginBottom: number = 10
+  /**
+   * 图片圆角列表
+   */
+  imageBorderRadiusList: Array<number> = [0, 5, 10, 20, 25, 30, 40, 50, 55, 60, 65, 70, 75, 80, 100]
+  /**
+   * 图片圆角
+   */
+  @State
+  imageBorderRadius: number = 0
+  /**
+   * 图片基于自身宽度缩放百分比列表
+   */
+  imageMaximumWidthList: Array<number> = [0, 0.2, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0]
+  /**
+   * 图片基于自身宽度缩放百分比
+   */
+  @State
+  imageMaximumWidth: number = 1.0
+  /**
+   * 图片基于父布局宽度缩放百分比列表
+   */
+  imageFixedRatioWidthList: Array<number| null> = [null,0, 0.2, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0]
+  /**
+   * 图片基于父布局宽度缩放百分比
+   */
+  @State
+  imageFixedRatioWidth: number| null = null
   /**
    * 配置数据内容
    */
@@ -127,7 +154,7 @@ struct ImagePage {
               Text(`是否设置默认占位图 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
-              Text(`${booleanToString(this.isFull)}`)
+              Text(this.resToString(this.imageResource))
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
             }
@@ -137,8 +164,8 @@ struct ImagePage {
             .margin(2)
 
             Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageResourceList, (item: Resource | undefined, index: number) => {
-                Button("1")
+              ForEach(this.imageResourceList, (item: Resource | null, index: number) => {
+                Button(this.resToString(item))
                   .type(ButtonType.Capsule)
                   .stateEffect(true)
                   .height(25)
@@ -146,8 +173,167 @@ struct ImagePage {
                   .backgroundColor(0xFF317AFF)
                   .fontSize(14)
                   .onClick(() => {
-                    this.imageResource = item
+                    if (item === undefined) {
+                      this.imageResource = null
+                    } else {
+                      this.imageResource = item
+                    }
                     this.imageDataMD.imageResource = this.imageResource
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片上边距 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageMarginTop}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageMarginTopList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageMarginTop = item
+                    this.imageDataMD.imageMarginTop = this.imageMarginTop
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片下边距 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageMarginBottom}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageMarginBottomList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageMarginBottom = item
+                    this.imageDataMD.imageMarginBottom = this.imageMarginBottom
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片圆角 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageBorderRadius}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageBorderRadiusList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageBorderRadius = item
+                    this.imageDataMD.imageBorderRadius = this.imageBorderRadius
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片基于自身宽度缩放百分比 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageMaximumWidth}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageMaximumWidthList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageMaximumWidth = item
+                    this.imageDataMD.imageMaximumWidth = this.imageMaximumWidth
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片基于父布局宽度缩放百分比 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageFixedRatioWidth}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageFixedRatioWidthList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageFixedRatioWidth = item
+                    this.imageDataMD.imageFixedRatioWidth = this.imageFixedRatioWidth
                   })
               })
             }
@@ -182,12 +368,25 @@ struct ImagePage {
     .backgroundColor(0xFFEAEAEA)
     .height("100%")
   }
+
+  resToString(item: Resource | null): string {
+    if (item !== null) {
+      return "app.media.startIcon"
+    } else {
+      return "null"
+    }
+  }
 }
 
 export class ImageDataMD {
   _isFull: boolean = true
   _pagePath: string = ""
-  _imageResource: Resource|undefined = undefined
+  _imageResource: Resource | null = null
+  _imageMarginTop: number = 10
+  _imageMarginBottom: number = 10
+  _imageBorderRadius: number = 0
+  _imageMaximumWidth: number = 1.0
+  _imageFixedRatioWidth: number| null = null
 
   public set isFull(value: boolean) {
     this._isFull = value
@@ -197,8 +396,28 @@ export class ImageDataMD {
     this._pagePath = value
   }
 
-  public set imageResource(value: Resource|undefined) {
+  public set imageResource(value: Resource | null) {
     this._imageResource = value
+  }
+
+  public set imageMarginTop(value: number) {
+    this._imageMarginTop = value
+  }
+
+  public set imageMarginBottom(value: number) {
+    this._imageMarginBottom = value
+  }
+
+  public set imageBorderRadius(value: number) {
+    this._imageBorderRadius = value
+  }
+
+  public set imageMaximumWidth(value: number) {
+    this._imageMaximumWidth = value
+  }
+
+  public set imageFixedRatioWidth(value: number) {
+    this._imageFixedRatioWidth = value
   }
 
   constructor() {

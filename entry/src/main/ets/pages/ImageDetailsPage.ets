@@ -38,7 +38,32 @@ struct ImageDetailsPage {
    * 图片默认占位图
    */
   @State
-  imageResource: Resource|undefined = undefined
+  imageResource: Resource | null = null
+  /**
+ * 图片上边距
+ */
+  @State
+  imageMarginTop: number = 10
+  /**
+   * 图片下边距
+   */
+  @State
+  imageMarginBottom: number = 10
+  /**
+ * 图片圆角
+ */
+  @State
+  imageBorderRadius: number = 0
+  /**
+   * 图片基于自身宽度缩放百分比
+   */
+  @State
+  imageMaximumWidth: number = 1.0
+  /**
+   * 图片基于父布局宽度缩放百分比
+   */
+  @State
+  imageFixedRatioWidth: number| null = null
   /**
    * 增量加载延迟
    */
@@ -50,6 +75,11 @@ struct ImageDetailsPage {
       this.fileStr = getFileContextStr(imageDataMD._pagePath)
       this.isFull = imageDataMD._isFull
       this.imageResource = imageDataMD._imageResource
+      this.imageMarginTop = imageDataMD._imageMarginTop
+      this.imageMarginBottom = imageDataMD._imageMarginBottom
+      this.imageBorderRadius = imageDataMD._imageBorderRadius
+      this.imageMaximumWidth = imageDataMD._imageMaximumWidth
+      this.imageFixedRatioWidth = imageDataMD._imageFixedRatioWidth
     } catch (e) {
     }
   }
@@ -108,8 +138,15 @@ struct ImageDetailsPage {
     config.setImageCallback(this.setImageCallback)
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this))
-    if(this.imageResource!==undefined){
+    if (this.imageResource !== null) {
       theme.setImageResource(this.imageResource)
+    }
+    theme.setImageMarginTop(this.imageMarginTop)
+    theme.setImageMarginBottom(this.imageMarginBottom)
+    theme.setImageBorderRadius(this.imageBorderRadius)
+    theme.setImageMaximumWidth(this.imageMaximumWidth)
+    if (this.imageFixedRatioWidth !== null) {
+      theme.setImageFixedRatioWidth(this.imageFixedRatioWidth)
     }
     config.setMarkdownTheme(theme)
     return config
@@ -123,7 +160,7 @@ struct ImageDetailsPage {
     return plugin
   }
 
-  setImageCallback(funcArg0: string, funcArg1: Array<string>){
-    hilog.error(1,"1",`-------------funcArg0:${funcArg0}`)
+  setImageCallback(funcArg0: string, funcArg1: Array<string>) {
+    hilog.error(1, "1", `-------------funcArg0:${funcArg0}`)
   }
 }
