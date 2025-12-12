@@ -16,18 +16,18 @@ public class MarkdownImgStyleRawFileCallbackComponent {
     /**
      * 图片链接
      */
-    var destination: String
+    var destinationStyleRawFileCallback: String
 
     /**
      * markdown配置
      */
-    var markdownConfiguration: MarkdownConfiguration
+    var markdownConfigurationStyleRawFileCallback: MarkdownConfiguration
 
     /**
      * 控件宽度 - 单位px
      */
     @Prop
-    var componentWidth: Float64
+    var componentWidthStyleRawFileCallback: Float64
 
     /**
      * 图片样式
@@ -37,22 +37,22 @@ public class MarkdownImgStyleRawFileCallbackComponent {
     /**
      * 图片点击事件
      */
-    var imageCallback: (String) -> Unit
+    var imageCallbackStyleRawFileCallback: (String) -> Unit
 
     /**
      * 链接点击事件
      */
-    var linkCallback: ?(String) -> Unit
+    var linkCallbackStyleRawFileCallback: ?(String) -> Unit
 
     /**
      * 链接url
      */
-    var linkUrl: ?String = Option<String>.None
+    var linkUrlStyleRawFileCallback: ?String = Option<String>.None
 
     /**
      * 是否是链接
      */
-    var isLink: Bool = false
+    var isLinkStyleRawFileCallback: Bool = false
 
     /**
      * 图片加载完成
@@ -64,13 +64,13 @@ public class MarkdownImgStyleRawFileCallbackComponent {
      * 图片宽度 - 单位px
      */
     @State
-    var width: ?Float64 = Option<Float64>.None
+    var widthStyleRawFileCallback: ?Float64 = Option<Float64>.None
 
     /**
      * 图片高度 - 单位px
      */
     @State
-    var height: ?Float64 = Option<Float64>.None
+    var heightStyleRawFileCallback: ?Float64 = Option<Float64>.None
 
     /**
      * 图片数据
@@ -82,13 +82,13 @@ public class MarkdownImgStyleRawFileCallbackComponent {
      * 替换之后的图片宽度 - 单位px
      */
     @State
-    var imageWidth: ?Float64 = Option<Float64>.None
+    var imageWidthStyleRawFileCallback: ?Float64 = Option<Float64>.None
 
     /**
      * 替换之后的图片高度 - 单位px
      */
     @State
-    var imageHeight: ?Float64 = Option<Float64>.None
+    var imageHeightStyleRawFileCallback: ?Float64 = Option<Float64>.None
 
     /**
      * 替换之后的图片数据
@@ -101,48 +101,6 @@ public class MarkdownImgStyleRawFileCallbackComponent {
      */
     @State
     var imageParse: Int64 = 0 // 0:开始解析。1：解析成功完成。2：解析失败
-
-    /**
-     * 图片上边距
-     */
-    @State
-    var imageMarginTop: Float64 = 10.0
-
-    /**
-     * 图片下边距
-     */
-    @State
-    var imageMarginBottom: Float64 = 10.0
-
-    /**
-     * 图片圆角大小
-     */
-    @State
-    var imageBorderRadius: Float64 = 0.0
-
-    /**
-     * 基于外层控件宽度大小对图片进行百分比缩放比例
-     */
-    @State
-    var imageFixedRatioWidth: Option<Float64> = Option<Float64>.None
-
-    /**
-     * 基于图片自身宽度大小对图片进行百分比缩放比例
-     */
-    @State
-    var imageMaximumWidth: Float64 = 1.0
-
-    /**
-     * 图片占位图
-     */
-    @State
-    var imageResource: Option<AppResource> = Option<AppResource>.None
-
-    /**
-     * 是否有图片占位图
-     */
-    @State
-    var isImageResource: Bool = false
 
     /**
      * 控件宽度 - 单位px
@@ -163,18 +121,7 @@ public class MarkdownImgStyleRawFileCallbackComponent {
     var align: FlexAlign = FlexAlign.Start
 
     protected override func aboutToAppear(): Unit {
-        imageMarginTop = markdownConfiguration.markdownTheme.imageMarginTop
-        imageMarginBottom = markdownConfiguration.markdownTheme.imageMarginBottom
-        imageBorderRadius = markdownConfiguration.markdownTheme.imageBorderRadius
-        imageFixedRatioWidth = markdownConfiguration.markdownTheme.imageFixedRatioWidth
-        imageMaximumWidth = markdownConfiguration.markdownTheme.imageMaximumWidth
-        imageResource = markdownConfiguration.markdownTheme.imageResource
-        if (imageResource.isSome()) {
-            isImageResource = true
-        } else {
-            isImageResource = false
-        }
-        componentImageWidth = vp2px(componentWidth.vp)().value
+        componentImageWidth = vp2px(componentWidthStyleRawFileCallback.vp)().value
         imageCallPixelmap()
         localRowImageStyleToPixelMap()
     }
@@ -189,38 +136,38 @@ public class MarkdownImgStyleRawFileCallbackComponent {
     func build() {
         if (true) {
             if (imageParse == 1) {
-                imageCallBackComponent(imagePixelMap1(), imageMarginTop, imageMarginBottom, imageBorderRadius, imageFixedRatioWidth, componentImageWidth, imageWidth(), imageHeight(), imageMaximumWidth, markdownConfiguration, isLink, imageCallback, linkCallback, linkUrl, destination)
+                imageCallBackComponent(imagePixelMap1(), markdownConfigurationStyleRawFileCallback.markdownTheme.imageMarginTop, markdownConfigurationStyleRawFileCallback.markdownTheme.imageMarginBottom, markdownConfigurationStyleRawFileCallback.markdownTheme.imageBorderRadius, markdownConfigurationStyleRawFileCallback.markdownTheme.imageFixedRatioWidth, componentImageWidth, imageWidthStyleRawFileCallback(), imageHeightStyleRawFileCallback(), markdownConfigurationStyleRawFileCallback.markdownTheme.imageMaximumWidth, markdownConfigurationStyleRawFileCallback, isLinkStyleRawFileCallback, imageCallbackStyleRawFileCallback, linkCallbackStyleRawFileCallback, linkUrlStyleRawFileCallback, destinationStyleRawFileCallback)
             } else {
                 if (imageType == 1) {
                     ImageSpan(imagePixelMap())
                         // 设置外边距属性
-                        .margin(top: imageMarginTop, bottom: imageMarginBottom)
+                        .margin(top: markdownConfigurationStyleRawFileCallback.markdownTheme.imageMarginTop, bottom: markdownConfigurationStyleRawFileCallback.markdownTheme.imageMarginBottom)
                         // 自定义图片圆角
-                        .interopBorderRadius(imageSpanBorderRadius(radius, imageBorderRadius))
+                        .interopBorderRadius(imageSpanBorderRadius(radius, markdownConfigurationStyleRawFileCallback.markdownTheme.imageBorderRadius))
                         // 设置组件自身的宽度
-                        .width(imageSpanWidth(imageFixedRatioWidth, componentImageWidth, width(), imageMaximumWidth))
+                        .width(imageSpanWidth(markdownConfigurationStyleRawFileCallback.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthStyleRawFileCallback(), markdownConfigurationStyleRawFileCallback.markdownTheme.imageMaximumWidth))
                         // 设置组件自身的高度
-                        .height(imageSpanHeight(imageFixedRatioWidth, componentImageWidth, width(), height(), imageMaximumWidth))
+                        .height(imageSpanHeight(markdownConfigurationStyleRawFileCallback.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthStyleRawFileCallback(), heightStyleRawFileCallback(), markdownConfigurationStyleRawFileCallback.markdownTheme.imageMaximumWidth))
                         // 设置图片的缩放类型
-                        .objectFit(markdownConfiguration.markdownTheme.imageFitType)
+                        .objectFit(markdownConfigurationStyleRawFileCallback.markdownTheme.imageFitType)
                         // 设置图片基于文本的对齐方式
                         .verticalAlign(ImageSpanAlignment.CENTER)
                         // 设置约束尺寸，组件布局时，进行尺寸范围限制
                         .constraintSize(maxWidth: 100.percent)
                         // 点击动作触发该方法调用
-                        .onClick {evt => imageSpanOnClick(isLink, imageCallback, linkCallback, linkUrl, destination)}
+                        .onClick {evt => imageSpanOnClick(isLinkStyleRawFileCallback, imageCallbackStyleRawFileCallback, linkCallbackStyleRawFileCallback, linkUrlStyleRawFileCallback, destinationStyleRawFileCallback)}
                 }
             }
-            if (isImageResource && imageType != 1 && imageParse != 1) {
+            if (markdownConfigurationStyleRawFileCallback.markdownTheme.imageResource.isSome() && imageType != 1 && imageParse != 1) {
                 // 有占位图
-                imagePlaceholderComponent(imageResource(), imageMarginTop, imageMarginBottom, imageFixedRatioWidth, imageMaximumWidth, if (radius.isSome()) { length2Float(radius()) } else { imageBorderRadius }, componentImageWidth)
+                imagePlaceholderComponent(markdownConfigurationStyleRawFileCallback.markdownTheme.imageResource(), markdownConfigurationStyleRawFileCallback.markdownTheme.imageMarginTop, markdownConfigurationStyleRawFileCallback.markdownTheme.imageMarginBottom, markdownConfigurationStyleRawFileCallback.markdownTheme.imageFixedRatioWidth, markdownConfigurationStyleRawFileCallback.markdownTheme.imageMaximumWidth, if (radius.isSome()) { length2Float(radius()) } else { markdownConfigurationStyleRawFileCallback.markdownTheme.imageBorderRadius }, componentImageWidth)
             }
         }
     }
 
     func imageCallPixelmap() {
         spawn {
-            let data: ?Array<UInt8> = markdownConfiguration.imageCallbackCallback()(destination)
+            let data: ?Array<UInt8> = markdownConfigurationStyleRawFileCallback.imageCallbackCallback()(destinationStyleRawFileCallback)
             if (data.isSome()) {
                 var imageSource: ImageSource = createImageSource(data())
                 let pixelMap1: PixelMap = imageSource.createPixelMap()
@@ -229,10 +176,10 @@ public class MarkdownImgStyleRawFileCallbackComponent {
                 let imageHeight1: Float64 = Float64(size.height)
                 imageSource.Release()
                 launch {
-                    this.imageWidth = imageWidth1
-                    this.imageHeight = imageHeight1
+                    this.imageWidthStyleRawFileCallback = imageWidth1
+                    this.imageHeightStyleRawFileCallback = imageHeight1
                     this.imagePixelMap1 = pixelMap1
-                    if (this.imagePixelMap1.isSome() && this.imageWidth.isSome() && this.imageHeight.isSome()) {
+                    if (this.imagePixelMap1.isSome() && this.imageWidthStyleRawFileCallback.isSome() && this.imageHeightStyleRawFileCallback.isSome()) {
                         imageParse = 1
                     } else {
                         imageParse = 2
@@ -251,11 +198,11 @@ public class MarkdownImgStyleRawFileCallbackComponent {
      */
     func localRowImageStyleToPixelMap() {
         let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
-            pixelMap, width, height => launch {
+            pixelMap, widthStyleRawFileCallback, heightStyleRawFileCallback => launch {
                 this.imagePixelMap = pixelMap
-                this.width = width
-                this.height = height
-                if (this.imagePixelMap.isSome() && this.width.isSome() && this.height.isSome()) {
+                this.heightStyleRawFileCallback = heightStyleRawFileCallback
+                this.widthStyleRawFileCallback = widthStyleRawFileCallback
+                if (this.imagePixelMap.isSome() && this.widthStyleRawFileCallback.isSome() && this.heightStyleRawFileCallback.isSome()) {
                     imageType = 1
                 } else {
                     imageType = 2
@@ -267,8 +214,8 @@ public class MarkdownImgStyleRawFileCallbackComponent {
             radius = picStyleObj.borderRadius()
         }
         align = picStyleObj.align
-        let picStyleObjWidth: ?Float64 = length2Float64(picStyleObj.width, componentImageWidth)
         let picStyleObjHeight: ?Float64 = length2Float64(picStyleObj.height, componentImageWidth)
-        let fut = rawfileToPixelmapStyle(destination, markdownConfiguration.markdownTheme.abilityContext, markdownConfiguration.markdownTheme.stageContext, componentImageWidth, picStyleObjWidth, picStyleObjHeight, callback)
+        let picStyleObjWidth: ?Float64 = length2Float64(picStyleObj.width, componentImageWidth)
+        let fut = rawfileToPixelmapStyle(destinationStyleRawFileCallback, markdownConfigurationStyleRawFileCallback.markdownTheme.abilityContext, markdownConfigurationStyleRawFileCallback.markdownTheme.stageContext, componentImageWidth, picStyleObjWidth, picStyleObjHeight, callback)
     }
 }

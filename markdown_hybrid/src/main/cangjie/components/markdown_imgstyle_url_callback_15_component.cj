@@ -16,18 +16,18 @@ public class MarkdownImgStyleUrlCallback15Component {
     /**
      * markdown配置
      */
-    var markdownConfiguration: MarkdownConfiguration
+    var markdownConfigurationStyleUrlCallback15: MarkdownConfiguration
 
     /**
      * 图片链接
      */
-    var destination: String
+    var destinationStyleUrlCallback15: String
 
     /**
      * 控件宽度 - 单位vp
      */
     @Prop
-    var componentWidth: Float64
+    var componentWidthStyleUrlCallback15: Float64
 
     /**
      * 图片样式
@@ -37,22 +37,22 @@ public class MarkdownImgStyleUrlCallback15Component {
     /**
      * 图片点击事件
      */
-    var imageCallback: (String) -> Unit
+    var imageCallbackStyleUrlCallback15: (String) -> Unit
 
     /**
      * 链接点击事件
      */
-    var linkCallback: ?(String) -> Unit
+    var linkCallbackStyleUrlCallback15: ?(String) -> Unit
 
     /**
      * 是否是链接
      */
-    var isLink: Bool = false
+    var isLinkStyleUrlCallback15: Bool = false
 
     /**
      * 链接url
      */
-    var linkUrl: ?String = Option<String>.None
+    var linkUrlStyleUrlCallback15: ?String = Option<String>.None
 
     /**
      * 图片加载
@@ -64,25 +64,25 @@ public class MarkdownImgStyleUrlCallback15Component {
      * 图片宽度 - 单位px
      */
     @State
-    var width: Float64 = 0.0
+    var widthStyleUrlCallback15: Float64 = 0.0
 
     /**
      * 图片高度 - 单位px
      */
     @State
-    var height: Float64 = 0.0
+    var heightStyleUrlCallback15: Float64 = 0.0
 
     /**
      * 替换之后的图片宽度 - 单位px
      */
     @State
-    var imageWidth: ?Float64 = Option<Float64>.None
+    var imageWidthStyleUrlCallback15: ?Float64 = Option<Float64>.None
 
     /**
      * 替换之后的图片高度 - 单位px
      */
     @State
-    var imageHeight: ?Float64 = Option<Float64>.None
+    var imageHeightStyleUrlCallback15: ?Float64 = Option<Float64>.None
 
     /**
      * 替换之后的图片数据
@@ -95,48 +95,6 @@ public class MarkdownImgStyleUrlCallback15Component {
      */
     @State
     var imageParse: Int64 = 0 // 0：开始解析。1：解析成功完成。2：解析失败
-
-    /**
-     * 图片上边距
-     */
-    @State
-    var imageMarginTop: Float64 = 10.0
-
-    /**
-     * 图片下边距
-     */
-    @State
-    var imageMarginBottom: Float64 = 10.0
-
-    /**
-     * 图片圆角大小
-     */
-    @State
-    var imageBorderRadius: Float64 = 0.0
-
-    /**
-     * 基于外层控件宽度大小对图片进行百分比缩放比例
-     */
-    @State
-    var imageFixedRatioWidth: Option<Float64> = Option<Float64>.None
-
-    /**
-     * 基于图片自身宽度大小对图片进行百分比缩放比例
-     */
-    @State
-    var imageMaximumWidth: Float64 = 1.0
-
-    /**
-     * 图片占位图
-     */
-    @State
-    var imageResource: Option<AppResource> = Option<AppResource>.None
-
-    /**
-     * 是否有图片占位图
-     */
-    @State
-    var isImageResource: Bool = false
 
     /**
      * 图片最大宽度 - 单位px
@@ -169,18 +127,7 @@ public class MarkdownImgStyleUrlCallback15Component {
     var align: FlexAlign = FlexAlign.Start
 
     protected override func aboutToAppear(): Unit {
-        imageMarginTop = markdownConfiguration.markdownTheme.imageMarginTop
-        imageMarginBottom = markdownConfiguration.markdownTheme.imageMarginBottom
-        imageBorderRadius = markdownConfiguration.markdownTheme.imageBorderRadius
-        imageFixedRatioWidth = markdownConfiguration.markdownTheme.imageFixedRatioWidth
-        imageMaximumWidth = markdownConfiguration.markdownTheme.imageMaximumWidth
-        imageResource = markdownConfiguration.markdownTheme.imageResource
-        if (imageResource.isSome()) {
-            isImageResource = true
-        } else {
-            isImageResource = false
-        }
-        componentImageWidth = vp2px(componentWidth.vp)().value
+        componentImageWidth = vp2px(componentWidthStyleUrlCallback15.vp)().value
         let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
         if (picStyleObj.borderRadius.isSome()) {
             radius = picStyleObj.borderRadius()
@@ -200,34 +147,34 @@ public class MarkdownImgStyleUrlCallback15Component {
     func build() {
         if (true) {
             if (imageParse == 1) {
-                imageCallBackComponent(imagePixelMap(), imageMarginTop, imageMarginBottom, imageBorderRadius, imageFixedRatioWidth, componentImageWidth, imageWidth(), imageHeight(), imageMaximumWidth, markdownConfiguration, isLink, imageCallback, linkCallback, linkUrl, destination)
+                imageCallBackComponent(imagePixelMap(), markdownConfigurationStyleUrlCallback15.markdownTheme.imageMarginTop, markdownConfigurationStyleUrlCallback15.markdownTheme.imageMarginBottom, markdownConfigurationStyleUrlCallback15.markdownTheme.imageBorderRadius, markdownConfigurationStyleUrlCallback15.markdownTheme.imageFixedRatioWidth, componentImageWidth, imageWidthStyleUrlCallback15(), imageHeightStyleUrlCallback15(), markdownConfigurationStyleUrlCallback15.markdownTheme.imageMaximumWidth, markdownConfigurationStyleUrlCallback15, isLinkStyleUrlCallback15, imageCallbackStyleUrlCallback15, linkCallbackStyleUrlCallback15, linkUrlStyleUrlCallback15, destinationStyleUrlCallback15)
             } else {
                 if (imageType != 2) {
-                    ImageSpan(destination)
+                    ImageSpan(destinationStyleUrlCallback15)
                         // 设置外边距属性
-                        .margin(top: imageMarginTop, bottom: imageMarginBottom)
+                        .margin(top: markdownConfigurationStyleUrlCallback15.markdownTheme.imageMarginTop, bottom: markdownConfigurationStyleUrlCallback15.markdownTheme.imageMarginBottom)
                         // 自定义图片圆角
-                        .interopBorderRadius(imageSpanBorderRadius(radius, imageBorderRadius))
+                        .interopBorderRadius(imageSpanBorderRadius(radius, markdownConfigurationStyleUrlCallback15.markdownTheme.imageBorderRadius))
                         // 设置组件自身的宽度
-                        .width(imageSpanWidth(imageFixedRatioWidth, componentImageWidth, width, imageMaximumWidth))
+                        .width(imageSpanWidth(markdownConfigurationStyleUrlCallback15.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthStyleUrlCallback15, markdownConfigurationStyleUrlCallback15.markdownTheme.imageMaximumWidth))
                         // 设置组件自身的高度
-                        .height(imageSpanHeight(imageFixedRatioWidth, componentImageWidth, width, height, imageMaximumWidth))
+                        .height(imageSpanHeight(markdownConfigurationStyleUrlCallback15.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthStyleUrlCallback15, heightStyleUrlCallback15, markdownConfigurationStyleUrlCallback15.markdownTheme.imageMaximumWidth))
                         // 设置组件的可见性
                         .visibility(visibilityImageSpanType(imageType))
                         // 设置图片的缩放类型
-                        .objectFit(markdownConfiguration.markdownTheme.imageFitType)
+                        .objectFit(markdownConfigurationStyleUrlCallback15.markdownTheme.imageFitType)
                         // 设置图片基于文本的对齐方式
                         .verticalAlign(ImageSpanAlignment.CENTER)
                         // 设置约束尺寸，组件布局时，进行尺寸范围限制
                         .constraintSize(maxWidth: 100.percent)
                         // 点击动作触发该方法调用
-                        .onClick {evt => imageSpanOnClick(isLink, imageCallback, linkCallback, linkUrl, destination)}
+                        .onClick {evt => imageSpanOnClick(isLinkStyleUrlCallback15, imageCallbackStyleUrlCallback15, linkCallbackStyleUrlCallback15, linkUrlStyleUrlCallback15, destinationStyleUrlCallback15)}
                         // 图片成功加载时触发该回调，返回成功加载的图片尺寸
                         .onComplete {
                             imageLoadResult =>
                                 let res = imageWidthHeight(picStyleObjWidth, picStyleObjHeight, componentImageWidth, imageLoadResult.height, imageLoadResult.width)
-                                width = res[0]
-                                height = res[1]
+                                widthStyleUrlCallback15 = res[0]
+                                heightStyleUrlCallback15 = res[1]
                                 imageType = 1
                         }
                         // 图片加载出现异常时触发该回调
@@ -236,16 +183,16 @@ public class MarkdownImgStyleUrlCallback15Component {
                         }
                 }
             }
-            if (isImageResource && imageType != 1 && imageParse != 1) {
+            if (markdownConfigurationStyleUrlCallback15.markdownTheme.imageResource.isSome() && imageType != 1 && imageParse != 1) {
                 // 有占位图
-                imagePlaceholderComponent(imageResource(), imageMarginTop, imageMarginBottom, imageFixedRatioWidth, imageMaximumWidth, if (radius.isSome()) { length2Float(radius()) } else { imageBorderRadius }, componentImageWidth)
+                imagePlaceholderComponent(markdownConfigurationStyleUrlCallback15.markdownTheme.imageResource(), markdownConfigurationStyleUrlCallback15.markdownTheme.imageMarginTop, markdownConfigurationStyleUrlCallback15.markdownTheme.imageMarginBottom, markdownConfigurationStyleUrlCallback15.markdownTheme.imageFixedRatioWidth, markdownConfigurationStyleUrlCallback15.markdownTheme.imageMaximumWidth, if (radius.isSome()) { length2Float(radius()) } else { markdownConfigurationStyleUrlCallback15.markdownTheme.imageBorderRadius }, componentImageWidth)
             }
         }
     }
 
     func imageCallPixelmap() {
         spawn {
-            let data: ?Array<UInt8> = markdownConfiguration.imageCallbackCallback()(destination)
+            let data: ?Array<UInt8> = markdownConfigurationStyleUrlCallback15.imageCallbackCallback()(destinationStyleUrlCallback15)
             if (data.isSome()) {
                 var imageSource: ImageSource = createImageSource(data())
                 let pixelMap1: PixelMap = imageSource.createPixelMap()
@@ -254,10 +201,10 @@ public class MarkdownImgStyleUrlCallback15Component {
                 let imageHeight1: Float64 = Float64(size.height)
                 imageSource.Release()
                 launch {
-                    this.imageWidth = imageWidth1
-                    this.imageHeight = imageHeight1
+                    this.imageWidthStyleUrlCallback15 = imageWidth1
+                    this.imageHeightStyleUrlCallback15 = imageHeight1
                     this.imagePixelMap = pixelMap1
-                    if (this.imagePixelMap.isSome() && this.imageWidth.isSome() && this.imageHeight.isSome()) {
+                    if (this.imagePixelMap.isSome() && this.imageWidthStyleUrlCallback15.isSome() && this.imageHeightStyleUrlCallback15.isSome()) {
                         imageParse = 1
                     } else {
                         imageParse = 2

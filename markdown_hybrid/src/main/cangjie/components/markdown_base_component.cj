@@ -894,14 +894,14 @@ func styleImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
     if (markdownConfiguration.imageCallbackCallback.isNone()) {
         if ((item.node as StyleImage)().getDestination().startsWith("./")) {
             MarkdownImgStyleRawFileComponent(
-                markdownConfiguration: markdownConfiguration,
-                destination: (item.node as StyleImage)().getDestination(),
-                componentWidth: componentWidth,
+                markdownConfigurationStyleRawFile: markdownConfiguration,
+                destinationStyleRawFile: (item.node as StyleImage)().getDestination(),
+                componentWidthStyleRawFile: componentWidth,
                 picStyle: (item.node as StyleImage)().styles,
-                imageCallback: imageCallback,
-                linkCallback: markdownConfiguration.linkCallback,
-                isLink: item.link.isSome(),
-                linkUrl: if (item.link.isSome()) {
+                imageCallbackStyleRawFile: imageCallback,
+                linkCallbackStyleRawFile: markdownConfiguration.linkCallback,
+                isLinkStyleRawFile: item.link.isSome(),
+                linkUrlStyleRawFile: if (item.link.isSome()) {
                     item.link().getDestination()
                 } else {
                     Option<String>.None
@@ -910,14 +910,14 @@ func styleImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
         } else {
             if (DeviceInfo.sdkApiVersion >= 15) {
                 MarkdownImgStyleUrl15Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as StyleImage)().getDestination(),
-                    componentWidth: componentWidth,
+                    markdownConfigurationStyleUrl15: markdownConfiguration,
+                    destinationStyleUrl15: (item.node as StyleImage)().getDestination(),
+                    componentWidthStyleUrl15: componentWidth,
                     picStyle: (item.node as StyleImage)().styles,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    imageCallbackStyleUrl15: imageCallback,
+                    linkCallbackStyleUrl15: markdownConfiguration.linkCallback,
+                    isLinkStyleUrl15: item.link.isSome(),
+                    linkUrlStyleUrl15: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
@@ -925,14 +925,14 @@ func styleImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
                 )
             } else {
                 MarkdownImgStyleUrl14Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as StyleImage)().getDestination(),
-                    componentWidth: componentWidth,
+                    markdownConfigurationStyleUrl14: markdownConfiguration,
+                    destinationStyleUrl14: (item.node as StyleImage)().getDestination(),
+                    componentWidthStyleUrl14: componentWidth,
                     picStyle: (item.node as StyleImage)().styles,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    imageCallbackStyleUrl14: imageCallback,
+                    linkCallbackStyleUrl14: markdownConfiguration.linkCallback,
+                    isLinkStyleUrl14: item.link.isSome(),
+                    linkUrlStyleUrl14: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
@@ -943,14 +943,14 @@ func styleImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
     } else {
         if ((item.node as StyleImage)().getDestination().startsWith("./")) {
             MarkdownImgStyleRawFileCallbackComponent(
-                markdownConfiguration: markdownConfiguration,
-                destination: (item.node as StyleImage)().getDestination(),
-                componentWidth: componentWidth,
+                markdownConfigurationStyleRawFileCallback: markdownConfiguration,
+                destinationStyleRawFileCallback: (item.node as StyleImage)().getDestination(),
+                componentWidthStyleRawFileCallback: componentWidth,
                 picStyle: (item.node as StyleImage)().styles,
-                imageCallback: imageCallback,
-                linkCallback: markdownConfiguration.linkCallback,
-                isLink: item.link.isSome(),
-                linkUrl: if (item.link.isSome()) {
+                imageCallbackStyleRawFileCallback: imageCallback,
+                linkCallbackStyleRawFileCallback: markdownConfiguration.linkCallback,
+                isLinkStyleRawFileCallback: item.link.isSome(),
+                linkUrlStyleRawFileCallback: if (item.link.isSome()) {
                     item.link().getDestination()
                 } else {
                     Option<String>.None
@@ -959,14 +959,14 @@ func styleImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
         } else {
             if (DeviceInfo.sdkApiVersion >= 15) {
                 MarkdownImgStyleUrlCallback15Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as StyleImage)().getDestination(),
-                    componentWidth: componentWidth,
+                    markdownConfigurationStyleUrlCallback15: markdownConfiguration,
+                    destinationStyleUrlCallback15: (item.node as StyleImage)().getDestination(),
+                    componentWidthStyleUrlCallback15: componentWidth,
                     picStyle: (item.node as StyleImage)().styles,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    imageCallbackStyleUrlCallback15: imageCallback,
+                    linkCallbackStyleUrlCallback15: markdownConfiguration.linkCallback,
+                    isLinkStyleUrlCallback15: item.link.isSome(),
+                    linkUrlStyleUrlCallback15: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
@@ -974,14 +974,14 @@ func styleImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
                 )
             } else {
                 MarkdownImgStyleUrlCallback14Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as StyleImage)().getDestination(),
-                    componentWidth: componentWidth,
+                    markdownConfigurationStyleUrlCallback14: markdownConfiguration,
+                    destinationStyleUrlCallback14: (item.node as StyleImage)().getDestination(),
+                    componentWidthStyleUrlCallback14: componentWidth,
                     picStyle: (item.node as StyleImage)().styles,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    imageCallbackStyleUrlCallback14: imageCallback,
+                    linkCallbackStyleUrlCallback14: markdownConfiguration.linkCallback,
+                    isLinkStyleUrlCallback14: item.link.isSome(),
+                    linkUrlStyleUrlCallback14: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
