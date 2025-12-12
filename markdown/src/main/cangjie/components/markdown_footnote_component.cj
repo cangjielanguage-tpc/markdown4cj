@@ -81,16 +81,7 @@ public class MarkdownFootnoteComponent {
                     item: NodeView, idx: Int64 => if (item.node is Paragraph) {
                         // 段落
                         ListItem() {
-                            MarkdownParagraphComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                footnoteBlock: (nodeView.node as FootnoteBlock)(),
-                                fontCallback: fontCallback,
-                                tocListOnClick: tocListOnClick,
-                                imageCallback: imageCallback,
-                                componentWidth: componentWidth,
-                                paragraphComponents: markdownCacheConfiguration.paragraphComponents
-                            )
+                            blockParagraphComponent(markdownConfiguration, item, (nodeView.node as FootnoteBlock)(), fontCallback, tocListOnClick, imageCallback, componentWidth, false, false, markdownCacheConfiguration.paragraphComponents)
                         }
                     } else {
                         // TODO 其他节点
@@ -123,91 +114,6 @@ public class MarkdownFootnoteComponent {
         if (refreshNodeViewSize == 0) {
             return
         }
-        if (refreshNodeViewSize > dataSourceSize) {
-            // 新数据大于页面数据
-            // 循环判断历史数据有没有做过修改
-            for (i in 0..dataSourceSize) {
-                let newBlockHash = refreshNodeViews[i].nodeHash
-                let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
-                let newContentHash = refreshNodeViews[i].contentHash
-                let oldContentHash = nodeViewDataSource.getData(i).contentHash
-                // 唯一ID是否相同
-                if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                    if (refreshNodeViews[i].node is Paragraph) {
-                        // 段落
-                        let cache = markdownCacheConfiguration.paragraphComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else {
-                        nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                    }
-                } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
-                }
-            }
-            // 循环添加新数据
-            for (i in dataSourceSize..refreshNodeViewSize) {
-                nodeViewDataSource.addData(refreshNodeViews[i])
-            }
-        } else if (refreshNodeViewSize == dataSourceSize) {
-            // 新数据等于页面数据
-            for (i in 0..dataSourceSize) {
-                let newBlockHash = refreshNodeViews[i].nodeHash
-                let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
-                let newContentHash = refreshNodeViews[i].contentHash
-                let oldContentHash = nodeViewDataSource.getData(i).contentHash
-                // 唯一ID是否相同
-                if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                    if (refreshNodeViews[i].node is Paragraph) {
-                        // 段落
-                        let cache = markdownCacheConfiguration.paragraphComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else {
-                        nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                    }
-                } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
-                }
-            }
-        } else {
-            // 新数据小于页面数据
-            // 循环判断历史数据有没有做过修改
-            for (i in 0..refreshNodeViewSize) {
-                let newBlockHash = refreshNodeViews[i].nodeHash
-                let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
-                let newContentHash = refreshNodeViews[i].contentHash
-                let oldContentHash = nodeViewDataSource.getData(i).contentHash
-                // 唯一ID是否相同
-                if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                    if (refreshNodeViews[i].node is Paragraph) {
-                        // 段落
-                        let cache = markdownCacheConfiguration.paragraphComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else {
-                        nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                    }
-                } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
-                }
-            }
-            // 循环删除多余的旧数据
-            for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
-                nodeViewDataSource.deleteData(i)
-            }
-        }
+        refreshNodeViewDataSource(nodeView, refreshNodeViews, refreshNodeViewSize, dataSourceSize, nodeViewDataSource, "footnote", markdownCacheConfiguration, Option<HashMap<Int64, MarkdownTableBlockRowComponent>>.None)
     }
 }

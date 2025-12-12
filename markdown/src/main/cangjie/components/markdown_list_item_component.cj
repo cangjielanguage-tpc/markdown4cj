@@ -104,113 +104,31 @@ class MarkdownListItemComponent {
                     item: NodeView, idx: Int64 => ListItem() {
                         if (item.node is Paragraph) {
                             // 段落
-                            MarkdownParagraphComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                fontCallback: fontCallback,
-                                imageCallback: imageCallback,
-                                tocListOnClick: tocListOnClick,
-                                componentWidth: componentWidth,
-                                isListTo: true,
-                                paragraphComponents: markdownCacheConfiguration.paragraphComponents
-                            )
+                            blockParagraphComponent(markdownConfiguration, item, Option<FootnoteBlock>.None, fontCallback, tocListOnClick, imageCallback, componentWidth, true, false, markdownCacheConfiguration.paragraphComponents)
                         } else if (item.node is Heading) {
                             // 标题
-                            MarkdownHeadingComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                fontCallback: fontCallback,
-                                imageCallback: imageCallback,
-                                componentWidth: componentWidth,
-                                isListTo: true,
-                                headingComponents: markdownCacheConfiguration.headingComponents
-                            )
+                            blockHeadingComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, true, markdownCacheConfiguration.headingComponents)
                         } else if (item.node is IndentedCodeBlock) {
                             // 缩进代码
-                            MarkdownIndentedCodeBlockComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
-                            )
+                            blockIndentedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.indentedCodeComponents)
                         } else if (item.node is FencedCodeBlock) {
                             // 围栏代码
-                            MarkdownFencedCodeBlockComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
-                            )
+                            blockFencedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.fencedCodeComponents)
                         } else if (item.node is BulletList) {
                             // 无序列表
-                            MarkdownListComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                adBuilder: adBuilder,
-                                videoBuilder: videoBuilder,
-                                audioBuilder: audioBuilder,
-                                isOrdered: false,
-                                fontCallback: fontCallback,
-                                imageCallback: imageCallback,
-                                tocListOnClick: tocListOnClick,
-                                videoCallback: videoCallback,
-                                componentWidth: componentWidth,
-                                markdownCacheConfiguration: markdownCacheConfiguration
-                            )
+                            MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: false, fontCallback: fontCallback, imageCallback: imageCallback, tocListOnClick: tocListOnClick, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
                         } else if (item.node is OrderedList) {
                             // 有序列表
-                            MarkdownListComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                adBuilder: adBuilder,
-                                videoBuilder: videoBuilder,
-                                audioBuilder: audioBuilder,
-                                isOrdered: true,
-                                fontCallback: fontCallback,
-                                imageCallback: imageCallback,
-                                tocListOnClick: tocListOnClick,
-                                videoCallback: videoCallback,
-                                componentWidth: componentWidth,
-                                markdownCacheConfiguration: markdownCacheConfiguration
-                            )
+                            MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: true, fontCallback: fontCallback, imageCallback: imageCallback, tocListOnClick: tocListOnClick, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
                         } else if (item.node is BlockQuote) {
                             // 块引用
-                            MarkdownQuoteComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                adBuilder: adBuilder,
-                                videoBuilder: videoBuilder,
-                                audioBuilder: audioBuilder,
-                                fontCallback: fontCallback,
-                                imageCallback: imageCallback,
-                                tocListOnClick: tocListOnClick,
-                                videoCallback: videoCallback,
-                                componentWidth: componentWidth,
-                                markdownCacheConfiguration: markdownCacheConfiguration
-                            )
+                            MarkdownQuoteComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, fontCallback: fontCallback, imageCallback: imageCallback, tocListOnClick: tocListOnClick, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
                         } else if (item.node is TableBlock) {
                             // 表格
-                            MarkdownTableBlockComponent(
-                                markdownConfiguration: markdownConfiguration,
-                                nodeView: item,
-                                fontCallback: fontCallback,
-                                imageCallback: imageCallback,
-                                componentWidth: componentWidth,
-                                tableComponents: markdownCacheConfiguration.tableComponents,
-                                tableRowComponents: markdownCacheConfiguration.tableRowComponents,
-                                tableCellComponents: markdownCacheConfiguration.tableCellComponents
-                            )
+                            blockTableComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, markdownCacheConfiguration.tableComponents, markdownCacheConfiguration.tableRowComponents, markdownCacheConfiguration.tableCellComponents)
                         } else if (item.node is LatexMathBlock) {
                             // 数学公式 - 单行
-                            if ((item.node as LatexMathBlock)().isClosed) {
-                                // 结束显示数学公式
-                                MarkdownLatexMathBlockComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    latexStr: (item.node as LatexMathBlock)().latex
-                                )
-                            } else {
-                                // 没结束显示纯文本
-                                Text((item.node as LatexMathBlock)().latex)
-                            }
+                            blockLatextComponent(markdownConfiguration, item)
                         } else if (item.node is BlockAudio) {
                             // 音频
                             audioBuilder(item, markdownConfiguration)
@@ -219,20 +137,10 @@ class MarkdownListItemComponent {
                             videoBuilder(item, markdownConfiguration, videoCallback)
                         } else if (item.node is SlideBlock) {
                             // 图片幻灯片
-                            MarkdownImageBannerComponent(
-                                slideBlockNodeView: item,
-                                markdownConfiguration: markdownConfiguration,
-                                imageCallback: imageCallback
-                            )
+                            blockImageBannerComponent(markdownConfiguration, item, imageCallback)
                         } else if (item.node is FencedCodeBlockListBlock) {
                             // 代码列表
-                            MarkdownCodeBlockListComponent(
-                                nodeView: item,
-                                strInfos: toCodeList(item)[0],
-                                strText: toCodeList(item)[1],
-                                strInfoText: toCodeList(item)[2],
-                                markdownConfiguration: markdownConfiguration
-                            )
+                            blockCodeBlockListComponent(markdownConfiguration, item, toCodeList(item))
                         } else if (item.node is BlockAD) {
                             // 广告
                             adBuilder(item)
@@ -270,200 +178,6 @@ class MarkdownListItemComponent {
         if (refreshNodeViewSize == 0) {
             return
         }
-        if (refreshNodeViewSize > dataSourceSize) {
-            // 新数据大于页面数据
-            // 循环判断历史数据有没有做过修改
-            for (i in 0..dataSourceSize) {
-                let newBlockHash = refreshNodeViews[i].nodeHash
-                let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
-                let newContentHash = refreshNodeViews[i].contentHash
-                let oldContentHash = nodeViewDataSource.getData(i).contentHash
-                // 唯一ID是否相同
-                if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                    if (refreshNodeViews[i].node is BulletList || refreshNodeViews[i].node is OrderedList) {
-                        // 有序列表和无序列表
-                        let cache = markdownCacheConfiguration.listComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is IndentedCodeBlock) {
-                        // 缩进代码
-                        let cache = markdownCacheConfiguration.indentedCodeComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is FencedCodeBlock) {
-                        // 围栏代码
-                        let cache = markdownCacheConfiguration.fencedCodeComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is Heading) {
-                        // 标题
-                        let cache = markdownCacheConfiguration.headingComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is Paragraph) {
-                        // 段落
-                        let cache = markdownCacheConfiguration.paragraphComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is TableBlock) {
-                        // 表格
-                        let cache = markdownCacheConfiguration.tableComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is BlockQuote) {
-                        // 块引用
-                        let cache = markdownCacheConfiguration.quoteComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else {
-                        nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                    }
-                } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
-                }
-            }
-            // 循环添加新数据
-            for (i in dataSourceSize..refreshNodeViewSize) {
-                nodeViewDataSource.addData(refreshNodeViews[i])
-            }
-        } else if (refreshNodeViewSize == dataSourceSize) {
-            // 新数据等于页面数据
-            for (i in 0..dataSourceSize) {
-                let newBlockHash = refreshNodeViews[i].nodeHash
-                let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
-                let newContentHash = refreshNodeViews[i].contentHash
-                let oldContentHash = nodeViewDataSource.getData(i).contentHash
-
-                // 唯一ID是否相同
-                if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                    if (refreshNodeViews[i].node is BulletList || refreshNodeViews[i].node is OrderedList) {
-                        // 有序列表和无序列表
-                        let cache = markdownCacheConfiguration.listComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is IndentedCodeBlock) {
-                        // 缩进代码
-                        let cache = markdownCacheConfiguration.indentedCodeComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is FencedCodeBlock) {
-                        // 围栏代码
-                        let cache = markdownCacheConfiguration.fencedCodeComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is Heading) {
-                        // 标题
-                        let cache = markdownCacheConfiguration.headingComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is Paragraph) {
-                        // 段落
-                        let cache = markdownCacheConfiguration.paragraphComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is TableBlock) {
-                        // 表格
-                        let cache = markdownCacheConfiguration.tableComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is BlockQuote) {
-                        // 块引用
-                        let cache = markdownCacheConfiguration.quoteComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else {
-                        nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                    }
-                } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
-                }
-            }
-        } else {
-            // 新数据小于页面数据
-            // 循环判断历史数据有没有做过修改
-            for (i in 0..refreshNodeViewSize) {
-                let newBlockHash = refreshNodeViews[i].nodeHash
-                let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
-                let newContentHash = refreshNodeViews[i].contentHash
-                let oldContentHash = nodeViewDataSource.getData(i).contentHash
-                // 唯一ID是否相同
-                if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                    if (refreshNodeViews[i].node is BulletList || refreshNodeViews[i].node is OrderedList) {
-                        // 有序列表和无序列表
-                        let cache = markdownCacheConfiguration.listComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is IndentedCodeBlock) {
-                        // 缩进代码
-                        let cache = markdownCacheConfiguration.indentedCodeComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is FencedCodeBlock) {
-                        // 围栏代码
-                        let cache = markdownCacheConfiguration.fencedCodeComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is Heading) {
-                        // 标题
-                        let cache = markdownCacheConfiguration.headingComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is Paragraph) {
-                        // 段落
-                        let cache = markdownCacheConfiguration.paragraphComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is TableBlock) {
-                        // 表格
-                        let cache = markdownCacheConfiguration.tableComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else if (refreshNodeViews[i].node is BlockQuote) {
-                        // 块引用
-                        let cache = markdownCacheConfiguration.quoteComponents.get(newBlockHash)
-                        if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeViews[i])
-                        }
-                    } else {
-                        nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                    }
-                } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
-                }
-            }
-            // 循环删除多余的旧数据
-            for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
-                nodeViewDataSource.deleteData(i)
-            }
-        }
+        refreshNodeViewDataSource(nodeView, refreshNodeViews, refreshNodeViewSize, dataSourceSize, nodeViewDataSource, "listitem", markdownCacheConfiguration, Option<HashMap<Int64, MarkdownTableBlockRowComponent>>.None)
     }
 }

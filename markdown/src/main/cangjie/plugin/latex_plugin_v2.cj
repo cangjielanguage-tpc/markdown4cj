@@ -16,20 +16,6 @@ public class LatexMathPluginV2 <: AbstractMarkdownPlugin {
         builder.customInlineContentParserFactory(LatexInlineParserFactory()) // 行内解析
     }
 
-    public func configureVisitor(builder: MarkdownVisitorBuilder): Unit {
-        addBlockVisitor(builder)
-        addInlineVisitor(builder)
-    }
-
-    private func addBlockVisitor(builder: MarkdownVisitorBuilder): Unit {
-        builder.on(
-            "LatexMathBlock",
-            {
-                visitor, node => buildView(node, true)
-            }
-        )
-    }
-
     private func addInlineVisitor(builder: MarkdownVisitorBuilder): Unit {
         builder.on(
             "LatexMathNode",
@@ -39,9 +25,23 @@ public class LatexMathPluginV2 <: AbstractMarkdownPlugin {
         )
     }
 
+    public func configureVisitor(builder: MarkdownVisitorBuilder): Unit {
+        addBlockVisitor(builder)
+        addInlineVisitor(builder)
+    }
+
     // @VisibleForTesting
     static func prepareLatexTextPlaceholder(latex: String): String {
         return latex.replace("\n", " ").trimAscii()
+    }
+
+    private func addBlockVisitor(builder: MarkdownVisitorBuilder): Unit {
+        builder.on(
+            "LatexMathBlock",
+            {
+                visitor, node => buildView(node, true)
+            }
+        )
     }
 
     public func getClassType(): String {
@@ -62,7 +62,6 @@ public class LatexInlineParser <: InlineContentParser {
                 let close = scanner.matchMultiple(r'$')
                 if (close > 0) {
                     let content = scanner.getSource(p1, p2).getContent()
-                    // scanner.next()
                     return ParsedInline.of(LatexMathNode(content), scanner.position())
                 }
             }

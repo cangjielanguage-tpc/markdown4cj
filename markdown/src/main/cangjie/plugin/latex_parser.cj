@@ -85,7 +85,6 @@ func isLatexLine(line: String): Bool {
 }
 
 func isLatexEnd(lineStr: String): Bool {
-    // let reg = Regex(#"[^\\]?\$\$$"#)
     let line = lineStr.trimAscii()
     let size = line.size
     return match {

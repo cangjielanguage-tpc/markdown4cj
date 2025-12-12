@@ -121,39 +121,12 @@ public class PrismThemeDefault <: PrismThemeBase {
     }
 
     /**
-     * 获取背景色
+     * 自定义设置颜色存储集合
      *
-     * @return 返回背景色
+     * @param HashMap<PrismColor, Color> 颜色存储集合
      */
-    public func background(): Color {
-        return this.bg
-    }
-
-    /**
-     * 设置背景色
-     *
-     * @param bg 背景色值
-     */
-    public func setBackground(bg: Color): Unit {
-        this.bg = bg
-    }
-
-    /**
-     * 获取默认文本颜色
-     *
-     * @return 返回文本颜色
-     */
-    public func textColor(): Color {
-        return this.text
-    }
-
-    /**
-     * 设置文本颜色
-     *
-     * @param text 文本颜色
-     */
-    public func setTextColor(text: Color): Unit {
-        this.text = text
+    public open override func setColorMap(colorMap: HashMap<PrismColor, Color>): Unit {
+        this.colorMap = colorMap
     }
 
     /**
@@ -166,12 +139,39 @@ public class PrismThemeDefault <: PrismThemeBase {
     }
 
     /**
-     * 自定义设置颜色存储集合
+     * 设置文本颜色
      *
-     * @param HashMap<PrismColor, Color> 颜色存储集合
+     * @param text 文本颜色
      */
-    public open override func setColorMap(colorMap: HashMap<PrismColor, Color>): Unit {
-        this.colorMap = colorMap
+    public func setTextColor(text: Color): Unit {
+        this.text = text
+    }
+
+    /**
+     * 获取默认文本颜色
+     *
+     * @return 返回文本颜色
+     */
+    public func textColor(): Color {
+        return this.text
+    }
+
+    /**
+     * 设置背景色
+     *
+     * @param bg 背景色值
+     */
+    public func setBackground(bg: Color): Unit {
+        this.bg = bg
+    }
+
+    /**
+     * 获取背景色
+     *
+     * @return 返回背景色
+     */
+    public func background(): Color {
+        return this.bg
     }
 }
 

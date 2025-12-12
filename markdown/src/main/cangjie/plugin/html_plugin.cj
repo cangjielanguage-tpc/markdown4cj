@@ -58,9 +58,6 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
 
     public override func configureParser(_: ParserBuilder): Unit {
         if (!builder.excludeDefaultsMethod()) {
-            // builder.addDefaultTagHandler(SubScriptHandler())
-            // builder.addDefaultTagHandler(SuperScriptHandler())
-            // builder.addDefaultTagHandler(UnderlineHandler())
             builder.addDefaultTagHandler(ImageHandler())
             builder.addDefaultTagHandler(LinkHandler())
             builder.addDefaultTagHandler(StrongEmphasisHandler())
@@ -162,7 +159,6 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
 
         // htmlString -> HtmlTag
         htmlParser.processFragment(StringBuilder(), html, rootTag)
-        // printTag(rootTag) // debug
 
         // rootTag.children分类
         rootTag = tagCategory(rootTag)
@@ -195,7 +191,6 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 p?.appendChild(tag)
             }
         }
-        // printTag(newRoot) // debug
         newRoot
     }
 
@@ -231,7 +226,6 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
         let htmlRenderer = htmlRenderer.getOrThrow()
         var parentNode = parent
         var nextNode: ?Node = node.getNext()
-        // printNode(node) // debug
         match (node) {
             case htmlInline: HtmlInline =>
                 let htmlString = htmlInline.getLiteral()
@@ -255,21 +249,17 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 }
                 node.unlink()
             case t: Text =>
-                // println("1.24 ") // debug
                 node.unlink()
                 match (parentNode) {
                     case v: Code => v.setLiteral(t.getLiteral())
                     case _ => parentNode.appendChild(node)
                 }
             case _ =>
-                // println("1.25 ") // debug
                 // 普通markdownNode
                 node.unlink()
                 parentNode.appendChild(node)
         }
 
-        // printNode(parentNode) // debug
-        // println("1.5 ${nextNode} ${parentNode}") // debug
         if (let Some(n) <- nextNode) {
             visitHtmlInline(visitor, appender, n, parentNode)
         }

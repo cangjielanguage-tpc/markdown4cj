@@ -29,17 +29,17 @@ extend<T> Option<T> {
  * 扩展Option，实现Option类型直接使用==和!=
  */
 extend<T> Option<T> where T <: Equatable<T> {
-    operator func ==(other: T): Bool {
-        match (this) {
-            case Some(v) => v == other
-            case _ => false
-        }
-    }
-
     operator func !=(other: T): Bool {
         match (this) {
             case Some(v) => v != other
             case _ => true
+        }
+    }
+
+    operator func ==(other: T): Bool {
+        match (this) {
+            case Some(v) => v == other
+            case _ => false
         }
     }
 }

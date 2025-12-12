@@ -35,6 +35,9 @@ func isAudio(destination: String): Bool {
 }
 
 class BlockAudioVisitor <: AbstractVisitor {
+    public func visit(p: Paragraph): Unit {
+        visit(p, {=> Paragraph()})
+    }
     public func visit(p: Heading): Unit {
         visit(
             p,
@@ -45,9 +48,6 @@ class BlockAudioVisitor <: AbstractVisitor {
                 return h
             }
         )
-    }
-    public func visit(p: Paragraph): Unit {
-        visit(p, {=> Paragraph()})
     }
     public func visit(blockNode: Node, newBlock: () -> Node): Unit {
         var p = blockNode

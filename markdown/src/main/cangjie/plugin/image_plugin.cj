@@ -3,39 +3,6 @@
  */
 package markdown.plugin
 
-public class ImagePlugin <: AbstractMarkdownPlugin {
-    public static func create(): ImagePlugin {
-        return ImagePlugin()
-    }
-
-    public func configureParser(builder: ParserBuilder): Unit {
-        builder.customDelimiterProcessor(StyleDelimiterProcessor())
-        builder.postProcessor(ImagePostProcessor())
-    }
-
-    public func configureVisitor(builder: MarkdownVisitorBuilder): Unit {
-        builder
-            .on(
-                "SlideBlock",
-                {
-                    visitor, slide =>
-                    buildView(slide, true)
-                    visitor.visitChildren(slide)
-                }
-            )
-            .on(
-                "Style",
-                {
-                    visitor, style => buildView(style, true)
-                }
-            )
-    }
-
-    public func getClassType(): String {
-        "ImagePlugin"
-    }
-}
-
 class Style <: CustomNode {
     Style(let style: String) {}
     public func getNodeType(): String {

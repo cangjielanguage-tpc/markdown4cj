@@ -108,6 +108,52 @@ class MarkdownHeadingComponent {
         .width(100.percent)
     }
 
+    @Builder
+    func headingTitleListComponent(item: NodeView) {
+        if (item.node is CommonmarkText) {
+            // 文本
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                headingTextComponent19(item, markdownConfiguration, level)
+            } else {
+                headingTextComponent18(item, markdownConfiguration, level)
+            }
+        } else if (item.node is Footnote) {
+            // 脚注
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                headingFootnoteComponent19(item, markdownConfiguration, level, fontCallback)
+            } else {
+                headingFootnoteComponent18(item, markdownConfiguration, level, fontCallback)
+            }
+        } else if (item.node is Code) {
+            // 内联代码
+            inLineCodeSpanComponent(item, markdownConfiguration, true, true, false, 0)
+        } else if (item.node is CommonmarkLink) {
+            // 链接
+            linkSpanComponent(isOneLink, isListTo, level, item, markdownConfiguration, componentWidth, imageCallback, true, false, 0, markdownConfiguration.markdownTheme.isListLinkStyle)
+        } else if (item.node is HardLineBreak) {
+            // 硬换行
+            Span("\n")
+        } else if (item.node is SoftLineBreak) {
+            // 软换行
+            Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
+        } else if (item.node is ImageHtmlNode) {
+            // HTML图片
+            htmlImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
+        } else if (item.node is StyleImage) {
+            //  图片Style节点
+            styleImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
+        } else if (item.node is CommonmarkImage) {
+            // 图片节点
+            coreImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
+        } else if (item.node is LatexMathNode) {
+            // 数学公式节点
+            latexSpanComponent(item, markdownConfiguration, componentWidth)
+        } else {
+            // TODO 其他节点
+            Span("")
+        }
+    }
+
     /**
      * 标题文字内容
      */
@@ -117,40 +163,7 @@ class MarkdownHeadingComponent {
             ForEach(
                 nodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                        // 文本
-                        headingTextComponent18(item, markdownConfiguration, level)
-                    } else if (item.node is Footnote) {
-                        // 脚注
-                        headingFootnoteComponent18(item, markdownConfiguration, level, fontCallback)
-                    } else if (item.node is Code) {
-                        // 内联代码
-                        inLineCodeSpanComponent(item, markdownConfiguration, true, true, false, 0)
-                    } else if (item.node is CommonmarkLink) {
-                        // 链接
-                        linkSpanComponent(isOneLink, isListTo, level, item, markdownConfiguration, componentWidth, imageCallback, true, false, 0, markdownConfiguration.markdownTheme.isListLinkStyle)
-                    } else if (item.node is HardLineBreak) {
-                        // 硬换行
-                        Span("\n")
-                    } else if (item.node is SoftLineBreak) {
-                        // 软换行
-                        Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
-                    } else if (item.node is ImageHtmlNode) {
-                        // HTML图片
-                        htmlImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-                    } else if (item.node is StyleImage) {
-                        //  图片Style节点
-                        styleImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-                    } else if (item.node is CommonmarkImage) {
-                        // 图片节点
-                        coreImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-                    } else if (item.node is LatexMathNode) {
-                        // 数学公式节点
-                        latexSpanComponent(item, markdownConfiguration, componentWidth)
-                    } else {
-                        // TODO 其他节点
-                        Span("")
-                    }
+                    item: NodeView, idx: Int64 => headingTitleListComponent(item)
                 },
                 keyGeneratorFunc: {
                     item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
@@ -186,40 +199,7 @@ class MarkdownHeadingComponent {
             ForEach(
                 nodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is CommonmarkText) {
-                        // 文本
-                        headingTextComponent19(item, markdownConfiguration, level)
-                    } else if (item.node is Footnote) {
-                        // 脚注
-                        headingFootnoteComponent19(item, markdownConfiguration, level, fontCallback)
-                    } else if (item.node is Code) {
-                        // 内联代码
-                        inLineCodeSpanComponent(item, markdownConfiguration, true, true, false, 0)
-                    } else if (item.node is CommonmarkLink) {
-                        // 链接
-                        linkSpanComponent(isOneLink, isListTo, level, item, markdownConfiguration, componentWidth, imageCallback, true, false, 0, markdownConfiguration.markdownTheme.isListLinkStyle)
-                    } else if (item.node is HardLineBreak) {
-                        // 硬换行
-                        Span("\n")
-                    } else if (item.node is SoftLineBreak) {
-                        // 软换行
-                        Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
-                    } else if (item.node is ImageHtmlNode) {
-                        // HTML图片
-                        htmlImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-                    } else if (item.node is StyleImage) {
-                        //  图片Style节点
-                        styleImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-                    } else if (item.node is CommonmarkImage) {
-                        // 图片节点
-                        coreImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-                    } else if (item.node is LatexMathNode) {
-                        // 数学公式节点
-                        latexSpanComponent(item, markdownConfiguration, componentWidth)
-                    } else {
-                        // TODO 其他节点
-                        Span("")
-                    }
+                    item: NodeView, idx: Int64 => headingTitleListComponent(item)
                 },
                 keyGeneratorFunc: {
                     item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
@@ -276,59 +256,7 @@ class MarkdownHeadingComponent {
     public func refreshData(nodeView: NodeView): Unit {
         this.nodeView = nodeView
         this.level = (nodeView.node as Heading)().getLevel() // 等级
-        let refreshNodeViews = nodeView.children
-        let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
-        let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
-        if (refreshNodeViewSize == 0) {
-            return
-        }
-        if (refreshNodeViewSize > nodeViewListSize) {
-            // 新数据大于页面数据
-            // 循环判断历史数据有没有做过修改
-            for (i in 0..nodeViewListSize) {
-                let newBlockHash = refreshNodeViews[i].nodeHash
-                let oldBlockHash = nodeViewList[i].nodeHash
-                let newContentHash = refreshNodeViews[i].contentHash
-                let oldContentHash = nodeViewList[i].contentHash
-                // 唯一ID是否相同
-                if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
-                    nodeViewList[i] = refreshNodeViews[i]
-                }
-            }
-            // 循环添加新数据
-            for (i in nodeViewListSize..refreshNodeViewSize) {
-                nodeViewList.append(refreshNodeViews[i])
-            }
-        } else if (refreshNodeViewSize == nodeViewListSize) {
-            // 新数据等于页面数据
-            for (i in 0..nodeViewListSize) {
-                let newBlockHash = refreshNodeViews[i].nodeHash
-                let oldBlockHash = nodeViewList[i].nodeHash
-                let newContentHash = refreshNodeViews[i].contentHash
-                let oldContentHash = nodeViewList[i].contentHash
-                // 唯一ID是否相同
-                if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
-                    nodeViewList[i] = refreshNodeViews[i]
-                }
-            }
-        } else {
-            // 新数据小于页面数据
-            // 循环判断历史数据有没有做过修改
-            for (i in 0..refreshNodeViewSize) {
-                let newBlockHash = refreshNodeViews[i].nodeHash
-                let oldBlockHash = nodeViewList[i].nodeHash
-                let newContentHash = refreshNodeViews[i].contentHash
-                let oldContentHash = nodeViewList[i].contentHash
-                // 唯一ID是否相同
-                if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
-                    nodeViewList[i] = refreshNodeViews[i]
-                }
-            }
-            // 循环删除多余的旧数据
-            for (i in nodeViewListSize - 1..=refreshNodeViewSize : -1) {
-                nodeViewList.remove(i)
-            }
-        }
+        refreshnodeViewList(this.nodeView, nodeViewList, Option<HashMap<Int64,MarkdownTableBlockCellComponent>>.None)
         if (nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkLink) {
             isOneLink = true
         } else {

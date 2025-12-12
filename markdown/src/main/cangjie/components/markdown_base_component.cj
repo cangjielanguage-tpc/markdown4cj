@@ -778,6 +778,30 @@ func listPrefixCheckboxINCComponent(item: NodeView, markdownConfiguration: Markd
 }
 
 /**
+ *
+ */
+@Builder
+func codeBlockTextComponent(str: String, markdownConfiguration: MarkdownConfiguration) {
+    Row() {
+        Text(str)
+            // 设置字体颜色
+            .fontColor(indentedCodeodeBlockTypeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+            // 设置字体大小
+            .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+            // 设置文本的最大行数
+            .maxLines(1)
+            // 设置文本超长时的显示方式
+            .textOverflow(TextOverflow.Ellipsis)
+            // 设置外边距
+            .margin(left: 8)
+    }
+    // 设置宽度
+    .width(30.percent)
+    // 设置子组件在水平方向上的对齐格式
+    .justifyContent(FlexAlign.Start)
+}
+
+/**
  * 图片占位图
  */
 @Builder
@@ -809,33 +833,55 @@ func imagePlaceholderComponent(imageResource: AppResource, imageMarginTop: Float
 }
 
 /**
+ * 图片替换图片
+ */
+@Builder
+func imageCallBackComponent(imagePixelMap: PixelMap, imageMarginTop: Float64, imageMarginBottom: Float64, imageBorderRadius: Float64, imageFixedRatioWidth: Option<Float64>, componentImageWidth: Float64, imageWidth: Float64, imageHeight: Float64, imageMaximumWidth: Float64, markdownConfiguration: MarkdownConfiguration, isLink: Bool, imageCallback: (String) -> Unit, linkCallback: ?(String) -> Unit, linkUrl: ?String, destination: String) {
+    ImageSpan(imagePixelMap)
+        // 设置外边距属性
+        .margin(top: imageMarginTop, bottom: imageMarginBottom)
+        // 自定义图片圆角
+        .interopBorderRadius(imageBorderRadius)
+        // 设置组件自身的宽度
+        .width(imageSpanWidth(imageFixedRatioWidth, componentImageWidth, imageWidth, imageMaximumWidth))
+        // 设置组件自身的高度
+        .height(imageSpanHeight(imageFixedRatioWidth, componentImageWidth, imageWidth, imageHeight, imageMaximumWidth))
+        // 设置图片的缩放类型
+        .objectFit(markdownConfiguration.markdownTheme.imageFitType)
+        // 设置图片基于文本的对齐方式
+        .verticalAlign(ImageSpanAlignment.CENTER)
+        // 点击动作触发该方法调用
+        .onClick {evt => imageSpanOnClick(isLink, imageCallback, linkCallback, linkUrl, destination)}
+}
+
+/**
  * html图片
  */
 @Builder
 func htmlImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfiguration, componentWidth: Float64, imageCallback: (String) -> Unit) {
     if (DeviceInfo.sdkApiVersion >= 15) {
         MarkdownImgHtml15Component(
-            markdownConfiguration: markdownConfiguration,
-            destination: (item.node as ImageHtmlNode)().getDestination(),
-            componentWidth: componentWidth,
-            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
-            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-            imageCallback: imageCallback,
-            linkCallback: markdownConfiguration.linkCallback,
-            isLink: item.link.isSome(),
-            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+            markdownConfigurationHtml15: markdownConfiguration,
+            destinationHtml15: (item.node as ImageHtmlNode)().getDestination(),
+            componentWidthHtml15: componentWidth,
+            imageWidthHtml15: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+            imageHeightHtml15: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+            imageCallbackHtml15: imageCallback,
+            linkCallbackHtml15: markdownConfiguration.linkCallback,
+            isLinkHtml15: item.link.isSome(),
+            linkUrlHtml15: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
         )
     } else {
         MarkdownImgHtml14Component(
-            markdownConfiguration: markdownConfiguration,
-            destination: (item.node as ImageHtmlNode)().getDestination(),
-            componentWidth: componentWidth,
-            imageWidth: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
-            imageHeight: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
-            imageCallback: imageCallback,
-            linkCallback: markdownConfiguration.linkCallback,
-            isLink: item.link.isSome(),
-            linkUrl: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
+            markdownConfigurationHtml14: markdownConfiguration,
+            destinationHtml14: (item.node as ImageHtmlNode)().getDestination(),
+            componentWidthHtml14: componentWidth,
+            imageWidthHtml14: strToFloat64((item.node as ImageHtmlNode)().getWidth()),
+            imageHeightHtml14: strToFloat64((item.node as ImageHtmlNode)().getHeight()),
+            imageCallbackHtml14: imageCallback,
+            linkCallbackHtml14: markdownConfiguration.linkCallback,
+            isLinkHtml14: item.link.isSome(),
+            linkUrlHtml14: if (item.link.isSome()) { item.link().getDestination() } else { Option<String>.None }
         )
     }
 }
@@ -848,14 +894,14 @@ func styleImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
     if (markdownConfiguration.imageCallbackCallback.isNone()) {
         if ((item.node as StyleImage)().getDestination().startsWith("./")) {
             MarkdownImgStyleRawFileComponent(
-                markdownConfiguration: markdownConfiguration,
-                destination: (item.node as StyleImage)().getDestination(),
-                componentWidth: componentWidth,
+                markdownConfigurationStyleRawFile: markdownConfiguration,
+                destinationStyleRawFile: (item.node as StyleImage)().getDestination(),
+                componentWidthStyleRawFile: componentWidth,
                 picStyle: (item.node as StyleImage)().styles,
-                imageCallback: imageCallback,
-                linkCallback: markdownConfiguration.linkCallback,
-                isLink: item.link.isSome(),
-                linkUrl: if (item.link.isSome()) {
+                imageCallbackStyleRawFile: imageCallback,
+                linkCallbackStyleRawFile: markdownConfiguration.linkCallback,
+                isLinkStyleRawFile: item.link.isSome(),
+                linkUrlStyleRawFile: if (item.link.isSome()) {
                     item.link().getDestination()
                 } else {
                     Option<String>.None
@@ -864,14 +910,14 @@ func styleImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
         } else {
             if (DeviceInfo.sdkApiVersion >= 15) {
                 MarkdownImgStyleUrl15Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as StyleImage)().getDestination(),
-                    componentWidth: componentWidth,
+                    markdownConfigurationStyleUrl15: markdownConfiguration,
+                    destinationStyleUrl15: (item.node as StyleImage)().getDestination(),
+                    componentWidthStyleUrl15: componentWidth,
                     picStyle: (item.node as StyleImage)().styles,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    imageCallbackStyleUrl15: imageCallback,
+                    linkCallbackStyleUrl15: markdownConfiguration.linkCallback,
+                    isLinkStyleUrl15: item.link.isSome(),
+                    linkUrlStyleUrl15: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
@@ -879,14 +925,14 @@ func styleImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
                 )
             } else {
                 MarkdownImgStyleUrl14Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as StyleImage)().getDestination(),
-                    componentWidth: componentWidth,
+                    markdownConfigurationStyleUrl14: markdownConfiguration,
+                    destinationStyleUrl14: (item.node as StyleImage)().getDestination(),
+                    componentWidthStyleUrl14: componentWidth,
                     picStyle: (item.node as StyleImage)().styles,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    imageCallbackStyleUrl14: imageCallback,
+                    linkCallbackStyleUrl14: markdownConfiguration.linkCallback,
+                    isLinkStyleUrl14: item.link.isSome(),
+                    linkUrlStyleUrl14: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
@@ -897,14 +943,14 @@ func styleImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
     } else {
         if ((item.node as StyleImage)().getDestination().startsWith("./")) {
             MarkdownImgStyleRawFileCallbackComponent(
-                markdownConfiguration: markdownConfiguration,
-                destination: (item.node as StyleImage)().getDestination(),
-                componentWidth: componentWidth,
+                markdownConfigurationStyleRawFileCallback: markdownConfiguration,
+                destinationStyleRawFileCallback: (item.node as StyleImage)().getDestination(),
+                componentWidthStyleRawFileCallback: componentWidth,
                 picStyle: (item.node as StyleImage)().styles,
-                imageCallback: imageCallback,
-                linkCallback: markdownConfiguration.linkCallback,
-                isLink: item.link.isSome(),
-                linkUrl: if (item.link.isSome()) {
+                imageCallbackStyleRawFileCallback: imageCallback,
+                linkCallbackStyleRawFileCallback: markdownConfiguration.linkCallback,
+                isLinkStyleRawFileCallback: item.link.isSome(),
+                linkUrlStyleRawFileCallback: if (item.link.isSome()) {
                     item.link().getDestination()
                 } else {
                     Option<String>.None
@@ -913,14 +959,14 @@ func styleImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
         } else {
             if (DeviceInfo.sdkApiVersion >= 15) {
                 MarkdownImgStyleUrlCallback15Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as StyleImage)().getDestination(),
-                    componentWidth: componentWidth,
+                    markdownConfigurationStyleUrlCallback15: markdownConfiguration,
+                    destinationStyleUrlCallback15: (item.node as StyleImage)().getDestination(),
+                    componentWidthStyleUrlCallback15: componentWidth,
                     picStyle: (item.node as StyleImage)().styles,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    imageCallbackStyleUrlCallback15: imageCallback,
+                    linkCallbackStyleUrlCallback15: markdownConfiguration.linkCallback,
+                    isLinkStyleUrlCallback15: item.link.isSome(),
+                    linkUrlStyleUrlCallback15: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
@@ -928,14 +974,14 @@ func styleImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
                 )
             } else {
                 MarkdownImgStyleUrlCallback14Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as StyleImage)().getDestination(),
-                    componentWidth: componentWidth,
+                    markdownConfigurationStyleUrlCallback14: markdownConfiguration,
+                    destinationStyleUrlCallback14: (item.node as StyleImage)().getDestination(),
+                    componentWidthStyleUrlCallback14: componentWidth,
                     picStyle: (item.node as StyleImage)().styles,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    imageCallbackStyleUrlCallback14: imageCallback,
+                    linkCallbackStyleUrlCallback14: markdownConfiguration.linkCallback,
+                    isLinkStyleUrlCallback14: item.link.isSome(),
+                    linkUrlStyleUrlCallback14: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
@@ -954,13 +1000,13 @@ func coreImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfi
     if (markdownConfiguration.imageCallbackCallback.isNone()) {
         if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
             MarkdownImgRawFileComponent(
-                markdownConfiguration: markdownConfiguration,
-                destination: (item.node as CommonmarkImage)().getDestination(),
-                componentWidth: componentWidth,
-                imageCallback: imageCallback,
-                linkCallback: markdownConfiguration.linkCallback,
-                isLink: item.link.isSome(),
-                linkUrl: if (item.link.isSome()) {
+                markdownConfigurationRawFile: markdownConfiguration,
+                destinationRawFile: (item.node as CommonmarkImage)().getDestination(),
+                componentWidthRawFile: componentWidth,
+                imageCallbackRawFile: imageCallback,
+                linkCallbackRawFile: markdownConfiguration.linkCallback,
+                isLinkRawFile: item.link.isSome(),
+                linkUrlRawFile: if (item.link.isSome()) {
                     item.link().getDestination()
                 } else {
                     Option<String>.None
@@ -969,13 +1015,13 @@ func coreImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfi
         } else {
             if (DeviceInfo.sdkApiVersion >= 15) {
                 MarkdownImgUrl15Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as CommonmarkImage)().getDestination(),
-                    componentWidth: componentWidth,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    markdownConfigurationUrl15: markdownConfiguration,
+                    destinationUrl15: (item.node as CommonmarkImage)().getDestination(),
+                    componentWidthUrl15: componentWidth,
+                    imageCallbackUrl15: imageCallback,
+                    linkCallbackUrl15: markdownConfiguration.linkCallback,
+                    isLinkUrl15: item.link.isSome(),
+                    linkUrlUrl15: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
@@ -983,13 +1029,13 @@ func coreImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfi
                 )
             } else {
                 MarkdownImgUrl14Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as CommonmarkImage)().getDestination(),
-                    componentWidth: componentWidth,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    markdownConfigurationUrl14: markdownConfiguration,
+                    destinationUrl14: (item.node as CommonmarkImage)().getDestination(),
+                    componentWidthUrl14: componentWidth,
+                    imageCallbackUrl14: imageCallback,
+                    linkCallbackUrl14: markdownConfiguration.linkCallback,
+                    isLinkUrl14: item.link.isSome(),
+                    linkUrlUrl14: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
@@ -1000,13 +1046,13 @@ func coreImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfi
     } else {
         if ((item.node as CommonmarkImage)().getDestination().startsWith("./")) {
             MarkdownImgRawFileCallbackComponent(
-                markdownConfiguration: markdownConfiguration,
-                destination: (item.node as CommonmarkImage)().getDestination(),
-                componentWidth: componentWidth,
-                imageCallback: imageCallback,
-                linkCallback: markdownConfiguration.linkCallback,
-                isLink: item.link.isSome(),
-                linkUrl: if (item.link.isSome()) {
+                markdownConfigurationRawFileCallback: markdownConfiguration,
+                destinationRawFileCallback: (item.node as CommonmarkImage)().getDestination(),
+                componentWidthRawFileCallback: componentWidth,
+                imageCallbackRawFileCallback: imageCallback,
+                linkCallbackRawFileCallback: markdownConfiguration.linkCallback,
+                isLinkRawFileCallback: item.link.isSome(),
+                linkUrlRawFileCallback: if (item.link.isSome()) {
                     item.link().getDestination()
                 } else {
                     Option<String>.None
@@ -1015,13 +1061,13 @@ func coreImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfi
         } else {
             if (DeviceInfo.sdkApiVersion >= 15) {
                 MarkdownImgUrlCallback15Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as CommonmarkImage)().getDestination(),
-                    componentWidth: componentWidth,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    markdownConfigurationUrlCallback15: markdownConfiguration,
+                    destinationUrlCallback15: (item.node as CommonmarkImage)().getDestination(),
+                    componentWidthUrlCallback15: componentWidth,
+                    imageCallbackUrlCallback15: imageCallback,
+                    linkCallbackUrlCallback15: markdownConfiguration.linkCallback,
+                    isLinkUrlCallback15: item.link.isSome(),
+                    linkUrlUrlCallback15: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
@@ -1029,13 +1075,13 @@ func coreImageSpanComponent(item: NodeView, markdownConfiguration: MarkdownConfi
                 )
             } else {
                 MarkdownImgUrlCallback14Component(
-                    markdownConfiguration: markdownConfiguration,
-                    destination: (item.node as CommonmarkImage)().getDestination(),
-                    componentWidth: componentWidth,
-                    imageCallback: imageCallback,
-                    linkCallback: markdownConfiguration.linkCallback,
-                    isLink: item.link.isSome(),
-                    linkUrl: if (item.link.isSome()) {
+                    markdownConfigurationUrlCallback14: markdownConfiguration,
+                    destinationUrlCallback14: (item.node as CommonmarkImage)().getDestination(),
+                    componentWidthUrlCallback14: componentWidth,
+                    imageCallbackUrlCallback14: imageCallback,
+                    linkCallbackUrlCallback14: markdownConfiguration.linkCallback,
+                    isLinkUrlCallback14: item.link.isSome(),
+                    linkUrlUrlCallback14: if (item.link.isSome()) {
                         item.link().getDestination()
                     } else {
                         Option<String>.None
@@ -1163,5 +1209,253 @@ func inLineCodeSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
     }
 }
 
+/**
+ * 标题
+ */
+@Builder
+func blockHeadingComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, fontCallback: (String) -> Unit, imageCallback: (String) -> Unit, componentWidth: Float64, isListTo: Bool, headingComponents: HashMap<Int64, MarkdownHeadingComponent>) {
+    MarkdownHeadingComponent(
+        markdownConfiguration: markdownConfiguration,
+        nodeView: item,
+        fontCallback: fontCallback,
+        imageCallback: imageCallback,
+        componentWidth: componentWidth,
+        isListTo: isListTo,
+        headingComponents: headingComponents
+    )
+}
 
+/**
+ * 段落
+ */
+@Builder
+func blockParagraphComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, footnoteBlock: Option<FootnoteBlock>, fontCallback: (String) -> Unit, tocListOnClick: (Int64) -> Unit, imageCallback: (String) -> Unit, componentWidth: Float64, isListTo: Bool, isDescList: Bool, paragraphComponents: HashMap<Int64, MarkdownParagraphComponent>) {
+    MarkdownParagraphComponent(
+        markdownConfiguration: markdownConfiguration,
+        nodeView: item,
+        footnoteBlock: footnoteBlock,
+        fontCallback: fontCallback,
+        tocListOnClick: tocListOnClick,
+        imageCallback: imageCallback,
+        componentWidth: componentWidth,
+        isListTo: isListTo,
+        paragraphComponents: paragraphComponents
+    )
+}
 
+/**
+ * 围栏代码
+ */
+@Builder
+func blockFencedCodeComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, fencedCodeComponents: HashMap<Int64, MarkdownFencedCodeBlockComponent>) {
+    MarkdownFencedCodeBlockComponent(
+        markdownConfiguration: markdownConfiguration,
+        nodeView: item,
+        fencedCodeComponents: fencedCodeComponents
+    )
+}
+
+/**
+ * 缩进代码
+ */
+@Builder
+func blockIndentedCodeComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, indentedCodeComponents: HashMap<Int64, MarkdownIndentedCodeBlockComponent>) {
+    MarkdownIndentedCodeBlockComponent(
+        markdownConfiguration: markdownConfiguration,
+        nodeView: item,
+        indentedCodeComponents: indentedCodeComponents
+    )
+}
+
+/**
+ * 表格
+ */
+@Builder
+func blockTableComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, fontCallback: (String) -> Unit, imageCallback: (String) -> Unit, componentWidth: Float64, tableComponents: HashMap<Int64, MarkdownTableBlockComponent>, tableRowComponents: HashMap<Int64, MarkdownTableBlockRowComponent>, tableCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent>) {
+    MarkdownTableBlockComponent(
+        markdownConfiguration: markdownConfiguration,
+        nodeView: item,
+        fontCallback: fontCallback,
+        imageCallback: imageCallback,
+        componentWidth: componentWidth,
+        tableComponents: tableComponents,
+        tableRowComponents: tableRowComponents,
+        tableCellComponents: tableCellComponents
+    )
+}
+
+/**
+ * 数学公式 -单行
+ */
+@Builder
+func blockLatextComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView) {
+    if ((item.node as LatexMathBlock)().isClosed) {
+        // 结束显示数学公式
+        MarkdownLatexMathBlockComponent(
+            markdownConfiguration: markdownConfiguration,
+            nodeView: item,
+            latexStr: (item.node as LatexMathBlock)().latex
+        )
+    } else {
+        // 没结束显示纯文本
+        Text((item.node as LatexMathBlock)().latex)
+    }
+}
+
+/**
+ * 图片幻灯片
+ */
+@Builder
+func blockImageBannerComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, imageCallback: (String) -> Unit) {
+    MarkdownImageBannerComponent(
+        slideBlockNodeView: item,
+        markdownConfiguration: markdownConfiguration,
+        imageCallback: imageCallback
+    )
+}
+
+/**
+ * 组合代码
+ */
+@Builder
+func blockCodeBlockListComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, res: (ArrayList<String>, ArrayList<String>, ArrayList<String>)) {
+    MarkdownCodeBlockListComponent(
+        nodeView: item,
+        strInfos: res[0],
+        strText: res[1],
+        strInfoText: res[2],
+        markdownConfiguration: markdownConfiguration
+    )
+}
+
+/**
+ *
+ */
+@Builder
+func codeNumberComponent(lineArray: ObservedArrayList<Int64>, markdownConfiguration: MarkdownConfiguration) {
+    Column() {
+        ForEach(
+            lineArray,
+            itemGeneratorFunc: {
+                item: Int64, idx: Int64 => Text((idx + 1).toString())
+                    // 设置文本颜色
+                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                    // 设置文本尺寸
+                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                    // 设置行高
+                    .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
+                    // 设置文本的最大行数
+                    .maxLines(1)
+                    // 设置文本超长时的显示方式
+                    .textOverflow(TextOverflow.Ellipsis)
+            },
+            keyGeneratorFunc: {
+                item: Int64, idx: Int64 => return "${idx}-${item}"
+            }
+        )
+    }
+    // 设置外边距属性
+    .margin(bottom: 10)
+    // 设置内边距属性
+    .padding(left: 8, right: 8)
+    // 设置 Column 子组件在水平方向上的对齐格式
+    .alignItems(HorizontalAlign.End)
+    // 设置边框的宽度
+    .borderWidth(EdgeWidths(right: markdownConfiguration.markdownTheme.thematicBreakHeight.vp))
+    // 设置元素的边框样式
+    .borderStyle(BorderStyle.Solid)
+    // 设置边框的颜色
+    .borderColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+    // 控件显示和隐藏
+    .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockLineNumberHide))
+}
+
+/**
+ *
+ */
+@Builder
+func codeImageComponent(markdownConfiguration: MarkdownConfiguration, codeText: String, info: Option<String>, info1: String, typ: Int64) {
+    Row() {
+        if (markdownConfiguration.markdownTheme.codeCopyIcon.isSome()) {
+            Row() {
+                Image(markdownConfiguration.markdownTheme.codeCopyIcon())
+                    // 设置组件自身的宽度
+                    .width(markdownConfiguration.markdownTheme.iconWidthAndHeight)
+                    // 设置组件自身的高度
+                    .height(markdownConfiguration.markdownTheme.iconWidthAndHeight)
+                    // 设置图片的缩放类型
+                    .objectFit(ImageFit.Contain)
+
+                Row()
+                    // 设置宽度
+                    .width(5)
+
+                if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
+                    Text("复制代码")
+                        // 设置字体颜色
+                        .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                        // 设置字体大小
+                        .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                        // 设置容器元素绘制区域内的子元素的对齐方式
+                        .align(Alignment.End)
+                        // 设置文本的最大行数
+                        .maxLines(1)
+                        // 设置文本超长时的显示方式
+                        .textOverflow(TextOverflow.Ellipsis)
+                        // 设置外边距
+                        .margin(right: 4)
+                }
+            }
+            // 设置子组件在水平方向上的对齐格式
+            .justifyContent(FlexAlign.End)
+            // 点击动作触发该方法调用
+            .onClick {evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)}
+        }
+
+        if (markdownConfiguration.markdownTheme.codeFullScreenIcon.isSome()) {
+            Row() {
+                Image(markdownConfiguration.markdownTheme.codeFullScreenIcon())
+                    // 设置组件自身的宽度
+                    .width(markdownConfiguration.markdownTheme.iconWidthAndHeight)
+                    // 设置组件自身的高度
+                    .height(markdownConfiguration.markdownTheme.iconWidthAndHeight)
+                    // 设置外边距属性
+                    .margin(left: 4)
+                    // 设置图片的缩放类型
+                    .objectFit(ImageFit.Contain)
+
+                Row()
+                    // 设置宽度
+                    .width(5)
+
+                if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
+                    Text("全屏代码")
+                        // 设置字体颜色
+                        .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                        // 设置字体大小
+                        .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                        // 设置容器元素绘制区域内的子元素的对齐方式
+                        .align(Alignment.End)
+                        // 设置文本的最大行数
+                        .maxLines(1)
+                        // 设置文本超长时的显示方式
+                        .textOverflow(TextOverflow.Ellipsis)
+                        // 设置外边距
+                        .margin(right: 4)
+                }
+            }
+            // 设置子组件在水平方向上的对齐格式
+            .justifyContent(FlexAlign.End)
+            // 控制当前组件显示或隐藏
+            .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
+            // 点击动作触发该方法调用
+            .onClick {
+                evt => codeFullScreenOnClick(codeText, if(typ == 0) {info} else {info1}, markdownConfiguration.codeFullScreenCallback)
+            }
+        }
+    }
+    // 设置宽度
+    .width(70.percent)
+    // 设置子组件在水平方向上的对齐格式
+    .justifyContent(FlexAlign.End)
+}

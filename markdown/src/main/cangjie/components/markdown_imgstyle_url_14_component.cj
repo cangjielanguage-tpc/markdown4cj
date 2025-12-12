@@ -16,18 +16,18 @@ public class MarkdownImgStyleUrl14Component {
     /**
      * markdown配置
      */
-    var markdownConfiguration: MarkdownConfiguration
+    var markdownConfigurationStyleUrl14: MarkdownConfiguration
 
     /**
      * 图片链接
      */
-    var destination: String
+    var destinationStyleUrl14: String
 
     /**
      * 控件宽度 - 单位vp
      */
     @Prop
-    var componentWidth: Float64
+    var componentWidthStyleUrl14: Float64
 
     /**
      * 图片样式
@@ -37,22 +37,22 @@ public class MarkdownImgStyleUrl14Component {
     /**
      * 图片点击事件
      */
-    var imageCallback: (String) -> Unit
+    var imageCallbackStyleUrl14: (String) -> Unit
 
     /**
      * 链接点击事件
      */
-    var linkCallback: ?(String) -> Unit
+    var linkCallbackStyleUrl14: ?(String) -> Unit
 
     /**
      * 是否是链接
      */
-    var isLink: Bool = false
+    var isLinkStyleUrl14: Bool = false
 
     /**
      * 链接url
      */
-    var linkUrl: ?String = Option<String>.None
+    var linkUrlStyleUrl14: ?String = Option<String>.None
 
     /**
      * 图片加载
@@ -64,61 +64,13 @@ public class MarkdownImgStyleUrl14Component {
      * 图片宽度 - 单位px
      */
     @State
-    var width: Float64 = 0.0
+    var widthStyleUrl14: Float64 = 0.0
 
     /**
      * 图片高度 - 单位px
      */
     @State
-    var height: Float64 = 0.0
-
-    /**
-     * 图片上边距
-     */
-    @State
-    var imageMarginTop: Float64 = 10.0
-
-    /**
-     * 图片下边距
-     */
-    @State
-    var imageMarginBottom: Float64 = 10.0
-
-    /**
-     * 图片圆角大小
-     */
-    @State
-    var imageBorderRadius: Float64 = 0.0
-
-    /**
-     * 基于外层控件宽度大小对图片进行百分比缩放比例
-     */
-    @State
-    var imageFixedRatioWidth: Option<Float64> = Option<Float64>.None
-
-    /**
-     * 基于图片自身宽度大小对图片进行百分比缩放比例
-     */
-    @State
-    var imageMaximumWidth: Float64 = 1.0
-
-    /**
-     * 图片占位图
-     */
-    @State
-    var imageResource: Option<AppResource> = Option<AppResource>.None
-
-    /**
-     * 是否有图片占位图
-     */
-    @State
-    var isImageResource: Bool = false
-
-    /**
-     * 图片最大宽度 - 单位px
-     */
-    @State
-    var componentImageWidth: Float64 = 0.0
+    var heightStyleUrl14: Float64 = 0.0
 
     /**
      *
@@ -127,10 +79,10 @@ public class MarkdownImgStyleUrl14Component {
     var picStyleObjWidth: ?Float64 = Option<Float64>.None
 
     /**
-     *
+     * 图片最大宽度 - 单位px
      */
     @State
-    var picStyleObjHeight: ?Float64 = Option<Float64>.None
+    var componentImageWidth: Float64 = 0.0
 
     /**
      * 图片圆角
@@ -139,61 +91,56 @@ public class MarkdownImgStyleUrl14Component {
     var radius: Option<Length> = Option<Length>.None
 
     /**
+     *
+     */
+    @State
+    var picStyleObjHeight: ?Float64 = Option<Float64>.None
+
+    /**
      * 对齐方式 - 暂未支持
      */
     @State
     var align: FlexAlign = FlexAlign.Start
 
     protected override func aboutToAppear(): Unit {
-        imageMarginTop = markdownConfiguration.markdownTheme.imageMarginTop
-        imageMarginBottom = markdownConfiguration.markdownTheme.imageMarginBottom
-        imageBorderRadius = markdownConfiguration.markdownTheme.imageBorderRadius
-        imageFixedRatioWidth = markdownConfiguration.markdownTheme.imageFixedRatioWidth
-        imageMaximumWidth = markdownConfiguration.markdownTheme.imageMaximumWidth
-        imageResource = markdownConfiguration.markdownTheme.imageResource
-        if (imageResource.isSome()) {
-            isImageResource = true
-        } else {
-            isImageResource = false
+        componentImageWidth = vp2px(componentWidthStyleUrl14.vp)().value
+        let picStyleObjStyleUrl14: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
+        if (picStyleObjStyleUrl14.borderRadius.isSome()) {
+            radius = picStyleObjStyleUrl14.borderRadius()
         }
-        componentImageWidth = vp2px(componentWidth.vp)().value
-        let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
-        if (picStyleObj.borderRadius.isSome()) {
-            radius = picStyleObj.borderRadius()
-        }
-        align = picStyleObj.align
-        picStyleObjWidth = length2Float64(picStyleObj.width, componentImageWidth)
-        picStyleObjHeight = length2Float64(picStyleObj.height, componentImageWidth)
+        align = picStyleObjStyleUrl14.align
+        picStyleObjWidth = length2Float64(picStyleObjStyleUrl14.width, componentImageWidth)
+        picStyleObjHeight = length2Float64(picStyleObjStyleUrl14.height, componentImageWidth)
     }
 
     func build() {
         if (true) {
             if (imageType != 2) {
-                ImageSpan(destination)
+                ImageSpan(destinationStyleUrl14)
                     // 设置外边距属性
-                    .margin(top: imageMarginTop, bottom: imageMarginBottom)
+                    .margin(top: markdownConfigurationStyleUrl14.markdownTheme.imageMarginTop, bottom: markdownConfigurationStyleUrl14.markdownTheme.imageMarginBottom)
                     // 自定义图片圆角
-                    .interopBorderRadius(imageSpanBorderRadius(radius, imageBorderRadius))
+                    .interopBorderRadius(imageSpanBorderRadius(radius, markdownConfigurationStyleUrl14.markdownTheme.imageBorderRadius))
                     // 设置组件自身的宽度
-                    .width(imageSpanWidth(imageFixedRatioWidth, componentImageWidth, width, imageMaximumWidth))
+                    .width(imageSpanWidth(markdownConfigurationStyleUrl14.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthStyleUrl14, markdownConfigurationStyleUrl14.markdownTheme.imageMaximumWidth))
                     // 设置组件自身的高度
-                    .height(imageSpanHeight(imageFixedRatioWidth, componentImageWidth, width, height, imageMaximumWidth))
+                    .height(imageSpanHeight(markdownConfigurationStyleUrl14.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthStyleUrl14, heightStyleUrl14, markdownConfigurationStyleUrl14.markdownTheme.imageMaximumWidth))
                     // 设置组件的可见性
                     .visibility(visibilityImageSpanType(imageType))
                     // 设置图片的缩放类型
-                    .objectFit(markdownConfiguration.markdownTheme.imageFitType)
+                    .objectFit(markdownConfigurationStyleUrl14.markdownTheme.imageFitType)
                     // 设置图片基于文本的对齐方式
                     .verticalAlign(ImageSpanAlignment.CENTER)
                     // 设置约束尺寸，组件布局时，进行尺寸范围限制
                     .constraintSize(maxWidth: 100.percent)
                     // 点击动作触发该方法调用
-                    .onClick {evt => imageSpanOnClick(isLink, imageCallback, linkCallback, linkUrl, destination)}
+                    .onClick {evt => imageSpanOnClick(isLinkStyleUrl14, imageCallbackStyleUrl14, linkCallbackStyleUrl14, linkUrlStyleUrl14, destinationStyleUrl14)}
                     // 图片成功加载时触发该回调，返回成功加载的图片尺寸
                     .interopOnComplete {
                         imageLoadResult =>
                             let res = imageWidthHeight(picStyleObjWidth, picStyleObjHeight, componentImageWidth, imageLoadResult.height, imageLoadResult.width)
-                            width = res[0]
-                            height = res[1]
+                            widthStyleUrl14 = res[0]
+                            heightStyleUrl14 = res[1]
                             imageType = 1
                     }
                     // 图片加载出现异常时触发该回调
@@ -201,9 +148,9 @@ public class MarkdownImgStyleUrl14Component {
                         imageError => imageType = 2
                     }
             }
-            if (isImageResource && imageType != 1) {
+            if (markdownConfigurationStyleUrl14.markdownTheme.imageResource.isSome() && imageType != 1) {
                 // 有占位图
-                imagePlaceholderComponent(imageResource(), imageMarginTop, imageMarginBottom, imageFixedRatioWidth, imageMaximumWidth, if (radius.isSome()) { length2Float(radius()) } else { imageBorderRadius }, componentImageWidth)
+                imagePlaceholderComponent(markdownConfigurationStyleUrl14.markdownTheme.imageResource(), markdownConfigurationStyleUrl14.markdownTheme.imageMarginTop, markdownConfigurationStyleUrl14.markdownTheme.imageMarginBottom, markdownConfigurationStyleUrl14.markdownTheme.imageFixedRatioWidth, markdownConfigurationStyleUrl14.markdownTheme.imageMaximumWidth, if (radius.isSome()) { length2Float(radius()) } else { markdownConfigurationStyleUrl14.markdownTheme.imageBorderRadius }, componentImageWidth)
             }
         }
     }
