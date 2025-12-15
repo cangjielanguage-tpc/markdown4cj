@@ -163,8 +163,6 @@ public class MarkdownQuoteComponent {
                     }
                     // 对子组件进行重新布局
                     .layoutWeight(1)
-                    // 背景色设置
-                    .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
                     // 内边距
                     .padding(left: markdownConfiguration.markdownTheme.blockQuoteRightMargin)
                     // 设置外边距属性
@@ -175,6 +173,8 @@ public class MarkdownQuoteComponent {
                 }
             )
         }
+        // 背景色设置
+        .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
         // 设置元素的边框颜色。
         .borderColor(markdownConfiguration.markdownTheme.blockQuoteColor)
         // 设置元素的边框宽度(单位为vp)。
