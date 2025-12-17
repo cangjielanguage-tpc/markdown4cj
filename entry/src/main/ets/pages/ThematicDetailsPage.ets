@@ -80,17 +80,16 @@ struct ThematicDetailsPage {
         this.safeTop
       )
       Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
+        .height(40)
+        .width("80%")
+        .type(ButtonType.Capsule)
+        .margin({ top: 5, bottom: 5 })
+        .fontColor(0xFFFFFFFF)
+        .backgroundColor(0xFF317AFF)
+        .align(Alignment.Center)
+        .fontSize(16)
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
               this.content = this.fileStr
             } else {
@@ -119,10 +118,10 @@ struct ThematicDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setThematicBreakColor(this.thematicBreakColor)
-    theme.setThematicBreakHeight(this.thematicBreakHeight)
-    theme.setThematicBreakTopMargin(this.thematicBreakTopMargin)
-    theme.setThematicBreakBottomMargin(this.thematicBreakBottomMargin)
+    theme.setThematicBreakColor(this.thematicBreakColor) // 分割线颜色
+    theme.setThematicBreakHeight(this.thematicBreakHeight) // 分割线高度
+    theme.setThematicBreakTopMargin(this.thematicBreakTopMargin) // 分割线上部外边距
+    theme.setThematicBreakBottomMargin(this.thematicBreakBottomMargin) // 分割线下部外边距
     config.setMarkdownTheme(theme)
     return config
   }

@@ -3,7 +3,7 @@
  */
 import { titleComponent } from './BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
 import { ParagraphData } from './ParagraphPage'
 
@@ -59,6 +59,16 @@ struct ParagraphDetailsPage {
   @State
   paragraphTypeface: string = "HarmonyOS Sans"
   /**
+   * 段落模块上间距
+   */
+  @State
+  paragraphTopMargins: number = 8
+  /**
+   * 段落模块下间距
+   */
+  @State
+  paragraphBottomMargins: number = 8
+  /**
    * 增量加载延迟
    */
   time: number = 50
@@ -73,6 +83,8 @@ struct ParagraphDetailsPage {
       this.paragraphTextWordSpace = paragraphData._paragraphTextWordSpace
       this.paragraphTextLineHeight = paragraphData._paragraphTextLineHeight
       this.paragraphTypeface = paragraphData._paragraphTypeface
+      this.paragraphTopMargins = paragraphData._paragraphTopMargins
+      this.paragraphBottomMargins = paragraphData._paragraphBottomMargins
     } catch (e) {
     }
   }
@@ -86,17 +98,16 @@ struct ParagraphDetailsPage {
         this.safeTop
       )
       Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
+        .height(40)
+        .width("80%")
+        .type(ButtonType.Capsule)
+        .margin({ top: 5, bottom: 5 })
+        .fontColor(0xFFFFFFFF)
+        .backgroundColor(0xFF317AFF)
+        .align(Alignment.Center)
+        .fontSize(16)
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
               this.content = this.fileStr
             } else {
@@ -114,7 +125,11 @@ struct ParagraphDetailsPage {
         )
       Scroll(this.scroller) {
         Column() {
-          CJMarkdown({ content: this.content, config: this.setMarkdownConfig() })
+          CJMarkdown({
+            content: this.content,
+            config: this.setMarkdownConfig(),
+            plugin: this.setPlugin()
+          })
         }
       }
       .padding({ bottom: 200 })
@@ -125,12 +140,20 @@ struct ParagraphDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setParagraphTextSize(this.paragraphTextSize)
-    theme.setParagraphTextColor(this.paragraphTextColor)
-    theme.setParagraphTextWordSpace(this.paragraphTextWordSpace)
-    theme.setParagraphTextLineHeight(this.paragraphTextLineHeight)
-    theme.setParagraphTypeface(this.paragraphTypeface)
+    theme.setParagraphTextSize(this.paragraphTextSize) // 段落文本大小
+    theme.setParagraphTextColor(this.paragraphTextColor) // 段落文本颜色
+    theme.setParagraphTextWordSpace(this.paragraphTextWordSpace) // 段落文本字间距
+    theme.setParagraphTextLineHeight(this.paragraphTextLineHeight) // 段落文本行高
+    theme.setParagraphTypeface(this.paragraphTypeface) // 段落文本字体
+    theme.setParagraphTopMargins(this.paragraphTopMargins) // 段落模块上间距
+    theme.setParagraphBottomMargins(this.paragraphBottomMargins) // 段落模块下间距
     config.setMarkdownTheme(theme)
     return config
+  }
+
+  setPlugin(): MarkdownPlugin {
+    let plugin: MarkdownPlugin = new MarkdownPlugin()
+    plugin.setIsStrikethroughPlugin(true) // 删除线插件
+    return plugin
   }
 }

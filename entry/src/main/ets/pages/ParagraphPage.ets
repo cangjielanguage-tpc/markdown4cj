@@ -81,6 +81,24 @@ struct ParagraphPage {
   @State
   paragraphTypeface: string = "HarmonyOS Sans"
   /**
+   * 段落模块上间距列表
+   */
+  paragraphTopMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * 段落模块上间距
+   */
+  @State
+  paragraphTopMargins: number = 8
+  /**
+   * 段落模块下间距列表
+   */
+  paragraphBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * 段落模块下间距
+   */
+  @State
+  paragraphBottomMargins: number = 8
+  /**
    * 配置数据内容
    */
   @State
@@ -288,27 +306,87 @@ struct ParagraphPage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`段落模块上间距 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.paragraphTopMargins}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.paragraphTopMarginsList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.paragraphTopMargins = item
+                    this.paragraphData.paragraphTopMargins = this.paragraphTopMargins
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`段落模块下间距 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.paragraphBottomMargins}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.paragraphBottomMarginsList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.paragraphBottomMargins = item
+                    this.paragraphData.paragraphBottomMargins = this.paragraphBottomMargins
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
                 Button(`${index + 1}、${item}`)
-                  .height(40)// 高度
-                  .width('80%')// 宽度
-                  .type(ButtonType.Capsule)// 圆角
-                  .fontColor(0xFFFFFFFF)// 文本颜色
-                  .backgroundColor(0xFF317AFF)// 背景颜色
-                  .margin({ top: 5, bottom: 5 })// 外边距
-                  .align(Alignment.Center)// 内容对齐方式
-                  .fontSize(16)// 字体大小
+                  .height(40)
+                  .width('80%')
+                  .type(ButtonType.Capsule)
+                  .fontColor(0xFFFFFFFF)
+                  .backgroundColor(0xFF317AFF)
+                  .margin({ top: 5, bottom: 5 })
+                  .align(Alignment.Center)
+                  .fontSize(16)
                   .onClick(() => {
-                    // 点击动作触发该方法调用
                     this.paragraphData.pagePath = `${this.rawFilePath}/${item}`
                     router.pushUrl({ url: "pages/ParagraphDetailsPage", params: this.paragraphData })
                   })
               }
             })
           }
-          // 设置ListItem在List交叉轴方向的布局方式
           .alignListItem(ListItemAlign.Center)
         }
         .padding({ bottom: 100 })
@@ -326,6 +404,8 @@ export class ParagraphData {
   _paragraphTextWordSpace: number = 0
   _paragraphTextLineHeight: number = 22
   _paragraphTypeface: string = "HarmonyOS Sans"
+  _paragraphTopMargins: number = 8
+  _paragraphBottomMargins: number = 8
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
@@ -351,6 +431,14 @@ export class ParagraphData {
 
   public set paragraphTypeface(value: string) {
     this._paragraphTypeface = value
+  }
+
+  public set paragraphTopMargins(value: number) {
+    this._paragraphTopMargins = value
+  }
+
+  public set paragraphBottomMargins(value: number) {
+    this._paragraphBottomMargins = value
   }
 
   public set pagePath(value: string) {

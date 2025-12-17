@@ -152,6 +152,24 @@ struct TitlePage {
   @State
   headingTypeface: string = "HarmonyOS Sans"
   /**
+   * 标题模块上间距列表
+   */
+  headingTopMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * 标题模块上间距
+   */
+  @State
+  headingTopMargins: number = 8
+  /**
+   * 标题模块下间距列表
+   */
+  headingBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * 标题模块下间距
+   */
+  @State
+  headingBottomMargins: number = 8
+  /**
    * 配置数据内容
    */
   @State
@@ -578,27 +596,87 @@ struct TitlePage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`标题模块上间距 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.headingTopMargins}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.headingTopMarginsList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.headingTopMargins = item
+                    this.titleData.headingTopMargins = this.headingTopMargins
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`标题模块下间距 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.headingBottomMargins}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.headingBottomMarginsList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.headingBottomMargins = item
+                    this.titleData.headingBottomMargins = this.headingBottomMargins
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
                 Button(`${index + 1}、${item}`)
-                  .height(40)// 高度
-                  .width('80%')// 宽度
-                  .type(ButtonType.Capsule)// 圆角
-                  .fontColor(0xFFFFFFFF)// 文本颜色
-                  .backgroundColor(0xFF317AFF)// 背景颜色
-                  .margin({ top: 5, bottom: 5 })// 外边距
-                  .align(Alignment.Center)// 内容对齐方式
-                  .fontSize(16)// 字体大小
+                  .height(40)
+                  .width('80%')
+                  .type(ButtonType.Capsule)
+                  .fontColor(0xFFFFFFFF)
+                  .backgroundColor(0xFF317AFF)
+                  .margin({ top: 5, bottom: 5 })
+                  .align(Alignment.Center)
+                  .fontSize(16)
                   .onClick(() => {
-                    // 点击动作触发该方法调用
                     this.titleData.pagePath = `${this.rawFilePath}/${item}`
                     router.pushUrl({ url: "pages/TitleDetailsPage", params: this.titleData })
                   })
               }
             })
           }
-          // 设置ListItem在List交叉轴方向的布局方式
           .alignListItem(ListItemAlign.Center)
         }
         .padding({ bottom: 100 })
@@ -623,6 +701,8 @@ export class TitleData {
   _headingTextLineHeight6: number = 22
   _headingTextSizeMultipliers: Array<number> = [20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
   _headingTypeface: string = "HarmonyOS Sans"
+  _headingTopMargins: number = 8
+  _headingBottomMargins: number = 8
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
@@ -675,6 +755,14 @@ export class TitleData {
 
   public set headingTypeface(value: string) {
     this._headingTypeface = value
+  }
+
+  public set headingTopMargins(value: number) {
+    this._headingTopMargins = value
+  }
+
+  public set headingBottomMargins(value: number) {
+    this._headingBottomMargins = value
   }
 
   public set pagePath(value: string) {

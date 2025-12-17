@@ -20,7 +20,7 @@ struct AllPage {
   /**
    * rawfile路径
    */
-  rawFilePath: string = "025_综合"
+  rawFilePath: string = "026_综合"
   /**
    * rawfile标题文件夹列表
    */

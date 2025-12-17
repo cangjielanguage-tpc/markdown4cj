@@ -111,16 +111,16 @@ struct AllDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    config.setLinkCallback(this.linkCallBack)
-    config.setImageCallback(this.imageCallback)
-    config.setAudioCallback(this.audioCallback)
-    config.setVideoCallback(this.videoCallback)
-    config.setVideoImageCallback(this.videoImageCallback)
-    config.setCodeCopyCallback(this.codeCopyCallback)
-    config.setCodeFullScreenCallback(this.codeFullScreenCallback)
-    config.setLatexImageCallback(this.latexCallBack)
-    config.setTocIndexCallback(this.tocIndexCallback)
-    config.setFootnoteCallback(this.footnoteCallback)
+    config.setLinkCallback(this.linkCallBack.bind(this))
+    config.setImageCallback(this.imageCallback.bind(this))
+    config.setAudioCallback(this.audioCallback.bind(this))
+    config.setVideoCallback(this.videoCallback.bind(this))
+    config.setVideoImageCallback(this.videoImageCallback.bind(this))
+    config.setCodeCopyCallback(this.codeCopyCallback.bind(this))
+    config.setCodeFullScreenCallback(this.codeFullScreenCallback.bind(this))
+    config.setLatexImageCallback(this.latexCallBack.bind(this))
+    config.setTocIndexCallback(this.tocIndexCallback.bind(this))
+    config.setFootnoteCallback(this.footnoteCallback.bind(this))
     let theme = new MarkdownTheme()
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins)
     theme.setIsDark(this.isDark)
@@ -189,10 +189,16 @@ struct AllDetailsPage {
   }
 
   tocIndexCallback(y: number | undefined): void {
-    hilog.error(1, "1", `---y:${y}`)
+    if(y !==undefined){
+      hilog.error(1, "1", `---y:${y}`)
+      this.scroller.scrollBy(0, y - (this.safeTop + 90))
+    }
   }
 
   footnoteCallback(y: number | undefined): void {
-    hilog.error(1, "1", `---y:${y}`)
+    if(y !==undefined){
+      hilog.error(1, "1", `---y:${y}`)
+      this.scroller.scrollBy(0, y - (this.safeTop + 90))
+    }
   }
 }
