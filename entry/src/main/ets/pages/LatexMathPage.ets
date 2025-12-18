@@ -48,12 +48,13 @@ struct LatexMathPage {
   /**
    * 数学公式背景色列表
    */
-  latexMathBackGroupColorList: Array<number> = [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  latexMathBackGroupColorList: Array<number> =
+    [0x00000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
   /**
    * 数学公式背景色
    */
   @State
-  latexMathBackGroupColor: number = 0xFFFFFFFF
+  latexMathBackGroupColor: number = 0x00000000
   /**
    * 数学公式文本颜色列表
    */
@@ -91,6 +92,15 @@ struct LatexMathPage {
    */
   @State
   latexMathResStr: string = "/data/storage/el1/bundle/entry/resources/resfile/res"
+  /**
+   * 数学公式未加载状态是否显示文字列表
+   */
+  latexDefaultTextList: Array<boolean> = [true, false]
+  /**
+   * 数学公式未加载状态是否显示文字
+   */
+  @State
+  latexDefaultText: boolean = true
   /**
    * 配置数据内容
    */
@@ -332,27 +342,56 @@ struct LatexMathPage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`数学公式未加载状态是否显示文字 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.latexDefaultText}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.latexDefaultTextList, (item: boolean, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.latexDefaultText = item
+                    this.latexMathData.latexDefaultText = this.latexDefaultText
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
                 Button(`${index + 1}、${item}`)
-                  .height(40)// 高度
-                  .width('80%')// 宽度
-                  .type(ButtonType.Capsule)// 圆角
-                  .fontColor(0xFFFFFFFF)// 文本颜色
-                  .backgroundColor(0xFF317AFF)// 背景颜色
-                  .margin({ top: 5, bottom: 5 })// 外边距
-                  .align(Alignment.Center)// 内容对齐方式
-                  .fontSize(16)// 字体大小
+                  .height(40)
+                  .width('80%')
+                  .type(ButtonType.Capsule)
+                  .fontColor(0xFFFFFFFF)
+                  .backgroundColor(0xFF317AFF)
+                  .margin({ top: 5, bottom: 5 })
+                  .align(Alignment.Center)
+                  .fontSize(16)
                   .onClick(() => {
-                    // 点击动作触发该方法调用
                     this.latexMathData.pagePath = `${this.rawFilePath}/${item}`
                     router.pushUrl({ url: "pages/LatexMathDetailsPage", params: this.latexMathData })
                   })
               }
             })
           }
-          // 设置ListItem在List交叉轴方向的布局方式
           .alignListItem(ListItemAlign.Center)
         }
         .padding({ bottom: 100 })
@@ -366,11 +405,12 @@ struct LatexMathPage {
 export class LatexMathData {
   _isFull: boolean = true
   _latexMathTextSize: number = 16
-  _latexMathBackGroupColor: number = 0xFFFFFFFF
+  _latexMathBackGroupColor: number = 0x00000000
   _latexMathTextColor: number = 0xFF000000
   _latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
   _latexMathBlockCenter: boolean = false
   _latexMathResStr: string = "/data/storage/el1/bundle/entry/resources/resfile/res"
+  _latexDefaultText: boolean = true
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
@@ -399,6 +439,10 @@ export class LatexMathData {
 
   public set latexMathResStr(value: string) {
     this._latexMathResStr = value
+  }
+
+  public set latexDefaultText(value: boolean) {
+    this._latexDefaultText = value
   }
 
   public set pagePath(value: string) {

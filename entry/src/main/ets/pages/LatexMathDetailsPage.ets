@@ -49,7 +49,7 @@ struct LatexMathDetailsPage {
    * 数学公式背景色
    */
   @State
-  latexMathBackGroupColor: number = 0xFFFFFFFF
+  latexMathBackGroupColor: number = 0x00000000
   /**
    * 数学公式文本颜色
    */
@@ -71,6 +71,10 @@ struct LatexMathDetailsPage {
   @State
   latexMathResStr: string = "/data/storage/el1/bundle/entry/resources/resfile/res"
   /**
+   * 数学公式未加载状态是否显示文字
+   */
+  latexDefaultText: boolean = true
+  /**
    * 增量加载延迟
    */
   time: number = 50
@@ -86,6 +90,7 @@ struct LatexMathDetailsPage {
       this.latexMathBlockCenter = latexMathData._latexMathBlockCenter
       this.latexMathColorFormat = latexMathData._latexMathColorFormat
       this.latexMathResStr = latexMathData._latexMathResStr
+      this.latexDefaultText = latexMathData._latexDefaultText
     } catch (e) {
     }
   }
@@ -99,17 +104,16 @@ struct LatexMathDetailsPage {
         this.safeTop
       )
       Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
+        .height(40)
+        .width("80%")
+        .type(ButtonType.Capsule)
+        .margin({ top: 5, bottom: 5 })
+        .fontColor(0xFFFFFFFF)
+        .backgroundColor(0xFF317AFF)
+        .align(Alignment.Center)
+        .fontSize(16)
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
               this.content = this.fileStr
             } else {
@@ -141,21 +145,25 @@ struct LatexMathDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    config.setLatexImageCallback(this.latexCallBack)
+    config.setLatexImageCallback(this.latexCallBack.bind(this)) // 数学公式点击回调
     let theme = new MarkdownTheme()
-    theme.setLatexMathTextSize(this.latexMathTextSize)
-    theme.setLatexMathBackGroupColor(this.latexMathBackGroupColor)
-    theme.setLatexMathTextColor(this.latexMathTextColor)
-    theme.setLatexMathBlockCenter(this.latexMathBlockCenter)
-    theme.setLatexMathColorFormat(this.latexMathColorFormat)
-    theme.setLatexMathResStr(this.latexMathResStr)
+    theme.setLatexMathTextSize(this.latexMathTextSize) // 数学公式文本大小
+    theme.setLatexMathBackGroupColor(this.latexMathBackGroupColor) // 数学公式背景色
+    theme.setLatexMathTextColor(this.latexMathTextColor) // 数学公式文本颜色
+    theme.setLatexMathBlockCenter(this.latexMathBlockCenter) // 块结构的数学公式是否居中
+    theme.setLatexMathColorFormat(this.latexMathColorFormat) // 数学公式生成图片格式
+    theme.setLatexMathResStr(this.latexMathResStr) // 数学公式字体路径
+    theme.setLatexDefaultText(this.latexDefaultText) // 数学公式未加载状态是否显示文字
     config.setMarkdownTheme(theme)
     return config
   }
 
   setPlugin(): MarkdownPlugin {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
-    plugin.setIsLatexMathPlugin(true)
+    plugin.setIsLatexMathPlugin(true) // 数学公式插件
+    plugin.setIsTablePlugin(true) // 表格插件
+    plugin.setIsTaskListPlugin(true) // 任务列表插件
+    plugin.setIsDescListPlugin(true) // 定义列表插件
     return plugin
   }
 

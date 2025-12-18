@@ -130,23 +130,21 @@ struct LineBreakPage {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
                 Button(`${index + 1}、${item}`)
-                  .height(40)// 高度
-                  .width('80%')// 宽度
-                  .type(ButtonType.Capsule)// 圆角
-                  .fontColor(0xFFFFFFFF)// 文本颜色
-                  .backgroundColor(0xFF317AFF)// 背景颜色
-                  .margin({ top: 5, bottom: 5 })// 外边距
-                  .align(Alignment.Center)// 内容对齐方式
-                  .fontSize(16)// 字体大小
+                  .height(40)
+                  .width('80%')
+                  .type(ButtonType.Capsule)
+                  .fontColor(0xFFFFFFFF)
+                  .backgroundColor(0xFF317AFF)
+                  .margin({ top: 5, bottom: 5 })
+                  .align(Alignment.Center)
+                  .fontSize(16)
                   .onClick(() => {
-                    // 点击动作触发该方法调用
                     this.lineBreakData.pagePath = `${this.rawFilePath}/${item}`
                     router.pushUrl({ url: "pages/LineBreakDetailsPage", params: this.lineBreakData })
                   })
               }
             })
           }
-          // 设置ListItem在List交叉轴方向的布局方式
           .alignListItem(ListItemAlign.Center)
         }
         .padding({ bottom: 100 })

@@ -894,7 +894,7 @@ public class CJMarkdownTheme {
      * @param linkColor 文本格式链接文本颜色 - 默认0XFF0000FF
      */
     public func setLinkColor(linkColor: UInt32): Unit {
-        this.linkColor = Color(linkColor)
+        this.linkColor = transColorForTrasparent(linkColor)
     }
 
     /**
@@ -921,7 +921,7 @@ public class CJMarkdownTheme {
      * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0XFF000000
      */
     public func setLinkBackGroupColor(linkBackGroupColor: UInt32): Unit {
-        this.linkBackGroupColor = Color(linkBackGroupColor)
+        this.linkBackGroupColor = transColorForTrasparent(linkBackGroupColor)
     }
 
     /**
@@ -939,7 +939,7 @@ public class CJMarkdownTheme {
      * @param linkCircleImageBackGroupColor 圆形图片格式链接主题背景颜色 - 默认0XFFFFFFFF
      */
     public func setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: UInt32): Unit {
-        this.linkCircleImageBackGroupColor = Color(linkCircleImageBackGroupColor)
+        this.linkCircleImageBackGroupColor = transColorForTrasparent(linkCircleImageBackGroupColor)
     }
 
     /**
@@ -948,7 +948,7 @@ public class CJMarkdownTheme {
      * @param linkCircleImageButtonBackGroupColor 圆形图片格式链接控件背景颜色 - 默认0XFF000000
      */
     public func setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: UInt32): Unit {
-        this.linkCircleImageButtonBackGroupColor = Color(linkCircleImageButtonBackGroupColor)
+        this.linkCircleImageButtonBackGroupColor = transColorForTrasparent(linkCircleImageButtonBackGroupColor)
     }
 
     /**
@@ -966,7 +966,7 @@ public class CJMarkdownTheme {
      * @param linkCircleImageTextColor 圆形图片格式链接文字颜色 - 默认0XFFFFFFFF
      */
     public func setLinkCircleImageTextColor(linkCircleImageTextColor: UInt32): Unit {
-        this.linkCircleImageTextColor = Color(linkCircleImageTextColor)
+        this.linkCircleImageTextColor = transColorForTrasparent(linkCircleImageTextColor)
     }
 
     /**
@@ -993,7 +993,7 @@ public class CJMarkdownTheme {
      * @param linkRectImageBackGroupColor 圆角矩形图片格式链接主题背景颜色 - 默认0XFFFFFFFF
      */
     public func setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: UInt32): Unit {
-        this.linkRectImageBackGroupColor = Color(linkRectImageBackGroupColor)
+        this.linkRectImageBackGroupColor = transColorForTrasparent(linkRectImageBackGroupColor)
     }
 
     /**
@@ -1002,7 +1002,7 @@ public class CJMarkdownTheme {
      * @param linkRectImageButtonBackGroupColor 圆角矩形图片格式链接控件背景颜色 - 默认0XFF000000
      */
     public func setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: UInt32): Unit {
-        this.linkRectImageButtonBackGroupColor = Color(linkRectImageButtonBackGroupColor)
+        this.linkRectImageButtonBackGroupColor = transColorForTrasparent(linkRectImageButtonBackGroupColor)
     }
 
     /**
@@ -1020,7 +1020,7 @@ public class CJMarkdownTheme {
      * @param linkRectImageTextColor 圆角矩形图片格式链接文字颜色 - 默认0XFFFFFFFF
      */
     public func setLinkRectImageTextColor(linkRectImageTextColor: UInt32): Unit {
-        this.linkRectImageTextColor = Color(linkRectImageTextColor)
+        this.linkRectImageTextColor = transColorForTrasparent(linkRectImageTextColor)
     }
 
     /**
@@ -1065,7 +1065,7 @@ public class CJMarkdownTheme {
      * @param linkRectToolImageBackGroupColor 空心圆角矩形图片格式链接主题背景颜色 - 默认OXFFFFFFFF
      */
     public func setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: UInt32): Unit {
-        this.linkRectToolImageBackGroupColor = Color(linkRectToolImageBackGroupColor)
+        this.linkRectToolImageBackGroupColor = transColorForTrasparent(linkRectToolImageBackGroupColor)
     }
 
     /**
@@ -1074,7 +1074,7 @@ public class CJMarkdownTheme {
      * @param linkRectToolImageButtonBackGroupColor 空心圆角矩形图片格式链接控件背景颜色 - 默认OXFFFFFFFF
      */
     public func setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: UInt32): Unit {
-        this.linkRectToolImageButtonBackGroupColor = Color(linkRectToolImageButtonBackGroupColor)
+        this.linkRectToolImageButtonBackGroupColor = transColorForTrasparent(linkRectToolImageButtonBackGroupColor)
     }
 
     /**
@@ -1182,7 +1182,7 @@ public class CJMarkdownTheme {
      * @param blockQuoteColor 块引用左边线条颜色 - 默认0XFF191919
      */
     public func setBlockQuoteColor(blockQuoteColor: UInt32): Unit {
-        this.blockQuoteColor = Color(blockQuoteColor)
+        this.blockQuoteColor = transColorForTrasparent(blockQuoteColor)
     }
 
     /**
@@ -1191,7 +1191,7 @@ public class CJMarkdownTheme {
      * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0XFFFFFFFF
      */
     public func setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: UInt32): Unit {
-        this.blockQuoteBackGroupColor = Color(blockQuoteBackGroupColor)
+        this.blockQuoteBackGroupColor = transColorForTrasparent(blockQuoteBackGroupColor)
     }
 
     /**
@@ -1245,7 +1245,7 @@ public class CJMarkdownTheme {
      * @param orderedListItemColor 有序列表前缀文本颜色 - 默认OXFF191919
      */
     public func setOrderedListItemColor(orderedListItemColor: UInt32): Unit {
-        this.orderedListItemColor = Color(orderedListItemColor)
+        this.orderedListItemColor = transColorForTrasparent(orderedListItemColor)
     }
 
     /**
@@ -1281,7 +1281,7 @@ public class CJMarkdownTheme {
      * @param bulletListItemColor 无序列表前缀文本颜色 - 默认OXFF191919
      */
     public func setBulletListItemColor(bulletListItemColor: UInt32): Unit {
-        this.bulletListItemColor = Color(bulletListItemColor)
+        this.bulletListItemColor = transColorForTrasparent(bulletListItemColor)
     }
 
     /**
@@ -1326,7 +1326,7 @@ public class CJMarkdownTheme {
      * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
      */
     public func setCodeTextColor(codeTextColor: UInt32): Unit {
-        this.codeTextColor = Color(codeTextColor)
+        this.codeTextColor = transColorForTrasparent(codeTextColor)
     }
 
     /**
@@ -1335,7 +1335,7 @@ public class CJMarkdownTheme {
      * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFF191919
      */
     public func setCodeBackgroundColor(codeBackgroundColor: UInt32): Unit {
-        this.codeBackgroundColor = Color(codeBackgroundColor)
+        this.codeBackgroundColor = transColorForTrasparent(codeBackgroundColor)
     }
 
     /**
@@ -1380,7 +1380,7 @@ public class CJMarkdownTheme {
      * @param codeBlockTextColor 代码块代码文本颜色 - 默认None
      */
     public func setCodeBlockTextColor(codeBlockTextColor: UInt32): Unit {
-        this.codeBlockTextColor = Color(codeBlockTextColor)
+        this.codeBlockTextColor = transColorForTrasparent(codeBlockTextColor)
     }
 
     /**
@@ -1389,7 +1389,7 @@ public class CJMarkdownTheme {
      * @param codeBlockTypeTextColor 代码块代码类型文本颜色 - 默认None
      */
     public func setCodeBlockTypeTextColor(codeBlockTypeTextColor: UInt32): Unit {
-        this.codeBlockTypeTextColor = Color(codeBlockTypeTextColor)
+        this.codeBlockTypeTextColor = transColorForTrasparent(codeBlockTypeTextColor)
     }
 
     /**
@@ -1434,7 +1434,7 @@ public class CJMarkdownTheme {
      * @param codeBlockBackgroundColor 代码块背景颜色 - 默认None
      */
     public func setCodeBlockBackgroundColor(codeBlockBackgroundColor: UInt32): Unit {
-        this.codeBlockBackgroundColor = Color(codeBlockBackgroundColor)
+        this.codeBlockBackgroundColor = transColorForTrasparent(codeBlockBackgroundColor)
     }
 
     /**
@@ -1524,7 +1524,7 @@ public class CJMarkdownTheme {
      * @param codeListTitleSelectTextColor 组合代码选中标题文本颜色 - 默认Color.RED
      */
     public func setCodeListTitleSelectTextColor(codeListTitleSelectTextColor: UInt32): Unit {
-        this.codeListTitleSelectTextColor = Color(codeListTitleSelectTextColor)
+        this.codeListTitleSelectTextColor = transColorForTrasparent(codeListTitleSelectTextColor)
     }
 
     /**
@@ -1533,7 +1533,7 @@ public class CJMarkdownTheme {
      * @param codeListTitleUnSelectTextColor 组合代码未选中标题文本颜色 - 默认Color.BLACK
      */
     public func setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: UInt32): Unit {
-        this.codeListTitleUnSelectTextColor = Color(codeListTitleUnSelectTextColor)
+        this.codeListTitleUnSelectTextColor = transColorForTrasparent(codeListTitleUnSelectTextColor)
     }
 
     /**
@@ -1542,7 +1542,7 @@ public class CJMarkdownTheme {
      * @param codeListTitleSelectBackGroupColor 组合代码选中标题背景颜色 - 默认Color.GRAY
      */
     public func setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: UInt32): Unit {
-        this.codeListTitleSelectBackGroupColor = Color(codeListTitleSelectBackGroupColor)
+        this.codeListTitleSelectBackGroupColor = transColorForTrasparent(codeListTitleSelectBackGroupColor)
     }
 
     /**
@@ -1551,7 +1551,7 @@ public class CJMarkdownTheme {
      * @param codeListTitleUnSelectBackGroupColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
      */
     public func setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: UInt32): Unit {
-        this.codeListTitleUnSelectBackGroupColor = Color(codeListTitleUnSelectBackGroupColor)
+        this.codeListTitleUnSelectBackGroupColor = transColorForTrasparent(codeListTitleUnSelectBackGroupColor)
     }
 
     /**
@@ -1596,7 +1596,7 @@ public class CJMarkdownTheme {
      * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0XFF191919
      */
     public func setHeadingBreakColor(headingBreakColor: UInt32): Unit {
-        this.headingBreakColor = Color(headingBreakColor)
+        this.headingBreakColor = transColorForTrasparent(headingBreakColor)
     }
 
     /**
@@ -1641,7 +1641,7 @@ public class CJMarkdownTheme {
      * @param headingTextColor 标题文本颜色 - 默认0XFF191919
      */
     public func setHeadingTextColor(headingTextColor: UInt32): Unit {
-        this.headingTextColor = Color(headingTextColor)
+        this.headingTextColor = transColorForTrasparent(headingTextColor)
     }
 
     /**
@@ -1740,7 +1740,7 @@ public class CJMarkdownTheme {
      * @param paragraphTextColor 段落文本颜色 - 默认0XFF191919
      */
     public func setParagraphTextColor(paragraphTextColor: UInt32): Unit {
-        this.paragraphTextColor = Color(paragraphTextColor)
+        this.paragraphTextColor = transColorForTrasparent(paragraphTextColor)
     }
 
     /**
@@ -1776,7 +1776,7 @@ public class CJMarkdownTheme {
      * @param thematicBreakColor 分割线颜色 - 默认0XFF191919
      */
     public func setThematicBreakColor(thematicBreakColor: UInt32): Unit {
-        this.thematicBreakColor = Color(thematicBreakColor)
+        this.thematicBreakColor = transColorForTrasparent(thematicBreakColor)
     }
 
     /**
@@ -1839,7 +1839,7 @@ public class CJMarkdownTheme {
      * @param latexMathBackGroupColor 数学公式背景色 - 默认0xFFFFFFFF
      */
     public func setLatexMathBackGroupColor(latexMathBackGroupColor: UInt32): Unit {
-        this.latexMathBackGroupColor = Color(latexMathBackGroupColor)
+        this.latexMathBackGroupColor = transColorForTrasparent(latexMathBackGroupColor)
     }
 
     /**
@@ -1848,7 +1848,7 @@ public class CJMarkdownTheme {
      * @param latexMathTextColor 数学公式文本颜色 - 默认0xFF000000
      */
     public func setLatexMathTextColor(latexMathTextColor: UInt32): Unit {
-        this.latexMathTextColor = Color(latexMathTextColor)
+        this.latexMathTextColor = transColorForTrasparent(latexMathTextColor)
     }
 
     /**
@@ -1888,7 +1888,7 @@ public class CJMarkdownTheme {
      * @param audioShadowColor 音频阴影颜色值 - 默认0x1A000000
      */
     public func setAudioShadowColor(audioShadowColor: UInt32): Unit {
-        this.audioShadowColor = Color(audioShadowColor)
+        this.audioShadowColor = transColorForTrasparent(audioShadowColor)
     }
 
     /**
@@ -1897,7 +1897,7 @@ public class CJMarkdownTheme {
      * @param audioBorderColor 音频边框颜色 - 默认0x33000000
      */
     public func setAudioBorderColor(audioBorderColor: UInt32): Unit {
-        this.audioBorderColor = Color(audioBorderColor)
+        this.audioBorderColor = transColorForTrasparent(audioBorderColor)
     }
 
     /**
@@ -1924,7 +1924,7 @@ public class CJMarkdownTheme {
      * @param audioButtonBackgroundColor 音频按钮背景颜色- 默认Color.BLACK
      */
     public func setAudioButtonBackgroundColor(audioButtonBackgroundColor: UInt32): Unit {
-        this.audioButtonBackgroundColor = Color(audioButtonBackgroundColor)
+        this.audioButtonBackgroundColor = transColorForTrasparent(audioButtonBackgroundColor)
     }
 
     /**
@@ -1933,7 +1933,7 @@ public class CJMarkdownTheme {
      * @param audioButtonTextColor 音频按钮文字颜色 - 默认Color.WHITE
      */
     public func setAudioButtonTextColor(audioButtonTextColor: UInt32): Unit {
-        this.audioButtonTextColor = Color(audioButtonTextColor)
+        this.audioButtonTextColor = transColorForTrasparent(audioButtonTextColor)
     }
 
     /**
@@ -1978,7 +1978,7 @@ public class CJMarkdownTheme {
      * @param audioTitleTextColor音频标题文字颜色 - 默认Color.BLACK
      */
     public func setAudioTitleTextColor(audioTitleTextColor: UInt32): Unit {
-        this.audioTitleTextColor = Color(audioTitleTextColor)
+        this.audioTitleTextColor = transColorForTrasparent(audioTitleTextColor)
     }
 
     /**
@@ -2005,7 +2005,7 @@ public class CJMarkdownTheme {
      * @param audioTypeTextColor 音频类型文字颜色 - 默认0X80000000
      */
     public func setAudioTypeTextColor(audioTypeTextColor: UInt32): Unit {
-        this.audioTypeTextColor = Color(audioTypeTextColor)
+        this.audioTypeTextColor = transColorForTrasparent(audioTypeTextColor)
     }
 
     /**
@@ -2050,7 +2050,7 @@ public class CJMarkdownTheme {
      * @param videoTimeTextColor 视频时间文本颜色 - 默认Color.WHITE
      */
     public func setVideoTimeTextColor(videoTimeTextColor: UInt32): Unit {
-        this.videoTimeTextColor = Color(videoTimeTextColor)
+        this.videoTimeTextColor = transColorForTrasparent(videoTimeTextColor)
     }
 
     /**
@@ -2181,7 +2181,7 @@ public class CJMarkdownTheme {
      * @param tableBorderColor 表格边框颜色 - 默认0XFF000000
      */
     public func setTableBorderColor(tableBorderColor: UInt32): Unit {
-        this.tableBorderColor = Color(tableBorderColor)
+        this.tableBorderColor = transColorForTrasparent(tableBorderColor)
     }
 
     /**
@@ -2199,7 +2199,7 @@ public class CJMarkdownTheme {
      * @param tableOddRowBackgroundColor 表格奇数行背景色 - 默认0XFFFFFFFF
      */
     public func setTableOddRowBackgroundColor(tableOddRowBackgroundColor: UInt32): Unit {
-        this.tableOddRowBackgroundColor = Color(tableOddRowBackgroundColor)
+        this.tableOddRowBackgroundColor = transColorForTrasparent(tableOddRowBackgroundColor)
     }
 
     /**
@@ -2208,7 +2208,7 @@ public class CJMarkdownTheme {
      * @param tableEvenRowBackgroundColor 表格偶数行背景色 - 默认0XFFE0E0E0
      */
     public func setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: UInt32): Unit {
-        this.tableEvenRowBackgroundColor = Color(tableEvenRowBackgroundColor)
+        this.tableEvenRowBackgroundColor = transColorForTrasparent(tableEvenRowBackgroundColor)
     }
 
     /**
@@ -2217,7 +2217,7 @@ public class CJMarkdownTheme {
      * @param tableHeaderRowBackgroundColor 表格头背景色 - 默认0XFFFFFFFF
      */
     public func setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: UInt32): Unit {
-        this.tableHeaderRowBackgroundColor = Color(tableHeaderRowBackgroundColor)
+        this.tableHeaderRowBackgroundColor = transColorForTrasparent(tableHeaderRowBackgroundColor)
     }
 
     /**
@@ -2280,7 +2280,7 @@ public class CJMarkdownTheme {
      * @param strikethroughColor 删除线颜色 - 默认0X191919
      */
     public func setStrikethroughColor(strikethroughColor: UInt32): Unit {
-        this.strikethroughColor = Color(strikethroughColor)
+        this.strikethroughColor = transColorForTrasparent(strikethroughColor)
     }
 
     /**

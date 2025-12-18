@@ -13,7 +13,7 @@ import std.collection.*
 import ohos.resource_manager.AppResource
 import std.sync.*
 
-var arkImgPreprocessFunc: ?(String)->?Array < Byte >= None
+var arkImgPreprocessFunc: ?(String) -> ?Array<Byte> = None
 
 class cbRet {
     var value: ?Array<UInt8> = None
@@ -22,26 +22,28 @@ class cbRet {
 
 public func registerImgPreprocessCallback(context: JSContext, callInfo: JSCallInfo): JSValue {
     let arktsCB = callInfo[0].asFunction(context)
-    arkImgPreprocessFunc = { url =>
-        let ret: cbRet = cbRet()
-        ret.sem.acquire()
-        ctx.getOrThrow().postJSTask {
-            let _url = url.toJSValue(context)
-            let _ret = arktsCB.call([_url]).asPromise()
-            let onFulfilled = context.function{context, callInfo =>
-                let bufferVale = Option<Array<Byte>>.fromJSValue(context, callInfo[0])
-                if(bufferVale.isSome()) {
-                    ret.value = bufferVale.getOrThrow()
+    arkImgPreprocessFunc = {
+        url =>
+            let ret: cbRet = cbRet()
+            ret.sem.acquire()
+            ctx.getOrThrow().postJSTask {
+                    let _url = url.toJSValue(context)
+                    let _ret = arktsCB.call([_url]).asPromise()
+                    let onFulfilled = context.function {
+                        context, callInfo =>
+                            let bufferVale = Option<Array<Byte>>.fromJSValue(context, callInfo[0])
+                            if (bufferVale.isSome()) {
+                                ret.value = bufferVale.getOrThrow()
+                            }
+                            ret.sem.release()
+                            context.undefined().toJSValue()
+                    }
+                    _ret.then(onFulfilled)
                 }
-                ret.sem.release()
-                context.undefined().toJSValue()
-            }
-            _ret.then(onFulfilled)
-        }
-        ret.sem.acquire()
-        let retValue = ret.value
-        ret.sem.release()
-        retValue
+            ret.sem.acquire()
+            let retValue = ret.value
+            ret.sem.release()
+            retValue
     }
     context.undefined().toJSValue()
 }
@@ -81,16 +83,14 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     )
     CustomView.create(comp)
     ViewStackProcessor.StopGetAccessRecording()
-    return ctx
-        .function(
+    return ctx.function(
             {
                 ctx1: JSContext, callInfo1: JSCallInfo =>
-                let input = String.fromJSValue(ctx1, callInfo1[0])
-                comp.updateMarkDown(input)
-                return ctx1.undefined().toJSValue()
+                    let input = String.fromJSValue(ctx1, callInfo1[0])
+                    comp.updateMarkDown(input)
+                    return ctx1.undefined().toJSValue()
             }
-        )
-        .toJSValue()
+        ).toJSValue()
 }
 
 var codeFullScreenIcon: ?AppResource = None
@@ -132,7 +132,22 @@ func arktsRes2CJResource(ctx: JSContext, value: JSValue): AppResource {
         String.fromJSValue(ctx, obj["bundleName"]),
         String.fromJSValue(ctx, obj["moduleName"]),
         Int32.fromJSValue(ctx, obj["id"]),
-        params:[],
+        params: [],
         resType: Int32.fromJSValue(ctx, obj["type"]),
     )
+}
+
+/**
+ * 互操作透明色颜色处理
+ *
+ * @param value 颜色值
+ * @return Color Color对象
+ *
+ */
+func transColorForTrasparent(value: UInt32): Color {
+    if (value >> 24 == 0) {
+        Color.TRANSPARENT
+    } else {
+        Color(value)
+    }
 }

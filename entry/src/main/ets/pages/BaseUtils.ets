@@ -47,6 +47,8 @@ export function numberToColorString(color: number|undefined): string {
       return "0xFF191919"
     case 0x00FFFFFF:
       return "0x00FFFFFF"
+    case 0x00000000:
+      return "透明色"
     case undefined:
       return "undefined"
   }
