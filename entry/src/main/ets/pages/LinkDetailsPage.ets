@@ -265,39 +265,39 @@ struct LinkDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    config.setLinkCallback(this.linkCallBack.bind(this))
+    config.setLinkCallback(this.linkCallBack.bind(this)) // 链接点击回调
     let theme = new MarkdownTheme()
-    theme.setIsLinkStyle(this.isLinkStyle)
-    theme.setIsListLinkStyle(this.isListLinkStyle)
-    theme.setLinkColor(this.linkColor)
-    theme.setIsLinkSize(this.isLinkSize)
-    theme.setLinkSize(this.linkSize)
-    theme.setLinkBackGroupColor(this.linkBackGroupColor)
-    theme.setIsLinkUnderlined(this.isLinkUnderlined)
-    theme.setLinkCircleImageBackGroupColor(this.linkCircleImageBackGroupColor)
-    theme.setLinkCircleImageButtonBackGroupColor(this.linkCircleImageButtonBackGroupColor)
-    theme.setLinkCircleImageTextSize(this.linkCircleImageTextSize)
-    theme.setLinkCircleImageTextColor(this.linkCircleImageTextColor)
-    theme.setLinkCircleImageRadius(this.linkCircleImageRadius)
-    theme.setLinkCircleImageMargin(this.linkCircleImageMargin)
-    theme.setLinkRectImageBackGroupColor(this.linkRectImageBackGroupColor)
-    theme.setLinkRectImageButtonBackGroupColor(this.linkRectImageButtonBackGroupColor)
-    theme.setLinkRectImageTextSize(this.linkRectImageTextSize)
-    theme.setLinkRectImageTextColor(this.linkRectImageTextColor)
-    theme.setLinkRectImageHeight(this.linkRectImageHeight)
-    theme.setLinkRectImagePadding(this.linkRectImagePadding)
-    theme.setLinkRectImageRadius(this.linkRectImageRadius)
-    theme.setLinkRectImageMargin(this.linkRectImageMargin)
-    theme.setLinkRectToolImageBackGroupColor(this.linkRectToolImageBackGroupColor)
-    theme.setLinkRectToolImageButtonBackGroupColor(this.linkRectToolImageButtonBackGroupColor)
-    theme.setLinkRectToolImageTextSize(this.linkRectToolImageTextSize)
-    theme.setLinkRectToolImageHeight(this.linkRectToolImageHeight)
-    theme.setLinkRectToolImagePadding(this.linkRectToolImagePadding)
-    theme.setLinkRectToolImageBorderWidth(this.linkRectToolImageBorderWidth)
-    theme.setLinkRectToolImageDividingLineWidth(this.linkRectToolImageDividingLineWidth)
-    theme.setLinkRectToolImageMargin(this.linkRectToolImageMargin)
-    theme.setLinkRectToolImageLineLeftPadding(this.linkRectToolImageLineLeftPadding)
-    theme.setLinkRectToolImageLineRightPadding(this.linkRectToolImageLineRightPadding)
+    theme.setIsLinkStyle(this.isLinkStyle) // 链接是否是图片显示
+    theme.setIsListLinkStyle(this.isListLinkStyle) // 列表中的单行链接是否是图片显示
+    theme.setLinkColor(this.linkColor) // 文本格式链接文本颜色
+    theme.setIsLinkSize(this.isLinkSize) // 是否按照链接文本字体大小显示文本
+    theme.setLinkSize(this.linkSize) // 文本格式链接文字大小
+    theme.setLinkBackGroupColor(this.linkBackGroupColor) // 文本格式链接背景颜色
+    theme.setIsLinkUnderlined(this.isLinkUnderlined) // 文本格式是否显示链接下划线
+    theme.setLinkCircleImageBackGroupColor(this.linkCircleImageBackGroupColor) // 圆形图片格式链接主题背景颜色
+    theme.setLinkCircleImageButtonBackGroupColor(this.linkCircleImageButtonBackGroupColor) // 圆形图片格式链接控件背景颜色
+    theme.setLinkCircleImageTextSize(this.linkCircleImageTextSize) // 圆形图片格式链接文字大小
+    theme.setLinkCircleImageTextColor(this.linkCircleImageTextColor) // 圆形图片格式链接文字颜色
+    theme.setLinkCircleImageRadius(this.linkCircleImageRadius) // 圆形图片格式链接半径
+    theme.setLinkCircleImageMargin(this.linkCircleImageMargin) // 圆形图片格式链接左右外边距
+    theme.setLinkRectImageBackGroupColor(this.linkRectImageBackGroupColor) // 圆角矩形图片格式链接主题背景颜色
+    theme.setLinkRectImageButtonBackGroupColor(this.linkRectImageButtonBackGroupColor) // 圆角矩形图片格式链接控件背景颜色
+    theme.setLinkRectImageTextSize(this.linkRectImageTextSize) // 圆角矩形图片格式链接文字大小
+    theme.setLinkRectImageTextColor(this.linkRectImageTextColor) // 圆角矩形图片格式链接文字颜色
+    theme.setLinkRectImageHeight(this.linkRectImageHeight) // 圆角矩形图片格式链接控件高度
+    theme.setLinkRectImagePadding(this.linkRectImagePadding) // 圆角矩形图片格式链接左右内边距
+    theme.setLinkRectImageRadius(this.linkRectImageRadius) // 圆角矩形图片格式链接圆角半径
+    theme.setLinkRectImageMargin(this.linkRectImageMargin) // 圆角矩形图片格式链接左右外边距
+    theme.setLinkRectToolImageBackGroupColor(this.linkRectToolImageBackGroupColor) // 空心圆角矩形图片格式链接主题背景颜色
+    theme.setLinkRectToolImageButtonBackGroupColor(this.linkRectToolImageButtonBackGroupColor) // 空心圆角矩形图片格式链接控件背景颜色
+    theme.setLinkRectToolImageTextSize(this.linkRectToolImageTextSize) // 空心圆角矩形图片格式链接文字大小
+    theme.setLinkRectToolImageHeight(this.linkRectToolImageHeight) // 空心圆角矩形图片格式链接控件高度
+    theme.setLinkRectToolImagePadding(this.linkRectToolImagePadding) // 空心圆角矩形图片格式链接左右内边距
+    theme.setLinkRectToolImageBorderWidth(this.linkRectToolImageBorderWidth) // 空心圆角矩形图片格式链接边框宽度
+    theme.setLinkRectToolImageDividingLineWidth(this.linkRectToolImageDividingLineWidth) // 空心圆角矩形图片格式链接分割线宽度
+    theme.setLinkRectToolImageMargin(this.linkRectToolImageMargin) // 空心圆角矩形图片格式链接左右外边距
+    theme.setLinkRectToolImageLineLeftPadding(this.linkRectToolImageLineLeftPadding) // 空心圆角矩形图片格式分割线和文本左边距
+    theme.setLinkRectToolImageLineRightPadding(this.linkRectToolImageLineRightPadding) // 空心圆角矩形图片格式分割线和文本右边距
     config.setMarkdownTheme(theme)
     return config
   }
