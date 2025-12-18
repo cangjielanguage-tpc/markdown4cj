@@ -116,23 +116,22 @@ struct TableDetailsPage {
   build() {
     Column() {
       titleComponent(
-        "标题测试用例",
+        "表格测试用例",
         0xFF317AFF,
         true,
         this.safeTop
       )
       Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
+        .height(40)
+        .width("80%")
+        .type(ButtonType.Capsule)
+        .margin({ top: 5, bottom: 5 })
+        .fontColor(0xFFFFFFFF)
+        .backgroundColor(0xFF317AFF)
+        .align(Alignment.Center)
+        .fontSize(16)
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
               this.content = this.fileStr
             } else {
@@ -165,25 +164,28 @@ struct TableDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setTableCellPadding(this.tableCellPadding)
-    theme.setTableBorderColor(this.tableBorderColor)
-    theme.setTableBorderWidth(this.tableBorderWidth)
-    theme.setTableOddRowBackgroundColor(this.tableOddRowBackgroundColor)
-    theme.setTableEvenRowBackgroundColor(this.tableEvenRowBackgroundColor)
-    theme.setTableHeaderRowBackgroundColor(this.tableHeaderRowBackgroundColor)
-    theme.setTableTextLineHeight(this.tableTextLineHeight)
-    theme.setTableRadius(this.tableRadius)
-    theme.setTableMinTextWidth(this.tableMinTextWidth)
-    theme.setTableMaxTextWidth(this.tableMaxTextWidth)
-    theme.setTableFirstColumnBold(this.tableFirstColumnBold)
+    theme.setContext(getContext(this)) // 上下文
+    theme.setTableCellPadding(this.tableCellPadding) // 表格内容内边距
+    theme.setTableBorderColor(this.tableBorderColor) // 表格边框颜色
+    theme.setTableBorderWidth(this.tableBorderWidth) // 表格边框宽度
+    theme.setTableOddRowBackgroundColor(this.tableOddRowBackgroundColor) // 表格奇数行背景色
+    theme.setTableEvenRowBackgroundColor(this.tableEvenRowBackgroundColor) // 表格偶数行背景色
+    theme.setTableHeaderRowBackgroundColor(this.tableHeaderRowBackgroundColor) // 表格头背景色
+    theme.setTableTextLineHeight(this.tableTextLineHeight) // 表格文本行高
+    theme.setTableRadius(this.tableRadius) // 表格圆角
+    theme.setTableMinTextWidth(this.tableMinTextWidth) // 表格最小宽度
+    theme.setTableMaxTextWidth(this.tableMaxTextWidth) // 表格最大宽度
+    theme.setTableFirstColumnBold(this.tableFirstColumnBold) // 表格第一列是否加粗
     config.setMarkdownTheme(theme)
     return config
   }
 
   setPlugin(): MarkdownPlugin {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
-    plugin.setIsTablePlugin(true)
-    plugin.setIsLatexMathPlugin(true)
+    plugin.setIsTablePlugin(true) // 表格插件
+    plugin.setIsLatexMathPlugin(true) // 数学公式插件
+    plugin.setIsStrikethroughPlugin(true) // 删除线插件
+    plugin.setIsHtmlPlugin(true) // HTML插件
     return plugin
   }
 }
