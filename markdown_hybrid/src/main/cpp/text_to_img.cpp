@@ -2,9 +2,9 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 #include <cstdint>
-#define __OS_ohos__
+#define OS_OHOS
 
-#ifdef __OS_ohos__
+#ifdef OS_OHOS
 
 #include <native_drawing/drawing_bitmap.h>
 
@@ -95,20 +95,20 @@ static UInt8Data toBitmapRGB565(OH_Drawing_Bitmap *bitmap)
     bmiHdr.biClrImportant = ZERO; // 说明对图象显示有重要影响的颜色索引的数目，0表示所有颜色都重要
 
     // RGB565格式掩码
-    bmiClr[0].rgbBlue = ZERO;
-    bmiClr[0].rgbGreen = COLOR_0XF8;
-    bmiClr[0].rgbRed = ZERO;
-    bmiClr[0].rgbReserved = ZERO;
+    bmiClr[ZERO].rgbBlue = ZERO;
+    bmiClr[ZERO].rgbGreen = COLOR_0XF8;
+    bmiClr[ZERO].rgbRed = ZERO;
+    bmiClr[ZERO].rgbReserved = ZERO;
 
-    bmiClr[1].rgbBlue = COLOR_0XE0;
-    bmiClr[1].rgbGreen = COLOR_0X07;
-    bmiClr[1].rgbRed = ZERO;
-    bmiClr[1].rgbReserved = ZERO;
+    bmiClr[ONE].rgbBlue = COLOR_0XE0;
+    bmiClr[ONE].rgbGreen = COLOR_0X07;
+    bmiClr[ONE].rgbRed = ZERO;
+    bmiClr[ONE].rgbReserved = ZERO;
 
-    bmiClr[2].rgbBlue = COLOR_0X1F;
-    bmiClr[2].rgbGreen = ZERO;
-    bmiClr[2].rgbRed = ZERO;
-    bmiClr[2].rgbReserved = ZERO;
+    bmiClr[TWO].rgbBlue = COLOR_0X1F;
+    bmiClr[TWO].rgbGreen = ZERO;
+    bmiClr[TWO].rgbRed = ZERO;
+    bmiClr[TWO].rgbReserved = ZERO;
 
     bmfHdr.bfType = (WORD)COLOR_0X4D42; // 文件类型，0x4D42也就是字符'BM'
     bmfHdr.bfSize =
@@ -529,4 +529,4 @@ UInt8Data drawRectToolImage(char *str1, char *str2, float fontSize, uint32_t fon
 }
 #endif
 
-#endif // __OS_ohos__
+#endif // OS_OHOS
