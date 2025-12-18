@@ -57,7 +57,7 @@ struct LinkDetailsPage {
   /**
    * 文本格式链接背景颜色
    */
-  linkBackGroupColor: number = 0xFF000000
+  linkBackGroupColor: number = 0x00000000
   /**
    * 文本格式是否显示链接下划线
    */
@@ -65,7 +65,7 @@ struct LinkDetailsPage {
   /**
    * 圆形图片格式链接主题背景颜色
    */
-  linkCircleImageBackGroupColor: number = 0xFFFFFFFF
+  linkCircleImageBackGroupColor: number = 0x00000000
   /**
    * 圆形图片格式链接控件背景颜色
    */
@@ -89,7 +89,7 @@ struct LinkDetailsPage {
   /**
    * 圆角矩形图片格式链接主题背景颜色
    */
-  linkRectImageBackGroupColor: number = 0xFFFFFFFF
+  linkRectImageBackGroupColor: number = 0x00000000
   /**
    * 圆角矩形图片格式链接控件背景颜色
    */
@@ -121,7 +121,7 @@ struct LinkDetailsPage {
   /**
    * 空心圆角矩形图片格式链接主题背景颜色
    */
-  linkRectToolImageBackGroupColor: number = 0xFFFFFFFF
+  linkRectToolImageBackGroupColor: number = 0x00000000
   /**
    * 空心圆角矩形图片格式链接控件背景颜色
    */
@@ -224,17 +224,16 @@ struct LinkDetailsPage {
         this.safeTop
       )
       Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
+        .height(40)
+        .width("80%")
+        .type(ButtonType.Capsule)
+        .margin({ top: 5, bottom: 5 })
+        .fontColor(0xFFFFFFFF)
+        .backgroundColor(0xFF317AFF)
+        .align(Alignment.Center)
+        .fontSize(16)
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
               this.content = this.fileStr
             } else {
@@ -266,7 +265,7 @@ struct LinkDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    config.setLinkCallback(this.linkCallBack)
+    config.setLinkCallback(this.linkCallBack.bind(this))
     let theme = new MarkdownTheme()
     theme.setIsLinkStyle(this.isLinkStyle)
     theme.setIsListLinkStyle(this.isListLinkStyle)
@@ -306,10 +305,13 @@ struct LinkDetailsPage {
   setPlugin(): MarkdownPlugin {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
     if (this.isLinkStyle) {
-      plugin.setIsLinkViewPlugin(true)
+      plugin.setIsLinkViewPlugin(true) // 链接块状化插件
     } else {
-      plugin.setIsLinkifyPlugin(true)
+      plugin.setIsLinkifyPlugin(true) // 链接自动加载插件
     }
+    plugin.setIsTablePlugin(true) // 表格插件
+    plugin.setIsTaskListPlugin(true) // 任务列表插件
+    plugin.setIsDescListPlugin(true) // 定义列表插件
     return plugin
   }
 

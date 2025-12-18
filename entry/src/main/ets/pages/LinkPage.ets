@@ -74,12 +74,13 @@ struct LinkPage {
   /**
    * 文本格式链接背景颜色列表
    */
-  linkBackGroupColorList: Array<number> = [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  linkBackGroupColorList: Array<number> =
+    [0x00000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
   /**
    * 文本格式链接背景颜色
    */
   @State
-  linkBackGroupColor: number = 0xFF0000FF
+  linkBackGroupColor: number = 0x00000000
   /**
    * 文本格式是否显示链接下划线列表
    */
@@ -102,12 +103,12 @@ struct LinkPage {
    * 圆形图片格式链接主题背景颜色列表
    */
   linkCircleImageBackGroupColorList: Array<number> =
-    [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+    [0x00000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
   /**
    * 圆形图片格式链接主题背景颜色
    */
   @State
-  linkCircleImageBackGroupColor: number = 0xFFFFFFFF
+  linkCircleImageBackGroupColor: number = 0x00000000
   /**
    * 圆形图片格式链接控件背景颜色列表
    */
@@ -158,12 +159,12 @@ struct LinkPage {
    * 圆角矩形图片格式链接主题背景颜色列表
    */
   linkRectImageBackGroupColorList: Array<number> =
-    [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+    [0x00000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
   /**
    * 圆角矩形图片格式链接主题背景颜色
    */
   @State
-  linkRectImageBackGroupColor: number = 0xFFFFFFFF
+  linkRectImageBackGroupColor: number = 0x00000000
   /**
    * 圆角矩形图片格式链接控件背景颜色列表
    */
@@ -232,12 +233,12 @@ struct LinkPage {
    * 空心圆角矩形图片格式链接主题背景颜色列表
    */
   linkRectToolImageBackGroupColorList: Array<number> =
-    [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+    [0x00000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
   /**
    * 空心圆角矩形图片格式链接主题背景颜色
    */
   @State
-  linkRectToolImageBackGroupColor: number = 0xFFFFFFFF
+  linkRectToolImageBackGroupColor: number = 0x00000000
   /**
    * 空心圆角矩形图片格式链接控件背景颜色列表
    */
@@ -1356,23 +1357,21 @@ struct LinkPage {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
                 Button(`${index + 1}、${item}`)
-                  .height(40)// 高度
-                  .width('80%')// 宽度
-                  .type(ButtonType.Capsule)// 圆角
-                  .fontColor(0xFFFFFFFF)// 文本颜色
-                  .backgroundColor(0xFF317AFF)// 背景颜色
-                  .margin({ top: 5, bottom: 5 })// 外边距
-                  .align(Alignment.Center)// 内容对齐方式
-                  .fontSize(16)// 字体大小
+                  .height(40)
+                  .width('80%')
+                  .type(ButtonType.Capsule)
+                  .fontColor(0xFFFFFFFF)
+                  .backgroundColor(0xFF317AFF)
+                  .margin({ top: 5, bottom: 5 })
+                  .align(Alignment.Center)
+                  .fontSize(16)
                   .onClick(() => {
-                    // 点击动作触发该方法调用
                     this.linkData.pagePath = `${this.rawFilePath}/${item}`
                     router.pushUrl({ url: "pages/LinkDetailsPage", params: this.linkData })
                   })
               }
             })
           }
-          // 设置ListItem在List交叉轴方向的布局方式
           .alignListItem(ListItemAlign.Center)
         }
         .padding({ bottom: 100 })
@@ -1390,15 +1389,15 @@ export class LinkData {
   _linkColor: number = 0xFF0000FF
   _isLinkSize: boolean = true
   _linkSize: number = 14
-  _linkBackGroupColor: number = 0xFF000000
+  _linkBackGroupColor: number = 0x00000000
   _isLinkUnderlined: boolean = true
-  _linkCircleImageBackGroupColor: number = 0xFFFFFFFF
+  _linkCircleImageBackGroupColor: number = 0x00000000
   _linkCircleImageButtonBackGroupColor: number = 0xFF000000
   _linkCircleImageTextColor: number = 0xFFFFFFFF
   _linkCircleImageTextSize: number = 14
   _linkCircleImageRadius: number = 20
   _linkCircleImageMargin: number = 6
-  _linkRectImageBackGroupColor: number = 0xFFFFFFFF
+  _linkRectImageBackGroupColor: number = 0x00000000
   _linkRectImageButtonBackGroupColor: number = 0xFF000000
   _linkRectImageTextSize: number = 14
   _linkRectImageTextColor: number = 0xFFFFFFFF
@@ -1406,7 +1405,7 @@ export class LinkData {
   _linkRectImagePadding: number = 6
   _linkRectImageRadius: number = 6
   _linkRectImageMargin: number = 6
-  _linkRectToolImageBackGroupColor: number = 0xFFFFFFFF
+  _linkRectToolImageBackGroupColor: number = 0x00000000
   _linkRectToolImageButtonBackGroupColor: number = 0xFFFFFFFF
   _linkRectToolImageTextSize: number = 14
   _linkRectToolImageHeight: number = 21
