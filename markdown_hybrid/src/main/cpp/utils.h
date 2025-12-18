@@ -11,10 +11,6 @@
 extern "C" {
 #endif
 
-
-//extern int memset_s(void *dest, uint32_t destsz, int ch, uint32_t count);
-//extern int memcpy_s(void *dest, uint32_t destsz, void *src, uint32_t count);
-
 #define BI_RGB 0x0
 #define BI_BITFIELDS 0x3
 
@@ -52,7 +48,7 @@ typedef struct tagRGBQUAD {
     BYTE rgbGreen;                    // 绿色的亮度(值范围为0-255)
     BYTE rgbRed;                      // 红色的亮度(值范围为0-255)
     BYTE rgbReserved;                 // 保留, 必须为0
-} __attribute__((packed)) RgbQuad;    //RGBQUAD;
+} __attribute__((packed)) RgbQuad;    // RGBQUAD;
 
 #ifdef __cplusplus
 }
