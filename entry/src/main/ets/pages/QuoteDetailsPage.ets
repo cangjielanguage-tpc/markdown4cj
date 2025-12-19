@@ -3,7 +3,7 @@
  */
 import { titleComponent } from './BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
 import { ThematicData } from './ThematicPage'
 import { QuoteData } from './QuotePage'
@@ -53,7 +53,7 @@ struct QuoteDetailsPage {
   /**
    * 块引用背景颜色
    */
-  blockQuoteBackGroupColor: number = 0xFFFFFFFF
+  blockQuoteBackGroupColor: number = 0xFFE0E0E0
   /**
    * 块引用子模块上下间距
    */
@@ -87,17 +87,16 @@ struct QuoteDetailsPage {
         this.safeTop
       )
       Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
+        .height(40)
+        .width("80%")
+        .type(ButtonType.Capsule)
+        .margin({ top: 5, bottom: 5 })
+        .fontColor(0xFFFFFFFF)
+        .backgroundColor(0xFF317AFF)
+        .align(Alignment.Center)
+        .fontSize(16)
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
               this.content = this.fileStr
             } else {
@@ -115,7 +114,11 @@ struct QuoteDetailsPage {
         )
       Scroll(this.scroller) {
         Column() {
-          CJMarkdown({ content: this.content, config: this.setMarkdownConfig() })
+          CJMarkdown({
+            content: this.content,
+            config: this.setMarkdownConfig(),
+            plugin: this.setPlugin()
+          })
         }
       }
       .padding({ bottom: 200 })
@@ -126,13 +129,30 @@ struct QuoteDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setBlockQuoteLeftMargin(this.blockQuoteLeftMargin)
-    theme.setBlockQuoteRightMargin(this.blockQuoteRightMargin)
-    theme.setBlockQuoteWidth(this.blockQuoteWidth)
-    theme.setBlockQuoteColor(this.blockQuoteColor)
-    theme.setBlockQuoteBackGroupColor(this.blockQuoteBackGroupColor)
-    theme.setBlockQuoteTopAndBottomMargins(this.blockQuoteTopAndBottomMargins)
+    theme.setBlockQuoteLeftMargin(this.blockQuoteLeftMargin) // 块引用左边距
+    theme.setBlockQuoteRightMargin(this.blockQuoteRightMargin) // 块引用右边距
+    theme.setBlockQuoteWidth(this.blockQuoteWidth) // 块引用左边线条宽度
+    theme.setBlockQuoteColor(this.blockQuoteColor) // 块引用左边线条颜色
+    theme.setBlockQuoteBackGroupColor(this.blockQuoteBackGroupColor) // 块引用背景颜色
+    theme.setBlockQuoteTopAndBottomMargins(this.blockQuoteTopAndBottomMargins) // 块引用子模块上下间距
+    theme.setCodeFullScreenIcon($r('app.media.startIcon')) // 代码块全屏图片icon
+    theme.setCodeCopyIcon($r('app.media.startIcon')) // 代码块复制图片icon
+    theme.setAudioIcon($r('app.media.startIcon')) // 音频图片icon
+    theme.setVideoImage($r('app.media.place_holder')) // 视频默认占位图
+    theme.setPlayCircleFillIcon($r('app.media.play_circle_fill')) // 视频播放按钮icon
     config.setMarkdownTheme(theme)
     return config
+  }
+
+  setPlugin(): MarkdownPlugin {
+    let plugin: MarkdownPlugin = new MarkdownPlugin()
+    plugin.setIsStrikethroughPlugin(true) // 删除线插件
+    plugin.setIsTablePlugin(true) // 表格插件
+    plugin.setIsTaskListPlugin(true) // 任务列表插件
+    plugin.setIsLatexMathPlugin(true) // 数学公式插件
+    plugin.setIsHtmlPlugin(true) // HTML插件
+    plugin.setIsBlockAudioPlugin(true) // 音频插件
+    plugin.setIsBlockVideoPlugin(true) // 视频插件
+    return plugin
   }
 }

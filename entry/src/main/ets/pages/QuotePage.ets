@@ -81,7 +81,7 @@ struct QuotePage {
    * 块引用背景颜色
    */
   @State
-  blockQuoteBackGroupColor: number = 0xFFFFFFFF
+  blockQuoteBackGroupColor: number = 0xFFE0E0E0
   /**
    * 块引用子模块上下间距列表
    */
@@ -337,23 +337,21 @@ struct QuotePage {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
                 Button(`${index + 1}、${item}`)
-                  .height(40)// 高度
-                  .width('80%')// 宽度
-                  .type(ButtonType.Capsule)// 圆角
-                  .fontColor(0xFFFFFFFF)// 文本颜色
-                  .backgroundColor(0xFF317AFF)// 背景颜色
-                  .margin({ top: 5, bottom: 5 })// 外边距
-                  .align(Alignment.Center)// 内容对齐方式
-                  .fontSize(16)// 字体大小
+                  .height(40)
+                  .width('80%')
+                  .type(ButtonType.Capsule)
+                  .fontColor(0xFFFFFFFF)
+                  .backgroundColor(0xFF317AFF)
+                  .margin({ top: 5, bottom: 5 })
+                  .align(Alignment.Center)
+                  .fontSize(16)
                   .onClick(() => {
-                    // 点击动作触发该方法调用
                     this.quoteData.pagePath = `${this.rawFilePath}/${item}`
                     router.pushUrl({ url: "pages/QuoteDetailsPage", params: this.quoteData })
                   })
               }
             })
           }
-          // 设置ListItem在List交叉轴方向的布局方式
           .alignListItem(ListItemAlign.Center)
         }
         .padding({ bottom: 100 })
@@ -370,7 +368,7 @@ export class QuoteData {
   _blockQuoteRightMargin: number = 8
   _blockQuoteWidth: number = 1
   _blockQuoteColor: number = 0xFF191919
-  _blockQuoteBackGroupColor: number = 0xFFFFFFFF
+  _blockQuoteBackGroupColor: number = 0xFFE0E0E0
   _blockQuoteTopAndBottomMargins: number = 0
   _pagePath: string = ""
 
