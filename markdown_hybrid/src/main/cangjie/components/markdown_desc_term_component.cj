@@ -19,15 +19,15 @@ public class MarkdownDescTermComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 术语节点
-     */
-    var nodeView: NodeView
-
-    /**
      * 控件宽度 - 单位px
      */
     @Prop
     var componentWidth: Float64
+
+    /**
+     * 术语节点
+     */
+    var nodeView: NodeView
 
     /**
      * 缓存的数据
@@ -35,9 +35,9 @@ public class MarkdownDescTermComponent {
     var markdownCacheConfiguration: MarkdownCacheConfiguration
 
     /**
-     * 脚注点击事件
+     * 图片点击事件
      */
-    var fontCallback: (String) -> Unit
+    var imageCallback: (String) -> Unit
 
     /**
      * TOC列表点击事件回调
@@ -45,9 +45,9 @@ public class MarkdownDescTermComponent {
     var tocListOnClick: (Int64) -> Unit
 
     /**
-     * 图片点击事件
+     * 脚注点击事件
      */
-    var imageCallback: (String) -> Unit
+    var fontCallback: (String) -> Unit
 
     /**
      * 懒加载数据源
@@ -91,7 +91,7 @@ public class MarkdownDescTermComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
+                    descTermNodeView: NodeView, idx: Int64 => return "${idx}-${descTermNodeView.nodeHash}-${descTermNodeView.contentHash}"
                 }
             )
         }

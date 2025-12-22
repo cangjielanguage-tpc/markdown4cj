@@ -24,15 +24,15 @@ public class MarkdownDescDefComponent {
     var nodeView: NodeView
 
     /**
+     * 缓存的数据
+     */
+    var markdownCacheConfiguration: MarkdownCacheConfiguration
+
+    /**
      * 控件宽度 - 单位px
      */
     @Prop
     var componentWidth: Float64
-
-    /**
-     * 缓存的数据
-     */
-    var markdownCacheConfiguration: MarkdownCacheConfiguration
 
     /**
      * 脚注点击事件
@@ -40,14 +40,14 @@ public class MarkdownDescDefComponent {
     var fontCallback: (String) -> Unit
 
     /**
-     * TOC列表点击事件回调
-     */
-    var tocListOnClick: (Int64) -> Unit
-
-    /**
      * 图片点击事件
      */
     var imageCallback: (String) -> Unit
+
+    /**
+     * TOC列表点击事件回调
+     */
+    var tocListOnClick: (Int64) -> Unit
 
     /**
      * 懒加载数据源
@@ -91,14 +91,14 @@ public class MarkdownDescDefComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
+                    descDefNodeView: NodeView, idx: Int64 => return "${idx}-${descDefNodeView.nodeHash}-${descDefNodeView.contentHash}"
                 }
             )
         }
-        // 设置List组件排列方向
-        .listDirection(Axis.Vertical)
         // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
         .alignListItem(ListItemAlign.Start)
+        // 设置List组件排列方向
+        .listDirection(Axis.Vertical)
         // 左边距
         .margin(left: markdownConfiguration.markdownTheme.descListDefIndentation, bottom: markdownConfiguration.markdownTheme.descListDefMargins, top: markdownConfiguration.markdownTheme.descListDefMargins)
     }
