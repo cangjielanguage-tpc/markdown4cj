@@ -1713,7 +1713,7 @@ public class MarkdownThemeBuilder {
     /**
      * 缩进/围栏/组合/单独代码块右边距
      */
-    protected var codeMultilineRightMargin: Float64 = 8.0
+    var codeMultilineRightMargin: Float64 = 8.0
 
     /**
      * 缩进/围栏/组合/单独代码块字体
