@@ -149,12 +149,12 @@ public class MarkdownListComponent {
                 }
             )
         }
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置List组件排列方向
-        .listDirection(Axis.Vertical)
         // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
         .alignListItem(ListItemAlign.Start)
+        // 设置List组件排列方向
+        .listDirection(Axis.Vertical)
+        // 设置组件自身的宽度
+        .width(100.percent)
     }
 
     /**
@@ -162,9 +162,9 @@ public class MarkdownListComponent {
      */
     public func refreshData(nodeView: NodeView): Unit {
         this.nodeView = nodeView
+        let dataSourceSize: Int64 = nodeViewDataSource.totalCount() // 页面缓存的数据长度
         let refreshNodeViews = nodeView.children
         let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
-        let dataSourceSize: Int64 = nodeViewDataSource.totalCount() // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
             return
         }

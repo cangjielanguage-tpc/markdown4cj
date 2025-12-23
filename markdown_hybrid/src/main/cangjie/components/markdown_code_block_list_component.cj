@@ -228,7 +228,7 @@ class MarkdownCodeBlockListComponent {
                     ForEach(
                         lineArray,
                         itemGeneratorFunc: {
-                            item: Int64, idx: Int64 => Text((idx + 1).toString())
+                            num: Int64, idx: Int64 => Text((idx + 1).toString())
                                 // 设置文本颜色
                                 .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
                                 // 设置文本尺寸
