@@ -105,7 +105,7 @@ class MarkdownIndentedCodeBlockComponent {
                 // 设置多行文本的文本对齐方式
                 .textAlign(TextAlign.Start)
                 // 设置内边距属性
-                .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin)
+                .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin, right: markdownConfiguration.markdownTheme.codeMultilineRightMargin)
                 // 设置行高
                 .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
         }

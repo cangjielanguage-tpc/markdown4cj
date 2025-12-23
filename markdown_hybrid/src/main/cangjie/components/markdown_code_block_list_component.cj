@@ -150,7 +150,7 @@ class MarkdownCodeBlockListComponent {
         // 设置多行文本的文本对齐方式
         .textAlign(TextAlign.Start)
         // 设置内边距属性
-        .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin)
+        .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin, right: markdownConfiguration.markdownTheme.codeMultilineRightMargin)
         // 控制当前组件显示或隐藏
         .visibility(listCodeTextBool(idx, idxSelect))
     }
