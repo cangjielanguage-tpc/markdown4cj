@@ -153,6 +153,8 @@ struct QuoteDetailsPage {
     plugin.setIsHtmlPlugin(true) // HTML插件
     plugin.setIsBlockAudioPlugin(true) // 音频插件
     plugin.setIsBlockVideoPlugin(true) // 视频插件
+    plugin.setIsCodeListPlugin(true) // 组合代码快列表插件
+    plugin.setIsImageSlidePlugin(true) // 图片幻灯片（Banner）插件
     return plugin
   }
 }

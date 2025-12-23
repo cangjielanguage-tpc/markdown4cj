@@ -79,7 +79,7 @@ class FootnoteBlockParser <: AbstractBlockParser {
 class FootnoteBlockParserFactory <: AbstractBlockParserFactory {
     static let FOOTNOTE_BLOCK = Regex(#"^\[\^.+?\]:"#)
     public func tryStart(state: ParserState, _: MatchedBlockParser): ?BlockStart {
-        let line: String = state.getLine()
+        let line: String = state.getLine()[state.getIndex()..]
         if (let Some(pos) <- FOOTNOTE_BLOCK.matcher(line).find()?.matchPosition()) {
             return BlockStart
                 .of4Cj(FootnoteBlockParser(line[2..pos.end - 2], line[pos.end..]))

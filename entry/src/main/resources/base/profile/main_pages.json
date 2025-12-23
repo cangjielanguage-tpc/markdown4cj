@@ -35,6 +35,8 @@
     "pages/VideoDetailsPage",
     "pages/ImagePage",
     "pages/ImageDetailsPage",
+    "pages/FootnotePage",
+    "pages/FootnoteDetailsPage",
     "pages/DescListPage",
     "pages/DescListDetailsPage",
     "pages/HeadIDPage",

@@ -171,6 +171,14 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
+              "22、脚注",
+              0xFFFF0000,
+              "pages/FootnotePage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
               "23、定义列表",
               0xFFFF0000,
               "pages/DescListPage"

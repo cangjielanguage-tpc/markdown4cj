@@ -144,6 +144,9 @@ class MarkdownListItemComponent {
                         } else if (item.node is BlockAD) {
                             // 广告
                             adBuilder(item)
+                        } else if (item.node is ThematicBreak) {
+                            // 分割线
+                            MarkdownThematicBreakComponent(markdownConfiguration: markdownConfiguration)
                         } else {
                             // 其他节点
                             Column() {
