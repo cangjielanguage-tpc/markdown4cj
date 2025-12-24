@@ -73,6 +73,11 @@ public class MarkdownQuoteComponent {
     var videoCallback: (String) -> Unit
 
     /**
+     * 注脚事件回调数据
+     */
+    var indexFootnoteHashMap: HashMap<String, Float64>
+
+    /**
      * 懒加载数据源
      */
     var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
@@ -117,13 +122,13 @@ public class MarkdownQuoteComponent {
                                 blockIndentedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.indentedCodeComponents)
                             } else if (item.node is BulletList) {
                                 // 无序列表
-                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: false, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
+                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: false, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap)
                             } else if (item.node is OrderedList) {
                                 // 有序列表
-                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: true, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
+                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: true, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap)
                             } else if (item.node is BlockQuote) {
                                 // 块引用
-                                MarkdownQuoteComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
+                                MarkdownQuoteComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap)
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 blockLatextComponent(markdownConfiguration, item)
@@ -148,6 +153,23 @@ public class MarkdownQuoteComponent {
                             } else if (item.node is ThematicBreak) {
                                 // 分割线
                                 MarkdownThematicBreakComponent(markdownConfiguration: markdownConfiguration)
+                            } else if (item.node is FootnoteBlock) {
+                                // 脚注内容
+                                Column() {
+                                    MarkdownFootnoteComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        nodeView: item,
+                                        fontCallback: fontCallback,
+                                        tocListOnClick: tocListOnClick,
+                                        imageCallback: imageCallback,
+                                        componentWidth: componentWidth,
+                                        markdownCacheConfiguration: markdownCacheConfiguration
+                                    )
+                                }
+                                // 组件区域变化时触发该回调
+                                .interopOnAreaChange {
+                                    oldValue, newValue => indexFootnoteHashMap.add((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
+                                }
                             } else {
                                 // 其他节点
                                 Column() {

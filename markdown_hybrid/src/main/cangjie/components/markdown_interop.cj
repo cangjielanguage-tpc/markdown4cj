@@ -441,6 +441,18 @@ extend Column {
         column.callMethod("onSizeChange", [callBackFunc.toJSValue()])
         return this
     }
+
+    func interopOnAreaChange(callback: (CJArea, CJArea) -> Unit): Column {
+        let global = context.getOrThrow().global
+        let ctx = context.getOrThrow()
+        let column = global["Column"].asObject(ctx)
+        let callBackFunc = getCtx().function {
+            ctx, callInfo => callback(CJArea.fromJSValue(ctx, callInfo[0]),
+                CJArea.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+        }
+        column.callMethod("onAreaChange", [callBackFunc.toJSValue()])
+        return this
+    }
 }
 
 extend List {

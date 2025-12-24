@@ -73,6 +73,11 @@ public class MarkdownListComponent {
     var videoCallback: (String) -> Unit
 
     /**
+     * 注脚事件回调数据
+     */
+    var indexFootnoteHashMap: HashMap<String, Float64>
+
+    /**
      * 缓存的数据
      */
     var markdownCacheConfiguration: MarkdownCacheConfiguration
@@ -133,7 +138,8 @@ public class MarkdownListComponent {
                                 imageCallback: imageCallback,
                                 videoCallback: videoCallback,
                                 componentWidth: componentWidth,
-                                markdownCacheConfiguration: markdownCacheConfiguration
+                                markdownCacheConfiguration: markdownCacheConfiguration,
+                                indexFootnoteHashMap: indexFootnoteHashMap
                             )
                         }
                         // 在垂直方向上子组件的对齐格式。
