@@ -73,6 +73,11 @@ public class MarkdownQuoteComponent {
     var videoCallback: (String) -> Unit
 
     /**
+     * 注脚事件回调数据
+     */
+    var indexFootnoteHashMap: HashMap<String, Float64>
+
+    /**
      * 懒加载数据源
      */
     var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
@@ -117,13 +122,13 @@ public class MarkdownQuoteComponent {
                                 blockIndentedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.indentedCodeComponents)
                             } else if (item.node is BulletList) {
                                 // 无序列表
-                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: false, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
+                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: false, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap)
                             } else if (item.node is OrderedList) {
                                 // 有序列表
-                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: true, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
+                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: true, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap)
                             } else if (item.node is BlockQuote) {
                                 // 块引用
-                                MarkdownQuoteComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration)
+                                MarkdownQuoteComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap)
                             } else if (item.node is LatexMathBlock) {
                                 // 数学公式 - 单行
                                 blockLatextComponent(markdownConfiguration, item)
@@ -145,6 +150,26 @@ public class MarkdownQuoteComponent {
                             } else if (item.node is BlockAD) {
                                 // 广告
                                 adBuilder(item)
+                            } else if (item.node is ThematicBreak) {
+                                // 分割线
+                                MarkdownThematicBreakComponent(markdownConfiguration: markdownConfiguration)
+                            } else if (item.node is FootnoteBlock) {
+                                // 脚注内容
+                                Column() {
+                                    MarkdownFootnoteComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        nodeView: item,
+                                        fontCallback: fontCallback,
+                                        tocListOnClick: tocListOnClick,
+                                        imageCallback: imageCallback,
+                                        componentWidth: componentWidth,
+                                        markdownCacheConfiguration: markdownCacheConfiguration
+                                    )
+                                }
+                                // 组件区域变化时触发该回调
+                                .interopOnAreaChange {
+                                    oldValue, newValue => indexFootnoteHashMap.add((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
+                                }
                             } else {
                                 // 其他节点
                                 Column() {
@@ -175,18 +200,18 @@ public class MarkdownQuoteComponent {
         }
         // 背景色设置
         .backgroundColor(markdownConfiguration.markdownTheme.blockQuoteBackGroupColor)
-        // 设置元素的边框颜色。
-        .borderColor(markdownConfiguration.markdownTheme.blockQuoteColor)
-        // 设置元素的边框宽度(单位为vp)。
-        .borderWidth(EdgeWidths(left: markdownConfiguration.markdownTheme.blockQuoteWidth.vp))
-        // 块内容前的起始边距
-        .margin(left: markdownConfiguration.markdownTheme.blockQuoteLeftMargin)
         // 设置组件自身的宽度
         .width(100.percent)
         // 设置List组件排列方向
         .listDirection(Axis.Vertical)
         // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
         .alignListItem(ListItemAlign.Start)
+        // 设置元素的边框颜色。
+        .borderColor(markdownConfiguration.markdownTheme.blockQuoteColor)
+        // 设置元素的边框宽度(单位为vp)。
+        .borderWidth(EdgeWidths(left: markdownConfiguration.markdownTheme.blockQuoteWidth.vp))
+        // 块内容前的起始边距
+        .margin(left: markdownConfiguration.markdownTheme.blockQuoteLeftMargin)
     }
 
     /**

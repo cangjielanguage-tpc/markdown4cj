@@ -105,7 +105,7 @@ class MarkdownIndentedCodeBlockComponent {
                 // 设置多行文本的文本对齐方式
                 .textAlign(TextAlign.Start)
                 // 设置内边距属性
-                .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin)
+                .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin, right: markdownConfiguration.markdownTheme.codeMultilineRightMargin)
                 // 设置行高
                 .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
         }
@@ -115,8 +115,8 @@ class MarkdownIndentedCodeBlockComponent {
         .scrollBar(BarState.Off)
         // 设置元素内容的对齐方式
         .align(Alignment.Start)
-        // 设置组件自身的宽度
-        .width(100.percent)
+        // 对子组件进行重新布局
+        .layoutWeight(1)
         // 设置内边距属性
         .padding(bottom: 10)
     }

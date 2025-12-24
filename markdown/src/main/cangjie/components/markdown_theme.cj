@@ -396,6 +396,11 @@ public class MarkdownTheme {
     protected var codeMultilineMargin: Float64 = 8.0
 
     /**
+     * 缩进/围栏/组合/单独代码块右边距
+     */
+    protected var codeMultilineRightMargin: Float64 = 8.0
+
+    /**
      * 缩进/围栏/组合/单独代码块字体
      */
     protected var codeBlockTypeface: String = "HarmonyOS Sans"
@@ -997,6 +1002,7 @@ public class MarkdownTheme {
         this.codeBlockLineNumberHide = builder.codeBlockLineNumberHide
         this.codeBlockBackgroundColor = builder.codeBlockBackgroundColor
         this.codeMultilineMargin = builder.codeMultilineMargin
+        this.codeMultilineRightMargin = builder.codeMultilineRightMargin
         this.codeTypeface = builder.codeTypeface
         this.codeBlockTypeface = builder.codeBlockTypeface
         this.codeTextSize = builder.codeTextSize
@@ -1705,6 +1711,11 @@ public class MarkdownThemeBuilder {
     var codeMultilineMargin: Float64 = 8.0
 
     /**
+     * 缩进/围栏/组合/单独代码块右边距
+     */
+    var codeMultilineRightMargin: Float64 = 8.0
+
+    /**
      * 缩进/围栏/组合/单独代码块字体
      */
     var codeBlockTypeface: String = "HarmonyOS Sans"
@@ -2309,6 +2320,7 @@ public class MarkdownThemeBuilder {
         this.codeBlockLineNumberHide = theme.codeBlockLineNumberHide
         this.codeBlockBackgroundColor = theme.codeBlockBackgroundColor
         this.codeMultilineMargin = theme.codeMultilineMargin
+        this.codeMultilineRightMargin = theme.codeMultilineRightMargin
         this.codeTypeface = theme.codeTypeface
         this.codeBlockTypeface = theme.codeBlockTypeface
         this.codeTextSize = theme.codeTextSize
@@ -3396,6 +3408,17 @@ public class MarkdownThemeBuilder {
      */
     public func setCodeMultilineMargin(codeMultilineMargin: Float64): MarkdownThemeBuilder {
         this.codeMultilineMargin = codeMultilineMargin
+        return this
+    }
+
+    /**
+     * 设置代码块右边距
+     *
+     * @param codeMultilineRightMargin 代码块右边距 - 默认8.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setCodeMultilineRightMargin(codeMultilineRightMargin: Float64): MarkdownThemeBuilder {
+        this.codeMultilineRightMargin = codeMultilineRightMargin
         return this
     }
 

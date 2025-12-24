@@ -150,7 +150,7 @@ class MarkdownCodeBlockListComponent {
         // 设置多行文本的文本对齐方式
         .textAlign(TextAlign.Start)
         // 设置内边距属性
-        .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin)
+        .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin, right: markdownConfiguration.markdownTheme.codeMultilineRightMargin)
         // 控制当前组件显示或隐藏
         .visibility(listCodeTextBool(idx, idxSelect))
     }
@@ -187,8 +187,8 @@ class MarkdownCodeBlockListComponent {
         .scrollBar(BarState.Off)
         // 设置元素内容的对齐方式
         .align(Alignment.Start)
-        // 设置组件自身的宽度
-        .width(100.percent)
+        // 对子组件进行重新布局
+        .layoutWeight(1)
         // 设置内边距属性
         .padding(bottom: 10, right: 50)
     }
@@ -228,7 +228,7 @@ class MarkdownCodeBlockListComponent {
                     ForEach(
                         lineArray,
                         itemGeneratorFunc: {
-                            item: Int64, idx: Int64 => Text((idx + 1).toString())
+                            num: Int64, idx: Int64 => Text((idx + 1).toString())
                                 // 设置文本颜色
                                 .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
                                 // 设置文本尺寸

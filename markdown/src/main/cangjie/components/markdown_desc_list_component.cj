@@ -35,14 +35,14 @@ public class MarkdownDescListComponent {
     var markdownCacheConfiguration: MarkdownCacheConfiguration
 
     /**
-     * 脚注点击事件
-     */
-    var fontCallback: (String) -> Unit
-
-    /**
      * TOC列表点击事件回调
      */
     var tocListOnClick: (Int64) -> Unit
+
+    /**
+     * 脚注点击事件
+     */
+    var fontCallback: (String) -> Unit
 
     /**
      * 图片点击事件
@@ -112,16 +112,16 @@ public class MarkdownDescListComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
+                    descListNodeView: NodeView, idx: Int64 => return "${idx}-${descListNodeView.nodeHash}-${descListNodeView.contentHash}"
                 }
             )
         }
-        // 设置组件自身的宽度
-        .width(100.percent)
         // 设置List组件排列方向
         .listDirection(Axis.Vertical)
         // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
         .alignListItem(ListItemAlign.Start)
+        // 设置组件自身的宽度
+        .width(100.percent)
     }
 
     /**

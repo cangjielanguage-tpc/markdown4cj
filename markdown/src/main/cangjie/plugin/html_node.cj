@@ -94,6 +94,13 @@ public class IgnoreBlockNode <: CustomBlock & IgnoreNode {
     public override func getNodeType(): NodeType {
         return "IgnoreBlockNode"
     }
+    public func getParent(): ?Node {
+        this.parent
+    }
+
+    protected func setParent(parent: Node): Unit {
+        this.parent = parent
+    }
 }
 
 public class IgnoreInlineNode <: CustomNode & IgnoreNode {
