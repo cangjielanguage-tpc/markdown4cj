@@ -66,7 +66,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ## 软件架构
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_cangjie-plugin_5.1.1/doc/assets/img.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_cangjie-plugin_6.0.0/doc/assets/img.png)
 
 ### 源码目录
 
@@ -98,7 +98,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_cangjie-plugin_5.1.1/doc/feature_api.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_cangjie-plugin_6.0.0/doc/feature_api.md)
 
 ## 使用说明
 
@@ -121,7 +121,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
       ```git
       git clone https://gitcode.com/Cangjie-TPC/markdown4cj.git
-      git checkout markdown4cj_cangjie-plugin_5.1.1
+      git checkout markdown4cj_cangjie-plugin_6.0.0
       ```
 
       编译markdown
@@ -213,11 +213,11 @@ Heading level 2
 
 ### 显示效果
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_cangjie-plugin_5.1.1/doc/assets/img1.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_cangjie-plugin_6.0.0/doc/assets/img1.png)
 
 ## 约束与限制
 
-当前基于 DevEco Studio for Windows 5.1.1.851 和 DevEco Studio Cangjie Plugin Canary for Windows 5.1.1.851 版本实现的
+当前基于 DevEco Studio for Windows 6.0.0 和 DevEco Studio Cangjie Plugin Canary for Windows 6.0.0 版本实现的
 
 1. 内联代码/链接文字格式背景色。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
@@ -296,7 +296,7 @@ Heading level 2
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_cangjie-plugin_5.1.1/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_cangjie-plugin_6.0.0/LICENSE) ，请自由的享受和参与开源。
 
 ## 参与贡献
 
