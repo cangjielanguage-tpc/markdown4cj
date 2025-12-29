@@ -33,11 +33,10 @@ func removediscard(stateBean: StateBean): Unit {
     stateBean.linesList = usefulList
 }
 
-
 func removeOnlyChangeLine(stateBean: StateBean): Unit {
     let usefulList: ArrayList<LineBean> = ArrayList<LineBean>()
     for (item in stateBean.linesList) {
-        if (item.codeLine.trimAscii().size>0) {
+        if (item.codeLine.trimAscii().size > 0) {
             usefulList.add(item)
         }
     }
@@ -46,32 +45,30 @@ func removeOnlyChangeLine(stateBean: StateBean): Unit {
 
 func modifyMacroAndSpace(stateBean: StateBean): Unit {
     for (item in stateBean.linesList) {
-        if(item.codeLine.trimAscii().startsWith("#")) {
+        if (item.codeLine.trimAscii().startsWith("#")) {
             //如果这种情况#include<stdio.h>       
-            if(item.codeLine.trimAscii().startsWith("#include") && !item.codeLine.contains("#include ")){
+            if (item.codeLine.trimAscii().startsWith("#include") && !item.codeLine.contains("#include ")) {
                 item.codeLine = item.codeLine.replace("#include", "#include ")
             }
             //对宏的行进行处理
-            let array = item.codeLine.split(" ",2,removeEmpty:true)
-            if(array.size>1){
-                item.codeLine = array[0]+" "+array[1]
-            }else{
+            let array = item.codeLine.split(" ", 2, removeEmpty: true)
+            if (array.size > 1) {
+                item.codeLine = array[0] + " " + array[1]
+            } else {
                 item.codeLine = array[0]
             }
         }
     }
-}   
-
+}
 
 public func codeFormat(languageType: ?String, code: String, cfg: FormatConfig): String {
-    if(let Some(i) <- languageType){
+    if (let Some(i) <- languageType) {
         let result = match (i.toAsciiLower()) {
             case "c" | "cpp" | "c++" | "clike" => CandCppFormat().formatCode(code, cfg)
             case _ => code
         }
         return result
-    }else{
+    } else {
         return code
     }
-   
 }

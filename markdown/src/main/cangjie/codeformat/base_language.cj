@@ -5,7 +5,6 @@
 package markdown.codeformat
 
 interface BaseLanguage {
-
     func dealWithNewLine(stateBean: StateBean): Unit
 
     func dealWithAccessPublic(stateBean: StateBean): Bool

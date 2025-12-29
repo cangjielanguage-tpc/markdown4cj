@@ -5,9 +5,8 @@
 package markdown.codeformat
 
 class CandCppFormat <: BaseLanguage {
-
     public override func dealWithNewLine(stateBean: StateBean): Unit {
-        if(stateBean.perLineOutput.size > 0){
+        if (stateBean.perLineOutput.size > 0) {
             let lineBean: LineBean = LineBean()
             lineBean.codeLine = stateBean.perLineOutput.toString()
             lineBean.indentLevel = stateBean.indentLevel
@@ -102,7 +101,7 @@ class CandCppFormat <: BaseLanguage {
         }
         //上面是往前遍历  下面是往后遍历
         while (currChar != r'\n') {
-            if(stateBean.currentIndex == stateBean.codeChars.getOrThrow().size - 1){
+            if (stateBean.currentIndex == stateBean.codeChars.getOrThrow().size - 1) {
                 break
             }
             stateBean.currentIndex++
@@ -164,7 +163,7 @@ class CandCppFormat <: BaseLanguage {
          asdsad
          */
         while (!(lastChar == r'*' && currChar == r'/')) {
-            if(stateBean.currentIndex == stateBean.codeChars.getOrThrow().size - 1){
+            if (stateBean.currentIndex == stateBean.codeChars.getOrThrow().size - 1) {
                 break
             }
             stateBean.currentIndex++
@@ -211,7 +210,7 @@ class CandCppFormat <: BaseLanguage {
         let lineStartIndex: Int64 = stateBean.currentIndex
         var currChar: Rune = stateBean.codeChars.getOrThrow()[stateBean.currentIndex] //#
         while (currChar != r'\n') {
-            if(stateBean.currentIndex == stateBean.codeChars.getOrThrow().size - 1){
+            if (stateBean.currentIndex == stateBean.codeChars.getOrThrow().size - 1) {
                 break
             }
             stateBean.currentIndex++
@@ -456,12 +455,6 @@ class CandCppFormat <: BaseLanguage {
             //在这里处理stateBean.perLineOutput还有剩余数据的问题
             dealWithNewLine(stateBean)
 
-
-            //  for(item in stateBean.linesList){
-            //      println("${item.codeLine.replace("\n","\\n")}")
-            //      println("================item.indentLevel=${item.indentLevel}=====================")
-            //  }
-
             //这里走完的话就收集到了
             //println("size=${stateBean.linesList.size}")
             //这里lineList开始处理了
@@ -509,13 +502,9 @@ class CandCppFormat <: BaseLanguage {
                     }
                 }
             }
-            //  for(item in stateBean.linesList){
-            //      println("${item.codeLine.replace("\n","\\n")}")
-            //      println("================item.isDiscarded=${item.isDiscarded}=====================")
-            //  }
 
             //如果只有一个换行就过滤
-            removeOnlyChangeLine(stateBean)    
+            removeOnlyChangeLine(stateBean)
             //这里处理如果}前面还有内容就和上一行连在一起解决数组中的{}问题
             for (i in 0..stateBean.linesList.size) {
                 let lineBean: LineBean = stateBean.linesList[i]
@@ -561,12 +550,7 @@ class CandCppFormat <: BaseLanguage {
                 item.codeLine = item.codeLine.trimAscii()
             }
             //修改#开始的宏和后面空格不一致问题
-            modifyMacroAndSpace(stateBean)   
-
-            //  for(item in stateBean.linesList){
-            //      println("${item.codeLine.replace("\n","\\n")}")
-            //      println("================item.indentLevel=${item.indentLevel}=====================")
-            //  }
+            modifyMacroAndSpace(stateBean)
 
 
             //最后根据缩进拼接
