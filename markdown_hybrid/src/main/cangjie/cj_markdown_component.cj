@@ -358,6 +358,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.isCodeStyle) {
                 markdownThemeBuilder.setIsCodeStyle(v) // 设置内联代码是否是图片显示
             }
+            if (let Some(v) <- w.cjMarkdownTheme.isCodeFormat) {
+                markdownThemeBuilder.setIsCodeFormat(v) // 设置是否格式化代码块内容
+            }
             if (let Some(v) <- w.cjMarkdownTheme.codeTextColor) {
                 markdownThemeBuilder.setCodeTextColor(v) // 设置文本、图片格式内联代码文本颜色
             }

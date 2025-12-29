@@ -22,7 +22,7 @@ class MarkdownCodeBlockListComponent {
      * 所有数据
      */
     @State
-    var arrayLists: ArrayList<ArrayList<PrismNodesParseRes>> = ArrayList<ArrayList<PrismNodesParseRes>>()
+    var arrayLists: ArrayList<ArrayList<PrismNodesParseResUI>> = ArrayList<ArrayList<PrismNodesParseResUI>>()
 
     /**
      * NodeView
@@ -126,12 +126,12 @@ class MarkdownCodeBlockListComponent {
      * 组合代码代码文本内容
      */
     @Builder
-    func codeBlockTextComponent(items: ArrayList<PrismNodesParseRes>, idx: Int64) {
+    func codeBlockTextComponent(items: ArrayList<PrismNodesParseResUI>, idx: Int64) {
         Text() {
             ForEach(
                 items,
                 itemGeneratorFunc: {
-                    item: PrismNodesParseRes, idx1: Int64 =>
+                    item: PrismNodesParseResUI, idx1: Int64 =>
                     // 设置文本内容
                     Span(item.getText())
                         // 设置文本颜色
@@ -164,7 +164,7 @@ class MarkdownCodeBlockListComponent {
             ForEach(
                 arrayLists,
                 itemGeneratorFunc: {
-                    items: ArrayList<PrismNodesParseRes>, idx: Int64 =>
+                    items: ArrayList<PrismNodesParseResUI>, idx: Int64 =>
                     // 组合代码代码内容
                     codeBlockTextComponent(items, idx)
                 }
@@ -270,7 +270,7 @@ class MarkdownCodeBlockListComponent {
      * 代码数据高亮解析
      */
     func stringCodeToResLists() {
-        let callback: (ArrayList<ArrayList<PrismNodesParseRes>>) -> Unit = {
+        let callback: (ArrayList<ArrayList<PrismNodesParseResUI>>) -> Unit = {
             prismNodesParseResLists => launch {
                 arrayLists = prismNodesParseResLists
             }

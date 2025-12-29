@@ -34,6 +34,11 @@ struct CodeBlockDetailsPage {
   @State
   isFull: boolean = true
   /**
+   * 是否格式化代码块内容
+   */
+  @State
+  isCodeFormat: boolean = true
+  /**
    * 代码块代码文本颜色
    */
   @State
@@ -111,13 +116,14 @@ struct CodeBlockDetailsPage {
   /**
    * 增量加载延迟
    */
-  time: number = 50
+  time: number = 100
 
   aboutToAppear(): void {
     try {
       let codeBlockData: CodeBlockData = router.getParams() as CodeBlockData
       this.fileStr = getFileContextStr(codeBlockData._pagePath)
       this.isFull = codeBlockData._isFull
+      this.isCodeFormat = codeBlockData._isCodeFormat
       this.codeBlockTextColor = codeBlockData._codeBlockTextColor
       this.codeBlockTypeTextColor = codeBlockData._codeBlockTypeTextColor
       this.codeBlockTypeTextStr = codeBlockData._codeBlockTypeTextStr
@@ -186,6 +192,7 @@ struct CodeBlockDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
+    theme.setIsCodeFormat(this.isCodeFormat)
     if(this.codeBlockTextColor !== undefined){
       theme.setCodeBlockTextColor(this.codeBlockTextColor)
     }

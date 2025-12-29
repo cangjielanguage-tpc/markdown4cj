@@ -1250,7 +1250,9 @@ func blockParagraphComponent(markdownConfiguration: MarkdownConfiguration, item:
 func blockFencedCodeComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, fencedCodeComponents: HashMap<Int64, MarkdownFencedCodeBlockComponent>) {
     MarkdownFencedCodeBlockComponent(
         markdownConfiguration: markdownConfiguration,
-        nodeView: item,
+        codeText: getCodeInfo(item)[0],
+        info: getCodeInfo(item)[1](),
+        nodeHash: item.nodeHash,
         fencedCodeComponents: fencedCodeComponents
     )
 }

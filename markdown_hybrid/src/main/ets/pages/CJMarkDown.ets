@@ -281,6 +281,9 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.isCodeStyle !== undefined) {
           cjMarkdownTheme.setIsCodeStyle(this.config.markdownTheme.isCodeStyle)
         }
+        if (this.config.markdownTheme.isCodeFormat !== undefined) {
+          cjMarkdownTheme.setIsCodeFormat(this.config.markdownTheme.isCodeFormat)
+        }
         if (this.config.markdownTheme.codeTextColor !== undefined) {
           cjMarkdownTheme.setCodeTextColor(this.config.markdownTheme.codeTextColor)
         }
@@ -1084,6 +1087,10 @@ export class MarkdownTheme {
    * 内联代码是否是图片显示
    */
   isCodeStyle?: boolean = undefined
+  /**
+   * 设置是否格式化代码块内容
+   */
+  isCodeFormat?: boolean = undefined
   /**
    * 文本、图片格式内联代码文本颜色
    */
@@ -2078,6 +2085,15 @@ export class MarkdownTheme {
    */
   setIsCodeStyle(isCodeStyle: boolean): void {
     this.isCodeStyle = isCodeStyle
+  }
+
+  /**
+   * 设置是否格式化代码块内容
+   *
+   * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
+   */
+  setIsCodeFormat(isCodeFormat: boolean): void {
+    this.isCodeFormat = isCodeFormat
   }
 
   /**

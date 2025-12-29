@@ -150,6 +150,8 @@ export declare class CJMarkdownTheme {
 
   setIsCodeStyle(isCodeStyle: boolean): void
 
+  setIsCodeFormat(isCodeFormat: boolean): void
+
   setCodeTextColor(codeTextColor: number): void
 
   setCodeBackgroundColor(codeBackgroundColor: number): void
