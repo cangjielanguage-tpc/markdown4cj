@@ -174,7 +174,7 @@ public class MarkdownComponent {
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 0, item), bottom: marginNodeBottom(idx, lastViewIndex, 0, item))
                             // 组件区域变化时触发该回调
-                            .onAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
+                            .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
                         } else if (item.node is Paragraph) {
                             // 段落
                             ListItem() {
@@ -283,7 +283,7 @@ public class MarkdownComponent {
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
                             // 组件区域变化时触发该回调
-                            .onAreaChange {
+                            .interopOnAreaChange {
                                 oldValue, newValue => indexFootnoteHashMap.add((item.node as FootnoteBlock)().noteid, newValue.globalPosition.y)
                             }
                         } else if (item.node is SlideBlock) {
@@ -324,7 +324,7 @@ public class MarkdownComponent {
             // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
             .alignListItem(ListItemAlign.Start)
             // 组件区域变化事件
-            .onAreaChange {
+            .interopOnSizeChange {
                 old, new => if (componentWidth != new.width) {
                     componentWidth = new.width
                 }
