@@ -130,7 +130,89 @@ class MarkdownIndentedCodeBlockComponent {
             if (codeText.trimAscii().size > 0) {
                 // 设置图片的数据源
                 codeBlockTextComponent(if (info.isSome()) {info()} else{markdownConfiguration.markdownTheme.codeBlockTypeTextStr}, markdownConfiguration)
-                codeImageComponent(markdownConfiguration, codeText, info, "", 0)
+                Row() {
+                    if (markdownConfiguration.markdownTheme.codeCopyIcon.isSome()) {
+                        Row() {
+                            Image(markdownConfiguration.markdownTheme.codeCopyIcon())
+                                // 设置组件自身的宽度
+                                .width(markdownConfiguration.markdownTheme.iconWidthAndHeight)
+                                // 设置组件自身的高度
+                                .height(markdownConfiguration.markdownTheme.iconWidthAndHeight)
+                                // 设置图片的缩放类型
+                                .objectFit(ImageFit.Contain)
+
+                            Row()
+                                // 设置宽度
+                                .width(5)
+
+                            if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
+                                Text("复制代码")
+                                    // 设置字体颜色
+                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                                    // 设置字体大小
+                                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                                    // 设置容器元素绘制区域内的子元素的对齐方式
+                                    .align(Alignment.End)
+                                    // 设置文本的最大行数
+                                    .maxLines(1)
+                                    // 设置文本超长时的显示方式
+                                    .textOverflow(TextOverflow.Ellipsis)
+                                    // 设置外边距
+                                    .margin(right: 4)
+                            }
+                        }
+                        // 设置子组件在水平方向上的对齐格式
+                        .justifyContent(FlexAlign.End)
+                        // 点击动作触发该方法调用
+                        .onClick {evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)}
+                    }
+
+                    if (markdownConfiguration.markdownTheme.codeFullScreenIcon.isSome()) {
+                        Row() {
+                            Image(markdownConfiguration.markdownTheme.codeFullScreenIcon())
+                                // 设置组件自身的宽度
+                                .width(markdownConfiguration.markdownTheme.iconWidthAndHeight)
+                                // 设置组件自身的高度
+                                .height(markdownConfiguration.markdownTheme.iconWidthAndHeight)
+                                // 设置外边距属性
+                                .margin(left: 4)
+                                // 设置图片的缩放类型
+                                .objectFit(ImageFit.Contain)
+
+                            Row()
+                                // 设置宽度
+                                .width(5)
+
+                            if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
+                                Text("全屏代码")
+                                    // 设置字体颜色
+                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                                    // 设置字体大小
+                                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                                    // 设置容器元素绘制区域内的子元素的对齐方式
+                                    .align(Alignment.End)
+                                    // 设置文本的最大行数
+                                    .maxLines(1)
+                                    // 设置文本超长时的显示方式
+                                    .textOverflow(TextOverflow.Ellipsis)
+                                    // 设置外边距
+                                    .margin(right: 4)
+                            }
+                        }
+                        // 设置子组件在水平方向上的对齐格式
+                        .justifyContent(FlexAlign.End)
+                        // 控制当前组件显示或隐藏
+                        .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
+                        // 点击动作触发该方法调用
+                        .onClick {
+                            evt => codeFullScreenOnClick(codeText, info, markdownConfiguration.codeFullScreenCallback)
+                        }
+                    }
+                }
+                // 设置宽度
+                .width(70.percent)
+                // 设置子组件在水平方向上的对齐格式
+                .justifyContent(FlexAlign.End)
             } else {
                 Row()
                     // 设置宽度
