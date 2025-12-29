@@ -6,6 +6,7 @@ import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
 import { CodeBlockData } from './CodeBlockPage'
+import hilog from '@ohos.hilog'
 
 @Entry
 @Component
@@ -191,6 +192,7 @@ struct CodeBlockDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
+    config.setCodeCopyCallback(this.codeCopyCallback.bind(this))
     let theme = new MarkdownTheme()
     theme.setIsCodeFormat(this.isCodeFormat)
     if(this.codeBlockTextColor !== undefined){
@@ -218,5 +220,9 @@ struct CodeBlockDetailsPage {
     theme.setCodeCopyIcon($r('app.media.startIcon'))
     config.setMarkdownTheme(theme)
     return config
+  }
+
+  codeCopyCallback(code: string): void {
+    hilog.error(1, "1", `---code:${code}`)
   }
 }
