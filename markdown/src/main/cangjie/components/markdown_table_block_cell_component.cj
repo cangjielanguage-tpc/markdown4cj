@@ -137,7 +137,7 @@ class MarkdownTableBlockCellComponent {
         // 设置约束尺寸，组件布局时，进行尺寸范围限制
         .constraintSize(minWidth: minTextWidth.vp, maxWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth.vp)
         // 组件区域变化时触发该回调
-        .interopOnSizeChange(
+        .onAreaChange(
             {
                 old, new =>
                     if (old.width == new.width) {
