@@ -40,14 +40,20 @@ class MarkdownCodeTextComponent {
      * 高亮代码列表
      */
     @State
-    var arrayList: ObservedArrayList<PrismNodesParseRes> = ObservedArrayList<PrismNodesParseRes>()
+    var arrayList: ObservedArrayList<PrismNodesParseResUI> = ObservedArrayList<PrismNodesParseResUI>()
 
     /**
      * 缓存的单独代码块控件
      */
     var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent>
 
+    /**
+     * 代码高亮
+     */
+    var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None
+
     protected override func aboutToAppear(): Unit {
+        psh = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
         // 初始化刷新数据
         refreshData(codeText, info)
         // 缓存当前控件
@@ -82,7 +88,7 @@ class MarkdownCodeTextComponent {
                 ForEach(
                     arrayList,
                     itemGeneratorFunc: {
-                        item: PrismNodesParseRes, idx: Int64 =>
+                        item: PrismNodesParseResUI, idx: Int64 =>
                         // 设置文本内容
                         Span(item.getText())
                             // 设置文本颜色
@@ -112,7 +118,7 @@ class MarkdownCodeTextComponent {
     func refreshData(codeText: String, info: Option<String>): Unit {
         this.codeText = codeText
         this.info = info
-        let callback: (ArrayList<PrismNodesParseRes>) -> Unit = {
+        let callback: (ArrayList<PrismNodesParseResUI>) -> Unit = {
             prismNodesParseResLists => launch {
                 arrayList.clear()
                 arrayList.appendAll(prismNodesParseResLists)
@@ -129,33 +135,22 @@ class MarkdownCodeTextComponent {
      * @param prismTheme 传入的高亮样式
      * @param callback PrismNodesParseRes列表回调接口
      */
-    func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseRes>) -> Unit): Future<Unit> {
+    func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseResUI>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
-            var prismNodesParseResList: ArrayList<PrismNodesParseRes> = ArrayList<PrismNodesParseRes>()
+            var prismNodesParseResList: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
             try {
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                var prism: Prism = Prism(GrammarLocatorGrammarUtils())
+                prismNodesParseResList = psh().highlight(info, code.trimEnd("\n"))
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                var psh: PrismSyntaxHighlight = PrismSyntaxHighlight.create(prism, prismTheme)
-                if (Thread.currentThread.hasPendingCancellation) {
-                    return
-                }
-                prismNodesParseResList = psh.highlight(info, code.trimEnd("\n"))
+                callback(prismNodesParseResList)
             } catch (e: Exception) {
-                let prismNodesParseRes: PrismNodesParseRes = PrismNodesParseRes("", code, Option<String>.None, Option<Color>.None)
+                let prismNodesParseRes: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: code, alias: Option<String>.None, color: Option<Color>.None)
                 prismNodesParseResList.add(prismNodesParseRes)
-            } finally {
-                try {
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        return
-                    }
-                    callback(prismNodesParseResList)
-                } catch (_) {
-                }
+                callback(prismNodesParseResList)
             }
         }
         return fut

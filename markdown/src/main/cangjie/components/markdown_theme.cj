@@ -326,6 +326,11 @@ public class MarkdownTheme {
     protected var isCodeStyle: Bool = false
 
     /**
+     * 是否格式化代码块内容
+     */
+    protected var isCodeFormat: Bool = false
+
+    /**
      * 文本/图片格式内联代码文本颜色
      */
     protected var codeTextColor: Color = COLOR_FF000000
@@ -987,6 +992,7 @@ public class MarkdownTheme {
         // 5、代码
         // 5.1、内联代码
         this.isCodeStyle = builder.isCodeStyle
+        this.isCodeFormat = builder.isCodeFormat
         this.codeTextColor = builder.codeTextColor
         this.codeBackgroundColor = builder.codeBackgroundColor
         this.codeTypeface = builder.codeTypeface
@@ -1639,6 +1645,11 @@ public class MarkdownThemeBuilder {
      * 内联代码是否是图片显示
      */
     var isCodeStyle: Bool = false
+
+    /**
+     * 是否格式化代码块内容
+     */
+    var isCodeFormat: Bool = false
 
     /**
      * 文本/图片格式内联代码文本颜色
@@ -2305,6 +2316,7 @@ public class MarkdownThemeBuilder {
         // 5、代码
         // 5.1、内联代码
         this.isCodeStyle = theme.isCodeStyle
+        this.isCodeFormat = theme.isCodeFormat
         this.codeTextColor = theme.codeTextColor
         this.codeBackgroundColor = theme.codeBackgroundColor
         this.codeTypeface = theme.codeTypeface
@@ -3254,6 +3266,17 @@ public class MarkdownThemeBuilder {
      */
     public func setIsCodeStyle(isCodeStyle: Bool): MarkdownThemeBuilder {
         this.isCodeStyle = isCodeStyle
+        return this
+    }
+
+    /**
+     * 设置是否格式化代码块内容
+     *
+     * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块；false：不格式化代码块。默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsCodeFormat(isCodeFormat: Bool): MarkdownThemeBuilder {
+        this.isCodeFormat = isCodeFormat
         return this
     }
 

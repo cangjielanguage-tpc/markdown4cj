@@ -463,7 +463,7 @@ func codeBackgroundColor(markdownTheme: MarkdownTheme, prismTheme: PrismTheme): 
  * @param prismTheme 代码高亮样式
  * @return 文字颜色
  */
-func codeTextColor(item: PrismNodesParseRes, markdownTheme: MarkdownTheme, prismTheme: PrismTheme): Color {
+func codeTextColor(item: PrismNodesParseResUI, markdownTheme: MarkdownTheme, prismTheme: PrismTheme): Color {
     let color: ?Color = item.getColor()
     if (color.isSome()) {
         return color()
@@ -1764,7 +1764,7 @@ func refreshCacheData(nodeView: NodeView, newBlockHash:Int64, compontentType:Str
                         // 围栏代码
                         let cache = w.fencedCodeComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
-                            v.refreshData(nodeView)
+                            v.refreshData(getCodeInfo(nodeView)[0], getCodeInfo(nodeView)[1](), nodeView.nodeHash)
                         }
                     } else if (nodeView.node is Heading) {
                         // 标题

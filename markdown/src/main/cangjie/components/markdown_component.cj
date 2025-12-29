@@ -8,6 +8,8 @@ import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
+protected let prism: Prism = Prism(GrammarLocatorGrammarUtils())
+
 /**
  * Markdown预览自定义控件
  */
@@ -531,7 +533,7 @@ public class MarkdownComponent {
                     // 围栏代码
                     let cache = markdownCacheConfiguration.fencedCodeComponents.get(newBlockHash)
                     if (let Some(v) <- cache) {
-                        v.refreshData(newNodeView)
+                        v.refreshData(getCodeInfo(newNodeView)[0], getCodeInfo(newNodeView)[1](), newNodeView.nodeHash)
                     }
                 } else if (newNodeView.node is Heading) {
                     // 标题
