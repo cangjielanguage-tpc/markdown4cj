@@ -456,7 +456,6 @@ class CandCppFormat <: BaseLanguage {
             dealWithNewLine(stateBean)
 
             //这里走完的话就收集到了
-            //println("size=${stateBean.linesList.size}")
             //这里lineList开始处理了
             //处理单行注释合并问题
             for (i in 0..stateBean.linesList.size) {
@@ -488,7 +487,6 @@ class CandCppFormat <: BaseLanguage {
                     if (i > 0) {
                         //有上一行，看上一行的结束是不是\n
                         let lastLineBean: LineBean = stateBean.linesList[i - 1]
-                        //println("tempCodeLine=${tempCodeLine}")
                         if (!lineBean.mutlilineCommentisAfterChangline) {
                             //如果这样的话，这一行的内容要加到上一行的后面
                             let stringbuilder: StringBuilder = StringBuilder()
@@ -532,7 +530,6 @@ class CandCppFormat <: BaseLanguage {
                     if (i > 0) {
                         //有上一行，看上一行的结束是不是\n
                         let lastLineBean: LineBean = stateBean.linesList[i - 1]
-                        //println("tempCodeLine=${tempCodeLine}")
                         //如果这样的话，这一行的内容要加到上一行的后面
                         let stringbuilder: StringBuilder = StringBuilder()
                         stringbuilder.append(lastLineBean.codeLine)
