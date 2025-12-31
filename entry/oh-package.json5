@@ -6,7 +6,7 @@
   "author": "",
   "license": "",
   "dependencies": {
+    "@cangjie/cjhybridview": "1.0.6",
     "@cangjie-tpc/markdown": "file:../markdown"
   }
 }
-

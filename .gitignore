@@ -21,6 +21,7 @@ entry/libs/markdown/src/*
 entry/src/main/markdowndatatest/src/*
 markdown/BuildProfile.ets
 entry/BuildProfile.ets
+/.appanalyzer
 **/cj_res
 **/*.cj.macrocall
 temp

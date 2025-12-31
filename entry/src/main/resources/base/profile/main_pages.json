@@ -1,2 +1,6 @@
 {
+  "src": [
+    "pages/Index",
+    "pages/demo_page"
+  ]
 }
