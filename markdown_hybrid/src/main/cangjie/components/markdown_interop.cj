@@ -19,8 +19,8 @@ let _ = {
     => JSModule.registerModule(
         {
             ctx, exports =>
-            context = ctx
-            exports
+                context = ctx
+                exports
         }
     )
 }()
@@ -188,8 +188,7 @@ public class ImageLoadResultInterop <: InteropObjectBase {
         let contentHeight = Float64.fromJSValue(context, input.getProperty(context, "contentHeight"))
         let contentOffsetX = Float64.fromJSValue(context, input.getProperty(context, "contentOffsetX"))
         let contentOffsetY = Float64.fromJSValue(context, input.getProperty(context, "contentOffsetY"))
-        ImageLoadResultInterop(width, height, componentWidth, componentHeight, loadingStatus, contentWidth, contentHeight,
-            contentOffsetX, contentOffsetY)
+        ImageLoadResultInterop(width, height, componentWidth, componentHeight, loadingStatus, contentWidth, contentHeight, contentOffsetX, contentOffsetY)
     }
 }
 
@@ -321,6 +320,32 @@ public class CJArea <: InteropObjectBase {
     }
 }
 
+public class CJLengthMetrics <: InteropObjectBase {
+    public CJLengthMetrics(value: Float64, unit: Int64) {
+        super(getCtx().object())
+        setProp("value", value.toJSValue(getCtx()))
+        setProp("unit", unit.toJSValue(getCtx()))
+    }
+
+    public prop value: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("value"))
+        }
+    }
+
+    public prop unit: Int64 {
+        get() {
+            Int64.fromJSValue(getCtx(), getProp("unit"))
+        }
+    }
+
+    static func fromJSValue(context: JSContext, input: JSValue): CJLengthMetrics {
+        let value = Float64.fromJSValue(context, input.getProperty(context, "value"))
+        let unit = Int64.fromJSValue(context, input.getProperty(context, "unit"))
+        CJLengthMetrics(value, unit)
+    }
+}
+
 extend Span {
     func interopStyle(isBool: Bool, backgroundColor: Color): Span {
         if (isBool) {
@@ -337,6 +362,18 @@ extend Span {
                 textBackgroundStyle.call(param.toJSValue())
             } catch (e: Exception) {
             }
+        }
+        return this
+    }
+
+    func interopBaselineOffset(value: CJLengthMetrics): Span {
+        try {
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let span = global["Span"].asObject(ctx)
+            let baselineOffset = span["baselineOffset"].asFunction(ctx)
+            baselineOffset.call(value.toJSValue(ctx))
+        } catch (e: Exception) {
         }
         return this
     }
@@ -368,9 +405,9 @@ extend Text {
             let onCopy = text["onCopy"].asFunction(ctx)
             let arg = ctx.function {
                 context: JSContext, callInfo: JSCallInfo =>
-                let value1 = callInfo[0].toString()
-                callback(value1)
-                context.undefined().toJSValue()
+                    let value1 = callInfo[0].toString()
+                    callback(value1)
+                    context.undefined().toJSValue()
             }
             onCopy.call(arg.toJSValue())
         } catch (e: Exception) {
@@ -386,12 +423,13 @@ extend ImageSpan {
             let ctx = context.getOrThrow()
             let imageSpan = global["ImageSpan"].asObject(ctx)
             let argFunc = getCtx().function(
-                {
-                    context: JSContext, callInfo: JSCallInfo =>
-                    let ret = value(ImageLoadResultInterop.fromJSValue(context, callInfo[0]))
-                    ret.toJSValue(context)
-                }
-            ).toJSValue()
+                    {
+                        context: JSContext, callInfo: JSCallInfo =>
+                            let ret = value(ImageLoadResultInterop.fromJSValue(context, callInfo[0]))
+                            ret.toJSValue(context)
+                    }
+                )
+                .toJSValue()
             jsObjApiCall(imageSpan, "onComplete", {ctx => [argFunc]})
         } catch (e: Exception) {
         }
@@ -404,12 +442,13 @@ extend ImageSpan {
             let ctx = context.getOrThrow()
             let imageSpan = global["ImageSpan"].asObject(ctx)
             let argFunc = getCtx().function(
-                {
-                    context: JSContext, callInfo: JSCallInfo =>
-                    let ret = value(CJImageErrorInterop.fromJSValue(context, callInfo[0]))
-                    ret.toJSValue(context)
-                }
-            ).toJSValue()
+                    {
+                        context: JSContext, callInfo: JSCallInfo =>
+                            let ret = value(CJImageErrorInterop.fromJSValue(context, callInfo[0]))
+                            ret.toJSValue(context)
+                    }
+                )
+                .toJSValue()
             jsObjApiCall(imageSpan, "onError", {ctx => [argFunc]})
         } catch (e: Exception) {
         }
@@ -431,54 +470,62 @@ extend ImageSpan {
 
 extend Column {
     func interopOnSizeChange(callback: (CJSizeOptions, CJSizeOptions) -> Unit): Column {
-        let global = context.getOrThrow().global
-        let ctx = context.getOrThrow()
-        let column = global["Column"].asObject(ctx)
-        let callBackFunc = getCtx().function {
-            ctx, callInfo => callback(CJSizeOptions.fromJSValue(ctx, callInfo[0]),
-                CJSizeOptions.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+        try {
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let column = global["Column"].asObject(ctx)
+            let callBackFunc = getCtx().function {
+                ctx, callInfo => callback(CJSizeOptions.fromJSValue(ctx, callInfo[0]), CJSizeOptions.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+            }
+            column.callMethod("onSizeChange", [callBackFunc.toJSValue()])
+        } catch (e: Exception) {
         }
-        column.callMethod("onSizeChange", [callBackFunc.toJSValue()])
         return this
     }
 
     func interopOnAreaChange(callback: (CJArea, CJArea) -> Unit): Column {
-        let global = context.getOrThrow().global
-        let ctx = context.getOrThrow()
-        let column = global["Column"].asObject(ctx)
-        let callBackFunc = getCtx().function {
-            ctx, callInfo => callback(CJArea.fromJSValue(ctx, callInfo[0]),
-                CJArea.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+        try {
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let column = global["Column"].asObject(ctx)
+            let callBackFunc = getCtx().function {
+                ctx, callInfo => callback(CJArea.fromJSValue(ctx, callInfo[0]), CJArea.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+            }
+            column.callMethod("onAreaChange", [callBackFunc.toJSValue()])
+        } catch (e: Exception) {
         }
-        column.callMethod("onAreaChange", [callBackFunc.toJSValue()])
         return this
     }
 }
 
 extend List {
     func interopOnSizeChange(callback: (CJSizeOptions, CJSizeOptions) -> Unit): List {
-        let global = context.getOrThrow().global
-        let ctx = context.getOrThrow()
-        let column = global["List"].asObject(ctx)
-        let callBackFunc = getCtx().function {
-            ctx, callInfo => callback(CJSizeOptions.fromJSValue(ctx, callInfo[0]),
-                CJSizeOptions.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+        try {
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let column = global["List"].asObject(ctx)
+            let callBackFunc = getCtx().function {
+                ctx, callInfo => callback(CJSizeOptions.fromJSValue(ctx, callInfo[0]), CJSizeOptions.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+            }
+            column.callMethod("onSizeChange", [callBackFunc.toJSValue()])
+        } catch (e: Exception) {
         }
-        column.callMethod("onSizeChange", [callBackFunc.toJSValue()])
         return this
     }
 }
 
 extend ListItem {
     func interopOnAreaChange(callback: (CJArea, CJArea) -> Unit): ListItem {
-        let global = context.getOrThrow().global
-        let ctx = context.getOrThrow()
-        let column = global["ListItem"].asObject(ctx)
-        let callBackFunc = getCtx().function {
-            ctx, callInfo => callback(CJArea.fromJSValue(ctx, callInfo[0]),
-                CJArea.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+        try {
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let column = global["ListItem"].asObject(ctx)
+            let callBackFunc = getCtx().function {
+                ctx, callInfo => callback(CJArea.fromJSValue(ctx, callInfo[0]), CJArea.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+            }
+            column.callMethod("onAreaChange", [callBackFunc.toJSValue()])
+        } catch (e: Exception) {
         }
-        column.callMethod("onAreaChange", [callBackFunc.toJSValue()])
         return this
     }
 }
