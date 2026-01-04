@@ -195,6 +195,22 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
+              "26、下标",
+              0xFFFF0000,
+              "pages/SubPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "27、上标",
+              0xFFFF0000,
+              "pages/SupPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
               "29、综合",
               0xFFFF0000,
               "pages/AllPage"
