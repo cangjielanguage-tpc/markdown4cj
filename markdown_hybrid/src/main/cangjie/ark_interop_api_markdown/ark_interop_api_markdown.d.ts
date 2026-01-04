@@ -39,6 +39,10 @@ export declare class CJMarkdownPlugin {
   setIsDescListPlugin(isDescListPlugin: boolean): void
 
   setIsHeadIDPlugin(isHeadIDPlugin: boolean): void
+
+  setIsSubPlugin(isSubPlugin: boolean): void
+
+  setIsSupPlugin(isSupPlugin: boolean): void
 }
 
 export declare class CJMarkdownTheme {

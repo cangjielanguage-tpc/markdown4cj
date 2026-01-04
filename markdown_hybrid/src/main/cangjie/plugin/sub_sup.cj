@@ -67,6 +67,9 @@ public class UnderlineHandler <: TagHandler {
 }
 
 public class SubPlugin <: AbstractMarkdownPlugin {
+    public static func create(): SubPlugin {
+        return SubPlugin()
+    }
     public func configureParser(parser: ParserBuilder): Unit {
         parser.customDelimiterProcessor(SubDelimiterProcessor())
     }
@@ -117,6 +120,9 @@ class SubDelimiterProcessor <: DelimiterProcessor {
 }
 
 public class SupPlugin <: AbstractMarkdownPlugin {
+    public static func create(): SupPlugin {
+        return SupPlugin()
+    }
     public func configureParser(parser: ParserBuilder): Unit {
         parser.customDelimiterProcessor(SupDelimiterProcessor())
     }

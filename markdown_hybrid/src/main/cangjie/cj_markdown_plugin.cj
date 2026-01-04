@@ -104,6 +104,16 @@ public class CJMarkdownPlugin {
      */
     var isHeadIDPlugin: Bool = false
 
+    /**
+     * 是否加载上标解析插件
+     */
+    var isSubPlugin: Bool = false
+
+    /**
+     * 是否加载上标解析插件
+     */
+    var isSupPlugin: Bool = false
+
     public init() {}
 
     /**
@@ -266,5 +276,23 @@ public class CJMarkdownPlugin {
      */
     public func setIsHeadIDPlugin(isHeadIDPlugin: Bool): Unit {
         this.isHeadIDPlugin = isHeadIDPlugin
+    }
+
+    /**
+     * 设置是否加载下标解析插件
+     *
+     * @param isSubPlugin
+     */
+    public func setIsSubPlugin(isSubPlugin: Bool): Unit {
+        this.isSubPlugin = isSubPlugin
+    }
+
+    /**
+     * 设置是否加载上标解析插件
+     *
+     * @param isSupPlugin
+     */
+    public func setIsSupPlugin(isSupPlugin: Bool): Unit {
+        this.isSupPlugin = isSupPlugin
     }
 }

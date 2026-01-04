@@ -195,7 +195,7 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "25、综合",
+              "29、综合",
               0xFFFF0000,
               "pages/AllPage"
             )

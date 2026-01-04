@@ -647,6 +647,8 @@ export struct CJMarkdown {
       cjMarkdownPlugin.setIsImageCollectPlugin(this.plugin.isImageCollectPlugin)
       cjMarkdownPlugin.setIsDescListPlugin(this.plugin.isDescListPlugin)
       cjMarkdownPlugin.setIsHeadIDPlugin(this.plugin.isHeadIDPlugin)
+      cjMarkdownPlugin.setIsSubPlugin(this.plugin.isSubPlugin)
+      cjMarkdownPlugin.setIsSupPlugin(this.plugin.isSupPlugin)
     }
     return cjMarkdownPlugin
   }
@@ -3177,6 +3179,14 @@ export class MarkdownPlugin {
    * 是否加载标题ID解析插件
    */
   isHeadIDPlugin: boolean = false
+  /**
+   * 是否加载下标解析插件
+   */
+  isSubPlugin: boolean = false
+  /**
+   * 是否加载上标解析插件
+   */
+  isSupPlugin: boolean = false
 
   /**
    * 设置音频插件
@@ -3338,6 +3348,24 @@ export class MarkdownPlugin {
    */
   setIsHeadIDPlugin(isHeadIDPlugin: boolean): void {
     this.isHeadIDPlugin = isHeadIDPlugin
+  }
+
+  /**
+   * 设置是否加载下标解析插件
+   *
+   * @param isSubPlugin 是否加载下标解析插件 - true：设置加载下标解析插件；false：不设置加载下标解析插件。默认false
+   */
+  setIsSubPlugin(isSubPlugin: boolean): void {
+    this.isSubPlugin = isSubPlugin
+  }
+
+  /**
+   * 设置是否加载上标解析插件
+   *
+   * @param isSupPlugin 是否加载上标解析插件 - true：设置加载上标解析插件；false：不设置加载上标解析插件。默认false
+   */
+  setIsSupPlugin(isSupPlugin: boolean): void {
+    this.isSupPlugin = isSupPlugin
   }
 }
 

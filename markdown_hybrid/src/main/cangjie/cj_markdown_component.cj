@@ -115,6 +115,12 @@ class CJMarkdownComponent {
             if(v.isImageCollectPlugin){
                 markdownBuilder.usePlugin(ImageCollectPlugin.create())
             }
+            if(v.isSubPlugin){
+                markdownBuilder.usePlugin(SubPlugin.create())
+            }
+            if(v.isSupPlugin){
+                markdownBuilder.usePlugin(SupPlugin.create())
+            }
         }
         // 唯一ID标识插件
         markdownBuilder.usePlugin(NodeIdPlugin.create())
