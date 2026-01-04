@@ -837,6 +837,41 @@ public class CJMarkdownTheme {
      */
     var descListDefMargins: ?Float64 = None
 
+    /**
+     * 下标字体颜色
+     */
+    var subTextColor: ?Color = None
+
+    /**
+     * 下标字体大小
+     */
+    var subTextSize: ?Float64 = None
+
+    /**
+     * 下标偏移距离
+     */
+    var subOffsetDist: ?Float64 = None
+
+    /**
+     * 上标字体颜色
+     */
+    var supTextColor: ?Color = None
+
+    /**
+     * 上标字体大小
+     */
+    var supTextSize: ?Float64 = None
+
+    /**
+     * 上标偏移距离
+     */
+    var supOffsetDist: ?Float64 = None
+
+    /**
+     * 下划线颜色
+     */
+    var underlineColor: ?Color = None
+
     public init() {}
 
     /**
@@ -2301,7 +2336,6 @@ public class CJMarkdownTheme {
      * 设置定义列表术语和定义行之间间距
      *
      * @param descListTermAndDefMargins 定义列表定义行缩进 默认8.0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setDescListTermAndDefMargins(descListTermAndDefMargins: Float64): Unit {
         this.descListTermAndDefMargins = descListTermAndDefMargins
@@ -2311,7 +2345,6 @@ public class CJMarkdownTheme {
      * 设置定义列表定义行缩进
      *
      * @param descListDefIndentation 定义列表定义行缩进 默认8.0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setDescListDefIndentation(descListDefIndentation: Float64): Unit {
         this.descListDefIndentation = descListDefIndentation
@@ -2321,9 +2354,71 @@ public class CJMarkdownTheme {
      * 设置定义列表定义行间距
      *
      * @param descListDefMargins 定义列表定义行间距 默认8.0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setDescListDefMargins(descListDefMargins: Float64): Unit {
         this.descListDefMargins = descListDefMargins
+    }
+
+    /**
+     * 设置下标字体颜色
+     *
+     * @param subTextColor 下标字体颜色 默认0XFF191919
+     */
+    public func setSubTextColor(subTextColor: UInt32): Unit {
+        this.subTextColor = transColorForTrasparent(subTextColor)
+    }
+
+    /**
+     * 设置下标字体大小
+     *
+     * @param subTextSize 下标字体大小 默认8.0
+     */
+    public func setSubTextSize(subTextSize: Float64): Unit {
+        this.subTextSize = subTextSize
+    }
+
+    /**
+     * 设置下标偏移距离
+     *
+     * @param subOffsetDist 下标偏移距离 默认8.0
+     */
+    public func setSubOffsetDist(subOffsetDist: Float64): Unit {
+        this.subOffsetDist = subOffsetDist
+    }
+
+    /**
+     * 设置上标字体颜色
+     *
+     * @param supTextColor 上标字体颜色 默认0XFF191919
+     */
+    public func setSupTextColor(supTextColor: UInt32): Unit {
+        this.supTextColor = transColorForTrasparent(supTextColor)
+    }
+
+    /**
+     * 设置上标字体大小
+     *
+     * @param supTextSize 上标字体大小 默认8.0
+     */
+    public func setSupTextSize(supTextSize: Float64): Unit {
+        this.supTextSize = supTextSize
+    }
+
+    /**
+     * 设置上标偏移距离
+     *
+     * @param supOffsetDist 上标偏移距离 默认8.0
+     */
+    public func setSupOffsetDist(supOffsetDist: Float64): Unit {
+        this.supOffsetDist = supOffsetDist
+    }
+
+    /**
+     * 设置下划线颜色
+     *
+     * @param underlineColor 下划线颜色 默认0XFF191919
+     */
+    public func setUnderlineColor(underlineColor: UInt32): Unit {
+        this.underlineColor = transColorForTrasparent(underlineColor)
     }
 }

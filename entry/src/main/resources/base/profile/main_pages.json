@@ -41,6 +41,10 @@
     "pages/DescListDetailsPage",
     "pages/HeadIDPage",
     "pages/HeadIDDetailsPage",
+    "pages/SubPage",
+    "pages/SubDetailsPage",
+    "pages/SupPage",
+    "pages/SupDetailsPage",
     "pages/AllPage",
     "pages/AllDetailsPage"
   ]

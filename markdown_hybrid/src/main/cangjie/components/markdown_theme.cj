@@ -915,6 +915,41 @@ public class MarkdownTheme {
      */
     protected var descListDefMargins: Float64 = 8.0
 
+    /**
+     * 下标字体颜色
+     */
+    protected var subTextColor: Color = COLOR_FF191919
+
+    /**
+     * 下标字体大小
+     */
+    protected var subTextSize: Float64 = 8.0
+
+    /**
+     * 下标偏移距离
+     */
+    protected var subOffsetDist: Float64 = 8.0
+
+    /**
+     * 上标字体颜色
+     */
+    protected var supTextColor: Color = COLOR_FF191919
+
+    /**
+     * 上标字体大小
+     */
+    protected var supTextSize: Float64 = 8.0
+
+    /**
+     * 上标偏移距离
+     */
+    protected var supOffsetDist: Float64 = 8.0
+
+    /**
+     * 下划线颜色
+     */
+    protected var underlineColor: Color = COLOR_FF191919
+
     protected init(builder: MarkdownThemeBuilder) {
         // 1、上下文
         this.stageContext = builder.stageContext
@@ -1141,6 +1176,19 @@ public class MarkdownTheme {
         this.descListTermAndDefMargins = builder.descListTermAndDefMargins
         this.descListDefIndentation = builder.descListDefIndentation
         this.descListDefMargins = builder.descListDefMargins
+
+        // 19、下标
+        this.subTextColor = builder.subTextColor
+        this.subTextSize = builder.subTextSize
+        this.subOffsetDist = builder.subOffsetDist
+
+        // 20、上标
+        this.supTextColor = builder.supTextColor
+        this.supTextSize = builder.supTextSize
+        this.supOffsetDist = builder.supOffsetDist
+
+        // 21、 下划线
+        this.underlineColor = builder.underlineColor
     }
 
     /**
@@ -2236,6 +2284,41 @@ public class MarkdownThemeBuilder {
      */
     var descListDefMargins: Float64 = 8.0
 
+    /**
+     * 下标字体颜色
+     */
+    var subTextColor: Color = COLOR_FF191919
+
+    /**
+     * 下标字体大小
+     */
+    var subTextSize: Float64 = 8.0
+
+    /**
+     * 下标偏移距离
+     */
+    var subOffsetDist: Float64 = 8.0
+
+    /**
+     * 上标字体颜色
+     */
+    var supTextColor: Color = COLOR_FF191919
+
+    /**
+     * 上标字体大小
+     */
+    var supTextSize: Float64 = 8.0
+
+    /**
+     * 上标偏移距离
+     */
+    var supOffsetDist: Float64 = 8.0
+
+    /**
+     * 下划线颜色
+     */
+    var underlineColor: Color = COLOR_FF191919
+
     init() {
     }
 
@@ -2465,6 +2548,19 @@ public class MarkdownThemeBuilder {
         this.descListTermAndDefMargins = theme.descListTermAndDefMargins
         this.descListDefIndentation = theme.descListDefIndentation
         this.descListDefMargins = theme.descListDefMargins
+
+        // 19、下标
+        this.subTextColor = theme.subTextColor
+        this.subTextSize = theme.subTextSize
+        this.subOffsetDist = theme.subOffsetDist
+
+        // 20、上标
+        this.supTextColor = theme.supTextColor
+        this.supTextSize = theme.supTextSize
+        this.supOffsetDist = theme.supOffsetDist
+
+        // 21、下划线
+        this.underlineColor = theme.underlineColor
     }
 
     /**
@@ -4564,6 +4660,83 @@ public class MarkdownThemeBuilder {
      */
     public func setDescListDefMargins(descListDefMargins: Float64): MarkdownThemeBuilder {
         this.descListDefMargins = descListDefMargins
+        return this
+    }
+
+    /**
+     * 设置下标字体颜色
+     *
+     * @param subTextColor 下标字体颜色 默认0XFF191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSubTextColor(subTextColor: Color): MarkdownThemeBuilder {
+        this.subTextColor = subTextColor
+        return this
+    }
+
+    /**
+     * 设置下标字体大小
+     *
+     * @param subTextSize 下标字体大小 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSubTextSize(subTextSize: Float64): MarkdownThemeBuilder {
+        this.subTextSize = subTextSize
+        return this
+    }
+
+    /**
+     * 设置下标偏移距离
+     *
+     * @param subOffsetDist 下标偏移距离 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSubOffsetDist(subOffsetDist: Float64): MarkdownThemeBuilder {
+        this.subOffsetDist = subOffsetDist
+        return this
+    }
+
+    /**
+     * 设置上标字体颜色
+     *
+     * @param supTextColor 上标字体颜色 默认0XFF191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSupTextColor(supTextColor: Color): MarkdownThemeBuilder {
+        this.supTextColor = supTextColor
+        return this
+    }
+
+    /**
+     * 设置上标字体大小
+     *
+     * @param supTextSize 上标字体大小 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSupTextSize(supTextSize: Float64): MarkdownThemeBuilder {
+        this.supTextSize = supTextSize
+        return this
+    }
+
+    /**
+     * 设置上标偏移距离
+     *
+     * @param supOffsetDist 上标偏移距离 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSupOffsetDist(supOffsetDist: Float64): MarkdownThemeBuilder {
+        this.supOffsetDist = supOffsetDist
+        return this
+    }
+
+    /**
+     * 设置下划线颜色
+     *
+     * @param underlineColor 下划线颜色 默认0XFF191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setUnderlineColor(underlineColor: Color): MarkdownThemeBuilder {
+        this.underlineColor = underlineColor
         return this
     }
 

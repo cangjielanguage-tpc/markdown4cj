@@ -373,6 +373,20 @@ export declare class CJMarkdownTheme {
   setDescListDefIndentation(descListDefIndentation: number): void
 
   setDescListDefMargins(descListDefMargins: number): void
+
+  setSubTextColor(subTextColor: number): void
+
+  setSubTextSize(subTextSize: number): void
+
+  setSubOffsetDist(subOffsetDist: number): void
+
+  setSupTextColor(supTextColor: number): void
+
+  setSupTextSize(supTextSize: number): void
+
+  setSupOffsetDist(supOffsetDist: number): void
+
+  setUnderlineColor(underlineColor: number): void
 }
 
 export declare class CJMarkdownConfig {

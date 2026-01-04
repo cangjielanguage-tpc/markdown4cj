@@ -699,6 +699,27 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.descListDefMargins) {
                 markdownThemeBuilder.setDescListDefMargins(v) // 设置定义列表定义行间距
             }
+            if (let Some(v) <- w.cjMarkdownTheme.subTextColor) {
+                markdownThemeBuilder.setSubTextColor(v) // 设置下标字体颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.subTextSize) {
+                markdownThemeBuilder.setSubTextSize(v) // 设置下标字体大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.subOffsetDist) {
+                markdownThemeBuilder.setSubOffsetDist(v) // 设置下标偏移距离
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.supTextColor) {
+                markdownThemeBuilder.setSupTextColor(v) // 设置上标字体颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.supTextSize) {
+                markdownThemeBuilder.setSupTextSize(v) // 设置上标字体大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.supOffsetDist) {
+                markdownThemeBuilder.setSupOffsetDist(v) // 设置上标偏移距离
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.underlineColor) {
+                markdownThemeBuilder.setUnderlineColor(v) // 设置下划线颜色
+            }
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()
         return markdownTheme

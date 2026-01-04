@@ -621,6 +621,27 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.descListDefMargins !== undefined) {
           cjMarkdownTheme.setDescListDefMargins(this.config.markdownTheme.descListDefMargins)
         }
+        if (this.config.markdownTheme.subTextColor !== undefined) {
+          cjMarkdownTheme.setSubTextColor(this.config.markdownTheme.subTextColor)
+        }
+        if (this.config.markdownTheme.subTextSize !== undefined) {
+          cjMarkdownTheme.setSubTextSize(this.config.markdownTheme.subTextSize)
+        }
+        if (this.config.markdownTheme.subOffsetDist !== undefined) {
+          cjMarkdownTheme.setSubOffsetDist(this.config.markdownTheme.subOffsetDist)
+        }
+        if (this.config.markdownTheme.supTextColor !== undefined) {
+          cjMarkdownTheme.setSupTextColor(this.config.markdownTheme.supTextColor)
+        }
+        if (this.config.markdownTheme.supTextSize !== undefined) {
+          cjMarkdownTheme.setSupTextSize(this.config.markdownTheme.supTextSize)
+        }
+        if (this.config.markdownTheme.supOffsetDist !== undefined) {
+          cjMarkdownTheme.setSupOffsetDist(this.config.markdownTheme.supOffsetDist)
+        }
+        if (this.config.markdownTheme.underlineColor !== undefined) {
+          cjMarkdownTheme.setUnderlineColor(this.config.markdownTheme.underlineColor)
+        }
       }
     }
     return cjMarkdownTheme
@@ -1525,11 +1546,38 @@ export class MarkdownTheme {
    * 定义列表定义行缩进
    */
   descListDefIndentation?: number= undefined
-
   /**
    * 定义列表定义行间距
    */
   descListDefMargins?: number = undefined
+  /**
+   * 下标字体颜色
+   */
+  subTextColor?: number = undefined
+  /**
+   * 下标字体大小
+   */
+  subTextSize?: number = undefined
+  /**
+   * 下标偏移距离
+   */
+  subOffsetDist?: number = undefined
+  /**
+   * 上标字体颜色
+   */
+  supTextColor?: number = undefined
+  /**
+   * 上标字体大小
+   */
+  supTextSize?: number = undefined
+  /**
+   * 上标偏移距离
+   */
+  supOffsetDist?: number = undefined
+  /**
+   * 下划线颜色
+   */
+  underlineColor?: number = undefined
 
   /**
    * 设置上下文
@@ -3077,6 +3125,69 @@ export class MarkdownTheme {
    */
   setDescListDefMargins(descListDefMargins: number): void {
     this.descListDefMargins = descListDefMargins
+  }
+
+  /**
+   * 设置下标字体颜色
+   *
+   * @param subTextColor 下标字体颜色 默认0XFF191919
+   */
+  setSubTextColor(subTextColor: number): void {
+    this.subTextColor = subTextColor
+  }
+
+  /**
+   * 设置下标字体大小
+   *
+   * @param subTextSize 下标字体大小 默认8.0
+   */
+  setSubTextSize(subTextSize: number): void {
+    this.subTextSize = subTextSize
+  }
+
+  /**
+   * 设置下标偏移距离
+   *
+   * @param subOffsetDist 下标偏移距离 默认8.0
+   */
+  setSubOffsetDist(subOffsetDist: number): void {
+    this.subOffsetDist = subOffsetDist
+  }
+
+  /**
+   * 设置上标字体颜色
+   *
+   * @param supTextColor 上标字体颜色 默认0XFF191919
+   */
+  setSupTextColor(supTextColor: number): void {
+    this.supTextColor = supTextColor
+  }
+
+  /**
+   * 设置上标字体大小
+   *
+   * @param supTextSize 上标字体大小 默认8.0
+   */
+  setSupTextSize(supTextSize: number): void {
+    this.supTextSize = supTextSize
+  }
+
+  /**
+   * 设置上标偏移距离
+   *
+   * @param supOffsetDist 上标偏移距离 默认8.0
+   */
+  setSupOffsetDist(supOffsetDist: number): void {
+    this.supOffsetDist = supOffsetDist
+  }
+
+  /**
+   * 设置下划线颜色
+   *
+   * @param underlineColor 下划线颜色 默认0XFF191919
+   */
+  setUnderlineColor(underlineColor: number): void {
+    this.underlineColor = underlineColor
   }
 }
 
