@@ -377,6 +377,18 @@ extend Span {
         }
         return this
     }
+
+    func interopLineHeight(value: Float64): Span {
+        try {
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let span = global["Span"].asObject(ctx)
+            let lineHeight = span["lineHeight"].asFunction(ctx)
+            lineHeight.call(value.toJSValue(ctx))
+        } catch (e: Exception) {
+        }
+        return this
+    }
 }
 
 extend Text {
@@ -410,6 +422,30 @@ extend Text {
                     context.undefined().toJSValue()
             }
             onCopy.call(arg.toJSValue())
+        } catch (e: Exception) {
+        }
+        return this
+    }
+
+    func interopHalfLeading(isBool: Bool): Text {
+        try {
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let text = global["Text"].asObject(ctx)
+            let halfLeading = text["halfLeading"].asFunction(ctx)
+            halfLeading.call(isBool.toJSValue(ctx))
+        } catch (e: Exception) {
+        }
+        return this
+    }
+
+    func interopLineSpacing(value: CJLengthMetrics): Text {
+        try {
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let text = global["Text"].asObject(ctx)
+            let lineSpacing = text["lineSpacing"].asFunction(ctx)
+            lineSpacing.call(value.toJSValue(ctx))
         } catch (e: Exception) {
         }
         return this

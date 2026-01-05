@@ -132,7 +132,7 @@ class MarkdownParagraphComponent {
             }
         } else if (item.node is Code) {
             // 内联代码
-            inLineCodeSpanComponent(item, markdownConfiguration, item.strongEmphasis, false, isDescList, 1)
+            inLineCodeSpanComponent(item, markdownConfiguration, item.strongEmphasis, false, isDescList, 1, 0)
         } else if (item.node is CommonmarkLink) {
             // 链接
             linkSpanComponent(isOneLink, isListTo, 0, item, markdownConfiguration, componentWidth, imageCallback, false, isDescList, 1, markdownConfiguration.markdownTheme.isListLinkStyle)
@@ -187,8 +187,8 @@ class MarkdownParagraphComponent {
         }
         // 设置多行文本的文本对齐方式
         .textAlign(TextAlign.Start)
-        // 设置行高
-        .lineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .interopHalfLeading(true)
         // 自定义设置组件是否支持文本可复制粘贴
         .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
             true
@@ -230,8 +230,8 @@ class MarkdownParagraphComponent {
         }
         // 设置多行文本的文本对齐方式
         .textAlign(TextAlign.Start)
-        // 设置行高
-        .lineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .halfLeading(true)
         // 支持设备内复制
         .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
             CopyOptions.LocalDevice
