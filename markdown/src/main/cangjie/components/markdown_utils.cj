@@ -364,20 +364,24 @@ func spanTextFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: Markdown
  * @return 返回需要显示的下划线中划线，返回需要显示的下划线中划线颜色
  */
 func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDecorationType, Color) {
-    // 是否是链接并且样式是否设置下划线
-    if ((nodeView.link.isSome() || nodeView.node is Footnote) && markdownTheme.isLinkUnderlined) {
-        // 是否是删除线
-        if (nodeView.props.isSome() && nodeView.props().get("strikethrough").isSome()) {
-            // TODO 需要同时设置下划线和中划线
-            return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor)
-        }
-        return (TextDecorationType.Underline, markdownTheme.linkColor)
+    if (nodeView.props.isSome() && nodeView.props().get("UnderlineNode").isSome()) {
+        return (TextDecorationType.Underline, markdownTheme.underlineColor)
     } else {
-        // 是否是删除线
-        if (nodeView.props.isSome() && nodeView.props().get("strikethrough").isSome()) {
-            return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor)
+        // 是否是链接并且样式是否设置下划线
+        if ((nodeView.link.isSome() || nodeView.node is Footnote) && markdownTheme.isLinkUnderlined) {
+            // 是否是删除线
+            if (nodeView.props.isSome() && nodeView.props().get("strikethrough").isSome()) {
+                // TODO 需要同时设置下划线和中划线
+                return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor)
+            }
+            return (TextDecorationType.Underline, markdownTheme.linkColor)
+        } else {
+            // 是否是删除线
+            if (nodeView.props.isSome() && nodeView.props().get("strikethrough").isSome()) {
+                return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor)
+            }
+            return (TextDecorationType.None, COLOR_191919)
         }
-        return (TextDecorationType.None, COLOR_191919)
     }
 }
 
