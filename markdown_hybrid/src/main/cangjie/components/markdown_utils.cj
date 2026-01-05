@@ -58,6 +58,34 @@ func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<
     return (strInfo, strText, strInfoText)
 }
 
+func headLineHeight(level: Int64, markdownConfiguration: MarkdownConfiguration): Float64 {
+    return match (level) {
+        case 1 => markdownConfiguration.markdownTheme.headingTextLineHeight1
+        case 2 => markdownConfiguration.markdownTheme.headingTextLineHeight2
+        case 3 => markdownConfiguration.markdownTheme.headingTextLineHeight3
+        case 4 => markdownConfiguration.markdownTheme.headingTextLineHeight4
+        case 5 => markdownConfiguration.markdownTheme.headingTextLineHeight5
+        case 6 => markdownConfiguration.markdownTheme.headingTextLineHeight6
+        case _ => markdownConfiguration.markdownTheme.headingTextLineHeight6
+    }
+}
+
+/**
+ * 文本内容设置
+ *
+ * @param nodeView 文本内容的NodeView（Text、Code、HeadLink）
+ * @return 返回需要显示的文本内容
+ */
+func spanBaselineOffset(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
+    if (nodeView.props.isSome() && nodeView.props().get("SubNode").isSome()) {
+        return markdownTheme.subOffsetDist
+    } else if (nodeView.props.isSome() && nodeView.props().get("SupNode").isSome()) {
+        return markdownTheme.supOffsetDist
+    } else {
+        return 0.0
+    }
+}
+
 /**
  * 文本内容设置
  *
@@ -119,7 +147,11 @@ func spanFontFamily(isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool): 
  * @return 返回需要显示的字体大小
  */
 func spanFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
-    if (nodeView.props.isSome() && nodeView.props().get("FontNode").isSome()) {
+    if (nodeView.props.isSome() && nodeView.props().get("SubNode").isSome()) {
+        return markdownTheme.subTextSize
+    } else if (nodeView.props.isSome() && nodeView.props().get("SupNode").isSome()) {
+        return markdownTheme.supTextSize
+    } else if (nodeView.props.isSome() && nodeView.props().get("FontNode").isSome()) {
         try {
             let fontNode: FontNode = (nodeView.props().get("FontNode")() as FontNode)()
             let sizeString: ?String = fontNode.getSize()
@@ -255,7 +287,11 @@ func spanFontStyle(nodeView: NodeView, isDescList: Bool): FontStyle {
  * @return 返回需要显示的字体颜色
  */
 func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isHeading: Bool): Color {
-    if (nodeView.props.isSome() && nodeView.props().get("FontNode").isSome()) {
+    if (nodeView.props.isSome() && nodeView.props().get("SubNode").isSome()) {
+        return markdownTheme.subTextColor
+    } else if (nodeView.props.isSome() && nodeView.props().get("SupNode").isSome()) {
+        return markdownTheme.supTextColor
+    } else if (nodeView.props.isSome() && nodeView.props().get("FontNode").isSome()) {
         try {
             let fontNode: FontNode = (nodeView.props().get("FontNode")() as FontNode)()
             let colorString: ?String = fontNode.getColor()
@@ -493,11 +529,11 @@ func indentedCodeTextColor(markdownTheme: MarkdownTheme, prismTheme: PrismTheme)
 }
 
 /**
- * 前缀显示文本内容
+ * 前缀显示文本行高
  *
- * @param item NodeView
  * @param isBullet 是否是无序列表
- * @return 返回前缀文本内容
+ * @param markdownConfiguration MarkdownConfiguration
+ * @return 返回前缀文本行高
  */
 func listPrefixLineHeight(isBullet: Bool, markdownConfiguration: MarkdownConfiguration): Float64 {
     if (isBullet) {
@@ -513,6 +549,7 @@ func listPrefixLineHeight(isBullet: Bool, markdownConfiguration: MarkdownConfigu
  *
  * @param item NodeView
  * @param isBullet 是否是无序列表
+ * @param markdownConfiguration MarkdownConfiguration
  * @return 返回前缀文本内容
  */
 func listPrefixStr(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration): String {

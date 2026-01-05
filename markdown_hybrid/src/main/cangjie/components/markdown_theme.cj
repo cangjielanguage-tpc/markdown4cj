@@ -928,7 +928,7 @@ public class MarkdownTheme {
     /**
      * 下标偏移距离
      */
-    protected var subOffsetDist: Float64 = 8.0
+    protected var subOffsetDist: Float64 = 0.0
 
     /**
      * 上标字体颜色
@@ -943,7 +943,7 @@ public class MarkdownTheme {
     /**
      * 上标偏移距离
      */
-    protected var supOffsetDist: Float64 = 8.0
+    protected var supOffsetDist: Float64 = 6.0
 
     /**
      * 下划线颜色
@@ -2297,7 +2297,7 @@ public class MarkdownThemeBuilder {
     /**
      * 下标偏移距离
      */
-    var subOffsetDist: Float64 = 8.0
+    var subOffsetDist: Float64 = 0.0
 
     /**
      * 上标字体颜色
@@ -2312,7 +2312,7 @@ public class MarkdownThemeBuilder {
     /**
      * 上标偏移距离
      */
-    var supOffsetDist: Float64 = 8.0
+    var supOffsetDist: Float64 = 6.0
 
     /**
      * 下划线颜色
@@ -4688,7 +4688,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置下标偏移距离
      *
-     * @param subOffsetDist 下标偏移距离 默认8.0
+     * @param subOffsetDist 下标偏移距离 默认0.0
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setSubOffsetDist(subOffsetDist: Float64): MarkdownThemeBuilder {
@@ -4721,7 +4721,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置上标偏移距离
      *
-     * @param supOffsetDist 上标偏移距离 默认8.0
+     * @param supOffsetDist 上标偏移距离 默认6.0
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setSupOffsetDist(supOffsetDist: Float64): MarkdownThemeBuilder {

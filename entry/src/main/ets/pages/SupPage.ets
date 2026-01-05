@@ -61,7 +61,7 @@ struct SupPage {
    * 上标偏移距离
    */
   @State
-  supOffsetDist: number = 8
+  supOffsetDist: number = 6
   /**
    * 配置数据内容
    */
@@ -239,9 +239,9 @@ struct SupPage {
 
 export class SupData {
   _isFull: boolean = true
-  _supTextColor: number = 8
+  _supTextColor: number = 0xFF191919
   _supTextSize: number = 8
-  _supOffsetDist: number = 1
+  _supOffsetDist: number = 6
   _pagePath: string = ""
 
   public set isFull(value: boolean) {

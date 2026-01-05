@@ -47,7 +47,7 @@ struct SupDetailsPage {
    * 上标偏移距离
    */
   @State
-  supOffsetDist: number = 8
+  supOffsetDist: number = 6
   /**
    * 增量加载延迟
    */
@@ -130,6 +130,7 @@ struct SupDetailsPage {
     plugin.setIsTaskListPlugin(true) // 任务列表插件
     plugin.setIsHtmlPlugin(true) // HTML插件
     plugin.setIsSupPlugin(true) // 上标插件
+    plugin.setIsSubPlugin(true) // 下标插件
     return plugin
   }
 }

@@ -171,7 +171,7 @@ class MarkdownTableBlockCellComponent {
             }
         } else if (item.node is Code) {
             // 内联代码
-            inLineCodeSpanComponent(item, markdownConfiguration, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold) || item.strongEmphasis, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), false, 2)
+            inLineCodeSpanComponent(item, markdownConfiguration, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold) || item.strongEmphasis, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), false, 2, 0)
         } else if (item.node is HardLineBreak) {
             // 硬换行
             Span("\n")
@@ -215,8 +215,8 @@ class MarkdownTableBlockCellComponent {
                 }
             )
         }
-        // 设置行高
-        .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .interopHalfLeading(true)
         // 自定义设置组件是否支持文本可复制粘贴
         .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
             true
@@ -247,8 +247,8 @@ class MarkdownTableBlockCellComponent {
                 }
             )
         }
-        // 设置行高
-        .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .halfLeading(true)
         // 支持设备内复制
         .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
             CopyOptions.LocalDevice

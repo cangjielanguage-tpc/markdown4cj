@@ -3148,7 +3148,7 @@ export class MarkdownTheme {
   /**
    * 设置下标偏移距离
    *
-   * @param subOffsetDist 下标偏移距离 默认8.0
+   * @param subOffsetDist 下标偏移距离 默认0.0
    */
   setSubOffsetDist(subOffsetDist: number): void {
     this.subOffsetDist = subOffsetDist
@@ -3175,7 +3175,7 @@ export class MarkdownTheme {
   /**
    * 设置上标偏移距离
    *
-   * @param supOffsetDist 上标偏移距离 默认8.0
+   * @param supOffsetDist 上标偏移距离 默认6.0
    */
   setSupOffsetDist(supOffsetDist: number): void {
     this.supOffsetDist = supOffsetDist

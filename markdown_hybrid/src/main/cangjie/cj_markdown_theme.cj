@@ -2380,7 +2380,7 @@ public class CJMarkdownTheme {
     /**
      * 设置下标偏移距离
      *
-     * @param subOffsetDist 下标偏移距离 默认8.0
+     * @param subOffsetDist 下标偏移距离 默认0.0
      */
     public func setSubOffsetDist(subOffsetDist: Float64): Unit {
         this.subOffsetDist = subOffsetDist
@@ -2407,7 +2407,7 @@ public class CJMarkdownTheme {
     /**
      * 设置上标偏移距离
      *
-     * @param supOffsetDist 上标偏移距离 默认8.0
+     * @param supOffsetDist 上标偏移距离 默认6.0
      */
     public func setSupOffsetDist(supOffsetDist: Float64): Unit {
         this.supOffsetDist = supOffsetDist

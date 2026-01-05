@@ -61,7 +61,7 @@ struct SubPage {
    * 下标偏移距离
    */
   @State
-  subOffsetDist: number = 8
+  subOffsetDist: number = 0
   /**
    * 配置数据内容
    */
@@ -239,9 +239,9 @@ struct SubPage {
 
 export class SubData {
   _isFull: boolean = true
-  _subTextColor: number = 8
+  _subTextColor: number = 0xFF191919
   _subTextSize: number = 8
-  _subOffsetDist: number = 1
+  _subOffsetDist: number = 0
   _pagePath: string = ""
 
   public set isFull(value: boolean) {

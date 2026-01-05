@@ -126,7 +126,7 @@ class MarkdownHeadingComponent {
             }
         } else if (item.node is Code) {
             // 内联代码
-            inLineCodeSpanComponent(item, markdownConfiguration, true, true, false, 0)
+            inLineCodeSpanComponent(item, markdownConfiguration, true, true, false, 0, level)
         } else if (item.node is CommonmarkLink) {
             // 链接
             linkSpanComponent(isOneLink, isListTo, level, item, markdownConfiguration, componentWidth, imageCallback, true, false, 0, markdownConfiguration.markdownTheme.isListLinkStyle)
@@ -174,8 +174,8 @@ class MarkdownHeadingComponent {
         .textAlign(TextAlign.Start)
         // 设置组件自身的宽度
         .width(100.percent)
-        // 设置行高
-        .lineHeight(tableLineHeight())
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .interopHalfLeading(true)
         // 自定义设置组件是否支持文本可复制粘贴
         .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
             true
@@ -210,8 +210,8 @@ class MarkdownHeadingComponent {
         .textAlign(TextAlign.Start)
         // 设置组件自身的宽度
         .width(100.percent)
-        // 设置行高
-        .lineHeight(tableLineHeight())
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .halfLeading(true)
         // 支持设备内复制
         .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
             CopyOptions.LocalDevice
@@ -235,18 +235,6 @@ class MarkdownHeadingComponent {
             headingTitleComponent19()
         } else {
             headingTitleComponent18()
-        }
-    }
-
-    func tableLineHeight(): Float64 {
-        return match (level) {
-            case 1 => markdownConfiguration.markdownTheme.headingTextLineHeight1
-            case 2 => markdownConfiguration.markdownTheme.headingTextLineHeight2
-            case 3 => markdownConfiguration.markdownTheme.headingTextLineHeight3
-            case 4 => markdownConfiguration.markdownTheme.headingTextLineHeight4
-            case 5 => markdownConfiguration.markdownTheme.headingTextLineHeight5
-            case 6 => markdownConfiguration.markdownTheme.headingTextLineHeight6
-            case _ => markdownConfiguration.markdownTheme.headingTextLineHeight6
         }
     }
 
