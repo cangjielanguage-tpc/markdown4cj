@@ -36,6 +36,15 @@ struct HTMLPage {
   @State
   isFull: boolean = true
   /**
+   * 下划线颜色列表
+   */
+  underlineColorList: Array<number> = [0xFF191919, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  /**
+   * 下划线颜色
+   */
+  @State
+  underlineColor: number = 0xFF191919
+  /**
    * 配置数据内容
    */
   @State
@@ -86,6 +95,39 @@ struct HTMLPage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`HTML下划线颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(numberToColorString(this.underlineColor))
+                .fontSize(16)
+                .fontColor(this.underlineColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.underlineColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.underlineColor = item
+                    this.htmlData.underlineColor = this.underlineColor
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -117,10 +159,15 @@ struct HTMLPage {
 
 export class HTMLData {
   _isFull: boolean = true
+  _underlineColor: number = 0xFF191919
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
     this._isFull = value
+  }
+
+  public set underlineColor(value: number) {
+    this._underlineColor = value
   }
 
   public set pagePath(value: string) {

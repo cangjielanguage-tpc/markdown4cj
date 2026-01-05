@@ -34,6 +34,11 @@ struct HTMLDetailsPage {
   @State
   isFull: boolean = true
   /**
+ * 下划线颜色
+ */
+  @State
+  underlineColor: number = 0xFF191919
+  /**
    * 增量加载延迟
    */
   time: number = 50
@@ -43,6 +48,7 @@ struct HTMLDetailsPage {
       let htmlData: HTMLData = router.getParams() as HTMLData
       this.fileStr = getFileContextStr(htmlData._pagePath)
       this.isFull = htmlData._isFull
+      this.underlineColor = htmlData._underlineColor
     } catch (e) {
     }
   }
@@ -98,6 +104,7 @@ struct HTMLDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
+    theme.setUnderlineColor(this.underlineColor) // 下划线颜色
     config.setMarkdownTheme(theme)
     return config
   }
