@@ -195,6 +195,14 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
+              "25、HTML",
+              0xFFFF0000,
+              "pages/HTMLPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
               "26、下标",
               0xFFFF0000,
               "pages/SubPage"

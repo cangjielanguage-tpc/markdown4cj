@@ -5,12 +5,11 @@ import { titleComponent } from './BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
-import { HeadIDData } from './HeadIDPage'
-import hilog from '@ohos.hilog'
+import { HTMLData } from './HTMLPage'
 
 @Entry
 @Component
-struct HeadIDDetailsPage {
+struct HTMLDetailsPage {
   /**
    * 滑动控制器
    */
@@ -41,9 +40,9 @@ struct HeadIDDetailsPage {
 
   aboutToAppear(): void {
     try {
-      let headIDData: HeadIDData = router.getParams() as HeadIDData
-      this.fileStr = getFileContextStr(headIDData._pagePath)
-      this.isFull = headIDData._isFull
+      let htmlData: HTMLData = router.getParams() as HTMLData
+      this.fileStr = getFileContextStr(htmlData._pagePath)
+      this.isFull = htmlData._isFull
     } catch (e) {
     }
   }
@@ -51,23 +50,22 @@ struct HeadIDDetailsPage {
   build() {
     Column() {
       titleComponent(
-        "标题ID测试用例",
+        "HTML测试用例",
         0xFF317AFF,
         true,
         this.safeTop
       )
       Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
+        .height(40)
+        .width("80%")
+        .type(ButtonType.Capsule)
+        .margin({ top: 5, bottom: 5 })
+        .fontColor(0xFFFFFFFF)
+        .backgroundColor(0xFF317AFF)
+        .align(Alignment.Center)
+        .fontSize(16)
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
               this.content = this.fileStr
             } else {
@@ -99,20 +97,14 @@ struct HeadIDDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    config.setTocIndexCallback(this.tocIndexCallback.bind(this))
+    let theme = new MarkdownTheme()
+    config.setMarkdownTheme(theme)
     return config
   }
 
   setPlugin(): MarkdownPlugin {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
-    plugin.setIsHeadIDPlugin(true)
+    plugin.setIsHtmlPlugin(true) // HTML插件
     return plugin
-  }
-
-  tocIndexCallback(y: number | undefined): void {
-    if(y !==undefined){
-      hilog.error(1, "1", `---y:${y}`)
-      this.scroller.scrollBy(0, y - (this.safeTop + 90))
-    }
   }
 }
