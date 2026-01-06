@@ -670,7 +670,7 @@ export struct CJMarkdown {
       cjMarkdownPlugin.setIsHeadIDPlugin(this.plugin.isHeadIDPlugin)
       cjMarkdownPlugin.setIsSubPlugin(this.plugin.isSubPlugin)
       cjMarkdownPlugin.setIsSupPlugin(this.plugin.isSupPlugin)
-      cjMarkdownPlugin.setIsEmojiPlugin(this.plugin.isEmojiPlugin, this.plugin.isEmojiFull)
+      cjMarkdownPlugin.setIsEmojiPlugin(this.plugin.isEmojiPlugin, this.plugin.isEmojiLight)
     }
     return cjMarkdownPlugin
   }
@@ -3304,9 +3304,9 @@ export class MarkdownPlugin {
    */
   isEmojiPlugin: boolean = false
   /**
-   * emoji解析插件是否全量加载
+   * emoji解析插件是否精简加载
    */
-  isEmojiFull: boolean = false
+  isEmojiLight: boolean = false
 
   /**
    * 设置音频插件
@@ -3492,11 +3492,11 @@ export class MarkdownPlugin {
    * 设置是否加载emoji解析插件
    *
    * @param isEmojiPlugin 是否加载上标解析插件 - true：设置加载上标解析插件件；false：不设置加载上标解析插件。默认false
-   * @param isEmojiFull 是否加载全量emoji表情 - true：加载全量emoji表情；false：不加载全量emoji表情。默认false
+   * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
    */
-  setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiFull: boolean): void {
+  setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void {
     this.isEmojiPlugin = isEmojiPlugin
-    this.isEmojiFull = isEmojiFull
+    this.isEmojiLight = isEmojiLight
   }
 }
 

@@ -34,6 +34,11 @@ struct EmojiDetailsPage {
   @State
   isFull: boolean = true
   /**
+   * emoji解析插件是否精简加载
+   */
+  @State
+  isEmojiLight: boolean = true
+  /**
    * 增量加载延迟
    */
   time: number = 50
@@ -43,6 +48,7 @@ struct EmojiDetailsPage {
       let emojiData: EmojiData = router.getParams() as EmojiData
       this.fileStr = getFileContextStr(emojiData._pagePath)
       this.isFull = emojiData._isFull
+      this.isEmojiLight = emojiData._isEmojiLight
     } catch (e) {
     }
   }
@@ -107,7 +113,7 @@ struct EmojiDetailsPage {
     plugin.setIsTablePlugin(true) // 表格插件
     plugin.setIsTaskListPlugin(true) // 任务列表插件
     plugin.setIsHtmlPlugin(true) // HTML插件
-    plugin.setIsEmojiPlugin(true, false) // emoji插件
+    plugin.setIsEmojiPlugin(true, this.isEmojiLight) // emoji插件
     return plugin
   }
 }

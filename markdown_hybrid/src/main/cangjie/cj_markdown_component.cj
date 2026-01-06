@@ -123,7 +123,7 @@ class CJMarkdownComponent {
                 markdownBuilder.usePlugin(SupPlugin.create())
             }
             if(v.isEmojiPlugin){
-                markdownBuilder.usePlugin(EmojiPlugin.create(v.isEmojiFull))
+                markdownBuilder.usePlugin(EmojiPlugin.create(v.isEmojiLight))
             }
         }
         // 唯一ID标识插件

@@ -36,6 +36,15 @@ struct EmojiPage {
   @State
   isFull: boolean = true
   /**
+   * emoji解析插件是否精简加载列表
+   */
+  isEmojiLightList: Array<boolean> = [false, true]
+  /**
+   * emoji解析插件是否精简加载
+   */
+  @State
+  isEmojiLight: boolean = true
+  /**
    * 配置数据内容
    */
   @State
@@ -86,6 +95,37 @@ struct EmojiPage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`emoji解析插件是否精简加载 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.isEmojiLight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.isEmojiLightList, (item: boolean, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.isEmojiLight = item
+                    this.emojiData.isEmojiLight = this.isEmojiLight
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -117,11 +157,17 @@ struct EmojiPage {
 
 export class EmojiData {
   _isFull: boolean = true
+  _isEmojiLight: boolean = true
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
     this._isFull = value
   }
+
+  public set isEmojiLight(value: boolean) {
+    this._isEmojiLight = value
+  }
+
   public set pagePath(value: string) {
     this._pagePath = value
   }

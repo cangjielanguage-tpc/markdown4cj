@@ -120,9 +120,9 @@ public class CJMarkdownPlugin {
     var isEmojiPlugin: Bool = false
 
     /**
-     * emoji解析插件是否全量加载
+     * emoji解析插件是否精简加载
      */
-    var isEmojiFull: Bool = false
+    var isEmojiLight: Bool = true
 
     public init() {}
 
@@ -310,10 +310,10 @@ public class CJMarkdownPlugin {
      * 设置是否加载emoji解析插件
      *
      * @param isEmojiPlugin
-     * @param isEmojiFull
+     * @param isEmojiLight
      */
-    public func setIsEmojiPlugin(isEmojiPlugin: Bool, isEmojiFull: Bool): Unit {
+    public func setIsEmojiPlugin(isEmojiPlugin: Bool, isEmojiLight: Bool): Unit {
         this.isEmojiPlugin = isEmojiPlugin
-        this.isEmojiFull = isEmojiFull
+        this.isEmojiLight = isEmojiLight
     }
 }
