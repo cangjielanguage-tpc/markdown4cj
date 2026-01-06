@@ -43,6 +43,8 @@ export declare class CJMarkdownPlugin {
   setIsSubPlugin(isSubPlugin: boolean): void
 
   setIsSupPlugin(isSupPlugin: boolean): void
+
+  setIsEmojiPlugin(isSupPlugin: boolean, isEmojiFull: boolean): void
 }
 
 export declare class CJMarkdownTheme {

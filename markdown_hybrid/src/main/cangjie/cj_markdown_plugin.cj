@@ -114,6 +114,16 @@ public class CJMarkdownPlugin {
      */
     var isSupPlugin: Bool = false
 
+    /**
+     * 是否加载emoji解析插件
+     */
+    var isEmojiPlugin: Bool = false
+
+    /**
+     * emoji解析插件是否全量加载
+     */
+    var isEmojiFull: Bool = false
+
     public init() {}
 
     /**
@@ -294,5 +304,16 @@ public class CJMarkdownPlugin {
      */
     public func setIsSupPlugin(isSupPlugin: Bool): Unit {
         this.isSupPlugin = isSupPlugin
+    }
+
+    /**
+     * 设置是否加载emoji解析插件
+     *
+     * @param isEmojiPlugin
+     * @param isEmojiFull
+     */
+    public func setIsEmojiPlugin(isEmojiPlugin: Bool, isEmojiFull: Bool): Unit {
+        this.isEmojiPlugin = isEmojiPlugin
+        this.isEmojiFull = isEmojiFull
     }
 }

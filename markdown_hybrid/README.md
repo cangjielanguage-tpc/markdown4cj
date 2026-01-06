@@ -96,9 +96,8 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 编译构建
 
-
 1. 下载安装
-   1. 通过中心仓下载安装
+   1. 通过中心仓下载安装 - 中心仓暂时下架，暂不支持
 
       ```sh
       ohpm install @cangjie-tpc/markdown_hybrid

@@ -1341,6 +1341,55 @@ export class MarkdownTheme {
    * @param descListDefMargins 定义列表定义行间距 默认8.0
    */
   setDescListDefMargins(descListDefMargins: number): void
+
+  /**
+   * 设置下标字体颜色
+   *
+   * @param subTextColor 下标字体颜色 默认0XFF191919
+   */
+  setSubTextColor(subTextColor: number): void
+
+  /**
+   * 设置下标字体大小
+   *
+   * @param subTextSize 下标字体大小 默认8.0
+   */
+  setSubTextSize(subTextSize: number): void
+
+  /**
+   * 设置下标偏移距离
+   *
+   * @param subOffsetDist 下标偏移距离 默认0.0
+   */
+  setSubOffsetDist(subOffsetDist: number): void
+
+  /**
+   * 设置上标字体颜色
+   *
+   * @param supTextColor 上标字体颜色 默认0XFF191919
+   */
+  setSupTextColor(supTextColor: number): void
+
+  /**
+   * 设置上标字体大小
+   *
+   * @param supTextSize 上标字体大小 默认8.0
+   */
+  setSupTextSize(supTextSize: number): void
+
+  /**
+   * 设置上标偏移距离
+   *
+   * @param supOffsetDist 上标偏移距离 默认6.0
+   */
+  setSupOffsetDist(supOffsetDist: number): void
+
+  /**
+   * 设置下划线颜色
+   *
+   * @param underlineColor 下划线颜色 默认0XFF191919
+   */
+  setUnderlineColor(underlineColor: number): void
 }
 ```
 
@@ -1522,6 +1571,28 @@ export class MarkdownPlugin {
    * @param isHeadIDPlugin 是否加载标题ID解析插件 - true：设置加载标题ID解析插件；false：不设置加载标题ID解析插件。默认false
    */
   setIsHeadIDPlugin(isHeadIDPlugin: boolean): void
+
+  /**
+   * 设置是否加载下标解析插件
+   *
+   * @param isSubPlugin 是否加载下标解析插件 - true：设置加载下标解析插件；false：不设置加载下标解析插件。默认false
+   */
+  setIsSubPlugin(isSubPlugin: boolean): void
+
+  /**
+   * 设置是否加载上标解析插件
+   *
+   * @param isSupPlugin 是否加载上标解析插件 - true：设置加载上标解析插件；false：不设置加载上标解析插件。默认false
+   */
+  setIsSupPlugin(isSupPlugin: boolean): void
+
+  /**
+   * 设置是否加载emoji解析插件
+   *
+   * @param isEmojiPlugin 是否加载上标解析插件 - true：设置加载上标解析插件件；false：不设置加载上标解析插件。默认false
+   * @param isEmojiFull 是否加载全量emoji表情 - true：加载全量emoji表情；false：不加载全量emoji表情。默认false
+   */
+  setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiFull: boolean): void
 }
 ```
 
