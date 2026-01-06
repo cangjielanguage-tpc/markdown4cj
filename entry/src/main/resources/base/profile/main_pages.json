@@ -47,6 +47,8 @@
     "pages/SubDetailsPage",
     "pages/SupPage",
     "pages/SupDetailsPage",
+    "pages/EmojiPage",
+    "pages/EmojiDetailsPage",
     "pages/AllPage",
     "pages/AllDetailsPage"
   ]

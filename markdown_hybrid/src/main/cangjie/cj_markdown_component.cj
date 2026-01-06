@@ -14,6 +14,7 @@ import markdown.components.*
 import markdown.core.*
 import markdown.plugin.*
 import markdown.texttoimg4cj.*
+import markdown.plugin.emoji.*
 
 @Component
 class CJMarkdownComponent {
@@ -120,6 +121,9 @@ class CJMarkdownComponent {
             }
             if(v.isSupPlugin){
                 markdownBuilder.usePlugin(SupPlugin.create())
+            }
+            if(v.isEmojiPlugin){
+                markdownBuilder.usePlugin(EmojiPlugin.create(v.isEmojiFull))
             }
         }
         // 唯一ID标识插件

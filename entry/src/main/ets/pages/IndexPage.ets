@@ -219,6 +219,14 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
+              "28、Emoji",
+              0xFFFF0000,
+              "pages/EmojiPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
               "29、综合",
               0xFFFF0000,
               "pages/AllPage"
