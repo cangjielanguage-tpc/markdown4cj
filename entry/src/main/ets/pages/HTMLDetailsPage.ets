@@ -105,6 +105,8 @@ struct HTMLDetailsPage {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
     theme.setUnderlineColor(this.underlineColor) // 下划线颜色
+    theme.setCodeFullScreenIcon($r('app.media.startIcon'))
+    theme.setCodeCopyIcon($r('app.media.startIcon'))
     config.setMarkdownTheme(theme)
     return config
   }
@@ -112,6 +114,7 @@ struct HTMLDetailsPage {
   setPlugin(): MarkdownPlugin {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
     plugin.setIsHtmlPlugin(true) // HTML插件
+    plugin.setIsTablePlugin(true) // 表格插件
     return plugin
   }
 }

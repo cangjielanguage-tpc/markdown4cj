@@ -3303,7 +3303,6 @@ export class MarkdownPlugin {
    * 是否加载emoji解析插件
    */
   isEmojiPlugin: boolean = false
-
   /**
    * emoji解析插件是否全量加载
    */

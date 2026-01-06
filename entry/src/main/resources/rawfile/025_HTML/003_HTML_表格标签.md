@@ -1,0 +1,43 @@
+### HTML表格
+
+<table>
+    <thead>
+        <tr>
+            <th>学号</th>
+            <th>姓名</th>
+            <th>科目</th>
+            <th>成绩</th>
+            <th>等级</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>001</td>
+            <td>张三</td>
+            <td>数学</td>
+            <td>95</td>
+            <td>A</td>
+        </tr>
+        <tr>
+            <td>001</td>
+            <td>张三</td>
+            <td>语文</td>
+            <td>88</td>
+            <td>B</td>
+        </tr>
+        <tr>
+            <td>002</td>
+            <td>李四</td>
+            <td>数学</td>
+            <td>79</td>
+            <td>C</td>
+        </tr>
+        <tr>
+            <td>002</td>
+            <td>李四</td>
+            <td>语文</td>
+            <td>92</td>
+            <td>A</td>
+        </tr>
+    </tbody>
+</table>
