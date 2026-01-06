@@ -42,6 +42,9 @@ public class PrismSyntaxHighlight {
         if (code.isEmpty() || info.isNone()) {
             return highlightNoLanguageInfo(code)
         }
+        if (info.getOrThrow().isEmpty()) {
+            return highlightNoLanguageInfo(code)
+        }
         return highlightWithLanguageInfo(this.prism, this.theme, info.getOrThrow(), code)
     }
 
@@ -152,7 +155,7 @@ class PrismNodeParse {
 
     static func textToArrayList(prism: Prism, colorMap: HashMap<PrismColor, Color>, info: ?String, literal: String): ArrayList<PrismNodesParseResUI> {
         if (let None <- info) {
-            return ArrayList<PrismNodesParseResUI>([PrismNodesParseResUI(types: "", alias: literal, text: Option<String>.None, color: Option<Color>.None)])
+            return ArrayList<PrismNodesParseResUI>([PrismNodesParseResUI(types: "", text: literal, alias: Option<String>.None, color: Option<Color>.None)])
         }
         let realInfo: String = info.getOrThrow().toAsciiLower()
         var grammar: ?PrismGrammar = None
@@ -160,7 +163,7 @@ class PrismNodeParse {
         var list: ArrayList<PrismNode> = try {
             prism.tokenize(literal, grammar.getOrThrow())
         } catch (e: NoneValueException) {
-            return ArrayList<PrismNodesParseResUI>([PrismNodesParseResUI(types: "", alias: literal, text: Option<String>.None, color: Option<Color>.None)])
+            return ArrayList<PrismNodesParseResUI>([PrismNodesParseResUI(types: "", text: literal, alias: Option<String>.None, color: Option<Color>.None)])
         }
         let listPrismNodesParseRes: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
         for (i in 0..list.size) {
@@ -183,7 +186,7 @@ class PrismNodeParse {
             if (color.isNone() && alias.isSome()) {
                 color = map.get(PrismColor.fromString(alias.getOrThrow().toAsciiLower()))
             }
-            let obj = PrismNodesParseResUI(types: types, alias: alias, text: text, color: color)
+            let obj = PrismNodesParseResUI(types: types, text: text, alias: alias, color: color)
             objList.add(obj)
         }
     }
