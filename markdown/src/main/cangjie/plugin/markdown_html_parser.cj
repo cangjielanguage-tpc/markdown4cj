@@ -273,7 +273,11 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
         }
 
         if (context.inPre) {
-            return TextTag(character.getData())
+            var str = character.getData()
+            if (str.startsWith("\n")) {
+                str = str[1..]
+            }
+            return TextTag(str)
         }
 
         // 去掉前后换行 中间的换行符替换为软换行(空格) TODO:pre标签
