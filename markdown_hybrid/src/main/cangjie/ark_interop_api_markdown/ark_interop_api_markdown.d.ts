@@ -48,6 +48,8 @@ export declare class CJMarkdownPlugin {
 }
 
 export declare class CJMarkdownTheme {
+  setIsMarkdownParserSync(isMarkdownParserSync: boolean): void
+
   setIsOnCopy(isOnCopy: boolean): void
 
   setBlockFirstTopMargin(blockFirstTopMargin: number): void

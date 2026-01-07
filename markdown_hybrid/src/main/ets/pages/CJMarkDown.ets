@@ -119,6 +119,9 @@ export struct CJMarkdown {
           this.config.markdownTheme.bannerImage,
           this.config.markdownTheme.imageResource
         )
+        if (this.config.markdownTheme.isMarkdownParserSync !== undefined) {
+          cjMarkdownTheme.setIsMarkdownParserSync(this.config.markdownTheme.isMarkdownParserSync)
+        }
         if (this.config.markdownTheme.isOnCopy !== undefined) {
           cjMarkdownTheme.setIsOnCopy(this.config.markdownTheme.isOnCopy)
         }
@@ -896,6 +899,10 @@ export class MarkdownTheme {
    */
   imageResource?: Resource = undefined
   /**
+   * markdown是否同步解析
+   */
+  isMarkdownParserSync?: boolean = undefined
+  /**
    * 是否打开长按复制粘贴
    */
   isOnCopy?: boolean = undefined
@@ -1650,6 +1657,15 @@ export class MarkdownTheme {
    */
   setImageResource(imageResource: Resource): void {
     this.imageResource = imageResource
+  }
+
+  /**
+   * 设置markdown是否同步解析
+   *
+   * @param isMarkdownParserSync markdown是否同步解析 - 默认false
+   */
+  setIsMarkdownParserSync(isMarkdownParserSync: boolean): void {
+    this.isMarkdownParserSync = isMarkdownParserSync
   }
 
   /**

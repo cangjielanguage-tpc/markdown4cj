@@ -206,6 +206,9 @@ class CJMarkdownComponent {
             markdownThemeBuilder.setImageResource(v) // 设置图片默认占位图
         }
         if(let Some(w) <- cfg){
+            if (let Some(v) <- w.cjMarkdownTheme.isMarkdownParserSync) {
+                markdownThemeBuilder.setIsMarkdownParserSync(v) // 设置markdown是否同步解析
+            }
             if (let Some(v) <- w.cjMarkdownTheme.isOnCopy) {
                 markdownThemeBuilder.setIsOnCopy(v) // 设置是否打开长按复制粘贴
             }

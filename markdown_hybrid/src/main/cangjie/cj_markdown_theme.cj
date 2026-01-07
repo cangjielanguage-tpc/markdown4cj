@@ -18,6 +18,11 @@ import ohos.resource_manager.AppResource
 @Interop[ArkTS]
 public class CJMarkdownTheme {
     /**
+     * markdown是否同步解析
+     */
+     var isMarkdownParserSync: ?Bool = None
+
+    /**
      * 是否打开长按复制粘贴
      */
     var isOnCopy: ?Bool = None
@@ -873,6 +878,15 @@ public class CJMarkdownTheme {
     var underlineColor: ?Color = None
 
     public init() {}
+
+    /**
+     * 设置markdown是否同步解析
+     *
+     * @param isMarkdownParserSync markdown是否同步解析 - 默认false
+     */
+    public func setIsMarkdownParserSync(isMarkdownParserSync: Bool): Unit {
+        this.isMarkdownParserSync = isMarkdownParserSync
+    }
 
     /**
      * 设置是否打开长按复制粘贴

@@ -56,6 +56,11 @@ public class MarkdownTheme {
     protected var abilityContext: ?AbilityContext = None
 
     /**
+     * markdown是否同步解析
+     */
+    protected var isMarkdownParserSync: Bool = false
+
+    /**
      * 是否打开长按复制粘贴
      */
     protected var isOnCopy: Bool = true
@@ -955,6 +960,7 @@ public class MarkdownTheme {
         this.stageContext = builder.stageContext
         this.abilityContext = builder.abilityContext
 
+        this.isMarkdownParserSync = builder.isMarkdownParserSync
         this.isOnCopy = builder.isOnCopy
 
         // 2、模块间距
@@ -1423,6 +1429,11 @@ public class MarkdownThemeBuilder {
      * markdown上下文 - 仓颉
      */
     var abilityContext: ?AbilityContext = None
+
+    /**
+     * markdown是否同步解析
+     */
+     var isMarkdownParserSync: Bool = false
 
     /**
      * 是否打开长按复制粘贴
@@ -2327,6 +2338,7 @@ public class MarkdownThemeBuilder {
         this.stageContext = theme.stageContext
         this.abilityContext = theme.abilityContext
 
+        this.isMarkdownParserSync = theme.isMarkdownParserSync
         this.isOnCopy = theme.isOnCopy
 
         // 2、模块间距
@@ -2768,6 +2780,17 @@ public class MarkdownThemeBuilder {
      */
     public func setAbilityContext(abilityContext: AbilityContext): MarkdownThemeBuilder {
         this.abilityContext = abilityContext
+        return this
+    }
+
+    /**
+     * 设置markdown是否同步解析
+     *
+     * @param isMarkdownParserSync markdown是否同步解析 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsMarkdownParserSync(isMarkdownParserSync: Bool): MarkdownThemeBuilder {
+        this.isMarkdownParserSync = isMarkdownParserSync
         return this
     }
 

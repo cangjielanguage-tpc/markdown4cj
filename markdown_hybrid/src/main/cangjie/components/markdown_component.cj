@@ -429,21 +429,75 @@ public class MarkdownComponent {
      * 刷新数据
      */
     func refreshData(): Unit {
-        // 上一步解析完成才继续解析
-        if (isRefreshData.load()) {
-            spawn {
-                // 异步解析，加锁
-                synchronized(parseReentrantMutex) {
-                    isRefreshData.store(false)
-                    stringToNodes()
-                    isRefreshData.store(true)
+        if (markdownConfiguration.markdownTheme.isMarkdownParserSync) {
+            stringToNodesSync()
+        } else {
+            // 上一步解析完成才继续解析
+            if (isRefreshData.load()) {
+                spawn {
+                    // 异步解析，加锁
+                    synchronized(parseReentrantMutex) {
+                        isRefreshData.store(false)
+                        stringToNodes()
+                        isRefreshData.store(true)
+                    }
                 }
             }
         }
     }
 
     /**
-     * 将String转换成ArrayList<NodeView>，将解析的列表添加到懒加载的数据源中
+     * 将String转换成ArrayList<NodeView>，将解析的列表添加到懒加载的数据源中 - 同步
+     */
+    func stringToNodesSync(): Unit {
+        try {
+            incBase().input = output
+            incBase().parse()
+            let doc = incBase().docView
+            if (let Some(v) <- markdownConfiguration.nodeString) {
+                v(NodeViewStringBuilder(doc))
+            }
+            let refreshNodeViews: ArrayList<NodeView> = doc.children
+            let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
+            let dataSourceSize: Int64 = nodeViewDataSource.totalCount() // 页面缓存的数据长度
+            imageAndVideoList.clear()
+            imageAndVideoList.add(all: getProp<ArrayList<String>>(doc, "links", ArrayList<String>()))
+            if (refreshNodeViewSize == 0) {
+                return
+            }
+            if (refreshNodeViewSize > dataSourceSize) {
+                // 新数据大于页面数据
+                // 循环判断历史数据有没有做过修改
+                for (i in 0..dataSourceSize) {
+                    updateNodeViewData(i, refreshNodeViews[i], refreshNodeViewSize > dataSourceSize)
+                }
+                // 循环添加新数据
+                for (i in dataSourceSize..refreshNodeViewSize) {
+                    nodeViewDataSource.addData(refreshNodeViews[i])
+                }
+            } else if (refreshNodeViewSize == dataSourceSize) {
+                // 新数据等于页面数据
+                for (i in 0..dataSourceSize) {
+                    updateNodeViewData(i, refreshNodeViews[i], refreshNodeViewSize == dataSourceSize)
+                }
+            } else {
+                // 新数据小于页面数据
+                // 循环判断历史数据有没有做过修改
+                for (i in 0..refreshNodeViewSize) {
+                    updateNodeViewData(i, refreshNodeViews[i], refreshNodeViewSize < dataSourceSize)
+                }
+                // 循环删除多余的旧数据
+                for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
+                    nodeViewDataSource.deleteData(i)
+                }
+            }
+            lastViewIndex = nodeViewDataSource.totalCount() - 1 // 页面缓存的数据长度
+        } catch (e: Exception) {
+        }
+    }
+
+    /**
+     * 将String转换成ArrayList<NodeView>，将解析的列表添加到懒加载的数据源中 - 异步
      */
     func stringToNodes(): Unit {
         try {
