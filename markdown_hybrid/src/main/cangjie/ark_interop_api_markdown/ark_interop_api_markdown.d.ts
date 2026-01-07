@@ -172,6 +172,8 @@ export declare class CJMarkdownTheme {
 
   setCodeHeight(codeHeight: number): void
 
+  setIsCodeBlockParserSync(isCodeBlockParserSync: boolean): void
+
   setCodeBlockTextColor(codeBlockTextColor: number): void
 
   setCodeBlockTypeTextColor(codeBlockTypeTextColor: number): void

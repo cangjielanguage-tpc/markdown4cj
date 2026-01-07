@@ -366,6 +366,11 @@ public class MarkdownTheme {
     protected var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
+     * 围栏代码块代码高亮是否同步解析
+     */
+    protected var isCodeBlockParserSync: Bool = false
+
+    /**
      * 缩进/围栏/组合/单独代码块代码文本颜色
      */
     protected var codeBlockTextColor: ?Color = None
@@ -1041,6 +1046,7 @@ public class MarkdownTheme {
         this.codeLeftAndRightPadding = builder.codeLeftAndRightPadding
         this.codeHeight = builder.codeHeight
         // 5.2、代码块
+        this.isCodeBlockParserSync = builder.isCodeBlockParserSync
         this.codeBlockTextColor = builder.codeBlockTextColor
         this.codeBlockTypeTextColor = builder.codeBlockTypeTextColor
         this.codeBlockTypeTextStr = builder.codeBlockTypeTextStr
@@ -1741,6 +1747,11 @@ public class MarkdownThemeBuilder {
     var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
+     * 围栏代码块代码高亮是否同步解析
+     */
+    var isCodeBlockParserSync: Bool = false
+
+    /**
      * 缩进/围栏/组合/单独代码块代码文本颜色
      */
     var codeBlockTextColor: ?Color = None
@@ -2419,6 +2430,7 @@ public class MarkdownThemeBuilder {
         this.codeLeftAndRightPadding = theme.codeLeftAndRightPadding
         this.codeHeight = theme.codeHeight
         // 5.2、代码块
+        this.isCodeBlockParserSync = theme.isCodeBlockParserSync
         this.codeBlockTextColor = theme.codeBlockTextColor
         this.codeBlockTypeTextColor = theme.codeBlockTypeTextColor
         this.codeBlockTypeTextStr = theme.codeBlockTypeTextStr
@@ -3462,6 +3474,17 @@ public class MarkdownThemeBuilder {
      */
     public func setCodeHeight(codeHeight: Float64): MarkdownThemeBuilder {
         this.codeHeight = vp2px(codeHeight.vp)().value
+        return this
+    }
+
+    /**
+     * 设置围栏代码块代码高亮是否同步解析
+     *
+     * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsCodeBlockParserSync(isCodeBlockParserSync: Bool): MarkdownThemeBuilder {
+        this.isCodeBlockParserSync = isCodeBlockParserSync
         return this
     }
 

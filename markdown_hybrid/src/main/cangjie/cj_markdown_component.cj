@@ -392,6 +392,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.codeHeight) {
                 markdownThemeBuilder.setCodeHeight(v) // 设置图片格式内联代码文本高度
             }
+            if (let Some(v) <- w.cjMarkdownTheme.isCodeBlockParserSync) {
+                markdownThemeBuilder.setIsCodeBlockParserSync(v) // 设置缩进/围栏/组合/单独代码块代码是否同步解析
+            }
             if (let Some(v) <- w.cjMarkdownTheme.codeBlockTextColor) {
                 markdownThemeBuilder.setCodeBlockTextColor(v) // 设置代码块代码文本颜色
             }

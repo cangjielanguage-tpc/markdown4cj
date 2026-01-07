@@ -305,6 +305,9 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.codeHeight !== undefined) {
           cjMarkdownTheme.setCodeHeight(this.config.markdownTheme.codeHeight)
         }
+        if (this.config.markdownTheme.isCodeBlockParserSync !== undefined) {
+          cjMarkdownTheme.setIsCodeBlockParserSync(this.config.markdownTheme.isCodeBlockParserSync)
+        }
         if (this.config.markdownTheme.codeBlockTextColor !== undefined) {
           cjMarkdownTheme.setCodeBlockTextColor(this.config.markdownTheme.codeBlockTextColor)
         }
@@ -1146,6 +1149,10 @@ export class MarkdownTheme {
    * 图片格式内联代码文本高度
    */
   codeHeight?: number = undefined
+  /**
+   * 围栏代码块代码高亮是否同步解析
+  */
+  isCodeBlockParserSync?: boolean = undefined
   /**
    * 代码块代码文本颜色
    */
@@ -2215,6 +2222,15 @@ export class MarkdownTheme {
    */
   setCodeHeight(codeHeight: number): void {
     this.codeHeight = codeHeight
+  }
+
+  /**
+   * 设置围栏代码块代码高亮是否同步解析
+   *
+   * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
+   */
+  setIsCodeBlockParserSync(isCodeBlockParserSync: boolean): void {
+    this.isCodeBlockParserSync = isCodeBlockParserSync
   }
 
   /**

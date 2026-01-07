@@ -328,6 +328,11 @@ public class CJMarkdownTheme {
     var codeHeight: ?Float64 = None
 
     /**
+     * 围栏代码块代码高亮是否同步解析
+     */
+    var isCodeBlockParserSync: ?Bool = None
+
+    /**
      * 代码块代码文本颜色
      */
     var codeBlockTextColor: ?Color = None
@@ -1435,6 +1440,15 @@ public class CJMarkdownTheme {
      */
     public func setCodeHeight(codeHeight: Float64): Unit {
         this.codeHeight = codeHeight
+    }
+
+    /**
+     * 设置围栏代码块代码高亮是否同步解析
+     *
+     * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
+     */
+    public func setIsCodeBlockParserSync(isCodeBlockParserSync: Bool): Unit {
+        this.isCodeBlockParserSync = isCodeBlockParserSync
     }
 
     /**
