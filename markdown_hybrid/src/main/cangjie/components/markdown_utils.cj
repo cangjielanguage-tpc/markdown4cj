@@ -907,8 +907,12 @@ func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicS
                     case _ => ()
                 }
             } else if (style.size > 15 && style[..15] == ":border-radius=") {
-                let value = style[15..style.size - 2]
-                picStyleObj.borderRadius = Int64.parse(value).px
+                let value = style[15..]
+                if (value[value.size - 2..] == "px") {
+                    picStyleObj.borderRadius = Int64.parse(value[..value.size - 2]).px
+                } else {
+                    picStyleObj.borderRadius = Int64.parse(value).vp
+                }
             } else if (style[..7] == ":style=") {
                 for (s in style[7..].split(";")) {
                     picStyle.add(":${s.replace(":", "=")}")
