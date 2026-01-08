@@ -41,7 +41,7 @@ public class Options {
         this.enabled = enabled
         this.regex = regex
     }
-    public func setLight(light: Bool) {
+    public func setLight(light: Bool): Unit {
         if (light) {
             defs = EMOJI_DATA_LIGHT
         } else {
