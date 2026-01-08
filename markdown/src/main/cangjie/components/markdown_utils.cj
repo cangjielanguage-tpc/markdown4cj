@@ -907,8 +907,12 @@ func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicS
                     case _ => ()
                 }
             } else if (style.size > 15 && style[..15] == ":border-radius=") {
-                let value = style[15..style.size - 2]
-                picStyleObj.borderRadius = Int64.parse(value).px
+                let value = style[15..]
+                if (value[value.size - 2..] == "px") {
+                    picStyleObj.borderRadius = Int64.parse(value[..value.size - 2]).px
+                } else {
+                    picStyleObj.borderRadius = Int64.parse(value).vp
+                }
             } else if (style[..7] == ":style=") {
                 for (s in style[7..].split(";")) {
                     picStyle.add(":${s.replace(":", "=")}")
@@ -1592,23 +1596,27 @@ func imageSpanHtmlComplete(imageLoadResultHeight: Float64, imageLoadResultWidth:
     var height: Float64 = 0.0
     let heightNew = widthNew * aspectRatio
     if (imageWidth.isSome() && imageHeight.isSome()) {
-        let aspectRatioNew: Float64 = imageHeight() / imageWidth()
-        width = if (componentImageWidth > imageWidth()) {
-            imageWidth()
+        let imageWidthPX = vp2px(imageWidth().vp)().value
+        let imageHeightPX = vp2px(imageHeight().vp)().value
+        let aspectRatioNew: Float64 = imageHeightPX / imageWidthPX
+        width = if (componentImageWidth > imageWidthPX) {
+            imageWidthPX
         } else {
             componentImageWidth
         }
         height = width * aspectRatioNew
     } else if (imageWidth.isSome() && !imageHeight.isSome()) {
-        width = if (componentImageWidth > imageWidth()) {
-            imageWidth()
+        let imageWidthPX = vp2px(imageWidth().vp)().value
+        width = if (componentImageWidth > imageWidthPX) {
+            imageWidthPX
         } else {
             componentImageWidth
         }
         height = width * aspectRatio
     } else if (!imageWidth.isSome() && imageHeight.isSome()) {
-        width = if (componentImageWidth > imageHeight() / aspectRatio) {
-            imageHeight() / aspectRatio
+        let imageHeightPX = vp2px(imageHeight().vp)().value
+        width = if (componentImageWidth > imageHeightPX / aspectRatio) {
+            imageHeightPX / aspectRatio
         } else {
             componentImageWidth
         }
