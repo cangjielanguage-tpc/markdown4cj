@@ -1592,23 +1592,27 @@ func imageSpanHtmlComplete(imageLoadResultHeight: Float64, imageLoadResultWidth:
     var height: Float64 = 0.0
     let heightNew = widthNew * aspectRatio
     if (imageWidth.isSome() && imageHeight.isSome()) {
-        let aspectRatioNew: Float64 = imageHeight() / imageWidth()
-        width = if (componentImageWidth > imageWidth()) {
-            imageWidth()
+        let imageWidthPX = vp2px(imageWidth().vp)().value
+        let imageHeightPX = vp2px(imageHeight().vp)().value
+        let aspectRatioNew: Float64 = imageHeightPX / imageWidthPX
+        width = if (componentImageWidth > imageWidthPX) {
+            imageWidthPX
         } else {
             componentImageWidth
         }
         height = width * aspectRatioNew
     } else if (imageWidth.isSome() && !imageHeight.isSome()) {
-        width = if (componentImageWidth > imageWidth()) {
-            imageWidth()
+        let imageWidthPX = vp2px(imageWidth().vp)().value
+        width = if (componentImageWidth > imageWidthPX) {
+            imageWidthPX
         } else {
             componentImageWidth
         }
         height = width * aspectRatio
     } else if (!imageWidth.isSome() && imageHeight.isSome()) {
-        width = if (componentImageWidth > imageHeight() / aspectRatio) {
-            imageHeight() / aspectRatio
+        let imageHeightPX = vp2px(imageHeight().vp)().value
+        width = if (componentImageWidth > imageHeightPX / aspectRatio) {
+            imageHeightPX / aspectRatio
         } else {
             componentImageWidth
         }
