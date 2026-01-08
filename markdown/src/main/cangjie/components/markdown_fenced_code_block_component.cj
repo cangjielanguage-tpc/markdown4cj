@@ -282,7 +282,59 @@ class MarkdownFencedCodeBlockComponent {
         this.isCodeNone = this.codeText.trimAscii().size > 0
         this.info = info
         this.nodeHash = nodeHash
-        stringCodeToResList(this.codeText)
+        if (markdownConfiguration.markdownTheme.isCodeBlockParserSync) {
+            stringCodeToResListSync(this.codeText)
+        } else {
+            stringCodeToResList(this.codeText)
+        }
+    }
+
+    /**
+     * 代码数据高亮解析
+     */
+    func stringCodeToResListSync(code: String) {
+        let codeText = if (markdownConfiguration.markdownTheme.isCodeFormat) {
+            codeFormat(info, code, FormatConfig())
+        } else {
+            code
+        }
+        let lines = codeText.lines().count()
+        refreshLines(lines)
+        var prismNodesParseResUIList: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
+        try {
+            prismNodesParseResUIList = psh().highlight(info, codeText.trimEnd("\n"))
+        } catch (e: Exception) {
+            let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None)
+            prismNodesParseResUIList.add(prismNodesParseResUI)
+        }
+        let newSize = prismNodesParseResUIList.size
+        let oldSize = arrayList.size
+        if (newSize == oldSize) {
+            for (i in 0..oldSize) {
+                if (arrayList[i].getText() != prismNodesParseResUIList[i].getText()) {
+                    arrayList[i] = prismNodesParseResUIList[i]
+                }
+            }
+        } else if (newSize > oldSize) {
+            for (i in 0..oldSize) {
+                if (arrayList[i].getText() != prismNodesParseResUIList[i].getText()) {
+                    arrayList[i] = prismNodesParseResUIList[i]
+                }
+            }
+            for (i in oldSize..newSize) {
+                arrayList.append(prismNodesParseResUIList[i])
+            }
+        } else {
+            for (i in 0..newSize) {
+                if (arrayList[i].getText() != prismNodesParseResUIList[i].getText()) {
+                    arrayList[i] = prismNodesParseResUIList[i]
+                }
+            }
+            // 循环删除多余的旧数据
+            for (i in oldSize - 1..=newSize : -1) {
+                arrayList.remove(i)
+            }
+        }
     }
 
     /**

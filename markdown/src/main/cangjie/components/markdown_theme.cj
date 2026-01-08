@@ -56,6 +56,11 @@ public class MarkdownTheme {
     protected var abilityContext: ?AbilityContext = None
 
     /**
+     * markdown是否同步解析
+     */
+    protected var isMarkdownParserSync: Bool = false
+
+    /**
      * 是否打开长按复制粘贴
      */
     protected var isOnCopy: Bool = true
@@ -359,6 +364,11 @@ public class MarkdownTheme {
      * 图片格式内联代码文本高度
      */
     protected var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
+
+    /**
+     * 围栏代码块代码高亮是否同步解析
+     */
+    protected var isCodeBlockParserSync: Bool = false
 
     /**
      * 缩进/围栏/组合/单独代码块代码文本颜色
@@ -955,6 +965,7 @@ public class MarkdownTheme {
         this.stageContext = builder.stageContext
         this.abilityContext = builder.abilityContext
 
+        this.isMarkdownParserSync = builder.isMarkdownParserSync
         this.isOnCopy = builder.isOnCopy
 
         // 2、模块间距
@@ -1035,6 +1046,7 @@ public class MarkdownTheme {
         this.codeLeftAndRightPadding = builder.codeLeftAndRightPadding
         this.codeHeight = builder.codeHeight
         // 5.2、代码块
+        this.isCodeBlockParserSync = builder.isCodeBlockParserSync
         this.codeBlockTextColor = builder.codeBlockTextColor
         this.codeBlockTypeTextColor = builder.codeBlockTypeTextColor
         this.codeBlockTypeTextStr = builder.codeBlockTypeTextStr
@@ -1425,6 +1437,11 @@ public class MarkdownThemeBuilder {
     var abilityContext: ?AbilityContext = None
 
     /**
+     * markdown是否同步解析
+     */
+     var isMarkdownParserSync: Bool = false
+
+    /**
      * 是否打开长按复制粘贴
      */
     var isOnCopy: Bool = true
@@ -1728,6 +1745,11 @@ public class MarkdownThemeBuilder {
      * 图片格式内联代码文本高度
      */
     var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
+
+    /**
+     * 围栏代码块代码高亮是否同步解析
+     */
+    var isCodeBlockParserSync: Bool = false
 
     /**
      * 缩进/围栏/组合/单独代码块代码文本颜色
@@ -2327,6 +2349,7 @@ public class MarkdownThemeBuilder {
         this.stageContext = theme.stageContext
         this.abilityContext = theme.abilityContext
 
+        this.isMarkdownParserSync = theme.isMarkdownParserSync
         this.isOnCopy = theme.isOnCopy
 
         // 2、模块间距
@@ -2407,6 +2430,7 @@ public class MarkdownThemeBuilder {
         this.codeLeftAndRightPadding = theme.codeLeftAndRightPadding
         this.codeHeight = theme.codeHeight
         // 5.2、代码块
+        this.isCodeBlockParserSync = theme.isCodeBlockParserSync
         this.codeBlockTextColor = theme.codeBlockTextColor
         this.codeBlockTypeTextColor = theme.codeBlockTypeTextColor
         this.codeBlockTypeTextStr = theme.codeBlockTypeTextStr
@@ -2768,6 +2792,17 @@ public class MarkdownThemeBuilder {
      */
     public func setAbilityContext(abilityContext: AbilityContext): MarkdownThemeBuilder {
         this.abilityContext = abilityContext
+        return this
+    }
+
+    /**
+     * 设置markdown是否同步解析
+     *
+     * @param isMarkdownParserSync markdown是否同步解析 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsMarkdownParserSync(isMarkdownParserSync: Bool): MarkdownThemeBuilder {
+        this.isMarkdownParserSync = isMarkdownParserSync
         return this
     }
 
@@ -3439,6 +3474,17 @@ public class MarkdownThemeBuilder {
      */
     public func setCodeHeight(codeHeight: Float64): MarkdownThemeBuilder {
         this.codeHeight = vp2px(codeHeight.vp)().value
+        return this
+    }
+
+    /**
+     * 设置围栏代码块代码高亮是否同步解析
+     *
+     * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsCodeBlockParserSync(isCodeBlockParserSync: Bool): MarkdownThemeBuilder {
+        this.isCodeBlockParserSync = isCodeBlockParserSync
         return this
     }
 

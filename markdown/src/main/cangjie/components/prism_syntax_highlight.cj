@@ -49,8 +49,7 @@ public class PrismSyntaxHighlight {
     }
 
     func highlightNoLanguageInfo(code: String): ArrayList<PrismNodesParseResUI> {
-        return ArrayList<PrismNodesParseResUI>(
-            [PrismNodesParseResUI(types: "", text: code, alias: Option<String>.None, color: Option<Color>.None)])
+        return ArrayList<PrismNodesParseResUI>([PrismNodesParseResUI(types: "", text: code, alias: Option<String>.None, color: Option<Color>.None)])
     }
 
     func highlightWithLanguageInfo(prism: Prism, theme: PrismTheme, info: String, code: String): ArrayList<PrismNodesParseResUI> {
