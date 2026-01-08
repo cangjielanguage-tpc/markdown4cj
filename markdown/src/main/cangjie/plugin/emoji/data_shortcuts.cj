@@ -10,9 +10,9 @@ package markdown.plugin.emoji
 //
 // Places to look for more emoticons info:
 //
-// - http://en.wikipedia.org/wiki/List_of_emoticons#Western
-// - https://github.com/wooorm/emoticon/blob/master/Support.md
-// - http://factoryjoe.com/projects/emoticons/
+// - /en/wikipedia/org/wiki/List_of_emoticons#Western
+// - /github/com/wooorm/emoticon/blob/master/Support.md
+// - /factoryjoe/com/projects/emoticons/
 //
 
 /* eslint-disable key-spacing */
