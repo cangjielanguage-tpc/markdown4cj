@@ -202,6 +202,13 @@ export class MarkdownTheme {
   setImageResource(imageResource: Resource): void
 
   /**
+   * 设置markdown是否同步解析
+   *
+   * @param isMarkdownParserSync markdown是否同步解析 - 默认false
+   */
+  setIsMarkdownParserSync(isMarkdownParserSync: boolean): void
+
+  /**
    * 设置是否打开长按复制粘贴
    *
    * @param isOnCopy 是否打开长按复制粘贴 - 默认true
@@ -620,6 +627,13 @@ export class MarkdownTheme {
    * @param codeHeight 图片格式内联代码文本高度 - 默认20.0vp
    */
   setCodeHeight(codeHeight: number): void
+
+  /**
+   * 设置围栏代码块代码高亮是否同步解析
+   *
+   * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
+   */
+  setIsCodeBlockParserSync(isCodeBlockParserSync: boolean): void
 
   /**
    * 设置代码块代码文本颜色
@@ -1590,7 +1604,7 @@ export class MarkdownPlugin {
    * 设置是否加载emoji解析插件
    *
    * @param isEmojiPlugin 是否加载上标解析插件 - true：设置加载上标解析插件件；false：不设置加载上标解析插件。默认false
-   * @param isEmojiFull 是否加载全量emoji表情 - true：加载全量emoji表情；false：不加载全量emoji表情。默认false
+   * @param isEmojiFull 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
    */
   setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiFull: boolean): void
 }
