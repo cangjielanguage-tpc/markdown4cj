@@ -330,6 +330,14 @@ public class MarkdownThemeBuilder {
     public func setAbilityContext(abilityContext: AbilityContext): MarkdownThemeBuilder
 
     /**
+     * 设置markdown是否同步解析
+     *
+     * @param isMarkdownParserSync markdown是否同步解析 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsMarkdownParserSync(isMarkdownParserSync: Bool): MarkdownThemeBuilder
+
+    /**
      * 设置是否打开长按复制粘贴
      *
      * @param isOnCopy 是否打开长按复制粘贴 - 默认true
@@ -762,6 +770,14 @@ public class MarkdownThemeBuilder {
     public func setIsCodeStyle(isCodeStyle: Bool): MarkdownThemeBuilder
 
     /**
+     * 设置是否格式化代码块内容
+     *
+     * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块；false：不格式化代码块。默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsCodeFormat(isCodeFormat: Bool): MarkdownThemeBuilder
+
+    /**
      * 设置文本、图片格式内联代码文本颜色
      *
      * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
@@ -808,6 +824,14 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeHeight(codeHeight: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置围栏代码块代码高亮是否同步解析
+     *
+     * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsCodeBlockParserSync(isCodeBlockParserSync: Bool): MarkdownThemeBuilder
 
     /**
      * 设置代码块代码文本颜色
@@ -872,6 +896,14 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeMultilineMargin(codeMultilineMargin: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置代码块右边距
+     *
+     * @param codeMultilineRightMargin 代码块右边距 - 默认8.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setCodeMultilineRightMargin(codeMultilineRightMargin: Float64): MarkdownThemeBuilder
 
     /**
      * 设置代码块字体
@@ -1690,6 +1722,62 @@ public class MarkdownThemeBuilder {
     public func setDescListDefMargins(descListDefMargins: Float64): MarkdownThemeBuilder
 
     /**
+     * 设置下标字体颜色
+     *
+     * @param subTextColor 下标字体颜色 默认0XFF191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSubTextColor(subTextColor: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置下标字体大小
+     *
+     * @param subTextSize 下标字体大小 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSubTextSize(subTextSize: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置下标偏移距离
+     *
+     * @param subOffsetDist 下标偏移距离 默认0.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSubOffsetDist(subOffsetDist: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置上标字体颜色
+     *
+     * @param supTextColor 上标字体颜色 默认0XFF191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSupTextColor(supTextColor: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置上标字体大小
+     *
+     * @param supTextSize 上标字体大小 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSupTextSize(supTextSize: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置上标偏移距离
+     *
+     * @param supOffsetDist 上标偏移距离 默认6.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSupOffsetDist(supOffsetDist: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置下划线颜色
+     *
+     * @param underlineColor 下划线颜色 默认0XFF191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setUnderlineColor(underlineColor: Color): MarkdownThemeBuilder
+
+    /**
      * 返回Theme对象
      *
      * @return MarkdownTheme MarkdownTheme对象
@@ -2306,6 +2394,53 @@ public class TaskListPlugin <: AbstractMarkdownPlugin {
 ```cangjie
 public class TocPlugin <: AbstractMarkdownPlugin {
     public static func create(): TocPlugin
+}
+```
+
+### Markdown 上标插件
+
+```cangjie
+public class SupPlugin <: AbstractMarkdownPlugin {
+    /**
+     * 创建上标插件
+     *
+     * @return SupPlugin
+     */
+    public static func create(): SupPlugin
+}
+```
+
+### Markdown 下标插件
+
+```cangjie
+public class SubPlugin <: AbstractMarkdownPlugin {
+    /**
+     * 创建下标插件
+     *
+     * @return SubPlugin
+     */
+    public static func create(): SubPlugin
+}
+```
+
+### Markdown Emoji插件
+
+```cangjie
+public class EmojiPlugin <: AbstractMarkdownPlugin {
+    /**
+     * 创建Emoji插件
+     *
+     * @return EmojiPlugin
+     */
+    public static func create(): EmojiPlugin
+    
+    /**
+     * 创建Emoji插件
+     *
+     * @param light 是否轻量emoji，默认true
+     * @return EmojiPlugin
+     */
+    public static func create(light: Bool): EmojiPlugin
 }
 ```
 
