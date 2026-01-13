@@ -44,7 +44,7 @@ struct CodeLineDetailsPage {
   /**
    * 文本、图片格式内联代码背景颜色
    */
-  codeBackgroundColor: number = 0xFF191919
+  codeBackgroundColor: number = 0xFFE0E0E0
   /**
    * 文本、图片格式内联代码文本大小
    */

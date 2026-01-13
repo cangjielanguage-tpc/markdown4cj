@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 单独代码块自定义控件
@@ -129,7 +126,7 @@ class MarkdownCodeComponent {
                 // 设置组件是否可交
                 .enabled(false)
                 // 嵌套滚动选项。设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
-                .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
+                .nestedScroll(NestedScrollOptions(NestedScrollMode.SelfFirst, NestedScrollMode.SelfFirst))
                 Scroll() {
                     Column() {
                         List(scroller: scroller2) {
@@ -155,21 +152,21 @@ class MarkdownCodeComponent {
                         // 设置组件的滑动效果
                         .edgeEffect(EdgeEffect.None)
                         // 列表到底末尾位置时触发
-                        .onReachEnd {
+                        .onReachEnd ({
                             => reachBottom = true
-                        }
+                        })
                         // 列表滑动时触发
-                        .onScroll {
-                            offset, _ =>
-                            scroller1.scrollTo(xOffset: 0.0, yOffset: scroller2.currentOffset().yOffset)
-                            checkScroll(offset)
-                        }
+                        .onWillScroll ({
+                            offsety, scrollState, scrollSource =>
+                            scroller1.scrollTo(xOffset: 0.0, yOffset: scroller2.currentOffset()().yOffset)
+                            checkScroll(offsety)
+                        })
                         // 触摸动作触发该事件
-                        .onTouch {
+                        .onTouch ({
                             evt => chatOnTouch(evt)
-                        }
+                        })
                         // 嵌套滚动选项。设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
-                        .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
+                        .nestedScroll(NestedScrollOptions(NestedScrollMode.SelfFirst, NestedScrollMode.SelfFirst))
                     }
                     // 设置组件自身的宽度
                     .height(100.percent)
@@ -185,7 +182,7 @@ class MarkdownCodeComponent {
                 // 设置组件自身的宽度
                 .height(100.percent)
                 // 嵌套滚动选项。设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
-                .nestedScroll(NestedScrollOptions(NestedScrollMode.PARENT_FIRST, NestedScrollMode.PARENT_FIRST))
+                .nestedScroll(NestedScrollOptions(NestedScrollMode.ParentFirst, NestedScrollMode.ParentFirst))
             }
             // 设置组件自身的宽度
             .width(100.percent)
@@ -281,7 +278,7 @@ class MarkdownCodeComponent {
                         // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)
                         // 点击动作触发该方法调用
-                        .onClick {evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)}
+                        .onClick ({evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)})
                     }
 
                     if (markdownConfiguration.markdownTheme.codeFullScreenIcon.isSome()) {
@@ -321,9 +318,9 @@ class MarkdownCodeComponent {
                         // 控制当前组件显示或隐藏
                         .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
                         // 点击动作触发该方法调用
-                        .onClick {
+                        .onClick ({
                             evt => codeFullScreenOnClick(codeText, info, markdownConfiguration.codeFullScreenCallback)
-                        }
+                        })
                     }
                 }
                 // 设置宽度

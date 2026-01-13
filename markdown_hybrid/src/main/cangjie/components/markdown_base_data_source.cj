@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 基础DataSource
@@ -49,7 +46,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
      *
      * @param listener 监听器
      */
-    public override func onRegisterDataChangeListener(listener: DataChangeListener): Unit {
+    public override func registerDataChangeListener(listener: DataChangeListener): Unit {
         this.listener = listener
     }
 
@@ -58,7 +55,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
      *
      * @param listener 监听器
      */
-    public override func onUnregisterDataChangeListener(listener: DataChangeListener): Unit {
+    public override func unregisterDataChangeListener(listener: DataChangeListener): Unit {
         this.listener = None
     }
 
@@ -75,7 +72,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
      * @param index 位置
      */
     public func notifyDataAddChange(index: Int): Unit {
-        this.listener?.onDataAdd(index)
+        this.listener?.onDataAdd(IntNative(index))
     }
 
     /**
@@ -84,7 +81,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
      * @param index 位置
      */
     public func notifyDataDeleteChange(index: Int): Unit {
-        this.listener?.onDataDelete(index)
+        this.listener?.onDataDelete(IntNative(index))
     }
 
     /**
@@ -93,7 +90,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
      * @param index 位置
      */
     public func notifyDataChange(index: Int): Unit {
-        this.listener?.onDataChange(index)
+        this.listener?.onDataChange(IntNative(index))
     }
 
     /**
@@ -103,7 +100,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
      * @param toIdx 数据移动目标位置。
      */
     public func notifyDataMoveChange(fromIdx: Int64, toIdx: Int64): Unit {
-        this.listener?.onDataMove(fromIdx, toIdx)
+        this.listener?.onDataMove(IntNative(fromIdx), IntNative(toIdx))
     }
 
     /**

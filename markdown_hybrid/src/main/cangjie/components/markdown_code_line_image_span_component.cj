@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 内联代码
@@ -65,7 +62,7 @@ public class MarkdownCodeLineImageSpanComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除缓存
-        imagePixelMap?.Release()
+        imagePixelMap?.release()
         imagePixelMap = Option<PixelMap>.None
         arrayUint8 = Option<Array<UInt8>>.None
     }
@@ -82,13 +79,13 @@ public class MarkdownCodeLineImageSpanComponent {
                 // 设置约束尺寸
                 .constraintSize(maxWidth: maxWidth)
                 // 设置图片基于文本的对齐方式
-                .verticalAlign(ImageSpanAlignment.CENTER)
+                .verticalAlign(ImageSpanAlignment.Center)
                 // 点击动作触发该方法调用
-                .onClick {
+                .onClick ({
                     evt => if (markdownConfiguration.linkCallback.isSome() && strUrl.isSome()) {
                         markdownConfiguration.linkCallback()(strUrl())
                     }
-                }
+                })
         }
     }
 
@@ -105,6 +102,6 @@ public class MarkdownCodeLineImageSpanComponent {
             }
         }
         // 解析内联代码
-        MarkdownParseCodeUtil.codeStrToRectPixelMap(strCode, markdownConfiguration, isFakeBoldText, callback)
+        MarkdownParseCodeUtil.codeStrToRectPixelMap(getUIContext().fp2px(markdownConfiguration.markdownTheme.codeTextSize.fp).getOrThrow().value, getUIContext().vp2px(markdownConfiguration.markdownTheme.codeLeftAndRightPadding.vp).getOrThrow().value, getUIContext().vp2px(markdownConfiguration.markdownTheme.codeHeight.vp).getOrThrow().value, strCode, markdownConfiguration, isFakeBoldText, callback)
     }
 }

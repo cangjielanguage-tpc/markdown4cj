@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 通过异步的方式将代码转换成带有颜色的列表 - 组合代码
@@ -58,7 +55,7 @@ func stringToResLists(codeBlockListNodeView: NodeView, markdownConfiguration: Ma
 }
 
 class MarkdownParseCodeUtil {
-    static func codeStrToRectPixelMap(strText: String, markdownConfiguration: MarkdownConfiguration, isFakeBoldText: Bool, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func codeStrToRectPixelMap(codeTextSize: Float64, codeHeight: Float64, codeLeftAndRightPadding: Float64, strText: String, markdownConfiguration: MarkdownConfiguration, isFakeBoldText: Bool, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
             var imageHeight: ?Float64 = Option<Float64>.None
@@ -70,13 +67,13 @@ class MarkdownParseCodeUtil {
                 }
                 arr = drawRectImageButton(
                     strText,
-                    markdownConfiguration.markdownTheme.codeTextSize,
+                    codeTextSize,
                     markdownConfiguration.markdownTheme.codeTextColor.toUInt32(),
                     markdownConfiguration.markdownTheme.codeBackgroundColor.toUInt32(),
                     markdownConfiguration.markdownTheme.codeBackgroundColor.toUInt32(),
-                    markdownConfiguration.markdownTheme.codeHeight,
+                    codeHeight,
                     ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
-                    markdownConfiguration.markdownTheme.codeLeftAndRightPadding,
+                    codeLeftAndRightPadding,
                     0.0,
                     isFakeBoldText
                 )
@@ -85,15 +82,15 @@ class MarkdownParseCodeUtil {
                 }
                 var imageSource: ImageSource = createImageSource(arr())
                 if (Thread.currentThread.hasPendingCancellation) {
-                    imageSource.Release()
+                    imageSource.release()
                     return
                 }
                 pixelMap = imageSource.createPixelMap()
-                imageSource.Release()
+                imageSource.release()
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                var size: Size = pixelMap().getImageInfo().size
+                var size = pixelMap().getImageInfo().size
                 imageWidth = Float64(size.width)
                 imageHeight = Float64(size.height)
                 callback(pixelMap, imageHeight, imageWidth, arr)

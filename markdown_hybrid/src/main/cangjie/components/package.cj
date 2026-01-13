@@ -11,10 +11,10 @@ internal import std.regex.*
 internal import std.sync.*
 internal import std.time.*
 internal import std.io.*
-internal import stdx.net.http.*
-internal import stdx.net.tls.*
-internal import stdx.encoding.base64.*
-internal import stdx.encoding.url.*
+//internal import stdx.net.http.*
+//internal import stdx.net.tls.*
+//internal import stdx.encoding.base64.*
+//internal import stdx.encoding.url.*
 
 // 内部其他包
 internal import markdown.core.*
@@ -77,20 +77,12 @@ internal import prism4cj.prism.Grammar as PrismGrammar
 internal import formula.*
 
 // 系统UI
-internal import ohos.device_info.*
+internal import kit.ArkUI.*
 internal import kit.LocalizationKit.*
-internal import ohos.image.PixelMap
-internal import ohos.image.InitializationOptions
-internal import ohos.image.PixelMapFormat
-internal import ohos.image.Size
-internal import ohos.image.Region
-internal import ohos.image.PositionArea
-internal import ohos.image.createPixelMap
-internal import ohos.image.createImageSource
-internal import ohos.image.ImageSource
+internal import kit.ImageKit.PixelMap
+internal import kit.ImageKit.createImageSource
+internal import kit.ImageKit.ImageSource
+internal import kit.AbilityKit.*
+internal import ohos.device_info.*
 internal import ohos.display.*
-internal import ohos.concurrency.*
-internal import ohos.ability.*
 internal import ohos.resource_manager.ResourceManager
-internal import ohos.resource_manager.Direction as ResourceManagerDirection
-internal import ohos.ark_interop_helper.*

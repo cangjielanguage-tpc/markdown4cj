@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 普通本地图片、设置图片预处理接口
@@ -104,15 +101,15 @@ public class MarkdownImgRawFileCallbackComponent {
     var componentImageWidth: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
-        componentImageWidth = vp2px(componentWidthRawFileCallback.vp)().value
+        componentImageWidth = getUIContext().vp2px(componentWidthRawFileCallback.vp)().value
         imageCallPixelmap()
         localRowImageToPixelMap()
     }
 
     protected override func aboutToDisappear(): Unit {
-        imagePixelMap1?.Release()
+        imagePixelMap1?.release()
         imagePixelMap1 = Option<PixelMap>.None
-        imagePixelMap?.Release()
+        imagePixelMap?.release()
         imagePixelMap = Option<PixelMap>.None
     }
 
@@ -134,11 +131,11 @@ public class MarkdownImgRawFileCallbackComponent {
                         // 设置图片的缩放类型
                         .objectFit(markdownConfigurationRawFileCallback.markdownTheme.imageFitType)
                         // 设置图片基于文本的对齐方式
-                        .verticalAlign(ImageSpanAlignment.CENTER)
+                        .verticalAlign(ImageSpanAlignment.Center)
                         // 设置约束尺寸，组件布局时，进行尺寸范围限制
                         .constraintSize(maxWidth: 100.percent)
                         // 点击动作触发该方法调用
-                        .onClick {evt => imageSpanOnClick(isLinkRawFileCallback, imageCallbackRawFileCallback, linkCallbackRawFileCallback, linkUrlRawFileCallback, destinationRawFileCallback)}
+                        .onClick ({evt => imageSpanOnClick(isLinkRawFileCallback, imageCallbackRawFileCallback, linkCallbackRawFileCallback, linkUrlRawFileCallback, destinationRawFileCallback)})
                 }
             }
             if (markdownConfigurationRawFileCallback.markdownTheme.imageResource.isSome() && imageType != 1 && imageParse != 1) {
@@ -154,10 +151,10 @@ public class MarkdownImgRawFileCallbackComponent {
             if (data.isSome()) {
                 var imageSource: ImageSource = createImageSource(data())
                 let pixelMap1: PixelMap = imageSource.createPixelMap()
-                var sizeRawFileCallback: Size = pixelMap1.getImageInfo().size
+                var sizeRawFileCallback = pixelMap1.getImageInfo().size
                 let imageWidthRawFileCallback: Float64 = Float64(sizeRawFileCallback.width)
                 let imageHeightRawFileCallback: Float64 = Float64(sizeRawFileCallback.height)
-                imageSource.Release()
+                imageSource.release()
                 launch {
                     this.imageWidthRawFileCallback = imageWidthRawFileCallback
                     this.imageHeightRawFileCallback = imageHeightRawFileCallback
@@ -192,6 +189,6 @@ public class MarkdownImgRawFileCallbackComponent {
                 }
             }
         }
-        let fut = rawfileToPixelmap(destinationRawFileCallback, markdownConfigurationRawFileCallback.markdownTheme.abilityContext, markdownConfigurationRawFileCallback.markdownTheme.stageContext, componentImageWidth, callback)
+        let fut = rawfileToPixelmap(destinationRawFileCallback, markdownConfigurationRawFileCallback.markdownTheme.context, componentImageWidth, callback)
     }
 }

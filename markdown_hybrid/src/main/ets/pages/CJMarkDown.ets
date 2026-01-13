@@ -2,17 +2,7 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 import { NodeController, FrameNode } from '@kit.ArkUI';
-import { requireCJLib } from 'libark_interop_loader.so';
-import { CustomLib, CJMarkdownConfig, CJMarkdownTheme, CJMarkdownPlugin } from 'libark_interop_api_markdown.so';
-
-export const global_customLib: CustomLib = requireCJLib("libmarkdown.so") as CustomLib
-
-export const global_cjLib: CJLib = requireCJLib("libmarkdown.so") as CJLib
-
-export interface CJLib {
-  getCJResource(codeFullScreenIcon?: Resource, codeCopyIcon?: Resource, audioIcon?: Resource, videoImage?: Resource,
-    playCircleFillIcon?: Resource, bannerImage?: Resource, imageResource?: Resource): void
-}
+import { CJMarkdownConfig, CJMarkdownTheme, CJMarkdownPlugin, registerImgPreprocessCallback, setGlobalContext, getCJResource, getLoadCJPage} from 'libmarkdown.so';
 
 class CJNodeController extends NodeController {
   rootNode?: FrameNode = undefined
@@ -31,7 +21,7 @@ class CJNodeController extends NodeController {
   makeNode(ctx: UIContext): FrameNode | null {
     if (this.rootNode === undefined) {
       this.rootNode = new FrameNode(ctx)
-      this.callbackCJ = global_customLib.getLoadCJPage(this.mdStr, this.config, this.plugin)
+      this.callbackCJ = getLoadCJPage(this.mdStr, this.config, this.plugin)
     }
     return this.rootNode
   }
@@ -57,7 +47,7 @@ export struct CJMarkdown {
   }
 
   getConfig(): CJMarkdownConfig {
-    let cjMarkdownConfig: CJMarkdownConfig = new global_customLib.CJMarkdownConfig()
+    let cjMarkdownConfig: CJMarkdownConfig = new CJMarkdownConfig()
     if (this.config !== undefined) {
       if (this.config.linkCallback !== undefined) {
         cjMarkdownConfig.setLinkCallback(this.config.linkCallback)
@@ -69,7 +59,7 @@ export struct CJMarkdown {
         cjMarkdownConfig.setImageCallback(this.config.imageCallback)
       }
       if (this.config.imageCallbackCallback !== undefined) {
-        global_customLib.registerImgPreprocessCallback(this.config.imageCallbackCallback)
+        registerImgPreprocessCallback(this.config.imageCallbackCallback)
       }
       if (this.config.audioCallback !== undefined) {
         cjMarkdownConfig.setAudioCallback(this.config.audioCallback)
@@ -104,13 +94,13 @@ export struct CJMarkdown {
   }
 
   getTheme(): CJMarkdownTheme {
-    let cjMarkdownTheme: CJMarkdownTheme = new global_customLib.CJMarkdownTheme()
+    let cjMarkdownTheme: CJMarkdownTheme = new CJMarkdownTheme()
     if (this.config !== undefined) {
       if (this.config.markdownTheme !== undefined) {
         if (this.config.markdownTheme.context !== undefined) {
-          global_customLib.setGlobalContext(this.config.markdownTheme.context)
+          setGlobalContext(this.config.markdownTheme.context)
         }
-        global_cjLib.getCJResource(
+        getCJResource(
           this.config.markdownTheme.codeFullScreenIcon,
           this.config.markdownTheme.codeCopyIcon,
           this.config.markdownTheme.audioIcon,
@@ -654,7 +644,7 @@ export struct CJMarkdown {
   }
 
   getPlugin(): CJMarkdownPlugin {
-    let cjMarkdownPlugin: CJMarkdownPlugin = new global_customLib.CJMarkdownPlugin()
+    let cjMarkdownPlugin: CJMarkdownPlugin = new CJMarkdownPlugin()
     if (this.plugin !== undefined) {
       cjMarkdownPlugin.setIsBlockAudioPlugin(this.plugin.isBlockAudioPlugin)
       cjMarkdownPlugin.setIsBlockVideoPlugin(this.plugin.isBlockVideoPlugin)
@@ -3531,4 +3521,3 @@ export class MarkdownPlugin {
     this.isEmojiLight = isEmojiLight
   }
 }
-

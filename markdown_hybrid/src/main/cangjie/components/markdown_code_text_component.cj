@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 单独代码块自定义控件
@@ -75,7 +72,7 @@ class MarkdownCodeTextComponent {
                 // 设置组件自身的宽度
                 .width(2)
                 // 设置文本颜色
-                .fontColor(Color.TRANSPARENT)
+                .fontColor(Color.Transparent)
                 // 设置行高
                 .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
                 // 设置文本尺寸

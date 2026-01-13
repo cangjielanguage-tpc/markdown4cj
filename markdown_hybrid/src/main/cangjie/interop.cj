@@ -3,13 +3,7 @@
  */
 package markdown
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
 import ohos.ark_interop.*
-import ohos.ark_interop_helper.*
-import std.collection.*
 
 let EXPORT_MODULE = JSModule.registerModule {
     runtime, exports =>

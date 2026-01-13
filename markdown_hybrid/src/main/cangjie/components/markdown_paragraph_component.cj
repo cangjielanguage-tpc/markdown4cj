@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown段落自定义页面
@@ -231,15 +228,15 @@ class MarkdownParagraphComponent {
         // 设置多行文本的文本对齐方式
         .textAlign(TextAlign.Start)
         // 设置文本是否将行间距平分至行的顶部与底部。
-        .halfLeading(true)
-        // 支持设备内复制
-        .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
-            CopyOptions.LocalDevice
+        .interopHalfLeading(true)
+        // 自定义设置组件是否支持文本可复制粘贴
+        .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
+            true
         } else {
-            CopyOptions.None
+            false
         })
-        // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
-        .onCopy({
+        // 自定义长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件
+        .interopOnCopy({
             str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
                 v(str)
             }

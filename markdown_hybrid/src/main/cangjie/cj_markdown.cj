@@ -4,12 +4,8 @@
 package markdown
 
 import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
 import ohos.ark_interop.*
-import ohos.ark_interop_helper.*
-import std.collection.*
 import ohos.resource_manager.AppResource
 import std.sync.*
 
@@ -21,7 +17,7 @@ class cbRet {
 }
 
 public func registerImgPreprocessCallback(context: JSContext, callInfo: JSCallInfo): JSValue {
-    let arktsCB = callInfo[0].asFunction(context)
+    let arktsCB = callInfo[0].asFunction()
     arkImgPreprocessFunc = {
         url =>
             let ret: cbRet = cbRet()
@@ -59,7 +55,7 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     let mdStr: String = callInfo[0].asString().toString()
     var cfg: ?CJMarkdownConfig = None
     if (callInfo[1].typeof() != JSType.UNDEFINED) {
-        let cfgObj: JSObject = callInfo[1].asObject(ctx)
+        let cfgObj: JSObject = callInfo[1].asObject()
         let cfgExt: Option<JSExternal> = cfgObj.getAttachInfo()
         if (let Some(v) <- cfgExt) {
             cfg = v.cast<CJMarkdownConfig>()
@@ -67,14 +63,14 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     }
     var plugin: ?CJMarkdownPlugin = None
     if (callInfo[2].typeof() != JSType.UNDEFINED) {
-        let cfgObj: JSObject = callInfo[2].asObject(ctx)
+        let cfgObj: JSObject = callInfo[2].asObject()
         let cfgExt: Option<JSExternal> = cfgObj.getAttachInfo()
         if (let Some(v) <- cfgExt) {
             plugin = v.cast<CJMarkdownPlugin>()
         }
     }
-    let elmetId = ViewStackProcessor.AllocateNewElmetIdForNextComponent()
-    ViewStackProcessor.StartGetAccessRecordingFor(elmetId)
+//    let elmetId = ViewStackProcessor.AllocateNewElmetIdForNextComponent()
+//    ViewStackProcessor.StartGetAccessRecordingFor(elmetId)
     let comp = CJMarkdownComponent(
         Option<CustomView>.None,
         mdStr: ObservedProperty<String>("", mdStr),
@@ -82,7 +78,7 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
         plugin: ObservedProperty<Option<CJMarkdownPlugin>>("", plugin)
     )
     CustomView.create(comp)
-    ViewStackProcessor.StopGetAccessRecording()
+//    ViewStackProcessor.StopGetAccessRecording()
     return ctx.function(
             {
                 ctx1: JSContext, callInfo1: JSCallInfo =>
@@ -131,7 +127,7 @@ func arktsRes2CJResource(ctx: JSContext, value: JSValue): AppResource {
     AppResource(
         String.fromJSValue(ctx, obj["bundleName"]),
         String.fromJSValue(ctx, obj["moduleName"]),
-        Int32.fromJSValue(ctx, obj["id"]),
+        UInt32.fromJSValue(ctx, obj["id"]),
         params: [],
         resType: Int32.fromJSValue(ctx, obj["type"]),
     )
@@ -146,7 +142,7 @@ func arktsRes2CJResource(ctx: JSContext, value: JSValue): AppResource {
  */
 func transColorForTrasparent(value: UInt32): Color {
     if (value >> 24 == 0) {
-        Color.TRANSPARENT
+        Color.Transparent
     } else {
         Color(value)
     }

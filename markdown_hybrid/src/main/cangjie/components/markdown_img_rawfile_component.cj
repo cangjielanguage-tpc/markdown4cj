@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 普通本地图片、未设置图片预处理接口
@@ -80,12 +77,12 @@ public class MarkdownImgRawFileComponent {
     var componentImageWidth: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
-        componentImageWidth = vp2px(componentWidthRawFile.vp)().value
+        componentImageWidth = getUIContext().vp2px(componentWidthRawFile.vp)().value
         localRowImageToPixelMap()
     }
 
     protected override func aboutToDisappear(): Unit {
-        imagePixelMapRawFile?.Release()
+        imagePixelMapRawFile?.release()
         imagePixelMapRawFile = Option<PixelMap>.None
     }
 
@@ -104,11 +101,11 @@ public class MarkdownImgRawFileComponent {
                     // 设置图片的缩放类型
                     .objectFit(markdownConfigurationRawFile.markdownTheme.imageFitType)
                     // 设置图片基于文本的对齐方式
-                    .verticalAlign(ImageSpanAlignment.CENTER)
+                    .verticalAlign(ImageSpanAlignment.Center)
                     // 设置约束尺寸，组件布局时，进行尺寸范围限制
                     .constraintSize(maxWidth: 100.percent)
                     // 点击动作触发该方法调用
-                    .onClick {evt => imageSpanOnClick(isLinkRawFile, imageCallbackRawFile, linkCallbackRawFile, linkUrlRawFile, destinationRawFile)}
+                    .onClick ({evt => imageSpanOnClick(isLinkRawFile, imageCallbackRawFile, linkCallbackRawFile, linkUrlRawFile, destinationRawFile)})
             }
             if (markdownConfigurationRawFile.markdownTheme.imageResource.isSome() && imageType != 1) {
                 // 有占位图
@@ -133,6 +130,6 @@ public class MarkdownImgRawFileComponent {
                 }
             }
         }
-        let fut = rawfileToPixelmap(destinationRawFile, markdownConfigurationRawFile.markdownTheme.abilityContext, markdownConfigurationRawFile.markdownTheme.stageContext, componentImageWidth, callback)
+        let fut = rawfileToPixelmap(destinationRawFile, markdownConfigurationRawFile.markdownTheme.context, componentImageWidth, callback)
     }
 }

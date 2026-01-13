@@ -63,7 +63,7 @@ struct CodeLinePage {
    * 文本、图片格式内联代码背景颜色
    */
   @State
-  codeBackgroundColor: number = 0xFF191919
+  codeBackgroundColor: number = 0xFFE0E0E0
   /**
    * 文本、图片格式内联代码文本大小列表
    */
@@ -407,7 +407,7 @@ export class CodeLineData {
   _isFull: boolean = true
   _isCodeStyle: boolean = false
   _codeTextColor: number = 0xFF000000
-  _codeBackgroundColor: number = 0xFF191919
+  _codeBackgroundColor: number = 0xFFE0E0E0
   _codeTextSize: number = 13
   _codeTypeface: string = "HarmonyOS Sans"
   _codeLeftAndRightPadding: number = 4

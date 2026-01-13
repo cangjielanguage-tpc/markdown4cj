@@ -4,16 +4,11 @@
 package markdown
 
 import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
-import ohos.ark_interop.*
-import ohos.ark_interop_helper.*
-import std.collection.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 import markdown.components.*
 import markdown.core.*
 import markdown.plugin.*
-import markdown.texttoimg4cj.*
 import markdown.plugin.emoji.*
 
 @Component
@@ -182,7 +177,7 @@ class CJMarkdownComponent {
     func setTheme(): MarkdownTheme {
         let markdownThemeBuilder: MarkdownThemeBuilder = MarkdownTheme.emptyBuilder()
         if (let Some(v) <- GlobalContext.getContext()) {
-            markdownThemeBuilder.setStageContext(v) // 设置markdown上下文 - 互操作
+            markdownThemeBuilder.setContext(v) // 设置markdown上下文
         }
         if (let Some(v) <- codeFullScreenIcon) {
             markdownThemeBuilder.setCodeFullScreenIcon(v) // 设置代码块代码全屏按钮默认图标

@@ -2,8 +2,11 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 import { Context } from "@kit.AbilityKit"
+import { resourceManager } from '@kit.LocalizationKit';
 
 export declare class CJMarkdownPlugin {
+  constructor()
+
   setIsBlockAudioPlugin(isBlockAudioPlugin: boolean): void
 
   setIsBlockVideoPlugin(isBlockVideoPlugin: boolean): void
@@ -48,6 +51,8 @@ export declare class CJMarkdownPlugin {
 }
 
 export declare class CJMarkdownTheme {
+  constructor()
+
   setIsMarkdownParserSync(isMarkdownParserSync: boolean): void
 
   setIsOnCopy(isOnCopy: boolean): void
@@ -396,6 +401,8 @@ export declare class CJMarkdownTheme {
 }
 
 export declare class CJMarkdownConfig {
+  constructor()
+
   setLinkCallback(cb: (funcArg0: string) => void): void
 
   setTextCopyCallback(cb: (funcArg0: string) => void): void
@@ -423,14 +430,10 @@ export declare class CJMarkdownConfig {
   setCJMarkdownTheme(cjMarkdownTheme: CJMarkdownTheme): void
 }
 
-export declare interface CustomLib {
-  CJMarkdownConfig: { new(): CJMarkdownConfig }
-  CJMarkdownTheme: { new(): CJMarkdownTheme }
-  CJMarkdownPlugin: { new(): CJMarkdownPlugin }
+export declare function setGlobalContext(context: Context): void
 
-  setGlobalContext(context: Context): void
+export declare function getLoadCJPage(mdStr: string, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin): (input: string) => void
 
-  getLoadCJPage(mdStr: string, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin): (input: string) => void
+export declare function registerImgPreprocessCallback(cb: (url: string) => Promise<ArrayBuffer|undefined>): void
 
-  registerImgPreprocessCallback(cb: (url: string) => Promise<ArrayBuffer|undefined>): void
-}
+export declare function getCJResource(codeFullScreenIcon?: resourceManager.Resource, codeCopyIcon?: resourceManager.Resource, audioIcon?: resourceManager.Resource, videoImage?: resourceManager.Resource, playCircleFillIcon?: resourceManager.Resource, bannerImage?: resourceManager.Resource, imageResource?: resourceManager.Resource): void

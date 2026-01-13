@@ -3,10 +3,6 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-
 let COLOR_191919: Color = Color(0x191919)
 let COLOR_0000FF: Color = Color(0x0000FF)
 let COLOR_FF0000: Color = Color(0xFF0000)
@@ -205,7 +201,7 @@ func spanFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme
 func spanTextFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
     if (isCode) {
         // 内联代码情况设置内联代码字体大小
-        return px2vp(markdownTheme.codeTextSize.px)().value
+        return markdownTheme.codeTextSize
     } else {
         if (nodeView.link.isSome() && markdownTheme.isLinkSize) {
             return markdownTheme.linkSize
@@ -408,7 +404,7 @@ func spanBackgroundColor(isCode: Bool, isLink: Bool, markdownTheme: MarkdownThem
         markdownTheme.linkBackGroupColor
     } else {
         // 不需要背景色设置
-        Color.TRANSPARENT
+        Color.Transparent
     }
 }
 
@@ -833,12 +829,12 @@ func styleImageRadius(borderRadius: ?Length): Length {
  * @param componentWidth 父布局控件宽度 - 单位vp
  * @return PicStyleObj对象
  */
-func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicStyleObj {
+func parsePicStyle(uiContext: UIContext, picStyle: ArrayList<String>, componentWidthPx: Float64): PicStyleObj {
     let picStyleObj: PicStyleObj = PicStyleObj()
     if (picStyle.isEmpty()) {
         return picStyleObj
     }
-    let componentWidth = px2vp(componentWidthPx.px)().value
+    let componentWidth = uiContext.px2vp(componentWidthPx.px)().value
     var index = 0
     while (index < picStyle.size) {
         try {
@@ -860,7 +856,7 @@ func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicS
                 }
                 if (value[value.size - 2..] == "px") {
                     let picStyleObjWidth: Length = Int64.parse(value[..value.size - 2]).px
-                    let componentWidthLength: ?Length = vp2px(componentWidth.vp)
+                    let componentWidthLength: ?Length = uiContext.vp2px(componentWidth.vp)
                     if (let Some(v) <- componentWidthLength) {
                         picStyleObj.width = if (picStyleObjWidth.value > v.value) {
                             v
@@ -964,10 +960,10 @@ func tableList(nodeViews: ArrayList<NodeView>): ArrayList<NodeView> {
  * @param componentWidth 控件宽度
  * @return ?Float64
  */
-func length2Float(length: Length): Float64 {
+func length2Float(uiContext: UIContext, length: Length): Float64 {
     return match (length.unitType) {
-        case LengthType.vp(v) => v.value
-        case LengthType.px(v) => px2vp(v.px)().value
+        case LengthUnit.Vp => length.value
+        case LengthUnit.Px => uiContext.px2vp(length)().value
         case _ => 0.0
     }
 }
@@ -979,12 +975,12 @@ func length2Float(length: Length): Float64 {
  * @param componentWidth 控件宽度
  * @return ?Float64
  */
-func length2Float64(length: ?Length, componentWidth: Float64): ?Float64 {
+func length2Float64(uiContext: UIContext, length: ?Length, componentWidth: Float64): ?Float64 {
     if (let Some(v) <- length) {
         return match (v.unitType) {
-            case LengthType.vp(v) => vp2px(v)().value
-            case LengthType.px(v) => v.value
-            case LengthType.percent(v) => v.value * componentWidth
+            case LengthUnit.Vp => uiContext.vp2px(v)().value
+            case LengthUnit.Px => v.value
+            case LengthUnit.Percent => v.value * componentWidth
             case _ => v.value
         }
     } else {
@@ -1053,7 +1049,8 @@ func isListItem(indexListOne: ArrayList<Int64>, indexListTwo: ArrayList<Int64>, 
  */
 func urlSafeBase64Decode(v: String): String {
     var vNew = v.replace("_", "/").replace("-", "+")
-    var arr: ?Array<Byte> = fromBase64String(vNew)
+//    var arr: ?Array<Byte> = fromBase64String(vNew)
+    var arr: ?Array<Byte> = Array<Byte>()
     if (arr.isNone()) {
         return ""
     }
@@ -1064,7 +1061,8 @@ func urlSafeBase64Decode(v: String): String {
     match (matchData) {
         case Some(v) =>
             var str: String = v.matchString()
-            var arrSplit: Array<String> = URL.parse(str).toString().split('.')
+//            var arrSplit: Array<String> = URL.parse(str).toString().split('.')
+            var arrSplit: Array<String> = Array<String>()
             if (arrSplit.size > 1) {
                 return arrSplit[arrSplit.size - 1].toAsciiUpper()
             } else {
@@ -1567,9 +1565,9 @@ func imageSpanHeight(imageFixedRatioWidth: Option<Float64>, componentImageWidth:
  * @param imageBorderRadius 图片圆角
  * @return Float64 图片圆角
  */
-func imageSpanBorderRadius(radius: Option<Length>, imageBorderRadius: Float64): Float64 {
+func imageSpanBorderRadius(uiContext: UIContext, radius: Option<Length>, imageBorderRadius: Float64): Float64 {
     return if (radius.isSome()) {
-        length2Float(radius())
+        length2Float(uiContext, radius())
     } else {
         imageBorderRadius
     }
@@ -1585,7 +1583,7 @@ func imageSpanBorderRadius(radius: Option<Length>, imageBorderRadius: Float64): 
  * @param imageHeight
  * @return (Float64, Float64)
  */
-func imageSpanHtmlComplete(imageLoadResultHeight: Float64, imageLoadResultWidth: Float64, componentImageWidth: Float64, imageWidth: ?Float64, imageHeight: ?Float64): (Float64, Float64) {
+func imageSpanHtmlComplete(uiContext: UIContext, imageLoadResultHeight: Float64, imageLoadResultWidth: Float64, componentImageWidth: Float64, imageWidth: ?Float64, imageHeight: ?Float64): (Float64, Float64) {
     let aspectRatio: Float64 = imageLoadResultHeight / imageLoadResultWidth
     let widthNew = if (componentImageWidth > imageLoadResultWidth) {
         imageLoadResultWidth
@@ -1596,8 +1594,8 @@ func imageSpanHtmlComplete(imageLoadResultHeight: Float64, imageLoadResultWidth:
     var height: Float64 = 0.0
     let heightNew = widthNew * aspectRatio
     if (imageWidth.isSome() && imageHeight.isSome()) {
-        let imageWidthPX = vp2px(imageWidth().vp)().value
-        let imageHeightPX = vp2px(imageHeight().vp)().value
+        let imageWidthPX = uiContext.vp2px(imageWidth().vp)().value
+        let imageHeightPX = uiContext.vp2px(imageHeight().vp)().value
         let aspectRatioNew: Float64 = imageHeightPX / imageWidthPX
         width = if (componentImageWidth > imageWidthPX) {
             imageWidthPX
@@ -1606,7 +1604,7 @@ func imageSpanHtmlComplete(imageLoadResultHeight: Float64, imageLoadResultWidth:
         }
         height = width * aspectRatioNew
     } else if (imageWidth.isSome() && !imageHeight.isSome()) {
-        let imageWidthPX = vp2px(imageWidth().vp)().value
+        let imageWidthPX = uiContext.vp2px(imageWidth().vp)().value
         width = if (componentImageWidth > imageWidthPX) {
             imageWidthPX
         } else {
@@ -1614,7 +1612,7 @@ func imageSpanHtmlComplete(imageLoadResultHeight: Float64, imageLoadResultWidth:
         }
         height = width * aspectRatio
     } else if (!imageWidth.isSome() && imageHeight.isSome()) {
-        let imageHeightPX = vp2px(imageHeight().vp)().value
+        let imageHeightPX = uiContext.vp2px(imageHeight().vp)().value
         width = if (componentImageWidth > imageHeightPX / aspectRatio) {
             imageHeightPX / aspectRatio
         } else {

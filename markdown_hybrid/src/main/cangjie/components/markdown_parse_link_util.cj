@@ -3,13 +3,10 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 class MarkdownParseLinkUtil {
-    static func linkStrToCirclePixelMap(strText: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func linkStrToCirclePixelMap(linkCircleImageTextSize: Float64, linkCircleImageRadius: Float64, strText: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
             var imageHeight: ?Float64 = Option<Float64>.None
@@ -21,11 +18,11 @@ class MarkdownParseLinkUtil {
                 }
                 arr = drawCircleImageButton(
                     strText,
-                    markdownConfiguration.markdownTheme.linkCircleImageTextSize,
+                    linkCircleImageTextSize,
                     markdownConfiguration.markdownTheme.linkCircleImageTextColor.toUInt32(),
                     markdownConfiguration.markdownTheme.linkCircleImageButtonBackGroupColor.toUInt32(),
                     markdownConfiguration.markdownTheme.linkCircleImageBackGroupColor.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkCircleImageRadius,
+                    linkCircleImageRadius,
                     ColorFormatEnum.COLOR_FORMAT_BGRA_8888
                 )
                 if (Thread.currentThread.hasPendingCancellation) {
@@ -33,15 +30,15 @@ class MarkdownParseLinkUtil {
                 }
                 var imageSource: ImageSource = createImageSource(arr())
                 if (Thread.currentThread.hasPendingCancellation) {
-                    imageSource.Release()
+                    imageSource.release()
                     return
                 }
                 pixelMap = imageSource.createPixelMap()
-                imageSource.Release()
+                imageSource.release()
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                var size: Size = pixelMap().getImageInfo().size
+                var size = pixelMap().getImageInfo().size
                 imageWidth = Float64(size.width)
                 imageHeight = Float64(size.height)
                 callback(pixelMap, imageHeight, imageWidth, arr)
@@ -52,7 +49,7 @@ class MarkdownParseLinkUtil {
         return fut
     }
 
-    static func linkStrToRectPixelMap(strText: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func linkStrToRectPixelMap(linkRectImageTextSize: Float64, linkRectImageHeight: Float64, linkRectImagePadding: Float64, linkRectImageRadius: Float64, strText: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
             var imageHeight: ?Float64 = Option<Float64>.None
@@ -64,14 +61,14 @@ class MarkdownParseLinkUtil {
                 }
                 arr = drawRectImageButton(
                     strText,
-                    markdownConfiguration.markdownTheme.linkRectImageTextSize,
+                    linkRectImageTextSize,
                     markdownConfiguration.markdownTheme.linkRectImageTextColor.toUInt32(),
                     markdownConfiguration.markdownTheme.linkRectImageButtonBackGroupColor.toUInt32(),
                     markdownConfiguration.markdownTheme.linkRectImageBackGroupColor.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkRectImageHeight,
+                    linkRectImageHeight,
                     ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
-                    markdownConfiguration.markdownTheme.linkRectImagePadding,
-                    markdownConfiguration.markdownTheme.linkRectImageRadius,
+                    linkRectImagePadding,
+                    linkRectImageRadius,
                     false
                 )
                 if (Thread.currentThread.hasPendingCancellation) {
@@ -79,15 +76,15 @@ class MarkdownParseLinkUtil {
                 }
                 var imageSource: ImageSource = createImageSource(arr())
                 if (Thread.currentThread.hasPendingCancellation) {
-                    imageSource.Release()
+                    imageSource.release()
                     return
                 }
                 pixelMap = imageSource.createPixelMap()
-                imageSource.Release()
+                imageSource.release()
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                var size: Size = pixelMap().getImageInfo().size
+                var size = pixelMap().getImageInfo().size
                 imageWidth = Float64(size.width)
                 imageHeight = Float64(size.height)
                 callback(pixelMap, imageHeight, imageWidth, arr)
@@ -98,7 +95,7 @@ class MarkdownParseLinkUtil {
         return fut
     }
 
-    static func linkStrToRectToolPixelMap(strText: String, strType: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func linkStrToRectToolPixelMap(linkRectToolImageTextSize: Float64, linkRectToolImageHeight: Float64, linkRectToolImagePadding: Float64, linkRectToolImageBorderWidth: Float64, linkRectToolImageDividingLineWidth: Float64, linkRectToolImageLineLeftPadding: Float64, linkRectToolImageLineRightPadding: Float64, strText: String, strType: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
             var imageHeight: ?Float64 = Option<Float64>.None
@@ -113,34 +110,34 @@ class MarkdownParseLinkUtil {
                 arr = drawRectToolImageButton(
                     strText,
                     strType,
-                    markdownConfiguration.markdownTheme.linkRectToolImageTextSize,
+                    linkRectToolImageTextSize,
                     c1.toUInt32(),
                     markdownConfiguration.markdownTheme.linkRectToolImageButtonBackGroupColor.toUInt32(),
                     markdownConfiguration.markdownTheme.linkRectToolImageBackGroupColor.toUInt32(),
                     c1.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkRectToolImageBorderWidth,
+                    linkRectToolImageBorderWidth,
                     c2.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkRectToolImageDividingLineWidth,
-                    markdownConfiguration.markdownTheme.linkRectToolImageHeight,
+                    linkRectToolImageDividingLineWidth,
+                    linkRectToolImageHeight,
                     ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
-                    markdownConfiguration.markdownTheme.linkRectToolImagePadding,
-                    markdownConfiguration.markdownTheme.linkRectToolImageLineLeftPadding,
-                    markdownConfiguration.markdownTheme.linkRectToolImageLineRightPadding
+                    linkRectToolImagePadding,
+                    linkRectToolImageLineLeftPadding,
+                    linkRectToolImageLineRightPadding
                 )
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
                 var imageSource: ImageSource = createImageSource(arr())
                 if (Thread.currentThread.hasPendingCancellation) {
-                    imageSource.Release()
+                    imageSource.release()
                     return
                 }
                 pixelMap = imageSource.createPixelMap()
-                imageSource.Release()
+                imageSource.release()
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                var size: Size = pixelMap().getImageInfo().size
+                var size = pixelMap().getImageInfo().size
                 imageWidth = Float64(size.width)
                 imageHeight = Float64(size.height)
                 callback(pixelMap, imageHeight, imageWidth, arr)

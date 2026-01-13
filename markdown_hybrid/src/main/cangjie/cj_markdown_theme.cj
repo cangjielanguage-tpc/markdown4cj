@@ -4,16 +4,10 @@
 package markdown
 
 import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
 import ohos.ark_interop.*
-import ohos.ark_interop_helper.*
 import ohos.ark_interop_macro.*
-import ohos.ability.*
-import std.collection.*
 import markdown.components.*
-import ohos.resource_manager.AppResource
 
 @Interop[ArkTS]
 public class CJMarkdownTheme {
