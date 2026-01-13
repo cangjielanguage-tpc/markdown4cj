@@ -3,10 +3,8 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 
 func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<String>, ArrayList<String>) {
     var strText: ArrayList<String> = ArrayList<String>()
@@ -187,7 +185,7 @@ func spanBackgroundColor(isCode: Bool, markdownTheme: MarkdownTheme): Color {
     return if (isCode) {
         markdownTheme.codeBackgroundColor
     } else {
-        Color.WHITE
+        Color.White
     }
 }
 
@@ -309,8 +307,8 @@ func codeTextColor(item: PrismNodesParseRes, markdownTheme: MarkdownTheme, prism
  * @param imagePadding padding宽度 - 单位vp
  * @return 第一层控件宽度 - 单位vp
  */
-func widthPxToVp(screenWidth: Int32, imagePadding: Int64): Float64 {
-    let length: ?Length = px2vp(Int64(screenWidth).px)
+func widthPxToVp(uiContext: UIContext, screenWidth: Int32, imagePadding: Int64): Float64 {
+    let length: ?Length = uiContext.px2vp(Int64(screenWidth).px)
     let width: Float64 = if (let Some(v) <- length) {
         v.value - Float64(imagePadding)
     } else {
@@ -326,8 +324,8 @@ func widthPxToVp(screenWidth: Int32, imagePadding: Int64): Float64 {
  * @param imagePadding padding宽度 - 单位vp
  * @return 第一层控件宽度 - 单位px
  */
-func widthVpToPx(screenWidth: Int32, imagePadding: Int64): Float64 {
-    let lengthPadding: ?Length = vp2px(imagePadding.vp)
+func widthVpToPx(uiContext: UIContext, screenWidth: Int32, imagePadding: Int64): Float64 {
+    let lengthPadding: ?Length = uiContext.vp2px(imagePadding.vp)
     let lengthScreen: Length = Int64(screenWidth).px
     let width: Float64 = if (let Some(v) <- lengthPadding) {
         lengthScreen.value - v.value
@@ -560,12 +558,12 @@ func styleImageRadius(borderRadius: ?Length): Length {
  * @param componentWidth 父布局控件宽度 - 单位vp
  * @return PicStyleObj对象
  */
-func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownConfiguration, componentWidthPx: Float64): PicStyleObj {
+func parsePicStyle(uiContext: UIContext, picStyle: ArrayList<String>, markdownConfiguration: MarkdownConfiguration, componentWidthPx: Float64): PicStyleObj {
     let picStyleObj: PicStyleObj = PicStyleObj()
     if (picStyle.isEmpty()) {
         return picStyleObj
     }
-    let componentWidth = px2vp(componentWidthPx.px)().value
+    let componentWidth = uiContext.px2vp(componentWidthPx.px)().value
     var index = 0
     while (index < picStyle.size) {
         try {
@@ -587,7 +585,7 @@ func parsePicStyle(picStyle: ArrayList<String>, markdownConfiguration: MarkdownC
                 }
                 if (value[value.size - 2..] == "px") {
                     let picStyleObjWidth: Length = Int64.parse(value[..value.size - 2]).px
-                    let componentWidthLength: ?Length = vp2px(componentWidth.vp)
+                    let componentWidthLength: ?Length = uiContext.vp2px(componentWidth.vp)
                     if (let Some(v) <- componentWidthLength) {
                         picStyleObj.width = if (picStyleObjWidth.value > v.value) {
                             v
@@ -662,7 +660,7 @@ func delPixelMap(listPixelMap: ArrayList<?PixelMap>) {
 func delPixelMap(listPixelMap: ?PixelMap) {
     spawn {
         if (listPixelMap.isSome()) {
-            listPixelMap().Release()
+            listPixelMap().release()
         }
     }
 }
@@ -687,6 +685,6 @@ func threadFutureCancel(fut: ?Future<Unit>) {
     }
 }
 
-func pxToVp(pxFloat64: Float64) :Float64{
-    return px2vp(pxFloat64.px)().value
+func pxToVp(uiContext: UIContext, pxFloat64: Float64) :Float64{
+    return uiContext.px2vp(pxFloat64.px)().value
 }

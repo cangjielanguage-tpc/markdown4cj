@@ -3,10 +3,8 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown无序列表(任务列表)、有序列表(TOC列表)、块引用自定义控件
@@ -94,7 +92,7 @@ public class MarkdownListComponent {
             // 值为 true 表示组件可用，可响应点击等操作；值为 false 时，不响应点击等操作
             .enabled(false)
             // 切换CheckBox组件形状
-            .shape(CheckBoxShape.ROUNDED_SQUARE)
+            .shape(CheckBoxShape.RoundedSquare)
             // 设置外边距属性
             .margin(left: markdownConfiguration.markdownTheme.blockMargin, right: 10.0)
     }
@@ -179,7 +177,7 @@ public class MarkdownListComponent {
             // 容器尺寸确定时，元素与兄弟节点主轴布局尺寸按照权重进行分配，忽略本身尺寸设置仅在Row/Column/Flex布局中生效
             .layoutWeight(1)
             // 圆角
-            .shape(ShapeType.Capsule)
+            .shape(ButtonType.Capsule)
             // 文本颜色
             .fontColor(markdownConfiguration.markdownTheme.buttonTextColor)
             // 背景颜色
@@ -193,7 +191,7 @@ public class MarkdownListComponent {
             // 宽度
             .width(100.percent)
             // 点击动作触发该方法调用
-            .onClick {listBigDataOnClick(nodeView, marginTop, marginBottom, componentWidth, markdownConfiguration.listBigDataCallback)}
+            .onClick ({evt => listBigDataOnClick(nodeView, marginTop, marginBottom, componentWidth, markdownConfiguration.listBigDataCallback)})
     }
 
     @Builder

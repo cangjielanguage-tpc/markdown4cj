@@ -3,10 +3,8 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown围栏代码列表切换自定义控件
@@ -72,7 +70,7 @@ class MarkdownCodeBlockListComponent {
         // 设置外边距属性
         .margin(top: marginTop, bottom: marginBottom)
         // 组件挂载显示时触发此回调
-        .onAppear {=> stringCodeToResLists()}
+        .onAppear ({=> stringCodeToResLists()})
     }
 
     /**
@@ -99,7 +97,7 @@ class MarkdownCodeBlockListComponent {
                             // 设置内边距属性
                             .padding(left: 14, right: 14, top: 5, bottom: 5)
                             // 点击动作触发该方法调用
-                            .onClick {evt => idxSelect = idx}
+                            .onClick ({evt => idxSelect = idx})
                     }
                 )
             }
@@ -206,7 +204,7 @@ class MarkdownCodeBlockListComponent {
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Contain)
                     // 点击动作触发该方法调用
-                    .onClick {evt => codeCopyOnClick(strText[idxSelect], markdownConfiguration.codeCopyCallback)}
+                    .onClick ({evt => codeCopyOnClick(strText[idxSelect], markdownConfiguration.codeCopyCallback)})
             }
             // 全屏按钮
             if (markdownConfiguration.markdownTheme.codeFullScreenIcon.isSome() && strText[idxSelect].trimAscii().size > 0) {
@@ -223,7 +221,7 @@ class MarkdownCodeBlockListComponent {
                     // 控制当前组件显示或隐藏
                     .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
                     // 点击动作触发该方法调用
-                    .onClick {evt => codeFullScreenOnClick(strText[idxSelect], strInfoText[idxSelect], markdownConfiguration.codeFullScreenCallback)}
+                    .onClick ({evt => codeFullScreenOnClick(strText[idxSelect], strInfoText[idxSelect], markdownConfiguration.codeFullScreenCallback)})
             }
         }
         // 设置外边距属性
@@ -235,7 +233,7 @@ class MarkdownCodeBlockListComponent {
      */
     @Builder
     func codeBlockComponent() {
-        Stack(Alignment.TopEnd) {
+        Stack(alignContent: Alignment.TopEnd) {
             // 组合代码代码块内容
             codeBlockCodeComponent()
             // 复制按钮和全屏按钮内容

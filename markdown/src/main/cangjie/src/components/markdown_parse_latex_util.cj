@@ -3,10 +3,8 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 
 class MarkdownParseLatexUtil {
     /**
@@ -61,19 +59,19 @@ class MarkdownParseLatexUtil {
                     }
                     var imageSource: ImageSource = createImageSource(arr())
                     if (Thread.currentThread.hasPendingCancellation) {
-                        imageSource.Release()
+                        imageSource.release()
                         return
                     }
                     pixelMap = imageSource.createPixelMap()
-                    imageSource.Release()
-                    var size: Size = pixelMap().getImageInfo().size
+                    imageSource.release()
+                    var size = pixelMap().getImageInfo().size
                     imageWidth = Float64(size.width)
                     imageHeight = Float64(size.height)
                 } catch (e: Exception) {
                 } finally {
                     try {
                         if (Thread.currentThread.hasPendingCancellation) {
-                            pixelMap?.Release()
+                            pixelMap?.release()
                             return
                         }
                         callback(pixelMap, imageHeight, imageWidth, arr)
@@ -134,12 +132,12 @@ class MarkdownParseLatexUtil {
                     }
                     var imageSource: ImageSource = createImageSource(arr())
                     if (Thread.currentThread.hasPendingCancellation) {
-                        imageSource.Release()
+                        imageSource.release()
                         return
                     }
                     pixelMap = imageSource.createPixelMap()
-                    imageSource.Release()
-                    var size: Size = pixelMap().getImageInfo().size
+                    imageSource.release()
+                    var size = pixelMap().getImageInfo().size
                     var sizeWidth: Float64 = Float64(size.width)
                     var sizeHeight: Float64 = Float64(size.height)
                     var aspectRatio: Float64 = sizeHeight / sizeWidth
@@ -150,7 +148,7 @@ class MarkdownParseLatexUtil {
                     }
                     height = width() * aspectRatio
                     if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap?.Release()
+                        pixelMap?.release()
                         return
                     }
                     pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
@@ -158,7 +156,7 @@ class MarkdownParseLatexUtil {
                 } finally {
                     try {
                         if (Thread.currentThread.hasPendingCancellation) {
-                            pixelMap?.Release()
+                            pixelMap?.release()
                             return
                         }
                         callback(pixelMap, height, width, arr)

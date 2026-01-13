@@ -3,10 +3,8 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown预览自定义控件
@@ -57,11 +55,11 @@ public class MarkdownComponent {
                                 markdownConfiguration: markdownConfiguration,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: widthVpToPx(getUIContext(), screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
-                        // 组件区域变化时触发该回调
-                        .onAreaChange {oldValue, newValue => indexHashMap.add(idx, newValue.position.y)}
+//                        // 组件区域变化时触发该回调
+//                        .onAreaChange ({oldValue, newValue => indexHashMap.add(idx, newValue.position.y)})
                     } else if (item.node is Paragraph) {
                         // 段落
                         ListItem() {
@@ -71,7 +69,7 @@ public class MarkdownComponent {
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 tocListOnClick: TocListOnClick,
-                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: widthVpToPx(getUIContext(), screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
                     } else if (item.node is BulletList) {
@@ -83,7 +81,7 @@ public class MarkdownComponent {
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 tocListOnClick: TocListOnClick,
-                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: widthVpToPx(getUIContext(), screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
                     } else if (item.node is OrderedList) {
@@ -95,7 +93,7 @@ public class MarkdownComponent {
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 tocListOnClick: TocListOnClick,
-                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: widthVpToPx(getUIContext(), screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
                     } else if (item.node is BlockQuote) {
@@ -107,7 +105,7 @@ public class MarkdownComponent {
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 tocListOnClick: TocListOnClick,
-                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: widthVpToPx(getUIContext(), screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
                     } else if (item.node is FencedCodeBlock) {
@@ -140,7 +138,7 @@ public class MarkdownComponent {
                                 markdownConfiguration: markdownConfiguration,
                                 marginTop: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
                                 marginBottom: markdownConfiguration.markdownTheme.blockTopAndBottomMargins,
-                                componentWidth: widthVpToPx(screenWidth, markdownConfiguration.markdownTheme.imagePadding)
+                                componentWidth: widthVpToPx(getUIContext(), screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
                     } else if (item.node is ThematicBreak) {
@@ -215,7 +213,7 @@ public class MarkdownComponent {
         // 设置组件自身的宽度
         .width(100.percent)
         // 组件挂载显示时触发此回调
-        .onAppear {=> stringToNodes()}
+        .onAppear ({=> stringToNodes()})
     }
 
     /**

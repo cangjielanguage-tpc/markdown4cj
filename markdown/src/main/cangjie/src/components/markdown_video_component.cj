@@ -3,10 +3,8 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown视频自定义页面
@@ -31,13 +29,13 @@ class MarkdownVideoComponent {
 
     func build() {
         // TODO ImageSpan缺少String入参，网络图片只能用Image接收
-        Stack(Alignment.Center) {
+        Stack(alignContent: Alignment.Center) {
             imgVideoComponent()
         }
         // 设置组件自身的宽度
         .width(100.percent)
         // 点击动作触发该方法调用
-        .onClick {evt => videoOnClick(imgVideo.getDestination(), markdownConfiguration.videoCallback)}
+        .onClick ({evt => videoOnClick(imgVideo.getDestination(), markdownConfiguration.videoCallback)})
     }
 
     /**

@@ -3,10 +3,8 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown图片页面
@@ -46,7 +44,7 @@ class MarkdownImageComponent {
                 // 占位图
                 .alt(markdownConfiguration.markdownTheme.imageResource())
                 // 图片的点击事件
-                .onClick {evt => imageOnClick(commonmarkImage.getDestination(), markdownConfiguration.imageCallback)}
+                .onClick ({evt => imageOnClick(commonmarkImage.getDestination(), markdownConfiguration.imageCallback)})
         } else {
             Image(commonmarkImage.getDestination())
                 // 设置图片的缩放类型
@@ -54,7 +52,7 @@ class MarkdownImageComponent {
                 // 设置图片解码过程中是否对图源自动缩放
                 .autoResize(markdownConfiguration.markdownTheme.isAutoResize)
                 // 图片的点击事件
-                .onClick {evt => imageOnClick(commonmarkImage.getDestination(), markdownConfiguration.imageCallback)}
+                .onClick ({evt => imageOnClick(commonmarkImage.getDestination(), markdownConfiguration.imageCallback)})
         }
     }
 }

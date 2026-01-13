@@ -3,11 +3,12 @@
  */
 package ohos_app_cangjie_entry
 
-import ohos.base.*
+import kit.AbilityKit.AbilityStage
+import kit.PerformanceAnalysisKit.Hilog
 
 class MyAbilityStage <: AbilityStage {
     public override func onCreate(): Unit {
-        AppLog.info("MyAbilityStage onCreated.")
+//        AppLog.info("MyAbilityStage onCreated.")
     }
 }
 

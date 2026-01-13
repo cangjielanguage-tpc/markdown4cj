@@ -3,10 +3,9 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
+import kit.AbilityKit.*
 
 /**
  * Markdown用户可设置的样式
@@ -28,7 +27,7 @@ public class MarkdownTheme {
     /**
      * 上下文
      */
-    protected var abilityContext: ?AbilityContext = None
+    protected var context: ?Context = None
 
     /**
      * 每个模块之间上下间距
@@ -168,22 +167,22 @@ public class MarkdownTheme {
     /**
      * 组合代码标题选中文本颜色
      */
-    protected var codeListTitleSelectTextColor: Color = Color.RED
+    protected var codeListTitleSelectTextColor: Color = Color.Red
 
     /**
      * 组合代码标题未选中文本颜色
      */
-    protected var codeListTitleUnSelectTextColor: Color = Color.BLACK
+    protected var codeListTitleUnSelectTextColor: Color = Color.Black
 
     /**
      * 组合代码标题选中背景颜色
      */
-    protected var codeListTitleSelectBackgroupColor: Color = Color.GRAY
+    protected var codeListTitleSelectBackgroupColor: Color = Color.Gray
 
     /**
      * 组合代码标题未选中背景颜色
      */
-    protected var codeListTitleUnSelectBackgroupColor: Color = Color.TRANSPARENT
+    protected var codeListTitleUnSelectBackgroupColor: Color = Color.Transparent
 
     /**
      * H1、H2标题下分割线高度
@@ -336,7 +335,7 @@ public class MarkdownTheme {
     protected var buttonTextMargin: Int64 = 14
 
     protected init(builder: MarkdownThemeBuilder) {
-        this.abilityContext = builder.abilityContext
+        this.context = builder.context
         this.blockTopAndBottomMargins = builder.blockTopAndBottomMargins
         // 链接
         this.linkColor = builder.linkColor
@@ -447,7 +446,7 @@ public class MarkdownThemeBuilder {
     /**
      * 上下文
      */
-    protected var abilityContext: ?AbilityContext = None
+    protected var context: ?Context = None
 
     /**
      * 每个模块之间上下间距
@@ -582,22 +581,22 @@ public class MarkdownThemeBuilder {
     /**
      * 组合代码标题选中文本颜色
      */
-    protected var codeListTitleSelectTextColor: Color = Color.RED
+    protected var codeListTitleSelectTextColor: Color = Color.Red
 
     /**
      * 组合代码标题未选中文本颜色
      */
-    protected var codeListTitleUnSelectTextColor: Color = Color.BLACK
+    protected var codeListTitleUnSelectTextColor: Color = Color.Black
 
     /**
      * 组合代码标题选中背景颜色
      */
-    protected var codeListTitleSelectBackgroupColor: Color = Color.GRAY
+    protected var codeListTitleSelectBackgroupColor: Color = Color.Gray
 
     /**
      * 组合代码标题未选中背景颜色
      */
-    protected var codeListTitleUnSelectBackgroupColor: Color = Color.TRANSPARENT
+    protected var codeListTitleUnSelectBackgroupColor: Color = Color.Transparent
 
     /**
      * H1、H2标题下分割线高度
@@ -753,7 +752,7 @@ public class MarkdownThemeBuilder {
     }
 
     init(theme: MarkdownTheme) {
-        this.abilityContext = theme.abilityContext
+        this.context = theme.context
         this.blockTopAndBottomMargins = theme.blockTopAndBottomMargins
         // 链接
         this.linkColor = theme.linkColor
@@ -831,11 +830,11 @@ public class MarkdownThemeBuilder {
     /**
      * 设置上下文
      *
-     * @param abilityContext 上下文
+     * @param context 上下文
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setAbilityContext(abilityContext: AbilityContext): MarkdownThemeBuilder {
-        this.abilityContext = abilityContext
+    public func setContext(context: Context): MarkdownThemeBuilder {
+        this.context = context
         return this
     }
 

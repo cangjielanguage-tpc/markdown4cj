@@ -3,10 +3,8 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 
 public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
     public MarkdownBaseDataSource(let data_: ArrayList<T>) {}
@@ -21,7 +19,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
         return data_[index]
     }
 
-    public func onRegisterDataChangeListener(listener: DataChangeListener): Unit {
+    public func registerDataChangeListener(listener: DataChangeListener): Unit {
         for (listeneritem in listenerOp) {
             if (refEq(listeneritem, listener)) {
                 return
@@ -30,7 +28,7 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
         listenerOp.add(listener)
     }
 
-    public func onUnregisterDataChangeListener(listener: DataChangeListener): Unit {
+    public func unregisterDataChangeListener(listener: DataChangeListener): Unit {
         var index = 0
         while (index < listenerOp.size) {
             let listeneritem = listenerOp[index]
@@ -64,20 +62,20 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
         let index = totalCount()
         data_.add(data)
         for (listeneritem in listenerOp) {
-            listeneritem.onDataAdd(index)
+            listeneritem.onDataAdd(IntNative(index))
         }
     }
 
     public func notifyDataChange(index: Int): Unit {
         for (listeneritem in listenerOp) {
-            listeneritem.onDataChange(index)
+            listeneritem.onDataChange(IntNative(index))
         }
     }
 
     public func deleteData(index: Int): Unit {
         data_.remove(at: index)
         for (listeneritem in listenerOp) {
-            listeneritem.onDataDelete(index)
+            listeneritem.onDataDelete(IntNative(index))
         }
     }
 

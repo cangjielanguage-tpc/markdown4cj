@@ -3,10 +3,8 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown图片自定义样式页面
@@ -160,6 +158,6 @@ class MarkdownImageStyleComponent {
         // 设置子组件在水平方向上的对齐格式
         .justifyContent(picStyleObj.align)
         // 点击动作触发该方法调用
-        .onClick {evt => imageOnClick(styleImage.getDestination(), markdownConfiguration.imageCallback)}
+        .onClick ({evt => imageOnClick(styleImage.getDestination(), markdownConfiguration.imageCallback)})
     }
 }

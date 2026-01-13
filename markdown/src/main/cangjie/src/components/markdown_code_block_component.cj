@@ -3,10 +3,8 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown围栏代码块、缩进代码块自定义控件
@@ -45,7 +43,7 @@ class MarkdownCodeBlockComponent {
     var marginBottom: Float64
 
     func build() {
-        Stack(Alignment.TopEnd) {
+        Stack(alignContent: Alignment.TopEnd) {
             // 代码块部分
             codeBlockComponent()
             // 复制按钮全屏按钮部分
@@ -56,7 +54,7 @@ class MarkdownCodeBlockComponent {
         // 设置外边距属性
         .margin(top: marginTop, bottom: marginBottom)
         // 组件挂载显示时触发此回调
-        .onAppear {=> stringCodeToResList()}
+        .onAppear ({=> stringCodeToResList()})
     }
 
     /**
@@ -130,7 +128,7 @@ class MarkdownCodeBlockComponent {
                     // 设置图片的缩放类型
                     .objectFit(ImageFit.Contain)
                     // 点击动作触发该方法调用
-                    .onClick {evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)}
+                    .onClick ({evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)})
             }
             // 全屏按钮
             if (markdownConfiguration.markdownTheme.codeFullScreenIcon.isSome() && codeText.trimAscii().size > 0) {
@@ -147,7 +145,7 @@ class MarkdownCodeBlockComponent {
                     // 控制当前组件显示或隐藏
                     .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
                     // 点击动作触发该方法调用
-                    .onClick {evt => codeFullScreenOnClick(codeText, info, markdownConfiguration.codeFullScreenCallback)}
+                    .onClick ({evt => codeFullScreenOnClick(codeText, info, markdownConfiguration.codeFullScreenCallback)})
             }
         }
         // 设置外边距属性

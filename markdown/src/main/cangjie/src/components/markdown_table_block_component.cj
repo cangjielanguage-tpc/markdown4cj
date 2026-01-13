@@ -3,10 +3,8 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown表格自定义控件
@@ -88,7 +86,7 @@ class MarkdownTableBlockComponent {
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 
     /**
@@ -113,7 +111,7 @@ class MarkdownTableBlockComponent {
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 
     /**
@@ -145,15 +143,15 @@ class MarkdownTableBlockComponent {
                         if (isLatexImagePixelMap(item, listPixelMap)) {
                             ImageSpan(item.pixelMap())
                                 // 设置组件自身的高度
-                                .height(pxToVp(item.height()))
+                                .height(pxToVp(getUIContext(), item.height()))
                                 // 设置组件自身的宽度
-                                .width(pxToVp(item.width()))
+                                .width(pxToVp(getUIContext(), item.width()))
                                 // 设置图片的缩放类型
                                 .objectFit(ImageFit.Contain)
                                 // 设置约束尺寸
                                 .constraintSize(maxWidth: 100.percent)
                                 // 点击动作触发该方法调用
-                                .onClick {evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px, markdownConfiguration.latexImageCallback)}
+                                .onClick ({evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px, markdownConfiguration.latexImageCallback)})
                         }
                 }
             }

@@ -3,10 +3,8 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown段落自定义页面
@@ -74,7 +72,7 @@ class MarkdownParagraphComponent {
                     } else if (item.node is StyleImage) {
                         // 图片Style
                         paragraphImageStyleComponent((item.node as StyleImage)(),
-                            parsePicStyle((item.node as StyleImage)().styles, markdownConfiguration, componentWidth))
+                            parsePicStyle(getUIContext(), (item.node as StyleImage)().styles, markdownConfiguration, componentWidth))
                     } else if (item.node is CommonmarkImage){
                         // 图片
                         paragraphImageComponent((item.node as CommonmarkImage)())
@@ -114,7 +112,7 @@ class MarkdownParagraphComponent {
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
-            .onClick {evt => tocListOnClickFunc(nodeView)}
+            .onClick ({evt => tocListOnClickFunc(nodeView)})
     }
 
     /**
@@ -139,7 +137,7 @@ class MarkdownParagraphComponent {
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
-            .onClick {evt => tocListOnClickFunc(nodeView)}
+            .onClick ({evt => tocListOnClickFunc(nodeView)})
     }
 
     /**
@@ -170,15 +168,15 @@ class MarkdownParagraphComponent {
                     if (isLatexImagePixelMap(item, listPixelMap)) {
                         ImageSpan(item.pixelMap())
                             // 设置组件自身的高度
-                            .height(pxToVp(item.height()))
+                            .height(pxToVp(getUIContext(), item.height()))
                             // 设置组件自身的宽度
-                            .width(pxToVp(item.width()))
+                            .width(pxToVp(getUIContext(), item.width()))
                             // 设置图片的缩放类型
                             .objectFit(ImageFit.Contain)
                             // 设置约束尺寸
                             .constraintSize(maxWidth: 100.percent)
                             // 点击动作触发该方法调用
-                            .onClick {evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px, markdownConfiguration.latexImageCallback)}
+                            .onClick ({evt => latexImageOnClick(item.arrayUint8(), item.height().px, item.width().px, markdownConfiguration.latexImageCallback)})
                     }
                 }
             }
