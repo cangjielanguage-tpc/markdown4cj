@@ -584,7 +584,14 @@ export class MarkdownTheme {
    *
    * @param isCodeStyle 内联代码是否是图片显示 - true：图片化显示；false：不图片化显示。默认false
    */
-  setIsCodeStyle(isCodeStyle: boolean): void
+  setIsCodeStyle(isCodeStyle: boolean): void  
+
+  /**
+   * 设置是否格式化代码块内容
+   *
+   * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
+   */
+  setIsCodeFormat(isCodeFormat: boolean): void
 
   /**
    * 设置文本、图片格式内联代码文本颜色
