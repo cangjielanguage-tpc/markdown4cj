@@ -1049,8 +1049,7 @@ func isListItem(indexListOne: ArrayList<Int64>, indexListTwo: ArrayList<Int64>, 
  */
 func urlSafeBase64Decode(v: String): String {
     var vNew = v.replace("_", "/").replace("-", "+")
-//    var arr: ?Array<Byte> = fromBase64String(vNew)
-    var arr: ?Array<Byte> = Array<Byte>()
+    var arr: ?Array<Byte> = fromBase64String(vNew)
     if (arr.isNone()) {
         return ""
     }
@@ -1061,8 +1060,7 @@ func urlSafeBase64Decode(v: String): String {
     match (matchData) {
         case Some(v) =>
             var str: String = v.matchString()
-//            var arrSplit: Array<String> = URL.parse(str).toString().split('.')
-            var arrSplit: Array<String> = Array<String>()
+            var arrSplit: Array<String> = URL.parse(str).toString().split('.')
             if (arrSplit.size > 1) {
                 return arrSplit[arrSplit.size - 1].toAsciiUpper()
             } else {

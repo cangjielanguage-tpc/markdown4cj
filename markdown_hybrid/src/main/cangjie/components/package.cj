@@ -11,10 +11,10 @@ internal import std.regex.*
 internal import std.sync.*
 internal import std.time.*
 internal import std.io.*
-//internal import stdx.net.http.*
-//internal import stdx.net.tls.*
-//internal import stdx.encoding.base64.*
-//internal import stdx.encoding.url.*
+internal import stdx.net.http.*
+internal import stdx.net.tls.*
+internal import stdx.encoding.base64.*
+internal import stdx.encoding.url.*
 
 // 内部其他包
 internal import markdown.core.*
