@@ -125,14 +125,13 @@ func rawfileToPixelmap(destination: String, context: ?Context, componentWidth: F
     return fut
 }
 
-//let client: Client = ClientBuilder().readTimeout(Duration.minute * 1).poolSize(2000).tlsConfig(getTlsClientConfig())
-//    .build()
-//
-//func getTlsClientConfig(): TlsClientConfig {
-//    var tls: TlsClientConfig = TlsClientConfig()
-//    tls.verifyMode = CertificateVerifyMode.TrustAll
-//    return tls
-//}
+let client: Client = ClientBuilder().readTimeout(Duration.minute * 1).poolSize(2000).tlsConfig(getTlsClientConfig()).build()
+
+func getTlsClientConfig(): TlsClientConfig {
+    var tls: TlsClientConfig = TlsClientConfig()
+    tls.verifyMode = CertificateVerifyMode.TrustAll
+    return tls
+}
 
 /**
  * 网络图片转PixelMap
@@ -143,72 +142,72 @@ func rawfileToPixelmap(destination: String, context: ?Context, componentWidth: F
  */
 func getImageFromHttpClient(path: String, componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64) -> Unit): Future<Unit> {
     let fut: Future<Unit> = spawn {
-//        var pixelMap: ?PixelMap = Option<PixelMap>.None
-//        var height: ?Float64 = Option<Float64>.None
-//        var width: ?Float64 = Option<Float64>.None
-//        try (imageLoadLimiter = ImageLoadLimiter()) {
-//            let str: String = path.trimAscii()
-//            if (Thread.currentThread.hasPendingCancellation) {
-//                return
-//            }
-//            let resp: HttpResponse = client.get(str)
-//            let inputStream: InputStream = resp.body
-//            let bodySize: Int64 = if (let Some(v) <- resp.bodySize) {
-//                if (v > 0) {
-//                    v
-//                } else {
-//                    2048
-//                }
-//            } else {
-//                2048
-//            }
-//            var arrDataTemp: Array<UInt8> = Array<UInt8>(bodySize, repeat: 0)
-//            let listbuf: ArrayList<UInt8> = ArrayList<UInt8>()
-//            var read: Int64 = 0
-//            do {
-//                if (Thread.currentThread.hasPendingCancellation) {
-//                    return
-//                }
-//                read = inputStream.read(arrDataTemp)
-//                listbuf.add(all: arrDataTemp[0..read])
-//            } while (read > 0)
-//            let arrData: Array<UInt8> = listbuf.toArray()
-//            if (Thread.currentThread.hasPendingCancellation) {
-//                return
-//            }
-//            var imageSource: ImageSource = createImageSource(arrData)
-//            if (Thread.currentThread.hasPendingCancellation) {
-//                imageSource.release()
-//                return
-//            }
-//            pixelMap = imageSource.createPixelMap()
-//            imageSource.release()
-//            var size = pixelMap().getImageInfo().size
-//            var sizeWidth: Float64 = Float64(size.width)
-//            var sizeHeight: Float64 = Float64(size.height)
-//            var aspectRatio: Float64 = sizeHeight / sizeWidth
-//            width = if (componentWidth > sizeWidth) {
-//                sizeWidth
-//            } else {
-//                componentWidth
-//            }
-//            height = width() * aspectRatio
-//            if (Thread.currentThread.hasPendingCancellation) {
-//                pixelMap?.release()
-//                return
-//            }
-//            pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
-//        } catch (e: Exception) {
-//        } finally {
-//            try {
-//                if (Thread.currentThread.hasPendingCancellation) {
-//                    pixelMap?.release()
-//                    return
-//                }
-//                callback(pixelMap, width, height)
-//            } catch (_) {
-//            }
-//        }
+        var pixelMap: ?PixelMap = Option<PixelMap>.None
+        var height: ?Float64 = Option<Float64>.None
+        var width: ?Float64 = Option<Float64>.None
+        try (imageLoadLimiter = ImageLoadLimiter()) {
+            let str: String = path.trimAscii()
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            let resp: HttpResponse = client.get(str)
+            let inputStream: InputStream = resp.body
+            let bodySize: Int64 = if (let Some(v) <- resp.bodySize) {
+                if (v > 0) {
+                    v
+                } else {
+                    2048
+                }
+            } else {
+                2048
+            }
+            var arrDataTemp: Array<UInt8> = Array<UInt8>(bodySize, repeat: 0)
+            let listbuf: ArrayList<UInt8> = ArrayList<UInt8>()
+            var read: Int64 = 0
+            do {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                read = inputStream.read(arrDataTemp)
+                listbuf.add(all: arrDataTemp[0..read])
+            } while (read > 0)
+            let arrData: Array<UInt8> = listbuf.toArray()
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            var imageSource: ImageSource = createImageSource(arrData)
+            if (Thread.currentThread.hasPendingCancellation) {
+                imageSource.release()
+                return
+            }
+            pixelMap = imageSource.createPixelMap()
+            imageSource.release()
+            var size = pixelMap().getImageInfo().size
+            var sizeWidth: Float64 = Float64(size.width)
+            var sizeHeight: Float64 = Float64(size.height)
+            var aspectRatio: Float64 = sizeHeight / sizeWidth
+            width = if (componentWidth > sizeWidth) {
+                sizeWidth
+            } else {
+                componentWidth
+            }
+            height = width() * aspectRatio
+            if (Thread.currentThread.hasPendingCancellation) {
+                pixelMap?.release()
+                return
+            }
+            pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
+        } catch (e: Exception) {
+        } finally {
+            try {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap?.release()
+                    return
+                }
+                callback(pixelMap, width, height)
+            } catch (_) {
+            }
+        }
     }
     return fut
 }

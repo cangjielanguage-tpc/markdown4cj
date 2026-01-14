@@ -58,8 +58,8 @@ public class MarkdownComponent {
                                 componentWidth: widthVpToPx(getUIContext(), screenWidth, markdownConfiguration.markdownTheme.imagePadding)
                             )
                         }
-//                        // 组件区域变化时触发该回调
-//                        .onAreaChange ({oldValue, newValue => indexHashMap.add(idx, newValue.position.y)})
+                        // 组件区域变化时触发该回调
+                        .onAreaChange ({oldValue, newValue => indexHashMap.add(idx, newValue.position.y().value)})
                     } else if (item.node is Paragraph) {
                         // 段落
                         ListItem() {

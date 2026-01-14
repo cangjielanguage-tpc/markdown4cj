@@ -3,14 +3,10 @@
  */
 package ohos_app_cangjie_entry
 
-import kit.PerformanceAnalysisKit.Hilog
-import kit.AbilityKit.Want
-import kit.AbilityKit.UIAbility
-import kit.AbilityKit.LaunchParam
-import kit.AbilityKit.LaunchReason
-import kit.ArkUI.WindowStage
+import kit.AbilityKit.*
+import kit.ArkUI.*
 
-//public var globalAbilityContext: ?AbilityContext = None
+public var uiAbilityContext: ?UIAbilityContext = None
 
 class MainAbility <: UIAbility {
     public init() {
@@ -19,24 +15,18 @@ class MainAbility <: UIAbility {
     }
 
     public override func onCreate(want: Want, launchParam: LaunchParam): Unit {
-//        globalAbilityContext = context
-//        AppLog.info("MainAbility OnCreated.${want.abilityName}")
+        uiAbilityContext = context
         match (launchParam.launchReason) {
-            case LaunchReason.StartAbility => ()//AppLog.info("START_ABILITY")
+            case LaunchReason.StartAbility => ()
             case _ => ()
         }
     }
 
     public override func onWindowStageCreate(windowStage: WindowStage): Unit {
-//        AppLog.info("MainAbility onWindowStageCreate.")
         windowStage.loadContent("Index")
     }
 }
 
-//func createAbility(): MainAbility {
-//    MainAbility()
-//}
-//
-//public func getGlobalAbilityContext(): AbilityContext {
-//    globalAbilityContext.getOrThrow()
-//}
+public func getUIAbilityContext(): Context {
+    uiAbilityContext.getOrThrow()
+}
