@@ -1,10 +1,8 @@
 package ohos_app_cangjie_entry
 
 import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
-import ohos.hybrid_base.*
+import kit.ArkUI.*
+import ohos.arkui.state_macro_manage.*
 import markdown.components.*
 
 @HybridComponentEntry

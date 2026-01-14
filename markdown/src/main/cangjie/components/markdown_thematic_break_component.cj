@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown分割线自定义控件

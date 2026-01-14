@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 普通网络/沙盒图片、设置图片预处理接口、API15以下
@@ -98,13 +95,13 @@ public class MarkdownImgUrlCallback14Component {
     var componentImageWidth: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
-        componentImageWidth = vp2px(componentWidthUrlCallback14.vp)().value
+        componentImageWidth = getUIContext().vp2px(componentWidthUrlCallback14.vp)().value
         imageCallPixelmap()
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除缓存数据
-        imagePixelMap?.Release()
+        imagePixelMap?.release()
         imagePixelMap = Option<PixelMap>.None
     }
 
@@ -128,11 +125,11 @@ public class MarkdownImgUrlCallback14Component {
                         // 设置图片的缩放类型
                         .objectFit(markdownConfigurationUrlCallback14.markdownTheme.imageFitType)
                         // 设置图片基于文本的对齐方式
-                        .verticalAlign(ImageSpanAlignment.CENTER)
+                        .verticalAlign(ImageSpanAlignment.Center)
                         // 设置约束尺寸，组件布局时，进行尺寸范围限制
                         .constraintSize(maxWidth: 100.percent)
                         // 点击动作触发该方法调用
-                        .onClick {evt => imageSpanOnClick(isLinkUrlCallback14, imageCallbackUrlCallback14, linkCallbackUrlCallback14, linkUrlUrlCallback14, destinationUrlCallback14)}
+                        .onClick ({evt => imageSpanOnClick(isLinkUrlCallback14, imageCallbackUrlCallback14, linkCallbackUrlCallback14, linkUrlUrlCallback14, destinationUrlCallback14)})
                         // 图片成功加载时触发该回调，返回成功加载的图片尺寸
                         .interopOnComplete {
                             imageLoadResult =>
@@ -160,10 +157,10 @@ public class MarkdownImgUrlCallback14Component {
             if (data.isSome()) {
                 var imageSource: ImageSource = createImageSource(data())
                 let pixelMap1: PixelMap = imageSource.createPixelMap()
-                var size: Size = pixelMap1.getImageInfo().size
+                var size = pixelMap1.getImageInfo().size
                 let imageWidthUrlCallback14: Float64 = Float64(size.width)
                 let imageHeightUrlCallback14: Float64 = Float64(size.height)
-                imageSource.Release()
+                imageSource.release()
                 launch {
                     this.imageWidthUrlCallback14 = imageWidthUrlCallback14
                     this.imageHeightUrlCallback14 = imageHeightUrlCallback14

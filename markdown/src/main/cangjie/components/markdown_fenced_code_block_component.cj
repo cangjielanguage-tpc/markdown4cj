@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown围栏代码块自定义控件
@@ -217,7 +214,7 @@ class MarkdownFencedCodeBlockComponent {
                         // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)
                         // 点击动作触发该方法调用
-                        .onClick {evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)}
+                        .onClick ({evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)})
                     }
 
                     if (markdownConfiguration.markdownTheme.codeFullScreenIcon.isSome()) {
@@ -257,9 +254,9 @@ class MarkdownFencedCodeBlockComponent {
                         // 控制当前组件显示或隐藏
                         .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
                         // 点击动作触发该方法调用
-                        .onClick {
+                        .onClick ({
                             evt => codeFullScreenOnClick(codeText, info, markdownConfiguration.codeFullScreenCallback)
-                        }
+                        })
                     }
                 }
                 // 设置宽度

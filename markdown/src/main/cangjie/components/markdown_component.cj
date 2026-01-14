@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 protected let prism: Prism = Prism(GrammarLocatorGrammarUtils())
 
@@ -150,7 +147,7 @@ public class MarkdownComponent {
         // 加载插件
         incBase = IncreaseParser(markdownPlugin)
         // 默认控件宽度等于屏幕宽度
-        componentWidth = px2vp(Float64(screenWidth).px).getOrThrow().value
+        componentWidth = getUIContext().px2vp(Float64(screenWidth).px).getOrThrow().value
         // 首次加载
         refreshData()
     }
@@ -330,7 +327,7 @@ public class MarkdownComponent {
                 }
             }
             // 设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
-            .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
+            .nestedScroll(NestedScrollOptions(NestedScrollMode.SelfFirst, NestedScrollMode.SelfFirst))
         } else {
             List(scroller: scroller) {
                 LazyForEach(
@@ -357,7 +354,7 @@ public class MarkdownComponent {
                 )
             }
             // 嵌套滚动选项。设置向前向后两个方向上的嵌套滚动模式，实现与父组件的滚动联动。
-            .nestedScroll(NestedScrollOptions(NestedScrollMode.PARENT_FIRST, NestedScrollMode.PARENT_FIRST))
+            .nestedScroll(NestedScrollOptions(NestedScrollMode.ParentFirst, NestedScrollMode.ParentFirst))
         }
     }
 

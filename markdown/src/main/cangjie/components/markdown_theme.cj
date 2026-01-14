@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown用户可设置的样式
@@ -46,14 +43,9 @@ import ohos.state_macro_manage.*
  */
 public class MarkdownTheme {
     /**
-     * markdown上下文 - 互操作
+     * markdown上下文
      */
-    protected var stageContext: ?StageContext = None
-
-    /**
-     * markdown上下文 - 仓颉
-     */
-    protected var abilityContext: ?AbilityContext = None
+    protected var context: ?Context = None
 
     /**
      * markdown是否同步解析
@@ -108,7 +100,7 @@ public class MarkdownTheme {
     /**
      * 文本格式链接背景颜色
      */
-    protected var linkBackGroupColor: Color = Color.TRANSPARENT
+    protected var linkBackGroupColor: Color = Color.Transparent
 
     /**
      * 文本格式是否显示链接下划线
@@ -118,7 +110,7 @@ public class MarkdownTheme {
     /**
      * 圆形图片格式链接主题背景颜色
      */
-    protected var linkCircleImageBackGroupColor: Color = Color.TRANSPARENT
+    protected var linkCircleImageBackGroupColor: Color = Color.Transparent
 
     /**
      * 圆形图片格式链接控件背景颜色
@@ -128,7 +120,7 @@ public class MarkdownTheme {
     /**
      * 圆形图片格式链接文字大小
      */
-    protected var linkCircleImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+    protected var linkCircleImageTextSize: Float64 = 14.0
 
     /**
      * 圆形图片格式链接文字颜色
@@ -138,7 +130,7 @@ public class MarkdownTheme {
     /**
      * 圆形图片格式链接半径
      */
-    protected var linkCircleImageRadius: Float64 = vp2px(20.0.vp).getOrThrow().value
+    protected var linkCircleImageRadius: Float64 = 20.0
 
     /**
      * 圆形图片格式链接左右外边距
@@ -148,7 +140,7 @@ public class MarkdownTheme {
     /**
      * 圆角矩形图片格式链接主题背景颜色
      */
-    protected var linkRectImageBackGroupColor: Color = Color.TRANSPARENT
+    protected var linkRectImageBackGroupColor: Color = Color.Transparent
 
     /**
      * 圆角矩形图片格式链接控件背景颜色
@@ -158,7 +150,7 @@ public class MarkdownTheme {
     /**
      * 圆角矩形图片格式链接文字大小
      */
-    protected var linkRectImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+    protected var linkRectImageTextSize: Float64 = 14.0
 
     /**
      * 圆角矩形图片格式链接文字颜色
@@ -168,17 +160,17 @@ public class MarkdownTheme {
     /**
      * 圆角矩形图片格式链接控件高度
      */
-    protected var linkRectImageHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
+    protected var linkRectImageHeight: Float64 = 20.0
 
     /**
      * 圆角矩形图片格式链接左右内边距
      */
-    protected var linkRectImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
+    protected var linkRectImagePadding: Float64 = 6.0
 
     /**
      * 圆角矩形图片格式链接圆角半径
      */
-    protected var linkRectImageRadius: Float64 = vp2px(6.0.vp).getOrThrow().value
+    protected var linkRectImageRadius: Float64 = 6.0
 
     /**
      * 圆角矩形图片格式链接左右外边距
@@ -188,7 +180,7 @@ public class MarkdownTheme {
     /**
      * 空心圆角矩形图片格式链接主题背景颜色
      */
-    protected var linkRectToolImageBackGroupColor: Color = Color.TRANSPARENT
+    protected var linkRectToolImageBackGroupColor: Color = Color.Transparent
 
     /**
      * 空心圆角矩形图片格式链接控件背景颜色
@@ -198,27 +190,27 @@ public class MarkdownTheme {
     /**
      * 空心圆角矩形图片格式链接文字大小
      */
-    protected var linkRectToolImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+    protected var linkRectToolImageTextSize: Float64 = 14.0
 
     /**
      * 空心圆角矩形图片格式链接控件高度
      */
-    protected var linkRectToolImageHeight: Float64 = vp2px(21.0.vp).getOrThrow().value
+    protected var linkRectToolImageHeight: Float64 = 21.0
 
     /**
      * 空心圆角矩形图片格式链接左右内边距
      */
-    protected var linkRectToolImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
+    protected var linkRectToolImagePadding: Float64 = 6.0
 
     /**
      * 空心圆角矩形图片格式链接边框宽度
      */
-    protected var linkRectToolImageBorderWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
+    protected var linkRectToolImageBorderWidth: Float64 = 1.0
 
     /**
      * 空心圆角矩形图片格式链接分割线宽度
      */
-    protected var linkRectToolImageDividingLineWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
+    protected var linkRectToolImageDividingLineWidth: Float64 = 1.0
 
     /**
      * 空心圆角矩形图片格式链接左右外边距
@@ -228,12 +220,12 @@ public class MarkdownTheme {
     /**
      * 空心圆角矩形图片格式分割线和文本左边距
      */
-    protected var linkRectToolImageLineLeftPadding: Float64 = vp2px(3.0.vp).getOrThrow().value
+    protected var linkRectToolImageLineLeftPadding: Float64 = 3.0
 
     /**
      * 空心圆角矩形图片格式分割线和文本右边距
      */
-    protected var linkRectToolImageLineRightPadding: Float64 = vp2px(3.0.vp).getOrThrow().value
+    protected var linkRectToolImageLineRightPadding: Float64 = 3.0
 
     /**
      * 块引用左边距
@@ -348,7 +340,7 @@ public class MarkdownTheme {
     /**
      * 文本/图片格式内联代码文本大小
      */
-    protected var codeTextSize: Float64 = fp2px(13.0.fp).getOrThrow().value
+    protected var codeTextSize: Float64 = 13.0
 
     /**
      * 文本格式内联代码文本字体
@@ -358,12 +350,12 @@ public class MarkdownTheme {
     /**
      * 图片格式内联代码文本左右边距
      */
-    protected var codeLeftAndRightPadding: Float64 = vp2px(4.0.vp).getOrThrow().value
+    protected var codeLeftAndRightPadding: Float64 = 4.0
 
     /**
      * 图片格式内联代码文本高度
      */
-    protected var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
+    protected var codeHeight: Float64 = 20.0
 
     /**
      * 围栏代码块代码高亮是否同步解析
@@ -468,22 +460,22 @@ public class MarkdownTheme {
     /**
      * 组合代码块选中标题文本颜色
      */
-    protected var codeListTitleSelectTextColor: Color = Color.RED
+    protected var codeListTitleSelectTextColor: Color = Color.Red
 
     /**
      * 组合代码块未选中标题文本颜色
      */
-    protected var codeListTitleUnSelectTextColor: Color = Color.BLACK
+    protected var codeListTitleUnSelectTextColor: Color = Color.Black
 
     /**
      * 组合代码块选中标题背景颜色
      */
-    protected var codeListTitleSelectBackGroupColor: Color = Color.GRAY
+    protected var codeListTitleSelectBackGroupColor: Color = Color.Gray
 
     /**
      * 组合代码块未选中标题背景颜色
      */
-    protected var codeListTitleUnSelectBackGroupColor: Color = Color.TRANSPARENT
+    protected var codeListTitleUnSelectBackGroupColor: Color = Color.Transparent
 
     /**
      * 是否单独代码块显示
@@ -638,12 +630,12 @@ public class MarkdownTheme {
     /**
      * 数学公式文本大小
      */
-    protected var latexMathTextSize: Float64 = fp2px(16.0.fp)().value
+    protected var latexMathTextSize: Float64 = 16.0
 
     /**
      * 数学公式背景色
      */
-    protected var latexMathBackGroupColor: Color = Color.TRANSPARENT
+    protected var latexMathBackGroupColor: Color = Color.Transparent
 
     /**
      * 数学公式文本颜色
@@ -693,12 +685,12 @@ public class MarkdownTheme {
     /**
      * 音频按钮背景颜色
      */
-    protected var audioButtonBackgroundColor: Color = Color.BLACK
+    protected var audioButtonBackgroundColor: Color = Color.Black
 
     /**
      * 音频按钮文字颜色
      */
-    protected var audioButtonTextColor: Color = Color.WHITE
+    protected var audioButtonTextColor: Color = Color.White
 
     /**
      * 音频按钮文字大小
@@ -723,7 +715,7 @@ public class MarkdownTheme {
     /**
      * 音频标题文字颜色
      */
-    protected var audioTitleTextColor: Color = Color.BLACK
+    protected var audioTitleTextColor: Color = Color.Black
 
     /**
      * 音频标题文字行高
@@ -773,7 +765,7 @@ public class MarkdownTheme {
     /**
      * 视频时间文本颜色
      */
-    protected var videoTimeTextColor: Color = Color.WHITE
+    protected var videoTimeTextColor: Color = Color.White
 
     /**
      * 视频时间文本大小
@@ -962,8 +954,7 @@ public class MarkdownTheme {
 
     protected init(builder: MarkdownThemeBuilder) {
         // 1、上下文
-        this.stageContext = builder.stageContext
-        this.abilityContext = builder.abilityContext
+        this.context = builder.context
 
         this.isMarkdownParserSync = builder.isMarkdownParserSync
         this.isOnCopy = builder.isOnCopy
@@ -1058,7 +1049,6 @@ public class MarkdownTheme {
         this.codeMultilineRightMargin = builder.codeMultilineRightMargin
         this.codeTypeface = builder.codeTypeface
         this.codeBlockTypeface = builder.codeBlockTypeface
-        this.codeTextSize = builder.codeTextSize
         this.codeBlockTextSize = builder.codeBlockTextSize
         this.codeBlockLineHeight = builder.codeBlockLineHeight
         this.codeBlockRadius = builder.codeBlockRadius
@@ -1236,17 +1226,17 @@ public class MarkdownTheme {
         // 3、链接
         // 3.1、文本格式链接
         markdownThemeBuilder.setLinkColor(COLOR_FF0000FF) // 链接文本颜色
-        markdownThemeBuilder.setLinkBackGroupColor(Color.TRANSPARENT) // 链接背景颜色
+        markdownThemeBuilder.setLinkBackGroupColor(Color.Transparent) // 链接背景颜色
         // 3.2、圆形图片格式链接
-        markdownThemeBuilder.setLinkCircleImageBackGroupColor(Color.TRANSPARENT) // 圆形图片链接主题背景颜色
+        markdownThemeBuilder.setLinkCircleImageBackGroupColor(Color.Transparent) // 圆形图片链接主题背景颜色
         markdownThemeBuilder.setLinkCircleImageButtonBackGroupColor(COLOR_FF000000) // 圆形图片链接控件背景颜色
         markdownThemeBuilder.setLinkCircleImageTextColor(COLOR_FFFFFFFF) // 圆形图片链接文字颜色
         // 3.3、圆角矩形图片格式链接
-        markdownThemeBuilder.setLinkRectImageBackGroupColor(Color.TRANSPARENT) // 圆角矩形图片链接主题背景颜色
+        markdownThemeBuilder.setLinkRectImageBackGroupColor(Color.Transparent) // 圆角矩形图片链接主题背景颜色
         markdownThemeBuilder.setLinkRectImageButtonBackGroupColor(COLOR_FF000000) // 圆角矩形图片链接控件背景颜色
         markdownThemeBuilder.setLinkRectImageTextColor(COLOR_FFFFFFFF) // 圆角矩形图片链接文字颜色
         // 3.4、空心圆角矩形图片格式链接
-        markdownThemeBuilder.setLinkRectToolImageBackGroupColor(Color.TRANSPARENT) // 空心圆角矩形图片链接主题背景颜色
+        markdownThemeBuilder.setLinkRectToolImageBackGroupColor(Color.Transparent) // 空心圆角矩形图片链接主题背景颜色
         markdownThemeBuilder.setLinkRectToolImageButtonBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接控件背景颜色
 
         // 4、列表
@@ -1264,10 +1254,10 @@ public class MarkdownTheme {
         markdownThemeBuilder.setCodeBackgroundColor(COLOR_FFEAEAEA) // 文本、图片格式内联代码背景颜色
         // 5.2、代码块
         // 5.3、组合代码
-        markdownThemeBuilder.setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
-        markdownThemeBuilder.setCodeListTitleUnSelectTextColor(Color.BLACK) // 组合代码未选中标题文本颜色
-        markdownThemeBuilder.setCodeListTitleSelectBackGroupColor(Color.GRAY) // 组合代码选中标题背景颜色
-        markdownThemeBuilder.setCodeListTitleUnSelectBackGroupColor(Color.TRANSPARENT) // 组合代码未选中标题背景颜色
+        markdownThemeBuilder.setCodeListTitleSelectTextColor(Color.Red) // 组合代码选中标题文本颜色
+        markdownThemeBuilder.setCodeListTitleUnSelectTextColor(Color.Black) // 组合代码未选中标题文本颜色
+        markdownThemeBuilder.setCodeListTitleSelectBackGroupColor(Color.Gray) // 组合代码选中标题背景颜色
+        markdownThemeBuilder.setCodeListTitleUnSelectBackGroupColor(Color.Transparent) // 组合代码未选中标题背景颜色
         // 5.4、单独代码块
 
         // 6、标题
@@ -1283,19 +1273,19 @@ public class MarkdownTheme {
         // 9、软换行
 
         // 10、数学公式
-        markdownThemeBuilder.setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
+        markdownThemeBuilder.setLatexMathBackGroupColor(Color.Transparent) // 数学公式背景色
         markdownThemeBuilder.setLatexMathTextColor(COLOR_FF000000) // 数学公式文本颜色
 
         // 11、音频
         markdownThemeBuilder.setAudioShadowColor(COLOR_1A000000) // 音频阴影颜色值
         markdownThemeBuilder.setAudioBorderColor(COLOR_33000000) // 音频边框颜色
-        markdownThemeBuilder.setAudioButtonBackgroundColor(Color.BLACK) // 音频按钮背景颜色
-        markdownThemeBuilder.setAudioButtonTextColor(Color.WHITE) // 音频按钮文字颜色
-        markdownThemeBuilder.setAudioTitleTextColor(Color.BLACK) // 音频标题文字颜色
+        markdownThemeBuilder.setAudioButtonBackgroundColor(Color.Black) // 音频按钮背景颜色
+        markdownThemeBuilder.setAudioButtonTextColor(Color.White) // 音频按钮文字颜色
+        markdownThemeBuilder.setAudioTitleTextColor(Color.Black) // 音频标题文字颜色
         markdownThemeBuilder.setAudioTypeTextColor(COLOR_80000000) // 音频类型文字颜色
 
         // 12、视频
-        markdownThemeBuilder.setVideoTimeTextColor(Color.WHITE) // 视频时间文本颜色
+        markdownThemeBuilder.setVideoTimeTextColor(Color.White) // 视频时间文本颜色
 
         // 13、图片banner
 
@@ -1331,17 +1321,17 @@ public class MarkdownTheme {
         // 3、链接
         // 3.1、文本格式链接
         markdownThemeBuilder.setLinkColor(COLOR_FF0000FF) // 链接文本颜色
-        markdownThemeBuilder.setLinkBackGroupColor(Color.TRANSPARENT) // 链接背景颜色
+        markdownThemeBuilder.setLinkBackGroupColor(Color.Transparent) // 链接背景颜色
         // 3.2、圆形图片格式链接
-        markdownThemeBuilder.setLinkCircleImageBackGroupColor(Color.TRANSPARENT) // 圆形图片链接主题背景颜色
+        markdownThemeBuilder.setLinkCircleImageBackGroupColor(Color.Transparent) // 圆形图片链接主题背景颜色
         markdownThemeBuilder.setLinkCircleImageButtonBackGroupColor(COLOR_FFFFFFFF) // 圆形图片链接控件背景颜色
         markdownThemeBuilder.setLinkCircleImageTextColor(COLOR_FF000000) // 圆形图片链接文字颜色
         // 3.3、圆角矩形图片格式链接
-        markdownThemeBuilder.setLinkRectImageBackGroupColor(Color.TRANSPARENT) // 圆角矩形图片链接主题背景颜色
+        markdownThemeBuilder.setLinkRectImageBackGroupColor(Color.Transparent) // 圆角矩形图片链接主题背景颜色
         markdownThemeBuilder.setLinkRectImageButtonBackGroupColor(COLOR_FFFFFFFF) // 圆角矩形图片链接控件背景颜色
         markdownThemeBuilder.setLinkRectImageTextColor(COLOR_FF000000) // 圆角矩形图片链接文字颜色
         // 3.4、空心圆角矩形图片格式链接
-        markdownThemeBuilder.setLinkRectToolImageBackGroupColor(Color.TRANSPARENT) // 空心圆角矩形图片链接主题背景颜色
+        markdownThemeBuilder.setLinkRectToolImageBackGroupColor(Color.Transparent) // 空心圆角矩形图片链接主题背景颜色
         markdownThemeBuilder.setLinkRectToolImageButtonBackGroupColor(COLOR_FF000000) // 空心圆角矩形图片链接控件背景颜色
 
         // 4、列表
@@ -1359,10 +1349,10 @@ public class MarkdownTheme {
         markdownThemeBuilder.setCodeBackgroundColor(COLOR_FF2D2D2D) // 文本、图片格式内联代码背景颜色
         // 5.2、代码块
         // 5.3、组合代码
-        markdownThemeBuilder.setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
-        markdownThemeBuilder.setCodeListTitleUnSelectTextColor(Color.BLACK) // 组合代码未选中标题文本颜色
-        markdownThemeBuilder.setCodeListTitleSelectBackGroupColor(Color.GRAY) // 组合代码选中标题背景颜色
-        markdownThemeBuilder.setCodeListTitleUnSelectBackGroupColor(Color.TRANSPARENT) // 组合代码未选中标题背景颜色
+        markdownThemeBuilder.setCodeListTitleSelectTextColor(Color.Red) // 组合代码选中标题文本颜色
+        markdownThemeBuilder.setCodeListTitleUnSelectTextColor(Color.Black) // 组合代码未选中标题文本颜色
+        markdownThemeBuilder.setCodeListTitleSelectBackGroupColor(Color.Gray) // 组合代码选中标题背景颜色
+        markdownThemeBuilder.setCodeListTitleUnSelectBackGroupColor(Color.Transparent) // 组合代码未选中标题背景颜色
         // 5.4、单独代码块
 
         // 6、标题
@@ -1378,19 +1368,19 @@ public class MarkdownTheme {
         // 9、软换行
 
         // 10、数学公式
-        markdownThemeBuilder.setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
+        markdownThemeBuilder.setLatexMathBackGroupColor(Color.Transparent) // 数学公式背景色
         markdownThemeBuilder.setLatexMathTextColor(COLOR_FFFFFFFF) // 数学公式文本颜色
 
         // 11、音频
         markdownThemeBuilder.setAudioShadowColor(COLOR_1AFFFFFF) // 音频阴影颜色值
         markdownThemeBuilder.setAudioBorderColor(COLOR_33FFFFFF) // 音频边框颜色
-        markdownThemeBuilder.setAudioButtonBackgroundColor(Color.WHITE) // 音频按钮背景颜色
-        markdownThemeBuilder.setAudioButtonTextColor(Color.BLACK) // 音频按钮文字颜色
-        markdownThemeBuilder.setAudioTitleTextColor(Color.WHITE) // 音频标题文字颜色
+        markdownThemeBuilder.setAudioButtonBackgroundColor(Color.White) // 音频按钮背景颜色
+        markdownThemeBuilder.setAudioButtonTextColor(Color.Black) // 音频按钮文字颜色
+        markdownThemeBuilder.setAudioTitleTextColor(Color.White) // 音频标题文字颜色
         markdownThemeBuilder.setAudioTypeTextColor(COLOR_80FFFFFF) // 音频类型文字颜色
 
         // 12、视频
-        markdownThemeBuilder.setVideoTimeTextColor(Color.BLACK) // 视频时间文本颜色
+        markdownThemeBuilder.setVideoTimeTextColor(Color.Black) // 视频时间文本颜色
 
         // 13、图片banner
 
@@ -1427,14 +1417,9 @@ public class MarkdownTheme {
  */
 public class MarkdownThemeBuilder {
     /**
-     * markdown上下文 - 互操作
+     * markdown上下文
      */
-    var stageContext: ?StageContext = None
-
-    /**
-     * markdown上下文 - 仓颉
-     */
-    var abilityContext: ?AbilityContext = None
+    var context: ?Context = None
 
     /**
      * markdown是否同步解析
@@ -1489,7 +1474,7 @@ public class MarkdownThemeBuilder {
     /**
      * 文本格式链接背景颜色
      */
-    var linkBackGroupColor: Color = Color.TRANSPARENT
+    var linkBackGroupColor: Color = Color.Transparent
 
     /**
      * 文本格式是否显示链接下划线
@@ -1499,7 +1484,7 @@ public class MarkdownThemeBuilder {
     /**
      * 圆形图片格式链接主题背景颜色
      */
-    var linkCircleImageBackGroupColor: Color = Color.TRANSPARENT
+    var linkCircleImageBackGroupColor: Color = Color.Transparent
 
     /**
      * 圆形图片格式链接控件背景颜色
@@ -1509,7 +1494,7 @@ public class MarkdownThemeBuilder {
     /**
      * 圆形图片格式链接文字大小
      */
-    var linkCircleImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+    var linkCircleImageTextSize: Float64 = 14.0
 
     /**
      * 圆形图片格式链接文字颜色
@@ -1519,7 +1504,7 @@ public class MarkdownThemeBuilder {
     /**
      * 圆形图片格式链接半径
      */
-    var linkCircleImageRadius: Float64 = vp2px(20.0.vp).getOrThrow().value
+    var linkCircleImageRadius: Float64 = 20.0
 
     /**
      * 圆形图片格式链接左右外边距
@@ -1529,7 +1514,7 @@ public class MarkdownThemeBuilder {
     /**
      * 圆角矩形图片格式链接主题背景颜色
      */
-    var linkRectImageBackGroupColor: Color = Color.TRANSPARENT
+    var linkRectImageBackGroupColor: Color = Color.Transparent
 
     /**
      * 圆角矩形图片格式链接控件背景颜色
@@ -1539,7 +1524,7 @@ public class MarkdownThemeBuilder {
     /**
      * 圆角矩形图片格式链接文字大小
      */
-    var linkRectImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+    var linkRectImageTextSize: Float64 = 14.0
 
     /**
      * 圆角矩形图片格式链接文字颜色
@@ -1549,17 +1534,17 @@ public class MarkdownThemeBuilder {
     /**
      * 圆角矩形图片格式链接控件高度
      */
-    var linkRectImageHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
+    var linkRectImageHeight: Float64 = 20.0
 
     /**
      * 圆角矩形图片格式链接左右内边距
      */
-    var linkRectImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
+    var linkRectImagePadding: Float64 = 6.0
 
     /**
      * 圆角矩形图片格式链接圆角半径
      */
-    var linkRectImageRadius: Float64 = vp2px(6.0.vp).getOrThrow().value
+    var linkRectImageRadius: Float64 = 6.0
 
     /**
      * 圆角矩形图片格式链接左右外边距
@@ -1569,7 +1554,7 @@ public class MarkdownThemeBuilder {
     /**
      * 空心圆角矩形图片格式链接主题背景颜色
      */
-    var linkRectToolImageBackGroupColor: Color = Color.TRANSPARENT
+    var linkRectToolImageBackGroupColor: Color = Color.Transparent
 
     /**
      * 空心圆角矩形图片格式链接控件背景颜色
@@ -1579,27 +1564,27 @@ public class MarkdownThemeBuilder {
     /**
      * 空心圆角矩形图片格式链接文字大小
      */
-    var linkRectToolImageTextSize: Float64 = fp2px(14.0.fp).getOrThrow().value
+    var linkRectToolImageTextSize: Float64 = 14.0
 
     /**
      * 空心圆角矩形图片格式链接控件高度
      */
-    var linkRectToolImageHeight: Float64 = vp2px(21.0.vp).getOrThrow().value
+    var linkRectToolImageHeight: Float64 = 21.0
 
     /**
      * 空心圆角矩形图片格式链接左右内边距
      */
-    var linkRectToolImagePadding: Float64 = vp2px(6.0.vp).getOrThrow().value
+    var linkRectToolImagePadding: Float64 = 6.0
 
     /**
      * 空心圆角矩形图片格式链接边框宽度
      */
-    var linkRectToolImageBorderWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
+    var linkRectToolImageBorderWidth: Float64 = 1.0
 
     /**
      * 空心圆角矩形图片格式链接分割线宽度
      */
-    var linkRectToolImageDividingLineWidth: Float64 = vp2px(1.0.vp).getOrThrow().value
+    var linkRectToolImageDividingLineWidth: Float64 = 1.0
 
     /**
      * 空心圆角矩形图片格式链接左右外边距
@@ -1609,12 +1594,12 @@ public class MarkdownThemeBuilder {
     /**
      * 空心圆角矩形图片格式分割线和文本左边距
      */
-    var linkRectToolImageLineLeftPadding: Float64 = vp2px(3.0.vp).getOrThrow().value
+    var linkRectToolImageLineLeftPadding: Float64 = 3.0
 
     /**
      * 空心圆角矩形图片格式分割线和文本右边距
      */
-    var linkRectToolImageLineRightPadding: Float64 = vp2px(3.0.vp).getOrThrow().value
+    var linkRectToolImageLineRightPadding: Float64 = 3.0
 
     /**
      * 块引用左边距
@@ -1729,7 +1714,7 @@ public class MarkdownThemeBuilder {
     /**
      * 文本/图片格式内联代码文本大小
      */
-    var codeTextSize: Float64 = fp2px(13.0.fp).getOrThrow().value
+    var codeTextSize: Float64 = 13.0
 
     /**
      * 文本格式内联代码文本字体
@@ -1739,12 +1724,12 @@ public class MarkdownThemeBuilder {
     /**
      * 图片格式内联代码文本左右边距
      */
-    var codeLeftAndRightPadding: Float64 = vp2px(4.0.vp).getOrThrow().value
+    var codeLeftAndRightPadding: Float64 = 4.0
 
     /**
      * 图片格式内联代码文本高度
      */
-    var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
+    var codeHeight: Float64 = 20.0
 
     /**
      * 围栏代码块代码高亮是否同步解析
@@ -1849,22 +1834,22 @@ public class MarkdownThemeBuilder {
     /**
      * 组合代码块选中标题文本颜色
      */
-    var codeListTitleSelectTextColor: Color = Color.RED
+    var codeListTitleSelectTextColor: Color = Color.Red
 
     /**
      * 组合代码块未选中标题文本颜色
      */
-    var codeListTitleUnSelectTextColor: Color = Color.BLACK
+    var codeListTitleUnSelectTextColor: Color = Color.Black
 
     /**
      * 组合代码块选中标题背景颜色
      */
-    var codeListTitleSelectBackGroupColor: Color = Color.GRAY
+    var codeListTitleSelectBackGroupColor: Color = Color.Gray
 
     /**
      * 组合代码块未选中标题背景颜色
      */
-    var codeListTitleUnSelectBackGroupColor: Color = Color.TRANSPARENT
+    var codeListTitleUnSelectBackGroupColor: Color = Color.Transparent
 
     /**
      * 是否单独代码块显示
@@ -2019,12 +2004,12 @@ public class MarkdownThemeBuilder {
     /**
      * 数学公式文本大小
      */
-    var latexMathTextSize: Float64 = fp2px(16.0.fp)().value
+    var latexMathTextSize: Float64 = 16.0
 
     /**
      * 数学公式背景色
      */
-    var latexMathBackGroupColor: Color = Color.TRANSPARENT
+    var latexMathBackGroupColor: Color = Color.Transparent
 
     /**
      * 数学公式文本颜色
@@ -2074,12 +2059,12 @@ public class MarkdownThemeBuilder {
     /**
      * 音频按钮背景颜色
      */
-    var audioButtonBackgroundColor: Color = Color.BLACK
+    var audioButtonBackgroundColor: Color = Color.Black
 
     /**
      * 音频按钮文字颜色
      */
-    var audioButtonTextColor: Color = Color.WHITE
+    var audioButtonTextColor: Color = Color.White
 
     /**
      * 音频按钮文字大小
@@ -2104,7 +2089,7 @@ public class MarkdownThemeBuilder {
     /**
      * 音频标题文字颜色
      */
-    var audioTitleTextColor: Color = Color.BLACK
+    var audioTitleTextColor: Color = Color.Black
 
     /**
      * 音频标题文字行高
@@ -2154,7 +2139,7 @@ public class MarkdownThemeBuilder {
     /**
      * 视频时间文本颜色
      */
-    var videoTimeTextColor: Color = Color.WHITE
+    var videoTimeTextColor: Color = Color.White
 
     /**
      * 视频时间文本大小
@@ -2346,8 +2331,7 @@ public class MarkdownThemeBuilder {
 
     init(theme: MarkdownTheme) {
         // 1、上下文
-        this.stageContext = theme.stageContext
-        this.abilityContext = theme.abilityContext
+        this.context = theme.context
 
         this.isMarkdownParserSync = theme.isMarkdownParserSync
         this.isOnCopy = theme.isOnCopy
@@ -2440,9 +2424,7 @@ public class MarkdownThemeBuilder {
         this.codeBlockBackgroundColor = theme.codeBlockBackgroundColor
         this.codeMultilineMargin = theme.codeMultilineMargin
         this.codeMultilineRightMargin = theme.codeMultilineRightMargin
-        this.codeTypeface = theme.codeTypeface
         this.codeBlockTypeface = theme.codeBlockTypeface
-        this.codeTextSize = theme.codeTextSize
         this.codeBlockTextSize = theme.codeBlockTextSize
         this.codeBlockLineHeight = theme.codeBlockLineHeight
         this.codeBlockRadius = theme.codeBlockRadius
@@ -2600,17 +2582,17 @@ public class MarkdownThemeBuilder {
         // 3、链接
         // 3.1、文本格式链接
         setLinkColor(COLOR_FF0000FF) // 链接文本颜色
-        setLinkBackGroupColor(Color.TRANSPARENT) // 链接背景颜色
+        setLinkBackGroupColor(Color.Transparent) // 链接背景颜色
         // 3.2、圆形图片格式链接
-        setLinkCircleImageBackGroupColor(Color.TRANSPARENT) // 圆形图片链接主题背景颜色
+        setLinkCircleImageBackGroupColor(Color.Transparent) // 圆形图片链接主题背景颜色
         setLinkCircleImageButtonBackGroupColor(COLOR_FF000000) // 圆形图片链接控件背景颜色
         setLinkCircleImageTextColor(COLOR_FFFFFFFF) // 圆形图片链接文字颜色
         // 3.3、圆角矩形图片格式链接
-        setLinkRectImageBackGroupColor(Color.TRANSPARENT) // 圆角矩形图片链接主题背景颜色
+        setLinkRectImageBackGroupColor(Color.Transparent) // 圆角矩形图片链接主题背景颜色
         setLinkRectImageButtonBackGroupColor(COLOR_FF000000) // 圆角矩形图片链接控件背景颜色
         setLinkRectImageTextColor(COLOR_FFFFFFFF) // 圆角矩形图片链接文字颜色
         // 3.4、空心圆角矩形图片格式链接
-        setLinkRectToolImageBackGroupColor(Color.TRANSPARENT) // 空心圆角矩形图片链接主题背景颜色
+        setLinkRectToolImageBackGroupColor(Color.Transparent) // 空心圆角矩形图片链接主题背景颜色
         setLinkRectToolImageButtonBackGroupColor(COLOR_FFFFFFFF) // 空心圆角矩形图片链接控件背景颜色
 
         // 4、列表
@@ -2628,10 +2610,10 @@ public class MarkdownThemeBuilder {
         setCodeBackgroundColor(COLOR_FFEAEAEA) // 文本、图片格式内联代码背景颜色
         // 5.2、代码块
         // 5.3、组合代码
-        setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
-        setCodeListTitleUnSelectTextColor(Color.BLACK) // 组合代码未选中标题文本颜色
-        setCodeListTitleSelectBackGroupColor(Color.GRAY) // 组合代码选中标题背景颜色
-        setCodeListTitleUnSelectBackGroupColor(Color.TRANSPARENT) // 组合代码未选中标题背景颜色
+        setCodeListTitleSelectTextColor(Color.Red) // 组合代码选中标题文本颜色
+        setCodeListTitleUnSelectTextColor(Color.Black) // 组合代码未选中标题文本颜色
+        setCodeListTitleSelectBackGroupColor(Color.Gray) // 组合代码选中标题背景颜色
+        setCodeListTitleUnSelectBackGroupColor(Color.Transparent) // 组合代码未选中标题背景颜色
         // 5.4、单独代码块
 
         // 6、标题
@@ -2647,19 +2629,19 @@ public class MarkdownThemeBuilder {
         // 9、软换行
 
         // 10、数学公式
-        setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
+        setLatexMathBackGroupColor(Color.Transparent) // 数学公式背景色
         setLatexMathTextColor(COLOR_FF000000) // 数学公式文本颜色
 
         // 11、音频
         setAudioShadowColor(COLOR_1A000000) // 音频阴影颜色值
         setAudioBorderColor(COLOR_33000000) // 音频边框颜色
-        setAudioButtonBackgroundColor(Color.BLACK) // 音频按钮背景颜色
-        setAudioButtonTextColor(Color.WHITE) // 音频按钮文字颜色
-        setAudioTitleTextColor(Color.BLACK) // 音频标题文字颜色
+        setAudioButtonBackgroundColor(Color.Black) // 音频按钮背景颜色
+        setAudioButtonTextColor(Color.White) // 音频按钮文字颜色
+        setAudioTitleTextColor(Color.Black) // 音频标题文字颜色
         setAudioTypeTextColor(COLOR_80000000) // 音频类型文字颜色
 
         // 12、视频
-        setVideoTimeTextColor(Color.WHITE) // 视频时间文本颜色
+        setVideoTimeTextColor(Color.White) // 视频时间文本颜色
 
         // 13、图片banner
 
@@ -2693,17 +2675,17 @@ public class MarkdownThemeBuilder {
         // 3、链接
         // 3.1、文本格式链接
         setLinkColor(COLOR_FF0000FF) // 链接文本颜色
-        setLinkBackGroupColor(Color.TRANSPARENT) // 链接背景颜色
+        setLinkBackGroupColor(Color.Transparent) // 链接背景颜色
         // 3.2、圆形图片格式链接
-        setLinkCircleImageBackGroupColor(Color.TRANSPARENT) // 圆形图片链接主题背景颜色
+        setLinkCircleImageBackGroupColor(Color.Transparent) // 圆形图片链接主题背景颜色
         setLinkCircleImageButtonBackGroupColor(COLOR_FFFFFFFF) // 圆形图片链接控件背景颜色
         setLinkCircleImageTextColor(COLOR_FF000000) // 圆形图片链接文字颜色
         // 3.3、圆角矩形图片格式链接
-        setLinkRectImageBackGroupColor(Color.TRANSPARENT) // 圆角矩形图片链接主题背景颜色
+        setLinkRectImageBackGroupColor(Color.Transparent) // 圆角矩形图片链接主题背景颜色
         setLinkRectImageButtonBackGroupColor(COLOR_FFFFFFFF) // 圆角矩形图片链接控件背景颜色
         setLinkRectImageTextColor(COLOR_FF000000) // 圆角矩形图片链接文字颜色
         // 3.4、空心圆角矩形图片格式链接
-        setLinkRectToolImageBackGroupColor(Color.TRANSPARENT) // 空心圆角矩形图片链接主题背景颜色
+        setLinkRectToolImageBackGroupColor(Color.Transparent) // 空心圆角矩形图片链接主题背景颜色
         setLinkRectToolImageButtonBackGroupColor(COLOR_FF000000) // 空心圆角矩形图片链接控件背景颜色
 
         // 4、列表
@@ -2721,10 +2703,10 @@ public class MarkdownThemeBuilder {
         setCodeBackgroundColor(COLOR_FF2D2D2D) // 文本、图片格式内联代码背景颜色
         // 5.2、代码块
         // 5.3、组合代码
-        setCodeListTitleSelectTextColor(Color.RED) // 组合代码选中标题文本颜色
-        setCodeListTitleUnSelectTextColor(Color.BLACK) // 组合代码未选中标题文本颜色
-        setCodeListTitleSelectBackGroupColor(Color.GRAY) // 组合代码选中标题背景颜色
-        setCodeListTitleUnSelectBackGroupColor(Color.TRANSPARENT) // 组合代码未选中标题背景颜色
+        setCodeListTitleSelectTextColor(Color.Red) // 组合代码选中标题文本颜色
+        setCodeListTitleUnSelectTextColor(Color.Black) // 组合代码未选中标题文本颜色
+        setCodeListTitleSelectBackGroupColor(Color.Gray) // 组合代码选中标题背景颜色
+        setCodeListTitleUnSelectBackGroupColor(Color.Transparent) // 组合代码未选中标题背景颜色
         // 5.4、单独代码块
 
         // 6、标题
@@ -2740,19 +2722,19 @@ public class MarkdownThemeBuilder {
         // 9、软换行
 
         // 10、数学公式
-        setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
+        setLatexMathBackGroupColor(Color.Transparent) // 数学公式背景色
         setLatexMathTextColor(COLOR_FFFFFFFF) // 数学公式文本颜色
 
         // 11、音频
         setAudioShadowColor(COLOR_1AFFFFFF) // 音频阴影颜色值
         setAudioBorderColor(COLOR_33FFFFFF) // 音频边框颜色
-        setAudioButtonBackgroundColor(Color.WHITE) // 音频按钮背景颜色
-        setAudioButtonTextColor(Color.BLACK) // 音频按钮文字颜色
-        setAudioTitleTextColor(Color.WHITE) // 音频标题文字颜色
+        setAudioButtonBackgroundColor(Color.White) // 音频按钮背景颜色
+        setAudioButtonTextColor(Color.Black) // 音频按钮文字颜色
+        setAudioTitleTextColor(Color.White) // 音频标题文字颜色
         setAudioTypeTextColor(COLOR_80FFFFFF) // 音频类型文字颜色
 
         // 12、视频
-        setVideoTimeTextColor(Color.BLACK) // 视频时间文本颜色
+        setVideoTimeTextColor(Color.Black) // 视频时间文本颜色
 
         // 13、图片banner
 
@@ -2774,24 +2756,13 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置markdown上下文 - 互操作
+     * 设置markdown上下文
      *
-     * @param stageContext markdown上下文 - 默认None
+     * @param context markdown上下文 - 默认None
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setStageContext(stageContext: StageContext): MarkdownThemeBuilder {
-        this.stageContext = stageContext
-        return this
-    }
-
-    /**
-     * 设置markdown上下文 - 仓颉
-     *
-     * @param abilityContext markdown上下文 - 默认None
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setAbilityContext(abilityContext: AbilityContext): MarkdownThemeBuilder {
-        this.abilityContext = abilityContext
+    public func setContext(context: Context): MarkdownThemeBuilder {
+        this.context = context
         return this
     }
 
@@ -2956,7 +2927,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkCircleImageTextSize(linkCircleImageTextSize: Float64): MarkdownThemeBuilder {
-        this.linkCircleImageTextSize = fp2px(linkCircleImageTextSize.fp).getOrThrow().value
+        this.linkCircleImageTextSize = linkCircleImageTextSize
         return this
     }
 
@@ -2978,7 +2949,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkCircleImageRadius(linkCircleImageRadius: Float64): MarkdownThemeBuilder {
-        this.linkCircleImageRadius = vp2px(linkCircleImageRadius.vp).getOrThrow().value
+        this.linkCircleImageRadius = linkCircleImageRadius
         return this
     }
 
@@ -3022,7 +2993,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectImageTextSize(linkRectImageTextSize: Float64): MarkdownThemeBuilder {
-        this.linkRectImageTextSize = fp2px(linkRectImageTextSize.fp).getOrThrow().value
+        this.linkRectImageTextSize = linkRectImageTextSize
         return this
     }
 
@@ -3044,7 +3015,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectImageHeight(linkRectImageHeight: Float64): MarkdownThemeBuilder {
-        this.linkRectImageHeight = vp2px(linkRectImageHeight.vp).getOrThrow().value
+        this.linkRectImageHeight = linkRectImageHeight
         return this
     }
 
@@ -3055,7 +3026,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectImagePadding(linkRectImagePadding: Float64): MarkdownThemeBuilder {
-        this.linkRectImagePadding = vp2px(linkRectImagePadding.vp).getOrThrow().value
+        this.linkRectImagePadding = linkRectImagePadding
         return this
     }
 
@@ -3066,7 +3037,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectImageRadius(linkRectImageRadius: Float64): MarkdownThemeBuilder {
-        this.linkRectImageRadius = vp2px(linkRectImageRadius.vp).getOrThrow().value
+        this.linkRectImageRadius = linkRectImageRadius
         return this
     }
 
@@ -3110,7 +3081,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectToolImageTextSize(linkRectToolImageTextSize: Float64): MarkdownThemeBuilder {
-        this.linkRectToolImageTextSize = fp2px(linkRectToolImageTextSize.fp).getOrThrow().value
+        this.linkRectToolImageTextSize = linkRectToolImageTextSize
         return this
     }
 
@@ -3121,7 +3092,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectToolImageHeight(linkRectToolImageHeight: Float64): MarkdownThemeBuilder {
-        this.linkRectToolImageHeight = vp2px(linkRectToolImageHeight.vp).getOrThrow().value
+        this.linkRectToolImageHeight = linkRectToolImageHeight
         return this
     }
 
@@ -3132,7 +3103,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectToolImagePadding(linkRectToolImagePadding: Float64): MarkdownThemeBuilder {
-        this.linkRectToolImagePadding = vp2px(linkRectToolImagePadding.vp).getOrThrow().value
+        this.linkRectToolImagePadding = linkRectToolImagePadding
         return this
     }
 
@@ -3143,7 +3114,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectToolImageBorderWidth(linkRectToolImageBorderWidth: Float64): MarkdownThemeBuilder {
-        this.linkRectToolImageBorderWidth = vp2px(linkRectToolImageBorderWidth.vp).getOrThrow().value
+        this.linkRectToolImageBorderWidth = linkRectToolImageBorderWidth
         return this
     }
 
@@ -3154,7 +3125,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectToolImageDividingLineWidth(linkRectToolImageDividingLineWidth: Float64): MarkdownThemeBuilder {
-        this.linkRectToolImageDividingLineWidth = vp2px(linkRectToolImageDividingLineWidth.vp).getOrThrow().value
+        this.linkRectToolImageDividingLineWidth = linkRectToolImageDividingLineWidth
         return this
     }
 
@@ -3176,7 +3147,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectToolImageLineLeftPadding(linkRectToolImageLineLeftPadding: Float64): MarkdownThemeBuilder {
-        this.linkRectToolImageLineLeftPadding = vp2px(linkRectToolImageLineLeftPadding.vp).getOrThrow().value
+        this.linkRectToolImageLineLeftPadding = linkRectToolImageLineLeftPadding
         return this
     }
 
@@ -3187,7 +3158,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkRectToolImageLineRightPadding(linkRectToolImageLineRightPadding: Float64): MarkdownThemeBuilder {
-        this.linkRectToolImageLineRightPadding = vp2px(linkRectToolImageLineRightPadding.vp).getOrThrow().value
+        this.linkRectToolImageLineRightPadding = linkRectToolImageLineRightPadding
         return this
     }
 
@@ -3440,7 +3411,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeTextSize(codeTextSize: Float64): MarkdownThemeBuilder {
-        this.codeTextSize = fp2px(codeTextSize.fp)().value
+        this.codeTextSize = codeTextSize
         return this
     }
 
@@ -3462,7 +3433,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeLeftAndRightPadding(codeLeftAndRightPadding: Float64): MarkdownThemeBuilder {
-        this.codeLeftAndRightPadding = vp2px(codeLeftAndRightPadding.vp)().value
+        this.codeLeftAndRightPadding = codeLeftAndRightPadding
         return this
     }
 
@@ -3473,7 +3444,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeHeight(codeHeight: Float64): MarkdownThemeBuilder {
-        this.codeHeight = vp2px(codeHeight.vp)().value
+        this.codeHeight = codeHeight
         return this
     }
 
@@ -4078,7 +4049,7 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLatexMathTextSize(latexMathTextSize: Float64): MarkdownThemeBuilder {
-        this.latexMathTextSize = fp2px(latexMathTextSize.fp)().value
+        this.latexMathTextSize = latexMathTextSize
         return this
     }
 

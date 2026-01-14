@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 行内数学公式
@@ -85,7 +82,7 @@ public class MarkdownLatexImageSpanComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除缓存
-        imagePixelMap?.Release()
+        imagePixelMap?.release()
         imagePixelMap = Option<PixelMap>.None
         arrayUint8 = Option<Array<UInt8>>.None
     }
@@ -103,9 +100,9 @@ public class MarkdownLatexImageSpanComponent {
                     // 设置约束尺寸
                     .constraintSize(maxWidth: maxWidth)
                     // 设置图片基于文本的对齐方式
-                    .verticalAlign(ImageSpanAlignment.CENTER)
+                    .verticalAlign(ImageSpanAlignment.Center)
                     // 点击动作触发该方法调用
-                    .onClick {
+                    .onClick ({
                         evt => if (isLink) {
                             if (linkCallback.isSome() && linkUrl.isSome()) {
                                 linkCallback()(linkUrl())
@@ -113,17 +110,17 @@ public class MarkdownLatexImageSpanComponent {
                         } else {
                             latexImageOnClick(arrayUint8(), imageHeight().px, imageWidth().px, markdownConfiguration.latexImageCallback)
                         }
-                    }
+                    })
             } else {
                 Span(strLatexMath)
                     // 设置字体颜色
-                    .fontColor(Color.RED)
+                    .fontColor(Color.Red)
             }
         } else {
             if (markdownConfiguration.markdownTheme.latexDefaultText) {
                 Span(strLatexMath)
                     // 设置字体颜色
-                    .fontColor(Color.RED)
+                    .fontColor(Color.Red)
             }
         }
     }
@@ -142,6 +139,6 @@ public class MarkdownLatexImageSpanComponent {
             }
         }
         // 解析数学公式
-        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(strLatexMath, markdownConfiguration, vp2px(componentWidth.vp)().value, callback)
+        MarkdownParseLatexUtil.latexMathStrToPixelMapRow(getUIContext().fp2px(markdownConfiguration.markdownTheme.latexMathTextSize.fp)().value, strLatexMath, markdownConfiguration, getUIContext().vp2px(componentWidth.vp)().value, callback)
     }
 }

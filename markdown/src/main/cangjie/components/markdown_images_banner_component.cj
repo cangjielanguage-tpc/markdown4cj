@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown图片幻灯片自定义控件
@@ -34,7 +31,7 @@ class MarkdownImageBannerComponent {
     var imageCallback: (String) -> Unit
 
     func build() {
-        Swiper(controller) {
+        Swiper(controller: controller) {
             ForEach(
                 slideBlockNodeView.children,
                 itemGeneratorFunc: {
@@ -68,7 +65,7 @@ class MarkdownImageBannerComponent {
                 // 设置图片解码过程中是否对图源自动缩放
                 .autoResize(markdownConfiguration.markdownTheme.isAutoResize)
                 // 图片的点击事件
-                .onClick {evt => imageOnClick(commonmarkImage.getDestination(), imageCallback)}
+                .onClick ({evt => imageOnClick(commonmarkImage.getDestination(), imageCallback)})
         } else {
             // 设置图片的数据源
             Image(commonmarkImage.getDestination())
@@ -77,7 +74,7 @@ class MarkdownImageBannerComponent {
                 // 设置图片解码过程中是否对图源自动缩放
                 .autoResize(markdownConfiguration.markdownTheme.isAutoResize)
                 // 图片的点击事件
-                .onClick {evt => imageOnClick(commonmarkImage.getDestination(), imageCallback)}
+                .onClick ({evt => imageOnClick(commonmarkImage.getDestination(), imageCallback)})
         }
     }
 }

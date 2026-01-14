@@ -3,22 +3,6 @@
  */
 package markdown.plugin
 
-/* public class Debuger {
-    static var _logger: ?Logger = None
-    mut static prop logger: Logger {
-        get() {
-            _logger ?? {
-                =>
-                let logger = getGlobalLogger([("name", "main")])
-                _logger = logger
-                logger
-            }()
-        }
-        set(v) {
-            _logger = v
-        }
-    }
-} */
 public func printTag(tag: HtmlTag): Unit {
     let appender = StringBuilder()
     var root: HtmlTag = tag

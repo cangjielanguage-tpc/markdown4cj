@@ -1,13 +1,11 @@
-import { CJHybridComponentV2 } from '@cangjie/cjhybridview';
+import { CJHybridComponent } from '@cangjie/cjhybridcomponent';
 
 @Entry
 @Component
 struct Demo_page {
-  @State message: string = 'Hello World';
-
   build() {
     Column() {
-      CJHybridComponentV2({
+      CJHybridComponent({
         library: 'ohos_app_cangjie_entry',
         component: 'Demo_page'
       })

@@ -6,7 +6,8 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "@cangjie/cjhybridview": "1.0.6",
-    "@cangjie-tpc/markdown": "file:../markdown"
+    "@cangjie/cjhybridcomponent": "1.0.0",
+    "@cangjie-tpc/markdown": "file:../markdown",
+    "libohos_app_cangjie_entry.so": "file:src/main/cangjie/libohos_app_cangjie_entry"
   }
 }

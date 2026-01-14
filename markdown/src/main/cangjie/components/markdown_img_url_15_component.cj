@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 普通网络/沙盒图片、未设置图片预处理接口、API15及以上
@@ -74,7 +71,7 @@ public class MarkdownImgUrl15Component {
     var componentImageWidth: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
-        componentImageWidth = vp2px(componentWidthUrl15.vp)().value
+        componentImageWidth = getUIContext().vp2px(componentWidthUrl15.vp)().value
     }
 
     func build() {
@@ -95,23 +92,23 @@ public class MarkdownImgUrl15Component {
                     // 设置图片的缩放类型
                     .objectFit(markdownConfigurationUrl15.markdownTheme.imageFitType)
                     // 设置图片基于文本的对齐方式
-                    .verticalAlign(ImageSpanAlignment.CENTER)
+                    .verticalAlign(ImageSpanAlignment.Center)
                     // 设置约束尺寸，组件布局时，进行尺寸范围限制
                     .constraintSize(maxWidth: 100.percent)
                     // 点击动作触发该方法调用
-                    .onClick {evt => imageSpanOnClick(isLinkUrl15, imageCallbackUrl15, linkCallbackUrl15, linkUrlUrl15, destinationUrl15)}
+                    .onClick ({evt => imageSpanOnClick(isLinkUrl15, imageCallbackUrl15, linkCallbackUrl15, linkUrlUrl15, destinationUrl15)})
                     // 图片成功加载时触发该回调，返回成功加载的图片尺寸
-                    .onComplete {
+                    .onComplete ({
                         imageLoadResult =>
                             let res = imageSpanComplete(imageLoadResult.height, imageLoadResult.width, componentImageWidth)
                             widthUrl15 = res[0]
                             heightUrl15 = res[1]
                             imageType = 1
-                    }
+                    })
                     // 图片加载出现异常时触发该回调
-                    .onError {
+                    .onError ({
                         imageError => imageType = 2
-                    }
+                    })
             }
             if (markdownConfigurationUrl15.markdownTheme.imageResource.isSome() && imageType != 1) {
                 // 有占位图

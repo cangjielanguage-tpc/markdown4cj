@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 class MarkdownParseLatexUtil {
     /**
@@ -22,7 +19,7 @@ class MarkdownParseLatexUtil {
      * @param markdownConfiguration Markdown Configuration
      * @param callback PixelMap图片、图片高度、图片宽度、图片数组数据 回调接口
      */
-    static func latexMathStrToPixelMap(strLatexMath: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func latexMathStrToPixelMap(latexMathTextSize: Float64, strLatexMath: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -38,7 +35,7 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownConfiguration.markdownTheme.latexMathTextSize), Float32(10), markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
+                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(latexMathTextSize), Float32(10), markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -56,19 +53,19 @@ class MarkdownParseLatexUtil {
                     }
                     var imageSource: ImageSource = createImageSource(arr())
                     if (Thread.currentThread.hasPendingCancellation) {
-                        imageSource.Release()
+                        imageSource.release()
                         return
                     }
                     pixelMap = imageSource.createPixelMap()
-                    imageSource.Release()
-                    var size: Size = pixelMap().getImageInfo().size
+                    imageSource.release()
+                    var size = pixelMap().getImageInfo().size
                     imageWidth = Float64(size.width)
                     imageHeight = Float64(size.height)
                 } catch (e: Exception) {
                 } finally {
                     try {
                         if (Thread.currentThread.hasPendingCancellation) {
-                            pixelMap?.Release()
+                            pixelMap?.release()
                             return
                         }
                         callback(pixelMap, imageHeight, imageWidth, arr)
@@ -89,7 +86,7 @@ class MarkdownParseLatexUtil {
      * @param componentWidth 控件宽度 - 单位vp
      * @param callback PixelMap图片、图片高度、图片宽度、图片数组数据 回调接口
      */
-    static func latexMathStrToPixelMapRow(strLatexMath: String, markdownConfiguration: MarkdownConfiguration, componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func latexMathStrToPixelMapRow(latexMathTextSize: Float64, strLatexMath: String, markdownConfiguration: MarkdownConfiguration, componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 var pixelMap: ?PixelMap = Option<PixelMap>.None
@@ -105,7 +102,7 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownConfiguration.markdownTheme.latexMathTextSize), Float32(10), markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
+                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(latexMathTextSize), Float32(10), markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -123,12 +120,12 @@ class MarkdownParseLatexUtil {
                     }
                     var imageSource: ImageSource = createImageSource(arr())
                     if (Thread.currentThread.hasPendingCancellation) {
-                        imageSource.Release()
+                        imageSource.release()
                         return
                     }
                     pixelMap = imageSource.createPixelMap()
-                    imageSource.Release()
-                    var size: Size = pixelMap().getImageInfo().size
+                    imageSource.release()
+                    var size = pixelMap().getImageInfo().size
                     var sizeWidth: Float64 = Float64(size.width)
                     var sizeHeight: Float64 = Float64(size.height)
                     var aspectRatio: Float64 = sizeHeight / sizeWidth
@@ -139,7 +136,7 @@ class MarkdownParseLatexUtil {
                     }
                     height = width() * aspectRatio
                     if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap?.Release()
+                        pixelMap?.release()
                         return
                     }
                     pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
@@ -147,7 +144,7 @@ class MarkdownParseLatexUtil {
                 } finally {
                     try {
                         if (Thread.currentThread.hasPendingCancellation) {
-                            pixelMap?.Release()
+                            pixelMap?.release()
                             return
                         }
                         callback(pixelMap, height, width, arr)

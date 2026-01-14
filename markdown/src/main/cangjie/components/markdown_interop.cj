@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 import ohos.ark_interop.*
 import ohos.ark_interop_helper.*
 
@@ -26,7 +23,7 @@ let _ = {
 }()
 
 public func getCtx(): JSContext {
-    let content = context ?? throw JSInteropNativeError("Component InterOp: get global context failed.")
+    let content = context ?? throw Exception("Component InterOp: get global context failed.")
     return content
 }
 
@@ -34,15 +31,15 @@ public func jsObjApiCall(obj: JSObject, funcName: String, args: (JSContext) -> A
     try {
         obj.callMethod(funcName, args(getCtx()))
     } catch (e: Exception) {
-        throw BusinessException(10000, "Cannot find the ${funcName}")
+        throw Exception("Cannot find the ${funcName}")
     }
 }
 
 public func jsObjApiCall(obj: JSObject, funcName: String): Unit {
     try {
         obj.callMethod(funcName)
-    } catch (e: JSCodeError) {
-        throw BusinessException(10000, "Cannot excute the ${funcName} function")
+    } catch (e: Exception) {
+        throw Exception("Cannot excute the ${funcName} function")
     }
 }
 
@@ -179,15 +176,15 @@ public class ImageLoadResultInterop <: InteropObjectBase {
     }
 
     static func fromJSValue(context: JSContext, input: JSValue): ImageLoadResultInterop {
-        let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
-        let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
-        let componentWidth = Float64.fromJSValue(context, input.getProperty(context, "componentWidth"))
-        let componentHeight = Float64.fromJSValue(context, input.getProperty(context, "componentHeight"))
-        let loadingStatus = Int64.fromJSValue(context, input.getProperty(context, "loadingStatus"))
-        let contentWidth = Float64.fromJSValue(context, input.getProperty(context, "contentWidth"))
-        let contentHeight = Float64.fromJSValue(context, input.getProperty(context, "contentHeight"))
-        let contentOffsetX = Float64.fromJSValue(context, input.getProperty(context, "contentOffsetX"))
-        let contentOffsetY = Float64.fromJSValue(context, input.getProperty(context, "contentOffsetY"))
+        let width = Float64.fromJSValue(context, input.getProperty("width"))
+        let height = Float64.fromJSValue(context, input.getProperty("height"))
+        let componentWidth = Float64.fromJSValue(context, input.getProperty("componentWidth"))
+        let componentHeight = Float64.fromJSValue(context, input.getProperty("componentHeight"))
+        let loadingStatus = Int64.fromJSValue(context, input.getProperty("loadingStatus"))
+        let contentWidth = Float64.fromJSValue(context, input.getProperty("contentWidth"))
+        let contentHeight = Float64.fromJSValue(context, input.getProperty("contentHeight"))
+        let contentOffsetX = Float64.fromJSValue(context, input.getProperty("contentOffsetX"))
+        let contentOffsetY = Float64.fromJSValue(context, input.getProperty("contentOffsetY"))
         ImageLoadResultInterop(width, height, componentWidth, componentHeight, loadingStatus, contentWidth, contentHeight, contentOffsetX, contentOffsetY)
     }
 }
@@ -219,9 +216,9 @@ public class CJImageErrorInterop <: InteropObjectBase {
     }
 
     static func fromJSValue(context: JSContext, input: JSValue): CJImageErrorInterop {
-        let componentWidth = Float64.fromJSValue(context, input.getProperty(context, "componentWidth"))
-        let componentHeight = Float64.fromJSValue(context, input.getProperty(context, "componentHeight"))
-        let message = String.fromJSValue(context, input.getProperty(context, "message"))
+        let componentWidth = Float64.fromJSValue(context, input.getProperty("componentWidth"))
+        let componentHeight = Float64.fromJSValue(context, input.getProperty("componentHeight"))
+        let message = String.fromJSValue(context, input.getProperty("message"))
         CJImageErrorInterop(componentWidth, componentHeight, message)
     }
 }
@@ -246,8 +243,8 @@ public class CJSizeOptions <: InteropObjectBase {
     }
 
     static func fromJSValue(context: JSContext, input: JSValue): CJSizeOptions {
-        let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
-        let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
+        let width = Float64.fromJSValue(context, input.getProperty("width"))
+        let height = Float64.fromJSValue(context, input.getProperty("height"))
         CJSizeOptions(width, height)
     }
 }
@@ -272,8 +269,8 @@ public class CJPosition <: InteropObjectBase {
     }
 
     static func fromJSValue(context: JSContext, input: JSValue): CJPosition {
-        let x = Float64.fromJSValue(context, input.getProperty(context, "x"))
-        let y = Float64.fromJSValue(context, input.getProperty(context, "y"))
+        let x = Float64.fromJSValue(context, input.getProperty("x"))
+        let y = Float64.fromJSValue(context, input.getProperty("y"))
         CJPosition(x, y)
     }
 }
@@ -312,10 +309,10 @@ public class CJArea <: InteropObjectBase {
     }
 
     static func fromJSValue(context: JSContext, input: JSValue): CJArea {
-        let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
-        let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
-        let position = CJPosition.fromJSValue(context, input.getProperty(context, "position"))
-        let globalPosition = CJPosition.fromJSValue(context, input.getProperty(context, "globalPosition"))
+        let width = Float64.fromJSValue(context, input.getProperty("width"))
+        let height = Float64.fromJSValue(context, input.getProperty("height"))
+        let position = CJPosition.fromJSValue(context, input.getProperty("position"))
+        let globalPosition = CJPosition.fromJSValue(context, input.getProperty("globalPosition"))
         CJArea(width, height, position, globalPosition)
     }
 }
@@ -340,8 +337,8 @@ public class CJLengthMetrics <: InteropObjectBase {
     }
 
     static func fromJSValue(context: JSContext, input: JSValue): CJLengthMetrics {
-        let value = Float64.fromJSValue(context, input.getProperty(context, "value"))
-        let unit = Int64.fromJSValue(context, input.getProperty(context, "unit"))
+        let value = Float64.fromJSValue(context, input.getProperty("value"))
+        let unit = Int64.fromJSValue(context, input.getProperty("unit"))
         CJLengthMetrics(value, unit)
     }
 }
@@ -354,8 +351,8 @@ extend Span {
                 let str: String = colorUInt32.format("08X")
                 let global = context.getOrThrow().global
                 let ctx = context.getOrThrow()
-                let span = global["Span"].asObject(ctx)
-                let textBackgroundStyle = span["textBackgroundStyle"].asFunction(ctx)
+                let span = global["Span"].asObject()
+                let textBackgroundStyle = span["textBackgroundStyle"].asFunction()
                 let param: JSObject = ctx.object()
                 param["color"] = ctx.string("#${str}").toJSValue()
                 param["radius"] = ctx.string("0vp").toJSValue()
@@ -370,8 +367,8 @@ extend Span {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let span = global["Span"].asObject(ctx)
-            let baselineOffset = span["baselineOffset"].asFunction(ctx)
+            let span = global["Span"].asObject()
+            let baselineOffset = span["baselineOffset"].asFunction()
             baselineOffset.call(value.toJSValue(ctx))
         } catch (e: Exception) {
         }
@@ -382,8 +379,8 @@ extend Span {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let span = global["Span"].asObject(ctx)
-            let lineHeight = span["lineHeight"].asFunction(ctx)
+            let span = global["Span"].asObject()
+            let lineHeight = span["lineHeight"].asFunction()
             lineHeight.call(value.toJSValue(ctx))
         } catch (e: Exception) {
         }
@@ -396,8 +393,8 @@ extend Text {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let text = global["Text"].asObject(ctx)
-            let copyOption = text["copyOption"].asFunction(ctx)
+            let text = global["Text"].asObject()
+            let copyOption = text["copyOption"].asFunction()
             let value: Int32 = if (isBool) {
                 2
             } else {
@@ -413,8 +410,8 @@ extend Text {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let text = global["Text"].asObject(ctx)
-            let onCopy = text["onCopy"].asFunction(ctx)
+            let text = global["Text"].asObject()
+            let onCopy = text["onCopy"].asFunction()
             let arg = ctx.function {
                 context: JSContext, callInfo: JSCallInfo =>
                     let value1 = callInfo[0].toString()
@@ -431,8 +428,8 @@ extend Text {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let text = global["Text"].asObject(ctx)
-            let halfLeading = text["halfLeading"].asFunction(ctx)
+            let text = global["Text"].asObject()
+            let halfLeading = text["halfLeading"].asFunction()
             halfLeading.call(isBool.toJSValue(ctx))
         } catch (e: Exception) {
         }
@@ -443,8 +440,8 @@ extend Text {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let text = global["Text"].asObject(ctx)
-            let lineSpacing = text["lineSpacing"].asFunction(ctx)
+            let text = global["Text"].asObject()
+            let lineSpacing = text["lineSpacing"].asFunction()
             lineSpacing.call(value.toJSValue(ctx))
         } catch (e: Exception) {
         }
@@ -457,7 +454,7 @@ extend ImageSpan {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let imageSpan = global["ImageSpan"].asObject(ctx)
+            let imageSpan = global["ImageSpan"].asObject()
             let argFunc = getCtx().function(
                     {
                         context: JSContext, callInfo: JSCallInfo =>
@@ -476,7 +473,7 @@ extend ImageSpan {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let imageSpan = global["ImageSpan"].asObject(ctx)
+            let imageSpan = global["ImageSpan"].asObject()
             let argFunc = getCtx().function(
                     {
                         context: JSContext, callInfo: JSCallInfo =>
@@ -495,8 +492,8 @@ extend ImageSpan {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let imageSpan = global["ImageSpan"].asObject(ctx)
-            let radius = imageSpan["borderRadius"].asFunction(ctx)
+            let imageSpan = global["ImageSpan"].asObject()
+            let radius = imageSpan["borderRadius"].asFunction()
             radius.call(value.toJSValue(ctx))
         } catch (e: Exception) {
         }
@@ -509,7 +506,7 @@ extend Column {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let column = global["Column"].asObject(ctx)
+            let column = global["Column"].asObject()
             let callBackFunc = getCtx().function {
                 ctx, callInfo => callback(CJSizeOptions.fromJSValue(ctx, callInfo[0]), CJSizeOptions.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
             }
@@ -523,7 +520,7 @@ extend Column {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let column = global["Column"].asObject(ctx)
+            let column = global["Column"].asObject()
             let callBackFunc = getCtx().function {
                 ctx, callInfo => callback(CJArea.fromJSValue(ctx, callInfo[0]), CJArea.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
             }
@@ -539,7 +536,7 @@ extend List {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let column = global["List"].asObject(ctx)
+            let column = global["List"].asObject()
             let callBackFunc = getCtx().function {
                 ctx, callInfo => callback(CJSizeOptions.fromJSValue(ctx, callInfo[0]), CJSizeOptions.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
             }
@@ -555,7 +552,7 @@ extend ListItem {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let column = global["ListItem"].asObject(ctx)
+            let column = global["ListItem"].asObject()
             let callBackFunc = getCtx().function {
                 ctx, callInfo => callback(CJArea.fromJSValue(ctx, callInfo[0]), CJArea.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
             }

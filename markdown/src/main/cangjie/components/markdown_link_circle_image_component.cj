@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 行内链接
@@ -63,7 +60,7 @@ public class MarkdownLinkCircleImageComponent {
 
     protected override func aboutToDisappear(): Unit {
         // 清除缓存
-        imagePixelMap?.Release()
+        imagePixelMap?.release()
         imagePixelMap = Option<PixelMap>.None
         arrayUint8 = Option<Array<UInt8>>.None
     }
@@ -80,15 +77,15 @@ public class MarkdownLinkCircleImageComponent {
                 // 设置约束尺寸
                 .constraintSize(maxWidth: maxWidth)
                 // 设置图片基于文本的对齐方式
-                .verticalAlign(ImageSpanAlignment.CENTER)
+                .verticalAlign(ImageSpanAlignment.Center)
                 // 左右外边距
                 .margin(right: markdownConfiguration.markdownTheme.linkCircleImageMargin, left: markdownConfiguration.markdownTheme.linkCircleImageMargin)
                 // 点击动作触发该方法调用
-                .onClick {
+                .onClick ({
                     evt => if (markdownConfiguration.linkCallback.isSome()) {
                         markdownConfiguration.linkCallback()(strUrl)
                     }
-                }
+                })
         }
     }
 
@@ -105,6 +102,6 @@ public class MarkdownLinkCircleImageComponent {
             }
         }
         // 解析链接
-        MarkdownParseLinkUtil.linkStrToCirclePixelMap(strText, markdownConfiguration, callback)
+        MarkdownParseLinkUtil.linkStrToCirclePixelMap(getUIContext().fp2px(markdownConfiguration.markdownTheme.linkCircleImageTextSize.fp).getOrThrow().value, getUIContext().vp2px(markdownConfiguration.markdownTheme.linkCircleImageRadius.vp).getOrThrow().value, strText, markdownConfiguration, callback)
     }
 }

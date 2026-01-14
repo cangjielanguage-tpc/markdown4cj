@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 普通网络/沙盒图片、未设置图片预处理接口、API15以下
@@ -74,7 +71,7 @@ public class MarkdownImgUrl14Component {
     var componentImageWidth: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
-        componentImageWidth = vp2px(componentWidthUrl14.vp)().value
+        componentImageWidth = getUIContext().vp2px(componentWidthUrl14.vp)().value
     }
 
     func build() {
@@ -95,11 +92,11 @@ public class MarkdownImgUrl14Component {
                     // 设置图片的缩放类型
                     .objectFit(markdownConfigurationUrl14.markdownTheme.imageFitType)
                     // 设置图片基于文本的对齐方式
-                    .verticalAlign(ImageSpanAlignment.CENTER)
+                    .verticalAlign(ImageSpanAlignment.Center)
                     // 设置约束尺寸，组件布局时，进行尺寸范围限制
                     .constraintSize(maxWidth: 100.percent)
                     // 点击动作触发该方法调用
-                    .onClick {evt => imageSpanOnClick(isLinkUrl14, imageCallbackUrl14, linkCallbackUrl14, linkUrlUrl14, destinationUrl14)}
+                    .onClick ({evt => imageSpanOnClick(isLinkUrl14, imageCallbackUrl14, linkCallbackUrl14, linkUrlUrl14, destinationUrl14)})
                     // 图片成功加载时触发该回调，返回成功加载的图片尺寸
                     .interopOnComplete {
                         imageLoadResult =>

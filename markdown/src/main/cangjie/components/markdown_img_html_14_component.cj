@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * HTML图片
@@ -84,7 +81,7 @@ public class MarkdownImgHtml14Component {
     var componentImageWidth: Float64 = 0.0
 
     protected override func aboutToAppear(): Unit {
-        componentImageWidth = vp2px(componentWidthHtml14.vp)().value
+        componentImageWidth = getUIContext().vp2px(componentWidthHtml14.vp)().value
     }
 
     func build() {
@@ -106,13 +103,13 @@ public class MarkdownImgHtml14Component {
                     // 设置约束尺寸，组件布局时，进行尺寸范围限制
                     .constraintSize(maxWidth: 100.percent)
                     // 设置图片基于文本的对齐方式
-                    .verticalAlign(ImageSpanAlignment.CENTER)
+                    .verticalAlign(ImageSpanAlignment.Center)
                     // 点击动作触发该方法调用
-                    .onClick {evt => imageSpanOnClick(isLinkHtml14, imageCallbackHtml14, linkCallbackHtml14, linkUrlHtml14, destinationHtml14)}
+                    .onClick ({evt => imageSpanOnClick(isLinkHtml14, imageCallbackHtml14, linkCallbackHtml14, linkUrlHtml14, destinationHtml14)})
                     // 图片成功加载时触发该回调，返回成功加载的图片尺寸
                     .interopOnComplete {
                         imageLoadResult =>
-                            let res = imageSpanHtmlComplete(imageLoadResult.height, imageLoadResult.width, componentImageWidth, imageWidthHtml14, imageHeightHtml14)
+                            let res = imageSpanHtmlComplete(getUIContext(), imageLoadResult.height, imageLoadResult.width, componentImageWidth, imageWidthHtml14, imageHeightHtml14)
                             heightHtml14 = res[1]
                             widthHtml14 = res[0]
                             imageType = 1

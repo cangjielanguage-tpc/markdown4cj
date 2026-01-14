@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown围栏代码列表切换自定义控件
@@ -101,11 +98,11 @@ class MarkdownCodeBlockListComponent {
                             // 设置内边距属性
                             .padding(left: 14, right: 14, top: 5, bottom: 5)
                             // 点击动作触发该方法调用
-                            .onClick {evt =>
+                            .onClick ({evt =>
                                 idxSelect = idx
                                 lines = strText[idxSelect].lines().count()
                                 lineArray.set(Array<Int64>(lines, repeat: 0))
-                            }
+                            })
                     }
                 )
             }
@@ -240,7 +237,7 @@ class MarkdownCodeBlockListComponent {
                         // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)
                         // 点击动作触发该方法调用
-                        .onClick {evt => codeCopyOnClick(strText[idxSelect], markdownConfiguration.codeCopyCallback)}
+                        .onClick ({evt => codeCopyOnClick(strText[idxSelect], markdownConfiguration.codeCopyCallback)})
                     }
 
                     if (markdownConfiguration.markdownTheme.codeFullScreenIcon.isSome()) {
@@ -280,9 +277,9 @@ class MarkdownCodeBlockListComponent {
                         // 控制当前组件显示或隐藏
                         .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
                         // 点击动作触发该方法调用
-                        .onClick {
+                        .onClick ({
                             evt => codeFullScreenOnClick(strText[idxSelect], strInfoText[idxSelect], markdownConfiguration.codeFullScreenCallback)
-                        }
+                        })
                     }
                 }
                 // 设置宽度

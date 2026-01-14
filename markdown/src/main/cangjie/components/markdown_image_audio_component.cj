@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 音频
@@ -56,7 +53,7 @@ public class MarkdownImageAudioComponent {
     }
 
     func build() {
-        Row(10) {
+        Row(space: 10.vp) {
             if (markdownConfiguration.markdownTheme.audioIcon.isSome()) {
                 Image(markdownConfiguration.markdownTheme.audioIcon())
                     // 设置组件自身的宽度
@@ -75,7 +72,7 @@ public class MarkdownImageAudioComponent {
                     .height(40)
             }
 
-            Column(2) {
+            Column(space: 2.vp) {
                 Text(audioTitle)
                     // 设置文本尺寸
                     .fontSize(markdownConfiguration.markdownTheme.audioTitleTextSize)
@@ -89,7 +86,7 @@ public class MarkdownImageAudioComponent {
                     .textOverflow(TextOverflow.Ellipsis)
                     // 设置文本颜色
                     .fontColor(markdownConfiguration.markdownTheme.audioTitleTextColor)
-                Row(8) {
+                Row(space: 8.vp) {
                     Text(audioType)
                         // 设置文本尺寸
                         .fontSize(markdownConfiguration.markdownTheme.audioTypeTextSize)

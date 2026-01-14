@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * Markdown数学公式自定义控件 - 单行
@@ -74,7 +71,7 @@ class MarkdownLatexMathBlockComponent {
     }
 
     protected override func aboutToDisappear(): Unit {
-        latexPixelMap?.Release()
+        latexPixelMap?.release()
         latexPixelMap = Option<PixelMap>.None
         latexData = Option<Array<UInt8>>.None
     }
@@ -92,9 +89,9 @@ class MarkdownLatexMathBlockComponent {
                         // 设置图片的缩放类型
                         .objectFit(ImageFit.Contain)
                         // 点击动作触发该方法调用
-                        .onClick {
+                        .onClick ({
                             evt => latexImageOnClick(latexData(), latexHeight().px, latexWidth().px, markdownConfiguration.latexImageCallback)
-                        }
+                        })
                 }
                 // 设置滚动方法
                 .scrollable(ScrollDirection.Horizontal)
@@ -107,13 +104,13 @@ class MarkdownLatexMathBlockComponent {
             } else {
                 Text(latexStr)
                     // 设置字体颜色
-                    .fontColor(Color.RED)
+                    .fontColor(Color.Red)
             }
         } else {
             if (markdownConfiguration.markdownTheme.latexDefaultText) {
                 Text(latexStr)
                     // 设置字体颜色
-                    .fontColor(Color.RED)
+                    .fontColor(Color.Red)
             }
         }
     }
@@ -139,6 +136,6 @@ class MarkdownLatexMathBlockComponent {
                 isBool = true
             }
         }
-        MarkdownParseLatexUtil.latexMathStrToPixelMap(latexStr, markdownConfiguration, callback)
+        MarkdownParseLatexUtil.latexMathStrToPixelMap(getUIContext().fp2px(markdownConfiguration.markdownTheme.latexMathTextSize.fp)().value, latexStr, markdownConfiguration, callback)
     }
 }

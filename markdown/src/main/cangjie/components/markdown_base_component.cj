@@ -3,10 +3,7 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
+import ohos.arkui.state_macro_manage.*
 
 /**
  * 标题文本
@@ -35,7 +32,7 @@ func headingTextComponent18(nodeView: NodeView, markdownConfiguration: MarkdownC
             // 设置Span基线的偏移量
             .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         Span(spanText(nodeView))
             // 设置文本的字体列表
@@ -57,7 +54,7 @@ func headingTextComponent18(nodeView: NodeView, markdownConfiguration: MarkdownC
             // 设置行高
             .interopLineHeight(headLineHeight(level, markdownConfiguration))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -79,16 +76,18 @@ func headingTextComponent19(nodeView: NodeView, markdownConfiguration: MarkdownC
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
+            // 设置Span基线的偏移量
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -102,18 +101,16 @@ func headingTextComponent19(nodeView: NodeView, markdownConfiguration: MarkdownC
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
-            // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
             // 设置行高
-            .lineHeight(headLineHeight(level, markdownConfiguration))
+            .interopLineHeight(headLineHeight(level, markdownConfiguration))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -144,7 +141,7 @@ func headingLinkComponent18(nodeView: NodeView, link: String, markdownConfigurat
             // 设置Span基线的偏移量
             .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(link)
@@ -167,7 +164,7 @@ func headingLinkComponent18(nodeView: NodeView, link: String, markdownConfigurat
             // 设置行高
             .interopLineHeight(headLineHeight(level, markdownConfiguration))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -189,16 +186,16 @@ func headingLinkComponent19(nodeView: NodeView, link: String, markdownConfigurat
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, true, markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(link)
@@ -212,16 +209,16 @@ func headingLinkComponent19(nodeView: NodeView, link: String, markdownConfigurat
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, true, markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置行高
-            .lineHeight(headLineHeight(level, markdownConfiguration))
+            .interopLineHeight(headLineHeight(level, markdownConfiguration))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -252,7 +249,7 @@ func headingCodeComponent18(nodeView: NodeView, markdownConfiguration: MarkdownC
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -275,7 +272,7 @@ func headingCodeComponent18(nodeView: NodeView, markdownConfiguration: MarkdownC
             // 设置行高
             .interopLineHeight(headLineHeight(level, markdownConfiguration))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -297,16 +294,16 @@ func headingCodeComponent19(nodeView: NodeView, markdownConfiguration: MarkdownC
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(true, false, markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(true, markdownConfiguration.markdownTheme.codeBackgroundColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -320,16 +317,16 @@ func headingCodeComponent19(nodeView: NodeView, markdownConfiguration: MarkdownC
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(true, false, markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(true, markdownConfiguration.markdownTheme.codeBackgroundColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置行高
-            .lineHeight(headLineHeight(level, markdownConfiguration))
+            .interopLineHeight(headLineHeight(level, markdownConfiguration))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -360,11 +357,11 @@ func headingFootnoteComponent18(nodeView: NodeView, markdownConfiguration: Markd
             // 设置Span基线的偏移量
             .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {
+            .onClick ({
                 evt => if (nodeView.node is Footnote) {
                     fontCallback((nodeView.node as Footnote)().noteid)
                 }
-            }
+            })
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -387,11 +384,11 @@ func headingFootnoteComponent18(nodeView: NodeView, markdownConfiguration: Markd
             // 设置行高
             .interopLineHeight(headLineHeight(level, markdownConfiguration))
             // 点击动作触发该方法调用
-            .onClick {
+            .onClick ({
                 evt => if (nodeView.node is Footnote) {
                     fontCallback((nodeView.node as Footnote)().noteid)
                 }
-            }
+            })
     }
 }
 
@@ -413,20 +410,20 @@ func headingFootnoteComponent19(nodeView: NodeView, markdownConfiguration: Markd
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {
+            .onClick ({
                 evt => if (nodeView.node is Footnote) {
                     fontCallback((nodeView.node as Footnote)().noteid)
                 }
-            }
+            })
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -440,20 +437,20 @@ func headingFootnoteComponent19(nodeView: NodeView, markdownConfiguration: Markd
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.headingTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置行高
-            .lineHeight(headLineHeight(level, markdownConfiguration))
+            .interopLineHeight(headLineHeight(level, markdownConfiguration))
             // 点击动作触发该方法调用
-            .onClick {
+            .onClick ({
                 evt => if (nodeView.node is Footnote) {
                     fontCallback((nodeView.node as Footnote)().noteid)
                 }
-            }
+            })
     }
 }
 
@@ -484,7 +481,7 @@ func paragraphTextComponent18(nodeView: NodeView, isDescList: Bool, markdownConf
             // 设置Span基线的偏移量
             .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -507,7 +504,7 @@ func paragraphTextComponent18(nodeView: NodeView, isDescList: Bool, markdownConf
             // 设置行高
             .interopLineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -529,16 +526,16 @@ func paragraphTextComponent19(nodeView: NodeView, isDescList: Bool, markdownConf
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -552,16 +549,16 @@ func paragraphTextComponent19(nodeView: NodeView, isDescList: Bool, markdownConf
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置行高
-            .lineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
+            .interopLineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -592,7 +589,7 @@ func paragraphTocComponent18(nodeView: NodeView, isDescList: Bool, markdownConfi
             // 设置Span基线的偏移量
             .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)}
+            .onClick ({evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)})
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -615,7 +612,7 @@ func paragraphTocComponent18(nodeView: NodeView, isDescList: Bool, markdownConfi
             // 设置行高
             .interopLineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)}
+            .onClick ({evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)})
     }
 }
 
@@ -637,16 +634,16 @@ func paragraphTocComponent19(nodeView: NodeView, isDescList: Bool, markdownConfi
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)}
+            .onClick ({evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)})
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -660,16 +657,16 @@ func paragraphTocComponent19(nodeView: NodeView, isDescList: Bool, markdownConfi
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置行高
-            .lineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
+            .interopLineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)}
+            .onClick ({evt => tocListOnClick((nodeView.node as HeadLink)().headIndex)})
     }
 }
 
@@ -700,7 +697,7 @@ func paragraphLinkComponent18(nodeView: NodeView, isDescList: Bool, link: String
             // 设置Span基线的偏移量
             .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(link)
@@ -723,7 +720,7 @@ func paragraphLinkComponent18(nodeView: NodeView, isDescList: Bool, link: String
             // 设置行高
             .interopLineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -745,16 +742,16 @@ func paragraphLinkComponent19(nodeView: NodeView, isDescList: Bool, link: String
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, true, markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(link)
@@ -768,16 +765,16 @@ func paragraphLinkComponent19(nodeView: NodeView, isDescList: Bool, link: String
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, true, markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置行高
-            .lineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
+            .interopLineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -808,7 +805,7 @@ func paragraphCodeComponent18(nodeView: NodeView, isDescList: Bool, markdownConf
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -831,7 +828,7 @@ func paragraphCodeComponent18(nodeView: NodeView, isDescList: Bool, markdownConf
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -853,16 +850,16 @@ func paragraphCodeComponent19(nodeView: NodeView, isDescList: Bool, markdownConf
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(true, false, markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(true, markdownConfiguration.markdownTheme.codeBackgroundColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -876,16 +873,16 @@ func paragraphCodeComponent19(nodeView: NodeView, isDescList: Bool, markdownConf
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(true, false, markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(true, markdownConfiguration.markdownTheme.codeBackgroundColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置行高
-            .lineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
+            .interopLineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -916,11 +913,11 @@ func paragraphFootnoteComponent18(nodeView: NodeView, isDescList: Bool, markdown
             // 设置Span基线的偏移量
             .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {
+            .onClick ({
                 evt => if (nodeView.node is Footnote) {
                     fontCallback((nodeView.node as Footnote)().noteid)
                 }
-            }
+            })
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -943,11 +940,11 @@ func paragraphFootnoteComponent18(nodeView: NodeView, isDescList: Bool, markdown
             // 设置行高
             .interopLineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {
+            .onClick ({
                 evt => if (nodeView.node is Footnote) {
                     fontCallback((nodeView.node as Footnote)().noteid)
                 }
-            }
+            })
     }
 }
 
@@ -969,20 +966,20 @@ func paragraphFootnoteComponent19(nodeView: NodeView, isDescList: Bool, markdown
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {
+            .onClick ({
                 evt => if (nodeView.node is Footnote) {
                     fontCallback((nodeView.node as Footnote)().noteid)
                 }
-            }
+            })
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -996,20 +993,20 @@ func paragraphFootnoteComponent19(nodeView: NodeView, isDescList: Bool, markdown
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置行高
-            .lineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
+            .interopLineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {
+            .onClick ({
                 evt => if (nodeView.node is Footnote) {
                     fontCallback((nodeView.node as Footnote)().noteid)
                 }
-            }
+            })
     }
 }
 
@@ -1040,7 +1037,7 @@ func tableComponentText18(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             // 设置Span基线的偏移量
             .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -1063,7 +1060,7 @@ func tableComponentText18(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             // 设置行高
             .interopLineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -1085,16 +1082,16 @@ func tableComponentText19(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -1108,16 +1105,16 @@ func tableComponentText19(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置行高
-            .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
+            .interopLineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -1148,7 +1145,7 @@ func tableComponentCode18(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -1171,7 +1168,7 @@ func tableComponentCode18(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -1193,16 +1190,16 @@ func tableComponentCode19(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(true, false, markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(true, markdownConfiguration.markdownTheme.codeBackgroundColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -1216,16 +1213,16 @@ func tableComponentCode19(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(true, false, markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(true, markdownConfiguration.markdownTheme.codeBackgroundColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置行高
-            .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
+            .interopLineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -1256,7 +1253,7 @@ func tableLinkComponent18(nodeView: NodeView, isHeader: Bool, link: String, mark
             // 设置Span基线的偏移量
             .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(link)
@@ -1279,7 +1276,7 @@ func tableLinkComponent18(nodeView: NodeView, isHeader: Bool, link: String, mark
             // 设置行高
             .interopLineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -1301,16 +1298,16 @@ func tableLinkComponent19(nodeView: NodeView, isHeader: Bool, link: String, mark
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     } else {
         // 设置文本内容
         Span(link)
@@ -1324,16 +1321,16 @@ func tableLinkComponent19(nodeView: NodeView, isHeader: Bool, link: String, mark
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置行高
-            .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
+            .interopLineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)}
+            .onClick ({evt => linkOnClick(nodeView, markdownConfiguration.linkCallback)})
     }
 }
 
@@ -1364,11 +1361,11 @@ func tableComponentFootnote18(nodeView: NodeView, isHeader: Bool, markdownConfig
             // 设置Span基线的偏移量
             .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {
+            .onClick ({
                 evt => if (nodeView.node is Footnote) {
                     fontCallback((nodeView.node as Footnote)().noteid)
                 }
-            }
+            })
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -1391,11 +1388,11 @@ func tableComponentFootnote18(nodeView: NodeView, isHeader: Bool, markdownConfig
             // 设置行高
             .interopLineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {
+            .onClick ({
                 evt => if (nodeView.node is Footnote) {
                     fontCallback((nodeView.node as Footnote)().noteid)
                 }
-            }
+            })
     }
 }
 
@@ -1417,20 +1414,20 @@ func tableComponentFootnote19(nodeView: NodeView, isHeader: Bool, markdownConfig
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置Span基线的偏移量
-            .baselineOffset(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme).vp)
+            .interopBaselineOffset(CJLengthMetrics(spanBaselineOffset(nodeView, markdownConfiguration.markdownTheme), 1))
             // 点击动作触发该方法调用
-            .onClick {
+            .onClick ({
                 evt => if (nodeView.node is Footnote) {
                     fontCallback((nodeView.node as Footnote)().noteid)
                 }
-            }
+            })
     } else {
         // 设置文本内容
         Span(spanText(nodeView))
@@ -1444,20 +1441,20 @@ func tableComponentFootnote19(nodeView: NodeView, isHeader: Bool, markdownConfig
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
             .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
-            // 设置背景样式
-            .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
+            // 自定义背景色
+            .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
             .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
             // 设置文本装饰线样式及其颜色
             .decoration(decorationType: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, markdownConfiguration.markdownTheme)[1])
             // 设置行高
-            .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
+            .interopLineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
             // 点击动作触发该方法调用
-            .onClick {
+            .onClick ({
                 evt => if (nodeView.node is Footnote) {
                     fontCallback((nodeView.node as Footnote)().noteid)
                 }
-            }
+            })
     }
 }
 
@@ -1500,7 +1497,7 @@ func listPrefixTextINCComponent19(item: NodeView, isBullet: Bool, markdownConfig
         // 设置内边距属性
         .padding(left: markdownConfiguration.markdownTheme.blockLeftMargin, right: markdownConfiguration.markdownTheme.blockRightMargin)
         // 设置文本是否将行间距平分至行的顶部与底部。
-        .halfLeading(true)
+        .interopHalfLeading(true)
         // 设置行高
         .lineHeight(listPrefixLineHeight(isBullet, markdownConfiguration))
         // 设置文本段落在水平方向的对齐方式
@@ -1538,7 +1535,7 @@ func listPrefixCheckboxINCComponent(item: NodeView, markdownConfiguration: Markd
         // 值为 true 表示组件可用，可响应点击等操作；值为 false 时，不响应点击等操作
         .enabled(false)
         // 切换CheckBox组件形状
-        .shape(CheckBoxShape.ROUNDED_SQUARE)
+        .shape(CheckBoxShape.RoundedSquare)
         // 设置外边距属性
         .margin(left: markdownConfiguration.markdownTheme.blockLeftMargin, right: markdownConfiguration.markdownTheme.blockRightMargin, top: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins)
 }
@@ -1593,7 +1590,7 @@ func imagePlaceholderComponent(imageResource: AppResource, imageMarginTop: Float
         // 设置图片的缩放类型
         .objectFit(ImageFit.Cover)
         // 设置图片基于文本的对齐方式
-        .verticalAlign(ImageSpanAlignment.CENTER)
+        .verticalAlign(ImageSpanAlignment.Center)
         // 设置约束尺寸，组件布局时，进行尺寸范围限制
         .constraintSize(maxWidth: 100.percent)
 }
@@ -1615,9 +1612,9 @@ func imageCallBackComponent(imagePixelMap: PixelMap, imageMarginTop: Float64, im
         // 设置图片的缩放类型
         .objectFit(markdownConfiguration.markdownTheme.imageFitType)
         // 设置图片基于文本的对齐方式
-        .verticalAlign(ImageSpanAlignment.CENTER)
+        .verticalAlign(ImageSpanAlignment.Center)
         // 点击动作触发该方法调用
-        .onClick {evt => imageSpanOnClick(isLink, imageCallback, linkCallback, linkUrl, destination)}
+        .onClick ({evt => imageSpanOnClick(isLink, imageCallback, linkCallback, linkUrl, destination)})
 }
 
 /**
