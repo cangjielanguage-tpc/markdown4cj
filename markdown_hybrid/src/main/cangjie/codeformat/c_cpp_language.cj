@@ -449,11 +449,6 @@ class CandCppFormat <: BaseLanguage {
                 let currChar = i[stateBean.currentIndex]
                 //没解析完成的话保留在perLineOutput里
                 stateBean.perLineOutput.append(currChar)
-                if (currChar == r'#' && stateBean.isLineStart) {
-                    //处理宏的逻辑
-                    dealWithMacro(stateBean)
-                    continue
-                }
                 //处理private: public: protected:
                 if (stateBean.isLineStart) {
                     if (dealWithAccessPublic(stateBean)) {
@@ -613,6 +608,8 @@ class CandCppFormat <: BaseLanguage {
             //过滤单行废弃
             removediscard(stateBean)
 
+            // 处理 if else
+            // 处理 if else if else if else
             for (i in 0..stateBean.linesList.size) {
                 let lineBean: LineBean = stateBean.linesList[i]
                 let codeStr = lineBean.codeLine.trimAscii().replace(" ","")
@@ -687,7 +684,6 @@ class CandCppFormat <: BaseLanguage {
             }
             //修改#开始的宏和后面空格不一致问题
             modifyMacroAndSpace(stateBean)
-
 
             //最后根据缩进拼接
             for (index in 0..usefulList.size) {
