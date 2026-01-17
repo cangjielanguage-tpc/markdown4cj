@@ -55,6 +55,16 @@ public class MarkdownConfiguration {
     }
 
     /**
+     * 视频发布的点击事件
+     */
+    protected var videoReleaseCallback: ?(String) -> Unit = None
+
+    /**
+     * 视频下载的点击事件
+     */
+    protected var videoDownloadCallback: ?(String) -> Unit = None
+
+    /**
      * 代码复制按钮的点击事件
      */
     protected var codeCopyCallback: ?(String) -> Unit = None
@@ -107,6 +117,8 @@ public class MarkdownConfiguration {
         this.audioCallback = builder.audioCallback
         this.videoCallback = builder.videoCallback
         this.videoImageCallback = builder.videoImageCallback
+        this.videoReleaseCallback = builder.videoReleaseCallback
+        this.videoDownloadCallback = builder.videoDownloadCallback
         this.codeCopyCallback = builder.codeCopyCallback
         this.codeFullScreenCallback = builder.codeFullScreenCallback
         this.latexImageCallback = builder.latexImageCallback
@@ -192,6 +204,16 @@ public class MarkdownConfigurationBuilder {
     }
 
     /**
+     * 视频发布的点击事件
+     */
+    var videoReleaseCallback: ?(String) -> Unit = None
+
+    /**
+     * 视频下载的点击事件
+     */
+    var videoDownloadCallback: ?(String) -> Unit = None
+
+    /**
      * 代码复制按钮的点击事件
      */
     var codeCopyCallback: ?(String) -> Unit = None
@@ -247,6 +269,8 @@ public class MarkdownConfigurationBuilder {
         this.audioCallback = configuration.audioCallback
         this.videoCallback = configuration.videoCallback
         this.videoImageCallback = configuration.videoImageCallback
+        this.videoReleaseCallback = configuration.videoReleaseCallback
+        this.videoDownloadCallback = configuration.videoDownloadCallback
         this.codeCopyCallback = configuration.codeCopyCallback
         this.codeFullScreenCallback = configuration.codeFullScreenCallback
         this.latexImageCallback = configuration.latexImageCallback
@@ -341,6 +365,28 @@ public class MarkdownConfigurationBuilder {
      */
     public func setVideoImageCallback(videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit): MarkdownConfigurationBuilder {
         this.videoImageCallback = videoImageCallback
+        return this
+    }
+
+    /**
+     * 设置视频发布的点击事件
+     *
+     * @param videoReleaseCallback 视频发布的点击事件 (String:视频链接)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setVideoReleaseCallback(videoReleaseCallback: (String) -> Unit): MarkdownConfigurationBuilder {
+        this.videoReleaseCallback = videoReleaseCallback
+        return this
+    }
+
+    /**
+     * 设置视频下载的点击事件
+     *
+     * @param videoDownloadCallback 视频下载的点击事件 (String:视频链接)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setVideoDownloadCallback(videoDownloadCallback: (String) -> Unit): MarkdownConfigurationBuilder {
+        this.videoDownloadCallback = videoDownloadCallback
         return this
     }
 

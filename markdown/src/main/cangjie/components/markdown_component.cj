@@ -65,22 +65,46 @@ public class MarkdownComponent {
         .build()
 
     /**
-     * 广告布局
+     * 自定义广告块结构布局
      */
     @BuilderParam
     var adBuilder: (NodeView) -> Unit = ADBuilder
 
     /**
-     * 视频布局
+     * 自定义视频块结构布局
      */
     @BuilderParam
     var videoBuilder: (NodeView, MarkdownConfiguration, (String) -> Unit) -> Unit = VideoBuilder
 
     /**
-     * 音频布局
+     * 自定义音频块结构布局
      */
     @BuilderParam
     var audioBuilder: (NodeView, MarkdownConfiguration) -> Unit = AudioBuilder
+
+    /**
+     * 自定义块结构布局
+     */
+    @BuilderParam
+    var customBlockBuilder: (NodeView, Int64) -> Unit = CustomBlockBuilder
+
+    /**
+     * 自定义行内标题布局
+     */
+    @BuilderParam
+    var customTitleLineBuilder: (NodeView, Int64) -> Unit = CustomTitleLineBuilder
+
+    /**
+     * 自定义行内段落布局
+     */
+    @BuilderParam
+    var customParagraphLineBuilder: (NodeView, Int64) -> Unit = CustomParagraphLineBuilder
+
+    /**
+     * 自定义行内表格布局
+     */
+    @BuilderParam
+    var customTableLineBuilder: (NodeView, Int64) -> Unit = CustomTableLineBuilder
 
     /**
      * 定位需要的数组
@@ -169,7 +193,15 @@ public class MarkdownComponent {
                         item: NodeView, idx: Int64 => if (item.node is Heading) {
                             // 标题
                             ListItem() {
-                                blockHeadingComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, false, markdownCacheConfiguration.headingComponents)
+                                MarkdownHeadingComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    nodeView: item,
+                                    fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
+                                    componentWidth: componentWidth,
+                                    headingComponents: markdownCacheConfiguration.headingComponents,
+                                    customTitleLineBuilder: customTitleLineBuilder
+                                )
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 0, item), bottom: marginNodeBottom(idx, lastViewIndex, 0, item))
@@ -178,56 +210,140 @@ public class MarkdownComponent {
                         } else if (item.node is Paragraph) {
                             // 段落
                             ListItem() {
-                                blockParagraphComponent(markdownConfiguration, item, Option<FootnoteBlock>.None, fontCallback, tocListOnClick, imageCallback, componentWidth, false, false, markdownCacheConfiguration.paragraphComponents)
+                                MarkdownParagraphComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    nodeView: item,
+                                    footnoteBlock: Option<FootnoteBlock>.None,
+                                    fontCallback: fontCallback,
+                                    tocListOnClick: tocListOnClick,
+                                    imageCallback: imageCallback,
+                                    componentWidth: componentWidth,
+                                    paragraphComponents: markdownCacheConfiguration.paragraphComponents,
+                                    customParagraphLineBuilder: customParagraphLineBuilder
+                                )
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 1, item), bottom: marginNodeBottom(idx, lastViewIndex, 1, item))
                         } else if (item.node is BulletList) {
                             // 无序列表（包含任务列表）
                             ListItem() {
-                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: false, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap)
+                                MarkdownListComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    nodeView: item,
+                                    adBuilder: adBuilder,
+                                    videoBuilder: videoBuilder,
+                                    audioBuilder: audioBuilder,
+                                    customBlockBuilder: customBlockBuilder,
+                                    isOrdered: false,
+                                    fontCallback: fontCallback,
+                                    tocListOnClick: tocListOnClick,
+                                    imageCallback: imageCallback,
+                                    videoCallback: videoCallback,
+                                    componentWidth: componentWidth,
+                                    markdownCacheConfiguration: markdownCacheConfiguration,
+                                    indexFootnoteHashMap: indexFootnoteHashMap,
+                                    customParagraphLineBuilder: customParagraphLineBuilder,
+                                    customTitleLineBuilder: customTitleLineBuilder,
+                                    customTableLineBuilder: customTableLineBuilder)
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
                         } else if (item.node is OrderedList) {
                             // 有序列表
                             ListItem() {
-                                MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: true, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap)
+                                MarkdownListComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    nodeView: item,
+                                    adBuilder: adBuilder,
+                                    videoBuilder: videoBuilder,
+                                    audioBuilder: audioBuilder,
+                                    customBlockBuilder: customBlockBuilder,
+                                    isOrdered: true,
+                                    fontCallback: fontCallback,
+                                    tocListOnClick: tocListOnClick,
+                                    imageCallback: imageCallback,
+                                    videoCallback: videoCallback,
+                                    componentWidth: componentWidth,
+                                    markdownCacheConfiguration: markdownCacheConfiguration,
+                                    indexFootnoteHashMap: indexFootnoteHashMap,
+                                    customParagraphLineBuilder: customParagraphLineBuilder,
+                                    customTitleLineBuilder: customTitleLineBuilder,
+                                    customTableLineBuilder: customTableLineBuilder
+                                )
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
                         } else if (item.node is BlockQuote) {
                             // 块引用
                             ListItem() {
-                                MarkdownQuoteComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap)
+                                MarkdownQuoteComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    nodeView: item,
+                                    adBuilder: adBuilder,
+                                    videoBuilder: videoBuilder,
+                                    audioBuilder: audioBuilder,
+                                    customBlockBuilder: customBlockBuilder,
+                                    fontCallback: fontCallback,
+                                    tocListOnClick: tocListOnClick,
+                                    imageCallback: imageCallback,
+                                    videoCallback: videoCallback,
+                                    componentWidth: componentWidth,
+                                    markdownCacheConfiguration: markdownCacheConfiguration,
+                                    indexFootnoteHashMap: indexFootnoteHashMap,
+                                    customParagraphLineBuilder: customParagraphLineBuilder,
+                                    customTitleLineBuilder: customTitleLineBuilder,
+                                    customTableLineBuilder: customTableLineBuilder
+                                )
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
                         } else if (item.node is FencedCodeBlock) {
                             // 围栏代码块
                             ListItem() {
-                                blockFencedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.fencedCodeComponents)
+                                MarkdownFencedCodeBlockComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    codeText: getCodeInfo(item)[0],
+                                    info: getCodeInfo(item)[1](),
+                                    nodeHash: item.nodeHash,
+                                    fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
+                                )
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
                         } else if (item.node is IndentedCodeBlock) {
                             // 缩进代码块
                             ListItem() {
-                                blockIndentedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.indentedCodeComponents)
+                                MarkdownIndentedCodeBlockComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    nodeView: item,
+                                    indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
+                                )
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
                         } else if (item.node is TableBlock) {
                             // 表格
                             ListItem() {
-                                blockTableComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, markdownCacheConfiguration.tableComponents, markdownCacheConfiguration.tableRowComponents, markdownCacheConfiguration.tableCellComponents)
+                                MarkdownTableBlockComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    nodeView: item,
+                                    fontCallback: fontCallback,
+                                    imageCallback: imageCallback,
+                                    componentWidth: componentWidth,
+                                    tableComponents: markdownCacheConfiguration.tableComponents,
+                                    tableRowComponents: markdownCacheConfiguration.tableRowComponents,
+                                    tableCellComponents: markdownCacheConfiguration.tableCellComponents,
+                                    customTableLineBuilder: customTableLineBuilder
+                                )
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
                         } else if (item.node is ThematicBreak) {
                             // 分割线
                             ListItem() {
-                                MarkdownThematicBreakComponent(markdownConfiguration: markdownConfiguration)
+                                MarkdownThematicBreakComponent(
+                                    markdownConfiguration: markdownConfiguration
+                                )
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 2, item), bottom: marginNodeBottom(idx, lastViewIndex, 2, item))
@@ -241,7 +357,8 @@ public class MarkdownComponent {
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
-                                    markdownCacheConfiguration: markdownCacheConfiguration
+                                    markdownCacheConfiguration: markdownCacheConfiguration,
+                                    customParagraphLineBuilder: customParagraphLineBuilder
                                 )
                             }
                             // 设置外边距属性
@@ -277,7 +394,8 @@ public class MarkdownComponent {
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
-                                    markdownCacheConfiguration: markdownCacheConfiguration
+                                    markdownCacheConfiguration: markdownCacheConfiguration,
+                                    customParagraphLineBuilder: customParagraphLineBuilder
                                 )
                             }
                             // 设置外边距属性
@@ -310,7 +428,7 @@ public class MarkdownComponent {
                         } else {
                             // TODO 其他节点
                             ListItem() {
-                                Text("")
+                                customBlockBuilder(item, idx)
                             }
                         }
                     },
@@ -338,12 +456,7 @@ public class MarkdownComponent {
                     itemGeneratorFunc: {
                         item: NodeView, idx: Int64 => if (idx == 0 && (item.node is FencedCodeBlock || item.node is IndentedCodeBlock)) {
                             ListItem() {
-                                MarkdownCodeComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    nodeView: item,
-                                    codeComponents: markdownCacheConfiguration.codeComponents,
-                                    codeTextComponents: markdownCacheConfiguration.codeTextComponents
-                                )
+                                MarkdownCodeComponent(markdownConfiguration: markdownConfiguration, nodeView: item, codeComponents: markdownCacheConfiguration.codeComponents, codeTextComponents: markdownCacheConfiguration.codeTextComponents)
                             }
                         } else {
                             ListItem() {
@@ -712,3 +825,24 @@ func AudioBuilder(item: NodeView, markdownConfiguration: MarkdownConfiguration) 
         nodeView: item
     )
 }
+
+@Builder
+func CustomBlockBuilder(item: NodeView, idx: Int64) {
+    Text("")
+}
+
+@Builder
+func CustomTitleLineBuilder(item: NodeView, idx: Int64) {
+    Span("")
+}
+
+@Builder
+func CustomParagraphLineBuilder(item: NodeView, idx: Int64) {
+    Span("")
+}
+
+@Builder
+func CustomTableLineBuilder(item: NodeView, idx: Int64) {
+    Span("")
+}
+

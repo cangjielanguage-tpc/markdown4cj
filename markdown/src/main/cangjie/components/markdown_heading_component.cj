@@ -67,6 +67,12 @@ class MarkdownHeadingComponent {
     @State
     var isOneLink: Bool = false
 
+    /**
+     * 自定义行内标题布局
+     */
+    @BuilderParam
+    var customTitleLineBuilder: (NodeView, Int64) -> Unit
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(this.nodeView)
@@ -108,8 +114,92 @@ class MarkdownHeadingComponent {
         .width(100.percent)
     }
 
+    /**
+     * 标题文字内容
+     */
     @Builder
-    func headingTitleListComponent(item: NodeView) {
+    func headingTitleComponent() {
+        if (DeviceInfo.sdkApiVersion >= 19) {
+            headingTitleComponent19()
+        } else {
+            headingTitleComponent18()
+        }
+    }
+
+    /**
+     * 标题文字内容
+     */
+    @Builder
+    func headingTitleComponent18() {
+        Text() {
+            ForEach(
+                nodeViewList,
+                itemGeneratorFunc: {
+                    item18: NodeView, idx18: Int64 => headingTitleListComponent(item18, idx18)
+                },
+                keyGeneratorFunc: {
+                    item18: NodeView, idx18: Int64 => return "${idx18}-${item18.nodeHash}-${item18.contentHash}"
+                }
+            )
+        }
+        // 设置多行文本的文本对齐方式
+        .textAlign(TextAlign.Start)
+        // 设置组件自身的宽度
+        .width(100.percent)
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .interopHalfLeading(true)
+        // 自定义设置组件是否支持文本可复制粘贴
+        .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
+            true
+        } else {
+            false
+        })
+        // 自定义长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件
+        .interopOnCopy({
+            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
+                v(str)
+            }
+        })
+    }
+
+    /**
+     * 标题文字内容
+     */
+    @Builder
+    func headingTitleComponent19() {
+        Text() {
+            ForEach(
+                nodeViewList,
+                itemGeneratorFunc: {
+                    item19: NodeView, idx19: Int64 => headingTitleListComponent(item19, idx19)
+                },
+                keyGeneratorFunc: {
+                    item19: NodeView, idx19: Int64 => return "${idx19}-${item19.nodeHash}-${item19.contentHash}"
+                }
+            )
+        }
+        // 设置多行文本的文本对齐方式
+        .textAlign(TextAlign.Start)
+        // 设置组件自身的宽度
+        .width(100.percent)
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .halfLeading(true)
+        // 支持设备内复制
+        .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
+            CopyOptions.LocalDevice
+        } else {
+            CopyOptions.None
+        })
+        // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
+        .onCopy({
+            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
+                v(str)
+            }
+        })
+    }
+
+    @Builder
+    func headingTitleListComponent(item: NodeView, index: Int64) {
         if (item.node is CommonmarkText) {
             // 文本
             if (DeviceInfo.sdkApiVersion >= 19) {
@@ -150,91 +240,7 @@ class MarkdownHeadingComponent {
             latexSpanComponent(item, markdownConfiguration, componentWidth)
         } else {
             // TODO 其他节点
-            Span("")
-        }
-    }
-
-    /**
-     * 标题文字内容
-     */
-    @Builder
-    func headingTitleComponent18() {
-        Text() {
-            ForEach(
-                nodeViewList,
-                itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => headingTitleListComponent(item)
-                },
-                keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
-                }
-            )
-        }
-        // 设置多行文本的文本对齐方式
-        .textAlign(TextAlign.Start)
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置文本是否将行间距平分至行的顶部与底部。
-        .interopHalfLeading(true)
-        // 自定义设置组件是否支持文本可复制粘贴
-        .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
-            true
-        } else {
-            false
-        })
-        // 自定义长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件
-        .interopOnCopy({
-            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
-                v(str)
-            }
-        })
-    }
-
-    /**
-     * 标题文字内容
-     */
-    @Builder
-    func headingTitleComponent19() {
-        Text() {
-            ForEach(
-                nodeViewList,
-                itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => headingTitleListComponent(item)
-                },
-                keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
-                }
-            )
-        }
-        // 设置多行文本的文本对齐方式
-        .textAlign(TextAlign.Start)
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置文本是否将行间距平分至行的顶部与底部。
-        .halfLeading(true)
-        // 支持设备内复制
-        .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
-            CopyOptions.LocalDevice
-        } else {
-            CopyOptions.None
-        })
-        // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
-        .onCopy({
-            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
-                v(str)
-            }
-        })
-    }
-
-    /**
-     * 标题文字内容
-     */
-    @Builder
-    func headingTitleComponent() {
-        if (DeviceInfo.sdkApiVersion >= 19) {
-            headingTitleComponent19()
-        } else {
-            headingTitleComponent18()
+            customTitleLineBuilder(item, index)
         }
     }
 

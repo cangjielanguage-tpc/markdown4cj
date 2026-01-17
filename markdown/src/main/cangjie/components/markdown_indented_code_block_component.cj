@@ -76,7 +76,41 @@ class MarkdownIndentedCodeBlockComponent {
         Column() {
             codeBlockButtonComponent()
             Row() {
-                codeNumberComponent(lineArray, markdownConfiguration)
+                Column() {
+                    ForEach(
+                        lineArray,
+                        itemGeneratorFunc: {
+                            item: Int64, idx: Int64 => Text((idx + 1).toString())
+                                // 设置文本颜色
+                                .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                                // 设置文本尺寸
+                                .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                                // 设置行高
+                                .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
+                                // 设置文本的最大行数
+                                .maxLines(1)
+                                // 设置文本超长时的显示方式
+                                .textOverflow(TextOverflow.Ellipsis)
+                        },
+                        keyGeneratorFunc: {
+                            item: Int64, idx: Int64 => return "${idx}-${item}"
+                        }
+                    )
+                }
+                // 设置外边距属性
+                .margin(bottom: 10)
+                // 设置内边距属性
+                .padding(left: 8, right: 8)
+                // 设置 Column 子组件在水平方向上的对齐格式
+                .alignItems(HorizontalAlign.End)
+                // 设置边框的宽度
+                .borderWidth(EdgeWidths(right: markdownConfiguration.markdownTheme.thematicBreakHeight.vp))
+                // 设置元素的边框样式
+                .borderStyle(BorderStyle.Solid)
+                // 设置边框的颜色
+                .borderColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                // 控件显示和隐藏
+                .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockLineNumberHide))
                 codeBlockComponent()
             }
         }
