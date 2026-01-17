@@ -45,6 +45,16 @@ public class CJMarkdownConfig {
     var videoImageCallback: ?(String, (String, Float64, Int64) -> Unit) -> Unit = None
 
     /**
+     * 视频发布的点击事件
+     */
+    var videoReleaseCallback: ?(String) -> Unit = None
+
+    /**
+     * 视频下载的点击事件
+     */
+    var videoDownloadCallback: ?(String) -> Unit = None
+
+    /**
      * 代码复制按钮的点击事件
      */
     var codeCopyCallback: ?(String) -> Unit = None
@@ -137,6 +147,24 @@ public class CJMarkdownConfig {
      */
     public func setVideoImageCallback(cb: (String, (String, Float64, Int64) -> Unit) -> Unit): Unit {
         this.videoImageCallback = cb
+    }
+
+    /**
+     * 设置视频发布的点击事件
+     *
+     * @param videoReleaseCallback 视频发布的点击事件 (String:视频链接)
+     */
+    public func setVideoReleaseCallback(videoReleaseCallback: (String) -> Unit): Unit {
+        this.videoReleaseCallback = videoReleaseCallback
+    }
+
+    /**
+     * 设置视频下载的点击事件
+     *
+     * @param videoDownloadCallback 视频下载的点击事件 (String:视频链接)
+     */
+    public func setVideoDownloadCallback(videoDownloadCallback: (String) -> Unit): Unit {
+        this.videoDownloadCallback = videoDownloadCallback
     }
 
     /**

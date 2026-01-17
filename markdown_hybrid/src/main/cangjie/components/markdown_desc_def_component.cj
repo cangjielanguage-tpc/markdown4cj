@@ -54,6 +54,12 @@ public class MarkdownDescDefComponent {
      */
     var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
+    /**
+     * 自定义行内段落布局
+     */
+    @BuilderParam
+    var customParagraphLineBuilder: (NodeView, Int64) -> Unit
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
@@ -81,7 +87,7 @@ public class MarkdownDescDefComponent {
                     item: NodeView, idx: Int64 => if (item.node is Paragraph) {
                         // 段落
                         ListItem() {
-                            blockParagraphComponent(markdownConfiguration, item, Option<FootnoteBlock>.None, fontCallback, tocListOnClick, imageCallback, componentWidth, true, false, markdownCacheConfiguration.paragraphComponents)
+                            MarkdownParagraphComponent(markdownConfiguration: markdownConfiguration, nodeView: item, footnoteBlock: Option<FootnoteBlock>.None, fontCallback: fontCallback, tocListOnClick: tocListOnClick, isListTo: true, imageCallback: imageCallback, componentWidth: componentWidth, paragraphComponents: markdownCacheConfiguration.paragraphComponents, customParagraphLineBuilder: customParagraphLineBuilder)
                         }
                     } else {
                         // TODO 其他节点

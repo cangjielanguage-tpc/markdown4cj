@@ -1976,40 +1976,6 @@ func inLineCodeSpanComponent(item: NodeView, markdownConfiguration: MarkdownConf
 }
 
 /**
- * 标题
- */
-@Builder
-func blockHeadingComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, fontCallback: (String) -> Unit, imageCallback: (String) -> Unit, componentWidth: Float64, isListTo: Bool, headingComponents: HashMap<Int64, MarkdownHeadingComponent>) {
-    MarkdownHeadingComponent(
-        markdownConfiguration: markdownConfiguration,
-        nodeView: item,
-        fontCallback: fontCallback,
-        imageCallback: imageCallback,
-        componentWidth: componentWidth,
-        isListTo: isListTo,
-        headingComponents: headingComponents
-    )
-}
-
-/**
- * 段落
- */
-@Builder
-func blockParagraphComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, footnoteBlock: Option<FootnoteBlock>, fontCallback: (String) -> Unit, tocListOnClick: (Int64) -> Unit, imageCallback: (String) -> Unit, componentWidth: Float64, isListTo: Bool, isDescList: Bool, paragraphComponents: HashMap<Int64, MarkdownParagraphComponent>) {
-    MarkdownParagraphComponent(
-        markdownConfiguration: markdownConfiguration,
-        nodeView: item,
-        footnoteBlock: footnoteBlock,
-        fontCallback: fontCallback,
-        tocListOnClick: tocListOnClick,
-        imageCallback: imageCallback,
-        componentWidth: componentWidth,
-        isListTo: isListTo,
-        paragraphComponents: paragraphComponents
-    )
-}
-
-/**
  * 围栏代码
  */
 @Builder
@@ -2036,34 +2002,13 @@ func blockIndentedCodeComponent(markdownConfiguration: MarkdownConfiguration, it
 }
 
 /**
- * 表格
- */
-@Builder
-func blockTableComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, fontCallback: (String) -> Unit, imageCallback: (String) -> Unit, componentWidth: Float64, tableComponents: HashMap<Int64, MarkdownTableBlockComponent>, tableRowComponents: HashMap<Int64, MarkdownTableBlockRowComponent>, tableCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent>) {
-    MarkdownTableBlockComponent(
-        markdownConfiguration: markdownConfiguration,
-        nodeView: item,
-        fontCallback: fontCallback,
-        imageCallback: imageCallback,
-        componentWidth: componentWidth,
-        tableComponents: tableComponents,
-        tableRowComponents: tableRowComponents,
-        tableCellComponents: tableCellComponents
-    )
-}
-
-/**
  * 数学公式 -单行
  */
 @Builder
 func blockLatextComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView) {
     if ((item.node as LatexMathBlock)().isClosed) {
         // 结束显示数学公式
-        MarkdownLatexMathBlockComponent(
-            markdownConfiguration: markdownConfiguration,
-            nodeView: item,
-            latexStr: (item.node as LatexMathBlock)().latex
-        )
+        MarkdownLatexMathBlockComponent(markdownConfiguration: markdownConfiguration, nodeView: item, latexStr: (item.node as LatexMathBlock)().latex)
     } else {
         // 没结束显示纯文本
         Text((item.node as LatexMathBlock)().latex)
@@ -2075,11 +2020,7 @@ func blockLatextComponent(markdownConfiguration: MarkdownConfiguration, item: No
  */
 @Builder
 func blockImageBannerComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, imageCallback: (String) -> Unit) {
-    MarkdownImageBannerComponent(
-        slideBlockNodeView: item,
-        markdownConfiguration: markdownConfiguration,
-        imageCallback: imageCallback
-    )
+    MarkdownImageBannerComponent(slideBlockNodeView: item, markdownConfiguration: markdownConfiguration, imageCallback: imageCallback)
 }
 
 /**
@@ -2087,53 +2028,5 @@ func blockImageBannerComponent(markdownConfiguration: MarkdownConfiguration, ite
  */
 @Builder
 func blockCodeBlockListComponent(markdownConfiguration: MarkdownConfiguration, item: NodeView, res: (ArrayList<String>, ArrayList<String>, ArrayList<String>)) {
-    MarkdownCodeBlockListComponent(
-        nodeView: item,
-        strInfos: res[0],
-        strText: res[1],
-        strInfoText: res[2],
-        markdownConfiguration: markdownConfiguration
-    )
-}
-
-/**
- *
- */
-@Builder
-func codeNumberComponent(lineArray: ObservedArrayList<Int64>, markdownConfiguration: MarkdownConfiguration) {
-    Column() {
-        ForEach(
-            lineArray,
-            itemGeneratorFunc: {
-                item: Int64, idx: Int64 => Text((idx + 1).toString())
-                    // 设置文本颜色
-                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                    // 设置文本尺寸
-                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                    // 设置行高
-                    .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
-                    // 设置文本的最大行数
-                    .maxLines(1)
-                    // 设置文本超长时的显示方式
-                    .textOverflow(TextOverflow.Ellipsis)
-            },
-            keyGeneratorFunc: {
-                item: Int64, idx: Int64 => return "${idx}-${item}"
-            }
-        )
-    }
-    // 设置外边距属性
-    .margin(bottom: 10)
-    // 设置内边距属性
-    .padding(left: 8, right: 8)
-    // 设置 Column 子组件在水平方向上的对齐格式
-    .alignItems(HorizontalAlign.End)
-    // 设置边框的宽度
-    .borderWidth(EdgeWidths(right: markdownConfiguration.markdownTheme.thematicBreakHeight.vp))
-    // 设置元素的边框样式
-    .borderStyle(BorderStyle.Solid)
-    // 设置边框的颜色
-    .borderColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-    // 控件显示和隐藏
-    .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockLineNumberHide))
+    MarkdownCodeBlockListComponent(nodeView: item, strInfos: res[0], strText: res[1], strInfoText: res[2], markdownConfiguration: markdownConfiguration)
 }

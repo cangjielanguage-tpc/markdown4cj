@@ -766,6 +766,16 @@ public class MarkdownTheme {
     protected var playCircleFillIcon: ?AppResource = None
 
     /**
+     * 视频发布默认图标
+     */
+    protected var videoReleaseImage: ?AppResource = None
+
+    /**
+     * 视频下载默认图标
+     */
+    protected var videoDownloadImage: ?AppResource = None
+
+    /**
      * 视频圆角大小
      */
     protected var videoBorderRadius: Float64 = 10.0
@@ -799,6 +809,86 @@ public class MarkdownTheme {
      * 视频下边距
      */
     protected var videoMarginBottom: Float64 = 10.0
+
+    /**
+     * 视频发布按钮图片宽度和高度
+     */
+    protected var videoReleaseImageWidthHeight: Float64 = 18.0
+
+    /**
+     * 视频发布按钮宽度
+     */
+    protected var videoReleaseWidth: Float64 = 144.0
+
+    /**
+     * 视频发布按钮高度
+     */
+    protected var videoReleaseHeight: Float64 = 44.0
+
+    /**
+     * 视频发布按钮圆角
+     */
+    protected var videoReleaseRadius: Float64 = 22.0
+
+    /**
+     * 视频发布按钮文本内容
+     */
+    protected var videoReleaseText: String = "发布视频"
+
+    /**
+     * 视频发布按钮文本大小
+     */
+    protected var videoReleaseTexSize: Float64 = 16.0
+
+    /**
+     * 视频发布按钮文本颜色
+     */
+    protected var videoReleaseTexColor: Color = COLOR_E6000000
+
+    /**
+     * 视频发布按钮背景颜色
+     */
+    protected var videoReleaseBackgroundColor: Color = COLOR_FFF5F5F5
+
+    /**
+     * 视频下载按钮图片宽度和高度
+     */
+    protected var videoDownloadImageWidthHeight: Float64 = 18.0
+
+    /**
+     * 视频下载按钮宽度
+     */
+    protected var videoDownloadWidth: Float64 = 144.0
+
+    /**
+     * 视频下载按钮高度
+     */
+    protected var videoDownloadHeight: Float64 = 44.0
+
+    /**
+     * 视频下载按钮圆角
+     */
+    protected var videoDownloadRadius: Float64 = 22.0
+
+    /**
+     * 视频下载按钮文本内容
+     */
+    protected var videoDownloadText: String = "下载视频"
+
+    /**
+     * 视频下载按钮文本大小
+     */
+    protected var videoDownloadTexSize: Float64 = 16.0
+
+    /**
+     * 视频下载按钮文本颜色
+     */
+    protected var videoDownloadTexColor: Color = COLOR_E6000000
+
+    /**
+     * 视频下载按钮背景颜色
+     */
+    protected var videoDownloadBackgroundColor: Color = COLOR_FFF5F5F5
 
     /**
      * 图片banner默认占位图
@@ -1144,6 +1234,8 @@ public class MarkdownTheme {
         // 12、视频
         this.videoImage = builder.videoImage
         this.playCircleFillIcon = builder.playCircleFillIcon
+        this.videoReleaseImage = builder.videoReleaseImage
+        this.videoDownloadImage = builder.videoDownloadImage
         this.videoBorderRadius = builder.videoBorderRadius
         this.videoTimeTextColor = builder.videoTimeTextColor
         this.videoTimeTextSize = builder.videoTimeTextSize
@@ -1151,6 +1243,22 @@ public class MarkdownTheme {
         this.videoTimeTextMarginBottom = builder.videoTimeTextMarginBottom
         this.videoMarginTop = builder.videoMarginTop
         this.videoMarginBottom = builder.videoMarginBottom
+        this.videoReleaseImageWidthHeight = builder.videoReleaseImageWidthHeight
+        this.videoReleaseWidth = builder.videoReleaseWidth
+        this.videoReleaseHeight = builder.videoReleaseHeight
+        this.videoReleaseRadius = builder.videoReleaseRadius
+        this.videoReleaseText = builder.videoReleaseText
+        this.videoReleaseTexSize = builder.videoReleaseTexSize
+        this.videoReleaseTexColor = builder.videoReleaseTexColor
+        this.videoReleaseBackgroundColor = builder.videoReleaseBackgroundColor
+        this.videoDownloadImageWidthHeight = builder.videoDownloadImageWidthHeight
+        this.videoDownloadWidth = builder.videoDownloadWidth
+        this.videoDownloadHeight = builder.videoDownloadHeight
+        this.videoDownloadRadius = builder.videoDownloadRadius
+        this.videoDownloadText = builder.videoDownloadText
+        this.videoDownloadTexSize = builder.videoDownloadTexSize
+        this.videoDownloadTexColor = builder.videoDownloadTexColor
+        this.videoDownloadBackgroundColor = builder.videoDownloadBackgroundColor
 
         // 13、图片banner
         this.bannerImage = builder.bannerImage
@@ -2147,6 +2255,16 @@ public class MarkdownThemeBuilder {
     var playCircleFillIcon: ?AppResource = None
 
     /**
+     * 视频发布默认图标
+     */
+    var videoReleaseImage: ?AppResource = None
+
+    /**
+     * 视频下载默认图标
+     */
+    var videoDownloadImage: ?AppResource = None
+
+    /**
      * 视频圆角大小
      */
     var videoBorderRadius: Float64 = 10.0
@@ -2180,6 +2298,86 @@ public class MarkdownThemeBuilder {
      * 视频下边距
      */
     var videoMarginBottom: Float64 = 10.0
+
+    /**
+     * 视频发布按钮图片宽度和高度
+     */
+    var videoReleaseImageWidthHeight: Float64 = 18.0
+
+    /**
+     * 视频发布按钮宽度
+     */
+    var videoReleaseWidth: Float64 = 144.0
+
+    /**
+     * 视频发布按钮高度
+     */
+    var videoReleaseHeight: Float64 = 44.0
+
+    /**
+     * 视频发布按钮圆角
+     */
+    var videoReleaseRadius: Float64 = 22.0
+
+    /**
+     * 视频发布按钮文本内容
+     */
+    var videoReleaseText: String = "发布视频"
+
+    /**
+     * 视频发布按钮文本大小
+     */
+    var videoReleaseTexSize: Float64 = 16.0
+
+    /**
+     * 视频发布按钮文本颜色
+     */
+    var videoReleaseTexColor: Color = COLOR_E6000000
+
+    /**
+     * 视频发布按钮背景颜色
+     */
+    var videoReleaseBackgroundColor: Color = COLOR_FFF5F5F5
+
+    /**
+     * 视频下载按钮图片宽度和高度
+     */
+    var videoDownloadImageWidthHeight: Float64 = 18.0
+
+    /**
+     * 视频下载按钮宽度
+     */
+    var videoDownloadWidth: Float64 = 144.0
+
+    /**
+     * 视频下载按钮高度
+     */
+    var videoDownloadHeight: Float64 = 44.0
+
+    /**
+     * 视频下载按钮圆角
+     */
+    var videoDownloadRadius: Float64 = 22.0
+
+    /**
+     * 视频下载按钮文本内容
+     */
+    var videoDownloadText: String = "下载视频"
+
+    /**
+     * 视频下载按钮文本大小
+     */
+    var videoDownloadTexSize: Float64 = 16.0
+
+    /**
+     * 视频下载按钮文本颜色
+     */
+    var videoDownloadTexColor: Color = COLOR_E6000000
+
+    /**
+     * 视频下载按钮背景颜色
+     */
+    var videoDownloadBackgroundColor: Color = COLOR_FFF5F5F5
 
     /**
      * 图片banner默认占位图
@@ -2528,6 +2726,8 @@ public class MarkdownThemeBuilder {
         // 12、视频
         this.videoImage = theme.videoImage
         this.playCircleFillIcon = theme.playCircleFillIcon
+        this.videoReleaseImage = theme.videoReleaseImage
+        this.videoDownloadImage = theme.videoDownloadImage
         this.videoBorderRadius = theme.videoBorderRadius
         this.videoTimeTextColor = theme.videoTimeTextColor
         this.videoTimeTextSize = theme.videoTimeTextSize
@@ -2535,6 +2735,22 @@ public class MarkdownThemeBuilder {
         this.videoTimeTextMarginBottom = theme.videoTimeTextMarginBottom
         this.videoMarginTop = theme.videoMarginTop
         this.videoMarginBottom = theme.videoMarginBottom
+        this.videoReleaseImageWidthHeight = theme.videoReleaseImageWidthHeight
+        this.videoReleaseWidth = theme.videoReleaseWidth
+        this.videoReleaseHeight = theme.videoReleaseHeight
+        this.videoReleaseRadius = theme.videoReleaseRadius
+        this.videoReleaseText = theme.videoReleaseText
+        this.videoReleaseTexSize = theme.videoReleaseTexSize
+        this.videoReleaseTexColor = theme.videoReleaseTexColor
+        this.videoReleaseBackgroundColor = theme.videoReleaseBackgroundColor
+        this.videoDownloadImageWidthHeight = theme.videoDownloadImageWidthHeight
+        this.videoDownloadWidth = theme.videoDownloadWidth
+        this.videoDownloadHeight = theme.videoDownloadHeight
+        this.videoDownloadRadius = theme.videoDownloadRadius
+        this.videoDownloadText = theme.videoDownloadText
+        this.videoDownloadTexSize = theme.videoDownloadTexSize
+        this.videoDownloadTexColor = theme.videoDownloadTexColor
+        this.videoDownloadBackgroundColor = theme.videoDownloadBackgroundColor
 
         // 13、图片banner
         this.bannerImage = theme.bannerImage
@@ -4358,6 +4574,28 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置视频发布默认图标
+     *
+     * @param videoDownloadImage 视频发布默认图标 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseImage(videoDownloadImage: AppResource): MarkdownThemeBuilder {
+        this.videoDownloadImage = videoDownloadImage
+        return this
+    }
+
+    /**
+     * 设置视频下载默认图标
+     *
+     * @param videoReleaseImage 视频下载默认图标 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadImage(videoReleaseImage: AppResource): MarkdownThemeBuilder {
+        this.videoReleaseImage = videoReleaseImage
+        return this
+    }
+
+    /**
      * 设置视频圆角
      *
      * @param videoBorderRadius 视频圆角 - 默认10.0vp
@@ -4431,6 +4669,182 @@ public class MarkdownThemeBuilder {
      */
     public func setVideoMarginBottom(videoMarginBottom: Float64): MarkdownThemeBuilder {
         this.videoMarginBottom = videoMarginBottom
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮图片宽度和高度
+     *
+     * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: Float64): MarkdownThemeBuilder {
+        this.videoReleaseImageWidthHeight = videoReleaseImageWidthHeight
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮宽度
+     *
+     * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseWidth(videoReleaseWidth: Float64): MarkdownThemeBuilder {
+        this.videoReleaseWidth = videoReleaseWidth
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮高度
+     *
+     * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseHeight(videoReleaseHeight: Float64): MarkdownThemeBuilder {
+        this.videoReleaseHeight = videoReleaseHeight
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮圆角
+     *
+     * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseRadius(videoReleaseRadius: Float64): MarkdownThemeBuilder {
+        this.videoReleaseRadius = videoReleaseRadius
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮文本内容
+     *
+     * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseText(videoReleaseText: String): MarkdownThemeBuilder {
+        this.videoReleaseText = videoReleaseText
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮文本大小
+     *
+     * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseTexSize(videoReleaseTexSize: Float64): MarkdownThemeBuilder {
+        this.videoReleaseTexSize = videoReleaseTexSize
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮文本颜色
+     *
+     * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseTexColor(videoReleaseTexColor: Color): MarkdownThemeBuilder {
+        this.videoReleaseTexColor = videoReleaseTexColor
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮背景颜色
+     *
+     * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: Color): MarkdownThemeBuilder {
+        this.videoReleaseBackgroundColor = videoReleaseBackgroundColor
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮图片宽度和高度
+     *
+     * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: Float64): MarkdownThemeBuilder {
+        this.videoDownloadImageWidthHeight = videoDownloadImageWidthHeight
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮宽度
+     *
+     * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadWidth(videoDownloadWidth: Float64): MarkdownThemeBuilder {
+        this.videoDownloadWidth = videoDownloadWidth
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮高度
+     *
+     * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadHeight(videoDownloadHeight: Float64): MarkdownThemeBuilder {
+        this.videoDownloadHeight = videoDownloadHeight
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮圆角
+     *
+     * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadRadius(videoDownloadRadius: Float64): MarkdownThemeBuilder {
+        this.videoDownloadRadius = videoDownloadRadius
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮文本内容
+     *
+     * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadText(videoDownloadText: String): MarkdownThemeBuilder {
+        this.videoDownloadText = videoDownloadText
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮文本大小
+     *
+     * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadTexSize(videoDownloadTexSize: Float64): MarkdownThemeBuilder {
+        this.videoDownloadTexSize = videoDownloadTexSize
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮文本颜色
+     *
+     * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadTexColor(videoDownloadTexColor: Color): MarkdownThemeBuilder {
+        this.videoDownloadTexColor = videoDownloadTexColor
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮背景颜色
+     *
+     * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: Color): MarkdownThemeBuilder {
+        this.videoDownloadBackgroundColor = videoDownloadBackgroundColor
         return this
     }
 

@@ -334,6 +334,38 @@ export declare class CJMarkdownTheme {
 
   setVideoMarginBottom(videoMarginBottom: number): void
 
+  setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: number): void
+
+  setVideoReleaseWidth(videoReleaseWidth: number): void
+
+  setVideoReleaseHeight(videoReleaseHeight: number): void
+
+  setVideoReleaseRadius(videoReleaseRadius: number): void
+
+  setVideoReleaseText(videoReleaseText: string): void
+
+  setVideoReleaseTexSize(videoReleaseTexSize: number): void
+
+  setVideoReleaseTexColor(videoReleaseTexColor: number): void
+
+  setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: number): void
+
+  setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: number): void
+
+  setVideoDownloadWidth(videoDownloadWidth: number): void
+
+  setVideoDownloadHeight(videoDownloadHeight: number): void
+
+  setVideoDownloadRadius(videoDownloadRadius: number): void
+
+  setVideoDownloadText(videoDownloadText: string): void
+
+  setVideoDownloadTexSize(videoDownloadTexSize: number): void
+
+  setVideoDownloadTexColor(videoDownloadTexColor: number): void
+
+  setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: number): void
+
   setImageFitType(imageFitType: number): void
 
   setImageMaximumWidth(imageMaximumWidth: number): void
@@ -407,6 +439,10 @@ export declare class CJMarkdownConfig {
   setVideoCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void
 
   setVideoImageCallback(cb: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void): void
+
+  setVideoReleaseCallback(cb: (funcArg0: string) => void): void
+
+  setVideoDownloadCallback(cb: (funcArg0: string) => void): void
 
   setCodeCopyCallback(cb: (funcArg0: string) => void): void
 

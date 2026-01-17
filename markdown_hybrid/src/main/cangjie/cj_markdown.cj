@@ -100,6 +100,8 @@ var videoImage: ?AppResource = None
 var playCircleFillIcon: ?AppResource = None
 var bannerImage: ?AppResource = None
 var imageResource: ?AppResource = None
+var videoReleaseImage: ?AppResource = None
+var videoDownloadImage: ?AppResource = None
 
 public func getCJResource(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     if (callInfo[0].typeof() != JSType.UNDEFINED) {
@@ -122,6 +124,12 @@ public func getCJResource(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     }
     if (callInfo[6].typeof() != JSType.UNDEFINED) {
         imageResource = arktsRes2CJResource(ctx, callInfo[6])
+    }
+    if (callInfo[7].typeof() != JSType.UNDEFINED) {
+        videoReleaseImage = arktsRes2CJResource(ctx, callInfo[7])
+    }
+    if (callInfo[8].typeof() != JSType.UNDEFINED) {
+        videoDownloadImage = arktsRes2CJResource(ctx, callInfo[8])
     }
     return ctx.undefined().toJSValue()
 }

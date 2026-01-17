@@ -733,6 +733,86 @@ public class CJMarkdownTheme {
     var videoMarginBottom: ?Float64 = None
 
     /**
+     * 视频发布按钮图片宽度和高度
+     */
+    var videoReleaseImageWidthHeight: ?Float64 = None
+
+    /**
+     * 视频发布按钮宽度
+     */
+    var videoReleaseWidth: ?Float64 = None
+
+    /**
+     * 视频发布按钮高度
+     */
+    var videoReleaseHeight: ?Float64 = None
+
+    /**
+     * 视频发布按钮圆角
+     */
+    var videoReleaseRadius: ?Float64 = None
+
+    /**
+     * 视频发布按钮文本内容
+     */
+    var videoReleaseText: ?String = None
+
+    /**
+     * 视频发布按钮文本大小
+     */
+    var videoReleaseTexSize: ?Float64 = None
+
+    /**
+     * 视频发布按钮文本颜色
+     */
+    var videoReleaseTexColor: ?Color = Option<Color>.None
+
+    /**
+     * 视频发布按钮背景颜色
+     */
+    var videoReleaseBackgroundColor: ?Color = Option<Color>.None
+
+    /**
+     * 视频下载按钮图片宽度和高度
+     */
+    var videoDownloadImageWidthHeight: ?Float64 = None
+
+    /**
+     * 视频下载按钮宽度
+     */
+    var videoDownloadWidth: ?Float64 = None
+
+    /**
+     * 视频下载按钮高度
+     */
+    var videoDownloadHeight: ?Float64 = None
+
+    /**
+     * 视频下载按钮圆角
+     */
+    var videoDownloadRadius: ?Float64 = None
+
+    /**
+     * 视频下载按钮文本内容
+     */
+    var videoDownloadText: ?String = None
+
+    /**
+     * 视频下载按钮文本大小
+     */
+    var videoDownloadTexSize: ?Float64 = None
+
+    /**
+     * 视频下载按钮文本颜色
+     */
+    var videoDownloadTexColor: ?Color = Option<Color>.None
+
+    /**
+     * 视频下载按钮背景颜色
+     */
+    var videoDownloadBackgroundColor: ?Color = Option<Color>.None
+
+    /**
      * 图片缩放类型
      */
     var imageFitType: ?ImageFit = Option<ImageFit>.None
@@ -2173,6 +2253,150 @@ public class CJMarkdownTheme {
      */
     public func setVideoMarginBottom(videoMarginBottom: Float64): Unit {
         this.videoMarginBottom = videoMarginBottom
+    }
+
+    /**
+     * 设置视频发布按钮图片宽度和高度
+     *
+     * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
+     */
+    public func setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: Float64): Unit {
+        this.videoReleaseImageWidthHeight = videoReleaseImageWidthHeight
+    }
+
+    /**
+     * 设置视频发布按钮宽度
+     *
+     * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
+     */
+    public func setVideoReleaseWidth(videoReleaseWidth: Float64): Unit {
+        this.videoReleaseWidth = videoReleaseWidth
+    }
+
+    /**
+     * 设置视频发布按钮高度
+     *
+     * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
+     */
+    public func setVideoReleaseHeight(videoReleaseHeight: Float64): Unit {
+        this.videoReleaseHeight = videoReleaseHeight
+    }
+
+    /**
+     * 设置视频发布按钮圆角
+     *
+     * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
+     */
+    public func setVideoReleaseRadius(videoReleaseRadius: Float64): Unit {
+        this.videoReleaseRadius = videoReleaseRadius
+    }
+
+    /**
+     * 设置视频发布按钮文本内容
+     *
+     * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
+     */
+    public func setVideoReleaseText(videoReleaseText: String): Unit {
+        this.videoReleaseText = videoReleaseText
+    }
+
+    /**
+     * 设置视频发布按钮文本大小
+     *
+     * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
+     */
+    public func setVideoReleaseTexSize(videoReleaseTexSize: Float64): Unit {
+        this.videoReleaseTexSize = videoReleaseTexSize
+    }
+
+    /**
+     * 设置视频发布按钮文本颜色
+     *
+     * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
+     */
+    public func setVideoReleaseTexColor(videoReleaseTexColor: UInt32): Unit {
+        this.videoReleaseTexColor = transColorForTrasparent(videoReleaseTexColor)
+    }
+
+    /**
+     * 设置视频发布按钮背景颜色
+     *
+     * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
+     */
+    public func setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: UInt32): Unit {
+        this.videoReleaseBackgroundColor = transColorForTrasparent(videoReleaseBackgroundColor)
+    }
+
+    /**
+     * 设置视频下载按钮图片宽度和高度
+     *
+     * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
+     */
+    public func setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: Float64): Unit {
+        this.videoDownloadImageWidthHeight = videoDownloadImageWidthHeight
+    }
+
+    /**
+     * 设置视频下载按钮宽度
+     *
+     * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
+     */
+    public func setVideoDownloadWidth(videoDownloadWidth: Float64): Unit {
+        this.videoDownloadWidth = videoDownloadWidth
+    }
+
+    /**
+     * 设置视频下载按钮高度
+     *
+     * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
+     */
+    public func setVideoDownloadHeight(videoDownloadHeight: Float64): Unit {
+        this.videoDownloadHeight = videoDownloadHeight
+    }
+
+    /**
+     * 设置视频下载按钮圆角
+     *
+     * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
+     */
+    public func setVideoDownloadRadius(videoDownloadRadius: Float64): Unit {
+        this.videoDownloadRadius = videoDownloadRadius
+    }
+
+    /**
+     * 设置视频下载按钮文本内容
+     *
+     * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
+     */
+    public func setVideoDownloadText(videoDownloadText: String): Unit {
+        this.videoDownloadText = videoDownloadText
+    }
+
+    /**
+     * 设置视频下载按钮文本大小
+     *
+     * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
+     */
+    public func setVideoDownloadTexSize(videoDownloadTexSize: Float64): Unit {
+        this.videoDownloadTexSize = videoDownloadTexSize
+    }
+
+    /**
+     * 设置视频下载按钮文本颜色
+     *
+     * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
+     */
+    public func setVideoDownloadTexColor(videoDownloadTexColor: UInt32): Unit {
+        this.videoDownloadTexColor = transColorForTrasparent(videoDownloadTexColor)
+    }
+
+    /**
+     * 设置视频下载按钮背景颜色
+     *
+     * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
+     */
+    public func setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: UInt32): Unit {
+        this.videoDownloadBackgroundColor = transColorForTrasparent(videoDownloadBackgroundColor)
     }
 
     /**

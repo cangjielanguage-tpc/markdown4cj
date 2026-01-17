@@ -11,7 +11,7 @@ export const global_cjLib: CJLib = requireCJLib("libmarkdown.so") as CJLib
 
 export interface CJLib {
   getCJResource(codeFullScreenIcon?: Resource, codeCopyIcon?: Resource, audioIcon?: Resource, videoImage?: Resource,
-    playCircleFillIcon?: Resource, bannerImage?: Resource, imageResource?: Resource): void
+    playCircleFillIcon?: Resource, bannerImage?: Resource, imageResource?: Resource, videoReleaseImage?: Resource, videoDownloadImage?: Resource): void
 }
 
 class CJNodeController extends NodeController {
@@ -80,6 +80,12 @@ export struct CJMarkdown {
       if (this.config.videoImageCallback !== undefined) {
         cjMarkdownConfig.setVideoImageCallback(this.config.videoImageCallback)
       }
+      if (this.config.videoReleaseCallback !== undefined) {
+        cjMarkdownConfig.setVideoReleaseCallback(this.config.videoReleaseCallback)
+      }
+      if (this.config.videoDownloadCallback !== undefined) {
+        cjMarkdownConfig.setVideoDownloadCallback(this.config.videoDownloadCallback)
+      }
       if (this.config.codeCopyCallback !== undefined) {
         cjMarkdownConfig.setCodeCopyCallback(this.config.codeCopyCallback)
       }
@@ -117,7 +123,9 @@ export struct CJMarkdown {
           this.config.markdownTheme.videoImage,
           this.config.markdownTheme.playCircleFillIcon,
           this.config.markdownTheme.bannerImage,
-          this.config.markdownTheme.imageResource
+          this.config.markdownTheme.imageResource,
+          this.config.markdownTheme.videoReleaseImage,
+          this.config.markdownTheme.videoDownloadImage
         )
         if (this.config.markdownTheme.isMarkdownParserSync !== undefined) {
           cjMarkdownTheme.setIsMarkdownParserSync(this.config.markdownTheme.isMarkdownParserSync)
@@ -558,6 +566,54 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.videoMarginBottom !== undefined) {
           cjMarkdownTheme.setVideoMarginBottom(this.config.markdownTheme.videoMarginBottom)
         }
+        if (this.config.markdownTheme.videoReleaseImageWidthHeight !== undefined) {
+          cjMarkdownTheme.setVideoReleaseImageWidthHeight(this.config.markdownTheme.videoReleaseImageWidthHeight)
+        }
+        if (this.config.markdownTheme.videoReleaseWidth !== undefined) {
+          cjMarkdownTheme.setVideoReleaseWidth(this.config.markdownTheme.videoReleaseWidth)
+        }
+        if (this.config.markdownTheme.videoReleaseHeight !== undefined) {
+          cjMarkdownTheme.setVideoReleaseHeight(this.config.markdownTheme.videoReleaseHeight)
+        }
+        if (this.config.markdownTheme.videoReleaseRadius !== undefined) {
+          cjMarkdownTheme.setVideoReleaseRadius(this.config.markdownTheme.videoReleaseRadius)
+        }
+        if (this.config.markdownTheme.videoReleaseText !== undefined) {
+          cjMarkdownTheme.setVideoReleaseText(this.config.markdownTheme.videoReleaseText)
+        }
+        if (this.config.markdownTheme.videoReleaseTexSize !== undefined) {
+          cjMarkdownTheme.setVideoReleaseTexSize(this.config.markdownTheme.videoReleaseTexSize)
+        }
+        if (this.config.markdownTheme.videoReleaseTexColor !== undefined) {
+          cjMarkdownTheme.setVideoReleaseTexColor(this.config.markdownTheme.videoReleaseTexColor)
+        }
+        if (this.config.markdownTheme.videoReleaseBackgroundColor !== undefined) {
+          cjMarkdownTheme.setVideoReleaseBackgroundColor(this.config.markdownTheme.videoReleaseBackgroundColor)
+        }
+        if (this.config.markdownTheme.videoDownloadImageWidthHeight !== undefined) {
+          cjMarkdownTheme.setVideoDownloadImageWidthHeight(this.config.markdownTheme.videoDownloadImageWidthHeight)
+        }
+        if (this.config.markdownTheme.videoDownloadWidth !== undefined) {
+          cjMarkdownTheme.setVideoDownloadWidth(this.config.markdownTheme.videoDownloadWidth)
+        }
+        if (this.config.markdownTheme.videoDownloadHeight !== undefined) {
+          cjMarkdownTheme.setVideoDownloadHeight(this.config.markdownTheme.videoDownloadHeight)
+        }
+        if (this.config.markdownTheme.videoDownloadRadius !== undefined) {
+          cjMarkdownTheme.setVideoDownloadRadius(this.config.markdownTheme.videoDownloadRadius)
+        }
+        if (this.config.markdownTheme.videoDownloadText !== undefined) {
+          cjMarkdownTheme.setVideoDownloadText(this.config.markdownTheme.videoDownloadText)
+        }
+        if (this.config.markdownTheme.videoDownloadTexSize !== undefined) {
+          cjMarkdownTheme.setVideoDownloadTexSize(this.config.markdownTheme.videoDownloadTexSize)
+        }
+        if (this.config.markdownTheme.videoDownloadTexColor !== undefined) {
+          cjMarkdownTheme.setVideoDownloadTexColor(this.config.markdownTheme.videoDownloadTexColor)
+        }
+        if (this.config.markdownTheme.videoDownloadBackgroundColor !== undefined) {
+          cjMarkdownTheme.setVideoDownloadBackgroundColor(this.config.markdownTheme.videoDownloadBackgroundColor)
+        }
         if (this.config.markdownTheme.imageFitType !== undefined) {
           cjMarkdownTheme.setImageFitType(this.config.markdownTheme.imageFitType)
         }
@@ -713,6 +769,14 @@ export class MarkdownConfiguration {
   videoImageCallback?: (funcArg0: string,
     funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
   /**
+   * 视频发布的点击事件
+   */
+  videoReleaseCallback?: (funcArg0: string) => void = undefined
+  /**
+   * 视频下载的点击事件
+   */
+  videoDownloadCallback?: (funcArg0: string) => void = undefined
+  /**
    * 代码复制按钮的点击事件
    */
   codeCopyCallback?: (funcArg0: string) => void = undefined
@@ -802,6 +866,24 @@ export class MarkdownConfiguration {
    */
   setVideoImageCallback(cb: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void): void {
     this.videoImageCallback = cb
+  }
+
+  /**
+   * 设置视频发布的点击事件
+   *
+   * @param cb 视频发布的点击事件(funcArg0：视频url) --- 需要加载视频解析插件
+   */
+  setVideoReleaseCallback(cb: (funcArg0: string) => void): void {
+    this.videoReleaseCallback = cb
+  }
+
+  /**
+   * 设置视频下载的点击事件
+   *
+   * @param cb 视频下载的点击事件(funcArg0：视频url) --- 需要加载视频解析插件
+   */
+  setVideoDownloadCallback(cb: (funcArg0: string) => void): void {
+    this.videoDownloadCallback = cb
   }
 
   /**
@@ -901,6 +983,14 @@ export class MarkdownTheme {
    * 图片默认占位图
    */
   imageResource?: Resource = undefined
+  /**
+   * 视频发布默认图标
+   */
+  videoReleaseImage?: Resource = undefined
+  /**
+   * 视频下载默认图标
+   */
+  videoDownloadImage?: Resource = undefined
   /**
    * markdown是否同步解析
    */
@@ -1474,6 +1564,85 @@ export class MarkdownTheme {
    */
   videoMarginBottom?: number = undefined
   /**
+   * 视频发布按钮图片宽度和高度
+   */
+  videoReleaseImageWidthHeight?: number = undefined
+
+  /**
+   * 视频发布按钮宽度
+   */
+  videoReleaseWidth?: number = undefined
+
+  /**
+   * 视频发布按钮高度
+   */
+  videoReleaseHeight?: number = undefined
+
+  /**
+   * 视频发布按钮圆角
+   */
+  videoReleaseRadius?: number = undefined
+
+  /**
+   * 视频发布按钮文本内容
+   */
+  videoReleaseText?: string = undefined
+
+  /**
+   * 视频发布按钮文本大小
+   */
+  videoReleaseTexSize?: number = undefined
+
+  /**
+   * 视频发布按钮文本颜色
+   */
+  videoReleaseTexColor?: number = undefined
+
+  /**
+   * 视频发布按钮背景颜色
+   */
+  videoReleaseBackgroundColor?: number = undefined
+
+  /**
+   * 视频下载按钮图片宽度和高度
+   */
+  videoDownloadImageWidthHeight?: number = undefined
+
+  /**
+   * 视频下载按钮宽度
+   */
+  videoDownloadWidth?: number = undefined
+
+  /**
+   * 视频下载按钮高度
+   */
+  videoDownloadHeight?: number = undefined
+
+  /**
+   * 视频下载按钮圆角
+   */
+  videoDownloadRadius?: number = undefined
+
+  /**
+   * 视频下载按钮文本内容
+   */
+  videoDownloadText?: string = undefined
+
+  /**
+   * 视频下载按钮文本大小
+   */
+  videoDownloadTexSize?: number = undefined
+
+  /**
+   * 视频下载按钮文本颜色
+   */
+  videoDownloadTexColor?: number = undefined
+
+  /**
+   * 视频下载按钮背景颜色
+   */
+  videoDownloadBackgroundColor?: number = undefined
+  /**
    * 图片缩放类型
    */
   imageFitType?: ImageFitType = undefined
@@ -1664,6 +1833,24 @@ export class MarkdownTheme {
    */
   setImageResource(imageResource: Resource): void {
     this.imageResource = imageResource
+  }
+
+  /**
+   * 设置视频发布默认图标
+   *
+   * @param videoReleaseImage 视频发布默认图标
+   */
+  setVideoReleaseImage(videoReleaseImage: Resource): void {
+    this.videoReleaseImage = videoReleaseImage
+  }
+
+  /**
+   * 设置视频下载默认图标
+   *
+   * @param videoDownloadImage 视频下载默认图标
+   */
+  setVideoDownloadImage(videoDownloadImage: Resource): void {
+    this.videoDownloadImage = videoDownloadImage
   }
 
   /**
@@ -2951,6 +3138,150 @@ export class MarkdownTheme {
    */
   setVideoMarginBottom(videoMarginBottom: number): void {
     this.videoMarginBottom = videoMarginBottom
+  }
+
+  /**
+   * 设置视频发布按钮图片宽度和高度
+   *
+   * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
+   */
+  setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: number): void {
+    this.videoReleaseImageWidthHeight = videoReleaseImageWidthHeight
+  }
+
+  /**
+   * 设置视频发布按钮宽度
+   *
+   * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
+   */
+  setVideoReleaseWidth(videoReleaseWidth: number): void {
+    this.videoReleaseWidth = videoReleaseWidth
+  }
+
+  /**
+   * 设置视频发布按钮高度
+   *
+   * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
+   */
+  setVideoReleaseHeight(videoReleaseHeight: number): void {
+    this.videoReleaseHeight = videoReleaseHeight
+  }
+
+  /**
+   * 设置视频发布按钮圆角
+   *
+   * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
+   */
+  setVideoReleaseRadius(videoReleaseRadius: number): void {
+    this.videoReleaseRadius = videoReleaseRadius
+  }
+
+  /**
+   * 设置视频发布按钮文本内容
+   *
+   * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
+   */
+  setVideoReleaseText(videoReleaseText: string): void {
+    this.videoReleaseText = videoReleaseText
+  }
+
+  /**
+   * 设置视频发布按钮文本大小
+   *
+   * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
+   */
+  setVideoReleaseTexSize(videoReleaseTexSize: number): void {
+    this.videoReleaseTexSize = videoReleaseTexSize
+  }
+
+  /**
+   * 设置视频发布按钮文本颜色
+   *
+   * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
+   */
+  setVideoReleaseTexColor(videoReleaseTexColor: number): void {
+    this.videoReleaseTexColor = videoReleaseTexColor
+  }
+
+  /**
+   * 设置视频发布按钮背景颜色
+   *
+   * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
+   */
+  setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: number): void {
+    this.videoReleaseBackgroundColor = videoReleaseBackgroundColor
+  }
+
+  /**
+   * 设置视频下载按钮图片宽度和高度
+   *
+   * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
+   */
+  setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: number): void {
+    this.videoDownloadImageWidthHeight = videoDownloadImageWidthHeight
+  }
+
+  /**
+   * 设置视频下载按钮宽度
+   *
+   * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
+   */
+  setVideoDownloadWidth(videoDownloadWidth: number): void {
+    this.videoDownloadWidth = videoDownloadWidth
+  }
+
+  /**
+   * 设置视频下载按钮高度
+   *
+   * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
+   */
+  setVideoDownloadHeight(videoDownloadHeight: number): void {
+    this.videoDownloadHeight = videoDownloadHeight
+  }
+
+  /**
+   * 设置视频下载按钮圆角
+   *
+   * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
+   */
+  setVideoDownloadRadius(videoDownloadRadius: number): void {
+    this.videoDownloadRadius = videoDownloadRadius
+  }
+
+  /**
+   * 设置视频下载按钮文本内容
+   *
+   * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
+   */
+  setVideoDownloadText(videoDownloadText: string): void {
+    this.videoDownloadText = videoDownloadText
+  }
+
+  /**
+   * 设置视频下载按钮文本大小
+   *
+   * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
+   */
+  setVideoDownloadTexSize(videoDownloadTexSize: number): void {
+    this.videoDownloadTexSize = videoDownloadTexSize
+  }
+
+  /**
+   * 设置视频下载按钮文本颜色
+   *
+   * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
+   */
+  setVideoDownloadTexColor(videoDownloadTexColor: number): void {
+    this.videoDownloadTexColor = videoDownloadTexColor
+  }
+
+  /**
+   * 设置视频下载按钮背景颜色
+   *
+   * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
+   */
+  setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: number): void {
+    this.videoDownloadBackgroundColor = videoDownloadBackgroundColor
   }
 
   /**
