@@ -334,6 +334,8 @@ export declare class CJMarkdownTheme {
 
   setVideoMarginBottom(videoMarginBottom: number): void
 
+  setIsVideoBottomLayout(isVideoBottomLayout: boolean): void
+
   setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: number): void
 
   setVideoReleaseWidth(videoReleaseWidth: number): void

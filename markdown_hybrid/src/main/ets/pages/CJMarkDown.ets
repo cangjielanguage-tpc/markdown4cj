@@ -566,6 +566,9 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.videoMarginBottom !== undefined) {
           cjMarkdownTheme.setVideoMarginBottom(this.config.markdownTheme.videoMarginBottom)
         }
+        if (this.config.markdownTheme.isVideoBottomLayout !== undefined) {
+          cjMarkdownTheme.setIsVideoBottomLayout(this.config.markdownTheme.isVideoBottomLayout)
+        }
         if (this.config.markdownTheme.videoReleaseImageWidthHeight !== undefined) {
           cjMarkdownTheme.setVideoReleaseImageWidthHeight(this.config.markdownTheme.videoReleaseImageWidthHeight)
         }
@@ -1564,55 +1567,49 @@ export class MarkdownTheme {
    */
   videoMarginBottom?: number = undefined
   /**
+   * 视频发布/下载按钮布局是否显示
+   */
+  isVideoBottomLayout?: boolean = undefined
+  /**
    * 视频发布按钮图片宽度和高度
    */
   videoReleaseImageWidthHeight?: number = undefined
-
   /**
    * 视频发布按钮宽度
    */
   videoReleaseWidth?: number = undefined
-
   /**
    * 视频发布按钮高度
    */
   videoReleaseHeight?: number = undefined
-
   /**
    * 视频发布按钮圆角
    */
   videoReleaseRadius?: number = undefined
-
   /**
    * 视频发布按钮文本内容
    */
   videoReleaseText?: string = undefined
-
   /**
    * 视频发布按钮文本大小
    */
   videoReleaseTexSize?: number = undefined
-
   /**
    * 视频发布按钮文本颜色
    */
   videoReleaseTexColor?: number = undefined
-
   /**
    * 视频发布按钮背景颜色
    */
   videoReleaseBackgroundColor?: number = undefined
-
   /**
    * 视频下载按钮图片宽度和高度
    */
   videoDownloadImageWidthHeight?: number = undefined
-
   /**
    * 视频下载按钮宽度
    */
   videoDownloadWidth?: number = undefined
-
   /**
    * 视频下载按钮高度
    */
@@ -3138,6 +3135,15 @@ export class MarkdownTheme {
    */
   setVideoMarginBottom(videoMarginBottom: number): void {
     this.videoMarginBottom = videoMarginBottom
+  }
+
+  /**
+   * 设置视频发布/下载按钮布局是否显示
+   *
+   * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默认false不显示
+   */
+  setIsVideoBottomLayout(isVideoBottomLayout: boolean): void {
+    this.isVideoBottomLayout = isVideoBottomLayout
   }
 
   /**

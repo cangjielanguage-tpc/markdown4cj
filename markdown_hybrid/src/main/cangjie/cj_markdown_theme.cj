@@ -733,6 +733,11 @@ public class CJMarkdownTheme {
     var videoMarginBottom: ?Float64 = None
 
     /**
+     * 视频发布/下载按钮布局是否显示
+     */
+    var isVideoBottomLayout: ?Bool = None
+
+    /**
      * 视频发布按钮图片宽度和高度
      */
     var videoReleaseImageWidthHeight: ?Float64 = None
@@ -2253,6 +2258,15 @@ public class CJMarkdownTheme {
      */
     public func setVideoMarginBottom(videoMarginBottom: Float64): Unit {
         this.videoMarginBottom = videoMarginBottom
+    }
+
+    /**
+     * 设置视频发布/下载按钮布局是否显示
+     *
+     * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默认false不显示
+     */
+    public func setIsVideoBottomLayout(isVideoBottomLayout: Bool): Unit {
+        this.isVideoBottomLayout = isVideoBottomLayout
     }
 
     /**

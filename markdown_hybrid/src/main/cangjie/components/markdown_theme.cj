@@ -811,6 +811,11 @@ public class MarkdownTheme {
     protected var videoMarginBottom: Float64 = 10.0
 
     /**
+     * 视频发布/下载按钮布局是否显示
+     */
+    protected var isVideoBottomLayout: Bool = false
+
+    /**
      * 视频发布按钮图片宽度和高度
      */
     protected var videoReleaseImageWidthHeight: Float64 = 18.0
@@ -1243,6 +1248,7 @@ public class MarkdownTheme {
         this.videoTimeTextMarginBottom = builder.videoTimeTextMarginBottom
         this.videoMarginTop = builder.videoMarginTop
         this.videoMarginBottom = builder.videoMarginBottom
+        this.isVideoBottomLayout = builder.isVideoBottomLayout
         this.videoReleaseImageWidthHeight = builder.videoReleaseImageWidthHeight
         this.videoReleaseWidth = builder.videoReleaseWidth
         this.videoReleaseHeight = builder.videoReleaseHeight
@@ -2300,6 +2306,11 @@ public class MarkdownThemeBuilder {
     var videoMarginBottom: Float64 = 10.0
 
     /**
+     * 视频发布/下载按钮布局是否显示
+     */
+    var isVideoBottomLayout: Bool = false
+
+    /**
      * 视频发布按钮图片宽度和高度
      */
     var videoReleaseImageWidthHeight: Float64 = 18.0
@@ -2735,6 +2746,7 @@ public class MarkdownThemeBuilder {
         this.videoTimeTextMarginBottom = theme.videoTimeTextMarginBottom
         this.videoMarginTop = theme.videoMarginTop
         this.videoMarginBottom = theme.videoMarginBottom
+        this.isVideoBottomLayout = theme.isVideoBottomLayout
         this.videoReleaseImageWidthHeight = theme.videoReleaseImageWidthHeight
         this.videoReleaseWidth = theme.videoReleaseWidth
         this.videoReleaseHeight = theme.videoReleaseHeight
@@ -4669,6 +4681,17 @@ public class MarkdownThemeBuilder {
      */
     public func setVideoMarginBottom(videoMarginBottom: Float64): MarkdownThemeBuilder {
         this.videoMarginBottom = videoMarginBottom
+        return this
+    }
+
+    /**
+     * 设置视频发布/下载按钮布局是否显示
+     *
+     * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默false不显示
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsVideoBottomLayout(isVideoBottomLayout: Bool): MarkdownThemeBuilder {
+        this.isVideoBottomLayout = isVideoBottomLayout
         return this
     }
 

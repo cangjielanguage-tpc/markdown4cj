@@ -647,6 +647,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.videoMarginBottom) {
                 markdownThemeBuilder.setVideoMarginBottom(v) // 设置视频下边距
             }
+            if (let Some(v) <- w.cjMarkdownTheme.isVideoBottomLayout) {
+                markdownThemeBuilder.setIsVideoBottomLayout(v) // 设置视频发布/下载按钮布局是否显示
+            }
             if (let Some(v) <- w.cjMarkdownTheme.videoReleaseImageWidthHeight) {
                 markdownThemeBuilder.setVideoReleaseImageWidthHeight(v) // 设置视频发布按钮图片宽度和高度
             }
