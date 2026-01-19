@@ -19,7 +19,11 @@ export struct CJMarkdown {
     * @param config 传入markdown配置选项
     * @param plugin 传入markdown插件化选项
     */
-    CJMarkdown(content: string, config?: MarkdownConfiguration, plugin?: MarkdownPlugin)
+    CJMarkdown(
+        content: string,
+        config?: MarkdownConfiguration,
+        plugin?: MarkdownPlugin
+    )
 }
 ```
 
@@ -82,6 +86,20 @@ export class MarkdownConfiguration {
    * @param cb 视频视频占位图和宽高比和视频时长回调。 (funcArg0：视频url,funcArg1:视频占位图和宽高比和视频时长回调 (funcArgfuncArg0:视频首帧图,funcArgfuncArg1:图片宽高比,funcArgfuncArg2,视频时长)) --- 需要加载视频解析插件
    */
   setVideoImageCallback(cb: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void): void
+
+  /**
+   * 设置视频发布的点击事件
+   *
+   * @param cb 视频发布的点击事件(funcArg0：视频url) --- 需要加载视频解析插件
+   */
+  setVideoReleaseCallback(cb: (funcArg0: string) => void): void
+
+  /**
+   * 设置视频下载的点击事件
+   *
+   * @param cb 视频下载的点击事件(funcArg0：视频url) --- 需要加载视频解析插件
+   */
+  setVideoDownloadCallback(cb: (funcArg0: string) => void): void
 
   /**
    * 设置代码复制点击回调
@@ -200,6 +218,20 @@ export class MarkdownTheme {
    * @param imageResource 图片占位图
    */
   setImageResource(imageResource: Resource): void
+
+  /**
+   * 设置视频发布默认图标
+   *
+   * @param videoReleaseImage 视频发布默认图标
+   */
+  setVideoReleaseImage(videoReleaseImage: Resource): void
+
+  /**
+   * 设置视频下载默认图标
+   *
+   * @param videoDownloadImage 视频下载默认图标
+   */
+  setVideoDownloadImage(videoDownloadImage: Resource): void
 
   /**
    * 设置markdown是否同步解析
@@ -584,7 +616,7 @@ export class MarkdownTheme {
    *
    * @param isCodeStyle 内联代码是否是图片显示 - true：图片化显示；false：不图片化显示。默认false
    */
-  setIsCodeStyle(isCodeStyle: boolean): void  
+  setIsCodeStyle(isCodeStyle: boolean): void
 
   /**
    * 设置是否格式化代码块内容
@@ -603,7 +635,7 @@ export class MarkdownTheme {
   /**
    * 设置文本、图片格式内联代码背景颜色
    *
-   * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFF191919
+   * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFFEAEAEA
    */
   setCodeBackgroundColor(codeBackgroundColor: number): void
 
@@ -1203,6 +1235,125 @@ export class MarkdownTheme {
   setVideoMarginBottom(videoMarginBottom: number): void
 
   /**
+   * 设置视频发布/下载按钮布局是否显示
+   *
+   * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默认false不显示
+   */
+  setIsVideoBottomLayout(isVideoBottomLayout: boolean): void
+
+  /**
+   * 设置视频发布按钮图片宽度和高度
+   *
+   * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
+   */
+  setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: number): void
+
+  /**
+   * 设置视频发布按钮宽度
+   *
+   * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
+   */
+  setVideoReleaseWidth(videoReleaseWidth: number): void
+
+  /**
+   * 设置视频发布按钮高度
+   *
+   * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
+   */
+  setVideoReleaseHeight(videoReleaseHeight: number): void
+
+  /**
+   * 设置视频发布按钮圆角
+   *
+   * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
+   */
+  setVideoReleaseRadius(videoReleaseRadius: number): void
+
+  /**
+   * 设置视频发布按钮文本内容
+   *
+   * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
+   */
+  setVideoReleaseText(videoReleaseText: string): void
+
+  /**
+   * 设置视频发布按钮文本大小
+   *
+   * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
+   */
+  setVideoReleaseTexSize(videoReleaseTexSize: number): void
+
+  /**
+   * 设置视频发布按钮文本颜色
+   *
+   * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
+   */
+  setVideoReleaseTexColor(videoReleaseTexColor: number): void
+
+  /**
+   * 设置视频发布按钮背景颜色
+   *
+   * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
+   */
+  setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: number): void
+
+  /**
+   * 设置视频下载按钮图片宽度和高度
+   *
+   * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
+   */
+  setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: number): void
+
+  /**
+   * 设置视频下载按钮宽度
+   *
+   * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
+   */
+  setVideoDownloadWidth(videoDownloadWidth: number): void
+
+  /**
+   * 设置视频下载按钮高度
+   *
+   * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
+   */
+  setVideoDownloadHeight(videoDownloadHeight: number): void
+
+  /**
+   * 设置视频下载按钮圆角
+   *
+   * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
+   */
+  setVideoDownloadRadius(videoDownloadRadius: number): void
+
+  /**
+   * 设置视频下载按钮文本内容
+   *
+   * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
+   */
+  setVideoDownloadText(videoDownloadText: string): void
+
+  /**
+   * 设置视频下载按钮文本大小
+   *
+   * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
+   */
+  setVideoDownloadTexSize(videoDownloadTexSize: number): void
+
+  /**
+   * 设置视频下载按钮文本颜色
+   *
+   * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
+   */
+  setVideoDownloadTexColor(videoDownloadTexColor: number): void
+
+  /**
+   * 设置视频下载按钮背景颜色
+   *
+   * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
+   */
+  setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: number): void
+
+  /**
    * 设置图片缩放类型
    *
    * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
@@ -1611,9 +1762,9 @@ export class MarkdownPlugin {
    * 设置是否加载emoji解析插件
    *
    * @param isEmojiPlugin 是否加载上标解析插件 - true：设置加载上标解析插件件；false：不设置加载上标解析插件。默认false
-   * @param isEmojiFull 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
+   * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
    */
-  setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiFull: boolean): void
+  setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void
 }
 ```
 

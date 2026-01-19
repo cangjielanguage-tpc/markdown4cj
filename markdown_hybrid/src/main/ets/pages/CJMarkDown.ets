@@ -741,6 +741,9 @@ export struct CJMarkdown {
   }
 }
 
+/**
+ * markdown配置
+ */
 export class MarkdownConfiguration {
   /**
    * 链接的点击事件
@@ -953,6 +956,9 @@ export class MarkdownConfiguration {
   }
 }
 
+/**
+ * Markdown用户可设置的样式
+ */
 export class MarkdownTheme {
   /**
    * 上下文
@@ -3561,6 +3567,9 @@ export class MarkdownTheme {
   }
 }
 
+/**
+ * 数学公式生成图片格式的枚举
+ */
 export enum LatexMathColorFormat {
   /**
    * 16位
@@ -3572,6 +3581,9 @@ export enum LatexMathColorFormat {
   COLOR_FORMAT_BGRA_8888
 }
 
+/**
+ * 图片缩放类型的枚举
+ */
 export enum ImageFitType{
   /**
    * 保持宽高比进行缩小或者放大，使得图片两边都大于或等于显示边界。
@@ -3587,6 +3599,9 @@ export enum ImageFitType{
   Fill
 }
 
+/**
+ * Markdown插件配置
+ */
 export class MarkdownPlugin {
   /**
    * 是否加载音频解析插件
