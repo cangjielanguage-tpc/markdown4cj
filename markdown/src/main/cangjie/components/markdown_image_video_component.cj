@@ -91,7 +91,9 @@ public class MarkdownImageVideoComponent {
             .width(100.percent)
             // 点击动作触发该方法调用
             .onClick {evt => videoOnClick(imageVideoUrl, videoCallback)}
-            imgVideoButtonComponent()
+            if (markdownConfiguration.markdownTheme.isVideoBottomLayout) {
+                imgVideoButtonComponent()
+            }
         }
     }
 
