@@ -55,14 +55,18 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 29. 支持音频语法
 30. 支持定义列表语法
 31. 支持标题ID语法
-32. 支持围栏代码块高亮功能
-33. 支持列表嵌套功能
-34. 支持文本样式设置
-35. 支持表格样式设置
-36. 支持超链接图片化设置
-37. 支持深浅主题色设置
-38. 支持文本长按选中复制粘贴
-39. 支持图文混排和图文不混排功能
+32. 支持上标语法
+33. 支持下标语法
+34. 支持emoji语法
+35. 支持围栏代码块高亮功能
+36. 支持列表嵌套功能
+37. 支持文本样式设置
+38. 支持表格样式设置
+39. 支持超链接图片化设置
+40. 支持深浅主题色设置
+41. 支持文本长按选中复制粘贴
+42. 支持图文混排和图文不混排功能
+43. 支持自定义解析和自定义布局
 
 ## 软件架构
 
@@ -105,7 +109,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 ### 编译构建
 
 1. 下载安装
-   1. 通过中心仓下载安装
+   1. 通过中心仓下载安装 - 中心仓暂时下架，暂不支持
 
       ```sh
       ohpm install @cangjie-tpc/markdown
@@ -278,6 +282,9 @@ Heading level 2
          * font-size属性 - 文本大小
          * font-weight属性 - 文本粗细
          * color属性 - 文本颜色(只支持6位16进制颜色)
+      8. u标签 - 下划线
+      9. sup标签 - 上标
+      10. sub标签 - 下标
    3. 行内块元素
       1. br标签 -  换行符
       2. img标签 - 图片
@@ -294,6 +301,7 @@ Heading level 2
 10. 音频支持的格式 `mp3, wav, aac, flac, ogg, m4a, wma, amr`
 11. `setLatexMathResStr` 接口默认字段是 `/data/storage/el1/bundle/entry/resources/resfile/res`。用户修改项目默认名称entry需要设置 `/data/storage/el1/bundle/xxx/resources/resfile/res` 数学公式才能正常显示
 12. markdownPlugin 自定义设置的时候。NodeIdPlugin 需要最后添加
+13. 自定义行内布局因为布局是在 Text 控件之中。暂时只支持 Span 和 ImageSpan
 
 ## 开源协议
 

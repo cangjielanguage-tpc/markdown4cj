@@ -107,11 +107,6 @@ public class MarkdownComponent {
     var customTableLineBuilder: (NodeView, Int64) -> Unit = CustomTableLineBuilder
 
     /**
-     * 定位需要的数组
-     */
-    var indexList: ArrayList<Int64> = ArrayList<Int64>()
-
-    /**
      * 屏幕宽度 - 单位px
      */
     let screenWidth: Int32 = getDefaultDisplaySync().width
@@ -167,6 +162,9 @@ public class MarkdownComponent {
      */
     var imageAndVideoList: ArrayList<String> = ArrayList<String>()
 
+    /**
+     * 最后一条数据的位置
+     */
     @State
     var lastViewIndex: Int64 = 0
 

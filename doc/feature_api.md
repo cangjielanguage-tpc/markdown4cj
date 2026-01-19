@@ -21,6 +21,10 @@ public class MarkdownComponent {
     * @param adBuilder 传入广告布局
     * @param videoBuilder 传入视频布局
     * @param audioBuilder 传入音频布局
+    * @param customBlockBuilder 传入自定义块结构布局
+    * @param customTitleLineBuilder 传入自定义标题行内布局
+    * @param customParagraphLineBuilder 传入自定义段落行内布局
+    * @param customTableLineBuilder 传入自定义表格行内布局
     */
     MarkdownComponent(
         output: String,
@@ -28,7 +32,11 @@ public class MarkdownComponent {
         markdownPlugin: Markdown,
         @BuilderParam adBuilder: (NodeView) -> Unit,
         @BuilderParam videoBuilder: (NodeView, MarkdownConfiguration, (String) -> Unit) -> Unit,
-        @BuilderParam audioBuilder: (NodeView, MarkdownConfiguration) -> Unit
+        @BuilderParam audioBuilder: (NodeView, MarkdownConfiguration) -> Unit,
+        @BuilderParam customBlockBuilder: (NodeView, Int64) -> Unit,
+        @BuilderParam customTitleLineBuilder: (NodeView, Int64) -> Unit,
+        @BuilderParam customParagraphLineBuilder: (NodeView, Int64) -> Unit,
+        @BuilderParam customTableLineBuilder: (NodeView, Int64) -> Unit
     )
 }
 ```
@@ -142,6 +150,22 @@ public class MarkdownConfigurationBuilder {
     public func setVideoImageCallback(videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit): MarkdownConfigurationBuilder
 
     /**
+     * 设置视频发布的点击事件
+     *
+     * @param videoReleaseCallback 视频发布的点击事件 (String:视频链接)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setVideoReleaseCallback(videoReleaseCallback: (String) -> Unit): MarkdownConfigurationBuilder
+
+    /**
+     * 设置视频下载的点击事件
+     *
+     * @param videoDownloadCallback 视频下载的点击事件 (String:视频链接)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setVideoDownloadCallback(videoDownloadCallback: (String) -> Unit): MarkdownConfigurationBuilder
+
+    /**
      * 设置代码复制按钮的点击事件
      *
      * @param codeCopyCallback 代码复制点击回调接口 (String:代码内容型)
@@ -216,7 +240,7 @@ Markdown用户可设置的样式
 /**
  * Markdown用户可设置的样式
  * 1：上下文 - 本地图片rawfile需要上下文。混合项目是stageContext，仓颉项目是abilityContext
- * 2：是否打开长按复制粘贴功能、每个模块之间上下间距
+ * 2：markdown是否同步解析、是否打开长按复制粘贴功能、markdown第一个模块上边距、markdown最后一个模块下边距、每个模块之间上下间距
  * 3：链接 - 链接是否是图片显示、列表中的单行链接是否是图片显示
  *          文本链接：文本格式链接文本颜色、是否按照链接文字字体大小显示文本、文本格式链接文字大小、文本格式链接背景颜色、文本格式是否显示链接下划线
  *          圆形图片链接：圆形图片格式链接主题背景颜色、圆形图片格式链接控件背景颜色、圆形图片格式链接文字大小、圆形图片格式链接文字颜色、圆形图片格式链接半径、圆形图片格式链接左右外边距
@@ -231,7 +255,8 @@ Markdown用户可设置的样式
  *          文本/图片格式内联代码文本颜色、文本/图片格式内联代码背景颜色、文本/图片格式内联代码文本大小
  *          文本格式内联代码：文本格式内联代码文本字体
  *          图片格式内联代码：图片格式内联代码文本左右边距、图片格式内联代码文本高度
- *          缩进/围栏/组合/单独代码块代码文本颜色、缩进/围栏/组合/单独代码块代码类型文本颜色、缩进/围栏/组合/单独代码块代码类型文本、缩进/围栏/组合/单独代码块代码类型和代码块距离、缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示、缩进/围栏/组合/单独代码块代码行号是否显示、缩进/围栏/组合/单独代码块背景颜色、缩进/围栏/组合/单独代码块左边距、缩进/围栏/组合/单独代码块字体、缩进/围栏/组合/单独代码块代码文本大小、缩进/围栏/组合/单独代码块代码文本行高、缩进/围栏/组合/单独代码块圆角大小、缩进/围栏/组合/单独代码块代码全屏按钮是否显示、缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高、缩进/围栏/组合/单独代码块代码全屏按钮默认图标、缩进/围栏/组合/单独代码块代码复制按钮默认图标
+ *          围栏代码块：是否格式化代码块内容、围栏代码块代码高亮是否同步解析
+ *          缩进/围栏/组合/单独代码块：缩进/围栏/组合/单独代码块代码文本颜色、缩进/围栏/组合/单独代码块代码类型文本颜色、缩进/围栏/组合/单独代码块代码类型文本、缩进/围栏/组合/单独代码块代码类型和代码块距离、缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示、缩进/围栏/组合/单独代码块代码行号是否显示、缩进/围栏/组合/单独代码块背景颜色、缩进/围栏/组合/单独代码块左边距、缩进/围栏/组合/单独代码块字体、缩进/围栏/组合/单独代码块代码文本大小、缩进/围栏/组合/单独代码块代码文本行高、缩进/围栏/组合/单独代码块圆角大小、缩进/围栏/组合/单独代码块代码全屏按钮是否显示、缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高、缩进/围栏/组合/单独代码块代码全屏按钮默认图标、缩进/围栏/组合/单独代码块代码复制按钮默认图标
  *          组合代码块：组合代码块未选中标题字体大小、组合代码块选中标题字体大小、组合代码块选中标题文本颜色、组合代码块未选中标题文本颜色、组合代码块选中标题背景颜色、组合代码块未选中标题背景颜色
  *          单独代码块：是否单独代码块显示、单独代码块行号宽度、单独代码块是否居底显示
  * 6：标题 - H1/H2标题下分割线高度、H1/H2标题下分割线颜色
@@ -241,13 +266,16 @@ Markdown用户可设置的样式
  * 9：软换行 - 软换行是否换行
  * 10：数学公式 - 数学公式未加载状态是否显示文字、数学公式文本大小、数学公式背景色、数学公式文本颜色、数学公式生成图片格式、块结构的数学公式是否居中、数学公式字体路径
  * 11：音频 - 音频图标、音频阴影颜色值、音频边框颜色、音频边框粗细、音频边框圆角、音频按钮背景颜色、音频按钮文字颜色、音频按钮文字大小、音频按钮文字内容、音频按钮圆角大小、音频标题文字大小、音频标题文字颜色、音频标题文字行高、音频类型文字大小、音频类型文字颜色、音频类型文字行高、音频上边距、音频下边距
- * 12：视频 - 视频默认占位图、视频播放按钮默认图标、视频圆角大小、视频时间文本颜色、视频时间文本大小、视频时间文本居右边距、视频时间文本居底边距、视频上边距、视频下边距
+ * 12：视频 - 视频默认占位图、视频播放按钮默认图标、视频发布默认图标、视频下载默认图标、视频圆角大小、视频时间文本颜色、视频时间文本大小、视频时间文本居右边距、视频时间文本居底边距、视频上边距、视频下边距、视频发布/下载按钮布局是否显示、视频发布按钮图片宽度和高度、视频发布按钮宽度、视频发布按钮高度、视频发布按钮圆角、视频发布按钮文本内容、视频发布按钮文本大小、视频发布按钮文本颜色、视频发布按钮背景颜色、视频下载按钮图片宽度和高度、视频下载按钮宽度、视频下载按钮高度、视频下载按钮圆角、视频下载按钮文本内容、视频下载按钮文本大小、视频下载按钮文本颜色、视频下载按钮背景颜色
  * 13：图片Banner - 图片banner默认占位图
  * 14：图片 - 图片基于自身宽度缩放百分比、图片基于父布局宽度缩放百分比、图片圆角大小、图片缩放类型、图片默认占位图、网络图片是否压缩、图片上边距、图片下边距
  * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高、表格圆角大小、表格一格最小宽度、表格一格最大宽度、表格第一列是否加粗
  * 16：代码高亮 - markdown代码高亮样式
  * 17：删除线 - 删除线颜色
  * 18：定义列表 - 定义列表术语和定义行之间间距、定义列表定义行缩进、定义列表定义行间距
+ * 19：下标 - 下标字体颜色、下标字体大小、下标偏移距离
+ * 20：上标 - 上标字体颜色、上标字体大小、上标偏移距离
+ * 21：下划线 - 下划线颜色
  */
 public class MarkdownTheme {
     /**
@@ -1466,6 +1494,22 @@ public class MarkdownThemeBuilder {
     public func setPlayCircleFillIcon(playCircleFillIcon: AppResource): MarkdownThemeBuilder
 
     /**
+     * 设置视频发布默认图标
+     *
+     * @param videoDownloadImage 视频发布默认图标 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseImage(videoDownloadImage: AppResource): MarkdownThemeBuilder
+
+    /**
+     * 设置视频下载默认图标
+     *
+     * @param videoReleaseImage 视频下载默认图标 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadImage(videoReleaseImage: AppResource): MarkdownThemeBuilder
+
+    /**
      * 设置视频圆角
      *
      * @param videoBorderRadius 视频圆角 - 默认10.0vp
@@ -1520,6 +1564,142 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setVideoMarginBottom(videoMarginBottom: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置视频发布/下载按钮布局是否显示
+     *
+     * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默false不显示
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsVideoBottomLayout(isVideoBottomLayout: Bool): MarkdownThemeBuilder
+
+    /**
+     * 设置视频发布按钮图片宽度和高度
+     *
+     * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置视频发布按钮宽度
+     *
+     * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseWidth(videoReleaseWidth: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置视频发布按钮高度
+     *
+     * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseHeight(videoReleaseHeight: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置视频发布按钮圆角
+     *
+     * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseRadius(videoReleaseRadius: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置视频发布按钮文本内容
+     *
+     * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseText(videoReleaseText: String): MarkdownThemeBuilder
+
+    /**
+     * 设置视频发布按钮文本大小
+     *
+     * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseTexSize(videoReleaseTexSize: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置视频发布按钮文本颜色
+     *
+     * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseTexColor(videoReleaseTexColor: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置视频发布按钮背景颜色
+     *
+     * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置视频下载按钮图片宽度和高度
+     *
+     * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置视频下载按钮宽度
+     *
+     * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadWidth(videoDownloadWidth: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置视频下载按钮高度
+     *
+     * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadHeight(videoDownloadHeight: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置视频下载按钮圆角
+     *
+     * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadRadius(videoDownloadRadius: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置视频下载按钮文本内容
+     *
+     * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadText(videoDownloadText: String): MarkdownThemeBuilder
+
+    /**
+     * 设置视频下载按钮文本大小
+     *
+     * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadTexSize(videoDownloadTexSize: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置视频下载按钮文本颜色
+     *
+     * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadTexColor(videoDownloadTexColor: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置视频下载按钮背景颜色
+     *
+     * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: Color): MarkdownThemeBuilder
 
     /**
      * 设置图片banner默认占位图
