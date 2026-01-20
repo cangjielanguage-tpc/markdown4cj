@@ -13,9 +13,9 @@ interface BaseLanguage {
 
     func dealWithAccessProtected(stateBean: StateBean): Bool
 
-    func dealWithMultiLineComment(stateBean: StateBean,perStr:String): Unit
+    func dealWithMultiLineComment(stateBean: StateBean, perStr: String): Unit
 
-    func dealWithSingleLineComment(stateBean: StateBean,perStr:String): Unit
+    func dealWithSingleLineComment(stateBean: StateBean, perStr: String): Unit
 
     func dealWithLeftBigBracket(stateBean: StateBean): Unit
 
