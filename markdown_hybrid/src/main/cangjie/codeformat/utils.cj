@@ -65,6 +65,8 @@ public func codeFormat(languageType: ?String, code: String, cfg: FormatConfig): 
     if (let Some(i) <- languageType) {
         let result = match (i.toAsciiLower()) {
             case "c" | "cpp" | "c++" | "clike" => CandCppFormat().formatCode(code, cfg)
+            case "java" => CandCppFormat().formatCode(code, cfg)
+            case "js" | "ts" | "javascript" | "typescript" => CandCppFormat().formatCode(code, cfg)
             case _ => code
         }
         return result

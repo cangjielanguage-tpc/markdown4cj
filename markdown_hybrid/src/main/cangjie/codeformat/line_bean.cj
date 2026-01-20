@@ -21,4 +21,7 @@ class LineBean {
     var isDiscarded: Bool = false //过滤后是否废弃
     var isFirstMultiCommentLine: Bool = false //是否是多行里面的第一行 第一行跟其他不同
     var mutlilineCommentisAfterChangline: Bool = false //多行前面是不是换行
+
+    var isInMultiString: Bool = false //是不是在多行注释里面 python有用
+
 }
