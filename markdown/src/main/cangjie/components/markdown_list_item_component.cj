@@ -37,6 +37,30 @@ class MarkdownListItemComponent {
     var audioBuilder: (NodeView, MarkdownConfiguration) -> Unit
 
     /**
+     * 自定义块结构布局
+     */
+    @BuilderParam
+    var customBlockBuilder: (NodeView, Int64) -> Unit
+
+    /**
+     * 自定义行内标题布局
+     */
+    @BuilderParam
+    var customTitleLineBuilder: (NodeView, Int64) -> Unit
+
+    /**
+     * 自定义行内段落布局
+     */
+    @BuilderParam
+    var customParagraphLineBuilder: (NodeView, Int64) -> Unit
+
+    /**
+     * 自定义行内表格布局
+     */
+    @BuilderParam
+    var customTableLineBuilder: (NodeView, Int64) -> Unit
+
+    /**
      * 列表节点
      */
     var nodeView: NodeView
@@ -109,10 +133,10 @@ class MarkdownListItemComponent {
                     item: NodeView, idx: Int64 => ListItem() {
                         if (item.node is Paragraph) {
                             // 段落
-                            blockParagraphComponent(markdownConfiguration, item, Option<FootnoteBlock>.None, fontCallback, tocListOnClick, imageCallback, componentWidth, true, false, markdownCacheConfiguration.paragraphComponents)
+                            MarkdownParagraphComponent(markdownConfiguration: markdownConfiguration, nodeView: item, footnoteBlock: Option<FootnoteBlock>.None, fontCallback: fontCallback, tocListOnClick: tocListOnClick, isListTo: true, imageCallback: imageCallback, componentWidth: componentWidth, paragraphComponents: markdownCacheConfiguration.paragraphComponents, customParagraphLineBuilder: customParagraphLineBuilder)
                         } else if (item.node is Heading) {
                             // 标题
-                            blockHeadingComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, true, markdownCacheConfiguration.headingComponents)
+                            MarkdownHeadingComponent(markdownConfiguration: markdownConfiguration, nodeView: item, fontCallback: fontCallback, imageCallback: imageCallback, componentWidth: componentWidth, isListTo: true, headingComponents: markdownCacheConfiguration.headingComponents, customTitleLineBuilder: customTitleLineBuilder)
                         } else if (item.node is IndentedCodeBlock) {
                             // 缩进代码
                             blockIndentedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.indentedCodeComponents)
@@ -121,16 +145,16 @@ class MarkdownListItemComponent {
                             blockFencedCodeComponent(markdownConfiguration, item, markdownCacheConfiguration.fencedCodeComponents)
                         } else if (item.node is BulletList) {
                             // 无序列表
-                            MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: false, fontCallback: fontCallback, imageCallback: imageCallback, tocListOnClick: tocListOnClick, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap)
+                            MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, customBlockBuilder: customBlockBuilder, isOrdered: false, fontCallback: fontCallback, imageCallback: imageCallback, tocListOnClick: tocListOnClick, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap, customParagraphLineBuilder: customParagraphLineBuilder, customTitleLineBuilder: customTitleLineBuilder, customTableLineBuilder: customTableLineBuilder)
                         } else if (item.node is OrderedList) {
                             // 有序列表
-                            MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, isOrdered: true, fontCallback: fontCallback, imageCallback: imageCallback, tocListOnClick: tocListOnClick, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap)
+                            MarkdownListComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, customBlockBuilder: customBlockBuilder, isOrdered: true, fontCallback: fontCallback, imageCallback: imageCallback, tocListOnClick: tocListOnClick, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap, customParagraphLineBuilder: customParagraphLineBuilder, customTitleLineBuilder: customTitleLineBuilder, customTableLineBuilder: customTableLineBuilder)
                         } else if (item.node is BlockQuote) {
                             // 块引用
-                            MarkdownQuoteComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, fontCallback: fontCallback, imageCallback: imageCallback, tocListOnClick: tocListOnClick, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap)
+                            MarkdownQuoteComponent(markdownConfiguration: markdownConfiguration, nodeView: item, adBuilder: adBuilder, videoBuilder: videoBuilder, audioBuilder: audioBuilder, customBlockBuilder: customBlockBuilder, fontCallback: fontCallback, imageCallback: imageCallback, tocListOnClick: tocListOnClick, videoCallback: videoCallback, componentWidth: componentWidth, markdownCacheConfiguration: markdownCacheConfiguration, indexFootnoteHashMap: indexFootnoteHashMap, customParagraphLineBuilder: customParagraphLineBuilder, customTitleLineBuilder: customTitleLineBuilder, customTableLineBuilder: customTableLineBuilder)
                         } else if (item.node is TableBlock) {
                             // 表格
-                            blockTableComponent(markdownConfiguration, item, fontCallback, imageCallback, componentWidth, markdownCacheConfiguration.tableComponents, markdownCacheConfiguration.tableRowComponents, markdownCacheConfiguration.tableCellComponents)
+                            MarkdownTableBlockComponent(markdownConfiguration: markdownConfiguration, nodeView: item, fontCallback: fontCallback, imageCallback: imageCallback, componentWidth: componentWidth, tableComponents: markdownCacheConfiguration.tableComponents, tableRowComponents: markdownCacheConfiguration.tableRowComponents, tableCellComponents: markdownCacheConfiguration.tableCellComponents, customTableLineBuilder: customTableLineBuilder)
                         } else if (item.node is LatexMathBlock) {
                             // 数学公式 - 单行
                             blockLatextComponent(markdownConfiguration, item)
@@ -162,7 +186,8 @@ class MarkdownListItemComponent {
                                     tocListOnClick: tocListOnClick,
                                     imageCallback: imageCallback,
                                     componentWidth: componentWidth,
-                                    markdownCacheConfiguration: markdownCacheConfiguration
+                                    markdownCacheConfiguration: markdownCacheConfiguration,
+                                    customParagraphLineBuilder: customParagraphLineBuilder
                                 )
                             }
                             // 组件区域变化时触发该回调
@@ -172,7 +197,7 @@ class MarkdownListItemComponent {
                         } else {
                             // 其他节点
                             Column() {
-                                Text("")
+                                customBlockBuilder(item, idx)
                             }
                         }
                     }

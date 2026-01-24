@@ -86,6 +86,10 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
             builder.addDefaultTagHandler(TextHandler())
 
             builder.addDefaultTagHandler(ParagraphHandler())
+
+            builder.addDefaultTagHandler(SubHandler())
+            builder.addDefaultTagHandler(SupHandler())
+            builder.addDefaultTagHandler(UnderlineHandler())
         }
         htmlParser = MarkdownHtmlParserImpl.create(_emptyTagReplacement)
         htmlRenderer = builder.build()
@@ -148,6 +152,33 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                 {
                     visitor, node =>
                     buildView(node, false)
+                    visitor.visitChildren(node)
+                }
+            )
+            .on(
+                "SubHtmlNode",
+                {
+                    visitor, node =>
+                    let view = buildView(node, false, needProps: true)
+                    view.props?.add("SubNode", true)
+                    visitor.visitChildren(node)
+                }
+            )
+            .on(
+                "SupHtmlNode",
+                {
+                    visitor, node =>
+                    let view = buildView(node, false, needProps: true)
+                    view.props?.add("SupNode", true)
+                    visitor.visitChildren(node)
+                }
+            )
+            .on(
+                "UnderlineNode",
+                {
+                    visitor, node =>
+                    let view = buildView(node, false, needProps: true)
+                    view.props?.add("UnderlineNode", true)
                     visitor.visitChildren(node)
                 }
             )

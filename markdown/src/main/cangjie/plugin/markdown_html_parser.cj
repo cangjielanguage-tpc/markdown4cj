@@ -38,7 +38,6 @@ public abstract class MarkdownHtmlParser {
      *                       can be detected by calling {@link HtmlTag#isClosed()}
      * @param action         {@link FlushAction} to be called with resulting tags ({@link BlockHtmlTag})
      */
-
     public func reset(): Unit
 }
 
@@ -94,14 +93,18 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
         this.trimmingAppender = trimmingAppender
     }
 
+    var context = HtmlParserContext()
+
     /**
      * html -> HtmlTag
      */
     public func processFragment(output: Appendable, htmlFragment: String, parent: HtmlTag): Unit {
         var parentTag = parent
+        context = HtmlParserContext()
         let tokeniser = Tokeniser(CharacterReader(htmlFragment), ParseErrorList.noTracking())
         while (true) {
             let token = tokeniser.read()
+            context.update(token)
             let tokenType = token.typ
             if (TokenType.EOFType == tokenType) {
                 break
@@ -268,6 +271,15 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
             ensureNewLineIfPreviousWasBlock(output)
             trimmingAppender.append(output, character.getData())
         }
+
+        if (context.inPre) {
+            var str = character.getData()
+            if (str.startsWith("\n")) {
+                str = str[1..]
+            }
+            return TextTag(str)
+        }
+
         // 去掉前后换行 中间的换行符替换为软换行(空格) TODO:pre标签
         let str = character.getData().trimAscii()
         if (str.size > 0) {
@@ -353,6 +365,17 @@ public class MarkdownHtmlParserImpl <: MarkdownHtmlParser {
         let replacement = emptyTagReplacement.replace(tag)
         if (let Some(replacement) <- replacement) {
             AppendableUtils.appendQuietly(output, replacement)
+        }
+    }
+}
+
+class HtmlParserContext {
+    var inPre = false
+    func update(token: Token): Unit {
+        match (token) {
+            case tag: StartTagToken where tag.name() == "pre" => inPre = true
+            case tag: EndTagToken where tag.name() == "pre" => inPre = false
+            case _ => ()
         }
     }
 }

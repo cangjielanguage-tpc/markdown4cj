@@ -37,6 +37,30 @@ public class MarkdownListComponent {
     var audioBuilder: (NodeView, MarkdownConfiguration) -> Unit
 
     /**
+     * 自定义块结构布局
+     */
+    @BuilderParam
+    var customBlockBuilder: (NodeView, Int64) -> Unit
+
+    /**
+     * 自定义行内标题布局
+     */
+    @BuilderParam
+    var customTitleLineBuilder: (NodeView, Int64) -> Unit
+
+    /**
+     * 自定义行内段落布局
+     */
+    @BuilderParam
+    var customParagraphLineBuilder: (NodeView, Int64) -> Unit
+
+    /**
+     * 自定义行内表格布局
+     */
+    @BuilderParam
+    var customTableLineBuilder: (NodeView, Int64) -> Unit
+
+    /**
      * 列表节点
      */
     var nodeView: NodeView
@@ -133,13 +157,17 @@ public class MarkdownListComponent {
                                 adBuilder: adBuilder,
                                 videoBuilder: videoBuilder,
                                 audioBuilder: audioBuilder,
+                                customBlockBuilder: customBlockBuilder,
                                 fontCallback: fontCallback,
                                 tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
                                 videoCallback: videoCallback,
                                 componentWidth: componentWidth,
                                 markdownCacheConfiguration: markdownCacheConfiguration,
-                                indexFootnoteHashMap: indexFootnoteHashMap
+                                indexFootnoteHashMap: indexFootnoteHashMap,
+                                customParagraphLineBuilder: customParagraphLineBuilder,
+                                customTitleLineBuilder: customTitleLineBuilder,
+                                customTableLineBuilder: customTableLineBuilder
                             )
                         }
                         // 在垂直方向上子组件的对齐格式。

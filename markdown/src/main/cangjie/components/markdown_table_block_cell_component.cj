@@ -93,6 +93,12 @@ class MarkdownTableBlockCellComponent {
     @Watch[refreshTextWidth]
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
 
+    /**
+     * 自定义行内表格布局
+     */
+    @BuilderParam
+    var customTableLineBuilder: (NodeView, Int64) -> Unit
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
@@ -137,7 +143,7 @@ class MarkdownTableBlockCellComponent {
         // 设置约束尺寸，组件布局时，进行尺寸范围限制
         .constraintSize(minWidth: minTextWidth.vp, maxWidth: markdownConfiguration.markdownTheme.tableMaxTextWidth.vp)
         // 组件区域变化时触发该回调
-        .onAreaChange(
+        .interopOnSizeChange(
             {
                 old, new =>
                     if (old.width == new.width) {
@@ -153,8 +159,84 @@ class MarkdownTableBlockCellComponent {
         )
     }
 
+    /**
+     * 表格文字内容
+     */
     @Builder
-    func tableBlockCellListComponent(item: NodeView) {
+    func tableBlockCellComponent() {
+        if (DeviceInfo.sdkApiVersion >= 19) {
+            tableBlockCellComponent19()
+        } else {
+            tableBlockCellComponent18()
+        }
+    }
+
+    /**
+     * 表格文字内容
+     */
+    @Builder
+    func tableBlockCellComponent18() {
+        Text() {
+            ForEach(
+                nodeViewList,
+                itemGeneratorFunc: {
+                    item18: NodeView, idx18: Int64 => tableBlockCellListComponent(item18, idx18)
+                },
+                keyGeneratorFunc: {
+                    item18: NodeView, idx18: Int64 => return "${idx18}-${item18.nodeHash}-${item18.contentHash}"
+                }
+            )
+        }
+        // 自定义设置组件是否支持文本可复制粘贴
+        .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
+            true
+        } else {
+            false
+        })
+        // 自定义长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件
+        .interopOnCopy({
+            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
+                v(str)
+            }
+        })
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .interopHalfLeading(true)
+    }
+
+    /**
+     * 表格文字内容
+     */
+    @Builder
+    func tableBlockCellComponent19() {
+        Text() {
+            ForEach(
+                nodeViewList,
+                itemGeneratorFunc: {
+                    item19: NodeView, idx19: Int64 => tableBlockCellListComponent(item19, idx19)
+                },
+                keyGeneratorFunc: {
+                    item19: NodeView, idx19: Int64 => return "${idx19}-${item19.nodeHash}-${item19.contentHash}"
+                }
+            )
+        }
+        // 支持设备内复制
+        .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
+            CopyOptions.LocalDevice
+        } else {
+            CopyOptions.None
+        })
+        // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
+        .onCopy({
+            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
+                markdownConfiguration.textCopyCallback()(str)
+            }
+        })
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .halfLeading(true)
+    }
+
+    @Builder
+    func tableBlockCellListComponent(item: NodeView, index: Int64) {
         if (item.node is CommonmarkText) {
             // 文本
             if (DeviceInfo.sdkApiVersion >= 19) {
@@ -171,7 +253,7 @@ class MarkdownTableBlockCellComponent {
             }
         } else if (item.node is Code) {
             // 内联代码
-            inLineCodeSpanComponent(item, markdownConfiguration, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold) || item.strongEmphasis, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), false, 2)
+            inLineCodeSpanComponent(item, markdownConfiguration, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold) || item.strongEmphasis, isHeader || (idxItem == 0 && markdownConfiguration.markdownTheme.tableFirstColumnBold), false, 2, 0)
         } else if (item.node is HardLineBreak) {
             // 硬换行
             Span("\n")
@@ -195,83 +277,7 @@ class MarkdownTableBlockCellComponent {
             latexSpanComponent(item, markdownConfiguration, markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth)
         } else {
             // TODO 其他节点
-            Span("")
-        }
-    }
-
-    /**
-     * 表格文字内容
-     */
-    @Builder
-    func tableBlockCellComponent18() {
-        Text() {
-            ForEach(
-                nodeViewList,
-                itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => tableBlockCellListComponent(item)
-                },
-                keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
-                }
-            )
-        }
-        // 设置行高
-        .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
-        // 自定义设置组件是否支持文本可复制粘贴
-        .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
-            true
-        } else {
-            false
-        })
-        // 自定义长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件
-        .interopOnCopy({
-            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
-                v(str)
-            }
-        })
-    }
-
-    /**
-     * 表格文字内容
-     */
-    @Builder
-    func tableBlockCellComponent19() {
-        Text() {
-            ForEach(
-                nodeViewList,
-                itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => tableBlockCellListComponent(item)
-                },
-                keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
-                }
-            )
-        }
-        // 设置行高
-        .lineHeight(markdownConfiguration.markdownTheme.tableTextLineHeight)
-        // 支持设备内复制
-        .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
-            CopyOptions.LocalDevice
-        } else {
-            CopyOptions.None
-        })
-        // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
-        .onCopy({
-            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
-                markdownConfiguration.textCopyCallback()(str)
-            }
-        })
-    }
-
-    /**
-     * 表格文字内容
-     */
-    @Builder
-    func tableBlockCellComponent() {
-        if (DeviceInfo.sdkApiVersion >= 19) {
-            tableBlockCellComponent19()
-        } else {
-            tableBlockCellComponent18()
+            customTableLineBuilder(item, index)
         }
     }
 

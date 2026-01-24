@@ -1,19 +1,17 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package ohos_app_cangjie_entry
 
 import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
-import ohos.concurrency.*
+import ohos.hybrid_base.*
 import markdown.components.*
 
-@Entry
+@HybridComponentEntry
 @Component
-class Index {
-    let mdStr: String = """
+class Demo_page {
+    @State
+    var mdStr: String = """
 ### 标题1
 
 # 1级标题
@@ -64,7 +62,7 @@ Heading level 2
 
 """
 
-     func build() {
+    public func build() {
         Scroll() {
             Column {
                 MarkdownComponent(output: mdStr)
