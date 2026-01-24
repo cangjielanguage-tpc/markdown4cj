@@ -67,6 +67,12 @@ class MarkdownHeadingComponent {
     @State
     var isOneLink: Bool = false
 
+    /**
+     * 自定义行内标题布局
+     */
+    @BuilderParam
+    var customTitleLineBuilder: (NodeView, Int64) -> Unit
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(this.nodeView)
@@ -108,49 +114,15 @@ class MarkdownHeadingComponent {
         .width(100.percent)
     }
 
+    /**
+     * 标题文字内容
+     */
     @Builder
-    func headingTitleListComponent(item: NodeView) {
-        if (item.node is CommonmarkText) {
-            // 文本
-            if (DeviceInfo.sdkApiVersion >= 19) {
-                headingTextComponent19(item, markdownConfiguration, level)
-            } else {
-                headingTextComponent18(item, markdownConfiguration, level)
-            }
-        } else if (item.node is Footnote) {
-            // 脚注
-            if (DeviceInfo.sdkApiVersion >= 19) {
-                headingFootnoteComponent19(item, markdownConfiguration, level, fontCallback)
-            } else {
-                headingFootnoteComponent18(item, markdownConfiguration, level, fontCallback)
-            }
-        } else if (item.node is Code) {
-            // 内联代码
-            inLineCodeSpanComponent(item, markdownConfiguration, true, true, false, 0)
-        } else if (item.node is CommonmarkLink) {
-            // 链接
-            linkSpanComponent(isOneLink, isListTo, level, item, markdownConfiguration, componentWidth, imageCallback, true, false, 0, markdownConfiguration.markdownTheme.isListLinkStyle)
-        } else if (item.node is HardLineBreak) {
-            // 硬换行
-            Span("\n")
-        } else if (item.node is SoftLineBreak) {
-            // 软换行
-            Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
-        } else if (item.node is ImageHtmlNode) {
-            // HTML图片
-            htmlImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-        } else if (item.node is StyleImage) {
-            //  图片Style节点
-            styleImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-        } else if (item.node is CommonmarkImage) {
-            // 图片节点
-            coreImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-        } else if (item.node is LatexMathNode) {
-            // 数学公式节点
-            latexSpanComponent(item, markdownConfiguration, componentWidth)
+    func headingTitleComponent() {
+        if (DeviceInfo.sdkApiVersion >= 19) {
+            headingTitleComponent19()
         } else {
-            // TODO 其他节点
-            Span("")
+            headingTitleComponent18()
         }
     }
 
@@ -163,10 +135,10 @@ class MarkdownHeadingComponent {
             ForEach(
                 nodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => headingTitleListComponent(item)
+                    item18: NodeView, idx18: Int64 => headingTitleListComponent(item18, idx18)
                 },
                 keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
+                    item18: NodeView, idx18: Int64 => return "${idx18}-${item18.nodeHash}-${item18.contentHash}"
                 }
             )
         }
@@ -174,8 +146,8 @@ class MarkdownHeadingComponent {
         .textAlign(TextAlign.Start)
         // 设置组件自身的宽度
         .width(100.percent)
-        // 设置行高
-        .lineHeight(tableLineHeight())
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .interopHalfLeading(true)
         // 自定义设置组件是否支持文本可复制粘贴
         .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
             true
@@ -199,10 +171,10 @@ class MarkdownHeadingComponent {
             ForEach(
                 nodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => headingTitleListComponent(item)
+                    item19: NodeView, idx19: Int64 => headingTitleListComponent(item19, idx19)
                 },
                 keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
+                    item19: NodeView, idx19: Int64 => return "${idx19}-${item19.nodeHash}-${item19.contentHash}"
                 }
             )
         }
@@ -210,8 +182,8 @@ class MarkdownHeadingComponent {
         .textAlign(TextAlign.Start)
         // 设置组件自身的宽度
         .width(100.percent)
-        // 设置行高
-        .lineHeight(tableLineHeight())
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .halfLeading(true)
         // 支持设备内复制
         .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
             CopyOptions.LocalDevice
@@ -226,27 +198,49 @@ class MarkdownHeadingComponent {
         })
     }
 
-    /**
-     * 标题文字内容
-     */
     @Builder
-    func headingTitleComponent() {
-        if (DeviceInfo.sdkApiVersion >= 19) {
-            headingTitleComponent19()
+    func headingTitleListComponent(item: NodeView, index: Int64) {
+        if (item.node is CommonmarkText) {
+            // 文本
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                headingTextComponent19(item, markdownConfiguration, level)
+            } else {
+                headingTextComponent18(item, markdownConfiguration, level)
+            }
+        } else if (item.node is Footnote) {
+            // 脚注
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                headingFootnoteComponent19(item, markdownConfiguration, level, fontCallback)
+            } else {
+                headingFootnoteComponent18(item, markdownConfiguration, level, fontCallback)
+            }
+        } else if (item.node is Code) {
+            // 内联代码
+            inLineCodeSpanComponent(item, markdownConfiguration, true, true, false, 0, level)
+        } else if (item.node is CommonmarkLink) {
+            // 链接
+            linkSpanComponent(isOneLink, isListTo, level, item, markdownConfiguration, componentWidth, imageCallback, true, false, 0, markdownConfiguration.markdownTheme.isListLinkStyle)
+        } else if (item.node is HardLineBreak) {
+            // 硬换行
+            Span("\n")
+        } else if (item.node is SoftLineBreak) {
+            // 软换行
+            Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
+        } else if (item.node is ImageHtmlNode) {
+            // HTML图片
+            htmlImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
+        } else if (item.node is StyleImage) {
+            //  图片Style节点
+            styleImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
+        } else if (item.node is CommonmarkImage) {
+            // 图片节点
+            coreImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
+        } else if (item.node is LatexMathNode) {
+            // 数学公式节点
+            latexSpanComponent(item, markdownConfiguration, componentWidth)
         } else {
-            headingTitleComponent18()
-        }
-    }
-
-    func tableLineHeight(): Float64 {
-        return match (level) {
-            case 1 => markdownConfiguration.markdownTheme.headingTextLineHeight1
-            case 2 => markdownConfiguration.markdownTheme.headingTextLineHeight2
-            case 3 => markdownConfiguration.markdownTheme.headingTextLineHeight3
-            case 4 => markdownConfiguration.markdownTheme.headingTextLineHeight4
-            case 5 => markdownConfiguration.markdownTheme.headingTextLineHeight5
-            case 6 => markdownConfiguration.markdownTheme.headingTextLineHeight6
-            case _ => markdownConfiguration.markdownTheme.headingTextLineHeight6
+            // TODO 其他节点
+            customTitleLineBuilder(item, index)
         }
     }
 

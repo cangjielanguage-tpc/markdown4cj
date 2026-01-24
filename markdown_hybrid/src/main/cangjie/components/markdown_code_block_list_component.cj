@@ -22,7 +22,7 @@ class MarkdownCodeBlockListComponent {
      * 所有数据
      */
     @State
-    var arrayLists: ArrayList<ArrayList<PrismNodesParseRes>> = ArrayList<ArrayList<PrismNodesParseRes>>()
+    var arrayLists: ArrayList<ArrayList<PrismNodesParseResUI>> = ArrayList<ArrayList<PrismNodesParseResUI>>()
 
     /**
      * NodeView
@@ -126,12 +126,12 @@ class MarkdownCodeBlockListComponent {
      * 组合代码代码文本内容
      */
     @Builder
-    func codeBlockTextComponent(items: ArrayList<PrismNodesParseRes>, idx: Int64) {
+    func codeBlockTextComponent(items: ArrayList<PrismNodesParseResUI>, idx: Int64) {
         Text() {
             ForEach(
                 items,
                 itemGeneratorFunc: {
-                    item: PrismNodesParseRes, idx1: Int64 =>
+                    item: PrismNodesParseResUI, idx1: Int64 =>
                     // 设置文本内容
                     Span(item.getText())
                         // 设置文本颜色
@@ -164,7 +164,7 @@ class MarkdownCodeBlockListComponent {
             ForEach(
                 arrayLists,
                 itemGeneratorFunc: {
-                    items: ArrayList<PrismNodesParseRes>, idx: Int64 =>
+                    items: ArrayList<PrismNodesParseResUI>, idx: Int64 =>
                     // 组合代码代码内容
                     codeBlockTextComponent(items, idx)
                 }
@@ -206,7 +206,89 @@ class MarkdownCodeBlockListComponent {
                     .width(30.percent)
                     // 设置子组件在水平方向上的对齐格式
                     .justifyContent(FlexAlign.Start)
-                codeImageComponent(markdownConfiguration, strText[idxSelect], Option<String>.None, strInfoText[idxSelect], 1)
+                Row() {
+                    if (markdownConfiguration.markdownTheme.codeCopyIcon.isSome()) {
+                        Row() {
+                            Image(markdownConfiguration.markdownTheme.codeCopyIcon())
+                                // 设置组件自身的宽度
+                                .width(markdownConfiguration.markdownTheme.iconWidthAndHeight)
+                                // 设置组件自身的高度
+                                .height(markdownConfiguration.markdownTheme.iconWidthAndHeight)
+                                // 设置图片的缩放类型
+                                .objectFit(ImageFit.Contain)
+
+                            Row()
+                                // 设置宽度
+                                .width(5)
+
+                            if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
+                                Text("复制代码")
+                                    // 设置字体颜色
+                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                                    // 设置字体大小
+                                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                                    // 设置容器元素绘制区域内的子元素的对齐方式
+                                    .align(Alignment.End)
+                                    // 设置文本的最大行数
+                                    .maxLines(1)
+                                    // 设置文本超长时的显示方式
+                                    .textOverflow(TextOverflow.Ellipsis)
+                                    // 设置外边距
+                                    .margin(right: 4)
+                            }
+                        }
+                        // 设置子组件在水平方向上的对齐格式
+                        .justifyContent(FlexAlign.End)
+                        // 点击动作触发该方法调用
+                        .onClick {evt => codeCopyOnClick(strText[idxSelect], markdownConfiguration.codeCopyCallback)}
+                    }
+
+                    if (markdownConfiguration.markdownTheme.codeFullScreenIcon.isSome()) {
+                        Row() {
+                            Image(markdownConfiguration.markdownTheme.codeFullScreenIcon())
+                                // 设置组件自身的宽度
+                                .width(markdownConfiguration.markdownTheme.iconWidthAndHeight)
+                                // 设置组件自身的高度
+                                .height(markdownConfiguration.markdownTheme.iconWidthAndHeight)
+                                // 设置外边距属性
+                                .margin(left: 4)
+                                // 设置图片的缩放类型
+                                .objectFit(ImageFit.Contain)
+
+                            Row()
+                                // 设置宽度
+                                .width(5)
+
+                            if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
+                                Text("全屏代码")
+                                    // 设置字体颜色
+                                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                                    // 设置字体大小
+                                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                                    // 设置容器元素绘制区域内的子元素的对齐方式
+                                    .align(Alignment.End)
+                                    // 设置文本的最大行数
+                                    .maxLines(1)
+                                    // 设置文本超长时的显示方式
+                                    .textOverflow(TextOverflow.Ellipsis)
+                                    // 设置外边距
+                                    .margin(right: 4)
+                            }
+                        }
+                        // 设置子组件在水平方向上的对齐格式
+                        .justifyContent(FlexAlign.End)
+                        // 控制当前组件显示或隐藏
+                        .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
+                        // 点击动作触发该方法调用
+                        .onClick {
+                            evt => codeFullScreenOnClick(strText[idxSelect], strInfoText[idxSelect], markdownConfiguration.codeFullScreenCallback)
+                        }
+                    }
+                }
+                // 设置宽度
+                .width(70.percent)
+                // 设置子组件在水平方向上的对齐格式
+                .justifyContent(FlexAlign.End)
             }
         }
         // 设置外边距属性
@@ -270,7 +352,7 @@ class MarkdownCodeBlockListComponent {
      * 代码数据高亮解析
      */
     func stringCodeToResLists() {
-        let callback: (ArrayList<ArrayList<PrismNodesParseRes>>) -> Unit = {
+        let callback: (ArrayList<ArrayList<PrismNodesParseResUI>>) -> Unit = {
             prismNodesParseResLists => launch {
                 arrayLists = prismNodesParseResLists
             }

@@ -51,6 +51,11 @@ class MarkdownParseLatexUtil {
                         return
                     }
                     arr = r.toBitmap(g2)
+                    latex.release()
+                    r.finalize()
+                    unsafe {
+                        LibC.free(g2.getG2())
+                    }
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -118,6 +123,11 @@ class MarkdownParseLatexUtil {
                         return
                     }
                     arr = r.toBitmap(g2)
+                    latex.release()
+                    r.finalize()
+                    unsafe {
+                        LibC.free(g2.getG2())
+                    }
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }

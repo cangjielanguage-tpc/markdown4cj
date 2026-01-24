@@ -18,6 +18,11 @@ import ohos.resource_manager.AppResource
 @Interop[ArkTS]
 public class CJMarkdownTheme {
     /**
+     * markdown是否同步解析
+     */
+     var isMarkdownParserSync: ?Bool = None
+
+    /**
      * 是否打开长按复制粘贴
      */
     var isOnCopy: ?Bool = None
@@ -288,6 +293,11 @@ public class CJMarkdownTheme {
     var isCodeStyle: ?Bool = None
 
     /**
+     * 是否格式化代码块内容
+     */
+    var isCodeFormat: ?Bool = None
+
+    /**
      * 文本、图片格式内联代码文本颜色
      */
     var codeTextColor: ?Color = None
@@ -316,6 +326,11 @@ public class CJMarkdownTheme {
      * 图片格式内联代码文本高度
      */
     var codeHeight: ?Float64 = None
+
+    /**
+     * 围栏代码块代码高亮是否同步解析
+     */
+    var isCodeBlockParserSync: ?Bool = None
 
     /**
      * 代码块代码文本颜色
@@ -718,6 +733,91 @@ public class CJMarkdownTheme {
     var videoMarginBottom: ?Float64 = None
 
     /**
+     * 视频发布/下载按钮布局是否显示
+     */
+    var isVideoBottomLayout: ?Bool = None
+
+    /**
+     * 视频发布按钮图片宽度和高度
+     */
+    var videoReleaseImageWidthHeight: ?Float64 = None
+
+    /**
+     * 视频发布按钮宽度
+     */
+    var videoReleaseWidth: ?Float64 = None
+
+    /**
+     * 视频发布按钮高度
+     */
+    var videoReleaseHeight: ?Float64 = None
+
+    /**
+     * 视频发布按钮圆角
+     */
+    var videoReleaseRadius: ?Float64 = None
+
+    /**
+     * 视频发布按钮文本内容
+     */
+    var videoReleaseText: ?String = None
+
+    /**
+     * 视频发布按钮文本大小
+     */
+    var videoReleaseTexSize: ?Float64 = None
+
+    /**
+     * 视频发布按钮文本颜色
+     */
+    var videoReleaseTexColor: ?Color = Option<Color>.None
+
+    /**
+     * 视频发布按钮背景颜色
+     */
+    var videoReleaseBackgroundColor: ?Color = Option<Color>.None
+
+    /**
+     * 视频下载按钮图片宽度和高度
+     */
+    var videoDownloadImageWidthHeight: ?Float64 = None
+
+    /**
+     * 视频下载按钮宽度
+     */
+    var videoDownloadWidth: ?Float64 = None
+
+    /**
+     * 视频下载按钮高度
+     */
+    var videoDownloadHeight: ?Float64 = None
+
+    /**
+     * 视频下载按钮圆角
+     */
+    var videoDownloadRadius: ?Float64 = None
+
+    /**
+     * 视频下载按钮文本内容
+     */
+    var videoDownloadText: ?String = None
+
+    /**
+     * 视频下载按钮文本大小
+     */
+    var videoDownloadTexSize: ?Float64 = None
+
+    /**
+     * 视频下载按钮文本颜色
+     */
+    var videoDownloadTexColor: ?Color = Option<Color>.None
+
+    /**
+     * 视频下载按钮背景颜色
+     */
+    var videoDownloadBackgroundColor: ?Color = Option<Color>.None
+
+    /**
      * 图片缩放类型
      */
     var imageFitType: ?ImageFit = Option<ImageFit>.None
@@ -832,7 +932,51 @@ public class CJMarkdownTheme {
      */
     var descListDefMargins: ?Float64 = None
 
+    /**
+     * 下标字体颜色
+     */
+    var subTextColor: ?Color = None
+
+    /**
+     * 下标字体大小
+     */
+    var subTextSize: ?Float64 = None
+
+    /**
+     * 下标偏移距离
+     */
+    var subOffsetDist: ?Float64 = None
+
+    /**
+     * 上标字体颜色
+     */
+    var supTextColor: ?Color = None
+
+    /**
+     * 上标字体大小
+     */
+    var supTextSize: ?Float64 = None
+
+    /**
+     * 上标偏移距离
+     */
+    var supOffsetDist: ?Float64 = None
+
+    /**
+     * 下划线颜色
+     */
+    var underlineColor: ?Color = None
+
     public init() {}
+
+    /**
+     * 设置markdown是否同步解析
+     *
+     * @param isMarkdownParserSync markdown是否同步解析 - 默认false
+     */
+    public func setIsMarkdownParserSync(isMarkdownParserSync: Bool): Unit {
+        this.isMarkdownParserSync = isMarkdownParserSync
+    }
 
     /**
      * 设置是否打开长按复制粘贴
@@ -1321,6 +1465,15 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置是否格式化代码块内容
+     *
+     * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
+     */
+    public func setIsCodeFormat(isCodeFormat: Bool): Unit {
+        this.isCodeFormat = isCodeFormat
+    }
+
+    /**
      * 设置文本、图片格式内联代码文本颜色
      *
      * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
@@ -1372,6 +1525,15 @@ public class CJMarkdownTheme {
      */
     public func setCodeHeight(codeHeight: Float64): Unit {
         this.codeHeight = codeHeight
+    }
+
+    /**
+     * 设置围栏代码块代码高亮是否同步解析
+     *
+     * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
+     */
+    public func setIsCodeBlockParserSync(isCodeBlockParserSync: Bool): Unit {
+        this.isCodeBlockParserSync = isCodeBlockParserSync
     }
 
     /**
@@ -2099,6 +2261,159 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置视频发布/下载按钮布局是否显示
+     *
+     * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默认false不显示
+     */
+    public func setIsVideoBottomLayout(isVideoBottomLayout: Bool): Unit {
+        this.isVideoBottomLayout = isVideoBottomLayout
+    }
+
+    /**
+     * 设置视频发布按钮图片宽度和高度
+     *
+     * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
+     */
+    public func setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: Float64): Unit {
+        this.videoReleaseImageWidthHeight = videoReleaseImageWidthHeight
+    }
+
+    /**
+     * 设置视频发布按钮宽度
+     *
+     * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
+     */
+    public func setVideoReleaseWidth(videoReleaseWidth: Float64): Unit {
+        this.videoReleaseWidth = videoReleaseWidth
+    }
+
+    /**
+     * 设置视频发布按钮高度
+     *
+     * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
+     */
+    public func setVideoReleaseHeight(videoReleaseHeight: Float64): Unit {
+        this.videoReleaseHeight = videoReleaseHeight
+    }
+
+    /**
+     * 设置视频发布按钮圆角
+     *
+     * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
+     */
+    public func setVideoReleaseRadius(videoReleaseRadius: Float64): Unit {
+        this.videoReleaseRadius = videoReleaseRadius
+    }
+
+    /**
+     * 设置视频发布按钮文本内容
+     *
+     * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
+     */
+    public func setVideoReleaseText(videoReleaseText: String): Unit {
+        this.videoReleaseText = videoReleaseText
+    }
+
+    /**
+     * 设置视频发布按钮文本大小
+     *
+     * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
+     */
+    public func setVideoReleaseTexSize(videoReleaseTexSize: Float64): Unit {
+        this.videoReleaseTexSize = videoReleaseTexSize
+    }
+
+    /**
+     * 设置视频发布按钮文本颜色
+     *
+     * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
+     */
+    public func setVideoReleaseTexColor(videoReleaseTexColor: UInt32): Unit {
+        this.videoReleaseTexColor = transColorForTrasparent(videoReleaseTexColor)
+    }
+
+    /**
+     * 设置视频发布按钮背景颜色
+     *
+     * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
+     */
+    public func setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: UInt32): Unit {
+        this.videoReleaseBackgroundColor = transColorForTrasparent(videoReleaseBackgroundColor)
+    }
+
+    /**
+     * 设置视频下载按钮图片宽度和高度
+     *
+     * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
+     */
+    public func setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: Float64): Unit {
+        this.videoDownloadImageWidthHeight = videoDownloadImageWidthHeight
+    }
+
+    /**
+     * 设置视频下载按钮宽度
+     *
+     * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
+     */
+    public func setVideoDownloadWidth(videoDownloadWidth: Float64): Unit {
+        this.videoDownloadWidth = videoDownloadWidth
+    }
+
+    /**
+     * 设置视频下载按钮高度
+     *
+     * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
+     */
+    public func setVideoDownloadHeight(videoDownloadHeight: Float64): Unit {
+        this.videoDownloadHeight = videoDownloadHeight
+    }
+
+    /**
+     * 设置视频下载按钮圆角
+     *
+     * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
+     */
+    public func setVideoDownloadRadius(videoDownloadRadius: Float64): Unit {
+        this.videoDownloadRadius = videoDownloadRadius
+    }
+
+    /**
+     * 设置视频下载按钮文本内容
+     *
+     * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
+     */
+    public func setVideoDownloadText(videoDownloadText: String): Unit {
+        this.videoDownloadText = videoDownloadText
+    }
+
+    /**
+     * 设置视频下载按钮文本大小
+     *
+     * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
+     */
+    public func setVideoDownloadTexSize(videoDownloadTexSize: Float64): Unit {
+        this.videoDownloadTexSize = videoDownloadTexSize
+    }
+
+    /**
+     * 设置视频下载按钮文本颜色
+     *
+     * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
+     */
+    public func setVideoDownloadTexColor(videoDownloadTexColor: UInt32): Unit {
+        this.videoDownloadTexColor = transColorForTrasparent(videoDownloadTexColor)
+    }
+
+    /**
+     * 设置视频下载按钮背景颜色
+     *
+     * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
+     */
+    public func setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: UInt32): Unit {
+        this.videoDownloadBackgroundColor = transColorForTrasparent(videoDownloadBackgroundColor)
+    }
+
+    /**
      * 设置图片缩放类型
      *
      * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
@@ -2287,7 +2602,6 @@ public class CJMarkdownTheme {
      * 设置定义列表术语和定义行之间间距
      *
      * @param descListTermAndDefMargins 定义列表定义行缩进 默认8.0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setDescListTermAndDefMargins(descListTermAndDefMargins: Float64): Unit {
         this.descListTermAndDefMargins = descListTermAndDefMargins
@@ -2297,7 +2611,6 @@ public class CJMarkdownTheme {
      * 设置定义列表定义行缩进
      *
      * @param descListDefIndentation 定义列表定义行缩进 默认8.0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setDescListDefIndentation(descListDefIndentation: Float64): Unit {
         this.descListDefIndentation = descListDefIndentation
@@ -2307,9 +2620,71 @@ public class CJMarkdownTheme {
      * 设置定义列表定义行间距
      *
      * @param descListDefMargins 定义列表定义行间距 默认8.0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setDescListDefMargins(descListDefMargins: Float64): Unit {
         this.descListDefMargins = descListDefMargins
+    }
+
+    /**
+     * 设置下标字体颜色
+     *
+     * @param subTextColor 下标字体颜色 默认0XFF191919
+     */
+    public func setSubTextColor(subTextColor: UInt32): Unit {
+        this.subTextColor = transColorForTrasparent(subTextColor)
+    }
+
+    /**
+     * 设置下标字体大小
+     *
+     * @param subTextSize 下标字体大小 默认8.0
+     */
+    public func setSubTextSize(subTextSize: Float64): Unit {
+        this.subTextSize = subTextSize
+    }
+
+    /**
+     * 设置下标偏移距离
+     *
+     * @param subOffsetDist 下标偏移距离 默认0.0
+     */
+    public func setSubOffsetDist(subOffsetDist: Float64): Unit {
+        this.subOffsetDist = subOffsetDist
+    }
+
+    /**
+     * 设置上标字体颜色
+     *
+     * @param supTextColor 上标字体颜色 默认0XFF191919
+     */
+    public func setSupTextColor(supTextColor: UInt32): Unit {
+        this.supTextColor = transColorForTrasparent(supTextColor)
+    }
+
+    /**
+     * 设置上标字体大小
+     *
+     * @param supTextSize 上标字体大小 默认8.0
+     */
+    public func setSupTextSize(supTextSize: Float64): Unit {
+        this.supTextSize = supTextSize
+    }
+
+    /**
+     * 设置上标偏移距离
+     *
+     * @param supOffsetDist 上标偏移距离 默认6.0
+     */
+    public func setSupOffsetDist(supOffsetDist: Float64): Unit {
+        this.supOffsetDist = supOffsetDist
+    }
+
+    /**
+     * 设置下划线颜色
+     *
+     * @param underlineColor 下划线颜色 默认0XFF191919
+     */
+    public func setUnderlineColor(underlineColor: UInt32): Unit {
+        this.underlineColor = transColorForTrasparent(underlineColor)
     }
 }

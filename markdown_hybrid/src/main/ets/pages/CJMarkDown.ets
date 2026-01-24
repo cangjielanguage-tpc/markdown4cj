@@ -11,7 +11,7 @@ export const global_cjLib: CJLib = requireCJLib("libmarkdown.so") as CJLib
 
 export interface CJLib {
   getCJResource(codeFullScreenIcon?: Resource, codeCopyIcon?: Resource, audioIcon?: Resource, videoImage?: Resource,
-    playCircleFillIcon?: Resource, bannerImage?: Resource, imageResource?: Resource): void
+    playCircleFillIcon?: Resource, bannerImage?: Resource, imageResource?: Resource, videoReleaseImage?: Resource, videoDownloadImage?: Resource): void
 }
 
 class CJNodeController extends NodeController {
@@ -80,6 +80,12 @@ export struct CJMarkdown {
       if (this.config.videoImageCallback !== undefined) {
         cjMarkdownConfig.setVideoImageCallback(this.config.videoImageCallback)
       }
+      if (this.config.videoReleaseCallback !== undefined) {
+        cjMarkdownConfig.setVideoReleaseCallback(this.config.videoReleaseCallback)
+      }
+      if (this.config.videoDownloadCallback !== undefined) {
+        cjMarkdownConfig.setVideoDownloadCallback(this.config.videoDownloadCallback)
+      }
       if (this.config.codeCopyCallback !== undefined) {
         cjMarkdownConfig.setCodeCopyCallback(this.config.codeCopyCallback)
       }
@@ -117,8 +123,13 @@ export struct CJMarkdown {
           this.config.markdownTheme.videoImage,
           this.config.markdownTheme.playCircleFillIcon,
           this.config.markdownTheme.bannerImage,
-          this.config.markdownTheme.imageResource
+          this.config.markdownTheme.imageResource,
+          this.config.markdownTheme.videoReleaseImage,
+          this.config.markdownTheme.videoDownloadImage
         )
+        if (this.config.markdownTheme.isMarkdownParserSync !== undefined) {
+          cjMarkdownTheme.setIsMarkdownParserSync(this.config.markdownTheme.isMarkdownParserSync)
+        }
         if (this.config.markdownTheme.isOnCopy !== undefined) {
           cjMarkdownTheme.setIsOnCopy(this.config.markdownTheme.isOnCopy)
         }
@@ -281,6 +292,9 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.isCodeStyle !== undefined) {
           cjMarkdownTheme.setIsCodeStyle(this.config.markdownTheme.isCodeStyle)
         }
+        if (this.config.markdownTheme.isCodeFormat !== undefined) {
+          cjMarkdownTheme.setIsCodeFormat(this.config.markdownTheme.isCodeFormat)
+        }
         if (this.config.markdownTheme.codeTextColor !== undefined) {
           cjMarkdownTheme.setCodeTextColor(this.config.markdownTheme.codeTextColor)
         }
@@ -298,6 +312,9 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.codeHeight !== undefined) {
           cjMarkdownTheme.setCodeHeight(this.config.markdownTheme.codeHeight)
+        }
+        if (this.config.markdownTheme.isCodeBlockParserSync !== undefined) {
+          cjMarkdownTheme.setIsCodeBlockParserSync(this.config.markdownTheme.isCodeBlockParserSync)
         }
         if (this.config.markdownTheme.codeBlockTextColor !== undefined) {
           cjMarkdownTheme.setCodeBlockTextColor(this.config.markdownTheme.codeBlockTextColor)
@@ -549,6 +566,57 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.videoMarginBottom !== undefined) {
           cjMarkdownTheme.setVideoMarginBottom(this.config.markdownTheme.videoMarginBottom)
         }
+        if (this.config.markdownTheme.isVideoBottomLayout !== undefined) {
+          cjMarkdownTheme.setIsVideoBottomLayout(this.config.markdownTheme.isVideoBottomLayout)
+        }
+        if (this.config.markdownTheme.videoReleaseImageWidthHeight !== undefined) {
+          cjMarkdownTheme.setVideoReleaseImageWidthHeight(this.config.markdownTheme.videoReleaseImageWidthHeight)
+        }
+        if (this.config.markdownTheme.videoReleaseWidth !== undefined) {
+          cjMarkdownTheme.setVideoReleaseWidth(this.config.markdownTheme.videoReleaseWidth)
+        }
+        if (this.config.markdownTheme.videoReleaseHeight !== undefined) {
+          cjMarkdownTheme.setVideoReleaseHeight(this.config.markdownTheme.videoReleaseHeight)
+        }
+        if (this.config.markdownTheme.videoReleaseRadius !== undefined) {
+          cjMarkdownTheme.setVideoReleaseRadius(this.config.markdownTheme.videoReleaseRadius)
+        }
+        if (this.config.markdownTheme.videoReleaseText !== undefined) {
+          cjMarkdownTheme.setVideoReleaseText(this.config.markdownTheme.videoReleaseText)
+        }
+        if (this.config.markdownTheme.videoReleaseTexSize !== undefined) {
+          cjMarkdownTheme.setVideoReleaseTexSize(this.config.markdownTheme.videoReleaseTexSize)
+        }
+        if (this.config.markdownTheme.videoReleaseTexColor !== undefined) {
+          cjMarkdownTheme.setVideoReleaseTexColor(this.config.markdownTheme.videoReleaseTexColor)
+        }
+        if (this.config.markdownTheme.videoReleaseBackgroundColor !== undefined) {
+          cjMarkdownTheme.setVideoReleaseBackgroundColor(this.config.markdownTheme.videoReleaseBackgroundColor)
+        }
+        if (this.config.markdownTheme.videoDownloadImageWidthHeight !== undefined) {
+          cjMarkdownTheme.setVideoDownloadImageWidthHeight(this.config.markdownTheme.videoDownloadImageWidthHeight)
+        }
+        if (this.config.markdownTheme.videoDownloadWidth !== undefined) {
+          cjMarkdownTheme.setVideoDownloadWidth(this.config.markdownTheme.videoDownloadWidth)
+        }
+        if (this.config.markdownTheme.videoDownloadHeight !== undefined) {
+          cjMarkdownTheme.setVideoDownloadHeight(this.config.markdownTheme.videoDownloadHeight)
+        }
+        if (this.config.markdownTheme.videoDownloadRadius !== undefined) {
+          cjMarkdownTheme.setVideoDownloadRadius(this.config.markdownTheme.videoDownloadRadius)
+        }
+        if (this.config.markdownTheme.videoDownloadText !== undefined) {
+          cjMarkdownTheme.setVideoDownloadText(this.config.markdownTheme.videoDownloadText)
+        }
+        if (this.config.markdownTheme.videoDownloadTexSize !== undefined) {
+          cjMarkdownTheme.setVideoDownloadTexSize(this.config.markdownTheme.videoDownloadTexSize)
+        }
+        if (this.config.markdownTheme.videoDownloadTexColor !== undefined) {
+          cjMarkdownTheme.setVideoDownloadTexColor(this.config.markdownTheme.videoDownloadTexColor)
+        }
+        if (this.config.markdownTheme.videoDownloadBackgroundColor !== undefined) {
+          cjMarkdownTheme.setVideoDownloadBackgroundColor(this.config.markdownTheme.videoDownloadBackgroundColor)
+        }
         if (this.config.markdownTheme.imageFitType !== undefined) {
           cjMarkdownTheme.setImageFitType(this.config.markdownTheme.imageFitType)
         }
@@ -618,6 +686,27 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.descListDefMargins !== undefined) {
           cjMarkdownTheme.setDescListDefMargins(this.config.markdownTheme.descListDefMargins)
         }
+        if (this.config.markdownTheme.subTextColor !== undefined) {
+          cjMarkdownTheme.setSubTextColor(this.config.markdownTheme.subTextColor)
+        }
+        if (this.config.markdownTheme.subTextSize !== undefined) {
+          cjMarkdownTheme.setSubTextSize(this.config.markdownTheme.subTextSize)
+        }
+        if (this.config.markdownTheme.subOffsetDist !== undefined) {
+          cjMarkdownTheme.setSubOffsetDist(this.config.markdownTheme.subOffsetDist)
+        }
+        if (this.config.markdownTheme.supTextColor !== undefined) {
+          cjMarkdownTheme.setSupTextColor(this.config.markdownTheme.supTextColor)
+        }
+        if (this.config.markdownTheme.supTextSize !== undefined) {
+          cjMarkdownTheme.setSupTextSize(this.config.markdownTheme.supTextSize)
+        }
+        if (this.config.markdownTheme.supOffsetDist !== undefined) {
+          cjMarkdownTheme.setSupOffsetDist(this.config.markdownTheme.supOffsetDist)
+        }
+        if (this.config.markdownTheme.underlineColor !== undefined) {
+          cjMarkdownTheme.setUnderlineColor(this.config.markdownTheme.underlineColor)
+        }
       }
     }
     return cjMarkdownTheme
@@ -644,11 +733,17 @@ export struct CJMarkdown {
       cjMarkdownPlugin.setIsImageCollectPlugin(this.plugin.isImageCollectPlugin)
       cjMarkdownPlugin.setIsDescListPlugin(this.plugin.isDescListPlugin)
       cjMarkdownPlugin.setIsHeadIDPlugin(this.plugin.isHeadIDPlugin)
+      cjMarkdownPlugin.setIsSubPlugin(this.plugin.isSubPlugin)
+      cjMarkdownPlugin.setIsSupPlugin(this.plugin.isSupPlugin)
+      cjMarkdownPlugin.setIsEmojiPlugin(this.plugin.isEmojiPlugin, this.plugin.isEmojiLight)
     }
     return cjMarkdownPlugin
   }
 }
 
+/**
+ * markdown配置
+ */
 export class MarkdownConfiguration {
   /**
    * 链接的点击事件
@@ -679,6 +774,14 @@ export class MarkdownConfiguration {
    */
   videoImageCallback?: (funcArg0: string,
     funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
+  /**
+   * 视频发布的点击事件
+   */
+  videoReleaseCallback?: (funcArg0: string) => void = undefined
+  /**
+   * 视频下载的点击事件
+   */
+  videoDownloadCallback?: (funcArg0: string) => void = undefined
   /**
    * 代码复制按钮的点击事件
    */
@@ -772,6 +875,24 @@ export class MarkdownConfiguration {
   }
 
   /**
+   * 设置视频发布的点击事件
+   *
+   * @param cb 视频发布的点击事件(funcArg0：视频url) --- 需要加载视频解析插件
+   */
+  setVideoReleaseCallback(cb: (funcArg0: string) => void): void {
+    this.videoReleaseCallback = cb
+  }
+
+  /**
+   * 设置视频下载的点击事件
+   *
+   * @param cb 视频下载的点击事件(funcArg0：视频url) --- 需要加载视频解析插件
+   */
+  setVideoDownloadCallback(cb: (funcArg0: string) => void): void {
+    this.videoDownloadCallback = cb
+  }
+
+  /**
    * 设置代码复制点击回调
    *
    * @param cb 代码复制点击回调(funcArg0：代码内容)
@@ -835,6 +956,9 @@ export class MarkdownConfiguration {
   }
 }
 
+/**
+ * Markdown用户可设置的样式
+ */
 export class MarkdownTheme {
   /**
    * 上下文
@@ -868,6 +992,18 @@ export class MarkdownTheme {
    * 图片默认占位图
    */
   imageResource?: Resource = undefined
+  /**
+   * 视频发布默认图标
+   */
+  videoReleaseImage?: Resource = undefined
+  /**
+   * 视频下载默认图标
+   */
+  videoDownloadImage?: Resource = undefined
+  /**
+   * markdown是否同步解析
+   */
+  isMarkdownParserSync?: boolean = undefined
   /**
    * 是否打开长按复制粘贴
    */
@@ -1085,6 +1221,10 @@ export class MarkdownTheme {
    */
   isCodeStyle?: boolean = undefined
   /**
+   * 设置是否格式化代码块内容
+   */
+  isCodeFormat?: boolean = undefined
+  /**
    * 文本、图片格式内联代码文本颜色
    */
   codeTextColor?: number = undefined
@@ -1108,6 +1248,10 @@ export class MarkdownTheme {
    * 图片格式内联代码文本高度
    */
   codeHeight?: number = undefined
+  /**
+   * 围栏代码块代码高亮是否同步解析
+  */
+  isCodeBlockParserSync?: boolean = undefined
   /**
    * 代码块代码文本颜色
    */
@@ -1429,6 +1573,79 @@ export class MarkdownTheme {
    */
   videoMarginBottom?: number = undefined
   /**
+   * 视频发布/下载按钮布局是否显示
+   */
+  isVideoBottomLayout?: boolean = undefined
+  /**
+   * 视频发布按钮图片宽度和高度
+   */
+  videoReleaseImageWidthHeight?: number = undefined
+  /**
+   * 视频发布按钮宽度
+   */
+  videoReleaseWidth?: number = undefined
+  /**
+   * 视频发布按钮高度
+   */
+  videoReleaseHeight?: number = undefined
+  /**
+   * 视频发布按钮圆角
+   */
+  videoReleaseRadius?: number = undefined
+  /**
+   * 视频发布按钮文本内容
+   */
+  videoReleaseText?: string = undefined
+  /**
+   * 视频发布按钮文本大小
+   */
+  videoReleaseTexSize?: number = undefined
+  /**
+   * 视频发布按钮文本颜色
+   */
+  videoReleaseTexColor?: number = undefined
+  /**
+   * 视频发布按钮背景颜色
+   */
+  videoReleaseBackgroundColor?: number = undefined
+  /**
+   * 视频下载按钮图片宽度和高度
+   */
+  videoDownloadImageWidthHeight?: number = undefined
+  /**
+   * 视频下载按钮宽度
+   */
+  videoDownloadWidth?: number = undefined
+  /**
+   * 视频下载按钮高度
+   */
+  videoDownloadHeight?: number = undefined
+
+  /**
+   * 视频下载按钮圆角
+   */
+  videoDownloadRadius?: number = undefined
+
+  /**
+   * 视频下载按钮文本内容
+   */
+  videoDownloadText?: string = undefined
+
+  /**
+   * 视频下载按钮文本大小
+   */
+  videoDownloadTexSize?: number = undefined
+
+  /**
+   * 视频下载按钮文本颜色
+   */
+  videoDownloadTexColor?: number = undefined
+
+  /**
+   * 视频下载按钮背景颜色
+   */
+  videoDownloadBackgroundColor?: number = undefined
+  /**
    * 图片缩放类型
    */
   imageFitType?: ImageFitType = undefined
@@ -1516,11 +1733,38 @@ export class MarkdownTheme {
    * 定义列表定义行缩进
    */
   descListDefIndentation?: number= undefined
-
   /**
    * 定义列表定义行间距
    */
   descListDefMargins?: number = undefined
+  /**
+   * 下标字体颜色
+   */
+  subTextColor?: number = undefined
+  /**
+   * 下标字体大小
+   */
+  subTextSize?: number = undefined
+  /**
+   * 下标偏移距离
+   */
+  subOffsetDist?: number = undefined
+  /**
+   * 上标字体颜色
+   */
+  supTextColor?: number = undefined
+  /**
+   * 上标字体大小
+   */
+  supTextSize?: number = undefined
+  /**
+   * 上标偏移距离
+   */
+  supOffsetDist?: number = undefined
+  /**
+   * 下划线颜色
+   */
+  underlineColor?: number = undefined
 
   /**
    * 设置上下文
@@ -1592,6 +1836,33 @@ export class MarkdownTheme {
    */
   setImageResource(imageResource: Resource): void {
     this.imageResource = imageResource
+  }
+
+  /**
+   * 设置视频发布默认图标
+   *
+   * @param videoReleaseImage 视频发布默认图标
+   */
+  setVideoReleaseImage(videoReleaseImage: Resource): void {
+    this.videoReleaseImage = videoReleaseImage
+  }
+
+  /**
+   * 设置视频下载默认图标
+   *
+   * @param videoDownloadImage 视频下载默认图标
+   */
+  setVideoDownloadImage(videoDownloadImage: Resource): void {
+    this.videoDownloadImage = videoDownloadImage
+  }
+
+  /**
+   * 设置markdown是否同步解析
+   *
+   * @param isMarkdownParserSync markdown是否同步解析 - 默认false
+   */
+  setIsMarkdownParserSync(isMarkdownParserSync: boolean): void {
+    this.isMarkdownParserSync = isMarkdownParserSync
   }
 
   /**
@@ -2081,6 +2352,15 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置是否格式化代码块内容
+   *
+   * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
+   */
+  setIsCodeFormat(isCodeFormat: boolean): void {
+    this.isCodeFormat = isCodeFormat
+  }
+
+  /**
    * 设置文本、图片格式内联代码文本颜色
    *
    * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
@@ -2132,6 +2412,15 @@ export class MarkdownTheme {
    */
   setCodeHeight(codeHeight: number): void {
     this.codeHeight = codeHeight
+  }
+
+  /**
+   * 设置围栏代码块代码高亮是否同步解析
+   *
+   * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
+   */
+  setIsCodeBlockParserSync(isCodeBlockParserSync: boolean): void {
+    this.isCodeBlockParserSync = isCodeBlockParserSync
   }
 
   /**
@@ -2855,6 +3144,159 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置视频发布/下载按钮布局是否显示
+   *
+   * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默认false不显示
+   */
+  setIsVideoBottomLayout(isVideoBottomLayout: boolean): void {
+    this.isVideoBottomLayout = isVideoBottomLayout
+  }
+
+  /**
+   * 设置视频发布按钮图片宽度和高度
+   *
+   * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
+   */
+  setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: number): void {
+    this.videoReleaseImageWidthHeight = videoReleaseImageWidthHeight
+  }
+
+  /**
+   * 设置视频发布按钮宽度
+   *
+   * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
+   */
+  setVideoReleaseWidth(videoReleaseWidth: number): void {
+    this.videoReleaseWidth = videoReleaseWidth
+  }
+
+  /**
+   * 设置视频发布按钮高度
+   *
+   * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
+   */
+  setVideoReleaseHeight(videoReleaseHeight: number): void {
+    this.videoReleaseHeight = videoReleaseHeight
+  }
+
+  /**
+   * 设置视频发布按钮圆角
+   *
+   * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
+   */
+  setVideoReleaseRadius(videoReleaseRadius: number): void {
+    this.videoReleaseRadius = videoReleaseRadius
+  }
+
+  /**
+   * 设置视频发布按钮文本内容
+   *
+   * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
+   */
+  setVideoReleaseText(videoReleaseText: string): void {
+    this.videoReleaseText = videoReleaseText
+  }
+
+  /**
+   * 设置视频发布按钮文本大小
+   *
+   * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
+   */
+  setVideoReleaseTexSize(videoReleaseTexSize: number): void {
+    this.videoReleaseTexSize = videoReleaseTexSize
+  }
+
+  /**
+   * 设置视频发布按钮文本颜色
+   *
+   * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
+   */
+  setVideoReleaseTexColor(videoReleaseTexColor: number): void {
+    this.videoReleaseTexColor = videoReleaseTexColor
+  }
+
+  /**
+   * 设置视频发布按钮背景颜色
+   *
+   * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
+   */
+  setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: number): void {
+    this.videoReleaseBackgroundColor = videoReleaseBackgroundColor
+  }
+
+  /**
+   * 设置视频下载按钮图片宽度和高度
+   *
+   * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
+   */
+  setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: number): void {
+    this.videoDownloadImageWidthHeight = videoDownloadImageWidthHeight
+  }
+
+  /**
+   * 设置视频下载按钮宽度
+   *
+   * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
+   */
+  setVideoDownloadWidth(videoDownloadWidth: number): void {
+    this.videoDownloadWidth = videoDownloadWidth
+  }
+
+  /**
+   * 设置视频下载按钮高度
+   *
+   * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
+   */
+  setVideoDownloadHeight(videoDownloadHeight: number): void {
+    this.videoDownloadHeight = videoDownloadHeight
+  }
+
+  /**
+   * 设置视频下载按钮圆角
+   *
+   * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
+   */
+  setVideoDownloadRadius(videoDownloadRadius: number): void {
+    this.videoDownloadRadius = videoDownloadRadius
+  }
+
+  /**
+   * 设置视频下载按钮文本内容
+   *
+   * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
+   */
+  setVideoDownloadText(videoDownloadText: string): void {
+    this.videoDownloadText = videoDownloadText
+  }
+
+  /**
+   * 设置视频下载按钮文本大小
+   *
+   * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
+   */
+  setVideoDownloadTexSize(videoDownloadTexSize: number): void {
+    this.videoDownloadTexSize = videoDownloadTexSize
+  }
+
+  /**
+   * 设置视频下载按钮文本颜色
+   *
+   * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
+   */
+  setVideoDownloadTexColor(videoDownloadTexColor: number): void {
+    this.videoDownloadTexColor = videoDownloadTexColor
+  }
+
+  /**
+   * 设置视频下载按钮背景颜色
+   *
+   * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
+   */
+  setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: number): void {
+    this.videoDownloadBackgroundColor = videoDownloadBackgroundColor
+  }
+
+  /**
    * 设置图片缩放类型
    *
    * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
@@ -3060,8 +3502,74 @@ export class MarkdownTheme {
   setDescListDefMargins(descListDefMargins: number): void {
     this.descListDefMargins = descListDefMargins
   }
+
+  /**
+   * 设置下标字体颜色
+   *
+   * @param subTextColor 下标字体颜色 默认0XFF191919
+   */
+  setSubTextColor(subTextColor: number): void {
+    this.subTextColor = subTextColor
+  }
+
+  /**
+   * 设置下标字体大小
+   *
+   * @param subTextSize 下标字体大小 默认8.0
+   */
+  setSubTextSize(subTextSize: number): void {
+    this.subTextSize = subTextSize
+  }
+
+  /**
+   * 设置下标偏移距离
+   *
+   * @param subOffsetDist 下标偏移距离 默认0.0
+   */
+  setSubOffsetDist(subOffsetDist: number): void {
+    this.subOffsetDist = subOffsetDist
+  }
+
+  /**
+   * 设置上标字体颜色
+   *
+   * @param supTextColor 上标字体颜色 默认0XFF191919
+   */
+  setSupTextColor(supTextColor: number): void {
+    this.supTextColor = supTextColor
+  }
+
+  /**
+   * 设置上标字体大小
+   *
+   * @param supTextSize 上标字体大小 默认8.0
+   */
+  setSupTextSize(supTextSize: number): void {
+    this.supTextSize = supTextSize
+  }
+
+  /**
+   * 设置上标偏移距离
+   *
+   * @param supOffsetDist 上标偏移距离 默认6.0
+   */
+  setSupOffsetDist(supOffsetDist: number): void {
+    this.supOffsetDist = supOffsetDist
+  }
+
+  /**
+   * 设置下划线颜色
+   *
+   * @param underlineColor 下划线颜色 默认0XFF191919
+   */
+  setUnderlineColor(underlineColor: number): void {
+    this.underlineColor = underlineColor
+  }
 }
 
+/**
+ * 数学公式生成图片格式的枚举
+ */
 export enum LatexMathColorFormat {
   /**
    * 16位
@@ -3073,6 +3581,9 @@ export enum LatexMathColorFormat {
   COLOR_FORMAT_BGRA_8888
 }
 
+/**
+ * 图片缩放类型的枚举
+ */
 export enum ImageFitType{
   /**
    * 保持宽高比进行缩小或者放大，使得图片两边都大于或等于显示边界。
@@ -3088,6 +3599,9 @@ export enum ImageFitType{
   Fill
 }
 
+/**
+ * Markdown插件配置
+ */
 export class MarkdownPlugin {
   /**
    * 是否加载音频解析插件
@@ -3161,6 +3675,22 @@ export class MarkdownPlugin {
    * 是否加载标题ID解析插件
    */
   isHeadIDPlugin: boolean = false
+  /**
+   * 是否加载下标解析插件
+   */
+  isSubPlugin: boolean = false
+  /**
+   * 是否加载上标解析插件
+   */
+  isSupPlugin: boolean = false
+  /**
+   * 是否加载emoji解析插件
+   */
+  isEmojiPlugin: boolean = false
+  /**
+   * emoji解析插件是否精简加载
+   */
+  isEmojiLight: boolean = false
 
   /**
    * 设置音频插件
@@ -3322,6 +3852,35 @@ export class MarkdownPlugin {
    */
   setIsHeadIDPlugin(isHeadIDPlugin: boolean): void {
     this.isHeadIDPlugin = isHeadIDPlugin
+  }
+
+  /**
+   * 设置是否加载下标解析插件
+   *
+   * @param isSubPlugin 是否加载下标解析插件 - true：设置加载下标解析插件；false：不设置加载下标解析插件。默认false
+   */
+  setIsSubPlugin(isSubPlugin: boolean): void {
+    this.isSubPlugin = isSubPlugin
+  }
+
+  /**
+   * 设置是否加载上标解析插件
+   *
+   * @param isSupPlugin 是否加载上标解析插件 - true：设置加载上标解析插件；false：不设置加载上标解析插件。默认false
+   */
+  setIsSupPlugin(isSupPlugin: boolean): void {
+    this.isSupPlugin = isSupPlugin
+  }
+
+  /**
+   * 设置是否加载emoji解析插件
+   *
+   * @param isEmojiPlugin 是否加载上标解析插件 - true：设置加载上标解析插件件；false：不设置加载上标解析插件。默认false
+   * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
+   */
+  setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void {
+    this.isEmojiPlugin = isEmojiPlugin
+    this.isEmojiLight = isEmojiLight
   }
 }
 

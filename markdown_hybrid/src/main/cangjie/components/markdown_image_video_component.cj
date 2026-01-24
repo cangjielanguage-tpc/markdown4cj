@@ -71,25 +71,86 @@ public class MarkdownImageVideoComponent {
     }
 
     func build() {
-        Stack(Alignment.BottomEnd) {
-            Stack(Alignment.Center) {
-                imgVideoComponent()
+        Column() {
+            Stack(Alignment.BottomEnd) {
+                Stack(Alignment.Center) {
+                    imgVideoComponent()
+                }
+                // 设置组件自身的宽度
+                .width(100.percent)
+
+                Text(time)
+                    // 设置文本颜色
+                    .fontColor(markdownConfiguration.markdownTheme.videoTimeTextColor)
+                    // 设置文本尺寸
+                    .fontSize(markdownConfiguration.markdownTheme.videoTimeTextSize)
+                    // 设置外边距属性
+                    .margin(right: markdownConfiguration.markdownTheme.videoTimeTextMarginRight, bottom: markdownConfiguration.markdownTheme.videoTimeTextMarginBottom)
             }
             // 设置组件自身的宽度
             .width(100.percent)
-
-            Text(time)
-                // 设置文本颜色
-                .fontColor(markdownConfiguration.markdownTheme.videoTimeTextColor)
-                // 设置文本尺寸
-                .fontSize(markdownConfiguration.markdownTheme.videoTimeTextSize)
-                // 设置外边距属性
-                .margin(right: markdownConfiguration.markdownTheme.videoTimeTextMarginRight, bottom: markdownConfiguration.markdownTheme.videoTimeTextMarginBottom)
+            // 点击动作触发该方法调用
+            .onClick {evt => videoOnClick(imageVideoUrl, videoCallback)}
+            if (markdownConfiguration.markdownTheme.isVideoBottomLayout) {
+                imgVideoButtonComponent()
+            }
         }
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 点击动作触发该方法调用
-        .onClick {evt => videoOnClick(imageVideoUrl, videoCallback)}
+    }
+
+    @Builder
+    func imgVideoButtonComponent() {
+        Row(8) {
+            Row(6) {
+                if (markdownConfiguration.markdownTheme.videoReleaseImage.isSome()) {
+                    Image(markdownConfiguration.markdownTheme.videoReleaseImage())
+                        .width(markdownConfiguration.markdownTheme.videoReleaseImageWidthHeight)
+                        .height(markdownConfiguration.markdownTheme.videoReleaseImageWidthHeight)
+                        .fillColor(markdownConfiguration.markdownTheme.videoReleaseTexColor) // 强制设为黑色，避免看不清
+                }
+                Text(markdownConfiguration.markdownTheme.videoReleaseText)
+                    .fontSize(markdownConfiguration.markdownTheme.videoReleaseTexSize)
+                    .fontWeight(FontWeight.Medium)
+                    .fontColor(markdownConfiguration.markdownTheme.videoReleaseTexColor)
+            }
+            .justifyContent(FlexAlign.Center)
+            .alignItems(VerticalAlign.Center)
+            .width(markdownConfiguration.markdownTheme.videoReleaseWidth)
+            .height(markdownConfiguration.markdownTheme.videoReleaseHeight)
+            .borderRadius(markdownConfiguration.markdownTheme.videoReleaseRadius)
+            .backgroundColor(markdownConfiguration.markdownTheme.videoReleaseBackgroundColor)
+            // 点击动作触发该方法调用
+            .onClick {evt =>
+                if (markdownConfiguration.videoReleaseCallback.isSome()) {
+                    markdownConfiguration.videoReleaseCallback()(imageVideoUrl)
+                }
+            }
+            Row(6) {
+                if (markdownConfiguration.markdownTheme.videoDownloadImage.isSome()) {
+                    Image(markdownConfiguration.markdownTheme.videoDownloadImage())
+                        .width(markdownConfiguration.markdownTheme.videoDownloadImageWidthHeight)
+                        .height(markdownConfiguration.markdownTheme.videoDownloadImageWidthHeight)
+                        .fillColor(markdownConfiguration.markdownTheme.videoDownloadTexColor)
+                }
+
+                Text(markdownConfiguration.markdownTheme.videoDownloadText)
+                    .fontSize(markdownConfiguration.markdownTheme.videoDownloadTexSize)
+                    .fontWeight(FontWeight.Medium)
+                    .fontColor(markdownConfiguration.markdownTheme.videoDownloadTexColor)
+            }
+            .justifyContent(FlexAlign.Center)
+            .alignItems(VerticalAlign.Center)
+            .width(markdownConfiguration.markdownTheme.videoDownloadWidth)
+            .height(markdownConfiguration.markdownTheme.videoDownloadHeight)
+            .borderRadius(markdownConfiguration.markdownTheme.videoDownloadRadius)
+            .backgroundColor(markdownConfiguration.markdownTheme.videoDownloadBackgroundColor)
+            // 点击动作触发该方法调用
+            .onClick {evt =>
+                if (markdownConfiguration.videoDownloadCallback.isSome()) {
+                    markdownConfiguration.videoDownloadCallback()(imageVideoUrl)
+                }
+            }
+        }
+        .margin(top: 14)
     }
 
     /**

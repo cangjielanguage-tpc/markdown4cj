@@ -54,6 +54,12 @@ public class MarkdownDescListComponent {
      */
     var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
+    /**
+     * 自定义行内段落布局
+     */
+    @BuilderParam
+    var customParagraphLineBuilder: (NodeView, Int64) -> Unit
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
@@ -88,7 +94,8 @@ public class MarkdownDescListComponent {
                                 tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
-                                markdownCacheConfiguration: markdownCacheConfiguration
+                                markdownCacheConfiguration: markdownCacheConfiguration,
+                                customParagraphLineBuilder: customParagraphLineBuilder
                             )
                         }
                     } else if (item.node is DescDef) {
@@ -101,7 +108,8 @@ public class MarkdownDescListComponent {
                                 tocListOnClick: tocListOnClick,
                                 imageCallback: imageCallback,
                                 componentWidth: componentWidth,
-                                markdownCacheConfiguration: markdownCacheConfiguration
+                                markdownCacheConfiguration: markdownCacheConfiguration,
+                                customParagraphLineBuilder: customParagraphLineBuilder
                             )
                         }
                     } else {

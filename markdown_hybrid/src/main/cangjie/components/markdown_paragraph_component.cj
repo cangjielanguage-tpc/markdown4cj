@@ -76,6 +76,12 @@ class MarkdownParagraphComponent {
     @State
     var isOneLink: Bool = false
 
+    /**
+     * 自定义行内段落布局
+     */
+    @BuilderParam
+    var customParagraphLineBuilder: (NodeView, Int64) -> Unit
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
@@ -107,56 +113,15 @@ class MarkdownParagraphComponent {
         .justifyContent(FlexAlign.Center)
     }
 
+    /**
+     * 段落文字内容
+     */
     @Builder
-    func paragraphListComponent(item: NodeView) {
-        if (item.node is CommonmarkText) {
-            // 文本
-            if (DeviceInfo.sdkApiVersion >= 19) {
-                paragraphTextComponent19(item, isDescList, markdownConfiguration)
-            } else {
-                paragraphTextComponent18(item, isDescList, markdownConfiguration)
-            }
-        } else if (item.node is HeadLink) {
-            // TOC列表
-            if (DeviceInfo.sdkApiVersion >= 19) {
-                paragraphTocComponent19(item, isDescList, markdownConfiguration, tocListOnClick)
-            } else {
-                paragraphTocComponent18(item, isDescList, markdownConfiguration, tocListOnClick)
-            }
-        } else if (item.node is Footnote) {
-            // 脚注
-            if (DeviceInfo.sdkApiVersion >= 19) {
-               paragraphFootnoteComponent19(item, isDescList, markdownConfiguration, fontCallback)
-            } else {
-                paragraphFootnoteComponent18(item, isDescList, markdownConfiguration, fontCallback)
-            }
-        } else if (item.node is Code) {
-            // 内联代码
-            inLineCodeSpanComponent(item, markdownConfiguration, item.strongEmphasis, false, isDescList, 1)
-        } else if (item.node is CommonmarkLink) {
-            // 链接
-            linkSpanComponent(isOneLink, isListTo, 0, item, markdownConfiguration, componentWidth, imageCallback, false, isDescList, 1, markdownConfiguration.markdownTheme.isListLinkStyle)
-        } else if (item.node is HardLineBreak) {
-            // 硬换行
-            Span("\n")
-        } else if (item.node is SoftLineBreak) {
-            // 软换行
-            Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
-        } else if (item.node is ImageHtmlNode) {
-            // HTML图片
-            htmlImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-        } else if (item.node is StyleImage) {
-            //  图片Style节点
-            styleImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-        } else if (item.node is CommonmarkImage) {
-            // 图片节点
-            coreImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-        } else if (item.node is LatexMathNode) {
-            // 数学公式节点
-            latexSpanComponent(item, markdownConfiguration, componentWidth)
+    func paragraphComponent() {
+        if (DeviceInfo.sdkApiVersion >= 19) {
+            paragraphComponent19()
         } else {
-            // TODO 其他节点
-            Span("")
+            paragraphComponent18()
         }
     }
 
@@ -178,17 +143,17 @@ class MarkdownParagraphComponent {
             ForEach(
                 nodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => paragraphListComponent(item)
+                    item18: NodeView, idx18: Int64 => paragraphListComponent(item18, idx18)
                 },
                 keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
+                    item18: NodeView, idx18: Int64 => return "${idx18}-${item18.nodeHash}-${item18.contentHash}"
                 }
             )
         }
         // 设置多行文本的文本对齐方式
         .textAlign(TextAlign.Start)
-        // 设置行高
-        .lineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .interopHalfLeading(true)
         // 自定义设置组件是否支持文本可复制粘贴
         .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
             true
@@ -221,17 +186,17 @@ class MarkdownParagraphComponent {
             ForEach(
                 nodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => paragraphListComponent(item)
+                    item19: NodeView, idx19: Int64 => paragraphListComponent(item19, idx19)
                 },
                 keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
+                    item19: NodeView, idx19: Int64 => return "${idx19}-${item19.nodeHash}-${item19.contentHash}"
                 }
             )
         }
         // 设置多行文本的文本对齐方式
         .textAlign(TextAlign.Start)
-        // 设置行高
-        .lineHeight(markdownConfiguration.markdownTheme.paragraphTextLineHeight)
+        // 设置文本是否将行间距平分至行的顶部与底部。
+        .halfLeading(true)
         // 支持设备内复制
         .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
             CopyOptions.LocalDevice
@@ -246,15 +211,56 @@ class MarkdownParagraphComponent {
         })
     }
 
-    /**
-     * 段落文字内容
-     */
     @Builder
-    func paragraphComponent() {
-        if (DeviceInfo.sdkApiVersion >= 19) {
-            paragraphComponent19()
+    func paragraphListComponent(item: NodeView, index: Int64) {
+        if (item.node is CommonmarkText) {
+            // 文本
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                paragraphTextComponent19(item, isDescList, markdownConfiguration)
+            } else {
+                paragraphTextComponent18(item, isDescList, markdownConfiguration)
+            }
+        } else if (item.node is HeadLink) {
+            // TOC列表
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                paragraphTocComponent19(item, isDescList, markdownConfiguration, tocListOnClick)
+            } else {
+                paragraphTocComponent18(item, isDescList, markdownConfiguration, tocListOnClick)
+            }
+        } else if (item.node is Footnote) {
+            // 脚注
+            if (DeviceInfo.sdkApiVersion >= 19) {
+               paragraphFootnoteComponent19(item, isDescList, markdownConfiguration, fontCallback)
+            } else {
+                paragraphFootnoteComponent18(item, isDescList, markdownConfiguration, fontCallback)
+            }
+        } else if (item.node is Code) {
+            // 内联代码
+            inLineCodeSpanComponent(item, markdownConfiguration, item.strongEmphasis, false, isDescList, 1, 0)
+        } else if (item.node is CommonmarkLink) {
+            // 链接
+            linkSpanComponent(isOneLink, isListTo, 0, item, markdownConfiguration, componentWidth, imageCallback, false, isDescList, 1, markdownConfiguration.markdownTheme.isListLinkStyle)
+        } else if (item.node is HardLineBreak) {
+            // 硬换行
+            Span("\n")
+        } else if (item.node is SoftLineBreak) {
+            // 软换行
+            Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
+        } else if (item.node is ImageHtmlNode) {
+            // HTML图片
+            htmlImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
+        } else if (item.node is StyleImage) {
+            //  图片Style节点
+            styleImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
+        } else if (item.node is CommonmarkImage) {
+            // 图片节点
+            coreImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
+        } else if (item.node is LatexMathNode) {
+            // 数学公式节点
+            latexSpanComponent(item, markdownConfiguration, componentWidth)
         } else {
-            paragraphComponent18()
+            // TODO 其他节点
+            customParagraphLineBuilder(item, index)
         }
     }
 

@@ -14,6 +14,7 @@ import markdown.components.*
 import markdown.core.*
 import markdown.plugin.*
 import markdown.texttoimg4cj.*
+import markdown.plugin.emoji.*
 
 @Component
 class CJMarkdownComponent {
@@ -115,6 +116,15 @@ class CJMarkdownComponent {
             if(v.isImageCollectPlugin){
                 markdownBuilder.usePlugin(ImageCollectPlugin.create())
             }
+            if(v.isSubPlugin){
+                markdownBuilder.usePlugin(SubPlugin.create())
+            }
+            if(v.isSupPlugin){
+                markdownBuilder.usePlugin(SupPlugin.create())
+            }
+            if(v.isEmojiPlugin){
+                markdownBuilder.usePlugin(EmojiPlugin.create(v.isEmojiLight))
+            }
         }
         // 唯一ID标识插件
         markdownBuilder.usePlugin(NodeIdPlugin.create())
@@ -145,6 +155,12 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.videoImageCallback) {
                 markdownConfigurationBuilder.setVideoImageCallback(v) // 设置视频的图片替换回调
+            }
+            if (let Some(v) <- w.videoReleaseCallback) {
+                markdownConfigurationBuilder.setVideoReleaseCallback(v) // 设置视频发布的点击事件
+            }
+            if (let Some(v) <- w.videoDownloadCallback) {
+                markdownConfigurationBuilder.setVideoDownloadCallback(v) // 设置视频下载的点击事件
             }
             if (let Some(v) <- w.codeCopyCallback) {
                 markdownConfigurationBuilder.setCodeCopyCallback(v) // 设置代码复制按钮的点击事件
@@ -195,7 +211,16 @@ class CJMarkdownComponent {
         if (let Some(v) <- imageResource) {
             markdownThemeBuilder.setImageResource(v) // 设置图片默认占位图
         }
+        if (let Some(v) <- videoReleaseImage) {
+            markdownThemeBuilder.setVideoReleaseImage(v) // 设置图片默认占位图
+        }
+        if (let Some(v) <- videoDownloadImage) {
+            markdownThemeBuilder.setVideoDownloadImage(v) // 设置图片默认占位图
+        }
         if(let Some(w) <- cfg){
+            if (let Some(v) <- w.cjMarkdownTheme.isMarkdownParserSync) {
+                markdownThemeBuilder.setIsMarkdownParserSync(v) // 设置markdown是否同步解析
+            }
             if (let Some(v) <- w.cjMarkdownTheme.isOnCopy) {
                 markdownThemeBuilder.setIsOnCopy(v) // 设置是否打开长按复制粘贴
             }
@@ -358,6 +383,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.isCodeStyle) {
                 markdownThemeBuilder.setIsCodeStyle(v) // 设置内联代码是否是图片显示
             }
+            if (let Some(v) <- w.cjMarkdownTheme.isCodeFormat) {
+                markdownThemeBuilder.setIsCodeFormat(v) // 设置是否格式化代码块内容
+            }
             if (let Some(v) <- w.cjMarkdownTheme.codeTextColor) {
                 markdownThemeBuilder.setCodeTextColor(v) // 设置文本、图片格式内联代码文本颜色
             }
@@ -375,6 +403,9 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeHeight) {
                 markdownThemeBuilder.setCodeHeight(v) // 设置图片格式内联代码文本高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.isCodeBlockParserSync) {
+                markdownThemeBuilder.setIsCodeBlockParserSync(v) // 设置缩进/围栏/组合/单独代码块代码是否同步解析
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeBlockTextColor) {
                 markdownThemeBuilder.setCodeBlockTextColor(v) // 设置代码块代码文本颜色
@@ -616,6 +647,57 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.videoMarginBottom) {
                 markdownThemeBuilder.setVideoMarginBottom(v) // 设置视频下边距
             }
+            if (let Some(v) <- w.cjMarkdownTheme.isVideoBottomLayout) {
+                markdownThemeBuilder.setIsVideoBottomLayout(v) // 设置视频发布/下载按钮布局是否显示
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseImageWidthHeight) {
+                markdownThemeBuilder.setVideoReleaseImageWidthHeight(v) // 设置视频发布按钮图片宽度和高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseWidth) {
+                markdownThemeBuilder.setVideoReleaseWidth(v) // 设置视频发布按钮宽度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseHeight) {
+                markdownThemeBuilder.setVideoReleaseHeight(v) // 设置视频发布按钮高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseRadius) {
+                markdownThemeBuilder.setVideoReleaseRadius(v) // 设置视频发布按钮圆角
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseText) {
+                markdownThemeBuilder.setVideoReleaseText(v) // 设置视频发布按钮文本内容
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseTexSize) {
+                markdownThemeBuilder.setVideoReleaseTexSize(v) // 设置视频发布按钮文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseTexColor) {
+                markdownThemeBuilder.setVideoReleaseTexColor(v) // 设置视频发布按钮文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseBackgroundColor) {
+                markdownThemeBuilder.setVideoReleaseBackgroundColor(v) // 设置视频发布按钮背景颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadImageWidthHeight) {
+                markdownThemeBuilder.setVideoDownloadImageWidthHeight(v) // 设置视频下载按钮图片宽度和高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadWidth) {
+                markdownThemeBuilder.setVideoDownloadWidth(v) // 设置视频下载按钮宽度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadHeight) {
+                markdownThemeBuilder.setVideoDownloadHeight(v) // 设置视频下载按钮高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadRadius) {
+                markdownThemeBuilder.setVideoDownloadRadius(v) // 设置视频下载按钮圆角
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadText) {
+                markdownThemeBuilder.setVideoDownloadText(v) // 设置视频下载按钮文本内容
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadTexSize) {
+                markdownThemeBuilder.setVideoDownloadTexSize(v) // 设置视频下载按钮文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadTexColor) {
+                markdownThemeBuilder.setVideoDownloadTexColor(v) // 设置视频下载按钮文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadBackgroundColor) {
+                markdownThemeBuilder.setVideoDownloadBackgroundColor(v) // 设置视频下载按钮背景颜色
+            }
             if (let Some(v) <- w.cjMarkdownTheme.imageFitType) {
                 markdownThemeBuilder.setImageFitType(v) // 设置图片缩放类型
             }
@@ -689,6 +771,27 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.descListDefMargins) {
                 markdownThemeBuilder.setDescListDefMargins(v) // 设置定义列表定义行间距
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.subTextColor) {
+                markdownThemeBuilder.setSubTextColor(v) // 设置下标字体颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.subTextSize) {
+                markdownThemeBuilder.setSubTextSize(v) // 设置下标字体大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.subOffsetDist) {
+                markdownThemeBuilder.setSubOffsetDist(v) // 设置下标偏移距离
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.supTextColor) {
+                markdownThemeBuilder.setSupTextColor(v) // 设置上标字体颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.supTextSize) {
+                markdownThemeBuilder.setSupTextSize(v) // 设置上标字体大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.supOffsetDist) {
+                markdownThemeBuilder.setSupOffsetDist(v) // 设置上标偏移距离
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.underlineColor) {
+                markdownThemeBuilder.setUnderlineColor(v) // 设置下划线颜色
             }
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()

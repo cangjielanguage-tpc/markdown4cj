@@ -11,7 +11,7 @@ import ohos.state_macro_manage.*
 /**
  * Markdown用户可设置的样式
  * 1：上下文 - 本地图片rawfile需要上下文。混合项目是stageContext，仓颉项目是abilityContext
- * 2：是否打开长按复制粘贴功能、每个模块之间上下间距
+ * 2：markdown是否同步解析、是否打开长按复制粘贴功能、markdown第一个模块上边距、markdown最后一个模块下边距、每个模块之间上下间距
  * 3：链接 - 链接是否是图片显示、列表中的单行链接是否是图片显示
  *          文本链接：文本格式链接文本颜色、是否按照链接文字字体大小显示文本、文本格式链接文字大小、文本格式链接背景颜色、文本格式是否显示链接下划线
  *          圆形图片链接：圆形图片格式链接主题背景颜色、圆形图片格式链接控件背景颜色、圆形图片格式链接文字大小、圆形图片格式链接文字颜色、圆形图片格式链接半径、圆形图片格式链接左右外边距
@@ -26,7 +26,8 @@ import ohos.state_macro_manage.*
  *          文本/图片格式内联代码文本颜色、文本/图片格式内联代码背景颜色、文本/图片格式内联代码文本大小
  *          文本格式内联代码：文本格式内联代码文本字体
  *          图片格式内联代码：图片格式内联代码文本左右边距、图片格式内联代码文本高度
- *          缩进/围栏/组合/单独代码块代码文本颜色、缩进/围栏/组合/单独代码块代码类型文本颜色、缩进/围栏/组合/单独代码块代码类型文本、缩进/围栏/组合/单独代码块代码类型和代码块距离、缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示、缩进/围栏/组合/单独代码块代码行号是否显示、缩进/围栏/组合/单独代码块背景颜色、缩进/围栏/组合/单独代码块左边距、缩进/围栏/组合/单独代码块字体、缩进/围栏/组合/单独代码块代码文本大小、缩进/围栏/组合/单独代码块代码文本行高、缩进/围栏/组合/单独代码块圆角大小、缩进/围栏/组合/单独代码块代码全屏按钮是否显示、缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高、缩进/围栏/组合/单独代码块代码全屏按钮默认图标、缩进/围栏/组合/单独代码块代码复制按钮默认图标
+ *          围栏代码块：是否格式化代码块内容、围栏代码块代码高亮是否同步解析
+ *          缩进/围栏/组合/单独代码块：缩进/围栏/组合/单独代码块代码文本颜色、缩进/围栏/组合/单独代码块代码类型文本颜色、缩进/围栏/组合/单独代码块代码类型文本、缩进/围栏/组合/单独代码块代码类型和代码块距离、缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示、缩进/围栏/组合/单独代码块代码行号是否显示、缩进/围栏/组合/单独代码块背景颜色、缩进/围栏/组合/单独代码块左边距、缩进/围栏/组合/单独代码块字体、缩进/围栏/组合/单独代码块代码文本大小、缩进/围栏/组合/单独代码块代码文本行高、缩进/围栏/组合/单独代码块圆角大小、缩进/围栏/组合/单独代码块代码全屏按钮是否显示、缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高、缩进/围栏/组合/单独代码块代码全屏按钮默认图标、缩进/围栏/组合/单独代码块代码复制按钮默认图标
  *          组合代码块：组合代码块未选中标题字体大小、组合代码块选中标题字体大小、组合代码块选中标题文本颜色、组合代码块未选中标题文本颜色、组合代码块选中标题背景颜色、组合代码块未选中标题背景颜色
  *          单独代码块：是否单独代码块显示、单独代码块行号宽度、单独代码块是否居底显示
  * 6：标题 - H1/H2标题下分割线高度、H1/H2标题下分割线颜色
@@ -36,13 +37,16 @@ import ohos.state_macro_manage.*
  * 9：软换行 - 软换行是否换行
  * 10：数学公式 - 数学公式未加载状态是否显示文字、数学公式文本大小、数学公式背景色、数学公式文本颜色、数学公式生成图片格式、块结构的数学公式是否居中、数学公式字体路径
  * 11：音频 - 音频图标、音频阴影颜色值、音频边框颜色、音频边框粗细、音频边框圆角、音频按钮背景颜色、音频按钮文字颜色、音频按钮文字大小、音频按钮文字内容、音频按钮圆角大小、音频标题文字大小、音频标题文字颜色、音频标题文字行高、音频类型文字大小、音频类型文字颜色、音频类型文字行高、音频上边距、音频下边距
- * 12：视频 - 视频默认占位图、视频播放按钮默认图标、视频圆角大小、视频时间文本颜色、视频时间文本大小、视频时间文本居右边距、视频时间文本居底边距、视频上边距、视频下边距
+ * 12：视频 - 视频默认占位图、视频播放按钮默认图标、视频发布默认图标、视频下载默认图标、视频圆角大小、视频时间文本颜色、视频时间文本大小、视频时间文本居右边距、视频时间文本居底边距、视频上边距、视频下边距、视频发布/下载按钮布局是否显示、视频发布按钮图片宽度和高度、视频发布按钮宽度、视频发布按钮高度、视频发布按钮圆角、视频发布按钮文本内容、视频发布按钮文本大小、视频发布按钮文本颜色、视频发布按钮背景颜色、视频下载按钮图片宽度和高度、视频下载按钮宽度、视频下载按钮高度、视频下载按钮圆角、视频下载按钮文本内容、视频下载按钮文本大小、视频下载按钮文本颜色、视频下载按钮背景颜色
  * 13：图片Banner - 图片banner默认占位图
  * 14：图片 - 图片基于自身宽度缩放百分比、图片基于父布局宽度缩放百分比、图片圆角大小、图片缩放类型、图片默认占位图、网络图片是否压缩、图片上边距、图片下边距
  * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高、表格圆角大小、表格一格最小宽度、表格一格最大宽度、表格第一列是否加粗
  * 16：代码高亮 - markdown代码高亮样式
  * 17：删除线 - 删除线颜色
  * 18：定义列表 - 定义列表术语和定义行之间间距、定义列表定义行缩进、定义列表定义行间距
+ * 19：下标 - 下标字体颜色、下标字体大小、下标偏移距离
+ * 20：上标 - 上标字体颜色、上标字体大小、上标偏移距离
+ * 21：下划线 - 下划线颜色
  */
 public class MarkdownTheme {
     /**
@@ -54,6 +58,11 @@ public class MarkdownTheme {
      * markdown上下文 - 仓颉
      */
     protected var abilityContext: ?AbilityContext = None
+
+    /**
+     * markdown是否同步解析
+     */
+    protected var isMarkdownParserSync: Bool = false
 
     /**
      * 是否打开长按复制粘贴
@@ -326,6 +335,11 @@ public class MarkdownTheme {
     protected var isCodeStyle: Bool = false
 
     /**
+     * 是否格式化代码块内容
+     */
+    protected var isCodeFormat: Bool = false
+
+    /**
      * 文本/图片格式内联代码文本颜色
      */
     protected var codeTextColor: Color = COLOR_FF000000
@@ -354,6 +368,11 @@ public class MarkdownTheme {
      * 图片格式内联代码文本高度
      */
     protected var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
+
+    /**
+     * 围栏代码块代码高亮是否同步解析
+     */
+    protected var isCodeBlockParserSync: Bool = false
 
     /**
      * 缩进/围栏/组合/单独代码块代码文本颜色
@@ -751,6 +770,16 @@ public class MarkdownTheme {
     protected var playCircleFillIcon: ?AppResource = None
 
     /**
+     * 视频发布默认图标
+     */
+    protected var videoReleaseImage: ?AppResource = None
+
+    /**
+     * 视频下载默认图标
+     */
+    protected var videoDownloadImage: ?AppResource = None
+
+    /**
      * 视频圆角大小
      */
     protected var videoBorderRadius: Float64 = 10.0
@@ -784,6 +813,91 @@ public class MarkdownTheme {
      * 视频下边距
      */
     protected var videoMarginBottom: Float64 = 10.0
+
+    /**
+     * 视频发布/下载按钮布局是否显示
+     */
+    protected var isVideoBottomLayout: Bool = false
+
+    /**
+     * 视频发布按钮图片宽度和高度
+     */
+    protected var videoReleaseImageWidthHeight: Float64 = 18.0
+
+    /**
+     * 视频发布按钮宽度
+     */
+    protected var videoReleaseWidth: Float64 = 144.0
+
+    /**
+     * 视频发布按钮高度
+     */
+    protected var videoReleaseHeight: Float64 = 44.0
+
+    /**
+     * 视频发布按钮圆角
+     */
+    protected var videoReleaseRadius: Float64 = 22.0
+
+    /**
+     * 视频发布按钮文本内容
+     */
+    protected var videoReleaseText: String = "发布视频"
+
+    /**
+     * 视频发布按钮文本大小
+     */
+    protected var videoReleaseTexSize: Float64 = 16.0
+
+    /**
+     * 视频发布按钮文本颜色
+     */
+    protected var videoReleaseTexColor: Color = COLOR_E6000000
+
+    /**
+     * 视频发布按钮背景颜色
+     */
+    protected var videoReleaseBackgroundColor: Color = COLOR_FFF5F5F5
+
+    /**
+     * 视频下载按钮图片宽度和高度
+     */
+    protected var videoDownloadImageWidthHeight: Float64 = 18.0
+
+    /**
+     * 视频下载按钮宽度
+     */
+    protected var videoDownloadWidth: Float64 = 144.0
+
+    /**
+     * 视频下载按钮高度
+     */
+    protected var videoDownloadHeight: Float64 = 44.0
+
+    /**
+     * 视频下载按钮圆角
+     */
+    protected var videoDownloadRadius: Float64 = 22.0
+
+    /**
+     * 视频下载按钮文本内容
+     */
+    protected var videoDownloadText: String = "下载视频"
+
+    /**
+     * 视频下载按钮文本大小
+     */
+    protected var videoDownloadTexSize: Float64 = 16.0
+
+    /**
+     * 视频下载按钮文本颜色
+     */
+    protected var videoDownloadTexColor: Color = COLOR_E6000000
+
+    /**
+     * 视频下载按钮背景颜色
+     */
+    protected var videoDownloadBackgroundColor: Color = COLOR_FFF5F5F5
 
     /**
      * 图片banner默认占位图
@@ -910,11 +1024,47 @@ public class MarkdownTheme {
      */
     protected var descListDefMargins: Float64 = 8.0
 
+    /**
+     * 下标字体颜色
+     */
+    protected var subTextColor: Color = COLOR_FF191919
+
+    /**
+     * 下标字体大小
+     */
+    protected var subTextSize: Float64 = 8.0
+
+    /**
+     * 下标偏移距离
+     */
+    protected var subOffsetDist: Float64 = 0.0
+
+    /**
+     * 上标字体颜色
+     */
+    protected var supTextColor: Color = COLOR_FF191919
+
+    /**
+     * 上标字体大小
+     */
+    protected var supTextSize: Float64 = 8.0
+
+    /**
+     * 上标偏移距离
+     */
+    protected var supOffsetDist: Float64 = 6.0
+
+    /**
+     * 下划线颜色
+     */
+    protected var underlineColor: Color = COLOR_FF191919
+
     protected init(builder: MarkdownThemeBuilder) {
         // 1、上下文
         this.stageContext = builder.stageContext
         this.abilityContext = builder.abilityContext
 
+        this.isMarkdownParserSync = builder.isMarkdownParserSync
         this.isOnCopy = builder.isOnCopy
 
         // 2、模块间距
@@ -987,6 +1137,7 @@ public class MarkdownTheme {
         // 5、代码
         // 5.1、内联代码
         this.isCodeStyle = builder.isCodeStyle
+        this.isCodeFormat = builder.isCodeFormat
         this.codeTextColor = builder.codeTextColor
         this.codeBackgroundColor = builder.codeBackgroundColor
         this.codeTypeface = builder.codeTypeface
@@ -994,6 +1145,7 @@ public class MarkdownTheme {
         this.codeLeftAndRightPadding = builder.codeLeftAndRightPadding
         this.codeHeight = builder.codeHeight
         // 5.2、代码块
+        this.isCodeBlockParserSync = builder.isCodeBlockParserSync
         this.codeBlockTextColor = builder.codeBlockTextColor
         this.codeBlockTypeTextColor = builder.codeBlockTypeTextColor
         this.codeBlockTypeTextStr = builder.codeBlockTypeTextStr
@@ -1091,6 +1243,8 @@ public class MarkdownTheme {
         // 12、视频
         this.videoImage = builder.videoImage
         this.playCircleFillIcon = builder.playCircleFillIcon
+        this.videoReleaseImage = builder.videoReleaseImage
+        this.videoDownloadImage = builder.videoDownloadImage
         this.videoBorderRadius = builder.videoBorderRadius
         this.videoTimeTextColor = builder.videoTimeTextColor
         this.videoTimeTextSize = builder.videoTimeTextSize
@@ -1098,6 +1252,23 @@ public class MarkdownTheme {
         this.videoTimeTextMarginBottom = builder.videoTimeTextMarginBottom
         this.videoMarginTop = builder.videoMarginTop
         this.videoMarginBottom = builder.videoMarginBottom
+        this.isVideoBottomLayout = builder.isVideoBottomLayout
+        this.videoReleaseImageWidthHeight = builder.videoReleaseImageWidthHeight
+        this.videoReleaseWidth = builder.videoReleaseWidth
+        this.videoReleaseHeight = builder.videoReleaseHeight
+        this.videoReleaseRadius = builder.videoReleaseRadius
+        this.videoReleaseText = builder.videoReleaseText
+        this.videoReleaseTexSize = builder.videoReleaseTexSize
+        this.videoReleaseTexColor = builder.videoReleaseTexColor
+        this.videoReleaseBackgroundColor = builder.videoReleaseBackgroundColor
+        this.videoDownloadImageWidthHeight = builder.videoDownloadImageWidthHeight
+        this.videoDownloadWidth = builder.videoDownloadWidth
+        this.videoDownloadHeight = builder.videoDownloadHeight
+        this.videoDownloadRadius = builder.videoDownloadRadius
+        this.videoDownloadText = builder.videoDownloadText
+        this.videoDownloadTexSize = builder.videoDownloadTexSize
+        this.videoDownloadTexColor = builder.videoDownloadTexColor
+        this.videoDownloadBackgroundColor = builder.videoDownloadBackgroundColor
 
         // 13、图片banner
         this.bannerImage = builder.bannerImage
@@ -1135,6 +1306,19 @@ public class MarkdownTheme {
         this.descListTermAndDefMargins = builder.descListTermAndDefMargins
         this.descListDefIndentation = builder.descListDefIndentation
         this.descListDefMargins = builder.descListDefMargins
+
+        // 19、下标
+        this.subTextColor = builder.subTextColor
+        this.subTextSize = builder.subTextSize
+        this.subOffsetDist = builder.subOffsetDist
+
+        // 20、上标
+        this.supTextColor = builder.supTextColor
+        this.supTextSize = builder.supTextSize
+        this.supOffsetDist = builder.supOffsetDist
+
+        // 21、 下划线
+        this.underlineColor = builder.underlineColor
     }
 
     /**
@@ -1369,6 +1553,11 @@ public class MarkdownThemeBuilder {
      * markdown上下文 - 仓颉
      */
     var abilityContext: ?AbilityContext = None
+
+    /**
+     * markdown是否同步解析
+     */
+     var isMarkdownParserSync: Bool = false
 
     /**
      * 是否打开长按复制粘贴
@@ -1641,6 +1830,11 @@ public class MarkdownThemeBuilder {
     var isCodeStyle: Bool = false
 
     /**
+     * 是否格式化代码块内容
+     */
+    var isCodeFormat: Bool = false
+
+    /**
      * 文本/图片格式内联代码文本颜色
      */
     var codeTextColor: Color = COLOR_FF000000
@@ -1669,6 +1863,11 @@ public class MarkdownThemeBuilder {
      * 图片格式内联代码文本高度
      */
     var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
+
+    /**
+     * 围栏代码块代码高亮是否同步解析
+     */
+    var isCodeBlockParserSync: Bool = false
 
     /**
      * 缩进/围栏/组合/单独代码块代码文本颜色
@@ -2066,6 +2265,16 @@ public class MarkdownThemeBuilder {
     var playCircleFillIcon: ?AppResource = None
 
     /**
+     * 视频发布默认图标
+     */
+    var videoReleaseImage: ?AppResource = None
+
+    /**
+     * 视频下载默认图标
+     */
+    var videoDownloadImage: ?AppResource = None
+
+    /**
      * 视频圆角大小
      */
     var videoBorderRadius: Float64 = 10.0
@@ -2099,6 +2308,91 @@ public class MarkdownThemeBuilder {
      * 视频下边距
      */
     var videoMarginBottom: Float64 = 10.0
+
+    /**
+     * 视频发布/下载按钮布局是否显示
+     */
+    var isVideoBottomLayout: Bool = false
+
+    /**
+     * 视频发布按钮图片宽度和高度
+     */
+    var videoReleaseImageWidthHeight: Float64 = 18.0
+
+    /**
+     * 视频发布按钮宽度
+     */
+    var videoReleaseWidth: Float64 = 144.0
+
+    /**
+     * 视频发布按钮高度
+     */
+    var videoReleaseHeight: Float64 = 44.0
+
+    /**
+     * 视频发布按钮圆角
+     */
+    var videoReleaseRadius: Float64 = 22.0
+
+    /**
+     * 视频发布按钮文本内容
+     */
+    var videoReleaseText: String = "发布视频"
+
+    /**
+     * 视频发布按钮文本大小
+     */
+    var videoReleaseTexSize: Float64 = 16.0
+
+    /**
+     * 视频发布按钮文本颜色
+     */
+    var videoReleaseTexColor: Color = COLOR_E6000000
+
+    /**
+     * 视频发布按钮背景颜色
+     */
+    var videoReleaseBackgroundColor: Color = COLOR_FFF5F5F5
+
+    /**
+     * 视频下载按钮图片宽度和高度
+     */
+    var videoDownloadImageWidthHeight: Float64 = 18.0
+
+    /**
+     * 视频下载按钮宽度
+     */
+    var videoDownloadWidth: Float64 = 144.0
+
+    /**
+     * 视频下载按钮高度
+     */
+    var videoDownloadHeight: Float64 = 44.0
+
+    /**
+     * 视频下载按钮圆角
+     */
+    var videoDownloadRadius: Float64 = 22.0
+
+    /**
+     * 视频下载按钮文本内容
+     */
+    var videoDownloadText: String = "下载视频"
+
+    /**
+     * 视频下载按钮文本大小
+     */
+    var videoDownloadTexSize: Float64 = 16.0
+
+    /**
+     * 视频下载按钮文本颜色
+     */
+    var videoDownloadTexColor: Color = COLOR_E6000000
+
+    /**
+     * 视频下载按钮背景颜色
+     */
+    var videoDownloadBackgroundColor: Color = COLOR_FFF5F5F5
 
     /**
      * 图片banner默认占位图
@@ -2225,6 +2519,41 @@ public class MarkdownThemeBuilder {
      */
     var descListDefMargins: Float64 = 8.0
 
+    /**
+     * 下标字体颜色
+     */
+    var subTextColor: Color = COLOR_FF191919
+
+    /**
+     * 下标字体大小
+     */
+    var subTextSize: Float64 = 8.0
+
+    /**
+     * 下标偏移距离
+     */
+    var subOffsetDist: Float64 = 0.0
+
+    /**
+     * 上标字体颜色
+     */
+    var supTextColor: Color = COLOR_FF191919
+
+    /**
+     * 上标字体大小
+     */
+    var supTextSize: Float64 = 8.0
+
+    /**
+     * 上标偏移距离
+     */
+    var supOffsetDist: Float64 = 6.0
+
+    /**
+     * 下划线颜色
+     */
+    var underlineColor: Color = COLOR_FF191919
+
     init() {
     }
 
@@ -2233,6 +2562,7 @@ public class MarkdownThemeBuilder {
         this.stageContext = theme.stageContext
         this.abilityContext = theme.abilityContext
 
+        this.isMarkdownParserSync = theme.isMarkdownParserSync
         this.isOnCopy = theme.isOnCopy
 
         // 2、模块间距
@@ -2305,6 +2635,7 @@ public class MarkdownThemeBuilder {
         // 5、代码
         // 5.1、内联代码
         this.isCodeStyle = theme.isCodeStyle
+        this.isCodeFormat = theme.isCodeFormat
         this.codeTextColor = theme.codeTextColor
         this.codeBackgroundColor = theme.codeBackgroundColor
         this.codeTypeface = theme.codeTypeface
@@ -2312,6 +2643,7 @@ public class MarkdownThemeBuilder {
         this.codeLeftAndRightPadding = theme.codeLeftAndRightPadding
         this.codeHeight = theme.codeHeight
         // 5.2、代码块
+        this.isCodeBlockParserSync = theme.isCodeBlockParserSync
         this.codeBlockTextColor = theme.codeBlockTextColor
         this.codeBlockTypeTextColor = theme.codeBlockTypeTextColor
         this.codeBlockTypeTextStr = theme.codeBlockTypeTextStr
@@ -2409,6 +2741,8 @@ public class MarkdownThemeBuilder {
         // 12、视频
         this.videoImage = theme.videoImage
         this.playCircleFillIcon = theme.playCircleFillIcon
+        this.videoReleaseImage = theme.videoReleaseImage
+        this.videoDownloadImage = theme.videoDownloadImage
         this.videoBorderRadius = theme.videoBorderRadius
         this.videoTimeTextColor = theme.videoTimeTextColor
         this.videoTimeTextSize = theme.videoTimeTextSize
@@ -2416,6 +2750,23 @@ public class MarkdownThemeBuilder {
         this.videoTimeTextMarginBottom = theme.videoTimeTextMarginBottom
         this.videoMarginTop = theme.videoMarginTop
         this.videoMarginBottom = theme.videoMarginBottom
+        this.isVideoBottomLayout = theme.isVideoBottomLayout
+        this.videoReleaseImageWidthHeight = theme.videoReleaseImageWidthHeight
+        this.videoReleaseWidth = theme.videoReleaseWidth
+        this.videoReleaseHeight = theme.videoReleaseHeight
+        this.videoReleaseRadius = theme.videoReleaseRadius
+        this.videoReleaseText = theme.videoReleaseText
+        this.videoReleaseTexSize = theme.videoReleaseTexSize
+        this.videoReleaseTexColor = theme.videoReleaseTexColor
+        this.videoReleaseBackgroundColor = theme.videoReleaseBackgroundColor
+        this.videoDownloadImageWidthHeight = theme.videoDownloadImageWidthHeight
+        this.videoDownloadWidth = theme.videoDownloadWidth
+        this.videoDownloadHeight = theme.videoDownloadHeight
+        this.videoDownloadRadius = theme.videoDownloadRadius
+        this.videoDownloadText = theme.videoDownloadText
+        this.videoDownloadTexSize = theme.videoDownloadTexSize
+        this.videoDownloadTexColor = theme.videoDownloadTexColor
+        this.videoDownloadBackgroundColor = theme.videoDownloadBackgroundColor
 
         // 13、图片banner
         this.bannerImage = theme.bannerImage
@@ -2453,6 +2804,19 @@ public class MarkdownThemeBuilder {
         this.descListTermAndDefMargins = theme.descListTermAndDefMargins
         this.descListDefIndentation = theme.descListDefIndentation
         this.descListDefMargins = theme.descListDefMargins
+
+        // 19、下标
+        this.subTextColor = theme.subTextColor
+        this.subTextSize = theme.subTextSize
+        this.subOffsetDist = theme.subOffsetDist
+
+        // 20、上标
+        this.supTextColor = theme.supTextColor
+        this.supTextSize = theme.supTextSize
+        this.supOffsetDist = theme.supOffsetDist
+
+        // 21、下划线
+        this.underlineColor = theme.underlineColor
     }
 
     /**
@@ -2660,6 +3024,17 @@ public class MarkdownThemeBuilder {
      */
     public func setAbilityContext(abilityContext: AbilityContext): MarkdownThemeBuilder {
         this.abilityContext = abilityContext
+        return this
+    }
+
+    /**
+     * 设置markdown是否同步解析
+     *
+     * @param isMarkdownParserSync markdown是否同步解析 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsMarkdownParserSync(isMarkdownParserSync: Bool): MarkdownThemeBuilder {
+        this.isMarkdownParserSync = isMarkdownParserSync
         return this
     }
 
@@ -3258,6 +3633,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置是否格式化代码块内容
+     *
+     * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块；false：不格式化代码块。默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsCodeFormat(isCodeFormat: Bool): MarkdownThemeBuilder {
+        this.isCodeFormat = isCodeFormat
+        return this
+    }
+
+    /**
      * 设置文本、图片格式内联代码文本颜色
      *
      * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
@@ -3320,6 +3706,17 @@ public class MarkdownThemeBuilder {
      */
     public func setCodeHeight(codeHeight: Float64): MarkdownThemeBuilder {
         this.codeHeight = vp2px(codeHeight.vp)().value
+        return this
+    }
+
+    /**
+     * 设置围栏代码块代码高亮是否同步解析
+     *
+     * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsCodeBlockParserSync(isCodeBlockParserSync: Bool): MarkdownThemeBuilder {
+        this.isCodeBlockParserSync = isCodeBlockParserSync
         return this
     }
 
@@ -4193,6 +4590,28 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置视频发布默认图标
+     *
+     * @param videoDownloadImage 视频发布默认图标 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseImage(videoDownloadImage: AppResource): MarkdownThemeBuilder {
+        this.videoDownloadImage = videoDownloadImage
+        return this
+    }
+
+    /**
+     * 设置视频下载默认图标
+     *
+     * @param videoReleaseImage 视频下载默认图标 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadImage(videoReleaseImage: AppResource): MarkdownThemeBuilder {
+        this.videoReleaseImage = videoReleaseImage
+        return this
+    }
+
+    /**
      * 设置视频圆角
      *
      * @param videoBorderRadius 视频圆角 - 默认10.0vp
@@ -4266,6 +4685,193 @@ public class MarkdownThemeBuilder {
      */
     public func setVideoMarginBottom(videoMarginBottom: Float64): MarkdownThemeBuilder {
         this.videoMarginBottom = videoMarginBottom
+        return this
+    }
+
+    /**
+     * 设置视频发布/下载按钮布局是否显示
+     *
+     * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默false不显示
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsVideoBottomLayout(isVideoBottomLayout: Bool): MarkdownThemeBuilder {
+        this.isVideoBottomLayout = isVideoBottomLayout
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮图片宽度和高度
+     *
+     * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: Float64): MarkdownThemeBuilder {
+        this.videoReleaseImageWidthHeight = videoReleaseImageWidthHeight
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮宽度
+     *
+     * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseWidth(videoReleaseWidth: Float64): MarkdownThemeBuilder {
+        this.videoReleaseWidth = videoReleaseWidth
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮高度
+     *
+     * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseHeight(videoReleaseHeight: Float64): MarkdownThemeBuilder {
+        this.videoReleaseHeight = videoReleaseHeight
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮圆角
+     *
+     * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseRadius(videoReleaseRadius: Float64): MarkdownThemeBuilder {
+        this.videoReleaseRadius = videoReleaseRadius
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮文本内容
+     *
+     * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseText(videoReleaseText: String): MarkdownThemeBuilder {
+        this.videoReleaseText = videoReleaseText
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮文本大小
+     *
+     * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseTexSize(videoReleaseTexSize: Float64): MarkdownThemeBuilder {
+        this.videoReleaseTexSize = videoReleaseTexSize
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮文本颜色
+     *
+     * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseTexColor(videoReleaseTexColor: Color): MarkdownThemeBuilder {
+        this.videoReleaseTexColor = videoReleaseTexColor
+        return this
+    }
+
+    /**
+     * 设置视频发布按钮背景颜色
+     *
+     * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: Color): MarkdownThemeBuilder {
+        this.videoReleaseBackgroundColor = videoReleaseBackgroundColor
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮图片宽度和高度
+     *
+     * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: Float64): MarkdownThemeBuilder {
+        this.videoDownloadImageWidthHeight = videoDownloadImageWidthHeight
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮宽度
+     *
+     * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadWidth(videoDownloadWidth: Float64): MarkdownThemeBuilder {
+        this.videoDownloadWidth = videoDownloadWidth
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮高度
+     *
+     * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadHeight(videoDownloadHeight: Float64): MarkdownThemeBuilder {
+        this.videoDownloadHeight = videoDownloadHeight
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮圆角
+     *
+     * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadRadius(videoDownloadRadius: Float64): MarkdownThemeBuilder {
+        this.videoDownloadRadius = videoDownloadRadius
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮文本内容
+     *
+     * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadText(videoDownloadText: String): MarkdownThemeBuilder {
+        this.videoDownloadText = videoDownloadText
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮文本大小
+     *
+     * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadTexSize(videoDownloadTexSize: Float64): MarkdownThemeBuilder {
+        this.videoDownloadTexSize = videoDownloadTexSize
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮文本颜色
+     *
+     * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadTexColor(videoDownloadTexColor: Color): MarkdownThemeBuilder {
+        this.videoDownloadTexColor = videoDownloadTexColor
+        return this
+    }
+
+    /**
+     * 设置视频下载按钮背景颜色
+     *
+     * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: Color): MarkdownThemeBuilder {
+        this.videoDownloadBackgroundColor = videoDownloadBackgroundColor
         return this
     }
 
@@ -4503,7 +5109,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置删除线颜色
      *
-     * @param strikethroughColor 删除线颜色 默认COLOR_FF191919
+     * @param strikethroughColor 删除线颜色 默认0XFF191919
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setStrikethroughColor(strikethroughColor: Color): MarkdownThemeBuilder {
@@ -4541,6 +5147,83 @@ public class MarkdownThemeBuilder {
      */
     public func setDescListDefMargins(descListDefMargins: Float64): MarkdownThemeBuilder {
         this.descListDefMargins = descListDefMargins
+        return this
+    }
+
+    /**
+     * 设置下标字体颜色
+     *
+     * @param subTextColor 下标字体颜色 默认0XFF191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSubTextColor(subTextColor: Color): MarkdownThemeBuilder {
+        this.subTextColor = subTextColor
+        return this
+    }
+
+    /**
+     * 设置下标字体大小
+     *
+     * @param subTextSize 下标字体大小 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSubTextSize(subTextSize: Float64): MarkdownThemeBuilder {
+        this.subTextSize = subTextSize
+        return this
+    }
+
+    /**
+     * 设置下标偏移距离
+     *
+     * @param subOffsetDist 下标偏移距离 默认0.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSubOffsetDist(subOffsetDist: Float64): MarkdownThemeBuilder {
+        this.subOffsetDist = subOffsetDist
+        return this
+    }
+
+    /**
+     * 设置上标字体颜色
+     *
+     * @param supTextColor 上标字体颜色 默认0XFF191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSupTextColor(supTextColor: Color): MarkdownThemeBuilder {
+        this.supTextColor = supTextColor
+        return this
+    }
+
+    /**
+     * 设置上标字体大小
+     *
+     * @param supTextSize 上标字体大小 默认8.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSupTextSize(supTextSize: Float64): MarkdownThemeBuilder {
+        this.supTextSize = supTextSize
+        return this
+    }
+
+    /**
+     * 设置上标偏移距离
+     *
+     * @param supOffsetDist 上标偏移距离 默认6.0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setSupOffsetDist(supOffsetDist: Float64): MarkdownThemeBuilder {
+        this.supOffsetDist = supOffsetDist
+        return this
+    }
+
+    /**
+     * 设置下划线颜色
+     *
+     * @param underlineColor 下划线颜色 默认0XFF191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setUnderlineColor(underlineColor: Color): MarkdownThemeBuilder {
+        this.underlineColor = underlineColor
         return this
     }
 

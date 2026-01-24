@@ -65,6 +65,12 @@ class MarkdownTableBlockComponent {
     @State
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> = ObservedArrayList<CellWidthArrayIndexedClass>()
 
+    /**
+     * 自定义行内表格布局
+     */
+    @BuilderParam
+    var customTableLineBuilder: (NodeView, Int64) -> Unit
+
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
         refreshData(nodeView)
@@ -113,7 +119,8 @@ class MarkdownTableBlockComponent {
                                 tableRowComponents: tableRowComponents,
                                 tableCellComponents: tableCellComponents,
                                 dataRowSize: nodeViewDataSource.totalCount(),
-                                cellWidthArrayIndexed: cellWidthArrayIndexed
+                                cellWidthArrayIndexed: cellWidthArrayIndexed,
+                                customTableLineBuilder: customTableLineBuilder
                             )
                         }
                     },
