@@ -102,6 +102,7 @@ var bannerImage: ?AppResource = None
 var imageResource: ?AppResource = None
 var videoReleaseImage: ?AppResource = None
 var videoDownloadImage: ?AppResource = None
+var imageDownloadImage: ?AppResource = None
 
 public func getCJResource(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     if (callInfo[0].typeof() != JSType.UNDEFINED) {
@@ -130,6 +131,9 @@ public func getCJResource(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     }
     if (callInfo[8].typeof() != JSType.UNDEFINED) {
         videoDownloadImage = arktsRes2CJResource(ctx, callInfo[8])
+    }
+    if (callInfo[9].typeof() != JSType.UNDEFINED) {
+        imageDownloadImage = arktsRes2CJResource(ctx, callInfo[9])
     }
     return ctx.undefined().toJSValue()
 }

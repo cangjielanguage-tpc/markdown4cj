@@ -30,6 +30,11 @@ public class CJMarkdownConfig {
     var imageCallback: ?(String, ArrayList<String>) -> Unit = None
 
     /**
+     * 图片下载的点击事件
+     */
+    var imageDownloadCallback: ?(String) -> Unit = None
+
+    /**
      * 音频的点击事件
      */
     var audioCallback: ?(String) -> Unit = None
@@ -118,6 +123,15 @@ public class CJMarkdownConfig {
         this.imageCallback = {
             url, list => cb(url, JSArrayEx<String>(list.toArray()))
         }
+    }
+
+    /**
+     * 设置图片下载的点击事件
+     *
+     * @param cb 图片下载的点击事件 (图片url)
+     */
+    public func setImageDownloadCallback(cb: (String) -> Unit): Unit {
+        this.imageDownloadCallback = cb
     }
 
     /**

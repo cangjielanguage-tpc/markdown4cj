@@ -148,14 +148,17 @@ struct ImageDetailsPage {
     if (this.imageFixedRatioWidth !== null) {
       theme.setImageFixedRatioWidth(this.imageFixedRatioWidth)
     }
+    theme.setImageDownloadImage($r('app.media.video_download'))
+    theme.setIsImageDownload(true)
+    theme.setIsImageMixedLayout(false)
     config.setMarkdownTheme(theme)
     return config
   }
 
   setPlugin(): MarkdownPlugin {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
-    // plugin.setIsImageSinglePlugin(true) // 图片单独提取到block解析插件
     plugin.setIsImageStylePlugin(true) // 图片样式
+    plugin.setIsImageTextMixPlugin(true) //
     plugin.setIsHtmlPlugin(true) // HTML
     return plugin
   }

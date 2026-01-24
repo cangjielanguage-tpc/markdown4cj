@@ -945,6 +945,61 @@ public class MarkdownTheme {
     protected var imageMarginBottom: Float64 = 10.0
 
     /**
+     * 图片是否有下载按钮
+     */
+    protected var isImageDownload: Bool = false
+
+    /**
+     * 是否图文混排
+     */
+    protected var isImageMixedLayout: Bool = true
+
+    /**
+     * 图片下载默认图标
+     */
+    protected var imageDownloadImage: ?AppResource = None
+
+    /**
+     * 图片下载按钮图片宽度和高度
+     */
+    protected var imageDownloadImageWidthHeight: Float64 = 18.0
+
+    /**
+     * 图片下载按钮宽度
+     */
+    protected var imageDownloadWidth: Float64 = 296.0
+
+    /**
+     * 图片下载按钮高度
+     */
+    protected var imageDownloadHeight: Float64 = 44.0
+
+    /**
+     * 图片下载按钮圆角
+     */
+    protected var imageDownloadRadius: Float64 = 22.0
+
+    /**
+     * 图片下载按钮文本内容
+     */
+    protected var imageDownloadText: String = "下载图片"
+
+    /**
+     * 图片下载按钮文本大小
+     */
+    protected var imageDownloadTexSize: Float64 = 16.0
+
+    /**
+     * 图片下载按钮文本颜色
+     */
+    protected var imageDownloadTexColor: Color = COLOR_E6000000
+
+    /**
+     * 图片下载按钮背景颜色
+     */
+    protected var imageDownloadBackgroundColor: Color = COLOR_FFF5F5F5
+
+    /**
      * 表格内容内边距
      */
     protected var tableCellPadding: Float64 = 4.0
@@ -1282,6 +1337,17 @@ public class MarkdownTheme {
         this.isAutoResize = builder.isAutoResize
         this.imageMarginTop = builder.imageMarginTop
         this.imageMarginBottom = builder.imageMarginBottom
+        this.isImageDownload = builder.isImageDownload
+        this.isImageMixedLayout = builder.isImageMixedLayout
+        this.imageDownloadImage = builder.imageDownloadImage
+        this.imageDownloadImageWidthHeight = builder.imageDownloadImageWidthHeight
+        this.imageDownloadWidth = builder.imageDownloadWidth
+        this.imageDownloadHeight = builder.imageDownloadHeight
+        this.imageDownloadRadius = builder.imageDownloadRadius
+        this.imageDownloadText = builder.imageDownloadText
+        this.imageDownloadTexSize = builder.imageDownloadTexSize
+        this.imageDownloadTexColor = builder.imageDownloadTexColor
+        this.imageDownloadBackgroundColor = builder.imageDownloadBackgroundColor
 
         // 15、表格
         this.tableCellPadding = builder.tableCellPadding
@@ -2440,6 +2506,61 @@ public class MarkdownThemeBuilder {
     var imageMarginBottom: Float64 = 10.0
 
     /**
+     * 图片是否有下载按钮
+     */
+    var isImageDownload: Bool = false
+
+    /**
+     * 是否图文混排
+     */
+    var isImageMixedLayout: Bool = true
+
+    /**
+     * 图片下载默认图标
+     */
+    var imageDownloadImage: ?AppResource = None
+
+    /**
+     * 图片下载按钮图片宽度和高度
+     */
+    var imageDownloadImageWidthHeight: Float64 = 18.0
+
+    /**
+     * 图片下载按钮宽度
+     */
+    var imageDownloadWidth: Float64 = 296.0
+
+    /**
+     * 图片下载按钮高度
+     */
+    var imageDownloadHeight: Float64 = 44.0
+
+    /**
+     * 图片下载按钮圆角
+     */
+    var imageDownloadRadius: Float64 = 22.0
+
+    /**
+     * 图片下载按钮文本内容
+     */
+    var imageDownloadText: String = "下载图片"
+
+    /**
+     * 图片下载按钮文本大小
+     */
+    var imageDownloadTexSize: Float64 = 16.0
+
+    /**
+     * 图片下载按钮文本颜色
+     */
+    var imageDownloadTexColor: Color = COLOR_E6000000
+
+    /**
+     * 图片下载按钮背景颜色
+     */
+    var imageDownloadBackgroundColor: Color = COLOR_FFF5F5F5
+
+    /**
      * 表格内容内边距
      */
     var tableCellPadding: Float64 = 4.0
@@ -2780,6 +2901,17 @@ public class MarkdownThemeBuilder {
         this.isAutoResize = theme.isAutoResize
         this.imageMarginTop = theme.imageMarginTop
         this.imageMarginBottom = theme.imageMarginBottom
+        this.isImageDownload = theme.isImageDownload
+        this.isImageMixedLayout = theme.isImageMixedLayout
+        this.imageDownloadImage = theme.imageDownloadImage
+        this.imageDownloadImageWidthHeight = theme.imageDownloadImageWidthHeight
+        this.imageDownloadWidth = theme.imageDownloadWidth
+        this.imageDownloadHeight = theme.imageDownloadHeight
+        this.imageDownloadRadius = theme.imageDownloadRadius
+        this.imageDownloadText = theme.imageDownloadText
+        this.imageDownloadTexSize = theme.imageDownloadTexSize
+        this.imageDownloadTexColor = theme.imageDownloadTexColor
+        this.imageDownloadBackgroundColor = theme.imageDownloadBackgroundColor
 
         // 15、表格
         this.tableCellPadding = theme.tableCellPadding
@@ -4971,6 +5103,127 @@ public class MarkdownThemeBuilder {
      */
     public func setImageMarginBottom(imageMarginBottom: Float64): MarkdownThemeBuilder {
         this.imageMarginBottom = imageMarginBottom
+        return this
+    }
+
+    /**
+     * 设置图片是否有下载按钮
+     *
+     * @param isImageDownload 图片是否有下载按钮 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsImageDownload(isImageDownload: Bool): MarkdownThemeBuilder {
+        this.isImageDownload = isImageDownload
+        return this
+    }
+
+    /**
+     * 设置是否图文混排
+     *
+     * @param isImageMixedLayout 是否图文混排 - 默认true
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsImageMixedLayout(isImageMixedLayout: Bool): MarkdownThemeBuilder {
+        this.isImageMixedLayout = isImageMixedLayout
+        return this
+    }
+
+    /**
+     * 设置图片下载默认图标
+     *
+     * @param imageDownloadImage 图片下载默认图标 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadImage(imageDownloadImage: AppResource): MarkdownThemeBuilder {
+        this.imageDownloadImage = imageDownloadImage
+        return this
+    }
+
+    /**
+     * 设置图片下载按钮图片宽度和高度
+     *
+     * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: Float64): MarkdownThemeBuilder {
+        this.imageDownloadImageWidthHeight = imageDownloadImageWidthHeight
+        return this
+    }
+
+    /**
+     * 设置图片下载按钮宽度
+     *
+     * @param imageDownloadWidth 图片下载按钮宽度 - 默认296.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadWidth(imageDownloadWidth: Float64): MarkdownThemeBuilder {
+        this.imageDownloadWidth = imageDownloadWidth
+        return this
+    }
+
+    /**
+     * 设置图片下载按钮高度
+     *
+     * @param imageDownloadHeight 图片下载按钮高度 - 默认44.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadHeight(imageDownloadHeight: Float64): MarkdownThemeBuilder {
+        this.imageDownloadHeight = imageDownloadHeight
+        return this
+    }
+
+    /**
+     * 设置图片下载按钮圆角
+     *
+     * @param imageDownloadRadius 图片下载按钮圆角 - 默认22.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadRadius(imageDownloadRadius: Float64): MarkdownThemeBuilder {
+        this.imageDownloadRadius = imageDownloadRadius
+        return this
+    }
+
+    /**
+     * 设置图片下载按钮文本内容
+     *
+     * @param imageDownloadText 图片下载按钮文本内容 - 默认"下载图片"
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadText(imageDownloadText: String): MarkdownThemeBuilder {
+        this.imageDownloadText = imageDownloadText
+        return this
+    }
+
+    /**
+     * 设置图片下载按钮文本大小
+     *
+     * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadTexSize(imageDownloadTexSize: Float64): MarkdownThemeBuilder {
+        this.imageDownloadTexSize = imageDownloadTexSize
+        return this
+    }
+
+    /**
+     * 设置图片下载按钮文本颜色
+     *
+     * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0XE6000000
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadTexColor(imageDownloadTexColor: Color): MarkdownThemeBuilder {
+        this.imageDownloadTexColor = imageDownloadTexColor
+        return this
+    }
+
+    /**
+     * 设置图片下载按钮背景颜色
+     *
+     * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0XFFF5F5F5
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadBackgroundColor(imageDownloadBackgroundColor: Color): MarkdownThemeBuilder {
+        this.imageDownloadBackgroundColor = imageDownloadBackgroundColor
         return this
     }
 

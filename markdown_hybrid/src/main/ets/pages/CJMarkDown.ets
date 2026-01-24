@@ -11,7 +11,7 @@ export const global_cjLib: CJLib = requireCJLib("libmarkdown.so") as CJLib
 
 export interface CJLib {
   getCJResource(codeFullScreenIcon?: Resource, codeCopyIcon?: Resource, audioIcon?: Resource, videoImage?: Resource,
-    playCircleFillIcon?: Resource, bannerImage?: Resource, imageResource?: Resource, videoReleaseImage?: Resource, videoDownloadImage?: Resource): void
+    playCircleFillIcon?: Resource, bannerImage?: Resource, imageResource?: Resource, videoReleaseImage?: Resource, videoDownloadImage?: Resource, imageDownloadImage?: Resource): void
 }
 
 class CJNodeController extends NodeController {
@@ -125,7 +125,8 @@ export struct CJMarkdown {
           this.config.markdownTheme.bannerImage,
           this.config.markdownTheme.imageResource,
           this.config.markdownTheme.videoReleaseImage,
-          this.config.markdownTheme.videoDownloadImage
+          this.config.markdownTheme.videoDownloadImage,
+          this.config.markdownTheme.imageDownloadImage
         )
         if (this.config.markdownTheme.isMarkdownParserSync !== undefined) {
           cjMarkdownTheme.setIsMarkdownParserSync(this.config.markdownTheme.isMarkdownParserSync)
@@ -638,6 +639,36 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.imageMarginBottom !== undefined) {
           cjMarkdownTheme.setImageMarginBottom(this.config.markdownTheme.imageMarginBottom)
         }
+        if (this.config.markdownTheme.isImageDownload !== undefined) {
+          cjMarkdownTheme.setIsImageDownload(this.config.markdownTheme.isImageDownload)
+        }
+        if (this.config.markdownTheme.isImageMixedLayout !== undefined) {
+          cjMarkdownTheme.setIsImageMixedLayout(this.config.markdownTheme.isImageMixedLayout)
+        }
+        if (this.config.markdownTheme.imageDownloadImageWidthHeight !== undefined) {
+          cjMarkdownTheme.setImageDownloadImageWidthHeight(this.config.markdownTheme.imageDownloadImageWidthHeight)
+        }
+        if (this.config.markdownTheme.imageDownloadWidth !== undefined) {
+          cjMarkdownTheme.setImageDownloadWidth(this.config.markdownTheme.imageDownloadWidth)
+        }
+        if (this.config.markdownTheme.imageDownloadHeight !== undefined) {
+          cjMarkdownTheme.setImageDownloadHeight(this.config.markdownTheme.imageDownloadHeight)
+        }
+        if (this.config.markdownTheme.imageDownloadRadius !== undefined) {
+          cjMarkdownTheme.setImageDownloadRadius(this.config.markdownTheme.imageDownloadRadius)
+        }
+        if (this.config.markdownTheme.imageDownloadText !== undefined) {
+          cjMarkdownTheme.setImageDownloadText(this.config.markdownTheme.imageDownloadText)
+        }
+        if (this.config.markdownTheme.imageDownloadTexSize !== undefined) {
+          cjMarkdownTheme.setImageDownloadTexSize(this.config.markdownTheme.imageDownloadTexSize)
+        }
+        if (this.config.markdownTheme.imageDownloadTexColor !== undefined) {
+          cjMarkdownTheme.setImageDownloadTexColor(this.config.markdownTheme.imageDownloadTexColor)
+        }
+        if (this.config.markdownTheme.imageDownloadBackgroundColor !== undefined) {
+          cjMarkdownTheme.setImageDownloadBackgroundColor(this.config.markdownTheme.imageDownloadBackgroundColor)
+        }
         if (this.config.markdownTheme.tableCellPadding !== undefined) {
           cjMarkdownTheme.setTableCellPadding(this.config.markdownTheme.tableCellPadding)
         }
@@ -1000,6 +1031,10 @@ export class MarkdownTheme {
    * 视频下载默认图标
    */
   videoDownloadImage?: Resource = undefined
+  /**
+   * 图片下载默认图标
+   */
+  imageDownloadImage?: Resource = undefined
   /**
    * markdown是否同步解析
    */
@@ -1674,6 +1709,46 @@ export class MarkdownTheme {
    */
   imageMarginBottom?: number = undefined
   /**
+   * 图片是否有下载按钮
+   */
+  isImageDownload?: boolean = undefined
+  /**
+   * 是否图文混排
+   */
+  isImageMixedLayout?: boolean = undefined
+  /**
+   * 图片下载按钮图片宽度和高度
+   */
+  imageDownloadImageWidthHeight?: number = undefined
+  /**
+   * 图片下载按钮宽度
+   */
+  imageDownloadWidth?: number = undefined
+  /**
+   * 图片下载按钮高度
+   */
+  imageDownloadHeight?: number = undefined
+  /**
+   * 图片下载按钮圆角
+   */
+  imageDownloadRadius?: number = undefined
+  /**
+   * 图片下载按钮文本内容
+   */
+  imageDownloadText?: string = undefined
+  /**
+   * 图片下载按钮文本大小
+   */
+  imageDownloadTexSize?: number = undefined
+  /**
+   * 图片下载按钮文本颜色
+   */
+  imageDownloadTexColor?: number = undefined
+  /**
+   * 图片下载按钮背景颜色
+   */
+  imageDownloadBackgroundColor?: number = undefined
+  /**
    * 表格内容内边距
    */
   tableCellPadding?: number = undefined
@@ -1854,6 +1929,15 @@ export class MarkdownTheme {
    */
   setVideoDownloadImage(videoDownloadImage: Resource): void {
     this.videoDownloadImage = videoDownloadImage
+  }
+
+  /**
+   * 设置图片下载默认图标
+   *
+   * @param imageDownloadImage 图片下载默认图标
+   */
+  setImageDownloadImage(imageDownloadImage: Resource): void {
+    this.imageDownloadImage = imageDownloadImage
   }
 
   /**
@@ -3357,6 +3441,96 @@ export class MarkdownTheme {
    */
   setImageMarginBottom(imageMarginBottom: number): void {
     this.imageMarginBottom = imageMarginBottom
+  }
+
+  /**
+   * 设置图片是否有下载按钮
+   *
+   * @param isImageDownload 图片是否有下载按钮 - 默认false
+   */
+  setIsImageDownload(isImageDownload: boolean): void {
+    this.isImageDownload = isImageDownload
+  }
+
+  /**
+   * 设置是否图文混排
+   *
+   * @param isImageMixedLayout 是否图文混排 - 默认true
+   */
+  setIsImageMixedLayout(isImageMixedLayout: boolean): void {
+    this.isImageMixedLayout = isImageMixedLayout
+  }
+
+  /**
+   * 设置图片下载按钮图片宽度和高度
+   *
+   * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
+   */
+  setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: number): void {
+    this.imageDownloadImageWidthHeight = imageDownloadImageWidthHeight
+  }
+
+  /**
+   * 设置图片下载按钮宽度
+   *
+   * @param imageDownloadWidth 图片下载按钮宽度 - 默认296.0
+   */
+  setImageDownloadWidth(imageDownloadWidth: number): void {
+    this.imageDownloadWidth = imageDownloadWidth
+  }
+
+  /**
+   * 设置图片下载按钮高度
+   *
+   * @param imageDownloadHeight 图片下载按钮高度 - 默认44.0
+   */
+  setImageDownloadHeight(imageDownloadHeight: number): void {
+    this.imageDownloadHeight = imageDownloadHeight
+  }
+
+  /**
+   * 设置图片下载按钮圆角
+   *
+   * @param imageDownloadRadius 图片下载按钮圆角 - 默认22.0
+   */
+  setImageDownloadRadius(imageDownloadRadius: number): void {
+    this.imageDownloadRadius = imageDownloadRadius
+  }
+
+  /**
+   * 设置图片下载按钮文本内容
+   *
+   * @param imageDownloadText 图片下载按钮文本内容 - 默认"下载图片"
+   */
+  setImageDownloadText(imageDownloadText: string): void {
+    this.imageDownloadText = imageDownloadText
+  }
+
+  /**
+   * 设置图片下载按钮文本大小
+   *
+   * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
+   */
+  setImageDownloadTexSize(imageDownloadTexSize: number): void {
+    this.imageDownloadTexSize = imageDownloadTexSize
+  }
+
+  /**
+   * 设置图片下载按钮文本颜色
+   *
+   * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0XE6000000
+   */
+  setImageDownloadTexColor(imageDownloadTexColor: number): void {
+    this.imageDownloadTexColor = imageDownloadTexColor
+  }
+
+  /**
+   * 设置图片下载按钮背景颜色
+   *
+   * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0XFFF5F5F5
+   */
+  setImageDownloadBackgroundColor(imageDownloadBackgroundColor: number): void {
+    this.imageDownloadBackgroundColor = imageDownloadBackgroundColor
   }
 
   /**

@@ -853,6 +853,56 @@ public class CJMarkdownTheme {
     var imageMarginBottom: ?Float64 = None
 
     /**
+     * 图片是否有下载按钮
+     */
+    var isImageDownload: ?Bool = None
+
+    /**
+     * 是否图文混排
+     */
+    var isImageMixedLayout: ?Bool = None
+
+    /**
+     * 图片下载按钮图片宽度和高度
+     */
+    var imageDownloadImageWidthHeight: ?Float64 = None
+
+    /**
+     * 图片下载按钮宽度
+     */
+    var imageDownloadWidth: ?Float64 = None
+
+    /**
+     * 图片下载按钮高度
+     */
+    var imageDownloadHeight: ?Float64 = None
+
+    /**
+     * 图片下载按钮圆角
+     */
+    var imageDownloadRadius: ?Float64 = None
+
+    /**
+     * 图片下载按钮文本内容
+     */
+    var imageDownloadText: ?String = None
+
+    /**
+     * 图片下载按钮文本大小
+     */
+    var imageDownloadTexSize: ?Float64 = None
+
+    /**
+     * 图片下载按钮文本颜色
+     */
+    var imageDownloadTexColor: ?Color = None
+
+    /**
+     * 图片下载按钮背景颜色
+     */
+    var imageDownloadBackgroundColor: ?Color = None
+
+    /**
      * 表格内容内边距
      */
     var tableCellPadding: ?Float64 = None
@@ -2479,6 +2529,96 @@ public class CJMarkdownTheme {
      */
     public func setImageMarginBottom(imageMarginBottom: Float64): Unit {
         this.imageMarginBottom = imageMarginBottom
+    }
+
+    /**
+     * 设置图片是否有下载按钮
+     *
+     * @param isImageDownload 图片是否有下载按钮 - 默认false
+     */
+    public func setIsImageDownload(isImageDownload: Bool): Unit {
+        this.isImageDownload = isImageDownload
+    }
+
+    /**
+     * 设置是否图文混排
+     *
+     * @param isImageMixedLayout 是否图文混排 - 默认true
+     */
+    public func setIsImageMixedLayout(isImageMixedLayout: Bool): Unit {
+        this.isImageMixedLayout = isImageMixedLayout
+    }
+
+    /**
+     * 设置图片下载按钮图片宽度和高度
+     *
+     * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
+     */
+    public func setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: Float64): Unit {
+        this.imageDownloadImageWidthHeight = imageDownloadImageWidthHeight
+    }
+
+    /**
+     * 设置图片下载按钮宽度
+     *
+     * @param imageDownloadWidth 图片下载按钮宽度 - 默认296.0
+     */
+    public func setImageDownloadWidth(imageDownloadWidth: Float64): Unit {
+        this.imageDownloadWidth = imageDownloadWidth
+    }
+
+    /**
+     * 设置图片下载按钮高度
+     *
+     * @param imageDownloadHeight 图片下载按钮高度 - 默认44.0
+     */
+    public func setImageDownloadHeight(imageDownloadHeight: Float64): Unit {
+        this.imageDownloadHeight = imageDownloadHeight
+    }
+
+    /**
+     * 设置图片下载按钮圆角
+     *
+     * @param imageDownloadRadius 图片下载按钮圆角 - 默认22.0
+     */
+    public func setImageDownloadRadius(imageDownloadRadius: Float64): Unit {
+        this.imageDownloadRadius = imageDownloadRadius
+    }
+
+    /**
+     * 设置图片下载按钮文本内容
+     *
+     * @param imageDownloadText 图片下载按钮文本内容 - 默认"下载图片"
+     */
+    public func setImageDownloadText(imageDownloadText: String): Unit {
+        this.imageDownloadText = imageDownloadText
+    }
+
+    /**
+     * 设置图片下载按钮文本大小
+     *
+     * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
+     */
+    public func setImageDownloadTexSize(imageDownloadTexSize: Float64): Unit {
+        this.imageDownloadTexSize = imageDownloadTexSize
+    }
+
+    /**
+     * 设置图片下载按钮文本颜色
+     *
+     * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0XE6000000
+     */
+    public func setImageDownloadTexColor(imageDownloadTexColor: UInt32): Unit {
+        this.imageDownloadTexColor = transColorForTrasparent(imageDownloadTexColor)
+    }
+
+    /**
+     * 设置图片下载按钮背景颜色
+     *
+     * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0XFFF5F5F5
+     */
+    public func setImageDownloadBackgroundColor(imageDownloadBackgroundColor: UInt32): Unit {
+        this.imageDownloadBackgroundColor = transColorForTrasparent(imageDownloadBackgroundColor)
     }
 
     /**

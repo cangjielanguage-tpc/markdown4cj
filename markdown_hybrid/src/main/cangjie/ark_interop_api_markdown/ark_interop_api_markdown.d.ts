@@ -382,6 +382,26 @@ export declare class CJMarkdownTheme {
 
   setImageMarginBottom(imageMarginBottom: number): void
 
+  setIsImageDownload(isImageDownload: boolean): void
+
+  setIsImageMixedLayout(isImageMixedLayout: boolean): void
+
+  setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: number): void
+
+  setImageDownloadWidth(imageDownloadWidth: number): void
+
+  setImageDownloadHeight(imageDownloadHeight: number): void
+
+  setImageDownloadRadius(imageDownloadRadius: number): void
+
+  setImageDownloadText(imageDownloadText: string): void
+
+  setImageDownloadTexSize(imageDownloadTexSize: number): void
+
+  setImageDownloadTexColor(imageDownloadTexColor: number): void
+
+  setImageDownloadBackgroundColor(imageDownloadBackgroundColor: number): void
+
   setTableCellPadding(tableCellPadding: number): void
 
   setTableBorderColor(tableBorderColor: number): void

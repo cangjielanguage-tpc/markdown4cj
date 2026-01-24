@@ -147,6 +147,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.imageCallback) {
                 markdownConfigurationBuilder.setImageCallback(v) // 设置图片的点击事件
             }
+            if (let Some(v) <- w.imageDownloadCallback) {
+                markdownConfigurationBuilder.setImageDownloadCallback(v) // 图片下载的点击事件
+            }
             if (let Some(v) <- w.audioCallback) {
                 markdownConfigurationBuilder.setAudioCallback(v) // 设置音频的点击事件
             }
@@ -216,6 +219,9 @@ class CJMarkdownComponent {
         }
         if (let Some(v) <- videoDownloadImage) {
             markdownThemeBuilder.setVideoDownloadImage(v) // 设置图片默认占位图
+        }
+        if (let Some(v) <- imageDownloadImage) {
+            markdownThemeBuilder.setImageDownloadImage(v) // 设置图片下载默认图标
         }
         if(let Some(w) <- cfg){
             if (let Some(v) <- w.cjMarkdownTheme.isMarkdownParserSync) {
@@ -718,6 +724,36 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.imageMarginBottom) {
                 markdownThemeBuilder.setImageMarginBottom(v) // 设置图片下边距
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.isImageDownload) {
+                markdownThemeBuilder.setIsImageDownload(v) // 设置图片是否有下载按钮
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.isImageMixedLayout) {
+                markdownThemeBuilder.setIsImageMixedLayout(v) // 设置是否图文混排
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadImageWidthHeight) {
+                markdownThemeBuilder.setImageDownloadImageWidthHeight(v) // 设置图片下载按钮图片宽度和高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadWidth) {
+                markdownThemeBuilder.setImageDownloadWidth(v) // 设置图片下载按钮宽度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadHeight) {
+                markdownThemeBuilder.setImageDownloadHeight(v) // 设置图片下载按钮高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadRadius) {
+                markdownThemeBuilder.setImageDownloadRadius(v) // 设置图片下载按钮圆角
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadText) {
+                markdownThemeBuilder.setImageDownloadText(v) // 设置图片下载按钮文本内容
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadTexSize) {
+                markdownThemeBuilder.setImageDownloadTexSize(v) // 设置图片下载按钮文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadTexColor) {
+                markdownThemeBuilder.setImageDownloadTexColor(v) // 设置图片下载按钮文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadBackgroundColor) {
+                markdownThemeBuilder.setImageDownloadBackgroundColor(v) // 设置图片下载按钮背景颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.tableCellPadding) {
                 markdownThemeBuilder.setTableCellPadding(v) // 设置表格内容内边距
