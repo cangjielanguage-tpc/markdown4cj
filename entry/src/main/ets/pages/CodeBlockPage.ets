@@ -36,6 +36,15 @@ struct CodeBlockPage {
   @State
   isFull: boolean = true
   /**
+   * 是否格式化代码块内容列表
+   */
+  isCodeFormatList: Array<boolean> = [true, false]
+  /**
+   * 是否格式化代码块内容
+   */
+  @State
+  isCodeFormat: boolean = false
+  /**
    * 代码块代码文本颜色列表
    */
   codeBlockTextColorList: Array<number | undefined> =
@@ -220,6 +229,36 @@ struct CodeBlockPage {
                   .onClick(() => {
                     this.isFull = stringToBoolean(item)
                     this.codeBlockData.isFull = this.isFull
+                  })
+              })
+            }
+          }
+          Column() {
+            Row() {
+              Text(`是否格式化代码块内容 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.isCodeFormat}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.isCodeFormatList, (item: boolean, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.isCodeFormat = item
+                    this.codeBlockData.isCodeFormat = this.isCodeFormat
                   })
               })
             }
@@ -729,6 +768,7 @@ struct CodeBlockPage {
 
 export class CodeBlockData {
   _isFull: boolean = true
+  _isCodeFormat: boolean = false
   _codeBlockTextColor: number | undefined = undefined
   _codeBlockTypeTextColor: number | undefined = undefined
   _codeBlockTypeTextStr: string = ""
@@ -748,6 +788,10 @@ export class CodeBlockData {
 
   public set isFull(value: boolean) {
     this._isFull = value
+  }
+
+  public set isCodeFormat(value: boolean) {
+    this._isCodeFormat = value
   }
 
   public set codeBlockTextColor(value: number | undefined) {
@@ -798,11 +842,9 @@ export class CodeBlockData {
     this._codeBlockRadius = value
   }
 
-
   public set isCodeFullScreen(value: boolean) {
     this._isCodeFullScreen = value
   }
-
 
   public set iconWidthAndHeight(value: number) {
     this._iconWidthAndHeight = value

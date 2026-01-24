@@ -5,7 +5,6 @@ import { titleComponent } from './BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
-import { hilog } from '@kit.PerformanceAnalysisKit'
 import { DescListData } from './DescListPage'
 
 @Entry

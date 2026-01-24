@@ -6,7 +6,7 @@ import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
 import { AudioDataMD } from './AudioPage'
-import { hilog } from '@kit.PerformanceAnalysisKit'
+import hilog from '@ohos.hilog'
 
 @Entry
 @Component

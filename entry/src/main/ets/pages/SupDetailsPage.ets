@@ -5,12 +5,11 @@ import { titleComponent } from './BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
-import { HeadIDData } from './HeadIDPage'
-import hilog from '@ohos.hilog'
+import { SupData } from './SupPage'
 
 @Entry
 @Component
-struct HeadIDDetailsPage {
+struct SupDetailsPage {
   /**
    * 滑动控制器
    */
@@ -35,15 +34,33 @@ struct HeadIDDetailsPage {
   @State
   isFull: boolean = true
   /**
+   * 上标字体颜色
+   */
+  @State
+  supTextColor: number = 0xFF191919
+  /**
+   * 上标字体大小
+   */
+  @State
+  supTextSize: number = 8
+  /**
+   * 上标偏移距离
+   */
+  @State
+  supOffsetDist: number = 6
+  /**
    * 增量加载延迟
    */
   time: number = 50
 
   aboutToAppear(): void {
     try {
-      let headIDData: HeadIDData = router.getParams() as HeadIDData
-      this.fileStr = getFileContextStr(headIDData._pagePath)
-      this.isFull = headIDData._isFull
+      let supData: SupData = router.getParams() as SupData
+      this.fileStr = getFileContextStr(supData._pagePath)
+      this.isFull = supData._isFull
+      this.supTextColor = supData._supTextColor
+      this.supTextSize = supData._supTextSize
+      this.supOffsetDist = supData._supOffsetDist
     } catch (e) {
     }
   }
@@ -51,23 +68,22 @@ struct HeadIDDetailsPage {
   build() {
     Column() {
       titleComponent(
-        "标题ID测试用例",
+        "上标测试用例",
         0xFF317AFF,
         true,
         this.safeTop
       )
       Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
+        .height(40)
+        .width("80%")
+        .type(ButtonType.Capsule)
+        .margin({ top: 5, bottom: 5 })
+        .fontColor(0xFFFFFFFF)
+        .backgroundColor(0xFF317AFF)
+        .align(Alignment.Center)
+        .fontSize(16)
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
               this.content = this.fileStr
             } else {
@@ -99,20 +115,22 @@ struct HeadIDDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    config.setTocIndexCallback(this.tocIndexCallback.bind(this))
+    let theme = new MarkdownTheme()
+    theme.setSupTextColor(this.supTextColor) // 上标字体颜色
+    theme.setSupTextSize(this.supTextSize) // 上标字体大小
+    theme.setSupOffsetDist(this.supOffsetDist) // 上标偏移距离
+    config.setMarkdownTheme(theme)
     return config
   }
 
   setPlugin(): MarkdownPlugin {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
-    plugin.setIsHeadIDPlugin(true)
+    plugin.setIsStrikethroughPlugin(true) // 删除线插件
+    plugin.setIsTablePlugin(true) // 表格插件
+    plugin.setIsTaskListPlugin(true) // 任务列表插件
+    plugin.setIsHtmlPlugin(true) // HTML插件
+    plugin.setIsSupPlugin(true) // 上标插件
+    plugin.setIsSubPlugin(true) // 下标插件
     return plugin
-  }
-
-  tocIndexCallback(y: number | undefined): void {
-    if(y !==undefined){
-      hilog.error(1, "1", `---y:${y}`)
-      this.scroller.scrollBy(0, y - (this.safeTop + 90))
-    }
   }
 }

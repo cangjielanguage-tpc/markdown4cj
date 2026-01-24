@@ -195,7 +195,39 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
-              "25、综合",
+              "25、HTML",
+              0xFFFF0000,
+              "pages/HTMLPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "26、下标",
+              0xFFFF0000,
+              "pages/SubPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "27、上标",
+              0xFFFF0000,
+              "pages/SupPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "28、Emoji",
+              0xFFFF0000,
+              "pages/EmojiPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "29、综合",
               0xFFFF0000,
               "pages/AllPage"
             )

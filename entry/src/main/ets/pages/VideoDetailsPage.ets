@@ -6,7 +6,7 @@ import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
 import { VideoData } from './VideoPage'
-import { hilog } from '@kit.PerformanceAnalysisKit'
+import hilog from '@ohos.hilog'
 
 @Entry
 @Component
@@ -136,9 +136,13 @@ struct VideoDetailsPage {
     let config = new MarkdownConfiguration()
     config.setVideoCallback(this.videoCallback)
     config.setVideoImageCallback(this.videoImageCallback)
+    config.setVideoReleaseCallback(this.videoReleaseCallback)
+    config.setVideoDownloadCallback(this.videoDownloadCallback)
     let theme = new MarkdownTheme()
     theme.setVideoImage($r('app.media.place_holder'))
     theme.setPlayCircleFillIcon($r('app.media.play_circle_fill'))
+    theme.setVideoReleaseImage($r('app.media.video_release'))
+    theme.setVideoDownloadImage($r('app.media.video_download'))
     theme.setVideoBorderRadius(this.videoBorderRadius)
     theme.setVideoTimeTextColor(this.videoTimeTextColor)
     theme.setVideoTimeTextSize(this.videoTimeTextSize)
@@ -163,5 +167,13 @@ struct VideoDetailsPage {
   videoImageCallback(url: string, cb: (imageUrl: string, aspectRatio: number, time: number) => void): void {
     hilog.error(1, "1", `---url:${url}`)
     cb("https://pic.leetcode-cn.com/1614477066-YeEeWg-file_1614477068523", 16 / 9, 200)
+  }
+
+  videoReleaseCallback(url: string): void {
+    hilog.error(1, "1", `---url:${url}`)
+  }
+
+  videoDownloadCallback(url: string): void {
+    hilog.error(1, "1", `---url:${url}`)
   }
 }

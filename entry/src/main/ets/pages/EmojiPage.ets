@@ -3,12 +3,12 @@
  */
 import { titleComponent } from './BaseComponent'
 import { getFileListStr } from './FileUtils'
-import { booleanToString, stringToBoolean } from './BaseUtils'
+import { booleanToString, numberToColorString, stringToBoolean } from './BaseUtils'
 import { router } from '@kit.ArkUI'
 
 @Entry
 @Component
-struct AllPage {
+struct EmojiPage {
   /**
    * 滑动控制器
    */
@@ -20,7 +20,7 @@ struct AllPage {
   /**
    * rawfile路径
    */
-  rawFilePath: string = "029_综合"
+  rawFilePath: string = "028_emoji"
   /**
    * rawfile标题文件夹列表
    */
@@ -36,28 +36,19 @@ struct AllPage {
   @State
   isFull: boolean = true
   /**
-   * 模块间上下间距列表
+   * emoji解析插件是否精简加载列表
    */
-  blockTopAndBottomMarginsList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  isEmojiLightList: Array<boolean> = [false, true]
   /**
-   * 模块间上下间距
+   * emoji解析插件是否精简加载
    */
   @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 代码深浅色模式列表
-   */
-  isDarkList: Array<boolean> = [true, false]
-  /**
-   * 代码深浅色模式
-   */
-  @State
-  isDark: boolean = true
+  isEmojiLight: boolean = true
   /**
    * 配置数据内容
    */
   @State
-  allData: AllData = new AllData()
+  emojiData: EmojiData = new EmojiData()
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -66,7 +57,7 @@ struct AllPage {
   build() {
     Column() {
       titleComponent(
-        "综合配置页面",
+        "emoji配置页面",
         0xFF317AFF,
         true,
         this.safeTop
@@ -98,7 +89,7 @@ struct AllPage {
                   .fontSize(14)
                   .onClick(() => {
                     this.isFull = stringToBoolean(item)
-                    this.allData.isFull = this.isFull
+                    this.emojiData.isFull = this.isFull
                   })
               })
             }
@@ -106,10 +97,10 @@ struct AllPage {
 
           Column() {
             Row() {
-              Text(`模块间上下间距 - `)
+              Text(`emoji解析插件是否精简加载 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
-              Text(`${this.blockTopAndBottomMargins}`)
+              Text(`${this.isEmojiLight}`)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
             }
@@ -119,38 +110,7 @@ struct AllPage {
             .margin(2)
 
             Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockTopAndBottomMarginsList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockTopAndBottomMargins = item
-                    this.allData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`代码深浅色模式 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isDark}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isDarkList, (item: boolean, index: number) => {
+              ForEach(this.isEmojiLightList, (item: boolean, index: number) => {
                 Button(`${item}`)
                   .type(ButtonType.Capsule)
                   .stateEffect(true)
@@ -159,8 +119,8 @@ struct AllPage {
                   .backgroundColor(0xFF317AFF)
                   .fontSize(14)
                   .onClick(() => {
-                    this.isDark = item
-                    this.allData.isDark = this.isDark
+                    this.isEmojiLight = item
+                    this.emojiData.isEmojiLight = this.isEmojiLight
                   })
               })
             }
@@ -170,23 +130,21 @@ struct AllPage {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
                 Button(`${index + 1}、${item}`)
-                  .height(40)// 高度
-                  .width('80%')// 宽度
-                  .type(ButtonType.Capsule)// 圆角
-                  .fontColor(0xFFFFFFFF)// 文本颜色
-                  .backgroundColor(0xFF317AFF)// 背景颜色
-                  .margin({ top: 5, bottom: 5 })// 外边距
-                  .align(Alignment.Center)// 内容对齐方式
-                  .fontSize(16)// 字体大小
+                  .height(40)
+                  .width('80%')
+                  .type(ButtonType.Capsule)
+                  .fontColor(0xFFFFFFFF)
+                  .backgroundColor(0xFF317AFF)
+                  .margin({ top: 5, bottom: 5 })
+                  .align(Alignment.Center)
+                  .fontSize(16)
                   .onClick(() => {
-                    // 点击动作触发该方法调用
-                    this.allData.pagePath = `${this.rawFilePath}/${item}`
-                    router.pushUrl({ url: "pages/AllDetailsPage", params: this.allData })
+                    this.emojiData.pagePath = `${this.rawFilePath}/${item}`
+                    router.pushUrl({ url: "pages/EmojiDetailsPage", params: this.emojiData })
                   })
               }
             })
           }
-          // 设置ListItem在List交叉轴方向的布局方式
           .alignListItem(ListItemAlign.Center)
         }
         .padding({ bottom: 100 })
@@ -197,22 +155,17 @@ struct AllPage {
   }
 }
 
-export class AllData {
+export class EmojiData {
   _isFull: boolean = true
-  _blockTopAndBottomMargins: number = 8
-  _isDark: boolean = true
+  _isEmojiLight: boolean = true
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
     this._isFull = value
   }
 
-  public set blockTopAndBottomMargins(value: number) {
-    this._blockTopAndBottomMargins = value
-  }
-
-  public set isDark(value: boolean) {
-    this._isDark = value
+  public set isEmojiLight(value: boolean) {
+    this._isEmojiLight = value
   }
 
   public set pagePath(value: string) {
