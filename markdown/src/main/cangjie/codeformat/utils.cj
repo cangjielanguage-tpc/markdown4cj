@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2026. All rights reserved.
  */
 
 package markdown.codeformat
@@ -64,9 +64,10 @@ func modifyMacroAndSpace(stateBean: StateBean): Unit {
 public func codeFormat(languageType: ?String, code: String, cfg: FormatConfig): String {
     if (let Some(i) <- languageType) {
         let result = match (i.toAsciiLower()) {
-            case "c" | "cpp" | "c++" | "clike" => CandCppFormat().formatCode(code, cfg)
-            case "java" => CandCppFormat().formatCode(code, cfg)
-            case "js" | "ts" | "javascript" | "typescript" => CandCppFormat().formatCode(code, cfg)
+            case "c" | "cpp" | "c++" | "clike" => CandJavaLikeFormat().formatCode(code, cfg)
+            case "java" => CandJavaLikeFormat().formatCode(code, cfg)
+            case "js" | "ts" | "javascript" | "typescript" => CandJavaLikeFormat().formatCode(code, cfg)
+            case "python" => PythonFormat().formatCode(code, cfg)
             case _ => code
         }
         return result

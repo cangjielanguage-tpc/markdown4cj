@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2026. All rights reserved.
  */
 
 package markdown.codeformat
@@ -38,16 +38,15 @@ class StateBean {
     var isInElse: Bool = false //是否在elif中 python有用
     var isLastLineReturn: Bool = false //上一行是否是return 如果是return else不用缩进 否则要缩进一次 python有用
 
-    //   for word,count in sorted(freq.items(),key=lambda x:
-    //             x[1],reverse=True):
     //为了处理这种情况  python有用
     var isInSmallBracket: Bool = false
     //为了处理这种情况 在小括号和大括号里面没成对走完 里面的:不能执行结束逻辑
-    //return{"总数":count,"正数":positive_count,"负数":negative_count,"总和":total,"平均值":average,"最大值":
-    var isInBigBracket: Bool = false // python有用
+    var isInBigBracket: Bool = false // 在python有用
     var bigBracketDoublepy: Int64 = 0 //大括号配对 python有用
     var smallBracketDoublepy: Int64 = 0 //大括号配对 python有用
     var isInMultiString: Bool = false //是否进入多行字符串 相当于python的多行注释 python有用
     var multiStringQuote: Rune = r' ' //多行字符串的类型 python有用
+    var isInImport: Bool = false //是否在Import中 python有用
+    var isHasClass: Bool = false //是否有class python有用 主要是class和def一起的时候使用
 
 }

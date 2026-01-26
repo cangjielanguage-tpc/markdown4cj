@@ -94,8 +94,138 @@ class MarkdownHeadingComponent {
 
     func build() {
         Column() {
-            // 标题内容
-            headingTitleComponent()
+            if (nodeViewList.size == 1 && (nodeViewList[0].node.getNodeType() == "Image") && !markdownConfiguration.markdownTheme.isImageMixedLayout) {
+                if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                    if ((nodeViewList[0].node as CommonmarkImage)().getDestination().startsWith("./")){
+                        MarkdownImageRawFileComponent(
+                            imgRawFileConfig: markdownConfiguration,
+                            imgRawFileDestination: (nodeViewList[0].node as CommonmarkImage)().getDestination(),
+                            imgRawFileComponentWidth: componentWidth,
+                            imgRawFileImgCb: imageCallback,
+                            imgRawFileLinkCb: markdownConfiguration.linkCallback,
+                            imgRawFileIsLink: nodeViewList[0].link.isSome(),
+                            imgRawFileLinkUrl: if (nodeViewList[0].link.isSome()) {
+                                nodeViewList[0].link().getDestination()
+                            } else {
+                                Option<String>.None
+                            }
+                        )
+                    } else {
+                        MarkdownImageUrlComponent(
+                            imgUrlConfig: markdownConfiguration,
+                            imgUrlDestination: (nodeViewList[0].node as CommonmarkImage)().getDestination(),
+                            imgUrlComponentWidth: componentWidth,
+                            imgUrlImgCb: imageCallback,
+                            imgUrlLinkCb: markdownConfiguration.linkCallback,
+                            imgUrlIsLink: nodeViewList[0].link.isSome(),
+                            imgUrlLinkUrl: if (nodeViewList[0].link.isSome()) {
+                                nodeViewList[0].link().getDestination()
+                            } else {
+                                Option<String>.None
+                            }
+                        )
+                    }
+                } else {
+                    if ((nodeViewList[0].node as CommonmarkImage)().getDestination().startsWith("./")){
+                        MarkdownImageRawFileCallbackComponent(
+                            imgRawFileCbConfig: markdownConfiguration,
+                            imgRawFileCbDestination: (nodeViewList[0].node as CommonmarkImage)().getDestination(),
+                            imgRawFileCbComponentWidth: componentWidth,
+                            imgRawFileCbImgCb: imageCallback,
+                            imgRawFileCbLinkCb: markdownConfiguration.linkCallback,
+                            imgRawFileCbIsLink: nodeViewList[0].link.isSome(),
+                            imgRawFileCbLinkUrl: if (nodeViewList[0].link.isSome()) {
+                                nodeViewList[0].link().getDestination()
+                            } else {
+                                Option<String>.None
+                            }
+                        )
+                    } else {
+                        MarkdownImageUrlCallbackComponent(
+                            imgUrlCbConfig: markdownConfiguration,
+                            imgUrlCbDestination: (nodeViewList[0].node as CommonmarkImage)().getDestination(),
+                            imgUrlCbComponentWidth: componentWidth,
+                            imgUrlCbImgCb: imageCallback,
+                            imgUrlCbLinkCb: markdownConfiguration.linkCallback,
+                            imgUrlCbIsLink: nodeViewList[0].link.isSome(),
+                            imgUrlCbLinkUrl: if (nodeViewList[0].link.isSome()) {
+                                nodeViewList[0].link().getDestination()
+                            } else {
+                                Option<String>.None
+                            }
+                        )
+                    }
+                }
+            } else  if (nodeViewList.size == 1 && (nodeViewList[0].node.getNodeType() == "StyleImage") && !markdownConfiguration.markdownTheme.isImageMixedLayout) {
+                if (markdownConfiguration.imageCallbackCallback.isNone()) {
+                    if ((nodeViewList[0].node as CommonmarkImage)().getDestination().startsWith("./")){
+                        MarkdownImageStyleRawFileComponent(
+                            imgStyleRawFileConfig: markdownConfiguration,
+                            imgStyleRawFileDestination: (nodeViewList[0].node as StyleImage)().getDestination(),
+                            imgStyleRawFileComponentWidth: componentWidth,
+                            imgStyleRawFileImgCb: imageCallback,
+                            imgStyleRawFileLinkCb: markdownConfiguration.linkCallback,
+                            imgStyleRawFileIsLink: nodeViewList[0].link.isSome(),
+                            imgStyleRawFileLinkUrl: if (nodeViewList[0].link.isSome()) {
+                                nodeViewList[0].link().getDestination()
+                            } else {
+                                Option<String>.None
+                            },
+                            imgStyleRawFileStyle: (nodeViewList[0].node as StyleImage)().styles
+                        )
+                    } else {
+                        MarkdownImageStyleUrlCallbackComponent(
+                            imgStyleUrlCbConfig: markdownConfiguration,
+                            imgStyleUrlCbDestination: (nodeViewList[0].node as StyleImage)().getDestination(),
+                            imgStyleUrlCbComponentWidth: componentWidth,
+                            imgStyleUrlCbImgCb: imageCallback,
+                            imgStyleUrlCbLinkCb: markdownConfiguration.linkCallback,
+                            imgStyleUrlCbIsLink: nodeViewList[0].link.isSome(),
+                            imgStyleUrlCbLinkUrl: if (nodeViewList[0].link.isSome()) {
+                                nodeViewList[0].link().getDestination()
+                            } else {
+                                Option<String>.None
+                            },
+                            imgStyleUrlCbStyle: (nodeViewList[0].node as StyleImage)().styles
+                        )
+                    }
+                } else {
+                    if ((nodeViewList[0].node as CommonmarkImage)().getDestination().startsWith("./")){
+                        MarkdownImageStyleRawFileCallBackComponent(
+                            imgStyleRawFileCbConfig: markdownConfiguration,
+                            imgStyleRawFileCbDestination: (nodeViewList[0].node as StyleImage)().getDestination(),
+                            imgStyleRawFileCbComponentWidth: componentWidth,
+                            imgStyleRawFileCbImgCb: imageCallback,
+                            imgStyleRawFileCbLinkCb: markdownConfiguration.linkCallback,
+                            imgStyleRawFileCbIsLink: nodeViewList[0].link.isSome(),
+                            imgStyleRawFileCbLinkUrl: if (nodeViewList[0].link.isSome()) {
+                                nodeViewList[0].link().getDestination()
+                            } else {
+                                Option<String>.None
+                            },
+                            imgStyleRawFileCbStyle: (nodeViewList[0].node as StyleImage)().styles
+                        )
+                    } else {
+                        MarkdownImageStyleUrlCallbackComponent(
+                            imgStyleUrlCbConfig: markdownConfiguration,
+                            imgStyleUrlCbDestination: (nodeViewList[0].node as StyleImage)().getDestination(),
+                            imgStyleUrlCbComponentWidth: componentWidth,
+                            imgStyleUrlCbImgCb: imageCallback,
+                            imgStyleUrlCbLinkCb: markdownConfiguration.linkCallback,
+                            imgStyleUrlCbIsLink: nodeViewList[0].link.isSome(),
+                            imgStyleUrlCbLinkUrl: if (nodeViewList[0].link.isSome()) {
+                                nodeViewList[0].link().getDestination()
+                            } else {
+                                Option<String>.None
+                            },
+                            imgStyleUrlCbStyle: (nodeViewList[0].node as StyleImage)().styles
+                        )
+                    }
+                }
+            } else {
+                // 标题内容
+                headingTitleComponent()
+            }
 
             // 一级二级标题是否显示下划线
             if ((level == 1 || level == 2) && markdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {

@@ -38,6 +38,11 @@ public class MarkdownConfiguration {
     protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
 
     /**
+     * 图片下载的点击事件
+     */
+    protected var imageDownloadCallback: ?(String) -> Unit = None
+
+    /**
      * 音频的点击事件
      */
     protected var audioCallback: ?(String) -> Unit = None
@@ -114,6 +119,7 @@ public class MarkdownConfiguration {
         this.linkCallback = builder.linkCallback
         this.imageCallback = builder.imageCallback
         this.imageCallbackCallback = builder.imageCallbackCallback
+        this.imageDownloadCallback = builder.imageDownloadCallback
         this.audioCallback = builder.audioCallback
         this.videoCallback = builder.videoCallback
         this.videoImageCallback = builder.videoImageCallback
@@ -185,6 +191,11 @@ public class MarkdownConfigurationBuilder {
      * 图片替换事件
      */
     var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
+
+    /**
+     * 图片下载的点击事件
+     */
+    var imageDownloadCallback: ?(String) -> Unit = None
 
     /**
      * 音频的点击事件
@@ -266,6 +277,7 @@ public class MarkdownConfigurationBuilder {
         this.linkCallback = configuration.linkCallback
         this.imageCallback = configuration.imageCallback
         this.imageCallbackCallback = configuration.imageCallbackCallback
+        this.imageDownloadCallback = configuration.imageDownloadCallback
         this.audioCallback = configuration.audioCallback
         this.videoCallback = configuration.videoCallback
         this.videoImageCallback = configuration.videoImageCallback
@@ -332,6 +344,17 @@ public class MarkdownConfigurationBuilder {
      */
     public func setImageCallbackCallback(imageCallbackCallback: (String) -> ?Array<UInt8>): MarkdownConfigurationBuilder {
         this.imageCallbackCallback = imageCallbackCallback
+        return this
+    }
+
+    /**
+     * 设置图片下载的点击事件
+     *
+     * @param imageDownloadCallback 图片下载的点击事件
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setImageDownloadCallback(imageDownloadCallback: (String) -> Unit): MarkdownConfigurationBuilder {
+        this.imageDownloadCallback = imageDownloadCallback
         return this
     }
 
