@@ -38,6 +38,7 @@ public class MarkdownImageBaseRawFileAltComponent {
             .borderRadius(imageBorderRadius)
             .width(imageWidth)
             .height(imageHeight)
+            .objectFit(markdownConfiguration.markdownTheme.imageFitType)
             .constraintSize(maxWidth: 100.percent)
             .autoResize(markdownConfiguration.markdownTheme.isAutoResize)
     }

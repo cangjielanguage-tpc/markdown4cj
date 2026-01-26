@@ -67,20 +67,33 @@ public class MarkdownImageBaseUrlAltComponent {
      * 图片宽度 - 单位px
      */
     @State
-    var imageWidth: Float64 = 0.0
+    var imageWidth: Length = 0.0.vp
 
     /**
      * 图片高度 - 单位px
      */
     @State
-    var imageHeight: Float64 = 0.0
+    var imageHeight: Length = 0.0.vp
+
+    protected override func aboutToAppear(): Unit {
+        imageWidth = if (markdownConfiguration.markdownTheme.imageFixedRatioWidth.isSome()) {
+            (componentImageWidth * markdownConfiguration.markdownTheme.imageFixedRatioWidth()).px
+        } else {
+            (componentImageWidth * markdownConfiguration.markdownTheme.imageMaximumWidth).px
+        }
+        imageHeight = if (markdownConfiguration.markdownTheme.imageFixedRatioWidth.isSome()) {
+            (componentImageWidth * 9.0 / 16.0 * markdownConfiguration.markdownTheme.imageFixedRatioWidth()).px
+        } else {
+            (componentImageWidth * 9.0 / 16.0 * markdownConfiguration.markdownTheme.imageMaximumWidth).px
+        }
+    }
 
     func build() {
         Image(destination)
             .alt(markdownConfiguration.markdownTheme.imageResource())
             .borderRadius(imageBorderRadius)
-            .width(imageSpanWidth(markdownConfiguration.markdownTheme.imageFixedRatioWidth, componentImageWidth, imageWidth, markdownConfiguration.markdownTheme.imageMaximumWidth))
-            .height(imageSpanHeight(markdownConfiguration.markdownTheme.imageFixedRatioWidth, componentImageWidth, imageWidth, imageHeight, markdownConfiguration.markdownTheme.imageMaximumWidth))
+            .width(imageWidth)
+            .height(imageHeight)
             .objectFit(markdownConfiguration.markdownTheme.imageFitType)
             .constraintSize(maxWidth: 100.percent)
             .autoResize(markdownConfiguration.markdownTheme.isAutoResize)
@@ -88,8 +101,10 @@ public class MarkdownImageBaseUrlAltComponent {
             .onComplete {
                 imageLoadResult =>
                     let res = imageWidthHeight(picStyleObjWidth, picStyleObjHeight, componentImageWidth, imageLoadResult.height, imageLoadResult.width)
-                    imageWidth = res[0]
-                    imageHeight = res[1]
+                    let imageWidthNew = res[0]
+                    let imageHeightNew = res[1]
+                    imageWidth = imageSpanWidth(markdownConfiguration.markdownTheme.imageFixedRatioWidth, componentImageWidth, imageWidthNew, markdownConfiguration.markdownTheme.imageMaximumWidth)
+                    imageHeight = imageSpanHeight(markdownConfiguration.markdownTheme.imageFixedRatioWidth, componentImageWidth, imageWidthNew, imageHeightNew, markdownConfiguration.markdownTheme.imageMaximumWidth)
             }
     }
 }
