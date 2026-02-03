@@ -131,7 +131,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
       import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
       ```
 
-### 功能示例
+### 使用仓颉组件功能示例
 
 ```cangjie
 /*
@@ -215,6 +215,56 @@ struct DemoPage {
 ### 显示效果
 
 ![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin_5.1.1/doc/assets/img1.png)
+
+### 使用三方库内置的ArkTS组件功能示例
+```typescript
+
+@State
+useCangjieComponent :boolean = false;  //是否使用cangjie
+
+build() {
+    Column() {
+      Column() {
+        CJMarkdown({
+          content: this.message,
+          isShow: this.useCangjieComponent
+        })
+      }
+    }
+    .padding({ left: 10, right: 10, top: this.safeTop })
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+```
+
+### 使用用户自定义ArkTS组件功能示例
+```typescript
+
+@State
+useCangjieComponent :boolean = false  //是否使用cangjie
+
+//用户自定义builder
+@Builder
+showTextBuilder() {
+   Column(){
+      Text(this.message).width('100%').height('100%').fontColor(Color.Red)
+   }
+}
+
+build() {
+    Column() {
+      Column() {
+        CJMarkdown({
+          content: this.message,
+          isShow: this.useCangjieComponent
+        })
+      }
+    }
+    .padding({ left: 10, right: 10, top: this.safeTop })
+    .width('100%')
+    .alignItems(HorizontalAlign.Start)
+  }
+```
 
 ## 约束与限制
 

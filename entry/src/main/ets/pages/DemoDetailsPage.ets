@@ -28,6 +28,10 @@ struct DemoDetailsPage {
    */
   @State
   content: string = ""
+
+  @State
+  useCangjieComponent: boolean = false
+
   /**
    * 是否全量加载
    */
@@ -44,6 +48,13 @@ struct DemoDetailsPage {
       this.fileStr = getFileContextStr(imageDataMD._pagePath)
       this.isFull = imageDataMD._isFull
     } catch (e) {
+    }
+  }
+
+  @Builder
+  showTextBuilder() {
+    Column(){
+      Text(this.content).width('100%').height('100%').fontColor(Color.Red)
     }
   }
 
@@ -66,6 +77,7 @@ struct DemoDetailsPage {
         .fontSize(16)// 字体大小
         .onClick(
           () => {
+            this.useCangjieComponent = true
             // 点击动作触发该方法调用
             if (this.isFull) {
               this.content = this.fileStr
@@ -87,7 +99,9 @@ struct DemoDetailsPage {
           CJMarkdown({
             content: this.content,
             config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
+            plugin: this.setPlugin(),
+            isShow: this.useCangjieComponent,
+            customContains: this.showTextBuilder
           })
         }
       }
