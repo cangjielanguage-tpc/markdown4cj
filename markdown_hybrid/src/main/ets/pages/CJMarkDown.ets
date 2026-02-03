@@ -4,6 +4,7 @@
 import { NodeController, FrameNode } from '@kit.ArkUI';
 import { requireCJLib } from 'libark_interop_loader.so';
 import { CustomLib, CJMarkdownConfig, CJMarkdownTheme, CJMarkdownPlugin } from 'libark_interop_api_markdown.so';
+import hilog from '@ohos.hilog';
 
 export let global_customLib: CustomLib | undefined = undefined
 
@@ -38,6 +39,8 @@ class CJNodeController extends NodeController {
     return this.rootNode
   }
 }
+
+
 
 @Component
 export struct CJMarkdown {
