@@ -135,7 +135,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ```cangjie
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 import { CJMarkdown} from '@cangjie-tpc/markdown_hybrid'
 
@@ -146,7 +146,6 @@ struct DemoPage {
    * 顶部导航栏高度
    */
   @StorageProp('safeTop') safeTop: number = 0
-    
   /**
    * md文本
    */

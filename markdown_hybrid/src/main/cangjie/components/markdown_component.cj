@@ -423,6 +423,18 @@ public class MarkdownComponent {
                             }
                             // 设置外边距属性
                             .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
+                        } else if (item.node is CardNode) {
+                            // 卡片
+                            ListItem() {
+                                MarkdownCardComponent(
+                                    markdownConfiguration: markdownConfiguration,
+                                    nodeView: item,
+                                    cardName: (item.node as CardNode)().getName(),
+                                    cardData: (item.node as CardNode)().getData()
+                                )
+                            }
+                            // 设置外边距属性
+                            .margin(top: marginNodeTop(idx, 3, item), bottom: marginNodeBottom(idx, lastViewIndex, 3, item))
                         } else {
                             // TODO 其他节点
                             ListItem() {
