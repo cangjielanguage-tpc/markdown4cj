@@ -108,3 +108,25 @@ public class IgnoreInlineNode <: CustomNode & IgnoreNode {
         return "IgnoreInlineNode"
     }
 }
+
+public class CardNode <: CustomBlock {
+    private var name: String
+    private var data: String
+
+    public init(name: String, data: String) {
+        this.name = name
+        this.data = data
+    }
+
+    public func getName(): String {
+        return name
+    }
+
+    public func getData(): String {
+        return data
+    }
+
+    public override func getNodeType(): NodeType {
+        return "CardNode"
+    }
+}

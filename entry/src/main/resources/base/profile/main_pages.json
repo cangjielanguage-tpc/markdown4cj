@@ -50,6 +50,7 @@
     "pages/EmojiPage",
     "pages/EmojiDetailsPage",
     "pages/AllPage",
-    "pages/AllDetailsPage"
+    "pages/AllDetailsPage",
+    "pages/Card"
   ]
 }

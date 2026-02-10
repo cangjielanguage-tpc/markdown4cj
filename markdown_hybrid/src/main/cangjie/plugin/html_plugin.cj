@@ -90,6 +90,7 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
             builder.addDefaultTagHandler(SubHandler())
             builder.addDefaultTagHandler(SupHandler())
             builder.addDefaultTagHandler(UnderlineHandler())
+            builder.addDefaultTagHandler(CardHandler())
         }
         htmlParser = MarkdownHtmlParserImpl.create(_emptyTagReplacement)
         htmlRenderer = builder.build()
@@ -179,6 +180,14 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
                     visitor, node =>
                     let view = buildView(node, false, needProps: true)
                     view.props?.add("UnderlineNode", true)
+                    visitor.visitChildren(node)
+                }
+            )
+            .on(
+                "CardNode",
+                {
+                    visitor, node =>
+                    buildView(node, true)
                     visitor.visitChildren(node)
                 }
             )

@@ -232,6 +232,13 @@ struct IndexPage {
               "pages/AllPage"
             )
           }
+          ListItem() {
+            itemListComponent(
+              "30、card",
+              0xFFFF0000,
+              "pages/Card"
+            )
+          }
         }
         // 设置ListItem在List交叉轴方向的布局方式
         .alignListItem(ListItemAlign.Center)
