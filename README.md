@@ -256,7 +256,8 @@ build() {
       Column() {
         CJMarkdown({
           content: this.message,
-          isShow: this.useCangjieComponent
+          isShow: this.useCangjieComponent,
+          customContains: this.showTextBuilder.bind(this)
         })
       }
     }
