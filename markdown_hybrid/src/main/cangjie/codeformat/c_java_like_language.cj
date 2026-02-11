@@ -499,12 +499,24 @@ class CandJavaLikeFormat <: BaseLanguage {
                 if (!stateBean.isInString) {
                     dealWithFor(stateBean)
                 }
-                if (currChar == r'{' && !stateBean.isInMacro && !stateBean.isInString && !stateBean.isInFor) {
+
+                //处理ts的反引号
+                if (currChar == r'`' && !stateBean.isInMacro && !stateBean.isInString && !stateBean.isInFor) {
+                    if (!stateBean.isInBackQuote) {
+                        stateBean.isInBackQuote = true
+                    } else {
+                        stateBean.isInBackQuote = false
+                    }
+                }
+
+                if (currChar == r'{' && !stateBean.isInMacro && !stateBean.isInString && !stateBean.isInFor &&
+                    !stateBean.isInBackQuote) {
                     //处理左大括号逻辑
                     dealWithLeftBigBracket(stateBean)
                     continue
                 }
-                if (currChar == r'}' && !stateBean.isInMacro && !stateBean.isInString && !stateBean.isInFor) {
+                if (currChar == r'}' && !stateBean.isInMacro && !stateBean.isInString && !stateBean.isInFor &&
+                    !stateBean.isInBackQuote) {
                     //处理右大括号逻辑
                     dealWithRightBigBracket(stateBean)
                     continue
@@ -588,13 +600,18 @@ class CandJavaLikeFormat <: BaseLanguage {
                     !lineBean.isInMultilineComment && !lineBean.isInSinglelineComment) {
                     if (i > 0) {
                         let lastLineBean: LineBean = stateBean.linesList[i - 1]
-                        //如果这样的话，这一行的内容要加到上一行的后面
-                        let stringbuilder: StringBuilder = StringBuilder()
-                        stringbuilder.append(lastLineBean.codeLine)
-                        //多行前面有内容 只要隔个一个空格
-                        stringbuilder.append(lineBean.codeLine.trimAscii())
-                        lastLineBean.codeLine = stringbuilder.toString()
-                        lineBean.isDiscarded = true
+                        //要求上一行不是isDiscarded为true
+                        if (!lastLineBean.isDiscarded) {
+                            //如果这样的话，这一行的内容要加到上一行的后面
+                            if (!lastLineBean.codeLine.trimAscii().endsWith(";")) {
+                                let stringbuilder: StringBuilder = StringBuilder()
+                                stringbuilder.append(lastLineBean.codeLine)
+                                //多行前面有内容 只要隔个一个空格
+                                stringbuilder.append(lineBean.codeLine.trimAscii())
+                                lastLineBean.codeLine = stringbuilder.toString()
+                                lineBean.isDiscarded = true
+                            }
+                        }
                     }
                 }
             }
@@ -611,7 +628,7 @@ class CandJavaLikeFormat <: BaseLanguage {
                         let lastLineBean: LineBean = stateBean.linesList[i - 1]
                         //如果这样的话，这一行的内容要加到上一行的后面
                         let stringbuilder: StringBuilder = StringBuilder()
-                        stringbuilder.append(lastLineBean.codeLine)
+                        stringbuilder.append(lastLineBean.codeLine.replace("\n", ""))
                         stringbuilder.append(lineBean.codeLine)
                         lastLineBean.codeLine = stringbuilder.toString()
                         lineBean.isDiscarded = true
@@ -624,8 +641,9 @@ class CandJavaLikeFormat <: BaseLanguage {
             for (i in 0..stateBean.linesList.size) {
                 let lineBean: LineBean = stateBean.linesList[i]
                 let codeStr = lineBean.codeLine.trimAscii().replace(" ", "")
-                if (((codeStr.startsWith("else{")) || (codeStr.startsWith("elseif(")) || (codeStr.startsWith("catch("))) &&
-                    !lineBean.isInMultilineComment && !lineBean.isInSinglelineComment) {
+                if ((((codeStr.startsWith("while(")) && (!codeStr.contains("{"))) || (codeStr.startsWith(",")) || (codeStr
+                    .startsWith("finally{")) || (codeStr.startsWith("else{")) || (codeStr.startsWith("elseif(")) || (codeStr
+                    .startsWith("catch("))) && !lineBean.isInMultilineComment && !lineBean.isInSinglelineComment) {
                     //如果当前行是单行注释，那就看他有没有上一行
                     if (i > 0) {
                         //有上一行，看上一行的结束是不是\n
@@ -644,6 +662,30 @@ class CandJavaLikeFormat <: BaseLanguage {
             }
             removediscard(stateBean)
 
+            //处理上一行,结尾 下一行是];结尾的情况
+            for (i in 0..stateBean.linesList.size) {
+                let lineBean: LineBean = stateBean.linesList[i]
+                let codeStr = lineBean.codeLine.trimAscii().replace(" ", "")
+                if ((codeStr.endsWith("];") || codeStr.endsWith("]")) && !codeStr.contains("[") &&
+                    !lineBean.isInMultilineComment && !lineBean.isInSinglelineComment) {
+                    //如果当前行是单行注释，那就看他有没有上一行
+                    if (i > 0) {
+                        //有上一行，看上一行是不是逗号结尾
+                        let lastLineBean: LineBean = stateBean.linesList[i - 1]
+                        if (lastLineBean.codeLine.trimAscii().endsWith(",")) {
+                            //上一行以}结尾那么合并这两行
+                            //如果这样的话，这一行的内容要加到上一行的后面
+                            let stringbuilder: StringBuilder = StringBuilder()
+                            stringbuilder.append(lastLineBean.codeLine.trimAscii())
+                            stringbuilder.append(lineBean.codeLine.trimAscii())
+                            lastLineBean.codeLine = stringbuilder.toString().replace("\n", "")
+                            lineBean.isDiscarded = true
+                        }
+                    }
+                }
+            }
+            removediscard(stateBean)
+
             //处理单行只有);但是上一行是}结尾的情况
             for (i in 0..stateBean.linesList.size) {
                 let lineBean: LineBean = stateBean.linesList[i]
@@ -655,6 +697,49 @@ class CandJavaLikeFormat <: BaseLanguage {
                         let lastLineBean: LineBean = stateBean.linesList[i - 1]
                         if (lastLineBean.codeLine.trimAscii().endsWith("}")) {
                             //上一行以}结尾那么合并这两行
+                            //如果这样的话，这一行的内容要加到上一行的后面
+                            let stringbuilder: StringBuilder = StringBuilder()
+                            stringbuilder.append(lastLineBean.codeLine)
+                            stringbuilder.append(lineBean.codeLine)
+                            lastLineBean.codeLine = stringbuilder.toString()
+                            lineBean.isDiscarded = true
+                        }
+                    }
+                }
+            }
+            removediscard(stateBean)
+
+            //处理if()后面么有{就，下一行就和他一起
+
+            for (i in 0..stateBean.linesList.size) {
+                let lineBean: LineBean = stateBean.linesList[i]
+                let codeStr = lineBean.codeLine.trimAscii().replace(" ", "")
+                if (codeStr.startsWith("if(") && (codeStr.endsWith(")")) && !lineBean.isInMultilineComment &&
+                    !lineBean.isInSinglelineComment) {
+                    //如果当前行是单行注释，那就看他有没有上一行
+                    if (i < stateBean.linesList.size - 1) {
+                        let nextLineBean: LineBean = stateBean.linesList[i + 1]
+                        //如果这样的话，这一行的内容要加到上一行的后面
+                        let stringbuilder: StringBuilder = StringBuilder()
+                        stringbuilder.append(lineBean.codeLine + " ")
+                        stringbuilder.append(nextLineBean.codeLine.trimAscii())
+                        lineBean.codeLine = stringbuilder.toString().replace("\n", "")
+                        nextLineBean.isDiscarded = true
+                    }
+                }
+            }
+            removediscard(stateBean)
+
+            //处理这种情况合成一起
+            //import {User,Order} 
+            //from './user';   
+            for (i in 0..stateBean.linesList.size) {
+                let lineBean: LineBean = stateBean.linesList[i]
+                let codeStr = lineBean.codeLine.trimAscii().replace(" ", "")
+                if (codeStr.startsWith("from") && !lineBean.isInMultilineComment && !lineBean.isInSinglelineComment) {
+                    if (i > 0) {
+                        let lastLineBean: LineBean = stateBean.linesList[i - 1]
+                        if (lastLineBean.codeLine.trimAscii().startsWith("import")) {
                             //如果这样的话，这一行的内容要加到上一行的后面
                             let stringbuilder: StringBuilder = StringBuilder()
                             stringbuilder.append(lastLineBean.codeLine)
