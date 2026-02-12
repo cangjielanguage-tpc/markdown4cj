@@ -102,7 +102,14 @@ struct DemoPage {
                   .onClick(() => {
                     // 点击动作触发该方法调用
                     this.demoDataMD.pagePath = `${this.rawFilePath}/${item}`
-                    router.pushUrl({ url: "pages/DemoDetailsPage", params: this.demoDataMD })
+                    if(index ==2){
+                      router.pushUrl({ url: "pages/DemoArkTsTextPage", params: this.demoDataMD })
+                    }
+                    else if(index ==3){
+                      router.pushUrl({ url: "pages/DemoCustomViewPage", params: this.demoDataMD })
+                    } else {
+                      router.pushUrl({ url: "pages/DemoDetailsPage", params: this.demoDataMD })
+                    }
                   })
               }
             })

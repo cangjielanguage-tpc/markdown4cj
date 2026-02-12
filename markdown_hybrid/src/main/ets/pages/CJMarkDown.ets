@@ -45,12 +45,12 @@ export struct CJMarkdown {
   @State config?: MarkdownConfiguration = undefined
   @State plugin?: MarkdownPlugin = undefined
   private markdownNode: CJNodeController | null = null
-  @Prop isShow: boolean = true
+  @Prop useCangjieComponent?: boolean = true
   @BuilderParam customContains: () => void = this.defaultTextBuilder
 
   @Builder
   defaultTextBuilder() {
-    if(!this.isShow) {
+    if(!this.useCangjieComponent) {
       Column() {
         Text(this.content)
       }.width('100%')
@@ -59,13 +59,13 @@ export struct CJMarkdown {
   }
 
   onMarkDownChange():void {
-    if(this.isShow === true) {
+    if(this.useCangjieComponent === true) {
       this.markdownNode?.callbackCJ(this.content)
     }
   }
 
   aboutToAppear(): void {
-    if(this.isShow === true) {
+    if(this.useCangjieComponent === true) {
       if(global_customLib ===undefined) {
         global_customLib = requireCJLib("libmarkdown.so") as CustomLib
       }
@@ -77,7 +77,7 @@ export struct CJMarkdown {
   }
 
   build() {
-    if(this.isShow) {
+    if(this.useCangjieComponent) {
       NodeContainer(this.markdownNode)
     } else {
       this.customContains()

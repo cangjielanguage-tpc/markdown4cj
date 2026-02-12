@@ -18,11 +18,15 @@ export struct CJMarkdown {
     * @param content 传入markdown文档内容
     * @param config 传入markdown配置选项
     * @param plugin 传入markdown插件化选项
+    * @param useCangjieComponent  是否使用Cangjie互操作组件展示，true: 使用 false:不使用Cangjie，使用ArkTS, 默认true
+    * @param customContains 传入ArkTS自定义组件，不传则使用三方库自带的Text组件显示
     */
     CJMarkdown(
         content: string,
         config?: MarkdownConfiguration,
-        plugin?: MarkdownPlugin
+        plugin?: MarkdownPlugin,
+        useCangjieComponent?: boolean,
+        customContains?: () => void
     )
 }
 ```

@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from './BaseComponent'
 import { router } from '@kit.ArkUI'
@@ -9,7 +6,7 @@ import { getFileContextStr } from './FileUtils'
 
 @Entry
 @Component
-struct DemoDetailsPage {
+struct DemoCustomViewPage {
   /**
    * 滑动控制器
    */
@@ -39,12 +36,25 @@ struct DemoDetailsPage {
    */
   time: number = 50
 
+  /**
+   * false： 不用仓颉显示，使用ArkTS组件显示
+   */
+  @State
+  useCangjieComponent: boolean = false
+
   aboutToAppear(): void {
     try {
       let imageDataMD: DemoDataMD = router.getParams() as DemoDataMD
       this.fileStr = getFileContextStr(imageDataMD._pagePath)
       this.isFull = imageDataMD._isFull
     } catch (e) {
+    }
+  }
+
+  @Builder
+  showTextBuilder() {
+    Column(){
+      Text(this.content).width('100%').height('100%').fontColor(Color.Red)
     }
   }
 
@@ -88,7 +98,9 @@ struct DemoDetailsPage {
           CJMarkdown({
             content: this.content,
             config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
+            plugin: this.setPlugin(),
+            useCangjieComponent: this.useCangjieComponent,
+            customContains: this.showTextBuilder.bind(this)
           })
         }
       }
