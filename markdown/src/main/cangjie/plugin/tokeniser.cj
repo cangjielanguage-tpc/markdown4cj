@@ -231,7 +231,7 @@ class Tokeniser {
             } else {
                 numRef
             })
-        } catch (ignored: IllegalArgumentException) {
+        } catch (_: IllegalArgumentException) {
             -1
         }
         if (charval == -1 || (charval >= 0xD800 && charval <= 0xDFFF) || charval > 0x10FFFF) {

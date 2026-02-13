@@ -3,16 +3,11 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
-
 class MarkdownParseLatexUtil {
     /**
      * 全局锁
      */
-    private static let latexReentrantMutex: ReentrantMutex = ReentrantMutex()
+    private static let latexReentrantMutex: Mutex = Mutex()
 
     /**
      * 数学公式文本转换成数学公式图片 - 单行
@@ -22,31 +17,35 @@ class MarkdownParseLatexUtil {
      * @param markdownConfiguration Markdown Configuration
      * @param callback PixelMap图片、图片高度、图片宽度、图片数组数据 回调接口
      */
-    static func latexMathStrToPixelMap(strLatexMath: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func latexMathStrToPixelMap(strLatexMath: String, markdownTheme: MarkdownTheme,
+        latexStrCallback: (String) -> String, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
                 var pixelMap: ?PixelMap = Option<PixelMap>.None
                 var imageHeight: ?Float64 = Option<Float64>.None
                 var imageWidth: ?Float64 = Option<Float64>.None
                 var arr: ?Array<UInt8> = Option<Array<UInt8>>.None
                 try {
-                    let strLatexMathNew = markdownConfiguration.latexStrCallback(strLatexMath)
+                    let strLatexMathNew = latexStrCallback(strLatexMath)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex = LaTeX(markdownConfiguration.markdownTheme.latexMathResStr)
+                    var latex: LaTeX = LaTeX(markdownTheme.latexMathResStr)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownConfiguration.markdownTheme.latexMathTextSize), Float32(10), markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
+                    var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownTheme.latexMathTextSize), Float32(10), markdownTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r, latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat))
+                    var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    r.draw(g2, markdownConfiguration.markdownTheme.latexMathBackGroupColor.toUInt32())
+                    r.draw(g2, markdownTheme.latexMathBackGroupColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -94,31 +93,34 @@ class MarkdownParseLatexUtil {
      * @param componentWidth 控件宽度 - 单位vp
      * @param callback PixelMap图片、图片高度、图片宽度、图片数组数据 回调接口
      */
-    static func latexMathStrToPixelMapRow(strLatexMath: String, markdownConfiguration: MarkdownConfiguration, componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func latexMathStrToPixelMapRow(strLatexMath: String, markdownTheme: MarkdownTheme, componentWidth: Float64, latexStrCallback: (String) -> String, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
                 var pixelMap: ?PixelMap = Option<PixelMap>.None
                 var height: ?Float64 = Option<Float64>.None
                 var width: ?Float64 = Option<Float64>.None
                 var arr: ?Array<UInt8> = Option<Array<UInt8>>.None
                 try {
-                    let strLatexMathNew = markdownConfiguration.latexStrCallback(strLatexMath)
+                    let strLatexMathNew = latexStrCallback(strLatexMath)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex = LaTeX(markdownConfiguration.markdownTheme.latexMathResStr)
+                    var latex: LaTeX = LaTeX(markdownTheme.latexMathResStr)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownConfiguration.markdownTheme.latexMathTextSize), Float32(10), markdownConfiguration.markdownTheme.latexMathTextColor.toUInt32())
+                    var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownTheme.latexMathTextSize), Float32(10), markdownTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r, latexMathColorFormat(markdownConfiguration.markdownTheme.latexMathColorFormat))
+                    var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    r.draw(g2, markdownConfiguration.markdownTheme.latexMathBackGroupColor.toUInt32())
+                    r.draw(g2, markdownTheme.latexMathBackGroupColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }

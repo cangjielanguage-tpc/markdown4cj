@@ -10,7 +10,6 @@ public abstract class TagHandler {
 
     protected static func visitChildren(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag,
         nodeParent: Node): Unit {
-        var handler: ?TagHandler
         for (child in tag.getChildren()) {
             visit(visitor, renderer, child, nodeParent)
         }
@@ -171,7 +170,7 @@ public class HeadingHandler <: TagHandler {
         var level: Int64
         try {
             level = Int64.parse(tag.name()[1..=1])
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             level = 0
         }
         if (level < 1 || level > 6) {
@@ -211,6 +210,37 @@ public class ImageHandler <: TagHandler {
 
     public override func supportedTags(): Collection<String> {
         return ["img"]
+    }
+}
+
+public class CardHandler <: TagHandler {
+
+    public init() {
+    }
+
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let attributes: Map<String, String> = tag.attributes()
+        let name: ?String = attributes.get("name")
+        let data: ?String = attributes.get("data")
+
+        if (let Some(v) <- name) {
+            let dataValue: String = if  (let Some(d) <- data) {
+                d
+            } else {
+                ""
+            }
+            let cardNode: CardNode = CardNode(v, dataValue)
+            visitChildren(visitor, renderer, tag, cardNode)
+            return cardNode
+        } else {
+            let ignoreNode = IgnoreBlockNode()
+            visitChildren(visitor, renderer, tag, ignoreNode)
+            return ignoreNode
+        }
+    }
+
+    public override func supportedTags(): Collection<String> {
+        return ["card"]
     }
 }
 
@@ -273,7 +303,7 @@ public class StrikeHandler <: TagHandler {
     }
 
     public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
-        let strikethrough: Strikethrough = Strikethrough()
+        let strikethrough: Strikethrough = Strikethrough("~~")
         visitChildren(visitor, renderer, tag, strikethrough)
         return strikethrough
     }

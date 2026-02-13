@@ -3,6 +3,9 @@
  */
 package markdown.core
 
+import std.collection.at
+import std.collection.count
+
 class NodeIterator <: Iterator<Node> {
     public NodeIterator(var current: ?Node, let justLeaf: Bool) {}
 
@@ -19,12 +22,13 @@ class NodeIterator <: Iterator<Node> {
 
 public interface NodeExt {
     /**
-     * 当前节点的子节点列表
+     * 当前节点的子节点迭代器
      */
-    func getListChildren(): ArrayList<Node>
-
     func iterateChildren(): Iterator<Node>
 
+    /**
+     * 当前节点的子节点列表
+     */
     func listChildren(): ArrayList<Node>
 
     func hasOnlyChild(): Bool
@@ -46,7 +50,13 @@ public interface NodeExt {
     func hasStrongEmphasis(): Bool
 
     /**
-     * 属于第几层ListItem 适用于BulletList中深度判断
+     * 属于第几层BlockQuote 适用于BlockQuote中深度判断
+     * @return 0:不属于BlockQuote 大于0:BlockQuote深度
+     */
+    func blockQuoteDepth(): Int
+
+    /**
+     * 属于第几层ListItem 适用于BulletList/OrderedList中深度判断
      * @return 0:不属于ListItem 大于0:ListItem深度
      */
     func listItemDepth(): Int
@@ -63,30 +73,32 @@ public interface NodeExt {
      */
     func flat(): Unit
 
-    func getView(): NodeView
-
-    func toViewString(): String
-
     func iterateLeafChildren(): Iterator<Node>
 
     func isLeafNode(): Bool
 
     func replaceWith(node: Node): Unit
+    /**
+     * 添加自定义属性
+     */
+    func addProp(key: String, value: Any): Any
+    /**
+     * 获取自定义属性
+     */
+    func getProp<T>(key: String): ?T
+    /**
+     * 当前子节点数量
+     */
+    prop childrenSize: Int
+    /**
+     * 获取指定child
+     */
+    operator func [](index: Int): Node
 }
 /**
  * Node扩展
  */
 extend Node <: NodeExt {
-    public func getListChildren(): ArrayList<Node> {
-        let list: ArrayList<Node> = ArrayList<Node>()
-        var node: ?Node = getFirstChild()
-        while (!node.isNone()) {
-            list.add(node.getOrThrow())
-            node = node.getOrThrow().getNext()
-        }
-        return list
-    }
-
     public func iterateChildren(): Iterator<Node> {
         return NodeIterator(getFirstChild(), false)
     }
@@ -137,6 +149,18 @@ extend Node <: NodeExt {
         return false
     }
 
+    public func blockQuoteDepth(): Int {
+        var n: ?Node = this
+        var depth: Int = 0
+        while (let Some(v) <- n) {
+            if (v is BlockQuote) {
+                depth++
+            }
+            n = v.getParent()
+        }
+        return depth
+    }
+
     public func listItemDepth(): Int {
         var n: ?Node = this
         var depth: Int = 0
@@ -176,18 +200,6 @@ extend Node <: NodeExt {
         this.unlink()
     }
 
-    public func getView(): NodeView {
-        (this.custom as NodeView)()
-    }
-
-    public func toViewString(): String {
-        if (custom is NodeView) {
-            "${this} ${getView()}"
-        } else {
-            this.toString()
-        }
-    }
-
     public func iterateLeafChildren(): Iterator<Node> {
         return NodeIterator(getFirstChild(), true)
     }
@@ -213,6 +225,34 @@ extend Node <: NodeExt {
         this.setFirstChild(node.getFirstChild())
         this.setLastChild(node.getLastChild())
     }
+
+    prop props: HashMap<String, Any> {
+        get() {
+            this.custom as HashMap<String, Any> ?? {
+                =>
+                    let m = HashMap<String, Any>(2)
+                    this.custom = m
+                    m
+            }()
+        }
+    }
+
+    public func addProp(key: String, value: Any): Any {
+        return props.add(key, value) ?? ()
+    }
+
+    public func getProp<T>(key: String): ?T {
+        return tryTo<Any, T>(props.get(key))
+    }
+
+    public prop childrenSize: Int {
+        get() {
+            return iterateChildren() |> count
+        }
+    }
+    public operator func [](index: Int): Node {
+        return (iterateChildren() |> at(index)).getOrThrow()
+    }
 }
 
 /**
@@ -226,3 +266,27 @@ extend BlockQuote <: ListNode {}
 extend BulletList <: ListNode {}
 
 extend OrderedList <: ListNode {}
+
+public func to<T, R>(obj: Option<?T>): R {
+    match (obj) {
+        case Some(Some(t: T)) => match (t) {
+            case v: R => v
+            case v: Option<R> => v.getOrThrow()
+            case v: Option<Option<R>> => v.getOrThrow().getOrThrow()
+            case _ => throw Exception("Class Cast Fail")
+        }
+        case _ => throw Exception("Class Cast Fail")
+    }
+}
+
+public func tryTo<T, R>(obj: Option<?T>): ?R {
+    match (obj) {
+        case Some(Some(t: T)) => match (t) {
+            case v: R => v
+            case v: Option<R> => v
+            case v: Option<Option<R>> => v ?? None
+            case _ => None
+        }
+        case _ => None
+    }
+}

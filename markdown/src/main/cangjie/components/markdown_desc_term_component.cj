@@ -1,96 +1,95 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 定义列表术语
+ * 定义列表术语控件
  */
 @Component
 public class MarkdownDescTermComponent {
     /**
      * markdown配置
      */
-    var markdownConfiguration: MarkdownConfiguration
+    var descTermMarkdownConfiguration: MarkdownConfiguration
 
     /**
-     * 控件宽度 - 单位px
+     * 定义列表术语控件自身节点
+     */
+    var descTermNodeView: NodeView
+
+    /**
+     * 控件宽度 - 单位vp
      */
     @Prop
-    var componentWidth: Float64
+    var descTermComponentWidth: Float64
 
     /**
-     * 术语节点
+     * 缓存的控件数据
      */
-    var nodeView: NodeView
-
-    /**
-     * 缓存的数据
-     */
-    var markdownCacheConfiguration: MarkdownCacheConfiguration
-
-    /**
-     * 图片点击事件
-     */
-    var imageCallback: (String) -> Unit
-
-    /**
-     * TOC列表点击事件回调
-     */
-    var tocListOnClick: (Int64) -> Unit
-
-    /**
-     * 脚注点击事件
-     */
-    var fontCallback: (String) -> Unit
-
-    /**
-     * 懒加载数据源
-     */
-    var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
+    var descTermMarkdownCacheConfiguration: MarkdownCacheConfiguration
 
     /**
      * 自定义行内段落布局
      */
     @BuilderParam
-    var customParagraphLineBuilder: (NodeView, Int64) -> Unit
+    var descTermCustomParagraphLineBuilder: (NodeView, Int64) -> Unit
+
+    /**
+     * TOC列表点击事件
+     */
+    var descTermTocListOnClick: (Int64) -> Unit
+
+    /**
+     * 图片点击事件
+     */
+    var descTermImageCallback: (String) -> Unit
+
+    /**
+     * 脚注点击事件
+     */
+    var descTermFootnoteCallback: (String) -> Unit
+
+    /**
+     * 定义列表术语控件子节点的懒加载数据源
+     */
+    var descTermNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
     protected override func aboutToAppear(): Unit {
-        // 初始化刷新数据
-        refreshData(nodeView)
-        // 缓存当前控件
-        markdownCacheConfiguration.descTermComponent.add(this.nodeView.nodeHash, this)
+        refreshDescTermData(descTermNodeView) // 初始化刷新数据
+        descTermMarkdownCacheConfiguration.descTermComponent.add(descTermNodeView.nodeHash, this) // 缓存当前控件
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        let value = markdownCacheConfiguration.descTermComponent.get(this.nodeView.nodeHash)
+        let value = descTermMarkdownCacheConfiguration.descTermComponent.get(descTermNodeView.nodeHash)
         if (let Some(v) <- value) {
             if (refEq(v, this)) {
-                markdownCacheConfiguration.descTermComponent.remove(this.nodeView.nodeHash)
+                descTermMarkdownCacheConfiguration.descTermComponent.remove(descTermNodeView.nodeHash)
             }
         } else {
-            markdownCacheConfiguration.descTermComponent.remove(this.nodeView.nodeHash)
+            descTermMarkdownCacheConfiguration.descTermComponent.remove(descTermNodeView.nodeHash)
         }
     }
 
     func build() {
         List() {
             LazyForEach(
-                nodeViewDataSource,
+                descTermNodeViewDataSource,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                        // 段落
+                    descTermNodeView: NodeView, idx: Int64 => if (descTermNodeView.nodeType == "Paragraph") {
                         ListItem() {
-                            MarkdownParagraphComponent(markdownConfiguration: markdownConfiguration, nodeView: item, footnoteBlock: Option<FootnoteBlock>.None, fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, componentWidth: componentWidth, isListTo: true, isDescList: true, paragraphComponents: markdownCacheConfiguration.paragraphComponents, customParagraphLineBuilder: customParagraphLineBuilder)
+                            MarkdownParagraphComponent(
+                                paragraphMarkdownConfiguration: descTermMarkdownConfiguration,
+                                paragraphNodeView: descTermNodeView,
+                                paragraphComponentWidth: descTermComponentWidth,
+                                paragraphComponents: descTermMarkdownCacheConfiguration.paragraphComponents,
+                                paragraphCustomParagraphLineBuilder: descTermCustomParagraphLineBuilder,
+                                paragraphTocListOnClick: descTermTocListOnClick,
+                                paragraphImageCallback: descTermImageCallback,
+                                paragraphFootnoteCallback: descTermFootnoteCallback
+                            )
                         }
                     } else {
-                        // TODO 其他节点
                         ListItem() {
                             Text("")
                         }
@@ -101,25 +100,80 @@ public class MarkdownDescTermComponent {
                 }
             )
         }
-        // 设置List组件排列方向
         .listDirection(Axis.Vertical)
-        // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
         .alignListItem(ListItemAlign.Start)
-        // 术语和定义行之间间距
-        .margin(bottom: markdownConfiguration.markdownTheme.descListTermAndDefMargins)
+        .margin(bottom: descTermMarkdownConfiguration.markdownTheme.descListTermAndDefMargins)
     }
 
     /**
-     * 数据刷新
+     * 定义列表解释控件数据刷新
+     *
+     * @param descTermNodeView 刷新的新数据
      */
-    public func refreshData(nodeView: NodeView): Unit {
-        this.nodeView = nodeView
-        let refreshNodeViews = nodeView.children
-        let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
-        let dataSourceSize: Int64 = nodeViewDataSource.totalCount() // 页面缓存的数据长度
+    public func refreshDescTermData(descTermNodeView: NodeView): Unit {
+        this.descTermNodeView = descTermNodeView
+        let refreshNodeViewChildren = descTermNodeView.children // 子节点数据
+        let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
+        let dataSourceSize: Int64 = descTermNodeViewDataSource.totalCount() // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
             return
         }
-        refreshNodeViewDataSource(nodeView, refreshNodeViews, refreshNodeViewSize, dataSourceSize, nodeViewDataSource, "descterm", markdownCacheConfiguration, Option<HashMap<Int64, MarkdownTableBlockRowComponent>>.None)
+        if (refreshNodeViewSize > dataSourceSize) {
+            // 新数据大于页面数据
+            refreshDescTermDatas(dataSourceSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
+            // 循环添加新数据
+            for (i in dataSourceSize..refreshNodeViewSize) {
+                descTermNodeViewDataSource.addData(refreshNodeViewChildren[i])
+            }
+        } else if (refreshNodeViewSize == dataSourceSize) {
+            // 新数据等于页面数据
+            refreshDescTermDatas(dataSourceSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
+        } else {
+            // 新数据小于页面数据
+            refreshDescTermDatas(refreshNodeViewSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
+            // 循环删除多余的旧数据
+            for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
+                descTermNodeViewDataSource.deleteData(i)
+            }
+        }
+    }
+
+    /**
+     * 循环判断历史数据有没有做过修改
+     *
+     * @param size 长度
+     * @param refreshNodeViews 刷新的数据
+     */
+    func refreshDescTermDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
+        for (i in 0..size) {
+            let refreshNodeView = refreshNodeViews[i]
+            let dataSourceNode = descTermNodeViewDataSource.getData(i)
+            let newNodeHash = refreshNodeView.nodeHash
+            let oldNodeHash = dataSourceNode.nodeHash
+            if (newNodeHash != oldNodeHash) {
+                // 自身节点唯一ID不相同需要刷新数据
+                descTermNodeViewDataSource.replaceData(i, refreshNodeView)
+                continue
+            }
+            let newContentHash = refreshNodeView.contentHash
+            let oldContentHash = dataSourceNode.contentHash
+            if (newContentHash != oldContentHash) {
+                // 子节点唯一ID不相同需要刷新子节点数据
+                if (refreshNodeView.nodeType == "Paragraph") {
+                    // 段落节点
+                    let paragraphComponents = descTermMarkdownCacheConfiguration.paragraphComponents
+                    let cache = paragraphComponents.get(newNodeHash)
+                    if (let Some(v) <- cache) {
+                        v.refreshParagraphData(refreshNodeView)
+                        descTermNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        descTermNodeViewDataSource.replaceData(i, refreshNodeView)
+                    }
+                    continue
+                }
+                // 其他
+                descTermNodeViewDataSource.replaceData(i, refreshNodeView)
+            }
+        }
     }
 }

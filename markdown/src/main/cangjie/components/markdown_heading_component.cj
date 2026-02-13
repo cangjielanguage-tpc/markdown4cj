@@ -3,63 +3,56 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * Markdown标题自定义控件
+ * 标题控件
  */
 @Component
 class MarkdownHeadingComponent {
     /**
      * markdown配置
      */
-    var markdownConfiguration: MarkdownConfiguration
+    var headingMarkdownConfiguration: MarkdownConfiguration
 
     /**
-     * 标题节点
-     */
-    var nodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位px
+     * 标题控件自身节点
      */
     @Prop
-    var componentWidth: Float64
+    var headingNodeView: NodeView
 
     /**
-     * 脚注点击事件
+     * 控件宽度 - 单位vp
      */
-    var fontCallback: (String) -> Unit
+    @Prop
+    var headingComponentWidth: Float64
 
     /**
-     * 图片点击事件
-     */
-    var imageCallback: (String) -> Unit
-
-    /**
-     * 缓存的标题控件列表
+     * 缓存的标题控件数据
      */
     var headingComponents: HashMap<Int64, MarkdownHeadingComponent>
 
     /**
-     * 标题等级
+     * 自定义行内标题控件
      */
-    @State
-    var level: Int64 = 1
+    @BuilderParam
+    var headingCustomHeadingLineBuilder: (NodeView, Int64) -> Unit
 
     /**
-     * 懒加载数据源
+     * 图片点击事件
      */
-    @State
-    var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+    var headingImageCallback: (String) -> Unit
 
     /**
-     * 是否列表中的标题
+     * 脚注点击事件
      */
-    var isListTo: Bool = false
+    var headingFootnoteCallback: (String) -> Unit
+
+    /**
+     * 标题子节点是否不为0
+     */
+    @State
+    var isRefresh: Bool = false
 
     /**
      * 是否只有一条链接数据
@@ -68,50 +61,115 @@ class MarkdownHeadingComponent {
     var isOneLink: Bool = false
 
     /**
-     * 自定义行内标题布局
+     * 列表数据
      */
-    @BuilderParam
-    var customTitleLineBuilder: (NodeView, Int64) -> Unit
+    @State
+    var headingNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
-        // 初始化刷新数据
-        refreshData(this.nodeView)
-        // 缓存当前控件
-        headingComponents.add(this.nodeView.nodeHash, this)
+        refreshHeadingData(headingNodeView) // 初始化刷新数据
+        headingComponents.add(headingNodeView.nodeHash, this) // 缓存当前控件
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        let value = headingComponents.get(this.nodeView.nodeHash)
+        let value = headingComponents.get(headingNodeView.nodeHash)
         if (let Some(v) <- value) {
             if (refEq(v, this)) {
-                headingComponents.remove(this.nodeView.nodeHash)
+                headingComponents.remove(headingNodeView.nodeHash)
             }
         } else {
-            headingComponents.remove(this.nodeView.nodeHash)
+            headingComponents.remove(headingNodeView.nodeHash)
         }
     }
 
     func build() {
         Column() {
-            // 标题内容
-            headingTitleComponent()
-
+            if (!headingMarkdownConfiguration.markdownTheme.isImageMixedLayout && headingNodeViewList.size == 1 && (headingNodeViewList[0].nodeType == "Image" || headingNodeViewList[0].nodeType == "StyleImage" || headingNodeViewList[0].nodeType == "ImageHtmlNode")) {
+                if (headingMarkdownConfiguration.imageCallbackCallback.isNone()) {
+                    if (headingNodeViewList[0].imageUrl().startsWith("./")) {
+                        MarkdownImageRawFileComponent(
+                            rawFileMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
+                            rawFileDestination: headingNodeViewList[0].imageUrl(),
+                            rawFileComponentWidth: headingComponentWidth,
+                            rawFileImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
+                            rawFileImageCallback: headingImageCallback,
+                            rawFileLinkCallback: headingMarkdownConfiguration.linkCallback,
+                            rawFileLink: headingNodeViewList[0].isLink,
+                            rawFileLinkUrl: headingNodeViewList[0].linkUrl,
+                            rawFileImageWidth: headingNodeViewList[0].imageWidth,
+                            rawFileImageHeight: headingNodeViewList[0].imageHeight,
+                            rawFileImageRadius: headingNodeViewList[0].imageRadius,
+                            rawFileImageAlign: headingNodeViewList[0].imageAlign
+                        )
+                    } else {
+                        MarkdownImageUrlComponent(
+                            urlMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
+                            urlDestination: headingNodeViewList[0].imageUrl(),
+                            urlComponentWidth: headingComponentWidth,
+                            urlImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
+                            urlImageCallback: headingImageCallback,
+                            urlLinkCallback: headingMarkdownConfiguration.linkCallback,
+                            urlLink: headingNodeViewList[0].isLink,
+                            urlLinkUrl: headingNodeViewList[0].linkUrl,
+                            urlImageWidth: headingNodeViewList[0].imageWidth,
+                            urlImageHeight: headingNodeViewList[0].imageHeight,
+                            urlImageRadius: headingNodeViewList[0].imageRadius,
+                            urlImageAlign: headingNodeViewList[0].imageAlign
+                        )
+                    }
+                } else {
+                    if (headingNodeViewList[0].imageUrl().startsWith("./")) {
+                        MarkdownImageCallbackRawFileComponent(
+                            rawFileCallbackMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
+                            rawFileCallbackDestination: headingNodeViewList[0].imageUrl(),
+                            rawFileCallbackComponentWidth: headingComponentWidth,
+                            rawFileCallbackImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
+                            rawFileCallbackImageCallbackCallback: headingMarkdownConfiguration.imageCallbackCallback(),
+                            rawFileCallbackImageCallback: headingImageCallback,
+                            rawFileCallbackLinkCallback: headingMarkdownConfiguration.linkCallback,
+                            rawFileCallbackLink: headingNodeViewList[0].isLink,
+                            rawFileCallbackLinkUrl: headingNodeViewList[0].linkUrl,
+                            rawFileCallbackImageWidth: headingNodeViewList[0].imageWidth,
+                            rawFileCallbackImageHeight: headingNodeViewList[0].imageHeight,
+                            rawFileCallbackImageRadius: headingNodeViewList[0].imageRadius,
+                            rawFileCallbackImageAlign: headingNodeViewList[0].imageAlign
+                        )
+                    } else {
+                        MarkdownImageCallbackUrlComponent(
+                            urlCallbackMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
+                            urlCallbackDestination: headingNodeViewList[0].imageUrl(),
+                            urlCallbackComponentWidth: headingComponentWidth,
+                            urlCallbackImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
+                            urlCallbackImageCallbackCallback: headingMarkdownConfiguration.imageCallbackCallback(),
+                            urlCallbackImageCallback: headingImageCallback,
+                            urlCallbackLinkCallback: headingMarkdownConfiguration.linkCallback,
+                            urlCallbackLink: headingNodeViewList[0].isLink,
+                            urlCallbackLinkUrl: headingNodeViewList[0].linkUrl,
+                            urlCallbackImageWidth: headingNodeViewList[0].imageWidth,
+                            urlCallbackImageHeight: headingNodeViewList[0].imageHeight,
+                            urlCallbackImageRadius: headingNodeViewList[0].imageRadius,
+                            urlCallbackImageAlign: headingNodeViewList[0].imageAlign
+                        )
+                    }
+                }
+            } else {
+                headingTitleComponent()
+            }
             // 一级二级标题是否显示下划线
-            if ((level == 1 || level == 2) && markdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {
+            if ((headingNodeView.headingLevel == 1) && headingMarkdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {
                 Divider()
-                    // 设置分割线颜色
-                    .color(markdownConfiguration.markdownTheme.headingBreakColor)
-                    // 设置分割线宽度
-                    .strokeWidth(markdownConfiguration.markdownTheme.headingBreakHeight)
+                    .color(headingMarkdownConfiguration.markdownTheme.headingBreakColor1)
+                    .strokeWidth(headingMarkdownConfiguration.markdownTheme.headingBreakHeight)
+            } else if ((headingNodeView.headingLevel == 2) && headingMarkdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {
+                Divider()
+                    .color(headingMarkdownConfiguration.markdownTheme.headingBreakColor2)
+                    .strokeWidth(headingMarkdownConfiguration.markdownTheme.headingBreakHeight)
             }
         }
-        // 设置子组件在水平方向上的对齐格式
-        .alignItems(HorizontalAlign.Start)
-        // 设置子组件在垂直方向上的对齐格式
-        .justifyContent(FlexAlign.Center)
-        // 设置组件自身的宽度
         .width(100.percent)
+        .alignItems(HorizontalAlign.Start)
+        .justifyContent(FlexAlign.Center)
     }
 
     /**
@@ -132,31 +190,26 @@ class MarkdownHeadingComponent {
     @Builder
     func headingTitleComponent18() {
         Text() {
-            ForEach(
-                nodeViewList,
-                itemGeneratorFunc: {
-                    item18: NodeView, idx18: Int64 => headingTitleListComponent(item18, idx18)
-                },
-                keyGeneratorFunc: {
-                    item18: NodeView, idx18: Int64 => return "${idx18}-${item18.nodeHash}-${item18.contentHash}"
-                }
-            )
+            if (isRefresh) {
+                markdownSpanListComponent(
+                    headingNodeViewList,
+                    headingMarkdownConfiguration,
+                    headingComponentWidth,
+                    Option<(Int64) -> Unit>.None,
+                    headingImageCallback,
+                    headingFootnoteCallback
+                )
+            }
         }
-        // 设置多行文本的文本对齐方式
         .textAlign(TextAlign.Start)
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置文本是否将行间距平分至行的顶部与底部。
         .interopHalfLeading(true)
-        // 自定义设置组件是否支持文本可复制粘贴
-        .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
+        .interopCopyOption(if (headingMarkdownConfiguration.markdownTheme.isOnCopy) {
             true
         } else {
             false
         })
-        // 自定义长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件
         .interopOnCopy({
-            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
+            str => if (let Some(v) <- headingMarkdownConfiguration.textCopyCallback) {
                 v(str)
             }
         })
@@ -168,93 +221,182 @@ class MarkdownHeadingComponent {
     @Builder
     func headingTitleComponent19() {
         Text() {
-            ForEach(
-                nodeViewList,
-                itemGeneratorFunc: {
-                    item19: NodeView, idx19: Int64 => headingTitleListComponent(item19, idx19)
-                },
-                keyGeneratorFunc: {
-                    item19: NodeView, idx19: Int64 => return "${idx19}-${item19.nodeHash}-${item19.contentHash}"
-                }
-            )
+            if (isRefresh) {
+                markdownSpanListComponent(
+                    headingNodeViewList,
+                    headingMarkdownConfiguration,
+                    headingComponentWidth,
+                    Option<(Int64) -> Unit>.None,
+                    headingImageCallback,
+                    headingFootnoteCallback
+                )
+            }
         }
-        // 设置多行文本的文本对齐方式
         .textAlign(TextAlign.Start)
-        // 设置组件自身的宽度
-        .width(100.percent)
-        // 设置文本是否将行间距平分至行的顶部与底部。
         .halfLeading(true)
-        // 支持设备内复制
-        .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
+        .copyOption(if (headingMarkdownConfiguration.markdownTheme.isOnCopy) {
             CopyOptions.LocalDevice
         } else {
             CopyOptions.None
         })
-        // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
         .onCopy({
-            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
+            str => if (let Some(v) <- headingMarkdownConfiguration.textCopyCallback) {
                 v(str)
             }
         })
     }
 
+    /**
+     * Span循环列表
+     *
+     * @param spanListNodeViewList NodeView列表
+     * @param spanListMarkdownConfiguration markdown配置
+     * @param spanListComponentWidth 最大宽度
+     * @param spanListTocListOnClick TOC点击事件
+     * @param spanListImageCallback 图片点击事件
+     * @param spanListFootnoteCallback 脚注点击事件
+     */
     @Builder
-    func headingTitleListComponent(item: NodeView, index: Int64) {
-        if (item.node is CommonmarkText) {
-            // 文本
-            if (DeviceInfo.sdkApiVersion >= 19) {
-                headingTextComponent19(item, markdownConfiguration, level)
-            } else {
-                headingTextComponent18(item, markdownConfiguration, level)
+    func markdownSpanListComponent(
+        spanListNodeViewList: ObservedArrayList<NodeView>,
+        spanListMarkdownConfiguration: MarkdownConfiguration,
+        spanListComponentWidth: Float64,
+        spanListTocListOnClick: ?(Int64) -> Unit,
+        spanListImageCallback: (String) -> Unit,
+        spanListFootnoteCallback: (String) -> Unit
+    ) {
+        ForEach(
+            spanListNodeViewList,
+            itemGeneratorFunc: {
+                spanListNodeView: NodeView, index: Int64 => if (spanListNodeView.nodeType == "Text" ||spanListNodeView.nodeType == "Code" || spanListNodeView.nodeType == "Footnote") {
+                    // Text：普通文本，Code：内联代码，Footnote：脚注节点
+                    markdownSpanComponent(
+                        spanListMarkdownConfiguration,
+                        spanListNodeView,
+                        spanListTocListOnClick,
+                        spanListFootnoteCallback,
+                        false
+                    )
+                } else if (spanListNodeView.nodeType == "LatexMathNode") {
+                    // 数学公式
+                    MarkdownLatexMathInLineComponent(
+                        markdownTheme: spanListMarkdownConfiguration.markdownTheme,
+                        latexMathInLineStr: spanListNodeView.nodeText,
+                        latexMathInLineComponentWidth: spanListComponentWidth,
+                        latexImageCallback: spanListMarkdownConfiguration.latexImageCallback,
+                        latexStrCallback: spanListMarkdownConfiguration.latexStrCallback,
+                        latexMathInLineLinkCallback: spanListMarkdownConfiguration.linkCallback,
+                        latexMathInLineIsLink: spanListNodeView.isLink,
+                        latexMathInLineLinkUrl: spanListNodeView.linkUrl
+                    )
+                } else if (spanListNodeView.nodeType == "SoftLineBreak") {
+                    // 软换行
+                    Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.isLineBreak))
+                } else if (spanListNodeView.nodeType == "HardLineBreak") {
+                    // 硬换行
+                    Span("\n")
+                } else if (spanListNodeView.nodeType == "Link" || spanListNodeView.nodeType == "HeadLink") {
+                    // 链接, TOC列表链接
+                    if (isOneLink) {
+                        spanLinkComponent(
+                            spanListNodeView,
+                            index,
+                            spanListMarkdownConfiguration,
+                            spanListTocListOnClick,
+                            spanListFootnoteCallback,
+                            true
+                        )
+                    } else {
+                        spanLinkComponent(
+                            spanListNodeView,
+                            index,
+                            spanListMarkdownConfiguration,
+                            spanListTocListOnClick,
+                            spanListFootnoteCallback,
+                            false
+                        )
+                    }
+                } else if (spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage" || spanListNodeView.nodeType == "ImageHtmlNode") {
+                    // Image：图片节点， StyleImage：图片Style节点，ImageHtmlNode：HTML图片
+                    spanImageComponent(
+                        spanListNodeView,
+                        index,
+                        spanListMarkdownConfiguration,
+                        spanListComponentWidth,
+                        spanListImageCallback
+                    )
+                } else {
+                    // 其他节点
+                    headingCustomHeadingLineBuilder(spanListNodeView, index)
+                }
+            },
+            keyGeneratorFunc: {
+                spanListNodeView: NodeView, idx: Int64 => return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
             }
-        } else if (item.node is Footnote) {
-            // 脚注
-            if (DeviceInfo.sdkApiVersion >= 19) {
-                headingFootnoteComponent19(item, markdownConfiguration, level, fontCallback)
-            } else {
-                headingFootnoteComponent18(item, markdownConfiguration, level, fontCallback)
+        )
+    }
+
+    /**
+     * 标题控件数据刷新
+     *
+     * @param headingNodeView 刷新的新数据
+     */
+    public func refreshHeadingData(headingNodeView: NodeView): Unit {
+        this.headingNodeView = headingNodeView
+        let refreshNodeViewChildren = headingNodeView.children // 子节点数据
+        let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
+        let headingNodeViewListSize: Int64 = headingNodeViewList.size // 页面缓存的数据长度
+        if (refreshNodeViewSize == 0) {
+            headingNodeViewList.clear()
+            return
+        }
+        if (refreshNodeViewSize > 0) {
+            isRefresh = true
+        }
+        if (refreshNodeViewSize > headingNodeViewListSize) {
+            // 新数据大于页面数据
+            refreshHeadingDatas(headingNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
+            // 循环添加新数据
+            for (i in headingNodeViewListSize..refreshNodeViewSize) {
+                headingNodeViewList.append(refreshNodeViewChildren[i])
             }
-        } else if (item.node is Code) {
-            // 内联代码
-            inLineCodeSpanComponent(item, markdownConfiguration, true, true, false, 0, level)
-        } else if (item.node is CommonmarkLink) {
-            // 链接
-            linkSpanComponent(isOneLink, isListTo, level, item, markdownConfiguration, componentWidth, imageCallback, true, false, 0, markdownConfiguration.markdownTheme.isListLinkStyle)
-        } else if (item.node is HardLineBreak) {
-            // 硬换行
-            Span("\n")
-        } else if (item.node is SoftLineBreak) {
-            // 软换行
-            Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
-        } else if (item.node is ImageHtmlNode) {
-            // HTML图片
-            htmlImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-        } else if (item.node is StyleImage) {
-            //  图片Style节点
-            styleImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-        } else if (item.node is CommonmarkImage) {
-            // 图片节点
-            coreImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-        } else if (item.node is LatexMathNode) {
-            // 数学公式节点
-            latexSpanComponent(item, markdownConfiguration, componentWidth)
+        } else if (refreshNodeViewSize == headingNodeViewListSize) {
+            // 新数据等于页面数据
+            refreshHeadingDatas(headingNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
         } else {
-            // TODO 其他节点
-            customTitleLineBuilder(item, index)
+            // 新数据小于页面数据
+            refreshHeadingDatas(refreshNodeViewSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
+            // 循环删除多余的旧数据
+            for (i in headingNodeViewListSize - 1..=refreshNodeViewSize : -1) {
+                headingNodeViewList.remove(i)
+            }
+        }
+        if (headingNodeViewList.size == 1 && (headingNodeViewList[0].nodeType == "Link" || headingNodeViewList[0].nodeType == "HeadLink")) {
+            isOneLink = true
+        } else {
+            isOneLink = false
         }
     }
 
     /**
-     * 数据刷新
+     * 循环判断历史数据有没有做过修改
+     *
+     * @param size 长度
+     * @param refreshNodeViews 刷新的数据
      */
-    public func refreshData(nodeView: NodeView): Unit {
-        this.nodeView = nodeView
-        this.level = (nodeView.node as Heading)().getLevel() // 等级
-        refreshnodeViewList(this.nodeView, nodeViewList, Option<HashMap<Int64,MarkdownTableBlockCellComponent>>.None)
-        if (nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkLink) {
-            isOneLink = true
-        } else {
-            isOneLink = false
+    func refreshHeadingDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
+        for (i in 0..size) {
+            let refreshNodeView = refreshNodeViews[i]
+            let dataSourceNode = headingNodeViewList[i]
+            let newNodeHash = refreshNodeView.nodeHash
+            let oldNodeHash = dataSourceNode.nodeHash
+            let newContentHash = refreshNodeView.contentHash
+            let oldContentHash = dataSourceNode.contentHash
+            if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
+                // 自身节点唯一ID不相同需要刷新数据
+                // 子节点唯一ID不相同需要刷新子节点数据
+                headingNodeViewList[i] = refreshNodeView
+            }
         }
     }
 }

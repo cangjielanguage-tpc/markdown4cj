@@ -61,9 +61,10 @@ class BlockVideoVisitor <: AbstractVisitor {
                     n.unlink()
                     let block = BlockVideo()
                     block.appendChild(n)
+                    block.setSourceSpans(n.getSourceSpans())
                     p.insertAfter(block)
                     // 分割后续paragraph.children
-                    if (let Some(c) <- current) {
+                    if (let Some(_) <- current) {
                         let newp = newBlock()
                         var n1: ?Node = current
                         while (let Some(n11) <- n1) {

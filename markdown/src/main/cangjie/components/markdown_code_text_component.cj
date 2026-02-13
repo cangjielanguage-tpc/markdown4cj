@@ -3,9 +3,6 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
@@ -16,7 +13,7 @@ class MarkdownCodeTextComponent {
     /**
      * markdown配置
      */
-    var markdownConfiguration: MarkdownConfiguration
+    var markdownTheme: MarkdownTheme
 
     /**
      * 代码内容
@@ -31,10 +28,15 @@ class MarkdownCodeTextComponent {
     var info: Option<String> = Option<String>.None
 
     /**
-     * 第几条
+     * 缓存的单独代码块文本列表控件
+     */
+    var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent>
+
+    /**
+     * hash
      */
     @State
-    var idx: Int64 = 0
+    var index: Int64 = -1
 
     /**
      * 高亮代码列表
@@ -43,114 +45,162 @@ class MarkdownCodeTextComponent {
     var arrayList: ObservedArrayList<PrismNodesParseResUI> = ObservedArrayList<PrismNodesParseResUI>()
 
     /**
-     * 缓存的单独代码块控件
-     */
-    var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent>
-
-    /**
      * 代码高亮
      */
     var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None
 
+    /**
+     * 子线程
+     */
+    var future: ?Future<Unit> = Option<Future<Unit>>.None
+
     protected override func aboutToAppear(): Unit {
-        psh = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
-        // 初始化刷新数据
-        refreshData(codeText, info)
-        // 缓存当前控件
-        codeTextComponents.add(idx, this)
+        psh = PrismSyntaxHighlight.create(prism, markdownTheme.prismTheme)
+        refreshData(codeText, info) // 初始化刷新数据
+        codeTextComponents.add(index, this) // 缓存当前控件
     }
 
     protected override func aboutToDisappear(): Unit {
-        // 清除当前控件
-        codeTextComponents.remove(idx)
+        // 删除缓存控件
+        let value = codeTextComponents.get(index)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                codeTextComponents.remove(index)
+            }
+        } else {
+            codeTextComponents.remove(index)
+        }
+        future?.cancel()
     }
 
     func build() {
-        Row() {
-            Text((idx + 1).toString())
-                // 设置文本的最大行数
-                .maxLines(1)
-                // 设置文本超长时的显示方式
-                .textOverflow(TextOverflow.Ellipsis)
-                // 设置组件自身的宽度
-                .width(2)
-                // 设置文本颜色
-                .fontColor(Color.TRANSPARENT)
-                // 设置行高
-                .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
-                // 设置文本尺寸
-                .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                // 设置文本的字体列表
-                .fontFamily(markdownConfiguration.markdownTheme.codeBlockTypeface)
-                // 设置多行文本的文本对齐方式
-                .textAlign(TextAlign.Start)
-            Text() {
-                ForEach(
-                    arrayList,
-                    itemGeneratorFunc: {
-                        item: PrismNodesParseResUI, idx: Int64 =>
-                        // 设置文本内容
-                        Span(item.getText())
-                            // 设置文本颜色
-                            .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                            // 设置文本字符间距
-                            .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
-                    }
-                )
-            }
-            // 设置文本尺寸
-            .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-            // 设置文本的字体列表
-            .fontFamily(markdownConfiguration.markdownTheme.codeBlockTypeface)
-            // 设置多行文本的文本对齐方式
-            .textAlign(TextAlign.Start)
-            // 设置文本的最大行数
-            .maxLines(1)
-            // 设置文本超长时的显示方式
-            .textOverflow(TextOverflow.Ellipsis)
-            // 设置内边距属性
-            .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin, right: markdownConfiguration.markdownTheme.codeMultilineMargin + markdownConfiguration.markdownTheme.separateCodeBlockWidth)
-            // 设置行高
-            .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
+        Text() {
+            ForEach(
+                arrayList,
+                itemGeneratorFunc: {
+                    item: PrismNodesParseResUI, idx: Int64 => Span(item.getText())
+                        .fontColor(codeTextColor(item, markdownTheme, markdownTheme.prismTheme))
+                        .letterSpacing(markdownTheme.paragraphTextWordSpace)
+                },
+                keyGeneratorFunc: {
+                    item: PrismNodesParseResUI, idx: Int64 => "${idx}-${item.getText()}"
+                }
+            )
         }
-    }
-
-    func refreshData(codeText: String, info: Option<String>): Unit {
-        this.codeText = codeText
-        this.info = info
-        let callback: (ArrayList<PrismNodesParseResUI>) -> Unit = {
-            prismNodesParseResLists => launch {
-                arrayList.clear()
-                arrayList.appendAll(prismNodesParseResLists)
-            }
-        }
-        stringToResList(codeText, info, markdownConfiguration.markdownTheme.prismTheme, callback)
+        .fontSize(markdownTheme.codeBlockTextSize)
+        .fontFamily(markdownTheme.codeBlockTypeface)
+        .textAlign(TextAlign.Start)
+        .maxLines(1)
+        .textOverflow(TextOverflow.Ellipsis)
+        .padding(left: markdownTheme.codeMultilineMargin, right: markdownTheme.codeMultilineMargin + markdownTheme.separateCodeBlockWidth)
+        .lineHeight(markdownTheme.codeBlockLineHeight)
     }
 
     /**
-     * 通过异步的方式将代码转换成带有颜色的列表 - 围栏代码、缩进代码
+     * 数据刷新
      *
-     * @param code 传入代码内容
-     * @param info 传入代码类型
-     * @param prismTheme 传入的高亮样式
-     * @param callback PrismNodesParseRes列表回调接口
+     * @param codeText 代码文本
+     * @param info 代码类型
      */
-    func stringToResList(code: String, info: ?String, prismTheme: PrismTheme, callback: (ArrayList<PrismNodesParseResUI>) -> Unit): Future<Unit> {
+    public func refreshData(codeText: String, info: Option<String>): Unit {
+        if (codeText.size == 0) {
+            // 空行数据需要空格文本填充Text控件使其在布局上占位
+            arrayList.append(PrismNodesParseResUI(types: "", text: " ", alias: Option<String>.None, color: Option<Color>.None))
+            return
+        }
+        this.codeText = codeText
+        this.info = info
+        if (markdownTheme.isCodeBlockParserSync) {
+            stringCodeToResListSync()
+        } else {
+            stringCodeToResList()
+        }
+    }
+
+    /**
+     * 同步代码高亮解析
+     */
+    func stringCodeToResListSync() {
+        var prismNodesParseResLists: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
+        try {
+            prismNodesParseResLists = psh().highlight(info, codeText)
+        } catch (e: Exception) {
+            let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None)
+            prismNodesParseResLists.add(prismNodesParseResUI)
+        }
+        refreshCodeDatas(prismNodesParseResLists)
+    }
+
+    /**
+     * 异步代码高亮解析
+     */
+    func stringCodeToResList() {
+        let callback: (ArrayList<PrismNodesParseResUI>) -> Unit = {
+            prismNodesParseResLists => launch {
+                refreshCodeDatas(prismNodesParseResLists)
+            }
+        }
+        future = stringToResList(this.codeText, this.info, callback)
+    }
+
+    /**
+     * 列表新老数据对比
+     */
+    func refreshCodeDatas(prismNodesParseResLists: ArrayList<PrismNodesParseResUI>): Unit {
+        let newSize = prismNodesParseResLists.size
+        let oldSize = arrayList.size
+        if (newSize == oldSize) {
+            // 新数据等于页面数据
+            for (i in 0..oldSize) {
+                if (arrayList[i].getText() != prismNodesParseResLists[i].getText()) {
+                    arrayList[i] = prismNodesParseResLists[i]
+                }
+            }
+        } else if (newSize > oldSize) {
+            // 新数据大于页面数据
+            // 循环判断历史数据有没有做过修改
+            for (i in 0..oldSize) {
+                if (arrayList[i].getText() != prismNodesParseResLists[i].getText()) {
+                    arrayList[i] = prismNodesParseResLists[i]
+                }
+            }
+            for (i in oldSize..newSize) {
+                arrayList.append(prismNodesParseResLists[i])
+            }
+        } else {
+            // 新数据小于页面数据
+            // 循环判断历史数据有没有做过修改
+            for (i in 0..newSize) {
+                if (arrayList[i].getText() != prismNodesParseResLists[i].getText()) {
+                    arrayList[i] = prismNodesParseResLists[i]
+                }
+            }
+            // 循环删除多余的旧数据
+            for (i in oldSize - 1..=newSize : -1) {
+                arrayList.remove(i)
+            }
+        }
+    }
+
+    /**
+     * 异步解析
+     */
+    func stringToResList(codeText: String, info: ?String, callback: (ArrayList<PrismNodesParseResUI>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
-            var prismNodesParseResList: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            var prismNodesParseResUIList: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
             try {
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                prismNodesParseResList = psh().highlight(info, code.trimEnd("\n"))
-                if (Thread.currentThread.hasPendingCancellation) {
-                    return
-                }
-                callback(prismNodesParseResList)
+                prismNodesParseResUIList = psh().highlight(info, codeText)
+                callback(prismNodesParseResUIList)
             } catch (e: Exception) {
-                let prismNodesParseRes: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: code, alias: Option<String>.None, color: Option<Color>.None)
-                prismNodesParseResList.add(prismNodesParseRes)
-                callback(prismNodesParseResList)
+                let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None)
+                prismNodesParseResUIList.add(prismNodesParseResUI)
+                callback(prismNodesParseResUIList)
             }
         }
         return fut

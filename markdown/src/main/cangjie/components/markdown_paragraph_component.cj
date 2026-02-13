@@ -3,72 +3,61 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * Markdown段落自定义页面
+ * 段落控件
  */
 @Component
 class MarkdownParagraphComponent {
     /**
      * markdown配置
      */
-    var markdownConfiguration: MarkdownConfiguration
+    var paragraphMarkdownConfiguration: MarkdownConfiguration
 
     /**
-     * 段落节点
-     */
-    var nodeView: NodeView
-
-    /**
-     * 脚注
-     */
-    var footnoteBlock: Option<FootnoteBlock> = Option<FootnoteBlock>.None
-
-    /**
-     * 控件宽度 - 单位px
+     * 段落控件自身节点
      */
     @Prop
-    var componentWidth: Float64
+    var paragraphNodeView: NodeView
 
     /**
-     * 缓存的第一层段落控件列表
+     * 控件宽度 - 单位vp
+     */
+    @Prop
+    var paragraphComponentWidth: Float64
+
+    /**
+     * 缓存的段落控件数据
      */
     var paragraphComponents: HashMap<Int64, MarkdownParagraphComponent>
 
     /**
-     * 脚注点击事件
+     * 自定义行内段落控件
      */
-    var fontCallback: (String) -> Unit
+    @BuilderParam
+    var paragraphCustomParagraphLineBuilder: (NodeView, Int64) -> Unit
 
     /**
-     * TOC列表点击事件回调
+     * TOC列表点击事件
      */
-    var tocListOnClick: (Int64) -> Unit
+    var paragraphTocListOnClick: (Int64) -> Unit
 
     /**
      * 图片点击事件
      */
-    var imageCallback: (String) -> Unit
+    var paragraphImageCallback: (String) -> Unit
 
     /**
-     * 懒加载数据源
+     * 脚注点击事件
+     */
+    var paragraphFootnoteCallback: (String) -> Unit
+
+    /**
+     * 标题子节点是否不为0
      */
     @State
-    var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
-
-    /**
-     * 是否列表中的段落
-     */
-    var isListTo: Bool = false
-
-    /**
-     * 是否定义列表中的段落
-     */
-    var isDescList: Bool = false
+    var isRefresh: Bool = false
 
     /**
      * 是否只有一条链接数据
@@ -77,39 +66,104 @@ class MarkdownParagraphComponent {
     var isOneLink: Bool = false
 
     /**
-     * 自定义行内段落布局
+     * 列表数据
      */
-    @BuilderParam
-    var customParagraphLineBuilder: (NodeView, Int64) -> Unit
+    @State
+    var paragraphNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
-        // 初始化刷新数据
-        refreshData(nodeView)
-        // 缓存当前控件
-        paragraphComponents.add(this.nodeView.nodeHash, this)
+        refreshParagraphData(paragraphNodeView) // 初始化刷新数据
+        paragraphComponents.add(paragraphNodeView.nodeHash, this) // 缓存当前控件
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        let value = paragraphComponents.get(this.nodeView.nodeHash)
+        let value = paragraphComponents.get(paragraphNodeView.nodeHash)
         if (let Some(v) <- value) {
             if (refEq(v, this)) {
-                paragraphComponents.remove(this.nodeView.nodeHash)
+                paragraphComponents.remove(paragraphNodeView.nodeHash)
             }
         } else {
-            paragraphComponents.remove(this.nodeView.nodeHash)
+            paragraphComponents.remove(paragraphNodeView.nodeHash)
         }
     }
 
     func build() {
         Column() {
-            paragraphComponent()
+            if (!paragraphMarkdownConfiguration.markdownTheme.isImageMixedLayout && paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage" || paragraphNodeViewList[0].nodeType == "ImageHtmlNode")) {
+                if (paragraphMarkdownConfiguration.imageCallbackCallback.isNone()) {
+                    if (paragraphNodeViewList[0].imageUrl().startsWith("./")) {
+                        MarkdownImageRawFileComponent(
+                            rawFileMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
+                            rawFileDestination: paragraphNodeViewList[0].imageUrl(),
+                            rawFileComponentWidth: paragraphComponentWidth,
+                            rawFileImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
+                            rawFileImageCallback: paragraphImageCallback,
+                            rawFileLinkCallback: paragraphMarkdownConfiguration.linkCallback,
+                            rawFileLink: paragraphNodeViewList[0].isLink,
+                            rawFileLinkUrl: paragraphNodeViewList[0].linkUrl,
+                            rawFileImageWidth: paragraphNodeViewList[0].imageWidth,
+                            rawFileImageHeight: paragraphNodeViewList[0].imageHeight,
+                            rawFileImageRadius: paragraphNodeViewList[0].imageRadius,
+                            rawFileImageAlign: paragraphNodeViewList[0].imageAlign
+                        )
+                    } else {
+                        MarkdownImageUrlComponent(
+                            urlMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
+                            urlDestination: paragraphNodeViewList[0].imageUrl(),
+                            urlComponentWidth: paragraphComponentWidth,
+                            urlImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
+                            urlImageCallback: paragraphImageCallback,
+                            urlLinkCallback: paragraphMarkdownConfiguration.linkCallback,
+                            urlLink: paragraphNodeViewList[0].isLink,
+                            urlLinkUrl: paragraphNodeViewList[0].linkUrl,
+                            urlImageWidth: paragraphNodeViewList[0].imageWidth,
+                            urlImageHeight: paragraphNodeViewList[0].imageHeight,
+                            urlImageRadius: paragraphNodeViewList[0].imageRadius,
+                            urlImageAlign: paragraphNodeViewList[0].imageAlign
+                        )
+                    }
+                } else {
+                    if (paragraphNodeViewList[0].imageUrl().startsWith("./")) {
+                        MarkdownImageCallbackRawFileComponent(
+                            rawFileCallbackMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
+                            rawFileCallbackDestination: paragraphNodeViewList[0].imageUrl(),
+                            rawFileCallbackComponentWidth: paragraphComponentWidth,
+                            rawFileCallbackImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
+                            rawFileCallbackImageCallbackCallback: paragraphMarkdownConfiguration.imageCallbackCallback(),
+                            rawFileCallbackImageCallback: paragraphImageCallback,
+                            rawFileCallbackLinkCallback: paragraphMarkdownConfiguration.linkCallback,
+                            rawFileCallbackLink: paragraphNodeViewList[0].isLink,
+                            rawFileCallbackLinkUrl: paragraphNodeViewList[0].linkUrl,
+                            rawFileCallbackImageWidth: paragraphNodeViewList[0].imageWidth,
+                            rawFileCallbackImageHeight: paragraphNodeViewList[0].imageHeight,
+                            rawFileCallbackImageRadius: paragraphNodeViewList[0].imageRadius,
+                            rawFileCallbackImageAlign: paragraphNodeViewList[0].imageAlign
+                        )
+                    } else {
+                        MarkdownImageCallbackUrlComponent(
+                            urlCallbackMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
+                            urlCallbackDestination: paragraphNodeViewList[0].imageUrl(),
+                            urlCallbackComponentWidth: paragraphComponentWidth,
+                            urlCallbackImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
+                            urlCallbackImageCallbackCallback: paragraphMarkdownConfiguration.imageCallbackCallback(),
+                            urlCallbackImageCallback: paragraphImageCallback,
+                            urlCallbackLinkCallback: paragraphMarkdownConfiguration.linkCallback,
+                            urlCallbackLink: paragraphNodeViewList[0].isLink,
+                            urlCallbackLinkUrl: paragraphNodeViewList[0].linkUrl,
+                            urlCallbackImageWidth: paragraphNodeViewList[0].imageWidth,
+                            urlCallbackImageHeight: paragraphNodeViewList[0].imageHeight,
+                            urlCallbackImageRadius: paragraphNodeViewList[0].imageRadius,
+                            urlCallbackImageAlign: paragraphNodeViewList[0].imageAlign
+                        )
+                    }
+                }
+            } else {
+                paragraphComponent()
+            }
         }
-        // 设置组件自身的宽度
         .width(100.percent)
-        // 设置子组件在水平方向上的对齐格式
         .alignItems(HorizontalAlign.Start)
-        // 设置子组件在垂直方向上的对齐格式
         .justifyContent(FlexAlign.Center)
     }
 
@@ -131,38 +185,32 @@ class MarkdownParagraphComponent {
     @Builder
     func paragraphComponent18() {
         Text() {
-            if (footnoteBlock.isSome()) {
-                Span("[^${footnoteBlock().noteid}]: ")
-                    // 设置文本尺寸
-                    .fontSize(markdownConfiguration.markdownTheme.paragraphTextSize)
-                    // 设置文本的字体粗细
+            if (paragraphNodeView.footnoteID.isSome()) {
+                Span("[^${paragraphNodeView.footnoteID()}]: ")
+                    .fontSize(paragraphMarkdownConfiguration.markdownTheme.paragraphTextSize)
                     .fontWeight(FontWeight.W400)
-                    // 设置文本颜色
-                    .fontColor(markdownConfiguration.markdownTheme.paragraphTextColor)
+                    .fontColor(paragraphMarkdownConfiguration.markdownTheme.paragraphTextColor)
             }
-            ForEach(
-                nodeViewList,
-                itemGeneratorFunc: {
-                    item18: NodeView, idx18: Int64 => paragraphListComponent(item18, idx18)
-                },
-                keyGeneratorFunc: {
-                    item18: NodeView, idx18: Int64 => return "${idx18}-${item18.nodeHash}-${item18.contentHash}"
-                }
-            )
+            if (isRefresh) {
+                markdownSpanListComponent(
+                    paragraphNodeViewList,
+                    paragraphMarkdownConfiguration,
+                    paragraphComponentWidth,
+                    paragraphTocListOnClick,
+                    paragraphImageCallback,
+                    paragraphFootnoteCallback
+                )
+            }
         }
-        // 设置多行文本的文本对齐方式
         .textAlign(TextAlign.Start)
-        // 设置文本是否将行间距平分至行的顶部与底部。
         .interopHalfLeading(true)
-        // 自定义设置组件是否支持文本可复制粘贴
-        .interopCopyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
+        .interopCopyOption(if (paragraphMarkdownConfiguration.markdownTheme.isOnCopy) {
             true
         } else {
             false
         })
-        // 自定义长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件
         .interopOnCopy({
-            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
+            str => if (let Some(v) <- paragraphMarkdownConfiguration.textCopyCallback) {
                 v(str)
             }
         })
@@ -174,106 +222,188 @@ class MarkdownParagraphComponent {
     @Builder
     func paragraphComponent19() {
         Text() {
-            if (footnoteBlock.isSome()) {
-                Span("[^${footnoteBlock().noteid}]: ")
-                    // 设置文本尺寸
-                    .fontSize(markdownConfiguration.markdownTheme.paragraphTextSize)
-                    // 设置文本的字体粗细
+            if (paragraphNodeView.footnoteID.isSome()) {
+                Span("[^${paragraphNodeView.footnoteID()}]: ")
+                    .fontSize(paragraphMarkdownConfiguration.markdownTheme.paragraphTextSize)
                     .fontWeight(FontWeight.W400)
-                    // 设置文本颜色
-                    .fontColor(markdownConfiguration.markdownTheme.paragraphTextColor)
+                    .fontColor(paragraphMarkdownConfiguration.markdownTheme.paragraphTextColor)
             }
-            ForEach(
-                nodeViewList,
-                itemGeneratorFunc: {
-                    item19: NodeView, idx19: Int64 => paragraphListComponent(item19, idx19)
-                },
-                keyGeneratorFunc: {
-                    item19: NodeView, idx19: Int64 => return "${idx19}-${item19.nodeHash}-${item19.contentHash}"
-                }
-            )
+            if (isRefresh) {
+                markdownSpanListComponent(
+                    paragraphNodeViewList,
+                    paragraphMarkdownConfiguration,
+                    paragraphComponentWidth,
+                    paragraphTocListOnClick,
+                    paragraphImageCallback,
+                    paragraphFootnoteCallback
+                )
+            }
         }
-        // 设置多行文本的文本对齐方式
         .textAlign(TextAlign.Start)
-        // 设置文本是否将行间距平分至行的顶部与底部。
         .halfLeading(true)
-        // 支持设备内复制
-        .copyOption(if (markdownConfiguration.markdownTheme.isOnCopy) {
+        .copyOption(if (paragraphMarkdownConfiguration.markdownTheme.isOnCopy) {
             CopyOptions.LocalDevice
         } else {
             CopyOptions.None
         })
-        // 长按文本内部区域弹出剪贴板后，点击剪切板复制按钮，触发该事件。目前文本复制仅支持文本。
         .onCopy({
-            str => if (let Some(v) <- markdownConfiguration.textCopyCallback) {
+            str => if (let Some(v) <- paragraphMarkdownConfiguration.textCopyCallback) {
                 v(str)
             }
         })
     }
 
+    /**
+     * Span循环列表
+     *
+     * @param spanListNodeViewList NodeView列表
+     * @param spanListMarkdownConfiguration markdown配置
+     * @param spanListComponentWidth 最大宽度
+     * @param spanListTocListOnClick TOC点击事件
+     * @param spanListImageCallback 图片点击事件
+     * @param spanListFootnoteCallback 脚注点击事件
+     */
     @Builder
-    func paragraphListComponent(item: NodeView, index: Int64) {
-        if (item.node is CommonmarkText) {
-            // 文本
-            if (DeviceInfo.sdkApiVersion >= 19) {
-                paragraphTextComponent19(item, isDescList, markdownConfiguration)
-            } else {
-                paragraphTextComponent18(item, isDescList, markdownConfiguration)
+    func markdownSpanListComponent(
+        spanListNodeViewList: ObservedArrayList<NodeView>,
+        spanListMarkdownConfiguration: MarkdownConfiguration,
+        spanListComponentWidth: Float64,
+        spanListTocListOnClick: ?(Int64) -> Unit,
+        spanListImageCallback: (String) -> Unit,
+        spanListFootnoteCallback: (String) -> Unit
+    ) {
+        ForEach(
+            spanListNodeViewList,
+            itemGeneratorFunc: {
+                spanListNodeView: NodeView, index: Int64 => if (spanListNodeView.nodeType == "Text" || spanListNodeView.nodeType == "Code" || spanListNodeView.nodeType == "Footnote") {
+                    // Text：普通文本，Code：内联代码，Footnote：脚注节点
+                    markdownSpanComponent(
+                        spanListMarkdownConfiguration,
+                        spanListNodeView,
+                        spanListTocListOnClick,
+                        spanListFootnoteCallback,
+                        false
+                    )
+                } else if (spanListNodeView.nodeType == "LatexMathNode") {
+                    // 数学公式
+                    MarkdownLatexMathInLineComponent(
+                        markdownTheme: spanListMarkdownConfiguration.markdownTheme,
+                        latexMathInLineStr: spanListNodeView.nodeText,
+                        latexMathInLineComponentWidth: spanListComponentWidth,
+                        latexImageCallback: spanListMarkdownConfiguration.latexImageCallback,
+                        latexStrCallback: spanListMarkdownConfiguration.latexStrCallback,
+                        latexMathInLineLinkCallback: spanListMarkdownConfiguration.linkCallback,
+                        latexMathInLineIsLink: spanListNodeView.isLink,
+                        latexMathInLineLinkUrl: spanListNodeView.linkUrl
+                    )
+                } else if (spanListNodeView.nodeType == "SoftLineBreak") {
+                    // 软换行
+                    Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.isLineBreak))
+                } else if (spanListNodeView.nodeType == "HardLineBreak") {
+                    // 硬换行
+                    Span("\n")
+                } else if (spanListNodeView.nodeType == "Link" || spanListNodeView.nodeType == "HeadLink") {
+                    // 链接, TOC列表链接
+                    if (isOneLink) {
+                        spanLinkComponent(
+                            spanListNodeView,
+                            index,
+                            spanListMarkdownConfiguration,
+                            spanListTocListOnClick,
+                            spanListFootnoteCallback,
+                            true
+                        )
+                    } else {
+                        spanLinkComponent(
+                            spanListNodeView,
+                            index,
+                            spanListMarkdownConfiguration,
+                            spanListTocListOnClick,
+                            spanListFootnoteCallback,
+                            false
+                        )
+                    }
+                } else if (spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage" || spanListNodeView.nodeType == "ImageHtmlNode") {
+                    // Image：图片节点， StyleImage：图片Style节点，ImageHtmlNode：HTML图片
+                    spanImageComponent(
+                        spanListNodeView,
+                        index,
+                        spanListMarkdownConfiguration,
+                        spanListComponentWidth,
+                        spanListImageCallback
+                    )
+                } else {
+                    // 其他节点
+                    paragraphCustomParagraphLineBuilder(spanListNodeView, index)
+                }
+            },
+            keyGeneratorFunc: {
+                spanListNodeView: NodeView, idx: Int64 => return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
             }
-        } else if (item.node is HeadLink) {
-            // TOC列表
-            if (DeviceInfo.sdkApiVersion >= 19) {
-                paragraphTocComponent19(item, isDescList, markdownConfiguration, tocListOnClick)
-            } else {
-                paragraphTocComponent18(item, isDescList, markdownConfiguration, tocListOnClick)
+        )
+    }
+
+    /**
+     * 段落控件数据刷新
+     *
+     * @param paragraphNodeView 刷新的新数据
+     */
+    public func refreshParagraphData(paragraphNodeView: NodeView): Unit {
+        this.paragraphNodeView = paragraphNodeView
+        let refreshNodeViewChildren = paragraphNodeView.children // 子节点数据
+        let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
+        let paragraphNodeViewListSize: Int64 = paragraphNodeViewList.size // 页面缓存的数据长度
+        if (refreshNodeViewSize == 0) {
+            paragraphNodeViewList.clear()
+            return
+        }
+        if (refreshNodeViewSize > 0) {
+            isRefresh = true
+        }
+        if (refreshNodeViewSize > paragraphNodeViewListSize) {
+            // 新数据大于页面数据
+            refreshParagraphDatas(paragraphNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
+            // 循环添加新数据
+            for (i in paragraphNodeViewListSize..refreshNodeViewSize) {
+                paragraphNodeViewList.append(refreshNodeViewChildren[i])
             }
-        } else if (item.node is Footnote) {
-            // 脚注
-            if (DeviceInfo.sdkApiVersion >= 19) {
-               paragraphFootnoteComponent19(item, isDescList, markdownConfiguration, fontCallback)
-            } else {
-                paragraphFootnoteComponent18(item, isDescList, markdownConfiguration, fontCallback)
-            }
-        } else if (item.node is Code) {
-            // 内联代码
-            inLineCodeSpanComponent(item, markdownConfiguration, item.strongEmphasis, false, isDescList, 1, 0)
-        } else if (item.node is CommonmarkLink) {
-            // 链接
-            linkSpanComponent(isOneLink, isListTo, 0, item, markdownConfiguration, componentWidth, imageCallback, false, isDescList, 1, markdownConfiguration.markdownTheme.isListLinkStyle)
-        } else if (item.node is HardLineBreak) {
-            // 硬换行
-            Span("\n")
-        } else if (item.node is SoftLineBreak) {
-            // 软换行
-            Span(spanSoftLineBreak(markdownConfiguration.markdownTheme.isLineBreak))
-        } else if (item.node is ImageHtmlNode) {
-            // HTML图片
-            htmlImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-        } else if (item.node is StyleImage) {
-            //  图片Style节点
-            styleImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-        } else if (item.node is CommonmarkImage) {
-            // 图片节点
-            coreImageSpanComponent(item, markdownConfiguration, componentWidth, imageCallback)
-        } else if (item.node is LatexMathNode) {
-            // 数学公式节点
-            latexSpanComponent(item, markdownConfiguration, componentWidth)
+        } else if (refreshNodeViewSize == paragraphNodeViewListSize) {
+            // 新数据等于页面数据
+            refreshParagraphDatas(paragraphNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
         } else {
-            // TODO 其他节点
-            customParagraphLineBuilder(item, index)
+            // 新数据小于页面数据
+            refreshParagraphDatas(refreshNodeViewSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
+            // 循环删除多余的旧数据
+            for (i in paragraphNodeViewListSize - 1..=refreshNodeViewSize : -1) {
+                paragraphNodeViewList.remove(i)
+            }
+        }
+        if (paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Link" || paragraphNodeViewList[0].nodeType == "HeadLink")) {
+            isOneLink = true
+        } else {
+            isOneLink = false
         }
     }
 
     /**
-     * 数据刷新
+     * 循环判断历史数据有没有做过修改
+     *
+     * @param size 长度
+     * @param refreshNodeViews 刷新的数据
      */
-    public func refreshData(nodeView: NodeView): Unit {
-        this.nodeView = nodeView
-        refreshnodeViewList(this.nodeView, nodeViewList, Option<HashMap<Int64,MarkdownTableBlockCellComponent>>.None)
-        if (nodeViewList.size == 1 && nodeViewList[0].node is CommonmarkLink) {
-            isOneLink = true
-        } else {
-            isOneLink = false
+    func refreshParagraphDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
+        for (i in 0..size) {
+            let refreshNodeView = refreshNodeViews[i]
+            let dataSourceNode = paragraphNodeViewList[i]
+            let newNodeHash = refreshNodeView.nodeHash
+            let oldNodeHash = dataSourceNode.nodeHash
+            let newContentHash = refreshNodeView.contentHash
+            let oldContentHash = dataSourceNode.contentHash
+            if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
+                // 自身节点唯一ID不相同需要刷新数据
+                // 子节点唯一ID不相同需要刷新子节点数据
+                paragraphNodeViewList[i] = refreshNodeView
+            }
         }
     }
 }

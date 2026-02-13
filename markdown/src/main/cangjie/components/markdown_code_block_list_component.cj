@@ -3,9 +3,6 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
@@ -19,13 +16,7 @@ class MarkdownCodeBlockListComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 所有数据
-     */
-    @State
-    var arrayLists: ArrayList<ArrayList<PrismNodesParseResUI>> = ArrayList<ArrayList<PrismNodesParseResUI>>()
-
-    /**
-     * NodeView
+     * Node
      */
     var nodeView: NodeView
 
@@ -61,6 +52,12 @@ class MarkdownCodeBlockListComponent {
      */
     @State
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>()
+
+    /**
+     * 所有数据
+     */
+    @State
+    var arrayLists: ArrayList<ArrayList<PrismNodesParseResUI>> = ArrayList<ArrayList<PrismNodesParseResUI>>()
 
     protected override func aboutToAppear(): Unit {
         stringCodeToResLists()

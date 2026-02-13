@@ -3,9 +3,6 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
@@ -36,6 +33,11 @@ public class MarkdownConfiguration {
      * 图片替换事件
      */
     protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
+
+    /**
+     * 图片下载的点击事件
+     */
+    protected var imageDownloadCallback: ?(String) -> Unit = None
 
     /**
      * 音频的点击事件
@@ -96,12 +98,12 @@ public class MarkdownConfiguration {
     /**
      * TOC跳转指定位置
      */
-    protected var tocIndexCallback: ?(?Float64) -> Unit = None
+    protected var tocIndexCallback: ?(?Int64) -> Unit = None
 
     /**
      * 脚注跳转指定位置
      */
-    protected var footnoteCallback: ?(?Float64) -> Unit = None
+    protected var footnoteCallback: ?(?Int64) -> Unit = None
 
     /**
      * 全部文本
@@ -114,6 +116,7 @@ public class MarkdownConfiguration {
         this.linkCallback = builder.linkCallback
         this.imageCallback = builder.imageCallback
         this.imageCallbackCallback = builder.imageCallbackCallback
+        this.imageDownloadCallback = builder.imageDownloadCallback
         this.audioCallback = builder.audioCallback
         this.videoCallback = builder.videoCallback
         this.videoImageCallback = builder.videoImageCallback
@@ -187,6 +190,11 @@ public class MarkdownConfigurationBuilder {
     var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
 
     /**
+     * 图片下载的点击事件
+     */
+    var imageDownloadCallback: ?(String) -> Unit = None
+
+    /**
      * 音频的点击事件
      */
     var audioCallback: ?(String) -> Unit = None
@@ -245,12 +253,12 @@ public class MarkdownConfigurationBuilder {
     /**
      * TOC跳转指定位置
      */
-    var tocIndexCallback: ?(?Float64) -> Unit = None
+    var tocIndexCallback: ?(?Int64) -> Unit = None
 
     /**
      * 脚注跳转指定位置
      */
-    var footnoteCallback: ?(?Float64) -> Unit = None
+    var footnoteCallback: ?(?Int64) -> Unit = None
 
     /**
      * 全部文本
@@ -266,6 +274,7 @@ public class MarkdownConfigurationBuilder {
         this.linkCallback = configuration.linkCallback
         this.imageCallback = configuration.imageCallback
         this.imageCallbackCallback = configuration.imageCallbackCallback
+        this.imageDownloadCallback = configuration.imageDownloadCallback
         this.audioCallback = configuration.audioCallback
         this.videoCallback = configuration.videoCallback
         this.videoImageCallback = configuration.videoImageCallback
@@ -332,6 +341,17 @@ public class MarkdownConfigurationBuilder {
      */
     public func setImageCallbackCallback(imageCallbackCallback: (String) -> ?Array<UInt8>): MarkdownConfigurationBuilder {
         this.imageCallbackCallback = imageCallbackCallback
+        return this
+    }
+
+    /**
+     * 设置图片下载的点击事件
+     *
+     * @param imageDownloadCallback 图片下载的点击事件
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setImageDownloadCallback(imageDownloadCallback: (String) -> Unit): MarkdownConfigurationBuilder {
+        this.imageDownloadCallback = imageDownloadCallback
         return this
     }
 
@@ -440,7 +460,7 @@ public class MarkdownConfigurationBuilder {
      * @param tocIndexCallback TOC跳转指定位置接口 (?Float64:位置距离)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setTocIndexCallback(tocIndexCallback: (?Float64) -> Unit): MarkdownConfigurationBuilder {
+    public func setTocIndexCallback(tocIndexCallback: (?Int64) -> Unit): MarkdownConfigurationBuilder {
         this.tocIndexCallback = tocIndexCallback
         return this
     }
@@ -451,7 +471,7 @@ public class MarkdownConfigurationBuilder {
      * @param footnoteCallback 脚注跳转指定位置接口 (?Float64:位置距离)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setFootnoteCallback(footnoteCallback: (?Float64) -> Unit): MarkdownConfigurationBuilder {
+    public func setFootnoteCallback(footnoteCallback: (?Int64) -> Unit): MarkdownConfigurationBuilder {
         this.footnoteCallback = footnoteCallback
         return this
     }

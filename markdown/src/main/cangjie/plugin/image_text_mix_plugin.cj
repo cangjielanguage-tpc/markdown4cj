@@ -54,9 +54,9 @@ func splitChildren(
     nodeParentFactory: () -> Node,
     spliterParentFactory: () -> Node
 ): Unit {
-    match ((srcNode.getFirstChild(), srcNode.getLastChild())) {
-        case (Some(a), Some(b)) where refEq(a, b) => return
-        case _ => ()
+    if ((srcNode.getFirstChild()?.getNext()).flatten().isNone()) {
+        // 子节点数量 <= 1
+        return
     }
     var lastBlock: ?Node = None
     var splitMatched = false // 是否触发切割
@@ -93,6 +93,11 @@ func splitChildren(
         }
     }
     if (srcNode.getFirstChild().isNone()) {
+        // 如果srcNode已空 将sourcespan信息移动到下一个节点
+        let n = srcNode.getNext()
+        for (ss in srcNode.getSourceSpans()) {
+            n?.addSourceSpan(ss)
+        }
         srcNode.unlink()
     }
 }

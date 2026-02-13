@@ -3,13 +3,6 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
-import ohos.ark_interop.*
-import ohos.ark_interop_helper.*
-
 /**
  * JSContext
  */
@@ -103,7 +96,7 @@ public open class InteropObjectBase {
         jsObj.getOrThrow().toJSValue()
     }
 
-    static func fromJSValue(_: JSContext, input: JSValue): InteropObjectBase {
+    public static func fromJSValue(_: JSContext, input: JSValue): InteropObjectBase {
         InteropObjectBase(input.asObject())
     }
 }
@@ -178,7 +171,7 @@ public class ImageLoadResultInterop <: InteropObjectBase {
         }
     }
 
-    static func fromJSValue(context: JSContext, input: JSValue): ImageLoadResultInterop {
+    public static func fromJSValue(context: JSContext, input: JSValue): ImageLoadResultInterop {
         let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
         let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
         let componentWidth = Float64.fromJSValue(context, input.getProperty(context, "componentWidth"))
@@ -218,7 +211,7 @@ public class CJImageErrorInterop <: InteropObjectBase {
         }
     }
 
-    static func fromJSValue(context: JSContext, input: JSValue): CJImageErrorInterop {
+    public static func fromJSValue(context: JSContext, input: JSValue): CJImageErrorInterop {
         let componentWidth = Float64.fromJSValue(context, input.getProperty(context, "componentWidth"))
         let componentHeight = Float64.fromJSValue(context, input.getProperty(context, "componentHeight"))
         let message = String.fromJSValue(context, input.getProperty(context, "message"))
@@ -245,7 +238,7 @@ public class CJSizeOptions <: InteropObjectBase {
         }
     }
 
-    static func fromJSValue(context: JSContext, input: JSValue): CJSizeOptions {
+    public static func fromJSValue(context: JSContext, input: JSValue): CJSizeOptions {
         let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
         let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
         CJSizeOptions(width, height)
@@ -271,7 +264,7 @@ public class CJPosition <: InteropObjectBase {
         }
     }
 
-    static func fromJSValue(context: JSContext, input: JSValue): CJPosition {
+    public static func fromJSValue(context: JSContext, input: JSValue): CJPosition {
         let x = Float64.fromJSValue(context, input.getProperty(context, "x"))
         let y = Float64.fromJSValue(context, input.getProperty(context, "y"))
         CJPosition(x, y)
@@ -311,7 +304,7 @@ public class CJArea <: InteropObjectBase {
         }
     }
 
-    static func fromJSValue(context: JSContext, input: JSValue): CJArea {
+    public static func fromJSValue(context: JSContext, input: JSValue): CJArea {
         let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
         let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
         let position = CJPosition.fromJSValue(context, input.getProperty(context, "position"))
@@ -339,10 +332,52 @@ public class CJLengthMetrics <: InteropObjectBase {
         }
     }
 
-    static func fromJSValue(context: JSContext, input: JSValue): CJLengthMetrics {
+    public static func fromJSValue(context: JSContext, input: JSValue): CJLengthMetrics {
         let value = Float64.fromJSValue(context, input.getProperty(context, "value"))
         let unit = Int64.fromJSValue(context, input.getProperty(context, "unit"))
         CJLengthMetrics(value, unit)
+    }
+}
+
+public class CJArkRectResult <: InteropObjectBase {
+    public CJArkRectResult(x: Float64, y: Float64, width: Float64, height: Float64) {
+        super(getCtx().object())
+        setProp("x", x.toJSValue(getCtx()))
+        setProp("y", y.toJSValue(getCtx()))
+        setProp("width", width.toJSValue(getCtx()))
+        setProp("height", height.toJSValue(getCtx()))
+    }
+
+    public prop x: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("x"))
+        }
+    }
+
+    public prop y: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("y"))
+        }
+    }
+
+    public prop width: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("width"))
+        }
+    }
+
+    public prop height: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("height"))
+        }
+    }
+
+    public static func fromJSValue(context: JSContext, input: JSValue): CJArkRectResult {
+        let x = Float64.fromJSValue(context, input.getProperty(context, "x"))
+        let y = Float64.fromJSValue(context, input.getProperty(context, "y"))
+        let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
+        let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
+        CJArkRectResult(x, y, width, height)
     }
 }
 
@@ -385,6 +420,39 @@ extend Span {
             let span = global["Span"].asObject(ctx)
             let lineHeight = span["lineHeight"].asFunction(ctx)
             lineHeight.call(value.toJSValue(ctx))
+        } catch (e: Exception) {
+        }
+        return this
+    }
+
+    func interopDecorationStyle(decorationStyle: (TextDecorationType, Color, Int32)): Span {
+        try {
+            let dType: Float64 = match (decorationStyle[0]) {
+                case Underline => 1.0
+                case Overline => 2.0
+                case LineThrough => 3.0
+                case _ => 0.0
+            }
+
+            let dColor: UInt32 = decorationStyle[1].toUInt32()
+            let colorString: String = dColor.format("08X")
+
+            let dStyle: Float64 = if (decorationStyle[2] < 0 || decorationStyle[2] > 4) {
+                0.0 // 负数和超出枚举范围，设置为0
+            } else {
+                Float64(decorationStyle[2])
+            }
+
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let span = global["Span"].asObject(ctx)
+
+            let decoration = span["decoration"].asFunction(ctx)
+            let param: JSObject = ctx.object()
+            param["type"] = ctx.number(dType).toJSValue()
+            param["color"] = ctx.string("#${colorString}").toJSValue()
+            param["style"] = ctx.number(dStyle).toJSValue()
+            decoration.call(param.toJSValue())
         } catch (e: Exception) {
         }
         return this
@@ -539,11 +607,23 @@ extend List {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let column = global["List"].asObject(ctx)
+            let list = global["List"].asObject(ctx)
             let callBackFunc = getCtx().function {
                 ctx, callInfo => callback(CJSizeOptions.fromJSValue(ctx, callInfo[0]), CJSizeOptions.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
             }
-            column.callMethod("onSizeChange", [callBackFunc.toJSValue()])
+            list.callMethod("onSizeChange", [callBackFunc.toJSValue()])
+        } catch (e: Exception) {
+        }
+        return this
+    }
+
+    func interopEnableScrollInteraction(isBool: Bool): List {
+        try {
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let list = global["List"].asObject(ctx)
+            let enableScrollInteraction = list["enableScrollInteraction"].asFunction(ctx)
+            enableScrollInteraction.call(isBool.toJSValue(ctx))
         } catch (e: Exception) {
         }
         return this
@@ -555,11 +635,25 @@ extend ListItem {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let column = global["ListItem"].asObject(ctx)
+            let listItem = global["ListItem"].asObject(ctx)
             let callBackFunc = getCtx().function {
                 ctx, callInfo => callback(CJArea.fromJSValue(ctx, callInfo[0]), CJArea.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
             }
-            column.callMethod("onAreaChange", [callBackFunc.toJSValue()])
+            listItem.callMethod("onAreaChange", [callBackFunc.toJSValue()])
+        } catch (e: Exception) {
+        }
+        return this
+    }
+
+    func interopOnSizeChange(callback: (CJSizeOptions, CJSizeOptions) -> Unit): ListItem {
+        try {
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let listItem = global["ListItem"].asObject(ctx)
+            let callBackFunc = getCtx().function {
+                ctx, callInfo => callback(CJSizeOptions.fromJSValue(ctx, callInfo[0]), CJSizeOptions.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+            }
+            listItem.callMethod("onSizeChange", [callBackFunc.toJSValue()])
         } catch (e: Exception) {
         }
         return this
