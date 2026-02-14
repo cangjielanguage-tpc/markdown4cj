@@ -286,7 +286,7 @@ struct CodeLinePage {
 export class CodeLineData {
   _isFull: boolean = true
   _codeTextColor: number = 0xFF000000
-  _codeBackgroundColor: number = 0xFF191919
+  _codeBackgroundColor: number = 0xFFE0E0E0
   _codeTextSize: number = 13
   _codeTypeface: string = "HarmonyOS Sans"
   _pagePath: string = ""
