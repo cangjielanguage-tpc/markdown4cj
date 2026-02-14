@@ -288,44 +288,29 @@ public class CJMarkdownTheme {
     var taskListItemLength: ?Float64 = None
 
     /**
-     * 内联代码是否是图片显示
-     */
-    var isCodeStyle: ?Bool = None
-
-    /**
      * 是否格式化代码块内容
      */
     var isCodeFormat: ?Bool = None
 
     /**
-     * 文本、图片格式内联代码文本颜色
+     * 内联代码文本颜色
      */
     var codeTextColor: ?Color = None
 
     /**
-     * 文本、图片格式内联代码背景颜色
+     * 内联代码背景颜色
      */
     var codeBackgroundColor: ?Color = None
 
     /**
-     * 文本、图片格式内联代码文本大小
+     * 内联代码文本大小
      */
     var codeTextSize: ?Float64 = None
 
     /**
-     * 文本格式内联代码文本字体
+     * 内联代码文本字体
      */
     var codeTypeface: ?String = None
-
-    /**
-     * 图片格式内联代码文本左右边距
-     */
-    var codeLeftAndRightPadding: ?Float64 = None
-
-    /**
-     * 图片格式内联代码文本高度
-     */
-    var codeHeight: ?Float64 = None
 
     /**
      * 围栏代码块代码高亮是否同步解析
@@ -1506,15 +1491,6 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置内联代码是否是图片显示
-     *
-     * @param isCodeStyle 内联代码是否是图片显示 - true：图片化显示；false：不图片化显示。默认false
-     */
-    public func setIsCodeStyle(isCodeStyle: Bool): Unit {
-        this.isCodeStyle = isCodeStyle
-    }
-
-    /**
      * 设置是否格式化代码块内容
      *
      * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
@@ -1524,57 +1500,39 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置文本、图片格式内联代码文本颜色
+     * 设置内联代码文本颜色
      *
-     * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
+     * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
      */
     public func setCodeTextColor(codeTextColor: UInt32): Unit {
         this.codeTextColor = transColorForTrasparent(codeTextColor)
     }
 
     /**
-     * 设置文本、图片格式内联代码背景颜色
+     * 设置内联代码背景颜色
      *
-     * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFF191919
+     * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFF191919
      */
     public func setCodeBackgroundColor(codeBackgroundColor: UInt32): Unit {
         this.codeBackgroundColor = transColorForTrasparent(codeBackgroundColor)
     }
 
     /**
-     * 设置文本、图片格式内联代码文本大小
+     * 设置内联代码文本大小
      *
-     * @param codeTextSize 文本、图片格式内联代码文本大小 - 默认13.0fp
+     * @param codeTextSize 内联代码文本大小 - 默认13.0fp
      */
     public func setCodeTextSize(codeTextSize: Float64): Unit {
         this.codeTextSize = codeTextSize
     }
 
     /**
-     * 设置文本格式内联代码文本字体
+     * 设置内联代码文本字体
      *
-     * @param codeTypeface 文本格式内联代码文本字体 - 默认"HarmonyOS Sans"
+     * @param codeTypeface 内联代码文本字体 - 默认"HarmonyOS Sans"
      */
     public func setCodeTypeface(codeTypeface: String): Unit {
         this.codeTypeface = codeTypeface
-    }
-
-    /**
-     * 设置图片格式内联代码文本左右边距
-     *
-     * @param codeLeftAndRightPadding 图片格式内联代码文本左右边距 - 默认4.0vp
-     */
-    public func setCodeLeftAndRightPadding(codeLeftAndRightPadding: Float64): Unit {
-        this.codeLeftAndRightPadding = codeLeftAndRightPadding
-    }
-
-    /**
-     * 设置图片格式内联代码文本高度
-     *
-     * @param codeHeight 图片格式内联代码文本高度 - 默认20.0vp
-     */
-    public func setCodeHeight(codeHeight: Float64): Unit {
-        this.codeHeight = codeHeight
     }
 
     /**

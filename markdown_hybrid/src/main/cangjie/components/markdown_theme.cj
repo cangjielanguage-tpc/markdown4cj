@@ -22,10 +22,7 @@ import ohos.state_macro_manage.*
  *          有序列表：有序列表前缀文本是否加粗、有序列表前缀文本颜色、有序列表前缀文本大小、有序列表前缀文本行高
  *          无序列表：无序列表前缀是否全部是实心圆型、无序列表前缀文本颜色、无序列表前缀文本大小、无序列表前缀文本行高
  *          任务列表：任务列表选择框宽高
- * 5：代码 - 内联代码是否是图片显示
- *          文本/图片格式内联代码文本颜色、文本/图片格式内联代码背景颜色、文本/图片格式内联代码文本大小
- *          文本格式内联代码：文本格式内联代码文本字体
- *          图片格式内联代码：图片格式内联代码文本左右边距、图片格式内联代码文本高度
+ * 5：代码 - 内联代码：内联代码文本颜色、内联代码背景颜色、内联代码文本大小、内联代码文本字体
  *          围栏代码块：是否格式化代码块内容、围栏代码块代码高亮是否同步解析
  *          缩进/围栏/组合/单独代码块：缩进/围栏/组合/单独代码块代码文本颜色、缩进/围栏/组合/单独代码块代码类型文本颜色、缩进/围栏/组合/单独代码块代码类型文本、缩进/围栏/组合/单独代码块代码类型和代码块距离、缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示、缩进/围栏/组合/单独代码块代码行号是否显示、缩进/围栏/组合/单独代码块背景颜色、缩进/围栏/组合/单独代码块左边距、缩进/围栏/组合/单独代码块字体、缩进/围栏/组合/单独代码块代码文本大小、缩进/围栏/组合/单独代码块代码文本行高、缩进/围栏/组合/单独代码块圆角大小、缩进/围栏/组合/单独代码块代码全屏按钮是否显示、缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高、缩进/围栏/组合/单独代码块代码全屏按钮默认图标、缩进/围栏/组合/单独代码块代码复制按钮默认图标
  *          组合代码块：组合代码块未选中标题字体大小、组合代码块选中标题字体大小、组合代码块选中标题文本颜色、组合代码块未选中标题文本颜色、组合代码块选中标题背景颜色、组合代码块未选中标题背景颜色
@@ -330,44 +327,29 @@ public class MarkdownTheme {
     protected var taskListItemLength: Float64 = 15.0
 
     /**
-     * 内联代码是否是图片显示
-     */
-    protected var isCodeStyle: Bool = false
-
-    /**
      * 是否格式化代码块内容
      */
     protected var isCodeFormat: Bool = false
 
     /**
-     * 文本/图片格式内联代码文本颜色
+     * 内联代码文本颜色
      */
     protected var codeTextColor: Color = COLOR_FF000000
 
     /**
-     * 文本/图片格式内联代码背景颜色
+     * 内联代码背景颜色
      */
     protected var codeBackgroundColor: Color = COLOR_FFEAEAEA
 
     /**
-     * 文本/图片格式内联代码文本大小
+     * 内联代码文本大小
      */
-    protected var codeTextSize: Float64 = fp2px(13.0.fp).getOrThrow().value
+    protected var codeTextSize: Float64 = 13.0
 
     /**
      * 文本格式内联代码文本字体
      */
     protected var codeTypeface: String = "HarmonyOS Sans"
-
-    /**
-     * 图片格式内联代码文本左右边距
-     */
-    protected var codeLeftAndRightPadding: Float64 = vp2px(4.0.vp).getOrThrow().value
-
-    /**
-     * 图片格式内联代码文本高度
-     */
-    protected var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
      * 围栏代码块代码高亮是否同步解析
@@ -1191,14 +1173,11 @@ public class MarkdownTheme {
 
         // 5、代码
         // 5.1、内联代码
-        this.isCodeStyle = builder.isCodeStyle
         this.isCodeFormat = builder.isCodeFormat
         this.codeTextColor = builder.codeTextColor
         this.codeBackgroundColor = builder.codeBackgroundColor
         this.codeTypeface = builder.codeTypeface
         this.codeTextSize = builder.codeTextSize
-        this.codeLeftAndRightPadding = builder.codeLeftAndRightPadding
-        this.codeHeight = builder.codeHeight
         // 5.2、代码块
         this.isCodeBlockParserSync = builder.isCodeBlockParserSync
         this.codeBlockTextColor = builder.codeBlockTextColor
@@ -1891,44 +1870,29 @@ public class MarkdownThemeBuilder {
     var taskListItemLength: Float64 = 15.0
 
     /**
-     * 内联代码是否是图片显示
-     */
-    var isCodeStyle: Bool = false
-
-    /**
      * 是否格式化代码块内容
      */
     var isCodeFormat: Bool = false
 
     /**
-     * 文本/图片格式内联代码文本颜色
+     * 内联代码文本颜色
      */
     var codeTextColor: Color = COLOR_FF000000
 
     /**
-     * 文本/图片格式内联代码背景颜色
+     * 内联代码背景颜色
      */
     var codeBackgroundColor: Color = COLOR_FFEAEAEA
 
     /**
-     * 文本/图片格式内联代码文本大小
+     * 内联代码文本大小
      */
-    var codeTextSize: Float64 = fp2px(13.0.fp).getOrThrow().value
+    var codeTextSize: Float64 = 13.0
 
     /**
      * 文本格式内联代码文本字体
      */
     var codeTypeface: String = "HarmonyOS Sans"
-
-    /**
-     * 图片格式内联代码文本左右边距
-     */
-    var codeLeftAndRightPadding: Float64 = vp2px(4.0.vp).getOrThrow().value
-
-    /**
-     * 图片格式内联代码文本高度
-     */
-    var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
      * 围栏代码块代码高亮是否同步解析
@@ -2755,14 +2719,11 @@ public class MarkdownThemeBuilder {
 
         // 5、代码
         // 5.1、内联代码
-        this.isCodeStyle = theme.isCodeStyle
         this.isCodeFormat = theme.isCodeFormat
         this.codeTextColor = theme.codeTextColor
         this.codeBackgroundColor = theme.codeBackgroundColor
         this.codeTypeface = theme.codeTypeface
         this.codeTextSize = theme.codeTextSize
-        this.codeLeftAndRightPadding = theme.codeLeftAndRightPadding
-        this.codeHeight = theme.codeHeight
         // 5.2、代码块
         this.isCodeBlockParserSync = theme.isCodeBlockParserSync
         this.codeBlockTextColor = theme.codeBlockTextColor
@@ -3754,17 +3715,6 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置内联代码是否是图片显示
-     *
-     * @param isCodeStyle 内联代码是否是图片显示 - true：图片化显示；false：不图片化显示。默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setIsCodeStyle(isCodeStyle: Bool): MarkdownThemeBuilder {
-        this.isCodeStyle = isCodeStyle
-        return this
-    }
-
-    /**
      * 设置是否格式化代码块内容
      *
      * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块；false：不格式化代码块。默认false
@@ -3776,9 +3726,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置文本、图片格式内联代码文本颜色
+     * 设置内联代码文本颜色
      *
-     * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
+     * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeTextColor(codeTextColor: Color): MarkdownThemeBuilder {
@@ -3787,9 +3737,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置文本、图片格式内联代码背景颜色
+     * 设置内联代码背景颜色
      *
-     * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFFEAEAEA
+     * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFFEAEAEA
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeBackgroundColor(codeBackgroundColor: Color): MarkdownThemeBuilder {
@@ -3798,46 +3748,24 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置文本、图片格式内联代码文本大小
+     * 设置内联代码文本大小
      *
-     * @param codeTextSize 文本、图片格式内联代码文本大小 - 默认13.0fp
+     * @param codeTextSize 内联代码文本大小 - 默认13.0fp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeTextSize(codeTextSize: Float64): MarkdownThemeBuilder {
-        this.codeTextSize = fp2px(codeTextSize.fp)().value
+        this.codeTextSize = codeTextSize
         return this
     }
 
     /**
-     * 设置文本格式内联代码文本字体
+     * 设置内联代码文本字体
      *
-     * @param codeTypeface 文本格式内联代码文本字体 - 默认"HarmonyOS Sans"
+     * @param codeTypeface内联代码文本字体 - 默认"HarmonyOS Sans"
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeTypeface(codeTypeface: String): MarkdownThemeBuilder {
         this.codeTypeface = codeTypeface
-        return this
-    }
-
-    /**
-     * 设置图片格式内联代码文本左右边距
-     *
-     * @param codeLeftAndRightPadding 图片格式内联代码文本左右边距 - 默认4.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setCodeLeftAndRightPadding(codeLeftAndRightPadding: Float64): MarkdownThemeBuilder {
-        this.codeLeftAndRightPadding = vp2px(codeLeftAndRightPadding.vp)().value
-        return this
-    }
-
-    /**
-     * 设置图片格式内联代码文本高度
-     *
-     * @param codeHeight 图片格式内联代码文本高度 - 默认20.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setCodeHeight(codeHeight: Float64): MarkdownThemeBuilder {
-        this.codeHeight = vp2px(codeHeight.vp)().value
         return this
     }
 

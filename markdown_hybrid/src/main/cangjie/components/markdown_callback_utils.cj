@@ -9,18 +9,6 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 链接的点击事件
- *
- * @param nodeView NodeView
- * @param linkCallback 链接点击事件的回调事件
- */
-func linkOnClick(nodeView: NodeView, linkCallback: ?(String) -> Unit): Unit {
-    if (linkCallback.isSome() && nodeView.link.isSome()) {
-        linkCallback()(nodeView.link().getDestination())
-    }
-}
-
-/**
  * 图片的点击事件
  *
  * @param isLink 是否是链接

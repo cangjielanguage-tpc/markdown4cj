@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 package markdown.components
 
@@ -9,146 +9,213 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 单独图片，本地url，普通图片，没有回调
+ * RawFile入参的图片
  */
 @Component
 public class MarkdownImageRawFileComponent {
     /**
      * markdown配置
      */
-    var imgRawFileConfig: MarkdownConfiguration
+    var rawFileMarkdownTheme: MarkdownTheme
 
     /**
      * 图片链接
      */
-    var imgRawFileDestination: String
+    var rawFileDestination: String
 
     /**
      * 控件宽度 - 单位vp
      */
     @Prop
-    var imgRawFileComponentWidth: Float64
+    var rawFileComponentWidth: Float64
 
     /**
      * 图片点击事件
      */
-    var imgRawFileImgCb: (String) -> Unit
+    var rawFileImageCallback: (String) -> Unit
 
     /**
      * 链接点击事件
      */
-    var imgRawFileLinkCb: ?(String) -> Unit
+    var rawFileLinkCallback: ?(String) -> Unit
 
     /**
      * 是否是链接
      */
-    var imgRawFileIsLink: Bool
+    var rawFileLink: Bool
 
     /**
-     * 链接url
+     * 链接URL
      */
-    var imgRawFileLinkUrl: ?String
+    var rawFileLinkUrl: Option<String>
 
     /**
-     * 图片最大宽度 - 单位px
+     * 图片宽度
+     */
+    var rawFileImageWidth: Option<Length>
+
+    /**
+     * 图片高度
+     */
+    var rawFileImageHeight: Option<Length>
+
+    /**
+     * 图片圆角
+     */
+    var rawFileImageRadius: Option<Length>
+
+    /**
+     * 图片对齐方式
+     */
+    var rawFileImageAlign: Option<HorizontalAlign>
+
+    /**
+     * 图片加载
      */
     @State
-    var imgRawFileComponentImgWidth: Float64 = 0.0
-
-    /**
-     * 图片宽度 - 单位px
-     */
-    @State
-    var imgRawFileImgWidth: ?Float64 = Option<Float64>.None
-
-    /**
-     * 图片高度 - 单位px
-     */
-    @State
-    var imgRawFileImgHeight: ?Float64 = Option<Float64>.None
+    var rawFileImageType: Int64 = 0 // 0：开始加载。1：加载成功完成。2：加载失败
 
     /**
      * 图片数据
      */
     @State
-    var imgRawFileImgPixelMap: Option<PixelMap> = Option<PixelMap>.None
+    var rawFileImagePixelMap: Option<PixelMap> = Option<PixelMap>.None
 
     /**
-     * 解析加载
+     * 图片高度 - 单位px
      */
     @State
-    var imgRawFileImgParse: Int64 = 0 // 0：开始解析。1：解析成功完成。2：解析失败
+    var rawFileHeight: Float64 = 0.0
+
+    /**
+     * 图片宽度 - 单位px
+     */
+    @State
+    var rawFileWidth: Float64 = 0.0
+
+    /**
+     * 图片圆角 - 单位vp
+     */
+    @State
+    var rawFileRadius: Float64 = 0.0
+
+    /**
+     * 占位图片高度 - 单位px
+     */
+    @State
+    var rawFilePlaceholderHeight: Float64 = 0.0
+
+    /**
+     * 占位图片宽度 - 单位px
+     */
+    @State
+    var rawFilePlaceholderWidth: Float64 = 0.0
+
+    /**
+     * 图片最大宽度 - 单位px
+     */
+    @State
+    var rawFileComponentImageWidth: Float64 = 0.0
+
+    /**
+     * 解析子线程
+     */
+    var rawFileFut: ?Future<Unit> = Option<Future<Unit>>.None
+
+    /**
+     * 图片对齐
+     */
+    @State
+    var urlHorizontalAlign: HorizontalAlign = HorizontalAlign.Start
 
     protected override func aboutToAppear(): Unit {
-        imgRawFileComponentImgWidth = vp2px(imgRawFileComponentWidth.vp)().value
-        localRowImageToPixelMap()
+        rawFileComponentImageWidth = vp2px(rawFileComponentWidth.vp)().value
+        rawFileRadius = imageSpanBorderRadius(rawFileImageRadius, rawFileMarkdownTheme.imageBorderRadius)
+        rawFilePlaceholderWidth = if (rawFileMarkdownTheme.imageFixedRatioWidth.isSome()) {
+            rawFileComponentImageWidth * rawFileMarkdownTheme.imageFixedRatioWidth()
+        } else {
+            rawFileComponentImageWidth * rawFileMarkdownTheme.imageMaximumWidth
+        }
+        rawFilePlaceholderHeight = if (rawFileMarkdownTheme.imageFixedRatioWidth.isSome()) {
+            rawFileComponentImageWidth * 9.0 / 16.0 * rawFileMarkdownTheme.imageFixedRatioWidth()
+        } else {
+            rawFileComponentImageWidth * 9.0 / 16.0 * rawFileMarkdownTheme.imageMaximumWidth
+        }
+        urlHorizontalAlign = if(rawFileImageAlign.isSome()){
+            rawFileImageAlign()
+        } else {
+            HorizontalAlign.Start
+        }
+        imageRawFilePixelMap()
     }
 
     protected override func aboutToDisappear(): Unit {
-        imgRawFileImgPixelMap?.Release()
-        imgRawFileImgPixelMap = Option<PixelMap>.None
+        // 清除缓存数据
+        rawFileImagePixelMap?.Release()
+        rawFileImagePixelMap = Option<PixelMap>.None
+        rawFileFut?.cancel()
     }
 
     func build() {
         Column(){
-            if (imgRawFileImgParse == 1) {
-                MarkdownImageBaseRawFileComponent(
-                    markdownConfiguration: imgRawFileConfig,
-                    destination: imgRawFileDestination,
-                    imagePixelMap: imgRawFileImgPixelMap(),
-                    componentImageWidth: imgRawFileComponentImgWidth,
-                    imageCallback: imgRawFileImgCb,
-                    linkCallback: imgRawFileLinkCb,
-                    isLink: imgRawFileIsLink,
-                    linkUrl: imgRawFileLinkUrl,
-                    imageBorderRadius: imgRawFileConfig.markdownTheme.imageBorderRadius,
-                    imageWidth: imgRawFileImgWidth(),
-                    imageHeight: imgRawFileImgHeight()
-                )
-            } else {
-                if (imgRawFileConfig.markdownTheme.imageResource.isSome()) {
-                    MarkdownImageBaseRawFileAltComponent(
-                        markdownConfiguration: imgRawFileConfig,
-                        imageBorderRadius: imgRawFileConfig.markdownTheme.imageBorderRadius,
-                        imageWidth: if (imgRawFileConfig.markdownTheme.imageFixedRatioWidth.isSome()) {
-                            (imgRawFileComponentImgWidth * imgRawFileConfig.markdownTheme.imageFixedRatioWidth()).px
-                        } else {
-                            (imgRawFileComponentImgWidth * imgRawFileConfig.markdownTheme.imageMaximumWidth).px
-                        },
-                        imageHeight: if (imgRawFileConfig.markdownTheme.imageFixedRatioWidth.isSome()) {
-                            (imgRawFileComponentImgWidth * 9.0 / 16.0 * imgRawFileConfig.markdownTheme.imageFixedRatioWidth()).px
-                        } else {
-                            (imgRawFileComponentImgWidth * 9.0 / 16.0 * imgRawFileConfig.markdownTheme.imageMaximumWidth).px
-                        }
-                    )
-                }
+            if (rawFileImageType == 1) {
+                // 加载图片
+                Image(rawFileImagePixelMap())
+                    .margin(top: rawFileMarkdownTheme.imageMarginTop, bottom: rawFileMarkdownTheme.imageMarginBottom)
+                    .borderRadius(rawFileRadius)
+                    .width(rawFileWidth.px)
+                    .height(rawFileHeight.px)
+                    .objectFit(rawFileMarkdownTheme.imageFitType)
+                    .constraintSize(maxWidth: 100.percent)
+                    .onClick {
+                        evt => imageSpanOnClick(rawFileLink, rawFileImageCallback, rawFileLinkCallback, rawFileLinkUrl, rawFileDestination)
+                    }
             }
-            if(imgRawFileConfig.markdownTheme.isImageDownload){
-                MarkdownImageDownloadComponent(
-                    markdownConfiguration: imgRawFileConfig,
-                    destination: imgRawFileDestination
+            if (rawFileMarkdownTheme.imageResource.isSome() && rawFileImageType != 1) {
+                // 图片占位图
+                imagePlaceholderComponent(
+                    rawFileMarkdownTheme.imageResource(),
+                    rawFileMarkdownTheme.imageMarginTop,
+                    rawFileMarkdownTheme.imageMarginBottom,
+                    rawFilePlaceholderWidth,
+                    rawFilePlaceholderHeight,
+                    rawFileRadius
                 )
             }
         }
-        .margin(top: imgRawFileConfig.markdownTheme.imageMarginTop, bottom: imgRawFileConfig.markdownTheme.imageMarginBottom)
+        .alignItems(urlHorizontalAlign)
     }
 
     /**
-     * 图片数据处理 - 本地rawfile图片
+     * 本地图片加载
      */
-    func localRowImageToPixelMap() {
+    func imageRawFilePixelMap() {
         let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
-            pixelMap, width, height => launch {
-                imgRawFileImgPixelMap = pixelMap
-                imgRawFileImgWidth = width
-                imgRawFileImgHeight = height
-                if (imgRawFileImgPixelMap.isSome() && imgRawFileImgWidth.isSome() && imgRawFileImgHeight.isSome()) {
-                    imgRawFileImgParse = 1
+            rawFileImagePixelMap, imageResWidth, imageResHeight => launch {
+                if (rawFileImagePixelMap.isSome() && imageResWidth.isSome() && imageResHeight.isSome()) {
+                    this.rawFileImagePixelMap = rawFileImagePixelMap
+                    let res = imageWidthAndHeight(
+                        rawFileComponentImageWidth,
+                        imageResWidth(),
+                        imageResHeight(),
+                        rawFileImageWidth,
+                        rawFileImageHeight,
+                        rawFileMarkdownTheme.imageFixedRatioWidth,
+                        rawFileMarkdownTheme.imageMaximumWidth
+                    )
+                    rawFileWidth = res[0]
+                    rawFileHeight = res[1]
+                    rawFileImageType = 1
                 } else {
-                    imgRawFileImgParse = 2
+                    rawFileImageType = 2
                 }
             }
         }
-        let fut = rawfileToPixelmap(imgRawFileDestination, imgRawFileConfig.markdownTheme.abilityContext, imgRawFileConfig.markdownTheme.stageContext, imgRawFileComponentImgWidth, callback)
+        rawFileFut = rawfileToPixelmap1(
+            rawFileDestination,
+            rawFileMarkdownTheme.abilityContext,
+            rawFileMarkdownTheme.stageContext,
+            callback
+        )
     }
 }

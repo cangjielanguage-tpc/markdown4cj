@@ -7,7 +7,7 @@ package markdown.plugin
  * 节点树纯文本提取
  */
 public class NodeViewStringBuilder <: ToString {
-    public NodeViewStringBuilder(let root: NodeView) {}
+    public NodeViewStringBuilder(let root: Node) {}
 
     let builder = StringBuilder()
 
@@ -26,8 +26,8 @@ public class NodeViewStringBuilder <: ToString {
     }
 
     // 使用深度优先遍历处理节点树
-    func traverse(nodeView: NodeView): Unit {
-        let node = nodeView.node
+    func traverse(nodeView: Node): Unit {
+        let node = nodeView
 
         if (leafNode(node)) {
             return
@@ -37,29 +37,28 @@ public class NodeViewStringBuilder <: ToString {
         match (node) {
             // 处理列表
             case v: ListItem =>
-                if (nodeView.bulletList) {
-                    add("  " * nodeView.bulletListDepth)
-                } else {
-                    add("  " * nodeView.depth).add(nodeView.order).add('. ')
+                add("  " * v.listItemDepth())
+                if (let Some(_: OrderedList) <- v.getParent()) {
+                    add(v.listItemIndex()).add('. ')
                 }
-            case v: BlockQuote => add("  " * nodeView.blockQuoteDepth)
+            case v: BlockQuote => add("  " * v.blockQuoteDepth())
             case _ => ()
         }
 
         // 处理子节点
-        for (child in nodeView.children) {
+        for (child in nodeView.iterateChildren()) {
             traverse(child)
         }
 
         // 后处理节点: 尾插换行/空格
         match (node) {
-            case v: DescList => ()
-            case v: DescTerm => ()
-            case v: DescDef => ()
-            case v: Paragraph => add("\n")
-            case v: Heading => add("\n")
-            case v: TableRow => add("\n")
-            case v: TableCell => add(" ")
+            case _: DescList => ()
+            case _: DescTerm => ()
+            case _: DescDef => ()
+            case _: Paragraph => add("\n")
+            case _: Heading => add("\n")
+            case _: TableRow => add("\n")
+            case _: TableCell => add(" ")
             case _ => ()
         }
     }
@@ -70,8 +69,8 @@ public class NodeViewStringBuilder <: ToString {
     func leafNode(node: Node): Bool {
         match (node) {
             case v: Text => add(v.getLiteral())
-            case v: HardLineBreak => add("\n")
-            case v: SoftLineBreak => add(" ")
+            case _: HardLineBreak => add("\n")
+            case _: SoftLineBreak => add(" ")
             // 处理Code节点
             case v: Code => add(v.getLiteral())
             case v: IndentedCodeBlock => add(v.getLiteral()).add("\n")

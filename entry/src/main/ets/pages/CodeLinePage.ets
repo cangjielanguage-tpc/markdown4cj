@@ -36,70 +36,43 @@ struct CodeLinePage {
   @State
   isFull: boolean = true
   /**
-   * 内联代码是否是图片显示列表
-   */
-  isCodeStyleList: Array<boolean> = [true, false]
-  /**
-   * 内联代码是否是图片显示
-   */
-  @State
-  isCodeStyle: boolean = false
-  /**
-   * 文本、图片格式内联代码文本颜色列表
+   * 内联代码文本颜色列表
    */
   codeTextColorList: Array<number> =
     [0xFF191919, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
   /**
-   * 文本、图片格式内联代码文本颜色
+   * 内联代码文本颜色
    */
   @State
   codeTextColor: number = 0xFF000000
   /**
-   * 文本、图片格式内联代码背景颜色列表
+   * 内联代码背景颜色列表
    */
   codeBackgroundColorList: Array<number> =
     [0xFF191919, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
   /**
-   * 文本、图片格式内联代码背景颜色
+   * 内联代码背景颜色
    */
   @State
-  codeBackgroundColor: number = 0xFF191919
+  codeBackgroundColor: number = 0xFFE0E0E0
   /**
-   * 文本、图片格式内联代码文本大小列表
+   * 内联代码文本大小列表
    */
   codeTextSizeList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
   /**
-   * 文本、图片格式内联代码文本大小
+   * 内联代码文本大小
    */
   @State
   codeTextSize: number = 14
   /**
-   * 文本格式内联代码文本字体列表
+   * 内联代码文本字体列表
    */
   codeTypefaceList: Array<string> = ["HarmonyOS Sans", "Hei"]
   /**
-   * 文本格式内联代码文本字体
+   * 内联代码文本字体
    */
   @State
   codeTypeface: string = "HarmonyOS Sans"
-  /**
-   * 图片格式内联代码文本左右边距列表
-   */
-  codeLeftAndRightPaddingList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  /**
-   * 图片格式内联代码文本左右边距
-   */
-  @State
-  codeLeftAndRightPadding: number = 4
-  /**
-   * 图片格式内联代码文本高度列表
-   */
-  codeHeightList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
-  /**
-   * 图片格式内联代码文本高度
-   */
-  @State
-  codeHeight: number = 20
   /**
    * 配置数据内容
    */
@@ -153,38 +126,7 @@ struct CodeLinePage {
 
           Column() {
             Row() {
-              Text(`内联代码是否是图片显示 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isCodeStyle}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isCodeStyleList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isCodeStyle = item
-                    this.codeLineData.isCodeStyle = this.isCodeStyle
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`文本、图片格式内联代码文本颜色 - `)
+              Text(`内联代码文本颜色 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
               Text(numberToColorString(this.codeTextColor))
@@ -217,7 +159,7 @@ struct CodeLinePage {
 
           Column() {
             Row() {
-              Text(`文本、图片格式内联代码背景颜色 - `)
+              Text(`内联代码背景颜色 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
               Text(numberToColorString(this.codeBackgroundColor))
@@ -250,7 +192,7 @@ struct CodeLinePage {
 
           Column() {
             Row() {
-              Text(`文本、图片格式内联代码文本大小 - `)
+              Text(`内联代码文本大小 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
               Text(`${this.codeTextSize}`)
@@ -281,7 +223,7 @@ struct CodeLinePage {
 
           Column() {
             Row() {
-              Text(`文本格式内联代码文本字体 - `)
+              Text(`内联代码文本字体 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
               Text(`${this.codeTypeface}`)
@@ -305,68 +247,6 @@ struct CodeLinePage {
                   .onClick(() => {
                     this.codeTypeface = item
                     this.codeLineData.codeTypeface = this.codeTypeface
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片格式内联代码文本左右边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.codeLeftAndRightPadding}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.codeLeftAndRightPaddingList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.codeLeftAndRightPadding = item
-                    this.codeLineData.codeLeftAndRightPadding = this.codeLeftAndRightPadding
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片格式内联代码文本高度 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.codeHeight}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.codeHeightList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.codeHeight = item
-                    this.codeLineData.codeHeight = this.codeHeight
                   })
               })
             }
@@ -405,21 +285,14 @@ struct CodeLinePage {
 
 export class CodeLineData {
   _isFull: boolean = true
-  _isCodeStyle: boolean = false
   _codeTextColor: number = 0xFF000000
   _codeBackgroundColor: number = 0xFF191919
   _codeTextSize: number = 13
   _codeTypeface: string = "HarmonyOS Sans"
-  _codeLeftAndRightPadding: number = 4
-  _codeHeight: number = 20
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
     this._isFull = value
-  }
-
-  public set isCodeStyle(value: boolean) {
-    this._isCodeStyle = value
   }
 
   public set codeTextColor(value: number) {
@@ -436,14 +309,6 @@ export class CodeLineData {
 
   public set codeTypeface(value: string) {
     this._codeTypeface = value
-  }
-
-  public set codeLeftAndRightPadding(value: number) {
-    this._codeLeftAndRightPadding = value
-  }
-
-  public set codeHeight(value: number) {
-    this._codeHeight = value
   }
 
   public set pagePath(value: string) {

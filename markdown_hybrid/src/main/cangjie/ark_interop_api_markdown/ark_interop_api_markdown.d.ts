@@ -156,8 +156,6 @@ export declare class CJMarkdownTheme {
 
   setTaskListItemLength(taskListItemLength: number): void
 
-  setIsCodeStyle(isCodeStyle: boolean): void
-
   setIsCodeFormat(isCodeFormat: boolean): void
 
   setCodeTextColor(codeTextColor: number): void
@@ -167,10 +165,6 @@ export declare class CJMarkdownTheme {
   setCodeTextSize(codeTextSize: number): void
 
   setCodeTypeface(codeTypeface: string): void
-
-  setCodeLeftAndRightPadding(codeLeftAndRightPadding: number): void
-
-  setCodeHeight(codeHeight: number): void
 
   setIsCodeBlockParserSync(isCodeBlockParserSync: boolean): void
 

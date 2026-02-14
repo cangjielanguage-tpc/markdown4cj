@@ -386,29 +386,20 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.taskListItemLength) {
                 markdownThemeBuilder.setTaskListItemLength(v) // 设置任务列表选择框宽高
             }
-            if (let Some(v) <- w.cjMarkdownTheme.isCodeStyle) {
-                markdownThemeBuilder.setIsCodeStyle(v) // 设置内联代码是否是图片显示
-            }
             if (let Some(v) <- w.cjMarkdownTheme.isCodeFormat) {
                 markdownThemeBuilder.setIsCodeFormat(v) // 设置是否格式化代码块内容
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeTextColor) {
-                markdownThemeBuilder.setCodeTextColor(v) // 设置文本、图片格式内联代码文本颜色
+                markdownThemeBuilder.setCodeTextColor(v) // 设置内联代码文本颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeBackgroundColor) {
-                markdownThemeBuilder.setCodeBackgroundColor(v) // 设置文本、图片格式内联代码背景颜色
+                markdownThemeBuilder.setCodeBackgroundColor(v) // 设置内联代码背景颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeTextSize) {
-                markdownThemeBuilder.setCodeTextSize(v) // 设置文本、图片格式内联代码文本大小
+                markdownThemeBuilder.setCodeTextSize(v) // 设置内联代码文本大小
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeTypeface) {
-                markdownThemeBuilder.setCodeTypeface(v) // 设置文本格式内联代码文本字体
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.codeLeftAndRightPadding) {
-                markdownThemeBuilder.setCodeLeftAndRightPadding(v) // 设置图片格式内联代码文本左右边距
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.codeHeight) {
-                markdownThemeBuilder.setCodeHeight(v) // 设置图片格式内联代码文本高度
+                markdownThemeBuilder.setCodeTypeface(v) // 设置内联代码文本字体
             }
             if (let Some(v) <- w.cjMarkdownTheme.isCodeBlockParserSync) {
                 markdownThemeBuilder.setIsCodeBlockParserSync(v) // 设置缩进/围栏/组合/单独代码块代码是否同步解析

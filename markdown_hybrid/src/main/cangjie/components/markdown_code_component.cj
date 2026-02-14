@@ -19,11 +19,6 @@ class MarkdownCodeComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 列表节点
-     */
-    var nodeView: NodeView
-
-    /**
      * 代码内容
      */
     @State
@@ -34,6 +29,22 @@ class MarkdownCodeComponent {
      */
     @State
     var info: Option<String> = Option<String>.None
+
+    /**
+     * hash
+     */
+    @State
+    var nodeHash: Int64 = 0
+
+    /**
+     * 缓存的单独代码块控件
+     */
+    var codeComponents: HashMap<Int64, MarkdownCodeComponent>
+
+    /**
+     * 缓存的单独代码块控件
+     */
+    var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent>
 
     /**
      * 代码列表
@@ -57,16 +68,6 @@ class MarkdownCodeComponent {
      */
     let scroller2: Scroller = Scroller()
 
-    /**
-     * 缓存的单独代码块控件
-     */
-    var codeComponents: HashMap<Int64, MarkdownCodeComponent>
-
-    /**
-     * 缓存的单独代码块控件
-     */
-    var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent>
-
     @State
     var reachBottom: Bool = true
 
@@ -74,14 +75,21 @@ class MarkdownCodeComponent {
 
     protected override func aboutToAppear(): Unit {
         // 初始化刷新数据
-        refreshData(nodeView)
+        refreshData(codeText, info, nodeHash)
         // 缓存当前控件
-        codeComponents.add(this.nodeView.nodeHash, this)
+        codeComponents.add(nodeHash, this)
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        codeComponents.remove(this.nodeView.nodeHash)
+        let value = codeComponents.get(nodeHash)
+        if (let Some(v) <- value) {
+            if (refEq(v, this)) {
+                codeComponents.remove(nodeHash)
+            }
+        } else {
+            codeComponents.remove(nodeHash)
+        }
     }
 
     func build() {
@@ -377,11 +385,10 @@ class MarkdownCodeComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(nodeView: NodeView): Unit {
-        this.nodeView = nodeView
-        let data = getCodeInfo(nodeView)
-        this.codeText = data[0]
-        this.info = data[1]
+    public func refreshData(codeText: String, info: Option<String>, nodeHash: Int64): Unit {
+        this.codeText = codeText
+        this.info = info
+        this.nodeHash = nodeHash
         let arr = ArrayList<String>()
         codeText.lines().forEach({
             s => arr.add(s)

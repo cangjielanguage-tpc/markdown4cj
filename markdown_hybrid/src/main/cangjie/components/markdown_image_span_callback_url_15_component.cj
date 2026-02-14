@@ -1,0 +1,262 @@
+/*
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
+ */
+package markdown.components
+
+import ohos.base.*
+import ohos.component.*
+import ohos.state_manage.*
+import ohos.state_macro_manage.*
+
+/**
+ * URL入参API大于等于15的图片
+ */
+@Component
+public class MarkdownSpanImageCallbackUrl15Component {
+    /**
+     * markdown配置
+     */
+    var url15CallbackMarkdownTheme: MarkdownTheme
+
+    /**
+     * 图片链接
+     */
+    var url15CallbackDestination: String
+
+    /**
+     * 控件宽度 - 单位vp
+     */
+    @Prop
+    var url15CallbackComponentWidth: Float64
+
+    /**
+     * 图片替换事件
+     */
+    var url15CallbackImageCallbackCallback: (String) -> ?Array<UInt8>
+
+    /**
+     * 图片点击事件
+     */
+    var url15CallbackImageCallback: (String) -> Unit
+
+    /**
+     * 链接点击事件
+     */
+    var url15CallbackLinkCallback: ?(String) -> Unit
+
+    /**
+     * 是否是链接
+     */
+    var url15CallbackLink: Bool
+
+    /**
+     * 链接URL
+     */
+    var url15CallbackLinkUrl: Option<String>
+
+    /**
+     * 图片宽度
+     */
+    var url15CallbackImageWidth: Option<Length>
+
+    /**
+     * 图片高度
+     */
+    var url15CallbackImageHeight: Option<Length>
+
+    /**
+     * 图片圆角
+     */
+    var url15CallbackImageRadius: Option<Length>
+
+    /**
+     * 图片对齐方式
+     */
+    var url15CallbackImageAlign: Option<HorizontalAlign>
+
+    /**
+     * 图片加载
+     */
+    @State
+    var url15CallbackImageType: Int64 = 0 // 0：开始加载。1：加载成功完成。2：加载失败
+
+    /**
+     * 图片高度 - 单位px
+     */
+    @State
+    var url15CallbackHeight: Float64 = 0.0
+
+    /**
+     * 图片宽度 - 单位px
+     */
+    @State
+    var url15CallbackWidth: Float64 = 0.0
+
+    /**
+     * 图片圆角 - 单位vp
+     */
+    @State
+    var url15CallbackRadius: Float64 = 0.0
+
+    /**
+     * 占位图片高度 - 单位px
+     */
+    @State
+    var url15CallbackPlaceholderHeight: Float64 = 0.0
+
+    /**
+     * 占位图片宽度 - 单位px
+     */
+    @State
+    var url15CallbackPlaceholderWidth: Float64 = 0.0
+
+    /**
+     * 替换之后的图片宽度 - 单位px
+     */
+    @State
+    var url15CallbackReplaceWidth: ?Float64 = Option<Float64>.None
+
+    /**
+     * 替换之后的图片高度 - 单位px
+     */
+    @State
+    var url15CallbackReplaceHeight: ?Float64 = Option<Float64>.None
+
+    /**
+     * 替换之后的图片数据
+     */
+    @State
+    var url15CallbackReplaceImagePixelMap: Option<PixelMap> = Option<PixelMap>.None
+
+    /**
+     * 解析加载
+     */
+    @State
+    var url15CallbackReplaceImageType: Int64 = 0 // 0：开始解析。1：解析成功完成。2：解析失败
+
+    /**
+     * 替换子线程
+     */
+    var url15CallbackReplaceFut: ?Future<Unit> = Option<Future<Unit>>.None
+
+    /**
+     * 图片最大宽度 - 单位px
+     */
+    @State
+    var url15CallbackComponentImageWidth: Float64 = 0.0
+
+    protected override func aboutToAppear(): Unit {
+        url15CallbackComponentImageWidth = vp2px(url15CallbackComponentWidth.vp)().value
+        url15CallbackRadius = imageSpanBorderRadius(url15CallbackImageRadius, url15CallbackMarkdownTheme.imageBorderRadius)
+        url15CallbackPlaceholderWidth = if (url15CallbackMarkdownTheme.imageFixedRatioWidth.isSome()) {
+            url15CallbackComponentImageWidth * url15CallbackMarkdownTheme.imageFixedRatioWidth()
+        } else {
+            url15CallbackComponentImageWidth * url15CallbackMarkdownTheme.imageMaximumWidth
+        }
+        url15CallbackPlaceholderHeight = if (url15CallbackMarkdownTheme.imageFixedRatioWidth.isSome()) {
+            url15CallbackComponentImageWidth * 9.0 / 16.0 * url15CallbackMarkdownTheme.imageFixedRatioWidth()
+        } else {
+            url15CallbackComponentImageWidth * 9.0 / 16.0 * url15CallbackMarkdownTheme.imageMaximumWidth
+        }
+        imageCallbackPixelmap()
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        // 清除缓存数据
+        url15CallbackReplaceImagePixelMap?.Release()
+        url15CallbackReplaceImagePixelMap = Option<PixelMap>.None
+        url15CallbackReplaceFut?.cancel()
+    }
+
+    func build() {
+        if (true) {
+            if (url15CallbackReplaceImageType == 1) {
+                // 替换之后的图片
+                ImageSpan(url15CallbackReplaceImagePixelMap())
+                    .margin(top: url15CallbackMarkdownTheme.imageMarginTop, bottom: url15CallbackMarkdownTheme.imageMarginBottom)
+                    .interopBorderRadius(url15CallbackRadius)
+                    .width(url15CallbackReplaceWidth())
+                    .height(url15CallbackReplaceHeight())
+                    .objectFit(url15CallbackMarkdownTheme.imageFitType)
+                    .verticalAlign(ImageSpanAlignment.CENTER)
+                    .constraintSize(maxWidth: 100.percent)
+                    .onClick {
+                        evt => imageSpanOnClick(url15CallbackLink, url15CallbackImageCallback, url15CallbackLinkCallback, url15CallbackLinkUrl, url15CallbackDestination)
+                    }
+            }else{
+                if (url15CallbackImageType != 2) {
+                    // 加载图片
+                    ImageSpan(url15CallbackDestination)
+                        .margin(top: url15CallbackMarkdownTheme.imageMarginTop, bottom: url15CallbackMarkdownTheme.imageMarginBottom)
+                        .interopBorderRadius(url15CallbackRadius)
+                        .width(url15CallbackWidth.px)
+                        .height(url15CallbackHeight.px)
+                        .objectFit(url15CallbackMarkdownTheme.imageFitType)
+                        .verticalAlign(ImageSpanAlignment.CENTER)
+                        .constraintSize(maxWidth: 100.percent)
+                        .onClick {
+                            evt => imageSpanOnClick(url15CallbackLink, url15CallbackImageCallback, url15CallbackLinkCallback, url15CallbackLinkUrl, url15CallbackDestination)
+                        }
+                        .onComplete {
+                            imageLoadResult =>
+                                let res = imageWidthAndHeight(
+                                    url15CallbackComponentImageWidth,
+                                    imageLoadResult.width,
+                                    imageLoadResult.height,
+                                    url15CallbackImageWidth,
+                                    url15CallbackImageHeight,
+                                    url15CallbackMarkdownTheme.imageFixedRatioWidth,
+                                    url15CallbackMarkdownTheme.imageMaximumWidth
+                                )
+                                url15CallbackWidth = res[0]
+                                url15CallbackHeight = res[1]
+                                url15CallbackImageType = 1
+                        }
+                        .onError {
+                            imageError => url15CallbackImageType = 2
+                        }
+                }
+                if (url15CallbackMarkdownTheme.imageResource.isSome() && url15CallbackImageType != 1) {
+                    // 图片占位图
+                    imageSpanPlaceholderComponent(
+                        url15CallbackMarkdownTheme.imageResource(),
+                        url15CallbackMarkdownTheme.imageMarginTop,
+                        url15CallbackMarkdownTheme.imageMarginBottom,
+                        url15CallbackPlaceholderWidth,
+                        url15CallbackPlaceholderHeight,
+                        url15CallbackRadius
+                    )
+                }
+            }
+        }
+    }
+
+    func imageCallbackPixelmap() {
+        let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
+            imagePixelMap, imageResWidth, imageResHeight => launch {
+                if (imagePixelMap.isSome() && imageResWidth.isSome() && imageResHeight.isSome()) {
+                    this.url15CallbackReplaceImagePixelMap = imagePixelMap
+                    let res = imageWidthAndHeight(
+                        url15CallbackComponentImageWidth,
+                        imageResWidth(),
+                        imageResHeight(),
+                        url15CallbackImageWidth,
+                        url15CallbackImageHeight,
+                        url15CallbackMarkdownTheme.imageFixedRatioWidth,
+                        url15CallbackMarkdownTheme.imageMaximumWidth
+                    )
+                    url15CallbackReplaceWidth = res[0]
+                    url15CallbackReplaceHeight = res[1]
+                    url15CallbackReplaceImageType = 1
+                } else {
+                    url15CallbackReplaceImageType = 2
+                }
+            }
+        }
+        url15CallbackReplaceFut = callbackToPixelmap(
+            url15CallbackDestination,
+            url15CallbackImageCallbackCallback,
+            callback
+        )
+    }
+}

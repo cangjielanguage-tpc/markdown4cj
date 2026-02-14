@@ -34,33 +34,21 @@ struct CodeLineDetailsPage {
   @State
   isFull: boolean = true
   /**
-   * 内联代码是否是图片显示
-   */
-  isCodeStyle: boolean = false
-  /**
-   * 文本、图片格式内联代码文本颜色
+   * 内联代码文本颜色
    */
   codeTextColor: number = 0xFF000000
   /**
-   * 文本、图片格式内联代码背景颜色
+   * 内联代码背景颜色
    */
   codeBackgroundColor: number = 0xFF191919
   /**
-   * 文本、图片格式内联代码文本大小
+   * 内联代码文本大小
    */
   codeTextSize: number = 13
   /**
-   * 文本格式内联代码文本字体
+   * 内联代码文本字体
    */
   codeTypeface: string = "HarmonyOS Sans"
-  /**
-   * 图片格式内联代码文本左右边距
-   */
-  codeLeftAndRightPadding: number = 4
-  /**
-   * 图片格式内联代码文本高度
-   */
-  codeHeight: number = 20
   /**
    * 增量加载延迟
    */
@@ -71,13 +59,10 @@ struct CodeLineDetailsPage {
       let codeLineData: CodeLineData = router.getParams() as CodeLineData
       this.fileStr = getFileContextStr(codeLineData._pagePath)
       this.isFull = codeLineData._isFull
-      this.isCodeStyle = codeLineData._isCodeStyle
       this.codeTextColor = codeLineData._codeTextColor
       this.codeBackgroundColor = codeLineData._codeBackgroundColor
       this.codeTextSize = codeLineData._codeTextSize
       this.codeTypeface = codeLineData._codeTypeface
-      this.codeLeftAndRightPadding = codeLineData._codeLeftAndRightPadding
-      this.codeHeight = codeLineData._codeHeight
     } catch (e) {
     }
   }
@@ -134,13 +119,10 @@ struct CodeLineDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setIsCodeStyle(this.isCodeStyle)
     theme.setCodeTextColor(this.codeTextColor)
     theme.setCodeBackgroundColor(this.codeBackgroundColor)
     theme.setCodeTextSize(this.codeTextSize)
     theme.setCodeTypeface(this.codeTypeface)
-    theme.setCodeLeftAndRightPadding(this.codeLeftAndRightPadding)
-    theme.setCodeHeight(this.codeHeight)
     config.setMarkdownTheme(theme)
     return config
   }

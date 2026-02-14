@@ -30,7 +30,7 @@ public func printTag(tag: HtmlTag): Unit {
 }
 
 public func printTag(tag: HtmlTag, dep: Int, appender: StringBuilder): Unit {
-    appender.append("${" "*dep}${tag} ${tag.isClosed()}\n")
+    appender.append("${" " * dep}${tag} ${tag.isClosed()}\n")
     for (child in tag.getChildren()) {
         printTag(child, dep + 1, appender)
     }
@@ -50,12 +50,8 @@ public func printNode(node: ?Node): Unit {
 
 public func printNode(node: ?Node, dep: Int, builder: StringBuilder): Unit {
     if (let Some(v) <- node) {
-        let str = if (v.custom is NodeView) {
-            v.toViewString()
-        } else {
-            v.toString()
-        }.replace("\n", "\\n")
-        builder.append("${" "*dep}${str}\n")
+        let str = v.toString().replace("\n", "\\n")
+        builder.append("${" " * dep}${str}\n")
         let child = v.getFirstChild()
         printNode(child, dep + 4, builder)
         let next = v.getNext()

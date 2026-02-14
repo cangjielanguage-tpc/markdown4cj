@@ -33,384 +33,340 @@ let COLOR_33FFFFFF: Color = Color(0x33FFFFFF)
 let COLOR_80FFFFFF: Color = Color(0x80FFFFFF)
 let COLOR_E6000000: Color = Color(0xE6000000)
 let COLOR_FFF5F5F5: Color = Color(0xFFF5F5F5)
-let null: NodeView = unsafe { zeroValue() }
 let SECONDS_PER_HOUR: Int64 = 3600
 let SECONDS_PER_MINUTE: Int64 = 60
 
 /**
- * 组合代码解析
+ * 上边距
  *
- * @param codeBlockListNodeView NodeView
- * @return 返回代码类型列表、代码内容列表、代码真实类型列表
+ * @param idx 第几条数据
+ * @param nodeType 类型。0：标题，1：段落，2：分割线，3：其他
+ * @param item nodeView对象
+ * @return Float64 上边距
  */
-func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<String>, ArrayList<String>) {
-    var strText: ArrayList<String> = ArrayList<String>()
-    var strInfoText: ArrayList<String> = ArrayList<String>()
-    var strInfo: ArrayList<String> = ArrayList<String>()
-    for (nodeView in codeBlockListNodeView.children) {
-        if (nodeView.node is FencedCodeBlock) {
-            strText.add((nodeView.node as FencedCodeBlock)().getLiteral())
-            strInfoText.add((nodeView.node as FencedCodeBlock)().getInfo())
+func marginNodeTop(idx: Int64, item: NodeView, markdownTheme: MarkdownTheme): Float64 {
+    if (idx == 0) {
+        return markdownTheme.blockFirstTopMargin
+    }
+    if (item.nodeType == "Heading" || item.nodeType == "IdHeading") {
+        // 标题
+        if (item.children.size == 1 && (item.children[0].nodeType == "Image" || item.children[0].nodeType == "StyleImage" || item.children[0].nodeType == "ImageHtmlNode")) {
+            return 0.0
+        } else {
+            return markdownTheme.headingTopMargins
         }
     }
-    if (codeBlockListNodeView.node is FencedCodeBlockListBlock) {
-        strInfo = (codeBlockListNodeView.node as FencedCodeBlockListBlock)().tabs
+    if (item.nodeType == "Paragraph") {
+        // 段落
+        if (item.children.size == 1 && (item.children[0].nodeType == "Image" || item.children[0].nodeType == "StyleImage" || item.children[0].nodeType == "ImageHtmlNode")) {
+            return 0.0
+        } else {
+            return markdownTheme.paragraphTopMargins
+        }
     }
-    return (strInfo, strText, strInfoText)
+    if (item.nodeType == "ThematicBreak") {
+        // 分割线
+        return markdownTheme.blockTopAndBottomMargins + markdownTheme.thematicBreakTopMargin
+    }
+    return markdownTheme.blockTopAndBottomMargins
 }
 
 /**
- * 计算标题行高
+ * 下边距
  *
- * @param level 标题等级
- * @param markdownConfiguration MarkdownConfiguration
- * @return 标题行高
+ * @param idx 第几条数据
+ * @param nodeType 类型。0：标题，1：段落，2：分割线，3：其他
+ * @param item nodeView对象
+ * @return Float64 上边距
  */
-func headLineHeight(level: Int64, markdownConfiguration: MarkdownConfiguration): Float64 {
-    return match (level) {
-        case 1 => markdownConfiguration.markdownTheme.headingTextLineHeight1
-        case 2 => markdownConfiguration.markdownTheme.headingTextLineHeight2
-        case 3 => markdownConfiguration.markdownTheme.headingTextLineHeight3
-        case 4 => markdownConfiguration.markdownTheme.headingTextLineHeight4
-        case 5 => markdownConfiguration.markdownTheme.headingTextLineHeight5
-        case 6 => markdownConfiguration.markdownTheme.headingTextLineHeight6
-        case _ => markdownConfiguration.markdownTheme.headingTextLineHeight6
+func marginNodeBottom(idx: Int64, size: Int64, item: NodeView, markdownTheme: MarkdownTheme): Float64 {
+    if (idx == size) {
+        return markdownTheme.blockLastBottomMargin
+    }
+    if (item.nodeType == "Heading" || item.nodeType == "IdHeading") {
+        // 标题
+        if (item.children.size == 1 && (item.children[0].nodeType == "Image" || item.children[0].nodeType == "StyleImage" || item.children[0].nodeType == "ImageHtmlNode")) {
+            return 0.0
+        } else {
+            return markdownTheme.headingTopMargins
+        }
+    }
+    if (item.nodeType == "Paragraph") {
+        // 段落
+        if (item.children.size == 1 && (item.children[0].nodeType == "Image" || item.children[0].nodeType == "StyleImage" || item.children[0].nodeType == "ImageHtmlNode")) {
+            return 0.0
+        } else {
+            return markdownTheme.paragraphTopMargins
+        }
+    }
+    if (item.nodeType == "ThematicBreak") {
+        // 分割线
+        return markdownTheme.blockTopAndBottomMargins + markdownTheme.thematicBreakTopMargin
+    }
+    return markdownTheme.blockTopAndBottomMargins
+}
+
+/**
+ * 点击事件
+ *
+ * @param markdownConfiguration MarkdownConfiguration
+ * @param nodeView NodeView
+ * @param tocListOnClick toc点击事件
+ * @param footnoteCallback 脚注点击事件
+ */
+func spanOnClick(markdownConfiguration: MarkdownConfiguration, nodeView: NodeView, tocListOnClick: ?(Int64) -> Unit, footnoteCallback: (String) -> Unit): Unit {
+    if (markdownConfiguration.linkCallback.isSome() && nodeView.linkUrl.isSome()) {
+        markdownConfiguration.linkCallback()(nodeView.linkUrl()) // 链接
+        return
+    }
+    if (nodeView.footnoteID.isSome()) {
+        footnoteCallback(nodeView.footnoteID()) // 脚注
+        return
+    }
+    if (nodeView.headLinkIndex.isSome() && tocListOnClick.isSome()) {
+        tocListOnClick()(nodeView.headLinkIndex()) // TOC/标题ID
+        return
     }
 }
 
 /**
- * 文本基线的偏移量
+ * 设置字体样式列表
  *
  * @param nodeView NodeView
- * @param markdownTheme MarkdownTheme
+ * @param markdownTheme markdown样式
+ * @return 字体样式列表
+ */
+func spanFontFamily(nodeView: NodeView, markdownTheme: MarkdownTheme): String {
+    if (nodeView.isInLineCode) {
+        return markdownTheme.codeTypeface // 内联代码
+    }
+    if (nodeView.isHeading) {
+        return markdownTheme.headingTypeface // 标题
+    }
+    return markdownTheme.paragraphTypeface // 段落和其他
+}
+
+/**
+ * 设置文字字体大小
+ *
+ * @param nodeView NodeView
+ * @param markdownTheme markdown样式
+ * @return 文字字体大小
+ */
+func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
+    if (nodeView.isSubNode) {
+        return markdownTheme.subTextSize // 下标
+    }
+    if (nodeView.isSupNode) {
+        return markdownTheme.supTextSize // 上标
+    }
+    if (nodeView.isFontNode) {
+        if (let Some(v) <- nodeView.fontNodeSize) {
+            return v // FontNode
+        }
+    }
+    if (nodeView.isSpanNode) {
+        if (let Some(v) <- nodeView.spanNodeSize) {
+            return v // SpanNode
+        }
+    }
+    if (nodeView.isInLineCode) {
+        return markdownTheme.codeTextSize // 内联代码
+    }
+    if (nodeView.isLink && markdownTheme.isLinkSize) {
+        return markdownTheme.linkSize // 链接
+    }
+    if (nodeView.isHeading) {
+        return markdownTheme.headingTextSizeMultipliers[nodeView.headingLevel - 1] // 标题
+    }
+    return markdownTheme.paragraphTextSize // 段落和其他
+}
+
+/**
+ * 设置文字样式加粗
+ *
+ * @param spanNode SpanNode
+ * @param isTitle 是否标题中
+ * @param isDescTerm 是否在定义列表术语中
+ * @param isStrongEmphasis 是否在加粗中
+ * @return 文字样式加粗
+ */
+func spanFontWeight(nodeView: NodeView): FontWeight {
+    if (nodeView.isSpanNode) {
+        if (let Some(v) <- nodeView.spanNodeWeight) {
+            return v // SpanNode
+        }
+    }
+    if (nodeView.isHeading || nodeView.isDescTerm || nodeView.isStrongEmphasis) {
+        return FontWeight.W600 // 标题/定义列表术语/加粗
+    }
+    return FontWeight.W400 // 其他
+}
+
+/**
+ * 设置文字样式斜体
+ *
+ * @param isDescTerm 是否在定义列表术语中
+ * @param isEmphasis 是否在斜体中
+ * @return 文字样式斜体
+ */
+func spanFontStyle(nodeView: NodeView): FontStyle {
+    if (nodeView.isDescTerm || nodeView.isEmphasis) {
+        return FontStyle.Italic // 定义列表术语/斜体
+    }
+    return FontStyle.Normal // 其他
+}
+
+/**
+ * 设置文本字体颜色
+ *
+ * @param isSubNode 是否在下标中
+ * @param isSupNode 是否在上标中
+ * @param fontNode 是否在FontNode中
+ * @param spanNode 是否在SpanNode中
+ * @param isCode 是否在内联代码中
+ * @param isLink 是否在连接中，并且显示链接自己的字体大小
+ * @param isTitle 是否在标题中
+ * @param level 标题等级
+ * @param markdownTheme markdown样式
+ * @return 文本字体颜色
+ */
+func spanFontColor(nodeView: NodeView, markdownTheme: MarkdownTheme): Color {
+    if (nodeView.isSubNode) {
+        return markdownTheme.subTextColor // 下标
+    }
+    if (nodeView.isSupNode) {
+        return markdownTheme.supTextColor //
+    }
+    if (nodeView.isFontNode) {
+        if (let Some(v) <- nodeView.fontNodeColor) {
+            return v // FontNode
+        }
+    }
+    if (nodeView.isSpanNode) {
+        if (let Some(v) <- nodeView.spanNodeColor) {
+            return v // SpanNode
+        }
+    }
+    if (nodeView.isInLineCode) {
+        return markdownTheme.codeTextColor // 内联代码
+    }
+    if (nodeView.isLink || nodeView.isFootnote) {
+        return markdownTheme.linkColor // 链接, 脚注
+    }
+    if (nodeView.isHeading) {
+        return markdownTheme.headingTextColor // 标题
+    }
+    return markdownTheme.paragraphTextColor // 段落和其他
+}
+
+/**
+ * 设置文本字符间距
+ *
+ * @param isHeading 是否在标题中
+ * @param markdownTheme markdown样式
+ * @return 文本基线的偏移量
+ */
+func spanLetterSpacing(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
+    if (nodeView.isHeading) {
+        return markdownTheme.headingTextWordSpace // 标题
+    }
+    return markdownTheme.paragraphTextWordSpace // 段落和其他
+}
+
+/**
+ * 设置文本下划线中划线
+ *
+ * @param isUnderlineNode 是否在下划线中
+ * @param isStrikethrough 是否在删除线中
+ * @param isLink 是否在链接中
+ * @param markdownTheme markdown样式
+ * @return 文本下划线中划线
+ */
+func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDecorationType, Color) {
+    if (nodeView.isUnderlineNode) {
+        return (TextDecorationType.Underline, markdownTheme.underlineColor) // 下划线
+    }
+    if (nodeView.isStrikethrough) {
+        return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor) // 删除线
+    }
+    if (nodeView.isLink || nodeView.isFootnote) {
+        return (TextDecorationType.Underline, markdownTheme.linkColor) // 链接, 脚注
+    }
+    return (TextDecorationType.None, Color.TRANSPARENT) // 其他
+}
+
+/**
+ * 设置文本背景色
+ *
+ * @param isCode 是否在内联代码中
+ * @param isLink 是否在链接中
+ * @param markdownTheme markdown样式
+ * @return 文本背景色
+ */
+func spanBackgroundColor(nodeView: NodeView, markdownTheme: MarkdownTheme): Color {
+    if (nodeView.isInLineCode) {
+        return markdownTheme.codeBackgroundColor // 内联代码
+    }
+    if (nodeView.isLink) {
+        return markdownTheme.linkBackGroupColor // 链接
+    }
+    return Color.TRANSPARENT // 其他
+}
+
+/**
+ * 设置文本基线的偏移量
+ *
+ * @param isSubNode 是否在下标中
+ * @param isSupNode 是否在上标中
+ * @param markdownTheme markdown样式
  * @return 文本基线的偏移量
  */
 func spanBaselineOffset(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
-    if (nodeView.props.isSome() && nodeView.props().get("SubNode").isSome()) {
-        return markdownTheme.subOffsetDist
-    } else if (nodeView.props.isSome() && nodeView.props().get("SupNode").isSome()) {
-        return markdownTheme.supOffsetDist
-    } else {
-        return 0.0
+    if (nodeView.isSubNode) {
+        return markdownTheme.subOffsetDist // 下标
     }
+    if (nodeView.isSupNode) {
+        return markdownTheme.supOffsetDist // 上标
+    }
+    return 0.0 // 其他
 }
 
 /**
- * 文本内容设置
+ * 设置文本行高
  *
- * @param nodeView 文本内容的NodeView（Text、Code、HeadLink）
- * @return 返回需要显示的文本内容
+ * @param isHeading 是否在标题中
+ * @param level 标题等级
+ * @param isTable 是否在表格中
+ * @param markdownTheme markdown样式
+ * @return 文本行高
  */
-func spanText(nodeView: NodeView): String {
-    if (nodeView.node is CommonmarkText) {
-        // 普通文本
-        return (nodeView.node as CommonmarkText)().getLiteral()
-    } else if (nodeView.node is Code) {
-        // 内联代码
-        return " ${(nodeView.node as Code)().getLiteral()} "
-    } else if (nodeView.node is HeadLink) {
-        // toc链接和标题id链接
-        return if (let Some(v) <- getLinkString(nodeView)) {
-            v
-        } else {
-            ""
-        }
-    } else if (nodeView.node is Footnote) {
-        // 脚注
-        return (nodeView.node as Footnote)().noteid
-    } else {
-        return ""
+func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
+    if (nodeView.isHeading) {
+        return headLineHeight(nodeView.headingLevel, markdownTheme) // 标题
     }
+    if (nodeView.isTable) {
+        return markdownTheme.tableTextLineHeight // 表格
+    }
+    return markdownTheme.paragraphTextLineHeight // 段落和其他
 }
 
 /**
- * 字体样式列表设置
+ * 设置标题行高
  *
- * @param isCode 是否是内联代码
- * @param markdownTheme markdown基础样式
- * @param isTitle 是否是标题
- * @return 返回需要显示的字体样式
+ * @param level 标题等级
+ * @param markdownTheme markdown样式
+ * @return 标题行高
  */
-func spanFontFamily(isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool): String {
-    if (isCode) {
-        // 内联代码情况设置内联代码字体样式
-        return markdownTheme.codeTypeface
-    } else {
-        if (isTitle) {
-            // 设置标题字体
-            return markdownTheme.headingTypeface
-        } else {
-            // 段落设置默认字体
-            return markdownTheme.paragraphTypeface
-        }
-    }
-}
-
-/**
- * 文字大小设置
- *
- * @param isCode 是否是内联代码
- * @param markdownTheme markdown基础样式
- * @param isTitle 是否是标题
- * @param level 几级标题
- * @return 返回需要显示的字体大小
- */
-func spanFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
-    if (nodeView.props.isSome() && nodeView.props().get("SubNode").isSome()) {
-        return markdownTheme.subTextSize
-    } else if (nodeView.props.isSome() && nodeView.props().get("SupNode").isSome()) {
-        return markdownTheme.supTextSize
-    } else if (nodeView.props.isSome() && nodeView.props().get("FontNode").isSome()) {
-        try {
-            let fontNode: FontNode = (nodeView.props().get("FontNode")() as FontNode)()
-            let sizeString: ?String = fontNode.getSize()
-            if (sizeString.isSome()) {
-                let sizeInt64: Int64 = Int64.parse(sizeString())
-                return Float64(sizeInt64)
-            } else {
-                return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
-            }
-        } catch (e: Exception) {
-            return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
-        }
-    } else if (nodeView.props.isSome() && nodeView.props().get("SpanNode").isSome()) {
-        try {
-            let spanNode: SpanNode = (nodeView.props().get("SpanNode")() as SpanNode)()
-            let style: ?HashMap<String, String> = spanNode.getStyle()
-            if (let Some(v) <- style) {
-                let sizeStr: ?String = v.get("font-size")
-                if (let Some(n) <- sizeStr) {
-                    let size: ?Float64 = sizeStringToSize(n)
-                    if (let Some(m) <- size) {
-                        return m
-                    }
-                }
-            }
-            return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
-        } catch (e: Exception) {
-            return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
-        }
-    } else {
-        return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
-    }
-}
-
-/**
- * 文字大小设置
- *
- * @param isCode 是否是内联代码
- * @param markdownTheme markdown基础样式
- * @param isTitle 是否是标题
- * @param level 几级标题
- * @return 返回需要显示的字体大小
- */
-func spanTextFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
-    if (isCode) {
-        // 内联代码情况设置内联代码字体大小
-        return px2vp(markdownTheme.codeTextSize.px)().value
-    } else {
-        if (nodeView.link.isSome() && markdownTheme.isLinkSize) {
-            return markdownTheme.linkSize
-        } else {
-            if (isTitle) {
-                return markdownTheme.headingTextSizeMultipliers[level - 1]
-            } else {
-                return markdownTheme.paragraphTextSize
-            }
-        }
-    }
-}
-
-/**
- * 文字粗细设置
- *
- * @param nodeView NodeView
- * @param isTitle 是否是标题
- * @return 返回需要显示的字体粗细
- */
-func spanFontWeight(nodeView: NodeView, isDescList: Bool, isTitle: Bool): FontWeight {
-    if (nodeView.props.isSome() && nodeView.props().get("SpanNode").isSome()) {
-        try {
-            let spanNode: SpanNode = (nodeView.props().get("SpanNode")() as SpanNode)()
-            let style: ?HashMap<String, String> = spanNode.getStyle()
-            if (let Some(v) <- style) {
-                let weightStr: ?String = v.get("font-weight")
-                if (let Some(n) <- weightStr) {
-                    let weight: ?FontWeight = fontWeightToValue(n)
-                    if (let Some(m) <- weight) {
-                        return m
-                    }
-                }
-            }
-            return spanTextFontWeight(nodeView, isDescList, isTitle)
-        } catch (e: Exception) {
-            return spanTextFontWeight(nodeView, isDescList, isTitle)
-        }
-    } else {
-        return spanTextFontWeight(nodeView, isDescList, isTitle)
-    }
-}
-
-/**
- * 表格文字粗细设置
- *
- * @param nodeView NodeView
- * @param isTitle 是否是标题
- * @return 返回需要显示的字体粗细
- */
-func spanTextFontWeight(nodeView: NodeView, isDescList: Bool, isTitle: Bool): FontWeight {
-    if (isTitle || isDescList) {
-        // 所有标题默认加粗
-        return FontWeight.W600
-    } else {
-        if (nodeView.strongEmphasis) {
-            return FontWeight.W600
-        } else {
-            return FontWeight.W400
-        }
-    }
-}
-
-/**
- * 文字样式（斜体）设置
- *
- * @param nodeView NodeView
- * @return 返回需要显示的字体样式（斜体）
- */
-func spanFontStyle(nodeView: NodeView, isDescList: Bool): FontStyle {
-    // 是否需要斜体
-    return if (nodeView.emphasis || isDescList) {
-        FontStyle.Italic
-    } else {
-        FontStyle.Normal
-    }
-}
-
-/**
- * 字体颜色设置 - 优先设置链接颜色，次要设置内联代码颜色
- *
- * @param nodeView NodeView
- * @param isCode 是否是内联代码
- * @param markdownTheme markdown基础样式
- * @param isHeading 是否是标题
- * @return 返回需要显示的字体颜色
- */
-func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isHeading: Bool): Color {
-    if (nodeView.props.isSome() && nodeView.props().get("SubNode").isSome()) {
-        return markdownTheme.subTextColor
-    } else if (nodeView.props.isSome() && nodeView.props().get("SupNode").isSome()) {
-        return markdownTheme.supTextColor
-    } else if (nodeView.props.isSome() && nodeView.props().get("FontNode").isSome()) {
-        try {
-            let fontNode: FontNode = (nodeView.props().get("FontNode")() as FontNode)()
-            let colorString: ?String = fontNode.getColor()
-            if (colorString.isSome()) {
-                let colorUInt32: UInt32 = UInt32.parse(colorString().replace("#", "0x"))
-                return Color(colorUInt32)
-            } else {
-                return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
-            }
-        } catch (e: Exception) {
-            return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
-        }
-    } else if (nodeView.props.isSome() && nodeView.props().get("SpanNode").isSome()) {
-        try {
-            let spanNode: SpanNode = (nodeView.props().get("SpanNode")() as SpanNode)()
-            let style: ?HashMap<String, String> = spanNode.getStyle()
-            if (let Some(v) <- style) {
-                let colorStr: ?String = v.get("color")
-                if (let Some(n) <- colorStr) {
-                    let color: ?Color = colorStringToColor(n)
-                    if (let Some(m) <- color) {
-                        return m
-                    } else {
-                        if (n.startsWith("#")) {
-                            let colorUInt32: UInt32 = UInt32.parse(n.replace("#", "0x"))
-                            return Color(colorUInt32)
-                        }
-                    }
-                }
-            }
-            return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
-        } catch (e: Exception) {
-            return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
-        }
-    } else {
-        return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
-    }
-}
-
-/**
- * 字体颜色设置 - 优先设置链接颜色，次要设置内联代码颜色
- *
- * @param nodeView NodeView
- * @param isCode 是否是内联代码
- * @param markdownTheme markdown基础样式
- * @param isHeading 是否是标题
- * @return 返回需要显示的字体颜色
- */
-func spanTextFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isHeading: Bool): Color {
-    if (nodeView.link.isSome() || nodeView.node is HeadLink || nodeView.node is Footnote) {
-        return markdownTheme.linkColor
-    } else {
-        if (isCode) {
-            return markdownTheme.codeTextColor
-        } else {
-            if (isHeading) {
-                return markdownTheme.headingTextColor
-            } else {
-                return markdownTheme.paragraphTextColor
-            }
-        }
-    }
-}
-
-/**
- * 下划线中划线设置 - 链接设置下划线，删除设置中划线
- *
- * @param nodeView NodeView
- * @param markdownTheme markdown基础样式
- * @return 返回需要显示的下划线中划线，返回需要显示的下划线中划线颜色
- */
-func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDecorationType, Color) {
-    if (nodeView.props.isSome() && nodeView.props().get("UnderlineNode").isSome()) {
-        return (TextDecorationType.Underline, markdownTheme.underlineColor)
-    } else {
-        // 是否是链接并且样式是否设置下划线
-        if ((nodeView.link.isSome() || nodeView.node is Footnote) && markdownTheme.isLinkUnderlined) {
-            // 是否是删除线
-            if (nodeView.props.isSome() && nodeView.props().get("strikethrough").isSome()) {
-                // TODO 需要同时设置下划线和中划线
-                return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor)
-            }
-            return (TextDecorationType.Underline, markdownTheme.linkColor)
-        } else {
-            // 是否是删除线
-            if (nodeView.props.isSome() && nodeView.props().get("strikethrough").isSome()) {
-                return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor)
-            }
-            return (TextDecorationType.None, COLOR_191919)
-        }
-    }
-}
-
-/**
- * 文本背景色设置
- *
- * @param isCode 是否是内联代码
- * @param markdownTheme markdown基础样式
- * @return 返回需要显示的背景颜色
- */
-func spanBackgroundColor(isCode: Bool, isLink: Bool, markdownTheme: MarkdownTheme): Color {
-    return if (isCode) {
-        // 内联代码情况需要设置背景色
-        markdownTheme.codeBackgroundColor
-    } else if (isLink) {
-        // 链接情况需要设置背景色
-        markdownTheme.linkBackGroupColor
-    } else {
-        // 不需要背景色设置
-        Color.TRANSPARENT
+func headLineHeight(level: Int64, markdownTheme: MarkdownTheme): Float64 {
+    return match (level) {
+        case 1 => markdownTheme.headingTextLineHeight1
+        case 2 => markdownTheme.headingTextLineHeight2
+        case 3 => markdownTheme.headingTextLineHeight3
+        case 4 => markdownTheme.headingTextLineHeight4
+        case 5 => markdownTheme.headingTextLineHeight5
+        case 6 => markdownTheme.headingTextLineHeight6
+        case _ => markdownTheme.headingTextLineHeight6
     }
 }
 
@@ -426,6 +382,333 @@ func spanSoftLineBreak(isLineBreak: Bool): String {
     } else {
         return " "
     }
+}
+
+/**
+ * 组合代码解析
+ *
+ * @param codeBlockListNodeView NodeView
+ * @return 返回代码类型列表、代码内容列表、代码真实类型列表
+ */
+func toCodeList(codeBlockListNodeView: NodeView): (ArrayList<String>, ArrayList<String>, ArrayList<String>) {
+    var strText: ArrayList<String> = ArrayList<String>()
+    var strInfoText: ArrayList<String> = ArrayList<String>()
+    var strInfo: ArrayList<String> = ArrayList<String>()
+    for (nodeView in codeBlockListNodeView.children) {
+        if (nodeView.nodeType == "FencedCodeBlock") {
+            strText.add(nodeView.nodeText)
+            strInfoText.add(nodeView.codeInfo.getOrThrow())
+        }
+    }
+    if (codeBlockListNodeView.nodeType == "FencedCodeBlockListBlock") {
+        strInfo = codeBlockListNodeView.codeListTab.getOrThrow()
+    }
+    return (strInfo, strText, strInfoText)
+}
+
+/**
+ * 前缀显示文本内容
+ *
+ * @param item NodeView
+ * @param isBullet 是否是无序列表
+ * @param markdownConfiguration MarkdownConfiguration
+ * @return 返回前缀文本内容
+ */
+func listPrefixStr(item: NodeView, listDepth: Int64, isBullet: Bool, markdownTheme: MarkdownTheme): String {
+    if (isBullet) {
+        // 有序列表
+        return "${item.orderedListNumber}."
+    }
+    if (markdownTheme.bulletListItemCircle) {
+        return "${solidCircleToUnicode()}"
+    }
+    if (listDepth == 0) {
+        return "${solidCircleToUnicode()}"
+    }
+    if (listDepth == 1) {
+        return "${hollowCircleToUnicode()}"
+    }
+    return "${solidSquareToUnicode()}"
+}
+
+/**
+ * 实心圆形
+ *
+ * @return 实心圆形UniCode码
+ */
+func solidCircleToUnicode(): Rune {
+    // ●
+    let solidDots: Rune = '\u{25CF}'
+    return solidDots
+}
+
+/**
+ * 空心圆形
+ *
+ * @return 空心圆形UniCode码
+ */
+func hollowCircleToUnicode(): Rune {
+    // ○
+    let hollowCircle: Rune = '\u{25CB}'
+    return hollowCircle
+}
+
+/**
+ * 实心正方形
+ *
+ * @return 实心正方形UniCode码
+ */
+func solidSquareToUnicode(): Rune {
+    // ■
+    let solidSquare: Rune = '\u{25A0}'
+    return solidSquare
+}
+
+/**
+ * 前缀显示文本内容颜色
+ *
+ * @param markdownTheme MarkdownTheme
+ * @param isBullet 是否是无序列表
+ * @return 返回前缀文本内容颜色
+ */
+func listPrefixColor(markdownTheme: MarkdownTheme, isBullet: Bool): Color {
+    if (isBullet) {
+        // 有序列表
+        return markdownTheme.orderedListItemColor
+    } else {
+        // 无序列表
+        return markdownTheme.bulletListItemColor
+    }
+}
+
+/**
+ * 前缀显示文本内容大小
+ *
+ * @param markdownTheme MarkdownTheme
+ * @param isBullet 是否是无序列表
+ * @return 返回前缀文本内容大小
+ */
+func listPrefixSize(markdownTheme: MarkdownTheme, isBullet: Bool): Float64 {
+    if (isBullet) {
+        // 有序列表
+        return markdownTheme.orderedListItemSize
+    } else {
+        // 无序列表
+        return markdownTheme.bulletListItemSize
+    }
+}
+
+/**
+ * 有序/无序列表前缀显示文本行高
+ *
+ * @param isBullet 是否是无序列表
+ * @param markdownConfiguration MarkdownConfiguration
+ * @return 返回前缀文本行高
+ */
+func listPrefixLineHeight(isBullet: Bool, markdownTheme: MarkdownTheme): Float64 {
+    if (isBullet) {
+        // 有序列表
+        return markdownTheme.orderedListItemLineHeight
+    } else {
+        return markdownTheme.bulletListItemLineHeight
+    }
+}
+
+/**
+ * 将Length转换成PX格式的Float64
+ *
+ * @param length Length
+ * @param componentImageWidth 控件宽度
+ * @return Option<Float64> PX格式的Float64
+ */
+func length2FloatPx(length: Option<Length>, componentImageWidth: Float64): Option<Float64> {
+    if (let Some(v) <- length) {
+        return match (v.unitType) {
+            case LengthType.vp(w) => vp2px(w.vp)().value
+            case LengthType.px(w) => w
+            case LengthType.percent(w) => componentImageWidth * w
+            case _ => Option<Float64>.None
+        }
+    } else {
+        return Option<Float64>.None
+    }
+}
+
+/**
+ * 处理图片的宽高
+ *
+ * @param componentImageWidth 控件宽度
+ * @param imageResWidth 图片真实宽度
+ * @param imageResHeight 图片真实高度
+ * @param imageWidth 图片设置宽度
+ * @param imageHeight 图片设置高度
+ * @param imageFixedRatioWidth 图片基于父布局宽度缩放百分比
+ * @param imageMaximumWidth 图片基于自身宽度缩放百分比
+ * @return (Float64, Float64) 图片的宽高单位是PX
+ */
+func imageWidthAndHeight(
+    componentImageWidth: Float64,
+    imageResWidth: Float64,
+    imageResHeight: Float64,
+    imageWidth: Option<Length>,
+    imageHeight: Option<Length>,
+    imageFixedRatioWidth: Option<Float64>,
+    imageMaximumWidth: Float64
+): (Float64, Float64) {
+    var width: Float64 = 0.0
+    var height: Float64 = 0.0
+    let aspectRatio: Float64 = imageResHeight / imageResWidth // 原图宽高比
+    let imageWidthPx: ?Float64 = length2FloatPx(imageWidth, componentImageWidth)
+    let imageHeightPx: ?Float64 = length2FloatPx(imageHeight, componentImageWidth)
+    if (imageWidthPx.isSome() && imageHeightPx.isSome()) {
+        let aspectRatioNew: Float64 = imageHeightPx() / imageWidthPx()
+        width = if (componentImageWidth > imageWidthPx()) {
+            imageWidthPx()
+        } else {
+            componentImageWidth
+        }
+        height = width * aspectRatioNew
+    } else if (imageWidthPx.isSome() && imageHeightPx.isNone()) {
+        width = if (componentImageWidth > imageWidthPx()) {
+            imageWidthPx()
+        } else {
+            componentImageWidth
+        }
+        height = width * aspectRatio
+    } else if (imageWidthPx.isNone() && imageHeightPx.isSome()) {
+        width = if (componentImageWidth > imageHeightPx() / aspectRatio) {
+            imageHeightPx() / aspectRatio
+        } else {
+            componentImageWidth
+        }
+        height = width * aspectRatio
+    } else {
+        width = if (componentImageWidth > imageResWidth) {
+            imageResWidth
+        } else {
+            componentImageWidth
+        }
+        height = width * aspectRatio
+    }
+    var widthNew: Float64 = 0.0
+    var heightNew: Float64 = 0.0
+    widthNew = if (imageFixedRatioWidth.isSome()) {
+        componentImageWidth * imageFixedRatioWidth()
+    } else {
+        width * imageMaximumWidth
+    }
+    heightNew = if (imageFixedRatioWidth.isSome()) {
+        height * (componentImageWidth / width) * imageFixedRatioWidth()
+    } else {
+        height * imageMaximumWidth
+    }
+    return (widthNew, heightNew)
+}
+
+/**
+ * 获取链接文本
+ *
+ * @param stringClass 文本对象
+ * @param commonmarkNode nodeView
+ * @return 链接文本
+ */
+func getLinkString(stringClass: StringClass, commonmarkNode: CommonmarkNode): String {
+    commonmarkNode.iterateChildren().forEach(
+            {
+                commonmarkChildrenNode: CommonmarkNode =>
+                    let nodeType = commonmarkChildrenNode.getNodeType()
+                    if (nodeType == "Text") {
+                        stringClass.addString((commonmarkChildrenNode as CommonmarkText)().getLiteral())
+                    } else if (nodeType == "Code") {
+                        stringClass.addString((commonmarkChildrenNode as Code)().getLiteral())
+                    } else if (nodeType == "Footnote") {
+                        stringClass.addString((commonmarkChildrenNode as Footnote)().noteid)
+                    } else if (nodeType == "LatexMathNode") {
+                        stringClass.addString((commonmarkChildrenNode as LatexMathNode)().latex)
+                    } else {
+                        stringClass.addString(getLinkString(stringClass, commonmarkChildrenNode))
+                    }
+            }
+        )
+    return stringClass.str
+}
+
+/**
+ * 对每张图片的 style 进行解析
+ *
+ * @param picStyle 图片样式集合
+ * @return PicStyleObj对象
+ */
+func parsePicStyle(picStyle: ArrayList<String>): PicStyleObj {
+    let picStyleObj: PicStyleObj = PicStyleObj()
+    if (picStyle.isEmpty()) {
+        return picStyleObj
+    }
+    var index = 0
+    while (index < picStyle.size) {
+        try {
+            let str = picStyle[index]
+            index++
+            if (str.size < 7) {
+                continue
+            }
+            let style = str.replace(" ", "").replace("\"", "").toAsciiLower()
+            if (style[..7] == ":width=") {
+                let value = style[7..]
+                if (value.size <= 1) {
+                    let picStyleObjWidth: Length = Int64.parse(value).vp
+                    picStyleObj.width = picStyleObjWidth
+                }
+                if (value[value.size - 2..] == "px") {
+                    let picStyleObjWidth: Length = Int64.parse(value[..value.size - 2]).px
+                    picStyleObj.width = picStyleObjWidth
+                } else if (value[value.size - 1..] == "%") {
+                    let opt = Int64.parse(value[..value.size - 1])
+                    if (opt <= 100) {
+                        picStyleObj.width = opt.percent
+                    }
+                } else {
+                    let picStyleObjWidth: Length = Int64.parse(value).vp
+                    picStyleObj.width = picStyleObjWidth
+                }
+            } else if (style[..8] == ":height=") {
+                let value = style[8..]
+                if (value.size <= 1) {
+                    picStyleObj.height = Int64.parse(value).vp
+                }
+                if (value[value.size - 2..] == "px") {
+                    picStyleObj.height = Int64.parse(value[..value.size - 2]).px
+                } else if (value[value.size - 1..] == "%") {
+                    let opt = Int64.parse(value[..value.size - 1])
+                    if (opt <= 100) {
+                        picStyleObj.height = opt.percent
+                    }
+                } else {
+                    picStyleObj.height = Int64.parse(value).vp
+                }
+            } else if (style[..7] == ":align=") {
+                let value = style[7..]
+                match (value) {
+                    case "left" => picStyleObj.align = HorizontalAlign.Start
+                    case "center" => picStyleObj.align = HorizontalAlign.Center
+                    case "right" => picStyleObj.align = HorizontalAlign.End
+                    case _ => ()
+                }
+            } else if (style.size > 15 && style[..15] == ":border-radius=") {
+                let value = style[15..]
+                if (value[value.size - 2..] == "px") {
+                    picStyleObj.borderRadius = Int64.parse(value[..value.size - 2]).px
+                } else {
+                    picStyleObj.borderRadius = Int64.parse(value).vp
+                }
+            } else if (style[..7] == ":style=") {
+                for (s in style[7..].split(";")) {
+                    picStyle.add(":${s.replace(":", "=")}")
+                }
+            }
+        } catch (e: Exception) {}
+    }
+    return picStyleObj
 }
 
 /**
@@ -542,192 +825,6 @@ func indentedCodeTextColor(markdownTheme: MarkdownTheme, prismTheme: PrismTheme)
 }
 
 /**
- * 前缀显示文本行高
- *
- * @param isBullet 是否是无序列表
- * @param markdownConfiguration MarkdownConfiguration
- * @return 返回前缀文本行高
- */
-func listPrefixLineHeight(isBullet: Bool, markdownConfiguration: MarkdownConfiguration): Float64 {
-    if (isBullet) {
-        // 有序列表
-        return markdownConfiguration.markdownTheme.orderedListItemLineHeight
-    } else {
-        return markdownConfiguration.markdownTheme.bulletListItemLineHeight
-    }
-}
-
-/**
- * 前缀显示文本内容
- *
- * @param item NodeView
- * @param isBullet 是否是无序列表
- * @param markdownConfiguration MarkdownConfiguration
- * @return 返回前缀文本内容
- */
-func listPrefixStr(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration): String {
-    if (isBullet) {
-        // 有序列表
-        return "${item.order}."
-    } else {
-        // 无序列表
-        if (markdownConfiguration.markdownTheme.bulletListItemCircle) {
-            return "${solidCircleToUnicode()}"
-        } else {
-            if (listOverallDepth(item) == 0) {
-                return "${solidCircleToUnicode()}"
-            } else if (listOverallDepth(item) == 1) {
-                return "${hollowCircleToUnicode()}"
-            } else {
-                return "${solidSquareToUnicode()}"
-            }
-        }
-    }
-}
-
-/**
- * 前缀显示文本内容颜色
- *
- * @param markdownTheme MarkdownTheme
- * @param isBullet 是否是无序列表
- * @return 返回前缀文本内容颜色
- */
-func listPrefixColor(markdownTheme: MarkdownTheme, isBullet: Bool): Color {
-    if (isBullet) {
-        // 有序列表
-        return markdownTheme.orderedListItemColor
-    } else {
-        // 无序列表
-        return markdownTheme.bulletListItemColor
-    }
-}
-
-/**
- * 前缀显示文本内容大小
- *
- * @param markdownTheme MarkdownTheme
- * @param isBullet 是否是无序列表
- * @return 返回前缀文本内容大小
- */
-func listPrefixSize(markdownTheme: MarkdownTheme, isBullet: Bool): Float64 {
-    if (isBullet) {
-        // 有序列表
-        return markdownTheme.orderedListItemSize
-    } else {
-        // 无序列表
-        return markdownTheme.bulletListItemSize
-    }
-}
-
-/**
- * 整体深度,有序列表深度（TOC列表深度） + 无序列表深度 - 任务列表深度
- *
- * @param item NodeView
- * @return 返回深度
- */
-func listOverallDepth(item: NodeView): Int64 {
-    // 任务列表深度,0开始，有值代表有深度需要加一
-    let taskDepth: Int64 = if (let Some(Some(v: Int)) <- item.props?.get(TaskListItem.TASK_DEPTH)) {
-        v + 1
-    } else {
-        0
-    }
-    // 有序列表深度
-    let depth = if (item.depth != -1) {
-        item.depth
-    } else {
-        0
-    }
-    // 无序列表深度
-    let bulletListDepth = if (item.bulletListDepth != -1) {
-        item.bulletListDepth
-    } else {
-        0
-    }
-    return depth + bulletListDepth - taskDepth
-}
-
-/**
- * 任务列表选择框是否选中
- *
- * @param item NodeView
- * @return 是否被选中
- */
-func taskSelect(item: NodeView): Bool {
-    if (item.node is TaskListItem) {
-        return (item.node as TaskListItem)().isDone()
-    } else {
-        return false
-    }
-}
-
-/**
- * 实心圆形
- *
- * @return 实心圆形UniCode码
- */
-func solidCircleToUnicode(): Rune {
-    // ●
-    let solidDots: Rune = '\u{25CF}'
-    return solidDots
-}
-
-/**
- * 空心圆形
- *
- * @return 空心圆形UniCode码
- */
-func hollowCircleToUnicode(): Rune {
-    // ○
-    let hollowCircle: Rune = '\u{25CB}'
-    return hollowCircle
-}
-
-/**
- * 实心正方形
- *
- * @return 实心正方形UniCode码
- */
-func solidSquareToUnicode(): Rune {
-    // ■
-    let solidSquare: Rune = '\u{25A0}'
-    return solidSquare
-}
-
-/**
- * 解析 tableBlockView 行数，返回当前网格布局行的数量
- *
- * @param tableBlockView NodeView
- * @return 列数
- */
-func parseRowCount(tableBlockView: NodeView): String {
-    let rowCount: Int64 = (tableBlockView.props().get("rowCount")() as Int64)()
-    let rowCountBuilder: StringBuilder = StringBuilder()
-    for (i in 0..rowCount) {
-        rowCountBuilder.append("1fr")
-        if (i != rowCount - 1) {
-            rowCountBuilder.append(" ")
-        }
-    }
-    return rowCountBuilder.toString()
-}
-
-/**
- * 解析 tableBlockView 列数，返回当前网格布局列的数量
- */
-func parseColumnCount(tableBlockView: NodeView): String {
-    let columnCount: Int64 = (tableBlockView.props().get("columnCount")() as Int64)()
-    let columnCountBuilder: StringBuilder = StringBuilder()
-    for (i in 0..columnCount) {
-        columnCountBuilder.append("1fr")
-        if (i != columnCount - 1) {
-            columnCountBuilder.append(" ")
-        }
-    }
-    return columnCountBuilder.toString()
-}
-
-/**
  * 渲染 tableCell 的颜色
  *
  * @param tableCell TableCell
@@ -815,144 +912,17 @@ func renderTableCellAlign(tableCell: TableCell): TextAlign {
 }
 
 /**
- * 图片圆角大小
- *
- * @param borderRadius 圆角大小
- * @return 圆角大小
- */
-func styleImageRadius(borderRadius: ?Length): Length {
-    if (borderRadius.isSome()) {
-        return borderRadius()
-    } else {
-        return 0.px
-    }
-}
-
-/**
- * 对每张图片的 style 进行解析
- *
- * @param picStyle 图片样式集合
- * @param componentWidth 父布局控件宽度 - 单位vp
- * @return PicStyleObj对象
- */
-func parsePicStyle(picStyle: ArrayList<String>, componentWidthPx: Float64): PicStyleObj {
-    let picStyleObj: PicStyleObj = PicStyleObj()
-    if (picStyle.isEmpty()) {
-        return picStyleObj
-    }
-    let componentWidth = px2vp(componentWidthPx.px)().value
-    var index = 0
-    while (index < picStyle.size) {
-        try {
-            let str = picStyle[index]
-            index++
-            if (str.size < 7) {
-                continue
-            }
-            let style = str.replace(" ", "").replace("\"", "").toAsciiLower()
-            if (style[..7] == ":width=") {
-                let value = style[7..]
-                if (value.size <= 1) {
-                    let picStyleObjWidth: Length = Int64.parse(value).vp
-                    picStyleObj.width = if (picStyleObjWidth.value > componentWidth) {
-                        componentWidth.vp
-                    } else {
-                        picStyleObjWidth
-                    }
-                }
-                if (value[value.size - 2..] == "px") {
-                    let picStyleObjWidth: Length = Int64.parse(value[..value.size - 2]).px
-                    let componentWidthLength: ?Length = vp2px(componentWidth.vp)
-                    if (let Some(v) <- componentWidthLength) {
-                        picStyleObj.width = if (picStyleObjWidth.value > v.value) {
-                            v
-                        } else {
-                            picStyleObjWidth
-                        }
-                    } else {
-                        picStyleObj.width = picStyleObjWidth
-                    }
-                } else if (value[value.size - 1..] == "%") {
-                    let opt = Int64.parse(value[..value.size - 1])
-                    if (opt <= 100) {
-                        picStyleObj.width = opt.percent
-                    }
-                } else {
-                    let picStyleObjWidth: Length = Int64.parse(value).vp
-                    picStyleObj.width = if (picStyleObjWidth.value > componentWidth) {
-                        componentWidth.vp
-                    } else {
-                        picStyleObjWidth
-                    }
-                }
-            } else if (style[..8] == ":height=") {
-                let value = style[8..]
-                if (value.size <= 1) {
-                    picStyleObj.height = Int64.parse(value).vp
-                }
-                if (value[value.size - 2..] == "px") {
-                    picStyleObj.height = Int64.parse(value[..value.size - 2]).px
-                } else if (value[value.size - 1..] == "%") {
-                    let opt = Int64.parse(value[..value.size - 1])
-                    if (opt <= 100) {
-                        picStyleObj.height = opt.percent
-                    }
-                } else {
-                    picStyleObj.height = Int64.parse(value).vp
-                }
-            } else if (style[..7] == ":align=") {
-                let value = style[7..]
-                match (value) {
-                    case "left" => picStyleObj.align = FlexAlign.Start
-                    case "center" => picStyleObj.align = FlexAlign.Center
-                    case "right" => picStyleObj.align = FlexAlign.End
-                    case _ => ()
-                }
-            } else if (style.size > 15 && style[..15] == ":border-radius=") {
-                let value = style[15..]
-                if (value[value.size - 2..] == "px") {
-                    picStyleObj.borderRadius = Int64.parse(value[..value.size - 2]).px
-                } else {
-                    picStyleObj.borderRadius = Int64.parse(value).vp
-                }
-            } else if (style[..7] == ":style=") {
-                for (s in style[7..].split(";")) {
-                    picStyle.add(":${s.replace(":", "=")}")
-                }
-            }
-        } catch (e: Exception) {}
-    }
-    return picStyleObj
-}
-
-/**
- * 获取代码内容和代码类型
- *
- * @param nodeView NodeView
- * @return 代码内容和代码类型
- */
-func getCodeInfo(nodeView: NodeView): (String, ?String) {
-    return if (nodeView.node is FencedCodeBlock) {
-        ((nodeView.node as FencedCodeBlock)().getLiteral(), (nodeView.node as FencedCodeBlock)().getInfo())
-    } else if (nodeView.node is IndentedCodeBlock) {
-        ((nodeView.node as IndentedCodeBlock)().getLiteral(), None)
-    } else {
-        ("", None)
-    }
-}
-
-/**
  * 对于表格数据进行处理 - 整合处理
  *
  * @param nodeViews ArrayList<NodeView>
  * @return ArrayList<NodeView>
  */
-func tableList(nodeViews: ArrayList<NodeView>): ArrayList<NodeView> {
-    let tableNodeViews = ArrayList<NodeView>()
+func tableList(nodeViews: ArrayList<CommonmarkNode>): ArrayList<CommonmarkNode> {
+    let tableNodeViews = ArrayList<CommonmarkNode>()
     for (nodeView in nodeViews) {
-        if (nodeView.node is TableBody || nodeView.node is TableHead) {
-            tableNodeViews.add(all: nodeView.children)
-        } else if (nodeView.node is TableRow) {
+        if (nodeView is TableBody || nodeView is TableHead) {
+            tableNodeViews.add(all: nodeView.listChildren())
+        } else if (nodeView is TableRow) {
             tableNodeViews.add(nodeView)
         }
     }
@@ -994,20 +964,6 @@ func length2Float64(length: ?Length, componentWidth: Float64): ?Float64 {
     }
 }
 
-/**
- * 获取map数据
- *
- * @param item NodeView
- * @param key key
- * @param default 默认值
- * @return T
- */
-func getProp<T>(item: NodeView, key: String, default: T): T {
-    match (item.props?.get(key)) {
-        case Some(Some(v: T)) => v
-        case v => default
-    }
-}
 
 /**
  * 将布局位置添加进列表
@@ -1083,6 +1039,23 @@ func urlSafeBase64Decode(v: String): String {
  * @param str String
  * @return ?Float64
  */
+func strToLength(str: ?String): ?Length {
+    var f: ?Length = Option<Length>.None
+    if (let Some(v) <- str) {
+        try {
+            f = Float64.parse(v).vp
+        } catch (e: IllegalArgumentException) {
+        }
+    }
+    return f
+}
+
+/**
+ * 将String转换成Float64
+ *
+ * @param str String
+ * @return ?Float64
+ */
 func strToFloat64(str: ?String): ?Float64 {
     var f: ?Float64 = Option<Float64>.None
     if (let Some(v) <- str) {
@@ -1131,29 +1104,6 @@ func appendTwoDigits(sb: StringBuilder, value: Int64): StringBuilder {
 }
 
 /**
- * 获取链接文本
- *
- * @param nodeView nodeView
- * @return 获取链接文本
- */
-func getLinkString(nodeView: NodeView): ?String {
-    if (nodeView.children.size == 0) {
-        return Option<String>.None
-    }
-    var s = ""
-    for (childrenNodeView in nodeView.children) {
-        if (childrenNodeView.node is CommonmarkText) {
-            s = s + (childrenNodeView.node as CommonmarkText)().getLiteral()
-        } else if (childrenNodeView.node is Footnote) {
-            s = s + (childrenNodeView.node as Footnote)().noteid
-        } else if (childrenNodeView.node is Code) {
-            s = s + (childrenNodeView.node as Code)().getLiteral()
-        }
-    }
-    return s
-}
-
-/**
  * 文本是否加粗
  *
  * @param b 布尔值
@@ -1196,20 +1146,6 @@ func indentedCodeodeBlockTypeTextColor(markdownTheme: MarkdownTheme, prismTheme:
         return markdownTheme.codeBlockTextColor()
     }
     return prismTheme.textColor()
-}
-
-/**
- * 获取链接url
- *
- * @param nodeView NodeView
- * @return 链接url
- */
-func linkUrl(nodeView: NodeView): ?String {
-    return if (nodeView.link.isSome()) {
-        nodeView.link().getDestination()
-    } else {
-        Option<String>.None
-    }
 }
 
 /**
@@ -1425,144 +1361,6 @@ func colorStringToColor(colorString: String): ?Color {
 }
 
 /**
- * 对style图片做处理
- *
- * @param picStyle 图片样式集合
- * @param componentImageWidth 父布局宽度
- * @param heightRes 图片自身高度
- * @param widthRes 图片自身宽度
- * @return (Float64, Float64, Option<Length>, FlexAlign) 图片宽度，图片高度，图片圆角，图片对齐样式
- */
-func imageWidthHeight(picStyleObjWidth: ?Float64, picStyleObjHeight: ?Float64, componentImageWidth: Float64, heightRes: Float64, widthRes: Float64): (Float64, Float64) {
-    var width: Float64 = 0.0
-    var height: Float64 = 0.0
-    let aspectRatio: Float64 = heightRes / widthRes
-    let widthNew = if (componentImageWidth > widthRes) {
-        widthRes
-    } else {
-        componentImageWidth
-    }
-    let heightNew = widthNew * aspectRatio
-    if (picStyleObjWidth.isSome() && picStyleObjHeight.isSome()) {
-        let aspectRatioNew: Float64 = picStyleObjHeight() / picStyleObjWidth()
-        width = if (componentImageWidth > picStyleObjWidth()) {
-            picStyleObjWidth()
-        } else {
-            componentImageWidth
-        }
-        height = width * aspectRatioNew
-    } else if (picStyleObjWidth.isSome() && picStyleObjHeight.isNone()) {
-        width = if (componentImageWidth > picStyleObjWidth()) {
-            picStyleObjWidth()
-        } else {
-            componentImageWidth
-        }
-        height = width * aspectRatio
-    } else if (picStyleObjWidth.isNone() && picStyleObjHeight.isSome()) {
-        width = if (componentImageWidth > picStyleObjHeight() / aspectRatio) {
-            picStyleObjHeight() / aspectRatio
-        } else {
-            componentImageWidth
-        }
-        height = width * aspectRatio
-    } else {
-        width = widthNew
-        height = heightNew
-    }
-    return (width, height)
-}
-
-/**
- * 上下边距
- *
- * @param nodeType 类型。0：有序无序列表，1：块引用
- * @param item nodeView对象
- * @param markdownConfiguration markdownConfiguration对象
- * @return Float64 上下边距
- */
-func marginNodeTopAndBottom(nodeType: Int64, item: NodeView, markdownConfiguration: MarkdownConfiguration): Float64 {
-    return if (item.node is Paragraph) {
-        if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-            0.0
-        } else {
-            marginNodeTopAndBottom(nodeType, markdownConfiguration)
-        }
-    } else if (item.node is Heading) {
-        if (item.children.size == 1 && item.children[0].node is CommonmarkImage) {
-            0.0
-        } else {
-            marginNodeTopAndBottom(nodeType, markdownConfiguration)
-        }
-    } else {
-        marginNodeTopAndBottom(nodeType, markdownConfiguration)
-    }
-}
-
-/**
- * 上下边距
- *
- * @param nodeType 类型。0：有序无序列表，1：块引用
- * @param markdownConfiguration markdownConfiguration对象
- * @return Float64 上下边距
- */
-func marginNodeTopAndBottom(nodeType: Int64, markdownConfiguration: MarkdownConfiguration): Float64 {
-    return if (nodeType == 0) {
-        markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins
-    } else {
-        markdownConfiguration.markdownTheme.blockQuoteTopAndBottomMargins
-    }
-}
-
-/**
- * 组件可见性判断
- *
- * @param imageType 0：开始加载。1：加载成功完成。2：加载失败
- * @return Visibility Visibility
- */
-func visibilityImageSpanType(imageType: Int64): Visibility {
-    if (imageType == 1) {
-        return Visibility.Visible
-    } else {
-        return Visibility.None
-    }
-}
-
-/**
- * 计算图片宽度
- *
- * @param imageFixedRatioWidth 基于外层控件宽度大小对图片进行百分比缩放比例
- * @param componentImageWidth 图片最大宽度
- * @param width 图片宽度
- * @param imageMaximumWidth 基于图片自身宽度大小对图片进行百分比缩放比例
- * @return Length 图片宽度
- */
-func imageSpanWidth(imageFixedRatioWidth: Option<Float64>, componentImageWidth: Float64, width: Float64, imageMaximumWidth: Float64): Length {
-    return if (imageFixedRatioWidth.isSome()) {
-        (componentImageWidth * imageFixedRatioWidth()).px
-    } else {
-        (width * imageMaximumWidth).px
-    }
-}
-
-/**
- * 计算图片高度
- *
- * @param imageFixedRatioWidth 基于外层控件宽度大小对图片进行百分比缩放比例
- * @param componentImageWidth 图片最大宽度
- * @param width 图片宽度
- * @param height 图片高度
- * @param imageMaximumWidth 基于图片自身宽度大小对图片进行百分比缩放比例
- * @return Length 图片高度
- */
-func imageSpanHeight(imageFixedRatioWidth: Option<Float64>, componentImageWidth: Float64, width: Float64, height: Float64, imageMaximumWidth: Float64): Length {
-    return if (imageFixedRatioWidth.isSome()) {
-        (height * (componentImageWidth / width) * imageFixedRatioWidth()).px
-    } else {
-        (height * imageMaximumWidth).px
-    }
-}
-
-/**
  * 计算图片圆角
  *
  * @param radius 图片圆角
@@ -1574,326 +1372,5 @@ func imageSpanBorderRadius(radius: Option<Length>, imageBorderRadius: Float64): 
         length2Float(radius())
     } else {
         imageBorderRadius
-    }
-}
-
-/**
- * HTML图片宽高计算
- *
- * @param imageLoadResultHeight
- * @param imageLoadResultWidth
- * @param componentImageWidth
- * @param imageWidth
- * @param imageHeight
- * @return (Float64, Float64)
- */
-func imageSpanHtmlComplete(imageLoadResultHeight: Float64, imageLoadResultWidth: Float64, componentImageWidth: Float64, imageWidth: ?Float64, imageHeight: ?Float64): (Float64, Float64) {
-    let aspectRatio: Float64 = imageLoadResultHeight / imageLoadResultWidth
-    let widthNew = if (componentImageWidth > imageLoadResultWidth) {
-        imageLoadResultWidth
-    } else {
-        componentImageWidth
-    }
-    var width: Float64 = 0.0
-    var height: Float64 = 0.0
-    let heightNew = widthNew * aspectRatio
-    if (imageWidth.isSome() && imageHeight.isSome()) {
-        let imageWidthPX = vp2px(imageWidth().vp)().value
-        let imageHeightPX = vp2px(imageHeight().vp)().value
-        let aspectRatioNew: Float64 = imageHeightPX / imageWidthPX
-        width = if (componentImageWidth > imageWidthPX) {
-            imageWidthPX
-        } else {
-            componentImageWidth
-        }
-        height = width * aspectRatioNew
-    } else if (imageWidth.isSome() && !imageHeight.isSome()) {
-        let imageWidthPX = vp2px(imageWidth().vp)().value
-        width = if (componentImageWidth > imageWidthPX) {
-            imageWidthPX
-        } else {
-            componentImageWidth
-        }
-        height = width * aspectRatio
-    } else if (!imageWidth.isSome() && imageHeight.isSome()) {
-        let imageHeightPX = vp2px(imageHeight().vp)().value
-        width = if (componentImageWidth > imageHeightPX / aspectRatio) {
-            imageHeightPX / aspectRatio
-        } else {
-            componentImageWidth
-        }
-        height = width * aspectRatio
-    } else {
-        width = widthNew
-        height = heightNew
-    }
-    return (width, height)
-}
-
-/**
- * HTML图片宽高计算
- *
- * @param imageLoadResultHeight
- * @param imageLoadResultWidth
- * @param componentImageWidth
- * @param imageWidth
- * @param imageHeight
- * @return (Float64, Float64)
- */
-func imageSpanComplete(imageLoadResultHeight: Float64, imageLoadResultWidth: Float64, componentImageWidth: Float64): (Float64, Float64) {
-    var width: Float64 = 0.0
-    var height: Float64 = 0.0
-    var aspectRatio: Float64 = imageLoadResultHeight / imageLoadResultWidth
-    width = if (componentImageWidth > imageLoadResultWidth) {
-        imageLoadResultWidth
-    } else {
-        componentImageWidth
-    }
-    height = width * aspectRatio
-    return (width, height)
-}
-
-/**
- * ObservedArrayList<NodeView>数据刷新
- */
-func refreshnodeViewList(nodeView: NodeView, nodeViewList: ObservedArrayList<NodeView>, tableCellComponents: ?HashMap<Int64, MarkdownTableBlockCellComponent>): Unit {
-    let refreshNodeViews = nodeView.children
-    let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
-    let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
-    if (refreshNodeViewSize == 0) {
-        return
-    }
-    if (refreshNodeViewSize > nodeViewListSize) {
-        // 新数据大于页面数据
-        // 循环判断历史数据有没有做过修改
-        for (i in 0..nodeViewListSize) {
-            refreshnodeView(nodeView, nodeViewList, refreshNodeViews, i, tableCellComponents)
-        }
-        // 循环添加新数据
-        for (i in nodeViewListSize..refreshNodeViewSize) {
-            nodeViewList.append(refreshNodeViews[i])
-        }
-    } else if (refreshNodeViewSize == nodeViewListSize) {
-        // 新数据等于页面数据
-        for (i in 0..nodeViewListSize) {
-            refreshnodeView(nodeView, nodeViewList, refreshNodeViews, i, tableCellComponents)
-        }
-    } else {
-        // 新数据小于页面数据
-        // 循环判断历史数据有没有做过修改
-        for (i in 0..refreshNodeViewSize) {
-            refreshnodeView(nodeView, nodeViewList, refreshNodeViews, i, tableCellComponents)
-        }
-        // 循环删除多余的旧数据
-        for (i in nodeViewListSize - 1..=refreshNodeViewSize : -1) {
-            nodeViewList.remove(i)
-        }
-    }
-}
-
-func refreshnodeView(nodeView: NodeView, nodeViewList: ObservedArrayList<NodeView>, refreshNodeViews: ArrayList<NodeView>, i: Int64, tableCellComponents: ?HashMap<Int64, MarkdownTableBlockCellComponent>) {
-    let newBlockHash = refreshNodeViews[i].nodeHash
-    let oldBlockHash = nodeViewList[i].nodeHash
-    let newContentHash = refreshNodeViews[i].contentHash
-    let oldContentHash = nodeViewList[i].contentHash
-    // 唯一ID是否相同
-    if (let Some(w) <- tableCellComponents) {
-        if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-            nodeViewList[i] = refreshNodeViews[i]
-        } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-            nodeViewList[i] = refreshNodeViews[i]
-        } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-            if (let Some(cache) <- w.get(newBlockHash)) {
-                cache.refreshData(refreshNodeViews[i])
-            }
-        }
-    } else {
-        if (newBlockHash != oldBlockHash || newContentHash != oldContentHash) {
-            nodeViewList[i] = refreshNodeViews[i]
-        }
-    }
-}
-
-func refreshNodeViewDataSource(nodeView: NodeView, refreshNodeViews: ArrayList<NodeView>, refreshNodeViewSize: Int64, dataSourceSize: Int64, nodeViewDataSource: NodeViewDataSource, compontentType: String, markdownCacheConfiguration: ?MarkdownCacheConfiguration, tableRowComponents: ?HashMap<Int64, MarkdownTableBlockRowComponent>): Unit {
-    if (refreshNodeViewSize > dataSourceSize) {
-        // 新数据大于页面数据
-        // 循环判断历史数据有没有做过修改
-        for (i in 0..dataSourceSize) {
-            let newBlockHash = refreshNodeViews[i].nodeHash
-            let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
-            let newContentHash = refreshNodeViews[i].contentHash
-            let oldContentHash = nodeViewDataSource.getData(i).contentHash
-            // 唯一ID是否相同
-            if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-            } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-            } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                let result = refreshCacheData(refreshNodeViews[i], newBlockHash, compontentType, markdownCacheConfiguration, tableRowComponents)
-                if (!result) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                }
-            } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
-            }
-        }
-        // 循环添加新数据
-        for (i in dataSourceSize..refreshNodeViewSize) {
-            nodeViewDataSource.addData(refreshNodeViews[i])
-        }
-    } else if (refreshNodeViewSize == dataSourceSize) {
-        // 新数据等于页面数据
-        for (i in 0..dataSourceSize) {
-            let newBlockHash = refreshNodeViews[i].nodeHash
-            let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
-            let newContentHash = refreshNodeViews[i].contentHash
-            let oldContentHash = nodeViewDataSource.getData(i).contentHash
-            // 唯一ID是否相同
-            if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-            } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-            } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                let result = refreshCacheData(refreshNodeViews[i], newBlockHash, compontentType, markdownCacheConfiguration, tableRowComponents)
-                if (!result) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                }
-            } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
-            }
-        }
-    } else {
-        // 新数据小于页面数据
-        // 循环判断历史数据有没有做过修改
-        for (i in 0..refreshNodeViewSize) {
-            let newBlockHash = refreshNodeViews[i].nodeHash
-            let oldBlockHash = nodeViewDataSource.getData(i).nodeHash
-            let newContentHash = refreshNodeViews[i].contentHash
-            let oldContentHash = nodeViewDataSource.getData(i).contentHash
-            // 唯一ID是否相同
-            if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-            } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-            } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                let result = refreshCacheData(refreshNodeViews[i], newBlockHash, compontentType, markdownCacheConfiguration, tableRowComponents)
-                if (!result) {
-                    nodeViewDataSource.replaceData(i, refreshNodeViews[i])
-                }
-            } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash) {
-            }
-        }
-        // 循环删除多余的旧数据
-        for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
-            nodeViewDataSource.deleteData(i)
-        }
-    }
-}
-
-func refreshCacheData(nodeView: NodeView, newBlockHash: Int64, compontentType: String, markdownCacheConfiguration: ?MarkdownCacheConfiguration, tableRowComponents: ?HashMap<Int64, MarkdownTableBlockRowComponent>): Bool {
-    match (compontentType) {
-        case "list" =>
-            if (let Some(w) <- markdownCacheConfiguration && let Some(cache) <- w.listItemComponents.get(newBlockHash)) {
-                cache.refreshData(nodeView)
-            }
-            return true
-        case "table" =>
-            if (let Some(w) <- tableRowComponents && let Some(cache) <- w.get(newBlockHash)) {
-                cache.refreshData(nodeView)
-            }
-            return true
-        case "quote" | "listitem" =>
-            if (let Some(w) <- markdownCacheConfiguration) {
-                if (nodeView.node is BulletList || nodeView.node is OrderedList) {
-                    // 有序列表和无序列表
-                    let cache = w.listComponents.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(nodeView)
-                    }
-                } else if (nodeView.node is IndentedCodeBlock) {
-                    // 缩进代码
-                    let cache = w.indentedCodeComponents.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(nodeView)
-                    }
-                } else if (nodeView.node is FencedCodeBlock) {
-                    // 围栏代码
-                    let cache = w.fencedCodeComponents.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(getCodeInfo(nodeView)[0], getCodeInfo(nodeView)[1](), nodeView.nodeHash)
-                    }
-                } else if (nodeView.node is Heading) {
-                    // 标题
-                    let cache = w.headingComponents.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(nodeView)
-                    }
-                } else if (nodeView.node is Paragraph) {
-                    // 段落
-                    let cache = w.paragraphComponents.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(nodeView)
-                    }
-                } else if (nodeView.node is TableBlock) {
-                    // 表格
-                    let cache = w.tableComponents.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(nodeView)
-                    }
-                } else if (nodeView.node is BlockQuote) {
-                    // 块引用
-                    let cache = w.quoteComponents.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(nodeView)
-                    }
-                } else {
-                    return false
-                }
-            }
-            return true
-        case "footnote" =>
-            if (let Some(w) <- markdownCacheConfiguration) {
-                if (nodeView.node is Paragraph) {
-                    // 段落
-                    let cache = w.paragraphComponents.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(nodeView)
-                    }
-                } else {
-                    return false
-                }
-            }
-            return true
-        case "desclist" =>
-            if (let Some(w) <- markdownCacheConfiguration) {
-                if (nodeView.node is DescTerm) {
-                    // 术语
-                    let cache = w.descTermComponent.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(nodeView)
-                    }
-                } else if (nodeView.node is DescDef) {
-                    // 解释
-                    let cache = w.descDefComponent.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(nodeView)
-                    }
-                } else {
-                    return false
-                }
-            }
-            return true
-        case "descterm" | "descdef" =>
-            if (let Some(w) <- markdownCacheConfiguration) {
-                if (nodeView.node is Paragraph) {
-                    // 段落
-                    let cache = w.paragraphComponents.get(newBlockHash)
-                    if (let Some(v) <- cache) {
-                        v.refreshData(nodeView)
-                    }
-                } else {
-                    return false
-                }
-            }
-            return true
-        case _ => return true
     }
 }

@@ -3,7 +3,6 @@
  */
 package markdown.plugin
 
-import std.collection.collectArray
 import std.collection.collectArrayList
 
 const NO_END: Int = -2

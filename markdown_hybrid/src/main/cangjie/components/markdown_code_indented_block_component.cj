@@ -9,19 +9,14 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * Markdown缩进代码块自定义控件
+ * 缩进代码块
  */
 @Component
-class MarkdownIndentedCodeBlockComponent {
+class MarkdownCodeIndentedBlockComponent {
     /**
      * markdown配置
      */
     var markdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 列表节点
-     */
-    var nodeView: NodeView
 
     /**
      * 代码内容
@@ -36,9 +31,15 @@ class MarkdownIndentedCodeBlockComponent {
     var info: Option<String> = Option<String>.None
 
     /**
+     * hash
+     */
+    @State
+    var nodeHash: Int64 = 0
+
+    /**
      * 缓存的缩进代码块控件列表
      */
-    var indentedCodeComponents: HashMap<Int64, MarkdownIndentedCodeBlockComponent>
+    var indentedCodeComponents: HashMap<Int64, MarkdownCodeIndentedBlockComponent>
 
     /**
      * 代码行数
@@ -54,21 +55,19 @@ class MarkdownIndentedCodeBlockComponent {
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>()
 
     protected override func aboutToAppear(): Unit {
-        // 初始化刷新数据
-        refreshData(nodeView)
-        // 缓存当前控件
-        indentedCodeComponents.add(this.nodeView.nodeHash, this)
+        refreshData(codeText, info, nodeHash) // 初始化刷新数据
+        indentedCodeComponents.add(nodeHash, this) // 缓存当前控件
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        let value = indentedCodeComponents.get(this.nodeView.nodeHash)
+        let value = indentedCodeComponents.get(nodeHash)
         if (let Some(v) <- value) {
             if (refEq(v, this)) {
-                indentedCodeComponents.remove(this.nodeView.nodeHash)
+                indentedCodeComponents.remove(nodeHash)
             }
         } else {
-            indentedCodeComponents.remove(this.nodeView.nodeHash)
+            indentedCodeComponents.remove(nodeHash)
         }
     }
 
@@ -81,15 +80,10 @@ class MarkdownIndentedCodeBlockComponent {
                         lineArray,
                         itemGeneratorFunc: {
                             item: Int64, idx: Int64 => Text((idx + 1).toString())
-                                // 设置文本颜色
                                 .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                // 设置文本尺寸
                                 .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                                // 设置行高
                                 .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
-                                // 设置文本的最大行数
                                 .maxLines(1)
-                                // 设置文本超长时的显示方式
                                 .textOverflow(TextOverflow.Ellipsis)
                         },
                         keyGeneratorFunc: {
@@ -97,28 +91,18 @@ class MarkdownIndentedCodeBlockComponent {
                         }
                     )
                 }
-                // 设置外边距属性
                 .margin(bottom: 10)
-                // 设置内边距属性
                 .padding(left: 8, right: 8)
-                // 设置 Column 子组件在水平方向上的对齐格式
                 .alignItems(HorizontalAlign.End)
-                // 设置边框的宽度
                 .borderWidth(EdgeWidths(right: markdownConfiguration.markdownTheme.thematicBreakHeight.vp))
-                // 设置元素的边框样式
                 .borderStyle(BorderStyle.Solid)
-                // 设置边框的颜色
-                .borderColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                // 控件显示和隐藏
+                .borderColor(indentedCodeTextColor(markdownConfiguration.markdownTheme,markdownConfiguration.markdownTheme.prismTheme))
                 .visibility(isVisibility(markdownConfiguration.markdownTheme.codeBlockLineNumberHide))
                 codeBlockComponent()
             }
         }
-        // 设置组件自身的宽度
         .width(100.percent)
-        // 设置圆角
         .borderRadius(markdownConfiguration.markdownTheme.codeBlockRadius)
-        // 设置背景色
         .backgroundColor(codeBackgroundColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
     }
 
@@ -130,28 +114,17 @@ class MarkdownIndentedCodeBlockComponent {
         Scroll() {
             // 代码文本内容
             Text(codeText)
-                // 设置文本颜色
                 .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                // 设置文本尺寸
                 .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                // 设置文本的字体列表
                 .fontFamily(markdownConfiguration.markdownTheme.codeBlockTypeface)
-                // 设置多行文本的文本对齐方式
                 .textAlign(TextAlign.Start)
-                // 设置内边距属性
                 .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin, right: markdownConfiguration.markdownTheme.codeMultilineRightMargin)
-                // 设置行高
                 .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
         }
-        // 设置滚动方法
         .scrollable(ScrollDirection.Horizontal)
-        // 设置滚动条状态
         .scrollBar(BarState.Off)
-        // 设置元素内容的对齐方式
         .align(Alignment.Start)
-        // 对子组件进行重新布局
         .layoutWeight(1)
-        // 设置内边距属性
         .padding(bottom: 10)
     }
 
@@ -162,102 +135,73 @@ class MarkdownIndentedCodeBlockComponent {
     func codeBlockButtonComponent() {
         Row() {
             if (codeText.trimAscii().size > 0) {
-                // 设置图片的数据源
-                codeBlockTextComponent(if (info.isSome()) {info()} else{markdownConfiguration.markdownTheme.codeBlockTypeTextStr}, markdownConfiguration)
+                codeBlockTextComponent(if (info.isSome()) {
+                    info()
+                } else {
+                    markdownConfiguration.markdownTheme.codeBlockTypeTextStr
+                }, markdownConfiguration)
                 Row() {
                     if (markdownConfiguration.markdownTheme.codeCopyIcon.isSome()) {
                         Row() {
                             Image(markdownConfiguration.markdownTheme.codeCopyIcon())
-                                // 设置组件自身的宽度
                                 .width(markdownConfiguration.markdownTheme.iconWidthAndHeight)
-                                // 设置组件自身的高度
                                 .height(markdownConfiguration.markdownTheme.iconWidthAndHeight)
-                                // 设置图片的缩放类型
                                 .objectFit(ImageFit.Contain)
 
                             Row()
-                                // 设置宽度
                                 .width(5)
 
                             if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
                                 Text("复制代码")
-                                    // 设置字体颜色
                                     .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                    // 设置字体大小
                                     .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                                    // 设置容器元素绘制区域内的子元素的对齐方式
                                     .align(Alignment.End)
-                                    // 设置文本的最大行数
                                     .maxLines(1)
-                                    // 设置文本超长时的显示方式
                                     .textOverflow(TextOverflow.Ellipsis)
-                                    // 设置外边距
                                     .margin(right: 4)
                             }
                         }
-                        // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)
-                        // 点击动作触发该方法调用
                         .onClick {evt => codeCopyOnClick(codeText, markdownConfiguration.codeCopyCallback)}
                     }
 
                     if (markdownConfiguration.markdownTheme.codeFullScreenIcon.isSome()) {
                         Row() {
                             Image(markdownConfiguration.markdownTheme.codeFullScreenIcon())
-                                // 设置组件自身的宽度
                                 .width(markdownConfiguration.markdownTheme.iconWidthAndHeight)
-                                // 设置组件自身的高度
                                 .height(markdownConfiguration.markdownTheme.iconWidthAndHeight)
-                                // 设置外边距属性
                                 .margin(left: 4)
-                                // 设置图片的缩放类型
                                 .objectFit(ImageFit.Contain)
 
                             Row()
-                                // 设置宽度
                                 .width(5)
 
                             if (markdownConfiguration.markdownTheme.codeBlockIconTextHide) {
                                 Text("全屏代码")
-                                    // 设置字体颜色
                                     .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                    // 设置字体大小
                                     .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-                                    // 设置容器元素绘制区域内的子元素的对齐方式
                                     .align(Alignment.End)
-                                    // 设置文本的最大行数
                                     .maxLines(1)
-                                    // 设置文本超长时的显示方式
                                     .textOverflow(TextOverflow.Ellipsis)
-                                    // 设置外边距
                                     .margin(right: 4)
                             }
                         }
-                        // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)
-                        // 控制当前组件显示或隐藏
                         .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
-                        // 点击动作触发该方法调用
                         .onClick {
                             evt => codeFullScreenOnClick(codeText, info, markdownConfiguration.codeFullScreenCallback)
                         }
                     }
                 }
-                // 设置宽度
                 .width(70.percent)
-                // 设置子组件在水平方向上的对齐格式
                 .justifyContent(FlexAlign.End)
             } else {
                 Row()
-                    // 设置宽度
                     .width(70.percent)
-                    // 设置子组件在水平方向上的对齐格式
                     .justifyContent(FlexAlign.Start)
             }
         }
-        // 设置外边距属性
         .margin(top: 8.0, right: 8.0, bottom: markdownConfiguration.markdownTheme.codeBlockTypeTextPadding)
-        // 设置子组件在垂直方向上的对齐格式
         .alignItems(VerticalAlign.Center)
     }
 
@@ -271,11 +215,10 @@ class MarkdownIndentedCodeBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(nodeView: NodeView): Unit {
-        this.nodeView = nodeView
-        let data = getCodeInfo(nodeView)
-        this.info = data[1]
-        this.codeText = data[0].trimEnd("\n")
+    public func refreshData(codeText: String, info: Option<String>, nodeHash: Int64): Unit {
+        this.info = info
+        this.codeText = codeText.trimEnd("\n")
+        this.nodeHash = nodeHash
         lines = codeText.lines().count()
         lineArray.set(Array<Int64>(lines, repeat: 0))
     }

@@ -10,8 +10,7 @@ export let global_customLib: CustomLib | undefined = undefined
 export let global_cjLib: CJLib | undefined = undefined
 
 export interface CJLib {
-  getCJResource(codeFullScreenIcon?: Resource, codeCopyIcon?: Resource, audioIcon?: Resource, videoImage?: Resource,
-    playCircleFillIcon?: Resource, bannerImage?: Resource, imageResource?: Resource, videoReleaseImage?: Resource, videoDownloadImage?: Resource, imageDownloadImage?: Resource): void
+  getCJResource(codeFullScreenIcon?: Resource, codeCopyIcon?: Resource, audioIcon?: Resource, videoImage?: Resource, playCircleFillIcon?: Resource, bannerImage?: Resource, imageResource?: Resource, videoReleaseImage?: Resource, videoDownloadImage?: Resource, imageDownloadImage?: Resource): void
 }
 
 class CJNodeController extends NodeController {
@@ -327,9 +326,6 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.taskListItemLength !== undefined) {
           cjMarkdownTheme.setTaskListItemLength(this.config.markdownTheme.taskListItemLength)
         }
-        if (this.config.markdownTheme.isCodeStyle !== undefined) {
-          cjMarkdownTheme.setIsCodeStyle(this.config.markdownTheme.isCodeStyle)
-        }
         if (this.config.markdownTheme.isCodeFormat !== undefined) {
           cjMarkdownTheme.setIsCodeFormat(this.config.markdownTheme.isCodeFormat)
         }
@@ -344,12 +340,6 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.codeTypeface !== undefined) {
           cjMarkdownTheme.setCodeTypeface(this.config.markdownTheme.codeTypeface)
-        }
-        if (this.config.markdownTheme.codeLeftAndRightPadding !== undefined) {
-          cjMarkdownTheme.setCodeLeftAndRightPadding(this.config.markdownTheme.codeLeftAndRightPadding)
-        }
-        if (this.config.markdownTheme.codeHeight !== undefined) {
-          cjMarkdownTheme.setCodeHeight(this.config.markdownTheme.codeHeight)
         }
         if (this.config.markdownTheme.isCodeBlockParserSync !== undefined) {
           cjMarkdownTheme.setIsCodeBlockParserSync(this.config.markdownTheme.isCodeBlockParserSync)
@@ -1294,37 +1284,25 @@ export class MarkdownTheme {
    */
   taskListItemLength?: number = undefined
   /**
-   * 内联代码是否是图片显示
-   */
-  isCodeStyle?: boolean = undefined
-  /**
    * 设置是否格式化代码块内容
    */
   isCodeFormat?: boolean = undefined
   /**
-   * 文本、图片格式内联代码文本颜色
+   * 内联代码文本颜色
    */
   codeTextColor?: number = undefined
   /**
-   * 文本、图片格式内联代码背景颜色
+   * 内联代码背景颜色
    */
   codeBackgroundColor?: number = undefined
   /**
-   * 文本、图片格式内联代码文本大小
+   * 内联代码文本大小
    */
   codeTextSize?: number = undefined
   /**
-   * 文本格式内联代码文本字体
+   * 内联代码文本字体
    */
   codeTypeface?: string = undefined
-  /**
-   * 图片格式内联代码文本左右边距
-   */
-  codeLeftAndRightPadding?: number = undefined
-  /**
-   * 图片格式内联代码文本高度
-   */
-  codeHeight?: number = undefined
   /**
    * 围栏代码块代码高亮是否同步解析
   */
@@ -2469,15 +2447,6 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置内联代码是否是图片显示
-   *
-   * @param isCodeStyle 内联代码是否是图片显示 - true：图片化显示；false：不图片化显示。默认false
-   */
-  setIsCodeStyle(isCodeStyle: boolean): void {
-    this.isCodeStyle = isCodeStyle
-  }
-
-  /**
    * 设置是否格式化代码块内容
    *
    * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
@@ -2487,57 +2456,39 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置文本、图片格式内联代码文本颜色
+   * 设置内联代码文本颜色
    *
-   * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
+   * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
    */
   setCodeTextColor(codeTextColor: number): void {
     this.codeTextColor = codeTextColor
   }
 
   /**
-   * 设置文本、图片格式内联代码背景颜色
+   * 设置内联代码背景颜色
    *
-   * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFFEAEAEA
+   * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFFEAEAEA
    */
   setCodeBackgroundColor(codeBackgroundColor: number): void {
     this.codeBackgroundColor = codeBackgroundColor
   }
 
   /**
-   * 设置文本、图片格式内联代码文本大小
+   * 设置内联代码文本大小
    *
-   * @param codeTextSize 文本、图片格式内联代码文本大小 - 默认13.0fp
+   * @param codeTextSize 内联代码文本大小 - 默认13.0fp
    */
   setCodeTextSize(codeTextSize: number): void {
     this.codeTextSize = codeTextSize
   }
 
   /**
-   * 设置文本格式内联代码文本字体
+   * 设置内联代码文本字体
    *
-   * @param codeTypeface 文本格式内联代码文本字体 - 默认"HarmonyOS Sans"
+   * @param codeTypeface 内联代码文本字体 - 默认"HarmonyOS Sans"
    */
   setCodeTypeface(codeTypeface: string): void {
     this.codeTypeface = codeTypeface
-  }
-
-  /**
-   * 设置图片格式内联代码文本左右边距
-   *
-   * @param codeLeftAndRightPadding 图片格式内联代码文本左右边距 - 默认4.0vp
-   */
-  setCodeLeftAndRightPadding(codeLeftAndRightPadding: number): void {
-    this.codeLeftAndRightPadding = codeLeftAndRightPadding
-  }
-
-  /**
-   * 设置图片格式内联代码文本高度
-   *
-   * @param codeHeight 图片格式内联代码文本高度 - 默认20.0vp
-   */
-  setCodeHeight(codeHeight: number): void {
-    this.codeHeight = codeHeight
   }
 
   /**

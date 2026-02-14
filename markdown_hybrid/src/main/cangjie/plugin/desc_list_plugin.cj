@@ -3,8 +3,6 @@
  */
 package markdown.plugin
 
-import std.reflect.*
-
 public class DescListPlugin <: AbstractMarkdownPlugin {
     public static func create(): DescListPlugin {
         return DescListPlugin()
@@ -23,14 +21,16 @@ public class DescListPlugin <: AbstractMarkdownPlugin {
 
 class DescListParserFactory <: BlockParserFactory {
     public func tryStart(state: ParserState, matchedBlockParser: MatchedBlockParser): Option<BlockStart> {
-        var indent: Int64 = state.getIndent()
         if (state.getIndent() >= Parsing.CODE_BLOCK_INDENT) {
             return BlockStart.none()
         }
-        let paragraphLines = matchedBlockParser.getParagraphContent() ?? return None
-        let line = state.getLine().trimLeft()
+        let paragraphLines = matchedBlockParser.getParagraphLines()
+        if (paragraphLines.isEmpty()) {
+            return None
+        }
+        let line = state.getLine().getContent().trimStart()
         if (line.startsWith(": ")) {
-            return BlockStart.of4Cj(DescListParser(paragraphLines)).replaceActiveBlockParser()
+            return BlockStart.of(DescListParser(paragraphLines)).replaceActiveBlockParser()
         }
         return BlockStart.none()
     }
@@ -38,19 +38,18 @@ class DescListParserFactory <: BlockParserFactory {
 
 class DescListParser <: AbstractBlockParser {
     let block = DescList()
-    let ddstr = ArrayList<String>()
-    DescListParser(let dt: String) {}
+    let ddstr = ArrayList<SourceLines>()
+    DescListParser(let dt: SourceLines) {}
     public func getBlock(): Block {
         return block
     }
-    public func addLine(line: String): Unit {
-        let lineTrim = line.trimLeft()
+    public func addLine(sline: SourceLine): Unit {
+        let line = sline.getContent()
+        let lineTrim = line.trimStart()
         if (lineTrim.size > 2 && lineTrim.startsWith(": ")) {
-            ddstr.add(lineTrim[2..])
+            ddstr.add(SourceLines.of(sline.substring(line.size - lineTrim.size, line.size)))
         } else if (!line.isBlank()) {
-            let lastIndex = ddstr.size - 1
-            var str = ddstr[lastIndex]
-            ddstr[lastIndex] = "${str}\n${lineTrim}"
+            ddstr.last?.addLine(sline)
         }
     }
     public func tryContinue(state: ParserState): Option<BlockContinue> {

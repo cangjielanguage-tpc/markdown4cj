@@ -28,7 +28,6 @@ internal import std.io.IOException
 internal import std.unicode.UnicodeStringExtension
 internal import std.math.abs
 internal import std.math.MaxMinValue
-internal import std.convert.Parsable
 internal import std.convert.*
 
 /**
@@ -64,13 +63,6 @@ let EMPTY_STRING: String = ""
 let EMPTY_MAP: Map<String, String> = HashMap()
 
 public type Runnable = () -> Unit
-
-extend StringBuilder {
-    func appends(str: ToString): StringBuilder {
-        this.append(str)
-        return this
-    }
-}
 
 extend String {
     func equalsIgnoreCase(other: String) {

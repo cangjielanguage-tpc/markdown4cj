@@ -105,7 +105,6 @@ class EmojiVisitor <: AbstractVisitor {
 
                 // Don't allow letters after any shortcut
                 if (pos.end < src.size && !ZPCc.matches(src.codePointAt(pos.end))) {
-                    let cp = src.codePointAt(pos.end)
                     continue
                 }
             } else {
