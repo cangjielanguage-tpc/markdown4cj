@@ -2,6 +2,7 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 import { Context } from "@kit.AbilityKit"
+import { resourceManager } from "@kit.LocalizationKit"
 
 export declare class CJMarkdownPlugin {
   setIsBlockAudioPlugin(isBlockAudioPlugin: boolean): void
@@ -45,6 +46,8 @@ export declare class CJMarkdownPlugin {
   setIsSupPlugin(isSupPlugin: boolean): void
 
   setIsEmojiPlugin(isSupPlugin: boolean, isEmojiLight: boolean): void
+
+  constructor()
 }
 
 export declare class CJMarkdownTheme {
@@ -441,6 +444,8 @@ export declare class CJMarkdownTheme {
   setSupOffsetDist(supOffsetDist: number): void
 
   setUnderlineColor(underlineColor: number): void
+
+  constructor()
 }
 
 export declare class CJMarkdownConfig {
@@ -473,16 +478,14 @@ export declare class CJMarkdownConfig {
   setFootnoteCallback(cb: (funcArg0: number | undefined) => void): void
 
   setCJMarkdownTheme(cjMarkdownTheme: CJMarkdownTheme): void
+
+  constructor()
 }
 
-export declare interface CustomLib {
-  CJMarkdownConfig: { new(): CJMarkdownConfig }
-  CJMarkdownTheme: { new(): CJMarkdownTheme }
-  CJMarkdownPlugin: { new(): CJMarkdownPlugin }
+export declare function setGlobalContext(context: Context): void
 
-  setGlobalContext(context: Context): void
+export declare function getLoadCJPage(mdStr: string, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin): (input: string) => void
 
-  getLoadCJPage(mdStr: string, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin): (input: string) => void
+export declare function registerImgPreprocessCallback(cb: (url: string) => Promise<ArrayBuffer|undefined>): void
 
-  registerImgPreprocessCallback(cb: (url: string) => Promise<ArrayBuffer|undefined>): void
-}
+export declare function getCJResource(codeFullScreenIcon?: resourceManager.Resource, codeCopyIcon?: resourceManager.Resource, audioIcon?: resourceManager.Resource, videoImage?: resourceManager.Resource, playCircleFillIcon?: resourceManager.Resource, bannerImage?: resourceManager.Resource, imageResource?: resourceManager.Resource, videoReleaseImage?: resourceManager.Resource, videoDownloadImage?: resourceManager.Resource, imageDownloadImage?: resourceManager.Resource): void
