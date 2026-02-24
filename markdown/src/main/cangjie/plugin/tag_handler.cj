@@ -214,6 +214,37 @@ public class ImageHandler <: TagHandler {
     }
 }
 
+public class CardHandler <: TagHandler {
+
+    public init() {
+    }
+
+    public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
+        let attributes: Map<String, String> = tag.attributes()
+        let name: ?String = attributes.get("name")
+        let data: ?String = attributes.get("data")
+
+        if (let Some(v) <- name) {
+            let dataValue: String = if  (let Some(d) <- data) {
+                d
+            } else {
+                ""
+            }
+            let cardNode: CardNode = CardNode(v, dataValue)
+            visitChildren(visitor, renderer, tag, cardNode)
+            return cardNode
+        } else {
+            let ignoreNode = IgnoreBlockNode()
+            visitChildren(visitor, renderer, tag, ignoreNode)
+            return ignoreNode
+        }
+    }
+
+    public override func supportedTags(): Collection<String> {
+        return ["card"]
+    }
+}
+
 public class LinkHandler <: TagHandler {
     public init() {
     }
