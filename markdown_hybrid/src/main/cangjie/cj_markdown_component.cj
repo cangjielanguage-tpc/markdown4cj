@@ -150,6 +150,7 @@ class CJMarkdownComponent {
         }
         // 唯一ID标识插件
         markdownBuilder.usePlugin(NodeIdPlugin.create())
+        markdownBuilder.includeSourceSpans(2) // BLOCKS_AND_INLINES
         return markdownBuilder.build()
     }
 

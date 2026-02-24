@@ -173,6 +173,7 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
         // HtmlTag ---handler---> CommonMarkNode
         let tagNode = htmlRenderer.getOrThrow().render(visitor, htmlParser, rootTag)
         htmlParser.reset()
+        tagNode.setSourceSpans(node.getSourceSpans())
 
         // replace htmlNode with tagNode
         node.replaceWith(tagNode)
