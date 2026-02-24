@@ -57,17 +57,19 @@ public func registerImgPreprocessCallback(context: JSContext, callInfo: JSCallIn
  */
 public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     let mdStr: String = callInfo[0].asString().toString()
+    let isInputEnded: Bool = callInfo[1].asBoolean().toBool()
+    let incrementalAnalysis: Bool = callInfo[2].asBoolean().toBool()
     var cfg: ?CJMarkdownConfig = None
-    if (callInfo[1].typeof() != JSType.UNDEFINED) {
-        let cfgObj: JSObject = callInfo[1].asObject(ctx)
+    if (callInfo[3].typeof() != JSType.UNDEFINED) {
+        let cfgObj: JSObject = callInfo[3].asObject(ctx)
         let cfgExt: Option<JSExternal> = cfgObj.getAttachInfo()
         if (let Some(v) <- cfgExt) {
             cfg = v.cast<CJMarkdownConfig>()
         }
     }
     var plugin: ?CJMarkdownPlugin = None
-    if (callInfo[2].typeof() != JSType.UNDEFINED) {
-        let cfgObj: JSObject = callInfo[2].asObject(ctx)
+    if (callInfo[4].typeof() != JSType.UNDEFINED) {
+        let cfgObj: JSObject = callInfo[4].asObject(ctx)
         let cfgExt: Option<JSExternal> = cfgObj.getAttachInfo()
         if (let Some(v) <- cfgExt) {
             plugin = v.cast<CJMarkdownPlugin>()
@@ -78,6 +80,8 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     let comp = CJMarkdownComponent(
         Option<CustomView>.None,
         mdStr: ObservedProperty<String>("", mdStr),
+        isInputEnded: ObservedProperty<Bool>("", isInputEnded),
+        incrementalAnalysis: ObservedProperty<Bool>("", incrementalAnalysis),
         cfg: ObservedProperty<Option<CJMarkdownConfig>>("", cfg),
         plugin: ObservedProperty<Option<CJMarkdownPlugin>>("", plugin)
     )
@@ -86,8 +90,10 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     return ctx.function(
             {
                 ctx1: JSContext, callInfo1: JSCallInfo =>
-                    let input = String.fromJSValue(ctx1, callInfo1[0])
-                    comp.updateMarkDown(input)
+                    let mdStr = String.fromJSValue(ctx1, callInfo1[0])
+                    let isInputEnded = Bool.fromJSValue(ctx1, callInfo1[1])
+                    let incrementalAnalysis = Bool.fromJSValue(ctx1, callInfo1[2])
+                    comp.updateMarkDown(mdStr, isInputEnded, incrementalAnalysis)
                     return ctx1.undefined().toJSValue()
             }
         ).toJSValue()

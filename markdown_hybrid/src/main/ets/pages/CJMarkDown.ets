@@ -6,14 +6,22 @@ import { CJMarkdownConfig, CJMarkdownTheme, CJMarkdownPlugin, getLoadCJPage, reg
 
 class CJNodeController extends NodeController {
   rootNode?: FrameNode = undefined
-  public callbackCJ: (input: string) => void = (input: string) => {this.mdStr = input}  // 持续输出调用
+  public callbackCJ: (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void = (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => {
+    this.mdStr = input
+    this.isInputEnded = isInputEnded
+    this.incrementalAnalysis = incrementalAnalysis
+  }  // 持续输出调用
   mdStr: string
+  isInputEnded: boolean
+  incrementalAnalysis: boolean
   config?: CJMarkdownConfig
   plugin?: CJMarkdownPlugin
 
-  constructor(input: string, config?: CJMarkdownConfig, plugin?: CJMarkdownPlugin) {
+  constructor(input: string, isInputEnded: boolean, incrementalAnalysis: boolean, config?: CJMarkdownConfig, plugin?: CJMarkdownPlugin) {
     super()
     this.mdStr = input
+    this.isInputEnded = isInputEnded
+    this.incrementalAnalysis = incrementalAnalysis
     this.config = config
     this.plugin = plugin
   }
@@ -21,7 +29,7 @@ class CJNodeController extends NodeController {
   makeNode(ctx: UIContext): FrameNode | null {
     if (this.rootNode === undefined) {
       this.rootNode = new FrameNode(ctx)
-      this.callbackCJ = getLoadCJPage(this.mdStr, this.config, this.plugin)
+      this.callbackCJ = getLoadCJPage(this.mdStr, this.isInputEnded, this.incrementalAnalysis, this.config, this.plugin)
     }
     return this.rootNode
   }
@@ -29,12 +37,35 @@ class CJNodeController extends NodeController {
 
 @Component
 export struct CJMarkdown {
+  /**
+   * 外部传入的Markdown文档
+   */
   @Prop @Watch('onMarkDownChange') content: string = ''
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State @Watch('onMarkDownChange') isInputEnded: boolean = true
+  /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State @Watch('onMarkDownChange') incrementalAnalysis: boolean = false
+  /**
+   * markdown配置
+   */
   @State config?: MarkdownConfiguration = undefined
+  /**
+   * markdown插件
+   */
   @State plugin?: MarkdownPlugin = undefined
-  private markdownNode: CJNodeController | null = null
+  /**
+   * 是否加载仓颉markdown
+   */
   @Prop useCangjieComponent?: boolean = true
+  /**
+   * 不加载仓颉markdown情况下默认布局
+   */
   @BuilderParam customContains: () => void = this.defaultTextBuilder
+  private markdownNode: CJNodeController | null = null
 
   @Builder
   defaultTextBuilder() {
@@ -49,13 +80,13 @@ export struct CJMarkdown {
 
   onMarkDownChange():void {
     if(this.useCangjieComponent === true) {
-      this.markdownNode?.callbackCJ(this.content)
+      this.markdownNode?.callbackCJ(this.content, this.isInputEnded, this.incrementalAnalysis)
     }
   }
 
   aboutToAppear(): void {
     if(this.useCangjieComponent === true) {
-      this.markdownNode = new CJNodeController(this.content, this.getConfig(), this.getPlugin())
+      this.markdownNode = new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin())
     }
   }
 

@@ -23,9 +23,18 @@ public class MarkdownComponent {
     var output: String
 
     /**
-     * markdown是否增量解析
+     * 流式输入是否输入结束(true:结束输入,false:持续输入)
      */
-    var incrementalAnalysis: Bool = false
+    @Prop
+    @Watch[inputEndedData]
+    var isInputEnded: Bool
+
+    /**
+     * markdown是否增量解析(true:增量解析,false:全量解析)
+     */
+    @Prop
+    @Watch[analysisData]
+    var incrementalAnalysis: Bool
 
     /**
      * markdown配置
@@ -172,6 +181,11 @@ public class MarkdownComponent {
      * 所有图片视频的url
      */
     var imageAndVideoList: ArrayList<String> = ArrayList<String>()
+
+    /**
+     * 上一次的输入内容
+     */
+    var oldOutput: String = ""
 
     /**
      * 最后一条数据的位置
@@ -551,11 +565,13 @@ public class MarkdownComponent {
         try {
             let doc = if (incrementalAnalysis) {
                 // 增量解析
-                incBase().parseIncremental(output)
+                let diff: String = output[oldOutput.size..]
+                incBase().parseIncremental(diff)
             } else {
                 // 全量解析
                 markdownPlugin.toMarkdown(output)
             }
+            oldOutput = output
             if (let Some(v) <- markdownConfiguration.nodeString) {
                 v(NodeViewStringBuilder(doc))
             }
@@ -754,6 +770,20 @@ public class MarkdownComponent {
                 }
             }
         }
+    }
+
+    /**
+     * 数据是否输入结束
+     */
+    func inputEndedData(): Unit{
+
+    }
+
+    /**
+     * markdown是否增量解析
+     */
+    func analysisData(): Unit{
+
     }
 
     /**

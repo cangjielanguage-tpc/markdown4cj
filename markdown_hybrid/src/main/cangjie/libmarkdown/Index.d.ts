@@ -484,7 +484,7 @@ export declare class CJMarkdownConfig {
 
 export declare function setGlobalContext(context: Context): void
 
-export declare function getLoadCJPage(mdStr: string, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin): (input: string) => void
+export declare function getLoadCJPage(mdStr: string, isInputEnded: boolean, incrementalAnalysis: boolean, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin): (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void
 
 export declare function registerImgPreprocessCallback(cb: (url: string) => Promise<ArrayBuffer|undefined>): void
 

@@ -26,6 +26,20 @@ class CJMarkdownComponent {
     var mdStr: String = ''
 
     /**
+     * 外部传入的Markdown文档
+     */
+    @State
+    @Watch[inputEndedData]
+    var isInputEnded: Bool = true
+
+    /**
+     * markdown是否增量解析
+     */
+    @State
+    @Watch[analysisData]
+    var incrementalAnalysis: Bool = false
+
+    /**
      * 配置
      */
     var cfg: ?CJMarkdownConfig
@@ -40,15 +54,23 @@ class CJMarkdownComponent {
 
     func build() {
         Column() {
-            MarkdownComponent(output: mdStr, markdownConfiguration: setConfig(), markdownPlugin: setPlugin())
+            MarkdownComponent(output: mdStr, isInputEnded: isInputEnded, incrementalAnalysis: incrementalAnalysis, markdownConfiguration: setConfig(), markdownPlugin: setPlugin())
         }
     }
 
     func onChanged(): Unit {
     }
 
-    public func updateMarkDown(input: String): Unit {
+    func inputEndedData(): Unit {
+    }
+
+    func analysisData(): Unit {
+    }
+
+    public func updateMarkDown(input: String, isInputEnded: Bool, incrementalAnalysis: Bool): Unit {
         mdStr = input
+        this.isInputEnded = isInputEnded
+        this.incrementalAnalysis = incrementalAnalysis
     }
 
     public func aboutToCJReuse(input: String): Unit {
