@@ -76,6 +76,8 @@ public class MarkdownComponent {
         .usePlugin(ImageCollectPlugin.create())
         // 唯一ID标识插件
         .usePlugin(NodeIdPlugin.create())
+        // BLOCKS_AND_INLINES
+        .includeSourceSpans(2)
         .build()
 
     /**
