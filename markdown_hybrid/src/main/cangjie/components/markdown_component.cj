@@ -23,6 +23,11 @@ public class MarkdownComponent {
     var output: String
 
     /**
+     * markdown是否增量解析
+     */
+    var incrementalAnalysis: Bool = false
+
+    /**
      * markdown配置
      */
     var markdownConfiguration: MarkdownConfiguration = MarkdownConfiguration.create()
@@ -544,10 +549,12 @@ public class MarkdownComponent {
      */
     func mdparse(): ?NodeView {
         try {
-            let doc = if (true) {
-                markdownPlugin.toMarkdown(output)
-            } else {
+            let doc = if (incrementalAnalysis) {
+                // 增量解析
                 incBase().parseIncremental(output)
+            } else {
+                // 全量解析
+                markdownPlugin.toMarkdown(output)
             }
             if (let Some(v) <- markdownConfiguration.nodeString) {
                 v(NodeViewStringBuilder(doc))
