@@ -37,6 +37,10 @@ export function numberToColorString(color: number|undefined): string {
       return "蓝"
     case 0xFFE0E0E0:
       return "灰"
+    case 0xE6000000:
+      return "0xE6000000"
+    case 0xFFF5F5F5:
+      return "0xFFF5F5F5"
     case 0x1A000000:
       return "0x1A000000"
     case 0x33000000:

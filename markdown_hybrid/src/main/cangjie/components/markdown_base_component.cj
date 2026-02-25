@@ -142,14 +142,11 @@ func imageSpanPlaceholderComponent(
 @Builder
 func imagePlaceholderComponent(
     imageResource: AppResource,
-    imageMarginTop: Float64,
-    imageMarginBottom: Float64,
     placeholderWidth: Float64,
     placeholderHeight: Float64,
     placeholderRadius: Float64
 ) {
     Image(imageResource)
-        .margin(top: imageMarginTop, bottom: imageMarginBottom)
         .borderRadius(placeholderRadius)
         .width(placeholderWidth.px)
         .height(placeholderHeight.px)

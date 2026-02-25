@@ -35,6 +35,21 @@ struct ImageDetailsPage {
   @State
   isFull: boolean = true
   /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
    * 图片默认占位图
    */
   @State
@@ -65,21 +80,85 @@ struct ImageDetailsPage {
   @State
   imageFixedRatioWidth: number| null = null
   /**
-   * 增量加载延迟
+   * 图片是否有下载按钮
    */
-  time: number = 50
+  @State
+  isImageDownload: boolean = false
+  /**
+   * 是否图文混排
+   */
+  @State
+  isImageMixedLayout: boolean = true
+  /**
+   * 图片下载按钮图片宽度和高度
+   */
+  @State
+  imageDownloadImageWidthHeight: number = 18
+  /**
+   * 图片下载按钮宽度
+   */
+  @State
+  imageDownloadWidth: number = 144
+  /**
+   * 图片下载按钮高度
+   */
+  @State
+  imageDownloadHeight: number = 44
+  /**
+   * 图片下载按钮圆角
+   */
+  @State
+  imageDownloadRadius: number = 22
+  /**
+   * 图片下载按钮文本内容
+   */
+  @State
+  imageDownloadText: string = "下载图片"
+  /**
+   * 图片下载按钮文本大小
+   */
+  @State
+  imageDownloadTexSize: number = 16
+  /**
+   * 图片下载按钮文本颜色
+   */
+  @State
+  imageDownloadTexColor: number = 0xE6000000
+  /**
+   * 图片下载按钮背景颜色
+   */
+  @State
+  imageDownloadBackgroundColor: number = 0xFFF5F5F5
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let imageDataMD: ImageDataMD = router.getParams() as ImageDataMD
       this.fileStr = getFileContextStr(imageDataMD._pagePath)
       this.isFull = imageDataMD._isFull
+      this.incrementalAnalysis = imageDataMD._incrementalAnalysis
+      this.time = imageDataMD._time
+      this.textNumber = imageDataMD._textNumber
       this.imageResource = imageDataMD._imageResource
       this.imageMarginTop = imageDataMD._imageMarginTop
       this.imageMarginBottom = imageDataMD._imageMarginBottom
       this.imageBorderRadius = imageDataMD._imageBorderRadius
       this.imageMaximumWidth = imageDataMD._imageMaximumWidth
       this.imageFixedRatioWidth = imageDataMD._imageFixedRatioWidth
+      this.isImageDownload = imageDataMD._isImageDownload
+      this.isImageMixedLayout = imageDataMD._isImageMixedLayout
+      this.imageDownloadImageWidthHeight = imageDataMD._imageDownloadImageWidthHeight
+      this.imageDownloadWidth = imageDataMD._imageDownloadWidth
+      this.imageDownloadHeight = imageDataMD._imageDownloadHeight
+      this.imageDownloadRadius = imageDataMD._imageDownloadRadius
+      this.imageDownloadText = imageDataMD._imageDownloadText
+      this.imageDownloadTexSize = imageDataMD._imageDownloadTexSize
+      this.imageDownloadTexColor = imageDataMD._imageDownloadTexColor
+      this.imageDownloadBackgroundColor = imageDataMD._imageDownloadBackgroundColor
     } catch (e) {
     }
   }
@@ -103,18 +182,24 @@ struct ImageDetailsPage {
         .fontSize(16)// 字体大小
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
+                this.content = this.content + this.fileStr.substring(this.content.length, index)
                 this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
+                if (index >= this.fileStr.length) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
-                index++
+                if (this.fileStr.length > index + this.textNumber) {
+                  index = index + this.textNumber
+                } else {
+                  index = this.fileStr.length
+                }
               }, this.time)
             }
           }
@@ -123,6 +208,8 @@ struct ImageDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
+            incrementalAnalysis: this.incrementalAnalysis,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
@@ -135,22 +222,30 @@ struct ImageDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    config.setImageCallback(this.setImageCallback)
+    config.setImageCallback(this.setImageCallback) // 图片点击回调
     let theme = new MarkdownTheme()
-    theme.setContext(getContext(this))
+    theme.setContext(getContext(this)) // 上下文
     if (this.imageResource !== null) {
-      theme.setImageResource(this.imageResource)
+      theme.setImageResource(this.imageResource) // 图片占位图
     }
-    theme.setImageMarginTop(this.imageMarginTop)
-    theme.setImageMarginBottom(this.imageMarginBottom)
-    theme.setImageBorderRadius(this.imageBorderRadius)
-    theme.setImageMaximumWidth(this.imageMaximumWidth)
+    theme.setImageMarginTop(this.imageMarginTop) // 图片上边距
+    theme.setImageMarginBottom(this.imageMarginBottom) // 图片下边距
+    theme.setImageBorderRadius(this.imageBorderRadius) // 图片圆角大小
+    theme.setImageMaximumWidth(this.imageMaximumWidth) // 图片基于自身宽度缩放百分比
     if (this.imageFixedRatioWidth !== null) {
-      theme.setImageFixedRatioWidth(this.imageFixedRatioWidth)
+      theme.setImageFixedRatioWidth(this.imageFixedRatioWidth) // 图片基于父布局宽度缩放百分比
     }
-    theme.setImageDownloadImage($r('app.media.video_download'))
-    theme.setIsImageDownload(true)
-    theme.setIsImageMixedLayout(false)
+    theme.setImageDownloadImage($r('app.media.video_download')) // 图片下载默认图标
+    theme.setIsImageDownload(this.isImageDownload) // 图片是否有下载按钮
+    theme.setIsImageMixedLayout(this.isImageMixedLayout) // 是否图文混排
+    theme.setImageDownloadImageWidthHeight(this.imageDownloadImageWidthHeight) // 图片下载按钮图片宽度和高度
+    theme.setImageDownloadWidth(this.imageDownloadWidth) // 图片下载按钮宽度
+    theme.setImageDownloadHeight(this.imageDownloadHeight) // 图片下载按钮高度
+    theme.setImageDownloadRadius(this.imageDownloadRadius) // 图片下载按钮圆角
+    theme.setImageDownloadText(this.imageDownloadText) // 图片下载按钮文本内容
+    theme.setImageDownloadTexSize(this.imageDownloadTexSize) // 图片下载按钮文本大小
+    theme.setImageDownloadTexColor(this.imageDownloadTexColor) // 图片下载按钮文本颜色
+    theme.setImageDownloadBackgroundColor(this.imageDownloadBackgroundColor) // 图片下载按钮背景颜色
     config.setMarkdownTheme(theme)
     return config
   }
@@ -158,7 +253,9 @@ struct ImageDetailsPage {
   setPlugin(): MarkdownPlugin {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
     plugin.setIsImageStylePlugin(true) // 图片样式
-    plugin.setIsImageTextMixPlugin(true) //
+    if (!this.isImageMixedLayout) {
+      plugin.setIsImageTextMixPlugin(true) // 图片不混排插件
+    }
     plugin.setIsHtmlPlugin(true) // HTML
     return plugin
   }

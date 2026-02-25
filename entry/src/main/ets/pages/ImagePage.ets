@@ -3,7 +3,7 @@
  */
 import { titleComponent } from './BaseComponent'
 import { getFileListStr } from './FileUtils'
-import { booleanToString, stringToBoolean } from './BaseUtils'
+import { booleanToString, numberToColorString, stringToBoolean } from './BaseUtils'
 import { router } from '@kit.ArkUI'
 
 @Entry
@@ -35,6 +35,33 @@ struct ImagePage {
    */
   @State
   isFull: boolean = true
+  /**
+   * markdown是否增量解析列表
+   */
+  incrementalAnalysisList: Array<boolean> = [true, false]
+  /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间列表
+   */
+  timeList: Array<number> = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500]
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量列表
+   */
+  textNumberList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 150, 200]
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
   /**
    * 图片默认占位图选项列表
    */
@@ -99,6 +126,96 @@ struct ImagePage {
   @State
   imageFixedRatioWidth: number| null = null
   /**
+   * 图片是否有下载按钮列表
+   */
+  isImageDownloadList: Array<boolean> = [true, false]
+  /**
+   * 图片是否有下载按钮
+   */
+  @State
+  isImageDownload: boolean = false
+  /**
+   * 是否图文混排列表
+   */
+  isImageMixedLayoutList: Array<boolean> = [true, false]
+  /**
+   * 是否图文混排
+   */
+  @State
+  isImageMixedLayout: boolean = true
+  /**
+   * 图片下载按钮图片宽度和高度列表
+   */
+  imageDownloadImageWidthHeightList: Array<number> = [10, 15, 18, 20, 25, 30, 35, 40]
+  /**
+   * 图片下载按钮图片宽度和高度
+   */
+  @State
+  imageDownloadImageWidthHeight: number = 18
+  /**
+   * 图片下载按钮宽度列表
+   */
+  imageDownloadWidthList: Array<number> = [100, 120, 130, 144, 150, 160, 180, 200]
+  /**
+   * 图片下载按钮宽度
+   */
+  @State
+  imageDownloadWidth: number = 144
+  /**
+   * 图片下载按钮高度列表
+   */
+  imageDownloadHeightList: Array<number> = [25, 30, 35, 40, 44, 50, 60, 70, 80]
+  /**
+   * 图片下载按钮高度
+   */
+  @State
+  imageDownloadHeight: number = 44
+  /**
+   * 图片下载按钮圆角列表
+   */
+  imageDownloadRadiusList: Array<number> = [10, 12, 15, 18, 20, 22, 25, 28, 30,35,40]
+  /**
+   * 图片下载按钮圆角
+   */
+  @State
+  imageDownloadRadius: number = 22
+  /**
+   * 图片下载按钮文本内容列表
+   */
+  imageDownloadTextList: Array<string> = ["下载", "提交", "下载图片"]
+  /**
+   * 图片下载按钮文本内容
+   */
+  @State
+  imageDownloadText: string = "下载图片"
+  /**
+   * 图片下载按钮文本大小列表
+   */
+  imageDownloadTexSizeList: Array<number> = [10, 12, 16, 18, 20, 22, 26, 28, 30,35,40]
+  /**
+   * 图片下载按钮文本大小
+   */
+  @State
+  imageDownloadTexSize: number = 16
+  /**
+   * 图片下载按钮文本颜色列表
+   */
+  imageDownloadTexColorList: Array<number> = [0xE6000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  /**
+   * 图片下载按钮文本颜色
+   */
+  @State
+  imageDownloadTexColor: number = 0xE6000000
+  /**
+   * 图片下载按钮背景颜色列表
+   */
+  imageDownloadBackgroundColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  /**
+   * 图片下载按钮背景颜色
+   */
+  @State
+  imageDownloadBackgroundColor: number = 0xFFF5F5F5
+  /**
    * 配置数据内容
    */
   @State
@@ -144,6 +261,99 @@ struct ImagePage {
                   .onClick(() => {
                     this.isFull = stringToBoolean(item)
                     this.imageDataMD.isFull = this.isFull
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`markdown是否增量解析 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.incrementalAnalysis}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.incrementalAnalysisList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.incrementalAnalysis = item
+                    this.imageDataMD.incrementalAnalysis = this.incrementalAnalysis
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`增量加载每次间隔时间 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.time}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.timeList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.time = item
+                    this.imageDataMD.time = this.time
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`增量每次增量文本数量 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.textNumber}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.textNumberList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.textNumber = item
+                    this.imageDataMD.textNumber = this.textNumber
                   })
               })
             }
@@ -339,6 +549,320 @@ struct ImagePage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`图片是否有下载按钮 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.isImageDownload}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.isImageDownloadList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.isImageDownload = item
+                    this.imageDataMD.isImageDownload = this.isImageDownload
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`是否图文混排 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.isImageMixedLayout}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.isImageMixedLayoutList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.isImageMixedLayout = item
+                    this.imageDataMD.isImageMixedLayout = this.isImageMixedLayout
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片下载按钮图片宽度和高度 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageDownloadImageWidthHeight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageDownloadImageWidthHeightList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageDownloadImageWidthHeight = item
+                    this.imageDataMD.imageDownloadImageWidthHeight = this.imageDownloadImageWidthHeight
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片下载按钮宽度 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageDownloadWidth}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageDownloadWidthList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageDownloadWidth = item
+                    this.imageDataMD.imageDownloadWidth = this.imageDownloadWidth
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片下载按钮高度 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageDownloadHeight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageDownloadHeightList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageDownloadHeight = item
+                    this.imageDataMD.imageDownloadHeight = this.imageDownloadHeight
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片下载按钮圆角 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageDownloadRadius}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageDownloadRadiusList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageDownloadRadius = item
+                    this.imageDataMD.imageDownloadRadius = this.imageDownloadRadius
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片下载按钮文本内容 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageDownloadText}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageDownloadTextList, (item: string, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageDownloadText = item
+                    this.imageDataMD.imageDownloadText = this.imageDownloadText
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片下载按钮文本大小 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageDownloadTexSize}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageDownloadTexSizeList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageDownloadTexSize = item
+                    this.imageDataMD.imageDownloadTexSize = this.imageDownloadTexSize
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片下载按钮文本颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${numberToColorString(this.imageDownloadTexColor)}`)
+                .fontSize(16)
+                .fontColor(this.imageDownloadTexColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageDownloadTexColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageDownloadTexColor = item
+                    this.imageDataMD.imageDownloadTexColor = this.imageDownloadTexColor
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片下载按钮背景颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${numberToColorString(this.imageDownloadBackgroundColor)}`)
+                .fontSize(16)
+                .fontColor(this.imageDownloadBackgroundColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageDownloadBackgroundColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageDownloadBackgroundColor = item
+                    this.imageDataMD.imageDownloadBackgroundColor = this.imageDownloadBackgroundColor
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -380,20 +904,41 @@ struct ImagePage {
 
 export class ImageDataMD {
   _isFull: boolean = true
-  _pagePath: string = ""
+  _incrementalAnalysis: boolean = false
+  _time: number = 50
+  _textNumber: number = 10
   _imageResource: Resource | null = null
   _imageMarginTop: number = 10
   _imageMarginBottom: number = 10
   _imageBorderRadius: number = 0
   _imageMaximumWidth: number = 1.0
   _imageFixedRatioWidth: number| null = null
+  _isImageDownload: boolean = false
+  _isImageMixedLayout: boolean = true
+  _imageDownloadImageWidthHeight: number = 18
+  _imageDownloadWidth: number = 144
+  _imageDownloadHeight: number = 44
+  _imageDownloadRadius: number = 22
+  _imageDownloadText: string = "下载图片"
+  _imageDownloadTexSize: number = 16
+  _imageDownloadTexColor: number = 0xE6000000
+  _imageDownloadBackgroundColor: number = 0xFFF5F5F5
+  _pagePath: string = ""
 
   public set isFull(value: boolean) {
     this._isFull = value
   }
 
-  public set pagePath(value: string) {
-    this._pagePath = value
+  public set incrementalAnalysis(value: boolean) {
+    this._incrementalAnalysis = value
+  }
+
+  public set time(value: number) {
+    this._time = value
+  }
+
+  public set textNumber(value: number) {
+    this._textNumber = value
   }
 
   public set imageResource(value: Resource | null) {
@@ -418,6 +963,50 @@ export class ImageDataMD {
 
   public set imageFixedRatioWidth(value: number) {
     this._imageFixedRatioWidth = value
+  }
+
+  public set isImageDownload(value: boolean) {
+    this._isImageDownload = value
+  }
+
+  public set isImageMixedLayout(value: boolean) {
+    this._isImageMixedLayout = value
+  }
+
+  public set imageDownloadImageWidthHeight(value: number) {
+    this._imageDownloadImageWidthHeight = value
+  }
+
+  public set imageDownloadWidth(value: number) {
+    this._imageDownloadWidth = value
+  }
+
+  public set imageDownloadHeight(value: number) {
+    this._imageDownloadHeight = value
+  }
+
+  public set imageDownloadRadius(value: number) {
+    this._imageDownloadRadius = value
+  }
+
+  public set imageDownloadText(value: string) {
+    this._imageDownloadText = value
+  }
+
+  public set imageDownloadTexSize(value: number) {
+    this._imageDownloadTexSize = value
+  }
+
+  public set imageDownloadTexColor(value: number) {
+    this._imageDownloadTexColor = value
+  }
+
+  public set imageDownloadBackgroundColor(value: number) {
+    this._imageDownloadBackgroundColor = value
+  }
+
+  public set pagePath(value: string) {
+    this._pagePath = value
   }
 
   constructor() {

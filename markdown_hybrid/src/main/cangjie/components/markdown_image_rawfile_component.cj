@@ -30,6 +30,11 @@ public class MarkdownImageRawFileComponent {
     var rawFileComponentWidth: Float64
 
     /**
+     * 图片下载的点击事件
+     */
+    var rawFileImageDownloadCallback: ?(String) -> Unit
+
+    /**
      * 图片点击事件
      */
     var rawFileImageCallback: (String) -> Unit
@@ -158,32 +163,39 @@ public class MarkdownImageRawFileComponent {
 
     func build() {
         Column(){
-            if (rawFileImageType == 1) {
-                // 加载图片
-                Image(rawFileImagePixelMap())
-                    .margin(top: rawFileMarkdownTheme.imageMarginTop, bottom: rawFileMarkdownTheme.imageMarginBottom)
-                    .borderRadius(rawFileRadius)
-                    .width(rawFileWidth.px)
-                    .height(rawFileHeight.px)
-                    .objectFit(rawFileMarkdownTheme.imageFitType)
-                    .constraintSize(maxWidth: 100.percent)
-                    .onClick {
-                        evt => imageSpanOnClick(rawFileLink, rawFileImageCallback, rawFileLinkCallback, rawFileLinkUrl, rawFileDestination)
-                    }
+            Column(){
+                if (rawFileImageType == 1) {
+                    // 加载图片
+                    Image(rawFileImagePixelMap())
+                        .borderRadius(rawFileRadius)
+                        .width(rawFileWidth.px)
+                        .height(rawFileHeight.px)
+                        .objectFit(rawFileMarkdownTheme.imageFitType)
+                        .constraintSize(maxWidth: 100.percent)
+                        .onClick {
+                            evt => imageSpanOnClick(rawFileLink, rawFileImageCallback, rawFileLinkCallback, rawFileLinkUrl, rawFileDestination)
+                        }
+                }
+                if (rawFileMarkdownTheme.imageResource.isSome() && rawFileImageType != 1) {
+                    // 图片占位图
+                    imagePlaceholderComponent(
+                        rawFileMarkdownTheme.imageResource(),
+                        rawFilePlaceholderWidth,
+                        rawFilePlaceholderHeight,
+                        rawFileRadius
+                    )
+                }
             }
-            if (rawFileMarkdownTheme.imageResource.isSome() && rawFileImageType != 1) {
-                // 图片占位图
-                imagePlaceholderComponent(
-                    rawFileMarkdownTheme.imageResource(),
-                    rawFileMarkdownTheme.imageMarginTop,
-                    rawFileMarkdownTheme.imageMarginBottom,
-                    rawFilePlaceholderWidth,
-                    rawFilePlaceholderHeight,
-                    rawFileRadius
+            .alignItems(urlHorizontalAlign)
+            if(rawFileMarkdownTheme.isImageDownload){
+                MarkdownImageDownloadComponent(
+                    markdownTheme: rawFileMarkdownTheme,
+                    destination: rawFileDestination,
+                    imageDownloadCallback: rawFileImageDownloadCallback
                 )
             }
         }
-        .alignItems(urlHorizontalAlign)
+        .margin(top: rawFileMarkdownTheme.imageMarginTop, bottom: rawFileMarkdownTheme.imageMarginBottom)
     }
 
     /**

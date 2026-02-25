@@ -35,6 +35,11 @@ public class MarkdownImageCallbackUrlComponent {
     var urlCallbackImageCallbackCallback: (String) -> ?Array<UInt8>
 
     /**
+     * 图片下载的点击事件
+     */
+    var urlCallbackImageDownloadCallback: ?(String) -> Unit
+
+    /**
      * 图片点击事件
      */
     var urlCallbackImageCallback: (String) -> Unit
@@ -181,64 +186,70 @@ public class MarkdownImageCallbackUrlComponent {
 
     func build() {
          Column(){
-            if (urlCallbackReplaceImageType == 1) {
-                // 替换之后的图片
-                Image(urlCallbackReplaceImagePixelMap())
-                    .margin(top: urlCallbackMarkdownTheme.imageMarginTop, bottom: urlCallbackMarkdownTheme.imageMarginBottom)
-                    .borderRadius(urlCallbackRadius)
-                    .width(urlCallbackReplaceWidth())
-                    .height(urlCallbackReplaceHeight())
-                    .objectFit(urlCallbackMarkdownTheme.imageFitType)
-                    .constraintSize(maxWidth: 100.percent)
-                    .onClick {
-                        evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
-                    }
-            }else{
-                if (urlCallbackImageType != 2) {
-                    // 加载图片
-                    Image(urlCallbackDestination)
-                        .margin(top: urlCallbackMarkdownTheme.imageMarginTop, bottom: urlCallbackMarkdownTheme.imageMarginBottom)
+             Column(){
+                if (urlCallbackReplaceImageType == 1) {
+                    // 替换之后的图片
+                    Image(urlCallbackReplaceImagePixelMap())
                         .borderRadius(urlCallbackRadius)
-                        .width(urlCallbackWidth.px)
-                        .height(urlCallbackHeight.px)
+                        .width(urlCallbackReplaceWidth())
+                        .height(urlCallbackReplaceHeight())
                         .objectFit(urlCallbackMarkdownTheme.imageFitType)
                         .constraintSize(maxWidth: 100.percent)
                         .onClick {
                             evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
                         }
-                        .onComplete {
-                            imageLoadResult =>
-                                let res = imageWidthAndHeight(
-                                    urlCallbackComponentImageWidth,
-                                    imageLoadResult.width,
-                                    imageLoadResult.height,
-                                    urlCallbackImageWidth,
-                                    urlCallbackImageHeight,
-                                    urlCallbackMarkdownTheme.imageFixedRatioWidth,
-                                    urlCallbackMarkdownTheme.imageMaximumWidth
-                                )
-                                urlCallbackWidth = res[0]
-                                urlCallbackHeight = res[1]
-                                urlCallbackImageType = 1
-                        }
-                        .onError {
-                            imageError => urlCallbackImageType = 2
-                        }
-                }
-                if (urlCallbackMarkdownTheme.imageResource.isSome() && urlCallbackImageType != 1) {
-                    // 图片占位图
-                    imagePlaceholderComponent(
-                        urlCallbackMarkdownTheme.imageResource(),
-                        urlCallbackMarkdownTheme.imageMarginTop,
-                        urlCallbackMarkdownTheme.imageMarginBottom,
-                        urlCallbackPlaceholderWidth,
-                        urlCallbackPlaceholderHeight,
-                        urlCallbackRadius
-                    )
+                }else{
+                    if (urlCallbackImageType != 2) {
+                        // 加载图片
+                        Image(urlCallbackDestination)
+                            .borderRadius(urlCallbackRadius)
+                            .width(urlCallbackWidth.px)
+                            .height(urlCallbackHeight.px)
+                            .objectFit(urlCallbackMarkdownTheme.imageFitType)
+                            .constraintSize(maxWidth: 100.percent)
+                            .onClick {
+                                evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
+                            }
+                            .onComplete {
+                                imageLoadResult =>
+                                    let res = imageWidthAndHeight(
+                                        urlCallbackComponentImageWidth,
+                                        imageLoadResult.width,
+                                        imageLoadResult.height,
+                                        urlCallbackImageWidth,
+                                        urlCallbackImageHeight,
+                                        urlCallbackMarkdownTheme.imageFixedRatioWidth,
+                                        urlCallbackMarkdownTheme.imageMaximumWidth
+                                    )
+                                    urlCallbackWidth = res[0]
+                                    urlCallbackHeight = res[1]
+                                    urlCallbackImageType = 1
+                            }
+                            .onError {
+                                imageError => urlCallbackImageType = 2
+                            }
+                    }
+                    if (urlCallbackMarkdownTheme.imageResource.isSome() && urlCallbackImageType != 1) {
+                        // 图片占位图
+                        imagePlaceholderComponent(
+                            urlCallbackMarkdownTheme.imageResource(),
+                            urlCallbackPlaceholderWidth,
+                            urlCallbackPlaceholderHeight,
+                            urlCallbackRadius
+                        )
+                    }
                 }
             }
+            .alignItems(urlHorizontalAlign)
+            if(urlCallbackMarkdownTheme.isImageDownload){
+                MarkdownImageDownloadComponent(
+                    markdownTheme: urlCallbackMarkdownTheme,
+                    destination: urlCallbackDestination,
+                    imageDownloadCallback: urlCallbackImageDownloadCallback
+                )
+            }
         }
-        .alignItems(urlHorizontalAlign)
+        .margin(top: urlCallbackMarkdownTheme.imageMarginTop, bottom: urlCallbackMarkdownTheme.imageMarginBottom)
     }
 
     func imageCallbackPixelmap() {

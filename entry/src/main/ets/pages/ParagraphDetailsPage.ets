@@ -6,6 +6,7 @@ import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from './FileUtils'
 import { ParagraphData } from './ParagraphPage'
+import hilog from '@ohos.hilog'
 
 @Entry
 @Component
@@ -33,6 +34,21 @@ struct ParagraphDetailsPage {
    */
   @State
   isFull: boolean = true
+  /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
   /**
    * 段落文本大小
    */
@@ -69,15 +85,19 @@ struct ParagraphDetailsPage {
   @State
   paragraphBottomMargins: number = 8
   /**
-   * 增量加载延迟
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
    */
-  time: number = 50
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let paragraphData: ParagraphData = router.getParams() as ParagraphData
       this.fileStr = getFileContextStr(paragraphData._pagePath)
       this.isFull = paragraphData._isFull
+      this.incrementalAnalysis = paragraphData._incrementalAnalysis
+      this.time = paragraphData._time
+      this.textNumber = paragraphData._textNumber
       this.paragraphTextSize = paragraphData._paragraphTextSize
       this.paragraphTextColor = paragraphData._paragraphTextColor
       this.paragraphTextWordSpace = paragraphData._paragraphTextWordSpace
@@ -109,16 +129,23 @@ struct ParagraphDetailsPage {
         .onClick(
           () => {
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
+                this.content = this.content + this.fileStr.substring(this.content.length, index)
                 this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
+                if (index >= this.fileStr.length) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
-                index++
+                if (this.fileStr.length > index + this.textNumber) {
+                  index = index + this.textNumber
+                } else {
+                  index = this.fileStr.length
+                }
               }, this.time)
             }
           }
@@ -127,6 +154,8 @@ struct ParagraphDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
+            incrementalAnalysis: this.incrementalAnalysis,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })

@@ -34,6 +34,21 @@ struct TitleDetailsPage {
   @State
   isFull: boolean = true
   /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
    * H1、H2下划线高度
    */
   @State
@@ -104,15 +119,19 @@ struct TitleDetailsPage {
   @State
   headingBottomMargins: number = 8
   /**
-   * 增量加载延迟
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
    */
-  time: number = 50
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let titleData: TitleData = router.getParams() as TitleData
       this.fileStr = getFileContextStr(titleData._pagePath)
       this.isFull = titleData._isFull
+      this.incrementalAnalysis = titleData._incrementalAnalysis
+      this.time = titleData._time
+      this.textNumber = titleData._textNumber
       this.headingBreakHeight = titleData._headingBreakHeight
       this.headingBreakColor = titleData._headingBreakColor
       this.headingTextColor = titleData._headingTextColor
@@ -151,16 +170,23 @@ struct TitleDetailsPage {
         .onClick(
           () => {
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
+                this.content = this.content + this.fileStr.substring(this.content.length, index)
                 this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
+                if (index >= this.fileStr.length) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
-                index++
+                if (this.fileStr.length > index + this.textNumber) {
+                  index = index + this.textNumber
+                } else {
+                  index = this.fileStr.length
+                }
               }, this.time)
             }
           }
@@ -169,6 +195,8 @@ struct TitleDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
+            incrementalAnalysis: this.incrementalAnalysis,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })

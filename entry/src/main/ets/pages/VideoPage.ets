@@ -36,6 +36,33 @@ struct VideoPage {
   @State
   isFull: boolean = true
   /**
+   * markdown是否增量解析列表
+   */
+  incrementalAnalysisList: Array<boolean> = [true, false]
+  /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间列表
+   */
+  timeList: Array<number> = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500]
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量列表
+   */
+  textNumberList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 150, 200]
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
    * 视频圆角列表
    */
   videoBorderRadiusList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
@@ -63,41 +90,194 @@ struct VideoPage {
   @State
   videoTimeTextSize: number = 14
   /**
-   * 音频上边距列表
+   * 视频上边距列表
    */
   videoTimeTextMarginRightList: Array<number> = [0, 5, 10, 15, 20, 25, 30, 35, 40]
   /**
-   * 音频上边距
+   * 视频上边距
    */
   @State
   videoTimeTextMarginRight: number = 10
   /**
-   * 音频下边距列表
+   * 视频下边距列表
    */
   videoTimeTextMarginBottomList: Array<number> = [0, 5, 10, 15, 20, 25, 30, 35, 40]
   /**
-   * 音频下边距
+   * 视频下边距
    */
   @State
   videoTimeTextMarginBottom: number = 10
   /**
-   * 音频上边距列表
+   * 视频上边距列表
    */
   videoMarginTopList: Array<number> = [0, 5, 10, 15, 20, 25, 30, 35, 40]
   /**
-   * 音频上边距
+   * 视频上边距
    */
   @State
   videoMarginTop: number = 10
   /**
-   * 音频下边距列表
+   * 视频下边距列表
    */
   videoMarginBottomList: Array<number> = [0, 5, 10, 15, 20, 25, 30, 35, 40]
   /**
-   * 音频下边距
+   * 视频下边距
    */
   @State
   videoMarginBottom: number = 10
+  /**
+   * 视频发布/下载按钮布局是否显示列表
+   */
+  isVideoBottomLayoutList: Array<boolean> = [true, false]
+  /**
+   * 视频发布/下载按钮布局是否显示
+   */
+  @State
+  isVideoBottomLayout: boolean = false
+  /**
+   * 视频发布按钮图片宽度和高度列表
+   */
+  videoReleaseImageWidthHeightList: Array<number> = [10, 15, 18, 20, 25, 30, 35, 40]
+  /**
+   * 视频发布按钮图片宽度和高度
+   */
+  @State
+  videoReleaseImageWidthHeight: number = 18
+  /**
+   * 视频发布按钮宽度列表
+   */
+  videoReleaseWidthList: Array<number> = [100, 120, 130, 144, 150, 160, 180, 200]
+  /**
+   * 视频发布按钮宽度
+   */
+  @State
+  videoReleaseWidth: number = 144
+  /**
+   * 视频发布按钮高度列表
+   */
+  videoReleaseHeightList: Array<number> = [25, 30, 35, 40, 44, 50, 60, 70, 80]
+  /**
+   * 视频发布按钮高度
+   */
+  @State
+  videoReleaseHeight: number = 44
+  /**
+   * 视频发布按钮圆角列表
+   */
+  videoReleaseRadiusList: Array<number> = [10, 12, 15, 18, 20, 22, 25, 28, 30,35,40]
+  /**
+   * 视频发布按钮圆角
+   */
+  @State
+  videoReleaseRadius: number = 22
+  /**
+   * 视频发布按钮文本内容列表
+   */
+  videoReleaseTextList: Array<string> = ["发布", "提交", "发布视频"]
+  /**
+   * 视频发布按钮文本内容
+   */
+  @State
+  videoReleaseText: string = "发布视频"
+  /**
+   * 视频发布按钮文本大小列表
+   */
+  videoReleaseTexSizeList: Array<number> = [10, 12, 16, 18, 20, 22, 26, 28, 30,35,40]
+  /**
+   * 视频发布按钮文本大小
+   */
+  @State
+  videoReleaseTexSize: number = 16
+  /**
+   * 视频发布按钮文本颜色列表
+   */
+  videoReleaseTexColorList: Array<number> = [0xE6000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  /**
+   * 视频发布按钮文本颜色
+   */
+  @State
+  videoReleaseTexColor: number = 0xE6000000
+  /**
+   * 视频发布按钮背景颜色列表
+   */
+  videoReleaseBackgroundColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  /**
+   * 视频发布按钮背景颜色
+   */
+  @State
+  videoReleaseBackgroundColor: number = 0xFFF5F5F5
+  /**
+   * 视频下载按钮图片宽度和高度列表
+   */
+  videoDownloadImageWidthHeightList: Array<number> = [10, 15, 18, 20, 25, 30, 35, 40]
+  /**
+   * 视频下载按钮图片宽度和高度
+   */
+  @State
+  videoDownloadImageWidthHeight: number = 18
+  /**
+   * 视频下载按钮宽度列表
+   */
+  videoDownloadWidthList: Array<number> = [100, 120, 130, 144, 150, 160, 180, 200]
+  /**
+   * 视频下载按钮宽度
+   */
+  @State
+  videoDownloadWidth: number = 144
+  /**
+   * 视频下载按钮高度列表
+   */
+  videoDownloadHeightList: Array<number> = [25, 30, 35, 40, 44, 50, 60, 70, 80]
+  /**
+   * 视频下载按钮高度
+   */
+  @State
+  videoDownloadHeight: number = 44
+  /**
+   * 视频下载按钮圆角列表
+   */
+  videoDownloadRadiusList: Array<number> = [10, 12, 15, 18, 20, 22, 25, 28, 30,35,40]
+  /**
+   * 视频下载按钮圆角
+   */
+  @State
+  videoDownloadRadius: number = 22
+  /**
+   * 视频下载按钮文本内容列表
+   */
+  videoDownloadTextList: Array<string> = ["下载", "提交", "下载视频"]
+  /**
+   * 视频下载按钮文本内容
+   */
+  @State
+  videoDownloadText: string = "下载视频"
+  /**
+   * 视频下载按钮文本大小列表
+   */
+  videoDownloadTexSizeList: Array<number> = [10, 12, 16, 18, 20, 22, 26, 28, 30,35,40]
+  /**
+   * 视频下载按钮文本大小
+   */
+  @State
+  videoDownloadTexSize: number = 16
+  /**
+   * 视频下载按钮文本颜色列表
+   */
+  videoDownloadTexColorList: Array<number> = [0xE6000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  /**
+   * 视频下载按钮文本颜色
+   */
+  @State
+  videoDownloadTexColor: number = 0xE6000000
+  /**
+   * 视频下载按钮背景颜色列表
+   */
+  videoDownloadBackgroundColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  /**
+   * 视频下载按钮背景颜色
+   */
+  @State
+  videoDownloadBackgroundColor: number = 0xFFF5F5F5
   /**
    * 配置数据内容
    */
@@ -144,6 +324,99 @@ struct VideoPage {
                   .onClick(() => {
                     this.isFull = stringToBoolean(item)
                     this.videoData.isFull = this.isFull
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`markdown是否增量解析 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.incrementalAnalysis}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.incrementalAnalysisList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.incrementalAnalysis = item
+                    this.videoData.incrementalAnalysis = this.incrementalAnalysis
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`增量加载每次间隔时间 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.time}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.timeList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.time = item
+                    this.videoData.time = this.time
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`增量每次增量文本数量 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.textNumber}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.textNumberList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.textNumber = item
+                    this.videoData.textNumber = this.textNumber
                   })
               })
             }
@@ -368,6 +641,541 @@ struct VideoPage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`视频发布/下载按钮布局是否显示 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.isVideoBottomLayout}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.isVideoBottomLayoutList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.isVideoBottomLayout = item
+                    this.videoData.isVideoBottomLayout = this.isVideoBottomLayout
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频发布按钮图片宽度和高度 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.videoReleaseImageWidthHeight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoReleaseImageWidthHeightList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoReleaseImageWidthHeight = item
+                    this.videoData.videoReleaseImageWidthHeight = this.videoReleaseImageWidthHeight
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频发布按钮宽度 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.videoReleaseWidth}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoReleaseWidthList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoReleaseWidth = item
+                    this.videoData.videoReleaseWidth = this.videoReleaseWidth
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频发布按钮高度 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.videoReleaseHeight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoReleaseHeightList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoReleaseHeight = item
+                    this.videoData.videoReleaseHeight = this.videoReleaseHeight
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频发布按钮圆角 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.videoReleaseRadius}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoReleaseRadiusList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoReleaseRadius = item
+                    this.videoData.videoReleaseRadius = this.videoReleaseRadius
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频发布按钮文本内容 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.videoReleaseText}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoReleaseTextList, (item: string, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoReleaseText = item
+                    this.videoData.videoReleaseText = this.videoReleaseText
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频发布按钮文本大小 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.videoReleaseTexSize}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoReleaseTexSizeList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoReleaseTexSize = item
+                    this.videoData.videoReleaseTexSize = this.videoReleaseTexSize
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频发布按钮文本颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${numberToColorString(this.videoReleaseTexColor)}`)
+                .fontSize(16)
+                .fontColor(this.videoReleaseTexColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoReleaseTexColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoReleaseTexColor = item
+                    this.videoData.videoReleaseTexColor = this.videoReleaseTexColor
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频发布按钮背景颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${numberToColorString(this.videoReleaseBackgroundColor)}`)
+                .fontSize(16)
+                .fontColor(this.videoReleaseBackgroundColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoReleaseBackgroundColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoReleaseBackgroundColor = item
+                    this.videoData.videoReleaseBackgroundColor = this.videoReleaseBackgroundColor
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频下载按钮图片宽度和高度 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.videoDownloadImageWidthHeight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoDownloadImageWidthHeightList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoDownloadImageWidthHeight = item
+                    this.videoData.videoDownloadImageWidthHeight = this.videoDownloadImageWidthHeight
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频下载按钮宽度 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.videoDownloadWidth}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoDownloadWidthList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoDownloadWidth = item
+                    this.videoData.videoDownloadWidth = this.videoDownloadWidth
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频下载按钮高度 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.videoDownloadHeight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoDownloadHeightList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoDownloadHeight = item
+                    this.videoData.videoDownloadHeight = this.videoDownloadHeight
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频下载按钮圆角 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.videoDownloadRadius}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoDownloadRadiusList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoDownloadRadius = item
+                    this.videoData.videoDownloadRadius = this.videoDownloadRadius
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频下载按钮文本内容 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.videoDownloadText}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoDownloadTextList, (item: string, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoDownloadText = item
+                    this.videoData.videoDownloadText = this.videoDownloadText
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频下载按钮文本大小 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.videoDownloadTexSize}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoDownloadTexSizeList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoDownloadTexSize = item
+                    this.videoData.videoDownloadTexSize = this.videoDownloadTexSize
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频下载按钮文本颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${numberToColorString(this.videoDownloadTexColor)}`)
+                .fontSize(16)
+                .fontColor(this.videoDownloadTexColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoDownloadTexColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoDownloadTexColor = item
+                    this.videoData.videoDownloadTexColor = this.videoDownloadTexColor
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`视频下载按钮背景颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${numberToColorString(this.videoDownloadBackgroundColor)}`)
+                .fontSize(16)
+                .fontColor(this.videoDownloadBackgroundColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.videoDownloadBackgroundColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.videoDownloadBackgroundColor = item
+                    this.videoData.videoDownloadBackgroundColor = this.videoDownloadBackgroundColor
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -401,6 +1209,9 @@ struct VideoPage {
 
 export class VideoData {
   _isFull: boolean = true
+  _incrementalAnalysis: boolean = false
+  _time: number = 50
+  _textNumber: number = 10
   _videoBorderRadius: number = 10
   _videoTimeTextColor: number = 0xFFFFFFFF
   _videoTimeTextSize: number = 14
@@ -408,10 +1219,39 @@ export class VideoData {
   _videoTimeTextMarginBottom: number = 10
   _videoMarginTop: number = 10
   _videoMarginBottom: number = 10
+  _isVideoBottomLayout: boolean = false
+  _videoReleaseImageWidthHeight: number = 18
+  _videoReleaseWidth: number = 144
+  _videoReleaseHeight: number = 44
+  _videoReleaseRadius: number = 22
+  _videoReleaseText: string = "发布视频"
+  _videoReleaseTexSize: number = 16
+  _videoReleaseTexColor: number = 0xE6000000
+  _videoReleaseBackgroundColor: number = 0xFFF5F5F5
+  _videoDownloadImageWidthHeight: number = 18
+  _videoDownloadWidth: number = 144
+  _videoDownloadHeight: number = 44
+  _videoDownloadRadius: number = 22
+  _videoDownloadText: string = "下载视频"
+  _videoDownloadTexSize: number = 16
+  _videoDownloadTexColor: number = 0xE6000000
+  _videoDownloadBackgroundColor: number = 0xFFF5F5F5
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
     this._isFull = value
+  }
+
+  public set incrementalAnalysis(value: boolean) {
+    this._incrementalAnalysis = value
+  }
+
+  public set time(value: number) {
+    this._time = value
+  }
+
+  public set textNumber(value: number) {
+    this._textNumber = value
   }
 
   public set videoBorderRadius(value: number) {
@@ -440,6 +1280,74 @@ export class VideoData {
 
   public set videoMarginBottom(value: number) {
     this._videoMarginBottom = value
+  }
+
+  public set isVideoBottomLayout(value: boolean) {
+    this._isVideoBottomLayout = value
+  }
+
+  public set videoReleaseImageWidthHeight(value: number) {
+    this._videoReleaseImageWidthHeight = value
+  }
+
+  public set videoReleaseWidth(value: number) {
+    this._videoReleaseWidth = value
+  }
+
+  public set videoReleaseHeight(value: number) {
+    this._videoReleaseHeight = value
+  }
+
+  public set videoReleaseRadius(value: number) {
+    this._videoReleaseRadius = value
+  }
+
+  public set videoReleaseText(value: string) {
+    this._videoReleaseText = value
+  }
+
+  public set videoReleaseTexSize(value: number) {
+    this._videoReleaseTexSize = value
+  }
+
+  public set videoReleaseTexColor(value: number) {
+    this._videoReleaseTexColor = value
+  }
+
+  public set videoReleaseBackgroundColor(value: number) {
+    this._videoReleaseBackgroundColor = value
+  }
+
+  public set videoDownloadImageWidthHeight(value: number) {
+    this._videoDownloadImageWidthHeight = value
+  }
+
+  public set videoDownloadWidth(value: number) {
+    this._videoDownloadWidth = value
+  }
+
+  public set videoDownloadHeight(value: number) {
+    this._videoDownloadHeight = value
+  }
+
+  public set videoDownloadRadius(value: number) {
+    this._videoDownloadRadius = value
+  }
+
+  public set videoDownloadText(value: string) {
+    this._videoDownloadText = value
+  }
+
+  public set videoDownloadTexSize(value: number) {
+    this._videoDownloadTexSize = value
+  }
+
+  public set videoDownloadTexColor(value: number) {
+    this._videoDownloadTexColor = value
+  }
+
+  public set videoDownloadBackgroundColor(value: number) {
+    this._videoDownloadBackgroundColor = value
   }
 
   public set pagePath(value: string) {

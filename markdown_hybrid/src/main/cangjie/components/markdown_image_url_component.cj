@@ -30,6 +30,11 @@ public class MarkdownImageUrlComponent {
     var urlComponentWidth: Float64
 
     /**
+     * 图片下载的点击事件
+     */
+    var urlImageDownloadCallback: ?(String) -> Unit
+
+    /**
      * 图片点击事件
      */
     var urlImageCallback: (String) -> Unit
@@ -139,49 +144,56 @@ public class MarkdownImageUrlComponent {
 
     func build() {
         Column(){
-            if (urlImageType != 2) {
-                // 加载图片
-                Image(urlDestination)
-                    .margin(top: urlMarkdownTheme.imageMarginTop, bottom: urlMarkdownTheme.imageMarginBottom)
-                    .borderRadius(urlRadius)
-                    .width(urlWidth.px)
-                    .height(urlHeight.px)
-                    .objectFit(urlMarkdownTheme.imageFitType)
-                    .constraintSize(maxWidth: 100.percent)
-                    .onClick {
-                        evt => imageSpanOnClick(urlLink, urlImageCallback, urlLinkCallback, urlLinkUrl, urlDestination)
-                    }
-                    .onComplete {
-                        imageLoadResult =>
-                            let res = imageWidthAndHeight(
-                                urlComponentImageWidth,
-                                imageLoadResult.width,
-                                imageLoadResult.height,
-                                urlImageWidth,
-                                urlImageHeight,
-                                urlMarkdownTheme.imageFixedRatioWidth,
-                                urlMarkdownTheme.imageMaximumWidth
-                            )
-                            urlWidth = res[0]
-                            urlHeight = res[1]
-                            urlImageType = 1
-                    }
-                    .onError {
-                        imageError => urlImageType = 2
-                    }
+            Column(){
+                if (urlImageType != 2) {
+                    // 加载图片
+                    Image(urlDestination)
+                        .borderRadius(urlRadius)
+                        .width(urlWidth.px)
+                        .height(urlHeight.px)
+                        .objectFit(urlMarkdownTheme.imageFitType)
+                        .constraintSize(maxWidth: 100.percent)
+                        .onClick {
+                            evt => imageSpanOnClick(urlLink, urlImageCallback, urlLinkCallback, urlLinkUrl, urlDestination)
+                        }
+                        .onComplete {
+                            imageLoadResult =>
+                                let res = imageWidthAndHeight(
+                                    urlComponentImageWidth,
+                                    imageLoadResult.width,
+                                    imageLoadResult.height,
+                                    urlImageWidth,
+                                    urlImageHeight,
+                                    urlMarkdownTheme.imageFixedRatioWidth,
+                                    urlMarkdownTheme.imageMaximumWidth
+                                )
+                                urlWidth = res[0]
+                                urlHeight = res[1]
+                                urlImageType = 1
+                        }
+                        .onError {
+                            imageError => urlImageType = 2
+                        }
+                }
+                if (urlMarkdownTheme.imageResource.isSome() && urlImageType != 1) {
+                    // 图片占位图
+                    imagePlaceholderComponent(
+                        urlMarkdownTheme.imageResource(),
+                        urlPlaceholderWidth,
+                        urlPlaceholderHeight,
+                        urlRadius
+                    )
+                }
             }
-            if (urlMarkdownTheme.imageResource.isSome() && urlImageType != 1) {
-                // 图片占位图
-                imagePlaceholderComponent(
-                    urlMarkdownTheme.imageResource(),
-                    urlMarkdownTheme.imageMarginTop,
-                    urlMarkdownTheme.imageMarginBottom,
-                    urlPlaceholderWidth,
-                    urlPlaceholderHeight,
-                    urlRadius
+            .alignItems(urlHorizontalAlign)
+            if(urlMarkdownTheme.isImageDownload){
+                MarkdownImageDownloadComponent(
+                    markdownTheme: urlMarkdownTheme,
+                    destination: urlDestination,
+                    imageDownloadCallback: urlImageDownloadCallback
                 )
             }
         }
-        .alignItems(urlHorizontalAlign)
+        .margin(top: urlMarkdownTheme.imageMarginTop, bottom: urlMarkdownTheme.imageMarginBottom)
     }
 }
