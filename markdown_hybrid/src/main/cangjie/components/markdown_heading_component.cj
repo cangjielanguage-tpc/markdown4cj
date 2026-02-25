@@ -295,7 +295,7 @@ class MarkdownHeadingComponent {
                     Span("\n")
                 } else if (spanListNodeView.nodeType == "Link" || spanListNodeView.nodeType == "HeadLink") {
                     // 链接, TOC列表链接
-                    if ((spanListNodeView.isBulletList || spanListNodeView.isOrderedList || spanListNodeView.isQuote || spanListNodeView.isDescList) && isOneLink && spanListMarkdownConfiguration.markdownTheme.isListLinkStyle) {
+                    if ((spanListNodeView.isBulletList || spanListNodeView.isOrderedList || spanListNodeView.isQuote || spanListNodeView.isDescList) && isOneLink && !spanListMarkdownConfiguration.markdownTheme.isListLinkStyle) {
                         markdownSpanComponent(
                             spanListMarkdownConfiguration,
                             spanListNodeView,
