@@ -1,6 +1,7 @@
 # 1.3.5
- -支持不使用cangjie组件，使用ArkTS的Text组件显示内容
- -支持用户自定义ArkTS组件显示
+
+1. 支持不使用cangjie组件，使用ArkTS的Text组件显示内容
+2. 支持用户自定义ArkTS组件显示
 
 # 1.3.4
 
