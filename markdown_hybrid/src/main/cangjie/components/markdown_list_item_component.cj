@@ -206,7 +206,7 @@ class MarkdownListItemComponent {
                         ListItem() {
                             MarkdownListComponent(
                                 listMarkdownConfiguration: listItemMarkdownConfiguration,
-                                listNodeView: listItemNodeView,
+                                listNodeView: item,
                                 listComponentWidth: listItemComponentWidth,
                                 listTableBlockComponentWidth: listItemTableBlockComponentWidth,
                                 listMarkdownCacheConfiguration: listItemMarkdownCacheConfiguration,
@@ -232,7 +232,7 @@ class MarkdownListItemComponent {
                         ListItem() {
                             MarkdownListComponent(
                                 listMarkdownConfiguration: listItemMarkdownConfiguration,
-                                listNodeView: listItemNodeView,
+                                listNodeView: item,
                                 listComponentWidth: listItemComponentWidth,
                                 listTableBlockComponentWidth: listItemTableBlockComponentWidth,
                                 listMarkdownCacheConfiguration: listItemMarkdownCacheConfiguration,
