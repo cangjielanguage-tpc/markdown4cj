@@ -42,7 +42,7 @@ public class MarkdownListComponent {
     var listMarkdownCacheConfiguration: MarkdownCacheConfiguration
 
     /**
-     * 是无序列表还是有序列表 - true：无序列表，fasle：有序列表
+     * 是无序列表还是有序列表 - true：有序列表，fasle：无序列表
      */
     var isOrdered: Bool
 
