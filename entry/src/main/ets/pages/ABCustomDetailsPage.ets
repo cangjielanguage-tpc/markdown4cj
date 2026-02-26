@@ -4,12 +4,12 @@
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from './BaseComponent'
 import { router } from '@kit.ArkUI'
-import { DemoDataMD } from './DemoPage'
 import { getFileContextStr } from './FileUtils'
+import { ABCustomDataMD } from './ABCustomPage'
 
 @Entry
 @Component
-struct DemoDetailsPage {
+struct ABCustomDetailsPage {
   /**
    * 滑动控制器
    */
@@ -49,6 +49,16 @@ struct DemoDetailsPage {
   @State
   textNumber: number = 10
   /**
+   * 是否使用ArkUI方案
+   */
+  @State
+  isABLoad: boolean = false
+  /**
+   * 使用ArkUI方案，是否传入容器布局
+   */
+  @State
+  isABLoadCustom: boolean = false
+  /**
    * 流式输入是否输入结束(true:结束输入,false:持续输入)
    */
   @State
@@ -56,12 +66,14 @@ struct DemoDetailsPage {
 
   aboutToAppear(): void {
     try {
-      let imageDataMD: DemoDataMD = router.getParams() as DemoDataMD
-      this.fileStr = getFileContextStr(imageDataMD._pagePath)
-      this.isFull = imageDataMD._isFull
-      this.incrementalAnalysis = imageDataMD._incrementalAnalysis
-      this.time = imageDataMD._time
-      this.textNumber = imageDataMD._textNumber
+      let abBCustomDataMD: ABCustomDataMD = router.getParams() as ABCustomDataMD
+      this.fileStr = getFileContextStr(abBCustomDataMD._pagePath)
+      this.isFull = abBCustomDataMD._isFull
+      this.incrementalAnalysis = abBCustomDataMD._incrementalAnalysis
+      this.time = abBCustomDataMD._time
+      this.textNumber = abBCustomDataMD._textNumber
+      this.isABLoad = abBCustomDataMD._isABLoad
+      this.isABLoadCustom = abBCustomDataMD._isABLoadCustom
     } catch (e) {
     }
   }
@@ -69,7 +81,7 @@ struct DemoDetailsPage {
   build() {
     Column() {
       titleComponent(
-        "演示样例测试用例",
+        "AB方案测试用例",
         0xFF317AFF,
         true,
         this.safeTop
@@ -109,18 +121,38 @@ struct DemoDetailsPage {
         )
       Scroll(this.scroller) {
         Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            incrementalAnalysis: this.incrementalAnalysis,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+          if (this.isABLoadCustom) {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin(),
+              useCangjieComponent: !this.isABLoad,
+              customContains: this.showTextBuilder.bind(this)
+            })
+          } else {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin(),
+              useCangjieComponent: !this.isABLoad
+            })
+          }
         }
       }
       .padding({ bottom: 200 })
     }
     .alignItems(HorizontalAlign.Center)
+  }
+
+  @Builder
+  showTextBuilder() {
+    Column(){
+      Text(this.content).width('100%').height('100%').fontColor(Color.Red)
+    }
   }
 
   setMarkdownConfig(): MarkdownConfiguration {

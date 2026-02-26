@@ -8,7 +8,7 @@ import { router } from '@kit.ArkUI'
 
 @Entry
 @Component
-struct DemoPage {
+struct ABCustomPage {
   /**
    * 滑动控制器
    */
@@ -20,7 +20,7 @@ struct DemoPage {
   /**
    * rawfile路径
    */
-  rawFilePath: string = "000_样例"
+  rawFilePath: string = "031_AB方案"
   /**
    * rawfile标题文件夹列表
    */
@@ -63,10 +63,28 @@ struct DemoPage {
   @State
   textNumber: number = 10
   /**
+   * 是否使用ArkUI方案列表
+   */
+  isABLoadList: Array<boolean> = [true, false]
+  /**
+   * 是否使用ArkUI方案
+   */
+  @State
+  isABLoad: boolean = false
+  /**
+   * 使用ArkUI方案，是否传入容器布局列表
+   */
+  isABLoadCustomList: Array<boolean> = [true, false]
+  /**
+   * 使用ArkUI方案，是否传入容器布局
+   */
+  @State
+  isABLoadCustom: boolean = false
+  /**
    * 配置数据内容
    */
   @State
-  demoDataMD: DemoDataMD = new DemoDataMD()
+  abCustomDataMD: ABCustomDataMD = new ABCustomDataMD()
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -75,7 +93,7 @@ struct DemoPage {
   build() {
     Column() {
       titleComponent(
-        "演示样例配置页面",
+        "AB方案配置页面",
         0xFF317AFF,
         true,
         this.safeTop
@@ -107,7 +125,7 @@ struct DemoPage {
                   .fontSize(14)
                   .onClick(() => {
                     this.isFull = stringToBoolean(item)
-                    this.demoDataMD.isFull = this.isFull
+                    this.abCustomDataMD.isFull = this.isFull
                   })
               })
             }
@@ -138,7 +156,7 @@ struct DemoPage {
                   .fontSize(14)
                   .onClick(() => {
                     this.incrementalAnalysis = item
-                    this.demoDataMD.incrementalAnalysis = this.incrementalAnalysis
+                    this.abCustomDataMD.incrementalAnalysis = this.incrementalAnalysis
                   })
               })
             }
@@ -169,7 +187,7 @@ struct DemoPage {
                   .fontSize(14)
                   .onClick(() => {
                     this.time = item
-                    this.demoDataMD.time = this.time
+                    this.abCustomDataMD.time = this.time
                   })
               })
             }
@@ -200,7 +218,69 @@ struct DemoPage {
                   .fontSize(14)
                   .onClick(() => {
                     this.textNumber = item
-                    this.demoDataMD.textNumber = this.textNumber
+                    this.abCustomDataMD.textNumber = this.textNumber
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`是否使用ArkUI方案 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.isABLoad}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.isABLoadList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.isABLoad = item
+                    this.abCustomDataMD.isABLoad = this.isABLoad
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`使用ArKUI方案，是否传入容器布局 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.isABLoadCustom}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.isABLoadCustomList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.isABLoadCustom = item
+                    this.abCustomDataMD.isABLoadCustom = this.isABLoadCustom
                   })
               })
             }
@@ -220,8 +300,8 @@ struct DemoPage {
                   .fontSize(16)// 字体大小
                   .onClick(() => {
                     // 点击动作触发该方法调用
-                    this.demoDataMD.pagePath = `${this.rawFilePath}/${item}`
-                    router.pushUrl({ url: "pages/DemoDetailsPage", params: this.demoDataMD })
+                    this.abCustomDataMD.pagePath = `${this.rawFilePath}/${item}`
+                    router.pushUrl({ url: "pages/ABCustomDetailsPage", params: this.abCustomDataMD })
                   })
               }
             })
@@ -237,11 +317,13 @@ struct DemoPage {
   }
 }
 
-export class DemoDataMD {
+export class ABCustomDataMD {
   _isFull: boolean = true
   _incrementalAnalysis: boolean = false
   _time: number = 50
   _textNumber: number = 10
+  _isABLoad: boolean = false
+  _isABLoadCustom: boolean = false
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
@@ -258,6 +340,14 @@ export class DemoDataMD {
 
   public set textNumber(value: number) {
     this._textNumber = value
+  }
+
+  public set isABLoad(value: boolean) {
+    this._isABLoad = value
+  }
+
+  public set isABLoadCustom(value: boolean) {
+    this._isABLoadCustom = value
   }
 
   public set pagePath(value: string) {
