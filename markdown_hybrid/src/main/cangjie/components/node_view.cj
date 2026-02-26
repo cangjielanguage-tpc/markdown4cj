@@ -19,6 +19,8 @@ public class NodeView {
     var nodeHash: Int64 = 0
     // node子节点标识
     var contentHash: Int64 = 0
+    // 段落
+    var isParagraph: Bool = false
     // 标题
     var isHeading: Bool = false
     // 标题等级
@@ -134,6 +136,7 @@ public func nodeToNodeView(
                     childrenNodeView.nodeHash = getProp<Int64>(commonmarkChildrenNode, 'nodeHash', 0)
                     childrenNodeView.contentHash = getProp<Int64>(commonmarkChildrenNode, 'contentHash', 0)
 
+                    childrenNodeView.isParagraph = childrenNewNodeView.isParagraph
                     childrenNodeView.isHeading = childrenNewNodeView.isHeading
                     childrenNodeView.headingLevel = childrenNewNodeView.headingLevel
                     childrenNodeView.headingID = childrenNewNodeView.headingID
@@ -325,8 +328,13 @@ public func nodeToNodeView(
                         nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
                     } else if (nodeType == "Paragraph") {
                         // 段落
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
-                        parentNewNodeView.children.add(childrenNodeView)
+                        if (childrenNodeView.isParagraph == true) {
+                            nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                        } else {
+                            childrenNodeView.isParagraph = true
+                            nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                            parentNewNodeView.children.add(childrenNodeView)
+                        }
                     } else if (nodeType == "Heading") {
                         // 标题
                         childrenNodeView.isHeading = true
@@ -456,10 +464,10 @@ public func nodeToNodeView(
                         // 无需处理
                     } else if (nodeType == "IgnoreBlockNode") {
                         // HTML块级别无用节点
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
                     } else if (nodeType == "IgnoreInlineNode") {
                         // Html行内无用节点
-                        nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
                     } else if (nodeType == "ImageHtmlNode") {
                         // HTML图片
                         let imageHtmlNode = (commonmarkChildrenNode as ImageHtmlNode)()
