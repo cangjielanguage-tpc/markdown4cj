@@ -57,6 +57,12 @@ class MarkdownParagraphComponent {
     var paragraphFootnoteCallback: (String) -> Unit
 
     /**
+     * 标题子节点是否不为0
+     */
+    @State
+    var isRefresh: Bool = false
+
+    /**
      * 是否只有一条链接数据
      */
     @State
@@ -188,14 +194,16 @@ class MarkdownParagraphComponent {
                     .fontWeight(FontWeight.W400)
                     .fontColor(paragraphMarkdownConfiguration.markdownTheme.paragraphTextColor)
             }
-            markdownSpanListComponent(
-                paragraphNodeViewList,
-                paragraphMarkdownConfiguration,
-                paragraphComponentWidth,
-                paragraphTocListOnClick,
-                paragraphImageCallback,
-                paragraphFootnoteCallback
-            )
+            if (isRefresh) {
+                markdownSpanListComponent(
+                    paragraphNodeViewList,
+                    paragraphMarkdownConfiguration,
+                    paragraphComponentWidth,
+                    paragraphTocListOnClick,
+                    paragraphImageCallback,
+                    paragraphFootnoteCallback
+                )
+            }
         }
         .textAlign(TextAlign.Start)
         .interopHalfLeading(true)
@@ -223,14 +231,16 @@ class MarkdownParagraphComponent {
                     .fontWeight(FontWeight.W400)
                     .fontColor(paragraphMarkdownConfiguration.markdownTheme.paragraphTextColor)
             }
-            markdownSpanListComponent(
-                paragraphNodeViewList,
-                paragraphMarkdownConfiguration,
-                paragraphComponentWidth,
-                paragraphTocListOnClick,
-                paragraphImageCallback,
-                paragraphFootnoteCallback
-            )
+            if (isRefresh) {
+                markdownSpanListComponent(
+                    paragraphNodeViewList,
+                    paragraphMarkdownConfiguration,
+                    paragraphComponentWidth,
+                    paragraphTocListOnClick,
+                    paragraphImageCallback,
+                    paragraphFootnoteCallback
+                )
+            }
         }
         .textAlign(TextAlign.Start)
         .halfLeading(true)
@@ -458,6 +468,9 @@ class MarkdownParagraphComponent {
         let paragraphNodeViewListSize: Int64 = paragraphNodeViewList.size // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
             return
+        }
+        if (refreshNodeViewSize > 0) {
+            isRefresh = true
         }
         if (refreshNodeViewSize > paragraphNodeViewListSize) {
             // 新数据大于页面数据
