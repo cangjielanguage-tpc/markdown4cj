@@ -68,7 +68,7 @@ class CJMarkdownComponent {
     }
 
     public func updateMarkDown(input: String, isInputEnded: Bool, incrementalAnalysis: Bool): Unit {
-        mdStr = input
+        this.mdStr = input
         this.isInputEnded = isInputEnded
         this.incrementalAnalysis = incrementalAnalysis
     }

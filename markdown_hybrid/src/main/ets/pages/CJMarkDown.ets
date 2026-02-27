@@ -44,11 +44,11 @@ export struct CJMarkdown {
   /**
    * 流式输入是否输入结束(true:结束输入,false:持续输入)
    */
-  @State @Watch('onMarkDownChange') isInputEnded: boolean = true
+  @Prop @Watch('onMarkDownChange') isInputEnded: boolean = true
   /**
    * markdown是否增量解析(true:增量解析,false:全量解析)
    */
-  @State @Watch('onMarkDownChange') incrementalAnalysis: boolean = false
+  @Prop @Watch('onMarkDownChange') incrementalAnalysis: boolean = false
   /**
    * markdown配置
    */
