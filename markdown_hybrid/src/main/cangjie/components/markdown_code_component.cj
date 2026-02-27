@@ -42,6 +42,11 @@ class MarkdownCodeComponent {
     var codeComponents: HashMap<Int64, MarkdownCodeComponent>
 
     /**
+     * 缓存的单独代码块文本列表控件
+     */
+    var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent>
+
+    /**
      * 代码列表
      */
     @State
@@ -110,7 +115,7 @@ class MarkdownCodeComponent {
                             }
                         },
                         keyGeneratorFunc: {
-                            item: String, idx: Int64 => "${idx}-${item}"
+                            item: String, idx: Int64 => "${idx}"
                         }
                     )
                 }
@@ -134,12 +139,14 @@ class MarkdownCodeComponent {
                                         MarkdownCodeTextComponent(
                                             markdownTheme: markdownConfiguration.markdownTheme,
                                             codeText: item,
-                                            info: info
+                                            info: info,
+                                            codeTextComponents: codeTextComponents,
+                                            index: idx
                                         )
                                     }
                                 },
                                 keyGeneratorFunc: {
-                                    item: String, idx: Int64 => "${idx}-${item}"
+                                    item: String, idx: Int64 => "${idx}"
                                 }
                             )
                         }
@@ -318,10 +325,7 @@ class MarkdownCodeComponent {
         this.codeText = codeText
         this.info = info
         this.nodeHash = nodeHash
-        let arr = ArrayList<String>()
-        this.codeText.lines().forEach({
-                s => arr.add(s)
-            })
+        let arr = this.codeText.split("\n") // 代码块数据分割
         let refreshNodeViewSize = arr.size // 刷新进来的数据长度
         let dataSourceSize = lineStrArray.totalCount() // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
@@ -331,8 +335,15 @@ class MarkdownCodeComponent {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
             for (i in 0..dataSourceSize) {
-                lineStrArray.replaceData(i, arr[i])
-                lineInt64Array.replaceData(i, arr[i])
+                if(lineStrArray.getData(i) != arr[i]){
+                    // 最后一条数据通过页面缓存刷新
+                    lineStrArray.replaceData(i, arr[i])
+                    lineInt64Array.replaceData(i, arr[i])
+                    let cache = codeTextComponents.get(i)
+                    if (let Some(v) <- cache) {
+                        v.refreshData(arr[i], info)
+                    }
+                }
             }
             // 循环添加新数据
             for (i in dataSourceSize..refreshNodeViewSize) {
@@ -341,16 +352,31 @@ class MarkdownCodeComponent {
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
-            for (i in 0..refreshNodeViewSize) {
-                lineStrArray.replaceData(i, arr[i])
-                lineInt64Array.replaceData(i, arr[i])
+            let indexItem: Int64 = dataSourceSize
+            for (i in 0..indexItem) {
+                if(lineStrArray.getData(i) != arr[i]){
+                    // 最后一条数据通过页面缓存刷新
+                    lineStrArray.replaceData(i, arr[i])
+                    lineInt64Array.replaceData(i, arr[i])
+                    let cache = codeTextComponents.get(i)
+                    if (let Some(v) <- cache) {
+                        v.refreshData(arr[i], info)
+                    }
+                }
             }
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
             for (i in 0..refreshNodeViewSize) {
-                lineStrArray.replaceData(i, arr[i])
-                lineInt64Array.replaceData(i, arr[i])
+                if(lineStrArray.getData(i) != arr[i]){
+                    // 最后一条数据通过页面缓存刷新
+                    lineStrArray.replaceData(i, arr[i])
+                    lineInt64Array.replaceData(i, arr[i])
+                    let cache = codeTextComponents.get(i)
+                    if (let Some(v) <- cache) {
+                        v.refreshData(arr[i], info)
+                    }
+                }
             }
             // 循环删除多余的旧数据
             for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
@@ -358,6 +384,7 @@ class MarkdownCodeComponent {
                 lineInt64Array.deleteData(i)
             }
         }
+        // 列表是否置底
         if (markdownConfiguration.markdownTheme.separateCodeIsBottom) {
             scrollChatIfAtBottom()
         }

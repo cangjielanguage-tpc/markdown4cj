@@ -510,7 +510,8 @@ public class MarkdownComponent {
                                     codeText: item.nodeText,
                                     info: item.codeInfo,
                                     nodeHash: item.nodeHash,
-                                    codeComponents: markdownCacheConfiguration.codeComponents
+                                    codeComponents: markdownCacheConfiguration.codeComponents,
+                                    codeTextComponents: markdownCacheConfiguration.codeTextComponents
                                 )
                             }
                         } else {

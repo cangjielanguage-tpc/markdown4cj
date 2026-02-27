@@ -34,6 +34,21 @@ struct CodeLineDetailsPage {
   @State
   isFull: boolean = true
   /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
    * 内联代码文本颜色
    */
   codeTextColor: number = 0xFF000000
@@ -50,15 +65,19 @@ struct CodeLineDetailsPage {
    */
   codeTypeface: string = "HarmonyOS Sans"
   /**
-   * 增量加载延迟
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
    */
-  time: number = 50
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let codeLineData: CodeLineData = router.getParams() as CodeLineData
       this.fileStr = getFileContextStr(codeLineData._pagePath)
       this.isFull = codeLineData._isFull
+      this.incrementalAnalysis = codeLineData._incrementalAnalysis
+      this.time = codeLineData._time
+      this.textNumber = codeLineData._textNumber
       this.codeTextColor = codeLineData._codeTextColor
       this.codeBackgroundColor = codeLineData._codeBackgroundColor
       this.codeTextSize = codeLineData._codeTextSize
@@ -86,18 +105,24 @@ struct CodeLineDetailsPage {
         .fontSize(16)// 字体大小
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
+                this.content = this.content + this.fileStr.substring(this.content.length, index)
                 this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
+                if (index >= this.fileStr.length) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
-                index++
+                if (this.fileStr.length > index + this.textNumber) {
+                  index = index + this.textNumber
+                } else {
+                  index = this.fileStr.length
+                }
               }, this.time)
             }
           }
@@ -106,6 +131,8 @@ struct CodeLineDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
+            incrementalAnalysis: this.incrementalAnalysis,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })

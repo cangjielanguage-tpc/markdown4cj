@@ -357,7 +357,7 @@ public func nodeToNodeView(
                     } else if (nodeType == "FencedCodeBlock") {
                         // 围栏代码块
                         let fencedCodeBlock = (commonmarkChildrenNode as FencedCodeBlock)()
-                        childrenNodeView.nodeText = fencedCodeBlock.getLiteral()
+                        childrenNodeView.nodeText = fencedCodeBlock.getLiteral().removeSuffix("\n")
                         childrenNodeView.codeInfo = fencedCodeBlock.getInfo()
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "IndentedCodeBlock") {

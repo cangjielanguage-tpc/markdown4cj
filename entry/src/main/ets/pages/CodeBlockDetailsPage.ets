@@ -35,6 +35,21 @@ struct CodeBlockDetailsPage {
   @State
   isFull: boolean = true
   /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
    * 是否格式化代码块内容
    */
   @State
@@ -115,15 +130,19 @@ struct CodeBlockDetailsPage {
   @State
   isDark: boolean = true
   /**
-   * 增量加载延迟
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
    */
-  time: number = 100
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let codeBlockData: CodeBlockData = router.getParams() as CodeBlockData
       this.fileStr = getFileContextStr(codeBlockData._pagePath)
       this.isFull = codeBlockData._isFull
+      this.incrementalAnalysis = codeBlockData._incrementalAnalysis
+      this.time = codeBlockData._time
+      this.textNumber = codeBlockData._textNumber
       this.isCodeFormat = codeBlockData._isCodeFormat
       this.codeBlockTextColor = codeBlockData._codeBlockTextColor
       this.codeBlockTypeTextColor = codeBlockData._codeBlockTypeTextColor
@@ -164,25 +183,36 @@ struct CodeBlockDetailsPage {
         .fontSize(16)// 字体大小
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
+                this.content = this.content + this.fileStr.substring(this.content.length, index)
                 this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
+                if (index >= this.fileStr.length) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
-                index++
+                if (this.fileStr.length > index + this.textNumber) {
+                  index = index + this.textNumber
+                } else {
+                  index = this.fileStr.length
+                }
               }, this.time)
             }
           }
         )
       Scroll(this.scroller) {
         Column() {
-          CJMarkdown({ content: this.content, config: this.setMarkdownConfig() })
+          CJMarkdown({
+            content: this.content,
+            isInputEnded: this.isInputEnded,
+            incrementalAnalysis: this.incrementalAnalysis,
+            config: this.setMarkdownConfig()
+          })
         }
       }
       .padding({ bottom: 200 })
@@ -195,17 +225,17 @@ struct CodeBlockDetailsPage {
     config.setCodeCopyCallback(this.codeCopyCallback.bind(this))
     let theme = new MarkdownTheme()
     theme.setIsCodeFormat(this.isCodeFormat)
-    if(this.codeBlockTextColor !== undefined){
+    if (this.codeBlockTextColor !== undefined) {
       theme.setCodeBlockTextColor(this.codeBlockTextColor)
     }
-    if(this.codeBlockTypeTextColor !== undefined){
+    if (this.codeBlockTypeTextColor !== undefined) {
       theme.setCodeBlockTypeTextColor(this.codeBlockTypeTextColor)
     }
     theme.setCodeBlockTypeTextStr(this.codeBlockTypeTextStr)
     theme.setCodeBlockTypeTextPadding(this.codeBlockTypeTextPadding)
     theme.setCodeBlockIconTextHide(this.codeBlockIconTextHide)
     theme.setCodeBlockLineNumberHide(this.codeBlockLineNumberHide)
-    if(this.codeBlockBackgroundColor !== undefined){
+    if (this.codeBlockBackgroundColor !== undefined) {
       theme.setCodeBlockBackgroundColor(this.codeBlockBackgroundColor)
     }
     theme.setCodeMultilineMargin(this.codeMultilineMargin)

@@ -36,6 +36,33 @@ struct CodeSeparatePage {
   @State
   isFull: boolean = true
   /**
+   * markdown是否增量解析列表
+   */
+  incrementalAnalysisList: Array<boolean> = [true, false]
+  /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间列表
+   */
+  timeList: Array<number> = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500]
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量列表
+   */
+  textNumberList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 150, 200]
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
    * 是否单独代码块显示列表
    */
   isSeparateCodeBlockList: Array<boolean> = [true, false]
@@ -53,6 +80,15 @@ struct CodeSeparatePage {
    */
   @State
   separateCodeBlockWidth: number = 50
+  /**
+   * 是否滑动到底部列表
+   */
+  separateCodeIsBottomList: Array<boolean> = [true, false]
+  /**
+   * 是否滑动到底部
+   */
+  @State
+  separateCodeIsBottom: boolean = false
   /**
    * 配置数据内容
    */
@@ -99,6 +135,99 @@ struct CodeSeparatePage {
                   .onClick(() => {
                     this.isFull = stringToBoolean(item)
                     this.codeSeparateData.isFull = this.isFull
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`markdown是否增量解析 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.incrementalAnalysis}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.incrementalAnalysisList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.incrementalAnalysis = item
+                    this.codeSeparateData.incrementalAnalysis = this.incrementalAnalysis
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`增量加载每次间隔时间 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.time}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.timeList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.time = item
+                    this.codeSeparateData.time = this.time
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`增量每次增量文本数量 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.textNumber}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.textNumberList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.textNumber = item
+                    this.codeSeparateData.textNumber = this.textNumber
                   })
               })
             }
@@ -166,6 +295,37 @@ struct CodeSeparatePage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`是否滑动到底部 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.separateCodeIsBottom}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.separateCodeIsBottomList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.separateCodeIsBottom = item
+                    this.codeSeparateData.separateCodeIsBottom = this.separateCodeIsBottom
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -199,12 +359,28 @@ struct CodeSeparatePage {
 
 export class CodeSeparateData {
   _isFull: boolean = true
+  _incrementalAnalysis: boolean = false
+  _time: number = 50
+  _textNumber: number = 10
   _isSeparateCodeBlock: boolean = false
   _separateCodeBlockWidth: number = 50
+  _separateCodeIsBottom: boolean = false
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
     this._isFull = value
+  }
+
+  public set incrementalAnalysis(value: boolean) {
+    this._incrementalAnalysis = value
+  }
+
+  public set time(value: number) {
+    this._time = value
+  }
+
+  public set textNumber(value: number) {
+    this._textNumber = value
   }
 
   public set isSeparateCodeBlock(value: boolean) {
@@ -213,6 +389,10 @@ export class CodeSeparateData {
 
   public set separateCodeBlockWidth(value: number) {
     this._separateCodeBlockWidth = value
+  }
+
+  public set separateCodeIsBottom(value: boolean) {
+    this._separateCodeIsBottom = value
   }
 
   public set pagePath(value: string) {
