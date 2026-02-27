@@ -64,6 +64,11 @@ class MarkdownCodeFencedBlockComponent {
      */
     var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None
 
+    /**
+     * 子线程
+     */
+    var future: ?Future<Unit> = Option<Future<Unit>>.None
+
     protected override func aboutToAppear(): Unit {
         psh = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
         refreshData(codeText, info, nodeHash) // 初始化刷新数据
@@ -80,6 +85,7 @@ class MarkdownCodeFencedBlockComponent {
         } else {
             fencedCodeComponents.remove(nodeHash)
         }
+        future?.cancel()
     }
 
     func build() {
@@ -244,7 +250,7 @@ class MarkdownCodeFencedBlockComponent {
         refreshLines(lines)
         var prismNodesParseResUIList: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
         try {
-            prismNodesParseResUIList = psh().highlight(info, codeText.trimEnd("\n"))
+            prismNodesParseResUIList = psh().highlight(info, codeText)
         } catch (e: Exception) {
             let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None)
             prismNodesParseResUIList.add(prismNodesParseResUI)
@@ -275,26 +281,6 @@ class MarkdownCodeFencedBlockComponent {
             // 循环删除多余的旧数据
             for (i in oldSize - 1..=newSize : -1) {
                 arrayList.remove(i)
-            }
-        }
-    }
-
-    /**
-     * 行号刷新
-     */
-    func refreshLines(lines: Int64): Unit {
-        let newSize = lines
-        let oldSize = lineArray.size
-        if (newSize == oldSize) {
-        } else if (newSize > oldSize) {
-            // 循环添加新数据
-            for (i in oldSize..newSize) {
-                lineArray.append(oldSize + i)
-            }
-        } else {
-            // 循环删除多余的旧数据
-            for (i in oldSize - 1..=newSize : -1) {
-                lineArray.remove(i)
             }
         }
     }
@@ -336,7 +322,28 @@ class MarkdownCodeFencedBlockComponent {
                 }
             }
         }
-        stringToResList(str, info, callback)
+
+        future = stringToResList(str, info, callback)
+    }
+
+    /**
+     * 行号刷新
+     */
+    func refreshLines(lines: Int64): Unit {
+        let newSize = lines
+        let oldSize = lineArray.size
+        if (newSize == oldSize) {
+        } else if (newSize > oldSize) {
+            // 循环添加新数据
+            for (i in oldSize..newSize) {
+                lineArray.append(oldSize + i)
+            }
+        } else {
+            // 循环删除多余的旧数据
+            for (i in oldSize - 1..=newSize : -1) {
+                lineArray.remove(i)
+            }
+        }
     }
 
     /**
@@ -362,7 +369,7 @@ class MarkdownCodeFencedBlockComponent {
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                prismNodesParseResUIList = psh().highlight(info, codeText.trimEnd("\n"))
+                prismNodesParseResUIList = psh().highlight(info, codeText)
                 callback(prismNodesParseResUIList, lines)
             } catch (e: Exception) {
                 let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None)
