@@ -183,7 +183,7 @@ class MarkdownParagraphComponent {
                             imgStyleRawFileStyle: (nodeViewList[0].node as StyleImage)().styles
                         )
                     } else {
-                        MarkdownImageStyleUrlCallbackComponent(
+                        MarkdownImageStyleUrlComponent(
                             imgStyleUrlCbConfig: markdownConfiguration,
                             imgStyleUrlCbDestination: (nodeViewList[0].node as StyleImage)().getDestination(),
                             imgStyleUrlCbComponentWidth: componentWidth,
