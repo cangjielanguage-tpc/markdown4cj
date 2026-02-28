@@ -4724,22 +4724,22 @@ public class MarkdownThemeBuilder {
     /**
      * 设置视频发布默认图标
      *
-     * @param videoDownloadImage 视频发布默认图标 - 默认None
+     * @param videoReleaseImage 视频发布默认图标 - 默认None
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setVideoReleaseImage(videoDownloadImage: AppResource): MarkdownThemeBuilder {
-        this.videoDownloadImage = videoDownloadImage
+    public func setVideoReleaseImage(videoReleaseImage: AppResource): MarkdownThemeBuilder {
+        this.videoReleaseImage = videoReleaseImage
         return this
     }
 
     /**
      * 设置视频下载默认图标
      *
-     * @param videoReleaseImage 视频下载默认图标 - 默认None
+     * @param videoDownloadImage 视频下载默认图标 - 默认None
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setVideoDownloadImage(videoReleaseImage: AppResource): MarkdownThemeBuilder {
-        this.videoReleaseImage = videoReleaseImage
+    public func setVideoDownloadImage(videoDownloadImage: AppResource): MarkdownThemeBuilder {
+        this.videoDownloadImage = videoDownloadImage
         return this
     }
 
