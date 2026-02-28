@@ -175,18 +175,18 @@ class MarkdownHeadingComponent {
                         )
                     } else {
                         MarkdownImageStyleUrlComponent(
-                            imgStyleUrlCbConfig: markdownConfiguration,
-                            imgStyleUrlCbDestination: (nodeViewList[0].node as StyleImage)().getDestination(),
-                            imgStyleUrlCbComponentWidth: componentWidth,
-                            imgStyleUrlCbImgCb: imageCallback,
-                            imgStyleUrlCbLinkCb: markdownConfiguration.linkCallback,
-                            imgStyleUrlCbIsLink: nodeViewList[0].link.isSome(),
-                            imgStyleUrlCbLinkUrl: if (nodeViewList[0].link.isSome()) {
+                            imgStyleUrlConfig: markdownConfiguration,
+                            imgStyleUrlDestination: (nodeViewList[0].node as StyleImage)().getDestination(),
+                            imgStyleUrlComponentWidth: componentWidth,
+                            imgStyleUrlImgCb: imageCallback,
+                            imgStyleUrlLinkCb: markdownConfiguration.linkCallback,
+                            imgStyleUrlIsLink: nodeViewList[0].link.isSome(),
+                            imgStyleUrlLinkUrl: if (nodeViewList[0].link.isSome()) {
                                 nodeViewList[0].link().getDestination()
                             } else {
                                 Option<String>.None
                             },
-                            imgStyleUrlCbStyle: (nodeViewList[0].node as StyleImage)().styles
+                            imgStyleUrlStyle: (nodeViewList[0].node as StyleImage)().styles
                         )
                     }
                 } else {
