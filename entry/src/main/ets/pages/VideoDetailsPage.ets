@@ -254,7 +254,7 @@ struct VideoDetailsPage {
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
-        }.backgroundColor(Color.Gray)
+        }
       }
       .padding({ bottom: 200 })
     }
@@ -303,6 +303,7 @@ struct VideoDetailsPage {
   setPlugin(): MarkdownPlugin {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
     plugin.setIsBlockVideoPlugin(true) // 视频插件
+    plugin.setIsImageCollectPlugin(true) // 图片视频url集合列表插件
     return plugin
   }
 
@@ -312,7 +313,7 @@ struct VideoDetailsPage {
 
   videoImageCallback(url: string, cb: (imageUrl: string, aspectRatio: number, time: number) => void): void {
     hilog.error(1, "1", `---url:${url}`)
-    cb("https://pic.leetcode-cn.com/1614477066-YeEeWg-file_1614477068523", 16 / 9, 200)
+    cb("https://markdown.com.cn/images/blue.jpg", 16 / 9, 200)
   }
 
   videoReleaseCallback(url: string): void {

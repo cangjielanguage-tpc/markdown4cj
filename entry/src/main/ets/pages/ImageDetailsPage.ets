@@ -4,7 +4,7 @@
 import { titleComponent } from './BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextStr } from './FileUtils'
+import { getFileContextArr, getFileContextStr } from './FileUtils'
 import { ImageDataMD } from './ImagePage'
 import hilog from '@ohos.hilog'
 
@@ -50,13 +50,18 @@ struct ImageDetailsPage {
   @State
   textNumber: number = 10
   /**
+   * 是否触发图片替换事件
+   */
+  @State
+  callback: boolean = false
+  /**
    * 图片默认占位图
    */
   @State
   imageResource: Resource | null = null
   /**
- * 图片上边距
- */
+   * 图片上边距
+   */
   @State
   imageMarginTop: number = 10
   /**
@@ -65,8 +70,8 @@ struct ImageDetailsPage {
   @State
   imageMarginBottom: number = 10
   /**
- * 图片圆角
- */
+   * 图片圆角
+   */
   @State
   imageBorderRadius: number = 0
   /**
@@ -78,7 +83,7 @@ struct ImageDetailsPage {
    * 图片基于父布局宽度缩放百分比
    */
   @State
-  imageFixedRatioWidth: number| null = null
+  imageFixedRatioWidth: number | null = null
   /**
    * 图片是否有下载按钮
    */
@@ -143,6 +148,7 @@ struct ImageDetailsPage {
       this.incrementalAnalysis = imageDataMD._incrementalAnalysis
       this.time = imageDataMD._time
       this.textNumber = imageDataMD._textNumber
+      this.callback = imageDataMD._callback
       this.imageResource = imageDataMD._imageResource
       this.imageMarginTop = imageDataMD._imageMarginTop
       this.imageMarginBottom = imageDataMD._imageMarginBottom
@@ -223,6 +229,10 @@ struct ImageDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     config.setImageCallback(this.setImageCallback) // 图片点击回调
+    if (this.callback) {
+      config.setImageCallbackCallback(this.setImageCallbackCallback) // 图片替换事件
+    }
+    config.setImageDownloadCallback(this.setImageDownloadCallback) // 图片下载的点击事件
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this)) // 上下文
     if (this.imageResource !== null) {
@@ -256,11 +266,21 @@ struct ImageDetailsPage {
     if (!this.isImageMixedLayout) {
       plugin.setIsImageTextMixPlugin(true) // 图片不混排插件
     }
+    plugin.setIsImageCollectPlugin(true) // 图片视频url集合列表插件
     plugin.setIsHtmlPlugin(true) // HTML
     return plugin
   }
 
   setImageCallback(funcArg0: string, funcArg1: Array<string>) {
+    hilog.error(1, "1", `-------------funcArg0:${funcArg0},funcArg1:${funcArg1}`)
+  }
+
+  async setImageCallbackCallback(funcArg0: string): Promise<ArrayBuffer | undefined> {
+    hilog.error(1, "1", `-------------funcArg0:${funcArg0}`)
+    return getFileContextArr("app_icon.png")
+  }
+
+  setImageDownloadCallback(funcArg0: string) {
     hilog.error(1, "1", `-------------funcArg0:${funcArg0}`)
   }
 }

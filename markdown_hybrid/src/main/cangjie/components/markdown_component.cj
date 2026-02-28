@@ -576,7 +576,7 @@ public class MarkdownComponent {
                 v(NodeViewStringBuilder(doc))
             }
             imageAndVideoList.clear()
-            imageAndVideoList.add(all: getProp<ArrayList<String>>(doc, "links", ArrayList<String>()))
+            imageAndVideoList.add(all: getProp<HashSet<String>>(doc, "links", HashSet<String>()).toArray())
             let nodeView: NodeView = NodeView()
             nodeToNodeView(doc, nodeView, nodeView, markdownConfiguration.markdownTheme.isLinkStyle)
             return nodeView

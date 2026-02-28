@@ -25,3 +25,14 @@ export function getFileContextStr(str: string): string {
     return ""
   }
 }
+
+/**
+ * 读取路径下文件内容
+ */
+export function getFileContextArr(str: string): Uint8Array | undefined {
+  try {
+    return baseManager!.getRawFileContentSync(str)
+  } catch (e) {
+    return undefined
+  }
+}

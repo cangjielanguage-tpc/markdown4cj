@@ -63,6 +63,15 @@ struct ImagePage {
   @State
   textNumber: number = 10
   /**
+   * 是否触发图片替换事件列表
+   */
+  callbackList: Array<boolean> = [true, false]
+  /**
+   * 是否触发图片替换事件
+   */
+  @State
+  callback: boolean = false
+  /**
    * 图片默认占位图选项列表
    */
   imageResourceList: Array<Resource | null> = [null, $r('app.media.startIcon')]
@@ -354,6 +363,37 @@ struct ImagePage {
                   .onClick(() => {
                     this.textNumber = item
                     this.imageDataMD.textNumber = this.textNumber
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`是否触发图片替换事件 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.callback}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.callbackList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.callback = item
+                    this.imageDataMD.callback = this.callback
                   })
               })
             }
@@ -907,6 +947,7 @@ export class ImageDataMD {
   _incrementalAnalysis: boolean = false
   _time: number = 50
   _textNumber: number = 10
+  _callback: boolean = false
   _imageResource: Resource | null = null
   _imageMarginTop: number = 10
   _imageMarginBottom: number = 10
@@ -939,6 +980,10 @@ export class ImageDataMD {
 
   public set textNumber(value: number) {
     this._textNumber = value
+  }
+
+  public set callback(value: boolean) {
+    this._callback = value
   }
 
   public set imageResource(value: Resource | null) {
