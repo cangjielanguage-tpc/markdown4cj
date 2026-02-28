@@ -357,12 +357,12 @@ public func nodeToNodeView(
                     } else if (nodeType == "FencedCodeBlock") {
                         // 围栏代码块
                         let fencedCodeBlock = (commonmarkChildrenNode as FencedCodeBlock)()
-                        childrenNodeView.nodeText = fencedCodeBlock.getLiteral().removeSuffix("\n")
+                        childrenNodeView.nodeText = fencedCodeBlock.getLiteral().removeSuffix("\n") // 围栏代码块数据源会多一行空行
                         childrenNodeView.codeInfo = fencedCodeBlock.getInfo()
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "IndentedCodeBlock") {
                         // 缩进代码块
-                        childrenNodeView.nodeText = (commonmarkChildrenNode as IndentedCodeBlock)().getLiteral()
+                        childrenNodeView.nodeText = (commonmarkChildrenNode as IndentedCodeBlock)().getLiteral().removeSuffix("\n") // 围栏代码块数据源会多一行空行
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "BulletList") {
                         // 无序列表

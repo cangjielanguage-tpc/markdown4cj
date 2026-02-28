@@ -33,7 +33,7 @@ func stringToResLists(nodeView: NodeView, markdownConfiguration: MarkdownConfigu
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    let res: ArrayList<PrismNodesParseResUI> = psh.highlight((node as FencedCodeBlock)().getInfo(), (node as FencedCodeBlock)().getLiteral().trimEnd("\n"))
+                    let res: ArrayList<PrismNodesParseResUI> = psh.highlight((node as FencedCodeBlock)().getInfo(), (node as FencedCodeBlock)().getLiteral())
                     prismNodesParseResLists.add(res)
                 }
             }

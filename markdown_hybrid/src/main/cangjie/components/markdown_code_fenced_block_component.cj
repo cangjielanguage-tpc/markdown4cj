@@ -225,8 +225,8 @@ class MarkdownCodeFencedBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(codeText: String, info: String, nodeHash: Int64): Unit {
-        this.codeText = codeText
+    public func refreshData(codeTextStr: String, info: String, nodeHash: Int64): Unit {
+        this.codeText = codeTextStr
         this.isCodeNone = this.codeText.trimAscii().size > 0
         this.info = info
         this.nodeHash = nodeHash
@@ -241,18 +241,19 @@ class MarkdownCodeFencedBlockComponent {
      * 代码数据高亮解析
      */
     func stringCodeToResListSync(code: String) {
-        let codeText = if (markdownConfiguration.markdownTheme.isCodeFormat) {
+        let codeTextStr = if (markdownConfiguration.markdownTheme.isCodeFormat) {
             codeFormat(info, code, FormatConfig())
         } else {
             code
         }
-        let lines = codeText.lines().count()
+        let arr = codeTextStr.split("\n") // 代码块数据分割
+        let lines = arr.size
         refreshLines(lines)
         var prismNodesParseResUIList: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
         try {
-            prismNodesParseResUIList = psh().highlight(info, codeText)
+            prismNodesParseResUIList = psh().highlight(info, codeTextStr)
         } catch (e: Exception) {
-            let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None)
+            let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeTextStr, alias: Option<String>.None, color: Option<Color>.None)
             prismNodesParseResUIList.add(prismNodesParseResUI)
         }
         let newSize = prismNodesParseResUIList.size
@@ -355,7 +356,7 @@ class MarkdownCodeFencedBlockComponent {
      */
     func stringToResList(code: String, info: ?String, callback: (ArrayList<PrismNodesParseResUI>, Int64) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
-            let codeText = if (markdownConfiguration.markdownTheme.isCodeFormat) {
+            let codeTextStr = if (markdownConfiguration.markdownTheme.isCodeFormat) {
                 codeFormat(info, code, FormatConfig())
             } else {
                 code
@@ -363,16 +364,18 @@ class MarkdownCodeFencedBlockComponent {
             if (Thread.currentThread.hasPendingCancellation) {
                 return
             }
-            let lines = codeText.lines().count()
+
+            let arr = codeTextStr.split("\n") // 代码块数据分割
+            let lines = arr.size
             var prismNodesParseResUIList: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
             try {
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                prismNodesParseResUIList = psh().highlight(info, codeText)
+                prismNodesParseResUIList = psh().highlight(info, codeTextStr)
                 callback(prismNodesParseResUIList, lines)
             } catch (e: Exception) {
-                let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None)
+                let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeTextStr, alias: Option<String>.None, color: Option<Color>.None)
                 prismNodesParseResUIList.add(prismNodesParseResUI)
                 callback(prismNodesParseResUIList, lines)
             }

@@ -45,7 +45,6 @@ class MarkdownCodeIndentedBlockComponent {
      * 代码行数
      */
     @State
-    @Watch[refreshLines]
     var lines: Int64 = 0
 
     /**
@@ -206,20 +205,14 @@ class MarkdownCodeIndentedBlockComponent {
     }
 
     /**
-     * 行号刷新
-     */
-    func refreshLines(): Unit {
-        lineArray.set(Array<Int64>(lines, repeat: 0))
-    }
-
-    /**
      * 数据刷新
      */
     public func refreshData(codeText: String, info: Option<String>, nodeHash: Int64): Unit {
         this.info = info
-        this.codeText = codeText.trimEnd("\n")
+        this.codeText = codeText
         this.nodeHash = nodeHash
-        lines = codeText.lines().count()
+        let arr = this.codeText.split("\n") // 代码块数据分割
+        lines = arr.size
         lineArray.set(Array<Int64>(lines, repeat: 0))
     }
 }
