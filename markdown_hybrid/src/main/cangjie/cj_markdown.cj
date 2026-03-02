@@ -113,33 +113,53 @@ var imageDownloadImage: ?AppResource = None
 public func getCJResource(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     if (callInfo[0].typeof() != JSType.UNDEFINED) {
         codeFullScreenIcon = arktsRes2CJResource(ctx, callInfo[0])
+    } else {
+        codeFullScreenIcon = None
     }
     if (callInfo[1].typeof() != JSType.UNDEFINED) {
         codeCopyIcon = arktsRes2CJResource(ctx, callInfo[1])
+    } else {
+        codeCopyIcon = None
     }
     if (callInfo[2].typeof() != JSType.UNDEFINED) {
         audioIcon = arktsRes2CJResource(ctx, callInfo[2])
+    } else {
+        audioIcon = None
     }
     if (callInfo[3].typeof() != JSType.UNDEFINED) {
         videoImage = arktsRes2CJResource(ctx, callInfo[3])
+    } else {
+        videoImage = None
     }
     if (callInfo[4].typeof() != JSType.UNDEFINED) {
         playCircleFillIcon = arktsRes2CJResource(ctx, callInfo[4])
+    } else {
+        playCircleFillIcon = None
     }
     if (callInfo[5].typeof() != JSType.UNDEFINED) {
         bannerImage = arktsRes2CJResource(ctx, callInfo[5])
+    } else {
+        bannerImage = None
     }
     if (callInfo[6].typeof() != JSType.UNDEFINED) {
         imageResource = arktsRes2CJResource(ctx, callInfo[6])
+    } else {
+        imageResource = None
     }
     if (callInfo[7].typeof() != JSType.UNDEFINED) {
         videoReleaseImage = arktsRes2CJResource(ctx, callInfo[7])
+    } else {
+        videoReleaseImage = None
     }
     if (callInfo[8].typeof() != JSType.UNDEFINED) {
         videoDownloadImage = arktsRes2CJResource(ctx, callInfo[8])
+    } else {
+        videoDownloadImage = None
     }
     if (callInfo[9].typeof() != JSType.UNDEFINED) {
         imageDownloadImage = arktsRes2CJResource(ctx, callInfo[9])
+    } else {
+        imageDownloadImage = None
     }
     return ctx.undefined().toJSValue()
 }
