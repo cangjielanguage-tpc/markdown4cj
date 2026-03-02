@@ -254,6 +254,13 @@ struct IndexPage {
               "pages/ABCustomPage"
             )
           }
+          ListItem() {
+            itemListComponent(
+              "32、AI聊天懒加载",
+              0xFFFF0000,
+              "pages/AIChatPage"
+            )
+          }
         }
         // 设置ListItem在List交叉轴方向的布局方式
         .alignListItem(ListItemAlign.Center)

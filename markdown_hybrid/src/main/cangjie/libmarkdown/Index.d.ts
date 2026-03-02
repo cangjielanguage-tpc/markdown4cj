@@ -484,9 +484,21 @@ export declare class CJMarkdownConfig {
   constructor()
 }
 
+export declare class CJMarkdownScroller {
+  constructor()
+
+  scrollBy(xOffset: number, yOffset: number): void
+
+  scrollEdge(value: number): void
+
+  isAtEnd(): boolean
+
+  currentYOffset(): number
+}
+
 export declare function setGlobalContext(context: Context): void
 
-export declare function getLoadCJPage(mdStr: string, isInputEnded: boolean, incrementalAnalysis: boolean, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin): (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void
+export declare function getLoadCJPage(mdStr: string, isInputEnded: boolean, incrementalAnalysis: boolean, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin, listScroller?: CJMarkdownScroller): (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void
 
 export declare function registerImgPreprocessCallback(cb: (url: string) => Promise<ArrayBuffer|undefined>): void
 

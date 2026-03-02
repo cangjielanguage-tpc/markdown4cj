@@ -548,6 +548,18 @@ extend List {
         }
         return this
     }
+
+    func interopEnableScrollInteraction(isBool: Bool): List {
+        try {
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let list = global["List"].asObject(ctx)
+            let enableScrollInteraction = list["enableScrollInteraction"].asFunction(ctx)
+            enableScrollInteraction.call(isBool.toJSValue(ctx))
+        } catch (e: Exception) {
+        }
+        return this
+    }
 }
 
 extend ListItem {

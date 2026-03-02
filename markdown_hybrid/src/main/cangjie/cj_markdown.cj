@@ -75,6 +75,14 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
             plugin = v.cast<CJMarkdownPlugin>()
         }
     }
+    var listscroller: ?CJMarkdownScroller = None
+    if (callInfo[5].typeof() != JSType.UNDEFINED) {
+        let scrollerObj: JSObject = callInfo[5].asObject()
+        let scrollerExt: Option<JSExternal> = scrollerObj.getAttachInfo()
+        if (let Some(v) <- scrollerExt) {
+            listscroller = v.cast<CJMarkdownScroller>()
+        }
+    }
     let elmetId = ViewStackProcessor.AllocateNewElmetIdForNextComponent()
     ViewStackProcessor.StartGetAccessRecordingFor(elmetId)
     let comp = CJMarkdownComponent(
@@ -83,7 +91,8 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
         isInputEnded: ObservedProperty<Bool>("", isInputEnded),
         incrementalAnalysis: ObservedProperty<Bool>("", incrementalAnalysis),
         cfg: ObservedProperty<Option<CJMarkdownConfig>>("", cfg),
-        plugin: ObservedProperty<Option<CJMarkdownPlugin>>("", plugin)
+        plugin: ObservedProperty<Option<CJMarkdownPlugin>>("", plugin),
+        listscroller: ObservedProperty<Option<CJMarkdownScroller>>("", listscroller)
     )
     CustomView.create(comp)
     ViewStackProcessor.StopGetAccessRecording()

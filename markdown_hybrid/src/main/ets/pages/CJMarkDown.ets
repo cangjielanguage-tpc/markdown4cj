@@ -2,7 +2,8 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 import { NodeController, FrameNode } from '@kit.ArkUI';
-import { CJMarkdownConfig, CJMarkdownTheme, CJMarkdownPlugin, getLoadCJPage, registerImgPreprocessCallback, setGlobalContext, getCJResource} from 'libmarkdown.so';
+import { CJMarkdownConfig, CJMarkdownTheme, CJMarkdownPlugin, getLoadCJPage, registerImgPreprocessCallback, setGlobalContext, getCJResource,
+  CJMarkdownScroller} from 'libmarkdown.so';
 
 class CJNodeController extends NodeController {
   rootNode?: FrameNode = undefined
@@ -16,20 +17,22 @@ class CJNodeController extends NodeController {
   incrementalAnalysis: boolean
   config?: CJMarkdownConfig
   plugin?: CJMarkdownPlugin
+  listScroller?: CJMarkdownScroller
 
-  constructor(input: string, isInputEnded: boolean, incrementalAnalysis: boolean, config?: CJMarkdownConfig, plugin?: CJMarkdownPlugin) {
+  constructor(input: string, isInputEnded: boolean, incrementalAnalysis: boolean, config?: CJMarkdownConfig, plugin?: CJMarkdownPlugin, listScroller?: CJMarkdownScroller) {
     super()
     this.mdStr = input
     this.isInputEnded = isInputEnded
     this.incrementalAnalysis = incrementalAnalysis
     this.config = config
     this.plugin = plugin
+    this.listScroller = listScroller
   }
 
   makeNode(ctx: UIContext): FrameNode | null {
     if (this.rootNode === undefined) {
       this.rootNode = new FrameNode(ctx)
-      this.callbackCJ = getLoadCJPage(this.mdStr, this.isInputEnded, this.incrementalAnalysis, this.config, this.plugin)
+      this.callbackCJ = getLoadCJPage(this.mdStr, this.isInputEnded, this.incrementalAnalysis, this.config, this.plugin, this.listScroller)
     }
     return this.rootNode
   }
@@ -57,6 +60,10 @@ export struct CJMarkdown {
    * markdown插件
    */
   @State plugin?: MarkdownPlugin = undefined
+  /**
+   * 滑动控制器
+   */
+  @State listScroller?: MarkdownScroller = undefined
   /**
    * 是否加载仓颉markdown
    */
@@ -86,7 +93,7 @@ export struct CJMarkdown {
 
   aboutToAppear(): void {
     if(this.useCangjieComponent === true) {
-      this.markdownNode = new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin())
+      this.markdownNode = new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin(), this.listScroller?.getScroller())
     }
   }
 
@@ -4070,3 +4077,66 @@ export class MarkdownPlugin {
   }
 }
 
+export class MarkdownScroller {
+  private scroller?: CJMarkdownScroller = undefined
+
+  /**
+   * 构造函数
+   */
+  constructor() {
+    this.scroller = new CJMarkdownScroller()
+  }
+
+  /**
+   * 滚动到容器边缘
+   *
+   * @param edge 滚动到容器边缘
+   */
+  scrollEdge(edge: Edge): void {
+    switch (edge){
+      case Edge.Top : this.scroller?.scrollEdge(1)
+      case Edge.Bottom : this.scroller?.scrollEdge(2)
+      default : this.scroller?.scrollEdge(1)
+    }
+  }
+
+  /**
+   * 滚动指定距离
+   *
+   * @param xOffset x轴偏移量
+   * @param yOffset y轴偏移量
+   */
+  scrollBy(xOffset: number, yOffset: number): void {
+    this.scroller?.scrollBy(xOffset, yOffset)
+  }
+
+  /**
+   * 判断是否滚动到底部
+   *
+   * @returns 是否滚动到底部
+   */
+  isAtEnd(): boolean {
+    return this.scroller?.isAtEnd() || false
+  }
+
+  /**
+   * 获取当前y轴偏移量
+   *
+   * @returns 当前y轴偏移量
+   */
+  currentYOffset(): number {
+    return this.scroller?.currentYOffset() || 0
+  }
+
+  /**
+   * 获取内部CJMarkdownScroller实例
+   *
+   * @returns CJMarkdownScroller实例
+   */
+  getScroller(): CJMarkdownScroller {
+    if (this.scroller === undefined) {
+      this.scroller = new CJMarkdownScroller()
+    }
+    return this.scroller
+  }
+}

@@ -49,12 +49,24 @@ class CJMarkdownComponent {
      */
     var plugin: ?CJMarkdownPlugin
 
+    /**
+     * 滑动控制器
+     */
+    var listscroller: ?CJMarkdownScroller
+
     protected func aboutToAppear(): Unit {
     }
 
     func build() {
         Column() {
-            MarkdownComponent(output: mdStr, isInputEnded: isInputEnded, incrementalAnalysis: incrementalAnalysis, markdownConfiguration: setConfig(), markdownPlugin: setPlugin())
+            MarkdownComponent(
+                output: mdStr,
+                isInputEnded: isInputEnded,
+                incrementalAnalysis: incrementalAnalysis,
+                markdownConfiguration: setConfig(),
+                markdownPlugin: setPlugin(),
+                scroller: setScroller()
+            )
         }
     }
 
@@ -846,5 +858,13 @@ class CJMarkdownComponent {
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()
         return markdownTheme
+    }
+
+    func setScroller(): Scroller {
+        if (let Some(scroller) <- listscroller) {
+            return scroller.scroller
+        } else {
+            return Scroller()
+        }
     }
 }

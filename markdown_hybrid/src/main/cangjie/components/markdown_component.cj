@@ -157,7 +157,12 @@ public class MarkdownComponent {
     /**
      * list控制器
      */
-    let scroller: Scroller = Scroller()
+    let scroller: Scroller
+
+    /**
+     * 单独代码块list控制器
+     */
+    let scrollerCode: Scroller = Scroller()
 
     /**
      * markdown解析器
@@ -212,294 +217,585 @@ public class MarkdownComponent {
 
     func build() {
         if (!markdownConfiguration.markdownTheme.isSeparateCodeBlock) {
-            List(scroller: scroller) {
-                LazyForEach(
-                    nodeViewDataSource,
-                    itemGeneratorFunc: {
-                        item: NodeView, idx: Int64 => if (item.nodeType == "Paragraph") {
-                            // 段落
-                            ListItem() {
-                                MarkdownParagraphComponent(
-                                    paragraphMarkdownConfiguration: markdownConfiguration,
-                                    paragraphNodeView: item,
-                                    paragraphComponentWidth: componentWidth,
-                                    paragraphComponents: markdownCacheConfiguration.paragraphComponents,
-                                    paragraphCustomParagraphLineBuilder: customParagraphLineBuilder,
-                                    paragraphTocListOnClick: tocListOnClick,
-                                    paragraphImageCallback: imageCallback,
-                                    paragraphFootnoteCallback: footnoteCallback
-                                )
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                List(scroller: scroller) {
+                    LazyForEach(
+                        nodeViewDataSource,
+                        itemGeneratorFunc: {
+                            item: NodeView, idx: Int64 => if (item.nodeType == "Paragraph") {
+                                // 段落
+                                ListItem() {
+                                    MarkdownParagraphComponent(
+                                        paragraphMarkdownConfiguration: markdownConfiguration,
+                                        paragraphNodeView: item,
+                                        paragraphComponentWidth: componentWidth,
+                                        paragraphComponents: markdownCacheConfiguration.paragraphComponents,
+                                        paragraphCustomParagraphLineBuilder: customParagraphLineBuilder,
+                                        paragraphTocListOnClick: tocListOnClick,
+                                        paragraphImageCallback: imageCallback,
+                                        paragraphFootnoteCallback: footnoteCallback
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "Heading" || item.nodeType == "IdHeading") {
+                                // 标题/标题ID
+                                ListItem() {
+                                    MarkdownHeadingComponent(
+                                        headingMarkdownConfiguration: markdownConfiguration,
+                                        headingNodeView: item,
+                                        headingComponentWidth: componentWidth,
+                                        headingComponents: markdownCacheConfiguration.headingComponents,
+                                        headingCustomHeadingLineBuilder: customHeadingLineBuilder,
+                                        headingImageCallback: imageCallback,
+                                        headingFootnoteCallback: footnoteCallback
+                                    )
+                                }
+                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "FencedCodeBlockListBlock") {
+                                // 围栏代码块列表
+                                ListItem() {
+                                    blockCodeBlockListComponent(
+                                        markdownConfiguration,
+                                        item,
+                                        toCodeList(item)
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "FencedCodeBlock") {
+                                // 围栏代码块
+                                ListItem() {
+                                    MarkdownCodeFencedBlockComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        codeText: item.nodeText,
+                                        info: item.codeInfo(),
+                                        nodeHash: item.nodeHash,
+                                        fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "IndentedCodeBlock") {
+                                // 缩进代码块
+                                ListItem() {
+                                    MarkdownCodeIndentedBlockComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        codeText: item.nodeText,
+                                        nodeHash: item.nodeHash,
+                                        indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "BulletList") {
+                                // 无序列表
+                                ListItem() {
+                                    MarkdownListComponent(
+                                        listMarkdownConfiguration: markdownConfiguration,
+                                        listNodeView: item,
+                                        listComponentWidth: componentWidth,
+                                        listTableBlockComponentWidth: tableBlockComponentWidth,
+                                        listMarkdownCacheConfiguration: markdownCacheConfiguration,
+                                        isOrdered: false,
+                                        listAdBuilder: adBuilder,
+                                        listVideoBuilder: videoBuilder,
+                                        listAudioBuilder: audioBuilder,
+                                        listCustomBlockBuilder: customBlockBuilder,
+                                        listCustomHeadingLineBuilder: customHeadingLineBuilder,
+                                        listCustomParagraphLineBuilder: customParagraphLineBuilder,
+                                        listCustomTableLineBuilder: customTableLineBuilder,
+                                        listFootnoteCallback: footnoteCallback,
+                                        listTocListOnClick: tocListOnClick,
+                                        listImageCallback: imageCallback,
+                                        listVideoCallback: videoCallback,
+                                        listIndexFootnoteHashMap: indexFootnoteHashMap,
+                                        listDepth: 0
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "OrderedList") {
+                                // 有序列表
+                                ListItem() {
+                                    MarkdownListComponent(
+                                        listMarkdownConfiguration: markdownConfiguration,
+                                        listNodeView: item,
+                                        listComponentWidth: componentWidth,
+                                        listTableBlockComponentWidth: tableBlockComponentWidth,
+                                        listMarkdownCacheConfiguration: markdownCacheConfiguration,
+                                        isOrdered: true,
+                                        listAdBuilder: adBuilder,
+                                        listVideoBuilder: videoBuilder,
+                                        listAudioBuilder: audioBuilder,
+                                        listCustomBlockBuilder: customBlockBuilder,
+                                        listCustomHeadingLineBuilder: customHeadingLineBuilder,
+                                        listCustomParagraphLineBuilder: customParagraphLineBuilder,
+                                        listCustomTableLineBuilder: customTableLineBuilder,
+                                        listFootnoteCallback: footnoteCallback,
+                                        listTocListOnClick: tocListOnClick,
+                                        listImageCallback: imageCallback,
+                                        listVideoCallback: videoCallback,
+                                        listIndexFootnoteHashMap: indexFootnoteHashMap,
+                                        listDepth: 0
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "BlockQuote") {
+                                // 块引用
+                                ListItem() {
+                                    MarkdownQuoteComponent(
+                                        quoteMarkdownConfiguration: markdownConfiguration,
+                                        quoteNodeView: item,
+                                        quoteComponentWidth: componentWidth,
+                                        quoteTableBlockComponentWidth: tableBlockComponentWidth,
+                                        quoteAdBuilder: adBuilder,
+                                        quoteVideoBuilder: videoBuilder,
+                                        quoteAudioBuilder: audioBuilder,
+                                        quoteCustomBlockBuilder: customBlockBuilder,
+                                        quoteCustomHeadingLineBuilder: customHeadingLineBuilder,
+                                        quoteCustomParagraphLineBuilder: customParagraphLineBuilder,
+                                        quoteCustomTableLineBuilder: customTableLineBuilder,
+                                        quoteMarkdownCacheConfiguration: markdownCacheConfiguration,
+                                        quoteFootnoteCallback: footnoteCallback,
+                                        quoteTocListOnClick: tocListOnClick,
+                                        quoteImageCallback: imageCallback,
+                                        quoteVideoCallback: videoCallback,
+                                        quoteIndexFootnoteHashMap: indexFootnoteHashMap,
+                                        quoteDepth: 0
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "LatexMathBlock") {
+                                // 数学公式块
+                                ListItem() {
+                                    MarkdownLatexMathBlockComponent(
+                                        markdownTheme:markdownConfiguration.markdownTheme,
+                                        latexMathBlockStr:item.nodeText,
+                                        latexImageCallback:markdownConfiguration.latexImageCallback,
+                                        latexStrCallback:markdownConfiguration.latexStrCallback,
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "TableBlock") {
+                                // 表格
+                                ListItem() {
+                                    MarkdownTableBlockComponent(
+                                        tableBlockMarkdownConfiguration:markdownConfiguration,
+                                        tableBlockNodeView:item,
+                                        tableBlockComponentWidth:tableBlockComponentWidth,
+                                        tableComponents:markdownCacheConfiguration.tableComponents,
+                                        tableRowComponents:markdownCacheConfiguration.tableRowComponents,
+                                        tableCellComponents:markdownCacheConfiguration.tableCellComponents,
+                                        tableBlockCustomTableLineBuilder:customTableLineBuilder,
+                                        tableBlockImageCallback:imageCallback,
+                                        tableBlockFootnoteCallback:footnoteCallback
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "ThematicBreak") {
+                                // 分割线
+                                ListItem() {
+                                    MarkdownThematicBreakComponent(
+                                        markdownTheme: markdownConfiguration.markdownTheme
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "FootnoteBlock") {
+                                // 脚注
+                                ListItem() {
+                                    MarkdownFootnoteComponent(
+                                        footnoteMarkdownConfiguration:markdownConfiguration,
+                                        footnoteNodeView:item,
+                                        footnoteComponentWidth:componentWidth,
+                                        footnoteMarkdownCacheConfiguration:markdownCacheConfiguration,
+                                        footnoteCustomParagraphLineBuilder:customParagraphLineBuilder,
+                                        footnoteTocListOnClick:tocListOnClick,
+                                        footnoteImageCallback:imageCallback,
+                                        footnoteFootnoteCallback:footnoteCallback
+                                    )
+                                }
+                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "DescList") {
+                                // 定义列表
+                                ListItem() {
+                                    MarkdownDescListComponent(
+                                        descListMarkdownConfiguration:markdownConfiguration,
+                                        descListNodeView:item,
+                                        descListComponentWidth:componentWidth,
+                                        descListMarkdownCacheConfiguration:markdownCacheConfiguration,
+                                        descListCustomParagraphLineBuilder:customParagraphLineBuilder,
+                                        descListTocListOnClick:tocListOnClick,
+                                        descListImageCallback:imageCallback,
+                                        descListFootnoteCallback:footnoteCallback
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "SlideBlock") {
+                                // 图片幻灯片
+                                ListItem() {
+                                    MarkdownBannerComponent(
+                                        markdownTheme:markdownConfiguration.markdownTheme,
+                                        nodeView:item,
+                                        imageCallback:imageCallback
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "BlockVideo") {
+                                // 视频
+                                ListItem() {
+                                    videoBuilder(
+                                        item,
+                                        markdownConfiguration.markdownTheme,
+                                        videoCallback,
+                                        markdownConfiguration.videoImageCallback,
+                                        markdownConfiguration.videoReleaseCallback,
+                                        markdownConfiguration.videoDownloadCallback
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "BlockAudio") {
+                                // 音频
+                                ListItem() {
+                                    audioBuilder(
+                                        item,
+                                        markdownConfiguration.markdownTheme,
+                                        markdownConfiguration.audioCallback
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "BlockAD") {
+                                // 广告
+                                ListItem() {
+                                    adBuilder(
+                                        item
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                             } else if (item.nodeType == "CardNode") {
+                                 // 卡片
+                                 ListItem() {
+                                     MarkdownCardComponent(
+                                         markdownConfiguration: markdownConfiguration,
+                                         nodeView: item,
+                                         cardName: item.cardName(),
+                                         cardData: item.cardData()
+                                     )
+                                 }
+                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else {
+                                // 其他
+                                ListItem() {
+                                    customBlockBuilder(
+                                        item,
+                                        idx
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "Heading" || item.nodeType == "IdHeading") {
-                            // 标题/标题ID
-                            ListItem() {
-                                MarkdownHeadingComponent(
-                                    headingMarkdownConfiguration: markdownConfiguration,
-                                    headingNodeView: item,
-                                    headingComponentWidth: componentWidth,
-                                    headingComponents: markdownCacheConfiguration.headingComponents,
-                                    headingCustomHeadingLineBuilder: customHeadingLineBuilder,
-                                    headingImageCallback: imageCallback,
-                                    headingFootnoteCallback: footnoteCallback
-                                )
-                            }
-                            .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "FencedCodeBlockListBlock") {
-                            // 围栏代码块列表
-                            ListItem() {
-                                blockCodeBlockListComponent(
-                                    markdownConfiguration,
-                                    item,
-                                    toCodeList(item)
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "FencedCodeBlock") {
-                            // 围栏代码块
-                            ListItem() {
-                                MarkdownCodeFencedBlockComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    codeText: item.nodeText,
-                                    info: item.codeInfo(),
-                                    nodeHash: item.nodeHash,
-                                    fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "IndentedCodeBlock") {
-                            // 缩进代码块
-                            ListItem() {
-                                MarkdownCodeIndentedBlockComponent(
-                                    markdownConfiguration: markdownConfiguration,
-                                    codeText: item.nodeText,
-                                    nodeHash: item.nodeHash,
-                                    indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "BulletList") {
-                            // 无序列表
-                            ListItem() {
-                                MarkdownListComponent(
-                                    listMarkdownConfiguration: markdownConfiguration,
-                                    listNodeView: item,
-                                    listComponentWidth: componentWidth,
-                                    listTableBlockComponentWidth: tableBlockComponentWidth,
-                                    listMarkdownCacheConfiguration: markdownCacheConfiguration,
-                                    isOrdered: false,
-                                    listAdBuilder: adBuilder,
-                                    listVideoBuilder: videoBuilder,
-                                    listAudioBuilder: audioBuilder,
-                                    listCustomBlockBuilder: customBlockBuilder,
-                                    listCustomHeadingLineBuilder: customHeadingLineBuilder,
-                                    listCustomParagraphLineBuilder: customParagraphLineBuilder,
-                                    listCustomTableLineBuilder: customTableLineBuilder,
-                                    listFootnoteCallback: footnoteCallback,
-                                    listTocListOnClick: tocListOnClick,
-                                    listImageCallback: imageCallback,
-                                    listVideoCallback: videoCallback,
-                                    listIndexFootnoteHashMap: indexFootnoteHashMap,
-                                    listDepth: 0
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "OrderedList") {
-                            // 有序列表
-                            ListItem() {
-                                MarkdownListComponent(
-                                    listMarkdownConfiguration: markdownConfiguration,
-                                    listNodeView: item,
-                                    listComponentWidth: componentWidth,
-                                    listTableBlockComponentWidth: tableBlockComponentWidth,
-                                    listMarkdownCacheConfiguration: markdownCacheConfiguration,
-                                    isOrdered: true,
-                                    listAdBuilder: adBuilder,
-                                    listVideoBuilder: videoBuilder,
-                                    listAudioBuilder: audioBuilder,
-                                    listCustomBlockBuilder: customBlockBuilder,
-                                    listCustomHeadingLineBuilder: customHeadingLineBuilder,
-                                    listCustomParagraphLineBuilder: customParagraphLineBuilder,
-                                    listCustomTableLineBuilder: customTableLineBuilder,
-                                    listFootnoteCallback: footnoteCallback,
-                                    listTocListOnClick: tocListOnClick,
-                                    listImageCallback: imageCallback,
-                                    listVideoCallback: videoCallback,
-                                    listIndexFootnoteHashMap: indexFootnoteHashMap,
-                                    listDepth: 0
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "BlockQuote") {
-                            // 块引用
-                            ListItem() {
-                                MarkdownQuoteComponent(
-                                    quoteMarkdownConfiguration: markdownConfiguration,
-                                    quoteNodeView: item,
-                                    quoteComponentWidth: componentWidth,
-                                    quoteTableBlockComponentWidth: tableBlockComponentWidth,
-                                    quoteAdBuilder: adBuilder,
-                                    quoteVideoBuilder: videoBuilder,
-                                    quoteAudioBuilder: audioBuilder,
-                                    quoteCustomBlockBuilder: customBlockBuilder,
-                                    quoteCustomHeadingLineBuilder: customHeadingLineBuilder,
-                                    quoteCustomParagraphLineBuilder: customParagraphLineBuilder,
-                                    quoteCustomTableLineBuilder: customTableLineBuilder,
-                                    quoteMarkdownCacheConfiguration: markdownCacheConfiguration,
-                                    quoteFootnoteCallback: footnoteCallback,
-                                    quoteTocListOnClick: tocListOnClick,
-                                    quoteImageCallback: imageCallback,
-                                    quoteVideoCallback: videoCallback,
-                                    quoteIndexFootnoteHashMap: indexFootnoteHashMap,
-                                    quoteDepth: 0
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "LatexMathBlock") {
-                            // 数学公式块
-                            ListItem() {
-                                MarkdownLatexMathBlockComponent(
-                                    markdownTheme:markdownConfiguration.markdownTheme,
-                                    latexMathBlockStr:item.nodeText,
-                                    latexImageCallback:markdownConfiguration.latexImageCallback,
-                                    latexStrCallback:markdownConfiguration.latexStrCallback,
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "TableBlock") {
-                            // 表格
-                            ListItem() {
-                                MarkdownTableBlockComponent(
-                                    tableBlockMarkdownConfiguration:markdownConfiguration,
-                                    tableBlockNodeView:item,
-                                    tableBlockComponentWidth:tableBlockComponentWidth,
-                                    tableComponents:markdownCacheConfiguration.tableComponents,
-                                    tableRowComponents:markdownCacheConfiguration.tableRowComponents,
-                                    tableCellComponents:markdownCacheConfiguration.tableCellComponents,
-                                    tableBlockCustomTableLineBuilder:customTableLineBuilder,
-                                    tableBlockImageCallback:imageCallback,
-                                    tableBlockFootnoteCallback:footnoteCallback
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "ThematicBreak") {
-                            // 分割线
-                            ListItem() {
-                                MarkdownThematicBreakComponent(
-                                    markdownTheme: markdownConfiguration.markdownTheme
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "FootnoteBlock") {
-                            // 脚注
-                            ListItem() {
-                                MarkdownFootnoteComponent(
-                                    footnoteMarkdownConfiguration:markdownConfiguration,
-                                    footnoteNodeView:item,
-                                    footnoteComponentWidth:componentWidth,
-                                    footnoteMarkdownCacheConfiguration:markdownCacheConfiguration,
-                                    footnoteCustomParagraphLineBuilder:customParagraphLineBuilder,
-                                    footnoteTocListOnClick:tocListOnClick,
-                                    footnoteImageCallback:imageCallback,
-                                    footnoteFootnoteCallback:footnoteCallback
-                                )
-                            }
-                            .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "DescList") {
-                            // 定义列表
-                            ListItem() {
-                                MarkdownDescListComponent(
-                                    descListMarkdownConfiguration:markdownConfiguration,
-                                    descListNodeView:item,
-                                    descListComponentWidth:componentWidth,
-                                    descListMarkdownCacheConfiguration:markdownCacheConfiguration,
-                                    descListCustomParagraphLineBuilder:customParagraphLineBuilder,
-                                    descListTocListOnClick:tocListOnClick,
-                                    descListImageCallback:imageCallback,
-                                    descListFootnoteCallback:footnoteCallback
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "SlideBlock") {
-                            // 图片幻灯片
-                            ListItem() {
-                                MarkdownBannerComponent(
-                                    markdownTheme:markdownConfiguration.markdownTheme,
-                                    nodeView:item,
-                                    imageCallback:imageCallback
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "BlockVideo") {
-                            // 视频
-                            ListItem() {
-                                videoBuilder(
-                                    item,
-                                    markdownConfiguration.markdownTheme,
-                                    videoCallback,
-                                    markdownConfiguration.videoImageCallback,
-                                    markdownConfiguration.videoReleaseCallback,
-                                    markdownConfiguration.videoDownloadCallback
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "BlockAudio") {
-                            // 音频
-                            ListItem() {
-                                audioBuilder(
-                                    item,
-                                    markdownConfiguration.markdownTheme,
-                                    markdownConfiguration.audioCallback
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else if (item.nodeType == "BlockAD") {
-                            // 广告
-                            ListItem() {
-                                adBuilder(
-                                    item
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                         } else if (item.nodeType == "CardNode") {
-                             // 卡片
-                             ListItem() {
-                                 MarkdownCardComponent(
-                                     markdownConfiguration: markdownConfiguration,
-                                     nodeView: item,
-                                     cardName: item.cardName(),
-                                     cardData: item.cardData()
-                                 )
-                             }
-                             .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                        } else {
-                            // 其他
-                            ListItem() {
-                                customBlockBuilder(
-                                    item,
-                                    idx
-                                )
-                            }
-                            .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                        },
+                        keyGeneratorFunc: {
+                            item: NodeView, idx: Int64 => "${idx}-${item.nodeHash}-${item.contentHash}"
                         }
-                    },
-                    keyGeneratorFunc: {
-                        item: NodeView, idx: Int64 => "${idx}-${item.nodeHash}-${item.contentHash}"
+                    )
+                }
+                .listDirection(Axis.Vertical)
+                .alignListItem(ListItemAlign.Start)
+                .scrollBar(BarState.Off)
+                .enableScrollInteraction(false)
+                .interopOnSizeChange {
+                    old, new => if (componentWidth != new.width) {
+                        componentWidth = new.width
                     }
-                )
-            }
-            .listDirection(Axis.Vertical)
-            .alignListItem(ListItemAlign.Start)
-            .nestedScroll(NestedScrollOptions(NestedScrollMode.SELF_FIRST, NestedScrollMode.SELF_FIRST))
-            .interopOnSizeChange {
-                old, new => if (componentWidth != new.width) {
-                    componentWidth = new.width
+                }
+            } else {
+                List(scroller: scroller) {
+                    LazyForEach(
+                        nodeViewDataSource,
+                        itemGeneratorFunc: {
+                            item: NodeView, idx: Int64 => if (item.nodeType == "Paragraph") {
+                                // 段落
+                                ListItem() {
+                                    MarkdownParagraphComponent(
+                                        paragraphMarkdownConfiguration: markdownConfiguration,
+                                        paragraphNodeView: item,
+                                        paragraphComponentWidth: componentWidth,
+                                        paragraphComponents: markdownCacheConfiguration.paragraphComponents,
+                                        paragraphCustomParagraphLineBuilder: customParagraphLineBuilder,
+                                        paragraphTocListOnClick: tocListOnClick,
+                                        paragraphImageCallback: imageCallback,
+                                        paragraphFootnoteCallback: footnoteCallback
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "Heading" || item.nodeType == "IdHeading") {
+                                // 标题/标题ID
+                                ListItem() {
+                                    MarkdownHeadingComponent(
+                                        headingMarkdownConfiguration: markdownConfiguration,
+                                        headingNodeView: item,
+                                        headingComponentWidth: componentWidth,
+                                        headingComponents: markdownCacheConfiguration.headingComponents,
+                                        headingCustomHeadingLineBuilder: customHeadingLineBuilder,
+                                        headingImageCallback: imageCallback,
+                                        headingFootnoteCallback: footnoteCallback
+                                    )
+                                }
+                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "FencedCodeBlockListBlock") {
+                                // 围栏代码块列表
+                                ListItem() {
+                                    blockCodeBlockListComponent(
+                                        markdownConfiguration,
+                                        item,
+                                        toCodeList(item)
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "FencedCodeBlock") {
+                                // 围栏代码块
+                                ListItem() {
+                                    MarkdownCodeFencedBlockComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        codeText: item.nodeText,
+                                        info: item.codeInfo(),
+                                        nodeHash: item.nodeHash,
+                                        fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "IndentedCodeBlock") {
+                                // 缩进代码块
+                                ListItem() {
+                                    MarkdownCodeIndentedBlockComponent(
+                                        markdownConfiguration: markdownConfiguration,
+                                        codeText: item.nodeText,
+                                        nodeHash: item.nodeHash,
+                                        indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "BulletList") {
+                                // 无序列表
+                                ListItem() {
+                                    MarkdownListComponent(
+                                        listMarkdownConfiguration: markdownConfiguration,
+                                        listNodeView: item,
+                                        listComponentWidth: componentWidth,
+                                        listTableBlockComponentWidth: tableBlockComponentWidth,
+                                        listMarkdownCacheConfiguration: markdownCacheConfiguration,
+                                        isOrdered: false,
+                                        listAdBuilder: adBuilder,
+                                        listVideoBuilder: videoBuilder,
+                                        listAudioBuilder: audioBuilder,
+                                        listCustomBlockBuilder: customBlockBuilder,
+                                        listCustomHeadingLineBuilder: customHeadingLineBuilder,
+                                        listCustomParagraphLineBuilder: customParagraphLineBuilder,
+                                        listCustomTableLineBuilder: customTableLineBuilder,
+                                        listFootnoteCallback: footnoteCallback,
+                                        listTocListOnClick: tocListOnClick,
+                                        listImageCallback: imageCallback,
+                                        listVideoCallback: videoCallback,
+                                        listIndexFootnoteHashMap: indexFootnoteHashMap,
+                                        listDepth: 0
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "OrderedList") {
+                                // 有序列表
+                                ListItem() {
+                                    MarkdownListComponent(
+                                        listMarkdownConfiguration: markdownConfiguration,
+                                        listNodeView: item,
+                                        listComponentWidth: componentWidth,
+                                        listTableBlockComponentWidth: tableBlockComponentWidth,
+                                        listMarkdownCacheConfiguration: markdownCacheConfiguration,
+                                        isOrdered: true,
+                                        listAdBuilder: adBuilder,
+                                        listVideoBuilder: videoBuilder,
+                                        listAudioBuilder: audioBuilder,
+                                        listCustomBlockBuilder: customBlockBuilder,
+                                        listCustomHeadingLineBuilder: customHeadingLineBuilder,
+                                        listCustomParagraphLineBuilder: customParagraphLineBuilder,
+                                        listCustomTableLineBuilder: customTableLineBuilder,
+                                        listFootnoteCallback: footnoteCallback,
+                                        listTocListOnClick: tocListOnClick,
+                                        listImageCallback: imageCallback,
+                                        listVideoCallback: videoCallback,
+                                        listIndexFootnoteHashMap: indexFootnoteHashMap,
+                                        listDepth: 0
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "BlockQuote") {
+                                // 块引用
+                                ListItem() {
+                                    MarkdownQuoteComponent(
+                                        quoteMarkdownConfiguration: markdownConfiguration,
+                                        quoteNodeView: item,
+                                        quoteComponentWidth: componentWidth,
+                                        quoteTableBlockComponentWidth: tableBlockComponentWidth,
+                                        quoteAdBuilder: adBuilder,
+                                        quoteVideoBuilder: videoBuilder,
+                                        quoteAudioBuilder: audioBuilder,
+                                        quoteCustomBlockBuilder: customBlockBuilder,
+                                        quoteCustomHeadingLineBuilder: customHeadingLineBuilder,
+                                        quoteCustomParagraphLineBuilder: customParagraphLineBuilder,
+                                        quoteCustomTableLineBuilder: customTableLineBuilder,
+                                        quoteMarkdownCacheConfiguration: markdownCacheConfiguration,
+                                        quoteFootnoteCallback: footnoteCallback,
+                                        quoteTocListOnClick: tocListOnClick,
+                                        quoteImageCallback: imageCallback,
+                                        quoteVideoCallback: videoCallback,
+                                        quoteIndexFootnoteHashMap: indexFootnoteHashMap,
+                                        quoteDepth: 0
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "LatexMathBlock") {
+                                // 数学公式块
+                                ListItem() {
+                                    MarkdownLatexMathBlockComponent(
+                                        markdownTheme:markdownConfiguration.markdownTheme,
+                                        latexMathBlockStr:item.nodeText,
+                                        latexImageCallback:markdownConfiguration.latexImageCallback,
+                                        latexStrCallback:markdownConfiguration.latexStrCallback,
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "TableBlock") {
+                                // 表格
+                                ListItem() {
+                                    MarkdownTableBlockComponent(
+                                        tableBlockMarkdownConfiguration:markdownConfiguration,
+                                        tableBlockNodeView:item,
+                                        tableBlockComponentWidth:tableBlockComponentWidth,
+                                        tableComponents:markdownCacheConfiguration.tableComponents,
+                                        tableRowComponents:markdownCacheConfiguration.tableRowComponents,
+                                        tableCellComponents:markdownCacheConfiguration.tableCellComponents,
+                                        tableBlockCustomTableLineBuilder:customTableLineBuilder,
+                                        tableBlockImageCallback:imageCallback,
+                                        tableBlockFootnoteCallback:footnoteCallback
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "ThematicBreak") {
+                                // 分割线
+                                ListItem() {
+                                    MarkdownThematicBreakComponent(
+                                        markdownTheme: markdownConfiguration.markdownTheme
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "FootnoteBlock") {
+                                // 脚注
+                                ListItem() {
+                                    MarkdownFootnoteComponent(
+                                        footnoteMarkdownConfiguration:markdownConfiguration,
+                                        footnoteNodeView:item,
+                                        footnoteComponentWidth:componentWidth,
+                                        footnoteMarkdownCacheConfiguration:markdownCacheConfiguration,
+                                        footnoteCustomParagraphLineBuilder:customParagraphLineBuilder,
+                                        footnoteTocListOnClick:tocListOnClick,
+                                        footnoteImageCallback:imageCallback,
+                                        footnoteFootnoteCallback:footnoteCallback
+                                    )
+                                }
+                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "DescList") {
+                                // 定义列表
+                                ListItem() {
+                                    MarkdownDescListComponent(
+                                        descListMarkdownConfiguration:markdownConfiguration,
+                                        descListNodeView:item,
+                                        descListComponentWidth:componentWidth,
+                                        descListMarkdownCacheConfiguration:markdownCacheConfiguration,
+                                        descListCustomParagraphLineBuilder:customParagraphLineBuilder,
+                                        descListTocListOnClick:tocListOnClick,
+                                        descListImageCallback:imageCallback,
+                                        descListFootnoteCallback:footnoteCallback
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "SlideBlock") {
+                                // 图片幻灯片
+                                ListItem() {
+                                    MarkdownBannerComponent(
+                                        markdownTheme:markdownConfiguration.markdownTheme,
+                                        nodeView:item,
+                                        imageCallback:imageCallback
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "BlockVideo") {
+                                // 视频
+                                ListItem() {
+                                    videoBuilder(
+                                        item,
+                                        markdownConfiguration.markdownTheme,
+                                        videoCallback,
+                                        markdownConfiguration.videoImageCallback,
+                                        markdownConfiguration.videoReleaseCallback,
+                                        markdownConfiguration.videoDownloadCallback
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "BlockAudio") {
+                                // 音频
+                                ListItem() {
+                                    audioBuilder(
+                                        item,
+                                        markdownConfiguration.markdownTheme,
+                                        markdownConfiguration.audioCallback
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else if (item.nodeType == "BlockAD") {
+                                // 广告
+                                ListItem() {
+                                    adBuilder(
+                                        item
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                             } else if (item.nodeType == "CardNode") {
+                                 // 卡片
+                                 ListItem() {
+                                     MarkdownCardComponent(
+                                         markdownConfiguration: markdownConfiguration,
+                                         nodeView: item,
+                                         cardName: item.cardName(),
+                                         cardData: item.cardData()
+                                     )
+                                 }
+                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            } else {
+                                // 其他
+                                ListItem() {
+                                    customBlockBuilder(
+                                        item,
+                                        idx
+                                    )
+                                }
+                                .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
+                            }
+                        },
+                        keyGeneratorFunc: {
+                            item: NodeView, idx: Int64 => "${idx}-${item.nodeHash}-${item.contentHash}"
+                        }
+                    )
+                }
+                .listDirection(Axis.Vertical)
+                .alignListItem(ListItemAlign.Start)
+                .scrollBar(BarState.Off)
+                .interopEnableScrollInteraction(false)
+                .interopOnSizeChange {
+                    old, new => if (componentWidth != new.width) {
+                        componentWidth = new.width
+                    }
                 }
             }
         } else {
-            List(scroller: scroller) {
+            List(scroller: scrollerCode) {
                 LazyForEach(
                     nodeViewDataSource,
                     itemGeneratorFunc: {
