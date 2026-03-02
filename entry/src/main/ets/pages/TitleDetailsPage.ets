@@ -210,8 +210,13 @@ struct TitleDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
+    theme.setContext(getContext(this)) // 上下文
     theme.setHeadingBreakHeight(this.headingBreakHeight) // H1、H2标题下分割线高度
     theme.setHeadingBreakColor(this.headingBreakColor) // H1、H2标题下分割线颜色
+    theme.setHeadingTypeface(this.headingTypeface) // 标题文本字体
+    theme.setHeadingTopMargins(this.headingTopMargins) // 标题模块上间距
+    theme.setHeadingBottomMargins(this.headingBottomMargins) // 标题模块下间距
+    theme.setHeadingTextSizeMultipliers(this.headingTextSizeMultipliers) // 标题文本大小数组
     theme.setHeadingTextColor(this.headingTextColor) // 标题文本颜色
     theme.setHeadingTextWordSpace(this.headingTextWordSpace) // 标题文本字间距
     theme.setHeadingTextLineHeight1(this.headingTextLineHeight1) // 一级标题文本行高
@@ -220,10 +225,6 @@ struct TitleDetailsPage {
     theme.setHeadingTextLineHeight4(this.headingTextLineHeight4) // 四级标题文本行高
     theme.setHeadingTextLineHeight5(this.headingTextLineHeight5) // 五级标题文本行高
     theme.setHeadingTextLineHeight6(this.headingTextLineHeight6) // 六级标题文本行高
-    theme.setHeadingTypeface(this.headingTypeface) // 标题文本字体
-    theme.setHeadingTextSizeMultipliers(this.headingTextSizeMultipliers) // 标题文本大小数组
-    theme.setHeadingTopMargins(this.headingTopMargins) // 标题模块上间距
-    theme.setHeadingBottomMargins(this.headingBottomMargins) // 标题模块下间距
     config.setMarkdownTheme(theme)
     return config
   }

@@ -295,6 +295,7 @@ struct LinkDetailsPage {
     let config = new MarkdownConfiguration()
     config.setLinkCallback(this.linkCallBack.bind(this)) // 链接点击回调
     let theme = new MarkdownTheme()
+    theme.setContext(getContext(this)) // 上下文
     theme.setIsLinkStyle(this.isLinkStyle) // 链接是否是图片显示
     theme.setIsListLinkStyle(this.isListLinkStyle) // 列表中的单行链接是否是图片显示
     theme.setLinkColor(this.linkColor) // 文本格式链接文本颜色

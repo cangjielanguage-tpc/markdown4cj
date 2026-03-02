@@ -169,13 +169,14 @@ struct ParagraphDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
+    theme.setContext(getContext(this)) // 上下文
+    theme.setParagraphTopMargins(this.paragraphTopMargins) // 段落模块上间距
+    theme.setParagraphBottomMargins(this.paragraphBottomMargins) // 段落模块下间距
     theme.setParagraphTextSize(this.paragraphTextSize) // 段落文本大小
     theme.setParagraphTextColor(this.paragraphTextColor) // 段落文本颜色
     theme.setParagraphTextWordSpace(this.paragraphTextWordSpace) // 段落文本字间距
     theme.setParagraphTextLineHeight(this.paragraphTextLineHeight) // 段落文本行高
     theme.setParagraphTypeface(this.paragraphTypeface) // 段落文本字体
-    theme.setParagraphTopMargins(this.paragraphTopMargins) // 段落模块上间距
-    theme.setParagraphBottomMargins(this.paragraphBottomMargins) // 段落模块下间距
     config.setMarkdownTheme(theme)
     return config
   }

@@ -175,13 +175,13 @@ struct LatexMathDetailsPage {
     let config = new MarkdownConfiguration()
     config.setLatexImageCallback(this.latexCallBack.bind(this)) // 数学公式点击回调
     let theme = new MarkdownTheme()
+    theme.setLatexDefaultText(this.latexDefaultText) // 数学公式未加载状态是否显示文字
     theme.setLatexMathTextSize(this.latexMathTextSize) // 数学公式文本大小
     theme.setLatexMathBackGroupColor(this.latexMathBackGroupColor) // 数学公式背景色
     theme.setLatexMathTextColor(this.latexMathTextColor) // 数学公式文本颜色
-    theme.setLatexMathBlockCenter(this.latexMathBlockCenter) // 块结构的数学公式是否居中
     theme.setLatexMathColorFormat(this.latexMathColorFormat) // 数学公式生成图片格式
+    theme.setLatexMathBlockCenter(this.latexMathBlockCenter) // 块结构的数学公式是否居中
     theme.setLatexMathResStr(this.latexMathResStr) // 数学公式字体路径
-    theme.setLatexDefaultText(this.latexDefaultText) // 数学公式未加载状态是否显示文字
     config.setMarkdownTheme(theme)
     return config
   }

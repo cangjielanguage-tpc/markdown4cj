@@ -35,6 +35,21 @@ struct QuoteDetailsPage {
   @State
   isFull: boolean = true
   /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
    * 块引用左边距
    */
   blockQuoteLeftMargin: number = 8
@@ -59,15 +74,19 @@ struct QuoteDetailsPage {
    */
   blockQuoteTopAndBottomMargins: number = 0
   /**
-   * 增量加载延迟
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
    */
-  time: number = 50
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let quoteData: QuoteData = router.getParams() as QuoteData
       this.fileStr = getFileContextStr(quoteData._pagePath)
       this.isFull = quoteData._isFull
+      this.incrementalAnalysis = quoteData._incrementalAnalysis
+      this.time = quoteData._time
+      this.textNumber = quoteData._textNumber
       this.blockQuoteLeftMargin = quoteData._blockQuoteLeftMargin
       this.blockQuoteRightMargin = quoteData._blockQuoteRightMargin
       this.blockQuoteWidth = quoteData._blockQuoteWidth
@@ -98,16 +117,23 @@ struct QuoteDetailsPage {
         .onClick(
           () => {
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
+                this.content = this.content + this.fileStr.substring(this.content.length, index)
                 this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
+                if (index >= this.fileStr.length) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
-                index++
+                if (this.fileStr.length > index + this.textNumber) {
+                  index = index + this.textNumber
+                } else {
+                  index = this.fileStr.length
+                }
               }, this.time)
             }
           }
@@ -116,6 +142,8 @@ struct QuoteDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
+            incrementalAnalysis: this.incrementalAnalysis,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
@@ -129,17 +157,18 @@ struct QuoteDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
+    theme.setContext(getContext(this)) // 上下文
+    theme.setCodeFullScreenIcon($r('app.media.startIcon')) // 代码块全屏图片icon
+    theme.setCodeCopyIcon($r('app.media.startIcon')) // 代码块复制图片icon
+    theme.setAudioIcon($r('app.media.startIcon')) // 音频图片icon
+    theme.setVideoImage($r('app.media.place_holder')) // 视频默认占位图
+    theme.setPlayCircleFillIcon($r('app.media.play_circle_fill')) // 视频播放按钮icon
     theme.setBlockQuoteLeftMargin(this.blockQuoteLeftMargin) // 块引用左边距
     theme.setBlockQuoteRightMargin(this.blockQuoteRightMargin) // 块引用右边距
     theme.setBlockQuoteWidth(this.blockQuoteWidth) // 块引用左边线条宽度
     theme.setBlockQuoteColor(this.blockQuoteColor) // 块引用左边线条颜色
     theme.setBlockQuoteBackGroupColor(this.blockQuoteBackGroupColor) // 块引用背景颜色
     theme.setBlockQuoteTopAndBottomMargins(this.blockQuoteTopAndBottomMargins) // 块引用子模块上下间距
-    theme.setCodeFullScreenIcon($r('app.media.startIcon')) // 代码块全屏图片icon
-    theme.setCodeCopyIcon($r('app.media.startIcon')) // 代码块复制图片icon
-    theme.setAudioIcon($r('app.media.startIcon')) // 音频图片icon
-    theme.setVideoImage($r('app.media.place_holder')) // 视频默认占位图
-    theme.setPlayCircleFillIcon($r('app.media.play_circle_fill')) // 视频播放按钮icon
     config.setMarkdownTheme(theme)
     return config
   }
