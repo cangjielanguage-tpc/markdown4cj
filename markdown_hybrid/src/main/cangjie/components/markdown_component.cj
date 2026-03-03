@@ -983,6 +983,8 @@ public class MarkdownComponent {
                         let cache = paragraphComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
                             v.refreshParagraphData(refreshNodeView)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
                     } else if (refreshNodeView.nodeType == "Heading" || refreshNodeView.nodeType == "IdHeading") {
                         // 标题/标题ID
@@ -990,6 +992,8 @@ public class MarkdownComponent {
                         let cache = headingComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
                             v.refreshHeadingData(refreshNodeView)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
                     } else if (refreshNodeView.nodeType == "FencedCodeBlock") {
                         // 围栏代码块
@@ -997,6 +1001,8 @@ public class MarkdownComponent {
                         let cache = fencedCodeComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
                             v.refreshData(refreshNodeView.nodeText, refreshNodeView.codeInfo(), refreshNodeView.nodeHash)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
                     } else if (refreshNodeView.nodeType == "IndentedCodeBlock") {
                         // 缩进代码块
@@ -1004,6 +1010,8 @@ public class MarkdownComponent {
                         let cache = indentedCodeComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
                             v.refreshData(refreshNodeView.nodeText, Option<String>.None, refreshNodeView.nodeHash)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
                     } else if (refreshNodeView.nodeType == "BulletList" || refreshNodeView.nodeType == "OrderedList") {
                         // 无序列表/有序列表
@@ -1011,6 +1019,8 @@ public class MarkdownComponent {
                         let cache = listComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
                             v.refreshListData(refreshNodeView)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
                     } else if (refreshNodeView.nodeType == "BlockQuote") {
                         // 块引用
@@ -1018,6 +1028,8 @@ public class MarkdownComponent {
                         let cache = quoteComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
                             v.refreshQuoteData(refreshNodeView)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
                     } else if (refreshNodeView.nodeType == "TableBlock") {
                         // 表格
@@ -1025,6 +1037,8 @@ public class MarkdownComponent {
                         let cache = tableComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
                             v.refreshTableBlockData(refreshNodeView)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
                     } else if (refreshNodeView.nodeType == "FootnoteBlock") {
                         // 脚注
@@ -1032,6 +1046,8 @@ public class MarkdownComponent {
                         let cache = footnoteComponent.get(newBlockHash)
                         if (let Some(v) <- cache) {
                             v.refreshFootnoteData(refreshNodeView)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
                     } else if (refreshNodeView.nodeType == "DescList") {
                         // 定义列表
@@ -1039,6 +1055,8 @@ public class MarkdownComponent {
                         let cache = descListComponent.get(newBlockHash)
                         if (let Some(v) <- cache) {
                             v.refreshDescListData(refreshNodeView)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
                     } else {
                         // TODO 其他
@@ -1051,6 +1069,8 @@ public class MarkdownComponent {
                         let cache = codeComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
                             v.refreshData(refreshNodeView.nodeText, refreshNodeView.codeInfo(), refreshNodeView.nodeHash)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
                     } else if (refreshNodeView.nodeType == "IndentedCodeBlock") {
                         // 缩进代码块
@@ -1058,6 +1078,8 @@ public class MarkdownComponent {
                         let cache = codeComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
                             v.refreshData(refreshNodeView.nodeText, Option<String>.None, refreshNodeView.nodeHash)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
                     } else {
                         // TODO 其他
