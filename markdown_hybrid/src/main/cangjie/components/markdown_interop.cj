@@ -539,11 +539,11 @@ extend List {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let column = global["List"].asObject(ctx)
+            let list = global["List"].asObject(ctx)
             let callBackFunc = getCtx().function {
                 ctx, callInfo => callback(CJSizeOptions.fromJSValue(ctx, callInfo[0]), CJSizeOptions.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
             }
-            column.callMethod("onSizeChange", [callBackFunc.toJSValue()])
+            list.callMethod("onSizeChange", [callBackFunc.toJSValue()])
         } catch (e: Exception) {
         }
         return this
@@ -567,11 +567,25 @@ extend ListItem {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
-            let column = global["ListItem"].asObject(ctx)
+            let listItem = global["ListItem"].asObject(ctx)
             let callBackFunc = getCtx().function {
                 ctx, callInfo => callback(CJArea.fromJSValue(ctx, callInfo[0]), CJArea.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
             }
-            column.callMethod("onAreaChange", [callBackFunc.toJSValue()])
+            listItem.callMethod("onAreaChange", [callBackFunc.toJSValue()])
+        } catch (e: Exception) {
+        }
+        return this
+    }
+
+    func interopOnSizeChange(callback: (CJSizeOptions, CJSizeOptions) -> Unit): ListItem {
+        try {
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let listItem = global["ListItem"].asObject(ctx)
+            let callBackFunc = getCtx().function {
+                ctx, callInfo => callback(CJSizeOptions.fromJSValue(ctx, callInfo[0]), CJSizeOptions.fromJSValue(ctx, callInfo[1])).toJSValue(ctx)
+            }
+            listItem.callMethod("onSizeChange", [callBackFunc.toJSValue()])
         } catch (e: Exception) {
         }
         return this
