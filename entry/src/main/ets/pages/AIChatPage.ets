@@ -145,7 +145,7 @@ struct AIChatPage {
       )
 
       // 聊天消息区
-      List({ scroller: this.scroller, initialIndex: this.messages.totalCount() - 1 }) {
+      List({ scroller: this.scroller, initialIndex: 0 }) {
         LazyForEach(this.messages, (value: Message, index?: number) => {
           ListItem() {
             ChatBlock({ message: value, scroller: this.scrollers[index || 0] })
@@ -167,7 +167,8 @@ struct AIChatPage {
         }
       )
       .onScrollFrameBegin((offset, state) => {
-        if(this.currentIndex % 2 == 0) {
+        if (this.messages.get(this.currentIndex).who === Who.Me){
+          // 其他卡片
           return { offsetRemain: offset }
         }
         const childOffset = this.scrollers[this.currentIndex]?.currentYOffset() || 0;
