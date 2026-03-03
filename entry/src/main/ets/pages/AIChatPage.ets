@@ -145,7 +145,7 @@ struct AIChatPage {
       )
 
       // 聊天消息区
-      List({ scroller: this.scroller, initialIndex: 0 }) {
+      List({ scroller: this.scroller, initialIndex: this.messages.totalCount() - 1 }) {
         LazyForEach(this.messages, (value: Message, index?: number) => {
           ListItem() {
             ChatBlock({ message: value, scroller: this.scrollers[index || 0] })
