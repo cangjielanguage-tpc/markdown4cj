@@ -95,7 +95,6 @@ export class LLM {
   private model: string;
   private memory: boolean;
 
-
   constructor(
   url: string,
   key: string,
@@ -131,7 +130,6 @@ export class LLM {
       },
       extraData: content
     }
-
     await httpRequest.requestInStream(this.url, options)
   }
 
@@ -153,14 +151,14 @@ export class LLM {
     let buffer = `${HARD_CODE_DATA}`
     const chunker = () => {
       if (buffer.length > 0) {
-        const size = this.randInt(1, 3)
+        const size = this.randInt(1, 10)
         const output = buffer.substring(0, Math.min(buffer.length, size));
         buffer = buffer.slice(Math.min(buffer.length, size));
         task(output);
-        setTimeout(chunker, 200);
+        setTimeout(chunker, 150);
       }
     };
-    setTimeout(chunker, 200);
+    setTimeout(chunker, 150);
     // let output = ""
     // const INDEX = 6
     // const httpRequest = http.createHttp()

@@ -12,7 +12,6 @@ const MARGIN: number = SIZE * 2 + 25
 export struct ChatBlock {
   @Prop
   message: Message
-
   /**
    * Markdown的控制器
    */
@@ -52,9 +51,13 @@ export struct ChatBlock {
         })
       }
     }
-    .margin({right: 50 })
     .constraintSize({ maxWidth: '200%' })
-    .padding({left: 10, right: 10, top: this.isText() ? 10 : 1, bottom: this.isText() ? 10 : 0})
+    .padding({
+      left: 10,
+      right: 10,
+      top: this.isText() ? 10 : 1,
+      bottom: this.isText() ? 10 : 0
+    })
     .backgroundColor(bgColor)
     .borderRadius(10)
   }
@@ -64,7 +67,8 @@ export struct ChatBlock {
       Column({ space: 3 }) {
         // 时间戳
         Row() {
-          Text(this.message.time).fontSize(12)
+          Text(this.message.time)
+            .fontSize(12)
         }
         .width('100%')
         .justifyContent(FlexAlign.End)
@@ -73,7 +77,8 @@ export struct ChatBlock {
         // 消息气泡
         Row() {
           this.MessageContent(0x4c96ff, 0xffffff)
-          Row().width(10)
+          Row()
+            .width(10)
           this.Avatar()
         }
         .justifyContent(FlexAlign.End)
@@ -84,16 +89,20 @@ export struct ChatBlock {
       .padding({ left: 10, right: 10 })
     } else {
       Column({ space: 3 }) {
+        // 时间戳
         Row() {
-          Text(this.message.time).fontSize(12)
+          Text(this.message.time)
+            .fontSize(12)
         }
         .width('100%')
         .justifyContent(FlexAlign.Start)
         .margin({ left: MARGIN })
 
+        // 消息气泡
         Row() {
           this.Avatar()
-          Row().width(10)
+          Row()
+            .width(10)
           this.MessageContent(0xffffff, 0x000000)
         }
         .justifyContent(FlexAlign.Start)

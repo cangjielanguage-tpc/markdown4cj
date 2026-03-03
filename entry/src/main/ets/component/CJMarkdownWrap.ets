@@ -11,9 +11,6 @@ import {
 import hilog from '@ohos.hilog'
 import { promptAction } from '@kit.ArkUI'
 
-const SIZE: number = 36
-const MARGIN: number = SIZE * 2 + 25
-
 @Component
 export struct CJMarkdownWrap {
   @Prop
@@ -29,77 +26,52 @@ export struct CJMarkdownWrap {
   }
 
   setPlugin(): MarkdownPlugin {
-    let plugin: MarkdownPlugin = new MarkdownPlugin();
-    plugin.setIsImageStylePlugin(true);
-    plugin.setIsImageSlidePlugin(true);
-    plugin.setIsImageTextMixPlugin(true);
-    plugin.setIsImageCollectPlugin(true);
-    plugin.setIsTablePlugin(true);
-    plugin.setIsLatexMathPlugin(true);
-    plugin.setIsStrikethroughPlugin(true);
-    plugin.setIsImageStylePlugin(true);
-    plugin.setIsTaskListPlugin(true);
-    return plugin;
+    let plugin: MarkdownPlugin = new MarkdownPlugin()
+    plugin.setIsImageStylePlugin(true) // 图片样式插件
+    plugin.setIsImageSlidePlugin(true) // 图片幻灯片（Banner）插件
+    plugin.setIsImageTextMixPlugin(true) // 图片不混排插件
+    plugin.setIsImageCollectPlugin(true) // 图片视频url集合列表插件
+    plugin.setIsTablePlugin(true) // 表格插件
+    plugin.setIsLatexMathPlugin(true) // 数学公式插件
+    plugin.setIsStrikethroughPlugin(true) // 删除线插件
+    plugin.setIsTaskListPlugin(true) // 任务列表插件
+    plugin.setIsHtmlPlugin(true) // HTML插件
+    plugin.setIsFootnotePlugin(true) // 脚注插件
+    plugin.setIsTocPlugin(true) // TOC插件
+    plugin.setIsLinkifyPlugin(true) // 链接自动加载插件
+    plugin.setIsDescListPlugin(true) // 定义列表解析插件
+    plugin.setIsHeadIDPlugin(true) // 标题ID解析插件
+    plugin.setIsSubPlugin(true) // 下标解析插件
+    plugin.setIsSupPlugin(true) // 上标解析插件
+    plugin.setIsEmojiPlugin(true, false) // emoji解析插件
+    return plugin
   }
 
   setConfiguration(): MarkdownConfiguration {
-    let config: MarkdownConfiguration = new MarkdownConfiguration();
-    let theme: MarkdownTheme = new MarkdownTheme();
-    //TODO: theme
-    theme.setImageMaximumWidth(1); //缩放比例
-    theme.setIsOnCopy(false);
-    theme.setIsMarkdownParserSync(true)
-    /**
-     * 保持宽高比进行缩小或者放大，使得图片两边都大于或等于显示边界。
-     * Contain = 0,
-     * 保持宽高比进行缩小或者放大，使得图片恰好完全显示在显示边界内。
-     Cover = 1,
-     * 不保持宽高比进行放大缩小，使得图片充满显示边界。
-     Fill = 2
-     * */
-    theme.setImageFitType(1)
-    theme.setTableOddRowBackgroundColor(0XFFFFFFFF); //背景色
-    theme.setTableEvenRowBackgroundColor(0XFFFFFFFF);
-    config.setMarkdownTheme(theme);
-    config.setLinkCallback(url => {
-      // console.log(TAG_NAME, `link callback:${url}`);
-      // ChatH5Util.openUrl(getContext(), url);
-      hilog.error(1, "1", `---url:${url}`)
-      promptAction.showToast({
-        message: url,
-        duration: 2000
-      });
-    });
-    config.setTextCopyCallback(txt => {
-      // console.log(TAG_NAME, `copy callback:${txt}`);
-      hilog.error(1, "1", `---txt:${txt}`)
-      promptAction.showToast({
-        message: txt,
-        duration: 2000
-      });
-    });
-    config.setImageCallback((url: string, imgList: Array<string>) => {
-      hilog.error(1, "1", `---url:${url},imgList:${imgList}`)
-      promptAction.showToast({
-        message: url,
-        duration: 2000
-      });
-      // console.log(TAG_NAME, `image callback:${url}, imgList:${JSON.stringify(imgList)}`);
-      // let imagesUrlList: Array<IPhotoListItem> = new Array();
-      // let index: number = 0;
-      // imgList.forEach((_url, idx) => {
-      //   imagesUrlList.push({
-      //     imageUrl: _url,
-      //     imageType: EImageType.IMAGE
-      //   });
-      //   if(_url === url) {
-      //     index = idx;
-      //   }
-      // })
-      // this.openImagePreview(imagesUrlList, url, index);
-    });
+    let config: MarkdownConfiguration = new MarkdownConfiguration()
+    config.setLinkCallback(this.linkCallback.bind(this)) // 链接点击回调
+    config.setImageCallback(this.imageCallback.bind(this)) // 图片点击回调
+    config.setCodeCopyCallback(this.codeCopyCallback.bind(this)) // 代码复制点击回调
+    config.setCodeFullScreenCallback(this.codeFullScreenCallback.bind(this)) // 代码全屏点击回调
+    let theme: MarkdownTheme = new MarkdownTheme()
+    theme.setImageMaximumWidth(1) // 图片基于自身宽度缩放百分比
+    theme.setIsOnCopy(false) // 是否打开长按复制粘贴
+    theme.setIsMarkdownParserSync(true) // markdown是否同步解析
+    theme.setImageFitType(1) // 图片缩放类型
+    theme.setTableOddRowBackgroundColor(0XFFFFFFFF) // 表格奇数行背景色
+    theme.setTableEvenRowBackgroundColor(0XFFFFFFFF) // 表格偶数行背景色
+    theme.setCodeFullScreenIcon($r('app.media.startIcon')) // 代码块全屏图片icon
+    theme.setCodeCopyIcon($r('app.media.startIcon')) // 代码块复制图片icon
+    config.setMarkdownTheme(theme) // markdown样式
+    return config
+  }
 
-    return config;
+  linkCallback(url: string): void {
+    hilog.error(1, "1", `---url:${url}`)
+    promptAction.showToast({
+      message: url,
+      duration: 2000
+    })
   }
 
   imageCallback(url: string, urlList: Array<string>): void {
@@ -107,11 +79,23 @@ export struct CJMarkdownWrap {
     promptAction.showToast({
       message: url,
       duration: 2000
-    });
+    })
   }
 
-  isText() {
-    return this.input.length <= 60
+  codeCopyCallback(code: string): void {
+    hilog.error(1, "1", `---code:${code}`)
+    promptAction.showToast({
+      message: code,
+      duration: 2000
+    })
+  }
+
+  codeFullScreenCallback(code: string, info: string | undefined): void {
+    hilog.error(1, "1", `---code:${code},info:${info}`)
+    promptAction.showToast({
+      message: code,
+      duration: 2000
+    })
   }
 
   build() {
@@ -121,7 +105,7 @@ export struct CJMarkdownWrap {
       plugin: this.setPlugin(),
       listScroller: this.setScroller()
     })
-    .constraintSize({ maxHeight: '150%' })
-    .width("90%")
+    .constraintSize({ maxHeight: '120%' })
+    .width("75%")
   }
 }

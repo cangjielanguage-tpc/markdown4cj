@@ -9,6 +9,24 @@ import { CJMarkdownWrap } from '../component/CJMarkdownWrap';
 import { MarkdownScroller } from '@cangjie-tpc/markdown_hybrid';
 import { inputMethod } from '@kit.IMEKit';
 import { titleComponent } from './BaseComponent';
+import { MESSAGE_DATA_1,
+  MESSAGE_DATA_10,
+  MESSAGE_DATA_11,
+  MESSAGE_DATA_12,
+  MESSAGE_DATA_13,
+  MESSAGE_DATA_14,
+  MESSAGE_DATA_15,
+  MESSAGE_DATA_16,
+  MESSAGE_DATA_17,
+  MESSAGE_DATA_18,
+  MESSAGE_DATA_19,
+  MESSAGE_DATA_2,
+  MESSAGE_DATA_20,
+  MESSAGE_DATA_3, MESSAGE_DATA_4,
+  MESSAGE_DATA_5,
+  MESSAGE_DATA_6, MESSAGE_DATA_7,
+  MESSAGE_DATA_8,
+  MESSAGE_DATA_9 } from '../model/MessageData';
 
 @Entry
 @Component
@@ -32,16 +50,46 @@ struct AIChatPage {
   private listHeight: number = 0
 
   aboutToAppear(): void {
-    for (let i = 0; i < 20; i++) {
-      if (i % 2 === 0) {
-        this.messages.append(new Message(new MessageContent('思考中...'), Who.Me, this.now()))
-      } else {
-        this.messages.append(new Message(new MessageContent(HARD_CODE_DATA), Who.You, this.now()))
-      }
-      let element = new MarkdownScroller()
-      element.scrollEdge(Edge.Bottom)
-      this.scrollers.push(element)
-    }
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_1), Who.Me, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_2), Who.You, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_3), Who.Me, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_4), Who.You, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_5), Who.Me, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_6), Who.You, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_7), Who.Me, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_8), Who.You, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_9), Who.Me, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_10), Who.You, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_11), Who.Me, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_12), Who.You, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_13), Who.Me, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_14), Who.You, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_15), Who.Me, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_16), Who.You, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_17), Who.Me, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_18), Who.You, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_19), Who.Me, this.now()))
+    this.scrollers.push(new MarkdownScroller())
+    this.messages.append(new Message(new MessageContent(MESSAGE_DATA_20), Who.You, this.now()))
+    this.scrollers.push(new MarkdownScroller())
   }
 
   onDidBuild(): void {

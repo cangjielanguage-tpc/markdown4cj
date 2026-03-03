@@ -24,7 +24,6 @@ export class MessageContent {
   }
 }
 
-
 @Observed
 export class Message {
   content: MessageContent = new MessageContent('')

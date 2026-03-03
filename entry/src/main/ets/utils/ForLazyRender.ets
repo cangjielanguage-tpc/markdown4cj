@@ -1,13 +1,11 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
  */
-// ArkTS 版实现
 export class GeneralDataSource<T> implements IDataSource {
   private data: Array<T> = []
   private listener?: DataChangeListener
 
   constructor() {
-    // this.data = data
   }
 
   public totalCount(): number {
