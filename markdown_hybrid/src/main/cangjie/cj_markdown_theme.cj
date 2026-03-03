@@ -833,6 +833,11 @@ public class CJMarkdownTheme {
     var imageFixedRatioWidth: ?Float64 = None
 
     /**
+     * 图片最大高度
+     */
+    var imageMaxHeight: ?Float64 = None
+
+    /**
      * 图片圆角大小
      */
     var imageBorderRadius: ?Float64 = None
@@ -931,6 +936,26 @@ public class CJMarkdownTheme {
      * 表格头背景色
      */
     var tableHeaderRowBackgroundColor: ?Color = None
+
+    /**
+     * 表格头文本颜色
+     */
+    var tableTitleTextColor: ?Color = None
+
+    /**
+     * 表格头文本大小
+     */
+    var tableTitleTextSize: ?Float64 = None
+
+    /**
+     * 表格内容文本颜色
+     */
+    var tableContentTextColor: ?Color = None
+
+    /**
+     * 表格内容文本大小
+     */
+    var tableContentTextSize: ?Float64 = None
 
     /**
      * 表格文本行高
@@ -2496,6 +2521,15 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置图片最大高度
+     *
+     * @param imageMaxHeight 图片最大高度 - 默认None
+     */
+    public func setImageMaxHeight(imageMaxHeight: Float64): Unit {
+        this.imageMaxHeight = imageMaxHeight
+    }
+
+    /**
      * 设置图片圆角大小
      *
      * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
@@ -2673,6 +2707,42 @@ public class CJMarkdownTheme {
      */
     public func setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: UInt32): Unit {
         this.tableHeaderRowBackgroundColor = transColorForTrasparent(tableHeaderRowBackgroundColor)
+    }
+
+    /**
+     * 设置表格头文本颜色
+     *
+     * @param tableTitleTextColor 表格头文本颜色 - 默认0XFF191919
+     */
+    public func setTableTitleTextColor(tableTitleTextColor: UInt32): Unit {
+        this.tableTitleTextColor = transColorForTrasparent(tableTitleTextColor)
+    }
+
+    /**
+     * 设置表格头文本大小
+     *
+     * @param tableTitleTextSize 表格头文本大小 - 默认14.0vp
+     */
+    public func setTableTitleTextSize(tableTitleTextSize: Float64): Unit {
+        this.tableTitleTextSize = tableTitleTextSize
+    }
+
+    /**
+     * 设置表格内容文本颜色
+     *
+     * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
+     */
+    public func setTableContentTextColor(tableContentTextColor: UInt32): Unit {
+        this.tableContentTextColor = transColorForTrasparent(tableContentTextColor)
+    }
+
+    /**
+     * 设置表格内容文本大小
+     *
+     * @param tableContentTextSize 表格内容文本大小 - 默认14.0vp
+     */
+    public func setTableContentTextSize(tableContentTextSize: Float64): Unit {
+        this.tableContentTextSize = tableContentTextSize
     }
 
     /**

@@ -374,6 +374,8 @@ export declare class CJMarkdownTheme {
 
   setImageFixedRatioWidth(imageFixedRatioWidth: number): void
 
+  setImageMaxHeight(imageMaxHeight: number): void
+
   setImageBorderRadius(imageBorderRadius: number): void
 
   setIsAutoResize(isAutoResize: boolean): void
@@ -413,6 +415,14 @@ export declare class CJMarkdownTheme {
   setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: number): void
 
   setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void
+
+  setTableTitleTextColor(tableTitleTextColor: number): void
+
+  setTableTitleTextSize(tableTitleTextSize: number): void
+
+  setTableContentTextColor(tableContentTextColor: number): void
+
+  setTableContentTextSize(tableContentTextSize: number): void
 
   setTableTextLineHeight(tableTextLineHeight: number): void
 

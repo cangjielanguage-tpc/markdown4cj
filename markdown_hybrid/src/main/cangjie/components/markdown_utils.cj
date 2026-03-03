@@ -6,6 +6,7 @@ package markdown.components
 import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
+import ohos.hilog.Hilog
 
 let COLOR_191919: Color = Color(0x191919)
 let COLOR_0000FF: Color = Color(0x0000FF)
@@ -149,13 +150,15 @@ func spanFontFamily(isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool): 
 /**
  * 文字大小设置
  *
+ * @param nodeView NodeView
  * @param isCode 是否是内联代码
  * @param markdownTheme markdown基础样式
  * @param isTitle 是否是标题
  * @param level 几级标题
+ * @param table 表格
  * @return 返回需要显示的字体大小
  */
-func spanFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
+func spanFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64, table: Int64): Float64 {
     if (nodeView.props.isSome() && nodeView.props().get("SubNode").isSome()) {
         return markdownTheme.subTextSize
     } else if (nodeView.props.isSome() && nodeView.props().get("SupNode").isSome()) {
@@ -168,10 +171,10 @@ func spanFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme
                 let sizeInt64: Int64 = Int64.parse(sizeString())
                 return Float64(sizeInt64)
             } else {
-                return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
+                return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level, table)
             }
         } catch (e: Exception) {
-            return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
+            return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level, table)
         }
     } else if (nodeView.props.isSome() && nodeView.props().get("SpanNode").isSome()) {
         try {
@@ -186,12 +189,12 @@ func spanFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme
                     }
                 }
             }
-            return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
+            return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level, table)
         } catch (e: Exception) {
-            return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
+            return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level, table)
         }
     } else {
-        return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level)
+        return spanTextFontSize(nodeView, isCode, markdownTheme, isTitle, level, table)
     }
 }
 
@@ -204,21 +207,25 @@ func spanFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme
  * @param level 几级标题
  * @return 返回需要显示的字体大小
  */
-func spanTextFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64): Float64 {
+func spanTextFontSize(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isTitle: Bool, level: Int64, table: Int64): Float64 {
+    Hilog.error(1,"1","----------table:${table}")
     if (isCode) {
         // 内联代码情况设置内联代码字体大小
         return px2vp(markdownTheme.codeTextSize.px)().value
-    } else {
-        if (nodeView.link.isSome() && markdownTheme.isLinkSize) {
-            return markdownTheme.linkSize
-        } else {
-            if (isTitle) {
-                return markdownTheme.headingTextSizeMultipliers[level - 1]
-            } else {
-                return markdownTheme.paragraphTextSize
-            }
-        }
     }
+    if (nodeView.link.isSome() && markdownTheme.isLinkSize) {
+        return markdownTheme.linkSize
+    }
+    if (isTitle) {
+        return markdownTheme.headingTextSizeMultipliers[level - 1]
+    }
+    if (table == 1) {
+        return markdownTheme.tableTitleTextSize
+    }
+    if (table == 2) {
+        return markdownTheme.tableContentTextSize
+    }
+    return markdownTheme.paragraphTextSize
 }
 
 /**
@@ -295,7 +302,7 @@ func spanFontStyle(nodeView: NodeView, isDescList: Bool): FontStyle {
  * @param isHeading 是否是标题
  * @return 返回需要显示的字体颜色
  */
-func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isHeading: Bool): Color {
+func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isHeading: Bool, table: Int64): Color {
     if (nodeView.props.isSome() && nodeView.props().get("SubNode").isSome()) {
         return markdownTheme.subTextColor
     } else if (nodeView.props.isSome() && nodeView.props().get("SupNode").isSome()) {
@@ -308,10 +315,10 @@ func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownThem
                 let colorUInt32: UInt32 = UInt32.parse(colorString().replace("#", "0x"))
                 return Color(colorUInt32)
             } else {
-                return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
+                return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading, table)
             }
         } catch (e: Exception) {
-            return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
+            return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading, table)
         }
     } else if (nodeView.props.isSome() && nodeView.props().get("SpanNode").isSome()) {
         try {
@@ -331,12 +338,12 @@ func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownThem
                     }
                 }
             }
-            return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
+            return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading, table)
         } catch (e: Exception) {
-            return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
+            return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading, table)
         }
     } else {
-        return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading)
+        return spanTextFontColor(nodeView, isCode, markdownTheme, isHeading, table)
     }
 }
 
@@ -349,20 +356,23 @@ func spanFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownThem
  * @param isHeading 是否是标题
  * @return 返回需要显示的字体颜色
  */
-func spanTextFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isHeading: Bool): Color {
+func spanTextFontColor(nodeView: NodeView, isCode: Bool, markdownTheme: MarkdownTheme, isHeading: Bool, table: Int64): Color {
     if (nodeView.link.isSome() || nodeView.node is HeadLink || nodeView.node is Footnote) {
         return markdownTheme.linkColor
-    } else {
-        if (isCode) {
-            return markdownTheme.codeTextColor
-        } else {
-            if (isHeading) {
-                return markdownTheme.headingTextColor
-            } else {
-                return markdownTheme.paragraphTextColor
-            }
-        }
     }
+    if (isCode) {
+        return markdownTheme.codeTextColor
+    }
+    if (isHeading) {
+        return markdownTheme.headingTextColor
+    }
+    if (table == 1) {
+        return markdownTheme.tableTitleTextColor
+    }
+    if (table == 2) {
+        return markdownTheme.tableContentTextColor
+    }
+    return markdownTheme.paragraphTextColor
 }
 
 /**

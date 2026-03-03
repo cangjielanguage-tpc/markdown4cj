@@ -19,13 +19,13 @@ func headingTextComponent18(nodeView: NodeView, markdownConfiguration: MarkdownC
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -41,13 +41,13 @@ func headingTextComponent18(nodeView: NodeView, markdownConfiguration: MarkdownC
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -72,13 +72,13 @@ func headingTextComponent19(nodeView: NodeView, markdownConfiguration: MarkdownC
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -95,13 +95,13 @@ func headingTextComponent19(nodeView: NodeView, markdownConfiguration: MarkdownC
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -128,13 +128,13 @@ func headingLinkComponent18(nodeView: NodeView, link: String, markdownConfigurat
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -151,13 +151,13 @@ func headingLinkComponent18(nodeView: NodeView, link: String, markdownConfigurat
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -182,13 +182,13 @@ func headingLinkComponent19(nodeView: NodeView, link: String, markdownConfigurat
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, true, markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -205,13 +205,13 @@ func headingLinkComponent19(nodeView: NodeView, link: String, markdownConfigurat
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, true, markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -236,13 +236,13 @@ func headingCodeComponent18(nodeView: NodeView, markdownConfiguration: MarkdownC
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, true, 0))
+            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, true, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true, 0))
             // 自定义背景色
             .interopStyle(true, markdownConfiguration.markdownTheme.codeBackgroundColor)
             // 设置文本字符间距
@@ -259,13 +259,13 @@ func headingCodeComponent18(nodeView: NodeView, markdownConfiguration: MarkdownC
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, true, 0))
+            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, true, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true, 0))
             // 自定义背景色
             .interopStyle(true, markdownConfiguration.markdownTheme.codeBackgroundColor)
             // 设置文本字符间距
@@ -290,13 +290,13 @@ func headingCodeComponent19(nodeView: NodeView, markdownConfiguration: MarkdownC
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, true, 0))
+            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, true, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(true, false, markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -313,13 +313,13 @@ func headingCodeComponent19(nodeView: NodeView, markdownConfiguration: MarkdownC
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, true, 0))
+            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, true, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, true, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(true, false, markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -344,13 +344,13 @@ func headingFootnoteComponent18(nodeView: NodeView, markdownConfiguration: Markd
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -371,13 +371,13 @@ func headingFootnoteComponent18(nodeView: NodeView, markdownConfiguration: Markd
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -406,13 +406,13 @@ func headingFootnoteComponent19(nodeView: NodeView, markdownConfiguration: Markd
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -433,13 +433,13 @@ func headingFootnoteComponent19(nodeView: NodeView, markdownConfiguration: Markd
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, true))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, true, level, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, true))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, true, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -468,13 +468,13 @@ func paragraphTextComponent18(nodeView: NodeView, isDescList: Bool, markdownConf
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -491,13 +491,13 @@ func paragraphTextComponent18(nodeView: NodeView, isDescList: Bool, markdownConf
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -522,13 +522,13 @@ func paragraphTextComponent19(nodeView: NodeView, isDescList: Bool, markdownConf
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -545,13 +545,13 @@ func paragraphTextComponent19(nodeView: NodeView, isDescList: Bool, markdownConf
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -576,13 +576,13 @@ func paragraphTocComponent18(nodeView: NodeView, isDescList: Bool, markdownConfi
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -599,13 +599,13 @@ func paragraphTocComponent18(nodeView: NodeView, isDescList: Bool, markdownConfi
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -630,13 +630,13 @@ func paragraphTocComponent19(nodeView: NodeView, isDescList: Bool, markdownConfi
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -653,13 +653,13 @@ func paragraphTocComponent19(nodeView: NodeView, isDescList: Bool, markdownConfi
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -684,13 +684,13 @@ func paragraphLinkComponent18(nodeView: NodeView, isDescList: Bool, link: String
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -707,13 +707,13 @@ func paragraphLinkComponent18(nodeView: NodeView, isDescList: Bool, link: String
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -738,13 +738,13 @@ func paragraphLinkComponent19(nodeView: NodeView, isDescList: Bool, link: String
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, true, markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -761,13 +761,13 @@ func paragraphLinkComponent19(nodeView: NodeView, isDescList: Bool, link: String
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, true, markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -792,13 +792,13 @@ func paragraphCodeComponent18(nodeView: NodeView, isDescList: Bool, markdownConf
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
             // 自定义背景色
             .interopStyle(true, markdownConfiguration.markdownTheme.codeBackgroundColor)
             // 设置文本字符间距
@@ -815,13 +815,13 @@ func paragraphCodeComponent18(nodeView: NodeView, isDescList: Bool, markdownConf
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
             // 自定义背景色
             .interopStyle(true, markdownConfiguration.markdownTheme.codeBackgroundColor)
             // 设置文本字符间距
@@ -846,13 +846,13 @@ func paragraphCodeComponent19(nodeView: NodeView, isDescList: Bool, markdownConf
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(true, false, markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -869,13 +869,13 @@ func paragraphCodeComponent19(nodeView: NodeView, isDescList: Bool, markdownConf
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(true, false, markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -900,13 +900,13 @@ func paragraphFootnoteComponent18(nodeView: NodeView, isDescList: Bool, markdown
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -927,13 +927,13 @@ func paragraphFootnoteComponent18(nodeView: NodeView, isDescList: Bool, markdown
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -962,13 +962,13 @@ func paragraphFootnoteComponent19(nodeView: NodeView, isDescList: Bool, markdown
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -989,13 +989,13 @@ func paragraphFootnoteComponent19(nodeView: NodeView, isDescList: Bool, markdown
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, 0))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, isDescList, false))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, isDescList))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -1024,13 +1024,13 @@ func tableComponentText18(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -1047,13 +1047,13 @@ func tableComponentText18(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -1078,13 +1078,13 @@ func tableComponentText19(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -1101,13 +1101,13 @@ func tableComponentText19(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -1132,13 +1132,13 @@ func tableComponentCode18(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 自定义背景色
             .interopStyle(true, markdownConfiguration.markdownTheme.codeBackgroundColor)
             // 设置文本字符间距
@@ -1155,13 +1155,13 @@ func tableComponentCode18(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 自定义背景色
             .interopStyle(true, markdownConfiguration.markdownTheme.codeBackgroundColor)
             // 设置文本字符间距
@@ -1186,13 +1186,13 @@ func tableComponentCode19(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(true, false, markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -1209,13 +1209,13 @@ func tableComponentCode19(nodeView: NodeView, isHeader: Bool, markdownConfigurat
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(true, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, true, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, true, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(true, false, markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -1240,13 +1240,13 @@ func tableLinkComponent18(nodeView: NodeView, isHeader: Bool, link: String, mark
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -1263,13 +1263,13 @@ func tableLinkComponent18(nodeView: NodeView, isHeader: Bool, link: String, mark
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -1294,13 +1294,13 @@ func tableLinkComponent19(nodeView: NodeView, isHeader: Bool, link: String, mark
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -1317,13 +1317,13 @@ func tableLinkComponent19(nodeView: NodeView, isHeader: Bool, link: String, mark
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -1348,13 +1348,13 @@ func tableComponentFootnote18(nodeView: NodeView, isHeader: Bool, markdownConfig
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -1375,13 +1375,13 @@ func tableComponentFootnote18(nodeView: NodeView, isHeader: Bool, markdownConfig
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 自定义背景色
             .interopStyle(nodeView.link.isSome(), markdownConfiguration.markdownTheme.linkBackGroupColor)
             // 设置文本字符间距
@@ -1410,13 +1410,13 @@ func tableComponentFootnote19(nodeView: NodeView, isHeader: Bool, markdownConfig
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距
@@ -1437,13 +1437,13 @@ func tableComponentFootnote19(nodeView: NodeView, isHeader: Bool, markdownConfig
             // 设置文本的字体列表
             .fontFamily(spanFontFamily(false, markdownConfiguration.markdownTheme, false))
             // 设置文本尺寸
-            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0))
+            .fontSize(spanFontSize(nodeView, false, markdownConfiguration.markdownTheme, false, 0, if(isHeader){1}else{2}))
             // 设置文本的字体粗细
             .fontWeight(spanFontWeight(nodeView, false, isHeader))
             // 设置文本的字体样式
             .fontStyle(spanFontStyle(nodeView, false))
             // 设置文本颜色
-            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false))
+            .fontColor(spanFontColor(nodeView, false, markdownConfiguration.markdownTheme, false, if(isHeader){1}else{2}))
             // 设置背景样式
             .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(false, nodeView.link.isSome(), markdownConfiguration.markdownTheme)))
             // 设置文本字符间距

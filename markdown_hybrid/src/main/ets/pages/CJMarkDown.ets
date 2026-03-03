@@ -664,6 +664,9 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.imageFixedRatioWidth !== undefined) {
           cjMarkdownTheme.setImageFixedRatioWidth(this.config.markdownTheme.imageFixedRatioWidth)
         }
+        if (this.config.markdownTheme.imageMaxHeight !== undefined) {
+          cjMarkdownTheme.setImageMaxHeight(this.config.markdownTheme.imageMaxHeight)
+        }
         if (this.config.markdownTheme.imageBorderRadius !== undefined) {
           cjMarkdownTheme.setImageBorderRadius(this.config.markdownTheme.imageBorderRadius)
         }
@@ -723,6 +726,18 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.tableHeaderRowBackgroundColor !== undefined) {
           cjMarkdownTheme.setTableHeaderRowBackgroundColor(this.config.markdownTheme.tableHeaderRowBackgroundColor)
+        }
+        if (this.config.markdownTheme.tableTitleTextColor !== undefined) {
+          cjMarkdownTheme.setTableTitleTextColor(this.config.markdownTheme.tableTitleTextColor)
+        }
+        if (this.config.markdownTheme.tableTitleTextSize !== undefined) {
+          cjMarkdownTheme.setTableTitleTextSize(this.config.markdownTheme.tableTitleTextSize)
+        }
+        if (this.config.markdownTheme.tableContentTextColor !== undefined) {
+          cjMarkdownTheme.setTableContentTextColor(this.config.markdownTheme.tableContentTextColor)
+        }
+        if (this.config.markdownTheme.tableContentTextSize !== undefined) {
+          cjMarkdownTheme.setTableContentTextSize(this.config.markdownTheme.tableContentTextSize)
         }
         if (this.config.markdownTheme.tableTextLineHeight !== undefined) {
           cjMarkdownTheme.setTableTextLineHeight(this.config.markdownTheme.tableTextLineHeight)
@@ -1735,6 +1750,10 @@ export class MarkdownTheme {
    */
   imageFixedRatioWidth?: number = undefined
   /**
+   * 图片最大高度
+   */
+  imageMaxHeight?: number = undefined
+  /**
    * 图片圆角大小
    */
   imageBorderRadius?: number = undefined
@@ -1814,6 +1833,25 @@ export class MarkdownTheme {
    * 表格头背景色
    */
   tableHeaderRowBackgroundColor?: number = undefined
+  /**
+   * 表格头文本颜色
+   */
+  tableTitleTextColor?: number = undefined
+
+  /**
+   * 表格头文本大小
+   */
+  tableTitleTextSize?: number = undefined
+
+  /**
+   * 表格内容文本颜色
+   */
+  tableContentTextColor?: number = undefined
+
+  /**
+   * 表格内容文本大小
+   */
+  tableContentTextSize?: number = undefined
   /**
    * 表格文本行高
    */
@@ -3450,6 +3488,15 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置图片最大高度
+   *
+   * @param imageMaxHeight 图片最大高度 - 默认None
+   */
+  setImageMaxHeight(imageMaxHeight: number): void {
+    this.imageMaxHeight = imageMaxHeight
+  }
+
+  /**
    * 设置图片圆角大小
    *
    * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
@@ -3627,6 +3674,42 @@ export class MarkdownTheme {
    */
   setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void {
     this.tableHeaderRowBackgroundColor = tableHeaderRowBackgroundColor
+  }
+
+  /**
+   * 设置表格头文本颜色
+   *
+   * @param tableTitleTextColor 表格头文本颜色 - 默认0XFF191919
+   */
+  setTableTitleTextColor(tableTitleTextColor: number): void {
+    this.tableTitleTextColor = tableTitleTextColor
+  }
+
+  /**
+   * 设置表格头文本大小
+   *
+   * @param tableTitleTextSize 表格头文本大小 - 默认14.0vp
+   */
+  setTableTitleTextSize(tableTitleTextSize: number): void {
+    this.tableTitleTextSize = tableTitleTextSize
+  }
+
+  /**
+   * 设置表格内容文本颜色
+   *
+   * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
+   */
+  setTableContentTextColor(tableContentTextColor: number): void {
+    this.tableContentTextColor = tableContentTextColor
+  }
+
+  /**
+   * 设置表格内容文本大小
+   *
+   * @param tableContentTextSize 表格内容文本大小 - 默认14.0vp
+   */
+  setTableContentTextSize(tableContentTextSize: number): void {
+    this.tableContentTextSize = tableContentTextSize
   }
 
   /**
