@@ -85,6 +85,11 @@ struct ImageDetailsPage {
   @State
   imageFixedRatioWidth: number | null = null
   /**
+   * 图片最大高度
+   */
+  @State
+  imageMaxHeight: number | null = null
+  /**
    * 图片是否有下载按钮
    */
   @State
@@ -155,6 +160,7 @@ struct ImageDetailsPage {
       this.imageBorderRadius = imageDataMD._imageBorderRadius
       this.imageMaximumWidth = imageDataMD._imageMaximumWidth
       this.imageFixedRatioWidth = imageDataMD._imageFixedRatioWidth
+      this.imageMaxHeight = imageDataMD._imageMaxHeight
       this.isImageDownload = imageDataMD._isImageDownload
       this.isImageMixedLayout = imageDataMD._isImageMixedLayout
       this.imageDownloadImageWidthHeight = imageDataMD._imageDownloadImageWidthHeight
@@ -244,6 +250,9 @@ struct ImageDetailsPage {
     theme.setImageMaximumWidth(this.imageMaximumWidth) // 图片基于自身宽度缩放百分比
     if (this.imageFixedRatioWidth !== null) {
       theme.setImageFixedRatioWidth(this.imageFixedRatioWidth) // 图片基于父布局宽度缩放百分比
+    }
+    if (this.imageMaxHeight !== null) {
+      theme.setImageMaxHeight(this.imageMaxHeight) // 图片最大高度
     }
     theme.setImageDownloadImage($r('app.media.video_download')) // 图片下载默认图标
     theme.setIsImageDownload(this.isImageDownload) // 图片是否有下载按钮

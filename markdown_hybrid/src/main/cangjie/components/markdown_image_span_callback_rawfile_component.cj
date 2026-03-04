@@ -239,6 +239,7 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                         imageResHeight(),
                         rawFileCallbackImageWidth,
                         rawFileCallbackImageHeight,
+                        rawFileCallbackMarkdownTheme.imageMaxHeight,
                         rawFileCallbackMarkdownTheme.imageFixedRatioWidth,
                         rawFileCallbackMarkdownTheme.imageMaximumWidth
                     )
@@ -271,6 +272,7 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                         imageResHeight(),
                         rawFileCallbackImageWidth,
                         rawFileCallbackImageHeight,
+                        rawFileCallbackMarkdownTheme.imageMaxHeight,
                         rawFileCallbackMarkdownTheme.imageFixedRatioWidth,
                         rawFileCallbackMarkdownTheme.imageMaximumWidth
                     )

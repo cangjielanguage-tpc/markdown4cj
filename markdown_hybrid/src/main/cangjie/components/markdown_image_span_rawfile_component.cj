@@ -189,6 +189,7 @@ public class MarkdownSpanImageRawFileComponent {
                         imageResHeight(),
                         rawFileImageWidth,
                         rawFileImageHeight,
+                        rawFileMarkdownTheme.imageMaxHeight,
                         rawFileMarkdownTheme.imageFixedRatioWidth,
                         rawFileMarkdownTheme.imageMaximumWidth
                     )

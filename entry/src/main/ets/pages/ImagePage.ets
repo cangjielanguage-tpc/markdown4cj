@@ -135,6 +135,15 @@ struct ImagePage {
   @State
   imageFixedRatioWidth: number| null = null
   /**
+   * 图片最大高度列表
+   */
+  imageMaxHeightList: Array<number | null> = [null, 50.0, 80.0, 100.0, 120.0, 150.0, 180.0, 200.0, 250.0, 300.0, 500.0]
+  /**
+   * 图片最大高度
+   */
+  @State
+  imageMaxHeight: number | null = null
+  /**
    * 图片是否有下载按钮列表
    */
   isImageDownloadList: Array<boolean> = [true, false]
@@ -591,6 +600,37 @@ struct ImagePage {
 
           Column() {
             Row() {
+              Text(`图片最大高度 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageMaxHeight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageMaxHeightList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageMaxHeight = item
+                    this.imageDataMD.imageMaxHeight = this.imageMaxHeight
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
               Text(`图片是否有下载按钮 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
@@ -954,6 +994,7 @@ export class ImageDataMD {
   _imageBorderRadius: number = 0
   _imageMaximumWidth: number = 1.0
   _imageFixedRatioWidth: number| null = null
+  _imageMaxHeight: number | null = null
   _isImageDownload: boolean = false
   _isImageMixedLayout: boolean = true
   _imageDownloadImageWidthHeight: number = 18
@@ -1008,6 +1049,10 @@ export class ImageDataMD {
 
   public set imageFixedRatioWidth(value: number) {
     this._imageFixedRatioWidth = value
+  }
+
+  public set imageMaxHeight(value: number) {
+    this._imageMaxHeight = value
   }
 
   public set isImageDownload(value: boolean) {

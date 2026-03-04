@@ -564,6 +564,7 @@ func imageWidthAndHeight(
     imageResHeight: Float64,
     imageWidth: Option<Length>,
     imageHeight: Option<Length>,
+    imageMaxHeight: ?Float64,
     imageFixedRatioWidth: Option<Float64>,
     imageMaximumWidth: Float64
 ): (Float64, Float64) {
@@ -574,47 +575,147 @@ func imageWidthAndHeight(
     let imageHeightPx: ?Float64 = length2FloatPx(imageHeight, componentImageWidth)
     if (imageWidthPx.isSome() && imageHeightPx.isSome()) {
         let aspectRatioNew: Float64 = imageHeightPx() / imageWidthPx()
-        width = if (componentImageWidth > imageWidthPx()) {
-            imageWidthPx()
+        var widthNew = if (imageFixedRatioWidth.isSome()) {
+            componentImageWidth * imageFixedRatioWidth()
+        } else {
+            imageWidthPx() * imageMaximumWidth
+        }
+        widthNew = if (componentImageWidth > widthNew) {
+            widthNew
         } else {
             componentImageWidth
         }
-        height = width * aspectRatioNew
+        var heightNew: Float64 = widthNew * aspectRatioNew
+        if (imageMaxHeight.isSome()) {
+            let imageMaxHeightPX = vp2px(imageMaxHeight().vp)().value
+            if (heightNew < imageMaxHeightPX) {
+                width = widthNew
+                height = heightNew
+            } else {
+                let aspectRatioHeightNew = imageMaxHeightPX / heightNew
+                width = widthNew * aspectRatioHeightNew
+                height = imageMaxHeightPX
+            }
+        } else {
+            width = widthNew
+            height = heightNew
+        }
+//        width = if (componentImageWidth > imageWidthPx()) {
+//            imageWidthPx()
+//        } else {
+//            componentImageWidth
+//        }
+//        height = width * aspectRatioNew
     } else if (imageWidthPx.isSome() && imageHeightPx.isNone()) {
-        width = if (componentImageWidth > imageWidthPx()) {
-            imageWidthPx()
+        var widthNew = if (imageFixedRatioWidth.isSome()) {
+            componentImageWidth * imageFixedRatioWidth()
+        } else {
+            imageWidthPx() * imageMaximumWidth
+        }
+        widthNew = if (componentImageWidth > widthNew) {
+            widthNew
         } else {
             componentImageWidth
         }
-        height = width * aspectRatio
+        var heightNew: Float64 = widthNew * aspectRatio
+        if (imageMaxHeight.isSome()) {
+            let imageMaxHeightPX = vp2px(imageMaxHeight().vp)().value
+            if (heightNew < imageMaxHeightPX) {
+                width = widthNew
+                height = heightNew
+            } else {
+                let aspectRatioHeightNew = imageMaxHeightPX / heightNew
+                width = widthNew * aspectRatioHeightNew
+                height = imageMaxHeightPX
+            }
+        } else {
+            width = widthNew
+            height = heightNew
+        }
+//        width = if (componentImageWidth > imageWidthPx()) {
+//            imageWidthPx()
+//        } else {
+//            componentImageWidth
+//        }
+//        height = width * aspectRatio
     } else if (imageWidthPx.isNone() && imageHeightPx.isSome()) {
-        width = if (componentImageWidth > imageHeightPx() / aspectRatio) {
-            imageHeightPx() / aspectRatio
+        var widthNew = if (imageFixedRatioWidth.isSome()) {
+            componentImageWidth * imageFixedRatioWidth()
+        } else {
+            imageHeightPx() / aspectRatio * imageMaximumWidth
+        }
+        widthNew = if (componentImageWidth > widthNew) {
+            widthNew
         } else {
             componentImageWidth
         }
-        height = width * aspectRatio
+        var heightNew: Float64 = widthNew * aspectRatio
+        if (imageMaxHeight.isSome()) {
+            let imageMaxHeightPX = vp2px(imageMaxHeight().vp)().value
+            if (heightNew < imageMaxHeightPX) {
+                width = widthNew
+                height = heightNew
+            } else {
+                let aspectRatioHeightNew = imageMaxHeightPX / heightNew
+                width = widthNew * aspectRatioHeightNew
+                height = imageMaxHeightPX
+            }
+        } else {
+            width = widthNew
+            height = heightNew
+        }
+//        width = if (componentImageWidth > imageHeightPx() / aspectRatio) {
+//            imageHeightPx() / aspectRatio
+//        } else {
+//            componentImageWidth
+//        }
+//        height = width * aspectRatio
     } else {
-        width = if (componentImageWidth > imageResWidth) {
-            imageResWidth
+        var widthNew = if (imageFixedRatioWidth.isSome()) {
+            componentImageWidth * imageFixedRatioWidth()
+        } else {
+            imageResWidth * imageMaximumWidth
+        }
+        widthNew = if (componentImageWidth > widthNew) {
+            widthNew
         } else {
             componentImageWidth
         }
-        height = width * aspectRatio
+        var heightNew: Float64 = widthNew * aspectRatio
+        if (imageMaxHeight.isSome()) {
+            let imageMaxHeightPX = vp2px(imageMaxHeight().vp)().value
+            if (heightNew < imageMaxHeightPX) {
+                width = widthNew
+                height = heightNew
+            } else {
+                let aspectRatioHeightNew = imageMaxHeightPX / heightNew
+                width = widthNew * aspectRatioHeightNew
+                height = imageMaxHeightPX
+            }
+        } else {
+            width = widthNew
+            height = heightNew
+        }
+//        width = if (componentImageWidth > imageResWidth) {
+//            imageResWidth
+//        } else {
+//            componentImageWidth
+//        }
+//        height = width * aspectRatio
     }
-    var widthNew: Float64 = 0.0
-    var heightNew: Float64 = 0.0
-    widthNew = if (imageFixedRatioWidth.isSome()) {
-        componentImageWidth * imageFixedRatioWidth()
-    } else {
-        width * imageMaximumWidth
-    }
-    heightNew = if (imageFixedRatioWidth.isSome()) {
-        height * (componentImageWidth / width) * imageFixedRatioWidth()
-    } else {
-        height * imageMaximumWidth
-    }
-    return (widthNew, heightNew)
+//    var widthNew: Float64 = 0.0
+//    var heightNew: Float64 = 0.0
+//    widthNew = if (imageFixedRatioWidth.isSome()) {
+//        componentImageWidth * imageFixedRatioWidth()
+//    } else {
+//        width * imageMaximumWidth
+//    }
+//    heightNew = if (imageFixedRatioWidth.isSome()) {
+//        height * (componentImageWidth / width) * imageFixedRatioWidth()
+//    } else {
+//        height * imageMaximumWidth
+//    }
+    return (width, height)
 }
 
 /**
