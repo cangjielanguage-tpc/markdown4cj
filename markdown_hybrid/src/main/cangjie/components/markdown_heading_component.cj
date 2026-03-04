@@ -273,7 +273,8 @@ class MarkdownHeadingComponent {
                         spanListMarkdownConfiguration,
                         spanListNodeView,
                         spanListTocListOnClick,
-                        spanListFootnoteCallback
+                        spanListFootnoteCallback,
+                        false
                     )
                 } else if (spanListNodeView.nodeType == "LatexMathNode") {
                     // 数学公式
@@ -300,7 +301,8 @@ class MarkdownHeadingComponent {
                             spanListMarkdownConfiguration,
                             spanListNodeView,
                             spanListTocListOnClick,
-                            spanListFootnoteCallback
+                            spanListFootnoteCallback,
+                            false
                         )
                     } else {
                         if (spanListNodeView.linkUrl().startsWith("http://") || spanListNodeView.linkUrl().startsWith("https://")) {

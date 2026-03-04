@@ -897,6 +897,11 @@ public class MarkdownTheme {
     protected var imageFixedRatioWidth: ?Float64 = None
 
     /**
+     * 图片最大高度
+     */
+    protected var imageMaxHeight: ?Float64 = None
+
+    /**
      * 图片圆角大小
      */
     protected var imageBorderRadius: Float64 = 0.0
@@ -1010,6 +1015,26 @@ public class MarkdownTheme {
      * 表格头背景色
      */
     protected var tableHeaderRowBackgroundColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 表格头文本颜色
+     */
+    protected var tableTitleTextColor: Color = COLOR_FF191919
+
+    /**
+     * 表格头文本大小
+     */
+    protected var tableTitleTextSize: Float64 = 14.0
+
+    /**
+     * 表格内容文本颜色
+     */
+    protected var tableContentTextColor: Color = COLOR_FF191919
+
+    /**
+     * 表格内容文本大小
+     */
+    protected var tableContentTextSize: Float64 = 14.0
 
     /**
      * 表格文本行高
@@ -1310,6 +1335,7 @@ public class MarkdownTheme {
         // 14、图片
         this.imageMaximumWidth = builder.imageMaximumWidth
         this.imageFixedRatioWidth = builder.imageFixedRatioWidth
+        this.imageMaxHeight = builder.imageMaxHeight
         this.imageBorderRadius = builder.imageBorderRadius
         this.imageFitType = builder.imageFitType
         this.imageResource = builder.imageResource
@@ -1335,6 +1361,10 @@ public class MarkdownTheme {
         this.tableOddRowBackgroundColor = builder.tableOddRowBackgroundColor
         this.tableEvenRowBackgroundColor = builder.tableEvenRowBackgroundColor
         this.tableHeaderRowBackgroundColor = builder.tableHeaderRowBackgroundColor
+        this.tableTitleTextColor = builder.tableTitleTextColor
+        this.tableTitleTextSize = builder.tableTitleTextSize
+        this.tableContentTextColor = builder.tableContentTextColor
+        this.tableContentTextSize = builder.tableContentTextSize
         this.tableTextLineHeight = builder.tableTextLineHeight
         this.tableRadius = builder.tableRadius
         this.tableMinTextWidth = builder.tableMinTextWidth
@@ -2440,6 +2470,11 @@ public class MarkdownThemeBuilder {
     var imageFixedRatioWidth: ?Float64 = None
 
     /**
+     * 图片最大高度
+     */
+    var imageMaxHeight: ?Float64 = None
+
+    /**
      * 图片圆角大小
      */
     var imageBorderRadius: Float64 = 0.0
@@ -2553,6 +2588,26 @@ public class MarkdownThemeBuilder {
      * 表格头背景色
      */
     var tableHeaderRowBackgroundColor: Color = COLOR_FFFFFFFF
+
+    /**
+     * 表格头文本颜色
+     */
+    var tableTitleTextColor: Color = COLOR_FF191919
+
+    /**
+     * 表格头文本大小
+     */
+    var tableTitleTextSize: Float64 = 14.0
+
+    /**
+     * 表格内容文本颜色
+     */
+    var tableContentTextColor: Color = COLOR_FF191919
+
+    /**
+     * 表格内容文本大小
+     */
+    var tableContentTextSize: Float64 = 14.0
 
     /**
      * 表格文本行高
@@ -2856,6 +2911,7 @@ public class MarkdownThemeBuilder {
         // 14、图片
         this.imageMaximumWidth = theme.imageMaximumWidth
         this.imageFixedRatioWidth = theme.imageFixedRatioWidth
+        this.imageMaxHeight = theme.imageMaxHeight
         this.imageBorderRadius = theme.imageBorderRadius
         this.imageFitType = theme.imageFitType
         this.imageResource = theme.imageResource
@@ -2881,6 +2937,10 @@ public class MarkdownThemeBuilder {
         this.tableOddRowBackgroundColor = theme.tableOddRowBackgroundColor
         this.tableEvenRowBackgroundColor = theme.tableEvenRowBackgroundColor
         this.tableHeaderRowBackgroundColor = theme.tableHeaderRowBackgroundColor
+        this.tableTitleTextColor = theme.tableTitleTextColor
+        this.tableTitleTextSize = theme.tableTitleTextSize
+        this.tableContentTextColor = theme.tableContentTextColor
+        this.tableContentTextSize = theme.tableContentTextSize
         this.tableTextLineHeight = theme.tableTextLineHeight
         this.tableRadius = theme.tableRadius
         this.tableMinTextWidth = theme.tableMinTextWidth
@@ -4969,6 +5029,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置图片最大高度
+     *
+     * @param imageMaxHeight 图片最大高度 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageMaxHeight(imageMaxHeight: Float64): MarkdownThemeBuilder {
+        this.imageMaxHeight = imageMaxHeight
+        return this
+    }
+
+    /**
      * 设置图片圆角
      *
      * @param imageBorderRadius 图片圆角 - 默认0.0
@@ -5218,6 +5289,50 @@ public class MarkdownThemeBuilder {
      */
     public func setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: Color): MarkdownThemeBuilder {
         this.tableHeaderRowBackgroundColor = tableHeaderRowBackgroundColor
+        return this
+    }
+
+    /**
+     * 设置表格头文本颜色
+     *
+     * @param tableTitleTextColor 表格头文本颜色 - 默认0XFF191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableTitleTextColor(tableTitleTextColor: Color): MarkdownThemeBuilder {
+        this.tableTitleTextColor = tableTitleTextColor
+        return this
+    }
+
+    /**
+     * 设置表格头文本大小
+     *
+     * @param tableTitleTextSize 表格头文本大小 - 默认14.0vp
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableTitleTextSize(tableTitleTextSize: Float64): MarkdownThemeBuilder {
+        this.tableTitleTextSize = tableTitleTextSize
+        return this
+    }
+
+    /**
+     * 设置表格内容文本颜色
+     *
+     * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableContentTextColor(tableContentTextColor: Color): MarkdownThemeBuilder {
+        this.tableContentTextColor = tableContentTextColor
+        return this
+    }
+
+    /**
+     * 设置表格内容文本大小
+     *
+     * @param tableContentTextSize 表格内容文本大小 - 默认14.0vp
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableContentTextSize(tableContentTextSize: Float64): MarkdownThemeBuilder {
+        this.tableContentTextSize = tableContentTextSize
         return this
     }
 

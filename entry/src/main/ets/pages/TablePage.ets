@@ -120,6 +120,42 @@ struct TablePage {
   @State
   tableHeaderRowBackgroundColor: number = 0xFFFFFFFF
   /**
+   * 表格头文本颜色列表
+   */
+  tableTitleTextColorList: Array<number> = [0XFF191919, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  /**
+   * 表格头文本颜色
+   */
+  @State
+  tableTitleTextColor: number = 0XFF191919
+  /**
+   * 表格头文本大小列表
+   */
+  tableTitleTextSizeList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  /**
+   * 表格头文本大小
+   */
+  @State
+  tableTitleTextSize: number = 14
+  /**
+   * 表格内容文本颜色列表
+   */
+  tableContentTextColorList: Array<number> = [0XFF191919, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  /**
+   * 表格内容文本颜色
+   */
+  @State
+  tableContentTextColor: number = 0XFF191919
+  /**
+   * 表格内容文本大小列表
+   */
+  tableContentTextSizeList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  /**
+   * 表格内容文本大小
+   */
+  @State
+  tableContentTextSize: number = 14
+  /**
    * 表格文本行高列表
    */
   tableTextLineHeightList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
@@ -504,6 +540,142 @@ struct TablePage {
             }
           }
 
+
+
+
+          Column() {
+            Row() {
+              Text(`表格头文本颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(numberToColorString(this.tableTitleTextColor))
+                .fontSize(16)
+                .fontColor(this.tableTitleTextColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.tableTitleTextColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.tableTitleTextColor = item
+                    this.tableData.tableTitleTextColor = this.tableTitleTextColor
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`表格头文本大小 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.tableTitleTextSize}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.tableTitleTextSizeList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.tableTitleTextSize = item
+                    this.tableData.tableTitleTextSize = this.tableTitleTextSize
+                  })
+              })
+            }
+          }
+
+
+          Column() {
+            Row() {
+              Text(`表格内容文本颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(numberToColorString(this.tableContentTextColor))
+                .fontSize(16)
+                .fontColor(this.tableContentTextColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.tableContentTextColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.tableContentTextColor = item
+                    this.tableData.tableContentTextColor = this.tableContentTextColor
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`表格内容文本大小 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.tableContentTextSize}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.tableContentTextSizeList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.tableContentTextSize = item
+                    this.tableData.tableContentTextSize = this.tableContentTextSize
+                  })
+              })
+            }
+          }
+
+
+
+
+
           Column() {
             Row() {
               Text(`表格文本行高 - `)
@@ -699,6 +871,10 @@ export class TableData {
   _tableOddRowBackgroundColor: number = 0xFFFFFFFF
   _tableEvenRowBackgroundColor: number = 0xFFE0E0E0
   _tableHeaderRowBackgroundColor: number = 0xFFFFFFFF
+  _tableTitleTextColor: number = 0XFF191919
+  _tableTitleTextSize: number = 14
+  _tableContentTextColor: number = 0XFF191919
+  _tableContentTextSize: number = 14
   _tableTextLineHeight: number = 22
   _tableRadius: number = 5
   _tableMinTextWidth: number = 50
@@ -744,6 +920,22 @@ export class TableData {
 
   public set tableHeaderRowBackgroundColor(value: number) {
     this._tableHeaderRowBackgroundColor = value
+  }
+
+  public set tableTitleTextColor(value: number) {
+    this._tableTitleTextColor = value
+  }
+
+  public set tableTitleTextSize(value: number) {
+    this._tableTitleTextSize = value
+  }
+
+  public set tableContentTextColor(value: number) {
+    this._tableContentTextColor = value
+  }
+
+  public set tableContentTextSize(value: number) {
+    this._tableContentTextSize = value
   }
 
   public set tableTextLineHeight(value: number) {

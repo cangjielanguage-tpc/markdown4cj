@@ -365,12 +365,16 @@ public class MarkdownComponent {
                             } else if (item.nodeType == "LatexMathBlock") {
                                 // 数学公式块
                                 ListItem() {
-                                    MarkdownLatexMathBlockComponent(
-                                        markdownTheme:markdownConfiguration.markdownTheme,
-                                        latexMathBlockStr:item.nodeText,
-                                        latexImageCallback:markdownConfiguration.latexImageCallback,
-                                        latexStrCallback:markdownConfiguration.latexStrCallback,
-                                    )
+                                    if (item.isLatexMathBlockClose) {
+                                        MarkdownLatexMathBlockComponent(
+                                            markdownTheme:markdownConfiguration.markdownTheme,
+                                            latexMathBlockStr:item.nodeText,
+                                            latexImageCallback:markdownConfiguration.latexImageCallback,
+                                            latexStrCallback:markdownConfiguration.latexStrCallback,
+                                        )
+                                    } else {
+                                        Text(item.nodeText)
+                                    }
                                 }
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "TableBlock") {
@@ -653,12 +657,16 @@ public class MarkdownComponent {
                             } else if (item.nodeType == "LatexMathBlock") {
                                 // 数学公式块
                                 ListItem() {
-                                    MarkdownLatexMathBlockComponent(
-                                        markdownTheme:markdownConfiguration.markdownTheme,
-                                        latexMathBlockStr:item.nodeText,
-                                        latexImageCallback:markdownConfiguration.latexImageCallback,
-                                        latexStrCallback:markdownConfiguration.latexStrCallback,
-                                    )
+                                    if (item.isLatexMathBlockClose) {
+                                        MarkdownLatexMathBlockComponent(
+                                            markdownTheme:markdownConfiguration.markdownTheme,
+                                            latexMathBlockStr:item.nodeText,
+                                            latexImageCallback:markdownConfiguration.latexImageCallback,
+                                            latexStrCallback:markdownConfiguration.latexStrCallback,
+                                        )
+                                    } else {
+                                        Text(item.nodeText)
+                                    }
                                 }
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "TableBlock") {

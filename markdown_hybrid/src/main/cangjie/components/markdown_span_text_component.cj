@@ -21,7 +21,8 @@ func markdownSpanComponent(
     spanMarkdownConfiguration: MarkdownConfiguration,
     nodeView: NodeView,
     spanTocListOnClick: ?(Int64) -> Unit,
-    spanFootnoteCallback: (String) -> Unit
+    spanFootnoteCallback: (String) -> Unit,
+    isTableFirst: Bool
 ) {
     if (DeviceInfo.sdkApiVersion >= 19) {
         // API大于等级19
@@ -30,7 +31,7 @@ func markdownSpanComponent(
             Span(nodeView.nodeText)
                 .fontFamily(spanFontFamily(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .fontSize(spanFontSize(nodeView, spanMarkdownConfiguration.markdownTheme))
-                .fontWeight(spanFontWeight(nodeView))
+                .fontWeight(spanFontWeight(nodeView, isTableFirst))
                 .fontStyle(spanFontStyle(nodeView))
                 .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
@@ -45,7 +46,7 @@ func markdownSpanComponent(
             Span(nodeView.nodeText)
                 .fontFamily(spanFontFamily(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .fontSize(spanFontSize(nodeView, spanMarkdownConfiguration.markdownTheme))
-                .fontWeight(spanFontWeight(nodeView))
+                .fontWeight(spanFontWeight(nodeView, isTableFirst))
                 .fontStyle(spanFontStyle(nodeView))
                 .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
@@ -63,7 +64,7 @@ func markdownSpanComponent(
             Span(nodeView.nodeText)
                 .fontFamily(spanFontFamily(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .fontSize(spanFontSize(nodeView, spanMarkdownConfiguration.markdownTheme))
-                .fontWeight(spanFontWeight(nodeView))
+                .fontWeight(spanFontWeight(nodeView, isTableFirst))
                 .fontStyle(spanFontStyle(nodeView))
                 .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
@@ -78,7 +79,7 @@ func markdownSpanComponent(
             Span(nodeView.nodeText)
                 .fontFamily(spanFontFamily(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .fontSize(spanFontSize(nodeView, spanMarkdownConfiguration.markdownTheme))
-                .fontWeight(spanFontWeight(nodeView))
+                .fontWeight(spanFontWeight(nodeView, isTableFirst))
                 .fontStyle(spanFontStyle(nodeView))
                 .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))

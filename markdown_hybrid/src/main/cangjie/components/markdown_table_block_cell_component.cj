@@ -238,7 +238,8 @@ class MarkdownTableBlockCellComponent {
                         spanListMarkdownConfiguration,
                         spanListNodeView,
                         spanListTocListOnClick,
-                        spanListFootnoteCallback
+                        spanListFootnoteCallback,
+                        tableBlockCellCell == 0 && spanListMarkdownConfiguration.markdownTheme.tableFirstColumnBold
                     )
                 } else if (spanListNodeView.nodeType == "LatexMathNode") {
                     // 数学公式

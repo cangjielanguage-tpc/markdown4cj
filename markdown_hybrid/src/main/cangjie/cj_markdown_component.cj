@@ -739,6 +739,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.imageFixedRatioWidth) {
                 markdownThemeBuilder.setImageFixedRatioWidth(v) // 设置图片基于父布局宽度缩放百分比
             }
+            if (let Some(v) <- w.cjMarkdownTheme.imageMaxHeight) {
+                markdownThemeBuilder.setImageMaxHeight(v) // 设置图片最大高度
+            }
             if (let Some(v) <- w.cjMarkdownTheme.imageBorderRadius) {
                 markdownThemeBuilder.setImageBorderRadius(v) // 设置图片圆角大小
             }
@@ -798,6 +801,18 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.tableHeaderRowBackgroundColor) {
                 markdownThemeBuilder.setTableHeaderRowBackgroundColor(v) // 设置表格头背景色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.tableTitleTextColor) {
+                markdownThemeBuilder.setTableTitleTextColor(v) // 设置表格头文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.tableTitleTextSize) {
+                markdownThemeBuilder.setTableTitleTextSize(v) // 设置表格头文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.tableContentTextColor) {
+                markdownThemeBuilder.setTableContentTextColor(v) // 设置表格内容文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.tableContentTextSize) {
+                markdownThemeBuilder.setTableContentTextSize(v) // 设置表格内容文本大小
             }
             if (let Some(v) <- w.cjMarkdownTheme.tableTextLineHeight) {
                 markdownThemeBuilder.setTableTextLineHeight(v) // 设置表格文本行高

@@ -79,6 +79,26 @@ struct TableDetailsPage {
   @State
   tableHeaderRowBackgroundColor: number = 0xFFFFFFFF
   /**
+   * 表格头文本颜色
+   */
+  @State
+  tableTitleTextColor: number = 0XFF191919
+  /**
+   * 表格头文本大小
+   */
+  @State
+  tableTitleTextSize: number = 14
+  /**
+   * 表格内容文本颜色
+   */
+  @State
+  tableContentTextColor: number = 0XFF191919
+  /**
+   * 表格内容文本大小
+   */
+  @State
+  tableContentTextSize: number = 14
+  /**
    * 表格文本行高
    */
   @State
@@ -123,6 +143,10 @@ struct TableDetailsPage {
       this.tableOddRowBackgroundColor = tableData._tableOddRowBackgroundColor
       this.tableEvenRowBackgroundColor = tableData._tableEvenRowBackgroundColor
       this.tableHeaderRowBackgroundColor = tableData._tableHeaderRowBackgroundColor
+      this.tableTitleTextColor = tableData._tableTitleTextColor
+      this.tableTitleTextSize = tableData._tableTitleTextSize
+      this.tableContentTextColor = tableData._tableContentTextColor
+      this.tableContentTextSize = tableData._tableContentTextSize
       this.tableTextLineHeight = tableData._tableTextLineHeight
       this.tableRadius = tableData._tableRadius
       this.tableMinTextWidth = tableData._tableMinTextWidth
@@ -199,6 +223,10 @@ struct TableDetailsPage {
     theme.setTableOddRowBackgroundColor(this.tableOddRowBackgroundColor) // 表格奇数行背景色
     theme.setTableEvenRowBackgroundColor(this.tableEvenRowBackgroundColor) // 表格偶数行背景色
     theme.setTableHeaderRowBackgroundColor(this.tableHeaderRowBackgroundColor) // 表格头背景色
+    theme.setTableTitleTextColor(this.tableTitleTextColor) // 表格头文本颜色
+    theme.setTableTitleTextSize(this.tableTitleTextSize) // 置表格头文本大小
+    theme.setTableContentTextColor(this.tableContentTextColor) // 表格内容文本颜色
+    theme.setTableContentTextSize(this.tableContentTextSize) // 表格内容文本大小
     theme.setTableTextLineHeight(this.tableTextLineHeight) // 表格文本行高
     theme.setTableRadius(this.tableRadius) // 表格圆角
     theme.setTableMinTextWidth(this.tableMinTextWidth) // 表格最小宽度

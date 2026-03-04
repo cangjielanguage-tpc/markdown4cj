@@ -179,6 +179,12 @@ func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
     if (nodeView.isHeading) {
         return markdownTheme.headingTextSizeMultipliers[nodeView.headingLevel - 1] // 标题
     }
+    if (nodeView.isTable && nodeView.isTableHead) {
+        return markdownTheme.tableTitleTextSize // 表格头
+    }
+    if (nodeView.isTable) {
+        return markdownTheme.tableContentTextSize // 表格内容
+    }
     return markdownTheme.paragraphTextSize // 段落和其他
 }
 
@@ -191,14 +197,14 @@ func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
  * @param isStrongEmphasis 是否在加粗中
  * @return 文字样式加粗
  */
-func spanFontWeight(nodeView: NodeView): FontWeight {
+func spanFontWeight(nodeView: NodeView, isTableFirst: Bool): FontWeight {
     if (nodeView.isSpanNode) {
         if (let Some(v) <- nodeView.spanNodeWeight) {
             return v // SpanNode
         }
     }
-    if (nodeView.isHeading || nodeView.isDescTerm || nodeView.isStrongEmphasis) {
-        return FontWeight.W600 // 标题/定义列表术语/加粗
+    if (nodeView.isHeading || nodeView.isDescTerm || nodeView.isStrongEmphasis || (nodeView.isTable && nodeView.isTableHead) || isTableFirst) {
+        return FontWeight.W600 // 标题/定义列表术语/加粗/表格头/表格第一列文本
     }
     return FontWeight.W400 // 其他
 }
@@ -236,7 +242,7 @@ func spanFontColor(nodeView: NodeView, markdownTheme: MarkdownTheme): Color {
         return markdownTheme.subTextColor // 下标
     }
     if (nodeView.isSupNode) {
-        return markdownTheme.supTextColor //
+        return markdownTheme.supTextColor // 上标
     }
     if (nodeView.isFontNode) {
         if (let Some(v) <- nodeView.fontNodeColor) {
@@ -248,14 +254,20 @@ func spanFontColor(nodeView: NodeView, markdownTheme: MarkdownTheme): Color {
             return v // SpanNode
         }
     }
-    if (nodeView.isInLineCode) {
-        return markdownTheme.codeTextColor // 内联代码
-    }
     if (nodeView.isLink || nodeView.isFootnote) {
         return markdownTheme.linkColor // 链接, 脚注
     }
+    if (nodeView.isInLineCode) {
+        return markdownTheme.codeTextColor // 内联代码
+    }
     if (nodeView.isHeading) {
         return markdownTheme.headingTextColor // 标题
+    }
+    if (nodeView.isTable && nodeView.isTableHead) {
+        return markdownTheme.tableTitleTextColor // 表格头
+    }
+    if (nodeView.isTable) {
+        return markdownTheme.tableContentTextColor // 表格内容
     }
     return markdownTheme.paragraphTextColor // 段落和其他
 }
