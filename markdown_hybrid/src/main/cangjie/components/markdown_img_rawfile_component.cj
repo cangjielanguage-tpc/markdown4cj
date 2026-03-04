@@ -98,9 +98,9 @@ public class MarkdownImgRawFileComponent {
                     // 自定义图片圆角
                     .interopBorderRadius(markdownConfigurationRawFile.markdownTheme.imageBorderRadius)
                     // 设置组件自身的宽度
-                    .width(imageSpanWidth(markdownConfigurationRawFile.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthRawFile(), markdownConfigurationRawFile.markdownTheme.imageMaximumWidth))
+                    .width(widthRawFile().px)
                     // 设置组件自身的高度
-                    .height(imageSpanHeight(markdownConfigurationRawFile.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthRawFile(), heightRawFile(), markdownConfigurationRawFile.markdownTheme.imageMaximumWidth))
+                    .height(heightRawFile().px)
                     // 设置图片的缩放类型
                     .objectFit(markdownConfigurationRawFile.markdownTheme.imageFitType)
                     // 设置图片基于文本的对齐方式
@@ -123,10 +123,20 @@ public class MarkdownImgRawFileComponent {
     func localRowImageToPixelMap() {
         let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
             pixelMap, widthRawFile, heightRawFile => launch {
-                this.imagePixelMapRawFile = pixelMap
-                this.widthRawFile = widthRawFile
-                this.heightRawFile = heightRawFile
                 if (this.imagePixelMapRawFile.isSome() && this.widthRawFile.isSome() && this.heightRawFile.isSome()) {
+                    this.imagePixelMapRawFile = pixelMap
+                    let res = imageWidthAndHeight(
+                        componentImageWidth,
+                        widthRawFile(),
+                        heightRawFile(),
+                        Option<Length>.None,
+                        Option<Length>.None,
+                        markdownConfigurationRawFile.markdownTheme.imageMaxHeight,
+                        markdownConfigurationRawFile.markdownTheme.imageFixedRatioWidth,
+                        markdownConfigurationRawFile.markdownTheme.imageMaximumWidth
+                    )
+                    this.widthRawFile = res[0]
+                    this.heightRawFile = res[1]
                     imageType = 1
                 } else {
                     imageType = 2

@@ -1907,3 +1907,160 @@ func refreshCacheData(nodeView: NodeView, newBlockHash: Int64, compontentType: S
         case _ => return true
     }
 }
+
+/**
+ * 将Length转换成PX格式的Float64
+ *
+ * @param length Length
+ * @param componentImageWidth 控件宽度
+ * @return Option<Float64> PX格式的Float64
+ */
+func length2FloatPx(length: Option<Length>, componentImageWidth: Float64): Option<Float64> {
+    if (let Some(v) <- length) {
+        return match (v.unitType) {
+            case LengthType.vp(w) => vp2px(w.vp)().value
+            case LengthType.px(w) => w
+            case LengthType.percent(w) => componentImageWidth * w
+            case _ => Option<Float64>.None
+        }
+    } else {
+        return Option<Float64>.None
+    }
+}
+
+/**
+ * 处理图片的宽高
+ *
+ * @param componentImageWidth 控件宽度
+ * @param imageResWidth 图片真实宽度
+ * @param imageResHeight 图片真实高度
+ * @param imageWidth 图片设置宽度
+ * @param imageHeight 图片设置高度
+ * @param imageMaxHeight 图片最大高度
+ * @param imageFixedRatioWidth 图片基于父布局宽度缩放百分比
+ * @param imageMaximumWidth 图片基于自身宽度缩放百分比
+ * @return (Float64, Float64) 图片的宽高单位是PX
+ */
+func imageWidthAndHeight(
+    componentImageWidth: Float64,
+    imageResWidth: Float64,
+    imageResHeight: Float64,
+    imageWidth: Option<Length>,
+    imageHeight: Option<Length>,
+    imageMaxHeight: ?Float64,
+    imageFixedRatioWidth: Option<Float64>,
+    imageMaximumWidth: Float64
+): (Float64, Float64) {
+    var width: Float64 = 0.0
+    var height: Float64 = 0.0
+    let aspectRatio: Float64 = imageResHeight / imageResWidth // 原图宽高比
+    let imageWidthPx: ?Float64 = length2FloatPx(imageWidth, componentImageWidth) // 宽度Length转换成px
+    let imageHeightPx: ?Float64 = length2FloatPx(imageHeight, componentImageWidth) // 高度Length转换成px
+    if (imageWidthPx.isSome() && imageHeightPx.isSome()) {
+        let aspectRatioNew: Float64 = imageHeightPx() / imageWidthPx()
+        var widthNew = if (imageFixedRatioWidth.isSome()) {
+            componentImageWidth * imageFixedRatioWidth()
+        } else {
+            imageWidthPx() * imageMaximumWidth
+        }
+        widthNew = if (componentImageWidth > widthNew) {
+            widthNew
+        } else {
+            componentImageWidth
+        }
+        var heightNew: Float64 = widthNew * aspectRatioNew
+        if (imageMaxHeight.isSome()) {
+            let imageMaxHeightPX = vp2px(imageMaxHeight().vp)().value
+            if (heightNew < imageMaxHeightPX) {
+                width = widthNew
+                height = heightNew
+            } else {
+                let aspectRatioHeightNew = imageMaxHeightPX / heightNew
+                width = widthNew * aspectRatioHeightNew
+                height = imageMaxHeightPX
+            }
+        } else {
+            width = widthNew
+            height = heightNew
+        }
+    } else if (imageWidthPx.isSome() && imageHeightPx.isNone()) {
+        var widthNew = if (imageFixedRatioWidth.isSome()) {
+            componentImageWidth * imageFixedRatioWidth()
+        } else {
+            imageWidthPx() * imageMaximumWidth
+        }
+        widthNew = if (componentImageWidth > widthNew) {
+            widthNew
+        } else {
+            componentImageWidth
+        }
+        var heightNew: Float64 = widthNew * aspectRatio
+        if (imageMaxHeight.isSome()) {
+            let imageMaxHeightPX = vp2px(imageMaxHeight().vp)().value
+            if (heightNew < imageMaxHeightPX) {
+                width = widthNew
+                height = heightNew
+            } else {
+                let aspectRatioHeightNew = imageMaxHeightPX / heightNew
+                width = widthNew * aspectRatioHeightNew
+                height = imageMaxHeightPX
+            }
+        } else {
+            width = widthNew
+            height = heightNew
+        }
+    } else if (imageWidthPx.isNone() && imageHeightPx.isSome()) {
+        var widthNew = if (imageFixedRatioWidth.isSome()) {
+            componentImageWidth * imageFixedRatioWidth()
+        } else {
+            imageHeightPx() / aspectRatio * imageMaximumWidth
+        }
+        widthNew = if (componentImageWidth > widthNew) {
+            widthNew
+        } else {
+            componentImageWidth
+        }
+        var heightNew: Float64 = widthNew * aspectRatio
+        if (imageMaxHeight.isSome()) {
+            let imageMaxHeightPX = vp2px(imageMaxHeight().vp)().value
+            if (heightNew < imageMaxHeightPX) {
+                width = widthNew
+                height = heightNew
+            } else {
+                let aspectRatioHeightNew = imageMaxHeightPX / heightNew
+                width = widthNew * aspectRatioHeightNew
+                height = imageMaxHeightPX
+            }
+        } else {
+            width = widthNew
+            height = heightNew
+        }
+    } else {
+        var widthNew = if (imageFixedRatioWidth.isSome()) {
+            componentImageWidth * imageFixedRatioWidth()
+        } else {
+            imageResWidth * imageMaximumWidth
+        }
+        widthNew = if (componentImageWidth > widthNew) {
+            widthNew
+        } else {
+            componentImageWidth
+        }
+        var heightNew: Float64 = widthNew * aspectRatio
+        if (imageMaxHeight.isSome()) {
+            let imageMaxHeightPX = vp2px(imageMaxHeight().vp)().value
+            if (heightNew < imageMaxHeightPX) {
+                width = widthNew
+                height = heightNew
+            } else {
+                let aspectRatioHeightNew = imageMaxHeightPX / heightNew
+                width = widthNew * aspectRatioHeightNew
+                height = imageMaxHeightPX
+            }
+        } else {
+            width = widthNew
+            height = heightNew
+        }
+    }
+    return (width, height)
+}

@@ -87,9 +87,9 @@ public class MarkdownImgUrl15Component {
                     // 自定义图片圆角
                     .interopBorderRadius(markdownConfigurationUrl15.markdownTheme.imageBorderRadius)
                     // 设置组件自身的宽度
-                    .width(imageSpanWidth(markdownConfigurationUrl15.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthUrl15, markdownConfigurationUrl15.markdownTheme.imageMaximumWidth))
+                    .width(widthUrl15.px)
                     // 设置组件自身的高度
-                    .height(imageSpanHeight(markdownConfigurationUrl15.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthUrl15, heightUrl15, markdownConfigurationUrl15.markdownTheme.imageMaximumWidth))
+                    .height(heightUrl15.px)
                     // 设置组件的可见性
                     .visibility(visibilityImageSpanType(imageType))
                     // 设置图片的缩放类型
@@ -103,7 +103,16 @@ public class MarkdownImgUrl15Component {
                     // 图片成功加载时触发该回调，返回成功加载的图片尺寸
                     .onComplete {
                         imageLoadResult =>
-                            let res = imageSpanComplete(imageLoadResult.height, imageLoadResult.width, componentImageWidth)
+                            let res = imageWidthAndHeight(
+                                componentImageWidth,
+                                imageLoadResult.width,
+                                imageLoadResult.height,
+                                Option<Length>.None,
+                                Option<Length>.None,
+                                markdownConfigurationUrl15.markdownTheme.imageMaxHeight,
+                                markdownConfigurationUrl15.markdownTheme.imageFixedRatioWidth,
+                                markdownConfigurationUrl15.markdownTheme.imageMaximumWidth
+                            )
                             widthUrl15 = res[0]
                             heightUrl15 = res[1]
                             imageType = 1

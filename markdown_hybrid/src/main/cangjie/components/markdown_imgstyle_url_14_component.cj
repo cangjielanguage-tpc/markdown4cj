@@ -76,7 +76,7 @@ public class MarkdownImgStyleUrl14Component {
      *
      */
     @State
-    var picStyleObjWidth: ?Float64 = Option<Float64>.None
+    var picStyleObjWidth: ?Length = Option<Length>.None
 
     /**
      * 图片最大宽度 - 单位px
@@ -94,7 +94,7 @@ public class MarkdownImgStyleUrl14Component {
      *
      */
     @State
-    var picStyleObjHeight: ?Float64 = Option<Float64>.None
+    var picStyleObjHeight: ?Length = Option<Length>.None
 
     /**
      * 对齐方式 - 暂未支持
@@ -109,8 +109,8 @@ public class MarkdownImgStyleUrl14Component {
             radius = picStyleObjStyleUrl14.borderRadius()
         }
         align = picStyleObjStyleUrl14.align
-        picStyleObjWidth = length2Float64(picStyleObjStyleUrl14.width, componentImageWidth)
-        picStyleObjHeight = length2Float64(picStyleObjStyleUrl14.height, componentImageWidth)
+        picStyleObjWidth = picStyleObjStyleUrl14.width
+        picStyleObjHeight = picStyleObjStyleUrl14.height
     }
 
     func build() {
@@ -122,9 +122,9 @@ public class MarkdownImgStyleUrl14Component {
                     // 自定义图片圆角
                     .interopBorderRadius(imageSpanBorderRadius(radius, markdownConfigurationStyleUrl14.markdownTheme.imageBorderRadius))
                     // 设置组件自身的宽度
-                    .width(imageSpanWidth(markdownConfigurationStyleUrl14.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthStyleUrl14, markdownConfigurationStyleUrl14.markdownTheme.imageMaximumWidth))
+                    .width(widthStyleUrl14.px)
                     // 设置组件自身的高度
-                    .height(imageSpanHeight(markdownConfigurationStyleUrl14.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthStyleUrl14, heightStyleUrl14, markdownConfigurationStyleUrl14.markdownTheme.imageMaximumWidth))
+                    .height(heightStyleUrl14.px)
                     // 设置组件的可见性
                     .visibility(visibilityImageSpanType(imageType))
                     // 设置图片的缩放类型
@@ -138,7 +138,16 @@ public class MarkdownImgStyleUrl14Component {
                     // 图片成功加载时触发该回调，返回成功加载的图片尺寸
                     .interopOnComplete {
                         imageLoadResult =>
-                            let res = imageWidthHeight(picStyleObjWidth, picStyleObjHeight, componentImageWidth, imageLoadResult.height, imageLoadResult.width)
+                            let res = imageWidthAndHeight(
+                                componentImageWidth,
+                                imageLoadResult.width,
+                                imageLoadResult.height,
+                                picStyleObjWidth,
+                                picStyleObjHeight,
+                                markdownConfigurationStyleUrl14.markdownTheme.imageMaxHeight,
+                                markdownConfigurationStyleUrl14.markdownTheme.imageFixedRatioWidth,
+                                markdownConfigurationStyleUrl14.markdownTheme.imageMaximumWidth
+                            )
                             widthStyleUrl14 = res[0]
                             heightStyleUrl14 = res[1]
                             imageType = 1

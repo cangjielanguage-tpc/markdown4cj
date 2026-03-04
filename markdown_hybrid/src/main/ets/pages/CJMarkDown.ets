@@ -102,6 +102,9 @@ export struct CJMarkdown {
       if (this.config.imageCallbackCallback !== undefined && global_customLib !== undefined) {
         global_customLib.registerImgPreprocessCallback(this.config.imageCallbackCallback)
       }
+      if (this.config.imageDownloadCallback !== undefined) {
+        cjMarkdownConfig.setImageDownloadCallback(this.config.imageDownloadCallback)
+      }
       if (this.config.audioCallback !== undefined) {
         cjMarkdownConfig.setAudioCallback(this.config.audioCallback)
       }
@@ -849,6 +852,10 @@ export class MarkdownConfiguration {
    */
   imageCallbackCallback?: (funcArg0: string) => Promise<ArrayBuffer | undefined> = undefined
   /**
+   * 图片下载的点击事件
+   */
+  imageDownloadCallback?: (funcArg0: string) => void = undefined
+  /**
    * 音频的点击事件
    */
   audioCallback?: (funcArg0: string) => void = undefined
@@ -932,6 +939,15 @@ export class MarkdownConfiguration {
    */
   setImageCallbackCallback(cb: (funcArg0: string) => Promise<ArrayBuffer | undefined>): void {
     this.imageCallbackCallback = cb
+  }
+
+  /**
+   * 设置图片下载的点击事件
+   *
+   * @param cb 图片下载的点击事件。 (funcArg0：图片url)
+   */
+  setImageDownloadCallback(cb: (funcArg0: string) => void): void {
+    this.imageDownloadCallback = cb
   }
 
   /**

@@ -96,8 +96,27 @@ public class MarkdownImgStyleRawFileComponent {
     @State
     var align: FlexAlign = FlexAlign.Start
 
+    /**
+     *
+     */
+    @State
+    var picStyleObjWidth: ?Length = Option<Length>.None
+
+    /**
+     *
+     */
+    @State
+    var picStyleObjHeight: ?Length = Option<Length>.None
+
     protected override func aboutToAppear(): Unit {
         componentImageWidth = vp2px(componentWidthStyleRawFile.vp)().value
+        let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
+        if (picStyleObj.borderRadius.isSome()) {
+            radius = picStyleObj.borderRadius()
+        }
+        align = picStyleObj.align
+        picStyleObjWidth = picStyleObj.width
+        picStyleObjHeight = picStyleObj.height
         localRowImageStyleToPixelMap()
     }
 
@@ -115,9 +134,9 @@ public class MarkdownImgStyleRawFileComponent {
                     // 自定义图片圆角
                     .interopBorderRadius(imageSpanBorderRadius(radius, markdownConfigurationStyleRawFile.markdownTheme.imageBorderRadius))
                     // 设置组件自身的宽度
-                    .width(imageSpanWidth(markdownConfigurationStyleRawFile.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthStyleRawFile(), markdownConfigurationStyleRawFile.markdownTheme.imageMaximumWidth))
+                    .width(widthStyleRawFile().px)
                     // 设置组件自身的高度
-                    .height(imageSpanHeight(markdownConfigurationStyleRawFile.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthStyleRawFile(), heightStyleRawFile(), markdownConfigurationStyleRawFile.markdownTheme.imageMaximumWidth))
+                    .height(heightStyleRawFile().px)
                     // 设置图片的缩放类型
                     .objectFit(markdownConfigurationStyleRawFile.markdownTheme.imageFitType)
                     // 设置图片基于文本的对齐方式
@@ -140,23 +159,26 @@ public class MarkdownImgStyleRawFileComponent {
     func localRowImageStyleToPixelMap() {
         let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
             pixelMap, widthStyleRawFile, heightStyleRawFile => launch {
-                this.heightStyleRawFile = heightStyleRawFile
-                this.imagePixelMap = pixelMap
-                this.widthStyleRawFile = widthStyleRawFile
                 if (this.imagePixelMap.isSome() && this.widthStyleRawFile.isSome() && this.heightStyleRawFile.isSome()) {
+                    this.imagePixelMap = pixelMap
+                    let res = imageWidthAndHeight(
+                        componentImageWidth,
+                        widthStyleRawFile(),
+                        heightStyleRawFile(),
+                        picStyleObjWidth,
+                        picStyleObjHeight,
+                        markdownConfigurationStyleRawFile.markdownTheme.imageMaxHeight,
+                        markdownConfigurationStyleRawFile.markdownTheme.imageFixedRatioWidth,
+                        markdownConfigurationStyleRawFile.markdownTheme.imageMaximumWidth
+                    )
+                    this.widthStyleRawFile = res[0]
+                    this.heightStyleRawFile = res[1]
                     imageType = 1
                 } else {
                     imageType = 2
                 }
             }
         }
-        let picStyleObj: PicStyleObj = parsePicStyle(picStyle, componentImageWidth)
-        if (picStyleObj.borderRadius.isSome()) {
-            radius = picStyleObj.borderRadius()
-        }
-        align = picStyleObj.align
-        let picStyleObjHeight: ?Float64 = length2Float64(picStyleObj.height, componentImageWidth)
-        let picStyleObjWidth: ?Float64 = length2Float64(picStyleObj.width, componentImageWidth)
-        let fut = rawfileToPixelmapStyle(destinationStyleRawFile, markdownConfigurationStyleRawFile.markdownTheme.abilityContext, markdownConfigurationStyleRawFile.markdownTheme.stageContext, componentImageWidth, picStyleObjWidth, picStyleObjHeight, callback)
+        let fut = rawfileToPixelmapStyle(destinationStyleRawFile, markdownConfigurationStyleRawFile.markdownTheme.abilityContext, markdownConfigurationStyleRawFile.markdownTheme.stageContext, componentImageWidth, Option<Float64>.None, Option<Float64>.None, callback)
     }
 }

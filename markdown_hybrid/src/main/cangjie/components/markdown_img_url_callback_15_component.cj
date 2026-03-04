@@ -120,9 +120,9 @@ public class MarkdownImgUrlCallback15Component {
                         // 自定义图片圆角
                         .interopBorderRadius(markdownConfigurationUrlCallback15.markdownTheme.imageBorderRadius)
                         // 设置组件自身的宽度
-                        .width(imageSpanWidth(markdownConfigurationUrlCallback15.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthUrlCallback15, markdownConfigurationUrlCallback15.markdownTheme.imageMaximumWidth))
+                        .width(widthUrlCallback15.px)
                         // 设置组件自身的高度
-                        .height(imageSpanHeight(markdownConfigurationUrlCallback15.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthUrlCallback15, heightUrlCallback15, markdownConfigurationUrlCallback15.markdownTheme.imageMaximumWidth))
+                        .height(heightUrlCallback15.px)
                         // 设置组件的可见性
                         .visibility(visibilityImageSpanType(imageType))
                         // 设置图片的缩放类型
@@ -136,7 +136,16 @@ public class MarkdownImgUrlCallback15Component {
                         // 图片成功加载时触发该回调，返回成功加载的图片尺寸
                         .onComplete {
                             imageLoadResult =>
-                                let res = imageSpanComplete(imageLoadResult.height, imageLoadResult.width, componentImageWidth)
+                                let res = imageWidthAndHeight(
+                                    componentImageWidth,
+                                    imageLoadResult.width,
+                                    imageLoadResult.height,
+                                    Option<Length>.None,
+                                    Option<Length>.None,
+                                    markdownConfigurationUrlCallback15.markdownTheme.imageMaxHeight,
+                                    markdownConfigurationUrlCallback15.markdownTheme.imageFixedRatioWidth,
+                                    markdownConfigurationUrlCallback15.markdownTheme.imageMaximumWidth
+                                )
                                 widthUrlCallback15 = res[0]
                                 heightUrlCallback15 = res[1]
                                 imageType = 1

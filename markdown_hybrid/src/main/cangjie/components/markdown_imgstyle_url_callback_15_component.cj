@@ -112,13 +112,13 @@ public class MarkdownImgStyleUrlCallback15Component {
      *
      */
     @State
-    var picStyleObjWidth: ?Float64 = Option<Float64>.None
+    var picStyleObjWidth: ?Length = Option<Length>.None
 
     /**
      *
      */
     @State
-    var picStyleObjHeight: ?Float64 = Option<Float64>.None
+    var picStyleObjHeight: ?Length = Option<Length>.None
 
     /**
      * 对齐方式 - 暂未支持
@@ -133,8 +133,8 @@ public class MarkdownImgStyleUrlCallback15Component {
             radius = picStyleObjStyleUrlCallback15.borderRadius()
         }
         align = picStyleObjStyleUrlCallback15.align
-        picStyleObjWidth = length2Float64(picStyleObjStyleUrlCallback15.width, componentImageWidth)
-        picStyleObjHeight = length2Float64(picStyleObjStyleUrlCallback15.height, componentImageWidth)
+        picStyleObjWidth = picStyleObjStyleUrlCallback15.width
+        picStyleObjHeight = picStyleObjStyleUrlCallback15.height
         imageCallPixelmap()
     }
 
@@ -156,9 +156,9 @@ public class MarkdownImgStyleUrlCallback15Component {
                         // 自定义图片圆角
                         .interopBorderRadius(imageSpanBorderRadius(radius, markdownConfigurationStyleUrlCallback15.markdownTheme.imageBorderRadius))
                         // 设置组件自身的宽度
-                        .width(imageSpanWidth(markdownConfigurationStyleUrlCallback15.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthStyleUrlCallback15, markdownConfigurationStyleUrlCallback15.markdownTheme.imageMaximumWidth))
+                        .width(widthStyleUrlCallback15.px)
                         // 设置组件自身的高度
-                        .height(imageSpanHeight(markdownConfigurationStyleUrlCallback15.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthStyleUrlCallback15, heightStyleUrlCallback15, markdownConfigurationStyleUrlCallback15.markdownTheme.imageMaximumWidth))
+                        .height(heightStyleUrlCallback15.px)
                         // 设置组件的可见性
                         .visibility(visibilityImageSpanType(imageType))
                         // 设置图片的缩放类型
@@ -172,7 +172,16 @@ public class MarkdownImgStyleUrlCallback15Component {
                         // 图片成功加载时触发该回调，返回成功加载的图片尺寸
                         .onComplete {
                             imageLoadResult =>
-                                let res = imageWidthHeight(picStyleObjWidth, picStyleObjHeight, componentImageWidth, imageLoadResult.height, imageLoadResult.width)
+                                let res = imageWidthAndHeight(
+                                    componentImageWidth,
+                                    imageLoadResult.width,
+                                    imageLoadResult.height,
+                                    picStyleObjWidth,
+                                    picStyleObjHeight,
+                                    markdownConfigurationStyleUrlCallback15.markdownTheme.imageMaxHeight,
+                                    markdownConfigurationStyleUrlCallback15.markdownTheme.imageFixedRatioWidth,
+                                    markdownConfigurationStyleUrlCallback15.markdownTheme.imageMaximumWidth
+                                )
                                 widthStyleUrlCallback15 = res[0]
                                 heightStyleUrlCallback15 = res[1]
                                 imageType = 1

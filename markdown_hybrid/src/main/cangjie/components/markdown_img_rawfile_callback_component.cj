@@ -128,9 +128,9 @@ public class MarkdownImgRawFileCallbackComponent {
                         // 自定义图片圆角
                         .interopBorderRadius(markdownConfigurationRawFileCallback.markdownTheme.imageBorderRadius)
                         // 设置组件自身的宽度
-                        .width(imageSpanWidth(markdownConfigurationRawFileCallback.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthRawFileCallback(), markdownConfigurationRawFileCallback.markdownTheme.imageMaximumWidth))
+                        .width(widthRawFileCallback().px)
                         // 设置组件自身的高度
-                        .height(imageSpanHeight(markdownConfigurationRawFileCallback.markdownTheme.imageFixedRatioWidth, componentImageWidth, widthRawFileCallback(), heightRawFileCallback(), markdownConfigurationRawFileCallback.markdownTheme.imageMaximumWidth))
+                        .height(heightRawFileCallback().px)
                         // 设置图片的缩放类型
                         .objectFit(markdownConfigurationRawFileCallback.markdownTheme.imageFitType)
                         // 设置图片基于文本的对齐方式
@@ -182,10 +182,20 @@ public class MarkdownImgRawFileCallbackComponent {
     func localRowImageToPixelMap() {
         let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
             pixelMap, widthRawFileCallback, heightRawFileCallback => launch {
-                this.imagePixelMap = pixelMap
-                this.widthRawFileCallback = widthRawFileCallback
-                this.heightRawFileCallback = heightRawFileCallback
                 if (this.imagePixelMap.isSome() && this.widthRawFileCallback.isSome() && this.heightRawFileCallback.isSome()) {
+                    this.imagePixelMap = pixelMap
+                    let res = imageWidthAndHeight(
+                        componentImageWidth,
+                        widthRawFileCallback(),
+                        heightRawFileCallback(),
+                        Option<Length>.None,
+                        Option<Length>.None,
+                        markdownConfigurationRawFileCallback.markdownTheme.imageMaxHeight,
+                        markdownConfigurationRawFileCallback.markdownTheme.imageFixedRatioWidth,
+                        markdownConfigurationRawFileCallback.markdownTheme.imageMaximumWidth
+                    )
+                    this.widthRawFileCallback = res[0]
+                    this.heightRawFileCallback = res[1]
                     imageType = 1
                 } else {
                     imageType = 2
