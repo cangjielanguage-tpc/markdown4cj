@@ -12,6 +12,7 @@ internal import std.time.*
 internal import std.io.*
 internal import stdx.net.http.*
 internal import stdx.net.tls.*
+internal import stdx.net.tls.common.CertificateVerifyMode
 
 internal import markdown.core.*
 internal import markdown.plugin.*
