@@ -192,6 +192,12 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.isMarkdownParserSync !== undefined) {
           cjMarkdownTheme.setIsMarkdownParserSync(this.config.markdownTheme.isMarkdownParserSync)
         }
+        if (this.config.markdownTheme.typeWriterOpen !== undefined) {
+          cjMarkdownTheme.setTypeWriterOpen(this.config.markdownTheme.typeWriterOpen)
+        }
+        if (this.config.markdownTheme.typeWriterColor !== undefined) {
+          cjMarkdownTheme.setTypeWriterColor(this.config.markdownTheme.typeWriterColor)
+        }
         if (this.config.markdownTheme.isOnCopy !== undefined) {
           cjMarkdownTheme.setIsOnCopy(this.config.markdownTheme.isOnCopy)
         }
@@ -1119,6 +1125,14 @@ export class MarkdownTheme {
    */
   isMarkdownParserSync?: boolean = undefined
   /**
+   * 是否开启打字机效果
+   */
+  typeWriterOpen?: boolean = undefined
+  /**
+   * 打字机效果颜色
+   */
+  typeWriterColor?: number = undefined
+  /**
    * 是否打开长按复制粘贴
    */
   isOnCopy?: boolean = undefined
@@ -2029,6 +2043,24 @@ export class MarkdownTheme {
    */
   setIsMarkdownParserSync(isMarkdownParserSync: boolean): void {
     this.isMarkdownParserSync = isMarkdownParserSync
+  }
+
+  /**
+   * 设置是否显示打字机效果
+   *
+   * @param typeWriterOpen 是否显示打字机效果 - true：显示；false：不显示。默认true
+   */
+  setTypeWriterOpen(typeWriterOpen: boolean): void {
+    this.typeWriterOpen = typeWriterOpen
+  }
+
+  /**
+   * 设置打字机效果颜色
+   *
+   * @param typeWriterColor 打字机效果颜色 - 默认RED
+   */
+  setTypeWriterColor(typeWriterColor: number): void {
+    this.typeWriterColor = typeWriterColor
   }
 
   /**

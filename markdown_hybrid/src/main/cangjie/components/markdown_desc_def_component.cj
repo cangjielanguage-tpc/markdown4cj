@@ -60,8 +60,14 @@ public class MarkdownDescDefComponent {
      */
     var descDefNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
+    /**
+     * 最后一条数据的位置
+     */
+    @State
+    var lastViewIndex: Int64 = 0
+
     protected override func aboutToAppear(): Unit {
-        refreshDescDefData(descDefNodeView) // 初始化刷新数据
+        refreshDescDefData(descDefNodeView, descDefNodeView.isEndData) // 初始化刷新数据
         descDefMarkdownCacheConfiguration.descDefComponent.add(descDefNodeView.nodeHash, this) // 缓存当前控件
     }
 
@@ -102,7 +108,7 @@ public class MarkdownDescDefComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    descDefNodeView: NodeView, idx: Int64 => return "${idx}-${descDefNodeView.nodeHash}-${descDefNodeView.contentHash}"
+                    descDefNodeView: NodeView, idx: Int64 => return "${idx}-${descDefNodeView.nodeHash}-${descDefNodeView.contentHash}-${descDefNodeView.canRefresh}"
                 }
             )
         }
@@ -116,7 +122,7 @@ public class MarkdownDescDefComponent {
      *
      * @param descDefNodeView 刷新的新数据
      */
-    public func refreshDescDefData(descDefNodeView: NodeView): Unit {
+    public func refreshDescDefData(descDefNodeView: NodeView, isEnd: Bool): Unit {
         let refreshNodeViewChildren = descDefNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = descDefNodeViewDataSource.totalCount() // 页面缓存的数据长度
@@ -126,23 +132,27 @@ public class MarkdownDescDefComponent {
         if (refreshNodeViewSize > dataSourceSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
-            refreshDescDefDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshDescDefDatas(dataSourceSize, refreshNodeViewChildren, false)
             // 循环添加新数据
             for (i in dataSourceSize..refreshNodeViewSize) {
+                if (isEnd && (i == refreshNodeViewSize - 1)) {
+                    refreshNodeViewChildren[i].isEndData = true
+                }
                 descDefNodeViewDataSource.addData(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
-            refreshDescDefDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshDescDefDatas(dataSourceSize, refreshNodeViewChildren, isEnd)
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
-            refreshDescDefDatas(refreshNodeViewSize, refreshNodeViewChildren)
+            refreshDescDefDatas(refreshNodeViewSize, refreshNodeViewChildren, isEnd)
             // 循环删除多余的旧数据
             for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
                 descDefNodeViewDataSource.deleteData(i)
             }
         }
+        lastViewIndex = descDefNodeViewDataSource.totalCount() - 1
     }
 
     /**
@@ -151,7 +161,7 @@ public class MarkdownDescDefComponent {
      * @param size 长度
      * @param refreshNodeViews 刷新的数据
      */
-    func refreshDescDefDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
+    func refreshDescDefDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>, isEnd: Bool): Unit {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
             let dataSourceNode = descDefNodeViewDataSource.getData(i)
@@ -159,6 +169,13 @@ public class MarkdownDescDefComponent {
             let oldBlockHash = dataSourceNode.nodeHash
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
+            // 当前层的倒数第二条数据，因为可能一行多个
+            let isSecondToLast: Bool = (i == lastViewIndex - 1)
+            if (isEnd) {
+                refreshNodeView.isEndData = (i == lastViewIndex && !isSecondToLast)
+            } else {
+                refreshNodeView.isEndData = false
+            }
             // 唯一ID是否相同
             if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                 descDefNodeViewDataSource.replaceData(i, refreshNodeView)
@@ -170,7 +187,21 @@ public class MarkdownDescDefComponent {
                     let paragraphComponents = descDefMarkdownCacheConfiguration.paragraphComponents
                     let cache = paragraphComponents.get(newBlockHash)
                     if (let Some(v) <- cache) {
-                        v.refreshParagraphData(refreshNodeView)
+                        v.refreshParagraphData(refreshNodeView, isSecondToLast || isEnd)
+                    }
+                } else {
+                    // 其他
+                    descDefNodeViewDataSource.replaceData(i, refreshNodeView)
+                }
+            } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash && dataSourceNode.canRefresh) {
+                refreshNodeView.isEndData = false
+                refreshNodeView.canRefresh = false
+                if (refreshNodeView.nodeType == "Paragraph") {
+                    // 段落
+                    let paragraphComponents = descDefMarkdownCacheConfiguration.paragraphComponents
+                    let cache = paragraphComponents.get(newBlockHash)
+                    if (let Some(v) <- cache) {
+                        v.refreshParagraphData(refreshNodeView, isSecondToLast || isEnd)
                     }
                 } else {
                     // 其他

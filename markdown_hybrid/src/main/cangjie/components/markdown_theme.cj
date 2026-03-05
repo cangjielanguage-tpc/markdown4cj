@@ -62,6 +62,16 @@ public class MarkdownTheme {
     protected var isMarkdownParserSync: Bool = false
 
     /**
+     * 是否开启打字机效果
+     */
+    protected var typeWriterOpen: Bool = true
+
+    /**
+     * 打字机效果颜色
+     */
+    protected var typeWriterColor: Color = Color.RED
+
+    /**
      * 是否打开长按复制粘贴
      */
     protected var isOnCopy: Bool = true
@@ -1127,6 +1137,8 @@ public class MarkdownTheme {
         this.abilityContext = builder.abilityContext
 
         this.isMarkdownParserSync = builder.isMarkdownParserSync
+        this.typeWriterOpen = builder.typeWriterOpen
+        this.typeWriterColor = builder.typeWriterColor
         this.isOnCopy = builder.isOnCopy
 
         // 2、模块间距
@@ -1632,7 +1644,17 @@ public class MarkdownThemeBuilder {
     /**
      * markdown是否同步解析
      */
-     var isMarkdownParserSync: Bool = false
+    var isMarkdownParserSync: Bool = false
+
+    /**
+     * 是否开启打字机效果
+     */
+    var typeWriterOpen: Bool = true
+
+    /**
+     * 打字机效果颜色
+     */
+    var typeWriterColor: Color = Color.RED
 
     /**
      * 是否打开长按复制粘贴
@@ -2703,6 +2725,8 @@ public class MarkdownThemeBuilder {
         this.abilityContext = theme.abilityContext
 
         this.isMarkdownParserSync = theme.isMarkdownParserSync
+        this.typeWriterOpen = theme.typeWriterOpen
+        this.typeWriterColor = theme.typeWriterColor
         this.isOnCopy = theme.isOnCopy
 
         // 2、模块间距
@@ -3188,6 +3212,28 @@ public class MarkdownThemeBuilder {
      */
     public func setIsMarkdownParserSync(isMarkdownParserSync: Bool): MarkdownThemeBuilder {
         this.isMarkdownParserSync = isMarkdownParserSync
+        return this
+    }
+
+    /**
+     * 设置是否显示打字机效果
+     *
+     * @param typeWriterOpen 是否显示打字机效果 - true：显示；false：不显示。默认true
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setTypeWriterOpen(typeWriterOpen: Bool): MarkdownThemeBuilder {
+        this.typeWriterOpen = typeWriterOpen
+        return this
+    }
+
+    /**
+     * 设置打字机效果颜色
+     *
+     * @param typeWriterColor 打字机效果颜色 - 默认RED
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setTypeWriterColor(typeWriterColor: Color): MarkdownThemeBuilder {
+        this.typeWriterColor = typeWriterColor
         return this
     }
 

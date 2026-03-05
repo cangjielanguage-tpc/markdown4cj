@@ -130,6 +130,29 @@ func spanOnClick(markdownConfiguration: MarkdownConfiguration, nodeView: NodeVie
 }
 
 /**
+ * 设置文本内容
+ *
+ * @param str 文本内容
+ * @return (String, String)
+ */
+func spanEndText(str: String): (String, String) {
+    if (str.size <= 0) {
+        return ("", "")
+    }
+    var index = str.size - 1
+    let arr = unsafe { str.rawData() }
+    while (index >= 0) {
+        if ((arr[index] >> 6) != 0b10) {
+            break
+        }
+        index--
+    }
+    let start = str[..index]
+    let end = str[index..]
+    return (start, end)
+}
+
+/**
  * 设置字体样式列表
  *
  * @param nodeView NodeView

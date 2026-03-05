@@ -263,7 +263,21 @@ export class MarkdownTheme {
    * @param isMarkdownParserSync markdown是否同步解析 - 默认false
    */
   setIsMarkdownParserSync(isMarkdownParserSync: boolean): void
+  
+  /**
+   * 设置是否显示打字机效果
+   *
+   * @param typeWriterOpen 是否显示打字机效果 - true：显示；false：不显示。默认true
+   */
+  setTypeWriterOpen(typeWriterOpen: boolean): void
 
+  /**
+   * 设置打字机效果颜色
+   *
+   * @param typeWriterColor 打字机效果颜色 - 默认RED
+   */
+  setTypeWriterColor(typeWriterColor: number): void
+    
   /**
    * 设置是否打开长按复制粘贴
    *

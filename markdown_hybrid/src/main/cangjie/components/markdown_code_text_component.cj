@@ -57,9 +57,21 @@ class MarkdownCodeTextComponent {
      */
     var future: ?Future<Unit> = Option<Future<Unit>>.None
 
+    /**
+     * 最后一条数据的位置
+     */
+    @State
+    var lastViewIndex: Int64 = 0
+
+    /**
+     * 上一层级传递过来的，是否是最后一条数据
+     */
+    @State
+    var isEndByParent: Bool = false
+
     protected override func aboutToAppear(): Unit {
         psh = PrismSyntaxHighlight.create(prism, markdownTheme.prismTheme)
-        refreshData(codeText, info) // 初始化刷新数据
+        refreshData(codeText, info, isEndByParent) // 初始化刷新数据
         codeTextComponents.add(index, this) // 缓存当前控件
     }
 
@@ -81,9 +93,20 @@ class MarkdownCodeTextComponent {
             ForEach(
                 arrayList,
                 itemGeneratorFunc: {
-                    item: PrismNodesParseResUI, idx: Int64 => Span(item.getText())
-                        .fontColor(codeTextColor(item, markdownTheme, markdownTheme.prismTheme))
-                        .letterSpacing(markdownTheme.paragraphTextWordSpace)
+                    item: PrismNodesParseResUI, idx: Int64 =>
+                        if (item.isCloseTypewriter()) {
+                            Span(item.getText())
+                                .fontColor(codeTextColor(item, markdownTheme, markdownTheme.prismTheme))
+                                .letterSpacing(markdownTheme.paragraphTextWordSpace)
+                         } else {
+                            Span(spanEndText(item.getText())[0])
+                                .fontColor(codeTextColor(item, markdownTheme, markdownTheme.prismTheme))
+                                .letterSpacing(markdownTheme.paragraphTextWordSpace)
+                            // 最后一个字符
+                            Span(spanEndText(item.getText())[1])
+                                .letterSpacing(markdownTheme.paragraphTextWordSpace)
+                                .fontColor(markdownTheme.typeWriterColor)
+                         }
                 },
                 keyGeneratorFunc: {
                     item: PrismNodesParseResUI, idx: Int64 => "${idx}-${item.getText()}"
@@ -105,7 +128,7 @@ class MarkdownCodeTextComponent {
      * @param codeText 代码文本
      * @param info 代码类型
      */
-    public func refreshData(codeText: String, info: Option<String>): Unit {
+    public func refreshData(codeText: String, info: Option<String>, isEnd: Bool): Unit {
         if (codeText.size == 0) {
             // 空行数据需要空格文本填充Text控件使其在布局上占位
             arrayList.append(PrismNodesParseResUI(types: "", text: " ", alias: Option<String>.None, color: Option<Color>.None))
@@ -114,16 +137,16 @@ class MarkdownCodeTextComponent {
         this.codeText = codeText
         this.info = info
         if (markdownTheme.isCodeBlockParserSync) {
-            stringCodeToResListSync()
+            stringCodeToResListSync(isEnd)
         } else {
-            stringCodeToResList()
+            stringCodeToResList(isEnd)
         }
     }
 
     /**
      * 同步代码高亮解析
      */
-    func stringCodeToResListSync() {
+    func stringCodeToResListSync(isEnd: Bool) {
         var prismNodesParseResLists: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
         try {
             prismNodesParseResLists = psh().highlight(info, codeText)
@@ -131,16 +154,16 @@ class MarkdownCodeTextComponent {
             let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None)
             prismNodesParseResLists.add(prismNodesParseResUI)
         }
-        refreshCodeDatas(prismNodesParseResLists)
+        refreshCodeDatas(prismNodesParseResLists, isEnd)
     }
 
     /**
      * 异步代码高亮解析
      */
-    func stringCodeToResList() {
+    func stringCodeToResList(isEnd: Bool) {
         let callback: (ArrayList<PrismNodesParseResUI>) -> Unit = {
             prismNodesParseResLists => launch {
-                refreshCodeDatas(prismNodesParseResLists)
+                refreshCodeDatas(prismNodesParseResLists, isEnd)
             }
         }
         future = stringToResList(this.codeText, this.info, callback)
@@ -149,13 +172,18 @@ class MarkdownCodeTextComponent {
     /**
      * 列表新老数据对比
      */
-    func refreshCodeDatas(prismNodesParseResLists: ArrayList<PrismNodesParseResUI>): Unit {
+    func refreshCodeDatas(prismNodesParseResLists: ArrayList<PrismNodesParseResUI>, isEnd: Bool): Unit {
         let newSize = prismNodesParseResLists.size
         let oldSize = arrayList.size
         if (newSize == oldSize) {
             // 新数据等于页面数据
             for (i in 0..oldSize) {
                 if (arrayList[i].getText() != prismNodesParseResLists[i].getText()) {
+                    if (isEnd && (i == lastViewIndex)) {
+                        prismNodesParseResLists[i].setCloseTypewriter(false)
+                    }
+                    arrayList[i] = prismNodesParseResLists[i]
+                } else if (!arrayList[i].isCloseTypewriter()) {
                     arrayList[i] = prismNodesParseResLists[i]
                 }
             }
@@ -163,17 +191,24 @@ class MarkdownCodeTextComponent {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
             for (i in 0..oldSize) {
+                arrayList[i].setCloseTypewriter(true) // 已有数据都设置成显示高亮
                 if (arrayList[i].getText() != prismNodesParseResLists[i].getText()) {
                     arrayList[i] = prismNodesParseResLists[i]
                 }
             }
             for (i in oldSize..newSize) {
+                if ((i == newSize -1) && isEnd) {
+                    prismNodesParseResLists[i].setCloseTypewriter(false)
+                } else {
+                    prismNodesParseResLists[i].setCloseTypewriter(true)
+                }
                 arrayList.append(prismNodesParseResLists[i])
             }
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
             for (i in 0..newSize) {
+                arrayList[i].setCloseTypewriter(true) // 已有数据都设置成显示高亮
                 if (arrayList[i].getText() != prismNodesParseResLists[i].getText()) {
                     arrayList[i] = prismNodesParseResLists[i]
                 }
@@ -183,6 +218,7 @@ class MarkdownCodeTextComponent {
                 arrayList.remove(i)
             }
         }
+        lastViewIndex = arrayList.size - 1
     }
 
     /**

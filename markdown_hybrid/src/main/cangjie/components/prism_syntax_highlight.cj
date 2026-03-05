@@ -70,6 +70,7 @@ public class PrismNodesParseResUI {
     var text: String = ""
     var alias: Option<String> = Option<String>.None
     var color: Option<Color> = Option<Color>.None
+    var closeTypewriter: Bool = true
 
     public init(types!: String, text!: String, alias!: Option<String>, color!: Option<Color>) {
         this.types = types
@@ -78,6 +79,23 @@ public class PrismNodesParseResUI {
         this.color = color
     }
 
+    /**
+     * 获取是否关闭打字机，true关闭，false显示，默认true
+     *
+     * @return 返回结果对象的类型
+     */
+    func isCloseTypewriter(): Bool {
+        return closeTypewriter
+    }
+
+    /**
+     * 设置是否关闭打字机
+     *
+     * @return 返回结果对象的类型
+     */
+    func setCloseTypewriter(closeTypewriter: Bool): Unit {
+        this.closeTypewriter = closeTypewriter
+    }
     /**
      * 获取结果对象类型
      *

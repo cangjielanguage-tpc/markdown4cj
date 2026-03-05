@@ -7,6 +7,7 @@ import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
 import ohos.state_macro_manage.*
+import ohos.hilog.Hilog
 
 protected let prism: Prism = Prism(GrammarLocatorGrammarUtils())
 
@@ -147,7 +148,8 @@ public class MarkdownComponent {
     /**
      * 注脚事件回调数据
      */
-    var indexFootnoteHashMap: HashMap<String, Float64> = HashMap<String, Float64>()
+    var indexFootnoteHashMap: HashMap<String, Int64> = HashMap<String, Int64>()
+//    var indexFootnoteList: ArrayList<Int64> = ArrayList<Int64>()
 
     /**
      * toc事件回调数据
@@ -158,6 +160,7 @@ public class MarkdownComponent {
      * list控制器
      */
     let scroller: Scroller
+    let scrollerNew: Scroller = Scroller()
 
     /**
      * 单独代码块list控制器
@@ -200,12 +203,20 @@ public class MarkdownComponent {
     @State
     var lastViewIndex: Int64 = 0
 
+    /**
+     * 是否开启打字机效果
+     */
+    @State
+    var showTypewriter: Bool = false
+
     protected override func aboutToAppear(): Unit {
         tableBlockComponentWidth = vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp)().value // 表格每个格子最大宽度
         // 加载插件
         incBase = IncreaseParser(markdownPlugin)
         // 默认控件宽度等于屏幕宽度
         componentWidth = px2vp(Float64(screenWidth).px).getOrThrow().value
+        // 获取是否开启打字机效果：配置文件中设置为true，并且增量更新数据正常传入
+        showTypewriter = markdownConfiguration.markdownTheme.typeWriterOpen && !isInputEnded
         // 首次加载
         refreshData()
     }
@@ -218,7 +229,7 @@ public class MarkdownComponent {
     func build() {
         if (!markdownConfiguration.markdownTheme.isSeparateCodeBlock) {
             if (DeviceInfo.sdkApiVersion >= 19) {
-                List(scroller: scroller) {
+                List(scroller: scrollerNew) {
                     LazyForEach(
                         nodeViewDataSource,
                         itemGeneratorFunc: {
@@ -250,7 +261,8 @@ public class MarkdownComponent {
                                         headingFootnoteCallback: footnoteCallback
                                     )
                                 }
-                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
+                                .onAppear({ => indexTocHashMap.add(idx, 0.0)})
+//                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "FencedCodeBlockListBlock") {
                                 // 围栏代码块列表
@@ -270,7 +282,8 @@ public class MarkdownComponent {
                                         codeText: item.nodeText,
                                         info: item.codeInfo(),
                                         nodeHash: item.nodeHash,
-                                        fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
+                                        fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents,
+                                        isEndByParent: item.isEndData
                                     )
                                 }
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
@@ -281,7 +294,8 @@ public class MarkdownComponent {
                                         markdownConfiguration: markdownConfiguration,
                                         codeText: item.nodeText,
                                         nodeHash: item.nodeHash,
-                                        indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
+                                        indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents,
+                                        isEndByParent: item.isEndData
                                     )
                                 }
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
@@ -366,15 +380,15 @@ public class MarkdownComponent {
                                 // 数学公式块
                                 ListItem() {
                                     if (item.isLatexMathBlockClose) {
-                                        MarkdownLatexMathBlockComponent(
-                                            markdownTheme:markdownConfiguration.markdownTheme,
-                                            latexMathBlockStr:item.nodeText,
-                                            latexImageCallback:markdownConfiguration.latexImageCallback,
-                                            latexStrCallback:markdownConfiguration.latexStrCallback,
-                                        )
-                                    } else {
-                                        Text(item.nodeText)
-                                    }
+                                         MarkdownLatexMathBlockComponent(
+                                             markdownTheme:markdownConfiguration.markdownTheme,
+                                             latexMathBlockStr:item.nodeText,
+                                             latexImageCallback:markdownConfiguration.latexImageCallback,
+                                             latexStrCallback:markdownConfiguration.latexStrCallback,
+                                         )
+                                     } else {
+                                         Text(item.nodeText)
+                                     }
                                 }
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "TableBlock") {
@@ -415,7 +429,9 @@ public class MarkdownComponent {
                                         footnoteFootnoteCallback:footnoteCallback
                                     )
                                 }
-                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
+                                // 先改成第二个参数为idx
+                                .onAppear({ => indexFootnoteHashMap.add(item.footnoteID(), idx)})
+//                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "DescList") {
                                 // 定义列表
@@ -496,21 +512,21 @@ public class MarkdownComponent {
                             }
                         },
                         keyGeneratorFunc: {
-                            item: NodeView, idx: Int64 => "${idx}-${item.nodeHash}-${item.contentHash}"
+                            item: NodeView, idx: Int64 => "${idx}-${item.nodeHash}-${item.contentHash}-${item.canRefresh}"
                         }
                     )
                 }
                 .listDirection(Axis.Vertical)
                 .alignListItem(ListItemAlign.Start)
-                .scrollBar(BarState.Off)
-                .enableScrollInteraction(false)
+//                .scrollBar(BarState.Off)
+//                .enableScrollInteraction(false)
                 .interopOnSizeChange {
                     old, new => if (componentWidth != new.width) {
                         componentWidth = new.width
                     }
                 }
             } else {
-                List(scroller: scroller) {
+                List(scroller: scrollerNew) {
                     LazyForEach(
                         nodeViewDataSource,
                         itemGeneratorFunc: {
@@ -542,7 +558,8 @@ public class MarkdownComponent {
                                         headingFootnoteCallback: footnoteCallback
                                     )
                                 }
-                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
+                                .onAppear({ => indexTocHashMap.add(idx, 0.0)})
+//                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "FencedCodeBlockListBlock") {
                                 // 围栏代码块列表
@@ -562,7 +579,8 @@ public class MarkdownComponent {
                                         codeText: item.nodeText,
                                         info: item.codeInfo(),
                                         nodeHash: item.nodeHash,
-                                        fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
+                                        fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents,
+                                        isEndByParent: item.isEndData
                                     )
                                 }
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
@@ -573,7 +591,8 @@ public class MarkdownComponent {
                                         markdownConfiguration: markdownConfiguration,
                                         codeText: item.nodeText,
                                         nodeHash: item.nodeHash,
-                                        indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
+                                        indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents,
+                                        isEndByParent: item.isEndData
                                     )
                                 }
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
@@ -658,15 +677,15 @@ public class MarkdownComponent {
                                 // 数学公式块
                                 ListItem() {
                                     if (item.isLatexMathBlockClose) {
-                                        MarkdownLatexMathBlockComponent(
-                                            markdownTheme:markdownConfiguration.markdownTheme,
-                                            latexMathBlockStr:item.nodeText,
-                                            latexImageCallback:markdownConfiguration.latexImageCallback,
-                                            latexStrCallback:markdownConfiguration.latexStrCallback,
-                                        )
-                                    } else {
-                                        Text(item.nodeText)
-                                    }
+                                         MarkdownLatexMathBlockComponent(
+                                             markdownTheme:markdownConfiguration.markdownTheme,
+                                             latexMathBlockStr:item.nodeText,
+                                             latexImageCallback:markdownConfiguration.latexImageCallback,
+                                             latexStrCallback:markdownConfiguration.latexStrCallback,
+                                         )
+                                     } else {
+                                         Text(item.nodeText)
+                                     }
                                 }
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "TableBlock") {
@@ -707,7 +726,8 @@ public class MarkdownComponent {
                                         footnoteFootnoteCallback:footnoteCallback
                                     )
                                 }
-                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
+                                .onAppear({ => indexFootnoteHashMap.add(item.footnoteID(), idx)})
+//                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "DescList") {
                                 // 定义列表
@@ -788,14 +808,14 @@ public class MarkdownComponent {
                             }
                         },
                         keyGeneratorFunc: {
-                            item: NodeView, idx: Int64 => "${idx}-${item.nodeHash}-${item.contentHash}"
+                            item: NodeView, idx: Int64 => "${idx}-${item.nodeHash}-${item.contentHash}-${item.canRefresh}"
                         }
                     )
                 }
                 .listDirection(Axis.Vertical)
                 .alignListItem(ListItemAlign.Start)
-                .scrollBar(BarState.Off)
-                .interopEnableScrollInteraction(false)
+//                .scrollBar(BarState.Off)
+//                .interopEnableScrollInteraction(false)
                 .interopOnSizeChange {
                     old, new => if (componentWidth != new.width) {
                         componentWidth = new.width
@@ -815,7 +835,8 @@ public class MarkdownComponent {
                                     info: item.codeInfo,
                                     nodeHash: item.nodeHash,
                                     codeComponents: markdownCacheConfiguration.codeComponents,
-                                    codeTextComponents: markdownCacheConfiguration.codeTextComponents
+                                    codeTextComponents: markdownCacheConfiguration.codeTextComponents,
+                                    isEndByParent: item.isEndData
                                 )
                             }
                         } else {
@@ -825,7 +846,7 @@ public class MarkdownComponent {
                         }
                     },
                     keyGeneratorFunc: {
-                        item: NodeView, idx: Int64 => "${idx}-${item.nodeHash}-${item.contentHash}"
+                        item: NodeView, idx: Int64 => "${idx}-${item.nodeHash}-${item.contentHash}-${item.canRefresh}"
                     }
                 )
             }
@@ -904,18 +925,21 @@ public class MarkdownComponent {
         if (refreshNodeViewSize > dataSourceSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
-            refreshDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshDatas(dataSourceSize, refreshNodeViewChildren, false)
             // 循环添加新数据
             for (i in dataSourceSize..refreshNodeViewSize) {
+                if (showTypewriter && (i == refreshNodeViewSize - 1)) {
+                    refreshNodeViewChildren[i].isEndData = true
+                }
                 nodeViewDataSource.addData(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
-            refreshDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshDatas(dataSourceSize, refreshNodeViewChildren, showTypewriter)
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
-            refreshDatas(refreshNodeViewSize, refreshNodeViewChildren)
+            refreshDatas(refreshNodeViewSize, refreshNodeViewChildren, showTypewriter)
             // 循环删除多余的旧数据
             for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
                 nodeViewDataSource.deleteData(i)
@@ -941,18 +965,21 @@ public class MarkdownComponent {
             if (refreshNodeViewSize > dataSourceSize) {
                 // 新数据大于页面数据
                 // 循环判断历史数据有没有做过修改
-                refreshDatas(dataSourceSize, refreshNodeViewChildren)
+                refreshDatas(dataSourceSize, refreshNodeViewChildren, false)
                 // 循环添加新数据
                 for (i in dataSourceSize..refreshNodeViewSize) {
+                    if (showTypewriter && (i == refreshNodeViewSize - 1)) {
+                        refreshNodeViewChildren[i].isEndData = true
+                    }
                     nodeViewDataSource.addData(refreshNodeViewChildren[i])
                 }
             } else if (refreshNodeViewSize == dataSourceSize) {
                 // 新数据等于页面数据
-                refreshDatas(dataSourceSize, refreshNodeViewChildren)
+                refreshDatas(dataSourceSize, refreshNodeViewChildren, showTypewriter)
             } else {
                 // 新数据小于页面数据
                 // 循环判断历史数据有没有做过修改
-                refreshDatas(refreshNodeViewSize, refreshNodeViewChildren)
+                refreshDatas(refreshNodeViewSize, refreshNodeViewChildren, showTypewriter)
                 // 循环删除多余的旧数据
                 for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
                     nodeViewDataSource.deleteData(i)
@@ -970,7 +997,7 @@ public class MarkdownComponent {
      * @param size 长度
      * @param refreshNodeViews 刷新的数据
      */
-    func refreshDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
+    func refreshDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>, isEnd: Bool): Unit {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
             let dataSourceNode = nodeViewDataSource.getData(i)
@@ -978,6 +1005,14 @@ public class MarkdownComponent {
             let oldBlockHash = dataSourceNode.nodeHash
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
+            // 当前层的倒数第二条数据，因为可能一行多个
+            let isSecondToLast: Bool = (i == lastViewIndex - 1) && isEnd // 当前倒数第二条数据
+            // 当前的数据是否应该有打字机效果：上层是最后一条、当前i是本层级最后一条、上层没有传递倒数第二条数据更新标记
+            if (isEnd) {
+                refreshNodeView.isEndData = (i == lastViewIndex && !isSecondToLast)
+            } else {
+                refreshNodeView.isEndData = false
+            }
             // 唯一ID是否相同
             if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                 nodeViewDataSource.replaceData(i, refreshNodeView)
@@ -990,7 +1025,7 @@ public class MarkdownComponent {
                         let paragraphComponents = markdownCacheConfiguration.paragraphComponents
                         let cache = paragraphComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
-                            v.refreshParagraphData(refreshNodeView)
+                            v.refreshParagraphData(refreshNodeView, isEnd)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -999,7 +1034,7 @@ public class MarkdownComponent {
                         let headingComponents = markdownCacheConfiguration.headingComponents
                         let cache = headingComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
-                            v.refreshHeadingData(refreshNodeView)
+                            v.refreshHeadingData(refreshNodeView, isEnd)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -1008,7 +1043,7 @@ public class MarkdownComponent {
                         let fencedCodeComponents = markdownCacheConfiguration.fencedCodeComponents
                         let cache = fencedCodeComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeView.nodeText, refreshNodeView.codeInfo(), refreshNodeView.nodeHash)
+                            v.refreshData(refreshNodeView.nodeText, refreshNodeView.codeInfo(), refreshNodeView.nodeHash, isEnd && !isSecondToLast)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -1017,7 +1052,7 @@ public class MarkdownComponent {
                         let indentedCodeComponents = markdownCacheConfiguration.indentedCodeComponents
                         let cache = indentedCodeComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeView.nodeText, Option<String>.None, refreshNodeView.nodeHash)
+                            v.refreshData(refreshNodeView.nodeText, Option<String>.None, refreshNodeView.nodeHash, isEnd && !isSecondToLast)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -1026,7 +1061,7 @@ public class MarkdownComponent {
                         let listComponents = markdownCacheConfiguration.listComponents
                         let cache = listComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
-                            v.refreshListData(refreshNodeView)
+                            v.refreshListData(refreshNodeView, isEnd)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -1035,7 +1070,7 @@ public class MarkdownComponent {
                         let quoteComponents = markdownCacheConfiguration.quoteComponents
                         let cache = quoteComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
-                            v.refreshQuoteData(refreshNodeView)
+                            v.refreshQuoteData(refreshNodeView, isEnd)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -1044,7 +1079,7 @@ public class MarkdownComponent {
                         let tableComponents = markdownCacheConfiguration.tableComponents
                         let cache = tableComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
-                            v.refreshTableBlockData(refreshNodeView)
+                            v.refreshTableBlockData(refreshNodeView, isEnd)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -1053,7 +1088,7 @@ public class MarkdownComponent {
                         let footnoteComponent = markdownCacheConfiguration.footnoteComponent
                         let cache = footnoteComponent.get(newBlockHash)
                         if (let Some(v) <- cache) {
-                            v.refreshFootnoteData(refreshNodeView)
+                            v.refreshFootnoteData(refreshNodeView, isEnd)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -1062,7 +1097,7 @@ public class MarkdownComponent {
                         let descListComponent = markdownCacheConfiguration.descListComponent
                         let cache = descListComponent.get(newBlockHash)
                         if (let Some(v) <- cache) {
-                            v.refreshDescListData(refreshNodeView)
+                            v.refreshDescListData(refreshNodeView, isEnd)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -1076,7 +1111,7 @@ public class MarkdownComponent {
                         let codeComponents = markdownCacheConfiguration.codeComponents
                         let cache = codeComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeView.nodeText, refreshNodeView.codeInfo(), refreshNodeView.nodeHash)
+                            v.refreshData(refreshNodeView.nodeText, refreshNodeView.codeInfo(), refreshNodeView.nodeHash, isEnd && !isSecondToLast)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -1085,7 +1120,121 @@ public class MarkdownComponent {
                         let codeComponents = markdownCacheConfiguration.codeComponents
                         let cache = codeComponents.get(newBlockHash)
                         if (let Some(v) <- cache) {
-                            v.refreshData(refreshNodeView.nodeText, Option<String>.None, refreshNodeView.nodeHash)
+                            v.refreshData(refreshNodeView.nodeText, Option<String>.None, refreshNodeView.nodeHash, isEnd && !isSecondToLast)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
+                        }
+                    } else {
+                        // TODO 其他
+                        nodeViewDataSource.replaceData(i, refreshNodeView)
+                    }
+                }
+            } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash && dataSourceNode.canRefresh) {
+                // 外层换行后，本条数据第一次变成倒数第二条数据时刷新，去掉结尾的变色效果
+                refreshNodeView.isEndData = false
+                refreshNodeView.canRefresh = false
+                if (!markdownConfiguration.markdownTheme.isSeparateCodeBlock) {
+                    if (refreshNodeView.nodeType == "Paragraph") {
+                        // 段落
+                        let paragraphComponents = markdownCacheConfiguration.paragraphComponents
+                        let cache = paragraphComponents.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshParagraphData(refreshNodeView, isEnd)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
+                        }
+                    } else if (refreshNodeView.nodeType == "Heading" || refreshNodeView.nodeType == "IdHeading") {
+                        // 标题/标题ID
+                        let headingComponents = markdownCacheConfiguration.headingComponents
+                        let cache = headingComponents.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshHeadingData(refreshNodeView, isEnd)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
+                        }
+                    } else if (refreshNodeView.nodeType == "FencedCodeBlock") {
+                        // 围栏代码块
+                        let fencedCodeComponents = markdownCacheConfiguration.fencedCodeComponents
+                        let cache = fencedCodeComponents.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeView.nodeText, refreshNodeView.codeInfo(), refreshNodeView.nodeHash, isEnd && !isSecondToLast)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
+                        }
+                    } else if (refreshNodeView.nodeType == "IndentedCodeBlock") {
+                        // 缩进代码块
+                        let indentedCodeComponents = markdownCacheConfiguration.indentedCodeComponents
+                        let cache = indentedCodeComponents.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeView.nodeText, Option<String>.None, refreshNodeView.nodeHash, isEnd && !isSecondToLast)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
+                        }
+                    } else if (refreshNodeView.nodeType == "BulletList" || refreshNodeView.nodeType == "OrderedList") {
+                        // 无序列表/有序列表
+                        let listComponents = markdownCacheConfiguration.listComponents
+                        let cache = listComponents.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshListData(refreshNodeView, isEnd)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
+                        }
+                    } else if (refreshNodeView.nodeType == "BlockQuote") {
+                        // 块引用
+                        let quoteComponents = markdownCacheConfiguration.quoteComponents
+                        let cache = quoteComponents.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshQuoteData(refreshNodeView, isEnd)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
+                        }
+                    } else if (refreshNodeView.nodeType == "TableBlock") {
+                        // 表格
+                        let tableComponents = markdownCacheConfiguration.tableComponents
+                        let cache = tableComponents.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshTableBlockData(refreshNodeView, isEnd)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
+                        }
+                    } else if (refreshNodeView.nodeType == "FootnoteBlock") {
+                        // 脚注
+                        let footnoteComponent = markdownCacheConfiguration.footnoteComponent
+                        let cache = footnoteComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshFootnoteData(refreshNodeView, isEnd)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
+                        }
+                    } else if (refreshNodeView.nodeType == "DescList") {
+                        // 定义列表
+                        let descListComponent = markdownCacheConfiguration.descListComponent
+                        let cache = descListComponent.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshDescListData(refreshNodeView, isEnd)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
+                        }
+                    } else {
+                        // TODO 其他
+                        nodeViewDataSource.replaceData(i, refreshNodeView)
+                    }
+                } else {
+                    if (refreshNodeView.nodeType == "FencedCodeBlock") {
+                        // 围栏代码块
+                        let codeComponents = markdownCacheConfiguration.codeComponents
+                        let cache = codeComponents.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeView.nodeText, refreshNodeView.codeInfo(), refreshNodeView.nodeHash, isEnd && !isSecondToLast)
+                        } else {
+                            nodeViewDataSource.replaceData(i, refreshNodeView)
+                        }
+                    } else if (refreshNodeView.nodeType == "IndentedCodeBlock") {
+                        // 缩进代码块
+                        let codeComponents = markdownCacheConfiguration.codeComponents
+                        let cache = codeComponents.get(newBlockHash)
+                        if (let Some(v) <- cache) {
+                            v.refreshData(refreshNodeView.nodeText, Option<String>.None, refreshNodeView.nodeHash, isEnd && !isSecondToLast)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -1102,6 +1251,10 @@ public class MarkdownComponent {
      * 数据是否输入结束
      */
     func inputEndedData(): Unit {
+        // 重新确认打字机效果开关
+        showTypewriter = markdownConfiguration.markdownTheme.typeWriterOpen && !isInputEnded
+        // 刷新
+        refreshData()
     }
 
     /**
@@ -1126,9 +1279,14 @@ public class MarkdownComponent {
      * 脚注点击回调
      */
     func footnoteCallback(noteid: String): Unit {
+//        scroller.scrollBy(xOffset: 0, yOffset: 500)
+        Hilog.error(555, "aaa", "----------------> 脚注点击回调")
         if (let Some(v) <- indexFootnoteHashMap.get(noteid)) {
+            Hilog.error(555, "aaa", "----------------> 脚注点击开始滚动: ${v}")
+            this.scrollerNew.scrollToIndex(Int32(v))
             if (let Some(w) <- markdownConfiguration.footnoteCallback) {
-                w(v)
+                Hilog.error(555, "aaa", "----------------> 脚注点击调用外部方法")
+//                w(Float64(v))
             }
         }
     }

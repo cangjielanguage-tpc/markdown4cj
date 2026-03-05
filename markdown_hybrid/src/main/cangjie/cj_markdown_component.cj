@@ -262,6 +262,12 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.isMarkdownParserSync) {
                 markdownThemeBuilder.setIsMarkdownParserSync(v) // 设置markdown是否同步解析
             }
+            if (let Some(v) <- w.cjMarkdownTheme.typeWriterOpen) {
+                markdownThemeBuilder.setTypeWriterOpen(v) // 设置是否开启打字机效果
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.typeWriterColor) {
+                markdownThemeBuilder.setTypeWriterColor(v) // 设置打字机效果颜色
+            }
             if (let Some(v) <- w.cjMarkdownTheme.isOnCopy) {
                 markdownThemeBuilder.setIsOnCopy(v) // 设置是否打开长按复制粘贴
             }

@@ -34,14 +34,20 @@ struct HTMLDetailsPage {
   @State
   isFull: boolean = true
   /**
- * 下划线颜色
- */
+   * 下划线颜色
+   */
   @State
   underlineColor: number = 0xFF191919
   /**
    * 增量加载延迟
    */
   time: number = 50
+
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
@@ -73,13 +79,16 @@ struct HTMLDetailsPage {
         .onClick(
           () => {
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
                 this.content = this.content + this.fileStr[index]
                 this.scroller.scrollEdge(Edge.Bottom)
                 if (index === this.fileStr.length - 1) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
                 index++
@@ -91,6 +100,7 @@ struct HTMLDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })

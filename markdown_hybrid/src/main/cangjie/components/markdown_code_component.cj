@@ -79,8 +79,20 @@ class MarkdownCodeComponent {
      */
     var chatTouch: Bool = false
 
+    /**
+     * 最后一条数据的位置
+     */
+    @State
+    var lastViewIndex: Int64 = 0
+
+    /**
+     * 上一层级传递过来的，是否是最后一条数据
+     */
+    @State
+    var isEndByParent: Bool = false
+
     protected override func aboutToAppear(): Unit {
-        refreshData(codeText, info, nodeHash) // 初始化刷新数据
+        refreshData(codeText, info, nodeHash, isEndByParent) // 初始化刷新数据
         codeComponents.add(nodeHash, this) // 缓存当前控件
     }
 
@@ -321,7 +333,7 @@ class MarkdownCodeComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(codeText: String, info: Option<String>, nodeHash: Int64): Unit {
+    public func refreshData(codeText: String, info: Option<String>, nodeHash: Int64, isEnd: Bool): Unit {
         this.codeText = codeText
         this.info = info
         this.nodeHash = nodeHash
@@ -341,7 +353,12 @@ class MarkdownCodeComponent {
                     lineInt64Array.replaceData(i, arr[i])
                     let cache = codeTextComponents.get(i)
                     if (let Some(v) <- cache) {
-                        v.refreshData(arr[i], info)
+                        v.refreshData(arr[i], info, false)
+                    }
+                } else if (i == lastViewIndex) {
+                    let cache = codeTextComponents.get(i)
+                    if (let Some(v) <- cache) {
+                        v.refreshData(arr[i], info, false)
                     }
                 }
             }
@@ -354,13 +371,19 @@ class MarkdownCodeComponent {
             // 新数据等于页面数据
             let indexItem: Int64 = dataSourceSize
             for (i in 0..indexItem) {
+                let isSecondToLast: Bool = (i == lastViewIndex - 1)
                 if(lineStrArray.getData(i) != arr[i]){
                     // 最后一条数据通过页面缓存刷新
                     lineStrArray.replaceData(i, arr[i])
                     lineInt64Array.replaceData(i, arr[i])
                     let cache = codeTextComponents.get(i)
                     if (let Some(v) <- cache) {
-                        v.refreshData(arr[i], info)
+                        v.refreshData(arr[i], info, isEnd && (i == lastViewIndex))
+                    }
+                } else if (isSecondToLast) {
+                    let cache = codeTextComponents.get(i)
+                    if (let Some(v) <- cache) {
+                        v.refreshData(arr[i], info, false)
                     }
                 }
             }
@@ -374,7 +397,7 @@ class MarkdownCodeComponent {
                     lineInt64Array.replaceData(i, arr[i])
                     let cache = codeTextComponents.get(i)
                     if (let Some(v) <- cache) {
-                        v.refreshData(arr[i], info)
+                        v.refreshData(arr[i], info, isEnd && (i == lastViewIndex))
                     }
                 }
             }
@@ -384,6 +407,7 @@ class MarkdownCodeComponent {
                 lineInt64Array.deleteData(i)
             }
         }
+        lastViewIndex = lineStrArray.totalCount() - 1
         // 列表是否置底
         if (markdownConfiguration.markdownTheme.separateCodeIsBottom) {
             scrollChatIfAtBottom()

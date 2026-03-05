@@ -53,8 +53,14 @@ class MarkdownCodeIndentedBlockComponent {
     @State
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>()
 
+    /**
+     * 只记录本层级的最后一个字符，本层所有数据都在同一个text组件
+     */
+    @State
+    var isEndByParent: Bool = false
+
     protected override func aboutToAppear(): Unit {
-        refreshData(codeText, info, nodeHash) // 初始化刷新数据
+        refreshData(codeText, info, nodeHash, isEndByParent) // 初始化刷新数据
         indentedCodeComponents.add(nodeHash, this) // 缓存当前控件
     }
 
@@ -111,14 +117,32 @@ class MarkdownCodeIndentedBlockComponent {
     @Builder
     func codeBlockComponent() {
         Scroll() {
-            // 代码文本内容
-            Text(codeText)
-                .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+            if (isEndByParent) {
+                Text() {
+                    Span(spanEndText(codeText.trimEnd("\n"))[0])
+                        .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                        .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
+                    // 最后一个字符
+                    Span(spanEndText(codeText.trimEnd("\n"))[1])
+                        .fontColor(markdownConfiguration.markdownTheme.typeWriterColor)
+                        .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
+                }
                 .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
                 .fontFamily(markdownConfiguration.markdownTheme.codeBlockTypeface)
                 .textAlign(TextAlign.Start)
                 .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin, right: markdownConfiguration.markdownTheme.codeMultilineRightMargin)
                 .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
+
+            } else {
+                // 代码文本内容
+                Text(codeText)
+                    .fontColor(indentedCodeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                    .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
+                    .fontFamily(markdownConfiguration.markdownTheme.codeBlockTypeface)
+                    .textAlign(TextAlign.Start)
+                    .padding(left: markdownConfiguration.markdownTheme.codeMultilineMargin, right: markdownConfiguration.markdownTheme.codeMultilineRightMargin)
+                    .lineHeight(markdownConfiguration.markdownTheme.codeBlockLineHeight)
+            }
         }
         .scrollable(ScrollDirection.Horizontal)
         .scrollBar(BarState.Off)
@@ -207,7 +231,10 @@ class MarkdownCodeIndentedBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(codeText: String, info: Option<String>, nodeHash: Int64): Unit {
+    public func refreshData(codeText: String, info: Option<String>, nodeHash: Int64, isEnd: Bool): Unit {
+        if (!isEnd) {
+            isEndByParent = false
+        }
         this.info = info
         this.codeText = codeText
         this.nodeHash = nodeHash

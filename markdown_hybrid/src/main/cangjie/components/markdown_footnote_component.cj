@@ -61,8 +61,14 @@ public class MarkdownFootnoteComponent {
      */
     var footnoteNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
+    /**
+     * 最后一条数据的位置
+     */
+    @State
+    var lastViewIndex: Int64 = 0
+
     protected override func aboutToAppear(): Unit {
-        refreshFootnoteData(footnoteNodeView) // 初始化刷新数据
+        refreshFootnoteData(footnoteNodeView, footnoteNodeView.isEndData) // 初始化刷新数据
         footnoteMarkdownCacheConfiguration.footnoteComponent.add(footnoteNodeView.nodeHash, this) // 缓存当前控件
     }
 
@@ -103,7 +109,7 @@ public class MarkdownFootnoteComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    footnoteNodeView: NodeView, idx: Int64 => return "${idx}-${footnoteNodeView.nodeHash}-${footnoteNodeView.contentHash}"
+                    footnoteNodeView: NodeView, idx: Int64 => return "${idx}-${footnoteNodeView.nodeHash}-${footnoteNodeView.contentHash}-${footnoteNodeView.canRefresh}"
                 }
             )
         }
@@ -116,7 +122,7 @@ public class MarkdownFootnoteComponent {
      *
      * @param footnoteNodeView 刷新的新数据
      */
-    public func refreshFootnoteData(footnoteNodeView: NodeView): Unit {
+    public func refreshFootnoteData(footnoteNodeView: NodeView, isEnd: Bool): Unit {
         let refreshNodeViewChildren = footnoteNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = footnoteNodeViewDataSource.totalCount() // 页面缓存的数据长度
@@ -126,23 +132,27 @@ public class MarkdownFootnoteComponent {
         if (refreshNodeViewSize > dataSourceSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
-            refreshFootnoteDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshFootnoteDatas(dataSourceSize, refreshNodeViewChildren, false)
             // 循环添加新数据
             for (i in dataSourceSize..refreshNodeViewSize) {
+                if (isEnd && (i == refreshNodeViewSize - 1)) {
+                    refreshNodeViewChildren[i].isEndData = true
+                }
                 footnoteNodeViewDataSource.addData(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
-            refreshFootnoteDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshFootnoteDatas(dataSourceSize, refreshNodeViewChildren, isEnd)
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
-            refreshFootnoteDatas(refreshNodeViewSize, refreshNodeViewChildren)
+            refreshFootnoteDatas(refreshNodeViewSize, refreshNodeViewChildren, isEnd)
             // 循环删除多余的旧数据
             for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
                 footnoteNodeViewDataSource.deleteData(i)
             }
         }
+        lastViewIndex = footnoteNodeViewDataSource.totalCount() - 1
     }
 
     /**
@@ -151,7 +161,7 @@ public class MarkdownFootnoteComponent {
      * @param size 长度
      * @param refreshNodeViews 刷新的数据
      */
-    func refreshFootnoteDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
+    func refreshFootnoteDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>, isEnd: Bool): Unit {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
             let dataSourceNode = footnoteNodeViewDataSource.getData(i)
@@ -159,6 +169,13 @@ public class MarkdownFootnoteComponent {
             let oldBlockHash = dataSourceNode.nodeHash
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
+            // 当前层的倒数第二条数据，因为可能一行多个
+            let isSecondToLast: Bool = (i == lastViewIndex - 1)
+            if (isEnd) {
+                refreshNodeView.isEndData = (i == lastViewIndex && !isSecondToLast)
+            } else {
+                refreshNodeView.isEndData = false
+            }
             // 唯一ID是否相同
             if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                 footnoteNodeViewDataSource.replaceData(i, refreshNodeView)
@@ -170,7 +187,7 @@ public class MarkdownFootnoteComponent {
                     let paragraphComponents = footnoteMarkdownCacheConfiguration.paragraphComponents
                     let cache = paragraphComponents.get(newBlockHash)
                     if (let Some(v) <- cache) {
-                        v.refreshParagraphData(refreshNodeView)
+                        v.refreshParagraphData(refreshNodeView, isSecondToLast || isEnd)
                     }
                 } else {
                     // 其他

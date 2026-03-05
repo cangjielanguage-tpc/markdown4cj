@@ -111,7 +111,7 @@ public class MarkdownListComponent {
     /**
      * 注脚事件回调数据
      */
-    var listIndexFootnoteHashMap: HashMap<String, Float64>
+    var listIndexFootnoteHashMap: HashMap<String, Int64>
 
     /**
      * 列表深度
@@ -123,8 +123,14 @@ public class MarkdownListComponent {
      */
     var listNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
+    /**
+     * 最后一条数据的位置
+     */
+    @State
+    var lastViewIndex: Int64 = 0
+
     protected override func aboutToAppear(): Unit {
-        refreshListData(listNodeView) // 初始化刷新数据
+        refreshListData(listNodeView, listNodeView.isEndData) // 初始化刷新数据
         listMarkdownCacheConfiguration.listComponents.add(listNodeView.nodeHash, this) // 缓存当前控件
     }
 
@@ -220,7 +226,7 @@ public class MarkdownListComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    listNodeView: NodeView, idx: Int64 => return "${idx}-${listNodeView.nodeHash}-${listNodeView.contentHash}"
+                    listNodeView: NodeView, idx: Int64 => return "${idx}-${listNodeView.nodeHash}-${listNodeView.contentHash}-${listNodeView.canRefresh}"
                 }
             )
         }
@@ -232,7 +238,7 @@ public class MarkdownListComponent {
     /**
      * 数据刷新
      */
-    public func refreshListData(listNodeView: NodeView): Unit {
+    public func refreshListData(listNodeView: NodeView, isEnd: Bool): Unit {
         let refreshNodeViewChildren = listNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = listNodeViewDataSource.totalCount() // 页面缓存的数据长度
@@ -242,23 +248,27 @@ public class MarkdownListComponent {
         if (refreshNodeViewSize > dataSourceSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
-            refreshListDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshListDatas(dataSourceSize, refreshNodeViewChildren, false)
             // 循环添加新数据
             for (i in dataSourceSize..refreshNodeViewSize) {
+                if (isEnd && (i == refreshNodeViewSize - 1)) {
+                    refreshNodeViewChildren[i].isEndData = true
+                }
                 listNodeViewDataSource.addData(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
-            refreshListDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshListDatas(dataSourceSize, refreshNodeViewChildren, isEnd)
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
-            refreshListDatas(refreshNodeViewSize, refreshNodeViewChildren)
+            refreshListDatas(refreshNodeViewSize, refreshNodeViewChildren, isEnd)
             // 循环删除多余的旧数据
             for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
                 listNodeViewDataSource.deleteData(i)
             }
         }
+        lastViewIndex = listNodeViewDataSource.totalCount() - 1
     }
 
     /**
@@ -267,7 +277,7 @@ public class MarkdownListComponent {
      * @param size 长度
      * @param refreshNodes 刷新的数据
      */
-    func refreshListDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
+    func refreshListDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>, isEnd: Bool): Unit {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
             let dataSourceNode = listNodeViewDataSource.getData(i)
@@ -275,6 +285,13 @@ public class MarkdownListComponent {
             let oldBlockHash = dataSourceNode.nodeHash
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
+            // 当前层的倒数第二条数据，因为可能一行多个
+            let isSecondToLast: Bool = (i == lastViewIndex - 1)
+            if (isEnd) {
+                refreshNodeView.isEndData = (i == lastViewIndex && !isSecondToLast)
+            } else {
+                refreshNodeView.isEndData = false
+            }
             // 唯一ID是否相同
             if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                 listNodeViewDataSource.replaceData(i, refreshNodeView)
@@ -286,7 +303,21 @@ public class MarkdownListComponent {
                     let listItemComponents = listMarkdownCacheConfiguration.listItemComponents
                     let cache = listItemComponents.get(newBlockHash)
                     if (let Some(v) <- cache) {
-                        v.refreshListItemData(refreshNodeView)
+                        v.refreshListItemData(refreshNodeView, isSecondToLast || isEnd)
+                    }
+                } else {
+                    // TODO 其他
+                    listNodeViewDataSource.replaceData(i, refreshNodeView)
+                }
+            } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash && dataSourceNode.canRefresh) {
+                refreshNodeView.isEndData = false
+                refreshNodeView.canRefresh = false
+                if (refreshNodeView.nodeType == "ListItem" || refreshNodeView.nodeType == "TaskListItem") {
+                    // ListItem/TaskListItem
+                    let listItemComponents = listMarkdownCacheConfiguration.listItemComponents
+                    let cache = listItemComponents.get(newBlockHash)
+                    if (let Some(v) <- cache) {
+                        v.refreshListItemData(refreshNodeView, isSecondToLast || isEnd)
                     }
                 } else {
                     // TODO 其他

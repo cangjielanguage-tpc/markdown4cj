@@ -107,6 +107,12 @@ struct AudioDetailsPage {
    */
   time: number = 50
 
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
   aboutToAppear(): void {
     try {
       let audioData: AudioDataMD = router.getParams() as AudioDataMD
@@ -154,13 +160,16 @@ struct AudioDetailsPage {
           () => {
             // 点击动作触发该方法调用
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
                 this.content = this.content + this.fileStr[index]
                 this.scroller.scrollEdge(Edge.Bottom)
                 if (index === this.fileStr.length - 1) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
                 index++
@@ -172,6 +181,7 @@ struct AudioDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })

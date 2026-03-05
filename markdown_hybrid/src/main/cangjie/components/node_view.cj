@@ -119,6 +119,10 @@ public class NodeView {
     var cardName: Option<String> = Option<String>.None
     // 卡片内容
     var cardData: Option<String> = Option<String>.None
+    // 是否是最后一条数据
+    var isEndData: Bool = false
+    // 是否可以刷新，主要用于倒数第二条数据的刷新判定
+    var canRefresh: Bool = true
 }
 
 public func nodeToNodeView(

@@ -69,9 +69,21 @@ class MarkdownCodeFencedBlockComponent {
      */
     var future: ?Future<Unit> = Option<Future<Unit>>.None
 
+    /**
+     * 最后一条数据的位置
+     */
+    @State
+    var lastViewIndex: Int64 = 0
+
+    /**
+     * 上一层级传递过来的，是否是最后一条数据
+     */
+    @State
+    var isEndByParent: Bool = false
+
     protected override func aboutToAppear(): Unit {
         psh = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
-        refreshData(codeText, info, nodeHash) // 初始化刷新数据
+        refreshData(codeText, info, nodeHash, isEndByParent) // 初始化刷新数据
         fencedCodeComponents.add(nodeHash, this) // 缓存当前控件
     }
 
@@ -121,12 +133,23 @@ class MarkdownCodeFencedBlockComponent {
                             ForEach(
                                 arrayList,
                                 itemGeneratorFunc: {
-                                    item: PrismNodesParseResUI, idx: Int64 => Span(item.getText())
-                                        .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-                                        .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
+                                    item: PrismNodesParseResUI, idx: Int64 =>
+                                        if (item.isCloseTypewriter()) {
+                                            Span(item.getText())
+                                                .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                                                .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
+                                         } else {
+                                            Span(spanEndText(item.getText())[0])
+                                                .fontColor(codeTextColor(item, markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
+                                                .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
+                                            // 最后一个字符
+                                            Span(spanEndText(item.getText())[1])
+                                                .letterSpacing(markdownConfiguration.markdownTheme.paragraphTextWordSpace)
+                                                .fontColor(markdownConfiguration.markdownTheme.typeWriterColor)
+                                         }
                                 },
                                 keyGeneratorFunc: {
-                                    item: PrismNodesParseResUI, idx: Int64 => return "${idx}-${item.getText()}"
+                                    item: PrismNodesParseResUI, idx: Int64 => return "${idx}-${item.getText()}-${item.isCloseTypewriter()}"
                                 }
                             )
                         }
@@ -225,22 +248,22 @@ class MarkdownCodeFencedBlockComponent {
     /**
      * 数据刷新
      */
-    public func refreshData(codeTextStr: String, info: String, nodeHash: Int64): Unit {
+    public func refreshData(codeTextStr: String, info: String, nodeHash: Int64, isEnd: Bool): Unit {
         this.codeText = codeTextStr
         this.isCodeNone = this.codeText.trimAscii().size > 0
         this.info = info
         this.nodeHash = nodeHash
         if (markdownConfiguration.markdownTheme.isCodeBlockParserSync) {
-            stringCodeToResListSync(this.codeText)
+            stringCodeToResListSync(this.codeText, isEnd)
         } else {
-            stringCodeToResList(this.codeText)
+            stringCodeToResList(this.codeText, isEnd)
         }
     }
 
     /**
      * 代码数据高亮解析
      */
-    func stringCodeToResListSync(code: String) {
+    func stringCodeToResListSync(code: String, isEnd: Bool) {
         let codeTextStr = if (markdownConfiguration.markdownTheme.isCodeFormat) {
             codeFormat(info, code, FormatConfig())
         } else {
@@ -261,20 +284,32 @@ class MarkdownCodeFencedBlockComponent {
         if (newSize == oldSize) {
             for (i in 0..oldSize) {
                 if (arrayList[i].getText() != prismNodesParseResUIList[i].getText()) {
+                    if (isEnd && (i == lastViewIndex)) {
+                        prismNodesParseResUIList[i].setCloseTypewriter(false)
+                    }
+                    arrayList[i] = prismNodesParseResUIList[i]
+                } else if (!arrayList[i].isCloseTypewriter()) {
                     arrayList[i] = prismNodesParseResUIList[i]
                 }
             }
         } else if (newSize > oldSize) {
             for (i in 0..oldSize) {
+                arrayList[i].setCloseTypewriter(true) // 已有数据都设置成显示高亮
                 if (arrayList[i].getText() != prismNodesParseResUIList[i].getText()) {
                     arrayList[i] = prismNodesParseResUIList[i]
                 }
             }
             for (i in oldSize..newSize) {
+                if ((i == newSize -1) && isEnd) {
+                    prismNodesParseResUIList[i].setCloseTypewriter(false)
+                } else {
+                    prismNodesParseResUIList[i].setCloseTypewriter(true)
+                }
                 arrayList.append(prismNodesParseResUIList[i])
             }
         } else {
             for (i in 0..newSize) {
+                arrayList[i].setCloseTypewriter(true) // 已有数据都设置成显示高亮
                 if (arrayList[i].getText() != prismNodesParseResUIList[i].getText()) {
                     arrayList[i] = prismNodesParseResUIList[i]
                 }
@@ -289,7 +324,7 @@ class MarkdownCodeFencedBlockComponent {
     /**
      * 代码数据高亮解析
      */
-    func stringCodeToResList(str: String) {
+    func stringCodeToResList(str: String, isEnd: Bool) {
         let callback: (ArrayList<PrismNodesParseResUI>, Int64) -> Unit = {
             prismNodesParseResLists, lines => launch {
                 refreshLines(lines)
@@ -298,20 +333,32 @@ class MarkdownCodeFencedBlockComponent {
                 if (newSize == oldSize) {
                     for (i in 0..oldSize) {
                         if (arrayList[i].getText() != prismNodesParseResLists[i].getText()) {
+                            if (isEnd && (i == lastViewIndex)) {
+                                prismNodesParseResLists[i].setCloseTypewriter(false)
+                            }
+                            arrayList[i] = prismNodesParseResLists[i]
+                        } else if (!arrayList[i].isCloseTypewriter()) {
                             arrayList[i] = prismNodesParseResLists[i]
                         }
                     }
                 } else if (newSize > oldSize) {
                     for (i in 0..oldSize) {
+                        arrayList[i].setCloseTypewriter(true) // 已有数据都设置成显示高亮
                         if (arrayList[i].getText() != prismNodesParseResLists[i].getText()) {
                             arrayList[i] = prismNodesParseResLists[i]
                         }
                     }
                     for (i in oldSize..newSize) {
+                        if ((i == newSize -1) && isEnd) {
+                            prismNodesParseResLists[i].setCloseTypewriter(false)
+                        } else {
+                            prismNodesParseResLists[i].setCloseTypewriter(true)
+                        }
                         arrayList.append(prismNodesParseResLists[i])
                     }
                 } else {
                     for (i in 0..newSize) {
+                        arrayList[i].setCloseTypewriter(true) // 已有数据都设置成显示高亮
                         if (arrayList[i].getText() != prismNodesParseResLists[i].getText()) {
                             arrayList[i] = prismNodesParseResLists[i]
                         }
@@ -321,6 +368,7 @@ class MarkdownCodeFencedBlockComponent {
                         arrayList.remove(i)
                     }
                 }
+                lastViewIndex = arrayList.size - 1
             }
         }
 

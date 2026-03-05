@@ -74,8 +74,14 @@ class MarkdownParagraphComponent {
     @State
     var paragraphNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
+    /**
+     * 最后一条数据的位置
+     */
+    @State
+    var lastViewIndex: Int64 = 0
+
     protected override func aboutToAppear(): Unit {
-        refreshParagraphData(paragraphNodeView) // 初始化刷新数据
+        refreshParagraphData(paragraphNodeView, paragraphNodeView.isEndData) // 初始化刷新数据
         paragraphComponents.add(paragraphNodeView.nodeHash, this) // 缓存当前控件
     }
 
@@ -285,7 +291,8 @@ class MarkdownParagraphComponent {
                         spanListNodeView,
                         spanListTocListOnClick,
                         spanListFootnoteCallback,
-                        false
+                        false,
+                        spanListNodeView.isEndData
                     )
                 } else if (spanListNodeView.nodeType == "LatexMathNode") {
                     // 数学公式
@@ -313,7 +320,8 @@ class MarkdownParagraphComponent {
                             spanListNodeView,
                             spanListTocListOnClick,
                             spanListFootnoteCallback,
-                            false
+                            false,
+                            spanListNodeView.isEndData
                         )
                     } else {
                         if (spanListNodeView.linkUrl().startsWith("http://") || spanListNodeView.linkUrl().startsWith("https://")) {
@@ -453,7 +461,7 @@ class MarkdownParagraphComponent {
                 }
             },
             keyGeneratorFunc: {
-                spanListNodeView: NodeView, idx: Int64 => return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}"
+                spanListNodeView: NodeView, idx: Int64 => return "${idx}-${spanListNodeView.nodeHash}-${spanListNodeView.contentHash}-${spanListNodeView.canRefresh}"
             }
         )
     }
@@ -463,7 +471,7 @@ class MarkdownParagraphComponent {
      *
      * @param paragraphNodeView 刷新的新数据
      */
-    public func refreshParagraphData(paragraphNodeView: NodeView): Unit {
+    public func refreshParagraphData(paragraphNodeView: NodeView, isEnd: Bool): Unit {
         this.paragraphNodeView = paragraphNodeView
         let refreshNodeViewChildren = paragraphNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
@@ -477,23 +485,27 @@ class MarkdownParagraphComponent {
         if (refreshNodeViewSize > paragraphNodeViewListSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
-            refreshParagraphDatas(paragraphNodeViewListSize, refreshNodeViewChildren)
+            refreshParagraphDatas(paragraphNodeViewListSize, refreshNodeViewChildren, false)
             // 循环添加新数据
             for (i in paragraphNodeViewListSize..refreshNodeViewSize) {
+                if (isEnd && (i == refreshNodeViewSize - 1)) {
+                    refreshNodeViewChildren[i].isEndData = true
+                }
                 paragraphNodeViewList.append(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == paragraphNodeViewListSize) {
             // 新数据等于页面数据
-            refreshParagraphDatas(paragraphNodeViewListSize, refreshNodeViewChildren)
+            refreshParagraphDatas(paragraphNodeViewListSize, refreshNodeViewChildren, isEnd)
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
-            refreshParagraphDatas(refreshNodeViewSize, refreshNodeViewChildren)
+            refreshParagraphDatas(refreshNodeViewSize, refreshNodeViewChildren, isEnd)
             // 循环删除多余的旧数据
             for (i in paragraphNodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 paragraphNodeViewList.remove(i)
             }
         }
+        lastViewIndex = paragraphNodeViewList.size - 1 // 页面缓存的数据长度
         if (paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Link" || paragraphNodeViewList[0].nodeType == "HeadLink")) {
             isOneLink = true
         } else {
@@ -507,7 +519,7 @@ class MarkdownParagraphComponent {
      * @param size 长度
      * @param refreshNodeViews 刷新的数据
      */
-    func refreshParagraphDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
+    func refreshParagraphDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>, isEnd: Bool): Unit {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
             let dataSourceNode = paragraphNodeViewList[i]
@@ -515,12 +527,24 @@ class MarkdownParagraphComponent {
             let oldBlockHash = dataSourceNode.nodeHash
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
+            // 当前层的倒数第二条数据，因为可能一行多个
+            let isSecondToLast: Bool = (i == lastViewIndex - 1)
+            if (isEnd) {
+                refreshNodeView.isEndData = (i == lastViewIndex && !isSecondToLast)
+            } else {
+                refreshNodeView.isEndData = false
+            }
             // 唯一ID是否相同
             if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                 paragraphNodeViewList[i] = refreshNodeView
             } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
                 paragraphNodeViewList[i] = refreshNodeView
             } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+                paragraphNodeViewList[i] = refreshNodeView
+            } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash && dataSourceNode.canRefresh) {
+                // 外层换行后，本条数据第一次变成倒数第二条数据时刷新，去掉结尾的变色效果
+                refreshNodeView.isEndData = false
+                refreshNodeView.canRefresh = false
                 paragraphNodeViewList[i] = refreshNodeView
             }
         }

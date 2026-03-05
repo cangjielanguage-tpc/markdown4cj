@@ -78,8 +78,14 @@ class MarkdownTableBlockRowComponent {
     @State
     var tableBlockRowNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
+    /**
+     * 最后一条数据的位置
+     */
+    @State
+    var lastViewIndex: Int64 = 0
+
     protected override func aboutToAppear(): Unit {
-        refreshTableBlockRowData(tableBlockRowNodeView) // 初始化刷新数据
+        refreshTableBlockRowData(tableBlockRowNodeView, tableBlockRowNodeView.isEndData) // 初始化刷新数据
         tableBlockRowComponents.add(tableBlockRowNodeView.nodeHash, this) // 缓存当前控件
     }
 
@@ -121,7 +127,7 @@ class MarkdownTableBlockRowComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    tableBlockRowNodeView: NodeView, idx: Int64 => return "${idx}-${tableBlockRowNodeView.nodeHash}-${tableBlockRowNodeView.contentHash}"
+                    tableBlockRowNodeView: NodeView, idx: Int64 => return "${idx}-${tableBlockRowNodeView.nodeHash}-${tableBlockRowNodeView.contentHash}-${tableBlockRowNodeView.canRefresh}"
                 }
             )
         }
@@ -132,7 +138,7 @@ class MarkdownTableBlockRowComponent {
      *
      * @param tableBlockRowNodeView 刷新的新数据
      */
-    public func refreshTableBlockRowData(tableBlockRowNodeView: NodeView): Unit {
+    public func refreshTableBlockRowData(tableBlockRowNodeView: NodeView, isEnd: Bool): Unit {
         this.tableBlockRowNodeView = tableBlockRowNodeView
         let refreshNodeViewChildren = tableBlockRowNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
@@ -143,23 +149,27 @@ class MarkdownTableBlockRowComponent {
         if (refreshNodeViewSize > tableBlockRowNodeViewListSize) {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
-            refreshTableBlockRowDatas(tableBlockRowNodeViewListSize, refreshNodeViewChildren)
+            refreshTableBlockRowDatas(tableBlockRowNodeViewListSize, refreshNodeViewChildren, false)
             // 循环添加新数据
             for (i in tableBlockRowNodeViewListSize..refreshNodeViewSize) {
+                if (isEnd && (i == refreshNodeViewSize - 1)) {
+                    refreshNodeViewChildren[i].isEndData = true
+                }
                 tableBlockRowNodeViewList.append(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == tableBlockRowNodeViewListSize) {
             // 新数据等于页面数据
-            refreshTableBlockRowDatas(tableBlockRowNodeViewListSize, refreshNodeViewChildren)
+            refreshTableBlockRowDatas(tableBlockRowNodeViewListSize, refreshNodeViewChildren, isEnd)
         } else {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
-            refreshTableBlockRowDatas(refreshNodeViewSize, refreshNodeViewChildren)
+            refreshTableBlockRowDatas(refreshNodeViewSize, refreshNodeViewChildren, isEnd)
             // 循环删除多余的旧数据
             for (i in tableBlockRowNodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 tableBlockRowNodeViewList.remove(i)
             }
         }
+        lastViewIndex = tableBlockRowNodeViewList.size - 1
     }
 
     /**
@@ -168,7 +178,7 @@ class MarkdownTableBlockRowComponent {
      * @param size 长度
      * @param refreshNodeViews 刷新的数据
      */
-    func refreshTableBlockRowDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
+    func refreshTableBlockRowDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>, isEnd: Bool): Unit {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
             let dataSourceNode = tableBlockRowNodeViewList[i]
@@ -176,6 +186,14 @@ class MarkdownTableBlockRowComponent {
             let oldBlockHash = dataSourceNode.nodeHash
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
+            // 当前层的倒数第二条数据，因为可能一行多个
+//            let isSecondToLast: Bool = (i == lastViewIndex - 1) && isEnd
+//            if (isEnd) {
+//                refreshNodeView.isEndData = (i == lastViewIndex && !isSecondToLast)
+//            } else {
+//                refreshNodeView.isEndData = false
+//            }
+            refreshNodeView.isEndData = isEnd
             // 唯一ID是否相同
             if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                 tableBlockRowNodeViewList[i] = refreshNodeView
@@ -186,7 +204,22 @@ class MarkdownTableBlockRowComponent {
                     // Cell
                     let cache = tableBlockCellComponents.get(newBlockHash)
                     if (let Some(v) <- cache) {
-                        v.refreshTableBlockCellData(refreshNodeView)
+//                        v.refreshTableBlockCellData(refreshNodeView, isSecondToLast || isEnd)
+                        v.refreshTableBlockCellData(refreshNodeView, isEnd)
+                    }
+                } else {
+                    // 其他
+                    tableBlockRowNodeViewList[i] = refreshNodeView
+                }
+            } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash && dataSourceNode.canRefresh) {
+                refreshNodeView.canRefresh = false
+                refreshNodeView.isEndData = false
+                if (refreshNodeView.nodeType == "TableCell") {
+                    // Cell
+                    let cache = tableBlockCellComponents.get(newBlockHash)
+                    if (let Some(v) <- cache) {
+//                        v.refreshTableBlockCellData(refreshNodeView, isSecondToLast || isEnd)
+                        v.refreshTableBlockCellData(refreshNodeView, isEnd)
                     }
                 } else {
                     // 其他
