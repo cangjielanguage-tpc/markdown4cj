@@ -3,9 +3,9 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.3.4-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.3.6-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v1.0.3-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v1.0.5-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -100,7 +100,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 ### 编译构建
 
 1. 下载安装
-   1. 通过中心仓下载安装 - 中心仓暂时下架，暂不支持
+   1. 通过中心仓下载安装
 
       ```sh
       ohpm install @cangjie-tpc/markdown_hybrid
@@ -112,7 +112,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
       import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
       ```
 
-   2. 本地编译安装
+   2. 本地编译安装 - 需要提前安装仓颉插件
 
       ```git
       git clone https://gitcode.com/Cangjie-TPC/markdown4cj.git
@@ -133,7 +133,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 使用仓颉组件功能示例
 
-```cangjie
+```ets
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
@@ -217,29 +217,29 @@ struct DemoPage {
 ![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin_5.1.1/doc/assets/img1.png)
 
 ### 使用三方库内置的ArkTS组件功能示例
-```typescript
 
+```ets
 @State
 useCangjieComponent :boolean = false;  //是否使用cangjie
 
 build() {
-    Column() {
+   Column() {
       Column() {
-        CJMarkdown({
-          content: this.message,
-          isShow: this.useCangjieComponent
-        })
+         CJMarkdown({
+            content: this.message,
+            isShow: this.useCangjieComponent
+         })
       }
-    }
-    .padding({ left: 10, right: 10, top: this.safeTop })
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-  }
+   }
+   .padding({ left: 10, right: 10, top: this.safeTop })
+      .width('100%')
+      .alignItems(HorizontalAlign.Start)
+}
 ```
 
 ### 使用用户自定义ArkTS组件功能示例
-```typescript
 
+```ets
 @State
 useCangjieComponent :boolean = false  //是否使用cangjie
 
@@ -252,19 +252,19 @@ showTextBuilder() {
 }
 
 build() {
-    Column() {
+   Column() {
       Column() {
-        CJMarkdown({
-          content: this.message,
-          isShow: this.useCangjieComponent,
-          customContains: this.showTextBuilder.bind(this)
-        })
+         CJMarkdown({
+            content: this.message,
+            isShow: this.useCangjieComponent,
+            customContains: this.showTextBuilder.bind(this)
+         })
       }
-    }
-    .padding({ left: 10, right: 10, top: this.safeTop })
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-  }
+   }
+   .padding({ left: 10, right: 10, top: this.safeTop })
+      .width('100%')
+      .alignItems(HorizontalAlign.Start)
+}
 ```
 
 ## 约束与限制

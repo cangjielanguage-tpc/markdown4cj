@@ -600,12 +600,6 @@ func imageWidthAndHeight(
             width = widthNew
             height = heightNew
         }
-//        width = if (componentImageWidth > imageWidthPx()) {
-//            imageWidthPx()
-//        } else {
-//            componentImageWidth
-//        }
-//        height = width * aspectRatioNew
     } else if (imageWidthPx.isSome() && imageHeightPx.isNone()) {
         var widthNew = if (imageFixedRatioWidth.isSome()) {
             componentImageWidth * imageFixedRatioWidth()
@@ -632,12 +626,6 @@ func imageWidthAndHeight(
             width = widthNew
             height = heightNew
         }
-//        width = if (componentImageWidth > imageWidthPx()) {
-//            imageWidthPx()
-//        } else {
-//            componentImageWidth
-//        }
-//        height = width * aspectRatio
     } else if (imageWidthPx.isNone() && imageHeightPx.isSome()) {
         var widthNew = if (imageFixedRatioWidth.isSome()) {
             componentImageWidth * imageFixedRatioWidth()
@@ -664,12 +652,6 @@ func imageWidthAndHeight(
             width = widthNew
             height = heightNew
         }
-//        width = if (componentImageWidth > imageHeightPx() / aspectRatio) {
-//            imageHeightPx() / aspectRatio
-//        } else {
-//            componentImageWidth
-//        }
-//        height = width * aspectRatio
     } else {
         var widthNew = if (imageFixedRatioWidth.isSome()) {
             componentImageWidth * imageFixedRatioWidth()
@@ -696,25 +678,7 @@ func imageWidthAndHeight(
             width = widthNew
             height = heightNew
         }
-//        width = if (componentImageWidth > imageResWidth) {
-//            imageResWidth
-//        } else {
-//            componentImageWidth
-//        }
-//        height = width * aspectRatio
     }
-//    var widthNew: Float64 = 0.0
-//    var heightNew: Float64 = 0.0
-//    widthNew = if (imageFixedRatioWidth.isSome()) {
-//        componentImageWidth * imageFixedRatioWidth()
-//    } else {
-//        width * imageMaximumWidth
-//    }
-//    heightNew = if (imageFixedRatioWidth.isSome()) {
-//        height * (componentImageWidth / width) * imageFixedRatioWidth()
-//    } else {
-//        height * imageMaximumWidth
-//    }
     return (width, height)
 }
 

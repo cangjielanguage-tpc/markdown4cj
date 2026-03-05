@@ -2,16 +2,24 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 import { NodeController, FrameNode } from '@kit.ArkUI';
-import { CJMarkdownConfig, CJMarkdownTheme, CJMarkdownPlugin, getLoadCJPage, registerImgPreprocessCallback, setGlobalContext, getCJResource,
-  CJMarkdownScroller} from 'libmarkdown.so';
+import {
+  CJMarkdownConfig,
+  CJMarkdownTheme,
+  CJMarkdownPlugin,
+  getLoadCJPage,
+  registerImgPreprocessCallback,
+  setGlobalContext,
+  getCJResource,
+  CJMarkdownScroller
+} from 'libmarkdown.so';
 
 class CJNodeController extends NodeController {
   rootNode?: FrameNode = undefined
   public callbackCJ: (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void = (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => {
-    this.mdStr = input
-    this.isInputEnded = isInputEnded
-    this.incrementalAnalysis = incrementalAnalysis
-  }  // 持续输出调用
+      this.mdStr = input
+      this.isInputEnded = isInputEnded
+      this.incrementalAnalysis = incrementalAnalysis
+    } // 持续输出调用
   mdStr: string
   isInputEnded: boolean
   incrementalAnalysis: boolean
@@ -45,11 +53,11 @@ export struct CJMarkdown {
    */
   @Prop @Watch('onMarkDownChange') content: string = ''
   /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   * 流式输入是否输入结束。true:结束输入,false:持续输入。默认true
    */
   @Prop @Watch('onMarkDownChange') isInputEnded: boolean = true
   /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
+   * markdown是否增量解析。true:增量解析,false:全量解析。默认false
    */
   @Prop @Watch('onMarkDownChange') incrementalAnalysis: boolean = false
   /**
@@ -65,18 +73,18 @@ export struct CJMarkdown {
    */
   @State listScroller?: MarkdownScroller = undefined
   /**
-   * 是否加载仓颉markdown
+   * 是否使用Cangjie互操作组件展示。true:使用Cangjie互操作组件,false:使用ArkUI。默认true
    */
   @Prop useCangjieComponent?: boolean = true
   /**
-   * 不加载仓颉markdown情况下默认布局
+   * 使用ArkUI布局用户传入ArkUI自定义组件,不传则使用三方库自带的Text组件显示
    */
   @BuilderParam customContains: () => void = this.defaultTextBuilder
   private markdownNode: CJNodeController | null = null
 
   @Builder
   defaultTextBuilder() {
-    if(!this.useCangjieComponent) {
+    if (!this.useCangjieComponent) {
       Column() {
         Text(this.content)
       }
@@ -85,14 +93,14 @@ export struct CJMarkdown {
     }
   }
 
-  onMarkDownChange():void {
-    if(this.useCangjieComponent === true) {
+  onMarkDownChange(): void {
+    if (this.useCangjieComponent === true) {
       this.markdownNode?.callbackCJ(this.content, this.isInputEnded, this.incrementalAnalysis)
     }
   }
 
   aboutToAppear(): void {
-    if(this.useCangjieComponent === true) {
+    if (this.useCangjieComponent === true) {
       this.markdownNode = new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin(), this.listScroller?.getScroller())
     }
   }
@@ -866,8 +874,7 @@ export class MarkdownConfiguration {
   /**
    * 视频的图片替换回调
    */
-  videoImageCallback?: (funcArg0: string,
-    funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
+  videoImageCallback?: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
   /**
    * 视频发布的点击事件
    */
@@ -984,7 +991,6 @@ export class MarkdownConfiguration {
    */
   setVideoReleaseCallback(cb: (funcArg0: string) => void): void {
     this.videoReleaseCallback = cb
-
   }
 
   /**
@@ -1346,7 +1352,7 @@ export class MarkdownTheme {
   codeTypeface?: string = undefined
   /**
    * 围栏代码块代码高亮是否同步解析
-  */
+   */
   isCodeBlockParserSync?: boolean = undefined
   /**
    * 代码块代码文本颜色
@@ -1716,27 +1722,22 @@ export class MarkdownTheme {
    * 视频下载按钮高度
    */
   videoDownloadHeight?: number = undefined
-
   /**
    * 视频下载按钮圆角
    */
   videoDownloadRadius?: number = undefined
-
   /**
    * 视频下载按钮文本内容
    */
   videoDownloadText?: string = undefined
-
   /**
    * 视频下载按钮文本大小
    */
   videoDownloadTexSize?: number = undefined
-
   /**
    * 视频下载按钮文本颜色
    */
   videoDownloadTexColor?: number = undefined
-
   /**
    * 视频下载按钮背景颜色
    */
@@ -1880,15 +1881,15 @@ export class MarkdownTheme {
   /**
    * 删除线颜色
    */
-  strikethroughColor?: number= undefined
+  strikethroughColor?: number = undefined
   /**
    * 定义列表定义行缩进
    */
-  descListTermAndDefMargins?: number= undefined
+  descListTermAndDefMargins?: number = undefined
   /**
    * 定义列表定义行缩进
    */
-  descListDefIndentation?: number= undefined
+  descListDefIndentation?: number = undefined
   /**
    * 定义列表定义行间距
    */
@@ -3857,7 +3858,7 @@ export enum LatexMathColorFormat {
 /**
  * 图片缩放类型的枚举
  */
-export enum ImageFitType{
+export enum ImageFitType {
   /**
    * 保持宽高比进行缩小或者放大，使得图片两边都大于或等于显示边界。
    */
@@ -4157,6 +4158,9 @@ export class MarkdownPlugin {
   }
 }
 
+/**
+ * Markdown滑动控制器
+ */
 export class MarkdownScroller {
   private scroller?: CJMarkdownScroller = undefined
 
@@ -4173,10 +4177,16 @@ export class MarkdownScroller {
    * @param edge 滚动到容器边缘
    */
   scrollEdge(edge: Edge): void {
-    switch (edge){
-      case Edge.Top : this.scroller?.scrollEdge(1)
-      case Edge.Bottom : this.scroller?.scrollEdge(2)
-      default : this.scroller?.scrollEdge(1)
+    switch (edge) {
+      case Edge.Top:
+        this.scroller?.scrollEdge(1)
+        break
+      case Edge.Bottom:
+        this.scroller?.scrollEdge(2)
+        break
+      default:
+        this.scroller?.scrollEdge(1)
+        break
     }
   }
 
