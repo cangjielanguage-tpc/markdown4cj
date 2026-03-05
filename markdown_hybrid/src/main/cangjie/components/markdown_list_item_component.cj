@@ -105,7 +105,7 @@ class MarkdownListItemComponent {
     /**
      * 注脚事件回调数据
      */
-    var listItemIndexFootnoteHashMap: HashMap<String, Int64>
+    var listItemIndexFootnoteHashMap: HashMap<String, Float64>
 
     /**
      * 列表深度

@@ -106,7 +106,7 @@ public class MarkdownQuoteComponent {
     /**
      * 注脚事件回调数据
      */
-    var quoteIndexFootnoteHashMap: HashMap<String, Int64>
+    var quoteIndexFootnoteHashMap: HashMap<String, Float64>
 
     /**
      * 列表深度

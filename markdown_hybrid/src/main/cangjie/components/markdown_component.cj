@@ -148,8 +148,7 @@ public class MarkdownComponent {
     /**
      * 注脚事件回调数据
      */
-    var indexFootnoteHashMap: HashMap<String, Int64> = HashMap<String, Int64>()
-//    var indexFootnoteList: ArrayList<Int64> = ArrayList<Int64>()
+    var indexFootnoteHashMap: HashMap<String, Float64> = HashMap<String, Float64>()
 
     /**
      * toc事件回调数据
@@ -160,7 +159,6 @@ public class MarkdownComponent {
      * list控制器
      */
     let scroller: Scroller
-    let scrollerNew: Scroller = Scroller()
 
     /**
      * 单独代码块list控制器
@@ -229,7 +227,7 @@ public class MarkdownComponent {
     func build() {
         if (!markdownConfiguration.markdownTheme.isSeparateCodeBlock) {
             if (DeviceInfo.sdkApiVersion >= 19) {
-                List(scroller: scrollerNew) {
+                List(scroller: scroller) {
                     LazyForEach(
                         nodeViewDataSource,
                         itemGeneratorFunc: {
@@ -261,8 +259,7 @@ public class MarkdownComponent {
                                         headingFootnoteCallback: footnoteCallback
                                     )
                                 }
-                                .onAppear({ => indexTocHashMap.add(idx, 0.0)})
-//                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
+                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "FencedCodeBlockListBlock") {
                                 // 围栏代码块列表
@@ -429,9 +426,7 @@ public class MarkdownComponent {
                                         footnoteFootnoteCallback:footnoteCallback
                                     )
                                 }
-                                // 先改成第二个参数为idx
-                                .onAppear({ => indexFootnoteHashMap.add(item.footnoteID(), idx)})
-//                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
+                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "DescList") {
                                 // 定义列表
@@ -518,15 +513,15 @@ public class MarkdownComponent {
                 }
                 .listDirection(Axis.Vertical)
                 .alignListItem(ListItemAlign.Start)
-//                .scrollBar(BarState.Off)
-//                .enableScrollInteraction(false)
+                .scrollBar(BarState.Off)
+                .enableScrollInteraction(false)
                 .interopOnSizeChange {
                     old, new => if (componentWidth != new.width) {
                         componentWidth = new.width
                     }
                 }
             } else {
-                List(scroller: scrollerNew) {
+                List(scroller: scroller) {
                     LazyForEach(
                         nodeViewDataSource,
                         itemGeneratorFunc: {
@@ -558,8 +553,7 @@ public class MarkdownComponent {
                                         headingFootnoteCallback: footnoteCallback
                                     )
                                 }
-                                .onAppear({ => indexTocHashMap.add(idx, 0.0)})
-//                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
+                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "FencedCodeBlockListBlock") {
                                 // 围栏代码块列表
@@ -726,8 +720,7 @@ public class MarkdownComponent {
                                         footnoteFootnoteCallback:footnoteCallback
                                     )
                                 }
-                                .onAppear({ => indexFootnoteHashMap.add(item.footnoteID(), idx)})
-//                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
+                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "DescList") {
                                 // 定义列表
@@ -814,8 +807,8 @@ public class MarkdownComponent {
                 }
                 .listDirection(Axis.Vertical)
                 .alignListItem(ListItemAlign.Start)
-//                .scrollBar(BarState.Off)
-//                .interopEnableScrollInteraction(false)
+                .scrollBar(BarState.Off)
+                .interopEnableScrollInteraction(false)
                 .interopOnSizeChange {
                     old, new => if (componentWidth != new.width) {
                         componentWidth = new.width
@@ -1279,14 +1272,9 @@ public class MarkdownComponent {
      * 脚注点击回调
      */
     func footnoteCallback(noteid: String): Unit {
-//        scroller.scrollBy(xOffset: 0, yOffset: 500)
-        Hilog.error(555, "aaa", "----------------> 脚注点击回调")
         if (let Some(v) <- indexFootnoteHashMap.get(noteid)) {
-            Hilog.error(555, "aaa", "----------------> 脚注点击开始滚动: ${v}")
-            this.scrollerNew.scrollToIndex(Int32(v))
             if (let Some(w) <- markdownConfiguration.footnoteCallback) {
-                Hilog.error(555, "aaa", "----------------> 脚注点击调用外部方法")
-//                w(Float64(v))
+                w(v)
             }
         }
     }
