@@ -503,6 +503,8 @@ export declare class CJMarkdownScroller {
 
   scrollBy(xOffset: number, yOffset: number): void
 
+  scrollToIndex(value: number): void
+
   scrollEdge(value: number): void
 
   isAtEnd(): boolean

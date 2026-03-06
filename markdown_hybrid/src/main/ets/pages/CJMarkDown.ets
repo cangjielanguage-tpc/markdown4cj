@@ -4233,6 +4233,15 @@ export class MarkdownScroller {
   }
 
   /**
+   * 滑动到指定Index
+   *
+   * @param index 要滑动到的目标元素在当前容器中的索引值
+   */
+  scrollToIndex(index: number): void {
+    this.scroller?.scrollToIndex(index)
+  }
+
+  /**
    * 判断是否滚动到底部
    *
    * @returns 是否滚动到底部
