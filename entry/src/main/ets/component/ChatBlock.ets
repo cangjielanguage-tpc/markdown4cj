@@ -10,31 +10,66 @@ const MARGIN: number = SIZE * 2 + 25
 
 @Component
 export struct ChatBlock {
+  /**
+   * 消息文本对象
+   */
   @Prop
   message: Message
   /**
    * Markdown的控制器
    */
-  scroller?: MarkdownScroller = undefined;
+  scroller?: MarkdownScroller = undefined
 
-  aboutToAppear(): void {
-    console.log(`ZJH aboutToAppear`)
-  }
+  build() {
+    if (this.message.who === 'Me') {
+      Column({ space: 3 }) {
+        // 时间戳
+        // Row() {
+        //   Text(this.message.time)
+        //     .fontSize(12)
+        // }
+        // .width('100%')
+        // .justifyContent(FlexAlign.End)
+        // .margin({ right: MARGIN })
 
-  aboutToDisappear(): void {
-    console.log(`ZJH aboutToDisappear`)
-  }
+        // 消息气泡
+        Row() {
+          this.MessageContent(0x4c96ff, 0xffffff)
+          // Row()
+          //   .width(10)
+          // this.Avatar()
+        }
+        .justifyContent(FlexAlign.End)
+        .alignItems(VerticalAlign.Top)
+        .width('100%')
+      }
+      .width('100%')
+      .padding({ left: 10, right: 10 })
+    } else {
+      Column({ space: 3 }) {
+        // 时间戳
+        // Row() {
+        //   Text(this.message.time)
+        //     .fontSize(12)
+        // }
+        // .width('100%')
+        // .justifyContent(FlexAlign.Start)
+        // .margin({ left: MARGIN })
 
-  isText() {
-    return this.message.content.content.length <= 60
-  }
-
-  @Builder
-  Avatar() {
-    Image(getIcon(this.message.who))
-      .width(SIZE)
-      .height(SIZE)
-      .borderRadius(SIZE / 2)
+        // 消息气泡
+        Row() {
+          // this.Avatar()
+          // Row()
+          //   .width(10)
+          this.MessageContent(0xffffff, 0x000000)
+        }
+        .justifyContent(FlexAlign.Start)
+        .alignItems(VerticalAlign.Top)
+        .width('100%')
+      }
+      .width('100%')
+      .padding({ left: 10, right: 10 })
+    }
   }
 
   @Builder
@@ -62,55 +97,21 @@ export struct ChatBlock {
     .borderRadius(10)
   }
 
-  build() {
-    if (this.message.who === 'Me') {
-      Column({ space: 3 }) {
-        // 时间戳
-        Row() {
-          Text(this.message.time)
-            .fontSize(12)
-        }
-        .width('100%')
-        .justifyContent(FlexAlign.End)
-        .margin({ right: MARGIN })
+  /**
+   * 头像
+   */
+  @Builder
+  Avatar() {
+    Image(getIcon(this.message.who))
+      .width(SIZE)
+      .height(SIZE)
+      .borderRadius(SIZE / 2)
+  }
 
-        // 消息气泡
-        Row() {
-          this.MessageContent(0x4c96ff, 0xffffff)
-          Row()
-            .width(10)
-          this.Avatar()
-        }
-        .justifyContent(FlexAlign.End)
-        .alignItems(VerticalAlign.Top)
-        .width('100%')
-      }
-      .width('100%')
-      .padding({ left: 10, right: 10 })
-    } else {
-      Column({ space: 3 }) {
-        // 时间戳
-        Row() {
-          Text(this.message.time)
-            .fontSize(12)
-        }
-        .width('100%')
-        .justifyContent(FlexAlign.Start)
-        .margin({ left: MARGIN })
-
-        // 消息气泡
-        Row() {
-          this.Avatar()
-          Row()
-            .width(10)
-          this.MessageContent(0xffffff, 0x000000)
-        }
-        .justifyContent(FlexAlign.Start)
-        .alignItems(VerticalAlign.Top)
-        .width('100%')
-      }
-      .width('100%')
-      .padding({ left: 10, right: 10 })
-    }
+  /**
+   * 文本小于60个字符使用普通文本显示
+   */
+  isText(): boolean {
+    return this.message.content.content.length <= 60
   }
 }

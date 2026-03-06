@@ -1,11 +1,11 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
  */
-import { http } from '@kit.NetworkKit';
-import { JSON } from '@kit.ArkTS';
-import { ChatCompletionChunk } from '../model/ChatCompletionChunk';
+import { http } from '@kit.NetworkKit'
+import { JSON } from '@kit.ArkTS'
+import { ChatCompletionChunk } from '../model/ChatCompletionChunk'
 import util from '@ohos.util'
-import { ChatCompletion } from '../model/CharCompletion';
+import { ChatCompletion } from '../model/CharCompletion'
 
 export enum Role {
   I = "user",
@@ -90,10 +90,10 @@ export const HARD_CODE_DATA = `理财平台的**稳定性**是投资者最关心
 
 export class LLM {
   private history: string = ''
-  private url: string;
-  private key: string;
-  private model: string;
-  private memory: boolean;
+  private url: string
+  private key: string
+  private model: string
+  private memory: boolean
 
   constructor(
   url: string,
@@ -101,10 +101,10 @@ export class LLM {
   model: string,
   memory: boolean = false
   ) {
-  this.url = url;
-  this.key = key;
-  this.model = model;
-  this.memory = memory;
+  this.url = url
+  this.key = key
+  this.model = model
+  this.memory = memory
 }
 
   private encode(role: Role, content: string): string {
@@ -145,28 +145,28 @@ export class LLM {
     }
   }
   randInt(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(Math.random() * (max - min + 1)) + min
   }
   public async chat(input: string, task: (chunk: string) => void, stream: boolean = false): Promise<void> {
     let buffer = `${HARD_CODE_DATA}`
     const chunker = () => {
       if (buffer.length > 0) {
         const size = this.randInt(1, 10)
-        const output = buffer.substring(0, Math.min(buffer.length, size));
-        buffer = buffer.slice(Math.min(buffer.length, size));
-        task(output);
-        setTimeout(chunker, 150);
+        const output = buffer.substring(0, Math.min(buffer.length, size))
+        buffer = buffer.slice(Math.min(buffer.length, size))
+        task(output)
+        setTimeout(chunker, 150)
       }
-    };
-    setTimeout(chunker, 150);
+    }
+    setTimeout(chunker, 150)
     // let output = ""
     // const INDEX = 6
     // const httpRequest = http.createHttp()
     // httpRequest.on('dataReceive', (data: ArrayBuffer) => {
-    //   const decoder = util.TextDecoder.create("utf-8");
+    //   const decoder = util.TextDecoder.create("utf-8")
     //   const str = decoder.decodeWithStream(new Uint8Array(data))
-    //   const lines = stream ? str.split("\n").filter(l => l.trim().length > 0) : [str];
-    //   console.log("LLM dataReceive:" + lines);
+    //   const lines = stream ? str.split("\n").filter(l => l.trim().length > 0) : [str]
+    //   console.log("LLM dataReceive:" + lines)
     //   for (let line of lines) {
     //     if (!stream || line.length > INDEX && line[INDEX] === "{") {
     //       const json = stream ? line.slice(INDEX) : line
