@@ -61,7 +61,7 @@ public class MarkdownComponent {
         // 视频插件
         .usePlugin(BlockVideoPlugin.create())
         // 自动链接插件
-        .usePlugin(LinkifyPlugin.create())
+        .usePlugin(LinkifyPlugin.create([]))
         // 幻灯片插件
         .usePlugin(ImageSlidePlugin.create())
         // ImageStyle插件

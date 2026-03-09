@@ -22,12 +22,13 @@ internal import std.collection.Set
 internal import std.time.DateTime
 internal import std.regex.Matcher
 internal import std.regex.Regex
-internal import std.regex.RegexOption
+internal import std.regex.RegexFlag
 internal import std.collection.contains
 internal import std.io.IOException
 internal import std.unicode.UnicodeStringExtension
 internal import std.math.abs
 internal import std.math.MaxMinValue
+internal import std.convert.Parsable
 internal import std.convert.*
 
 /**
@@ -61,8 +62,16 @@ extend<T> Option<T> where T <: Equatable<T> {
 let NULL_CHAR: Rune = '\u{0}'
 let EMPTY_STRING: String = ""
 let EMPTY_MAP: Map<String, String> = HashMap()
+let EMPTY_STRING_ARRAY: Array<String> = []
 
 public type Runnable = () -> Unit
+
+extend StringBuilder {
+    func appends(str: ToString): StringBuilder {
+        this.append(str)
+        return this
+    }
+}
 
 extend String {
     func equalsIgnoreCase(other: String) {

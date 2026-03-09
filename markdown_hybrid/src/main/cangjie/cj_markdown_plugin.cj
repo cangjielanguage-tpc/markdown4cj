@@ -65,6 +65,11 @@ public class CJMarkdownPlugin {
     var isLinkifyPlugin: Bool = false
 
     /**
+     * 正则列表
+     */
+    var regs: Array<String> = []
+
+    /**
      * 是否加载链接单独解析插件
      */
     var isLinkViewPlugin: Bool = false
@@ -211,9 +216,11 @@ public class CJMarkdownPlugin {
      * 设置是否加载链接自动解析解析插件
      *
      * @param isLinkifyPlugin
+     * @param regs 正则列表
      */
-    public func setIsLinkifyPlugin(isLinkifyPlugin: Bool): Unit {
+    public func setIsLinkifyPlugin(isLinkifyPlugin: Bool, regs: JSArrayEx<String>): Unit {
         this.isLinkifyPlugin = isLinkifyPlugin
+        this.regs = regs.toArray()
     }
 
     /**

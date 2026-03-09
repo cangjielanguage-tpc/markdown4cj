@@ -336,7 +336,7 @@ struct LinkDetailsPage {
     if (this.isLinkStyle) {
       plugin.setIsLinkViewPlugin(true) // 链接块状化插件
     } else {
-      plugin.setIsLinkifyPlugin(true) // 链接自动加载插件
+      plugin.setIsLinkifyPlugin(true, []) // 链接自动加载插件
     }
     plugin.setIsTablePlugin(true) // 表格插件
     plugin.setIsTaskListPlugin(true) // 任务列表插件

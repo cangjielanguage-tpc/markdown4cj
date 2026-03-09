@@ -73,7 +73,7 @@ export struct CJMarkdownWrap {
     plugin.setIsHtmlPlugin(true) // HTML插件
     plugin.setIsFootnotePlugin(true) // 脚注插件
     plugin.setIsTocPlugin(true) // TOC插件
-    plugin.setIsLinkifyPlugin(true) // 链接自动加载插件
+    plugin.setIsLinkifyPlugin(true, []) // 链接自动加载插件
     plugin.setIsDescListPlugin(true) // 定义列表解析插件
     plugin.setIsHeadIDPlugin(true) // 标题ID解析插件
     plugin.setIsSubPlugin(true) // 下标解析插件

@@ -23,7 +23,7 @@ export declare class CJMarkdownPlugin {
 
   setIsStrikethroughPlugin(isStrikethroughPlugin: boolean): void
 
-  setIsLinkifyPlugin(isLinkifyPlugin: boolean): void
+  setIsLinkifyPlugin(isLinkifyPlugin: boolean, regs: Array<string>): void
 
   setIsLinkViewPlugin(isLinkViewPlugin: boolean): void
 

@@ -846,7 +846,7 @@ export struct CJMarkdown {
       cjMarkdownPlugin.setIsTocPlugin(this.plugin.isTocPlugin)
       cjMarkdownPlugin.setIsTaskListPlugin(this.plugin.isTaskListPlugin)
       cjMarkdownPlugin.setIsStrikethroughPlugin(this.plugin.isStrikethroughPlugin)
-      cjMarkdownPlugin.setIsLinkifyPlugin(this.plugin.isLinkifyPlugin)
+      cjMarkdownPlugin.setIsLinkifyPlugin(this.plugin.isLinkifyPlugin, this.plugin.regs)
       cjMarkdownPlugin.setIsLinkViewPlugin(this.plugin.isLinkViewPlugin)
       cjMarkdownPlugin.setIsLatexMathPlugin(this.plugin.isLatexMathPlugin)
       cjMarkdownPlugin.setIsImageStylePlugin(this.plugin.isImageStylePlugin)
@@ -4046,6 +4046,10 @@ export class MarkdownPlugin {
    */
   isLinkifyPlugin: boolean = false
   /**
+   * 正则列表
+   */
+  regs: Array<string> = []
+  /**
    * 是否加载链接单独解析插件
    */
   isLinkViewPlugin: boolean = false
@@ -4180,8 +4184,9 @@ export class MarkdownPlugin {
    *
    * @param isLinkifyPlugin 是否设置链接自动加载插件 - true：设置链接自动加载插件；false：不设置链接自动加载插件。默认false
    */
-  setIsLinkifyPlugin(isLinkifyPlugin: boolean): void {
+  setIsLinkifyPlugin(isLinkifyPlugin: boolean, regs: Array<string>): void {
     this.isLinkifyPlugin = isLinkifyPlugin
+    this.regs = regs
   }
 
   /**

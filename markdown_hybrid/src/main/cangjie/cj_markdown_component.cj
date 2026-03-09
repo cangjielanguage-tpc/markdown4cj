@@ -118,7 +118,7 @@ class CJMarkdownComponent {
                 markdownBuilder.usePlugin(StrikethroughPlugin.create())
             }
             if(v.isLinkifyPlugin){
-                markdownBuilder.usePlugin(LinkifyPlugin.create())
+                markdownBuilder.usePlugin(LinkifyPlugin.create(v.regs))
             }
             if(v.isLinkViewPlugin){
                 markdownBuilder.usePlugin(LinkViewPlugin.create())
