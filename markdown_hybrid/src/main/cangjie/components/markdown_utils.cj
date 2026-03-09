@@ -6,6 +6,7 @@ package markdown.components
 import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
+import ohos.hilog.Hilog
 
 let COLOR_191919: Color = Color(0x191919)
 let COLOR_0000FF: Color = Color(0x0000FF)
@@ -284,7 +285,7 @@ func spanFontColor(nodeView: NodeView, markdownTheme: MarkdownTheme): Color {
         return markdownTheme.codeTextColor // 内联代码
     }
     if (nodeView.isHeading) {
-        return markdownTheme.headingTextColor // 标题
+        return headColor(nodeView.headingLevel, markdownTheme) // 标题
     }
     if (nodeView.isTable && nodeView.isTableHead) {
         return markdownTheme.tableTitleTextColor // 表格头
@@ -293,6 +294,25 @@ func spanFontColor(nodeView: NodeView, markdownTheme: MarkdownTheme): Color {
         return markdownTheme.tableContentTextColor // 表格内容
     }
     return markdownTheme.paragraphTextColor // 段落和其他
+}
+
+/**
+ * 设置不同等级标题颜色
+ *
+ * @param level 标题等级
+ * @param markdownTheme markdown样式
+ * @return 标题颜色
+ */
+func headColor(level: Int64, markdownTheme: MarkdownTheme): Color {
+    return match (level) {
+        case 1 => markdownTheme.headingTextColor1
+        case 2 => markdownTheme.headingTextColor2
+        case 3 => markdownTheme.headingTextColor3
+        case 4 => markdownTheme.headingTextColor4
+        case 5 => markdownTheme.headingTextColor5
+        case 6 => markdownTheme.headingTextColor6
+        case _ => markdownTheme.headingTextColor
+    }
 }
 
 /**

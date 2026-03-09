@@ -166,9 +166,13 @@ class MarkdownHeadingComponent {
                 headingTitleComponent()
             }
             // 一级二级标题是否显示下划线
-            if ((headingNodeView.headingLevel == 1 || headingNodeView.headingLevel == 2) && headingMarkdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {
+            if ((headingNodeView.headingLevel == 1) && headingMarkdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {
                 Divider()
-                    .color(headingMarkdownConfiguration.markdownTheme.headingBreakColor)
+                    .color(headingMarkdownConfiguration.markdownTheme.headingBreakColor1)
+                    .strokeWidth(headingMarkdownConfiguration.markdownTheme.headingBreakHeight)
+            } else if ((headingNodeView.headingLevel == 2) && headingMarkdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {
+                Divider()
+                    .color(headingMarkdownConfiguration.markdownTheme.headingBreakColor2)
                     .strokeWidth(headingMarkdownConfiguration.markdownTheme.headingBreakHeight)
             }
         }

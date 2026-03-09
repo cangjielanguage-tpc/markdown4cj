@@ -225,6 +225,14 @@ struct TitleDetailsPage {
     theme.setHeadingTextLineHeight4(this.headingTextLineHeight4) // 四级标题文本行高
     theme.setHeadingTextLineHeight5(this.headingTextLineHeight5) // 五级标题文本行高
     theme.setHeadingTextLineHeight6(this.headingTextLineHeight6) // 六级标题文本行高
+
+    theme.setHeadingTextColor1(0xFFB22222) // 各级标题颜色
+    theme.setHeadingTextColor2(0xFFD2691E)
+    theme.setHeadingTextColor3(0xFFFFD700)
+    theme.setHeadingTextColor4(0xFF228B22)
+    theme.setHeadingTextColor5(0xFF00BFFF)
+    theme.setHeadingTextColor6(0xFF9400D3)
+
     config.setMarkdownTheme(theme)
     return config
   }

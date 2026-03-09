@@ -249,6 +249,18 @@ export declare class CJMarkdownTheme {
 
   setHeadingTextLineHeight6(headingTextLineHeight6: number): void
 
+  setHeadingTextColor1(headingTextColor1: number): void
+
+  setHeadingTextColor2(headingTextColor2: number): void
+
+  setHeadingTextColor3(headingTextColor3: number): void
+
+  setHeadingTextColor4(headingTextColor4: number): void
+
+  setHeadingTextColor5(headingTextColor5: number): void
+
+  setHeadingTextColor6(headingTextColor6: number): void
+
   setParagraphTopMargins(paragraphTopMargins: number): void
 
   setParagraphBottomMargins(paragraphBottomMargins: number): void

@@ -532,6 +532,46 @@ public class MarkdownTheme {
     protected var headingTextColor: Color = COLOR_FF191919
 
     /**
+     * 一级标题文本颜色
+     */
+    protected var headingTextColor1: Color = COLOR_FF191919
+
+    /**
+     * H1标题下分割线颜色
+     */
+    protected var headingBreakColor1: Color = COLOR_FF191919
+
+    /**
+     * 二级标题文本颜色
+     */
+    protected var headingTextColor2: Color = COLOR_FF191919
+
+    /**
+     * H2标题下分割线颜色
+     */
+    protected var headingBreakColor2: Color = COLOR_FF191919
+
+    /**
+     * 三级标题文本颜色
+     */
+    protected var headingTextColor3: Color = COLOR_FF191919
+
+    /**
+     * 四级标题文本颜色
+     */
+    protected var headingTextColor4: Color = COLOR_FF191919
+
+    /**
+     * 五级标题文本颜色
+     */
+    protected var headingTextColor5: Color = COLOR_FF191919
+
+    /**
+     * 六级标题文本颜色
+     */
+    protected var headingTextColor6: Color = COLOR_FF191919
+
+    /**
      * 标题文本字间距
      */
     protected var headingTextWordSpace: Float64 = 0.0
@@ -1256,6 +1296,14 @@ public class MarkdownTheme {
         this.headingBottomMargins = builder.headingBottomMargins
         this.headingTextSizeMultipliers = builder.headingTextSizeMultipliers
         this.headingTextColor = builder.headingTextColor
+        this.headingTextColor1 = builder.headingTextColor1
+        this.headingBreakColor1 = builder.headingBreakColor1
+        this.headingTextColor2 = builder.headingTextColor2
+        this.headingBreakColor2 = builder.headingBreakColor2
+        this.headingTextColor3 = builder.headingTextColor3
+        this.headingTextColor4 = builder.headingTextColor4
+        this.headingTextColor5 = builder.headingTextColor5
+        this.headingTextColor6 = builder.headingTextColor6
         this.headingTextWordSpace = builder.headingTextWordSpace
         this.headingTextLineHeight1 = builder.headingTextLineHeight1
         this.headingTextLineHeight2 = builder.headingTextLineHeight2
@@ -2117,6 +2165,46 @@ public class MarkdownThemeBuilder {
     var headingTextColor: Color = COLOR_FF191919
 
     /**
+     * 一级标题文本颜色
+     */
+    var headingTextColor1: Color = COLOR_FF191919
+
+    /**
+     * H1标题下分割线颜色
+     */
+    var headingBreakColor1: Color = COLOR_FF191919
+
+    /**
+     * 二级标题文本颜色
+     */
+    var headingTextColor2: Color = COLOR_FF191919
+
+    /**
+     * H2标题下分割线颜色
+     */
+    var headingBreakColor2: Color = COLOR_FF191919
+
+    /**
+     * 三级标题文本颜色
+     */
+    var headingTextColor3: Color = COLOR_FF191919
+
+    /**
+     * 四级标题文本颜色
+     */
+    var headingTextColor4: Color = COLOR_FF191919
+
+    /**
+     * 五级标题文本颜色
+     */
+    var headingTextColor5: Color = COLOR_FF191919
+
+    /**
+     * 六级标题文本颜色
+     */
+    var headingTextColor6: Color = COLOR_FF191919
+
+    /**
      * 标题文本字间距
      */
     var headingTextWordSpace: Float64 = 0.0
@@ -2844,6 +2932,14 @@ public class MarkdownThemeBuilder {
         this.headingBottomMargins = theme.headingBottomMargins
         this.headingTextSizeMultipliers = theme.headingTextSizeMultipliers
         this.headingTextColor = theme.headingTextColor
+        this.headingTextColor1 = theme.headingTextColor1
+        this.headingBreakColor1 = theme.headingBreakColor1 // 初始使用文本颜色作为分割线颜色
+        this.headingTextColor2 = theme.headingTextColor2
+        this.headingBreakColor2 = theme.headingBreakColor2 // 初始使用文本颜色作为分割线颜色
+        this.headingTextColor3 = theme.headingTextColor3
+        this.headingTextColor4 = theme.headingTextColor4
+        this.headingTextColor5 = theme.headingTextColor5
+        this.headingTextColor6 = theme.headingTextColor6
         this.headingTextWordSpace = theme.headingTextWordSpace
         this.headingTextLineHeight1 = theme.headingTextLineHeight1
         this.headingTextLineHeight2 = theme.headingTextLineHeight2
@@ -4191,6 +4287,9 @@ public class MarkdownThemeBuilder {
      */
     public func setHeadingBreakColor(headingBreakColor: Color): MarkdownThemeBuilder {
         this.headingBreakColor = headingBreakColor
+        // H1/H2标题下分割线同步设置颜色
+        this.headingBreakColor1 = headingBreakColor
+        this.headingBreakColor2 = headingBreakColor
         return this
     }
 
@@ -4246,6 +4345,68 @@ public class MarkdownThemeBuilder {
      */
     public func setHeadingTextColor(headingTextColor: Color): MarkdownThemeBuilder {
         this.headingTextColor = headingTextColor
+        return this
+    }
+
+    /**
+     * 设置一级标题文本颜色
+     *
+     * @param headingTextColor1 一级标题文本颜色
+     */
+    public func setHeadingTextColor1(headingTextColor1: Color): MarkdownThemeBuilder {
+        this.headingTextColor1 = headingTextColor1
+        this.headingBreakColor1 = headingTextColor1 // 同时设置分割线颜色
+        return this
+    }
+
+    /**
+     * 设置二级标题文本颜色
+     *
+     * @param headingTextColor2 二级标题文本颜色
+     */
+    public func setHeadingTextColor2(headingTextColor2: Color): MarkdownThemeBuilder {
+        this.headingTextColor2 = headingTextColor2
+        this.headingBreakColor2 = headingTextColor2 // 同时设置分割线颜色
+        return this
+    }
+
+    /**
+     * 设置三级标题文本颜色
+     *
+     * @param headingTextColor3 三级标题文本颜色
+     */
+    public func setHeadingTextColor3(headingTextColor3: Color): MarkdownThemeBuilder {
+        this.headingTextColor3 = headingTextColor3
+        return this
+    }
+
+    /**
+     * 设置四级标题文本颜色
+     *
+     * @param headingTextColor4 四级标题文本颜色
+     */
+    public func setHeadingTextColor4(headingTextColor4: Color): MarkdownThemeBuilder {
+        this.headingTextColor4 = headingTextColor4
+        return this
+    }
+
+    /**
+     * 设置五级标题文本颜色
+     *
+     * @param headingTextColor5 五级标题文本颜色
+     */
+    public func setHeadingTextColor5(headingTextColor5: Color): MarkdownThemeBuilder {
+        this.headingTextColor5 = headingTextColor5
+        return this
+    }
+
+    /**
+     * 设置六级标题文本颜色
+     *
+     * @param headingTextColor6 六级标题文本颜色
+     */
+    public func setHeadingTextColor6(headingTextColor6: Color): MarkdownThemeBuilder {
+        this.headingTextColor6 = headingTextColor6
         return this
     }
 

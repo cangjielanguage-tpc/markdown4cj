@@ -490,6 +490,24 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.headingTextLineHeight6 !== undefined) {
           cjMarkdownTheme.setHeadingTextLineHeight6(this.config.markdownTheme.headingTextLineHeight6)
         }
+        if (this.config.markdownTheme.headingTextColor1 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor1(this.config.markdownTheme.headingTextColor1)
+        }
+        if (this.config.markdownTheme.headingTextColor2 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor2(this.config.markdownTheme.headingTextColor2)
+        }
+        if (this.config.markdownTheme.headingTextColor3 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor3(this.config.markdownTheme.headingTextColor3)
+        }
+        if (this.config.markdownTheme.headingTextColor4 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor4(this.config.markdownTheme.headingTextColor4)
+        }
+        if (this.config.markdownTheme.headingTextColor5 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor5(this.config.markdownTheme.headingTextColor5)
+        }
+        if (this.config.markdownTheme.headingTextColor6 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor6(this.config.markdownTheme.headingTextColor6)
+        }
         if (this.config.markdownTheme.paragraphTopMargins !== undefined) {
           cjMarkdownTheme.setParagraphTopMargins(this.config.markdownTheme.paragraphTopMargins)
         }
@@ -1516,6 +1534,30 @@ export class MarkdownTheme {
    * 六级标题文本行高
    */
   headingTextLineHeight6?: number = undefined
+  /**
+   * 一级标题文本颜色
+   */
+  headingTextColor1?: number = undefined
+  /**
+   * 二级标题文本颜色
+   */
+  headingTextColor2?: number = undefined
+  /**
+   * 三级标题文本颜色
+   */
+  headingTextColor3?: number = undefined
+  /**
+   * 四级标题文本颜色
+   */
+  headingTextColor4?: number = undefined
+  /**
+   * 五级标题文本颜色
+   */
+  headingTextColor5?: number = undefined
+  /**
+   * 六级标题文本颜色
+   */
+  headingTextColor6?: number = undefined
   /**
    * 段落模块上间距
    */
@@ -2925,6 +2967,60 @@ export class MarkdownTheme {
    */
   setHeadingTextLineHeight6(headingTextLineHeight6: number): void {
     this.headingTextLineHeight6 = headingTextLineHeight6
+  }
+
+  /**
+   * 设置一级标题文本颜色
+   *
+   * @param headingTextColor1 一级标题文本颜色
+   */
+  setHeadingTextColor1(headingTextColor1: number): void {
+    this.headingTextColor1 = headingTextColor1
+  }
+
+  /**
+   * 设置二级标题文本颜色
+   *
+   * @param headingTextColor2 一级标题文本颜色
+   */
+  setHeadingTextColor2(headingTextColor2: number): void {
+    this.headingTextColor2 = headingTextColor2
+  }
+
+  /**
+   * 设置三级标题文本颜色
+   *
+   * @param headingTextColor3 一级标题文本颜色
+   */
+  setHeadingTextColor3(headingTextColor3: number): void {
+    this.headingTextColor3 = headingTextColor3
+  }
+
+  /**
+   * 设置四级标题文本颜色
+   *
+   * @param headingTextColor4 一级标题文本颜色
+   */
+  setHeadingTextColor4(headingTextColor4: number): void {
+    this.headingTextColor4 = headingTextColor4
+  }
+
+  /**
+   * 设置五级标题文本颜色
+   *
+   * @param headingTextColor5 一级标题文本颜色
+   */
+  setHeadingTextColor5(headingTextColor5: number): void {
+    this.headingTextColor5 = headingTextColor5
+  }
+
+  /**
+   * 设置六级标题文本颜色
+   *
+   * @param headingTextColor6 一级标题文本颜色
+   */
+  setHeadingTextColor6(headingTextColor6: number): void {
+    this.headingTextColor6 = headingTextColor6
   }
 
   /**

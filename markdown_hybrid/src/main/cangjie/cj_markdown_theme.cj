@@ -513,6 +513,36 @@ public class CJMarkdownTheme {
     var headingTextLineHeight6: ?Float64 = None
 
     /**
+     * 一级标题文本颜色
+     */
+    var headingTextColor1: ?Color = None
+
+    /**
+     * 二级标题文本颜色
+     */
+    var headingTextColor2: ?Color = None
+
+    /**
+     * 三级标题文本颜色
+     */
+    var headingTextColor3: ?Color = None
+
+    /**
+     * 四级标题文本颜色
+     */
+    var headingTextColor4: ?Color = None
+
+    /**
+     * 五级标题文本颜色
+     */
+    var headingTextColor5: ?Color = None
+
+    /**
+     * 六级标题文本颜色
+     */
+    var headingTextColor6: ?Color = None
+
+    /**
      * 段落模块上间距
      */
     var paragraphTopMargins: ?Float64 = None
@@ -1930,6 +1960,60 @@ public class CJMarkdownTheme {
      */
     public func setHeadingTextLineHeight6(headingTextLineHeight6: Float64): Unit {
         this.headingTextLineHeight6 = headingTextLineHeight6
+    }
+
+    /**
+     * 设置一级标题文本颜色
+     *
+     * @param headingTextColor1 一级标题文本颜色
+     */
+    public func setHeadingTextColor1(headingTextColor1: UInt32): Unit {
+        this.headingTextColor1 = transColorForTrasparent(headingTextColor1)
+    }
+
+    /**
+     * 设置二级标题文本颜色
+     *
+     * @param headingTextColor2 二级标题文本颜色
+     */
+    public func setHeadingTextColor2(headingTextColor2: UInt32): Unit {
+        this.headingTextColor2 = transColorForTrasparent(headingTextColor2)
+    }
+
+    /**
+     * 设置三级标题文本颜色
+     *
+     * @param headingTextColor3 三级标题文本颜色
+     */
+    public func setHeadingTextColor3(headingTextColor3: UInt32): Unit {
+        this.headingTextColor3 = transColorForTrasparent(headingTextColor3)
+    }
+
+    /**
+     * 设置四级标题文本颜色
+     *
+     * @param headingTextColor4 四级标题文本颜色
+     */
+    public func setHeadingTextColor4(headingTextColor4: UInt32): Unit {
+        this.headingTextColor4 = transColorForTrasparent(headingTextColor4)
+    }
+
+    /**
+     * 设置五级标题文本颜色
+     *
+     * @param headingTextColor5 五级标题文本颜色
+     */
+    public func setHeadingTextColor5(headingTextColor5: UInt32): Unit {
+        this.headingTextColor5 = transColorForTrasparent(headingTextColor5)
+    }
+
+    /**
+     * 设置六级标题文本颜色
+     *
+     * @param headingTextColor6 六级标题文本颜色
+     */
+    public func setHeadingTextColor6(headingTextColor6: UInt32): Unit {
+        this.headingTextColor6 = transColorForTrasparent(headingTextColor6)
     }
 
     /**
