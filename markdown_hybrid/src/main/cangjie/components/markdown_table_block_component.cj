@@ -139,7 +139,8 @@ class MarkdownTableBlockComponent {
             .alignListItem(ListItemAlign.Start)
         }
         .scrollable(ScrollDirection.Horizontal)
-        .scrollBar(BarState.Off)
+        .scrollBar(if (tableBlockMarkdownConfiguration.markdownTheme.tableScrollBarShow) { BarState.Auto } else { BarState.Off })
+        .scrollBarColor(tableBlockMarkdownConfiguration.markdownTheme.tableScrollBarColor)
         .padding(left: tableBlockMarkdownConfiguration.markdownTheme.tableBorderWidth, right: tableBlockMarkdownConfiguration.markdownTheme.tableBorderWidth)
     }
 

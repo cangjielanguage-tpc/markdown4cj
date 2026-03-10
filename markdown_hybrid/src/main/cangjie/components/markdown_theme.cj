@@ -1112,6 +1112,16 @@ public class MarkdownTheme {
     protected var tableFirstColumnBold: Bool = false
 
     /**
+     * 表格是否显示滚动条
+     */
+    protected var tableScrollBarShow: Bool = false
+
+    /**
+     * 表格是否显示滚动条
+     */
+    protected var tableScrollBarColor: Color = COLOR_FF191919
+
+    /**
      * markdown代码高亮样式
      */
     protected var prismTheme: PrismTheme = PrismThemeDarkula.create()
@@ -1430,6 +1440,8 @@ public class MarkdownTheme {
         this.tableMinTextWidth = builder.tableMinTextWidth
         this.tableMaxTextWidth = builder.tableMaxTextWidth
         this.tableFirstColumnBold = builder.tableFirstColumnBold
+        this.tableScrollBarShow = builder.tableScrollBarShow
+        this.tableScrollBarColor = builder.tableScrollBarColor
 
         // 16、代码高亮
         this.prismTheme = builder.prismTheme
@@ -2745,6 +2757,16 @@ public class MarkdownThemeBuilder {
     var tableFirstColumnBold: Bool = false
 
     /**
+     * 表格是否显示滚动条
+     */
+    var tableScrollBarShow: Bool = false
+
+    /**
+     * 表格是否显示滚动条
+     */
+    var tableScrollBarColor: Color = COLOR_FF191919
+
+    /**
      * markdown代码高亮样式
      */
     var prismTheme: PrismTheme = PrismThemeDarkula.create()
@@ -3066,6 +3088,8 @@ public class MarkdownThemeBuilder {
         this.tableMinTextWidth = theme.tableMinTextWidth
         this.tableMaxTextWidth = theme.tableMaxTextWidth
         this.tableFirstColumnBold = theme.tableFirstColumnBold
+        this.tableScrollBarShow = theme.tableScrollBarShow
+        this.tableScrollBarColor = theme.tableScrollBarColor
 
         // 16、代码高亮
         this.prismTheme = theme.prismTheme
@@ -5595,6 +5619,28 @@ public class MarkdownThemeBuilder {
      */
     public func setTableFirstColumnBold(tableFirstColumnBold: Bool): MarkdownThemeBuilder {
         this.tableFirstColumnBold = tableFirstColumnBold
+        return this
+    }
+
+    /**
+     * 设置表格是否显示滚动条
+     *
+     * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableScrollBarShow(tableScrollBarShow: Bool): MarkdownThemeBuilder {
+        this.tableScrollBarShow = tableScrollBarShow
+        return this
+    }
+
+    /**
+     * 设置表格滚动条颜色
+     *
+     * @param tableFirstColumnBold 表格滚动条颜色
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableScrollBarColor(tableScrollBarColor: Color): MarkdownThemeBuilder {
+        this.tableScrollBarColor = tableScrollBarColor
         return this
     }
 

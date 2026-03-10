@@ -853,6 +853,12 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.tableFirstColumnBold) {
                 markdownThemeBuilder.setTableFirstColumnBold(v) // 设置表格第一列是否加粗
             }
+            if (let Some(v) <- w.cjMarkdownTheme.tableScrollBarShow) {
+                markdownThemeBuilder.setTableScrollBarShow(v) // 设置表格是否显示滚动条
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.tableScrollBarColor) {
+                markdownThemeBuilder.setTableScrollBarColor(v) // 设置表格滚动条颜色
+            }
             if (let Some(v) <- w.cjMarkdownTheme.isDark) {
                 // 设置markdown代码高亮样式
                 if(v){

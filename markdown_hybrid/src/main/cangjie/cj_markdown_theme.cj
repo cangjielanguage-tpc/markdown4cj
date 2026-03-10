@@ -1008,6 +1008,16 @@ public class CJMarkdownTheme {
     var tableFirstColumnBold: ?Bool = None
 
     /**
+     * 表格是否显示滚动条
+     */
+    var tableScrollBarShow: ?Bool = None
+
+    /**
+     * 表格是否显示滚动条
+     */
+    var tableScrollBarColor: ?Color = None
+
+    /**
      * 代码深浅色模式
      */
     var isDark: ?Bool = None
@@ -2860,6 +2870,24 @@ public class CJMarkdownTheme {
      */
     public func setTableFirstColumnBold(tableFirstColumnBold: Bool): Unit {
         this.tableFirstColumnBold = tableFirstColumnBold
+    }
+
+    /**
+     * 设置表格是否显示滚动条
+     *
+     * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
+     */
+    public func setTableScrollBarShow(tableScrollBarShow: Bool): Unit {
+        this.tableScrollBarShow = tableScrollBarShow
+    }
+
+    /**
+     * 设置表格滚动条颜色
+     *
+     * @param tableScrollBarColor 表格滚动条颜色
+     */
+    public func setTableScrollBarColor(tableScrollBarColor: UInt32): Unit {
+        this.tableScrollBarColor = transColorForTrasparent(tableScrollBarColor)
     }
 
     /**

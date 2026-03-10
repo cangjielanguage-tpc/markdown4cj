@@ -793,6 +793,12 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.tableFirstColumnBold !== undefined) {
           cjMarkdownTheme.setTableFirstColumnBold(this.config.markdownTheme.tableFirstColumnBold)
         }
+        if (this.config.markdownTheme.tableScrollBarShow !== undefined) {
+          cjMarkdownTheme.setTableScrollBarShow(this.config.markdownTheme.tableScrollBarShow)
+        }
+        if (this.config.markdownTheme.tableScrollBarColor !== undefined) {
+          cjMarkdownTheme.setTableScrollBarColor(this.config.markdownTheme.tableScrollBarColor)
+        }
         if (this.config.markdownTheme.isDark !== undefined) {
           cjMarkdownTheme.setIsDark(this.config.markdownTheme.isDark)
         }
@@ -1930,6 +1936,14 @@ export class MarkdownTheme {
    * 表格第一列是否加粗
    */
   tableFirstColumnBold?: boolean = undefined
+  /**
+   * 表格是否显示滚动条
+   */
+  tableScrollBarShow?: boolean = undefined
+  /**
+   * 表格是否显示滚动条
+   */
+  tableScrollBarColor?: number = undefined
   /**
    * 代码深浅色模式
    */
@@ -3858,6 +3872,24 @@ export class MarkdownTheme {
    */
   setTableFirstColumnBold(tableFirstColumnBold: boolean): void {
     this.tableFirstColumnBold = tableFirstColumnBold
+  }
+
+  /**
+   * 设置表格是否显示滚动条
+   *
+   * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
+   */
+  setTableScrollBarShow(tableScrollBarShow: boolean): void {
+    this.tableScrollBarShow = tableScrollBarShow
+  }
+
+  /**
+   * 设置表格滚动条颜色
+   *
+   * @param tableScrollBarColor 表格滚动条颜色
+   */
+  setTableScrollBarColor(tableScrollBarColor: number): void {
+    this.tableScrollBarColor = tableScrollBarColor
   }
 
   /**

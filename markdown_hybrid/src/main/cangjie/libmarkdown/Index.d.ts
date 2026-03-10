@@ -447,6 +447,10 @@ export declare class CJMarkdownTheme {
 
   setTableFirstColumnBold(tableFirstColumnBold: boolean): void
 
+  setTableScrollBarShow(tableScrollBarShow: boolean): void
+
+  setTableScrollBarColor(tableScrollBarColor: number): void
+
   setIsDark(isDark: boolean): void
 
   setStrikethroughColor(strikethroughColor: number): void

@@ -204,6 +204,8 @@ struct TableDetailsPage {
     theme.setTableMinTextWidth(this.tableMinTextWidth) // 表格最小宽度
     theme.setTableMaxTextWidth(this.tableMaxTextWidth) // 表格最大宽度
     theme.setTableFirstColumnBold(this.tableFirstColumnBold) // 表格第一列是否加粗
+    theme.setTableScrollBarShow(true) // 设置显示滚动条
+    theme.setTableScrollBarColor(0xFFFFD700) // 设置滚动条颜色
     config.setMarkdownTheme(theme)
     return config
   }
