@@ -31,7 +31,6 @@ export struct CJMarkdownWrap {
       plugin: this.setPlugin(),
       listScroller: this.setScroller()
     })
-    .constraintSize({ maxHeight: '120%' })
     .width("75%")
   }
 

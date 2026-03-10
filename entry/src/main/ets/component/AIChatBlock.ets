@@ -9,7 +9,7 @@ const SIZE: number = 36
 const MARGIN: number = SIZE * 2 + 25
 
 @Component
-export struct ChatBlock {
+export struct AIChatBlock {
   /**
    * 消息文本对象
    */

@@ -1,8 +1,8 @@
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { DemoDataMD } from './DemoPage'
-import { getFileContextStr } from './FileUtils'
+import { getFileContextStr } from '../utils/FileUtils'
 
 @Entry
 @Component

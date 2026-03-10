@@ -1,10 +1,10 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextArr, getFileContextStr } from './FileUtils'
+import { getFileContextArr, getFileContextStr } from '../utils/FileUtils'
 import { ImageDataMD } from './ImagePage'
 import hilog from '@ohos.hilog'
 

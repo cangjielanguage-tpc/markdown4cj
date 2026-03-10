@@ -1,9 +1,9 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
-import { getFileListStr } from './FileUtils'
-import { booleanToString, enumToString, numberToColorString, stringToBoolean } from './BaseUtils'
+import { titleComponent } from '../component/BaseComponent'
+import { getFileListStr } from '../utils/FileUtils'
+import { booleanToString, enumToString, numberToColorString, stringToBoolean } from '../utils/BaseUtils'
 import { router } from '@kit.ArkUI'
 import { LatexMathColorFormat } from '@cangjie-tpc/markdown_hybrid'
 

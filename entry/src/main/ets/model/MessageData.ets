@@ -262,6 +262,8 @@ export const MESSAGE_DATA_7 = `理财产品排名`
 export const MESSAGE_DATA_8 = `我来帮你梳理2026年3月的理财产品情况~
 你没有盲目跟风选择热门产品，而是先了解排名信息，这种谨慎的投资态度很稳妥。
 
+![示例图](https://markdown.com.cn/images/blue.jpg)
+
 ---
 
 ### 📊 在售重点理财产品一览
@@ -303,6 +305,8 @@ export const MESSAGE_DATA_9 = `黄金白银走势`
 
 export const MESSAGE_DATA_10 = `金价银价近期暴涨解析📈
 你关注黄金白银走势，说明有不错的投资敏感度，这能帮你及时捕捉市场机会。
+
+![示例图](https://markdown.com.cn/images/green.jpg)
 
 ---
 

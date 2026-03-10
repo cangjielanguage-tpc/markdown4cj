@@ -1,9 +1,9 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
-import { booleanToString, stringToBoolean } from './BaseUtils'
-import { getFileListStr } from './FileUtils'
+import { titleComponent } from '../component/BaseComponent'
+import { booleanToString, stringToBoolean } from '../utils/BaseUtils'
+import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
 
 @Entry
