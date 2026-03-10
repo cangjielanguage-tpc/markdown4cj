@@ -81,6 +81,17 @@ struct AIChaLazytDetailsPage {
    */
   inFirst: boolean = true
 
+  /**
+   * 是否在布局末尾
+   */
+  @State
+  reachBottom: boolean = true
+
+  /**
+   * 手指是否触摸
+   */
+  chatTouch: boolean = false
+
   aboutToAppear(): void {
     // 数据添加
     this.messages.append(new Message(new MessageContent(MESSAGE_DATA_1), Who.Me, this.now()))
@@ -169,7 +180,7 @@ struct AIChaLazytDetailsPage {
     Column() {
       // 顶部标题
       titleComponent(
-        "仓宝",
+        "仓宝 - 懒加载",
         0xFF317AFF,
         true,
         this.safeTop
@@ -189,6 +200,10 @@ struct AIChaLazytDetailsPage {
       .backgroundColor('rgb(238, 237, 242)')
       .stackFromEnd(true)
       .edgeEffect(EdgeEffect.None)
+      .onReachEnd (() => {
+          this.reachBottom = true
+        }
+      )
       .onSizeChange((_, value) => {
         this.listWidth = Number(value.width)
         this.listHeight = Number(value.height)
@@ -214,6 +229,7 @@ struct AIChaLazytDetailsPage {
         }
       })
       .onScrollFrameBegin((offset, state) => {
+        this.checkScroll(offset)
         if (this.messages.get(this.currentIndex).who === Who.Me) {
           // 其他卡片
           return { offsetRemain: offset }
@@ -265,6 +281,7 @@ struct AIChaLazytDetailsPage {
         }
       })
       .onTouch((event: TouchEvent) => {
+        this.chatOnTouch(event)
         if (event.type == TouchType.Down) {
           inputMethod.getController().stopInputSession()
         }
@@ -323,6 +340,46 @@ struct AIChaLazytDetailsPage {
     .backgroundColor('rgb(242, 241, 247)')
     .expandSafeArea([SafeAreaType.SYSTEM], [SafeAreaEdge.TOP, SafeAreaEdge.BOTTOM])
   }
+  /**
+   * 是否滑动到底部
+   */
+  scrollChatIfAtBottom() {
+    if (this.reachBottom) {
+      this.scroll2Bottom()
+    }
+  }
+
+  /**
+   * 滑动到底部
+   */
+  scroll2Bottom() {
+    this.scroller.scrollEdge(Edge.Bottom)
+    this.markdownScrollerArray[this.markdownScrollerArray.length -1].scrollEdge(Edge.Bottom)
+  }
+
+  /**
+   * 判断滑动距离和是否手指触摸
+   */
+  checkScroll(offset: number) {
+    if (offset < -0.5 && this.chatTouch) {
+      this.reachBottom = false
+    }
+  }
+
+
+  /**
+   * 手指触摸判断
+   */
+  chatOnTouch(evt: TouchEvent) {
+    switch (evt.type){
+      case TouchType.Down:
+        this.chatTouch = true
+        break
+      case TouchType.Up:
+        this.chatTouch = false
+        break
+    }
+  }
 
   /**
    * 获取当前时间
@@ -355,7 +412,9 @@ struct AIChaLazytDetailsPage {
         talking.content = new MessageContent(talking.content.content + slice)
       }
       this.messages.reload()
+      this.scrollChatIfAtBottom()
     }, true).then(() => {
+      this.scrollChatIfAtBottom()
       this.scroller.scrollEdge(Edge.Bottom)
     })
   }

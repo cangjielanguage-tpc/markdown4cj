@@ -14,7 +14,7 @@ struct AIChatPage {
   build() {
     Column() {
       titleComponent(
-        "综合配置页面",
+        "AI聊天页面",
         0xFF317AFF,
         true,
         this.safeTop
