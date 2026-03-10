@@ -616,6 +616,7 @@ func length2FloatPx(length: Option<Length>, componentImageWidth: Float64): Optio
  * @param imageResHeight 图片真实高度
  * @param imageWidth 图片设置宽度
  * @param imageHeight 图片设置高度
+ * @param imageMaxWidth 图片设置宽度
  * @param imageFixedRatioWidth 图片基于父布局宽度缩放百分比
  * @param imageMaximumWidth 图片基于自身宽度缩放百分比
  * @return (Float64, Float64) 图片的宽高单位是PX
@@ -626,12 +627,23 @@ func imageWidthAndHeight(
     imageResHeight: Float64,
     imageWidth: Option<Length>,
     imageHeight: Option<Length>,
+    imageMaxWidth: ?Float64,
     imageMaxHeight: ?Float64,
     imageFixedRatioWidth: Option<Float64>,
     imageMaximumWidth: Float64
 ): (Float64, Float64) {
     var width: Float64 = 0.0
     var height: Float64 = 0.0
+    let componentImageWidthNew = if (let Some(v) <- imageMaxWidth) {
+        let imageMaxWidthNew = vp2px(v.vp)().value
+        if (imageMaxWidthNew < componentImageWidth) {
+            imageMaxWidthNew
+        } else {
+            componentImageWidth
+        }
+    } else {
+        componentImageWidth
+    }
     let aspectRatio: Float64 = imageResHeight / imageResWidth // 原图宽高比
     let imageWidthPx: ?Float64 = length2FloatPx(imageWidth, componentImageWidth)
     let imageHeightPx: ?Float64 = length2FloatPx(imageHeight, componentImageWidth)
@@ -642,10 +654,10 @@ func imageWidthAndHeight(
         } else {
             imageWidthPx() * imageMaximumWidth
         }
-        widthNew = if (componentImageWidth > widthNew) {
+        widthNew = if (componentImageWidthNew > widthNew) {
             widthNew
         } else {
-            componentImageWidth
+            componentImageWidthNew
         }
         var heightNew: Float64 = widthNew * aspectRatioNew
         if (imageMaxHeight.isSome()) {
@@ -668,10 +680,10 @@ func imageWidthAndHeight(
         } else {
             imageWidthPx() * imageMaximumWidth
         }
-        widthNew = if (componentImageWidth > widthNew) {
+        widthNew = if (componentImageWidthNew > widthNew) {
             widthNew
         } else {
-            componentImageWidth
+            componentImageWidthNew
         }
         var heightNew: Float64 = widthNew * aspectRatio
         if (imageMaxHeight.isSome()) {
@@ -694,10 +706,10 @@ func imageWidthAndHeight(
         } else {
             imageHeightPx() / aspectRatio * imageMaximumWidth
         }
-        widthNew = if (componentImageWidth > widthNew) {
+        widthNew = if (componentImageWidthNew > widthNew) {
             widthNew
         } else {
-            componentImageWidth
+            componentImageWidthNew
         }
         var heightNew: Float64 = widthNew * aspectRatio
         if (imageMaxHeight.isSome()) {
@@ -720,10 +732,10 @@ func imageWidthAndHeight(
         } else {
             imageResWidth * imageMaximumWidth
         }
-        widthNew = if (componentImageWidth > widthNew) {
+        widthNew = if (componentImageWidthNew > widthNew) {
             widthNew
         } else {
-            componentImageWidth
+            componentImageWidthNew
         }
         var heightNew: Float64 = widthNew * aspectRatio
         if (imageMaxHeight.isSome()) {

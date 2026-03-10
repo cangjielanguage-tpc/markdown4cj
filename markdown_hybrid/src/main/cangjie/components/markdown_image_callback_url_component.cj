@@ -222,6 +222,7 @@ public class MarkdownImageCallbackUrlComponent {
                                         imageLoadResult.height,
                                         urlCallbackImageWidth,
                                         urlCallbackImageHeight,
+                                        urlCallbackMarkdownTheme.imageMaxWidth,
                                         urlCallbackMarkdownTheme.imageMaxHeight,
                                         urlCallbackMarkdownTheme.imageFixedRatioWidth,
                                         urlCallbackMarkdownTheme.imageMaximumWidth
@@ -270,6 +271,7 @@ public class MarkdownImageCallbackUrlComponent {
                         imageResHeight(),
                         urlCallbackImageWidth,
                         urlCallbackImageHeight,
+                        urlCallbackMarkdownTheme.imageMaxWidth,
                         urlCallbackMarkdownTheme.imageMaxHeight,
                         urlCallbackMarkdownTheme.imageFixedRatioWidth,
                         urlCallbackMarkdownTheme.imageMaximumWidth

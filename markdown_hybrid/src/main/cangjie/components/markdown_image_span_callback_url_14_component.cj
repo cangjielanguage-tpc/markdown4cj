@@ -209,6 +209,7 @@ public class MarkdownSpanImageCallbackUrl14Component {
                                     imageLoadResult.height,
                                     url14CallbackImageWidth,
                                     url14CallbackImageHeight,
+                                    url14CallbackMarkdownTheme.imageMaxWidth,
                                     url14CallbackMarkdownTheme.imageMaxHeight,
                                     url14CallbackMarkdownTheme.imageFixedRatioWidth,
                                     url14CallbackMarkdownTheme.imageMaximumWidth
@@ -249,6 +250,7 @@ public class MarkdownSpanImageCallbackUrl14Component {
                         imageResHeight(),
                         url14CallbackImageWidth,
                         url14CallbackImageHeight,
+                        url14CallbackMarkdownTheme.imageMaxWidth,
                         url14CallbackMarkdownTheme.imageMaxHeight,
                         url14CallbackMarkdownTheme.imageFixedRatioWidth,
                         url14CallbackMarkdownTheme.imageMaximumWidth

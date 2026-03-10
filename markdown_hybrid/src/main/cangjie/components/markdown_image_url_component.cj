@@ -166,6 +166,7 @@ public class MarkdownImageUrlComponent {
                                     imageLoadResult.height,
                                     urlImageWidth,
                                     urlImageHeight,
+                                    urlMarkdownTheme.imageMaxWidth,
                                     urlMarkdownTheme.imageMaxHeight,
                                     urlMarkdownTheme.imageFixedRatioWidth,
                                     urlMarkdownTheme.imageMaximumWidth

@@ -151,6 +151,7 @@ public class MarkdownSpanImageUrl14Component {
                                 imageLoadResult.height,
                                 url14ImageWidth,
                                 url14ImageHeight,
+                                url14MarkdownTheme.imageMaxWidth,
                                 url14MarkdownTheme.imageMaxHeight,
                                 url14MarkdownTheme.imageFixedRatioWidth,
                                 url14MarkdownTheme.imageMaximumWidth

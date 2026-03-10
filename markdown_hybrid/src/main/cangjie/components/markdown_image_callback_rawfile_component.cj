@@ -266,6 +266,7 @@ public class MarkdownImageCallbackRawFileComponent {
                         imageResHeight(),
                         rawFileCallbackImageWidth,
                         rawFileCallbackImageHeight,
+                        rawFileCallbackMarkdownTheme.imageMaxWidth,
                         rawFileCallbackMarkdownTheme.imageMaxHeight,
                         rawFileCallbackMarkdownTheme.imageFixedRatioWidth,
                         rawFileCallbackMarkdownTheme.imageMaximumWidth
@@ -299,6 +300,7 @@ public class MarkdownImageCallbackRawFileComponent {
                         imageResHeight(),
                         rawFileCallbackImageWidth,
                         rawFileCallbackImageHeight,
+                        rawFileCallbackMarkdownTheme.imageMaxWidth,
                         rawFileCallbackMarkdownTheme.imageMaxHeight,
                         rawFileCallbackMarkdownTheme.imageFixedRatioWidth,
                         rawFileCallbackMarkdownTheme.imageMaximumWidth

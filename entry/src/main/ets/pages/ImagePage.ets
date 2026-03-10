@@ -722,7 +722,7 @@ struct ImagePage {
 
           Column() {
             Row() {
-              Text(`图片最大高度 - `)
+              Text(`图片最大宽度 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
               Text(`${this.imageMaxWidth}`)
