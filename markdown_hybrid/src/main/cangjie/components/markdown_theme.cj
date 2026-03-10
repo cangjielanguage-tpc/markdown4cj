@@ -952,9 +952,24 @@ public class MarkdownTheme {
     protected var imageMaxHeight: ?Float64 = None
 
     /**
+     * 图片最大宽度
+     */
+    protected var imageMaxWidth: ?Float64 = None
+
+    /**
      * 图片圆角大小
      */
     protected var imageBorderRadius: Float64 = 0.0
+
+    /**
+     * 图片边框宽度
+     */
+    protected var imageBorderWidth: Float64 = 0.0
+
+    /**
+     * 图片边框颜色
+     */
+    protected var imageBorderColor: Color = Color.BLACK
 
     /**
      * 图片缩放类型
@@ -1406,7 +1421,10 @@ public class MarkdownTheme {
         this.imageMaximumWidth = builder.imageMaximumWidth
         this.imageFixedRatioWidth = builder.imageFixedRatioWidth
         this.imageMaxHeight = builder.imageMaxHeight
+        this.imageMaxWidth = builder.imageMaxWidth
         this.imageBorderRadius = builder.imageBorderRadius
+        this.imageBorderWidth = builder.imageBorderWidth
+        this.imageBorderColor = builder.imageBorderColor
         this.imageFitType = builder.imageFitType
         this.imageResource = builder.imageResource
         this.isAutoResize = builder.isAutoResize
@@ -2597,9 +2615,24 @@ public class MarkdownThemeBuilder {
     var imageMaxHeight: ?Float64 = None
 
     /**
+     * 图片最大宽度
+     */
+    var imageMaxWidth: ?Float64 = None
+
+    /**
      * 图片圆角大小
      */
     var imageBorderRadius: Float64 = 0.0
+
+    /**
+     * 图片边框宽度
+     */
+    var imageBorderWidth: Float64 = 0.0
+
+    /**
+     * 图片边框颜色
+     */
+    var imageBorderColor: Color = Color.BLACK
 
     /**
      * 图片缩放类型
@@ -3054,7 +3087,10 @@ public class MarkdownThemeBuilder {
         this.imageMaximumWidth = theme.imageMaximumWidth
         this.imageFixedRatioWidth = theme.imageFixedRatioWidth
         this.imageMaxHeight = theme.imageMaxHeight
+        this.imageMaxWidth = theme.imageMaxWidth
         this.imageBorderRadius = theme.imageBorderRadius
+        this.imageBorderWidth = theme.imageBorderWidth
+        this.imageBorderColor = theme.imageBorderColor
         this.imageFitType = theme.imageFitType
         this.imageResource = theme.imageResource
         this.isAutoResize = theme.isAutoResize
@@ -5271,6 +5307,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置图片最大宽度
+     *
+     * @param imageMaxWidth 图片最大宽度 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageMaxWidth(imageMaxWidth: Float64): MarkdownThemeBuilder {
+        this.imageMaxWidth = imageMaxWidth
+        return this
+    }
+
+    /**
      * 设置图片圆角
      *
      * @param imageBorderRadius 图片圆角 - 默认0.0
@@ -5278,6 +5325,28 @@ public class MarkdownThemeBuilder {
      */
     public func setImageBorderRadius(imageBorderRadius: Float64): MarkdownThemeBuilder {
         this.imageBorderRadius = imageBorderRadius
+        return this
+    }
+
+    /**
+     * 设置图片边框宽度
+     *
+     * @param imageBorderWidth 图片边框宽度 - 默认0.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageBorderWidth(imageBorderWidth: Float64): MarkdownThemeBuilder {
+        this.imageBorderWidth = imageBorderWidth
+        return this
+    }
+
+    /**
+     * 设置图片边框颜色
+     *
+     * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageBorderColor(imageBorderColor: Color): MarkdownThemeBuilder {
+        this.imageBorderColor = imageBorderColor
         return this
     }
 

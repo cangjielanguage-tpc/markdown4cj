@@ -389,7 +389,13 @@ export declare class CJMarkdownTheme {
 
   setImageMaxHeight(imageMaxHeight: number): void
 
+  setImageMaxWidth(imageMaxWidth: number): void
+
   setImageBorderRadius(imageBorderRadius: number): void
+
+  setImageBorderWidth(imageBorderWidth: number): void
+
+  setImageBorderColor(imageBorderColor: number): void
 
   setIsAutoResize(isAutoResize: boolean): void
 

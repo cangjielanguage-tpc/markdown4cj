@@ -706,8 +706,17 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.imageMaxHeight !== undefined) {
           cjMarkdownTheme.setImageMaxHeight(this.config.markdownTheme.imageMaxHeight)
         }
+        if (this.config.markdownTheme.imageMaxWidth !== undefined) {
+          cjMarkdownTheme.setImageMaxHeight(this.config.markdownTheme.imageMaxWidth)
+        }
         if (this.config.markdownTheme.imageBorderRadius !== undefined) {
           cjMarkdownTheme.setImageBorderRadius(this.config.markdownTheme.imageBorderRadius)
+        }
+        if (this.config.markdownTheme.imageBorderWidth !== undefined) {
+          cjMarkdownTheme.setImageBorderWidth(this.config.markdownTheme.imageBorderWidth)
+        }
+        if (this.config.markdownTheme.imageBorderColor !== undefined) {
+          cjMarkdownTheme.setImageBorderColor(this.config.markdownTheme.imageBorderColor)
         }
         if (this.config.markdownTheme.isAutoResize !== undefined) {
           cjMarkdownTheme.setIsAutoResize(this.config.markdownTheme.isAutoResize)
@@ -1821,9 +1830,21 @@ export class MarkdownTheme {
    */
   imageMaxHeight?: number = undefined
   /**
+   * 图片最大宽度
+   */
+  imageMaxWidth?: number = undefined
+  /**
    * 图片圆角大小
    */
   imageBorderRadius?: number = undefined
+  /**
+   * 图片圆角大小
+   */
+  imageBorderWidth?: number = undefined
+  /**
+   * 图片圆角大小
+   */
+  imageBorderColor?: number = undefined
   /**
    * 网络图片是否压缩
    */
@@ -3614,12 +3635,39 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置图片最大宽度
+   *
+   * @param imageMaxWidth 图片最大宽度 - 默认None
+   */
+  setImageMaxWidth(imageMaxWidth: number): void {
+    this.imageMaxWidth = imageMaxWidth
+  }
+
+  /**
    * 设置图片圆角大小
    *
    * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
    */
   setImageBorderRadius(imageBorderRadius: number): void {
     this.imageBorderRadius = imageBorderRadius
+  }
+
+  /**
+   * 设置图片边框宽度
+   *
+   * @param imageBorderWidth 图片边框宽度 - 默认0.0vp
+   */
+  setImageBorderWidth(imageBorderWidth: number): void {
+    this.imageBorderWidth = imageBorderWidth
+  }
+
+  /**
+   * 设置图片边框颜色
+   *
+   * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
+   */
+  setImageBorderColor(imageBorderColor: number): void {
+    this.imageBorderColor = imageBorderColor
   }
 
   /**

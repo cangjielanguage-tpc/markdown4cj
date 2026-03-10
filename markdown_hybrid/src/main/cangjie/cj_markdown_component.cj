@@ -766,8 +766,17 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.imageMaxHeight) {
                 markdownThemeBuilder.setImageMaxHeight(v) // 设置图片最大高度
             }
+            if (let Some(v) <- w.cjMarkdownTheme.imageMaxWidth) {
+                markdownThemeBuilder.setImageMaxWidth(v) // 设置图片最大宽度
+            }
             if (let Some(v) <- w.cjMarkdownTheme.imageBorderRadius) {
                 markdownThemeBuilder.setImageBorderRadius(v) // 设置图片圆角大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageBorderWidth) {
+                markdownThemeBuilder.setImageBorderWidth(v) // 设置图片边框宽度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageBorderColor) {
+                markdownThemeBuilder.setImageBorderColor(v) // 设置图片边框颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.isAutoResize) {
                 markdownThemeBuilder.setIsAutoResize(v) // 设置网络图片是否压缩

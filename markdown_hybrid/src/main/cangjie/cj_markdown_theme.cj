@@ -863,9 +863,24 @@ public class CJMarkdownTheme {
     var imageMaxHeight: ?Float64 = None
 
     /**
+     * 图片最大宽度
+     */
+    var imageMaxWidth: ?Float64 = None
+
+    /**
      * 图片圆角大小
      */
     var imageBorderRadius: ?Float64 = None
+
+    /**
+     * 图片边框宽度
+     */
+    var imageBorderWidth: ?Float64 = None
+
+    /**
+     * 图片边框颜色
+     */
+    var imageBorderColor: ?Color = None
 
     /**
      * 网络图片是否压缩
@@ -2612,12 +2627,39 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置图片最大宽度
+     *
+     * @param imageMaxWidth 图片最大宽度 - 默认None
+     */
+    public func setImageMaxWidth(imageMaxWidth: Float64): Unit {
+        this.imageMaxWidth = imageMaxWidth
+    }
+
+    /**
      * 设置图片圆角大小
      *
      * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
      */
     public func setImageBorderRadius(imageBorderRadius: Float64): Unit {
         this.imageBorderRadius = imageBorderRadius
+    }
+
+    /**
+     * 设置图片边框宽度
+     *
+     * @param imageBorderWidth 图片边框宽度 - 默认0.0
+     */
+    public func setImageBorderWidth(imageBorderWidth: Float64): Unit {
+        this.imageBorderWidth = imageBorderWidth
+    }
+
+    /**
+     * 设置图片边框颜色
+     *
+     * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
+     */
+    public func setImageBorderColor(imageBorderColor: UInt32): Unit {
+        this.imageBorderColor = transColorForTrasparent(imageBorderColor)
     }
 
     /**
