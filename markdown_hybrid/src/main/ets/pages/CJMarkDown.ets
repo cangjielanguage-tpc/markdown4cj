@@ -4215,6 +4215,7 @@ export class MarkdownPlugin {
    * 设置链接自动加载插件
    *
    * @param isLinkifyPlugin 是否设置链接自动加载插件 - true：设置链接自动加载插件；false：不设置链接自动加载插件。默认false
+   * @param regs 正则列表
    */
   setIsLinkifyPlugin(isLinkifyPlugin: boolean, regs: Array<string>): void {
     this.isLinkifyPlugin = isLinkifyPlugin
