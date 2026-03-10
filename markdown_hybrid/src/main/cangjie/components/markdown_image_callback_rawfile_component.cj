@@ -206,6 +206,8 @@ public class MarkdownImageCallbackRawFileComponent {
                     // 替换之后的图片
                     Image(rawFileCallbackReplaceImagePixelMap())
                         .borderRadius(rawFileCallbackRadius)
+                        .borderWidth(rawFileCallbackMarkdownTheme.imageBorderWidth)
+                        .borderColor(rawFileCallbackMarkdownTheme.imageBorderColor)
                         .width(rawFileCallbackReplaceWidth())
                         .height(rawFileCallbackReplaceHeight())
                         .objectFit(rawFileCallbackMarkdownTheme.imageFitType)
@@ -218,6 +220,8 @@ public class MarkdownImageCallbackRawFileComponent {
                         // 加载图片
                         Image(rawFileCallbackImagePixelMap())
                             .borderRadius(rawFileCallbackRadius)
+                            .borderWidth(rawFileCallbackMarkdownTheme.imageBorderWidth)
+                            .borderColor(rawFileCallbackMarkdownTheme.imageBorderColor)
                             .width(rawFileCallbackWidth.px)
                             .height(rawFileCallbackHeight.px)
                             .objectFit(rawFileCallbackMarkdownTheme.imageFitType)
@@ -232,7 +236,9 @@ public class MarkdownImageCallbackRawFileComponent {
                             rawFileCallbackMarkdownTheme.imageResource(),
                             rawFileCallbackPlaceholderWidth,
                             rawFileCallbackPlaceholderHeight,
-                            rawFileCallbackRadius
+                            rawFileCallbackRadius,
+                            rawFileCallbackMarkdownTheme.imageBorderWidth,
+                            rawFileCallbackMarkdownTheme.imageBorderColor
                         )
                     }
                 }

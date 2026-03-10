@@ -175,6 +175,8 @@ public class MarkdownSpanImageCallbackUrl15Component {
                 ImageSpan(url15CallbackReplaceImagePixelMap())
                     .margin(top: url15CallbackMarkdownTheme.imageMarginTop, bottom: url15CallbackMarkdownTheme.imageMarginBottom)
                     .interopBorderRadius(url15CallbackRadius)
+                    .borderWidth(url15CallbackMarkdownTheme.imageBorderWidth)
+                    .borderColor(url15CallbackMarkdownTheme.imageBorderColor)
                     .width(url15CallbackReplaceWidth())
                     .height(url15CallbackReplaceHeight())
                     .objectFit(url15CallbackMarkdownTheme.imageFitType)
@@ -189,6 +191,8 @@ public class MarkdownSpanImageCallbackUrl15Component {
                     ImageSpan(url15CallbackDestination)
                         .margin(top: url15CallbackMarkdownTheme.imageMarginTop, bottom: url15CallbackMarkdownTheme.imageMarginBottom)
                         .interopBorderRadius(url15CallbackRadius)
+                        .borderWidth(url15CallbackMarkdownTheme.imageBorderWidth)
+                        .borderColor(url15CallbackMarkdownTheme.imageBorderColor)
                         .width(url15CallbackWidth.px)
                         .height(url15CallbackHeight.px)
                         .objectFit(url15CallbackMarkdownTheme.imageFitType)
@@ -225,7 +229,9 @@ public class MarkdownSpanImageCallbackUrl15Component {
                         url15CallbackMarkdownTheme.imageMarginBottom,
                         url15CallbackPlaceholderWidth,
                         url15CallbackPlaceholderHeight,
-                        url15CallbackRadius
+                        url15CallbackRadius,
+                        url15CallbackMarkdownTheme.imageBorderWidth,
+                        url15CallbackMarkdownTheme.imageBorderColor
                     )
                 }
             }

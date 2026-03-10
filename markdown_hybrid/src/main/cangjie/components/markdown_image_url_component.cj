@@ -149,6 +149,8 @@ public class MarkdownImageUrlComponent {
                     // 加载图片
                     Image(urlDestination)
                         .borderRadius(urlRadius)
+                        .borderWidth(urlMarkdownTheme.imageBorderWidth)
+                        .borderColor(urlMarkdownTheme.imageBorderColor)
                         .width(urlWidth.px)
                         .height(urlHeight.px)
                         .objectFit(urlMarkdownTheme.imageFitType)
@@ -182,7 +184,9 @@ public class MarkdownImageUrlComponent {
                         urlMarkdownTheme.imageResource(),
                         urlPlaceholderWidth,
                         urlPlaceholderHeight,
-                        urlRadius
+                        urlRadius,
+                        urlMarkdownTheme.imageBorderWidth,
+                        urlMarkdownTheme.imageBorderColor
                     )
                 }
             }

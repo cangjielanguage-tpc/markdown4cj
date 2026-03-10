@@ -117,11 +117,15 @@ func imageSpanPlaceholderComponent(
     imageMarginBottom: Float64,
     placeholderWidth: Float64,
     placeholderHeight: Float64,
-    placeholderRadius: Float64
+    placeholderRadius: Float64,
+    imageBorderWidth: Float64,
+    imageBorderColor: Color
 ) {
     ImageSpan(imageResource)
         .margin(top: imageMarginTop, bottom: imageMarginBottom)
         .interopBorderRadius(placeholderRadius)
+        .borderWidth(imageBorderWidth)
+        .borderColor(imageBorderColor)
         .width(placeholderWidth.px)
         .height(placeholderHeight.px)
         .objectFit(ImageFit.Cover)
@@ -144,10 +148,14 @@ func imagePlaceholderComponent(
     imageResource: AppResource,
     placeholderWidth: Float64,
     placeholderHeight: Float64,
-    placeholderRadius: Float64
+    placeholderRadius: Float64,
+    imageBorderWidth: Float64,
+    imageBorderColor: Color
 ) {
     Image(imageResource)
         .borderRadius(placeholderRadius)
+        .borderWidth(imageBorderWidth)
+        .borderColor(imageBorderColor)
         .width(placeholderWidth.px)
         .height(placeholderHeight.px)
         .objectFit(ImageFit.Cover)

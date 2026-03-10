@@ -133,6 +133,8 @@ public class MarkdownSpanImageUrl14Component {
                 ImageSpan(url14Destination)
                     .margin(top: url14MarkdownTheme.imageMarginTop, bottom: url14MarkdownTheme.imageMarginBottom)
                     .interopBorderRadius(url14Radius)
+                    .borderWidth(url14MarkdownTheme.imageBorderWidth)
+                    .borderColor(url14MarkdownTheme.imageBorderColor)
                     .width(url14Width.px)
                     .height(url14Height.px)
                     .objectFit(url14MarkdownTheme.imageFitType)
@@ -169,7 +171,9 @@ public class MarkdownSpanImageUrl14Component {
                     url14MarkdownTheme.imageMarginBottom,
                     url14PlaceholderWidth,
                     url14PlaceholderHeight,
-                    url14Radius
+                    url14Radius,
+                    url14MarkdownTheme.imageBorderWidth,
+                    url14MarkdownTheme.imageBorderColor
                 )
             }
         }

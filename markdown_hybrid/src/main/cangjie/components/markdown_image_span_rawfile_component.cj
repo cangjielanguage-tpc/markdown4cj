@@ -152,6 +152,8 @@ public class MarkdownSpanImageRawFileComponent {
                 ImageSpan(rawFileImagePixelMap())
                     .margin(top: rawFileMarkdownTheme.imageMarginTop, bottom: rawFileMarkdownTheme.imageMarginBottom)
                     .interopBorderRadius(rawFileRadius)
+                    .borderWidth(rawFileMarkdownTheme.imageBorderWidth)
+                    .borderColor(rawFileMarkdownTheme.imageBorderColor)
                     .width(rawFileWidth.px)
                     .height(rawFileHeight.px)
                     .objectFit(rawFileMarkdownTheme.imageFitType)
@@ -169,7 +171,9 @@ public class MarkdownSpanImageRawFileComponent {
                     rawFileMarkdownTheme.imageMarginBottom,
                     rawFilePlaceholderWidth,
                     rawFilePlaceholderHeight,
-                    rawFileRadius
+                    rawFileRadius,
+                    rawFileMarkdownTheme.imageBorderWidth,
+                    rawFileMarkdownTheme.imageBorderColor
                 )
             }
         }

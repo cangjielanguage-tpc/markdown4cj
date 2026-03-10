@@ -175,6 +175,8 @@ public class MarkdownSpanImageCallbackUrl14Component {
                 ImageSpan(url14CallbackReplaceImagePixelMap())
                     .margin(top: url14CallbackMarkdownTheme.imageMarginTop, bottom: url14CallbackMarkdownTheme.imageMarginBottom)
                     .interopBorderRadius(url14CallbackRadius)
+                    .borderWidth(url14CallbackMarkdownTheme.imageBorderWidth)
+                    .borderColor(url14CallbackMarkdownTheme.imageBorderColor)
                     .width(url14CallbackReplaceWidth())
                     .height(url14CallbackReplaceHeight())
                     .objectFit(url14CallbackMarkdownTheme.imageFitType)
@@ -189,6 +191,8 @@ public class MarkdownSpanImageCallbackUrl14Component {
                     ImageSpan(url14CallbackDestination)
                         .margin(top: url14CallbackMarkdownTheme.imageMarginTop, bottom: url14CallbackMarkdownTheme.imageMarginBottom)
                         .interopBorderRadius(url14CallbackRadius)
+                        .borderWidth(url14CallbackMarkdownTheme.imageBorderWidth)
+                        .borderColor(url14CallbackMarkdownTheme.imageBorderColor)
                         .width(url14CallbackWidth.px)
                         .height(url14CallbackHeight.px)
                         .objectFit(url14CallbackMarkdownTheme.imageFitType)
@@ -225,7 +229,9 @@ public class MarkdownSpanImageCallbackUrl14Component {
                         url14CallbackMarkdownTheme.imageMarginBottom,
                         url14CallbackPlaceholderWidth,
                         url14CallbackPlaceholderHeight,
-                        url14CallbackRadius
+                        url14CallbackRadius,
+                        url14CallbackMarkdownTheme.imageBorderWidth,
+                        url14CallbackMarkdownTheme.imageBorderColor
                     )
                 }
             }

@@ -191,6 +191,8 @@ public class MarkdownImageCallbackUrlComponent {
                     // 替换之后的图片
                     Image(urlCallbackReplaceImagePixelMap())
                         .borderRadius(urlCallbackRadius)
+                        .borderWidth(urlCallbackMarkdownTheme.imageBorderWidth)
+                        .borderColor(urlCallbackMarkdownTheme.imageBorderColor)
                         .width(urlCallbackReplaceWidth())
                         .height(urlCallbackReplaceHeight())
                         .objectFit(urlCallbackMarkdownTheme.imageFitType)
@@ -203,6 +205,8 @@ public class MarkdownImageCallbackUrlComponent {
                         // 加载图片
                         Image(urlCallbackDestination)
                             .borderRadius(urlCallbackRadius)
+                            .borderWidth(urlCallbackMarkdownTheme.imageBorderWidth)
+                            .borderColor(urlCallbackMarkdownTheme.imageBorderColor)
                             .width(urlCallbackWidth.px)
                             .height(urlCallbackHeight.px)
                             .objectFit(urlCallbackMarkdownTheme.imageFitType)
@@ -236,7 +240,9 @@ public class MarkdownImageCallbackUrlComponent {
                             urlCallbackMarkdownTheme.imageResource(),
                             urlCallbackPlaceholderWidth,
                             urlCallbackPlaceholderHeight,
-                            urlCallbackRadius
+                            urlCallbackRadius,
+                            urlCallbackMarkdownTheme.imageBorderWidth,
+                            urlCallbackMarkdownTheme.imageBorderColor
                         )
                     }
                 }

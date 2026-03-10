@@ -168,6 +168,8 @@ public class MarkdownImageRawFileComponent {
                     // 加载图片
                     Image(rawFileImagePixelMap())
                         .borderRadius(rawFileRadius)
+                        .borderWidth(rawFileMarkdownTheme.imageBorderWidth)
+                        .borderColor(rawFileMarkdownTheme.imageBorderColor)
                         .width(rawFileWidth.px)
                         .height(rawFileHeight.px)
                         .objectFit(rawFileMarkdownTheme.imageFitType)
@@ -182,7 +184,9 @@ public class MarkdownImageRawFileComponent {
                         rawFileMarkdownTheme.imageResource(),
                         rawFilePlaceholderWidth,
                         rawFilePlaceholderHeight,
-                        rawFileRadius
+                        rawFileRadius,
+                        rawFileMarkdownTheme.imageBorderWidth,
+                        rawFileMarkdownTheme.imageBorderColor
                     )
                 }
             }

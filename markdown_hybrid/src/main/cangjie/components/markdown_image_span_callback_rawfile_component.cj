@@ -190,6 +190,8 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                 ImageSpan(rawFileCallbackReplaceImagePixelMap())
                     .margin(top: rawFileCallbackMarkdownTheme.imageMarginTop, bottom: rawFileCallbackMarkdownTheme.imageMarginBottom)
                     .interopBorderRadius(rawFileCallbackRadius)
+                    .borderWidth(rawFileCallbackMarkdownTheme.imageBorderWidth)
+                    .borderColor(rawFileCallbackMarkdownTheme.imageBorderColor)
                     .width(rawFileCallbackReplaceWidth())
                     .height(rawFileCallbackReplaceHeight())
                     .objectFit(rawFileCallbackMarkdownTheme.imageFitType)
@@ -204,6 +206,8 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                     ImageSpan(rawFileCallbackImagePixelMap())
                         .margin(top: rawFileCallbackMarkdownTheme.imageMarginTop, bottom: rawFileCallbackMarkdownTheme.imageMarginBottom)
                         .interopBorderRadius(rawFileCallbackRadius)
+                        .borderWidth(rawFileCallbackMarkdownTheme.imageBorderWidth)
+                        .borderColor(rawFileCallbackMarkdownTheme.imageBorderColor)
                         .width(rawFileCallbackWidth.px)
                         .height(rawFileCallbackHeight.px)
                         .objectFit(rawFileCallbackMarkdownTheme.imageFitType)
@@ -221,7 +225,9 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                         rawFileCallbackMarkdownTheme.imageMarginBottom,
                         rawFileCallbackPlaceholderWidth,
                         rawFileCallbackPlaceholderHeight,
-                        rawFileCallbackRadius
+                        rawFileCallbackRadius,
+                        rawFileCallbackMarkdownTheme.imageBorderWidth,
+                        rawFileCallbackMarkdownTheme.imageBorderColor
                     )
                 }
             }
