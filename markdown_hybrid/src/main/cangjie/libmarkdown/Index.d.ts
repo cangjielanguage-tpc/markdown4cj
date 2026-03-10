@@ -75,6 +75,8 @@ export declare class CJMarkdownTheme {
 
   setLinkSize(linkSize: number): void
 
+  setLinkLineHeight(linkLineHeight: number): void
+
   setLinkBackGroupColor(linkBackGroupColor: number): void
 
   setIsLinkUnderlined(isLinkUnderlined: boolean): void
@@ -231,9 +233,17 @@ export declare class CJMarkdownTheme {
 
   setHeadingBottomMargins(headingBottomMargins: number): void
 
-  setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): void
+  setHeadingTextSize1(headingTextSize1: number): void
 
-  setHeadingTextColor(headingTextColor: number): void
+  setHeadingTextSize2(headingTextSize2: number): void
+
+  setHeadingTextSize3(headingTextSize3: number): void
+
+  setHeadingTextSize4(headingTextSize4: number): void
+
+  setHeadingTextSize5(headingTextSize5: number): void
+
+  setHeadingTextSize6(headingTextSize6: number): void
 
   setHeadingTextWordSpace(headingTextWordSpace: number): void
 
@@ -439,6 +449,8 @@ export declare class CJMarkdownTheme {
 
   setTableTitleTextSize(tableTitleTextSize: number): void
 
+  setTableTitleLineHeight(tableTitleLineHeight: number): void
+
   setTableContentTextColor(tableContentTextColor: number): void
 
   setTableContentTextSize(tableContentTextSize: number): void
@@ -461,6 +473,8 @@ export declare class CJMarkdownTheme {
 
   setStrikethroughColor(strikethroughColor: number): void
 
+  setStrikethroughStyle(strikethroughStyle: number): void
+
   setDescListTermAndDefMargins(descListTermAndDefMargins: number): void
 
   setDescListDefIndentation(descListDefIndentation: number): void
@@ -480,6 +494,8 @@ export declare class CJMarkdownTheme {
   setSupOffsetDist(supOffsetDist: number): void
 
   setUnderlineColor(underlineColor: number): void
+
+  setUnderlineStyle(underlineStyle: number): void
 
   constructor()
 }

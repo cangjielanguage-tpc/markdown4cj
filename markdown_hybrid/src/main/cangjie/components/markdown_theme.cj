@@ -117,6 +117,11 @@ public class MarkdownTheme {
     protected var linkSize: Float64 = 14.0
 
     /**
+     * 文本格式链接文字行高
+     */
+    protected var linkLineHeight: Float64 = 20.0
+
+    /**
      * 文本格式链接背景颜色
      */
     protected var linkBackGroupColor: Color = Color.TRANSPARENT
@@ -522,14 +527,34 @@ public class MarkdownTheme {
     protected var headingBottomMargins: Float64 = 8.0
 
     /**
-     * 标题文本大小数组
+     * 一级标题文本大小
      */
-    protected var headingTextSizeMultipliers: Array<Float64> = [20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+    protected var headingTextSize1: Float64 = 20.0
 
     /**
-     * 标题文本颜色
+     * 二级标题文本大小
      */
-    protected var headingTextColor: Color = COLOR_FF191919
+    protected var headingTextSize2: Float64 = 17.0
+
+    /**
+     * 三级标题文本大小
+     */
+    protected var headingTextSize3: Float64 = 16.0
+
+    /**
+     * 四级标题文本大小
+     */
+    protected var headingTextSize4: Float64 = 15.0
+
+    /**
+     * 五级标题文本大小
+     */
+    protected var headingTextSize5: Float64 = 15.0
+
+    /**
+     * 六级标题文本大小
+     */
+    protected var headingTextSize6: Float64 = 13.0
 
     /**
      * 一级标题文本颜色
@@ -1092,6 +1117,11 @@ public class MarkdownTheme {
     protected var tableTitleTextSize: Float64 = 14.0
 
     /**
+     * 表格头文本大小
+     */
+    protected var tableTitleLineHeight: Float64 = 22.0
+
+    /**
      * 表格内容文本颜色
      */
     protected var tableContentTextColor: Color = COLOR_FF191919
@@ -1147,6 +1177,11 @@ public class MarkdownTheme {
     protected var strikethroughColor: Color = COLOR_FF191919
 
     /**
+     * 删除线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线
+     */
+    protected var strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+
+    /**
      * 定义列表术语和定义行之间间距
      */
     protected var descListTermAndDefMargins: Float64 = 8.0
@@ -1196,6 +1231,11 @@ public class MarkdownTheme {
      */
     protected var underlineColor: Color = COLOR_FF191919
 
+    /**
+     * 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线
+     */
+    protected var underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+
     protected init(builder: MarkdownThemeBuilder) {
         // 1、上下文
         this.stageContext = builder.stageContext
@@ -1218,6 +1258,7 @@ public class MarkdownTheme {
         this.linkColor = builder.linkColor
         this.isLinkSize = builder.isLinkSize
         this.linkSize = builder.linkSize
+        this.linkLineHeight = builder.linkLineHeight
         this.linkBackGroupColor = builder.linkBackGroupColor
         this.isLinkUnderlined = builder.isLinkUnderlined
         // 3.2、圆形图片格式链接
@@ -1319,8 +1360,12 @@ public class MarkdownTheme {
         this.headingTypeface = builder.headingTypeface
         this.headingTopMargins = builder.headingTopMargins
         this.headingBottomMargins = builder.headingBottomMargins
-        this.headingTextSizeMultipliers = builder.headingTextSizeMultipliers
-        this.headingTextColor = builder.headingTextColor
+        this.headingTextSize1 = builder.headingTextSize1
+        this.headingTextSize2 = builder.headingTextSize2
+        this.headingTextSize3 = builder.headingTextSize3
+        this.headingTextSize4 = builder.headingTextSize4
+        this.headingTextSize5 = builder.headingTextSize5
+        this.headingTextSize6 = builder.headingTextSize6
         this.headingTextColor1 = builder.headingTextColor1
         this.headingBreakColor1 = builder.headingBreakColor1
         this.headingTextColor2 = builder.headingTextColor2
@@ -1451,6 +1496,7 @@ public class MarkdownTheme {
         this.tableHeaderRowBackgroundColor = builder.tableHeaderRowBackgroundColor
         this.tableTitleTextColor = builder.tableTitleTextColor
         this.tableTitleTextSize = builder.tableTitleTextSize
+        this.tableTitleLineHeight = builder.tableTitleLineHeight
         this.tableContentTextColor = builder.tableContentTextColor
         this.tableContentTextSize = builder.tableContentTextSize
         this.tableTextLineHeight = builder.tableTextLineHeight
@@ -1466,6 +1512,7 @@ public class MarkdownTheme {
 
         // 17、删除线
         this.strikethroughColor = builder.strikethroughColor
+        this.strikethroughStyle = builder.strikethroughStyle
 
         // 18、定义列表
         this.descListTermAndDefMargins = builder.descListTermAndDefMargins
@@ -1484,6 +1531,7 @@ public class MarkdownTheme {
 
         // 21、 下划线
         this.underlineColor = builder.underlineColor
+        this.underlineStyle = builder.underlineStyle
     }
 
     /**
@@ -1555,7 +1603,6 @@ public class MarkdownTheme {
 
         // 6、标题
         markdownThemeBuilder.setHeadingBreakColor(COLOR_FF191919) // H1、H2标题下分割线颜色
-        markdownThemeBuilder.setHeadingTextColor(COLOR_FF191919) // 标题文本颜色
 
         // 7、段落
         markdownThemeBuilder.setParagraphTextColor(COLOR_FF191919) // 段落文本颜色
@@ -1650,7 +1697,6 @@ public class MarkdownTheme {
 
         // 6、标题
         markdownThemeBuilder.setHeadingBreakColor(COLOR_FFFFFFFF) // H1、H2标题下分割线颜色
-        markdownThemeBuilder.setHeadingTextColor(COLOR_FFFFFFFF) // 标题文本颜色
 
         // 7、段落
         markdownThemeBuilder.setParagraphTextColor(COLOR_FFFFFFFF) // 段落文本颜色
@@ -1778,6 +1824,11 @@ public class MarkdownThemeBuilder {
      * 文本格式链接文字大小
      */
     var linkSize: Float64 = 14.0
+
+    /**
+     * 文本格式链接文字行高
+     */
+    var linkLineHeight: Float64 = 20.0
 
     /**
      * 文本格式链接背景颜色
@@ -2185,14 +2236,34 @@ public class MarkdownThemeBuilder {
     var headingBottomMargins: Float64 = 8.0
 
     /**
-     * 标题文本大小数组
+     * 一级标题文本大小
      */
-    var headingTextSizeMultipliers: Array<Float64> = [20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+    var headingTextSize1: Float64 = 20.0
 
     /**
-     * 标题文本颜色
+     * 二级标题文本大小
      */
-    var headingTextColor: Color = COLOR_FF191919
+    var headingTextSize2: Float64 = 17.0
+
+    /**
+     * 三级标题文本大小
+     */
+    var headingTextSize3: Float64 = 16.0
+
+    /**
+     * 四级标题文本大小
+     */
+    var headingTextSize4: Float64 = 15.0
+
+    /**
+     * 五级标题文本大小
+     */
+    var headingTextSize5: Float64 = 15.0
+
+    /**
+     * 六级标题文本大小
+     */
+    var headingTextSize6: Float64 = 13.0
 
     /**
      * 一级标题文本颜色
@@ -2755,6 +2826,11 @@ public class MarkdownThemeBuilder {
     var tableTitleTextSize: Float64 = 14.0
 
     /**
+     * 表格头行高
+     */
+    var tableTitleLineHeight: Float64 = 22.0
+
+    /**
      * 表格内容文本颜色
      */
     var tableContentTextColor: Color = COLOR_FF191919
@@ -2795,7 +2871,7 @@ public class MarkdownThemeBuilder {
     var tableScrollBarShow: Bool = false
 
     /**
-     * 表格是否显示滚动条
+     * 表格滚动条颜色
      */
     var tableScrollBarColor: Color = COLOR_FF191919
 
@@ -2808,6 +2884,11 @@ public class MarkdownThemeBuilder {
      * 删除线颜色
      */
     var strikethroughColor: Color = COLOR_FF191919
+
+    /**
+     * 删除线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线
+     */
+    var strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
     /**
      * 定义列表术语和定义行之间间距
@@ -2859,6 +2940,11 @@ public class MarkdownThemeBuilder {
      */
     var underlineColor: Color = COLOR_FF191919
 
+    /**
+     * 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线
+     */
+    var underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+
     init() {
     }
 
@@ -2884,6 +2970,7 @@ public class MarkdownThemeBuilder {
         this.linkColor = theme.linkColor
         this.isLinkSize = theme.isLinkSize
         this.linkSize = theme.linkSize
+        this.linkLineHeight = theme.linkLineHeight
         this.linkBackGroupColor = theme.linkBackGroupColor
         this.isLinkUnderlined = theme.isLinkUnderlined
         // 3.2、圆形图片格式链接
@@ -2985,8 +3072,12 @@ public class MarkdownThemeBuilder {
         this.headingTypeface = theme.headingTypeface
         this.headingTopMargins = theme.headingTopMargins
         this.headingBottomMargins = theme.headingBottomMargins
-        this.headingTextSizeMultipliers = theme.headingTextSizeMultipliers
-        this.headingTextColor = theme.headingTextColor
+        this.headingTextSize1 = theme.headingTextSize1
+        this.headingTextSize2 = theme.headingTextSize2
+        this.headingTextSize3 = theme.headingTextSize3
+        this.headingTextSize4 = theme.headingTextSize4
+        this.headingTextSize5 = theme.headingTextSize5
+        this.headingTextSize6 = theme.headingTextSize6
         this.headingTextColor1 = theme.headingTextColor1
         this.headingBreakColor1 = theme.headingBreakColor1 // 初始使用文本颜色作为分割线颜色
         this.headingTextColor2 = theme.headingTextColor2
@@ -3117,6 +3208,7 @@ public class MarkdownThemeBuilder {
         this.tableHeaderRowBackgroundColor = theme.tableHeaderRowBackgroundColor
         this.tableTitleTextColor = theme.tableTitleTextColor
         this.tableTitleTextSize = theme.tableTitleTextSize
+        this.tableTitleLineHeight = theme.tableTitleLineHeight
         this.tableContentTextColor = theme.tableContentTextColor
         this.tableContentTextSize = theme.tableContentTextSize
         this.tableTextLineHeight = theme.tableTextLineHeight
@@ -3132,6 +3224,7 @@ public class MarkdownThemeBuilder {
 
         // 17、删除线
         this.strikethroughColor = theme.strikethroughColor
+        this.strikethroughStyle = theme.strikethroughStyle
 
         // 18、定义列表
         this.descListTermAndDefMargins = theme.descListTermAndDefMargins
@@ -3150,6 +3243,7 @@ public class MarkdownThemeBuilder {
 
         // 21、下划线
         this.underlineColor = theme.underlineColor
+        this.underlineStyle = theme.underlineStyle
     }
 
     /**
@@ -3201,7 +3295,6 @@ public class MarkdownThemeBuilder {
 
         // 6、标题
         setHeadingBreakColor(COLOR_FF191919) // H1、H2标题下分割线颜色
-        setHeadingTextColor(COLOR_FF191919) // 标题文本颜色
 
         // 7、段落
         setParagraphTextColor(COLOR_FF191919) // 段落文本颜色
@@ -3294,7 +3387,6 @@ public class MarkdownThemeBuilder {
 
         // 6、标题
         setHeadingBreakColor(COLOR_FFFFFFFF) // H1、H2标题下分割线颜色
-        setHeadingTextColor(COLOR_FFFFFFFF) // 标题文本颜色
 
         // 7、段落
         setParagraphTextColor(COLOR_FFFFFFFF) // 段落文本颜色
@@ -3489,6 +3581,17 @@ public class MarkdownThemeBuilder {
      */
     public func setLinkSize(linkSize: Float64): MarkdownThemeBuilder {
         this.linkSize = linkSize
+        return this
+    }
+
+    /**
+     * 设置文本格式链接文字行高
+     *
+     * @param linkLineHeight 文本格式链接文字行高
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setLinkLineHeight(linkLineHeight: Float64): MarkdownThemeBuilder {
+        this.linkLineHeight = linkLineHeight
         return this
     }
 
@@ -4387,24 +4490,68 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置标题文本大小数组
+     * 设置一级标题文本大小
      *
-     * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+     * @param headingTextSize1 一级标题文本大小 - 默认20.0
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<Float64>): MarkdownThemeBuilder {
-        this.headingTextSizeMultipliers = headingTextSizeMultipliers
+    public func setHeadingTextSize1(headingTextSize1: Float64): MarkdownThemeBuilder {
+        this.headingTextSize1 = headingTextSize1
         return this
     }
 
     /**
-     * 设置标题文本颜色
+     * 设置二级标题文本大小
      *
-     * @param headingTextColor 标题文本颜色 - 默认0XFF191919
+     * @param headingTextSize2 二级标题文本大小 - 默认17.0
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setHeadingTextColor(headingTextColor: Color): MarkdownThemeBuilder {
-        this.headingTextColor = headingTextColor
+    public func setHeadingTextSize2(headingTextSize2: Float64): MarkdownThemeBuilder {
+        this.headingTextSize2 = headingTextSize2
+        return this
+    }
+
+    /**
+     * 设置三级标题文本大小
+     *
+     * @param headingTextSize3 三级标题文本大小 - 默认16.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextSize3(headingTextSize3: Float64): MarkdownThemeBuilder {
+        this.headingTextSize3 = headingTextSize3
+        return this
+    }
+
+    /**
+     * 设置四级标题文本大小
+     *
+     * @param headingTextSize4 四级标题文本大小 - 默认15.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextSize4(headingTextSize4: Float64): MarkdownThemeBuilder {
+        this.headingTextSize4 = headingTextSize4
+        return this
+    }
+
+    /**
+     * 设置五级标题文本大小
+     *
+     * @param headingTextSize5 五级标题文本大小 - 默认15.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextSize5(headingTextSize5: Float64): MarkdownThemeBuilder {
+        this.headingTextSize5 = headingTextSize5
+        return this
+    }
+
+    /**
+     * 设置六级标题文本大小
+     *
+     * @param headingTextSize6 六级标题文本大小 - 默认13.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextSize6(headingTextSize6: Float64): MarkdownThemeBuilder {
+        this.headingTextSize6 = headingTextSize6
         return this
     }
 
@@ -5615,6 +5762,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置表格头文本行高
+     *
+     * @param tableTitleLineHeight 表格头文本行高 - 默认22.0vp
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableTitleLineHeight(tableTitleLineHeight: Float64): MarkdownThemeBuilder {
+        this.tableTitleLineHeight = tableTitleLineHeight
+        return this
+    }
+
+    /**
      * 设置表格内容文本颜色
      *
      * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
@@ -5736,6 +5894,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置删除线样式
+     *
+     * @param strikethroughStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setStrikethroughStyle(strikethroughStyle: TextDecorationStyle): MarkdownThemeBuilder {
+        this.strikethroughStyle = strikethroughStyle
+        return this
+    }
+
+    /**
      * 设置定义列表术语和定义行之间间距
      *
      * @param descListTermAndDefMargins 定义列表术语和定义行之间间距 默认8.0
@@ -5842,6 +6011,17 @@ public class MarkdownThemeBuilder {
      */
     public func setUnderlineColor(underlineColor: Color): MarkdownThemeBuilder {
         this.underlineColor = underlineColor
+        return this
+    }
+
+    /**
+     * 设置下划线样式
+     *
+     * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setUnderlineStyle(underlineStyle: TextDecorationStyle): MarkdownThemeBuilder {
+        this.underlineStyle = underlineStyle
         return this
     }
 

@@ -201,7 +201,7 @@ func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
         return markdownTheme.linkSize // 链接
     }
     if (nodeView.isHeading) {
-        return markdownTheme.headingTextSizeMultipliers[nodeView.headingLevel - 1] // 标题
+        return headingTextSize(nodeView.headingLevel, markdownTheme) // 标题
     }
     if (nodeView.isTable && nodeView.isTableHead) {
         return markdownTheme.tableTitleTextSize // 表格头
@@ -210,6 +210,25 @@ func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
         return markdownTheme.tableContentTextSize // 表格内容
     }
     return markdownTheme.paragraphTextSize // 段落和其他
+}
+
+/**
+ * 设置不同等级标题颜色
+ *
+ * @param level 标题等级
+ * @param markdownTheme markdown样式
+ * @return 标题颜色
+ */
+func headingTextSize(level: Int64, markdownTheme: MarkdownTheme): Float64 {
+    return match (level) {
+        case 1 => markdownTheme.headingTextSize1
+        case 2 => markdownTheme.headingTextSize2
+        case 3 => markdownTheme.headingTextSize3
+        case 4 => markdownTheme.headingTextSize4
+        case 5 => markdownTheme.headingTextSize5
+        case 6 => markdownTheme.headingTextSize6
+        case _ => markdownTheme.headingTextSize6
+    }
 }
 
 /**
@@ -311,7 +330,7 @@ func headColor(level: Int64, markdownTheme: MarkdownTheme): Color {
         case 4 => markdownTheme.headingTextColor4
         case 5 => markdownTheme.headingTextColor5
         case 6 => markdownTheme.headingTextColor6
-        case _ => markdownTheme.headingTextColor
+        case _ => markdownTheme.headingTextColor6
     }
 }
 

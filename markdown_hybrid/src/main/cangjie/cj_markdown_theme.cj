@@ -78,6 +78,11 @@ public class CJMarkdownTheme {
     var linkSize: ?Float64 = None
 
     /**
+     * 文本格式链接文字行高
+     */
+    var linkLineHeight: ?Float64 = None
+
+    /**
      * 文本格式链接背景颜色
      */
     var linkBackGroupColor: ?Color = None
@@ -468,14 +473,34 @@ public class CJMarkdownTheme {
     var headingBottomMargins: ?Float64 = None
 
     /**
-     * 标题文本大小数组
+     * 一级标题文本大小
      */
-    var headingTextSizeMultipliers: ?Array<Float64> = None
+    var headingTextSize1: ?Float64 = None
 
     /**
-     * 标题文本颜色
+     * 二级标题文本大小
      */
-    var headingTextColor: ?Color = None
+    var headingTextSize2: ?Float64 = None
+
+    /**
+     * 三级标题文本大小
+     */
+    var headingTextSize3: ?Float64 = None
+
+    /**
+     * 四级标题文本大小
+     */
+    var headingTextSize4: ?Float64 = None
+
+    /**
+     * 五级标题文本大小
+     */
+    var headingTextSize5: ?Float64 = None
+
+    /**
+     * 六级标题文本大小
+     */
+    var headingTextSize6: ?Float64 = None
 
     /**
      * 标题文本字间距
@@ -988,6 +1013,11 @@ public class CJMarkdownTheme {
     var tableTitleTextSize: ?Float64 = None
 
     /**
+     * 表格头文本行高
+     */
+    var tableTitleLineHeight: ?Float64 = None
+
+    /**
      * 表格内容文本颜色
      */
     var tableContentTextColor: ?Color = None
@@ -1028,7 +1058,7 @@ public class CJMarkdownTheme {
     var tableScrollBarShow: ?Bool = None
 
     /**
-     * 表格是否显示滚动条
+     * 表格滚动条颜色
      */
     var tableScrollBarColor: ?Color = None
 
@@ -1041,6 +1071,11 @@ public class CJMarkdownTheme {
      * 删除线颜色
      */
     var strikethroughColor: ?Color = None
+
+    /**
+     * 删除线样式
+     */
+    var strikethroughStyle: ?TextDecorationStyle = Option<TextDecorationStyle>.None
 
     /**
      * 定义列表术语和定义行之间间距
@@ -1091,6 +1126,11 @@ public class CJMarkdownTheme {
      * 下划线颜色
      */
     var underlineColor: ?Color = None
+
+    /**
+     * 下划线样式
+     */
+    var underlineStyle: ?TextDecorationStyle = Option<TextDecorationStyle>.None
 
     public init() {}
 
@@ -1202,6 +1242,15 @@ public class CJMarkdownTheme {
      */
     public func setLinkSize(linkSize: Float64): Unit {
         this.linkSize = linkSize
+    }
+
+    /**
+     * 设置文本格式链接文字行高
+     *
+     * @param linkLineHeight 文本格式链接文字行高
+     */
+    public func setLinkLineHeight(linkLineHeight: Float64): Unit {
+        this.linkLineHeight = linkLineHeight
     }
 
     /**
@@ -1907,21 +1956,57 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置标题文本大小数组
+     * 设置一级标题文本大小
      *
-     * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+     * @param headingTextSize1 一级标题文本大小 - 默认20.0
      */
-    public func setHeadingTextSizeMultipliers(headingTextSizeMultipliers: JSArrayEx<Float64>): Unit {
-        this.headingTextSizeMultipliers = headingTextSizeMultipliers.toArray()
+    public func setHeadingTextSize1(headingTextSize1: Float64): Unit {
+        this.headingTextSize1 = headingTextSize1
     }
 
     /**
-     * 设置标题文本颜色
+     * 设置二级标题文本大小
      *
-     * @param headingTextColor 标题文本颜色 - 默认0XFF191919
+     * @param headingTextSize2 二级标题文本大小 - 默认17.0
      */
-    public func setHeadingTextColor(headingTextColor: UInt32): Unit {
-        this.headingTextColor = transColorForTrasparent(headingTextColor)
+    public func setHeadingTextSize2(headingTextSize2: Float64): Unit {
+        this.headingTextSize2 = headingTextSize2
+    }
+
+    /**
+     * 设置三级标题文本大小
+     *
+     * @param headingTextSize3 三级标题文本大小 - 默认16.0
+     */
+    public func setHeadingTextSize3(headingTextSize3: Float64): Unit {
+        this.headingTextSize3 = headingTextSize3
+    }
+
+    /**
+     * 设置四级标题文本大小
+     *
+     * @param headingTextSize4 四级标题文本大小 - 默认15.0
+     */
+    public func setHeadingTextSize4(headingTextSize4: Float64): Unit {
+        this.headingTextSize4 = headingTextSize4
+    }
+
+    /**
+     * 设置五级标题文本大小
+     *
+     * @param headingTextSize5 五级标题文本大小 - 默认15.0
+     */
+    public func setHeadingTextSize5(headingTextSize5: Float64): Unit {
+        this.headingTextSize5 = headingTextSize5
+    }
+
+    /**
+     * 设置六级标题文本大小
+     *
+     * @param headingTextSize6 六级标题文本大小 - 默认13.0
+     */
+    public func setHeadingTextSize6(headingTextSize6: Float64): Unit {
+        this.headingTextSize6 = headingTextSize6
     }
 
     /**
@@ -2852,6 +2937,15 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置表格头文本行高
+     *
+     * @param tableTitleLineHeight 表格头文本行高 - 默认22.0vp
+     */
+    public func setTableTitleLineHeight(tableTitleLineHeight: Float64): Unit {
+        this.tableTitleLineHeight = tableTitleLineHeight
+    }
+
+    /**
      * 设置表格内容文本颜色
      *
      * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
@@ -2951,6 +3045,22 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置删除线样式
+     *
+     * @param strikethroughStyle 删除线样式  - SOLID-单实线 DOUBLE-双实线 DOTTED-点线 DASHED-虚线 WAVY-波浪线 默认SOLID
+     */
+    public func setStrikethroughStyle(strikethroughStyle: Int64): Unit {
+        this.strikethroughStyle = match (strikethroughStyle) {
+            case 0 => TextDecorationStyle.SOLID
+            case 1 => TextDecorationStyle.DOUBLE
+            case 2 => TextDecorationStyle.DOTTED
+            case 3 => TextDecorationStyle.DASHED
+            case 4 => TextDecorationStyle.WAVY
+            case _ => TextDecorationStyle.SOLID
+        }
+    }
+
+    /**
      * 设置定义列表术语和定义行之间间距
      *
      * @param descListTermAndDefMargins 定义列表定义行缩进 默认8.0
@@ -3038,5 +3148,21 @@ public class CJMarkdownTheme {
      */
     public func setUnderlineColor(underlineColor: UInt32): Unit {
         this.underlineColor = transColorForTrasparent(underlineColor)
+    }
+
+    /**
+     * 设置下划线样式
+     *
+     * @param underlineStyle 下划线样式  - SOLID-单实线 DOUBLE-双实线 DOTTED-点线 DASHED-虚线 WAVY-波浪线 默认SOLID
+     */
+    public func setUnderlineStyle(underlineStyle: Int64): Unit {
+        this.underlineStyle = match (underlineStyle) {
+            case 0 => TextDecorationStyle.SOLID
+            case 1 => TextDecorationStyle.DOUBLE
+            case 2 => TextDecorationStyle.DOTTED
+            case 3 => TextDecorationStyle.DASHED
+            case 4 => TextDecorationStyle.WAVY
+            case _ => TextDecorationStyle.SOLID
+        }
     }
 }

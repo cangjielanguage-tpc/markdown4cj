@@ -216,8 +216,14 @@ struct TitleDetailsPage {
     theme.setHeadingTypeface(this.headingTypeface) // 标题文本字体
     theme.setHeadingTopMargins(this.headingTopMargins) // 标题模块上间距
     theme.setHeadingBottomMargins(this.headingBottomMargins) // 标题模块下间距
-    theme.setHeadingTextSizeMultipliers(this.headingTextSizeMultipliers) // 标题文本大小数组
-    theme.setHeadingTextColor(this.headingTextColor) // 标题文本颜色
+
+    theme.setHeadingTextSize1(20) // [20, 17, 16, 15, 15, 13]
+    theme.setHeadingTextSize2(17)
+    theme.setHeadingTextSize3(16)
+    theme.setHeadingTextSize4(15)
+    theme.setHeadingTextSize5(15)
+    theme.setHeadingTextSize6(13)
+
     theme.setHeadingTextWordSpace(this.headingTextWordSpace) // 标题文本字间距
     theme.setHeadingTextLineHeight1(this.headingTextLineHeight1) // 一级标题文本行高
     theme.setHeadingTextLineHeight2(this.headingTextLineHeight2) // 二级标题文本行高
@@ -226,7 +232,7 @@ struct TitleDetailsPage {
     theme.setHeadingTextLineHeight5(this.headingTextLineHeight5) // 五级标题文本行高
     theme.setHeadingTextLineHeight6(this.headingTextLineHeight6) // 六级标题文本行高
 
-    theme.setHeadingTextColor1(0xFFB22222) // 各级标题颜色
+    theme.setHeadingTextColor1(this.headingTextColor) // 各级标题颜色
     theme.setHeadingTextColor2(0xFFD2691E)
     theme.setHeadingTextColor3(0xFFFFD700)
     theme.setHeadingTextColor4(0xFF228B22)

@@ -529,12 +529,6 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.headingBottomMargins) {
                 markdownThemeBuilder.setHeadingBottomMargins(v) // 设置标题模块下间距
             }
-            if (let Some(v) <- w.cjMarkdownTheme.headingTextSizeMultipliers) {
-                markdownThemeBuilder.setHeadingTextSizeMultipliers(v) // 设置标题文本大小数组
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor) {
-                markdownThemeBuilder.setHeadingTextColor(v) // 设置标题文本颜色
-            }
             if (let Some(v) <- w.cjMarkdownTheme.headingTextWordSpace) {
                 markdownThemeBuilder.setHeadingTextWordSpace(v) // 设置标题文本字间距
             }

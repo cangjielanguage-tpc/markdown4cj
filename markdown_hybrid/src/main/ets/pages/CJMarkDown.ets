@@ -225,6 +225,9 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.linkSize !== undefined) {
           cjMarkdownTheme.setLinkSize(this.config.markdownTheme.linkSize)
         }
+        if (this.config.markdownTheme.linkLineHeight !== undefined) {
+          cjMarkdownTheme.setLinkLineHeight(this.config.markdownTheme.linkLineHeight)
+        }
         if (this.config.markdownTheme.linkBackGroupColor !== undefined) {
           cjMarkdownTheme.setLinkBackGroupColor(this.config.markdownTheme.linkBackGroupColor)
         }
@@ -459,15 +462,23 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.headingBottomMargins !== undefined) {
           cjMarkdownTheme.setHeadingBottomMargins(this.config.markdownTheme.headingBottomMargins)
         }
-        if (this.config.markdownTheme.headingTextSizeMultipliers !== undefined) {
-          let multipliers: Array<number> = new Array<number>()
-          for (let index = 0; index < this.config.markdownTheme.headingTextSizeMultipliers.length; index++) {
-            multipliers.push(this.config.markdownTheme.headingTextSizeMultipliers[index])
-          }
-          cjMarkdownTheme.setHeadingTextSizeMultipliers(multipliers)
+        if (this.config.markdownTheme.headingTextSize1 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize1(this.config.markdownTheme.headingTextSize1)
         }
-        if (this.config.markdownTheme.headingTextColor !== undefined) {
-          cjMarkdownTheme.setHeadingTextColor(this.config.markdownTheme.headingTextColor)
+        if (this.config.markdownTheme.headingTextSize2 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize2(this.config.markdownTheme.headingTextSize2)
+        }
+        if (this.config.markdownTheme.headingTextSize3 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize3(this.config.markdownTheme.headingTextSize3)
+        }
+        if (this.config.markdownTheme.headingTextSize4 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize4(this.config.markdownTheme.headingTextSize4)
+        }
+        if (this.config.markdownTheme.headingTextSize5 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize5(this.config.markdownTheme.headingTextSize5)
+        }
+        if (this.config.markdownTheme.headingTextSize6 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize6(this.config.markdownTheme.headingTextSize6)
         }
         if (this.config.markdownTheme.headingTextWordSpace !== undefined) {
           cjMarkdownTheme.setHeadingTextWordSpace(this.config.markdownTheme.headingTextWordSpace)
@@ -707,7 +718,7 @@ export struct CJMarkdown {
           cjMarkdownTheme.setImageMaxHeight(this.config.markdownTheme.imageMaxHeight)
         }
         if (this.config.markdownTheme.imageMaxWidth !== undefined) {
-          cjMarkdownTheme.setImageMaxHeight(this.config.markdownTheme.imageMaxWidth)
+          cjMarkdownTheme.setImageMaxWidth(this.config.markdownTheme.imageMaxWidth)
         }
         if (this.config.markdownTheme.imageBorderRadius !== undefined) {
           cjMarkdownTheme.setImageBorderRadius(this.config.markdownTheme.imageBorderRadius)
@@ -780,6 +791,9 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.tableTitleTextSize !== undefined) {
           cjMarkdownTheme.setTableTitleTextSize(this.config.markdownTheme.tableTitleTextSize)
+        }
+        if (this.config.markdownTheme.tableTitleLineHeight !== undefined) {
+          cjMarkdownTheme.setTableTitleLineHeight(this.config.markdownTheme.tableTitleLineHeight)
         }
         if (this.config.markdownTheme.tableContentTextColor !== undefined) {
           cjMarkdownTheme.setTableContentTextColor(this.config.markdownTheme.tableContentTextColor)
@@ -1202,6 +1216,10 @@ export class MarkdownTheme {
    */
   linkSize?: number = undefined
   /**
+   * 文本格式链接文字行高
+   */
+  linkLineHeight?: number = undefined
+  /**
    * 文本格式链接背景颜色
    */
   linkBackGroupColor?: number = undefined
@@ -1514,13 +1532,29 @@ export class MarkdownTheme {
    */
   headingBottomMargins?: number = undefined
   /**
-   * 标题文本大小数组
+   * 一级标题文本大小
    */
-  headingTextSizeMultipliers?: Array<number> = undefined
+  headingTextSize1?: number = undefined
   /**
-   * 标题文本颜色
+   * 二级标题文本大小
    */
-  headingTextColor?: number = undefined
+  headingTextSize2?: number = undefined
+  /**
+   * 三级标题文本大小
+   */
+  headingTextSize3?: number = undefined
+  /**
+   * 四级标题文本大小
+   */
+  headingTextSize4?: number = undefined
+  /**
+   * 五级标题文本大小
+   */
+  headingTextSize5?: number = undefined
+  /**
+   * 六级标题文本大小
+   */
+  headingTextSize6?: number = undefined
   /**
    * 标题文本字间距
    */
@@ -1930,6 +1964,10 @@ export class MarkdownTheme {
    */
   tableTitleTextSize?: number = undefined
   /**
+   * 表格头文本行高
+   */
+  tableTitleLineHeight?: number = undefined
+  /**
    * 表格内容文本颜色
    */
   tableContentTextColor?: number = undefined
@@ -1962,7 +2000,7 @@ export class MarkdownTheme {
    */
   tableScrollBarShow?: boolean = undefined
   /**
-   * 表格是否显示滚动条
+   * 表格滚动条颜色
    */
   tableScrollBarColor?: number = undefined
   /**
@@ -1973,6 +2011,10 @@ export class MarkdownTheme {
    * 删除线颜色
    */
   strikethroughColor?: number = undefined
+  /**
+   * 删除线样式
+   */
+  strikethroughStyle?: DecorationStyle = undefined
   /**
    * 定义列表定义行缩进
    */
@@ -2013,6 +2055,10 @@ export class MarkdownTheme {
    * 下划线颜色
    */
   underlineColor?: number = undefined
+  /**
+   * 下划线样式
+   */
+  underlineStyle?: DecorationStyle = undefined
 
   /**
    * 设置上下文
@@ -2219,6 +2265,15 @@ export class MarkdownTheme {
    */
   setLinkSize(linkSize: number): void {
     this.linkSize = linkSize
+  }
+
+  /**
+   * 设置文本格式链接文字行高
+   *
+   * @param linkLineHeight 文本格式链接文字行高
+   */
+  setLinkLineHeight(linkLineHeight: number): void {
+    this.linkLineHeight = linkLineHeight
   }
 
   /**
@@ -2924,21 +2979,57 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置标题文本大小数组
+   * 设置一级标题文本大小
    *
-   * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+   * @param headingTextSize1 一级标题文本大小 - 默认20.0
    */
-  setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): void {
-    this.headingTextSizeMultipliers = headingTextSizeMultipliers
+  setHeadingTextSize1(headingTextSize1: number): void {
+    this.headingTextSize1 = headingTextSize1
   }
 
   /**
-   * 设置标题文本颜色
+   * 设置二级标题文本大小
    *
-   * @param headingTextColor 标题文本颜色 - 默认0XFF191919
+   * @param headingTextSize2 二级标题文本大小 - 默认17.0
    */
-  setHeadingTextColor(headingTextColor: number): void {
-    this.headingTextColor = headingTextColor
+  setHeadingTextSize2(headingTextSize2: number): void {
+    this.headingTextSize2 = headingTextSize2
+  }
+
+  /**
+   * 设置三级标题文本大小
+   *
+   * @param headingTextSize3 三级标题文本大小 - 默认16.0
+   */
+  setHeadingTextSize3(headingTextSize3: number): void {
+    this.headingTextSize3 = headingTextSize3
+  }
+
+  /**
+   * 设置四级标题文本大小
+   *
+   * @param headingTextSize4 四级标题文本大小 - 默认15.0
+   */
+  setHeadingTextSize4(headingTextSize4: number): void {
+    this.headingTextSize4 = headingTextSize4
+  }
+
+  /**
+   * 设置五级标题文本大小
+   *
+   * @param headingTextSize5 五级标题文本大小 - 默认15.0
+   */
+  setHeadingTextSize5(headingTextSize5: number): void {
+    this.headingTextSize5 = headingTextSize5
+  }
+
+  /**
+   * 设置六级标题文本大小
+   *
+   * @param headingTextSize6 六级标题文本大小 - 默认13.0
+   */
+  setHeadingTextSize6(headingTextSize6: number): void {
+    this.headingTextSize6 = headingTextSize6
   }
 
   /**
@@ -3007,7 +3098,7 @@ export class MarkdownTheme {
   /**
    * 设置一级标题文本颜色
    *
-   * @param headingTextColor1 一级标题文本颜色
+   * @param headingTextColor1 标题文本颜色
    */
   setHeadingTextColor1(headingTextColor1: number): void {
     this.headingTextColor1 = headingTextColor1
@@ -3016,7 +3107,7 @@ export class MarkdownTheme {
   /**
    * 设置二级标题文本颜色
    *
-   * @param headingTextColor2 一级标题文本颜色
+   * @param headingTextColor2 标题文本颜色
    */
   setHeadingTextColor2(headingTextColor2: number): void {
     this.headingTextColor2 = headingTextColor2
@@ -3025,7 +3116,7 @@ export class MarkdownTheme {
   /**
    * 设置三级标题文本颜色
    *
-   * @param headingTextColor3 一级标题文本颜色
+   * @param headingTextColor3 标题文本颜色
    */
   setHeadingTextColor3(headingTextColor3: number): void {
     this.headingTextColor3 = headingTextColor3
@@ -3034,7 +3125,7 @@ export class MarkdownTheme {
   /**
    * 设置四级标题文本颜色
    *
-   * @param headingTextColor4 一级标题文本颜色
+   * @param headingTextColor4 标题文本颜色
    */
   setHeadingTextColor4(headingTextColor4: number): void {
     this.headingTextColor4 = headingTextColor4
@@ -3043,7 +3134,7 @@ export class MarkdownTheme {
   /**
    * 设置五级标题文本颜色
    *
-   * @param headingTextColor5 一级标题文本颜色
+   * @param headingTextColor5 标题文本颜色
    */
   setHeadingTextColor5(headingTextColor5: number): void {
     this.headingTextColor5 = headingTextColor5
@@ -3052,7 +3143,7 @@ export class MarkdownTheme {
   /**
    * 设置六级标题文本颜色
    *
-   * @param headingTextColor6 一级标题文本颜色
+   * @param headingTextColor6 标题文本颜色
    */
   setHeadingTextColor6(headingTextColor6: number): void {
     this.headingTextColor6 = headingTextColor6
@@ -3860,6 +3951,15 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置表格头文本行高
+   *
+   * @param tableTitleLineHeight 表格头文本行高 - 默认22.0vp
+   */
+  setTableTitleLineHeight(tableTitleLineHeight: number): void {
+    this.tableTitleLineHeight = tableTitleLineHeight
+  }
+
+  /**
    * 设置表格内容文本颜色
    *
    * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
@@ -4047,6 +4147,15 @@ export class MarkdownTheme {
   setUnderlineColor(underlineColor: number): void {
     this.underlineColor = underlineColor
   }
+
+  /**
+   * 设置下划线样式
+   *
+   * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+   */
+  setUnderlineStyle(underlineStyle: DecorationStyle): void {
+    this.underlineStyle = underlineStyle
+  }
 }
 
 /**
@@ -4079,6 +4188,17 @@ export enum ImageFitType {
    * 不保持宽高比进行放大缩小，使得图片充满显示边界。
    */
   Fill
+}
+
+/**
+ * 装饰线样式的枚举
+ */
+export enum DecorationStyle {
+  Solid, // 单实线
+  Double, // 双实线
+  Dotted, // 点线
+  Dashed, // 虚线
+  Wavy // 波浪线
 }
 
 /**
