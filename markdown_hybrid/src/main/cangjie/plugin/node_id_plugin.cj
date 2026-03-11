@@ -35,10 +35,9 @@ public func calcNodeIdWithStack(stack: ArrayList<NodeHashCalculator>, needNodeHa
     while (stack.size > 0) {
         let parent = stack[stack.size - 1]
         let childIndex = parent.childIndex
-        if (childIndex < parent.node.childrenSize) {
-            let child = parent.node[childIndex]
-            let childHasher = NodeHashCalculator(child, parent, childIndex, needNodeHash, needContentHash)
-            if (child.childrenSize > 0) {
+        if (let Some(child) <- parent.child) {
+            let childHasher = NodeHashCalculator(child, parent, parent.childIndex, needNodeHash, needContentHash)
+            if (child.getFirstChild().isSome()) {
                 // 保存当前状态，然后处理子节点
                 stack.add(childHasher)
             } else {
@@ -62,6 +61,7 @@ public func calcNodeIdWithStack(stack: ArrayList<NodeHashCalculator>, needNodeHa
  *     - 更新parent的childIndex
  */
 public class NodeHashCalculator {
+    public var child: ?Node = None // 当前遍历到node的第几个子节点
     public var childIndex = 0 // 当前遍历到node的第几个子节点
     public var nodeHasher = DefaultHasher() // 用于计算node的nodeHash
     public var posionHasher = DefaultHasher() // 用于计算node的posistion的nodeHash
@@ -73,6 +73,7 @@ public class NodeHashCalculator {
         let needNodeHash: Bool,
         let needContentHash: Bool
     ) {
+        child = node.getFirstChild()
         if (needNodeHash) {
             // 根据parent.position/index 计算position
             posionHasher.write(parent?.posionHasher.finish() ?? 0)
@@ -115,6 +116,7 @@ public class NodeHashCalculator {
         }
         if (let Some(p) <- parent) {
             p.accumulate(contentHasher.finish())
+            p.child = node.getNext()
             p.childIndex += 1
         }
     }
