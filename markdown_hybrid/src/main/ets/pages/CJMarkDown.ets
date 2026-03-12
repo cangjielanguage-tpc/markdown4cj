@@ -4167,7 +4167,6 @@ export class MarkdownTheme {
    * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
    */
   setUnderlineStyle(underlineStyle: TextDecorationStyle): void {
-    console.error("--------------> underlineStyle:" + underlineStyle)
     this.underlineStyle = underlineStyle
   }
 }

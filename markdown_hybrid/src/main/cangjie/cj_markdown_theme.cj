@@ -3171,7 +3171,6 @@ public class CJMarkdownTheme {
      * @param underlineStyle 下划线样式  - SOLID-单实线 DOUBLE-双实线 DOTTED-点线 DASHED-虚线 WAVY-波浪线 默认SOLID
      */
     public func setUnderlineStyle(underlineStyle: Int64): Unit {
-        Hilog.error(666, "aaa", "=========> underlineStyle: ${underlineStyle}")
         this.underlineStyle = match (underlineStyle) {
             case 0 => TextDecorationStyle.SOLID
             case 1 => TextDecorationStyle.DOUBLE
