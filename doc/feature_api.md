@@ -1723,6 +1723,13 @@ export class MarkdownTheme {
   setStrikethroughColor(strikethroughColor: number): void
 
   /**
+   * 设置删除线样式
+   *
+   * @param strikethroughStyle 删除线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+   */
+  setStrikethroughStyle(strikethroughStyle: TextDecorationStyle): void
+  
+  /**
    * 设置定义列表术语和定义行之间间距
    *
    * @param descListTermAndDefMargins 定义列表定义行缩进 默认8.0
@@ -1795,7 +1802,7 @@ export class MarkdownTheme {
   /**
    * 设置下划线样式
    *
-   * @param underlineStyle 下划线样式 默认DecorationStyle.Solid
+   * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
    */
   setUnderlineStyle(underlineStyle: DecorationStyle): void  
 }
@@ -1825,22 +1832,6 @@ export enum ImageFitType {
 }
 ```
 
-### enum DecorationStyle
-
-装饰线样式的枚举
-
-```ets
-/**
- * 装饰线样式的枚举
- */
-export enum DecorationStyle {
-  Solid, // 单实线
-  Double, // 双实线
-  Dotted, // 点线
-  Dashed, // 虚线
-  Wavy // 波浪线
-}
-```
 ### enum LatexMathColorFormat
 
 数学公式生成图片格式的枚举

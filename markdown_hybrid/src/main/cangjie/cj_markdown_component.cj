@@ -876,6 +876,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.strikethroughColor) {
                 markdownThemeBuilder.setStrikethroughColor(v) // 设置删除线颜色
             }
+            if (let Some(v) <- w.cjMarkdownTheme.strikethroughStyle) {
+                markdownThemeBuilder.setStrikethroughStyle(v) // 设置删除线样式
+            }
             if (let Some(v) <- w.cjMarkdownTheme.descListTermAndDefMargins) {
                 markdownThemeBuilder.setDescListTermAndDefMargins(v) // 设置定义列表术语和定义行之间间距
             }
@@ -907,7 +910,7 @@ class CJMarkdownComponent {
                 markdownThemeBuilder.setUnderlineColor(v) // 设置下划线颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.underlineStyle) {
-                markdownThemeBuilder.setUnderlineStyle(v) // 设置下划线央视
+                markdownThemeBuilder.setUnderlineStyle(v) // 设置下划线样式
             }
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()

@@ -825,6 +825,9 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.strikethroughColor !== undefined) {
           cjMarkdownTheme.setStrikethroughColor(this.config.markdownTheme.strikethroughColor)
         }
+        if (this.config.markdownTheme.strikethroughStyle !== undefined) {
+          cjMarkdownTheme.setStrikethroughStyle(this.config.markdownTheme.strikethroughStyle)
+        }
         if (this.config.markdownTheme.descListTermAndDefMargins !== undefined) {
           cjMarkdownTheme.setDescListTermAndDefMargins(this.config.markdownTheme.descListTermAndDefMargins)
         }
@@ -4069,6 +4072,15 @@ export class MarkdownTheme {
    */
   setStrikethroughColor(strikethroughColor: number): void {
     this.strikethroughColor = strikethroughColor
+  }
+
+  /**
+   * 设置删除线样式
+   *
+   * @param strikethroughStyle 删除线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+   */
+  setStrikethroughStyle(strikethroughStyle: TextDecorationStyle): void {
+    this.strikethroughStyle = strikethroughStyle
   }
 
   /**

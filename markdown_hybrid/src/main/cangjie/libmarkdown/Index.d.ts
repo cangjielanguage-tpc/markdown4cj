@@ -475,6 +475,8 @@ export declare class CJMarkdownTheme {
 
   setStrikethroughColor(strikethroughColor: number): void
 
+  setStrikethroughStyle(strikethroughStyle: number): void
+
   setDescListTermAndDefMargins(descListTermAndDefMargins: number): void
 
   setDescListDefIndentation(descListDefIndentation: number): void
