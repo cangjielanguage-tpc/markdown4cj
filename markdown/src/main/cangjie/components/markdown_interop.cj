@@ -389,6 +389,39 @@ extend Span {
         }
         return this
     }
+
+    func interopDecorationStyle(decorationStyle: (TextDecorationType, Color, Int32)): Span {
+        try {
+            let dType: Float64 = match (decorationStyle[0]) {
+                case Underline => 1.0
+                case Overline => 2.0
+                case LineThrough => 3.0
+                case _ => 0.0
+            }
+
+            let dColor: UInt32 = decorationStyle[1].toUInt32()
+            let colorString: String = dColor.format("08X")
+
+            let dStyle: Float64 = if (decorationStyle[2] < 0 || decorationStyle[2] > 4) {
+                0.0 // 负数和超出枚举范围，设置为0
+            } else {
+                Float64(decorationStyle[2])
+            }
+
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let span = global["Span"].asObject(ctx)
+
+            let decoration = span["decoration"].asFunction(ctx)
+            let param: JSObject = ctx.object()
+            param["type"] = ctx.number(dType).toJSValue()
+            param["color"] = ctx.string("#${colorString}").toJSValue()
+            param["style"] = ctx.number(dStyle).toJSValue()
+            decoration.call(param.toJSValue())
+        } catch (e: Exception) {
+        }
+        return this
+    }
 }
 
 extend Text {
