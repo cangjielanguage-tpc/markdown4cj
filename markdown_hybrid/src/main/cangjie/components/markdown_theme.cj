@@ -4532,7 +4532,6 @@ public class MarkdownThemeBuilder {
      */
     public func setHeadingTextColor1(headingTextColor1: Color): MarkdownThemeBuilder {
         this.headingTextColor1 = headingTextColor1
-        this.headingBreakColor1 = headingTextColor1 // 同时设置分割线颜色
         return this
     }
 
@@ -4554,7 +4553,6 @@ public class MarkdownThemeBuilder {
      */
     public func setHeadingTextColor2(headingTextColor2: Color): MarkdownThemeBuilder {
         this.headingTextColor2 = headingTextColor2
-        this.headingBreakColor2 = headingTextColor2 // 同时设置分割线颜色
         return this
     }
 

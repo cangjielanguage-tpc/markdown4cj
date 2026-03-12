@@ -6,7 +6,6 @@ package markdown.components
 import ohos.base.*
 import ohos.component.*
 import ohos.state_manage.*
-import ohos.hilog.Hilog
 
 let COLOR_191919: Color = Color(0x191919)
 let COLOR_0000FF: Color = Color(0x0000FF)
@@ -422,7 +421,7 @@ func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
     if (nodeView.isTable && nodeView.isTableHead) {
         return markdownTheme.tableTitleLineHeight // 表格头
     }
-    if (nodeView.isTable && nodeView.isTableBody) {
+    if (nodeView.isTable) {
         return markdownTheme.tableTextLineHeight // 表格
     }
     if (nodeView.isLink) {
