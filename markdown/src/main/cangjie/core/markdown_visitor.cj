@@ -155,15 +155,14 @@ class MarkdownVisitorImpl <: MarkdownVisitor {
     }
 
     public override func visit(customNode: CustomNode): Unit {
-        visitNode(customNode, needCollect: false)
+        visitNode(customNode)
     }
 
-    private func visitNode(node: Node, needCollect!: Bool = true): Unit {
+    private func visitNode(node: Node): Unit {
         let nodeVisitor: ?NodeVisitor = nodes.get(node.getNodeType())
         if (let Some(f) <- nodeVisitor) {
             f(this, node)
         } else {
-            buildView(node, needCollect)
             visitChildren(node)
         }
     }

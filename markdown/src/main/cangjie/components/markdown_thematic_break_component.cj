@@ -1,5 +1,5 @@
 /*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
+ * Copyright (c) Huawei Technologies Co., Ltd. 2024-2026. All rights reserved.
  */
 package markdown.components
 
@@ -9,23 +9,21 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * Markdown分割线自定义控件
+ * 分割线控件
  */
 @Component
 class MarkdownThematicBreakComponent {
     /**
-     * 分割线样式
+     * markdown样式
      */
-    var markdownConfiguration: MarkdownConfiguration
+    var markdownTheme: MarkdownTheme
 
     func build() {
         Column() {
-            if (markdownConfiguration.markdownTheme.thematicBreakHeight > 0.0) {
+            if (markdownTheme.thematicBreakHeight > 0.0) {
                 Divider()
-                    // 设置分割线颜色
-                    .color(markdownConfiguration.markdownTheme.thematicBreakColor)
-                    // 设置分割线宽度
-                    .strokeWidth(markdownConfiguration.markdownTheme.thematicBreakHeight)
+                    .color(markdownTheme.thematicBreakColor)
+                    .strokeWidth(markdownTheme.thematicBreakHeight)
             }
         }
     }

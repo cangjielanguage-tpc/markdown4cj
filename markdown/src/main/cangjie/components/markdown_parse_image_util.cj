@@ -14,15 +14,24 @@ import ohos.state_macro_manage.*
  * @param destination 图片路径
  * @param abilityContext AbilityContext
  * @param stageContext StageContext
- * @param componentWidth 控件宽度 - 单位px
- * @param callback PixelMap图片、图片高度、图片宽度 回调接口
+ * @param callback PixelMap图片、图片高度、图片宽度
+ * @return Future<Unit> 线程
  */
-func rawfileToPixelmap(destination: String, abilityContext: ?AbilityContext, stageContext: ?StageContext, componentWidth: Float64, callback: (?PixelMap, ?Float64, ?Float64) -> Unit): Future<Unit> {
+func rawfileToPixelmap1(
+    destination: String,
+    abilityContext: ?AbilityContext,
+    stageContext: ?StageContext,
+    callback: (?PixelMap, ?Float64, ?Float64) -> Unit
+): Future<Unit> {
     let fut: Future<Unit> = spawn {
         var pixelMap: ?PixelMap = Option<PixelMap>.None
         var height: ?Float64 = Option<Float64>.None
         var width: ?Float64 = Option<Float64>.None
         try (imageLoadLimiter = ImageLoadLimiter()) {
+            if (Thread
+            .currentThread.hasPendingCancellation) {
+                return
+            }
             var resourceManager: ?ResourceManager = None
             if (let Some(v) <- abilityContext) {
                 resourceManager = ResourceManager.getResourceManager(getStageContext(v))
@@ -46,21 +55,70 @@ func rawfileToPixelmap(destination: String, abilityContext: ?AbilityContext, sta
                 }
                 pixelMap = imageSource.createPixelMap()
                 imageSource.Release()
-                var size: Size = pixelMap().getImageInfo().size
-                var sizeWidth: Float64 = Float64(size.width)
-                var sizeHeight: Float64 = Float64(size.height)
-                var aspectRatio: Float64 = sizeHeight / sizeWidth
-                width = if (componentWidth > sizeWidth) {
-                    sizeWidth
-                } else {
-                    componentWidth
-                }
-                height = width() * aspectRatio
                 if (Thread.currentThread.hasPendingCancellation) {
                     pixelMap?.Release()
                     return
                 }
-                pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
+                var size = pixelMap().getImageInfo().size
+                width = Float64(size.width)
+                height = Float64(size.height)
+            }
+        } catch (e: Exception) {
+        } finally {
+            try {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap?.Release()
+                    return
+                }
+                callback(pixelMap, width, height)
+            } catch (_) {
+            }
+        }
+    }
+    return fut
+}
+
+/**
+ * 本地图片路径转换成PixelMap (./开头)
+ *
+ * @param destination 图片路径
+ * @param abilityContext AbilityContext
+ * @param stageContext StageContext
+ * @param callback PixelMap图片、图片高度、图片宽度
+ * @return Future<Unit> 线程
+ */
+func callbackToPixelmap(
+    destination: String,
+    imageCallbackCallback: (String) -> ?Array<UInt8>,
+    callback: (?PixelMap, ?Float64, ?Float64) -> Unit
+): Future<Unit> {
+    let fut: Future<Unit> = spawn {
+        var pixelMap: ?PixelMap = Option<PixelMap>.None
+        var height: ?Float64 = Option<Float64>.None
+        var width: ?Float64 = Option<Float64>.None
+        try (imageLoadLimiter = ImageLoadLimiter()) {
+            if (Thread.currentThread.hasPendingCancellation) {
+                return
+            }
+            let data: ?Array<UInt8> = imageCallbackCallback(destination)
+            if (let Some(v) <- data) {
+                if (Thread.currentThread.hasPendingCancellation) {
+                    return
+                }
+                var imageSource: ImageSource = createImageSource(v)
+                if (Thread.currentThread.hasPendingCancellation) {
+                    imageSource.Release()
+                    return
+                }
+                pixelMap = imageSource.createPixelMap()
+                imageSource.Release()
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap?.Release()
+                    return
+                }
+                var size = pixelMap().getImageInfo().size
+                width = Float64(size.width)
+                height = Float64(size.height)
             }
         } catch (e: Exception) {
         } finally {

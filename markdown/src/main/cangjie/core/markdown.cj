@@ -63,7 +63,7 @@ public abstract class Markdown {
      * as these methods will additionally call specific {@link MarkdownPlugin} methods to <em>prepare</em>
      * proper display.
      */
-    public func render(node: Node): NodeView
+    public func render(node: Node): Node
 
     /**
      * This method will {@link #parse(String)} and {@link #render(Node)} supplied markdown. Returned
@@ -73,7 +73,7 @@ public abstract class Markdown {
      * @see #parse(String)
      * @see #render(Node)
      */
-    public func toMarkdown(input: String): NodeView
+    public func toMarkdown(input: String): Node
 
     /**
      * Requests information if certain plugin has been registered. Please note that this
@@ -128,7 +128,7 @@ class MarkdownImpl <: Markdown {
         return parser.parse(input)
     }
 
-    public override func render(node: Node): NodeView {
+    public override func render(node: Node): Node {
         for (plugin in plugins) {
             plugin.beforeRender(node)
         }
@@ -148,11 +148,11 @@ class MarkdownImpl <: Markdown {
         // clear render props and builder after rendering
         // as we no longer reuse visitor - there is no need to clean it
         // we might still do it if we introduce a thread-local storage though visitor.clear()
-        return node.getView()
+        return node
     }
 
-    public override func toMarkdown(input: String): NodeView {
-        let spanned: NodeView = try {
+    public override func toMarkdown(input: String): Node {
+        let spanned: Node = try {
             let tree = parse(input)
             render(tree)
         } catch (e: Exception) {
@@ -222,6 +222,12 @@ public interface MarkdownBuilder {
      */
     func fallbackToRawInputWhenEmpty(fallbackToRawInputWhenEmpty: Bool): MarkdownBuilder
 
+    /**
+     * 包含SourceSpan信息
+     * @param flag 0:不包含(默认) 1:仅Block节点 2:全部节点
+     */
+    func includeSourceSpans(flag: Int): MarkdownBuilder
+
     func build(): Markdown
 }
 
@@ -229,6 +235,7 @@ class MarkdownBuilderImpl <: MarkdownBuilder {
     private let plugins: ArrayList<MarkdownPlugin> = ArrayList<MarkdownPlugin>(3)
 
     private var _fallbackToRawInputWhenEmpty: Bool = true
+    private var _includeSourceSpans: Int = 0
 
     public override func usePlugin(plugin: MarkdownPlugin): MarkdownBuilder {
         this.plugins.add(plugin)
@@ -247,6 +254,11 @@ class MarkdownBuilderImpl <: MarkdownBuilder {
         return this
     }
 
+    public func includeSourceSpans(flag: Int): MarkdownBuilder {
+        this._includeSourceSpans = flag
+        return this
+    }
+
     public override func build(): Markdown {
         if (plugins.isEmpty()) {
             throw IllegalStateException("No plugins were added to this builder. Use #usePlugin method to add them")
@@ -257,12 +269,17 @@ class MarkdownBuilderImpl <: MarkdownBuilder {
         let plugins: ArrayList<MarkdownPlugin> = preparePlugins(this.plugins)
 
         let parserBuilder: ParserBuilder = ParserBuilder()
-        parserBuilder.inlineParserFactory(InlineParserV2Factory()) // 使用v2版本的InlineParser
         let visitorBuilder: MarkdownVisitorBuilder = MarkdownVisitorBuilderImpl()
 
         for (plugin in plugins) {
             plugin.configureParser(parserBuilder)
             plugin.configureVisitor(visitorBuilder)
+        }
+
+        match (_includeSourceSpans) {
+            case 1 => parserBuilder.includeSourceSpans(IncludeSourceSpans.BLOCKS)
+            case 2 => parserBuilder.includeSourceSpans(IncludeSourceSpans.BLOCKS_AND_INLINES)
+            case _ => parserBuilder.includeSourceSpans(IncludeSourceSpans.NONE)
         }
 
         // do not reuse render-props (each render call should have own render-props)

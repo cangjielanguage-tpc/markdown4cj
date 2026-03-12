@@ -17,7 +17,6 @@ public class CodeListPlugin <: AbstractMarkdownPlugin {
             "FencedCodeBlockListBlock",
             {
                 visitor, node =>
-                buildView(node, true)
                 visitor.visitChildren(node)
             }
         )
@@ -51,7 +50,6 @@ class CodeListVisitor <: AbstractVisitor {
     }
     func process(node: Node): Unit {
         var codeList: ?FencedCodeBlockListBlock = None
-        var codeListName: String = ""
         var block: ?Node = node.getFirstChild()
         while (let Some(b) <- block) {
             block = b.getNext()
@@ -66,6 +64,7 @@ class CodeListVisitor <: AbstractVisitor {
                         case Some(v) where v.name == listName => v
                         case _ =>
                             let v = FencedCodeBlockListBlock(listName)
+                            v.setSourceSpans(code.getSourceSpans())
                             code.insertBefore(v)
                             codeList = v
                             v

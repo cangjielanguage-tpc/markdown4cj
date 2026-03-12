@@ -10,7 +10,6 @@ public abstract class TagHandler {
 
     protected static func visitChildren(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag,
         nodeParent: Node): Unit {
-        var handler: ?TagHandler
         for (child in tag.getChildren()) {
             visit(visitor, renderer, child, nodeParent)
         }
@@ -171,7 +170,7 @@ public class HeadingHandler <: TagHandler {
         var level: Int64
         try {
             level = Int64.parse(tag.name()[1..=1])
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             level = 0
         }
         if (level < 1 || level > 6) {
@@ -304,7 +303,7 @@ public class StrikeHandler <: TagHandler {
     }
 
     public override func handle(visitor: ?MarkdownVisitor, renderer: MarkdownHtmlRenderer, tag: HtmlTag): Node {
-        let strikethrough: Strikethrough = Strikethrough()
+        let strikethrough: Strikethrough = Strikethrough("~~")
         visitChildren(visitor, renderer, tag, strikethrough)
         return strikethrough
     }

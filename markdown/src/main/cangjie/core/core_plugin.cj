@@ -20,16 +20,16 @@ public class CorePlugin <: AbstractMarkdownPlugin {
      * Set<Class<? <: Block>>
      */
     public static let enabledBlockTypes: HashSet<String> = HashSet<String>(
-            [
-                "BlockQuote",
-                "Heading",
-                "FencedCodeBlock",
-                "HtmlBlock",
-                "ThematicBreak",
-                "ListBlock",
-                "IndentedCodeBlock"
-            ]
-        )
+        [
+            "BlockQuote",
+            "Heading",
+            "FencedCodeBlock",
+            "HtmlBlock",
+            "ThematicBreak",
+            "ListBlock",
+            "IndentedCodeBlock"
+        ]
+    )
 
     private let onTextAddedListeners: ArrayList<OnTextAddedListener> = ArrayList<OnTextAddedListener>(0)
 
@@ -73,21 +73,13 @@ public class CorePlugin <: AbstractMarkdownPlugin {
     }
 
     private func text(builder: MarkdownVisitorBuilder): Unit {
-        builder.on(
-            "Text",
-            {
-                visitor, text => buildView(text, true)
-            }
-        )
     }
 
     private static func strongEmphasis(builder: MarkdownVisitorBuilder): Unit {
         builder.on(
             "StrongEmphasis",
             {
-                visitor, strongEmphasis =>
-                buildView(strongEmphasis, false)
-                visitor.visitChildren(strongEmphasis)
+                visitor, strongEmphasis => visitor.visitChildren(strongEmphasis)
             }
         )
     }
@@ -96,9 +88,7 @@ public class CorePlugin <: AbstractMarkdownPlugin {
         builder.on(
             "Emphasis",
             {
-                visitor, emphasis =>
-                buildView(emphasis, false)
-                visitor.visitChildren(emphasis)
+                visitor, emphasis => visitor.visitChildren(emphasis)
             }
         )
     }
@@ -107,20 +97,12 @@ public class CorePlugin <: AbstractMarkdownPlugin {
         builder.on(
             "BlockQuote",
             {
-                visitor, blockQuote =>
-                buildView(blockQuote, true)
-                visitor.visitChildren(blockQuote)
+                visitor, blockQuote => visitor.visitChildren(blockQuote)
             }
         )
     }
 
-    private static func code(builder: MarkdownVisitorBuilder): Unit {
-        builder.on(
-            "Code",
-            {
-                visitor, code => buildView(code, true)
-            }
-        )
+    private static func code(_: MarkdownVisitorBuilder): Unit {
     }
 
     private static func fencedCodeBlock(builder: MarkdownVisitorBuilder): Unit {
@@ -128,9 +110,8 @@ public class CorePlugin <: AbstractMarkdownPlugin {
             "FencedCodeBlock",
             {
                 visitor, node =>
-                let fencedCodeBlock: FencedCodeBlock = (node as FencedCodeBlock)()
-                buildView(fencedCodeBlock, true)
-                visitCodeBlock(visitor, fencedCodeBlock.getInfo(), fencedCodeBlock.getLiteral(), fencedCodeBlock)
+                    let fencedCodeBlock: FencedCodeBlock = (node as FencedCodeBlock)()
+                    visitCodeBlock(visitor, fencedCodeBlock.getInfo(), fencedCodeBlock.getLiteral(), fencedCodeBlock)
             }
         )
     }
@@ -140,9 +121,8 @@ public class CorePlugin <: AbstractMarkdownPlugin {
             "IndentedCodeBlock",
             {
                 visitor, node =>
-                let indentedCodeBlock: IndentedCodeBlock = (node as IndentedCodeBlock)()
-                buildView(indentedCodeBlock, true)
-                visitCodeBlock(visitor, Option<String>.None, indentedCodeBlock.getLiteral(), indentedCodeBlock)
+                    let indentedCodeBlock: IndentedCodeBlock = (node as IndentedCodeBlock)()
+                    visitCodeBlock(visitor, Option<String>.None, indentedCodeBlock.getLiteral(), indentedCodeBlock)
             }
         )
     }
@@ -153,9 +133,7 @@ public class CorePlugin <: AbstractMarkdownPlugin {
         builder.on(
             "Image",
             {
-                visitor, image =>
-                buildView(image, true)
-                visitor.visitChildren(image)
+                visitor, image => visitor.visitChildren(image)
             }
         )
     }
@@ -175,88 +153,43 @@ public class CorePlugin <: AbstractMarkdownPlugin {
         builder.on(
             "ListItem",
             {
-                visitor, listItem =>
-                buildView(listItem, true)
-                visitor.visitChildren(listItem)
+                visitor, listItem => visitor.visitChildren(listItem)
             }
         )
     }
 
-    private static func listLevel(node: Node): Int {
-        var level: Int = 0
-        var parent: ?Node = node.getParent()
-        while (let Some(v) <- parent) {
-            if (v is ListItem) {
-                level += 1
-            }
-            parent = v.getParent()
-        }
-        return level
-    }
-
-    private static func thematicBreak(builder: MarkdownVisitorBuilder): Unit {
-        builder.on(
-            "ThematicBreak",
-            {
-                visitor, thematicBreak => buildView(thematicBreak, true)
-            }
-        )
+    private static func thematicBreak(_: MarkdownVisitorBuilder): Unit {
     }
 
     private static func heading(builder: MarkdownVisitorBuilder): Unit {
         builder.on(
             "Heading",
             {
-                visitor, heading =>
-                buildView(heading, true)
-                visitor.visitChildren(heading)
+                visitor, heading => visitor.visitChildren(heading)
             }
         )
     }
 
-    private static func softLineBreak(builder: MarkdownVisitorBuilder): Unit {
-        builder.on(
-            "SoftLineBreak",
-            {
-                visitor, softLineBreak => buildView(softLineBreak, true)
-            }
-        )
+    private static func softLineBreak(_: MarkdownVisitorBuilder): Unit {
     }
 
-    private static func hardLineBreak(builder: MarkdownVisitorBuilder): Unit {
-        builder.on(
-            "HardLineBreak",
-            {
-                visitor, hardLineBreak => buildView(hardLineBreak, true)
-            }
-        )
+    private static func hardLineBreak(_: MarkdownVisitorBuilder): Unit {
     }
 
     private static func paragraph(builder: MarkdownVisitorBuilder): Unit {
         builder.on(
             "Paragraph",
             {
-                visitor, paragraph =>
-                buildView(paragraph, true)
-                visitor.visitChildren(paragraph)
+                visitor, paragraph => visitor.visitChildren(paragraph)
             }
         )
-    }
-
-    private static func isInTightList(paragraph: Paragraph): Bool {
-        if (let Some(Some(list: ListBlock)) <- paragraph.getParent()?.getParent()) {
-            return list.isTight()
-        }
-        return false
     }
 
     private static func link(builder: MarkdownVisitorBuilder): Unit {
         builder.on(
             "Link",
             {
-                visitor, link =>
-                buildView(link, false)
-                visitor.visitChildren(link)
+                visitor, link => visitor.visitChildren(link)
             }
         )
     }
@@ -289,6 +222,5 @@ public interface OnTextAddedListener {
 }
 
 func SimpleBlockNodeVisitor(visitor: MarkdownVisitor, node: Node): Unit {
-    buildView(node, true)
     visitor.visitChildren(node)
 }

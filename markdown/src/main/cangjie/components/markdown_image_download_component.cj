@@ -16,7 +16,7 @@ public class MarkdownImageDownloadComponent {
     /**
      * markdown配置
      */
-    var markdownConfiguration: MarkdownConfiguration
+    var markdownTheme: MarkdownTheme
 
     /**
      * 图片链接
@@ -24,13 +24,9 @@ public class MarkdownImageDownloadComponent {
     var destination: String
 
     /**
-     * markdown配置
+     * 图片下载的点击事件
      */
-    var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build()
-
-    protected override func aboutToAppear(): Unit {
-        markdownTheme = markdownConfiguration.markdownTheme
-    }
+    var imageDownloadCallback: ?(String) -> Unit
 
     func build() {
          Row(7) {
@@ -53,8 +49,8 @@ public class MarkdownImageDownloadComponent {
         .backgroundColor(markdownTheme.imageDownloadBackgroundColor)
         .margin(top: 14)
         .onClick {evt =>
-            if (markdownConfiguration.imageDownloadCallback.isSome()) {
-                markdownConfiguration.imageDownloadCallback()(destination)
+            if (imageDownloadCallback.isSome()) {
+                imageDownloadCallback()(destination)
             }
         }
     }

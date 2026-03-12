@@ -9,88 +9,94 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * 脚注
+ * 脚注控件
  */
 @Component
 public class MarkdownFootnoteComponent {
     /**
      * markdown配置
      */
-    var markdownConfiguration: MarkdownConfiguration
+    var footnoteMarkdownConfiguration: MarkdownConfiguration
 
     /**
-     * 脚注节点
-     */
-    var nodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位px
+     * 脚注控件自身节点
      */
     @Prop
-    var componentWidth: Float64
+    var footnoteNodeView: NodeView
 
     /**
-     * 缓存的数据
+     * 控件宽度 - 单位vp
      */
-    var markdownCacheConfiguration: MarkdownCacheConfiguration
+    @Prop
+    var footnoteComponentWidth: Float64
 
     /**
-     * 脚注点击事件
+     * 缓存的控件数据
      */
-    var fontCallback: (String) -> Unit
+    var footnoteMarkdownCacheConfiguration: MarkdownCacheConfiguration
 
     /**
-     * TOC列表点击事件回调
+     * 自定义行内段落控件
      */
-    var tocListOnClick: (Int64) -> Unit
+    @BuilderParam
+    var footnoteCustomParagraphLineBuilder: (NodeView, Int64) -> Unit
+
+    /**
+     * TOC列表点击事件
+     */
+    var footnoteTocListOnClick: (Int64) -> Unit
 
     /**
      * 图片点击事件
      */
-    var imageCallback: (String) -> Unit
+    var footnoteImageCallback: (String) -> Unit
 
     /**
-     * 懒加载数据源
+     * 脚注点击事件
      */
-    var nodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
+    var footnoteFootnoteCallback: (String) -> Unit
 
     /**
-     * 自定义行内段落布局
+     * 脚注控件子节点的懒加载数据源
      */
-    @BuilderParam
-    var customParagraphLineBuilder: (NodeView, Int64) -> Unit
+    var footnoteNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
 
     protected override func aboutToAppear(): Unit {
-        // 初始化刷新数据
-        refreshData(nodeView)
-        // 缓存当前控件
-        markdownCacheConfiguration.footnoteComponent.add(this.nodeView.nodeHash, this)
+        refreshFootnoteData(footnoteNodeView) // 初始化刷新数据
+        footnoteMarkdownCacheConfiguration.footnoteComponent.add(footnoteNodeView.nodeHash, this) // 缓存当前控件
     }
 
     protected override func aboutToDisappear(): Unit {
-        // 清除当前控件
-        let value = markdownCacheConfiguration.footnoteComponent.get(this.nodeView.nodeHash)
+        // 清除当前控件缓存
+        let value = footnoteMarkdownCacheConfiguration.footnoteComponent.get(footnoteNodeView.nodeHash)
         if (let Some(v) <- value) {
             if (refEq(v, this)) {
-                markdownCacheConfiguration.footnoteComponent.remove(this.nodeView.nodeHash)
+                footnoteMarkdownCacheConfiguration.footnoteComponent.remove(footnoteNodeView.nodeHash)
             }
         } else {
-            markdownCacheConfiguration.footnoteComponent.remove(this.nodeView.nodeHash)
+            footnoteMarkdownCacheConfiguration.footnoteComponent.remove(footnoteNodeView.nodeHash)
         }
     }
 
     func build() {
         List() {
             LazyForEach(
-                nodeViewDataSource,
+                footnoteNodeViewDataSource,
                 itemGeneratorFunc: {
-                    item: NodeView, idx: Int64 => if (item.node is Paragraph) {
-                        // 段落
+                    nodeView: NodeView, idx: Int64 => if (nodeView.nodeType == "Paragraph") {
                         ListItem() {
-                            MarkdownParagraphComponent(markdownConfiguration: markdownConfiguration, nodeView: item, footnoteBlock: (nodeView.node as FootnoteBlock)(), fontCallback: fontCallback, tocListOnClick: tocListOnClick, imageCallback: imageCallback, componentWidth: componentWidth, paragraphComponents: markdownCacheConfiguration.paragraphComponents, customParagraphLineBuilder: customParagraphLineBuilder)
+                            MarkdownParagraphComponent(
+                                paragraphMarkdownConfiguration: footnoteMarkdownConfiguration,
+                                paragraphNodeView: nodeView,
+                                paragraphComponentWidth: footnoteComponentWidth,
+                                paragraphComponents: footnoteMarkdownCacheConfiguration.paragraphComponents,
+                                paragraphCustomParagraphLineBuilder: footnoteCustomParagraphLineBuilder,
+                                paragraphTocListOnClick: footnoteTocListOnClick,
+                                paragraphImageCallback: footnoteImageCallback,
+                                paragraphFootnoteCallback: footnoteFootnoteCallback
+                            )
                         }
                     } else {
-                        // TODO 其他节点
                         ListItem() {
                             Text("")
                         }
@@ -101,25 +107,76 @@ public class MarkdownFootnoteComponent {
                 }
             )
         }
-        // 设置List组件排列方向
         .listDirection(Axis.Vertical)
-        // List交叉轴方向宽度大于ListItem交叉轴宽度 * lanes时，ListItem在List交叉轴方向的布局方式，默认为首部对齐
         .alignListItem(ListItemAlign.Start)
-        // 左边距
-        .margin(left: markdownConfiguration.markdownTheme.descListDefIndentation)
     }
 
     /**
-     * 数据刷新
+     * 定义列表解释控件数据刷新
+     *
+     * @param footnoteNodeView 刷新的新数据
      */
-    public func refreshData(nodeView: NodeView): Unit {
-        this.nodeView = nodeView
-        let refreshNodeViews = nodeView.children
-        let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
-        let dataSourceSize: Int64 = nodeViewDataSource.totalCount() // 页面缓存的数据长度
+    public func refreshFootnoteData(footnoteNodeView: NodeView): Unit {
+        let refreshNodeViewChildren = footnoteNodeView.children // 子节点数据
+        let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
+        let dataSourceSize: Int64 = footnoteNodeViewDataSource.totalCount() // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
             return
         }
-        refreshNodeViewDataSource(nodeView, refreshNodeViews, refreshNodeViewSize, dataSourceSize, nodeViewDataSource, "footnote", markdownCacheConfiguration, Option<HashMap<Int64, MarkdownTableBlockRowComponent>>.None)
+        if (refreshNodeViewSize > dataSourceSize) {
+            // 新数据大于页面数据
+            // 循环判断历史数据有没有做过修改
+            refreshFootnoteDatas(dataSourceSize, refreshNodeViewChildren)
+            // 循环添加新数据
+            for (i in dataSourceSize..refreshNodeViewSize) {
+                footnoteNodeViewDataSource.addData(refreshNodeViewChildren[i])
+            }
+        } else if (refreshNodeViewSize == dataSourceSize) {
+            // 新数据等于页面数据
+            refreshFootnoteDatas(dataSourceSize, refreshNodeViewChildren)
+        } else {
+            // 新数据小于页面数据
+            // 循环判断历史数据有没有做过修改
+            refreshFootnoteDatas(refreshNodeViewSize, refreshNodeViewChildren)
+            // 循环删除多余的旧数据
+            for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
+                footnoteNodeViewDataSource.deleteData(i)
+            }
+        }
+    }
+
+    /**
+     * 循环判断历史数据有没有做过修改
+     *
+     * @param size 长度
+     * @param refreshNodeViews 刷新的数据
+     */
+    func refreshFootnoteDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
+        for (i in 0..size) {
+            let refreshNodeView = refreshNodeViews[i]
+            let dataSourceNode = footnoteNodeViewDataSource.getData(i)
+            let newBlockHash = refreshNodeView.nodeHash
+            let oldBlockHash = dataSourceNode.nodeHash
+            let newContentHash = refreshNodeView.contentHash
+            let oldContentHash = dataSourceNode.contentHash
+            // 唯一ID是否相同
+            if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
+                footnoteNodeViewDataSource.replaceData(i, refreshNodeView)
+            } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
+                footnoteNodeViewDataSource.replaceData(i, refreshNodeView)
+            } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+                if (refreshNodeView.nodeType == "Paragraph") {
+                    // 段落
+                    let paragraphComponents = footnoteMarkdownCacheConfiguration.paragraphComponents
+                    let cache = paragraphComponents.get(newBlockHash)
+                    if (let Some(v) <- cache) {
+                        v.refreshParagraphData(refreshNodeView)
+                    }
+                } else {
+                    // 其他
+                    footnoteNodeViewDataSource.replaceData(i, refreshNodeView)
+                }
+            }
+        }
     }
 }
