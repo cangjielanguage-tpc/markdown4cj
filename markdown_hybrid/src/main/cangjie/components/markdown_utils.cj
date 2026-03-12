@@ -189,11 +189,11 @@ func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
 }
 
 /**
- * 设置不同等级标题颜色
+ * 设置不同等级标题文本大小
  *
  * @param level 标题等级
  * @param markdownTheme markdown样式
- * @return 标题颜色
+ * @return 标题文本大小
  */
 func headingTextSize(level: Int64, markdownTheme: MarkdownTheme): Float64 {
     return match (level) {
@@ -333,17 +333,17 @@ func spanLetterSpacing(nodeView: NodeView, markdownTheme: MarkdownTheme): Float6
  * @param markdownTheme markdown样式
  * @return 文本下划线中划线
  */
-func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDecorationType, Color) {
+func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDecorationType, Color, Int32) {
     if (nodeView.isUnderlineNode) {
-        return (TextDecorationType.Underline, markdownTheme.underlineColor) // 下划线
+        return (TextDecorationType.Underline, markdownTheme.underlineColor, markdownTheme.underlineStyle) // 下划线
     }
     if (nodeView.isStrikethrough) {
-        return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor) // 删除线
+        return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor, markdownTheme.strikethroughStyle) // 删除线
     }
     if (nodeView.isLink || nodeView.isFootnote) {
-        return (TextDecorationType.Underline, markdownTheme.linkColor) // 链接, 脚注
+        return (TextDecorationType.Underline, markdownTheme.linkColor, 0) // 链接, 脚注
     }
-    return (TextDecorationType.None, Color.TRANSPARENT) // 其他
+    return (TextDecorationType.None, Color.TRANSPARENT, 0) // 其他
 }
 
 /**
@@ -395,8 +395,14 @@ func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
     if (nodeView.isHeading) {
         return headLineHeight(nodeView.headingLevel, markdownTheme) // 标题
     }
+    if (nodeView.isTable && nodeView.isTableHead) {
+        return markdownTheme.tableTitleLineHeight // 表格头
+    }
     if (nodeView.isTable) {
         return markdownTheme.tableTextLineHeight // 表格
+    }
+    if (nodeView.isLink) {
+        return markdownTheme.linkLineHeight // 链接
     }
     return markdownTheme.paragraphTextLineHeight // 段落和其他
 }

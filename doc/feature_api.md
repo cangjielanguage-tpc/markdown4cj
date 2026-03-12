@@ -326,7 +326,14 @@ export class MarkdownTheme {
    * @param linkSize 文本格式链接文字大小 - 默认14.0fp
    */
   setLinkSize(linkSize: number): void
-
+  
+  /**
+   * 设置文本格式链接文字行高
+   *
+   * @param linkLineHeight 文本格式链接文字行高
+   */
+  setLinkLineHeight(linkLineHeight: number): void
+  
   /**
    * 设置文本格式链接背景颜色
    *
@@ -846,13 +853,6 @@ export class MarkdownTheme {
   setHeadingBreakHeight(headingBreakHeight: number): void
 
   /**
-   * 设置H1、H2标题下分割线颜色
-   *
-   * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0XFF191919
-   */
-  setHeadingBreakColor(headingBreakColor: number): void
-
-  /**
    * 设置标题文本字体
    *
    * @param headingTypeface 标题文本字体 - 默认"HarmonyOS Sans"
@@ -874,18 +874,104 @@ export class MarkdownTheme {
   setHeadingBottomMargins(headingBottomMargins: number): void
 
   /**
-   * 设置标题文本大小数组
+   * 设置一级标题文本大小
    *
-   * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+   * @param headingTextSize1 一级标题文本大小 - 默认20.0
    */
-  setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): void
+  setHeadingTextSize1(headingTextSize1: number): void 
 
   /**
-   * 设置标题文本颜色
+   * 设置二级标题文本大小
    *
-   * @param headingTextColor 标题文本颜色 - 默认0XFF191919
+   * @param headingTextSize2 二级标题文本大小 - 默认17.0
    */
-  setHeadingTextColor(headingTextColor: number): void
+  setHeadingTextSize2(headingTextSize2: number): void 
+
+  /**
+   * 设置三级标题文本大小
+   *
+   * @param headingTextSize3 三级标题文本大小 - 默认16.0
+   */
+  setHeadingTextSize3(headingTextSize3: number): void 
+
+  /**
+   * 设置四级标题文本大小
+   *
+   * @param headingTextSize4 四级标题文本大小 - 默认15.0
+   */
+  setHeadingTextSize4(headingTextSize4: number): void 
+
+  /**
+   * 设置五级标题文本大小
+   *
+   * @param headingTextSize5 五级标题文本大小 - 默认15.0
+   */
+  setHeadingTextSize5(headingTextSize5: number): void 
+
+  /**
+   * 设置六级标题文本大小
+   *
+   * @param headingTextSize6 六级标题文本大小 - 默认13.0
+   */
+  setHeadingTextSize6(headingTextSize6: number): void 
+
+  /**
+   * 设置一级标题文本颜色
+   *
+   * @param headingTextColor1 标题文本颜色
+   */
+  setHeadingTextColor1(headingTextColor1: number): void 
+  
+  /**
+   * 设置H1标题下分割线颜色
+   *
+   * @param headingBreakColor1 H1标题下分割线颜色 - 默认0XFF191919
+   */
+  setHeadingBreakColor1(headingBreakColor1: number): void
+
+  /**
+   * 设置二级标题文本颜色
+   *
+   * @param headingTextColor2 标题文本颜色
+   */
+  setHeadingTextColor2(headingTextColor2: number): void 
+  
+  /**
+   * 设置H2标题下分割线颜色
+   *
+   * @param headingBreakColor2 H2标题下分割线颜色 - 默认0XFF191919
+   */
+  setHeadingBreakColor2(headingBreakColor2: number): void
+
+  /**
+   * 设置三级标题文本颜色
+   *
+   * @param headingTextColor3 标题文本颜色
+   */
+  setHeadingTextColor3(headingTextColor3: number): void 
+
+  /**
+   * 设置四级标题文本颜色
+   *
+   * @param headingTextColor4 标题文本颜色
+   */
+  setHeadingTextColor4(headingTextColor4: number): void {
+    this.headingTextColor4 = headingTextColor4
+  }
+
+  /**
+   * 设置五级标题文本颜色
+   *
+   * @param headingTextColor5 标题文本颜色
+   */
+  setHeadingTextColor5(headingTextColor5: number): void 
+
+  /**
+   * 设置六级标题文本颜色
+   *
+   * @param headingTextColor6 标题文本颜色
+   */
+  setHeadingTextColor6(headingTextColor6: number): void 
 
   /**
    * 设置标题文本字间距
@@ -1539,6 +1625,13 @@ export class MarkdownTheme {
   setTableTitleTextSize(tableTitleTextSize: number): void
 
   /**
+   * 设置表格头文本行高
+   *
+   * @param tableTitleLineHeight 表格头文本行高 - 默认22.0vp
+   */
+  setTableTitleLineHeight(tableTitleLineHeight: number): void 
+    
+  /**
    * 设置表格内容文本颜色
    *
    * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
@@ -1553,7 +1646,7 @@ export class MarkdownTheme {
   setTableContentTextSize(tableContentTextSize: number): void
 
   /**
-   * 设置表格文本行高
+   * 设置表格内容文本行高
    *
    * @param tableTextLineHeight 表格文本行高 - 默认22.0vp
    */
@@ -1586,7 +1679,21 @@ export class MarkdownTheme {
    * @param tableFirstColumnBold 表格第一列是否加粗 - true：加粗；false：不加粗。默认false
    */
   setTableFirstColumnBold(tableFirstColumnBold: boolean): void
+  
+  /**
+   * 设置表格是否显示滚动条
+   *
+   * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
+   */
+  setTableScrollBarShow(tableScrollBarShow: boolean): void 
 
+  /**
+   * 设置表格滚动条颜色
+   *
+   * @param tableScrollBarColor 表格滚动条颜色
+   */
+  setTableScrollBarColor(tableScrollBarColor: number): void 
+  
   /**
    * 设置代码块深浅色
    *
@@ -1601,6 +1708,13 @@ export class MarkdownTheme {
    */
   setStrikethroughColor(strikethroughColor: number): void
 
+  /**
+   * 设置删除线样式
+   *
+   * @param strikethroughStyle 删除线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+   */
+  setStrikethroughStyle(strikethroughStyle: TextDecorationStyle): void
+  
   /**
    * 设置定义列表术语和定义行之间间距
    *
@@ -1670,6 +1784,13 @@ export class MarkdownTheme {
    * @param underlineColor 下划线颜色 默认0XFF191919
    */
   setUnderlineColor(underlineColor: number): void
+  
+  /**
+   * 设置下划线样式
+   *
+   * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+   */
+  setUnderlineStyle(underlineStyle: DecorationStyle): void  
 }
 ```
 
@@ -1793,8 +1914,9 @@ export class MarkdownPlugin {
    * 设置链接自动加载插件
    *
    * @param isLinkifyPlugin 是否设置链接自动加载插件 - true：设置链接自动加载插件；false：不设置链接自动加载插件。默认false
+   * @param regs 正则列表
    */
-  setIsLinkifyPlugin(isLinkifyPlugin: boolean): void
+  setIsLinkifyPlugin(isLinkifyPlugin: boolean, regs: Array<string>): void
 
   /**
    * 设置链接块状化插件

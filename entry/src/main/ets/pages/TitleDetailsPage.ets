@@ -212,7 +212,6 @@ struct TitleDetailsPage {
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this)) // 上下文
     theme.setHeadingBreakHeight(this.headingBreakHeight) // H1、H2标题下分割线高度
-    theme.setHeadingBreakColor(this.headingBreakColor) // H1、H2标题下分割线颜色
     theme.setHeadingTypeface(this.headingTypeface) // 标题文本字体
     theme.setHeadingTopMargins(this.headingTopMargins) // 标题模块上间距
     theme.setHeadingBottomMargins(this.headingBottomMargins) // 标题模块下间距

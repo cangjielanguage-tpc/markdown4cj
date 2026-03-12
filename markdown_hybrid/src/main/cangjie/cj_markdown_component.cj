@@ -511,9 +511,6 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.headingBreakHeight) {
                 markdownThemeBuilder.setHeadingBreakHeight(v) // 设置H1、H2标题下分割线高度
             }
-            if (let Some(v) <- w.cjMarkdownTheme.headingBreakColor) {
-                markdownThemeBuilder.setHeadingBreakColor(v) // 设置H1、H2标题下分割线颜色
-            }
             if (let Some(v) <- w.cjMarkdownTheme.headingTypeface) {
                 markdownThemeBuilder.setHeadingTypeface(v) // 设置标题文本字体
             }
@@ -547,8 +544,14 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.headingTextColor1) {
                 markdownThemeBuilder.setHeadingTextColor1(v) // 设置一级标题文本颜色
             }
+            if (let Some(v) <- w.cjMarkdownTheme.headingBreakColor1) {
+                markdownThemeBuilder.setHeadingBreakColor1(v) // 设置H1标题下分割线颜色
+            }
             if (let Some(v) <- w.cjMarkdownTheme.headingTextColor2) {
                 markdownThemeBuilder.setHeadingTextColor2(v) // 设置二级标题文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingBreakColor2) {
+                markdownThemeBuilder.setHeadingBreakColor2(v) // 设置H2标题下分割线颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.headingTextColor3) {
                 markdownThemeBuilder.setHeadingTextColor3(v) // 设置三级标题文本颜色
@@ -867,6 +870,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.strikethroughColor) {
                 markdownThemeBuilder.setStrikethroughColor(v) // 设置删除线颜色
             }
+            if (let Some(v) <- w.cjMarkdownTheme.strikethroughStyle) {
+                markdownThemeBuilder.setStrikethroughStyle(v) // 设置删除线样式
+            }
             if (let Some(v) <- w.cjMarkdownTheme.descListTermAndDefMargins) {
                 markdownThemeBuilder.setDescListTermAndDefMargins(v) // 设置定义列表术语和定义行之间间距
             }
@@ -896,6 +902,9 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.underlineColor) {
                 markdownThemeBuilder.setUnderlineColor(v) // 设置下划线颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.underlineStyle) {
+                markdownThemeBuilder.setUnderlineStyle(v) // 设置下划线样式
             }
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()

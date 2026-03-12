@@ -221,8 +221,6 @@ export declare class CJMarkdownTheme {
 
   setHeadingBreakHeight(headingBreakHeight: number): void
 
-  setHeadingBreakColor(headingBreakColor: number): void
-
   setHeadingTypeface(headingTypeface: string): void
 
   setHeadingTopMargins(headingTopMargins: number): void
@@ -257,7 +255,11 @@ export declare class CJMarkdownTheme {
 
   setHeadingTextColor1(headingTextColor1: number): void
 
+  setHeadingBreakColor1(headingBreakColor1: number): void
+
   setHeadingTextColor2(headingTextColor2: number): void
+
+  setHeadingBreakColor2(headingBreakColor2: number): void
 
   setHeadingTextColor3(headingTextColor3: number): void
 
@@ -468,6 +470,8 @@ export declare class CJMarkdownTheme {
   setIsDark(isDark: boolean): void
 
   setStrikethroughColor(strikethroughColor: number): void
+
+  setStrikethroughStyle(strikethroughStyle: number): void
 
   setDescListTermAndDefMargins(descListTermAndDefMargins: number): void
 
