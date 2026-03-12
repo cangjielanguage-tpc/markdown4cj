@@ -212,11 +212,11 @@ func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
 }
 
 /**
- * 设置不同等级标题颜色
+ * 设置不同等级标题文本大小
  *
  * @param level 标题等级
  * @param markdownTheme markdown样式
- * @return 标题颜色
+ * @return 标题文本大小
  */
 func headingTextSize(level: Int64, markdownTheme: MarkdownTheme): Float64 {
     return match (level) {

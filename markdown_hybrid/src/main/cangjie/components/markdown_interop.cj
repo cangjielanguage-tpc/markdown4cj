@@ -390,19 +390,19 @@ extend Span {
         return this
     }
 
-    func interopDecorationStyle(decorationType!: TextDecorationType = TextDecorationType.None, color!: Color = COLOR_FF191919, decorationStyle!: TextDecorationStyle = TextDecorationStyle.SOLID): Span {
+    func interopDecorationStyle(decorationStyle: (TextDecorationType, Color, TextDecorationStyle)): Span {
         try {
-            let dType: Int32 = match (decorationType) {
+            let dType: Int32 = match (decorationStyle[0]) {
                 case Underline => 1
                 case Overline => 2
                 case LineThrough => 3
                 case _ => 0
             }
 
-            let dColor: UInt32 = color.toUInt32()
+            let dColor: UInt32 = decorationStyle[1].toUInt32()
             let colorString: String = dColor.format("08X")
 
-            let dStyle: Int32 = match (decorationStyle) {
+            let dStyle: Int32 = match (decorationStyle[2]) {
                 case DOUBLE => 1
                 case DOTTED => 2
                 case DASHED => 3
