@@ -167,7 +167,7 @@ public class MarkdownComponent {
     /**
      * markdown解析器
      */
-    var incBase: ?IncreaseParser = Option<IncreaseParser>.None
+    var incBase: ?IncreaseParserV2 = Option<IncreaseParserV2>.None
 
     /**
      * 锁
@@ -209,7 +209,7 @@ public class MarkdownComponent {
     protected override func aboutToAppear(): Unit {
         tableBlockComponentWidth = vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp)().value // 表格每个格子最大宽度
         // 加载插件
-        incBase = IncreaseParser(markdownPlugin)
+        incBase = IncreaseParserV2(markdownPlugin)
         // 默认控件宽度等于屏幕宽度
         componentWidth = px2vp(Float64(screenWidth).px).getOrThrow().value
         // 获取是否开启打字机效果：配置文件中设置为true，并且增量更新数据正常传入
@@ -882,8 +882,7 @@ public class MarkdownComponent {
         try {
             let doc = if (incrementalAnalysis) {
                 // 增量解析
-                let diff: String = output[oldOutput.size..]
-                incBase().parseIncremental(diff)
+                incBase().parseIncremental(output)
             } else {
                 // 全量解析
                 markdownPlugin.toMarkdown(output)

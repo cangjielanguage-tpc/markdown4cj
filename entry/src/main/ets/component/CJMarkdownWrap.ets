@@ -19,6 +19,11 @@ export struct CJMarkdownWrap {
   @Prop
   input: string
   /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
    * Markdown的控制器
    */
   @State
@@ -29,9 +34,9 @@ export struct CJMarkdownWrap {
       content: this.input,
       config: this.setConfiguration(),
       plugin: this.setPlugin(),
-      listScroller: this.setScroller()
+      listScroller: this.setScroller(),
+      incrementalAnalysis: this.incrementalAnalysis
     })
-    .width("75%")
   }
 
   /**

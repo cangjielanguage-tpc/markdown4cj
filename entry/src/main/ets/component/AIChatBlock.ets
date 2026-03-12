@@ -16,6 +16,11 @@ export struct AIChatBlock {
   @Prop
   message: Message
   /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
    * Markdown的控制器
    */
   scroller?: MarkdownScroller = undefined
@@ -82,11 +87,12 @@ export struct AIChatBlock {
       } else {
         CJMarkdownWrap({
           input: this.message.content.content,
-          scroller: this.scroller
+          scroller: this.scroller,
+          incrementalAnalysis: this.incrementalAnalysis
         })
       }
     }
-    .constraintSize({ maxWidth: '200%' })
+    .constraintSize({ maxWidth: '75%' })
     .padding({
       left: 10,
       right: 10,

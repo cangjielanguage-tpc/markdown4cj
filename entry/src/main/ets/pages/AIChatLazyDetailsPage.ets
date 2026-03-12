@@ -43,6 +43,11 @@ struct AIChaLazytDetailsPage {
    */
   @State input: string = ''
   /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
    * 消息对象列表
    */
   private messages = new GeneralDataSource<Message>()
@@ -190,7 +195,11 @@ struct AIChaLazytDetailsPage {
       List({ scroller: this.scroller, initialIndex: this.messages.totalCount() - 1, space: 15 }) {
         LazyForEach(this.messages, (value: Message, index: number) => {
           ListItem() {
-            AIChatLazyBlock({ message: value, scroller: this.markdownScrollerArray[index] })
+            AIChatLazyBlock({
+              message: value,
+              scroller: this.markdownScrollerArray[index],
+              incrementalAnalysis: this.incrementalAnalysis
+            })
           }
         })
       }
