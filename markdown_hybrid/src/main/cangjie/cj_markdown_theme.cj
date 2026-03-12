@@ -3061,7 +3061,7 @@ public class CJMarkdownTheme {
     /**
      * 设置删除线样式
      *
-     * @param strikethroughStyle 删除线样式  - SOLID-单实线 DOUBLE-双实线 DOTTED-点线 DASHED-虚线 WAVY-波浪线 默认SOLID
+     * @param strikethroughStyle 删除线样式 - 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
      */
     public func setStrikethroughStyle(strikethroughStyle: Int32): Unit {
         this.strikethroughStyle = strikethroughStyle
@@ -3160,7 +3160,7 @@ public class CJMarkdownTheme {
     /**
      * 设置下划线样式
      *
-     * @param underlineStyle 下划线样式  - SOLID-单实线 DOUBLE-双实线 DOTTED-点线 DASHED-虚线 WAVY-波浪线 默认SOLID
+     * @param underlineStyle 下划线样式 - 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
      */
     public func setUnderlineStyle(underlineStyle: Int32): Unit {
         this.underlineStyle = underlineStyle

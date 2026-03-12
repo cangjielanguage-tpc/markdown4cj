@@ -392,20 +392,20 @@ extend Span {
 
     func interopDecorationStyle(decorationStyle: (TextDecorationType, Color, Int32)): Span {
         try {
-            let dType: Int32 = match (decorationStyle[0]) {
-                case Underline => 1
-                case Overline => 2
-                case LineThrough => 3
-                case _ => 0
+            let dType: Float64 = match (decorationStyle[0]) {
+                case Underline => 1.0
+                case Overline => 2.0
+                case LineThrough => 3.0
+                case _ => 0.0
             }
 
             let dColor: UInt32 = decorationStyle[1].toUInt32()
             let colorString: String = dColor.format("08X")
 
-            let dStyle: Int32 = if (decorationStyle[2] < 0 || decorationStyle[2] > 4) {
-                0 // 负数和超出枚举范围，设置为0
+            let dStyle: Float64 = if (decorationStyle[2] < 0 || decorationStyle[2] > 4) {
+                0.0 // 负数和超出枚举范围，设置为0
             } else {
-                decorationStyle[2]
+                Float64(decorationStyle[2])
             }
 
             let global = context.getOrThrow().global
