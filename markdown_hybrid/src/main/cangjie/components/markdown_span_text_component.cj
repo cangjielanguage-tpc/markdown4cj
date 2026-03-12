@@ -38,7 +38,7 @@ func markdownSpanComponent(
                     .fontStyle(spanFontStyle(nodeView))
                     .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
-                    .decoration(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1])
+                    .interopDecorationStyle(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1], decorationStyle: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[2])
                     .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme)))
                     .baselineOffset(spanBaselineOffset(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .onClick({
@@ -53,7 +53,7 @@ func markdownSpanComponent(
                     .fontStyle(spanFontStyle(nodeView))
                     .fontColor(spanMarkdownConfiguration.markdownTheme.typeWriterColor)
                     .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
-                    .decoration(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1])
+                    .interopDecorationStyle(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1], decorationStyle: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[2])
                     .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme)))
                     .baselineOffset(spanBaselineOffset(nodeView, spanMarkdownConfiguration.markdownTheme))
 
@@ -66,7 +66,7 @@ func markdownSpanComponent(
                     .fontStyle(spanFontStyle(nodeView))
                     .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
-                    .decoration(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1])
+                    .interopDecorationStyle(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1], decorationStyle: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[2])
                     .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme)))
                     .baselineOffset(spanBaselineOffset(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .onClick({
@@ -83,7 +83,7 @@ func markdownSpanComponent(
                     .fontStyle(spanFontStyle(nodeView))
                     .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
-                    .decoration(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1])
+                    .interopDecorationStyle(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1], decorationStyle: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[2])
                     .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme)))
                     .lineHeight(spanBaselineOffset(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .onClick({
@@ -98,7 +98,7 @@ func markdownSpanComponent(
                     .fontStyle(spanFontStyle(nodeView))
                     .fontColor(spanMarkdownConfiguration.markdownTheme.typeWriterColor)
                     .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
-                    .decoration(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1])
+                    .interopDecorationStyle(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1], decorationStyle: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[2])
                     .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme)))
                     .lineHeight(spanBaselineOffset(nodeView, spanMarkdownConfiguration.markdownTheme))
 
@@ -111,7 +111,7 @@ func markdownSpanComponent(
                     .fontStyle(spanFontStyle(nodeView))
                     .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
-                    .decoration(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1])
+                    .interopDecorationStyle(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1], decorationStyle: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[2])
                     .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme)))
                     .lineHeight(spanBaselineOffset(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .onClick({
@@ -131,7 +131,7 @@ func markdownSpanComponent(
                     .fontStyle(spanFontStyle(nodeView))
                     .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
-                    .decoration(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1])
+                    .interopDecorationStyle(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1], decorationStyle: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[2])
                     .interopStyle(true, spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .interopBaselineOffset(CJLengthMetrics(spanLineHeight(nodeView, spanMarkdownConfiguration.markdownTheme), 1))
                     .onClick({
@@ -146,7 +146,7 @@ func markdownSpanComponent(
                     .fontStyle(spanFontStyle(nodeView))
                     .fontColor(spanMarkdownConfiguration.markdownTheme.typeWriterColor)
                     .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
-                    .decoration(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1])
+                    .interopDecorationStyle(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1], decorationStyle: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[2])
                     .interopStyle(true, spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .interopBaselineOffset(CJLengthMetrics(spanLineHeight(nodeView, spanMarkdownConfiguration.markdownTheme), 1))
 
@@ -159,7 +159,7 @@ func markdownSpanComponent(
                     .fontStyle(spanFontStyle(nodeView))
                     .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
-                    .decoration(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1])
+                    .interopDecorationStyle(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1], decorationStyle: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[2])
                     .interopStyle(true, spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .interopBaselineOffset(CJLengthMetrics(spanLineHeight(nodeView, spanMarkdownConfiguration.markdownTheme), 1))
                     .onClick({
@@ -176,7 +176,7 @@ func markdownSpanComponent(
                     .fontStyle(spanFontStyle(nodeView))
                     .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
-                    .decoration(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1])
+                    .interopDecorationStyle(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1], decorationStyle: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[2])
                     .interopStyle(true, spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .interopLineHeight(spanLineHeight(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .onClick({
@@ -191,7 +191,7 @@ func markdownSpanComponent(
                     .fontStyle(spanFontStyle(nodeView))
                     .fontColor(spanMarkdownConfiguration.markdownTheme.typeWriterColor)
                     .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
-                    .decoration(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1])
+                    .interopDecorationStyle(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1], decorationStyle: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[2])
                     .interopStyle(true, spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .interopLineHeight(spanLineHeight(nodeView, spanMarkdownConfiguration.markdownTheme))
 
@@ -204,7 +204,7 @@ func markdownSpanComponent(
                     .fontStyle(spanFontStyle(nodeView))
                     .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
-                    .decoration(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1])
+                    .interopDecorationStyle(decorationType: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[0], color: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[1], decorationStyle: spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme)[2])
                     .interopStyle(true, spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .interopLineHeight(spanLineHeight(nodeView, spanMarkdownConfiguration.markdownTheme))
                     .onClick({

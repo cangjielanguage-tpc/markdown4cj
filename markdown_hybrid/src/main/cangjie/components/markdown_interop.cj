@@ -9,6 +9,7 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 import ohos.ark_interop.*
 import ohos.ark_interop_helper.*
+import ohos.hilog.Hilog
 
 /**
  * JSContext
@@ -385,6 +386,41 @@ extend Span {
             let span = global["Span"].asObject(ctx)
             let lineHeight = span["lineHeight"].asFunction(ctx)
             lineHeight.call(value.toJSValue(ctx))
+        } catch (e: Exception) {
+        }
+        return this
+    }
+
+    func interopDecorationStyle(decorationType!: TextDecorationType = TextDecorationType.None, color!: Color = COLOR_FF191919, decorationStyle!: TextDecorationStyle = TextDecorationStyle.SOLID): Span {
+        try {
+            let dType: Int32 = match (decorationType) {
+                case Underline => 1
+                case Overline => 2
+                case LineThrough => 3
+                case _ => 0
+            }
+
+            let dColor: UInt32 = color.toUInt32()
+            let colorString: String = dColor.format("08X")
+
+            let dStyle: Int32 = match (decorationStyle) {
+                case DOUBLE => 1
+                case DOTTED => 2
+                case DASHED => 3
+                case WAVY => 4
+                case _ => 0
+            }
+
+            let global = context.getOrThrow().global
+            let ctx = context.getOrThrow()
+            let span = global["Span"].asObject(ctx)
+
+            let decoration = span["decoration"].asFunction(ctx)
+            let param: JSObject = ctx.object()
+            param["type"] = ctx.number(dType).toJSValue()
+            param["color"] = ctx.string("#${colorString}").toJSValue()
+            param["style"] = ctx.number(dStyle).toJSValue()
+            decoration.call(param.toJSValue())
         } catch (e: Exception) {
         }
         return this

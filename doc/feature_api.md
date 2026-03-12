@@ -867,13 +867,6 @@ export class MarkdownTheme {
   setHeadingBreakHeight(headingBreakHeight: number): void
 
   /**
-   * 设置H1、H2标题下分割线颜色
-   *
-   * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0XFF191919
-   */
-  setHeadingBreakColor(headingBreakColor: number): void
-
-  /**
    * 设置标题文本字体
    *
    * @param headingTypeface 标题文本字体 - 默认"HarmonyOS Sans"
@@ -942,6 +935,13 @@ export class MarkdownTheme {
    * @param headingTextColor1 标题文本颜色
    */
   setHeadingTextColor1(headingTextColor1: number): void 
+  
+  /**
+   * 设置H1标题下分割线颜色
+   *
+   * @param headingBreakColor1 H1标题下分割线颜色 - 默认0XFF191919
+   */
+  setHeadingBreakColor1(headingBreakColor1: number): void
 
   /**
    * 设置二级标题文本颜色
@@ -949,6 +949,13 @@ export class MarkdownTheme {
    * @param headingTextColor2 标题文本颜色
    */
   setHeadingTextColor2(headingTextColor2: number): void 
+  
+  /**
+   * 设置H2标题下分割线颜色
+   *
+   * @param headingBreakColor2 H2标题下分割线颜色 - 默认0XFF191919
+   */
+  setHeadingBreakColor2(headingBreakColor2: number): void
 
   /**
    * 设置三级标题文本颜色

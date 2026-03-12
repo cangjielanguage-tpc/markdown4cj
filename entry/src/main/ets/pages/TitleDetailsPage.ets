@@ -212,17 +212,16 @@ struct TitleDetailsPage {
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this)) // 上下文
     theme.setHeadingBreakHeight(this.headingBreakHeight) // H1、H2标题下分割线高度
-    theme.setHeadingBreakColor(this.headingBreakColor) // H1、H2标题下分割线颜色
     theme.setHeadingTypeface(this.headingTypeface) // 标题文本字体
     theme.setHeadingTopMargins(this.headingTopMargins) // 标题模块上间距
     theme.setHeadingBottomMargins(this.headingBottomMargins) // 标题模块下间距
 
-    theme.setHeadingTextSize1(20) // [20, 17, 16, 15, 15, 13]
-    theme.setHeadingTextSize2(17)
-    theme.setHeadingTextSize3(16)
-    theme.setHeadingTextSize4(15)
-    theme.setHeadingTextSize5(15)
-    theme.setHeadingTextSize6(13)
+    theme.setHeadingTextSize1(this.headingTextSizeMultipliers[0]) // [20, 17, 16, 15, 15, 13]
+    theme.setHeadingTextSize2(this.headingTextSizeMultipliers[1])
+    theme.setHeadingTextSize3(this.headingTextSizeMultipliers[2])
+    theme.setHeadingTextSize4(this.headingTextSizeMultipliers[3])
+    theme.setHeadingTextSize5(this.headingTextSizeMultipliers[4])
+    theme.setHeadingTextSize6(this.headingTextSizeMultipliers[5])
 
     theme.setHeadingTextWordSpace(this.headingTextWordSpace) // 标题文本字间距
     theme.setHeadingTextLineHeight1(this.headingTextLineHeight1) // 一级标题文本行高
@@ -231,13 +230,6 @@ struct TitleDetailsPage {
     theme.setHeadingTextLineHeight4(this.headingTextLineHeight4) // 四级标题文本行高
     theme.setHeadingTextLineHeight5(this.headingTextLineHeight5) // 五级标题文本行高
     theme.setHeadingTextLineHeight6(this.headingTextLineHeight6) // 六级标题文本行高
-
-    theme.setHeadingTextColor1(this.headingTextColor) // 各级标题颜色
-    theme.setHeadingTextColor2(0xFFD2691E)
-    theme.setHeadingTextColor3(0xFFFFD700)
-    theme.setHeadingTextColor4(0xFF228B22)
-    theme.setHeadingTextColor5(0xFF00BFFF)
-    theme.setHeadingTextColor6(0xFF9400D3)
 
     config.setMarkdownTheme(theme)
     return config

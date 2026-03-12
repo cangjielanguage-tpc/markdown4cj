@@ -507,11 +507,6 @@ public class MarkdownTheme {
     protected var headingBreakHeight: Float64 = 0.5
 
     /**
-     * H1/H2标题下分割线颜色
-     */
-    protected var headingBreakColor: Color = COLOR_FF191919
-
-    /**
      * 标题文本字体
      */
     protected var headingTypeface: String = "HarmonyOS Sans"
@@ -1356,7 +1351,6 @@ public class MarkdownTheme {
 
         // 6、标题
         this.headingBreakHeight = builder.headingBreakHeight
-        this.headingBreakColor = builder.headingBreakColor
         this.headingTypeface = builder.headingTypeface
         this.headingTopMargins = builder.headingTopMargins
         this.headingBottomMargins = builder.headingBottomMargins
@@ -1602,7 +1596,6 @@ public class MarkdownTheme {
         // 5.4、单独代码块
 
         // 6、标题
-        markdownThemeBuilder.setHeadingBreakColor(COLOR_FF191919) // H1、H2标题下分割线颜色
 
         // 7、段落
         markdownThemeBuilder.setParagraphTextColor(COLOR_FF191919) // 段落文本颜色
@@ -1696,7 +1689,6 @@ public class MarkdownTheme {
         // 5.4、单独代码块
 
         // 6、标题
-        markdownThemeBuilder.setHeadingBreakColor(COLOR_FFFFFFFF) // H1、H2标题下分割线颜色
 
         // 7、段落
         markdownThemeBuilder.setParagraphTextColor(COLOR_FFFFFFFF) // 段落文本颜色
@@ -2214,11 +2206,6 @@ public class MarkdownThemeBuilder {
      * H1/H2标题下分割线高度
      */
     var headingBreakHeight: Float64 = 0.5
-
-    /**
-     * H1/H2标题下分割线颜色
-     */
-    var headingBreakColor: Color = COLOR_FF191919
 
     /**
      * 标题文本字体
@@ -3068,7 +3055,6 @@ public class MarkdownThemeBuilder {
 
         // 6、标题
         this.headingBreakHeight = theme.headingBreakHeight
-        this.headingBreakColor = theme.headingBreakColor
         this.headingTypeface = theme.headingTypeface
         this.headingTopMargins = theme.headingTopMargins
         this.headingBottomMargins = theme.headingBottomMargins
@@ -3294,7 +3280,6 @@ public class MarkdownThemeBuilder {
         // 5.4、单独代码块
 
         // 6、标题
-        setHeadingBreakColor(COLOR_FF191919) // H1、H2标题下分割线颜色
 
         // 7、段落
         setParagraphTextColor(COLOR_FF191919) // 段落文本颜色
@@ -3386,7 +3371,6 @@ public class MarkdownThemeBuilder {
         // 5.4、单独代码块
 
         // 6、标题
-        setHeadingBreakColor(COLOR_FFFFFFFF) // H1、H2标题下分割线颜色
 
         // 7、段落
         setParagraphTextColor(COLOR_FFFFFFFF) // 段落文本颜色
@@ -4443,20 +4427,6 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置H1、H2标题下分割线颜色
-     *
-     * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0XFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setHeadingBreakColor(headingBreakColor: Color): MarkdownThemeBuilder {
-        this.headingBreakColor = headingBreakColor
-        // H1/H2标题下分割线同步设置颜色
-        this.headingBreakColor1 = headingBreakColor
-        this.headingBreakColor2 = headingBreakColor
-        return this
-    }
-
-    /**
      * 设置标题文本字体
      *
      * @param headingTypeface 标题文本字体 - 默认"HarmonyOS Sans"
@@ -4567,6 +4537,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置H1标题下分割线颜色
+     *
+     * @param headingBreakColor H1标题下分割线颜色 - 默认0XFF191919
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingBreakColor1(headingBreakColor1: Color): MarkdownThemeBuilder {
+        this.headingBreakColor1 = headingBreakColor1
+        return this
+    }
+
+    /**
      * 设置二级标题文本颜色
      *
      * @param headingTextColor2 二级标题文本颜色
@@ -4574,6 +4555,17 @@ public class MarkdownThemeBuilder {
     public func setHeadingTextColor2(headingTextColor2: Color): MarkdownThemeBuilder {
         this.headingTextColor2 = headingTextColor2
         this.headingBreakColor2 = headingTextColor2 // 同时设置分割线颜色
+        return this
+    }
+
+    /**
+     * 设置H2标题下分割线颜色
+     *
+     * @param headingBreakColor2 H1、H2标题下分割线颜色 - 默认0XFF191919
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingBreakColor2(headingBreakColor2: Color): MarkdownThemeBuilder {
+        this.headingBreakColor2 = headingBreakColor2
         return this
     }
 

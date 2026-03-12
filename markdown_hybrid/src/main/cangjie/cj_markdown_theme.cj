@@ -14,6 +14,7 @@ import ohos.ability.*
 import std.collection.*
 import markdown.components.*
 import ohos.resource_manager.AppResource
+import ohos.hilog.Hilog
 
 @Interop[ArkTS]
 public class CJMarkdownTheme {
@@ -453,11 +454,6 @@ public class CJMarkdownTheme {
     var headingBreakHeight: ?Float64 = None
 
     /**
-     * H1、H2标题下分割线颜色
-     */
-    var headingBreakColor: ?Color = None
-
-    /**
      * 标题文本字体
      */
     var headingTypeface: ?String = None
@@ -543,9 +539,19 @@ public class CJMarkdownTheme {
     var headingTextColor1: ?Color = None
 
     /**
+     * H1标题下分割线颜色
+     */
+    var headingBreakColor1: ?Color = None
+
+    /**
      * 二级标题文本颜色
      */
     var headingTextColor2: ?Color = None
+
+    /**
+     * H2标题下分割线颜色
+     */
+    var headingBreakColor2: ?Color = None
 
     /**
      * 三级标题文本颜色
@@ -1920,15 +1926,6 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置H1、H2标题下分割线颜色
-     *
-     * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0XFF191919
-     */
-    public func setHeadingBreakColor(headingBreakColor: UInt32): Unit {
-        this.headingBreakColor = transColorForTrasparent(headingBreakColor)
-    }
-
-    /**
      * 设置标题文本字体
      *
      * @param headingTypeface 标题文本字体 - 默认"HarmonyOS Sans"
@@ -2082,12 +2079,30 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置H1标题下分割线颜色
+     *
+     * @param headingBreakColor H1标题下分割线颜色 - 默认0XFF191919
+     */
+    public func setHeadingBreakColor1(headingBreakColor1: UInt32): Unit {
+        this.headingBreakColor1 = transColorForTrasparent(headingBreakColor1)
+    }
+
+    /**
      * 设置二级标题文本颜色
      *
      * @param headingTextColor2 二级标题文本颜色
      */
     public func setHeadingTextColor2(headingTextColor2: UInt32): Unit {
         this.headingTextColor2 = transColorForTrasparent(headingTextColor2)
+    }
+
+    /**
+     * 设置H2标题下分割线颜色
+     *
+     * @param headingBreakColor2 H1、H2标题下分割线颜色 - 默认0XFF191919
+     */
+    public func setHeadingBreakColor2(headingBreakColor2: UInt32): Unit {
+        this.headingBreakColor2 = transColorForTrasparent(headingBreakColor2)
     }
 
     /**
@@ -3156,6 +3171,7 @@ public class CJMarkdownTheme {
      * @param underlineStyle 下划线样式  - SOLID-单实线 DOUBLE-双实线 DOTTED-点线 DASHED-虚线 WAVY-波浪线 默认SOLID
      */
     public func setUnderlineStyle(underlineStyle: Int64): Unit {
+        Hilog.error(666, "aaa", "=========> underlineStyle: ${underlineStyle}")
         this.underlineStyle = match (underlineStyle) {
             case 0 => TextDecorationStyle.SOLID
             case 1 => TextDecorationStyle.DOUBLE

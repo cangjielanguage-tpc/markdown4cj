@@ -450,9 +450,6 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.headingBreakHeight !== undefined) {
           cjMarkdownTheme.setHeadingBreakHeight(this.config.markdownTheme.headingBreakHeight)
         }
-        if (this.config.markdownTheme.headingBreakColor !== undefined) {
-          cjMarkdownTheme.setHeadingBreakColor(this.config.markdownTheme.headingBreakColor)
-        }
         if (this.config.markdownTheme.headingTypeface !== undefined) {
           cjMarkdownTheme.setHeadingTypeface(this.config.markdownTheme.headingTypeface)
         }
@@ -857,6 +854,9 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.underlineColor !== undefined) {
           cjMarkdownTheme.setUnderlineColor(this.config.markdownTheme.underlineColor)
+        }
+        if (this.config.markdownTheme.underlineStyle !== undefined) {
+          cjMarkdownTheme.setUnderlineStyle(this.config.markdownTheme.underlineStyle)
         }
       }
     }
@@ -1516,10 +1516,6 @@ export class MarkdownTheme {
    */
   headingBreakHeight?: number = undefined
   /**
-   * H1、H2标题下分割线颜色
-   */
-  headingBreakColor?: number = undefined
-  /**
    * 标题文本字体
    */
   headingTypeface?: string = undefined
@@ -1588,9 +1584,17 @@ export class MarkdownTheme {
    */
   headingTextColor1?: number = undefined
   /**
+   * H1标题下分割线颜色
+   */
+  headingBreakColor1?: number = undefined
+  /**
    * 二级标题文本颜色
    */
   headingTextColor2?: number = undefined
+  /**
+   * H2标题下分割线颜色
+   */
+  headingBreakColor2?: number = undefined
   /**
    * 三级标题文本颜色
    */
@@ -2014,7 +2018,7 @@ export class MarkdownTheme {
   /**
    * 删除线样式
    */
-  strikethroughStyle?: DecorationStyle = undefined
+  strikethroughStyle?: TextDecorationStyle = undefined
   /**
    * 定义列表定义行缩进
    */
@@ -2058,7 +2062,7 @@ export class MarkdownTheme {
   /**
    * 下划线样式
    */
-  underlineStyle?: DecorationStyle = undefined
+  underlineStyle?: TextDecorationStyle = undefined
 
   /**
    * 设置上下文
@@ -2943,15 +2947,6 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置H1、H2标题下分割线颜色
-   *
-   * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0XFF191919
-   */
-  setHeadingBreakColor(headingBreakColor: number): void {
-    this.headingBreakColor = headingBreakColor
-  }
-
-  /**
    * 设置标题文本字体
    *
    * @param headingTypeface 标题文本字体 - 默认"HarmonyOS Sans"
@@ -3105,12 +3100,30 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置H1标题下分割线颜色
+   *
+   * @param headingBreakColor1 H1标题下分割线颜色 - 默认0XFF191919
+   */
+  setHeadingBreakColor1(headingBreakColor1: number): void {
+    this.headingBreakColor1 = headingBreakColor1
+  }
+
+  /**
    * 设置二级标题文本颜色
    *
    * @param headingTextColor2 标题文本颜色
    */
   setHeadingTextColor2(headingTextColor2: number): void {
     this.headingTextColor2 = headingTextColor2
+  }
+
+  /**
+   * 设置H2标题下分割线颜色
+   *
+   * @param headingBreakColor2 H2标题下分割线颜色 - 默认0XFF191919
+   */
+  setHeadingBreakColor2(headingBreakColor2: number): void {
+    this.headingBreakColor2 = headingBreakColor2
   }
 
   /**
@@ -4153,7 +4166,8 @@ export class MarkdownTheme {
    *
    * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
    */
-  setUnderlineStyle(underlineStyle: DecorationStyle): void {
+  setUnderlineStyle(underlineStyle: TextDecorationStyle): void {
+    console.error("--------------> underlineStyle:" + underlineStyle)
     this.underlineStyle = underlineStyle
   }
 }
@@ -4188,17 +4202,6 @@ export enum ImageFitType {
    * 不保持宽高比进行放大缩小，使得图片充满显示边界。
    */
   Fill
-}
-
-/**
- * 装饰线样式的枚举
- */
-export enum DecorationStyle {
-  Solid, // 单实线
-  Double, // 双实线
-  Dotted, // 点线
-  Dashed, // 虚线
-  Wavy // 波浪线
 }
 
 /**

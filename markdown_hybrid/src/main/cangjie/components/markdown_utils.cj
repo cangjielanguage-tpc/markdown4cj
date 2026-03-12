@@ -357,17 +357,17 @@ func spanLetterSpacing(nodeView: NodeView, markdownTheme: MarkdownTheme): Float6
  * @param markdownTheme markdown样式
  * @return 文本下划线中划线
  */
-func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDecorationType, Color) {
+func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDecorationType, Color, TextDecorationStyle) {
     if (nodeView.isUnderlineNode) {
-        return (TextDecorationType.Underline, markdownTheme.underlineColor) // 下划线
+        return (TextDecorationType.Underline, markdownTheme.underlineColor, markdownTheme.underlineStyle) // 下划线
     }
     if (nodeView.isStrikethrough) {
-        return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor) // 删除线
+        return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor, markdownTheme.strikethroughStyle) // 删除线
     }
     if (nodeView.isLink || nodeView.isFootnote) {
-        return (TextDecorationType.Underline, markdownTheme.linkColor) // 链接, 脚注
+        return (TextDecorationType.Underline, markdownTheme.linkColor, TextDecorationStyle.SOLID) // 链接, 脚注
     }
-    return (TextDecorationType.None, Color.TRANSPARENT) // 其他
+    return (TextDecorationType.None, Color.TRANSPARENT, TextDecorationStyle.SOLID) // 其他
 }
 
 /**
@@ -419,8 +419,14 @@ func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
     if (nodeView.isHeading) {
         return headLineHeight(nodeView.headingLevel, markdownTheme) // 标题
     }
-    if (nodeView.isTable) {
+    if (nodeView.isTable && nodeView.isTableHead) {
+        return markdownTheme.tableTitleLineHeight // 表格头
+    }
+    if (nodeView.isTable && nodeView.isTableBody) {
         return markdownTheme.tableTextLineHeight // 表格
+    }
+    if (nodeView.isLink) {
+        return markdownTheme.linkLineHeight // 链接
     }
     return markdownTheme.paragraphTextLineHeight // 段落和其他
 }
