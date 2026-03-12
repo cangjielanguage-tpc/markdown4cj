@@ -11,9 +11,6 @@ public open class ADPlugin <: AbstractMarkdownPlugin {
         return ADPlugin()
     }
 
-    public open override func afterRender(doc: Node, _: MarkdownVisitor): Unit {
-    }
-
     public func getClassType(): String {
         "ADPlugin"
     }

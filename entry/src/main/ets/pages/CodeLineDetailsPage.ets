@@ -1,10 +1,10 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextStr } from './FileUtils'
+import { getFileContextStr } from '../utils/FileUtils'
 import { CodeLineData } from './CodeLinePage'
 
 @Entry
@@ -34,50 +34,54 @@ struct CodeLineDetailsPage {
   @State
   isFull: boolean = true
   /**
-   * 内联代码是否是图片显示
+   * markdown是否增量解析(true:增量解析,false:全量解析)
    */
-  isCodeStyle: boolean = false
+  @State
+  incrementalAnalysis: boolean = false
   /**
-   * 文本、图片格式内联代码文本颜色
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 内联代码文本颜色
    */
   codeTextColor: number = 0xFF000000
   /**
-   * 文本、图片格式内联代码背景颜色
+   * 内联代码背景颜色
    */
-  codeBackgroundColor: number = 0xFF191919
+  codeBackgroundColor: number = 0xFFE0E0E0
   /**
-   * 文本、图片格式内联代码文本大小
+   * 内联代码文本大小
    */
   codeTextSize: number = 13
   /**
-   * 文本格式内联代码文本字体
+   * 内联代码文本字体
    */
   codeTypeface: string = "HarmonyOS Sans"
   /**
-   * 图片格式内联代码文本左右边距
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
    */
-  codeLeftAndRightPadding: number = 4
-  /**
-   * 图片格式内联代码文本高度
-   */
-  codeHeight: number = 20
-  /**
-   * 增量加载延迟
-   */
-  time: number = 50
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let codeLineData: CodeLineData = router.getParams() as CodeLineData
       this.fileStr = getFileContextStr(codeLineData._pagePath)
       this.isFull = codeLineData._isFull
-      this.isCodeStyle = codeLineData._isCodeStyle
+      this.incrementalAnalysis = codeLineData._incrementalAnalysis
+      this.time = codeLineData._time
+      this.textNumber = codeLineData._textNumber
       this.codeTextColor = codeLineData._codeTextColor
       this.codeBackgroundColor = codeLineData._codeBackgroundColor
       this.codeTextSize = codeLineData._codeTextSize
       this.codeTypeface = codeLineData._codeTypeface
-      this.codeLeftAndRightPadding = codeLineData._codeLeftAndRightPadding
-      this.codeHeight = codeLineData._codeHeight
     } catch (e) {
     }
   }
@@ -101,18 +105,24 @@ struct CodeLineDetailsPage {
         .fontSize(16)// 字体大小
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
+                this.content = this.content + this.fileStr.substring(this.content.length, index)
                 this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
+                if (index >= this.fileStr.length) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
-                index++
+                if (this.fileStr.length > index + this.textNumber) {
+                  index = index + this.textNumber
+                } else {
+                  index = this.fileStr.length
+                }
               }, this.time)
             }
           }
@@ -121,6 +131,8 @@ struct CodeLineDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
+            incrementalAnalysis: this.incrementalAnalysis,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
@@ -134,13 +146,10 @@ struct CodeLineDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setIsCodeStyle(this.isCodeStyle)
     theme.setCodeTextColor(this.codeTextColor)
     theme.setCodeBackgroundColor(this.codeBackgroundColor)
     theme.setCodeTextSize(this.codeTextSize)
     theme.setCodeTypeface(this.codeTypeface)
-    theme.setCodeLeftAndRightPadding(this.codeLeftAndRightPadding)
-    theme.setCodeHeight(this.codeHeight)
     config.setMarkdownTheme(theme)
     return config
   }

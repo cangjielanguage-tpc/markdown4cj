@@ -6,6 +6,7 @@ package markdown.components
 // 标准库
 internal import std.collection.ArrayList
 internal import std.collection.HashMap
+internal import std.collection.HashSet
 internal import std.convert.*
 internal import std.regex.*
 internal import std.sync.*

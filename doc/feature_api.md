@@ -6,7 +6,7 @@
 
 Markdown预览自定义控件
 
-```cangjie
+```ets
 /**
  * Markdown预览自定义控件
  */
@@ -16,15 +16,21 @@ export struct CJMarkdown {
     * 初始化Markdown自定义控件
     *
     * @param content 传入markdown文档内容
+    * @param isInputEnded 流式输入是否输入结束。true:结束输入,false:持续输入。默认true
+    * @param incrementalAnalysis markdown是否增量解析。true:增量解析,false:全量解析。默认false
     * @param config 传入markdown配置选项
     * @param plugin 传入markdown插件化选项
-    * @param useCangjieComponent  是否使用Cangjie互操作组件展示，true: 使用 false:不使用Cangjie，使用ArkTS, 默认true
-    * @param customContains 传入ArkTS自定义组件，不传则使用三方库自带的Text组件显示
+    * @param listScroller 滑动控制器
+    * @param useCangjieComponent 是否使用Cangjie互操作组件展示。true:使用Cangjie互操作组件,false:使用ArkUI。默认true
+    * @param customContains 使用ArkUI布局用户传入ArkUI自定义组件,不传则使用三方库自带的Text组件显示
     */
     CJMarkdown(
         content: string,
+        isInputEnded?: boolean,
+        incrementalAnalysis?: boolean,
         config?: MarkdownConfiguration,
         plugin?: MarkdownPlugin,
+        listScroller?: MarkdownScroller,
         useCangjieComponent?: boolean,
         customContains?: () => void
     )
@@ -37,7 +43,7 @@ export struct CJMarkdown {
 
 Markdown配置
 
-```cangjie
+```ets
 /**
  * markdown配置
  */
@@ -69,6 +75,13 @@ export class MarkdownConfiguration {
    * @param cb 图片替换事件。 (funcArg0：图片url 返回值是替换的图片数据)
    */
   setImageCallbackCallback(cb: (funcArg0: string) => Promise<ArrayBuffer | undefined>): void
+
+  /**
+   * 设置图片下载的点击事件
+   *
+   * @param cb 图片下载的点击事件。 (funcArg0：图片url)
+   */
+  setImageDownloadCallback(cb: (funcArg0: string) => void): void
 
   /**
    * 设置音频点击回调
@@ -162,7 +175,7 @@ export class MarkdownConfiguration {
 
 Markdown用户可设置的样式
 
-```cangjie
+```ets
 /**
  * Markdown用户可设置的样式
  */
@@ -236,6 +249,13 @@ export class MarkdownTheme {
    * @param videoDownloadImage 视频下载默认图标
    */
   setVideoDownloadImage(videoDownloadImage: Resource): void
+
+  /**
+   * 设置图片下载默认图标
+   *
+   * @param imageDownloadImage 图片下载默认图标
+   */
+  setImageDownloadImage(imageDownloadImage: Resource): void
 
   /**
    * 设置markdown是否同步解析
@@ -616,13 +636,6 @@ export class MarkdownTheme {
   setTaskListItemLength(taskListItemLength: number): void
 
   /**
-   * 设置内联代码是否是图片显示
-   *
-   * @param isCodeStyle 内联代码是否是图片显示 - true：图片化显示；false：不图片化显示。默认false
-   */
-  setIsCodeStyle(isCodeStyle: boolean): void
-
-  /**
    * 设置是否格式化代码块内容
    *
    * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
@@ -630,46 +643,32 @@ export class MarkdownTheme {
   setIsCodeFormat(isCodeFormat: boolean): void
 
   /**
-   * 设置文本、图片格式内联代码文本颜色
+   * 设置内联代码文本颜色
    *
-   * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
+   * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
    */
   setCodeTextColor(codeTextColor: number): void
 
   /**
-   * 设置文本、图片格式内联代码背景颜色
+   * 设置内联代码背景颜色
    *
-   * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFFEAEAEA
+   * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFFEAEAEA
    */
   setCodeBackgroundColor(codeBackgroundColor: number): void
 
   /**
-   * 设置文本、图片格式内联代码文本大小
+   * 设置内联代码文本大小
    *
-   * @param codeTextSize 文本、图片格式内联代码文本大小 - 默认13.0fp
+   * @param codeTextSize 内联代码文本大小 - 默认13.0fp
    */
   setCodeTextSize(codeTextSize: number): void
 
   /**
-   * 设置文本格式内联代码文本字体
+   * 设置内联代码文本字体
    *
-   * @param codeTypeface 文本格式内联代码文本字体 - 默认"HarmonyOS Sans"
+   * @param codeTypeface 内联代码文本字体 - 默认"HarmonyOS Sans"
    */
   setCodeTypeface(codeTypeface: string): void
-
-  /**
-   * 设置图片格式内联代码文本左右边距
-   *
-   * @param codeLeftAndRightPadding 图片格式内联代码文本左右边距 - 默认4.0vp
-   */
-  setCodeLeftAndRightPadding(codeLeftAndRightPadding: number): void
-
-  /**
-   * 设置图片格式内联代码文本高度
-   *
-   * @param codeHeight 图片格式内联代码文本高度 - 默认20.0vp
-   */
-  setCodeHeight(codeHeight: number): void
 
   /**
    * 设置围栏代码块代码高亮是否同步解析
@@ -1379,6 +1378,13 @@ export class MarkdownTheme {
   setImageFixedRatioWidth(imageFixedRatioWidth: number): void
 
   /**
+   * 设置图片最大高度
+   *
+   * @param imageMaxHeight 图片最大高度 - 默认None
+   */
+  setImageMaxHeight(imageMaxHeight: number): void
+
+  /**
    * 设置图片圆角大小
    *
    * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
@@ -1405,6 +1411,76 @@ export class MarkdownTheme {
    * @param imageMarginBottom 图片下边距 - 默认10.0vp
    */
   setImageMarginBottom(imageMarginBottom: number): void
+
+  /**
+   * 设置图片是否有下载按钮
+   *
+   * @param isImageDownload 图片是否有下载按钮 - 默认false
+   */
+  setIsImageDownload(isImageDownload: boolean): void
+
+  /**
+   * 设置是否图文混排
+   *
+   * @param isImageMixedLayout 是否图文混排 - 默认true
+   */
+  setIsImageMixedLayout(isImageMixedLayout: boolean): void
+
+  /**
+   * 设置图片下载按钮图片宽度和高度
+   *
+   * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
+   */
+  setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: number): void
+
+  /**
+   * 设置图片下载按钮宽度
+   *
+   * @param imageDownloadWidth 图片下载按钮宽度 - 默认296.0
+   */
+  setImageDownloadWidth(imageDownloadWidth: number): void
+
+  /**
+   * 设置图片下载按钮高度
+   *
+   * @param imageDownloadHeight 图片下载按钮高度 - 默认44.0
+   */
+  setImageDownloadHeight(imageDownloadHeight: number): void
+
+  /**
+   * 设置图片下载按钮圆角
+   *
+   * @param imageDownloadRadius 图片下载按钮圆角 - 默认22.0
+   */
+  setImageDownloadRadius(imageDownloadRadius: number): void
+
+  /**
+   * 设置图片下载按钮文本内容
+   *
+   * @param imageDownloadText 图片下载按钮文本内容 - 默认"下载图片"
+   */
+  setImageDownloadText(imageDownloadText: string): void
+
+  /**
+   * 设置图片下载按钮文本大小
+   *
+   * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
+   */
+  setImageDownloadTexSize(imageDownloadTexSize: number): void
+
+  /**
+   * 设置图片下载按钮文本颜色
+   *
+   * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0XE6000000
+   */
+  setImageDownloadTexColor(imageDownloadTexColor: number): void
+
+  /**
+   * 设置图片下载按钮背景颜色
+   *
+   * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0XFFF5F5F5
+   */
+  setImageDownloadBackgroundColor(imageDownloadBackgroundColor: number): void
 
   /**
    * 设置表格内容内边距
@@ -1447,6 +1523,34 @@ export class MarkdownTheme {
    * @param tableHeaderRowBackgroundColor 表格头背景色 - 默认0XFFFFFFFF
    */
   setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void
+
+  /**
+   * 设置表格头文本颜色
+   *
+   * @param tableTitleTextColor 表格头文本颜色 - 默认0XFF191919
+   */
+  setTableTitleTextColor(tableTitleTextColor: number): void
+
+  /**
+   * 设置表格头文本大小
+   *
+   * @param tableTitleTextSize 表格头文本大小 - 默认14.0vp
+   */
+  setTableTitleTextSize(tableTitleTextSize: number): void
+
+  /**
+   * 设置表格内容文本颜色
+   *
+   * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
+   */
+  setTableContentTextColor(tableContentTextColor: number): void
+
+  /**
+   * 设置表格内容文本大小
+   *
+   * @param tableContentTextSize 表格内容文本大小 - 默认14.0vp
+   */
+  setTableContentTextSize(tableContentTextSize: number): void
 
   /**
    * 设置表格文本行高
@@ -1573,11 +1677,11 @@ export class MarkdownTheme {
 
 图片缩放类型的枚举
 
-```cangjie
+```ets
 /**
  * 图片缩放类型的枚举
  */
-export enum ImageFitType{
+export enum ImageFitType {
   /**
    * 保持宽高比进行缩小或者放大，使得图片两边都大于或等于显示边界。
    */
@@ -1597,7 +1701,7 @@ export enum ImageFitType{
 
 数学公式生成图片格式的枚举
 
-```cangjie
+```ets
 /**
  * 数学公式生成图片格式的枚举
  */
@@ -1617,7 +1721,7 @@ export enum LatexMathColorFormat {
 
 Markdown插件配置
 
-```cangjie
+```ets
 /**
  * Markdown插件配置
  */
@@ -1772,3 +1876,54 @@ export class MarkdownPlugin {
 }
 ```
 
+### class MarkdownScroller
+
+Markdown滑动控制器
+
+```ets
+/**
+ * Markdown滑动控制器
+ */
+export class MarkdownScroller {
+  /**
+   * 构造函数
+   */
+  constructor()
+
+  /**
+   * 滚动到容器边缘
+   *
+   * @param edge 滚动到容器边缘
+   */
+  scrollEdge(edge: Edge): void
+
+  /**
+   * 滚动指定距离
+   *
+   * @param xOffset x轴偏移量
+   * @param yOffset y轴偏移量
+   */
+  scrollBy(xOffset: number, yOffset: number): void
+
+  /**
+   * 判断是否滚动到底部
+   *
+   * @returns 是否滚动到底部
+   */
+  isAtEnd(): boolean
+
+  /**
+   * 获取当前y轴偏移量
+   *
+   * @returns 当前y轴偏移量
+   */
+  currentYOffset(): number
+
+  /**
+   * 获取内部CJMarkdownScroller实例
+   *
+   * @returns CJMarkdownScroller实例
+   */
+  getScroller(): CJMarkdownScroller
+}
+```

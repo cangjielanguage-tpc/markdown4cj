@@ -1,10 +1,10 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextStr } from './FileUtils'
+import { getFileContextStr } from '../utils/FileUtils'
 import { CodeSeparateData } from './CodeSeparatePage'
 
 @Entry
@@ -34,6 +34,21 @@ struct CodeSeparateDetailsPage {
   @State
   isFull: boolean = true
   /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
    * 是否单独代码块显示
    */
   isSeparateCodeBlock: boolean = false
@@ -42,17 +57,26 @@ struct CodeSeparateDetailsPage {
    */
   separateCodeBlockWidth: number = 50
   /**
-   * 增量加载延迟
+   * 是否滑动到底部
    */
-  time: number = 50
+  separateCodeIsBottom: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let codeSeparateData: CodeSeparateData = router.getParams() as CodeSeparateData
       this.fileStr = getFileContextStr(codeSeparateData._pagePath)
       this.isFull = codeSeparateData._isFull
+      this.incrementalAnalysis = codeSeparateData._incrementalAnalysis
+      this.time = codeSeparateData._time
+      this.textNumber = codeSeparateData._textNumber
       this.isSeparateCodeBlock = codeSeparateData._isSeparateCodeBlock
       this.separateCodeBlockWidth = codeSeparateData._separateCodeBlockWidth
+      this.separateCodeIsBottom = codeSeparateData._separateCodeIsBottom
     } catch (e) {
     }
   }
@@ -76,25 +100,36 @@ struct CodeSeparateDetailsPage {
         .fontSize(16)// 字体大小
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
+                this.content = this.content + this.fileStr.substring(this.content.length, index)
                 this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
+                if (index >= this.fileStr.length) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
-                index++
+                if (this.fileStr.length > index + this.textNumber) {
+                  index = index + this.textNumber
+                } else {
+                  index = this.fileStr.length
+                }
               }, this.time)
             }
           }
         )
       Scroll(this.scroller) {
         Column() {
-          CJMarkdown({ content: this.content, config: this.setMarkdownConfig() })
+          CJMarkdown({
+            content: this.content,
+            isInputEnded: this.isInputEnded,
+            incrementalAnalysis: this.incrementalAnalysis,
+            config: this.setMarkdownConfig()
+          })
         }
       }
       .padding({ bottom: 200 })
@@ -105,10 +140,11 @@ struct CodeSeparateDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setIsSeparateCodeBlock(this.isSeparateCodeBlock)
-    theme.setSeparateCodeBlockWidth(this.separateCodeBlockWidth)
-    theme.setCodeFullScreenIcon($r('app.media.startIcon'))
-    theme.setCodeCopyIcon($r('app.media.startIcon'))
+    theme.setIsSeparateCodeBlock(this.isSeparateCodeBlock) // 是否单独代码块显示
+    theme.setSeparateCodeBlockWidth(this.separateCodeBlockWidth) // 单独代码块行号宽度
+    theme.setCodeFullScreenIcon($r('app.media.startIcon')) // 代码块全屏图片icon
+    theme.setCodeCopyIcon($r('app.media.startIcon')) // 代码块复制图片icon
+    theme.setSeparateCodeIsBottom(this.separateCodeIsBottom) // 单独代码块是否居底显示
     config.setMarkdownTheme(theme)
     return config
   }

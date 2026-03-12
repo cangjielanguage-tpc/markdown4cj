@@ -2,10 +2,10 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { DemoDataMD } from './DemoPage'
-import { getFileContextStr } from './FileUtils'
+import { getFileContextStr } from '../utils/FileUtils'
 
 @Entry
 @Component
@@ -28,22 +28,40 @@ struct DemoDetailsPage {
    */
   @State
   content: string = ""
-
   /**
    * 是否全量加载
    */
   @State
   isFull: boolean = true
   /**
-   * 增量加载延迟
+   * markdown是否增量解析(true:增量解析,false:全量解析)
    */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
   time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let imageDataMD: DemoDataMD = router.getParams() as DemoDataMD
       this.fileStr = getFileContextStr(imageDataMD._pagePath)
       this.isFull = imageDataMD._isFull
+      this.incrementalAnalysis = imageDataMD._incrementalAnalysis
+      this.time = imageDataMD._time
+      this.textNumber = imageDataMD._textNumber
     } catch (e) {
     }
   }
@@ -67,18 +85,24 @@ struct DemoDetailsPage {
         .fontSize(16)// 字体大小
         .onClick(
           () => {
-            // 点击动作触发该方法调用
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
+                this.content = this.content + this.fileStr.substring(this.content.length, index)
                 this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
+                if (index >= this.fileStr.length) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
-                index++
+                if (this.fileStr.length > index + this.textNumber) {
+                  index = index + this.textNumber
+                } else {
+                  index = this.fileStr.length
+                }
               }, this.time)
             }
           }
@@ -87,6 +111,8 @@ struct DemoDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
+            incrementalAnalysis: this.incrementalAnalysis,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
@@ -100,12 +126,12 @@ struct DemoDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setContext(getContext(this))
-    theme.setCodeFullScreenIcon($r('app.media.startIcon'))
-    theme.setCodeCopyIcon($r('app.media.startIcon'))
-    theme.setAudioIcon($r('app.media.startIcon'))
-    theme.setVideoImage($r('app.media.place_holder'))
-    theme.setPlayCircleFillIcon($r('app.media.play_circle_fill'))
+    theme.setContext(getContext(this)) // 上下文
+    theme.setCodeFullScreenIcon($r('app.media.startIcon')) // 代码块全屏图片icon
+    theme.setCodeCopyIcon($r('app.media.startIcon')) // 代码块复制图片icon
+    theme.setAudioIcon($r('app.media.startIcon')) // 音频图片icon
+    theme.setVideoImage($r('app.media.place_holder')) // 视频默认占位图
+    theme.setPlayCircleFillIcon($r('app.media.play_circle_fill')) // 视频播放按钮icon
     config.setMarkdownTheme(theme)
     return config
   }
@@ -116,7 +142,7 @@ struct DemoDetailsPage {
     plugin.setIsLatexMathPlugin(true) // 数学公式插件
     plugin.setIsStrikethroughPlugin(true) // 删除线插件
     plugin.setIsTaskListPlugin(true) // 任务列表插件
-    plugin.setIsLinkifyPlugin(true) // 自动链接插件
+    plugin.setIsLinkifyPlugin(true, []) // 自动链接插件
     plugin.setIsBlockAudioPlugin(true) // 音频插件
     plugin.setIsBlockVideoPlugin(true) // 视频插件
     plugin.setIsImageCollectPlugin(true) // 图片视频列表url集合列表解析插件

@@ -9,135 +9,190 @@ import ohos.state_manage.*
 import ohos.state_macro_manage.*
 
 /**
- * Markdown表格自定义控件
+ * 表格Row控件
  */
 @Component
 class MarkdownTableBlockRowComponent {
     /**
      * markdown配置
      */
-    var markdownConfiguration: MarkdownConfiguration
+    var tableBlockRowMarkdownConfiguration: MarkdownConfiguration
 
     /**
-     * 表格内容数据
-     */
-    var nodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位px
+     * 表格Row控件自身节点
      */
     @Prop
-    var componentWidth: Float64
+    var tableBlockRowNodeView: NodeView
 
     /**
-     * 内容第几条
+     * 控件宽度 - 单位vp
      */
-    var idRow: Int64
+    @Prop
+    var tableBlockRowComponentWidth: Float64
 
     /**
-     * 表格有几行
+     * 缓存的表格Row控件数据
      */
-    var dataRowSize: Int64
+    var tableBlockRowComponents: HashMap<Int64, MarkdownTableBlockRowComponent>
 
     /**
-     * 缓存的表格行
+     * 缓存的表格Cell控件数据
      */
-    var tableRowComponents: HashMap<Int64, MarkdownTableBlockRowComponent>
+    var tableBlockCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent>
 
     /**
-     * 缓存的表格行内格子
+     * 自定义行内表格Cell控件
      */
-    var tableCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent>
-
-    /**
-     * 脚注点击事件
-     */
-    var fontCallback: (String) -> Unit
+    @BuilderParam
+    var tableBlockRowCustomTableLineBuilder: (NodeView, Int64) -> Unit
 
     /**
      * 图片点击事件
      */
-    var imageCallback: (String) -> Unit
+    var tableBlockRowImageCallback: (String) -> Unit
 
     /**
-     * 懒加载数据源
+     * 脚注点击事件
      */
-    @State
-    var nodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+    var tableBlockRowFootnoteCallback: (String) -> Unit
 
     /**
-     * 宽度列表
+     * 表格的第几行
+     */
+    var tableBlockRowRow: Int64
+
+    /**
+     * 表格总共有几列
+     */
+    var tableBlockRowCellSize: Int64
+
+    /**
+     * 表格宽度列表
      */
     @Prop
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
 
     /**
-     * 自定义行内表格布局
+     * 数据源
      */
-    @BuilderParam
-    var customTableLineBuilder: (NodeView, Int64) -> Unit
+    @State
+    var tableBlockRowNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
 
     protected override func aboutToAppear(): Unit {
-        // 初始化刷新数据
-        refreshData(nodeView)
-        // 缓存当前控件
-        tableRowComponents.add(this.nodeView.nodeHash, this)
+        refreshTableBlockRowData(tableBlockRowNodeView) // 初始化刷新数据
+        tableBlockRowComponents.add(tableBlockRowNodeView.nodeHash, this) // 缓存当前控件
     }
 
     protected override func aboutToDisappear(): Unit {
         // 清除当前控件
-        let value = tableRowComponents.get(this.nodeView.nodeHash)
+        let value = tableBlockRowComponents.get(tableBlockRowNodeView.nodeHash)
         if (let Some(v) <- value) {
             if (refEq(v, this)) {
-                tableRowComponents.remove(this.nodeView.nodeHash)
+                tableBlockRowComponents.remove(tableBlockRowNodeView.nodeHash)
             }
         } else {
-            tableRowComponents.remove(this.nodeView.nodeHash)
+            tableBlockRowComponents.remove(tableBlockRowNodeView.nodeHash)
         }
     }
 
     func build() {
         Row() {
             ForEach(
-                nodeViewList,
+                tableBlockRowNodeViewList,
                 itemGeneratorFunc: {
-                    item: NodeView, idxItem: Int64 => if (item.node is TableCell) {
+                    nodeview: NodeView, idx: Int64 => if (nodeview.nodeType == "TableCell") {
+                        // 表格Cell节点
                         MarkdownTableBlockCellComponent(
-                            markdownConfiguration: markdownConfiguration,
-                            nodeView: item,
-                            fontCallback: fontCallback,
-                            imageCallback: imageCallback,
-                            isHeader: (item.node as TableCell)().isHeader(),
-                            alignment: (item.node as TableCell)().getAlignment(),
-                            componentWidth: componentWidth,
-                            idRow: idRow,
-                            tableCellComponents: tableCellComponents,
-                            dataRowSize: dataRowSize,
-                            idxItem: idxItem,
-                            dataCellSize: nodeViewList.size,
+                            tableBlockCellMarkdownConfiguration: tableBlockRowMarkdownConfiguration,
+                            tableBlockCellNodeView: nodeview,
+                            tableBlockCellComponentWidth: tableBlockRowComponentWidth,
+                            tableBlockCellComponents: tableBlockCellComponents,
+                            tableBlockCellCustomTableLineBuilder: tableBlockRowCustomTableLineBuilder,
+                            tableBlockCellImageCallback: tableBlockRowImageCallback,
+                            tableBlockCellFootnoteCallback: tableBlockRowFootnoteCallback,
+                            tableBlockCellRow: tableBlockRowRow,
+                            tableBlockCellCell: idx,
+                            tableBlockCellCellSize: tableBlockRowCellSize,
                             cellWidthArrayIndexed: cellWidthArrayIndexed,
-                            customTableLineBuilder: customTableLineBuilder
                         )
+                    } else {
+                        // 其他节点
+                        Text("")
                     }
                 },
                 keyGeneratorFunc: {
-                    item: NodeView, idx: Int64 => return "${idx}-${item.nodeHash}-${item.contentHash}"
+                    tableBlockRowNodeView: NodeView, idx: Int64 => return "${idx}-${tableBlockRowNodeView.nodeHash}-${tableBlockRowNodeView.contentHash}"
                 }
             )
         }
     }
 
     /**
-     * 数据刷新
+     * 表格Row控件数据刷新
+     *
+     * @param tableBlockRowNodeView 刷新的新数据
      */
-    public func refreshData(nodeView: NodeView): Unit {
-        this.nodeView = nodeView
-        let refreshNodeViews: ArrayList<NodeView> = nodeView.children
-        let refreshNodeViewSize: Int64 = refreshNodeViews.size // 刷新进来的数据长度
-        let nodeViewListSize: Int64 = nodeViewList.size // 页面缓存的数据长度
+    public func refreshTableBlockRowData(tableBlockRowNodeView: NodeView): Unit {
+        this.tableBlockRowNodeView = tableBlockRowNodeView
+        let refreshNodeViewChildren = tableBlockRowNodeView.children // 子节点数据
+        let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
+        let tableBlockRowNodeViewListSize: Int64 = tableBlockRowNodeViewList.size // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
             return
         }
-        refreshnodeViewList(this.nodeView, nodeViewList, tableCellComponents)
+        if (refreshNodeViewSize > tableBlockRowNodeViewListSize) {
+            // 新数据大于页面数据
+            // 循环判断历史数据有没有做过修改
+            refreshTableBlockRowDatas(tableBlockRowNodeViewListSize, refreshNodeViewChildren)
+            // 循环添加新数据
+            for (i in tableBlockRowNodeViewListSize..refreshNodeViewSize) {
+                tableBlockRowNodeViewList.append(refreshNodeViewChildren[i])
+            }
+        } else if (refreshNodeViewSize == tableBlockRowNodeViewListSize) {
+            // 新数据等于页面数据
+            refreshTableBlockRowDatas(tableBlockRowNodeViewListSize, refreshNodeViewChildren)
+        } else {
+            // 新数据小于页面数据
+            // 循环判断历史数据有没有做过修改
+            refreshTableBlockRowDatas(refreshNodeViewSize, refreshNodeViewChildren)
+            // 循环删除多余的旧数据
+            for (i in tableBlockRowNodeViewListSize - 1..=refreshNodeViewSize : -1) {
+                tableBlockRowNodeViewList.remove(i)
+            }
+        }
+    }
+
+    /**
+     * 循环判断历史数据有没有做过修改
+     *
+     * @param size 长度
+     * @param refreshNodeViews 刷新的数据
+     */
+    func refreshTableBlockRowDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
+        for (i in 0..size) {
+            let refreshNodeView = refreshNodeViews[i]
+            let dataSourceNode = tableBlockRowNodeViewList[i]
+            let newBlockHash = refreshNodeView.nodeHash
+            let oldBlockHash = dataSourceNode.nodeHash
+            let newContentHash = refreshNodeView.contentHash
+            let oldContentHash = dataSourceNode.contentHash
+            // 唯一ID是否相同
+            if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
+                tableBlockRowNodeViewList[i] = refreshNodeView
+            } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
+                tableBlockRowNodeViewList[i] = refreshNodeView
+            } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+                if (refreshNodeView.nodeType == "TableCell") {
+                    // Cell
+                    let cache = tableBlockCellComponents.get(newBlockHash)
+                    if (let Some(v) <- cache) {
+                        v.refreshTableBlockCellData(refreshNodeView)
+                    }
+                } else {
+                    // 其他
+                    tableBlockRowNodeViewList[i] = refreshNodeView
+                }
+            }
+        }
     }
 }

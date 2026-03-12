@@ -26,6 +26,20 @@ class CJMarkdownComponent {
     var mdStr: String = ''
 
     /**
+     * 外部传入的Markdown文档
+     */
+    @State
+    @Watch[inputEndedData]
+    var isInputEnded: Bool = true
+
+    /**
+     * markdown是否增量解析
+     */
+    @State
+    @Watch[analysisData]
+    var incrementalAnalysis: Bool = false
+
+    /**
      * 配置
      */
     var cfg: ?CJMarkdownConfig
@@ -35,20 +49,40 @@ class CJMarkdownComponent {
      */
     var plugin: ?CJMarkdownPlugin
 
+    /**
+     * 滑动控制器
+     */
+    var listscroller: ?CJMarkdownScroller
+
     protected func aboutToAppear(): Unit {
     }
 
     func build() {
         Column() {
-            MarkdownComponent(output: mdStr, markdownConfiguration: setConfig(), markdownPlugin: setPlugin())
+            MarkdownComponent(
+                output: mdStr,
+                isInputEnded: isInputEnded,
+                incrementalAnalysis: incrementalAnalysis,
+                markdownConfiguration: setConfig(),
+                markdownPlugin: setPlugin(),
+                scroller: setScroller()
+            )
         }
     }
 
     func onChanged(): Unit {
     }
 
-    public func updateMarkDown(input: String): Unit {
-        mdStr = input
+    func inputEndedData(): Unit {
+    }
+
+    func analysisData(): Unit {
+    }
+
+    public func updateMarkDown(input: String, isInputEnded: Bool, incrementalAnalysis: Bool): Unit {
+        this.mdStr = input
+        this.isInputEnded = isInputEnded
+        this.incrementalAnalysis = incrementalAnalysis
     }
 
     public func aboutToCJReuse(input: String): Unit {
@@ -84,7 +118,7 @@ class CJMarkdownComponent {
                 markdownBuilder.usePlugin(StrikethroughPlugin.create())
             }
             if(v.isLinkifyPlugin){
-                markdownBuilder.usePlugin(LinkifyPlugin.create())
+                markdownBuilder.usePlugin(LinkifyPlugin.create(v.regs))
             }
             if(v.isLinkViewPlugin){
                 markdownBuilder.usePlugin(LinkViewPlugin.create())
@@ -128,6 +162,7 @@ class CJMarkdownComponent {
         }
         // 唯一ID标识插件
         markdownBuilder.usePlugin(NodeIdPlugin.create())
+        markdownBuilder.includeSourceSpans(2) // BLOCKS_AND_INLINES
         return markdownBuilder.build()
     }
 
@@ -386,29 +421,20 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.taskListItemLength) {
                 markdownThemeBuilder.setTaskListItemLength(v) // 设置任务列表选择框宽高
             }
-            if (let Some(v) <- w.cjMarkdownTheme.isCodeStyle) {
-                markdownThemeBuilder.setIsCodeStyle(v) // 设置内联代码是否是图片显示
-            }
             if (let Some(v) <- w.cjMarkdownTheme.isCodeFormat) {
                 markdownThemeBuilder.setIsCodeFormat(v) // 设置是否格式化代码块内容
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeTextColor) {
-                markdownThemeBuilder.setCodeTextColor(v) // 设置文本、图片格式内联代码文本颜色
+                markdownThemeBuilder.setCodeTextColor(v) // 设置内联代码文本颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeBackgroundColor) {
-                markdownThemeBuilder.setCodeBackgroundColor(v) // 设置文本、图片格式内联代码背景颜色
+                markdownThemeBuilder.setCodeBackgroundColor(v) // 设置内联代码背景颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeTextSize) {
-                markdownThemeBuilder.setCodeTextSize(v) // 设置文本、图片格式内联代码文本大小
+                markdownThemeBuilder.setCodeTextSize(v) // 设置内联代码文本大小
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeTypeface) {
-                markdownThemeBuilder.setCodeTypeface(v) // 设置文本格式内联代码文本字体
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.codeLeftAndRightPadding) {
-                markdownThemeBuilder.setCodeLeftAndRightPadding(v) // 设置图片格式内联代码文本左右边距
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.codeHeight) {
-                markdownThemeBuilder.setCodeHeight(v) // 设置图片格式内联代码文本高度
+                markdownThemeBuilder.setCodeTypeface(v) // 设置内联代码文本字体
             }
             if (let Some(v) <- w.cjMarkdownTheme.isCodeBlockParserSync) {
                 markdownThemeBuilder.setIsCodeBlockParserSync(v) // 设置缩进/围栏/组合/单独代码块代码是否同步解析
@@ -497,12 +523,6 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.headingBottomMargins) {
                 markdownThemeBuilder.setHeadingBottomMargins(v) // 设置标题模块下间距
             }
-            if (let Some(v) <- w.cjMarkdownTheme.headingTextSizeMultipliers) {
-                markdownThemeBuilder.setHeadingTextSizeMultipliers(v) // 设置标题文本大小数组
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor) {
-                markdownThemeBuilder.setHeadingTextColor(v) // 设置标题文本颜色
-            }
             if (let Some(v) <- w.cjMarkdownTheme.headingTextWordSpace) {
                 markdownThemeBuilder.setHeadingTextWordSpace(v) // 设置标题文本字间距
             }
@@ -523,6 +543,24 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.headingTextLineHeight6) {
                 markdownThemeBuilder.setHeadingTextLineHeight6(v) // 设置六级标题文本行高
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor1) {
+                markdownThemeBuilder.setHeadingTextColor1(v) // 设置一级标题文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor2) {
+                markdownThemeBuilder.setHeadingTextColor2(v) // 设置二级标题文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor3) {
+                markdownThemeBuilder.setHeadingTextColor3(v) // 设置三级标题文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor4) {
+                markdownThemeBuilder.setHeadingTextColor4(v) // 设置四级标题文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor5) {
+                markdownThemeBuilder.setHeadingTextColor5(v) // 设置五级标题文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor6) {
+                markdownThemeBuilder.setHeadingTextColor6(v) // 设置六级标题文本颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.paragraphTopMargins) {
                 markdownThemeBuilder.setParagraphTopMargins(v) // 设置段落模块上间距
@@ -716,8 +754,17 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.imageMaxHeight) {
                 markdownThemeBuilder.setImageMaxHeight(v) // 设置图片最大高度
             }
+            if (let Some(v) <- w.cjMarkdownTheme.imageMaxWidth) {
+                markdownThemeBuilder.setImageMaxWidth(v) // 设置图片最大宽度
+            }
             if (let Some(v) <- w.cjMarkdownTheme.imageBorderRadius) {
                 markdownThemeBuilder.setImageBorderRadius(v) // 设置图片圆角大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageBorderWidth) {
+                markdownThemeBuilder.setImageBorderWidth(v) // 设置图片边框宽度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageBorderColor) {
+                markdownThemeBuilder.setImageBorderColor(v) // 设置图片边框颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.isAutoResize) {
                 markdownThemeBuilder.setIsAutoResize(v) // 设置网络图片是否压缩
@@ -803,6 +850,12 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.tableFirstColumnBold) {
                 markdownThemeBuilder.setTableFirstColumnBold(v) // 设置表格第一列是否加粗
             }
+            if (let Some(v) <- w.cjMarkdownTheme.tableScrollBarShow) {
+                markdownThemeBuilder.setTableScrollBarShow(v) // 设置表格是否显示滚动条
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.tableScrollBarColor) {
+                markdownThemeBuilder.setTableScrollBarColor(v) // 设置表格滚动条颜色
+            }
             if (let Some(v) <- w.cjMarkdownTheme.isDark) {
                 // 设置markdown代码高亮样式
                 if(v){
@@ -847,5 +900,13 @@ class CJMarkdownComponent {
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()
         return markdownTheme
+    }
+
+    func setScroller(): Scroller {
+        if (let Some(scroller) <- listscroller) {
+            return scroller.scroller
+        } else {
+            return Scroller()
+        }
     }
 }

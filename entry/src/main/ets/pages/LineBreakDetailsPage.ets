@@ -1,10 +1,10 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextStr } from './FileUtils'
+import { getFileContextStr } from '../utils/FileUtils'
 import { LineBreakData } from './LineBreakPage'
 
 @Entry
@@ -34,20 +34,39 @@ struct LineBreakDetailsPage {
   @State
   isFull: boolean = true
   /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
    * 软换行是否换行
    */
   @State
   isLineBreak: boolean = false
   /**
-   * 增量加载延迟
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
    */
-  time: number = 50
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let lineBreakData: LineBreakData = router.getParams() as LineBreakData
       this.fileStr = getFileContextStr(lineBreakData._pagePath)
       this.isFull = lineBreakData._isFull
+      this.incrementalAnalysis = lineBreakData._incrementalAnalysis
+      this.time = lineBreakData._time
+      this.textNumber = lineBreakData._textNumber
       this.isLineBreak = lineBreakData._isLineBreak
     } catch (e) {
     }
@@ -73,23 +92,35 @@ struct LineBreakDetailsPage {
         .onClick(
           () => {
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
+                this.content = this.content + this.fileStr.substring(this.content.length, index)
                 this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
+                if (index >= this.fileStr.length) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
-                index++
+                if (this.fileStr.length > index + this.textNumber) {
+                  index = index + this.textNumber
+                } else {
+                  index = this.fileStr.length
+                }
               }, this.time)
             }
           }
         )
       Scroll(this.scroller) {
         Column() {
-          CJMarkdown({ content: this.content, config: this.setMarkdownConfig() })
+          CJMarkdown({
+            content: this.content,
+            isInputEnded: this.isInputEnded,
+            incrementalAnalysis: this.incrementalAnalysis,
+            config: this.setMarkdownConfig()
+          })
         }
       }
       .padding({ bottom: 200 })

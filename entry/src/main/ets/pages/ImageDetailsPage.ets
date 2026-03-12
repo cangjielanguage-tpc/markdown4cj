@@ -1,10 +1,10 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextArr, getFileContextStr } from './FileUtils'
+import { getFileContextArr, getFileContextStr } from '../utils/FileUtils'
 import { ImageDataMD } from './ImagePage'
 import hilog from '@ohos.hilog'
 
@@ -75,6 +75,16 @@ struct ImageDetailsPage {
   @State
   imageBorderRadius: number = 0
   /**
+ * 图片边框宽度
+ */
+  @State
+  imageBorderWidth: number = 0
+  /**
+ * 图片边框颜色
+ */
+  @State
+  imageBorderColor: number = 0xFF000000
+  /**
    * 图片基于自身宽度缩放百分比
    */
   @State
@@ -89,6 +99,11 @@ struct ImageDetailsPage {
    */
   @State
   imageMaxHeight: number | null = null
+  /**
+ * 图片最大宽度
+ */
+  @State
+  imageMaxWidth: number | null = null
   /**
    * 图片是否有下载按钮
    */
@@ -158,9 +173,12 @@ struct ImageDetailsPage {
       this.imageMarginTop = imageDataMD._imageMarginTop
       this.imageMarginBottom = imageDataMD._imageMarginBottom
       this.imageBorderRadius = imageDataMD._imageBorderRadius
+      this.imageBorderWidth = imageDataMD._imageBorderWidth
+      this.imageBorderColor = imageDataMD._imageBorderColor
       this.imageMaximumWidth = imageDataMD._imageMaximumWidth
       this.imageFixedRatioWidth = imageDataMD._imageFixedRatioWidth
       this.imageMaxHeight = imageDataMD._imageMaxHeight
+      this.imageMaxWidth = imageDataMD._imageMaxWidth
       this.isImageDownload = imageDataMD._isImageDownload
       this.isImageMixedLayout = imageDataMD._isImageMixedLayout
       this.imageDownloadImageWidthHeight = imageDataMD._imageDownloadImageWidthHeight
@@ -220,6 +238,8 @@ struct ImageDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
+            incrementalAnalysis: this.incrementalAnalysis,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
@@ -245,12 +265,17 @@ struct ImageDetailsPage {
     theme.setImageMarginTop(this.imageMarginTop) // 图片上边距
     theme.setImageMarginBottom(this.imageMarginBottom) // 图片下边距
     theme.setImageBorderRadius(this.imageBorderRadius) // 图片圆角大小
+    theme.setImageBorderWidth(this.imageBorderWidth) // 图片边框宽度
+    theme.setImageBorderColor(this.imageBorderColor) // 图片边框颜色
     theme.setImageMaximumWidth(this.imageMaximumWidth) // 图片基于自身宽度缩放百分比
     if (this.imageFixedRatioWidth !== null) {
       theme.setImageFixedRatioWidth(this.imageFixedRatioWidth) // 图片基于父布局宽度缩放百分比
     }
     if (this.imageMaxHeight !== null) {
       theme.setImageMaxHeight(this.imageMaxHeight) // 图片最大高度
+    }
+    if (this.imageMaxWidth !== null) {
+      theme.setImageMaxWidth(this.imageMaxWidth) // 图片最大宽度
     }
     theme.setImageDownloadImage($r('app.media.video_download')) // 图片下载默认图标
     theme.setIsImageDownload(this.isImageDownload) // 图片是否有下载按钮

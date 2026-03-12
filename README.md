@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.3.5-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.3.6-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjc-v1.0.5-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
@@ -223,18 +223,18 @@ struct DemoPage {
 useCangjieComponent :boolean = false;  //是否使用cangjie
 
 build() {
-    Column() {
+   Column() {
       Column() {
-        CJMarkdown({
-          content: this.message,
-          isShow: this.useCangjieComponent
-        })
+         CJMarkdown({
+            content: this.message,
+            isShow: this.useCangjieComponent
+         })
       }
-    }
-    .padding({ left: 10, right: 10, top: this.safeTop })
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-  }
+   }
+   .padding({ left: 10, right: 10, top: this.safeTop })
+      .width('100%')
+      .alignItems(HorizontalAlign.Start)
+}
 ```
 
 ### 使用用户自定义ArkTS组件功能示例
@@ -252,19 +252,19 @@ showTextBuilder() {
 }
 
 build() {
-    Column() {
+   Column() {
       Column() {
-        CJMarkdown({
-          content: this.message,
-          isShow: this.useCangjieComponent,
-          customContains: this.showTextBuilder.bind(this)
-        })
+         CJMarkdown({
+            content: this.message,
+            isShow: this.useCangjieComponent,
+            customContains: this.showTextBuilder.bind(this)
+         })
       }
-    }
-    .padding({ left: 10, right: 10, top: this.safeTop })
-    .width('100%')
-    .alignItems(HorizontalAlign.Start)
-  }
+   }
+   .padding({ left: 10, right: 10, top: this.safeTop })
+      .width('100%')
+      .alignItems(HorizontalAlign.Start)
+}
 ```
 
 ## 约束与限制

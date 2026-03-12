@@ -57,20 +57,30 @@ public func registerImgPreprocessCallback(context: JSContext, callInfo: JSCallIn
  */
 public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     let mdStr: String = callInfo[0].asString().toString()
+    let isInputEnded: Bool = callInfo[1].asBoolean().toBool()
+    let incrementalAnalysis: Bool = callInfo[2].asBoolean().toBool()
     var cfg: ?CJMarkdownConfig = None
-    if (callInfo[1].typeof() != JSType.UNDEFINED) {
-        let cfgObj: JSObject = callInfo[1].asObject(ctx)
+    if (callInfo[3].typeof() != JSType.UNDEFINED) {
+        let cfgObj: JSObject = callInfo[3].asObject(ctx)
         let cfgExt: Option<JSExternal> = cfgObj.getAttachInfo()
         if (let Some(v) <- cfgExt) {
             cfg = v.cast<CJMarkdownConfig>()
         }
     }
     var plugin: ?CJMarkdownPlugin = None
-    if (callInfo[2].typeof() != JSType.UNDEFINED) {
-        let cfgObj: JSObject = callInfo[2].asObject(ctx)
+    if (callInfo[4].typeof() != JSType.UNDEFINED) {
+        let cfgObj: JSObject = callInfo[4].asObject(ctx)
         let cfgExt: Option<JSExternal> = cfgObj.getAttachInfo()
         if (let Some(v) <- cfgExt) {
             plugin = v.cast<CJMarkdownPlugin>()
+        }
+    }
+    var listscroller: ?CJMarkdownScroller = None
+    if (callInfo[5].typeof() != JSType.UNDEFINED) {
+        let scrollerObj: JSObject = callInfo[5].asObject()
+        let scrollerExt: Option<JSExternal> = scrollerObj.getAttachInfo()
+        if (let Some(v) <- scrollerExt) {
+            listscroller = v.cast<CJMarkdownScroller>()
         }
     }
     let elmetId = ViewStackProcessor.AllocateNewElmetIdForNextComponent()
@@ -78,16 +88,21 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     let comp = CJMarkdownComponent(
         Option<CustomView>.None,
         mdStr: ObservedProperty<String>("", mdStr),
+        isInputEnded: ObservedProperty<Bool>("", isInputEnded),
+        incrementalAnalysis: ObservedProperty<Bool>("", incrementalAnalysis),
         cfg: ObservedProperty<Option<CJMarkdownConfig>>("", cfg),
-        plugin: ObservedProperty<Option<CJMarkdownPlugin>>("", plugin)
+        plugin: ObservedProperty<Option<CJMarkdownPlugin>>("", plugin),
+        listscroller: ObservedProperty<Option<CJMarkdownScroller>>("", listscroller)
     )
     CustomView.create(comp)
     ViewStackProcessor.StopGetAccessRecording()
     return ctx.function(
             {
                 ctx1: JSContext, callInfo1: JSCallInfo =>
-                    let input = String.fromJSValue(ctx1, callInfo1[0])
-                    comp.updateMarkDown(input)
+                    let mdStr = String.fromJSValue(ctx1, callInfo1[0])
+                    let isInputEnded = Bool.fromJSValue(ctx1, callInfo1[1])
+                    let incrementalAnalysis = Bool.fromJSValue(ctx1, callInfo1[2])
+                    comp.updateMarkDown(mdStr, isInputEnded, incrementalAnalysis)
                     return ctx1.undefined().toJSValue()
             }
         ).toJSValue()
@@ -107,33 +122,53 @@ var imageDownloadImage: ?AppResource = None
 public func getCJResource(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     if (callInfo[0].typeof() != JSType.UNDEFINED) {
         codeFullScreenIcon = arktsRes2CJResource(ctx, callInfo[0])
+    } else {
+        codeFullScreenIcon = None
     }
     if (callInfo[1].typeof() != JSType.UNDEFINED) {
         codeCopyIcon = arktsRes2CJResource(ctx, callInfo[1])
+    } else {
+        codeCopyIcon = None
     }
     if (callInfo[2].typeof() != JSType.UNDEFINED) {
         audioIcon = arktsRes2CJResource(ctx, callInfo[2])
+    } else {
+        audioIcon = None
     }
     if (callInfo[3].typeof() != JSType.UNDEFINED) {
         videoImage = arktsRes2CJResource(ctx, callInfo[3])
+    } else {
+        videoImage = None
     }
     if (callInfo[4].typeof() != JSType.UNDEFINED) {
         playCircleFillIcon = arktsRes2CJResource(ctx, callInfo[4])
+    } else {
+        playCircleFillIcon = None
     }
     if (callInfo[5].typeof() != JSType.UNDEFINED) {
         bannerImage = arktsRes2CJResource(ctx, callInfo[5])
+    } else {
+        bannerImage = None
     }
     if (callInfo[6].typeof() != JSType.UNDEFINED) {
         imageResource = arktsRes2CJResource(ctx, callInfo[6])
+    } else {
+        imageResource = None
     }
     if (callInfo[7].typeof() != JSType.UNDEFINED) {
         videoReleaseImage = arktsRes2CJResource(ctx, callInfo[7])
+    } else {
+        videoReleaseImage = None
     }
     if (callInfo[8].typeof() != JSType.UNDEFINED) {
         videoDownloadImage = arktsRes2CJResource(ctx, callInfo[8])
+    } else {
+        videoDownloadImage = None
     }
     if (callInfo[9].typeof() != JSType.UNDEFINED) {
         imageDownloadImage = arktsRes2CJResource(ctx, callInfo[9])
+    } else {
+        imageDownloadImage = None
     }
     return ctx.undefined().toJSValue()
 }

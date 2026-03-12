@@ -1,7 +1,7 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import {
   CJMarkdown,
@@ -10,7 +10,7 @@ import {
   MarkdownPlugin,
   MarkdownTheme
 } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextStr } from './FileUtils'
+import { getFileContextStr } from '../utils/FileUtils'
 import { LatexMathData } from './LatexMathPage'
 import hilog from '@ohos.hilog'
 
@@ -40,6 +40,21 @@ struct LatexMathDetailsPage {
    */
   @State
   isFull: boolean = true
+  /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
   /**
    * 数学公式文本大小
    */
@@ -75,15 +90,19 @@ struct LatexMathDetailsPage {
    */
   latexDefaultText: boolean = true
   /**
-   * 增量加载延迟
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
    */
-  time: number = 50
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let latexMathData: LatexMathData = router.getParams() as LatexMathData
       this.fileStr = getFileContextStr(latexMathData._pagePath)
       this.isFull = latexMathData._isFull
+      this.incrementalAnalysis = latexMathData._incrementalAnalysis
+      this.time = latexMathData._time
+      this.textNumber = latexMathData._textNumber
       this.latexMathTextSize = latexMathData._latexMathTextSize
       this.latexMathBackGroupColor = latexMathData._latexMathBackGroupColor
       this.latexMathTextColor = latexMathData._latexMathTextColor
@@ -115,16 +134,23 @@ struct LatexMathDetailsPage {
         .onClick(
           () => {
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
+                this.content = this.content + this.fileStr.substring(this.content.length, index)
                 this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
+                if (index >= this.fileStr.length) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
-                index++
+                if (this.fileStr.length > index + this.textNumber) {
+                  index = index + this.textNumber
+                } else {
+                  index = this.fileStr.length
+                }
               }, this.time)
             }
           }
@@ -133,6 +159,8 @@ struct LatexMathDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
+            incrementalAnalysis: this.incrementalAnalysis,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
@@ -147,13 +175,13 @@ struct LatexMathDetailsPage {
     let config = new MarkdownConfiguration()
     config.setLatexImageCallback(this.latexCallBack.bind(this)) // 数学公式点击回调
     let theme = new MarkdownTheme()
+    theme.setLatexDefaultText(this.latexDefaultText) // 数学公式未加载状态是否显示文字
     theme.setLatexMathTextSize(this.latexMathTextSize) // 数学公式文本大小
     theme.setLatexMathBackGroupColor(this.latexMathBackGroupColor) // 数学公式背景色
     theme.setLatexMathTextColor(this.latexMathTextColor) // 数学公式文本颜色
-    theme.setLatexMathBlockCenter(this.latexMathBlockCenter) // 块结构的数学公式是否居中
     theme.setLatexMathColorFormat(this.latexMathColorFormat) // 数学公式生成图片格式
+    theme.setLatexMathBlockCenter(this.latexMathBlockCenter) // 块结构的数学公式是否居中
     theme.setLatexMathResStr(this.latexMathResStr) // 数学公式字体路径
-    theme.setLatexDefaultText(this.latexDefaultText) // 数学公式未加载状态是否显示文字
     config.setMarkdownTheme(theme)
     return config
   }

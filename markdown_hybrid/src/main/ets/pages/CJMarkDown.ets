@@ -2,38 +2,45 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 import { NodeController, FrameNode } from '@kit.ArkUI';
-import { requireCJLib } from 'libark_interop_loader.so';
-import { CustomLib, CJMarkdownConfig, CJMarkdownTheme, CJMarkdownPlugin } from 'libark_interop_api_markdown.so';
-
-export let global_customLib: CustomLib | undefined = undefined
-
-export let global_cjLib: CJLib | undefined = undefined
-
-export interface CJLib {
-  getCJResource(codeFullScreenIcon?: Resource, codeCopyIcon?: Resource, audioIcon?: Resource, videoImage?: Resource,
-    playCircleFillIcon?: Resource, bannerImage?: Resource, imageResource?: Resource, videoReleaseImage?: Resource, videoDownloadImage?: Resource, imageDownloadImage?: Resource): void
-}
+import {
+  CJMarkdownConfig,
+  CJMarkdownTheme,
+  CJMarkdownPlugin,
+  getLoadCJPage,
+  registerImgPreprocessCallback,
+  setGlobalContext,
+  getCJResource,
+  CJMarkdownScroller
+} from 'libmarkdown.so';
 
 class CJNodeController extends NodeController {
   rootNode?: FrameNode = undefined
-  public callbackCJ: (input: string) => void = (input: string) => {this.mdStr = input}  // 持续输出调用
+  public callbackCJ: (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void = (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => {
+      this.mdStr = input
+      this.isInputEnded = isInputEnded
+      this.incrementalAnalysis = incrementalAnalysis
+    } // 持续输出调用
   mdStr: string
+  isInputEnded: boolean
+  incrementalAnalysis: boolean
   config?: CJMarkdownConfig
   plugin?: CJMarkdownPlugin
+  listScroller?: CJMarkdownScroller
 
-  constructor(input: string, config?: CJMarkdownConfig, plugin?: CJMarkdownPlugin) {
+  constructor(input: string, isInputEnded: boolean, incrementalAnalysis: boolean, config?: CJMarkdownConfig, plugin?: CJMarkdownPlugin, listScroller?: CJMarkdownScroller) {
     super()
     this.mdStr = input
+    this.isInputEnded = isInputEnded
+    this.incrementalAnalysis = incrementalAnalysis
     this.config = config
     this.plugin = plugin
+    this.listScroller = listScroller
   }
 
   makeNode(ctx: UIContext): FrameNode | null {
     if (this.rootNode === undefined) {
       this.rootNode = new FrameNode(ctx)
-      if(global_customLib !== undefined){
-        this.callbackCJ = global_customLib.getLoadCJPage(this.mdStr, this.config, this.plugin)
-      }
+      this.callbackCJ = getLoadCJPage(this.mdStr, this.isInputEnded, this.incrementalAnalysis, this.config, this.plugin, this.listScroller)
     }
     return this.rootNode
   }
@@ -41,55 +48,74 @@ class CJNodeController extends NodeController {
 
 @Component
 export struct CJMarkdown {
+  /**
+   * 外部传入的Markdown文档
+   */
   @Prop @Watch('onMarkDownChange') content: string = ''
+  /**
+   * 流式输入是否输入结束。true:结束输入,false:持续输入。默认true
+   */
+  @Prop @Watch('onMarkDownChange') isInputEnded: boolean = true
+  /**
+   * markdown是否增量解析。true:增量解析,false:全量解析。默认false
+   */
+  @Prop @Watch('onMarkDownChange') incrementalAnalysis: boolean = false
+  /**
+   * markdown配置
+   */
   @State config?: MarkdownConfiguration = undefined
+  /**
+   * markdown插件
+   */
   @State plugin?: MarkdownPlugin = undefined
-  private markdownNode: CJNodeController | null = null
+  /**
+   * 滑动控制器
+   */
+  @State listScroller?: MarkdownScroller = undefined
+  /**
+   * 是否使用Cangjie互操作组件展示。true:使用Cangjie互操作组件,false:使用ArkUI。默认true
+   */
   @Prop useCangjieComponent?: boolean = true
+  /**
+   * 使用ArkUI布局用户传入ArkUI自定义组件,不传则使用三方库自带的Text组件显示
+   */
   @BuilderParam customContains: () => void = this.defaultTextBuilder
+  private markdownNode: CJNodeController | null = null
 
   @Builder
   defaultTextBuilder() {
-    if(!this.useCangjieComponent) {
+    if (!this.useCangjieComponent) {
       Column() {
         Text(this.content)
-      }.width('100%')
+      }
+      .width('100%')
       .height('100%')
     }
   }
 
-  onMarkDownChange():void {
-    if(this.useCangjieComponent === true) {
-      this.markdownNode?.callbackCJ(this.content)
+  onMarkDownChange(): void {
+    if (this.useCangjieComponent === true) {
+      this.markdownNode?.callbackCJ(this.content, this.isInputEnded, this.incrementalAnalysis)
     }
   }
 
   aboutToAppear(): void {
-    if(this.useCangjieComponent === true) {
-      if(global_customLib ===undefined) {
-        global_customLib = requireCJLib("libmarkdown.so") as CustomLib
-      }
-      if(global_cjLib === undefined){
-        global_cjLib = requireCJLib("libmarkdown.so") as CJLib
-      }
-      this.markdownNode = new CJNodeController(this.content, this.getConfig(), this.getPlugin())
+    if (this.useCangjieComponent === true) {
+      this.markdownNode = new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin(), this.listScroller?.getScroller())
     }
   }
 
   build() {
-    if(this.useCangjieComponent) {
+    if (this.useCangjieComponent) {
       NodeContainer(this.markdownNode)
     } else {
       this.customContains()
     }
   }
 
-  getConfig(): CJMarkdownConfig|undefined {
-    let cjMarkdownConfig: CJMarkdownConfig|undefined = undefined
-    if(global_customLib !== undefined) {
-      cjMarkdownConfig = new global_customLib.CJMarkdownConfig()
-    }
-    if (this.config !== undefined && cjMarkdownConfig !== undefined) {
+  getConfig(): CJMarkdownConfig {
+    let cjMarkdownConfig: CJMarkdownConfig = new CJMarkdownConfig()
+    if (this.config !== undefined) {
       if (this.config.linkCallback !== undefined) {
         cjMarkdownConfig.setLinkCallback(this.config.linkCallback)
       }
@@ -99,8 +125,8 @@ export struct CJMarkdown {
       if (this.config.imageCallback !== undefined) {
         cjMarkdownConfig.setImageCallback(this.config.imageCallback)
       }
-      if (this.config.imageCallbackCallback !== undefined && global_customLib !== undefined) {
-        global_customLib.registerImgPreprocessCallback(this.config.imageCallbackCallback)
+      if (this.config.imageCallbackCallback !== undefined) {
+        registerImgPreprocessCallback(this.config.imageCallbackCallback)
       }
       if (this.config.imageDownloadCallback !== undefined) {
         cjMarkdownConfig.setImageDownloadCallback(this.config.imageDownloadCallback)
@@ -143,30 +169,25 @@ export struct CJMarkdown {
     return cjMarkdownConfig
   }
 
-  getTheme(): CJMarkdownTheme|undefined {
-    let cjMarkdownTheme: CJMarkdownTheme |undefined = undefined
-    if(global_customLib !== undefined){
-      cjMarkdownTheme = new global_customLib.CJMarkdownTheme()
-    }
-    if (this.config !== undefined && cjMarkdownTheme!==undefined) {
+  getTheme(): CJMarkdownTheme {
+    let cjMarkdownTheme: CJMarkdownTheme = new CJMarkdownTheme()
+    if (this.config !== undefined) {
       if (this.config.markdownTheme !== undefined) {
-        if (this.config.markdownTheme.context !== undefined && global_customLib!==undefined) {
-          global_customLib.setGlobalContext(this.config.markdownTheme.context)
+        if (this.config.markdownTheme.context !== undefined) {
+          setGlobalContext(this.config.markdownTheme.context)
         }
-        if(global_cjLib!==undefined){
-          global_cjLib.getCJResource(
-            this.config.markdownTheme.codeFullScreenIcon,
-            this.config.markdownTheme.codeCopyIcon,
-            this.config.markdownTheme.audioIcon,
-            this.config.markdownTheme.videoImage,
-            this.config.markdownTheme.playCircleFillIcon,
-            this.config.markdownTheme.bannerImage,
-            this.config.markdownTheme.imageResource,
-            this.config.markdownTheme.videoReleaseImage,
-            this.config.markdownTheme.videoDownloadImage,
-            this.config.markdownTheme.imageDownloadImage
-          )
-        }
+        getCJResource(
+          this.config.markdownTheme.codeFullScreenIcon,
+          this.config.markdownTheme.codeCopyIcon,
+          this.config.markdownTheme.audioIcon,
+          this.config.markdownTheme.videoImage,
+          this.config.markdownTheme.playCircleFillIcon,
+          this.config.markdownTheme.bannerImage,
+          this.config.markdownTheme.imageResource,
+          this.config.markdownTheme.videoReleaseImage,
+          this.config.markdownTheme.videoDownloadImage,
+          this.config.markdownTheme.imageDownloadImage
+        )
 
         if (this.config.markdownTheme.isMarkdownParserSync !== undefined) {
           cjMarkdownTheme.setIsMarkdownParserSync(this.config.markdownTheme.isMarkdownParserSync)
@@ -197,6 +218,9 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.linkSize !== undefined) {
           cjMarkdownTheme.setLinkSize(this.config.markdownTheme.linkSize)
+        }
+        if (this.config.markdownTheme.linkLineHeight !== undefined) {
+          cjMarkdownTheme.setLinkLineHeight(this.config.markdownTheme.linkLineHeight)
         }
         if (this.config.markdownTheme.linkBackGroupColor !== undefined) {
           cjMarkdownTheme.setLinkBackGroupColor(this.config.markdownTheme.linkBackGroupColor)
@@ -330,9 +354,6 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.taskListItemLength !== undefined) {
           cjMarkdownTheme.setTaskListItemLength(this.config.markdownTheme.taskListItemLength)
         }
-        if (this.config.markdownTheme.isCodeStyle !== undefined) {
-          cjMarkdownTheme.setIsCodeStyle(this.config.markdownTheme.isCodeStyle)
-        }
         if (this.config.markdownTheme.isCodeFormat !== undefined) {
           cjMarkdownTheme.setIsCodeFormat(this.config.markdownTheme.isCodeFormat)
         }
@@ -347,12 +368,6 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.codeTypeface !== undefined) {
           cjMarkdownTheme.setCodeTypeface(this.config.markdownTheme.codeTypeface)
-        }
-        if (this.config.markdownTheme.codeLeftAndRightPadding !== undefined) {
-          cjMarkdownTheme.setCodeLeftAndRightPadding(this.config.markdownTheme.codeLeftAndRightPadding)
-        }
-        if (this.config.markdownTheme.codeHeight !== undefined) {
-          cjMarkdownTheme.setCodeHeight(this.config.markdownTheme.codeHeight)
         }
         if (this.config.markdownTheme.isCodeBlockParserSync !== undefined) {
           cjMarkdownTheme.setIsCodeBlockParserSync(this.config.markdownTheme.isCodeBlockParserSync)
@@ -441,15 +456,23 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.headingBottomMargins !== undefined) {
           cjMarkdownTheme.setHeadingBottomMargins(this.config.markdownTheme.headingBottomMargins)
         }
-        if (this.config.markdownTheme.headingTextSizeMultipliers !== undefined) {
-          let multipliers: Array<number> = new Array<number>()
-          for (let index = 0; index < this.config.markdownTheme.headingTextSizeMultipliers.length; index++) {
-            multipliers.push(this.config.markdownTheme.headingTextSizeMultipliers[index])
-          }
-          cjMarkdownTheme.setHeadingTextSizeMultipliers(multipliers)
+        if (this.config.markdownTheme.headingTextSize1 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize1(this.config.markdownTheme.headingTextSize1)
         }
-        if (this.config.markdownTheme.headingTextColor !== undefined) {
-          cjMarkdownTheme.setHeadingTextColor(this.config.markdownTheme.headingTextColor)
+        if (this.config.markdownTheme.headingTextSize2 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize2(this.config.markdownTheme.headingTextSize2)
+        }
+        if (this.config.markdownTheme.headingTextSize3 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize3(this.config.markdownTheme.headingTextSize3)
+        }
+        if (this.config.markdownTheme.headingTextSize4 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize4(this.config.markdownTheme.headingTextSize4)
+        }
+        if (this.config.markdownTheme.headingTextSize5 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize5(this.config.markdownTheme.headingTextSize5)
+        }
+        if (this.config.markdownTheme.headingTextSize6 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize6(this.config.markdownTheme.headingTextSize6)
         }
         if (this.config.markdownTheme.headingTextWordSpace !== undefined) {
           cjMarkdownTheme.setHeadingTextWordSpace(this.config.markdownTheme.headingTextWordSpace)
@@ -471,6 +494,24 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.headingTextLineHeight6 !== undefined) {
           cjMarkdownTheme.setHeadingTextLineHeight6(this.config.markdownTheme.headingTextLineHeight6)
+        }
+        if (this.config.markdownTheme.headingTextColor1 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor1(this.config.markdownTheme.headingTextColor1)
+        }
+        if (this.config.markdownTheme.headingTextColor2 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor2(this.config.markdownTheme.headingTextColor2)
+        }
+        if (this.config.markdownTheme.headingTextColor3 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor3(this.config.markdownTheme.headingTextColor3)
+        }
+        if (this.config.markdownTheme.headingTextColor4 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor4(this.config.markdownTheme.headingTextColor4)
+        }
+        if (this.config.markdownTheme.headingTextColor5 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor5(this.config.markdownTheme.headingTextColor5)
+        }
+        if (this.config.markdownTheme.headingTextColor6 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor6(this.config.markdownTheme.headingTextColor6)
         }
         if (this.config.markdownTheme.paragraphTopMargins !== undefined) {
           cjMarkdownTheme.setParagraphTopMargins(this.config.markdownTheme.paragraphTopMargins)
@@ -670,8 +711,17 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.imageMaxHeight !== undefined) {
           cjMarkdownTheme.setImageMaxHeight(this.config.markdownTheme.imageMaxHeight)
         }
+        if (this.config.markdownTheme.imageMaxWidth !== undefined) {
+          cjMarkdownTheme.setImageMaxWidth(this.config.markdownTheme.imageMaxWidth)
+        }
         if (this.config.markdownTheme.imageBorderRadius !== undefined) {
           cjMarkdownTheme.setImageBorderRadius(this.config.markdownTheme.imageBorderRadius)
+        }
+        if (this.config.markdownTheme.imageBorderWidth !== undefined) {
+          cjMarkdownTheme.setImageBorderWidth(this.config.markdownTheme.imageBorderWidth)
+        }
+        if (this.config.markdownTheme.imageBorderColor !== undefined) {
+          cjMarkdownTheme.setImageBorderColor(this.config.markdownTheme.imageBorderColor)
         }
         if (this.config.markdownTheme.isAutoResize !== undefined) {
           cjMarkdownTheme.setIsAutoResize(this.config.markdownTheme.isAutoResize)
@@ -736,6 +786,9 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.tableTitleTextSize !== undefined) {
           cjMarkdownTheme.setTableTitleTextSize(this.config.markdownTheme.tableTitleTextSize)
         }
+        if (this.config.markdownTheme.tableTitleLineHeight !== undefined) {
+          cjMarkdownTheme.setTableTitleLineHeight(this.config.markdownTheme.tableTitleLineHeight)
+        }
         if (this.config.markdownTheme.tableContentTextColor !== undefined) {
           cjMarkdownTheme.setTableContentTextColor(this.config.markdownTheme.tableContentTextColor)
         }
@@ -756,6 +809,12 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.tableFirstColumnBold !== undefined) {
           cjMarkdownTheme.setTableFirstColumnBold(this.config.markdownTheme.tableFirstColumnBold)
+        }
+        if (this.config.markdownTheme.tableScrollBarShow !== undefined) {
+          cjMarkdownTheme.setTableScrollBarShow(this.config.markdownTheme.tableScrollBarShow)
+        }
+        if (this.config.markdownTheme.tableScrollBarColor !== undefined) {
+          cjMarkdownTheme.setTableScrollBarColor(this.config.markdownTheme.tableScrollBarColor)
         }
         if (this.config.markdownTheme.isDark !== undefined) {
           cjMarkdownTheme.setIsDark(this.config.markdownTheme.isDark)
@@ -798,13 +857,9 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getPlugin(): CJMarkdownPlugin | undefined {
-    let cjMarkdownPlugin: CJMarkdownPlugin | undefined = undefined
-    if(global_customLib !== undefined){
-      cjMarkdownPlugin = new global_customLib.CJMarkdownPlugin()
-    }
-
-    if (this.plugin !== undefined && cjMarkdownPlugin!==undefined) {
+  getPlugin(): CJMarkdownPlugin {
+    let cjMarkdownPlugin: CJMarkdownPlugin = new CJMarkdownPlugin()
+    if (this.plugin !== undefined) {
       cjMarkdownPlugin.setIsBlockAudioPlugin(this.plugin.isBlockAudioPlugin)
       cjMarkdownPlugin.setIsBlockVideoPlugin(this.plugin.isBlockVideoPlugin)
       cjMarkdownPlugin.setIsCodeListPlugin(this.plugin.isCodeListPlugin)
@@ -814,7 +869,7 @@ export struct CJMarkdown {
       cjMarkdownPlugin.setIsTocPlugin(this.plugin.isTocPlugin)
       cjMarkdownPlugin.setIsTaskListPlugin(this.plugin.isTaskListPlugin)
       cjMarkdownPlugin.setIsStrikethroughPlugin(this.plugin.isStrikethroughPlugin)
-      cjMarkdownPlugin.setIsLinkifyPlugin(this.plugin.isLinkifyPlugin)
+      cjMarkdownPlugin.setIsLinkifyPlugin(this.plugin.isLinkifyPlugin, this.plugin.regs)
       cjMarkdownPlugin.setIsLinkViewPlugin(this.plugin.isLinkViewPlugin)
       cjMarkdownPlugin.setIsLatexMathPlugin(this.plugin.isLatexMathPlugin)
       cjMarkdownPlugin.setIsImageStylePlugin(this.plugin.isImageStylePlugin)
@@ -866,8 +921,7 @@ export class MarkdownConfiguration {
   /**
    * 视频的图片替换回调
    */
-  videoImageCallback?: (funcArg0: string,
-    funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
+  videoImageCallback?: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
   /**
    * 视频发布的点击事件
    */
@@ -984,7 +1038,6 @@ export class MarkdownConfiguration {
    */
   setVideoReleaseCallback(cb: (funcArg0: string) => void): void {
     this.videoReleaseCallback = cb
-
   }
 
   /**
@@ -1148,6 +1201,10 @@ export class MarkdownTheme {
    * 文本格式链接文字大小
    */
   linkSize?: number = undefined
+  /**
+   * 文本格式链接文字行高
+   */
+  linkLineHeight?: number = undefined
   /**
    * 文本格式链接背景颜色
    */
@@ -1325,40 +1382,28 @@ export class MarkdownTheme {
    */
   taskListItemLength?: number = undefined
   /**
-   * 内联代码是否是图片显示
-   */
-  isCodeStyle?: boolean = undefined
-  /**
    * 设置是否格式化代码块内容
    */
   isCodeFormat?: boolean = undefined
   /**
-   * 文本、图片格式内联代码文本颜色
+   * 内联代码文本颜色
    */
   codeTextColor?: number = undefined
   /**
-   * 文本、图片格式内联代码背景颜色
+   * 内联代码背景颜色
    */
   codeBackgroundColor?: number = undefined
   /**
-   * 文本、图片格式内联代码文本大小
+   * 内联代码文本大小
    */
   codeTextSize?: number = undefined
   /**
-   * 文本格式内联代码文本字体
+   * 内联代码文本字体
    */
   codeTypeface?: string = undefined
   /**
-   * 图片格式内联代码文本左右边距
-   */
-  codeLeftAndRightPadding?: number = undefined
-  /**
-   * 图片格式内联代码文本高度
-   */
-  codeHeight?: number = undefined
-  /**
    * 围栏代码块代码高亮是否同步解析
-  */
+   */
   isCodeBlockParserSync?: boolean = undefined
   /**
    * 代码块代码文本颜色
@@ -1473,13 +1518,29 @@ export class MarkdownTheme {
    */
   headingBottomMargins?: number = undefined
   /**
-   * 标题文本大小数组
+   * 一级标题文本大小
    */
-  headingTextSizeMultipliers?: Array<number> = undefined
+  headingTextSize1?: number = undefined
   /**
-   * 标题文本颜色
+   * 二级标题文本大小
    */
-  headingTextColor?: number = undefined
+  headingTextSize2?: number = undefined
+  /**
+   * 三级标题文本大小
+   */
+  headingTextSize3?: number = undefined
+  /**
+   * 四级标题文本大小
+   */
+  headingTextSize4?: number = undefined
+  /**
+   * 五级标题文本大小
+   */
+  headingTextSize5?: number = undefined
+  /**
+   * 六级标题文本大小
+   */
+  headingTextSize6?: number = undefined
   /**
    * 标题文本字间距
    */
@@ -1508,6 +1569,30 @@ export class MarkdownTheme {
    * 六级标题文本行高
    */
   headingTextLineHeight6?: number = undefined
+  /**
+   * 一级标题文本颜色
+   */
+  headingTextColor1?: number = undefined
+  /**
+   * 二级标题文本颜色
+   */
+  headingTextColor2?: number = undefined
+  /**
+   * 三级标题文本颜色
+   */
+  headingTextColor3?: number = undefined
+  /**
+   * 四级标题文本颜色
+   */
+  headingTextColor4?: number = undefined
+  /**
+   * 五级标题文本颜色
+   */
+  headingTextColor5?: number = undefined
+  /**
+   * 六级标题文本颜色
+   */
+  headingTextColor6?: number = undefined
   /**
    * 段落模块上间距
    */
@@ -1728,27 +1813,22 @@ export class MarkdownTheme {
    * 视频下载按钮高度
    */
   videoDownloadHeight?: number = undefined
-
   /**
    * 视频下载按钮圆角
    */
   videoDownloadRadius?: number = undefined
-
   /**
    * 视频下载按钮文本内容
    */
   videoDownloadText?: string = undefined
-
   /**
    * 视频下载按钮文本大小
    */
   videoDownloadTexSize?: number = undefined
-
   /**
    * 视频下载按钮文本颜色
    */
   videoDownloadTexColor?: number = undefined
-
   /**
    * 视频下载按钮背景颜色
    */
@@ -1770,9 +1850,21 @@ export class MarkdownTheme {
    */
   imageMaxHeight?: number = undefined
   /**
+   * 图片最大宽度
+   */
+  imageMaxWidth?: number = undefined
+  /**
    * 图片圆角大小
    */
   imageBorderRadius?: number = undefined
+  /**
+   * 图片圆角大小
+   */
+  imageBorderWidth?: number = undefined
+  /**
+   * 图片圆角大小
+   */
+  imageBorderColor?: number = undefined
   /**
    * 网络图片是否压缩
    */
@@ -1853,17 +1945,18 @@ export class MarkdownTheme {
    * 表格头文本颜色
    */
   tableTitleTextColor?: number = undefined
-
   /**
    * 表格头文本大小
    */
   tableTitleTextSize?: number = undefined
-
+  /**
+   * 表格头文本行高
+   */
+  tableTitleLineHeight?: number = undefined
   /**
    * 表格内容文本颜色
    */
   tableContentTextColor?: number = undefined
-
   /**
    * 表格内容文本大小
    */
@@ -1889,21 +1982,33 @@ export class MarkdownTheme {
    */
   tableFirstColumnBold?: boolean = undefined
   /**
+   * 表格是否显示滚动条
+   */
+  tableScrollBarShow?: boolean = undefined
+  /**
+   * 表格滚动条颜色
+   */
+  tableScrollBarColor?: number = undefined
+  /**
    * 代码深浅色模式
    */
   isDark?: boolean = undefined
   /**
    * 删除线颜色
    */
-  strikethroughColor?: number= undefined
+  strikethroughColor?: number = undefined
+  /**
+   * 删除线样式
+   */
+  strikethroughStyle?: DecorationStyle = undefined
   /**
    * 定义列表定义行缩进
    */
-  descListTermAndDefMargins?: number= undefined
+  descListTermAndDefMargins?: number = undefined
   /**
    * 定义列表定义行缩进
    */
-  descListDefIndentation?: number= undefined
+  descListDefIndentation?: number = undefined
   /**
    * 定义列表定义行间距
    */
@@ -1936,6 +2041,10 @@ export class MarkdownTheme {
    * 下划线颜色
    */
   underlineColor?: number = undefined
+  /**
+   * 下划线样式
+   */
+  underlineStyle?: DecorationStyle = undefined
 
   /**
    * 设置上下文
@@ -2124,6 +2233,15 @@ export class MarkdownTheme {
    */
   setLinkSize(linkSize: number): void {
     this.linkSize = linkSize
+  }
+
+  /**
+   * 设置文本格式链接文字行高
+   *
+   * @param linkLineHeight 文本格式链接文字行高
+   */
+  setLinkLineHeight(linkLineHeight: number): void {
+    this.linkLineHeight = linkLineHeight
   }
 
   /**
@@ -2523,15 +2641,6 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置内联代码是否是图片显示
-   *
-   * @param isCodeStyle 内联代码是否是图片显示 - true：图片化显示；false：不图片化显示。默认false
-   */
-  setIsCodeStyle(isCodeStyle: boolean): void {
-    this.isCodeStyle = isCodeStyle
-  }
-
-  /**
    * 设置是否格式化代码块内容
    *
    * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
@@ -2541,57 +2650,39 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置文本、图片格式内联代码文本颜色
+   * 设置内联代码文本颜色
    *
-   * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
+   * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
    */
   setCodeTextColor(codeTextColor: number): void {
     this.codeTextColor = codeTextColor
   }
 
   /**
-   * 设置文本、图片格式内联代码背景颜色
+   * 设置内联代码背景颜色
    *
-   * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFFEAEAEA
+   * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFFEAEAEA
    */
   setCodeBackgroundColor(codeBackgroundColor: number): void {
     this.codeBackgroundColor = codeBackgroundColor
   }
 
   /**
-   * 设置文本、图片格式内联代码文本大小
+   * 设置内联代码文本大小
    *
-   * @param codeTextSize 文本、图片格式内联代码文本大小 - 默认13.0fp
+   * @param codeTextSize 内联代码文本大小 - 默认13.0fp
    */
   setCodeTextSize(codeTextSize: number): void {
     this.codeTextSize = codeTextSize
   }
 
   /**
-   * 设置文本格式内联代码文本字体
+   * 设置内联代码文本字体
    *
-   * @param codeTypeface 文本格式内联代码文本字体 - 默认"HarmonyOS Sans"
+   * @param codeTypeface 内联代码文本字体 - 默认"HarmonyOS Sans"
    */
   setCodeTypeface(codeTypeface: string): void {
     this.codeTypeface = codeTypeface
-  }
-
-  /**
-   * 设置图片格式内联代码文本左右边距
-   *
-   * @param codeLeftAndRightPadding 图片格式内联代码文本左右边距 - 默认4.0vp
-   */
-  setCodeLeftAndRightPadding(codeLeftAndRightPadding: number): void {
-    this.codeLeftAndRightPadding = codeLeftAndRightPadding
-  }
-
-  /**
-   * 设置图片格式内联代码文本高度
-   *
-   * @param codeHeight 图片格式内联代码文本高度 - 默认20.0vp
-   */
-  setCodeHeight(codeHeight: number): void {
-    this.codeHeight = codeHeight
   }
 
   /**
@@ -2856,21 +2947,57 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置标题文本大小数组
+   * 设置一级标题文本大小
    *
-   * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+   * @param headingTextSize1 一级标题文本大小 - 默认20.0
    */
-  setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): void {
-    this.headingTextSizeMultipliers = headingTextSizeMultipliers
+  setHeadingTextSize1(headingTextSize1: number): void {
+    this.headingTextSize1 = headingTextSize1
   }
 
   /**
-   * 设置标题文本颜色
+   * 设置二级标题文本大小
    *
-   * @param headingTextColor 标题文本颜色 - 默认0XFF191919
+   * @param headingTextSize2 二级标题文本大小 - 默认17.0
    */
-  setHeadingTextColor(headingTextColor: number): void {
-    this.headingTextColor = headingTextColor
+  setHeadingTextSize2(headingTextSize2: number): void {
+    this.headingTextSize2 = headingTextSize2
+  }
+
+  /**
+   * 设置三级标题文本大小
+   *
+   * @param headingTextSize3 三级标题文本大小 - 默认16.0
+   */
+  setHeadingTextSize3(headingTextSize3: number): void {
+    this.headingTextSize3 = headingTextSize3
+  }
+
+  /**
+   * 设置四级标题文本大小
+   *
+   * @param headingTextSize4 四级标题文本大小 - 默认15.0
+   */
+  setHeadingTextSize4(headingTextSize4: number): void {
+    this.headingTextSize4 = headingTextSize4
+  }
+
+  /**
+   * 设置五级标题文本大小
+   *
+   * @param headingTextSize5 五级标题文本大小 - 默认15.0
+   */
+  setHeadingTextSize5(headingTextSize5: number): void {
+    this.headingTextSize5 = headingTextSize5
+  }
+
+  /**
+   * 设置六级标题文本大小
+   *
+   * @param headingTextSize6 六级标题文本大小 - 默认13.0
+   */
+  setHeadingTextSize6(headingTextSize6: number): void {
+    this.headingTextSize6 = headingTextSize6
   }
 
   /**
@@ -2934,6 +3061,60 @@ export class MarkdownTheme {
    */
   setHeadingTextLineHeight6(headingTextLineHeight6: number): void {
     this.headingTextLineHeight6 = headingTextLineHeight6
+  }
+
+  /**
+   * 设置一级标题文本颜色
+   *
+   * @param headingTextColor1 标题文本颜色
+   */
+  setHeadingTextColor1(headingTextColor1: number): void {
+    this.headingTextColor1 = headingTextColor1
+  }
+
+  /**
+   * 设置二级标题文本颜色
+   *
+   * @param headingTextColor2 标题文本颜色
+   */
+  setHeadingTextColor2(headingTextColor2: number): void {
+    this.headingTextColor2 = headingTextColor2
+  }
+
+  /**
+   * 设置三级标题文本颜色
+   *
+   * @param headingTextColor3 标题文本颜色
+   */
+  setHeadingTextColor3(headingTextColor3: number): void {
+    this.headingTextColor3 = headingTextColor3
+  }
+
+  /**
+   * 设置四级标题文本颜色
+   *
+   * @param headingTextColor4 标题文本颜色
+   */
+  setHeadingTextColor4(headingTextColor4: number): void {
+    this.headingTextColor4 = headingTextColor4
+  }
+
+  /**
+   * 设置五级标题文本颜色
+   *
+   * @param headingTextColor5 标题文本颜色
+   */
+  setHeadingTextColor5(headingTextColor5: number): void {
+    this.headingTextColor5 = headingTextColor5
+  }
+
+  /**
+   * 设置六级标题文本颜色
+   *
+   * @param headingTextColor6 标题文本颜色
+   */
+  setHeadingTextColor6(headingTextColor6: number): void {
+    this.headingTextColor6 = headingTextColor6
   }
 
   /**
@@ -3513,12 +3694,39 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置图片最大宽度
+   *
+   * @param imageMaxWidth 图片最大宽度 - 默认None
+   */
+  setImageMaxWidth(imageMaxWidth: number): void {
+    this.imageMaxWidth = imageMaxWidth
+  }
+
+  /**
    * 设置图片圆角大小
    *
    * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
    */
   setImageBorderRadius(imageBorderRadius: number): void {
     this.imageBorderRadius = imageBorderRadius
+  }
+
+  /**
+   * 设置图片边框宽度
+   *
+   * @param imageBorderWidth 图片边框宽度 - 默认0.0vp
+   */
+  setImageBorderWidth(imageBorderWidth: number): void {
+    this.imageBorderWidth = imageBorderWidth
+  }
+
+  /**
+   * 设置图片边框颜色
+   *
+   * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
+   */
+  setImageBorderColor(imageBorderColor: number): void {
+    this.imageBorderColor = imageBorderColor
   }
 
   /**
@@ -3711,6 +3919,15 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置表格头文本行高
+   *
+   * @param tableTitleLineHeight 表格头文本行高 - 默认22.0vp
+   */
+  setTableTitleLineHeight(tableTitleLineHeight: number): void {
+    this.tableTitleLineHeight = tableTitleLineHeight
+  }
+
+  /**
    * 设置表格内容文本颜色
    *
    * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
@@ -3771,6 +3988,24 @@ export class MarkdownTheme {
    */
   setTableFirstColumnBold(tableFirstColumnBold: boolean): void {
     this.tableFirstColumnBold = tableFirstColumnBold
+  }
+
+  /**
+   * 设置表格是否显示滚动条
+   *
+   * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
+   */
+  setTableScrollBarShow(tableScrollBarShow: boolean): void {
+    this.tableScrollBarShow = tableScrollBarShow
+  }
+
+  /**
+   * 设置表格滚动条颜色
+   *
+   * @param tableScrollBarColor 表格滚动条颜色
+   */
+  setTableScrollBarColor(tableScrollBarColor: number): void {
+    this.tableScrollBarColor = tableScrollBarColor
   }
 
   /**
@@ -3880,6 +4115,15 @@ export class MarkdownTheme {
   setUnderlineColor(underlineColor: number): void {
     this.underlineColor = underlineColor
   }
+
+  /**
+   * 设置下划线样式
+   *
+   * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+   */
+  setUnderlineStyle(underlineStyle: DecorationStyle): void {
+    this.underlineStyle = underlineStyle
+  }
 }
 
 /**
@@ -3899,7 +4143,7 @@ export enum LatexMathColorFormat {
 /**
  * 图片缩放类型的枚举
  */
-export enum ImageFitType{
+export enum ImageFitType {
   /**
    * 保持宽高比进行缩小或者放大，使得图片两边都大于或等于显示边界。
    */
@@ -3912,6 +4156,17 @@ export enum ImageFitType{
    * 不保持宽高比进行放大缩小，使得图片充满显示边界。
    */
   Fill
+}
+
+/**
+ * 装饰线样式的枚举
+ */
+export enum DecorationStyle {
+  Solid, // 单实线
+  Double, // 双实线
+  Dotted, // 点线
+  Dashed, // 虚线
+  Wavy // 波浪线
 }
 
 /**
@@ -3958,6 +4213,10 @@ export class MarkdownPlugin {
    * 是否加载链接自动解析插件
    */
   isLinkifyPlugin: boolean = false
+  /**
+   * 正则列表
+   */
+  regs: Array<string> = []
   /**
    * 是否加载链接单独解析插件
    */
@@ -4092,9 +4351,11 @@ export class MarkdownPlugin {
    * 设置链接自动加载插件
    *
    * @param isLinkifyPlugin 是否设置链接自动加载插件 - true：设置链接自动加载插件；false：不设置链接自动加载插件。默认false
+   * @param regs 正则列表
    */
-  setIsLinkifyPlugin(isLinkifyPlugin: boolean): void {
+  setIsLinkifyPlugin(isLinkifyPlugin: boolean, regs: Array<string>): void {
     this.isLinkifyPlugin = isLinkifyPlugin
+    this.regs = regs
   }
 
   /**
@@ -4199,3 +4460,84 @@ export class MarkdownPlugin {
   }
 }
 
+/**
+ * Markdown滑动控制器
+ */
+export class MarkdownScroller {
+  private scroller?: CJMarkdownScroller = undefined
+
+  /**
+   * 构造函数
+   */
+  constructor() {
+    this.scroller = new CJMarkdownScroller()
+  }
+
+  /**
+   * 滚动到容器边缘
+   *
+   * @param edge 滚动到容器边缘
+   */
+  scrollEdge(edge: Edge): void {
+    switch (edge) {
+      case Edge.Top:
+        this.scroller?.scrollEdge(1)
+        break
+      case Edge.Bottom:
+        this.scroller?.scrollEdge(2)
+        break
+      default:
+        this.scroller?.scrollEdge(1)
+        break
+    }
+  }
+
+  /**
+   * 滚动指定距离
+   *
+   * @param xOffset x轴偏移量
+   * @param yOffset y轴偏移量
+   */
+  scrollBy(xOffset: number, yOffset: number): void {
+    this.scroller?.scrollBy(xOffset, yOffset)
+  }
+
+  /**
+   * 滑动到指定Index
+   *
+   * @param index 要滑动到的目标元素在当前容器中的索引值
+   */
+  scrollToIndex(index: number): void {
+    this.scroller?.scrollToIndex(index)
+  }
+
+  /**
+   * 判断是否滚动到底部
+   *
+   * @returns 是否滚动到底部
+   */
+  isAtEnd(): boolean {
+    return this.scroller?.isAtEnd() || false
+  }
+
+  /**
+   * 获取当前y轴偏移量
+   *
+   * @returns 当前y轴偏移量
+   */
+  currentYOffset(): number {
+    return this.scroller?.currentYOffset() || 0
+  }
+
+  /**
+   * 获取内部CJMarkdownScroller实例
+   *
+   * @returns CJMarkdownScroller实例
+   */
+  getScroller(): CJMarkdownScroller {
+    if (this.scroller === undefined) {
+      this.scroller = new CJMarkdownScroller()
+    }
+    return this.scroller
+  }
+}

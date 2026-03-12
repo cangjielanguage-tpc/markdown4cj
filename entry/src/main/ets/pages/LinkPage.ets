@@ -1,9 +1,9 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
-import { getFileListStr } from './FileUtils'
-import { booleanToString, numberToColorString, stringToBoolean } from './BaseUtils'
+import { titleComponent } from '../component/BaseComponent'
+import { getFileListStr } from '../utils/FileUtils'
+import { booleanToString, numberToColorString, stringToBoolean } from '../utils/BaseUtils'
 import { router } from '@kit.ArkUI'
 
 @Entry
@@ -35,6 +35,33 @@ struct LinkPage {
    */
   @State
   isFull: boolean = true
+  /**
+   * markdown是否增量解析列表
+   */
+  incrementalAnalysisList: Array<boolean> = [true, false]
+  /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间列表
+   */
+  timeList: Array<number> = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500]
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量列表
+   */
+  textNumberList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 150, 200]
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
   /**
    * 链接是否是图片显示列表
    */
@@ -367,6 +394,100 @@ struct LinkPage {
                   .onClick(() => {
                     this.isFull = stringToBoolean(item)
                     this.linkData.isFull = this.isFull
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`markdown是否增量解析 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.incrementalAnalysis}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.incrementalAnalysisList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.incrementalAnalysis = item
+                    this.linkData.incrementalAnalysis = this.incrementalAnalysis
+                  })
+              })
+            }
+          }
+
+
+          Column() {
+            Row() {
+              Text(`增量加载每次间隔时间 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.time}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.timeList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.time = item
+                    this.linkData.time = this.time
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`增量每次增量文本数量 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.textNumber}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.textNumberList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.textNumber = item
+                    this.linkData.textNumber = this.textNumber
                   })
               })
             }
@@ -1384,6 +1505,9 @@ struct LinkPage {
 
 export class LinkData {
   _isFull: boolean = true
+  _incrementalAnalysis: boolean = false
+  _time: number = 50
+  _textNumber: number = 10
   _isLinkStyle: boolean = false
   _isListLinkStyle: boolean = false
   _linkColor: number = 0xFF0000FF
@@ -1419,6 +1543,18 @@ export class LinkData {
 
   public set isFull(value: boolean) {
     this._isFull = value
+  }
+
+  public set incrementalAnalysis(value: boolean) {
+    this._incrementalAnalysis = value
+  }
+
+  public set time(value: number) {
+    this._time = value
+  }
+
+  public set textNumber(value: number) {
+    this._textNumber = value
   }
 
   public set isLinkStyle(value: boolean) {

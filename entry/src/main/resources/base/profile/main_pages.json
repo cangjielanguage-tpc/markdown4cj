@@ -1,5 +1,6 @@
 {
   "src": [
+    "pages/Index",
     "pages/IndexPage",
     "pages/DemoPage",
     "pages/DemoDetailsPage",
@@ -53,6 +54,11 @@
     "pages/EmojiDetailsPage",
     "pages/AllPage",
     "pages/AllDetailsPage",
-    "pages/Card"
+    "pages/CardPage",
+    "pages/ABCustomPage",
+    "pages/ABCustomDetailsPage",
+    "pages/AIChatPage",
+    "pages/AIChatDetailsPage",
+    "pages/AIChatLazyDetailsPage"
   ]
 }

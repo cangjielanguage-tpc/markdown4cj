@@ -1,10 +1,10 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextStr } from './FileUtils'
+import { getFileContextStr } from '../utils/FileUtils'
 import { EmojiData } from './EmojiPage'
 
 @Entry
@@ -43,6 +43,12 @@ struct EmojiDetailsPage {
    */
   time: number = 50
 
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
   aboutToAppear(): void {
     try {
       let emojiData: EmojiData = router.getParams() as EmojiData
@@ -73,13 +79,16 @@ struct EmojiDetailsPage {
         .onClick(
           () => {
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
                 this.content = this.content + this.fileStr[index]
                 this.scroller.scrollEdge(Edge.Bottom)
                 if (index === this.fileStr.length - 1) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
                 index++
@@ -91,6 +100,7 @@ struct EmojiDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })

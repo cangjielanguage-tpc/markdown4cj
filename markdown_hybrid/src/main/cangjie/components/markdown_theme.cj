@@ -22,10 +22,7 @@ import ohos.state_macro_manage.*
  *          有序列表：有序列表前缀文本是否加粗、有序列表前缀文本颜色、有序列表前缀文本大小、有序列表前缀文本行高
  *          无序列表：无序列表前缀是否全部是实心圆型、无序列表前缀文本颜色、无序列表前缀文本大小、无序列表前缀文本行高
  *          任务列表：任务列表选择框宽高
- * 5：代码 - 内联代码是否是图片显示
- *          文本/图片格式内联代码文本颜色、文本/图片格式内联代码背景颜色、文本/图片格式内联代码文本大小
- *          文本格式内联代码：文本格式内联代码文本字体
- *          图片格式内联代码：图片格式内联代码文本左右边距、图片格式内联代码文本高度
+ * 5：代码 - 内联代码：内联代码文本颜色、内联代码背景颜色、内联代码文本大小、内联代码文本字体
  *          围栏代码块：是否格式化代码块内容、围栏代码块代码高亮是否同步解析
  *          缩进/围栏/组合/单独代码块：缩进/围栏/组合/单独代码块代码文本颜色、缩进/围栏/组合/单独代码块代码类型文本颜色、缩进/围栏/组合/单独代码块代码类型文本、缩进/围栏/组合/单独代码块代码类型和代码块距离、缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示、缩进/围栏/组合/单独代码块代码行号是否显示、缩进/围栏/组合/单独代码块背景颜色、缩进/围栏/组合/单独代码块左边距、缩进/围栏/组合/单独代码块字体、缩进/围栏/组合/单独代码块代码文本大小、缩进/围栏/组合/单独代码块代码文本行高、缩进/围栏/组合/单独代码块圆角大小、缩进/围栏/组合/单独代码块代码全屏按钮是否显示、缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高、缩进/围栏/组合/单独代码块代码全屏按钮默认图标、缩进/围栏/组合/单独代码块代码复制按钮默认图标
  *          组合代码块：组合代码块未选中标题字体大小、组合代码块选中标题字体大小、组合代码块选中标题文本颜色、组合代码块未选中标题文本颜色、组合代码块选中标题背景颜色、组合代码块未选中标题背景颜色
@@ -108,6 +105,11 @@ public class MarkdownTheme {
      * 文本格式链接文字大小
      */
     protected var linkSize: Float64 = 14.0
+
+    /**
+     * 文本格式链接文字行高
+     */
+    protected var linkLineHeight: Float64 = 20.0
 
     /**
      * 文本格式链接背景颜色
@@ -330,44 +332,29 @@ public class MarkdownTheme {
     protected var taskListItemLength: Float64 = 15.0
 
     /**
-     * 内联代码是否是图片显示
-     */
-    protected var isCodeStyle: Bool = false
-
-    /**
      * 是否格式化代码块内容
      */
     protected var isCodeFormat: Bool = false
 
     /**
-     * 文本/图片格式内联代码文本颜色
+     * 内联代码文本颜色
      */
     protected var codeTextColor: Color = COLOR_FF000000
 
     /**
-     * 文本/图片格式内联代码背景颜色
+     * 内联代码背景颜色
      */
     protected var codeBackgroundColor: Color = COLOR_FFEAEAEA
 
     /**
-     * 文本/图片格式内联代码文本大小
+     * 内联代码文本大小
      */
-    protected var codeTextSize: Float64 = fp2px(13.0.fp).getOrThrow().value
+    protected var codeTextSize: Float64 = 13.0
 
     /**
      * 文本格式内联代码文本字体
      */
     protected var codeTypeface: String = "HarmonyOS Sans"
-
-    /**
-     * 图片格式内联代码文本左右边距
-     */
-    protected var codeLeftAndRightPadding: Float64 = vp2px(4.0.vp).getOrThrow().value
-
-    /**
-     * 图片格式内联代码文本高度
-     */
-    protected var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
      * 围栏代码块代码高亮是否同步解析
@@ -530,14 +517,74 @@ public class MarkdownTheme {
     protected var headingBottomMargins: Float64 = 8.0
 
     /**
-     * 标题文本大小数组
+     * 一级标题文本大小
      */
-    protected var headingTextSizeMultipliers: Array<Float64> = [20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+    protected var headingTextSize1: Float64 = 20.0
 
     /**
-     * 标题文本颜色
+     * 二级标题文本大小
      */
-    protected var headingTextColor: Color = COLOR_FF191919
+    protected var headingTextSize2: Float64 = 17.0
+
+    /**
+     * 三级标题文本大小
+     */
+    protected var headingTextSize3: Float64 = 16.0
+
+    /**
+     * 四级标题文本大小
+     */
+    protected var headingTextSize4: Float64 = 15.0
+
+    /**
+     * 五级标题文本大小
+     */
+    protected var headingTextSize5: Float64 = 15.0
+
+    /**
+     * 六级标题文本大小
+     */
+    protected var headingTextSize6: Float64 = 13.0
+
+    /**
+     * 一级标题文本颜色
+     */
+    protected var headingTextColor1: Color = COLOR_FF191919
+
+    /**
+     * H1标题下分割线颜色
+     */
+    protected var headingBreakColor1: Color = COLOR_FF191919
+
+    /**
+     * 二级标题文本颜色
+     */
+    protected var headingTextColor2: Color = COLOR_FF191919
+
+    /**
+     * H2标题下分割线颜色
+     */
+    protected var headingBreakColor2: Color = COLOR_FF191919
+
+    /**
+     * 三级标题文本颜色
+     */
+    protected var headingTextColor3: Color = COLOR_FF191919
+
+    /**
+     * 四级标题文本颜色
+     */
+    protected var headingTextColor4: Color = COLOR_FF191919
+
+    /**
+     * 五级标题文本颜色
+     */
+    protected var headingTextColor5: Color = COLOR_FF191919
+
+    /**
+     * 六级标题文本颜色
+     */
+    protected var headingTextColor6: Color = COLOR_FF191919
 
     /**
      * 标题文本字间距
@@ -920,9 +967,24 @@ public class MarkdownTheme {
     protected var imageMaxHeight: ?Float64 = None
 
     /**
+     * 图片最大宽度
+     */
+    protected var imageMaxWidth: ?Float64 = None
+
+    /**
      * 图片圆角大小
      */
     protected var imageBorderRadius: Float64 = 0.0
+
+    /**
+     * 图片边框宽度
+     */
+    protected var imageBorderWidth: Float64 = 0.0
+
+    /**
+     * 图片边框颜色
+     */
+    protected var imageBorderColor: Color = Color.BLACK
 
     /**
      * 图片缩放类型
@@ -1045,6 +1107,11 @@ public class MarkdownTheme {
     protected var tableTitleTextSize: Float64 = 14.0
 
     /**
+     * 表格头文本大小
+     */
+    protected var tableTitleLineHeight: Float64 = 22.0
+
+    /**
      * 表格内容文本颜色
      */
     protected var tableContentTextColor: Color = COLOR_FF191919
@@ -1080,6 +1147,16 @@ public class MarkdownTheme {
     protected var tableFirstColumnBold: Bool = false
 
     /**
+     * 表格是否显示滚动条
+     */
+    protected var tableScrollBarShow: Bool = false
+
+    /**
+     * 表格是否显示滚动条
+     */
+    protected var tableScrollBarColor: Color = COLOR_FF191919
+
+    /**
      * markdown代码高亮样式
      */
     protected var prismTheme: PrismTheme = PrismThemeDarkula.create()
@@ -1088,6 +1165,11 @@ public class MarkdownTheme {
      * 删除线颜色
      */
     protected var strikethroughColor: Color = COLOR_FF191919
+
+    /**
+     * 删除线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线
+     */
+    protected var strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
     /**
      * 定义列表术语和定义行之间间距
@@ -1139,6 +1221,11 @@ public class MarkdownTheme {
      */
     protected var underlineColor: Color = COLOR_FF191919
 
+    /**
+     * 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线
+     */
+    protected var underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+
     protected init(builder: MarkdownThemeBuilder) {
         // 1、上下文
         this.stageContext = builder.stageContext
@@ -1159,6 +1246,7 @@ public class MarkdownTheme {
         this.linkColor = builder.linkColor
         this.isLinkSize = builder.isLinkSize
         this.linkSize = builder.linkSize
+        this.linkLineHeight = builder.linkLineHeight
         this.linkBackGroupColor = builder.linkBackGroupColor
         this.isLinkUnderlined = builder.isLinkUnderlined
         // 3.2、圆形图片格式链接
@@ -1216,14 +1304,11 @@ public class MarkdownTheme {
 
         // 5、代码
         // 5.1、内联代码
-        this.isCodeStyle = builder.isCodeStyle
         this.isCodeFormat = builder.isCodeFormat
         this.codeTextColor = builder.codeTextColor
         this.codeBackgroundColor = builder.codeBackgroundColor
         this.codeTypeface = builder.codeTypeface
         this.codeTextSize = builder.codeTextSize
-        this.codeLeftAndRightPadding = builder.codeLeftAndRightPadding
-        this.codeHeight = builder.codeHeight
         // 5.2、代码块
         this.isCodeBlockParserSync = builder.isCodeBlockParserSync
         this.codeBlockTextColor = builder.codeBlockTextColor
@@ -1263,8 +1348,20 @@ public class MarkdownTheme {
         this.headingTypeface = builder.headingTypeface
         this.headingTopMargins = builder.headingTopMargins
         this.headingBottomMargins = builder.headingBottomMargins
-        this.headingTextSizeMultipliers = builder.headingTextSizeMultipliers
-        this.headingTextColor = builder.headingTextColor
+        this.headingTextSize1 = builder.headingTextSize1
+        this.headingTextSize2 = builder.headingTextSize2
+        this.headingTextSize3 = builder.headingTextSize3
+        this.headingTextSize4 = builder.headingTextSize4
+        this.headingTextSize5 = builder.headingTextSize5
+        this.headingTextSize6 = builder.headingTextSize6
+        this.headingTextColor1 = builder.headingTextColor1
+        this.headingBreakColor1 = builder.headingBreakColor1
+        this.headingTextColor2 = builder.headingTextColor2
+        this.headingBreakColor2 = builder.headingBreakColor2
+        this.headingTextColor3 = builder.headingTextColor3
+        this.headingTextColor4 = builder.headingTextColor4
+        this.headingTextColor5 = builder.headingTextColor5
+        this.headingTextColor6 = builder.headingTextColor6
         this.headingTextWordSpace = builder.headingTextWordSpace
         this.headingTextLineHeight1 = builder.headingTextLineHeight1
         this.headingTextLineHeight2 = builder.headingTextLineHeight2
@@ -1357,7 +1454,10 @@ public class MarkdownTheme {
         this.imageMaximumWidth = builder.imageMaximumWidth
         this.imageFixedRatioWidth = builder.imageFixedRatioWidth
         this.imageMaxHeight = builder.imageMaxHeight
+        this.imageMaxWidth = builder.imageMaxWidth
         this.imageBorderRadius = builder.imageBorderRadius
+        this.imageBorderWidth = builder.imageBorderWidth
+        this.imageBorderColor = builder.imageBorderColor
         this.imageFitType = builder.imageFitType
         this.imageResource = builder.imageResource
         this.isAutoResize = builder.isAutoResize
@@ -1384,6 +1484,7 @@ public class MarkdownTheme {
         this.tableHeaderRowBackgroundColor = builder.tableHeaderRowBackgroundColor
         this.tableTitleTextColor = builder.tableTitleTextColor
         this.tableTitleTextSize = builder.tableTitleTextSize
+        this.tableTitleLineHeight = builder.tableTitleLineHeight
         this.tableContentTextColor = builder.tableContentTextColor
         this.tableContentTextSize = builder.tableContentTextSize
         this.tableTextLineHeight = builder.tableTextLineHeight
@@ -1391,12 +1492,15 @@ public class MarkdownTheme {
         this.tableMinTextWidth = builder.tableMinTextWidth
         this.tableMaxTextWidth = builder.tableMaxTextWidth
         this.tableFirstColumnBold = builder.tableFirstColumnBold
+        this.tableScrollBarShow = builder.tableScrollBarShow
+        this.tableScrollBarColor = builder.tableScrollBarColor
 
         // 16、代码高亮
         this.prismTheme = builder.prismTheme
 
         // 17、删除线
         this.strikethroughColor = builder.strikethroughColor
+        this.strikethroughStyle = builder.strikethroughStyle
 
         // 18、定义列表
         this.descListTermAndDefMargins = builder.descListTermAndDefMargins
@@ -1415,6 +1519,7 @@ public class MarkdownTheme {
 
         // 21、 下划线
         this.underlineColor = builder.underlineColor
+        this.underlineStyle = builder.underlineStyle
     }
 
     /**
@@ -1486,7 +1591,6 @@ public class MarkdownTheme {
 
         // 6、标题
         markdownThemeBuilder.setHeadingBreakColor(COLOR_FF191919) // H1、H2标题下分割线颜色
-        markdownThemeBuilder.setHeadingTextColor(COLOR_FF191919) // 标题文本颜色
 
         // 7、段落
         markdownThemeBuilder.setParagraphTextColor(COLOR_FF191919) // 段落文本颜色
@@ -1581,7 +1685,6 @@ public class MarkdownTheme {
 
         // 6、标题
         markdownThemeBuilder.setHeadingBreakColor(COLOR_FFFFFFFF) // H1、H2标题下分割线颜色
-        markdownThemeBuilder.setHeadingTextColor(COLOR_FFFFFFFF) // 标题文本颜色
 
         // 7、段落
         markdownThemeBuilder.setParagraphTextColor(COLOR_FFFFFFFF) // 段落文本颜色
@@ -1653,7 +1756,7 @@ public class MarkdownThemeBuilder {
     /**
      * markdown是否同步解析
      */
-     var isMarkdownParserSync: Bool = false
+    var isMarkdownParserSync: Bool = false
 
     /**
      * 是否打开长按复制粘贴
@@ -1699,6 +1802,11 @@ public class MarkdownThemeBuilder {
      * 文本格式链接文字大小
      */
     var linkSize: Float64 = 14.0
+
+    /**
+     * 文本格式链接文字行高
+     */
+    var linkLineHeight: Float64 = 20.0
 
     /**
      * 文本格式链接背景颜色
@@ -1921,44 +2029,29 @@ public class MarkdownThemeBuilder {
     var taskListItemLength: Float64 = 15.0
 
     /**
-     * 内联代码是否是图片显示
-     */
-    var isCodeStyle: Bool = false
-
-    /**
      * 是否格式化代码块内容
      */
     var isCodeFormat: Bool = false
 
     /**
-     * 文本/图片格式内联代码文本颜色
+     * 内联代码文本颜色
      */
     var codeTextColor: Color = COLOR_FF000000
 
     /**
-     * 文本/图片格式内联代码背景颜色
+     * 内联代码背景颜色
      */
     var codeBackgroundColor: Color = COLOR_FFEAEAEA
 
     /**
-     * 文本/图片格式内联代码文本大小
+     * 内联代码文本大小
      */
-    var codeTextSize: Float64 = fp2px(13.0.fp).getOrThrow().value
+    var codeTextSize: Float64 = 13.0
 
     /**
      * 文本格式内联代码文本字体
      */
     var codeTypeface: String = "HarmonyOS Sans"
-
-    /**
-     * 图片格式内联代码文本左右边距
-     */
-    var codeLeftAndRightPadding: Float64 = vp2px(4.0.vp).getOrThrow().value
-
-    /**
-     * 图片格式内联代码文本高度
-     */
-    var codeHeight: Float64 = vp2px(20.0.vp).getOrThrow().value
 
     /**
      * 围栏代码块代码高亮是否同步解析
@@ -2121,14 +2214,74 @@ public class MarkdownThemeBuilder {
     var headingBottomMargins: Float64 = 8.0
 
     /**
-     * 标题文本大小数组
+     * 一级标题文本大小
      */
-    var headingTextSizeMultipliers: Array<Float64> = [20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+    var headingTextSize1: Float64 = 20.0
 
     /**
-     * 标题文本颜色
+     * 二级标题文本大小
      */
-    var headingTextColor: Color = COLOR_FF191919
+    var headingTextSize2: Float64 = 17.0
+
+    /**
+     * 三级标题文本大小
+     */
+    var headingTextSize3: Float64 = 16.0
+
+    /**
+     * 四级标题文本大小
+     */
+    var headingTextSize4: Float64 = 15.0
+
+    /**
+     * 五级标题文本大小
+     */
+    var headingTextSize5: Float64 = 15.0
+
+    /**
+     * 六级标题文本大小
+     */
+    var headingTextSize6: Float64 = 13.0
+
+    /**
+     * 一级标题文本颜色
+     */
+    var headingTextColor1: Color = COLOR_FF191919
+
+    /**
+     * H1标题下分割线颜色
+     */
+    var headingBreakColor1: Color = COLOR_FF191919
+
+    /**
+     * 二级标题文本颜色
+     */
+    var headingTextColor2: Color = COLOR_FF191919
+
+    /**
+     * H2标题下分割线颜色
+     */
+    var headingBreakColor2: Color = COLOR_FF191919
+
+    /**
+     * 三级标题文本颜色
+     */
+    var headingTextColor3: Color = COLOR_FF191919
+
+    /**
+     * 四级标题文本颜色
+     */
+    var headingTextColor4: Color = COLOR_FF191919
+
+    /**
+     * 五级标题文本颜色
+     */
+    var headingTextColor5: Color = COLOR_FF191919
+
+    /**
+     * 六级标题文本颜色
+     */
+    var headingTextColor6: Color = COLOR_FF191919
 
     /**
      * 标题文本字间距
@@ -2511,9 +2664,24 @@ public class MarkdownThemeBuilder {
     var imageMaxHeight: ?Float64 = None
 
     /**
+     * 图片最大宽度
+     */
+    var imageMaxWidth: ?Float64 = None
+
+    /**
      * 图片圆角大小
      */
     var imageBorderRadius: Float64 = 0.0
+
+    /**
+     * 图片边框宽度
+     */
+    var imageBorderWidth: Float64 = 0.0
+
+    /**
+     * 图片边框颜色
+     */
+    var imageBorderColor: Color = Color.BLACK
 
     /**
      * 图片缩放类型
@@ -2636,6 +2804,11 @@ public class MarkdownThemeBuilder {
     var tableTitleTextSize: Float64 = 14.0
 
     /**
+     * 表格头行高
+     */
+    var tableTitleLineHeight: Float64 = 22.0
+
+    /**
      * 表格内容文本颜色
      */
     var tableContentTextColor: Color = COLOR_FF191919
@@ -2671,6 +2844,16 @@ public class MarkdownThemeBuilder {
     var tableFirstColumnBold: Bool = false
 
     /**
+     * 表格是否显示滚动条
+     */
+    var tableScrollBarShow: Bool = false
+
+    /**
+     * 表格滚动条颜色
+     */
+    var tableScrollBarColor: Color = COLOR_FF191919
+
+    /**
      * markdown代码高亮样式
      */
     var prismTheme: PrismTheme = PrismThemeDarkula.create()
@@ -2679,6 +2862,11 @@ public class MarkdownThemeBuilder {
      * 删除线颜色
      */
     var strikethroughColor: Color = COLOR_FF191919
+
+    /**
+     * 删除线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线
+     */
+    var strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
     /**
      * 定义列表术语和定义行之间间距
@@ -2730,6 +2918,11 @@ public class MarkdownThemeBuilder {
      */
     var underlineColor: Color = COLOR_FF191919
 
+    /**
+     * 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线
+     */
+    var underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+
     init() {
     }
 
@@ -2753,6 +2946,7 @@ public class MarkdownThemeBuilder {
         this.linkColor = theme.linkColor
         this.isLinkSize = theme.isLinkSize
         this.linkSize = theme.linkSize
+        this.linkLineHeight = theme.linkLineHeight
         this.linkBackGroupColor = theme.linkBackGroupColor
         this.isLinkUnderlined = theme.isLinkUnderlined
         // 3.2、圆形图片格式链接
@@ -2810,14 +3004,11 @@ public class MarkdownThemeBuilder {
 
         // 5、代码
         // 5.1、内联代码
-        this.isCodeStyle = theme.isCodeStyle
         this.isCodeFormat = theme.isCodeFormat
         this.codeTextColor = theme.codeTextColor
         this.codeBackgroundColor = theme.codeBackgroundColor
         this.codeTypeface = theme.codeTypeface
         this.codeTextSize = theme.codeTextSize
-        this.codeLeftAndRightPadding = theme.codeLeftAndRightPadding
-        this.codeHeight = theme.codeHeight
         // 5.2、代码块
         this.isCodeBlockParserSync = theme.isCodeBlockParserSync
         this.codeBlockTextColor = theme.codeBlockTextColor
@@ -2857,8 +3048,20 @@ public class MarkdownThemeBuilder {
         this.headingTypeface = theme.headingTypeface
         this.headingTopMargins = theme.headingTopMargins
         this.headingBottomMargins = theme.headingBottomMargins
-        this.headingTextSizeMultipliers = theme.headingTextSizeMultipliers
-        this.headingTextColor = theme.headingTextColor
+        this.headingTextSize1 = theme.headingTextSize1
+        this.headingTextSize2 = theme.headingTextSize2
+        this.headingTextSize3 = theme.headingTextSize3
+        this.headingTextSize4 = theme.headingTextSize4
+        this.headingTextSize5 = theme.headingTextSize5
+        this.headingTextSize6 = theme.headingTextSize6
+        this.headingTextColor1 = theme.headingTextColor1
+        this.headingBreakColor1 = theme.headingBreakColor1 // 初始使用文本颜色作为分割线颜色
+        this.headingTextColor2 = theme.headingTextColor2
+        this.headingBreakColor2 = theme.headingBreakColor2 // 初始使用文本颜色作为分割线颜色
+        this.headingTextColor3 = theme.headingTextColor3
+        this.headingTextColor4 = theme.headingTextColor4
+        this.headingTextColor5 = theme.headingTextColor5
+        this.headingTextColor6 = theme.headingTextColor6
         this.headingTextWordSpace = theme.headingTextWordSpace
         this.headingTextLineHeight1 = theme.headingTextLineHeight1
         this.headingTextLineHeight2 = theme.headingTextLineHeight2
@@ -2951,7 +3154,10 @@ public class MarkdownThemeBuilder {
         this.imageMaximumWidth = theme.imageMaximumWidth
         this.imageFixedRatioWidth = theme.imageFixedRatioWidth
         this.imageMaxHeight = theme.imageMaxHeight
+        this.imageMaxWidth = theme.imageMaxWidth
         this.imageBorderRadius = theme.imageBorderRadius
+        this.imageBorderWidth = theme.imageBorderWidth
+        this.imageBorderColor = theme.imageBorderColor
         this.imageFitType = theme.imageFitType
         this.imageResource = theme.imageResource
         this.isAutoResize = theme.isAutoResize
@@ -2978,6 +3184,7 @@ public class MarkdownThemeBuilder {
         this.tableHeaderRowBackgroundColor = theme.tableHeaderRowBackgroundColor
         this.tableTitleTextColor = theme.tableTitleTextColor
         this.tableTitleTextSize = theme.tableTitleTextSize
+        this.tableTitleLineHeight = theme.tableTitleLineHeight
         this.tableContentTextColor = theme.tableContentTextColor
         this.tableContentTextSize = theme.tableContentTextSize
         this.tableTextLineHeight = theme.tableTextLineHeight
@@ -2985,12 +3192,15 @@ public class MarkdownThemeBuilder {
         this.tableMinTextWidth = theme.tableMinTextWidth
         this.tableMaxTextWidth = theme.tableMaxTextWidth
         this.tableFirstColumnBold = theme.tableFirstColumnBold
+        this.tableScrollBarShow = theme.tableScrollBarShow
+        this.tableScrollBarColor = theme.tableScrollBarColor
 
         // 16、代码高亮
         this.prismTheme = theme.prismTheme
 
         // 17、删除线
         this.strikethroughColor = theme.strikethroughColor
+        this.strikethroughStyle = theme.strikethroughStyle
 
         // 18、定义列表
         this.descListTermAndDefMargins = theme.descListTermAndDefMargins
@@ -3009,6 +3219,7 @@ public class MarkdownThemeBuilder {
 
         // 21、下划线
         this.underlineColor = theme.underlineColor
+        this.underlineStyle = theme.underlineStyle
     }
 
     /**
@@ -3060,7 +3271,6 @@ public class MarkdownThemeBuilder {
 
         // 6、标题
         setHeadingBreakColor(COLOR_FF191919) // H1、H2标题下分割线颜色
-        setHeadingTextColor(COLOR_FF191919) // 标题文本颜色
 
         // 7、段落
         setParagraphTextColor(COLOR_FF191919) // 段落文本颜色
@@ -3153,7 +3363,6 @@ public class MarkdownThemeBuilder {
 
         // 6、标题
         setHeadingBreakColor(COLOR_FFFFFFFF) // H1、H2标题下分割线颜色
-        setHeadingTextColor(COLOR_FFFFFFFF) // 标题文本颜色
 
         // 7、段落
         setParagraphTextColor(COLOR_FFFFFFFF) // 段落文本颜色
@@ -3326,6 +3535,17 @@ public class MarkdownThemeBuilder {
      */
     public func setLinkSize(linkSize: Float64): MarkdownThemeBuilder {
         this.linkSize = linkSize
+        return this
+    }
+
+    /**
+     * 设置文本格式链接文字行高
+     *
+     * @param linkLineHeight 文本格式链接文字行高
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setLinkLineHeight(linkLineHeight: Float64): MarkdownThemeBuilder {
+        this.linkLineHeight = linkLineHeight
         return this
     }
 
@@ -3814,17 +4034,6 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置内联代码是否是图片显示
-     *
-     * @param isCodeStyle 内联代码是否是图片显示 - true：图片化显示；false：不图片化显示。默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setIsCodeStyle(isCodeStyle: Bool): MarkdownThemeBuilder {
-        this.isCodeStyle = isCodeStyle
-        return this
-    }
-
-    /**
      * 设置是否格式化代码块内容
      *
      * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块；false：不格式化代码块。默认false
@@ -3836,9 +4045,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置文本、图片格式内联代码文本颜色
+     * 设置内联代码文本颜色
      *
-     * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
+     * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeTextColor(codeTextColor: Color): MarkdownThemeBuilder {
@@ -3847,9 +4056,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置文本、图片格式内联代码背景颜色
+     * 设置内联代码背景颜色
      *
-     * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFFEAEAEA
+     * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFFEAEAEA
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeBackgroundColor(codeBackgroundColor: Color): MarkdownThemeBuilder {
@@ -3858,46 +4067,24 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置文本、图片格式内联代码文本大小
+     * 设置内联代码文本大小
      *
-     * @param codeTextSize 文本、图片格式内联代码文本大小 - 默认13.0fp
+     * @param codeTextSize 内联代码文本大小 - 默认13.0fp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeTextSize(codeTextSize: Float64): MarkdownThemeBuilder {
-        this.codeTextSize = fp2px(codeTextSize.fp)().value
+        this.codeTextSize = codeTextSize
         return this
     }
 
     /**
-     * 设置文本格式内联代码文本字体
+     * 设置内联代码文本字体
      *
-     * @param codeTypeface 文本格式内联代码文本字体 - 默认"HarmonyOS Sans"
+     * @param codeTypeface内联代码文本字体 - 默认"HarmonyOS Sans"
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeTypeface(codeTypeface: String): MarkdownThemeBuilder {
         this.codeTypeface = codeTypeface
-        return this
-    }
-
-    /**
-     * 设置图片格式内联代码文本左右边距
-     *
-     * @param codeLeftAndRightPadding 图片格式内联代码文本左右边距 - 默认4.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setCodeLeftAndRightPadding(codeLeftAndRightPadding: Float64): MarkdownThemeBuilder {
-        this.codeLeftAndRightPadding = vp2px(codeLeftAndRightPadding.vp)().value
-        return this
-    }
-
-    /**
-     * 设置图片格式内联代码文本高度
-     *
-     * @param codeHeight 图片格式内联代码文本高度 - 默认20.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setCodeHeight(codeHeight: Float64): MarkdownThemeBuilder {
-        this.codeHeight = vp2px(codeHeight.vp)().value
         return this
     }
 
@@ -4217,6 +4404,9 @@ public class MarkdownThemeBuilder {
      */
     public func setHeadingBreakColor(headingBreakColor: Color): MarkdownThemeBuilder {
         this.headingBreakColor = headingBreakColor
+        // H1/H2标题下分割线同步设置颜色
+        this.headingBreakColor1 = headingBreakColor
+        this.headingBreakColor2 = headingBreakColor
         return this
     }
 
@@ -4254,24 +4444,130 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置标题文本大小数组
+     * 设置一级标题文本大小
      *
-     * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+     * @param headingTextSize1 一级标题文本大小 - 默认20.0
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<Float64>): MarkdownThemeBuilder {
-        this.headingTextSizeMultipliers = headingTextSizeMultipliers
+    public func setHeadingTextSize1(headingTextSize1: Float64): MarkdownThemeBuilder {
+        this.headingTextSize1 = headingTextSize1
         return this
     }
 
     /**
-     * 设置标题文本颜色
+     * 设置二级标题文本大小
      *
-     * @param headingTextColor 标题文本颜色 - 默认0XFF191919
+     * @param headingTextSize2 二级标题文本大小 - 默认17.0
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setHeadingTextColor(headingTextColor: Color): MarkdownThemeBuilder {
-        this.headingTextColor = headingTextColor
+    public func setHeadingTextSize2(headingTextSize2: Float64): MarkdownThemeBuilder {
+        this.headingTextSize2 = headingTextSize2
+        return this
+    }
+
+    /**
+     * 设置三级标题文本大小
+     *
+     * @param headingTextSize3 三级标题文本大小 - 默认16.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextSize3(headingTextSize3: Float64): MarkdownThemeBuilder {
+        this.headingTextSize3 = headingTextSize3
+        return this
+    }
+
+    /**
+     * 设置四级标题文本大小
+     *
+     * @param headingTextSize4 四级标题文本大小 - 默认15.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextSize4(headingTextSize4: Float64): MarkdownThemeBuilder {
+        this.headingTextSize4 = headingTextSize4
+        return this
+    }
+
+    /**
+     * 设置五级标题文本大小
+     *
+     * @param headingTextSize5 五级标题文本大小 - 默认15.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextSize5(headingTextSize5: Float64): MarkdownThemeBuilder {
+        this.headingTextSize5 = headingTextSize5
+        return this
+    }
+
+    /**
+     * 设置六级标题文本大小
+     *
+     * @param headingTextSize6 六级标题文本大小 - 默认13.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextSize6(headingTextSize6: Float64): MarkdownThemeBuilder {
+        this.headingTextSize6 = headingTextSize6
+        return this
+    }
+
+    /**
+     * 设置一级标题文本颜色
+     *
+     * @param headingTextColor1 一级标题文本颜色
+     */
+    public func setHeadingTextColor1(headingTextColor1: Color): MarkdownThemeBuilder {
+        this.headingTextColor1 = headingTextColor1
+        this.headingBreakColor1 = headingTextColor1 // 同时设置分割线颜色
+        return this
+    }
+
+    /**
+     * 设置二级标题文本颜色
+     *
+     * @param headingTextColor2 二级标题文本颜色
+     */
+    public func setHeadingTextColor2(headingTextColor2: Color): MarkdownThemeBuilder {
+        this.headingTextColor2 = headingTextColor2
+        this.headingBreakColor2 = headingTextColor2 // 同时设置分割线颜色
+        return this
+    }
+
+    /**
+     * 设置三级标题文本颜色
+     *
+     * @param headingTextColor3 三级标题文本颜色
+     */
+    public func setHeadingTextColor3(headingTextColor3: Color): MarkdownThemeBuilder {
+        this.headingTextColor3 = headingTextColor3
+        return this
+    }
+
+    /**
+     * 设置四级标题文本颜色
+     *
+     * @param headingTextColor4 四级标题文本颜色
+     */
+    public func setHeadingTextColor4(headingTextColor4: Color): MarkdownThemeBuilder {
+        this.headingTextColor4 = headingTextColor4
+        return this
+    }
+
+    /**
+     * 设置五级标题文本颜色
+     *
+     * @param headingTextColor5 五级标题文本颜色
+     */
+    public func setHeadingTextColor5(headingTextColor5: Color): MarkdownThemeBuilder {
+        this.headingTextColor5 = headingTextColor5
+        return this
+    }
+
+    /**
+     * 设置六级标题文本颜色
+     *
+     * @param headingTextColor6 六级标题文本颜色
+     */
+    public func setHeadingTextColor6(headingTextColor6: Color): MarkdownThemeBuilder {
+        this.headingTextColor6 = headingTextColor6
         return this
     }
 
@@ -5112,6 +5408,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置图片最大宽度
+     *
+     * @param imageMaxWidth 图片最大宽度 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageMaxWidth(imageMaxWidth: Float64): MarkdownThemeBuilder {
+        this.imageMaxWidth = imageMaxWidth
+        return this
+    }
+
+    /**
      * 设置图片圆角
      *
      * @param imageBorderRadius 图片圆角 - 默认0.0
@@ -5119,6 +5426,28 @@ public class MarkdownThemeBuilder {
      */
     public func setImageBorderRadius(imageBorderRadius: Float64): MarkdownThemeBuilder {
         this.imageBorderRadius = imageBorderRadius
+        return this
+    }
+
+    /**
+     * 设置图片边框宽度
+     *
+     * @param imageBorderWidth 图片边框宽度 - 默认0.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageBorderWidth(imageBorderWidth: Float64): MarkdownThemeBuilder {
+        this.imageBorderWidth = imageBorderWidth
+        return this
+    }
+
+    /**
+     * 设置图片边框颜色
+     *
+     * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageBorderColor(imageBorderColor: Color): MarkdownThemeBuilder {
+        this.imageBorderColor = imageBorderColor
         return this
     }
 
@@ -5387,6 +5716,17 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置表格头文本行高
+     *
+     * @param tableTitleLineHeight 表格头文本行高 - 默认22.0vp
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableTitleLineHeight(tableTitleLineHeight: Float64): MarkdownThemeBuilder {
+        this.tableTitleLineHeight = tableTitleLineHeight
+        return this
+    }
+
+    /**
      * 设置表格内容文本颜色
      *
      * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
@@ -5464,6 +5804,28 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置表格是否显示滚动条
+     *
+     * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableScrollBarShow(tableScrollBarShow: Bool): MarkdownThemeBuilder {
+        this.tableScrollBarShow = tableScrollBarShow
+        return this
+    }
+
+    /**
+     * 设置表格滚动条颜色
+     *
+     * @param tableFirstColumnBold 表格滚动条颜色
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableScrollBarColor(tableScrollBarColor: Color): MarkdownThemeBuilder {
+        this.tableScrollBarColor = tableScrollBarColor
+        return this
+    }
+
+    /**
      * 设置markdown代码高亮样式
      *
      * @param PrismTheme markdown代码高亮样式 - 默认PrismThemeDarkula.create()
@@ -5482,6 +5844,17 @@ public class MarkdownThemeBuilder {
      */
     public func setStrikethroughColor(strikethroughColor: Color): MarkdownThemeBuilder {
         this.strikethroughColor = strikethroughColor
+        return this
+    }
+
+    /**
+     * 设置删除线样式
+     *
+     * @param strikethroughStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setStrikethroughStyle(strikethroughStyle: TextDecorationStyle): MarkdownThemeBuilder {
+        this.strikethroughStyle = strikethroughStyle
         return this
     }
 
@@ -5592,6 +5965,17 @@ public class MarkdownThemeBuilder {
      */
     public func setUnderlineColor(underlineColor: Color): MarkdownThemeBuilder {
         this.underlineColor = underlineColor
+        return this
+    }
+
+    /**
+     * 设置下划线样式
+     *
+     * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setUnderlineStyle(underlineStyle: TextDecorationStyle): MarkdownThemeBuilder {
+        this.underlineStyle = underlineStyle
         return this
     }
 

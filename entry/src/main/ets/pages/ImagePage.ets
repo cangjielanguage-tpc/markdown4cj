@@ -1,9 +1,9 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
-import { getFileListStr } from './FileUtils'
-import { booleanToString, numberToColorString, stringToBoolean } from './BaseUtils'
+import { titleComponent } from '../component/BaseComponent'
+import { getFileListStr } from '../utils/FileUtils'
+import { booleanToString, numberToColorString, stringToBoolean } from '../utils/BaseUtils'
 import { router } from '@kit.ArkUI'
 
 @Entry
@@ -117,6 +117,24 @@ struct ImagePage {
   @State
   imageBorderRadius: number = 0
   /**
+   * 图片边框宽度列表
+   */
+  imageBorderWidthList: Array<number> = [0, 1, 2, 3, 4, 5, 8, 10, 15, 20]
+  /**
+   * 图片边框宽度
+   */
+  @State
+  imageBorderWidth: number = 0
+  /**
+   * 图片边框颜色列表
+   */
+  imageBorderColorList: Array<number> = [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  /**
+   * 图片边框颜色
+   */
+  @State
+  imageBorderColor: number = 0xFF000000
+  /**
    * 图片基于自身宽度缩放百分比列表
    */
   imageMaximumWidthList: Array<number> = [0, 0.2, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0]
@@ -128,12 +146,12 @@ struct ImagePage {
   /**
    * 图片基于父布局宽度缩放百分比列表
    */
-  imageFixedRatioWidthList: Array<number | null> = [null, 0, 0.2, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0]
+  imageFixedRatioWidthList: Array<number| null> = [null,0, 0.2, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0]
   /**
    * 图片基于父布局宽度缩放百分比
    */
   @State
-  imageFixedRatioWidth: number | null = null
+  imageFixedRatioWidth: number| null = null
   /**
    * 图片最大高度列表
    */
@@ -143,6 +161,15 @@ struct ImagePage {
    */
   @State
   imageMaxHeight: number | null = null
+  /**
+   * 图片最大宽度列表
+   */
+  imageMaxWidthList: Array<number | null> = [null, 50.0, 80.0, 100.0, 120.0, 150.0, 180.0, 200.0, 250.0, 300.0, 500.0]
+  /**
+   * 图片最大宽度
+   */
+  @State
+  imageMaxWidth: number | null = null
   /**
    * 图片是否有下载按钮列表
    */
@@ -191,7 +218,7 @@ struct ImagePage {
   /**
    * 图片下载按钮圆角列表
    */
-  imageDownloadRadiusList: Array<number> = [10, 12, 15, 18, 20, 22, 25, 28, 30, 35, 40]
+  imageDownloadRadiusList: Array<number> = [10, 12, 15, 18, 20, 22, 25, 28, 30,35,40]
   /**
    * 图片下载按钮圆角
    */
@@ -209,7 +236,7 @@ struct ImagePage {
   /**
    * 图片下载按钮文本大小列表
    */
-  imageDownloadTexSizeList: Array<number> = [10, 12, 16, 18, 20, 22, 26, 28, 30, 35, 40]
+  imageDownloadTexSizeList: Array<number> = [10, 12, 16, 18, 20, 22, 26, 28, 30,35,40]
   /**
    * 图片下载按钮文本大小
    */
@@ -218,8 +245,7 @@ struct ImagePage {
   /**
    * 图片下载按钮文本颜色列表
    */
-  imageDownloadTexColorList: Array<number> =
-    [0xE6000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  imageDownloadTexColorList: Array<number> = [0xE6000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
   /**
    * 图片下载按钮文本颜色
    */
@@ -228,8 +254,7 @@ struct ImagePage {
   /**
    * 图片下载按钮背景颜色列表
    */
-  imageDownloadBackgroundColorList: Array<number> =
-    [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  imageDownloadBackgroundColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
   /**
    * 图片下载按钮背景颜色
    */
@@ -540,6 +565,70 @@ struct ImagePage {
 
           Column() {
             Row() {
+              Text(`图片边框宽度 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageBorderWidth}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageBorderWidthList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageBorderWidth = item
+                    this.imageDataMD.imageBorderWidth = this.imageBorderWidth
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片边框颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${numberToColorString(this.imageBorderColor)}`)
+                .fontSize(16)
+                .fontColor(this.imageBorderColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageBorderColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageBorderColor = item
+                    this.imageDataMD.imageBorderColor = this.imageBorderColor
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
               Text(`图片基于自身宽度缩放百分比 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
@@ -626,6 +715,37 @@ struct ImagePage {
                   .onClick(() => {
                     this.imageMaxHeight = item
                     this.imageDataMD.imageMaxHeight = this.imageMaxHeight
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`图片最大宽度 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.imageMaxWidth}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.imageMaxHeightList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.imageMaxWidth = item
+                    this.imageDataMD.imageMaxWidth = this.imageMaxWidth
                   })
               })
             }
@@ -994,9 +1114,12 @@ export class ImageDataMD {
   _imageMarginTop: number = 10
   _imageMarginBottom: number = 10
   _imageBorderRadius: number = 0
+  _imageBorderWidth: number = 0
+  _imageBorderColor: number = 0xFF000000
   _imageMaximumWidth: number = 1.0
-  _imageFixedRatioWidth: number | null = null
+  _imageFixedRatioWidth: number| null = null
   _imageMaxHeight: number | null = null
+  _imageMaxWidth: number | null = null
   _isImageDownload: boolean = false
   _isImageMixedLayout: boolean = true
   _imageDownloadImageWidthHeight: number = 18
@@ -1045,6 +1168,14 @@ export class ImageDataMD {
     this._imageBorderRadius = value
   }
 
+  public set imageBorderWidth(value: number) {
+    this._imageBorderWidth = value
+  }
+
+  public set imageBorderColor(value: number) {
+    this._imageBorderColor = value
+  }
+
   public set imageMaximumWidth(value: number) {
     this._imageMaximumWidth = value
   }
@@ -1055,6 +1186,10 @@ export class ImageDataMD {
 
   public set imageMaxHeight(value: number) {
     this._imageMaxHeight = value
+  }
+
+  public set imageMaxWidth(value: number) {
+    this._imageMaxWidth = value
   }
 
   public set isImageDownload(value: boolean) {

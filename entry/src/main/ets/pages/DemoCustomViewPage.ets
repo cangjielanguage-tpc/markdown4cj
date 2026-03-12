@@ -1,8 +1,8 @@
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { DemoDataMD } from './DemoPage'
-import { getFileContextStr } from './FileUtils'
+import { getFileContextStr } from '../utils/FileUtils'
 
 @Entry
 @Component
@@ -128,7 +128,7 @@ struct DemoCustomViewPage {
     plugin.setIsLatexMathPlugin(true) // 数学公式插件
     plugin.setIsStrikethroughPlugin(true) // 删除线插件
     plugin.setIsTaskListPlugin(true) // 任务列表插件
-    plugin.setIsLinkifyPlugin(true) // 自动链接插件
+    plugin.setIsLinkifyPlugin(true, []) // 自动链接插件
     plugin.setIsBlockAudioPlugin(true) // 音频插件
     plugin.setIsBlockVideoPlugin(true) // 视频插件
     plugin.setIsImageCollectPlugin(true) // 图片视频列表url集合列表解析插件

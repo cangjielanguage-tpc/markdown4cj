@@ -1,10 +1,10 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextStr } from './FileUtils'
+import { getFileContextStr } from '../utils/FileUtils'
 import { TableData } from './TablePage'
 
 @Entry
@@ -33,6 +33,21 @@ struct TableDetailsPage {
    */
   @State
   isFull: boolean = true
+  /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
   /**
    * 表格内容内边距
    */
@@ -89,15 +104,19 @@ struct TableDetailsPage {
   @State
   tableFirstColumnBold: boolean = false
   /**
-   * 增量加载延迟
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
    */
-  time: number = 50
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let tableData: TableData = router.getParams() as TableData
       this.fileStr = getFileContextStr(tableData._pagePath)
       this.isFull = tableData._isFull
+      this.incrementalAnalysis = tableData._incrementalAnalysis
+      this.time = tableData._time
+      this.textNumber = tableData._textNumber
       this.tableCellPadding = tableData._tableCellPadding
       this.tableBorderColor = tableData._tableBorderColor
       this.tableBorderWidth = tableData._tableBorderWidth
@@ -133,16 +152,23 @@ struct TableDetailsPage {
         .onClick(
           () => {
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
+                this.content = this.content + this.fileStr.substring(this.content.length, index)
                 this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
+                if (index >= this.fileStr.length) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
-                index++
+                if (this.fileStr.length > index + this.textNumber) {
+                  index = index + this.textNumber
+                } else {
+                  index = this.fileStr.length
+                }
               }, this.time)
             }
           }
@@ -151,6 +177,8 @@ struct TableDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
+            incrementalAnalysis: this.incrementalAnalysis,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
@@ -176,6 +204,8 @@ struct TableDetailsPage {
     theme.setTableMinTextWidth(this.tableMinTextWidth) // 表格最小宽度
     theme.setTableMaxTextWidth(this.tableMaxTextWidth) // 表格最大宽度
     theme.setTableFirstColumnBold(this.tableFirstColumnBold) // 表格第一列是否加粗
+    theme.setTableScrollBarShow(true) // 设置显示滚动条
+    theme.setTableScrollBarColor(0xFFFFD700) // 设置滚动条颜色
     config.setMarkdownTheme(theme)
     return config
   }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { itemListComponent, titleComponent } from './BaseComponent'
+import { itemListComponent, titleComponent } from '../component/BaseComponent'
 import { font } from '@kit.ArkUI'
 
 @Entry
@@ -33,6 +33,14 @@ struct IndexPage {
       )
       Scroll(this.scroller) {
         List() {
+          ListItem() {
+            itemListComponent(
+              "示例",
+              0xFFFF0000,
+              "pages/Index"
+            )
+          }
+
           ListItem() {
             itemListComponent(
               "0、演示样例",
@@ -237,6 +245,20 @@ struct IndexPage {
               "30、card",
               0xFFFF0000,
               "pages/Card"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "31、AB方案",
+              0xFFFF0000,
+              "pages/ABCustomPage"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "32、AI聊天懒加载",
+              0xFFFF0000,
+              "pages/AIChatPage"
             )
           }
         }

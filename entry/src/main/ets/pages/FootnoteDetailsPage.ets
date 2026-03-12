@@ -1,10 +1,10 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextStr } from './FileUtils'
+import { getFileContextStr } from '../utils/FileUtils'
 import { FootnoteData } from './FootnotePage'
 
 @Entry
@@ -38,6 +38,12 @@ struct FootnoteDetailsPage {
    */
   time: number = 50
 
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
   aboutToAppear(): void {
     try {
       let footnoteData: FootnoteData = router.getParams() as FootnoteData
@@ -68,13 +74,16 @@ struct FootnoteDetailsPage {
           () => {
             // 点击动作触发该方法调用
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
                 this.content = this.content + this.fileStr[index]
                 this.scroller.scrollEdge(Edge.Bottom)
                 if (index === this.fileStr.length - 1) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
                 index++
@@ -86,6 +95,7 @@ struct FootnoteDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
@@ -99,6 +109,7 @@ struct FootnoteDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     config.setFootnoteCallback(this.footnoteCallback.bind(this))
+    // config.setFootnoteCallback(this.footnoteCallbackNew.bind(this))
     return config
   }
 
@@ -111,6 +122,12 @@ struct FootnoteDetailsPage {
   footnoteCallback(y: number | undefined): void {
     if(y !==undefined){
       this.scroller.scrollBy(0, y - (this.safeTop + 90))
+    }
+  }
+
+  footnoteCallbackNew(y: number | undefined): void {
+    if(y !==undefined){
+      this.scroller.scrollToIndex(y)
     }
   }
 }

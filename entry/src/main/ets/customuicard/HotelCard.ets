@@ -1,33 +1,33 @@
-import { AlertDialog, CustomContentDialog } from '@kit.ArkUI';
+import { CustomContentDialog } from '@kit.ArkUI'
 
 export class OrderInfo {
-  public hotelName: string = "";
-  public roomType: string = "";
-  public checkInDate: string = "";
-  public price: string = "";
+  public hotelName: string = ""
+  public roomType: string = ""
+  public checkInDate: string = ""
+  public price: string = ""
   public status: string = 'pending'
   constructor(hotelName: string, roomType: string, checkInDate: string, price: string, status: string) {
-    this.hotelName = hotelName;
-    this.roomType = roomType;
-    this.checkInDate = checkInDate;
-    this.price = price;
-    this.status = status;
+    this.hotelName = hotelName
+    this.roomType = roomType
+    this.checkInDate = checkInDate
+    this.price = price
+    this.status = status
   }
 }
 
 @Component
 export struct HotelCard {
-  data: string = "";
-  @State orderInfo: OrderInfo = new OrderInfo("", "", "", "", '');
+  data: string = ""
+  @State orderInfo: OrderInfo = new OrderInfo("", "", "", "", '')
 
   aboutToAppear() {
     if (this.data && this.data !== "") {
 
       try {
-        const data:Record<string, string> = JSON.parse(this.data);
-        this.orderInfo = new OrderInfo(data.hotelName, data.roomType, data.checkInDate, data.price, data.status);
+        const data:Record<string, string> = JSON.parse(this.data)
+        this.orderInfo = new OrderInfo(data.hotelName, data.roomType, data.checkInDate, data.price, data.status)
       } catch (error) {
-        console.error("JSON.parse error: ", error);
+        console.error("JSON.parse error: ", error)
       }
       
     }
@@ -39,10 +39,10 @@ export struct HotelCard {
       primaryTitle: '',
       secondaryTitle: '',
       contentBuilder: () => {
-        this.dialogContent();
+        this.dialogContent()
       }
     }),
-});
+})
 
   build() {
     Column() {
@@ -97,7 +97,7 @@ export struct HotelCard {
             .fontSize(16)
             .onClick(
               () => {
-                this.dialogControllerOrderInfo.open();
+                this.dialogControllerOrderInfo.open()
               }
             )
         }
@@ -189,7 +189,7 @@ export struct HotelCard {
         .backgroundColor(0xFF317AFF)
         .fontColor(Color.White)
         .onClick(() => {
-          this.dialogControllerOrderInfo.close();
+          this.dialogControllerOrderInfo.close()
         })
     }
     .width(300)

@@ -20,7 +20,7 @@ public class CJMarkdownTheme {
     /**
      * markdown是否同步解析
      */
-     var isMarkdownParserSync: ?Bool = None
+    var isMarkdownParserSync: ?Bool = None
 
     /**
      * 是否打开长按复制粘贴
@@ -66,6 +66,11 @@ public class CJMarkdownTheme {
      * 文本格式链接文字大小
      */
     var linkSize: ?Float64 = None
+
+    /**
+     * 文本格式链接文字行高
+     */
+    var linkLineHeight: ?Float64 = None
 
     /**
      * 文本格式链接背景颜色
@@ -288,44 +293,29 @@ public class CJMarkdownTheme {
     var taskListItemLength: ?Float64 = None
 
     /**
-     * 内联代码是否是图片显示
-     */
-    var isCodeStyle: ?Bool = None
-
-    /**
      * 是否格式化代码块内容
      */
     var isCodeFormat: ?Bool = None
 
     /**
-     * 文本、图片格式内联代码文本颜色
+     * 内联代码文本颜色
      */
     var codeTextColor: ?Color = None
 
     /**
-     * 文本、图片格式内联代码背景颜色
+     * 内联代码背景颜色
      */
     var codeBackgroundColor: ?Color = None
 
     /**
-     * 文本、图片格式内联代码文本大小
+     * 内联代码文本大小
      */
     var codeTextSize: ?Float64 = None
 
     /**
-     * 文本格式内联代码文本字体
+     * 内联代码文本字体
      */
     var codeTypeface: ?String = None
-
-    /**
-     * 图片格式内联代码文本左右边距
-     */
-    var codeLeftAndRightPadding: ?Float64 = None
-
-    /**
-     * 图片格式内联代码文本高度
-     */
-    var codeHeight: ?Float64 = None
 
     /**
      * 围栏代码块代码高亮是否同步解析
@@ -473,14 +463,34 @@ public class CJMarkdownTheme {
     var headingBottomMargins: ?Float64 = None
 
     /**
-     * 标题文本大小数组
+     * 一级标题文本大小
      */
-    var headingTextSizeMultipliers: ?Array<Float64> = None
+    var headingTextSize1: ?Float64 = None
 
     /**
-     * 标题文本颜色
+     * 二级标题文本大小
      */
-    var headingTextColor: ?Color = None
+    var headingTextSize2: ?Float64 = None
+
+    /**
+     * 三级标题文本大小
+     */
+    var headingTextSize3: ?Float64 = None
+
+    /**
+     * 四级标题文本大小
+     */
+    var headingTextSize4: ?Float64 = None
+
+    /**
+     * 五级标题文本大小
+     */
+    var headingTextSize5: ?Float64 = None
+
+    /**
+     * 六级标题文本大小
+     */
+    var headingTextSize6: ?Float64 = None
 
     /**
      * 标题文本字间距
@@ -516,6 +526,36 @@ public class CJMarkdownTheme {
      * 六级标题文本行高
      */
     var headingTextLineHeight6: ?Float64 = None
+
+    /**
+     * 一级标题文本颜色
+     */
+    var headingTextColor1: ?Color = None
+
+    /**
+     * 二级标题文本颜色
+     */
+    var headingTextColor2: ?Color = None
+
+    /**
+     * 三级标题文本颜色
+     */
+    var headingTextColor3: ?Color = None
+
+    /**
+     * 四级标题文本颜色
+     */
+    var headingTextColor4: ?Color = None
+
+    /**
+     * 五级标题文本颜色
+     */
+    var headingTextColor5: ?Color = None
+
+    /**
+     * 六级标题文本颜色
+     */
+    var headingTextColor6: ?Color = None
 
     /**
      * 段落模块上间距
@@ -838,9 +878,24 @@ public class CJMarkdownTheme {
     var imageMaxHeight: ?Float64 = None
 
     /**
+     * 图片最大宽度
+     */
+    var imageMaxWidth: ?Float64 = None
+
+    /**
      * 图片圆角大小
      */
     var imageBorderRadius: ?Float64 = None
+
+    /**
+     * 图片边框宽度
+     */
+    var imageBorderWidth: ?Float64 = None
+
+    /**
+     * 图片边框颜色
+     */
+    var imageBorderColor: ?Color = None
 
     /**
      * 网络图片是否压缩
@@ -948,6 +1003,11 @@ public class CJMarkdownTheme {
     var tableTitleTextSize: ?Float64 = None
 
     /**
+     * 表格头文本行高
+     */
+    var tableTitleLineHeight: ?Float64 = None
+
+    /**
      * 表格内容文本颜色
      */
     var tableContentTextColor: ?Color = None
@@ -983,6 +1043,16 @@ public class CJMarkdownTheme {
     var tableFirstColumnBold: ?Bool = None
 
     /**
+     * 表格是否显示滚动条
+     */
+    var tableScrollBarShow: ?Bool = None
+
+    /**
+     * 表格滚动条颜色
+     */
+    var tableScrollBarColor: ?Color = None
+
+    /**
      * 代码深浅色模式
      */
     var isDark: ?Bool = None
@@ -991,6 +1061,11 @@ public class CJMarkdownTheme {
      * 删除线颜色
      */
     var strikethroughColor: ?Color = None
+
+    /**
+     * 删除线样式
+     */
+    var strikethroughStyle: ?TextDecorationStyle = Option<TextDecorationStyle>.None
 
     /**
      * 定义列表术语和定义行之间间距
@@ -1041,6 +1116,11 @@ public class CJMarkdownTheme {
      * 下划线颜色
      */
     var underlineColor: ?Color = None
+
+    /**
+     * 下划线样式
+     */
+    var underlineStyle: ?TextDecorationStyle = Option<TextDecorationStyle>.None
 
     public init() {}
 
@@ -1132,6 +1212,15 @@ public class CJMarkdownTheme {
      */
     public func setLinkSize(linkSize: Float64): Unit {
         this.linkSize = linkSize
+    }
+
+    /**
+     * 设置文本格式链接文字行高
+     *
+     * @param linkLineHeight 文本格式链接文字行高
+     */
+    public func setLinkLineHeight(linkLineHeight: Float64): Unit {
+        this.linkLineHeight = linkLineHeight
     }
 
     /**
@@ -1531,15 +1620,6 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置内联代码是否是图片显示
-     *
-     * @param isCodeStyle 内联代码是否是图片显示 - true：图片化显示；false：不图片化显示。默认false
-     */
-    public func setIsCodeStyle(isCodeStyle: Bool): Unit {
-        this.isCodeStyle = isCodeStyle
-    }
-
-    /**
      * 设置是否格式化代码块内容
      *
      * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
@@ -1549,57 +1629,39 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置文本、图片格式内联代码文本颜色
+     * 设置内联代码文本颜色
      *
-     * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
+     * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
      */
     public func setCodeTextColor(codeTextColor: UInt32): Unit {
         this.codeTextColor = transColorForTrasparent(codeTextColor)
     }
 
     /**
-     * 设置文本、图片格式内联代码背景颜色
+     * 设置内联代码背景颜色
      *
-     * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFF191919
+     * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFF191919
      */
     public func setCodeBackgroundColor(codeBackgroundColor: UInt32): Unit {
         this.codeBackgroundColor = transColorForTrasparent(codeBackgroundColor)
     }
 
     /**
-     * 设置文本、图片格式内联代码文本大小
+     * 设置内联代码文本大小
      *
-     * @param codeTextSize 文本、图片格式内联代码文本大小 - 默认13.0fp
+     * @param codeTextSize 内联代码文本大小 - 默认13.0fp
      */
     public func setCodeTextSize(codeTextSize: Float64): Unit {
         this.codeTextSize = codeTextSize
     }
 
     /**
-     * 设置文本格式内联代码文本字体
+     * 设置内联代码文本字体
      *
-     * @param codeTypeface 文本格式内联代码文本字体 - 默认"HarmonyOS Sans"
+     * @param codeTypeface 内联代码文本字体 - 默认"HarmonyOS Sans"
      */
     public func setCodeTypeface(codeTypeface: String): Unit {
         this.codeTypeface = codeTypeface
-    }
-
-    /**
-     * 设置图片格式内联代码文本左右边距
-     *
-     * @param codeLeftAndRightPadding 图片格式内联代码文本左右边距 - 默认4.0vp
-     */
-    public func setCodeLeftAndRightPadding(codeLeftAndRightPadding: Float64): Unit {
-        this.codeLeftAndRightPadding = codeLeftAndRightPadding
-    }
-
-    /**
-     * 设置图片格式内联代码文本高度
-     *
-     * @param codeHeight 图片格式内联代码文本高度 - 默认20.0vp
-     */
-    public func setCodeHeight(codeHeight: Float64): Unit {
-        this.codeHeight = codeHeight
     }
 
     /**
@@ -1864,21 +1926,57 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置标题文本大小数组
+     * 设置一级标题文本大小
      *
-     * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+     * @param headingTextSize1 一级标题文本大小 - 默认20.0
      */
-    public func setHeadingTextSizeMultipliers(headingTextSizeMultipliers: JSArrayEx<Float64>): Unit {
-        this.headingTextSizeMultipliers = headingTextSizeMultipliers.toArray()
+    public func setHeadingTextSize1(headingTextSize1: Float64): Unit {
+        this.headingTextSize1 = headingTextSize1
     }
 
     /**
-     * 设置标题文本颜色
+     * 设置二级标题文本大小
      *
-     * @param headingTextColor 标题文本颜色 - 默认0XFF191919
+     * @param headingTextSize2 二级标题文本大小 - 默认17.0
      */
-    public func setHeadingTextColor(headingTextColor: UInt32): Unit {
-        this.headingTextColor = transColorForTrasparent(headingTextColor)
+    public func setHeadingTextSize2(headingTextSize2: Float64): Unit {
+        this.headingTextSize2 = headingTextSize2
+    }
+
+    /**
+     * 设置三级标题文本大小
+     *
+     * @param headingTextSize3 三级标题文本大小 - 默认16.0
+     */
+    public func setHeadingTextSize3(headingTextSize3: Float64): Unit {
+        this.headingTextSize3 = headingTextSize3
+    }
+
+    /**
+     * 设置四级标题文本大小
+     *
+     * @param headingTextSize4 四级标题文本大小 - 默认15.0
+     */
+    public func setHeadingTextSize4(headingTextSize4: Float64): Unit {
+        this.headingTextSize4 = headingTextSize4
+    }
+
+    /**
+     * 设置五级标题文本大小
+     *
+     * @param headingTextSize5 五级标题文本大小 - 默认15.0
+     */
+    public func setHeadingTextSize5(headingTextSize5: Float64): Unit {
+        this.headingTextSize5 = headingTextSize5
+    }
+
+    /**
+     * 设置六级标题文本大小
+     *
+     * @param headingTextSize6 六级标题文本大小 - 默认13.0
+     */
+    public func setHeadingTextSize6(headingTextSize6: Float64): Unit {
+        this.headingTextSize6 = headingTextSize6
     }
 
     /**
@@ -1942,6 +2040,60 @@ public class CJMarkdownTheme {
      */
     public func setHeadingTextLineHeight6(headingTextLineHeight6: Float64): Unit {
         this.headingTextLineHeight6 = headingTextLineHeight6
+    }
+
+    /**
+     * 设置一级标题文本颜色
+     *
+     * @param headingTextColor1 一级标题文本颜色
+     */
+    public func setHeadingTextColor1(headingTextColor1: UInt32): Unit {
+        this.headingTextColor1 = transColorForTrasparent(headingTextColor1)
+    }
+
+    /**
+     * 设置二级标题文本颜色
+     *
+     * @param headingTextColor2 二级标题文本颜色
+     */
+    public func setHeadingTextColor2(headingTextColor2: UInt32): Unit {
+        this.headingTextColor2 = transColorForTrasparent(headingTextColor2)
+    }
+
+    /**
+     * 设置三级标题文本颜色
+     *
+     * @param headingTextColor3 三级标题文本颜色
+     */
+    public func setHeadingTextColor3(headingTextColor3: UInt32): Unit {
+        this.headingTextColor3 = transColorForTrasparent(headingTextColor3)
+    }
+
+    /**
+     * 设置四级标题文本颜色
+     *
+     * @param headingTextColor4 四级标题文本颜色
+     */
+    public func setHeadingTextColor4(headingTextColor4: UInt32): Unit {
+        this.headingTextColor4 = transColorForTrasparent(headingTextColor4)
+    }
+
+    /**
+     * 设置五级标题文本颜色
+     *
+     * @param headingTextColor5 五级标题文本颜色
+     */
+    public func setHeadingTextColor5(headingTextColor5: UInt32): Unit {
+        this.headingTextColor5 = transColorForTrasparent(headingTextColor5)
+    }
+
+    /**
+     * 设置六级标题文本颜色
+     *
+     * @param headingTextColor6 六级标题文本颜色
+     */
+    public func setHeadingTextColor6(headingTextColor6: UInt32): Unit {
+        this.headingTextColor6 = transColorForTrasparent(headingTextColor6)
     }
 
     /**
@@ -2530,12 +2682,39 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置图片最大宽度
+     *
+     * @param imageMaxWidth 图片最大宽度 - 默认None
+     */
+    public func setImageMaxWidth(imageMaxWidth: Float64): Unit {
+        this.imageMaxWidth = imageMaxWidth
+    }
+
+    /**
      * 设置图片圆角大小
      *
      * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
      */
     public func setImageBorderRadius(imageBorderRadius: Float64): Unit {
         this.imageBorderRadius = imageBorderRadius
+    }
+
+    /**
+     * 设置图片边框宽度
+     *
+     * @param imageBorderWidth 图片边框宽度 - 默认0.0
+     */
+    public func setImageBorderWidth(imageBorderWidth: Float64): Unit {
+        this.imageBorderWidth = imageBorderWidth
+    }
+
+    /**
+     * 设置图片边框颜色
+     *
+     * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
+     */
+    public func setImageBorderColor(imageBorderColor: UInt32): Unit {
+        this.imageBorderColor = transColorForTrasparent(imageBorderColor)
     }
 
     /**
@@ -2728,6 +2907,15 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置表格头文本行高
+     *
+     * @param tableTitleLineHeight 表格头文本行高 - 默认22.0vp
+     */
+    public func setTableTitleLineHeight(tableTitleLineHeight: Float64): Unit {
+        this.tableTitleLineHeight = tableTitleLineHeight
+    }
+
+    /**
      * 设置表格内容文本颜色
      *
      * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
@@ -2791,6 +2979,24 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置表格是否显示滚动条
+     *
+     * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
+     */
+    public func setTableScrollBarShow(tableScrollBarShow: Bool): Unit {
+        this.tableScrollBarShow = tableScrollBarShow
+    }
+
+    /**
+     * 设置表格滚动条颜色
+     *
+     * @param tableScrollBarColor 表格滚动条颜色
+     */
+    public func setTableScrollBarColor(tableScrollBarColor: UInt32): Unit {
+        this.tableScrollBarColor = transColorForTrasparent(tableScrollBarColor)
+    }
+
+    /**
      * 设置代码块深浅色
      *
      * @param isDark 是否是深色 - true：深色；false：浅色。默认false
@@ -2806,6 +3012,22 @@ public class CJMarkdownTheme {
      */
     public func setStrikethroughColor(strikethroughColor: UInt32): Unit {
         this.strikethroughColor = transColorForTrasparent(strikethroughColor)
+    }
+
+    /**
+     * 设置删除线样式
+     *
+     * @param strikethroughStyle 删除线样式  - SOLID-单实线 DOUBLE-双实线 DOTTED-点线 DASHED-虚线 WAVY-波浪线 默认SOLID
+     */
+    public func setStrikethroughStyle(strikethroughStyle: Int64): Unit {
+        this.strikethroughStyle = match (strikethroughStyle) {
+            case 0 => TextDecorationStyle.SOLID
+            case 1 => TextDecorationStyle.DOUBLE
+            case 2 => TextDecorationStyle.DOTTED
+            case 3 => TextDecorationStyle.DASHED
+            case 4 => TextDecorationStyle.WAVY
+            case _ => TextDecorationStyle.SOLID
+        }
     }
 
     /**
@@ -2896,5 +3118,21 @@ public class CJMarkdownTheme {
      */
     public func setUnderlineColor(underlineColor: UInt32): Unit {
         this.underlineColor = transColorForTrasparent(underlineColor)
+    }
+
+    /**
+     * 设置下划线样式
+     *
+     * @param underlineStyle 下划线样式  - SOLID-单实线 DOUBLE-双实线 DOTTED-点线 DASHED-虚线 WAVY-波浪线 默认SOLID
+     */
+    public func setUnderlineStyle(underlineStyle: Int64): Unit {
+        this.underlineStyle = match (underlineStyle) {
+            case 0 => TextDecorationStyle.SOLID
+            case 1 => TextDecorationStyle.DOUBLE
+            case 2 => TextDecorationStyle.DOTTED
+            case 3 => TextDecorationStyle.DASHED
+            case 4 => TextDecorationStyle.WAVY
+            case _ => TextDecorationStyle.SOLID
+        }
     }
 }

@@ -9,12 +9,8 @@ internal import std.collection.HashMap
 internal import std.collection.HashSet
 internal import std.collection.Map
 internal import std.collection.collectArrayList
-internal import std.collection.collectString
-internal import std.collection.map
 internal import std.collection.forEach
 internal import std.time.DateTime
-internal import std.regex.Matcher
-internal import std.regex.Regex
 
 /**
  * 扩展Option，getOrThrow()方法直接用()
@@ -49,10 +45,3 @@ let EMPTY_STRING: String = ""
 let EMPTY_MAP: Map<String, String> = HashMap()
 
 public type Runnable = () -> Unit
-
-extend StringBuilder {
-    func appends(str: ToString): StringBuilder {
-        this.append(str)
-        return this
-    }
-}

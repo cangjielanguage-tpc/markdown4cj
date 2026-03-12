@@ -1,10 +1,10 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextStr } from './FileUtils'
+import { getFileContextStr } from '../utils/FileUtils'
 import { DescListData } from './DescListPage'
 
 @Entry
@@ -38,6 +38,12 @@ struct DescListDetailsPage {
    */
   time: number = 50
 
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
   aboutToAppear(): void {
     try {
       let descListData: DescListData = router.getParams() as DescListData
@@ -68,13 +74,16 @@ struct DescListDetailsPage {
           () => {
             // 点击动作触发该方法调用
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
                 this.content = this.content + this.fileStr[index]
                 this.scroller.scrollEdge(Edge.Bottom)
                 if (index === this.fileStr.length - 1) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
                 index++
@@ -86,6 +95,7 @@ struct DescListDetailsPage {
         Column() {
           CJMarkdown({
             content: this.content,
+            isInputEnded: this.isInputEnded,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
@@ -98,6 +108,8 @@ struct DescListDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
+    let theme = new MarkdownTheme()
+    config.setMarkdownTheme(theme)
     return config
   }
 
