@@ -1174,7 +1174,7 @@ public class MarkdownTheme {
     /**
      * 删除线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线
      */
-    protected var strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+    protected var strikethroughStyle: Int32 = 0
 
     /**
      * 定义列表术语和定义行之间间距
@@ -1229,7 +1229,7 @@ public class MarkdownTheme {
     /**
      * 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线
      */
-    protected var underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+    protected var underlineStyle: Int32 = 0
 
     protected init(builder: MarkdownThemeBuilder) {
         // 1、上下文
@@ -2875,7 +2875,7 @@ public class MarkdownThemeBuilder {
     /**
      * 删除线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线
      */
-    var strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+    var strikethroughStyle: Int32 = 0
 
     /**
      * 定义列表术语和定义行之间间距
@@ -2930,7 +2930,7 @@ public class MarkdownThemeBuilder {
     /**
      * 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线
      */
-    var underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+    var underlineStyle: Int32 = 0
 
     init() {
     }
@@ -5889,7 +5889,7 @@ public class MarkdownThemeBuilder {
      * @param strikethroughStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setStrikethroughStyle(strikethroughStyle: TextDecorationStyle): MarkdownThemeBuilder {
+    public func setStrikethroughStyle(strikethroughStyle: Int32): MarkdownThemeBuilder {
         this.strikethroughStyle = strikethroughStyle
         return this
     }
@@ -6010,7 +6010,7 @@ public class MarkdownThemeBuilder {
      * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setUnderlineStyle(underlineStyle: TextDecorationStyle): MarkdownThemeBuilder {
+    public func setUnderlineStyle(underlineStyle: Int32): MarkdownThemeBuilder {
         this.underlineStyle = underlineStyle
         return this
     }

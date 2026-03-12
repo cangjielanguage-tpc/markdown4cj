@@ -356,7 +356,7 @@ func spanLetterSpacing(nodeView: NodeView, markdownTheme: MarkdownTheme): Float6
  * @param markdownTheme markdown样式
  * @return 文本下划线中划线
  */
-func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDecorationType, Color, TextDecorationStyle) {
+func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDecorationType, Color, Int32) {
     if (nodeView.isUnderlineNode) {
         return (TextDecorationType.Underline, markdownTheme.underlineColor, markdownTheme.underlineStyle) // 下划线
     }
@@ -364,9 +364,9 @@ func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDeco
         return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor, markdownTheme.strikethroughStyle) // 删除线
     }
     if (nodeView.isLink || nodeView.isFootnote) {
-        return (TextDecorationType.Underline, markdownTheme.linkColor, TextDecorationStyle.SOLID) // 链接, 脚注
+        return (TextDecorationType.Underline, markdownTheme.linkColor, 0) // 链接, 脚注
     }
-    return (TextDecorationType.None, Color.TRANSPARENT, TextDecorationStyle.SOLID) // 其他
+    return (TextDecorationType.None, Color.TRANSPARENT, 0) // 其他
 }
 
 /**

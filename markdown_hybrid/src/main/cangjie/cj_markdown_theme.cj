@@ -14,7 +14,6 @@ import ohos.ability.*
 import std.collection.*
 import markdown.components.*
 import ohos.resource_manager.AppResource
-import ohos.hilog.Hilog
 
 @Interop[ArkTS]
 public class CJMarkdownTheme {
@@ -1081,7 +1080,7 @@ public class CJMarkdownTheme {
     /**
      * 删除线样式
      */
-    var strikethroughStyle: ?TextDecorationStyle = Option<TextDecorationStyle>.None
+    var strikethroughStyle: ?Int32 = None
 
     /**
      * 定义列表术语和定义行之间间距
@@ -1136,7 +1135,7 @@ public class CJMarkdownTheme {
     /**
      * 下划线样式
      */
-    var underlineStyle: ?TextDecorationStyle = Option<TextDecorationStyle>.None
+    var underlineStyle: ?Int32 = None
 
     public init() {}
 
@@ -3064,15 +3063,8 @@ public class CJMarkdownTheme {
      *
      * @param strikethroughStyle 删除线样式  - SOLID-单实线 DOUBLE-双实线 DOTTED-点线 DASHED-虚线 WAVY-波浪线 默认SOLID
      */
-    public func setStrikethroughStyle(strikethroughStyle: Int64): Unit {
-        this.strikethroughStyle = match (strikethroughStyle) {
-            case 0 => TextDecorationStyle.SOLID
-            case 1 => TextDecorationStyle.DOUBLE
-            case 2 => TextDecorationStyle.DOTTED
-            case 3 => TextDecorationStyle.DASHED
-            case 4 => TextDecorationStyle.WAVY
-            case _ => TextDecorationStyle.SOLID
-        }
+    public func setStrikethroughStyle(strikethroughStyle: Int32): Unit {
+        this.strikethroughStyle = strikethroughStyle
     }
 
     /**
@@ -3170,14 +3162,7 @@ public class CJMarkdownTheme {
      *
      * @param underlineStyle 下划线样式  - SOLID-单实线 DOUBLE-双实线 DOTTED-点线 DASHED-虚线 WAVY-波浪线 默认SOLID
      */
-    public func setUnderlineStyle(underlineStyle: Int64): Unit {
-        this.underlineStyle = match (underlineStyle) {
-            case 0 => TextDecorationStyle.SOLID
-            case 1 => TextDecorationStyle.DOUBLE
-            case 2 => TextDecorationStyle.DOTTED
-            case 3 => TextDecorationStyle.DASHED
-            case 4 => TextDecorationStyle.WAVY
-            case _ => TextDecorationStyle.SOLID
-        }
+    public func setUnderlineStyle(underlineStyle: Int32): Unit {
+        this.underlineStyle = underlineStyle
     }
 }

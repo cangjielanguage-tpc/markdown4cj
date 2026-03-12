@@ -390,7 +390,7 @@ extend Span {
         return this
     }
 
-    func interopDecorationStyle(decorationStyle: (TextDecorationType, Color, TextDecorationStyle)): Span {
+    func interopDecorationStyle(decorationStyle: (TextDecorationType, Color, Int32)): Span {
         try {
             let dType: Int32 = match (decorationStyle[0]) {
                 case Underline => 1
@@ -402,12 +402,10 @@ extend Span {
             let dColor: UInt32 = decorationStyle[1].toUInt32()
             let colorString: String = dColor.format("08X")
 
-            let dStyle: Int32 = match (decorationStyle[2]) {
-                case DOUBLE => 1
-                case DOTTED => 2
-                case DASHED => 3
-                case WAVY => 4
-                case _ => 0
+            let dStyle: Int32 = if (decorationStyle[2] < 0 || decorationStyle[2] > 4) {
+                0 // 负数和超出枚举范围，设置为0
+            } else {
+                decorationStyle[2]
             }
 
             let global = context.getOrThrow().global
