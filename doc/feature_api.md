@@ -16,6 +16,8 @@ public class MarkdownComponent {
     * 初始化Markdown自定义控件
     *
     * @param output 传入markdown文档内容
+    * @param isInputEnded 流式输入是否输入结束(true:结束输入,false:持续输入)
+    * @param incrementalAnalysis markdown是否增量解析(true:增量解析,false:全量解析)
     * @param markdownAIConfiguration 传入markdown配置选项
     * @param markdownPlugin 传入markdown插件
     * @param adBuilder 传入广告布局
@@ -25,18 +27,22 @@ public class MarkdownComponent {
     * @param customTitleLineBuilder 传入自定义标题行内布局
     * @param customParagraphLineBuilder 传入自定义段落行内布局
     * @param customTableLineBuilder 传入自定义表格行内布局
+    * @param scroller list控制器
     */
     MarkdownComponent(
         output: String,
+        isInputEnded: Bool,
+        incrementalAnalysis: Bool,
         markdownAIConfiguration!: MarkdownAIConfiguration,
-        markdownPlugin: Markdown,
-        @BuilderParam adBuilder: (NodeView) -> Unit,
-        @BuilderParam videoBuilder: (NodeView, MarkdownConfiguration, (String) -> Unit) -> Unit,
-        @BuilderParam audioBuilder: (NodeView, MarkdownConfiguration) -> Unit,
-        @BuilderParam customBlockBuilder: (NodeView, Int64) -> Unit,
-        @BuilderParam customTitleLineBuilder: (NodeView, Int64) -> Unit,
-        @BuilderParam customParagraphLineBuilder: (NodeView, Int64) -> Unit,
-        @BuilderParam customTableLineBuilder: (NodeView, Int64) -> Unit
+        markdownPlugin!: Markdown,
+        @BuilderParam adBuilder!: (NodeView) -> Unit,
+        @BuilderParam videoBuilder!: (NodeView, MarkdownTheme, (String) -> Unit, (String, (String, Float64, Int64) -> Unit) -> Unit, ?(String) -> Unit, ?(String) -> Unit) -> Unit,
+        @BuilderParam audioBuilder!: (NodeView, MarkdownTheme, ?(String) -> Unit) -> Unit,
+        @BuilderParam customBlockBuilder!: (NodeView, Int64) -> Unit,
+        @BuilderParam customTitleLineBuilder!: (NodeView, Int64) -> Unit,
+        @BuilderParam customParagraphLineBuilder!: (NodeView, Int64) -> Unit,
+        @BuilderParam customTableLineBuilder!: (NodeView, Int64) -> Unit,
+        scroller: Scroller
     )
 }
 ```
@@ -124,6 +130,14 @@ public class MarkdownConfigurationBuilder {
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setImageCallbackCallback(imageCallbackCallback: (String) -> ?Array<UInt8>): MarkdownConfigurationBuilder
+
+    /**
+     * 设置图片下载的点击事件
+     *
+     * @param imageDownloadCallback 图片下载的点击事件
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setImageDownloadCallback(imageDownloadCallback: (String) -> Unit): MarkdownConfigurationBuilder
 
     /**
      * 设置音频的点击事件
@@ -236,46 +250,279 @@ public class MarkdownConfigurationBuilder {
 
 Markdown用户可设置的样式
 
+可设置接口总览
+
+1. 上下文 - 本地图片rawfile需要上下文
+    1. stageContext - 混合项目
+    2. abilityContext - 仓颉项目
+2. 综合接口
+   1. markdown是否同步解析
+   2. 是否打开长按复制粘贴功能
+   3. markdown第一个模块上边距
+   4. markdown最后一个模块下边距
+   5. 每个模块之间上下间距
+3. 链接
+   1. 链接是否图片显示 - 链接图标化
+   2. 列表中的单行链接是否是图片显示
+   3. 文本格式链接
+      1. 文本格式链接文本颜色
+      2. 是否按照链接文字字体大小显示文本
+      3. 文本格式链接文字大小
+      4. 文本格式链接文字行高
+      5. 文本格式链接背景颜色
+      6. 文本格式是否显示链接下划线
+   4. 圆形图片格式链接
+      1. 圆形图片格式链接主题背景颜色
+      2. 圆形图片格式链接控件背景颜色
+      3. 圆形图片格式链接文字大小
+      4. 圆形图片格式链接文字颜色
+      5. 圆形图片格式链接半径
+      6. 圆形图片格式链接左右外边距
+   5. 圆角矩形图片格式链接
+      1. 圆角矩形图片格式链接主题背景颜色
+      2. 圆角矩形图片格式链接控件背景颜色
+      3. 圆角矩形图片格式链接文字大小
+      4. 圆角矩形图片格式链接文字颜色
+      5. 圆角矩形图片格式链接控件高度
+      6. 圆角矩形图片格式链接左右内边距
+      7. 圆角矩形图片格式链接圆角半径
+      8. 圆角矩形图片格式链接左右外边距
+   6. 空心圆角矩形图片格式链接
+      1. 空心圆角矩形图片格式链接主题背景颜色
+      2. 空心圆角矩形图片格式链接控件背景颜色
+      3. 空心圆角矩形图片格式链接文字大小
+      4. 空心圆角矩形图片格式链接控件高度
+      5. 空心圆角矩形图片格式链接左右内边距
+      6. 空心圆角矩形图片格式链接边框宽度
+      7. 空心圆角矩形图片格式链接分割线宽度
+      8. 空心圆角矩形图片格式链接左右外边距
+      9. 空心圆角矩形图片格式分割线和文本左边距
+      10. 空心圆角矩形图片格式分割线和文本右边距
+4. 块引用
+   1. 块引用左边距
+   2. 块引用右边距
+   3. 块引用左边线条宽度
+   4. 块引用左边线条颜色
+   5. 块引用背景颜色
+   6. 块引用子模块上下间距
+5. 有序/无序/任务列表
+   1. 有序/无序/任务列表子模块上下间距
+   2. 有序/无序/任务列表左边距
+   3. 有序/无序/任务列表右边距
+   4. 有序列表
+      1. 有序列表前缀文本是否加粗
+      2. 有序列表前缀文本颜色
+      3. 有序列表前缀文本大小
+      4. 有序列表前缀文本行高
+   5. 无序列表
+      1. 无序列表前缀是否全部是实心圆型
+      2. 无序列表前缀文本颜色
+      3. 无序列表前缀文本大小
+      4. 无序列表前缀文本行高
+   6. 任务列表
+      1. 任务列表选择框宽高
+6. 代码
+   1. 内联代码
+      1. 内联代码文本颜色
+      2. 内联代码背景颜色
+      3. 内联代码文本大小
+      4. 内联代码文本字体
+   2. 缩进/围栏/组合/单独代码块
+      1. 是否格式化代码块内容
+      2. 代码高亮是否同步解析
+      3. 缩进/围栏/组合/单独代码块代码文本颜色
+      4. 缩进/围栏/组合/单独代码块代码类型文本颜色
+      5. 缩进/围栏/组合/单独代码块代码类型文本
+      6. 缩进/围栏/组合/单独代码块代码类型和代码块距离
+      7. 缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示
+      8. 缩进/围栏/组合/单独代码块代码行号是否显示
+      9. 缩进/围栏/组合/单独代码块背景颜色
+      10. 缩进/围栏/组合/单独代码块左边距
+      11. 缩进/围栏/组合/单独代码块右边距
+      12. 缩进/围栏/组合/单独代码块字体
+      13. 缩进/围栏/组合/单独代码块代码文本大小
+      14. 缩进/围栏/组合/单独代码块代码文本行高
+      15. 缩进/围栏/组合/单独代码块控件圆角大小
+      16. 缩进/围栏/组合/单独代码块代码全屏按钮是否显示
+      17. 缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高
+      18. 缩进/围栏/组合/单独代码块代码全屏按钮默认图标
+      19. 缩进/围栏/组合/单独代码块代码复制按钮默认图标
+      20. 组合代码块
+          1. 组合代码块未选中标题字体大小
+          2. 组合代码块选中标题字体大小
+          3. 组合代码块选中标题文本颜色
+          4. 组合代码块未选中标题文本颜色
+          5. 组合代码块选中标题背景颜色
+          6. 组合代码块未选中标题背景颜色
+      21. 单独代码块
+          1. 是否单独代码块显示
+          2. 单独代码块行号宽度
+          3. 单独代码块是否居底显示
+7. 标题
+   1. H1和H2标题下分割线高度
+   2. H1标题下分割线颜色
+   3. H2标题下分割线颜色
+   4. 标题文本字体
+   5. 标题文本字间距
+   6. 标题模块上间距
+   7. 标题模块下间距
+   8. H1标题文本大小
+   9. H2标题文本大小
+   10. H3标题文本大小
+   11. H4标题文本大小
+   12. H5标题文本大小
+   13. H6标题文本大小
+   14. H1标题文本颜色
+   15. H2标题文本颜色
+   16. H3标题文本颜色
+   17. H4标题文本颜色
+   18. H5标题文本颜色
+   19. H6标题文本颜色
+   20. H1标题文本行高
+   21. H2标题文本行高
+   22. H3标题文本行高
+   23. H4标题文本行高
+   24. H5标题文本行高
+   25. H6标题文本行高
+8. 段落
+   1. 段落模块上间距
+   2. 段落模块下间距
+   3. 段落文本大小
+   4. 段落文本颜色
+   5. 段落文本字间距
+   6. 段落文本行高
+   7. 段落文本字体
+9. 分割线
+   1. 分割线颜色
+   2. 分割线高度
+   3. 分割线额外上部外边距
+   4. 分割线额外下部外边距
+10. 软换行
+    1. 软换行是否换行
+11. 数学公式
+    1. 数学公式未加载状态是否显示文字
+    2. 数学公式文本大小
+    3. 数学公式背景色
+    4. 数学公式文本颜色
+    5. 数学公式生成图片格式
+    6. 块结构的数学公式是否居中
+    7. 数学公式字体路径
+12. 音频
+    1. 音频图标
+    2. 音频阴影颜色值
+    3. 音频边框颜色
+    4. 音频边框粗细
+    5. 音频边框圆角
+    6. 音频按钮背景颜色
+    7. 音频按钮文字颜色
+    8. 音频按钮文字大小
+    9. 音频按钮文字内容
+    10. 音频按钮圆角大小
+    11. 音频标题文字大小
+    12. 音频标题文字颜色
+    13. 音频标题文字行高
+    14. 音频类型文字大小
+    15. 音频类型文字颜色
+    16. 音频类型文字行高
+    17. 音频上边距
+    18. 音频下边距
+13. 视频
+    1. 视频默认占位图
+    2. 视频播放按钮默认图标
+    3. 视频发布默认图标
+    4. 视频下载默认图标
+    5. 视频圆角大小
+    6. 视频时间文本颜色
+    7. 视频时间文本大小
+    8. 视频时间文本居右边距
+    9. 视频时间文本居底边距
+    10. 视频上边距
+    11. 视频下边距
+    12. 视频发布/下载按钮布局是否显示
+    13. 视频发布按钮图片宽度和高度
+    14. 视频发布按钮宽度
+    15. 视频发布按钮高度
+    16. 视频发布按钮圆角
+    17. 视频发布按钮文本内容
+    18. 视频发布按钮文本大小
+    19. 视频发布按钮文本颜色
+    20. 视频发布按钮背景颜色
+    21. 视频下载按钮图片宽度和高度
+    22. 视频下载按钮宽度
+    23. 视频下载按钮高度
+    24. 视频下载按钮圆角
+    25. 视频下载按钮文本内容
+    26. 视频下载按钮文本大小
+    27. 视频下载按钮文本颜色
+    28. 视频下载按钮背景颜色
+14. 图片banner
+    1. 图片banner默认占位图
+15. 图片
+    1. 是否图文混排
+    2. 图片基于自身宽度缩放百分比
+    3. 图片基于父布局宽度缩放百分比
+    4. 图片最大高度
+    5. 图片最大宽度
+    6. 图片圆角大小
+    7. 图片边框宽度
+    8. 图片边框颜色
+    9. 图片缩放类型
+    10. 图片默认占位图
+    11. 网络图片是否压缩
+    12. 图片上边距
+    13. 图片下边距
+    14. 图片是否有下载按钮
+    15. 图片下载默认图标
+    16. 图片下载按钮图片宽度和高度
+    17. 图片下载按钮宽度
+    18. 图片下载按钮高度
+    19. 图片下载按钮圆角
+    20. 图片下载按钮文本内容
+    21. 图片下载按钮文本大小
+    22. 图片下载按钮文本颜色
+    23. 图片下载按钮背景颜色
+16. 表格
+    1. 表格内容内边距
+    2. 表格边框颜色
+    3. 表格边框宽度
+    4. 表格奇数行背景色
+    5. 表格偶数行背景色
+    6. 表格标题背景色
+    7. 表格标题文本大小
+    8. 表格标题行高
+    9. 表格内容文本颜色
+    10. 表格内容文本大小
+    11. 表格内容文本行高
+    12. 表格圆角大小
+    13. 表格一格最小宽度
+    14. 表格一格最大宽度
+    15. 表格第一列是否加粗
+    16. 表格是否显示滚动条
+    17. 表格滚动条颜色
+17. 代码块高亮
+    1. markdown代码高亮样式
+18. 删除线
+    1. 删除线颜色
+    2. 删除线样式
+19. 定义列表
+    1. 定义列表术语和定义行之间间距
+    2. 定义列表定义行缩进
+    3. 定义列表定义行间距
+20. 下标
+    1. 下标字体颜色
+    2. 下标字体大小
+    3. 下标偏移距离
+21. 上标
+    1. 上标字体颜色
+    2. 上标字体大小
+    3. 上标偏移距离
+22. 下划线
+    1. 下划线颜色
+    2. 下划线样式
+
 ```cangjie
 /**
  * Markdown用户可设置的样式
- * 1：上下文 - 本地图片rawfile需要上下文。混合项目是stageContext，仓颉项目是abilityContext
- * 2：markdown是否同步解析、是否打开长按复制粘贴功能、markdown第一个模块上边距、markdown最后一个模块下边距、每个模块之间上下间距
- * 3：链接 - 链接是否是图片显示、列表中的单行链接是否是图片显示
- *          文本链接：文本格式链接文本颜色、是否按照链接文字字体大小显示文本、文本格式链接文字大小、文本格式链接背景颜色、文本格式是否显示链接下划线
- *          圆形图片链接：圆形图片格式链接主题背景颜色、圆形图片格式链接控件背景颜色、圆形图片格式链接文字大小、圆形图片格式链接文字颜色、圆形图片格式链接半径、圆形图片格式链接左右外边距
- *          圆角矩形图片链接：圆角矩形图片格式链接主题背景颜色、圆角矩形图片格式链接控件背景颜色、圆角矩形图片格式链接文字大小、圆角矩形图片格式链接文字颜色、圆角矩形图片格式链接控件高度、圆角矩形图片格式链接左右内边距、圆角矩形图片格式链接圆角半径、圆角矩形图片格式链接左右外边距
- *          空心圆角矩形图片链接：空心圆角矩形图片格式链接主题背景颜色、空心圆角矩形图片格式链接控件背景颜色、空心圆角矩形图片格式链接文字大小、空心圆角矩形图片格式链接控件高度、空心圆角矩形图片格式链接左右内边距、空心圆角矩形图片格式链接边框宽度、空心圆角矩形图片格式链接分割线宽度、空心圆角矩形图片格式链接左右外边距、空心圆角矩形图片格式分割线和文本左边距、空心圆角矩形图片格式分割线和文本右边距
- * 4：列表 - 块引用：块引用左边距、块引用右边距、块引用左边线条宽度、块引用左边线条颜色、块引用背景颜色、块引用子模块上下间距
- *          有序/无序/任务列表子模块上下间距、有序/无序/任务列表左边距、有序/无序/任务列表右边距
- *          有序列表：有序列表前缀文本是否加粗、有序列表前缀文本颜色、有序列表前缀文本大小、有序列表前缀文本行高
- *          无序列表：无序列表前缀是否全部是实心圆型、无序列表前缀文本颜色、无序列表前缀文本大小、无序列表前缀文本行高
- *          任务列表：任务列表选择框宽高
- * 5：代码 - 内联代码是否是图片显示
- *          文本/图片格式内联代码文本颜色、文本/图片格式内联代码背景颜色、文本/图片格式内联代码文本大小
- *          文本格式内联代码：文本格式内联代码文本字体
- *          图片格式内联代码：图片格式内联代码文本左右边距、图片格式内联代码文本高度
- *          围栏代码块：是否格式化代码块内容、围栏代码块代码高亮是否同步解析
- *          缩进/围栏/组合/单独代码块：缩进/围栏/组合/单独代码块代码文本颜色、缩进/围栏/组合/单独代码块代码类型文本颜色、缩进/围栏/组合/单独代码块代码类型文本、缩进/围栏/组合/单独代码块代码类型和代码块距离、缩进/围栏/组合/单独代码块代码复制/全屏文字是否显示、缩进/围栏/组合/单独代码块代码行号是否显示、缩进/围栏/组合/单独代码块背景颜色、缩进/围栏/组合/单独代码块左边距、缩进/围栏/组合/单独代码块字体、缩进/围栏/组合/单独代码块代码文本大小、缩进/围栏/组合/单独代码块代码文本行高、缩进/围栏/组合/单独代码块圆角大小、缩进/围栏/组合/单独代码块代码全屏按钮是否显示、缩进/围栏/组合/单独代码块代码全屏/复制按钮宽高、缩进/围栏/组合/单独代码块代码全屏按钮默认图标、缩进/围栏/组合/单独代码块代码复制按钮默认图标
- *          组合代码块：组合代码块未选中标题字体大小、组合代码块选中标题字体大小、组合代码块选中标题文本颜色、组合代码块未选中标题文本颜色、组合代码块选中标题背景颜色、组合代码块未选中标题背景颜色
- *          单独代码块：是否单独代码块显示、单独代码块行号宽度、单独代码块是否居底显示
- * 6：标题 - H1/H2标题下分割线高度、H1/H2标题下分割线颜色
- *          标题文本字体、标题模块上间距、标题模块下间距、标题文本大小数组、标题文本颜色、标题文本字间距、一级标题文本行高、二级标题文本行高、三级标题文本行高、四级标题文本行高、五级标题文本行高、六级标题文本行高
- * 7：段落 - 段落模块上间距、段落模块下间距、段落文本大小、段落文本颜色、段落文本字间距、段落文本行高、段落文本字体
- * 8：分割线 - 分割线颜色、分割线高度、分割线上部外边距、分割线下部外边距
- * 9：软换行 - 软换行是否换行
- * 10：数学公式 - 数学公式未加载状态是否显示文字、数学公式文本大小、数学公式背景色、数学公式文本颜色、数学公式生成图片格式、块结构的数学公式是否居中、数学公式字体路径
- * 11：音频 - 音频图标、音频阴影颜色值、音频边框颜色、音频边框粗细、音频边框圆角、音频按钮背景颜色、音频按钮文字颜色、音频按钮文字大小、音频按钮文字内容、音频按钮圆角大小、音频标题文字大小、音频标题文字颜色、音频标题文字行高、音频类型文字大小、音频类型文字颜色、音频类型文字行高、音频上边距、音频下边距
- * 12：视频 - 视频默认占位图、视频播放按钮默认图标、视频发布默认图标、视频下载默认图标、视频圆角大小、视频时间文本颜色、视频时间文本大小、视频时间文本居右边距、视频时间文本居底边距、视频上边距、视频下边距、视频发布/下载按钮布局是否显示、视频发布按钮图片宽度和高度、视频发布按钮宽度、视频发布按钮高度、视频发布按钮圆角、视频发布按钮文本内容、视频发布按钮文本大小、视频发布按钮文本颜色、视频发布按钮背景颜色、视频下载按钮图片宽度和高度、视频下载按钮宽度、视频下载按钮高度、视频下载按钮圆角、视频下载按钮文本内容、视频下载按钮文本大小、视频下载按钮文本颜色、视频下载按钮背景颜色
- * 13：图片Banner - 图片banner默认占位图
- * 14：图片 - 图片基于自身宽度缩放百分比、图片基于父布局宽度缩放百分比、图片圆角大小、图片缩放类型、图片默认占位图、网络图片是否压缩、图片上边距、图片下边距
- * 15：表格 - 表格内容内边距、表格边框颜色、表格边框宽度、表格奇数行背景色、表格偶数行背景色、表格头背景色、表格文本行高、表格圆角大小、表格一格最小宽度、表格一格最大宽度、表格第一列是否加粗
- * 16：代码高亮 - markdown代码高亮样式
- * 17：删除线 - 删除线颜色
- * 18：定义列表 - 定义列表术语和定义行之间间距、定义列表定义行缩进、定义列表定义行间距
- * 19：下标 - 下标字体颜色、下标字体大小、下标偏移距离
- * 20：上标 - 上标字体颜色、上标字体大小、上标偏移距离
- * 21：下划线 - 下划线颜色
  */
 public class MarkdownTheme {
     /**
@@ -436,6 +683,14 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setLinkSize(linkSize: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置文本格式链接文字行高
+     *
+     * @param linkLineHeight 文本格式链接文字行高
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setLinkLineHeight(linkLineHeight: Float64): MarkdownThemeBuilder
 
     /**
      * 设置文本格式链接背景颜色
@@ -790,14 +1045,6 @@ public class MarkdownThemeBuilder {
     public func setTaskListItemLength(taskListItemLength: Float64): MarkdownThemeBuilder
 
     /**
-     * 设置内联代码是否是图片显示
-     *
-     * @param isCodeStyle 内联代码是否是图片显示 - true：图片化显示；false：不图片化显示。默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setIsCodeStyle(isCodeStyle: Bool): MarkdownThemeBuilder
-
-    /**
      * 设置是否格式化代码块内容
      *
      * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块；false：不格式化代码块。默认false
@@ -806,52 +1053,36 @@ public class MarkdownThemeBuilder {
     public func setIsCodeFormat(isCodeFormat: Bool): MarkdownThemeBuilder
 
     /**
-     * 设置文本、图片格式内联代码文本颜色
+     * 设置内联代码文本颜色
      *
-     * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
+     * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeTextColor(codeTextColor: Color): MarkdownThemeBuilder
 
     /**
-     * 设置文本、图片格式内联代码背景颜色
+     * 设置内联代码背景颜色
      *
-     * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFFEAEAEA
+     * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFFEAEAEA
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeBackgroundColor(codeBackgroundColor: Color): MarkdownThemeBuilder
 
     /**
-     * 设置文本、图片格式内联代码文本大小
+     * 设置内联代码文本大小
      *
-     * @param codeTextSize 文本、图片格式内联代码文本大小 - 默认13.0fp
+     * @param codeTextSize 内联代码文本大小 - 默认13.0fp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeTextSize(codeTextSize: Float64): MarkdownThemeBuilder
 
     /**
-     * 设置文本格式内联代码文本字体
+     * 设置内联代码文本字体
      *
-     * @param codeTypeface 文本格式内联代码文本字体 - 默认"HarmonyOS Sans"
+     * @param codeTypeface内联代码文本字体 - 默认"HarmonyOS Sans"
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setCodeTypeface(codeTypeface: String): MarkdownThemeBuilder
-
-    /**
-     * 设置图片格式内联代码文本左右边距
-     *
-     * @param codeLeftAndRightPadding 图片格式内联代码文本左右边距 - 默认4.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setCodeLeftAndRightPadding(codeLeftAndRightPadding: Float64): MarkdownThemeBuilder
-
-    /**
-     * 设置图片格式内联代码文本高度
-     *
-     * @param codeHeight 图片格式内联代码文本高度 - 默认20.0vp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setCodeHeight(codeHeight: Float64): MarkdownThemeBuilder
 
     /**
      * 设置围栏代码块代码高亮是否同步解析
@@ -1078,14 +1309,6 @@ public class MarkdownThemeBuilder {
     public func setHeadingBreakHeight(headingBreakHeight: Float64): MarkdownThemeBuilder
 
     /**
-     * 设置H1、H2标题下分割线颜色
-     *
-     * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0XFF191919
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setHeadingBreakColor(headingBreakColor: Color): MarkdownThemeBuilder
-
-    /**
      * 设置标题文本字体
      *
      * @param headingTypeface 标题文本字体 - 默认"HarmonyOS Sans"
@@ -1110,20 +1333,110 @@ public class MarkdownThemeBuilder {
     public func setHeadingBottomMargins(headingBottomMargins: Float64): MarkdownThemeBuilder
 
     /**
-     * 设置标题文本大小数组
+     * 设置一级标题文本大小
      *
-     * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+     * @param headingTextSize1 一级标题文本大小 - 默认20.0
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<Float64>): MarkdownThemeBuilder
+    public func setHeadingTextSize1(headingTextSize1: Float64): MarkdownThemeBuilder
 
     /**
-     * 设置标题文本颜色
+     * 设置二级标题文本大小
      *
-     * @param headingTextColor 标题文本颜色 - 默认0XFF191919
+     * @param headingTextSize2 二级标题文本大小 - 默认17.0
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setHeadingTextColor(headingTextColor: Color): MarkdownThemeBuilder
+    public func setHeadingTextSize2(headingTextSize2: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置三级标题文本大小
+     *
+     * @param headingTextSize3 三级标题文本大小 - 默认16.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextSize3(headingTextSize3: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置四级标题文本大小
+     *
+     * @param headingTextSize4 四级标题文本大小 - 默认15.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextSize4(headingTextSize4: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置五级标题文本大小
+     *
+     * @param headingTextSize5 五级标题文本大小 - 默认15.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextSize5(headingTextSize5: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置六级标题文本大小
+     *
+     * @param headingTextSize6 六级标题文本大小 - 默认13.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextSize6(headingTextSize6: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置一级标题文本颜色
+     *
+     * @param headingTextColor1 一级标题文本颜色
+     */
+    public func setHeadingTextColor1(headingTextColor1: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置H1标题下分割线颜色
+     *
+     * @param headingBreakColor H1标题下分割线颜色 - 默认0XFF191919
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingBreakColor1(headingBreakColor1: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置二级标题文本颜色
+     *
+     * @param headingTextColor2 二级标题文本颜色
+     */
+    public func setHeadingTextColor2(headingTextColor2: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置H2标题下分割线颜色
+     *
+     * @param headingBreakColor2 H1、H2标题下分割线颜色 - 默认0XFF191919
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingBreakColor2(headingBreakColor2: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置三级标题文本颜色
+     *
+     * @param headingTextColor3 三级标题文本颜色
+     */
+    public func setHeadingTextColor3(headingTextColor3: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置四级标题文本颜色
+     *
+     * @param headingTextColor4 四级标题文本颜色
+     */
+    public func setHeadingTextColor4(headingTextColor4: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置五级标题文本颜色
+     *
+     * @param headingTextColor5 五级标题文本颜色
+     */
+    public func setHeadingTextColor5(headingTextColor5: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置六级标题文本颜色
+     *
+     * @param headingTextColor6 六级标题文本颜色
+     */
+    public func setHeadingTextColor6(headingTextColor6: Color): MarkdownThemeBuilder
 
     /**
      * 设置标题文本字间距
@@ -1496,18 +1809,18 @@ public class MarkdownThemeBuilder {
     /**
      * 设置视频发布默认图标
      *
-     * @param videoDownloadImage 视频发布默认图标 - 默认None
+     * @param videoReleaseImage 视频发布默认图标 - 默认None
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setVideoReleaseImage(videoDownloadImage: AppResource): MarkdownThemeBuilder
+    public func setVideoReleaseImage(videoReleaseImage: AppResource): MarkdownThemeBuilder
 
     /**
      * 设置视频下载默认图标
      *
-     * @param videoReleaseImage 视频下载默认图标 - 默认None
+     * @param videoDownloadImage 视频下载默认图标 - 默认None
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setVideoDownloadImage(videoReleaseImage: AppResource): MarkdownThemeBuilder
+    public func setVideoDownloadImage(videoDownloadImage: AppResource): MarkdownThemeBuilder
 
     /**
      * 设置视频圆角
@@ -1726,12 +2039,44 @@ public class MarkdownThemeBuilder {
     public func setImageFixedRatioWidth(imageFixedRatioWidth: Float64): MarkdownThemeBuilder
 
     /**
+     * 设置图片最大高度
+     *
+     * @param imageMaxHeight 图片最大高度 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageMaxHeight(imageMaxHeight: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置图片最大宽度
+     *
+     * @param imageMaxWidth 图片最大宽度 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageMaxWidth(imageMaxWidth: Float64): MarkdownThemeBuilder
+
+    /**
      * 设置图片圆角
      *
      * @param imageBorderRadius 图片圆角 - 默认0.0
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setImageBorderRadius(imageBorderRadius: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置图片边框宽度
+     *
+     * @param imageBorderWidth 图片边框宽度 - 默认0.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageBorderWidth(imageBorderWidth: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置图片边框颜色
+     *
+     * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageBorderColor(imageBorderColor: Color): MarkdownThemeBuilder
 
     /**
      * 设置图片缩放类型
@@ -1774,6 +2119,94 @@ public class MarkdownThemeBuilder {
     public func setImageMarginBottom(imageMarginBottom: Float64): MarkdownThemeBuilder
 
     /**
+     * 设置图片是否有下载按钮
+     *
+     * @param isImageDownload 图片是否有下载按钮 - 默认false
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsImageDownload(isImageDownload: Bool): MarkdownThemeBuilder
+
+    /**
+     * 设置是否图文混排
+     *
+     * @param isImageMixedLayout 是否图文混排 - 默认true
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setIsImageMixedLayout(isImageMixedLayout: Bool): MarkdownThemeBuilder
+
+    /**
+     * 设置图片下载默认图标
+     *
+     * @param imageDownloadImage 图片下载默认图标 - 默认None
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadImage(imageDownloadImage: AppResource): MarkdownThemeBuilder
+
+    /**
+     * 设置图片下载按钮图片宽度和高度
+     *
+     * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置图片下载按钮宽度
+     *
+     * @param imageDownloadWidth 图片下载按钮宽度 - 默认296.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadWidth(imageDownloadWidth: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置图片下载按钮高度
+     *
+     * @param imageDownloadHeight 图片下载按钮高度 - 默认44.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadHeight(imageDownloadHeight: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置图片下载按钮圆角
+     *
+     * @param imageDownloadRadius 图片下载按钮圆角 - 默认22.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadRadius(imageDownloadRadius: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置图片下载按钮文本内容
+     *
+     * @param imageDownloadText 图片下载按钮文本内容 - 默认"下载图片"
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadText(imageDownloadText: String): MarkdownThemeBuilder
+
+    /**
+     * 设置图片下载按钮文本大小
+     *
+     * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadTexSize(imageDownloadTexSize: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置图片下载按钮文本颜色
+     *
+     * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0XE6000000
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadTexColor(imageDownloadTexColor: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置图片下载按钮背景颜色
+     *
+     * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0XFFF5F5F5
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageDownloadBackgroundColor(imageDownloadBackgroundColor: Color): MarkdownThemeBuilder
+
+    /**
      * 设置表格内容内边距
      *
      * @param tableCellPadding 表格内容内边距 - 默认4.0vp
@@ -1814,17 +2247,57 @@ public class MarkdownThemeBuilder {
     public func setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: Color): MarkdownThemeBuilder
 
     /**
-     * 设置表格头背景色
+     * 设置表格标题背景色
      *
-     * @param tableHeaderRowBackgroundColor 表格头背景色 - 默认0XFFFFFFFF
+     * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0XFFFFFFFF
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: Color): MarkdownThemeBuilder
 
     /**
-     * 设置表格文本行高
+     * 设置表格标题文本颜色
      *
-     * @param tableTextLineHeight 表格文本行高 - 默认22.0vp
+     * @param tableTitleTextColor 表格标题文本颜色 - 默认0XFF191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableTitleTextColor(tableTitleTextColor: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置表格标题文本大小
+     *
+     * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableTitleTextSize(tableTitleTextSize: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置表格标题文本行高
+     *
+     * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableTitleLineHeight(tableTitleLineHeight: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置表格内容文本颜色
+     *
+     * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableContentTextColor(tableContentTextColor: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置表格内容文本大小
+     *
+     * @param tableContentTextSize 表格内容文本大小 - 默认14.0vp
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableContentTextSize(tableContentTextSize: Float64): MarkdownThemeBuilder
+
+    /**
+     * 设置表格内容文本行高
+     *
+     * @param tableTextLineHeight 表格内容文本行高 - 默认22.0vp
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setTableTextLineHeight(tableTextLineHeight: Float64): MarkdownThemeBuilder
@@ -1862,6 +2335,22 @@ public class MarkdownThemeBuilder {
     public func setTableFirstColumnBold(tableFirstColumnBold: Bool): MarkdownThemeBuilder
 
     /**
+     * 设置表格是否显示滚动条
+     *
+     * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableScrollBarShow(tableScrollBarShow: Bool): MarkdownThemeBuilder
+
+    /**
+     * 设置表格滚动条颜色
+     *
+     * @param tableFirstColumnBold 表格滚动条颜色
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableScrollBarColor(tableScrollBarColor: Color): MarkdownThemeBuilder
+
+    /**
      * 设置markdown代码高亮样式
      *
      * @param PrismTheme markdown代码高亮样式 - 默认PrismThemeDarkula.create()
@@ -1876,6 +2365,14 @@ public class MarkdownThemeBuilder {
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setStrikethroughColor(strikethroughColor: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置删除线样式
+     *
+     * @param strikethroughStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setStrikethroughStyle(strikethroughStyle: Int32): MarkdownThemeBuilder
 
     /**
      * 设置定义列表术语和定义行之间间距
@@ -1956,6 +2453,14 @@ public class MarkdownThemeBuilder {
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setUnderlineColor(underlineColor: Color): MarkdownThemeBuilder
+
+    /**
+     * 设置下划线样式
+     *
+     * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setUnderlineStyle(underlineStyle: Int32): MarkdownThemeBuilder
 
     /**
      * 返回Theme对象
@@ -2383,48 +2888,6 @@ public interface MarkdownPlugin <: Hashable & Equatable<MarkdownPlugin> & ToStri
 }
 ```
 
-### 用于渲染Component的NodeView数据结构
-
-```cangjie
-public class NodeView <: ToString {
-    /* BlockQuote深度 -1:无效 >=0:深度 */
-    public var blockQuoteDepth: Int = -1
-    /* 是否被BlockQuote修饰 */
-    public var blockQuote: Bool = false
-    /* 是否被Emphasis修饰 */
-    public var emphasis: Bool = false
-    /* 是否被StrongEmphasis修饰 */
-    public var strongEmphasis: Bool = false
-    /* 是否被Link修饰 */
-    public var link: ?Link = None
-    /* 是否属于BulletList */
-    public var bulletList: Bool = false
-    /* 属于第几层OrderedListItem -1:无效 >=0:深度 */
-    public var depth: Int = -1
-    /* 属于第几位OrderedListItem -1:无效 >=0:序号 */
-    public var order: Int = -1
-    public var orderedList: ?Int = None
-    /* 属于第几层BulletListItem -1:无效 >=0:深度 */
-    public var bulletListDepth: Int = -1
-    /* ListItem中可包含多个Block，但只有第一个Block有列表符号 */
-    public var listMark: Bool = false
-    // 本身Node节点
-    public var node: Node
-    // 是否为Node开始
-    public prop isNodeStart: Bool
-    // 是否为Node结束
-    public prop isNodeEnd: Bool
-    // 子节点列表
-    public let children: ArrayList<NodeView> = ArrayList<NodeView>()
-    // NodeViewTree中的上级NodeView
-    public var collector: ?NodeView = None
-    // 供插件使用的自定义属性
-    public var props: ?HashMap<String, Any> = None
-    // 所有上级列表节点 用于ListItem中第一个Block前的列表符号绘制
-    public var list: ArrayList<NodeView> = EMPTY_LIST
-}
-```
-
 ### Markdown音频插件
 
 ```cangjie
@@ -2541,7 +3004,13 @@ public class LinkViewPlugin <: AbstractMarkdownPlugin {
 
 ```cangjie
 public class LinkifyPlugin <: AbstractMarkdownPlugin {
-    public static func create(): LinkifyPlugin
+    /**
+     * 创建自动网址链接插件
+     *
+     * @param regs 自定义正则
+     * @return LinkifyPlugin
+     */
+    public static func create(regs: Array<String>): LinkifyPlugin
 }
 ```
 
