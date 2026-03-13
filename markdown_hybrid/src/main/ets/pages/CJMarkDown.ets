@@ -3994,9 +3994,9 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置表格文本行高
+   * 设置表格内容文本行高
    *
-   * @param tableTextLineHeight 表格文本行高 - 默认22.0vp
+   * @param tableTextLineHeight 表格内容文本行高 - 默认22.0vp
    */
   setTableTextLineHeight(tableTextLineHeight: number): void {
     this.tableTextLineHeight = tableTextLineHeight
