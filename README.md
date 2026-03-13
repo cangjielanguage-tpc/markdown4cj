@@ -3,9 +3,9 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.3.1-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.3.2-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v1.0.3-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v1.0.5-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -155,7 +155,12 @@ class ARHeading1Page {
     func build() {
         Scroll() {
             Column {
-                MarkdownComponent(output: mdStr)
+                MarkdownComponent(
+                    output: mdStr,
+                    isInputEnded: true,
+                    incrementalAnalysis: false,
+                    scroller: Scroller()
+                )
             }
         }
         // 设置滚动方法
@@ -301,7 +306,7 @@ Heading level 2
 10. 音频支持的格式 `mp3, wav, aac, flac, ogg, m4a, wma, amr`
 11. `setLatexMathResStr` 接口默认字段是 `/data/storage/el1/bundle/entry/resources/resfile/res`。用户修改项目默认名称entry需要设置 `/data/storage/el1/bundle/xxx/resources/resfile/res` 数学公式才能正常显示
 12. markdownPlugin 自定义设置的时候。NodeIdPlugin 需要最后添加
-13. 自定义行内布局因为布局是在 Text 控件之中。暂时只支持 Span 和 ImageSpan 
+13. 自定义行内布局因为布局是在 Text 控件之中。暂时只支持 Span 和 ImageSpan
 
 ## 开源协议
 
