@@ -102,6 +102,41 @@ struct ListDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
@@ -123,6 +158,13 @@ struct ListDetailsPage {
       this.bulletListItemSize = listData._bulletListItemSize
       this.bulletListItemLineHeight = listData._bulletListItemLineHeight
       this.taskListItemLength = listData._taskListItemLength
+      this.isMarkdownParserSync = listData._isMarkdownParserSync
+      this.typeWriterOpen = listData._typeWriterOpen
+      this.typeWriterColor = listData._typeWriterColor
+      this.isOnCopy = listData._isOnCopy
+      this.blockFirstTopMargin = listData._blockFirstTopMargin
+      this.blockLastBottomMargin = listData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = listData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -212,6 +254,13 @@ struct ListDetailsPage {
     theme.setBulletListItemSize(this.bulletListItemSize) // 无序列表前缀文本大小
     theme.setBulletListItemLineHeight(this.bulletListItemLineHeight) // 无序列表前缀文本行高
     theme.setTaskListItemLength(this.taskListItemLength) // 任务列表选择框宽高
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
+    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }

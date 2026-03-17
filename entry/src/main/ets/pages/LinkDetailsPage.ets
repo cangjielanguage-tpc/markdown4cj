@@ -190,6 +190,41 @@ struct LinkDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
@@ -230,6 +265,13 @@ struct LinkDetailsPage {
       this.linkRectToolImageMargin = linkData._linkRectToolImageMargin
       this.linkRectToolImageLineLeftPadding = linkData._linkRectToolImageLineLeftPadding
       this.linkRectToolImageLineRightPadding = linkData._linkRectToolImageLineRightPadding
+      this.isMarkdownParserSync = linkData._isMarkdownParserSync
+      this.typeWriterOpen = linkData._typeWriterOpen
+      this.typeWriterColor = linkData._typeWriterColor
+      this.isOnCopy = linkData._isOnCopy
+      this.blockFirstTopMargin = linkData._blockFirstTopMargin
+      this.blockLastBottomMargin = linkData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = linkData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -327,6 +369,13 @@ struct LinkDetailsPage {
     theme.setLinkRectToolImageMargin(this.linkRectToolImageMargin) // 空心圆角矩形图片格式链接左右外边距
     theme.setLinkRectToolImageLineLeftPadding(this.linkRectToolImageLineLeftPadding) // 空心圆角矩形图片格式分割线和文本左边距
     theme.setLinkRectToolImageLineRightPadding(this.linkRectToolImageLineRightPadding) // 空心圆角矩形图片格式分割线和文本右边距
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
+    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }

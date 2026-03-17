@@ -58,6 +58,41 @@ struct SupDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8.0
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8.0
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8.0
 
   aboutToAppear(): void {
     try {
@@ -67,6 +102,13 @@ struct SupDetailsPage {
       this.supTextColor = supData._supTextColor
       this.supTextSize = supData._supTextSize
       this.supOffsetDist = supData._supOffsetDist
+      this.isMarkdownParserSync = supData._isMarkdownParserSync
+      this.typeWriterOpen = supData._typeWriterOpen
+      this.typeWriterColor = supData._typeWriterColor
+      this.isOnCopy = supData._isOnCopy
+      this.blockFirstTopMargin = supData._blockFirstTopMargin
+      this.blockLastBottomMargin = supData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = supData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -129,6 +171,13 @@ struct SupDetailsPage {
     theme.setSupTextColor(this.supTextColor) // 上标字体颜色
     theme.setSupTextSize(this.supTextSize) // 上标字体大小
     theme.setSupOffsetDist(this.supOffsetDist) // 上标偏移距离
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
+    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }

@@ -54,6 +54,36 @@ struct AllDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
 
   aboutToAppear(): void {
     try {
@@ -62,6 +92,12 @@ struct AllDetailsPage {
       this.isFull = allData._isFull
       this.blockTopAndBottomMargins = allData._blockTopAndBottomMargins
       this.isDark = allData._isDark
+      this.isMarkdownParserSync = allData._isMarkdownParserSync
+      this.typeWriterOpen = allData._typeWriterOpen
+      this.typeWriterColor = allData._typeWriterColor
+      this.isOnCopy = allData._isOnCopy
+      this.blockFirstTopMargin = allData._blockFirstTopMargin
+      this.blockLastBottomMargin = allData._blockLastBottomMargin
     } catch (e) {
     }
   }
@@ -141,6 +177,13 @@ struct AllDetailsPage {
     theme.setPlayCircleFillIcon($r('app.media.play_circle_fill'))
     theme.setBannerImage($r('app.media.place_holder'))
     theme.setImageResource($r('app.media.place_holder'))
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
+    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }

@@ -30,7 +30,7 @@ public class MarkdownTheme {
     /**
      * 是否开启打字机效果
      */
-    protected var typeWriterOpen: Bool = true
+    protected var typeWriterOpen: Bool = false
 
     /**
      * 打字机效果颜色

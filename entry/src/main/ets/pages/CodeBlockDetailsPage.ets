@@ -134,6 +134,41 @@ struct CodeBlockDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
@@ -160,6 +195,13 @@ struct CodeBlockDetailsPage {
       this.iconWidthAndHeight = codeBlockData._iconWidthAndHeight
       this.iconWidthAndHeight = codeBlockData._iconWidthAndHeight
       this.isDark = codeBlockData._isDark
+      this.isMarkdownParserSync = codeBlockData._isMarkdownParserSync
+      this.typeWriterOpen = codeBlockData._typeWriterOpen
+      this.typeWriterColor = codeBlockData._typeWriterColor
+      this.isOnCopy = codeBlockData._isOnCopy
+      this.blockFirstTopMargin = codeBlockData._blockFirstTopMargin
+      this.blockLastBottomMargin = codeBlockData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = codeBlockData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -248,6 +290,13 @@ struct CodeBlockDetailsPage {
     theme.setIsDark(this.isDark)
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
+    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }

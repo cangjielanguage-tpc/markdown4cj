@@ -167,6 +167,41 @@ struct VideoDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
@@ -200,6 +235,13 @@ struct VideoDetailsPage {
       this.videoDownloadTexSize = videoData._videoDownloadTexSize
       this.videoDownloadTexColor = videoData._videoDownloadTexColor
       this.videoDownloadBackgroundColor = videoData._videoDownloadBackgroundColor
+      this.isMarkdownParserSync = videoData._isMarkdownParserSync
+      this.typeWriterOpen = videoData._typeWriterOpen
+      this.typeWriterColor = videoData._typeWriterColor
+      this.isOnCopy = videoData._isOnCopy
+      this.blockFirstTopMargin = videoData._blockFirstTopMargin
+      this.blockLastBottomMargin = videoData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = videoData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -296,6 +338,13 @@ struct VideoDetailsPage {
     theme.setVideoDownloadTexSize(this.videoDownloadTexSize) // 视频下载按钮文本大小
     theme.setVideoDownloadTexColor(this.videoDownloadTexColor) // 视频下载按钮文本颜色
     theme.setVideoDownloadBackgroundColor(this.videoDownloadBackgroundColor) // 视频下载按钮背景颜色
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
+    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }

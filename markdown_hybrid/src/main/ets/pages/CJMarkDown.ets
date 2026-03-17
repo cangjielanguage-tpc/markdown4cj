@@ -501,8 +501,14 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.headingTextColor1 !== undefined) {
           cjMarkdownTheme.setHeadingTextColor1(this.config.markdownTheme.headingTextColor1)
         }
+        if (this.config.markdownTheme.headingTextColor1 !== undefined) {
+          cjMarkdownTheme.setHeadingBreakColor1(this.config.markdownTheme.headingBreakColor1)
+        }
         if (this.config.markdownTheme.headingTextColor2 !== undefined) {
           cjMarkdownTheme.setHeadingTextColor2(this.config.markdownTheme.headingTextColor2)
+        }
+        if (this.config.markdownTheme.headingTextColor1 !== undefined) {
+          cjMarkdownTheme.setHeadingBreakColor2(this.config.markdownTheme.headingBreakColor2)
         }
         if (this.config.markdownTheme.headingTextColor3 !== undefined) {
           cjMarkdownTheme.setHeadingTextColor3(this.config.markdownTheme.headingTextColor3)

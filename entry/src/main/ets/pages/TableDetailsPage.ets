@@ -108,6 +108,41 @@ struct TableDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8.0
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8.0
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8.0
 
   aboutToAppear(): void {
     try {
@@ -128,6 +163,13 @@ struct TableDetailsPage {
       this.tableMinTextWidth = tableData._tableMinTextWidth
       this.tableMaxTextWidth = tableData._tableMaxTextWidth
       this.tableFirstColumnBold = tableData._tableFirstColumnBold
+      this.isMarkdownParserSync = tableData._isMarkdownParserSync
+      this.typeWriterOpen = tableData._typeWriterOpen
+      this.typeWriterColor = tableData._typeWriterColor
+      this.isOnCopy = tableData._isOnCopy
+      this.blockFirstTopMargin = tableData._blockFirstTopMargin
+      this.blockLastBottomMargin = tableData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = tableData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -206,6 +248,13 @@ struct TableDetailsPage {
     theme.setTableFirstColumnBold(this.tableFirstColumnBold) // 表格第一列是否加粗
     theme.setTableScrollBarShow(true) // 设置显示滚动条
     theme.setTableScrollBarColor(0xFFFFD700) // 设置滚动条颜色
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
+    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }
