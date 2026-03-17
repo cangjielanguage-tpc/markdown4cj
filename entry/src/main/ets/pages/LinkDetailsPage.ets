@@ -225,6 +225,11 @@ struct LinkDetailsPage {
    */
   @State
   blockTopAndBottomMargins: number = 8
+  /**
+   * 文本格式链接文字行高
+   */
+  @State
+  linkLineHeight: number = 22
 
   aboutToAppear(): void {
     try {
@@ -272,6 +277,7 @@ struct LinkDetailsPage {
       this.blockFirstTopMargin = linkData._blockFirstTopMargin
       this.blockLastBottomMargin = linkData._blockLastBottomMargin
       this.blockTopAndBottomMargins = linkData._blockTopAndBottomMargins
+      this.linkLineHeight = linkData._linkLineHeight
     } catch (e) {
     }
   }
@@ -376,6 +382,7 @@ struct LinkDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setLinkLineHeight(this.linkLineHeight) // 文本格式链接文字行高
     config.setMarkdownTheme(theme)
     return config
   }

@@ -412,6 +412,15 @@ struct LinkPage {
    */
   blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
   /**
+   * 文本格式链接文字行高
+   */
+  @State
+  linkLineHeight: number = 22
+  /**
+   * 文本格式链接文字行高
+   */
+  linkLineHeightList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  /**
    * 配置数据内容
    */
   @State
@@ -1756,6 +1765,37 @@ struct LinkPage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`文本格式链接文字行高 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.linkLineHeight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.linkLineHeightList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.linkLineHeight = item
+                    this.linkData.linkLineHeight = this.linkLineHeight
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -1828,6 +1868,7 @@ export class LinkData {
   _blockFirstTopMargin: number = 8
   _blockLastBottomMargin: number = 8
   _blockTopAndBottomMargins: number = 8
+  _linkLineHeight: number = 22
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
@@ -1996,6 +2037,10 @@ export class LinkData {
 
   public set blockTopAndBottomMargins(value: number) {
     this._blockTopAndBottomMargins = value
+  }
+
+  public set linkLineHeight(value: number) {
+    this._linkLineHeight = value
   }
 
   public set pagePath(value: string) {

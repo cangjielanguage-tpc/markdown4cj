@@ -20,6 +20,27 @@ export function uint8ArrayToString(array: Uint8Array) {
   return retStr;
 }
 
+/**
+ * 下划线样式转文本
+ */
+export function styleToString(style: TextDecorationStyle): string {
+  switch (style) {
+    case TextDecorationStyle.SOLID:
+      return "单实线"
+    case TextDecorationStyle.DOUBLE:
+      return "双实线"
+    case TextDecorationStyle.DOTTED:
+      return "点线"
+    case TextDecorationStyle.DASHED:
+      return "虚线"
+    case TextDecorationStyle.WAVY:
+      return "波浪线"
+  }
+}
+
+/**
+ * 颜色列表转换文本
+ */
 export function numberArrayToColorString(color: Array<number>): string {
   let returnString = ""
   for (let index = 0; index < color.length; index++) {

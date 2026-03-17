@@ -124,6 +124,11 @@ struct ParagraphDetailsPage {
    */
   @State
   blockTopAndBottomMargins: number = 8
+  /**
+   * 删除线样式
+   */
+  @State
+  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
   aboutToAppear(): void {
     try {
@@ -147,6 +152,7 @@ struct ParagraphDetailsPage {
       this.blockFirstTopMargin = paragraphData._blockFirstTopMargin
       this.blockLastBottomMargin = paragraphData._blockLastBottomMargin
       this.blockTopAndBottomMargins = paragraphData._blockTopAndBottomMargins
+      this.strikethroughStyle = paragraphData._strikethroughStyle
     } catch (e) {
     }
   }
@@ -226,6 +232,7 @@ struct ParagraphDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setStrikethroughStyle(this.strikethroughStyle) // 删除线样式
     config.setMarkdownTheme(theme)
     return config
   }

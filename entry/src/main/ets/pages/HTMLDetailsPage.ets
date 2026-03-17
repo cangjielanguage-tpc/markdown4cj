@@ -83,6 +83,11 @@ struct HTMLDetailsPage {
    */
   @State
   blockTopAndBottomMargins: number = 8
+  /**
+   * 下划线样式
+   */
+  @State
+  underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
   aboutToAppear(): void {
     try {
@@ -97,6 +102,7 @@ struct HTMLDetailsPage {
       this.blockFirstTopMargin = htmlData._blockFirstTopMargin
       this.blockLastBottomMargin = htmlData._blockLastBottomMargin
       this.blockTopAndBottomMargins = htmlData._blockTopAndBottomMargins
+      this.underlineStyle = htmlData._underlineStyle
     } catch (e) {
     }
   }
@@ -157,6 +163,7 @@ struct HTMLDetailsPage {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
     theme.setUnderlineColor(this.underlineColor) // 下划线颜色
+    theme.setUnderlineStyle(this.underlineStyle) // 下划线样式
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
