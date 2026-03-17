@@ -147,22 +147,27 @@ struct TitleDetailsPage {
    * markdown第一个模块上边距
    */
   @State
-  blockFirstTopMargin: number = 8.0
+  blockFirstTopMargin: number = 8
   /**
    * markdown最后一个模块下边距
    */
   @State
-  blockLastBottomMargin: number = 8.0
+  blockLastBottomMargin: number = 8
   /**
    * 模块间上下间距
    */
   @State
-  blockTopAndBottomMargins: number = 8.0
+  blockTopAndBottomMargins: number = 8
   /**
    * 标题文本颜色数组
    */
   @State
   headingTextColors: Array<number> = [0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000]
+  /**
+   * 删除线样式
+   */
+  @State
+  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
   aboutToAppear(): void {
     try {
@@ -193,8 +198,8 @@ struct TitleDetailsPage {
       this.blockFirstTopMargin = titleData._blockFirstTopMargin
       this.blockLastBottomMargin = titleData._blockLastBottomMargin
       this.blockTopAndBottomMargins = titleData._blockTopAndBottomMargins
-
       this.headingTextColors = titleData._headingTextColors
+      this.strikethroughStyle = titleData._strikethroughStyle
     } catch (e) {
     }
   }
@@ -297,6 +302,8 @@ struct TitleDetailsPage {
 
     theme.setHeadingBreakColor1(this.headingTextColors[6]) // H1标题下分割线颜色
     theme.setHeadingBreakColor2(this.headingTextColors[7]) // H2标题下分割线颜色
+
+    theme.setStrikethroughStyle(this.strikethroughStyle) // 删除线样式
 
     config.setMarkdownTheme(theme)
     return config

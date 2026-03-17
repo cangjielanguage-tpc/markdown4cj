@@ -204,7 +204,7 @@ struct TablePage {
    * markdown第一个模块上边距
    */
   @State
-  blockFirstTopMargin: number = 8.0
+  blockFirstTopMargin: number = 8
   /**
    * markdown第一个模块上边距
    */
@@ -213,7 +213,7 @@ struct TablePage {
    * markdown最后一个模块下边距
    */
   @State
-  blockLastBottomMargin: number = 8.0
+  blockLastBottomMargin: number = 8
   /**
    * markdown最后一个模块下边距
    */
@@ -222,11 +222,38 @@ struct TablePage {
    * 模块间上下间距
    */
   @State
-  blockTopAndBottomMargins: number = 8.0
+  blockTopAndBottomMargins: number = 8
   /**
    * 模块间上下间距
    */
   blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * 表格头行高
+   */
+  @State
+  tableTitleLineHeight: number = 22
+  /**
+   * 表格头行高列表
+   */
+  tableTitleLineHeightList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  /**
+   * 是否显示滚动条
+   */
+  @State
+  tableScrollBarShow: boolean = false
+  /**
+   * 是否显示滚动条
+   */
+  tableScrollBarShowList: Array<boolean> = [true, false]
+  /**
+   * 表格滚动条颜色
+   */
+  @State
+  tableScrollBarColor: number = 0xFFFFFFFF
+  /**
+   * 表格滚动条颜色列表
+   */
+  tableScrollBarColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
   /**
    * 配置数据内容
    */
@@ -562,37 +589,6 @@ struct TablePage {
                   .onClick(() => {
                     this.tableHeaderRowBackgroundColor = item
                     this.tableData.tableHeaderRowBackgroundColor = this.tableHeaderRowBackgroundColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`表格文本行高 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.tableTextLineHeight}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.tableTextLineHeightList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.tableTextLineHeight = item
-                    this.tableData.tableTextLineHeight = this.tableTextLineHeight
                   })
               })
             }
@@ -941,6 +937,132 @@ struct TablePage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`表格头行高 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.tableTitleLineHeight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.tableTitleLineHeightList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.tableTitleLineHeight = item
+                    this.tableData.tableTitleLineHeight = this.tableTitleLineHeight
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`表格文本行高 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.tableTextLineHeight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.tableTextLineHeightList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.tableTextLineHeight = item
+                    this.tableData.tableTextLineHeight = this.tableTextLineHeight
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`是否显示滚动条 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.tableScrollBarShow}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.tableScrollBarShowList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.tableScrollBarShow = item
+                    this.tableData.tableScrollBarShow = this.tableScrollBarShow
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`表格滚动条颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(numberToColorString(this.tableScrollBarColor))
+                .fontSize(16)
+                .fontColor(this.tableScrollBarColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.tableScrollBarColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.tableScrollBarColor = item
+                    this.tableData.tableScrollBarColor = this.tableScrollBarColor
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -981,7 +1103,6 @@ export class TableData {
   _tableOddRowBackgroundColor: number = 0xFFFFFFFF
   _tableEvenRowBackgroundColor: number = 0xFFE0E0E0
   _tableHeaderRowBackgroundColor: number = 0xFFFFFFFF
-  _tableTextLineHeight: number = 22
   _tableRadius: number = 5
   _tableMinTextWidth: number = 50
   _tableMaxTextWidth: number = 300
@@ -990,9 +1111,13 @@ export class TableData {
   _typeWriterOpen: boolean = false
   _typeWriterColor: number = 0xFFFF0000
   _isOnCopy: boolean = false
-  _blockFirstTopMargin: number = 8.0
-  _blockLastBottomMargin: number = 8.0
-  _blockTopAndBottomMargins: number = 8.0
+  _blockFirstTopMargin: number = 8
+  _blockLastBottomMargin: number = 8
+  _blockTopAndBottomMargins: number = 8
+  _tableTitleLineHeight: number = 22
+  _tableTextLineHeight: number = 22
+  _tableScrollBarShow: boolean = false
+  _tableScrollBarColor: number = 0xFFFFFFFF
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
@@ -1033,10 +1158,6 @@ export class TableData {
 
   public set tableHeaderRowBackgroundColor(value: number) {
     this._tableHeaderRowBackgroundColor = value
-  }
-
-  public set tableTextLineHeight(value: number) {
-    this._tableTextLineHeight = value
   }
 
   public set tableRadius(value: number) {
@@ -1081,6 +1202,22 @@ export class TableData {
 
   public set blockTopAndBottomMargins(value: number) {
     this._blockTopAndBottomMargins = value
+  }
+
+  public set tableTitleLineHeight(value: number) {
+    this._tableTitleLineHeight = value
+  }
+
+  public set tableTextLineHeight(value: number) {
+    this._tableTextLineHeight = value
+  }
+
+  public set tableScrollBarShow(value: boolean) {
+    this._tableScrollBarShow = value
+  }
+
+  public set tableScrollBarColor(value: number) {
+    this._tableScrollBarColor = value
   }
 
   public set pagePath(value: string) {

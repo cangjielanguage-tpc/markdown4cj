@@ -132,17 +132,32 @@ struct TableDetailsPage {
    * markdown第一个模块上边距
    */
   @State
-  blockFirstTopMargin: number = 8.0
+  blockFirstTopMargin: number = 8
   /**
    * markdown最后一个模块下边距
    */
   @State
-  blockLastBottomMargin: number = 8.0
+  blockLastBottomMargin: number = 8
   /**
    * 模块间上下间距
    */
   @State
-  blockTopAndBottomMargins: number = 8.0
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 表格头行高
+   */
+  @State
+  tableTitleLineHeight: number = 22
+  /**
+   * 是否显示滚动条
+   */
+  @State
+  tableScrollBarShow: boolean = false
+  /**
+   * 表格滚动条颜色
+   */
+  @State
+  tableScrollBarColor: number = 0xFFFFFFFF
 
   aboutToAppear(): void {
     try {
@@ -158,7 +173,6 @@ struct TableDetailsPage {
       this.tableOddRowBackgroundColor = tableData._tableOddRowBackgroundColor
       this.tableEvenRowBackgroundColor = tableData._tableEvenRowBackgroundColor
       this.tableHeaderRowBackgroundColor = tableData._tableHeaderRowBackgroundColor
-      this.tableTextLineHeight = tableData._tableTextLineHeight
       this.tableRadius = tableData._tableRadius
       this.tableMinTextWidth = tableData._tableMinTextWidth
       this.tableMaxTextWidth = tableData._tableMaxTextWidth
@@ -170,6 +184,10 @@ struct TableDetailsPage {
       this.blockFirstTopMargin = tableData._blockFirstTopMargin
       this.blockLastBottomMargin = tableData._blockLastBottomMargin
       this.blockTopAndBottomMargins = tableData._blockTopAndBottomMargins
+      this.tableTitleLineHeight = tableData._tableTitleLineHeight
+      this.tableTextLineHeight = tableData._tableTextLineHeight
+      this.tableScrollBarShow = tableData._tableScrollBarShow
+      this.tableScrollBarColor = tableData._tableScrollBarColor
     } catch (e) {
     }
   }
@@ -241,7 +259,6 @@ struct TableDetailsPage {
     theme.setTableOddRowBackgroundColor(this.tableOddRowBackgroundColor) // 表格奇数行背景色
     theme.setTableEvenRowBackgroundColor(this.tableEvenRowBackgroundColor) // 表格偶数行背景色
     theme.setTableHeaderRowBackgroundColor(this.tableHeaderRowBackgroundColor) // 表格头背景色
-    theme.setTableTextLineHeight(this.tableTextLineHeight) // 表格文本行高
     theme.setTableRadius(this.tableRadius) // 表格圆角
     theme.setTableMinTextWidth(this.tableMinTextWidth) // 表格最小宽度
     theme.setTableMaxTextWidth(this.tableMaxTextWidth) // 表格最大宽度
@@ -255,6 +272,12 @@ struct TableDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+
+    theme.setTableTitleLineHeight(this.tableTitleLineHeight) // 表格头行高
+    theme.setTableTextLineHeight(this.tableTextLineHeight) // 表格文本行高
+    theme.setTableScrollBarShow(this.tableScrollBarShow) // 表格是否显示滚动条
+    theme.setTableScrollBarColor(this.tableScrollBarColor) // 表格滚动条颜色
+
     config.setMarkdownTheme(theme)
     return config
   }

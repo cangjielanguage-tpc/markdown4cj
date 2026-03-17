@@ -3,7 +3,7 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
-import { booleanToString, numberToColorString, stringToBoolean } from '../utils/BaseUtils'
+import { booleanToString, numberToColorString, stringToBoolean, styleToString } from '../utils/BaseUtils'
 import { router } from '@kit.ArkUI'
 
 @Entry
@@ -188,6 +188,15 @@ struct ParagraphPage {
    * 模块间上下间距
    */
   blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * 删除线样式
+   */
+  @State
+  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+  /**
+   * 删除线样式
+   */
+  strikethroughStyleList: Array<TextDecorationStyle> = [TextDecorationStyle.SOLID, TextDecorationStyle.DOUBLE, TextDecorationStyle.DOTTED, TextDecorationStyle.DASHED, TextDecorationStyle.WAVY]
   /**
    * 配置数据内容
    */
@@ -771,6 +780,37 @@ struct ParagraphPage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`删除线样式 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(styleToString(this.strikethroughStyle))
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.strikethroughStyleList, (item: TextDecorationStyle, index: number) => {
+                Button(styleToString(item))
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.strikethroughStyle = item
+                    this.paragraphData.strikethroughStyle = this.strikethroughStyle
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -819,6 +859,7 @@ export class ParagraphData {
   _blockFirstTopMargin: number = 8
   _blockLastBottomMargin: number = 8
   _blockTopAndBottomMargins: number = 8
+  _strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
@@ -892,6 +933,10 @@ export class ParagraphData {
 
   public set blockTopAndBottomMargins(value: number) {
     this._blockTopAndBottomMargins = value
+  }
+
+  public set strikethroughStyle(value: TextDecorationStyle) {
+    this._strikethroughStyle = value
   }
 
   public set pagePath(value: string) {

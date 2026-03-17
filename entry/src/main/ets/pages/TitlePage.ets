@@ -3,7 +3,7 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
-import { booleanToString, numberToColorString, numberArrayToColorString, stringToBoolean } from '../utils/BaseUtils'
+import { booleanToString, numberToColorString, numberArrayToColorString, stringToBoolean, styleToString } from '../utils/BaseUtils'
 import { router } from '@kit.ArkUI'
 
 @Entry
@@ -236,7 +236,7 @@ struct TitlePage {
    * markdown第一个模块上边距
    */
   @State
-  blockFirstTopMargin: number = 8.0
+  blockFirstTopMargin: number = 8
   /**
    * markdown第一个模块上边距
    */
@@ -245,7 +245,7 @@ struct TitlePage {
    * markdown最后一个模块下边距
    */
   @State
-  blockLastBottomMargin: number = 8.0
+  blockLastBottomMargin: number = 8
   /**
    * markdown最后一个模块下边距
    */
@@ -254,7 +254,7 @@ struct TitlePage {
    * 模块间上下间距
    */
   @State
-  blockTopAndBottomMargins: number = 8.0
+  blockTopAndBottomMargins: number = 8
   /**
    * 模块间上下间距
    */
@@ -272,7 +272,15 @@ struct TitlePage {
     [0xFFEE82EE, 0xFF6A5ACD, 0xFFFA8072, 0xFF7EC0EE, 0xFF00F5FF, 0xFF32CD32, 0xFFFFD700, 0xFF8B0000],
     [0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000]
   ]
-
+  /**
+   * 删除线样式
+   */
+  @State
+  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+  /**
+   * 删除线样式
+   */
+  strikethroughStyleList: Array<TextDecorationStyle> = [TextDecorationStyle.SOLID, TextDecorationStyle.DOUBLE, TextDecorationStyle.DOTTED, TextDecorationStyle.DASHED, TextDecorationStyle.WAVY]
   /**
    * 配置数据内容
    */
@@ -1103,6 +1111,37 @@ struct TitlePage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`删除线样式 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(styleToString(this.strikethroughStyle))
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.strikethroughStyleList, (item: TextDecorationStyle, index: number) => {
+                Button(styleToString(item))
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.strikethroughStyle = item
+                    this.titleData.strikethroughStyle = this.strikethroughStyle
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -1155,10 +1194,11 @@ export class TitleData {
   _typeWriterOpen: boolean = false
   _typeWriterColor: number = 0xFFFF0000
   _isOnCopy: boolean = false
-  _blockFirstTopMargin: number = 8.0
-  _blockLastBottomMargin: number = 8.0
-  _blockTopAndBottomMargins: number = 8.0
+  _blockFirstTopMargin: number = 8
+  _blockLastBottomMargin: number = 8
+  _blockTopAndBottomMargins: number = 8
   _headingTextColors: Array<number> = [0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000]
+  _strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
@@ -1263,6 +1303,10 @@ export class TitleData {
 
   public set blockTopAndBottomMargins(value: number) {
     this._blockTopAndBottomMargins = value
+  }
+
+  public set strikethroughStyle(value: TextDecorationStyle) {
+    this._strikethroughStyle = value
   }
 
   public set pagePath(value: string) {

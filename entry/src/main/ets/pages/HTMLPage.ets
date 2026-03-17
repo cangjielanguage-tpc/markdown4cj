@@ -3,7 +3,7 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
-import { booleanToString, numberToColorString, stringToBoolean } from '../utils/BaseUtils'
+import { booleanToString, numberToColorString, stringToBoolean, styleToString } from '../utils/BaseUtils'
 import { router } from '@kit.ArkUI'
 
 @Entry
@@ -108,6 +108,15 @@ struct HTMLPage {
    */
   blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
   /**
+   * 下划线样式
+   */
+  @State
+  underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+  /**
+   * 下划线样式
+   */
+  underlineStyleList: Array<TextDecorationStyle> = [TextDecorationStyle.SOLID, TextDecorationStyle.DOUBLE, TextDecorationStyle.DOTTED, TextDecorationStyle.DASHED, TextDecorationStyle.WAVY]
+  /**
    * 配置数据内容
    */
   @State
@@ -186,6 +195,37 @@ struct HTMLPage {
                   .onClick(() => {
                     this.underlineColor = item
                     this.htmlData.underlineColor = this.underlineColor
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`HTML下划线样式 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(styleToString(this.underlineStyle))
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.underlineStyleList, (item: TextDecorationStyle, index: number) => {
+                Button(styleToString(item))
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.underlineStyle = item
+                    this.htmlData.underlineStyle = this.underlineStyle
                   })
               })
             }
@@ -449,6 +489,7 @@ export class HTMLData {
   _blockFirstTopMargin: number = 8
   _blockLastBottomMargin: number = 8
   _blockTopAndBottomMargins: number = 8
+  _underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
@@ -485,6 +526,10 @@ export class HTMLData {
 
   public set blockTopAndBottomMargins(value: number) {
     this._blockTopAndBottomMargins = value
+  }
+
+  public set underlineStyle(value: TextDecorationStyle) {
+    this._underlineStyle = value
   }
 
   public set pagePath(value: string) {
