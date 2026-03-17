@@ -21,7 +21,9 @@ internal import stdx.encoding.url.*
 internal import markdown.core.*
 internal import markdown.plugin.*
 internal import markdown.texttoimg4cj.*
-internal import markdown.codeformat.*
+
+// codeformat
+internal import codeformat.*
 
 // commonmark
 internal import commonmark4cj.strikethrough.*
