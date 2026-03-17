@@ -52,7 +52,7 @@ func markdownSpanComponent(
                 .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .interopDecorationStyle(spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme)))
-                .lineHeight(spanBaselineOffset(nodeView, spanMarkdownConfiguration.markdownTheme))
+                .lineHeight(spanLineHeight(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .onClick({
                     evt => spanOnClick(spanMarkdownConfiguration, nodeView, spanTocListOnClick, spanFootnoteCallback)
                 })

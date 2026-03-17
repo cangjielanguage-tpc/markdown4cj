@@ -289,6 +289,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.linkSize) {
                 markdownThemeBuilder.setLinkSize(v) // 设置文本格式链接文字大小
             }
+            if (let Some(v) <- w.cjMarkdownTheme.linkLineHeight) {
+                markdownThemeBuilder.setLinkLineHeight(v) // 设置文本格式链接行高
+            }
             if (let Some(v) <- w.cjMarkdownTheme.linkBackGroupColor) {
                 markdownThemeBuilder.setLinkBackGroupColor(v) // 设置文本格式链接背景颜色
             }
@@ -831,6 +834,9 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.tableTitleTextSize) {
                 markdownThemeBuilder.setTableTitleTextSize(v) // 设置表格头文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.tableTitleLineHeight) {
+                markdownThemeBuilder.setTableTitleLineHeight(v) // 设置表格头行高
             }
             if (let Some(v) <- w.cjMarkdownTheme.tableContentTextColor) {
                 markdownThemeBuilder.setTableContentTextColor(v) // 设置表格内容文本颜色
