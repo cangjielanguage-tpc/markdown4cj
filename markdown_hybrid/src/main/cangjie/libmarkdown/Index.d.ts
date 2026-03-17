@@ -549,7 +549,21 @@ export declare class CJMarkdownScroller {
 
   isAtEnd(): boolean
 
+  getItemRect(index: number): CJRectResult
+
   currentYOffset(): number
+}
+
+export declare class CJRectResult {
+  constructor (x: number, y: number, width: number, height: number)
+
+  getItemRectX(): number
+
+  getItemRectY(): number
+
+  getItemRectWidth(): number
+
+  getItemRectHeight(): number
 }
 
 export declare function setGlobalContext(context: Context): void

@@ -3,7 +3,9 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+  MarkdownScroller,
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import { HeadIDData } from './HeadIDPage'
 import hilog from '@ohos.hilog'
@@ -80,6 +82,11 @@ struct HeadIDDetailsPage {
   @State
   blockTopAndBottomMargins: number = 8
 
+  /**
+   * Markdown的控制器
+   */
+  markdownScroller: MarkdownScroller = new MarkdownScroller()
+
   aboutToAppear(): void {
     try {
       let headIDData: HeadIDData = router.getParams() as HeadIDData
@@ -139,6 +146,7 @@ struct HeadIDDetailsPage {
           CJMarkdown({
             content: this.content,
             isInputEnded: this.isInputEnded,
+            listScroller: this.markdownScroller,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
@@ -173,7 +181,8 @@ struct HeadIDDetailsPage {
   tocIndexCallback(y: number | undefined): void {
     if(y !==undefined){
       hilog.error(1, "1", `---y:${y}`)
-      this.scroller.scrollBy(0, y - (this.safeTop + 90))
+      let rect = this.markdownScroller.getItemRect(y)
+      this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
     }
   }
 }

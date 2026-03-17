@@ -147,12 +147,12 @@ public class MarkdownComponent {
     /**
      * 注脚事件回调数据
      */
-    var indexFootnoteHashMap: HashMap<String, Float64> = HashMap<String, Float64>()
+    var indexFootnoteHashMap: HashMap<String, Int64> = HashMap<String, Int64>()
 
     /**
      * toc事件回调数据
      */
-    var indexTocHashMap: HashMap<Int64, Float64> = HashMap<Int64, Float64>()
+    var indexTocHashMap: HashMap<Int64, Int64> = HashMap<Int64, Int64>()
 
     /**
      * list控制器
@@ -258,7 +258,6 @@ public class MarkdownComponent {
                                         headingFootnoteCallback: footnoteCallback
                                     )
                                 }
-                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "FencedCodeBlockListBlock") {
                                 // 围栏代码块列表
@@ -425,7 +424,6 @@ public class MarkdownComponent {
                                         footnoteFootnoteCallback:footnoteCallback
                                     )
                                 }
-                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "DescList") {
                                 // 定义列表
@@ -552,7 +550,6 @@ public class MarkdownComponent {
                                         headingFootnoteCallback: footnoteCallback
                                     )
                                 }
-                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "FencedCodeBlockListBlock") {
                                 // 围栏代码块列表
@@ -719,7 +716,6 @@ public class MarkdownComponent {
                                         footnoteFootnoteCallback:footnoteCallback
                                     )
                                 }
-                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "DescList") {
                                 // 定义列表
@@ -919,6 +915,11 @@ public class MarkdownComponent {
             refreshDatas(dataSourceSize, refreshNodeViewChildren, false)
             // 循环添加新数据
             for (i in dataSourceSize..refreshNodeViewSize) {
+                if (refreshNodeViewChildren[i].nodeType == "Heading" || refreshNodeViewChildren[i].nodeType == "IdHeading") {
+                    indexTocHashMap.add(i, i)
+                } else if (refreshNodeViewChildren[i].nodeType == "FootnoteBlock") {
+                    indexFootnoteHashMap.add(refreshNodeViewChildren[i].footnoteID(), i)
+                }
                 if (showTypewriter && (i == refreshNodeViewSize - 1)) {
                     refreshNodeViewChildren[i].isEndData = true
                 }
@@ -959,6 +960,11 @@ public class MarkdownComponent {
                 refreshDatas(dataSourceSize, refreshNodeViewChildren, false)
                 // 循环添加新数据
                 for (i in dataSourceSize..refreshNodeViewSize) {
+                    if (refreshNodeViewChildren[i].nodeType == "Heading" || refreshNodeViewChildren[i].nodeType == "IdHeading") {
+                        indexTocHashMap.add(i, i)
+                    } else if (refreshNodeViewChildren[i].nodeType == "FootnoteBlock") {
+                        indexFootnoteHashMap.add(refreshNodeViewChildren[i].footnoteID(), i)
+                    }
                     if (showTypewriter && (i == refreshNodeViewSize - 1)) {
                         refreshNodeViewChildren[i].isEndData = true
                     }
@@ -996,6 +1002,11 @@ public class MarkdownComponent {
             let oldBlockHash = dataSourceNode.nodeHash
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
+            if (refreshNodeView.nodeType == "Heading" || refreshNodeView.nodeType == "IdHeading") {
+                indexTocHashMap.add(i, i)
+            } else if (refreshNodeView.nodeType == "FootnoteBlock") {
+                indexFootnoteHashMap.add(refreshNodeView.footnoteID(), i)
+            }
             // 当前层的倒数第二条数据，因为可能一行多个
             let isSecondToLast: Bool = (i == lastViewIndex - 1) && isEnd // 当前倒数第二条数据
             // 当前的数据是否应该有打字机效果：上层是最后一条、当前i是本层级最后一条、上层没有传递倒数第二条数据更新标记

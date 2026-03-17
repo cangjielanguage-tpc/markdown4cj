@@ -3,4 +3,5 @@ export { CJMarkdown,
   MarkdownTheme,
   MarkdownPlugin,
   LatexMathColorFormat,
-  MarkdownScroller } from './src/main/ets/pages/CJMarkDown'
+  MarkdownScroller,
+  MarkdownRectResult } from './src/main/ets/pages/CJMarkDown'

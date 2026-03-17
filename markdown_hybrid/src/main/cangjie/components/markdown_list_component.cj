@@ -111,7 +111,7 @@ public class MarkdownListComponent {
     /**
      * 注脚事件回调数据
      */
-    var listIndexFootnoteHashMap: HashMap<String, Float64>
+    var listIndexFootnoteHashMap: HashMap<String, Int64>
 
     /**
      * 列表深度
