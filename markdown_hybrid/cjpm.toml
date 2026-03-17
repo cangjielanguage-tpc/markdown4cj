@@ -23,6 +23,9 @@
   [dependencies.formula]
     tag = "cjc_1.0.0"
     git = "https://gitcode.com/Cangjie-TPC/formula-ffi.git"
+  [dependencies.codeformat]
+    branch = "codeformat4md"
+    git = "https://gitcode.com/Cangjie-TPC/codeformat4cj.git"
 
 [ffi]
   [ffi.c]
