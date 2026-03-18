@@ -3,10 +3,6 @@
  */
 package markdown.components
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-
 let COLOR_191919: Color = Color(0x191919)
 let COLOR_0000FF: Color = Color(0x0000FF)
 let COLOR_FF0000: Color = Color(0xFF0000)

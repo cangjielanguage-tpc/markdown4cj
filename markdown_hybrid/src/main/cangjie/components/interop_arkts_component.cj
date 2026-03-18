@@ -1,10 +1,5 @@
 package markdown.components
 
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.base.*
-import ohos.ark_interop.*
-
 public class CardWrapper <: CustomView {
     private var cardName: String = ""
     private var CompObj: ?JSObject = Option.None
