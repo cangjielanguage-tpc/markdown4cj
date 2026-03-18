@@ -196,7 +196,7 @@ struct LatexMathDetailsPage {
           })
         }
       }
-      .padding({ bottom: 200 })
+      .layoutWeight(1)
     }
     .alignItems(HorizontalAlign.Center)
   }
