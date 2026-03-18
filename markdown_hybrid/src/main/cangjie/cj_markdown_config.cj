@@ -3,14 +3,7 @@
  */
 package markdown
 
-import ohos.base.*
-import ohos.state_manage.*
-import ohos.component.*
-import ohos.ark_interop.*
-import ohos.state_macro_manage.*
 import ohos.ark_interop_macro.*
-import ohos.ark_interop_helper.*
-import std.collection.*
 
 @Interop[ArkTS]
 public class CJMarkdownConfig {

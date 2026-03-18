@@ -3,11 +3,7 @@
  */
 package markdown
 
-import ohos.ark_interop.*
 import ohos.ark_interop_macro.*
-import ohos.component.Scroller
-import ohos.component.Edge
-import ohos.device_info.DeviceInfo
 
 @Interop[ArkTS]
 public class CJMarkdownScroller {

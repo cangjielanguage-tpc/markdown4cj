@@ -3,16 +3,6 @@
  */
 package markdown
 
-import ohos.base.*
-import ohos.component.*
-import ohos.state_manage.*
-import ohos.state_macro_manage.*
-import ohos.ark_interop.*
-import ohos.ark_interop_helper.*
-import std.collection.*
-import ohos.resource_manager.AppResource
-import std.sync.*
-
 var arkImgPreprocessFunc: ?(String) -> ?Array<Byte> = None
 
 class cbRet {
