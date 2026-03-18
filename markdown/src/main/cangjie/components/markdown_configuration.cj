@@ -101,12 +101,12 @@ public class MarkdownConfiguration {
     /**
      * TOC跳转指定位置
      */
-    protected var tocIndexCallback: ?(?Float64) -> Unit = None
+    protected var tocIndexCallback: ?(?Int64) -> Unit = None
 
     /**
      * 脚注跳转指定位置
      */
-    protected var footnoteCallback: ?(?Float64) -> Unit = None
+    protected var footnoteCallback: ?(?Int64) -> Unit = None
 
     /**
      * 全部文本
@@ -256,12 +256,12 @@ public class MarkdownConfigurationBuilder {
     /**
      * TOC跳转指定位置
      */
-    var tocIndexCallback: ?(?Float64) -> Unit = None
+    var tocIndexCallback: ?(?Int64) -> Unit = None
 
     /**
      * 脚注跳转指定位置
      */
-    var footnoteCallback: ?(?Float64) -> Unit = None
+    var footnoteCallback: ?(?Int64) -> Unit = None
 
     /**
      * 全部文本
@@ -463,7 +463,7 @@ public class MarkdownConfigurationBuilder {
      * @param tocIndexCallback TOC跳转指定位置接口 (?Float64:位置距离)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setTocIndexCallback(tocIndexCallback: (?Float64) -> Unit): MarkdownConfigurationBuilder {
+    public func setTocIndexCallback(tocIndexCallback: (?Int64) -> Unit): MarkdownConfigurationBuilder {
         this.tocIndexCallback = tocIndexCallback
         return this
     }
@@ -474,7 +474,7 @@ public class MarkdownConfigurationBuilder {
      * @param footnoteCallback 脚注跳转指定位置接口 (?Float64:位置距离)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setFootnoteCallback(footnoteCallback: (?Float64) -> Unit): MarkdownConfigurationBuilder {
+    public func setFootnoteCallback(footnoteCallback: (?Int64) -> Unit): MarkdownConfigurationBuilder {
         this.footnoteCallback = footnoteCallback
         return this
     }

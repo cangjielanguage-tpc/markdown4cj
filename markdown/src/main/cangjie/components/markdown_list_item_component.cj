@@ -103,11 +103,6 @@ class MarkdownListItemComponent {
     var listItemVideoCallback: (String) -> Unit
 
     /**
-     * 注脚事件回调数据
-     */
-    var listItemIndexFootnoteHashMap: HashMap<String, Float64>
-
-    /**
      * 列表深度
      */
     var listItemDepth: Int64
@@ -222,7 +217,6 @@ class MarkdownListItemComponent {
                                 listTocListOnClick: listItemTocListOnClick,
                                 listImageCallback: listItemImageCallback,
                                 listVideoCallback: listItemVideoCallback,
-                                listIndexFootnoteHashMap: listItemIndexFootnoteHashMap,
                                 listDepth: listItemDepth + 1
                             )
                         }
@@ -248,7 +242,6 @@ class MarkdownListItemComponent {
                                 listTocListOnClick: listItemTocListOnClick,
                                 listImageCallback: listItemImageCallback,
                                 listVideoCallback: listItemVideoCallback,
-                                listIndexFootnoteHashMap: listItemIndexFootnoteHashMap,
                                 listDepth: listItemDepth + 1
                             )
                         }
@@ -273,7 +266,6 @@ class MarkdownListItemComponent {
                                 quoteTocListOnClick: listItemTocListOnClick,
                                 quoteImageCallback: listItemImageCallback,
                                 quoteVideoCallback: listItemVideoCallback,
-                                quoteIndexFootnoteHashMap: listItemIndexFootnoteHashMap,
                                 quoteDepth: listItemDepth + 1
                             )
                         }
