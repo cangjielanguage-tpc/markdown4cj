@@ -165,6 +165,78 @@ struct TablePage {
   @State
   tableFirstColumnBold: boolean = false
   /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  isMarkdownParserSyncList: Array<boolean> = [true, false]
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * 是否打开长按复制粘贴
+   */
+  isOnCopyList: Array<boolean> = [true, false]
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown第一个模块上边距
+   */
+  blockFirstTopMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  blockLastBottomMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 模块间上下间距
+   */
+  blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * 表格头行高
+   */
+  @State
+  tableTitleLineHeight: number = 22
+  /**
+   * 表格头行高列表
+   */
+  tableTitleLineHeightList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  /**
+   * 是否显示滚动条
+   */
+  @State
+  tableScrollBarShow: boolean = false
+  /**
+   * 是否显示滚动条
+   */
+  tableScrollBarShowList: Array<boolean> = [true, false]
+  /**
+   * 表格滚动条颜色
+   */
+  @State
+  tableScrollBarColor: number = 0xFFFFFFFF
+  /**
+   * 表格滚动条颜色列表
+   */
+  tableScrollBarColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  /**
    * 配置数据内容
    */
   @State
@@ -506,37 +578,6 @@ struct TablePage {
 
           Column() {
             Row() {
-              Text(`表格文本行高 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.tableTextLineHeight}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.tableTextLineHeightList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.tableTextLineHeight = item
-                    this.tableData.tableTextLineHeight = this.tableTextLineHeight
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
               Text(`表格圆角 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
@@ -659,6 +700,287 @@ struct TablePage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`markdown是否同步解析 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.isMarkdownParserSync}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.isMarkdownParserSyncList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.isMarkdownParserSync = item
+                    this.tableData.isMarkdownParserSync = this.isMarkdownParserSync
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`是否打开长按复制粘贴 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.isOnCopy}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.isOnCopyList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.isOnCopy = item
+                    this.tableData.isOnCopy = this.isOnCopy
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`markdown第一个模块上边距 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.blockFirstTopMargin}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.blockFirstTopMarginList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.blockFirstTopMargin = item
+                    this.tableData.blockFirstTopMargin = this.blockFirstTopMargin
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`markdown最后一个模块下边距 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.blockLastBottomMargin}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.blockLastBottomMarginList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.blockLastBottomMargin = item
+                    this.tableData.blockLastBottomMargin = this.blockLastBottomMargin
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`模块间上下间距 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.blockTopAndBottomMargins}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.blockTopAndBottomMarginsList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.blockTopAndBottomMargins = item
+                    this.tableData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`表格头行高 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.tableTitleLineHeight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.tableTitleLineHeightList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.tableTitleLineHeight = item
+                    this.tableData.tableTitleLineHeight = this.tableTitleLineHeight
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`表格文本行高 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.tableTextLineHeight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.tableTextLineHeightList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.tableTextLineHeight = item
+                    this.tableData.tableTextLineHeight = this.tableTextLineHeight
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`是否显示滚动条 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.tableScrollBarShow}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.tableScrollBarShowList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.tableScrollBarShow = item
+                    this.tableData.tableScrollBarShow = this.tableScrollBarShow
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`表格滚动条颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(numberToColorString(this.tableScrollBarColor))
+                .fontSize(16)
+                .fontColor(this.tableScrollBarColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.tableScrollBarColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.tableScrollBarColor = item
+                    this.tableData.tableScrollBarColor = this.tableScrollBarColor
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -699,11 +1021,19 @@ export class TableData {
   _tableOddRowBackgroundColor: number = 0xFFFFFFFF
   _tableEvenRowBackgroundColor: number = 0xFFE0E0E0
   _tableHeaderRowBackgroundColor: number = 0xFFFFFFFF
-  _tableTextLineHeight: number = 22
   _tableRadius: number = 5
   _tableMinTextWidth: number = 50
   _tableMaxTextWidth: number = 300
   _tableFirstColumnBold: boolean = false
+  _isMarkdownParserSync: boolean = false
+  _isOnCopy: boolean = false
+  _blockFirstTopMargin: number = 8
+  _blockLastBottomMargin: number = 8
+  _blockTopAndBottomMargins: number = 8
+  _tableTitleLineHeight: number = 22
+  _tableTextLineHeight: number = 22
+  _tableScrollBarShow: boolean = false
+  _tableScrollBarColor: number = 0xFFFFFFFF
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
@@ -746,10 +1076,6 @@ export class TableData {
     this._tableHeaderRowBackgroundColor = value
   }
 
-  public set tableTextLineHeight(value: number) {
-    this._tableTextLineHeight = value
-  }
-
   public set tableRadius(value: number) {
     this._tableRadius = value
   }
@@ -764,6 +1090,42 @@ export class TableData {
 
   public set tableFirstColumnBold(value: boolean) {
     this._tableFirstColumnBold = value
+  }
+
+  public set isMarkdownParserSync(value: boolean) {
+    this._isMarkdownParserSync = value
+  }
+
+  public set isOnCopy(value: boolean) {
+    this._isOnCopy = value
+  }
+
+  public set blockFirstTopMargin(value: number) {
+    this._blockFirstTopMargin = value
+  }
+
+  public set blockLastBottomMargin(value: number) {
+    this._blockLastBottomMargin = value
+  }
+
+  public set blockTopAndBottomMargins(value: number) {
+    this._blockTopAndBottomMargins = value
+  }
+
+  public set tableTitleLineHeight(value: number) {
+    this._tableTitleLineHeight = value
+  }
+
+  public set tableTextLineHeight(value: number) {
+    this._tableTextLineHeight = value
+  }
+
+  public set tableScrollBarShow(value: boolean) {
+    this._tableScrollBarShow = value
+  }
+
+  public set tableScrollBarColor(value: number) {
+    this._tableScrollBarColor = value
   }
 
   public set pagePath(value: string) {

@@ -48,6 +48,36 @@ struct HTMLDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 下划线样式
+   */
+  @State
+  underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
   aboutToAppear(): void {
     try {
@@ -55,6 +85,12 @@ struct HTMLDetailsPage {
       this.fileStr = getFileContextStr(htmlData._pagePath)
       this.isFull = htmlData._isFull
       this.underlineColor = htmlData._underlineColor
+      this.isMarkdownParserSync = htmlData._isMarkdownParserSync
+      this.isOnCopy = htmlData._isOnCopy
+      this.blockFirstTopMargin = htmlData._blockFirstTopMargin
+      this.blockLastBottomMargin = htmlData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = htmlData._blockTopAndBottomMargins
+      this.underlineStyle = htmlData._underlineStyle
     } catch (e) {
     }
   }
@@ -115,8 +151,14 @@ struct HTMLDetailsPage {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
     theme.setUnderlineColor(this.underlineColor) // 下划线颜色
+    theme.setUnderlineStyle(this.underlineStyle) // 下划线样式
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }

@@ -48,6 +48,31 @@ struct EmojiDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
@@ -55,6 +80,11 @@ struct EmojiDetailsPage {
       this.fileStr = getFileContextStr(emojiData._pagePath)
       this.isFull = emojiData._isFull
       this.isEmojiLight = emojiData._isEmojiLight
+      this.isMarkdownParserSync = emojiData._isMarkdownParserSync
+      this.isOnCopy = emojiData._isOnCopy
+      this.blockFirstTopMargin = emojiData._blockFirstTopMargin
+      this.blockLastBottomMargin = emojiData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = emojiData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -114,6 +144,11 @@ struct EmojiDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }

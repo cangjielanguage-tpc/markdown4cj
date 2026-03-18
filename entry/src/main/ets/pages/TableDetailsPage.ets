@@ -108,6 +108,46 @@ struct TableDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 表格头行高
+   */
+  @State
+  tableTitleLineHeight: number = 22
+  /**
+   * 是否显示滚动条
+   */
+  @State
+  tableScrollBarShow: boolean = false
+  /**
+   * 表格滚动条颜色
+   */
+  @State
+  tableScrollBarColor: number = 0xFFFFFFFF
 
   aboutToAppear(): void {
     try {
@@ -123,11 +163,19 @@ struct TableDetailsPage {
       this.tableOddRowBackgroundColor = tableData._tableOddRowBackgroundColor
       this.tableEvenRowBackgroundColor = tableData._tableEvenRowBackgroundColor
       this.tableHeaderRowBackgroundColor = tableData._tableHeaderRowBackgroundColor
-      this.tableTextLineHeight = tableData._tableTextLineHeight
       this.tableRadius = tableData._tableRadius
       this.tableMinTextWidth = tableData._tableMinTextWidth
       this.tableMaxTextWidth = tableData._tableMaxTextWidth
       this.tableFirstColumnBold = tableData._tableFirstColumnBold
+      this.isMarkdownParserSync = tableData._isMarkdownParserSync
+      this.isOnCopy = tableData._isOnCopy
+      this.blockFirstTopMargin = tableData._blockFirstTopMargin
+      this.blockLastBottomMargin = tableData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = tableData._blockTopAndBottomMargins
+      this.tableTitleLineHeight = tableData._tableTitleLineHeight
+      this.tableTextLineHeight = tableData._tableTextLineHeight
+      this.tableScrollBarShow = tableData._tableScrollBarShow
+      this.tableScrollBarColor = tableData._tableScrollBarColor
     } catch (e) {
     }
   }
@@ -199,13 +247,23 @@ struct TableDetailsPage {
     theme.setTableOddRowBackgroundColor(this.tableOddRowBackgroundColor) // 表格奇数行背景色
     theme.setTableEvenRowBackgroundColor(this.tableEvenRowBackgroundColor) // 表格偶数行背景色
     theme.setTableHeaderRowBackgroundColor(this.tableHeaderRowBackgroundColor) // 表格头背景色
-    theme.setTableTextLineHeight(this.tableTextLineHeight) // 表格文本行高
     theme.setTableRadius(this.tableRadius) // 表格圆角
     theme.setTableMinTextWidth(this.tableMinTextWidth) // 表格最小宽度
     theme.setTableMaxTextWidth(this.tableMaxTextWidth) // 表格最大宽度
     theme.setTableFirstColumnBold(this.tableFirstColumnBold) // 表格第一列是否加粗
     theme.setTableScrollBarShow(true) // 设置显示滚动条
     theme.setTableScrollBarColor(0xFFFFD700) // 设置滚动条颜色
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+
+    theme.setTableTitleLineHeight(this.tableTitleLineHeight) // 表格头行高
+    theme.setTableTextLineHeight(this.tableTextLineHeight) // 表格文本行高
+    theme.setTableScrollBarShow(this.tableScrollBarShow) // 表格是否显示滚动条
+    theme.setTableScrollBarColor(this.tableScrollBarColor) // 表格滚动条颜色
+
     config.setMarkdownTheme(theme)
     return config
   }

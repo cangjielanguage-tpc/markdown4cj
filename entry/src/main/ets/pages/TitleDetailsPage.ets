@@ -123,6 +123,41 @@ struct TitleDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 标题文本颜色数组
+   */
+  @State
+  headingTextColors: Array<number> = [0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000]
+  /**
+   * 删除线样式
+   */
+  @State
+  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
   aboutToAppear(): void {
     try {
@@ -146,6 +181,13 @@ struct TitleDetailsPage {
       this.headingTypeface = titleData._headingTypeface
       this.headingTopMargins = titleData._headingTopMargins
       this.headingBottomMargins = titleData._headingBottomMargins
+      this.isMarkdownParserSync = titleData._isMarkdownParserSync
+      this.isOnCopy = titleData._isOnCopy
+      this.blockFirstTopMargin = titleData._blockFirstTopMargin
+      this.blockLastBottomMargin = titleData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = titleData._blockTopAndBottomMargins
+      this.headingTextColors = titleData._headingTextColors
+      this.strikethroughStyle = titleData._strikethroughStyle
     } catch (e) {
     }
   }
@@ -216,12 +258,12 @@ struct TitleDetailsPage {
     theme.setHeadingTopMargins(this.headingTopMargins) // 标题模块上间距
     theme.setHeadingBottomMargins(this.headingBottomMargins) // 标题模块下间距
 
-    theme.setHeadingTextSize1(20) // [20, 17, 16, 15, 15, 13]
-    theme.setHeadingTextSize2(17)
-    theme.setHeadingTextSize3(16)
-    theme.setHeadingTextSize4(15)
-    theme.setHeadingTextSize5(15)
-    theme.setHeadingTextSize6(13)
+    theme.setHeadingTextSize1(this.headingTextSizeMultipliers[0]) // [20, 17, 16, 15, 15, 13]
+    theme.setHeadingTextSize2(this.headingTextSizeMultipliers[1])
+    theme.setHeadingTextSize3(this.headingTextSizeMultipliers[2])
+    theme.setHeadingTextSize4(this.headingTextSizeMultipliers[3])
+    theme.setHeadingTextSize5(this.headingTextSizeMultipliers[4])
+    theme.setHeadingTextSize6(this.headingTextSizeMultipliers[5])
 
     theme.setHeadingTextWordSpace(this.headingTextWordSpace) // 标题文本字间距
     theme.setHeadingTextLineHeight1(this.headingTextLineHeight1) // 一级标题文本行高
@@ -231,12 +273,23 @@ struct TitleDetailsPage {
     theme.setHeadingTextLineHeight5(this.headingTextLineHeight5) // 五级标题文本行高
     theme.setHeadingTextLineHeight6(this.headingTextLineHeight6) // 六级标题文本行高
 
-    theme.setHeadingTextColor1(this.headingTextColor) // 各级标题颜色
-    theme.setHeadingTextColor2(0xFFD2691E)
-    theme.setHeadingTextColor3(0xFFFFD700)
-    theme.setHeadingTextColor4(0xFF228B22)
-    theme.setHeadingTextColor5(0xFF00BFFF)
-    theme.setHeadingTextColor6(0xFF9400D3)
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+
+    theme.setHeadingTextColor1(this.headingTextColors[0]) // 一级标题文本颜色
+    theme.setHeadingTextColor2(this.headingTextColors[1]) // 二级标题文本颜色
+    theme.setHeadingTextColor3(this.headingTextColors[2]) // 三级标题文本颜色
+    theme.setHeadingTextColor4(this.headingTextColors[3]) // 四级标题文本颜色
+    theme.setHeadingTextColor5(this.headingTextColors[4]) // 五级标题文本颜色
+    theme.setHeadingTextColor6(this.headingTextColors[5]) // 六级标题文本颜色
+
+    theme.setHeadingBreakColor1(this.headingTextColors[6]) // H1标题下分割线颜色
+    theme.setHeadingBreakColor2(this.headingTextColors[7]) // H2标题下分割线颜色
+
+    theme.setStrikethroughStyle(this.strikethroughStyle) // 删除线样式
 
     config.setMarkdownTheme(theme)
     return config

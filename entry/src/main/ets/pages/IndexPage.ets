@@ -244,7 +244,7 @@ struct IndexPage {
             itemListComponent(
               "30、card",
               0xFFFF0000,
-              "pages/Card"
+              "pages/CardPage"
             )
           }
           ListItem() {

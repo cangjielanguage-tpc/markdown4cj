@@ -37,7 +37,6 @@ export struct CJMarkdownWrap {
       listScroller: this.setScroller(),
       incrementalAnalysis: this.incrementalAnalysis
     })
-    .width("75%")
   }
 
   /**

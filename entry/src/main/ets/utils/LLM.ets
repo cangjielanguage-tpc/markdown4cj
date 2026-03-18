@@ -155,10 +155,10 @@ export class LLM {
         const output = buffer.substring(0, Math.min(buffer.length, size))
         buffer = buffer.slice(Math.min(buffer.length, size))
         task(output)
-        setTimeout(chunker, 150)
+        setTimeout(chunker, 20)
       }
     }
-    setTimeout(chunker, 150)
+    setTimeout(chunker, 20)
     // let output = ""
     // const INDEX = 6
     // const httpRequest = http.createHttp()

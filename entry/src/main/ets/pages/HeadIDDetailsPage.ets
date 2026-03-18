@@ -46,6 +46,31 @@ struct HeadIDDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
 
   /**
    * Markdown的控制器
@@ -57,6 +82,11 @@ struct HeadIDDetailsPage {
       let headIDData: HeadIDData = router.getParams() as HeadIDData
       this.fileStr = getFileContextStr(headIDData._pagePath)
       this.isFull = headIDData._isFull
+      this.isMarkdownParserSync = headIDData._isMarkdownParserSync
+      this.isOnCopy = headIDData._isOnCopy
+      this.blockFirstTopMargin = headIDData._blockFirstTopMargin
+      this.blockLastBottomMargin = headIDData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = headIDData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -117,6 +147,13 @@ struct HeadIDDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
+    let theme = new MarkdownTheme()
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    config.setMarkdownTheme(theme)
     config.setTocIndexCallback(this.tocIndexCallback.bind(this))
     return config
   }

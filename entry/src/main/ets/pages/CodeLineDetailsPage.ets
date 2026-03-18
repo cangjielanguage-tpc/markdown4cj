@@ -69,6 +69,31 @@ struct CodeLineDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
@@ -82,6 +107,11 @@ struct CodeLineDetailsPage {
       this.codeBackgroundColor = codeLineData._codeBackgroundColor
       this.codeTextSize = codeLineData._codeTextSize
       this.codeTypeface = codeLineData._codeTypeface
+      this.isMarkdownParserSync = codeLineData._isMarkdownParserSync
+      this.isOnCopy = codeLineData._isOnCopy
+      this.blockFirstTopMargin = codeLineData._blockFirstTopMargin
+      this.blockLastBottomMargin = codeLineData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = codeLineData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -150,6 +180,11 @@ struct CodeLineDetailsPage {
     theme.setCodeBackgroundColor(this.codeBackgroundColor)
     theme.setCodeTextSize(this.codeTextSize)
     theme.setCodeTypeface(this.codeTypeface)
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }

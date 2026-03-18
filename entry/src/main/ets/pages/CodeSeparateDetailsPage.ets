@@ -65,6 +65,31 @@ struct CodeSeparateDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
@@ -77,6 +102,11 @@ struct CodeSeparateDetailsPage {
       this.isSeparateCodeBlock = codeSeparateData._isSeparateCodeBlock
       this.separateCodeBlockWidth = codeSeparateData._separateCodeBlockWidth
       this.separateCodeIsBottom = codeSeparateData._separateCodeIsBottom
+      this.isMarkdownParserSync = codeSeparateData._isMarkdownParserSync
+      this.isOnCopy = codeSeparateData._isOnCopy
+      this.blockFirstTopMargin = codeSeparateData._blockFirstTopMargin
+      this.blockLastBottomMargin = codeSeparateData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = codeSeparateData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -145,6 +175,11 @@ struct CodeSeparateDetailsPage {
     theme.setCodeFullScreenIcon($r('app.media.startIcon')) // 代码块全屏图片icon
     theme.setCodeCopyIcon($r('app.media.startIcon')) // 代码块复制图片icon
     theme.setSeparateCodeIsBottom(this.separateCodeIsBottom) // 单独代码块是否居底显示
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }

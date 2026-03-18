@@ -61,6 +61,36 @@ struct CodeListDetailsPage {
    * 增量加载延迟
    */
   time: number = 50
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
@@ -73,6 +103,11 @@ struct CodeListDetailsPage {
       this.codeListTitleUnSelectTextColor = codeListData._codeListTitleUnSelectTextColor
       this.codeListTitleSelectBackGroupColor = codeListData._codeListTitleSelectBackGroupColor
       this.codeListTitleUnSelectBackGroupColor = codeListData._codeListTitleUnSelectBackGroupColor
+      this.isMarkdownParserSync = codeListData._isMarkdownParserSync
+      this.isOnCopy = codeListData._isOnCopy
+      this.blockFirstTopMargin = codeListData._blockFirstTopMargin
+      this.blockLastBottomMargin = codeListData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = codeListData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -137,6 +172,11 @@ struct CodeListDetailsPage {
     theme.setCodeListTitleUnSelectBackGroupColor(this.codeListTitleUnSelectBackGroupColor)
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }

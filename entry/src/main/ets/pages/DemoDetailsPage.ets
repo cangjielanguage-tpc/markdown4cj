@@ -1,14 +1,11 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
-  MarkdownScroller,
-  MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { DemoDataMD } from './DemoPage'
 import { getFileContextStr } from '../utils/FileUtils'
-import hilog from '@ohos.hilog'
 
 @Entry
 @Component
@@ -56,11 +53,31 @@ struct DemoDetailsPage {
    */
   @State
   isInputEnded: boolean = false
-
   /**
-   * Markdown的控制器
+   * markdown是否同步解析
    */
-  markdownScroller: MarkdownScroller = new MarkdownScroller()
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
@@ -70,6 +87,11 @@ struct DemoDetailsPage {
       this.incrementalAnalysis = imageDataMD._incrementalAnalysis
       this.time = imageDataMD._time
       this.textNumber = imageDataMD._textNumber
+      this.isMarkdownParserSync = imageDataMD._isMarkdownParserSync
+      this.isOnCopy = imageDataMD._isOnCopy
+      this.blockFirstTopMargin = imageDataMD._blockFirstTopMargin
+      this.blockLastBottomMargin = imageDataMD._blockLastBottomMargin
+      this.blockTopAndBottomMargins = imageDataMD._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -121,7 +143,6 @@ struct DemoDetailsPage {
             content: this.content,
             isInputEnded: this.isInputEnded,
             incrementalAnalysis: this.incrementalAnalysis,
-            listScroller: this.markdownScroller,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
@@ -134,16 +155,6 @@ struct DemoDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    config.setLinkCallback(this.linkCallBack.bind(this))
-    config.setImageCallback(this.imageCallback.bind(this))
-    config.setAudioCallback(this.audioCallback.bind(this))
-    config.setVideoCallback(this.videoCallback.bind(this))
-    config.setVideoImageCallback(this.videoImageCallback.bind(this))
-    config.setCodeCopyCallback(this.codeCopyCallback.bind(this))
-    config.setCodeFullScreenCallback(this.codeFullScreenCallback.bind(this))
-    config.setLatexImageCallback(this.latexCallBack.bind(this))
-    config.setTocIndexCallback(this.tocIndexCallback.bind(this))
-    config.setFootnoteCallback(this.footnoteCallback.bind(this))
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this)) // 上下文
     theme.setCodeFullScreenIcon($r('app.media.startIcon')) // 代码块全屏图片icon
@@ -151,6 +162,11 @@ struct DemoDetailsPage {
     theme.setAudioIcon($r('app.media.startIcon')) // 音频图片icon
     theme.setVideoImage($r('app.media.place_holder')) // 视频默认占位图
     theme.setPlayCircleFillIcon($r('app.media.play_circle_fill')) // 视频播放按钮icon
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }
@@ -176,53 +192,5 @@ struct DemoDetailsPage {
     plugin.setIsDescListPlugin(true) // 定义列表解析插件
     plugin.setIsHeadIDPlugin(true) // 标题ID解析插件
     return plugin
-  }
-
-  linkCallBack(url: string): void {
-    hilog.error(1, "1", `---url:${url}`)
-  }
-
-  imageCallback(url: string, urlList: Array<string>): void {
-    hilog.error(1, "1", `---url:${url},urlList:${urlList}`)
-  }
-
-  audioCallback(url: string): void {
-    hilog.error(1, "1", `---url:${url}`)
-  }
-
-  videoCallback(url: string, urlList: Array<string>): void {
-    hilog.error(1, "1", `---url:${url},urlList:${urlList}`)
-  }
-
-  videoImageCallback(url: string, cb: (imageUrl: string, aspectRatio: number, time: number) => void): void {
-    hilog.error(1, "1", `---url:${url}`)
-  }
-
-  codeCopyCallback(code: string): void {
-    hilog.error(1, "1", `---code:${code}`)
-  }
-
-  codeFullScreenCallback(code: string, type: string | undefined): void {
-    hilog.error(1, "1", `---code:${code},type:${type}`)
-  }
-
-  latexCallBack(data: ArrayBuffer, heightNumber: number, widthNumber: number): void {
-    hilog.error(1, "1", `---data.size:${data.byteLength},heightNumber:${heightNumber},widthNumber:${widthNumber}`)
-  }
-
-  tocIndexCallback(y: number | undefined): void {
-    if(y !==undefined){
-      hilog.error(1, "1", `---y:${y}`)
-      let rect = this.markdownScroller.getItemRect(y)
-      this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
-    }
-  }
-
-  footnoteCallback(y: number | undefined): void {
-    if(y !==undefined){
-      hilog.error(1, "1", `---y:${y}`)
-      let rect = this.markdownScroller.getItemRect(y)
-      this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
-    }
   }
 }

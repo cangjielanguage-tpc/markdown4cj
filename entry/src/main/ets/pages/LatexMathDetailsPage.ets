@@ -94,6 +94,31 @@ struct LatexMathDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
@@ -110,6 +135,11 @@ struct LatexMathDetailsPage {
       this.latexMathColorFormat = latexMathData._latexMathColorFormat
       this.latexMathResStr = latexMathData._latexMathResStr
       this.latexDefaultText = latexMathData._latexDefaultText
+      this.isMarkdownParserSync = latexMathData._isMarkdownParserSync
+      this.isOnCopy = latexMathData._isOnCopy
+      this.blockFirstTopMargin = latexMathData._blockFirstTopMargin
+      this.blockLastBottomMargin = latexMathData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = latexMathData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -182,6 +212,11 @@ struct LatexMathDetailsPage {
     theme.setLatexMathColorFormat(this.latexMathColorFormat) // 数学公式生成图片格式
     theme.setLatexMathBlockCenter(this.latexMathBlockCenter) // 块结构的数学公式是否居中
     theme.setLatexMathResStr(this.latexMathResStr) // 数学公式字体路径
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     config.setMarkdownTheme(theme)
     return config
   }
