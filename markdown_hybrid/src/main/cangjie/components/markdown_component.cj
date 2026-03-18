@@ -147,12 +147,12 @@ public class MarkdownComponent {
     /**
      * 注脚事件回调数据
      */
-    var indexFootnoteHashMap: HashMap<String, Float64> = HashMap<String, Float64>()
+    var indexFootnoteHashMap: HashMap<String, Int64> = HashMap<String, Int64>()
 
     /**
      * toc事件回调数据
      */
-    var indexTocHashMap: HashMap<Int64, Float64> = HashMap<Int64, Float64>()
+    var indexTocHashMap: HashMap<Int64, Int64> = HashMap<Int64, Int64>()
 
     /**
      * list控制器
@@ -250,7 +250,6 @@ public class MarkdownComponent {
                                         headingFootnoteCallback: footnoteCallback
                                     )
                                 }
-                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "FencedCodeBlockListBlock") {
                                 // 围栏代码块列表
@@ -306,7 +305,6 @@ public class MarkdownComponent {
                                         listTocListOnClick: tocListOnClick,
                                         listImageCallback: imageCallback,
                                         listVideoCallback: videoCallback,
-                                        listIndexFootnoteHashMap: indexFootnoteHashMap,
                                         listDepth: 0
                                     )
                                 }
@@ -332,7 +330,6 @@ public class MarkdownComponent {
                                         listTocListOnClick: tocListOnClick,
                                         listImageCallback: imageCallback,
                                         listVideoCallback: videoCallback,
-                                        listIndexFootnoteHashMap: indexFootnoteHashMap,
                                         listDepth: 0
                                     )
                                 }
@@ -357,7 +354,6 @@ public class MarkdownComponent {
                                         quoteTocListOnClick: tocListOnClick,
                                         quoteImageCallback: imageCallback,
                                         quoteVideoCallback: videoCallback,
-                                        quoteIndexFootnoteHashMap: indexFootnoteHashMap,
                                         quoteDepth: 0
                                     )
                                 }
@@ -415,7 +411,6 @@ public class MarkdownComponent {
                                         footnoteFootnoteCallback:footnoteCallback
                                     )
                                 }
-                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "DescList") {
                                 // 定义列表
@@ -542,7 +537,6 @@ public class MarkdownComponent {
                                         headingFootnoteCallback: footnoteCallback
                                     )
                                 }
-                                .interopOnAreaChange {oldValue, newValue => indexTocHashMap.add(idx, newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "FencedCodeBlockListBlock") {
                                 // 围栏代码块列表
@@ -598,7 +592,6 @@ public class MarkdownComponent {
                                         listTocListOnClick: tocListOnClick,
                                         listImageCallback: imageCallback,
                                         listVideoCallback: videoCallback,
-                                        listIndexFootnoteHashMap: indexFootnoteHashMap,
                                         listDepth: 0
                                     )
                                 }
@@ -624,7 +617,6 @@ public class MarkdownComponent {
                                         listTocListOnClick: tocListOnClick,
                                         listImageCallback: imageCallback,
                                         listVideoCallback: videoCallback,
-                                        listIndexFootnoteHashMap: indexFootnoteHashMap,
                                         listDepth: 0
                                     )
                                 }
@@ -649,7 +641,6 @@ public class MarkdownComponent {
                                         quoteTocListOnClick: tocListOnClick,
                                         quoteImageCallback: imageCallback,
                                         quoteVideoCallback: videoCallback,
-                                        quoteIndexFootnoteHashMap: indexFootnoteHashMap,
                                         quoteDepth: 0
                                     )
                                 }
@@ -707,7 +698,6 @@ public class MarkdownComponent {
                                         footnoteFootnoteCallback:footnoteCallback
                                     )
                                 }
-                                .interopOnAreaChange {oldValue, newValue => indexFootnoteHashMap.add(item.footnoteID(), newValue.globalPosition.y)}
                                 .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                             } else if (item.nodeType == "DescList") {
                                 // 定义列表
@@ -906,6 +896,11 @@ public class MarkdownComponent {
             refreshDatas(dataSourceSize, refreshNodeViewChildren)
             // 循环添加新数据
             for (i in dataSourceSize..refreshNodeViewSize) {
+                if (refreshNodeViewChildren[i].nodeType == "Heading" || refreshNodeViewChildren[i].nodeType == "IdHeading") {
+                    indexTocHashMap.add(i, i)
+                } else if (refreshNodeViewChildren[i].nodeType == "FootnoteBlock") {
+                    indexFootnoteHashMap.add(refreshNodeViewChildren[i].footnoteID(), i)
+                }
                 nodeViewDataSource.addData(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
@@ -943,6 +938,11 @@ public class MarkdownComponent {
                 refreshDatas(dataSourceSize, refreshNodeViewChildren)
                 // 循环添加新数据
                 for (i in dataSourceSize..refreshNodeViewSize) {
+                    if (refreshNodeViewChildren[i].nodeType == "Heading" || refreshNodeViewChildren[i].nodeType == "IdHeading") {
+                        indexTocHashMap.add(i, i)
+                    } else if (refreshNodeViewChildren[i].nodeType == "FootnoteBlock") {
+                        indexFootnoteHashMap.add(refreshNodeViewChildren[i].footnoteID(), i)
+                    }
                     nodeViewDataSource.addData(refreshNodeViewChildren[i])
                 }
             } else if (refreshNodeViewSize == dataSourceSize) {
@@ -977,6 +977,11 @@ public class MarkdownComponent {
             let oldBlockHash = dataSourceNode.nodeHash
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
+            if (refreshNodeView.nodeType == "Heading" || refreshNodeView.nodeType == "IdHeading") {
+                indexTocHashMap.add(i, i)
+            } else if (refreshNodeView.nodeType == "FootnoteBlock") {
+                indexFootnoteHashMap.add(refreshNodeView.footnoteID(), i)
+            }
             // 唯一ID是否相同
             if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
                 nodeViewDataSource.replaceData(i, refreshNodeView)

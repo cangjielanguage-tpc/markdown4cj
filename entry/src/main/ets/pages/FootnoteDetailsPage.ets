@@ -3,9 +3,12 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+  MarkdownScroller,
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import { FootnoteData } from './FootnotePage'
+import hilog from '@ohos.hilog'
 
 @Entry
 @Component
@@ -43,6 +46,11 @@ struct FootnoteDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+
+  /**
+   * Markdown的控制器
+   */
+  markdownScroller: MarkdownScroller = new MarkdownScroller()
 
   aboutToAppear(): void {
     try {
@@ -96,6 +104,7 @@ struct FootnoteDetailsPage {
           CJMarkdown({
             content: this.content,
             isInputEnded: this.isInputEnded,
+            listScroller: this.markdownScroller,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
@@ -109,7 +118,6 @@ struct FootnoteDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     config.setFootnoteCallback(this.footnoteCallback.bind(this))
-    // config.setFootnoteCallback(this.footnoteCallbackNew.bind(this))
     return config
   }
 
@@ -121,13 +129,9 @@ struct FootnoteDetailsPage {
 
   footnoteCallback(y: number | undefined): void {
     if(y !==undefined){
-      this.scroller.scrollBy(0, y - (this.safeTop + 90))
-    }
-  }
-
-  footnoteCallbackNew(y: number | undefined): void {
-    if(y !==undefined){
-      this.scroller.scrollToIndex(y)
+      hilog.error(1, "1", `---y:${y}`)
+      let rect = this.markdownScroller.getItemRect(y)
+      this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
     }
   }
 }

@@ -3,7 +3,9 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+  MarkdownScroller,
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import { AllData } from './AllPage'
 import hilog from '@ohos.hilog'
@@ -54,6 +56,11 @@ struct AllDetailsPage {
    */
   @State
   isInputEnded: boolean = false
+
+  /**
+   * Markdown的控制器
+   */
+  markdownScroller: MarkdownScroller = new MarkdownScroller()
 
   aboutToAppear(): void {
     try {
@@ -109,6 +116,7 @@ struct AllDetailsPage {
           CJMarkdown({
             content: this.content,
             isInputEnded: this.isInputEnded,
+            listScroller: this.markdownScroller,
             config: this.setMarkdownConfig(),
             plugin: this.setPlugin()
           })
@@ -201,14 +209,16 @@ struct AllDetailsPage {
   tocIndexCallback(y: number | undefined): void {
     if(y !==undefined){
       hilog.error(1, "1", `---y:${y}`)
-      this.scroller.scrollBy(0, y - (this.safeTop + 90))
+      let rect = this.markdownScroller.getItemRect(y)
+      this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
     }
   }
 
   footnoteCallback(y: number | undefined): void {
     if(y !==undefined){
       hilog.error(1, "1", `---y:${y}`)
-      this.scroller.scrollBy(0, y - (this.safeTop + 90))
+      let rect = this.markdownScroller.getItemRect(y)
+      this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
     }
   }
 }

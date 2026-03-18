@@ -10,7 +10,8 @@ import {
   registerImgPreprocessCallback,
   setGlobalContext,
   getCJResource,
-  CJMarkdownScroller
+  CJMarkdownScroller,
+  CJRectResult
 } from 'libmarkdown.so';
 
 class CJNodeController extends NodeController {
@@ -4550,6 +4551,16 @@ export class MarkdownScroller {
   }
 
   /**
+   * 获取子组件的大小及相对容器组件的位置
+   *
+   * @returns 子组件的大小和相对于组件的位置
+   */
+  getItemRect(index: number): MarkdownRectResult{
+    let rect = this.scroller?.getItemRect(index) || new CJRectResult(0,0,0,0)
+    return new MarkdownRectResult(rect.getItemRectX(),rect.getItemRectY(),rect.getItemRectWidth(),rect.getItemRectHeight())
+  }
+
+  /**
    * 获取内部CJMarkdownScroller实例
    *
    * @returns CJMarkdownScroller实例
@@ -4559,5 +4570,38 @@ export class MarkdownScroller {
       this.scroller = new CJMarkdownScroller()
     }
     return this.scroller
+  }
+}
+
+/**
+ * 子组件的大小和相对于组件的位置
+ */
+export class MarkdownRectResult {
+  private x: number = 0
+  private y: number = 0
+  private width: number = 0
+  private height: number = 0
+
+  constructor (x: number, y: number, width: number, height: number){
+    this.x = x
+    this.y = y
+    this.width = width
+    this.height = height
+  }
+
+  getItemRectX(): number{
+    return this.x
+  }
+
+  getItemRectY(): number{
+    return this.y
+  }
+
+  getItemRectWidth(): number{
+    return this.width
+  }
+
+  getItemRectHeight(): number{
+    return this.height
   }
 }

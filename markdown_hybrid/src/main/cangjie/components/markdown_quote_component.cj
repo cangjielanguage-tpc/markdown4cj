@@ -104,11 +104,6 @@ public class MarkdownQuoteComponent {
     var quoteVideoCallback: (String) -> Unit
 
     /**
-     * 注脚事件回调数据
-     */
-    var quoteIndexFootnoteHashMap: HashMap<String, Float64>
-
-    /**
      * 列表深度
      */
     var quoteDepth: Int64
@@ -234,7 +229,6 @@ public class MarkdownQuoteComponent {
                                 listTocListOnClick: quoteTocListOnClick,
                                 listImageCallback: quoteImageCallback,
                                 listVideoCallback: quoteVideoCallback,
-                                listIndexFootnoteHashMap: quoteIndexFootnoteHashMap,
                                 listDepth: quoteDepth + 1
                             )
                         }
@@ -262,7 +256,6 @@ public class MarkdownQuoteComponent {
                                 listTocListOnClick: quoteTocListOnClick,
                                 listImageCallback: quoteImageCallback,
                                 listVideoCallback: quoteVideoCallback,
-                                listIndexFootnoteHashMap: quoteIndexFootnoteHashMap,
                                 listDepth: quoteDepth + 1
                             )
                         }
@@ -289,7 +282,6 @@ public class MarkdownQuoteComponent {
                                 quoteTocListOnClick: quoteTocListOnClick,
                                 quoteImageCallback: quoteImageCallback,
                                 quoteVideoCallback: quoteVideoCallback,
-                                quoteIndexFootnoteHashMap: quoteIndexFootnoteHashMap,
                                 quoteDepth: quoteDepth + 1
                             )
                         }

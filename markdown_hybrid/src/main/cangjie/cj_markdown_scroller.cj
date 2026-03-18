@@ -7,6 +7,7 @@ import ohos.ark_interop.*
 import ohos.ark_interop_macro.*
 import ohos.component.Scroller
 import ohos.component.Edge
+import ohos.device_info.DeviceInfo
 
 @Interop[ArkTS]
 public class CJMarkdownScroller {
@@ -62,10 +63,67 @@ public class CJMarkdownScroller {
     }
 
     /**
+     * 获取子组件的大小及相对容器组件的位置
+     */
+    public func getItemRect(index: Int64): CJRectResult {
+        if (DeviceInfo.sdkApiVersion >= 19) {
+            let rect = this.scroller.getItemRect(Int32(index))
+            return CJRectResult(rect.x,rect.y,rect.width,rect.height)
+        } else {
+            let rect = this.scroller.interopGetItemRect(index)
+            return CJRectResult(rect.x,rect.y,rect.width,rect.height)
+        }
+    }
+
+    /**
      * 获取当前的滚动总偏移量
      */
     public func currentYOffset(): Float64 {
         let offsetResult = this.scroller.currentOffset()
         return offsetResult.yOffset
+    }
+}
+
+
+@Interop[ArkTS]
+public class CJRectResult {
+    var x: Float64
+    var y: Float64
+    var width: Float64
+    var height: Float64
+
+    public init(x: Float64,y: Float64,width: Float64,height: Float64){
+        this.x = x
+        this.y = y
+        this.width = width
+        this.height = height
+    }
+
+    /**
+     *
+     */
+    public func getItemRectX(): Float64 {
+        return x
+    }
+
+    /**
+     *
+     */
+    public func getItemRectY(): Float64 {
+        return y
+    }
+
+    /**
+     *
+     */
+    public func getItemRectWidth(): Float64 {
+        return width
+    }
+
+    /**
+     *
+     */
+    public func getItemRectHeight(): Float64 {
+        return height
     }
 }

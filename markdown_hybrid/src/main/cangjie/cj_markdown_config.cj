@@ -82,12 +82,12 @@ public class CJMarkdownConfig {
     /**
      * TOC跳转指定位置
      */
-    var tocIndexCallback: ?(Option<Float64>) -> Unit = None
+    var tocIndexCallback: ?(Option<Int64>) -> Unit = None
 
     /**
      * 脚注跳转指定位置
      */
-    var footnoteCallback: ?(Option<Float64>) -> Unit = None
+    var footnoteCallback: ?(Option<Int64>) -> Unit = None
 
     /**
      * markdown默认样式
@@ -224,7 +224,7 @@ public class CJMarkdownConfig {
      *
      * @param cb TOC跳转指定位置接口 (位置距离)
      */
-    public func setTocIndexCallback(cb: (Option<Float64>) -> Unit): Unit {
+    public func setTocIndexCallback(cb: (Option<Int64>) -> Unit): Unit {
         this.tocIndexCallback = cb
     }
 
@@ -233,7 +233,7 @@ public class CJMarkdownConfig {
      *
      * @param cb 脚注跳转指定位置接口 (位置距离)
      */
-    public func setFootnoteCallback(cb: (Option<Float64>) -> Unit): Unit {
+    public func setFootnoteCallback(cb: (Option<Int64>) -> Unit): Unit {
         this.footnoteCallback = cb
     }
 

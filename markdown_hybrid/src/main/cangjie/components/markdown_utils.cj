@@ -115,16 +115,16 @@ func marginNodeBottom(idx: Int64, size: Int64, item: NodeView, markdownTheme: Ma
  * @param footnoteCallback 脚注点击事件
  */
 func spanOnClick(markdownConfiguration: MarkdownConfiguration, nodeView: NodeView, tocListOnClick: ?(Int64) -> Unit, footnoteCallback: (String) -> Unit): Unit {
-    if (markdownConfiguration.linkCallback.isSome() && nodeView.linkUrl.isSome()) {
-        markdownConfiguration.linkCallback()(nodeView.linkUrl()) // 链接
-        return
-    }
     if (nodeView.footnoteID.isSome()) {
         footnoteCallback(nodeView.footnoteID()) // 脚注
         return
     }
     if (nodeView.headLinkIndex.isSome() && tocListOnClick.isSome()) {
         tocListOnClick()(nodeView.headLinkIndex()) // TOC/标题ID
+        return
+    }
+    if (markdownConfiguration.linkCallback.isSome() && nodeView.linkUrl.isSome()) {
+        markdownConfiguration.linkCallback()(nodeView.linkUrl()) // 链接
         return
     }
 }
