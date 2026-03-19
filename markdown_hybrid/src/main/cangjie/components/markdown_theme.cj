@@ -1192,6 +1192,21 @@ public class MarkdownTheme {
      */
     protected var underlineStyle: Int32 = 0
 
+    /**
+     * markdown是否支持滚动手势
+     */
+    protected var openGestureSwipe: Bool = false
+
+    /**
+     * codeformat是否用制表符
+     */
+    protected var useTab: Bool = false
+
+    /**
+     * codeformat空格缩进数量，默认4空格
+     */
+    protected var indentWidth: Int64 = 4
+
     protected init(builder: MarkdownThemeBuilder) {
         // 1、上下文
         this.stageContext = builder.stageContext
@@ -1487,6 +1502,13 @@ public class MarkdownTheme {
         // 21、 下划线
         this.underlineColor = builder.underlineColor
         this.underlineStyle = builder.underlineStyle
+
+        // 22、滑动
+        this.openGestureSwipe = builder.openGestureSwipe
+
+        // 23、codeformat
+        this.useTab = builder.useTab
+        this.indentWidth = builder.indentWidth
     }
 
     /**
@@ -2893,6 +2915,21 @@ public class MarkdownThemeBuilder {
      */
     var underlineStyle: Int32 = 0
 
+    /**
+     * markdown是否支持滚动手势
+     */
+    var openGestureSwipe: Bool = false
+
+    /**
+     * codeformat是否用制表符
+     */
+    var useTab: Bool = false
+
+    /**
+     * codeformat空格缩进数量，默认4空格
+     */
+    var indentWidth: Int64 = 4
+
     init() {
     }
 
@@ -3191,6 +3228,13 @@ public class MarkdownThemeBuilder {
         // 21、下划线
         this.underlineColor = theme.underlineColor
         this.underlineStyle = theme.underlineStyle
+
+        // 22、滑动
+        this.openGestureSwipe = theme.openGestureSwipe
+
+        // 23、codeformat
+        this.useTab = theme.useTab
+        this.indentWidth = theme.indentWidth
     }
 
     /**
@@ -5973,6 +6017,39 @@ public class MarkdownThemeBuilder {
      */
     public func setUnderlineStyle(underlineStyle: Int32): MarkdownThemeBuilder {
         this.underlineStyle = underlineStyle
+        return this
+    }
+
+    /**
+     * 设置markdown是否支持滚动手势
+     *
+     * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setOpenGestureSwipe(openGestureSwipe: Bool): MarkdownThemeBuilder {
+        this.openGestureSwipe = openGestureSwipe
+        return this
+    }
+
+    /**
+     * 设置codeformat是否用制表符
+     *
+     * @param useTab true-使用，false-不使用，默认false
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setUseTab(useTab: Bool): MarkdownThemeBuilder {
+        this.useTab = useTab
+        return this
+    }
+
+    /**
+     * 设置codeformat空格缩进数量
+     *
+     * @param indentWidth 空格缩进数量，默认4空格
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setIndentWidth(indentWidth: Int64): MarkdownThemeBuilder {
+        this.indentWidth = indentWidth
         return this
     }
 

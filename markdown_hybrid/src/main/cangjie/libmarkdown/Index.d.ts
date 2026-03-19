@@ -499,6 +499,12 @@ export declare class CJMarkdownTheme {
 
   setUnderlineStyle(underlineStyle: number): void
 
+  setOpenGestureSwipe(openGestureSwipe: boolean): void
+
+  setUseTab(useTab: boolean): void
+
+  setIndentWidth(indentWidth: number): void
+
   constructor()
 }
 

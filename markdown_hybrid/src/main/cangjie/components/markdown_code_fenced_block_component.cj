@@ -78,8 +78,15 @@ class MarkdownCodeFencedBlockComponent {
     @State
     var isEndByParent: Bool = false
 
+    /**
+     * codeformat配置
+     */
+    @State
+    var formatConfig: FormatConfig = FormatConfig()
+
     protected override func aboutToAppear(): Unit {
         psh = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
+        formatConfig = FormatConfig(useTab: markdownConfiguration.markdownTheme.useTab, indentWidth: markdownConfiguration.markdownTheme.indentWidth)
         refreshData(codeText, info, nodeHash, isEndByParent) // 初始化刷新数据
         fencedCodeComponents.add(nodeHash, this) // 缓存当前控件
     }
@@ -262,7 +269,7 @@ class MarkdownCodeFencedBlockComponent {
      */
     func stringCodeToResListSync(code: String, isEnd: Bool) {
         let codeTextStr = if (markdownConfiguration.markdownTheme.isCodeFormat) {
-            codeFormat(info, code, FormatConfig())
+            codeFormat(info, code, formatConfig)
         } else {
             code
         }
@@ -402,7 +409,7 @@ class MarkdownCodeFencedBlockComponent {
     func stringToResList(code: String, info: ?String, callback: (ArrayList<PrismNodesParseResUI>, Int64) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             let codeTextStr = if (markdownConfiguration.markdownTheme.isCodeFormat) {
-                codeFormat(info, code, FormatConfig())
+                codeFormat(info, code, formatConfig)
             } else {
                 code
             }

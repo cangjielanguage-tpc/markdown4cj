@@ -508,7 +508,7 @@ public class MarkdownComponent {
                 .listDirection(Axis.Vertical)
                 .alignListItem(ListItemAlign.Start)
                 .scrollBar(BarState.Off)
-                .enableScrollInteraction(false)
+                .enableScrollInteraction(markdownConfiguration.markdownTheme.openGestureSwipe)
                 .interopOnSizeChange {
                     old, new => if (componentWidth != new.width) {
                         componentWidth = new.width
@@ -800,7 +800,7 @@ public class MarkdownComponent {
                 .listDirection(Axis.Vertical)
                 .alignListItem(ListItemAlign.Start)
                 .scrollBar(BarState.Off)
-                .interopEnableScrollInteraction(false)
+                .interopEnableScrollInteraction(markdownConfiguration.markdownTheme.openGestureSwipe)
                 .interopOnSizeChange {
                     old, new => if (componentWidth != new.width) {
                         componentWidth = new.width

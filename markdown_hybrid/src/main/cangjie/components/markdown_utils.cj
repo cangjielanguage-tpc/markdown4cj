@@ -411,6 +411,9 @@ func spanBaselineOffset(nodeView: NodeView, markdownTheme: MarkdownTheme): Float
  * @return 文本行高
  */
 func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
+    if (nodeView.isLink) {
+        return markdownTheme.linkLineHeight // 链接
+    }
     if (nodeView.isHeading) {
         return headLineHeight(nodeView.headingLevel, markdownTheme) // 标题
     }
@@ -419,9 +422,6 @@ func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
     }
     if (nodeView.isTable) {
         return markdownTheme.tableTextLineHeight // 表格
-    }
-    if (nodeView.isLink) {
-        return markdownTheme.linkLineHeight // 链接
     }
     return markdownTheme.paragraphTextLineHeight // 段落和其他
 }
