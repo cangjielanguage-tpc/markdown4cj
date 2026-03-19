@@ -274,6 +274,24 @@ struct CodeBlockPage {
    */
   blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
   /**
+   * codeformat是否使用制表符
+   */
+  @State
+  useTab: boolean = false
+  /**
+   * codeformat是否使用制表符列表
+   */
+  useTabList: Array<boolean> = [true, false]
+  /**
+   * codeformat空格缩进数量
+   */
+  @State
+  indentWidth: number = 4
+  /**
+   * codeformat空格缩进数量列表
+   */
+  indentWidthList: Array<number> = [0, 2, 4, 6, 8, 10]
+  /**
    * 配置数据内容
    */
   @State
@@ -412,37 +430,6 @@ struct CodeBlockPage {
                   .onClick(() => {
                     this.textNumber = item
                     this.codeBlockData.textNumber = this.textNumber
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`是否格式化代码块内容 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isCodeFormat}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isCodeFormatList, (item: boolean, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isCodeFormat = item
-                    this.codeBlockData.isCodeFormat = this.isCodeFormat
                   })
               })
             }
@@ -1138,6 +1125,99 @@ struct CodeBlockPage {
             }
           }
 
+          Column() {
+            Row() {
+              Text(`是否格式化代码块内容 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.isCodeFormat}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.isCodeFormatList, (item: boolean, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.isCodeFormat = item
+                    this.codeBlockData.isCodeFormat = this.isCodeFormat
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`codeformat是否使用制表符 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.useTab}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.useTabList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.useTab = item
+                    this.codeBlockData.useTab = this.useTab
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`codeformat空格缩进数量 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.indentWidth}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.indentWidthList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.indentWidth = item
+                    this.codeBlockData.indentWidth = this.indentWidth
+                  })
+              })
+            }
+          }
+
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -1197,6 +1277,8 @@ export class CodeBlockData {
   _blockFirstTopMargin: number = 8
   _blockLastBottomMargin: number = 8
   _blockTopAndBottomMargins: number = 8
+  _useTab: boolean = false
+  _indentWidth: number = 4
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
@@ -1305,6 +1387,14 @@ export class CodeBlockData {
 
   public set blockTopAndBottomMargins(value: number) {
     this._blockTopAndBottomMargins = value
+  }
+
+  public set useTab(value: boolean) {
+    this._useTab = value
+  }
+
+  public set indentWidth(value: number) {
+    this._indentWidth = value
   }
 
   public set pagePath(value: string) {
