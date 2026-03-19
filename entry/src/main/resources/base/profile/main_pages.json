@@ -4,8 +4,6 @@
     "pages/IndexPage",
     "pages/DemoPage",
     "pages/DemoDetailsPage",
-    "pages/DemoArkTsTextPage",
-    "pages/DemoCustomViewPage",
     "pages/TitlePage",
     "pages/TitleDetailsPage",
     "pages/ParagraphPage",

@@ -174,7 +174,8 @@ struct CodeSeparateDetailsPage {
           })
         }
       }
-      .padding({ bottom: 200 })
+      .align(Alignment.TopStart)
+      .layoutWeight(1)
     }
     .alignItems(HorizontalAlign.Center)
   }
