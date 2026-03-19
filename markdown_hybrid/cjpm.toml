@@ -15,16 +15,16 @@
 
 [dependencies]
   [dependencies.commonmark4cj]
-    branch = "upgrade"
+    tag = "commonmark4cj-1.1.0_cangjie-1.0.4_parser-2.0"
     git = "https://gitcode.com/Cangjie-TPC/commonmark4cj.git"
   [dependencies.prism4cj]
     tag = "v1.0.4"
     git = "https://gitcode.com/Cangjie-TPC/prism4cj.git"
   [dependencies.formula]
-    tag = "cjc_1.0.0"
+    tag = "formula-1.0.0"
     git = "https://gitcode.com/Cangjie-TPC/formula-ffi.git"
   [dependencies.codeformat]
-    branch = "codeformat4md"
+    tag = "v1.0.0.B002"
     git = "https://gitcode.com/Cangjie-TPC/codeformat4cj.git"
 
 [ffi]
