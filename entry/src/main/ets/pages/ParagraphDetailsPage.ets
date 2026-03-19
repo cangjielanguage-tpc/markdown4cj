@@ -197,6 +197,7 @@ struct ParagraphDetailsPage {
           })
         }
       }
+      .align(Alignment.TopStart)
       .layoutWeight(1)
     }
     .alignItems(HorizontalAlign.Center)

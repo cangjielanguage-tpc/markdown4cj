@@ -140,6 +140,7 @@ struct HeadIDDetailsPage {
           })
         }
       }
+      .align(Alignment.TopStart)
       .layoutWeight(1)
     }
     .alignItems(HorizontalAlign.Center)

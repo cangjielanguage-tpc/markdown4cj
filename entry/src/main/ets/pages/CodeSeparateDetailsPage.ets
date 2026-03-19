@@ -162,6 +162,7 @@ struct CodeSeparateDetailsPage {
           })
         }
       }
+      .align(Alignment.TopStart)
       .layoutWeight(1)
     }
     .alignItems(HorizontalAlign.Center)
