@@ -3,8 +3,6 @@
  */
 package markdown.components
 
-import ohos.state_macro_manage.*
-
 /**
  * JSContext
  */

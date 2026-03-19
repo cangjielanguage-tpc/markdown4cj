@@ -261,10 +261,10 @@ class CJMarkdownComponent {
                 markdownThemeBuilder.setIsOnCopy(v) // 设置是否打开长按复制粘贴
             }
             if (let Some(v) <- w.cjMarkdownTheme.blockFirstTopMargin) {
-                markdownThemeBuilder.setBlockLastBottomMargin(v) // 设置markdown第一个模块上边距
+                markdownThemeBuilder.setBlockFirstTopMargin(v) // 设置markdown第一个模块上边距
             }
-            if (let Some(v) <- w.cjMarkdownTheme.blockTopAndBottomMargins) {
-                markdownThemeBuilder.setBlockTopAndBottomMargins(v) // 设置markdown最后一个模块下边距
+            if (let Some(v) <- w.cjMarkdownTheme.blockLastBottomMargin) {
+                markdownThemeBuilder.setBlockLastBottomMargin(v) // 设置markdown最后一个模块下边距
             }
             if (let Some(v) <- w.cjMarkdownTheme.blockTopAndBottomMargins) {
                 markdownThemeBuilder.setBlockTopAndBottomMargins(v) // 设置模块间上下间距
