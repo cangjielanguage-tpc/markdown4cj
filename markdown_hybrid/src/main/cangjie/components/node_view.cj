@@ -3,8 +3,6 @@
  */
 package markdown.components
 
-import ohos.state_macro_manage.*
-
 public class NodeView {
     // 子节点列表
     var children: ArrayList<NodeView> = ArrayList<NodeView>()
