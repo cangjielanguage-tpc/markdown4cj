@@ -901,6 +901,15 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.underlineStyle) {
                 markdownThemeBuilder.setUnderlineStyle(v) // 设置下划线样式
             }
+            if (let Some(v) <- w.cjMarkdownTheme.openGestureSwipe) {
+                markdownThemeBuilder.setOpenGestureSwipe(v) // 设置markdown是否支持滚动手势
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.useTab) {
+                markdownThemeBuilder.setUseTab(v) // 设置codeformat是否用制表符
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.indentWidth) {
+                markdownThemeBuilder.setIndentWidth(v) // 设置codeformat空格缩进数量
+            }
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()
         return markdownTheme

@@ -862,6 +862,15 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.underlineStyle !== undefined) {
           cjMarkdownTheme.setUnderlineStyle(this.config.markdownTheme.underlineStyle)
         }
+        if (this.config.markdownTheme.openGestureSwipe !== undefined) {
+          cjMarkdownTheme.setOpenGestureSwipe(this.config.markdownTheme.openGestureSwipe)
+        }
+        if (this.config.markdownTheme.useTab !== undefined) {
+          cjMarkdownTheme.setUseTab(this.config.markdownTheme.useTab)
+        }
+        if (this.config.markdownTheme.indentWidth !== undefined) {
+          cjMarkdownTheme.setIndentWidth(this.config.markdownTheme.indentWidth)
+        }
       }
     }
     return cjMarkdownTheme
@@ -2059,6 +2068,18 @@ export class MarkdownTheme {
    * 下划线样式
    */
   underlineStyle?: TextDecorationStyle = undefined
+  /**
+   * markdown是否支持滚动手势
+   */
+  openGestureSwipe?: boolean = undefined
+  /**
+   * codeformat是否用制表符
+   */
+  useTab?: boolean = undefined
+  /**
+   * codeformat空格缩进数量，默认4空格
+   */
+  indentWidth?: number = undefined
 
   /**
    * 设置上下文
@@ -4155,6 +4176,33 @@ export class MarkdownTheme {
    */
   setUnderlineStyle(underlineStyle: TextDecorationStyle): void {
     this.underlineStyle = underlineStyle
+  }
+
+  /**
+   * 设置markdown是否支持滚动手势
+   *
+   * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
+   */
+  setOpenGestureSwipe(openGestureSwipe: boolean): void {
+    this.openGestureSwipe = openGestureSwipe
+  }
+
+  /**
+   * 设置codeformat是否用制表符
+   *
+   * @param useTab true-使用，false-不使用，默认false
+   */
+  setUseTab(useTab: boolean): void {
+    this.useTab = useTab
+  }
+
+  /**
+   * 设置codeformat空格缩进数量
+   *
+   * @param indentWidth 空格缩进数量，默认4空格
+   */
+  setIndentWidth(indentWidth: number): void {
+    this.indentWidth = indentWidth
   }
 }
 

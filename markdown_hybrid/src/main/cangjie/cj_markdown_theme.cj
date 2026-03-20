@@ -1117,6 +1117,21 @@ public class CJMarkdownTheme {
      */
     var underlineStyle: ?Int32 = None
 
+    /**
+     * markdown是否支持滚动手势
+     */
+    var openGestureSwipe: ?Bool = None
+
+    /**
+     * codeformat是否用制表符
+     */
+    var useTab: ?Bool = None
+
+    /**
+     * codeformat空格缩进数量，默认4空格
+     */
+    var indentWidth: ?Int64 = None
+
     public init() {}
 
     /**
@@ -3124,5 +3139,32 @@ public class CJMarkdownTheme {
      */
     public func setUnderlineStyle(underlineStyle: Int32): Unit {
         this.underlineStyle = underlineStyle
+    }
+
+    /**
+     * 设置markdown是否支持滚动手势
+     *
+     * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
+     */
+    public func setOpenGestureSwipe(openGestureSwipe: Bool): Unit {
+        this.openGestureSwipe = openGestureSwipe
+    }
+
+    /**
+     * 设置codeformat是否用制表符
+     *
+     * @param useTab true-使用，false-不使用，默认false
+     */
+    public func setUseTab(useTab: Bool): Unit {
+        this.useTab = useTab
+    }
+
+    /**
+     * 设置codeformat空格缩进数量
+     *
+     * @param indentWidth 空格缩进数量，默认4空格
+     */
+    public func setIndentWidth(indentWidth: Int64): Unit {
+        this.indentWidth = indentWidth
     }
 }
