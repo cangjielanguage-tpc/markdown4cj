@@ -74,6 +74,7 @@ class MarkdownCodeFencedBlockComponent {
 
     protected override func aboutToAppear(): Unit {
         psh = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
+        formatConfig = FormatConfig(useTab: markdownConfiguration.markdownTheme.useTab, indentWidth: markdownConfiguration.markdownTheme.indentWidth)
         refreshData(codeText, info, nodeHash) // 初始化刷新数据
         fencedCodeComponents.add(nodeHash, this) // 缓存当前控件
     }
