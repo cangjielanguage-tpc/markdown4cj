@@ -160,37 +160,6 @@ struct EmojiPage {
 
           Column() {
             Row() {
-              Text(`emoji解析插件是否精简加载 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isEmojiLight}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isEmojiLightList, (item: boolean, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isEmojiLight = item
-                    this.emojiData.isEmojiLight = this.isEmojiLight
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
               Text(`markdown是否同步解析 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
@@ -403,6 +372,37 @@ struct EmojiPage {
                   .onClick(() => {
                     this.blockTopAndBottomMargins = item
                     this.emojiData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`emoji解析插件是否精简加载 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.isEmojiLight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.isEmojiLightList, (item: boolean, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.isEmojiLight = item
+                    this.emojiData.isEmojiLight = this.isEmojiLight
                   })
               })
             }

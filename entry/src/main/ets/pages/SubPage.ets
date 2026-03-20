@@ -178,101 +178,6 @@ struct SubPage {
 
           Column() {
             Row() {
-              Text(`下标字体颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.subTextColor))
-                .fontSize(16)
-                .fontColor(this.subTextColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.subTextColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.subTextColor = item
-                    this.subData.subTextColor = this.subTextColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`下标字体大小 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.subTextSize}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.subTextSizeList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.subTextSize = item
-                    this.subData.subTextSize = this.subTextSize
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`下标偏移距离 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.subOffsetDist}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.subOffsetDistList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.subOffsetDist = item
-                    this.subData.subOffsetDist = this.subOffsetDist
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
               Text(`markdown是否同步解析 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
@@ -297,70 +202,6 @@ struct SubPage {
                   .onClick(() => {
                     this.isMarkdownParserSync = item
                     this.subData.isMarkdownParserSync = this.isMarkdownParserSync
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`是否开启打字机效果 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.typeWriterOpen}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.typeWriterOpenList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.typeWriterOpen = item
-                    this.subData.typeWriterOpen = this.typeWriterOpen
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`打字机效果颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.typeWriterColor))
-                .fontSize(16)
-                .fontColor(this.typeWriterColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.typeWriterColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.typeWriterColor = item
-                    this.subData.typeWriterColor = this.typeWriterColor
                   })
               })
             }
@@ -485,6 +326,165 @@ struct SubPage {
                   .onClick(() => {
                     this.blockTopAndBottomMargins = item
                     this.subData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`下标字体颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(numberToColorString(this.subTextColor))
+                .fontSize(16)
+                .fontColor(this.subTextColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.subTextColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.subTextColor = item
+                    this.subData.subTextColor = this.subTextColor
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`下标字体大小 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.subTextSize}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.subTextSizeList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.subTextSize = item
+                    this.subData.subTextSize = this.subTextSize
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`下标偏移距离 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.subOffsetDist}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.subOffsetDistList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.subOffsetDist = item
+                    this.subData.subOffsetDist = this.subOffsetDist
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`是否开启打字机效果 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.typeWriterOpen}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.typeWriterOpenList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.typeWriterOpen = item
+                    this.subData.typeWriterOpen = this.typeWriterOpen
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`打字机效果颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(numberToColorString(this.typeWriterColor))
+                .fontSize(16)
+                .fontColor(this.typeWriterColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.typeWriterColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.typeWriterColor = item
+                    this.subData.typeWriterColor = this.typeWriterColor
                   })
               })
             }
