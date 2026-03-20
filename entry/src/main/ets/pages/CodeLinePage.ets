@@ -291,134 +291,6 @@ struct CodeLinePage {
 
           Column() {
             Row() {
-              Text(`内联代码文本颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.codeTextColor))
-                .fontSize(16)
-                .fontColor(this.codeTextColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.codeTextColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.codeTextColor = item
-                    this.codeLineData.codeTextColor = this.codeTextColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`内联代码背景颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.codeBackgroundColor))
-                .fontSize(16)
-                .fontColor(this.codeBackgroundColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.codeBackgroundColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.codeBackgroundColor = item
-                    this.codeLineData.codeBackgroundColor = this.codeBackgroundColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`内联代码文本大小 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.codeTextSize}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.codeTextSizeList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.codeTextSize = item
-                    this.codeLineData.codeTextSize = this.codeTextSize
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`内联代码文本字体 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.codeTypeface}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.codeTypefaceList, (item: string, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.codeTypeface = item
-                    this.codeLineData.codeTypeface = this.codeTypeface
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
               Text(`markdown是否同步解析 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
@@ -567,6 +439,134 @@ struct CodeLinePage {
                   .onClick(() => {
                     this.blockTopAndBottomMargins = item
                     this.codeLineData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`内联代码文本颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(numberToColorString(this.codeTextColor))
+                .fontSize(16)
+                .fontColor(this.codeTextColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.codeTextColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.codeTextColor = item
+                    this.codeLineData.codeTextColor = this.codeTextColor
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`内联代码背景颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(numberToColorString(this.codeBackgroundColor))
+                .fontSize(16)
+                .fontColor(this.codeBackgroundColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.codeBackgroundColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.codeBackgroundColor = item
+                    this.codeLineData.codeBackgroundColor = this.codeBackgroundColor
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`内联代码文本大小 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.codeTextSize}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.codeTextSizeList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.codeTextSize = item
+                    this.codeLineData.codeTextSize = this.codeTextSize
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`内联代码文本字体 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.codeTypeface}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.codeTypefaceList, (item: string, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.codeTypeface = item
+                    this.codeLineData.codeTypeface = this.codeTypeface
                   })
               })
             }

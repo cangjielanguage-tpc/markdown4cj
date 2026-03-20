@@ -292,132 +292,6 @@ struct ThematicPage {
 
           Column() {
             Row() {
-              Text(`分割线高度 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.thematicBreakHeight}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.thematicBreakHeightList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.thematicBreakHeight = item
-                    this.thematicData.thematicBreakHeight = this.thematicBreakHeight
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`分割线颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.thematicBreakColor))
-                .fontSize(16)
-                .fontColor(this.thematicBreakColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.thematicBreakColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.thematicBreakColor = item
-                    this.thematicData.thematicBreakColor = this.thematicBreakColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`分割线上部外边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.thematicBreakTopMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.thematicBreakTopMarginList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.thematicBreakTopMargin = item
-                    this.thematicData.thematicBreakTopMargin = this.thematicBreakTopMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`分割线下部外边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.thematicBreakBottomMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.thematicBreakBottomMarginList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.thematicBreakBottomMargin = item
-                    this.thematicData.thematicBreakBottomMargin = this.thematicBreakBottomMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
               Text(`markdown是否同步解析 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
@@ -566,6 +440,132 @@ struct ThematicPage {
                   .onClick(() => {
                     this.blockTopAndBottomMargins = item
                     this.thematicData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`分割线高度 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.thematicBreakHeight}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.thematicBreakHeightList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.thematicBreakHeight = item
+                    this.thematicData.thematicBreakHeight = this.thematicBreakHeight
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`分割线颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(numberToColorString(this.thematicBreakColor))
+                .fontSize(16)
+                .fontColor(this.thematicBreakColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.thematicBreakColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.thematicBreakColor = item
+                    this.thematicData.thematicBreakColor = this.thematicBreakColor
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`分割线上部外边距 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.thematicBreakTopMargin}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.thematicBreakTopMarginList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.thematicBreakTopMargin = item
+                    this.thematicData.thematicBreakTopMargin = this.thematicBreakTopMargin
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`分割线下部外边距 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.thematicBreakBottomMargin}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.thematicBreakBottomMarginList, (item: number, index: number) => {
+                Button(`${item}`)
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.thematicBreakBottomMargin = item
+                    this.thematicData.thematicBreakBottomMargin = this.thematicBreakBottomMargin
                   })
               })
             }

@@ -151,70 +151,6 @@ struct HTMLPage {
 
           Column() {
             Row() {
-              Text(`HTML下划线颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.underlineColor))
-                .fontSize(16)
-                .fontColor(this.underlineColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.underlineColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.underlineColor = item
-                    this.htmlData.underlineColor = this.underlineColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`HTML下划线样式 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(styleToString(this.underlineStyle))
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.underlineStyleList, (item: TextDecorationStyle, index: number) => {
-                Button(styleToString(item))
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.underlineStyle = item
-                    this.htmlData.underlineStyle = this.underlineStyle
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
               Text(`markdown是否同步解析 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
@@ -363,6 +299,70 @@ struct HTMLPage {
                   .onClick(() => {
                     this.blockTopAndBottomMargins = item
                     this.htmlData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`HTML下划线颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(numberToColorString(this.underlineColor))
+                .fontSize(16)
+                .fontColor(this.underlineColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.underlineColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.underlineColor = item
+                    this.htmlData.underlineColor = this.underlineColor
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`HTML下划线样式 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(styleToString(this.underlineStyle))
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.underlineStyleList, (item: TextDecorationStyle, index: number) => {
+                Button(styleToString(item))
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.underlineStyle = item
+                    this.htmlData.underlineStyle = this.underlineStyle
                   })
               })
             }

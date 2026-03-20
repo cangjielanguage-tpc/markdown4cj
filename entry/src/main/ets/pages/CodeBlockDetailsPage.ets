@@ -159,6 +159,16 @@ struct CodeBlockDetailsPage {
    */
   @State
   blockTopAndBottomMargins: number = 8
+  /**
+   * codeformat是否使用制表符
+   */
+  @State
+  useTab: boolean = false
+  /**
+   * codeformat空格缩进数量
+   */
+  @State
+  indentWidth: number = 4
 
   aboutToAppear(): void {
     try {
@@ -190,6 +200,8 @@ struct CodeBlockDetailsPage {
       this.blockFirstTopMargin = codeBlockData._blockFirstTopMargin
       this.blockLastBottomMargin = codeBlockData._blockLastBottomMargin
       this.blockTopAndBottomMargins = codeBlockData._blockTopAndBottomMargins
+      this.useTab = codeBlockData._useTab
+      this.indentWidth = codeBlockData._indentWidth
     } catch (e) {
     }
   }
@@ -284,6 +296,8 @@ struct CodeBlockDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setUseTab(this.useTab) // codeformat是否使用制表符
+    theme.setIndentWidth(this.indentWidth) // codeformat空格缩进数量
     config.setMarkdownTheme(theme)
     return config
   }

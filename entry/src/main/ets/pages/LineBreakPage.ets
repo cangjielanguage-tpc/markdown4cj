@@ -263,37 +263,6 @@ struct LineBreakPage {
 
           Column() {
             Row() {
-              Text(`软换行是否换行 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isLineBreak}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isLineBreakList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isLineBreak = item
-                    this.lineBreakData.isLineBreak = this.isLineBreak
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
               Text(`markdown是否同步解析 - `)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
@@ -442,6 +411,37 @@ struct LineBreakPage {
                   .onClick(() => {
                     this.blockTopAndBottomMargins = item
                     this.lineBreakData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`软换行是否换行 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.isLineBreak}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.isLineBreakList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.isLineBreak = item
+                    this.lineBreakData.isLineBreak = this.isLineBreak
                   })
               })
             }
