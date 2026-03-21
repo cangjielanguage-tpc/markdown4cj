@@ -205,7 +205,7 @@ public class MarkdownSpanImageRawFileComponent {
         }
         rawFileFut = rawfileToPixelmap1(
             rawFileDestination,
-            rawFileMarkdownTheme.abilityContext,
+            rawFileMarkdownTheme.uiAbilityContext,
             rawFileMarkdownTheme.stageContext,
             callback
         )

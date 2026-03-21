@@ -3,8 +3,6 @@
  */
 package markdown.components
 
-import ohos.state_macro_manage.*
-
 /**
  * 通过异步的方式将代码转换成带有颜色的列表 - 组合代码
  *

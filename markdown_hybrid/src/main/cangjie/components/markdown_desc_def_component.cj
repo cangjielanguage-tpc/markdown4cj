@@ -122,19 +122,17 @@ public class MarkdownDescDefComponent {
         }
         if (refreshNodeViewSize > dataSourceSize) {
             // 新数据大于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshDescDefDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshDescDefDatas(dataSourceSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
             // 循环添加新数据
             for (i in dataSourceSize..refreshNodeViewSize) {
                 descDefNodeViewDataSource.addData(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
-            refreshDescDefDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshDescDefDatas(dataSourceSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
         } else {
             // 新数据小于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshDescDefDatas(refreshNodeViewSize, refreshNodeViewChildren)
+            refreshDescDefDatas(refreshNodeViewSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
             // 循环删除多余的旧数据
             for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
                 descDefNodeViewDataSource.deleteData(i)
@@ -152,27 +150,28 @@ public class MarkdownDescDefComponent {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
             let dataSourceNode = descDefNodeViewDataSource.getData(i)
-            let newBlockHash = refreshNodeView.nodeHash
-            let oldBlockHash = dataSourceNode.nodeHash
+            let newNodeHash = refreshNodeView.nodeHash
+            let oldNodeHash = dataSourceNode.nodeHash
+            if (newNodeHash != oldNodeHash) {
+                // 自身节点唯一ID不相同需要刷新数据
+                descDefNodeViewDataSource.replaceData(i, refreshNodeView)
+                continue
+            }
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
-            // 唯一ID是否相同
-            if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                descDefNodeViewDataSource.replaceData(i, refreshNodeView)
-            } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                descDefNodeViewDataSource.replaceData(i, refreshNodeView)
-            } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+            if (newContentHash != oldContentHash) {
+                // 子节点唯一ID不相同需要刷新子节点数据
                 if (refreshNodeView.nodeType == "Paragraph") {
-                    // 段落
+                    // 段落节点
                     let paragraphComponents = descDefMarkdownCacheConfiguration.paragraphComponents
-                    let cache = paragraphComponents.get(newBlockHash)
+                    let cache = paragraphComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshParagraphData(refreshNodeView)
                     }
-                } else {
-                    // 其他
-                    descDefNodeViewDataSource.replaceData(i, refreshNodeView)
+                    continue
                 }
+                // 其他节点
+                descDefNodeViewDataSource.replaceData(i, refreshNodeView)
             }
         }
     }

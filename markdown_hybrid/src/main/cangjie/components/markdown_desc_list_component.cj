@@ -135,19 +135,17 @@ public class MarkdownDescListComponent {
         }
         if (refreshNodeViewSize > dataSourceSize) {
             // 新数据大于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshDescListDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshDescListDatas(dataSourceSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
             // 循环添加新数据
             for (i in dataSourceSize..refreshNodeViewSize) {
                 descListNodeViewDataSource.addData(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
-            refreshDescListDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshDescListDatas(dataSourceSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
         } else {
             // 新数据小于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshDescListDatas(refreshNodeViewSize, refreshNodeViewChildren)
+            refreshDescListDatas(refreshNodeViewSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
             // 循环删除多余的旧数据
             for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
                 descListNodeViewDataSource.deleteData(i)
@@ -165,34 +163,37 @@ public class MarkdownDescListComponent {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
             let dataSourceNode = descListNodeViewDataSource.getData(i)
-            let newBlockHash = refreshNodeView.nodeHash
-            let oldBlockHash = dataSourceNode.nodeHash
+            let newNodeHash = refreshNodeView.nodeHash
+            let oldNodeHash = dataSourceNode.nodeHash
+            if (newNodeHash != oldNodeHash) {
+                // 自身节点唯一ID不相同需要刷新数据
+                descListNodeViewDataSource.replaceData(i, refreshNodeView)
+                continue
+            }
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
-            // 唯一ID是否相同
-            if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                descListNodeViewDataSource.replaceData(i, refreshNodeView)
-            } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                descListNodeViewDataSource.replaceData(i, refreshNodeView)
-            } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+            if (newContentHash != oldContentHash) {
+                // 子节点唯一ID不相同需要刷新子节点数据
                 if (refreshNodeView.nodeType == "DescTerm") {
-                    // 定义列表术语
+                    // 定义列表术语节点
                     let descTermComponents = descListMarkdownCacheConfiguration.descTermComponent
-                    let cache = descTermComponents.get(newBlockHash)
+                    let cache = descTermComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshDescTermData(refreshNodeView)
                     }
-                } else if (refreshNodeView.nodeType == "DescDef") {
-                    // 定义列表解释
+                    continue
+                }
+                if (refreshNodeView.nodeType == "DescDef") {
+                    // 定义列表解释节点
                     let descDefComponents = descListMarkdownCacheConfiguration.descDefComponent
-                    let cache = descDefComponents.get(newBlockHash)
+                    let cache = descDefComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshDescDefData(refreshNodeView)
                     }
-                } else {
-                    // 其他
-                    descListNodeViewDataSource.replaceData(i, refreshNodeView)
+                    continue
                 }
+                // 其他节点
+                descListNodeViewDataSource.replaceData(i, refreshNodeView)
             }
         }
     }

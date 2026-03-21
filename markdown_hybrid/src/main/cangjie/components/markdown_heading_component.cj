@@ -466,19 +466,17 @@ class MarkdownHeadingComponent {
         }
         if (refreshNodeViewSize > headingNodeViewListSize) {
             // 新数据大于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshHeadingDatas(headingNodeViewListSize, refreshNodeViewChildren)
+            refreshHeadingDatas(headingNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
             // 循环添加新数据
             for (i in headingNodeViewListSize..refreshNodeViewSize) {
                 headingNodeViewList.append(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == headingNodeViewListSize) {
             // 新数据等于页面数据
-            refreshHeadingDatas(headingNodeViewListSize, refreshNodeViewChildren)
+            refreshHeadingDatas(headingNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
         } else {
             // 新数据小于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshHeadingDatas(refreshNodeViewSize, refreshNodeViewChildren)
+            refreshHeadingDatas(refreshNodeViewSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
             // 循环删除多余的旧数据
             for (i in headingNodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 headingNodeViewList.remove(i)
@@ -501,16 +499,13 @@ class MarkdownHeadingComponent {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
             let dataSourceNode = headingNodeViewList[i]
-            let newBlockHash = refreshNodeView.nodeHash
-            let oldBlockHash = dataSourceNode.nodeHash
+            let newNodeHash = refreshNodeView.nodeHash
+            let oldNodeHash = dataSourceNode.nodeHash
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
-            // 唯一ID是否相同
-            if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                headingNodeViewList[i] = refreshNodeView
-            } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                headingNodeViewList[i] = refreshNodeView
-            } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+            if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
+                // 自身节点唯一ID不相同需要刷新数据
+                // 子节点唯一ID不相同需要刷新子节点数据
                 headingNodeViewList[i] = refreshNodeView
             }
         }
