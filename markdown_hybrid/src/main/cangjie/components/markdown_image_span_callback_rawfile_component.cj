@@ -291,7 +291,7 @@ public class MarkdownSpanImageCallbackRawFileComponent {
         }
         rawFileCallbackFut = rawfileToPixelmap1(
             rawFileCallbackDestination,
-            rawFileCallbackMarkdownTheme.abilityContext,
+            rawFileCallbackMarkdownTheme.uiAbilityContext,
             rawFileCallbackMarkdownTheme.stageContext,
             callback
         )

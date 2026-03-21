@@ -199,7 +199,7 @@ func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
         return headingTextSize(nodeView.headingLevel, markdownTheme) // 标题
     }
     if (nodeView.isTable && nodeView.isTableHead) {
-        return markdownTheme.tableTitleTextSize // 表格头
+        return markdownTheme.tableTitleTextSize // 表格标题
     }
     if (nodeView.isTable) {
         return markdownTheme.tableContentTextSize // 表格内容
@@ -242,7 +242,7 @@ func spanFontWeight(nodeView: NodeView, isTableFirst: Bool): FontWeight {
         }
     }
     if (nodeView.isHeading || nodeView.isDescTerm || nodeView.isStrongEmphasis || (nodeView.isTable && nodeView.isTableHead) || isTableFirst) {
-        return FontWeight.W600 // 标题/定义列表术语/加粗/表格头/表格第一列文本
+        return FontWeight.W600 // 标题/定义列表术语/加粗/表格标题/表格第一列文本
     }
     return FontWeight.W400 // 其他
 }
@@ -302,7 +302,7 @@ func spanFontColor(nodeView: NodeView, markdownTheme: MarkdownTheme): Color {
         return headColor(nodeView.headingLevel, markdownTheme) // 标题
     }
     if (nodeView.isTable && nodeView.isTableHead) {
-        return markdownTheme.tableTitleTextColor // 表格头
+        return markdownTheme.tableTitleTextColor // 表格标题
     }
     if (nodeView.isTable) {
         return markdownTheme.tableContentTextColor // 表格内容
@@ -418,7 +418,7 @@ func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
         return headLineHeight(nodeView.headingLevel, markdownTheme) // 标题
     }
     if (nodeView.isTable && nodeView.isTableHead) {
-        return markdownTheme.tableTitleLineHeight // 表格头
+        return markdownTheme.tableTitleLineHeight // 表格标题
     }
     if (nodeView.isTable) {
         return markdownTheme.tableTextLineHeight // 表格
@@ -1169,8 +1169,7 @@ func urlSafeBase64Decode(v: String): String {
     }
     var arrStr: String = String.fromUtf8(arr.getOrThrow())
     var regex: Regex = Regex("file-name=([^&]+)")
-    var matcher: Matcher = Matcher(regex, arrStr)
-    var matchData: ?MatchData = matcher.find()
+    var matchData: ?MatchData = regex.find(arrStr)
     match (matchData) {
         case Some(v) =>
             var str: String = v.matchString()

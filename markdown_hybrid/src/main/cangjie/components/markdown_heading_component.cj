@@ -474,8 +474,7 @@ class MarkdownHeadingComponent {
         }
         if (refreshNodeViewSize > headingNodeViewListSize) {
             // 新数据大于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshHeadingDatas(headingNodeViewListSize, refreshNodeViewChildren, false)
+            refreshHeadingDatas(headingNodeViewListSize, refreshNodeViewChildren, false) // 循环判断历史数据有没有做过修改
             // 循环添加新数据
             for (i in headingNodeViewListSize..refreshNodeViewSize) {
                 if (isEnd && (i == refreshNodeViewSize - 1)) {
@@ -485,17 +484,16 @@ class MarkdownHeadingComponent {
             }
         } else if (refreshNodeViewSize == headingNodeViewListSize) {
             // 新数据等于页面数据
-            refreshHeadingDatas(headingNodeViewListSize, refreshNodeViewChildren, isEnd)
+            refreshHeadingDatas(headingNodeViewListSize, refreshNodeViewChildren, isEnd) // 循环判断历史数据有没有做过修改
         } else {
             // 新数据小于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshHeadingDatas(refreshNodeViewSize, refreshNodeViewChildren, isEnd)
+            refreshHeadingDatas(refreshNodeViewSize, refreshNodeViewChildren, isEnd) // 循环判断历史数据有没有做过修改
             // 循环删除多余的旧数据
             for (i in headingNodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 headingNodeViewList.remove(i)
             }
         }
-        lastViewIndex = headingNodeViewList.size - 1
+        lastViewIndex = headingNodeViewList.size - 1 // 页面缓存的数据长度
         if (headingNodeViewList.size == 1 && (headingNodeViewList[0].nodeType == "Link" || headingNodeViewList[0].nodeType == "HeadLink")) {
             isOneLink = true
         } else {
@@ -513,8 +511,8 @@ class MarkdownHeadingComponent {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
             let dataSourceNode = headingNodeViewList[i]
-            let newBlockHash = refreshNodeView.nodeHash
-            let oldBlockHash = dataSourceNode.nodeHash
+            let newNodeHash = refreshNodeView.nodeHash
+            let oldNodeHash = dataSourceNode.nodeHash
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
             // 当前层的倒数第二条数据，因为可能一行多个
@@ -525,13 +523,13 @@ class MarkdownHeadingComponent {
                 refreshNodeView.isEndData = false
             }
             // 唯一ID是否相同
-            if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
+            if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
+                // 自身节点唯一ID不相同需要刷新数据
+                // 子节点唯一ID不相同需要刷新子节点数据
                 headingNodeViewList[i] = refreshNodeView
-            } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                headingNodeViewList[i] = refreshNodeView
-            } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                headingNodeViewList[i] = refreshNodeView
-            } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash && dataSourceNode.canRefresh) {
+                continue
+            }
+            if (dataSourceNode.canRefresh) {
                 // 外层换行后，本条数据第一次变成倒数第二条数据时刷新，去掉结尾的变色效果
                 refreshNodeView.canRefresh = false
                 refreshNodeView.isEndData = false

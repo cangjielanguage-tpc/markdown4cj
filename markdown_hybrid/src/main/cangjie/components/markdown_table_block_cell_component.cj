@@ -481,8 +481,7 @@ class MarkdownTableBlockCellComponent {
         }
         if (refreshNodeViewSize > tableBlockCellNodeViewListSize) {
             // 新数据大于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshTableBlockCellDatas(tableBlockCellNodeViewListSize, refreshNodeViewChildren, false)
+            refreshTableBlockCellDatas(tableBlockCellNodeViewListSize, refreshNodeViewChildren, false) // 循环判断历史数据有没有做过修改
             // 循环添加新数据
             for (i in tableBlockCellNodeViewListSize..refreshNodeViewSize) {
                 if (isEnd && (i == refreshNodeViewSize - 1)) {
@@ -492,11 +491,10 @@ class MarkdownTableBlockCellComponent {
             }
         } else if (refreshNodeViewSize == tableBlockCellNodeViewListSize) {
             // 新数据等于页面数据
-            refreshTableBlockCellDatas(tableBlockCellNodeViewListSize, refreshNodeViewChildren, isEnd)
+            refreshTableBlockCellDatas(tableBlockCellNodeViewListSize, refreshNodeViewChildren, isEnd) // 循环判断历史数据有没有做过修改
         } else {
             // 新数据小于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshTableBlockCellDatas(refreshNodeViewSize, refreshNodeViewChildren, isEnd)
+            refreshTableBlockCellDatas(refreshNodeViewSize, refreshNodeViewChildren, isEnd) // 循环判断历史数据有没有做过修改
             // 循环删除多余的旧数据
             for (i in tableBlockCellNodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 tableBlockCellNodeViewList.remove(i)
@@ -515,8 +513,8 @@ class MarkdownTableBlockCellComponent {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
             let dataSourceNode = tableBlockCellNodeViewList[i]
-            let newBlockHash = refreshNodeView.nodeHash
-            let oldBlockHash = dataSourceNode.nodeHash
+            let newNodeHash = refreshNodeView.nodeHash
+            let oldNodeHash = dataSourceNode.nodeHash
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
             // 当前层的倒数第二条数据，因为可能一行多个
@@ -527,13 +525,14 @@ class MarkdownTableBlockCellComponent {
                 refreshNodeView.isEndData = false
             }
             // 唯一ID是否相同
-            if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
+            if (newNodeHash != oldNodeHash || newContentHash != oldContentHash) {
+                // 自身节点唯一ID不相同需要刷新数据
+                // 子节点唯一ID不相同需要刷新子节点数据
                 tableBlockCellNodeViewList[i] = refreshNodeView
-            } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                tableBlockCellNodeViewList[i] = refreshNodeView
-            } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
-                tableBlockCellNodeViewList[i] = refreshNodeView
-            } else if (newBlockHash == oldBlockHash && newContentHash == oldContentHash && dataSourceNode.canRefresh) {
+                continue
+            }
+            if (dataSourceNode.canRefresh) {
+                // 是否需要刷新
                 refreshNodeView.canRefresh = false
                 refreshNodeView.isEndData = false
                 tableBlockCellNodeViewList[i] = refreshNodeView

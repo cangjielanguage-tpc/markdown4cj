@@ -1975,19 +1975,19 @@ export class MarkdownTheme {
    */
   tableEvenRowBackgroundColor?: number = undefined
   /**
-   * 表格头背景色
+   * 表格标题背景色
    */
   tableHeaderRowBackgroundColor?: number = undefined
   /**
-   * 表格头文本颜色
+   * 表格标题文本颜色
    */
   tableTitleTextColor?: number = undefined
   /**
-   * 表格头文本大小
+   * 表格标题文本大小
    */
   tableTitleTextSize?: number = undefined
   /**
-   * 表格头文本行高
+   * 表格标题文本行高
    */
   tableTitleLineHeight?: number = undefined
   /**
@@ -3968,36 +3968,36 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置表格头背景色
+   * 设置表格标题背景色
    *
-   * @param tableHeaderRowBackgroundColor 表格头背景色 - 默认0XFFFFFFFF
+   * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0XFFFFFFFF
    */
   setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void {
     this.tableHeaderRowBackgroundColor = tableHeaderRowBackgroundColor
   }
 
   /**
-   * 设置表格头文本颜色
+   * 设置表格标题文本颜色
    *
-   * @param tableTitleTextColor 表格头文本颜色 - 默认0XFF191919
+   * @param tableTitleTextColor 表格标题文本颜色 - 默认0XFF191919
    */
   setTableTitleTextColor(tableTitleTextColor: number): void {
     this.tableTitleTextColor = tableTitleTextColor
   }
 
   /**
-   * 设置表格头文本大小
+   * 设置表格标题文本大小
    *
-   * @param tableTitleTextSize 表格头文本大小 - 默认14.0vp
+   * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
    */
   setTableTitleTextSize(tableTitleTextSize: number): void {
     this.tableTitleTextSize = tableTitleTextSize
   }
 
   /**
-   * 设置表格头文本行高
+   * 设置表格标题文本行高
    *
-   * @param tableTitleLineHeight 表格头文本行高 - 默认22.0vp
+   * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
    */
   setTableTitleLineHeight(tableTitleLineHeight: number): void {
     this.tableTitleLineHeight = tableTitleLineHeight

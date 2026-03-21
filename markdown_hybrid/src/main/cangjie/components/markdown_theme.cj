@@ -15,7 +15,7 @@ public class MarkdownTheme {
     /**
      * markdown上下文 - 仓颉
      */
-    protected var abilityContext: ?AbilityContext = None
+   protected var uiAbilityContext: ?UIAbilityContext = None
 
     /**
      * markdown是否同步解析
@@ -1058,22 +1058,22 @@ public class MarkdownTheme {
     protected var tableEvenRowBackgroundColor: Color = COLOR_FFE0E0E0
 
     /**
-     * 表格头背景色
+     * 表格标题背景色
      */
     protected var tableHeaderRowBackgroundColor: Color = COLOR_FFFFFFFF
 
     /**
-     * 表格头文本颜色
+     * 表格标题文本颜色
      */
     protected var tableTitleTextColor: Color = COLOR_FF191919
 
     /**
-     * 表格头文本大小
+     * 表格标题文本大小
      */
     protected var tableTitleTextSize: Float64 = 14.0
 
     /**
-     * 表格头文本大小
+     * 表格标题文本大小
      */
     protected var tableTitleLineHeight: Float64 = 22.0
 
@@ -1210,7 +1210,7 @@ public class MarkdownTheme {
     protected init(builder: MarkdownThemeBuilder) {
         // 1、上下文
         this.stageContext = builder.stageContext
-        this.abilityContext = builder.abilityContext
+        this.uiAbilityContext = builder.uiAbilityContext
 
         this.isMarkdownParserSync = builder.isMarkdownParserSync
         this.typeWriterOpen = builder.typeWriterOpen
@@ -1611,7 +1611,7 @@ public class MarkdownTheme {
         markdownThemeBuilder.setTableBorderColor(COLOR_FF000000) // 表格边框颜色
         markdownThemeBuilder.setTableOddRowBackgroundColor(COLOR_FFFFFFFF) // 表格奇数行背景色
         markdownThemeBuilder.setTableEvenRowBackgroundColor(COLOR_FFE0E0E0) // 表格偶数行背景色
-        markdownThemeBuilder.setTableHeaderRowBackgroundColor(COLOR_FFFFFFFF) // 表格头背景色
+        markdownThemeBuilder.setTableHeaderRowBackgroundColor(COLOR_FFFFFFFF) // 表格标题背景色
 
         // 16、代码高亮
         markdownThemeBuilder.setPrismTheme(PrismThemeDarkula.create()) // markdown代码高亮样式
@@ -1704,7 +1704,7 @@ public class MarkdownTheme {
         markdownThemeBuilder.setTableBorderColor(COLOR_FFFFFFFF) // 表格边框颜色
         markdownThemeBuilder.setTableOddRowBackgroundColor(COLOR_FF000000) // 表格奇数行背景色
         markdownThemeBuilder.setTableEvenRowBackgroundColor(COLOR_FF191919) // 表格偶数行背景色
-        markdownThemeBuilder.setTableHeaderRowBackgroundColor(COLOR_FF000000) // 表格头背景色
+        markdownThemeBuilder.setTableHeaderRowBackgroundColor(COLOR_FF000000) // 表格标题背景色
 
         // 16、代码高亮
         markdownThemeBuilder.setPrismTheme(PrismThemeDefault.create()) // markdown代码高亮样式
@@ -1738,7 +1738,7 @@ public class MarkdownThemeBuilder {
     /**
      * markdown上下文 - 仓颉
      */
-    var abilityContext: ?AbilityContext = None
+    var uiAbilityContext: ?UIAbilityContext = None
 
     /**
      * markdown是否同步解析
@@ -2781,22 +2781,22 @@ public class MarkdownThemeBuilder {
     var tableEvenRowBackgroundColor: Color = COLOR_FFE0E0E0
 
     /**
-     * 表格头背景色
+     * 表格标题背景色
      */
     var tableHeaderRowBackgroundColor: Color = COLOR_FFFFFFFF
 
     /**
-     * 表格头文本颜色
+     * 表格标题文本颜色
      */
     var tableTitleTextColor: Color = COLOR_FF191919
 
     /**
-     * 表格头文本大小
+     * 表格标题文本大小
      */
     var tableTitleTextSize: Float64 = 14.0
 
     /**
-     * 表格头行高
+     * 表格标题行高
      */
     var tableTitleLineHeight: Float64 = 22.0
 
@@ -2936,7 +2936,7 @@ public class MarkdownThemeBuilder {
     init(theme: MarkdownTheme) {
         // 1、上下文
         this.stageContext = theme.stageContext
-        this.abilityContext = theme.abilityContext
+        this.uiAbilityContext = theme.uiAbilityContext
 
         this.isMarkdownParserSync = theme.isMarkdownParserSync
         this.typeWriterOpen = theme.typeWriterOpen
@@ -3317,7 +3317,7 @@ public class MarkdownThemeBuilder {
         setTableBorderColor(COLOR_FF000000) // 表格边框颜色
         setTableOddRowBackgroundColor(COLOR_FFFFFFFF) // 表格奇数行背景色
         setTableEvenRowBackgroundColor(COLOR_FFE0E0E0) // 表格偶数行背景色
-        setTableHeaderRowBackgroundColor(COLOR_FFFFFFFF) // 表格头背景色
+        setTableHeaderRowBackgroundColor(COLOR_FFFFFFFF) // 表格标题背景色
 
         // 16、代码高亮
         setPrismTheme(PrismThemeDarkula.create()) // markdown代码高亮样式
@@ -3408,7 +3408,7 @@ public class MarkdownThemeBuilder {
         setTableBorderColor(COLOR_FFFFFFFF) // 表格边框颜色
         setTableOddRowBackgroundColor(COLOR_FF000000) // 表格奇数行背景色
         setTableEvenRowBackgroundColor(COLOR_FF191919) // 表格偶数行背景色
-        setTableHeaderRowBackgroundColor(COLOR_FF000000) // 表格头背景色
+        setTableHeaderRowBackgroundColor(COLOR_FF000000) // 表格标题背景色
 
         // 16、代码高亮
         setPrismTheme(PrismThemeDefault.create()) // markdown代码高亮样式
@@ -3433,11 +3433,11 @@ public class MarkdownThemeBuilder {
     /**
      * 设置markdown上下文 - 仓颉
      *
-     * @param abilityContext markdown上下文 - 默认None
+     * @param uiAbilityContext markdown上下文 - 默认None
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setAbilityContext(abilityContext: AbilityContext): MarkdownThemeBuilder {
-        this.abilityContext = abilityContext
+    public func setUIAbilityContext(uiAbilityContext: UIAbilityContext): MarkdownThemeBuilder {
+        this.uiAbilityContext = uiAbilityContext
         return this
     }
 

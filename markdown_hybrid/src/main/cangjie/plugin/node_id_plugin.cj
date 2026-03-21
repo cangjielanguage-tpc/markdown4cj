@@ -62,10 +62,10 @@ public func calcNodeIdWithStack(stack: ArrayList<NodeHashCalculator>, needNodeHa
  */
 public class NodeHashCalculator {
     public var child: ?Node = None // 当前遍历到node的第几个子节点
-    public var childIndex = 0 // 当前遍历到node的第几个子节点
-    public var nodeHasher = DefaultHasher() // 用于计算node的nodeHash
-    public var posionHasher = DefaultHasher() // 用于计算node的posistion的nodeHash
-    public var contentHasher = DefaultHasher() // 用于计算node的contentHash
+    public var childIndex: Int64 = 0 // 当前遍历到node的第几个子节点
+    public var nodeHasher: DefaultHasher = DefaultHasher() // 用于计算node的nodeHash
+    public var posionHasher: DefaultHasher = DefaultHasher() // 用于计算node的posistion的nodeHash
+    public var contentHasher: DefaultHasher = DefaultHasher() // 用于计算node的contentHash
     public NodeHashCalculator(
         let node: Node, /* 当前节点 */
         let parent: ?NodeHashCalculator, /* 父节点 */

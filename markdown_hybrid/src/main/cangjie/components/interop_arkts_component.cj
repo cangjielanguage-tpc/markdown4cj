@@ -48,6 +48,6 @@ public class CardWrapper <: CustomView {
         )
     }
 
-    public func aboutToBeDeleted() {
+    public func aboutToBeDeleted(): Unit {
     }
 }

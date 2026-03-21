@@ -26,7 +26,7 @@ public class NodeView {
     var isTable: Bool = false
     // 表格列对齐方式
     var tableAlignment: HorizontalAlign = HorizontalAlign.Start
-    // 表格头
+    // 表格标题
     var isTableHead: Bool = false
     // 表格内容
     var isTableBody: Bool = false
@@ -406,7 +406,7 @@ public func nodeToNodeView(
                         nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "TableHead") {
-                        // 表格头
+                        // 表格标题
                         childrenNodeView.isTableHead = true
                         nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
                     } else if (nodeType == "TableBody") {
