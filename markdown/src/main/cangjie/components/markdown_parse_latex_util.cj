@@ -3,13 +3,11 @@
  */
 package markdown.components
 
-import ohos.state_macro_manage.*
-
 class MarkdownParseLatexUtil {
     /**
      * 全局锁
      */
-    private static let latexReentrantMutex: ReentrantMutex = ReentrantMutex()
+    private static let latexReentrantMutex: Mutex = Mutex()
 
     /**
      * 数学公式文本转换成数学公式图片 - 单行
@@ -35,15 +33,15 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex = LaTeX(markdownTheme.latexMathResStr)
+                    var latex: LaTeX = LaTeX(markdownTheme.latexMathResStr)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownTheme.latexMathTextSize), Float32(10), markdownTheme.latexMathTextColor.toUInt32())
+                    var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownTheme.latexMathTextSize), Float32(10), markdownTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathColorFormat))
+                    var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -110,15 +108,15 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex = LaTeX(markdownTheme.latexMathResStr)
+                    var latex: LaTeX = LaTeX(markdownTheme.latexMathResStr)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownTheme.latexMathTextSize), Float32(10), markdownTheme.latexMathTextColor.toUInt32())
+                    var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownTheme.latexMathTextSize), Float32(10), markdownTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2 = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathColorFormat))
+                    var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }

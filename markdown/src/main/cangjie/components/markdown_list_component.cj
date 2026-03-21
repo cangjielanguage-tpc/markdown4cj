@@ -231,19 +231,17 @@ public class MarkdownListComponent {
         }
         if (refreshNodeViewSize > dataSourceSize) {
             // 新数据大于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshListDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshListDatas(dataSourceSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
             // 循环添加新数据
             for (i in dataSourceSize..refreshNodeViewSize) {
                 listNodeViewDataSource.addData(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == dataSourceSize) {
             // 新数据等于页面数据
-            refreshListDatas(dataSourceSize, refreshNodeViewChildren)
+            refreshListDatas(dataSourceSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
         } else {
             // 新数据小于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshListDatas(refreshNodeViewSize, refreshNodeViewChildren)
+            refreshListDatas(refreshNodeViewSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
             // 循环删除多余的旧数据
             for (i in dataSourceSize - 1..=refreshNodeViewSize : -1) {
                 listNodeViewDataSource.deleteData(i)
@@ -261,27 +259,28 @@ public class MarkdownListComponent {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
             let dataSourceNode = listNodeViewDataSource.getData(i)
-            let newBlockHash = refreshNodeView.nodeHash
-            let oldBlockHash = dataSourceNode.nodeHash
+            let newNodeHash = refreshNodeView.nodeHash
+            let oldNodeHash = dataSourceNode.nodeHash
+            if (newNodeHash != oldNodeHash) {
+                // 自身节点唯一ID不相同需要刷新数据
+                listNodeViewDataSource.replaceData(i, refreshNodeView)
+                continue
+            }
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
-            // 唯一ID是否相同
-            if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                listNodeViewDataSource.replaceData(i, refreshNodeView)
-            } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                listNodeViewDataSource.replaceData(i, refreshNodeView)
-            } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+            if (newContentHash != oldContentHash) {
+                // 子节点唯一ID不相同需要刷新子节点数据
                 if (refreshNodeView.nodeType == "ListItem" || refreshNodeView.nodeType == "TaskListItem") {
-                    // ListItem/TaskListItem
+                    // ListItem/TaskListItem节点
                     let listItemComponents = listMarkdownCacheConfiguration.listItemComponents
-                    let cache = listItemComponents.get(newBlockHash)
+                    let cache = listItemComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshListItemData(refreshNodeView)
                     }
-                } else {
-                    // TODO 其他
-                    listNodeViewDataSource.replaceData(i, refreshNodeView)
+                    continue
                 }
+                // 其他节点
+                listNodeViewDataSource.replaceData(i, refreshNodeView)
             }
         }
     }

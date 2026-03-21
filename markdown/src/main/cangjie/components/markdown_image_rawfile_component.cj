@@ -228,7 +228,7 @@ public class MarkdownImageRawFileComponent {
         }
         rawFileFut = rawfileToPixelmap1(
             rawFileDestination,
-            rawFileMarkdownTheme.abilityContext,
+            rawFileMarkdownTheme.uiAbilityContext,
             rawFileMarkdownTheme.stageContext,
             callback
         )

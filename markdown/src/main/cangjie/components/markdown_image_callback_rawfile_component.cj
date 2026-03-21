@@ -312,7 +312,7 @@ public class MarkdownImageCallbackRawFileComponent {
         }
         rawFileCallbackFut = rawfileToPixelmap1(
             rawFileCallbackDestination,
-            rawFileCallbackMarkdownTheme.abilityContext,
+            rawFileCallbackMarkdownTheme.uiAbilityContext,
             rawFileCallbackMarkdownTheme.stageContext,
             callback
         )

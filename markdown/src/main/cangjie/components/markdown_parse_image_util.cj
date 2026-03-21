@@ -3,20 +3,18 @@
  */
 package markdown.components
 
-import ohos.state_macro_manage.*
-
 /**
  * 本地图片路径转换成PixelMap (./开头)
  *
  * @param destination 图片路径
- * @param abilityContext AbilityContext
+ * @param uiAbilityContext UIAbilityContext
  * @param stageContext StageContext
  * @param callback PixelMap图片、图片高度、图片宽度
  * @return Future<Unit> 线程
  */
 func rawfileToPixelmap1(
     destination: String,
-    abilityContext: ?AbilityContext,
+    uiAbilityContext: ?UIAbilityContext,
     stageContext: ?StageContext,
     callback: (?PixelMap, ?Float64, ?Float64) -> Unit
 ): Future<Unit> {
@@ -30,7 +28,7 @@ func rawfileToPixelmap1(
                 return
             }
             var resourceManager: ?ResourceManager = None
-            if (let Some(v) <- abilityContext) {
+            if (let Some(v) <- uiAbilityContext) {
                 resourceManager = ResourceManager.getResourceManager(getStageContext(v))
             } else {
                 if (let Some(v) <- stageContext) {
@@ -76,11 +74,10 @@ func rawfileToPixelmap1(
 }
 
 /**
- * 本地图片路径转换成PixelMap (./开头)
+ * 图片替换
  *
  * @param destination 图片路径
- * @param abilityContext AbilityContext
- * @param stageContext StageContext
+ * @param imageCallbackCallback 替换接口
  * @param callback PixelMap图片、图片高度、图片宽度
  * @return Future<Unit> 线程
  */

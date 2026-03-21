@@ -139,19 +139,17 @@ class MarkdownTableBlockRowComponent {
         }
         if (refreshNodeViewSize > tableBlockRowNodeViewListSize) {
             // 新数据大于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshTableBlockRowDatas(tableBlockRowNodeViewListSize, refreshNodeViewChildren)
+            refreshTableBlockRowDatas(tableBlockRowNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
             // 循环添加新数据
             for (i in tableBlockRowNodeViewListSize..refreshNodeViewSize) {
                 tableBlockRowNodeViewList.append(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == tableBlockRowNodeViewListSize) {
             // 新数据等于页面数据
-            refreshTableBlockRowDatas(tableBlockRowNodeViewListSize, refreshNodeViewChildren)
+            refreshTableBlockRowDatas(tableBlockRowNodeViewListSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
         } else {
             // 新数据小于页面数据
-            // 循环判断历史数据有没有做过修改
-            refreshTableBlockRowDatas(refreshNodeViewSize, refreshNodeViewChildren)
+            refreshTableBlockRowDatas(refreshNodeViewSize, refreshNodeViewChildren) // 循环判断历史数据有没有做过修改
             // 循环删除多余的旧数据
             for (i in tableBlockRowNodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 tableBlockRowNodeViewList.remove(i)
@@ -169,26 +167,27 @@ class MarkdownTableBlockRowComponent {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
             let dataSourceNode = tableBlockRowNodeViewList[i]
-            let newBlockHash = refreshNodeView.nodeHash
-            let oldBlockHash = dataSourceNode.nodeHash
+            let newNodeHash = refreshNodeView.nodeHash
+            let oldNodeHash = dataSourceNode.nodeHash
+            if (newNodeHash != oldNodeHash) {
+                // 自身节点唯一ID不相同需要刷新数据
+                tableBlockRowNodeViewList[i] = refreshNodeView
+                continue
+            }
             let newContentHash = refreshNodeView.contentHash
             let oldContentHash = dataSourceNode.contentHash
-            // 唯一ID是否相同
-            if (newBlockHash != oldBlockHash && newContentHash != oldContentHash) {
-                tableBlockRowNodeViewList[i] = refreshNodeView
-            } else if (newBlockHash != oldBlockHash && newContentHash == oldContentHash) {
-                tableBlockRowNodeViewList[i] = refreshNodeView
-            } else if (newBlockHash == oldBlockHash && newContentHash != oldContentHash) {
+            if (newContentHash != oldContentHash) {
+                // 子节点唯一ID不相同需要刷新子节点数据
                 if (refreshNodeView.nodeType == "TableCell") {
-                    // Cell
-                    let cache = tableBlockCellComponents.get(newBlockHash)
+                    // 表格Cell节点
+                    let cache = tableBlockCellComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshTableBlockCellData(refreshNodeView)
                     }
-                } else {
-                    // 其他
-                    tableBlockRowNodeViewList[i] = refreshNodeView
+                    continue
                 }
+                // 其他节点
+                tableBlockRowNodeViewList[i] = refreshNodeView
             }
         }
     }

@@ -3,8 +3,6 @@
  */
 package markdown.components
 
-import ohos.state_macro_manage.*
-
 class MarkdownParseLinkUtil {
     static func linkStrToCirclePixelMap(strText: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {

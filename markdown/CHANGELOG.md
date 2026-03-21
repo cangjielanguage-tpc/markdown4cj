@@ -30,6 +30,7 @@
 28. 删除设置内联代码是否是图片显示接口
 29. 删除设置图片格式内联代码文本左右边距接口
 30. 删除设置图片格式内联代码文本高度接口
+31. setAbilityContext(abilityContext: AbilityContext) 接口修改成 setUIAbilityContext(uiAbilityContext: UIAbilityContext)
 
 # 1.3.1
 
