@@ -29,7 +29,7 @@ struct TitleDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 增量加载全量加载选项
    */
   @State
   isFull: boolean = true
@@ -48,6 +48,41 @@ struct TitleDetailsPage {
    */
   @State
   textNumber: number = 10
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
   /**
    * H1、H2下划线高度
    */
@@ -119,55 +154,15 @@ struct TitleDetailsPage {
   @State
   headingBottomMargins: number = 8
   /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
-  isInputEnded: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否开启打字机效果
-   */
-  @State
-  typeWriterOpen: boolean = false
-  /**
-   * 打字机效果颜色
-   */
-  @State
-  typeWriterColor: number = 0xFFFF0000
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
    * 标题文本颜色数组
    */
   @State
   headingTextColors: Array<number> = [0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000]
   /**
-   * 删除线样式
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
    */
   @State
-  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
@@ -177,6 +172,13 @@ struct TitleDetailsPage {
       this.incrementalAnalysis = titleData._incrementalAnalysis
       this.time = titleData._time
       this.textNumber = titleData._textNumber
+      this.isMarkdownParserSync = titleData._isMarkdownParserSync
+      this.typeWriterOpen = titleData._typeWriterOpen
+      this.typeWriterColor = titleData._typeWriterColor
+      this.isOnCopy = titleData._isOnCopy
+      this.blockFirstTopMargin = titleData._blockFirstTopMargin
+      this.blockLastBottomMargin = titleData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = titleData._blockTopAndBottomMargins
       this.headingBreakHeight = titleData._headingBreakHeight
       this.headingBreakColor = titleData._headingBreakColor
       this.headingTextColor = titleData._headingTextColor
@@ -191,15 +193,7 @@ struct TitleDetailsPage {
       this.headingTypeface = titleData._headingTypeface
       this.headingTopMargins = titleData._headingTopMargins
       this.headingBottomMargins = titleData._headingBottomMargins
-      this.isMarkdownParserSync = titleData._isMarkdownParserSync
-      this.typeWriterOpen = titleData._typeWriterOpen
-      this.typeWriterColor = titleData._typeWriterColor
-      this.isOnCopy = titleData._isOnCopy
-      this.blockFirstTopMargin = titleData._blockFirstTopMargin
-      this.blockLastBottomMargin = titleData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = titleData._blockTopAndBottomMargins
       this.headingTextColors = titleData._headingTextColors
-      this.strikethroughStyle = titleData._strikethroughStyle
     } catch (e) {
     }
   }
@@ -266,6 +260,15 @@ struct TitleDetailsPage {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this)) // 上下文
+
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
+    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+
     theme.setHeadingBreakHeight(this.headingBreakHeight) // H1、H2标题下分割线高度
     theme.setHeadingTypeface(this.headingTypeface) // 标题文本字体
     theme.setHeadingTopMargins(this.headingTopMargins) // 标题模块上间距
@@ -286,14 +289,6 @@ struct TitleDetailsPage {
     theme.setHeadingTextLineHeight5(this.headingTextLineHeight5) // 五级标题文本行高
     theme.setHeadingTextLineHeight6(this.headingTextLineHeight6) // 六级标题文本行高
 
-    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
-    theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
-    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
-    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
-    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
-    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
-    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
-
     theme.setHeadingTextColor1(this.headingTextColors[0]) // 一级标题文本颜色
     theme.setHeadingTextColor2(this.headingTextColors[1]) // 二级标题文本颜色
     theme.setHeadingTextColor3(this.headingTextColors[2]) // 三级标题文本颜色
@@ -303,8 +298,6 @@ struct TitleDetailsPage {
 
     theme.setHeadingBreakColor1(this.headingTextColors[6]) // H1标题下分割线颜色
     theme.setHeadingBreakColor2(this.headingTextColors[7]) // H2标题下分割线颜色
-
-    theme.setStrikethroughStyle(this.strikethroughStyle) // 删除线样式
 
     config.setMarkdownTheme(theme)
     return config

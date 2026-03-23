@@ -29,7 +29,7 @@ struct ThematicDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 增量加载全量加载选项
    */
   @State
   isFull: boolean = true
@@ -48,6 +48,41 @@ struct ThematicDetailsPage {
    */
   @State
   textNumber: number = 10
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
   /**
    * 分割线颜色
    */
@@ -73,41 +108,6 @@ struct ThematicDetailsPage {
    */
   @State
   isInputEnded: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否开启打字机效果
-   */
-  @State
-  typeWriterOpen: boolean = false
-  /**
-   * 打字机效果颜色
-   */
-  @State
-  typeWriterColor: number = 0xFFFF0000
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8.0
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8.0
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8.0
 
   aboutToAppear(): void {
     try {
@@ -117,10 +117,6 @@ struct ThematicDetailsPage {
       this.incrementalAnalysis = thematicData._incrementalAnalysis
       this.time = thematicData._time
       this.textNumber = thematicData._textNumber
-      this.thematicBreakColor = thematicData._thematicBreakColor
-      this.thematicBreakHeight = thematicData._thematicBreakHeight
-      this.thematicBreakTopMargin = thematicData._thematicBreakTopMargin
-      this.thematicBreakBottomMargin = thematicData._thematicBreakBottomMargin
       this.isMarkdownParserSync = thematicData._isMarkdownParserSync
       this.typeWriterOpen = thematicData._typeWriterOpen
       this.typeWriterColor = thematicData._typeWriterColor
@@ -128,6 +124,10 @@ struct ThematicDetailsPage {
       this.blockFirstTopMargin = thematicData._blockFirstTopMargin
       this.blockLastBottomMargin = thematicData._blockLastBottomMargin
       this.blockTopAndBottomMargins = thematicData._blockTopAndBottomMargins
+      this.thematicBreakColor = thematicData._thematicBreakColor
+      this.thematicBreakHeight = thematicData._thematicBreakHeight
+      this.thematicBreakTopMargin = thematicData._thematicBreakTopMargin
+      this.thematicBreakBottomMargin = thematicData._thematicBreakBottomMargin
     } catch (e) {
     }
   }
@@ -192,10 +192,8 @@ struct ThematicDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setThematicBreakColor(this.thematicBreakColor) // 分割线颜色
-    theme.setThematicBreakHeight(this.thematicBreakHeight) // 分割线高度
-    theme.setThematicBreakTopMargin(this.thematicBreakTopMargin) // 分割线上部外边距
-    theme.setThematicBreakBottomMargin(this.thematicBreakBottomMargin) // 分割线下部外边距
+    theme.setContext(getContext(this)) // 上下文
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
     theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
@@ -203,6 +201,11 @@ struct ThematicDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+
+    theme.setThematicBreakColor(this.thematicBreakColor) // 分割线颜色
+    theme.setThematicBreakHeight(this.thematicBreakHeight) // 分割线高度
+    theme.setThematicBreakTopMargin(this.thematicBreakTopMargin) // 分割线上部外边距
+    theme.setThematicBreakBottomMargin(this.thematicBreakBottomMargin) // 分割线下部外边距
     config.setMarkdownTheme(theme)
     return config
   }

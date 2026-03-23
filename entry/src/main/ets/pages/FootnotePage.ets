@@ -36,68 +36,95 @@ struct FootnotePage {
   @State
   isFull: boolean = true
   /**
+   * markdown是否增量解析列表
+   */
+  incrementalAnalysisList: Array<boolean> = [true, false]
+  /**
+   * markdown是否增量解析(true:增量解析,false:全量解析)
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间列表
+   */
+  timeList: Array<number> = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500]
+  /**
+   * 增量加载每次间隔时间 - 毫秒
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量列表
+   */
+  textNumberList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 150, 200]
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * markdown是否同步解析
+   */
+  isMarkdownParserSyncList: Array<boolean> = [true, false]
+  /**
    * markdown是否同步解析
    */
   @State
   isMarkdownParserSync: boolean = false
   /**
-   * markdown是否同步解析
+   * 是否开启打字机效果
    */
-  isMarkdownParserSyncList: Array<boolean> = [true, false]
+  typeWriterOpenList: Array<boolean> = [true, false]
   /**
    * 是否开启打字机效果
    */
   @State
   typeWriterOpen: boolean = false
   /**
-   * 是否开启打字机效果
+   * 打字机效果颜色列表
    */
-  typeWriterOpenList: Array<boolean> = [true, false]
+  typeWriterColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
   /**
    * 打字机效果颜色
    */
   @State
   typeWriterColor: number = 0xFFFF0000
   /**
-   * 打字机效果颜色列表
+   * 是否打开长按复制粘贴
    */
-  typeWriterColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  isOnCopyList: Array<boolean> = [true, false]
   /**
    * 是否打开长按复制粘贴
    */
   @State
   isOnCopy: boolean = false
   /**
-   * 是否打开长按复制粘贴
+   * markdown第一个模块上边距
    */
-  isOnCopyList: Array<boolean> = [true, false]
+  blockFirstTopMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
   /**
    * markdown第一个模块上边距
    */
   @State
   blockFirstTopMargin: number = 8
   /**
-   * markdown第一个模块上边距
+   * markdown最后一个模块下边距
    */
-  blockFirstTopMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  blockLastBottomMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
   /**
    * markdown最后一个模块下边距
    */
   @State
   blockLastBottomMargin: number = 8
   /**
-   * markdown最后一个模块下边距
+   * 模块间上下间距
    */
-  blockLastBottomMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
   /**
    * 模块间上下间距
    */
   @State
   blockTopAndBottomMargins: number = 8
-  /**
-   * 模块间上下间距
-   */
-  blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
   /**
    * 配置数据内容
    */
@@ -144,6 +171,100 @@ struct FootnotePage {
                   .onClick(() => {
                     this.isFull = stringToBoolean(item)
                     this.footnoteData.isFull = this.isFull
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`markdown是否增量解析 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.incrementalAnalysis}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.incrementalAnalysisList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.incrementalAnalysis = item
+                    this.footnoteData.incrementalAnalysis = this.incrementalAnalysis
+                  })
+              })
+            }
+          }
+
+
+          Column() {
+            Row() {
+              Text(`增量加载每次间隔时间 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.time}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.timeList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.time = item
+                    this.footnoteData.time = this.time
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`增量每次增量文本数量 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.textNumber}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.textNumberList, (item: number, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.textNumber = item
+                    this.footnoteData.textNumber = this.textNumber
                   })
               })
             }
@@ -401,6 +522,9 @@ struct FootnotePage {
 
 export class FootnoteData {
   _isFull: boolean = true
+  _incrementalAnalysis: boolean = false
+  _time: number = 50
+  _textNumber: number = 10
   _isMarkdownParserSync: boolean = false
   _typeWriterOpen: boolean = false
   _typeWriterColor: number = 0xFFFF0000
@@ -412,6 +536,18 @@ export class FootnoteData {
 
   public set isFull(value: boolean) {
     this._isFull = value
+  }
+
+  public set incrementalAnalysis(value: boolean) {
+    this._incrementalAnalysis = value
+  }
+
+  public set time(value: number) {
+    this._time = value
+  }
+
+  public set textNumber(value: number) {
+    this._textNumber = value
   }
 
   public set isMarkdownParserSync(value: boolean) {

@@ -64,6 +64,69 @@ struct LatexMathPage {
   @State
   textNumber: number = 10
   /**
+   * markdown是否同步解析
+   */
+  isMarkdownParserSyncList: Array<boolean> = [true, false]
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  typeWriterOpenList: Array<boolean> = [true, false]
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色列表
+   */
+  typeWriterColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴
+   */
+  isOnCopyList: Array<boolean> = [true, false]
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  blockFirstTopMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  blockLastBottomMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
    * 数学公式文本大小列表
    */
   latexMathTextSizeList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
@@ -128,69 +191,6 @@ struct LatexMathPage {
    */
   @State
   latexDefaultText: boolean = true
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  isMarkdownParserSyncList: Array<boolean> = [true, false]
-  /**
-   * 是否开启打字机效果
-   */
-  @State
-  typeWriterOpen: boolean = false
-  /**
-   * 是否开启打字机效果
-   */
-  typeWriterOpenList: Array<boolean> = [true, false]
-  /**
-   * 打字机效果颜色
-   */
-  @State
-  typeWriterColor: number = 0xFFFF0000
-  /**
-   * 打字机效果颜色列表
-   */
-  typeWriterColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * 是否打开长按复制粘贴
-   */
-  isOnCopyList: Array<boolean> = [true, false]
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown第一个模块上边距
-   */
-  blockFirstTopMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  blockLastBottomMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 模块间上下间距
-   */
-  blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
   /**
    * 配置数据内容
    */
@@ -362,6 +362,70 @@ struct LatexMathPage {
                   .onClick(() => {
                     this.isMarkdownParserSync = item
                     this.latexMathData.isMarkdownParserSync = this.isMarkdownParserSync
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`是否开启打字机效果 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.typeWriterOpen}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.typeWriterOpenList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.typeWriterOpen = item
+                    this.latexMathData.typeWriterOpen = this.typeWriterOpen
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`打字机效果颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(numberToColorString(this.typeWriterColor))
+                .fontSize(16)
+                .fontColor(this.typeWriterColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.typeWriterColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.typeWriterColor = item
+                    this.latexMathData.typeWriterColor = this.typeWriterColor
                   })
               })
             }
@@ -712,70 +776,6 @@ struct LatexMathPage {
             }
           }
 
-          Column() {
-            Row() {
-              Text(`是否开启打字机效果 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.typeWriterOpen}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.typeWriterOpenList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.typeWriterOpen = item
-                    this.latexMathData.typeWriterOpen = this.typeWriterOpen
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`打字机效果颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.typeWriterColor))
-                .fontSize(16)
-                .fontColor(this.typeWriterColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.typeWriterColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.typeWriterColor = item
-                    this.latexMathData.typeWriterColor = this.typeWriterColor
-                  })
-              })
-            }
-          }
-
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -810,13 +810,6 @@ export class LatexMathData {
   _incrementalAnalysis: boolean = false
   _time: number = 50
   _textNumber: number = 10
-  _latexMathTextSize: number = 16
-  _latexMathBackGroupColor: number = 0x00000000
-  _latexMathTextColor: number = 0xFF000000
-  _latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
-  _latexMathBlockCenter: boolean = false
-  _latexMathResStr: string = "/data/storage/el1/bundle/entry/resources/resfile/res"
-  _latexDefaultText: boolean = true
   _isMarkdownParserSync: boolean = false
   _typeWriterOpen: boolean = false
   _typeWriterColor: number = 0xFFFF0000
@@ -824,6 +817,13 @@ export class LatexMathData {
   _blockFirstTopMargin: number = 8
   _blockLastBottomMargin: number = 8
   _blockTopAndBottomMargins: number = 8
+  _latexMathTextSize: number = 16
+  _latexMathBackGroupColor: number = 0x00000000
+  _latexMathTextColor: number = 0xFF000000
+  _latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
+  _latexMathBlockCenter: boolean = false
+  _latexMathResStr: string = "/data/storage/el1/bundle/entry/resources/resfile/res"
+  _latexDefaultText: boolean = true
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
@@ -840,34 +840,6 @@ export class LatexMathData {
 
   public set textNumber(value: number) {
     this._textNumber = value
-  }
-
-  public set latexMathTextSize(value: number) {
-    this._latexMathTextSize = value
-  }
-
-  public set latexMathBackGroupColor(value: number) {
-    this._latexMathBackGroupColor = value
-  }
-
-  public set latexMathTextColor(value: number) {
-    this._latexMathTextColor = value
-  }
-
-  public set latexMathColorFormat(value: LatexMathColorFormat) {
-    this._latexMathColorFormat = value
-  }
-
-  public set latexMathBlockCenter(value: boolean) {
-    this._latexMathBlockCenter = value
-  }
-
-  public set latexMathResStr(value: string) {
-    this._latexMathResStr = value
-  }
-
-  public set latexDefaultText(value: boolean) {
-    this._latexDefaultText = value
   }
 
   public set isMarkdownParserSync(value: boolean) {
@@ -896,6 +868,34 @@ export class LatexMathData {
 
   public set blockTopAndBottomMargins(value: number) {
     this._blockTopAndBottomMargins = value
+  }
+
+  public set latexMathTextSize(value: number) {
+    this._latexMathTextSize = value
+  }
+
+  public set latexMathBackGroupColor(value: number) {
+    this._latexMathBackGroupColor = value
+  }
+
+  public set latexMathTextColor(value: number) {
+    this._latexMathTextColor = value
+  }
+
+  public set latexMathColorFormat(value: LatexMathColorFormat) {
+    this._latexMathColorFormat = value
+  }
+
+  public set latexMathBlockCenter(value: boolean) {
+    this._latexMathBlockCenter = value
+  }
+
+  public set latexMathResStr(value: string) {
+    this._latexMathResStr = value
+  }
+
+  public set latexDefaultText(value: boolean) {
+    this._latexDefaultText = value
   }
 
   public set pagePath(value: string) {

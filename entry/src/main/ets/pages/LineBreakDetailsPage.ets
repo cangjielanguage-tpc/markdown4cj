@@ -29,7 +29,7 @@ struct LineBreakDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 增量加载全量加载选项
    */
   @State
   isFull: boolean = true
@@ -48,16 +48,6 @@ struct LineBreakDetailsPage {
    */
   @State
   textNumber: number = 10
-  /**
-   * 软换行是否换行
-   */
-  @State
-  isLineBreak: boolean = false
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
-  isInputEnded: boolean = false
   /**
    * markdown是否同步解析
    */
@@ -93,16 +83,24 @@ struct LineBreakDetailsPage {
    */
   @State
   blockTopAndBottomMargins: number = 8
+  /**
+   * 软换行是否换行
+   */
+  @State
+  isLineBreak: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let lineBreakData: LineBreakData = router.getParams() as LineBreakData
       this.fileStr = getFileContextStr(lineBreakData._pagePath)
-      this.isFull = lineBreakData._isFull
       this.incrementalAnalysis = lineBreakData._incrementalAnalysis
       this.time = lineBreakData._time
       this.textNumber = lineBreakData._textNumber
-      this.isLineBreak = lineBreakData._isLineBreak
       this.isMarkdownParserSync = lineBreakData._isMarkdownParserSync
       this.typeWriterOpen = lineBreakData._typeWriterOpen
       this.typeWriterColor = lineBreakData._typeWriterColor
@@ -110,6 +108,7 @@ struct LineBreakDetailsPage {
       this.blockFirstTopMargin = lineBreakData._blockFirstTopMargin
       this.blockLastBottomMargin = lineBreakData._blockLastBottomMargin
       this.blockTopAndBottomMargins = lineBreakData._blockTopAndBottomMargins
+      this.isLineBreak = lineBreakData._isLineBreak
     } catch (e) {
     }
   }
@@ -174,7 +173,10 @@ struct LineBreakDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
+    theme.setContext(getContext(this)) // 上下文
+
     theme.setIsLineBreak(this.isLineBreak) // 软换行是否换行
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
     theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
@@ -182,6 +184,7 @@ struct LineBreakDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+
     config.setMarkdownTheme(theme)
     return config
   }

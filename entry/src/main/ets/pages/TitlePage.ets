@@ -63,6 +63,69 @@ struct TitlePage {
   @State
   textNumber: number = 10
   /**
+   * markdown是否同步解析
+   */
+  isMarkdownParserSyncList: Array<boolean> = [true, false]
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  typeWriterOpenList: Array<boolean> = [true, false]
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色列表
+   */
+  typeWriterColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴
+   */
+  isOnCopyList: Array<boolean> = [true, false]
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  blockFirstTopMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  blockLastBottomMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
    * H1、H2下划线高度列表
    */
   headingBreakHeightList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -197,69 +260,6 @@ struct TitlePage {
   @State
   headingBottomMargins: number = 8
   /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  isMarkdownParserSyncList: Array<boolean> = [true, false]
-  /**
-   * 是否开启打字机效果
-   */
-  @State
-  typeWriterOpen: boolean = false
-  /**
-   * 是否开启打字机效果
-   */
-  typeWriterOpenList: Array<boolean> = [true, false]
-  /**
-   * 打字机效果颜色
-   */
-  @State
-  typeWriterColor: number = 0xFFFF0000
-  /**
-   * 打字机效果颜色列表
-   */
-  typeWriterColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * 是否打开长按复制粘贴
-   */
-  isOnCopyList: Array<boolean> = [true, false]
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown第一个模块上边距
-   */
-  blockFirstTopMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  blockLastBottomMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 模块间上下间距
-   */
-  blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
    * 标题文本颜色数组
    */
   @State
@@ -272,15 +272,6 @@ struct TitlePage {
     [0xFFEE82EE, 0xFF6A5ACD, 0xFFFA8072, 0xFF7EC0EE, 0xFF00F5FF, 0xFF32CD32, 0xFFFFD700, 0xFF8B0000],
     [0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000]
   ]
-  /**
-   * 删除线样式
-   */
-  @State
-  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
-  /**
-   * 删除线样式
-   */
-  strikethroughStyleList: Array<TextDecorationStyle> = [TextDecorationStyle.SOLID, TextDecorationStyle.DOUBLE, TextDecorationStyle.DOTTED, TextDecorationStyle.DASHED, TextDecorationStyle.WAVY]
   /**
    * 配置数据内容
    */
@@ -452,6 +443,70 @@ struct TitlePage {
                   .onClick(() => {
                     this.isMarkdownParserSync = item
                     this.titleData.isMarkdownParserSync = this.isMarkdownParserSync
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`是否开启打字机效果 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(`${this.typeWriterOpen}`)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.typeWriterOpenList, (item: boolean, index: number) => {
+                Button(item.toString())
+                  .type(ButtonType.Capsule)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(0xFF317AFF)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.typeWriterOpen = item
+                    this.titleData.typeWriterOpen = this.typeWriterOpen
+                  })
+              })
+            }
+          }
+
+          Column() {
+            Row() {
+              Text(`打字机效果颜色 - `)
+                .fontSize(16)
+                .textAlign(TextAlign.Start)
+              Text(numberToColorString(this.typeWriterColor))
+                .fontSize(16)
+                .fontColor(this.typeWriterColor)
+                .textAlign(TextAlign.Start)
+            }
+            .width("100%")
+            .backgroundColor(Color.Gray)
+            .padding(2)
+            .margin(2)
+
+            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
+              ForEach(this.typeWriterColorList, (item: number, index: number) => {
+                Button(numberToColorString(item))
+                  .type(ButtonType.Capsule)
+                  .fontColor(Color.Gray)
+                  .stateEffect(true)
+                  .height(25)
+                  .margin(2)
+                  .backgroundColor(item)
+                  .fontSize(14)
+                  .onClick(() => {
+                    this.typeWriterColor = item
+                    this.titleData.typeWriterColor = this.typeWriterColor
                   })
               })
             }
@@ -1021,70 +1076,6 @@ struct TitlePage {
 
           Column() {
             Row() {
-              Text(`是否开启打字机效果 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.typeWriterOpen}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.typeWriterOpenList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.typeWriterOpen = item
-                    this.titleData.typeWriterOpen = this.typeWriterOpen
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`打字机效果颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.typeWriterColor))
-                .fontSize(16)
-                .fontColor(this.typeWriterColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.typeWriterColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.typeWriterColor = item
-                    this.titleData.typeWriterColor = this.typeWriterColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
               Text(`标题文本颜色数组`)
                 .fontSize(16)
                 .textAlign(TextAlign.Start)
@@ -1106,37 +1097,6 @@ struct TitlePage {
                   .onClick(() => {
                     this.headingTextColors = item
                     this.titleData.headingTextColors = this.headingTextColors
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`删除线样式 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(styleToString(this.strikethroughStyle))
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.strikethroughStyleList, (item: TextDecorationStyle, index: number) => {
-                Button(styleToString(item))
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.strikethroughStyle = item
-                    this.titleData.strikethroughStyle = this.strikethroughStyle
                   })
               })
             }
@@ -1176,6 +1136,13 @@ export class TitleData {
   _incrementalAnalysis: boolean = false
   _time: number = 50
   _textNumber: number = 10
+  _isMarkdownParserSync: boolean = false
+  _typeWriterOpen: boolean = false
+  _typeWriterColor: number = 0xFFFF0000
+  _isOnCopy: boolean = false
+  _blockFirstTopMargin: number = 8
+  _blockLastBottomMargin: number = 8
+  _blockTopAndBottomMargins: number = 8
   _headingBreakHeight: number = 1
   _headingBreakColor: number = 0xFF000000
   _headingTextColor: number = 0xFF000000
@@ -1190,15 +1157,7 @@ export class TitleData {
   _headingTypeface: string = "HarmonyOS Sans"
   _headingTopMargins: number = 8
   _headingBottomMargins: number = 8
-  _isMarkdownParserSync: boolean = false
-  _typeWriterOpen: boolean = false
-  _typeWriterColor: number = 0xFFFF0000
-  _isOnCopy: boolean = false
-  _blockFirstTopMargin: number = 8
-  _blockLastBottomMargin: number = 8
-  _blockTopAndBottomMargins: number = 8
   _headingTextColors: Array<number> = [0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000]
-  _strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
   _pagePath: string = ""
 
   public set isFull(value: boolean) {
@@ -1215,6 +1174,34 @@ export class TitleData {
 
   public set textNumber(value: number) {
     this._textNumber = value
+  }
+
+  public set isMarkdownParserSync(value: boolean) {
+    this._isMarkdownParserSync = value
+  }
+
+  public set typeWriterOpen(value: boolean) {
+    this._typeWriterOpen = value
+  }
+
+  public set typeWriterColor(value: number) {
+    this._typeWriterColor = value
+  }
+
+  public set isOnCopy(value: boolean) {
+    this._isOnCopy = value
+  }
+
+  public set blockFirstTopMargin(value: number) {
+    this._blockFirstTopMargin = value
+  }
+
+  public set blockLastBottomMargin(value: number) {
+    this._blockLastBottomMargin = value
+  }
+
+  public set blockTopAndBottomMargins(value: number) {
+    this._blockTopAndBottomMargins = value
   }
 
   public set headingBreakHeight(value: number) {
@@ -1275,38 +1262,6 @@ export class TitleData {
 
   public set headingTextColors(value: Array<number>) {
     this._headingTextColors = value
-  }
-
-  public set isMarkdownParserSync(value: boolean) {
-    this._isMarkdownParserSync = value
-  }
-
-  public set typeWriterOpen(value: boolean) {
-    this._typeWriterOpen = value
-  }
-
-  public set typeWriterColor(value: number) {
-    this._typeWriterColor = value
-  }
-
-  public set isOnCopy(value: boolean) {
-    this._isOnCopy = value
-  }
-
-  public set blockFirstTopMargin(value: number) {
-    this._blockFirstTopMargin = value
-  }
-
-  public set blockLastBottomMargin(value: number) {
-    this._blockLastBottomMargin = value
-  }
-
-  public set blockTopAndBottomMargins(value: number) {
-    this._blockTopAndBottomMargins = value
-  }
-
-  public set strikethroughStyle(value: TextDecorationStyle) {
-    this._strikethroughStyle = value
   }
 
   public set pagePath(value: string) {

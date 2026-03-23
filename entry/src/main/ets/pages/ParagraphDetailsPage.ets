@@ -30,7 +30,7 @@ struct ParagraphDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 增量加载全量加载选项
    */
   @State
   isFull: boolean = true
@@ -49,6 +49,41 @@ struct ParagraphDetailsPage {
    */
   @State
   textNumber: number = 10
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
   /**
    * 段落文本大小
    */
@@ -89,46 +124,6 @@ struct ParagraphDetailsPage {
    */
   @State
   isInputEnded: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否开启打字机效果
-   */
-  @State
-  typeWriterOpen: boolean = false
-  /**
-   * 打字机效果颜色
-   */
-  @State
-  typeWriterColor: number = 0xFFFF0000
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 删除线样式
-   */
-  @State
-  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
   aboutToAppear(): void {
     try {
@@ -138,13 +133,6 @@ struct ParagraphDetailsPage {
       this.incrementalAnalysis = paragraphData._incrementalAnalysis
       this.time = paragraphData._time
       this.textNumber = paragraphData._textNumber
-      this.paragraphTextSize = paragraphData._paragraphTextSize
-      this.paragraphTextColor = paragraphData._paragraphTextColor
-      this.paragraphTextWordSpace = paragraphData._paragraphTextWordSpace
-      this.paragraphTextLineHeight = paragraphData._paragraphTextLineHeight
-      this.paragraphTypeface = paragraphData._paragraphTypeface
-      this.paragraphTopMargins = paragraphData._paragraphTopMargins
-      this.paragraphBottomMargins = paragraphData._paragraphBottomMargins
       this.isMarkdownParserSync = paragraphData._isMarkdownParserSync
       this.typeWriterOpen = paragraphData._typeWriterOpen
       this.typeWriterColor = paragraphData._typeWriterColor
@@ -152,7 +140,13 @@ struct ParagraphDetailsPage {
       this.blockFirstTopMargin = paragraphData._blockFirstTopMargin
       this.blockLastBottomMargin = paragraphData._blockLastBottomMargin
       this.blockTopAndBottomMargins = paragraphData._blockTopAndBottomMargins
-      this.strikethroughStyle = paragraphData._strikethroughStyle
+      this.paragraphTextSize = paragraphData._paragraphTextSize
+      this.paragraphTextColor = paragraphData._paragraphTextColor
+      this.paragraphTextWordSpace = paragraphData._paragraphTextWordSpace
+      this.paragraphTextLineHeight = paragraphData._paragraphTextLineHeight
+      this.paragraphTypeface = paragraphData._paragraphTypeface
+      this.paragraphTopMargins = paragraphData._paragraphTopMargins
+      this.paragraphBottomMargins = paragraphData._paragraphBottomMargins
     } catch (e) {
     }
   }
@@ -219,13 +213,7 @@ struct ParagraphDetailsPage {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this)) // 上下文
-    theme.setParagraphTopMargins(this.paragraphTopMargins) // 段落模块上间距
-    theme.setParagraphBottomMargins(this.paragraphBottomMargins) // 段落模块下间距
-    theme.setParagraphTextSize(this.paragraphTextSize) // 段落文本大小
-    theme.setParagraphTextColor(this.paragraphTextColor) // 段落文本颜色
-    theme.setParagraphTextWordSpace(this.paragraphTextWordSpace) // 段落文本字间距
-    theme.setParagraphTextLineHeight(this.paragraphTextLineHeight) // 段落文本行高
-    theme.setParagraphTypeface(this.paragraphTypeface) // 段落文本字体
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
     theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
@@ -233,7 +221,14 @@ struct ParagraphDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
-    theme.setStrikethroughStyle(this.strikethroughStyle) // 删除线样式
+
+    theme.setParagraphTopMargins(this.paragraphTopMargins) // 段落模块上间距
+    theme.setParagraphBottomMargins(this.paragraphBottomMargins) // 段落模块下间距
+    theme.setParagraphTextSize(this.paragraphTextSize) // 段落文本大小
+    theme.setParagraphTextColor(this.paragraphTextColor) // 段落文本颜色
+    theme.setParagraphTextWordSpace(this.paragraphTextWordSpace) // 段落文本字间距
+    theme.setParagraphTextLineHeight(this.paragraphTextLineHeight) // 段落文本行高
+    theme.setParagraphTypeface(this.paragraphTypeface) // 段落文本字体
     config.setMarkdownTheme(theme)
     return config
   }

@@ -29,8 +29,8 @@ struct TableDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
-   */
+ * 增量加载全量加载选项
+ */
   @State
   isFull: boolean = true
   /**
@@ -48,66 +48,6 @@ struct TableDetailsPage {
    */
   @State
   textNumber: number = 10
-  /**
-   * 表格内容内边距
-   */
-  @State
-  tableCellPadding: number = 4.0
-  /**
-   * 表格边框颜色
-   */
-  @State
-  tableBorderColor: number = 0xFF000000
-  /**
-   * 表格边框宽度
-   */
-  @State
-  tableBorderWidth: number = 1.0
-  /**
-   * 表格奇数行背景色
-   */
-  @State
-  tableOddRowBackgroundColor: number = 0xFFFFFFFF
-  /**
-   * 表格偶数行背景色
-   */
-  @State
-  tableEvenRowBackgroundColor: number = 0xFFE0E0E0
-  /**
-   * 表格头背景色
-   */
-  @State
-  tableHeaderRowBackgroundColor: number = 0xFFFFFFFF
-  /**
-   * 表格文本行高
-   */
-  @State
-  tableTextLineHeight: number = 22.0
-  /**
-   * 表格圆角
-   */
-  @State
-  tableRadius: number = 5.0
-  /**
-   * 表格最小宽度
-   */
-  @State
-  tableMinTextWidth: number = 50.0
-  /**
-   * 表格最大宽度
-   */
-  @State
-  tableMaxTextWidth: number = 300.0
-  /**
-   * 表格第一列是否加粗
-   */
-  @State
-  tableFirstColumnBold: boolean = false
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
-  isInputEnded: boolean = false
   /**
    * markdown是否同步解析
    */
@@ -144,7 +84,67 @@ struct TableDetailsPage {
   @State
   blockTopAndBottomMargins: number = 8
   /**
-   * 表格头行高
+   * 表格内容内边距
+   */
+  @State
+  tableCellPadding: number = 4.0
+  /**
+   * 表格边框颜色
+   */
+  @State
+  tableBorderColor: number = 0xFF000000
+  /**
+   * 表格边框宽度
+   */
+  @State
+  tableBorderWidth: number = 1.0
+  /**
+   * 表格奇数行背景色
+   */
+  @State
+  tableOddRowBackgroundColor: number = 0xFFFFFFFF
+  /**
+   * 表格偶数行背景色
+   */
+  @State
+  tableEvenRowBackgroundColor: number = 0xFFE0E0E0
+  /**
+   * 表格标题背景色
+   */
+  @State
+  tableHeaderRowBackgroundColor: number = 0xFFFFFFFF
+  /**
+   * 表格文本行高
+   */
+  @State
+  tableTextLineHeight: number = 22.0
+  /**
+   * 表格圆角
+   */
+  @State
+  tableRadius: number = 5.0
+  /**
+   * 表格最小宽度
+   */
+  @State
+  tableMinTextWidth: number = 50.0
+  /**
+   * 表格最大宽度
+   */
+  @State
+  tableMaxTextWidth: number = 300.0
+  /**
+   * 表格第一列是否加粗
+   */
+  @State
+  tableFirstColumnBold: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+  /**
+   * 表格标题行高
    */
   @State
   tableTitleLineHeight: number = 22
@@ -167,6 +167,13 @@ struct TableDetailsPage {
       this.incrementalAnalysis = tableData._incrementalAnalysis
       this.time = tableData._time
       this.textNumber = tableData._textNumber
+      this.isMarkdownParserSync = tableData._isMarkdownParserSync
+      this.typeWriterOpen = tableData._typeWriterOpen
+      this.typeWriterColor = tableData._typeWriterColor
+      this.isOnCopy = tableData._isOnCopy
+      this.blockFirstTopMargin = tableData._blockFirstTopMargin
+      this.blockLastBottomMargin = tableData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = tableData._blockTopAndBottomMargins
       this.tableCellPadding = tableData._tableCellPadding
       this.tableBorderColor = tableData._tableBorderColor
       this.tableBorderWidth = tableData._tableBorderWidth
@@ -177,13 +184,6 @@ struct TableDetailsPage {
       this.tableMinTextWidth = tableData._tableMinTextWidth
       this.tableMaxTextWidth = tableData._tableMaxTextWidth
       this.tableFirstColumnBold = tableData._tableFirstColumnBold
-      this.isMarkdownParserSync = tableData._isMarkdownParserSync
-      this.typeWriterOpen = tableData._typeWriterOpen
-      this.typeWriterColor = tableData._typeWriterColor
-      this.isOnCopy = tableData._isOnCopy
-      this.blockFirstTopMargin = tableData._blockFirstTopMargin
-      this.blockLastBottomMargin = tableData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = tableData._blockTopAndBottomMargins
       this.tableTitleLineHeight = tableData._tableTitleLineHeight
       this.tableTextLineHeight = tableData._tableTextLineHeight
       this.tableScrollBarShow = tableData._tableScrollBarShow
@@ -254,18 +254,7 @@ struct TableDetailsPage {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this)) // 上下文
-    theme.setTableCellPadding(this.tableCellPadding) // 表格内容内边距
-    theme.setTableBorderColor(this.tableBorderColor) // 表格边框颜色
-    theme.setTableBorderWidth(this.tableBorderWidth) // 表格边框宽度
-    theme.setTableOddRowBackgroundColor(this.tableOddRowBackgroundColor) // 表格奇数行背景色
-    theme.setTableEvenRowBackgroundColor(this.tableEvenRowBackgroundColor) // 表格偶数行背景色
-    theme.setTableHeaderRowBackgroundColor(this.tableHeaderRowBackgroundColor) // 表格头背景色
-    theme.setTableRadius(this.tableRadius) // 表格圆角
-    theme.setTableMinTextWidth(this.tableMinTextWidth) // 表格最小宽度
-    theme.setTableMaxTextWidth(this.tableMaxTextWidth) // 表格最大宽度
-    theme.setTableFirstColumnBold(this.tableFirstColumnBold) // 表格第一列是否加粗
-    theme.setTableScrollBarShow(true) // 设置显示滚动条
-    theme.setTableScrollBarColor(0xFFFFD700) // 设置滚动条颜色
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
     theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
@@ -274,7 +263,19 @@ struct TableDetailsPage {
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
 
-    theme.setTableTitleLineHeight(this.tableTitleLineHeight) // 表格头行高
+    theme.setTableCellPadding(this.tableCellPadding) // 表格内容内边距
+    theme.setTableBorderColor(this.tableBorderColor) // 表格边框颜色
+    theme.setTableBorderWidth(this.tableBorderWidth) // 表格边框宽度
+    theme.setTableOddRowBackgroundColor(this.tableOddRowBackgroundColor) // 表格奇数行背景色
+    theme.setTableEvenRowBackgroundColor(this.tableEvenRowBackgroundColor) // 表格偶数行背景色
+    theme.setTableHeaderRowBackgroundColor(this.tableHeaderRowBackgroundColor) // 表格标题背景色
+    theme.setTableRadius(this.tableRadius) // 表格圆角
+    theme.setTableMinTextWidth(this.tableMinTextWidth) // 表格最小宽度
+    theme.setTableMaxTextWidth(this.tableMaxTextWidth) // 表格最大宽度
+    theme.setTableFirstColumnBold(this.tableFirstColumnBold) // 表格第一列是否加粗
+    theme.setTableScrollBarShow(true) // 设置显示滚动条
+    theme.setTableScrollBarColor(0xFFFFD700) // 设置滚动条颜色
+    theme.setTableTitleLineHeight(this.tableTitleLineHeight) // 表格标题行高
     theme.setTableTextLineHeight(this.tableTextLineHeight) // 表格文本行高
     theme.setTableScrollBarShow(this.tableScrollBarShow) // 表格是否显示滚动条
     theme.setTableScrollBarColor(this.tableScrollBarColor) // 表格滚动条颜色

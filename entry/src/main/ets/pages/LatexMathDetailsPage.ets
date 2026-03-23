@@ -36,7 +36,7 @@ struct LatexMathDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 增量加载全量加载选项
    */
   @State
   isFull: boolean = true
@@ -55,6 +55,41 @@ struct LatexMathDetailsPage {
    */
   @State
   textNumber: number = 10
+  /**
+   * markdown是否同步解析
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * markdown第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * markdown最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * 模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
   /**
    * 数学公式文本大小
    */
@@ -94,41 +129,6 @@ struct LatexMathDetailsPage {
    */
   @State
   isInputEnded: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否开启打字机效果
-   */
-  @State
-  typeWriterOpen: boolean = false
-  /**
-   * 打字机效果颜色
-   */
-  @State
-  typeWriterColor: number = 0xFFFF0000
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
@@ -138,13 +138,6 @@ struct LatexMathDetailsPage {
       this.incrementalAnalysis = latexMathData._incrementalAnalysis
       this.time = latexMathData._time
       this.textNumber = latexMathData._textNumber
-      this.latexMathTextSize = latexMathData._latexMathTextSize
-      this.latexMathBackGroupColor = latexMathData._latexMathBackGroupColor
-      this.latexMathTextColor = latexMathData._latexMathTextColor
-      this.latexMathBlockCenter = latexMathData._latexMathBlockCenter
-      this.latexMathColorFormat = latexMathData._latexMathColorFormat
-      this.latexMathResStr = latexMathData._latexMathResStr
-      this.latexDefaultText = latexMathData._latexDefaultText
       this.isMarkdownParserSync = latexMathData._isMarkdownParserSync
       this.typeWriterOpen = latexMathData._typeWriterOpen
       this.typeWriterColor = latexMathData._typeWriterColor
@@ -152,6 +145,13 @@ struct LatexMathDetailsPage {
       this.blockFirstTopMargin = latexMathData._blockFirstTopMargin
       this.blockLastBottomMargin = latexMathData._blockLastBottomMargin
       this.blockTopAndBottomMargins = latexMathData._blockTopAndBottomMargins
+      this.latexMathTextSize = latexMathData._latexMathTextSize
+      this.latexMathBackGroupColor = latexMathData._latexMathBackGroupColor
+      this.latexMathTextColor = latexMathData._latexMathTextColor
+      this.latexMathBlockCenter = latexMathData._latexMathBlockCenter
+      this.latexMathColorFormat = latexMathData._latexMathColorFormat
+      this.latexMathResStr = latexMathData._latexMathResStr
+      this.latexDefaultText = latexMathData._latexDefaultText
     } catch (e) {
     }
   }
@@ -218,13 +218,8 @@ struct LatexMathDetailsPage {
     let config = new MarkdownConfiguration()
     config.setLatexImageCallback(this.latexCallBack.bind(this)) // 数学公式点击回调
     let theme = new MarkdownTheme()
-    theme.setLatexDefaultText(this.latexDefaultText) // 数学公式未加载状态是否显示文字
-    theme.setLatexMathTextSize(this.latexMathTextSize) // 数学公式文本大小
-    theme.setLatexMathBackGroupColor(this.latexMathBackGroupColor) // 数学公式背景色
-    theme.setLatexMathTextColor(this.latexMathTextColor) // 数学公式文本颜色
-    theme.setLatexMathColorFormat(this.latexMathColorFormat) // 数学公式生成图片格式
-    theme.setLatexMathBlockCenter(this.latexMathBlockCenter) // 块结构的数学公式是否居中
-    theme.setLatexMathResStr(this.latexMathResStr) // 数学公式字体路径
+    theme.setContext(getContext(this)) // 上下文
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
     theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
@@ -232,6 +227,15 @@ struct LatexMathDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+
+    theme.setLatexDefaultText(this.latexDefaultText) // 数学公式未加载状态是否显示文字
+    theme.setLatexMathTextSize(this.latexMathTextSize) // 数学公式文本大小
+    theme.setLatexMathBackGroupColor(this.latexMathBackGroupColor) // 数学公式背景色
+    theme.setLatexMathTextColor(this.latexMathTextColor) // 数学公式文本颜色
+    theme.setLatexMathColorFormat(this.latexMathColorFormat) // 数学公式生成图片格式
+    theme.setLatexMathBlockCenter(this.latexMathBlockCenter) // 块结构的数学公式是否居中
+    theme.setLatexMathResStr(this.latexMathResStr) // 数学公式字体路径
+
     config.setMarkdownTheme(theme)
     return config
   }
