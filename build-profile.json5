@@ -1,6 +1,20 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "default",
+        "type": "HarmonyOS",
+        "material": {
+          "certpath": "./sign/default_markdown4cj_hybrid_typewriter_uMWDmqGyAwpCnBItWrOstLv0uubilnx88HfqH39TyMI=.cer",
+          "keyAlias": "debugKey",
+          "keyPassword": "0000001B97FDE8750CCE51B9AA62D1B3AD8B6FDF30351D16B5B637885ACA7461817E2FB99EB86654337F08",
+          "profile": "./sign/default_markdown4cj_hybrid_typewriter_uMWDmqGyAwpCnBItWrOstLv0uubilnx88HfqH39TyMI=.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "./sign/default_markdown4cj_hybrid_typewriter_uMWDmqGyAwpCnBItWrOstLv0uubilnx88HfqH39TyMI=.p12",
+          "storePassword": "0000001B93E8635C292F18CA36CD943ED433059DFB557DBBE5F2D07766FB36E90085C3B485F44ECEF9B301"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
