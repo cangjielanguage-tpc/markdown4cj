@@ -258,136 +258,23 @@ class MarkdownTableBlockCellComponent {
                     Span("\n")
                 } else if (spanListNodeView.nodeType == "Link" || spanListNodeView.nodeType == "HeadLink") {
                     // 链接, TOC列表链接
-                    if (spanListNodeView.linkUrl().startsWith("http://") || spanListNodeView.linkUrl().startsWith("https://")) {
-                        if (spanListNodeView.nodeText.trimAscii().toRuneArray().size > 1) {
-                            MarkdownLinkRectImageComponent(
-                                markdownConfiguration: spanListMarkdownConfiguration,
-                                strText: spanListNodeView.nodeText.trimAscii(),
-                                strUrl: spanListNodeView.linkUrl()
-                            )
-                        } else if (spanListNodeView.nodeText.trimAscii().toRuneArray().size == 1) {
-                            MarkdownLinkCircleImageComponent(
-                                markdownConfiguration: spanListMarkdownConfiguration,
-                                strText: spanListNodeView.nodeText.trimAscii(),
-                                strUrl: spanListNodeView.linkUrl()
-                            )
-                        }
-                    } else {
-                        if (spanListNodeView.nodeText.trimAscii().toRuneArray().size >= 1) {
-                            MarkdownLinkRectToolImageComponent(
-                                markdownConfiguration: spanListMarkdownConfiguration,
-                                strText: spanListNodeView.nodeText.trimAscii(),
-                                strUrl: spanListNodeView.linkUrl(),
-                                strType: urlSafeBase64Decode(spanListNodeView.linkUrl())
-                            )
-                        }
-                    }
+                    spanLinkComponent(
+                        spanListNodeView,
+                        index,
+                        spanListMarkdownConfiguration,
+                        spanListTocListOnClick,
+                        spanListFootnoteCallback,
+                        false
+                    )
                 } else if (spanListNodeView.nodeType == "Image" || spanListNodeView.nodeType == "StyleImage" || spanListNodeView.nodeType == "ImageHtmlNode") {
                     // Image：图片节点， StyleImage：图片Style节点，ImageHtmlNode：HTML图片
-                    if (spanListMarkdownConfiguration.imageCallbackCallback.isNone()) {
-                        // 没有图片替换回调接口
-                        if (spanListNodeView.imageUrl().startsWith("./")) {
-                            // 本地图片
-                            MarkdownSpanImageRawFileComponent(
-                                rawFileMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                                rawFileDestination: spanListNodeView.imageUrl(),
-                                rawFileComponentWidth: spanListComponentWidth,
-                                rawFileImageCallback: spanListImageCallback,
-                                rawFileLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                                rawFileLink: spanListNodeView.isLink,
-                                rawFileLinkUrl: spanListNodeView.linkUrl,
-                                rawFileImageWidth: spanListNodeView.imageWidth,
-                                rawFileImageHeight: spanListNodeView.imageHeight,
-                                rawFileImageRadius: spanListNodeView.imageRadius,
-                                rawFileImageAlign: spanListNodeView.imageAlign
-                            )
-                        } else {
-                            if (DeviceInfo.sdkApiVersion >= 15) {
-                                // API大于等于15
-                                MarkdownSpanImageUrl15Component(
-                                    url15MarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                                    url15Destination: spanListNodeView.imageUrl(),
-                                    url15ComponentWidth: spanListComponentWidth,
-                                    url15ImageCallback: spanListImageCallback,
-                                    url15LinkCallback: spanListMarkdownConfiguration.linkCallback,
-                                    url15Link: spanListNodeView.isLink,
-                                    url15LinkUrl: spanListNodeView.linkUrl,
-                                    url15ImageWidth: spanListNodeView.imageWidth,
-                                    url15ImageHeight: spanListNodeView.imageHeight,
-                                    url15ImageRadius: spanListNodeView.imageRadius,
-                                    url15ImageAlign: spanListNodeView.imageAlign
-                                )
-                            } else {
-                                // API小于15
-                                MarkdownSpanImageUrl14Component(
-                                    url14MarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                                    url14Destination: spanListNodeView.imageUrl(),
-                                    url14ComponentWidth: spanListComponentWidth,
-                                    url14ImageCallback: spanListImageCallback,
-                                    url14LinkCallback: spanListMarkdownConfiguration.linkCallback,
-                                    url14Link: spanListNodeView.isLink,
-                                    url14LinkUrl: spanListNodeView.linkUrl,
-                                    url14ImageWidth: spanListNodeView.imageWidth,
-                                    url14ImageHeight: spanListNodeView.imageHeight,
-                                    url14ImageRadius: spanListNodeView.imageRadius,
-                                    url14ImageAlign: spanListNodeView.imageAlign
-                                )
-                            }
-                        }
-                    } else {
-                        // 有图片替换回调接口
-                        if (spanListNodeView.imageUrl().startsWith("./")) {
-                            // 本地图片
-                            MarkdownSpanImageCallbackRawFileComponent(
-                                rawFileCallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                                rawFileCallbackDestination: spanListNodeView.imageUrl(),
-                                rawFileCallbackComponentWidth: spanListComponentWidth,
-                                rawFileCallbackImageCallbackCallback: spanListMarkdownConfiguration.imageCallbackCallback(),
-                                rawFileCallbackImageCallback: spanListImageCallback,
-                                rawFileCallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                                rawFileCallbackLink: spanListNodeView.isLink,
-                                rawFileCallbackLinkUrl: spanListNodeView.linkUrl,
-                                rawFileCallbackImageWidth: spanListNodeView.imageWidth,
-                                rawFileCallbackImageHeight: spanListNodeView.imageHeight,
-                                rawFileCallbackImageRadius: spanListNodeView.imageRadius,
-                                rawFileCallbackImageAlign: spanListNodeView.imageAlign
-                            )
-                        } else {
-                            if (DeviceInfo.sdkApiVersion >= 15) {
-                                // API大于等于15
-                                MarkdownSpanImageCallbackUrl15Component(
-                                    url15CallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                                    url15CallbackDestination: spanListNodeView.imageUrl(),
-                                    url15CallbackComponentWidth: spanListComponentWidth,
-                                    url15CallbackImageCallbackCallback: spanListMarkdownConfiguration.imageCallbackCallback(),
-                                    url15CallbackImageCallback: spanListImageCallback,
-                                    url15CallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                                    url15CallbackLink: spanListNodeView.isLink,
-                                    url15CallbackLinkUrl: spanListNodeView.linkUrl,
-                                    url15CallbackImageWidth: spanListNodeView.imageWidth,
-                                    url15CallbackImageHeight: spanListNodeView.imageHeight,
-                                    url15CallbackImageRadius: spanListNodeView.imageRadius,
-                                    url15CallbackImageAlign: spanListNodeView.imageAlign
-                                )
-                            } else {
-                                // API小于15
-                                MarkdownSpanImageCallbackUrl14Component(
-                                    url14CallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                                    url14CallbackDestination: spanListNodeView.imageUrl(),
-                                    url14CallbackComponentWidth: spanListComponentWidth,
-                                    url14CallbackImageCallbackCallback: spanListMarkdownConfiguration.imageCallbackCallback(),
-                                    url14CallbackImageCallback: spanListImageCallback,
-                                    url14CallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                                    url14CallbackLink: spanListNodeView.isLink,
-                                    url14CallbackLinkUrl: spanListNodeView.linkUrl,
-                                    url14CallbackImageWidth: spanListNodeView.imageWidth,
-                                    url14CallbackImageHeight: spanListNodeView.imageHeight,
-                                    url14CallbackImageRadius: spanListNodeView.imageRadius,
-                                    url14CallbackImageAlign: spanListNodeView.imageAlign
-                                )
-                            }
-                        }
-                    }
+                    spanImageComponent(
+                        spanListNodeView,
+                        index,
+                        spanListMarkdownConfiguration,
+                        spanListComponentWidth,
+                        spanListImageCallback
+                    )
                 } else {
                     // 其他节点
                     tableBlockCellCustomTableLineBuilder(spanListNodeView, index)
