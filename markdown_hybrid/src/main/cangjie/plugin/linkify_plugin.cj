@@ -31,7 +31,7 @@ class LinkifyPostProcessor <: PostProcessor {
         } else {
             "(${urlreg})|${multi}"
         }
-        multiMatcher = Regex(multi, RegexFlag.Unicode)
+        multiMatcher = Regex(multi, RegexFlag.Unicode) /* cjlint-ignore !G.CHK.04 */
     }
     public func process(node: Node): Node {
         let visitor = LinkifyVisitor(multiMatcher)
