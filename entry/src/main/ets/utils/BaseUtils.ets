@@ -1,7 +1,6 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { LatexMathColorFormat } from "@cangjie-tpc/markdown_hybrid";
 import { util } from "@kit.ArkTS";
 
 /**
@@ -138,17 +137,5 @@ export function objectToJson(obj: object): string {
     return json
   } catch (e) {
     return ""
-  }
-}
-
-/**
- * 对象转换成json
- */
-export function enumToString(e: LatexMathColorFormat): string {
-  switch (e) {
-    case LatexMathColorFormat.COLOR_FORMAT_RGB_565:
-      return "COLOR_FORMAT_RGB_565"
-    case LatexMathColorFormat.COLOR_FORMAT_BGRA_8888:
-      return "COLOR_FORMAT_BGRA_8888"
   }
 }

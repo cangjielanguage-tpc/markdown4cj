@@ -68,11 +68,6 @@ public class CJMarkdownPlugin {
     var isLinkViewPlugin: Bool = false
 
     /**
-     * 是否加载数学公式解析插件
-     */
-    var isLatexMathPlugin: Bool = false
-
-    /**
      * 是否加载图片自定义样式解析插件
      */
     var isImageStylePlugin: Bool = false
@@ -223,15 +218,6 @@ public class CJMarkdownPlugin {
      */
     public func setIsLinkViewPlugin(isLinkViewPlugin: Bool): Unit {
         this.isLinkViewPlugin = isLinkViewPlugin
-    }
-
-    /**
-     * 设置是否加载数学公式解析插件
-     *
-     * @param isLatexMathPlugin
-     */
-    public func setIsLatexMathPlugin(isLatexMathPlugin: Bool): Unit {
-        this.isLatexMathPlugin = isLatexMathPlugin
     }
 
     /**

@@ -54,10 +54,6 @@ public class NodeView {
     var isFootnote: Bool = false
     // 脚注ID
     var footnoteID: Option<String> = Option<String>.None
-    // 块结构数学公式
-    var isLatexMathBlock: Bool = false
-    // 块结构数学公式是否结束
-    var isLatexMathBlockClose: Bool = false
     // FontNode
     var isFontNode: Bool = false
     // FontNode文本大小
@@ -151,8 +147,6 @@ public func nodeToNodeView(
                     childrenNodeView.isQuote = childrenNewNodeView.isQuote
                     childrenNodeView.isFootnote = childrenNewNodeView.isFootnote
                     childrenNodeView.footnoteID = childrenNewNodeView.footnoteID
-                    childrenNodeView.isLatexMathBlock = childrenNewNodeView.isLatexMathBlock
-                    childrenNodeView.isLatexMathBlockClose = childrenNewNodeView.isLatexMathBlockClose
                     childrenNodeView.isFontNode = childrenNewNodeView.isFontNode
                     childrenNodeView.fontNodeSize = childrenNewNodeView.fontNodeSize
                     childrenNodeView.fontNodeColor = childrenNewNodeView.fontNodeColor
@@ -384,17 +378,6 @@ public func nodeToNodeView(
                         // 块引用
                         childrenNodeView.isQuote = true
                         nodeToNodeView(commonmarkChildrenNode, childrenNodeView, childrenNodeView, isLinkStyle)
-                        parentNewNodeView.children.add(childrenNodeView)
-                    } else if (nodeType == "LatexMathBlock") {
-                        // 数学公式块
-                        childrenNodeView.isLatexMathBlock = true
-                        let latexMathBlock = (commonmarkChildrenNode as LatexMathBlock)()
-                        childrenNodeView.nodeText = latexMathBlock.latex
-                        childrenNodeView.isLatexMathBlockClose = latexMathBlock.isClosed
-                        parentNewNodeView.children.add(childrenNodeView)
-                    } else if (nodeType == "LatexMathNode") {
-                        // 内联数学公式
-                        childrenNodeView.nodeText = (commonmarkChildrenNode as LatexMathNode)().latex
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "TableBlock") {
                         // 表格

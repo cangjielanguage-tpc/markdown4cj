@@ -112,9 +112,6 @@ class CJMarkdownComponent {
             if(v.isLinkViewPlugin){
                 markdownBuilder.usePlugin(LinkViewPlugin.create())
             }
-            if(v.isLatexMathPlugin){
-                markdownBuilder.usePlugin(LatexMathPluginV2.create())
-            }
             if(v.isImageStylePlugin){
                 markdownBuilder.usePlugin(ImageStylePlugin.create())
             }
@@ -194,12 +191,6 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.codeFullScreenCallback) {
                 markdownConfigurationBuilder.setCodeFullScreenCallback(v) // 设置代码全屏按钮的点击事件
-            }
-            if (let Some(v) <- w.latexImageCallback) {
-                markdownConfigurationBuilder.setLatexImageCallbackCallback(v) // 设置数学公式图片点击事件
-            }
-            if (let Some(v) <- w.latexStrCallback) {
-                markdownConfigurationBuilder.setLatexStrCallback(v) // 设置数学公式数据处理事件
             }
             if (let Some(v) <- w.tocIndexCallback) {
                 markdownConfigurationBuilder.setTocIndexCallback(v) // 设置TOC跳转指定位置
@@ -592,27 +583,6 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.isLineBreak) {
                 markdownThemeBuilder.setIsLineBreak(v) // 设置软换行是否换行
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.latexDefaultText) {
-                markdownThemeBuilder.setLatexDefaultText(v) // 设置数学公式未加载状态是否显示文字
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.latexMathTextSize) {
-                markdownThemeBuilder.setLatexMathTextSize(v) // 设置数学公式文本大小
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.latexMathBackGroupColor) {
-                markdownThemeBuilder.setLatexMathBackGroupColor(v) // 设置数学公式背景色
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.latexMathTextColor) {
-                markdownThemeBuilder.setLatexMathTextColor(v) // 设置数学公式文本颜色
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.latexMathColorFormat) {
-                markdownThemeBuilder.setLatexMathColorFormat(v) // 设置数学公式生成图片格式
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.latexMathBlockCenter) {
-                markdownThemeBuilder.setLatexMathBlockCenter(v) // 设置块结构的数学公式是否居中
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.latexMathResStr) {
-                markdownThemeBuilder.setLatexMathResStr(v) // 设置数学公式字体路径
             }
             if (let Some(v) <- w.cjMarkdownTheme.audioShadowColor) {
                 markdownThemeBuilder.setAudioShadowColor(v) // 设置音频阴影颜色值

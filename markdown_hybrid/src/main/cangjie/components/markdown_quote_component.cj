@@ -246,14 +246,6 @@ public class MarkdownQuoteComponent {
                                 quoteVideoCallback: quoteVideoCallback,
                                 quoteDepth: quoteDepth + 1
                             )
-                        } else if (item.nodeType == "LatexMathBlock") {
-                            // 数学公式块
-                            MarkdownLatexMathBlockComponent(
-                                markdownTheme: quoteMarkdownConfiguration.markdownTheme,
-                                latexMathBlockStr: item.nodeText,
-                                latexImageCallback: quoteMarkdownConfiguration.latexImageCallback,
-                                latexStrCallback: quoteMarkdownConfiguration.latexStrCallback
-                            )
                         } else if (item.nodeType == "TableBlock") {
                             // 表格
                             MarkdownTableBlockComponent(

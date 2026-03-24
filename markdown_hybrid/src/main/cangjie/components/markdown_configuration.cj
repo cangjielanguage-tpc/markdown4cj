@@ -77,25 +77,6 @@ public class MarkdownConfiguration {
     protected var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None
 
     /**
-     * 数学公式图片点击事件
-     */
-    protected var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit = None
-
-    /**
-     * 数学公式数据处理事件
-     */
-    protected var latexStrCallback: (String) -> String = {
-        data: String =>
-            var dataNew = data.replace("{aligned*}", "{aligned}")
-            dataNew = dataNew.replace("{align*}", "{align}")
-            dataNew = dataNew.replace("{flalign*}", "{flalign}")
-            dataNew = dataNew.replace("{gather*}", "{gather}")
-            dataNew = dataNew.replace("{multline*}", "{multline}")
-            dataNew = dataNew.replace("{eqnarray*}", "{eqnarray}")
-            return dataNew
-    }
-
-    /**
      * TOC跳转指定位置
      */
     protected var tocIndexCallback: ?(?Int64) -> Unit = None
@@ -124,8 +105,6 @@ public class MarkdownConfiguration {
         this.videoDownloadCallback = builder.videoDownloadCallback
         this.codeCopyCallback = builder.codeCopyCallback
         this.codeFullScreenCallback = builder.codeFullScreenCallback
-        this.latexImageCallback = builder.latexImageCallback
-        this.latexStrCallback = builder.latexStrCallback
         this.tocIndexCallback = builder.tocIndexCallback
         this.footnoteCallback = builder.footnoteCallback
         this.nodeString = builder.nodeString
@@ -232,25 +211,6 @@ public class MarkdownConfigurationBuilder {
     var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None
 
     /**
-     * 数学公式图片点击事件
-     */
-    var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit = None
-
-    /**
-     * 数学公式数据处理事件
-     */
-    var latexStrCallback: (String) -> String = {
-        data: String =>
-            var dataNew = data.replace("{aligned*}", "{aligned}")
-            dataNew = dataNew.replace("{align*}", "{align}")
-            dataNew = dataNew.replace("{flalign*}", "{flalign}")
-            dataNew = dataNew.replace("{gather*}", "{gather}")
-            dataNew = dataNew.replace("{multline*}", "{multline}")
-            dataNew = dataNew.replace("{eqnarray*}", "{eqnarray}")
-            return dataNew
-    }
-
-    /**
      * TOC跳转指定位置
      */
     var tocIndexCallback: ?(?Int64) -> Unit = None
@@ -282,8 +242,6 @@ public class MarkdownConfigurationBuilder {
         this.videoDownloadCallback = configuration.videoDownloadCallback
         this.codeCopyCallback = configuration.codeCopyCallback
         this.codeFullScreenCallback = configuration.codeFullScreenCallback
-        this.latexImageCallback = configuration.latexImageCallback
-        this.latexStrCallback = configuration.latexStrCallback
         this.tocIndexCallback = configuration.tocIndexCallback
         this.footnoteCallback = configuration.footnoteCallback
         this.nodeString = configuration.nodeString
@@ -429,28 +387,6 @@ public class MarkdownConfigurationBuilder {
      */
     public func setCodeFullScreenCallback(codeFullScreenCallback: (String, Option<String>) -> Unit): MarkdownConfigurationBuilder {
         this.codeFullScreenCallback = codeFullScreenCallback
-        return this
-    }
-
-    /**
-     * 设置数学公式图片点击事件
-     *
-     * @param latexImageCallback 数学公式图片点击回调接口 (Array<UInt8>:图片数据,Length:高度,Length:宽度)
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
-     */
-    public func setLatexImageCallbackCallback(latexImageCallback: (Array<UInt8>, Length, Length) -> Unit): MarkdownConfigurationBuilder {
-        this.latexImageCallback = latexImageCallback
-        return this
-    }
-
-    /**
-     * 设置数学公式数据处理事件
-     *
-     * @param latexStrCallback 数学公式数据处理回调接口 (参数String:数学公式的内容,返回值String:数学公式处理之后的内容)
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
-     */
-    public func setLatexStrCallback(latexStrCallback: (String) -> String): MarkdownConfigurationBuilder {
-        this.latexStrCallback = latexStrCallback
         return this
     }
 

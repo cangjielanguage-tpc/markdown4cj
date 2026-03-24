@@ -638,41 +638,6 @@ public class MarkdownTheme {
     protected var isLineBreak: Bool = false
 
     /**
-     * 数学公式未加载状态是否显示文字
-     */
-    protected var latexDefaultText: Bool = true
-
-    /**
-     * 数学公式文本大小
-     */
-    protected var latexMathTextSize: Float64 = fp2px(16.0.fp)().value
-
-    /**
-     * 数学公式背景色
-     */
-    protected var latexMathBackGroupColor: Color = Color.TRANSPARENT
-
-    /**
-     * 数学公式文本颜色
-     */
-    protected var latexMathTextColor: Color = COLOR_FF000000
-
-    /**
-     * 数学公式生成图片格式
-     */
-    protected var latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
-
-    /**
-     * 块结构的数学公式是否居中
-     */
-    protected var latexMathBlockCenter: Bool = false
-
-    /**
-     * 数学公式字体路径
-     */
-    protected var latexMathResStr: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
-
-    /**
      * 音频图标
      */
     protected var audioIcon: ?AppResource = None
@@ -1359,13 +1324,6 @@ public class MarkdownTheme {
         this.isLineBreak = builder.isLineBreak
 
         // 10、数学公式
-        this.latexDefaultText = builder.latexDefaultText
-        this.latexMathTextSize = builder.latexMathTextSize
-        this.latexMathBackGroupColor = builder.latexMathBackGroupColor
-        this.latexMathTextColor = builder.latexMathTextColor
-        this.latexMathColorFormat = builder.latexMathColorFormat
-        this.latexMathBlockCenter = builder.latexMathBlockCenter
-        this.latexMathResStr = builder.latexMathResStr
 
         // 11、音频
         this.audioIcon = builder.audioIcon
@@ -1577,8 +1535,6 @@ public class MarkdownTheme {
         // 9、软换行
 
         // 10、数学公式
-        markdownThemeBuilder.setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
-        markdownThemeBuilder.setLatexMathTextColor(COLOR_FF000000) // 数学公式文本颜色
 
         // 11、音频
         markdownThemeBuilder.setAudioShadowColor(COLOR_1A000000) // 音频阴影颜色值
@@ -1670,8 +1626,6 @@ public class MarkdownTheme {
         // 9、软换行
 
         // 10、数学公式
-        markdownThemeBuilder.setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
-        markdownThemeBuilder.setLatexMathTextColor(COLOR_FFFFFFFF) // 数学公式文本颜色
 
         // 11、音频
         markdownThemeBuilder.setAudioShadowColor(COLOR_1AFFFFFF) // 音频阴影颜色值
@@ -2347,41 +2301,6 @@ public class MarkdownThemeBuilder {
      * 软换行是否换行
      */
     var isLineBreak: Bool = false
-
-    /**
-     * 数学公式未加载状态是否显示文字
-     */
-    var latexDefaultText: Bool = true
-
-    /**
-     * 数学公式文本大小
-     */
-    var latexMathTextSize: Float64 = fp2px(16.0.fp)().value
-
-    /**
-     * 数学公式背景色
-     */
-    var latexMathBackGroupColor: Color = Color.TRANSPARENT
-
-    /**
-     * 数学公式文本颜色
-     */
-    var latexMathTextColor: Color = COLOR_FF000000
-
-    /**
-     * 数学公式生成图片格式
-     */
-    var latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
-
-    /**
-     * 块结构的数学公式是否居中
-     */
-    var latexMathBlockCenter: Bool = false
-
-    /**
-     * 数学公式字体路径
-     */
-    var latexMathResStr: String = "/data/storage/el1/bundle/entry/resources/resfile/res"
 
     /**
      * 音频图标
@@ -3073,13 +2992,6 @@ public class MarkdownThemeBuilder {
         this.isLineBreak = theme.isLineBreak
 
         // 10、数学公式
-        this.latexDefaultText = theme.latexDefaultText
-        this.latexMathTextSize = theme.latexMathTextSize
-        this.latexMathBackGroupColor = theme.latexMathBackGroupColor
-        this.latexMathTextColor = theme.latexMathTextColor
-        this.latexMathColorFormat = theme.latexMathColorFormat
-        this.latexMathBlockCenter = theme.latexMathBlockCenter
-        this.latexMathResStr = theme.latexMathResStr
 
         // 11、音频
         this.audioIcon = theme.audioIcon
@@ -3271,8 +3183,6 @@ public class MarkdownThemeBuilder {
         // 9、软换行
 
         // 10、数学公式
-        setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
-        setLatexMathTextColor(COLOR_FF000000) // 数学公式文本颜色
 
         // 11、音频
         setAudioShadowColor(COLOR_1A000000) // 音频阴影颜色值
@@ -3362,8 +3272,6 @@ public class MarkdownThemeBuilder {
         // 9、软换行
 
         // 10、数学公式
-        setLatexMathBackGroupColor(Color.TRANSPARENT) // 数学公式背景色
-        setLatexMathTextColor(COLOR_FFFFFFFF) // 数学公式文本颜色
 
         // 11、音频
         setAudioShadowColor(COLOR_1AFFFFFF) // 音频阴影颜色值
@@ -4772,83 +4680,6 @@ public class MarkdownThemeBuilder {
      */
     public func setIsLineBreak(isLineBreak: Bool): MarkdownThemeBuilder {
         this.isLineBreak = isLineBreak
-        return this
-    }
-
-    /**
-     * 设置数学公式未加载状态是否显示文字
-     *
-     * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setLatexDefaultText(latexDefaultText: Bool): MarkdownThemeBuilder {
-        this.latexDefaultText = latexDefaultText
-        return this
-    }
-
-    /**
-     * 设置数学公式文本大小
-     *
-     * @param latexMathTextSize 数学公式文本大小 - 默认16.0fp
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setLatexMathTextSize(latexMathTextSize: Float64): MarkdownThemeBuilder {
-        this.latexMathTextSize = fp2px(latexMathTextSize.fp)().value
-        return this
-    }
-
-    /**
-     * 设置数学公式背景色
-     *
-     * @param latexMathBackGroupColor 数学公式背景色 - 默认Color.TRANSPARENT
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setLatexMathBackGroupColor(latexMathBackGroupColor: Color): MarkdownThemeBuilder {
-        this.latexMathBackGroupColor = latexMathBackGroupColor
-        return this
-    }
-
-    /**
-     * 设置数学公式文本颜色
-     *
-     * @param latexMathTextColor 数学公式文本颜色 - 默认0xFF000000
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setLatexMathTextColor(latexMathTextColor: Color): MarkdownThemeBuilder {
-        this.latexMathTextColor = latexMathTextColor
-        return this
-    }
-
-    /**
-     * 设置数学公式生成图片格式
-     *
-     * @param latexMathColorFormat 数学公式生成图片格式 - 默认LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setLatexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): MarkdownThemeBuilder {
-        this.latexMathColorFormat = latexMathColorFormat
-        return this
-    }
-
-    /**
-     * 设置块结构的数学公式是否居中
-     *
-     * @param latexMathBlockCenter 块结构的数学公式是否居中 - true：居中；false：不居中。默认false
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setLatexMathBlockCenter(latexMathBlockCenter: Bool): MarkdownThemeBuilder {
-        this.latexMathBlockCenter = latexMathBlockCenter
-        return this
-    }
-
-    /**
-     * 设置数学公式字体路径
-     *
-     * @param latexMathResStr 数学公式字体路径 默认 "/data/storage/el1/bundle/entry/resources/resfile/res"
-     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-     */
-    public func setLatexMathResStr(latexMathResStr: String): MarkdownThemeBuilder {
-        this.latexMathResStr = latexMathResStr
         return this
     }
 

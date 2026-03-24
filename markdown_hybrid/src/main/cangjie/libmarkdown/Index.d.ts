@@ -27,8 +27,6 @@ export declare class CJMarkdownPlugin {
 
   setIsLinkViewPlugin(isLinkViewPlugin: boolean): void
 
-  setIsLatexMathPlugin(isLatexMathPlugin: boolean): void
-
   setIsImageStylePlugin(isImageStylePlugin: boolean): void
 
   setIsImageSlidePlugin(isImageSlidePlugin: boolean): void
@@ -293,20 +291,6 @@ export declare class CJMarkdownTheme {
 
   setIsLineBreak(isLineBreak: boolean): void
 
-  setLatexDefaultText(latexMathTextSize: boolean): void
-
-  setLatexMathTextSize(latexMathTextSize: number): void
-
-  setLatexMathBackGroupColor(latexMathBackGroupColor: number): void
-
-  setLatexMathTextColor(latexMathTextColor: number): void
-
-  setLatexMathColorFormat(latexMathColorFormat: number): void
-
-  setLatexMathBlockCenter(latexMathBlockCenter: boolean): void
-
-  setLatexMathResStr(latexMathResStr: string): void
-
   setAudioShadowColor(audioShadowColor: number): void
 
   setAudioBorderColor(audioBorderColor: number): void
@@ -526,10 +510,6 @@ export declare class CJMarkdownConfig {
   setCodeCopyCallback(cb: (funcArg0: string) => void): void
 
   setCodeFullScreenCallback(cb: (funcArg0: string, funcArg1: string | undefined) => void): void
-
-  setLatexImageCallback(cb: (funcArg0: ArrayBuffer, funcArg1: number, funcArg2: number) => void): void
-
-  setLatexStrCallback(cb: (funcArg0: string) => string): void
 
   setTocIndexCallback(cb: (funcArg0: number | undefined) => void): void
 

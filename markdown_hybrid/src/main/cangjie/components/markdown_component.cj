@@ -51,8 +51,6 @@ public class MarkdownComponent {
         .usePlugin(StrikethroughPlugin.create())
         // 表格插件
         .usePlugin(TablePlugin.create())
-        // 数学公式插件
-        .usePlugin(LatexMathPluginV2.create())
         // 音频插件
         .usePlugin(BlockAudioPlugin.create())
         // 视频插件
@@ -411,21 +409,6 @@ public class MarkdownComponent {
                             quoteVideoCallback: videoCallback,
                             quoteDepth: 0
                         )
-                    }
-                    .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
-                } else if (item.nodeType == "LatexMathBlock") {
-                    // 数学公式块
-                    ListItem() {
-                        if (item.isLatexMathBlockClose) {
-                             MarkdownLatexMathBlockComponent(
-                                 markdownTheme:markdownConfiguration.markdownTheme,
-                                 latexMathBlockStr:item.nodeText,
-                                 latexImageCallback:markdownConfiguration.latexImageCallback,
-                                 latexStrCallback:markdownConfiguration.latexStrCallback,
-                             )
-                         } else {
-                             Text(item.nodeText)
-                         }
                     }
                     .margin(top: marginNodeTop(idx, item, markdownConfiguration.markdownTheme), bottom: marginNodeBottom(idx, lastViewIndex, item, markdownConfiguration.markdownTheme))
                 } else if (item.nodeType == "TableBlock") {

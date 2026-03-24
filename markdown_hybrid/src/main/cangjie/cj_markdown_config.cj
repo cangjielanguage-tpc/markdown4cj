@@ -63,16 +63,6 @@ public class CJMarkdownConfig {
     var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None
 
     /**
-     * 数学公式图片点击事件
-     */
-    var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit = None
-
-    /**
-     * 数学公式数据处理事件
-     */
-    var latexStrCallback: ?(String) -> String = None
-
-    /**
      * TOC跳转指定位置
      */
     var tocIndexCallback: ?(Option<Int64>) -> Unit = None
@@ -190,26 +180,6 @@ public class CJMarkdownConfig {
      */
     public func setCodeFullScreenCallback(cb: (String, Option<String>) -> Unit): Unit {
         this.codeFullScreenCallback = cb
-    }
-
-    /**
-     * 设置数学公式图片点击事件
-     *
-     * @param cb 数学公式图片点击回调接口 (数学公式图片数组数据，高度，宽度)
-     */
-    public func setLatexImageCallback(cb: (Array<Byte>, Float64, Float64) -> Unit): Unit {
-        this.latexImageCallback = {
-            data, height, width => cb(data, height.value, width.value)
-        }
-    }
-
-    /**
-     * 设置数学公式数据处理事件
-     *
-     * @param cb 数学公式数据处理回调接口 (数学公式文本内容)：数学公式处理之后的文本内容
-     */
-    public func setLatexStrCallback(cb: (String) -> String): Unit {
-        this.latexStrCallback = cb
     }
 
     /**

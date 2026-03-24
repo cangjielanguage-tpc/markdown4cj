@@ -153,12 +153,6 @@ export struct CJMarkdown {
       if (this.config.codeFullScreenCallback !== undefined) {
         cjMarkdownConfig.setCodeFullScreenCallback(this.config.codeFullScreenCallback)
       }
-      if (this.config.latexImageCallback !== undefined) {
-        cjMarkdownConfig.setLatexImageCallback(this.config.latexImageCallback)
-      }
-      if (this.config.latexStrCallback !== undefined) {
-        cjMarkdownConfig.setLatexStrCallback(this.config.latexStrCallback)
-      }
       if (this.config.tocIndexCallback !== undefined) {
         cjMarkdownConfig.setTocIndexCallback(this.config.tocIndexCallback)
       }
@@ -553,27 +547,6 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.isLineBreak !== undefined) {
           cjMarkdownTheme.setIsLineBreak(this.config.markdownTheme.isLineBreak)
         }
-        if (this.config.markdownTheme.latexDefaultText !== undefined) {
-          cjMarkdownTheme.setLatexDefaultText(this.config.markdownTheme.latexDefaultText)
-        }
-        if (this.config.markdownTheme.latexMathTextSize !== undefined) {
-          cjMarkdownTheme.setLatexMathTextSize(this.config.markdownTheme.latexMathTextSize)
-        }
-        if (this.config.markdownTheme.latexMathBackGroupColor !== undefined) {
-          cjMarkdownTheme.setLatexMathBackGroupColor(this.config.markdownTheme.latexMathBackGroupColor)
-        }
-        if (this.config.markdownTheme.latexMathTextColor !== undefined) {
-          cjMarkdownTheme.setLatexMathTextColor(this.config.markdownTheme.latexMathTextColor)
-        }
-        if (this.config.markdownTheme.latexMathColorFormat !== undefined) {
-          cjMarkdownTheme.setLatexMathColorFormat(this.config.markdownTheme.latexMathColorFormat)
-        }
-        if (this.config.markdownTheme.latexMathBlockCenter !== undefined) {
-          cjMarkdownTheme.setLatexMathBlockCenter(this.config.markdownTheme.latexMathBlockCenter)
-        }
-        if (this.config.markdownTheme.latexMathResStr !== undefined) {
-          cjMarkdownTheme.setLatexMathResStr(this.config.markdownTheme.latexMathResStr)
-        }
         if (this.config.markdownTheme.audioShadowColor !== undefined) {
           cjMarkdownTheme.setAudioShadowColor(this.config.markdownTheme.audioShadowColor)
         }
@@ -890,7 +863,6 @@ export struct CJMarkdown {
       cjMarkdownPlugin.setIsStrikethroughPlugin(this.plugin.isStrikethroughPlugin)
       cjMarkdownPlugin.setIsLinkifyPlugin(this.plugin.isLinkifyPlugin, this.plugin.regs)
       cjMarkdownPlugin.setIsLinkViewPlugin(this.plugin.isLinkViewPlugin)
-      cjMarkdownPlugin.setIsLatexMathPlugin(this.plugin.isLatexMathPlugin)
       cjMarkdownPlugin.setIsImageStylePlugin(this.plugin.isImageStylePlugin)
       cjMarkdownPlugin.setIsImageSlidePlugin(this.plugin.isImageSlidePlugin)
       cjMarkdownPlugin.setIsImageTextMixPlugin(this.plugin.isImageTextMixPlugin)
@@ -957,14 +929,6 @@ export class MarkdownConfiguration {
    * 代码全屏按钮的点击事件
    */
   codeFullScreenCallback?: (funcArg0: string, funcArg1: string | undefined) => void = undefined
-  /**
-   * 数学公式图片点击事件
-   */
-  latexImageCallback?: (funcArg0: ArrayBuffer, funcArg1: number, funcArg2: number) => void = undefined
-  /**
-   * 数学公式数据处理事件
-   */
-  latexStrCallback?: (funcArg0: string) => string = undefined
   /**
    * TOC跳转指定位置
    */
@@ -1084,24 +1048,6 @@ export class MarkdownConfiguration {
    */
   setCodeFullScreenCallback(cb: (funcArg0: string, funcArg1: string | undefined) => void): void {
     this.codeFullScreenCallback = cb
-  }
-
-  /**
-   * 设置数学公式点击回调
-   *
-   * @param cb 数学公式点击回调(funcArg0：数学公式图片数组数据, funcArg1:图片高度, funcArg2:图片宽度) --- 需要加载数学公式解析插件
-   */
-  setLatexImageCallback(cb: (funcArg0: ArrayBuffer, funcArg1: number, funcArg2: number) => void): void {
-    this.latexImageCallback = cb
-  }
-
-  /**
-   * 设置数学公式公式预处理回调
-   *
-   * @param cb 数学公式公式预处理回调(funcArg0：数学公式文本内容,return：处理过后的数学公式文本) --- 需要加载数学公式解析插件
-   */
-  setLatexStrCallback(cb: (funcArg0: string) => string): void {
-    this.latexStrCallback = cb
   }
 
   /**
@@ -1664,34 +1610,6 @@ export class MarkdownTheme {
    * 软换行是否换行
    */
   isLineBreak?: boolean = undefined
-  /**
-   * 数学公式未加载状态是否显示文字
-   */
-  latexDefaultText?: boolean = undefined
-  /**
-   * 数学公式文本大小
-   */
-  latexMathTextSize?: number = undefined
-  /**
-   * 数学公式背景色
-   */
-  latexMathBackGroupColor?: number = undefined
-  /**
-   * 数学公式文本颜色
-   */
-  latexMathTextColor?: number = undefined
-  /**
-   * 数学公式生成图片格式
-   */
-  latexMathColorFormat?: LatexMathColorFormat = undefined
-  /**
-   * 块结构的数学公式是否居中
-   */
-  latexMathBlockCenter?: boolean = undefined
-  /**
-   * 数学公式字体路径
-   */
-  latexMathResStr?: string = undefined
   /**
    * 音频阴影颜色值
    */
@@ -3270,69 +3188,6 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置数学公式未加载状态是否显示文字
-   *
-   * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
-   */
-  setLatexDefaultText(latexDefaultText: boolean): void {
-    this.latexDefaultText = latexDefaultText
-  }
-
-  /**
-   * 设置数学公式文本大小
-   *
-   * @param latexMathTextSize 数学公式文本大小 - 默认16.0fp
-   */
-  setLatexMathTextSize(latexMathTextSize: number): void {
-    this.latexMathTextSize = latexMathTextSize
-  }
-
-  /**
-   * 设置数学公式背景色
-   *
-   * @param latexMathBackGroupColor 数学公式背景色 - 默认Color.TRANSPARENT
-   */
-  setLatexMathBackGroupColor(latexMathBackGroupColor: number): void {
-    this.latexMathBackGroupColor = latexMathBackGroupColor
-  }
-
-  /**
-   * 设置数学公式文本颜色
-   *
-   * @param latexMathTextColor 数学公式文本颜色 - 默认0xFF000000
-   */
-  setLatexMathTextColor(latexMathTextColor: number): void {
-    this.latexMathTextColor = latexMathTextColor
-  }
-
-  /**
-   * 设置数学公式生成图片格式
-   *
-   * @param latexMathColorFormat 数学公式生成图片格式 - 默认LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
-   */
-  setLatexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): void {
-    this.latexMathColorFormat = latexMathColorFormat
-  }
-
-  /**
-   * 设置块结构的数学公式是否居中
-   *
-   * @param latexMathBlockCenter 块结构的数学公式是否居中 - true：居中；false：不居中。默认false
-   */
-  setLatexMathBlockCenter(latexMathBlockCenter: boolean): void {
-    this.latexMathBlockCenter = latexMathBlockCenter
-  }
-
-  /**
-   * 设置数学公式字体路径
-   *
-   * @param latexMathResStr 数学公式字体路径 默认 "/data/storage/el1/bundle/entry/resources/resfile/res"
-   */
-  setLatexMathResStr(latexMathResStr: string): void {
-    this.latexMathResStr = latexMathResStr
-  }
-
-  /**
    * 设置音频阴影颜色值
    *
    * @param audioShadowColor 音频阴影颜色值 - 默认0x1A000000
@@ -4207,20 +4062,6 @@ export class MarkdownTheme {
 }
 
 /**
- * 数学公式生成图片格式的枚举
- */
-export enum LatexMathColorFormat {
-  /**
-   * 16位
-   */
-  COLOR_FORMAT_RGB_565,
-  /**
-   * 32位
-   */
-  COLOR_FORMAT_BGRA_8888
-}
-
-/**
  * 图片缩放类型的枚举
  */
 export enum ImageFitType {
@@ -4290,10 +4131,6 @@ export class MarkdownPlugin {
    * 是否加载链接单独解析插件
    */
   isLinkViewPlugin: boolean = false
-  /**
-   * 是否加载数学公式解析插件
-   */
-  isLatexMathPlugin: boolean = false
   /**
    * 是否加载图片自定义样式解析插件
    */
@@ -4434,15 +4271,6 @@ export class MarkdownPlugin {
    */
   setIsLinkViewPlugin(isLinkViewPlugin: boolean): void {
     this.isLinkViewPlugin = isLinkViewPlugin
-  }
-
-  /**
-   * 设置数学公式插件
-   *
-   * @param isLatexMathPlugin 是否设置数学公式插件 - true：设置数学公式插件；false：不设置数学公式插件。默认false
-   */
-  setIsLatexMathPlugin(isLatexMathPlugin: boolean): void {
-    this.isLatexMathPlugin = isLatexMathPlugin
   }
 
   /**

@@ -238,18 +238,6 @@ class MarkdownTableBlockCellComponent {
                         spanListFootnoteCallback,
                         tableBlockCellCell == 0 && spanListMarkdownConfiguration.markdownTheme.tableFirstColumnBold
                     )
-                } else if (spanListNodeView.nodeType == "LatexMathNode") {
-                    // 数学公式
-                    MarkdownLatexMathInLineComponent(
-                        markdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                        latexMathInLineStr: spanListNodeView.nodeText,
-                        latexMathInLineComponentWidth: spanListComponentWidth,
-                        latexImageCallback: spanListMarkdownConfiguration.latexImageCallback,
-                        latexStrCallback: spanListMarkdownConfiguration.latexStrCallback,
-                        latexMathInLineLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                        latexMathInLineIsLink: spanListNodeView.isLink,
-                        latexMathInLineLinkUrl: spanListNodeView.linkUrl
-                    )
                 } else if (spanListNodeView.nodeType == "SoftLineBreak") {
                     // 软换行
                     Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.isLineBreak))

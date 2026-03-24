@@ -80,17 +80,3 @@ func codeFullScreenOnClick(codeText: String, info: ?String, codeFullScreenCallba
         }
     }
 }
-
-/**
- * 数学公式图片点击事件
- *
- * @param lists 数学公式数据
- * @param height 高度
- * @param width 宽度
- * @param latexImageCallback 数学公式图片点击事件
- */
-func latexImageOnClick(lists: Array<UInt8>, height: Length, width: Length, latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit): Unit {
-    if (latexImageCallback.isSome()) {
-        latexImageCallback()(lists, height, width)
-    }
-}

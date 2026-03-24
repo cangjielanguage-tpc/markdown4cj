@@ -12,8 +12,6 @@
     "pages/ThematicDetailsPage",
     "pages/LineBreakPage",
     "pages/LineBreakDetailsPage",
-    "pages/LatexMathPage",
-    "pages/LatexMathDetailsPage",
     "pages/TablePage",
     "pages/TableDetailsPage",
     "pages/LinkPage",

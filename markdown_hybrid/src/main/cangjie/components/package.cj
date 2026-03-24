@@ -52,12 +52,6 @@ internal import prism4cj.prism.Text as PrismText
 internal import prism4cj.prism.Node as PrismNode
 internal import prism4cj.prism.Grammar as PrismGrammar
 
-// formula
-internal import formula.LaTeX
-internal import formula.Render
-internal import formula.Graphic2D
-internal import formula.ColorFormat
-
 // 系统UI
 internal import ohos.ability.UIAbilityContext
 internal import ohos.ability.getStageContext

@@ -214,7 +214,6 @@ struct QuoteDetailsPage {
     plugin.setIsStrikethroughPlugin(true) // 删除线插件
     plugin.setIsTablePlugin(true) // 表格插件
     plugin.setIsTaskListPlugin(true) // 任务列表插件
-    plugin.setIsLatexMathPlugin(true) // 数学公式插件
     plugin.setIsHtmlPlugin(true) // HTML插件
     plugin.setIsBlockAudioPlugin(true) // 音频插件
     plugin.setIsBlockVideoPlugin(true) // 视频插件

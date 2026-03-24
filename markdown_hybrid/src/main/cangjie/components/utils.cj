@@ -74,33 +74,6 @@ public class PicStyleObj {
 }
 
 /**
- * 数学公式生成图片格式枚举
- */
-public enum LatexMathColorFormat <: Equatable<LatexMathColorFormat> {
-    /**
-     * 16位
-     */
-    | COLOR_FORMAT_RGB_565
-
-    /**
-     * 32位
-     */
-    | COLOR_FORMAT_BGRA_8888
-
-    public operator func ==(that: LatexMathColorFormat): Bool {
-        match ((this, that)) {
-            case (COLOR_FORMAT_RGB_565, COLOR_FORMAT_RGB_565) => true
-            case (COLOR_FORMAT_BGRA_8888, COLOR_FORMAT_BGRA_8888) => true
-            case _ => false
-        }
-    }
-
-    public operator func !=(that: LatexMathColorFormat): Bool {
-        return !(this == that)
-    }
-}
-
-/**
  * 文本对象
  */
 public class StringClass {

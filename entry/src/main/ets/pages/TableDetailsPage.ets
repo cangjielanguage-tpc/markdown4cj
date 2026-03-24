@@ -272,7 +272,6 @@ struct TableDetailsPage {
   setPlugin(): MarkdownPlugin {
     let plugin: MarkdownPlugin = new MarkdownPlugin()
     plugin.setIsTablePlugin(true) // 表格插件
-    plugin.setIsLatexMathPlugin(true) // 数学公式插件
     plugin.setIsStrikethroughPlugin(true) // 删除线插件
     plugin.setIsHtmlPlugin(true) // HTML插件
     return plugin

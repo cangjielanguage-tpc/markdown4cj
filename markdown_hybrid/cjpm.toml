@@ -20,9 +20,6 @@
   [dependencies.prism4cj]
     tag = "v1.0.4"
     git = "https://gitcode.com/Cangjie-TPC/prism4cj.git"
-  [dependencies.formula]
-    tag = "formula-1.0.0"
-    git = "https://gitcode.com/Cangjie-TPC/formula-ffi.git"
   [dependencies.codeformat]
     tag = "v1.0.0.B002"
     git = "https://gitcode.com/Cangjie-TPC/codeformat4cj.git"

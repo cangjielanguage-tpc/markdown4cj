@@ -613,41 +613,6 @@ public class CJMarkdownTheme {
     var isLineBreak: ?Bool = None
 
     /**
-     * 数学公式未加载状态是否显示文字
-     */
-    var latexDefaultText: ?Bool = None
-
-    /**
-     * 数学公式文本大小
-     */
-    var latexMathTextSize: ?Float64 = None
-
-    /**
-     * 数学公式背景色
-     */
-    var latexMathBackGroupColor: ?Color = None
-
-    /**
-     * 数学公式文本颜色
-     */
-    var latexMathTextColor: ?Color = None
-
-    /**
-     * 数学公式生成图片格式
-     */
-    var latexMathColorFormat: ?LatexMathColorFormat = None
-
-    /**
-     * 块结构的数学公式是否居中
-     */
-    var latexMathBlockCenter: ?Bool = None
-
-    /**
-     * 数学公式字体路径
-     */
-    var latexMathResStr: ?String = None
-
-    /**
      * 音频阴影颜色值
      */
     var audioShadowColor: ?Color = None
@@ -2221,73 +2186,6 @@ public class CJMarkdownTheme {
      */
     public func setIsLineBreak(isLineBreak: Bool): Unit {
         this.isLineBreak = isLineBreak
-    }
-
-    /**
-     * 设置数学公式未加载状态是否显示文字
-     *
-     * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
-     */
-    public func setLatexDefaultText(latexDefaultText: Bool): Unit {
-        this.latexDefaultText = latexDefaultText
-    }
-
-    /**
-     * 设置数学公式文本大小
-     *
-     * @param latexMathTextSize 数学公式文本大小 - 默认16.0fp
-     */
-    public func setLatexMathTextSize(latexMathTextSize: Float64): Unit {
-        this.latexMathTextSize = latexMathTextSize
-    }
-
-    /**
-     * 设置数学公式背景色
-     *
-     * @param latexMathBackGroupColor 数学公式背景色 - 默认0xFFFFFFFF
-     */
-    public func setLatexMathBackGroupColor(latexMathBackGroupColor: UInt32): Unit {
-        this.latexMathBackGroupColor = transColorForTrasparent(latexMathBackGroupColor)
-    }
-
-    /**
-     * 设置数学公式文本颜色
-     *
-     * @param latexMathTextColor 数学公式文本颜色 - 默认0xFF000000
-     */
-    public func setLatexMathTextColor(latexMathTextColor: UInt32): Unit {
-        this.latexMathTextColor = transColorForTrasparent(latexMathTextColor)
-    }
-
-    /**
-     * 设置数学公式生成图片格式
-     *
-     * @param latexMathColorFormat 数学公式生成图片格式 - 默认LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
-     */
-    public func setLatexMathColorFormat(latexMathColorFormat: Int64): Unit {
-        match (latexMathColorFormat) {
-            case 0 => this.latexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_RGB_565
-            case 1 => this.latexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
-            case _ => this.latexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_RGB_565
-        }
-    }
-
-    /**
-     * 设置块结构的数学公式是否居中
-     *
-     * @param latexMathBlockCenter 块结构的数学公式是否居中 - true：居中；false：不居中。默认false
-     */
-    public func setLatexMathBlockCenter(latexMathBlockCenter: Bool): Unit {
-        this.latexMathBlockCenter = latexMathBlockCenter
-    }
-
-    /**
-     * 设置数学公式字体路径
-     *
-     * @param latexMathResStr 数学公式字体路径 默认 "/data/storage/el1/bundle/entry/resources/resfile/res"
-     */
-    public func setLatexMathResStr(latexMathResStr: String): Unit {
-        this.latexMathResStr = latexMathResStr
     }
 
     /**

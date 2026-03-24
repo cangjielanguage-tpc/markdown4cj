@@ -752,8 +752,6 @@ func getLinkString(stringClass: StringClass, commonmarkNode: CommonmarkNode): St
                         stringClass.addString((commonmarkChildrenNode as Code)().getLiteral())
                     } else if (nodeType == "Footnote") {
                         stringClass.addString((commonmarkChildrenNode as Footnote)().noteid)
-                    } else if (nodeType == "LatexMathNode") {
-                        stringClass.addString((commonmarkChildrenNode as LatexMathNode)().latex)
                     } else {
                         stringClass.addString(getLinkString(stringClass, commonmarkChildrenNode))
                     }

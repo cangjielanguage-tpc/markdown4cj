@@ -78,9 +78,6 @@ public class NodeViewStringBuilder <: ToString {
             // 处理Html节点
             case v: HtmlInline => add(v.getLiteral())
             case v: HtmlBlock => add(v.getLiteral()).add("\n")
-            // 处理latex
-            case v: LatexMathNode => add(v.latex)
-            case v: LatexMathBlock => add(v.latex).add("\n")
             case _ => return false
         }
         return true
