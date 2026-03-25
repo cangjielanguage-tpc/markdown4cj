@@ -2,7 +2,6 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
  */
 package markdown.components
-import ohos.hilog.Hilog
 
 /**
  * Markdown用户可设置的样式
