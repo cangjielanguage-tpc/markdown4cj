@@ -1,5 +1,6 @@
+import { LatexMathColorFormat } from "@cangjie-tpc/markdown_hybrid"
 import { TypeEnum } from "../model/TypeEnum"
-import { colorSwitch, colorSwitch1, numberToColorString } from "../utils/BaseUtils"
+import { colorSwitch, colorSwitch1, enumToString, numberToColorString, styleToString } from "../utils/BaseUtils"
 
 /**
  * 自定义选项卡
@@ -8,9 +9,9 @@ import { colorSwitch, colorSwitch1, numberToColorString } from "../utils/BaseUti
 export struct BaseTabComponent {
   titleStr: string = ""
   typeEnum: TypeEnum = TypeEnum.IS_STRING
-  allListData: Array<string | number | boolean> = Array<string | number | boolean>()
+  allListData: Array<string | number | boolean | Resource | undefined> = Array<string | number | boolean | Resource | undefined>()
   @Link
-  allData: string | number | boolean
+  allData: string | number | boolean | Resource | undefined
 
   build() {
     Column() {
@@ -38,6 +39,24 @@ export struct BaseTabComponent {
             .padding(2)
             .textAlign(TextAlign.Start)
             .border({ width: 1, color: Color.Black })
+        } else if (this.typeEnum == TypeEnum.IS_RESOURCE) {
+          if (this.allData !== null) {
+            Text(`${(this.allData as Resource).id}`)
+              .fontSize(16)
+              .textAlign(TextAlign.Start)
+          } else {
+            Text("undefined")
+              .fontSize(16)
+              .textAlign(TextAlign.Start)
+          }
+        } else if (this.typeEnum == TypeEnum.IS_LATEX_FORMAT) {
+          Text(enumToString(this.allData as number))
+            .fontSize(16)
+            .textAlign(TextAlign.Start)
+        } else if (this.typeEnum == TypeEnum.IS_DECORATION_STYLE) {
+          Text(styleToString(this.allData as number))
+            .fontSize(16)
+            .textAlign(TextAlign.Start)
         }
       }
       .width("100%")
@@ -102,6 +121,59 @@ export struct BaseTabComponent {
               .fontSize(14)
               .onClick(() => {
                 this.allData = item
+              })
+          })
+        } else if (this.typeEnum == TypeEnum.IS_RESOURCE) {
+          ForEach(this.allListData, (item: string | number | boolean | Resource | undefined, _: number) => {
+            if (item !== undefined) {
+              Button(`${(item as Resource).id}`)
+                .type(ButtonType.Capsule)
+                .stateEffect(true)
+                .height(25)
+                .margin(2)
+                .backgroundColor(0xFF317AFF)
+                .fontSize(14)
+                .onClick(() => {
+                  this.allData = item as string
+                })
+            } else {
+              Button("undefined")
+                .type(ButtonType.Capsule)
+                .stateEffect(true)
+                .height(25)
+                .margin(2)
+                .backgroundColor(0xFF317AFF)
+                .fontSize(14)
+                .onClick(() => {
+                  this.allData = undefined
+                })
+            }
+
+          })
+        } else if (this.typeEnum == TypeEnum.IS_LATEX_FORMAT) {
+          ForEach(this.allListData, (item: string | number | boolean, _: number) => {
+            Button(`${enumToString(item as number)}`)
+              .type(ButtonType.Capsule)
+              .stateEffect(true)
+              .height(25)
+              .margin(2)
+              .backgroundColor(0xFF317AFF)
+              .fontSize(14)
+              .onClick(() => {
+                this.allData = item as string
+              })
+          })
+        } else if (this.typeEnum == TypeEnum.IS_DECORATION_STYLE) {
+          ForEach(this.allListData, (item: string | number | boolean, _: number) => {
+            Button(`${styleToString(item as number)}`)
+              .type(ButtonType.Capsule)
+              .stateEffect(true)
+              .height(25)
+              .margin(2)
+              .backgroundColor(0xFF317AFF)
+              .fontSize(14)
+              .onClick(() => {
+                this.allData = item as string
               })
           })
         }

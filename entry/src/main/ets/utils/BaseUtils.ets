@@ -156,6 +156,7 @@ export function booleanToString(isFull: boolean): string {
  * 下划线样式转文本
  */
 export function styleToString(style: TextDecorationStyle): string {
+  console.error("---------> " + style)
   switch (style) {
     case TextDecorationStyle.SOLID:
       return "单实线"
@@ -167,6 +168,8 @@ export function styleToString(style: TextDecorationStyle): string {
       return "虚线"
     case TextDecorationStyle.WAVY:
       return "波浪线"
+    default :
+      return "undefined"
   }
 }
 
@@ -179,5 +182,7 @@ export function enumToString(e: LatexMathColorFormat): string {
       return "COLOR_FORMAT_RGB_565"
     case LatexMathColorFormat.COLOR_FORMAT_BGRA_8888:
       return "COLOR_FORMAT_BGRA_8888"
+    default :
+      return "undefined"
   }
 }

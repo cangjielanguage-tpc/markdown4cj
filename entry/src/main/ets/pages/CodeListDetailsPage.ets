@@ -5,7 +5,7 @@ import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
-import { CodeListData } from './CodeListPage'
+import { CodeListData } from '../model/CodeListData'
 
 @Entry
 @Component
@@ -17,7 +17,8 @@ struct CodeListDetailsPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -29,10 +30,77 @@ struct CodeListDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
+  /**
+   * 是否增量解析Markdown文本
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
   /**
    * 组合代码未选中标题字体大小
    */
@@ -57,62 +125,16 @@ struct CodeListDetailsPage {
    * 组合代码未选中标题背景颜色
    */
   codeListTitleUnSelectBackGroupColor: number = 0x00FFFFFF
-  /**
-   * 增量加载延迟
-   */
-  time: number = 50
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
-  isInputEnded: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否开启打字机效果
-   */
-  @State
-  typeWriterOpen: boolean = false
-  /**
-   * 打字机效果颜色
-   */
-  @State
-  typeWriterColor: number = 0xFFFF0000
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
       let codeListData: CodeListData = router.getParams() as CodeListData
       this.fileStr = getFileContextStr(codeListData._pagePath)
+      // ---------- 通用
       this.isFull = codeListData._isFull
-      this.codeListTitleTextSize = codeListData._codeListTitleTextSize
-      this.codeListTitleSelectTextSize = codeListData._codeListTitleSelectTextSize
-      this.codeListTitleSelectTextColor = codeListData._codeListTitleSelectTextColor
-      this.codeListTitleUnSelectTextColor = codeListData._codeListTitleUnSelectTextColor
-      this.codeListTitleSelectBackGroupColor = codeListData._codeListTitleSelectBackGroupColor
-      this.codeListTitleUnSelectBackGroupColor = codeListData._codeListTitleUnSelectBackGroupColor
+      this.incrementalAnalysis = codeListData._incrementalAnalysis
+      this.time = codeListData._time
+      this.textNumber = codeListData._textNumber
       this.isMarkdownParserSync = codeListData._isMarkdownParserSync
       this.typeWriterOpen = codeListData._typeWriterOpen
       this.typeWriterColor = codeListData._typeWriterColor
@@ -120,6 +142,15 @@ struct CodeListDetailsPage {
       this.blockFirstTopMargin = codeListData._blockFirstTopMargin
       this.blockLastBottomMargin = codeListData._blockLastBottomMargin
       this.blockTopAndBottomMargins = codeListData._blockTopAndBottomMargins
+      this.openGestureSwipe = codeListData._openGestureSwipe
+      this.openGestureSwipeTest = codeListData._openGestureSwipeTest
+      // ---------- 专有
+      this.codeListTitleTextSize = codeListData._codeListTitleTextSize
+      this.codeListTitleSelectTextSize = codeListData._codeListTitleSelectTextSize
+      this.codeListTitleSelectTextColor = codeListData._codeListTitleSelectTextColor
+      this.codeListTitleUnSelectTextColor = codeListData._codeListTitleUnSelectTextColor
+      this.codeListTitleSelectBackGroupColor = codeListData._codeListTitleSelectBackGroupColor
+      this.codeListTitleUnSelectBackGroupColor = codeListData._codeListTitleUnSelectBackGroupColor
     } catch (e) {
     }
   }
@@ -160,12 +191,22 @@ struct CodeListDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -185,6 +226,7 @@ struct CodeListDetailsPage {
     theme.setCodeListTitleUnSelectBackGroupColor(this.codeListTitleUnSelectBackGroupColor)
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
     theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
@@ -192,6 +234,8 @@ struct CodeListDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     config.setMarkdownTheme(theme)
     return config
   }

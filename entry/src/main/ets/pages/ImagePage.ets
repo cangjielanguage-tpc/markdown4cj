@@ -3,12 +3,23 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
-import { booleanToString, numberToColorString, stringToBoolean } from '../utils/BaseUtils'
 import { router } from '@kit.ArkUI'
+import { BaseTabComponent } from '../component/BaseTabComponent'
+import { TypeEnum } from '../model/TypeEnum'
+import {
+  booleanListGeneralData,
+  colorListGeneralData,
+  marginListGeneralData,
+  textNumberListGeneralData,
+  textSizeListGeneralData,
+  timeListGeneralData
+} from '../model/GeneralData'
+import { ImageDataMD } from '../model/ImageDataMD'
 
 @Entry
 @Component
 struct ImagePage {
+  // ---------------- 通用
   /**
    * 滑动控制器
    */
@@ -16,56 +27,140 @@ struct ImagePage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * rawfile路径
    */
   rawFilePath: string = "016_图片"
   /**
-   * rawfile标题文件夹列表
+   * rawfile文件夹列表
    */
   @State
   folderList: Array<string> = new Array<string>()
   /**
-   * 增量加载全量加载选项列表
+   * 是否全量加载Markdown文本列表
    */
-  isFullList: Array<string> = ["全量加载", "增量加载"]
+  isFullList: Array<boolean> = booleanListGeneralData
   /**
-   * 增量加载全量加载选项
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
-   * markdown是否增量解析列表
+   * 是否增量解析Markdown文本列表
    */
-  incrementalAnalysisList: Array<boolean> = [true, false]
+  incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
+   * 是否增量解析Markdown文本
    */
   @State
   incrementalAnalysis: boolean = false
   /**
    * 增量加载每次间隔时间列表
    */
-  timeList: Array<number> = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500]
+  timeList: Array<number> = timeListGeneralData
   /**
-   * 增量加载每次间隔时间 - 毫秒
+   * 增量加载每次间隔时间
    */
   @State
   time: number = 50
   /**
    * 增量每次增量文本数量列表
    */
-  textNumberList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 150, 200]
+  textNumberList: Array<number> = textNumberListGeneralData
   /**
    * 增量每次增量文本数量
    */
   @State
   textNumber: number = 10
   /**
+   * 是否同步解析Markdown文本列表
+   */
+  isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果列表
+   */
+  typeWriterOpenList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色列表
+   */
+  typeWriterColorList: Array<number> = colorListGeneralData
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴效果列表
+   */
+  isOnCopyList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距列表
+   */
+  blockFirstTopMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距列表
+   */
+  blockLastBottomMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距列表
+   */
+  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动列表
+   */
+  openGestureSwipeList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试列表
+   */
+  openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+
+  // ---------------- 专有
+  /**
    * 是否触发图片替换事件列表
    */
-  callbackList: Array<boolean> = [true, false]
+  callbackList: Array<boolean> = booleanListGeneralData
   /**
    * 是否触发图片替换事件
    */
@@ -74,16 +169,16 @@ struct ImagePage {
   /**
    * 图片默认占位图选项列表
    */
-  imageResourceList: Array<Resource | null> = [null, $r('app.media.startIcon')]
+  imageResourceList: Array<Resource | undefined> = [undefined, $r('app.media.startIcon')]
   /**
    * 图片默认占位图
    */
   @State
-  imageResource: Resource | null = null
+  imageResource: Resource | undefined = undefined
   /**
    * 网络图片是否压缩列表
    */
-  isAutoResizeList: Array<boolean> = [true, false]
+  isAutoResizeList: Array<boolean> = booleanListGeneralData
   /**
    * 网络图片是否压缩
    */
@@ -128,7 +223,7 @@ struct ImagePage {
   /**
    * 图片边框颜色列表
    */
-  imageBorderColorList: Array<number> = [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  imageBorderColorList: Array<number> = colorListGeneralData
   /**
    * 图片边框颜色
    */
@@ -146,34 +241,34 @@ struct ImagePage {
   /**
    * 图片基于父布局宽度缩放百分比列表
    */
-  imageFixedRatioWidthList: Array<number| null> = [null,0, 0.2, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0]
+  imageFixedRatioWidthList: Array<number| undefined> = [undefined,0, 0.2, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0]
   /**
    * 图片基于父布局宽度缩放百分比
    */
   @State
-  imageFixedRatioWidth: number| null = null
+  imageFixedRatioWidth: number | undefined = undefined
   /**
    * 图片最大高度列表
    */
-  imageMaxHeightList: Array<number | null> = [null, 50.0, 80.0, 100.0, 120.0, 150.0, 180.0, 200.0, 250.0, 300.0, 500.0]
+  imageMaxHeightList: Array<number | undefined> = [undefined, 50.0, 80.0, 100.0, 120.0, 150.0, 180.0, 200.0, 250.0, 300.0, 500.0]
   /**
    * 图片最大高度
    */
   @State
-  imageMaxHeight: number | null = null
+  imageMaxHeight: number | undefined = undefined
   /**
    * 图片最大宽度列表
    */
-  imageMaxWidthList: Array<number | null> = [null, 50.0, 80.0, 100.0, 120.0, 150.0, 180.0, 200.0, 250.0, 300.0, 500.0]
+  imageMaxWidthList: Array<number | undefined> = [undefined, 50.0, 80.0, 100.0, 120.0, 150.0, 180.0, 200.0, 250.0, 300.0, 500.0]
   /**
    * 图片最大宽度
    */
   @State
-  imageMaxWidth: number | null = null
+  imageMaxWidth: number | undefined = undefined
   /**
    * 图片是否有下载按钮列表
    */
-  isImageDownloadList: Array<boolean> = [true, false]
+  isImageDownloadList: Array<boolean> = booleanListGeneralData
   /**
    * 图片是否有下载按钮
    */
@@ -182,7 +277,7 @@ struct ImagePage {
   /**
    * 是否图文混排列表
    */
-  isImageMixedLayoutList: Array<boolean> = [true, false]
+  isImageMixedLayoutList: Array<boolean> = booleanListGeneralData
   /**
    * 是否图文混排
    */
@@ -236,7 +331,7 @@ struct ImagePage {
   /**
    * 图片下载按钮文本大小列表
    */
-  imageDownloadTexSizeList: Array<number> = [10, 12, 16, 18, 20, 22, 26, 28, 30,35,40]
+  imageDownloadTexSizeList: Array<number> = textSizeListGeneralData
   /**
    * 图片下载按钮文本大小
    */
@@ -245,84 +340,21 @@ struct ImagePage {
   /**
    * 图片下载按钮文本颜色列表
    */
-  imageDownloadTexColorList: Array<number> = [0xE6000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  imageDownloadTexColorList: Array<number> = colorListGeneralData
   /**
    * 图片下载按钮文本颜色
    */
   @State
-  imageDownloadTexColor: number = 0xE6000000
+  imageDownloadTexColor: number = 0xFF191919
   /**
    * 图片下载按钮背景颜色列表
    */
-  imageDownloadBackgroundColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  imageDownloadBackgroundColorList: Array<number> = colorListGeneralData
   /**
    * 图片下载按钮背景颜色
    */
   @State
-  imageDownloadBackgroundColor: number = 0xFFF5F5F5
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  isMarkdownParserSyncList: Array<boolean> = [true, false]
-  /**
-   * 是否开启打字机效果
-   */
-  @State
-  typeWriterOpen: boolean = false
-  /**
-   * 是否开启打字机效果
-   */
-  typeWriterOpenList: Array<boolean> = [true, false]
-  /**
-   * 打字机效果颜色
-   */
-  @State
-  typeWriterColor: number = 0xFFFF0000
-  /**
-   * 打字机效果颜色列表
-   */
-  typeWriterColorList: Array<number> = [0xFFF5F5F5, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * 是否打开长按复制粘贴
-   */
-  isOnCopyList: Array<boolean> = [true, false]
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown第一个模块上边距
-   */
-  blockFirstTopMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  blockLastBottomMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 模块间上下间距
-   */
-  blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
+  imageDownloadBackgroundColor: number = 0xFFE0E0E0
   /**
    * 配置数据内容
    */
@@ -343,1031 +375,271 @@ struct ImagePage {
       )
       Scroll() {
         Column() {
-          Column() {
-            Row() {
-              Text(`是否增量加载 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${booleanToString(this.isFull)}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isFullList, (item: string, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isFull = stringToBoolean(item)
-                    this.imageDataMD.isFull = this.isFull
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown是否增量解析 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.incrementalAnalysis}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.incrementalAnalysisList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.incrementalAnalysis = item
-                    this.imageDataMD.incrementalAnalysis = this.incrementalAnalysis
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`增量加载每次间隔时间 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.time}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.timeList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.time = item
-                    this.imageDataMD.time = this.time
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`增量每次增量文本数量 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.textNumber}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.textNumberList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.textNumber = item
-                    this.imageDataMD.textNumber = this.textNumber
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown是否同步解析 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isMarkdownParserSync}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isMarkdownParserSyncList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isMarkdownParserSync = item
-                    this.imageDataMD.isMarkdownParserSync = this.isMarkdownParserSync
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`是否打开长按复制粘贴 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isOnCopy}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isOnCopyList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isOnCopy = item
-                    this.imageDataMD.isOnCopy = this.isOnCopy
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown第一个模块上边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockFirstTopMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockFirstTopMarginList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockFirstTopMargin = item
-                    this.imageDataMD.blockFirstTopMargin = this.blockFirstTopMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown最后一个模块下边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockLastBottomMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockLastBottomMarginList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockLastBottomMargin = item
-                    this.imageDataMD.blockLastBottomMargin = this.blockLastBottomMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`模块间上下间距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockTopAndBottomMargins}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockTopAndBottomMarginsList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockTopAndBottomMargins = item
-                    this.imageDataMD.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`是否触发图片替换事件 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.callback}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.callbackList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.callback = item
-                    this.imageDataMD.callback = this.callback
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`是否设置默认占位图 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(this.resToString(this.imageResource))
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageResourceList, (item: Resource | null, index: number) => {
-                Button(this.resToString(item))
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    if (item === undefined) {
-                      this.imageResource = null
-                    } else {
-                      this.imageResource = item
-                    }
-                    this.imageDataMD.imageResource = this.imageResource
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片上边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageMarginTop}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageMarginTopList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageMarginTop = item
-                    this.imageDataMD.imageMarginTop = this.imageMarginTop
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片下边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageMarginBottom}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageMarginBottomList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageMarginBottom = item
-                    this.imageDataMD.imageMarginBottom = this.imageMarginBottom
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片圆角 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageBorderRadius}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageBorderRadiusList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageBorderRadius = item
-                    this.imageDataMD.imageBorderRadius = this.imageBorderRadius
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片边框宽度 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageBorderWidth}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageBorderWidthList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageBorderWidth = item
-                    this.imageDataMD.imageBorderWidth = this.imageBorderWidth
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片边框颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${numberToColorString(this.imageBorderColor)}`)
-                .fontSize(16)
-                .fontColor(this.imageBorderColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageBorderColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageBorderColor = item
-                    this.imageDataMD.imageBorderColor = this.imageBorderColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片基于自身宽度缩放百分比 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageMaximumWidth}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageMaximumWidthList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageMaximumWidth = item
-                    this.imageDataMD.imageMaximumWidth = this.imageMaximumWidth
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片基于父布局宽度缩放百分比 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageFixedRatioWidth}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageFixedRatioWidthList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageFixedRatioWidth = item
-                    this.imageDataMD.imageFixedRatioWidth = this.imageFixedRatioWidth
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片最大高度 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageMaxHeight}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageMaxHeightList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageMaxHeight = item
-                    this.imageDataMD.imageMaxHeight = this.imageMaxHeight
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片最大宽度 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageMaxWidth}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageMaxHeightList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageMaxWidth = item
-                    this.imageDataMD.imageMaxWidth = this.imageMaxWidth
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片是否有下载按钮 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isImageDownload}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isImageDownloadList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isImageDownload = item
-                    this.imageDataMD.isImageDownload = this.isImageDownload
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`是否图文混排 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isImageMixedLayout}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isImageMixedLayoutList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isImageMixedLayout = item
-                    this.imageDataMD.isImageMixedLayout = this.isImageMixedLayout
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片下载按钮图片宽度和高度 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageDownloadImageWidthHeight}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageDownloadImageWidthHeightList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageDownloadImageWidthHeight = item
-                    this.imageDataMD.imageDownloadImageWidthHeight = this.imageDownloadImageWidthHeight
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片下载按钮宽度 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageDownloadWidth}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageDownloadWidthList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageDownloadWidth = item
-                    this.imageDataMD.imageDownloadWidth = this.imageDownloadWidth
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片下载按钮高度 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageDownloadHeight}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageDownloadHeightList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageDownloadHeight = item
-                    this.imageDataMD.imageDownloadHeight = this.imageDownloadHeight
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片下载按钮圆角 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageDownloadRadius}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageDownloadRadiusList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageDownloadRadius = item
-                    this.imageDataMD.imageDownloadRadius = this.imageDownloadRadius
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片下载按钮文本内容 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageDownloadText}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageDownloadTextList, (item: string, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageDownloadText = item
-                    this.imageDataMD.imageDownloadText = this.imageDownloadText
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片下载按钮文本大小 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageDownloadTexSize}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageDownloadTexSizeList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageDownloadTexSize = item
-                    this.imageDataMD.imageDownloadTexSize = this.imageDownloadTexSize
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片下载按钮文本颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${numberToColorString(this.imageDownloadTexColor)}`)
-                .fontSize(16)
-                .fontColor(this.imageDownloadTexColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageDownloadTexColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageDownloadTexColor = item
-                    this.imageDataMD.imageDownloadTexColor = this.imageDownloadTexColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片下载按钮背景颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${numberToColorString(this.imageDownloadBackgroundColor)}`)
-                .fontSize(16)
-                .fontColor(this.imageDownloadBackgroundColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageDownloadBackgroundColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageDownloadBackgroundColor = item
-                    this.imageDataMD.imageDownloadBackgroundColor = this.imageDownloadBackgroundColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`是否开启打字机效果 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.typeWriterOpen}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.typeWriterOpenList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.typeWriterOpen = item
-                    this.imageDataMD.typeWriterOpen = this.typeWriterOpen
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`打字机效果颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.typeWriterColor))
-                .fontSize(16)
-                .fontColor(this.typeWriterColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.typeWriterColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.typeWriterColor = item
-                    this.imageDataMD.typeWriterColor = this.typeWriterColor
-                  })
-              })
-            }
-          }
-
+          // ------------ 通用
+          BaseTabComponent({
+            titleStr: "是否全量加载Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isFullList,
+            allData: this.isFull
+          })
+          BaseTabComponent({
+            titleStr: "是否增量解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.incrementalAnalysisList,
+            allData: this.incrementalAnalysis
+          })
+          BaseTabComponent({
+            titleStr: "增量加载每次间隔时间 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.timeList,
+            allData: this.time
+          })
+          BaseTabComponent({
+            titleStr: "增量每次增量文本数量 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.textNumberList,
+            allData: this.textNumber
+          })
+          BaseTabComponent({
+            titleStr: "是否同步解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isMarkdownParserSyncList,
+            allData: this.isMarkdownParserSync
+          })
+          BaseTabComponent({
+            titleStr: "是否开启打字机效果 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.typeWriterOpenList,
+            allData: this.typeWriterOpen
+          })
+          BaseTabComponent({
+            titleStr: "打字机效果颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.typeWriterColorList,
+            allData: this.typeWriterColor
+          })
+          BaseTabComponent({
+            titleStr: "是否打开长按复制粘贴效果 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isOnCopyList,
+            allData: this.isOnCopy
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本第一个模块上边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockFirstTopMarginList,
+            allData: this.blockFirstTopMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本最后一个模块下边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockLastBottomMarginList,
+            allData: this.blockLastBottomMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockTopAndBottomMarginsList,
+            allData: this.blockTopAndBottomMargins
+          })
+          BaseTabComponent({
+            titleStr: "是否开启响应滑动测试 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeTestList,
+            allData: this.openGestureSwipeTest
+          })
+          BaseTabComponent({
+            titleStr: "是否允许markdown控件自身响应滑动 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeList,
+            allData: this.openGestureSwipe
+          })
+
+          // ---------------- 专有
+          BaseTabComponent({
+            titleStr: "是否触发图片替换事件 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.callbackList,
+            allData: this.callback
+          })
+          BaseTabComponent({
+            titleStr: "是否设置默认占位图 - ",
+            typeEnum: TypeEnum.IS_RESOURCE,
+            allListData: this.imageResourceList,
+            allData: this.typeWriterColor
+          })
+          BaseTabComponent({
+            titleStr: "图片上边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageMarginTopList,
+            allData: this.imageMarginTop
+          })
+          BaseTabComponent({
+            titleStr: "图片下边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageMarginBottomList,
+            allData: this.imageMarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "图片圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageBorderRadiusList,
+            allData: this.imageBorderRadius
+          })
+          BaseTabComponent({
+            titleStr: "图片边框宽度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageBorderWidthList,
+            allData: this.imageBorderWidth
+          })
+          BaseTabComponent({
+            titleStr: "图片边框颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.imageBorderColorList,
+            allData: this.imageBorderColor
+          })
+          BaseTabComponent({
+            titleStr: "图片基于自身宽度缩放百分比 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageMaximumWidthList,
+            allData: this.imageMaximumWidth
+          })
+          BaseTabComponent({
+            titleStr: "图片基于父布局宽度缩放百分比 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageFixedRatioWidthList,
+            allData: this.imageFixedRatioWidth
+          })
+          BaseTabComponent({
+            titleStr: "图片最大高度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageMaxHeightList,
+            allData: this.imageMaxHeight
+          })
+          BaseTabComponent({
+            titleStr: "图片最大宽度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageMaxHeightList,
+            allData: this.imageMaxHeight
+          })
+          BaseTabComponent({
+            titleStr: "图片是否有下载按钮 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isImageDownloadList,
+            allData: this.isImageDownload
+          })
+          BaseTabComponent({
+            titleStr: "是否图文混排 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isImageMixedLayoutList,
+            allData: this.isImageMixedLayout
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮图片宽度和高度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageDownloadImageWidthHeightList,
+            allData: this.imageDownloadImageWidthHeight
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮宽度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageDownloadWidthList,
+            allData: this.imageDownloadWidth
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮高度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageDownloadHeightList,
+            allData: this.imageDownloadHeight
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageDownloadRadiusList,
+            allData: this.imageDownloadRadius
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮文本内容 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.imageDownloadTextList,
+            allData: this.imageDownloadText
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮文本大小 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageDownloadTexSizeList,
+            allData: this.imageDownloadTexSize
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.imageDownloadTexColorList,
+            allData: this.imageDownloadTexColor
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.imageDownloadBackgroundColorList,
+            allData: this.imageDownloadBackgroundColor
+          })
+
+          // 列表显示
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
                 Button(`${index + 1}、${item}`)
-                  .height(40)// 高度
-                  .width('80%')// 宽度
-                  .type(ButtonType.Capsule)// 圆角
-                  .fontColor(0xFFFFFFFF)// 文本颜色
-                  .backgroundColor(0xFF317AFF)// 背景颜色
-                  .margin({ top: 5, bottom: 5 })// 外边距
-                  .align(Alignment.Center)// 内容对齐方式
-                  .fontSize(16)// 字体大小
+                  .height(40)
+                  .width('80%')
+                  .type(ButtonType.Capsule)
+                  .fontColor(0xFFFFFFFF)
+                  .backgroundColor(0xFF317AFF)
+                  .margin({ top: 5, bottom: 5 })
+                  .align(Alignment.Center)
+                  .fontSize(16)
                   .onClick(() => {
-                    // 点击动作触发该方法调用
+                    // ---------- 通用
+                    this.imageDataMD.isFull = this.isFull
+                    this.imageDataMD.incrementalAnalysis = this.incrementalAnalysis
+                    this.imageDataMD.time = this.time
+                    this.imageDataMD.textNumber = this.textNumber
+                    this.imageDataMD.isMarkdownParserSync = this.isMarkdownParserSync
+                    this.imageDataMD.typeWriterOpen = this.typeWriterOpen
+                    this.imageDataMD.typeWriterColor = this.typeWriterColor
+                    this.imageDataMD.isOnCopy = this.isOnCopy
+                    this.imageDataMD.blockFirstTopMargin = this.blockFirstTopMargin
+                    this.imageDataMD.blockLastBottomMargin = this.blockLastBottomMargin
+                    this.imageDataMD.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.imageDataMD.openGestureSwipe = this.openGestureSwipe
+                    this.imageDataMD.openGestureSwipeTest = this.openGestureSwipeTest
                     this.imageDataMD.pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 专有
+                    this.imageDataMD.callback = this.callback
+                    this.imageDataMD.imageResource = this.imageResource
+                    this.imageDataMD.imageMarginTop = this.imageMarginTop
+                    this.imageDataMD.imageMarginBottom = this.imageMarginBottom
+                    this.imageDataMD.imageBorderRadius = this.imageBorderRadius
+                    this.imageDataMD.imageBorderWidth = this.imageBorderWidth
+                    this.imageDataMD.imageBorderColor = this.imageBorderColor
+                    this.imageDataMD.imageMaximumWidth = this.imageMaximumWidth
+                    this.imageDataMD.imageFixedRatioWidth = this.imageFixedRatioWidth
+                    this.imageDataMD.imageMaxHeight = this.imageMaxHeight
+                    this.imageDataMD.imageMaxWidth = this.imageMaxWidth
+                    this.imageDataMD.isImageDownload = this.isImageDownload
+                    this.imageDataMD.isImageMixedLayout = this.isImageMixedLayout
+                    this.imageDataMD.imageDownloadImageWidthHeight = this.imageDownloadImageWidthHeight
+                    this.imageDataMD.imageDownloadWidth = this.imageDownloadWidth
+                    this.imageDataMD.imageDownloadHeight = this.imageDownloadHeight
+                    this.imageDataMD.imageDownloadRadius = this.imageDownloadRadius
+                    this.imageDataMD.imageDownloadText = this.imageDownloadText
+                    this.imageDataMD.imageDownloadTexSize = this.imageDownloadTexSize
+                    this.imageDataMD.imageDownloadTexColor = this.imageDownloadTexColor
+                    this.imageDataMD.imageDownloadBackgroundColor = this.imageDownloadBackgroundColor
+                    // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/ImageDetailsPage", params: this.imageDataMD })
                   })
               }
             })
           }
-          // 设置ListItem在List交叉轴方向的布局方式
           .alignListItem(ListItemAlign.Center)
         }
         .padding({ bottom: 100 })
@@ -1386,173 +658,5 @@ struct ImagePage {
   }
 }
 
-export class ImageDataMD {
-  _isFull: boolean = true
-  _incrementalAnalysis: boolean = false
-  _time: number = 50
-  _textNumber: number = 10
-  _callback: boolean = false
-  _imageResource: Resource | null = null
-  _imageMarginTop: number = 10
-  _imageMarginBottom: number = 10
-  _imageBorderRadius: number = 0
-  _imageBorderWidth: number = 0
-  _imageBorderColor: number = 0xFF000000
-  _imageMaximumWidth: number = 1.0
-  _imageFixedRatioWidth: number| null = null
-  _imageMaxHeight: number | null = null
-  _imageMaxWidth: number | null = null
-  _isImageDownload: boolean = false
-  _isImageMixedLayout: boolean = true
-  _imageDownloadImageWidthHeight: number = 18
-  _imageDownloadWidth: number = 144
-  _imageDownloadHeight: number = 44
-  _imageDownloadRadius: number = 22
-  _imageDownloadText: string = "下载图片"
-  _imageDownloadTexSize: number = 16
-  _imageDownloadTexColor: number = 0xE6000000
-  _imageDownloadBackgroundColor: number = 0xFFF5F5F5
-  _isMarkdownParserSync: boolean = false
-  _typeWriterOpen: boolean = false
-  _typeWriterColor: number = 0xFFFF0000
-  _isOnCopy: boolean = false
-  _blockFirstTopMargin: number = 8
-  _blockLastBottomMargin: number = 8
-  _blockTopAndBottomMargins: number = 8
-  _pagePath: string = ""
 
-  public set isFull(value: boolean) {
-    this._isFull = value
-  }
-
-  public set incrementalAnalysis(value: boolean) {
-    this._incrementalAnalysis = value
-  }
-
-  public set time(value: number) {
-    this._time = value
-  }
-
-  public set textNumber(value: number) {
-    this._textNumber = value
-  }
-
-  public set callback(value: boolean) {
-    this._callback = value
-  }
-
-  public set imageResource(value: Resource | null) {
-    this._imageResource = value
-  }
-
-  public set imageMarginTop(value: number) {
-    this._imageMarginTop = value
-  }
-
-  public set imageMarginBottom(value: number) {
-    this._imageMarginBottom = value
-  }
-
-  public set imageBorderRadius(value: number) {
-    this._imageBorderRadius = value
-  }
-
-  public set imageBorderWidth(value: number) {
-    this._imageBorderWidth = value
-  }
-
-  public set imageBorderColor(value: number) {
-    this._imageBorderColor = value
-  }
-
-  public set imageMaximumWidth(value: number) {
-    this._imageMaximumWidth = value
-  }
-
-  public set imageFixedRatioWidth(value: number) {
-    this._imageFixedRatioWidth = value
-  }
-
-  public set imageMaxHeight(value: number) {
-    this._imageMaxHeight = value
-  }
-
-  public set imageMaxWidth(value: number) {
-    this._imageMaxWidth = value
-  }
-
-  public set isImageDownload(value: boolean) {
-    this._isImageDownload = value
-  }
-
-  public set isImageMixedLayout(value: boolean) {
-    this._isImageMixedLayout = value
-  }
-
-  public set imageDownloadImageWidthHeight(value: number) {
-    this._imageDownloadImageWidthHeight = value
-  }
-
-  public set imageDownloadWidth(value: number) {
-    this._imageDownloadWidth = value
-  }
-
-  public set imageDownloadHeight(value: number) {
-    this._imageDownloadHeight = value
-  }
-
-  public set imageDownloadRadius(value: number) {
-    this._imageDownloadRadius = value
-  }
-
-  public set imageDownloadText(value: string) {
-    this._imageDownloadText = value
-  }
-
-  public set imageDownloadTexSize(value: number) {
-    this._imageDownloadTexSize = value
-  }
-
-  public set imageDownloadTexColor(value: number) {
-    this._imageDownloadTexColor = value
-  }
-
-  public set imageDownloadBackgroundColor(value: number) {
-    this._imageDownloadBackgroundColor = value
-  }
-
-  public set isMarkdownParserSync(value: boolean) {
-    this._isMarkdownParserSync = value
-  }
-
-  public set typeWriterOpen(value: boolean) {
-    this._typeWriterOpen = value
-  }
-
-  public set typeWriterColor(value: number) {
-    this._typeWriterColor = value
-  }
-
-  public set isOnCopy(value: boolean) {
-    this._isOnCopy = value
-  }
-
-  public set blockFirstTopMargin(value: number) {
-    this._blockFirstTopMargin = value
-  }
-
-  public set blockLastBottomMargin(value: number) {
-    this._blockLastBottomMargin = value
-  }
-
-  public set blockTopAndBottomMargins(value: number) {
-    this._blockTopAndBottomMargins = value
-  }
-
-  public set pagePath(value: string) {
-    this._pagePath = value
-  }
-
-  constructor() {
-  }
-}
+export { ImageDataMD }

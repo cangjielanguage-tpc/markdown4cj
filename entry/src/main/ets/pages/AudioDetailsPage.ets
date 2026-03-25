@@ -5,12 +5,13 @@ import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
-import { AudioDataMD } from './AudioPage'
 import hilog from '@ohos.hilog'
+import { AudioMDData } from '../model/AudioMDData'
 
 @Entry
 @Component
 struct AudioDetailsPage {
+  // ---------- 通用
   /**
    * 滑动控制器
    */
@@ -18,7 +19,8 @@ struct AudioDetailsPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -30,10 +32,77 @@ struct AudioDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
+  /**
+   * 是否增量解析Markdown文本
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
   /**
    * 音频阴影颜色值
    */
@@ -102,57 +171,26 @@ struct AudioDetailsPage {
    * 音频下边距
    */
   audioMarginBottom: number = 10.0
-  /**
-   * 增量加载延迟
-   */
-  time: number = 50
-
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
-  isInputEnded: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否开启打字机效果
-   */
-  @State
-  typeWriterOpen: boolean = false
-  /**
-   * 打字机效果颜色
-   */
-  @State
-  typeWriterColor: number = 0xFFFF0000
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
-      let audioData: AudioDataMD = router.getParams() as AudioDataMD
+      let audioData: AudioMDData = router.getParams() as AudioMDData
       this.fileStr = getFileContextStr(audioData._pagePath)
+      // ---------- 通用
       this.isFull = audioData._isFull
+      this.incrementalAnalysis = audioData._incrementalAnalysis
+      this.time = audioData._time
+      this.textNumber = audioData._textNumber
+      this.isMarkdownParserSync = audioData._isMarkdownParserSync
+      this.typeWriterOpen = audioData._typeWriterOpen
+      this.typeWriterColor = audioData._typeWriterColor
+      this.isOnCopy = audioData._isOnCopy
+      this.blockFirstTopMargin = audioData._blockFirstTopMargin
+      this.blockLastBottomMargin = audioData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = audioData._blockTopAndBottomMargins
+      this.openGestureSwipe = audioData._openGestureSwipe
+      this.openGestureSwipeTest = audioData._openGestureSwipeTest
+      // ---------- 专有
       this.audioShadowColor = audioData._audioShadowColor
       this.audioBorderColor = audioData._audioBorderColor
       this.audioBorderWidth = audioData._audioBorderWidth
@@ -170,13 +208,6 @@ struct AudioDetailsPage {
       this.audioTypeTextLineHeight = audioData._audioTypeTextLineHeight
       this.audioMarginTop = audioData._audioMarginTop
       this.audioMarginBottom = audioData._audioMarginBottom
-      this.isMarkdownParserSync = audioData._isMarkdownParserSync
-      this.typeWriterOpen = audioData._typeWriterOpen
-      this.typeWriterColor = audioData._typeWriterColor
-      this.isOnCopy = audioData._isOnCopy
-      this.blockFirstTopMargin = audioData._blockFirstTopMargin
-      this.blockLastBottomMargin = audioData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = audioData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -220,13 +251,24 @@ struct AudioDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -238,6 +280,7 @@ struct AudioDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     config.setAudioCallback(this.audioCallback)
+
     let theme = new MarkdownTheme()
     theme.setAudioIcon($r('app.media.startIcon'))
     theme.setAudioShadowColor(this.audioShadowColor)
@@ -257,6 +300,7 @@ struct AudioDetailsPage {
     theme.setAudioTypeTextLineHeight(this.audioTypeTextLineHeight)
     theme.setAudioMarginTop(this.audioMarginTop)
     theme.setAudioMarginBottom(this.audioMarginBottom)
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
     theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
@@ -264,6 +308,8 @@ struct AudioDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     config.setMarkdownTheme(theme)
     return config
   }

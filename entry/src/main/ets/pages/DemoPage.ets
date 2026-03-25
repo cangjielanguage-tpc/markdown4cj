@@ -136,6 +136,24 @@ struct DemoPage {
   @State
   blockTopAndBottomMargins: number = 8
   /**
+   * 是否允许markdown控件自身响应滑动列表
+   */
+  openGestureSwipeList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试列表
+   */
+  openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
    * 数据
    */
   @State
@@ -155,6 +173,7 @@ struct DemoPage {
       )
       Scroll() {
         Column() {
+          // ------------ 通用
           BaseTabComponent({
             titleStr: "是否全量加载Markdown文本 - ",
             typeEnum: TypeEnum.IS_BOOLEAN,
@@ -221,7 +240,22 @@ struct DemoPage {
             allListData: this.blockTopAndBottomMarginsList,
             allData: this.blockTopAndBottomMargins
           })
+          BaseTabComponent({
+            titleStr: "是否开启响应滑动测试 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeTestList,
+            allData: this.openGestureSwipeTest
+          })
+          BaseTabComponent({
+            titleStr: "是否允许markdown控件自身响应滑动 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeList,
+            allData: this.openGestureSwipe
+          })
 
+          // ---------------- 专有
+
+          // 列表显示
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -235,6 +269,7 @@ struct DemoPage {
                   .align(Alignment.Center)
                   .fontSize(16)
                   .onClick(() => {
+                    // ---------- 通用
                     this.baseMDData.isFull = this.isFull
                     this.baseMDData.incrementalAnalysis = this.incrementalAnalysis
                     this.baseMDData.time = this.time
@@ -246,7 +281,11 @@ struct DemoPage {
                     this.baseMDData.blockFirstTopMargin = this.blockFirstTopMargin
                     this.baseMDData.blockLastBottomMargin = this.blockLastBottomMargin
                     this.baseMDData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.baseMDData.openGestureSwipe = this.openGestureSwipe
+                    this.baseMDData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.baseMDData.pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 专有
+                    // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/DemoDetailsPage", params: this.baseMDData })
                   })
               }

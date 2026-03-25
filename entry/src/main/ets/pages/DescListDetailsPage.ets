@@ -5,7 +5,7 @@ import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
-import { DescListData } from './DescListPage'
+import { DescListData } from '../model/DescListData'
 
 @Entry
 @Component
@@ -17,7 +17,8 @@ struct DescListDetailsPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -29,22 +30,27 @@ struct DescListDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
-   * 增量加载延迟
-   */
-  time: number = 50
-
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   * 是否增量解析Markdown文本
    */
   @State
-  isInputEnded: boolean = false
+  incrementalAnalysis: boolean = false
   /**
-   * markdown是否同步解析
+   * 增量加载每次间隔时间
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本
    */
   @State
   isMarkdownParserSync: boolean = false
@@ -59,31 +65,52 @@ struct DescListDetailsPage {
   @State
   typeWriterColor: number = 0xFFFF0000
   /**
-   * 是否打开长按复制粘贴
+   * 是否打开长按复制粘贴效果
    */
   @State
   isOnCopy: boolean = false
   /**
-   * markdown第一个模块上边距
+   * Markdown文本第一个模块上边距
    */
   @State
   blockFirstTopMargin: number = 8
   /**
-   * markdown最后一个模块下边距
+   * Markdown文本最后一个模块下边距
    */
   @State
   blockLastBottomMargin: number = 8
   /**
-   * 模块间上下间距
+   * Markdown文本模块间上下间距
    */
   @State
   blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
 
   aboutToAppear(): void {
     try {
       let descListData: DescListData = router.getParams() as DescListData
       this.fileStr = getFileContextStr(descListData._pagePath)
+      // ---------- 通用
       this.isFull = descListData._isFull
+      this.incrementalAnalysis = descListData._incrementalAnalysis
+      this.time = descListData._time
+      this.textNumber = descListData._textNumber
       this.isMarkdownParserSync = descListData._isMarkdownParserSync
       this.typeWriterOpen = descListData._typeWriterOpen
       this.typeWriterColor = descListData._typeWriterColor
@@ -91,6 +118,9 @@ struct DescListDetailsPage {
       this.blockFirstTopMargin = descListData._blockFirstTopMargin
       this.blockLastBottomMargin = descListData._blockLastBottomMargin
       this.blockTopAndBottomMargins = descListData._blockTopAndBottomMargins
+      this.openGestureSwipe = descListData._openGestureSwipe
+      this.openGestureSwipeTest = descListData._openGestureSwipeTest
+      // ---------- 专有
     } catch (e) {
     }
   }
@@ -134,13 +164,24 @@ struct DescListDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -161,6 +202,8 @@ struct DescListDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     config.setMarkdownTheme(theme)
     return config
   }

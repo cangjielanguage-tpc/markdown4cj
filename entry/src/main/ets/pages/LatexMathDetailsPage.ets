@@ -11,8 +11,8 @@ import {
   MarkdownTheme
 } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
-import { LatexMathData } from './LatexMathPage'
 import hilog from '@ohos.hilog'
+import { LatexMathData } from '../model/LatexMathData'
 
 @Entry
 @Component
@@ -24,7 +24,8 @@ struct LatexMathDetailsPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -36,17 +37,17 @@ struct LatexMathDetailsPage {
   @State
   content: string = ""
   /**
-   * 增量加载全量加载选项
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
+   * 是否增量解析Markdown文本
    */
   @State
   incrementalAnalysis: boolean = false
   /**
-   * 增量加载每次间隔时间 - 毫秒
+   * 增量加载每次间隔时间
    */
   @State
   time: number = 50
@@ -56,7 +57,7 @@ struct LatexMathDetailsPage {
   @State
   textNumber: number = 10
   /**
-   * markdown是否同步解析
+   * 是否同步解析Markdown文本
    */
   @State
   isMarkdownParserSync: boolean = false
@@ -71,25 +72,42 @@ struct LatexMathDetailsPage {
   @State
   typeWriterColor: number = 0xFFFF0000
   /**
-   * 是否打开长按复制粘贴
+   * 是否打开长按复制粘贴效果
    */
   @State
   isOnCopy: boolean = false
   /**
-   * markdown第一个模块上边距
+   * Markdown文本第一个模块上边距
    */
   @State
   blockFirstTopMargin: number = 8
   /**
-   * markdown最后一个模块下边距
+   * Markdown文本最后一个模块下边距
    */
   @State
   blockLastBottomMargin: number = 8
   /**
-   * 模块间上下间距
+   * Markdown文本模块间上下间距
    */
   @State
   blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
   /**
    * 数学公式文本大小
    */
@@ -124,16 +142,12 @@ struct LatexMathDetailsPage {
    * 数学公式未加载状态是否显示文字
    */
   latexDefaultText: boolean = true
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
-  isInputEnded: boolean = false
 
   aboutToAppear(): void {
     try {
       let latexMathData: LatexMathData = router.getParams() as LatexMathData
       this.fileStr = getFileContextStr(latexMathData._pagePath)
+      // ---------- 通用
       this.isFull = latexMathData._isFull
       this.incrementalAnalysis = latexMathData._incrementalAnalysis
       this.time = latexMathData._time
@@ -145,6 +159,9 @@ struct LatexMathDetailsPage {
       this.blockFirstTopMargin = latexMathData._blockFirstTopMargin
       this.blockLastBottomMargin = latexMathData._blockLastBottomMargin
       this.blockTopAndBottomMargins = latexMathData._blockTopAndBottomMargins
+      this.openGestureSwipe = latexMathData._openGestureSwipe
+      this.openGestureSwipeTest = latexMathData._openGestureSwipeTest
+      // ---------- 专有
       this.latexMathTextSize = latexMathData._latexMathTextSize
       this.latexMathBackGroupColor = latexMathData._latexMathBackGroupColor
       this.latexMathTextColor = latexMathData._latexMathTextColor
@@ -198,14 +215,26 @@ struct LatexMathDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            incrementalAnalysis: this.incrementalAnalysis,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -235,6 +264,7 @@ struct LatexMathDetailsPage {
     theme.setLatexMathColorFormat(this.latexMathColorFormat) // 数学公式生成图片格式
     theme.setLatexMathBlockCenter(this.latexMathBlockCenter) // 块结构的数学公式是否居中
     theme.setLatexMathResStr(this.latexMathResStr) // 数学公式字体路径
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
 
     config.setMarkdownTheme(theme)
     return config

@@ -5,12 +5,13 @@ import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
-import { CodeBlockData } from './CodeBlockPage'
 import hilog from '@ohos.hilog'
+import { CodeBlockData } from '../model/CodeBlockData'
 
 @Entry
 @Component
 struct CodeBlockDetailsPage {
+  // ---------- 通用
   /**
    * 滑动控制器
    */
@@ -18,7 +19,8 @@ struct CodeBlockDetailsPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -30,17 +32,17 @@ struct CodeBlockDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
+   * 是否增量解析Markdown文本
    */
   @State
   incrementalAnalysis: boolean = false
   /**
-   * 增量加载每次间隔时间 - 毫秒
+   * 增量加载每次间隔时间
    */
   @State
   time: number = 50
@@ -49,6 +51,58 @@ struct CodeBlockDetailsPage {
    */
   @State
   textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否开启打字机效果
+   */
+  @State
+  typeWriterOpen: boolean = false
+  /**
+   * 打字机效果颜色
+   */
+  @State
+  typeWriterColor: number = 0xFFFF0000
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
   /**
    * 是否格式化代码块内容
    */
@@ -130,46 +184,6 @@ struct CodeBlockDetailsPage {
   @State
   isDark: boolean = true
   /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
-  isInputEnded: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否开启打字机效果
-   */
-  @State
-  typeWriterOpen: boolean = false
-  /**
-   * 打字机效果颜色
-   */
-  @State
-  typeWriterColor: number = 0xFFFF0000
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
    * codeformat是否使用制表符
    */
   @State
@@ -184,10 +198,21 @@ struct CodeBlockDetailsPage {
     try {
       let codeBlockData: CodeBlockData = router.getParams() as CodeBlockData
       this.fileStr = getFileContextStr(codeBlockData._pagePath)
+      // ---------- 通用
       this.isFull = codeBlockData._isFull
       this.incrementalAnalysis = codeBlockData._incrementalAnalysis
       this.time = codeBlockData._time
       this.textNumber = codeBlockData._textNumber
+      this.isMarkdownParserSync = codeBlockData._isMarkdownParserSync
+      this.typeWriterOpen = codeBlockData._typeWriterOpen
+      this.typeWriterColor = codeBlockData._typeWriterColor
+      this.isOnCopy = codeBlockData._isOnCopy
+      this.blockFirstTopMargin = codeBlockData._blockFirstTopMargin
+      this.blockLastBottomMargin = codeBlockData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = codeBlockData._blockTopAndBottomMargins
+      this.openGestureSwipe = codeBlockData._openGestureSwipe
+      this.openGestureSwipeTest = codeBlockData._openGestureSwipeTest
+      // ---------- 专有
       this.isCodeFormat = codeBlockData._isCodeFormat
       this.codeBlockTextColor = codeBlockData._codeBlockTextColor
       this.codeBlockTypeTextColor = codeBlockData._codeBlockTypeTextColor
@@ -205,13 +230,6 @@ struct CodeBlockDetailsPage {
       this.iconWidthAndHeight = codeBlockData._iconWidthAndHeight
       this.iconWidthAndHeight = codeBlockData._iconWidthAndHeight
       this.isDark = codeBlockData._isDark
-      this.isMarkdownParserSync = codeBlockData._isMarkdownParserSync
-      this.typeWriterOpen = codeBlockData._typeWriterOpen
-      this.typeWriterColor = codeBlockData._typeWriterColor
-      this.isOnCopy = codeBlockData._isOnCopy
-      this.blockFirstTopMargin = codeBlockData._blockFirstTopMargin
-      this.blockLastBottomMargin = codeBlockData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = codeBlockData._blockTopAndBottomMargins
       this.useTab = codeBlockData._useTab
       this.indentWidth = codeBlockData._indentWidth
     } catch (e) {
@@ -260,13 +278,24 @@ struct CodeBlockDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            incrementalAnalysis: this.incrementalAnalysis,
-            config: this.setMarkdownConfig()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -303,6 +332,9 @@ struct CodeBlockDetailsPage {
     theme.setIsDark(this.isDark)
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
+    theme.setUseTab(this.useTab) // codeformat是否使用制表符
+    theme.setIndentWidth(this.indentWidth) // codeformat空格缩进数量
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
     theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
@@ -310,8 +342,8 @@ struct CodeBlockDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
-    theme.setUseTab(this.useTab) // codeformat是否使用制表符
-    theme.setIndentWidth(this.indentWidth) // codeformat空格缩进数量
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     config.setMarkdownTheme(theme)
     return config
   }

@@ -10,6 +10,7 @@ import { BaseMDData } from '../model/BaseMDData'
 @Entry
 @Component
 struct DemoDetailsPage {
+  // ---------- 通用
   /**
    * 滑动控制器
    */
@@ -85,15 +86,28 @@ struct DemoDetailsPage {
   @State
   blockTopAndBottomMargins: number = 8
   /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
    * 流式输入是否输入结束(true:结束输入,false:持续输入)
    */
   @State
   isInputEnded: boolean = false
 
+  // ---------- 专有
+
   aboutToAppear(): void {
     try {
       let baseMDData: BaseMDData = router.getParams() as BaseMDData
       this.fileStr = getFileContextStr(baseMDData._pagePath)
+      // ---------- 通用
       this.isFull = baseMDData._isFull
       this.incrementalAnalysis = baseMDData._incrementalAnalysis
       this.time = baseMDData._time
@@ -105,6 +119,9 @@ struct DemoDetailsPage {
       this.blockFirstTopMargin = baseMDData._blockFirstTopMargin
       this.blockLastBottomMargin = baseMDData._blockLastBottomMargin
       this.blockTopAndBottomMargins = baseMDData._blockTopAndBottomMargins
+      this.openGestureSwipe = baseMDData._openGestureSwipe
+      this.openGestureSwipeTest = baseMDData._openGestureSwipeTest
+      // ---------- 专有
     } catch (e) {
     }
   }
@@ -151,14 +168,26 @@ struct DemoDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            incrementalAnalysis: this.incrementalAnalysis,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -185,6 +214,7 @@ struct DemoDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
 
     config.setMarkdownTheme(theme)
     return config

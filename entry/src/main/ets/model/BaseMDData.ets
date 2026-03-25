@@ -13,6 +13,8 @@ export class BaseMDData {
   _blockFirstTopMargin: number = 8 // Markdown文本第一个模块上边距
   _blockLastBottomMargin: number = 8 // Markdown文本最后一个模块下边距
   _blockTopAndBottomMargins: number = 8 // Markdown文本模块间上下间距
+  _openGestureSwipeTest: boolean = false // 是否开启响应滑动测试
+  _openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
   _pagePath: string = "" // Markdown文本rawfile路径
 
   public set isFull(value: boolean) {
@@ -57,6 +59,14 @@ export class BaseMDData {
 
   public set blockTopAndBottomMargins(value: number) {
     this._blockTopAndBottomMargins = value
+  }
+
+  public set openGestureSwipeTest(value: boolean) {
+    this._openGestureSwipeTest = value
+  }
+
+  public set openGestureSwipe(value: boolean) {
+    this._openGestureSwipe = value
   }
 
   public set pagePath(value: string) {

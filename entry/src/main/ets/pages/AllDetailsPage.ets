@@ -7,12 +7,13 @@ import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
   MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
-import { AllData } from './AllPage'
 import hilog from '@ohos.hilog'
+import { AllData } from '../model/AllData'
 
 @Entry
 @Component
 struct AllDetailsPage {
+  // ---------- 通用
   /**
    * 滑动控制器
    */
@@ -20,7 +21,8 @@ struct AllDetailsPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -32,32 +34,27 @@ struct AllDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
-   * 模块间上下间距
+   * 是否增量解析Markdown文本
    */
   @State
-  blockTopAndBottomMargins: number = 8
+  incrementalAnalysis: boolean = false
   /**
-   * 代码深浅色模式
+   * 增量加载每次间隔时间
    */
   @State
-  isDark: boolean = true
-  /**
-   * 增量加载延迟
-   */
   time: number = 50
-
   /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   * 增量每次增量文本数量
    */
   @State
-  isInputEnded: boolean = false
+  textNumber: number = 10
   /**
-   * markdown是否同步解析
+   * 是否同步解析Markdown文本
    */
   @State
   isMarkdownParserSync: boolean = false
@@ -72,20 +69,47 @@ struct AllDetailsPage {
   @State
   typeWriterColor: number = 0xFFFF0000
   /**
-   * 是否打开长按复制粘贴
+   * 是否打开长按复制粘贴效果
    */
   @State
   isOnCopy: boolean = false
   /**
-   * markdown第一个模块上边距
+   * Markdown文本第一个模块上边距
    */
   @State
   blockFirstTopMargin: number = 8
   /**
-   * markdown最后一个模块下边距
+   * Markdown文本最后一个模块下边距
    */
   @State
   blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
+  /**
+   * 代码深浅色模式
+   */
+  @State
+  isDark: boolean = true
 
   /**
    * Markdown的控制器
@@ -96,15 +120,22 @@ struct AllDetailsPage {
     try {
       let allData: AllData = router.getParams() as AllData
       this.fileStr = getFileContextStr(allData._pagePath)
+      // ---------- 通用
       this.isFull = allData._isFull
-      this.blockTopAndBottomMargins = allData._blockTopAndBottomMargins
-      this.isDark = allData._isDark
+      this.incrementalAnalysis = allData._incrementalAnalysis
+      this.time = allData._time
+      this.textNumber = allData._textNumber
       this.isMarkdownParserSync = allData._isMarkdownParserSync
       this.typeWriterOpen = allData._typeWriterOpen
       this.typeWriterColor = allData._typeWriterColor
       this.isOnCopy = allData._isOnCopy
       this.blockFirstTopMargin = allData._blockFirstTopMargin
       this.blockLastBottomMargin = allData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = allData._blockTopAndBottomMargins
+      this.openGestureSwipe = allData._openGestureSwipe
+      this.openGestureSwipeTest = allData._openGestureSwipeTest
+      // ---------- 专有
+      this.isDark = allData._isDark
     } catch (e) {
     }
   }
@@ -148,14 +179,26 @@ struct AllDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            listScroller: this.markdownScroller,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -176,8 +219,8 @@ struct AllDetailsPage {
     config.setLatexImageCallback(this.latexCallBack.bind(this))
     config.setTocIndexCallback(this.tocIndexCallback.bind(this))
     config.setFootnoteCallback(this.footnoteCallback.bind(this))
+
     let theme = new MarkdownTheme()
-    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins)
     theme.setIsDark(this.isDark)
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
@@ -186,6 +229,7 @@ struct AllDetailsPage {
     theme.setPlayCircleFillIcon($r('app.media.play_circle_fill'))
     theme.setBannerImage($r('app.media.place_holder'))
     theme.setImageResource($r('app.media.place_holder'))
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
     theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
@@ -193,6 +237,8 @@ struct AllDetailsPage {
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     config.setMarkdownTheme(theme)
     return config
   }
