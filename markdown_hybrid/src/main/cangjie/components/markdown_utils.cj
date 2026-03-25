@@ -192,7 +192,7 @@ func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
     if (nodeView.isInLineCode) {
         return markdownTheme.codeTextSize // 内联代码
     }
-    if (nodeView.isLink && markdownTheme.isLinkSize) {
+    if ((nodeView.isLink || nodeView.isFootnote) && markdownTheme.isLinkSize) {
         return markdownTheme.linkSize // 链接
     }
     if (nodeView.isHeading) {
@@ -359,7 +359,7 @@ func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDeco
     if (nodeView.isStrikethrough) {
         return (TextDecorationType.LineThrough, markdownTheme.strikethroughColor, markdownTheme.strikethroughStyle) // 删除线
     }
-    if (nodeView.isLink || nodeView.isFootnote) {
+    if ((nodeView.isLink || nodeView.isFootnote) && markdownTheme.isLinkUnderlined) {
         return (TextDecorationType.Underline, markdownTheme.linkColor, 0) // 链接, 脚注
     }
     return (TextDecorationType.None, Color.TRANSPARENT, 0) // 其他
@@ -377,7 +377,7 @@ func spanBackgroundColor(nodeView: NodeView, markdownTheme: MarkdownTheme): Colo
     if (nodeView.isInLineCode) {
         return markdownTheme.codeBackgroundColor // 内联代码
     }
-    if (nodeView.isLink) {
+    if (nodeView.isLink || nodeView.isFootnote) {
         return markdownTheme.linkBackGroupColor // 链接
     }
     return Color.TRANSPARENT // 其他
@@ -411,7 +411,7 @@ func spanBaselineOffset(nodeView: NodeView, markdownTheme: MarkdownTheme): Float
  * @return 文本行高
  */
 func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
-    if (nodeView.isLink) {
+    if (nodeView.isLink || nodeView.isFootnote) {
         return markdownTheme.linkLineHeight // 链接
     }
     if (nodeView.isHeading) {
