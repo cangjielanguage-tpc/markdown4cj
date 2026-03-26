@@ -347,6 +347,7 @@ class MarkdownHeadingComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let headingNodeViewListSize: Int64 = headingNodeViewList.size // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            headingNodeViewList.clear()
             return
         }
         if (refreshNodeViewSize > 0) {
