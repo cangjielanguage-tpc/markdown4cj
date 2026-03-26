@@ -361,6 +361,7 @@ class MarkdownParagraphComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let paragraphNodeViewListSize: Int64 = paragraphNodeViewList.size // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            paragraphNodeViewList.clear()
             return
         }
         if (refreshNodeViewSize > 0) {
