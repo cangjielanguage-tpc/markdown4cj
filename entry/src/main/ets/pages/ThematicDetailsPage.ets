@@ -3,7 +3,9 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown, MarkdownConfiguration,
+  MarkdownPlugin,
+  MarkdownScroller, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import { ThematicData } from '../model/ThematicData'
 
@@ -14,6 +16,10 @@ struct ThematicDetailsPage {
    * 滑动控制器
    */
   scroller: Scroller = new Scroller()
+  /**
+   * Markdown的控制器
+   */
+  markdownScroller: MarkdownScroller = new MarkdownScroller()
   /**
    * 顶部导航栏高度
    */
@@ -185,7 +191,9 @@ struct ThematicDetailsPage {
               content: this.content,
               isInputEnded: this.isInputEnded,
               incrementalAnalysis: this.incrementalAnalysis,
-              config: this.setMarkdownConfig()
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
             })
           }.height("100%")
         } else {
@@ -194,7 +202,9 @@ struct ThematicDetailsPage {
               content: this.content,
               isInputEnded: this.isInputEnded,
               incrementalAnalysis: this.incrementalAnalysis,
-              config: this.setMarkdownConfig()
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
             })
           }
         }
@@ -224,5 +234,26 @@ struct ThematicDetailsPage {
 
     config.setMarkdownTheme(theme)
     return config
+  }
+
+  setPlugin(): MarkdownPlugin {
+    let plugin: MarkdownPlugin = new MarkdownPlugin()
+    plugin.setIsTablePlugin(true) // 表格插件
+    plugin.setIsLatexMathPlugin(true) // 数学公式插件
+    plugin.setIsStrikethroughPlugin(true) // 删除线插件
+    plugin.setIsTaskListPlugin(true) // 任务列表插件
+    plugin.setIsLinkifyPlugin(true, []) // 自动链接插件
+    plugin.setIsBlockAudioPlugin(true) // 音频插件
+    plugin.setIsBlockVideoPlugin(true) // 视频插件
+    plugin.setIsImageCollectPlugin(true) // 图片视频列表url集合列表解析插件
+    plugin.setIsImageTextMixPlugin(true) // 图文不混排插件
+    plugin.setIsImageSlidePlugin(true) // 图片banner
+    plugin.setIsCodeListPlugin(true) // 代码块列表
+    plugin.setIsImageStylePlugin(true) // 图片样式
+    plugin.setIsTocPlugin(true) // TOC插件
+    plugin.setIsFootnotePlugin(true) // 脚注
+    plugin.setIsHtmlPlugin(true) // Html插件
+    plugin.setIsLinkViewPlugin(true) // 链接单独块解析插件
+    return plugin
   }
 }

@@ -3,7 +3,9 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+  MarkdownScroller,
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import { CodeListData } from '../model/CodeListData'
 
@@ -14,6 +16,10 @@ struct CodeListDetailsPage {
    * 滑动控制器
    */
   scroller: Scroller = new Scroller()
+  /**
+   * Markdown的控制器
+   */
+  markdownScroller: MarkdownScroller = new MarkdownScroller()
   /**
    * 顶部导航栏高度
    */
@@ -183,6 +189,9 @@ struct CodeListDetailsPage {
           Column() {
             CJMarkdown({
               content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
               config: this.setMarkdownConfig(),
               plugin: this.setPlugin()
             })
@@ -191,6 +200,9 @@ struct CodeListDetailsPage {
           Column() {
             CJMarkdown({
               content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
               config: this.setMarkdownConfig(),
               plugin: this.setPlugin()
             })

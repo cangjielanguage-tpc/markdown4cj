@@ -8,6 +8,7 @@ import {
   LatexMathColorFormat,
   MarkdownConfiguration,
   MarkdownPlugin,
+  MarkdownScroller,
   MarkdownTheme
 } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
@@ -21,6 +22,10 @@ struct LatexMathDetailsPage {
    * 滑动控制器
    */
   scroller: Scroller = new Scroller()
+  /**
+   * Markdown的控制器
+   */
+  markdownScroller: MarkdownScroller = new MarkdownScroller()
   /**
    * 顶部导航栏高度
    */
@@ -209,6 +214,7 @@ struct LatexMathDetailsPage {
               content: this.content,
               isInputEnded: this.isInputEnded,
               incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
               config: this.setMarkdownConfig(),
               plugin: this.setPlugin()
             })
@@ -219,6 +225,7 @@ struct LatexMathDetailsPage {
               content: this.content,
               isInputEnded: this.isInputEnded,
               incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
               config: this.setMarkdownConfig(),
               plugin: this.setPlugin()
             })

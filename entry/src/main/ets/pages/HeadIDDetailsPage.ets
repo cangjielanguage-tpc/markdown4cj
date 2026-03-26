@@ -18,6 +18,10 @@ struct HeadIDDetailsPage {
    */
   scroller: Scroller = new Scroller()
   /**
+   * Markdown的控制器
+   */
+  markdownScroller: MarkdownScroller = new MarkdownScroller()
+  /**
    * 顶部导航栏高度
    */
   @StorageProp('safeTop')
@@ -95,11 +99,6 @@ struct HeadIDDetailsPage {
 
   // ---------- 专有
 
-  /**
-   * Markdown的控制器
-   */
-  markdownScroller: MarkdownScroller = new MarkdownScroller()
-
   aboutToAppear(): void {
     try {
       let headIDData: HeadIDData = router.getParams() as HeadIDData
@@ -165,6 +164,7 @@ struct HeadIDDetailsPage {
             CJMarkdown({
               content: this.content,
               isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
               listScroller: this.markdownScroller,
               config: this.setMarkdownConfig(),
               plugin: this.setPlugin()
@@ -175,6 +175,7 @@ struct HeadIDDetailsPage {
             CJMarkdown({
               content: this.content,
               isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
               listScroller: this.markdownScroller,
               config: this.setMarkdownConfig(),
               plugin: this.setPlugin()
@@ -212,8 +213,12 @@ struct HeadIDDetailsPage {
   tocIndexCallback(y: number | undefined): void {
     if(y !==undefined){
       hilog.error(1, "1", `---y:${y}`)
-      let rect = this.markdownScroller.getItemRect(y)
-      this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
+      if (this.openGestureSwipeTest) {
+        this.markdownScroller.scrollToIndex(y)
+      } else {
+        let rect = this.markdownScroller.getItemRect(y)
+        this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
+      }
     }
   }
 }
