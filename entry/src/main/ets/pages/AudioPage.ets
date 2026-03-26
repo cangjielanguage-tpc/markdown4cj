@@ -3,12 +3,24 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
-import { booleanToString, numberToColorString, stringToBoolean } from '../utils/BaseUtils'
 import { router } from '@kit.ArkUI'
+import { BaseTabComponent } from '../component/BaseTabComponent'
+import { TypeEnum } from '../model/TypeEnum'
+import {
+  booleanListGeneralData,
+  colorListGeneralData,
+  marginListGeneralData,
+  textLineHeightListGeneralData,
+  textNumberListGeneralData,
+  textSizeListGeneralData,
+  timeListGeneralData
+} from '../model/GeneralData'
+import { AudioMDData } from '../model/AudioMDData'
 
 @Entry
 @Component
 struct AudioPage {
+  // ---------------- 通用
   /**
    * 滑动控制器
    */
@@ -16,45 +28,136 @@ struct AudioPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * rawfile路径
    */
   rawFilePath: string = "014_音频"
   /**
-   * rawfile标题文件夹列表
+   * rawfile文件夹列表
    */
   @State
   folderList: Array<string> = new Array<string>()
   /**
-   * 增量加载全量加载选项列表
+   * 是否全量加载Markdown文本列表
    */
-  isFullList: Array<string> = ["全量加载", "增量加载"]
+  isFullList: Array<boolean> = booleanListGeneralData
   /**
-   * 增量加载全量加载选项
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
+   * 是否增量解析Markdown文本列表
+   */
+  incrementalAnalysisList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否增量解析Markdown文本
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间列表
+   */
+  timeList: Array<number> = timeListGeneralData
+  /**
+   * 增量加载每次间隔时间
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量列表
+   */
+  textNumberList: Array<number> = textNumberListGeneralData
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本列表
+   */
+  isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果列表
+   */
+  isOnCopyList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距列表
+   */
+  blockFirstTopMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距列表
+   */
+  blockLastBottomMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距列表
+   */
+  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动列表
+   */
+  openGestureSwipeList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试列表
+   */
+  openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+
+  // ---------------- 专有
+  /**
    * 音频阴影颜色值列表
    */
-  audioShadowColorList: Array<number> =
-    [0x1A000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  audioShadowColorList: Array<number> = colorListGeneralData
   /**
    * 音频阴影颜色值
    */
   @State
-  audioShadowColor: number = 0x1A000000
+  audioShadowColor: number = 0xFF808080
   /**
    * 音频边框颜色列表
    */
-  audioBorderColorList: Array<number> =
-    [0x33000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  audioBorderColorList: Array<number> = colorListGeneralData
   /**
    * 音频边框颜色
    */
   @State
-  audioBorderColor: number = 0x33000000
+  audioBorderColor: number = 0xFF808080
   /**
    * 音频边框粗细列表
    */
@@ -76,8 +179,7 @@ struct AudioPage {
   /**
    * 音频按钮背景颜色列表
    */
-  audioButtonBackgroundColorList: Array<number> =
-    [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  audioButtonBackgroundColorList: Array<number> = colorListGeneralData
   /**
    * 音频按钮背景颜色
    */
@@ -86,7 +188,7 @@ struct AudioPage {
   /**
    * 音频按钮文字颜色列表
    */
-  audioButtonTextColorList: Array<number> = [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  audioButtonTextColorList: Array<number> = colorListGeneralData
   /**
    * 音频按钮文字颜色
    */
@@ -95,7 +197,7 @@ struct AudioPage {
   /**
    * 音频按钮文字大小列表
    */
-  audioButtonTextSizeList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  audioButtonTextSizeList: Array<number> = textSizeListGeneralData
   /**
    * 音频按钮文字大小
    */
@@ -122,7 +224,7 @@ struct AudioPage {
   /**
    * 音频标题文字大小列表
    */
-  audioTitleTextSizeList: Array<number> = [12, 14, 15, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  audioTitleTextSizeList: Array<number> = textSizeListGeneralData
   /**
    * 音频标题文字大小
    */
@@ -131,7 +233,7 @@ struct AudioPage {
   /**
    * 音频标题文字颜色列表
    */
-  audioTitleTextColorList: Array<number> = [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  audioTitleTextColorList: Array<number> = colorListGeneralData
   /**
    * 音频标题文字颜色
    */
@@ -140,7 +242,7 @@ struct AudioPage {
   /**
    * 音频标题文字行高列表
    */
-  audioTitleTextLineHeightList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  audioTitleTextLineHeightList: Array<number> = textLineHeightListGeneralData
   /**
    * 音频标题文字行高
    */
@@ -149,7 +251,7 @@ struct AudioPage {
   /**
    * 音频类型文字大小列表
    */
-  audioTypeTextSizeList: Array<number> = [10, 11, 12, 14, 15, 16, 18, 20, 22, 24, 26, 28, 30]
+  audioTypeTextSizeList: Array<number> = textSizeListGeneralData
   /**
    * 音频类型文字大小
    */
@@ -158,8 +260,7 @@ struct AudioPage {
   /**
    * 音频类型文字颜色列表
    */
-  audioTypeTextColorList: Array<number> =
-    [0x80000000, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  audioTypeTextColorList: Array<number> = colorListGeneralData
   /**
    * 音频类型文字颜色
    */
@@ -168,7 +269,7 @@ struct AudioPage {
   /**
    * 音频类型文字行高列表
    */
-  audioTypeTextLineHeightList: Array<number> = [10, 11, 12, 14, 15, 16, 18, 20, 22, 24, 26, 28, 30]
+  audioTypeTextLineHeightList: Array<number> = textLineHeightListGeneralData
   /**
    * 音频类型文字行高
    */
@@ -177,7 +278,7 @@ struct AudioPage {
   /**
    * 音频上边距列表
    */
-  audioMarginTopList: Array<number> = [0, 5, 10, 15, 20, 25, 30, 35, 40]
+  audioMarginTopList: Array<number> = marginListGeneralData
   /**
    * 音频上边距
    */
@@ -186,62 +287,17 @@ struct AudioPage {
   /**
    * 音频下边距列表
    */
-  audioMarginBottomList: Array<number> = [0, 5, 10, 15, 20, 25, 30, 35, 40]
+  audioMarginBottomList: Array<number> = marginListGeneralData
   /**
    * 音频下边距
    */
   @State
   audioMarginBottom: number = 10
   /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  isMarkdownParserSyncList: Array<boolean> = [true, false]
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * 是否打开长按复制粘贴
-   */
-  isOnCopyList: Array<boolean> = [true, false]
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown第一个模块上边距
-   */
-  blockFirstTopMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  blockLastBottomMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 模块间上下间距
-   */
-  blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
    * 配置数据内容
    */
   @State
-  audioData: AudioDataMD = new AudioDataMD()
+  audioData: AudioMDData = new AudioMDData()
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -257,759 +313,229 @@ struct AudioPage {
       )
       Scroll() {
         Column() {
-          Column() {
-            Row() {
-              Text(`是否增量加载 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${booleanToString(this.isFull)}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
+          // ------------ 通用
+          BaseTabComponent({
+            titleStr: "是否全量加载Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isFullList,
+            allData: this.isFull
+          })
+          BaseTabComponent({
+            titleStr: "是否增量解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.incrementalAnalysisList,
+            allData: this.incrementalAnalysis
+          })
+          BaseTabComponent({
+            titleStr: "增量加载每次间隔时间 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.timeList,
+            allData: this.time
+          })
+          BaseTabComponent({
+            titleStr: "增量每次增量文本数量 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.textNumberList,
+            allData: this.textNumber
+          })
+          BaseTabComponent({
+            titleStr: "是否同步解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isMarkdownParserSyncList,
+            allData: this.isMarkdownParserSync
+          })
+          BaseTabComponent({
+            titleStr: "是否打开长按复制粘贴效果 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isOnCopyList,
+            allData: this.isOnCopy
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本第一个模块上边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockFirstTopMarginList,
+            allData: this.blockFirstTopMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本最后一个模块下边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockLastBottomMarginList,
+            allData: this.blockLastBottomMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockTopAndBottomMarginsList,
+            allData: this.blockTopAndBottomMargins
+          })
+          BaseTabComponent({
+            titleStr: "是否开启响应滑动测试 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeTestList,
+            allData: this.openGestureSwipeTest
+          })
+          BaseTabComponent({
+            titleStr: "是否允许markdown控件自身响应滑动 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeList,
+            allData: this.openGestureSwipe
+          })
 
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isFullList, (item: string, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isFull = stringToBoolean(item)
-                    this.audioData.isFull = this.isFull
-                  })
-              })
-            }
-          }
+          // ---------------- 专有
+          BaseTabComponent({
+            titleStr: "音频阴影颜色值 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.audioShadowColorList,
+            allData: this.audioShadowColor
+          })
+          BaseTabComponent({
+            titleStr: "音频边框颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.audioBorderColorList,
+            allData: this.audioBorderColor
+          })
+          BaseTabComponent({
+            titleStr: "音频边框粗细 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioBorderWidthList,
+            allData: this.audioBorderWidth
+          })
+          BaseTabComponent({
+            titleStr: "音频边框圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioBorderRadiusList,
+            allData: this.audioBorderRadius
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.audioButtonBackgroundColorList,
+            allData: this.audioButtonBackgroundColor
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮文字颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.audioButtonTextColorList,
+            allData: this.audioButtonTextColor
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮文字大小 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioButtonTextSizeList,
+            allData: this.audioButtonTextSize
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮文字内容 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.audioButtonTextList,
+            allData: this.audioButtonText
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioButtonBorderRadiusList,
+            allData: this.audioButtonBorderRadius
+          })
+          BaseTabComponent({
+            titleStr: "音频标题文字大小 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioTitleTextSizeList,
+            allData: this.audioTitleTextSize
+          })
+          BaseTabComponent({
+            titleStr: "音频标题文字颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.audioTitleTextColorList,
+            allData: this.audioTitleTextColor
+          })
+          BaseTabComponent({
+            titleStr: "音频标题文字行高 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioTitleTextLineHeightList,
+            allData: this.audioTitleTextLineHeight
+          })
+          BaseTabComponent({
+            titleStr: "音频类型文字大小 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioTypeTextSizeList,
+            allData: this.audioTypeTextSize
+          })
+          BaseTabComponent({
+            titleStr: "音频类型文字颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.audioTypeTextColorList,
+            allData: this.audioTypeTextColor
+          })
+          BaseTabComponent({
+            titleStr: "音频类型文字行高 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioTypeTextLineHeightList,
+            allData: this.audioTypeTextLineHeight
+          })
+          BaseTabComponent({
+            titleStr: "音频上边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioMarginTopList,
+            allData: this.audioMarginTop
+          })
+          BaseTabComponent({
+            titleStr: "音频下边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioMarginBottomList,
+            allData: this.audioMarginBottom
+          })
 
-          Column() {
-            Row() {
-              Text(`markdown是否同步解析 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isMarkdownParserSync}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isMarkdownParserSyncList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isMarkdownParserSync = item
-                    this.audioData.isMarkdownParserSync = this.isMarkdownParserSync
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`是否打开长按复制粘贴 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isOnCopy}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isOnCopyList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isOnCopy = item
-                    this.audioData.isOnCopy = this.isOnCopy
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown第一个模块上边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockFirstTopMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockFirstTopMarginList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockFirstTopMargin = item
-                    this.audioData.blockFirstTopMargin = this.blockFirstTopMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown最后一个模块下边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockLastBottomMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockLastBottomMarginList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockLastBottomMargin = item
-                    this.audioData.blockLastBottomMargin = this.blockLastBottomMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`模块间上下间距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockTopAndBottomMargins}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockTopAndBottomMarginsList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockTopAndBottomMargins = item
-                    this.audioData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频阴影颜色值 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.audioShadowColor))
-                .fontSize(16)
-                .fontColor(this.audioShadowColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioShadowColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioShadowColor = item
-                    this.audioData.audioShadowColor = this.audioShadowColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频边框颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.audioBorderColor))
-                .fontSize(16)
-                .fontColor(this.audioBorderColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioBorderColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioBorderColor = item
-                    this.audioData.audioBorderColor = this.audioBorderColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频边框粗细 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.audioBorderWidth}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioBorderWidthList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioBorderWidth = item
-                    this.audioData.audioBorderWidth = this.audioBorderWidth
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频边框圆角 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.audioBorderRadius}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioBorderRadiusList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioBorderRadius = item
-                    this.audioData.audioBorderRadius = this.audioBorderRadius
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频按钮背景颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.audioButtonBackgroundColor))
-                .fontSize(16)
-                .fontColor(this.audioButtonBackgroundColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioButtonBackgroundColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioButtonBackgroundColor = item
-                    this.audioData.audioButtonBackgroundColor = this.audioButtonBackgroundColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频按钮文字颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.audioButtonTextColor))
-                .fontSize(16)
-                .fontColor(this.audioButtonTextColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioButtonTextColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioButtonTextColor = item
-                    this.audioData.audioButtonTextColor = this.audioButtonTextColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频按钮文字大小 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.audioButtonTextSize}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioButtonTextSizeList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioButtonTextSize = item
-                    this.audioData.audioButtonTextSize = this.audioButtonTextSize
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频按钮文字内容 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.audioButtonText}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioButtonTextList, (item: string, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioButtonText = item
-                    this.audioData.audioButtonText = this.audioButtonText
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频按钮圆角 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.audioButtonBorderRadius}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioButtonBorderRadiusList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioButtonBorderRadius = item
-                    this.audioData.audioButtonBorderRadius = this.audioButtonBorderRadius
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频标题文字大小 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.audioTitleTextSize}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioTitleTextSizeList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioTitleTextSize = item
-                    this.audioData.audioTitleTextSize = this.audioTitleTextSize
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频标题文字颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.audioTitleTextColor))
-                .fontSize(16)
-                .fontColor(this.audioTitleTextColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioTitleTextColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .width(150)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioTitleTextColor = item
-                    this.audioData.audioTitleTextColor = this.audioTitleTextColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频标题文字行高 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.audioTitleTextLineHeight}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioTitleTextLineHeightList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioTitleTextLineHeight = item
-                    this.audioData.audioTitleTextLineHeight = this.audioTitleTextLineHeight
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频类型文字大小 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.audioTypeTextSize}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioTypeTextSizeList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioTypeTextSize = item
-                    this.audioData.audioTypeTextSize = this.audioTypeTextSize
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频类型文字颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.audioTypeTextColor))
-                .fontSize(16)
-                .fontColor(this.audioTypeTextColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioTypeTextColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .width(150)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioTypeTextColor = item
-                    this.audioData.audioTypeTextColor = this.audioTypeTextColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频类型文字行高 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.audioTypeTextLineHeight}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioTypeTextLineHeightList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioTypeTextLineHeight = item
-                    this.audioData.audioTypeTextLineHeight = this.audioTypeTextLineHeight
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频上边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.audioMarginTop}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioMarginTopList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioMarginTop = item
-                    this.audioData.audioMarginTop = this.audioMarginTop
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`音频下边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.audioMarginBottom}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.audioMarginBottomList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.audioMarginBottom = item
-                    this.audioData.audioMarginBottom = this.audioMarginBottom
-                  })
-              })
-            }
-          }
-
+          // 列表显示
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
                 Button(`${index + 1}、${item}`)
-                  .height(40)// 高度
-                  .width('80%')// 宽度
-                  .type(ButtonType.Capsule)// 圆角
-                  .fontColor(0xFFFFFFFF)// 文本颜色
-                  .backgroundColor(0xFF317AFF)// 背景颜色
-                  .margin({ top: 5, bottom: 5 })// 外边距
-                  .align(Alignment.Center)// 内容对齐方式
-                  .fontSize(16)// 字体大小
+                  .height(40)
+                  .width('80%')
+                  .type(ButtonType.Capsule)
+                  .fontColor(0xFFFFFFFF)
+                  .backgroundColor(0xFF317AFF)
+                  .margin({ top: 5, bottom: 5 })
+                  .align(Alignment.Center)
+                  .fontSize(16)
                   .onClick(() => {
-                    // 点击动作触发该方法调用
+                    // ---------- 通用
+                    this.audioData.isFull = this.isFull
+                    this.audioData.incrementalAnalysis = this.incrementalAnalysis
+                    this.audioData.time = this.time
+                    this.audioData.textNumber = this.textNumber
+                    this.audioData.isMarkdownParserSync = this.isMarkdownParserSync
+                    this.audioData.isOnCopy = this.isOnCopy
+                    this.audioData.blockFirstTopMargin = this.blockFirstTopMargin
+                    this.audioData.blockLastBottomMargin = this.blockLastBottomMargin
+                    this.audioData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.audioData.openGestureSwipe = this.openGestureSwipe
+                    this.audioData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.audioData.pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 专有
+                    this.audioData.audioShadowColor = this.audioShadowColor
+                    this.audioData.audioBorderColor = this.audioBorderColor
+                    this.audioData.audioBorderWidth = this.audioBorderWidth
+                    this.audioData.audioBorderRadius = this.audioBorderRadius
+                    this.audioData.audioButtonBackgroundColor = this.audioButtonBackgroundColor
+                    this.audioData.audioButtonTextColor = this.audioButtonTextColor
+                    this.audioData.audioButtonTextSize = this.audioButtonTextSize
+                    this.audioData.audioButtonText = this.audioButtonText
+                    this.audioData.audioButtonBorderRadius = this.audioButtonBorderRadius
+                    this.audioData.audioTitleTextSize = this.audioTitleTextSize
+                    this.audioData.audioTitleTextColor = this.audioTitleTextColor
+                    this.audioData.audioTitleTextLineHeight = this.audioTitleTextLineHeight
+                    this.audioData.audioTypeTextSize = this.audioTypeTextSize
+                    this.audioData.audioTypeTextColor = this.audioTypeTextColor
+                    this.audioData.audioTypeTextLineHeight = this.audioTypeTextLineHeight
+                    this.audioData.audioMarginTop = this.audioMarginTop
+                    this.audioData.audioMarginBottom = this.audioMarginBottom
+                    // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/AudioDetailsPage", params: this.audioData })
                   })
               }
             })
           }
-          // 设置ListItem在List交叉轴方向的布局方式
           .alignListItem(ListItemAlign.Center)
         }
         .padding({ bottom: 100 })
@@ -1020,137 +546,4 @@ struct AudioPage {
   }
 }
 
-export class AudioDataMD {
-  _isFull: boolean = true
-  _audioShadowColor: number = 0x1A000000
-  _audioBorderColor: number = 0x33000000
-  _audioBorderWidth: number = 0.5
-  _audioBorderRadius: number = 12
-  _audioButtonBackgroundColor: number = 0xFF000000
-  _audioButtonTextColor: number = 0xFFFFFFFF
-  _audioButtonTextSize: number = 14.0
-  _audioButtonText: string = "立即播放"
-  _audioButtonBorderRadius: number = 16.0
-  _audioTitleTextSize: number = 15.0
-  _audioTitleTextColor: number = 0xFF000000
-  _audioTitleTextLineHeight: number = 20.0
-  _audioTypeTextSize: number = 11.0
-  _audioTypeTextColor: number = 0x80000000
-  _audioTypeTextLineHeight: number = 15.0
-  _audioMarginTop: number = 10.0
-  _audioMarginBottom: number = 10.0
-  _isMarkdownParserSync: boolean = false
-  _isOnCopy: boolean = false
-  _blockFirstTopMargin: number = 8
-  _blockLastBottomMargin: number = 8
-  _blockTopAndBottomMargins: number = 8
-  _pagePath: string = ""
 
-  public set audioShadowColor(value: number) {
-    this._audioShadowColor = value
-  }
-
-  public set audioBorderColor(value: number) {
-    this._audioBorderColor = value
-  }
-
-
-  public set audioBorderWidth(value: number) {
-    this._audioBorderWidth = value
-  }
-
-  public set audioBorderRadius(value: number) {
-    this._audioBorderRadius = value
-  }
-
-
-  public set audioButtonBackgroundColor(value: number) {
-    this._audioButtonBackgroundColor = value
-  }
-
-
-  public set audioButtonTextColor(value: number) {
-    this._audioButtonTextColor = value
-  }
-
-  public set audioButtonTextSize(value: number) {
-    this._audioButtonTextSize = value
-  }
-
-
-  public set audioButtonText(value: string) {
-    this._audioButtonText = value
-  }
-
-  public set audioButtonBorderRadius(value: number) {
-    this._audioButtonBorderRadius = value
-  }
-
-
-  public set audioTitleTextSize(value: number) {
-    this._audioTitleTextSize = value
-  }
-
-
-  public set audioTitleTextColor(value: number) {
-    this._audioTitleTextColor = value
-  }
-
-
-  public set audioTitleTextLineHeight(value: number) {
-    this._audioTitleTextLineHeight = value
-  }
-
-  public set audioTypeTextSize(value: number) {
-    this._audioTypeTextSize = value
-  }
-
-  public set audioTypeTextColor(value: number) {
-    this._audioTypeTextColor = value
-  }
-
-
-  public set audioTypeTextLineHeight(value: number) {
-    this._audioTypeTextLineHeight = value
-  }
-
-  public set audioMarginTop(value: number) {
-    this._audioMarginTop = value
-  }
-
-
-  public set audioMarginBottom(value: number) {
-    this._audioMarginBottom = value
-  }
-
-  public set isFull(value: boolean) {
-    this._isFull = value
-  }
-
-  public set isMarkdownParserSync(value: boolean) {
-    this._isMarkdownParserSync = value
-  }
-
-  public set isOnCopy(value: boolean) {
-    this._isOnCopy = value
-  }
-
-  public set blockFirstTopMargin(value: number) {
-    this._blockFirstTopMargin = value
-  }
-
-  public set blockLastBottomMargin(value: number) {
-    this._blockLastBottomMargin = value
-  }
-
-  public set blockTopAndBottomMargins(value: number) {
-    this._blockTopAndBottomMargins = value
-  }
-
-  public set pagePath(value: string) {
-    this._pagePath = value
-  }
-
-  constructor() {
-  }
-}

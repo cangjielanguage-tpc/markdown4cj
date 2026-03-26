@@ -5,7 +5,7 @@ import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
-import { TableData } from './TablePage'
+import { TableData } from '../model/TableData'
 
 @Entry
 @Component
@@ -17,7 +17,8 @@ struct TableDetailsPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -29,17 +30,17 @@ struct TableDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
+   * 是否增量解析Markdown文本
    */
   @State
   incrementalAnalysis: boolean = false
   /**
-   * 增量加载每次间隔时间 - 毫秒
+   * 增量加载每次间隔时间
    */
   @State
   time: number = 50
@@ -48,6 +49,48 @@ struct TableDetailsPage {
    */
   @State
   textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
   /**
    * 表格内容内边距
    */
@@ -74,7 +117,7 @@ struct TableDetailsPage {
   @State
   tableEvenRowBackgroundColor: number = 0xFFE0E0E0
   /**
-   * 表格头背景色
+   * 表格标题背景色
    */
   @State
   tableHeaderRowBackgroundColor: number = 0xFFFFFFFF
@@ -104,37 +147,7 @@ struct TableDetailsPage {
   @State
   tableFirstColumnBold: boolean = false
   /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
-  isInputEnded: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 表格头行高
+   * 表格标题行高
    */
   @State
   tableTitleLineHeight: number = 22
@@ -153,10 +166,19 @@ struct TableDetailsPage {
     try {
       let tableData: TableData = router.getParams() as TableData
       this.fileStr = getFileContextStr(tableData._pagePath)
+      // ---------- 通用
       this.isFull = tableData._isFull
       this.incrementalAnalysis = tableData._incrementalAnalysis
       this.time = tableData._time
       this.textNumber = tableData._textNumber
+      this.isMarkdownParserSync = tableData._isMarkdownParserSync
+      this.isOnCopy = tableData._isOnCopy
+      this.blockFirstTopMargin = tableData._blockFirstTopMargin
+      this.blockLastBottomMargin = tableData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = tableData._blockTopAndBottomMargins
+      this.openGestureSwipe = tableData._openGestureSwipe
+      this.openGestureSwipeTest = tableData._openGestureSwipeTest
+      // ---------- 专有
       this.tableCellPadding = tableData._tableCellPadding
       this.tableBorderColor = tableData._tableBorderColor
       this.tableBorderWidth = tableData._tableBorderWidth
@@ -167,11 +189,6 @@ struct TableDetailsPage {
       this.tableMinTextWidth = tableData._tableMinTextWidth
       this.tableMaxTextWidth = tableData._tableMaxTextWidth
       this.tableFirstColumnBold = tableData._tableFirstColumnBold
-      this.isMarkdownParserSync = tableData._isMarkdownParserSync
-      this.isOnCopy = tableData._isOnCopy
-      this.blockFirstTopMargin = tableData._blockFirstTopMargin
-      this.blockLastBottomMargin = tableData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = tableData._blockTopAndBottomMargins
       this.tableTitleLineHeight = tableData._tableTitleLineHeight
       this.tableTextLineHeight = tableData._tableTextLineHeight
       this.tableScrollBarShow = tableData._tableScrollBarShow
@@ -222,14 +239,26 @@ struct TableDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            incrementalAnalysis: this.incrementalAnalysis,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -242,25 +271,27 @@ struct TableDetailsPage {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this)) // 上下文
+
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     theme.setTableCellPadding(this.tableCellPadding) // 表格内容内边距
     theme.setTableBorderColor(this.tableBorderColor) // 表格边框颜色
     theme.setTableBorderWidth(this.tableBorderWidth) // 表格边框宽度
     theme.setTableOddRowBackgroundColor(this.tableOddRowBackgroundColor) // 表格奇数行背景色
     theme.setTableEvenRowBackgroundColor(this.tableEvenRowBackgroundColor) // 表格偶数行背景色
-    theme.setTableHeaderRowBackgroundColor(this.tableHeaderRowBackgroundColor) // 表格头背景色
+    theme.setTableHeaderRowBackgroundColor(this.tableHeaderRowBackgroundColor) // 表格标题背景色
     theme.setTableRadius(this.tableRadius) // 表格圆角
     theme.setTableMinTextWidth(this.tableMinTextWidth) // 表格最小宽度
     theme.setTableMaxTextWidth(this.tableMaxTextWidth) // 表格最大宽度
     theme.setTableFirstColumnBold(this.tableFirstColumnBold) // 表格第一列是否加粗
     theme.setTableScrollBarShow(true) // 设置显示滚动条
     theme.setTableScrollBarColor(0xFFFFD700) // 设置滚动条颜色
-    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
-    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
-    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
-    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
-    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
-
-    theme.setTableTitleLineHeight(this.tableTitleLineHeight) // 表格头行高
+    theme.setTableTitleLineHeight(this.tableTitleLineHeight) // 表格标题行高
     theme.setTableTextLineHeight(this.tableTextLineHeight) // 表格文本行高
     theme.setTableScrollBarShow(this.tableScrollBarShow) // 表格是否显示滚动条
     theme.setTableScrollBarColor(this.tableScrollBarColor) // 表格滚动条颜色

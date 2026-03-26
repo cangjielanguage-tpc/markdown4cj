@@ -5,7 +5,7 @@ import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
-import { ThematicData } from './ThematicPage'
+import { ThematicData } from '../model/ThematicData'
 
 @Entry
 @Component
@@ -17,7 +17,8 @@ struct ThematicDetailsPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -29,17 +30,17 @@ struct ThematicDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
+   * 是否增量解析Markdown文本
    */
   @State
   incrementalAnalysis: boolean = false
   /**
-   * 增量加载每次间隔时间 - 毫秒
+   * 增量加载每次间隔时间
    */
   @State
   time: number = 50
@@ -48,6 +49,48 @@ struct ThematicDetailsPage {
    */
   @State
   textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
   /**
    * 分割线颜色
    */
@@ -68,54 +111,28 @@ struct ThematicDetailsPage {
    */
   @State
   thematicBreakBottomMargin: number = 0.0
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
-  isInputEnded: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8.0
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8.0
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8.0
 
   aboutToAppear(): void {
     try {
       let thematicData: ThematicData = router.getParams() as ThematicData
       this.fileStr = getFileContextStr(thematicData._pagePath)
+      // ---------- 通用
       this.isFull = thematicData._isFull
       this.incrementalAnalysis = thematicData._incrementalAnalysis
       this.time = thematicData._time
       this.textNumber = thematicData._textNumber
-      this.thematicBreakColor = thematicData._thematicBreakColor
-      this.thematicBreakHeight = thematicData._thematicBreakHeight
-      this.thematicBreakTopMargin = thematicData._thematicBreakTopMargin
-      this.thematicBreakBottomMargin = thematicData._thematicBreakBottomMargin
       this.isMarkdownParserSync = thematicData._isMarkdownParserSync
       this.isOnCopy = thematicData._isOnCopy
       this.blockFirstTopMargin = thematicData._blockFirstTopMargin
       this.blockLastBottomMargin = thematicData._blockLastBottomMargin
       this.blockTopAndBottomMargins = thematicData._blockTopAndBottomMargins
+      this.openGestureSwipe = thematicData._openGestureSwipe
+      this.openGestureSwipeTest = thematicData._openGestureSwipeTest
+      // ---------- 专有
+      this.thematicBreakColor = thematicData._thematicBreakColor
+      this.thematicBreakHeight = thematicData._thematicBreakHeight
+      this.thematicBreakTopMargin = thematicData._thematicBreakTopMargin
+      this.thematicBreakBottomMargin = thematicData._thematicBreakBottomMargin
     } catch (e) {
     }
   }
@@ -162,13 +179,24 @@ struct ThematicDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            incrementalAnalysis: this.incrementalAnalysis,
-            config: this.setMarkdownConfig()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -180,15 +208,20 @@ struct ThematicDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setThematicBreakColor(this.thematicBreakColor) // 分割线颜色
-    theme.setThematicBreakHeight(this.thematicBreakHeight) // 分割线高度
-    theme.setThematicBreakTopMargin(this.thematicBreakTopMargin) // 分割线上部外边距
-    theme.setThematicBreakBottomMargin(this.thematicBreakBottomMargin) // 分割线下部外边距
+    theme.setContext(getContext(this)) // 上下文
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
+    theme.setThematicBreakColor(this.thematicBreakColor) // 分割线颜色
+    theme.setThematicBreakHeight(this.thematicBreakHeight) // 分割线高度
+    theme.setThematicBreakTopMargin(this.thematicBreakTopMargin) // 分割线上部外边距
+    theme.setThematicBreakBottomMargin(this.thematicBreakBottomMargin) // 分割线下部外边距
+
     config.setMarkdownTheme(theme)
     return config
   }

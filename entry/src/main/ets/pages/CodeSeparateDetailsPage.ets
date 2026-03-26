@@ -5,7 +5,7 @@ import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
-import { CodeSeparateData } from './CodeSeparatePage'
+import { CodeSeparateData } from '../model/CodeSeparateData'
 
 @Entry
 @Component
@@ -17,7 +17,8 @@ struct CodeSeparateDetailsPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -29,17 +30,17 @@ struct CodeSeparateDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
+   * 是否增量解析Markdown文本
    */
   @State
   incrementalAnalysis: boolean = false
   /**
-   * 增量加载每次间隔时间 - 毫秒
+   * 增量加载每次间隔时间
    */
   @State
   time: number = 50
@@ -48,6 +49,48 @@ struct CodeSeparateDetailsPage {
    */
   @State
   textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
   /**
    * 是否单独代码块显示
    */
@@ -60,53 +103,27 @@ struct CodeSeparateDetailsPage {
    * 是否滑动到底部
    */
   separateCodeIsBottom: boolean = false
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
-  isInputEnded: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
       let codeSeparateData: CodeSeparateData = router.getParams() as CodeSeparateData
       this.fileStr = getFileContextStr(codeSeparateData._pagePath)
+      // ---------- 通用
       this.isFull = codeSeparateData._isFull
       this.incrementalAnalysis = codeSeparateData._incrementalAnalysis
       this.time = codeSeparateData._time
       this.textNumber = codeSeparateData._textNumber
-      this.isSeparateCodeBlock = codeSeparateData._isSeparateCodeBlock
-      this.separateCodeBlockWidth = codeSeparateData._separateCodeBlockWidth
-      this.separateCodeIsBottom = codeSeparateData._separateCodeIsBottom
       this.isMarkdownParserSync = codeSeparateData._isMarkdownParserSync
       this.isOnCopy = codeSeparateData._isOnCopy
       this.blockFirstTopMargin = codeSeparateData._blockFirstTopMargin
       this.blockLastBottomMargin = codeSeparateData._blockLastBottomMargin
       this.blockTopAndBottomMargins = codeSeparateData._blockTopAndBottomMargins
+      this.openGestureSwipe = codeSeparateData._openGestureSwipe
+      this.openGestureSwipeTest = codeSeparateData._openGestureSwipeTest
+      // ---------- 专有
+      this.isSeparateCodeBlock = codeSeparateData._isSeparateCodeBlock
+      this.separateCodeBlockWidth = codeSeparateData._separateCodeBlockWidth
+      this.separateCodeIsBottom = codeSeparateData._separateCodeIsBottom
     } catch (e) {
     }
   }
@@ -153,13 +170,24 @@ struct CodeSeparateDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            incrementalAnalysis: this.incrementalAnalysis,
-            config: this.setMarkdownConfig()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -176,11 +204,14 @@ struct CodeSeparateDetailsPage {
     theme.setCodeFullScreenIcon($r('app.media.startIcon')) // 代码块全屏图片icon
     theme.setCodeCopyIcon($r('app.media.startIcon')) // 代码块复制图片icon
     theme.setSeparateCodeIsBottom(this.separateCodeIsBottom) // 单独代码块是否居底显示
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     config.setMarkdownTheme(theme)
     return config
   }

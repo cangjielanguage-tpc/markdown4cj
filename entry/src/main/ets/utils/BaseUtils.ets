@@ -5,6 +5,41 @@ import { LatexMathColorFormat } from "@cangjie-tpc/markdown_hybrid";
 import { util } from "@kit.ArkTS";
 
 /**
+ * 文本颜色需要反转颜色，显示更清楚
+ *
+ * @param color 文本颜色颜色
+ * @return 反转之后的颜色
+ */
+export function colorSwitch(color: number): number {
+  switch (color) {
+    case 0xFFE0E0E0:
+      return 0xFF000000
+    case 0xFFFFFFFF:
+      return 0xFF000000
+    case 0xFFEAEAEA:
+      return 0xFF000000
+    case 0xFFF5F5F5:
+      return 0xFF000000
+    default:
+      return 0xFFFFFFFF
+  }
+}
+/**
+ * 文本颜色需要反转颜色，显示更清楚
+ *
+ * @param color 文本颜色颜色
+ * @return 反转之后的颜色
+ */
+export function colorSwitch1(color: number): number {
+  switch (color) {
+    case 0xFF808080:
+      return 0xFF000000
+    default:
+      return 0xFF808080
+  }
+}
+
+/**
  * uint8Array转换成string
  */
 export function uint8ArrayToString(array: Uint8Array) {
@@ -21,24 +56,6 @@ export function uint8ArrayToString(array: Uint8Array) {
 }
 
 /**
- * 下划线样式转文本
- */
-export function styleToString(style: TextDecorationStyle): string {
-  switch (style) {
-    case TextDecorationStyle.SOLID:
-      return "单实线"
-    case TextDecorationStyle.DOUBLE:
-      return "双实线"
-    case TextDecorationStyle.DOTTED:
-      return "点线"
-    case TextDecorationStyle.DASHED:
-      return "虚线"
-    case TextDecorationStyle.WAVY:
-      return "波浪线"
-  }
-}
-
-/**
  * 颜色列表转换文本
  */
 export function numberArrayToColorString(color: Array<number>): string {
@@ -52,7 +69,7 @@ export function numberArrayToColorString(color: Array<number>): string {
 /**
  * 颜色转换文本
  */
-export function numberToColorString(color: number|undefined): string {
+export function numberToColorString(color: number | undefined): string {
   switch (color) {
     case 0xFF000000:
       return "黑"
@@ -65,21 +82,27 @@ export function numberToColorString(color: number|undefined): string {
     case 0xFF0000FF:
       return "蓝"
     case 0xFFE0E0E0:
-      return "灰"
-    case 0xE6000000:
-      return "0xE6000000"
+      return "银灰"
+    case 0xFF333333:
+      return "深灰"
+    case 0xFF808080:
+      return "中灰"
+    case 0xFFCCCCCC:
+      return "浅灰"
+    case 0xFF4CAF50:
+      return "翠绿"
+    case 0xFFFFC107:
+      return "橙黄"
+    case 0xFFF44336:
+      return "鲜红"
+    case 0xFF2196F3:
+      return "天蓝"
+    case 0xFF1976D2:
+      return "深蓝"
     case 0xFFF5F5F5:
-      return "0xFFF5F5F5"
-    case 0x1A000000:
-      return "0x1A000000"
-    case 0x33000000:
-      return "0x33000000"
-    case 0x80000000:
-      return "0x80000000"
+      return "烟白"
     case 0xFF191919:
-      return "0xFF191919"
-    case 0x00FFFFFF:
-      return "0x00FFFFFF"
+      return "炭黑"
     case 0xFF00F5FF:
       return "绿松石"
     case 0xFF6A5ACD:
@@ -130,19 +153,27 @@ export function booleanToString(isFull: boolean): string {
 }
 
 /**
- * 对象转换成json
+ * 下划线样式转文本
  */
-export function objectToJson(obj: object): string {
-  try {
-    let json = JSON.stringify(obj)
-    return json
-  } catch (e) {
-    return ""
+export function styleToString(style: TextDecorationStyle): string {
+  switch (style) {
+    case TextDecorationStyle.SOLID:
+      return "单实线"
+    case TextDecorationStyle.DOUBLE:
+      return "双实线"
+    case TextDecorationStyle.DOTTED:
+      return "点线"
+    case TextDecorationStyle.DASHED:
+      return "虚线"
+    case TextDecorationStyle.WAVY:
+      return "波浪线"
+    default :
+      return "undefined"
   }
 }
 
 /**
- * 对象转换成json
+ * 数学公式生成图片格式转文本
  */
 export function enumToString(e: LatexMathColorFormat): string {
   switch (e) {
@@ -150,5 +181,7 @@ export function enumToString(e: LatexMathColorFormat): string {
       return "COLOR_FORMAT_RGB_565"
     case LatexMathColorFormat.COLOR_FORMAT_BGRA_8888:
       return "COLOR_FORMAT_BGRA_8888"
+    default :
+      return "undefined"
   }
 }
