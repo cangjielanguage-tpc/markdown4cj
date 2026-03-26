@@ -342,6 +342,7 @@ class MarkdownTableBlockCellComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let tableBlockCellNodeViewListSize: Int64 = tableBlockCellNodeViewList.size // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            tableBlockCellNodeViewList.clear()
             return
         }
         if (refreshNodeViewSize > 0) {
