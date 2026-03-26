@@ -3,12 +3,23 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
-import { booleanToString, numberToColorString, stringToBoolean } from '../utils/BaseUtils'
 import { router } from '@kit.ArkUI'
+import { BaseTabComponent } from '../component/BaseTabComponent'
+import { TypeEnum } from '../model/TypeEnum'
+import {
+  booleanListGeneralData,
+  colorListGeneralData,
+  marginListGeneralData,
+  textNumberListGeneralData,
+  textSizeListGeneralData,
+  timeListGeneralData
+} from '../model/GeneralData'
+import { SubData } from '../model/SubData'
 
 @Entry
 @Component
 struct SubPage {
+  // ---------------- 通用
   /**
    * 滑动控制器
    */
@@ -16,29 +27,122 @@ struct SubPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * rawfile路径
    */
   rawFilePath: string = "026_下标"
   /**
-   * rawfile标题文件夹列表
+   * rawfile文件夹列表
    */
   @State
   folderList: Array<string> = new Array<string>()
   /**
-   * 增量加载全量加载选项列表
+   * 是否全量加载Markdown文本列表
    */
-  isFullList: Array<string> = ["全量加载", "增量加载"]
+  isFullList: Array<boolean> = booleanListGeneralData
   /**
-   * 增量加载全量加载选项
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
+   * 是否增量解析Markdown文本列表
+   */
+  incrementalAnalysisList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否增量解析Markdown文本
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间列表
+   */
+  timeList: Array<number> = timeListGeneralData
+  /**
+   * 增量加载每次间隔时间
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量列表
+   */
+  textNumberList: Array<number> = textNumberListGeneralData
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本列表
+   */
+  isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果列表
+   */
+  isOnCopyList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距列表
+   */
+  blockFirstTopMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距列表
+   */
+  blockLastBottomMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距列表
+   */
+  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动列表
+   */
+  openGestureSwipeList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试列表
+   */
+  openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+
+  // ---------------- 专有
+  /**
    * 下标字体颜色列表
    */
-  subTextColorList: Array<number> = [0xFF191919, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  subTextColorList: Array<number> = colorListGeneralData
   /**
    * 下标字体颜色
    */
@@ -47,7 +151,7 @@ struct SubPage {
   /**
    * 下标字体大小列表
    */
-  subTextSizeList: Array<number> = [4, 6, 8, 10, 12, 14, 16, 18, 20, 22]
+  subTextSizeList: Array<number> = textSizeListGeneralData
   /**
    * 下标字体大小
    */
@@ -62,51 +166,6 @@ struct SubPage {
    */
   @State
   subOffsetDist: number = 0
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  isMarkdownParserSyncList: Array<boolean> = [true, false]
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * 是否打开长按复制粘贴
-   */
-  isOnCopyList: Array<boolean> = [true, false]
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8.0
-  /**
-   * markdown第一个模块上边距
-   */
-  blockFirstTopMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8.0
-  /**
-   * markdown最后一个模块下边距
-   */
-  blockLastBottomMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8.0
-  /**
-   * 模块间上下间距
-   */
-  blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
   /**
    * 配置数据内容
    */
@@ -127,287 +186,95 @@ struct SubPage {
       )
       Scroll() {
         Column() {
-          Column() {
-            Row() {
-              Text(`是否增量加载 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${booleanToString(this.isFull)}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
+          // ------------ 通用
+          BaseTabComponent({
+            titleStr: "是否全量加载Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isFullList,
+            allData: this.isFull
+          })
+          BaseTabComponent({
+            titleStr: "是否增量解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.incrementalAnalysisList,
+            allData: this.incrementalAnalysis
+          })
+          BaseTabComponent({
+            titleStr: "增量加载每次间隔时间 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.timeList,
+            allData: this.time
+          })
+          BaseTabComponent({
+            titleStr: "增量每次增量文本数量 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.textNumberList,
+            allData: this.textNumber
+          })
+          BaseTabComponent({
+            titleStr: "是否同步解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isMarkdownParserSyncList,
+            allData: this.isMarkdownParserSync
+          })
+          BaseTabComponent({
+            titleStr: "是否打开长按复制粘贴效果 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isOnCopyList,
+            allData: this.isOnCopy
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本第一个模块上边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockFirstTopMarginList,
+            allData: this.blockFirstTopMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本最后一个模块下边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockLastBottomMarginList,
+            allData: this.blockLastBottomMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockTopAndBottomMarginsList,
+            allData: this.blockTopAndBottomMargins
+          })
+          BaseTabComponent({
+            titleStr: "是否开启响应滑动测试 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeTestList,
+            allData: this.openGestureSwipeTest
+          })
+          BaseTabComponent({
+            titleStr: "是否允许markdown控件自身响应滑动 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeList,
+            allData: this.openGestureSwipe
+          })
 
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isFullList, (item: string, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isFull = stringToBoolean(item)
-                    this.subData.isFull = this.isFull
-                  })
-              })
-            }
-          }
+          // ---------------- 专有
+          BaseTabComponent({
+            titleStr: "下标字体颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.subTextColorList,
+            allData: this.subTextColor
+          })
+          BaseTabComponent({
+            titleStr: "下标字体大小 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.subTextSizeList,
+            allData: this.subTextSize
+          })
+          BaseTabComponent({
+            titleStr: "下标偏移距离 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.subOffsetDistList,
+            allData: this.subOffsetDist
+          })
 
-          Column() {
-            Row() {
-              Text(`markdown是否同步解析 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isMarkdownParserSync}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isMarkdownParserSyncList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isMarkdownParserSync = item
-                    this.subData.isMarkdownParserSync = this.isMarkdownParserSync
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`是否打开长按复制粘贴 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isOnCopy}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isOnCopyList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isOnCopy = item
-                    this.subData.isOnCopy = this.isOnCopy
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown第一个模块上边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockFirstTopMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockFirstTopMarginList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockFirstTopMargin = item
-                    this.subData.blockFirstTopMargin = this.blockFirstTopMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown最后一个模块下边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockLastBottomMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockLastBottomMarginList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockLastBottomMargin = item
-                    this.subData.blockLastBottomMargin = this.blockLastBottomMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`模块间上下间距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockTopAndBottomMargins}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockTopAndBottomMarginsList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockTopAndBottomMargins = item
-                    this.subData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`下标字体颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.subTextColor))
-                .fontSize(16)
-                .fontColor(this.subTextColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.subTextColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.subTextColor = item
-                    this.subData.subTextColor = this.subTextColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`下标字体大小 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.subTextSize}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.subTextSizeList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.subTextSize = item
-                    this.subData.subTextSize = this.subTextSize
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`下标偏移距离 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.subOffsetDist}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.subOffsetDistList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.subOffsetDist = item
-                    this.subData.subOffsetDist = this.subOffsetDist
-                  })
-              })
-            }
-          }
-
+          // 列表显示
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -421,7 +288,24 @@ struct SubPage {
                   .align(Alignment.Center)
                   .fontSize(16)
                   .onClick(() => {
+                    // ---------- 通用
+                    this.subData.isFull = this.isFull
+                    this.subData.incrementalAnalysis = this.incrementalAnalysis
+                    this.subData.time = this.time
+                    this.subData.textNumber = this.textNumber
+                    this.subData.isMarkdownParserSync = this.isMarkdownParserSync
+                    this.subData.isOnCopy = this.isOnCopy
+                    this.subData.blockFirstTopMargin = this.blockFirstTopMargin
+                    this.subData.blockLastBottomMargin = this.blockLastBottomMargin
+                    this.subData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.subData.openGestureSwipe = this.openGestureSwipe
+                    this.subData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.subData.pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 专有
+                    this.subData.subTextColor = this.subTextColor
+                    this.subData.subTextSize = this.subTextSize
+                    this.subData.subOffsetDist = this.subOffsetDist
+                    // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/SubDetailsPage", params: this.subData })
                   })
               }
@@ -437,59 +321,3 @@ struct SubPage {
   }
 }
 
-export class SubData {
-  _isFull: boolean = true
-  _subTextColor: number = 0xFF191919
-  _subTextSize: number = 8
-  _subOffsetDist: number = 0
-  _isMarkdownParserSync: boolean = false
-  _isOnCopy: boolean = false
-  _blockFirstTopMargin: number = 8.0
-  _blockLastBottomMargin: number = 8.0
-  _blockTopAndBottomMargins: number = 8.0
-  _pagePath: string = ""
-
-  public set isFull(value: boolean) {
-    this._isFull = value
-  }
-
-  public set subTextColor(value: number) {
-    this._subTextColor = value
-  }
-
-  public set subTextSize(value: number) {
-    this._subTextSize = value
-  }
-
-  public set subOffsetDist(value: number) {
-    this._subOffsetDist = value
-  }
-
-  public set isMarkdownParserSync(value: boolean) {
-    this._isMarkdownParserSync = value
-  }
-
-  public set isOnCopy(value: boolean) {
-    this._isOnCopy = value
-  }
-
-  public set blockFirstTopMargin(value: number) {
-    this._blockFirstTopMargin = value
-  }
-
-  public set blockLastBottomMargin(value: number) {
-    this._blockLastBottomMargin = value
-  }
-
-  public set blockTopAndBottomMargins(value: number) {
-    this._blockTopAndBottomMargins = value
-  }
-
-
-  public set pagePath(value: string) {
-    this._pagePath = value
-  }
-
-  constructor() {
-  }
-}

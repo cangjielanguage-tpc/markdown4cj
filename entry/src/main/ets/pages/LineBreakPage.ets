@@ -3,12 +3,22 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
-import { booleanToString, numberToColorString, stringToBoolean } from '../utils/BaseUtils'
 import { router } from '@kit.ArkUI'
+import { BaseTabComponent } from '../component/BaseTabComponent'
+import { TypeEnum } from '../model/TypeEnum'
+import {
+  booleanListGeneralData,
+  colorListGeneralData,
+  marginListGeneralData,
+  textNumberListGeneralData,
+  timeListGeneralData
+} from '../model/GeneralData'
+import { LineBreakData } from '../model/LineBreakData'
 
 @Entry
 @Component
 struct LineBreakPage {
+  // ---------------- 通用
   /**
    * 滑动控制器
    */
@@ -16,106 +26,127 @@ struct LineBreakPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * rawfile路径
    */
   rawFilePath: string = "004_软换行"
   /**
-   * rawfile标题文件夹列表
+   * rawfile文件夹列表
    */
   @State
   folderList: Array<string> = new Array<string>()
   /**
-   * 增量加载全量加载选项列表
+   * 是否全量加载Markdown文本列表
    */
-  isFullList: Array<string> = ["全量加载", "增量加载"]
+  isFullList: Array<boolean> = booleanListGeneralData
   /**
-   * 增量加载全量加载选项
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
- * markdown是否增量解析列表
- */
-  incrementalAnalysisList: Array<boolean> = [true, false]
+   * 是否增量解析Markdown文本列表
+   */
+  incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
+   * 是否增量解析Markdown文本
    */
   @State
   incrementalAnalysis: boolean = false
   /**
    * 增量加载每次间隔时间列表
    */
-  timeList: Array<number> = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500]
+  timeList: Array<number> = timeListGeneralData
   /**
-   * 增量加载每次间隔时间 - 毫秒
+   * 增量加载每次间隔时间
    */
   @State
   time: number = 50
   /**
    * 增量每次增量文本数量列表
    */
-  textNumberList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 150, 200]
+  textNumberList: Array<number> = textNumberListGeneralData
   /**
    * 增量每次增量文本数量
    */
   @State
   textNumber: number = 10
   /**
+   * 是否同步解析Markdown文本列表
+   */
+  isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果列表
+   */
+  isOnCopyList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距列表
+   */
+  blockFirstTopMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距列表
+   */
+  blockLastBottomMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距列表
+   */
+  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动列表
+   */
+  openGestureSwipeList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试列表
+   */
+  openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+
+  // ---------------- 专有
+  /**
    * 软换行是否换行列表
    */
-  isLineBreakList: Array<boolean> = [true, false]
+  isLineBreakList: Array<boolean> = booleanListGeneralData
   /**
    * 软换行是否换行
    */
   @State
   isLineBreak: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  isMarkdownParserSyncList: Array<boolean> = [true, false]
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * 是否打开长按复制粘贴
-   */
-  isOnCopyList: Array<boolean> = [true, false]
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown第一个模块上边距
-   */
-  blockFirstTopMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  blockLastBottomMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 模块间上下间距
-   */
-  blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
   /**
    * 配置数据内容
    */
@@ -136,317 +167,83 @@ struct LineBreakPage {
       )
       Scroll() {
         Column() {
-          Column() {
-            Row() {
-              Text(`是否增量加载 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${booleanToString(this.isFull)}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
+          // ------------ 通用
+          BaseTabComponent({
+            titleStr: "是否全量加载Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isFullList,
+            allData: this.isFull
+          })
+          BaseTabComponent({
+            titleStr: "是否增量解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.incrementalAnalysisList,
+            allData: this.incrementalAnalysis
+          })
+          BaseTabComponent({
+            titleStr: "增量加载每次间隔时间 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.timeList,
+            allData: this.time
+          })
+          BaseTabComponent({
+            titleStr: "增量每次增量文本数量 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.textNumberList,
+            allData: this.textNumber
+          })
+          BaseTabComponent({
+            titleStr: "是否同步解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isMarkdownParserSyncList,
+            allData: this.isMarkdownParserSync
+          })
+          BaseTabComponent({
+            titleStr: "是否打开长按复制粘贴效果 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isOnCopyList,
+            allData: this.isOnCopy
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本第一个模块上边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockFirstTopMarginList,
+            allData: this.blockFirstTopMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本最后一个模块下边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockLastBottomMarginList,
+            allData: this.blockLastBottomMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockTopAndBottomMarginsList,
+            allData: this.blockTopAndBottomMargins
+          })
+          BaseTabComponent({
+            titleStr: "是否开启响应滑动测试 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeTestList,
+            allData: this.openGestureSwipeTest
+          })
+          BaseTabComponent({
+            titleStr: "是否允许markdown控件自身响应滑动 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeList,
+            allData: this.openGestureSwipe
+          })
 
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isFullList, (item: string, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isFull = stringToBoolean(item)
-                    this.lineBreakData.isFull = this.isFull
-                  })
-              })
-            }
-          }
+          // ---------------- 专有
+          BaseTabComponent({
+            titleStr: "软换行是否换行 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isLineBreakList,
+            allData: this.isLineBreak
+          })
 
-          Column() {
-            Row() {
-              Text(`markdown是否增量解析 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.incrementalAnalysis}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.incrementalAnalysisList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.incrementalAnalysis = item
-                    this.lineBreakData.incrementalAnalysis = this.incrementalAnalysis
-                  })
-              })
-            }
-          }
-
-
-          Column() {
-            Row() {
-              Text(`增量加载每次间隔时间 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.time}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.timeList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.time = item
-                    this.lineBreakData.time = this.time
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`增量每次增量文本数量 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.textNumber}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.textNumberList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.textNumber = item
-                    this.lineBreakData.textNumber = this.textNumber
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown是否同步解析 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isMarkdownParserSync}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isMarkdownParserSyncList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isMarkdownParserSync = item
-                    this.lineBreakData.isMarkdownParserSync = this.isMarkdownParserSync
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`是否打开长按复制粘贴 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isOnCopy}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isOnCopyList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isOnCopy = item
-                    this.lineBreakData.isOnCopy = this.isOnCopy
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown第一个模块上边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockFirstTopMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockFirstTopMarginList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockFirstTopMargin = item
-                    this.lineBreakData.blockFirstTopMargin = this.blockFirstTopMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown最后一个模块下边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockLastBottomMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockLastBottomMarginList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockLastBottomMargin = item
-                    this.lineBreakData.blockLastBottomMargin = this.blockLastBottomMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`模块间上下间距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockTopAndBottomMargins}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockTopAndBottomMarginsList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockTopAndBottomMargins = item
-                    this.lineBreakData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`软换行是否换行 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isLineBreak}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isLineBreakList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isLineBreak = item
-                    this.lineBreakData.isLineBreak = this.isLineBreak
-                  })
-              })
-            }
-          }
-
+          // 列表显示
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -460,7 +257,22 @@ struct LineBreakPage {
                   .align(Alignment.Center)
                   .fontSize(16)
                   .onClick(() => {
+                    // ---------- 通用
+                    this.lineBreakData.isFull = this.isFull
+                    this.lineBreakData.incrementalAnalysis = this.incrementalAnalysis
+                    this.lineBreakData.time = this.time
+                    this.lineBreakData.textNumber = this.textNumber
+                    this.lineBreakData.isMarkdownParserSync = this.isMarkdownParserSync
+                    this.lineBreakData.isOnCopy = this.isOnCopy
+                    this.lineBreakData.blockFirstTopMargin = this.blockFirstTopMargin
+                    this.lineBreakData.blockLastBottomMargin = this.blockLastBottomMargin
+                    this.lineBreakData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.lineBreakData.openGestureSwipe = this.openGestureSwipe
+                    this.lineBreakData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.lineBreakData.pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 专有
+                    this.lineBreakData.isLineBreak = this.isLineBreak
+                    // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/LineBreakDetailsPage", params: this.lineBreakData })
                   })
               }
@@ -476,63 +288,4 @@ struct LineBreakPage {
   }
 }
 
-export class LineBreakData {
-  _isFull: boolean = true
-  _incrementalAnalysis: boolean = false
-  _time: number = 50
-  _textNumber: number = 10
-  _isLineBreak: boolean = false
-  _isMarkdownParserSync: boolean = false
-  _isOnCopy: boolean = false
-  _blockFirstTopMargin: number = 8
-  _blockLastBottomMargin: number = 8
-  _blockTopAndBottomMargins: number = 8
-  _pagePath: string = ""
 
-  public set isFull(value: boolean) {
-    this._isFull = value
-  }
-
-  public set incrementalAnalysis(value: boolean) {
-    this._incrementalAnalysis = value
-  }
-
-  public set time(value: number) {
-    this._time = value
-  }
-
-  public set textNumber(value: number) {
-    this._textNumber = value
-  }
-
-  public set isLineBreak(value: boolean) {
-    this._isLineBreak = value
-  }
-
-  public set isMarkdownParserSync(value: boolean) {
-    this._isMarkdownParserSync = value
-  }
-
-  public set isOnCopy(value: boolean) {
-    this._isOnCopy = value
-  }
-
-  public set blockFirstTopMargin(value: number) {
-    this._blockFirstTopMargin = value
-  }
-
-  public set blockLastBottomMargin(value: number) {
-    this._blockLastBottomMargin = value
-  }
-
-  public set blockTopAndBottomMargins(value: number) {
-    this._blockTopAndBottomMargins = value
-  }
-
-  public set pagePath(value: string) {
-    this._pagePath = value
-  }
-
-  constructor() {
-  }
-}

@@ -5,8 +5,8 @@ import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
-import { VideoData } from './VideoPage'
 import hilog from '@ohos.hilog'
+import { VideoData } from '../model/VideoData'
 
 @Entry
 @Component
@@ -18,7 +18,8 @@ struct VideoDetailsPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -30,17 +31,17 @@ struct VideoDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
+   * 是否增量解析Markdown文本
    */
   @State
   incrementalAnalysis: boolean = false
   /**
-   * 增量加载每次间隔时间 - 毫秒
+   * 增量加载每次间隔时间
    */
   @State
   time: number = 50
@@ -49,6 +50,48 @@ struct VideoDetailsPage {
    */
   @State
   textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
   /**
    * 视频圆角
    */
@@ -162,45 +205,24 @@ struct VideoDetailsPage {
    */
   @State
   videoDownloadBackgroundColor: number = 0xFFF5F5F5
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
-  isInputEnded: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
 
   aboutToAppear(): void {
     try {
       let videoData: VideoData = router.getParams() as VideoData
       this.fileStr = getFileContextStr(videoData._pagePath)
+      // ---------- 通用
       this.isFull = videoData._isFull
       this.incrementalAnalysis = videoData._incrementalAnalysis
       this.time = videoData._time
       this.textNumber = videoData._textNumber
+      this.isMarkdownParserSync = videoData._isMarkdownParserSync
+      this.isOnCopy = videoData._isOnCopy
+      this.blockFirstTopMargin = videoData._blockFirstTopMargin
+      this.blockLastBottomMargin = videoData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = videoData._blockTopAndBottomMargins
+      this.openGestureSwipe = videoData._openGestureSwipe
+      this.openGestureSwipeTest = videoData._openGestureSwipeTest
+      // ---------- 专有
       this.videoBorderRadius = videoData._videoBorderRadius
       this.videoTimeTextColor = videoData._videoTimeTextColor
       this.videoTimeTextSize = videoData._videoTimeTextSize
@@ -225,11 +247,6 @@ struct VideoDetailsPage {
       this.videoDownloadTexSize = videoData._videoDownloadTexSize
       this.videoDownloadTexColor = videoData._videoDownloadTexColor
       this.videoDownloadBackgroundColor = videoData._videoDownloadBackgroundColor
-      this.isMarkdownParserSync = videoData._isMarkdownParserSync
-      this.isOnCopy = videoData._isOnCopy
-      this.blockFirstTopMargin = videoData._blockFirstTopMargin
-      this.blockLastBottomMargin = videoData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = videoData._blockTopAndBottomMargins
     } catch (e) {
     }
   }
@@ -276,14 +293,26 @@ struct VideoDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            incrementalAnalysis: this.incrementalAnalysis,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -327,11 +356,14 @@ struct VideoDetailsPage {
     theme.setVideoDownloadTexSize(this.videoDownloadTexSize) // 视频下载按钮文本大小
     theme.setVideoDownloadTexColor(this.videoDownloadTexColor) // 视频下载按钮文本颜色
     theme.setVideoDownloadBackgroundColor(this.videoDownloadBackgroundColor) // 视频下载按钮背景颜色
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     config.setMarkdownTheme(theme)
     return config
   }

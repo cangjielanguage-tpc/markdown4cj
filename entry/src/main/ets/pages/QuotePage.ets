@@ -3,12 +3,22 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
-import { booleanToString, numberToColorString, stringToBoolean } from '../utils/BaseUtils'
 import { router } from '@kit.ArkUI'
+import { BaseTabComponent } from '../component/BaseTabComponent'
+import { TypeEnum } from '../model/TypeEnum'
+import {
+  booleanListGeneralData,
+  colorListGeneralData,
+  marginListGeneralData,
+  textNumberListGeneralData,
+  timeListGeneralData
+} from '../model/GeneralData'
+import { QuoteData } from '../model/QuoteData'
 
 @Entry
 @Component
 struct QuotePage {
+  // ---------------- 通用
   /**
    * 滑动控制器
    */
@@ -16,56 +26,122 @@ struct QuotePage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * rawfile路径
    */
   rawFilePath: string = "008_块引用"
   /**
-   * rawfile标题文件夹列表
+   * rawfile文件夹列表
    */
   @State
   folderList: Array<string> = new Array<string>()
   /**
-   * 增量加载全量加载选项列表
+   * 是否全量加载Markdown文本列表
    */
-  isFullList: Array<string> = ["全量加载", "增量加载"]
+  isFullList: Array<boolean> = booleanListGeneralData
   /**
-   * 增量加载全量加载选项
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
-   * markdown是否增量解析列表
+   * 是否增量解析Markdown文本列表
    */
-  incrementalAnalysisList: Array<boolean> = [true, false]
+  incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
+   * 是否增量解析Markdown文本
    */
   @State
   incrementalAnalysis: boolean = false
   /**
    * 增量加载每次间隔时间列表
    */
-  timeList: Array<number> = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500]
+  timeList: Array<number> = timeListGeneralData
   /**
-   * 增量加载每次间隔时间 - 毫秒
+   * 增量加载每次间隔时间
    */
   @State
   time: number = 50
   /**
    * 增量每次增量文本数量列表
    */
-  textNumberList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 150, 200]
+  textNumberList: Array<number> = textNumberListGeneralData
   /**
    * 增量每次增量文本数量
    */
   @State
   textNumber: number = 10
   /**
+   * 是否同步解析Markdown文本列表
+   */
+  isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果列表
+   */
+  isOnCopyList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距列表
+   */
+  blockFirstTopMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距列表
+   */
+  blockLastBottomMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距列表
+   */
+  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动列表
+   */
+  openGestureSwipeList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试列表
+   */
+  openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+
+  // ---------------- 专有
+  /**
    * 块引用左边距列表
    */
-  blockQuoteLeftMarginList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20]
+  blockQuoteLeftMarginList: Array<number> = marginListGeneralData
   /**
    * 块引用左边距
    */
@@ -74,7 +150,7 @@ struct QuotePage {
   /**
    * 块引用右边距列表
    */
-  blockQuoteRightMarginList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20]
+  blockQuoteRightMarginList: Array<number> = marginListGeneralData
   /**
    * 块引用右边距
    */
@@ -92,8 +168,7 @@ struct QuotePage {
   /**
    * 块引用左边线条颜色列表
    */
-  blockQuoteColorList: Array<number> =
-    [0xFF191919, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  blockQuoteColorList: Array<number> = colorListGeneralData
   /**
    * 块引用左边线条颜色
    */
@@ -102,8 +177,7 @@ struct QuotePage {
   /**
    * 块引用背景颜色列表
    */
-  blockQuoteBackGroupColorList: Array<number> =
-    [0xFF191919, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  blockQuoteBackGroupColorList: Array<number> = colorListGeneralData
   /**
    * 块引用背景颜色
    */
@@ -112,58 +186,12 @@ struct QuotePage {
   /**
    * 块引用子模块上下间距列表
    */
-  blockQuoteTopAndBottomMarginsList: Array<number> =
-    [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+  blockQuoteTopAndBottomMarginsList: Array<number> = marginListGeneralData
   /**
    * 块引用子模块上下间距
    */
   @State
   blockQuoteTopAndBottomMargins: number = 0
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  isMarkdownParserSyncList: Array<boolean> = [true, false]
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * 是否打开长按复制粘贴
-   */
-  isOnCopyList: Array<boolean> = [true, false]
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8.0
-  /**
-   * markdown第一个模块上边距
-   */
-  blockFirstTopMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8.0
-  /**
-   * markdown最后一个模块下边距
-   */
-  blockLastBottomMarginList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8.0
-  /**
-   * 模块间上下间距
-   */
-  blockTopAndBottomMarginsList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
   /**
    * 配置数据内容
    */
@@ -184,476 +212,113 @@ struct QuotePage {
       )
       Scroll() {
         Column() {
-          Column() {
-            Row() {
-              Text(`是否增量加载 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${booleanToString(this.isFull)}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
+          // ------------ 通用
+          BaseTabComponent({
+            titleStr: "是否全量加载Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isFullList,
+            allData: this.isFull
+          })
+          BaseTabComponent({
+            titleStr: "是否增量解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.incrementalAnalysisList,
+            allData: this.incrementalAnalysis
+          })
+          BaseTabComponent({
+            titleStr: "增量加载每次间隔时间 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.timeList,
+            allData: this.time
+          })
+          BaseTabComponent({
+            titleStr: "增量每次增量文本数量 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.textNumberList,
+            allData: this.textNumber
+          })
+          BaseTabComponent({
+            titleStr: "是否同步解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isMarkdownParserSyncList,
+            allData: this.isMarkdownParserSync
+          })
+          BaseTabComponent({
+            titleStr: "是否打开长按复制粘贴效果 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isOnCopyList,
+            allData: this.isOnCopy
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本第一个模块上边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockFirstTopMarginList,
+            allData: this.blockFirstTopMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本最后一个模块下边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockLastBottomMarginList,
+            allData: this.blockLastBottomMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockTopAndBottomMarginsList,
+            allData: this.blockTopAndBottomMargins
+          })
+          BaseTabComponent({
+            titleStr: "是否开启响应滑动测试 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeTestList,
+            allData: this.openGestureSwipeTest
+          })
+          BaseTabComponent({
+            titleStr: "是否允许markdown控件自身响应滑动 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeList,
+            allData: this.openGestureSwipe
+          })
 
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isFullList, (item: string, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isFull = stringToBoolean(item)
-                    this.quoteData.isFull = this.isFull
-                  })
-              })
-            }
-          }
+          // ---------------- 专有
+          BaseTabComponent({
+            titleStr: "块引用左边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockQuoteLeftMarginList,
+            allData: this.blockQuoteLeftMargin
+          })
+          BaseTabComponent({
+            titleStr: "块引用右边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockQuoteRightMarginList,
+            allData: this.blockQuoteRightMargin
+          })
+          BaseTabComponent({
+            titleStr: "块引用左边线条宽度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockQuoteWidthList,
+            allData: this.blockQuoteWidth
+          })
+          BaseTabComponent({
+            titleStr: "块引用左边线条颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.blockQuoteColorList,
+            allData: this.blockQuoteColor
+          })
+          BaseTabComponent({
+            titleStr: "块引用背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.blockQuoteBackGroupColorList,
+            allData: this.blockQuoteBackGroupColor
+          })
+          BaseTabComponent({
+            titleStr: "块引用子模块上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockQuoteTopAndBottomMarginsList,
+            allData: this.blockQuoteTopAndBottomMargins
+          })
 
-          Column() {
-            Row() {
-              Text(`markdown是否增量解析 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.incrementalAnalysis}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.incrementalAnalysisList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.incrementalAnalysis = item
-                    this.quoteData.incrementalAnalysis = this.incrementalAnalysis
-                  })
-              })
-            }
-          }
-
-
-          Column() {
-            Row() {
-              Text(`增量加载每次间隔时间 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.time}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.timeList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.time = item
-                    this.quoteData.time = this.time
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`增量每次增量文本数量 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.textNumber}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.textNumberList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.textNumber = item
-                    this.quoteData.textNumber = this.textNumber
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown是否同步解析 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isMarkdownParserSync}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isMarkdownParserSyncList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isMarkdownParserSync = item
-                    this.quoteData.isMarkdownParserSync = this.isMarkdownParserSync
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`是否打开长按复制粘贴 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.isOnCopy}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isOnCopyList, (item: boolean, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isOnCopy = item
-                    this.quoteData.isOnCopy = this.isOnCopy
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown第一个模块上边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockFirstTopMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockFirstTopMarginList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockFirstTopMargin = item
-                    this.quoteData.blockFirstTopMargin = this.blockFirstTopMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`markdown最后一个模块下边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockLastBottomMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockLastBottomMarginList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockLastBottomMargin = item
-                    this.quoteData.blockLastBottomMargin = this.blockLastBottomMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`模块间上下间距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockTopAndBottomMargins}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockTopAndBottomMarginsList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockTopAndBottomMargins = item
-                    this.quoteData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`块引用左边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockQuoteLeftMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockQuoteLeftMarginList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockQuoteLeftMargin = item
-                    this.quoteData.blockQuoteLeftMargin = this.blockQuoteLeftMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`块引用右边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockQuoteRightMargin}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockQuoteRightMarginList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockQuoteRightMargin = item
-                    this.quoteData.blockQuoteRightMargin = this.blockQuoteRightMargin
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`块引用左边线条宽度 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockQuoteWidth}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockQuoteWidthList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockQuoteWidth = item
-                    this.quoteData.blockQuoteWidth = this.blockQuoteWidth
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`块引用左边线条颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.blockQuoteColor))
-                .fontSize(16)
-                .fontColor(this.blockQuoteColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockQuoteColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockQuoteColor = item
-                    this.quoteData.blockQuoteColor = this.blockQuoteColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`块引用背景颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.blockQuoteBackGroupColor))
-                .fontSize(16)
-                .fontColor(this.blockQuoteBackGroupColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockQuoteBackGroupColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockQuoteBackGroupColor = item
-                    this.quoteData.blockQuoteBackGroupColor = this.blockQuoteBackGroupColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`块引用子模块上下间距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.blockQuoteTopAndBottomMargins}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.blockQuoteTopAndBottomMarginsList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.blockQuoteTopAndBottomMargins = item
-                    this.quoteData.blockQuoteTopAndBottomMargins = this.blockQuoteTopAndBottomMargins
-                  })
-              })
-            }
-          }
-
+          // 列表显示
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -667,7 +332,27 @@ struct QuotePage {
                   .align(Alignment.Center)
                   .fontSize(16)
                   .onClick(() => {
+                    // ---------- 通用
+                    this.quoteData.isFull = this.isFull
+                    this.quoteData.incrementalAnalysis = this.incrementalAnalysis
+                    this.quoteData.time = this.time
+                    this.quoteData.textNumber = this.textNumber
+                    this.quoteData.isMarkdownParserSync = this.isMarkdownParserSync
+                    this.quoteData.isOnCopy = this.isOnCopy
+                    this.quoteData.blockFirstTopMargin = this.blockFirstTopMargin
+                    this.quoteData.blockLastBottomMargin = this.blockLastBottomMargin
+                    this.quoteData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.quoteData.openGestureSwipe = this.openGestureSwipe
+                    this.quoteData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.quoteData.pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 专有
+                    this.quoteData.blockQuoteLeftMargin = this.blockQuoteLeftMargin
+                    this.quoteData.blockQuoteRightMargin = this.blockQuoteRightMargin
+                    this.quoteData.blockQuoteWidth = this.blockQuoteWidth
+                    this.quoteData.blockQuoteColor = this.blockQuoteColor
+                    this.quoteData.blockQuoteBackGroupColor = this.blockQuoteBackGroupColor
+                    this.quoteData.blockQuoteTopAndBottomMargins = this.blockQuoteTopAndBottomMargins
+                    // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/QuoteDetailsPage", params: this.quoteData })
                   })
               }
@@ -683,88 +368,4 @@ struct QuotePage {
   }
 }
 
-export class QuoteData {
-  _isFull: boolean = true
-  _incrementalAnalysis: boolean = false
-  _time: number = 50
-  _textNumber: number = 10
-  _blockQuoteLeftMargin: number = 8
-  _blockQuoteRightMargin: number = 8
-  _blockQuoteWidth: number = 1
-  _blockQuoteColor: number = 0xFF191919
-  _blockQuoteBackGroupColor: number = 0xFFE0E0E0
-  _blockQuoteTopAndBottomMargins: number = 0
-  _isMarkdownParserSync: boolean = false
-  _isOnCopy: boolean = false
-  _blockFirstTopMargin: number = 8.0
-  _blockLastBottomMargin: number = 8.0
-  _blockTopAndBottomMargins: number = 8.0
-  _pagePath: string = ""
 
-  public set isFull(value: boolean) {
-    this._isFull = value
-  }
-
-  public set incrementalAnalysis(value: boolean) {
-    this._incrementalAnalysis = value
-  }
-
-  public set time(value: number) {
-    this._time = value
-  }
-
-  public set textNumber(value: number) {
-    this._textNumber = value
-  }
-
-  public set blockQuoteLeftMargin(value: number) {
-    this._blockQuoteLeftMargin = value
-  }
-
-  public set blockQuoteRightMargin(value: number) {
-    this._blockQuoteRightMargin = value
-  }
-
-  public set blockQuoteWidth(value: number) {
-    this._blockQuoteWidth = value
-  }
-
-  public set blockQuoteColor(value: number) {
-    this._blockQuoteColor = value
-  }
-
-  public set blockQuoteBackGroupColor(value: number) {
-    this._blockQuoteBackGroupColor = value
-  }
-
-  public set blockQuoteTopAndBottomMargins(value: number) {
-    this._blockQuoteTopAndBottomMargins = value
-  }
-
-  public set isMarkdownParserSync(value: boolean) {
-    this._isMarkdownParserSync = value
-  }
-
-  public set isOnCopy(value: boolean) {
-    this._isOnCopy = value
-  }
-
-  public set blockFirstTopMargin(value: number) {
-    this._blockFirstTopMargin = value
-  }
-
-  public set blockLastBottomMargin(value: number) {
-    this._blockLastBottomMargin = value
-  }
-
-  public set blockTopAndBottomMargins(value: number) {
-    this._blockTopAndBottomMargins = value
-  }
-
-  public set pagePath(value: string) {
-    this._pagePath = value
-  }
-
-  constructor() {
-  }
-}

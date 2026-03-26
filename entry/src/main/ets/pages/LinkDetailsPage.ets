@@ -5,8 +5,8 @@ import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
-import { LinkData } from './LinkPage'
 import hilog from '@ohos.hilog'
+import { LinkData } from '../model/LinkData'
 
 @Entry
 @Component
@@ -18,7 +18,8 @@ struct LinkDetailsPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -30,17 +31,17 @@ struct LinkDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
+   * 是否增量解析Markdown文本
    */
   @State
   incrementalAnalysis: boolean = false
   /**
-   * 增量加载每次间隔时间 - 毫秒
+   * 增量加载每次间隔时间
    */
   @State
   time: number = 50
@@ -49,6 +50,48 @@ struct LinkDetailsPage {
    */
   @State
   textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
   /**
    * 链接是否是图片显示
    */
@@ -186,36 +229,6 @@ struct LinkDetailsPage {
    */
   linkRectToolImageLineRightPadding: number = 3
   /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
-  isInputEnded: boolean = false
-  /**
-   * markdown是否同步解析
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * markdown第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * markdown最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * 模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
    * 文本格式链接文字行高
    */
   @State
@@ -225,10 +238,19 @@ struct LinkDetailsPage {
     try {
       let linkData: LinkData = router.getParams() as LinkData
       this.fileStr = getFileContextStr(linkData._pagePath)
+      // ---------- 通用
       this.isFull = linkData._isFull
       this.incrementalAnalysis = linkData._incrementalAnalysis
       this.time = linkData._time
       this.textNumber = linkData._textNumber
+      this.isMarkdownParserSync = linkData._isMarkdownParserSync
+      this.isOnCopy = linkData._isOnCopy
+      this.blockFirstTopMargin = linkData._blockFirstTopMargin
+      this.blockLastBottomMargin = linkData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = linkData._blockTopAndBottomMargins
+      this.openGestureSwipe = linkData._openGestureSwipe
+      this.openGestureSwipeTest = linkData._openGestureSwipeTest
+      // ---------- 专有
       this.isLinkStyle = linkData._isLinkStyle
       this.isListLinkStyle = linkData._isListLinkStyle
       this.linkColor = linkData._linkColor
@@ -260,11 +282,6 @@ struct LinkDetailsPage {
       this.linkRectToolImageMargin = linkData._linkRectToolImageMargin
       this.linkRectToolImageLineLeftPadding = linkData._linkRectToolImageLineLeftPadding
       this.linkRectToolImageLineRightPadding = linkData._linkRectToolImageLineRightPadding
-      this.isMarkdownParserSync = linkData._isMarkdownParserSync
-      this.isOnCopy = linkData._isOnCopy
-      this.blockFirstTopMargin = linkData._blockFirstTopMargin
-      this.blockLastBottomMargin = linkData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = linkData._blockTopAndBottomMargins
       this.linkLineHeight = linkData._linkLineHeight
     } catch (e) {
     }
@@ -312,14 +329,26 @@ struct LinkDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            incrementalAnalysis: this.incrementalAnalysis,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -364,12 +393,15 @@ struct LinkDetailsPage {
     theme.setLinkRectToolImageMargin(this.linkRectToolImageMargin) // 空心圆角矩形图片格式链接左右外边距
     theme.setLinkRectToolImageLineLeftPadding(this.linkRectToolImageLineLeftPadding) // 空心圆角矩形图片格式分割线和文本左边距
     theme.setLinkRectToolImageLineRightPadding(this.linkRectToolImageLineRightPadding) // 空心圆角矩形图片格式分割线和文本右边距
+    theme.setLinkLineHeight(this.linkLineHeight) // 文本格式链接文字行高
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
-    theme.setLinkLineHeight(this.linkLineHeight) // 文本格式链接文字行高
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     config.setMarkdownTheme(theme)
     return config
   }

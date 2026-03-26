@@ -3,9 +3,9 @@
  */
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { TitleData } from './TitlePage'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
+import { TitleData } from '../model/TitleData'
 
 @Entry
 @Component
@@ -17,7 +17,8 @@ struct TitleDetailsPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -29,17 +30,17 @@ struct TitleDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
+   * 是否增量解析Markdown文本
    */
   @State
   incrementalAnalysis: boolean = false
   /**
-   * 增量加载每次间隔时间 - 毫秒
+   * 增量加载每次间隔时间
    */
   @State
   time: number = 50
@@ -49,15 +50,62 @@ struct TitleDetailsPage {
   @State
   textNumber: number = 10
   /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
+  /**
    * H1、H2下划线高度
    */
   @State
   headingBreakHeight: number = 1
   /**
-   * H1、H2下划线颜色
+   * H1下划线颜色
    */
   @State
-  headingBreakColor: number = 0xFF000000
+  headingBreakColor1: number = 0xFF000000
+  /**
+   * H2下划线颜色
+   */
+  @State
+  headingBreakColor2: number = 0xFF000000
   /**
    * 标题文本颜色
    */
@@ -99,10 +147,35 @@ struct TitleDetailsPage {
   @State
   headingTextLineHeight6: number = 22
   /**
-   * 标题文本大小数组
+   * 标题文本大小1
    */
   @State
-  headingTextSizeMultipliers: Array<number> = [20, 17, 16, 15, 15, 13]
+  headingTextSizeMultipliers1: number = 20
+  /**
+   * 标题文本大小2
+   */
+  @State
+  headingTextSizeMultipliers2: number = 17
+  /**
+   * 标题文本大小3
+   */
+  @State
+  headingTextSizeMultipliers3: number = 16
+  /**
+   * 标题文本大小4
+   */
+  @State
+  headingTextSizeMultipliers4: number = 15
+  /**
+   * 标题文本大小5
+   */
+  @State
+  headingTextSizeMultipliers5: number = 15
+  /**
+   * 标题文本大小6
+   */
+  @State
+  headingTextSizeMultipliers6: number = 13
   /**
    * 标题文本字体
    */
@@ -119,57 +192,56 @@ struct TitleDetailsPage {
   @State
   headingBottomMargins: number = 8
   /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   * 标题文本颜色1
    */
   @State
-  isInputEnded: boolean = false
+  headingTextColors1: number = 0xFF000000
   /**
-   * markdown是否同步解析
+   * 标题文本颜色2
    */
   @State
-  isMarkdownParserSync: boolean = false
+  headingTextColors2: number = 0xFF000000
   /**
-   * 是否打开长按复制粘贴
+   * 标题文本颜色3
    */
   @State
-  isOnCopy: boolean = false
+  headingTextColors3: number = 0xFF000000
   /**
-   * markdown第一个模块上边距
+   * 标题文本颜色4
    */
   @State
-  blockFirstTopMargin: number = 8
+  headingTextColors4: number = 0xFF000000
   /**
-   * markdown最后一个模块下边距
+   * 标题文本颜色5
    */
   @State
-  blockLastBottomMargin: number = 8
+  headingTextColors5: number = 0xFF000000
   /**
-   * 模块间上下间距
+   * 标题文本颜色6
    */
   @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 标题文本颜色数组
-   */
-  @State
-  headingTextColors: Array<number> = [0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000, 0xFF000000]
-  /**
-   * 删除线样式
-   */
-  @State
-  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+  headingTextColors6: number = 0xFF000000
 
   aboutToAppear(): void {
     try {
       let titleData: TitleData = router.getParams() as TitleData
       this.fileStr = getFileContextStr(titleData._pagePath)
+      // ---------- 通用
       this.isFull = titleData._isFull
       this.incrementalAnalysis = titleData._incrementalAnalysis
       this.time = titleData._time
       this.textNumber = titleData._textNumber
+      this.isMarkdownParserSync = titleData._isMarkdownParserSync
+      this.isOnCopy = titleData._isOnCopy
+      this.blockFirstTopMargin = titleData._blockFirstTopMargin
+      this.blockLastBottomMargin = titleData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = titleData._blockTopAndBottomMargins
+      this.openGestureSwipe = titleData._openGestureSwipe
+      this.openGestureSwipeTest = titleData._openGestureSwipeTest
+      // ---------- 专有
       this.headingBreakHeight = titleData._headingBreakHeight
-      this.headingBreakColor = titleData._headingBreakColor
-      this.headingTextColor = titleData._headingTextColor
+      this.headingBreakColor1 = titleData._headingBreakColor1
+      this.headingBreakColor2 = titleData._headingBreakColor2
       this.headingTextWordSpace = titleData._headingTextWordSpace
       this.headingTextLineHeight1 = titleData._headingTextLineHeight1
       this.headingTextLineHeight2 = titleData._headingTextLineHeight2
@@ -177,17 +249,21 @@ struct TitleDetailsPage {
       this.headingTextLineHeight4 = titleData._headingTextLineHeight4
       this.headingTextLineHeight5 = titleData._headingTextLineHeight5
       this.headingTextLineHeight6 = titleData._headingTextLineHeight6
-      this.headingTextSizeMultipliers = titleData._headingTextSizeMultipliers
+      this.headingTextSizeMultipliers1 = titleData._headingTextSizeMultipliers1
+      this.headingTextSizeMultipliers2 = titleData._headingTextSizeMultipliers2
+      this.headingTextSizeMultipliers3 = titleData._headingTextSizeMultipliers3
+      this.headingTextSizeMultipliers4 = titleData._headingTextSizeMultipliers4
+      this.headingTextSizeMultipliers5 = titleData._headingTextSizeMultipliers5
+      this.headingTextSizeMultipliers6 = titleData._headingTextSizeMultipliers6
       this.headingTypeface = titleData._headingTypeface
       this.headingTopMargins = titleData._headingTopMargins
       this.headingBottomMargins = titleData._headingBottomMargins
-      this.isMarkdownParserSync = titleData._isMarkdownParserSync
-      this.isOnCopy = titleData._isOnCopy
-      this.blockFirstTopMargin = titleData._blockFirstTopMargin
-      this.blockLastBottomMargin = titleData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = titleData._blockTopAndBottomMargins
-      this.headingTextColors = titleData._headingTextColors
-      this.strikethroughStyle = titleData._strikethroughStyle
+      this.headingTextColors1 = titleData._headingTextColors1
+      this.headingTextColors2 = titleData._headingTextColors2
+      this.headingTextColors3 = titleData._headingTextColors3
+      this.headingTextColors4 = titleData._headingTextColors4
+      this.headingTextColors5 = titleData._headingTextColors5
+      this.headingTextColors6 = titleData._headingTextColors6
     } catch (e) {
     }
   }
@@ -234,14 +310,26 @@ struct TitleDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            incrementalAnalysis: this.incrementalAnalysis,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -254,17 +342,25 @@ struct TitleDetailsPage {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this)) // 上下文
+
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     theme.setHeadingBreakHeight(this.headingBreakHeight) // H1、H2标题下分割线高度
     theme.setHeadingTypeface(this.headingTypeface) // 标题文本字体
     theme.setHeadingTopMargins(this.headingTopMargins) // 标题模块上间距
     theme.setHeadingBottomMargins(this.headingBottomMargins) // 标题模块下间距
 
-    theme.setHeadingTextSize1(this.headingTextSizeMultipliers[0]) // [20, 17, 16, 15, 15, 13]
-    theme.setHeadingTextSize2(this.headingTextSizeMultipliers[1])
-    theme.setHeadingTextSize3(this.headingTextSizeMultipliers[2])
-    theme.setHeadingTextSize4(this.headingTextSizeMultipliers[3])
-    theme.setHeadingTextSize5(this.headingTextSizeMultipliers[4])
-    theme.setHeadingTextSize6(this.headingTextSizeMultipliers[5])
+    theme.setHeadingTextSize1(this.headingTextSizeMultipliers1) // [20, 17, 16, 15, 15, 13]
+    theme.setHeadingTextSize2(this.headingTextSizeMultipliers2)
+    theme.setHeadingTextSize3(this.headingTextSizeMultipliers3)
+    theme.setHeadingTextSize4(this.headingTextSizeMultipliers4)
+    theme.setHeadingTextSize5(this.headingTextSizeMultipliers5)
+    theme.setHeadingTextSize6(this.headingTextSizeMultipliers6)
 
     theme.setHeadingTextWordSpace(this.headingTextWordSpace) // 标题文本字间距
     theme.setHeadingTextLineHeight1(this.headingTextLineHeight1) // 一级标题文本行高
@@ -274,23 +370,15 @@ struct TitleDetailsPage {
     theme.setHeadingTextLineHeight5(this.headingTextLineHeight5) // 五级标题文本行高
     theme.setHeadingTextLineHeight6(this.headingTextLineHeight6) // 六级标题文本行高
 
-    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
-    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
-    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
-    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
-    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setHeadingTextColor1(this.headingTextColors1) // 一级标题文本颜色
+    theme.setHeadingTextColor2(this.headingTextColors2) // 二级标题文本颜色
+    theme.setHeadingTextColor3(this.headingTextColors3) // 三级标题文本颜色
+    theme.setHeadingTextColor4(this.headingTextColors4) // 四级标题文本颜色
+    theme.setHeadingTextColor5(this.headingTextColors5) // 五级标题文本颜色
+    theme.setHeadingTextColor6(this.headingTextColors6) // 六级标题文本颜色
 
-    theme.setHeadingTextColor1(this.headingTextColors[0]) // 一级标题文本颜色
-    theme.setHeadingTextColor2(this.headingTextColors[1]) // 二级标题文本颜色
-    theme.setHeadingTextColor3(this.headingTextColors[2]) // 三级标题文本颜色
-    theme.setHeadingTextColor4(this.headingTextColors[3]) // 四级标题文本颜色
-    theme.setHeadingTextColor5(this.headingTextColors[4]) // 五级标题文本颜色
-    theme.setHeadingTextColor6(this.headingTextColors[5]) // 六级标题文本颜色
-
-    theme.setHeadingBreakColor1(this.headingTextColors[6]) // H1标题下分割线颜色
-    theme.setHeadingBreakColor2(this.headingTextColors[7]) // H2标题下分割线颜色
-
-    theme.setStrikethroughStyle(this.strikethroughStyle) // 删除线样式
+    theme.setHeadingBreakColor1(this.headingBreakColor1) // H1标题下分割线颜色
+    theme.setHeadingBreakColor2(this.headingBreakColor2) // H2标题下分割线颜色
 
     config.setMarkdownTheme(theme)
     return config
