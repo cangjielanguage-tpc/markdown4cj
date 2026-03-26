@@ -19,6 +19,10 @@ struct AllDetailsPage {
    */
   scroller: Scroller = new Scroller()
   /**
+   * Markdown的控制器
+   */
+  markdownScroller: MarkdownScroller = new MarkdownScroller()
+  /**
    * 顶部导航栏高度
    */
   @StorageProp('safeTop')
@@ -111,11 +115,6 @@ struct AllDetailsPage {
   @State
   isDark: boolean = true
 
-  /**
-   * Markdown的控制器
-   */
-  markdownScroller: MarkdownScroller = new MarkdownScroller()
-
   aboutToAppear(): void {
     try {
       let allData: AllData = router.getParams() as AllData
@@ -184,6 +183,7 @@ struct AllDetailsPage {
             CJMarkdown({
               content: this.content,
               isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
               listScroller: this.markdownScroller,
               config: this.setMarkdownConfig(),
               plugin: this.setPlugin()
