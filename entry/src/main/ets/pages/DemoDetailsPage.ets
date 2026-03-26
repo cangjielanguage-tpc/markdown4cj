@@ -3,24 +3,29 @@
  */
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { DemoDataMD } from './DemoPage'
 import { getFileContextStr } from '../utils/FileUtils'
-import hilog from '@ohos.hilog'
+import { BaseMDData } from '../model/BaseMDData'
 
 @Entry
 @Component
 struct DemoDetailsPage {
+  // ---------- 通用
   /**
    * 滑动控制器
    */
   scroller: Scroller = new Scroller()
   /**
+   * Markdown的控制器
+   */
+  markdownScroller: MarkdownScroller = new MarkdownScroller()
+  /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -32,17 +37,17 @@ struct DemoDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
-   * markdown是否增量解析(true:增量解析,false:全量解析)
+   * 是否增量解析Markdown文本
    */
   @State
   incrementalAnalysis: boolean = false
   /**
-   * 增量加载每次间隔时间 - 毫秒
+   * 增量加载每次间隔时间
    */
   @State
   time: number = 50
@@ -52,54 +57,65 @@ struct DemoDetailsPage {
   @State
   textNumber: number = 10
   /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
-  isInputEnded: boolean = false
-  /**
-   * markdown是否同步解析
+   * 是否同步解析Markdown文本
    */
   @State
   isMarkdownParserSync: boolean = false
   /**
-   * 是否打开长按复制粘贴
+   * 是否打开长按复制粘贴效果
    */
   @State
   isOnCopy: boolean = false
   /**
-   * markdown第一个模块上边距
+   * Markdown文本第一个模块上边距
    */
   @State
   blockFirstTopMargin: number = 8
   /**
-   * markdown最后一个模块下边距
+   * Markdown文本最后一个模块下边距
    */
   @State
   blockLastBottomMargin: number = 8
   /**
-   * 模块间上下间距
+   * Markdown文本模块间上下间距
    */
   @State
   blockTopAndBottomMargins: number = 8
-
   /**
-   * Markdown的控制器
+   * 是否允许markdown控件自身响应滑动
    */
-  markdownScroller: MarkdownScroller = new MarkdownScroller()
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
 
   aboutToAppear(): void {
     try {
-      let imageDataMD: DemoDataMD = router.getParams() as DemoDataMD
-      this.fileStr = getFileContextStr(imageDataMD._pagePath)
-      this.isFull = imageDataMD._isFull
-      this.incrementalAnalysis = imageDataMD._incrementalAnalysis
-      this.time = imageDataMD._time
-      this.textNumber = imageDataMD._textNumber
-      this.isMarkdownParserSync = imageDataMD._isMarkdownParserSync
-      this.isOnCopy = imageDataMD._isOnCopy
-      this.blockFirstTopMargin = imageDataMD._blockFirstTopMargin
-      this.blockLastBottomMargin = imageDataMD._blockLastBottomMargin
-      this.blockTopAndBottomMargins = imageDataMD._blockTopAndBottomMargins
+      let baseMDData: BaseMDData = router.getParams() as BaseMDData
+      this.fileStr = getFileContextStr(baseMDData._pagePath)
+      // ---------- 通用
+      this.isFull = baseMDData._isFull
+      this.incrementalAnalysis = baseMDData._incrementalAnalysis
+      this.time = baseMDData._time
+      this.textNumber = baseMDData._textNumber
+      this.isMarkdownParserSync = baseMDData._isMarkdownParserSync
+      this.isOnCopy = baseMDData._isOnCopy
+      this.blockFirstTopMargin = baseMDData._blockFirstTopMargin
+      this.blockLastBottomMargin = baseMDData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = baseMDData._blockTopAndBottomMargins
+      this.openGestureSwipe = baseMDData._openGestureSwipe
+      this.openGestureSwipeTest = baseMDData._openGestureSwipeTest
+      // ---------- 专有
     } catch (e) {
     }
   }
@@ -113,14 +129,14 @@ struct DemoDetailsPage {
         this.safeTop
       )
       Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
+        .height(40)
+        .width("80%")
+        .type(ButtonType.Capsule)
+        .margin({ top: 5, bottom: 5 })
+        .fontColor(0xFFFFFFFF)
+        .backgroundColor(0xFF317AFF)
+        .align(Alignment.Center)
+        .fontSize(16)
         .onClick(
           () => {
             if (this.isFull) {
@@ -146,15 +162,28 @@ struct DemoDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            isInputEnded: this.isInputEnded,
-            incrementalAnalysis: this.incrementalAnalysis,
-            listScroller: this.markdownScroller,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
       .align(Alignment.TopStart)
@@ -165,27 +194,22 @@ struct DemoDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    config.setLinkCallback(this.linkCallBack.bind(this))
-    config.setImageCallback(this.imageCallback.bind(this))
-    config.setAudioCallback(this.audioCallback.bind(this))
-    config.setVideoCallback(this.videoCallback.bind(this))
-    config.setVideoImageCallback(this.videoImageCallback.bind(this))
-    config.setCodeCopyCallback(this.codeCopyCallback.bind(this))
-    config.setCodeFullScreenCallback(this.codeFullScreenCallback.bind(this))
-    config.setTocIndexCallback(this.tocIndexCallback.bind(this))
-    config.setFootnoteCallback(this.footnoteCallback.bind(this))
     let theme = new MarkdownTheme()
     theme.setContext(getContext(this)) // 上下文
+
     theme.setCodeFullScreenIcon($r('app.media.startIcon')) // 代码块全屏图片icon
     theme.setCodeCopyIcon($r('app.media.startIcon')) // 代码块复制图片icon
     theme.setAudioIcon($r('app.media.startIcon')) // 音频图片icon
     theme.setVideoImage($r('app.media.place_holder')) // 视频默认占位图
     theme.setPlayCircleFillIcon($r('app.media.play_circle_fill')) // 视频播放按钮icon
+
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     config.setMarkdownTheme(theme)
     return config
   }
@@ -210,49 +234,5 @@ struct DemoDetailsPage {
     plugin.setIsDescListPlugin(true) // 定义列表解析插件
     plugin.setIsHeadIDPlugin(true) // 标题ID解析插件
     return plugin
-  }
-
-  linkCallBack(url: string): void {
-    hilog.error(1, "1", `---url:${url}`)
-  }
-
-  imageCallback(url: string, urlList: Array<string>): void {
-    hilog.error(1, "1", `---url:${url},urlList:${urlList}`)
-  }
-
-  audioCallback(url: string): void {
-    hilog.error(1, "1", `---url:${url}`)
-  }
-
-  videoCallback(url: string, urlList: Array<string>): void {
-    hilog.error(1, "1", `---url:${url},urlList:${urlList}`)
-  }
-
-  videoImageCallback(url: string, cb: (imageUrl: string, aspectRatio: number, time: number) => void): void {
-    hilog.error(1, "1", `---url:${url}`)
-  }
-
-  codeCopyCallback(code: string): void {
-    hilog.error(1, "1", `---code:${code}`)
-  }
-
-  codeFullScreenCallback(code: string, type: string | undefined): void {
-    hilog.error(1, "1", `---code:${code},type:${type}`)
-  }
-
-  tocIndexCallback(y: number | undefined): void {
-    if(y !==undefined){
-      hilog.error(1, "1", `---y:${y}`)
-      let rect = this.markdownScroller.getItemRect(y)
-      this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
-    }
-  }
-
-  footnoteCallback(y: number | undefined): void {
-    if(y !==undefined){
-      hilog.error(1, "1", `---y:${y}`)
-      let rect = this.markdownScroller.getItemRect(y)
-      this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
-    }
   }
 }

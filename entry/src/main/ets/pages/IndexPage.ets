@@ -171,6 +171,14 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
+              "19、删除线",
+              0xFFFF0000,
+              "pages/StrikethroughPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
               "22、脚注",
               0xFFFF0000,
               "pages/FootnotePage"

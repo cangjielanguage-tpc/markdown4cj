@@ -55,6 +55,12 @@
     "pages/ABCustomDetailsPage",
     "pages/AIChatPage",
     "pages/AIChatDetailsPage",
-    "pages/AIChatLazyDetailsPage"
+    "pages/AIChatLazyDetailsPage",
+    "pages/BoldPage",
+    "pages/BoldDetailsPage",
+    "pages/ItalicPage",
+    "pages/ItalicDetailsPage",
+    "pages/StrikethroughPage",
+    "pages/StrikethroughDetailsPage"
   ]
 }
