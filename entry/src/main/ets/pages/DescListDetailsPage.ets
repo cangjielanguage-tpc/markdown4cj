@@ -193,8 +193,6 @@ struct DescListDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setTypeWriterOpen(true) // 设置打字机是否开启
-    theme.setTypeWriterColor(0xFFFFFF33) // 设置打字机颜色
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
     theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色

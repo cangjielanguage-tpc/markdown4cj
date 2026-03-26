@@ -466,7 +466,7 @@ struct ImagePage {
             titleStr: "设置默认占位图 - ",
             typeEnum: TypeEnum.IS_RESOURCE,
             allListData: this.imageResourceList,
-            allData: this.typeWriterColor
+            allData: this.imageResource
           })
           BaseTabComponent({
             titleStr: "图片上边距 - ",
