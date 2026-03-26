@@ -338,8 +338,8 @@ struct LatexMathPage {
           BaseTabComponent({
             titleStr: "数学公式文本颜色 - ",
             typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.latexMathTextColorList,
-            allData: this.latexMathTextColor
+            allListData: this.latexMathBackGroupColorList,
+            allData: this.latexMathBackGroupColor
           })
           BaseTabComponent({
             titleStr: "数学公式生成图片格式 - ",

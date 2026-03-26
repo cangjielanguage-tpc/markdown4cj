@@ -463,7 +463,7 @@ struct ImagePage {
             allData: this.callback
           })
           BaseTabComponent({
-            titleStr: "是否设置默认占位图 - ",
+            titleStr: "设置默认占位图 - ",
             typeEnum: TypeEnum.IS_RESOURCE,
             allListData: this.imageResourceList,
             allData: this.typeWriterColor

@@ -441,7 +441,7 @@ struct CodeBlockPage {
           })
           BaseTabComponent({
             titleStr: "设置代码类型和代码块距离 - ",
-            typeEnum: TypeEnum.IS_COLOR,
+            typeEnum: TypeEnum.IS_NUMBER,
             allListData: this.codeBlockTypeTextPaddingList,
             allData: this.codeBlockTypeTextPadding
           })
@@ -500,7 +500,7 @@ struct CodeBlockPage {
             allData: this.iconWidthAndHeight
           })
           BaseTabComponent({
-            titleStr: "代码块深浅色模式 - ",
+            titleStr: "代码块使用深色模式 - ",
             typeEnum: TypeEnum.IS_BOOLEAN,
             allListData: this.isDarkList,
             allData: this.isDark

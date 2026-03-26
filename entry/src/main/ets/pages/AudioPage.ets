@@ -504,13 +504,13 @@ struct AudioPage {
           })
           BaseTabComponent({
             titleStr: "音频上边距 - ",
-            typeEnum: TypeEnum.IS_COLOR,
+            typeEnum: TypeEnum.IS_NUMBER,
             allListData: this.audioMarginTopList,
             allData: this.audioMarginTop
           })
           BaseTabComponent({
             titleStr: "音频下边距 - ",
-            typeEnum: TypeEnum.IS_COLOR,
+            typeEnum: TypeEnum.IS_NUMBER,
             allListData: this.audioMarginBottomList,
             allData: this.audioMarginBottom
           })
