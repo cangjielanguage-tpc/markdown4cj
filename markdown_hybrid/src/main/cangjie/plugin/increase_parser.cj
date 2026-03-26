@@ -75,19 +75,24 @@ public class IncreaseParser {
     /**
      * 检测可能受影响的尾部Block数量
      * 不求精准 只求覆盖
+     * 底线条件：往前找第一个有 SourceSpan 的 Block
+     * 保底退化：全量解析
      */
     func detectDirtyBlocks(): Int {
         this.firstDirtyBlock = currentDocument.getLastChild() ?? return -1
         let continueBlock1 = firstDirtyBlock.getPrevious() ?? return -1
+        var deepth = 1
         if (continueBlock1 is TableBlock || continueBlock1 is ListBlock || continueBlock1 is FencedCodeBlockListBlock) {
             this.firstDirtyBlock = continueBlock1
-            return 2
+            deepth = 2
+        }else if (firstDirtyBlock is TableBlock || firstDirtyBlock is ListBlock) {
+            deepth = 1
         }
-        if (firstDirtyBlock is TableBlock || firstDirtyBlock is ListBlock) {
-            return 1
+        while (firstDirtyBlock.getSourceSpans().isEmpty()) {
+            this.firstDirtyBlock = firstDirtyBlock.getPrevious() ?? return -1
+            deepth++
         }
-
-        return 1
+        return deepth
     }
 
     /**
