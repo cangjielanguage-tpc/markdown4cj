@@ -7,11 +7,11 @@
         "material": {
           "certpath": "./sign/default_markdown4cj_hybrid_irhUbhRwTy6rMqkmCSKq8tHdrvfc_puDJ9wCPq5TRyU=.cer",
           "keyAlias": "debugKey",
-          "keyPassword": "0000001BE6E9A1885782FB2D2D53A0DBB99D118BA9FDD7B53FAE304A9811E4B6D4AD49A15CD43397F42247",
+          "keyPassword": "0000001B0F0F0A8C6AF60DD1B0787BFF74E9DC0D576BC9993F44A8CA86363B6674243C979B52C3141CBD91",
           "profile": "./sign/default_markdown4cj_hybrid_irhUbhRwTy6rMqkmCSKq8tHdrvfc_puDJ9wCPq5TRyU=.p7b",
           "signAlg": "SHA256withECDSA",
           "storeFile": "./sign/default_markdown4cj_hybrid_irhUbhRwTy6rMqkmCSKq8tHdrvfc_puDJ9wCPq5TRyU=.p12",
-          "storePassword": "0000001BA868B0251346FBC7091B4323C4AED9732C0A78323BAD366676BE6A45612AD0656BDA2156ABC8DF"
+          "storePassword": "0000001B79467812C51A87D2E60954E680442A6064949EA2C6E3F8B256864FE9631FEEE31FD249B85CA052"
         }
       }
     ],
