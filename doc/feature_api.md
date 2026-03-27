@@ -2068,10 +2068,59 @@ export class MarkdownScroller {
   currentYOffset(): number
 
   /**
+   * 获取子组件的大小及相对容器组件的位置
+   *
+   * @returns 子组件的大小和相对于组件的位置
+   */
+  getItemRect(index: number): MarkdownRectResult
+  
+  /**
    * 获取内部CJMarkdownScroller实例
    *
    * @returns CJMarkdownScroller实例
    */
   getScroller(): CJMarkdownScroller
+}
+```
+
+子组件的大小和相对于组件的位置
+
+```ets
+/**
+ * 子组件的大小和相对于组件的位置
+ */
+export class MarkdownRectResult {
+  /**
+   * 构造函数
+   */
+  constructor (x: number, y: number, width: number, height: number)
+  
+  /**
+   * 获取子组件相对坐标x
+   *
+   * @returns CJMarkdownScroller实例
+   */
+  getItemRectX(): number
+  
+  /**
+   * 获取子组件相对坐标y
+   *
+   * @returns CJMarkdownScroller实例
+   */
+  getItemRectY(): number
+  
+  /**
+   * 获取子组件宽度
+   *
+   * @returns CJMarkdownScroller实例
+   */
+  getItemRectWidth(): number
+  
+  /**
+   * 获取子组件高度
+   *
+   * @returns CJMarkdownScroller实例
+   */
+  getItemRectHeight(): number
 }
 ```
