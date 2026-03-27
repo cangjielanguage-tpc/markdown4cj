@@ -133,20 +133,6 @@ export class MarkdownConfiguration {
   setCodeFullScreenCallback(cb: (funcArg0: string, funcArg1: string | undefined) => void): void
 
   /**
-   * 设置数学公式点击回调
-   *
-   * @param cb 数学公式点击回调(funcArg0：数学公式图片数组数据, funcArg1:图片高度, funcArg2:图片宽度) --- 需要加载数学公式解析插件
-   */
-  setLatexImageCallback(cb: (funcArg0: ArrayBuffer, funcArg1: number, funcArg2: number) => void): void
-
-  /**
-   * 设置数学公式公式预处理回调
-   *
-   * @param cb 数学公式公式预处理回调(funcArg0：数学公式文本内容,return：处理过后的数学公式文本) --- 需要加载数学公式解析插件
-   */
-  setLatexStrCallback(cb: (funcArg0: string) => string): void
-
-  /**
    * 设置TOC点击回调
    *
    * @param cb TOC点击回调(funcArg0：偏移量) --- 需要加载TOC解析插件
@@ -1105,55 +1091,6 @@ export class MarkdownTheme {
   setIsLineBreak(isLineBreak: boolean): void
 
   /**
-   * 设置数学公式未加载状态是否显示文字
-   *
-   * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
-   */
-  setLatexDefaultText(latexDefaultText: boolean): void
-
-  /**
-   * 设置数学公式文本大小
-   *
-   * @param latexMathTextSize 数学公式文本大小 - 默认16.0fp
-   */
-  setLatexMathTextSize(latexMathTextSize: number): void
-
-  /**
-   * 设置数学公式背景色
-   *
-   * @param latexMathBackGroupColor 数学公式背景色 - 默认Color.TRANSPARENT
-   */
-  setLatexMathBackGroupColor(latexMathBackGroupColor: number): void
-
-  /**
-   * 设置数学公式文本颜色
-   *
-   * @param latexMathTextColor 数学公式文本颜色 - 默认0xFF000000
-   */
-  setLatexMathTextColor(latexMathTextColor: number): void
-
-  /**
-   * 设置数学公式生成图片格式
-   *
-   * @param latexMathColorFormat 数学公式生成图片格式 - 默认LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
-   */
-  setLatexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): void
-
-  /**
-   * 设置块结构的数学公式是否居中
-   *
-   * @param latexMathBlockCenter 块结构的数学公式是否居中 - true：居中；false：不居中。默认false
-   */
-  setLatexMathBlockCenter(latexMathBlockCenter: boolean): void
-
-  /**
-   * 设置数学公式字体路径
-   *
-   * @param latexMathResStr 数学公式字体路径 默认 "/data/storage/el1/bundle/entry/resources/resfile/res"
-   */
-  setLatexMathResStr(latexMathResStr: string): void
-
-  /**
    * 设置音频阴影颜色值
    *
    * @param audioShadowColor 音频阴影颜色值 - 默认0x1A000000
@@ -1623,30 +1560,30 @@ export class MarkdownTheme {
   setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: number): void
 
   /**
-   * 设置表格标题背景色
+   * 设置表格头背景色
    *
-   * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0XFFFFFFFF
+   * @param tableHeaderRowBackgroundColor 表格头背景色 - 默认0XFFFFFFFF
    */
   setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void
 
   /**
-   * 设置表格标题文本颜色
+   * 设置表格头文本颜色
    *
-   * @param tableTitleTextColor 表格标题文本颜色 - 默认0XFF191919
+   * @param tableTitleTextColor 表格头文本颜色 - 默认0XFF191919
    */
   setTableTitleTextColor(tableTitleTextColor: number): void
 
   /**
-   * 设置表格标题文本大小
+   * 设置表格头文本大小
    *
-   * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
+   * @param tableTitleTextSize 表格头文本大小 - 默认14.0vp
    */
   setTableTitleTextSize(tableTitleTextSize: number): void
 
   /**
-   * 设置表格标题文本行高
+   * 设置表格头文本行高
    *
-   * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
+   * @param tableTitleLineHeight 表格头文本行高 - 默认22.0vp
    */
   setTableTitleLineHeight(tableTitleLineHeight: number): void
 
@@ -1837,26 +1774,6 @@ export enum ImageFitType {
 }
 ```
 
-### enum LatexMathColorFormat
-
-数学公式生成图片格式的枚举
-
-```ets
-/**
- * 数学公式生成图片格式的枚举
- */
-export enum LatexMathColorFormat {
-  /**
-   * 16位
-   */
-  COLOR_FORMAT_RGB_565,
-  /**
-   * 32位
-   */
-  COLOR_FORMAT_BGRA_8888
-}
-```
-
 ### class MarkdownPlugin
 
 Markdown插件配置
@@ -1943,13 +1860,6 @@ export class MarkdownPlugin {
    * @param isLinkViewPlugin 是否设置链接块状化插件 - true：设置链接块状化插件；false：不设置链接块状化插件。默认false
    */
   setIsLinkViewPlugin(isLinkViewPlugin: boolean): void
-
-  /**
-   * 设置数学公式插件
-   *
-   * @param isLatexMathPlugin 是否设置数学公式插件 - true：设置数学公式插件；false：不设置数学公式插件。默认false
-   */
-  setIsLatexMathPlugin(isLatexMathPlugin: boolean): void
 
   /**
    * 设置图片样式插件
