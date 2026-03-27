@@ -1826,33 +1826,6 @@ export class MarkdownTheme {
   setUnderlineStyle(underlineStyle: TextDecorationStyle): void {
     this.underlineStyle = underlineStyle
   }
-
-  /**
-   * 设置markdown是否支持滚动手势
-   *
-   * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
-   */
-  setOpenGestureSwipe(openGestureSwipe: boolean): void {
-    this.openGestureSwipe = openGestureSwipe
-  }
-
-  /**
-   * 设置codeformat是否用制表符
-   *
-   * @param useTab true-使用，false-不使用，默认false
-   */
-  setUseTab(useTab: boolean): void {
-    this.useTab = useTab
-  }
-
-  /**
-   * 设置codeformat空格缩进数量
-   *
-   * @param indentWidth 空格缩进数量，默认4空格
-   */
-  setIndentWidth(indentWidth: number): void {
-    this.indentWidth = indentWidth
-  }
 }
 ```
 
