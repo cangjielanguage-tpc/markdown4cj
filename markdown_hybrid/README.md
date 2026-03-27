@@ -348,6 +348,7 @@ build() {
 9. 视频支持的格式 `mp4, mov, avi, mkv, wmv, flv, webm, m4v, 3gp`
 10. 音频支持的格式 `mp3, wav, aac, flac, ogg, m4a, wma, amr`
 11. `setLatexMathResStr` 接口默认字段是 `/data/storage/el1/bundle/entry/resources/resfile/res`。用户修改项目默认名称entry需要设置 `/data/storage/el1/bundle/xxx/resources/resfile/res` 数学公式才能正常显示
+12. 增量解析会导致上下数据前后文失效(TOC/脚注/标题ID/引用链接)
 
 ## 开源协议
 
