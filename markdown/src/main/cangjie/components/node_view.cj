@@ -114,6 +114,8 @@ public class NodeView {
     var cardName: Option<String> = Option<String>.None
     // 卡片内容
     var cardData: Option<String> = Option<String>.None
+    // Node
+    var commonmarkNode: Option<CommonmarkNode> = Option<CommonmarkNode>.None
 }
 
 public func nodeToNodeView(
@@ -181,6 +183,7 @@ public func nodeToNodeView(
                     childrenNodeView.codeListTab = childrenNewNodeView.codeListTab
                     childrenNodeView.cardName = childrenNewNodeView.cardName
                     childrenNodeView.cardData = childrenNewNodeView.cardData
+                    childrenNodeView.commonmarkNode = childrenNewNodeView.commonmarkNode
 
                     if (nodeType == "Text") {
                         // 普通文本
@@ -521,6 +524,10 @@ public func nodeToNodeView(
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "BlockAD") {
                         // 广告
+                        parentNewNodeView.children.add(childrenNodeView)
+                    } else {
+                        // 自定义其他节点
+                        childrenNodeView.commonmarkNode = commonmarkChildrenNode
                         parentNewNodeView.children.add(childrenNodeView)
                     }
             }
