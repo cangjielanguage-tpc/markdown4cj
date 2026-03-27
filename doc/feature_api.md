@@ -18,13 +18,13 @@ public class MarkdownComponent {
     * @param output 传入markdown文档内容
     * @param isInputEnded 流式输入是否输入结束(true:结束输入,false:持续输入)
     * @param incrementalAnalysis markdown是否增量解析(true:增量解析,false:全量解析)
-    * @param markdownAIConfiguration 传入markdown配置选项
+    * @param markdownConfiguration 传入markdown配置选项
     * @param markdownPlugin 传入markdown插件
     * @param adBuilder 传入广告布局
     * @param videoBuilder 传入视频布局
     * @param audioBuilder 传入音频布局
     * @param customBlockBuilder 传入自定义块结构布局
-    * @param customTitleLineBuilder 传入自定义标题行内布局
+    * @param customHeadingLineBuilder 传入自定义标题行内布局
     * @param customParagraphLineBuilder 传入自定义段落行内布局
     * @param customTableLineBuilder 传入自定义表格行内布局
     * @param scroller list控制器
@@ -33,13 +33,13 @@ public class MarkdownComponent {
         output: String,
         isInputEnded: Bool,
         incrementalAnalysis: Bool,
-        markdownAIConfiguration!: MarkdownAIConfiguration,
+        markdownConfiguration!: MarkdownConfiguration,
         markdownPlugin!: Markdown,
         @BuilderParam adBuilder!: (NodeView) -> Unit,
         @BuilderParam videoBuilder!: (NodeView, MarkdownTheme, (String) -> Unit, (String, (String, Float64, Int64) -> Unit) -> Unit, ?(String) -> Unit, ?(String) -> Unit) -> Unit,
         @BuilderParam audioBuilder!: (NodeView, MarkdownTheme, ?(String) -> Unit) -> Unit,
         @BuilderParam customBlockBuilder!: (NodeView, Int64) -> Unit,
-        @BuilderParam customTitleLineBuilder!: (NodeView, Int64) -> Unit,
+        @BuilderParam customHeadingLineBuilder!: (NodeView, Int64) -> Unit,
         @BuilderParam customParagraphLineBuilder!: (NodeView, Int64) -> Unit,
         @BuilderParam customTableLineBuilder!: (NodeView, Int64) -> Unit,
         scroller: Scroller
@@ -254,7 +254,7 @@ Markdown用户可设置的样式
 
 1. 上下文 - 本地图片rawfile需要上下文
     1. stageContext - 混合项目
-    2. abilityContext - 仓颉项目
+    2. uiAbilityContext - 仓颉项目
 2. 综合接口
    1. markdown是否同步解析
    2. 是否打开长按复制粘贴功能

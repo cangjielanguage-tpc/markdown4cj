@@ -307,6 +307,8 @@ Heading level 2
 11. `setLatexMathResStr` 接口默认字段是 `/data/storage/el1/bundle/entry/resources/resfile/res`。用户修改项目默认名称entry需要设置 `/data/storage/el1/bundle/xxx/resources/resfile/res` 数学公式才能正常显示
 12. markdownPlugin 自定义设置的时候。NodeIdPlugin 需要最后添加
 13. 自定义行内布局因为布局是在 Text 控件之中。暂时只支持 Span 和 ImageSpan
+14. 增量解析情况插件需要添加 .includeSourceSpans(2) 接口，需要最后添加
+15. 增量解析会导致上下数据前后文失效(TOC/脚注/标题ID/引用链接)
 
 ## 开源协议
 
