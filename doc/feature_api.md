@@ -1823,7 +1823,36 @@ export class MarkdownTheme {
    *
    * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
    */
-  setUnderlineStyle(underlineStyle: TextDecorationStyle): void
+  setUnderlineStyle(underlineStyle: TextDecorationStyle): void {
+    this.underlineStyle = underlineStyle
+  }
+
+  /**
+   * 设置markdown是否支持滚动手势
+   *
+   * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
+   */
+  setOpenGestureSwipe(openGestureSwipe: boolean): void {
+    this.openGestureSwipe = openGestureSwipe
+  }
+
+  /**
+   * 设置codeformat是否用制表符
+   *
+   * @param useTab true-使用，false-不使用，默认false
+   */
+  setUseTab(useTab: boolean): void {
+    this.useTab = useTab
+  }
+
+  /**
+   * 设置codeformat空格缩进数量
+   *
+   * @param indentWidth 空格缩进数量，默认4空格
+   */
+  setIndentWidth(indentWidth: number): void {
+    this.indentWidth = indentWidth
+  }
 }
 ```
 
@@ -2082,10 +2111,59 @@ export class MarkdownScroller {
   currentYOffset(): number
 
   /**
+   * 获取子组件的大小及相对容器组件的位置
+   *
+   * @returns 子组件的大小和相对于组件的位置
+   */
+  getItemRect(index: number): MarkdownRectResult
+  
+  /**
    * 获取内部CJMarkdownScroller实例
    *
    * @returns CJMarkdownScroller实例
    */
   getScroller(): CJMarkdownScroller
+}
+```
+
+子组件的大小和相对于组件的位置
+
+```ets
+/**
+ * 子组件的大小和相对于组件的位置
+ */
+export class MarkdownRectResult {
+  /**
+   * 构造函数
+   */
+  constructor (x: number, y: number, width: number, height: number)
+  
+  /**
+   * 获取子组件相对坐标x
+   *
+   * @returns CJMarkdownScroller实例
+   */
+  getItemRectX(): number
+  
+  /**
+   * 获取子组件相对坐标y
+   *
+   * @returns CJMarkdownScroller实例
+   */
+  getItemRectY(): number
+  
+  /**
+   * 获取子组件宽度
+   *
+   * @returns CJMarkdownScroller实例
+   */
+  getItemRectWidth(): number
+  
+  /**
+   * 获取子组件高度
+   *
+   * @returns CJMarkdownScroller实例
+   */
+  getItemRectHeight(): number
 }
 ```
