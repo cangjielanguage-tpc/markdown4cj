@@ -52,6 +52,7 @@ export struct CJMarkdownWrap {
     theme.setImageMaximumWidth(1) // 图片基于自身宽度缩放百分比
     theme.setIsOnCopy(false) // 是否打开长按复制粘贴
     theme.setIsMarkdownParserSync(true) // markdown是否同步解析
+    theme.setIsCodeBlockParserSync(true) // markdown是否同步解析
     theme.setImageFitType(1) // 图片缩放类型
     theme.setTableOddRowBackgroundColor(0XFFFFFFFF) // 表格奇数行背景色
     theme.setTableEvenRowBackgroundColor(0XFFFFFFFF) // 表格偶数行背景色

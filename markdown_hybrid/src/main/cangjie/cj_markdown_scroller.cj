@@ -80,7 +80,6 @@ public class CJMarkdownScroller {
     }
 }
 
-
 @Interop[ArkTS]
 public class CJRectResult {
     var x: Float64

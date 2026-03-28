@@ -46,8 +46,6 @@ export declare class CJMarkdownPlugin {
   setIsSupPlugin(isSupPlugin: boolean): void
 
   setIsEmojiPlugin(isSupPlugin: boolean, isEmojiLight: boolean): void
-
-  constructor()
 }
 
 export declare class CJMarkdownTheme {
@@ -500,8 +498,6 @@ export declare class CJMarkdownTheme {
   setUseTab(useTab: boolean): void
 
   setIndentWidth(indentWidth: number): void
-
-  constructor()
 }
 
 export declare class CJMarkdownConfig {
@@ -536,12 +532,9 @@ export declare class CJMarkdownConfig {
   setFootnoteCallback(cb: (funcArg0: number | undefined) => void): void
 
   setCJMarkdownTheme(cjMarkdownTheme: CJMarkdownTheme): void
-
-  constructor()
 }
 
 export declare class CJMarkdownScroller {
-  constructor()
 
   scrollBy(xOffset: number, yOffset: number): void
 
@@ -557,8 +550,6 @@ export declare class CJMarkdownScroller {
 }
 
 export declare class CJRectResult {
-  constructor (x: number, y: number, width: number, height: number)
-
   getItemRectX(): number
 
   getItemRectY(): number
@@ -568,10 +559,22 @@ export declare class CJRectResult {
   getItemRectHeight(): number
 }
 
-export declare function setGlobalContext(context: Context): void
+export declare interface CustomLib {
+  CJMarkdownConfig: {new (): CJMarkdownConfig}
 
-export declare function getLoadCJPage(mdStr: string, isInputEnded: boolean, incrementalAnalysis: boolean, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin, listScroller?: CJMarkdownScroller): (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void
+  CJMarkdownPlugin: {new (): CJMarkdownPlugin}
 
-export declare function registerImgPreprocessCallback(cb: (url: string) => Promise<ArrayBuffer|undefined>): void
+  CJMarkdownScroller: {new (): CJMarkdownScroller}
 
-export declare function getCJResource(codeFullScreenIcon?: resourceManager.Resource, codeCopyIcon?: resourceManager.Resource, audioIcon?: resourceManager.Resource, videoImage?: resourceManager.Resource, playCircleFillIcon?: resourceManager.Resource, bannerImage?: resourceManager.Resource, imageResource?: resourceManager.Resource, videoReleaseImage?: resourceManager.Resource, videoDownloadImage?: resourceManager.Resource, imageDownloadImage?: resourceManager.Resource): void
+  CJRectResult: {new (x: number, y: number, width: number, height: number): CJRectResult}
+
+  CJMarkdownTheme: {new (): CJMarkdownTheme}
+
+  setGlobalContext(context: Context): void
+
+  getLoadCJPage(mdStr: string, isInputEnded: boolean, incrementalAnalysis: boolean, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin, listScroller?: CJMarkdownScroller): (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void
+
+  registerImgPreprocessCallback(cb: (url: string) => Promise<ArrayBuffer|undefined>): void
+
+  getCJResource(codeFullScreenIcon?: resourceManager.Resource, codeCopyIcon?: resourceManager.Resource, audioIcon?: resourceManager.Resource, videoImage?: resourceManager.Resource, playCircleFillIcon?: resourceManager.Resource, bannerImage?: resourceManager.Resource, imageResource?: resourceManager.Resource, videoReleaseImage?: resourceManager.Resource, videoDownloadImage?: resourceManager.Resource, imageDownloadImage?: resourceManager.Resource): void
+}
