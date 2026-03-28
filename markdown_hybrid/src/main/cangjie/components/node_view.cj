@@ -118,6 +118,8 @@ public class NodeView {
     var isEndData: Bool = false
     // 是否可以刷新，主要用于倒数第二条数据的刷新判定
     var canRefresh: Bool = true
+    // Node
+    var commonmarkNode: Option<CommonmarkNode> = Option<CommonmarkNode>.None
 }
 
 public func nodeToNodeView(
@@ -185,6 +187,7 @@ public func nodeToNodeView(
                     childrenNodeView.codeListTab = childrenNewNodeView.codeListTab
                     childrenNodeView.cardName = childrenNewNodeView.cardName
                     childrenNodeView.cardData = childrenNewNodeView.cardData
+                    childrenNodeView.commonmarkNode = childrenNewNodeView.commonmarkNode
 
                     if (nodeType == "Text") {
                         // 普通文本
@@ -525,6 +528,10 @@ public func nodeToNodeView(
                         parentNewNodeView.children.add(childrenNodeView)
                     } else if (nodeType == "BlockAD") {
                         // 广告
+                        parentNewNodeView.children.add(childrenNodeView)
+                    } else {
+                        // 自定义其他节点
+                        childrenNodeView.commonmarkNode = commonmarkChildrenNode
                         parentNewNodeView.children.add(childrenNodeView)
                     }
             }

@@ -96,7 +96,7 @@ public open class InteropObjectBase {
         jsObj.getOrThrow().toJSValue()
     }
 
-    static func fromJSValue(_: JSContext, input: JSValue): InteropObjectBase {
+    public static func fromJSValue(_: JSContext, input: JSValue): InteropObjectBase {
         InteropObjectBase(input.asObject())
     }
 }
@@ -171,7 +171,7 @@ public class ImageLoadResultInterop <: InteropObjectBase {
         }
     }
 
-    static func fromJSValue(context: JSContext, input: JSValue): ImageLoadResultInterop {
+    public static func fromJSValue(context: JSContext, input: JSValue): ImageLoadResultInterop {
         let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
         let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
         let componentWidth = Float64.fromJSValue(context, input.getProperty(context, "componentWidth"))
@@ -211,7 +211,7 @@ public class CJImageErrorInterop <: InteropObjectBase {
         }
     }
 
-    static func fromJSValue(context: JSContext, input: JSValue): CJImageErrorInterop {
+    public static func fromJSValue(context: JSContext, input: JSValue): CJImageErrorInterop {
         let componentWidth = Float64.fromJSValue(context, input.getProperty(context, "componentWidth"))
         let componentHeight = Float64.fromJSValue(context, input.getProperty(context, "componentHeight"))
         let message = String.fromJSValue(context, input.getProperty(context, "message"))
@@ -238,7 +238,7 @@ public class CJSizeOptions <: InteropObjectBase {
         }
     }
 
-    static func fromJSValue(context: JSContext, input: JSValue): CJSizeOptions {
+    public static func fromJSValue(context: JSContext, input: JSValue): CJSizeOptions {
         let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
         let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
         CJSizeOptions(width, height)
@@ -264,7 +264,7 @@ public class CJPosition <: InteropObjectBase {
         }
     }
 
-    static func fromJSValue(context: JSContext, input: JSValue): CJPosition {
+    public static func fromJSValue(context: JSContext, input: JSValue): CJPosition {
         let x = Float64.fromJSValue(context, input.getProperty(context, "x"))
         let y = Float64.fromJSValue(context, input.getProperty(context, "y"))
         CJPosition(x, y)
@@ -304,7 +304,7 @@ public class CJArea <: InteropObjectBase {
         }
     }
 
-    static func fromJSValue(context: JSContext, input: JSValue): CJArea {
+    public static func fromJSValue(context: JSContext, input: JSValue): CJArea {
         let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
         let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
         let position = CJPosition.fromJSValue(context, input.getProperty(context, "position"))
@@ -332,10 +332,52 @@ public class CJLengthMetrics <: InteropObjectBase {
         }
     }
 
-    static func fromJSValue(context: JSContext, input: JSValue): CJLengthMetrics {
+    public static func fromJSValue(context: JSContext, input: JSValue): CJLengthMetrics {
         let value = Float64.fromJSValue(context, input.getProperty(context, "value"))
         let unit = Int64.fromJSValue(context, input.getProperty(context, "unit"))
         CJLengthMetrics(value, unit)
+    }
+}
+
+public class CJArkRectResult <: InteropObjectBase {
+    public CJArkRectResult(x: Float64, y: Float64, width: Float64, height: Float64) {
+        super(getCtx().object())
+        setProp("x", x.toJSValue(getCtx()))
+        setProp("y", y.toJSValue(getCtx()))
+        setProp("width", width.toJSValue(getCtx()))
+        setProp("height", height.toJSValue(getCtx()))
+    }
+
+    public prop x: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("x"))
+        }
+    }
+
+    public prop y: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("y"))
+        }
+    }
+
+    public prop width: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("width"))
+        }
+    }
+
+    public prop height: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("height"))
+        }
+    }
+
+    public static func fromJSValue(context: JSContext, input: JSValue): CJArkRectResult {
+        let x = Float64.fromJSValue(context, input.getProperty(context, "x"))
+        let y = Float64.fromJSValue(context, input.getProperty(context, "y"))
+        let width = Float64.fromJSValue(context, input.getProperty(context, "width"))
+        let height = Float64.fromJSValue(context, input.getProperty(context, "height"))
+        CJArkRectResult(x, y, width, height)
     }
 }
 

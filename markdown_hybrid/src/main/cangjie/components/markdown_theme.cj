@@ -15,7 +15,7 @@ public class MarkdownTheme {
     /**
      * markdown上下文 - 仓颉
      */
-   protected var uiAbilityContext: ?UIAbilityContext = None
+    protected var uiAbilityContext: ?UIAbilityContext = None
 
     /**
      * markdown是否同步解析
