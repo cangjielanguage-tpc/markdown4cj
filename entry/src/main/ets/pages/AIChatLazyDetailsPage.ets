@@ -85,13 +85,11 @@ struct AIChaLazytDetailsPage {
    * 是否第一次进页面
    */
   inFirst: boolean = true
-
   /**
    * 是否在布局末尾
    */
   @State
   reachBottom: boolean = true
-
   /**
    * 手指是否触摸
    */

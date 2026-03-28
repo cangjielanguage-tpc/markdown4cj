@@ -1,22 +1,22 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { NodeController, FrameNode } from '@kit.ArkUI';
+import { NodeController, FrameNode } from '@kit.ArkUI'
+import { requireCJLib } from 'libark_interop_loader.so'
 import {
+  CustomLib,
   CJMarkdownConfig,
   CJMarkdownTheme,
   CJMarkdownPlugin,
-  getLoadCJPage,
-  registerImgPreprocessCallback,
-  setGlobalContext,
-  getCJResource,
-  CJMarkdownScroller,
-  CJRectResult
-} from 'libmarkdown.so';
+  CJMarkdownScroller
+} from 'libark_interop_api_markdown.so'
+
+export let global_customLib: CustomLib | undefined = undefined
 
 class CJNodeController extends NodeController {
   rootNode?: FrameNode = undefined
-  public callbackCJ: (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void = (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => {
+  public callbackCJ: (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void =
+    (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => {
       this.mdStr = input
       this.isInputEnded = isInputEnded
       this.incrementalAnalysis = incrementalAnalysis
@@ -27,8 +27,10 @@ class CJNodeController extends NodeController {
   config?: CJMarkdownConfig
   plugin?: CJMarkdownPlugin
   listScroller?: CJMarkdownScroller
+  scroller: Scroller = new Scroller()
 
-  constructor(input: string, isInputEnded: boolean, incrementalAnalysis: boolean, config?: CJMarkdownConfig, plugin?: CJMarkdownPlugin, listScroller?: CJMarkdownScroller) {
+  constructor(input: string, isInputEnded: boolean, incrementalAnalysis: boolean, config?: CJMarkdownConfig,
+    plugin?: CJMarkdownPlugin, listScroller?: CJMarkdownScroller) {
     super()
     this.mdStr = input
     this.isInputEnded = isInputEnded
@@ -41,7 +43,11 @@ class CJNodeController extends NodeController {
   makeNode(ctx: UIContext): FrameNode | null {
     if (this.rootNode === undefined) {
       this.rootNode = new FrameNode(ctx)
-      this.callbackCJ = getLoadCJPage(this.mdStr, this.isInputEnded, this.incrementalAnalysis, this.config, this.plugin, this.listScroller)
+      if (global_customLib !== undefined) {
+        this.callbackCJ =
+          global_customLib.getLoadCJPage(this.mdStr, this.isInputEnded, this.incrementalAnalysis, this.config,
+            this.plugin, this.listScroller)
+      }
     }
     return this.rootNode
   }
@@ -102,7 +108,12 @@ export struct CJMarkdown {
 
   aboutToAppear(): void {
     if (this.useCangjieComponent === true) {
-      this.markdownNode = new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin(), this.listScroller?.getScroller())
+      if (global_customLib === undefined) {
+        global_customLib = requireCJLib("libmarkdown.so") as CustomLib
+      }
+      this.markdownNode =
+        new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(),
+          this.getPlugin(), this.listScroller?.getScroller())
     }
   }
 
@@ -114,8 +125,11 @@ export struct CJMarkdown {
     }
   }
 
-  getConfig(): CJMarkdownConfig {
-    let cjMarkdownConfig: CJMarkdownConfig = new CJMarkdownConfig()
+  getConfig(): CJMarkdownConfig | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownConfig: CJMarkdownConfig = new global_customLib.CJMarkdownConfig()
     if (this.config !== undefined) {
       if (this.config.linkCallback !== undefined) {
         cjMarkdownConfig.setLinkCallback(this.config.linkCallback)
@@ -127,7 +141,7 @@ export struct CJMarkdown {
         cjMarkdownConfig.setImageCallback(this.config.imageCallback)
       }
       if (this.config.imageCallbackCallback !== undefined) {
-        registerImgPreprocessCallback(this.config.imageCallbackCallback)
+        global_customLib.registerImgPreprocessCallback(this.config.imageCallbackCallback)
       }
       if (this.config.imageDownloadCallback !== undefined) {
         cjMarkdownConfig.setImageDownloadCallback(this.config.imageDownloadCallback)
@@ -164,14 +178,17 @@ export struct CJMarkdown {
     return cjMarkdownConfig
   }
 
-  getTheme(): CJMarkdownTheme {
-    let cjMarkdownTheme: CJMarkdownTheme = new CJMarkdownTheme()
+  getTheme(): CJMarkdownTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme: CJMarkdownTheme = new global_customLib.CJMarkdownTheme()
     if (this.config !== undefined) {
       if (this.config.markdownTheme !== undefined) {
         if (this.config.markdownTheme.context !== undefined) {
-          setGlobalContext(this.config.markdownTheme.context)
+          global_customLib.setGlobalContext(this.config.markdownTheme.context)
         }
-        getCJResource(
+        global_customLib.getCJResource(
           this.config.markdownTheme.codeFullScreenIcon,
           this.config.markdownTheme.codeCopyIcon,
           this.config.markdownTheme.audioIcon,
@@ -849,8 +866,11 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getPlugin(): CJMarkdownPlugin {
-    let cjMarkdownPlugin: CJMarkdownPlugin = new CJMarkdownPlugin()
+  getPlugin(): CJMarkdownPlugin | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownPlugin: CJMarkdownPlugin = new global_customLib.CJMarkdownPlugin()
     if (this.plugin !== undefined) {
       cjMarkdownPlugin.setIsBlockAudioPlugin(this.plugin.isBlockAudioPlugin)
       cjMarkdownPlugin.setIsBlockVideoPlugin(this.plugin.isBlockVideoPlugin)
@@ -4361,13 +4381,16 @@ export class MarkdownPlugin {
  * Markdown滑动控制器
  */
 export class MarkdownScroller {
-  private scroller?: CJMarkdownScroller = undefined
+  private scroller: CJMarkdownScroller|undefined = undefined
 
   /**
    * 构造函数
    */
   constructor() {
-    this.scroller = new CJMarkdownScroller()
+    if (global_customLib === undefined) {
+      global_customLib = requireCJLib("libmarkdown.so") as CustomLib
+    }
+    this.scroller = new global_customLib.CJMarkdownScroller()
   }
 
   /**
@@ -4431,9 +4454,12 @@ export class MarkdownScroller {
    *
    * @returns 子组件的大小和相对于组件的位置
    */
-  getItemRect(index: number): MarkdownRectResult{
-    let rect = this.scroller?.getItemRect(index) || new CJRectResult(0,0,0,0)
-    return new MarkdownRectResult(rect.getItemRectX(),rect.getItemRectY(),rect.getItemRectWidth(),rect.getItemRectHeight())
+  getItemRect(index: number): MarkdownRectResult {
+    if (global_customLib === undefined) {
+      return new MarkdownRectResult(0, 0, 0, 0)
+    }
+    let rect = this.scroller?.getItemRect(index) || new global_customLib.CJRectResult(0, 0, 0, 0)
+    return new MarkdownRectResult(rect.getItemRectX(), rect.getItemRectY(), rect.getItemRectWidth(), rect.getItemRectHeight())
   }
 
   /**
@@ -4441,9 +4467,12 @@ export class MarkdownScroller {
    *
    * @returns CJMarkdownScroller实例
    */
-  getScroller(): CJMarkdownScroller {
+  getScroller(): CJMarkdownScroller | undefined {
+    if (global_customLib === undefined) {
+      return this.scroller
+    }
     if (this.scroller === undefined) {
-      this.scroller = new CJMarkdownScroller()
+      this.scroller = new global_customLib.CJMarkdownScroller()
     }
     return this.scroller
   }
@@ -4458,26 +4487,26 @@ export class MarkdownRectResult {
   private width: number = 0
   private height: number = 0
 
-  constructor (x: number, y: number, width: number, height: number){
+  constructor(x: number, y: number, width: number, height: number) {
     this.x = x
     this.y = y
     this.width = width
     this.height = height
   }
 
-  getItemRectX(): number{
+  getItemRectX(): number {
     return this.x
   }
 
-  getItemRectY(): number{
+  getItemRectY(): number {
     return this.y
   }
 
-  getItemRectWidth(): number{
+  getItemRectWidth(): number {
     return this.width
   }
 
-  getItemRectHeight(): number{
+  getItemRectHeight(): number {
     return this.height
   }
 }
