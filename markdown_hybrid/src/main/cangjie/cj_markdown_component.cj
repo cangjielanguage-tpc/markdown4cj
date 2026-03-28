@@ -816,16 +816,16 @@ class CJMarkdownComponent {
                 markdownThemeBuilder.setTableEvenRowBackgroundColor(v) // 设置表格偶数行背景色
             }
             if (let Some(v) <- w.cjMarkdownTheme.tableHeaderRowBackgroundColor) {
-                markdownThemeBuilder.setTableHeaderRowBackgroundColor(v) // 设置表格头背景色
+                markdownThemeBuilder.setTableHeaderRowBackgroundColor(v) // 设置表格标题背景色
             }
             if (let Some(v) <- w.cjMarkdownTheme.tableTitleTextColor) {
-                markdownThemeBuilder.setTableTitleTextColor(v) // 设置表格头文本颜色
+                markdownThemeBuilder.setTableTitleTextColor(v) // 设置表格标题文本颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.tableTitleTextSize) {
-                markdownThemeBuilder.setTableTitleTextSize(v) // 设置表格头文本大小
+                markdownThemeBuilder.setTableTitleTextSize(v) // 设置表格标题文本大小
             }
             if (let Some(v) <- w.cjMarkdownTheme.tableTitleLineHeight) {
-                markdownThemeBuilder.setTableTitleLineHeight(v) // 设置表格头行高
+                markdownThemeBuilder.setTableTitleLineHeight(v) // 设置表格标题行高
             }
             if (let Some(v) <- w.cjMarkdownTheme.tableContentTextColor) {
                 markdownThemeBuilder.setTableContentTextColor(v) // 设置表格内容文本颜色

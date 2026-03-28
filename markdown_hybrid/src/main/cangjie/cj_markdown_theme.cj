@@ -983,22 +983,22 @@ public class CJMarkdownTheme {
     var tableEvenRowBackgroundColor: ?Color = None
 
     /**
-     * 表格头背景色
+     * 表格标题背景色
      */
     var tableHeaderRowBackgroundColor: ?Color = None
 
     /**
-     * 表格头文本颜色
+     * 表格标题文本颜色
      */
     var tableTitleTextColor: ?Color = None
 
     /**
-     * 表格头文本大小
+     * 表格标题文本大小
      */
     var tableTitleTextSize: ?Float64 = None
 
     /**
-     * 表格头文本行高
+     * 表格标题文本行高
      */
     var tableTitleLineHeight: ?Float64 = None
 
@@ -2899,36 +2899,36 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置表格头背景色
+     * 设置表格标题背景色
      *
-     * @param tableHeaderRowBackgroundColor 表格头背景色 - 默认0XFFFFFFFF
+     * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0XFFFFFFFF
      */
     public func setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: UInt32): Unit {
         this.tableHeaderRowBackgroundColor = transColorForTrasparent(tableHeaderRowBackgroundColor)
     }
 
     /**
-     * 设置表格头文本颜色
+     * 设置表格标题文本颜色
      *
-     * @param tableTitleTextColor 表格头文本颜色 - 默认0XFF191919
+     * @param tableTitleTextColor 表格标题文本颜色 - 默认0XFF191919
      */
     public func setTableTitleTextColor(tableTitleTextColor: UInt32): Unit {
         this.tableTitleTextColor = transColorForTrasparent(tableTitleTextColor)
     }
 
     /**
-     * 设置表格头文本大小
+     * 设置表格标题文本大小
      *
-     * @param tableTitleTextSize 表格头文本大小 - 默认14.0vp
+     * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
      */
     public func setTableTitleTextSize(tableTitleTextSize: Float64): Unit {
         this.tableTitleTextSize = tableTitleTextSize
     }
 
     /**
-     * 设置表格头文本行高
+     * 设置表格标题文本行高
      *
-     * @param tableTitleLineHeight 表格头文本行高 - 默认22.0vp
+     * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
      */
     public func setTableTitleLineHeight(tableTitleLineHeight: Float64): Unit {
         this.tableTitleLineHeight = tableTitleLineHeight

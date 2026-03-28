@@ -29,8 +29,7 @@ class CJNodeController extends NodeController {
   listScroller?: CJMarkdownScroller
   scroller: Scroller = new Scroller()
 
-  constructor(input: string, isInputEnded: boolean, incrementalAnalysis: boolean, config?: CJMarkdownConfig,
-    plugin?: CJMarkdownPlugin, listScroller?: CJMarkdownScroller) {
+  constructor(input: string, isInputEnded: boolean, incrementalAnalysis: boolean, config?: CJMarkdownConfig, plugin?: CJMarkdownPlugin, listScroller?: CJMarkdownScroller) {
     super()
     this.mdStr = input
     this.isInputEnded = isInputEnded
@@ -44,9 +43,7 @@ class CJNodeController extends NodeController {
     if (this.rootNode === undefined) {
       this.rootNode = new FrameNode(ctx)
       if (global_customLib !== undefined) {
-        this.callbackCJ =
-          global_customLib.getLoadCJPage(this.mdStr, this.isInputEnded, this.incrementalAnalysis, this.config,
-            this.plugin, this.listScroller)
+        this.callbackCJ = global_customLib.getLoadCJPage(this.mdStr, this.isInputEnded, this.incrementalAnalysis, this.config, this.plugin, this.listScroller)
       }
     }
     return this.rootNode
@@ -111,9 +108,7 @@ export struct CJMarkdown {
       if (global_customLib === undefined) {
         global_customLib = requireCJLib("libmarkdown.so") as CustomLib
       }
-      this.markdownNode =
-        new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(),
-          this.getPlugin(), this.listScroller?.getScroller())
+      this.markdownNode = new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin(), this.listScroller?.getScroller())
     }
   }
 
@@ -960,8 +955,7 @@ export class MarkdownConfiguration {
   /**
    * 视频的图片替换回调
    */
-  videoImageCallback?: (funcArg0: string,
-    funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
+  videoImageCallback?: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
   /**
    * 视频发布的点击事件
    */
@@ -1067,8 +1061,7 @@ export class MarkdownConfiguration {
    *
    * @param cb 视频视频占位图和宽高比和视频时长回调。 (funcArg0：视频url,funcArg1:视频占位图和宽高比和视频时长回调 (funcArgfuncArg0:视频首帧图,funcArgfuncArg1:图片宽高比,funcArgfuncArg2,视频时长)) --- 需要加载视频解析插件
    */
-  setVideoImageCallback(cb: (funcArg0: string,
-    funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void): void {
+  setVideoImageCallback(cb: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void): void {
     this.videoImageCallback = cb
   }
 
@@ -1983,19 +1976,19 @@ export class MarkdownTheme {
    */
   tableEvenRowBackgroundColor?: number = undefined
   /**
-   * 表格头背景色
+   * 表格标题背景色
    */
   tableHeaderRowBackgroundColor?: number = undefined
   /**
-   * 表格头文本颜色
+   * 表格标题文本颜色
    */
   tableTitleTextColor?: number = undefined
   /**
-   * 表格头文本大小
+   * 表格标题文本大小
    */
   tableTitleTextSize?: number = undefined
   /**
-   * 表格头文本行高
+   * 表格标题文本行高
    */
   tableTitleLineHeight?: number = undefined
   /**
@@ -3958,36 +3951,36 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置表格头背景色
+   * 设置表格标题背景色
    *
-   * @param tableHeaderRowBackgroundColor 表格头背景色 - 默认0XFFFFFFFF
+   * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0XFFFFFFFF
    */
   setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void {
     this.tableHeaderRowBackgroundColor = tableHeaderRowBackgroundColor
   }
 
   /**
-   * 设置表格头文本颜色
+   * 设置表格标题文本颜色
    *
-   * @param tableTitleTextColor 表格头文本颜色 - 默认0XFF191919
+   * @param tableTitleTextColor 表格标题文本颜色 - 默认0XFF191919
    */
   setTableTitleTextColor(tableTitleTextColor: number): void {
     this.tableTitleTextColor = tableTitleTextColor
   }
 
   /**
-   * 设置表格头文本大小
+   * 设置表格标题文本大小
    *
-   * @param tableTitleTextSize 表格头文本大小 - 默认14.0vp
+   * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
    */
   setTableTitleTextSize(tableTitleTextSize: number): void {
     this.tableTitleTextSize = tableTitleTextSize
   }
 
   /**
-   * 设置表格头文本行高
+   * 设置表格标题文本行高
    *
-   * @param tableTitleLineHeight 表格头文本行高 - 默认22.0vp
+   * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
    */
   setTableTitleLineHeight(tableTitleLineHeight: number): void {
     this.tableTitleLineHeight = tableTitleLineHeight
