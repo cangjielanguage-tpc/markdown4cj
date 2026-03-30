@@ -142,12 +142,12 @@ struct HTMLPage {
   /**
    * 下划线颜色列表
    */
-  underlineColorList: Array<number> = colorListGeneralData
+  underlineColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 下划线颜色
    */
   @State
-  underlineColor: number = 0xFF191919
+  underlineColor: number | undefined = undefined
   /**
    * 下划线样式
    */

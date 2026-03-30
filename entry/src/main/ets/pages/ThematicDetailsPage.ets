@@ -101,7 +101,7 @@ struct ThematicDetailsPage {
    * 分割线颜色
    */
   @State
-  thematicBreakColor: number = 0xFF000000
+  thematicBreakColor: number | undefined = undefined
   /**
    * 分割线高度
    */
@@ -227,7 +227,9 @@ struct ThematicDetailsPage {
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
 
-    theme.setThematicBreakColor(this.thematicBreakColor) // 分割线颜色
+    if (this.thematicBreakColor !== undefined) {
+      theme.setThematicBreakColor(this.thematicBreakColor) // 分割线颜色
+    }
     theme.setThematicBreakHeight(this.thematicBreakHeight) // 分割线高度
     theme.setThematicBreakTopMargin(this.thematicBreakTopMargin) // 分割线上部外边距
     theme.setThematicBreakBottomMargin(this.thematicBreakBottomMargin) // 分割线下部外边距

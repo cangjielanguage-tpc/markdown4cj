@@ -3,10 +3,10 @@ import { BaseMDData } from "./BaseMDData"
 export class CodeListData extends BaseMDData {
   _codeListTitleTextSize: number = 13
   _codeListTitleSelectTextSize: number = 13
-  _codeListTitleSelectTextColor: number = 0xFFFF0000
-  _codeListTitleUnSelectTextColor: number = 0xFF000000
-  _codeListTitleSelectBackGroupColor: number = 0xFF191919
-  _codeListTitleUnSelectBackGroupColor: number = 0x00FFFFFF
+  _codeListTitleSelectTextColor: number | undefined = undefined
+  _codeListTitleUnSelectTextColor: number | undefined = undefined
+  _codeListTitleSelectBackGroupColor: number | undefined = undefined
+  _codeListTitleUnSelectBackGroupColor: number | undefined = undefined
 
   public set codeListTitleTextSize(value: number) {
     this._codeListTitleTextSize = value
@@ -16,19 +16,19 @@ export class CodeListData extends BaseMDData {
     this._codeListTitleSelectTextSize = value
   }
 
-  public set codeListTitleSelectTextColor(value: number) {
+  public set codeListTitleSelectTextColor(value: number | undefined) {
     this._codeListTitleSelectTextColor = value
   }
 
-  public set codeListTitleUnSelectTextColor(value: number) {
+  public set codeListTitleUnSelectTextColor(value: number | undefined) {
     this._codeListTitleUnSelectTextColor = value
   }
 
-  public set codeListTitleSelectBackGroupColor(value: number) {
+  public set codeListTitleSelectBackGroupColor(value: number | undefined) {
     this._codeListTitleSelectBackGroupColor = value
   }
 
-  public set codeListTitleUnSelectBackGroupColor(value: number) {
+  public set codeListTitleUnSelectBackGroupColor(value: number | undefined) {
     this._codeListTitleUnSelectBackGroupColor = value
   }
 

@@ -106,7 +106,7 @@ struct ParagraphDetailsPage {
    * 段落文本颜色
    */
   @State
-  paragraphTextColor: number = 0xFF000000
+  paragraphTextColor: number | undefined = undefined
   /**
    * 段落文本字间距
    */
@@ -248,7 +248,9 @@ struct ParagraphDetailsPage {
     theme.setParagraphTopMargins(this.paragraphTopMargins) // 段落模块上间距
     theme.setParagraphBottomMargins(this.paragraphBottomMargins) // 段落模块下间距
     theme.setParagraphTextSize(this.paragraphTextSize) // 段落文本大小
-    theme.setParagraphTextColor(this.paragraphTextColor) // 段落文本颜色
+    if (this.paragraphTextColor !== undefined) {
+      theme.setParagraphTextColor(this.paragraphTextColor) // 段落文本颜色
+    }
     theme.setParagraphTextWordSpace(this.paragraphTextWordSpace) // 段落文本字间距
     theme.setParagraphTextLineHeight(this.paragraphTextLineHeight) // 段落文本行高
     theme.setParagraphTypeface(this.paragraphTypeface) // 段落文本字体

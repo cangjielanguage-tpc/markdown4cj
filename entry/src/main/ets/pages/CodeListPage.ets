@@ -160,39 +160,39 @@ struct CodeListPage {
   /**
    * 组合代码选中标题文本颜色列表
    */
-  codeListTitleSelectTextColorList: Array<number> = colorListGeneralData
+  codeListTitleSelectTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 组合代码选中标题文本颜色
    */
   @State
-  codeListTitleSelectTextColor: number = 0xFFFF0000
+  codeListTitleSelectTextColor: number | undefined = undefined
   /**
    * 组合代码未选中标题文本颜色列表
    */
-  codeListTitleUnSelectTextColorList: Array<number> = colorListGeneralData
+  codeListTitleUnSelectTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 组合代码未选中标题文本颜色
    */
   @State
-  codeListTitleUnSelectTextColor: number = 0xFF000000
+  codeListTitleUnSelectTextColor: number | undefined = undefined
   /**
    * 组合代码选中标题背景颜色列表
    */
-  codeListTitleSelectBackGroupColorList: Array<number> = colorListGeneralData
+  codeListTitleSelectBackGroupColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 组合代码选中标题背景颜色
    */
   @State
-  codeListTitleSelectBackGroupColor: number = 0xFF191919
+  codeListTitleSelectBackGroupColor: number | undefined = undefined
   /**
    * 组合代码未选中标题背景颜色列表
    */
-  codeListTitleUnSelectBackGroupColorList: Array<number> = colorListGeneralData
+  codeListTitleUnSelectBackGroupColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 组合代码未选中标题背景颜色
    */
   @State
-  codeListTitleUnSelectBackGroupColor: number = 0x00FFFFFF
+  codeListTitleUnSelectBackGroupColor: number | undefined = undefined
   /**
    * 配置数据内容
    */

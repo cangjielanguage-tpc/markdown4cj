@@ -101,11 +101,11 @@ struct CodeLineDetailsPage {
   /**
    * 内联代码文本颜色
    */
-  codeTextColor: number = 0xFF000000
+  codeTextColor: number | undefined = undefined
   /**
    * 内联代码背景颜色
    */
-  codeBackgroundColor: number = 0xFFE0E0E0
+  codeBackgroundColor: number | undefined = undefined
   /**
    * 内联代码文本大小
    */
@@ -215,8 +215,12 @@ struct CodeLineDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setCodeTextColor(this.codeTextColor)
-    theme.setCodeBackgroundColor(this.codeBackgroundColor)
+    if (this.codeTextColor !== undefined) {
+      theme.setCodeTextColor(this.codeTextColor)
+    }
+    if (this.codeBackgroundColor !== undefined) {
+      theme.setCodeBackgroundColor(this.codeBackgroundColor)
+    }
     theme.setCodeTextSize(this.codeTextSize)
     theme.setCodeTypeface(this.codeTypeface)
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析

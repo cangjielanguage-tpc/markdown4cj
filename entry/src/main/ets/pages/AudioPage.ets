@@ -143,21 +143,21 @@ struct AudioPage {
   /**
    * 音频阴影颜色值列表
    */
-  audioShadowColorList: Array<number> = colorListGeneralData
+  audioShadowColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 音频阴影颜色值
    */
   @State
-  audioShadowColor: number = 0xFF808080
+  audioShadowColor: number | undefined = undefined
   /**
    * 音频边框颜色列表
    */
-  audioBorderColorList: Array<number> = colorListGeneralData
+  audioBorderColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 音频边框颜色
    */
   @State
-  audioBorderColor: number = 0xFF808080
+  audioBorderColor: number | undefined = undefined
   /**
    * 音频边框粗细列表
    */
@@ -179,21 +179,21 @@ struct AudioPage {
   /**
    * 音频按钮背景颜色列表
    */
-  audioButtonBackgroundColorList: Array<number> = colorListGeneralData
+  audioButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 音频按钮背景颜色
    */
   @State
-  audioButtonBackgroundColor: number = 0xFF000000
+  audioButtonBackgroundColor: number | undefined = undefined
   /**
    * 音频按钮文字颜色列表
    */
-  audioButtonTextColorList: Array<number> = colorListGeneralData
+  audioButtonTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 音频按钮文字颜色
    */
   @State
-  audioButtonTextColor: number = 0xFFFFFFFF
+  audioButtonTextColor: number | undefined = undefined
   /**
    * 音频按钮文字大小列表
    */
@@ -233,12 +233,12 @@ struct AudioPage {
   /**
    * 音频标题文字颜色列表
    */
-  audioTitleTextColorList: Array<number> = colorListGeneralData
+  audioTitleTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 音频标题文字颜色
    */
   @State
-  audioTitleTextColor: number = 0xFF000000
+  audioTitleTextColor: number | undefined = undefined
   /**
    * 音频标题文字行高列表
    */
@@ -260,12 +260,12 @@ struct AudioPage {
   /**
    * 音频类型文字颜色列表
    */
-  audioTypeTextColorList: Array<number> = colorListGeneralData
+  audioTypeTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 音频类型文字颜色
    */
   @State
-  audioTypeTextColor: number = 0x80000000
+  audioTypeTextColor: number | undefined = undefined
   /**
    * 音频类型文字行高列表
    */

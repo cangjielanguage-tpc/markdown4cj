@@ -112,12 +112,12 @@ struct LatexMathDetailsPage {
    * 数学公式背景色
    */
   @State
-  latexMathBackGroupColor: number = 0x00000000
+  latexMathBackGroupColor: number | undefined = undefined
   /**
    * 数学公式文本颜色
    */
   @State
-  latexMathTextColor: number = 0xFF000000
+  latexMathTextColor: number | undefined = undefined
   /**
    * 块结构的数学公式是否居中
    */
@@ -252,8 +252,12 @@ struct LatexMathDetailsPage {
 
     theme.setLatexDefaultText(this.latexDefaultText) // 数学公式未加载状态是否显示文字
     theme.setLatexMathTextSize(this.latexMathTextSize) // 数学公式文本大小
-    theme.setLatexMathBackGroupColor(this.latexMathBackGroupColor) // 数学公式背景色
-    theme.setLatexMathTextColor(this.latexMathTextColor) // 数学公式文本颜色
+    if (this.latexMathBackGroupColor !== undefined) {
+      theme.setLatexMathBackGroupColor(this.latexMathBackGroupColor) // 数学公式背景色
+    }
+    if (this.latexMathTextColor !== undefined) {
+      theme.setLatexMathTextColor(this.latexMathTextColor) // 数学公式文本颜色
+    }
     theme.setLatexMathColorFormat(this.latexMathColorFormat) // 数学公式生成图片格式
     theme.setLatexMathBlockCenter(this.latexMathBlockCenter) // 块结构的数学公式是否居中
     theme.setLatexMathResStr(this.latexMathResStr) // 数学公式字体路径

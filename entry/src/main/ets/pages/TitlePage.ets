@@ -154,21 +154,21 @@ struct TitlePage {
   /**
    * H1下划线颜色列表
    */
-  headingBreakColorList1: Array<number> = colorListGeneralData
+  headingBreakColorList1: Array<number | undefined> = colorListGeneralData
   /**
    * H1下划线颜色
    */
   @State
-  headingBreakColor1: number = 0xFF000000
+  headingBreakColor1: number | undefined = undefined
   /**
    * H2下划线颜色列表
    */
-  headingBreakColorList2: Array<number> = colorListGeneralData
+  headingBreakColorList2: Array<number | undefined> = colorListGeneralData
   /**
    * H2下划线颜色
    */
   @State
-  headingBreakColor2: number = 0xFF000000
+  headingBreakColor2: number | undefined = undefined
   /**
    * 标题文本字间距列表
    */
@@ -323,62 +323,62 @@ struct TitlePage {
    * 标题文本颜色数组1
    */
   @State
-  headingTextColorsList1: Array<number> = colorListGeneralData
+  headingTextColorsList1: Array<number | undefined> = colorListGeneralData
   /**
    * 标题文本颜色1
    */
   @State
-  headingTextColors1: number = 0xFF000000
+  headingTextColors1: number | undefined = undefined
   /**
    * 标题文本颜色数组2
    */
   @State
-  headingTextColorsList2: Array<number> = colorListGeneralData
+  headingTextColorsList2: Array<number | undefined> = colorListGeneralData
   /**
    * 标题文本颜色2
    */
   @State
-  headingTextColors2: number = 0xFF000000
+  headingTextColors2: number | undefined = undefined
   /**
    * 标题文本颜色数组3
    */
   @State
-  headingTextColorsList3: Array<number> = colorListGeneralData
+  headingTextColorsList3: Array<number | undefined> = colorListGeneralData
   /**
    * 标题文本颜色3
    */
   @State
-  headingTextColors3: number = 0xFF000000
+  headingTextColors3: number | undefined = undefined
   /**
    * 标题文本颜色数组4
    */
   @State
-  headingTextColorsList4: Array<number> = colorListGeneralData
+  headingTextColorsList4: Array<number | undefined> = colorListGeneralData
   /**
    * 标题文本颜色4
    */
   @State
-  headingTextColors4: number = 0xFF000000
+  headingTextColors4: number | undefined = undefined
   /**
    * 标题文本颜色数组5
    */
   @State
-  headingTextColorsList5: Array<number> = colorListGeneralData
+  headingTextColorsList5: Array<number | undefined> = colorListGeneralData
   /**
    * 标题文本颜色5
    */
   @State
-  headingTextColors5: number = 0xFF000000
+  headingTextColors5: number | undefined = undefined
   /**
    * 标题文本颜色数组6
    */
   @State
-  headingTextColorsList6: Array<number> = colorListGeneralData
+  headingTextColorsList6: Array<number | undefined> = colorListGeneralData
   /**
    * 标题文本颜色6
    */
   @State
-  headingTextColors6: number = 0xFF000000
+  headingTextColors6: number | undefined = undefined
   /**
    * 配置数据内容
    */

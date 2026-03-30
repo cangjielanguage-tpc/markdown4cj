@@ -2,7 +2,7 @@ import { BaseMDData } from "./BaseMDData"
 
 export class ParagraphData extends BaseMDData {
   _paragraphTextSize: number = 14
-  _paragraphTextColor: number = 0xFF000000
+  _paragraphTextColor: number | undefined = undefined
   _paragraphTextWordSpace: number = 0
   _paragraphTextLineHeight: number = 22
   _paragraphTypeface: string = "HarmonyOS Sans"
@@ -13,7 +13,7 @@ export class ParagraphData extends BaseMDData {
     this._paragraphTextSize = value
   }
 
-  public set paragraphTextColor(value: number) {
+  public set paragraphTextColor(value: number | undefined) {
     this._paragraphTextColor = value
   }
 

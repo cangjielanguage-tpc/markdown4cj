@@ -105,7 +105,7 @@ struct VideoDetailsPage {
   /**
    * 视频时间文本颜色
    */
-  videoTimeTextColor: number = 0xFFFFFFFF
+  videoTimeTextColor: number | undefined = undefined
   /**
    * 视频时间文本大小
    */
@@ -165,12 +165,12 @@ struct VideoDetailsPage {
    * 视频发布按钮文本颜色
    */
   @State
-  videoReleaseTexColor: number = 0xE6000000
+  videoReleaseTexColor: number | undefined = undefined
   /**
    * 视频发布按钮背景颜色
    */
   @State
-  videoReleaseBackgroundColor: number = 0xFFF5F5F5
+  videoReleaseBackgroundColor: number | undefined = undefined
   /**
    * 视频下载按钮图片宽度和高度
    */
@@ -205,12 +205,12 @@ struct VideoDetailsPage {
    * 视频下载按钮文本颜色
    */
   @State
-  videoDownloadTexColor: number = 0xE6000000
+  videoDownloadTexColor: number | undefined = undefined
   /**
    * 视频下载按钮背景颜色
    */
   @State
-  videoDownloadBackgroundColor: number = 0xFFF5F5F5
+  videoDownloadBackgroundColor: number | undefined = undefined
 
   aboutToAppear(): void {
     try {
@@ -341,7 +341,9 @@ struct VideoDetailsPage {
     theme.setVideoReleaseImage($r('app.media.video_release')) // 视频发布默认图标
     theme.setVideoDownloadImage($r('app.media.video_download')) // 视频下载默认图标
     theme.setVideoBorderRadius(this.videoBorderRadius) // 视频圆角
-    theme.setVideoTimeTextColor(this.videoTimeTextColor) // 视频时间文本颜色
+    if (this.videoTimeTextColor !== undefined) {
+      theme.setVideoTimeTextColor(this.videoTimeTextColor) // 视频时间文本颜色
+    }
     theme.setVideoTimeTextSize(this.videoTimeTextSize) // 视频时间文本大小
     theme.setVideoTimeTextMarginRight(this.videoTimeTextMarginRight) // 视频时间文本居右边距
     theme.setVideoTimeTextMarginBottom(this.videoTimeTextMarginBottom) // 视频时间文本居底边距
@@ -354,17 +356,24 @@ struct VideoDetailsPage {
     theme.setVideoReleaseRadius(this.videoReleaseRadius) // 视频发布按钮圆角
     theme.setVideoReleaseText(this.videoReleaseText) // 视频发布按钮文本内容
     theme.setVideoReleaseTexSize(this.videoReleaseTexSize) // 视频发布按钮文本大小
-    theme.setVideoReleaseTexColor(this.videoReleaseTexColor) // 视频发布按钮文本颜色
-    theme.setVideoReleaseBackgroundColor(this.videoReleaseBackgroundColor) // 视频发布按钮背景颜色
+    if (this.videoReleaseTexColor !== undefined) {
+      theme.setVideoReleaseTexColor(this.videoReleaseTexColor) // 视频发布按钮文本颜色
+    }
+    if (this.videoReleaseBackgroundColor !== undefined) {
+      theme.setVideoReleaseBackgroundColor(this.videoReleaseBackgroundColor) // 视频发布按钮背景颜色
+    }
     theme.setVideoDownloadImageWidthHeight(this.videoDownloadImageWidthHeight) // 视频下载按钮图片宽度和高度
     theme.setVideoDownloadWidth(this.videoDownloadWidth) // 视频下载按钮宽度
     theme.setVideoDownloadHeight(this.videoDownloadHeight) // 视频下载按钮高度
     theme.setVideoDownloadRadius(this.videoDownloadRadius) // 视频下载按钮圆角
     theme.setVideoDownloadText(this.videoDownloadText) // 视频下载按钮文本内容
     theme.setVideoDownloadTexSize(this.videoDownloadTexSize) // 视频下载按钮文本大小
-    theme.setVideoDownloadTexColor(this.videoDownloadTexColor) // 视频下载按钮文本颜色
-    theme.setVideoDownloadBackgroundColor(this.videoDownloadBackgroundColor) // 视频下载按钮背景颜色
-
+    if (this.videoDownloadTexColor !== undefined) {
+      theme.setVideoDownloadTexColor(this.videoDownloadTexColor) // 视频下载按钮文本颜色
+    }
+    if (this.videoDownloadBackgroundColor !== undefined) {
+      theme.setVideoDownloadBackgroundColor(this.videoDownloadBackgroundColor) // 视频下载按钮背景颜色
+    }
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距

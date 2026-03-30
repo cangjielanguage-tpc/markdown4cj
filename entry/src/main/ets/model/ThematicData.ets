@@ -2,7 +2,7 @@ import { BaseMDData } from "./BaseMDData"
 
 export class ThematicData extends BaseMDData {
   _thematicBreakHeight: number = 0.5
-  _thematicBreakColor: number = 0xFF000000
+  _thematicBreakColor: number | undefined = undefined
   _thematicBreakTopMargin: number = 0
   _thematicBreakBottomMargin: number = 0
 
@@ -10,7 +10,7 @@ export class ThematicData extends BaseMDData {
     this._thematicBreakHeight = value
   }
 
-  public set thematicBreakColor(value: number) {
+  public set thematicBreakColor(value: number | undefined) {
     this._thematicBreakColor = value
   }
 

@@ -4,8 +4,8 @@ export class QuoteData extends BaseMDData {
   _blockQuoteLeftMargin: number = 8
   _blockQuoteRightMargin: number = 8
   _blockQuoteWidth: number = 1
-  _blockQuoteColor: number = 0xFF191919
-  _blockQuoteBackGroupColor: number = 0xFFE0E0E0
+  _blockQuoteColor: number | undefined = undefined
+  _blockQuoteBackGroupColor: number | undefined = undefined
   _blockQuoteTopAndBottomMargins: number = 0
 
   public set blockQuoteLeftMargin(value: number) {
@@ -20,11 +20,11 @@ export class QuoteData extends BaseMDData {
     this._blockQuoteWidth = value
   }
 
-  public set blockQuoteColor(value: number) {
+  public set blockQuoteColor(value: number | undefined) {
     this._blockQuoteColor = value
   }
 
-  public set blockQuoteBackGroupColor(value: number) {
+  public set blockQuoteBackGroupColor(value: number | undefined) {
     this._blockQuoteBackGroupColor = value
   }
 

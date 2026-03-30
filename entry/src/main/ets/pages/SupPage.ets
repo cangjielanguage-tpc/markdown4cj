@@ -142,12 +142,12 @@ struct SupPage {
   /**
    * 上标字体颜色列表
    */
-  supTextColorList: Array<number> = colorListGeneralData
+  supTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 上标字体颜色
    */
   @State
-  supTextColor: number = 0xFF191919
+  supTextColor: number | undefined = undefined
   /**
    * 上标字体大小列表
    */
