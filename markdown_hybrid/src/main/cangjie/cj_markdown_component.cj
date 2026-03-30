@@ -533,6 +533,24 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.headingTextLineHeight6) {
                 markdownThemeBuilder.setHeadingTextLineHeight6(v) // 设置六级标题文本行高
             }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextSize1) {
+                markdownThemeBuilder.setHeadingTextSize1(v) // 设置一级标题文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextSize2) {
+                markdownThemeBuilder.setHeadingTextSize2(v) // 设置二级标题文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextSize3) {
+                markdownThemeBuilder.setHeadingTextSize3(v) // 设置三级标题文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextSize4) {
+                markdownThemeBuilder.setHeadingTextSize4(v) // 设置四级标题文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextSize5) {
+                markdownThemeBuilder.setHeadingTextSize5(v) // 设置五级标题文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextSize6) {
+                markdownThemeBuilder.setHeadingTextSize6(v) // 设置六级标题文本大小
+            }
             if (let Some(v) <- w.cjMarkdownTheme.headingTextColor1) {
                 markdownThemeBuilder.setHeadingTextColor1(v) // 设置一级标题文本颜色
             }
