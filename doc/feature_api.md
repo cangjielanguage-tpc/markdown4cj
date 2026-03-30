@@ -1560,30 +1560,30 @@ export class MarkdownTheme {
   setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: number): void
 
   /**
-   * 设置表格头背景色
+   * 设置表格标题背景色
    *
-   * @param tableHeaderRowBackgroundColor 表格头背景色 - 默认0XFFFFFFFF
+   * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0XFFFFFFFF
    */
   setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void
 
   /**
-   * 设置表格头文本颜色
+   * 设置表格标题文本颜色
    *
-   * @param tableTitleTextColor 表格头文本颜色 - 默认0XFF191919
+   * @param tableTitleTextColor 表格标题文本颜色 - 默认0XFF191919
    */
   setTableTitleTextColor(tableTitleTextColor: number): void
 
   /**
-   * 设置表格头文本大小
+   * 设置表格标题文本大小
    *
-   * @param tableTitleTextSize 表格头文本大小 - 默认14.0vp
+   * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
    */
   setTableTitleTextSize(tableTitleTextSize: number): void
 
   /**
-   * 设置表格头文本行高
+   * 设置表格标题文本行高
    *
-   * @param tableTitleLineHeight 表格头文本行高 - 默认22.0vp
+   * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
    */
   setTableTitleLineHeight(tableTitleLineHeight: number): void
 
