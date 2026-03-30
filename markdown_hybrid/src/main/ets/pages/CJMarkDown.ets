@@ -161,6 +161,12 @@ export struct CJMarkdown {
       if (this.config.codeFullScreenCallback !== undefined) {
         cjMarkdownConfig.setCodeFullScreenCallback(this.config.codeFullScreenCallback)
       }
+      if (this.config.latexImageCallback !== undefined) {
+        cjMarkdownConfig.setLatexImageCallback(this.config.latexImageCallback)
+      }
+      if (this.config.latexStrCallback !== undefined) {
+        cjMarkdownConfig.setLatexStrCallback(this.config.latexStrCallback)
+      }
       if (this.config.tocIndexCallback !== undefined) {
         cjMarkdownConfig.setTocIndexCallback(this.config.tocIndexCallback)
       }
