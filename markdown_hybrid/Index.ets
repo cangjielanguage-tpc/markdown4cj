@@ -3,4 +3,5 @@ export { CJMarkdown,
   MarkdownTheme,
   MarkdownPlugin,
   MarkdownScroller,
-  MarkdownRectResult } from './src/main/ets/pages/CJMarkDown'
+  MarkdownRectResult,
+  ImageFitType } from './src/main/ets/pages/CJMarkDown'
