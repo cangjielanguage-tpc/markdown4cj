@@ -45,31 +45,30 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 19. 支持任务列表语法
 20. 支持块引用语法
 21. 支持Toc目录语法
-22. 支持数学公式语法
-23. 支持脚注语法
-24. 支持图片语法
-25. 支持图片Style语法
-26. 支持图片幻灯片语法
-27. 支持组合代码块语法
-28. 支持视频语法
-29. 支持音频语法
-30. 支持定义列表语法
-31. 支持标题ID语法
-32. 支持上标语法
-33. 支持下标语法
-34. 支持emoji语法
-35. 支持围栏代码块高亮功能
-36. 支持列表嵌套功能
-37. 支持文本样式设置
-38. 支持表格样式设置
-39. 支持超链接图片化设置
-40. 支持深浅主题色设置
-41. 支持文本长按选中复制粘贴
-42. 支持图文混排和图文不混排功能
+22. 支持脚注语法
+23. 支持图片语法
+24. 支持图片Style语法
+25. 支持图片幻灯片语法
+26. 支持组合代码块语法
+27. 支持视频语法
+28. 支持音频语法
+29. 支持定义列表语法
+30. 支持标题ID语法
+31. 支持上标语法
+32. 支持下标语法
+33. 支持emoji语法
+34. 支持围栏代码块高亮功能
+35. 支持列表嵌套功能
+36. 支持文本样式设置
+37. 支持表格样式设置
+38. 支持超链接图片化设置
+39. 支持深浅主题色设置
+40. 支持文本长按选中复制粘贴
+41. 支持图文混排和图文不混排功能
 
 ## 软件架构
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin_5.1.1/doc/assets/img.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_lite_hybrid_cangjie-plugin_5.1.1/doc/assets/img.png)
 
 ### 源码目录
 
@@ -93,7 +92,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin_5.1.1/doc/feature_api.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_lite_hybrid_cangjie-plugin_5.1.1/doc/feature_api.md)
 
 ## 使用说明
 
@@ -116,7 +115,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
       ```git
       git clone https://gitcode.com/Cangjie-TPC/markdown4cj.git
-      git checkout markdown4cj_hybrid_cangjie-plugin_5.1.1
+      git checkout markdown4cj_lite_hybrid_cangjie-plugin_5.1.1
       ```
 
       编译markdown
@@ -214,7 +213,7 @@ struct DemoPage {
 
 ### 显示效果
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin_5.1.1/doc/assets/img1.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_lite_hybrid_cangjie-plugin_5.1.1/doc/assets/img1.png)
 
 ### 使用三方库内置的ArkTS组件功能示例
 
@@ -347,11 +346,11 @@ build() {
 8. 图片显示功能。纯仓颉项目支持API15及以上版本。互操作项目支持API12及以上版本
 9. 视频支持的格式 `mp4, mov, avi, mkv, wmv, flv, webm, m4v, 3gp`
 10. 音频支持的格式 `mp3, wav, aac, flac, ogg, m4a, wma, amr`
-11. `setLatexMathResStr` 接口默认字段是 `/data/storage/el1/bundle/entry/resources/resfile/res`。用户修改项目默认名称entry需要设置 `/data/storage/el1/bundle/xxx/resources/resfile/res` 数学公式才能正常显示
+11. 增量解析会导致上下数据前后文失效(TOC/脚注/标题ID/引用链接)
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin_5.1.1/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_lite_hybrid_cangjie-plugin_5.1.1/LICENSE) ，请自由的享受和参与开源。
 
 ## 参与贡献
 
