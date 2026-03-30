@@ -71,7 +71,7 @@ struct AudioDetailsPage {
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果
    */
@@ -112,11 +112,11 @@ struct AudioDetailsPage {
   /**
    * 音频阴影颜色值
    */
-  audioShadowColor: number = 0x1A000000
+  audioShadowColor: number | undefined = undefined
   /**
    * 音频边框颜色
    */
-  audioBorderColor: number = 0x33000000
+  audioBorderColor: number | undefined = undefined
   /**
    * 音频边框粗细
    */
@@ -128,11 +128,11 @@ struct AudioDetailsPage {
   /**
    * 音频按钮背景颜色
    */
-  audioButtonBackgroundColor: number = 0xFF000000
+  audioButtonBackgroundColor: number | undefined = undefined
   /**
    * 音频按钮文字颜色
    */
-  audioButtonTextColor: number = 0xFFFFFFFF
+  audioButtonTextColor: number | undefined = undefined
   /**
    * 音频按钮文字大小
    */
@@ -152,7 +152,7 @@ struct AudioDetailsPage {
   /**
    * 音频标题文字颜色
    */
-  audioTitleTextColor: number = 0xFF000000
+  audioTitleTextColor: number | undefined = undefined
   /**
    * 音频标题文字行高
    */
@@ -164,7 +164,7 @@ struct AudioDetailsPage {
   /**
    * 音频类型文字颜色
    */
-  audioTypeTextColor: number = 0x80000000
+  audioTypeTextColor: number | undefined = undefined
   /**
    * 音频类型文字行高
    */
@@ -293,27 +293,41 @@ struct AudioDetailsPage {
 
     let theme = new MarkdownTheme()
     theme.setAudioIcon($r('app.media.startIcon'))
-    theme.setAudioShadowColor(this.audioShadowColor)
-    theme.setAudioBorderColor(this.audioBorderColor)
+    if (this.audioShadowColor !== undefined) {
+      theme.setAudioShadowColor(this.audioShadowColor)
+    }
+    if (this.audioBorderColor !== undefined) {
+      theme.setAudioBorderColor(this.audioBorderColor)
+    }
     theme.setAudioBorderWidth(this.audioBorderWidth)
     theme.setAudioBorderRadius(this.audioBorderRadius)
-    theme.setAudioButtonBackgroundColor(this.audioButtonBackgroundColor)
-    theme.setAudioButtonTextColor(this.audioButtonTextColor)
+    if (this.audioButtonBackgroundColor !== undefined) {
+      theme.setAudioButtonBackgroundColor(this.audioButtonBackgroundColor)
+    }
+    if (this.audioButtonTextColor !== undefined) {
+      theme.setAudioButtonTextColor(this.audioButtonTextColor)
+    }
     theme.setAudioButtonTextSize(this.audioButtonTextSize)
     theme.setAudioButtonText(this.audioButtonText)
     theme.setAudioButtonBorderRadius(this.audioButtonBorderRadius)
     theme.setAudioTitleTextSize(this.audioTitleTextSize)
-    theme.setAudioTitleTextColor(this.audioTitleTextColor)
+    if (this.audioTitleTextColor !== undefined) {
+      theme.setAudioTitleTextColor(this.audioTitleTextColor)
+    }
     theme.setAudioTitleTextLineHeight(this.audioTitleTextLineHeight)
     theme.setAudioTypeTextSize(this.audioTypeTextSize)
-    theme.setAudioTypeTextColor(this.audioTypeTextColor)
+    if (this.audioTypeTextColor !== undefined) {
+      theme.setAudioTypeTextColor(this.audioTypeTextColor)
+    }
     theme.setAudioTypeTextLineHeight(this.audioTypeTextLineHeight)
     theme.setAudioMarginTop(this.audioMarginTop)
     theme.setAudioMarginBottom(this.audioMarginBottom)
 
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
-    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    if (this.typeWriterColor !== undefined) {
+      theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    }
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距

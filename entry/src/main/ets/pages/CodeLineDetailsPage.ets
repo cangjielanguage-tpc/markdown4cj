@@ -70,7 +70,7 @@ struct CodeLineDetailsPage {
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果
    */
@@ -111,11 +111,11 @@ struct CodeLineDetailsPage {
   /**
    * 内联代码文本颜色
    */
-  codeTextColor: number = 0xFF000000
+  codeTextColor: number | undefined = undefined
   /**
    * 内联代码背景颜色
    */
-  codeBackgroundColor: number = 0xFFE0E0E0
+  codeBackgroundColor: number | undefined = undefined
   /**
    * 内联代码文本大小
    */
@@ -227,13 +227,19 @@ struct CodeLineDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setCodeTextColor(this.codeTextColor)
-    theme.setCodeBackgroundColor(this.codeBackgroundColor)
+    if (this.codeTextColor !== undefined) {
+      theme.setCodeTextColor(this.codeTextColor)
+    }
+    if (this.codeBackgroundColor !== undefined) {
+      theme.setCodeBackgroundColor(this.codeBackgroundColor)
+    }
     theme.setCodeTextSize(this.codeTextSize)
     theme.setCodeTypeface(this.codeTypeface)
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
-    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    if (this.typeWriterColor !== undefined) {
+      theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    }
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距

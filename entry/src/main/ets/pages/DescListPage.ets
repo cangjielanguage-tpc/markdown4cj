@@ -11,6 +11,7 @@ import {
   colorListGeneralData,
   marginListGeneralData,
   textNumberListGeneralData,
+  textWordSpaceListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
 import { DescListData } from '../model/DescListData'
@@ -94,12 +95,12 @@ struct DescListPage {
   /**
    * 打字机效果颜色列表
    */
-  typeWriterColorList: Array<number> = colorListGeneralData
+  typeWriterColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果列表
    */
@@ -156,6 +157,33 @@ struct DescListPage {
   openGestureSwipeTest: boolean = false
 
   // ---------------- 专有
+  /**
+   * 定义列表术语和定义行之间间距列表
+   */
+  descListTermAndDefMarginsList: Array<number> = marginListGeneralData
+  /**
+   * 定义列表术语和定义行之间间距
+   */
+  @State
+  descListTermAndDefMargins: number = 8
+  /**
+   * 定义列表定义行缩进列表
+   */
+  descListDefIndentationList: Array<number> = textWordSpaceListGeneralData
+  /**
+   * 定义列表定义行缩进
+   */
+  @State
+  descListDefIndentation: number = 8
+  /**
+   * 定义列表定义行间距列表
+   */
+  descListDefMarginsList: Array<number> = marginListGeneralData
+  /**
+   * 定义列表定义行间距
+   */
+  @State
+  descListDefMargins: number = 8
 
   /**
    * 配置数据内容
@@ -258,6 +286,24 @@ struct DescListPage {
           })
 
           // ---------------- 专有
+          BaseTabComponent({
+            titleStr: "定义列表术语和定义行之间间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.descListTermAndDefMarginsList,
+            allData: this.descListTermAndDefMargins
+          })
+          BaseTabComponent({
+            titleStr: "定义列表定义行缩进 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.descListDefIndentationList,
+            allData: this.descListDefIndentation
+          })
+          BaseTabComponent({
+            titleStr: "定义列表定义行间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.descListDefMarginsList,
+            allData: this.descListDefMargins
+          })
 
           // 列表显示
           List() {
@@ -289,6 +335,9 @@ struct DescListPage {
                     this.descListData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.descListData.pagePath = `${this.rawFilePath}/${item}`
                     // ---------- 专有
+                    this.descListData.descListTermAndDefMargins = this.descListTermAndDefMargins
+                    this.descListData.descListDefIndentation = this.descListDefIndentation
+                    this.descListData.descListDefMargins = this.descListDefMargins
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/DescListDetailsPage", params: this.descListData })
                   })

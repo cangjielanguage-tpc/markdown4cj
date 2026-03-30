@@ -69,7 +69,7 @@ struct SupDetailsPage {
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果
    */
@@ -111,7 +111,7 @@ struct SupDetailsPage {
    * 上标字体颜色
    */
   @State
-  supTextColor: number = 0xFF191919
+  supTextColor: number | undefined = undefined
   /**
    * 上标字体大小
    */
@@ -220,13 +220,17 @@ struct SupDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setSupTextColor(this.supTextColor) // 上标字体颜色
+    if (this.supTextColor !== undefined) {
+      theme.setSupTextColor(this.supTextColor) // 上标字体颜色
+    }
     theme.setSupTextSize(this.supTextSize) // 上标字体大小
     theme.setSupOffsetDist(this.supOffsetDist) // 上标偏移距离
 
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
-    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    if (this.typeWriterColor !== undefined) {
+      theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    }
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距

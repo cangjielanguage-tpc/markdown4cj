@@ -69,7 +69,7 @@ struct TitleDetailsPage {
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果
    */
@@ -116,17 +116,17 @@ struct TitleDetailsPage {
    * H1下划线颜色
    */
   @State
-  headingBreakColor1: number = 0xFF000000
+  headingBreakColor1: number | undefined = undefined
   /**
    * H2下划线颜色
    */
   @State
-  headingBreakColor2: number = 0xFF000000
+  headingBreakColor2: number | undefined = undefined
   /**
    * 标题文本颜色
    */
   @State
-  headingTextColor: number = 0xFF000000
+  headingTextColor: number | undefined = undefined
   /**
    * 标题文本字间距
    */
@@ -211,32 +211,32 @@ struct TitleDetailsPage {
    * 标题文本颜色1
    */
   @State
-  headingTextColors1: number = 0xFF000000
+  headingTextColors1: number | undefined = undefined
   /**
    * 标题文本颜色2
    */
   @State
-  headingTextColors2: number = 0xFF000000
+  headingTextColors2: number | undefined = undefined
   /**
    * 标题文本颜色3
    */
   @State
-  headingTextColors3: number = 0xFF000000
+  headingTextColors3: number | undefined = undefined
   /**
    * 标题文本颜色4
    */
   @State
-  headingTextColors4: number = 0xFF000000
+  headingTextColors4: number | undefined = undefined
   /**
    * 标题文本颜色5
    */
   @State
-  headingTextColors5: number = 0xFF000000
+  headingTextColors5: number | undefined = undefined
   /**
    * 标题文本颜色6
    */
   @State
-  headingTextColors6: number = 0xFF000000
+  headingTextColors6: number | undefined = undefined
 
   aboutToAppear(): void {
     try {
@@ -365,7 +365,9 @@ struct TitleDetailsPage {
 
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
-    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    if (this.typeWriterColor !== undefined) {
+      theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    }
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
@@ -392,15 +394,31 @@ struct TitleDetailsPage {
     theme.setHeadingTextLineHeight5(this.headingTextLineHeight5) // 五级标题文本行高
     theme.setHeadingTextLineHeight6(this.headingTextLineHeight6) // 六级标题文本行高
 
-    theme.setHeadingTextColor1(this.headingTextColors1) // 一级标题文本颜色
-    theme.setHeadingTextColor2(this.headingTextColors2) // 二级标题文本颜色
-    theme.setHeadingTextColor3(this.headingTextColors3) // 三级标题文本颜色
-    theme.setHeadingTextColor4(this.headingTextColors4) // 四级标题文本颜色
-    theme.setHeadingTextColor5(this.headingTextColors5) // 五级标题文本颜色
-    theme.setHeadingTextColor6(this.headingTextColors6) // 六级标题文本颜色
+    if (this.headingTextColors1 !== undefined) {
+      theme.setHeadingTextColor1(this.headingTextColors1) // 一级标题文本颜色
+    }
+    if (this.headingTextColors2 !== undefined) {
+      theme.setHeadingTextColor2(this.headingTextColors2) // 二级标题文本颜色
+    }
+    if (this.headingTextColors3 !== undefined) {
+      theme.setHeadingTextColor3(this.headingTextColors3) // 三级标题文本颜色
+    }
+    if (this.headingTextColors4 !== undefined) {
+      theme.setHeadingTextColor4(this.headingTextColors4) // 四级标题文本颜色
+    }
+    if (this.headingTextColors5 !== undefined) {
+      theme.setHeadingTextColor5(this.headingTextColors5) // 五级标题文本颜色
+    }
+    if (this.headingTextColors6 !== undefined) {
+      theme.setHeadingTextColor6(this.headingTextColors6) // 六级标题文本颜色
+    }
 
-    theme.setHeadingBreakColor1(this.headingBreakColor1) // H1标题下分割线颜色
-    theme.setHeadingBreakColor2(this.headingBreakColor2) // H2标题下分割线颜色
+    if (this.headingBreakColor1 !== undefined) {
+      theme.setHeadingBreakColor1(this.headingBreakColor1) // H1标题下分割线颜色
+    }
+    if (this.headingBreakColor2 !== undefined) {
+      theme.setHeadingBreakColor2(this.headingBreakColor2) // H2标题下分割线颜色
+    }
 
     config.setMarkdownTheme(theme)
     return config

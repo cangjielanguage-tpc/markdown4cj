@@ -94,12 +94,12 @@ struct ThematicPage {
   /**
    * 打字机效果颜色列表
    */
-  typeWriterColorList: Array<number> = colorListGeneralData
+  typeWriterColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果列表
    */
@@ -168,12 +168,12 @@ struct ThematicPage {
   /**
    * 分割线颜色列表
    */
-  thematicBreakColorList: Array<number> = colorListGeneralData
+  thematicBreakColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 分割线颜色
    */
   @State
-  thematicBreakColor: number = 0xFF000000
+  thematicBreakColor: number | undefined = undefined
   /**
    * 分割线上部外边距列表
    */

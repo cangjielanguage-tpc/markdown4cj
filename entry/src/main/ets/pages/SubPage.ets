@@ -95,12 +95,12 @@ struct SubPage {
   /**
    * 打字机效果颜色列表
    */
-  typeWriterColorList: Array<number> = colorListGeneralData
+  typeWriterColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果列表
    */
@@ -160,12 +160,12 @@ struct SubPage {
   /**
    * 下标字体颜色列表
    */
-  subTextColorList: Array<number> = colorListGeneralData
+  subTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 下标字体颜色
    */
   @State
-  subTextColor: number = 0xFF191919
+  subTextColor: number | undefined = undefined
   /**
    * 下标字体大小列表
    */

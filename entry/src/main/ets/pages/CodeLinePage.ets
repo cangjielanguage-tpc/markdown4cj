@@ -96,12 +96,12 @@ struct CodeLinePage {
   /**
    * 打字机效果颜色列表
    */
-  typeWriterColorList: Array<number> = colorListGeneralData
+  typeWriterColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果列表
    */
@@ -161,21 +161,21 @@ struct CodeLinePage {
   /**
    * 内联代码文本颜色列表
    */
-  codeTextColorList: Array<number> = colorListGeneralData
+  codeTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 内联代码文本颜色
    */
   @State
-  codeTextColor: number = 0xFF000000
+  codeTextColor: number | undefined = undefined
   /**
    * 内联代码背景颜色列表
    */
-  codeBackgroundColorList: Array<number> = colorListGeneralData
+  codeBackgroundColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 内联代码背景颜色
    */
   @State
-  codeBackgroundColor: number = 0xFFE0E0E0
+  codeBackgroundColor: number | undefined = undefined
   /**
    * 内联代码文本大小列表
    */

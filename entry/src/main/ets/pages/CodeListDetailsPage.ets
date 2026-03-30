@@ -69,7 +69,7 @@ struct CodeListDetailsPage {
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果
    */
@@ -118,19 +118,19 @@ struct CodeListDetailsPage {
   /**
    * 组合代码选中标题文本颜色
    */
-  codeListTitleSelectTextColor: number = 0xFFFF0000
+  codeListTitleSelectTextColor: number | undefined = undefined
   /**
    * 组合代码未选中标题文本颜色
    */
-  codeListTitleUnSelectTextColor: number = 0xFF000000
+  codeListTitleUnSelectTextColor: number | undefined = undefined
   /**
    * 组合代码选中标题背景颜色
    */
-  codeListTitleSelectBackGroupColor: number = 0xFF191919
+  codeListTitleSelectBackGroupColor: number | undefined = undefined
   /**
    * 组合代码未选中标题背景颜色
    */
-  codeListTitleUnSelectBackGroupColor: number = 0x00FFFFFF
+  codeListTitleUnSelectBackGroupColor: number | undefined = undefined
 
   aboutToAppear(): void {
     try {
@@ -232,16 +232,26 @@ struct CodeListDetailsPage {
     let theme = new MarkdownTheme()
     theme.setCodeListTitleTextSize(this.codeListTitleTextSize)
     theme.setCodeListTitleSelectTextSize(this.codeListTitleSelectTextSize)
-    theme.setCodeListTitleSelectTextColor(this.codeListTitleSelectTextColor)
-    theme.setCodeListTitleUnSelectTextColor(this.codeListTitleUnSelectTextColor)
-    theme.setCodeListTitleSelectBackGroupColor(this.codeListTitleSelectBackGroupColor)
-    theme.setCodeListTitleUnSelectBackGroupColor(this.codeListTitleUnSelectBackGroupColor)
+    if (this.codeListTitleSelectTextColor !== undefined) {
+      theme.setCodeListTitleSelectTextColor(this.codeListTitleSelectTextColor)
+    }
+    if (this.codeListTitleUnSelectTextColor !== undefined) {
+      theme.setCodeListTitleUnSelectTextColor(this.codeListTitleUnSelectTextColor)
+    }
+    if (this.codeListTitleSelectBackGroupColor !== undefined) {
+      theme.setCodeListTitleSelectBackGroupColor(this.codeListTitleSelectBackGroupColor)
+    }
+    if (this.codeListTitleUnSelectBackGroupColor !== undefined) {
+      theme.setCodeListTitleUnSelectBackGroupColor(this.codeListTitleUnSelectBackGroupColor)
+    }
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
 
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
-    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    if (this.typeWriterColor !== undefined) {
+      theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    }
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距

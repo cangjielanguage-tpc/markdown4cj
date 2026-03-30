@@ -70,7 +70,7 @@ struct LinkDetailsPage {
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果
    */
@@ -119,7 +119,7 @@ struct LinkDetailsPage {
   /**
    * 文本格式链接文本颜色
    */
-  linkColor: number = 0xFF0000FF
+  linkColor: number | undefined = undefined
   /**
    * 文本格式链接文字大小
    */
@@ -131,7 +131,7 @@ struct LinkDetailsPage {
   /**
    * 文本格式链接背景颜色
    */
-  linkBackGroupColor: number = 0x00000000
+  linkBackGroupColor: number | undefined = undefined
   /**
    * 文本格式是否显示链接下划线
    */
@@ -139,11 +139,11 @@ struct LinkDetailsPage {
   /**
    * 圆形图片格式链接主题背景颜色
    */
-  linkCircleImageBackGroupColor: number = 0x00000000
+  linkCircleImageBackGroupColor: number | undefined = undefined
   /**
    * 圆形图片格式链接控件背景颜色
    */
-  linkCircleImageButtonBackGroupColor: number = 0xFF000000
+  linkCircleImageButtonBackGroupColor: number | undefined = undefined
   /**
    * 圆形图片格式链接文字大小
    */
@@ -151,7 +151,7 @@ struct LinkDetailsPage {
   /**
    * 圆形图片格式链接文字颜色
    */
-  linkCircleImageTextColor: number = 0xFFFFFFFF
+  linkCircleImageTextColor: number | undefined = undefined
   /**
    * 圆形图片格式链接半径
    */
@@ -163,11 +163,11 @@ struct LinkDetailsPage {
   /**
    * 圆角矩形图片格式链接主题背景颜色
    */
-  linkRectImageBackGroupColor: number = 0x00000000
+  linkRectImageBackGroupColor: number | undefined = undefined
   /**
    * 圆角矩形图片格式链接控件背景颜色
    */
-  linkRectImageButtonBackGroupColor: number = 0xFF000000
+  linkRectImageButtonBackGroupColor: number | undefined = undefined
   /**
    * 圆角矩形图片格式链接文字大小
    */
@@ -175,7 +175,7 @@ struct LinkDetailsPage {
   /**
    * 圆角矩形图片格式链接文字颜色
    */
-  linkRectImageTextColor: number = 0xFFFFFFFF
+  linkRectImageTextColor: number | undefined = undefined
   /**
    * 圆角矩形图片格式链接控件高度
    */
@@ -195,19 +195,19 @@ struct LinkDetailsPage {
   /**
    * 空心圆角矩形图片格式链接主题背景颜色
    */
-  linkRectToolImageBackGroupColor: number = 0x00000000
+  linkRectToolImageBackGroupColor: number | undefined = undefined
   /**
    * 空心圆角矩形图片格式链接控件背景颜色
    */
-  linkRectToolImageButtonBackGroupColor: number = 0xFFFFFFFF
+  linkRectToolImageButtonBackGroupColor: number | undefined = undefined
   /**
    * 空心圆角矩形图片格式链接控件边框颜色
    */
-  linkRectToolImageButtonBorderColor: number = 0xFF000000
+  linkRectToolImageButtonBorderColor: number | undefined = undefined
   /**
    * 空心圆角矩形图片格式链接控件分割线颜色
    */
-  linkRectToolImageButtonDividingLineColor: number = 0xFF000000
+  linkRectToolImageButtonDividingLineColor: number | undefined = undefined
   /**
    * 空心圆角矩形图片格式链接文字大小
    */
@@ -215,7 +215,7 @@ struct LinkDetailsPage {
   /**
    * 空心圆角矩形图片格式链接文字颜色
    */
-  linkRectToolImageTextColor: number = 0xFF000000
+  linkRectToolImageTextColor: number | undefined = undefined
   /**
    * 空心圆角矩形图片格式链接控件高度
    */
@@ -384,27 +384,47 @@ struct LinkDetailsPage {
     theme.setContext(getContext(this)) // 上下文
     theme.setIsLinkStyle(this.isLinkStyle) // 链接是否是图片显示
     theme.setIsListLinkStyle(this.isListLinkStyle) // 列表中的单行链接是否是图片显示
-    theme.setLinkColor(this.linkColor) // 文本格式链接文本颜色
+    if (this.linkColor !== undefined) {
+      theme.setLinkColor(this.linkColor) // 文本格式链接文本颜色
+    }
     theme.setIsLinkSize(this.isLinkSize) // 是否按照链接文本字体大小显示文本
     theme.setLinkSize(this.linkSize) // 文本格式链接文字大小
-    theme.setLinkBackGroupColor(this.linkBackGroupColor) // 文本格式链接背景颜色
+    if (this.linkBackGroupColor !== undefined) {
+      theme.setLinkBackGroupColor(this.linkBackGroupColor) // 文本格式链接背景颜色
+    }
     theme.setIsLinkUnderlined(this.isLinkUnderlined) // 文本格式是否显示链接下划线
-    theme.setLinkCircleImageBackGroupColor(this.linkCircleImageBackGroupColor) // 圆形图片格式链接主题背景颜色
-    theme.setLinkCircleImageButtonBackGroupColor(this.linkCircleImageButtonBackGroupColor) // 圆形图片格式链接控件背景颜色
+    if (this.linkCircleImageBackGroupColor !== undefined) {
+      theme.setLinkCircleImageBackGroupColor(this.linkCircleImageBackGroupColor) // 圆形图片格式链接主题背景颜色
+    }
+    if (this.linkCircleImageButtonBackGroupColor !== undefined) {
+      theme.setLinkCircleImageButtonBackGroupColor(this.linkCircleImageButtonBackGroupColor) // 圆形图片格式链接控件背景颜色
+    }
     theme.setLinkCircleImageTextSize(this.linkCircleImageTextSize) // 圆形图片格式链接文字大小
-    theme.setLinkCircleImageTextColor(this.linkCircleImageTextColor) // 圆形图片格式链接文字颜色
+    if (this.linkCircleImageTextColor !== undefined) {
+      theme.setLinkCircleImageTextColor(this.linkCircleImageTextColor) // 圆形图片格式链接文字颜色
+    }
     theme.setLinkCircleImageRadius(this.linkCircleImageRadius) // 圆形图片格式链接半径
     theme.setLinkCircleImageMargin(this.linkCircleImageMargin) // 圆形图片格式链接左右外边距
-    theme.setLinkRectImageBackGroupColor(this.linkRectImageBackGroupColor) // 圆角矩形图片格式链接主题背景颜色
-    theme.setLinkRectImageButtonBackGroupColor(this.linkRectImageButtonBackGroupColor) // 圆角矩形图片格式链接控件背景颜色
+    if (this.linkRectImageBackGroupColor !== undefined) {
+      theme.setLinkRectImageBackGroupColor(this.linkRectImageBackGroupColor) // 圆角矩形图片格式链接主题背景颜色
+    }
+    if (this.linkRectImageButtonBackGroupColor !== undefined) {
+      theme.setLinkRectImageButtonBackGroupColor(this.linkRectImageButtonBackGroupColor) // 圆角矩形图片格式链接控件背景颜色
+    }
     theme.setLinkRectImageTextSize(this.linkRectImageTextSize) // 圆角矩形图片格式链接文字大小
-    theme.setLinkRectImageTextColor(this.linkRectImageTextColor) // 圆角矩形图片格式链接文字颜色
+    if (this.linkRectImageTextColor !== undefined) {
+      theme.setLinkRectImageTextColor(this.linkRectImageTextColor) // 圆角矩形图片格式链接文字颜色
+    }
     theme.setLinkRectImageHeight(this.linkRectImageHeight) // 圆角矩形图片格式链接控件高度
     theme.setLinkRectImagePadding(this.linkRectImagePadding) // 圆角矩形图片格式链接左右内边距
     theme.setLinkRectImageRadius(this.linkRectImageRadius) // 圆角矩形图片格式链接圆角半径
     theme.setLinkRectImageMargin(this.linkRectImageMargin) // 圆角矩形图片格式链接左右外边距
-    theme.setLinkRectToolImageBackGroupColor(this.linkRectToolImageBackGroupColor) // 空心圆角矩形图片格式链接主题背景颜色
-    theme.setLinkRectToolImageButtonBackGroupColor(this.linkRectToolImageButtonBackGroupColor) // 空心圆角矩形图片格式链接控件背景颜色
+    if (this.linkRectToolImageBackGroupColor !== undefined) {
+      theme.setLinkRectToolImageBackGroupColor(this.linkRectToolImageBackGroupColor) // 空心圆角矩形图片格式链接主题背景颜色
+    }
+    if (this.linkRectToolImageButtonBackGroupColor !== undefined) {
+      theme.setLinkRectToolImageButtonBackGroupColor(this.linkRectToolImageButtonBackGroupColor) // 空心圆角矩形图片格式链接控件背景颜色
+    }
     theme.setLinkRectToolImageTextSize(this.linkRectToolImageTextSize) // 空心圆角矩形图片格式链接文字大小
     theme.setLinkRectToolImageHeight(this.linkRectToolImageHeight) // 空心圆角矩形图片格式链接控件高度
     theme.setLinkRectToolImagePadding(this.linkRectToolImagePadding) // 空心圆角矩形图片格式链接左右内边距
@@ -417,7 +437,9 @@ struct LinkDetailsPage {
 
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
-    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    if (this.typeWriterColor !== undefined) {
+      theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    }
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距

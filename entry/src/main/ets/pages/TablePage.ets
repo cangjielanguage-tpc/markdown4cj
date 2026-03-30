@@ -12,6 +12,7 @@ import {
   marginListGeneralData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
+  textSizeListGeneralData,
   textWordSpaceListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
@@ -96,12 +97,12 @@ struct TablePage {
   /**
    * 打字机效果颜色列表
    */
-  typeWriterColorList: Array<number> = colorListGeneralData
+  typeWriterColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果列表
    */
@@ -170,12 +171,12 @@ struct TablePage {
   /**
    * 表格边框颜色列表
    */
-  tableBorderColorList: Array<number> = colorListGeneralData
+  tableBorderColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 表格边框颜色
    */
   @State
-  tableBorderColor: number = 0xFF000000
+  tableBorderColor: number | undefined = undefined
   /**
    * 表格边框宽度列表
    */
@@ -188,30 +189,30 @@ struct TablePage {
   /**
    * 表格奇数行背景色列表
    */
-  tableOddRowBackgroundColorList: Array<number> = colorListGeneralData
+  tableOddRowBackgroundColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 表格奇数行背景色
    */
   @State
-  tableOddRowBackgroundColor: number = 0xFFFFFFFF
+  tableOddRowBackgroundColor: number | undefined = undefined
   /**
    * 表格偶数行背景色列表
    */
-  tableEvenRowBackgroundColorList: Array<number> = colorListGeneralData
+  tableEvenRowBackgroundColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 表格偶数行背景色
    */
   @State
-  tableEvenRowBackgroundColor: number = 0xFFE0E0E0
+  tableEvenRowBackgroundColor: number | undefined = undefined
   /**
    * 表格标题背景色列表
    */
-  tableHeaderRowBackgroundColorList: Array<number> = colorListGeneralData
+  tableHeaderRowBackgroundColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 表格标题背景色
    */
   @State
-  tableHeaderRowBackgroundColor: number = 0xFFFFFFFF
+  tableHeaderRowBackgroundColor: number | undefined = undefined
   /**
    * 表格文本行高列表
    */
@@ -258,14 +259,59 @@ struct TablePage {
   @State
   tableFirstColumnBold: boolean = false
   /**
-   * 表格标题行高
+   * 表格标题文本行高列表
+   */
+  tableTitleLineHeightList: Array<number> = textLineHeightListGeneralData
+  /**
+   * 表格标题文本行高
    */
   @State
   tableTitleLineHeight: number = 22
   /**
-   * 表格标题行高列表
+   * 表格标题文本大小列表
    */
-  tableTitleLineHeightList: Array<number> = textLineHeightListGeneralData
+  tableTitleTextSizeList: Array<number> = textSizeListGeneralData
+  /**
+   * 表格标题文本大小
+   */
+  @State
+  tableTitleTextSize: number = 14
+  /**
+   * 表格标题文本颜色列表
+   */
+  tableTitleTextColorList: Array<number | undefined> = colorListGeneralData
+  /**
+   * 表格标题文本颜色
+   */
+  @State
+  tableTitleTextColor: number | undefined = undefined
+  /**
+   * 表格内容文本行高列表
+   */
+  tableContentTextLineHeightList: Array<number> = textLineHeightListGeneralData
+  /**
+   * 表格内容文本行高
+   */
+  @State
+  tableContentTextLineHeight: number = 22
+  /**
+   * 表格内容文本大小列表
+   */
+  tableContentTextSizeList: Array<number> = textSizeListGeneralData
+  /**
+   * 表格内容文本大小
+   */
+  @State
+  tableContentTextSize: number = 14
+  /**
+   * 表格内容文本颜色列表
+   */
+  tableContentTextColorList: Array<number | undefined> = colorListGeneralData
+  /**
+   * 表格内容文本颜色
+   */
+  @State
+  tableContentTextColor: number | undefined = undefined
   /**
    * 是否显示滚动条
    */
@@ -279,11 +325,11 @@ struct TablePage {
    * 表格滚动条颜色
    */
   @State
-  tableScrollBarColor: number = 0xFFFFFFFF
+  tableScrollBarColor: number | undefined = undefined
   /**
    * 表格滚动条颜色列表
    */
-  tableScrollBarColorList: Array<number> = colorListGeneralData
+  tableScrollBarColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 配置数据内容
    */
@@ -446,16 +492,40 @@ struct TablePage {
             allData: this.tableFirstColumnBold
           })
           BaseTabComponent({
-            titleStr: "表格标题行高 - ",
+            titleStr: "表格标题文本行高 - ",
             typeEnum: TypeEnum.IS_NUMBER,
             allListData: this.tableTitleLineHeightList,
             allData: this.tableTitleLineHeight
           })
           BaseTabComponent({
-            titleStr: "表格文本行高 - ",
+            titleStr: "表格标题文本大小 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.tableTextLineHeightList,
-            allData: this.tableTextLineHeight
+            allListData: this.tableTitleTextSizeList,
+            allData: this.tableTitleTextSize
+          })
+          BaseTabComponent({
+            titleStr: "表格标题文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.tableTitleTextColorList,
+            allData: this.tableTitleTextColor
+          })
+          BaseTabComponent({
+            titleStr: "表格内容文本行高 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.tableContentTextLineHeightList,
+            allData: this.tableContentTextLineHeight
+          })
+          BaseTabComponent({
+            titleStr: "表格内容文本大小 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.tableContentTextSizeList,
+            allData: this.tableContentTextSize
+          })
+          BaseTabComponent({
+            titleStr: "表格内容文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.tableContentTextColorList,
+            allData: this.tableContentTextColor
           })
           BaseTabComponent({
             titleStr: "是否显示滚动条 - ",
@@ -511,7 +581,11 @@ struct TablePage {
                     this.tableData.tableMaxTextWidth = this.tableMaxTextWidth
                     this.tableData.tableFirstColumnBold = this.tableFirstColumnBold
                     this.tableData.tableTitleLineHeight = this.tableTitleLineHeight
-                    this.tableData.tableTextLineHeight = this.tableTextLineHeight
+                    this.tableData._tableTitleTextSize = this.tableTitleTextSize
+                    this.tableData._tableTitleTextColor = this.tableTitleTextColor
+                    this.tableData._tableContentTextLineHeight = this.tableContentTextLineHeight
+                    this.tableData._tableContentTextSize = this.tableContentTextSize
+                    this.tableData._tableContentTextColor = this.tableContentTextColor
                     this.tableData.tableScrollBarShow = this.tableScrollBarShow
                     this.tableData.tableScrollBarColor = this.tableScrollBarColor
                     // ---------- 跳转到详情

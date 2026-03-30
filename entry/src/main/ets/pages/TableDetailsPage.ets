@@ -69,7 +69,7 @@ struct TableDetailsPage {
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果
    */
@@ -116,7 +116,7 @@ struct TableDetailsPage {
    * 表格边框颜色
    */
   @State
-  tableBorderColor: number = 0xFF000000
+  tableBorderColor: number | undefined = undefined
   /**
    * 表格边框宽度
    */
@@ -126,17 +126,17 @@ struct TableDetailsPage {
    * 表格奇数行背景色
    */
   @State
-  tableOddRowBackgroundColor: number = 0xFFFFFFFF
+  tableOddRowBackgroundColor: number | undefined = undefined
   /**
    * 表格偶数行背景色
    */
   @State
-  tableEvenRowBackgroundColor: number = 0xFFE0E0E0
+  tableEvenRowBackgroundColor: number | undefined = undefined
   /**
    * 表格标题背景色
    */
   @State
-  tableHeaderRowBackgroundColor: number = 0xFFFFFFFF
+  tableHeaderRowBackgroundColor: number | undefined = undefined
   /**
    * 表格文本行高
    */
@@ -163,10 +163,35 @@ struct TableDetailsPage {
   @State
   tableFirstColumnBold: boolean = false
   /**
-   * 表格标题行高
+   * 表格标题文本行高
    */
   @State
   tableTitleLineHeight: number = 22
+  /**
+   * 表格标题文本大小
+   */
+  @State
+  tableTitleTextSize: number = 14
+  /**
+   * 表格标题文本颜色
+   */
+  @State
+  tableTitleTextColor: number | undefined = undefined
+  /**
+   * 表格内容文本行高
+   */
+  @State
+  tableContentTextLineHeight: number = 22
+  /**
+   * 表格内容文本大小
+   */
+  @State
+  tableContentTextSize: number = 14
+  /**
+   * 表格内容文本颜色
+   */
+  @State
+  tableContentTextColor: number | undefined = undefined
   /**
    * 是否显示滚动条
    */
@@ -176,7 +201,7 @@ struct TableDetailsPage {
    * 表格滚动条颜色
    */
   @State
-  tableScrollBarColor: number = 0xFFFFFFFF
+  tableScrollBarColor: number | undefined = undefined
 
   aboutToAppear(): void {
     try {
@@ -208,7 +233,11 @@ struct TableDetailsPage {
       this.tableMaxTextWidth = tableData._tableMaxTextWidth
       this.tableFirstColumnBold = tableData._tableFirstColumnBold
       this.tableTitleLineHeight = tableData._tableTitleLineHeight
-      this.tableTextLineHeight = tableData._tableTextLineHeight
+      this.tableTitleTextSize = tableData._tableTitleTextSize
+      this.tableTitleTextColor = tableData._tableTitleTextColor
+      this.tableContentTextLineHeight = tableData._tableContentTextLineHeight
+      this.tableContentTextSize = tableData._tableContentTextSize
+      this.tableContentTextColor = tableData._tableContentTextColor
       this.tableScrollBarShow = tableData._tableScrollBarShow
       this.tableScrollBarColor = tableData._tableScrollBarColor
     } catch (e) {
@@ -294,7 +323,9 @@ struct TableDetailsPage {
 
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
-    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    if (this.typeWriterColor !== undefined) {
+      theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    }
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
@@ -302,21 +333,38 @@ struct TableDetailsPage {
     theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
 
     theme.setTableCellPadding(this.tableCellPadding) // 表格内容内边距
-    theme.setTableBorderColor(this.tableBorderColor) // 表格边框颜色
+    if (this.tableBorderColor !== undefined) {
+      theme.setTableBorderColor(this.tableBorderColor) // 表格边框颜色
+    }
     theme.setTableBorderWidth(this.tableBorderWidth) // 表格边框宽度
-    theme.setTableOddRowBackgroundColor(this.tableOddRowBackgroundColor) // 表格奇数行背景色
-    theme.setTableEvenRowBackgroundColor(this.tableEvenRowBackgroundColor) // 表格偶数行背景色
-    theme.setTableHeaderRowBackgroundColor(this.tableHeaderRowBackgroundColor) // 表格标题背景色
+    if (this.tableOddRowBackgroundColor !== undefined) {
+      theme.setTableOddRowBackgroundColor(this.tableOddRowBackgroundColor) // 表格奇数行背景色
+    }
+    if (this.tableEvenRowBackgroundColor !== undefined) {
+      theme.setTableEvenRowBackgroundColor(this.tableEvenRowBackgroundColor) // 表格偶数行背景色
+    }
+    if (this.tableHeaderRowBackgroundColor !== undefined) {
+      theme.setTableHeaderRowBackgroundColor(this.tableHeaderRowBackgroundColor) // 表格标题背景色
+    }
     theme.setTableRadius(this.tableRadius) // 表格圆角
     theme.setTableMinTextWidth(this.tableMinTextWidth) // 表格最小宽度
     theme.setTableMaxTextWidth(this.tableMaxTextWidth) // 表格最大宽度
     theme.setTableFirstColumnBold(this.tableFirstColumnBold) // 表格第一列是否加粗
-    theme.setTableScrollBarShow(true) // 设置显示滚动条
-    theme.setTableScrollBarColor(0xFFFFD700) // 设置滚动条颜色
-    theme.setTableTitleLineHeight(this.tableTitleLineHeight) // 表格标题行高
-    theme.setTableTextLineHeight(this.tableTextLineHeight) // 表格文本行高
+    theme.setTableTitleLineHeight(this.tableTitleLineHeight) // 表格标题文本行高
+    theme.setTableTitleTextSize(this.tableTitleTextSize) // 表格标题文本大小
+    if (this.tableTitleTextColor !== undefined) {
+      theme.setTableTitleTextColor(this.tableTitleTextColor) // 表格标题文本颜色
+    }
+    if (this.tableTitleTextColor !== undefined) {}
+    theme.setTableContentTextLineHeight(this.tableContentTextLineHeight) // 表格内容文本行高
+    theme.setTableContentTextSize(this.tableContentTextSize) // 表格内容文本大小
+    if (this.tableContentTextColor !== undefined) {
+      theme.setTableContentTextColor(this.tableContentTextColor) // 表格内容文本颜色
+    }
     theme.setTableScrollBarShow(this.tableScrollBarShow) // 表格是否显示滚动条
-    theme.setTableScrollBarColor(this.tableScrollBarColor) // 表格滚动条颜色
+    if (this.tableScrollBarColor !== undefined) {
+      theme.setTableScrollBarColor(this.tableScrollBarColor) // 表格滚动条颜色
+    }
 
     config.setMarkdownTheme(theme)
     return config

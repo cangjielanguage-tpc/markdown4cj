@@ -97,12 +97,12 @@ struct LinkPage {
   /**
    * 打字机效果颜色列表
    */
-  typeWriterColorList: Array<number> = colorListGeneralData
+  typeWriterColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果列表
    */
@@ -180,12 +180,12 @@ struct LinkPage {
   /**
    * 文本格式链接文本颜色列表
    */
-  linkColorList: Array<number> = colorListGeneralData
+  linkColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 文本格式链接文本颜色
    */
   @State
-  linkColor: number = 0xFF0000FF
+  linkColor: number | undefined = undefined
   /**
    * 文本格式链接文字大小列表
    */
@@ -198,12 +198,12 @@ struct LinkPage {
   /**
    * 文本格式链接背景颜色列表
    */
-  linkBackGroupColorList: Array<number> = colorListGeneralData
+  linkBackGroupColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 文本格式链接背景颜色
    */
   @State
-  linkBackGroupColor: number = 0x00000000
+  linkBackGroupColor: number | undefined = undefined
   /**
    * 文本格式是否显示链接下划线列表
    */
@@ -225,21 +225,21 @@ struct LinkPage {
   /**
    * 圆形图片格式链接主题背景颜色列表
    */
-  linkCircleImageBackGroupColorList: Array<number> = colorListGeneralData
+  linkCircleImageBackGroupColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 圆形图片格式链接主题背景颜色
    */
   @State
-  linkCircleImageBackGroupColor: number = 0x00000000
+  linkCircleImageBackGroupColor: number | undefined = undefined
   /**
    * 圆形图片格式链接控件背景颜色列表
    */
-  linkCircleImageButtonBackGroupColorList: Array<number> = colorListGeneralData
+  linkCircleImageButtonBackGroupColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 圆形图片格式链接控件背景颜色
    */
   @State
-  linkCircleImageButtonBackGroupColor: number = 0xFFFFFFFF
+  linkCircleImageButtonBackGroupColor: number | undefined = undefined
   /**
    * 文本格式链接文字大小列表
    */
@@ -252,12 +252,12 @@ struct LinkPage {
   /**
    * 圆形图片格式链接文字颜色列表
    */
-  linkCircleImageTextColorList: Array<number> = colorListGeneralData
+  linkCircleImageTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 圆形图片格式链接文字颜色
    */
   @State
-  linkCircleImageTextColor: number = 0xFFFFFFFF
+  linkCircleImageTextColor: number | undefined = undefined
   /**
    * 圆形图片格式链接半径列表
    */
@@ -279,21 +279,21 @@ struct LinkPage {
   /**
    * 圆角矩形图片格式链接主题背景颜色列表
    */
-  linkRectImageBackGroupColorList: Array<number> = colorListGeneralData
+  linkRectImageBackGroupColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 圆角矩形图片格式链接主题背景颜色
    */
   @State
-  linkRectImageBackGroupColor: number = 0x00000000
+  linkRectImageBackGroupColor: number | undefined = undefined
   /**
    * 圆角矩形图片格式链接控件背景颜色列表
    */
-  linkRectImageButtonBackGroupColorList: Array<number> = colorListGeneralData
+  linkRectImageButtonBackGroupColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 圆角矩形图片格式链接控件背景颜色
    */
   @State
-  linkRectImageButtonBackGroupColor: number = 0xFFFFFFFF
+  linkRectImageButtonBackGroupColor: number | undefined = undefined
   /**
    * 圆角矩形图片格式链接文字大小列表
    */
@@ -306,12 +306,12 @@ struct LinkPage {
   /**
    * 圆角矩形图片格式链接文字颜色列表
    */
-  linkRectImageTextColorList: Array<number> = colorListGeneralData
+  linkRectImageTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 圆角矩形图片格式链接文字颜色
    */
   @State
-  linkRectImageTextColor: number = 0xFFFFFFFF
+  linkRectImageTextColor: number | undefined = undefined
   /**
    * 圆角矩形图片格式链接控件高度列表
    */
@@ -351,21 +351,21 @@ struct LinkPage {
   /**
    * 空心圆角矩形图片格式链接主题背景颜色列表
    */
-  linkRectToolImageBackGroupColorList: Array<number> = colorListGeneralData
+  linkRectToolImageBackGroupColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 空心圆角矩形图片格式链接主题背景颜色
    */
   @State
-  linkRectToolImageBackGroupColor: number = 0x00000000
+  linkRectToolImageBackGroupColor: number | undefined = undefined
   /**
    * 空心圆角矩形图片格式链接控件背景颜色列表
    */
-  linkRectToolImageButtonBackGroupColorList: Array<number> = colorListGeneralData
+  linkRectToolImageButtonBackGroupColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 空心圆角矩形图片格式链接控件背景颜色
    */
   @State
-  linkRectToolImageButtonBackGroupColor: number = 0xFFFFFFFF
+  linkRectToolImageButtonBackGroupColor: number | undefined = undefined
   /**
    * 空心圆角矩形图片格式链接文字大小列表
    */

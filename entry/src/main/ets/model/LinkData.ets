@@ -3,27 +3,27 @@ import { BaseMDData } from "./BaseMDData"
 export class LinkData extends BaseMDData {
   _isLinkStyle: boolean = false
   _isListLinkStyle: boolean = false
-  _linkColor: number = 0xFF0000FF
+  _linkColor: number | undefined = undefined
   _isLinkSize: boolean = true
   _linkSize: number = 14
-  _linkBackGroupColor: number = 0x00000000
+  _linkBackGroupColor: number | undefined = undefined
   _isLinkUnderlined: boolean = true
-  _linkCircleImageBackGroupColor: number = 0x00000000
-  _linkCircleImageButtonBackGroupColor: number = 0xFF000000
-  _linkCircleImageTextColor: number = 0xFFFFFFFF
+  _linkCircleImageBackGroupColor: number | undefined = undefined
+  _linkCircleImageButtonBackGroupColor: number | undefined = undefined
+  _linkCircleImageTextColor: number | undefined = undefined
   _linkCircleImageTextSize: number = 14
   _linkCircleImageRadius: number = 20
   _linkCircleImageMargin: number = 6
-  _linkRectImageBackGroupColor: number = 0x00000000
-  _linkRectImageButtonBackGroupColor: number = 0xFF000000
+  _linkRectImageBackGroupColor: number | undefined = undefined
+  _linkRectImageButtonBackGroupColor: number | undefined = undefined
   _linkRectImageTextSize: number = 14
-  _linkRectImageTextColor: number = 0xFFFFFFFF
+  _linkRectImageTextColor: number | undefined = undefined
   _linkRectImageHeight: number = 20
   _linkRectImagePadding: number = 6
   _linkRectImageRadius: number = 6
   _linkRectImageMargin: number = 6
-  _linkRectToolImageBackGroupColor: number = 0x00000000
-  _linkRectToolImageButtonBackGroupColor: number = 0xFFFFFFFF
+  _linkRectToolImageBackGroupColor: number | undefined = undefined
+  _linkRectToolImageButtonBackGroupColor: number | undefined = undefined
   _linkRectToolImageTextSize: number = 14
   _linkRectToolImageHeight: number = 21
   _linkRectToolImagePadding: number = 6
@@ -42,7 +42,7 @@ export class LinkData extends BaseMDData {
     this._isListLinkStyle = value
   }
 
-  public set linkColor(value: number) {
+  public set linkColor(value: number | undefined) {
     this._linkColor = value
   }
 
@@ -54,7 +54,7 @@ export class LinkData extends BaseMDData {
     this._linkSize = value
   }
 
-  public set linkBackGroupColor(value: number) {
+  public set linkBackGroupColor(value: number | undefined) {
     this._linkBackGroupColor = value
   }
 
@@ -62,11 +62,11 @@ export class LinkData extends BaseMDData {
     this._isLinkUnderlined = value
   }
 
-  public set linkCircleImageBackGroupColor(value: number) {
+  public set linkCircleImageBackGroupColor(value: number | undefined) {
     this._linkCircleImageBackGroupColor = value
   }
 
-  public set linkCircleImageButtonBackGroupColor(value: number) {
+  public set linkCircleImageButtonBackGroupColor(value: number | undefined) {
     this._linkCircleImageButtonBackGroupColor = value
   }
 
@@ -74,7 +74,7 @@ export class LinkData extends BaseMDData {
     this._linkCircleImageTextSize = value
   }
 
-  public set linkCircleImageTextColor(value: number) {
+  public set linkCircleImageTextColor(value: number | undefined) {
     this._linkCircleImageTextColor = value
   }
 
@@ -86,11 +86,11 @@ export class LinkData extends BaseMDData {
     this._linkCircleImageMargin = value
   }
 
-  public set linkRectImageBackGroupColor(value: number) {
+  public set linkRectImageBackGroupColor(value: number | undefined) {
     this._linkRectImageBackGroupColor = value
   }
 
-  public set linkRectImageButtonBackGroupColor(value: number) {
+  public set linkRectImageButtonBackGroupColor(value: number | undefined) {
     this._linkRectImageButtonBackGroupColor = value
   }
 
@@ -98,7 +98,7 @@ export class LinkData extends BaseMDData {
     this._linkRectImageTextSize = value
   }
 
-  public set linkRectImageTextColor(value: number) {
+  public set linkRectImageTextColor(value: number | undefined) {
     this._linkRectImageTextColor = value
   }
 
@@ -118,11 +118,11 @@ export class LinkData extends BaseMDData {
     this._linkRectImageMargin = value
   }
 
-  public set linkRectToolImageBackGroupColor(value: number) {
+  public set linkRectToolImageBackGroupColor(value: number | undefined) {
     this._linkRectToolImageBackGroupColor = value
   }
 
-  public set linkRectToolImageButtonBackGroupColor(value: number) {
+  public set linkRectToolImageButtonBackGroupColor(value: number | undefined) {
     this._linkRectToolImageButtonBackGroupColor = value
   }
 

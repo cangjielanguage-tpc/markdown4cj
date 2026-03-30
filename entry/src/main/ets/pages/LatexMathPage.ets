@@ -96,12 +96,12 @@ struct LatexMathPage {
   /**
    * 打字机效果颜色列表
    */
-  typeWriterColorList: Array<number> = colorListGeneralData
+  typeWriterColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果列表
    */
@@ -170,21 +170,21 @@ struct LatexMathPage {
   /**
    * 数学公式背景色列表
    */
-  latexMathBackGroupColorList: Array<number> = colorListGeneralData
+  latexMathBackGroupColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 数学公式背景色
    */
   @State
-  latexMathBackGroupColor: number = 0x00000000
+  latexMathBackGroupColor: number | undefined = undefined
   /**
    * 数学公式文本颜色列表
    */
-  latexMathTextColorList: Array<number> = colorListGeneralData
+  latexMathTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 数学公式文本颜色
    */
   @State
-  latexMathTextColor: number = 0xFF000000
+  latexMathTextColor: number | undefined = undefined
   /**
    * 块结构的数学公式是否居中列表
    */

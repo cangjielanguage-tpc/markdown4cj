@@ -5,11 +5,11 @@ export class ListData extends BaseMDData {
   _blockLeftMargin: number = 8
   _blockRightMargin: number = 8
   _orderedListItemPrefixBold: boolean = false
-  _orderedListItemColor: number = 0xFF191919
+  _orderedListItemColor: number | undefined = undefined
   _orderedListItemSize: number = 14
   _orderedListItemLineHeight: number = 22
   _bulletListItemCircle: boolean = false
-  _bulletListItemColor: number = 0xFF191919
+  _bulletListItemColor: number | undefined = undefined
   _bulletListItemSize: number = 4
   _bulletListItemLineHeight: number = 18
   _taskListItemLength: number = 15
@@ -30,7 +30,7 @@ export class ListData extends BaseMDData {
     this._orderedListItemPrefixBold = value
   }
 
-  public set orderedListItemColor(value: number) {
+  public set orderedListItemColor(value: number | undefined) {
     this._orderedListItemColor = value
   }
 
@@ -46,7 +46,7 @@ export class ListData extends BaseMDData {
     this._bulletListItemCircle = value
   }
 
-  public set bulletListItemColor(value: number) {
+  public set bulletListItemColor(value: number | undefined) {
     this._bulletListItemColor = value
   }
 

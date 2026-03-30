@@ -1,7 +1,8 @@
 /**
  * 通用颜色列表
  */
-export const colorListGeneralData: Array<number> = [
+export const colorListGeneralData: Array<number | undefined> = [
+  undefined,
   0xFF000000, // 黑
   0xFFFFFFFF, // 白
   0xFFFF0000, // 红

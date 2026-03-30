@@ -2,25 +2,30 @@ import { BaseMDData } from "./BaseMDData"
 
 export class TableData extends BaseMDData {
   _tableCellPadding: number = 4
-  _tableBorderColor: number = 0xFF000000
+  _tableBorderColor: number | undefined = undefined
   _tableBorderWidth: number = 1
-  _tableOddRowBackgroundColor: number = 0xFFFFFFFF
-  _tableEvenRowBackgroundColor: number = 0xFFE0E0E0
-  _tableHeaderRowBackgroundColor: number = 0xFFFFFFFF
+  _tableOddRowBackgroundColor: number | undefined = undefined
+  _tableEvenRowBackgroundColor: number | undefined = undefined
+  _tableHeaderRowBackgroundColor: number | undefined = undefined
   _tableRadius: number = 5
   _tableMinTextWidth: number = 50
   _tableMaxTextWidth: number = 300
   _tableFirstColumnBold: boolean = false
   _tableTitleLineHeight: number = 22
   _tableTextLineHeight: number = 22
+  _tableTitleTextSize: number = 14
+  _tableTitleTextColor: number | undefined = undefined
+  _tableContentTextLineHeight: number = 22
+  _tableContentTextSize: number = 14
+  _tableContentTextColor: number | undefined = undefined
   _tableScrollBarShow: boolean = false
-  _tableScrollBarColor: number = 0xFFFFFFFF
+  _tableScrollBarColor: number | undefined = undefined
 
   public set tableCellPadding(value: number) {
     this._tableCellPadding = value
   }
 
-  public set tableBorderColor(value: number) {
+  public set tableBorderColor(value: number | undefined) {
     this._tableBorderColor = value
   }
 
@@ -28,15 +33,15 @@ export class TableData extends BaseMDData {
     this._tableBorderWidth = value
   }
 
-  public set tableOddRowBackgroundColor(value: number) {
+  public set tableOddRowBackgroundColor(value: number | undefined) {
     this._tableOddRowBackgroundColor = value
   }
 
-  public set tableEvenRowBackgroundColor(value: number) {
+  public set tableEvenRowBackgroundColor(value: number | undefined) {
     this._tableEvenRowBackgroundColor = value
   }
 
-  public set tableHeaderRowBackgroundColor(value: number) {
+  public set tableHeaderRowBackgroundColor(value: number | undefined) {
     this._tableHeaderRowBackgroundColor = value
   }
 
@@ -68,7 +73,7 @@ export class TableData extends BaseMDData {
     this._tableScrollBarShow = value
   }
 
-  public set tableScrollBarColor(value: number) {
+  public set tableScrollBarColor(value: number | undefined) {
     this._tableScrollBarColor = value
   }
 

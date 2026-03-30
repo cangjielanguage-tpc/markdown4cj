@@ -91,12 +91,12 @@ struct StrikethroughPage {
   /**
    * 打字机效果颜色列表
    */
-  typeWriterColorList: Array<number> = colorListGeneralData
+  typeWriterColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果列表
    */
@@ -161,12 +161,12 @@ struct StrikethroughPage {
   /**
    * 删除线颜色列表
    */
-  strikethroughColorList: Array<number> = colorListGeneralData
+  strikethroughColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 删除线颜色
    */
   @State
-  strikethroughColor: number = 0xFF191919
+  strikethroughColor: number | undefined = undefined
   /**
    * 删除线样式
    */

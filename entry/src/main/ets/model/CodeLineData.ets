@@ -1,16 +1,16 @@
 import { BaseMDData } from "./BaseMDData"
 
 export class CodeLineData extends BaseMDData {
-  _codeTextColor: number = 0xFF000000
-  _codeBackgroundColor: number = 0xFFE0E0E0
+  _codeTextColor: number | undefined = undefined
+  _codeBackgroundColor: number | undefined = undefined
   _codeTextSize: number = 13
   _codeTypeface: string = "HarmonyOS Sans"
 
-  public set codeTextColor(value: number) {
+  public set codeTextColor(value: number | undefined) {
     this._codeTextColor = value
   }
 
-  public set codeBackgroundColor(value: number) {
+  public set codeBackgroundColor(value: number | undefined) {
     this._codeBackgroundColor = value
   }
 

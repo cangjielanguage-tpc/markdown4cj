@@ -3,8 +3,8 @@ import { BaseMDData } from "./BaseMDData"
 
 export class LatexMathData extends BaseMDData {
   _latexMathTextSize: number = 16
-  _latexMathBackGroupColor: number = 0x00000000
-  _latexMathTextColor: number = 0xFF000000
+  _latexMathBackGroupColor: number | undefined = undefined
+  _latexMathTextColor: number | undefined = undefined
   _latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
   _latexMathBlockCenter: boolean = false
   _latexMathResStr: string = "/data/storage/el1/bundle/entry/resources/resfile/res"
@@ -14,11 +14,11 @@ export class LatexMathData extends BaseMDData {
     this._latexMathTextSize = value
   }
 
-  public set latexMathBackGroupColor(value: number) {
+  public set latexMathBackGroupColor(value: number | undefined) {
     this._latexMathBackGroupColor = value
   }
 
-  public set latexMathTextColor(value: number) {
+  public set latexMathTextColor(value: number | undefined) {
     this._latexMathTextColor = value
   }
 

@@ -1,11 +1,11 @@
 import { BaseMDData } from "./BaseMDData"
 
 export class SupData extends BaseMDData {
-  _supTextColor: number = 0xFF191919
+  _supTextColor: number | undefined = undefined
   _supTextSize: number = 8
   _supOffsetDist: number = 6
 
-  public set supTextColor(value: number) {
+  public set supTextColor(value: number | undefined) {
     this._supTextColor = value
   }
 

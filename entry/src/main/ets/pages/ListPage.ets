@@ -97,12 +97,12 @@ struct ListPage {
   /**
    * 打字机效果颜色列表
    */
-  typeWriterColorList: Array<number> = colorListGeneralData
+  typeWriterColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果列表
    */
@@ -199,12 +199,12 @@ struct ListPage {
   /**
    * 有序列表前缀文本颜色列表
    */
-  orderedListItemColorList: Array<number> = colorListGeneralData
+  orderedListItemColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 有序列表前缀文本颜色
    */
   @State
-  orderedListItemColor: number = 0xFF191919
+  orderedListItemColor: number | undefined = undefined
   /**
    * 有序列表前缀文本大小列表
    */
@@ -235,12 +235,12 @@ struct ListPage {
   /**
    * 无序列表前缀文本颜色列表
    */
-  bulletListItemColorList: Array<number> = colorListGeneralData
+  bulletListItemColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 无序列表前缀文本颜色
    */
   @State
-  bulletListItemColor: number = 0xFF191919
+  bulletListItemColor: number | undefined = undefined
   /**
    * 无序列表前缀文本大小列表
    */

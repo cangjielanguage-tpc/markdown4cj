@@ -95,12 +95,12 @@ struct ImagePage {
   /**
    * 打字机效果颜色列表
    */
-  typeWriterColorList: Array<number> = colorListGeneralData
+  typeWriterColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果列表
    */
@@ -223,12 +223,12 @@ struct ImagePage {
   /**
    * 图片边框颜色列表
    */
-  imageBorderColorList: Array<number> = colorListGeneralData
+  imageBorderColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 图片边框颜色
    */
   @State
-  imageBorderColor: number = 0xFF000000
+  imageBorderColor: number | undefined = undefined
   /**
    * 图片基于自身宽度缩放百分比列表
    */
@@ -340,21 +340,21 @@ struct ImagePage {
   /**
    * 图片下载按钮文本颜色列表
    */
-  imageDownloadTexColorList: Array<number> = colorListGeneralData
+  imageDownloadTexColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 图片下载按钮文本颜色
    */
   @State
-  imageDownloadTexColor: number = 0xFF191919
+  imageDownloadTexColor: number | undefined = undefined
   /**
    * 图片下载按钮背景颜色列表
    */
-  imageDownloadBackgroundColorList: Array<number> = colorListGeneralData
+  imageDownloadBackgroundColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 图片下载按钮背景颜色
    */
   @State
-  imageDownloadBackgroundColor: number = 0xFFE0E0E0
+  imageDownloadBackgroundColor: number | undefined = undefined
   /**
    * 配置数据内容
    */

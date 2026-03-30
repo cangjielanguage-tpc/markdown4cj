@@ -96,12 +96,12 @@ struct CodeBlockPage {
   /**
    * 打字机效果颜色列表
    */
-  typeWriterColorList: Array<number> = colorListGeneralData
+  typeWriterColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果列表
    */
@@ -170,21 +170,21 @@ struct CodeBlockPage {
   /**
    * 代码块代码文本颜色列表
    */
-  codeBlockTextColorList: Array<number> = colorListGeneralData
+  codeBlockTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 代码块代码文本颜色
    */
   @State
-  codeBlockTextColor: number = 0xFF191919
+  codeBlockTextColor: number | undefined = undefined
   /**
    * 代码块代码类型文本颜色列表
    */
-  codeBlockTypeTextColorList: Array<number> = colorListGeneralData
+  codeBlockTypeTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 代码块代码类型文本颜色
    */
   @State
-  codeBlockTypeTextColor: number = 0xFF191919
+  codeBlockTypeTextColor: number | undefined = undefined
   /**
    * 代码块代码类型文本列表
    */
@@ -224,12 +224,12 @@ struct CodeBlockPage {
   /**
    * 代码块背景颜色列表
    */
-  codeBlockBackgroundColorList: Array<number> = colorListGeneralData
+  codeBlockBackgroundColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 代码块背景颜色
    */
   @State
-  codeBlockBackgroundColor: number = 0xFF191919
+  codeBlockBackgroundColor: number | undefined = undefined
   /**
    * 代码块左边距列表
    */

@@ -69,7 +69,7 @@ struct HTMLDetailsPage {
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果
    */
@@ -111,7 +111,7 @@ struct HTMLDetailsPage {
    * 下划线颜色
    */
   @State
-  underlineColor: number = 0xFF191919
+  underlineColor: number | undefined = undefined
   /**
    * 下划线样式
    */
@@ -214,13 +214,17 @@ struct HTMLDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setUnderlineColor(this.underlineColor) // 下划线颜色
+    if (this.underlineColor !== undefined) {
+      theme.setUnderlineColor(this.underlineColor) // 下划线颜色
+    }
     theme.setUnderlineStyle(this.underlineStyle) // 下划线样式
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
-    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    if (this.typeWriterColor !== undefined) {
+      theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    }
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距

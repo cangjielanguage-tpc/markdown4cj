@@ -70,7 +70,7 @@ struct ListDetailsPage {
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果
    */
@@ -127,7 +127,7 @@ struct ListDetailsPage {
   /**
    * 有序列表前缀文本颜色
    */
-  orderedListItemColor: number = 0xFF191919
+  orderedListItemColor: number | undefined = undefined
   /**
    * 有序列表前缀文本大小
    */
@@ -143,7 +143,7 @@ struct ListDetailsPage {
   /**
    * 无序列表前缀文本颜色
    */
-  bulletListItemColor: number = 0xFF191919
+  bulletListItemColor: number | undefined = undefined
   /**
    * 无序列表前缀文本大小
    */
@@ -284,18 +284,24 @@ struct ListDetailsPage {
     theme.setBlockLeftMargin(this.blockLeftMargin) // 有序列表、无序列表、任务列表左边距
     theme.setBlockRightMargin(this.blockRightMargin) // 有序列表、无序列表、任务列表右边距
     theme.setOrderedListItemPrefixBold(this.orderedListItemPrefixBold) // 有序列表前缀文本是否加粗
-    theme.setOrderedListItemColor(this.orderedListItemColor) // 有序列表前缀文本颜色
+    if (this.orderedListItemColor !== undefined) {
+      theme.setOrderedListItemColor(this.orderedListItemColor) // 有序列表前缀文本颜色
+    }
     theme.setOrderedListItemSize(this.orderedListItemSize) // 有序列表前缀文本大小
     theme.setOrderedListItemLineHeight(this.orderedListItemLineHeight) // 有序列表前缀文本行高
     theme.setBulletListItemCircle(this.bulletListItemCircle) // 无序列表前缀是否全部是实心圆型
-    theme.setBulletListItemColor(this.bulletListItemColor) // 无序列表前缀文本颜色
+    if (this.bulletListItemColor !== undefined) {
+      theme.setBulletListItemColor(this.bulletListItemColor) // 无序列表前缀文本颜色
+    }
     theme.setBulletListItemSize(this.bulletListItemSize) // 无序列表前缀文本大小
     theme.setBulletListItemLineHeight(this.bulletListItemLineHeight) // 无序列表前缀文本行高
     theme.setTaskListItemLength(this.taskListItemLength) // 任务列表选择框宽高
 
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
-    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    if (this.typeWriterColor !== undefined) {
+      theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    }
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距

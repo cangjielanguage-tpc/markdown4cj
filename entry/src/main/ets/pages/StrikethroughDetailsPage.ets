@@ -67,7 +67,7 @@ struct StrikethroughDetailsPage {
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果
    */
@@ -109,7 +109,7 @@ struct StrikethroughDetailsPage {
    * 下划线颜色
    */
   @State
-  strikethroughColor: number = 0xFF191919
+  strikethroughColor: number | undefined = undefined
   /**
    * 下划线样式
    */
@@ -219,7 +219,9 @@ struct StrikethroughDetailsPage {
     theme.setContext(getContext(this)) // 上下文
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setTypeWriterOpen(this.typeWriterOpen) // 是否开启打字机效果
-    theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    if (this.typeWriterColor !== undefined) {
+      theme.setTypeWriterColor(this.typeWriterColor) // 打字机效果颜色
+    }
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
     theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
@@ -227,7 +229,9 @@ struct StrikethroughDetailsPage {
     theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
 
     theme.setStrikethroughStyle(this.strikethroughStyle) // 删除线样式
-    theme.setStrikethroughColor(this.strikethroughColor) // 删除线颜色
+    if (this.strikethroughColor !== undefined) {
+      theme.setStrikethroughColor(this.strikethroughColor) // 删除线颜色
+    }
 
     config.setMarkdownTheme(theme)
     return config

@@ -94,12 +94,12 @@ struct QuotePage {
   /**
    * 打字机效果颜色列表
    */
-  typeWriterColorList: Array<number> = colorListGeneralData
+  typeWriterColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 打字机效果颜色
    */
   @State
-  typeWriterColor: number = 0xFFFF0000
+  typeWriterColor: number | undefined = undefined
   /**
    * 是否打开长按复制粘贴效果列表
    */
@@ -186,21 +186,21 @@ struct QuotePage {
   /**
    * 块引用左边线条颜色列表
    */
-  blockQuoteColorList: Array<number> = colorListGeneralData
+  blockQuoteColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 块引用左边线条颜色
    */
   @State
-  blockQuoteColor: number = 0xFF191919
+  blockQuoteColor: number | undefined = undefined
   /**
    * 块引用背景颜色列表
    */
-  blockQuoteBackGroupColorList: Array<number> = colorListGeneralData
+  blockQuoteBackGroupColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 块引用背景颜色
    */
   @State
-  blockQuoteBackGroupColor: number = 0xFFE0E0E0
+  blockQuoteBackGroupColor: number | undefined = undefined
   /**
    * 块引用子模块上下间距列表
    */

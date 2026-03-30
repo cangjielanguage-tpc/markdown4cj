@@ -8,7 +8,7 @@ export class BaseMDData {
   _textNumber: number = 10 // 增量每次增量文本数量
   _isMarkdownParserSync: boolean = false // 是否同步解析Markdown文本
   _typeWriterOpen: boolean = false // 是否开启打字机效果
-  _typeWriterColor: number = 0xFFFF0000 // 打字机效果颜色
+  _typeWriterColor: number | undefined = undefined // 打字机效果颜色
   _isOnCopy: boolean = false // 是否打开长按复制粘贴效果
   _blockFirstTopMargin: number = 8 // Markdown文本第一个模块上边距
   _blockLastBottomMargin: number = 8 // Markdown文本最后一个模块下边距
@@ -41,7 +41,7 @@ export class BaseMDData {
     this._typeWriterOpen = value
   }
 
-  public set typeWriterColor(value: number) {
+  public set typeWriterColor(value: number | undefined) {
     this._typeWriterColor = value
   }
 
