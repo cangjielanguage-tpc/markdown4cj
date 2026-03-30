@@ -460,8 +460,8 @@ struct CodeBlockPage {
           BaseTabComponent({
             titleStr: "代码块左边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.codeBlockBackgroundColorList,
-            allData: this.codeBlockBackgroundColor
+            allListData: this.codeMultilineMarginList,
+            allData: this.codeMultilineMargin
           })
           BaseTabComponent({
             titleStr: "代码块字体 - ",
