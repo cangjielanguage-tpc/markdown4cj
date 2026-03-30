@@ -4465,6 +4465,22 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置标题文本大小数组
+     *
+     * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<Float64>): MarkdownThemeBuilder {
+        this.headingTextSize1 = headingTextSizeMultipliers[0]
+        this.headingTextSize2 = headingTextSizeMultipliers[1]
+        this.headingTextSize3 = headingTextSizeMultipliers[2]
+        this.headingTextSize4 = headingTextSizeMultipliers[3]
+        this.headingTextSize5 = headingTextSizeMultipliers[4]
+        this.headingTextSize6 = headingTextSizeMultipliers[5]
+        return this
+    }
+
+    /**
      * 设置一级标题文本大小
      *
      * @param headingTextSize1 一级标题文本大小 - 默认20.0
@@ -4527,6 +4543,34 @@ public class MarkdownThemeBuilder {
      */
     public func setHeadingTextSize6(headingTextSize6: Float64): MarkdownThemeBuilder {
         this.headingTextSize6 = headingTextSize6
+        return this
+    }
+
+    /**
+     * 设置标题文本颜色
+     *
+     * @param headingTextColor 标题文本颜色 - 默认0XFF191919
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTextColor(headingTextColor: Color): MarkdownThemeBuilder {
+        this.headingTextColor1 = headingTextColor
+        this.headingTextColor2 = headingTextColor
+        this.headingTextColor3 = headingTextColor
+        this.headingTextColor4 = headingTextColor
+        this.headingTextColor5 = headingTextColor
+        this.headingTextColor6 = headingTextColor
+        return this
+    }
+
+    /**
+     * 设置H1、H2标题下分割线颜色
+     *
+     * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0XFF191919
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingBreakColor(headingBreakColor: Color): MarkdownThemeBuilder {
+        this.headingBreakColor1 = headingBreakColor
+        this.headingBreakColor2 = headingBreakColor
         return this
     }
 
@@ -5757,6 +5801,18 @@ public class MarkdownThemeBuilder {
     }
 
     /**
+     * 设置表格文本行高
+     *
+     * @param tableTextLineHeight 表格内容文本行高 - 默认22.0vp
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setTableTextLineHeight(tableTextLineHeight: Float64): MarkdownThemeBuilder {
+        this.tableTitleLineHeight = tableTextLineHeight
+        this.tableTextLineHeight = tableTextLineHeight
+        return this
+    }
+
+    /**
      * 设置表格标题文本行高
      *
      * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
@@ -5795,7 +5851,7 @@ public class MarkdownThemeBuilder {
      * @param tableTextLineHeight 表格内容文本行高 - 默认22.0vp
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setTableTextLineHeight(tableTextLineHeight: Float64): MarkdownThemeBuilder {
+    public func setTableContentTextLineHeight(tableTextLineHeight: Float64): MarkdownThemeBuilder {
         this.tableTextLineHeight = tableTextLineHeight
         return this
     }
