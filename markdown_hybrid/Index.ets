@@ -4,4 +4,5 @@ export { CJMarkdown,
   MarkdownPlugin,
   LatexMathColorFormat,
   MarkdownScroller,
-  MarkdownRectResult } from './src/main/ets/pages/CJMarkDown'
+  MarkdownRectResult,
+  ImageFitType } from './src/main/ets/pages/CJMarkDown'
