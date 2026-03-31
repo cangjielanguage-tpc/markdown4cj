@@ -2,8 +2,8 @@ import { BaseMDData } from "./BaseMDData"
 
 export class TitleData extends BaseMDData {
   _headingBreakHeight: number = 1
-  _headingBreakColor1: number = 0xFF000000
-  _headingBreakColor2: number = 0xFF000000
+  _headingBreakColor1: number | undefined = undefined
+  _headingBreakColor2: number | undefined = undefined
   _headingTextWordSpace: number = 0
   _headingTextLineHeight1: number = 22
   _headingTextLineHeight2: number = 22
@@ -20,22 +20,22 @@ export class TitleData extends BaseMDData {
   _headingTypeface: string = "HarmonyOS Sans"
   _headingTopMargins: number = 8
   _headingBottomMargins: number = 8
-  _headingTextColors1: number = 0xFF000000
-  _headingTextColors2: number = 0xFF000000
-  _headingTextColors3: number = 0xFF000000
-  _headingTextColors4: number = 0xFF000000
-  _headingTextColors5: number = 0xFF000000
-  _headingTextColors6: number = 0xFF000000
+  _headingTextColors1: number | undefined = undefined
+  _headingTextColors2: number | undefined = undefined
+  _headingTextColors3: number | undefined = undefined
+  _headingTextColors4: number | undefined = undefined
+  _headingTextColors5: number | undefined = undefined
+  _headingTextColors6: number | undefined = undefined
 
   public set headingBreakHeight(value: number) {
     this._headingBreakHeight = value
   }
 
-  public set headingBreakColor1(value: number) {
+  public set headingBreakColor1(value: number | undefined) {
     this._headingBreakColor1 = value
   }
 
-  public set headingBreakColor2(value: number) {
+  public set headingBreakColor2(value: number | undefined) {
     this._headingBreakColor2 = value
   }
 
@@ -103,27 +103,27 @@ export class TitleData extends BaseMDData {
     this._headingBottomMargins = value
   }
 
-  public set headingTextColors1(value: number) {
+  public set headingTextColors1(value: number | undefined) {
     this._headingTextColors1 = value
   }
 
-  public set headingTextColors2(value: number) {
+  public set headingTextColors2(value: number | undefined) {
     this._headingTextColors2 = value
   }
 
-  public set headingTextColors3(value: number) {
+  public set headingTextColors3(value: number | undefined) {
     this._headingTextColors3 = value
   }
 
-  public set headingTextColors4(value: number) {
+  public set headingTextColors4(value: number | undefined) {
     this._headingTextColors4 = value
   }
 
-  public set headingTextColors5(value: number) {
+  public set headingTextColors5(value: number | undefined) {
     this._headingTextColors5 = value
   }
 
-  public set headingTextColors6(value: number) {
+  public set headingTextColors6(value: number | undefined) {
     this._headingTextColors6 = value
   }
 

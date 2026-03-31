@@ -132,7 +132,7 @@ struct ImageDetailsPage {
  * 图片边框颜色
  */
   @State
-  imageBorderColor: number = 0xFF000000
+  imageBorderColor: number | undefined = undefined
   /**
    * 图片基于自身宽度缩放百分比
    */
@@ -197,12 +197,12 @@ struct ImageDetailsPage {
    * 图片下载按钮文本颜色
    */
   @State
-  imageDownloadTexColor: number = 0xE6000000
+  imageDownloadTexColor: number | undefined = undefined
   /**
    * 图片下载按钮背景颜色
    */
   @State
-  imageDownloadBackgroundColor: number = 0xFFF5F5F5
+  imageDownloadBackgroundColor: number | undefined = undefined
 
   aboutToAppear(): void {
     try {
@@ -334,7 +334,9 @@ struct ImageDetailsPage {
     theme.setImageMarginBottom(this.imageMarginBottom) // 图片下边距
     theme.setImageBorderRadius(this.imageBorderRadius) // 图片圆角大小
     theme.setImageBorderWidth(this.imageBorderWidth) // 图片边框宽度
-    theme.setImageBorderColor(this.imageBorderColor) // 图片边框颜色
+    if (this.imageBorderColor !== undefined) {
+      theme.setImageBorderColor(this.imageBorderColor) // 图片边框颜色
+    }
     theme.setImageMaximumWidth(this.imageMaximumWidth) // 图片基于自身宽度缩放百分比
     if (this.imageFixedRatioWidth !== undefined) {
       theme.setImageFixedRatioWidth(this.imageFixedRatioWidth) // 图片基于父布局宽度缩放百分比
@@ -354,8 +356,12 @@ struct ImageDetailsPage {
     theme.setImageDownloadRadius(this.imageDownloadRadius) // 图片下载按钮圆角
     theme.setImageDownloadText(this.imageDownloadText) // 图片下载按钮文本内容
     theme.setImageDownloadTexSize(this.imageDownloadTexSize) // 图片下载按钮文本大小
-    theme.setImageDownloadTexColor(this.imageDownloadTexColor) // 图片下载按钮文本颜色
-    theme.setImageDownloadBackgroundColor(this.imageDownloadBackgroundColor) // 图片下载按钮背景颜色
+    if (this.imageDownloadTexColor !== undefined) {
+      theme.setImageDownloadTexColor(this.imageDownloadTexColor) // 图片下载按钮文本颜色
+    }
+    if (this.imageDownloadBackgroundColor !== undefined) {
+      theme.setImageDownloadBackgroundColor(this.imageDownloadBackgroundColor) // 图片下载按钮背景颜色
+    }
 
     theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
     theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴

@@ -1,11 +1,11 @@
 import { BaseMDData } from "./BaseMDData"
 
 export class SubData extends BaseMDData {
-  _subTextColor: number = 0xFF191919
+  _subTextColor: number | undefined = undefined
   _subTextSize: number = 8
   _subOffsetDist: number = 0
 
-  public set subTextColor(value: number) {
+  public set subTextColor(value: number | undefined) {
     this._subTextColor = value
   }
 

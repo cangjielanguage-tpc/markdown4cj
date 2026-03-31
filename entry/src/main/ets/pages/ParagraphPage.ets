@@ -154,12 +154,12 @@ struct ParagraphPage {
   /**
    * 段落文本颜色列表
    */
-  paragraphTextColorList: Array<number> = colorListGeneralData
+  paragraphTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 段落文本颜色
    */
   @State
-  paragraphTextColor: number = 0xFF000000
+  paragraphTextColor: number | undefined = undefined
   /**
    * 段落文本字间距列表
    */

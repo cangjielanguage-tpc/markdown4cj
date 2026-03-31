@@ -101,7 +101,7 @@ struct SupDetailsPage {
    * 上标字体颜色
    */
   @State
-  supTextColor: number = 0xFF191919
+  supTextColor: number | undefined = undefined
   /**
    * 上标字体大小
    */
@@ -208,7 +208,9 @@ struct SupDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setSupTextColor(this.supTextColor) // 上标字体颜色
+    if (this.supTextColor !== undefined) {
+      theme.setSupTextColor(this.supTextColor) // 上标字体颜色
+    }
     theme.setSupTextSize(this.supTextSize) // 上标字体大小
     theme.setSupOffsetDist(this.supOffsetDist) // 上标偏移距离
 

@@ -101,7 +101,7 @@ struct HTMLDetailsPage {
    * 下划线颜色
    */
   @State
-  underlineColor: number = 0xFF191919
+  underlineColor: number | undefined = undefined
   /**
    * 下划线样式
    */
@@ -202,7 +202,9 @@ struct HTMLDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setUnderlineColor(this.underlineColor) // 下划线颜色
+    if (this.underlineColor !== undefined) {
+      theme.setUnderlineColor(this.underlineColor) // 下划线颜色
+    }
     theme.setUnderlineStyle(this.underlineStyle) // 下划线样式
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))

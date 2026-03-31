@@ -97,6 +97,21 @@ struct DescListDetailsPage {
   isInputEnded: boolean = false
 
   // ---------- 专有
+  /**
+   * 定义列表术语和定义行之间间距
+   */
+  @State
+  descListTermAndDefMargins: number = 8
+  /**
+   * 定义列表定义行缩进
+   */
+  @State
+  descListDefIndentation: number = 8
+  /**
+   * 定义列表定义行间距
+   */
+  @State
+  descListDefMargins: number = 8
 
   aboutToAppear(): void {
     try {
@@ -115,6 +130,9 @@ struct DescListDetailsPage {
       this.openGestureSwipe = descListData._openGestureSwipe
       this.openGestureSwipeTest = descListData._openGestureSwipeTest
       // ---------- 专有
+      this.descListTermAndDefMargins = descListData._descListTermAndDefMargins
+      this.descListDefIndentation = descListData._descListDefIndentation
+      this.descListDefMargins = descListData._descListDefMargins
     } catch (e) {
     }
   }
@@ -197,6 +215,10 @@ struct DescListDetailsPage {
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
+    theme.setDescListTermAndDefMargins(this.descListTermAndDefMargins) // 定义列表术语和定义行之间间距
+    theme.setDescListDefIndentation(this.descListDefIndentation) // 定义列表定义行缩进
+    theme.setDescListDefMargins(this.descListDefMargins) // 定义列表定义行间距
 
     config.setMarkdownTheme(theme)
     return config

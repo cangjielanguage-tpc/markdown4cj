@@ -143,12 +143,12 @@ struct StrikethroughPage {
   /**
    * 删除线颜色列表
    */
-  strikethroughColorList: Array<number> = colorListGeneralData
+  strikethroughColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 删除线颜色
    */
   @State
-  strikethroughColor: number = 0xFF191919
+  strikethroughColor: number | undefined = undefined
   /**
    * 删除线样式
    */

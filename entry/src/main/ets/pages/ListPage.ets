@@ -181,12 +181,12 @@ struct ListPage {
   /**
    * 有序列表前缀文本颜色列表
    */
-  orderedListItemColorList: Array<number> = colorListGeneralData
+  orderedListItemColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 有序列表前缀文本颜色
    */
   @State
-  orderedListItemColor: number = 0xFF191919
+  orderedListItemColor: number | undefined = undefined
   /**
    * 有序列表前缀文本大小列表
    */
@@ -217,12 +217,12 @@ struct ListPage {
   /**
    * 无序列表前缀文本颜色列表
    */
-  bulletListItemColorList: Array<number> = colorListGeneralData
+  bulletListItemColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 无序列表前缀文本颜色
    */
   @State
-  bulletListItemColor: number = 0xFF191919
+  bulletListItemColor: number | undefined = undefined
   /**
    * 无序列表前缀文本大小列表
    */

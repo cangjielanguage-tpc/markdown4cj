@@ -142,12 +142,12 @@ struct SubPage {
   /**
    * 下标字体颜色列表
    */
-  subTextColorList: Array<number> = colorListGeneralData
+  subTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 下标字体颜色
    */
   @State
-  subTextColor: number = 0xFF191919
+  subTextColor: number | undefined = undefined
   /**
    * 下标字体大小列表
    */

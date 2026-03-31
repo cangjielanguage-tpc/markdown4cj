@@ -1,10 +1,10 @@
 import { BaseMDData } from "./BaseMDData"
 
 export class HTMLData extends BaseMDData {
-  _underlineColor: number = 0xFF191919
+  _underlineColor: number | undefined = undefined
   _underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
 
-  public set underlineColor(value: number) {
+  public set underlineColor(value: number | undefined) {
     this._underlineColor = value
   }
 

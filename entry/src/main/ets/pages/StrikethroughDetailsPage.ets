@@ -99,7 +99,7 @@ struct StrikethroughDetailsPage {
    * 下划线颜色
    */
   @State
-  strikethroughColor: number = 0xFF191919
+  strikethroughColor: number | undefined = undefined
   /**
    * 下划线样式
    */
@@ -213,7 +213,9 @@ struct StrikethroughDetailsPage {
     theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
 
     theme.setStrikethroughStyle(this.strikethroughStyle) // 删除线样式
-    theme.setStrikethroughColor(this.strikethroughColor) // 删除线颜色
+    if (this.strikethroughColor !== undefined) {
+      theme.setStrikethroughColor(this.strikethroughColor) // 删除线颜色
+    }
 
     config.setMarkdownTheme(theme)
     return config

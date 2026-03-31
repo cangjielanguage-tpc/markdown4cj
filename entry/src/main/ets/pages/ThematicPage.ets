@@ -150,12 +150,12 @@ struct ThematicPage {
   /**
    * 分割线颜色列表
    */
-  thematicBreakColorList: Array<number> = colorListGeneralData
+  thematicBreakColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 分割线颜色
    */
   @State
-  thematicBreakColor: number = 0xFF000000
+  thematicBreakColor: number | undefined = undefined
   /**
    * 分割线上部外边距列表
    */

@@ -7,7 +7,7 @@ export class ImageDataMD extends BaseMDData {
   _imageMarginBottom: number = 10
   _imageBorderRadius: number = 0
   _imageBorderWidth: number = 0
-  _imageBorderColor: number = 0xFF000000
+  _imageBorderColor: number | undefined = undefined
   _imageMaximumWidth: number = 1.0
   _imageFixedRatioWidth: number | undefined = undefined
   _imageMaxHeight: number | undefined = undefined
@@ -20,8 +20,8 @@ export class ImageDataMD extends BaseMDData {
   _imageDownloadRadius: number = 22
   _imageDownloadText: string = "下载图片"
   _imageDownloadTexSize: number = 16
-  _imageDownloadTexColor: number = 0xE6000000
-  _imageDownloadBackgroundColor: number = 0xFFF5F5F5
+  _imageDownloadTexColor: number | undefined = undefined
+  _imageDownloadBackgroundColor: number | undefined = undefined
 
   public set callback(value: boolean) {
     this._callback = value
@@ -47,7 +47,7 @@ export class ImageDataMD extends BaseMDData {
     this._imageBorderWidth = value
   }
 
-  public set imageBorderColor(value: number) {
+  public set imageBorderColor(value: number | undefined) {
     this._imageBorderColor = value
   }
 
@@ -99,11 +99,11 @@ export class ImageDataMD extends BaseMDData {
     this._imageDownloadTexSize = value
   }
 
-  public set imageDownloadTexColor(value: number) {
+  public set imageDownloadTexColor(value: number | undefined) {
     this._imageDownloadTexColor = value
   }
 
-  public set imageDownloadBackgroundColor(value: number) {
+  public set imageDownloadBackgroundColor(value: number | undefined) {
     this._imageDownloadBackgroundColor = value
   }
 

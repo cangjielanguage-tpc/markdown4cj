@@ -101,7 +101,7 @@ struct SubDetailsPage {
    * 下标字体颜色
    */
   @State
-  subTextColor: number = 0xFF191919
+  subTextColor: number | undefined = undefined
   /**
    * 下标字体大小
    */
@@ -208,7 +208,9 @@ struct SubDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setSubTextColor(this.subTextColor) // 下标字体颜色
+    if (this.subTextColor !== undefined) {
+      theme.setSubTextColor(this.subTextColor) // 下标字体颜色
+    }
     theme.setSubTextSize(this.subTextSize) // 下标字体大小
     theme.setSubOffsetDist(this.subOffsetDist) // 下标偏移距离
 

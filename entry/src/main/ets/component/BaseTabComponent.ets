@@ -228,17 +228,30 @@ export struct BaseTabComponent {
 
           })
         } else if (this.typeEnum == TypeEnum.IS_DECORATION_STYLE) {
-          ForEach(this.allListData, (item: string | number | boolean, _: number) => {
-            Button(`${styleToString(item as number)}`)
-              .type(ButtonType.Capsule)
-              .stateEffect(true)
-              .height(25)
-              .margin(2)
-              .backgroundColor(0xFF317AFF)
-              .fontSize(14)
-              .onClick(() => {
-                this.allData = item as string
-              })
+          ForEach(this.allListData, (item: string | number | boolean | Resource | undefined, _: number) => {
+            if (item !== undefined) {
+              Button(`${styleToString(item as number)}`)
+                .type(ButtonType.Capsule)
+                .stateEffect(true)
+                .height(25)
+                .margin(2)
+                .backgroundColor(0xFF317AFF)
+                .fontSize(14)
+                .onClick(() => {
+                  this.allData = item as number
+                })
+            } else {
+              Button("undefined")
+                .type(ButtonType.Capsule)
+                .stateEffect(true)
+                .height(25)
+                .margin(2)
+                .backgroundColor(0xFF317AFF)
+                .fontSize(14)
+                .onClick(() => {
+                  this.allData = undefined
+                })
+            }
           })
         }
       }

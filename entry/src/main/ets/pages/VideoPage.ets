@@ -151,12 +151,12 @@ struct VideoPage {
   /**
    * 视频时间文本颜色列表
    */
-  videoTimeTextColorList: Array<number> = colorListGeneralData
+  videoTimeTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 视频时间文本颜色
    */
   @State
-  videoTimeTextColor: number = 0xFFFFFFFF
+  videoTimeTextColor: number | undefined = undefined
   /**
    * 视频时间文本大小列表
    */
@@ -268,21 +268,21 @@ struct VideoPage {
   /**
    * 视频发布按钮文本颜色列表
    */
-  videoReleaseTexColorList: Array<number> = colorListGeneralData
+  videoReleaseTexColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 视频发布按钮文本颜色
    */
   @State
-  videoReleaseTexColor: number = 0xE6000000
+  videoReleaseTexColor: number | undefined = undefined
   /**
    * 视频发布按钮背景颜色列表
    */
-  videoReleaseBackgroundColorList: Array<number> = colorListGeneralData
+  videoReleaseBackgroundColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 视频发布按钮背景颜色
    */
   @State
-  videoReleaseBackgroundColor: number = 0xFFF5F5F5
+  videoReleaseBackgroundColor: number | undefined = undefined
   /**
    * 视频下载按钮图片宽度和高度列表
    */
@@ -340,21 +340,21 @@ struct VideoPage {
   /**
    * 视频下载按钮文本颜色列表
    */
-  videoDownloadTexColorList: Array<number> = colorListGeneralData
+  videoDownloadTexColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 视频下载按钮文本颜色
    */
   @State
-  videoDownloadTexColor: number = 0xE6000000
+  videoDownloadTexColor: number | undefined = undefined
   /**
    * 视频下载按钮背景颜色列表
    */
-  videoDownloadBackgroundColorList: Array<number> = colorListGeneralData
+  videoDownloadBackgroundColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 视频下载按钮背景颜色
    */
   @State
-  videoDownloadBackgroundColor: number = 0xFFF5F5F5
+  videoDownloadBackgroundColor: number | undefined = undefined
   /**
    * 配置数据内容
    */
