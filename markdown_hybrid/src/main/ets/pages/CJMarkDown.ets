@@ -108,6 +108,8 @@ export struct CJMarkdown {
         global_customLib = requireCJLib("libmarkdown.so") as CustomLib
       }
       this.markdownNode = new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin(), this.listScroller?.getScroller())
+    } else {
+      global_customLib = undefined
     }
   }
 
@@ -2993,6 +2995,9 @@ export class MarkdownTheme {
    * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
    */
   setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): void {
+    if (headingTextSizeMultipliers.length != 6) {
+      return
+    }
     this.headingTextSize1 = headingTextSizeMultipliers[0]
     this.headingTextSize2 = headingTextSizeMultipliers[1]
     this.headingTextSize3 = headingTextSizeMultipliers[2]
@@ -4014,7 +4019,7 @@ export class MarkdownTheme {
    * @param tableTextLineHeight 表格文本行高 - 默认22.0vp
    */
   setTableTextLineHeight(tableTextLineHeight: number): void {
-    this.tableTitleTextSize = tableTextLineHeight
+    this.tableTitleLineHeight = tableTextLineHeight
     this.tableTextLineHeight = tableTextLineHeight
   }
 
@@ -4585,7 +4590,7 @@ export class MarkdownPlugin {
   /**
    * 设置是否加载emoji解析插件
    *
-   * @param isEmojiPlugin 是否加载上标解析插件 - true：设置加载上标解析插件件；false：不设置加载上标解析插件。默认false
+   * @param isEmojiPlugin 是否加载Emoji解析插件 - true：设置加载Emoji解析插件件；false：不设置加载Emoji解析插件。默认false
    * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
    */
   setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void {
@@ -4669,6 +4674,7 @@ export class MarkdownScroller {
   /**
    * 获取子组件的大小及相对容器组件的位置
    *
+   * @param index 索引值
    * @returns 子组件的大小和相对于组件的位置
    */
   getItemRect(index: number): MarkdownRectResult {
@@ -4704,6 +4710,9 @@ export class MarkdownRectResult {
   private width: number = 0
   private height: number = 0
 
+  /**
+   * 构造函数
+   */
   constructor(x: number, y: number, width: number, height: number) {
     this.x = x
     this.y = y
@@ -4711,18 +4720,38 @@ export class MarkdownRectResult {
     this.height = height
   }
 
+  /**
+   * 获取子组件相对坐标x
+   *
+   * @returns 子组件x轴位置
+   */
   getItemRectX(): number {
     return this.x
   }
 
+  /**
+   * 获取子组件相对坐标y
+   *
+   * @returns 子组件y轴位置
+   */
   getItemRectY(): number {
     return this.y
   }
 
+  /**
+   * 获取子组件宽度
+   *
+   * @returns 子组件宽度
+   */
   getItemRectWidth(): number {
     return this.width
   }
 
+  /**
+   * 获取子组件高度
+   *
+   * @returns 子组件高度
+   */
   getItemRectHeight(): number {
     return this.height
   }
