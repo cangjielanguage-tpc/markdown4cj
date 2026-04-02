@@ -3216,7 +3216,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置浅色主题整体样式
      *
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setDefaultTheme(): MarkdownThemeBuilder {
         // 1、上下文
@@ -3307,7 +3307,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置深色主题整体样式
      *
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setDarkulaTheme(): MarkdownThemeBuilder {
         // 1、上下文
@@ -5670,7 +5670,7 @@ public class MarkdownThemeBuilder {
      * 设置表格内容内边距
      *
      * @param tableCellPadding 表格内容内边距 - 默认4.0vp
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableCellPadding(tableCellPadding: Float64): MarkdownThemeBuilder {
         this.tableCellPadding = tableCellPadding
@@ -5681,7 +5681,7 @@ public class MarkdownThemeBuilder {
      * 设置表格边框颜色
      *
      * @param tableBorderColor 表格边框颜色 - 默认0XFF000000
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableBorderColor(tableBorderColor: Color): MarkdownThemeBuilder {
         this.tableBorderColor = tableBorderColor
@@ -5692,7 +5692,7 @@ public class MarkdownThemeBuilder {
      * 设置表格边框宽度
      *
      * @param tableBorderWidth 表格边框宽度 - 默认1.0vp
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableBorderWidth(tableBorderWidth: Float64): MarkdownThemeBuilder {
         this.tableBorderWidth = tableBorderWidth
@@ -5703,7 +5703,7 @@ public class MarkdownThemeBuilder {
      * 设置表格奇数行背景色
      *
      * @param tableOddRowBackgroundColor 表格奇数行背景色 - 默认0XFFFFFFFF
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableOddRowBackgroundColor(tableOddRowBackgroundColor: Color): MarkdownThemeBuilder {
         this.tableOddRowBackgroundColor = tableOddRowBackgroundColor
@@ -5714,7 +5714,7 @@ public class MarkdownThemeBuilder {
      * 设置表格偶数行背景色
      *
      * @param tableEvenRowBackgroundColor 表格偶数行背景色 - 默认0XFFE0E0E0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: Color): MarkdownThemeBuilder {
         this.tableEvenRowBackgroundColor = tableEvenRowBackgroundColor
@@ -5725,7 +5725,7 @@ public class MarkdownThemeBuilder {
      * 设置表格标题背景色
      *
      * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0XFFFFFFFF
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: Color): MarkdownThemeBuilder {
         this.tableHeaderRowBackgroundColor = tableHeaderRowBackgroundColor
@@ -5736,7 +5736,7 @@ public class MarkdownThemeBuilder {
      * 设置表格标题文本颜色
      *
      * @param tableTitleTextColor 表格标题文本颜色 - 默认0XFF191919
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableTitleTextColor(tableTitleTextColor: Color): MarkdownThemeBuilder {
         this.tableTitleTextColor = tableTitleTextColor
@@ -5747,7 +5747,7 @@ public class MarkdownThemeBuilder {
      * 设置表格标题文本大小
      *
      * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableTitleTextSize(tableTitleTextSize: Float64): MarkdownThemeBuilder {
         this.tableTitleTextSize = tableTitleTextSize
@@ -5758,7 +5758,7 @@ public class MarkdownThemeBuilder {
      * 设置表格文本行高
      *
      * @param tableTextLineHeight 表格内容文本行高 - 默认22.0vp
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableTextLineHeight(tableTextLineHeight: Float64): MarkdownThemeBuilder {
         this.tableTitleLineHeight = tableTextLineHeight
@@ -5770,7 +5770,7 @@ public class MarkdownThemeBuilder {
      * 设置表格标题文本行高
      *
      * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableTitleLineHeight(tableTitleLineHeight: Float64): MarkdownThemeBuilder {
         this.tableTitleLineHeight = tableTitleLineHeight
@@ -5781,7 +5781,7 @@ public class MarkdownThemeBuilder {
      * 设置表格内容文本颜色
      *
      * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableContentTextColor(tableContentTextColor: Color): MarkdownThemeBuilder {
         this.tableContentTextColor = tableContentTextColor
@@ -5792,7 +5792,7 @@ public class MarkdownThemeBuilder {
      * 设置表格内容文本大小
      *
      * @param tableContentTextSize 表格内容文本大小 - 默认14.0vp
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableContentTextSize(tableContentTextSize: Float64): MarkdownThemeBuilder {
         this.tableContentTextSize = tableContentTextSize
@@ -5803,7 +5803,7 @@ public class MarkdownThemeBuilder {
      * 设置表格内容文本行高
      *
      * @param tableTextLineHeight 表格内容文本行高 - 默认22.0vp
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableContentTextLineHeight(tableTextLineHeight: Float64): MarkdownThemeBuilder {
         this.tableTextLineHeight = tableTextLineHeight
@@ -5814,7 +5814,7 @@ public class MarkdownThemeBuilder {
      * 设置表格圆角
      *
      * @param tableRadius 表格圆角 - 默认5.0vp
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableRadius(tableRadius: Float64): MarkdownThemeBuilder {
         this.tableRadius = tableRadius
@@ -5825,7 +5825,7 @@ public class MarkdownThemeBuilder {
      * 设置表格最小宽度
      *
      * @param tableMinTextWidth 表格最小宽度 - 默认50.0vp
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableMinTextWidth(tableMinTextWidth: Float64): MarkdownThemeBuilder {
         this.tableMinTextWidth = tableMinTextWidth
@@ -5836,7 +5836,7 @@ public class MarkdownThemeBuilder {
      * 设置表格最大宽度
      *
      * @param tableMaxTextWidth 表格最大宽度- 默认300.0vp
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableMaxTextWidth(tableMaxTextWidth: Float64): MarkdownThemeBuilder {
         this.tableMaxTextWidth = tableMaxTextWidth
@@ -5847,7 +5847,7 @@ public class MarkdownThemeBuilder {
      * 设置表格第一列是否加粗
      *
      * @param tableFirstColumnBold 表格第一列是否加粗 - true：加粗；false：不加粗。默认false
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableFirstColumnBold(tableFirstColumnBold: Bool): MarkdownThemeBuilder {
         this.tableFirstColumnBold = tableFirstColumnBold
@@ -5858,7 +5858,7 @@ public class MarkdownThemeBuilder {
      * 设置表格是否显示滚动条
      *
      * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableScrollBarShow(tableScrollBarShow: Bool): MarkdownThemeBuilder {
         this.tableScrollBarShow = tableScrollBarShow
@@ -5869,7 +5869,7 @@ public class MarkdownThemeBuilder {
      * 设置表格滚动条颜色
      *
      * @param tableFirstColumnBold 表格滚动条颜色
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setTableScrollBarColor(tableScrollBarColor: Color): MarkdownThemeBuilder {
         this.tableScrollBarColor = tableScrollBarColor
@@ -5880,7 +5880,7 @@ public class MarkdownThemeBuilder {
      * 设置markdown代码高亮样式
      *
      * @param PrismTheme markdown代码高亮样式 - 默认PrismThemeDarkula.create()
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setPrismTheme(prismTheme: PrismTheme): MarkdownThemeBuilder {
         this.prismTheme = prismTheme
@@ -5891,7 +5891,7 @@ public class MarkdownThemeBuilder {
      * 设置删除线颜色
      *
      * @param strikethroughColor 删除线颜色 默认0XFF191919
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setStrikethroughColor(strikethroughColor: Color): MarkdownThemeBuilder {
         this.strikethroughColor = strikethroughColor
@@ -5902,7 +5902,7 @@ public class MarkdownThemeBuilder {
      * 设置删除线样式
      *
      * @param strikethroughStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setStrikethroughStyle(strikethroughStyle: Int32): MarkdownThemeBuilder {
         this.strikethroughStyle = strikethroughStyle
@@ -5913,7 +5913,7 @@ public class MarkdownThemeBuilder {
      * 设置定义列表术语和定义行之间间距
      *
      * @param descListTermAndDefMargins 定义列表术语和定义行之间间距 默认8.0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setDescListTermAndDefMargins(descListTermAndDefMargins: Float64): MarkdownThemeBuilder {
         this.descListTermAndDefMargins = descListTermAndDefMargins
@@ -5924,7 +5924,7 @@ public class MarkdownThemeBuilder {
      * 设置定义列表定义行缩进
      *
      * @param descListDefIndentation 定义列表定义行缩进 默认8.0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setDescListDefIndentation(descListDefIndentation: Float64): MarkdownThemeBuilder {
         this.descListDefIndentation = descListDefIndentation
@@ -5935,7 +5935,7 @@ public class MarkdownThemeBuilder {
      * 设置定义列表定义行间距
      *
      * @param descListDefMargins 定义列表定义行间距 默认8.0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setDescListDefMargins(descListDefMargins: Float64): MarkdownThemeBuilder {
         this.descListDefMargins = descListDefMargins
@@ -5946,7 +5946,7 @@ public class MarkdownThemeBuilder {
      * 设置下标字体颜色
      *
      * @param subTextColor 下标字体颜色 默认0XFF191919
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setSubTextColor(subTextColor: Color): MarkdownThemeBuilder {
         this.subTextColor = subTextColor
@@ -5957,7 +5957,7 @@ public class MarkdownThemeBuilder {
      * 设置下标字体大小
      *
      * @param subTextSize 下标字体大小 默认8.0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setSubTextSize(subTextSize: Float64): MarkdownThemeBuilder {
         this.subTextSize = subTextSize
@@ -5968,7 +5968,7 @@ public class MarkdownThemeBuilder {
      * 设置下标偏移距离
      *
      * @param subOffsetDist 下标偏移距离 默认0.0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setSubOffsetDist(subOffsetDist: Float64): MarkdownThemeBuilder {
         this.subOffsetDist = subOffsetDist
@@ -5979,7 +5979,7 @@ public class MarkdownThemeBuilder {
      * 设置上标字体颜色
      *
      * @param supTextColor 上标字体颜色 默认0XFF191919
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setSupTextColor(supTextColor: Color): MarkdownThemeBuilder {
         this.supTextColor = supTextColor
@@ -5990,7 +5990,7 @@ public class MarkdownThemeBuilder {
      * 设置上标字体大小
      *
      * @param supTextSize 上标字体大小 默认8.0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setSupTextSize(supTextSize: Float64): MarkdownThemeBuilder {
         this.supTextSize = supTextSize
@@ -6001,7 +6001,7 @@ public class MarkdownThemeBuilder {
      * 设置上标偏移距离
      *
      * @param supOffsetDist 上标偏移距离 默认6.0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setSupOffsetDist(supOffsetDist: Float64): MarkdownThemeBuilder {
         this.supOffsetDist = supOffsetDist
@@ -6012,7 +6012,7 @@ public class MarkdownThemeBuilder {
      * 设置下划线颜色
      *
      * @param underlineColor 下划线颜色 默认0XFF191919
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setUnderlineColor(underlineColor: Color): MarkdownThemeBuilder {
         this.underlineColor = underlineColor
@@ -6023,7 +6023,7 @@ public class MarkdownThemeBuilder {
      * 设置下划线样式
      *
      * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setUnderlineStyle(underlineStyle: Int32): MarkdownThemeBuilder {
         this.underlineStyle = underlineStyle
@@ -6034,7 +6034,7 @@ public class MarkdownThemeBuilder {
      * 设置markdown是否支持滚动手势
      *
      * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setOpenGestureSwipe(openGestureSwipe: Bool): MarkdownThemeBuilder {
         this.openGestureSwipe = openGestureSwipe
@@ -6045,7 +6045,7 @@ public class MarkdownThemeBuilder {
      * 设置codeformat是否用制表符
      *
      * @param useTab true-使用，false-不使用，默认false
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setUseTab(useTab: Bool): MarkdownThemeBuilder {
         this.useTab = useTab
@@ -6056,7 +6056,7 @@ public class MarkdownThemeBuilder {
      * 设置codeformat空格缩进数量
      *
      * @param indentWidth 空格缩进数量，默认4空格
-     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setIndentWidth(indentWidth: Int64): MarkdownThemeBuilder {
         this.indentWidth = indentWidth
