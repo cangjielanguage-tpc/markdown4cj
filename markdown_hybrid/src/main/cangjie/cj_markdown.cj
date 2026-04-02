@@ -17,18 +17,20 @@ public func registerImgPreprocessCallback(context: JSContext, callInfo: JSCallIn
             let ret: cbRet = cbRet()
             ret.sem.acquire()
             ctx.getOrThrow().postJSTask {
-                    let _url = url.toJSValue(context)
-                    let _ret = arktsCB.call([_url]).asPromise()
-                    let onFulfilled = context.function {
-                        context, callInfo =>
-                            let bufferVale = Option<Array<Byte>>.fromJSValue(context, callInfo[0])
-                            if (bufferVale.isSome()) {
-                                ret.value = bufferVale.getOrThrow()
-                            }
-                            ret.sem.release()
-                            context.undefined().toJSValue()
+                    newScope(context) {
+                        let _url = url.toJSValue(context)
+                        let _ret = arktsCB.call([_url]).asPromise()
+                        let onFulfilled = context.function {
+                            context, callInfo =>
+                                let bufferValue = Option<Array<Byte>>.fromJSValue(context, callInfo[0])
+                                if (let Some(v) <- bufferValue) {
+                                    ret.value = v
+                                }
+                                ret.sem.release()
+                                context.undefined().toJSValue()
+                        }
+                        _ret.then(onFulfilled)
                     }
-                    _ret.then(onFulfilled)
                 }
             ret.sem.acquire()
             let retValue = ret.value
