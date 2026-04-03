@@ -1747,6 +1747,27 @@ export class MarkdownTheme {
    * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
    */
   setUnderlineStyle(underlineStyle: TextDecorationStyle): void
+
+  /**
+   * 设置markdown是否支持滚动手势
+   *
+   * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
+   */
+  setOpenGestureSwipe(openGestureSwipe: boolean): void
+
+  /**
+   * 设置codeformat是否用制表符
+   *
+   * @param useTab true-使用，false-不使用，默认false
+   */
+  setUseTab(useTab: boolean): void
+
+  /**
+   * 设置codeformat空格缩进数量
+   *
+   * @param indentWidth 空格缩进数量，默认4空格
+   */
+  setIndentWidth(indentWidth: number): void
 }
 ```
 
@@ -1920,7 +1941,7 @@ export class MarkdownPlugin {
   /**
    * 设置是否加载emoji解析插件
    *
-   * @param isEmojiPlugin 是否加载上标解析插件 - true：设置加载上标解析插件件；false：不设置加载上标解析插件。默认false
+   * @param isEmojiPlugin 是否加载Emoji解析插件 - true：设置加载Emoji解析插件件；false：不设置加载Emoji解析插件。默认false
    * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
    */
   setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void
@@ -1980,6 +2001,8 @@ export class MarkdownScroller {
   /**
    * 获取子组件的大小及相对容器组件的位置
    *
+   *
+   * @param index 索引值
    * @returns 子组件的大小和相对于组件的位置
    */
   getItemRect(index: number): MarkdownRectResult
@@ -2004,32 +2027,32 @@ export class MarkdownRectResult {
    * 构造函数
    */
   constructor (x: number, y: number, width: number, height: number)
-  
+
   /**
    * 获取子组件相对坐标x
    *
-   * @returns CJMarkdownScroller实例
+   * @returns 子组件x轴位置
    */
   getItemRectX(): number
-  
+
   /**
    * 获取子组件相对坐标y
    *
-   * @returns CJMarkdownScroller实例
+   * @returns 子组件y轴位置
    */
   getItemRectY(): number
-  
+
   /**
    * 获取子组件宽度
    *
-   * @returns CJMarkdownScroller实例
+   * @returns 子组件宽度
    */
   getItemRectWidth(): number
-  
+
   /**
    * 获取子组件高度
    *
-   * @returns CJMarkdownScroller实例
+   * @returns 子组件高度
    */
   getItemRectHeight(): number
 }
