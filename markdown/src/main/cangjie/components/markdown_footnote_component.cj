@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -18,7 +15,6 @@ public class MarkdownFootnoteComponent {
     /**
      * 脚注控件自身节点
      */
-    @Prop
     var footnoteNodeView: NodeView
 
     /**
@@ -114,6 +110,7 @@ public class MarkdownFootnoteComponent {
      * @param footnoteNodeView 刷新的新数据
      */
     public func refreshFootnoteData(footnoteNodeView: NodeView): Unit {
+        this.footnoteNodeView = footnoteNodeView
         let refreshNodeViewChildren = footnoteNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = footnoteNodeViewDataSource.totalCount() // 页面缓存的数据长度
@@ -167,6 +164,9 @@ public class MarkdownFootnoteComponent {
                     let cache = paragraphComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshParagraphData(refreshNodeView)
+                        footnoteNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        footnoteNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }

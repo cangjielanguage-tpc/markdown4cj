@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -198,7 +195,7 @@ public class MarkdownComponent {
     var lastViewIndex: Int64 = 0
 
     protected override func aboutToAppear(): Unit {
-        tableBlockComponentWidth = vp2px((markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth).vp)().value // 表格每个格子最大宽度
+        tableBlockComponentWidth = markdownConfiguration.markdownTheme.tableMaxTextWidth - 2.0 * markdownConfiguration.markdownTheme.tableCellPadding - 2.0 * markdownConfiguration.markdownTheme.tableBorderWidth // 表格每个格子最大宽度
         // 加载插件
         incBase = IncreaseParserV2(markdownPlugin)
         // 默认控件宽度等于屏幕宽度
@@ -691,6 +688,7 @@ public class MarkdownComponent {
                         let cache = paragraphComponents.get(newNodeHash)
                         if (let Some(v) <- cache) {
                             v.refreshParagraphData(refreshNodeView)
+                            nodeViewDataSource.update(i, refreshNodeView)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -702,6 +700,7 @@ public class MarkdownComponent {
                         let cache = headingComponents.get(newNodeHash)
                         if (let Some(v) <- cache) {
                             v.refreshHeadingData(refreshNodeView)
+                            nodeViewDataSource.update(i, refreshNodeView)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -713,6 +712,7 @@ public class MarkdownComponent {
                         let cache = fencedCodeComponents.get(newNodeHash)
                         if (let Some(v) <- cache) {
                             v.refreshData(refreshNodeView.nodeText, refreshNodeView.codeInfo(), refreshNodeView.nodeHash)
+                            nodeViewDataSource.update(i, refreshNodeView)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -724,6 +724,7 @@ public class MarkdownComponent {
                         let cache = indentedCodeComponents.get(newNodeHash)
                         if (let Some(v) <- cache) {
                             v.refreshData(refreshNodeView.nodeText, Option<String>.None, refreshNodeView.nodeHash)
+                            nodeViewDataSource.update(i, refreshNodeView)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -735,6 +736,7 @@ public class MarkdownComponent {
                         let cache = listComponents.get(newNodeHash)
                         if (let Some(v) <- cache) {
                             v.refreshListData(refreshNodeView)
+                            nodeViewDataSource.update(i, refreshNodeView)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -746,6 +748,7 @@ public class MarkdownComponent {
                         let cache = quoteComponents.get(newNodeHash)
                         if (let Some(v) <- cache) {
                             v.refreshQuoteData(refreshNodeView)
+                            nodeViewDataSource.update(i, refreshNodeView)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -757,6 +760,7 @@ public class MarkdownComponent {
                         let cache = tableComponents.get(newNodeHash)
                         if (let Some(v) <- cache) {
                             v.refreshTableBlockData(refreshNodeView)
+                            nodeViewDataSource.update(i, refreshNodeView)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -768,6 +772,7 @@ public class MarkdownComponent {
                         let cache = footnoteComponent.get(newNodeHash)
                         if (let Some(v) <- cache) {
                             v.refreshFootnoteData(refreshNodeView)
+                            nodeViewDataSource.update(i, refreshNodeView)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -779,6 +784,7 @@ public class MarkdownComponent {
                         let cache = descListComponent.get(newNodeHash)
                         if (let Some(v) <- cache) {
                             v.refreshDescListData(refreshNodeView)
+                            nodeViewDataSource.update(i, refreshNodeView)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -794,6 +800,7 @@ public class MarkdownComponent {
                         let cache = codeComponents.get(newNodeHash)
                         if (let Some(v) <- cache) {
                             v.refreshData(refreshNodeView.nodeText, refreshNodeView.codeInfo(), refreshNodeView.nodeHash)
+                            nodeViewDataSource.update(i, refreshNodeView)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
@@ -805,6 +812,7 @@ public class MarkdownComponent {
                         let cache = codeComponents.get(newNodeHash)
                         if (let Some(v) <- cache) {
                             v.refreshData(refreshNodeView.nodeText, Option<String>.None, refreshNodeView.nodeHash)
+                            nodeViewDataSource.update(i, refreshNodeView)
                         } else {
                             nodeViewDataSource.replaceData(i, refreshNodeView)
                         }
