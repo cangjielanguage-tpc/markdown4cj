@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -118,7 +115,7 @@ class MarkdownTableBlockRowComponent {
                     }
                 },
                 keyGeneratorFunc: {
-                    tableBlockRowNodeView: NodeView, idx: Int64 => return "${idx}-${tableBlockRowNodeView.nodeHash}-${tableBlockRowNodeView.contentHash}"
+                    nodeview: NodeView, idx: Int64 => return "${idx}-${nodeview.nodeHash}-${nodeview.contentHash}"
                 }
             )
         }
@@ -183,6 +180,8 @@ class MarkdownTableBlockRowComponent {
                     let cache = tableBlockCellComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshTableBlockCellData(refreshNodeView)
+                    } else {
+                        tableBlockRowNodeViewList[i] = refreshNodeView
                     }
                     continue
                 }

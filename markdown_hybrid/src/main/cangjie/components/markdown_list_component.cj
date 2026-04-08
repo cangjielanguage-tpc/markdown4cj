@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -18,7 +15,6 @@ public class MarkdownListComponent {
     /**
      * 列表节点
      */
-    @Prop
     var listNodeView: NodeView
 
     /**
@@ -223,6 +219,7 @@ public class MarkdownListComponent {
      * 数据刷新
      */
     public func refreshListData(listNodeView: NodeView): Unit {
+        this.listNodeView = listNodeView
         let refreshNodeViewChildren = listNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = listNodeViewDataSource.totalCount() // 页面缓存的数据长度
@@ -276,6 +273,9 @@ public class MarkdownListComponent {
                     let cache = listItemComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshListItemData(refreshNodeView)
+                        listNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        listNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
