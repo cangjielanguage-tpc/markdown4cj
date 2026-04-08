@@ -1843,9 +1843,9 @@ export class MarkdownTheme {
   setUnderlineStyle(underlineStyle: TextDecorationStyle): void
 
   /**
-   * 设置markdown是否支持滚动手势
+   * 设置markdown是否支持滚动
    *
-   * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
+   * @param openGestureSwipe true-支持滚动，false-不支持滚动，默认false
    */
   setOpenGestureSwipe(openGestureSwipe: boolean): void
 
