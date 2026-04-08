@@ -2496,9 +2496,9 @@ public class MarkdownThemeBuilder {
     public func setUnderlineStyle(underlineStyle: Int32): MarkdownThemeBuilder
 
     /**
-     * 设置markdown是否支持滚动手势
+     * 设置markdown是否支持滚动操作
      *
-     * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
+     * @param openGestureSwipe true-支持滚动，false-不支持滚动，默认false
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setOpenGestureSwipe(openGestureSwipe: Bool): MarkdownThemeBuilder
