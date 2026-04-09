@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -323,6 +320,7 @@ class MarkdownListItemComponent {
      * 数据刷新
      */
     public func refreshListItemData(listItemNodeView: NodeView): Unit {
+        this.listItemNodeView = listItemNodeView
         let refreshNodeViewChildren = listItemNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = listItemNodeViewDataSource.totalCount() // 页面缓存的数据长度
@@ -376,6 +374,9 @@ class MarkdownListItemComponent {
                     let cache = paragraphComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshParagraphData(refreshNodeView)
+                        listItemNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        listItemNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -385,6 +386,9 @@ class MarkdownListItemComponent {
                     let cache = headingComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshHeadingData(refreshNodeView)
+                        listItemNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        listItemNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -394,6 +398,9 @@ class MarkdownListItemComponent {
                     let cache = fencedCodeComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshData(refreshNodeView.nodeText, refreshNodeView.codeInfo(), refreshNodeView.nodeHash)
+                        listItemNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        listItemNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -403,6 +410,9 @@ class MarkdownListItemComponent {
                     let cache = indentedCodeComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshData(refreshNodeView.nodeText, Option<String>.None, refreshNodeView.nodeHash)
+                        listItemNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        listItemNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -412,6 +422,9 @@ class MarkdownListItemComponent {
                     let cache = listComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshListData(refreshNodeView)
+                        listItemNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        listItemNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -421,6 +434,9 @@ class MarkdownListItemComponent {
                     let cache = quoteComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshQuoteData(refreshNodeView)
+                        listItemNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        listItemNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -430,6 +446,9 @@ class MarkdownListItemComponent {
                     let cache = tableComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshTableBlockData(refreshNodeView)
+                        listItemNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        listItemNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -439,6 +458,9 @@ class MarkdownListItemComponent {
                     let cache = footnoteComponent.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshFootnoteData(refreshNodeView)
+                        listItemNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        listItemNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }

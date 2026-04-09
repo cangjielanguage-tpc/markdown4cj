@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -18,7 +15,6 @@ public class MarkdownQuoteComponent {
     /**
      * 列表节点
      */
-    @Prop
     var quoteNodeView: NodeView
 
     /**
@@ -331,6 +327,7 @@ public class MarkdownQuoteComponent {
      * 数据刷新
      */
     public func refreshQuoteData(quoteNodeView: NodeView): Unit {
+        this.quoteNodeView = quoteNodeView
         let refreshNodeViewChildren = quoteNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = quoteNodeViewDataSource.totalCount() // 页面缓存的数据长度
@@ -384,6 +381,9 @@ public class MarkdownQuoteComponent {
                     let cache = paragraphComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshParagraphData(refreshNodeView)
+                        quoteNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        quoteNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -393,6 +393,9 @@ public class MarkdownQuoteComponent {
                     let cache = headingComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshHeadingData(refreshNodeView)
+                        quoteNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        quoteNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -402,6 +405,9 @@ public class MarkdownQuoteComponent {
                     let cache = fencedCodeComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshData(refreshNodeView.nodeText, refreshNodeView.codeInfo(), refreshNodeView.nodeHash)
+                        quoteNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        quoteNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -411,6 +417,9 @@ public class MarkdownQuoteComponent {
                     let cache = indentedCodeComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshData(refreshNodeView.nodeText, Option<String>.None, refreshNodeView.nodeHash)
+                        quoteNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        quoteNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -420,6 +429,9 @@ public class MarkdownQuoteComponent {
                     let cache = listComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshListData(refreshNodeView)
+                        quoteNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        quoteNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -429,6 +441,9 @@ public class MarkdownQuoteComponent {
                     let cache = quoteComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshQuoteData(refreshNodeView)
+                        quoteNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        quoteNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -438,6 +453,9 @@ public class MarkdownQuoteComponent {
                     let cache = tableComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshTableBlockData(refreshNodeView)
+                        quoteNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        quoteNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
@@ -447,6 +465,9 @@ public class MarkdownQuoteComponent {
                     let cache = footnoteComponent.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshFootnoteData(refreshNodeView)
+                        quoteNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        quoteNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }

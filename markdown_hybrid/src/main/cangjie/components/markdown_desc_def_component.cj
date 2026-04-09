@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -114,6 +111,7 @@ public class MarkdownDescDefComponent {
      * @param descDefNodeView 刷新的新数据
      */
     public func refreshDescDefData(descDefNodeView: NodeView): Unit {
+        this.descDefNodeView = descDefNodeView
         let refreshNodeViewChildren = descDefNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = descDefNodeViewDataSource.totalCount() // 页面缓存的数据长度
@@ -167,6 +165,9 @@ public class MarkdownDescDefComponent {
                     let cache = paragraphComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshParagraphData(refreshNodeView)
+                        descDefNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        descDefNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
