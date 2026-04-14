@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -203,6 +200,9 @@ class MarkdownTableBlockComponent {
                     let cache = tableRowComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshTableBlockRowData(refreshNodeView)
+                        tableBlockNodeViewDataSource.update(i, refreshNodeView)
+                    } else {
+                        tableBlockNodeViewDataSource.replaceData(i, refreshNodeView)
                     }
                     continue
                 }
