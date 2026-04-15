@@ -7,70 +7,23 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownTableBlockComponent {
-    /**
-     * markdown配置
-     */
-    var tableBlockMarkdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 表格控件自身节点
-     */
+    var tableBlockMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    var tableBlockNodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var tableBlockNodeView: NodeView // 表格控件自身节点
     @State
-    var tableBlockComponentWidth: Float64 = 0.0
-
-    /**
-     * 缓存的表格控件数据
-     */
-    var tableComponents: HashMap<Int64, MarkdownTableBlockComponent>
-
-    /**
-     * 缓存的表格Row控件数据
-     */
-    var tableRowComponents: HashMap<Int64, MarkdownTableBlockRowComponent>
-
-    /**
-     * 缓存的表格Cell控件数据
-     */
-    var tableCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent>
-
-    /**
-     * 自定义行内表格Cell控件
-     */
+    var tableBlockComponentWidth: Float64 = 0.0 // 控件宽度 - 单位vp
+    var tableComponents: HashMap<Int64, MarkdownTableBlockComponent> // 缓存的表格控件数据
+    var tableRowComponents: HashMap<Int64, MarkdownTableBlockRowComponent> // 缓存的表格Row控件数据
+    var tableCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent> // 缓存的表格Cell控件数据
     @BuilderParam
-    var tableBlockCustomTableLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var tableBlockImageCallback: (String) -> Unit
-
-    /**
-     * 脚注点击事件
-     */
-    var tableBlockFootnoteCallback: (String) -> Unit
-
-    /**
-     * 表格总共有几列
-     */
+    var tableBlockCustomTableLineBuilder: (NodeView, Int64) -> Unit // 自定义行内表格Cell控件
+    var tableBlockImageCallback: (String) -> Unit // 图片点击事件
+    var tableBlockFootnoteCallback: (String) -> Unit // 脚注点击事件
     @State
-    var tableBlockCellSize: Int64 = 0
-
-    /**
-     * 表格宽度列表
-     */
+    var tableBlockCellSize: Int64 = 0 // 表格总共有几列
     @State
-    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> = ObservedArrayList<CellWidthArrayIndexedClass>()
-
-    /**
-     * 懒加载数据源
-     */
-    var tableBlockNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
+    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> = ObservedArrayList<CellWidthArrayIndexedClass>() // 表格宽度列表
+    var tableBlockNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
 
     protected override func aboutToAppear(): Unit {
         refreshTableBlockData(tableBlockNodeView) // 初始化刷新数据
@@ -123,13 +76,21 @@ class MarkdownTableBlockComponent {
                     }
                 )
             }
-            .border(width: tableBlockMarkdownConfiguration.markdownTheme.tableBorderWidth.vp, color: tableBlockMarkdownConfiguration.markdownTheme.tableBorderColor, style: BorderStyle.Solid, radius: tableBlockMarkdownConfiguration.markdownTheme.tableRadius.vp)
+            .borderStyle(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderStyle)
+            .borderWidth(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth)
+            .borderColor(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableBorderColor)
+            .borderRadius(topLeft: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusTopLeft.vp, topRight: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusTopRight.vp, bottomLeft: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusBottomLeft.vp, bottomRight: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableRadiusBottomRight.vp)
             .alignListItem(ListItemAlign.Start)
         }
         .scrollable(ScrollDirection.Horizontal)
-        .scrollBar(if (tableBlockMarkdownConfiguration.markdownTheme.tableScrollBarShow) { BarState.Auto } else { BarState.Off })
-        .scrollBarColor(tableBlockMarkdownConfiguration.markdownTheme.tableScrollBarColor)
-        .padding(left: tableBlockMarkdownConfiguration.markdownTheme.tableBorderWidth, right: tableBlockMarkdownConfiguration.markdownTheme.tableBorderWidth)
+        .scrollBar(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableScrollBarState)
+        .scrollBarColor(tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableScrollBarColor)
+        .padding(
+            top: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tablePaddingTop,
+            right: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tablePaddingRight,
+            bottom: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tablePaddingBottom,
+            left: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tablePaddingLeft
+        )
     }
 
     /**
@@ -217,7 +178,7 @@ class MarkdownTableBlockComponent {
      */
     func createListCellWidth() {
         for (i in 0..tableBlockCellSize) {
-            cellWidthArrayIndexed.append(CellWidthArrayIndexedClass(minWidth: tableBlockMarkdownConfiguration.markdownTheme.tableMinTextWidth, index: i))
+            cellWidthArrayIndexed.append(CellWidthArrayIndexedClass(minWidth: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableMinCellWidth, index: i))
         }
     }
 }

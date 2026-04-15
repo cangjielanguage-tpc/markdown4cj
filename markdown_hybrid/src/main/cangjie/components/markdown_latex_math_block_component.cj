@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,61 +7,24 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownLatexMathBlockComponent {
-    /**
-     * markdown样式
-     */
-    var markdownTheme: MarkdownTheme
-
-    /**
-     * 数学公式文本
-     */
-    var latexMathBlockStr: String
-
-    /**
-     * 数学公式图片点击事件
-     */
-    var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit
-
-    /**
-     * 数学公式数据处理事件
-     */
-    var latexStrCallback: (String) -> String
-
-    /**
-     * 数学公式列表数据
-     */
-    var latexMathBlockData: ?Array<UInt8> = Option<Array<UInt8>>.None
-
-    /**
-     * 数学公式PixelMap
-     */
+    var markdownTheme: MarkdownTheme // markdown样式
+    var latexMathBlockStr: String // 数学公式文本
+    var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit // 数学公式图片点击事件
+    var latexStrCallback: (String) -> String // 数学公式数据处理事件
+    var latexMathBlockData: ?Array<UInt8> = Option<Array<UInt8>>.None // 数学公式列表数据
     @State
-    var latexMathBlockPixelMap: ?PixelMap = Option<PixelMap>.None
-
-    /**
-     * 数学公式高度
-     */
+    var latexMathBlockPixelMap: ?PixelMap = Option<PixelMap>.None // 数学公式PixelMap
     @State
-    var latexMathBlockHeight: ?Float64 = Option<Float64>.None
-
-    /**
-     * 数学公式宽度 - 单位px
-     */
+    var latexMathBlockHeight: ?Float64 = Option<Float64>.None // 数学公式高度 - 单位px
     @State
-    var latexMathBlockWidth: ?Float64 = Option<Float64>.None
-
-    /**
-     * 解析是否结束 - 单位px
-     */
+    var latexMathBlockWidth: ?Float64 = Option<Float64>.None // 数学公式宽度 - 单位px
     @State
-    var isLatexMathBlockParserEnd: Bool = false
-
-    /**
-     * 解析子线程
-     */
-    var latexMathBlockFut: ?Future<Unit> = Option<Future<Unit>>.None
+    var isLatexMathBlockParserEnd: Bool = false // 解析是否结束
+    var latexMathBlockFut: ?Future<Unit> = Option<Future<Unit>>.None // 解析子线程
+    var latexMathTextSize: Float64 = 0.0 // 数学公式文本大小 - 单位px
 
     protected override func aboutToAppear(): Unit {
+        latexMathTextSize = fp2px(markdownTheme.latexMathTheme.latexMathTextSize.fp)().value
         latexMathBlockParser()
     }
 
@@ -90,13 +50,41 @@ class MarkdownLatexMathBlockComponent {
                 .scrollable(ScrollDirection.Horizontal)
                 .width(100.percent)
                 .scrollBar(BarState.Off)
-                .align(isAlignItems(markdownTheme.latexMathBlockCenter))
+                .align(isAlignItems(markdownTheme.latexMathTheme.latexMathBlockCenter))
+                .padding(
+                    top: markdownTheme.latexMathTheme.latexMathPaddingTop,
+                    right: markdownTheme.latexMathTheme.latexMathPaddingRight,
+                    bottom: markdownTheme.latexMathTheme.latexMathPaddingBottom,
+                    left: markdownTheme.latexMathTheme.latexMathPaddingLeft
+                )
             } else {
-                Text(latexMathBlockStr).fontColor(Color.RED)
+                Text(latexMathBlockStr)
+                    .fontFamily(markdownTheme.latexMathTheme.latexMathDefaultTextFontFamily)
+                    .fontSize(markdownTheme.latexMathTheme.latexMathDefaultTextFontSize)
+                    .fontWeight(markdownTheme.latexMathTheme.latexMathDefaultTextFontWeight)
+                    .fontStyle(markdownTheme.latexMathTheme.latexMathDefaultTextFontStyle)
+                    .fontColor(markdownTheme.latexMathTheme.latexMathDefaultTextFontColor)
+                    .padding(
+                        top: markdownTheme.latexMathTheme.latexMathPaddingTop,
+                        right: markdownTheme.latexMathTheme.latexMathPaddingRight,
+                        bottom: markdownTheme.latexMathTheme.latexMathPaddingBottom,
+                        left: markdownTheme.latexMathTheme.latexMathPaddingLeft
+                    )
             }
         } else {
-            if (markdownTheme.latexDefaultText) {
-                Text(latexMathBlockStr).fontColor(Color.RED)
+            if (markdownTheme.latexMathTheme.latexMathDefaultText) {
+                Text(latexMathBlockStr)
+                    .fontFamily(markdownTheme.latexMathTheme.latexMathDefaultTextFontFamily)
+                    .fontSize(markdownTheme.latexMathTheme.latexMathDefaultTextFontSize)
+                    .fontWeight(markdownTheme.latexMathTheme.latexMathDefaultTextFontWeight)
+                    .fontStyle(markdownTheme.latexMathTheme.latexMathDefaultTextFontStyle)
+                    .fontColor(markdownTheme.latexMathTheme.latexMathDefaultTextFontColor)
+                    .padding(
+                        top: markdownTheme.latexMathTheme.latexMathPaddingTop,
+                        right: markdownTheme.latexMathTheme.latexMathPaddingRight,
+                        bottom: markdownTheme.latexMathTheme.latexMathPaddingBottom,
+                        left: markdownTheme.latexMathTheme.latexMathPaddingLeft
+                    )
             }
         }
     }
@@ -114,6 +102,6 @@ class MarkdownLatexMathBlockComponent {
                 isLatexMathBlockParserEnd = true
             }
         }
-        latexMathBlockFut = MarkdownParseLatexUtil.latexMathStrToPixelMap(latexMathBlockStr, markdownTheme, latexStrCallback, callback)
+        latexMathBlockFut = MarkdownParseLatexUtil.latexMathStrToPixelMap(latexMathBlockStr, markdownTheme, latexMathTextSize, latexStrCallback, callback)
     }
 }

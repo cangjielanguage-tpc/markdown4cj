@@ -7,52 +7,17 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownDescDefComponent {
-    /**
-     * markdown配置
-     */
-    var descDefMarkdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 定义列表解释控件自身节点
-     */
-    var descDefNodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var descDefMarkdownConfiguration: MarkdownConfiguration // markdown配置
+    var descDefNodeView: NodeView // 定义列表解释控件自身节点
     @Prop
-    var descDefComponentWidth: Float64
-
-    /**
-     * 缓存的控件数据
-     */
-    var descDefMarkdownCacheConfiguration: MarkdownCacheConfiguration
-
-    /**
-     * 自定义行内段落控件
-     */
+    var descDefComponentWidth: Float64 // 控件宽度 - 单位vp
+    var descDefMarkdownCacheConfiguration: MarkdownCacheConfiguration // 缓存的控件数据
     @BuilderParam
-    var descDefCustomParagraphLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * TOC列表点击事件
-     */
-    var descDefTocListOnClick: (Int64) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var descDefImageCallback: (String) -> Unit
-
-    /**
-     * 脚注点击事件
-     */
-    var descDefFootnoteCallback: (String) -> Unit
-
-    /**
-     * 定义列表解释控件子节点的懒加载数据源
-     */
-    var descDefNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
+    var descDefCustomParagraphLineBuilder: (NodeView, Int64) -> Unit // 自定义行内段落控件
+    var descDefTocListOnClick: (Int64) -> Unit // TOC列表点击事件
+    var descDefImageCallback: (String) -> Unit // 图片点击事件
+    var descDefFootnoteCallback: (String) -> Unit // 脚注点击事件
+    var descDefNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 定义列表解释控件子节点的懒加载数据源
 
     protected override func aboutToAppear(): Unit {
         refreshDescDefData(descDefNodeView) // 初始化刷新数据
@@ -102,7 +67,7 @@ public class MarkdownDescDefComponent {
         }
         .alignListItem(ListItemAlign.Start)
         .listDirection(Axis.Vertical)
-        .margin(left: descDefMarkdownConfiguration.markdownTheme.descListDefIndentation, bottom: descDefMarkdownConfiguration.markdownTheme.descListDefMargins, top: descDefMarkdownConfiguration.markdownTheme.descListDefMargins)
+        .margin(left: descDefMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListDescriptionIndent)
     }
 
     /**

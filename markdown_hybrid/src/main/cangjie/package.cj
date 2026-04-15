@@ -18,6 +18,7 @@ internal import std.sync.*
 
 // markdown
 internal import markdown.components.*
+internal import markdown.components.theme.*
 internal import markdown.core.*
 internal import markdown.plugin.*
 internal import markdown.texttoimg4cj.*

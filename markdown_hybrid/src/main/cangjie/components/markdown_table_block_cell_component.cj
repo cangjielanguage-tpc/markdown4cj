@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,83 +7,28 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownTableBlockCellComponent {
-    /**
-     * markdown配置
-     */
-    var tableBlockCellMarkdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 表格Cell控件自身节点
-     */
+    var tableBlockCellMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    var tableBlockCellNodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var tableBlockCellNodeView: NodeView // 表格Cell控件自身节点
     @Prop
-    var tableBlockCellComponentWidth: Float64
-
-    /**
-     * 缓存的表格Cell控件数据
-     */
-    var tableBlockCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent>
-
-    /**
-     * 自定义行内表格Cell控件
-     */
+    var tableBlockCellComponentWidth: Float64 // 控件宽度 - 单位vp
+    var tableBlockCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent> // 缓存的表格Cell控件数据
     @BuilderParam
-    var tableBlockCellCustomTableLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var tableBlockCellImageCallback: (String) -> Unit
-
-    /**
-     * 脚注点击事件
-     */
-    var tableBlockCellFootnoteCallback: (String) -> Unit
-
-    /**
-     * 表格的第几行
-     */
-    var tableBlockCellRow: Int64
-
-    /**
-     * 表格的第几条
-     */
-    var tableBlockCellCell: Int64
-
-    /**
-     * 表格总共有几列
-     */
-    var tableBlockCellCellSize: Int64
-
-    /**
-     * 表格宽度列表
-     */
+    var tableBlockCellCustomTableLineBuilder: (NodeView, Int64) -> Unit // 自定义行内表格Cell控件
+    var tableBlockCellImageCallback: (String) -> Unit // 图片点击事件
+    var tableBlockCellFootnoteCallback: (String) -> Unit // 脚注点击事件
+    var tableBlockCellRow: Int64 // 表格的第几行
+    var tableBlockCellCell: Int64 // 表格的第几条
+    var tableBlockCellCellSize: Int64 // 表格总共有几列
     @Prop
     @Watch[refreshTextWidth]
-    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
-
-    /**
-     * 表格Cell最小宽度
-     */
+    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> // 表格宽度列表
     @State
-    var tableBlockCellMinCellWidth: Float64 = 0.0
-
-    /**
-     * 表格Cell子节点是否不为0
-     */
+    var tableBlockCellMinCellWidth: Float64 = 0.0 // 表格Cell最小宽度
     @State
-    var isRefresh: Bool = false
-
-    /**
-     * 列表数据
-     */
+    var isRefresh: Bool = false // 表格Cell子节点是否不为0
     @State
-    var tableBlockCellNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+    var tableBlockCellNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
 
     protected override func aboutToAppear(): Unit {
         refreshTableBlockCellData(tableBlockCellNodeView) // 初始化刷新数据
@@ -113,12 +55,12 @@ class MarkdownTableBlockCellComponent {
         .alignItems(tableBlockCellNodeView.tableAlignment)
         .justifyContent(FlexAlign.Center)
         .alignSelf(ItemAlign.Stretch)
-        .padding(tableBlockCellMarkdownConfiguration.markdownTheme.tableCellPadding)
+        .padding(top: tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableCellPaddingTop, right: tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableCellPaddingRight, bottom: tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableCellPaddingBottom, left:tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableCellPaddingLeft)
         .backgroundColor(renderTableCellColor(tableBlockCellNodeView.isTableHead, tableBlockCellMarkdownConfiguration.markdownTheme, tableBlockCellRow))
         .borderWidth(EdgeWidths(left: leftWidths().vp, right: rightWidths().vp, top: topWidths().vp, bottom: bottomWidths().vp))
-        .borderStyle(BorderStyle.Solid)
-        .borderColor(tableBlockCellMarkdownConfiguration.markdownTheme.tableBorderColor)
-        .constraintSize(minWidth: tableBlockCellMinCellWidth.vp, maxWidth: tableBlockCellMarkdownConfiguration.markdownTheme.tableMaxTextWidth.vp)
+        .borderStyle(tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableBorderStyle)
+        .borderColor(tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableBorderColor)
+        .constraintSize(minWidth: tableBlockCellMinCellWidth.vp, maxWidth: tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableMaxCellWidth.vp)
         .interopOnSizeChange(
             {
                 old, new =>
@@ -165,7 +107,7 @@ class MarkdownTableBlockCellComponent {
             }
         }
         .interopHalfLeading(true)
-        .interopCopyOption(if (tableBlockCellMarkdownConfiguration.markdownTheme.isOnCopy) {
+        .interopCopyOption(if (tableBlockCellMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
             true
         } else {
             false
@@ -195,7 +137,7 @@ class MarkdownTableBlockCellComponent {
             }
         }
         .halfLeading(true)
-        .copyOption(if (tableBlockCellMarkdownConfiguration.markdownTheme.isOnCopy) {
+        .copyOption(if (tableBlockCellMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
             CopyOptions.LocalDevice
         } else {
             CopyOptions.None
@@ -236,7 +178,7 @@ class MarkdownTableBlockCellComponent {
                         spanListNodeView,
                         spanListTocListOnClick,
                         spanListFootnoteCallback,
-                        tableBlockCellCell == 0 && spanListMarkdownConfiguration.markdownTheme.tableFirstColumnBold
+                        tableBlockCellCell == 0 && spanListMarkdownConfiguration.markdownTheme.tableTheme.tableFirstColumnIsBold
                     )
                 } else if (spanListNodeView.nodeType == "LatexMathNode") {
                     // 数学公式
@@ -252,7 +194,7 @@ class MarkdownTableBlockCellComponent {
                     )
                 } else if (spanListNodeView.nodeType == "SoftLineBreak") {
                     // 软换行
-                    Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.isLineBreak))
+                    Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.globalTheme.isLineBreak))
                 } else if (spanListNodeView.nodeType == "HardLineBreak") {
                     // 硬换行
                     Span("\n")
@@ -304,7 +246,7 @@ class MarkdownTableBlockCellComponent {
         return if (tableBlockCellCell == tableBlockCellCellSize - 1) {
             0.0
         } else {
-            tableBlockCellMarkdownConfiguration.markdownTheme.tableBorderWidth
+            tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth
         }
     }
 
@@ -317,7 +259,7 @@ class MarkdownTableBlockCellComponent {
         return if (tableBlockCellRow == 0) {
             0.0
         } else {
-            tableBlockCellMarkdownConfiguration.markdownTheme.tableBorderWidth
+            tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableBorderWidth
         }
     }
 
@@ -339,7 +281,7 @@ class MarkdownTableBlockCellComponent {
                 tableBlockCellMinCellWidth = v.minWidth
             }
         } else {
-            tableBlockCellMinCellWidth = tableBlockCellMarkdownConfiguration.markdownTheme.tableMinTextWidth
+            tableBlockCellMinCellWidth = tableBlockCellMarkdownConfiguration.markdownTheme.tableTheme.tableMinCellWidth
         }
     }
 

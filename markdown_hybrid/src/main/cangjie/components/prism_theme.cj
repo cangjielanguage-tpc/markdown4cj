@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 /**
@@ -83,12 +80,9 @@ public abstract open class PrismThemeBase <: PrismTheme {
  *  prism 默认主题类
  */
 public class PrismThemeDefault <: PrismThemeBase {
-
-    // 背景颜色
-    var bg: Color
-    var colorMap: HashMap<PrismColor, Color>
-    // 文本颜色
-    var text: Color
+    var bg: Color // // 背景颜色
+    var colorMap: HashMap<PrismColor, Color> // 颜色存储集合
+    var text: Color // // 文本颜色
 
     init(background: Color, colorMap: HashMap<PrismColor, Color>, text: Color) {
         this.bg = background
@@ -174,11 +168,9 @@ public class PrismThemeDefault <: PrismThemeBase {
  *  prism 暗黑主题类
  */
 public class PrismThemeDarkula <: PrismThemeBase {
-    // 背景颜色
-    var bg: Color
-    var colorMap: HashMap<PrismColor, Color>
-    // 文本颜色
-    var text: Color
+    var bg: Color // 背景颜色
+    var colorMap: HashMap<PrismColor, Color> // 颜色存储集合
+    var text: Color // 文本颜色
 
     /**
      * PrismThemeDarkula 构造函数

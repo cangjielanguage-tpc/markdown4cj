@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -9,81 +6,22 @@ import ohos.state_macro_manage.*
  * markdown配置
  */
 public class MarkdownConfiguration {
-    /**
-     * markdown默认样式
-     */
-    protected var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build()
-
-    /**
-     * 文本复制的点击事件
-     */
-    protected var textCopyCallback: ?(String) -> Unit = None
-
-    /**
-     * 链接的点击事件
-     */
-    protected var linkCallback: ?(String) -> Unit = None
-
-    /**
-     * 图片的点击事件
-     */
-    protected var imageCallback: ?(String, ArrayList<String>) -> Unit = None
-
-    /**
-     * 图片替换事件
-     */
-    protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
-
-    /**
-     * 图片下载的点击事件
-     */
-    protected var imageDownloadCallback: ?(String) -> Unit = None
-
-    /**
-     * 音频的点击事件
-     */
-    protected var audioCallback: ?(String) -> Unit = None
-
-    /**
-     * 视频的点击事件
-     */
-    protected var videoCallback: ?(String, ArrayList<String>) -> Unit = None
-
-    /**
-     * 视频的图片替换回调
-     */
+    protected var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build() // markdown默认样式
+    protected var textCopyCallback: ?(String) -> Unit = None // 文本复制的点击事件
+    protected var linkCallback: ?(String) -> Unit = None // 链接的点击事件
+    protected var imageCallback: ?(String, ArrayList<String>) -> Unit = None // 图片的点击事件
+    protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None // 图片替换事件
+    protected var imageDownloadCallback: ?(String) -> Unit = None // 图片下载的点击事件
+    protected var audioCallback: ?(String) -> Unit = None // 音频的点击事件
+    protected var videoCallback: ?(String, ArrayList<String>) -> Unit = None // 视频的点击事件
     protected var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
         url: String, coverCallback: (String, Float64, Int64) -> Unit => ()
-    }
-
-    /**
-     * 视频发布的点击事件
-     */
-    protected var videoReleaseCallback: ?(String) -> Unit = None
-
-    /**
-     * 视频下载的点击事件
-     */
-    protected var videoDownloadCallback: ?(String) -> Unit = None
-
-    /**
-     * 代码复制按钮的点击事件
-     */
-    protected var codeCopyCallback: ?(String) -> Unit = None
-
-    /**
-     * 代码全屏按钮的点击事件
-     */
-    protected var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None
-
-    /**
-     * 数学公式图片点击事件
-     */
-    protected var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit = None
-
-    /**
-     * 数学公式数据处理事件
-     */
+    } // 视频的图片替换回调
+    protected var videoReleaseCallback: ?(String) -> Unit = None // 视频发布的点击事件
+    protected var videoDownloadCallback: ?(String) -> Unit = None // 视频下载的点击事件
+    protected var codeCopyCallback: ?(String) -> Unit = None // 代码复制按钮的点击事件
+    protected var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None // 代码全屏按钮的点击事件
+    protected var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit = None // 数学公式图片点击事件
     protected var latexStrCallback: (String) -> String = {
         data: String =>
             var dataNew = data.replace("{aligned*}", "{aligned}")
@@ -93,22 +31,10 @@ public class MarkdownConfiguration {
             dataNew = dataNew.replace("{multline*}", "{multline}")
             dataNew = dataNew.replace("{eqnarray*}", "{eqnarray}")
             return dataNew
-    }
-
-    /**
-     * TOC跳转指定位置
-     */
-    protected var tocIndexCallback: ?(?Int64) -> Unit = None
-
-    /**
-     * 脚注跳转指定位置
-     */
-    protected var footnoteCallback: ?(?Int64) -> Unit = None
-
-    /**
-     * 全部文本
-     */
-    protected var nodeString: ?(NodeViewStringBuilder) -> Unit = None
+    } // 数学公式数据处理事件
+    protected var tocIndexCallback: ?(?Int64) -> Unit = None // TOC跳转指定位置
+    protected var footnoteCallback: ?(?Int64) -> Unit = None // 脚注跳转指定位置
+    protected var nodeString: ?(NodeViewStringBuilder) -> Unit = None // 全部文本
 
     protected init(builder: MarkdownConfigurationBuilder) {
         this.markdownTheme = builder.markdownTheme
@@ -164,81 +90,22 @@ public class MarkdownConfiguration {
  * MarkdownConfiguration Builder
  */
 public class MarkdownConfigurationBuilder {
-    /**
-     * markdown默认样式
-     */
-    var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build()
-
-    /**
-     * 文本复制的点击事件
-     */
-    var textCopyCallback: ?(String) -> Unit = None
-
-    /**
-     * 链接的点击事件
-     */
-    var linkCallback: ?(String) -> Unit = None
-
-    /**
-     * 图片的点击事件
-     */
-    var imageCallback: ?(String, ArrayList<String>) -> Unit = None
-
-    /**
-     * 图片替换事件
-     */
-    var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
-
-    /**
-     * 图片下载的点击事件
-     */
-    var imageDownloadCallback: ?(String) -> Unit = None
-
-    /**
-     * 音频的点击事件
-     */
-    var audioCallback: ?(String) -> Unit = None
-
-    /**
-     * 视频的点击事件
-     */
-    var videoCallback: ?(String, ArrayList<String>) -> Unit = None
-
-    /**
-     * 视频的图片替换回调
-     */
+    var markdownTheme: MarkdownTheme = MarkdownTheme.emptyBuilder().build() // markdown默认样式
+    var textCopyCallback: ?(String) -> Unit = None // 文本复制的点击事件
+    var linkCallback: ?(String) -> Unit = None // 链接的点击事件
+    var imageCallback: ?(String, ArrayList<String>) -> Unit = None // 图片的点击事件
+    var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None // 图片替换事件
+    var imageDownloadCallback: ?(String) -> Unit = None // 图片下载的点击事件
+    var audioCallback: ?(String) -> Unit = None // 音频的点击事件
+    var videoCallback: ?(String, ArrayList<String>) -> Unit = None // 视频的点击事件
     var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
         url: String, coverCallback: (String, Float64, Int64) -> Unit => ()
-    }
-
-    /**
-     * 视频发布的点击事件
-     */
-    var videoReleaseCallback: ?(String) -> Unit = None
-
-    /**
-     * 视频下载的点击事件
-     */
-    var videoDownloadCallback: ?(String) -> Unit = None
-
-    /**
-     * 代码复制按钮的点击事件
-     */
-    var codeCopyCallback: ?(String) -> Unit = None
-
-    /**
-     * 代码全屏按钮的点击事件
-     */
-    var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None
-
-    /**
-     * 数学公式图片点击事件
-     */
-    var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit = None
-
-    /**
-     * 数学公式数据处理事件
-     */
+    } // 视频的图片替换回调
+    var videoReleaseCallback: ?(String) -> Unit = None // 视频发布的点击事件
+    var videoDownloadCallback: ?(String) -> Unit = None // 视频下载的点击事件
+    var codeCopyCallback: ?(String) -> Unit = None // 代码复制按钮的点击事件
+    var codeFullScreenCallback: ?(String, Option<String>) -> Unit = None // 代码全屏按钮的点击事件
+    var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit = None // 数学公式图片点击事件
     var latexStrCallback: (String) -> String = {
         data: String =>
             var dataNew = data.replace("{aligned*}", "{aligned}")
@@ -248,22 +115,10 @@ public class MarkdownConfigurationBuilder {
             dataNew = dataNew.replace("{multline*}", "{multline}")
             dataNew = dataNew.replace("{eqnarray*}", "{eqnarray}")
             return dataNew
-    }
-
-    /**
-     * TOC跳转指定位置
-     */
-    var tocIndexCallback: ?(?Int64) -> Unit = None
-
-    /**
-     * 脚注跳转指定位置
-     */
-    var footnoteCallback: ?(?Int64) -> Unit = None
-
-    /**
-     * 全部文本
-     */
-    var nodeString: ?(NodeViewStringBuilder) -> Unit = None
+    } // 数学公式数据处理事件
+    var tocIndexCallback: ?(?Int64) -> Unit = None // TOC跳转指定位置
+    var footnoteCallback: ?(?Int64) -> Unit = None // 脚注跳转指定位置
+    var nodeString: ?(NodeViewStringBuilder) -> Unit = None // 全部文本
 
     init() {
     }

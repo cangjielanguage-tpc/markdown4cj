@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,57 +7,35 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownLinkRectToolImageComponent {
-    /**
-     * markdown配置
-     */
-    var markdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 链接
-     */
-    var strUrl: String
-
-    /**
-     * 链接内容
-     */
-    var strText: String
-
-    /**
-     * 链接类型
-     */
-    var strType: String
-
-    /**
-     * 链接高度
-     */
+    var markdownConfiguration: MarkdownConfiguration // markdown配置
+    var strUrl: String // 链接
+    var strText: String // 链接内容
+    var strType: String // 链接类型
     @State
-    var imageHeight: ?Float64 = Option<Float64>.None
-
-    /**
-     * 链接宽度
-     */
+    var imageHeight: ?Float64 = Option<Float64>.None // 链接高度
     @State
-    var imageWidth: ?Float64 = Option<Float64>.None
-
-    /**
-     * 链接图片信息
-     */
+    var imageWidth: ?Float64 = Option<Float64>.None // 链接宽度
     @State
-    var imagePixelMap: ?PixelMap = Option<PixelMap>.None
-
-    /**
-     * 链接数组信息
-     */
-    var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None
-
-    /**
-     * 图片最大宽度
-     */
-    var maxWidth: Length = 100.percent
+    var imagePixelMap: ?PixelMap = Option<PixelMap>.None // 链接图片信息
+    var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None // 链接数组信息
+    var maxWidth: Length = 100.percent // 图片最大宽度
+    var linkRectToolIconTextSize: Float64 = 0.0 // 空心圆角矩形图片格式链接文字大小 - 单位px
+    var linkRectToolIconHeight: Float64 = 0.0 // 空心圆角矩形图片格式链接控件高度 - 单位px
+    var linkRectToolIconPadding: Float64 = 0.0 // 空心圆角矩形图片格式链接左右内边距 - 单位px
+    var linkRectToolIconBorderWidth: Float64 = 0.0 // 空心圆角矩形图片格式链接边框宽度 - 单位px
+    var linkRectToolIconDividingLineWidth: Float64 = 0.0 // 空心圆角矩形图片格式链接分割线宽度 - 单位px
+    var linkRectToolIconLineLeftPadding: Float64 = 0.0 // 空心圆角矩形图片格式分割线和文本左边距 - 单位px
+    var linkRectToolIconLineRightPadding: Float64 = 0.0 // 空心圆角矩形图片格式分割线和文本右边距 - 单位px
 
     protected override func aboutToAppear(): Unit {
-        // 链接解析
-        latexMathImagePixelmap()
+        linkRectToolIconTextSize = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconTextSize.vp)().value
+        linkRectToolIconHeight = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconHeight.vp)().value
+        linkRectToolIconPadding = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconPadding.vp)().value
+        linkRectToolIconBorderWidth = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconBorderWidth.vp)().value
+        linkRectToolIconDividingLineWidth = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconDividingLineWidth.vp)().value
+        linkRectToolIconLineLeftPadding = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconLineLeftPadding.vp)().value
+        linkRectToolIconLineRightPadding = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconLineRightPadding.vp)().value
+        latexMathImagePixelmap() // 链接解析
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -73,21 +48,13 @@ public class MarkdownLinkRectToolImageComponent {
     func build() {
         if (imagePixelMap.isSome() && imageHeight.isSome() && imageWidth.isSome()) {
             ImageSpan(imagePixelMap())
-                // 设置组件自身的宽度
                 .width(imageWidth().px)
-                // 设置组件自身的高度
                 .height(imageHeight().px)
-                // 设置图片的缩放类型
                 .objectFit(ImageFit.Contain)
-                // 设置约束尺寸
                 .constraintSize(maxWidth: maxWidth)
-                // 设置图片基于文本的对齐方式
                 .verticalAlign(ImageSpanAlignment.CENTER)
-                // 设置图片是否隐藏
                 .visibility(isVisibility(strType != ""))
-                // 左右外边距
-                .margin(right: markdownConfiguration.markdownTheme.linkRectToolImageMargin, left: markdownConfiguration.markdownTheme.linkRectToolImageMargin)
-                // 点击动作触发该方法调用
+                .margin(right: markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconMargin, left: markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconMargin)
                 .onClick {
                     evt => if (markdownConfiguration.linkCallback.isSome()) {
                         markdownConfiguration.linkCallback()(strUrl)
@@ -109,7 +76,7 @@ public class MarkdownLinkRectToolImageComponent {
             }
         }
         // 解析链接
-        MarkdownParseLinkUtil.linkStrToRectToolPixelMap(strText, strType, markdownConfiguration, callback)
+        MarkdownParseLinkUtil.linkStrToRectToolPixelMap(strText, strType, linkRectToolIconTextSize, linkRectToolIconHeight, linkRectToolIconPadding, linkRectToolIconBorderWidth, linkRectToolIconDividingLineWidth, linkRectToolIconLineLeftPadding, linkRectToolIconLineRightPadding, markdownConfiguration, callback)
     }
 }
 

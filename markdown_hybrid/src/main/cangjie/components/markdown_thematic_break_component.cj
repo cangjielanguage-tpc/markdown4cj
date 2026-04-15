@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2026. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,18 +7,22 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownThematicBreakComponent {
-    /**
-     * markdown样式
-     */
-    var markdownTheme: MarkdownTheme
+    var markdownTheme: MarkdownTheme // markdown样式
 
     func build() {
         Column() {
-            if (markdownTheme.thematicBreakHeight > 0.0) {
+            if (markdownTheme.dividerTheme.dividerStrokeWidth > 0.0) {
                 Divider()
-                    .color(markdownTheme.thematicBreakColor)
-                    .strokeWidth(markdownTheme.thematicBreakHeight)
+                    .color(markdownTheme.dividerTheme.dividerColor)
+                    .strokeWidth(markdownTheme.dividerTheme.dividerStrokeWidth)
+                    .lineCap(markdownTheme.dividerTheme.dividerStyle)
             }
         }
+        .padding(
+            top: markdownTheme.dividerTheme.dividerPaddingTop,
+            right: markdownTheme.dividerTheme.dividerPaddingRight,
+            bottom: markdownTheme.dividerTheme.dividerPaddingBottom,
+            left: markdownTheme.dividerTheme.dividerPaddingLeft
+        )
     }
 }

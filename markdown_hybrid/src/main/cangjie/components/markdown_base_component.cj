@@ -1,6 +1,3 @@
-/**
- * Created on 2026/2/4
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -111,18 +108,25 @@ func CustomTableLineBuilder(nodeView: NodeView, idx: Int64) {
 func imageSpanPlaceholderComponent(
     imageResource: AppResource,
     imageMarginTop: Float64,
+    imageMarginRight: Float64,
     imageMarginBottom: Float64,
+    imageMarginLeft: Float64,
     placeholderWidth: Float64,
     placeholderHeight: Float64,
-    placeholderRadius: Float64,
+    placeholderRadiusTopLeft: Float64,
+    placeholderRadiusTopRight: Float64,
+    placeholderRadiusBottomLeft: Float64,
+    placeholderRadiusBottomRight: Float64,
     imageBorderWidth: Float64,
-    imageBorderColor: Color
+    imageBorderColor: Color,
+    imageBorderStyle: BorderStyle
 ) {
     ImageSpan(imageResource)
-        .margin(top: imageMarginTop, bottom: imageMarginBottom)
-        .interopBorderRadius(placeholderRadius)
+        .margin(top: imageMarginTop, right: imageMarginRight, bottom: imageMarginBottom, left: imageMarginLeft)
+        .interopBorderRadius(placeholderRadiusTopLeft, placeholderRadiusTopRight, placeholderRadiusBottomLeft, placeholderRadiusBottomRight)
         .borderWidth(imageBorderWidth)
         .borderColor(imageBorderColor)
+        .borderStyle(imageBorderStyle)
         .width(placeholderWidth.px)
         .height(placeholderHeight.px)
         .objectFit(ImageFit.Cover)
@@ -134,25 +138,34 @@ func imageSpanPlaceholderComponent(
  * 图片占位图
  *
  * @param imageResource 占位图图片
- * @param imageMarginTop 占位图上边距
- * @param imageMarginBottom 占位图下边距
- * @param placeholderWidth 占位图宽度
- * @param placeholderHeight 占位图高度
- * @param placeholderRadius 占位图圆角
+ * @param placeholderWidth 图片宽度
+ * @param placeholderHeight 图片高度
+ * @param placeholderRadiusTopLeft 图片左上圆角
+ * @param placeholderRadiusTopRight 图片右上圆角
+ * @param placeholderRadiusBottomLeft 图片左下圆角
+ * @param placeholderRadiusBottomRight 图片右下圆角
+ * @param imageBorderWidth 占位图边框宽度
+ * @param imageBorderColor 占位图边框颜色
+ * @param imageBorderStyle 占位图边框样式
  */
 @Builder
 func imagePlaceholderComponent(
     imageResource: AppResource,
     placeholderWidth: Float64,
     placeholderHeight: Float64,
-    placeholderRadius: Float64,
+    placeholderRadiusTopLeft: Float64,
+    placeholderRadiusTopRight: Float64,
+    placeholderRadiusBottomLeft: Float64,
+    placeholderRadiusBottomRight: Float64,
     imageBorderWidth: Float64,
-    imageBorderColor: Color
+    imageBorderColor: Color,
+    imageBorderStyle: BorderStyle
 ) {
     Image(imageResource)
-        .borderRadius(placeholderRadius)
+        .borderRadius(topLeft: placeholderRadiusTopLeft, topRight: placeholderRadiusTopRight, bottomLeft: placeholderRadiusBottomLeft, bottomRight: placeholderRadiusBottomRight)
         .borderWidth(imageBorderWidth)
         .borderColor(imageBorderColor)
+        .borderStyle(imageBorderStyle)
         .width(placeholderWidth.px)
         .height(placeholderHeight.px)
         .objectFit(ImageFit.Cover)
@@ -178,85 +191,24 @@ func blockCodeBlockListComponent(
 }
 
 /**
- * 无序列表和有序列表的前缀文本
- */
-@Builder
-func listPrefixTextINCComponent18(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration, listDepth: Int64) {
-    Text(listPrefixStr(item, listDepth, isBullet, markdownConfiguration.markdownTheme))
-        .fontColor(listPrefixColor(markdownConfiguration.markdownTheme, isBullet))
-        .fontSize(listPrefixSize(markdownConfiguration.markdownTheme, isBullet))
-        .padding(left: markdownConfiguration.markdownTheme.blockLeftMargin, right: markdownConfiguration.markdownTheme.blockRightMargin)
-        .interopHalfLeading(true)
-        .lineHeight(listPrefixLineHeight(isBullet, markdownConfiguration.markdownTheme))
-        .textAlign(TextAlign.Center)
-        .fontWeight(isFontWeight(markdownConfiguration.markdownTheme.orderedListItemPrefixBold))
-        .margin(top: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins)
-}
-
-/**
- * 无序列表和有序列表的前缀文本
- */
-@Builder
-func listPrefixTextINCComponent19(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration, listDepth: Int64) {
-    Text(listPrefixStr(item, listDepth, isBullet, markdownConfiguration.markdownTheme))
-        .fontColor(listPrefixColor(markdownConfiguration.markdownTheme, isBullet))
-        .fontSize(listPrefixSize(markdownConfiguration.markdownTheme, isBullet))
-        .padding(left: markdownConfiguration.markdownTheme.blockLeftMargin, right: markdownConfiguration.markdownTheme.blockRightMargin)
-        .halfLeading(true)
-        .lineHeight(listPrefixLineHeight(isBullet, markdownConfiguration.markdownTheme))
-        .textAlign(TextAlign.Center)
-        .fontWeight(isFontWeight(markdownConfiguration.markdownTheme.orderedListItemPrefixBold))
-        .margin(top: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins)
-}
-
-/**
- * 无序列表和有序列表的前缀文本
- */
-@Builder
-func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration, listDepth: Int64) {
-    if (DeviceInfo.sdkApiVersion >= 19) {
-        listPrefixTextINCComponent19(item, isBullet, markdownConfiguration, listDepth)
-    } else {
-        listPrefixTextINCComponent18(item, isBullet, markdownConfiguration, listDepth)
-    }
-}
-
-/**
- * 任务列表的前缀多选框
- */
-@Builder
-func listPrefixCheckboxINCComponent(item: NodeView, markdownConfiguration: MarkdownConfiguration) {
-    Checkbox()
-        .height(markdownConfiguration.markdownTheme.taskListItemLength)
-        .width(markdownConfiguration.markdownTheme.taskListItemLength)
-        .select(item.isTaskListSelected)
-        .enabled(false)
-        .shape(CheckBoxShape.ROUNDED_SQUARE)
-        .margin(left: markdownConfiguration.markdownTheme.blockLeftMargin, right: markdownConfiguration.markdownTheme.blockRightMargin, top: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins, bottom: markdownConfiguration.markdownTheme.blockOrderedAndBulletTopAndBottomMargins)
-}
-
-/**
  * 行号文本显示
  */
 @Builder
 func codeBlockTextComponent(str: String, markdownConfiguration: MarkdownConfiguration) {
     Row() {
         Text(str)
-            // 设置字体颜色
-            .fontColor(indentedCodeodeBlockTypeTextColor(markdownConfiguration.markdownTheme, markdownConfiguration.markdownTheme.prismTheme))
-            // 设置字体大小
-            .fontSize(markdownConfiguration.markdownTheme.codeBlockTextSize)
-            // 设置文本的最大行数
-            .maxLines(1)
-            // 设置文本超长时的显示方式
+            .fontFamily(codeTypeTextFontFamily(markdownConfiguration.markdownTheme))
+            .fontSize(codeTypeTextFontSize(markdownConfiguration.markdownTheme))
+            .fontWeight(codeTypeTextFontWeight(markdownConfiguration.markdownTheme))
+            .fontStyle(codeTypeTextFontStyle(markdownConfiguration.markdownTheme))
+            .fontColor(codeTypeTextFontColor(markdownConfiguration.markdownTheme))
+            .lineHeight(codeTypeTextLineHeight(markdownConfiguration.markdownTheme))
             .textOverflow(TextOverflow.Ellipsis)
-            // 设置外边距
-            .margin(left: 8)
+            .maxLines(1)
     }
-    // 设置宽度
     .width(30.percent)
-    // 设置子组件在水平方向上的对齐格式
     .justifyContent(FlexAlign.Start)
+    .margin(left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTypeTextMarginLeft)
 }
 
 /**
@@ -271,7 +223,7 @@ func spanLinkComponent(
     spanListFootnoteCallback: (String) -> Unit,
     isOneLink: Bool
 ) {
-    if ((spanListNodeView.isBulletList || spanListNodeView.isOrderedList || spanListNodeView.isQuote || spanListNodeView.isDescList) && isOneLink && !spanListMarkdownConfiguration.markdownTheme.isListLinkStyle) {
+    if ((spanListNodeView.isBulletList || spanListNodeView.isOrderedList || spanListNodeView.isQuote || spanListNodeView.isDescList) && isOneLink && !spanListMarkdownConfiguration.markdownTheme.linkTheme.linkListIsIcon) {
         markdownSpanComponent(
             spanListMarkdownConfiguration,
             spanListNodeView,

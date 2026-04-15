@@ -7,70 +7,24 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownTableBlockRowComponent {
-    /**
-     * markdown配置
-     */
-    var tableBlockRowMarkdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 表格Row控件自身节点
-     */
+    var tableBlockRowMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    var tableBlockRowNodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var tableBlockRowNodeView: NodeView // 表格Row控件自身节点
     @Prop
-    var tableBlockRowComponentWidth: Float64
-
-    /**
-     * 缓存的表格Row控件数据
-     */
-    var tableBlockRowComponents: HashMap<Int64, MarkdownTableBlockRowComponent>
-
-    /**
-     * 缓存的表格Cell控件数据
-     */
-    var tableBlockCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent>
-
-    /**
-     * 自定义行内表格Cell控件
-     */
+    var tableBlockRowComponentWidth: Float64 // 控件宽度 - 单位vp
+    var tableBlockRowComponents: HashMap<Int64, MarkdownTableBlockRowComponent> // 缓存的表格Row控件数据
+    var tableBlockCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent> // 缓存的表格Cell控件数据
     @BuilderParam
-    var tableBlockRowCustomTableLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var tableBlockRowImageCallback: (String) -> Unit
-
-    /**
-     * 脚注点击事件
-     */
-    var tableBlockRowFootnoteCallback: (String) -> Unit
-
-    /**
-     * 表格的第几行
-     */
-    var tableBlockRowRow: Int64
-
-    /**
-     * 表格总共有几列
-     */
-    var tableBlockRowCellSize: Int64
-
-    /**
-     * 表格宽度列表
-     */
+    var tableBlockRowCustomTableLineBuilder: (NodeView, Int64) -> Unit // 自定义行内表格Cell控件
+    var tableBlockRowImageCallback: (String) -> Unit // 图片点击事件
+    var tableBlockRowFootnoteCallback: (String) -> Unit // 脚注点击事件
+    var tableBlockRowRow: Int64 // 表格的第几行
+    var tableBlockRowCellSize: Int64 // 表格总共有几列
     @Prop
-    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
-
-    /**
-     * 数据源
-     */
+    var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> // 表格宽度列表
+    var tableBlockRowNodeViews: ArrayList<NodeView> = ArrayList<NodeView>() // 缓存的表格Row控件数据
     @State
-    var tableBlockRowNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+    var tableBlockRowNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 数据源
 
     protected override func aboutToAppear(): Unit {
         refreshTableBlockRowData(tableBlockRowNodeView) // 初始化刷新数据
@@ -130,7 +84,7 @@ class MarkdownTableBlockRowComponent {
         this.tableBlockRowNodeView = tableBlockRowNodeView
         let refreshNodeViewChildren = tableBlockRowNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
-        let tableBlockRowNodeViewListSize: Int64 = tableBlockRowNodeViewList.size // 页面缓存的数据长度
+        let tableBlockRowNodeViewListSize: Int64 = tableBlockRowNodeViews.size // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
             return
         }
@@ -140,6 +94,7 @@ class MarkdownTableBlockRowComponent {
             // 循环添加新数据
             for (i in tableBlockRowNodeViewListSize..refreshNodeViewSize) {
                 tableBlockRowNodeViewList.append(refreshNodeViewChildren[i])
+                tableBlockRowNodeViews.add(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == tableBlockRowNodeViewListSize) {
             // 新数据等于页面数据
@@ -150,6 +105,7 @@ class MarkdownTableBlockRowComponent {
             // 循环删除多余的旧数据
             for (i in tableBlockRowNodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 tableBlockRowNodeViewList.remove(i)
+                tableBlockRowNodeViews.remove(at: i)
             }
         }
     }
@@ -163,12 +119,13 @@ class MarkdownTableBlockRowComponent {
     func refreshTableBlockRowDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
-            let dataSourceNode = tableBlockRowNodeViewList[i]
+            let dataSourceNode = tableBlockRowNodeViews[i]
             let newNodeHash = refreshNodeView.nodeHash
             let oldNodeHash = dataSourceNode.nodeHash
             if (newNodeHash != oldNodeHash) {
                 // 自身节点唯一ID不相同需要刷新数据
                 tableBlockRowNodeViewList[i] = refreshNodeView
+                tableBlockRowNodeViews[i] = refreshNodeView
                 continue
             }
             let newContentHash = refreshNodeView.contentHash
@@ -180,13 +137,16 @@ class MarkdownTableBlockRowComponent {
                     let cache = tableBlockCellComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
                         v.refreshTableBlockCellData(refreshNodeView)
+                        tableBlockRowNodeViews[i] = refreshNodeView
                     } else {
                         tableBlockRowNodeViewList[i] = refreshNodeView
+                        tableBlockRowNodeViews[i] = refreshNodeView
                     }
                     continue
                 }
                 // 其他节点
                 tableBlockRowNodeViewList[i] = refreshNodeView
+                tableBlockRowNodeViews[i] = refreshNodeView
             }
         }
     }
