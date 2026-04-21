@@ -7,109 +7,34 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownListComponent {
-    /**
-     * markdown配置
-     */
-    var listMarkdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 列表节点
-     */
-    var listNodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var listMarkdownConfiguration: MarkdownConfiguration // markdown配置
+    var listNodeView: NodeView // 列表节点
     @Prop
-    var listComponentWidth: Float64
-
-    /**
-     * 表格控件宽度 - 单位vp
-     */
+    var listComponentWidth: Float64 // 控件宽度 - 单位vp
     @Prop
-    var listTableBlockComponentWidth: Float64
-
-    /**
-     * 缓存的数据
-     */
-    var listMarkdownCacheConfiguration: MarkdownCacheConfiguration
-
-    /**
-     * 是无序列表还是有序列表 - true：有序列表，fasle：无序列表
-     */
-    var isOrdered: Bool
-
-    /**
-     * 广告布局
-     */
+    var listTableBlockComponentWidth: Float64 // 表格控件宽度 - 单位vp
+    var listMarkdownCacheConfiguration: MarkdownCacheConfiguration // 缓存的数据
+    var isOrdered: Bool // 是无序列表还是有序列表 - true：有序列表，fasle：无序列表
     @BuilderParam
-    var listAdBuilder: (NodeView) -> Unit
-
-    /**
-     * 视频布局
-     */
+    var listAdBuilder: (NodeView) -> Unit // 广告布局
     @BuilderParam
-    var listVideoBuilder: (NodeView, MarkdownTheme, (String) -> Unit, (String, (String, Float64, Int64) -> Unit) -> Unit, ?(String) -> Unit, ?(String) -> Unit) -> Unit
-
-    /**
-     * 音频布局
-     */
+    var listVideoBuilder: (NodeView, MarkdownTheme, (String) -> Unit, (String, (String, Float64, Int64) -> Unit) -> Unit, ?(String) -> Unit, ?(String) -> Unit) -> Unit // 视频布局
     @BuilderParam
-    var listAudioBuilder: (NodeView, MarkdownTheme, ?(String) -> Unit) -> Unit
-
-    /**
-     * 自定义块结构布局
-     */
+    var listAudioBuilder: (NodeView, MarkdownTheme, ?(String) -> Unit) -> Unit // 音频布局
     @BuilderParam
-    var listCustomBlockBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 自定义行内标题布局
-     */
+    var listCustomBlockBuilder: (NodeView, Int64) -> Unit // 自定义块结构布局
     @BuilderParam
-    var listCustomHeadingLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 自定义行内段落布局
-     */
+    var listCustomHeadingLineBuilder: (NodeView, Int64) -> Unit // 自定义行内标题布局
     @BuilderParam
-    var listCustomParagraphLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 自定义行内表格布局
-     */
+    var listCustomParagraphLineBuilder: (NodeView, Int64) -> Unit // 自定义行内段落布局
     @BuilderParam
-    var listCustomTableLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 脚注点击事件
-     */
-    var listFootnoteCallback: (String) -> Unit
-
-    /**
-     * TOC列表点击事件回调
-     */
-    var listTocListOnClick: (Int64) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var listImageCallback: (String) -> Unit
-
-    /**
-     * 视频点击事件
-     */
-    var listVideoCallback: (String) -> Unit
-
-    /**
-     * 列表深度
-     */
-    var listDepth: Int64
-
-    /**
-     * 懒加载数据源
-     */
-    var listNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
+    var listCustomTableLineBuilder: (NodeView, Int64) -> Unit // 自定义行内表格布局
+    var listFootnoteCallback: (String) -> Unit // 脚注点击事件
+    var listTocListOnClick: (Int64) -> Unit // TOC列表点击事件回调
+    var listImageCallback: (String) -> Unit // 图片点击事件
+    var listVideoCallback: (String) -> Unit // 视频点击事件
+    var listDepth: Int64 // 列表深度
+    var listNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 懒加载数据源
 
     protected override func aboutToAppear(): Unit {
         refreshListData(listNodeView) // 初始化刷新数据
@@ -129,7 +54,7 @@ public class MarkdownListComponent {
     }
 
     func build() {
-        List() {
+        List(space: listChildSpacing(listMarkdownConfiguration.markdownTheme, listNodeView)) {
             LazyForEach(
                 listNodeViewDataSource,
                 itemGeneratorFunc: {
@@ -210,9 +135,77 @@ public class MarkdownListComponent {
                 }
             )
         }
+        .backgroundColor(listBackgroundColor(isOrdered, listMarkdownConfiguration.markdownTheme))
         .alignListItem(ListItemAlign.Start)
         .listDirection(Axis.Vertical)
         .width(100.percent)
+        .padding(
+            top: listMarkdownConfiguration.markdownTheme.bulletListTheme.bulletListPaddingTop,
+            right: listMarkdownConfiguration.markdownTheme.bulletListTheme.bulletListPaddingRight,
+            bottom: listMarkdownConfiguration.markdownTheme.bulletListTheme.bulletListPaddingBottom,
+            left: listMarkdownConfiguration.markdownTheme.bulletListTheme.bulletListPaddingLeft
+        )
+    }
+
+    /**
+     * 无序/有序列表的前缀文本
+     */
+    @Builder
+    func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration, listDepth: Int64) {
+        if (DeviceInfo.sdkApiVersion >= 19) {
+            listPrefixTextINCComponent19(item, isBullet, markdownConfiguration, listDepth)
+        } else {
+            listPrefixTextINCComponent18(item, isBullet, markdownConfiguration, listDepth)
+        }
+    }
+
+    /**
+     * 无序/有序列表的前缀文本
+     */
+    @Builder
+    func listPrefixTextINCComponent18(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration, listDepth: Int64) {
+        Text(listPrefixStr(item, listDepth, isBullet, markdownConfiguration.markdownTheme))
+            .fontFamily(listPrefixFontFamily(isBullet, markdownConfiguration.markdownTheme))
+            .fontSize(listPrefixSize(isBullet, markdownConfiguration.markdownTheme))
+            .fontWeight(listPrefixFontWeight(isBullet, markdownConfiguration.markdownTheme))
+            .fontStyle(listPrefixFontStyle(isBullet, markdownConfiguration.markdownTheme))
+            .fontColor(listPrefixColor(isBullet, markdownConfiguration.markdownTheme))
+            .lineHeight(listPrefixLineHeight(isBullet, markdownConfiguration.markdownTheme))
+            .margin(right: listPrefixSpacing(isBullet, markdownConfiguration.markdownTheme))
+            .interopHalfLeading(true)
+            .textAlign(TextAlign.Center)
+    }
+
+    /**
+     * 无序/有序列表的前缀文本
+     */
+    @Builder
+    func listPrefixTextINCComponent19(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration, listDepth: Int64) {
+        Text(listPrefixStr(item, listDepth, isBullet, markdownConfiguration.markdownTheme))
+            .fontFamily(listPrefixFontFamily(isBullet, markdownConfiguration.markdownTheme))
+            .fontSize(listPrefixSize(isBullet, markdownConfiguration.markdownTheme))
+            .fontWeight(listPrefixFontWeight(isBullet, markdownConfiguration.markdownTheme))
+            .fontStyle(listPrefixFontStyle(isBullet, markdownConfiguration.markdownTheme))
+            .fontColor(listPrefixColor(isBullet, markdownConfiguration.markdownTheme))
+            .lineHeight(listPrefixLineHeight(isBullet, markdownConfiguration.markdownTheme))
+            .margin(right: listPrefixSpacing(isBullet, markdownConfiguration.markdownTheme))
+            .halfLeading(true)
+            .textAlign(TextAlign.Center)
+    }
+
+    /**
+     * 任务列表的前缀多选框
+     */
+    @Builder
+    func listPrefixCheckboxINCComponent(item: NodeView, markdownConfiguration: MarkdownConfiguration) {
+        Checkbox()
+            .height(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxWidth)
+            .width(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxHeight)
+            .margin(right: markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSpacing)
+            .shape(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxShape)
+            .selectedColor(markdownConfiguration.markdownTheme.bulletListTheme.bulletListCheckboxSelectedColor)
+            .select(item.isTaskListSelected)
+            .enabled(false)
     }
 
     /**

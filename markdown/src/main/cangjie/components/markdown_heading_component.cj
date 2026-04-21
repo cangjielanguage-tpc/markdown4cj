@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,61 +7,22 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownHeadingComponent {
-    /**
-     * markdown配置
-     */
-    var headingMarkdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 标题控件自身节点
-     */
+    var headingMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    var headingNodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var headingNodeView: NodeView // 标题控件自身节点
     @Prop
-    var headingComponentWidth: Float64
-
-    /**
-     * 缓存的标题控件数据
-     */
-    var headingComponents: HashMap<Int64, MarkdownHeadingComponent>
-
-    /**
-     * 自定义行内标题控件
-     */
+    var headingComponentWidth: Float64 // 控件宽度 - 单位vp
+    var headingComponents: HashMap<Int64, MarkdownHeadingComponent> // 缓存的标题控件数据
     @BuilderParam
-    var headingCustomHeadingLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var headingImageCallback: (String) -> Unit
-
-    /**
-     * 脚注点击事件
-     */
-    var headingFootnoteCallback: (String) -> Unit
-
-    /**
-     * 标题子节点是否不为0
-     */
+    var headingCustomHeadingLineBuilder: (NodeView, Int64) -> Unit // 自定义行内标题控件
+    var headingImageCallback: (String) -> Unit // 图片点击事件
+    var headingFootnoteCallback: (String) -> Unit // 脚注点击事件
     @State
-    var isRefresh: Bool = false
-
-    /**
-     * 是否只有一条链接数据
-     */
+    var isRefresh: Bool = false // 标题子节点是否不为0
     @State
-    var isOneLink: Bool = false
-
-    /**
-     * 列表数据
-     */
+    var isOneLink: Bool = false // 是否只有一条链接数据
     @State
-    var headingNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+    var headingNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
 
     protected override func aboutToAppear(): Unit {
         refreshHeadingData(headingNodeView) // 初始化刷新数据
@@ -85,7 +43,7 @@ class MarkdownHeadingComponent {
 
     func build() {
         Column() {
-            if (!headingMarkdownConfiguration.markdownTheme.isImageMixedLayout && headingNodeViewList.size == 1 && (headingNodeViewList[0].nodeType == "Image" || headingNodeViewList[0].nodeType == "StyleImage" || headingNodeViewList[0].nodeType == "ImageHtmlNode")) {
+            if (!headingMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && headingNodeViewList.size == 1 && (headingNodeViewList[0].nodeType == "Image" || headingNodeViewList[0].nodeType == "StyleImage" || headingNodeViewList[0].nodeType == "ImageHtmlNode")) {
                 if (headingMarkdownConfiguration.imageCallbackCallback.isNone()) {
                     if (headingNodeViewList[0].imageUrl().startsWith("./")) {
                         MarkdownImageRawFileComponent(
@@ -157,19 +115,28 @@ class MarkdownHeadingComponent {
                 headingTitleComponent()
             }
             // 一级二级标题是否显示下划线
-            if ((headingNodeView.headingLevel == 1) && headingMarkdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {
+            if (headingNodeView.headingLevel == 1 && headingMarkdownConfiguration.markdownTheme.headingTheme.heading1UnderlineHeight > 0.0) {
                 Divider()
-                    .color(headingMarkdownConfiguration.markdownTheme.headingBreakColor1)
-                    .strokeWidth(headingMarkdownConfiguration.markdownTheme.headingBreakHeight)
-            } else if ((headingNodeView.headingLevel == 2) && headingMarkdownConfiguration.markdownTheme.headingBreakHeight > 0.0) {
+                    .color(headingMarkdownConfiguration.markdownTheme.headingTheme.heading1UnderlineColor)
+                    .strokeWidth(headingMarkdownConfiguration.markdownTheme.headingTheme.heading1UnderlineHeight)
+                    .margin(top: headingMarkdownConfiguration.markdownTheme.headingTheme.heading1UnderlineSpacing)
+            } else if (headingNodeView.headingLevel == 2 && headingMarkdownConfiguration.markdownTheme.headingTheme.heading2UnderlineHeight > 0.0) {
                 Divider()
-                    .color(headingMarkdownConfiguration.markdownTheme.headingBreakColor2)
-                    .strokeWidth(headingMarkdownConfiguration.markdownTheme.headingBreakHeight)
+                    .color(headingMarkdownConfiguration.markdownTheme.headingTheme.heading2UnderlineColor)
+                    .strokeWidth(headingMarkdownConfiguration.markdownTheme.headingTheme.heading2UnderlineHeight)
+                    .margin(top: headingMarkdownConfiguration.markdownTheme.headingTheme.heading2UnderlineSpacing)
             }
         }
         .width(100.percent)
         .alignItems(HorizontalAlign.Start)
         .justifyContent(FlexAlign.Center)
+        .backgroundColor(headingBackgroundColor(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme))
+        .padding(
+            top: headingPaddingTop(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
+            right: headingPaddingRight(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
+            bottom: headingPaddingBottom(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
+            left: headingPaddingLeft(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme)
+        )
     }
 
     /**
@@ -203,7 +170,7 @@ class MarkdownHeadingComponent {
         }
         .textAlign(TextAlign.Start)
         .interopHalfLeading(true)
-        .interopCopyOption(if (headingMarkdownConfiguration.markdownTheme.isOnCopy) {
+        .interopCopyOption(if (headingMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
             true
         } else {
             false
@@ -234,7 +201,7 @@ class MarkdownHeadingComponent {
         }
         .textAlign(TextAlign.Start)
         .halfLeading(true)
-        .copyOption(if (headingMarkdownConfiguration.markdownTheme.isOnCopy) {
+        .copyOption(if (headingMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
             CopyOptions.LocalDevice
         } else {
             CopyOptions.None
@@ -291,7 +258,7 @@ class MarkdownHeadingComponent {
                     )
                 } else if (spanListNodeView.nodeType == "SoftLineBreak") {
                     // 软换行
-                    Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.isLineBreak))
+                    Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.globalTheme.isLineBreak))
                 } else if (spanListNodeView.nodeType == "HardLineBreak") {
                     // 硬换行
                     Span("\n")

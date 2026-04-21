@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,49 +7,18 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownCodeTextComponent {
-    /**
-     * markdown配置
-     */
-    var markdownTheme: MarkdownTheme
-
-    /**
-     * 代码内容
-     */
+    var markdownTheme: MarkdownTheme // markdown配置
     @State
-    var codeText: String = ""
-
-    /**
-     * 代码类型
-     */
+    var codeText: String = "" // 代码内容
     @State
-    var info: Option<String> = Option<String>.None
-
-    /**
-     * 缓存的单独代码块文本列表控件
-     */
-    var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent>
-
-    /**
-     * hash
-     */
+    var info: Option<String> = Option<String>.None // 代码类型
+    var codeTextComponents: HashMap<Int64, MarkdownCodeTextComponent> // 缓存的单独代码块文本列表控件
     @State
-    var index: Int64 = -1
-
-    /**
-     * 高亮代码列表
-     */
+    var index: Int64 = -1 // hash
     @State
-    var arrayList: ObservedArrayList<PrismNodesParseResUI> = ObservedArrayList<PrismNodesParseResUI>()
-
-    /**
-     * 代码高亮
-     */
-    var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None
-
-    /**
-     * 子线程
-     */
-    var future: ?Future<Unit> = Option<Future<Unit>>.None
+    var arrayList: ObservedArrayList<PrismNodesParseResUI> = ObservedArrayList<PrismNodesParseResUI>() // 高亮代码列表
+    var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None // 代码高亮
+    var future: ?Future<Unit> = Option<Future<Unit>>.None // 子线程
 
     protected override func aboutToAppear(): Unit {
         psh = PrismSyntaxHighlight.create(prism, markdownTheme.prismTheme)
@@ -79,21 +45,22 @@ class MarkdownCodeTextComponent {
                 arrayList,
                 itemGeneratorFunc: {
                     item: PrismNodesParseResUI, idx: Int64 => Span(item.getText())
-                        .fontColor(codeTextColor(item, markdownTheme, markdownTheme.prismTheme))
-                        .letterSpacing(markdownTheme.paragraphTextWordSpace)
+                        .fontColor(codeTextColor(item, markdownTheme))
+                        .letterSpacing(markdownTheme.codeBlockTheme.codeBlockTextLetterSpacing)
                 },
                 keyGeneratorFunc: {
                     item: PrismNodesParseResUI, idx: Int64 => "${idx}-${item.getText()}"
                 }
             )
         }
-        .fontSize(markdownTheme.codeBlockTextSize)
-        .fontFamily(markdownTheme.codeBlockTypeface)
+        .fontFamily(markdownTheme.codeBlockTheme.codeBlockTextFontFamily)
+        .fontSize(markdownTheme.codeBlockTheme.codeBlockTextFontSize)
+        .fontWeight(markdownTheme.codeBlockTheme.codeBlockTextFontWeight)
+        .fontStyle(markdownTheme.codeBlockTheme.codeBlockTextFontStyle)
+        .lineHeight(markdownTheme.codeBlockTheme.codeBlockTextLineHeight)
         .textAlign(TextAlign.Start)
         .maxLines(1)
         .textOverflow(TextOverflow.Ellipsis)
-        .padding(left: markdownTheme.codeMultilineMargin, right: markdownTheme.codeMultilineMargin + markdownTheme.separateCodeBlockWidth)
-        .lineHeight(markdownTheme.codeBlockLineHeight)
     }
 
     /**
@@ -110,7 +77,7 @@ class MarkdownCodeTextComponent {
         }
         this.codeText = codeText
         this.info = info
-        if (markdownTheme.isCodeBlockParserSync) {
+        if (markdownTheme.codeBlockTheme.codeBlockParserSync) {
             stringCodeToResListSync()
         } else {
             stringCodeToResList()

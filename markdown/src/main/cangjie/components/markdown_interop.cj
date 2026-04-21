@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 /**
@@ -381,11 +378,53 @@ public class CJArkRectResult <: InteropObjectBase {
     }
 }
 
+public class CJBorderRadiuses <: InteropObjectBase {
+    public CJBorderRadiuses(topLeft: Float64, topRight: Float64, bottomLeft: Float64, bottomRight: Float64) {
+        super(getCtx().object())
+        setProp("topLeft", topLeft.toJSValue(getCtx()))
+        setProp("topRight", topRight.toJSValue(getCtx()))
+        setProp("bottomLeft", bottomLeft.toJSValue(getCtx()))
+        setProp("bottomRight", bottomRight.toJSValue(getCtx()))
+    }
+
+    public prop width: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("topLeft"))
+        }
+    }
+
+    public prop height: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("topRight"))
+        }
+    }
+
+    public prop position: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("bottomLeft"))
+        }
+    }
+
+    public prop globalPosition: Float64 {
+        get() {
+            Float64.fromJSValue(getCtx(), getProp("bottomRight"))
+        }
+    }
+
+    public static func fromJSValue(context: JSContext, input: JSValue): CJBorderRadiuses {
+        let topLeft = Float64.fromJSValue(context, input.getProperty(context, "topLeft"))
+        let height = Float64.fromJSValue(context, input.getProperty(context, "topRight"))
+        let bottomLeft = Float64.fromJSValue(context, input.getProperty(context, "bottomLeft"))
+        let bottomRight = Float64.fromJSValue(context, input.getProperty(context, "bottomRight"))
+        CJBorderRadiuses(topLeft, height, bottomLeft, bottomRight)
+    }
+}
+
 extend Span {
-    func interopStyle(isBool: Bool, backgroundColor: Color): Span {
+    func interopStyle(isBool: Bool, backgroundColor: (Color, Float64, Float64, Float64, Float64)): Span {
         if (isBool) {
             try {
-                let colorUInt32: UInt32 = backgroundColor.toUInt32()
+                let colorUInt32: UInt32 = backgroundColor[0].toUInt32()
                 let str: String = colorUInt32.format("08X")
                 let global = context.getOrThrow().global
                 let ctx = context.getOrThrow()
@@ -393,7 +432,7 @@ extend Span {
                 let textBackgroundStyle = span["textBackgroundStyle"].asFunction(ctx)
                 let param: JSObject = ctx.object()
                 param["color"] = ctx.string("#${str}").toJSValue()
-                param["radius"] = ctx.string("0vp").toJSValue()
+                param["radius"] = CJBorderRadiuses(backgroundColor[1], backgroundColor[2], backgroundColor[3], backgroundColor[4]).toJSValue(ctx)
                 textBackgroundStyle.call(param.toJSValue())
             } catch (e: Exception) {
             }
@@ -559,13 +598,13 @@ extend ImageSpan {
         return this
     }
 
-    func interopBorderRadius(value: Float64): ImageSpan {
+    func interopBorderRadius(topLeft: Float64, topRight: Float64, bottomLeft: Float64, bottomRight: Float64): ImageSpan {
         try {
             let global = context.getOrThrow().global
             let ctx = context.getOrThrow()
             let imageSpan = global["ImageSpan"].asObject(ctx)
             let radius = imageSpan["borderRadius"].asFunction(ctx)
-            radius.call(value.toJSValue(ctx))
+            radius.call(CJBorderRadiuses(topLeft, topRight, bottomLeft, bottomRight).toJSValue(ctx))
         } catch (e: Exception) {
         }
         return this

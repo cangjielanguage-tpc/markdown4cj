@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,82 +7,31 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownLatexMathInLineComponent {
-    /**
-     * markdown样式
-     */
-    var markdownTheme: MarkdownTheme
-
-    /**
-     * 数学公式文本
-     */
-    var latexMathInLineStr: String
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var markdownTheme: MarkdownTheme // markdown样式
+    var latexMathInLineStr: String // 数学公式文本
     @Prop
-    var latexMathInLineComponentWidth: Float64
-
-    /**
-     * 数学公式图片点击事件
-     */
-    var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit
-
-    /**
-     * 数学公式数据处理事件
-     */
-    var latexStrCallback: (String) -> String
-
-    /**
-     * 链接点击事件
-     */
-    var latexMathInLineLinkCallback: ?(String) -> Unit
-
-    /**
-     * 是否是链接
-     */
-    var latexMathInLineIsLink: Bool = false
-
-    /**
-     * 链接url
-     */
-    var latexMathInLineLinkUrl: ?String = Option<String>.None
-
-    /**
-     * 数学公式列表数据
-     */
-    var latexMathInLineData: ?Array<UInt8> = Option<Array<UInt8>>.None
-
-    /**
-     * 数学公式PixelMap
-     */
+    var latexMathInLineComponentWidth: Float64 // 控件宽度 - 单位vp
+    var latexImageCallback: ?(Array<UInt8>, Length, Length) -> Unit // 数学公式图片点击事件
+    var latexStrCallback: (String) -> String // 数学公式数据处理事件
+    var latexMathInLineLinkCallback: ?(String) -> Unit // 链接点击事件
+    var latexMathInLineIsLink: Bool = false // 是否是链接
+    var latexMathInLineLinkUrl: ?String = Option<String>.None // 链接url
+    var latexMathInLineData: ?Array<UInt8> = Option<Array<UInt8>>.None // 数学公式列表数据
     @State
-    var latexMathInLinePixelMap: ?PixelMap = Option<PixelMap>.None
-
-    /**
-     * 数学公式高度 - 单位px
-     */
+    var latexMathInLinePixelMap: ?PixelMap = Option<PixelMap>.None // 数学公式PixelMap
     @State
-    var latexMathInLineHeight: ?Float64 = Option<Float64>.None
-
-    /**
-     * 数学公式宽度 - 单位px
-     */
+    var latexMathInLineHeight: ?Float64 = Option<Float64>.None // 数学公式高度 - 单位px
     @State
-    var latexMathInLineWidth: ?Float64 = Option<Float64>.None
-
-    /**
-     * 解析是否结束
-     */
+    var latexMathInLineWidth: ?Float64 = Option<Float64>.None // 数学公式宽度 - 单位px
     @State
-    var isLatexMathInLineParserEnd: Bool = false
-
-    /**
-     * 解析子线程
-     */
-    var latexMathInLineFut: ?Future<Unit> = Option<Future<Unit>>.None
+    var isLatexMathInLineParserEnd: Bool = false // 解析是否结束
+    var latexMathInLineFut: ?Future<Unit> = Option<Future<Unit>>.None // 解析子线程
+    var latexMathTextSize: Float64 = 0.0 // 数学公式文本大小 - 单位px
+    var componentWidth: Float64 = 0.0 // 控件宽度 - 单位px
 
     protected override func aboutToAppear(): Unit {
+        latexMathTextSize = fp2px(markdownTheme.latexMathTheme.latexMathTextSize.fp)().value
+        componentWidth = vp2px(latexMathInLineComponentWidth.vp)().value
         latexMathInLineParser()
     }
 
@@ -117,12 +63,20 @@ public class MarkdownLatexMathInLineComponent {
                     }
             } else {
                 Span(latexMathInLineStr)
-                    .fontColor(Color.RED)
+                    .fontFamily(markdownTheme.latexMathTheme.latexMathDefaultTextFontFamily)
+                    .fontSize(markdownTheme.latexMathTheme.latexMathDefaultTextFontSize)
+                    .fontWeight(markdownTheme.latexMathTheme.latexMathDefaultTextFontWeight)
+                    .fontStyle(markdownTheme.latexMathTheme.latexMathDefaultTextFontStyle)
+                    .fontColor(markdownTheme.latexMathTheme.latexMathDefaultTextFontColor)
             }
         } else {
-            if (markdownTheme.latexDefaultText) {
+            if (markdownTheme.latexMathTheme.latexMathDefaultText) {
                 Span(latexMathInLineStr)
-                    .fontColor(Color.RED)
+                    .fontFamily(markdownTheme.latexMathTheme.latexMathDefaultTextFontFamily)
+                    .fontSize(markdownTheme.latexMathTheme.latexMathDefaultTextFontSize)
+                    .fontWeight(markdownTheme.latexMathTheme.latexMathDefaultTextFontWeight)
+                    .fontStyle(markdownTheme.latexMathTheme.latexMathDefaultTextFontStyle)
+                    .fontColor(markdownTheme.latexMathTheme.latexMathDefaultTextFontColor)
             }
         }
     }
@@ -140,6 +94,6 @@ public class MarkdownLatexMathInLineComponent {
                 isLatexMathInLineParserEnd = true
             }
         }
-        latexMathInLineFut = MarkdownParseLatexUtil.latexMathStrToPixelMapRow(latexMathInLineStr, markdownTheme, vp2px(latexMathInLineComponentWidth.vp)().value, latexStrCallback, callback)
+        latexMathInLineFut = MarkdownParseLatexUtil.latexMathStrToPixelMapRow(latexMathInLineStr, markdownTheme, latexMathTextSize, componentWidth, latexStrCallback, callback)
     }
 }

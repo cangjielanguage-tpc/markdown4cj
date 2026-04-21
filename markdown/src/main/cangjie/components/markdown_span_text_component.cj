@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -28,12 +25,12 @@ func markdownSpanComponent(
             Span(nodeView.nodeText)
                 .fontFamily(spanFontFamily(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .fontSize(spanFontSize(nodeView, spanMarkdownConfiguration.markdownTheme))
-                .fontWeight(spanFontWeight(nodeView, isTableFirst))
-                .fontStyle(spanFontStyle(nodeView))
+                .fontWeight(spanFontWeight(nodeView, isTableFirst, spanMarkdownConfiguration.markdownTheme))
+                .fontStyle(spanFontStyle(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .interopDecorationStyle(spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme))
-                .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme)))
+                .textBackgroundStyle(spanBackgroundColor19(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .baselineOffset(spanBaselineOffset(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .onClick({
                     evt => spanOnClick(spanMarkdownConfiguration, nodeView, spanTocListOnClick, spanFootnoteCallback)
@@ -43,12 +40,12 @@ func markdownSpanComponent(
             Span(nodeView.nodeText)
                 .fontFamily(spanFontFamily(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .fontSize(spanFontSize(nodeView, spanMarkdownConfiguration.markdownTheme))
-                .fontWeight(spanFontWeight(nodeView, isTableFirst))
-                .fontStyle(spanFontStyle(nodeView))
+                .fontWeight(spanFontWeight(nodeView, isTableFirst, spanMarkdownConfiguration.markdownTheme))
+                .fontStyle(spanFontStyle(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .interopDecorationStyle(spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme))
-                .textBackgroundStyle(TextBackgroundStyle(color: spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme)))
+                .textBackgroundStyle(spanBackgroundColor19(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .lineHeight(spanLineHeight(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .onClick({
                     evt => spanOnClick(spanMarkdownConfiguration, nodeView, spanTocListOnClick, spanFootnoteCallback)
@@ -61,12 +58,12 @@ func markdownSpanComponent(
             Span(nodeView.nodeText)
                 .fontFamily(spanFontFamily(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .fontSize(spanFontSize(nodeView, spanMarkdownConfiguration.markdownTheme))
-                .fontWeight(spanFontWeight(nodeView, isTableFirst))
-                .fontStyle(spanFontStyle(nodeView))
+                .fontWeight(spanFontWeight(nodeView, isTableFirst, spanMarkdownConfiguration.markdownTheme))
+                .fontStyle(spanFontStyle(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .interopDecorationStyle(spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme))
-                .interopStyle(true, spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme))
+                .interopStyle(true, spanBackgroundColor18(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .interopBaselineOffset(CJLengthMetrics(spanLineHeight(nodeView, spanMarkdownConfiguration.markdownTheme), 1))
                 .onClick({
                     evt => spanOnClick(spanMarkdownConfiguration, nodeView, spanTocListOnClick, spanFootnoteCallback)
@@ -76,12 +73,12 @@ func markdownSpanComponent(
             Span(nodeView.nodeText)
                 .fontFamily(spanFontFamily(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .fontSize(spanFontSize(nodeView, spanMarkdownConfiguration.markdownTheme))
-                .fontWeight(spanFontWeight(nodeView, isTableFirst))
-                .fontStyle(spanFontStyle(nodeView))
+                .fontWeight(spanFontWeight(nodeView, isTableFirst, spanMarkdownConfiguration.markdownTheme))
+                .fontStyle(spanFontStyle(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .fontColor(spanFontColor(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .letterSpacing(spanLetterSpacing(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .interopDecorationStyle(spanDecoration(nodeView, spanMarkdownConfiguration.markdownTheme))
-                .interopStyle(true, spanBackgroundColor(nodeView, spanMarkdownConfiguration.markdownTheme))
+                .interopStyle(true, spanBackgroundColor18(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .interopLineHeight(spanLineHeight(nodeView, spanMarkdownConfiguration.markdownTheme))
                 .onClick({
                     evt => spanOnClick(spanMarkdownConfiguration, nodeView, spanTocListOnClick, spanFootnoteCallback)

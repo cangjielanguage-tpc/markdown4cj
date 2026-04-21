@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,52 +7,24 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownLinkCircleImageComponent {
-    /**
-     * markdown配置
-     */
-    var markdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 链接
-     */
-    var strUrl: String
-
-    /**
-     * 链接内容
-     */
-    var strText: String
-
-    /**
-     * 链接高度
-     */
+    var markdownConfiguration: MarkdownConfiguration // markdown配置
+    var strUrl: String // 链接
+    var strText: String // 链接内容
     @State
-    var imageHeight: ?Float64 = Option<Float64>.None
-
-    /**
-     * 链接宽度
-     */
+    var imageHeight: ?Float64 = Option<Float64>.None // 链接高度
     @State
-    var imageWidth: ?Float64 = Option<Float64>.None
-
-    /**
-     * 链接图片信息
-     */
+    var imageWidth: ?Float64 = Option<Float64>.None // 链接宽度
     @State
-    var imagePixelMap: ?PixelMap = Option<PixelMap>.None
-
-    /**
-     * 链接数组信息
-     */
-    var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None
-
-    /**
-     * 图片最大宽度
-     */
-    var maxWidth: Length = 100.percent
+    var imagePixelMap: ?PixelMap = Option<PixelMap>.None // 链接图片信息
+    var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None // 链接数组信息
+    var maxWidth: Length = 100.percent // 图片最大宽度
+    var linkCircleIconTextSize: Float64 = 0.0 // 圆形图片格式链接文字大小 - 单位px
+    var linkCircleIconRadius: Float64 = 0.0 // 圆形图片格式链接半径 - 单位px
 
     protected override func aboutToAppear(): Unit {
-        // 链接解析
-        linkImagePixelmap()
+        linkCircleIconTextSize = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkCircleIconTextSize.vp)().value
+        linkCircleIconRadius = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkCircleIconRadius.vp)().value
+        linkImagePixelmap() // 链接解析
     }
 
     protected override func aboutToDisappear(): Unit {
@@ -68,19 +37,12 @@ public class MarkdownLinkCircleImageComponent {
     func build() {
         if (imagePixelMap.isSome() && imageHeight.isSome() && imageWidth.isSome()) {
             ImageSpan(imagePixelMap())
-                // 设置组件自身的宽度
                 .width(imageWidth().px)
-                // 设置组件自身的高度
                 .height(imageHeight().px)
-                // 设置图片的缩放类型
                 .objectFit(ImageFit.Contain)
-                // 设置约束尺寸
                 .constraintSize(maxWidth: maxWidth)
-                // 设置图片基于文本的对齐方式
                 .verticalAlign(ImageSpanAlignment.CENTER)
-                // 左右外边距
-                .margin(right: markdownConfiguration.markdownTheme.linkCircleImageMargin, left: markdownConfiguration.markdownTheme.linkCircleImageMargin)
-                // 点击动作触发该方法调用
+                .margin(right: markdownConfiguration.markdownTheme.linkTheme.linkCircleIconMargin, left: markdownConfiguration.markdownTheme.linkTheme.linkCircleIconMargin)
                 .onClick {
                     evt => if (markdownConfiguration.linkCallback.isSome()) {
                         markdownConfiguration.linkCallback()(strUrl)
@@ -102,6 +64,6 @@ public class MarkdownLinkCircleImageComponent {
             }
         }
         // 解析链接
-        MarkdownParseLinkUtil.linkStrToCirclePixelMap(strText, markdownConfiguration, callback)
+        MarkdownParseLinkUtil.linkStrToCirclePixelMap(strText, linkCircleIconTextSize, linkCircleIconRadius, markdownConfiguration, callback)
     }
 }

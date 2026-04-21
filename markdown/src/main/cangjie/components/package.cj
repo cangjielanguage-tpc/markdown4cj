@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 // 标准库
@@ -24,6 +21,7 @@ internal import stdx.encoding.url.URL
 internal import markdown.core.*
 internal import markdown.plugin.*
 internal import markdown.texttoimg4cj.*
+internal import markdown.components.theme.*
 
 // codeformat
 internal import codeformat.codeFormat
@@ -87,6 +85,7 @@ internal import ohos.component.FontStyle
 internal import ohos.component.LegalCallCheck
 internal import ohos.component.FakeComponent
 internal import ohos.component.Row
+internal import ohos.component.Blank
 internal import ohos.component.Swiper
 internal import ohos.component.Image
 internal import ohos.component.If
@@ -119,6 +118,7 @@ internal import ohos.component.Stack
 internal import ohos.component.Divider
 internal import ohos.component.CopyOptions
 internal import ohos.component.TextBackgroundStyle
+internal import ohos.component.BorderRadiuses
 internal import ohos.concurrency.launch
 internal import ohos.device_info.DeviceInfo
 internal import ohos.display.getDefaultDisplaySync

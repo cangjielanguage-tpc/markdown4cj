@@ -576,6 +576,206 @@ MarkdownTheme Builder
  */
 public class MarkdownThemeBuilder {
     /**
+     * 设置全局样式
+     *
+     * @param globalTheme 全局样式 - 默认GlobalTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setGlobalTheme(globalTheme: GlobalTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置段落样式
+     *
+     * @param paragraphTheme 段落样式 - 默认ParagraphTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setParagraphTheme(paragraphTheme: ParagraphTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置标题样式
+     *
+     * @param headingTheme 标题样式 - 默认HeadingTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHeadingTheme(headingTheme: HeadingTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置表格样式
+     *
+     * @param tableTheme 表格样式 - 默认TableTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setTableTheme(tableTheme: TableTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置分割线样式
+     *
+     * @param dividerTheme 分割线样式 - 默认DividerTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setDividerTheme(dividerTheme: DividerTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置块引用样式
+     *
+     * @param blockQuoteTheme 块引用样式 - 默认BlockQuoteTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setBlockQuoteTheme(blockQuoteTheme: BlockQuoteTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置有序列表样式
+     *
+     * @param orderedListTheme 有序列表样式 - 默认OrderedListTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setOrderedListTheme(orderedListTheme: OrderedListTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置无序/任务列表样式
+     *
+     * @param bulletListTheme 无序/任务列表样式 - 默认BulletListTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setBulletListTheme(bulletListTheme: BulletListTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置定义列表样式
+     *
+     * @param definitionListTheme 定义列表样式 - 默认DefinitionListTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setDefinitionListTheme(definitionListTheme: DefinitionListTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置代码块样式
+     *
+     * @param codeBlockTheme 代码块样式 - 默认CodeBlockTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setCodeBlockTheme(codeBlockTheme: CodeBlockTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置音频样式
+     *
+     * @param audioTheme 音频样式 - 默认AudioTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setAudioTheme(audioTheme: AudioTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置视频样式
+     *
+     * @param videoTheme 视频样式 - 默认VideoTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setVideoTheme(videoTheme: VideoTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置banner样式
+     *
+     * @param bannerTheme banner样式 - 默认BannerTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setBannerTheme(bannerTheme: BannerTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置脚注定义样式
+     *
+     * @param footnoteDefTheme 脚注定义样式 - 默认FootnoteDefTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setFootnoteDefTheme(footnoteDefTheme: FootnoteDefTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置脚注引用样式
+     *
+     * @param footnoteRefTheme 脚注引用样式 - 默认FootnoteRefTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setFootnoteRefTheme(footnoteRefTheme: FootnoteRefTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置内联代码样式
+     *
+     * @param inlineCodeTheme 内联代码样式 - 默认InlineCodeTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setInlineCodeTheme(inlineCodeTheme: InlineCodeTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置加粗文本样式
+     *
+     * @param boldTheme 加粗文本样式 - 默认BoldTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setBoldTheme(boldTheme: BoldTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置数学公式样式
+     *
+     * @param latexMathTheme 数学公式样式 - 默认FormulaTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setLatexMathTheme(latexMathTheme: LatexMathTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置HTML下划线文本样式
+     *
+     * @param htmlUnderlineTheme HTML下划线文本样式 - 默认HtmlUnderlineTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHtmlUnderlineTheme(htmlUnderlineTheme: HtmlUnderlineTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置图片样式
+     *
+     * @param imageTheme 图片样式 - 默认ImageTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setImageTheme(imageTheme: ImageTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置斜体文本样式
+     *
+     * @param italicTheme 斜体文本样式 - 默认ItalicTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setItalicTheme(italicTheme: ItalicTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置链接文本样式
+     *
+     * @param linkTheme 链接文本样式 - 默认LinkTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setLinkTheme(linkTheme: LinkTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置删除线文本样式
+     *
+     * @param strikethroughTheme 删除线文本样式 - 默认StrikethroughTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setStrikethroughTheme(strikethroughTheme: StrikethroughTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置下标文本样式
+     *
+     * @param subTheme 下标文本样式 - 默认SubTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setSubTheme(subTheme: SubTheme): MarkdownThemeBuilder
+
+    /**
+     * 设置上标文本样式
+     *
+     * @param supTheme 上标文本样式 - 默认SupTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setSupTheme(supTheme: SupTheme): MarkdownThemeBuilder
+
+    /**
      * 设置浅色主题整体样式
      *
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
@@ -2525,6 +2725,3113 @@ public class MarkdownThemeBuilder {
      * @return MarkdownTheme MarkdownTheme对象
      */
     public func build(): MarkdownTheme
+}
+```
+
+#### 加粗文本样式
+
+##### public class BoldTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 加粗文本样式
+ */
+public class BoldTheme <: MarkdownBaseTheme {
+    /**
+     * 设置加粗文本颜色
+     *
+     * @param color 加粗文本颜色
+     * @return 当前BoldTheme对象
+     */
+    public func setBoldTextFontColor(color: Color): BoldTheme
+
+    /**
+     * 设置加粗文本尺寸
+     *
+     * @param size 加粗文本尺寸
+     * @return 当前BoldTheme对象
+     */
+    public func setBoldTextFontSize(size: Float64): BoldTheme
+
+    /**
+     * 设置加粗文本字体样式
+     *
+     * @param style 加粗文本字体样式
+     * @return 当前BoldTheme对象
+     */
+    public func setBoldTextFontStyle(style: FontStyle): BoldTheme
+
+    /**
+     * 设置加粗文本字体粗细
+     *
+     * @param weight 加粗文本字体粗细
+     * @return 当前BoldTheme对象
+     */
+    public func setBoldTextFontWeight(weight: FontWeight): BoldTheme
+
+    /**
+     * 设置加粗文本字体
+     *
+     * @param family 加粗文本字体
+     * @return 当前BoldTheme对象
+     */
+    public func setBoldTextFontFamily(family: String): BoldTheme
+
+    /**
+     * 设置加粗文本行高
+     *
+     * @param lineHeight 加粗文本行高
+     * @return 当前BoldTheme对象
+     */
+    public func setBoldTextLineHeight(lineHeight: Float64): BoldTheme
+
+    /**
+     * 设置加粗文本字符间距
+     *
+     * @param spacing 加粗文本字符间距
+     * @return 当前BoldTheme对象
+     */
+    public func setBoldTextLetterSpacing(spacing: Float64): BoldTheme
+}
+```
+
+#### 斜体文本样式
+
+##### public class ItalicTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 斜体文本样式
+ */
+public class ItalicTheme <: MarkdownBaseTheme {
+    /**
+     * 设置斜体文本颜色
+     *
+     * @param color 斜体文本颜色
+     * @return 当前ItalicTheme对象
+     */
+    public func setItalicTextFontColor(color: Color): ItalicTheme
+
+    /**
+     * 设置斜体文本尺寸
+     *
+     * @param size 斜体文本尺寸
+     * @return 当前ItalicTheme对象
+     */
+    public func setItalicTextFontSize(size: Float64): ItalicTheme
+
+    /**
+     * 设置斜体文本字体粗细
+     *
+     * @param weight 斜体文本字体粗细
+     * @return 当前ItalicTheme对象
+     */
+    public func setItalicTextFontWeight(weight: FontWeight): ItalicTheme
+
+    /**
+     * 设置斜体文本字体
+     *
+     * @param family 斜体文本字体
+     * @return 当前ItalicTheme对象
+     */
+    public func setItalicTextFontFamily(family: String): ItalicTheme
+
+    /**
+     * 设置斜体文本行高
+     *
+     * @param lineHeight 斜体文本行高
+     * @return 当前ItalicTheme对象
+     */
+    public func setItalicTextLineHeight(lineHeight: Float64): ItalicTheme
+
+    /**
+     * 设置斜体文本字符间距
+     *
+     * @param spacing 斜体文本字符间距
+     * @return 当前ItalicTheme对象
+     */
+    public func setItalicTextLetterSpacing(spacing: Float64): ItalicTheme
+}
+```
+
+#### 删除线文本样式
+
+##### public class StrikethroughTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 删除线文本样式
+ */
+public class StrikethroughTheme <: MarkdownBaseTheme {
+    /**
+     * 设置删除线文本颜色
+     *
+     * @param color 删除线文本颜色
+     * @return 当前StrikethroughTheme对象
+     */
+    public func setStrikethroughTextFontColor(color: Color): StrikethroughTheme
+
+    /**
+     * 设置删除线文本尺寸
+     *
+     * @param size 删除线文本尺寸
+     * @return 当前StrikethroughTheme对象
+     */
+    public func setStrikethroughTextFontSize(size: Float64): StrikethroughTheme
+
+    /**
+     * 设置删除线文本字体样式
+     *
+     * @param style 删除线文本字体样式
+     * @return 当前StrikethroughTheme对象
+     */
+    public func setStrikethroughTextFontStyle(style: FontStyle): StrikethroughTheme
+
+    /**
+     * 设置删除线文本字体粗细
+     *
+     * @param weight 删除线文本字体粗细
+     * @return 当前StrikethroughTheme对象
+     */
+    public func setStrikethroughTextFontWeight(weight: FontWeight): StrikethroughTheme
+
+    /**
+     * 设置删除线文本字体
+     *
+     * @param family 删除线文本字体
+     * @return 当前StrikethroughTheme对象
+     */
+    public func setStrikethroughTextFontFamily(family: String): StrikethroughTheme
+
+    /**
+     * 设置删除线文本行高
+     *
+     * @param lineHeight 删除线文本行高
+     * @return 当前StrikethroughTheme对象
+     */
+    public func setStrikethroughTextLineHeight(lineHeight: Float64): StrikethroughTheme
+
+    /**
+     * 设置删除线文本字符间距
+     *
+     * @param spacing 删除线文本字符间距
+     * @return 当前StrikethroughTheme对象
+     */
+    public func setStrikethroughTextLetterSpacing(spacing: Float64): StrikethroughTheme
+
+    /**
+     * 设置删除线文本装饰线颜色
+     *
+     * @param color 删除线文本装饰线颜色
+     * @return 当前StrikethroughTheme对象
+     */
+    public func setStrikethroughTextDecorationColor(color: Color): StrikethroughTheme
+
+    /**
+     * 设置删除线文本装饰线样式
+     *
+     * @param style 删除线文本装饰线样式
+     * @return 当前StrikethroughTheme对象
+     */
+    public func setStrikethroughTextDecorationStyle(style: MarkdownTextDecorationStyle): StrikethroughTheme
+}
+```
+
+#### 下标文本样式
+
+##### public class SubTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 下标文本样式
+ */
+public class SubTheme <: MarkdownBaseTheme {
+    /**
+     * 设置下标文本颜色
+     *
+     * @param color 下标文本颜色
+     * @return 当前SubTheme对象
+     */
+    public func setSubTextFontColor(color: Color): SubTheme
+
+    /**
+     * 设置下标文本尺寸
+     *
+     * @param size 下标文本尺寸
+     * @return 当前SubTheme对象
+     */
+    public func setSubTextFontSize(size: Float64): SubTheme
+
+    /**
+     * 设置下标文本字体样式
+     *
+     * @param style 下标文本字体样式
+     * @return 当前SubTheme对象
+     */
+    public func setSubTextFontStyle(style: FontStyle): SubTheme
+
+    /**
+     * 设置下标文本字体粗细
+     *
+     * @param weight 下标文本字体粗细
+     * @return 当前SubTheme对象
+     */
+    public func setSubTextFontWeight(weight: FontWeight): SubTheme
+
+    /**
+     * 设置下标文本字体
+     *
+     * @param family 下标文本字体
+     * @return 当前SubTheme对象
+     */
+    public func setSubTextFontFamily(family: String): SubTheme
+
+    /**
+     * 设置下标文本字符间距
+     *
+     * @param spacing 下标文本字符间距
+     * @return 当前SubTheme对象
+     */
+    public func setSubTextLetterSpacing(spacing: Float64): SubTheme
+
+    /**
+     * 设置下标文本基线的偏移量
+     *
+     * @param offset 下标文本基线的偏移量
+     * @return 当前SubTheme对象
+     */
+    public func setSubTextBaselineOffset(offset: Float64): SubTheme
+}
+```
+
+#### 上标文本样式
+
+##### public class SupTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 上标文本样式
+ */
+public class SupTheme <: MarkdownBaseTheme {
+    /**
+     * 设置上标文本颜色
+     *
+     * @param color 上标文本颜色
+     * @return 当前SupTheme对象
+     */
+    public func setSupTextFontColor(color: Color): SupTheme
+
+    /**
+     * 设置上标文本尺寸
+     *
+     * @param size 上标文本尺寸
+     * @return 当前SupTheme对象
+     */
+    public func setSupTextFontSize(size: Float64): SupTheme
+
+    /**
+     * 设置上标文本字体样式
+     *
+     * @param style 上标文本字体样式
+     * @return 当前SupTheme对象
+     */
+    public func setSupTextFontStyle(style: FontStyle): SupTheme
+
+    /**
+     * 设置上标文本字体粗细
+     *
+     * @param weight 上标文本字体粗细
+     * @return 当前SupTheme对象
+     */
+    public func setSupTextFontWeight(weight: FontWeight): SupTheme
+
+    /**
+     * 设置上标文本字体
+     *
+     * @param family 上标文本字体
+     * @return 当前SupTheme对象
+     */
+    public func setSupTextFontFamily(family: String): SupTheme
+
+    /**
+     * 设置上标文本字符间距
+     *
+     * @param spacing 上标文本字符间距
+     * @return 当前SupTheme对象
+     */
+    public func setSupTextLetterSpacing(spacing: Float64): SupTheme
+
+    /**
+     * 设置上标文本基线的偏移量
+     *
+     * @param offset 上标文本基线的偏移量
+     * @return 当前SupTheme对象
+     */
+    public func setSupTextBaselineOffset(offset: Float64): SupTheme
+}
+```
+
+#### 内联代码样式
+
+##### public class InlineCodeTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 内联代码样式
+ */
+public class InlineCodeTheme <: MarkdownBaseTheme {
+    /**
+     * 设置内联代码文本颜色
+     *
+     * @param color 内联代码文本颜色
+     * @return 当前InlineCodeTheme对象
+     */
+    public func setInlineCodeTextFontColor(color: Color): InlineCodeTheme
+
+    /**
+     * 设置内联代码文本尺寸
+     *
+     * @param size 内联代码文本尺寸
+     * @return 当前InlineCodeTheme对象
+     */
+    public func setInlineCodeTextFontSize(size: Float64): InlineCodeTheme
+
+    /**
+     * 设置内联代码文本字体样式
+     *
+     * @param style 内联代码文本字体样式
+     * @return 当前InlineCodeTheme对象
+     */
+    public func setInlineCodeTextFontStyle(style: FontStyle): InlineCodeTheme
+
+    /**
+     * 设置内联代码文本字体粗细
+     *
+     * @param weight 内联代码文本字体粗细
+     * @return 当前InlineCodeTheme对象
+     */
+    public func setInlineCodeTextFontWeight(weight: FontWeight): InlineCodeTheme
+
+    /**
+     * 设置内联代码文本字体
+     *
+     * @param family 内联代码文本字体
+     * @return 当前InlineCodeTheme对象
+     */
+    public func setInlineCodeTextFontFamily(family: String): InlineCodeTheme
+
+    /**
+     * 设置内联代码文本行高
+     *
+     * @param lineHeight 内联代码文本行高
+     * @return 当前InlineCodeTheme对象
+     */
+    public func setInlineCodeTextLineHeight(lineHeight: Float64): InlineCodeTheme
+
+    /**
+     * 设置内联代码文本字符间距
+     *
+     * @param spacing 内联代码文本字符间距
+     * @return 当前InlineCodeTheme对象
+     */
+    public func setInlineCodeTextLetterSpacing(spacing: Float64): InlineCodeTheme
+
+    /**
+     * 设置内联代码文本背景颜色
+     *
+     * @param color 内联代码文本背景颜色
+     * @return 当前InlineCodeTheme对象
+     */
+    public func setInlineCodeTextBackgroundColor(color: Color): InlineCodeTheme
+
+    /**
+     * 统一设置内联代码文本背景整体圆角
+     *
+     * @param radius 圆角
+     * @return 当前InlineCodeTheme对象
+     */
+    public func setInlineCodeTextBackgroundRadius(radius: Float64): InlineCodeTheme
+
+    /**
+     * 分别设置内联代码文本背景四个圆角
+     *
+     * @param topLeft 左上圆角 命名参数
+     * @param topRight 右上圆角 命名参数
+     * @param bottomLeft 左下圆角 命名参数
+     * @param bottomRight 右下圆角 命名参数
+     * @return 当前InlineCodeTheme对象
+     */
+    public func setInlineCodeTextBackgroundRadius(topLeft!: Float64 = 0.0, topRight!: Float64 = 0.0, bottomLeft!: Float64 = 0.0, bottomRight!: Float64 = 0.0): InlineCodeTheme
+}
+```
+
+#### 段落样式
+
+##### public class ParagraphTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 段落样式
+ */
+public class ParagraphTheme <: MarkdownBaseTheme {
+    /**
+     * 设置段落背景颜色
+     *
+     * @param color 段落背景颜色
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphBackgroundColor(color: Color): ParagraphTheme
+
+    /**
+     * 统一设置段落外边距
+     *
+     * @param margin 外边距
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphMargin(margin: Float64): ParagraphTheme
+
+    /**
+     * 分别设置段落四个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): ParagraphTheme
+
+    /**
+     * 统一设置段落内边距
+     *
+     * @param padding 内边距
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphPadding(padding: Float64): ParagraphTheme
+
+    /**
+     * 设置段落文本颜色
+     *
+     * @param color 段落文本颜色
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphTextFontColor(color: Color): ParagraphTheme
+
+    /**
+     * 设置段落文本尺寸
+     *
+     * @param size 段落文本尺寸
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphTextFontSize(size: Float64): ParagraphTheme
+
+    /**
+     * 设置段落文本字体粗细
+     *
+     * @param weight 段落文本字体粗细
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphTextFontWeight(weight: FontWeight): ParagraphTheme
+
+    /**
+     * 设置段落文本字体
+     *
+     * @param family 段落文本字体
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphTextFontFamily(family: String): ParagraphTheme
+
+    /**
+     * 设置段落文本行高
+     *
+     * @param lineHeight 段落文本行高
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphTextLineHeight(lineHeight: Float64): ParagraphTheme
+
+    /**
+     * 设置段落文本字符间距
+     *
+     * @param spacing 段落文本字符间距
+     * @return 当前ParagraphTheme对象
+     */
+    public func setParagraphTextLetterSpacing(spacing: Float64): ParagraphTheme
+}
+```
+
+#### 有序列表样式
+
+##### public class OrderedListTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 有序列表样式
+ */
+public class OrderedListTheme <: MarkdownBaseTheme {
+    /**
+     * 设置有序列表背景颜色
+     *
+     * @param color 有序列表背景颜色
+     * @return 当前OrderedListTheme对象
+     */
+    public func setOrderedListBackgroundColor(color: Color): OrderedListTheme
+
+    /**
+     * 统一设置有序列表外边距
+     *
+     * @param margin 外边距
+     * @return 当前OrderedListTheme对象
+     */
+    public func setOrderedListMargin(margin: Float64): OrderedListTheme
+
+    /**
+     * 分别设置有序列表四个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前OrderedListTheme对象
+     */
+    public func setOrderedListMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 8.0): OrderedListTheme
+
+    /**
+     * 统一设置有序列表内边距
+     *
+     * @param padding 内边距
+     * @return 当前OrderedListTheme对象
+     */
+    public func setOrderedListPadding(padding: Float64): OrderedListTheme
+
+    /**
+     * 设置有序列表子模块上下间距
+     *
+     * @param spacing 有序列表子模块上下间距
+     * @return 当前OrderedListTheme对象
+     */
+    public func setOrderedListChildSpacing(spacing: Int64): OrderedListTheme
+
+    /**
+     * 设置有序列表列表编号和列表内容间距
+     *
+     * @param spacing 有序列表列表编号和列表内容间距
+     * @return 当前OrderedListTheme对象
+     */
+    public func setOrderedListMarkerSpacing(spacing: Float64): OrderedListTheme
+
+    /**
+     * 设置有序列表列表编号文本颜色
+     *
+     * @param color 有序列表列表编号文本颜色
+     * @return 当前OrderedListTheme对象
+     */
+    public func setOrderedListMarkerTextFontColor(color: Color): OrderedListTheme
+
+    /**
+     * 设置有序列表列表编号文本尺寸
+     *
+     * @param size 有序列表列表编号文本尺寸
+     * @return 当前OrderedListTheme对象
+     */
+    public func setOrderedListMarkerTextFontSize(size: Float64): OrderedListTheme
+
+    /**
+     * 设置有序列表列表编号文本字体粗细
+     *
+     * @param weight 有序列表列表编号文本字体粗细
+     * @return 当前OrderedListTheme对象
+     */
+    public func setOrderedListMarkerTextFontWeight(weight: FontWeight): OrderedListTheme
+
+    /**
+     * 设置有序列表列表编号文本字体
+     *
+     * @param family 有序列表列表编号文本字体
+     * @return 当前OrderedListTheme对象
+     */
+    public func setOrderedListMarkerTextFontFamily(family: String): OrderedListTheme
+}
+```
+
+#### 分割线样式
+
+##### public class DividerTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 分割线样式
+ */
+public class DividerTheme <: MarkdownBaseTheme {
+    /**
+     * 统一设置分割线整体外边距
+     *
+     * @param margin 外边距
+     * @return 当前DividerTheme对象
+     */
+    public func setDividerMargin(margin: Float64): DividerTheme
+
+    /**
+     * 分别设置分割线四个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前DividerTheme对象
+     */
+    public func setDividerMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): DividerTheme
+
+    /**
+     * 统一设置分割线整体内边距
+     *
+     * @param padding 内边距
+     * @return 当前DividerTheme对象
+     */
+    public func setDividerPadding(padding: Float64): DividerTheme
+
+    /**
+     * 设置分割线颜色
+     *
+     * @param color 分割线颜色
+     * @return 当前DividerTheme对象
+     */
+    public func setDividerColor(color: Color): DividerTheme
+
+    /**
+     * 设置分割线宽度
+     *
+     * @param strokeWidth 分割线宽度
+     * @return 当前DividerTheme对象
+     */
+    public func setDividerStrokeWidth(strokeWidth: Float64): DividerTheme
+
+    /**
+     * 设置分割线端点样式
+     *
+     * @param style 分割线端点样式
+     * @return 当前DividerTheme对象
+     */
+    public func setDividerStyle(style: LineCapStyle): DividerTheme
+}
+```
+
+#### Banner样式
+
+##### public class BannerTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * Banner样式
+ */
+public class BannerTheme <: MarkdownBaseTheme {
+    /**
+     * 统一设置banner整体外边距
+     *
+     * @param margin 外边距
+     * @return 当前BannerTheme对象
+     */
+    public func setBannerMargin(margin: Float64): BannerTheme
+
+    /**
+     * 分别设置banner四个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前BannerTheme对象
+     */
+    public func setBannerMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): BannerTheme
+
+    /**
+     * 统一设置banner整体内边距
+     *
+     * @param padding 内边距
+     * @return 当前BannerTheme对象
+     */
+    public func setBannerPadding(padding: Float64): BannerTheme
+
+    /**
+     * 分别设置banner四个内边距
+     *
+     * @param top 上内边距 命名参数
+     * @param right 右内边距 命名参数
+     * @param bottom 下内边距 命名参数
+     * @param left 左内边距 命名参数
+     * @return 当前BannerTheme对象
+     */
+    public func setBannerPadding(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): BannerTheme
+
+    /**
+     * 设置banner占位图
+     *
+     * @param resource banner占位图
+     * @return 当前BannerTheme对象
+     */
+    public func setBannerPlaceholder(resource: AppResource): BannerTheme
+}
+```
+
+#### 定义列表样式
+
+##### public class DefinitionListTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 定义列表样式
+ */
+public class DefinitionListTheme <: MarkdownBaseTheme {
+    /**
+     * 设置定义列表背景颜色
+     *
+     * @param color 定义列表背景颜色
+     * @return 当前DefinitionListTheme对象
+     */
+    public func setDefinitionListBackgroundColor(color: Color): DefinitionListTheme
+
+    /**
+     * 统一设置定义列表外边距
+     *
+     * @param margin 外边距
+     * @return 当前DefinitionListTheme对象
+     */
+    public func setDefinitionListMargin(margin: Float64): DefinitionListTheme
+
+    /**
+     * 分别设置定义列表四个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前DefinitionListTheme对象
+     */
+    public func setDefinitionListMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): DefinitionListTheme
+
+    /**
+     * 统一设置定义列表内边距
+     *
+     * @param padding 内边距
+     * @return 当前DefinitionListTheme对象
+     */
+    public func setDefinitionListPadding(padding: Float64): DefinitionListTheme
+
+    /**
+     * 设置定义列表术语和定义行之间间距
+     *
+     * @param spacing 定义列表术语和定义行之间间距
+     * @return 当前DefinitionListTheme对象
+     */
+    public func setDefinitionListTermToDescriptionSpacing(spacing: Float64): DefinitionListTheme
+
+    /**
+     * 设置定义列表术语文本字体粗细
+     *
+     * @param weight 定义列表术语文本字体粗细
+     * @return 当前DefinitionListTheme对象
+     */
+    public func setDefinitionListTermTextFontWeight(weight: FontWeight): DefinitionListTheme
+
+    /**
+     * 设置定义列表术语文本字体样式
+     *
+     * @param style 定义列表术语文本字体样式
+     * @return 当前DefinitionListTheme对象
+     */
+    public func setDefinitionListTermTextFontStyle(style: FontStyle): DefinitionListTheme
+
+    /**
+     * 设置定义列表定义行之间间距
+     *
+     * @param spacing 定义列表定义行之间间距
+     * @return 当前DefinitionListTheme对象
+     */
+    public func setDefinitionListDescriptionItemSpacing(spacing: Float64): DefinitionListTheme
+
+    /**
+     * 设置定义列表定义行左缩进距离
+     *
+     * @param indent 定义列表定义行左缩进距离
+     * @return 当前DefinitionListTheme对象
+     */
+    public func setDefinitionListDescriptionIndent(indent: Float64): DefinitionListTheme
+}
+```
+
+#### 脚注定义样式
+
+##### public class FootnoteDefTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 脚注定义样式
+ */
+public class FootnoteDefTheme <: MarkdownBaseTheme {
+    /**
+     * 设置脚注定义背景颜色
+     *
+     * @param color 脚注定义背景颜色
+     * @return 当前FootnoteDefTheme对象
+     */
+    public func setFootnoteDefBackgroundColor(color: Color): FootnoteDefTheme
+
+    /**
+     * 统一设置脚注定义外边距
+     *
+     * @param margin 外边距
+     * @return 当前FootnoteDefTheme对象
+     */
+    public func setFootnoteDefMargin(margin: Float64): FootnoteDefTheme
+
+    /**
+     * 分别设置脚注定义四个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前FootnoteDefTheme对象
+     */
+    public func setFootnoteDefMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): FootnoteDefTheme
+
+    /**
+     * 统一设置脚注定义内边距
+     *
+     * @param padding 内边距
+     * @return 当前FootnoteDefTheme对象
+     */
+    public func setFootnoteDefPadding(padding: Float64): FootnoteDefTheme
+
+    /**
+     * 分别设置脚注定义四个内边距
+     *
+     * @param top 上内边距 命名参数
+     * @param right 右内边距 命名参数
+     * @param bottom 下内边距 命名参数
+     * @param left 左内边距 命名参数
+     * @return 当前FootnoteDefTheme对象
+     */
+    public func setFootnoteDefPadding(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): FootnoteDefTheme
+}
+```
+
+#### 脚注引用样式
+
+##### public class FootnoteRefTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 脚注引用样式
+ */
+public class FootnoteRefTheme <: MarkdownBaseTheme {
+    /**
+     * 设置脚注引用文本颜色
+     *
+     * @param color 脚注引用文本颜色
+     * @return 当前FootnoteRefTheme对象
+     */
+    public func setFootnoteRefTextFontColor(color: Color): FootnoteRefTheme
+
+    /**
+     * 设置脚注引用文本尺寸
+     *
+     * @param size 脚注引用文本尺寸
+     * @return 当前FootnoteRefTheme对象
+     */
+    public func setFootnoteRefTextFontSize(size: Float64): FootnoteRefTheme
+
+    /**
+     * 设置脚注引用文本字体样式
+     *
+     * @param style 脚注引用文本字体样式
+     * @return 当前FootnoteRefTheme对象
+     */
+    public func setFootnoteRefTextFontStyle(style: FontStyle): FootnoteRefTheme
+
+    /**
+     * 设置脚注引用文本字体粗细
+     *
+     * @param weight 脚注引用文本字体粗细
+     * @return 当前FootnoteRefTheme对象
+     */
+    public func setFootnoteRefTextFontWeight(weight: FontWeight): FootnoteRefTheme
+
+    /**
+     * 设置脚注引用文本字体
+     *
+     * @param family 脚注引用文本字体
+     * @return 当前FootnoteRefTheme对象
+     */
+    public func setFootnoteRefTextFontFamily(family: String): FootnoteRefTheme
+
+    /**
+     * 设置脚注引用文本行高
+     *
+     * @param lineHeight 脚注引用文本行高
+     * @return 当前FootnoteRefTheme对象
+     */
+    public func setFootnoteRefTextLineHeight(lineHeight: Float64): FootnoteRefTheme
+
+    /**
+     * 设置脚注引用文本字符间距
+     *
+     * @param spacing 脚注引用文本字符间距
+     * @return 当前FootnoteRefTheme对象
+     */
+    public func setFootnoteRefTextLetterSpacing(spacing: Float64): FootnoteRefTheme
+
+    /**
+     * 设置脚注引用文本装饰线类型
+     *
+     * @param decorationType 脚注引用文本装饰线类型
+     * @return 当前FootnoteRefTheme对象
+     */
+    public func setFootnoteRefTextDecorationType(decorationType: TextDecorationType): FootnoteRefTheme
+
+    /**
+     * 设置脚注引用文本装饰线颜色
+     *
+     * @param color 脚注引用文本装饰线颜色
+     * @return 当前FootnoteRefTheme对象
+     */
+    public func setFootnoteRefTextDecorationColor(color: Color): FootnoteRefTheme
+
+    /**
+     * 设置脚注引用文本装饰线样式
+     *
+     * @param style 脚注引用文本装饰线样式
+     * @return 当前FootnoteRefTheme对象
+     */
+    public func setFootnoteRefTextDecorationStyle(style: MarkdownTextDecorationStyle): FootnoteRefTheme
+
+    /**
+     * 设置脚注引用文本背景颜色
+     *
+     * @param color 脚注引用文本背景颜色
+     * @return 当前FootnoteRefTheme对象
+     */
+    public func setFootnoteRefTextBackgroundColor(color: Color): FootnoteRefTheme
+
+    /**
+     * 统一设置脚注引用文本背景整体圆角
+     *
+     * @param radius 圆角
+     * @return 当前FootnoteRefTheme对象
+     */
+    public func setFootnoteRefTextBackgroundRadius(radius: Float64): FootnoteRefTheme
+
+    /**
+     * 分别设置脚注引用文本背景四个圆角
+     *
+     * @param topLeft 左上圆角 命名参数
+     * @param topRight 右上圆角 命名参数
+     * @param bottomLeft 左下圆角 命名参数
+     * @param bottomRight 右下圆角 命名参数
+     * @return 当前FootnoteRefTheme对象
+     */
+    public func setFootnoteRefTextBackgroundRadius(topLeft!: Float64 = 0.0, topRight!: Float64 = 0.0, bottomLeft!: Float64 = 0.0, bottomRight!: Float64 = 0.0): FootnoteRefTheme
+}
+```
+
+#### HTML下划线文本样式
+
+##### public class HtmlUnderlineTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * HTML下划线文本样式
+ */
+public class HtmlUnderlineTheme <: MarkdownBaseTheme {
+    /**
+     * 设置HTML下划线文本颜色
+     *
+     * @param color HTML下划线文本颜色
+     * @return 当前HtmlUnderlineTheme对象
+     */
+    public func setHtmlUnderlineTextFontColor(color: Color): HtmlUnderlineTheme
+
+    /**
+     * 设置HTML下划线文本尺寸
+     *
+     * @param size HTML下划线文本尺寸
+     * @return 当前HtmlUnderlineTheme对象
+     */
+    public func setHtmlUnderlineTextFontSize(size: Float64): HtmlUnderlineTheme
+
+    /**
+     * 设置HTML下划线文本字体样式
+     *
+     * @param style HTML下划线文本字体样式
+     * @return 当前HtmlUnderlineTheme对象
+     */
+    public func setHtmlUnderlineTextFontStyle(style: FontStyle): HtmlUnderlineTheme
+
+    /**
+     * 设置HTML下划线文本字体粗细
+     *
+     * @param weight HTML下划线文本字体粗细
+     * @return 当前HtmlUnderlineTheme对象
+     */
+    public func setHtmlUnderlineTextFontWeight(weight: FontWeight): HtmlUnderlineTheme
+
+    /**
+     * 设置HTML下划线文本字体
+     *
+     * @param family HTML下划线文本字体
+     * @return 当前HtmlUnderlineTheme对象
+     */
+    public func setHtmlUnderlineTextFontFamily(family: String): HtmlUnderlineTheme
+
+    /**
+     * 设置HTML下划线文本行高
+     *
+     * @param lineHeight HTML下划线文本行高
+     * @return 当前HtmlUnderlineTheme对象
+     */
+    public func setHtmlUnderlineTextLineHeight(lineHeight: Float64): HtmlUnderlineTheme
+
+    /**
+     * 设置HTML下划线文本字符间距
+     *
+     * @param spacing HTML下划线文本字符间距
+     * @return 当前HtmlUnderlineTheme对象
+     */
+    public func setHtmlUnderlineTextLetterSpacing(spacing: Float64): HtmlUnderlineTheme
+
+    /**
+     * 设置HTML下划线文本装饰线颜色
+     *
+     * @param color HTML下划线文本装饰线颜色
+     * @return 当前HtmlUnderlineTheme对象
+     */
+    public func setHtmlUnderlineTextDecorationColor(color: Color): HtmlUnderlineTheme
+
+    /**
+     * 设置HTML下划线文本装饰线样式
+     *
+     * @param style HTML下划线文本装饰线样式
+     * @return 当前HtmlUnderlineTheme对象
+     */
+    public func setHtmlUnderlineTextDecorationStyle(style: MarkdownTextDecorationStyle): HtmlUnderlineTheme
+}
+```
+
+#### 数学公式样式
+
+##### public class LatexMathTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 数学公式样式
+ */
+public class LatexMathTheme <: MarkdownBaseTheme {
+    /**
+     * 统一设置块结构数学公式外边距
+     *
+     * @param margin 外边距
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathMargin(margin: Float64): LatexMathTheme
+
+    /**
+     * 分别设置块结构数学公式四个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): LatexMathTheme
+
+    /**
+     * 统一设置块结构数学公式内边距
+     *
+     * @param padding 内边距
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathPadding(padding: Float64): LatexMathTheme
+
+    /**
+     * 设置数学公式未加载状态是否显示文字
+     *
+     * @param showDefaultText 是否显示文字
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathDefaultText(showDefaultText: Bool): LatexMathTheme
+
+    /**
+     * 设置数学公式未加载状态文本颜色
+     *
+     * @param color 文本颜色
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathDefaultTextFontColor(color: Color): LatexMathTheme
+
+    /**
+     * 设置数学公式未加载状态文本尺寸
+     *
+     * @param size 文本尺寸
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathDefaultTextFontSize(size: Float64): LatexMathTheme
+
+    /**
+     * 设置数学公式文本大小
+     *
+     * @param size 文本大小
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathTextSize(size: Float64): LatexMathTheme
+
+    /**
+     * 设置数学公式背景色
+     *
+     * @param color 背景色
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathBackgroundColor(color: Color): LatexMathTheme
+
+    /**
+     * 设置数学公式文本颜色
+     *
+     * @param color 文本颜色
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathTextColor(color: Color): LatexMathTheme
+
+    /**
+     * 设置数学公式生成图片格式
+     *
+     * @param format 生成图片格式
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathColorFormat(format: LatexMathColorFormat): LatexMathTheme
+
+    /**
+     * 设置块结构的数学公式是否居中
+     *
+     * @param center 是否居中
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathBlockCenter(center: Bool): LatexMathTheme
+
+    /**
+     * 设置数学公式字体路径
+     *
+     * @param path 字体路径
+     * @return 当前LatexMathTheme对象
+     */
+    public func setLatexMathResPath(path: String): LatexMathTheme
+}
+```
+
+#### 全局样式
+
+##### public class GlobalTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 全局样式
+ */
+public class GlobalTheme <: MarkdownBaseTheme {
+    /**
+     * 设置markdown上下文 - 互操作
+     *
+     * @param context 上下文对象
+     * @return 当前GlobalTheme对象
+     */
+    public func setStageContext(context: StageContext): GlobalTheme
+
+    /**
+     * 设置markdown上下文 - 仓颉
+     *
+     * @param context 上下文对象
+     * @return 当前GlobalTheme对象
+     */
+    public func setUiAbilityContext(context: UIAbilityContext): GlobalTheme
+
+    /**
+     * 设置markdown是否同步解析
+     *
+     * @param parserSync 是否同步解析
+     * @return 当前GlobalTheme对象
+     */
+    public func setIsMarkdownParserSync(parserSync: Bool): GlobalTheme
+
+    /**
+     * 设置是否打开长按复制粘贴
+     *
+     * @param onCopy 是否开启
+     * @return 当前GlobalTheme对象
+     */
+    public func setIsOnCopy(onCopy: Bool): GlobalTheme
+
+    /**
+     * 全局整体外边距
+     *
+     * @param margin 外边距
+     * @return 当前GlobalTheme对象
+     */
+    public func setMargin(margin: Float64): GlobalTheme
+
+    /**
+     * 全局分别设置四个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前GlobalTheme对象
+     */
+    public func setMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): GlobalTheme
+
+    /**
+     * 设置markdown子组件主轴方向的间隔
+     *
+     * @param space markdown子组件主轴方向的间隔
+     * @return 当前GlobalTheme对象
+     */
+    public func setMarkdownBlockSpacing(space: Int64): GlobalTheme
+
+    /**
+     * 设置软换行是否换行
+     *
+     * @param lineBreak 是否换行
+     * @return 当前GlobalTheme对象
+     */
+    public func setIsLineBreak(lineBreak: Bool): GlobalTheme
+
+    /**
+     * 设置markdown是否支持滚动手势
+     *
+     * @param gestureSwipe 是否支持手势滑动
+     * @return 当前GlobalTheme对象
+     */
+    public func setOpenGestureSwipe(gestureSwipe: Bool): GlobalTheme
+
+    /**
+     * 设置背景颜色
+     *
+     * @param color 背景颜色
+     * @return 当前GlobalTheme对象
+     */
+    public func setBackgroundColor(color: Color): GlobalTheme
+}
+```
+
+#### 音频样式
+
+##### public class AudioTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 音频样式
+ */
+public class AudioTheme <: MarkdownBaseTheme {
+    /**
+     * 设置音频背景颜色
+     *
+     * @param color 音频背景颜色
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioBackgroundColor(color: Color): AudioTheme
+
+    /**
+     * 统一设置音频整体外边距
+     *
+     * @param margin 外边距
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioMargin(margin: Float64): AudioTheme
+
+    /**
+     * 分别设置音频四个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): AudioTheme
+
+    /**
+     * 统一设置音频整体内边距
+     *
+     * @param padding 内边距
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioPadding(padding: Float64): AudioTheme
+
+    /**
+     * 分别设置音频四个内边距
+     *
+     * @param top 上内边距 命名参数
+     * @param right 右内边距 命名参数
+     * @param bottom 下内边距 命名参数
+     * @param left 左内边距 命名参数
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioPadding(top!: Float64 = 12.0, right!: Float64 = 16.0, bottom!: Float64 = 12.0, left!: Float64 = 12.0): AudioTheme
+
+    /**
+     * 设置音频边框样式
+     *
+     * @param borderStyle 音频边框样式
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioBorderStyle(borderStyle: BorderStyle): AudioTheme
+
+    /**
+     * 设置音频边框宽度
+     *
+     * @param borderWidth 音频边框宽度
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioBorderWidth(borderWidth: Float64): AudioTheme
+
+    /**
+     * 设置音频边框颜色
+     *
+     * @param borderColor 音频边框颜色
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioBorderColor(borderColor: Color): AudioTheme
+
+    /**
+     * 统一设置音频整体圆角
+     *
+     * @param radius 圆角
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioRadius(radius: Float64): AudioTheme
+
+    /**
+     * 分别设置音频四个圆角
+     *
+     * @param topLeft 左上圆角 命名参数
+     * @param topRight 右上圆角 命名参数
+     * @param bottomLeft 左下圆角 命名参数
+     * @param bottomRight 右下圆角 命名参数
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioRadius(topLeft!: Float64 = 12.0, topRight!: Float64 = 12.0, bottomLeft!: Float64 = 12.0, bottomRight!: Float64 = 12.0): AudioTheme
+
+    /**
+     * 设置音频阴影模糊半径
+     *
+     * @param radius 音频阴影模糊半径
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioShadowRadius(radius: Float64): AudioTheme
+
+    /**
+     * 设置音频阴影颜色
+     *
+     * @param color 音频阴影颜色
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioShadowColor(color: Color): AudioTheme
+
+    /**
+     * 设置音频阴影X轴偏移量
+     *
+     * @param offsetX 音频阴影X轴偏移量
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioShadowOffsetX(offsetX: Float64): AudioTheme
+
+    /**
+     * 设置音频阴影Y轴偏移量
+     *
+     * @param offsetY 音频阴影Y轴偏移量
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioShadowOffsetY(offsetY: Float64): AudioTheme
+
+    /**
+     * 设置音频图标
+     *
+     * @param icon 音频图标
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioIcon(icon: AppResource): AudioTheme
+
+    /**
+     * 设置音频图标宽度
+     *
+     * @param width 音频图标宽度
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioIconWidth(width: Float64): AudioTheme
+
+    /**
+     * 设置音频图标高度
+     *
+     * @param height 音频图标高度
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioIconHeight(height: Float64): AudioTheme
+
+    /**
+     * 统一设置音频图标整体圆角
+     *
+     * @param radius 圆角
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioIconRadius(radius: Float64): AudioTheme
+
+    /**
+     * 分别设置音频图标四个圆角
+     *
+     * @param topLeft 左上圆角 命名参数
+     * @param topRight 右上圆角 命名参数
+     * @param bottomLeft 左下圆角 命名参数
+     * @param bottomRight 右下圆角 命名参数
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioIconRadius(topLeft!: Float64 = 8.0, topRight!: Float64 = 8.0, bottomLeft!: Float64 = 8.0, bottomRight!: Float64 = 8.0): AudioTheme
+
+    /**
+     * 设置音频图标缩放类型
+     *
+     * @param fitType 音频图标缩放类型
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioIconFitType(fitType: ImageFit): AudioTheme
+
+    /**
+     * 设置音频标题文本和类型文本间距
+     *
+     * @param spacing 音频标题文本和类型文本间距
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioTitleToTypeSpacing(spacing: Float64): AudioTheme
+
+    /**
+     * 设置音频标题文本颜色
+     *
+     * @param color 音频标题文本颜色
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioTitleTextFontColor(color: Color): AudioTheme
+
+    /**
+     * 设置音频标题文本尺寸
+     *
+     * @param size 音频标题文本尺寸
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioTitleTextFontSize(size: Float64): AudioTheme
+
+    /**
+     * 设置音频标题文本字体样式
+     *
+     * @param style 音频标题文本字体样式
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioTitleTextFontStyle(style: FontStyle): AudioTheme
+
+    /**
+     * 设置音频标题文本字体粗细
+     *
+     * @param weight 音频标题文本字体粗细
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioTitleTextFontWeight(weight: FontWeight): AudioTheme
+
+    /**
+     * 设置音频标题文本字体
+     *
+     * @param family 音频标题文本字体
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioTitleTextFontFamily(family: String): AudioTheme
+
+    /**
+     * 设置音频标题文本行高
+     *
+     * @param height 音频标题文本行高
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioTitleTextLineHeight(height: Float64): AudioTheme
+
+    /**
+     * 设置音频类型文本颜色
+     *
+     * @param color 音频类型文本颜色
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioTypeTextFontColor(color: Color): AudioTheme
+
+    /**
+     * 设置音频类型文本尺寸
+     *
+     * @param size 音频类型文本尺寸
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioTypeTextFontSize(size: Float64): AudioTheme
+
+    /**
+     * 设置音频类型文本字体样式
+     *
+     * @param style 音频类型文本字体样式
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioTypeTextFontStyle(style: FontStyle): AudioTheme
+
+    /**
+     * 设置音频类型文本字体粗细
+     *
+     * @param weight 音频类型文本字体粗细
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioTypeTextFontWeight(weight: FontWeight): AudioTheme
+
+    /**
+     * 设置音频类型文本字体
+     *
+     * @param family 音频类型文本字体
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioTypeTextFontFamily(family: String): AudioTheme
+
+    /**
+     * 设置音频类型文本行高
+     *
+     * @param height 音频类型文本行高
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioTypeTextLineHeight(height: Float64): AudioTheme
+
+    /**
+     * 设置音频按钮背景颜色
+     *
+     * @param color 音频按钮背景颜色
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonBackgroundColor(color: Color): AudioTheme
+
+    /**
+     * 设置音频按钮宽度
+     *
+     * @param width 音频按钮宽度
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonWidth(width: Float64): AudioTheme
+
+    /**
+     * 设置音频按钮高度
+     *
+     * @param height 音频按钮高度
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonHeight(height: Float64): AudioTheme
+
+    /**
+     * 设置音频按钮边框样式
+     *
+     * @param borderStyle 音频按钮边框样式
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonBorderStyle(borderStyle: BorderStyle): AudioTheme
+
+    /**
+     * 设置音频按钮边框宽度
+     *
+     * @param borderWidth 音频按钮边框宽度
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonBorderWidth(borderWidth: Float64): AudioTheme
+
+    /**
+     * 设置音频按钮边框颜色
+     *
+     * @param borderColor 音频按钮边框颜色
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonBorderColor(borderColor: Color): AudioTheme
+
+    /**
+     * 统一设置音频按钮整体圆角
+     *
+     * @param radius 圆角
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonRadius(radius: Float64): AudioTheme
+
+    /**
+     * 分别设置音频按钮四个圆角
+     *
+     * @param topLeft 左上圆角 命名参数
+     * @param topRight 右上圆角 命名参数
+     * @param bottomLeft 左下圆角 命名参数
+     * @param bottomRight 右下圆角 命名参数
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonRadius(topLeft!: Float64 = 16.0, topRight!: Float64 = 16.0, bottomLeft!: Float64 = 16.0, bottomRight!: Float64 = 16.0): AudioTheme
+
+    /**
+     * 设置音频按钮默认文本内容
+     *
+     * @param text 音频按钮默认文本内容
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonText(text: String): AudioTheme
+
+    /**
+     * 设置音频按钮文本颜色
+     *
+     * @param color 音频按钮文本颜色
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonTextFontColor(color: Color): AudioTheme
+
+    /**
+     * 设置音频按钮文本尺寸
+     *
+     * @param size 音频按钮文本尺寸
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonTextFontSize(size: Float64): AudioTheme
+
+    /**
+     * 设置音频按钮文本字体样式
+     *
+     * @param style 音频按钮文本字体样式
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonTextFontStyle(style: FontStyle): AudioTheme
+
+    /**
+     * 设置音频按钮文本字体粗细
+     *
+     * @param weight 音频按钮文本字体粗细
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonTextFontWeight(weight: FontWeight): AudioTheme
+
+    /**
+     * 设置音频按钮文本字体
+     *
+     * @param family 音频按钮文本字体
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonTextFontFamily(family: String): AudioTheme
+
+    /**
+     * 设置音频按钮文本行高
+     *
+     * @param height 音频按钮文本行高
+     * @return 当前AudioTheme对象
+     */
+    public func setAudioButtonTextLineHeight(height: Float64): AudioTheme
+}
+```
+
+#### 视频样式
+
+##### public class VideoTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 视频样式
+ */
+public class VideoTheme <: MarkdownBaseTheme {
+
+    /**
+     * 设置视频背景颜色
+     * @param color 视频背景颜色
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoBackgroundColor(color: Color): VideoTheme
+
+    /**
+     * 统一设置视频外边距
+     * @param margin 外边距
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoMargin(margin: Float64): VideoTheme
+
+    /**
+     * 分别设置视频四个外边距
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): VideoTheme
+
+    /**
+     * 统一设置视频内边距
+     * @param padding 内边距
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoPadding(padding: Float64): VideoTheme
+
+    /**
+     * 分别设置视频四个内边距
+     * @param top 上内边距 命名参数
+     * @param right 右内边距 命名参数
+     * @param bottom 下内边距 命名参数
+     * @param left 左内边距 命名参数
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoPadding(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): VideoTheme
+
+    /**
+     * 统一设置视频整体圆角
+     * @param radius 圆角
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoRadius(radius: Float64): VideoTheme
+
+    /**
+     * 分别设置视频四个圆角
+     * @param topLeft 左上圆角 命名参数
+     * @param topRight 右上圆角 命名参数
+     * @param bottomLeft 左下圆角 命名参数
+     * @param bottomRight 右下圆角 命名参数
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoRadius(topLeft!: Float64 = 10.0, topRight!: Float64 = 10.0, bottomLeft!: Float64 = 10.0, bottomRight!: Float64 = 10.0): VideoTheme
+
+    /**
+     * 设置视频边框样式
+     * @param borderStyle 视频边框样式
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoBorderStyle(borderStyle: BorderStyle): VideoTheme
+
+    /**
+     * 设置视频边框宽度
+     * @param borderWidth 视频边框宽度
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoBorderWidth(borderWidth: Float64): VideoTheme
+
+    /**
+     * 设置视频边框颜色
+     * @param borderColor 视频边框颜色
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoBorderColor(borderColor: Color): VideoTheme
+
+    /**
+     * 设置视频占位图
+     * @param resource 视频占位图
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoPlaceholder(resource: AppResource): VideoTheme
+
+    /**
+     * 设置视频图片缩放类型
+     * @param fitType 视频图片缩放类型
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoImageFitType(fitType: ImageFit): VideoTheme
+
+    /**
+     * 设置播放按钮默认图片
+     * @param icon 播放按钮默认图片
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoPlayIcon(icon: AppResource): VideoTheme
+
+    /**
+     * 设置播放按钮图标宽度
+     * @param width 播放按钮图标宽度
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoPlayIconWidth(width: Float64): VideoTheme
+
+    /**
+     * 设置播放按钮图标高度
+     * @param height 播放按钮图标高度
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoPlayIconHeight(height: Float64): VideoTheme
+
+    /**
+     * 设置播放按钮图标缩放类型
+     * @param fitType 播放按钮图标缩放类型
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoPlayIconFitType(fitType: ImageFit): VideoTheme
+
+    /**
+     * 设置视频时间文本颜色
+     * @param color 视频时间文本颜色
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoTimeTextFontColor(color: Color): VideoTheme
+
+    /**
+     * 设置视频时间文本尺寸
+     * @param size 视频时间文本尺寸
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoTimeTextFontSize(size: Float64): VideoTheme
+
+    /**
+     * 设置视频时间文本字体样式
+     * @param style 视频时间文本字体样式
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoTimeTextFontStyle(style: FontStyle): VideoTheme
+
+    /**
+     * 设置视频时间文本字体粗细
+     * @param weight 视频时间文本字体粗细
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoTimeTextFontWeight(weight: FontWeight): VideoTheme
+
+    /**
+     * 设置视频时间文本字体
+     * @param family 视频时间文本字体
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoTimeTextFontFamily(family: String): VideoTheme
+
+    /**
+     * 设置视频时间文本行高
+     * @param height 视频时间文本行高
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoTimeTextLineHeight(height: Float64): VideoTheme
+
+    /**
+     * 设置视频时间文本居右边距
+     * @param margin 视频时间文本居右边距
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoTimeTextMarginRight(margin: Float64): VideoTheme
+
+    /**
+     * 设置视频时间文本居底边距
+     * @param margin 视频时间文本居底边距
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoTimeTextMarginBottom(margin: Float64): VideoTheme
+
+    /**
+     * 设置底部布局是否显示
+     * @param visible 底部布局是否显示
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoBottomLayoutVisible(visible: Bool): VideoTheme
+
+    /**
+     * 设置底部布局距离视频上边距
+     * @param marginTop 底部布局距离视频上边距
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoBottomLayoutMarginTop(marginTop: Float64): VideoTheme
+
+    /**
+     * 设置视频发布按钮是否显示
+     * @param visible 视频发布按钮是否显示
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonVisible(visible: Bool): VideoTheme
+
+    /**
+     * 设置视频发布按钮背景颜色
+     * @param color 视频发布按钮背景颜色
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonBackgroundColor(color: Color): VideoTheme
+
+    /**
+     * 设置视频发布按钮宽度
+     * @param width 视频发布按钮宽度
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonWidth(width: Float64): VideoTheme
+
+    /**
+     * 设置视频发布按钮高度
+     * @param height 视频发布按钮高度
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonHeight(height: Float64): VideoTheme
+
+    /**
+     * 统一设置视频发布按钮整体圆角
+     * @param radius 圆角
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonRadius(radius: Float64): VideoTheme
+
+    /**
+     * 分别设置视频发布按钮四个圆角
+     * @param topLeft 左上圆角 命名参数
+     * @param topRight 右上圆角 命名参数
+     * @param bottomLeft 左下圆角 命名参数
+     * @param bottomRight 右下圆角 命名参数
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonRadius(topLeft!: Float64 = 22.0, topRight!: Float64 = 22.0, bottomLeft!: Float64 = 22.0, bottomRight!: Float64 = 22.0): VideoTheme
+
+    /**
+     * 设置视频发布按钮图标和文本间距
+     * @param gap 视频发布按钮图标和文本间距
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonIconTextGap(gap: Float64): VideoTheme
+
+    /**
+     * 设置视频发布按钮图标
+     * @param icon 视频发布按钮图标
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonIcon(icon: AppResource): VideoTheme
+
+    /**
+     * 设置视频发布按钮图标宽度
+     * @param width 视频发布按钮图标宽度
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonIconWidth(width: Float64): VideoTheme
+
+    /**
+     * 设置视频发布按钮图标高度
+     * @param height 视频发布按钮图标高度
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonIconHeight(height: Float64): VideoTheme
+
+    /**
+     * 设置视频发布按钮默认文本内容
+     * @param text 视频发布按钮默认文本内容
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonText(text: String): VideoTheme
+
+    /**
+     * 设置视频发布按钮文本颜色
+     * @param color 视频发布按钮文本颜色
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonTextFontColor(color: Color): VideoTheme
+
+    /**
+     * 设置视频发布按钮文本尺寸
+     * @param size 视频发布按钮文本尺寸
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonTextFontSize(size: Float64): VideoTheme
+
+    /**
+     * 设置视频发布按钮文本字体样式
+     * @param style 视频发布按钮文本字体样式
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonTextFontStyle(style: FontStyle): VideoTheme
+
+    /**
+     * 设置视频发布按钮文本字体粗细
+     * @param weight 视频发布按钮文本字体粗细
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonTextFontWeight(weight: FontWeight): VideoTheme
+
+    /**
+     * 设置视频发布按钮文本字体
+     * @param family 视频发布按钮文本字体
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonTextFontFamily(family: String): VideoTheme
+
+    /**
+     * 设置视频发布按钮文本行高
+     * @param height 视频发布按钮文本行高
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoReleaseButtonTextLineHeight(height: Float64): VideoTheme
+
+    /**
+     * 设置视频下载按钮是否显示
+     * @param visible 视频下载按钮是否显示
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonVisible(visible: Bool): VideoTheme
+
+    /**
+     * 设置视频下载按钮背景颜色
+     * @param color 视频下载按钮背景颜色
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonBackgroundColor(color: Color): VideoTheme
+
+    /**
+     * 设置视频下载按钮宽度
+     * @param width 视频下载按钮宽度
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonWidth(width: Float64): VideoTheme
+
+    /**
+     * 设置视频下载按钮高度
+     * @param height 视频下载按钮高度
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonHeight(height: Float64): VideoTheme
+
+    /**
+     * 统一设置视频下载按钮整体圆角
+     * @param radius 圆角
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonRadius(radius: Float64): VideoTheme
+
+    /**
+     * 分别设置视频下载按钮四个圆角
+     * @param topLeft 左上圆角 命名参数
+     * @param topRight 右上圆角 命名参数
+     * @param bottomLeft 左下圆角 命名参数
+     * @param bottomRight 右下圆角 命名参数
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonRadius(topLeft!: Float64 = 22.0, topRight!: Float64 = 22.0, bottomLeft!: Float64 = 22.0, bottomRight!: Float64 = 22.0): VideoTheme
+
+    /**
+     * 设置视频下载按钮图标和文本间距
+     * @param gap 视频下载按钮图标和文本间距
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonIconTextGap(gap: Float64): VideoTheme
+
+    /**
+     * 设置视频下载按钮图标
+     * @param icon 视频下载按钮图标
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonIcon(icon: AppResource): VideoTheme
+
+    /**
+     * 设置视频下载按钮图标宽度
+     * @param width 视频下载按钮图标宽度
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonIconWidth(width: Float64): VideoTheme
+
+    /**
+     * 设置视频下载按钮图标高度
+     * @param height 视频下载按钮图标高度
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonIconHeight(height: Float64): VideoTheme
+
+    /**
+     * 设置视频下载按钮默认文本内容
+     * @param text 视频下载按钮默认文本内容
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonText(text: String): VideoTheme
+
+    /**
+     * 设置视频下载按钮文本颜色
+     * @param color 视频下载按钮文本颜色
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonTextFontColor(color: Color): VideoTheme
+
+    /**
+     * 设置视频下载按钮文本尺寸
+     * @param size 视频下载按钮文本尺寸
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonTextFontSize(size: Float64): VideoTheme
+
+    /**
+     * 设置视频下载按钮文本字体样式
+     * @param style 视频下载按钮文本字体样式
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonTextFontStyle(style: FontStyle): VideoTheme
+
+    /**
+     * 设置视频下载按钮文本字体粗细
+     * @param weight 视频下载按钮文本字体粗细
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonTextFontWeight(weight: FontWeight): VideoTheme
+
+    /**
+     * 设置视频下载按钮文本字体
+     * @param family 视频下载按钮文本字体
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonTextFontFamily(family: String): VideoTheme
+
+    /**
+     * 设置视频下载按钮文本行高
+     * @param height 视频下载按钮文本行高
+     * @return 当前VideoTheme对象
+     */
+    public func setVideoDownloadButtonTextLineHeight(height: Float64): VideoTheme
+}
+```
+
+#### 图片样式
+
+##### public class ImageTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 图片样式
+ */
+public class ImageTheme <: MarkdownBaseTheme {
+    /**
+     * 设置4个外边距为统一值
+     *
+     * @param margin 外边距
+     * @return 当前ImageTheme对象
+     */
+    public func setMargin(margin: Float64): ImageTheme
+
+    /**
+     * 分别设置4个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前ImageTheme对象
+     */
+    public func setMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): ImageTheme
+
+    /**
+     * 设置4个圆角为统一值
+     *
+     * @param radius 圆角
+     * @return 当前ImageTheme对象
+     */
+    public func setRadius(radius: Float64): ImageTheme
+
+    /**
+     * 分别设置4个圆角
+     *
+     * @param topLeft 左上圆角 命名参数
+     * @param topRight 右上圆角 命名参数
+     * @param bottomLeft 左下圆角 命名参数
+     * @param bottomRight 右下圆角 命名参数
+     * @return 当前ImageTheme对象
+     */
+    public func setRadius(topLeft!: Float64 = 0.0, topRight!: Float64 = 0.0, bottomLeft!: Float64 = 0.0, bottomRight!: Float64 = 0.0): ImageTheme
+
+    /**
+     * 设置图片边框样式
+     *
+     * @param borderStyle 图片边框样式
+     * @return 当前ImageTheme对象
+     */
+    public func setImageBorderStyle(borderStyle: BorderStyle): ImageTheme
+
+    /**
+     * 设置图片边框宽度
+     *
+     * @param borderWidth 图片边框宽度
+     * @return 当前ImageTheme对象
+     */
+    public func setImageBorderWidth(borderWidth: Float64): ImageTheme
+
+    /**
+     * 设置图片边框颜色
+     *
+     * @param borderColor 图片边框颜色
+     * @return 当前ImageTheme对象
+     */
+    public func setImageBorderColor(borderColor: Color): ImageTheme
+
+    /**
+     * 设置图片默认占位图
+     *
+     * @param placeholder 图片默认占位图
+     * @return 当前ImageTheme对象
+     */
+    public func setImagePlaceholder(placeholder: AppResource): ImageTheme
+
+    /**
+     * 设置网络图片是否压缩
+     *
+     * @param imageAutoResize 网络图片是否压缩
+     * @return 当前ImageTheme对象
+     */
+    public func setImageAutoResize(imageAutoResize: Bool): ImageTheme
+
+    /**
+     * 设置是否图文混排
+     *
+     * @param mixedLayout 是否图文混排
+     * @return 当前ImageTheme对象
+     */
+    public func setIsImageMixedLayout(mixedLayout: Bool): ImageTheme
+
+    /**
+     * 设置图片基于自身宽度缩放百分比
+     *
+     * @param maximumWidth 图片基于自身宽度缩放百分比
+     * @return 当前ImageTheme对象
+     */
+    public func setImageMaximumWidth(maximumWidth: Float64): ImageTheme
+
+    /**
+     * 设置图片最大高度
+     *
+     * @param maxHeight 图片最大高度
+     * @return 当前ImageTheme对象
+     */
+    public func setImageMaxHeight(maxHeight: Float64): ImageTheme
+
+    /**
+     * 设置图片高度
+     *
+     * @param height 图片高度
+     * @return 当前ImageTheme对象
+     */
+    public func setImageHeight(height: Float64): ImageTheme
+
+    /**
+     * 设置图片宽度
+     *
+     * @param width 图片宽度
+     * @return 当前ImageTheme对象
+     */
+    public func setImageWidth(width: Float64): ImageTheme
+
+    /**
+     * 设置图片缩放类型
+     *
+     * @param fitType 图片缩放类型
+     * @return 当前ImageTheme对象
+     */
+    public func setImageFitType(fitType: ImageFit): ImageTheme
+
+    /**
+     * 设置图片下载按钮是否显示
+     *
+     * @param visible 图片下载按钮是否显示
+     * @return 当前ImageTheme对象
+     */
+    public func setImageDownloadButtonVisible(visible: Bool): ImageTheme
+}
+```
+
+#### 表格样式
+
+##### public class TableTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 表格样式
+ */
+public class TableTheme <: MarkdownBaseTheme {
+    /**
+     * 设置表格标题背景颜色
+     *
+     * @param color 表格标题背景颜色
+     * @return 当前TableTheme对象
+     */
+    public func setTableTitleBackgroundColor(color: Color): TableTheme
+
+    /**
+     * 设置表格内容奇数行背景颜色
+     *
+     * @param color 奇数行背景颜色
+     * @return 当前TableTheme对象
+     */
+    public func setTableContentOddRowBackgroundColor(color: Color): TableTheme
+
+    /**
+     * 设置表格内容偶数行背景颜色
+     *
+     * @param color 偶数行背景颜色
+     * @return 当前TableTheme对象
+     */
+    public func setTableContentEvenRowBackgroundColor(color: Color): TableTheme
+
+    /**
+     * 统一设置表格外边距
+     *
+     * @param margin 外边距
+     * @return 当前TableTheme对象
+     */
+    public func setTableMargin(margin: Float64): TableTheme
+
+    /**
+     * 分别设置表格四个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前TableTheme对象
+     */
+    public func setTableMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): TableTheme
+
+    /**
+     * 统一设置表格内边距
+     *
+     * @param padding 内边距
+     * @return 当前TableTheme对象
+     */
+    public func setTablePadding(padding: Float64): TableTheme
+
+    /**
+     * 统一设置表格内容内边距
+     *
+     * @param padding 内边距
+     * @return 当前TableTheme对象
+     */
+    public func setTableCellPadding(padding: Float64): TableTheme
+
+    /**
+     * 设置表格边框样式
+     *
+     * @param style 表格边框样式
+     * @return 当前TableTheme对象
+     */
+    public func setTableBorderStyle(style: BorderStyle): TableTheme
+
+    /**
+     * 设置表格边框宽度
+     *
+     * @param width 表格边框宽度
+     * @return 当前TableTheme对象
+     */
+    public func setTableBorderWidth(width: Float64): TableTheme
+
+    /**
+     * 设置表格边框颜色
+     *
+     * @param color 表格边框颜色
+     * @return 当前TableTheme对象
+     */
+    public func setTableBorderColor(color: Color): TableTheme
+
+    /**
+     * 统一设置表格边框四个圆角
+     *
+     * @param radius 圆角半径
+     * @return 当前TableTheme对象
+     */
+    public func setTableRadius(radius: Float64): TableTheme
+
+    /**
+     * 设置表格滚动条状态
+     *
+     * @param state 滚动条状态
+     * @return 当前TableTheme对象
+     */
+    public func setTableScrollBarState(state: BarState): TableTheme
+
+    /**
+     * 设置表格一格最小宽度
+     *
+     * @param width 最小宽度
+     * @return 当前TableTheme对象
+     */
+    public func setTableMinCellWidth(width: Float64): TableTheme
+
+    /**
+     * 设置表格一格最大宽度
+     *
+     * @param width 最大宽度
+     * @return 当前TableTheme对象
+     */
+    public func setTableMaxCellWidth(width: Float64): TableTheme
+
+    /**
+     * 设置表格第一列是否加粗
+     *
+     * @param isBold 是否加粗
+     * @return 当前TableTheme对象
+     */
+    public func setTableFirstColumnIsBold(isBold: Bool): TableTheme
+
+    /**
+     * 设置表格标题文本颜色
+     *
+     * @param color 表格标题文本颜色
+     * @return 当前TableTheme对象
+     */
+    public func setTableTitleTextFontColor(color: Color): TableTheme
+
+    /**
+     * 设置表格标题文本尺寸
+     *
+     * @param size 表格标题文本尺寸
+     * @return 当前TableTheme对象
+     */
+    public func setTableTitleTextFontSize(size: Float64): TableTheme
+
+    /**
+     * 设置表格内容文本颜色
+     *
+     * @param color 表格内容文本颜色
+     * @return 当前TableTheme对象
+     */
+    public func setTableContentTextFontColor(color: Color): TableTheme
+
+    /**
+     * 设置表格内容文本尺寸
+     *
+     * @param size 表格内容文本尺寸
+     * @return 当前TableTheme对象
+     */
+    public func setTableContentTextFontSize(size: Float64): TableTheme
+}
+```
+
+#### 标题样式
+
+##### public class HeadingTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 标题样式
+ */
+public class HeadingTheme <: MarkdownBaseTheme {
+    /**
+     * 设置标题的背景颜色:设置所有标题为统一背景颜色
+     *
+     * @param color 背景颜色
+     * @return 当前HeadingTheme对象
+     */
+    public func setBackgroundColorForAllHeading(color: Color): HeadingTheme
+
+    /**
+     * 设置标题的背景颜色:通过集合的方式,分别设置每级标题的背景颜色
+     *
+     * @param colorList 背景颜色集合
+     * @return 当前HeadingTheme对象
+     */
+    public func setBackgroundColorForEachHeading(colorList: Array<Color>): HeadingTheme
+
+    /**
+     * 设置标题的背景颜色:指定标题等级,设置该等级标题的背景颜色
+     *
+     * @param level 标题等级
+     * @param color 背景颜色
+     * @return 当前HeadingTheme对象
+     */
+    public func setBackgroundColorForDesignateHeading(level: Int64, color: Color): HeadingTheme
+
+    /**
+     * 设置标题的4个外边距:设置H1-H6级标题所有4个外边距为统一值
+     *
+     * @param margin 外边距
+     * @return 当前HeadingTheme对象
+     */
+    public func setMarginForAllHeading(margin: Float64): HeadingTheme
+
+    /**
+     * 设置标题的4个外边距:指定标题等级,设置标题的4个外边距为统一值
+     *
+     * @param level 标题等级
+     * @param margin 外边距
+     * @return 当前HeadingTheme对象
+     */
+    public func setMarginForDesignateHeading(level: Int64, margin: Float64): HeadingTheme
+
+    /**
+     * 设置标题文本颜色:所有标题的统一文本颜色
+     *
+     * @param color 文本颜色
+     * @return 当前HeadingTheme对象
+     */
+    public func setTextFontColorForAllHeading(color: Color): HeadingTheme
+
+    /**
+     * 设置标题文本颜色:设置指定等级的标题的文本颜色
+     *
+     * @param level 标题等级
+     * @param color 文本颜色
+     * @return 当前HeadingTheme对象
+     */
+    public func setTextFontColorForDesignateHeading(level: Int64, color: Color): HeadingTheme
+
+    /**
+     * 设置标题文本尺寸:所有标题的统一文本尺寸
+     *
+     * @param size 文本尺寸
+     * @return 当前HeadingTheme对象
+     */
+    public func setTextFontSizeForAllHeading(size: Float64): HeadingTheme
+
+    /**
+     * 设置标题文本字体粗细:所有标题的统一文本字体粗细
+     *
+     * @param weight 文本字体粗细
+     * @return 当前HeadingTheme对象
+     */
+    public func setTextFontWeightForAllHeading(weight: FontWeight): HeadingTheme
+
+    /**
+     * 设置标题文本字体:所有标题的统一文本字体
+     *
+     * @param family 文本字体
+     * @return 当前HeadingTheme对象
+     */
+    public func setTextFontFamilyForAllHeading(family: String): HeadingTheme
+
+    /**
+     * 设置标题文本行高:所有标题的统一文本行高
+     *
+     * @param lineHeight 文本行高
+     * @return 当前HeadingTheme对象
+     */
+    public func setTextLineHeightForAllHeading(lineHeight: Float64): HeadingTheme
+
+    /**
+     * 设置标题下划线高度:H1和H2标题的统一下划线高度
+     *
+     * @param height 下划线高度
+     * @return 当前HeadingTheme对象
+     */
+    public func setUnderlineHeightForAllHeading(height: Float64): HeadingTheme
+
+    /**
+     * 设置标题下划线颜色:H1和H2标题的统一下划线颜色
+     *
+     * @param color 下划线颜色
+     * @return 当前HeadingTheme对象
+     */
+    public func setUnderlineColorForAllHeading(color: Color): HeadingTheme
+}
+```
+
+#### 代码块样式
+
+##### public class CodeBlockTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 代码块样式
+ */
+public class CodeBlockTheme <: MarkdownBaseTheme {
+    /**
+     * 设置是否格式化围栏代码块内容
+     *
+     * @param isCodeFormat 是否格式化围栏代码块内容
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockIsCodeFormat(isCodeFormat: Bool): CodeBlockTheme
+
+    /**
+     * 设置代码块背景颜色
+     *
+     * @param color 代码块背景颜色
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockBackgroundColor(color: Color): CodeBlockTheme
+
+    /**
+     * 代码块整体外边距
+     *
+     * @param margin 外边距
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setMargin(margin: Float64): CodeBlockTheme
+
+    /**
+     * 代码块分别设置四个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): CodeBlockTheme
+
+    /**
+     * 代码块整体内边距
+     *
+     * @param padding 内边距
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setPadding(padding: Float64): CodeBlockTheme
+
+    /**
+     * 设置代码块边框样式
+     *
+     * @param borderStyle 代码块边框样式
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockBorderStyle(borderStyle: BorderStyle): CodeBlockTheme
+
+    /**
+     * 设置代码块边框宽度
+     *
+     * @param borderWidth 代码块边框宽度
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockBorderWidth(borderWidth: Float64): CodeBlockTheme
+
+    /**
+     * 设置代码块边框颜色
+     *
+     * @param borderColor 代码块边框颜色
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockBorderColor(borderColor: Color): CodeBlockTheme
+
+    /**
+     * 代码块整体圆角
+     *
+     * @param radius 圆角
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setRadius(radius: Float64): CodeBlockTheme
+
+    /**
+     * 设置代码块代码复制按钮是否显示
+     *
+     * @param isShow 是否显示
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockCopyButtonIsShow(isShow: Bool): CodeBlockTheme
+
+    /**
+     * 设置代码块代码全屏按钮是否显示
+     *
+     * @param isShow 是否显示
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockFullScreenButtonIsShow(isShow: Bool): CodeBlockTheme
+
+    /**
+     * 设置代码块代码行号是否显示
+     *
+     * @param isShow 是否显示
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockLineNumberIsShow(isShow: Bool): CodeBlockTheme
+
+    /**
+     * 设置代码块代码文本颜色
+     *
+     * @param color 代码块代码文本颜色
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockTextFontColor(color: Color): CodeBlockTheme
+
+    /**
+     * 设置代码块代码文本尺寸
+     *
+     * @param size 代码块代码文本尺寸
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockTextFontSize(size: Float64): CodeBlockTheme
+
+    /**
+     * 设置代码块代码文本字体
+     *
+     * @param family 代码块代码文本字体
+     * @return 当前CodeBlockTheme对象
+     */
+    public func setCodeBlockTextFontFamily(family: String): CodeBlockTheme
+}
+```
+
+#### 链接文本样式
+
+##### public class LinkTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 链接文本样式
+ */
+public class LinkTheme <: MarkdownBaseTheme {
+    /**
+     * 设置链接是否是图片显示
+     *
+     * @param isIcon 链接是否是图片显示
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkIsIcon(isIcon: Bool): LinkTheme
+
+    /**
+     * 设置列表中的单行链接是否是图片显示
+     *
+     * @param isIcon 列表中的单行链接是否是图片显示
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkListIsIcon(isIcon: Bool): LinkTheme
+
+    /**
+     * 设置链接文本颜色
+     *
+     * @param color 链接文本颜色
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkTextFontColor(color: Color): LinkTheme
+
+    /**
+     * 设置链接文本尺寸
+     *
+     * @param size 链接文本尺寸
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkTextFontSize(size: Float64): LinkTheme
+
+    /**
+     * 设置链接文本字体样式
+     *
+     * @param style 链接文本字体样式
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkTextFontStyle(style: FontStyle): LinkTheme
+
+    /**
+     * 设置链接文本字体粗细
+     *
+     * @param weight 链接文本字体粗细
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkTextFontWeight(weight: FontWeight): LinkTheme
+
+    /**
+     * 设置链接文本字体
+     *
+     * @param family 链接文本字体
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkTextFontFamily(family: String): LinkTheme
+
+    /**
+     * 设置链接文本行高
+     *
+     * @param lineHeight 链接文本行高
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkTextLineHeight(lineHeight: Float64): LinkTheme
+
+    /**
+     * 设置链接文本字符间距
+     *
+     * @param spacing 链接文本字符间距
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkTextLetterSpacing(spacing: Float64): LinkTheme
+
+    /**
+     * 设置链接文本装饰线类型
+     *
+     * @param decorationType 链接文本装饰线类型
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkTextDecorationType(decorationType: TextDecorationType): LinkTheme
+
+    /**
+     * 设置链接文本装饰线颜色
+     *
+     * @param color 链接文本装饰线颜色
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkTextDecorationColor(color: Color): LinkTheme
+
+    /**
+     * 设置链接文本装饰线样式
+     *
+     * @param style 链接文本装饰线样式
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkTextDecorationStyle(style: MarkdownTextDecorationStyle): LinkTheme
+
+    /**
+     * 设置链接文本背景颜色
+     *
+     * @param color 链接文本背景颜色
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkTextBackgroundColor(color: Color): LinkTheme
+
+    /**
+     * 统一设置链接文本背景四个圆角
+     *
+     * @param radius 统一圆角半径,同时赋值给四个角
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkTextBackgroundRadius(radius: Float64): LinkTheme
+
+    /**
+     * 分别设置4个圆角
+     *
+     * @param topLeft 左上圆角 命名参数
+     * @param topRight 右上圆角 命名参数
+     * @param bottomLeft 左下圆角 命名参数
+     * @param bottomRight 右下圆角 命名参数
+     * @return 当前LinkTheme对象
+     */
+    public func setLinkTextBackgroundRadius(topLeft!: Float64, topRight!: Float64, bottomLeft!: Float64, bottomRight!: Float64): LinkTheme
+}
+```
+
+#### 块引用样式
+
+##### public class BlockQuoteTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 块引用样式
+ */
+public class BlockQuoteTheme <: MarkdownBaseTheme {
+    /**
+     * 设置块引用背景颜色
+     *
+     * @param color 块引用背景颜色
+     * @return 当前BlockQuoteTheme对象
+     */
+    public func setBlockQuoteBackgroundColor(color: Color): BlockQuoteTheme
+
+    /**
+     * 统一设置块引用整体外边距
+     *
+     * @param margin 外边距
+     * @return 当前BlockQuoteTheme对象
+     */
+    public func setBlockQuoteMargin(margin: Float64): BlockQuoteTheme
+
+    /**
+     * 分别设置块引用四个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前BlockQuoteTheme对象
+     */
+    public func setBlockQuoteMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 8.0): BlockQuoteTheme
+
+    /**
+     * 统一设置块引用整体内边距
+     *
+     * @param padding 内边距
+     * @return 当前BlockQuoteTheme对象
+     */
+    public func setBlockQuotePadding(padding: Float64): BlockQuoteTheme
+
+    /**
+     * 统一设置块引用整体圆角
+     *
+     * @param radius 圆角
+     * @return 当前BlockQuoteTheme对象
+     */
+    public func setBlockQuoteRadius(radius: Float64): BlockQuoteTheme
+
+    /**
+     * 设置块引用左侧边框宽度
+     *
+     * @param width 块引用左侧边框宽度
+     * @return 当前BlockQuoteTheme对象
+     */
+    public func setBlockQuoteLeftBorderWidth(width: Float64): BlockQuoteTheme
+
+    /**
+     * 设置块引用左侧边框颜色
+     *
+     * @param color 块引用左侧边框颜色
+     * @return 当前BlockQuoteTheme对象
+     */
+    public func setBlockQuoteLeftBorderColor(color: Color): BlockQuoteTheme
+
+    /**
+     * 设置块引用左侧线条和内容的间距
+     *
+     * @param space 块引用左侧线条和内容的间距
+     * @return 当前BlockQuoteTheme对象
+     */
+    public func setBlockQuoteBorderContentSpacing(space: Float64): BlockQuoteTheme
+
+    /**
+     * 设置块引用子模块间距
+     *
+     * @param space 块引用子模块间距
+     * @return 当前BlockQuoteTheme对象
+     */
+    public func setBlockQuoteChildSpacing(space: Int64): BlockQuoteTheme
+}
+```
+
+#### 无序/任务列表样式
+
+##### public class BulletListTheme <: MarkdownBaseTheme
+
+```cangjie
+/**
+ * 无序/任务列表样式
+ */
+public class BulletListTheme <: MarkdownBaseTheme {
+    /**
+     * 设置无序/任务背景颜色
+     *
+     * @param color 无序/任务背景颜色
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListBackgroundColor(color: Color): BulletListTheme
+
+    /**
+     * 统一设置无序/任务外边距
+     *
+     * @param margin 外边距
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListMargin(margin: Float64): BulletListTheme
+
+    /**
+     * 分别设置无序/任务四个外边距
+     *
+     * @param top 上外边距 命名参数
+     * @param right 右外边距 命名参数
+     * @param bottom 下外边距 命名参数
+     * @param left 左外边距 命名参数
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 8.0): BulletListTheme
+
+    /**
+     * 统一设置无序/任务内边距
+     *
+     * @param padding 内边距
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListPadding(padding: Float64): BulletListTheme
+
+    /**
+     * 设置无序/任务子模块上下间距
+     *
+     * @param spacing 无序/任务子模块上下间距
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListChildSpacing(spacing: Int64): BulletListTheme
+
+    /**
+     * 设置无序列表列表符号和列表内容间距
+     *
+     * @param spacing 无序列表列表符号和列表内容间距
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListBulletSpacing(spacing: Float64): BulletListTheme
+
+    /**
+     * 设置无序列表列表符号是否全部是实心圆型
+     *
+     * @param isCircle 无序列表列表符号是否全部是实心圆型
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListBulletIsCircle(isCircle: Bool): BulletListTheme
+
+    /**
+     * 设置无序列表列表符号文本颜色
+     *
+     * @param color 无序列表列表符号文本颜色
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListBulletTextFontColor(color: Color): BulletListTheme
+
+    /**
+     * 设置无序列表列表符号文本尺寸
+     *
+     * @param size 无序列表列表符号文本尺寸
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListBulletTextFontSize(size: Float64): BulletListTheme
+
+    /**
+     * 设置任务列表多选框和列表内容间距
+     *
+     * @param spacing 任务列表多选框和列表内容间距
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListCheckboxSpacing(spacing: Float64): BulletListTheme
+
+    /**
+     * 设置任务列表多选框宽度
+     *
+     * @param width 任务列表多选框宽度
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListCheckboxWidth(width: Float64): BulletListTheme
+
+    /**
+     * 设置任务列表多选框高度
+     *
+     * @param height 任务列表多选框高度
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListCheckboxHeight(height: Float64): BulletListTheme
+
+    /**
+     * 设置任务列表多选框选中颜色
+     *
+     * @param color 任务列表多选框选中颜色
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListCheckboxSelectedColor(color: Color): BulletListTheme
+
+    /**
+     * 设置任务列表多选框形状
+     *
+     * @param shape 任务列表多选框形状
+     * @return 当前BulletListTheme对象
+     */
+    public func setBulletListCheckboxShape(shape: CheckBoxShape): BulletListTheme
+}
+```
+
+### public enum LatexMathColorFormat <: Equatable<LatexMathColorFormat>
+
+数学公式生成图片格式枚举
+
+```cangjie
+/**
+ * 数学公式生成图片格式枚举
+ */
+public enum LatexMathColorFormat <: Equatable<LatexMathColorFormat> {
+    | COLOR_FORMAT_RGB_565 // 16位
+    | COLOR_FORMAT_BGRA_8888 // 32位
+
+    public operator func ==(that: LatexMathColorFormat): Bool
+
+    public operator func !=(that: LatexMathColorFormat): Bool
+
+    public static func fromInt64(value: Int64): ?LatexMathColorFormat
+
+    public func toInt64(): Int64
+}
+```
+
+### public enum MarkdownTextDecorationStyle <: Equatable<MarkdownTextDecorationStyle>
+
+装饰线样式枚举
+
+```cangjie
+/**
+ * 装饰线样式枚举
+ */
+public enum MarkdownTextDecorationStyle <: Equatable<MarkdownTextDecorationStyle> {
+    | SOLID // 实线
+    | DOUBLE // 双线
+    | DOTTED // 虚线
+    | DASHED // 破折线
+    | WAVY // 波浪线
+
+    public operator func ==(that: MarkdownTextDecorationStyle): Bool
+
+    public operator func !=(that: MarkdownTextDecorationStyle): Boo
+
+    public static func fromInt64(int: Int64): ?MarkdownTextDecorationStyle
+
+    public func toInt64(): Int64
+
+    public func toInt32(): Int32
 }
 ```
 
