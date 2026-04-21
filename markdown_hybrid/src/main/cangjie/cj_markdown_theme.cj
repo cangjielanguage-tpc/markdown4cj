@@ -8,1044 +8,129 @@ import ohos.ark_interop_macro.*
 @Interop[ArkTS]
 public class CJMarkdownTheme {
     /**
-     * markdown是否同步解析
+     * 全局样式
      */
-    var isMarkdownParserSync: ?Bool = None
+    var cjMarkdownGlobalTheme: CJMarkdownGlobalTheme = CJMarkdownGlobalTheme()
 
     /**
-     * 是否打开长按复制粘贴
+     * 链接文本样式
      */
-    var isOnCopy: ?Bool = None
+    var cjMarkdownLinkTheme: CJMarkdownLinkTheme = CJMarkdownLinkTheme()
 
     /**
-     * markdown第一个模块上边距
+     * banner样式
      */
-    var blockFirstTopMargin: ?Float64 = None
+    var cjMarkdownBannerTheme: CJMarkdownBannerTheme = CJMarkdownBannerTheme()
 
     /**
-     * markdown最后一个模块下边距
+     * 块引用样式
      */
-    var blockLastBottomMargin: ?Float64 = None
+    var cjMarkdownBlockQuoteTheme: CJMarkdownBlockQuoteTheme = CJMarkdownBlockQuoteTheme()
 
     /**
-     * 模块间上下间距
+     * 有序列表样式
      */
-    var blockTopAndBottomMargins: ?Float64 = None
+    var cjMarkdownOrderedListTheme: CJMarkdownOrderedListTheme = CJMarkdownOrderedListTheme()
 
     /**
-     * 链接是否是图片显示
+     * 无序/任务列表样式
      */
-    var isLinkStyle: ?Bool = None
+    var cjMarkdownBulletListTheme: CJMarkdownBulletListTheme = CJMarkdownBulletListTheme()
 
     /**
-     * 列表中的单行链接是否是图片显示
+     * 代码块样式
      */
-    var isListLinkStyle: ?Bool = None
+    var cjMarkdownCodeBlockTheme: CJMarkdownCodeBlockTheme = CJMarkdownCodeBlockTheme()
 
     /**
-     * 文本格式链接文本颜色
+     * 内联代码样式
      */
-    var linkColor: ?Color = None
+    var cjMarkdownInlineCodeTheme: CJMarkdownInlineCodeTheme = CJMarkdownInlineCodeTheme()
 
     /**
-     * 是否按照链接文字字体大小显示文本
+     * 标题样式
      */
-    var isLinkSize: ?Bool = None
+    var cjMarkdownHeadingTheme: CJMarkdownHeadingTheme = CJMarkdownHeadingTheme()
 
     /**
-     * 文本格式链接文字大小
+     * 段落样式
      */
-    var linkSize: ?Float64 = None
+    var cjMarkdownParagraphTheme: CJMarkdownParagraphTheme = CJMarkdownParagraphTheme()
 
     /**
-     * 文本格式链接文字行高
+     * 分割线样式
      */
-    var linkLineHeight: ?Float64 = None
+    var cjMarkdownDividerTheme: CJMarkdownDividerTheme = CJMarkdownDividerTheme()
 
     /**
-     * 文本格式链接背景颜色
+     * 数学公式样式
      */
-    var linkBackGroupColor: ?Color = None
+    var cjMarkdownLatexMathTheme: CJMarkdownLatexMathTheme = CJMarkdownLatexMathTheme()
 
     /**
-     * 文本格式是否显示链接下划线
+     * 音频样式
      */
-    var isLinkUnderlined: ?Bool = None
+    var cjMarkdownAudioTheme: CJMarkdownAudioTheme = CJMarkdownAudioTheme()
 
     /**
-     * 圆形图片格式链接主题背景颜色
+     * 加粗文本样式
      */
-    var linkCircleImageBackGroupColor: ?Color = None
+    var cjMarkdownBoldTheme: CJMarkdownBoldTheme = CJMarkdownBoldTheme()
 
     /**
-     * 圆形图片格式链接控件背景颜色
+     * 斜体文本样式
      */
-    var linkCircleImageButtonBackGroupColor: ?Color = None
+    var cjMarkdownItalicTheme: CJMarkdownItalicTheme = CJMarkdownItalicTheme()
 
     /**
-     * 圆形图片格式链接文字大小
+     * 删除线文本样式
      */
-    var linkCircleImageTextSize: ?Float64 = None
+    var cjMarkdownStrikethroughTheme: CJMarkdownStrikethroughTheme = CJMarkdownStrikethroughTheme()
 
     /**
-     * 圆形图片格式链接文字颜色
+     * 脚注定义样式
      */
-    var linkCircleImageTextColor: ?Color = None
+    var cjMarkdownFootnoteDefTheme: CJMarkdownFootnoteDefTheme = CJMarkdownFootnoteDefTheme()
 
     /**
-     * 圆形图片格式链接半径
+     * 脚注引用样式
      */
-    var linkCircleImageRadius: ?Float64 = None
+    var cjMarkdownFootnoteRefTheme: CJMarkdownFootnoteRefTheme = CJMarkdownFootnoteRefTheme()
 
     /**
-     * 圆形图片格式链接左右外边距
+     * 视频样式
      */
-    var linkCircleImageMargin: ?Float64 = None
+    var cjMarkdownVideoTheme: CJMarkdownVideoTheme = CJMarkdownVideoTheme()
 
     /**
-     * 圆角矩形图片格式链接主题背景颜色
+     * 图片样式
      */
-    var linkRectImageBackGroupColor: ?Color = None
+    var cjMarkdownImageTheme: CJMarkdownImageTheme = CJMarkdownImageTheme()
 
     /**
-     * 圆角矩形图片格式链接控件背景颜色
+     * 表格样式
      */
-    var linkRectImageButtonBackGroupColor: ?Color = None
+    var cjMarkdownTableTheme: CJMarkdownTableTheme = CJMarkdownTableTheme()
 
     /**
-     * 圆角矩形图片格式链接文字大小
+     * 定义列表样式
      */
-    var linkRectImageTextSize: ?Float64 = None
+    var cjMarkdownDefinitionListTheme: CJMarkdownDefinitionListTheme = CJMarkdownDefinitionListTheme()
 
     /**
-     * 圆角矩形图片格式链接文字颜色
+     * 下标文本样式
      */
-    var linkRectImageTextColor: ?Color = None
+    var cjMarkdownSubTheme: CJMarkdownSubTheme = CJMarkdownSubTheme()
 
     /**
-     * 圆角矩形图片格式链接控件高度
+     * 上标文本样式
      */
-    var linkRectImageHeight: ?Float64 = None
+    var cjMarkdownSupTheme: CJMarkdownSupTheme = CJMarkdownSupTheme()
 
     /**
-     * 圆角矩形图片格式链接左右内边距
+     * 下划线样式
      */
-    var linkRectImagePadding: ?Float64 = None
-
-    /**
-     * 圆角矩形图片格式链接圆角半径
-     */
-    var linkRectImageRadius: ?Float64 = None
-
-    /**
-     * 圆角矩形图片格式链接左右外边距
-     */
-    var linkRectImageMargin: ?Float64 = None
-
-    /**
-     * 空心圆角矩形图片格式链接主题背景颜色
-     */
-    var linkRectToolImageBackGroupColor: ?Color = None
-
-    /**
-     * 空心圆角矩形图片格式链接控件背景颜色
-     */
-    var linkRectToolImageButtonBackGroupColor: ?Color = None
-
-    /**
-     * 空心圆角矩形图片格式链接文字大小
-     */
-    var linkRectToolImageTextSize: ?Float64 = None
-
-    /**
-     * 空心圆角矩形图片格式链接控件高度
-     */
-    var linkRectToolImageHeight: ?Float64 = None
-
-    /**
-     * 空心圆角矩形图片格式链接左右内边距
-     */
-    var linkRectToolImagePadding: ?Float64 = None
-
-    /**
-     * 空心圆角矩形图片格式链接边框宽度
-     */
-    var linkRectToolImageBorderWidth: ?Float64 = None
-
-    /**
-     * 空心圆角矩形图片格式链接分割线宽度
-     */
-    var linkRectToolImageDividingLineWidth: ?Float64 = None
-
-    /**
-     * 空心圆角矩形图片格式链接左右外边距
-     */
-    var linkRectToolImageMargin: ?Float64 = None
-
-    /**
-     * 空心圆角矩形图片格式分割线和文本左边距
-     */
-    var linkRectToolImageLineLeftPadding: ?Float64 = None
-
-    /**
-     * 空心圆角矩形图片格式分割线和文本右边距
-     */
-    var linkRectToolImageLineRightPadding: ?Float64 = None
-
-    /**
-     * 块引用左边距
-     */
-    var blockQuoteLeftMargin: ?Float64 = None
-
-    /**
-     * 块引用右边距
-     */
-    var blockQuoteRightMargin: ?Float64 = None
-
-    /**
-     * 块引用左边线条宽度
-     */
-    var blockQuoteWidth: ?Float64 = None
-
-    /**
-     * 块引用左边线条颜色
-     */
-    var blockQuoteColor: ?Color = None
-
-    /**
-     * 块引用背景颜色
-     */
-    var blockQuoteBackGroupColor: ?Color = None
-
-    /**
-     * 块引用子模块上下间距
-     */
-    var blockQuoteTopAndBottomMargins: ?Float64 = None
-
-    /**
-     * 有序列表、无序列表、任务列表子模块上下间距
-     */
-    var blockOrderedAndBulletTopAndBottomMargins: ?Float64 = None
-
-    /**
-     * 有序列表、无序列表、任务列表左边距
-     */
-    var blockLeftMargin: ?Float64 = None
-
-    /**
-     * 有序列表、无序列表、任务列表右边距
-     */
-    var blockRightMargin: ?Float64 = None
-
-    /**
-     * 有序列表前缀文本是否加粗
-     */
-    var orderedListItemPrefixBold: ?Bool = None
-
-    /**
-     * 有序列表前缀文本颜色
-     */
-    var orderedListItemColor: ?Color = None
-
-    /**
-     * 有序列表前缀文本大小
-     */
-    var orderedListItemSize: ?Float64 = None
-
-    /**
-     * 有序列表前缀文本行高
-     */
-    var orderedListItemLineHeight: ?Float64 = None
-
-    /**
-     * 无序列表前缀是否全部是实心圆型
-     */
-    var bulletListItemCircle: ?Bool = None
-
-    /**
-     * 无序列表前缀文本颜色
-     */
-    var bulletListItemColor: ?Color = None
-
-    /**
-     * 无序列表前缀文本大小
-     */
-    var bulletListItemSize: ?Float64 = None
-
-    /**
-     * 无序列表前缀文本行高
-     */
-    var bulletListItemLineHeight: ?Float64 = None
-
-    /**
-     * 任务列表选择框宽高
-     */
-    var taskListItemLength: ?Float64 = None
-
-    /**
-     * 是否格式化代码块内容
-     */
-    var isCodeFormat: ?Bool = None
-
-    /**
-     * 内联代码文本颜色
-     */
-    var codeTextColor: ?Color = None
-
-    /**
-     * 内联代码背景颜色
-     */
-    var codeBackgroundColor: ?Color = None
-
-    /**
-     * 内联代码文本大小
-     */
-    var codeTextSize: ?Float64 = None
-
-    /**
-     * 内联代码文本字体
-     */
-    var codeTypeface: ?String = None
-
-    /**
-     * 围栏代码块代码高亮是否同步解析
-     */
-    var isCodeBlockParserSync: ?Bool = None
-
-    /**
-     * 代码块代码文本颜色
-     */
-    var codeBlockTextColor: ?Color = None
-
-    /**
-     * 代码块代码类型文本颜色
-     */
-    var codeBlockTypeTextColor: ?Color = None
-
-    /**
-     * 代码块代码类型文本
-     */
-     var codeBlockTypeTextStr: ?String = None
-
-    /**
-     * 代码类型和代码块距离
-     */
-     var codeBlockTypeTextPadding: ?Float64 = None
-
-    /**
-     * 代码块复制、全屏图片文字是否显示
-     */
-    var codeBlockIconTextHide: ?Bool = None
-
-    /**
-     * 代码块代码行号是否显示
-     */
-    var codeBlockLineNumberHide: ?Bool = None
-
-    /**
-     * 代码块背景颜色
-     */
-    var codeBlockBackgroundColor: ?Color = None
-
-    /**
-     * 代码块左边距
-     */
-    var codeMultilineMargin: ?Float64 = None
-
-    /**
-     * 代码块字体
-     */
-    var codeBlockTypeface: ?String = None
-
-    /**
-     * 代码块代码文本大小
-     */
-    var codeBlockTextSize: ?Float64 = None
-
-    /**
-     * 代码块代码文本行高
-     */
-    var codeBlockLineHeight: ?Float64 = None
-
-    /**
-     * 代码块控件圆角大小
-     */
-    var codeBlockRadius: ?Float64 = None
-
-    /**
-     * 代码块代码全屏按钮是否显示
-     */
-    var isCodeFullScreen: ?Bool = None
-
-    /**
-     * 代码块代码全屏、代码复制按钮宽高
-     */
-    var iconWidthAndHeight: ?Float64 = None
-
-    /**
-     * 组合代码未选中标题字体大小
-     */
-    var codeListTitleTextSize: ?Float64 = None
-
-    /**
-     * 组合代码选中标题字体大小
-     */
-    var codeListTitleSelectTextSize: ?Float64 = None
-
-    /**
-     * 组合代码选中标题文本颜色
-     */
-    var codeListTitleSelectTextColor: ?Color = None
-
-    /**
-     * 组合代码未选中标题文本颜色
-     */
-    var codeListTitleUnSelectTextColor: ?Color = None
-
-    /**
-     * 组合代码选中标题背景颜色
-     */
-    var codeListTitleSelectBackGroupColor: ?Color = None
-
-    /**
-     * 组合代码未选中标题背景颜色
-     */
-    var codeListTitleUnSelectBackGroupColor: ?Color = None
-
-    /**
-     * 是否单独代码块显示
-     */
-    var isSeparateCodeBlock: ?Bool = None
-
-    /**
-     * 单独代码块行号宽度
-     */
-    var separateCodeBlockWidth: ?Float64 = None
-
-    /**
-     * 单独代码块是否居底显示
-     */
-    var separateCodeIsBottom: ?Bool = None
-
-    /**
-     * H1、H2标题下分割线高度
-     */
-    var headingBreakHeight: ?Float64 = None
-
-    /**
-     * 标题文本字体
-     */
-    var headingTypeface: ?String = None
-
-    /**
-     * 标题模块上间距
-     */
-    var headingTopMargins: ?Float64 = None
-
-    /**
-     * 标题模块下间距
-     */
-    var headingBottomMargins: ?Float64 = None
-
-    /**
-     * 一级标题文本大小
-     */
-    var headingTextSize1: ?Float64 = None
-
-    /**
-     * 二级标题文本大小
-     */
-    var headingTextSize2: ?Float64 = None
-
-    /**
-     * 三级标题文本大小
-     */
-    var headingTextSize3: ?Float64 = None
-
-    /**
-     * 四级标题文本大小
-     */
-    var headingTextSize4: ?Float64 = None
-
-    /**
-     * 五级标题文本大小
-     */
-    var headingTextSize5: ?Float64 = None
-
-    /**
-     * 六级标题文本大小
-     */
-    var headingTextSize6: ?Float64 = None
-
-    /**
-     * 标题文本字间距
-     */
-    var headingTextWordSpace: ?Float64 = None
-
-    /**
-     * 一级标题文本行高
-     */
-    var headingTextLineHeight1: ?Float64 = None
-
-    /**
-     * 二级标题文本行高
-     */
-    var headingTextLineHeight2: ?Float64 = None
-
-    /**
-     * 三级标题文本行高
-     */
-    var headingTextLineHeight3: ?Float64 = None
-
-    /**
-     * 四级标题文本行高
-     */
-    var headingTextLineHeight4: ?Float64 = None
-
-    /**
-     * 五级标题文本行高
-     */
-    var headingTextLineHeight5: ?Float64 = None
-
-    /**
-     * 六级标题文本行高
-     */
-    var headingTextLineHeight6: ?Float64 = None
-
-    /**
-     * 一级标题文本颜色
-     */
-    var headingTextColor1: ?Color = None
-
-    /**
-     * H1标题下分割线颜色
-     */
-    var headingBreakColor1: ?Color = None
-
-    /**
-     * 二级标题文本颜色
-     */
-    var headingTextColor2: ?Color = None
-
-    /**
-     * H2标题下分割线颜色
-     */
-    var headingBreakColor2: ?Color = None
-
-    /**
-     * 三级标题文本颜色
-     */
-    var headingTextColor3: ?Color = None
-
-    /**
-     * 四级标题文本颜色
-     */
-    var headingTextColor4: ?Color = None
-
-    /**
-     * 五级标题文本颜色
-     */
-    var headingTextColor5: ?Color = None
-
-    /**
-     * 六级标题文本颜色
-     */
-    var headingTextColor6: ?Color = None
-
-    /**
-     * 段落模块上间距
-     */
-    var paragraphTopMargins: ?Float64 = None
-
-    /**
-     * 段落模块下间距
-     */
-    var paragraphBottomMargins: ?Float64 = None
-
-    /**
-     * 段落文本大小
-     */
-    var paragraphTextSize: ?Float64 = None
-
-    /**
-     * 段落文本颜色
-     */
-    var paragraphTextColor: ?Color = None
-
-    /**
-     * 段落文本字间距
-     */
-    var paragraphTextWordSpace: ?Float64 = None
-
-    /**
-     * 段落文本行高
-     */
-    var paragraphTextLineHeight: ?Float64 = None
-
-    /**
-     * 段落文本字体
-     */
-    var paragraphTypeface: ?String = None
-
-    /**
-     * 分割线颜色
-     */
-    var thematicBreakColor: ?Color = None
-
-    /**
-     * 分割线高度
-     */
-    var thematicBreakHeight: ?Float64 = None
-
-    /**
-     * 分割线上部外边距
-     */
-    var thematicBreakTopMargin: ?Float64 = None
-
-    /**
-     * 分割线下部外边距
-     */
-    var thematicBreakBottomMargin: ?Float64 = None
-
-    /**
-     * 软换行是否换行
-     */
-    var isLineBreak: ?Bool = None
-
-    /**
-     * 数学公式未加载状态是否显示文字
-     */
-    var latexDefaultText: ?Bool = None
-
-    /**
-     * 数学公式文本大小
-     */
-    var latexMathTextSize: ?Float64 = None
-
-    /**
-     * 数学公式背景色
-     */
-    var latexMathBackGroupColor: ?Color = None
-
-    /**
-     * 数学公式文本颜色
-     */
-    var latexMathTextColor: ?Color = None
-
-    /**
-     * 数学公式生成图片格式
-     */
-    var latexMathColorFormat: ?LatexMathColorFormat = None
-
-    /**
-     * 块结构的数学公式是否居中
-     */
-    var latexMathBlockCenter: ?Bool = None
-
-    /**
-     * 数学公式字体路径
-     */
-    var latexMathResStr: ?String = None
-
-    /**
-     * 音频阴影颜色值
-     */
-    var audioShadowColor: ?Color = None
-
-    /**
-     * 音频边框颜色
-     */
-    var audioBorderColor: ?Color = None
-
-    /**
-     * 音频边框粗细
-     */
-    var audioBorderWidth: ?Float64 = None
-
-    /**
-     * 音频边框圆角
-     */
-    var audioBorderRadius: ?Float64 = None
-
-    /**
-     * 音频按钮背景颜色
-     */
-    var audioButtonBackgroundColor: ?Color = None
-
-    /**
-     * 音频按钮文字颜色
-     */
-    var audioButtonTextColor: ?Color = None
-
-    /**
-     * 音频按钮文字大小
-     */
-    var audioButtonTextSize: ?Float64 = None
-
-    /**
-     * 音频按钮文字内容
-     */
-    var audioButtonText: ?String = None
-
-    /**
-     * 音频按钮圆角
-     */
-    var audioButtonBorderRadius: ?Float64 = None
-
-    /**
-     * 音频标题文字大小
-     */
-    var audioTitleTextSize: ?Float64 = None
-
-    /**
-     * 音频标题文字颜色
-     */
-    var audioTitleTextColor: ?Color = None
-
-    /**
-     * 音频标题文字行高
-     */
-    var audioTitleTextLineHeight: ?Float64 = None
-
-    /**
-     * 音频类型文字大小
-     */
-    var audioTypeTextSize: ?Float64 = None
-
-    /**
-     * 音频类型文字颜色
-     */
-    var audioTypeTextColor: ?Color = None
-
-    /**
-     * 音频类型文字行高
-     */
-    var audioTypeTextLineHeight: ?Float64 = None
-
-    /**
-     * 音频上边距
-     */
-    var audioMarginTop: ?Float64 = None
-
-    /**
-     * 音频下边距
-     */
-    var audioMarginBottom: ?Float64 = None
-
-    /**
-     * 视频圆角
-     */
-    var videoBorderRadius: ?Float64 = None
-
-    /**
-     * 视频时间文本颜色
-     */
-    var videoTimeTextColor: ?Color = None
-
-    /**
-     * 视频时间文本大小
-     */
-    var videoTimeTextSize: ?Float64 = None
-
-    /**
-     * 视频时间文本居右边距
-     */
-    var videoTimeTextMarginRight: ?Float64 = None
-
-    /**
-     * 视频时间文本居底边距
-     */
-    var videoTimeTextMarginBottom: ?Float64 = None
-
-    /**
-     * 视频上边距
-     */
-    var videoMarginTop: ?Float64 = None
-
-    /**
-     * 视频下边距
-     */
-    var videoMarginBottom: ?Float64 = None
-
-    /**
-     * 视频发布/下载按钮布局是否显示
-     */
-    var isVideoBottomLayout: ?Bool = None
-
-    /**
-     * 视频发布按钮图片宽度和高度
-     */
-    var videoReleaseImageWidthHeight: ?Float64 = None
-
-    /**
-     * 视频发布按钮宽度
-     */
-    var videoReleaseWidth: ?Float64 = None
-
-    /**
-     * 视频发布按钮高度
-     */
-    var videoReleaseHeight: ?Float64 = None
-
-    /**
-     * 视频发布按钮圆角
-     */
-    var videoReleaseRadius: ?Float64 = None
-
-    /**
-     * 视频发布按钮文本内容
-     */
-    var videoReleaseText: ?String = None
-
-    /**
-     * 视频发布按钮文本大小
-     */
-    var videoReleaseTexSize: ?Float64 = None
-
-    /**
-     * 视频发布按钮文本颜色
-     */
-    var videoReleaseTexColor: ?Color = Option<Color>.None
-
-    /**
-     * 视频发布按钮背景颜色
-     */
-    var videoReleaseBackgroundColor: ?Color = Option<Color>.None
-
-    /**
-     * 视频下载按钮图片宽度和高度
-     */
-    var videoDownloadImageWidthHeight: ?Float64 = None
-
-    /**
-     * 视频下载按钮宽度
-     */
-    var videoDownloadWidth: ?Float64 = None
-
-    /**
-     * 视频下载按钮高度
-     */
-    var videoDownloadHeight: ?Float64 = None
-
-    /**
-     * 视频下载按钮圆角
-     */
-    var videoDownloadRadius: ?Float64 = None
-
-    /**
-     * 视频下载按钮文本内容
-     */
-    var videoDownloadText: ?String = None
-
-    /**
-     * 视频下载按钮文本大小
-     */
-    var videoDownloadTexSize: ?Float64 = None
-
-    /**
-     * 视频下载按钮文本颜色
-     */
-    var videoDownloadTexColor: ?Color = Option<Color>.None
-
-    /**
-     * 视频下载按钮背景颜色
-     */
-    var videoDownloadBackgroundColor: ?Color = Option<Color>.None
-
-    /**
-     * 图片缩放类型
-     */
-    var imageFitType: ?ImageFit = Option<ImageFit>.None
-
-    /**
-     * 图片最大宽度百分比
-     */
-    var imageMaximumWidth: ?Float64 = None
-
-    /**
-     * 图片固定宽度百分比
-     */
-    var imageFixedRatioWidth: ?Float64 = None
-
-    /**
-     * 图片最大高度
-     */
-    var imageMaxHeight: ?Float64 = None
-
-    /**
-     * 图片最大宽度
-     */
-    var imageMaxWidth: ?Float64 = None
-
-    /**
-     * 图片圆角大小
-     */
-    var imageBorderRadius: ?Float64 = None
-
-    /**
-     * 图片边框宽度
-     */
-    var imageBorderWidth: ?Float64 = None
-
-    /**
-     * 图片边框颜色
-     */
-    var imageBorderColor: ?Color = None
-
-    /**
-     * 网络图片是否压缩
-     */
-    var isAutoResize: ?Bool = None
-
-    /**
-     * 图片上边距
-     */
-    var imageMarginTop: ?Float64 = None
-
-    /**
-     * 图片下边距
-     */
-    var imageMarginBottom: ?Float64 = None
-
-    /**
-     * 图片是否有下载按钮
-     */
-    var isImageDownload: ?Bool = None
-
-    /**
-     * 是否图文混排
-     */
-    var isImageMixedLayout: ?Bool = None
-
-    /**
-     * 图片下载按钮图片宽度和高度
-     */
-    var imageDownloadImageWidthHeight: ?Float64 = None
-
-    /**
-     * 图片下载按钮宽度
-     */
-    var imageDownloadWidth: ?Float64 = None
-
-    /**
-     * 图片下载按钮高度
-     */
-    var imageDownloadHeight: ?Float64 = None
-
-    /**
-     * 图片下载按钮圆角
-     */
-    var imageDownloadRadius: ?Float64 = None
-
-    /**
-     * 图片下载按钮文本内容
-     */
-    var imageDownloadText: ?String = None
-
-    /**
-     * 图片下载按钮文本大小
-     */
-    var imageDownloadTexSize: ?Float64 = None
-
-    /**
-     * 图片下载按钮文本颜色
-     */
-    var imageDownloadTexColor: ?Color = None
-
-    /**
-     * 图片下载按钮背景颜色
-     */
-    var imageDownloadBackgroundColor: ?Color = None
-
-    /**
-     * 表格内容内边距
-     */
-    var tableCellPadding: ?Float64 = None
-
-    /**
-     * 表格边框颜色
-     */
-    var tableBorderColor: ?Color = None
-
-    /**
-     * 表格边框宽度
-     */
-    var tableBorderWidth: ?Float64 = None
-
-    /**
-     * 表格奇数行背景色
-     */
-    var tableOddRowBackgroundColor: ?Color = None
-
-    /**
-     * 表格偶数行背景色
-     */
-    var tableEvenRowBackgroundColor: ?Color = None
-
-    /**
-     * 表格标题背景色
-     */
-    var tableHeaderRowBackgroundColor: ?Color = None
-
-    /**
-     * 表格标题文本颜色
-     */
-    var tableTitleTextColor: ?Color = None
-
-    /**
-     * 表格标题文本大小
-     */
-    var tableTitleTextSize: ?Float64 = None
-
-    /**
-     * 表格标题文本行高
-     */
-    var tableTitleLineHeight: ?Float64 = None
-
-    /**
-     * 表格内容文本颜色
-     */
-    var tableContentTextColor: ?Color = None
-
-    /**
-     * 表格内容文本大小
-     */
-    var tableContentTextSize: ?Float64 = None
-
-    /**
-     * 表格文本行高
-     */
-    var tableTextLineHeight: ?Float64 = None
-
-    /**
-     * 表格圆角
-     */
-    var tableRadius: ?Float64 = None
-
-    /**
-     * 表格最小宽度
-     */
-    var tableMinTextWidth: ?Float64 = None
-
-    /**
-     * 表格最大宽度
-     */
-    var tableMaxTextWidth: ?Float64 = None
-
-    /**
-     * 表格第一列是否加粗
-     */
-    var tableFirstColumnBold: ?Bool = None
-
-    /**
-     * 表格是否显示滚动条
-     */
-    var tableScrollBarShow: ?Bool = None
-
-    /**
-     * 表格滚动条颜色
-     */
-    var tableScrollBarColor: ?Color = None
+    var cjMarkdownHtmlUnderlineTheme: CJMarkdownHtmlUnderlineTheme = CJMarkdownHtmlUnderlineTheme()
 
     /**
      * 代码深浅色模式
@@ -1053,84 +138,9 @@ public class CJMarkdownTheme {
     var isDark: ?Bool = None
 
     /**
-     * 删除线颜色
+     * 是否按照链接文本字体大小显示文本
      */
-    var strikethroughColor: ?Color = None
-
-    /**
-     * 删除线样式
-     */
-    var strikethroughStyle: ?Int32 = None
-
-    /**
-     * 定义列表术语和定义行之间间距
-     */
-    var descListTermAndDefMargins: ?Float64 = None
-
-    /**
-     * 定义列表定义行缩进
-     */
-    var descListDefIndentation: ?Float64 = None
-
-    /**
-     * 定义列表定义行间距
-     */
-    var descListDefMargins: ?Float64 = None
-
-    /**
-     * 下标字体颜色
-     */
-    var subTextColor: ?Color = None
-
-    /**
-     * 下标字体大小
-     */
-    var subTextSize: ?Float64 = None
-
-    /**
-     * 下标偏移距离
-     */
-    var subOffsetDist: ?Float64 = None
-
-    /**
-     * 上标字体颜色
-     */
-    var supTextColor: ?Color = None
-
-    /**
-     * 上标字体大小
-     */
-    var supTextSize: ?Float64 = None
-
-    /**
-     * 上标偏移距离
-     */
-    var supOffsetDist: ?Float64 = None
-
-    /**
-     * 下划线颜色
-     */
-    var underlineColor: ?Color = None
-
-    /**
-     * 下划线样式
-     */
-    var underlineStyle: ?Int32 = None
-
-    /**
-     * markdown是否支持滚动手势
-     */
-    var openGestureSwipe: ?Bool = None
-
-    /**
-     * codeformat是否用制表符
-     */
-    var useTab: ?Bool = None
-
-    /**
-     * codeformat空格缩进数量，默认4空格
-     */
-    var indentWidth: ?Int64 = None
+    var isLinkSize: ?Bool = None
 
     public init() {}
 
@@ -1140,7 +150,7 @@ public class CJMarkdownTheme {
      * @param isMarkdownParserSync markdown是否同步解析 - 默认false
      */
     public func setIsMarkdownParserSync(isMarkdownParserSync: Bool): Unit {
-        this.isMarkdownParserSync = isMarkdownParserSync
+        this.cjMarkdownGlobalTheme.setIsMarkdownParserSync(isMarkdownParserSync)
     }
 
     /**
@@ -1149,7 +159,7 @@ public class CJMarkdownTheme {
      * @param isOnCopy 是否打开长按复制粘贴 - 默认true
      */
     public func setIsOnCopy(isOnCopy: Bool): Unit {
-        this.isOnCopy = isOnCopy
+        this.cjMarkdownGlobalTheme.setIsOnCopy(isOnCopy)
     }
 
     /**
@@ -1158,7 +168,7 @@ public class CJMarkdownTheme {
      * @param blockFirstTopMargin markdown第一个模块上边距 - 默认8.0vp
      */
     public func setBlockFirstTopMargin(blockFirstTopMargin: Float64): Unit {
-        this.blockFirstTopMargin = blockFirstTopMargin
+        this.cjMarkdownGlobalTheme.blockMarginTop = blockFirstTopMargin
     }
 
     /**
@@ -1167,7 +177,7 @@ public class CJMarkdownTheme {
      * @param blockLastBottomMargin markdown最后一个模块下边距 - 默认8.0vp
      */
     public func setBlockLastBottomMargin(blockLastBottomMargin: Float64): Unit {
-        this.blockLastBottomMargin = blockLastBottomMargin
+        this.cjMarkdownGlobalTheme.blockMarginBottom = blockLastBottomMargin
     }
 
     /**
@@ -1176,7 +186,7 @@ public class CJMarkdownTheme {
      * @param blockTopAndBottomMargins 模块间上下间距 - 默认8.0vp
      */
     public func setBlockTopAndBottomMargins(blockTopAndBottomMargins: Float64): Unit {
-        this.blockTopAndBottomMargins = blockTopAndBottomMargins
+        this.cjMarkdownGlobalTheme.setBlockSpacing(Int64(blockTopAndBottomMargins))
     }
 
     /**
@@ -1185,7 +195,7 @@ public class CJMarkdownTheme {
      * @param isLinkStyle 链接是否是图片显示 - true：图片显示；false：文本显示。默认false
      */
     public func setIsLinkStyle(isLinkStyle: Bool): Unit {
-        this.isLinkStyle = isLinkStyle
+        this.cjMarkdownLinkTheme.setLinkIsIcon(isLinkStyle)
     }
 
     /**
@@ -1194,7 +204,7 @@ public class CJMarkdownTheme {
      * @param isListLinkStyle 列表中的单行链接是否是图片显示 - true：图片显示；false：文本显示。默认false
      */
     public func setIsListLinkStyle(isListLinkStyle: Bool): Unit {
-        this.isListLinkStyle = isListLinkStyle
+        this.cjMarkdownLinkTheme.setLinkListIsIcon(isListLinkStyle)
     }
 
     /**
@@ -1203,7 +213,7 @@ public class CJMarkdownTheme {
      * @param linkColor 文本格式链接文本颜色 - 默认0XFF0000FF
      */
     public func setLinkColor(linkColor: UInt32): Unit {
-        this.linkColor = transColorForTrasparent(linkColor)
+        this.cjMarkdownLinkTheme.setLinkTextFontColor(linkColor)
     }
 
     /**
@@ -1221,7 +231,7 @@ public class CJMarkdownTheme {
      * @param linkSize 文本格式链接文字大小 - 默认14.0fp
      */
     public func setLinkSize(linkSize: Float64): Unit {
-        this.linkSize = linkSize
+        this.cjMarkdownLinkTheme.setLinkTextFontSize(linkSize)
     }
 
     /**
@@ -1230,7 +240,7 @@ public class CJMarkdownTheme {
      * @param linkLineHeight 文本格式链接文字行高
      */
     public func setLinkLineHeight(linkLineHeight: Float64): Unit {
-        this.linkLineHeight = linkLineHeight
+        this.cjMarkdownLinkTheme.setLinkTextLineHeight(linkLineHeight)
     }
 
     /**
@@ -1239,7 +249,7 @@ public class CJMarkdownTheme {
      * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0XFF000000
      */
     public func setLinkBackGroupColor(linkBackGroupColor: UInt32): Unit {
-        this.linkBackGroupColor = transColorForTrasparent(linkBackGroupColor)
+        this.cjMarkdownLinkTheme.setLinkTextBackgroundColor(linkBackGroupColor)
     }
 
     /**
@@ -1248,7 +258,11 @@ public class CJMarkdownTheme {
      * @param isLinkUnderlined 文本格式是否显示链接下划线 - true：显示下划线；false：不显示下划线。默认true
      */
     public func setIsLinkUnderlined(isLinkUnderlined: Bool): Unit {
-        this.isLinkUnderlined = isLinkUnderlined
+        if (isLinkUnderlined) {
+            this.cjMarkdownLinkTheme.setLinkTextDecorationType(2)
+        } else {
+            this.cjMarkdownLinkTheme.setLinkTextDecorationType(0)
+        }
     }
 
     /**
@@ -1257,7 +271,7 @@ public class CJMarkdownTheme {
      * @param linkCircleImageBackGroupColor 圆形图片格式链接主题背景颜色 - 默认0XFFFFFFFF
      */
     public func setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: UInt32): Unit {
-        this.linkCircleImageBackGroupColor = transColorForTrasparent(linkCircleImageBackGroupColor)
+        this.cjMarkdownLinkTheme.setLinkCircleIconBackgroundColor(linkCircleImageBackGroupColor)
     }
 
     /**
@@ -1266,7 +280,7 @@ public class CJMarkdownTheme {
      * @param linkCircleImageButtonBackGroupColor 圆形图片格式链接控件背景颜色 - 默认0XFF000000
      */
     public func setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: UInt32): Unit {
-        this.linkCircleImageButtonBackGroupColor = transColorForTrasparent(linkCircleImageButtonBackGroupColor)
+        this.cjMarkdownLinkTheme.setLinkCircleIconButtonBackgroundColor(linkCircleImageButtonBackGroupColor)
     }
 
     /**
@@ -1275,7 +289,7 @@ public class CJMarkdownTheme {
      * @param linkCircleImageTextSize 圆形图片格式链接文字大小 - 默认14.0fp
      */
     public func setLinkCircleImageTextSize(linkCircleImageTextSize: Float64): Unit {
-        this.linkCircleImageTextSize = linkCircleImageTextSize
+        this.cjMarkdownLinkTheme.setLinkCircleIconTextSize(linkCircleImageTextSize)
     }
 
     /**
@@ -1284,7 +298,7 @@ public class CJMarkdownTheme {
      * @param linkCircleImageTextColor 圆形图片格式链接文字颜色 - 默认0XFFFFFFFF
      */
     public func setLinkCircleImageTextColor(linkCircleImageTextColor: UInt32): Unit {
-        this.linkCircleImageTextColor = transColorForTrasparent(linkCircleImageTextColor)
+        this.cjMarkdownLinkTheme.setLinkCircleIconTextColor(linkCircleImageTextColor)
     }
 
     /**
@@ -1293,7 +307,7 @@ public class CJMarkdownTheme {
      * @param linkCircleImageRadius 圆形图片格式链接半径 - 默认20.0vp
      */
     public func setLinkCircleImageRadius(linkCircleImageRadius: Float64): Unit {
-        this.linkCircleImageRadius = linkCircleImageRadius
+        this.cjMarkdownLinkTheme.setLinkCircleIconRadius(linkCircleImageRadius)
     }
 
     /**
@@ -1302,7 +316,7 @@ public class CJMarkdownTheme {
      * @param linkCircleImageMargin 圆形图片格式链接左右外边距 - 默认6.0vp
      */
     public func setLinkCircleImageMargin(linkCircleImageMargin: Float64): Unit {
-        this.linkCircleImageMargin = linkCircleImageMargin
+        this.cjMarkdownLinkTheme.setLinkCircleIconMargin(linkCircleImageMargin)
     }
 
     /**
@@ -1311,7 +325,7 @@ public class CJMarkdownTheme {
      * @param linkRectImageBackGroupColor 圆角矩形图片格式链接主题背景颜色 - 默认0XFFFFFFFF
      */
     public func setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: UInt32): Unit {
-        this.linkRectImageBackGroupColor = transColorForTrasparent(linkRectImageBackGroupColor)
+        this.cjMarkdownLinkTheme.setLinkRectIconBackgroundColor(linkRectImageBackGroupColor)
     }
 
     /**
@@ -1320,7 +334,7 @@ public class CJMarkdownTheme {
      * @param linkRectImageButtonBackGroupColor 圆角矩形图片格式链接控件背景颜色 - 默认0XFF000000
      */
     public func setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: UInt32): Unit {
-        this.linkRectImageButtonBackGroupColor = transColorForTrasparent(linkRectImageButtonBackGroupColor)
+        this.cjMarkdownLinkTheme.setLinkRectIconButtonBackgroundColor(linkRectImageButtonBackGroupColor)
     }
 
     /**
@@ -1329,7 +343,7 @@ public class CJMarkdownTheme {
      * @param linkRectImageTextSize 圆角矩形图片格式链接文字大小 - 默认14.0fp
      */
     public func setLinkRectImageTextSize(linkRectImageTextSize: Float64): Unit {
-        this.linkRectImageTextSize = linkRectImageTextSize
+        this.cjMarkdownLinkTheme.setLinkRectIconTextSize(linkRectImageTextSize)
     }
 
     /**
@@ -1338,7 +352,7 @@ public class CJMarkdownTheme {
      * @param linkRectImageTextColor 圆角矩形图片格式链接文字颜色 - 默认0XFFFFFFFF
      */
     public func setLinkRectImageTextColor(linkRectImageTextColor: UInt32): Unit {
-        this.linkRectImageTextColor = transColorForTrasparent(linkRectImageTextColor)
+        this.cjMarkdownLinkTheme.setLinkRectIconTextColor(linkRectImageTextColor)
     }
 
     /**
@@ -1347,7 +361,7 @@ public class CJMarkdownTheme {
      * @param linkRectImageHeight 圆角矩形图片格式链接控件高度 - 默认20.0vp
      */
     public func setLinkRectImageHeight(linkRectImageHeight: Float64): Unit {
-        this.linkRectImageHeight = linkRectImageHeight
+        this.cjMarkdownLinkTheme.setLinkRectIconHeight(linkRectImageHeight)
     }
 
     /**
@@ -1356,7 +370,7 @@ public class CJMarkdownTheme {
      * @param linkRectImagePadding 圆角矩形图片格式链接左右内边距 - 默认6.0vp
      */
     public func setLinkRectImagePadding(linkRectImagePadding: Float64): Unit {
-        this.linkRectImagePadding = linkRectImagePadding
+        this.cjMarkdownLinkTheme.setLinkRectIconPadding(linkRectImagePadding)
     }
 
     /**
@@ -1365,7 +379,7 @@ public class CJMarkdownTheme {
      * @param linkRectImageRadius 圆角矩形图片格式链接圆角半径 - 默认6.0vp
      */
     public func setLinkRectImageRadius(linkRectImageRadius: Float64): Unit {
-        this.linkRectImageRadius = linkRectImageRadius
+        this.cjMarkdownLinkTheme.setLinkRectIconRadius(linkRectImageRadius)
     }
 
     /**
@@ -1374,7 +388,7 @@ public class CJMarkdownTheme {
      * @param linkRectImageMargin 圆角矩形图片格式链接左右外边距 - 默认6.0vp
      */
     public func setLinkRectImageMargin(linkRectImageMargin: Float64): Unit {
-        this.linkRectImageMargin = linkRectImageMargin
+        this.cjMarkdownLinkTheme.setLinkRectIconMargin(linkRectImageMargin)
     }
 
     /**
@@ -1383,7 +397,7 @@ public class CJMarkdownTheme {
      * @param linkRectToolImageBackGroupColor 空心圆角矩形图片格式链接主题背景颜色 - 默认OXFFFFFFFF
      */
     public func setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: UInt32): Unit {
-        this.linkRectToolImageBackGroupColor = transColorForTrasparent(linkRectToolImageBackGroupColor)
+        this.cjMarkdownLinkTheme.setLinkRectToolIconBackgroundColor(linkRectToolImageBackGroupColor)
     }
 
     /**
@@ -1392,7 +406,7 @@ public class CJMarkdownTheme {
      * @param linkRectToolImageButtonBackGroupColor 空心圆角矩形图片格式链接控件背景颜色 - 默认OXFFFFFFFF
      */
     public func setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: UInt32): Unit {
-        this.linkRectToolImageButtonBackGroupColor = transColorForTrasparent(linkRectToolImageButtonBackGroupColor)
+        this.cjMarkdownLinkTheme.setLinkRectToolIconButtonBackgroundColor(linkRectToolImageButtonBackGroupColor)
     }
 
     /**
@@ -1401,7 +415,7 @@ public class CJMarkdownTheme {
      * @param linkRectToolImageTextSize 空心圆角矩形图片格式链接文字大小 - 默认14.0fp
      */
     public func setLinkRectToolImageTextSize(linkRectToolImageTextSize: Float64): Unit {
-        this.linkRectToolImageTextSize = linkRectToolImageTextSize
+        this.cjMarkdownLinkTheme.setLinkRectToolIconTextSize(linkRectToolImageTextSize)
     }
 
     /**
@@ -1410,7 +424,7 @@ public class CJMarkdownTheme {
      * @param linkRectToolImageHeight 空心圆角矩形图片格式链接控件高度 - 默认21.0vp
      */
     public func setLinkRectToolImageHeight(linkRectToolImageHeight: Float64): Unit {
-        this.linkRectToolImageHeight = linkRectToolImageHeight
+        this.cjMarkdownLinkTheme.setLinkRectToolIconHeight(linkRectToolImageHeight)
     }
 
     /**
@@ -1419,7 +433,7 @@ public class CJMarkdownTheme {
      * @param linkRectToolImagePadding 空心圆角矩形图片格式链接左右内边距 - 默认6.0vp
      */
     public func setLinkRectToolImagePadding(linkRectToolImagePadding: Float64): Unit {
-        this.linkRectToolImagePadding = linkRectToolImagePadding
+        this.cjMarkdownLinkTheme.setLinkRectToolIconPadding(linkRectToolImagePadding)
     }
 
     /**
@@ -1428,7 +442,7 @@ public class CJMarkdownTheme {
      * @param linkRectToolImageBorderWidth 空心圆角矩形图片格式链接边框宽度 - 默认1.0vp
      */
     public func setLinkRectToolImageBorderWidth(linkRectToolImageBorderWidth: Float64): Unit {
-        this.linkRectToolImageBorderWidth = linkRectToolImageBorderWidth
+        this.cjMarkdownLinkTheme.setLinkRectToolIconBorderWidth(linkRectToolImageBorderWidth)
     }
 
     /**
@@ -1437,7 +451,7 @@ public class CJMarkdownTheme {
      * @param linkRectToolImageDividingLineWidth 空心圆角矩形图片格式链接分割线宽度 - 默认1.0vp
      */
     public func setLinkRectToolImageDividingLineWidth(linkRectToolImageDividingLineWidth: Float64): Unit {
-        this.linkRectToolImageDividingLineWidth = linkRectToolImageDividingLineWidth
+        this.cjMarkdownLinkTheme.setLinkRectToolIconDividingLineWidth(linkRectToolImageDividingLineWidth)
     }
 
     /**
@@ -1446,7 +460,7 @@ public class CJMarkdownTheme {
      * @param linkRectToolImageMargin 空心圆角矩形图片格式链接左右外边距 - 默认6.0vp
      */
     public func setLinkRectToolImageMargin(linkRectToolImageMargin: Float64): Unit {
-        this.linkRectToolImageMargin = linkRectToolImageMargin
+        this.cjMarkdownLinkTheme.setLinkRectToolIconMargin(linkRectToolImageMargin)
     }
 
     /**
@@ -1455,7 +469,7 @@ public class CJMarkdownTheme {
      * @param linkRectToolImageLineLeftPadding 空心圆角矩形图片格式分割线和文本左边距 - 默认3.0vp
      */
     public func setLinkRectToolImageLineLeftPadding(linkRectToolImageLineLeftPadding: Float64): Unit {
-        this.linkRectToolImageLineLeftPadding = linkRectToolImageLineLeftPadding
+        this.cjMarkdownLinkTheme.setLinkRectToolIconLineLeftPadding(linkRectToolImageLineLeftPadding)
     }
 
     /**
@@ -1464,7 +478,7 @@ public class CJMarkdownTheme {
      * @param linkRectToolImageLineRightPadding 空心圆角矩形图片格式分割线和文本右边距 - 默认3.0vp
      */
     public func setLinkRectToolImageLineRightPadding(linkRectToolImageLineRightPadding: Float64): Unit {
-        this.linkRectToolImageLineRightPadding = linkRectToolImageLineRightPadding
+        this.cjMarkdownLinkTheme.setLinkRectToolIconLineRightPadding(linkRectToolImageLineRightPadding)
     }
 
     /**
@@ -1473,7 +487,7 @@ public class CJMarkdownTheme {
      * @param blockQuoteLeftMargin 块引用左边距 - 默认8.0vp
      */
     public func setBlockQuoteLeftMargin(blockQuoteLeftMargin: Float64): Unit {
-        this.blockQuoteLeftMargin = blockQuoteLeftMargin
+        this.cjMarkdownBlockQuoteTheme.blockQuoteMarginLeft = blockQuoteLeftMargin
     }
 
     /**
@@ -1482,7 +496,7 @@ public class CJMarkdownTheme {
      * @param blockQuoteRightMargin 块引用右边距 - 默认8.0vp
      */
     public func setBlockQuoteRightMargin(blockQuoteRightMargin: Float64): Unit {
-        this.blockQuoteRightMargin = blockQuoteRightMargin
+        this.cjMarkdownBlockQuoteTheme.blockQuoteMarginRight = blockQuoteRightMargin
     }
 
     /**
@@ -1491,7 +505,7 @@ public class CJMarkdownTheme {
      * @param blockQuoteWidth 块引用左边线条宽度 - 默认1.0vp
      */
     public func setBlockQuoteWidth(blockQuoteWidth: Float64): Unit {
-        this.blockQuoteWidth = blockQuoteWidth
+        this.cjMarkdownBlockQuoteTheme.setBlockQuoteLeftBorderWidth(blockQuoteWidth)
     }
 
     /**
@@ -1500,7 +514,7 @@ public class CJMarkdownTheme {
      * @param blockQuoteColor 块引用左边线条颜色 - 默认0XFF191919
      */
     public func setBlockQuoteColor(blockQuoteColor: UInt32): Unit {
-        this.blockQuoteColor = transColorForTrasparent(blockQuoteColor)
+        this.cjMarkdownBlockQuoteTheme.setBlockQuoteLeftBorderColor(blockQuoteColor)
     }
 
     /**
@@ -1509,7 +523,7 @@ public class CJMarkdownTheme {
      * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0XFFFFFFFF
      */
     public func setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: UInt32): Unit {
-        this.blockQuoteBackGroupColor = transColorForTrasparent(blockQuoteBackGroupColor)
+        this.cjMarkdownBlockQuoteTheme.setBlockQuoteBackgroundColor(blockQuoteBackGroupColor)
     }
 
     /**
@@ -1518,7 +532,7 @@ public class CJMarkdownTheme {
      * @param blockQuoteTopAndBottomMargins 块引用子模块上下间距 - 默认0.0vp
      */
     public func setBlockQuoteTopAndBottomMargins(blockQuoteTopAndBottomMargins: Float64): Unit {
-        this.blockQuoteTopAndBottomMargins = blockQuoteTopAndBottomMargins
+        this.cjMarkdownBlockQuoteTheme.setBlockQuoteChildSpacing(blockQuoteTopAndBottomMargins)
     }
 
     /**
@@ -1527,7 +541,8 @@ public class CJMarkdownTheme {
      * @param blockOrderedAndBulletTopAndBottomMargins 有序列表、无序列表、任务列表子模块上下间距 - 默认0.0vp
      */
     public func setBlockOrderedAndBulletTopAndBottomMargins(blockOrderedAndBulletTopAndBottomMargins: Float64): Unit {
-        this.blockOrderedAndBulletTopAndBottomMargins = blockOrderedAndBulletTopAndBottomMargins
+        this.cjMarkdownOrderedListTheme.setOrderedListChildSpacing(Int64(blockOrderedAndBulletTopAndBottomMargins))
+        this.cjMarkdownBulletListTheme.setBulletListChildSpacing(Int64(blockOrderedAndBulletTopAndBottomMargins))
     }
 
     /**
@@ -1536,16 +551,18 @@ public class CJMarkdownTheme {
      * @param blockLeftMargin 有序列表、无序列表、任务列表左边距 - 默认8.0vp
      */
     public func setBlockLeftMargin(blockLeftMargin: Float64): Unit {
-        this.blockLeftMargin = blockLeftMargin
+        this.cjMarkdownOrderedListTheme.orderedListMarginLeft = blockLeftMargin
+        this.cjMarkdownBulletListTheme.bulletListMarginLeft = blockLeftMargin
     }
 
     /**
-     * 设置有序列表、无序列表、任务列表右边距
+     * 设置有序列表、无序列表、任务列表右边距 - 列表前缀和列表内容间距
      *
      * @param blockRightMargin 有序列表、无序列表、任务列表右边距 - 默认8.0vp
      */
     public func setBlockRightMargin(blockRightMargin: Float64): Unit {
-        this.blockRightMargin = blockRightMargin
+        this.cjMarkdownOrderedListTheme.setOrderedListMarkerSpacing(blockRightMargin)
+        this.cjMarkdownBulletListTheme.setBulletListBulletSpacing(blockRightMargin)
     }
 
     /**
@@ -1554,7 +571,11 @@ public class CJMarkdownTheme {
      * @param orderedListItemPrefixBold 有序列表前缀文本是否加粗 - true：加粗；false：不加粗。默认false
      */
     public func setOrderedListItemPrefixBold(orderedListItemPrefixBold: Bool): Unit {
-        this.orderedListItemPrefixBold = orderedListItemPrefixBold
+        if (orderedListItemPrefixBold) {
+            this.cjMarkdownOrderedListTheme.setOrderedListMarkerTextFontWeight(4) // convertFontWeight转换时4表示Blod
+        } else {
+            this.cjMarkdownOrderedListTheme.setOrderedListMarkerTextFontWeight(1) // convertFontWeight转换时1表示Normal
+        }
     }
 
     /**
@@ -1563,7 +584,7 @@ public class CJMarkdownTheme {
      * @param orderedListItemColor 有序列表前缀文本颜色 - 默认OXFF191919
      */
     public func setOrderedListItemColor(orderedListItemColor: UInt32): Unit {
-        this.orderedListItemColor = transColorForTrasparent(orderedListItemColor)
+        this.cjMarkdownOrderedListTheme.setOrderedListMarkerTextFontColor(orderedListItemColor)
     }
 
     /**
@@ -1572,7 +593,7 @@ public class CJMarkdownTheme {
      * @param orderedListItemSize 有序列表前缀文本大小 - 默认14.0fp
      */
     public func setOrderedListItemSize(orderedListItemSize: Float64): Unit {
-        this.orderedListItemSize = orderedListItemSize
+        this.cjMarkdownOrderedListTheme.setOrderedListMarkerTextFontSize(orderedListItemSize)
     }
 
     /**
@@ -1581,7 +602,7 @@ public class CJMarkdownTheme {
      * @param orderedListItemLineHeight 有序列表前缀文本行高 - 默认22.0vp
      */
     public func setOrderedListItemLineHeight(orderedListItemLineHeight: Float64): Unit {
-        this.orderedListItemLineHeight = orderedListItemLineHeight
+        this.cjMarkdownOrderedListTheme.setOrderedListMarkerTextLineHeight(orderedListItemLineHeight)
     }
 
     /**
@@ -1590,7 +611,7 @@ public class CJMarkdownTheme {
      * @param bulletListItemCircle 无序列表前缀是否全部是实心圆型 - 默认false
      */
     public func setBulletListItemCircle(bulletListItemCircle: Bool): Unit {
-        this.bulletListItemCircle = bulletListItemCircle
+        this.cjMarkdownBulletListTheme.setBulletListBulletIsCircle(bulletListItemCircle)
     }
 
     /**
@@ -1599,7 +620,7 @@ public class CJMarkdownTheme {
      * @param bulletListItemColor 无序列表前缀文本颜色 - 默认OXFF191919
      */
     public func setBulletListItemColor(bulletListItemColor: UInt32): Unit {
-        this.bulletListItemColor = transColorForTrasparent(bulletListItemColor)
+        this.cjMarkdownBulletListTheme.setBulletListBulletTextFontColor(bulletListItemColor)
     }
 
     /**
@@ -1608,7 +629,7 @@ public class CJMarkdownTheme {
      * @param bulletListItemSize 无序列表前缀文本大小 - 默认4.0fp
      */
     public func setBulletListItemSize(bulletListItemSize: Float64): Unit {
-        this.bulletListItemSize = bulletListItemSize
+        this.cjMarkdownBulletListTheme.setBulletListBulletTextFontSize(bulletListItemSize)
     }
 
     /**
@@ -1617,7 +638,7 @@ public class CJMarkdownTheme {
      * @param bulletListItemLineHeight 无序列表前缀文本行高 - 默认18.0vp
      */
     public func setBulletListItemLineHeight(bulletListItemLineHeight: Float64): Unit {
-        this.bulletListItemLineHeight = bulletListItemLineHeight
+        this.cjMarkdownBulletListTheme.setBulletListBulletTextLineHeight(bulletListItemLineHeight)
     }
 
     /**
@@ -1626,7 +647,8 @@ public class CJMarkdownTheme {
      * @param taskListItemLength 任务列表选择框宽高 - 默认15.0vp
      */
     public func setTaskListItemLength(taskListItemLength: Float64): Unit {
-        this.taskListItemLength = taskListItemLength
+        this.cjMarkdownBulletListTheme.setBulletListCheckboxWidth(taskListItemLength)
+        this.cjMarkdownBulletListTheme.setBulletListCheckboxHeight(taskListItemLength)
     }
 
     /**
@@ -1635,7 +657,7 @@ public class CJMarkdownTheme {
      * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
      */
     public func setIsCodeFormat(isCodeFormat: Bool): Unit {
-        this.isCodeFormat = isCodeFormat
+        this.cjMarkdownCodeBlockTheme.setCodeBlockIsCodeFormat(isCodeFormat)
     }
 
     /**
@@ -1644,7 +666,7 @@ public class CJMarkdownTheme {
      * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
      */
     public func setCodeTextColor(codeTextColor: UInt32): Unit {
-        this.codeTextColor = transColorForTrasparent(codeTextColor)
+        this.cjMarkdownInlineCodeTheme.setInlineCodeTextFontColor(codeTextColor)
     }
 
     /**
@@ -1653,7 +675,7 @@ public class CJMarkdownTheme {
      * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFF191919
      */
     public func setCodeBackgroundColor(codeBackgroundColor: UInt32): Unit {
-        this.codeBackgroundColor = transColorForTrasparent(codeBackgroundColor)
+        this.cjMarkdownInlineCodeTheme.setInlineCodeTextBackgroundColor(codeBackgroundColor)
     }
 
     /**
@@ -1662,7 +684,7 @@ public class CJMarkdownTheme {
      * @param codeTextSize 内联代码文本大小 - 默认13.0fp
      */
     public func setCodeTextSize(codeTextSize: Float64): Unit {
-        this.codeTextSize = codeTextSize
+        this.cjMarkdownInlineCodeTheme.setInlineCodeTextFontSize(codeTextSize)
     }
 
     /**
@@ -1671,7 +693,7 @@ public class CJMarkdownTheme {
      * @param codeTypeface 内联代码文本字体 - 默认"HarmonyOS Sans"
      */
     public func setCodeTypeface(codeTypeface: String): Unit {
-        this.codeTypeface = codeTypeface
+        this.cjMarkdownInlineCodeTheme.setInlineCodeTextFontFamily(codeTypeface)
     }
 
     /**
@@ -1680,7 +702,7 @@ public class CJMarkdownTheme {
      * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
      */
     public func setIsCodeBlockParserSync(isCodeBlockParserSync: Bool): Unit {
-        this.isCodeBlockParserSync = isCodeBlockParserSync
+        this.cjMarkdownCodeBlockTheme.setCodeBlockParserSync(isCodeBlockParserSync)
     }
 
     /**
@@ -1689,7 +711,7 @@ public class CJMarkdownTheme {
      * @param codeBlockTextColor 代码块代码文本颜色 - 默认None
      */
     public func setCodeBlockTextColor(codeBlockTextColor: UInt32): Unit {
-        this.codeBlockTextColor = transColorForTrasparent(codeBlockTextColor)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockTextFontColor(codeBlockTextColor)
     }
 
     /**
@@ -1698,7 +720,7 @@ public class CJMarkdownTheme {
      * @param codeBlockTypeTextColor 代码块代码类型文本颜色 - 默认None
      */
     public func setCodeBlockTypeTextColor(codeBlockTypeTextColor: UInt32): Unit {
-        this.codeBlockTypeTextColor = transColorForTrasparent(codeBlockTypeTextColor)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockTypeTextFontColor(codeBlockTypeTextColor)
     }
 
     /**
@@ -1707,7 +729,7 @@ public class CJMarkdownTheme {
      * @param codeBlockTypeTextStr 代码块代码类型文本 - 默认""
      */
     public func setCodeBlockTypeTextStr(codeBlockTypeTextStr: String): Unit {
-        this.codeBlockTypeTextStr = codeBlockTypeTextStr
+        this.cjMarkdownCodeBlockTheme.setCodeBlockTypeText(codeBlockTypeTextStr)
     }
 
     /**
@@ -1716,7 +738,7 @@ public class CJMarkdownTheme {
      * @param codeBlockTypeTextPadding 代码类型和代码块距离 - 默认0.0
      */
     public func setCodeBlockTypeTextPadding(codeBlockTypeTextPadding: Float64): Unit {
-        this.codeBlockTypeTextPadding = codeBlockTypeTextPadding
+        this.cjMarkdownCodeBlockTheme.setCodeBlockTitleLayoutMarginBottom(codeBlockTypeTextPadding)
     }
 
     /**
@@ -1725,7 +747,8 @@ public class CJMarkdownTheme {
      * @param codeBlockIconTextHide 代码块复制、全屏图片文字是否显示 - true：显示；false：不显示。默认true
      */
     public func setCodeBlockIconTextHide(codeBlockIconTextHide: Bool): Unit {
-        this.codeBlockIconTextHide = codeBlockIconTextHide
+        this.cjMarkdownCodeBlockTheme.setCodeBlockCopyTextIsShow(codeBlockIconTextHide)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockFullScreenTextIsShow(codeBlockIconTextHide)
     }
 
     /**
@@ -1734,7 +757,7 @@ public class CJMarkdownTheme {
      * @param codeBlockLineNumberHide 代码块代码行号是否显示 - true：显示；false：不显示。默认true
      */
     public func setCodeBlockLineNumberHide(codeBlockLineNumberHide: Bool): Unit {
-        this.codeBlockLineNumberHide = codeBlockLineNumberHide
+        this.cjMarkdownCodeBlockTheme.setCodeBlockLineNumberIsShow(codeBlockLineNumberHide)
     }
 
     /**
@@ -1743,16 +766,16 @@ public class CJMarkdownTheme {
      * @param codeBlockBackgroundColor 代码块背景颜色 - 默认None
      */
     public func setCodeBlockBackgroundColor(codeBlockBackgroundColor: UInt32): Unit {
-        this.codeBlockBackgroundColor = transColorForTrasparent(codeBlockBackgroundColor)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockBackgroundColor(codeBlockBackgroundColor)
     }
 
     /**
-     * 设置代码块左边距
+     * 设置代码块左边距（代码块代码行号和分割线间距）
      *
      * @param codeMultilineMargin 代码块左边距 - 默认8.0vp
      */
     public func setCodeMultilineMargin(codeMultilineMargin: Float64): Unit {
-        this.codeMultilineMargin = codeMultilineMargin
+        this.cjMarkdownCodeBlockTheme.codeBlockLineNumberDividerSpacing = codeMultilineMargin
     }
 
     /**
@@ -1761,7 +784,7 @@ public class CJMarkdownTheme {
      * @param codeBlockTypeface 代码块字体 - 默认"HarmonyOS Sans"
      */
     public func setCodeBlockTypeface(codeBlockTypeface: String): Unit {
-        this.codeBlockTypeface = codeBlockTypeface
+        this.cjMarkdownCodeBlockTheme.setCodeBlockTextFontFamily(codeBlockTypeface)
     }
 
     /**
@@ -1770,7 +793,7 @@ public class CJMarkdownTheme {
      * @param codeBlockTextSize 代码块代码文本大小 -  默认13.0fp
      */
     public func setCodeBlockTextSize(codeBlockTextSize: Float64): Unit {
-        this.codeBlockTextSize = codeBlockTextSize
+        this.cjMarkdownCodeBlockTheme.setCodeBlockTextFontSize(codeBlockTextSize)
     }
 
     /**
@@ -1779,7 +802,7 @@ public class CJMarkdownTheme {
      * @param codeBlockLineHeight 代码块代码文本行高 - 默认22.0vp
      */
     public func setCodeBlockLineHeight(codeBlockLineHeight: Float64): Unit {
-        this.codeBlockLineHeight = codeBlockLineHeight
+        this.cjMarkdownCodeBlockTheme.setCodeBlockTextLineHeight(codeBlockLineHeight)
     }
 
     /**
@@ -1788,7 +811,7 @@ public class CJMarkdownTheme {
      * @param codeBlockRadius 代码块控件圆角大小 - 默认8.0vp
      */
     public func setCodeBlockRadius(codeBlockRadius: Float64): Unit {
-        this.codeBlockRadius = codeBlockRadius
+        this.cjMarkdownCodeBlockTheme.setCodeBlockAllRadius(codeBlockRadius)
     }
 
     /**
@@ -1797,7 +820,7 @@ public class CJMarkdownTheme {
      * @param isCodeFullScreen 代码块代码全屏按钮是否显示 - true：显示；false：不显示。默认true
      */
     public func setIsCodeFullScreen(isCodeFullScreen: Bool): Unit {
-        this.isCodeFullScreen = isCodeFullScreen
+        this.cjMarkdownCodeBlockTheme.setCodeBlockCopyButtonIsShow(isCodeFullScreen)
     }
 
     /**
@@ -1806,7 +829,10 @@ public class CJMarkdownTheme {
      * @param iconWidthAndHeight 代码块代码全屏、代码复制按钮宽高 - 默认24.0vp
      */
     public func setIconWidthAndHeight(iconWidthAndHeight: Float64): Unit {
-        this.iconWidthAndHeight = iconWidthAndHeight
+        this.cjMarkdownCodeBlockTheme.setCodeBlockCopyIconWidth(iconWidthAndHeight)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockCopyIconHeight(iconWidthAndHeight)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockFullScreenIconWidth(iconWidthAndHeight)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockFullScreenIconHeight(iconWidthAndHeight)
     }
 
     /**
@@ -1815,7 +841,7 @@ public class CJMarkdownTheme {
      * @param codeListTitleTextSize 组合代码未选中标题字体大小 - 默认13.0fp
      */
     public func setCodeListTitleTextSize(codeListTitleTextSize: Float64): Unit {
-        this.codeListTitleTextSize = codeListTitleTextSize
+        this.cjMarkdownCodeBlockTheme.setCodeBlockListTitleTextSize(codeListTitleTextSize)
     }
 
     /**
@@ -1824,7 +850,7 @@ public class CJMarkdownTheme {
      * @param codeListTitleSelectTextSize 组合代码选中标题字体大小 - 默认13.0fp
      */
     public func setCodeListTitleSelectTextSize(codeListTitleSelectTextSize: Float64): Unit {
-        this.codeListTitleSelectTextSize = codeListTitleSelectTextSize
+        this.cjMarkdownCodeBlockTheme.setCodeBlockListTitleSelectTextSize(codeListTitleSelectTextSize)
     }
 
     /**
@@ -1833,7 +859,7 @@ public class CJMarkdownTheme {
      * @param codeListTitleSelectTextColor 组合代码选中标题文本颜色 - 默认Color.RED
      */
     public func setCodeListTitleSelectTextColor(codeListTitleSelectTextColor: UInt32): Unit {
-        this.codeListTitleSelectTextColor = transColorForTrasparent(codeListTitleSelectTextColor)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockListTitleSelectTextColor(codeListTitleSelectTextColor)
     }
 
     /**
@@ -1842,7 +868,7 @@ public class CJMarkdownTheme {
      * @param codeListTitleUnSelectTextColor 组合代码未选中标题文本颜色 - 默认Color.BLACK
      */
     public func setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: UInt32): Unit {
-        this.codeListTitleUnSelectTextColor = transColorForTrasparent(codeListTitleUnSelectTextColor)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockListTitleUnSelectTextColor(codeListTitleUnSelectTextColor)
     }
 
     /**
@@ -1851,7 +877,7 @@ public class CJMarkdownTheme {
      * @param codeListTitleSelectBackGroupColor 组合代码选中标题背景颜色 - 默认Color.GRAY
      */
     public func setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: UInt32): Unit {
-        this.codeListTitleSelectBackGroupColor = transColorForTrasparent(codeListTitleSelectBackGroupColor)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockListTitleSelectBackgroupColor(codeListTitleSelectBackGroupColor)
     }
 
     /**
@@ -1860,7 +886,7 @@ public class CJMarkdownTheme {
      * @param codeListTitleUnSelectBackGroupColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
      */
     public func setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: UInt32): Unit {
-        this.codeListTitleUnSelectBackGroupColor = transColorForTrasparent(codeListTitleUnSelectBackGroupColor)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockListTitleUnSelectBackgroupColor(codeListTitleUnSelectBackGroupColor)
     }
 
     /**
@@ -1869,7 +895,7 @@ public class CJMarkdownTheme {
      * @param isSeparateCodeBlock 是否单独代码块显示 - true：显示；false：不显示。默认false
      */
     public func setIsSeparateCodeBlock(isSeparateCodeBlock: Bool): Unit {
-        this.isSeparateCodeBlock = isSeparateCodeBlock
+        this.cjMarkdownCodeBlockTheme.setCodeBlockIsSeparate(isSeparateCodeBlock)
     }
 
     /**
@@ -1878,7 +904,7 @@ public class CJMarkdownTheme {
      * @param separateCodeBlockWidth 单独代码块行号宽度 - 默认50.0vp
      */
     public func setSeparateCodeBlockWidth(separateCodeBlockWidth: Float64): Unit {
-        this.separateCodeBlockWidth = separateCodeBlockWidth
+        this.cjMarkdownCodeBlockTheme.setCodeBlockSeparateWidth(separateCodeBlockWidth)
     }
 
     /**
@@ -1887,7 +913,7 @@ public class CJMarkdownTheme {
      * @param separateCodeIsBottom 单独代码块是否居底显示 - 默认false
      */
     public func setSeparateCodeIsBottom(separateCodeIsBottom: Bool): Unit {
-        this.separateCodeIsBottom = separateCodeIsBottom
+        this.cjMarkdownCodeBlockTheme.setCodeBlockSeparateIsBottom(separateCodeIsBottom)
     }
 
     /**
@@ -1896,7 +922,7 @@ public class CJMarkdownTheme {
      * @param headingBreakHeight H1、H2标题下分割线高度 - 默认0.5vp
      */
     public func setHeadingBreakHeight(headingBreakHeight: Float64): Unit {
-        this.headingBreakHeight = headingBreakHeight
+        this.cjMarkdownHeadingTheme.setUnderlineHeightForAllHeading(headingBreakHeight)
     }
 
     /**
@@ -1905,7 +931,7 @@ public class CJMarkdownTheme {
      * @param headingTypeface 标题文本字体 - 默认"HarmonyOS Sans"
      */
     public func setHeadingTypeface(headingTypeface: String): Unit {
-        this.headingTypeface = headingTypeface
+        this.cjMarkdownHeadingTheme.setTextFontFamilyForAllHeading(headingTypeface)
     }
 
     /**
@@ -1914,7 +940,12 @@ public class CJMarkdownTheme {
      * @param headingTopMargins 标题模块上间距 - 默认8.0
      */
     public func setHeadingTopMargins(headingTopMargins: Float64): Unit {
-        this.headingTopMargins = headingTopMargins
+        this.cjMarkdownHeadingTheme.heading1MarginTop = headingTopMargins
+        this.cjMarkdownHeadingTheme.heading2MarginTop = headingTopMargins
+        this.cjMarkdownHeadingTheme.heading3MarginTop = headingTopMargins
+        this.cjMarkdownHeadingTheme.heading4MarginTop = headingTopMargins
+        this.cjMarkdownHeadingTheme.heading5MarginTop = headingTopMargins
+        this.cjMarkdownHeadingTheme.heading6MarginTop = headingTopMargins
     }
 
     /**
@@ -1923,7 +954,12 @@ public class CJMarkdownTheme {
      * @param headingBottomMargins 标题模块下间距 - 默认8.0
      */
     public func setHeadingBottomMargins(headingBottomMargins: Float64): Unit {
-        this.headingBottomMargins = headingBottomMargins
+        this.cjMarkdownHeadingTheme.heading1MarginBottom = headingBottomMargins
+        this.cjMarkdownHeadingTheme.heading2MarginBottom = headingBottomMargins
+        this.cjMarkdownHeadingTheme.heading3MarginBottom = headingBottomMargins
+        this.cjMarkdownHeadingTheme.heading4MarginBottom = headingBottomMargins
+        this.cjMarkdownHeadingTheme.heading5MarginBottom = headingBottomMargins
+        this.cjMarkdownHeadingTheme.heading6MarginBottom = headingBottomMargins
     }
 
     /**
@@ -1932,7 +968,7 @@ public class CJMarkdownTheme {
      * @param headingTextSize1 一级标题文本大小 - 默认20.0
      */
     public func setHeadingTextSize1(headingTextSize1: Float64): Unit {
-        this.headingTextSize1 = headingTextSize1
+        this.cjMarkdownHeadingTheme.setTextFontSizeForDesignateHeading(1, headingTextSize1)
     }
 
     /**
@@ -1941,7 +977,7 @@ public class CJMarkdownTheme {
      * @param headingTextSize2 二级标题文本大小 - 默认17.0
      */
     public func setHeadingTextSize2(headingTextSize2: Float64): Unit {
-        this.headingTextSize2 = headingTextSize2
+        this.cjMarkdownHeadingTheme.setTextFontSizeForDesignateHeading(2, headingTextSize2)
     }
 
     /**
@@ -1950,7 +986,7 @@ public class CJMarkdownTheme {
      * @param headingTextSize3 三级标题文本大小 - 默认16.0
      */
     public func setHeadingTextSize3(headingTextSize3: Float64): Unit {
-        this.headingTextSize3 = headingTextSize3
+        this.cjMarkdownHeadingTheme.setTextFontSizeForDesignateHeading(3, headingTextSize3)
     }
 
     /**
@@ -1959,7 +995,7 @@ public class CJMarkdownTheme {
      * @param headingTextSize4 四级标题文本大小 - 默认15.0
      */
     public func setHeadingTextSize4(headingTextSize4: Float64): Unit {
-        this.headingTextSize4 = headingTextSize4
+        this.cjMarkdownHeadingTheme.setTextFontSizeForDesignateHeading(4, headingTextSize4)
     }
 
     /**
@@ -1968,7 +1004,7 @@ public class CJMarkdownTheme {
      * @param headingTextSize5 五级标题文本大小 - 默认15.0
      */
     public func setHeadingTextSize5(headingTextSize5: Float64): Unit {
-        this.headingTextSize5 = headingTextSize5
+        this.cjMarkdownHeadingTheme.setTextFontSizeForDesignateHeading(5, headingTextSize5)
     }
 
     /**
@@ -1977,7 +1013,7 @@ public class CJMarkdownTheme {
      * @param headingTextSize6 六级标题文本大小 - 默认13.0
      */
     public func setHeadingTextSize6(headingTextSize6: Float64): Unit {
-        this.headingTextSize6 = headingTextSize6
+        this.cjMarkdownHeadingTheme.setTextFontSizeForDesignateHeading(6, headingTextSize6)
     }
 
     /**
@@ -1986,7 +1022,7 @@ public class CJMarkdownTheme {
      * @param headingTextWordSpace 标题文本字间距 - 默认0.0vp
      */
     public func setHeadingTextWordSpace(headingTextWordSpace: Float64): Unit {
-        this.headingTextWordSpace = headingTextWordSpace
+        this.cjMarkdownHeadingTheme.setTextLetterSpacingForAllHeading(headingTextWordSpace)
     }
 
     /**
@@ -1995,7 +1031,7 @@ public class CJMarkdownTheme {
      * @param headingTextLineHeight1 一级标题文本行高 - 默认22.0vp
      */
     public func setHeadingTextLineHeight1(headingTextLineHeight1: Float64): Unit {
-        this.headingTextLineHeight1 = headingTextLineHeight1
+        this.cjMarkdownHeadingTheme.setTextLineHeightForDesignateHeading(1, headingTextLineHeight1)
     }
 
     /**
@@ -2004,7 +1040,7 @@ public class CJMarkdownTheme {
      * @param headingTextLineHeight2 二级标题文本行高 - 默认22.0vp
      */
     public func setHeadingTextLineHeight2(headingTextLineHeight2: Float64): Unit {
-        this.headingTextLineHeight2 = headingTextLineHeight2
+        this.cjMarkdownHeadingTheme.setTextLineHeightForDesignateHeading(2, headingTextLineHeight2)
     }
 
     /**
@@ -2013,7 +1049,7 @@ public class CJMarkdownTheme {
      * @param headingTextLineHeight3 三级标题文本行高 - 默认22.0vp
      */
     public func setHeadingTextLineHeight3(headingTextLineHeight3: Float64): Unit {
-        this.headingTextLineHeight3 = headingTextLineHeight3
+        this.cjMarkdownHeadingTheme.setTextLineHeightForDesignateHeading(3, headingTextLineHeight3)
     }
 
     /**
@@ -2022,7 +1058,7 @@ public class CJMarkdownTheme {
      * @param headingTextLineHeight4 四级标题文本行高 - 默认22.0vp
      */
     public func setHeadingTextLineHeight4(headingTextLineHeight4: Float64): Unit {
-        this.headingTextLineHeight4 = headingTextLineHeight4
+        this.cjMarkdownHeadingTheme.setTextLineHeightForDesignateHeading(4, headingTextLineHeight4)
     }
 
     /**
@@ -2031,7 +1067,7 @@ public class CJMarkdownTheme {
      * @param headingTextLineHeight5 五级标题文本行高 - 默认22.0vp
      */
     public func setHeadingTextLineHeight5(headingTextLineHeight5: Float64): Unit {
-        this.headingTextLineHeight5 = headingTextLineHeight5
+        this.cjMarkdownHeadingTheme.setTextLineHeightForDesignateHeading(5, headingTextLineHeight5)
     }
 
     /**
@@ -2040,7 +1076,7 @@ public class CJMarkdownTheme {
      * @param headingTextLineHeight1 六级标题文本行高 - 默认22.0vp
      */
     public func setHeadingTextLineHeight6(headingTextLineHeight6: Float64): Unit {
-        this.headingTextLineHeight6 = headingTextLineHeight6
+        this.cjMarkdownHeadingTheme.setTextLineHeightForDesignateHeading(6, headingTextLineHeight6)
     }
 
     /**
@@ -2049,7 +1085,7 @@ public class CJMarkdownTheme {
      * @param headingTextColor1 一级标题文本颜色
      */
     public func setHeadingTextColor1(headingTextColor1: UInt32): Unit {
-        this.headingTextColor1 = transColorForTrasparent(headingTextColor1)
+        this.cjMarkdownHeadingTheme.setTextFontColorForDesignateHeading(1, headingTextColor1)
     }
 
     /**
@@ -2058,7 +1094,7 @@ public class CJMarkdownTheme {
      * @param headingBreakColor H1标题下分割线颜色 - 默认0XFF191919
      */
     public func setHeadingBreakColor1(headingBreakColor1: UInt32): Unit {
-        this.headingBreakColor1 = transColorForTrasparent(headingBreakColor1)
+        this.cjMarkdownHeadingTheme.setUnderlineColorForDesignateHeading(1, headingBreakColor1)
     }
 
     /**
@@ -2067,7 +1103,7 @@ public class CJMarkdownTheme {
      * @param headingTextColor2 二级标题文本颜色
      */
     public func setHeadingTextColor2(headingTextColor2: UInt32): Unit {
-        this.headingTextColor2 = transColorForTrasparent(headingTextColor2)
+        this.cjMarkdownHeadingTheme.setTextFontColorForDesignateHeading(2, headingTextColor2)
     }
 
     /**
@@ -2076,7 +1112,7 @@ public class CJMarkdownTheme {
      * @param headingBreakColor2 H1、H2标题下分割线颜色 - 默认0XFF191919
      */
     public func setHeadingBreakColor2(headingBreakColor2: UInt32): Unit {
-        this.headingBreakColor2 = transColorForTrasparent(headingBreakColor2)
+        this.cjMarkdownHeadingTheme.setUnderlineColorForDesignateHeading(2, headingBreakColor2)
     }
 
     /**
@@ -2085,7 +1121,7 @@ public class CJMarkdownTheme {
      * @param headingTextColor3 三级标题文本颜色
      */
     public func setHeadingTextColor3(headingTextColor3: UInt32): Unit {
-        this.headingTextColor3 = transColorForTrasparent(headingTextColor3)
+        this.cjMarkdownHeadingTheme.setTextFontColorForDesignateHeading(3, headingTextColor3)
     }
 
     /**
@@ -2094,7 +1130,7 @@ public class CJMarkdownTheme {
      * @param headingTextColor4 四级标题文本颜色
      */
     public func setHeadingTextColor4(headingTextColor4: UInt32): Unit {
-        this.headingTextColor4 = transColorForTrasparent(headingTextColor4)
+        this.cjMarkdownHeadingTheme.setTextFontColorForDesignateHeading(4, headingTextColor4)
     }
 
     /**
@@ -2103,7 +1139,7 @@ public class CJMarkdownTheme {
      * @param headingTextColor5 五级标题文本颜色
      */
     public func setHeadingTextColor5(headingTextColor5: UInt32): Unit {
-        this.headingTextColor5 = transColorForTrasparent(headingTextColor5)
+        this.cjMarkdownHeadingTheme.setTextFontColorForDesignateHeading(5, headingTextColor5)
     }
 
     /**
@@ -2112,7 +1148,7 @@ public class CJMarkdownTheme {
      * @param headingTextColor6 六级标题文本颜色
      */
     public func setHeadingTextColor6(headingTextColor6: UInt32): Unit {
-        this.headingTextColor6 = transColorForTrasparent(headingTextColor6)
+        this.cjMarkdownHeadingTheme.setTextFontColorForDesignateHeading(6, headingTextColor6)
     }
 
     /**
@@ -2121,7 +1157,7 @@ public class CJMarkdownTheme {
      * @param paragraphTopMargins 段落模块上间距 - 默认8.0
      */
     public func setParagraphTopMargins(paragraphTopMargins: Float64): Unit {
-        this.paragraphTopMargins = paragraphTopMargins
+        this.cjMarkdownParagraphTheme.paragraphMarginTop = paragraphTopMargins
     }
 
     /**
@@ -2130,7 +1166,7 @@ public class CJMarkdownTheme {
      * @param paragraphBottomMargins 段落模块下间距 - 默认8.0
      */
     public func setParagraphBottomMargins(paragraphBottomMargins: Float64): Unit {
-        this.paragraphBottomMargins = paragraphBottomMargins
+        this.cjMarkdownParagraphTheme.paragraphMarginBottom = paragraphBottomMargins
     }
 
     /**
@@ -2139,7 +1175,7 @@ public class CJMarkdownTheme {
      * @param paragraphTextSize 段落文本大小 - 默认14.0fp
      */
     public func setParagraphTextSize(paragraphTextSize: Float64): Unit {
-        this.paragraphTextSize = paragraphTextSize
+        this.cjMarkdownParagraphTheme.setParagraphTextFontSize(paragraphTextSize)
     }
 
     /**
@@ -2148,7 +1184,7 @@ public class CJMarkdownTheme {
      * @param paragraphTextColor 段落文本颜色 - 默认0XFF191919
      */
     public func setParagraphTextColor(paragraphTextColor: UInt32): Unit {
-        this.paragraphTextColor = transColorForTrasparent(paragraphTextColor)
+        this.cjMarkdownParagraphTheme.setParagraphTextFontColor(paragraphTextColor)
     }
 
     /**
@@ -2157,7 +1193,7 @@ public class CJMarkdownTheme {
      * @param paragraphTextWordSpace 段落文本字间距 - 默认0.0vp
      */
     public func setParagraphTextWordSpace(paragraphTextWordSpace: Float64): Unit {
-        this.paragraphTextWordSpace = paragraphTextWordSpace
+        this.cjMarkdownParagraphTheme.setParagraphTextLetterSpacing(paragraphTextWordSpace)
     }
 
     /**
@@ -2166,7 +1202,7 @@ public class CJMarkdownTheme {
      * @param paragraphTextLineHeight 段落文本行高 - 默认22.0vp
      */
     public func setParagraphTextLineHeight(paragraphTextLineHeight: Float64): Unit {
-        this.paragraphTextLineHeight = paragraphTextLineHeight
+        this.cjMarkdownParagraphTheme.setParagraphTextLineHeight(paragraphTextLineHeight)
     }
 
     /**
@@ -2175,7 +1211,7 @@ public class CJMarkdownTheme {
      * @param paragraphTypeface 段落文本字体 - 默认"HarmonyOS Sans"
      */
     public func setParagraphTypeface(paragraphTypeface: String): Unit {
-        this.paragraphTypeface = paragraphTypeface
+        this.cjMarkdownParagraphTheme.setParagraphTextFontFamily(paragraphTypeface)
     }
 
     /**
@@ -2184,7 +1220,7 @@ public class CJMarkdownTheme {
      * @param thematicBreakColor 分割线颜色 - 默认0XFF191919
      */
     public func setThematicBreakColor(thematicBreakColor: UInt32): Unit {
-        this.thematicBreakColor = transColorForTrasparent(thematicBreakColor)
+        this.cjMarkdownDividerTheme.setDividerColor(thematicBreakColor)
     }
 
     /**
@@ -2193,7 +1229,7 @@ public class CJMarkdownTheme {
      * @param thematicBreakHeight 分割线高度 - 默认0.5vp
      */
     public func setThematicBreakHeight(thematicBreakHeight: Float64): Unit {
-        this.thematicBreakHeight = thematicBreakHeight
+        this.cjMarkdownDividerTheme.setDividerStrokeWidth(thematicBreakHeight)
     }
 
     /**
@@ -2202,7 +1238,7 @@ public class CJMarkdownTheme {
      * @param thematicBreakTopMargin 分割线上部外边距 - 默认0.0vp
      */
     public func setThematicBreakTopMargin(thematicBreakTopMargin: Float64): Unit {
-        this.thematicBreakTopMargin = thematicBreakTopMargin
+        this.cjMarkdownDividerTheme.dividerMarginTop = thematicBreakTopMargin
     }
 
     /**
@@ -2211,7 +1247,7 @@ public class CJMarkdownTheme {
      * @param thematicBreakBottomMargin 分割线下部外边距 - 默认0.0vp
      */
     public func setThematicBreakBottomMargin(thematicBreakBottomMargin: Float64): Unit {
-        this.thematicBreakBottomMargin = thematicBreakBottomMargin
+        this.cjMarkdownDividerTheme.dividerMarginBottom = thematicBreakBottomMargin
     }
 
     /**
@@ -2220,7 +1256,7 @@ public class CJMarkdownTheme {
      * @param isLineBreak 软换行是否换行 - true：换行；false：不换行。默认false
      */
     public func setIsLineBreak(isLineBreak: Bool): Unit {
-        this.isLineBreak = isLineBreak
+        this.cjMarkdownGlobalTheme.setIsLineBreak(isLineBreak)
     }
 
     /**
@@ -2229,7 +1265,7 @@ public class CJMarkdownTheme {
      * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
      */
     public func setLatexDefaultText(latexDefaultText: Bool): Unit {
-        this.latexDefaultText = latexDefaultText
+        this.cjMarkdownLatexMathTheme.setLatexMathDefaultText(latexDefaultText)
     }
 
     /**
@@ -2238,7 +1274,7 @@ public class CJMarkdownTheme {
      * @param latexMathTextSize 数学公式文本大小 - 默认16.0fp
      */
     public func setLatexMathTextSize(latexMathTextSize: Float64): Unit {
-        this.latexMathTextSize = latexMathTextSize
+        this.cjMarkdownLatexMathTheme.setLatexMathTextSize(latexMathTextSize)
     }
 
     /**
@@ -2247,7 +1283,7 @@ public class CJMarkdownTheme {
      * @param latexMathBackGroupColor 数学公式背景色 - 默认0xFFFFFFFF
      */
     public func setLatexMathBackGroupColor(latexMathBackGroupColor: UInt32): Unit {
-        this.latexMathBackGroupColor = transColorForTrasparent(latexMathBackGroupColor)
+        this.cjMarkdownLatexMathTheme.setLatexMathBackgroundColor(latexMathBackGroupColor)
     }
 
     /**
@@ -2256,7 +1292,7 @@ public class CJMarkdownTheme {
      * @param latexMathTextColor 数学公式文本颜色 - 默认0xFF000000
      */
     public func setLatexMathTextColor(latexMathTextColor: UInt32): Unit {
-        this.latexMathTextColor = transColorForTrasparent(latexMathTextColor)
+        this.cjMarkdownLatexMathTheme.setLatexMathTextColor(latexMathTextColor)
     }
 
     /**
@@ -2265,11 +1301,7 @@ public class CJMarkdownTheme {
      * @param latexMathColorFormat 数学公式生成图片格式 - 默认LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
      */
     public func setLatexMathColorFormat(latexMathColorFormat: Int64): Unit {
-        match (latexMathColorFormat) {
-            case 0 => this.latexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_RGB_565
-            case 1 => this.latexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
-            case _ => this.latexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_RGB_565
-        }
+        this.cjMarkdownLatexMathTheme.setLatexMathColorFormat(latexMathColorFormat)
     }
 
     /**
@@ -2278,7 +1310,7 @@ public class CJMarkdownTheme {
      * @param latexMathBlockCenter 块结构的数学公式是否居中 - true：居中；false：不居中。默认false
      */
     public func setLatexMathBlockCenter(latexMathBlockCenter: Bool): Unit {
-        this.latexMathBlockCenter = latexMathBlockCenter
+        this.cjMarkdownLatexMathTheme.setLatexMathBlockCenter(latexMathBlockCenter)
     }
 
     /**
@@ -2287,7 +1319,7 @@ public class CJMarkdownTheme {
      * @param latexMathResStr 数学公式字体路径 默认 "/data/storage/el1/bundle/entry/resources/resfile/res"
      */
     public func setLatexMathResStr(latexMathResStr: String): Unit {
-        this.latexMathResStr = latexMathResStr
+        this.cjMarkdownLatexMathTheme.setLatexMathResPath(latexMathResStr)
     }
 
     /**
@@ -2296,7 +1328,7 @@ public class CJMarkdownTheme {
      * @param audioShadowColor 音频阴影颜色值 - 默认0x1A000000
      */
     public func setAudioShadowColor(audioShadowColor: UInt32): Unit {
-        this.audioShadowColor = transColorForTrasparent(audioShadowColor)
+        this.cjMarkdownAudioTheme.setAudioShadowColor(audioShadowColor)
     }
 
     /**
@@ -2305,7 +1337,7 @@ public class CJMarkdownTheme {
      * @param audioBorderColor 音频边框颜色 - 默认0x33000000
      */
     public func setAudioBorderColor(audioBorderColor: UInt32): Unit {
-        this.audioBorderColor = transColorForTrasparent(audioBorderColor)
+        this.cjMarkdownAudioTheme.setAudioBorderColor(audioBorderColor)
     }
 
     /**
@@ -2314,7 +1346,7 @@ public class CJMarkdownTheme {
      * @param audioBorderWidth 音频边框粗细 - 默认0.5vp
      */
     public func setAudioBorderWidth(audioBorderWidth: Float64): Unit {
-        this.audioBorderWidth = audioBorderWidth
+        this.cjMarkdownAudioTheme.setAudioBorderWidth(audioBorderWidth)
     }
 
     /**
@@ -2323,7 +1355,7 @@ public class CJMarkdownTheme {
      * @param audioBorderRadius 音频边框圆角 - 默认12.0vp
      */
     public func setAudioBorderRadius(audioBorderRadius: Float64): Unit {
-        this.audioBorderRadius = audioBorderRadius
+        this.cjMarkdownAudioTheme.setAudioBorderAllRadius(audioBorderRadius)
     }
 
     /**
@@ -2332,7 +1364,7 @@ public class CJMarkdownTheme {
      * @param audioButtonBackgroundColor 音频按钮背景颜色- 默认Color.BLACK
      */
     public func setAudioButtonBackgroundColor(audioButtonBackgroundColor: UInt32): Unit {
-        this.audioButtonBackgroundColor = transColorForTrasparent(audioButtonBackgroundColor)
+        this.cjMarkdownAudioTheme.setAudioButtonBackgroundColor(audioButtonBackgroundColor)
     }
 
     /**
@@ -2341,7 +1373,7 @@ public class CJMarkdownTheme {
      * @param audioButtonTextColor 音频按钮文字颜色 - 默认Color.WHITE
      */
     public func setAudioButtonTextColor(audioButtonTextColor: UInt32): Unit {
-        this.audioButtonTextColor = transColorForTrasparent(audioButtonTextColor)
+        this.cjMarkdownAudioTheme.setAudioButtonTextFontColor(audioButtonTextColor)
     }
 
     /**
@@ -2350,7 +1382,7 @@ public class CJMarkdownTheme {
      * @param audioButtonTextSize 音频按钮文字大小 - 默认14.0fp
      */
     public func setAudioButtonTextSize(audioButtonTextSize: Float64): Unit {
-        this.audioButtonTextSize = audioButtonTextSize
+        this.cjMarkdownAudioTheme.setAudioButtonTextFontSize(audioButtonTextSize)
     }
 
     /**
@@ -2359,7 +1391,7 @@ public class CJMarkdownTheme {
      * @param audioButtonText 音频按钮文字内容 - 默认"立即播放"
      */
     public func setAudioButtonText(audioButtonText: String): Unit {
-        this.audioButtonText = audioButtonText
+        this.cjMarkdownAudioTheme.setAudioButtonText(audioButtonText)
     }
 
     /**
@@ -2368,7 +1400,7 @@ public class CJMarkdownTheme {
      * @param audioButtonBorderRadius 音频按钮圆角 - 默认16.0vp
      */
     public func setAudioButtonBorderRadius(audioButtonBorderRadius: Float64): Unit {
-        this.audioButtonBorderRadius = audioButtonBorderRadius
+        this.cjMarkdownAudioTheme.setAudioButtonAllRadius(audioButtonBorderRadius)
     }
 
     /**
@@ -2377,7 +1409,7 @@ public class CJMarkdownTheme {
      * @param audioTitleTextSize 音频标题文字大小 - 默认15.0fp
      */
     public func setAudioTitleTextSize(audioTitleTextSize: Float64): Unit {
-        this.audioTitleTextSize = audioTitleTextSize
+        this.cjMarkdownAudioTheme.setAudioTitleTextFontSize(audioTitleTextSize)
     }
 
     /**
@@ -2386,7 +1418,7 @@ public class CJMarkdownTheme {
      * @param audioTitleTextColor音频标题文字颜色 - 默认Color.BLACK
      */
     public func setAudioTitleTextColor(audioTitleTextColor: UInt32): Unit {
-        this.audioTitleTextColor = transColorForTrasparent(audioTitleTextColor)
+        this.cjMarkdownAudioTheme.setAudioTitleTextFontColor(audioTitleTextColor)
     }
 
     /**
@@ -2395,7 +1427,7 @@ public class CJMarkdownTheme {
      * @param audioTitleTextLineHeight 音频标题文字行高 - 默认20.0vp
      */
     public func setAudioTitleTextLineHeight(audioTitleTextLineHeight: Float64): Unit {
-        this.audioTitleTextLineHeight = audioTitleTextLineHeight
+        this.cjMarkdownAudioTheme.setAudioTitleTextLineHeight(audioTitleTextLineHeight)
     }
 
     /**
@@ -2404,7 +1436,7 @@ public class CJMarkdownTheme {
      * @param audioTypeTextSize 音频类型文字大小 - 默认11.0fp
      */
     public func setAudioTypeTextSize(audioTypeTextSize: Float64): Unit {
-        this.audioTypeTextSize = audioTypeTextSize
+        this.cjMarkdownAudioTheme.setAudioTypeTextFontSize(audioTypeTextSize)
     }
 
     /**
@@ -2413,7 +1445,7 @@ public class CJMarkdownTheme {
      * @param audioTypeTextColor 音频类型文字颜色 - 默认0X80000000
      */
     public func setAudioTypeTextColor(audioTypeTextColor: UInt32): Unit {
-        this.audioTypeTextColor = transColorForTrasparent(audioTypeTextColor)
+        this.cjMarkdownAudioTheme.setAudioTypeTextFontColor(audioTypeTextColor)
     }
 
     /**
@@ -2422,7 +1454,7 @@ public class CJMarkdownTheme {
      * @param audioTypeTextLineHeight 音频类型文字行高 - 默认15.0vp
      */
     public func setAudioTypeTextLineHeight(audioTypeTextLineHeight: Float64): Unit {
-        this.audioTypeTextLineHeight = audioTypeTextLineHeight
+        this.cjMarkdownAudioTheme.setAudioTypeTextLineHeight(audioTypeTextLineHeight)
     }
 
     /**
@@ -2431,7 +1463,7 @@ public class CJMarkdownTheme {
      * @param audioMarginTop 音频上边距 - 默认10.0vp
      */
     public func setAudioMarginTop(audioMarginTop: Float64): Unit {
-        this.audioMarginTop = audioMarginTop
+        this.cjMarkdownAudioTheme.audioMarginTop = audioMarginTop
     }
 
     /**
@@ -2440,7 +1472,7 @@ public class CJMarkdownTheme {
      * @param audioMarginBottom 音频下边距 - 默认10.0vp
      */
     public func setAudioMarginBottom(audioMarginBottom: Float64): Unit {
-        this.audioMarginBottom = audioMarginBottom
+        this.cjMarkdownAudioTheme.audioMarginBottom = audioMarginBottom
     }
 
     /**
@@ -2449,7 +1481,7 @@ public class CJMarkdownTheme {
      * @param videoBorderRadius 视频圆角 - 默认10.0vp
      */
     public func setVideoBorderRadius(videoBorderRadius: Float64): Unit {
-        this.videoBorderRadius = videoBorderRadius
+        this.cjMarkdownVideoTheme.setVideoBorderAllRadius(videoBorderRadius)
     }
 
     /**
@@ -2458,7 +1490,7 @@ public class CJMarkdownTheme {
      * @param videoTimeTextColor 视频时间文本颜色 - 默认Color.WHITE
      */
     public func setVideoTimeTextColor(videoTimeTextColor: UInt32): Unit {
-        this.videoTimeTextColor = transColorForTrasparent(videoTimeTextColor)
+        this.cjMarkdownVideoTheme.setVideoTimeTextFontColor(videoTimeTextColor)
     }
 
     /**
@@ -2467,7 +1499,7 @@ public class CJMarkdownTheme {
      * @param videoTimeTextSize 视频时间文本大小 - 默认14.0fp
      */
     public func setVideoTimeTextSize(videoTimeTextSize: Float64): Unit {
-        this.videoTimeTextSize = videoTimeTextSize
+        this.cjMarkdownVideoTheme.setVideoTimeTextFontSize(videoTimeTextSize)
     }
 
     /**
@@ -2476,7 +1508,7 @@ public class CJMarkdownTheme {
      * @param videoTimeTextMarginRight 视频时间文本居右边距 - 默认10.0vp
      */
     public func setVideoTimeTextMarginRight(videoTimeTextMarginRight: Float64): Unit {
-        this.videoTimeTextMarginRight = videoTimeTextMarginRight
+        this.cjMarkdownVideoTheme.setVideoTimeTextMarginRight(videoTimeTextMarginRight)
     }
 
     /**
@@ -2485,7 +1517,7 @@ public class CJMarkdownTheme {
      * @param videoTimeTextMarginBottom 视频时间文本居底边距 - 默认10.0vp
      */
     public func setVideoTimeTextMarginBottom(videoTimeTextMarginBottom: Float64): Unit {
-        this.videoTimeTextMarginBottom = videoTimeTextMarginBottom
+        this.cjMarkdownVideoTheme.setVideoTimeTextMarginBottom(videoTimeTextMarginBottom)
     }
 
     /**
@@ -2494,7 +1526,7 @@ public class CJMarkdownTheme {
      * @param videoMarginTop 视频上边距 - 默认10.0vp
      */
     public func setVideoMarginTop(videoMarginTop: Float64): Unit {
-        this.videoMarginTop = videoMarginTop
+        this.cjMarkdownVideoTheme.videoMarginTop = videoMarginTop
     }
 
     /**
@@ -2503,7 +1535,7 @@ public class CJMarkdownTheme {
      * @param videoMarginBottom 视频下边距 - 默认10.0vp
      */
     public func setVideoMarginBottom(videoMarginBottom: Float64): Unit {
-        this.videoMarginBottom = videoMarginBottom
+        this.cjMarkdownVideoTheme.videoMarginBottom = videoMarginBottom
     }
 
     /**
@@ -2512,7 +1544,7 @@ public class CJMarkdownTheme {
      * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默认false不显示
      */
     public func setIsVideoBottomLayout(isVideoBottomLayout: Bool): Unit {
-        this.isVideoBottomLayout = isVideoBottomLayout
+        this.cjMarkdownVideoTheme.setVideoBottomLayoutVisible(isVideoBottomLayout)
     }
 
     /**
@@ -2521,7 +1553,8 @@ public class CJMarkdownTheme {
      * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
      */
     public func setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: Float64): Unit {
-        this.videoReleaseImageWidthHeight = videoReleaseImageWidthHeight
+        this.cjMarkdownVideoTheme.setVideoReleaseButtonIconWidth(videoReleaseImageWidthHeight)
+        this.cjMarkdownVideoTheme.setVideoReleaseButtonIconHeight(videoReleaseImageWidthHeight)
     }
 
     /**
@@ -2530,7 +1563,7 @@ public class CJMarkdownTheme {
      * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
      */
     public func setVideoReleaseWidth(videoReleaseWidth: Float64): Unit {
-        this.videoReleaseWidth = videoReleaseWidth
+        this.cjMarkdownVideoTheme.setVideoReleaseButtonWidth(videoReleaseWidth)
     }
 
     /**
@@ -2539,7 +1572,7 @@ public class CJMarkdownTheme {
      * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
      */
     public func setVideoReleaseHeight(videoReleaseHeight: Float64): Unit {
-        this.videoReleaseHeight = videoReleaseHeight
+        this.cjMarkdownVideoTheme.setVideoReleaseButtonHeight(videoReleaseHeight)
     }
 
     /**
@@ -2548,7 +1581,7 @@ public class CJMarkdownTheme {
      * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
      */
     public func setVideoReleaseRadius(videoReleaseRadius: Float64): Unit {
-        this.videoReleaseRadius = videoReleaseRadius
+        this.cjMarkdownVideoTheme.setVideoReleaseButtonAllRadius(videoReleaseRadius)
     }
 
     /**
@@ -2557,7 +1590,7 @@ public class CJMarkdownTheme {
      * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
      */
     public func setVideoReleaseText(videoReleaseText: String): Unit {
-        this.videoReleaseText = videoReleaseText
+        this.cjMarkdownVideoTheme.setVideoReleaseButtonText(videoReleaseText)
     }
 
     /**
@@ -2566,7 +1599,7 @@ public class CJMarkdownTheme {
      * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
      */
     public func setVideoReleaseTexSize(videoReleaseTexSize: Float64): Unit {
-        this.videoReleaseTexSize = videoReleaseTexSize
+        this.cjMarkdownVideoTheme.setVideoReleaseButtonTextFontSize(videoReleaseTexSize)
     }
 
     /**
@@ -2575,7 +1608,7 @@ public class CJMarkdownTheme {
      * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
      */
     public func setVideoReleaseTexColor(videoReleaseTexColor: UInt32): Unit {
-        this.videoReleaseTexColor = transColorForTrasparent(videoReleaseTexColor)
+        this.cjMarkdownVideoTheme.setVideoReleaseButtonTextFontColor(videoReleaseTexColor)
     }
 
     /**
@@ -2584,7 +1617,7 @@ public class CJMarkdownTheme {
      * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
      */
     public func setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: UInt32): Unit {
-        this.videoReleaseBackgroundColor = transColorForTrasparent(videoReleaseBackgroundColor)
+        this.cjMarkdownVideoTheme.setVideoReleaseButtonBackgroundColor(videoReleaseBackgroundColor)
     }
 
     /**
@@ -2593,7 +1626,8 @@ public class CJMarkdownTheme {
      * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
      */
     public func setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: Float64): Unit {
-        this.videoDownloadImageWidthHeight = videoDownloadImageWidthHeight
+        this.cjMarkdownVideoTheme.setVideoDownloadButtonIconWidth(videoDownloadImageWidthHeight)
+        this.cjMarkdownVideoTheme.setVideoDownloadButtonIconHeight(videoDownloadImageWidthHeight)
     }
 
     /**
@@ -2602,7 +1636,7 @@ public class CJMarkdownTheme {
      * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
      */
     public func setVideoDownloadWidth(videoDownloadWidth: Float64): Unit {
-        this.videoDownloadWidth = videoDownloadWidth
+        this.cjMarkdownVideoTheme.setVideoDownloadButtonWidth(videoDownloadWidth)
     }
 
     /**
@@ -2611,7 +1645,7 @@ public class CJMarkdownTheme {
      * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
      */
     public func setVideoDownloadHeight(videoDownloadHeight: Float64): Unit {
-        this.videoDownloadHeight = videoDownloadHeight
+        this.cjMarkdownVideoTheme.setVideoDownloadButtonHeight(videoDownloadHeight)
     }
 
     /**
@@ -2620,7 +1654,7 @@ public class CJMarkdownTheme {
      * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
      */
     public func setVideoDownloadRadius(videoDownloadRadius: Float64): Unit {
-        this.videoDownloadRadius = videoDownloadRadius
+        this.cjMarkdownVideoTheme.setVideoDownloadButtonAllRadius(videoDownloadRadius)
     }
 
     /**
@@ -2629,7 +1663,7 @@ public class CJMarkdownTheme {
      * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
      */
     public func setVideoDownloadText(videoDownloadText: String): Unit {
-        this.videoDownloadText = videoDownloadText
+        this.cjMarkdownVideoTheme.setVideoDownloadButtonText(videoDownloadText)
     }
 
     /**
@@ -2638,7 +1672,7 @@ public class CJMarkdownTheme {
      * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
      */
     public func setVideoDownloadTexSize(videoDownloadTexSize: Float64): Unit {
-        this.videoDownloadTexSize = videoDownloadTexSize
+        this.cjMarkdownVideoTheme.setVideoDownloadButtonTextFontSize(videoDownloadTexSize)
     }
 
     /**
@@ -2647,7 +1681,7 @@ public class CJMarkdownTheme {
      * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
      */
     public func setVideoDownloadTexColor(videoDownloadTexColor: UInt32): Unit {
-        this.videoDownloadTexColor = transColorForTrasparent(videoDownloadTexColor)
+        this.cjMarkdownVideoTheme.setVideoDownloadButtonTextFontColor(videoDownloadTexColor)
     }
 
     /**
@@ -2656,7 +1690,7 @@ public class CJMarkdownTheme {
      * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
      */
     public func setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: UInt32): Unit {
-        this.videoDownloadBackgroundColor = transColorForTrasparent(videoDownloadBackgroundColor)
+        this.cjMarkdownVideoTheme.setVideoDownloadButtonBackgroundColor(videoDownloadBackgroundColor)
     }
 
     /**
@@ -2665,12 +1699,7 @@ public class CJMarkdownTheme {
      * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
      */
     public func setImageFitType(imageFitType: Int64): Unit {
-        this.imageFitType = match (imageFitType) {
-            case 0 => ImageFit.Contain
-            case 1 => ImageFit.Cover
-            case 2 => ImageFit.Fill
-            case _ => ImageFit.Contain
-        }
+        this.cjMarkdownImageTheme.setImageFitType(imageFitType)
     }
 
     /**
@@ -2679,7 +1708,7 @@ public class CJMarkdownTheme {
      * @param imageMaximumWidth 图片最大宽度百分比 - 默认1.0
      */
     public func setImageMaximumWidth(imageMaximumWidth: Float64): Unit {
-        this.imageMaximumWidth = imageMaximumWidth
+        this.cjMarkdownImageTheme.setImageMaximumWidth(imageMaximumWidth)
     }
 
     /**
@@ -2688,7 +1717,7 @@ public class CJMarkdownTheme {
      * @param imageFixedRatioWidth 图片固定宽度百分比 - 默认None
      */
     public func setImageFixedRatioWidth(imageFixedRatioWidth: Float64): Unit {
-        this.imageFixedRatioWidth = imageFixedRatioWidth
+        this.cjMarkdownImageTheme.setImageFixedRatioWidth(imageFixedRatioWidth)
     }
 
     /**
@@ -2697,7 +1726,7 @@ public class CJMarkdownTheme {
      * @param imageMaxHeight 图片最大高度 - 默认None
      */
     public func setImageMaxHeight(imageMaxHeight: Float64): Unit {
-        this.imageMaxHeight = imageMaxHeight
+        this.cjMarkdownImageTheme.setImageMaxHeight(imageMaxHeight)
     }
 
     /**
@@ -2706,7 +1735,7 @@ public class CJMarkdownTheme {
      * @param imageMaxWidth 图片最大宽度 - 默认None
      */
     public func setImageMaxWidth(imageMaxWidth: Float64): Unit {
-        this.imageMaxWidth = imageMaxWidth
+        this.cjMarkdownImageTheme.setImageMaxWidth(imageMaxWidth)
     }
 
     /**
@@ -2715,7 +1744,7 @@ public class CJMarkdownTheme {
      * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
      */
     public func setImageBorderRadius(imageBorderRadius: Float64): Unit {
-        this.imageBorderRadius = imageBorderRadius
+        this.cjMarkdownImageTheme.setImageBorderAllRadius(imageBorderRadius)
     }
 
     /**
@@ -2724,7 +1753,7 @@ public class CJMarkdownTheme {
      * @param imageBorderWidth 图片边框宽度 - 默认0.0
      */
     public func setImageBorderWidth(imageBorderWidth: Float64): Unit {
-        this.imageBorderWidth = imageBorderWidth
+        this.cjMarkdownImageTheme.setImageBorderWidth(imageBorderWidth)
     }
 
     /**
@@ -2733,7 +1762,7 @@ public class CJMarkdownTheme {
      * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
      */
     public func setImageBorderColor(imageBorderColor: UInt32): Unit {
-        this.imageBorderColor = transColorForTrasparent(imageBorderColor)
+        this.cjMarkdownImageTheme.setImageBorderColor(imageBorderColor)
     }
 
     /**
@@ -2742,7 +1771,7 @@ public class CJMarkdownTheme {
      * @param isAutoResize 网络图片是否压缩 - true：压缩；false：不压缩。默认true
      */
     public func setIsAutoResize(isAutoResize: Bool): Unit {
-        this.isAutoResize = isAutoResize
+        this.cjMarkdownImageTheme.setImageAutoResize(isAutoResize)
     }
 
     /**
@@ -2751,7 +1780,7 @@ public class CJMarkdownTheme {
      * @param imageMarginTop 图片上边距 - 默认10.0vp
      */
     public func setImageMarginTop(imageMarginTop: Float64): Unit {
-        this.imageMarginTop = imageMarginTop
+        this.cjMarkdownImageTheme.imageMarginTop = imageMarginTop
     }
 
     /**
@@ -2760,7 +1789,7 @@ public class CJMarkdownTheme {
      * @param imageMarginBottom 图片下边距 - 默认10.0vp
      */
     public func setImageMarginBottom(imageMarginBottom: Float64): Unit {
-        this.imageMarginBottom = imageMarginBottom
+        this.cjMarkdownImageTheme.imageMarginBottom = imageMarginBottom
     }
 
     /**
@@ -2769,7 +1798,7 @@ public class CJMarkdownTheme {
      * @param isImageDownload 图片是否有下载按钮 - 默认false
      */
     public func setIsImageDownload(isImageDownload: Bool): Unit {
-        this.isImageDownload = isImageDownload
+        this.cjMarkdownImageTheme.setImageDownloadButtonVisible(isImageDownload)
     }
 
     /**
@@ -2778,7 +1807,7 @@ public class CJMarkdownTheme {
      * @param isImageMixedLayout 是否图文混排 - 默认true
      */
     public func setIsImageMixedLayout(isImageMixedLayout: Bool): Unit {
-        this.isImageMixedLayout = isImageMixedLayout
+        this.cjMarkdownImageTheme.setIsImageMixedLayout(isImageMixedLayout)
     }
 
     /**
@@ -2787,7 +1816,8 @@ public class CJMarkdownTheme {
      * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
      */
     public func setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: Float64): Unit {
-        this.imageDownloadImageWidthHeight = imageDownloadImageWidthHeight
+        this.cjMarkdownImageTheme.setImageDownloadButtonIconWidth(imageDownloadImageWidthHeight)
+        this.cjMarkdownImageTheme.setImageDownloadButtonIconHeight(imageDownloadImageWidthHeight)
     }
 
     /**
@@ -2796,7 +1826,7 @@ public class CJMarkdownTheme {
      * @param imageDownloadWidth 图片下载按钮宽度 - 默认296.0
      */
     public func setImageDownloadWidth(imageDownloadWidth: Float64): Unit {
-        this.imageDownloadWidth = imageDownloadWidth
+        this.cjMarkdownImageTheme.setImageDownloadButtonWidth(imageDownloadWidth)
     }
 
     /**
@@ -2805,7 +1835,7 @@ public class CJMarkdownTheme {
      * @param imageDownloadHeight 图片下载按钮高度 - 默认44.0
      */
     public func setImageDownloadHeight(imageDownloadHeight: Float64): Unit {
-        this.imageDownloadHeight = imageDownloadHeight
+        this.cjMarkdownImageTheme.setImageDownloadButtonHeight(imageDownloadHeight)
     }
 
     /**
@@ -2814,7 +1844,7 @@ public class CJMarkdownTheme {
      * @param imageDownloadRadius 图片下载按钮圆角 - 默认22.0
      */
     public func setImageDownloadRadius(imageDownloadRadius: Float64): Unit {
-        this.imageDownloadRadius = imageDownloadRadius
+        this.cjMarkdownImageTheme.setImageDownloadButtonAllRadius(imageDownloadRadius)
     }
 
     /**
@@ -2823,7 +1853,7 @@ public class CJMarkdownTheme {
      * @param imageDownloadText 图片下载按钮文本内容 - 默认"下载图片"
      */
     public func setImageDownloadText(imageDownloadText: String): Unit {
-        this.imageDownloadText = imageDownloadText
+        this.cjMarkdownImageTheme.setImageDownloadButtonText(imageDownloadText)
     }
 
     /**
@@ -2832,7 +1862,7 @@ public class CJMarkdownTheme {
      * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
      */
     public func setImageDownloadTexSize(imageDownloadTexSize: Float64): Unit {
-        this.imageDownloadTexSize = imageDownloadTexSize
+        this.cjMarkdownImageTheme.setImageDownloadButtonTextFontSize(imageDownloadTexSize)
     }
 
     /**
@@ -2841,7 +1871,7 @@ public class CJMarkdownTheme {
      * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0XE6000000
      */
     public func setImageDownloadTexColor(imageDownloadTexColor: UInt32): Unit {
-        this.imageDownloadTexColor = transColorForTrasparent(imageDownloadTexColor)
+        this.cjMarkdownImageTheme.setImageDownloadButtonTextFontColor(imageDownloadTexColor)
     }
 
     /**
@@ -2850,7 +1880,7 @@ public class CJMarkdownTheme {
      * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0XFFF5F5F5
      */
     public func setImageDownloadBackgroundColor(imageDownloadBackgroundColor: UInt32): Unit {
-        this.imageDownloadBackgroundColor = transColorForTrasparent(imageDownloadBackgroundColor)
+        this.cjMarkdownImageTheme.setImageDownloadButtonBackgroundColor(imageDownloadBackgroundColor)
     }
 
     /**
@@ -2859,7 +1889,7 @@ public class CJMarkdownTheme {
      * @param tableCellPadding 表格内容内边距 - 默认4.0vp
      */
     public func setTableCellPadding(tableCellPadding: Float64): Unit {
-        this.tableCellPadding = tableCellPadding
+        this.cjMarkdownTableTheme.setTableCellAllPadding(tableCellPadding)
     }
 
     /**
@@ -2868,7 +1898,7 @@ public class CJMarkdownTheme {
      * @param tableBorderColor 表格边框颜色 - 默认0XFF000000
      */
     public func setTableBorderColor(tableBorderColor: UInt32): Unit {
-        this.tableBorderColor = transColorForTrasparent(tableBorderColor)
+        this.cjMarkdownTableTheme.setTableBorderColor(tableBorderColor)
     }
 
     /**
@@ -2877,7 +1907,7 @@ public class CJMarkdownTheme {
      * @param tableBorderWidth 表格边框宽度 - 默认1.0vp
      */
     public func setTableBorderWidth(tableBorderWidth: Float64): Unit {
-        this.tableBorderWidth = tableBorderWidth
+        this.cjMarkdownTableTheme.setTableBorderWidth(tableBorderWidth)
     }
 
     /**
@@ -2886,7 +1916,7 @@ public class CJMarkdownTheme {
      * @param tableOddRowBackgroundColor 表格奇数行背景色 - 默认0XFFFFFFFF
      */
     public func setTableOddRowBackgroundColor(tableOddRowBackgroundColor: UInt32): Unit {
-        this.tableOddRowBackgroundColor = transColorForTrasparent(tableOddRowBackgroundColor)
+        this.cjMarkdownTableTheme.setTableContentOddRowBackgroundColor(tableOddRowBackgroundColor)
     }
 
     /**
@@ -2895,7 +1925,7 @@ public class CJMarkdownTheme {
      * @param tableEvenRowBackgroundColor 表格偶数行背景色 - 默认0XFFE0E0E0
      */
     public func setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: UInt32): Unit {
-        this.tableEvenRowBackgroundColor = transColorForTrasparent(tableEvenRowBackgroundColor)
+        this.cjMarkdownTableTheme.setTableContentEvenRowBackgroundColor(tableEvenRowBackgroundColor)
     }
 
     /**
@@ -2904,7 +1934,7 @@ public class CJMarkdownTheme {
      * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0XFFFFFFFF
      */
     public func setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: UInt32): Unit {
-        this.tableHeaderRowBackgroundColor = transColorForTrasparent(tableHeaderRowBackgroundColor)
+        this.cjMarkdownTableTheme.setTableTitleBackgroundColor(tableHeaderRowBackgroundColor)
     }
 
     /**
@@ -2913,7 +1943,7 @@ public class CJMarkdownTheme {
      * @param tableTitleTextColor 表格标题文本颜色 - 默认0XFF191919
      */
     public func setTableTitleTextColor(tableTitleTextColor: UInt32): Unit {
-        this.tableTitleTextColor = transColorForTrasparent(tableTitleTextColor)
+        this.cjMarkdownTableTheme.setTableTitleTextFontColor(tableTitleTextColor)
     }
 
     /**
@@ -2922,7 +1952,7 @@ public class CJMarkdownTheme {
      * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
      */
     public func setTableTitleTextSize(tableTitleTextSize: Float64): Unit {
-        this.tableTitleTextSize = tableTitleTextSize
+        this.cjMarkdownTableTheme.setTableTitleTextFontSize(tableTitleTextSize)
     }
 
     /**
@@ -2931,7 +1961,7 @@ public class CJMarkdownTheme {
      * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
      */
     public func setTableTitleLineHeight(tableTitleLineHeight: Float64): Unit {
-        this.tableTitleLineHeight = tableTitleLineHeight
+        this.cjMarkdownTableTheme.setTableTitleTextLineHeight(tableTitleLineHeight)
     }
 
     /**
@@ -2940,7 +1970,7 @@ public class CJMarkdownTheme {
      * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
      */
     public func setTableContentTextColor(tableContentTextColor: UInt32): Unit {
-        this.tableContentTextColor = transColorForTrasparent(tableContentTextColor)
+        this.cjMarkdownTableTheme.setTableContentTextFontColor(tableContentTextColor)
     }
 
     /**
@@ -2949,7 +1979,7 @@ public class CJMarkdownTheme {
      * @param tableContentTextSize 表格内容文本大小 - 默认14.0vp
      */
     public func setTableContentTextSize(tableContentTextSize: Float64): Unit {
-        this.tableContentTextSize = tableContentTextSize
+        this.cjMarkdownTableTheme.setTableContentTextFontSize(tableContentTextSize)
     }
 
     /**
@@ -2958,7 +1988,7 @@ public class CJMarkdownTheme {
      * @param tableTextLineHeight 表格文本行高 - 默认22.0vp
      */
     public func setTableTextLineHeight(tableTextLineHeight: Float64): Unit {
-        this.tableTextLineHeight = tableTextLineHeight
+        this.cjMarkdownTableTheme.setTableContentTextLineHeight(tableTextLineHeight)
     }
 
     /**
@@ -2967,7 +1997,7 @@ public class CJMarkdownTheme {
      * @param tableRadius 表格圆角 - 默认5.0vp
      */
     public func setTableRadius(tableRadius: Float64): Unit {
-        this.tableRadius = tableRadius
+        this.cjMarkdownTableTheme.setTableAllRadius(tableRadius)
     }
 
     /**
@@ -2976,7 +2006,7 @@ public class CJMarkdownTheme {
      * @param tableMinTextWidth 表格最小宽度 - 默认50.0vp
      */
     public func setTableMinTextWidth(tableMinTextWidth: Float64): Unit {
-        this.tableMinTextWidth = tableMinTextWidth
+        this.cjMarkdownTableTheme.setTableMinCellWidth(tableMinTextWidth)
     }
 
     /**
@@ -2985,7 +2015,7 @@ public class CJMarkdownTheme {
      * @param tableMaxTextWidth 表格最大宽度- 默认300.0vp
      */
     public func setTableMaxTextWidth(tableMaxTextWidth: Float64): Unit {
-        this.tableMaxTextWidth = tableMaxTextWidth
+        this.cjMarkdownTableTheme.setTableMaxCellWidth(tableMaxTextWidth)
     }
 
     /**
@@ -2994,16 +2024,16 @@ public class CJMarkdownTheme {
      * @param tableFirstColumnBold 表格第一列是否加粗 - true：加粗；false：不加粗。默认false
      */
     public func setTableFirstColumnBold(tableFirstColumnBold: Bool): Unit {
-        this.tableFirstColumnBold = tableFirstColumnBold
+        this.cjMarkdownTableTheme.setTableFirstColumnIsBold(tableFirstColumnBold)
     }
 
     /**
-     * 设置表格是否显示滚动条
+     * 设置表格滚动条状态
      *
-     * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
+     * @param tableScrollBarShow 滚动条状态 - 0-显示 1-不显示 2-自动，默认不显示
      */
-    public func setTableScrollBarShow(tableScrollBarShow: Bool): Unit {
-        this.tableScrollBarShow = tableScrollBarShow
+    public func setTableScrollBarShow(tableScrollBarShow: Int64): Unit {
+        this.cjMarkdownTableTheme.setTableScrollBarState(tableScrollBarShow)
     }
 
     /**
@@ -3012,7 +2042,7 @@ public class CJMarkdownTheme {
      * @param tableScrollBarColor 表格滚动条颜色
      */
     public func setTableScrollBarColor(tableScrollBarColor: UInt32): Unit {
-        this.tableScrollBarColor = transColorForTrasparent(tableScrollBarColor)
+        this.cjMarkdownTableTheme.setTableScrollBarColor(tableScrollBarColor)
     }
 
     /**
@@ -3030,7 +2060,7 @@ public class CJMarkdownTheme {
      * @param strikethroughColor 删除线颜色 - 默认0X191919
      */
     public func setStrikethroughColor(strikethroughColor: UInt32): Unit {
-        this.strikethroughColor = transColorForTrasparent(strikethroughColor)
+        this.cjMarkdownStrikethroughTheme.setStrikethroughTextDecorationColor(strikethroughColor)
     }
 
     /**
@@ -3039,7 +2069,7 @@ public class CJMarkdownTheme {
      * @param strikethroughStyle 删除线样式 - 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
      */
     public func setStrikethroughStyle(strikethroughStyle: Int32): Unit {
-        this.strikethroughStyle = strikethroughStyle
+        this.cjMarkdownStrikethroughTheme.setStrikethroughTextDecorationStyle(Int64(strikethroughStyle))
     }
 
     /**
@@ -3048,7 +2078,7 @@ public class CJMarkdownTheme {
      * @param descListTermAndDefMargins 定义列表定义行缩进 默认8.0
      */
     public func setDescListTermAndDefMargins(descListTermAndDefMargins: Float64): Unit {
-        this.descListTermAndDefMargins = descListTermAndDefMargins
+        this.cjMarkdownDefinitionListTheme.setDefinitionListTermToDescriptionSpacing(descListTermAndDefMargins)
     }
 
     /**
@@ -3057,7 +2087,7 @@ public class CJMarkdownTheme {
      * @param descListDefIndentation 定义列表定义行缩进 默认8.0
      */
     public func setDescListDefIndentation(descListDefIndentation: Float64): Unit {
-        this.descListDefIndentation = descListDefIndentation
+        this.cjMarkdownDefinitionListTheme.setDefinitionListDescriptionIndent(descListDefIndentation)
     }
 
     /**
@@ -3066,7 +2096,7 @@ public class CJMarkdownTheme {
      * @param descListDefMargins 定义列表定义行间距 默认8.0
      */
     public func setDescListDefMargins(descListDefMargins: Float64): Unit {
-        this.descListDefMargins = descListDefMargins
+        this.cjMarkdownDefinitionListTheme.setDefinitionListDescriptionItemSpacing(descListDefMargins)
     }
 
     /**
@@ -3075,7 +2105,7 @@ public class CJMarkdownTheme {
      * @param subTextColor 下标字体颜色 默认0XFF191919
      */
     public func setSubTextColor(subTextColor: UInt32): Unit {
-        this.subTextColor = transColorForTrasparent(subTextColor)
+        this.cjMarkdownSubTheme.setSubTextFontColor(subTextColor)
     }
 
     /**
@@ -3084,7 +2114,7 @@ public class CJMarkdownTheme {
      * @param subTextSize 下标字体大小 默认8.0
      */
     public func setSubTextSize(subTextSize: Float64): Unit {
-        this.subTextSize = subTextSize
+        this.cjMarkdownSubTheme.setSubTextFontSize(subTextSize)
     }
 
     /**
@@ -3093,7 +2123,7 @@ public class CJMarkdownTheme {
      * @param subOffsetDist 下标偏移距离 默认0.0
      */
     public func setSubOffsetDist(subOffsetDist: Float64): Unit {
-        this.subOffsetDist = subOffsetDist
+        this.cjMarkdownSubTheme.setSubTextBaselineOffset(subOffsetDist)
     }
 
     /**
@@ -3102,7 +2132,7 @@ public class CJMarkdownTheme {
      * @param supTextColor 上标字体颜色 默认0XFF191919
      */
     public func setSupTextColor(supTextColor: UInt32): Unit {
-        this.supTextColor = transColorForTrasparent(supTextColor)
+        this.cjMarkdownSupTheme.setSupTextFontColor(supTextColor)
     }
 
     /**
@@ -3111,7 +2141,7 @@ public class CJMarkdownTheme {
      * @param supTextSize 上标字体大小 默认8.0
      */
     public func setSupTextSize(supTextSize: Float64): Unit {
-        this.supTextSize = supTextSize
+        this.cjMarkdownSupTheme.setSupTextFontSize(supTextSize)
     }
 
     /**
@@ -3120,7 +2150,7 @@ public class CJMarkdownTheme {
      * @param supOffsetDist 上标偏移距离 默认6.0
      */
     public func setSupOffsetDist(supOffsetDist: Float64): Unit {
-        this.supOffsetDist = supOffsetDist
+        this.cjMarkdownSupTheme.setSupTextFontSize(supOffsetDist)
     }
 
     /**
@@ -3129,7 +2159,7 @@ public class CJMarkdownTheme {
      * @param underlineColor 下划线颜色 默认0XFF191919
      */
     public func setUnderlineColor(underlineColor: UInt32): Unit {
-        this.underlineColor = transColorForTrasparent(underlineColor)
+        this.cjMarkdownHtmlUnderlineTheme.setHtmlUnderlineTextFontColor(underlineColor)
     }
 
     /**
@@ -3138,7 +2168,7 @@ public class CJMarkdownTheme {
      * @param underlineStyle 下划线样式 - 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
      */
     public func setUnderlineStyle(underlineStyle: Int32): Unit {
-        this.underlineStyle = underlineStyle
+        this.cjMarkdownHtmlUnderlineTheme.setHtmlUnderlineTextDecorationStyle(Int64(underlineStyle))
     }
 
     /**
@@ -3147,7 +2177,7 @@ public class CJMarkdownTheme {
      * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
      */
     public func setOpenGestureSwipe(openGestureSwipe: Bool): Unit {
-        this.openGestureSwipe = openGestureSwipe
+        this.cjMarkdownGlobalTheme.setOpenGestureSwipe(openGestureSwipe)
     }
 
     /**
@@ -3156,7 +2186,7 @@ public class CJMarkdownTheme {
      * @param useTab true-使用，false-不使用，默认false
      */
     public func setUseTab(useTab: Bool): Unit {
-        this.useTab = useTab
+        this.cjMarkdownCodeBlockTheme.setCodeBlockUseTab(useTab)
     }
 
     /**
@@ -3165,6 +2195,231 @@ public class CJMarkdownTheme {
      * @param indentWidth 空格缩进数量，默认4空格
      */
     public func setIndentWidth(indentWidth: Int64): Unit {
-        this.indentWidth = indentWidth
+        this.cjMarkdownCodeBlockTheme.setCodeBlockIndentWidth(indentWidth)
+    }
+
+    /**
+     * 设置全局样式
+     *
+     * @param cjMarkdownGlobalTheme 全局样式
+     */
+    public func setCJMarkdownGlobalTheme(cjMarkdownGlobalTheme: CJMarkdownGlobalTheme): Unit {
+        this.cjMarkdownGlobalTheme = cjMarkdownGlobalTheme
+    }
+
+    /**
+     * 设置音频样式
+     *
+     * @param cjMarkdownAudioTheme 全局样式
+     */
+    public func setCJMarkdownAudioTheme(cjMarkdownAudioTheme: CJMarkdownAudioTheme): Unit {
+        this.cjMarkdownAudioTheme = cjMarkdownAudioTheme
+    }
+
+    /**
+     * 设置加粗文本样式
+     *
+     * @param cjMarkdownBoldTheme 全局样式
+     */
+    public func setCJMarkdownBoldTheme(cjMarkdownBoldTheme: CJMarkdownBoldTheme): Unit {
+        this.cjMarkdownBoldTheme = cjMarkdownBoldTheme
+    }
+
+    /**
+     * 设置定义列表样式
+     *
+     * @param cjMarkdownDefinitionListTheme 定义列表样式
+     */
+    public func setCJMarkdownDefinitionListTheme(cjMarkdownDefinitionListTheme: CJMarkdownDefinitionListTheme): Unit {
+        this.cjMarkdownDefinitionListTheme = cjMarkdownDefinitionListTheme
+    }
+
+    /**
+     * 设置分割线样式
+     *
+     * @param  cjMarkdownDividerTheme分割线样式
+     */
+    public func setCJMarkdownDividerTheme(cjMarkdownDividerTheme: CJMarkdownDividerTheme): Unit {
+        this.cjMarkdownDividerTheme = cjMarkdownDividerTheme
+    }
+
+    /**
+     * 设置脚注定义样式
+     *
+     * @param cjMarkdownFootnoteDefTheme 脚注定义样式
+     */
+    public func setCJMarkdownFootnoteDefTheme(cjMarkdownFootnoteDefTheme: CJMarkdownFootnoteDefTheme): Unit {
+        this.cjMarkdownFootnoteDefTheme = cjMarkdownFootnoteDefTheme
+    }
+
+    /**
+     * 设置脚注引用样式
+     *
+     * @param cjMarkdownFootnoteRefTheme 脚注引用样式
+     */
+    public func setCJMarkdownFootnoteRefTheme(cjMarkdownFootnoteRefTheme: CJMarkdownFootnoteRefTheme): Unit {
+        this.cjMarkdownFootnoteRefTheme = cjMarkdownFootnoteRefTheme
+    }
+
+    /**
+     * 设置数学公式样式
+     *
+     * @param cjMarkdownLatexMathTheme 数学公式样式
+     */
+    public func setCJMarkdownLatexMathTheme(cjMarkdownLatexMathTheme: CJMarkdownLatexMathTheme): Unit {
+        this.cjMarkdownLatexMathTheme = cjMarkdownLatexMathTheme
+    }
+
+    /**
+     * 设置HTML下划线样式
+     *
+     * @param cjMarkdownHtmlUnderlineTheme HTML下划线样式
+     */
+    public func setCJMarkdownHtmlUnderlineTheme(cjMarkdownHtmlUnderlineTheme: CJMarkdownHtmlUnderlineTheme): Unit {
+        this.cjMarkdownHtmlUnderlineTheme = cjMarkdownHtmlUnderlineTheme
+    }
+
+    /**
+     * 设置斜体文本样式
+     *
+     * @param cjMarkdownItalicTheme 斜体文本样式
+     */
+    public func setCJMarkdownItalicTheme(cjMarkdownItalicTheme: CJMarkdownItalicTheme): Unit {
+        this.cjMarkdownItalicTheme = cjMarkdownItalicTheme
+    }
+
+    /**
+     * 设置删除线文本样式
+     *
+     * @param cjMarkdownStrikethroughTheme 删除线文本样式
+     */
+    public func setCJMarkdownStrikethroughTheme(cjMarkdownStrikethroughTheme: CJMarkdownStrikethroughTheme): Unit {
+        this.cjMarkdownStrikethroughTheme = cjMarkdownStrikethroughTheme
+    }
+
+    /**
+     * 设置下标文本样式
+     *
+     * @param cjMarkdownSubTheme 下标文本样式
+     */
+    public func setCJMarkdownSubTheme(cjMarkdownSubTheme: CJMarkdownSubTheme): Unit {
+        this.cjMarkdownSubTheme = cjMarkdownSubTheme
+    }
+
+    /**
+     * 设置上标文本样式
+     *
+     * @param cjMarkdownSupTheme 上标文本样式
+     */
+    public func setCJMarkdownSupTheme(cjMarkdownSupTheme: CJMarkdownSupTheme): Unit {
+        this.cjMarkdownSupTheme = cjMarkdownSupTheme
+    }
+
+    /**
+     * 设置内联代码样式
+     *
+     * @param  内联代码样式
+     */
+    public func setCJMarkdownInlineCodeTheme(cjMarkdownInlineCodeTheme: CJMarkdownInlineCodeTheme): Unit {
+        this.cjMarkdownInlineCodeTheme = cjMarkdownInlineCodeTheme
+    }
+
+    /**
+     * 设置链接文本样式
+     *
+     * @param cjMarkdownLinkTheme 链接文本样式
+     */
+    public func setCJMarkdownLinkTheme(cjMarkdownLinkTheme: CJMarkdownLinkTheme): Unit {
+        this.cjMarkdownLinkTheme = cjMarkdownLinkTheme
+    }
+
+    /**
+     * 设置有序列表样式
+     *
+     * @param cjMarkdownOrderedListTheme 有序列表样式
+     */
+    public func setCJMarkdownOrderedListTheme(cjMarkdownOrderedListTheme: CJMarkdownOrderedListTheme): Unit {
+        this.cjMarkdownOrderedListTheme = cjMarkdownOrderedListTheme
+    }
+
+    /**
+     * 设置无序/任务列表样式
+     *
+     * @param cjMarkdownBulletListTheme 无序列表样式
+     */
+    public func setCJMarkdownBulletListTheme(cjMarkdownBulletListTheme: CJMarkdownBulletListTheme): Unit {
+        this.cjMarkdownBulletListTheme = cjMarkdownBulletListTheme
+    }
+
+    /**
+     * 设置段落样式
+     *
+     * @param cjMarkdownParagraphTheme 段落样式
+     */
+    public func setCJMarkdownParagraphTheme(cjMarkdownParagraphTheme: CJMarkdownParagraphTheme): Unit {
+        this.cjMarkdownParagraphTheme = cjMarkdownParagraphTheme
+    }
+
+    /**
+     * 设置视频样式
+     *
+     * @param cjMarkdownVideoTheme 视频样式
+     */
+    public func setCJMarkdownVideoTheme(cjMarkdownVideoTheme: CJMarkdownVideoTheme): Unit {
+        this.cjMarkdownVideoTheme = cjMarkdownVideoTheme
+    }
+
+    /**
+     * 设置表格样式
+     *
+     * @param cjMarkdownTableTheme 表格样式
+     */
+    public func setCJMarkdownTableTheme(cjMarkdownTableTheme: CJMarkdownTableTheme): Unit {
+        this.cjMarkdownTableTheme = cjMarkdownTableTheme
+    }
+
+    /**
+     * 设置块引用样式
+     *
+     * @param cjMarkdownBlockQuoteTheme 块引用样式
+     */
+    public func setCJMarkdownBlockQuoteTheme(cjMarkdownBlockQuoteTheme: CJMarkdownBlockQuoteTheme): Unit {
+        this.cjMarkdownBlockQuoteTheme = cjMarkdownBlockQuoteTheme
+    }
+
+    /**
+     * 设置banner样式
+     *
+     * @param cjMarkdownBannerTheme banner样式
+     */
+    public func setCJMarkdownBannerTheme(cjMarkdownBannerTheme: CJMarkdownBannerTheme): Unit {
+        this.cjMarkdownBannerTheme = cjMarkdownBannerTheme
+    }
+
+    /**
+     * 设置图片样式
+     *
+     * @param cjMarkdownImageTheme 图片样式
+     */
+    public func setCJMarkdownImageTheme(cjMarkdownImageTheme: CJMarkdownImageTheme): Unit {
+        this.cjMarkdownImageTheme = cjMarkdownImageTheme
+    }
+
+    /**
+     * 设置标题样式
+     *
+     * @param cjMarkdownHeadingTheme 标题样式
+     */
+    public func setCJMarkdownHeadingTheme(cjMarkdownHeadingTheme: CJMarkdownHeadingTheme): Unit {
+        this.cjMarkdownHeadingTheme = cjMarkdownHeadingTheme
+    }
+
+    /**
+     * 设置代码块样式
+     *
+     * @param cjMarkdownCodeBlockTheme 代码块样式
+     */
+    public func setCJMarkdownCodeBlockTheme(cjMarkdownCodeBlockTheme: CJMarkdownCodeBlockTheme): Unit {
+        this.cjMarkdownCodeBlockTheme = cjMarkdownCodeBlockTheme
     }
 }

@@ -1,8 +1,36 @@
-export { CJMarkdown,
-  MarkdownConfiguration,
-  MarkdownTheme,
-  MarkdownPlugin,
+export { CJMarkdown, MarkdownScroller } from './src/main/ets/pages/CJMarkDown'
+
+export { MarkdownConfiguration } from './src/main/ets/pages/MarkdownConfiguration'
+export { MarkdownTheme,
   LatexMathColorFormat,
-  MarkdownScroller,
-  MarkdownRectResult,
-  ImageFitType } from './src/main/ets/pages/CJMarkDown'
+  ImageFitType,
+  MarkdownTextDecorationStyle
+} from './src/main/ets/pages/MarkdownTheme'
+
+export { MarkdownPlugin } from './src/main/ets/pages/MarkdownPlugin'
+export { MarkdownRectResult } from './src/main/ets/pages/MarkdownRectResult'
+export { MarkdownThemeAudio } from './src/main/ets/pages/MarkdownThemeAudio'
+export { MarkdownThemeBanner } from './src/main/ets/pages/MarkdownThemeBanner'
+export { MarkdownThemeBlockQuote } from './src/main/ets/pages/MarkdownThemeBlockQuote'
+export { MarkdownThemeBold } from './src/main/ets/pages/MarkdownThemeBold'
+export { MarkdownThemeBulletList } from './src/main/ets/pages/MarkdownThemeBulletList'
+export { MarkdownThemeCodeBlock } from './src/main/ets/pages/MarkdownThemeCodeBlock'
+export { MarkdownThemeDefinitionList } from './src/main/ets/pages/MarkdownThemeDefinitionList'
+export { MarkdownThemeDivider } from './src/main/ets/pages/MarkdownThemeDivider'
+export { MarkdownThemeFootnoteDef } from './src/main/ets/pages/MarkdownThemeFootnoteDef'
+export { MarkdownThemeFootnoteRef } from './src/main/ets/pages/MarkdownThemeFootnoteRef'
+export { MarkdownThemeGlobal } from './src/main/ets/pages/MarkdownThemeGlobal'
+export { MarkdownThemeHeading } from './src/main/ets/pages/MarkdownThemeHeading'
+export { MarkdownThemeHtmlUnderline } from './src/main/ets/pages/MarkdownThemeHtmlUnderline'
+export { MarkdownThemeImage } from './src/main/ets/pages/MarkdownThemeImage'
+export { MarkdownThemeInlineCode } from './src/main/ets/pages/MarkdownThemeInlineCode'
+export { MarkdownThemeItalic } from './src/main/ets/pages/MarkdownThemeItalic'
+export { MarkdownThemeLatexMath } from './src/main/ets/pages/MarkdownThemeLatexMath'
+export { MarkdownThemeLink } from './src/main/ets/pages/MarkdownThemeLink'
+export { MarkdownThemeOrderedList } from './src/main/ets/pages/MarkdownThemeOrderedList'
+export { MarkdownThemeParagraph } from './src/main/ets/pages/MarkdownThemeParagraph'
+export { MarkdownThemeStrikethrough } from './src/main/ets/pages/MarkdownThemeStrikethrough'
+export { MarkdownThemeSub } from './src/main/ets/pages/MarkdownThemeSub'
+export { MarkdownThemeSup } from './src/main/ets/pages/MarkdownThemeSup'
+export { MarkdownThemeTable } from './src/main/ets/pages/MarkdownThemeTable'
+export { MarkdownThemeVideo } from './src/main/ets/pages/MarkdownThemeVideo'

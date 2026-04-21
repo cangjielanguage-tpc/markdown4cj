@@ -188,6 +188,181 @@ export class MarkdownTheme {
   setContext(context: Context): void
 
   /**
+   * 设置全局样式
+   *
+   * @param markdownThemeGlobal 全局样式
+   */
+  setMarkdownThemeGlobal(markdownThemeGlobal: MarkdownThemeGlobal): void
+
+  /**
+   * 设置音频样式
+   *
+   * @param markdownThemeAudio 音频样式
+   */
+  setMarkdownThemeAudio(markdownThemeAudio: MarkdownThemeAudio): void
+
+  /**
+   * 设置Banner样式
+   *
+   * @param markdownThemeBanner Banner样式
+   */
+  setMarkdownThemeBanner(markdownThemeBanner: MarkdownThemeBanner): void
+
+  /**
+   * 设置块引用样式
+   *
+   * @param markdownThemeBlockQuote 块引用样式
+   */
+  setMarkdownThemeBlockQuote(markdownThemeBlockQuote: MarkdownThemeBlockQuote): void
+
+  /**
+   * 设置加粗文本样式
+   *
+   * @param markdownThemeBold 加粗文本样式
+   */
+  setMarkdownThemeBold(markdownThemeBold: MarkdownThemeBold): void
+
+  /**
+   * 设置代码块样式
+   *
+   * @param markdownThemeCodeBlock 代码块样式
+   */
+  setMarkdownThemeCodeBlock(markdownThemeCodeBlock: MarkdownThemeCodeBlock): void
+
+  /**
+   * 设置定义列表样式
+   *
+   * @param markdownThemeDefinitionList 定义列表样式
+   */
+  setMarkdownThemeDefinitionList(markdownThemeDefinitionList: MarkdownThemeDefinitionList): void
+
+  /**
+   * 设置分割线样式
+   *
+   * @param markdownThemeDivider 分割线样式
+   */
+  setMarkdownThemeDivider(markdownThemeDivider: MarkdownThemeDivider): void
+
+  /**
+   * 设置脚注定义样式
+   *
+   * @param markdownThemeFootnoteDef 脚注定义样式
+   */
+  setMarkdownThemeFootnoteDef(markdownThemeFootnoteDef: MarkdownThemeFootnoteDef): void
+
+  /**
+   * 设置脚注引用样式
+   *
+   * @param markdownThemeFootnoteRef 脚注引用样式
+   */
+  setMarkdownThemeFootnoteRef(markdownThemeFootnoteRef: MarkdownThemeFootnoteRef): void
+
+  /**
+   * 设置数学公式样式
+   *
+   * @param markdownThemeLatexMath 数学公式样式
+   */
+  setMarkdownThemeLatexMath(markdownThemeLatexMath: MarkdownThemeLatexMath): void
+
+  /**
+   * 设置标题样式
+   *
+   * @param markdownThemeHeading 标题样式
+   */
+  setMarkdownThemeHeading(markdownThemeHeading: MarkdownThemeHeading): void
+
+  /**
+   * 设置HTML下划线文本样式
+   *
+   * @param markdownThemeHtmlUnderline HTML下划线文本样式
+   */
+  setMarkdownThemeHtmlUnderline(markdownThemeHtmlUnderline: MarkdownThemeHtmlUnderline): void
+
+  /**
+   * 设置图片样式
+   *
+   * @param markdownThemeImage 图片样式
+   */
+  setMarkdownThemeImage(markdownThemeImage: MarkdownThemeImage): void
+
+  /**
+   * 设置内联代码样式
+   *
+   * @param markdownThemeInlineCode 内联代码样式
+   */
+  setMarkdownThemeInlineCode(markdownThemeInlineCode: MarkdownThemeInlineCode): void
+
+  /**
+   * 设置斜体文本样式
+   *
+   * @param markdownThemeItalic 斜体文本样式
+   */
+  setMarkdownThemeItalic(markdownThemeItalic: MarkdownThemeItalic): void
+
+  /**
+   * 设置链接文本样式
+   *
+   * @param markdownThemeLink 链接文本样式
+   */
+  setMarkdownThemeLink(markdownThemeLink: MarkdownThemeLink): void
+
+  /**
+   * 设置有序列表样式
+   *
+   * @param markdownThemeOrderedList 有序列表样式
+   */
+  setMarkdownThemeOrderedList(markdownThemeOrderedList: MarkdownThemeOrderedList): void
+
+  /**
+   * 设置段落样式
+   *
+   * @param markdownThemeParagraph 段落样式
+   */
+  setMarkdownThemeParagraph(markdownThemeParagraph: MarkdownThemeParagraph): void
+
+  /**
+   * 设置删除线文本样式
+   *
+   * @param markdownThemeStrikethrough 删除线文本样式
+   */
+  setMarkdownThemeStrikethrough(markdownThemeStrikethrough: MarkdownThemeStrikethrough): void
+
+  /**
+   * 设置下标文本样式
+   *
+   * @param markdownThemeSub 下标文本样式
+   */
+  setMarkdownThemeSub(markdownThemeSub: MarkdownThemeSub): void
+
+  /**
+   * 设置上标文本样式
+   *
+   * @param markdownThemeSup 上标文本样式
+   */
+  setMarkdownThemeSup(markdownThemeSup: MarkdownThemeSup): void
+
+  /**
+   * 设置表格样式
+   *
+   * @param markdownThemeTable 表格样式
+   */
+  setMarkdownThemeTable(markdownThemeTable: MarkdownThemeTable): void
+
+  /**
+   * 设置无序/任务列表样式
+   *
+   * @param markdownThemeBulletList 无序/任务列表样式
+   */
+  setMarkdownThemeBulletList(markdownThemeBulletList: MarkdownThemeBulletList): void
+
+  /**
+   * 设置视频样式
+   *
+   * @param markdownThemeVideo 视频样式
+   */
+  setMarkdownThemeVideo(markdownThemeVideo: MarkdownThemeVideo): void
+
+  /**
    * 设置代码块全屏图片icon
    *
    * @param codeFullScreenIcon 代码块全屏图片icon
@@ -1865,6 +2040,4000 @@ export class MarkdownTheme {
 }
 ```
 
+### class MarkdownThemeGlobal
+
+Markdown全局样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-全局样式
+ */
+export class MarkdownThemeGlobal {
+  /**
+   * 设置markdown是否同步解析
+   *
+   * @param isSync 是否同步解析
+   */
+  setIsMarkdownParserSync(isSync: boolean): void
+
+  /**
+   * 设置是否打开长按复制粘贴
+   *
+   * @param onCopy 是否打开
+   */
+  setIsOnCopy(onCopy: boolean): void
+
+  /**
+   * 设置4个外边距为统一值
+   *
+   * @param margin 外边距
+   */
+  setAllMargin(margin: number): void
+
+  /**
+   * 分别设置4个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置模块间上下间距
+   *
+   * @param spacing 模块间上下间距
+   */
+  setMarkdownBlockSpacing(spacing: number): void
+
+  /**
+   * 设置软换行是否换行
+   *
+   * @param isLineBreak 是否换行
+   */
+  setIsLineBreak(isLineBreak: boolean): void
+
+  /**
+   * 设置markdown是否允许滑动
+   *
+   * @param openGestureSwipe 是否允许滑动
+   */
+  setOpenGestureSwipe(openGestureSwipe: boolean): void
+
+  /**
+   * 设置背景颜色
+   *
+   * @param color 背景颜色
+   */
+  setBackgroundColor(color: number): void
+}
+```
+
+### class MarkdownThemeItalic
+
+Markdown斜体文本样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-斜体文本样式
+ */
+export class MarkdownThemeItalic {
+  /**
+   * 设置斜体文本颜色
+   *
+   * @param color 斜体文本颜色
+   */
+  setItalicTextFontColor(color: number): void
+
+  /**
+   * 设置斜体文本尺寸
+   *
+   * @param size 斜体文本尺寸
+   */
+  setItalicTextFontSize(size: number): void
+
+  /**
+   * 设置斜体文本字体粗细
+   *
+   * @param weight 斜体文本字体粗细
+   */
+  setItalicTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置斜体文本字体
+   *
+   * @param family 斜体文本字体
+   */
+  setItalicTextFontFamily(family: string): void
+
+  /**
+   * 设置斜体文本行高
+   *
+   * @param lineHeight 斜体文本行高
+   */
+  setItalicTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置斜体文本字符间距
+   *
+   * @param spacing 斜体文本字符间距
+   */
+  setItalicTextLetterSpacing(spacing: number): void
+}
+```
+
+### class MarkdownThemeStrikethrough
+
+Markdown删除线文本样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-删除线文本样式
+ */
+export class MarkdownThemeStrikethrough {
+  /**
+   * 设置删除线文本颜色
+   *
+   * @param color 删除线文本颜色
+   */
+  setStrikethroughTextFontColor(color: number): void
+
+  /**
+   * 设置删除线文本尺寸
+   *
+   * @param size 删除线文本字号
+   */
+  setStrikethroughTextFontSize(size: number): void
+
+  /**
+   * 设置删除线文本字体样式
+   *
+   * @param style 删除线文本字体样式
+   */
+  setStrikethroughTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置删除线文本字体粗细
+   *
+   * @param weight 删除线文本字体粗细
+   */
+  setStrikethroughTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置删除线文本字体
+   *
+   * @param family 删除线文本字体
+   */
+  setStrikethroughTextFontFamily(family: string): void
+
+  /**
+   * 设置删除线文本行高
+   *
+   * @param lineHeight 删除线文本行高
+   */
+  setStrikethroughTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置删除线文本字符间距
+   *
+   * @param spacing 删除线文本字符间距
+   */
+  setStrikethroughTextLetterSpacing(spacing: number): void
+
+  /**
+   * 设置删除线文本装饰线颜色
+   *
+   * @param color 删除线文本装饰线颜色
+   */
+  setStrikethroughTextDecorationColor(color: number): void
+
+  /**
+   * 设置删除线文本装饰线样式
+   *
+   * @param style 删除线文本装饰线样式
+   */
+  setStrikethroughTextDecorationStyle(style: MarkdownTextDecorationStyle): void
+}
+```
+
+### class MarkdownThemeSub
+
+Markdown下标文本样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-下标文本样式
+ */
+export class MarkdownThemeSub {
+  /**
+   * 设置下标文本颜色
+   *
+   * @param color 下标文本颜色
+   */
+  setSubTextFontColor(color: number): void
+
+  /**
+   * 设置下标文本尺寸
+   *
+   * @param size 下标文本尺寸
+   */
+  setSubTextFontSize(size: number): void
+
+  /**
+   * 设置下标文本字体样式
+   *
+   * @param style 下标文本字体样式
+   */
+  setSubTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置下标文本字体粗细
+   *
+   * @param weight 下标文本字体粗细
+   */
+  setSubTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置下标文本字体
+   *
+   * @param family 下标文本字体
+   */
+  setSubTextFontFamily(family: string): void
+
+  /**
+   * 设置下标文本字符间距
+   *
+   * @param spacing 下标文本字符间距
+   */
+  setSubTextLetterSpacing(spacing: number): void
+
+  /**
+   * 设置下标文本基线的偏移量
+   *
+   * @param offset 下标文本基线的偏移量
+   */
+  setSubTextBaselineOffset(offset: number): void
+}
+```
+
+### class MarkdownThemeSup
+
+Markdown上标文本样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-上标文本样式
+ */
+export class MarkdownThemeSup {
+  /**
+   * 设置上标文本颜色
+   *
+   * @param color 上标文本颜色
+   */
+  setSupTextFontColor(color: number): void
+
+  /**
+   * 设置上标文本尺寸
+   *
+   * @param size 上标文本尺寸
+   */
+  setSupTextFontSize(size: number): void
+
+  /**
+   * 设置上标文本字体样式
+   *
+   * @param style 上标文本字体样式
+   */
+  setSupTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置上标文本字体粗细
+   *
+   * @param weight 上标文本字体粗细
+   */
+  setSupTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置上标文本字体
+   *
+   * @param family 上标文本字体
+   */
+  setSupTextFontFamily(family: string): void
+
+  /**
+   * 设置上标文本字符间距
+   *
+   * @param spacing 上标文本字符间距
+   */
+  setSupTextLetterSpacing(spacing: number): void
+
+  /**
+   * 设置上标文本基线的偏移量
+   *
+   * @param offset 上标文本基线的偏移量
+   */
+  setSupTextBaselineOffset(offset: number): void
+}
+```
+
+### class MarkdownThemeHtmlUnderline
+
+Markdown HTML下划线文本样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-HTML下划线文本样式
+ */
+export class MarkdownThemeHtmlUnderline {
+  /**
+   * 设置HTML下划线文本颜色
+   *
+   * @param color HTML下划线文本颜色
+   */
+  setHtmlUnderlineTextFontColor(color: number): void
+
+  /**
+   * 设置HTML下划线文本尺寸
+   *
+   * @param size HTML下划线文本尺寸
+   */
+  setHtmlUnderlineTextFontSize(size: number): void
+
+  /**
+   * 设置HTML下划线文本字体样式
+   *
+   * @param style HTML下划线文本字体样式
+   */
+  setHtmlUnderlineTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置HTML下划线文本字体粗细
+   *
+   * @param weight HTML下划线文本字体粗细
+   */
+  setHtmlUnderlineTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置HTML下划线文本字体
+   *
+   * @param family HTML下划线文本字体
+   */
+  setHtmlUnderlineTextFontFamily(family: string): void
+
+  /**
+   * 设置HTML下划线文本行高
+   *
+   * @param lineHeight HTML下划线文本行高
+   */
+  setHtmlUnderlineTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置HTML下划线文本字符间距
+   *
+   * @param spacing HTML下划线文本字符间距
+   */
+  setHtmlUnderlineTextLetterSpacing(spacing: number): void
+
+  /**
+   * 设置HTML下划线文本装饰线颜色
+   *
+   * @param color HTML下划线文本装饰线颜色
+   */
+  setHtmlUnderlineTextDecorationColor(color: number): void
+
+  /**
+   * 设置HTML下划线文本装饰线样式
+   *
+   * @param style HTML下划线文本装饰线样式
+   */
+  setHtmlUnderlineTextDecorationStyle(style: MarkdownTextDecorationStyle): void
+}
+```
+
+### class MarkdownThemeLink
+
+Markdown链接文本样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-链接文本样式
+ */
+export class MarkdownThemeLink {
+  /**
+   * 设置链接是否是图片显示
+   *
+   * @param isIcon 链接是否是图片显示
+   */
+  setLinkIsIcon(isIcon: boolean): void
+
+  /**
+   * 设置列表中的单行链接是否是图片显示
+   *
+   * @param isIcon 列表中的单行链接是否是图片显示
+   */
+  setLinkListIsIcon(isIcon: boolean): void
+
+  /**
+   * 设置链接文本颜色
+   *
+   * @param color 链接文本颜色
+   */
+  setLinkTextFontColor(color: number): void
+
+  /**
+   * 设置链接文本尺寸
+   *
+   * @param size 链接文本尺寸
+   */
+  setLinkTextFontSize(size: number): void
+
+  /**
+   * 设置链接文本字体样式
+   *
+   * @param style 链接文本字体样式
+   */
+  setLinkTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置链接文本字体粗细
+   *
+   * @param weight 链接文本字体粗细
+   */
+  setLinkTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置链接文本字体
+   *
+   * @param family 链接文本字体
+   */
+  setLinkTextFontFamily(family: string): void
+
+  /**
+   * 设置链接文本行高
+   *
+   * @param lineHeight 链接文本行高
+   */
+  setLinkTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置链接文本字符间距
+   *
+   * @param spacing 链接文本字符间距
+   */
+  setLinkTextLetterSpacing(spacing: number): void
+
+  /**
+   * 设置链接文本装饰线类型
+   *
+   * @param decorationType 链接文本装饰线类型
+   */
+  setLinkTextDecorationType(decorationType: TextDecorationType): void
+
+  /**
+   * 设置链接文本装饰线颜色
+   *
+   * @param color 链接文本装饰线颜色
+   */
+  setLinkTextDecorationColor(color: number): void
+
+  /**
+   * 设置链接文本装饰线样式
+   *
+   * @param style 链接文本装饰线样式
+   */
+  setLinkTextDecorationStyle(style: TextDecorationStyle): void
+
+  /**
+   * 设置链接文本背景颜色
+   *
+   * @param color 链接文本背景颜色
+   */
+  setLinkTextBackgroundColor(color: number): void
+
+  /**
+   * 统一设置链接文本背景四个圆角
+   *
+   * @param radius 统一圆角半径，同时赋值给四个角
+   */
+  setLinkTextBackgroundAllRadius(radius: number): void
+
+  /**
+   * 分别设置4个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setLinkTextBackgroundRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+
+  /**
+   * 设置圆形图片格式链接主题背景颜色
+   *
+   * @param color 圆形图片格式链接主题背景颜色
+   */
+  setLinkCircleIconBackgroundColor(color: number): void
+
+  /**
+   * 设置圆形图片格式链接控件背景颜色
+   *
+   * @param color 圆形图片格式链接控件背景颜色
+   */
+  setLinkCircleIconButtonBackgroundColor(color: number): void
+
+  /**
+   * 设置圆形图片格式链接文字大小
+   *
+   * @param size 圆形图片格式链接文字大小
+   */
+  setLinkCircleIconTextSize(size: number): void
+
+  /**
+   * 设置圆形图片格式链接文字颜色
+   *
+   * @param color 圆形图片格式链接文字颜色
+   */
+  setLinkCircleIconTextColor(color: number): void
+
+  /**
+   * 设置圆形图片格式链接半径
+   *
+   * @param radius 圆形图片格式链接半径
+   */
+  setLinkCircleIconRadius(radius: number): void
+
+  /**
+   * 设置圆形图片格式链接左右外边距
+   *
+   * @param margin 圆形图片格式链接左右外边距
+   */
+  setLinkCircleIconMargin(margin: number): void
+
+  /**
+   * 设置圆角矩形图片格式链接主题背景颜色
+   *
+   * @param color 圆角矩形图片格式链接主题背景颜色
+   */
+  setLinkRectIconBackgroundColor(color: number): void
+
+  /**
+   * 设置圆角矩形图片格式链接控件背景颜色
+   *
+   * @param color 圆角矩形图片格式链接控件背景颜色
+   */
+  setLinkRectIconButtonBackgroundColor(color: number): void
+
+  /**
+   * 设置圆角矩形图片格式链接文字大小
+   *
+   * @param size 圆角矩形图片格式链接文字大小
+   */
+  setLinkRectIconTextSize(size: number): void
+
+  /**
+   * 设置圆角矩形图片格式链接文字颜色
+   *
+   * @param color 圆角矩形图片格式链接文字颜色
+   */
+  setLinkRectIconTextColor(color: number): void
+
+  /**
+   * 设置圆角矩形图片格式链接控件高度
+   *
+   * @param height 圆角矩形图片格式链接控件高度
+   */
+  setLinkRectIconHeight(height: number): void
+
+  /**
+   * 设置圆角矩形图片格式链接左右内边距
+   *
+   * @param padding 圆角矩形图片格式链接左右内边距
+   */
+  setLinkRectIconPadding(padding: number): void
+
+  /**
+   * 设置圆角矩形图片格式链接圆角半径
+   *
+   * @param radius 圆角矩形图片格式链接圆角半径
+   */
+  setLinkRectIconRadius(radius: number): void
+
+  /**
+   * 设置圆角矩形图片格式链接左右外边距
+   *
+   * @param margin 圆角矩形图片格式链接左右外边距
+   */
+  setLinkRectIconMargin(margin: number): void
+
+  /**
+   * 设置空心圆角矩形图片格式链接主题背景颜色
+   *
+   * @param color 空心圆角矩形图片格式链接主题背景颜色
+   */
+  setLinkRectToolIconBackgroundColor(color: number): void
+
+  /**
+   * 设置空心圆角矩形图片格式链接控件背景颜色
+   *
+   * @param color 空心圆角矩形图片格式链接控件背景颜色
+   */
+  setLinkRectToolIconButtonBackgroundColor(color: number): void
+
+  /**
+   * 设置空心圆角矩形图片格式链接文字大小
+   *
+   * @param size 空心圆角矩形图片格式链接文字大小
+   */
+  setLinkRectToolIconTextSize(size: number): void
+
+  /**
+   * 设置空心圆角矩形图片格式链接控件高度
+   *
+   * @param height 空心圆角矩形图片格式链接控件高度
+   */
+  setLinkRectToolIconHeight(height: number): void
+
+  /**
+   * 设置空心圆角矩形图片格式链接左右内边距
+   *
+   * @param padding 空心圆角矩形图片格式链接左右内边距
+   */
+  setLinkRectToolIconPadding(padding: number): void
+
+  /**
+   * 设置空心圆角矩形图片格式链接边框宽度
+   *
+   * @param width 空心圆角矩形图片格式链接边框宽度
+   */
+  setLinkRectToolIconBorderWidth(width: number): void
+
+  /**
+   * 设置空心圆角矩形图片格式链接分割线宽度
+   *
+   * @param width 空心圆角矩形图片格式链接分割线宽度
+   */
+  setLinkRectToolIconDividingLineWidth(width: number): void
+
+  /**
+   * 设置空心圆角矩形图片格式链接左右外边距
+   *
+   * @param margin 空心圆角矩形图片格式链接左右外边距
+   */
+  setLinkRectToolIconMargin(margin: number): void
+
+  /**
+   * 设置空心圆角矩形图片格式分割线和文本左边距
+   *
+   * @param padding 空心圆角矩形图片格式分割线和文本左边距
+   */
+  setLinkRectToolIconLineLeftPadding(padding: number): void
+
+  /**
+   * 设置空心圆角矩形图片格式分割线和文本右边距
+   *
+   * @param padding 空心圆角矩形图片格式分割线和文本右边距
+   */
+  setLinkRectToolIconLineRightPadding(padding: number): void
+}
+```
+
+### class MarkdownThemeParagraph
+
+Markdown段落样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-段落样式
+ */
+export class MarkdownThemeParagraph {
+  /**
+   * 设置段落背景颜色
+   *
+   * @param color 段落背景颜色
+   */
+  setParagraphBackgroundColor(color: number): void
+
+  /**
+   * 设置4个外边距为统一值
+   *
+   * @param margin 外边距
+   */
+  setParagraphAllMargin(margin: number): void
+
+  /**
+   * 分别设置4个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setParagraphMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置4个内边距为统一值
+   *
+   * @param padding 内边距
+   */
+  setParagraphAllPadding(padding: number): void
+
+  /**
+   * 分别设置4个内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setParagraphPadding(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置段落文本颜色
+   *
+   * @param color 段落文本颜色
+   */
+  setParagraphTextFontColor(color: number): void
+
+  /**
+   * 设置段落文本尺寸
+   *
+   * @param size 段落文本尺寸
+   */
+  setParagraphTextFontSize(size: number): void
+
+  /**
+   * 设置段落文本字体样式
+   *
+   * @param style 段落文本字体样式
+   */
+  setParagraphTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置段落文本字体粗细
+   *
+   * @param weight 段落文本字体粗细
+   */
+  setParagraphTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置段落文本字体
+   *
+   * @param family 段落文本字体
+   */
+  setParagraphTextFontFamily(family: string): void
+
+  /**
+   * 设置段落文本行高
+   *
+   * @param lineHeight 段落文本行高
+   */
+  setParagraphTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置段落文本字符间距
+   *
+   * @param spacing 段落文本字符间距
+   */
+  setParagraphTextLetterSpacing(spacing: number): void
+}
+```
+
+### class MarkdownThemeInlineCode
+
+Markdown内联代码样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-内联代码样式
+ */
+export class MarkdownThemeInlineCode {
+  /**
+   * 设置内联代码文本颜色
+   *
+   * @param color 内联代码文本颜色
+   */
+  setInlineCodeTextFontColor(color: number): void
+
+  /**
+   * 设置内联代码文本尺寸
+   *
+   * @param size 内联代码文本尺寸
+   */
+  setInlineCodeTextFontSize(size: number): void
+
+  /**
+   * 设置内联代码文本字体样式
+   *
+   * @param style 内联代码文本字体样式
+   */
+  setInlineCodeTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置内联代码文本字体粗细
+   *
+   * @param weight 内联代码文本字体粗细
+   */
+  setInlineCodeTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置内联代码文本字体
+   *
+   * @param family 内联代码文本字体
+   */
+  setInlineCodeTextFontFamily(family: string): void
+
+  /**
+   * 设置内联代码文本行高
+   *
+   * @param lineHeight 内联代码文本行高
+   */
+  setInlineCodeTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置内联代码文本字符间距
+   *
+   * @param spacing 内联代码文本字符间距
+   */
+  setInlineCodeTextLetterSpacing(spacing: number): void
+
+  /**
+   * 设置内联代码文本背景颜色
+   *
+   * @param color 内联代码文本背景颜色
+   */
+  setInlineCodeTextBackgroundColor(color: number): void
+
+  /**
+   * 统一设置内联代码文本背景四个圆角
+   *
+   * @param radius 统一圆角半径，同时赋值给四个角
+   */
+  setInlineCodeTextBackgroundAllRadius(radius: number): void
+
+  /**
+   * 分别设置4个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setInlineCodeTextBackgroundRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+}
+```
+
+### class MarkdownThemeTable
+
+Markdown表格样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-表格样式
+ */
+export class MarkdownThemeTable {
+  /**
+   * 设置4个外边距为统一值
+   *
+   * @param margin 外边距
+   */
+  setTableAllMargin(margin: number): void
+
+  /**
+   * 分别设置4个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setTableMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置4个内边距为统一值
+   *
+   * @param padding 内边距
+   */
+  setTableAllPadding(padding: number): void
+
+  /**
+   * 分别设置4个内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setTablePadding(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置表格内容内边距
+   *
+   * @param padding 内边距
+   */
+  setTableCellAllPadding(padding: number): void
+
+  /**
+   * 设置表格内容内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setTableCellPadding(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置表格标题背景颜色
+   *
+   * @param color 表格标题背景颜色
+   */
+  setTableTitleBackgroundColor(color: number): void
+
+  /**
+   * 设置表格内容奇数行背景颜色
+   *
+   * @param color 奇数行背景颜色
+   */
+  setTableContentOddRowBackgroundColor(color: number): void
+
+  /**
+   * 设置表格内容偶数行背景颜色
+   *
+   * @param color 偶数行背景颜色
+   */
+  setTableContentEvenRowBackgroundColor(color: number): void
+
+  /**
+   * 设置表格边框样式
+   *
+   * @param style 表格边框样式
+   */
+  setTableBorderStyle(style: BorderStyle): void
+
+  /**
+   * 设置表格边框宽度
+   *
+   * @param width 表格边框宽度
+   */
+  setTableBorderWidth(width: number): void
+
+  /**
+   * 设置表格边框颜色
+   *
+   * @param color 表格边框颜色
+   */
+  setTableBorderColor(color: number): void
+
+  /**
+   * 设置表格边框4个圆角为统一值
+   *
+   * @param radius 圆角半径
+   */
+  setTableAllRadius(radius: number): void
+
+  /**
+   * 分别设置表格边框4个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setTableRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+
+  /**
+   * 设置表格滚动条状态
+   *
+   * @param state 滚动条状态
+   */
+  setTableScrollBarState(state: BarState): void
+
+  /**
+   * 设置表格滚动条颜色
+   *
+   * @param color 滚动条颜色
+   */
+  setTableScrollBarColor(color: number): void
+
+  /**
+   * 设置表格一格最小宽度
+   *
+   * @param width 最小宽度
+   */
+  setTableMinCellWidth(width: number): void
+
+  /**
+   * 设置表格一格最大宽度
+   *
+   * @param width 最大宽度
+   */
+  setTableMaxCellWidth(width: number): void
+
+  /**
+   * 设置表格第一列是否加粗
+   *
+   * @param isBold 是否加粗
+   */
+  setTableFirstColumnIsBold(isBold: boolean): void
+
+  /**
+   * 设置表格标题文本颜色
+   *
+   * @param color 表格标题文本颜色
+   */
+  setTableTitleTextFontColor(color: number): void
+
+  /**
+   * 设置表格标题文本尺寸
+   *
+   * @param size 表格标题文本尺寸
+   */
+  setTableTitleTextFontSize(size: number): void
+
+  /**
+   * 设置表格标题文本字体样式
+   *
+   * @param style 表格标题文本字体样式
+   */
+  setTableTitleTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置表格标题文本字体粗细
+   *
+   * @param weight 表格标题文本字体粗细
+   */
+  setTableTitleTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置表格标题文本字体
+   *
+   * @param family 表格标题文本字体
+   */
+  setTableTitleTextFontFamily(family: string): void
+
+  /**
+   * 设置表格标题文本行高
+   *
+   * @param lineHeight 表格标题文本行高
+   */
+  setTableTitleTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置表格标题文本字符间距
+   *
+   * @param spacing 表格标题文本字符间距
+   */
+  setTableTitleTextLetterSpacing(spacing: number): void
+
+  /**
+   * 设置表格内容文本颜色
+   *
+   * @param color 表格内容文本颜色
+   */
+  setTableContentTextFontColor(color: number): void
+
+  /**
+   * 设置表格内容文本尺寸
+   *
+   * @param size 表格内容文本尺寸
+   */
+  setTableContentTextFontSize(size: number): void
+
+  /**
+   * 设置表格内容文本字体样式
+   *
+   * @param style 表格内容文本字体样式
+   */
+  setTableContentTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置表格内容文本字体粗细
+   *
+   * @param weight 表格内容文本字体粗细
+   */
+  setTableContentTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置表格内容文本字体
+   *
+   * @param family 表格内容文本字体
+   */
+  setTableContentTextFontFamily(family: string): void
+
+  /**
+   * 设置表格内容文本行高
+   *
+   * @param lineHeight 表格内容文本行高
+   */
+  setTableContentTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置表格内容文本字符间距
+   *
+   * @param spacing 表格内容文本字符间距
+   */
+  setTableContentTextLetterSpacing(spacing: number): void
+}
+```
+
+### class MarkdownThemeLatexMath
+
+Markdown数学公式样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-数学公式样式
+ */
+export class MarkdownThemeLatexMath {
+  /**
+   * 设置数学公式未加载状态是否显示文字
+   *
+   * @param showDefaultText 是否显示文字
+   */
+  setLatexMathDefaultText(showDefaultText: boolean): void
+
+  /**
+   * 设置数学公式未加载状态文本颜色
+   *
+   * @param color 文本颜色
+   */
+  setLatexMathDefaultTextFontColor(color: number): void
+
+  /**
+   * 设置数学公式未加载状态文本尺寸
+   *
+   * @param size 文本尺寸
+   */
+  setLatexMathDefaultTextFontSize(size: number): void
+
+  /**
+   * 设置数学公式未加载状态文本字体样式
+   *
+   * @param style 字体样式
+   */
+  setLatexMathDefaultTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置数学公式未加载状态文本字体粗细
+   *
+   * @param weight 字体粗细
+   */
+  setLatexMathDefaultTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置数学公式未加载状态文本字体
+   *
+   * @param family 字体
+   */
+  setLatexMathDefaultTextFontFamily(family: string): void
+
+  /**
+   * 设置数学公式文本大小
+   *
+   * @param size 文本大小
+   */
+  setLatexMathTextSize(size: number): void
+
+  /**
+   * 设置数学公式背景色
+   *
+   * @param color 背景色
+   */
+  setLatexMathBackgroundColor(color: number): void
+
+  /**
+   * 设置数学公式文本颜色
+   *
+   * @param color 文本颜色
+   */
+  setLatexMathTextColor(color: number): void
+
+  /**
+   * 设置数学公式生成图片格式
+   *
+   * @param format 生成图片格式
+   */
+  setLatexMathColorFormat(format: LatexMathColorFormat): void
+
+  /**
+   * 设置块结构的数学公式是否居中
+   *
+   * @param center 是否居中
+   */
+  setLatexMathBlockCenter(center: boolean): void
+
+  /**
+   * 设置数学公式字体路径
+   *
+   * @param path 字体路径
+   */
+  setLatexMathResPath(path: string): void
+
+  /**
+   * 统一设置LaTeX数学公式外边距
+   *
+   * @param margin 外边距
+   */
+  setLatexMathAllMargin(margin: number): void
+
+  /**
+   * 分别设置LaTeX数学公式四个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setLatexMathMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 统一设置LaTeX数学公式内边距
+   *
+   * @param padding 内边距
+   */
+  setLatexMathAllPadding(padding: number): void
+
+  /**
+   * 分别设置LaTeX数学公式四个内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setLatexMathPadding(top?: number, right?: number, bottom?: number, left?: number): void
+}
+```
+
+### class MarkdownThemeFootnoteRef
+
+Markdown脚注引用样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-脚注引用样式
+ */
+export class MarkdownThemeFootnoteRef {
+  /**
+   * 设置脚注引用文本颜色
+   *
+   * @param color 脚注引用文本颜色
+   */
+  setFootnoteRefTextFontColor(color: number): void
+
+  /**
+   * 设置脚注引用文本尺寸
+   *
+   * @param size 脚注引用文本尺寸
+   */
+  setFootnoteRefTextFontSize(size: number): void
+
+  /**
+   * 设置脚注引用文本字体样式
+   *
+   * @param style 脚注引用文本字体样式
+   */
+  setFootnoteRefTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置脚注引用文本字体粗细
+   *
+   * @param weight 脚注引用文本字体粗细
+   */
+  setFootnoteRefTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置脚注引用文本字体
+   *
+   * @param family 脚注引用文本字体
+   */
+  setFootnoteRefTextFontFamily(family: string): void
+
+  /**
+   * 设置脚注引用文本行高
+   *
+   * @param lineHeight 脚注引用文本行高
+   */
+  setFootnoteRefTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置脚注引用文本字符间距
+   *
+   * @param spacing 脚注引用文本字符间距
+   */
+  setFootnoteRefTextLetterSpacing(spacing: number): void
+
+  /**
+   * 设置脚注引用文本装饰线类型
+   *
+   * @param decorationType 脚注引用文本装饰线类型
+   */
+  setFootnoteRefTextDecorationType(decorationType: TextDecorationType): void
+
+  /**
+   * 设置脚注引用文本装饰线颜色
+   *
+   * @param color 脚注引用文本装饰线颜色
+   */
+  setFootnoteRefTextDecorationColor(color: number): void
+
+  /**
+   * 设置脚注引用文本装饰线样式
+   *
+   * @param style 脚注引用文本装饰线样式
+   */
+  setFootnoteRefTextDecorationStyle(style: MarkdownTextDecorationStyle): void
+
+  /**
+   * 设置脚注引用文本背景颜色
+   *
+   * @param color 脚注引用文本背景颜色
+   */
+  setFootnoteRefTextBackgroundColor(color: number): void
+
+  /**
+   * 统一设置脚注引用文本背景四个圆角
+   *
+   * @param radius 统一圆角半径，同时赋值给四个角
+   */
+  setFootnoteRefTextBackgroundAllRadius(radius: number): void
+
+  /**
+   * 分别设置4个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setFootnoteRefTextBackgroundRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+}
+```
+
+### class MarkdownThemeFootnoteDef
+
+Markdown脚注定义样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-脚注定义样式
+ */
+export class MarkdownThemeFootnoteDef {
+  /**
+   * 设置脚注定义背景颜色
+   *
+   * @param color 脚注定义背景颜色
+   */
+  setFootnoteDefBackgroundColor(color: number): void
+
+  /**
+   * 设置4个外边距为统一值
+   *
+   * @param margin 外边距
+   */
+  setFootnoteDefAllMargin(margin: number): void
+
+  /**
+   * 分别设置4个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setFootnoteDefMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置4个内边距为统一值
+   *
+   * @param padding 内边距
+   */
+  setFootnoteDefAllPadding(padding: number): void
+
+  /**
+   * 分别设置4个内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setFootnoteDefPadding(top?: number, right?: number, bottom?: number, left?: number): void
+}
+```
+
+### class MarkdownThemeDefinitionList
+
+Markdown定义列表样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-定义列表样式
+ */
+export class MarkdownThemeDefinitionList {
+  /**
+   * 设置4个外边距为统一值
+   *
+   * @param margin 外边距
+   */
+  setDefinitionListAllMargin(margin: number): void
+
+  /**
+   * 分别设置4个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setDefinitionListMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置4个内边距为统一值
+   *
+   * @param padding 内边距
+   */
+  setDefinitionListAllPadding(padding: number): void
+
+  /**
+   * 分别设置4个内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setDefinitionListPadding(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置定义列表背景颜色
+   *
+   * @param color 定义列表背景颜色
+   */
+  setDefinitionListBackgroundColor(color: number): void
+
+  /**
+   * 设置定义列表术语和定义行之间间距
+   *
+   * @param spacing 间距
+   */
+  setDefinitionListTermToDescriptionSpacing(spacing: number): void
+
+  /**
+   * 设置定义列表术语文本字体粗细
+   *
+   * @param weight 文本字体粗细
+   */
+  setDefinitionListTermTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置定义列表术语文本字体样式
+   *
+   * @param style 定义列表术语文本字体样式
+   */
+  setDefinitionListTermTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置定义列表定义行之间间距
+   *
+   * @param spacing 间距
+   */
+  setDefinitionListDescriptionItemSpacing(spacing: number): void
+
+  /**
+   * 设置定义列表定义行左缩进距离
+   *
+   * @param indent 左缩进距离
+   */
+  setDefinitionListDescriptionIndent(indent: number): void
+}
+```
+
+### class MarkdownThemeOrderedList
+
+Markdown有序列表样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-有序列表样式
+ */
+export class MarkdownThemeOrderedList {
+  /**
+   * 设置有序列表背景颜色
+   *
+   * @param color 有序列表背景颜色
+   */
+  setOrderedListBackgroundColor(color: number): void
+
+  /**
+   * 设置4个外边距为统一值
+   *
+   * @param margin 外边距
+   */
+  setOrderedListAllMargin(margin: number): void
+
+  /**
+   * 分别设置4个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setOrderedListMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置4个内边距为统一值
+   *
+   * @param padding 内边距
+   */
+  setOrderedListAllPadding(padding: number): void
+
+  /**
+   * 分别设置4个内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setOrderedListPadding(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置有序列表子模块上下间距
+   *
+   * @param spacing 上下间距
+   */
+  setOrderedListChildSpacing(spacing: number): void
+
+  /**
+   * 设置有序列表子模块中子模块上下间距
+   *
+   * @param spacing 上下间距
+   */
+  setOrderedListChildChildSpacing(spacing: number): void
+
+  /**
+   * 设置有序列表列表编号和列表内容间距
+   *
+   * @param spacing 间距
+   */
+  setOrderedListMarkerSpacing(spacing: number): void
+
+  /**
+   * 设置有序列表列表编号文本颜色
+   *
+   * @param color 列表编号文本颜色
+   */
+  setOrderedListMarkerTextFontColor(color: number): void
+
+  /**
+   * 设置有序列表列表编号文本尺寸
+   *
+   * @param size 列表编号文本尺寸
+   */
+  setOrderedListMarkerTextFontSize(size: number): void
+
+  /**
+   * 设置有序列表列表编号文本字体样式
+   *
+   * @param style 列表编号文本字体样式
+   */
+  setOrderedListMarkerTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置有序列表列表编号文本字体粗细
+   *
+   * @param weight 列表编号文本字体粗细
+   */
+  setOrderedListMarkerTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置有序列表列表编号文本字体
+   *
+   * @param family 列表编号文本字体
+   */
+  setOrderedListMarkerTextFontFamily(family: string): void
+
+  /**
+   * 设置有序列表列表编号文本行高
+   *
+   * @param lineHeight 列表编号文本行高
+   */
+  setOrderedListMarkerTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置有序列表列表编号文本字符间距
+   *
+   * @param spacing 列表编号文本字符间距
+   */
+  setOrderedListMarkerTextLetterSpacing(spacing: number): void
+}
+```
+
+### class MarkdownThemeBulletList
+
+Markdown无序列表样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-无序/任务列表样式
+ */
+export class MarkdownThemeBulletList {
+  /**
+   * 设置无序/任务背景颜色
+   *
+   * @param color 无序/任务背景颜色
+   */
+  setBulletListBackgroundColor(color: number): void
+
+  /**
+   * 统一设置无序/任务外边距
+   *
+   * @param margin 外边距
+   */
+  setBulletListAllMargin(margin: number): void
+
+  /**
+   * 分别设置无序/任务四个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setBulletListMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 统一设置无序/任务内边距
+   *
+   * @param padding 内边距
+   */
+  setBulletListAllPadding(padding: number): void
+
+  /**
+   * 分别设置无序/任务四个内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setBulletListPadding(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置无序/任务子模块上下间距
+   *
+   * @param spacing 无序/任务子模块上下间距
+   */
+  setBulletListChildSpacing(spacing: number): void
+
+  /**
+   * 设置无序/任务子模块中子模块上下间距
+   *
+   * @param spacing 无序/任务子模块中子模块上下间距
+   */
+  setBulletListChildChildSpacing(spacing: number): void
+
+  /**
+   * 设置无序列表列表符号和列表内容间距
+   *
+   * @param spacing 无序列表列表符号和列表内容间距
+   */
+  setBulletListBulletSpacing(spacing: number): void
+
+  /**
+   * 设置无序列表列表符号是否全部是实心圆型
+   *
+   * @param isCircle 无序列表列表符号是否全部是实心圆型
+   */
+  setBulletListBulletIsCircle(isCircle: boolean): void
+
+  /**
+   * 设置无序列表列表符号文本颜色
+   *
+   * @param color 无序列表列表符号文本颜色
+   */
+  setBulletListBulletTextFontColor(color: number): void
+
+  /**
+   * 设置无序列表列表符号文本尺寸
+   *
+   * @param size 无序列表列表符号文本尺寸
+   */
+  setBulletListBulletTextFontSize(size: number): void
+
+  /**
+   * 设置无序列表列表符号文本字体样式
+   *
+   * @param style 无序列表列表符号文本字体样式
+   */
+  setBulletListBulletTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置无序列表列表符号文本字体粗细
+   *
+   * @param weight 无序列表列表符号文本字体粗细
+   */
+  setBulletListBulletTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置无序列表列表符号文本字体
+   *
+   * @param family 无序列表列表符号文本字体
+   */
+  setBulletListBulletTextFontFamily(family: string): void
+
+  /**
+   * 设置无序列表列表符号文本行高
+   *
+   * @param lineHeight 无序列表列表符号文本行高
+   */
+  setBulletListBulletTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置任务列表多选框和列表内容间距
+   *
+   * @param spacing 任务列表多选框和列表内容间距
+   */
+  setBulletListCheckboxSpacing(spacing: number): void
+
+  /**
+   * 设置任务列表多选框宽度
+   *
+   * @param width 任务列表多选框宽度
+   */
+  setBulletListCheckboxWidth(width: number): void
+
+  /**
+   * 设置任务列表多选框高度
+   *
+   * @param height 任务列表多选框高度
+   */
+  setBulletListCheckboxHeight(height: number): void
+
+  /**
+   * 设置任务列表多选框选中颜色
+   *
+   * @param color 任务列表多选框选中颜色
+   */
+  setBulletListCheckboxSelectedColor(color: number): void
+
+  /**
+   * 设置任务列表多选框形状
+   *
+   * @param shape 任务列表多选框形状
+   */
+  setBulletListCheckboxShape(shape: CheckBoxShape): void
+}
+```
+
+### class MarkdownThemeImage
+
+Markdown图片样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-图片样式
+ */
+export class MarkdownThemeImage {
+  /**
+   * 设置4个外边距为统一值
+   *
+   * @param margin 外边距
+   */
+  setImageAllMargin(margin: number): void
+
+  /**
+   * 分别设置4个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setImageMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置4个圆角为统一值
+   *
+   * @param radius 圆角
+   */
+  setImageAllRadius(radius: number): void
+
+  /**
+   * 分别设置4个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setImageRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+
+  /**
+   * 设置图片边框样式
+   *
+   * @param borderStyle 图片边框样式
+   */
+  setImageBorderStyle(borderStyle: BorderStyle): void
+
+  /**
+   * 设置图片边框宽度
+   *
+   * @param borderWidth 图片边框宽度
+   */
+  setImageBorderWidth(borderWidth: number): void
+
+  /**
+   * 设置图片边框颜色
+   *
+   * @param borderColor 图片边框颜色
+   */
+  setImageBorderColor(borderColor: number): void
+
+  /**
+   * 设置图片默认占位图
+   *
+   * @param placeholder 图片默认占位图
+   */
+  setImagePlaceholder(placeholder: Resource): void
+
+  /**
+   * 设置网络图片是否压缩
+   *
+   * @param imageAutoResize 网络图片是否压缩
+   */
+  setImageAutoResize(imageAutoResize: boolean): void
+
+  /**
+   * 设置是否图文混排
+   *
+   * @param mixedLayout 是否图文混排
+   */
+  setIsImageMixedLayout(mixedLayout: boolean): void
+
+  /**
+   * 设置图片基于自身宽度缩放百分比
+   *
+   * @param maximumWidth 图片基于自身宽度缩放百分比
+   */
+  setImageMaximumWidth(maximumWidth: number): void
+
+  /**
+   * 设置图片基于父布局宽度缩放百分比
+   *
+   * @param fixedRatioWidth 图片基于父布局宽度缩放百分比
+   */
+  setImageFixedRatioWidth(fixedRatioWidth: number): void
+
+  /**
+   * 设置图片最大高度
+   *
+   * @param maxHeight 图片最大高度
+   */
+  setImageMaxHeight(maxHeight: number): void
+
+  /**
+   * 设置图片高度
+   *
+   * @param height 图片高度
+   */
+  setImageHeight(height: number): void
+
+  /**
+   * 设置图片最大宽度
+   *
+   * @param maxWidth 图片最大宽度
+   */
+  setImageMaxWidth(maxWidth: number): void
+
+  /**
+   * 设置图片宽度
+   *
+   * @param width 图片宽度
+   */
+  setImageWidth(width: number): void
+
+  /**
+   * 设置图片缩放类型
+   *
+   * @param fitType 图片缩放类型
+   */
+  setImageFitType(fitType: ImageFitType): void
+
+  /**
+   * 设置底部布局距离图片上边距
+   *
+   * @param marginTop 底部布局距离图片上边距
+   */
+  setImageBottomLayoutMarginTop(marginTop: number): void
+
+  /**
+   * 设置图片下载按钮是否显示
+   *
+   * @param visible 图片下载按钮是否显示
+   */
+  setImageDownloadButtonVisible(visible: boolean): void
+
+  /**
+   * 设置图片下载按钮宽度
+   *
+   * @param width 图片下载按钮宽度
+   */
+  setImageDownloadButtonWidth(width: number): void
+
+  /**
+   * 设置图片下载按钮高度
+   *
+   * @param height 图片下载按钮高度
+   */
+  setImageDownloadButtonHeight(height: number): void
+
+  /**
+   * 设置图片下载按钮4个圆角为统一值
+   *
+   * @param radius 圆角
+   */
+  setImageDownloadButtonAllRadius(radius: number): void
+
+  /**
+   * 分别设置图片下载按钮4个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setImageDownloadButtonRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+
+  /**
+   * 设置图片下载按钮图标
+   *
+   * @param icon 图片下载按钮图标
+   */
+  setImageDownloadButtonIcon(icon: Resource): void
+
+  /**
+   * 设置图片下载按钮图标宽度
+   *
+   * @param width 图片下载按钮图标宽度
+   */
+  setImageDownloadButtonIconWidth(width: number): void
+
+  /**
+   * 设置图片下载按钮图标高度
+   *
+   * @param height 图片下载按钮图标高度
+   */
+  setImageDownloadButtonIconHeight(height: number): void
+
+  /**
+   * 设置图片下载按钮图标和文本间距
+   *
+   * @param gap 图片下载按钮图标和文本间距
+   */
+  setImageDownloadButtonIconTextGap(gap: number): void
+
+  /**
+   * 设置图片下载按钮背景颜色
+   *
+   * @param color 图片下载按钮背景颜色
+   */
+  setImageDownloadButtonBackgroundColor(color: number): void
+
+  /**
+   * 设置图片下载按钮默认文本内容
+   *
+   * @param text 图片下载按钮默认文本内容
+   */
+  setImageDownloadButtonText(text: string): void
+
+  /**
+   * 设置图片下载按钮文本颜色
+   *
+   * @param color 图片下载按钮文本颜色
+   */
+  setImageDownloadButtonTextFontColor(color: number): void
+
+  /**
+   * 设置图片下载按钮文本尺寸
+   *
+   * @param size 图片下载按钮文本尺寸
+   */
+  setImageDownloadButtonTextFontSize(size: number): void
+
+  /**
+   * 设置图片下载按钮文本字体样式
+   *
+   * @param style 图片下载按钮文本字体样式
+   */
+  setImageDownloadButtonTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置图片下载按钮文本字体粗细
+   *
+   * @param weight 图片下载按钮文本字体粗细
+   */
+  setImageDownloadButtonTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置图片下载按钮文本字体
+   *
+   * @param family 图片下载按钮文本字体
+   */
+  setImageDownloadButtonTextFontFamily(family: string): void
+
+  /**
+   * 设置图片下载按钮文本行高
+   *
+   * @param lineHeight 图片下载按钮文本行高
+   */
+  setImageDownloadButtonTextLineHeight(lineHeight: number): void
+}
+```
+
+### class MarkdownThemeAudio
+
+Markdown音频样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-音频样式
+ */
+export class MarkdownThemeAudio {
+  /**
+   * 设置音频背景颜色
+   *
+   * @param color 音频背景颜色
+   */
+  setAudioBackgroundColor(color: number): void
+
+  /**
+   * 音频整体外边距
+   *
+   * @param margin 外边距
+   */
+  setAudioAllMargin(margin: number): void
+
+  /**
+   * 音频分别设置四个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setAudioMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 音频整体内边距
+   *
+   * @param padding 内边距
+   */
+  setAudioAllPadding(padding: number): void
+
+  /**
+   * 音频分别设置四个内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setAudioPadding(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置音频边框样式
+   *
+   * @param borderStyle 音频边框样式
+   */
+  setAudioBorderStyle(borderStyle: BorderStyle): void
+
+  /**
+   * 设置音频边框宽度
+   *
+   * @param borderWidth 音频边框宽度
+   */
+  setAudioBorderWidth(borderWidth: number): void
+
+  /**
+   * 设置音频边框颜色
+   *
+   * @param borderColor 音频边框颜色
+   */
+  setAudioBorderColor(borderColor: number): void
+
+  /**
+   * 音频整体圆角
+   *
+   * @param radius 圆角
+   */
+  setAudioAllRadius(radius: number): void
+
+  /**
+   * 音频分别设置四个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setAudioRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+
+  /**
+   * 设置音频阴影模糊半径
+   *
+   * @param radius 音频阴影模糊半径
+   */
+  setAudioShadowRadius(radius: number): void
+
+  /**
+   * 设置音频阴影X轴偏移量
+   *
+   * @param offsetX 音频阴影X轴偏移量
+   */
+  setAudioShadowOffsetX(offsetX: number): void
+
+  /**
+   * 设置音频阴影Y轴偏移量
+   *
+   * @param offsetY 音频阴影Y轴偏移量
+   */
+  setAudioShadowOffsetY(offsetY: number): void
+
+  /**
+   * 设置音频图标
+   *
+   * @param icon 音频图标
+   */
+  setAudioIcon(icon: Resource): void
+
+  /**
+   * 设置音频图标宽度
+   *
+   * @param width 音频图标宽度
+   */
+  setAudioIconWidth(width: number): void
+
+  /**
+   * 设置音频图标高度
+   *
+   * @param height 音频图标高度
+   */
+  setAudioIconHeight(height: number): void
+
+  /**
+   * 音频图标整体圆角
+   *
+   * @param radius 圆角
+   */
+  setAudioIconAllRadius(radius: number): void
+
+  /**
+   * 音频图标分别设置四个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setAudioIconRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+
+  /**
+   * 设置音频图标缩放类型
+   *
+   * @param fitType 音频图标缩放类型
+   */
+  setAudioIconFitType(fitType: ImageFit): void
+
+  /**
+   * 设置音频标题文本和类型文本间距
+   *
+   * @param spacing 音频标题文本和类型文本间距
+   */
+  setAudioTitleToTypeSpacing(spacing: number): void
+
+  /**
+   * 设置音频阴影颜色
+   *
+   * @param color 音频阴影颜色
+   */
+  setAudioShadowColor(color: number): void
+
+  /**
+   * 设置音频按钮宽度
+   *
+   * @param width 音频按钮宽度
+   */
+  setAudioButtonWidth(width: number): void
+
+  /**
+   * 设置音频按钮高度
+   *
+   * @param height 音频按钮高度
+   */
+  setAudioButtonHeight(height: number): void
+
+  /**
+   * 设置音频按钮背景颜色
+   *
+   * @param color 音频按钮背景颜色
+   */
+  setAudioButtonBackgroundColor(color: number): void
+
+  /**
+   * 设置音频按钮边框样式
+   *
+   * @param borderStyle 音频按钮边框样式
+   */
+  setAudioButtonBorderStyle(borderStyle: BorderStyle): void
+
+  /**
+   * 设置音频按钮边框宽度
+   *
+   * @param borderWidth 音频按钮边框宽度
+   */
+  setAudioButtonBorderWidth(borderWidth: number): void
+
+  /**
+   * 设置音频按钮边框颜色
+   *
+   * @param borderColor 音频按钮边框颜色
+   */
+  setAudioButtonBorderColor(borderColor: number): void
+
+  /**
+   * 音频按钮整体圆角
+   *
+   * @param radius 圆角
+   */
+  setAudioButtonAllRadius(radius: number): void
+
+  /**
+   * 音频按钮分别设置四个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setAudioButtonRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+
+  /**
+   * 设置音频按钮默认文本内容
+   *
+   * @param text 音频按钮默认文本内容
+   */
+  setAudioButtonText(text: string): void
+
+  /**
+   * 设置音频按钮文本颜色
+   *
+   * @param color 音频按钮文本颜色
+   */
+  setAudioButtonTextFontColor(color: number): void
+
+  /**
+   * 设置音频按钮文本尺寸
+   *
+   * @param size 音频按钮文本尺寸
+   */
+  setAudioButtonTextFontSize(size: number): void
+
+  /**
+   * 设置音频按钮文本字体样式
+   *
+   * @param style 音频按钮文本字体样式
+   */
+  setAudioButtonTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置音频按钮文本字体粗细
+   *
+   * @param weight 音频按钮文本字体粗细
+   */
+  setAudioButtonTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置音频按钮文本字体
+   *
+   * @param family 音频按钮文本字体
+   */
+  setAudioButtonTextFontFamily(family: string): void
+
+  /**
+   * 设置音频按钮文本行高
+   *
+   * @param height 音频按钮文本行高
+   */
+  setAudioButtonTextLineHeight(height: number): void
+
+  /**
+   * 设置音频标题文本颜色
+   *
+   * @param color 音频标题文本颜色
+   */
+  setAudioTitleTextFontColor(color: number): void
+
+  /**
+   * 设置音频标题文本尺寸
+   *
+   * @param size 音频标题文本尺寸
+   */
+  setAudioTitleTextFontSize(size: number): void
+
+  /**
+   * 设置音频标题文本字体样式
+   *
+   * @param style 音频标题文本字体样式
+   */
+  setAudioTitleTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置音频标题文本字体粗细
+   *
+   * @param weight 音频标题文本字体粗细
+   */
+  setAudioTitleTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置音频标题文本字体
+   *
+   * @param family 音频标题文本字体
+   */
+  setAudioTitleTextFontFamily(family: string): void
+
+  /**
+   * 设置音频标题文本行高
+   *
+   * @param height 音频标题文本行高
+   */
+  setAudioTitleTextLineHeight(height: number): void
+
+  /**
+   * 设置音频类型文本颜色
+   *
+   * @param color 音频类型文本颜色
+   */
+  setAudioTypeTextFontColor(color: number): void
+
+  /**
+   * 设置音频类型文本尺寸
+   *
+   * @param size 音频类型文本尺寸
+   */
+  setAudioTypeTextFontSize(size: number): void
+
+  /**
+   * 设置音频类型文本字体样式
+   *
+   * @param style 音频类型文本字体样式
+   */
+  setAudioTypeTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置音频类型文本字体粗细
+   *
+   * @param weight 音频类型文本字体粗细
+   */
+  setAudioTypeTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置音频类型文本字体
+   *
+   * @param family 音频类型文本字体
+   */
+  setAudioTypeTextFontFamily(family: string): void
+
+  /**
+   * 设置音频类型文本行高
+   *
+   * @param height 音频类型文本行高
+   */
+  setAudioTypeTextLineHeight(height: number): void
+}
+```
+
+### class MarkdownThemeVideo
+
+Markdown视频样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-视频样式
+ */
+export class MarkdownThemeVideo {
+  /**
+   * 设置视频背景颜色
+   *
+   * @param color 视频背景颜色
+   */
+  setVideoBackgroundColor(color: number): void
+
+  /**
+   * 设置4个外边距为统一值
+   *
+   * @param margin 外边距
+   */
+  setVideoAllMargin(margin: number): void
+
+  /**
+   * 分别设置4个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setVideoMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置4个内边距为统一值
+   *
+   * @param padding 内边距
+   */
+  setVideoAllPadding(padding: number): void
+
+  /**
+   * 分别设置4个内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setVideoPadding(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 统一设置视频背景四个圆角
+   *
+   * @param radius 统一圆角半径，同时赋值给四个角
+   */
+  setVideoAllRadius(radius: number): void
+
+  /**
+   * 分别设置4个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setVideoRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+
+  /**
+   * 设置视频边框样式
+   *
+   * @param borderStyle 视频边框样式
+   */
+  setVideoBorderStyle(borderStyle: BorderStyle): void
+
+  /**
+   * 设置视频边框宽度
+   *
+   * @param borderWidth 视频边框宽度
+   */
+  setVideoBorderWidth(borderWidth: number): void
+
+  /**
+   * 设置视频边框颜色
+   *
+   * @param borderColor 视频边框颜色
+   */
+  setVideoBorderColor(borderColor: number): void
+
+  /**
+   * 设置视频占位图
+   *
+   * @param resource 视频占位图
+   */
+  setVideoPlaceholder(resource: Resource): void
+
+  /**
+   * 设置播放按钮默认图片
+   *
+   * @param icon 播放按钮默认图片
+   */
+  setVideoPlayIcon(icon: Resource): void
+
+  /**
+   * 设置视频时间文本颜色
+   *
+   * @param color 视频时间文本颜色
+   */
+  setVideoTimeTextFontColor(color: number): void
+
+  /**
+   * 设置视频时间文本尺寸
+   *
+   * @param size 视频时间文本尺寸
+   */
+  setVideoTimeTextFontSize(size: number): void
+
+  /**
+   * 设置视频时间文本字体样式
+   *
+   * @param style 视频时间文本字体样式
+   */
+  setVideoTimeTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置视频时间文本字体粗细
+   *
+   * @param weight 视频时间文本字体粗细
+   */
+  setVideoTimeTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置视频时间文本字体
+   *
+   * @param family 视频时间文本字体
+   */
+  setVideoTimeTextFontFamily(family: string): void
+
+  /**
+   * 设置视频时间文本行高
+   *
+   * @param lineHeight 视频时间文本行高
+   */
+  setVideoTimeTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置视频时间文本居右边距
+   *
+   * @param margin 视频时间文本居右边距
+   */
+  setVideoTimeTextMarginRight(margin: number): void
+
+  /**
+   * 设置视频时间文本居底边距
+   *
+   * @param margin 视频时间文本居底边距
+   */
+  setVideoTimeTextMarginBottom(margin: number): void
+
+  /**
+   * 设置底部布局是否显示
+   *
+   * @param visible 底部布局是否显示
+   */
+  setVideoBottomLayoutVisible(visible: boolean): void
+
+  /**
+   * 设置底部布局距离视频上边距
+   *
+   * @param marginTop 底部布局距离视频上边距
+   */
+  setVideoBottomLayoutMarginTop(marginTop: number): void
+
+  /**
+   * 设置视频发布按钮是否显示
+   *
+   * @param visible 视频发布按钮是否显示
+   */
+  setVideoReleaseButtonVisible(visible: boolean): void
+
+  /**
+   * 设置视频发布按钮背景颜色
+   *
+   * @param color 视频发布按钮背景颜色
+   */
+  setVideoReleaseButtonBackgroundColor(color: number): void
+
+  /**
+   * 设置视频发布按钮宽度
+   *
+   * @param width 视频发布按钮宽度
+   */
+  setVideoReleaseButtonWidth(width: number): void
+
+  /**
+   * 设置视频发布按钮高度
+   *
+   * @param height 视频发布按钮高度
+   */
+  setVideoReleaseButtonHeight(height: number): void
+
+  /**
+   * 统一设置视频发布按钮四个圆角
+   *
+   * @param radius 统一圆角半径，同时赋值给四个角
+   */
+  setVideoReleaseButtonAllRadius(radius: number): void
+
+  /**
+   * 分别设置视频发布按钮4个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setVideoReleaseButtonRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+
+  /**
+   * 设置视频发布按钮图标
+   *
+   * @param icon 视频发布按钮图标
+   */
+  setVideoReleaseButtonIcon(icon: Resource): void
+
+  /**
+   * 设置视频发布按钮图标宽度
+   *
+   * @param width 视频发布按钮图标宽度
+   */
+  setVideoReleaseButtonIconWidth(width: number): void
+
+  /**
+   * 设置视频发布按钮图标高度
+   *
+   * @param height 视频发布按钮图标高度
+   */
+  setVideoReleaseButtonIconHeight(height: number): void
+
+  /**
+   * 设置视频发布按钮默认文本内容
+   *
+   * @param text 视频发布按钮默认文本内容
+   */
+  setVideoReleaseButtonText(text: string): void
+
+  /**
+   * 设置视频发布按钮文本颜色
+   *
+   * @param color 视频发布按钮文本颜色
+   */
+  setVideoReleaseButtonTextFontColor(color: number): void
+
+  /**
+   * 设置视频发布按钮文本尺寸
+   *
+   * @param size 视频发布按钮文本尺寸
+   */
+  setVideoReleaseButtonTextFontSize(size: number): void
+
+  /**
+   * 设置视频发布按钮文本字体样式
+   *
+   * @param style 视频发布按钮文本字体样式
+   */
+  setVideoReleaseButtonTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置视频发布按钮文本字体粗细
+   *
+   * @param weight 视频发布按钮文本字体粗细
+   */
+  setVideoReleaseButtonTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置视频发布按钮文本字体
+   *
+   * @param family 视频发布按钮文本字体
+   */
+  setVideoReleaseButtonTextFontFamily(family: string): void
+
+  /**
+   * 设置视频发布按钮文本行高
+   *
+   * @param lineHeight 视频发布按钮文本行高
+   */
+  setVideoReleaseButtonTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置视频下载按钮是否显示
+   *
+   * @param visible 视频下载按钮是否显示
+   */
+  setVideoDownloadButtonVisible(visible: boolean): void
+
+  /**
+   * 设置视频下载按钮背景颜色
+   *
+   * @param color 视频下载按钮背景颜色
+   */
+  setVideoDownloadButtonBackgroundColor(color: number): void
+
+  /**
+   * 设置视频下载按钮宽度
+   *
+   * @param width 视频下载按钮宽度
+   */
+  setVideoDownloadButtonWidth(width: number): void
+
+  /**
+   * 设置视频下载按钮高度
+   *
+   * @param height 视频下载按钮高度
+   */
+  setVideoDownloadButtonHeight(height: number): void
+
+  /**
+   * 统一设置视频下载按钮四个圆角
+   *
+   * @param radius 统一圆角半径，同时赋值给四个角
+   */
+  setVideoDownloadButtonAllRadius(radius: number): void
+
+  /**
+   * 分别设置视频下载按钮4个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setVideoDownloadButtonRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+
+  /**
+   * 设置视频下载按钮图标
+   *
+   * @param icon 视频下载按钮图标
+   */
+  setVideoDownloadButtonIcon(icon: Resource): void
+
+  /**
+   * 设置视频下载按钮图标宽度
+   *
+   * @param width 视频下载按钮图标宽度
+   */
+  setVideoDownloadButtonIconWidth(width: number): void
+
+  /**
+   * 设置视频下载按钮图标高度
+   *
+   * @param height 视频下载按钮图标高度
+   */
+  setVideoDownloadButtonIconHeight(height: number): void
+
+  /**
+   * 设置视频下载按钮默认文本内容
+   *
+   * @param text 视频下载按钮默认文本内容
+   */
+  setVideoDownloadButtonText(text: string): void
+
+  /**
+   * 设置视频下载按钮文本颜色
+   *
+   * @param color 视频下载按钮文本颜色
+   */
+  setVideoDownloadButtonTextFontColor(color: number): void
+
+  /**
+   * 设置视频下载按钮文本尺寸
+   *
+   * @param size 视频下载按钮文本尺寸
+   */
+  setVideoDownloadButtonTextFontSize(size: number): void
+
+  /**
+   * 设置视频下载按钮文本字体样式
+   *
+   * @param style 视频下载按钮文本字体样式
+   */
+  setVideoDownloadButtonTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置视频下载按钮文本字体粗细
+   *
+   * @param weight 视频下载按钮文本字体粗细
+   */
+  setVideoDownloadButtonTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置视频下载按钮文本字体
+   *
+   * @param family 视频下载按钮文本字体
+   */
+  setVideoDownloadButtonTextFontFamily(family: string): void
+
+  /**
+   * 设置视频下载按钮文本行高
+   *
+   * @param lineHeight 视频下载按钮文本行高
+   */
+  setVideoDownloadButtonTextLineHeight(lineHeight: number): void
+}
+```
+
+### class MarkdownThemeCodeBlock
+
+Markdown代码块样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-代码块样式
+ */
+export class MarkdownThemeCodeBlock {
+  /**
+   * 设置是否格式化围栏代码块内容
+   *
+   * @param isCodeFormat 是否格式化围栏代码块内容
+   */
+  setCodeBlockIsCodeFormat(isCodeFormat: boolean): void
+
+  /**
+   * 设置codeformat是否用制表符
+   *
+   * @param useTab 是否用制表符
+   */
+  setCodeBlockUseTab(useTab: boolean): void
+
+  /**
+   * 设置codeformat空格缩进数量
+   *
+   * @param indentWidth 空格缩进数量
+   */
+  setCodeBlockIndentWidth(indentWidth: number): void
+
+  /**
+   * 设置围栏代码块代码高亮是否同步解析
+   *
+   * @param parserSync 是否同步解析
+   */
+  setCodeBlockParserSync(parserSync: boolean): void
+
+  /**
+   * 设置代码块背景颜色
+   *
+   * @param color 代码块背景颜色
+   */
+  setCodeBlockBackgroundColor(color: number): void
+
+  /**
+   * 代码块整体外边距
+   *
+   * @param margin 外边距
+   */
+  setCodeBlockAllMargin(margin: number): void
+
+  /**
+   * 代码块分别设置四个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setCodeBlockMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 代码块整体内边距
+   *
+   * @param padding 内边距
+   */
+  setCodeBlockAllPadding(padding: number): void
+
+  /**
+   * 代码块分别设置四个内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setCodeBlockPadding(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置代码块边框样式
+   *
+   * @param borderStyle 代码块边框样式
+   */
+  setCodeBlockBorderStyle(borderStyle: BorderStyle): void
+
+  /**
+   * 设置代码块边框宽度
+   *
+   * @param borderWidth 代码块边框宽度
+   */
+  setCodeBlockBorderWidth(borderWidth: number): void
+
+  /**
+   * 设置代码块边框颜色
+   *
+   * @param borderColor 代码块边框颜色
+   */
+  setCodeBlockBorderColor(borderColor: number): void
+
+  /**
+   * 代码块整体圆角
+   *
+   * @param radius 圆角
+   */
+  setCodeBlockAllRadius(radius: number): void
+
+  /**
+   * 代码块分别设置四个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setCodeBlockRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+
+  /**
+   * 设置代码块类型和代码块内容间距
+   *
+   * @param marginBottom 代码块类型和代码块内容间距
+   */
+  setCodeBlockTitleLayoutMarginBottom(marginBottom: number): void
+
+  /**
+   * 设置代码块没有代码类型时默认显示文本
+   *
+   * @param text 默认显示文本
+   */
+  setCodeBlockTypeText(text: string): void
+
+  /**
+   * 设置代码块类型文本颜色
+   *
+   * @param color 代码块类型文本颜色
+   */
+  setCodeBlockTypeTextFontColor(color: number): void
+
+  /**
+   * 设置代码块类型文本尺寸
+   *
+   * @param size 代码块类型文本尺寸
+   */
+  setCodeBlockTypeTextFontSize(size: number): void
+
+  /**
+   * 设置代码块类型文本字体样式
+   *
+   * @param style 代码块类型文本字体样式
+   */
+  setCodeBlockTypeTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置代码块类型文本字体粗细
+   *
+   * @param weight 代码块类型文本字体粗细
+   */
+  setCodeBlockTypeTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置代码块类型文本字体
+   *
+   * @param family 代码块类型文本字体
+   */
+  setCodeBlockTypeTextFontFamily(family: string): void
+
+  /**
+   * 设置代码块类型文本行高
+   *
+   * @param height 代码块类型文本行高
+   */
+  setCodeBlockTypeTextLineHeight(height: number): void
+
+  /**
+   * 设置代码块代码复制和代码全屏间距
+   *
+   * @param spacing 代码块代码复制和代码全屏间距
+   */
+  setCodeBlockCopyFullScreenSpacing(spacing: number): void
+
+  /**
+   * 设置代码块代码复制按钮是否显示
+   *
+   * @param isShow 是否显示
+   */
+  setCodeBlockCopyButtonIsShow(isShow: boolean): void
+
+  /**
+   * 设置代码块代码复制文本是否显示
+   *
+   * @param isShow 是否显示
+   */
+  setCodeBlockCopyTextIsShow(isShow: boolean): void
+
+  /**
+   * 设置代码块代码复制按钮默认图标
+   *
+   * @param icon 默认图标
+   */
+  setCodeBlockCopyIcon(icon: Resource): void
+
+  /**
+   * 设置代码块代码复制图标宽度
+   *
+   * @param width 图标宽度
+   */
+  setCodeBlockCopyIconWidth(width: number): void
+
+  /**
+   * 设置代码块代码复制图标高度
+   *
+   * @param height 图标高度
+   */
+  setCodeBlockCopyIconHeight(height: number): void
+
+  /**
+   * 设置代码块代码复制图标和文本间距
+   *
+   * @param spacing 代码块代码复制图标和文本间距
+   */
+  setCodeBlockCopyIconTextSpacing(spacing: number): void
+
+  /**
+   * 设置代码块代码复制默认文本内容
+   *
+   * @param text 默认文本内容
+   */
+  setCodeBlockCopyText(text: string): void
+
+  /**
+   * 设置代码块代码复制文本颜色
+   *
+   * @param color 代码块代码复制文本颜色
+   */
+  setCodeBlockCopyTextFontColor(color: number): void
+
+  /**
+   * 设置代码块代码复制文本尺寸
+   *
+   * @param size 代码块代码复制文本尺寸
+   */
+  setCodeBlockCopyTextFontSize(size: number): void
+
+  /**
+   * 设置代码块代码复制文本字体样式
+   *
+   * @param style 代码块代码复制文本字体样式
+   */
+  setCodeBlockCopyTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置代码块代码复制文本字体粗细
+   *
+   * @param weight 代码块代码复制文本字体粗细
+   */
+  setCodeBlockCopyTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置代码块代码复制文本字体
+   *
+   * @param family 代码块代码复制文本字体
+   */
+  setCodeBlockCopyTextFontFamily(family: string): void
+
+  /**
+   * 设置代码块代码复制文本行高
+   *
+   * @param height 代码块代码复制文本行高
+   */
+  setCodeBlockCopyTextLineHeight(height: number): void
+
+  /**
+   * 设置代码块代码全屏按钮是否显示
+   *
+   * @param isShow 是否显示
+   */
+  setCodeBlockFullScreenButtonIsShow(isShow: boolean): void
+
+  /**
+   * 设置代码块代码全屏文本是否显示
+   *
+   * @param isShow 是否显示
+   */
+  setCodeBlockFullScreenTextIsShow(isShow: boolean): void
+
+  /**
+   * 设置代码块代码全屏按钮默认图标
+   *
+   * @param icon 默认图标
+   */
+  setCodeBlockFullScreenIcon(icon: Resource): void
+
+  /**
+   * 设置代码块代码全屏图标宽度
+   *
+   * @param width 图标宽度
+   */
+  setCodeBlockFullScreenIconWidth(width: number): void
+
+  /**
+   * 设置代码块代码全屏图标高度
+   *
+   * @param height 图标高度
+   */
+  setCodeBlockFullScreenIconHeight(height: number): void
+
+  /**
+   * 设置代码块代码全屏图标和文本间距
+   *
+   * @param spacing 代码块代码全屏图标和文本间距
+   */
+  setCodeBlockFullScreenIconTextSpacing(spacing: number): void
+
+  /**
+   * 设置代码块代码全屏默认文本内容
+   *
+   * @param text 默认文本内容
+   */
+  setCodeBlockFullScreenText(text: string): void
+
+  /**
+   * 设置代码块代码全屏文本颜色
+   *
+   * @param color 代码块代码全屏文本颜色
+   */
+  setCodeBlockFullScreenTextFontColor(color: number): void
+
+  /**
+   * 设置代码块代码全屏文本尺寸
+   *
+   * @param size 代码块代码全屏文本尺寸
+   */
+  setCodeBlockFullScreenTextFontSize(size: number): void
+
+  /**
+   * 设置代码块代码全屏文本字体样式
+   *
+   * @param style 代码块代码全屏文本字体样式
+   */
+  setCodeBlockFullScreenTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置代码块代码全屏文本字体粗细
+   *
+   * @param weight 代码块代码全屏文本字体粗细
+   */
+  setCodeBlockFullScreenTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置代码块代码全屏文本字体
+   *
+   * @param family 代码块代码全屏文本字体
+   */
+  setCodeBlockFullScreenTextFontFamily(family: string): void
+
+  /**
+   * 设置代码块代码全屏文本行高
+   *
+   * @param height 代码块代码全屏文本行高
+   */
+  setCodeBlockFullScreenTextLineHeight(height: number): void
+
+  /**
+   * 设置代码块代码行号是否显示
+   *
+   * @param isShow 是否显示
+   */
+  setCodeBlockLineNumberIsShow(isShow: boolean): void
+
+  /**
+   * 设置代码块代码行号左内边距
+   *
+   * @param left 代码块代码行号左内边距
+   */
+  setCodeBlockLineNumberTextPaddingLeft(left: number): void
+
+  /**
+   * 设置代码块代码行号文本颜色
+   *
+   * @param color 代码块代码行号文本颜色
+   */
+  setCodeBlockLineNumberTextFontColor(color: number): void
+
+  /**
+   * 设置代码块代码行号文本尺寸
+   *
+   * @param size 代码块代码行号文本尺寸
+   */
+  setCodeBlockLineNumberTextFontSize(size: number): void
+
+  /**
+   * 设置代码块代码行号文本字体样式
+   *
+   * @param style 代码块代码行号文本字体样式
+   */
+  setCodeBlockLineNumberTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置代码块代码行号文本字体粗细
+   *
+   * @param weight 代码块代码行号文本字体粗细
+   */
+  setCodeBlockLineNumberTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置代码块代码行号文本字体
+   *
+   * @param family 代码块代码行号文本字体
+   */
+  setCodeBlockLineNumberTextFontFamily(family: string): void
+
+  /**
+   * 设置代码块代码行号文本行高
+   *
+   * @param height 代码块代码行号文本行高
+   */
+  setCodeBlockLineNumberTextLineHeight(height: number): void
+
+  /**
+   * 设置代码块代码行号和代码块中间分割线颜色
+   *
+   * @param color 分割线颜色
+   */
+  setCodeBlockDividerColor(color: number): void
+
+  /**
+   * 设置代码块代码行号和代码块中间分割线宽度
+   *
+   * @param strokeWidth 分割线宽度
+   */
+  setCodeBlockDividerStrokeWidth(strokeWidth: number): void
+
+  /**
+   * 设置代码块代码行号和分割线间距
+   *
+   * @param spacing 代码块代码行号和分割线间距
+   */
+  setCodeBlockLineNumberDividerSpacing(spacing: number): void
+
+  /**
+   * 设置代码块文本颜色
+   *
+   * @param color 代码块文本颜色
+   */
+  setCodeBlockTextFontColor(color: number): void
+
+  /**
+   * 设置代码块代码文本右外边距
+   *
+   * @param marginRight 代码块代码文本右外边距
+   */
+  setCodeBlockTextMarginRight(marginRight: number): void
+
+  /**
+   * 设置代码块代码文本左外边距
+   *
+   * @param marginLeft 代码块代码文本左外边距
+   */
+  setCodeBlockTextMarginLeft(marginLeft: number): void
+
+  /**
+   * 设置代码块文本尺寸
+   *
+   * @param size 代码块文本尺寸
+   */
+  setCodeBlockTextFontSize(size: number): void
+
+  /**
+   * 设置代码块文本字体样式
+   *
+   * @param style 代码块文本字体样式
+   */
+  setCodeBlockTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置代码块文本字体粗细
+   *
+   * @param weight 代码块文本字体粗细
+   */
+  setCodeBlockTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置代码块文本字体
+   *
+   * @param family 代码块文本字体
+   */
+  setCodeBlockTextFontFamily(family: string): void
+
+  /**
+   * 设置代码块文本行高
+   *
+   * @param height 代码块文本行高
+   */
+  setCodeBlockTextLineHeight(height: number): void
+
+  /**
+   * 设置代码块文本字符间距
+   *
+   * @param spacing 代码块文本字符间距
+   */
+  setCodeBlockTextLetterSpacing(spacing: number): void
+
+  /**
+   * 设置组合代码块未选中标题字体大小
+   *
+   * @param size 字体大小
+   */
+  setCodeBlockListTitleTextSize(size: number): void
+
+  /**
+   * 设置组合代码块选中标题字体大小
+   *
+   * @param size 字体大小
+   */
+  setCodeBlockListTitleSelectTextSize(size: number): void
+
+  /**
+   * 设置组合代码块选中标题文本颜色
+   *
+   * @param color 文本颜色
+   */
+  setCodeBlockListTitleSelectTextColor(color: number): void
+
+  /**
+   * 设置组合代码块未选中标题文本颜色
+   *
+   * @param color 文本颜色
+   */
+  setCodeBlockListTitleUnSelectTextColor(color: number): void
+
+  /**
+   * 设置组合代码块选中标题背景颜色
+   *
+   * @param color 背景颜色
+   */
+  setCodeBlockListTitleSelectBackGroupColor(color: number): void
+
+  /**
+   * 设置组合代码块未选中标题背景颜色
+   *
+   * @param color 背景颜色
+   */
+  setCodeBlockListTitleUnSelectBackGroupColor(color: number): void
+
+  /**
+   * 设置是否单独代码块显示
+   *
+   * @param isSeparate 是否单独显示
+   */
+  setCodeBlockIsSeparate(isSeparate: boolean): void
+
+  /**
+   * 设置单独代码块行号宽度
+   *
+   * @param width 行号宽度
+   */
+  setCodeBlockSeparateWidth(width: number): void
+
+  /**
+   * 设置单独代码块是否居底显示
+   *
+   * @param isBottom 是否居底
+   */
+  setCodeBlockSeparateIsBottom(isBottom: boolean): void
+}
+```
+
+### class MarkdownThemeHeading
+
+Markdown标题样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-标题样式
+ */
+export class MarkdownThemeHeading {
+  /**
+   * 设置标题的背景颜色：设置所有标题为统一背景颜色
+   *
+   * @param color 背景颜色
+   */
+  setBackgroundColorForAllHeading(color: number): void
+
+  /**
+   * 设置标题的背景颜色：通过集合的方式，分别设置每级标题的背景颜色
+   *
+   * @param colorList 背景颜色集合
+   */
+  setBackgroundColorForEachHeading(colorList: number[]): void
+
+  /**
+   * 设置标题的背景颜色：指定标题等级，设置该等级标题的背景颜色
+   *
+   * @param level 标题等级
+   * @param color 背景颜色
+   */
+  setBackgroundColorForDesignateHeading(level: number, color: number): void
+
+  /**
+   * 设置标题的4个外边距：设置H1-H6级标题所有4个外边距为统一值
+   *
+   * @param margin 外边距
+   */
+  setMarginForAllHeading(margin: number): void
+
+  /**
+   * 设置标题的4个外边距：设置H1-H6级标题，所有等级的某一个外边距为统一值
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setMarginForAllHeadingEachLevel(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置标题的4个外边距：设置H1-H6级标题，每级标题自己的4个外边距为统一值
+   *
+   * @param marginList 外边距集合
+   */
+  setMarginForEachHeading(marginList: number[]): void
+
+  /**
+   * 设置标题的4个外边距：指定标题等级，设置标题的4个外边距为统一值
+   *
+   * @param level 标题等级
+   * @param margin 外边距
+   */
+  setMarginForDesignateHeading(level: number, margin: number): void
+
+  /**
+   * 设置标题的4个外边距：分别设置H1-H6每级标题的每个外边距
+   *
+   * @param top 上外边距集合
+   * @param right 右外边距集合
+   * @param bottom 下外边距集合
+   * @param left 左外边距集合
+   */
+  setMarginForEachHeadingDetail(top: number[], right: number[], bottom: number[], left: number[]): void
+
+  /**
+   * 设置标题的4个外边距：指定标题等级，分别设置该标题的每个外边距
+   *
+   * @param level 标题等级
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setMarginForDesignateHeadingDetail(level: number, top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置标题的4个内边距：设置H1-H6级标题所有4个内边距为统一值
+   *
+   * @param padding 内边距
+   */
+  setPaddingForAllHeading(padding: number): void
+
+  /**
+   * 设置标题的4个内边距：设置H1-H6级标题，所有等级的某一个内边距为统一值
+   *
+   * @param top 上内边距集合
+   * @param right 右内边距集合
+   * @param bottom 下内边距集合
+   * @param left 左内边距集合
+   */
+  setPaddingForAllHeadingEachLevel(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置标题的4个内边距：设置H1-H6级标题，每级标题自己的4个内边距为统一值
+   *
+   * @param paddingList 内边距集合
+   */
+  setPaddingForEachHeading(paddingList: number[]): void
+
+  /**
+   * 设置标题的4个内边距：指定标题等级，设置标题的4个内边距为统一值
+   *
+   * @param level 标题等级
+   * @param padding 内边距
+   */
+  setPaddingForDesignateHeading(level: number, padding: number): void
+
+  /**
+   * 设置标题的4个内边距：分别设置H1-H6每级标题的每个内边距
+   *
+   * @param top 上内边距集合
+   * @param right 右内边距集合
+   * @param bottom 下内边距集合
+   * @param left 左内边距集合
+   */
+  setPaddingForEachHeadingDetail(top: number[], right: number[], bottom: number[], left: number[]): void
+
+  /**
+   * 设置标题的4个内边距：指定标题等级，分别设置该标题的每个内边距
+   *
+   * @param level 标题等级
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setPaddingForDesignateHeadingDetail(level: number, top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置标题文本颜色：所有标题的统一文本颜色
+   *
+   * @param color 文本颜色
+   */
+  setTextFontColorForAllHeading(color: number): void
+
+  /**
+   * 设置标题文本颜色：分别设置每级标题的文本颜色
+   *
+   * @param colorList 文本颜色集合
+   */
+  setTextFontColorForEachHeading(colorList: number[]): void
+
+  /**
+   * 设置标题文本颜色：设置指定等级的标题的文本颜色
+   *
+   * @param level 标题等级
+   * @param color 文本颜色
+   */
+  setTextFontColorForDesignateHeading(level: number, color: number): void
+
+  /**
+   * 设置标题文本尺寸：所有标题的统一文本尺寸
+   *
+   * @param size 文本尺寸
+   */
+  setTextFontSizeForAllHeading(size: number): void
+
+  /**
+   * 设置标题文本尺寸：分别设置每级标题的文本尺寸
+   *
+   * @param sizeList 文本尺寸集合
+   */
+  setTextFontSizeForEachHeading(sizeList: number[]): void
+
+  /**
+   * 设置标题文本尺寸：设置指定等级的标题的文本尺寸
+   *
+   * @param level 标题等级
+   * @param size 文本尺寸
+   */
+  setTextFontSizeForDesignateHeading(level: number, size: number): void
+
+  /**
+   * 设置标题文本字体样式：所有标题的统一文本字体样式
+   *
+   * @param style 文本字体样式
+   */
+  setTextFontStyleForAllHeading(style: FontStyle): void
+
+  /**
+   * 设置标题文本字体样式：分别设置每级标题的文本字体样式
+   *
+   * @param styleList 文本字体样式集合
+   */
+  setTextFontStyleForEachHeading(styleList: FontStyle[]): void
+
+  /**
+   * 设置标题文本字体样式：设置指定等级的标题的文本字体样式
+   *
+   * @param level 标题等级
+   * @param style 文本字体样式
+   */
+  setTextFontStyleForDesignateHeading(level: number, style: FontStyle): void
+
+  /**
+   * 设置标题文本字体粗细：所有标题的统一文本字体粗细
+   *
+   * @param weight 文本字体粗细
+   */
+  setTextFontWeightForAllHeading(weight: FontWeight): void
+
+  /**
+   * 设置标题文本字体粗细：分别设置每级标题的文本字体粗细
+   *
+   * @param weightList 文本字体粗细集合
+   */
+  setTextFontWeightForEachHeading(weightList: FontWeight[]): void
+
+  /**
+   * 设置标题文本字体粗细：设置指定等级的标题的文本字体粗细
+   *
+   * @param level 标题等级
+   * @param weight 文本字体粗细
+   */
+  setTextFontWeightForDesignateHeading(level: number, weight: FontWeight): void
+
+  /**
+   * 设置标题文本字体：所有标题的统一文本字体
+   *
+   * @param family 文本字体
+   */
+  setTextFontFamilyForAllHeading(family: string): void
+
+  /**
+   * 设置标题文本字体：分别设置每级标题的文本字体
+   *
+   * @param familyList 文本字体集合
+   */
+  setTextFontFamilyForEachHeading(familyList: string[]): void
+
+  /**
+   * 设置标题文本字体：设置指定等级的标题的文本字体
+   *
+   * @param level 标题等级
+   * @param family 文本字体
+   */
+  setTextFontFamilyForDesignateHeading(level: number, family: string): void
+
+  /**
+   * 设置标题文本行高：所有标题的统一文本行高
+   *
+   * @param lineHeight 文本行高
+   */
+  setTextLineHeightForAllHeading(lineHeight: number): void
+
+  /**
+   * 设置标题文本行高：分别设置每级标题的文本行高
+   *
+   * @param lineHeightList 文本行高集合
+   */
+  setTextLineHeightForEachHeading(lineHeightList: number[]): void
+
+  /**
+   * 设置标题文本行高：设置指定等级的标题的文本行高
+   *
+   * @param level 标题等级
+   * @param lineHeight 文本行高
+   */
+  setTextLineHeightForDesignateHeading(level: number, lineHeight: number): void
+
+  /**
+   * 设置标题文本字符间距：所有标题的统一文本字符间距
+   *
+   * @param spacing 文本字符间距
+   */
+  setTextLetterSpacingForAllHeading(spacing: number): void
+
+  /**
+   * 设置标题文本字符间距：分别设置每级标题的文本字符间距
+   *
+   * @param spacingList 文本字符间距集合
+   */
+  setTextLetterSpacingForEachHeading(spacingList: number[]): void
+
+  /**
+   * 设置标题文本字符间距：设置指定等级的标题的文本字符间距
+   *
+   * @param level 标题等级
+   * @param spacing 文本字符间距
+   */
+  setTextLetterSpacingForDesignateHeading(level: number, spacing: number): void
+
+  /**
+   * 设置标题下划线高度：H1和H2标题的统一下划线高度
+   *
+   * @param height 下划线高度
+   */
+  setUnderlineHeightForAllHeading(height: number): void
+
+  /**
+   * 设置标题下划线高度：设置指定等级标题的下划线高度（仅H1和H2）
+   *
+   * @param level 标题等级
+   * @param height 下划线高度
+   */
+  setUnderlineHeightForDesignateHeading(level: number, height: number): void
+
+  /**
+   * 设置标题下划线颜色：H1和H2标题的统一下划线颜色
+   *
+   * @param color 下划线颜色
+   */
+  setUnderlineColorForAllHeading(color: number): void
+
+  /**
+   * 设置标题下划线颜色：设置指定等级标题的下划线颜色（仅H1和H2）
+   *
+   * @param level 标题等级
+   * @param color 下划线颜色
+   */
+  setUnderlineColorForDesignateHeading(level: number, color: number): void
+
+  /**
+   * 设置标题下划线间距：H1和H2标题的统一下划线间距
+   *
+   * @param spacing 下划线间距
+   */
+  setUnderlineSpacingForAllHeading(spacing: number): void
+
+  /**
+   * 设置标题下划线间距：设置指定等级标题的下划线间距（仅H1和H2）
+   *
+   * @param level 标题等级
+   * @param spacing 下划线间距
+   */
+  setUnderlineSpacingForDesignateHeading(level: number, spacing: number): void
+
+  /**
+   * 设置标题下划线显示：H1和H2标题的统一下划线显示状态
+   *
+   * @param display 是否显示下划线
+   */
+  setUnderlineDisplayForAllHeading(display: boolean): void
+
+  /**
+   * 设置标题下划线显示：设置指定等级标题的下划线显示状态（仅H1和H2）
+   *
+   * @param level 标题等级
+   * @param display 是否显示下划线
+   */
+  setUnderlineDisplayForDesignateHeading(level: number, display: boolean): void
+}
+```
+
+### class MarkdownThemeBanner
+
+Markdown Banner样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-Banner样式
+ */
+export class MarkdownThemeBanner {
+  /**
+   * banner整体外边距
+   *
+   * @param margin 外边距
+   */
+  setBannerAllMargin(margin: number): void
+
+  /**
+   * banner分别设置四个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setBannerMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * banner整体内边距
+   *
+   * @param padding 内边距
+   */
+  setBannerAllPadding(padding: number): void
+
+  /**
+   * banner分别设置四个内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setBannerPadding(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置banner占位图
+   *
+   * @param resource banner占位图
+   */
+  setBannerPlaceholder(resource: Resource): void
+}
+```
+
+### class MarkdownThemeBlockQuote
+
+Markdown块引用样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-块引用样式
+ */
+export class MarkdownThemeBlockQuote {
+  /**
+   * 设置块引用背景颜色
+   *
+   * @param color 块引用背景颜色
+   */
+  setBlockQuoteBackgroundColor(color: number): void
+
+  /**
+   * 块引用整体外边距
+   *
+   * @param margin 外边距
+   */
+  setBlockQuoteAllMargin(margin: number): void
+
+  /**
+   * 块引用分别设置四个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setBlockQuoteMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 块引用整体内边距
+   *
+   * @param padding 内边距
+   */
+  setBlockQuoteAllPadding(padding: number): void
+
+  /**
+   * 块引用分别设置四个内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setBlockQuotePadding(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 块引用整体圆角
+   *
+   * @param radius 圆角
+   */
+  setBlockQuoteAllRadius(radius: number): void
+
+  /**
+   * 块引用分别设置四个圆角
+   *
+   * @param topLeft 左上圆角
+   * @param topRight 右上圆角
+   * @param bottomLeft 左下圆角
+   * @param bottomRight 右下圆角
+   */
+  setBlockQuoteRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+
+  /**
+   * 设置块引用左侧边框宽度
+   *
+   * @param width 块引用左侧边框宽度
+   */
+  setBlockQuoteLeftBorderWidth(width: number): void
+
+  /**
+   * 设置块引用左侧边框颜色
+   *
+   * @param color 块引用左侧边框颜色
+   */
+  setBlockQuoteLeftBorderColor(color: number): void
+
+  /**
+   * 设置块引用左侧线条和内容的间距
+   *
+   * @param spacing 块引用左侧线条和内容的间距
+   */
+  setBlockQuoteBorderContentSpacing(spacing: number): void
+
+  /**
+   * 设置块引用子模块上下间距
+   *
+   * @param spacing 块引用子模块上下间距
+   */
+  setBlockQuoteChildSpacing(spacing: number): void
+}
+```
+
+### class MarkdownThemeBold
+
+Markdown加粗文本样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-加粗文本样式
+ */
+export class MarkdownThemeBold {
+  /**
+   * 设置加粗文本颜色
+   *
+   * @param color 加粗文本颜色
+   */
+  setBoldTextFontColor(color: number): void
+
+  /**
+   * 设置加粗文本尺寸
+   *
+   * @param size 加粗文本尺寸
+   */
+  setBoldTextFontSize(size: number): void
+
+  /**
+   * 设置加粗文本字体样式
+   *
+   * @param style 加粗文本字体样式
+   */
+  setBoldTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置加粗文本字体粗细
+   *
+   * @param weight 加粗文本字体粗细
+   */
+  setBoldTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置加粗文本字体
+   *
+   * @param family 加粗文本字体
+   */
+  setBoldTextFontFamily(family: string): void
+
+  /**
+   * 设置加粗文本行高
+   *
+   * @param lineHeight 加粗文本行高
+   */
+  setBoldTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置加粗文本字符间距
+   *
+   * @param spacing 加粗文本字符间距
+   */
+  setBoldTextLetterSpacing(spacing: number): void
+}
+```
+
+### class MarkdownThemeDivider
+
+Markdown分割线样式配置
+
+```ets
+/**
+ * Markdown用户可设置的样式-分割线样式
+ */
+export class MarkdownThemeDivider {
+  /**
+   * 分割线整体外边距
+   *
+   * @param margin 外边距
+   */
+  setDividerAllMargin(margin: number): void
+
+  /**
+   * 分割线分别设置四个外边距
+   *
+   * @param top 上外边距
+   * @param right 右外边距
+   * @param bottom 下外边距
+   * @param left 左外边距
+   */
+  setDividerMargin(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 分割线整体内边距
+   *
+   * @param padding 内边距
+   */
+  setDividerAllPadding(padding: number): void
+
+  /**
+   * 分割线分别设置四个内边距
+   *
+   * @param top 上内边距
+   * @param right 右内边距
+   * @param bottom 下内边距
+   * @param left 左内边距
+   */
+  setDividerPadding(top?: number, right?: number, bottom?: number, left?: number): void
+
+  /**
+   * 设置分割线颜色
+   *
+   * @param color 分割线颜色
+   */
+  setDividerColor(color: number): void
+
+  /**
+   * 设置分割线宽度
+   *
+   * @param strokeWidth 分割线宽度
+   */
+  setDividerStrokeWidth(strokeWidth: number): void
+
+  /**
+   * 设置分割线端点样式
+   *
+   * @param style 分割线端点样式
+   */
+  setDividerStyle(style: LineCapStyle): void
+}
+```
+
 ### enum ImageFitType
 
 图片缩放类型的枚举
@@ -1906,6 +6075,38 @@ export enum LatexMathColorFormat {
    * 32位
    */
   COLOR_FORMAT_BGRA_8888
+}
+```
+
+### enum MarkdownTextDecorationStyle
+
+文本装饰线样式
+
+```ets
+/**
+ * 文本装饰线样式
+ */
+export enum MarkdownTextDecorationStyle {
+  /**
+   * 实线
+   */
+  SOLID = 0,
+  /**
+   * 双横线
+   */
+  DOUBLE = 1,
+  /**
+   * 点线
+   */
+  DOTTED = 2,
+  /**
+   * 虚线
+   */
+  DASHED = 3,
+  /**
+   * 波浪线
+   */
+  WAVY = 4
 }
 ```
 
