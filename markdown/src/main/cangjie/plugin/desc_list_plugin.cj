@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
- */
 package markdown.plugin
 
 public class DescListPlugin <: AbstractMarkdownPlugin {
@@ -11,7 +8,7 @@ public class DescListPlugin <: AbstractMarkdownPlugin {
         builder.customBlockParserFactory(DescListParserFactory())
     }
 
-    public func configureVisitor(builder: MarkdownVisitorBuilder): Unit {
+    public func configureVisitor(_: MarkdownVisitorBuilder): Unit {
     }
 
     public func getClassType(): String {
@@ -47,7 +44,7 @@ class DescListParser <: AbstractBlockParser {
         let line = sline.getContent()
         let lineTrim = line.trimStart()
         if (lineTrim.size > 2 && lineTrim.startsWith(": ")) {
-            ddstr.add(SourceLines.of(sline.substring(line.size - lineTrim.size, line.size)))
+            ddstr.add(SourceLines.of(sline.substring(line.size - lineTrim.size + 2, line.size)))
         } else if (!line.isBlank()) {
             ddstr.last?.addLine(sline)
         }

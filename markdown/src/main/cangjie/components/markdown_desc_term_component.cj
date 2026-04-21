@@ -7,52 +7,17 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownDescTermComponent {
-    /**
-     * markdown配置
-     */
-    var descTermMarkdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 定义列表术语控件自身节点
-     */
-    var descTermNodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var descTermMarkdownConfiguration: MarkdownConfiguration // markdown配置
+    var descTermNodeView: NodeView // 定义列表术语控件自身节点
     @Prop
-    var descTermComponentWidth: Float64
-
-    /**
-     * 缓存的控件数据
-     */
-    var descTermMarkdownCacheConfiguration: MarkdownCacheConfiguration
-
-    /**
-     * 自定义行内段落布局
-     */
+    var descTermComponentWidth: Float64 // 控件宽度 - 单位vp
+    var descTermMarkdownCacheConfiguration: MarkdownCacheConfiguration // 缓存的控件数据
     @BuilderParam
-    var descTermCustomParagraphLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * TOC列表点击事件
-     */
-    var descTermTocListOnClick: (Int64) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var descTermImageCallback: (String) -> Unit
-
-    /**
-     * 脚注点击事件
-     */
-    var descTermFootnoteCallback: (String) -> Unit
-
-    /**
-     * 定义列表术语控件子节点的懒加载数据源
-     */
-    var descTermNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
+    var descTermCustomParagraphLineBuilder: (NodeView, Int64) -> Unit // 自定义行内段落布局
+    var descTermTocListOnClick: (Int64) -> Unit // TOC列表点击事件
+    var descTermImageCallback: (String) -> Unit // 图片点击事件
+    var descTermFootnoteCallback: (String) -> Unit // 脚注点击事件
+    var descTermNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 定义列表术语控件子节点的懒加载数据源
 
     protected override func aboutToAppear(): Unit {
         refreshDescTermData(descTermNodeView) // 初始化刷新数据
@@ -102,7 +67,7 @@ public class MarkdownDescTermComponent {
         }
         .listDirection(Axis.Vertical)
         .alignListItem(ListItemAlign.Start)
-        .margin(bottom: descTermMarkdownConfiguration.markdownTheme.descListTermAndDefMargins)
+        .margin(bottom: descTermMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListTermToDescriptionSpacing)
     }
 
     /**
@@ -116,6 +81,7 @@ public class MarkdownDescTermComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = descTermNodeViewDataSource.totalCount() // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            descTermNodeViewDataSource.clear()
             return
         }
         if (refreshNodeViewSize > dataSourceSize) {

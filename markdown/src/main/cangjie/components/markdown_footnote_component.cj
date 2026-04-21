@@ -7,52 +7,17 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownFootnoteComponent {
-    /**
-     * markdown配置
-     */
-    var footnoteMarkdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 脚注控件自身节点
-     */
-    var footnoteNodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var footnoteMarkdownConfiguration: MarkdownConfiguration // markdown配置
+    var footnoteNodeView: NodeView // 脚注控件自身节点
     @Prop
-    var footnoteComponentWidth: Float64
-
-    /**
-     * 缓存的控件数据
-     */
-    var footnoteMarkdownCacheConfiguration: MarkdownCacheConfiguration
-
-    /**
-     * 自定义行内段落控件
-     */
+    var footnoteComponentWidth: Float64 // 控件宽度 - 单位vp
+    var footnoteMarkdownCacheConfiguration: MarkdownCacheConfiguration // 缓存的控件数据
     @BuilderParam
-    var footnoteCustomParagraphLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * TOC列表点击事件
-     */
-    var footnoteTocListOnClick: (Int64) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var footnoteImageCallback: (String) -> Unit
-
-    /**
-     * 脚注点击事件
-     */
-    var footnoteFootnoteCallback: (String) -> Unit
-
-    /**
-     * 脚注控件子节点的懒加载数据源
-     */
-    var footnoteNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>())
+    var footnoteCustomParagraphLineBuilder: (NodeView, Int64) -> Unit // 自定义行内段落控件
+    var footnoteTocListOnClick: (Int64) -> Unit // TOC列表点击事件
+    var footnoteImageCallback: (String) -> Unit // 图片点击事件
+    var footnoteFootnoteCallback: (String) -> Unit // 脚注点击事件
+    var footnoteNodeViewDataSource: NodeViewDataSource = NodeViewDataSource(ArrayList<NodeView>()) // 脚注控件子节点的懒加载数据源
 
     protected override func aboutToAppear(): Unit {
         refreshFootnoteData(footnoteNodeView) // 初始化刷新数据
@@ -100,8 +65,21 @@ public class MarkdownFootnoteComponent {
                 }
             )
         }
+        .backgroundColor(footnoteBackgroundColor(footnoteMarkdownConfiguration.markdownTheme, footnoteNodeView))
         .listDirection(Axis.Vertical)
         .alignListItem(ListItemAlign.Start)
+        .padding(
+            top: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefPaddingTop,
+            right: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefPaddingRight,
+            bottom: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefPaddingBottom,
+            left: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefPaddingLeft
+        )
+        .margin(
+            top: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefMarginTop,
+            right: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefMarginRight,
+            bottom: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefMarginBottom,
+            left: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefMarginLeft
+        )
     }
 
     /**
@@ -115,6 +93,7 @@ public class MarkdownFootnoteComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = footnoteNodeViewDataSource.totalCount() // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            footnoteNodeViewDataSource.clear()
             return
         }
         if (refreshNodeViewSize > dataSourceSize) {

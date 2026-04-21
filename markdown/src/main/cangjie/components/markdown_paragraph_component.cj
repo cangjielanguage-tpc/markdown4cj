@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,66 +7,23 @@ import ohos.state_macro_manage.*
  */
 @Component
 class MarkdownParagraphComponent {
-    /**
-     * markdown配置
-     */
-    var paragraphMarkdownConfiguration: MarkdownConfiguration
-
-    /**
-     * 段落控件自身节点
-     */
+    var paragraphMarkdownConfiguration: MarkdownConfiguration // markdown配置
     @Prop
-    var paragraphNodeView: NodeView
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var paragraphNodeView: NodeView // 段落控件自身节点
     @Prop
-    var paragraphComponentWidth: Float64
-
-    /**
-     * 缓存的段落控件数据
-     */
-    var paragraphComponents: HashMap<Int64, MarkdownParagraphComponent>
-
-    /**
-     * 自定义行内段落控件
-     */
+    var paragraphComponentWidth: Float64 // 控件宽度 - 单位vp
+    var paragraphComponents: HashMap<Int64, MarkdownParagraphComponent> // 缓存的段落控件数据
     @BuilderParam
-    var paragraphCustomParagraphLineBuilder: (NodeView, Int64) -> Unit
-
-    /**
-     * TOC列表点击事件
-     */
-    var paragraphTocListOnClick: (Int64) -> Unit
-
-    /**
-     * 图片点击事件
-     */
-    var paragraphImageCallback: (String) -> Unit
-
-    /**
-     * 脚注点击事件
-     */
-    var paragraphFootnoteCallback: (String) -> Unit
-
-    /**
-     * 标题子节点是否不为0
-     */
+    var paragraphCustomParagraphLineBuilder: (NodeView, Int64) -> Unit // 自定义行内段落控件
+    var paragraphTocListOnClick: (Int64) -> Unit // TOC列表点击事件
+    var paragraphImageCallback: (String) -> Unit // 图片点击事件
+    var paragraphFootnoteCallback: (String) -> Unit // 脚注点击事件
     @State
-    var isRefresh: Bool = false
-
-    /**
-     * 是否只有一条链接数据
-     */
+    var isRefresh: Bool = false // 标题子节点是否不为0
     @State
-    var isOneLink: Bool = false
-
-    /**
-     * 列表数据
-     */
+    var isOneLink: Bool = false // 是否只有一条链接数据
     @State
-    var paragraphNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
+    var paragraphNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 列表数据
 
     protected override func aboutToAppear(): Unit {
         refreshParagraphData(paragraphNodeView) // 初始化刷新数据
@@ -90,7 +44,7 @@ class MarkdownParagraphComponent {
 
     func build() {
         Column() {
-            if (!paragraphMarkdownConfiguration.markdownTheme.isImageMixedLayout && paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage" || paragraphNodeViewList[0].nodeType == "ImageHtmlNode")) {
+            if (!paragraphMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage" || paragraphNodeViewList[0].nodeType == "ImageHtmlNode")) {
                 if (paragraphMarkdownConfiguration.imageCallbackCallback.isNone()) {
                     if (paragraphNodeViewList[0].imageUrl().startsWith("./")) {
                         MarkdownImageRawFileComponent(
@@ -165,6 +119,19 @@ class MarkdownParagraphComponent {
         .width(100.percent)
         .alignItems(HorizontalAlign.Start)
         .justifyContent(FlexAlign.Center)
+        .backgroundColor(paragraphBackgroundColor(paragraphMarkdownConfiguration.markdownTheme, paragraphNodeView))
+        .padding(
+            top: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphPaddingTop,
+            right: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphPaddingRight,
+            bottom: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphPaddingBottom,
+            left: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphPaddingLeft
+        )
+        .margin(
+            top: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginTop,
+            right: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginRight,
+            bottom: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginBottom,
+            left: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginLeft
+        )
     }
 
     /**
@@ -187,9 +154,11 @@ class MarkdownParagraphComponent {
         Text() {
             if (paragraphNodeView.footnoteID.isSome()) {
                 Span("[^${paragraphNodeView.footnoteID()}]: ")
-                    .fontSize(paragraphMarkdownConfiguration.markdownTheme.paragraphTextSize)
-                    .fontWeight(FontWeight.W400)
-                    .fontColor(paragraphMarkdownConfiguration.markdownTheme.paragraphTextColor)
+                    .fontFamily(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontFamily)
+                    .fontSize(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontSize)
+                    .fontWeight(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontWeight)
+                    .fontStyle(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontStyle)
+                    .fontColor(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontColor)
             }
             if (isRefresh) {
                 markdownSpanListComponent(
@@ -204,7 +173,7 @@ class MarkdownParagraphComponent {
         }
         .textAlign(TextAlign.Start)
         .interopHalfLeading(true)
-        .interopCopyOption(if (paragraphMarkdownConfiguration.markdownTheme.isOnCopy) {
+        .interopCopyOption(if (paragraphMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
             true
         } else {
             false
@@ -224,9 +193,9 @@ class MarkdownParagraphComponent {
         Text() {
             if (paragraphNodeView.footnoteID.isSome()) {
                 Span("[^${paragraphNodeView.footnoteID()}]: ")
-                    .fontSize(paragraphMarkdownConfiguration.markdownTheme.paragraphTextSize)
-                    .fontWeight(FontWeight.W400)
-                    .fontColor(paragraphMarkdownConfiguration.markdownTheme.paragraphTextColor)
+                    .fontSize(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontSize)
+                    .fontWeight(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontWeight)
+                    .fontColor(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontColor)
             }
             if (isRefresh) {
                 markdownSpanListComponent(
@@ -241,7 +210,7 @@ class MarkdownParagraphComponent {
         }
         .textAlign(TextAlign.Start)
         .halfLeading(true)
-        .copyOption(if (paragraphMarkdownConfiguration.markdownTheme.isOnCopy) {
+        .copyOption(if (paragraphMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
             CopyOptions.LocalDevice
         } else {
             CopyOptions.None
@@ -298,7 +267,7 @@ class MarkdownParagraphComponent {
                     )
                 } else if (spanListNodeView.nodeType == "SoftLineBreak") {
                     // 软换行
-                    Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.isLineBreak))
+                    Span(spanSoftLineBreak(spanListMarkdownConfiguration.markdownTheme.globalTheme.isLineBreak))
                 } else if (spanListNodeView.nodeType == "HardLineBreak") {
                     // 硬换行
                     Span("\n")
@@ -307,7 +276,6 @@ class MarkdownParagraphComponent {
                     if (isOneLink) {
                         spanLinkComponent(
                             spanListNodeView,
-                            index,
                             spanListMarkdownConfiguration,
                             spanListTocListOnClick,
                             spanListFootnoteCallback,
@@ -316,7 +284,6 @@ class MarkdownParagraphComponent {
                     } else {
                         spanLinkComponent(
                             spanListNodeView,
-                            index,
                             spanListMarkdownConfiguration,
                             spanListTocListOnClick,
                             spanListFootnoteCallback,
@@ -327,7 +294,6 @@ class MarkdownParagraphComponent {
                     // Image：图片节点， StyleImage：图片Style节点，ImageHtmlNode：HTML图片
                     spanImageComponent(
                         spanListNodeView,
-                        index,
                         spanListMarkdownConfiguration,
                         spanListComponentWidth,
                         spanListImageCallback

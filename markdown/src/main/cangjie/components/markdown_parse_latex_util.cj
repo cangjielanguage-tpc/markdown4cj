@@ -1,24 +1,19 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 class MarkdownParseLatexUtil {
-    /**
-     * 全局锁
-     */
-    private static let latexReentrantMutex: Mutex = Mutex()
+    private static let latexReentrantMutex: Mutex = Mutex() // 全局锁
 
     /**
      * 数学公式文本转换成数学公式图片 - 单行
      *
      * @param strLatexMath 数学公式文本
-     * @param resStr 数学公式需要的字体资源目录路径
-     * @param markdownConfiguration Markdown Configuration
-     * @param callback PixelMap图片、图片高度、图片宽度、图片数组数据 回调接口
+     * @param markdownTheme markdown样式
+     * @param latexMathTextSize 数学公式文本大小 - 单位px
+     * @param latexStrCallback 数学公式文本替换接口 旧文本 -> 新文本
+     * @param callback 数学公式图片回调接口 - PixelMap图片、图片高度、图片宽度、图片数组数据
+     * @return Future
      */
-    static func latexMathStrToPixelMap(strLatexMath: String, markdownTheme: MarkdownTheme,
-        latexStrCallback: (String) -> String, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func latexMathStrToPixelMap(strLatexMath: String, markdownTheme: MarkdownTheme, latexMathTextSize: Float64, latexStrCallback: (String) -> String, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 if (Thread.currentThread.hasPendingCancellation) {
@@ -33,19 +28,19 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex: LaTeX = LaTeX(markdownTheme.latexMathResStr)
+                    var latex: LaTeX = LaTeX(markdownTheme.latexMathTheme.latexMathResPath)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownTheme.latexMathTextSize), Float32(10), markdownTheme.latexMathTextColor.toUInt32())
+                    var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(latexMathTextSize), Float32(10), markdownTheme.latexMathTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathColorFormat))
+                    var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    r.draw(g2, markdownTheme.latexMathBackGroupColor.toUInt32())
+                    r.draw(g2, markdownTheme.latexMathTheme.latexMathBackgroundColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -88,12 +83,14 @@ class MarkdownParseLatexUtil {
      * 数学公式文本转换成数学公式图片 - 行内
      *
      * @param strLatexMath 数学公式文本
-     * @param resStr 数学公式需要的字体资源目录路径
-     * @param markdownConfiguration Markdown Configuration
-     * @param componentWidth 控件宽度 - 单位vp
-     * @param callback PixelMap图片、图片高度、图片宽度、图片数组数据 回调接口
+     * @param markdownTheme markdown样式
+     * @param latexMathTextSize 数学公式文本大小 - 单位px
+     * @param componentWidth 控件宽度 - 单位px
+     * @param latexStrCallback 数学公式文本替换接口 旧文本 -> 新文本
+     * @param callback 数学公式图片回调接口 - PixelMap图片、图片高度、图片宽度、图片数组数据
+     * @return Future
      */
-    static func latexMathStrToPixelMapRow(strLatexMath: String, markdownTheme: MarkdownTheme, componentWidth: Float64, latexStrCallback: (String) -> String, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func latexMathStrToPixelMapRow(strLatexMath: String, markdownTheme: MarkdownTheme, latexMathTextSize: Float64, componentWidth: Float64, latexStrCallback: (String) -> String, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 if (Thread.currentThread.hasPendingCancellation) {
@@ -108,19 +105,19 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex: LaTeX = LaTeX(markdownTheme.latexMathResStr)
+                    var latex: LaTeX = LaTeX(markdownTheme.latexMathTheme.latexMathResPath)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownTheme.latexMathTextSize), Float32(10), markdownTheme.latexMathTextColor.toUInt32())
+                    var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(latexMathTextSize), Float32(10), markdownTheme.latexMathTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathColorFormat))
+                    var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    r.draw(g2, markdownTheme.latexMathBackGroupColor.toUInt32())
+                    r.draw(g2, markdownTheme.latexMathTheme.latexMathBackgroundColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }

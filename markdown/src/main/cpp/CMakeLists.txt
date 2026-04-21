@@ -15,8 +15,3 @@ target_include_directories(text_to_img PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(text_to_img PRIVATE native_drawing)
 
 add_compile_definitions(__OHOS__)
-
-
-
-
-

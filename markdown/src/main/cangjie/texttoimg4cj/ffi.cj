@@ -1,18 +1,14 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
-
 package markdown.texttoimg4cj
 
 foreign {
-    func drawCircleImage(str: CString, fontSize: Float32, fontColor: UInt32, fontBackGroupColor: UInt32,
-        backGroupColor: UInt32, textHeight: Float32, colorFormat: Int32): UInt8Data
+    func drawCircleImage(str: CString, fontSize: Float32, fontColor: UInt32, fontBackgroundColor: UInt32,
+        backgroundColor: UInt32, textHeight: Float32, colorFormat: Int32): UInt8Data
 
-    func drawRectImage(str: CString, fontSize: Float32, fontColor: UInt32, fontBackGroupColor: UInt32,
-        backGroupColor: UInt32, textHeight: Float32, colorFormat: Int32, padding: Float32, radius: Float32, isFakeBoldText: Bool): UInt8Data
+    func drawRectImage(str: CString, fontSize: Float32, fontColor: UInt32, fontBackgroundColor: UInt32,
+        backgroundColor: UInt32, textHeight: Float32, colorFormat: Int32, padding: Float32, radius: Float32, isFakeBoldText: Bool): UInt8Data
 
     func drawRectToolImage(str1: CString, str2: CString, fontSize: Float32, fontColor: UInt32,
-        fontBackGroupColor: UInt32, backGroupColor: UInt32, borderColor: UInt32, borderWidth: Float32,
+        fontBackgroundColor: UInt32, backgroundColor: UInt32, borderColor: UInt32, borderWidth: Float32,
         dividingLineColor: UInt32, dividingLineWidth: Float32, textHeight: Float32, colorFormat: Int32,
         padding: Float32, lineLeftPadding: Float32, lineRightPadding: Float32): UInt8Data
 }
@@ -37,14 +33,14 @@ let BGRA_8888: Int32 = 5
  * @param str 文本内容
  * @param fontSize 文本大小 - 单位px
  * @param fontColor 文本颜色
- * @param fontBackGroupColor 控件背景颜色
- * @param backGroupColor 背景颜色
+ * @param fontBackgroundColor 控件背景颜色
+ * @param backgroundColor 背景颜色
  * @param textHeight 控件高度 - 单位px
  * @param colorFormat 图片格式
  * @return 图片数组数据
  */
-public func drawCircleImageButton(str: String, fontSize: Float64, fontColor: UInt32, fontBackGroupColor: UInt32,
-    backGroupColor: UInt32, textHeight: Float64, colorFormat: ColorFormatEnum): Array<UInt8> {
+public func drawCircleImageButton(str: String, fontSize: Float64, fontColor: UInt32, fontBackgroundColor: UInt32,
+    backgroundColor: UInt32, textHeight: Float64, colorFormat: ColorFormatEnum): Array<UInt8> {
     unsafe {
         // 文本
         var cstr = LibC.mallocCString(str)
@@ -57,7 +53,7 @@ public func drawCircleImageButton(str: String, fontSize: Float64, fontColor: UIn
             case COLOR_FORMAT_RGB_565 => RGB_565
             case COLOR_FORMAT_BGRA_8888 => BGRA_8888
         }
-        var data: UInt8Data = drawCircleImage(cstr, fontSizeFloat32, fontColor, fontBackGroupColor, backGroupColor,
+        var data: UInt8Data = drawCircleImage(cstr, fontSizeFloat32, fontColor, fontBackgroundColor, backgroundColor,
             textHeightFloat32, format)
         var arr = Array<UInt8>(data.len, repeat: 0)
         for (i in 0..data.len) {
@@ -75,15 +71,15 @@ public func drawCircleImageButton(str: String, fontSize: Float64, fontColor: UIn
  * @param str 文本内容
  * @param fontSize 文本大小 - 单位px
  * @param fontColor 文本颜色
- * @param fontBackGroupColor 控件背景颜色
- * @param backGroupColor 背景颜色
+ * @param fontBackgroundColor 控件背景颜色
+ * @param backgroundColor 背景颜色
  * @param textHeight 控件高度 - 单位px
  * @param colorFormat 图片格式
  * @param padding 左右边距 - 单位px
  * @return 图片数组数据
  */
-public func drawRectImageButton(str: String, fontSize: Float64, fontColor: UInt32, fontBackGroupColor: UInt32,
-    backGroupColor: UInt32, textHeight: Float64, colorFormat: ColorFormatEnum, padding: Float64, radius: Float64, isFakeBoldText: Bool): Array<UInt8> {
+public func drawRectImageButton(str: String, fontSize: Float64, fontColor: UInt32, fontBackgroundColor: UInt32,
+    backgroundColor: UInt32, textHeight: Float64, colorFormat: ColorFormatEnum, padding: Float64, radius: Float64, isFakeBoldText: Bool): Array<UInt8> {
     unsafe {
         // 文本
         var cstr = LibC.mallocCString(str)
@@ -100,7 +96,7 @@ public func drawRectImageButton(str: String, fontSize: Float64, fontColor: UInt3
             case COLOR_FORMAT_RGB_565 => RGB_565
             case COLOR_FORMAT_BGRA_8888 => BGRA_8888
         }
-        var data: UInt8Data = drawRectImage(cstr, fontSizeFloat32, fontColor, fontBackGroupColor, backGroupColor,
+        var data: UInt8Data = drawRectImage(cstr, fontSizeFloat32, fontColor, fontBackgroundColor, backgroundColor,
             textHeightFloat32, format, paddingFloat32, radiusFloat32, isFakeBoldText)
         var arr = Array<UInt8>(data.len, repeat: 0)
         for (i in 0..data.len) {
@@ -118,8 +114,8 @@ public func drawRectImageButton(str: String, fontSize: Float64, fontColor: UInt3
  * @param str 文本内容
  * @param fontSize 文本大小 - 单位px
  * @param fontColor 文本颜色
- * @param fontBackGroupColor 控件背景颜色
- * @param backGroupColor 背景颜色
+ * @param fontBackgroundColor 控件背景颜色
+ * @param backgroundColor 背景颜色
  * @param borderColor 边框颜色
  * @param borderWidth 边框宽度 - 单位px
  * @param dividingLineColor 分割线颜色
@@ -130,7 +126,7 @@ public func drawRectImageButton(str: String, fontSize: Float64, fontColor: UInt3
  * @return 图片数组数据
  */
 public func drawRectToolImageButton(str1: String, str2: String, fontSize: Float64, fontColor: UInt32,
-    fontBackGroupColor: UInt32, backGroupColor: UInt32, borderColor: UInt32, borderWidth: Float64,
+    fontBackgroundColor: UInt32, backgroundColor: UInt32, borderColor: UInt32, borderWidth: Float64,
     dividingLineColor: UInt32, dividingLineWidth: Float64, textHeight: Float64, colorFormat: ColorFormatEnum,
     padding: Float64, lineLeftPadding: Float64, lineRightPadding: Float64): Array<UInt8> {
     unsafe {
@@ -157,8 +153,8 @@ public func drawRectToolImageButton(str1: String, str2: String, fontSize: Float6
             case COLOR_FORMAT_RGB_565 => RGB_565
             case COLOR_FORMAT_BGRA_8888 => BGRA_8888
         }
-        var data: UInt8Data = drawRectToolImage(cstr1, cstr2, fontSizeFloat32, fontColor, fontBackGroupColor,
-            backGroupColor, borderColor, borderWidthFloat32, dividingLineColor, dividingLineWidthFloat32,
+        var data: UInt8Data = drawRectToolImage(cstr1, cstr2, fontSizeFloat32, fontColor, fontBackgroundColor,
+            backgroundColor, borderColor, borderWidthFloat32, dividingLineColor, dividingLineWidthFloat32,
             textHeightFloat32, format, paddingFloat32, lineLeftPaddingFloat32, lineRightPaddingFloat32)
         var arr = Array<UInt8>(data.len, repeat: 0)
         for (i in 0..data.len) {

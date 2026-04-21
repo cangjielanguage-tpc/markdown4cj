@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
- */
 package markdown.core
 
 /**
@@ -72,7 +69,7 @@ public class CorePlugin <: AbstractMarkdownPlugin {
         thematicBreak(builder)
     }
 
-    private func text(builder: MarkdownVisitorBuilder): Unit {
+    private func text(_: MarkdownVisitorBuilder): Unit {
     }
 
     private static func strongEmphasis(builder: MarkdownVisitorBuilder): Unit {
@@ -127,7 +124,7 @@ public class CorePlugin <: AbstractMarkdownPlugin {
         )
     }
 
-    // his method is moved from ImagesPlugin. Alternative implementations must set SpanFactory
+    // This method is moved from ImagesPlugin. Alternative implementations must set SpanFactory
     // for Image node in order for this visitor to function
     private static func image(builder: MarkdownVisitorBuilder): Unit {
         builder.on(

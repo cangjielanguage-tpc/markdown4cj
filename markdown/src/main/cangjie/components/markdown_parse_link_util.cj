@@ -1,10 +1,7 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 class MarkdownParseLinkUtil {
-    static func linkStrToCirclePixelMap(strText: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func linkStrToCirclePixelMap(strText: String, linkCircleIconTextSize: Float64, linkCircleIconRadius: Float64, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
             var imageHeight: ?Float64 = Option<Float64>.None
@@ -16,11 +13,11 @@ class MarkdownParseLinkUtil {
                 }
                 arr = drawCircleImageButton(
                     strText,
-                    markdownConfiguration.markdownTheme.linkCircleImageTextSize,
-                    markdownConfiguration.markdownTheme.linkCircleImageTextColor.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkCircleImageButtonBackGroupColor.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkCircleImageBackGroupColor.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkCircleImageRadius,
+                    linkCircleIconTextSize,
+                    markdownConfiguration.markdownTheme.linkTheme.linkCircleIconTextColor.toUInt32(),
+                    markdownConfiguration.markdownTheme.linkTheme.linkCircleIconButtonBackgroundColor.toUInt32(),
+                    markdownConfiguration.markdownTheme.linkTheme.linkCircleIconBackgroundColor.toUInt32(),
+                    linkCircleIconRadius,
                     ColorFormatEnum.COLOR_FORMAT_BGRA_8888
                 )
                 if (Thread.currentThread.hasPendingCancellation) {
@@ -47,7 +44,7 @@ class MarkdownParseLinkUtil {
         return fut
     }
 
-    static func linkStrToRectPixelMap(strText: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func linkStrToRectPixelMap(strText: String, linkRectIconTextSize: Float64, linkRectIconHeight: Float64, linkRectIconPadding: Float64, linkRectIconRadius: Float64, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
             var imageHeight: ?Float64 = Option<Float64>.None
@@ -59,14 +56,14 @@ class MarkdownParseLinkUtil {
                 }
                 arr = drawRectImageButton(
                     strText,
-                    markdownConfiguration.markdownTheme.linkRectImageTextSize,
-                    markdownConfiguration.markdownTheme.linkRectImageTextColor.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkRectImageButtonBackGroupColor.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkRectImageBackGroupColor.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkRectImageHeight,
+                    linkRectIconTextSize,
+                    markdownConfiguration.markdownTheme.linkTheme.linkRectIconTextColor.toUInt32(),
+                    markdownConfiguration.markdownTheme.linkTheme.linkRectIconButtonBackgroundColor.toUInt32(),
+                    markdownConfiguration.markdownTheme.linkTheme.linkRectIconBackgroundColor.toUInt32(),
+                    linkRectIconHeight,
                     ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
-                    markdownConfiguration.markdownTheme.linkRectImagePadding,
-                    markdownConfiguration.markdownTheme.linkRectImageRadius,
+                    linkRectIconPadding,
+                    linkRectIconRadius,
                     false
                 )
                 if (Thread.currentThread.hasPendingCancellation) {
@@ -93,7 +90,7 @@ class MarkdownParseLinkUtil {
         return fut
     }
 
-    static func linkStrToRectToolPixelMap(strText: String, strType: String, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func linkStrToRectToolPixelMap(strText: String, strType: String, linkRectToolIconTextSize: Float64, linkRectToolIconHeight: Float64, linkRectToolIconPadding: Float64, linkRectToolIconBorderWidth: Float64, linkRectToolIconDividingLineWidth: Float64, linkRectToolIconLineLeftPadding: Float64, linkRectToolIconLineRightPadding: Float64, markdownConfiguration: MarkdownConfiguration, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
         let fut: Future<Unit> = spawn {
             var pixelMap: ?PixelMap = Option<PixelMap>.None
             var imageHeight: ?Float64 = Option<Float64>.None
@@ -108,19 +105,19 @@ class MarkdownParseLinkUtil {
                 arr = drawRectToolImageButton(
                     strText,
                     strType,
-                    markdownConfiguration.markdownTheme.linkRectToolImageTextSize,
+                    linkRectToolIconTextSize,
                     c1.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkRectToolImageButtonBackGroupColor.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkRectToolImageBackGroupColor.toUInt32(),
+                    markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconButtonBackgroundColor.toUInt32(),
+                    markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconBackgroundColor.toUInt32(),
                     c1.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkRectToolImageBorderWidth,
+                    linkRectToolIconBorderWidth,
                     c2.toUInt32(),
-                    markdownConfiguration.markdownTheme.linkRectToolImageDividingLineWidth,
-                    markdownConfiguration.markdownTheme.linkRectToolImageHeight,
+                    linkRectToolIconDividingLineWidth,
+                    linkRectToolIconHeight,
                     ColorFormatEnum.COLOR_FORMAT_BGRA_8888,
-                    markdownConfiguration.markdownTheme.linkRectToolImagePadding,
-                    markdownConfiguration.markdownTheme.linkRectToolImageLineLeftPadding,
-                    markdownConfiguration.markdownTheme.linkRectToolImageLineRightPadding
+                    linkRectToolIconPadding,
+                    linkRectToolIconLineLeftPadding,
+                    linkRectToolIconLineRightPadding
                 )
                 if (Thread.currentThread.hasPendingCancellation) {
                     return

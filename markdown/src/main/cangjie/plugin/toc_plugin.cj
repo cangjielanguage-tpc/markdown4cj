@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2024. All rights reserved.
- */
 package markdown.plugin
 
 public class TocPlugin <: AbstractMarkdownPlugin {
@@ -117,13 +114,14 @@ class HeadTree <: CustomBlock {
     var item_list_v: ?OrderedList = None
     prop item_list: OrderedList {
         get() {
-            this.item_list_v ?? {
-                =>
+            if (let Some(v) <- item_list_v) {
+                return v
+            }  else {
                 let v = OrderedList(1, r'.')
                 this.item_list_v = v
                 this.item.appendChild(v)
-                v
-            }()
+                return v
+            }
         }
     }
     HeadTree(let head: Heading, let text: String, let headIndex: Int) {
@@ -163,7 +161,7 @@ func deepClone(node: Node): Node {
 
 class TocBlockParserFactory <: BlockParserFactory {
     TocBlockParserFactory(let needReplace: ArrayList<TocBlock>) {}
-    public func tryStart(state: ParserState, matchedBlockParser: MatchedBlockParser): Option<BlockStart> {
+    public func tryStart(state: ParserState, _: MatchedBlockParser): Option<BlockStart> {
         if (state.getIndent() >= Parsing.CODE_BLOCK_INDENT) {
             return BlockStart.none()
         }
@@ -183,7 +181,7 @@ class TocBlockParser <: AbstractBlockParser {
     public func getBlock(): Block {
         return block
     }
-    public func tryContinue(parserState: ParserState): Option<BlockContinue> {
+    public func tryContinue(_: ParserState): Option<BlockContinue> {
         return None
     }
     public func closeBlock(): Unit {

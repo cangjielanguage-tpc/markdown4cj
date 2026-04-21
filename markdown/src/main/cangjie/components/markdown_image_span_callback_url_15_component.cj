@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.components
 
 import ohos.state_macro_manage.*
@@ -10,150 +7,74 @@ import ohos.state_macro_manage.*
  */
 @Component
 public class MarkdownSpanImageCallbackUrl15Component {
-    /**
-     * markdown配置
-     */
-    var url15CallbackMarkdownTheme: MarkdownTheme
-
-    /**
-     * 图片链接
-     */
-    var url15CallbackDestination: String
-
-    /**
-     * 控件宽度 - 单位vp
-     */
+    var url15CallbackMarkdownTheme: MarkdownTheme // markdown配置
+    var url15CallbackDestination: String // 图片链接
     @Prop
-    var url15CallbackComponentWidth: Float64
-
-    /**
-     * 图片替换事件
-     */
-    var url15CallbackImageCallbackCallback: (String) -> ?Array<UInt8>
-
-    /**
-     * 图片点击事件
-     */
-    var url15CallbackImageCallback: (String) -> Unit
-
-    /**
-     * 链接点击事件
-     */
-    var url15CallbackLinkCallback: ?(String) -> Unit
-
-    /**
-     * 是否是链接
-     */
-    var url15CallbackLink: Bool
-
-    /**
-     * 链接URL
-     */
-    var url15CallbackLinkUrl: Option<String>
-
-    /**
-     * 图片宽度
-     */
-    var url15CallbackImageWidth: Option<Length>
-
-    /**
-     * 图片高度
-     */
-    var url15CallbackImageHeight: Option<Length>
-
-    /**
-     * 图片圆角
-     */
-    var url15CallbackImageRadius: Option<Length>
-
-    /**
-     * 图片对齐方式
-     */
-    var url15CallbackImageAlign: Option<HorizontalAlign>
-
-    /**
-     * 图片加载
-     */
+    var url15CallbackComponentWidth: Float64 // 控件宽度 - 单位vp
+    var url15CallbackImageCallbackCallback: (String) -> ?Array<UInt8> // 图片替换事件
+    var url15CallbackImageCallback: (String) -> Unit // 图片点击事件
+    var url15CallbackLinkCallback: ?(String) -> Unit // 链接点击事件
+    var url15CallbackLink: Bool // 是否是链接
+    var url15CallbackLinkUrl: Option<String> // 链接URL
+    var url15CallbackImageWidth: Option<Length> // 图片宽度
+    var url15CallbackImageHeight: Option<Length> // 图片高度
+    var url15CallbackImageRadius: Option<Length> // 图片圆角
+    var url15CallbackImageAlign: Option<HorizontalAlign> // 图片对齐方式
     @State
-    var url15CallbackImageType: Int64 = 0 // 0：开始加载。1：加载成功完成。2：加载失败
-
-    /**
-     * 图片高度 - 单位px
-     */
+    var url15CallbackImageType: Int64 = 0 // 图片加载 0：开始加载。1：加载成功完成。2：加载失败
     @State
-    var url15CallbackHeight: Float64 = 0.0
-
-    /**
-     * 图片宽度 - 单位px
-     */
+    var url15CallbackHeight: Float64 = 0.0 // 图片最终高度 - 单位px
     @State
-    var url15CallbackWidth: Float64 = 0.0
-
-    /**
-     * 图片圆角 - 单位vp
-     */
+    var url15CallbackWidth: Float64 = 0.0 // 图片最终宽度 - 单位px
     @State
-    var url15CallbackRadius: Float64 = 0.0
-
-    /**
-     * 占位图片高度 - 单位px
-     */
+    var url15CallbackRadiusTopLeft: Float64 = 0.0 // 图片左上圆角 - 单位vp
     @State
-    var url15CallbackPlaceholderHeight: Float64 = 0.0
-
-    /**
-     * 占位图片宽度 - 单位px
-     */
+    var url15CallbackRadiusTopRight: Float64 = 0.0 // 图片右上圆角 - 单位vp
     @State
-    var url15CallbackPlaceholderWidth: Float64 = 0.0
-
-    /**
-     * 替换之后的图片宽度 - 单位px
-     */
+    var url15CallbackRadiusBottomLeft: Float64 = 0.0 // 图片左下圆角 - 单位vp
     @State
-    var url15CallbackReplaceWidth: ?Float64 = Option<Float64>.None
-
-    /**
-     * 替换之后的图片高度 - 单位px
-     */
+    var url15CallbackRadiusBottomRight: Float64 = 0.0 // 图片右下圆角 - 单位vp
     @State
-    var url15CallbackReplaceHeight: ?Float64 = Option<Float64>.None
-
-    /**
-     * 替换之后的图片数据
-     */
+    var url15CallbackThemeHeight: Option<Float64> = Option<Float64>.None // 图片设置高度 - 单位px
     @State
-    var url15CallbackReplaceImagePixelMap: Option<PixelMap> = Option<PixelMap>.None
-
-    /**
-     * 解析加载
-     */
+    var url15CallbackThemeWidth: Option<Float64> = Option<Float64>.None // 图片设置宽度 - 单位px
     @State
-    var url15CallbackReplaceImageType: Int64 = 0 // 0：开始解析。1：解析成功完成。2：解析失败
-
-    /**
-     * 替换子线程
-     */
-    var url15CallbackReplaceFut: ?Future<Unit> = Option<Future<Unit>>.None
-
-    /**
-     * 图片最大宽度 - 单位px
-     */
+    var url15CallbackPlaceholderHeight: Float64 = 0.0 // 占位图片高度 - 单位px
     @State
-    var url15CallbackComponentImageWidth: Float64 = 0.0
+    var url15CallbackPlaceholderWidth: Float64 = 0.0 // 占位图片宽度 - 单位px
+    @State
+    var url15CallbackReplaceWidth: ?Float64 = Option<Float64>.None // 替换之后的图片宽度 - 单位px
+    @State
+    var url15CallbackReplaceHeight: ?Float64 = Option<Float64>.None // 替换之后的图片高度 - 单位px
+    @State
+    var url15CallbackReplaceImagePixelMap: Option<PixelMap> = Option<PixelMap>.None // 替换之后的图片数据
+    @State
+    var url15CallbackReplaceImageType: Int64 = 0 // 解析加载 0：开始解析。1：解析成功完成。2：解析失败
+    var url15CallbackReplaceFut: ?Future<Unit> = Option<Future<Unit>>.None // 替换子线程
+    @State
+    var url15CallbackComponentImageWidth: Float64 = 0.0 // 图片最大宽度 - 单位px
 
     protected override func aboutToAppear(): Unit {
-        url15CallbackComponentImageWidth = vp2px(url15CallbackComponentWidth.vp)().value
-        url15CallbackRadius = imageSpanBorderRadius(url15CallbackImageRadius, url15CallbackMarkdownTheme.imageBorderRadius)
-        url15CallbackPlaceholderWidth = if (url15CallbackMarkdownTheme.imageFixedRatioWidth.isSome()) {
-            url15CallbackComponentImageWidth * url15CallbackMarkdownTheme.imageFixedRatioWidth()
+        url15CallbackComponentImageWidth = vp2px(url15CallbackComponentWidth.vp)().value // 图片最大宽度单位转换
+        // 图片圆角
+        let radius = imageSpanBorderRadius(url15CallbackImageRadius, url15CallbackMarkdownTheme.imageTheme.imageRadiusTopLeft, url15CallbackMarkdownTheme.imageTheme.imageRadiusTopRight, url15CallbackMarkdownTheme.imageTheme.imageRadiusBottomLeft, url15CallbackMarkdownTheme.imageTheme.imageRadiusBottomRight)
+        url15CallbackRadiusTopLeft =  radius[0] // 图片左上圆角
+        url15CallbackRadiusTopRight =  radius[1] // 图片右上圆角
+        url15CallbackRadiusBottomLeft =  radius[2] // 图片左下圆角
+        url15CallbackRadiusBottomRight =  radius[3] // 图片右下圆角
+        url15CallbackThemeWidth = widthHeightLength2FloatPx(url15CallbackImageWidth, url15CallbackMarkdownTheme.imageTheme.imageWidth, url15CallbackComponentImageWidth) // 图片设置宽度
+        url15CallbackThemeHeight = widthHeightLength2FloatPx(url15CallbackImageHeight, url15CallbackMarkdownTheme.imageTheme.imageHeight, url15CallbackComponentImageWidth) // 图片设置高度
+        // 图片占位图宽度
+        url15CallbackPlaceholderWidth = if (url15CallbackMarkdownTheme.imageTheme.imageFixedRatioWidth.isSome()) {
+            url15CallbackComponentImageWidth * url15CallbackMarkdownTheme.imageTheme.imageFixedRatioWidth()
         } else {
-            url15CallbackComponentImageWidth * url15CallbackMarkdownTheme.imageMaximumWidth
+            url15CallbackComponentImageWidth * url15CallbackMarkdownTheme.imageTheme.imageMaximumWidth
         }
-        url15CallbackPlaceholderHeight = if (url15CallbackMarkdownTheme.imageFixedRatioWidth.isSome()) {
-            url15CallbackComponentImageWidth * 9.0 / 16.0 * url15CallbackMarkdownTheme.imageFixedRatioWidth()
+        // 图片占位图高度
+        url15CallbackPlaceholderHeight = if (url15CallbackMarkdownTheme.imageTheme.imageFixedRatioWidth.isSome()) {
+            url15CallbackComponentImageWidth * 9.0 / 16.0 * url15CallbackMarkdownTheme.imageTheme.imageFixedRatioWidth()
         } else {
-            url15CallbackComponentImageWidth * 9.0 / 16.0 * url15CallbackMarkdownTheme.imageMaximumWidth
+            url15CallbackComponentImageWidth * 9.0 / 16.0 * url15CallbackMarkdownTheme.imageTheme.imageMaximumWidth
         }
         imageCallbackPixelmap()
     }
@@ -170,29 +91,31 @@ public class MarkdownSpanImageCallbackUrl15Component {
             if (url15CallbackReplaceImageType == 1) {
                 // 替换之后的图片
                 ImageSpan(url15CallbackReplaceImagePixelMap())
-                    .margin(top: url15CallbackMarkdownTheme.imageMarginTop, bottom: url15CallbackMarkdownTheme.imageMarginBottom)
-                    .interopBorderRadius(url15CallbackRadius)
-                    .borderWidth(url15CallbackMarkdownTheme.imageBorderWidth)
-                    .borderColor(url15CallbackMarkdownTheme.imageBorderColor)
-                    .width(url15CallbackReplaceWidth())
-                    .height(url15CallbackReplaceHeight())
-                    .objectFit(url15CallbackMarkdownTheme.imageFitType)
+                    .margin(top: url15CallbackMarkdownTheme.imageTheme.imageMarginTop, right: url15CallbackMarkdownTheme.imageTheme.imageMarginRight, bottom: url15CallbackMarkdownTheme.imageTheme.imageMarginBottom, left: url15CallbackMarkdownTheme.imageTheme.imageMarginLeft)
+                    .interopBorderRadius(url15CallbackRadiusTopLeft, url15CallbackRadiusTopRight, url15CallbackRadiusBottomLeft, url15CallbackRadiusBottomRight)
+                    .borderWidth(url15CallbackMarkdownTheme.imageTheme.imageBorderWidth)
+                    .borderColor(url15CallbackMarkdownTheme.imageTheme.imageBorderColor)
+                    .borderStyle(url15CallbackMarkdownTheme.imageTheme.imageBorderStyle)
+                    .width(url15CallbackReplaceWidth().px)
+                    .height(url15CallbackReplaceHeight().px)
+                    .objectFit(url15CallbackMarkdownTheme.imageTheme.imageFitType)
                     .verticalAlign(ImageSpanAlignment.CENTER)
                     .constraintSize(maxWidth: 100.percent)
                     .onClick {
                         evt => imageSpanOnClick(url15CallbackLink, url15CallbackImageCallback, url15CallbackLinkCallback, url15CallbackLinkUrl, url15CallbackDestination)
                     }
-            }else{
+            } else {
                 if (url15CallbackImageType != 2) {
                     // 加载图片
                     ImageSpan(url15CallbackDestination)
-                        .margin(top: url15CallbackMarkdownTheme.imageMarginTop, bottom: url15CallbackMarkdownTheme.imageMarginBottom)
-                        .interopBorderRadius(url15CallbackRadius)
-                        .borderWidth(url15CallbackMarkdownTheme.imageBorderWidth)
-                        .borderColor(url15CallbackMarkdownTheme.imageBorderColor)
+                        .margin(top: url15CallbackMarkdownTheme.imageTheme.imageMarginTop, right: url15CallbackMarkdownTheme.imageTheme.imageMarginRight, bottom: url15CallbackMarkdownTheme.imageTheme.imageMarginBottom, left: url15CallbackMarkdownTheme.imageTheme.imageMarginLeft)
+                        .interopBorderRadius(url15CallbackRadiusTopLeft, url15CallbackRadiusTopRight, url15CallbackRadiusBottomLeft, url15CallbackRadiusBottomRight)
+                        .borderWidth(url15CallbackMarkdownTheme.imageTheme.imageBorderWidth)
+                        .borderColor(url15CallbackMarkdownTheme.imageTheme.imageBorderColor)
+                        .borderStyle(url15CallbackMarkdownTheme.imageTheme.imageBorderStyle)
                         .width(url15CallbackWidth.px)
                         .height(url15CallbackHeight.px)
-                        .objectFit(url15CallbackMarkdownTheme.imageFitType)
+                        .objectFit(url15CallbackMarkdownTheme.imageTheme.imageFitType)
                         .verticalAlign(ImageSpanAlignment.CENTER)
                         .constraintSize(maxWidth: 100.percent)
                         .onClick {
@@ -204,12 +127,12 @@ public class MarkdownSpanImageCallbackUrl15Component {
                                     url15CallbackComponentImageWidth,
                                     imageLoadResult.width,
                                     imageLoadResult.height,
-                                    url15CallbackImageWidth,
-                                    url15CallbackImageHeight,
-                                    url15CallbackMarkdownTheme.imageMaxWidth,
-                                    url15CallbackMarkdownTheme.imageMaxHeight,
-                                    url15CallbackMarkdownTheme.imageFixedRatioWidth,
-                                    url15CallbackMarkdownTheme.imageMaximumWidth
+                                    url15CallbackThemeWidth,
+                                    url15CallbackThemeHeight,
+                                    url15CallbackMarkdownTheme.imageTheme.imageMaxWidth,
+                                    url15CallbackMarkdownTheme.imageTheme.imageMaxHeight,
+                                    url15CallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                                    url15CallbackMarkdownTheme.imageTheme.imageMaximumWidth
                                 )
                                 url15CallbackWidth = res[0]
                                 url15CallbackHeight = res[1]
@@ -219,17 +142,23 @@ public class MarkdownSpanImageCallbackUrl15Component {
                             imageError => url15CallbackImageType = 2
                         }
                 }
-                if (url15CallbackMarkdownTheme.imageResource.isSome() && url15CallbackImageType != 1) {
+                if (url15CallbackMarkdownTheme.imageTheme.imagePlaceholder.isSome() && url15CallbackImageType != 1) {
                     // 图片占位图
                     imageSpanPlaceholderComponent(
-                        url15CallbackMarkdownTheme.imageResource(),
-                        url15CallbackMarkdownTheme.imageMarginTop,
-                        url15CallbackMarkdownTheme.imageMarginBottom,
+                        url15CallbackMarkdownTheme.imageTheme.imagePlaceholder(),
+                        url15CallbackMarkdownTheme.imageTheme.imageMarginTop,
+                        url15CallbackMarkdownTheme.imageTheme.imageMarginRight,
+                        url15CallbackMarkdownTheme.imageTheme.imageMarginBottom,
+                        url15CallbackMarkdownTheme.imageTheme.imageMarginLeft,
                         url15CallbackPlaceholderWidth,
                         url15CallbackPlaceholderHeight,
-                        url15CallbackRadius,
-                        url15CallbackMarkdownTheme.imageBorderWidth,
-                        url15CallbackMarkdownTheme.imageBorderColor
+                        url15CallbackRadiusTopLeft,
+                        url15CallbackRadiusTopRight,
+                        url15CallbackRadiusBottomLeft,
+                        url15CallbackRadiusBottomRight,
+                        url15CallbackMarkdownTheme.imageTheme.imageBorderWidth,
+                        url15CallbackMarkdownTheme.imageTheme.imageBorderColor,
+                        url15CallbackMarkdownTheme.imageTheme.imageBorderStyle
                     )
                 }
             }
@@ -245,12 +174,12 @@ public class MarkdownSpanImageCallbackUrl15Component {
                         url15CallbackComponentImageWidth,
                         imageResWidth(),
                         imageResHeight(),
-                        url15CallbackImageWidth,
-                        url15CallbackImageHeight,
-                        url15CallbackMarkdownTheme.imageMaxWidth,
-                        url15CallbackMarkdownTheme.imageMaxHeight,
-                        url15CallbackMarkdownTheme.imageFixedRatioWidth,
-                        url15CallbackMarkdownTheme.imageMaximumWidth
+                        url15CallbackThemeWidth,
+                        url15CallbackThemeHeight,
+                        url15CallbackMarkdownTheme.imageTheme.imageMaxWidth,
+                        url15CallbackMarkdownTheme.imageTheme.imageMaxHeight,
+                        url15CallbackMarkdownTheme.imageTheme.imageFixedRatioWidth,
+                        url15CallbackMarkdownTheme.imageTheme.imageMaximumWidth
                     )
                     url15CallbackReplaceWidth = res[0]
                     url15CallbackReplaceHeight = res[1]

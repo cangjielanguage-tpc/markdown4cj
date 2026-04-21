@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.plugin
 
 public enum TokenType <: Equatable<TokenType> & ToString {
