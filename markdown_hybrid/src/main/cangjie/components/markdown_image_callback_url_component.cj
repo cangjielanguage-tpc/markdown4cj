@@ -190,8 +190,8 @@ public class MarkdownImageCallbackUrlComponent {
                         .borderRadius(urlCallbackRadius)
                         .borderWidth(urlCallbackMarkdownTheme.imageBorderWidth)
                         .borderColor(urlCallbackMarkdownTheme.imageBorderColor)
-                        .width(urlCallbackReplaceWidth())
-                        .height(urlCallbackReplaceHeight())
+                        .width(urlCallbackReplaceWidth().px)
+                        .height(urlCallbackReplaceHeight().px)
                         .objectFit(urlCallbackMarkdownTheme.imageFitType)
                         .constraintSize(maxWidth: 100.percent)
                         .onClick {
