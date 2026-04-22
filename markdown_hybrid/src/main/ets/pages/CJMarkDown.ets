@@ -293,6 +293,8 @@ export struct CJMarkdown {
       }
       if (this.config.imageCallbackCallback !== undefined) {
         global_customLib.registerImgPreprocessCallback(this.config.imageCallbackCallback)
+      } else {
+        global_customLib.registerImgPreprocessCallback(undefined)
       }
       if (this.config.imageDownloadCallback !== undefined) {
         cjMarkdownConfig.setImageDownloadCallback(this.config.imageDownloadCallback)
@@ -375,6 +377,8 @@ export struct CJMarkdown {
       if (this.config.markdownTheme !== undefined) {
         if (this.config.markdownTheme.context !== undefined) {
           global_customLib.setGlobalContext(this.config.markdownTheme.context)
+        } else {
+          global_customLib.setGlobalContext(undefined)
         }
         global_customLib.getCJResource(
           this.config.markdownTheme.markdownThemeAudio.audioIcon,

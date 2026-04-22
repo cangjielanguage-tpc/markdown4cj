@@ -41,6 +41,10 @@ public class GlobalContext {
  * @return JSValue 返回值
  */
 func setGlobalContext(runtime: JSContext, callInfo: JSCallInfo): JSValue {
+    if (callInfo[0].typeof() == JSType.UNDEFINED) {
+        ctx = None
+        return runtime.undefined().toJSValue()
+    }
     let jsEnv = runtime.getNapiEnv()
     let jsValue = arkTsValuetoNapiValue(jsEnv, callInfo[0])
     if (isStageMode(jsEnv, jsValue)) {

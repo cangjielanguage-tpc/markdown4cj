@@ -1724,11 +1724,11 @@ export declare interface CustomLib {
 
   CJMarkdownTheme: {new (): CJMarkdownTheme}
 
-  setGlobalContext(context: Context): void
+  setGlobalContext(context?: Context): void
 
   getLoadCJPage(mdStr: string, isInputEnded: boolean, incrementalAnalysis: boolean, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin, listScroller?: CJMarkdownScroller): (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void
 
-  registerImgPreprocessCallback(cb: (url: string) => Promise<ArrayBuffer|undefined>): void
+  registerImgPreprocessCallback(cb?: (url: string) => Promise<ArrayBuffer|undefined>): void
 
   getCJResource(
     audioIcon?: resourceManager.Resource,
