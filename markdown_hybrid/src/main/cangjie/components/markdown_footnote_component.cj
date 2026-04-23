@@ -87,6 +87,7 @@ public class MarkdownFootnoteComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let dataSourceSize: Int64 = footnoteNodeViewDataSource.totalCount() // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            footnoteNodeViewDataSource.clear()
             return
         }
         if (refreshNodeViewSize > dataSourceSize) {

@@ -24,7 +24,7 @@ class MarkdownTableBlockRowComponent {
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass> // 表格宽度列表
     var tableBlockRowNodeViews: ArrayList<NodeView> = ArrayList<NodeView>() // 缓存的表格Row控件数据
     @State
-    var tableBlockRowNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 数据源
+    var tableBlockRowNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // UI数据源
 
     protected override func aboutToAppear(): Unit {
         refreshTableBlockRowData(tableBlockRowNodeView) // 初始化刷新数据
@@ -86,6 +86,8 @@ class MarkdownTableBlockRowComponent {
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
         let tableBlockRowNodeViewListSize: Int64 = tableBlockRowNodeViews.size // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            tableBlockRowNodeViewList.clear()
+            tableBlockRowNodeViews.clear()
             return
         }
         if (refreshNodeViewSize > tableBlockRowNodeViewListSize) {
@@ -136,7 +138,9 @@ class MarkdownTableBlockRowComponent {
                     // 表格Cell节点
                     let cache = tableBlockCellComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
+                        // UI数据不能修改，直接走缓存子布局控件数据的修改，防止当前子布局控件重新创建
                         v.refreshTableBlockCellData(refreshNodeView)
+                        // 对数据进行修改，UI修改通过缓存布局修改
                         tableBlockRowNodeViews[i] = refreshNodeView
                     } else {
                         tableBlockRowNodeViewList[i] = refreshNodeView

@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.plugin
 
 /**
@@ -16,7 +13,7 @@ public class LatexMathPluginV2 <: AbstractMarkdownPlugin {
         builder.customInlineContentParserFactory(LatexInlineParserFactory()) // 行内解析: $...$ \(...\) \[...\]
     }
 
-    public func configureVisitor(builder: MarkdownVisitorBuilder): Unit {
+    public func configureVisitor(_: MarkdownVisitorBuilder): Unit {
     }
 
     // @VisibleForTesting

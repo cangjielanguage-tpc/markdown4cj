@@ -519,6 +519,7 @@ public class MarkdownComponent {
                 let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
                 let dataSourceSize: Int64 = nodeViewDataSource.totalCount() // 页面缓存的数据长度
                 if (refreshNodeViewSize == 0) {
+                    nodeViewDataSource.clear()
                     return
                 }
                 stringToNodes(refreshNodeViewChildren, refreshNodeViewSize, dataSourceSize)
@@ -537,6 +538,7 @@ public class MarkdownComponent {
                         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
                         let dataSourceSize: Int64 = nodeViewDataSource.totalCount() // 页面缓存的数据长度
                         if (refreshNodeViewSize == 0) {
+                            nodeViewDataSource.clear()
                             isRefreshData.store(true)
                             return
                         }

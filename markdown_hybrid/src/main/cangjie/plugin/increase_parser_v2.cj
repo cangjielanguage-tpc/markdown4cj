@@ -229,7 +229,7 @@ public class IncreaseParserV2 {
     }
 
     // ==================== 辅助方法 ====================
-    func getInputIndex(node: Node): Int {
+    func getInputIndex(_: Node): Int {
         return if (let Some(i) <- firstDirtyBlock.getProp<Int>("inputIndex")) {
             i // 增量parse Node会计算inputIndex
         } else if (let Some(firstSpan) <- firstDirtyBlock

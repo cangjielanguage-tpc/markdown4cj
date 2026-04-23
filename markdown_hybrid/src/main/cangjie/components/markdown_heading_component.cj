@@ -267,7 +267,6 @@ class MarkdownHeadingComponent {
                     if (isOneLink) {
                         spanLinkComponent(
                             spanListNodeView,
-                            index,
                             spanListMarkdownConfiguration,
                             spanListTocListOnClick,
                             spanListFootnoteCallback,
@@ -276,7 +275,6 @@ class MarkdownHeadingComponent {
                     } else {
                         spanLinkComponent(
                             spanListNodeView,
-                            index,
                             spanListMarkdownConfiguration,
                             spanListTocListOnClick,
                             spanListFootnoteCallback,
@@ -287,7 +285,6 @@ class MarkdownHeadingComponent {
                     // Image：图片节点， StyleImage：图片Style节点，ImageHtmlNode：HTML图片
                     spanImageComponent(
                         spanListNodeView,
-                        index,
                         spanListMarkdownConfiguration,
                         spanListComponentWidth,
                         spanListImageCallback

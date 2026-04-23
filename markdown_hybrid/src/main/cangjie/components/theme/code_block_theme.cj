@@ -83,9 +83,9 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
     public var codeBlockListTitleTextSize: Float64 = 13.0 // 组合代码块未选中标题字体大小
     public var codeBlockListTitleSelectTextSize: Float64 = 13.0 // 组合代码块选中标题字体大小
     public var codeBlockListTitleSelectTextColor: Color = COLOR_RED // 组合代码块选中标题文本颜色
-    public var codeBlockListTitleUnSelectTextColor: Color = COLOR_BLACK // 组合代码块未选中标题文本颜色
-    public var codeBlockListTitleSelectBackgroupColor: Color = COLOR_GRAY // 组合代码块选中标题背景颜色
-    public var codeBlockListTitleUnSelectBackgroupColor: Color = COLOR_TRANSPARENT // 组合代码块未选中标题背景颜色
+    public var codeBlockListTitleUnselectTextColor: Color = COLOR_BLACK // 组合代码块未选中标题文本颜色
+    public var codeBlockListTitleSelectBackgroundColor: Color = COLOR_GRAY // 组合代码块选中标题背景颜色
+    public var codeBlockListTitleUnselectBackgroundColor: Color = COLOR_TRANSPARENT // 组合代码块未选中标题背景颜色
     public var codeBlockIsSeparate: Bool = false // 是否单独代码块显示
     public var codeBlockSeparateWidth: Float64 = 50.0 // 单独代码块行号宽度
     public var codeBlockSeparateIsBottom: Bool = false // 单独代码块是否居底显示
@@ -151,7 +151,7 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param margin 外边距
      * @return 当前CodeBlockTheme对象
      */
-    public func setCodeBlockMargin(margin: Float64): CodeBlockTheme {
+    public func setMargin(margin: Float64): CodeBlockTheme {
         this.codeBlockMarginTop = margin
         this.codeBlockMarginRight = margin
         this.codeBlockMarginBottom = margin
@@ -168,7 +168,7 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param left 左外边距 命名参数
      * @return 当前CodeBlockTheme对象
      */
-    public func setCodeBlockMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): CodeBlockTheme {
+    public func setMargin(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): CodeBlockTheme {
         this.codeBlockMarginTop = top
         this.codeBlockMarginRight = right
         this.codeBlockMarginBottom = bottom
@@ -182,7 +182,7 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param padding 内边距
      * @return 当前CodeBlockTheme对象
      */
-    public func setCodeBlockPadding(padding: Float64): CodeBlockTheme {
+    public func setPadding(padding: Float64): CodeBlockTheme {
         this.codeBlockPaddingTop = padding
         this.codeBlockPaddingRight = padding
         this.codeBlockPaddingBottom = padding
@@ -199,7 +199,7 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param left 左内边距 命名参数
      * @return 当前CodeBlockTheme对象
      */
-    public func setCodeBlockPadding(top!: Float64 = 0.0, right!: Float64 = 8.0, bottom!: Float64 = 8.0, left!: Float64 = 0.0): CodeBlockTheme {
+    public func setPadding(top!: Float64 = 0.0, right!: Float64 = 8.0, bottom!: Float64 = 8.0, left!: Float64 = 0.0): CodeBlockTheme {
         this.codeBlockPaddingTop = top
         this.codeBlockPaddingRight = right
         this.codeBlockPaddingBottom = bottom
@@ -246,7 +246,7 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param radius 圆角
      * @return 当前CodeBlockTheme对象
      */
-    public func setCodeBlockRadius(radius: Float64): CodeBlockTheme {
+    public func setRadius(radius: Float64): CodeBlockTheme {
         this.codeBlockRadiusTopLeft = radius
         this.codeBlockRadiusTopRight = radius
         this.codeBlockRadiusBottomLeft = radius
@@ -263,7 +263,7 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param bottomRight 右下圆角 命名参数
      * @return 当前CodeBlockTheme对象
      */
-    public func setCodeBlockRadius(topLeft!: Float64 = 8.0, topRight!: Float64 = 8.0, bottomLeft!: Float64 = 8.0, bottomRight!: Float64 = 8.0): CodeBlockTheme {
+    public func setRadius(topLeft!: Float64 = 8.0, topRight!: Float64 = 8.0, bottomLeft!: Float64 = 8.0, bottomRight!: Float64 = 8.0): CodeBlockTheme {
         this.codeBlockRadiusTopLeft = topLeft
         this.codeBlockRadiusTopRight = topRight
         this.codeBlockRadiusBottomLeft = bottomLeft
@@ -926,8 +926,8 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param color 文本颜色
      * @return 当前CodeBlockTheme对象
      */
-    public func setCodeBlockListTitleUnSelectTextColor(color: Color): CodeBlockTheme {
-        this.codeBlockListTitleUnSelectTextColor = color
+    public func setCodeBlockListTitleUnselectTextColor(color: Color): CodeBlockTheme {
+        this.codeBlockListTitleUnselectTextColor = color
         return this
     }
 
@@ -937,8 +937,8 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param color 背景颜色
      * @return 当前CodeBlockTheme对象
      */
-    public func setCodeBlockListTitleSelectBackgroupColor(color: Color): CodeBlockTheme {
-        this.codeBlockListTitleSelectBackgroupColor = color
+    public func setCodeBlockListTitleSelectBackgroundColor(color: Color): CodeBlockTheme {
+        this.codeBlockListTitleSelectBackgroundColor = color
         return this
     }
 
@@ -948,8 +948,8 @@ public class CodeBlockTheme <: MarkdownBaseTheme {
      * @param color 背景颜色
      * @return 当前CodeBlockTheme对象
      */
-    public func setCodeBlockListTitleUnSelectBackgroupColor(color: Color): CodeBlockTheme {
-        this.codeBlockListTitleUnSelectBackgroupColor = color
+    public func setCodeBlockListTitleUnselectBackgroundColor(color: Color): CodeBlockTheme {
+        this.codeBlockListTitleUnselectBackgroundColor = color
         return this
     }
 

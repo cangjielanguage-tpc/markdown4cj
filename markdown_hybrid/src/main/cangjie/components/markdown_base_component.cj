@@ -8,7 +8,7 @@ import ohos.state_macro_manage.*
  * @param nodeView NodeView
  */
 @Builder
-func ADBuilder(nodeView: NodeView) {
+func ADBuilder(nodeView: NodeView) { /* cjlint-ignore !G.FUN.02 */
     Text("")
 }
 
@@ -57,7 +57,7 @@ func AudioBuilder(nodeView: NodeView, markdownTheme: MarkdownTheme, audioCallbac
  * @param idx 数组下标
  */
 @Builder
-func CustomBlockBuilder(nodeView: NodeView, idx: Int64) {
+func CustomBlockBuilder(nodeView: NodeView, idx: Int64) { /* cjlint-ignore !G.FUN.02 */
     Text("")
 }
 
@@ -68,7 +68,7 @@ func CustomBlockBuilder(nodeView: NodeView, idx: Int64) {
  * @param idx 数组下标
  */
 @Builder
-func CustomHeadingLineBuilder(nodeView: NodeView, idx: Int64) {
+func CustomHeadingLineBuilder(nodeView: NodeView, idx: Int64) { /* cjlint-ignore !G.FUN.02 */
     Span("")
 }
 
@@ -79,7 +79,7 @@ func CustomHeadingLineBuilder(nodeView: NodeView, idx: Int64) {
  * @param idx 数组下标
  */
 @Builder
-func CustomParagraphLineBuilder(nodeView: NodeView, idx: Int64) {
+func CustomParagraphLineBuilder(nodeView: NodeView, idx: Int64) { /* cjlint-ignore !G.FUN.02 */
     Span("")
 }
 
@@ -90,7 +90,7 @@ func CustomParagraphLineBuilder(nodeView: NodeView, idx: Int64) {
  * @param idx 数组下标
  */
 @Builder
-func CustomTableLineBuilder(nodeView: NodeView, idx: Int64) {
+func CustomTableLineBuilder(nodeView: NodeView, idx: Int64) { /* cjlint-ignore !G.FUN.02 */
     Span("")
 }
 
@@ -217,7 +217,6 @@ func codeBlockTextComponent(str: String, markdownConfiguration: MarkdownConfigur
 @Builder
 func spanLinkComponent(
     spanListNodeView: NodeView,
-    index: Int64,
     spanListMarkdownConfiguration: MarkdownConfiguration,
     spanListTocListOnClick: ?(Int64) -> Unit,
     spanListFootnoteCallback: (String) -> Unit,
@@ -265,7 +264,6 @@ func spanLinkComponent(
 @Builder
 func spanImageComponent(
     spanListNodeView: NodeView,
-    index: Int64,
     spanListMarkdownConfiguration: MarkdownConfiguration,
     spanListComponentWidth: Float64,
     spanListImageCallback: (String) -> Unit

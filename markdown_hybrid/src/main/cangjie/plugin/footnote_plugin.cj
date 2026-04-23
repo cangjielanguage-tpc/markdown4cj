@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown.plugin
 
 public class FootnotePlugin <: AbstractMarkdownPlugin {
@@ -13,7 +10,7 @@ public class FootnotePlugin <: AbstractMarkdownPlugin {
         builder.postProcessor(FootnotePostProcessor())
     }
 
-    public func configureVisitor(builder: MarkdownVisitorBuilder): Unit {
+    public func configureVisitor(_: MarkdownVisitorBuilder): Unit {
     }
 
     public func getClassType(): String {
@@ -55,11 +52,11 @@ class FootnoteBlockParser <: AbstractBlockParser {
         block
     }
 
-    public func tryContinue(parserState: ParserState): ?BlockContinue {
+    public func tryContinue(_: ParserState): ?BlockContinue {
         None
     }
 
-    public func addLine(line: SourceLine): Unit {}
+    public func addLine(_: SourceLine): Unit {}
     public func parseInlines(inlineParser: InlineParser): Unit {
         inlineParser.parse(SourceLines.of(line), paragraph)
     }

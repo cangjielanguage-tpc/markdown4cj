@@ -2043,7 +2043,7 @@ func listCodeTextColor(idxSelect: Int64, idx: Int64, markdownConfiguration: Mark
     if (idxSelect == idx) {
         return markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockListTitleSelectTextColor
     } else {
-        return markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockListTitleUnSelectTextColor
+        return markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockListTitleUnselectTextColor
     }
 }
 
@@ -2057,9 +2057,9 @@ func listCodeTextColor(idxSelect: Int64, idx: Int64, markdownConfiguration: Mark
  */
 func listCodeBackgroupColor(idxSelect: Int64, idx: Int64, markdownConfiguration: MarkdownConfiguration): Color {
     if (idxSelect == idx) {
-        return markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockListTitleSelectBackgroupColor
+        return markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockListTitleSelectBackgroundColor
     } else {
-        return markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockListTitleUnSelectBackgroupColor
+        return markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockListTitleUnselectBackgroundColor
     }
 }
 
