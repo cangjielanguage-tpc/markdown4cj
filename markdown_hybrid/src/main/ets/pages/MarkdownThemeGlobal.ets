@@ -85,7 +85,7 @@ export class MarkdownThemeGlobal {
    *
    * @param margin 外边距
    */
-  setAllMargin(margin: number): void {
+  setGlobalAllMargin(margin: number): void {
     this.blockMarginTop = margin
     this.blockMarginRight = margin
     this.blockMarginBottom = margin
@@ -100,7 +100,7 @@ export class MarkdownThemeGlobal {
    * @param bottom 下外边距
    * @param left 左外边距
    */
-  setMargin(top?: number, right?: number, bottom?: number, left?: number): void {
+  setGlobalMargin(top?: number, right?: number, bottom?: number, left?: number): void {
     this.blockMarginTop = top
     this.blockMarginRight = right
     this.blockMarginBottom = bottom
@@ -112,7 +112,7 @@ export class MarkdownThemeGlobal {
    *
    * @param spacing 模块间上下间距
    */
-  setMarkdownBlockSpacing(spacing: number): void {
+  setBlockSpacing(spacing: number): void {
     this.markdownBlockSpacing = spacing
   }
 

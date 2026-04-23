@@ -575,7 +575,7 @@ export class MarkdownThemeHeading {
    *
    * @param margin 外边距
    */
-  setMarginForAllHeading(margin: number): void {
+  setAllMarginForAllHeading(margin: number): void {
     this.heading1MarginTop = margin
     this.heading1MarginRight = margin
     this.heading1MarginBottom = margin
@@ -611,12 +611,12 @@ export class MarkdownThemeHeading {
    * @param left 左外边距
    */
   setMarginForAllHeadingEachLevel(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.setMarginForDesignateHeadingDetail(1, top, right, bottom, left)
-    this.setMarginForDesignateHeadingDetail(2, top, right, bottom, left)
-    this.setMarginForDesignateHeadingDetail(3, top, right, bottom, left)
-    this.setMarginForDesignateHeadingDetail(4, top, right, bottom, left)
-    this.setMarginForDesignateHeadingDetail(5, top, right, bottom, left)
-    this.setMarginForDesignateHeadingDetail(6, top, right, bottom, left)
+    this.setMarginForDesignateHeading(1, top, right, bottom, left)
+    this.setMarginForDesignateHeading(2, top, right, bottom, left)
+    this.setMarginForDesignateHeading(3, top, right, bottom, left)
+    this.setMarginForDesignateHeading(4, top, right, bottom, left)
+    this.setMarginForDesignateHeading(5, top, right, bottom, left)
+    this.setMarginForDesignateHeading(6, top, right, bottom, left)
   }
 
   /**
@@ -627,7 +627,7 @@ export class MarkdownThemeHeading {
   setMarginForEachHeading(marginList: number[]): void {
     let level = 1
     for (const margin of marginList) {
-      this.setMarginForDesignateHeading(level, margin)
+      this.setAllMarginForDesignateHeading(level, margin)
       level += 1
     }
   }
@@ -638,8 +638,8 @@ export class MarkdownThemeHeading {
    * @param level 标题等级
    * @param margin 外边距
    */
-  setMarginForDesignateHeading(level: number, margin: number): void {
-    this.setMarginForDesignateHeadingDetail(level, margin, margin, margin, margin)
+  setAllMarginForDesignateHeading(level: number, margin: number): void {
+    this.setMarginForDesignateHeading(level, margin, margin, margin, margin)
   }
 
   /**
@@ -652,16 +652,16 @@ export class MarkdownThemeHeading {
    */
   setMarginForEachHeadingDetail(top: number[], right: number[], bottom: number[], left: number[]): void {
     for (let index = 0; index < top.length; index++) {
-      this.setMarginForDesignateHeadingDetail((index + 1), top[index], undefined, undefined, undefined)
+      this.setMarginForDesignateHeading((index + 1), top[index], undefined, undefined, undefined)
     }
     for (let index = 0; index < right.length; index++) {
-      this.setMarginForDesignateHeadingDetail((index + 1), undefined, right[index], undefined, undefined)
+      this.setMarginForDesignateHeading((index + 1), undefined, right[index], undefined, undefined)
     }
     for (let index = 0; index < bottom.length; index++) {
-      this.setMarginForDesignateHeadingDetail((index + 1), undefined, undefined, bottom[index], undefined)
+      this.setMarginForDesignateHeading((index + 1), undefined, undefined, bottom[index], undefined)
     }
     for (let index = 0; index < left.length; index++) {
-      this.setMarginForDesignateHeadingDetail((index + 1), undefined, undefined, undefined, left[index])
+      this.setMarginForDesignateHeading((index + 1), undefined, undefined, undefined, left[index])
     }
   }
 
@@ -674,7 +674,7 @@ export class MarkdownThemeHeading {
    * @param bottom 下外边距
    * @param left 左外边距
    */
-  setMarginForDesignateHeadingDetail(level: number, top?: number, right?: number, bottom?: number, left?: number): void {
+  setMarginForDesignateHeading(level: number, top?: number, right?: number, bottom?: number, left?: number): void {
     switch (level) {
       case 1:
         if (top !== undefined) this.heading1MarginTop = top
@@ -722,7 +722,7 @@ export class MarkdownThemeHeading {
    *
    * @param padding 内边距
    */
-  setPaddingForAllHeading(padding: number): void {
+  setAllPaddingForAllHeading(padding: number): void {
     this.heading1PaddingTop = padding
     this.heading1PaddingRight = padding
     this.heading1PaddingBottom = padding
@@ -758,12 +758,12 @@ export class MarkdownThemeHeading {
    * @param left 左内边距集合
    */
   setPaddingForAllHeadingEachLevel(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.setPaddingForDesignateHeadingDetail(1, top, right, bottom, left)
-    this.setPaddingForDesignateHeadingDetail(2, top, right, bottom, left)
-    this.setPaddingForDesignateHeadingDetail(3, top, right, bottom, left)
-    this.setPaddingForDesignateHeadingDetail(4, top, right, bottom, left)
-    this.setPaddingForDesignateHeadingDetail(5, top, right, bottom, left)
-    this.setPaddingForDesignateHeadingDetail(6, top, right, bottom, left)
+    this.setPaddingForDesignateHeading(1, top, right, bottom, left)
+    this.setPaddingForDesignateHeading(2, top, right, bottom, left)
+    this.setPaddingForDesignateHeading(3, top, right, bottom, left)
+    this.setPaddingForDesignateHeading(4, top, right, bottom, left)
+    this.setPaddingForDesignateHeading(5, top, right, bottom, left)
+    this.setPaddingForDesignateHeading(6, top, right, bottom, left)
   }
 
   /**
@@ -774,7 +774,7 @@ export class MarkdownThemeHeading {
   setPaddingForEachHeading(paddingList: number[]): void {
     let level = 1
     for (const padding of paddingList) {
-      this.setPaddingForDesignateHeading(level, padding)
+      this.setAllPaddingForDesignateHeading(level, padding)
       level += 1
     }
   }
@@ -785,8 +785,8 @@ export class MarkdownThemeHeading {
    * @param level 标题等级
    * @param padding 内边距
    */
-  setPaddingForDesignateHeading(level: number, padding: number): void {
-    this.setPaddingForDesignateHeadingDetail(level, padding, padding, padding, padding)
+  setAllPaddingForDesignateHeading(level: number, padding: number): void {
+    this.setPaddingForDesignateHeading(level, padding, padding, padding, padding)
   }
 
   /**
@@ -799,16 +799,16 @@ export class MarkdownThemeHeading {
    */
   setPaddingForEachHeadingDetail(top: number[], right: number[], bottom: number[], left: number[]): void {
     for (let index = 0; index < top.length; index++) {
-      this.setPaddingForDesignateHeadingDetail((index + 1), top[index], undefined, undefined, undefined)
+      this.setPaddingForDesignateHeading((index + 1), top[index], undefined, undefined, undefined)
     }
     for (let index = 0; index < right.length; index++) {
-      this.setPaddingForDesignateHeadingDetail((index + 1), undefined, right[index], undefined, undefined)
+      this.setPaddingForDesignateHeading((index + 1), undefined, right[index], undefined, undefined)
     }
     for (let index = 0; index < bottom.length; index++) {
-      this.setPaddingForDesignateHeadingDetail((index + 1), undefined, undefined, bottom[index], undefined)
+      this.setPaddingForDesignateHeading((index + 1), undefined, undefined, bottom[index], undefined)
     }
     for (let index = 0; index < left.length; index++) {
-      this.setPaddingForDesignateHeadingDetail((index + 1), undefined, undefined, undefined, left[index])
+      this.setPaddingForDesignateHeading((index + 1), undefined, undefined, undefined, left[index])
     }
   }
 
@@ -821,7 +821,7 @@ export class MarkdownThemeHeading {
    * @param bottom 下内边距
    * @param left 左内边距
    */
-  setPaddingForDesignateHeadingDetail(level: number, top?: number, right?: number, bottom?: number, left?: number): void {
+  setPaddingForDesignateHeading(level: number, top?: number, right?: number, bottom?: number, left?: number): void {
     switch (level) {
       case 1:
         if (top !== undefined) this.heading1PaddingTop = top

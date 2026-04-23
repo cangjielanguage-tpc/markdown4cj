@@ -420,7 +420,7 @@ export class MarkdownThemeVideo {
    *
    * @param radius 统一圆角半径，同时赋值给四个角
    */
-  setVideoAllRadius(radius: number): void {
+  setVideoBorderAllRadius(radius: number): void {
     this.videoRadiusTopLeft = radius
     this.videoRadiusTopRight = radius
     this.videoRadiusBottomLeft = radius
@@ -435,7 +435,7 @@ export class MarkdownThemeVideo {
    * @param bottomLeft 左下圆角
    * @param bottomRight 右下圆角
    */
-  setVideoRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
+  setVideoBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
     this.videoRadiusTopLeft = topLeft
     this.videoRadiusTopRight = topRight
     this.videoRadiusBottomLeft = bottomLeft

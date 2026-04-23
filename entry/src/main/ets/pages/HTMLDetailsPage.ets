@@ -5,6 +5,7 @@ import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
+  MarkdownTextDecorationStyle,
   MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import { HTMLData } from '../model/HTMLData'
@@ -106,7 +107,7 @@ struct HTMLDetailsPage {
    * 下划线样式
    */
   @State
-  underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+  underlineStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
 
   aboutToAppear(): void {
     try {

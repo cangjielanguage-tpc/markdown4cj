@@ -516,7 +516,7 @@ export class MarkdownTheme {
    * @param blockFirstTopMargin markdown第一个模块上边距 - 默认8.0vp
    */
   setBlockFirstTopMargin(blockFirstTopMargin: number): void {
-    this.markdownThemeGlobal.setMargin(blockFirstTopMargin)
+    this.markdownThemeGlobal.setGlobalMargin(blockFirstTopMargin, undefined, undefined, undefined)
   }
 
   /**
@@ -525,7 +525,7 @@ export class MarkdownTheme {
    * @param blockLastBottomMargin markdown最后一个模块下边距 - 默认8.0vp
    */
   setBlockLastBottomMargin(blockLastBottomMargin: number): void {
-    this.markdownThemeGlobal.setMargin(undefined, undefined, blockLastBottomMargin, undefined)
+    this.markdownThemeGlobal.setGlobalMargin(undefined, undefined, blockLastBottomMargin, undefined)
   }
 
   /**
@@ -534,7 +534,7 @@ export class MarkdownTheme {
    * @param blockTopAndBottomMargins 模块间上下间距 - 默认8.0vp
    */
   setBlockTopAndBottomMargins(blockTopAndBottomMargins: number): void {
-    this.markdownThemeGlobal.setMarkdownBlockSpacing(blockTopAndBottomMargins)
+    this.markdownThemeGlobal.setBlockSpacing(blockTopAndBottomMargins)
   }
 
   /**
@@ -1726,7 +1726,7 @@ export class MarkdownTheme {
    * @param audioBorderRadius 音频边框圆角 - 默认12.0vp
    */
   setAudioBorderRadius(audioBorderRadius: number): void {
-    this.markdownThemeAudio.setAudioAllRadius(audioBorderRadius)
+    this.markdownThemeAudio.setAudioBorderAllRadius(audioBorderRadius)
   }
 
   /**
@@ -1852,7 +1852,7 @@ export class MarkdownTheme {
    * @param videoBorderRadius 视频圆角 - 默认10.0vp
    */
   setVideoBorderRadius(videoBorderRadius: number): void {
-    this.markdownThemeVideo.setVideoAllRadius(videoBorderRadius)
+    this.markdownThemeVideo.setVideoBorderAllRadius(videoBorderRadius)
   }
 
   /**
@@ -2115,7 +2115,7 @@ export class MarkdownTheme {
    * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
    */
   setImageBorderRadius(imageBorderRadius: number): void {
-    this.markdownThemeImage.setImageAllRadius(imageBorderRadius)
+    this.markdownThemeImage.setImageBorderAllRadius(imageBorderRadius)
   }
 
   /**

@@ -607,11 +607,11 @@ export declare class CJMarkdownGlobalTheme {
 
   setBackgroundColor(color: number): void
 
-  setMarkdownBlockSpacing(spacing: number): void
+  setBlockSpacing(spacing: number): void
 
-  setAllMargin(margin: number): void
+  setGlobalAllMargin(margin: number): void
 
-  setMargin(top?: number, right?: number, bottom?: number, left?: number): void
+  setGlobalMargin(top?: number, right?: number, bottom?: number, left?: number): void
 
   setIsLineBreak(isLineBreak: boolean): void
 
@@ -635,9 +635,9 @@ export declare class CJMarkdownAudioTheme {
 
   setAudioBorderColor(borderColor: number): void
 
-  setAudioAllRadius(radius: number): void
+  setAudioBorderAllRadius(radius: number): void
 
-  setAudioRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+  setAudioBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
 
   setAudioShadowRadius(radius: number): void
 
@@ -1047,29 +1047,29 @@ export declare class CJMarkdownHeadingTheme {
 
   setBackgroundColorForDesignateHeading(level: number, color: number): void
 
-  setMarginForAllHeading(margin: number): void
+  setAllMarginForAllHeading(margin: number): void
 
   setMarginForAllHeadingEachLevel(top?: number, right?: number, bottom?: number, left?: number): void
 
   setMarginForEachHeading(marginList: number[]): void
 
-  setMarginForDesignateHeading(level: number, margin: number): void
+  setAllMarginForDesignateHeading(level: number, margin: number): void
 
   setMarginForEachHeadingDetail(top: number[], right: number[], bottom: number[], left: number[]): void
 
-  setMarginForDesignateHeadingDetail(level: number, top?: number, right?: number, bottom?: number, left?: number): void
+  setMarginForDesignateHeading(level: number, top?: number, right?: number, bottom?: number, left?: number): void
 
-  setPaddingForAllHeading(padding: number): void
+  setAllPaddingForAllHeading(padding: number): void
 
   setPaddingForAllHeadingEachLevel(top?: number, right?: number, bottom?: number, left?: number): void
 
   setPaddingForEachHeading(paddingList: number[]): void
 
-  setPaddingForDesignateHeading(level: number, padding: number): void
+  setAllPaddingForDesignateHeading(level: number, padding: number): void
 
   setPaddingForEachHeadingDetail(top: number[], right: number[], bottom: number[], left: number[]): void
 
-  setPaddingForDesignateHeadingDetail(level: number, top?: number, right?: number, bottom?: number, left?: number): void
+  setPaddingForDesignateHeading(level: number, top?: number, right?: number, bottom?: number, left?: number): void
 
   setTextFontColorForAllHeading(color: number): void
 
@@ -1151,9 +1151,9 @@ export declare class CJMarkdownImageTheme {
 
   setImageMargin(top?: number, right?: number, bottom?: number, left?: number): void
 
-  setImageAllRadius(radius: number): void
+  setImageBorderAllRadius(radius: number): void
 
-  setImageRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+  setImageBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
 
   setImageBorderStyle(borderStyle: number): void
 
@@ -1551,9 +1551,9 @@ export declare class CJMarkdownVideoTheme {
 
   setVideoPadding(top?: number, right?: number, bottom?: number, left?: number): void
 
-  setVideoAllRadius(radius: number): void
+  setVideoBorderAllRadius(radius: number): void
 
-  setVideoRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+  setVideoBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
 
   setVideoBorderStyle(borderStyle: number): void
 
@@ -1723,6 +1723,56 @@ export declare interface CustomLib {
   CJRectResult: {new (x: number, y: number, width: number, height: number): CJRectResult}
 
   CJMarkdownTheme: {new (): CJMarkdownTheme}
+
+  CJMarkdownGlobalTheme: {new (): CJMarkdownGlobalTheme}
+
+  CJMarkdownAudioTheme: {new (): CJMarkdownAudioTheme}
+
+  CJMarkdownBannerTheme: {new (): CJMarkdownBannerTheme}
+
+  CJMarkdownBlockQuoteTheme: {new (): CJMarkdownBlockQuoteTheme}
+
+  CJMarkdownBoldTheme: {new (): CJMarkdownBoldTheme}
+
+  CJMarkdownBulletListTheme: {new (): CJMarkdownBulletListTheme}
+
+  CJMarkdownCodeBlockTheme: {new (): CJMarkdownCodeBlockTheme}
+
+  CJMarkdownDefinitionListTheme: {new (): CJMarkdownDefinitionListTheme}
+
+  CJMarkdownDividerTheme: {new (): CJMarkdownDividerTheme}
+
+  CJMarkdownFootnoteDefTheme: {new (): CJMarkdownFootnoteDefTheme}
+
+  CJMarkdownFootnoteRefTheme: {new (): CJMarkdownFootnoteRefTheme}
+
+  CJMarkdownHeadingTheme: {new (): CJMarkdownHeadingTheme}
+
+  CJMarkdownHtmlUnderlineTheme: {new (): CJMarkdownHtmlUnderlineTheme}
+
+  CJMarkdownImageTheme: {new (): CJMarkdownImageTheme}
+
+  CJMarkdownInlineCodeTheme: {new (): CJMarkdownInlineCodeTheme}
+
+  CJMarkdownItalicTheme: {new (): CJMarkdownItalicTheme}
+
+  CJMarkdownLatexMathTheme: {new (): CJMarkdownLatexMathTheme}
+
+  CJMarkdownLinkTheme: {new (): CJMarkdownLinkTheme}
+
+  CJMarkdownOrderedListTheme: {new (): CJMarkdownOrderedListTheme}
+
+  CJMarkdownParagraphTheme: {new (): CJMarkdownParagraphTheme}
+
+  CJMarkdownStrikethroughTheme: {new (): CJMarkdownStrikethroughTheme}
+
+  CJMarkdownSubTheme: {new (): CJMarkdownSubTheme}
+
+  CJMarkdownSupTheme: {new (): CJMarkdownSupTheme}
+
+  CJMarkdownTableTheme: {new (): CJMarkdownTableTheme}
+
+  CJMarkdownVideoTheme: {new (): CJMarkdownVideoTheme}
 
   setGlobalContext(context?: Context): void
 

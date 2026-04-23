@@ -241,7 +241,7 @@ export class MarkdownThemeImage {
    *
    * @param radius 圆角
    */
-  setImageAllRadius(radius: number): void {
+  setImageBorderAllRadius(radius: number): void {
     this.imageRadiusTopLeft = radius
     this.imageRadiusTopRight = radius
     this.imageRadiusBottomLeft = radius
@@ -256,7 +256,7 @@ export class MarkdownThemeImage {
    * @param bottomLeft 左下圆角
    * @param bottomRight 右下圆角
    */
-  setImageRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
+  setImageBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
     this.imageRadiusTopLeft = topLeft
     this.imageRadiusTopRight = topRight
     this.imageRadiusBottomLeft = bottomLeft

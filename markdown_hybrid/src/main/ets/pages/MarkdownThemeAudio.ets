@@ -387,7 +387,7 @@ export class MarkdownThemeAudio {
    *
    * @param radius 圆角
    */
-  setAudioAllRadius(radius: number): void {
+  setAudioBorderAllRadius(radius: number): void {
     this.audioRadiusTopLeft = radius
     this.audioRadiusTopRight = radius
     this.audioRadiusBottomLeft = radius
@@ -402,7 +402,7 @@ export class MarkdownThemeAudio {
    * @param bottomLeft 左下圆角
    * @param bottomRight 右下圆角
    */
-  setAudioRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
+  setAudioBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
     this.audioRadiusTopLeft = topLeft
     this.audioRadiusTopRight = topRight
     this.audioRadiusBottomLeft = bottomLeft

@@ -15,6 +15,7 @@ import {
 } from '../model/GeneralData'
 import { HTMLData } from '../model/HTMLData'
 import { styleToString } from '../utils/BaseUtils'
+import { MarkdownTextDecorationStyle } from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component
@@ -152,11 +153,11 @@ struct HTMLPage {
    * 下划线样式
    */
   @State
-  underlineStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+  underlineStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
   /**
    * 下划线样式
    */
-  underlineStyleList: Array<TextDecorationStyle> = [TextDecorationStyle.SOLID, TextDecorationStyle.DOUBLE, TextDecorationStyle.DOTTED, TextDecorationStyle.DASHED, TextDecorationStyle.WAVY]
+  underlineStyleList: Array<MarkdownTextDecorationStyle> = [MarkdownTextDecorationStyle.SOLID, MarkdownTextDecorationStyle.DOUBLE, MarkdownTextDecorationStyle.DOTTED, MarkdownTextDecorationStyle.DASHED, MarkdownTextDecorationStyle.WAVY]
   /**
    * 配置数据内容
    */

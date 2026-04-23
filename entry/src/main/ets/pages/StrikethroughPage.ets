@@ -11,6 +11,7 @@ import {
   timeListGeneralData
 } from '../model/GeneralData'
 import { StrikethroughData } from '../model/StrikethroughData'
+import { MarkdownTextDecorationStyle } from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component
@@ -153,11 +154,11 @@ struct StrikethroughPage {
    * 删除线样式
    */
   @State
-  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+  strikethroughStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
   /**
    * 删除线样式
    */
-  strikethroughStyleList: Array<TextDecorationStyle> = [TextDecorationStyle.SOLID, TextDecorationStyle.DOUBLE, TextDecorationStyle.DOTTED, TextDecorationStyle.DASHED, TextDecorationStyle.WAVY]
+  strikethroughStyleList: Array<MarkdownTextDecorationStyle> = [MarkdownTextDecorationStyle.SOLID, MarkdownTextDecorationStyle.DOUBLE, MarkdownTextDecorationStyle.DOTTED, MarkdownTextDecorationStyle.DASHED, MarkdownTextDecorationStyle.WAVY]
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)

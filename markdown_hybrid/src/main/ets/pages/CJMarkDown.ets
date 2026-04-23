@@ -432,12 +432,48 @@ export struct CJMarkdown {
   }
 
   getAudioTheme(theme: MarkdownThemeAudio): CJMarkdownAudioTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownAudioTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownAudioTheme()
     if (theme.audioBackgroundColor !== undefined) {
       cjMarkdownTheme.setAudioBackgroundColor(theme.audioBackgroundColor)
     }
-    cjMarkdownTheme.setAudioMargin(theme.audioMarginTop, theme.audioMarginRight, theme.audioMarginBottom, theme.audioMarginLeft)
-    cjMarkdownTheme.setAudioPadding(theme.audioPaddingTop, theme.audioPaddingRight, theme.audioPaddingBottom, theme.audioPaddingLeft)
+    let audioMarginTop: number = 10.0
+    let audioMarginRight: number = 0.0
+    let audioMarginBottom: number = 10.0
+    let audioMarginLeft: number = 0.0
+    if (theme.audioMarginTop !== undefined) {
+      audioMarginTop = theme.audioMarginTop
+    }
+    if (theme.audioMarginRight !== undefined) {
+      audioMarginRight = theme.audioMarginRight
+    }
+    if (theme.audioMarginBottom !== undefined) {
+      audioMarginBottom = theme.audioMarginBottom
+    }
+    if (theme.audioMarginLeft !== undefined) {
+      audioMarginLeft = theme.audioMarginLeft
+    }
+    cjMarkdownTheme.setAudioMargin(audioMarginTop, audioMarginRight, audioMarginBottom, audioMarginLeft)
+
+    let audioPaddingTop: number = 0.0
+    let audioPaddingRight: number = 0.0
+    let audioPaddingBottom: number = 0.0
+    let audioPaddingLeft: number = 0.0
+    if (theme.audioPaddingTop !== undefined) {
+      audioPaddingTop = theme.audioPaddingTop
+    }
+    if (theme.audioPaddingRight !== undefined) {
+      audioPaddingRight = theme.audioPaddingRight
+    }
+    if (theme.audioPaddingBottom !== undefined) {
+      audioPaddingBottom = theme.audioPaddingBottom
+    }
+    if (theme.audioPaddingLeft !== undefined) {
+      audioPaddingLeft = theme.audioPaddingLeft
+    }
+    cjMarkdownTheme.setAudioPadding(audioPaddingTop, audioPaddingRight, audioPaddingBottom, audioPaddingLeft)
     if (theme.audioBorderStyle !== undefined) {
       cjMarkdownTheme.setAudioBorderStyle(theme.audioBorderStyle)
     }
@@ -447,7 +483,23 @@ export struct CJMarkdown {
     if (theme.audioBorderColor !== undefined) {
       cjMarkdownTheme.setAudioBorderColor(theme.audioBorderColor)
     }
-    cjMarkdownTheme.setAudioRadius(theme.audioRadiusTopLeft, theme.audioRadiusTopRight, theme.audioRadiusBottomLeft, theme.audioRadiusBottomRight)
+    let audioRadiusTopLeft: number = 12.0
+    let audioRadiusTopRight: number = 12.0
+    let audioRadiusBottomLeft: number = 12.0
+    let audioRadiusBottomRight: number = 12.0
+    if (theme.audioRadiusTopLeft !== undefined) {
+      audioRadiusTopLeft = theme.audioRadiusTopLeft
+    }
+    if (theme.audioRadiusTopRight !== undefined) {
+      audioRadiusTopRight = theme.audioRadiusTopRight
+    }
+    if (theme.audioRadiusBottomLeft !== undefined) {
+      audioRadiusBottomLeft = theme.audioRadiusBottomLeft
+    }
+    if (theme.audioRadiusBottomRight !== undefined) {
+      audioRadiusBottomRight = theme.audioRadiusBottomRight
+    }
+    cjMarkdownTheme.setAudioBorderRadius(audioRadiusTopLeft, audioRadiusTopRight, audioRadiusBottomLeft, audioRadiusBottomRight)
     if (theme.audioShadowRadius !== undefined) {
       cjMarkdownTheme.setAudioShadowRadius(theme.audioShadowRadius)
     }
@@ -478,7 +530,23 @@ export struct CJMarkdown {
     if (theme.audioButtonBorderColor !== undefined) {
       cjMarkdownTheme.setAudioButtonBorderColor(theme.audioButtonBorderColor)
     }
-    cjMarkdownTheme.setAudioButtonRadius(theme.audioButtonRadiusTopLeft, theme.audioButtonRadiusTopRight, theme.audioButtonRadiusBottomLeft, theme.audioButtonRadiusBottomRight)
+    let audioButtonRadiusTopLeft: number = 12.0
+    let audioButtonRadiusTopRight: number = 12.0
+    let audioButtonRadiusBottomLeft: number = 12.0
+    let audioButtonRadiusBottomRight: number = 12.0
+    if (theme.audioButtonRadiusTopLeft !== undefined) {
+      audioButtonRadiusTopLeft = theme.audioButtonRadiusTopLeft
+    }
+    if (theme.audioButtonRadiusTopRight !== undefined) {
+      audioButtonRadiusTopRight = theme.audioButtonRadiusTopRight
+    }
+    if (theme.audioButtonRadiusBottomLeft !== undefined) {
+      audioButtonRadiusBottomLeft = theme.audioButtonRadiusBottomLeft
+    }
+    if (theme.audioButtonRadiusBottomRight !== undefined) {
+      audioButtonRadiusBottomRight = theme.audioButtonRadiusBottomRight
+    }
+    cjMarkdownTheme.setAudioButtonRadius(audioButtonRadiusTopLeft, audioButtonRadiusTopRight, audioButtonRadiusBottomLeft, audioButtonRadiusBottomRight)
     if (theme.audioButtonText !== undefined) {
       cjMarkdownTheme.setAudioButtonText(theme.audioButtonText)
     }
@@ -506,11 +574,23 @@ export struct CJMarkdown {
     if (theme.audioIconHeight !== undefined) {
       cjMarkdownTheme.setAudioIconHeight(theme.audioIconHeight)
     }
-    cjMarkdownTheme.setAudioIconRadius(
-      theme.audioIconRadiusTopLeft,
-      theme.audioIconRadiusTopRight,
-      theme.audioIconRadiusBottomLeft,
-      theme.audioIconRadiusBottomRight
+    let audioIconRadiusTopLeft: number = 12.0
+    let audioIconRadiusTopRight: number = 12.0
+    let audioIconRadiusBottomLeft: number = 12.0
+    let audioIconRadiusBottomRight: number = 12.0
+    if (theme.audioIconRadiusTopLeft !== undefined) {
+      audioIconRadiusTopLeft = theme.audioIconRadiusTopLeft
+    }
+    if (theme.audioIconRadiusTopRight !== undefined) {
+      audioIconRadiusTopRight = theme.audioIconRadiusTopRight
+    }
+    if (theme.audioIconRadiusBottomLeft !== undefined) {
+      audioIconRadiusBottomLeft = theme.audioIconRadiusBottomLeft
+    }
+    if (theme.audioIconRadiusBottomRight !== undefined) {
+      audioIconRadiusBottomRight = theme.audioIconRadiusBottomRight
+    }
+    cjMarkdownTheme.setAudioIconRadius(audioIconRadiusTopLeft, audioIconRadiusTopRight, audioIconRadiusBottomLeft, audioIconRadiusBottomRight
     )
     if (theme.audioIconFitType !== undefined) {
       cjMarkdownTheme.setAudioIconFitType(theme.audioIconFitType)
@@ -558,20 +638,109 @@ export struct CJMarkdown {
   }
 
   getBannerTheme(theme: MarkdownThemeBanner): CJMarkdownBannerTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownBannerTheme()
-    cjMarkdownTheme.setBannerMargin(theme.bannerMarginTop, theme.bannerMarginRight, theme.bannerMarginBottom, theme.bannerMarginLeft)
-    cjMarkdownTheme.setBannerPadding(theme.bannerPaddingTop, theme.bannerPaddingRight, theme.bannerPaddingBottom, theme.bannerPaddingLeft)
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownBannerTheme()
+    let bannerMarginTop: number = 0.0
+    let bannerMarginRight: number = 0.0
+    let bannerMarginBottom: number = 0.0
+    let bannerMarginLeft: number = 0.0
+    if (theme.bannerMarginTop !== undefined) {
+      bannerMarginTop = theme.bannerMarginTop
+    }
+    if (theme.bannerMarginRight !== undefined) {
+      bannerMarginRight = theme.bannerMarginRight
+    }
+    if (theme.bannerMarginBottom !== undefined) {
+      bannerMarginBottom = theme.bannerMarginBottom
+    }
+    if (theme.bannerMarginLeft !== undefined) {
+      bannerMarginLeft = theme.bannerMarginLeft
+    }
+    cjMarkdownTheme.setBannerMargin(bannerMarginTop, bannerMarginRight, bannerMarginBottom, bannerMarginLeft)
+
+    let bannerPaddingTop: number = 0.0
+    let bannerPaddingRight: number = 0.0
+    let bannerPaddingBottom: number = 0.0
+    let bannerPaddingLeft: number = 0.0
+    if (theme.bannerPaddingTop !== undefined) {
+      bannerPaddingTop = theme.bannerPaddingTop
+    }
+    if (theme.bannerPaddingRight !== undefined) {
+      bannerPaddingRight = theme.bannerPaddingRight
+    }
+    if (theme.bannerPaddingBottom !== undefined) {
+      bannerPaddingBottom = theme.bannerPaddingBottom
+    }
+    if (theme.bannerPaddingLeft !== undefined) {
+      bannerPaddingLeft = theme.bannerPaddingLeft
+    }
+    cjMarkdownTheme.setBannerPadding(bannerPaddingTop, bannerPaddingRight, bannerPaddingBottom, bannerPaddingLeft)
     return cjMarkdownTheme
   }
 
   getBlockQuoteTheme(theme: MarkdownThemeBlockQuote): CJMarkdownBlockQuoteTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownBlockQuoteTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownBlockQuoteTheme()
     if (theme.blockQuoteBackgroundColor !== undefined) {
       cjMarkdownTheme.setBlockQuoteBackgroundColor(theme.blockQuoteBackgroundColor)
     }
-    cjMarkdownTheme.setBlockQuoteMargin(theme.blockQuoteMarginTop, theme.blockQuoteMarginRight, theme.blockQuoteMarginBottom, theme.blockQuoteMarginLeft)
-    cjMarkdownTheme.setBlockQuotePadding(theme.blockQuotePaddingTop, theme.blockQuotePaddingRight, theme.blockQuotePaddingBottom, theme.blockQuotePaddingLeft)
-    cjMarkdownTheme.setBlockQuoteRadius(theme.blockQuoteRadiusTopLeft, theme.blockQuoteRadiusTopRight, theme.blockQuoteRadiusBottomLeft, theme.blockQuoteRadiusBottomRight)
+    let blockQuoteMarginTop: number = 0.0
+    let blockQuoteMarginRight: number = 0.0
+    let blockQuoteMarginBottom: number = 0.0
+    let blockQuoteMarginLeft: number = 0.0
+    if (theme.blockQuoteMarginTop !== undefined) {
+      blockQuoteMarginTop = theme.blockQuoteMarginTop
+    }
+    if (theme.blockQuoteMarginRight !== undefined) {
+      blockQuoteMarginRight = theme.blockQuoteMarginRight
+    }
+    if (theme.blockQuoteMarginBottom !== undefined) {
+      blockQuoteMarginBottom = theme.blockQuoteMarginBottom
+    }
+    if (theme.blockQuoteMarginLeft !== undefined) {
+      blockQuoteMarginLeft = theme.blockQuoteMarginLeft
+    }
+    cjMarkdownTheme.setBlockQuoteMargin(blockQuoteMarginTop, blockQuoteMarginRight, blockQuoteMarginBottom, blockQuoteMarginLeft)
+
+    let blockQuotePaddingTop: number = 0.0
+    let blockQuotePaddingRight: number = 0.0
+    let blockQuotePaddingBottom: number = 0.0
+    let blockQuotePaddingLeft: number = 0.0
+    if (theme.blockQuotePaddingTop !== undefined) {
+      blockQuotePaddingTop = theme.blockQuotePaddingTop
+    }
+    if (theme.blockQuotePaddingRight !== undefined) {
+      blockQuotePaddingRight = theme.blockQuotePaddingRight
+    }
+    if (theme.blockQuotePaddingBottom !== undefined) {
+      blockQuotePaddingBottom = theme.blockQuotePaddingBottom
+    }
+    if (theme.blockQuotePaddingLeft !== undefined) {
+      blockQuotePaddingLeft = theme.blockQuotePaddingLeft
+    }
+    cjMarkdownTheme.setBlockQuotePadding(blockQuotePaddingTop, blockQuotePaddingRight, blockQuotePaddingBottom, blockQuotePaddingLeft)
+
+    let blockQuoteRadiusTopLeft: number = 0.0
+    let blockQuoteRadiusTopRight: number = 0.0
+    let blockQuoteRadiusBottomLeft: number = 0.0
+    let blockQuoteRadiusBottomRight: number = 0.0
+    if (theme.blockQuoteRadiusTopLeft !== undefined) {
+      blockQuoteRadiusTopLeft = theme.blockQuoteRadiusTopLeft
+    }
+    if (theme.blockQuoteRadiusTopRight !== undefined) {
+      blockQuoteRadiusTopRight = theme.blockQuoteRadiusTopRight
+    }
+    if (theme.blockQuoteRadiusBottomLeft !== undefined) {
+      blockQuoteRadiusBottomLeft = theme.blockQuoteRadiusBottomLeft
+    }
+    if (theme.blockQuoteRadiusBottomRight !== undefined) {
+      blockQuoteRadiusBottomRight = theme.blockQuoteRadiusBottomRight
+    }
+    cjMarkdownTheme.setBlockQuoteRadius(blockQuoteRadiusTopLeft, blockQuoteRadiusTopRight, blockQuoteRadiusBottomLeft, blockQuoteRadiusBottomRight)
     if (theme.blockQuoteLeftBorderWidth !== undefined) {
       cjMarkdownTheme.setBlockQuoteLeftBorderWidth(theme.blockQuoteLeftBorderWidth)
     }
@@ -588,7 +757,10 @@ export struct CJMarkdown {
   }
 
   getBoldTheme(theme: MarkdownThemeBold): CJMarkdownBoldTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownBoldTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownBoldTheme()
     if (theme.boldTextFontColor !== undefined) {
       cjMarkdownTheme.setBoldTextFontColor(theme.boldTextFontColor)
     }
@@ -614,12 +786,48 @@ export struct CJMarkdown {
   }
 
   getBulletListTheme(theme: MarkdownThemeBulletList): CJMarkdownBulletListTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownBulletListTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownBulletListTheme()
     if (theme.bulletListBackgroundColor !== undefined) {
       cjMarkdownTheme.setBulletListBackgroundColor(theme.bulletListBackgroundColor)
     }
-    cjMarkdownTheme.setBulletListMargin(theme.bulletListMarginTop, theme.bulletListMarginRight, theme.bulletListMarginBottom, theme.bulletListMarginLeft)
-    cjMarkdownTheme.setBulletListPadding(theme.bulletListPaddingTop, theme.bulletListPaddingRight, theme.bulletListPaddingBottom, theme.bulletListPaddingLeft)
+    let bulletListMarginTop: number = 0.0
+    let bulletListMarginRight: number = 0.0
+    let bulletListMarginBottom: number = 0.0
+    let bulletListMarginLeft: number = 0.0
+    if (theme.bulletListMarginTop !== undefined) {
+      bulletListMarginTop = theme.bulletListMarginTop
+    }
+    if (theme.bulletListMarginRight !== undefined) {
+      bulletListMarginRight = theme.bulletListMarginRight
+    }
+    if (theme.bulletListMarginBottom !== undefined) {
+      bulletListMarginBottom = theme.bulletListMarginBottom
+    }
+    if (theme.bulletListMarginLeft !== undefined) {
+      bulletListMarginLeft = theme.bulletListMarginLeft
+    }
+    cjMarkdownTheme.setBulletListMargin(bulletListMarginTop, bulletListMarginRight, bulletListMarginBottom, bulletListMarginLeft)
+
+    let bulletListPaddingTop: number = 0.0
+    let bulletListPaddingRight: number = 0.0
+    let bulletListPaddingBottom: number = 0.0
+    let bulletListPaddingLeft: number = 0.0
+    if (theme.bulletListPaddingTop !== undefined) {
+      bulletListPaddingTop = theme.bulletListPaddingTop
+    }
+    if (theme.bulletListPaddingRight !== undefined) {
+      bulletListPaddingRight = theme.bulletListPaddingRight
+    }
+    if (theme.bulletListPaddingBottom !== undefined) {
+      bulletListPaddingBottom = theme.bulletListPaddingBottom
+    }
+    if (theme.bulletListPaddingLeft !== undefined) {
+      bulletListPaddingLeft = theme.bulletListPaddingLeft
+    }
+    cjMarkdownTheme.setBulletListPadding(bulletListPaddingTop, bulletListPaddingRight, bulletListPaddingBottom, bulletListPaddingLeft)
     if (theme.bulletListChildSpacing !== undefined) {
       cjMarkdownTheme.setBulletListChildSpacing(theme.bulletListChildSpacing)
     }
@@ -669,7 +877,10 @@ export struct CJMarkdown {
   }
 
   getCodeBlockTheme(theme: MarkdownThemeCodeBlock): CJMarkdownCodeBlockTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownCodeBlockTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownCodeBlockTheme()
     if (theme.codeBlockIsCodeFormat !== undefined) {
       cjMarkdownTheme.setCodeBlockIsCodeFormat(theme.codeBlockIsCodeFormat)
     }
@@ -685,8 +896,41 @@ export struct CJMarkdown {
     if (theme.codeBlockBackgroundColor !== undefined) {
       cjMarkdownTheme.setCodeBlockBackgroundColor(theme.codeBlockBackgroundColor)
     }
-    cjMarkdownTheme.setCodeBlockMargin(theme.codeBlockMarginTop, theme.codeBlockMarginRight, theme.codeBlockMarginBottom, theme.codeBlockMarginLeft)
-    cjMarkdownTheme.setCodeBlockPadding(theme.codeBlockPaddingTop, theme.codeBlockPaddingRight, theme.codeBlockPaddingBottom, theme.codeBlockPaddingLeft)
+    let codeBlockMarginTop: number = 0.0
+    let codeBlockMarginRight: number = 0.0
+    let codeBlockMarginBottom: number = 0.0
+    let codeBlockMarginLeft: number = 0.0
+    if (theme.codeBlockMarginTop !== undefined) {
+      codeBlockMarginTop = theme.codeBlockMarginTop
+    }
+    if (theme.codeBlockMarginRight !== undefined) {
+      codeBlockMarginRight = theme.codeBlockMarginRight
+    }
+    if (theme.codeBlockMarginBottom !== undefined) {
+      codeBlockMarginBottom = theme.codeBlockMarginBottom
+    }
+    if (theme.codeBlockMarginLeft !== undefined) {
+      codeBlockMarginLeft = theme.codeBlockMarginLeft
+    }
+    cjMarkdownTheme.setCodeBlockMargin(codeBlockMarginTop, codeBlockMarginRight, codeBlockMarginBottom, codeBlockMarginLeft)
+
+    let codeBlockPaddingTop: number = 0.0
+    let codeBlockPaddingRight: number = 0.0
+    let codeBlockPaddingBottom: number = 0.0
+    let codeBlockPaddingLeft: number = 0.0
+    if (theme.codeBlockPaddingTop !== undefined) {
+      codeBlockPaddingTop = theme.codeBlockPaddingTop
+    }
+    if (theme.codeBlockPaddingRight !== undefined) {
+      codeBlockPaddingRight = theme.codeBlockPaddingRight
+    }
+    if (theme.codeBlockPaddingBottom !== undefined) {
+      codeBlockPaddingBottom = theme.codeBlockPaddingBottom
+    }
+    if (theme.codeBlockPaddingLeft !== undefined) {
+      codeBlockPaddingLeft = theme.codeBlockPaddingLeft
+    }
+    cjMarkdownTheme.setCodeBlockPadding(codeBlockPaddingTop, codeBlockPaddingRight, codeBlockPaddingBottom, codeBlockPaddingLeft)
     if (theme.codeBlockBorderStyle !== undefined) {
       cjMarkdownTheme.setCodeBlockBorderStyle(theme.codeBlockBorderStyle)
     }
@@ -696,7 +940,23 @@ export struct CJMarkdown {
     if (theme.codeBlockBorderColor !== undefined) {
       cjMarkdownTheme.setCodeBlockBorderColor(theme.codeBlockBorderColor)
     }
-    cjMarkdownTheme.setCodeBlockRadius(theme.codeBlockRadiusTopLeft, theme.codeBlockRadiusTopRight, theme.codeBlockRadiusBottomLeft, theme.codeBlockRadiusBottomRight)
+    let codeBlockRadiusTopLeft: number = 0.0
+    let codeBlockRadiusTopRight: number = 0.0
+    let codeBlockRadiusBottomLeft: number = 0.0
+    let codeBlockRadiusBottomRight: number = 0.0
+    if (theme.codeBlockRadiusTopLeft !== undefined) {
+      codeBlockRadiusTopLeft = theme.codeBlockRadiusTopLeft
+    }
+    if (theme.codeBlockRadiusTopRight !== undefined) {
+      codeBlockRadiusTopRight = theme.codeBlockRadiusTopRight
+    }
+    if (theme.codeBlockRadiusBottomLeft !== undefined) {
+      codeBlockRadiusBottomLeft = theme.codeBlockRadiusBottomLeft
+    }
+    if (theme.codeBlockRadiusBottomRight !== undefined) {
+      codeBlockRadiusBottomRight = theme.codeBlockRadiusBottomRight
+    }
+    cjMarkdownTheme.setCodeBlockRadius(codeBlockRadiusTopLeft, codeBlockRadiusTopRight, codeBlockRadiusBottomLeft, codeBlockRadiusBottomRight)
     if (theme.codeBlockTitleLayoutMarginBottom !== undefined) {
       cjMarkdownTheme.setCodeBlockTitleLayoutMarginBottom(theme.codeBlockTitleLayoutMarginBottom)
     }
@@ -890,12 +1150,48 @@ export struct CJMarkdown {
   }
 
   getDefinitionListTheme(theme: MarkdownThemeDefinitionList): CJMarkdownDefinitionListTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownDefinitionListTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownDefinitionListTheme()
     if (theme.definitionListBackgroundColor !== undefined) {
       cjMarkdownTheme.setDefinitionListBackgroundColor(theme.definitionListBackgroundColor)
     }
-    cjMarkdownTheme.setDefinitionListMargin(theme.definitionListMarginTop, theme.definitionListMarginRight, theme.definitionListMarginBottom, theme.definitionListMarginLeft)
-    cjMarkdownTheme.setDefinitionListPadding(theme.definitionListPaddingTop, theme.definitionListPaddingRight, theme.definitionListPaddingBottom, theme.definitionListPaddingLeft)
+    let definitionListMarginTop: number = 0.0
+    let definitionListMarginRight: number = 0.0
+    let definitionListMarginBottom: number = 0.0
+    let definitionListMarginLeft: number = 0.0
+    if (theme.definitionListMarginTop !== undefined) {
+      definitionListMarginTop = theme.definitionListMarginTop
+    }
+    if (theme.definitionListMarginRight !== undefined) {
+      definitionListMarginRight = theme.definitionListMarginRight
+    }
+    if (theme.definitionListMarginBottom !== undefined) {
+      definitionListMarginBottom = theme.definitionListMarginBottom
+    }
+    if (theme.definitionListMarginLeft !== undefined) {
+      definitionListMarginLeft = theme.definitionListMarginLeft
+    }
+    cjMarkdownTheme.setDefinitionListMargin(definitionListMarginTop, definitionListMarginRight, definitionListMarginBottom, definitionListMarginLeft)
+
+    let definitionListPaddingTop: number = 0.0
+    let definitionListPaddingRight: number = 0.0
+    let definitionListPaddingBottom: number = 0.0
+    let definitionListPaddingLeft: number = 0.0
+    if (theme.definitionListPaddingTop !== undefined) {
+      definitionListPaddingTop = theme.definitionListPaddingTop
+    }
+    if (theme.definitionListPaddingRight !== undefined) {
+      definitionListPaddingRight = theme.definitionListPaddingRight
+    }
+    if (theme.definitionListPaddingBottom !== undefined) {
+      definitionListPaddingBottom = theme.definitionListPaddingBottom
+    }
+    if (theme.definitionListPaddingLeft !== undefined) {
+      definitionListPaddingLeft = theme.definitionListPaddingLeft
+    }
+    cjMarkdownTheme.setDefinitionListPadding(definitionListPaddingTop, definitionListPaddingRight, definitionListPaddingBottom, definitionListPaddingLeft)
     if (theme.definitionListTermToDescriptionSpacing !== undefined) {
       cjMarkdownTheme.setDefinitionListTermToDescriptionSpacing(theme.definitionListTermToDescriptionSpacing)
     }
@@ -915,9 +1211,45 @@ export struct CJMarkdown {
   }
 
   getDividerTheme(theme: MarkdownThemeDivider): CJMarkdownDividerTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownDividerTheme()
-    cjMarkdownTheme.setDividerMargin(theme.dividerMarginTop, theme.dividerMarginRight, theme.dividerMarginBottom, theme.dividerMarginLeft)
-    cjMarkdownTheme.setDividerPadding(theme.dividerPaddingTop, theme.dividerPaddingRight, theme.dividerPaddingBottom, theme.dividerPaddingLeft)
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownDividerTheme()
+    let dividerMarginTop: number = 0.0
+    let dividerMarginRight: number = 0.0
+    let dividerMarginBottom: number = 0.0
+    let dividerMarginLeft: number = 0.0
+    if (theme.dividerMarginTop !== undefined) {
+      dividerMarginTop = theme.dividerMarginTop
+    }
+    if (theme.dividerMarginRight !== undefined) {
+      dividerMarginRight = theme.dividerMarginRight
+    }
+    if (theme.dividerMarginBottom !== undefined) {
+      dividerMarginBottom = theme.dividerMarginBottom
+    }
+    if (theme.dividerMarginLeft !== undefined) {
+      dividerMarginLeft = theme.dividerMarginLeft
+    }
+    cjMarkdownTheme.setDividerMargin(dividerMarginTop, dividerMarginRight, dividerMarginBottom, dividerMarginLeft)
+
+    let dividerPaddingTop: number = 0.0
+    let dividerPaddingRight: number = 0.0
+    let dividerPaddingBottom: number = 0.0
+    let dividerPaddingLeft: number = 0.0
+    if (theme.dividerPaddingTop !== undefined) {
+      dividerPaddingTop = theme.dividerPaddingTop
+    }
+    if (theme.dividerPaddingRight !== undefined) {
+      dividerPaddingRight = theme.dividerPaddingRight
+    }
+    if (theme.dividerPaddingBottom !== undefined) {
+      dividerPaddingBottom = theme.dividerPaddingBottom
+    }
+    if (theme.dividerPaddingLeft !== undefined) {
+      dividerPaddingLeft = theme.dividerPaddingLeft
+    }
+    cjMarkdownTheme.setDividerPadding(dividerPaddingTop, dividerPaddingRight, dividerPaddingBottom, dividerPaddingLeft)
     if (theme.dividerColor !== undefined) {
       cjMarkdownTheme.setDividerColor(theme.dividerColor)
     }
@@ -931,17 +1263,56 @@ export struct CJMarkdown {
   }
 
   getFootnoteDefTheme(theme: MarkdownThemeFootnoteDef): CJMarkdownFootnoteDefTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownFootnoteDefTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownFootnoteDefTheme()
     if (theme.footnoteDefBackgroundColor !== undefined) {
       cjMarkdownTheme.setFootnoteDefBackgroundColor(theme.footnoteDefBackgroundColor)
     }
-    cjMarkdownTheme.setFootnoteDefMargin(theme.footnoteDefMarginTop, theme.footnoteDefMarginRight, theme.footnoteDefMarginBottom, theme.footnoteDefMarginLeft)
-    cjMarkdownTheme.setFootnoteDefPadding(theme.footnoteDefPaddingTop, theme.footnoteDefPaddingRight, theme.footnoteDefPaddingBottom, theme.footnoteDefPaddingLeft)
+    let footnoteDefMarginTop: number = 0.0
+    let footnoteDefMarginRight: number = 0.0
+    let footnoteDefMarginBottom: number = 0.0
+    let footnoteDefMarginLeft: number = 0.0
+    if (theme.footnoteDefMarginTop !== undefined) {
+      footnoteDefMarginTop = theme.footnoteDefMarginTop
+    }
+    if (theme.footnoteDefMarginRight !== undefined) {
+      footnoteDefMarginRight = theme.footnoteDefMarginRight
+    }
+    if (theme.footnoteDefMarginBottom !== undefined) {
+      footnoteDefMarginBottom = theme.footnoteDefMarginBottom
+    }
+    if (theme.footnoteDefMarginLeft !== undefined) {
+      footnoteDefMarginLeft = theme.footnoteDefMarginLeft
+    }
+    cjMarkdownTheme.setFootnoteDefMargin(footnoteDefMarginTop, footnoteDefMarginRight, footnoteDefMarginBottom, footnoteDefMarginLeft)
+
+    let footnoteDefPaddingTop: number = 0.0
+    let footnoteDefPaddingRight: number = 0.0
+    let footnoteDefPaddingBottom: number = 0.0
+    let footnoteDefPaddingLeft: number = 0.0
+    if (theme.footnoteDefPaddingTop !== undefined) {
+      footnoteDefPaddingTop = theme.footnoteDefPaddingTop
+    }
+    if (theme.footnoteDefPaddingRight !== undefined) {
+      footnoteDefPaddingRight = theme.footnoteDefPaddingRight
+    }
+    if (theme.footnoteDefPaddingBottom !== undefined) {
+      footnoteDefPaddingBottom = theme.footnoteDefPaddingBottom
+    }
+    if (theme.footnoteDefPaddingLeft !== undefined) {
+      footnoteDefPaddingLeft = theme.footnoteDefPaddingLeft
+    }
+    cjMarkdownTheme.setFootnoteDefPadding(footnoteDefPaddingTop, footnoteDefPaddingRight, footnoteDefPaddingBottom, footnoteDefPaddingLeft)
     return cjMarkdownTheme
   }
 
   getFootnoteRefTheme(theme: MarkdownThemeFootnoteRef): CJMarkdownFootnoteRefTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownFootnoteRefTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownFootnoteRefTheme()
     if (theme.footnoteRefTextFontColor !== undefined) {
       cjMarkdownTheme.setFootnoteRefTextFontColor(theme.footnoteRefTextFontColor)
     }
@@ -975,26 +1346,61 @@ export struct CJMarkdown {
     if (theme.footnoteRefTextBackgroundColor !== undefined) {
       cjMarkdownTheme.setFootnoteRefTextBackgroundColor(theme.footnoteRefTextBackgroundColor)
     }
+    let footnoteRefTextBackgroundRadiusTopLeft: number = 0.0
+    let footnoteRefTextBackgroundRadiusTopRight: number = 0.0
+    let footnoteRefTextBackgroundRadiusBottomLeft: number = 0.0
+    let footnoteRefTextBackgroundRadiusBottomRight: number = 0.0
+    if (theme.footnoteRefTextBackgroundRadiusTopLeft !== undefined) {
+      footnoteRefTextBackgroundRadiusTopLeft = theme.footnoteRefTextBackgroundRadiusTopLeft
+    }
+    if (theme.footnoteRefTextBackgroundRadiusTopRight !== undefined) {
+      footnoteRefTextBackgroundRadiusTopRight = theme.footnoteRefTextBackgroundRadiusTopRight
+    }
+    if (theme.footnoteRefTextBackgroundRadiusBottomLeft !== undefined) {
+      footnoteRefTextBackgroundRadiusBottomLeft = theme.footnoteRefTextBackgroundRadiusBottomLeft
+    }
+    if (theme.footnoteRefTextBackgroundRadiusBottomRight !== undefined) {
+      footnoteRefTextBackgroundRadiusBottomRight = theme.footnoteRefTextBackgroundRadiusBottomRight
+    }
     cjMarkdownTheme.setFootnoteRefTextBackgroundRadius(
-      theme.footnoteRefTextBackgroundRadiusTopLeft,
-      theme.footnoteRefTextBackgroundRadiusTopRight,
-      theme.footnoteRefTextBackgroundRadiusBottomLeft,
-      theme.footnoteRefTextBackgroundRadiusBottomRight
+      footnoteRefTextBackgroundRadiusTopLeft,
+      footnoteRefTextBackgroundRadiusTopRight,
+      footnoteRefTextBackgroundRadiusBottomLeft,
+      footnoteRefTextBackgroundRadiusBottomRight
     )
     return cjMarkdownTheme
   }
 
   getGlobalTheme(theme: MarkdownThemeGlobal): CJMarkdownGlobalTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownGlobalTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownGlobalTheme()
     if (theme.isMarkdownParserSync !== undefined) {
       cjMarkdownTheme.setIsMarkdownParserSync(theme.isMarkdownParserSync)
     }
     if (theme.isOnCopy !== undefined) {
       cjMarkdownTheme.setIsOnCopy(theme.isOnCopy)
     }
-    cjMarkdownTheme.setMargin(theme.blockMarginTop, theme.blockMarginRight, theme.blockMarginBottom, theme.blockMarginLeft)
+    let blockMarginTop: number = 0.0
+    let blockMarginRight: number = 0.0
+    let blockMarginBottom: number = 0.0
+    let blockMarginLeft: number = 0.0
+    if (theme.blockMarginTop !== undefined) {
+      blockMarginTop = theme.blockMarginTop
+    }
+    if (theme.blockMarginRight !== undefined) {
+      blockMarginRight = theme.blockMarginRight
+    }
+    if (theme.blockMarginBottom !== undefined) {
+      blockMarginBottom = theme.blockMarginBottom
+    }
+    if (theme.blockMarginLeft !== undefined) {
+      blockMarginLeft = theme.blockMarginLeft
+    }
+    cjMarkdownTheme.setGlobalMargin(blockMarginTop, blockMarginRight, blockMarginBottom, blockMarginLeft)
     if (theme.markdownBlockSpacing !== undefined) {
-      cjMarkdownTheme.setMarkdownBlockSpacing(theme.markdownBlockSpacing)
+      cjMarkdownTheme.setBlockSpacing(theme.markdownBlockSpacing)
     }
     if (theme.isLineBreak !== undefined) {
       cjMarkdownTheme.setIsLineBreak(theme.isLineBreak)
@@ -1006,13 +1412,49 @@ export struct CJMarkdown {
   }
 
   getHeadingTheme(theme: MarkdownThemeHeading): CJMarkdownHeadingTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownHeadingTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownHeadingTheme()
     // H1
     if (theme.heading1BackgroundColor !== undefined) {
       cjMarkdownTheme.setBackgroundColorForDesignateHeading(1, theme.heading1BackgroundColor)
     }
-    cjMarkdownTheme.setMarginForDesignateHeadingDetail(1, theme.heading1MarginTop, theme.heading1MarginRight, theme.heading1MarginBottom, theme.heading1MarginLeft)
-    cjMarkdownTheme.setPaddingForDesignateHeadingDetail(1, theme.heading1PaddingTop, theme.heading1PaddingRight, theme.heading1PaddingBottom, theme.heading1PaddingLeft)
+    let heading1MarginTop: number = 0.0
+    let heading1MarginRight: number = 0.0
+    let heading1MarginBottom: number = 0.0
+    let heading1MarginLeft: number = 0.0
+    if (theme.heading1MarginTop !== undefined) {
+      heading1MarginTop = theme.heading1MarginTop
+    }
+    if (theme.heading1MarginRight !== undefined) {
+      heading1MarginRight = theme.heading1MarginRight
+    }
+    if (theme.heading1MarginBottom !== undefined) {
+      heading1MarginBottom = theme.heading1MarginBottom
+    }
+    if (theme.heading1MarginLeft !== undefined) {
+      heading1MarginLeft = theme.heading1MarginLeft
+    }
+    cjMarkdownTheme.setMarginForDesignateHeading(1, heading1MarginTop, heading1MarginRight, heading1MarginBottom, heading1MarginLeft)
+
+    let heading1PaddingTop: number = 0.0
+    let heading1PaddingRight: number = 0.0
+    let heading1PaddingBottom: number = 0.0
+    let heading1PaddingLeft: number = 0.0
+    if (theme.heading1PaddingTop !== undefined) {
+      heading1PaddingTop = theme.heading1PaddingTop
+    }
+    if (theme.heading1PaddingRight !== undefined) {
+      heading1PaddingRight = theme.heading1PaddingRight
+    }
+    if (theme.heading1PaddingBottom !== undefined) {
+      heading1PaddingBottom = theme.heading1PaddingBottom
+    }
+    if (theme.heading1PaddingLeft !== undefined) {
+      heading1PaddingLeft = theme.heading1PaddingLeft
+    }
+    cjMarkdownTheme.setPaddingForDesignateHeading(1, heading1PaddingTop, heading1PaddingRight, heading1PaddingBottom, heading1PaddingLeft)
     if (theme.heading1TextFontColor !== undefined) {
       cjMarkdownTheme.setTextFontColorForDesignateHeading(1, theme.heading1TextFontColor)
     }
@@ -1047,8 +1489,41 @@ export struct CJMarkdown {
     if (theme.heading2BackgroundColor !== undefined) {
       cjMarkdownTheme.setBackgroundColorForDesignateHeading(2, theme.heading2BackgroundColor)
     }
-    cjMarkdownTheme.setMarginForDesignateHeadingDetail(2, theme.heading2MarginTop, theme.heading2MarginRight, theme.heading2MarginBottom, theme.heading2MarginLeft)
-    cjMarkdownTheme.setPaddingForDesignateHeadingDetail(2, theme.heading2PaddingTop, theme.heading2PaddingRight, theme.heading2PaddingBottom, theme.heading2PaddingLeft)
+    let heading2MarginTop: number = 0.0
+    let heading2MarginRight: number = 0.0
+    let heading2MarginBottom: number = 0.0
+    let heading2MarginLeft: number = 0.0
+    if (theme.heading2MarginTop !== undefined) {
+      heading2MarginTop = theme.heading2MarginTop
+    }
+    if (theme.heading2MarginRight !== undefined) {
+      heading2MarginRight = theme.heading2MarginRight
+    }
+    if (theme.heading2MarginBottom !== undefined) {
+      heading2MarginBottom = theme.heading2MarginBottom
+    }
+    if (theme.heading2MarginLeft !== undefined) {
+      heading2MarginLeft = theme.heading2MarginLeft
+    }
+    cjMarkdownTheme.setMarginForDesignateHeading(2, heading2MarginTop, heading2MarginRight, heading2MarginBottom, heading2MarginLeft)
+
+    let heading2PaddingTop: number = 0.0
+    let heading2PaddingRight: number = 0.0
+    let heading2PaddingBottom: number = 0.0
+    let heading2PaddingLeft: number = 0.0
+    if (theme.heading2PaddingTop !== undefined) {
+      heading2PaddingTop = theme.heading2PaddingTop
+    }
+    if (theme.heading2PaddingRight !== undefined) {
+      heading2PaddingRight = theme.heading2PaddingRight
+    }
+    if (theme.heading2PaddingBottom !== undefined) {
+      heading2PaddingBottom = theme.heading2PaddingBottom
+    }
+    if (theme.heading2PaddingLeft !== undefined) {
+      heading2PaddingLeft = theme.heading2PaddingLeft
+    }
+    cjMarkdownTheme.setPaddingForDesignateHeading(2, heading2PaddingTop, heading2PaddingRight, heading2PaddingBottom, heading2PaddingLeft)
     if (theme.heading2TextFontColor !== undefined) {
       cjMarkdownTheme.setTextFontColorForDesignateHeading(2, theme.heading2TextFontColor)
     }
@@ -1083,8 +1558,41 @@ export struct CJMarkdown {
     if (theme.heading3BackgroundColor !== undefined) {
       cjMarkdownTheme.setBackgroundColorForDesignateHeading(3, theme.heading3BackgroundColor)
     }
-    cjMarkdownTheme.setMarginForDesignateHeadingDetail(3, theme.heading3MarginTop, theme.heading3MarginRight, theme.heading3MarginBottom, theme.heading3MarginLeft)
-    cjMarkdownTheme.setPaddingForDesignateHeadingDetail(3, theme.heading3PaddingTop, theme.heading3PaddingRight, theme.heading3PaddingBottom, theme.heading3PaddingLeft)
+    let heading3MarginTop: number = 0.0
+    let heading3MarginRight: number = 0.0
+    let heading3MarginBottom: number = 0.0
+    let heading3MarginLeft: number = 0.0
+    if (theme.heading3MarginTop !== undefined) {
+      heading3MarginTop = theme.heading3MarginTop
+    }
+    if (theme.heading3MarginRight !== undefined) {
+      heading3MarginRight = theme.heading3MarginRight
+    }
+    if (theme.heading3MarginBottom !== undefined) {
+      heading3MarginBottom = theme.heading3MarginBottom
+    }
+    if (theme.heading3MarginLeft !== undefined) {
+      heading3MarginLeft = theme.heading3MarginLeft
+    }
+    cjMarkdownTheme.setMarginForDesignateHeading(3, heading3MarginTop, heading3MarginRight, heading3MarginBottom, heading3MarginLeft)
+
+    let heading3PaddingTop: number = 0.0
+    let heading3PaddingRight: number = 0.0
+    let heading3PaddingBottom: number = 0.0
+    let heading3PaddingLeft: number = 0.0
+    if (theme.heading3PaddingTop !== undefined) {
+      heading3PaddingTop = theme.heading3PaddingTop
+    }
+    if (theme.heading3PaddingRight !== undefined) {
+      heading3PaddingRight = theme.heading3PaddingRight
+    }
+    if (theme.heading3PaddingBottom !== undefined) {
+      heading3PaddingBottom = theme.heading3PaddingBottom
+    }
+    if (theme.heading3PaddingLeft !== undefined) {
+      heading3PaddingLeft = theme.heading3PaddingLeft
+    }
+    cjMarkdownTheme.setPaddingForDesignateHeading(3, heading3PaddingTop, heading3PaddingRight, heading3PaddingBottom, heading3PaddingLeft)
     if (theme.heading3TextFontColor !== undefined) {
       cjMarkdownTheme.setTextFontColorForDesignateHeading(3, theme.heading3TextFontColor)
     }
@@ -1110,8 +1618,41 @@ export struct CJMarkdown {
     if (theme.heading4BackgroundColor !== undefined) {
       cjMarkdownTheme.setBackgroundColorForDesignateHeading(4, theme.heading4BackgroundColor)
     }
-    cjMarkdownTheme.setMarginForDesignateHeadingDetail(4, theme.heading4MarginTop, theme.heading4MarginRight, theme.heading4MarginBottom, theme.heading4MarginLeft)
-    cjMarkdownTheme.setPaddingForDesignateHeadingDetail(4, theme.heading4PaddingTop, theme.heading4PaddingRight, theme.heading4PaddingBottom, theme.heading4PaddingLeft)
+    let heading4MarginTop: number = 0.0
+    let heading4MarginRight: number = 0.0
+    let heading4MarginBottom: number = 0.0
+    let heading4MarginLeft: number = 0.0
+    if (theme.heading4MarginTop !== undefined) {
+      heading4MarginTop = theme.heading4MarginTop
+    }
+    if (theme.heading4MarginRight !== undefined) {
+      heading4MarginRight = theme.heading4MarginRight
+    }
+    if (theme.heading4MarginBottom !== undefined) {
+      heading4MarginBottom = theme.heading4MarginBottom
+    }
+    if (theme.heading4MarginLeft !== undefined) {
+      heading4MarginLeft = theme.heading4MarginLeft
+    }
+    cjMarkdownTheme.setMarginForDesignateHeading(4, heading4MarginTop, heading4MarginRight, heading4MarginBottom, heading4MarginLeft)
+
+    let heading4PaddingTop: number = 0.0
+    let heading4PaddingRight: number = 0.0
+    let heading4PaddingBottom: number = 0.0
+    let heading4PaddingLeft: number = 0.0
+    if (theme.heading4PaddingTop !== undefined) {
+      heading4PaddingTop = theme.heading4PaddingTop
+    }
+    if (theme.heading4PaddingRight !== undefined) {
+      heading4PaddingRight = theme.heading4PaddingRight
+    }
+    if (theme.heading4PaddingBottom !== undefined) {
+      heading4PaddingBottom = theme.heading4PaddingBottom
+    }
+    if (theme.heading4PaddingLeft !== undefined) {
+      heading4PaddingLeft = theme.heading4PaddingLeft
+    }
+    cjMarkdownTheme.setPaddingForDesignateHeading(4, heading4PaddingTop, heading4PaddingRight, heading4PaddingBottom, heading4PaddingLeft)
     if (theme.heading4TextFontColor !== undefined) {
       cjMarkdownTheme.setTextFontColorForDesignateHeading(4, theme.heading4TextFontColor)
     }
@@ -1137,8 +1678,41 @@ export struct CJMarkdown {
     if (theme.heading5BackgroundColor !== undefined) {
       cjMarkdownTheme.setBackgroundColorForDesignateHeading(5, theme.heading5BackgroundColor)
     }
-    cjMarkdownTheme.setMarginForDesignateHeadingDetail(5, theme.heading5MarginTop, theme.heading5MarginRight, theme.heading5MarginBottom, theme.heading5MarginLeft)
-    cjMarkdownTheme.setPaddingForDesignateHeadingDetail(5, theme.heading5PaddingTop, theme.heading5PaddingRight, theme.heading5PaddingBottom, theme.heading5PaddingLeft)
+    let heading5MarginTop: number = 0.0
+    let heading5MarginRight: number = 0.0
+    let heading5MarginBottom: number = 0.0
+    let heading5MarginLeft: number = 0.0
+    if (theme.heading5MarginTop !== undefined) {
+      heading5MarginTop = theme.heading5MarginTop
+    }
+    if (theme.heading5MarginRight !== undefined) {
+      heading5MarginRight = theme.heading5MarginRight
+    }
+    if (theme.heading5MarginBottom !== undefined) {
+      heading5MarginBottom = theme.heading5MarginBottom
+    }
+    if (theme.heading5MarginLeft !== undefined) {
+      heading5MarginLeft = theme.heading5MarginLeft
+    }
+    cjMarkdownTheme.setMarginForDesignateHeading(5, heading5MarginTop, heading5MarginRight, heading5MarginBottom, heading5MarginLeft)
+
+    let heading5PaddingTop: number = 0.0
+    let heading5PaddingRight: number = 0.0
+    let heading5PaddingBottom: number = 0.0
+    let heading5PaddingLeft: number = 0.0
+    if (theme.heading5PaddingTop !== undefined) {
+      heading5PaddingTop = theme.heading5PaddingTop
+    }
+    if (theme.heading5PaddingRight !== undefined) {
+      heading5PaddingRight = theme.heading5PaddingRight
+    }
+    if (theme.heading5PaddingBottom !== undefined) {
+      heading5PaddingBottom = theme.heading5PaddingBottom
+    }
+    if (theme.heading5PaddingLeft !== undefined) {
+      heading5PaddingLeft = theme.heading5PaddingLeft
+    }
+    cjMarkdownTheme.setPaddingForDesignateHeading(5, heading5PaddingTop, heading5PaddingRight, heading5PaddingBottom, heading5PaddingLeft)
     if (theme.heading5TextFontColor !== undefined) {
       cjMarkdownTheme.setTextFontColorForDesignateHeading(5, theme.heading5TextFontColor)
     }
@@ -1164,8 +1738,41 @@ export struct CJMarkdown {
     if (theme.heading6BackgroundColor !== undefined) {
       cjMarkdownTheme.setBackgroundColorForDesignateHeading(6, theme.heading6BackgroundColor)
     }
-    cjMarkdownTheme.setMarginForDesignateHeadingDetail(6, theme.heading6MarginTop, theme.heading6MarginRight, theme.heading6MarginBottom, theme.heading6MarginLeft)
-    cjMarkdownTheme.setPaddingForDesignateHeadingDetail(6, theme.heading6PaddingTop, theme.heading6PaddingRight, theme.heading6PaddingBottom, theme.heading6PaddingLeft)
+    let heading6MarginTop: number = 0.0
+    let heading6MarginRight: number = 0.0
+    let heading6MarginBottom: number = 0.0
+    let heading6MarginLeft: number = 0.0
+    if (theme.heading6MarginTop !== undefined) {
+      heading6MarginTop = theme.heading6MarginTop
+    }
+    if (theme.heading6MarginRight !== undefined) {
+      heading6MarginRight = theme.heading6MarginRight
+    }
+    if (theme.heading6MarginBottom !== undefined) {
+      heading6MarginBottom = theme.heading6MarginBottom
+    }
+    if (theme.heading6MarginLeft !== undefined) {
+      heading6MarginLeft = theme.heading6MarginLeft
+    }
+    cjMarkdownTheme.setMarginForDesignateHeading(6, heading6MarginTop, heading6MarginRight, heading6MarginBottom, heading6MarginLeft)
+
+    let heading6PaddingTop: number = 0.0
+    let heading6PaddingRight: number = 0.0
+    let heading6PaddingBottom: number = 0.0
+    let heading6PaddingLeft: number = 0.0
+    if (theme.heading6PaddingTop !== undefined) {
+      heading6PaddingTop = theme.heading6PaddingTop
+    }
+    if (theme.heading6PaddingRight !== undefined) {
+      heading6PaddingRight = theme.heading6PaddingRight
+    }
+    if (theme.heading6PaddingBottom !== undefined) {
+      heading6PaddingBottom = theme.heading6PaddingBottom
+    }
+    if (theme.heading6PaddingLeft !== undefined) {
+      heading6PaddingLeft = theme.heading6PaddingLeft
+    }
+    cjMarkdownTheme.setPaddingForDesignateHeading(6, heading6PaddingTop, heading6PaddingRight, heading6PaddingBottom, heading6PaddingLeft)
     if (theme.heading6TextFontColor !== undefined) {
       cjMarkdownTheme.setTextFontColorForDesignateHeading(6, theme.heading6TextFontColor)
     }
@@ -1191,7 +1798,10 @@ export struct CJMarkdown {
   }
 
   getHtmlUnderlineTheme(theme: MarkdownThemeHtmlUnderline): CJMarkdownHtmlUnderlineTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownHtmlUnderlineTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownHtmlUnderlineTheme()
     if (theme.htmlUnderlineTextFontColor !== undefined) {
       cjMarkdownTheme.setHtmlUnderlineTextFontColor(theme.htmlUnderlineTextFontColor)
     }
@@ -1223,9 +1833,45 @@ export struct CJMarkdown {
   }
 
   getImageTheme(theme: MarkdownThemeImage): CJMarkdownImageTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownImageTheme()
-    cjMarkdownTheme.setImageMargin(theme.imageMarginTop, theme.imageMarginRight, theme.imageMarginBottom, theme.imageMarginLeft)
-    cjMarkdownTheme.setImageRadius(theme.imageRadiusTopLeft, theme.imageRadiusTopRight, theme.imageRadiusBottomLeft, theme.imageRadiusBottomRight)
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownImageTheme()
+    let imageMarginTop: number = 0.0
+    let imageMarginRight: number = 0.0
+    let imageMarginBottom: number = 0.0
+    let imageMarginLeft: number = 0.0
+    if (theme.imageMarginTop !== undefined) {
+      imageMarginTop = theme.imageMarginTop
+    }
+    if (theme.imageMarginRight !== undefined) {
+      imageMarginRight = theme.imageMarginRight
+    }
+    if (theme.imageMarginBottom !== undefined) {
+      imageMarginBottom = theme.imageMarginBottom
+    }
+    if (theme.imageMarginLeft !== undefined) {
+      imageMarginLeft = theme.imageMarginLeft
+    }
+    cjMarkdownTheme.setImageMargin(imageMarginTop, imageMarginRight, imageMarginBottom, imageMarginLeft)
+
+    let imageRadiusTopLeft: number = 0.0
+    let imageRadiusTopRight: number = 0.0
+    let imageRadiusBottomLeft: number = 0.0
+    let imageRadiusBottomRight: number = 0.0
+    if (theme.imageRadiusTopLeft !== undefined) {
+      imageRadiusTopLeft = theme.imageRadiusTopLeft
+    }
+    if (theme.imageRadiusTopRight !== undefined) {
+      imageRadiusTopRight = theme.imageRadiusTopRight
+    }
+    if (theme.imageRadiusBottomLeft !== undefined) {
+      imageRadiusBottomLeft = theme.imageRadiusBottomLeft
+    }
+    if (theme.imageRadiusBottomRight !== undefined) {
+      imageRadiusBottomRight = theme.imageRadiusBottomRight
+    }
+    cjMarkdownTheme.setImageBorderRadius(imageRadiusTopLeft, imageRadiusTopRight, imageRadiusBottomLeft, imageRadiusBottomRight)
     if (theme.imageBorderStyle !== undefined) {
       cjMarkdownTheme.setImageBorderStyle(theme.imageBorderStyle)
     }
@@ -1274,11 +1920,27 @@ export struct CJMarkdown {
     if (theme.imageDownloadButtonHeight !== undefined) {
       cjMarkdownTheme.setImageDownloadButtonHeight(theme.imageDownloadButtonHeight)
     }
+    let imageDownloadButtonRadiusTopLeft: number = 0.0
+    let imageDownloadButtonRadiusTopRight: number = 0.0
+    let imageDownloadButtonRadiusBottomLeft: number = 0.0
+    let imageDownloadButtonRadiusBottomRight: number = 0.0
+    if (theme.imageDownloadButtonRadiusTopLeft !== undefined) {
+      imageDownloadButtonRadiusTopLeft = theme.imageDownloadButtonRadiusTopLeft
+    }
+    if (theme.imageDownloadButtonRadiusTopRight !== undefined) {
+      imageDownloadButtonRadiusTopRight = theme.imageDownloadButtonRadiusTopRight
+    }
+    if (theme.imageDownloadButtonRadiusBottomLeft !== undefined) {
+      imageDownloadButtonRadiusBottomLeft = theme.imageDownloadButtonRadiusBottomLeft
+    }
+    if (theme.imageDownloadButtonRadiusBottomRight !== undefined) {
+      imageDownloadButtonRadiusBottomRight = theme.imageDownloadButtonRadiusBottomRight
+    }
     cjMarkdownTheme.setImageDownloadButtonRadius(
-      theme.imageDownloadButtonRadiusTopLeft,
-      theme.imageDownloadButtonRadiusTopRight,
-      theme.imageDownloadButtonRadiusBottomLeft,
-      theme.imageDownloadButtonRadiusBottomRight
+      imageDownloadButtonRadiusTopLeft,
+      imageDownloadButtonRadiusTopRight,
+      imageDownloadButtonRadiusBottomLeft,
+      imageDownloadButtonRadiusBottomRight
     )
     if (theme.imageDownloadButtonIconWidth !== undefined) {
       cjMarkdownTheme.setImageDownloadButtonIconWidth(theme.imageDownloadButtonIconWidth)
@@ -1317,7 +1979,10 @@ export struct CJMarkdown {
   }
 
   getInlineCodeTheme(theme: MarkdownThemeInlineCode): CJMarkdownInlineCodeTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownInlineCodeTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownInlineCodeTheme()
     if (theme.inlineCodeTextFontColor !== undefined) {
       cjMarkdownTheme.setInlineCodeTextFontColor(theme.inlineCodeTextFontColor)
     }
@@ -1342,17 +2007,36 @@ export struct CJMarkdown {
     if (theme.inlineCodeTextBackgroundColor !== undefined) {
       cjMarkdownTheme.setInlineCodeTextBackgroundColor(theme.inlineCodeTextBackgroundColor)
     }
+    let inlineCodeTextBackgroundRadiusTopLeft: number = 0.0
+    let inlineCodeTextBackgroundRadiusTopRight: number = 0.0
+    let inlineCodeTextBackgroundRadiusBottomLeft: number = 0.0
+    let inlineCodeTextBackgroundRadiusBottomRight: number = 0.0
+    if (theme.inlineCodeTextBackgroundRadiusTopLeft !== undefined) {
+      inlineCodeTextBackgroundRadiusTopLeft = theme.inlineCodeTextBackgroundRadiusTopLeft
+    }
+    if (theme.inlineCodeTextBackgroundRadiusTopRight !== undefined) {
+      inlineCodeTextBackgroundRadiusTopRight = theme.inlineCodeTextBackgroundRadiusTopRight
+    }
+    if (theme.inlineCodeTextBackgroundRadiusBottomLeft !== undefined) {
+      inlineCodeTextBackgroundRadiusBottomLeft = theme.inlineCodeTextBackgroundRadiusBottomLeft
+    }
+    if (theme.inlineCodeTextBackgroundRadiusBottomRight !== undefined) {
+      inlineCodeTextBackgroundRadiusBottomRight = theme.inlineCodeTextBackgroundRadiusBottomRight
+    }
     cjMarkdownTheme.setInlineCodeTextBackgroundRadius(
-      theme.inlineCodeTextBackgroundRadiusTopLeft,
-      theme.inlineCodeTextBackgroundRadiusTopRight,
-      theme.inlineCodeTextBackgroundRadiusBottomLeft,
-      theme.inlineCodeTextBackgroundRadiusBottomRight
+      inlineCodeTextBackgroundRadiusTopLeft,
+      inlineCodeTextBackgroundRadiusTopRight,
+      inlineCodeTextBackgroundRadiusBottomLeft,
+      inlineCodeTextBackgroundRadiusBottomRight
     )
     return cjMarkdownTheme
   }
 
   getItalicTheme(theme: MarkdownThemeItalic): CJMarkdownItalicTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownItalicTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownItalicTheme()
     if (theme.italicTextFontColor !== undefined) {
       cjMarkdownTheme.setItalicTextFontColor(theme.italicTextFontColor)
     }
@@ -1375,9 +2059,45 @@ export struct CJMarkdown {
   }
 
   getLatexMathTheme(theme: MarkdownThemeLatexMath): CJMarkdownLatexMathTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownLatexMathTheme()
-    cjMarkdownTheme.setLatexMathMargin(theme.latexMathMarginTop, theme.latexMathMarginRight, theme.latexMathMarginBottom, theme.latexMathMarginLeft)
-    cjMarkdownTheme.setLatexMathPadding(theme.latexMathPaddingTop, theme.latexMathPaddingRight, theme.latexMathPaddingBottom, theme.latexMathPaddingLeft)
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownLatexMathTheme()
+    let latexMathMarginTop: number = 0.0
+    let latexMathMarginRight: number = 0.0
+    let latexMathMarginBottom: number = 0.0
+    let latexMathMarginLeft: number = 0.0
+    if (theme.latexMathMarginTop !== undefined) {
+      latexMathMarginTop = theme.latexMathMarginTop
+    }
+    if (theme.latexMathMarginRight !== undefined) {
+      latexMathMarginRight = theme.latexMathMarginRight
+    }
+    if (theme.latexMathMarginBottom !== undefined) {
+      latexMathMarginBottom = theme.latexMathMarginBottom
+    }
+    if (theme.latexMathMarginLeft !== undefined) {
+      latexMathMarginLeft = theme.latexMathMarginLeft
+    }
+    cjMarkdownTheme.setLatexMathMargin(latexMathMarginTop, latexMathMarginRight, latexMathMarginBottom, latexMathMarginLeft)
+
+    let latexMathPaddingTop: number = 0.0
+    let latexMathPaddingRight: number = 0.0
+    let latexMathPaddingBottom: number = 0.0
+    let latexMathPaddingLeft: number = 0.0
+    if (theme.latexMathPaddingTop !== undefined) {
+      latexMathPaddingTop = theme.latexMathPaddingTop
+    }
+    if (theme.latexMathPaddingRight !== undefined) {
+      latexMathPaddingRight = theme.latexMathPaddingRight
+    }
+    if (theme.latexMathPaddingBottom !== undefined) {
+      latexMathPaddingBottom = theme.latexMathPaddingBottom
+    }
+    if (theme.latexMathPaddingLeft !== undefined) {
+      latexMathPaddingLeft = theme.latexMathPaddingLeft
+    }
+    cjMarkdownTheme.setLatexMathPadding(latexMathPaddingTop, latexMathPaddingRight, latexMathPaddingBottom, latexMathPaddingLeft)
     if (theme.latexMathDefaultText !== undefined) {
       cjMarkdownTheme.setLatexMathDefaultText(theme.latexMathDefaultText)
     }
@@ -1418,7 +2138,10 @@ export struct CJMarkdown {
   }
 
   getLinkTheme(theme: MarkdownThemeLink): CJMarkdownLinkTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownLinkTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownLinkTheme()
     if (theme.linkIsIcon !== undefined) {
       cjMarkdownTheme.setLinkIsIcon(theme.linkIsIcon)
     }
@@ -1458,11 +2181,27 @@ export struct CJMarkdown {
     if (theme.linkTextBackgroundColor !== undefined) {
       cjMarkdownTheme.setLinkTextBackgroundColor(theme.linkTextBackgroundColor)
     }
+    let linkTextBackgroundRadiusTopLeft: number = 0.0
+    let linkTextBackgroundRadiusTopRight: number = 0.0
+    let linkTextBackgroundRadiusBottomLeft: number = 0.0
+    let linkTextBackgroundRadiusBottomRight: number = 0.0
+    if (theme.linkTextBackgroundRadiusTopLeft !== undefined) {
+      linkTextBackgroundRadiusTopLeft = theme.linkTextBackgroundRadiusTopLeft
+    }
+    if (theme.linkTextBackgroundRadiusTopRight !== undefined) {
+      linkTextBackgroundRadiusTopRight = theme.linkTextBackgroundRadiusTopRight
+    }
+    if (theme.linkTextBackgroundRadiusBottomLeft !== undefined) {
+      linkTextBackgroundRadiusBottomLeft = theme.linkTextBackgroundRadiusBottomLeft
+    }
+    if (theme.linkTextBackgroundRadiusBottomRight !== undefined) {
+      linkTextBackgroundRadiusBottomRight = theme.linkTextBackgroundRadiusBottomRight
+    }
     cjMarkdownTheme.setLinkTextBackgroundRadius(
-      theme.linkTextBackgroundRadiusTopLeft,
-      theme.linkTextBackgroundRadiusTopRight,
-      theme.linkTextBackgroundRadiusBottomLeft,
-      theme.linkTextBackgroundRadiusBottomRight
+      linkTextBackgroundRadiusTopLeft,
+      linkTextBackgroundRadiusTopRight,
+      linkTextBackgroundRadiusBottomLeft,
+      linkTextBackgroundRadiusBottomRight
     )
     if (theme.linkCircleIconBackgroundColor !== undefined) {
       cjMarkdownTheme.setLinkCircleIconBackgroundColor(theme.linkCircleIconBackgroundColor)
@@ -1540,69 +2279,130 @@ export struct CJMarkdown {
   }
 
   getOrderedListTheme(theme: MarkdownThemeOrderedList): CJMarkdownOrderedListTheme | undefined {
-  let cjMarkdownTheme = new CJMarkdownOrderedListTheme()
-  if (theme.orderedListBackgroundColor !== undefined) {
-    cjMarkdownTheme.setOrderedListBackgroundColor(theme.orderedListBackgroundColor)
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownOrderedListTheme()
+    if (theme.orderedListBackgroundColor !== undefined) {
+      cjMarkdownTheme.setOrderedListBackgroundColor(theme.orderedListBackgroundColor)
+    }
+    let orderedListMarginTop: number = 0.0
+    let orderedListMarginRight: number = 0.0
+    let orderedListMarginBottom: number = 0.0
+    let orderedListMarginLeft: number = 0.0
+    if (theme.orderedListMarginTop !== undefined) {
+      orderedListMarginTop = theme.orderedListMarginTop
+    }
+    if (theme.orderedListMarginRight !== undefined) {
+      orderedListMarginRight = theme.orderedListMarginRight
+    }
+    if (theme.orderedListMarginBottom !== undefined) {
+      orderedListMarginBottom = theme.orderedListMarginBottom
+    }
+    if (theme.orderedListMarginLeft !== undefined) {
+      orderedListMarginLeft = theme.orderedListMarginLeft
+    }
+    cjMarkdownTheme.setOrderedListMargin(
+      orderedListMarginTop,
+      orderedListMarginRight,
+      orderedListMarginBottom,
+      orderedListMarginLeft
+    )
+    let orderedListPaddingTop: number = 0.0
+    let orderedListPaddingRight: number = 0.0
+    let orderedListPaddingBottom: number = 0.0
+    let orderedListPaddingLeft: number = 0.0
+    if (theme.orderedListPaddingTop !== undefined) {
+      orderedListPaddingTop = theme.orderedListPaddingTop
+    }
+    if (theme.orderedListPaddingRight !== undefined) {
+      orderedListPaddingRight = theme.orderedListPaddingRight
+    }
+    if (theme.orderedListPaddingBottom !== undefined) {
+      orderedListPaddingBottom = theme.orderedListPaddingBottom
+    }
+    if (theme.orderedListPaddingLeft !== undefined) {
+      orderedListPaddingLeft = theme.orderedListPaddingLeft
+    }
+    cjMarkdownTheme.setOrderedListPadding(
+      orderedListPaddingTop,
+      orderedListPaddingRight,
+      orderedListPaddingBottom,
+      orderedListPaddingLeft
+    )
+    if (theme.orderedListChildSpacing !== undefined) {
+      cjMarkdownTheme.setOrderedListChildSpacing(theme.orderedListChildSpacing)
+    }
+    if (theme.orderedListChildChildSpacing !== undefined) {
+      cjMarkdownTheme.setOrderedListChildChildSpacing(theme.orderedListChildChildSpacing)
+    }
+    if (theme.orderedListMarkerSpacing !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerSpacing(theme.orderedListMarkerSpacing)
+    }
+    if (theme.orderedListMarkerTextFontColor !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontColor(theme.orderedListMarkerTextFontColor)
+    }
+    if (theme.orderedListMarkerTextFontSize !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontSize(theme.orderedListMarkerTextFontSize)
+    }
+    if (theme.orderedListMarkerTextFontStyle !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontStyle(theme.orderedListMarkerTextFontStyle)
+    }
+    if (theme.orderedListMarkerTextFontWeight !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontWeight(theme.orderedListMarkerTextFontWeight)
+    }
+    if (theme.orderedListMarkerTextFontFamily !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontFamily(theme.orderedListMarkerTextFontFamily)
+    }
+    if (theme.orderedListMarkerTextLineHeight !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextLineHeight(theme.orderedListMarkerTextLineHeight)
+    }
+    return cjMarkdownTheme
   }
-  cjMarkdownTheme.setOrderedListMargin(
-    theme.orderedListMarginTop,
-    theme.orderedListMarginRight,
-    theme.orderedListMarginBottom,
-    theme.orderedListMarginLeft
-  )
-  cjMarkdownTheme.setOrderedListPadding(
-    theme.orderedListPaddingTop,
-    theme.orderedListPaddingRight,
-    theme.orderedListPaddingBottom,
-    theme.orderedListPaddingLeft
-  )
-  if (theme.orderedListChildSpacing !== undefined) {
-    cjMarkdownTheme.setOrderedListChildSpacing(theme.orderedListChildSpacing)
-  }
-  if (theme.orderedListChildChildSpacing !== undefined) {
-    cjMarkdownTheme.setOrderedListChildChildSpacing(theme.orderedListChildChildSpacing)
-  }
-  if (theme.orderedListMarkerSpacing !== undefined) {
-    cjMarkdownTheme.setOrderedListMarkerSpacing(theme.orderedListMarkerSpacing)
-  }
-  if (theme.orderedListMarkerTextFontColor !== undefined) {
-    cjMarkdownTheme.setOrderedListMarkerTextFontColor(theme.orderedListMarkerTextFontColor)
-  }
-  if (theme.orderedListMarkerTextFontSize !== undefined) {
-    cjMarkdownTheme.setOrderedListMarkerTextFontSize(theme.orderedListMarkerTextFontSize)
-  }
-  if (theme.orderedListMarkerTextFontStyle !== undefined) {
-    cjMarkdownTheme.setOrderedListMarkerTextFontStyle(theme.orderedListMarkerTextFontStyle)
-  }
-  if (theme.orderedListMarkerTextFontWeight !== undefined) {
-    cjMarkdownTheme.setOrderedListMarkerTextFontWeight(theme.orderedListMarkerTextFontWeight)
-  }
-  if (theme.orderedListMarkerTextFontFamily !== undefined) {
-    cjMarkdownTheme.setOrderedListMarkerTextFontFamily(theme.orderedListMarkerTextFontFamily)
-  }
-  if (theme.orderedListMarkerTextLineHeight !== undefined) {
-    cjMarkdownTheme.setOrderedListMarkerTextLineHeight(theme.orderedListMarkerTextLineHeight)
-  }
-  return cjMarkdownTheme
-}
 
   getParagraphTheme(theme: MarkdownThemeParagraph): CJMarkdownParagraphTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownParagraphTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownParagraphTheme()
     if (theme.paragraphBackgroundColor !== undefined) {
       cjMarkdownTheme.setParagraphBackgroundColor(theme.paragraphBackgroundColor)
     }
-    cjMarkdownTheme.setParagraphMargin(
-      theme.paragraphMarginTop,
-      theme.paragraphMarginRight,
-      theme.paragraphMarginBottom,
-      theme.paragraphMarginLeft
-    )
-    cjMarkdownTheme.setParagraphPadding(
-      theme.paragraphPaddingTop,
-      theme.paragraphPaddingRight,
-      theme.paragraphPaddingBottom,
-      theme.paragraphPaddingLeft
-    )
+    let paragraphMarginTop: number = 0.0
+    let paragraphMarginRight: number = 0.0
+    let paragraphMarginBottom: number = 0.0
+    let paragraphMarginLeft: number = 0.0
+    if (theme.paragraphMarginTop !== undefined) {
+      paragraphMarginTop = theme.paragraphMarginTop
+    }
+    if (theme.paragraphMarginRight !== undefined) {
+      paragraphMarginRight = theme.paragraphMarginRight
+    }
+    if (theme.paragraphMarginBottom !== undefined) {
+      paragraphMarginBottom = theme.paragraphMarginBottom
+    }
+    if (theme.paragraphMarginLeft !== undefined) {
+      paragraphMarginLeft = theme.paragraphMarginLeft
+    }
+    cjMarkdownTheme.setParagraphMargin(paragraphMarginTop, paragraphMarginRight, paragraphMarginBottom, paragraphMarginLeft)
+
+    let paragraphPaddingTop: number = 0.0
+    let paragraphPaddingRight: number = 0.0
+    let paragraphPaddingBottom: number = 0.0
+    let paragraphPaddingLeft: number = 0.0
+    if (theme.paragraphPaddingTop !== undefined) {
+      paragraphPaddingTop = theme.paragraphPaddingTop
+    }
+    if (theme.paragraphPaddingRight !== undefined) {
+      paragraphPaddingRight = theme.paragraphPaddingRight
+    }
+    if (theme.paragraphPaddingBottom !== undefined) {
+      paragraphPaddingBottom = theme.paragraphPaddingBottom
+    }
+    if (theme.paragraphPaddingLeft !== undefined) {
+      paragraphPaddingLeft = theme.paragraphPaddingLeft
+    }
+    cjMarkdownTheme.setParagraphPadding(paragraphPaddingTop, paragraphPaddingRight, paragraphPaddingBottom, paragraphPaddingLeft)
     if (theme.paragraphTextFontColor !== undefined) {
       cjMarkdownTheme.setParagraphTextFontColor(theme.paragraphTextFontColor)
     }
@@ -1628,7 +2428,10 @@ export struct CJMarkdown {
   }
 
   getStrikethroughTheme(theme: MarkdownThemeStrikethrough): CJMarkdownStrikethroughTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownStrikethroughTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownStrikethroughTheme()
     if (theme.strikethroughTextFontColor !== undefined) {
       cjMarkdownTheme.setStrikethroughTextFontColor(theme.strikethroughTextFontColor)
     }
@@ -1660,7 +2463,10 @@ export struct CJMarkdown {
   }
 
   getSubTheme(theme: MarkdownThemeSub): CJMarkdownSubTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownSubTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownSubTheme()
     if (theme.subTextFontColor !== undefined) {
       cjMarkdownTheme.setSubTextFontColor(theme.subTextFontColor)
     }
@@ -1686,7 +2492,10 @@ export struct CJMarkdown {
   }
 
   getSupTheme(theme: MarkdownThemeSup): CJMarkdownSupTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownSupTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownSupTheme()
     if (theme.supTextFontColor !== undefined) {
       cjMarkdownTheme.setSupTextFontColor(theme.supTextFontColor)
     }
@@ -1712,7 +2521,10 @@ export struct CJMarkdown {
   }
 
   getTableTheme(theme: MarkdownThemeTable): CJMarkdownTableTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownTableTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownTableTheme()
     if (theme.tableTitleBackgroundColor !== undefined) {
       cjMarkdownTheme.setTableTitleBackgroundColor(theme.tableTitleBackgroundColor)
     }
@@ -1722,24 +2534,59 @@ export struct CJMarkdown {
     if (theme.tableContentEvenRowBackgroundColor !== undefined) {
       cjMarkdownTheme.setTableContentEvenRowBackgroundColor(theme.tableContentEvenRowBackgroundColor)
     }
-    cjMarkdownTheme.setTableMargin(
-      theme.tableMarginTop,
-      theme.tableMarginRight,
-      theme.tableMarginBottom,
-      theme.tableMarginLeft
-    )
-    cjMarkdownTheme.setTablePadding(
-      theme.tablePaddingTop,
-      theme.tablePaddingRight,
-      theme.tablePaddingBottom,
-      theme.tablePaddingLeft
-    )
-    cjMarkdownTheme.setTableCellPadding(
-      theme.tableCellPaddingTop,
-      theme.tableCellPaddingRight,
-      theme.tableCellPaddingBottom,
-      theme.tableCellPaddingLeft
-    )
+    let tableMarginTop: number = 0.0
+    let tableMarginRight: number = 0.0
+    let tableMarginBottom: number = 0.0
+    let tableMarginLeft: number = 0.0
+    if (theme.tableMarginTop !== undefined) {
+      tableMarginTop = theme.tableMarginTop
+    }
+    if (theme.tableMarginRight !== undefined) {
+      tableMarginRight = theme.tableMarginRight
+    }
+    if (theme.tableMarginBottom !== undefined) {
+      tableMarginBottom = theme.tableMarginBottom
+    }
+    if (theme.tableMarginLeft !== undefined) {
+      tableMarginLeft = theme.tableMarginLeft
+    }
+    cjMarkdownTheme.setTableMargin(tableMarginTop, tableMarginRight, tableMarginBottom, tableMarginLeft)
+
+    let tablePaddingTop: number = 0.0
+    let tablePaddingRight: number = 0.0
+    let tablePaddingBottom: number = 0.0
+    let tablePaddingLeft: number = 0.0
+    if (theme.tablePaddingTop !== undefined) {
+      tablePaddingTop = theme.tablePaddingTop
+    }
+    if (theme.tablePaddingRight !== undefined) {
+      tablePaddingRight = theme.tablePaddingRight
+    }
+    if (theme.tablePaddingBottom !== undefined) {
+      tablePaddingBottom = theme.tablePaddingBottom
+    }
+    if (theme.tablePaddingLeft !== undefined) {
+      tablePaddingLeft = theme.tablePaddingLeft
+    }
+    cjMarkdownTheme.setTablePadding(tablePaddingTop, tablePaddingRight, tablePaddingBottom, tablePaddingLeft)
+
+    let tableCellPaddingTop: number = 0.0
+    let tableCellPaddingRight: number = 0.0
+    let tableCellPaddingBottom: number = 0.0
+    let tableCellPaddingLeft: number = 0.0
+    if (theme.tableCellPaddingTop !== undefined) {
+      tableCellPaddingTop = theme.tableCellPaddingTop
+    }
+    if (theme.tableCellPaddingRight !== undefined) {
+      tableCellPaddingRight = theme.tableCellPaddingRight
+    }
+    if (theme.tableCellPaddingBottom !== undefined) {
+      tableCellPaddingBottom = theme.tableCellPaddingBottom
+    }
+    if (theme.tableCellPaddingLeft !== undefined) {
+      tableCellPaddingLeft = theme.tableCellPaddingLeft
+    }
+    cjMarkdownTheme.setTableCellPadding(tableCellPaddingTop, tableCellPaddingRight, tableCellPaddingBottom, tableCellPaddingLeft)
     if (theme.tableBorderStyle !== undefined) {
       cjMarkdownTheme.setTableBorderStyle(theme.tableBorderStyle)
     }
@@ -1749,12 +2596,23 @@ export struct CJMarkdown {
     if (theme.tableBorderColor !== undefined) {
       cjMarkdownTheme.setTableBorderColor(theme.tableBorderColor)
     }
-    cjMarkdownTheme.setTableRadius(
-      theme.tableRadiusTopLeft,
-      theme.tableRadiusTopRight,
-      theme.tableRadiusBottomLeft,
-      theme.tableRadiusBottomRight
-    )
+    let tableRadiusTopLeft: number = 0.0
+    let tableRadiusTopRight: number = 0.0
+    let tableRadiusBottomLeft: number = 0.0
+    let tableRadiusBottomRight: number = 0.0
+    if (theme.tableRadiusTopLeft !== undefined) {
+      tableRadiusTopLeft = theme.tableRadiusTopLeft
+    }
+    if (theme.tableRadiusTopRight !== undefined) {
+      tableRadiusTopRight = theme.tableRadiusTopRight
+    }
+    if (theme.tableRadiusBottomLeft !== undefined) {
+      tableRadiusBottomLeft = theme.tableRadiusBottomLeft
+    }
+    if (theme.tableRadiusBottomRight !== undefined) {
+      tableRadiusBottomRight = theme.tableRadiusBottomRight
+    }
+    cjMarkdownTheme.setTableRadius(tableRadiusTopLeft, tableRadiusTopRight, tableRadiusBottomLeft, tableRadiusBottomRight)
     if (theme.tableScrollBarState !== undefined) {
       cjMarkdownTheme.setTableScrollBarState(theme.tableScrollBarState)
     }
@@ -1816,28 +2674,66 @@ export struct CJMarkdown {
   }
 
   getVideoTheme(theme: MarkdownThemeVideo): CJMarkdownVideoTheme | undefined {
-    let cjMarkdownTheme = new CJMarkdownVideoTheme()
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownVideoTheme()
     if (theme.videoBackgroundColor !== undefined) {
       cjMarkdownTheme.setVideoBackgroundColor(theme.videoBackgroundColor)
     }
-    cjMarkdownTheme.setVideoMargin(
-      theme.videoMarginTop,
-      theme.videoMarginRight,
-      theme.videoMarginBottom,
-      theme.videoMarginLeft
-    )
-    cjMarkdownTheme.setVideoPadding(
-      theme.videoPaddingTop,
-      theme.videoPaddingRight,
-      theme.videoPaddingBottom,
-      theme.videoPaddingLeft
-    )
-    cjMarkdownTheme.setVideoRadius(
-      theme.videoRadiusTopLeft,
-      theme.videoRadiusTopRight,
-      theme.videoRadiusBottomLeft,
-      theme.videoRadiusBottomRight
-    )
+    let videoMarginTop: number = 0.0
+    let videoMarginRight: number = 0.0
+    let videoMarginBottom: number = 0.0
+    let videoMarginLeft: number = 0.0
+    if (theme.videoMarginTop !== undefined) {
+      videoMarginTop = theme.videoMarginTop
+    }
+    if (theme.videoMarginRight !== undefined) {
+      videoMarginRight = theme.videoMarginRight
+    }
+    if (theme.videoMarginBottom !== undefined) {
+      videoMarginBottom = theme.videoMarginBottom
+    }
+    if (theme.videoMarginLeft !== undefined) {
+      videoMarginLeft = theme.videoMarginLeft
+    }
+    cjMarkdownTheme.setVideoMargin(videoMarginTop, videoMarginRight, videoMarginBottom, videoMarginLeft)
+
+    let videoPaddingTop: number = 0.0
+    let videoPaddingRight: number = 0.0
+    let videoPaddingBottom: number = 0.0
+    let videoPaddingLeft: number = 0.0
+    if (theme.videoPaddingTop !== undefined) {
+      videoPaddingTop = theme.videoPaddingTop
+    }
+    if (theme.videoPaddingRight !== undefined) {
+      videoPaddingRight = theme.videoPaddingRight
+    }
+    if (theme.videoPaddingBottom !== undefined) {
+      videoPaddingBottom = theme.videoPaddingBottom
+    }
+    if (theme.videoPaddingLeft !== undefined) {
+      videoPaddingLeft = theme.videoPaddingLeft
+    }
+    cjMarkdownTheme.setVideoPadding(videoPaddingTop, videoPaddingRight, videoPaddingBottom, videoPaddingLeft)
+
+    let videoRadiusTopLeft: number = 0.0
+    let videoRadiusTopRight: number = 0.0
+    let videoRadiusBottomLeft: number = 0.0
+    let videoRadiusBottomRight: number = 0.0
+    if (theme.videoRadiusTopLeft !== undefined) {
+      videoRadiusTopLeft = theme.videoRadiusTopLeft
+    }
+    if (theme.videoRadiusTopRight !== undefined) {
+      videoRadiusTopRight = theme.videoRadiusTopRight
+    }
+    if (theme.videoRadiusBottomLeft !== undefined) {
+      videoRadiusBottomLeft = theme.videoRadiusBottomLeft
+    }
+    if (theme.videoRadiusBottomRight !== undefined) {
+      videoRadiusBottomRight = theme.videoRadiusBottomRight
+    }
+    cjMarkdownTheme.setVideoBorderRadius(videoRadiusTopLeft, videoRadiusTopRight, videoRadiusBottomLeft, videoRadiusBottomRight)
     if (theme.videoImageFitType !== undefined) {
       cjMarkdownTheme.setVideoImageFitType(theme.videoImageFitType)
     }
@@ -1901,11 +2797,27 @@ export struct CJMarkdown {
     if (theme.videoReleaseButtonHeight !== undefined) {
       cjMarkdownTheme.setVideoReleaseButtonHeight(theme.videoReleaseButtonHeight)
     }
+    let videoReleaseButtonRadiusTopLeft: number = 0.0
+    let videoReleaseButtonRadiusTopRight: number = 0.0
+    let videoReleaseButtonRadiusBottomLeft: number = 0.0
+    let videoReleaseButtonRadiusBottomRight: number = 0.0
+    if (theme.videoReleaseButtonRadiusTopLeft !== undefined) {
+      videoReleaseButtonRadiusTopLeft = theme.videoReleaseButtonRadiusTopLeft
+    }
+    if (theme.videoReleaseButtonRadiusTopRight !== undefined) {
+      videoReleaseButtonRadiusTopRight = theme.videoReleaseButtonRadiusTopRight
+    }
+    if (theme.videoReleaseButtonRadiusBottomLeft !== undefined) {
+      videoReleaseButtonRadiusBottomLeft = theme.videoReleaseButtonRadiusBottomLeft
+    }
+    if (theme.videoReleaseButtonRadiusBottomRight !== undefined) {
+      videoReleaseButtonRadiusBottomRight = theme.videoReleaseButtonRadiusBottomRight
+    }
     cjMarkdownTheme.setVideoReleaseButtonRadius(
-      theme.videoReleaseButtonRadiusTopLeft,
-      theme.videoReleaseButtonRadiusTopRight,
-      theme.videoReleaseButtonRadiusBottomLeft,
-      theme.videoReleaseButtonRadiusBottomRight
+      videoReleaseButtonRadiusTopLeft,
+      videoReleaseButtonRadiusTopRight,
+      videoReleaseButtonRadiusBottomLeft,
+      videoReleaseButtonRadiusBottomRight
     )
     if (theme.videoReleaseButtonIconWidth !== undefined) {
       cjMarkdownTheme.setVideoReleaseButtonIconWidth(theme.videoReleaseButtonIconWidth)
@@ -1949,11 +2861,27 @@ export struct CJMarkdown {
     if (theme.videoDownloadButtonHeight !== undefined) {
       cjMarkdownTheme.setVideoDownloadButtonHeight(theme.videoDownloadButtonHeight)
     }
+    let videoDownloadButtonRadiusTopLeft: number = 0.0
+    let videoDownloadButtonRadiusTopRight: number = 0.0
+    let videoDownloadButtonRadiusBottomLeft: number = 0.0
+    let videoDownloadButtonRadiusBottomRight: number = 0.0
+    if (theme.videoDownloadButtonRadiusTopLeft !== undefined) {
+      videoDownloadButtonRadiusTopLeft = theme.videoDownloadButtonRadiusTopLeft
+    }
+    if (theme.videoDownloadButtonRadiusTopRight !== undefined) {
+      videoDownloadButtonRadiusTopRight = theme.videoDownloadButtonRadiusTopRight
+    }
+    if (theme.videoDownloadButtonRadiusBottomLeft !== undefined) {
+      videoDownloadButtonRadiusBottomLeft = theme.videoDownloadButtonRadiusBottomLeft
+    }
+    if (theme.videoDownloadButtonRadiusBottomRight !== undefined) {
+      videoDownloadButtonRadiusBottomRight = theme.videoDownloadButtonRadiusBottomRight
+    }
     cjMarkdownTheme.setVideoDownloadButtonRadius(
-      theme.videoDownloadButtonRadiusTopLeft,
-      theme.videoDownloadButtonRadiusTopRight,
-      theme.videoDownloadButtonRadiusBottomLeft,
-      theme.videoDownloadButtonRadiusBottomRight
+      videoDownloadButtonRadiusTopLeft,
+      videoDownloadButtonRadiusTopRight,
+      videoDownloadButtonRadiusBottomLeft,
+      videoDownloadButtonRadiusBottomRight
     )
     if (theme.videoDownloadButtonIconWidth !== undefined) {
       cjMarkdownTheme.setVideoDownloadButtonIconWidth(theme.videoDownloadButtonIconWidth)

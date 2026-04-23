@@ -1,5 +1,6 @@
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
+  MarkdownTextDecorationStyle,
   MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
@@ -104,7 +105,7 @@ struct StrikethroughDetailsPage {
    * 下划线样式
    */
   @State
-  strikethroughStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+  strikethroughStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
 
   aboutToAppear(): void {
     try {
