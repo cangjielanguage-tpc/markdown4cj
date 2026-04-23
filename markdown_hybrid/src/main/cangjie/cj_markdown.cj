@@ -11,6 +11,10 @@ class cbRet {
 }
 
 public func registerImgPreprocessCallback(context: JSContext, callInfo: JSCallInfo): JSValue {
+    if (callInfo[0].typeof() == JSType.UNDEFINED) {
+        arkImgPreprocessFunc = None
+        return context.undefined().toJSValue()
+    }
     let arktsCB = callInfo[0].asFunction(context)
     arkImgPreprocessFunc = {
         url =>

@@ -67,7 +67,12 @@ class MarkdownTableBlockRowComponent {
     var cellWidthArrayIndexed: ObservedArrayList<CellWidthArrayIndexedClass>
 
     /**
-     * 数据源
+     * 缓存的表格Row控件数据
+     */
+    var tableBlockRowNodeViews: ArrayList<NodeView> = ArrayList<NodeView>()
+
+    /**
+     * UI数据源
      */
     @State
     var tableBlockRowNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>()
@@ -130,8 +135,10 @@ class MarkdownTableBlockRowComponent {
         this.tableBlockRowNodeView = tableBlockRowNodeView
         let refreshNodeViewChildren = tableBlockRowNodeView.children // 子节点数据
         let refreshNodeViewSize: Int64 = refreshNodeViewChildren.size // 刷新进来的数据长度
-        let tableBlockRowNodeViewListSize: Int64 = tableBlockRowNodeViewList.size // 页面缓存的数据长度
+        let tableBlockRowNodeViewListSize: Int64 = tableBlockRowNodeViews.size // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            tableBlockRowNodeViewList.clear()
+            tableBlockRowNodeViews.clear()
             return
         }
         if (refreshNodeViewSize > tableBlockRowNodeViewListSize) {
@@ -140,6 +147,7 @@ class MarkdownTableBlockRowComponent {
             // 循环添加新数据
             for (i in tableBlockRowNodeViewListSize..refreshNodeViewSize) {
                 tableBlockRowNodeViewList.append(refreshNodeViewChildren[i])
+                tableBlockRowNodeViews.add(refreshNodeViewChildren[i])
             }
         } else if (refreshNodeViewSize == tableBlockRowNodeViewListSize) {
             // 新数据等于页面数据
@@ -150,6 +158,7 @@ class MarkdownTableBlockRowComponent {
             // 循环删除多余的旧数据
             for (i in tableBlockRowNodeViewListSize - 1..=refreshNodeViewSize : -1) {
                 tableBlockRowNodeViewList.remove(i)
+                tableBlockRowNodeViews.remove(at: i)
             }
         }
     }
@@ -163,12 +172,13 @@ class MarkdownTableBlockRowComponent {
     func refreshTableBlockRowDatas(size: Int64, refreshNodeViews: ArrayList<NodeView>): Unit {
         for (i in 0..size) {
             let refreshNodeView = refreshNodeViews[i]
-            let dataSourceNode = tableBlockRowNodeViewList[i]
+            let dataSourceNode = tableBlockRowNodeViews[i]
             let newNodeHash = refreshNodeView.nodeHash
             let oldNodeHash = dataSourceNode.nodeHash
             if (newNodeHash != oldNodeHash) {
                 // 自身节点唯一ID不相同需要刷新数据
                 tableBlockRowNodeViewList[i] = refreshNodeView
+                tableBlockRowNodeViews[i] = refreshNodeView
                 continue
             }
             let newContentHash = refreshNodeView.contentHash
@@ -179,14 +189,19 @@ class MarkdownTableBlockRowComponent {
                     // 表格Cell节点
                     let cache = tableBlockCellComponents.get(newNodeHash)
                     if (let Some(v) <- cache) {
+                        // UI数据不能修改，直接走缓存子布局控件数据的修改，防止当前子布局控件重新创建
                         v.refreshTableBlockCellData(refreshNodeView)
+                        // 对数据进行修改，UI修改通过缓存布局修改
+                        tableBlockRowNodeViews[i] = refreshNodeView
                     } else {
                         tableBlockRowNodeViewList[i] = refreshNodeView
+                        tableBlockRowNodeViews[i] = refreshNodeView
                     }
                     continue
                 }
                 // 其他节点
                 tableBlockRowNodeViewList[i] = refreshNodeView
+                tableBlockRowNodeViews[i] = refreshNodeView
             }
         }
     }

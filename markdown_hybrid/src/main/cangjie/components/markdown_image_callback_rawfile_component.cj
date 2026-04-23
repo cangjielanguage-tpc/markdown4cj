@@ -205,8 +205,8 @@ public class MarkdownImageCallbackRawFileComponent {
                         .borderRadius(rawFileCallbackRadius)
                         .borderWidth(rawFileCallbackMarkdownTheme.imageBorderWidth)
                         .borderColor(rawFileCallbackMarkdownTheme.imageBorderColor)
-                        .width(rawFileCallbackReplaceWidth())
-                        .height(rawFileCallbackReplaceHeight())
+                        .width(rawFileCallbackReplaceWidth().px)
+                        .height(rawFileCallbackReplaceHeight().px)
                         .objectFit(rawFileCallbackMarkdownTheme.imageFitType)
                         .constraintSize(maxWidth: 100.percent)
                         .onClick {

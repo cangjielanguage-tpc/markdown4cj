@@ -570,11 +570,11 @@ export declare interface CustomLib {
 
   CJMarkdownTheme: {new (): CJMarkdownTheme}
 
-  setGlobalContext(context: Context): void
+  setGlobalContext(context?: Context): void
 
   getLoadCJPage(mdStr: string, isInputEnded: boolean, incrementalAnalysis: boolean, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin, listScroller?: CJMarkdownScroller): (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void
 
-  registerImgPreprocessCallback(cb: (url: string) => Promise<ArrayBuffer|undefined>): void
+  registerImgPreprocessCallback(cb?: (url: string) => Promise<ArrayBuffer|undefined>): void
 
   getCJResource(codeFullScreenIcon?: resourceManager.Resource, codeCopyIcon?: resourceManager.Resource, audioIcon?: resourceManager.Resource, videoImage?: resourceManager.Resource, playCircleFillIcon?: resourceManager.Resource, bannerImage?: resourceManager.Resource, imageResource?: resourceManager.Resource, videoReleaseImage?: resourceManager.Resource, videoDownloadImage?: resourceManager.Resource, imageDownloadImage?: resourceManager.Resource): void
 }
