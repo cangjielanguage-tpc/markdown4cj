@@ -2068,7 +2068,7 @@ export class MarkdownThemeGlobal {
    *
    * @param margin 外边距
    */
-  setAllMargin(margin: number): void
+  setGlobalAllMargin(margin: number): void
 
   /**
    * 分别设置4个外边距
@@ -2078,14 +2078,14 @@ export class MarkdownThemeGlobal {
    * @param bottom 下外边距
    * @param left 左外边距
    */
-  setMargin(top?: number, right?: number, bottom?: number, left?: number): void
+  setGlobalMargin(top?: number, right?: number, bottom?: number, left?: number): void
 
   /**
    * 设置模块间上下间距
    *
    * @param spacing 模块间上下间距
    */
-  setMarkdownBlockSpacing(spacing: number): void
+  setBlockSpacing(spacing: number): void
 
   /**
    * 设置软换行是否换行
@@ -3840,7 +3840,7 @@ export class MarkdownThemeImage {
    *
    * @param radius 圆角
    */
-  setImageAllRadius(radius: number): void
+  setImageBorderAllRadius(radius: number): void
 
   /**
    * 分别设置4个圆角
@@ -3850,7 +3850,7 @@ export class MarkdownThemeImage {
    * @param bottomLeft 左下圆角
    * @param bottomRight 右下圆角
    */
-  setImageRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+  setImageBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
 
   /**
    * 设置图片边框样式
@@ -4150,7 +4150,7 @@ export class MarkdownThemeAudio {
    *
    * @param radius 圆角
    */
-  setAudioAllRadius(radius: number): void
+  setAudioBorderAllRadius(radius: number): void
 
   /**
    * 音频分别设置四个圆角
@@ -4160,7 +4160,7 @@ export class MarkdownThemeAudio {
    * @param bottomLeft 左下圆角
    * @param bottomRight 右下圆角
    */
-  setAudioRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+  setAudioBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
 
   /**
    * 设置音频阴影模糊半径
@@ -4219,7 +4219,7 @@ export class MarkdownThemeAudio {
    * @param bottomLeft 左下圆角
    * @param bottomRight 右下圆角
    */
-  setAudioIconRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+  setAudioIconBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
 
   /**
    * 设置音频图标缩放类型
@@ -4299,7 +4299,7 @@ export class MarkdownThemeAudio {
    * @param bottomLeft 左下圆角
    * @param bottomRight 右下圆角
    */
-  setAudioButtonRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+  setAudioButtonBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
 
   /**
    * 设置音频按钮默认文本内容
@@ -4491,7 +4491,7 @@ export class MarkdownThemeVideo {
    *
    * @param radius 统一圆角半径，同时赋值给四个角
    */
-  setVideoAllRadius(radius: number): void
+  setVideoBorderAllRadius(radius: number): void
 
   /**
    * 分别设置4个圆角
@@ -4501,7 +4501,7 @@ export class MarkdownThemeVideo {
    * @param bottomLeft 左下圆角
    * @param bottomRight 右下圆角
    */
-  setVideoRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+  setVideoBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
 
   /**
    * 设置视频边框样式
@@ -4651,7 +4651,7 @@ export class MarkdownThemeVideo {
    * @param bottomLeft 左下圆角
    * @param bottomRight 右下圆角
    */
-  setVideoReleaseButtonRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+  setVideoReleaseButtonBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
 
   /**
    * 设置视频发布按钮图标
@@ -4766,7 +4766,7 @@ export class MarkdownThemeVideo {
    * @param bottomLeft 左下圆角
    * @param bottomRight 右下圆角
    */
-  setVideoDownloadButtonRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
+  setVideoDownloadButtonBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void
 
   /**
    * 设置视频下载按钮图标
@@ -5442,7 +5442,7 @@ export class MarkdownThemeHeading {
    *
    * @param margin 外边距
    */
-  setMarginForAllHeading(margin: number): void
+  setAllMarginForAllHeading(margin: number): void
 
   /**
    * 设置标题的4个外边距：设置H1-H6级标题，所有等级的某一个外边距为统一值
@@ -5467,7 +5467,7 @@ export class MarkdownThemeHeading {
    * @param level 标题等级
    * @param margin 外边距
    */
-  setMarginForDesignateHeading(level: number, margin: number): void
+  setAllMarginForDesignateHeading(level: number, margin: number): void
 
   /**
    * 设置标题的4个外边距：分别设置H1-H6每级标题的每个外边距
@@ -5488,14 +5488,14 @@ export class MarkdownThemeHeading {
    * @param bottom 下外边距
    * @param left 左外边距
    */
-  setMarginForDesignateHeadingDetail(level: number, top?: number, right?: number, bottom?: number, left?: number): void
+  setMarginForDesignateHeading(level: number, top?: number, right?: number, bottom?: number, left?: number): void
 
   /**
    * 设置标题的4个内边距：设置H1-H6级标题所有4个内边距为统一值
    *
    * @param padding 内边距
    */
-  setPaddingForAllHeading(padding: number): void
+  setAllPaddingForAllHeading(padding: number): void
 
   /**
    * 设置标题的4个内边距：设置H1-H6级标题，所有等级的某一个内边距为统一值
@@ -5520,7 +5520,7 @@ export class MarkdownThemeHeading {
    * @param level 标题等级
    * @param padding 内边距
    */
-  setPaddingForDesignateHeading(level: number, padding: number): void
+  setAllPaddingForDesignateHeading(level: number, padding: number): void
 
   /**
    * 设置标题的4个内边距：分别设置H1-H6每级标题的每个内边距
@@ -5541,7 +5541,7 @@ export class MarkdownThemeHeading {
    * @param bottom 下内边距
    * @param left 左内边距
    */
-  setPaddingForDesignateHeadingDetail(level: number, top?: number, right?: number, bottom?: number, left?: number): void
+  setPaddingForDesignateHeading(level: number, top?: number, right?: number, bottom?: number, left?: number): void
 
   /**
    * 设置标题文本颜色：所有标题的统一文本颜色
@@ -5741,21 +5741,6 @@ export class MarkdownThemeHeading {
    * @param spacing 下划线间距
    */
   setUnderlineSpacingForDesignateHeading(level: number, spacing: number): void
-
-  /**
-   * 设置标题下划线显示：H1和H2标题的统一下划线显示状态
-   *
-   * @param display 是否显示下划线
-   */
-  setUnderlineDisplayForAllHeading(display: boolean): void
-
-  /**
-   * 设置标题下划线显示：设置指定等级标题的下划线显示状态（仅H1和H2）
-   *
-   * @param level 标题等级
-   * @param display 是否显示下划线
-   */
-  setUnderlineDisplayForDesignateHeading(level: number, display: boolean): void
 }
 ```
 
