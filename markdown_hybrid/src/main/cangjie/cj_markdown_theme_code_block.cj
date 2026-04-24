@@ -1,12 +1,14 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown
 
 import ohos.ark_interop_macro.*
 
 @Interop[ArkTS]
 public class CJMarkdownCodeBlockTheme {
+    /**
+     * 代码深浅色模式
+     */
+    var codeBlockIsDark: ?Bool = None
+
     /**
      * 是否格式化围栏代码块内容
      */
@@ -395,17 +397,17 @@ public class CJMarkdownCodeBlockTheme {
     /**
      * 组合代码块未选中标题文本颜色
      */
-    var codeBlockListTitleUnSelectTextColor: ?Color = None
+    var codeBlockListTitleUnselectTextColor: ?Color = None
 
     /**
      * 组合代码块选中标题背景颜色
      */
-    var codeBlockListTitleSelectBackgroupColor: ?Color = None
+    var codeBlockListTitleSelectBackgroundColor: ?Color = None
 
     /**
      * 组合代码块未选中标题背景颜色
      */
-    var codeBlockListTitleUnSelectBackgroupColor: ?Color = None
+    var codeBlockListTitleUnselectBackgroundColor: ?Color = None
 
     /**
      * 是否单独代码块显示
@@ -423,6 +425,15 @@ public class CJMarkdownCodeBlockTheme {
     var codeBlockSeparateIsBottom: ?Bool = None
 
     public init() {}
+
+    /**
+     * 设置代码块深浅色
+     *
+     * @param isDark 是否是深色 - true：深色；false：浅色。默认false
+     */
+    public func setCodeBlockIsDark(isDark: Bool): Unit {
+        this.codeBlockIsDark = isDark
+    }
 
     /**
      * 设置是否格式化围栏代码块内容
@@ -1095,8 +1106,8 @@ public class CJMarkdownCodeBlockTheme {
      *
      * @param color 文本颜色
      */
-    public func setCodeBlockListTitleUnSelectTextColor(color: UInt32): Unit {
-        codeBlockListTitleUnSelectTextColor = transColorForTrasparent(color)
+    public func setCodeBlockListTitleUnselectTextColor(color: UInt32): Unit {
+        codeBlockListTitleUnselectTextColor = transColorForTrasparent(color)
     }
 
     /**
@@ -1104,8 +1115,8 @@ public class CJMarkdownCodeBlockTheme {
      *
      * @param color 背景颜色
      */
-    public func setCodeBlockListTitleSelectBackgroupColor(color: UInt32): Unit {
-        codeBlockListTitleSelectBackgroupColor = transColorForTrasparent(color)
+    public func setCodeBlockListTitleSelectBackgroundColor(color: UInt32): Unit {
+        codeBlockListTitleSelectBackgroundColor = transColorForTrasparent(color)
     }
 
     /**
@@ -1113,8 +1124,8 @@ public class CJMarkdownCodeBlockTheme {
      *
      * @param color 背景颜色
      */
-    public func setCodeBlockListTitleUnSelectBackgroupColor(color: UInt32): Unit {
-        codeBlockListTitleUnSelectBackgroupColor = transColorForTrasparent(color)
+    public func setCodeBlockListTitleUnselectBackgroundColor(color: UInt32): Unit {
+        codeBlockListTitleUnselectBackgroundColor = transColorForTrasparent(color)
     }
 
     /**

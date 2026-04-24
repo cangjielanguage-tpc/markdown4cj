@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { NodeController, FrameNode } from '@kit.ArkUI'
 import { requireCJLib } from 'libark_interop_loader.so'
 import {
@@ -375,8 +372,9 @@ export struct CJMarkdown {
     let cjMarkdownTheme: CJMarkdownTheme = new global_customLib.CJMarkdownTheme()
     if (this.config !== undefined) {
       if (this.config.markdownTheme !== undefined) {
-        if (this.config.markdownTheme.context !== undefined) {
-          global_customLib.setGlobalContext(this.config.markdownTheme.context)
+        if (this.config.markdownTheme.markdownThemeGlobal !== undefined &&
+            this.config.markdownTheme.markdownThemeGlobal.stageContext !== undefined) {
+          global_customLib.setGlobalContext(this.config.markdownTheme.markdownThemeGlobal.stageContext)
         } else {
           global_customLib.setGlobalContext(undefined)
         }
@@ -423,8 +421,9 @@ export struct CJMarkdown {
           cjMarkdownTheme.setIsLinkSize(this.config.markdownTheme.isLinkSize)
         }
 
-        if (this.config.markdownTheme.isDark !== undefined) {
-          cjMarkdownTheme.setIsDark(this.config.markdownTheme.isDark)
+        if (this.config.markdownTheme.markdownThemeCodeBlock !== undefined &&
+            this.config.markdownTheme.markdownThemeCodeBlock.codeBlockIsDark !== undefined) {
+          cjMarkdownTheme.setIsDark(this.config.markdownTheme.markdownThemeCodeBlock.codeBlockIsDark)
         }
       }
     }
@@ -1128,14 +1127,14 @@ export struct CJMarkdown {
     if (theme.codeBlockListTitleSelectTextColor !== undefined) {
       cjMarkdownTheme.setCodeBlockListTitleSelectTextColor(theme.codeBlockListTitleSelectTextColor)
     }
-    if (theme.codeBlockListTitleUnSelectTextColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockListTitleUnSelectTextColor(theme.codeBlockListTitleUnSelectTextColor)
+    if (theme.codeBlockListTitleUnselectTextColor !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleUnselectTextColor(theme.codeBlockListTitleUnselectTextColor)
     }
-    if (theme.codeBlockListTitleSelectBackgroupColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockListTitleSelectBackGroupColor(theme.codeBlockListTitleSelectBackgroupColor)
+    if (theme.codeBlockListTitleSelectBackgroundColor !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleSelectBackgroundColor(theme.codeBlockListTitleSelectBackgroundColor)
     }
-    if (theme.codeBlockListTitleUnSelectBackgroupColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockListTitleUnSelectBackGroupColor(theme.codeBlockListTitleUnSelectBackgroupColor)
+    if (theme.codeBlockListTitleUnselectBackgroundColor !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleUnselectBackgroundColor(theme.codeBlockListTitleUnselectBackgroundColor)
     }
     if (theme.codeBlockIsSeparate !== undefined) {
       cjMarkdownTheme.setCodeBlockIsSeparate(theme.codeBlockIsSeparate)

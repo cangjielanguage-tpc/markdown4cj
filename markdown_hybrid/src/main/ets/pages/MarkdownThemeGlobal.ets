@@ -5,12 +5,7 @@ export class MarkdownThemeGlobal {
   /**
    * markdown上下文 - 互操作
    */
-  stageContext?: Object = undefined
-
-  /**
-   * markdown上下文 - 仓颉
-   */
-  uiAbilityContext?: Object = undefined
+  stageContext?: Context = undefined
 
   /**
    * markdown是否同步解析
@@ -61,6 +56,15 @@ export class MarkdownThemeGlobal {
    * 背景颜色
    */
   backgroundColor?: number = undefined
+
+  /**
+   * 设置上下文
+   *
+   * @param context 上下文
+   */
+  setStageContext(context: Context): void {
+    this.stageContext = context
+  }
 
   /**
    * 设置markdown是否同步解析

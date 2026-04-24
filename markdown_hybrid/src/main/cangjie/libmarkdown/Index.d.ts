@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { Context } from "@kit.AbilityKit"
 import { resourceManager } from "@kit.LocalizationKit"
 
@@ -601,6 +598,8 @@ export declare class CJMarkdownTheme {
 }
 
 export declare class CJMarkdownGlobalTheme {
+  setStageContext(context: Context): void
+
   setIsMarkdownParserSync(isSync: boolean): void
 
   setIsOnCopy(onCopy: boolean): void
@@ -807,6 +806,8 @@ export declare class CJMarkdownBulletListTheme {
 }
 
 export declare class CJMarkdownCodeBlockTheme {
+  setCodeBlockIsDark(isDark: boolean): void
+
   setCodeBlockIsCodeFormat(isCodeFormat: boolean): void
 
   setCodeBlockUseTab(useTab: boolean): void
@@ -949,11 +950,11 @@ export declare class CJMarkdownCodeBlockTheme {
 
   setCodeBlockListTitleSelectTextColor(color: number): void
 
-  setCodeBlockListTitleUnSelectTextColor(color: number): void
+  setCodeBlockListTitleUnselectTextColor(color: number): void
 
-  setCodeBlockListTitleSelectBackGroupColor(color: number): void
+  setCodeBlockListTitleSelectBackgroundColor(color: number): void
 
-  setCodeBlockListTitleUnSelectBackGroupColor(color: number): void
+  setCodeBlockListTitleUnselectBackgroundColor(color: number): void
 
   setCodeBlockIsSeparate(isSeparate: boolean): void
 

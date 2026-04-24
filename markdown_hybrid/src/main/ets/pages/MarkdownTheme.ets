@@ -29,16 +29,6 @@ import { MarkdownThemeBulletList } from "./MarkdownThemeBulletList"
  */
 export class MarkdownTheme {
   /**
-   * 上下文
-   */
-  context?: Context = undefined
-
-  /**
-   * 代码深浅色模式
-   */
-  isDark?: boolean = undefined
-
-  /**
    * 是否按照链接文本字体大小显示文本
    */
   isLinkSize?: boolean = undefined
@@ -174,7 +164,7 @@ export class MarkdownTheme {
    * @param context 上下文
    */
   setContext(context: Context): void {
-    this.context = context
+    this.markdownThemeGlobal.setStageContext(context)
   }
 
   /**
@@ -1216,7 +1206,7 @@ export class MarkdownTheme {
    * @param codeListTitleUnSelectTextColor 组合代码未选中标题文本颜色 - 默认Color.BLACK
    */
   setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: number): void {
-    this.markdownThemeCodeBlock.setCodeBlockListTitleUnSelectTextColor(codeListTitleUnSelectTextColor)
+    this.markdownThemeCodeBlock.setCodeBlockListTitleUnselectTextColor(codeListTitleUnSelectTextColor)
   }
 
   /**
@@ -1225,7 +1215,7 @@ export class MarkdownTheme {
    * @param codeListTitleSelectBackGroupColor 组合代码选中标题背景颜色 - 默认Color.GRAY
    */
   setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: number): void {
-    this.markdownThemeCodeBlock.setCodeBlockListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor)
+    this.markdownThemeCodeBlock.setCodeBlockListTitleSelectBackgroundColor(codeListTitleSelectBackGroupColor)
   }
 
   /**
@@ -1234,7 +1224,7 @@ export class MarkdownTheme {
    * @param codeListTitleUnSelectBackGroupColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
    */
   setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: number): void {
-    this.markdownThemeCodeBlock.setCodeBlockListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor)
+    this.markdownThemeCodeBlock.setCodeBlockListTitleUnselectBackgroundColor(codeListTitleUnSelectBackGroupColor)
   }
 
   /**
@@ -2436,7 +2426,7 @@ export class MarkdownTheme {
    * @param isDark 是否是深色 - true：深色；false：浅色。默认false
    */
   setIsDark(isDark: boolean): void {
-    this.isDark = isDark
+    this.markdownThemeCodeBlock.setCodeBlockIsDark(isDark)
   }
 
   /**

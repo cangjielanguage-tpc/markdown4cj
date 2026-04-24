@@ -3,6 +3,11 @@
  */
 export class MarkdownThemeCodeBlock {
   /**
+   * 代码深浅色模式
+   */
+  codeBlockIsDark?: boolean = undefined
+
+  /**
    * 是否格式化围栏代码块内容
    */
   codeBlockIsCodeFormat?: boolean = undefined
@@ -400,17 +405,17 @@ export class MarkdownThemeCodeBlock {
   /**
    * 组合代码块未选中标题文本颜色
    */
-  codeBlockListTitleUnSelectTextColor?: number = undefined
+  codeBlockListTitleUnselectTextColor?: number = undefined
 
   /**
    * 组合代码块选中标题背景颜色
    */
-  codeBlockListTitleSelectBackgroupColor?: number = undefined
+  codeBlockListTitleSelectBackgroundColor?: number = undefined
 
   /**
    * 组合代码块未选中标题背景颜色
    */
-  codeBlockListTitleUnSelectBackgroupColor?: number = undefined
+  codeBlockListTitleUnselectBackgroundColor?: number = undefined
 
   /**
    * 是否单独代码块显示
@@ -426,6 +431,15 @@ export class MarkdownThemeCodeBlock {
    * 单独代码块是否居底显示
    */
   codeBlockSeparateIsBottom?: boolean = undefined
+
+  /**
+   * 设置代码块深浅色
+   *
+   * @param isDark 是否是深色 - true：深色；false：浅色。默认false
+   */
+  setCodeBlockIsDark(isDark: boolean): void {
+    this.codeBlockIsDark = isDark
+  }
 
   /**
    * 设置是否格式化围栏代码块内容
@@ -1116,8 +1130,8 @@ export class MarkdownThemeCodeBlock {
    *
    * @param color 文本颜色
    */
-  setCodeBlockListTitleUnSelectTextColor(color: number): void {
-    this.codeBlockListTitleUnSelectTextColor = color
+  setCodeBlockListTitleUnselectTextColor(color: number): void {
+    this.codeBlockListTitleUnselectTextColor = color
   }
 
   /**
@@ -1125,8 +1139,8 @@ export class MarkdownThemeCodeBlock {
    *
    * @param color 背景颜色
    */
-  setCodeBlockListTitleSelectBackGroupColor(color: number): void {
-    this.codeBlockListTitleSelectBackgroupColor = color
+  setCodeBlockListTitleSelectBackgroundColor(color: number): void {
+    this.codeBlockListTitleSelectBackgroundColor = color
   }
 
   /**
@@ -1134,8 +1148,8 @@ export class MarkdownThemeCodeBlock {
    *
    * @param color 背景颜色
    */
-  setCodeBlockListTitleUnSelectBackGroupColor(color: number): void {
-    this.codeBlockListTitleUnSelectBackgroupColor = color
+  setCodeBlockListTitleUnselectBackgroundColor(color: number): void {
+    this.codeBlockListTitleUnselectBackgroundColor = color
   }
 
   /**

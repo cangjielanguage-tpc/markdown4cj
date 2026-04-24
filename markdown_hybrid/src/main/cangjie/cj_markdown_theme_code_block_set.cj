@@ -1,6 +1,3 @@
-/**
- * Created on 2026/4/20
- */
 package markdown
 
 func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme {
@@ -28,7 +25,7 @@ func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme
     if (let Some(v) <- codeBlockTheme.codeBlockMarginRight) { codeBlockMarginRight = v }
     if (let Some(v) <- codeBlockTheme.codeBlockMarginBottom) { codeBlockMarginBottom = v }
     if (let Some(v) <- codeBlockTheme.codeBlockMarginLeft) { codeBlockMarginLeft = v }
-    theme.setCodeBlockMargin(top: codeBlockMarginTop, right: codeBlockMarginRight, bottom: codeBlockMarginBottom, left: codeBlockMarginLeft)
+    theme.setMargin(top: codeBlockMarginTop, right: codeBlockMarginRight, bottom: codeBlockMarginBottom, left: codeBlockMarginLeft)
 
     var codeBlockPaddingTop: Float64 = 0.0
     var codeBlockPaddingRight: Float64 = 8.0
@@ -38,7 +35,7 @@ func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme
     if (let Some(v) <- codeBlockTheme.codeBlockPaddingRight) { codeBlockPaddingRight = v }
     if (let Some(v) <- codeBlockTheme.codeBlockPaddingBottom) { codeBlockPaddingBottom = v }
     if (let Some(v) <- codeBlockTheme.codeBlockPaddingLeft) { codeBlockPaddingLeft = v }
-    theme.setCodeBlockPadding(top: codeBlockPaddingTop, right: codeBlockPaddingRight, bottom: codeBlockPaddingBottom, left: codeBlockPaddingLeft)
+    theme.setPadding(top: codeBlockPaddingTop, right: codeBlockPaddingRight, bottom: codeBlockPaddingBottom, left: codeBlockPaddingLeft)
 
     if (let Some(v) <- codeBlockTheme.codeBlockBorderStyle) {
         theme.setCodeBlockBorderStyle(v)
@@ -57,7 +54,7 @@ func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme
     if (let Some(v) <- codeBlockTheme.codeBlockRadiusTopRight) { codeBlockRadiusTopRight = v }
     if (let Some(v) <- codeBlockTheme.codeBlockRadiusBottomLeft) { codeBlockRadiusBottomLeft = v }
     if (let Some(v) <- codeBlockTheme.codeBlockRadiusBottomRight) { codeBlockRadiusBottomRight = v }
-    theme.setCodeBlockRadius(topLeft: codeBlockRadiusTopLeft, topRight: codeBlockRadiusTopRight, bottomLeft: codeBlockRadiusBottomLeft, bottomRight: codeBlockRadiusBottomRight)
+    theme.setRadius(topLeft: codeBlockRadiusTopLeft, topRight: codeBlockRadiusTopRight, bottomLeft: codeBlockRadiusBottomLeft, bottomRight: codeBlockRadiusBottomRight)
 
     if (let Some(v) <- codeBlockTheme.codeBlockTitleLayoutMarginBottom) {
         theme.setCodeBlockTitleLayoutMarginBottom(v)
@@ -230,14 +227,14 @@ func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme
     if (let Some(v) <- codeBlockTheme.codeBlockListTitleSelectTextColor) {
         theme.setCodeBlockListTitleSelectTextColor(v)
     }
-    if (let Some(v) <- codeBlockTheme.codeBlockListTitleUnSelectTextColor) {
-        theme.setCodeBlockListTitleUnSelectTextColor(v)
+    if (let Some(v) <- codeBlockTheme.codeBlockListTitleUnselectTextColor) {
+        theme.setCodeBlockListTitleSelectBackgroundColor(v)
     }
-    if (let Some(v) <- codeBlockTheme.codeBlockListTitleSelectBackgroupColor) {
-        theme.setCodeBlockListTitleSelectBackgroupColor(v)
+    if (let Some(v) <- codeBlockTheme.codeBlockListTitleSelectBackgroundColor) {
+        theme.setCodeBlockListTitleSelectBackgroundColor(v)
     }
-    if (let Some(v) <- codeBlockTheme.codeBlockListTitleUnSelectBackgroupColor) {
-        theme.setCodeBlockListTitleUnSelectBackgroupColor(v)
+    if (let Some(v) <- codeBlockTheme.codeBlockListTitleUnselectBackgroundColor) {
+        theme.setCodeBlockListTitleUnselectBackgroundColor(v)
     }
     if (let Some(v) <- codeBlockTheme.codeBlockIsSeparate) {
         theme.setCodeBlockIsSeparate(v)

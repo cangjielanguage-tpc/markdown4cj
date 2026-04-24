@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown
 
 import ohos.ark_interop_macro.*
@@ -132,16 +129,6 @@ public class CJMarkdownTheme {
      */
     var cjMarkdownHtmlUnderlineTheme: CJMarkdownHtmlUnderlineTheme = CJMarkdownHtmlUnderlineTheme()
 
-    /**
-     * 代码深浅色模式
-     */
-    var isDark: ?Bool = None
-
-    /**
-     * 是否按照链接文本字体大小显示文本
-     */
-    var isLinkSize: ?Bool = None
-
     public init() {}
 
     /**
@@ -222,7 +209,13 @@ public class CJMarkdownTheme {
      * @param isLinkSize 是否按照链接文本自己大小显示文本 - true：显示链接自己文本大小；false：跟随标题段落大小显示。默认true
      */
     public func setIsLinkSize(isLinkSize: Bool): Unit {
-        this.isLinkSize = isLinkSize
+        if(isLinkSize){
+            if(cjMarkdownLinkTheme.linkTextFontSize.isNone()){
+                cjMarkdownLinkTheme.linkTextFontSize = 14.0
+            }
+        } else {
+            cjMarkdownLinkTheme.linkTextFontSize = None
+        }
     }
 
     /**
@@ -868,7 +861,7 @@ public class CJMarkdownTheme {
      * @param codeListTitleUnSelectTextColor 组合代码未选中标题文本颜色 - 默认Color.BLACK
      */
     public func setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: UInt32): Unit {
-        this.cjMarkdownCodeBlockTheme.setCodeBlockListTitleUnSelectTextColor(codeListTitleUnSelectTextColor)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockListTitleUnselectTextColor(codeListTitleUnSelectTextColor)
     }
 
     /**
@@ -877,7 +870,7 @@ public class CJMarkdownTheme {
      * @param codeListTitleSelectBackGroupColor 组合代码选中标题背景颜色 - 默认Color.GRAY
      */
     public func setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: UInt32): Unit {
-        this.cjMarkdownCodeBlockTheme.setCodeBlockListTitleSelectBackgroupColor(codeListTitleSelectBackGroupColor)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockListTitleSelectBackgroundColor(codeListTitleSelectBackGroupColor)
     }
 
     /**
@@ -886,7 +879,7 @@ public class CJMarkdownTheme {
      * @param codeListTitleUnSelectBackGroupColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
      */
     public func setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: UInt32): Unit {
-        this.cjMarkdownCodeBlockTheme.setCodeBlockListTitleUnSelectBackgroupColor(codeListTitleUnSelectBackGroupColor)
+        this.cjMarkdownCodeBlockTheme.setCodeBlockListTitleUnselectBackgroundColor(codeListTitleUnSelectBackGroupColor)
     }
 
     /**
@@ -2051,7 +2044,7 @@ public class CJMarkdownTheme {
      * @param isDark 是否是深色 - true：深色；false：浅色。默认false
      */
     public func setIsDark(isDark: Bool): Unit {
-        this.isDark = isDark
+        this.cjMarkdownCodeBlockTheme.setCodeBlockIsDark(isDark)
     }
 
     /**
