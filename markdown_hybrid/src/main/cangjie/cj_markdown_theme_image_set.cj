@@ -1,6 +1,3 @@
-/**
- * Created on 2026/4/20
- */
 package markdown
 
 func setImageTheme(imageTheme: CJMarkdownImageTheme): ImageTheme {
@@ -13,7 +10,7 @@ func setImageTheme(imageTheme: CJMarkdownImageTheme): ImageTheme {
     if (let Some(v) <- imageTheme.imageMarginRight) { imageMarginRight = v }
     if (let Some(v) <- imageTheme.imageMarginBottom) { imageMarginBottom = v }
     if (let Some(v) <- imageTheme.imageMarginLeft) { imageMarginLeft = v }
-    theme.setImageMargin(top: imageMarginTop, right: imageMarginRight, bottom: imageMarginBottom, left: imageMarginLeft)
+    theme.setMargin(top: imageMarginTop, right: imageMarginRight, bottom: imageMarginBottom, left: imageMarginLeft)
 
     var imageRadiusTopLeft: Float64 = 0.0
     var imageRadiusTopRight: Float64 = 0.0
@@ -23,7 +20,7 @@ func setImageTheme(imageTheme: CJMarkdownImageTheme): ImageTheme {
     if (let Some(v) <- imageTheme.imageRadiusTopRight) { imageRadiusTopRight = v }
     if (let Some(v) <- imageTheme.imageRadiusBottomLeft) { imageRadiusBottomLeft = v }
     if (let Some(v) <- imageTheme.imageRadiusBottomRight) { imageRadiusBottomRight = v }
-    theme.setImageRadius(topLeft: imageRadiusTopLeft, topRight: imageRadiusTopRight, bottomLeft: imageRadiusBottomLeft, bottomRight: imageRadiusBottomRight)
+    theme.setRadius(topLeft: imageRadiusTopLeft, topRight: imageRadiusTopRight, bottomLeft: imageRadiusBottomLeft, bottomRight: imageRadiusBottomRight)
 
     if (let Some(v) <- imageTheme.imageBorderStyle) {
         theme.setImageBorderStyle(v)

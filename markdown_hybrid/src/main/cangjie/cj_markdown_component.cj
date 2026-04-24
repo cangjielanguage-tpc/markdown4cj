@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown
 
 import ohos.state_macro_manage.*
@@ -256,7 +253,7 @@ class CJMarkdownComponent {
             markdownThemeBuilder.setImageDownloadImage(v) // 设置图片下载默认图标
         }
         if(let Some(w) <- cfg){
-            if (let Some(v) <- w.cjMarkdownTheme.isDark) {
+            if (let Some(v) <- w.cjMarkdownTheme.cjMarkdownCodeBlockTheme.codeBlockIsDark) {
                 // 设置markdown代码高亮样式
                 if(v){
                     markdownThemeBuilder.setPrismTheme(PrismThemeDarkula.create()) // 深色
