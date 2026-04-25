@@ -5,6 +5,9 @@ package markdown
 
 func setGlobalTheme(globalTheme: CJMarkdownGlobalTheme): GlobalTheme {
     let theme: GlobalTheme = GlobalTheme()
+    if (let Some(v) <- GlobalContext.getContext()) {
+        theme.setStageContext(v) // 设置markdown上下文 - 互操作
+    }
     if (let Some(v) <- globalTheme.isMarkdownParserSync) {
         theme.setIsMarkdownParserSync(v) // 设置markdown是否同步解析
     }

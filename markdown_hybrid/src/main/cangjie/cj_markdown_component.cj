@@ -219,9 +219,6 @@ class CJMarkdownComponent {
 
     func setTheme(): MarkdownTheme {
         let markdownThemeBuilder: MarkdownThemeBuilder = MarkdownTheme.emptyBuilder()
-        if (let Some(v) <- GlobalContext.getContext()) {
-            markdownThemeBuilder.setStageContext(v) // 设置markdown上下文 - 互操作
-        }
         if (let Some(v) <- codeFullScreenIcon) {
             markdownThemeBuilder.setCodeFullScreenIcon(v) // 设置代码块代码全屏按钮默认图标
         }
@@ -262,32 +259,31 @@ class CJMarkdownComponent {
                 }
             }
 
-            setGlobalTheme(w.cjMarkdownTheme.cjMarkdownGlobalTheme) // 全局样式
-            setParagraphTheme(w.cjMarkdownTheme.cjMarkdownParagraphTheme) // 段落样式
-            setHeadingTheme(w.cjMarkdownTheme.cjMarkdownHeadingTheme) // 标题样式
-            setTableTheme(w.cjMarkdownTheme.cjMarkdownTableTheme) // 表格样式
-            setDividerTheme(w.cjMarkdownTheme.cjMarkdownDividerTheme) // 分割线样式
-            setBlockQuoteTheme(w.cjMarkdownTheme.cjMarkdownBlockQuoteTheme) // 块引用样式
-            setOrderedListTheme(w.cjMarkdownTheme.cjMarkdownOrderedListTheme) // 有序列表样式
-            setBulletListTheme(w.cjMarkdownTheme.cjMarkdownBulletListTheme) // 无序/任务列表样式
-            setDefinitionListTheme(w.cjMarkdownTheme.cjMarkdownDefinitionListTheme) // 定义列表样式
-            setCodeBlockTheme(w.cjMarkdownTheme.cjMarkdownCodeBlockTheme) // 代码块样式
-            setAudioTheme(w.cjMarkdownTheme.cjMarkdownAudioTheme) // 音频样式
-            setVideoTheme(w.cjMarkdownTheme.cjMarkdownVideoTheme) // 视频样式
-            setBannerTheme(w.cjMarkdownTheme.cjMarkdownBannerTheme) // banner样式
-            setFootnoteDefTheme(w.cjMarkdownTheme.cjMarkdownFootnoteDefTheme) // 脚注定义样式
-            setFootnoteRefTheme(w.cjMarkdownTheme.cjMarkdownFootnoteRefTheme) // 脚注引用样式
-            setInlineCodeTheme(w.cjMarkdownTheme.cjMarkdownInlineCodeTheme) // 内联代码样式
-            setBoldTheme(w.cjMarkdownTheme.cjMarkdownBoldTheme) // 加粗文本样式
-            setLatexMathTheme(w.cjMarkdownTheme.cjMarkdownLatexMathTheme) // 数学公式样式
-            setHtmlUnderlineTheme(w.cjMarkdownTheme.cjMarkdownHtmlUnderlineTheme) // HTML下划线文本样式
-            setImageTheme(w.cjMarkdownTheme.cjMarkdownImageTheme) // 图片样式
-            setItalicTheme(w.cjMarkdownTheme.cjMarkdownItalicTheme) // 斜体文本样式
-            setLinkTheme(w.cjMarkdownTheme.cjMarkdownLinkTheme)// 链接文本样式
-            setStrikethroughTheme(w.cjMarkdownTheme.cjMarkdownStrikethroughTheme) // 删除线文本样式
-            setSubTheme(w.cjMarkdownTheme.cjMarkdownSubTheme) // 下标文本样式
-            setSupTheme(w.cjMarkdownTheme.cjMarkdownSupTheme) // 上标文本样式
-//            var prismTheme: PrismTheme = PrismThemeDarkula.create() // markdown代码高亮样式
+            markdownThemeBuilder.setGlobalTheme(setGlobalTheme(w.cjMarkdownTheme.cjMarkdownGlobalTheme)) // 全局样式
+            markdownThemeBuilder.setParagraphTheme(setParagraphTheme(w.cjMarkdownTheme.cjMarkdownParagraphTheme)) // 段落样式
+            markdownThemeBuilder.setHeadingTheme(setHeadingTheme(w.cjMarkdownTheme.cjMarkdownHeadingTheme)) // 标题样式
+            markdownThemeBuilder.setTableTheme(setTableTheme(w.cjMarkdownTheme.cjMarkdownTableTheme)) // 表格样式
+            markdownThemeBuilder.setDividerTheme(setDividerTheme(w.cjMarkdownTheme.cjMarkdownDividerTheme)) // 分割线样式
+            markdownThemeBuilder.setBlockQuoteTheme(setBlockQuoteTheme(w.cjMarkdownTheme.cjMarkdownBlockQuoteTheme)) // 块引用样式
+            markdownThemeBuilder.setOrderedListTheme(setOrderedListTheme(w.cjMarkdownTheme.cjMarkdownOrderedListTheme)) // 有序列表样式
+            markdownThemeBuilder.setBulletListTheme(setBulletListTheme(w.cjMarkdownTheme.cjMarkdownBulletListTheme)) // 无序/任务列表样式
+            markdownThemeBuilder.setDefinitionListTheme(setDefinitionListTheme(w.cjMarkdownTheme.cjMarkdownDefinitionListTheme)) // 定义列表样式
+            markdownThemeBuilder.setCodeBlockTheme(setCodeBlockTheme(w.cjMarkdownTheme.cjMarkdownCodeBlockTheme)) // 代码块样式
+            markdownThemeBuilder.setAudioTheme(setAudioTheme(w.cjMarkdownTheme.cjMarkdownAudioTheme)) // 音频样式
+            markdownThemeBuilder.setVideoTheme(setVideoTheme(w.cjMarkdownTheme.cjMarkdownVideoTheme)) // 视频样式
+            markdownThemeBuilder.setBannerTheme(setBannerTheme(w.cjMarkdownTheme.cjMarkdownBannerTheme)) // banner样式
+            markdownThemeBuilder.setFootnoteDefTheme(setFootnoteDefTheme(w.cjMarkdownTheme.cjMarkdownFootnoteDefTheme)) // 脚注定义样式
+            markdownThemeBuilder.setFootnoteRefTheme(setFootnoteRefTheme(w.cjMarkdownTheme.cjMarkdownFootnoteRefTheme)) // 脚注引用样式
+            markdownThemeBuilder.setInlineCodeTheme(setInlineCodeTheme(w.cjMarkdownTheme.cjMarkdownInlineCodeTheme)) // 内联代码样式
+            markdownThemeBuilder.setBoldTheme(setBoldTheme(w.cjMarkdownTheme.cjMarkdownBoldTheme)) // 加粗文本样式
+            markdownThemeBuilder.setLatexMathTheme(setLatexMathTheme(w.cjMarkdownTheme.cjMarkdownLatexMathTheme)) // 数学公式样式
+            markdownThemeBuilder.setHtmlUnderlineTheme(setHtmlUnderlineTheme(w.cjMarkdownTheme.cjMarkdownHtmlUnderlineTheme)) // HTML下划线文本样式
+            markdownThemeBuilder.setImageTheme(setImageTheme(w.cjMarkdownTheme.cjMarkdownImageTheme)) // 图片样式
+            markdownThemeBuilder.setItalicTheme(setItalicTheme(w.cjMarkdownTheme.cjMarkdownItalicTheme)) // 斜体文本样式
+            markdownThemeBuilder.setLinkTheme(setLinkTheme(w.cjMarkdownTheme.cjMarkdownLinkTheme))// 链接文本样式
+            markdownThemeBuilder.setStrikethroughTheme(setStrikethroughTheme(w.cjMarkdownTheme.cjMarkdownStrikethroughTheme)) // 删除线文本样式
+            markdownThemeBuilder.setSubTheme(setSubTheme(w.cjMarkdownTheme.cjMarkdownSubTheme)) // 下标文本样式
+            markdownThemeBuilder.setSupTheme(setSupTheme(w.cjMarkdownTheme.cjMarkdownSupTheme)) // 上标文本样式
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()
         return markdownTheme
