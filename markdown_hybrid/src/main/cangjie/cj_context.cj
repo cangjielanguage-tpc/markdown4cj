@@ -3,12 +3,6 @@
  */
 package markdown
 
-import ohos.ark_interop.JSContext
-import ohos.ark_interop.JSCallInfo
-import ohos.ark_interop.JSValue
-import kit.AbilityKit.Context
-import kit.AbilityKit.createContextFromJSValue
-
 /**
  * JSContext
  */
@@ -18,14 +12,14 @@ public var ctx: ?JSContext = None
  * 定义一个全局的 Context 获取类，方便后续其他业务使用
  */
 public class GlobalContext {
-    static var _context: Option<Context> = None
+    static var _context: Option<StageContext> = None
 
     /**
      * 设置StageContext
      *
      * @param context StageContext
      */
-    public static func setContext(context: Context): Unit {
+    public static func setContext(context: StageContext): Unit {
         _context = context
     }
 
@@ -34,7 +28,7 @@ public class GlobalContext {
      *
      * @return Option<StageContext> StageContext
      */
-    public static func getContext(): Option<Context> {
+    public static func getContext(): Option<StageContext> {
         return _context
     }
 }
@@ -47,7 +41,15 @@ public class GlobalContext {
  * @return JSValue 返回值
  */
 func setGlobalContext(runtime: JSContext, callInfo: JSCallInfo): JSValue {
-    let jsValue = callInfo[0]
-    GlobalContext.setContext(createContextFromJSValue(runtime, jsValue))
+    if (callInfo[0].typeof() == JSType.UNDEFINED) {
+        ctx = None
+        return runtime.undefined().toJSValue()
+    }
+    let jsEnv = runtime.getNapiEnv()
+    let jsValue = arkTsValuetoNapiValue(jsEnv, callInfo[0])
+    if (isStageMode(jsEnv, jsValue)) {
+        GlobalContext.setContext(getContextStageMode(jsEnv, jsValue))
+    } else {
+    }
     return runtime.undefined().toJSValue()
 }

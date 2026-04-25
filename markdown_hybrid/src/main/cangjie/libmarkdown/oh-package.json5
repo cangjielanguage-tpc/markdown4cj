@@ -1,5 +1,5 @@
 {
-  "name": "libmarkdown.so",
+  "name": "libark_interop_api_markdown.so",
   "types": "./Index.d.ts",
   "version": "1.0.0",
   "description": ""

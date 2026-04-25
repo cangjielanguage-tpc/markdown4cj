@@ -1,12 +1,14 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextStr } from './FileUtils'
-import { LinkData } from './LinkPage'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+  MarkdownScroller,
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
+import { LinkData } from '../model/LinkData'
 
 @Entry
 @Component
@@ -16,9 +18,14 @@ struct LinkDetailsPage {
    */
   scroller: Scroller = new Scroller()
   /**
+   * Markdown的控制器
+   */
+  markdownScroller: MarkdownScroller = new MarkdownScroller()
+  /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -30,10 +37,67 @@ struct LinkDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
+  /**
+   * 是否增量解析Markdown文本
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
   /**
    * 链接是否是图片显示
    */
@@ -45,7 +109,7 @@ struct LinkDetailsPage {
   /**
    * 文本格式链接文本颜色
    */
-  linkColor: number = 0xFF0000FF
+  linkColor: number | undefined = undefined
   /**
    * 文本格式链接文字大小
    */
@@ -57,7 +121,7 @@ struct LinkDetailsPage {
   /**
    * 文本格式链接背景颜色
    */
-  linkBackGroupColor: number = 0x00000000
+  linkBackGroupColor: number | undefined = undefined
   /**
    * 文本格式是否显示链接下划线
    */
@@ -65,11 +129,11 @@ struct LinkDetailsPage {
   /**
    * 圆形图片格式链接主题背景颜色
    */
-  linkCircleImageBackGroupColor: number = 0x00000000
+  linkCircleImageBackGroupColor: number | undefined = undefined
   /**
    * 圆形图片格式链接控件背景颜色
    */
-  linkCircleImageButtonBackGroupColor: number = 0xFF000000
+  linkCircleImageButtonBackGroupColor: number | undefined = undefined
   /**
    * 圆形图片格式链接文字大小
    */
@@ -77,7 +141,7 @@ struct LinkDetailsPage {
   /**
    * 圆形图片格式链接文字颜色
    */
-  linkCircleImageTextColor: number = 0xFFFFFFFF
+  linkCircleImageTextColor: number | undefined = undefined
   /**
    * 圆形图片格式链接半径
    */
@@ -89,11 +153,11 @@ struct LinkDetailsPage {
   /**
    * 圆角矩形图片格式链接主题背景颜色
    */
-  linkRectImageBackGroupColor: number = 0x00000000
+  linkRectImageBackGroupColor: number | undefined = undefined
   /**
    * 圆角矩形图片格式链接控件背景颜色
    */
-  linkRectImageButtonBackGroupColor: number = 0xFF000000
+  linkRectImageButtonBackGroupColor: number | undefined = undefined
   /**
    * 圆角矩形图片格式链接文字大小
    */
@@ -101,7 +165,7 @@ struct LinkDetailsPage {
   /**
    * 圆角矩形图片格式链接文字颜色
    */
-  linkRectImageTextColor: number = 0xFFFFFFFF
+  linkRectImageTextColor: number | undefined = undefined
   /**
    * 圆角矩形图片格式链接控件高度
    */
@@ -121,19 +185,19 @@ struct LinkDetailsPage {
   /**
    * 空心圆角矩形图片格式链接主题背景颜色
    */
-  linkRectToolImageBackGroupColor: number = 0x00000000
+  linkRectToolImageBackGroupColor: number | undefined = undefined
   /**
    * 空心圆角矩形图片格式链接控件背景颜色
    */
-  linkRectToolImageButtonBackGroupColor: number = 0xFFFFFFFF
+  linkRectToolImageButtonBackGroupColor: number | undefined = undefined
   /**
    * 空心圆角矩形图片格式链接控件边框颜色
    */
-  linkRectToolImageButtonBorderColor: number = 0xFF000000
+  linkRectToolImageButtonBorderColor: number | undefined = undefined
   /**
    * 空心圆角矩形图片格式链接控件分割线颜色
    */
-  linkRectToolImageButtonDividingLineColor: number = 0xFF000000
+  linkRectToolImageButtonDividingLineColor: number | undefined = undefined
   /**
    * 空心圆角矩形图片格式链接文字大小
    */
@@ -141,7 +205,7 @@ struct LinkDetailsPage {
   /**
    * 空心圆角矩形图片格式链接文字颜色
    */
-  linkRectToolImageTextColor: number = 0xFF000000
+  linkRectToolImageTextColor: number | undefined = undefined
   /**
    * 空心圆角矩形图片格式链接控件高度
    */
@@ -171,15 +235,28 @@ struct LinkDetailsPage {
    */
   linkRectToolImageLineRightPadding: number = 3
   /**
-   * 增量加载延迟
+   * 文本格式链接文字行高
    */
-  time: number = 50
+  @State
+  linkLineHeight: number = 22
 
   aboutToAppear(): void {
     try {
       let linkData: LinkData = router.getParams() as LinkData
       this.fileStr = getFileContextStr(linkData._pagePath)
+      // ---------- 通用
       this.isFull = linkData._isFull
+      this.incrementalAnalysis = linkData._incrementalAnalysis
+      this.time = linkData._time
+      this.textNumber = linkData._textNumber
+      this.isMarkdownParserSync = linkData._isMarkdownParserSync
+      this.isOnCopy = linkData._isOnCopy
+      this.blockFirstTopMargin = linkData._blockFirstTopMargin
+      this.blockLastBottomMargin = linkData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = linkData._blockTopAndBottomMargins
+      this.openGestureSwipe = linkData._openGestureSwipe
+      this.openGestureSwipeTest = linkData._openGestureSwipeTest
+      // ---------- 专有
       this.isLinkStyle = linkData._isLinkStyle
       this.isListLinkStyle = linkData._isListLinkStyle
       this.linkColor = linkData._linkColor
@@ -211,6 +288,7 @@ struct LinkDetailsPage {
       this.linkRectToolImageMargin = linkData._linkRectToolImageMargin
       this.linkRectToolImageLineLeftPadding = linkData._linkRectToolImageLineLeftPadding
       this.linkRectToolImageLineRightPadding = linkData._linkRectToolImageLineRightPadding
+      this.linkLineHeight = linkData._linkLineHeight
     } catch (e) {
     }
   }
@@ -235,30 +313,54 @@ struct LinkDetailsPage {
         .onClick(
           () => {
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
-                this.content = this.content + this.fileStr[index]
+                this.content = this.content + this.fileStr.substring(this.content.length, index)
                 this.scroller.scrollEdge(Edge.Bottom)
-                if (index === this.fileStr.length - 1) {
+                if (index >= this.fileStr.length) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
-                index++
+                if (this.fileStr.length > index + this.textNumber) {
+                  index = index + this.textNumber
+                } else {
+                  index = this.fileStr.length
+                }
               }, this.time)
             }
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
-      .padding({ bottom: 200 })
+      .align(Alignment.TopStart)
+      .layoutWeight(1)
     }
     .alignItems(HorizontalAlign.Center)
   }
@@ -267,29 +369,50 @@ struct LinkDetailsPage {
     let config = new MarkdownConfiguration()
     config.setLinkCallback(this.linkCallBack.bind(this)) // 链接点击回调
     let theme = new MarkdownTheme()
+    theme.setContext(getContext(this)) // 上下文
     theme.setIsLinkStyle(this.isLinkStyle) // 链接是否是图片显示
     theme.setIsListLinkStyle(this.isListLinkStyle) // 列表中的单行链接是否是图片显示
-    theme.setLinkColor(this.linkColor) // 文本格式链接文本颜色
+    if (this.linkColor !== undefined) {
+      theme.setLinkColor(this.linkColor) // 文本格式链接文本颜色
+    }
     theme.setIsLinkSize(this.isLinkSize) // 是否按照链接文本字体大小显示文本
     theme.setLinkSize(this.linkSize) // 文本格式链接文字大小
-    theme.setLinkBackGroupColor(this.linkBackGroupColor) // 文本格式链接背景颜色
+    if (this.linkBackGroupColor !== undefined) {
+      theme.setLinkBackGroupColor(this.linkBackGroupColor) // 文本格式链接背景颜色
+    }
     theme.setIsLinkUnderlined(this.isLinkUnderlined) // 文本格式是否显示链接下划线
-    theme.setLinkCircleImageBackGroupColor(this.linkCircleImageBackGroupColor) // 圆形图片格式链接主题背景颜色
-    theme.setLinkCircleImageButtonBackGroupColor(this.linkCircleImageButtonBackGroupColor) // 圆形图片格式链接控件背景颜色
+    if (this.linkCircleImageBackGroupColor !== undefined) {
+      theme.setLinkCircleImageBackGroupColor(this.linkCircleImageBackGroupColor) // 圆形图片格式链接主题背景颜色
+    }
+    if (this.linkCircleImageButtonBackGroupColor !== undefined) {
+      theme.setLinkCircleImageButtonBackGroupColor(this.linkCircleImageButtonBackGroupColor) // 圆形图片格式链接控件背景颜色
+    }
     theme.setLinkCircleImageTextSize(this.linkCircleImageTextSize) // 圆形图片格式链接文字大小
-    theme.setLinkCircleImageTextColor(this.linkCircleImageTextColor) // 圆形图片格式链接文字颜色
+    if (this.linkCircleImageTextColor !== undefined) {
+      theme.setLinkCircleImageTextColor(this.linkCircleImageTextColor) // 圆形图片格式链接文字颜色
+    }
     theme.setLinkCircleImageRadius(this.linkCircleImageRadius) // 圆形图片格式链接半径
     theme.setLinkCircleImageMargin(this.linkCircleImageMargin) // 圆形图片格式链接左右外边距
-    theme.setLinkRectImageBackGroupColor(this.linkRectImageBackGroupColor) // 圆角矩形图片格式链接主题背景颜色
-    theme.setLinkRectImageButtonBackGroupColor(this.linkRectImageButtonBackGroupColor) // 圆角矩形图片格式链接控件背景颜色
+    if (this.linkRectImageBackGroupColor !== undefined) {
+      theme.setLinkRectImageBackGroupColor(this.linkRectImageBackGroupColor) // 圆角矩形图片格式链接主题背景颜色
+    }
+    if (this.linkRectImageButtonBackGroupColor !== undefined) {
+      theme.setLinkRectImageButtonBackGroupColor(this.linkRectImageButtonBackGroupColor) // 圆角矩形图片格式链接控件背景颜色
+    }
     theme.setLinkRectImageTextSize(this.linkRectImageTextSize) // 圆角矩形图片格式链接文字大小
-    theme.setLinkRectImageTextColor(this.linkRectImageTextColor) // 圆角矩形图片格式链接文字颜色
+    if (this.linkRectImageTextColor !== undefined) {
+      theme.setLinkRectImageTextColor(this.linkRectImageTextColor) // 圆角矩形图片格式链接文字颜色
+    }
     theme.setLinkRectImageHeight(this.linkRectImageHeight) // 圆角矩形图片格式链接控件高度
     theme.setLinkRectImagePadding(this.linkRectImagePadding) // 圆角矩形图片格式链接左右内边距
     theme.setLinkRectImageRadius(this.linkRectImageRadius) // 圆角矩形图片格式链接圆角半径
     theme.setLinkRectImageMargin(this.linkRectImageMargin) // 圆角矩形图片格式链接左右外边距
-    theme.setLinkRectToolImageBackGroupColor(this.linkRectToolImageBackGroupColor) // 空心圆角矩形图片格式链接主题背景颜色
-    theme.setLinkRectToolImageButtonBackGroupColor(this.linkRectToolImageButtonBackGroupColor) // 空心圆角矩形图片格式链接控件背景颜色
+    if (this.linkRectToolImageBackGroupColor !== undefined) {
+      theme.setLinkRectToolImageBackGroupColor(this.linkRectToolImageBackGroupColor) // 空心圆角矩形图片格式链接主题背景颜色
+    }
+    if (this.linkRectToolImageButtonBackGroupColor !== undefined) {
+      theme.setLinkRectToolImageButtonBackGroupColor(this.linkRectToolImageButtonBackGroupColor) // 空心圆角矩形图片格式链接控件背景颜色
+    }
     theme.setLinkRectToolImageTextSize(this.linkRectToolImageTextSize) // 空心圆角矩形图片格式链接文字大小
     theme.setLinkRectToolImageHeight(this.linkRectToolImageHeight) // 空心圆角矩形图片格式链接控件高度
     theme.setLinkRectToolImagePadding(this.linkRectToolImagePadding) // 空心圆角矩形图片格式链接左右内边距
@@ -298,6 +421,15 @@ struct LinkDetailsPage {
     theme.setLinkRectToolImageMargin(this.linkRectToolImageMargin) // 空心圆角矩形图片格式链接左右外边距
     theme.setLinkRectToolImageLineLeftPadding(this.linkRectToolImageLineLeftPadding) // 空心圆角矩形图片格式分割线和文本左边距
     theme.setLinkRectToolImageLineRightPadding(this.linkRectToolImageLineRightPadding) // 空心圆角矩形图片格式分割线和文本右边距
+    theme.setLinkLineHeight(this.linkLineHeight) // 文本格式链接文字行高
+
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     config.setMarkdownTheme(theme)
     return config
   }
@@ -307,7 +439,7 @@ struct LinkDetailsPage {
     if (this.isLinkStyle) {
       plugin.setIsLinkViewPlugin(true) // 链接块状化插件
     } else {
-      plugin.setIsLinkifyPlugin(true) // 链接自动加载插件
+      plugin.setIsLinkifyPlugin(true, []) // 链接自动加载插件
     }
     plugin.setIsTablePlugin(true) // 表格插件
     plugin.setIsTaskListPlugin(true) // 任务列表插件

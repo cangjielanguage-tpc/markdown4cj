@@ -3,13 +3,7 @@
  */
 package markdown
 
-import ohos.base.*
-import kit.ArkUI.*
-import ohos.arkui.state_macro_manage.*
-import markdown.components.*
-import markdown.core.*
-import markdown.plugin.*
-import markdown.plugin.emoji.*
+import ohos.state_macro_manage.*
 
 @Component
 class CJMarkdownComponent {
@@ -21,6 +15,20 @@ class CJMarkdownComponent {
     var mdStr: String = ''
 
     /**
+     * 外部传入的Markdown文档
+     */
+    @State
+    @Watch[inputEndedData]
+    var isInputEnded: Bool = true
+
+    /**
+     * markdown是否增量解析
+     */
+    @State
+    @Watch[analysisData]
+    var incrementalAnalysis: Bool = false
+
+    /**
      * 配置
      */
     var cfg: ?CJMarkdownConfig
@@ -30,20 +38,40 @@ class CJMarkdownComponent {
      */
     var plugin: ?CJMarkdownPlugin
 
+    /**
+     * 滑动控制器
+     */
+    var listscroller: ?CJMarkdownScroller
+
     protected func aboutToAppear(): Unit {
     }
 
     func build() {
         Column() {
-            MarkdownComponent(output: mdStr, markdownConfiguration: setConfig(), markdownPlugin: setPlugin())
+            MarkdownComponent(
+                output: mdStr,
+                isInputEnded: isInputEnded,
+                incrementalAnalysis: incrementalAnalysis,
+                markdownConfiguration: setConfig(),
+                markdownPlugin: setPlugin(),
+                scroller: setScroller()
+            )
         }
     }
 
     func onChanged(): Unit {
     }
 
-    public func updateMarkDown(input: String): Unit {
-        mdStr = input
+    func inputEndedData(): Unit {
+    }
+
+    func analysisData(): Unit {
+    }
+
+    public func updateMarkDown(input: String, isInputEnded: Bool, incrementalAnalysis: Bool): Unit {
+        this.mdStr = input
+        this.isInputEnded = isInputEnded
+        this.incrementalAnalysis = incrementalAnalysis
     }
 
     public func aboutToCJReuse(input: String): Unit {
@@ -79,7 +107,7 @@ class CJMarkdownComponent {
                 markdownBuilder.usePlugin(StrikethroughPlugin.create())
             }
             if(v.isLinkifyPlugin){
-                markdownBuilder.usePlugin(LinkifyPlugin.create())
+                markdownBuilder.usePlugin(LinkifyPlugin.create(v.regs))
             }
             if(v.isLinkViewPlugin){
                 markdownBuilder.usePlugin(LinkViewPlugin.create())
@@ -123,6 +151,7 @@ class CJMarkdownComponent {
         }
         // 唯一ID标识插件
         markdownBuilder.usePlugin(NodeIdPlugin.create())
+        markdownBuilder.includeSourceSpans(2) // BLOCKS_AND_INLINES
         return markdownBuilder.build()
     }
 
@@ -142,6 +171,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.imageCallback) {
                 markdownConfigurationBuilder.setImageCallback(v) // 设置图片的点击事件
             }
+            if (let Some(v) <- w.imageDownloadCallback) {
+                markdownConfigurationBuilder.setImageDownloadCallback(v) // 图片下载的点击事件
+            }
             if (let Some(v) <- w.audioCallback) {
                 markdownConfigurationBuilder.setAudioCallback(v) // 设置音频的点击事件
             }
@@ -150,6 +182,12 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.videoImageCallback) {
                 markdownConfigurationBuilder.setVideoImageCallback(v) // 设置视频的图片替换回调
+            }
+            if (let Some(v) <- w.videoReleaseCallback) {
+                markdownConfigurationBuilder.setVideoReleaseCallback(v) // 设置视频发布的点击事件
+            }
+            if (let Some(v) <- w.videoDownloadCallback) {
+                markdownConfigurationBuilder.setVideoDownloadCallback(v) // 设置视频下载的点击事件
             }
             if (let Some(v) <- w.codeCopyCallback) {
                 markdownConfigurationBuilder.setCodeCopyCallback(v) // 设置代码复制按钮的点击事件
@@ -177,7 +215,7 @@ class CJMarkdownComponent {
     func setTheme(): MarkdownTheme {
         let markdownThemeBuilder: MarkdownThemeBuilder = MarkdownTheme.emptyBuilder()
         if (let Some(v) <- GlobalContext.getContext()) {
-            markdownThemeBuilder.setContext(v) // 设置markdown上下文
+            markdownThemeBuilder.setStageContext(v) // 设置markdown上下文 - 互操作
         }
         if (let Some(v) <- codeFullScreenIcon) {
             markdownThemeBuilder.setCodeFullScreenIcon(v) // 设置代码块代码全屏按钮默认图标
@@ -200,6 +238,15 @@ class CJMarkdownComponent {
         if (let Some(v) <- imageResource) {
             markdownThemeBuilder.setImageResource(v) // 设置图片默认占位图
         }
+        if (let Some(v) <- videoReleaseImage) {
+            markdownThemeBuilder.setVideoReleaseImage(v) // 设置图片默认占位图
+        }
+        if (let Some(v) <- videoDownloadImage) {
+            markdownThemeBuilder.setVideoDownloadImage(v) // 设置图片默认占位图
+        }
+        if (let Some(v) <- imageDownloadImage) {
+            markdownThemeBuilder.setImageDownloadImage(v) // 设置图片下载默认图标
+        }
         if(let Some(w) <- cfg){
             if (let Some(v) <- w.cjMarkdownTheme.isMarkdownParserSync) {
                 markdownThemeBuilder.setIsMarkdownParserSync(v) // 设置markdown是否同步解析
@@ -208,10 +255,10 @@ class CJMarkdownComponent {
                 markdownThemeBuilder.setIsOnCopy(v) // 设置是否打开长按复制粘贴
             }
             if (let Some(v) <- w.cjMarkdownTheme.blockFirstTopMargin) {
-                markdownThemeBuilder.setBlockLastBottomMargin(v) // 设置markdown第一个模块上边距
+                markdownThemeBuilder.setBlockFirstTopMargin(v) // 设置markdown第一个模块上边距
             }
-            if (let Some(v) <- w.cjMarkdownTheme.blockTopAndBottomMargins) {
-                markdownThemeBuilder.setBlockTopAndBottomMargins(v) // 设置markdown最后一个模块下边距
+            if (let Some(v) <- w.cjMarkdownTheme.blockLastBottomMargin) {
+                markdownThemeBuilder.setBlockLastBottomMargin(v) // 设置markdown最后一个模块下边距
             }
             if (let Some(v) <- w.cjMarkdownTheme.blockTopAndBottomMargins) {
                 markdownThemeBuilder.setBlockTopAndBottomMargins(v) // 设置模块间上下间距
@@ -230,6 +277,9 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.linkSize) {
                 markdownThemeBuilder.setLinkSize(v) // 设置文本格式链接文字大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.linkLineHeight) {
+                markdownThemeBuilder.setLinkLineHeight(v) // 设置文本格式链接行高
             }
             if (let Some(v) <- w.cjMarkdownTheme.linkBackGroupColor) {
                 markdownThemeBuilder.setLinkBackGroupColor(v) // 设置文本格式链接背景颜色
@@ -363,29 +413,20 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.taskListItemLength) {
                 markdownThemeBuilder.setTaskListItemLength(v) // 设置任务列表选择框宽高
             }
-            if (let Some(v) <- w.cjMarkdownTheme.isCodeStyle) {
-                markdownThemeBuilder.setIsCodeStyle(v) // 设置内联代码是否是图片显示
-            }
             if (let Some(v) <- w.cjMarkdownTheme.isCodeFormat) {
                 markdownThemeBuilder.setIsCodeFormat(v) // 设置是否格式化代码块内容
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeTextColor) {
-                markdownThemeBuilder.setCodeTextColor(v) // 设置文本、图片格式内联代码文本颜色
+                markdownThemeBuilder.setCodeTextColor(v) // 设置内联代码文本颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeBackgroundColor) {
-                markdownThemeBuilder.setCodeBackgroundColor(v) // 设置文本、图片格式内联代码背景颜色
+                markdownThemeBuilder.setCodeBackgroundColor(v) // 设置内联代码背景颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeTextSize) {
-                markdownThemeBuilder.setCodeTextSize(v) // 设置文本、图片格式内联代码文本大小
+                markdownThemeBuilder.setCodeTextSize(v) // 设置内联代码文本大小
             }
             if (let Some(v) <- w.cjMarkdownTheme.codeTypeface) {
-                markdownThemeBuilder.setCodeTypeface(v) // 设置文本格式内联代码文本字体
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.codeLeftAndRightPadding) {
-                markdownThemeBuilder.setCodeLeftAndRightPadding(v) // 设置图片格式内联代码文本左右边距
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.codeHeight) {
-                markdownThemeBuilder.setCodeHeight(v) // 设置图片格式内联代码文本高度
+                markdownThemeBuilder.setCodeTypeface(v) // 设置内联代码文本字体
             }
             if (let Some(v) <- w.cjMarkdownTheme.isCodeBlockParserSync) {
                 markdownThemeBuilder.setIsCodeBlockParserSync(v) // 设置缩进/围栏/组合/单独代码块代码是否同步解析
@@ -462,9 +503,6 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.headingBreakHeight) {
                 markdownThemeBuilder.setHeadingBreakHeight(v) // 设置H1、H2标题下分割线高度
             }
-            if (let Some(v) <- w.cjMarkdownTheme.headingBreakColor) {
-                markdownThemeBuilder.setHeadingBreakColor(v) // 设置H1、H2标题下分割线颜色
-            }
             if (let Some(v) <- w.cjMarkdownTheme.headingTypeface) {
                 markdownThemeBuilder.setHeadingTypeface(v) // 设置标题文本字体
             }
@@ -473,12 +511,6 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.headingBottomMargins) {
                 markdownThemeBuilder.setHeadingBottomMargins(v) // 设置标题模块下间距
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.headingTextSizeMultipliers) {
-                markdownThemeBuilder.setHeadingTextSizeMultipliers(v) // 设置标题文本大小数组
-            }
-            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor) {
-                markdownThemeBuilder.setHeadingTextColor(v) // 设置标题文本颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.headingTextWordSpace) {
                 markdownThemeBuilder.setHeadingTextWordSpace(v) // 设置标题文本字间距
@@ -500,6 +532,48 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.headingTextLineHeight6) {
                 markdownThemeBuilder.setHeadingTextLineHeight6(v) // 设置六级标题文本行高
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextSize1) {
+                markdownThemeBuilder.setHeadingTextSize1(v) // 设置一级标题文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextSize2) {
+                markdownThemeBuilder.setHeadingTextSize2(v) // 设置二级标题文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextSize3) {
+                markdownThemeBuilder.setHeadingTextSize3(v) // 设置三级标题文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextSize4) {
+                markdownThemeBuilder.setHeadingTextSize4(v) // 设置四级标题文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextSize5) {
+                markdownThemeBuilder.setHeadingTextSize5(v) // 设置五级标题文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextSize6) {
+                markdownThemeBuilder.setHeadingTextSize6(v) // 设置六级标题文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor1) {
+                markdownThemeBuilder.setHeadingTextColor1(v) // 设置一级标题文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingBreakColor1) {
+                markdownThemeBuilder.setHeadingBreakColor1(v) // 设置H1标题下分割线颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor2) {
+                markdownThemeBuilder.setHeadingTextColor2(v) // 设置二级标题文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingBreakColor2) {
+                markdownThemeBuilder.setHeadingBreakColor2(v) // 设置H2标题下分割线颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor3) {
+                markdownThemeBuilder.setHeadingTextColor3(v) // 设置三级标题文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor4) {
+                markdownThemeBuilder.setHeadingTextColor4(v) // 设置四级标题文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor5) {
+                markdownThemeBuilder.setHeadingTextColor5(v) // 设置五级标题文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.headingTextColor6) {
+                markdownThemeBuilder.setHeadingTextColor6(v) // 设置六级标题文本颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.paragraphTopMargins) {
                 markdownThemeBuilder.setParagraphTopMargins(v) // 设置段落模块上间距
@@ -630,6 +704,57 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.videoMarginBottom) {
                 markdownThemeBuilder.setVideoMarginBottom(v) // 设置视频下边距
             }
+            if (let Some(v) <- w.cjMarkdownTheme.isVideoBottomLayout) {
+                markdownThemeBuilder.setIsVideoBottomLayout(v) // 设置视频发布/下载按钮布局是否显示
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseImageWidthHeight) {
+                markdownThemeBuilder.setVideoReleaseImageWidthHeight(v) // 设置视频发布按钮图片宽度和高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseWidth) {
+                markdownThemeBuilder.setVideoReleaseWidth(v) // 设置视频发布按钮宽度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseHeight) {
+                markdownThemeBuilder.setVideoReleaseHeight(v) // 设置视频发布按钮高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseRadius) {
+                markdownThemeBuilder.setVideoReleaseRadius(v) // 设置视频发布按钮圆角
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseText) {
+                markdownThemeBuilder.setVideoReleaseText(v) // 设置视频发布按钮文本内容
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseTexSize) {
+                markdownThemeBuilder.setVideoReleaseTexSize(v) // 设置视频发布按钮文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseTexColor) {
+                markdownThemeBuilder.setVideoReleaseTexColor(v) // 设置视频发布按钮文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoReleaseBackgroundColor) {
+                markdownThemeBuilder.setVideoReleaseBackgroundColor(v) // 设置视频发布按钮背景颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadImageWidthHeight) {
+                markdownThemeBuilder.setVideoDownloadImageWidthHeight(v) // 设置视频下载按钮图片宽度和高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadWidth) {
+                markdownThemeBuilder.setVideoDownloadWidth(v) // 设置视频下载按钮宽度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadHeight) {
+                markdownThemeBuilder.setVideoDownloadHeight(v) // 设置视频下载按钮高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadRadius) {
+                markdownThemeBuilder.setVideoDownloadRadius(v) // 设置视频下载按钮圆角
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadText) {
+                markdownThemeBuilder.setVideoDownloadText(v) // 设置视频下载按钮文本内容
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadTexSize) {
+                markdownThemeBuilder.setVideoDownloadTexSize(v) // 设置视频下载按钮文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadTexColor) {
+                markdownThemeBuilder.setVideoDownloadTexColor(v) // 设置视频下载按钮文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.videoDownloadBackgroundColor) {
+                markdownThemeBuilder.setVideoDownloadBackgroundColor(v) // 设置视频下载按钮背景颜色
+            }
             if (let Some(v) <- w.cjMarkdownTheme.imageFitType) {
                 markdownThemeBuilder.setImageFitType(v) // 设置图片缩放类型
             }
@@ -639,8 +764,20 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.imageFixedRatioWidth) {
                 markdownThemeBuilder.setImageFixedRatioWidth(v) // 设置图片基于父布局宽度缩放百分比
             }
+            if (let Some(v) <- w.cjMarkdownTheme.imageMaxHeight) {
+                markdownThemeBuilder.setImageMaxHeight(v) // 设置图片最大高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageMaxWidth) {
+                markdownThemeBuilder.setImageMaxWidth(v) // 设置图片最大宽度
+            }
             if (let Some(v) <- w.cjMarkdownTheme.imageBorderRadius) {
                 markdownThemeBuilder.setImageBorderRadius(v) // 设置图片圆角大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageBorderWidth) {
+                markdownThemeBuilder.setImageBorderWidth(v) // 设置图片边框宽度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageBorderColor) {
+                markdownThemeBuilder.setImageBorderColor(v) // 设置图片边框颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.isAutoResize) {
                 markdownThemeBuilder.setIsAutoResize(v) // 设置网络图片是否压缩
@@ -650,6 +787,36 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.imageMarginBottom) {
                 markdownThemeBuilder.setImageMarginBottom(v) // 设置图片下边距
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.isImageDownload) {
+                markdownThemeBuilder.setIsImageDownload(v) // 设置图片是否有下载按钮
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.isImageMixedLayout) {
+                markdownThemeBuilder.setIsImageMixedLayout(v) // 设置是否图文混排
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadImageWidthHeight) {
+                markdownThemeBuilder.setImageDownloadImageWidthHeight(v) // 设置图片下载按钮图片宽度和高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadWidth) {
+                markdownThemeBuilder.setImageDownloadWidth(v) // 设置图片下载按钮宽度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadHeight) {
+                markdownThemeBuilder.setImageDownloadHeight(v) // 设置图片下载按钮高度
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadRadius) {
+                markdownThemeBuilder.setImageDownloadRadius(v) // 设置图片下载按钮圆角
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadText) {
+                markdownThemeBuilder.setImageDownloadText(v) // 设置图片下载按钮文本内容
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadTexSize) {
+                markdownThemeBuilder.setImageDownloadTexSize(v) // 设置图片下载按钮文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadTexColor) {
+                markdownThemeBuilder.setImageDownloadTexColor(v) // 设置图片下载按钮文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.imageDownloadBackgroundColor) {
+                markdownThemeBuilder.setImageDownloadBackgroundColor(v) // 设置图片下载按钮背景颜色
             }
             if (let Some(v) <- w.cjMarkdownTheme.tableCellPadding) {
                 markdownThemeBuilder.setTableCellPadding(v) // 设置表格内容内边距
@@ -667,7 +834,22 @@ class CJMarkdownComponent {
                 markdownThemeBuilder.setTableEvenRowBackgroundColor(v) // 设置表格偶数行背景色
             }
             if (let Some(v) <- w.cjMarkdownTheme.tableHeaderRowBackgroundColor) {
-                markdownThemeBuilder.setTableHeaderRowBackgroundColor(v) // 设置表格头背景色
+                markdownThemeBuilder.setTableHeaderRowBackgroundColor(v) // 设置表格标题背景色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.tableTitleTextColor) {
+                markdownThemeBuilder.setTableTitleTextColor(v) // 设置表格标题文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.tableTitleTextSize) {
+                markdownThemeBuilder.setTableTitleTextSize(v) // 设置表格标题文本大小
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.tableTitleLineHeight) {
+                markdownThemeBuilder.setTableTitleLineHeight(v) // 设置表格标题行高
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.tableContentTextColor) {
+                markdownThemeBuilder.setTableContentTextColor(v) // 设置表格内容文本颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.tableContentTextSize) {
+                markdownThemeBuilder.setTableContentTextSize(v) // 设置表格内容文本大小
             }
             if (let Some(v) <- w.cjMarkdownTheme.tableTextLineHeight) {
                 markdownThemeBuilder.setTableTextLineHeight(v) // 设置表格文本行高
@@ -684,6 +866,12 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.tableFirstColumnBold) {
                 markdownThemeBuilder.setTableFirstColumnBold(v) // 设置表格第一列是否加粗
             }
+            if (let Some(v) <- w.cjMarkdownTheme.tableScrollBarShow) {
+                markdownThemeBuilder.setTableScrollBarShow(v) // 设置表格是否显示滚动条
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.tableScrollBarColor) {
+                markdownThemeBuilder.setTableScrollBarColor(v) // 设置表格滚动条颜色
+            }
             if (let Some(v) <- w.cjMarkdownTheme.isDark) {
                 // 设置markdown代码高亮样式
                 if(v){
@@ -694,6 +882,9 @@ class CJMarkdownComponent {
             }
             if (let Some(v) <- w.cjMarkdownTheme.strikethroughColor) {
                 markdownThemeBuilder.setStrikethroughColor(v) // 设置删除线颜色
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.strikethroughStyle) {
+                markdownThemeBuilder.setStrikethroughStyle(v) // 设置删除线样式
             }
             if (let Some(v) <- w.cjMarkdownTheme.descListTermAndDefMargins) {
                 markdownThemeBuilder.setDescListTermAndDefMargins(v) // 设置定义列表术语和定义行之间间距
@@ -725,8 +916,28 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.underlineColor) {
                 markdownThemeBuilder.setUnderlineColor(v) // 设置下划线颜色
             }
+            if (let Some(v) <- w.cjMarkdownTheme.underlineStyle) {
+                markdownThemeBuilder.setUnderlineStyle(v) // 设置下划线样式
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.openGestureSwipe) {
+                markdownThemeBuilder.setOpenGestureSwipe(v) // 设置markdown是否支持滚动手势
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.useTab) {
+                markdownThemeBuilder.setUseTab(v) // 设置codeformat是否用制表符
+            }
+            if (let Some(v) <- w.cjMarkdownTheme.indentWidth) {
+                markdownThemeBuilder.setIndentWidth(v) // 设置codeformat空格缩进数量
+            }
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()
         return markdownTheme
+    }
+
+    func setScroller(): Scroller {
+        if (let Some(scroller) <- listscroller) {
+            return scroller.scroller
+        } else {
+            return Scroller()
+        }
     }
 }

@@ -3,11 +3,7 @@
  */
 package markdown
 
-import ohos.base.*
-import kit.ArkUI.*
-import ohos.ark_interop.*
 import ohos.ark_interop_macro.*
-import std.collection.*
 
 @Interop[ArkTS]
 public class CJMarkdownConfig {
@@ -27,6 +23,11 @@ public class CJMarkdownConfig {
     var imageCallback: ?(String, ArrayList<String>) -> Unit = None
 
     /**
+     * 图片下载的点击事件
+     */
+    var imageDownloadCallback: ?(String) -> Unit = None
+
+    /**
      * 音频的点击事件
      */
     var audioCallback: ?(String) -> Unit = None
@@ -40,6 +41,16 @@ public class CJMarkdownConfig {
      * 视频的图片替换回调
      */
     var videoImageCallback: ?(String, (String, Float64, Int64) -> Unit) -> Unit = None
+
+    /**
+     * 视频发布的点击事件
+     */
+    var videoReleaseCallback: ?(String) -> Unit = None
+
+    /**
+     * 视频下载的点击事件
+     */
+    var videoDownloadCallback: ?(String) -> Unit = None
 
     /**
      * 代码复制按钮的点击事件
@@ -64,12 +75,12 @@ public class CJMarkdownConfig {
     /**
      * TOC跳转指定位置
      */
-    var tocIndexCallback: ?(Option<Float64>) -> Unit = None
+    var tocIndexCallback: ?(Option<Int64>) -> Unit = None
 
     /**
      * 脚注跳转指定位置
      */
-    var footnoteCallback: ?(Option<Float64>) -> Unit = None
+    var footnoteCallback: ?(Option<Int64>) -> Unit = None
 
     /**
      * markdown默认样式
@@ -108,6 +119,15 @@ public class CJMarkdownConfig {
     }
 
     /**
+     * 设置图片下载的点击事件
+     *
+     * @param cb 图片下载的点击事件 (图片url)
+     */
+    public func setImageDownloadCallback(cb: (String) -> Unit): Unit {
+        this.imageDownloadCallback = cb
+    }
+
+    /**
      * 设置音频的点击事件
      *
      * @param cb 音频点击回调接口 (音频url)
@@ -134,6 +154,24 @@ public class CJMarkdownConfig {
      */
     public func setVideoImageCallback(cb: (String, (String, Float64, Int64) -> Unit) -> Unit): Unit {
         this.videoImageCallback = cb
+    }
+
+    /**
+     * 设置视频发布的点击事件
+     *
+     * @param videoReleaseCallback 视频发布的点击事件 (String:视频链接)
+     */
+    public func setVideoReleaseCallback(videoReleaseCallback: (String) -> Unit): Unit {
+        this.videoReleaseCallback = videoReleaseCallback
+    }
+
+    /**
+     * 设置视频下载的点击事件
+     *
+     * @param videoDownloadCallback 视频下载的点击事件 (String:视频链接)
+     */
+    public func setVideoDownloadCallback(videoDownloadCallback: (String) -> Unit): Unit {
+        this.videoDownloadCallback = videoDownloadCallback
     }
 
     /**
@@ -179,7 +217,7 @@ public class CJMarkdownConfig {
      *
      * @param cb TOC跳转指定位置接口 (位置距离)
      */
-    public func setTocIndexCallback(cb: (Option<Float64>) -> Unit): Unit {
+    public func setTocIndexCallback(cb: (Option<Int64>) -> Unit): Unit {
         this.tocIndexCallback = cb
     }
 
@@ -188,7 +226,7 @@ public class CJMarkdownConfig {
      *
      * @param cb 脚注跳转指定位置接口 (位置距离)
      */
-    public func setFootnoteCallback(cb: (Option<Float64>) -> Unit): Unit {
+    public func setFootnoteCallback(cb: (Option<Int64>) -> Unit): Unit {
         this.footnoteCallback = cb
     }
 

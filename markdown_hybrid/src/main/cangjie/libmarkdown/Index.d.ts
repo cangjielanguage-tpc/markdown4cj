@@ -2,11 +2,9 @@
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
 import { Context } from "@kit.AbilityKit"
-import { resourceManager } from '@kit.LocalizationKit';
+import { resourceManager } from "@kit.LocalizationKit"
 
 export declare class CJMarkdownPlugin {
-  constructor()
-
   setIsBlockAudioPlugin(isBlockAudioPlugin: boolean): void
 
   setIsBlockVideoPlugin(isBlockVideoPlugin: boolean): void
@@ -25,7 +23,7 @@ export declare class CJMarkdownPlugin {
 
   setIsStrikethroughPlugin(isStrikethroughPlugin: boolean): void
 
-  setIsLinkifyPlugin(isLinkifyPlugin: boolean): void
+  setIsLinkifyPlugin(isLinkifyPlugin: boolean, regs: Array<string>): void
 
   setIsLinkViewPlugin(isLinkViewPlugin: boolean): void
 
@@ -51,8 +49,6 @@ export declare class CJMarkdownPlugin {
 }
 
 export declare class CJMarkdownTheme {
-  constructor()
-
   setIsMarkdownParserSync(isMarkdownParserSync: boolean): void
 
   setIsOnCopy(isOnCopy: boolean): void
@@ -72,6 +68,8 @@ export declare class CJMarkdownTheme {
   setIsLinkSize(isLinkSize: boolean): void
 
   setLinkSize(linkSize: number): void
+
+  setLinkLineHeight(linkLineHeight: number): void
 
   setLinkBackGroupColor(linkBackGroupColor: number): void
 
@@ -161,8 +159,6 @@ export declare class CJMarkdownTheme {
 
   setTaskListItemLength(taskListItemLength: number): void
 
-  setIsCodeStyle(isCodeStyle: boolean): void
-
   setIsCodeFormat(isCodeFormat: boolean): void
 
   setCodeTextColor(codeTextColor: number): void
@@ -172,10 +168,6 @@ export declare class CJMarkdownTheme {
   setCodeTextSize(codeTextSize: number): void
 
   setCodeTypeface(codeTypeface: string): void
-
-  setCodeLeftAndRightPadding(codeLeftAndRightPadding: number): void
-
-  setCodeHeight(codeHeight: number): void
 
   setIsCodeBlockParserSync(isCodeBlockParserSync: boolean): void
 
@@ -227,17 +219,23 @@ export declare class CJMarkdownTheme {
 
   setHeadingBreakHeight(headingBreakHeight: number): void
 
-  setHeadingBreakColor(headingBreakColor: number): void
-
   setHeadingTypeface(headingTypeface: string): void
 
   setHeadingTopMargins(headingTopMargins: number): void
 
   setHeadingBottomMargins(headingBottomMargins: number): void
 
-  setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): void
+  setHeadingTextSize1(headingTextSize1: number): void
 
-  setHeadingTextColor(headingTextColor: number): void
+  setHeadingTextSize2(headingTextSize2: number): void
+
+  setHeadingTextSize3(headingTextSize3: number): void
+
+  setHeadingTextSize4(headingTextSize4: number): void
+
+  setHeadingTextSize5(headingTextSize5: number): void
+
+  setHeadingTextSize6(headingTextSize6: number): void
 
   setHeadingTextWordSpace(headingTextWordSpace: number): void
 
@@ -252,6 +250,22 @@ export declare class CJMarkdownTheme {
   setHeadingTextLineHeight5(headingTextLineHeight5: number): void
 
   setHeadingTextLineHeight6(headingTextLineHeight6: number): void
+
+  setHeadingTextColor1(headingTextColor1: number): void
+
+  setHeadingBreakColor1(headingBreakColor1: number): void
+
+  setHeadingTextColor2(headingTextColor2: number): void
+
+  setHeadingBreakColor2(headingBreakColor2: number): void
+
+  setHeadingTextColor3(headingTextColor3: number): void
+
+  setHeadingTextColor4(headingTextColor4: number): void
+
+  setHeadingTextColor5(headingTextColor5: number): void
+
+  setHeadingTextColor6(headingTextColor6: number): void
 
   setParagraphTopMargins(paragraphTopMargins: number): void
 
@@ -339,19 +353,81 @@ export declare class CJMarkdownTheme {
 
   setVideoMarginBottom(videoMarginBottom: number): void
 
+  setIsVideoBottomLayout(isVideoBottomLayout: boolean): void
+
+  setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: number): void
+
+  setVideoReleaseWidth(videoReleaseWidth: number): void
+
+  setVideoReleaseHeight(videoReleaseHeight: number): void
+
+  setVideoReleaseRadius(videoReleaseRadius: number): void
+
+  setVideoReleaseText(videoReleaseText: string): void
+
+  setVideoReleaseTexSize(videoReleaseTexSize: number): void
+
+  setVideoReleaseTexColor(videoReleaseTexColor: number): void
+
+  setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: number): void
+
+  setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: number): void
+
+  setVideoDownloadWidth(videoDownloadWidth: number): void
+
+  setVideoDownloadHeight(videoDownloadHeight: number): void
+
+  setVideoDownloadRadius(videoDownloadRadius: number): void
+
+  setVideoDownloadText(videoDownloadText: string): void
+
+  setVideoDownloadTexSize(videoDownloadTexSize: number): void
+
+  setVideoDownloadTexColor(videoDownloadTexColor: number): void
+
+  setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: number): void
+
   setImageFitType(imageFitType: number): void
 
   setImageMaximumWidth(imageMaximumWidth: number): void
 
   setImageFixedRatioWidth(imageFixedRatioWidth: number): void
 
+  setImageMaxHeight(imageMaxHeight: number): void
+
+  setImageMaxWidth(imageMaxWidth: number): void
+
   setImageBorderRadius(imageBorderRadius: number): void
+
+  setImageBorderWidth(imageBorderWidth: number): void
+
+  setImageBorderColor(imageBorderColor: number): void
 
   setIsAutoResize(isAutoResize: boolean): void
 
   setImageMarginTop(imageMarginTop: number): void
 
   setImageMarginBottom(imageMarginBottom: number): void
+
+  setIsImageDownload(isImageDownload: boolean): void
+
+  setIsImageMixedLayout(isImageMixedLayout: boolean): void
+
+  setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: number): void
+
+  setImageDownloadWidth(imageDownloadWidth: number): void
+
+  setImageDownloadHeight(imageDownloadHeight: number): void
+
+  setImageDownloadRadius(imageDownloadRadius: number): void
+
+  setImageDownloadText(imageDownloadText: string): void
+
+  setImageDownloadTexSize(imageDownloadTexSize: number): void
+
+  setImageDownloadTexColor(imageDownloadTexColor: number): void
+
+  setImageDownloadBackgroundColor(imageDownloadBackgroundColor: number): void
 
   setTableCellPadding(tableCellPadding: number): void
 
@@ -365,6 +441,16 @@ export declare class CJMarkdownTheme {
 
   setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void
 
+  setTableTitleTextColor(tableTitleTextColor: number): void
+
+  setTableTitleTextSize(tableTitleTextSize: number): void
+
+  setTableTitleLineHeight(tableTitleLineHeight: number): void
+
+  setTableContentTextColor(tableContentTextColor: number): void
+
+  setTableContentTextSize(tableContentTextSize: number): void
+
   setTableTextLineHeight(tableTextLineHeight: number): void
 
   setTableRadius(tableRadius: number): void
@@ -375,9 +461,15 @@ export declare class CJMarkdownTheme {
 
   setTableFirstColumnBold(tableFirstColumnBold: boolean): void
 
+  setTableScrollBarShow(tableScrollBarShow: boolean): void
+
+  setTableScrollBarColor(tableScrollBarColor: number): void
+
   setIsDark(isDark: boolean): void
 
   setStrikethroughColor(strikethroughColor: number): void
+
+  setStrikethroughStyle(strikethroughStyle: number): void
 
   setDescListTermAndDefMargins(descListTermAndDefMargins: number): void
 
@@ -398,22 +490,34 @@ export declare class CJMarkdownTheme {
   setSupOffsetDist(supOffsetDist: number): void
 
   setUnderlineColor(underlineColor: number): void
+
+  setUnderlineStyle(underlineStyle: number): void
+
+  setOpenGestureSwipe(openGestureSwipe: boolean): void
+
+  setUseTab(useTab: boolean): void
+
+  setIndentWidth(indentWidth: number): void
 }
 
 export declare class CJMarkdownConfig {
-  constructor()
-
   setLinkCallback(cb: (funcArg0: string) => void): void
 
   setTextCopyCallback(cb: (funcArg0: string) => void): void
 
   setImageCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void
 
+  setImageDownloadCallback(cb: (string) => void): void
+
   setAudioCallback(cb: (funcArg0: string) => void): void
 
   setVideoCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void
 
   setVideoImageCallback(cb: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void): void
+
+  setVideoReleaseCallback(cb: (funcArg0: string) => void): void
+
+  setVideoDownloadCallback(cb: (funcArg0: string) => void): void
 
   setCodeCopyCallback(cb: (funcArg0: string) => void): void
 
@@ -430,10 +534,47 @@ export declare class CJMarkdownConfig {
   setCJMarkdownTheme(cjMarkdownTheme: CJMarkdownTheme): void
 }
 
-export declare function setGlobalContext(context: Context): void
+export declare class CJMarkdownScroller {
 
-export declare function getLoadCJPage(mdStr: string, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin): (input: string) => void
+  scrollBy(xOffset: number, yOffset: number): void
 
-export declare function registerImgPreprocessCallback(cb: (url: string) => Promise<ArrayBuffer|undefined>): void
+  scrollToIndex(value: number): void
 
-export declare function getCJResource(codeFullScreenIcon?: resourceManager.Resource, codeCopyIcon?: resourceManager.Resource, audioIcon?: resourceManager.Resource, videoImage?: resourceManager.Resource, playCircleFillIcon?: resourceManager.Resource, bannerImage?: resourceManager.Resource, imageResource?: resourceManager.Resource): void
+  scrollEdge(value: number): void
+
+  isAtEnd(): boolean
+
+  getItemRect(index: number): CJRectResult
+
+  currentYOffset(): number
+}
+
+export declare class CJRectResult {
+  getItemRectX(): number
+
+  getItemRectY(): number
+
+  getItemRectWidth(): number
+
+  getItemRectHeight(): number
+}
+
+export declare interface CustomLib {
+  CJMarkdownConfig: {new (): CJMarkdownConfig}
+
+  CJMarkdownPlugin: {new (): CJMarkdownPlugin}
+
+  CJMarkdownScroller: {new (): CJMarkdownScroller}
+
+  CJRectResult: {new (x: number, y: number, width: number, height: number): CJRectResult}
+
+  CJMarkdownTheme: {new (): CJMarkdownTheme}
+
+  setGlobalContext(context?: Context): void
+
+  getLoadCJPage(mdStr: string, isInputEnded: boolean, incrementalAnalysis: boolean, cfg: CJMarkdownConfig, plugin: CJMarkdownPlugin, listScroller?: CJMarkdownScroller): (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void
+
+  registerImgPreprocessCallback(cb?: (url: string) => Promise<ArrayBuffer|undefined>): void
+
+  getCJResource(codeFullScreenIcon?: resourceManager.Resource, codeCopyIcon?: resourceManager.Resource, audioIcon?: resourceManager.Resource, videoImage?: resourceManager.Resource, playCircleFillIcon?: resourceManager.Resource, bannerImage?: resourceManager.Resource, imageResource?: resourceManager.Resource, videoReleaseImage?: resourceManager.Resource, videoDownloadImage?: resourceManager.Resource, imageDownloadImage?: resourceManager.Resource): void
+}

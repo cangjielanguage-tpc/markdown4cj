@@ -27,7 +27,9 @@ class StyleDelimiterProcessor <: DelimiterProcessor {
         return 1
     }
     let reg = Regex("^:(style|align|width|height|border-radius)=")
-    public func process(opener: Text, closer: Text, _: Int): Unit {
+    public override func process(openingRun: DelimiterRun, closingRun: DelimiterRun): Int {
+        let opener = openingRun.getOpener()
+        let closer = closingRun.getCloser()
         if (!process(opener, closer)) {
             if (let Some(n: Text) <- opener.getNext()) {
                 n.setLiteral("{" + n.getLiteral())
@@ -36,6 +38,7 @@ class StyleDelimiterProcessor <: DelimiterProcessor {
                 p.setLiteral(p.getLiteral() + "}")
             }
         }
+        1
     }
 
     /*
@@ -50,7 +53,7 @@ class StyleDelimiterProcessor <: DelimiterProcessor {
                 return false
             }
             let str = style.getLiteral()
-            if (reg.matcher(str).find().isSome()) {
+            if (reg.matches(str)) {
                 // 处理style前的Image
                 if (let Some(image: Image) <- opener.getPrevious()) {
                     match (image) {
@@ -65,102 +68,6 @@ class StyleDelimiterProcessor <: DelimiterProcessor {
             }
         }
         return false
-    }
-}
-
-class ImageDelimiterVisitor <: AbstractVisitor {
-    public func visit(p: Paragraph): Unit {
-        visitChildren(p)
-        let node = match (p.getFirstChild()) {
-            case Some(t: Text) where t.getLiteral() == "<" => t.getNext()
-            case _ => return
-        }
-    }
-}
-
-class ImagePostProcessor <: PostProcessor {
-    public func process(node: Node): Node {
-        node.accept(ImageVisitor())
-        return node
-    }
-}
-
-class ImageVisitor <: AbstractVisitor {
-    private let collector = ArrayList<Node>()
-    public func visit(p: Paragraph): Unit {
-        // 单独的图片提到block级别
-        match ((p.getFirstChild(), p.getLastChild())) {
-            case (Some(a: Image), Some(b: Image)) where refEq(a, b) =>
-                p.replaceWith(a)
-                return
-            case _ => ()
-        }
-
-        // for ImageVideo
-        visitChildren(p)
-
-        var node: ?Node = match (p.getFirstChild()) {
-            case Some(t: Text) where t.getLiteral() == "<" => match (t.getNext()) {
-                case Some(_: SoftLineBreak) => return // 如果<后换行 不支持
-                case Some(v) => v
-                case _ => return
-            }
-            case _ => return
-        }
-        let end = match (p.getLastChild()) {
-            case Some(t: Text) where t.getLiteral() == ">" => t
-            case _ => return
-        }
-
-        collector.clear()
-        var wantImg = true
-        while (let Some(n) <- node) {
-            if (n == end) {
-                if (wantImg) {
-                    return // 如果是逗号结尾 不支持
-                } else {
-                    break
-                }
-            }
-            node = n.getNext()
-            if (n is SoftLineBreak) {
-                continue
-            }
-            if (wantImg) {
-                // Image node
-                if (n is Image) {
-                    collector.add(n)
-                    wantImg = !wantImg
-                } else {
-                    return
-                }
-            } else {
-                // Text{,} node
-                match (n) {
-                    case t: Text where t.getLiteral().trimAscii() == "," => wantImg = !wantImg
-                    case _ => return
-                }
-            }
-        }
-
-        let slide = SlideBlock()
-        for (n in collector) {
-            slide.appendChild(n)
-        }
-        p.insertBefore(slide)
-        p.unlink()
-    }
-
-    public func visit(img: Image): Unit {
-        if (ImgVideo.isImgVideo(img.getDestination())) {
-            let text = if (let Some(v: Text) <- img.getFirstChild()) {
-                v.getLiteral()
-            } else {
-                ""
-            }
-            let imgvideo = ImgVideo(text, img.getDestination(), img.getTitle())
-            img.replaceWith(imgvideo)
-        }
     }
 }
 

@@ -1,11 +1,13 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextStr } from './FileUtils'
-import { SupData } from './SupPage'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+  MarkdownScroller,
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+import { getFileContextStr } from '../utils/FileUtils'
+import { SupData } from '../model/SupData'
 
 @Entry
 @Component
@@ -15,9 +17,14 @@ struct SupDetailsPage {
    */
   scroller: Scroller = new Scroller()
   /**
+   * Markdown的控制器
+   */
+  markdownScroller: MarkdownScroller = new MarkdownScroller()
+  /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -29,15 +36,72 @@ struct SupDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
+   * 是否增量解析Markdown文本
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
+  /**
    * 上标字体颜色
    */
   @State
-  supTextColor: number = 0xFF191919
+  supTextColor: number | undefined = undefined
   /**
    * 上标字体大小
    */
@@ -48,16 +112,24 @@ struct SupDetailsPage {
    */
   @State
   supOffsetDist: number = 6
-  /**
-   * 增量加载延迟
-   */
-  time: number = 50
 
   aboutToAppear(): void {
     try {
       let supData: SupData = router.getParams() as SupData
       this.fileStr = getFileContextStr(supData._pagePath)
+      // ---------- 通用
       this.isFull = supData._isFull
+      this.incrementalAnalysis = supData._incrementalAnalysis
+      this.time = supData._time
+      this.textNumber = supData._textNumber
+      this.isMarkdownParserSync = supData._isMarkdownParserSync
+      this.isOnCopy = supData._isOnCopy
+      this.blockFirstTopMargin = supData._blockFirstTopMargin
+      this.blockLastBottomMargin = supData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = supData._blockTopAndBottomMargins
+      this.openGestureSwipe = supData._openGestureSwipe
+      this.openGestureSwipeTest = supData._openGestureSwipeTest
+      // ---------- 专有
       this.supTextColor = supData._supTextColor
       this.supTextSize = supData._supTextSize
       this.supOffsetDist = supData._supOffsetDist
@@ -85,13 +157,16 @@ struct SupDetailsPage {
         .onClick(
           () => {
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
                 this.content = this.content + this.fileStr[index]
                 this.scroller.scrollEdge(Edge.Bottom)
                 if (index === this.fileStr.length - 1) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
                 index++
@@ -100,15 +175,32 @@ struct SupDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
-      .padding({ bottom: 200 })
+      .align(Alignment.TopStart)
+      .layoutWeight(1)
     }
     .alignItems(HorizontalAlign.Center)
   }
@@ -116,9 +208,19 @@ struct SupDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     let theme = new MarkdownTheme()
-    theme.setSupTextColor(this.supTextColor) // 上标字体颜色
+    if (this.supTextColor !== undefined) {
+      theme.setSupTextColor(this.supTextColor) // 上标字体颜色
+    }
     theme.setSupTextSize(this.supTextSize) // 上标字体大小
     theme.setSupOffsetDist(this.supOffsetDist) // 上标偏移距离
+
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     config.setMarkdownTheme(theme)
     return config
   }

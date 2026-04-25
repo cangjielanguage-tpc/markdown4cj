@@ -3,8 +3,6 @@
  */
 package markdown.components
 
-import ohos.arkui.state_macro_manage.*
-
 /**
  * prism 主题接口
  */

@@ -78,8 +78,6 @@ public class SubPlugin <: AbstractMarkdownPlugin {
             "SubNode",
             {
                 visitor, node =>
-                    let view = buildView(node, false, needProps: true)
-                    view.props?.add("SubNode", true)
                     visitor.visitChildren(node)
             }
         )
@@ -106,7 +104,9 @@ class SubDelimiterProcessor <: DelimiterProcessor {
             return 0
         }
     }
-    public override func process(opener: Text, closer: Text, _: Int64): Unit {
+    public override func process(openingRun: DelimiterRun, closingRun: DelimiterRun): Int {
+        let opener = openingRun.getOpener()
+        let closer = closingRun.getCloser()
         var sub: Node = SubNode()
 
         var tmp: ?Node = opener.getNext()
@@ -116,6 +116,7 @@ class SubDelimiterProcessor <: DelimiterProcessor {
         }
 
         opener.insertAfter(sub)
+        return 1
     }
 }
 
@@ -131,8 +132,6 @@ public class SupPlugin <: AbstractMarkdownPlugin {
             "SupNode",
             {
                 visitor, node =>
-                    let view = buildView(node, false, needProps: true)
-                    view.props?.add("SupNode", true)
                     visitor.visitChildren(node)
             }
         )
@@ -159,7 +158,9 @@ class SupDelimiterProcessor <: DelimiterProcessor {
             return 0
         }
     }
-    public override func process(opener: Text, closer: Text, _: Int64): Unit {
+    public override func process(openingRun: DelimiterRun, closingRun: DelimiterRun): Int {
+        let opener = openingRun.getOpener()
+        let closer = closingRun.getCloser()
         var sup: Node = SupNode()
 
         var tmp: ?Node = opener.getNext()
@@ -169,5 +170,6 @@ class SupDelimiterProcessor <: DelimiterProcessor {
         }
 
         opener.insertAfter(sup)
+        return 1
     }
 }

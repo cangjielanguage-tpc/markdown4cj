@@ -2,4 +2,7 @@ export { CJMarkdown,
   MarkdownConfiguration,
   MarkdownTheme,
   MarkdownPlugin,
-  LatexMathColorFormat } from './src/main/ets/pages/CJMarkDown'
+  LatexMathColorFormat,
+  MarkdownScroller,
+  MarkdownRectResult,
+  ImageFitType } from './src/main/ets/pages/CJMarkDown'

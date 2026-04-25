@@ -23,9 +23,9 @@ public class MarkdownCacheConfiguration {
 
     let tableCellComponents: HashMap<Int64, MarkdownTableBlockCellComponent> = HashMap<Int64, MarkdownTableBlockCellComponent>()
 
-    let indentedCodeComponents: HashMap<Int64, MarkdownIndentedCodeBlockComponent> = HashMap<Int64, MarkdownIndentedCodeBlockComponent>()
+    let indentedCodeComponents: HashMap<Int64, MarkdownCodeIndentedBlockComponent> = HashMap<Int64, MarkdownCodeIndentedBlockComponent>()
 
-    let fencedCodeComponents: HashMap<Int64, MarkdownFencedCodeBlockComponent> = HashMap<Int64, MarkdownFencedCodeBlockComponent>()
+    let fencedCodeComponents: HashMap<Int64, MarkdownCodeFencedBlockComponent> = HashMap<Int64, MarkdownCodeFencedBlockComponent>()
 
     let codeComponents: HashMap<Int64, MarkdownCodeComponent> = HashMap<Int64, MarkdownCodeComponent>()
 

@@ -3,7 +3,7 @@
  */
 package markdown.components
 
-import ohos.arkui.state_macro_manage.*
+import ohos.state_macro_manage.*
 
 /**
  * markdown配置
@@ -35,6 +35,11 @@ public class MarkdownConfiguration {
     protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
 
     /**
+     * 图片下载的点击事件
+     */
+    protected var imageDownloadCallback: ?(String) -> Unit = None
+
+    /**
      * 音频的点击事件
      */
     protected var audioCallback: ?(String) -> Unit = None
@@ -50,6 +55,16 @@ public class MarkdownConfiguration {
     protected var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
         url: String, coverCallback: (String, Float64, Int64) -> Unit => ()
     }
+
+    /**
+     * 视频发布的点击事件
+     */
+    protected var videoReleaseCallback: ?(String) -> Unit = None
+
+    /**
+     * 视频下载的点击事件
+     */
+    protected var videoDownloadCallback: ?(String) -> Unit = None
 
     /**
      * 代码复制按钮的点击事件
@@ -83,12 +98,12 @@ public class MarkdownConfiguration {
     /**
      * TOC跳转指定位置
      */
-    protected var tocIndexCallback: ?(?Float64) -> Unit = None
+    protected var tocIndexCallback: ?(?Int64) -> Unit = None
 
     /**
      * 脚注跳转指定位置
      */
-    protected var footnoteCallback: ?(?Float64) -> Unit = None
+    protected var footnoteCallback: ?(?Int64) -> Unit = None
 
     /**
      * 全部文本
@@ -101,9 +116,12 @@ public class MarkdownConfiguration {
         this.linkCallback = builder.linkCallback
         this.imageCallback = builder.imageCallback
         this.imageCallbackCallback = builder.imageCallbackCallback
+        this.imageDownloadCallback = builder.imageDownloadCallback
         this.audioCallback = builder.audioCallback
         this.videoCallback = builder.videoCallback
         this.videoImageCallback = builder.videoImageCallback
+        this.videoReleaseCallback = builder.videoReleaseCallback
+        this.videoDownloadCallback = builder.videoDownloadCallback
         this.codeCopyCallback = builder.codeCopyCallback
         this.codeFullScreenCallback = builder.codeFullScreenCallback
         this.latexImageCallback = builder.latexImageCallback
@@ -172,6 +190,11 @@ public class MarkdownConfigurationBuilder {
     var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None
 
     /**
+     * 图片下载的点击事件
+     */
+    var imageDownloadCallback: ?(String) -> Unit = None
+
+    /**
      * 音频的点击事件
      */
     var audioCallback: ?(String) -> Unit = None
@@ -187,6 +210,16 @@ public class MarkdownConfigurationBuilder {
     var videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit = {
         url: String, coverCallback: (String, Float64, Int64) -> Unit => ()
     }
+
+    /**
+     * 视频发布的点击事件
+     */
+    var videoReleaseCallback: ?(String) -> Unit = None
+
+    /**
+     * 视频下载的点击事件
+     */
+    var videoDownloadCallback: ?(String) -> Unit = None
 
     /**
      * 代码复制按钮的点击事件
@@ -220,12 +253,12 @@ public class MarkdownConfigurationBuilder {
     /**
      * TOC跳转指定位置
      */
-    var tocIndexCallback: ?(?Float64) -> Unit = None
+    var tocIndexCallback: ?(?Int64) -> Unit = None
 
     /**
      * 脚注跳转指定位置
      */
-    var footnoteCallback: ?(?Float64) -> Unit = None
+    var footnoteCallback: ?(?Int64) -> Unit = None
 
     /**
      * 全部文本
@@ -241,9 +274,12 @@ public class MarkdownConfigurationBuilder {
         this.linkCallback = configuration.linkCallback
         this.imageCallback = configuration.imageCallback
         this.imageCallbackCallback = configuration.imageCallbackCallback
+        this.imageDownloadCallback = configuration.imageDownloadCallback
         this.audioCallback = configuration.audioCallback
         this.videoCallback = configuration.videoCallback
         this.videoImageCallback = configuration.videoImageCallback
+        this.videoReleaseCallback = configuration.videoReleaseCallback
+        this.videoDownloadCallback = configuration.videoDownloadCallback
         this.codeCopyCallback = configuration.codeCopyCallback
         this.codeFullScreenCallback = configuration.codeFullScreenCallback
         this.latexImageCallback = configuration.latexImageCallback
@@ -309,6 +345,17 @@ public class MarkdownConfigurationBuilder {
     }
 
     /**
+     * 设置图片下载的点击事件
+     *
+     * @param imageDownloadCallback 图片下载的点击事件
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setImageDownloadCallback(imageDownloadCallback: (String) -> Unit): MarkdownConfigurationBuilder {
+        this.imageDownloadCallback = imageDownloadCallback
+        return this
+    }
+
+    /**
      * 设置音频的点击事件
      *
      * @param audioCallback 音频点击回调接口 (String:音频链接)
@@ -338,6 +385,28 @@ public class MarkdownConfigurationBuilder {
      */
     public func setVideoImageCallback(videoImageCallback: (String, (String, Float64, Int64) -> Unit) -> Unit): MarkdownConfigurationBuilder {
         this.videoImageCallback = videoImageCallback
+        return this
+    }
+
+    /**
+     * 设置视频发布的点击事件
+     *
+     * @param videoReleaseCallback 视频发布的点击事件 (String:视频链接)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setVideoReleaseCallback(videoReleaseCallback: (String) -> Unit): MarkdownConfigurationBuilder {
+        this.videoReleaseCallback = videoReleaseCallback
+        return this
+    }
+
+    /**
+     * 设置视频下载的点击事件
+     *
+     * @param videoDownloadCallback 视频下载的点击事件 (String:视频链接)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setVideoDownloadCallback(videoDownloadCallback: (String) -> Unit): MarkdownConfigurationBuilder {
+        this.videoDownloadCallback = videoDownloadCallback
         return this
     }
 
@@ -391,7 +460,7 @@ public class MarkdownConfigurationBuilder {
      * @param tocIndexCallback TOC跳转指定位置接口 (?Float64:位置距离)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setTocIndexCallback(tocIndexCallback: (?Float64) -> Unit): MarkdownConfigurationBuilder {
+    public func setTocIndexCallback(tocIndexCallback: (?Int64) -> Unit): MarkdownConfigurationBuilder {
         this.tocIndexCallback = tocIndexCallback
         return this
     }
@@ -402,7 +471,7 @@ public class MarkdownConfigurationBuilder {
      * @param footnoteCallback 脚注跳转指定位置接口 (?Float64:位置距离)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
-    public func setFootnoteCallback(footnoteCallback: (?Float64) -> Unit): MarkdownConfigurationBuilder {
+    public func setFootnoteCallback(footnoteCallback: (?Int64) -> Unit): MarkdownConfigurationBuilder {
         this.footnoteCallback = footnoteCallback
         return this
     }

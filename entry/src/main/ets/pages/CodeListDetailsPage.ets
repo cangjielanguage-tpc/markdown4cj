@@ -1,11 +1,13 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextStr } from './FileUtils'
-import { CodeListData } from './CodeListPage'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+  MarkdownScroller,
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+import { getFileContextStr } from '../utils/FileUtils'
+import { CodeListData } from '../model/CodeListData'
 
 @Entry
 @Component
@@ -15,9 +17,14 @@ struct CodeListDetailsPage {
    */
   scroller: Scroller = new Scroller()
   /**
+   * Markdown的控制器
+   */
+  markdownScroller: MarkdownScroller = new MarkdownScroller()
+  /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -29,10 +36,67 @@ struct CodeListDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
+  /**
+   * 是否增量解析Markdown文本
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
   /**
    * 组合代码未选中标题字体大小
    */
@@ -44,29 +108,37 @@ struct CodeListDetailsPage {
   /**
    * 组合代码选中标题文本颜色
    */
-  codeListTitleSelectTextColor: number = 0xFFFF0000
+  codeListTitleSelectTextColor: number | undefined = undefined
   /**
    * 组合代码未选中标题文本颜色
    */
-  codeListTitleUnSelectTextColor: number = 0xFF000000
+  codeListTitleUnSelectTextColor: number | undefined = undefined
   /**
    * 组合代码选中标题背景颜色
    */
-  codeListTitleSelectBackGroupColor: number = 0xFF191919
+  codeListTitleSelectBackGroupColor: number | undefined = undefined
   /**
    * 组合代码未选中标题背景颜色
    */
-  codeListTitleUnSelectBackGroupColor: number = 0x00FFFFFF
-  /**
-   * 增量加载延迟
-   */
-  time: number = 50
+  codeListTitleUnSelectBackGroupColor: number | undefined = undefined
 
   aboutToAppear(): void {
     try {
       let codeListData: CodeListData = router.getParams() as CodeListData
       this.fileStr = getFileContextStr(codeListData._pagePath)
+      // ---------- 通用
       this.isFull = codeListData._isFull
+      this.incrementalAnalysis = codeListData._incrementalAnalysis
+      this.time = codeListData._time
+      this.textNumber = codeListData._textNumber
+      this.isMarkdownParserSync = codeListData._isMarkdownParserSync
+      this.isOnCopy = codeListData._isOnCopy
+      this.blockFirstTopMargin = codeListData._blockFirstTopMargin
+      this.blockLastBottomMargin = codeListData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = codeListData._blockTopAndBottomMargins
+      this.openGestureSwipe = codeListData._openGestureSwipe
+      this.openGestureSwipeTest = codeListData._openGestureSwipeTest
+      // ---------- 专有
       this.codeListTitleTextSize = codeListData._codeListTitleTextSize
       this.codeListTitleSelectTextSize = codeListData._codeListTitleSelectTextSize
       this.codeListTitleSelectTextColor = codeListData._codeListTitleSelectTextColor
@@ -113,15 +185,32 @@ struct CodeListDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
-      .padding({ bottom: 200 })
+      .align(Alignment.TopStart)
+      .layoutWeight(1)
     }
     .alignItems(HorizontalAlign.Center)
   }
@@ -131,12 +220,28 @@ struct CodeListDetailsPage {
     let theme = new MarkdownTheme()
     theme.setCodeListTitleTextSize(this.codeListTitleTextSize)
     theme.setCodeListTitleSelectTextSize(this.codeListTitleSelectTextSize)
-    theme.setCodeListTitleSelectTextColor(this.codeListTitleSelectTextColor)
-    theme.setCodeListTitleUnSelectTextColor(this.codeListTitleUnSelectTextColor)
-    theme.setCodeListTitleSelectBackGroupColor(this.codeListTitleSelectBackGroupColor)
-    theme.setCodeListTitleUnSelectBackGroupColor(this.codeListTitleUnSelectBackGroupColor)
+    if (this.codeListTitleSelectTextColor !== undefined) {
+      theme.setCodeListTitleSelectTextColor(this.codeListTitleSelectTextColor)
+    }
+    if (this.codeListTitleUnSelectTextColor !== undefined) {
+      theme.setCodeListTitleUnSelectTextColor(this.codeListTitleUnSelectTextColor)
+    }
+    if (this.codeListTitleSelectBackGroupColor !== undefined) {
+      theme.setCodeListTitleSelectBackGroupColor(this.codeListTitleSelectBackGroupColor)
+    }
+    if (this.codeListTitleUnSelectBackGroupColor !== undefined) {
+      theme.setCodeListTitleUnSelectBackGroupColor(this.codeListTitleUnSelectBackGroupColor)
+    }
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
+
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     config.setMarkdownTheme(theme)
     return config
   }

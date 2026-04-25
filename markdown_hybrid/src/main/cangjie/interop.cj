@@ -3,8 +3,6 @@
  */
 package markdown
 
-import ohos.ark_interop.*
-
 let EXPORT_MODULE = JSModule.registerModule {
     runtime, exports =>
     ctx = runtime

@@ -4,12 +4,16 @@
 package markdown.plugin
 
 public class LinkifyPlugin <: AbstractMarkdownPlugin {
-    public static func create(): LinkifyPlugin {
-        return LinkifyPlugin()
+    var regs: Array<String> = EMPTY_STRING_ARRAY
+    public static func create(regs: Array<String>): LinkifyPlugin {
+        let plugin = LinkifyPlugin()
+        plugin.regs = regs
+        return plugin
     }
 
     public func configureParser(parser: ParserBuilder): Unit {
-        parser.postProcessor(LinkifyPostProcessor())
+        let proc = LinkifyPostProcessor(regs)
+        parser.postProcessor(proc)
     }
 
     public func getClassType(): String {
@@ -18,15 +22,26 @@ public class LinkifyPlugin <: AbstractMarkdownPlugin {
 }
 
 class LinkifyPostProcessor <: PostProcessor {
+    static let urlreg = #"https?://[!*'();:@&=+$,/?#[\]a-zA-Z0-9-_.~]+"#
+    let multiMatcher: Regex
+    LinkifyPostProcessor(let regs: Array<String>) {
+        var multi: String = regs |> map {s => "(${s})"} |> collectString(delimiter: "|")
+        multi = if (multi.isEmpty()) {
+            urlreg
+        } else {
+            "(${urlreg})|${multi}"
+        }
+        multiMatcher = Regex(multi, RegexFlag.Unicode) /* cjlint-ignore !G.CHK.04 */
+    }
     public func process(node: Node): Node {
-        let visitor = LinkifyVisitor()
+        let visitor = LinkifyVisitor(multiMatcher)
         node.accept(visitor)
         return node
     }
 }
 
 class LinkifyVisitor <: AbstractVisitor {
-    static let urlreg = Regex(#"https?://[!*'();:@&=+$,/?#[\]a-zA-Z0-9-_.~]+"#)
+    LinkifyVisitor(let multiMatcher: Regex) {}
     public func visit(node: Text): Unit {
         if (let Some(_: Link) <- node.getParent()) {
             return
@@ -35,7 +50,7 @@ class LinkifyVisitor <: AbstractVisitor {
         let originTextNode = (node as Text)()
         let fulltext = originTextNode.getLiteral()
         var i = 0
-        for (data in urlreg.lazyFindAll(fulltext)) {
+        for (data in multiMatcher.lazyFindAll(fulltext)) {
             // 处理正则前的文本
             if (i < data.matchPosition().start) {
                 let snippet = fulltext[i..data.matchPosition().start]

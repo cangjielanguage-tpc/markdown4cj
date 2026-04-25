@@ -3,7 +3,7 @@
  */
 package markdown.components
 
-import ohos.arkui.state_macro_manage.*
+import ohos.state_macro_manage.*
 
 /**
  * Markdown围栏代码列表切换自定义控件
@@ -16,13 +16,7 @@ class MarkdownCodeBlockListComponent {
     var markdownConfiguration: MarkdownConfiguration
 
     /**
-     * 所有数据
-     */
-    @State
-    var arrayLists: ArrayList<ArrayList<PrismNodesParseResUI>> = ArrayList<ArrayList<PrismNodesParseResUI>>()
-
-    /**
-     * NodeView
+     * Node
      */
     var nodeView: NodeView
 
@@ -58,6 +52,12 @@ class MarkdownCodeBlockListComponent {
      */
     @State
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>()
+
+    /**
+     * 所有数据
+     */
+    @State
+    var arrayLists: ArrayList<ArrayList<PrismNodesParseResUI>> = ArrayList<ArrayList<PrismNodesParseResUI>>()
 
     protected override func aboutToAppear(): Unit {
         stringCodeToResLists()
@@ -98,11 +98,11 @@ class MarkdownCodeBlockListComponent {
                             // 设置内边距属性
                             .padding(left: 14, right: 14, top: 5, bottom: 5)
                             // 点击动作触发该方法调用
-                            .onClick ({evt =>
+                            .onClick {evt =>
                                 idxSelect = idx
                                 lines = strText[idxSelect].lines().count()
                                 lineArray.set(Array<Int64>(lines, repeat: 0))
-                            })
+                            }
                     }
                 )
             }
@@ -237,7 +237,7 @@ class MarkdownCodeBlockListComponent {
                         // 设置子组件在水平方向上的对齐格式
                         .justifyContent(FlexAlign.End)
                         // 点击动作触发该方法调用
-                        .onClick ({evt => codeCopyOnClick(strText[idxSelect], markdownConfiguration.codeCopyCallback)})
+                        .onClick {evt => codeCopyOnClick(strText[idxSelect], markdownConfiguration.codeCopyCallback)}
                     }
 
                     if (markdownConfiguration.markdownTheme.codeFullScreenIcon.isSome()) {
@@ -277,9 +277,9 @@ class MarkdownCodeBlockListComponent {
                         // 控制当前组件显示或隐藏
                         .visibility(isVisibility(markdownConfiguration.markdownTheme.isCodeFullScreen))
                         // 点击动作触发该方法调用
-                        .onClick ({
+                        .onClick {
                             evt => codeFullScreenOnClick(strText[idxSelect], strInfoText[idxSelect], markdownConfiguration.codeFullScreenCallback)
-                        })
+                        }
                     }
                 }
                 // 设置宽度

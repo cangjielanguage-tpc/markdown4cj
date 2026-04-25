@@ -1,14 +1,27 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
-import { getFileListStr } from './FileUtils'
-import { booleanToString, numberToColorString, stringToBoolean } from './BaseUtils'
+import { titleComponent } from '../component/BaseComponent'
+import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
+import { BaseTabComponent } from '../component/BaseTabComponent'
+import { TypeEnum } from '../model/TypeEnum'
+import {
+  booleanListGeneralData,
+  colorListGeneralData,
+  marginListGeneralData,
+  textLineHeightListGeneralData,
+  textNumberListGeneralData,
+  textSizeListGeneralData,
+  textWordSpaceListGeneralData,
+  timeListGeneralData
+} from '../model/GeneralData'
+import { TableData } from '../model/TableData'
 
 @Entry
 @Component
 struct TablePage {
+  // ---------------- 通用
   /**
    * 滑动控制器
    */
@@ -16,29 +29,122 @@ struct TablePage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * rawfile路径
    */
   rawFilePath: string = "006_表格"
   /**
-   * rawfile标题文件夹列表
+   * rawfile文件夹列表
    */
   @State
   folderList: Array<string> = new Array<string>()
   /**
-   * 增量加载全量加载选项列表
+   * 是否全量加载Markdown文本列表
    */
-  isFullList: Array<string> = ["全量加载", "增量加载"]
+  isFullList: Array<boolean> = booleanListGeneralData
   /**
-   * 增量加载全量加载选项
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
+   * 是否增量解析Markdown文本列表
+   */
+  incrementalAnalysisList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否增量解析Markdown文本
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间列表
+   */
+  timeList: Array<number> = timeListGeneralData
+  /**
+   * 增量加载每次间隔时间
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量列表
+   */
+  textNumberList: Array<number> = textNumberListGeneralData
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本列表
+   */
+  isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果列表
+   */
+  isOnCopyList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距列表
+   */
+  blockFirstTopMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距列表
+   */
+  blockLastBottomMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距列表
+   */
+  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动列表
+   */
+  openGestureSwipeList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试列表
+   */
+  openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+
+  // ---------------- 专有
+  /**
    * 表格内容内边距列表
    */
-  tableCellPaddingList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  tableCellPaddingList: Array<number> = textWordSpaceListGeneralData
   /**
    * 表格内容内边距
    */
@@ -47,12 +153,12 @@ struct TablePage {
   /**
    * 表格边框颜色列表
    */
-  tableBorderColorList: Array<number> = [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  tableBorderColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 表格边框颜色
    */
   @State
-  tableBorderColor: number = 0xFF000000
+  tableBorderColor: number | undefined = undefined
   /**
    * 表格边框宽度列表
    */
@@ -65,37 +171,34 @@ struct TablePage {
   /**
    * 表格奇数行背景色列表
    */
-  tableOddRowBackgroundColorList: Array<number> =
-    [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  tableOddRowBackgroundColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 表格奇数行背景色
    */
   @State
-  tableOddRowBackgroundColor: number = 0xFFFFFFFF
+  tableOddRowBackgroundColor: number | undefined = undefined
   /**
    * 表格偶数行背景色列表
    */
-  tableEvenRowBackgroundColorList: Array<number> =
-    [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  tableEvenRowBackgroundColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 表格偶数行背景色
    */
   @State
-  tableEvenRowBackgroundColor: number = 0xFFE0E0E0
+  tableEvenRowBackgroundColor: number | undefined = undefined
   /**
-   * 表格头背景色列表
+   * 表格标题背景色列表
    */
-  tableHeaderRowBackgroundColorList: Array<number> =
-    [0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  tableHeaderRowBackgroundColorList: Array<number | undefined> = colorListGeneralData
   /**
-   * 表格头背景色
+   * 表格标题背景色
    */
   @State
-  tableHeaderRowBackgroundColor: number = 0xFFFFFFFF
+  tableHeaderRowBackgroundColor: number | undefined = undefined
   /**
    * 表格文本行高列表
    */
-  tableTextLineHeightList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  tableTextLineHeightList: Array<number> = textLineHeightListGeneralData
   /**
    * 表格文本行高
    */
@@ -131,12 +234,84 @@ struct TablePage {
   /**
    * 表格第一列是否加粗列表
    */
-  tableFirstColumnBoldList: Array<boolean> = [true, false]
+  tableFirstColumnBoldList: Array<boolean> = booleanListGeneralData
   /**
    * 表格第一列是否加粗
    */
   @State
   tableFirstColumnBold: boolean = false
+  /**
+   * 表格标题文本行高列表
+   */
+  tableTitleLineHeightList: Array<number> = textLineHeightListGeneralData
+  /**
+   * 表格标题文本行高
+   */
+  @State
+  tableTitleLineHeight: number = 22
+  /**
+   * 表格标题文本大小列表
+   */
+  tableTitleTextSizeList: Array<number> = textSizeListGeneralData
+  /**
+   * 表格标题文本大小
+   */
+  @State
+  tableTitleTextSize: number = 14
+  /**
+   * 表格标题文本颜色列表
+   */
+  tableTitleTextColorList: Array<number | undefined> = colorListGeneralData
+  /**
+   * 表格标题文本颜色
+   */
+  @State
+  tableTitleTextColor: number | undefined = undefined
+  /**
+   * 表格内容文本行高列表
+   */
+  tableContentTextLineHeightList: Array<number> = textLineHeightListGeneralData
+  /**
+   * 表格内容文本行高
+   */
+  @State
+  tableContentTextLineHeight: number = 22
+  /**
+   * 表格内容文本大小列表
+   */
+  tableContentTextSizeList: Array<number> = textSizeListGeneralData
+  /**
+   * 表格内容文本大小
+   */
+  @State
+  tableContentTextSize: number = 14
+  /**
+   * 表格内容文本颜色列表
+   */
+  tableContentTextColorList: Array<number | undefined> = colorListGeneralData
+  /**
+   * 表格内容文本颜色
+   */
+  @State
+  tableContentTextColor: number | undefined = undefined
+  /**
+   * 是否显示滚动条
+   */
+  @State
+  tableScrollBarShow: boolean = false
+  /**
+   * 是否显示滚动条
+   */
+  tableScrollBarShowList: Array<boolean> = booleanListGeneralData
+  /**
+   * 表格滚动条颜色
+   */
+  @State
+  tableScrollBarColor: number | undefined = undefined
+  /**
+   * 表格滚动条颜色列表
+   */
+  tableScrollBarColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 配置数据内容
    */
@@ -157,387 +332,185 @@ struct TablePage {
       )
       Scroll() {
         Column() {
-          Column() {
-            Row() {
-              Text(`是否增量加载 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${booleanToString(this.isFull)}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
+          // ------------ 通用
+          BaseTabComponent({
+            titleStr: "是否全量加载Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isFullList,
+            allData: this.isFull
+          })
+          BaseTabComponent({
+            titleStr: "是否增量解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.incrementalAnalysisList,
+            allData: this.incrementalAnalysis
+          })
+          BaseTabComponent({
+            titleStr: "增量加载每次间隔时间 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.timeList,
+            allData: this.time
+          })
+          BaseTabComponent({
+            titleStr: "增量每次增量文本数量 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.textNumberList,
+            allData: this.textNumber
+          })
+          BaseTabComponent({
+            titleStr: "是否同步解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isMarkdownParserSyncList,
+            allData: this.isMarkdownParserSync
+          })
+          BaseTabComponent({
+            titleStr: "是否打开长按复制粘贴效果 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isOnCopyList,
+            allData: this.isOnCopy
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本第一个模块上边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockFirstTopMarginList,
+            allData: this.blockFirstTopMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本最后一个模块下边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockLastBottomMarginList,
+            allData: this.blockLastBottomMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockTopAndBottomMarginsList,
+            allData: this.blockTopAndBottomMargins
+          })
+          BaseTabComponent({
+            titleStr: "是否开启响应滑动测试 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeTestList,
+            allData: this.openGestureSwipeTest
+          })
+          BaseTabComponent({
+            titleStr: "是否允许markdown控件自身响应滑动 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeList,
+            allData: this.openGestureSwipe
+          })
 
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isFullList, (item: string, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isFull = stringToBoolean(item)
-                    this.tableData.isFull = this.isFull
-                  })
-              })
-            }
-          }
+          // ---------------- 专有
+          BaseTabComponent({
+            titleStr: "表格内容内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.tableCellPaddingList,
+            allData: this.tableCellPadding
+          })
+          BaseTabComponent({
+            titleStr: "表格边框颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.tableBorderColorList,
+            allData: this.tableBorderColor
+          })
+          BaseTabComponent({
+            titleStr: "表格边框宽度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.tableBorderWidthList,
+            allData: this.tableBorderWidth
+          })
+          BaseTabComponent({
+            titleStr: "表格奇数行背景色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.tableOddRowBackgroundColorList,
+            allData: this.tableOddRowBackgroundColor
+          })
+          BaseTabComponent({
+            titleStr: "表格偶数行背景色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.tableEvenRowBackgroundColorList,
+            allData: this.tableEvenRowBackgroundColor
+          })
+          BaseTabComponent({
+            titleStr: "表格标题背景色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.tableHeaderRowBackgroundColorList,
+            allData: this.tableHeaderRowBackgroundColor
+          })
+          BaseTabComponent({
+            titleStr: "表格圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.tableRadiusList,
+            allData: this.tableRadius
+          })
+          BaseTabComponent({
+            titleStr: "表格最小宽度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.tableMinTextWidthList,
+            allData: this.tableMinTextWidth
+          })
+          BaseTabComponent({
+            titleStr: "表格最大宽度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.tableMaxTextWidthList,
+            allData: this.tableMaxTextWidth
+          })
+          BaseTabComponent({
+            titleStr: "表格第一列是否加粗 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.tableFirstColumnBoldList,
+            allData: this.tableFirstColumnBold
+          })
+          BaseTabComponent({
+            titleStr: "表格标题文本行高 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.tableTitleLineHeightList,
+            allData: this.tableTitleLineHeight
+          })
+          BaseTabComponent({
+            titleStr: "表格标题文本大小 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.tableTitleTextSizeList,
+            allData: this.tableTitleTextSize
+          })
+          BaseTabComponent({
+            titleStr: "表格标题文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.tableTitleTextColorList,
+            allData: this.tableTitleTextColor
+          })
+          BaseTabComponent({
+            titleStr: "表格内容文本行高 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.tableContentTextLineHeightList,
+            allData: this.tableContentTextLineHeight
+          })
+          BaseTabComponent({
+            titleStr: "表格内容文本大小 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.tableContentTextSizeList,
+            allData: this.tableContentTextSize
+          })
+          BaseTabComponent({
+            titleStr: "表格内容文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.tableContentTextColorList,
+            allData: this.tableContentTextColor
+          })
+          BaseTabComponent({
+            titleStr: "是否显示滚动条 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.tableScrollBarShowList,
+            allData: this.tableScrollBarShow
+          })
+          BaseTabComponent({
+            titleStr: "表格滚动条颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.tableScrollBarColorList,
+            allData: this.tableScrollBarColor
+          })
 
-          Column() {
-            Row() {
-              Text(`表格内容内边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.tableCellPadding}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.tableCellPaddingList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.tableCellPadding = item
-                    this.tableData.tableCellPadding = this.tableCellPadding
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`表格边框颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.tableBorderColor))
-                .fontSize(16)
-                .fontColor(this.tableBorderColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.tableBorderColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.tableBorderColor = item
-                    this.tableData.tableBorderColor = this.tableBorderColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`表格边框宽度 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.tableBorderWidth}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.tableBorderWidthList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.tableBorderWidth = item
-                    this.tableData.tableBorderWidth = this.tableBorderWidth
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`表格奇数行背景色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.tableOddRowBackgroundColor))
-                .fontSize(16)
-                .fontColor(this.tableOddRowBackgroundColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.tableOddRowBackgroundColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.tableOddRowBackgroundColor = item
-                    this.tableData.tableOddRowBackgroundColor = this.tableOddRowBackgroundColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`表格偶数行背景色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.tableEvenRowBackgroundColor))
-                .fontSize(16)
-                .fontColor(this.tableEvenRowBackgroundColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.tableEvenRowBackgroundColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.tableEvenRowBackgroundColor = item
-                    this.tableData.tableEvenRowBackgroundColor = this.tableEvenRowBackgroundColor
-                  })
-              })
-            }
-          }
-
-
-          Column() {
-            Row() {
-              Text(`表格头背景色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.tableHeaderRowBackgroundColor))
-                .fontSize(16)
-                .fontColor(this.tableHeaderRowBackgroundColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.tableHeaderRowBackgroundColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.tableHeaderRowBackgroundColor = item
-                    this.tableData.tableHeaderRowBackgroundColor = this.tableHeaderRowBackgroundColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`表格文本行高 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.tableTextLineHeight}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.tableTextLineHeightList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.tableTextLineHeight = item
-                    this.tableData.tableTextLineHeight = this.tableTextLineHeight
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`表格圆角 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.tableRadius}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.tableRadiusList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.tableRadius = item
-                    this.tableData.tableRadius = this.tableRadius
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`表格最小宽度 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.tableMinTextWidth}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.tableMinTextWidthList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.tableMinTextWidth = item
-                    this.tableData.tableMinTextWidth = this.tableMinTextWidth
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`表格最大宽度 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.tableMaxTextWidth}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.tableMaxTextWidthList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.tableMaxTextWidth = item
-                    this.tableData.tableMaxTextWidth = this.tableMaxTextWidth
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`表格第一列是否加粗 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.tableFirstColumnBold}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.tableFirstColumnBoldList, (item: boolean, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.tableFirstColumnBold = item
-                    this.tableData.tableFirstColumnBold = this.tableFirstColumnBold
-                  })
-              })
-            }
-          }
-
+          // 列表显示
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
@@ -551,7 +524,39 @@ struct TablePage {
                   .align(Alignment.Center)
                   .fontSize(16)
                   .onClick(() => {
+                    // ---------- 通用
+                    this.tableData.isFull = this.isFull
+                    this.tableData.incrementalAnalysis = this.incrementalAnalysis
+                    this.tableData.time = this.time
+                    this.tableData.textNumber = this.textNumber
+                    this.tableData.isMarkdownParserSync = this.isMarkdownParserSync
+                    this.tableData.isOnCopy = this.isOnCopy
+                    this.tableData.blockFirstTopMargin = this.blockFirstTopMargin
+                    this.tableData.blockLastBottomMargin = this.blockLastBottomMargin
+                    this.tableData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.tableData.openGestureSwipe = this.openGestureSwipe
+                    this.tableData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.tableData.pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 专有
+                    this.tableData.tableCellPadding = this.tableCellPadding
+                    this.tableData.tableBorderColor = this.tableBorderColor
+                    this.tableData.tableBorderWidth = this.tableBorderWidth
+                    this.tableData.tableOddRowBackgroundColor = this.tableOddRowBackgroundColor
+                    this.tableData.tableEvenRowBackgroundColor = this.tableEvenRowBackgroundColor
+                    this.tableData.tableHeaderRowBackgroundColor = this.tableHeaderRowBackgroundColor
+                    this.tableData.tableRadius = this.tableRadius
+                    this.tableData.tableMinTextWidth = this.tableMinTextWidth
+                    this.tableData.tableMaxTextWidth = this.tableMaxTextWidth
+                    this.tableData.tableFirstColumnBold = this.tableFirstColumnBold
+                    this.tableData.tableTitleLineHeight = this.tableTitleLineHeight
+                    this.tableData._tableTitleTextSize = this.tableTitleTextSize
+                    this.tableData._tableTitleTextColor = this.tableTitleTextColor
+                    this.tableData._tableContentTextLineHeight = this.tableContentTextLineHeight
+                    this.tableData._tableContentTextSize = this.tableContentTextSize
+                    this.tableData._tableContentTextColor = this.tableContentTextColor
+                    this.tableData.tableScrollBarShow = this.tableScrollBarShow
+                    this.tableData.tableScrollBarColor = this.tableScrollBarColor
+                    // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/TableDetailsPage", params: this.tableData })
                   })
               }
@@ -567,73 +572,4 @@ struct TablePage {
   }
 }
 
-export class TableData {
-  _isFull: boolean = true
-  _tableCellPadding: number = 4
-  _tableBorderColor: number = 0xFF000000
-  _tableBorderWidth: number = 1
-  _tableOddRowBackgroundColor: number = 0xFFFFFFFF
-  _tableEvenRowBackgroundColor: number = 0xFFE0E0E0
-  _tableHeaderRowBackgroundColor: number = 0xFFFFFFFF
-  _tableTextLineHeight: number = 22
-  _tableRadius: number = 5
-  _tableMinTextWidth: number = 50
-  _tableMaxTextWidth: number = 300
-  _tableFirstColumnBold: boolean = false
-  _pagePath: string = ""
 
-  public set isFull(value: boolean) {
-    this._isFull = value
-  }
-
-  public set tableCellPadding(value: number) {
-    this._tableCellPadding = value
-  }
-
-  public set tableBorderColor(value: number) {
-    this._tableBorderColor = value
-  }
-
-  public set tableBorderWidth(value: number) {
-    this._tableBorderWidth = value
-  }
-
-  public set tableOddRowBackgroundColor(value: number) {
-    this._tableOddRowBackgroundColor = value
-  }
-
-  public set tableEvenRowBackgroundColor(value: number) {
-    this._tableEvenRowBackgroundColor = value
-  }
-
-  public set tableHeaderRowBackgroundColor(value: number) {
-    this._tableHeaderRowBackgroundColor = value
-  }
-
-  public set tableTextLineHeight(value: number) {
-    this._tableTextLineHeight = value
-  }
-
-  public set tableRadius(value: number) {
-    this._tableRadius = value
-  }
-
-  public set tableMinTextWidth(value: number) {
-    this._tableMinTextWidth = value
-  }
-
-  public set tableMaxTextWidth(value: number) {
-    this._tableMaxTextWidth = value
-  }
-
-  public set tableFirstColumnBold(value: boolean) {
-    this._tableFirstColumnBold = value
-  }
-
-  public set pagePath(value: string) {
-    this._pagePath = value
-  }
-
-  constructor() {
-  }
-}

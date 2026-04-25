@@ -1,27 +1,49 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { NodeController, FrameNode } from '@kit.ArkUI';
-import { CJMarkdownConfig, CJMarkdownTheme, CJMarkdownPlugin, registerImgPreprocessCallback, setGlobalContext, getCJResource, getLoadCJPage} from 'libmarkdown.so';
+import { NodeController, FrameNode } from '@kit.ArkUI'
+import { requireCJLib } from 'libark_interop_loader.so'
+import {
+  CustomLib,
+  CJMarkdownConfig,
+  CJMarkdownTheme,
+  CJMarkdownPlugin,
+  CJMarkdownScroller
+} from 'libark_interop_api_markdown.so'
+
+export let global_customLib: CustomLib | undefined = undefined
 
 class CJNodeController extends NodeController {
   rootNode?: FrameNode = undefined
-  public callbackCJ: (input: string) => void = (input: string) => {this.mdStr = input}  // 持续输出调用
+  public callbackCJ: (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => void =
+    (input: string, isInputEnded: boolean, incrementalAnalysis: boolean) => {
+      this.mdStr = input
+      this.isInputEnded = isInputEnded
+      this.incrementalAnalysis = incrementalAnalysis
+    } // 持续输出调用
   mdStr: string
+  isInputEnded: boolean
+  incrementalAnalysis: boolean
   config?: CJMarkdownConfig
   plugin?: CJMarkdownPlugin
+  listScroller?: CJMarkdownScroller
 
-  constructor(input: string, config?: CJMarkdownConfig, plugin?: CJMarkdownPlugin) {
+  constructor(input: string, isInputEnded: boolean, incrementalAnalysis: boolean, config?: CJMarkdownConfig, plugin?: CJMarkdownPlugin, listScroller?: CJMarkdownScroller) {
     super()
     this.mdStr = input
+    this.isInputEnded = isInputEnded
+    this.incrementalAnalysis = incrementalAnalysis
     this.config = config
     this.plugin = plugin
+    this.listScroller = listScroller
   }
 
   makeNode(ctx: UIContext): FrameNode | null {
     if (this.rootNode === undefined) {
       this.rootNode = new FrameNode(ctx)
-      this.callbackCJ = getLoadCJPage(this.mdStr, this.config, this.plugin)
+      if (global_customLib !== undefined) {
+        this.callbackCJ = global_customLib.getLoadCJPage(this.mdStr, this.isInputEnded, this.incrementalAnalysis, this.config, this.plugin, this.listScroller)
+      }
     }
     return this.rootNode
   }
@@ -29,25 +51,81 @@ class CJNodeController extends NodeController {
 
 @Component
 export struct CJMarkdown {
+  /**
+   * 外部传入的Markdown文档
+   */
   @Prop @Watch('onMarkDownChange') content: string = ''
+  /**
+   * 流式输入是否输入结束。true:结束输入,false:持续输入。默认true
+   */
+  @Prop @Watch('onMarkDownChange') isInputEnded: boolean = true
+  /**
+   * markdown是否增量解析。true:增量解析,false:全量解析。默认false
+   */
+  @Prop @Watch('onMarkDownChange') incrementalAnalysis: boolean = false
+  /**
+   * markdown配置
+   */
   @State config?: MarkdownConfiguration = undefined
+  /**
+   * markdown插件
+   */
   @State plugin?: MarkdownPlugin = undefined
+  /**
+   * 滑动控制器
+   */
+  @State listScroller?: MarkdownScroller = undefined
+  /**
+   * 是否使用Cangjie互操作组件展示。true:使用Cangjie互操作组件,false:使用ArkUI。默认true
+   */
+  @Prop useCangjieComponent?: boolean = true
+  /**
+   * 使用ArkUI布局用户传入ArkUI自定义组件,不传则使用三方库自带的Text组件显示
+   */
+  @BuilderParam customContains: () => void = this.defaultTextBuilder
   private markdownNode: CJNodeController | null = null
 
-  onMarkDownChange():void {
-    this.markdownNode?.callbackCJ(this.content)
+  @Builder
+  defaultTextBuilder() {
+    if (!this.useCangjieComponent) {
+      Column() {
+        Text(this.content)
+      }
+      .width('100%')
+      .height('100%')
+    }
+  }
+
+  onMarkDownChange(): void {
+    if (this.useCangjieComponent === true) {
+      this.markdownNode?.callbackCJ(this.content, this.isInputEnded, this.incrementalAnalysis)
+    }
   }
 
   aboutToAppear(): void {
-    this.markdownNode = new CJNodeController(this.content, this.getConfig(), this.getPlugin())
+    if (this.useCangjieComponent === true) {
+      if (global_customLib === undefined) {
+        global_customLib = requireCJLib("libmarkdown.so") as CustomLib
+      }
+      this.markdownNode = new CJNodeController(this.content, this.isInputEnded, this.incrementalAnalysis, this.getConfig(), this.getPlugin(), this.listScroller?.getScroller())
+    } else {
+      global_customLib = undefined
+    }
   }
 
   build() {
-    NodeContainer(this.markdownNode)
+    if (this.useCangjieComponent) {
+      NodeContainer(this.markdownNode)
+    } else {
+      this.customContains()
+    }
   }
 
-  getConfig(): CJMarkdownConfig {
-    let cjMarkdownConfig: CJMarkdownConfig = new CJMarkdownConfig()
+  getConfig(): CJMarkdownConfig | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownConfig: CJMarkdownConfig = new global_customLib.CJMarkdownConfig()
     if (this.config !== undefined) {
       if (this.config.linkCallback !== undefined) {
         cjMarkdownConfig.setLinkCallback(this.config.linkCallback)
@@ -59,7 +137,12 @@ export struct CJMarkdown {
         cjMarkdownConfig.setImageCallback(this.config.imageCallback)
       }
       if (this.config.imageCallbackCallback !== undefined) {
-        registerImgPreprocessCallback(this.config.imageCallbackCallback)
+        global_customLib.registerImgPreprocessCallback(this.config.imageCallbackCallback)
+      } else {
+        global_customLib.registerImgPreprocessCallback(undefined)
+      }
+      if (this.config.imageDownloadCallback !== undefined) {
+        cjMarkdownConfig.setImageDownloadCallback(this.config.imageDownloadCallback)
       }
       if (this.config.audioCallback !== undefined) {
         cjMarkdownConfig.setAudioCallback(this.config.audioCallback)
@@ -69,6 +152,12 @@ export struct CJMarkdown {
       }
       if (this.config.videoImageCallback !== undefined) {
         cjMarkdownConfig.setVideoImageCallback(this.config.videoImageCallback)
+      }
+      if (this.config.videoReleaseCallback !== undefined) {
+        cjMarkdownConfig.setVideoReleaseCallback(this.config.videoReleaseCallback)
+      }
+      if (this.config.videoDownloadCallback !== undefined) {
+        cjMarkdownConfig.setVideoDownloadCallback(this.config.videoDownloadCallback)
       }
       if (this.config.codeCopyCallback !== undefined) {
         cjMarkdownConfig.setCodeCopyCallback(this.config.codeCopyCallback)
@@ -88,27 +177,36 @@ export struct CJMarkdown {
       if (this.config.footnoteCallback !== undefined) {
         cjMarkdownConfig.setFootnoteCallback(this.config.footnoteCallback)
       }
+      cjMarkdownConfig.setCJMarkdownTheme(this.getTheme())
     }
-    cjMarkdownConfig.setCJMarkdownTheme(this.getTheme())
     return cjMarkdownConfig
   }
 
-  getTheme(): CJMarkdownTheme {
-    let cjMarkdownTheme: CJMarkdownTheme = new CJMarkdownTheme()
+  getTheme(): CJMarkdownTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme: CJMarkdownTheme = new global_customLib.CJMarkdownTheme()
     if (this.config !== undefined) {
       if (this.config.markdownTheme !== undefined) {
         if (this.config.markdownTheme.context !== undefined) {
-          setGlobalContext(this.config.markdownTheme.context)
+          global_customLib.setGlobalContext(this.config.markdownTheme.context)
+        } else {
+          global_customLib.setGlobalContext(undefined)
         }
-        getCJResource(
+        global_customLib.getCJResource(
           this.config.markdownTheme.codeFullScreenIcon,
           this.config.markdownTheme.codeCopyIcon,
           this.config.markdownTheme.audioIcon,
           this.config.markdownTheme.videoImage,
           this.config.markdownTheme.playCircleFillIcon,
           this.config.markdownTheme.bannerImage,
-          this.config.markdownTheme.imageResource
+          this.config.markdownTheme.imageResource,
+          this.config.markdownTheme.videoReleaseImage,
+          this.config.markdownTheme.videoDownloadImage,
+          this.config.markdownTheme.imageDownloadImage
         )
+
         if (this.config.markdownTheme.isMarkdownParserSync !== undefined) {
           cjMarkdownTheme.setIsMarkdownParserSync(this.config.markdownTheme.isMarkdownParserSync)
         }
@@ -138,6 +236,9 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.linkSize !== undefined) {
           cjMarkdownTheme.setLinkSize(this.config.markdownTheme.linkSize)
+        }
+        if (this.config.markdownTheme.linkLineHeight !== undefined) {
+          cjMarkdownTheme.setLinkLineHeight(this.config.markdownTheme.linkLineHeight)
         }
         if (this.config.markdownTheme.linkBackGroupColor !== undefined) {
           cjMarkdownTheme.setLinkBackGroupColor(this.config.markdownTheme.linkBackGroupColor)
@@ -271,9 +372,6 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.taskListItemLength !== undefined) {
           cjMarkdownTheme.setTaskListItemLength(this.config.markdownTheme.taskListItemLength)
         }
-        if (this.config.markdownTheme.isCodeStyle !== undefined) {
-          cjMarkdownTheme.setIsCodeStyle(this.config.markdownTheme.isCodeStyle)
-        }
         if (this.config.markdownTheme.isCodeFormat !== undefined) {
           cjMarkdownTheme.setIsCodeFormat(this.config.markdownTheme.isCodeFormat)
         }
@@ -288,12 +386,6 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.codeTypeface !== undefined) {
           cjMarkdownTheme.setCodeTypeface(this.config.markdownTheme.codeTypeface)
-        }
-        if (this.config.markdownTheme.codeLeftAndRightPadding !== undefined) {
-          cjMarkdownTheme.setCodeLeftAndRightPadding(this.config.markdownTheme.codeLeftAndRightPadding)
-        }
-        if (this.config.markdownTheme.codeHeight !== undefined) {
-          cjMarkdownTheme.setCodeHeight(this.config.markdownTheme.codeHeight)
         }
         if (this.config.markdownTheme.isCodeBlockParserSync !== undefined) {
           cjMarkdownTheme.setIsCodeBlockParserSync(this.config.markdownTheme.isCodeBlockParserSync)
@@ -370,9 +462,6 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.headingBreakHeight !== undefined) {
           cjMarkdownTheme.setHeadingBreakHeight(this.config.markdownTheme.headingBreakHeight)
         }
-        if (this.config.markdownTheme.headingBreakColor !== undefined) {
-          cjMarkdownTheme.setHeadingBreakColor(this.config.markdownTheme.headingBreakColor)
-        }
         if (this.config.markdownTheme.headingTypeface !== undefined) {
           cjMarkdownTheme.setHeadingTypeface(this.config.markdownTheme.headingTypeface)
         }
@@ -382,15 +471,23 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.headingBottomMargins !== undefined) {
           cjMarkdownTheme.setHeadingBottomMargins(this.config.markdownTheme.headingBottomMargins)
         }
-        if (this.config.markdownTheme.headingTextSizeMultipliers !== undefined) {
-          let multipliers: Array<number> = new Array<number>()
-          for (let index = 0; index < this.config.markdownTheme.headingTextSizeMultipliers.length; index++) {
-            multipliers.push(this.config.markdownTheme.headingTextSizeMultipliers[index])
-          }
-          cjMarkdownTheme.setHeadingTextSizeMultipliers(multipliers)
+        if (this.config.markdownTheme.headingTextSize1 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize1(this.config.markdownTheme.headingTextSize1)
         }
-        if (this.config.markdownTheme.headingTextColor !== undefined) {
-          cjMarkdownTheme.setHeadingTextColor(this.config.markdownTheme.headingTextColor)
+        if (this.config.markdownTheme.headingTextSize2 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize2(this.config.markdownTheme.headingTextSize2)
+        }
+        if (this.config.markdownTheme.headingTextSize3 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize3(this.config.markdownTheme.headingTextSize3)
+        }
+        if (this.config.markdownTheme.headingTextSize4 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize4(this.config.markdownTheme.headingTextSize4)
+        }
+        if (this.config.markdownTheme.headingTextSize5 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize5(this.config.markdownTheme.headingTextSize5)
+        }
+        if (this.config.markdownTheme.headingTextSize6 !== undefined) {
+          cjMarkdownTheme.setHeadingTextSize6(this.config.markdownTheme.headingTextSize6)
         }
         if (this.config.markdownTheme.headingTextWordSpace !== undefined) {
           cjMarkdownTheme.setHeadingTextWordSpace(this.config.markdownTheme.headingTextWordSpace)
@@ -412,6 +509,30 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.headingTextLineHeight6 !== undefined) {
           cjMarkdownTheme.setHeadingTextLineHeight6(this.config.markdownTheme.headingTextLineHeight6)
+        }
+        if (this.config.markdownTheme.headingTextColor1 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor1(this.config.markdownTheme.headingTextColor1)
+        }
+        if (this.config.markdownTheme.headingBreakColor1 !== undefined) {
+          cjMarkdownTheme.setHeadingBreakColor1(this.config.markdownTheme.headingBreakColor1)
+        }
+        if (this.config.markdownTheme.headingTextColor2 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor2(this.config.markdownTheme.headingTextColor2)
+        }
+        if (this.config.markdownTheme.headingBreakColor2 !== undefined) {
+          cjMarkdownTheme.setHeadingBreakColor2(this.config.markdownTheme.headingBreakColor2)
+        }
+        if (this.config.markdownTheme.headingTextColor3 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor3(this.config.markdownTheme.headingTextColor3)
+        }
+        if (this.config.markdownTheme.headingTextColor4 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor4(this.config.markdownTheme.headingTextColor4)
+        }
+        if (this.config.markdownTheme.headingTextColor5 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor5(this.config.markdownTheme.headingTextColor5)
+        }
+        if (this.config.markdownTheme.headingTextColor6 !== undefined) {
+          cjMarkdownTheme.setHeadingTextColor6(this.config.markdownTheme.headingTextColor6)
         }
         if (this.config.markdownTheme.paragraphTopMargins !== undefined) {
           cjMarkdownTheme.setParagraphTopMargins(this.config.markdownTheme.paragraphTopMargins)
@@ -548,6 +669,57 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.videoMarginBottom !== undefined) {
           cjMarkdownTheme.setVideoMarginBottom(this.config.markdownTheme.videoMarginBottom)
         }
+        if (this.config.markdownTheme.isVideoBottomLayout !== undefined) {
+          cjMarkdownTheme.setIsVideoBottomLayout(this.config.markdownTheme.isVideoBottomLayout)
+        }
+        if (this.config.markdownTheme.videoReleaseImageWidthHeight !== undefined) {
+          cjMarkdownTheme.setVideoReleaseImageWidthHeight(this.config.markdownTheme.videoReleaseImageWidthHeight)
+        }
+        if (this.config.markdownTheme.videoReleaseWidth !== undefined) {
+          cjMarkdownTheme.setVideoReleaseWidth(this.config.markdownTheme.videoReleaseWidth)
+        }
+        if (this.config.markdownTheme.videoReleaseHeight !== undefined) {
+          cjMarkdownTheme.setVideoReleaseHeight(this.config.markdownTheme.videoReleaseHeight)
+        }
+        if (this.config.markdownTheme.videoReleaseRadius !== undefined) {
+          cjMarkdownTheme.setVideoReleaseRadius(this.config.markdownTheme.videoReleaseRadius)
+        }
+        if (this.config.markdownTheme.videoReleaseText !== undefined) {
+          cjMarkdownTheme.setVideoReleaseText(this.config.markdownTheme.videoReleaseText)
+        }
+        if (this.config.markdownTheme.videoReleaseTexSize !== undefined) {
+          cjMarkdownTheme.setVideoReleaseTexSize(this.config.markdownTheme.videoReleaseTexSize)
+        }
+        if (this.config.markdownTheme.videoReleaseTexColor !== undefined) {
+          cjMarkdownTheme.setVideoReleaseTexColor(this.config.markdownTheme.videoReleaseTexColor)
+        }
+        if (this.config.markdownTheme.videoReleaseBackgroundColor !== undefined) {
+          cjMarkdownTheme.setVideoReleaseBackgroundColor(this.config.markdownTheme.videoReleaseBackgroundColor)
+        }
+        if (this.config.markdownTheme.videoDownloadImageWidthHeight !== undefined) {
+          cjMarkdownTheme.setVideoDownloadImageWidthHeight(this.config.markdownTheme.videoDownloadImageWidthHeight)
+        }
+        if (this.config.markdownTheme.videoDownloadWidth !== undefined) {
+          cjMarkdownTheme.setVideoDownloadWidth(this.config.markdownTheme.videoDownloadWidth)
+        }
+        if (this.config.markdownTheme.videoDownloadHeight !== undefined) {
+          cjMarkdownTheme.setVideoDownloadHeight(this.config.markdownTheme.videoDownloadHeight)
+        }
+        if (this.config.markdownTheme.videoDownloadRadius !== undefined) {
+          cjMarkdownTheme.setVideoDownloadRadius(this.config.markdownTheme.videoDownloadRadius)
+        }
+        if (this.config.markdownTheme.videoDownloadText !== undefined) {
+          cjMarkdownTheme.setVideoDownloadText(this.config.markdownTheme.videoDownloadText)
+        }
+        if (this.config.markdownTheme.videoDownloadTexSize !== undefined) {
+          cjMarkdownTheme.setVideoDownloadTexSize(this.config.markdownTheme.videoDownloadTexSize)
+        }
+        if (this.config.markdownTheme.videoDownloadTexColor !== undefined) {
+          cjMarkdownTheme.setVideoDownloadTexColor(this.config.markdownTheme.videoDownloadTexColor)
+        }
+        if (this.config.markdownTheme.videoDownloadBackgroundColor !== undefined) {
+          cjMarkdownTheme.setVideoDownloadBackgroundColor(this.config.markdownTheme.videoDownloadBackgroundColor)
+        }
         if (this.config.markdownTheme.imageFitType !== undefined) {
           cjMarkdownTheme.setImageFitType(this.config.markdownTheme.imageFitType)
         }
@@ -557,8 +729,20 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.imageFixedRatioWidth !== undefined) {
           cjMarkdownTheme.setImageFixedRatioWidth(this.config.markdownTheme.imageFixedRatioWidth)
         }
+        if (this.config.markdownTheme.imageMaxHeight !== undefined) {
+          cjMarkdownTheme.setImageMaxHeight(this.config.markdownTheme.imageMaxHeight)
+        }
+        if (this.config.markdownTheme.imageMaxWidth !== undefined) {
+          cjMarkdownTheme.setImageMaxWidth(this.config.markdownTheme.imageMaxWidth)
+        }
         if (this.config.markdownTheme.imageBorderRadius !== undefined) {
           cjMarkdownTheme.setImageBorderRadius(this.config.markdownTheme.imageBorderRadius)
+        }
+        if (this.config.markdownTheme.imageBorderWidth !== undefined) {
+          cjMarkdownTheme.setImageBorderWidth(this.config.markdownTheme.imageBorderWidth)
+        }
+        if (this.config.markdownTheme.imageBorderColor !== undefined) {
+          cjMarkdownTheme.setImageBorderColor(this.config.markdownTheme.imageBorderColor)
         }
         if (this.config.markdownTheme.isAutoResize !== undefined) {
           cjMarkdownTheme.setIsAutoResize(this.config.markdownTheme.isAutoResize)
@@ -568,6 +752,36 @@ export struct CJMarkdown {
         }
         if (this.config.markdownTheme.imageMarginBottom !== undefined) {
           cjMarkdownTheme.setImageMarginBottom(this.config.markdownTheme.imageMarginBottom)
+        }
+        if (this.config.markdownTheme.isImageDownload !== undefined) {
+          cjMarkdownTheme.setIsImageDownload(this.config.markdownTheme.isImageDownload)
+        }
+        if (this.config.markdownTheme.isImageMixedLayout !== undefined) {
+          cjMarkdownTheme.setIsImageMixedLayout(this.config.markdownTheme.isImageMixedLayout)
+        }
+        if (this.config.markdownTheme.imageDownloadImageWidthHeight !== undefined) {
+          cjMarkdownTheme.setImageDownloadImageWidthHeight(this.config.markdownTheme.imageDownloadImageWidthHeight)
+        }
+        if (this.config.markdownTheme.imageDownloadWidth !== undefined) {
+          cjMarkdownTheme.setImageDownloadWidth(this.config.markdownTheme.imageDownloadWidth)
+        }
+        if (this.config.markdownTheme.imageDownloadHeight !== undefined) {
+          cjMarkdownTheme.setImageDownloadHeight(this.config.markdownTheme.imageDownloadHeight)
+        }
+        if (this.config.markdownTheme.imageDownloadRadius !== undefined) {
+          cjMarkdownTheme.setImageDownloadRadius(this.config.markdownTheme.imageDownloadRadius)
+        }
+        if (this.config.markdownTheme.imageDownloadText !== undefined) {
+          cjMarkdownTheme.setImageDownloadText(this.config.markdownTheme.imageDownloadText)
+        }
+        if (this.config.markdownTheme.imageDownloadTexSize !== undefined) {
+          cjMarkdownTheme.setImageDownloadTexSize(this.config.markdownTheme.imageDownloadTexSize)
+        }
+        if (this.config.markdownTheme.imageDownloadTexColor !== undefined) {
+          cjMarkdownTheme.setImageDownloadTexColor(this.config.markdownTheme.imageDownloadTexColor)
+        }
+        if (this.config.markdownTheme.imageDownloadBackgroundColor !== undefined) {
+          cjMarkdownTheme.setImageDownloadBackgroundColor(this.config.markdownTheme.imageDownloadBackgroundColor)
         }
         if (this.config.markdownTheme.tableCellPadding !== undefined) {
           cjMarkdownTheme.setTableCellPadding(this.config.markdownTheme.tableCellPadding)
@@ -587,6 +801,21 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.tableHeaderRowBackgroundColor !== undefined) {
           cjMarkdownTheme.setTableHeaderRowBackgroundColor(this.config.markdownTheme.tableHeaderRowBackgroundColor)
         }
+        if (this.config.markdownTheme.tableTitleTextColor !== undefined) {
+          cjMarkdownTheme.setTableTitleTextColor(this.config.markdownTheme.tableTitleTextColor)
+        }
+        if (this.config.markdownTheme.tableTitleTextSize !== undefined) {
+          cjMarkdownTheme.setTableTitleTextSize(this.config.markdownTheme.tableTitleTextSize)
+        }
+        if (this.config.markdownTheme.tableTitleLineHeight !== undefined) {
+          cjMarkdownTheme.setTableTitleLineHeight(this.config.markdownTheme.tableTitleLineHeight)
+        }
+        if (this.config.markdownTheme.tableContentTextColor !== undefined) {
+          cjMarkdownTheme.setTableContentTextColor(this.config.markdownTheme.tableContentTextColor)
+        }
+        if (this.config.markdownTheme.tableContentTextSize !== undefined) {
+          cjMarkdownTheme.setTableContentTextSize(this.config.markdownTheme.tableContentTextSize)
+        }
         if (this.config.markdownTheme.tableTextLineHeight !== undefined) {
           cjMarkdownTheme.setTableTextLineHeight(this.config.markdownTheme.tableTextLineHeight)
         }
@@ -602,11 +831,20 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.tableFirstColumnBold !== undefined) {
           cjMarkdownTheme.setTableFirstColumnBold(this.config.markdownTheme.tableFirstColumnBold)
         }
+        if (this.config.markdownTheme.tableScrollBarShow !== undefined) {
+          cjMarkdownTheme.setTableScrollBarShow(this.config.markdownTheme.tableScrollBarShow)
+        }
+        if (this.config.markdownTheme.tableScrollBarColor !== undefined) {
+          cjMarkdownTheme.setTableScrollBarColor(this.config.markdownTheme.tableScrollBarColor)
+        }
         if (this.config.markdownTheme.isDark !== undefined) {
           cjMarkdownTheme.setIsDark(this.config.markdownTheme.isDark)
         }
         if (this.config.markdownTheme.strikethroughColor !== undefined) {
           cjMarkdownTheme.setStrikethroughColor(this.config.markdownTheme.strikethroughColor)
+        }
+        if (this.config.markdownTheme.strikethroughStyle !== undefined) {
+          cjMarkdownTheme.setStrikethroughStyle(this.config.markdownTheme.strikethroughStyle)
         }
         if (this.config.markdownTheme.descListTermAndDefMargins !== undefined) {
           cjMarkdownTheme.setDescListTermAndDefMargins(this.config.markdownTheme.descListTermAndDefMargins)
@@ -638,13 +876,28 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.underlineColor !== undefined) {
           cjMarkdownTheme.setUnderlineColor(this.config.markdownTheme.underlineColor)
         }
+        if (this.config.markdownTheme.underlineStyle !== undefined) {
+          cjMarkdownTheme.setUnderlineStyle(this.config.markdownTheme.underlineStyle)
+        }
+        if (this.config.markdownTheme.openGestureSwipe !== undefined) {
+          cjMarkdownTheme.setOpenGestureSwipe(this.config.markdownTheme.openGestureSwipe)
+        }
+        if (this.config.markdownTheme.useTab !== undefined) {
+          cjMarkdownTheme.setUseTab(this.config.markdownTheme.useTab)
+        }
+        if (this.config.markdownTheme.indentWidth !== undefined) {
+          cjMarkdownTheme.setIndentWidth(this.config.markdownTheme.indentWidth)
+        }
       }
     }
     return cjMarkdownTheme
   }
 
-  getPlugin(): CJMarkdownPlugin {
-    let cjMarkdownPlugin: CJMarkdownPlugin = new CJMarkdownPlugin()
+  getPlugin(): CJMarkdownPlugin | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownPlugin: CJMarkdownPlugin = new global_customLib.CJMarkdownPlugin()
     if (this.plugin !== undefined) {
       cjMarkdownPlugin.setIsBlockAudioPlugin(this.plugin.isBlockAudioPlugin)
       cjMarkdownPlugin.setIsBlockVideoPlugin(this.plugin.isBlockVideoPlugin)
@@ -655,7 +908,7 @@ export struct CJMarkdown {
       cjMarkdownPlugin.setIsTocPlugin(this.plugin.isTocPlugin)
       cjMarkdownPlugin.setIsTaskListPlugin(this.plugin.isTaskListPlugin)
       cjMarkdownPlugin.setIsStrikethroughPlugin(this.plugin.isStrikethroughPlugin)
-      cjMarkdownPlugin.setIsLinkifyPlugin(this.plugin.isLinkifyPlugin)
+      cjMarkdownPlugin.setIsLinkifyPlugin(this.plugin.isLinkifyPlugin, this.plugin.regs)
       cjMarkdownPlugin.setIsLinkViewPlugin(this.plugin.isLinkViewPlugin)
       cjMarkdownPlugin.setIsLatexMathPlugin(this.plugin.isLatexMathPlugin)
       cjMarkdownPlugin.setIsImageStylePlugin(this.plugin.isImageStylePlugin)
@@ -672,6 +925,9 @@ export struct CJMarkdown {
   }
 }
 
+/**
+ * markdown配置
+ */
 export class MarkdownConfiguration {
   /**
    * 链接的点击事件
@@ -690,6 +946,10 @@ export class MarkdownConfiguration {
    */
   imageCallbackCallback?: (funcArg0: string) => Promise<ArrayBuffer | undefined> = undefined
   /**
+   * 图片下载的点击事件
+   */
+  imageDownloadCallback?: (funcArg0: string) => void = undefined
+  /**
    * 音频的点击事件
    */
   audioCallback?: (funcArg0: string) => void = undefined
@@ -700,8 +960,15 @@ export class MarkdownConfiguration {
   /**
    * 视频的图片替换回调
    */
-  videoImageCallback?: (funcArg0: string,
-    funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
+  videoImageCallback?: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
+  /**
+   * 视频发布的点击事件
+   */
+  videoReleaseCallback?: (funcArg0: string) => void = undefined
+  /**
+   * 视频下载的点击事件
+   */
+  videoDownloadCallback?: (funcArg0: string) => void = undefined
   /**
    * 代码复制按钮的点击事件
    */
@@ -768,6 +1035,15 @@ export class MarkdownConfiguration {
   }
 
   /**
+   * 设置图片下载的点击事件
+   *
+   * @param cb 图片下载的点击事件。 (funcArg0：图片url)
+   */
+  setImageDownloadCallback(cb: (funcArg0: string) => void): void {
+    this.imageDownloadCallback = cb
+  }
+
+  /**
    * 设置音频点击回调
    *
    * @param cb 音频点击回调(funcArg0：音频url) --- 需要加载音频解析插件
@@ -792,6 +1068,24 @@ export class MarkdownConfiguration {
    */
   setVideoImageCallback(cb: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void): void {
     this.videoImageCallback = cb
+  }
+
+  /**
+   * 设置视频发布的点击事件
+   *
+   * @param cb 视频发布的点击事件(funcArg0：视频url) --- 需要加载视频解析插件
+   */
+  setVideoReleaseCallback(cb: (funcArg0: string) => void): void {
+    this.videoReleaseCallback = cb
+  }
+
+  /**
+   * 设置视频下载的点击事件
+   *
+   * @param cb 视频下载的点击事件(funcArg0：视频url) --- 需要加载视频解析插件
+   */
+  setVideoDownloadCallback(cb: (funcArg0: string) => void): void {
+    this.videoDownloadCallback = cb
   }
 
   /**
@@ -858,6 +1152,9 @@ export class MarkdownConfiguration {
   }
 }
 
+/**
+ * Markdown用户可设置的样式
+ */
 export class MarkdownTheme {
   /**
    * 上下文
@@ -891,6 +1188,18 @@ export class MarkdownTheme {
    * 图片默认占位图
    */
   imageResource?: Resource = undefined
+  /**
+   * 视频发布默认图标
+   */
+  videoReleaseImage?: Resource = undefined
+  /**
+   * 视频下载默认图标
+   */
+  videoDownloadImage?: Resource = undefined
+  /**
+   * 图片下载默认图标
+   */
+  imageDownloadImage?: Resource = undefined
   /**
    * markdown是否同步解析
    */
@@ -931,6 +1240,10 @@ export class MarkdownTheme {
    * 文本格式链接文字大小
    */
   linkSize?: number = undefined
+  /**
+   * 文本格式链接文字行高
+   */
+  linkLineHeight?: number = undefined
   /**
    * 文本格式链接背景颜色
    */
@@ -1108,40 +1421,28 @@ export class MarkdownTheme {
    */
   taskListItemLength?: number = undefined
   /**
-   * 内联代码是否是图片显示
-   */
-  isCodeStyle?: boolean = undefined
-  /**
    * 设置是否格式化代码块内容
    */
   isCodeFormat?: boolean = undefined
   /**
-   * 文本、图片格式内联代码文本颜色
+   * 内联代码文本颜色
    */
   codeTextColor?: number = undefined
   /**
-   * 文本、图片格式内联代码背景颜色
+   * 内联代码背景颜色
    */
   codeBackgroundColor?: number = undefined
   /**
-   * 文本、图片格式内联代码文本大小
+   * 内联代码文本大小
    */
   codeTextSize?: number = undefined
   /**
-   * 文本格式内联代码文本字体
+   * 内联代码文本字体
    */
   codeTypeface?: string = undefined
   /**
-   * 图片格式内联代码文本左右边距
-   */
-  codeLeftAndRightPadding?: number = undefined
-  /**
-   * 图片格式内联代码文本高度
-   */
-  codeHeight?: number = undefined
-  /**
    * 围栏代码块代码高亮是否同步解析
-  */
+   */
   isCodeBlockParserSync?: boolean = undefined
   /**
    * 代码块代码文本颜色
@@ -1240,10 +1541,6 @@ export class MarkdownTheme {
    */
   headingBreakHeight?: number = undefined
   /**
-   * H1、H2标题下分割线颜色
-   */
-  headingBreakColor?: number = undefined
-  /**
    * 标题文本字体
    */
   headingTypeface?: string = undefined
@@ -1256,13 +1553,29 @@ export class MarkdownTheme {
    */
   headingBottomMargins?: number = undefined
   /**
-   * 标题文本大小数组
+   * 一级标题文本大小
    */
-  headingTextSizeMultipliers?: Array<number> = undefined
+  headingTextSize1?: number = undefined
   /**
-   * 标题文本颜色
+   * 二级标题文本大小
    */
-  headingTextColor?: number = undefined
+  headingTextSize2?: number = undefined
+  /**
+   * 三级标题文本大小
+   */
+  headingTextSize3?: number = undefined
+  /**
+   * 四级标题文本大小
+   */
+  headingTextSize4?: number = undefined
+  /**
+   * 五级标题文本大小
+   */
+  headingTextSize5?: number = undefined
+  /**
+   * 六级标题文本大小
+   */
+  headingTextSize6?: number = undefined
   /**
    * 标题文本字间距
    */
@@ -1291,6 +1604,38 @@ export class MarkdownTheme {
    * 六级标题文本行高
    */
   headingTextLineHeight6?: number = undefined
+  /**
+   * 一级标题文本颜色
+   */
+  headingTextColor1?: number = undefined
+  /**
+   * H1标题下分割线颜色
+   */
+  headingBreakColor1?: number = undefined
+  /**
+   * 二级标题文本颜色
+   */
+  headingTextColor2?: number = undefined
+  /**
+   * H2标题下分割线颜色
+   */
+  headingBreakColor2?: number = undefined
+  /**
+   * 三级标题文本颜色
+   */
+  headingTextColor3?: number = undefined
+  /**
+   * 四级标题文本颜色
+   */
+  headingTextColor4?: number = undefined
+  /**
+   * 五级标题文本颜色
+   */
+  headingTextColor5?: number = undefined
+  /**
+   * 六级标题文本颜色
+   */
+  headingTextColor6?: number = undefined
   /**
    * 段落模块上间距
    */
@@ -1464,6 +1809,74 @@ export class MarkdownTheme {
    */
   videoMarginBottom?: number = undefined
   /**
+   * 视频发布/下载按钮布局是否显示
+   */
+  isVideoBottomLayout?: boolean = undefined
+  /**
+   * 视频发布按钮图片宽度和高度
+   */
+  videoReleaseImageWidthHeight?: number = undefined
+  /**
+   * 视频发布按钮宽度
+   */
+  videoReleaseWidth?: number = undefined
+  /**
+   * 视频发布按钮高度
+   */
+  videoReleaseHeight?: number = undefined
+  /**
+   * 视频发布按钮圆角
+   */
+  videoReleaseRadius?: number = undefined
+  /**
+   * 视频发布按钮文本内容
+   */
+  videoReleaseText?: string = undefined
+  /**
+   * 视频发布按钮文本大小
+   */
+  videoReleaseTexSize?: number = undefined
+  /**
+   * 视频发布按钮文本颜色
+   */
+  videoReleaseTexColor?: number = undefined
+  /**
+   * 视频发布按钮背景颜色
+   */
+  videoReleaseBackgroundColor?: number = undefined
+  /**
+   * 视频下载按钮图片宽度和高度
+   */
+  videoDownloadImageWidthHeight?: number = undefined
+  /**
+   * 视频下载按钮宽度
+   */
+  videoDownloadWidth?: number = undefined
+  /**
+   * 视频下载按钮高度
+   */
+  videoDownloadHeight?: number = undefined
+  /**
+   * 视频下载按钮圆角
+   */
+  videoDownloadRadius?: number = undefined
+  /**
+   * 视频下载按钮文本内容
+   */
+  videoDownloadText?: string = undefined
+  /**
+   * 视频下载按钮文本大小
+   */
+  videoDownloadTexSize?: number = undefined
+  /**
+   * 视频下载按钮文本颜色
+   */
+  videoDownloadTexColor?: number = undefined
+  /**
+   * 视频下载按钮背景颜色
+   */
+  videoDownloadBackgroundColor?: number = undefined
+  /**
    * 图片缩放类型
    */
   imageFitType?: ImageFitType = undefined
@@ -1476,9 +1889,25 @@ export class MarkdownTheme {
    */
   imageFixedRatioWidth?: number = undefined
   /**
+   * 图片最大高度
+   */
+  imageMaxHeight?: number = undefined
+  /**
+   * 图片最大宽度
+   */
+  imageMaxWidth?: number = undefined
+  /**
    * 图片圆角大小
    */
   imageBorderRadius?: number = undefined
+  /**
+   * 图片圆角大小
+   */
+  imageBorderWidth?: number = undefined
+  /**
+   * 图片圆角大小
+   */
+  imageBorderColor?: number = undefined
   /**
    * 网络图片是否压缩
    */
@@ -1491,6 +1920,46 @@ export class MarkdownTheme {
    * 图片下边距
    */
   imageMarginBottom?: number = undefined
+  /**
+   * 图片是否有下载按钮
+   */
+  isImageDownload?: boolean = undefined
+  /**
+   * 是否图文混排
+   */
+  isImageMixedLayout?: boolean = undefined
+  /**
+   * 图片下载按钮图片宽度和高度
+   */
+  imageDownloadImageWidthHeight?: number = undefined
+  /**
+   * 图片下载按钮宽度
+   */
+  imageDownloadWidth?: number = undefined
+  /**
+   * 图片下载按钮高度
+   */
+  imageDownloadHeight?: number = undefined
+  /**
+   * 图片下载按钮圆角
+   */
+  imageDownloadRadius?: number = undefined
+  /**
+   * 图片下载按钮文本内容
+   */
+  imageDownloadText?: string = undefined
+  /**
+   * 图片下载按钮文本大小
+   */
+  imageDownloadTexSize?: number = undefined
+  /**
+   * 图片下载按钮文本颜色
+   */
+  imageDownloadTexColor?: number = undefined
+  /**
+   * 图片下载按钮背景颜色
+   */
+  imageDownloadBackgroundColor?: number = undefined
   /**
    * 表格内容内边距
    */
@@ -1512,9 +1981,29 @@ export class MarkdownTheme {
    */
   tableEvenRowBackgroundColor?: number = undefined
   /**
-   * 表格头背景色
+   * 表格标题背景色
    */
   tableHeaderRowBackgroundColor?: number = undefined
+  /**
+   * 表格标题文本颜色
+   */
+  tableTitleTextColor?: number = undefined
+  /**
+   * 表格标题文本大小
+   */
+  tableTitleTextSize?: number = undefined
+  /**
+   * 表格标题文本行高
+   */
+  tableTitleLineHeight?: number = undefined
+  /**
+   * 表格内容文本颜色
+   */
+  tableContentTextColor?: number = undefined
+  /**
+   * 表格内容文本大小
+   */
+  tableContentTextSize?: number = undefined
   /**
    * 表格文本行高
    */
@@ -1536,21 +2025,33 @@ export class MarkdownTheme {
    */
   tableFirstColumnBold?: boolean = undefined
   /**
+   * 表格是否显示滚动条
+   */
+  tableScrollBarShow?: boolean = undefined
+  /**
+   * 表格滚动条颜色
+   */
+  tableScrollBarColor?: number = undefined
+  /**
    * 代码深浅色模式
    */
   isDark?: boolean = undefined
   /**
    * 删除线颜色
    */
-  strikethroughColor?: number= undefined
+  strikethroughColor?: number = undefined
+  /**
+   * 删除线样式
+   */
+  strikethroughStyle?: TextDecorationStyle = undefined
   /**
    * 定义列表定义行缩进
    */
-  descListTermAndDefMargins?: number= undefined
+  descListTermAndDefMargins?: number = undefined
   /**
    * 定义列表定义行缩进
    */
-  descListDefIndentation?: number= undefined
+  descListDefIndentation?: number = undefined
   /**
    * 定义列表定义行间距
    */
@@ -1583,6 +2084,22 @@ export class MarkdownTheme {
    * 下划线颜色
    */
   underlineColor?: number = undefined
+  /**
+   * 下划线样式
+   */
+  underlineStyle?: TextDecorationStyle = undefined
+  /**
+   * markdown是否支持滚动手势
+   */
+  openGestureSwipe?: boolean = undefined
+  /**
+   * codeformat是否用制表符
+   */
+  useTab?: boolean = undefined
+  /**
+   * codeformat空格缩进数量，默认4空格
+   */
+  indentWidth?: number = undefined
 
   /**
    * 设置上下文
@@ -1654,6 +2171,33 @@ export class MarkdownTheme {
    */
   setImageResource(imageResource: Resource): void {
     this.imageResource = imageResource
+  }
+
+  /**
+   * 设置视频发布默认图标
+   *
+   * @param videoReleaseImage 视频发布默认图标
+   */
+  setVideoReleaseImage(videoReleaseImage: Resource): void {
+    this.videoReleaseImage = videoReleaseImage
+  }
+
+  /**
+   * 设置视频下载默认图标
+   *
+   * @param videoDownloadImage 视频下载默认图标
+   */
+  setVideoDownloadImage(videoDownloadImage: Resource): void {
+    this.videoDownloadImage = videoDownloadImage
+  }
+
+  /**
+   * 设置图片下载默认图标
+   *
+   * @param imageDownloadImage 图片下载默认图标
+   */
+  setImageDownloadImage(imageDownloadImage: Resource): void {
+    this.imageDownloadImage = imageDownloadImage
   }
 
   /**
@@ -1744,6 +2288,15 @@ export class MarkdownTheme {
    */
   setLinkSize(linkSize: number): void {
     this.linkSize = linkSize
+  }
+
+  /**
+   * 设置文本格式链接文字行高
+   *
+   * @param linkLineHeight 文本格式链接文字行高
+   */
+  setLinkLineHeight(linkLineHeight: number): void {
+    this.linkLineHeight = linkLineHeight
   }
 
   /**
@@ -2143,15 +2696,6 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置内联代码是否是图片显示
-   *
-   * @param isCodeStyle 内联代码是否是图片显示 - true：图片化显示；false：不图片化显示。默认false
-   */
-  setIsCodeStyle(isCodeStyle: boolean): void {
-    this.isCodeStyle = isCodeStyle
-  }
-
-  /**
    * 设置是否格式化代码块内容
    *
    * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
@@ -2161,57 +2705,39 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置文本、图片格式内联代码文本颜色
+   * 设置内联代码文本颜色
    *
-   * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
+   * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
    */
   setCodeTextColor(codeTextColor: number): void {
     this.codeTextColor = codeTextColor
   }
 
   /**
-   * 设置文本、图片格式内联代码背景颜色
+   * 设置内联代码背景颜色
    *
-   * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFFEAEAEA
+   * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFFEAEAEA
    */
   setCodeBackgroundColor(codeBackgroundColor: number): void {
     this.codeBackgroundColor = codeBackgroundColor
   }
 
   /**
-   * 设置文本、图片格式内联代码文本大小
+   * 设置内联代码文本大小
    *
-   * @param codeTextSize 文本、图片格式内联代码文本大小 - 默认13.0fp
+   * @param codeTextSize 内联代码文本大小 - 默认13.0fp
    */
   setCodeTextSize(codeTextSize: number): void {
     this.codeTextSize = codeTextSize
   }
 
   /**
-   * 设置文本格式内联代码文本字体
+   * 设置内联代码文本字体
    *
-   * @param codeTypeface 文本格式内联代码文本字体 - 默认"HarmonyOS Sans"
+   * @param codeTypeface 内联代码文本字体 - 默认"HarmonyOS Sans"
    */
   setCodeTypeface(codeTypeface: string): void {
     this.codeTypeface = codeTypeface
-  }
-
-  /**
-   * 设置图片格式内联代码文本左右边距
-   *
-   * @param codeLeftAndRightPadding 图片格式内联代码文本左右边距 - 默认4.0vp
-   */
-  setCodeLeftAndRightPadding(codeLeftAndRightPadding: number): void {
-    this.codeLeftAndRightPadding = codeLeftAndRightPadding
-  }
-
-  /**
-   * 设置图片格式内联代码文本高度
-   *
-   * @param codeHeight 图片格式内联代码文本高度 - 默认20.0vp
-   */
-  setCodeHeight(codeHeight: number): void {
-    this.codeHeight = codeHeight
   }
 
   /**
@@ -2440,15 +2966,6 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置H1、H2标题下分割线颜色
-   *
-   * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0XFF191919
-   */
-  setHeadingBreakColor(headingBreakColor: number): void {
-    this.headingBreakColor = headingBreakColor
-  }
-
-  /**
    * 设置标题文本字体
    *
    * @param headingTypeface 标题文本字体 - 默认"HarmonyOS Sans"
@@ -2479,18 +2996,98 @@ export class MarkdownTheme {
    * 设置标题文本大小数组
    *
    * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+   * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
    */
   setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): void {
-    this.headingTextSizeMultipliers = headingTextSizeMultipliers
+    if (headingTextSizeMultipliers.length != 6) {
+      return
+    }
+    this.headingTextSize1 = headingTextSizeMultipliers[0]
+    this.headingTextSize2 = headingTextSizeMultipliers[1]
+    this.headingTextSize3 = headingTextSizeMultipliers[2]
+    this.headingTextSize4 = headingTextSizeMultipliers[3]
+    this.headingTextSize5 = headingTextSizeMultipliers[4]
+    this.headingTextSize6 = headingTextSizeMultipliers[5]
+  }
+
+  /**
+   * 设置一级标题文本大小
+   *
+   * @param headingTextSize1 一级标题文本大小 - 默认20.0
+   */
+  setHeadingTextSize1(headingTextSize1: number): void {
+    this.headingTextSize1 = headingTextSize1
+  }
+
+  /**
+   * 设置二级标题文本大小
+   *
+   * @param headingTextSize2 二级标题文本大小 - 默认17.0
+   */
+  setHeadingTextSize2(headingTextSize2: number): void {
+    this.headingTextSize2 = headingTextSize2
+  }
+
+  /**
+   * 设置三级标题文本大小
+   *
+   * @param headingTextSize3 三级标题文本大小 - 默认16.0
+   */
+  setHeadingTextSize3(headingTextSize3: number): void {
+    this.headingTextSize3 = headingTextSize3
+  }
+
+  /**
+   * 设置四级标题文本大小
+   *
+   * @param headingTextSize4 四级标题文本大小 - 默认15.0
+   */
+  setHeadingTextSize4(headingTextSize4: number): void {
+    this.headingTextSize4 = headingTextSize4
+  }
+
+  /**
+   * 设置五级标题文本大小
+   *
+   * @param headingTextSize5 五级标题文本大小 - 默认15.0
+   */
+  setHeadingTextSize5(headingTextSize5: number): void {
+    this.headingTextSize5 = headingTextSize5
+  }
+
+  /**
+   * 设置六级标题文本大小
+   *
+   * @param headingTextSize6 六级标题文本大小 - 默认13.0
+   */
+  setHeadingTextSize6(headingTextSize6: number): void {
+    this.headingTextSize6 = headingTextSize6
   }
 
   /**
    * 设置标题文本颜色
    *
    * @param headingTextColor 标题文本颜色 - 默认0XFF191919
+   * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
    */
   setHeadingTextColor(headingTextColor: number): void {
-    this.headingTextColor = headingTextColor
+    this.headingTextColor1 = headingTextColor
+    this.headingTextColor2 = headingTextColor
+    this.headingTextColor3 = headingTextColor
+    this.headingTextColor4 = headingTextColor
+    this.headingTextColor5 = headingTextColor
+    this.headingTextColor6 = headingTextColor
+  }
+
+  /**
+   * 设置H1、H2标题下分割线颜色
+   *
+   * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0XFF191919
+   * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+   */
+  setHeadingBreakColor(headingBreakColor: number): void {
+    this.headingBreakColor1 = headingBreakColor
+    this.headingBreakColor2 = headingBreakColor
   }
 
   /**
@@ -2554,6 +3151,78 @@ export class MarkdownTheme {
    */
   setHeadingTextLineHeight6(headingTextLineHeight6: number): void {
     this.headingTextLineHeight6 = headingTextLineHeight6
+  }
+
+  /**
+   * 设置一级标题文本颜色
+   *
+   * @param headingTextColor1 标题文本颜色
+   */
+  setHeadingTextColor1(headingTextColor1: number): void {
+    this.headingTextColor1 = headingTextColor1
+  }
+
+  /**
+   * 设置H1标题下分割线颜色
+   *
+   * @param headingBreakColor1 H1标题下分割线颜色 - 默认0XFF191919
+   */
+  setHeadingBreakColor1(headingBreakColor1: number): void {
+    this.headingBreakColor1 = headingBreakColor1
+  }
+
+  /**
+   * 设置二级标题文本颜色
+   *
+   * @param headingTextColor2 标题文本颜色
+   */
+  setHeadingTextColor2(headingTextColor2: number): void {
+    this.headingTextColor2 = headingTextColor2
+  }
+
+  /**
+   * 设置H2标题下分割线颜色
+   *
+   * @param headingBreakColor2 H2标题下分割线颜色 - 默认0XFF191919
+   */
+  setHeadingBreakColor2(headingBreakColor2: number): void {
+    this.headingBreakColor2 = headingBreakColor2
+  }
+
+  /**
+   * 设置三级标题文本颜色
+   *
+   * @param headingTextColor3 标题文本颜色
+   */
+  setHeadingTextColor3(headingTextColor3: number): void {
+    this.headingTextColor3 = headingTextColor3
+  }
+
+  /**
+   * 设置四级标题文本颜色
+   *
+   * @param headingTextColor4 标题文本颜色
+   */
+  setHeadingTextColor4(headingTextColor4: number): void {
+    this.headingTextColor4 = headingTextColor4
+  }
+
+  /**
+   * 设置五级标题文本颜色
+   *
+   * @param headingTextColor5 标题文本颜色
+   */
+  setHeadingTextColor5(headingTextColor5: number): void {
+    this.headingTextColor5 = headingTextColor5
+  }
+
+  /**
+   * 设置六级标题文本颜色
+   *
+   * @param headingTextColor6 标题文本颜色
+   */
+  setHeadingTextColor6(headingTextColor6: number): void {
+    this.headingTextColor6 = headingTextColor6
   }
 
   /**
@@ -2944,6 +3613,159 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置视频发布/下载按钮布局是否显示
+   *
+   * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默认false不显示
+   */
+  setIsVideoBottomLayout(isVideoBottomLayout: boolean): void {
+    this.isVideoBottomLayout = isVideoBottomLayout
+  }
+
+  /**
+   * 设置视频发布按钮图片宽度和高度
+   *
+   * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
+   */
+  setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: number): void {
+    this.videoReleaseImageWidthHeight = videoReleaseImageWidthHeight
+  }
+
+  /**
+   * 设置视频发布按钮宽度
+   *
+   * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
+   */
+  setVideoReleaseWidth(videoReleaseWidth: number): void {
+    this.videoReleaseWidth = videoReleaseWidth
+  }
+
+  /**
+   * 设置视频发布按钮高度
+   *
+   * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
+   */
+  setVideoReleaseHeight(videoReleaseHeight: number): void {
+    this.videoReleaseHeight = videoReleaseHeight
+  }
+
+  /**
+   * 设置视频发布按钮圆角
+   *
+   * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
+   */
+  setVideoReleaseRadius(videoReleaseRadius: number): void {
+    this.videoReleaseRadius = videoReleaseRadius
+  }
+
+  /**
+   * 设置视频发布按钮文本内容
+   *
+   * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
+   */
+  setVideoReleaseText(videoReleaseText: string): void {
+    this.videoReleaseText = videoReleaseText
+  }
+
+  /**
+   * 设置视频发布按钮文本大小
+   *
+   * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
+   */
+  setVideoReleaseTexSize(videoReleaseTexSize: number): void {
+    this.videoReleaseTexSize = videoReleaseTexSize
+  }
+
+  /**
+   * 设置视频发布按钮文本颜色
+   *
+   * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
+   */
+  setVideoReleaseTexColor(videoReleaseTexColor: number): void {
+    this.videoReleaseTexColor = videoReleaseTexColor
+  }
+
+  /**
+   * 设置视频发布按钮背景颜色
+   *
+   * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
+   */
+  setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: number): void {
+    this.videoReleaseBackgroundColor = videoReleaseBackgroundColor
+  }
+
+  /**
+   * 设置视频下载按钮图片宽度和高度
+   *
+   * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
+   */
+  setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: number): void {
+    this.videoDownloadImageWidthHeight = videoDownloadImageWidthHeight
+  }
+
+  /**
+   * 设置视频下载按钮宽度
+   *
+   * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
+   */
+  setVideoDownloadWidth(videoDownloadWidth: number): void {
+    this.videoDownloadWidth = videoDownloadWidth
+  }
+
+  /**
+   * 设置视频下载按钮高度
+   *
+   * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
+   */
+  setVideoDownloadHeight(videoDownloadHeight: number): void {
+    this.videoDownloadHeight = videoDownloadHeight
+  }
+
+  /**
+   * 设置视频下载按钮圆角
+   *
+   * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
+   */
+  setVideoDownloadRadius(videoDownloadRadius: number): void {
+    this.videoDownloadRadius = videoDownloadRadius
+  }
+
+  /**
+   * 设置视频下载按钮文本内容
+   *
+   * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
+   */
+  setVideoDownloadText(videoDownloadText: string): void {
+    this.videoDownloadText = videoDownloadText
+  }
+
+  /**
+   * 设置视频下载按钮文本大小
+   *
+   * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
+   */
+  setVideoDownloadTexSize(videoDownloadTexSize: number): void {
+    this.videoDownloadTexSize = videoDownloadTexSize
+  }
+
+  /**
+   * 设置视频下载按钮文本颜色
+   *
+   * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
+   */
+  setVideoDownloadTexColor(videoDownloadTexColor: number): void {
+    this.videoDownloadTexColor = videoDownloadTexColor
+  }
+
+  /**
+   * 设置视频下载按钮背景颜色
+   *
+   * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
+   */
+  setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: number): void {
+    this.videoDownloadBackgroundColor = videoDownloadBackgroundColor
+  }
+
+  /**
    * 设置图片缩放类型
    *
    * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
@@ -2971,12 +3793,48 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置图片最大高度
+   *
+   * @param imageMaxHeight 图片最大高度 - 默认None
+   */
+  setImageMaxHeight(imageMaxHeight: number): void {
+    this.imageMaxHeight = imageMaxHeight
+  }
+
+  /**
+   * 设置图片最大宽度
+   *
+   * @param imageMaxWidth 图片最大宽度 - 默认None
+   */
+  setImageMaxWidth(imageMaxWidth: number): void {
+    this.imageMaxWidth = imageMaxWidth
+  }
+
+  /**
    * 设置图片圆角大小
    *
    * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
    */
   setImageBorderRadius(imageBorderRadius: number): void {
     this.imageBorderRadius = imageBorderRadius
+  }
+
+  /**
+   * 设置图片边框宽度
+   *
+   * @param imageBorderWidth 图片边框宽度 - 默认0.0vp
+   */
+  setImageBorderWidth(imageBorderWidth: number): void {
+    this.imageBorderWidth = imageBorderWidth
+  }
+
+  /**
+   * 设置图片边框颜色
+   *
+   * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
+   */
+  setImageBorderColor(imageBorderColor: number): void {
+    this.imageBorderColor = imageBorderColor
   }
 
   /**
@@ -3004,6 +3862,96 @@ export class MarkdownTheme {
    */
   setImageMarginBottom(imageMarginBottom: number): void {
     this.imageMarginBottom = imageMarginBottom
+  }
+
+  /**
+   * 设置图片是否有下载按钮
+   *
+   * @param isImageDownload 图片是否有下载按钮 - 默认false
+   */
+  setIsImageDownload(isImageDownload: boolean): void {
+    this.isImageDownload = isImageDownload
+  }
+
+  /**
+   * 设置是否图文混排
+   *
+   * @param isImageMixedLayout 是否图文混排 - 默认true
+   */
+  setIsImageMixedLayout(isImageMixedLayout: boolean): void {
+    this.isImageMixedLayout = isImageMixedLayout
+  }
+
+  /**
+   * 设置图片下载按钮图片宽度和高度
+   *
+   * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
+   */
+  setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: number): void {
+    this.imageDownloadImageWidthHeight = imageDownloadImageWidthHeight
+  }
+
+  /**
+   * 设置图片下载按钮宽度
+   *
+   * @param imageDownloadWidth 图片下载按钮宽度 - 默认296.0
+   */
+  setImageDownloadWidth(imageDownloadWidth: number): void {
+    this.imageDownloadWidth = imageDownloadWidth
+  }
+
+  /**
+   * 设置图片下载按钮高度
+   *
+   * @param imageDownloadHeight 图片下载按钮高度 - 默认44.0
+   */
+  setImageDownloadHeight(imageDownloadHeight: number): void {
+    this.imageDownloadHeight = imageDownloadHeight
+  }
+
+  /**
+   * 设置图片下载按钮圆角
+   *
+   * @param imageDownloadRadius 图片下载按钮圆角 - 默认22.0
+   */
+  setImageDownloadRadius(imageDownloadRadius: number): void {
+    this.imageDownloadRadius = imageDownloadRadius
+  }
+
+  /**
+   * 设置图片下载按钮文本内容
+   *
+   * @param imageDownloadText 图片下载按钮文本内容 - 默认"下载图片"
+   */
+  setImageDownloadText(imageDownloadText: string): void {
+    this.imageDownloadText = imageDownloadText
+  }
+
+  /**
+   * 设置图片下载按钮文本大小
+   *
+   * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
+   */
+  setImageDownloadTexSize(imageDownloadTexSize: number): void {
+    this.imageDownloadTexSize = imageDownloadTexSize
+  }
+
+  /**
+   * 设置图片下载按钮文本颜色
+   *
+   * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0XE6000000
+   */
+  setImageDownloadTexColor(imageDownloadTexColor: number): void {
+    this.imageDownloadTexColor = imageDownloadTexColor
+  }
+
+  /**
+   * 设置图片下载按钮背景颜色
+   *
+   * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0XFFF5F5F5
+   */
+  setImageDownloadBackgroundColor(imageDownloadBackgroundColor: number): void {
+    this.imageDownloadBackgroundColor = imageDownloadBackgroundColor
   }
 
   /**
@@ -3052,12 +4000,21 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置表格头背景色
+   * 设置表格标题背景色
    *
-   * @param tableHeaderRowBackgroundColor 表格头背景色 - 默认0XFFFFFFFF
+   * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0XFFFFFFFF
    */
   setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void {
     this.tableHeaderRowBackgroundColor = tableHeaderRowBackgroundColor
+  }
+
+  /**
+   * 设置表格标题文本颜色
+   *
+   * @param tableTitleTextColor 表格标题文本颜色 - 默认0XFF191919
+   */
+  setTableTitleTextColor(tableTitleTextColor: number): void {
+    this.tableTitleTextColor = tableTitleTextColor
   }
 
   /**
@@ -3066,6 +4023,52 @@ export class MarkdownTheme {
    * @param tableTextLineHeight 表格文本行高 - 默认22.0vp
    */
   setTableTextLineHeight(tableTextLineHeight: number): void {
+    this.tableTitleLineHeight = tableTextLineHeight
+    this.tableTextLineHeight = tableTextLineHeight
+  }
+
+  /**
+   * 设置表格标题文本大小
+   *
+   * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
+   */
+  setTableTitleTextSize(tableTitleTextSize: number): void {
+    this.tableTitleTextSize = tableTitleTextSize
+  }
+
+  /**
+   * 设置表格标题文本行高
+   *
+   * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
+   */
+  setTableTitleLineHeight(tableTitleLineHeight: number): void {
+    this.tableTitleLineHeight = tableTitleLineHeight
+  }
+
+  /**
+   * 设置表格内容文本颜色
+   *
+   * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
+   */
+  setTableContentTextColor(tableContentTextColor: number): void {
+    this.tableContentTextColor = tableContentTextColor
+  }
+
+  /**
+   * 设置表格内容文本大小
+   *
+   * @param tableContentTextSize 表格内容文本大小 - 默认14.0vp
+   */
+  setTableContentTextSize(tableContentTextSize: number): void {
+    this.tableContentTextSize = tableContentTextSize
+  }
+
+  /**
+   * 设置表格内容文本行高
+   *
+   * @param tableTextLineHeight 表格内容文本行高 - 默认22.0vp
+   */
+  setTableContentTextLineHeight(tableTextLineHeight: number): void {
     this.tableTextLineHeight = tableTextLineHeight
   }
 
@@ -3106,6 +4109,24 @@ export class MarkdownTheme {
   }
 
   /**
+   * 设置表格是否显示滚动条
+   *
+   * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
+   */
+  setTableScrollBarShow(tableScrollBarShow: boolean): void {
+    this.tableScrollBarShow = tableScrollBarShow
+  }
+
+  /**
+   * 设置表格滚动条颜色
+   *
+   * @param tableScrollBarColor 表格滚动条颜色
+   */
+  setTableScrollBarColor(tableScrollBarColor: number): void {
+    this.tableScrollBarColor = tableScrollBarColor
+  }
+
+  /**
    * 设置代码块深浅色
    *
    * @param isDark 是否是深色 - true：深色；false：浅色。默认false
@@ -3121,6 +4142,15 @@ export class MarkdownTheme {
    */
   setStrikethroughColor(strikethroughColor: number): void {
     this.strikethroughColor = strikethroughColor
+  }
+
+  /**
+   * 设置删除线样式
+   *
+   * @param strikethroughStyle 删除线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+   */
+  setStrikethroughStyle(strikethroughStyle: TextDecorationStyle): void {
+    this.strikethroughStyle = strikethroughStyle
   }
 
   /**
@@ -3212,8 +4242,47 @@ export class MarkdownTheme {
   setUnderlineColor(underlineColor: number): void {
     this.underlineColor = underlineColor
   }
+
+  /**
+   * 设置下划线样式
+   *
+   * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+   */
+  setUnderlineStyle(underlineStyle: TextDecorationStyle): void {
+    this.underlineStyle = underlineStyle
+  }
+
+  /**
+   * 设置markdown是否支持滚动手势
+   *
+   * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
+   */
+  setOpenGestureSwipe(openGestureSwipe: boolean): void {
+    this.openGestureSwipe = openGestureSwipe
+  }
+
+  /**
+   * 设置codeformat是否用制表符
+   *
+   * @param useTab true-使用，false-不使用，默认false
+   */
+  setUseTab(useTab: boolean): void {
+    this.useTab = useTab
+  }
+
+  /**
+   * 设置codeformat空格缩进数量
+   *
+   * @param indentWidth 空格缩进数量，默认4空格
+   */
+  setIndentWidth(indentWidth: number): void {
+    this.indentWidth = indentWidth
+  }
 }
 
+/**
+ * 数学公式生成图片格式的枚举
+ */
 export enum LatexMathColorFormat {
   /**
    * 16位
@@ -3225,7 +4294,10 @@ export enum LatexMathColorFormat {
   COLOR_FORMAT_BGRA_8888
 }
 
-export enum ImageFitType{
+/**
+ * 图片缩放类型的枚举
+ */
+export enum ImageFitType {
   /**
    * 保持宽高比进行缩小或者放大，使得图片两边都大于或等于显示边界。
    */
@@ -3240,6 +4312,9 @@ export enum ImageFitType{
   Fill
 }
 
+/**
+ * Markdown插件配置
+ */
 export class MarkdownPlugin {
   /**
    * 是否加载音频解析插件
@@ -3281,6 +4356,10 @@ export class MarkdownPlugin {
    * 是否加载链接自动解析插件
    */
   isLinkifyPlugin: boolean = false
+  /**
+   * 正则列表
+   */
+  regs: Array<string> = []
   /**
    * 是否加载链接单独解析插件
    */
@@ -3415,9 +4494,11 @@ export class MarkdownPlugin {
    * 设置链接自动加载插件
    *
    * @param isLinkifyPlugin 是否设置链接自动加载插件 - true：设置链接自动加载插件；false：不设置链接自动加载插件。默认false
+   * @param regs 正则列表
    */
-  setIsLinkifyPlugin(isLinkifyPlugin: boolean): void {
+  setIsLinkifyPlugin(isLinkifyPlugin: boolean, regs: Array<string>): void {
     this.isLinkifyPlugin = isLinkifyPlugin
+    this.regs = regs
   }
 
   /**
@@ -3513,11 +4594,169 @@ export class MarkdownPlugin {
   /**
    * 设置是否加载emoji解析插件
    *
-   * @param isEmojiPlugin 是否加载上标解析插件 - true：设置加载上标解析插件件；false：不设置加载上标解析插件。默认false
+   * @param isEmojiPlugin 是否加载Emoji解析插件 - true：设置加载Emoji解析插件件；false：不设置加载Emoji解析插件。默认false
    * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
    */
   setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void {
     this.isEmojiPlugin = isEmojiPlugin
     this.isEmojiLight = isEmojiLight
+  }
+}
+
+/**
+ * Markdown滑动控制器
+ */
+export class MarkdownScroller {
+  private scroller: CJMarkdownScroller | undefined = undefined
+
+  /**
+   * 构造函数
+   */
+  constructor() {
+    if (global_customLib === undefined) {
+      global_customLib = requireCJLib("libmarkdown.so") as CustomLib
+    }
+    this.scroller = new global_customLib.CJMarkdownScroller()
+  }
+
+  /**
+   * 滚动到容器边缘
+   *
+   * @param edge 滚动到容器边缘
+   */
+  scrollEdge(edge: Edge): void {
+    switch (edge) {
+      case Edge.Top:
+        this.scroller?.scrollEdge(1)
+        break
+      case Edge.Bottom:
+        this.scroller?.scrollEdge(2)
+        break
+      default:
+        this.scroller?.scrollEdge(1)
+        break
+    }
+  }
+
+  /**
+   * 滚动指定距离
+   *
+   * @param xOffset x轴偏移量
+   * @param yOffset y轴偏移量
+   */
+  scrollBy(xOffset: number, yOffset: number): void {
+    this.scroller?.scrollBy(xOffset, yOffset)
+  }
+
+  /**
+   * 滑动到指定Index
+   *
+   * @param index 要滑动到的目标元素在当前容器中的索引值
+   */
+  scrollToIndex(index: number): void {
+    this.scroller?.scrollToIndex(index)
+  }
+
+  /**
+   * 判断是否滚动到底部
+   *
+   * @returns 是否滚动到底部
+   */
+  isAtEnd(): boolean {
+    return this.scroller?.isAtEnd() || false
+  }
+
+  /**
+   * 获取当前y轴偏移量
+   *
+   * @returns 当前y轴偏移量
+   */
+  currentYOffset(): number {
+    return this.scroller?.currentYOffset() || 0
+  }
+
+  /**
+   * 获取子组件的大小及相对容器组件的位置
+   *
+   * @param index 索引值
+   * @returns 子组件的大小和相对于组件的位置
+   */
+  getItemRect(index: number): MarkdownRectResult {
+    if (global_customLib === undefined) {
+      return new MarkdownRectResult(0, 0, 0, 0)
+    }
+    let rect = this.scroller?.getItemRect(index) || new global_customLib.CJRectResult(0, 0, 0, 0)
+    return new MarkdownRectResult(rect.getItemRectX(), rect.getItemRectY(), rect.getItemRectWidth(), rect.getItemRectHeight())
+  }
+
+  /**
+   * 获取内部CJMarkdownScroller实例
+   *
+   * @returns CJMarkdownScroller实例
+   */
+  getScroller(): CJMarkdownScroller | undefined {
+    if (global_customLib === undefined) {
+      return this.scroller
+    }
+    if (this.scroller === undefined) {
+      this.scroller = new global_customLib.CJMarkdownScroller()
+    }
+    return this.scroller
+  }
+}
+
+/**
+ * 子组件的大小和相对于组件的位置
+ */
+export class MarkdownRectResult {
+  private x: number = 0
+  private y: number = 0
+  private width: number = 0
+  private height: number = 0
+
+  /**
+   * 构造函数
+   */
+  constructor(x: number, y: number, width: number, height: number) {
+    this.x = x
+    this.y = y
+    this.width = width
+    this.height = height
+  }
+
+  /**
+   * 获取子组件相对坐标x
+   *
+   * @returns 子组件x轴位置
+   */
+  getItemRectX(): number {
+    return this.x
+  }
+
+  /**
+   * 获取子组件相对坐标y
+   *
+   * @returns 子组件y轴位置
+   */
+  getItemRectY(): number {
+    return this.y
+  }
+
+  /**
+   * 获取子组件宽度
+   *
+   * @returns 子组件宽度
+   */
+  getItemRectWidth(): number {
+    return this.width
+  }
+
+  /**
+   * 获取子组件高度
+   *
+   * @returns 子组件高度
+   */
+  getItemRectHeight(): number {
+    return this.height
   }
 }

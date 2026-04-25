@@ -1,14 +1,25 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
-import { getFileListStr } from './FileUtils'
-import { booleanToString, stringToBoolean } from './BaseUtils'
+import { titleComponent } from '../component/BaseComponent'
+import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
+import { BaseTabComponent } from '../component/BaseTabComponent'
+import { TypeEnum } from '../model/TypeEnum'
+import {
+  booleanListGeneralData,
+  colorListGeneralData,
+  marginListGeneralData,
+  textNumberListGeneralData,
+  textSizeListGeneralData,
+  timeListGeneralData
+} from '../model/GeneralData'
+import { ImageDataMD } from '../model/ImageDataMD'
 
 @Entry
 @Component
 struct ImagePage {
+  // ---------------- 通用
   /**
    * 滑动控制器
    */
@@ -16,38 +27,140 @@ struct ImagePage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * rawfile路径
    */
   rawFilePath: string = "016_图片"
   /**
-   * rawfile标题文件夹列表
+   * rawfile文件夹列表
    */
   @State
   folderList: Array<string> = new Array<string>()
   /**
-   * 增量加载全量加载选项列表
+   * 是否全量加载Markdown文本列表
    */
-  isFullList: Array<string> = ["全量加载", "增量加载"]
+  isFullList: Array<boolean> = booleanListGeneralData
   /**
-   * 增量加载全量加载选项
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
+   * 是否增量解析Markdown文本列表
+   */
+  incrementalAnalysisList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否增量解析Markdown文本
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间列表
+   */
+  timeList: Array<number> = timeListGeneralData
+  /**
+   * 增量加载每次间隔时间
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量列表
+   */
+  textNumberList: Array<number> = textNumberListGeneralData
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本列表
+   */
+  isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果列表
+   */
+  isOnCopyList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距列表
+   */
+  blockFirstTopMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距列表
+   */
+  blockLastBottomMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距列表
+   */
+  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动列表
+   */
+  openGestureSwipeList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试列表
+   */
+  openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+
+  // ---------------- 专有
+  /**
+   * 是否触发图片替换事件列表
+   */
+  callbackList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否触发图片替换事件
+   */
+  @State
+  callback: boolean = false
+  /**
    * 图片默认占位图选项列表
    */
-  imageResourceList: Array<Resource | null> = [null, $r('app.media.startIcon')]
+  imageResourceList: Array<Resource | undefined> = [undefined, $r('app.media.startIcon')]
   /**
    * 图片默认占位图
    */
   @State
-  imageResource: Resource | null = null
+  imageResource: Resource | undefined = undefined
   /**
    * 网络图片是否压缩列表
    */
-  isAutoResizeList: Array<boolean> = [true, false]
+  isAutoResizeList: Array<boolean> = booleanListGeneralData
   /**
    * 网络图片是否压缩
    */
@@ -81,6 +194,24 @@ struct ImagePage {
   @State
   imageBorderRadius: number = 0
   /**
+   * 图片边框宽度列表
+   */
+  imageBorderWidthList: Array<number> = [0, 1, 2, 3, 4, 5, 8, 10, 15, 20]
+  /**
+   * 图片边框宽度
+   */
+  @State
+  imageBorderWidth: number = 0
+  /**
+   * 图片边框颜色列表
+   */
+  imageBorderColorList: Array<number | undefined> = colorListGeneralData
+  /**
+   * 图片边框颜色
+   */
+  @State
+  imageBorderColor: number | undefined = undefined
+  /**
    * 图片基于自身宽度缩放百分比列表
    */
   imageMaximumWidthList: Array<number> = [0, 0.2, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0]
@@ -92,12 +223,120 @@ struct ImagePage {
   /**
    * 图片基于父布局宽度缩放百分比列表
    */
-  imageFixedRatioWidthList: Array<number| null> = [null,0, 0.2, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0]
+  imageFixedRatioWidthList: Array<number| undefined> = [undefined,0, 0.2, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0]
   /**
    * 图片基于父布局宽度缩放百分比
    */
   @State
-  imageFixedRatioWidth: number| null = null
+  imageFixedRatioWidth: number | undefined = undefined
+  /**
+   * 图片最大高度列表
+   */
+  imageMaxHeightList: Array<number | undefined> = [undefined, 50.0, 80.0, 100.0, 120.0, 150.0, 180.0, 200.0, 250.0, 300.0, 500.0]
+  /**
+   * 图片最大高度
+   */
+  @State
+  imageMaxHeight: number | undefined = undefined
+  /**
+   * 图片最大宽度列表
+   */
+  imageMaxWidthList: Array<number | undefined> = [undefined, 50.0, 80.0, 100.0, 120.0, 150.0, 180.0, 200.0, 250.0, 300.0, 500.0]
+  /**
+   * 图片最大宽度
+   */
+  @State
+  imageMaxWidth: number | undefined = undefined
+  /**
+   * 图片是否有下载按钮列表
+   */
+  isImageDownloadList: Array<boolean> = booleanListGeneralData
+  /**
+   * 图片是否有下载按钮
+   */
+  @State
+  isImageDownload: boolean = false
+  /**
+   * 是否图文混排列表
+   */
+  isImageMixedLayoutList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否图文混排
+   */
+  @State
+  isImageMixedLayout: boolean = true
+  /**
+   * 图片下载按钮图片宽度和高度列表
+   */
+  imageDownloadImageWidthHeightList: Array<number> = [10, 15, 18, 20, 25, 30, 35, 40]
+  /**
+   * 图片下载按钮图片宽度和高度
+   */
+  @State
+  imageDownloadImageWidthHeight: number = 18
+  /**
+   * 图片下载按钮宽度列表
+   */
+  imageDownloadWidthList: Array<number> = [100, 120, 130, 144, 150, 160, 180, 200]
+  /**
+   * 图片下载按钮宽度
+   */
+  @State
+  imageDownloadWidth: number = 144
+  /**
+   * 图片下载按钮高度列表
+   */
+  imageDownloadHeightList: Array<number> = [25, 30, 35, 40, 44, 50, 60, 70, 80]
+  /**
+   * 图片下载按钮高度
+   */
+  @State
+  imageDownloadHeight: number = 44
+  /**
+   * 图片下载按钮圆角列表
+   */
+  imageDownloadRadiusList: Array<number> = [10, 12, 15, 18, 20, 22, 25, 28, 30,35,40]
+  /**
+   * 图片下载按钮圆角
+   */
+  @State
+  imageDownloadRadius: number = 22
+  /**
+   * 图片下载按钮文本内容列表
+   */
+  imageDownloadTextList: Array<string> = ["下载", "提交", "下载图片"]
+  /**
+   * 图片下载按钮文本内容
+   */
+  @State
+  imageDownloadText: string = "下载图片"
+  /**
+   * 图片下载按钮文本大小列表
+   */
+  imageDownloadTexSizeList: Array<number> = textSizeListGeneralData
+  /**
+   * 图片下载按钮文本大小
+   */
+  @State
+  imageDownloadTexSize: number = 16
+  /**
+   * 图片下载按钮文本颜色列表
+   */
+  imageDownloadTexColorList: Array<number | undefined> = colorListGeneralData
+  /**
+   * 图片下载按钮文本颜色
+   */
+  @State
+  imageDownloadTexColor: number | undefined = undefined
+  /**
+   * 图片下载按钮背景颜色列表
+   */
+  imageDownloadBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  /**
+   * 图片下载按钮背景颜色
+   */
+  @State
+  imageDownloadBackgroundColor: number | undefined = undefined
   /**
    * 配置数据内容
    */
@@ -118,248 +357,257 @@ struct ImagePage {
       )
       Scroll() {
         Column() {
-          Column() {
-            Row() {
-              Text(`是否增量加载 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${booleanToString(this.isFull)}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
+          // ------------ 通用
+          BaseTabComponent({
+            titleStr: "是否全量加载Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isFullList,
+            allData: this.isFull
+          })
+          BaseTabComponent({
+            titleStr: "是否增量解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.incrementalAnalysisList,
+            allData: this.incrementalAnalysis
+          })
+          BaseTabComponent({
+            titleStr: "增量加载每次间隔时间 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.timeList,
+            allData: this.time
+          })
+          BaseTabComponent({
+            titleStr: "增量每次增量文本数量 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.textNumberList,
+            allData: this.textNumber
+          })
+          BaseTabComponent({
+            titleStr: "是否同步解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isMarkdownParserSyncList,
+            allData: this.isMarkdownParserSync
+          })
+          BaseTabComponent({
+            titleStr: "是否打开长按复制粘贴效果 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isOnCopyList,
+            allData: this.isOnCopy
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本第一个模块上边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockFirstTopMarginList,
+            allData: this.blockFirstTopMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本最后一个模块下边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockLastBottomMarginList,
+            allData: this.blockLastBottomMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockTopAndBottomMarginsList,
+            allData: this.blockTopAndBottomMargins
+          })
+          BaseTabComponent({
+            titleStr: "是否开启响应滑动测试 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeTestList,
+            allData: this.openGestureSwipeTest
+          })
+          BaseTabComponent({
+            titleStr: "是否允许markdown控件自身响应滑动 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeList,
+            allData: this.openGestureSwipe
+          })
 
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isFullList, (item: string, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isFull = stringToBoolean(item)
-                    this.imageDataMD.isFull = this.isFull
-                  })
-              })
-            }
-          }
+          // ---------------- 专有
+          BaseTabComponent({
+            titleStr: "是否触发图片替换事件 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.callbackList,
+            allData: this.callback
+          })
+          BaseTabComponent({
+            titleStr: "设置默认占位图 - ",
+            typeEnum: TypeEnum.IS_RESOURCE,
+            allListData: this.imageResourceList,
+            allData: this.imageResource
+          })
+          BaseTabComponent({
+            titleStr: "图片上边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageMarginTopList,
+            allData: this.imageMarginTop
+          })
+          BaseTabComponent({
+            titleStr: "图片下边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageMarginBottomList,
+            allData: this.imageMarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "图片圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageBorderRadiusList,
+            allData: this.imageBorderRadius
+          })
+          BaseTabComponent({
+            titleStr: "图片边框宽度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageBorderWidthList,
+            allData: this.imageBorderWidth
+          })
+          BaseTabComponent({
+            titleStr: "图片边框颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.imageBorderColorList,
+            allData: this.imageBorderColor
+          })
+          BaseTabComponent({
+            titleStr: "图片基于自身宽度缩放百分比 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageMaximumWidthList,
+            allData: this.imageMaximumWidth
+          })
+          BaseTabComponent({
+            titleStr: "图片基于父布局宽度缩放百分比 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageFixedRatioWidthList,
+            allData: this.imageFixedRatioWidth
+          })
+          BaseTabComponent({
+            titleStr: "图片最大高度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageMaxHeightList,
+            allData: this.imageMaxHeight
+          })
+          BaseTabComponent({
+            titleStr: "图片最大宽度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageMaxHeightList,
+            allData: this.imageMaxHeight
+          })
+          BaseTabComponent({
+            titleStr: "图片是否有下载按钮 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isImageDownloadList,
+            allData: this.isImageDownload
+          })
+          BaseTabComponent({
+            titleStr: "是否图文混排 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isImageMixedLayoutList,
+            allData: this.isImageMixedLayout
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮图片宽度和高度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageDownloadImageWidthHeightList,
+            allData: this.imageDownloadImageWidthHeight
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮宽度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageDownloadWidthList,
+            allData: this.imageDownloadWidth
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮高度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageDownloadHeightList,
+            allData: this.imageDownloadHeight
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageDownloadRadiusList,
+            allData: this.imageDownloadRadius
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮文本内容 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.imageDownloadTextList,
+            allData: this.imageDownloadText
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮文本大小 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.imageDownloadTexSizeList,
+            allData: this.imageDownloadTexSize
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.imageDownloadTexColorList,
+            allData: this.imageDownloadTexColor
+          })
+          BaseTabComponent({
+            titleStr: "图片下载按钮背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.imageDownloadBackgroundColorList,
+            allData: this.imageDownloadBackgroundColor
+          })
 
-          Column() {
-            Row() {
-              Text(`是否设置默认占位图 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(this.resToString(this.imageResource))
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageResourceList, (item: Resource | null, index: number) => {
-                Button(this.resToString(item))
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    if (item === undefined) {
-                      this.imageResource = null
-                    } else {
-                      this.imageResource = item
-                    }
-                    this.imageDataMD.imageResource = this.imageResource
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片上边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageMarginTop}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageMarginTopList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageMarginTop = item
-                    this.imageDataMD.imageMarginTop = this.imageMarginTop
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片下边距 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageMarginBottom}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageMarginBottomList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageMarginBottom = item
-                    this.imageDataMD.imageMarginBottom = this.imageMarginBottom
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片圆角 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageBorderRadius}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageBorderRadiusList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageBorderRadius = item
-                    this.imageDataMD.imageBorderRadius = this.imageBorderRadius
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片基于自身宽度缩放百分比 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageMaximumWidth}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageMaximumWidthList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageMaximumWidth = item
-                    this.imageDataMD.imageMaximumWidth = this.imageMaximumWidth
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`图片基于父布局宽度缩放百分比 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.imageFixedRatioWidth}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.imageFixedRatioWidthList, (item: number, index: number) => {
-                Button(`${item}`)
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.imageFixedRatioWidth = item
-                    this.imageDataMD.imageFixedRatioWidth = this.imageFixedRatioWidth
-                  })
-              })
-            }
-          }
-
+          // 列表显示
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
                 Button(`${index + 1}、${item}`)
-                  .height(40)// 高度
-                  .width('80%')// 宽度
-                  .type(ButtonType.Capsule)// 圆角
-                  .fontColor(0xFFFFFFFF)// 文本颜色
-                  .backgroundColor(0xFF317AFF)// 背景颜色
-                  .margin({ top: 5, bottom: 5 })// 外边距
-                  .align(Alignment.Center)// 内容对齐方式
-                  .fontSize(16)// 字体大小
+                  .height(40)
+                  .width('80%')
+                  .type(ButtonType.Capsule)
+                  .fontColor(0xFFFFFFFF)
+                  .backgroundColor(0xFF317AFF)
+                  .margin({ top: 5, bottom: 5 })
+                  .align(Alignment.Center)
+                  .fontSize(16)
                   .onClick(() => {
-                    // 点击动作触发该方法调用
+                    // ---------- 通用
+                    this.imageDataMD.isFull = this.isFull
+                    this.imageDataMD.incrementalAnalysis = this.incrementalAnalysis
+                    this.imageDataMD.time = this.time
+                    this.imageDataMD.textNumber = this.textNumber
+                    this.imageDataMD.isMarkdownParserSync = this.isMarkdownParserSync
+                    this.imageDataMD.isOnCopy = this.isOnCopy
+                    this.imageDataMD.blockFirstTopMargin = this.blockFirstTopMargin
+                    this.imageDataMD.blockLastBottomMargin = this.blockLastBottomMargin
+                    this.imageDataMD.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.imageDataMD.openGestureSwipe = this.openGestureSwipe
+                    this.imageDataMD.openGestureSwipeTest = this.openGestureSwipeTest
                     this.imageDataMD.pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 专有
+                    this.imageDataMD.callback = this.callback
+                    this.imageDataMD.imageResource = this.imageResource
+                    this.imageDataMD.imageMarginTop = this.imageMarginTop
+                    this.imageDataMD.imageMarginBottom = this.imageMarginBottom
+                    this.imageDataMD.imageBorderRadius = this.imageBorderRadius
+                    this.imageDataMD.imageBorderWidth = this.imageBorderWidth
+                    this.imageDataMD.imageBorderColor = this.imageBorderColor
+                    this.imageDataMD.imageMaximumWidth = this.imageMaximumWidth
+                    this.imageDataMD.imageFixedRatioWidth = this.imageFixedRatioWidth
+                    this.imageDataMD.imageMaxHeight = this.imageMaxHeight
+                    this.imageDataMD.imageMaxWidth = this.imageMaxWidth
+                    this.imageDataMD.isImageDownload = this.isImageDownload
+                    this.imageDataMD.isImageMixedLayout = this.isImageMixedLayout
+                    this.imageDataMD.imageDownloadImageWidthHeight = this.imageDownloadImageWidthHeight
+                    this.imageDataMD.imageDownloadWidth = this.imageDownloadWidth
+                    this.imageDataMD.imageDownloadHeight = this.imageDownloadHeight
+                    this.imageDataMD.imageDownloadRadius = this.imageDownloadRadius
+                    this.imageDataMD.imageDownloadText = this.imageDownloadText
+                    this.imageDataMD.imageDownloadTexSize = this.imageDownloadTexSize
+                    this.imageDataMD.imageDownloadTexColor = this.imageDownloadTexColor
+                    this.imageDataMD.imageDownloadBackgroundColor = this.imageDownloadBackgroundColor
+                    // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/ImageDetailsPage", params: this.imageDataMD })
                   })
               }
             })
           }
-          // 设置ListItem在List交叉轴方向的布局方式
           .alignListItem(ListItemAlign.Center)
         }
         .padding({ bottom: 100 })
@@ -378,48 +626,5 @@ struct ImagePage {
   }
 }
 
-export class ImageDataMD {
-  _isFull: boolean = true
-  _pagePath: string = ""
-  _imageResource: Resource | null = null
-  _imageMarginTop: number = 10
-  _imageMarginBottom: number = 10
-  _imageBorderRadius: number = 0
-  _imageMaximumWidth: number = 1.0
-  _imageFixedRatioWidth: number| null = null
 
-  public set isFull(value: boolean) {
-    this._isFull = value
-  }
-
-  public set pagePath(value: string) {
-    this._pagePath = value
-  }
-
-  public set imageResource(value: Resource | null) {
-    this._imageResource = value
-  }
-
-  public set imageMarginTop(value: number) {
-    this._imageMarginTop = value
-  }
-
-  public set imageMarginBottom(value: number) {
-    this._imageMarginBottom = value
-  }
-
-  public set imageBorderRadius(value: number) {
-    this._imageBorderRadius = value
-  }
-
-  public set imageMaximumWidth(value: number) {
-    this._imageMaximumWidth = value
-  }
-
-  public set imageFixedRatioWidth(value: number) {
-    this._imageFixedRatioWidth = value
-  }
-
-  constructor() {
-  }
-}
+export { ImageDataMD }

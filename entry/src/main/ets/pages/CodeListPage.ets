@@ -1,14 +1,25 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
-import { getFileListStr } from './FileUtils'
-import { booleanToString, numberToColorString, stringToBoolean } from './BaseUtils'
+import { titleComponent } from '../component/BaseComponent'
+import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
+import { BaseTabComponent } from '../component/BaseTabComponent'
+import { TypeEnum } from '../model/TypeEnum'
+import {
+  booleanListGeneralData,
+  colorListGeneralData,
+  marginListGeneralData,
+  textNumberListGeneralData,
+  textSizeListGeneralData,
+  timeListGeneralData
+} from '../model/GeneralData'
+import { CodeListData } from '../model/CodeListData'
 
 @Entry
 @Component
 struct CodeListPage {
+  // ---------------- 通用
   /**
    * 滑动控制器
    */
@@ -16,29 +27,122 @@ struct CodeListPage {
   /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * rawfile路径
    */
   rawFilePath: string = "012_组合代码块"
   /**
-   * rawfile标题文件夹列表
+   * rawfile文件夹列表
    */
   @State
   folderList: Array<string> = new Array<string>()
   /**
-   * 增量加载全量加载选项列表
+   * 是否全量加载Markdown文本列表
    */
-  isFullList: Array<string> = ["全量加载", "增量加载"]
+  isFullList: Array<boolean> = booleanListGeneralData
   /**
-   * 增量加载全量加载选项
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
+   * 是否增量解析Markdown文本列表
+   */
+  incrementalAnalysisList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否增量解析Markdown文本
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间列表
+   */
+  timeList: Array<number> = timeListGeneralData
+  /**
+   * 增量加载每次间隔时间
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量列表
+   */
+  textNumberList: Array<number> = textNumberListGeneralData
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本列表
+   */
+  isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果列表
+   */
+  isOnCopyList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距列表
+   */
+  blockFirstTopMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距列表
+   */
+  blockLastBottomMarginList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距列表
+   */
+  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动列表
+   */
+  openGestureSwipeList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试列表
+   */
+  openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+
+  // ---------------- 专有
+  /**
    * 组合代码未选中标题字体大小列表
    */
-  codeListTitleTextSizeList: Array<number> = [12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  codeListTitleTextSizeList: Array<number> = textSizeListGeneralData
   /**
    * 组合代码未选中标题字体大小
    */
@@ -47,7 +151,7 @@ struct CodeListPage {
   /**
    * 组合代码选中标题字体大小列表
    */
-  codeListTitleSelectTextSizeList: Array<number> = [12, 13, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  codeListTitleSelectTextSizeList: Array<number> = textSizeListGeneralData
   /**
    * 组合代码选中标题字体大小
    */
@@ -56,43 +160,39 @@ struct CodeListPage {
   /**
    * 组合代码选中标题文本颜色列表
    */
-  codeListTitleSelectTextColorList: Array<number> =
-    [0xFF191919, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  codeListTitleSelectTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 组合代码选中标题文本颜色
    */
   @State
-  codeListTitleSelectTextColor: number = 0xFFFF0000
+  codeListTitleSelectTextColor: number | undefined = undefined
   /**
    * 组合代码未选中标题文本颜色列表
    */
-  codeListTitleUnSelectTextColorList: Array<number> =
-    [0xFF191919, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  codeListTitleUnSelectTextColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 组合代码未选中标题文本颜色
    */
   @State
-  codeListTitleUnSelectTextColor: number = 0xFF000000
+  codeListTitleUnSelectTextColor: number | undefined = undefined
   /**
    * 组合代码选中标题背景颜色列表
    */
-  codeListTitleSelectBackGroupColorList: Array<number> =
-    [0xFF191919, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0]
+  codeListTitleSelectBackGroupColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 组合代码选中标题背景颜色
    */
   @State
-  codeListTitleSelectBackGroupColor: number = 0xFF191919
+  codeListTitleSelectBackGroupColor: number | undefined = undefined
   /**
    * 组合代码未选中标题背景颜色列表
    */
-  codeListTitleUnSelectBackGroupColorList: Array<number> =
-    [0xFF191919, 0xFF000000, 0xFFFFFFFF, 0xFFFF0000, 0xFF00FF00, 0xFF0000FF, 0xFFE0E0E0, 0x00FFFFFF]
+  codeListTitleUnSelectBackGroupColorList: Array<number | undefined> = colorListGeneralData
   /**
    * 组合代码未选中标题背景颜色
    */
   @State
-  codeListTitleUnSelectBackGroupColor: number = 0x00FFFFFF
+  codeListTitleUnSelectBackGroupColor: number | undefined = undefined
   /**
    * 配置数据内容
    */
@@ -113,252 +213,152 @@ struct CodeListPage {
       )
       Scroll() {
         Column() {
-          Column() {
-            Row() {
-              Text(`是否增量加载 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${booleanToString(this.isFull)}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
+          // ------------ 通用
+          BaseTabComponent({
+            titleStr: "是否全量加载Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isFullList,
+            allData: this.isFull
+          })
+          BaseTabComponent({
+            titleStr: "是否增量解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.incrementalAnalysisList,
+            allData: this.incrementalAnalysis
+          })
+          BaseTabComponent({
+            titleStr: "增量加载每次间隔时间 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.timeList,
+            allData: this.time
+          })
+          BaseTabComponent({
+            titleStr: "增量每次增量文本数量 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.textNumberList,
+            allData: this.textNumber
+          })
+          BaseTabComponent({
+            titleStr: "是否同步解析Markdown文本 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isMarkdownParserSyncList,
+            allData: this.isMarkdownParserSync
+          })
+          BaseTabComponent({
+            titleStr: "是否打开长按复制粘贴效果 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isOnCopyList,
+            allData: this.isOnCopy
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本第一个模块上边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockFirstTopMarginList,
+            allData: this.blockFirstTopMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本最后一个模块下边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockLastBottomMarginList,
+            allData: this.blockLastBottomMargin
+          })
+          BaseTabComponent({
+            titleStr: "Markdown文本模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockTopAndBottomMarginsList,
+            allData: this.blockTopAndBottomMargins
+          })
+          BaseTabComponent({
+            titleStr: "是否开启响应滑动测试 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeTestList,
+            allData: this.openGestureSwipeTest
+          })
+          BaseTabComponent({
+            titleStr: "是否允许markdown控件自身响应滑动 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.openGestureSwipeList,
+            allData: this.openGestureSwipe
+          })
 
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.isFullList, (item: string, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.isFull = stringToBoolean(item)
-                    this.codeListData.isFull = this.isFull
-                  })
-              })
-            }
-          }
+          // ---------------- 专有
+          BaseTabComponent({
+            titleStr: "组合代码未选中标题字体大小 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.codeListTitleTextSizeList,
+            allData: this.codeListTitleTextSize
+          })
+          BaseTabComponent({
+            titleStr: "组合代码选中标题字体大小 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.codeListTitleSelectTextSizeList,
+            allData: this.codeListTitleSelectTextSize
+          })
+          BaseTabComponent({
+            titleStr: "组合代码选中标题文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.codeListTitleSelectTextColorList,
+            allData: this.codeListTitleSelectTextColor
+          })
+          BaseTabComponent({
+            titleStr: "组合代码未选中标题文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.codeListTitleUnSelectTextColorList,
+            allData: this.codeListTitleUnSelectTextColor
+          })
+          BaseTabComponent({
+            titleStr: "组合代码选中标题背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.codeListTitleSelectBackGroupColorList,
+            allData: this.codeListTitleSelectBackGroupColor
+          })
+          BaseTabComponent({
+            titleStr: "组合代码未选中标题背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.codeListTitleUnSelectBackGroupColorList,
+            allData: this.codeListTitleUnSelectBackGroupColor
+          })
 
-          Column() {
-            Row() {
-              Text(`组合代码未选中标题字体大小 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.codeListTitleTextSize}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.codeListTitleTextSizeList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.codeListTitleTextSize = item
-                    this.codeListData.codeListTitleTextSize = this.codeListTitleTextSize
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`组合代码选中标题字体大小 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(`${this.codeListTitleSelectTextSize}`)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.codeListTitleSelectTextSizeList, (item: number, index: number) => {
-                Button(item.toString())
-                  .type(ButtonType.Capsule)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(0xFF317AFF)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.codeListTitleSelectTextSize = item
-                    this.codeListData.codeListTitleSelectTextSize = this.codeListTitleSelectTextSize
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`组合代码选中标题文本颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.codeListTitleSelectTextColor))
-                .fontSize(16)
-                .fontColor(this.codeListTitleSelectTextColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.codeListTitleSelectTextColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.codeListTitleSelectTextColor = item
-                    this.codeListData.codeListTitleSelectTextColor = this.codeListTitleSelectTextColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`组合代码未选中标题文本颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.codeListTitleUnSelectTextColor))
-                .fontSize(16)
-                .fontColor(this.codeListTitleUnSelectTextColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.codeListTitleUnSelectTextColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.codeListTitleUnSelectTextColor = item
-                    this.codeListData.codeListTitleUnSelectTextColor = this.codeListTitleUnSelectTextColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`组合代码选中标题背景颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.codeListTitleSelectBackGroupColor))
-                .fontSize(16)
-                .fontColor(this.codeListTitleSelectBackGroupColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.codeListTitleSelectBackGroupColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.codeListTitleSelectBackGroupColor = item
-                    this.codeListData.codeListTitleSelectBackGroupColor = this.codeListTitleSelectBackGroupColor
-                  })
-              })
-            }
-          }
-
-          Column() {
-            Row() {
-              Text(`组合代码未选中标题背景颜色 - `)
-                .fontSize(16)
-                .textAlign(TextAlign.Start)
-              Text(numberToColorString(this.codeListTitleUnSelectBackGroupColor))
-                .fontSize(16)
-                .fontColor(this.codeListTitleUnSelectBackGroupColor)
-                .textAlign(TextAlign.Start)
-            }
-            .width("100%")
-            .backgroundColor(Color.Gray)
-            .padding(2)
-            .margin(2)
-
-            Flex({ alignItems: ItemAlign.Center, wrap: FlexWrap.Wrap }) {
-              ForEach(this.codeListTitleUnSelectBackGroupColorList, (item: number, index: number) => {
-                Button(numberToColorString(item))
-                  .type(ButtonType.Capsule)
-                  .fontColor(Color.Gray)
-                  .stateEffect(true)
-                  .height(25)
-                  .margin(2)
-                  .backgroundColor(item)
-                  .fontSize(14)
-                  .onClick(() => {
-                    this.codeListTitleUnSelectBackGroupColor = item
-                    this.codeListData.codeListTitleUnSelectBackGroupColor = this.codeListTitleUnSelectBackGroupColor
-                  })
-              })
-            }
-          }
-
+          // 列表显示
           List() {
             ForEach(this.folderList, (item: string, index: number) => {
               ListItem() {
                 Button(`${index + 1}、${item}`)
-                  .height(40)// 高度
-                  .width('80%')// 宽度
-                  .type(ButtonType.Capsule)// 圆角
-                  .fontColor(0xFFFFFFFF)// 文本颜色
-                  .backgroundColor(0xFF317AFF)// 背景颜色
-                  .margin({ top: 5, bottom: 5 })// 外边距
-                  .align(Alignment.Center)// 内容对齐方式
-                  .fontSize(16)// 字体大小
+                  .height(40)
+                  .width('80%')
+                  .type(ButtonType.Capsule)
+                  .fontColor(0xFFFFFFFF)
+                  .backgroundColor(0xFF317AFF)
+                  .margin({ top: 5, bottom: 5 })
+                  .align(Alignment.Center)
+                  .fontSize(16)
                   .onClick(() => {
-                    // 点击动作触发该方法调用
+                    // ---------- 通用
+                    this.codeListData.isFull = this.isFull
+                    this.codeListData.incrementalAnalysis = this.incrementalAnalysis
+                    this.codeListData.time = this.time
+                    this.codeListData.textNumber = this.textNumber
+                    this.codeListData.isMarkdownParserSync = this.isMarkdownParserSync
+                    this.codeListData.isOnCopy = this.isOnCopy
+                    this.codeListData.blockFirstTopMargin = this.blockFirstTopMargin
+                    this.codeListData.blockLastBottomMargin = this.blockLastBottomMargin
+                    this.codeListData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.codeListData.openGestureSwipe = this.openGestureSwipe
+                    this.codeListData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.codeListData.pagePath = `${this.rawFilePath}/${item}`
+                    // ---------- 专有
+                    this.codeListData.codeListTitleTextSize = this.codeListTitleTextSize
+                    this.codeListData.codeListTitleSelectTextSize = this.codeListTitleSelectTextSize
+                    this.codeListData.codeListTitleSelectTextColor = this.codeListTitleSelectTextColor
+                    this.codeListData.codeListTitleUnSelectTextColor = this.codeListTitleUnSelectTextColor
+                    this.codeListData.codeListTitleSelectBackGroupColor = this.codeListTitleSelectBackGroupColor
+                    this.codeListData.codeListTitleUnSelectBackGroupColor = this.codeListTitleUnSelectBackGroupColor
+                    // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/CodeListDetailsPage", params: this.codeListData })
                   })
               }
             })
           }
-          // 设置ListItem在List交叉轴方向的布局方式
           .alignListItem(ListItemAlign.Center)
         }
         .padding({ bottom: 100 })
@@ -369,48 +369,4 @@ struct CodeListPage {
   }
 }
 
-export class CodeListData {
-  _isFull: boolean = true
-  _codeListTitleTextSize: number = 13
-  _codeListTitleSelectTextSize: number = 13
-  _codeListTitleSelectTextColor: number = 0xFFFF0000
-  _codeListTitleUnSelectTextColor: number = 0xFF000000
-  _codeListTitleSelectBackGroupColor: number = 0xFF191919
-  _codeListTitleUnSelectBackGroupColor: number = 0x00FFFFFF
-  _pagePath: string = ""
 
-  public set isFull(value: boolean) {
-    this._isFull = value
-  }
-
-  public set codeListTitleTextSize(value: number) {
-    this._codeListTitleTextSize = value
-  }
-
-  public set codeListTitleSelectTextSize(value: number) {
-    this._codeListTitleSelectTextSize = value
-  }
-
-  public set codeListTitleSelectTextColor(value: number) {
-    this._codeListTitleSelectTextColor = value
-  }
-
-  public set codeListTitleUnSelectTextColor(value: number) {
-    this._codeListTitleUnSelectTextColor = value
-  }
-
-  public set codeListTitleSelectBackGroupColor(value: number) {
-    this._codeListTitleSelectBackGroupColor = value
-  }
-
-  public set codeListTitleUnSelectBackGroupColor(value: number) {
-    this._codeListTitleUnSelectBackGroupColor = value
-  }
-
-  public set pagePath(value: string) {
-    this._pagePath = value
-  }
-
-  constructor() {
-  }
-}

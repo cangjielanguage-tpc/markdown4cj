@@ -1,24 +1,32 @@
 /*
  * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
  */
-import { titleComponent } from './BaseComponent'
+import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
-import { getFileContextStr } from './FileUtils'
-import { AudioDataMD } from './AudioPage'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+  MarkdownScroller,
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
+import { AudioMDData } from '../model/AudioMDData'
 
 @Entry
 @Component
 struct AudioDetailsPage {
+  // ---------- 通用
   /**
    * 滑动控制器
    */
   scroller: Scroller = new Scroller()
   /**
+   * Markdown的控制器
+   */
+  markdownScroller: MarkdownScroller = new MarkdownScroller()
+  /**
    * 顶部导航栏高度
    */
-  @StorageProp('safeTop') safeTop: number = 0
+  @StorageProp('safeTop')
+  safeTop: number = 0
   /**
    * 文件文本
    */
@@ -30,18 +38,75 @@ struct AudioDetailsPage {
   @State
   content: string = ""
   /**
-   * 是否全量加载
+   * 是否全量加载Markdown文本
    */
   @State
   isFull: boolean = true
   /**
+   * 是否增量解析Markdown文本
+   */
+  @State
+  incrementalAnalysis: boolean = false
+  /**
+   * 增量加载每次间隔时间
+   */
+  @State
+  time: number = 50
+  /**
+   * 增量每次增量文本数量
+   */
+  @State
+  textNumber: number = 10
+  /**
+   * 是否同步解析Markdown文本
+   */
+  @State
+  isMarkdownParserSync: boolean = false
+  /**
+   * 是否打开长按复制粘贴效果
+   */
+  @State
+  isOnCopy: boolean = false
+  /**
+   * Markdown文本第一个模块上边距
+   */
+  @State
+  blockFirstTopMargin: number = 8
+  /**
+   * Markdown文本最后一个模块下边距
+   */
+  @State
+  blockLastBottomMargin: number = 8
+  /**
+   * Markdown文本模块间上下间距
+   */
+  @State
+  blockTopAndBottomMargins: number = 8
+  /**
+   * 是否允许markdown控件自身响应滑动
+   */
+  @State
+  openGestureSwipe: boolean = false
+  /**
+   * 是否开启响应滑动测试
+   */
+  @State
+  openGestureSwipeTest: boolean = false
+  /**
+   * 流式输入是否输入结束(true:结束输入,false:持续输入)
+   */
+  @State
+  isInputEnded: boolean = false
+
+  // ---------- 专有
+  /**
    * 音频阴影颜色值
    */
-  audioShadowColor: number = 0x1A000000
+  audioShadowColor: number | undefined = undefined
   /**
    * 音频边框颜色
    */
-  audioBorderColor: number = 0x33000000
+  audioBorderColor: number | undefined = undefined
   /**
    * 音频边框粗细
    */
@@ -53,11 +118,11 @@ struct AudioDetailsPage {
   /**
    * 音频按钮背景颜色
    */
-  audioButtonBackgroundColor: number = 0xFF000000
+  audioButtonBackgroundColor: number | undefined = undefined
   /**
    * 音频按钮文字颜色
    */
-  audioButtonTextColor: number = 0xFFFFFFFF
+  audioButtonTextColor: number | undefined = undefined
   /**
    * 音频按钮文字大小
    */
@@ -77,7 +142,7 @@ struct AudioDetailsPage {
   /**
    * 音频标题文字颜色
    */
-  audioTitleTextColor: number = 0xFF000000
+  audioTitleTextColor: number | undefined = undefined
   /**
    * 音频标题文字行高
    */
@@ -89,7 +154,7 @@ struct AudioDetailsPage {
   /**
    * 音频类型文字颜色
    */
-  audioTypeTextColor: number = 0x80000000
+  audioTypeTextColor: number | undefined = undefined
   /**
    * 音频类型文字行高
    */
@@ -102,16 +167,24 @@ struct AudioDetailsPage {
    * 音频下边距
    */
   audioMarginBottom: number = 10.0
-  /**
-   * 增量加载延迟
-   */
-  time: number = 50
 
   aboutToAppear(): void {
     try {
-      let audioData: AudioDataMD = router.getParams() as AudioDataMD
+      let audioData: AudioMDData = router.getParams() as AudioMDData
       this.fileStr = getFileContextStr(audioData._pagePath)
+      // ---------- 通用
       this.isFull = audioData._isFull
+      this.incrementalAnalysis = audioData._incrementalAnalysis
+      this.time = audioData._time
+      this.textNumber = audioData._textNumber
+      this.isMarkdownParserSync = audioData._isMarkdownParserSync
+      this.isOnCopy = audioData._isOnCopy
+      this.blockFirstTopMargin = audioData._blockFirstTopMargin
+      this.blockLastBottomMargin = audioData._blockLastBottomMargin
+      this.blockTopAndBottomMargins = audioData._blockTopAndBottomMargins
+      this.openGestureSwipe = audioData._openGestureSwipe
+      this.openGestureSwipeTest = audioData._openGestureSwipeTest
+      // ---------- 专有
       this.audioShadowColor = audioData._audioShadowColor
       this.audioBorderColor = audioData._audioBorderColor
       this.audioBorderWidth = audioData._audioBorderWidth
@@ -154,13 +227,16 @@ struct AudioDetailsPage {
           () => {
             // 点击动作触发该方法调用
             if (this.isFull) {
+              this.isInputEnded = true
               this.content = this.fileStr
             } else {
+              this.isInputEnded = false
               let index = 0
               let id = setInterval(() => {
                 this.content = this.content + this.fileStr[index]
                 this.scroller.scrollEdge(Edge.Bottom)
                 if (index === this.fileStr.length - 1) {
+                  this.isInputEnded = true
                   clearInterval(id)
                 }
                 index++
@@ -169,15 +245,32 @@ struct AudioDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        Column() {
-          CJMarkdown({
-            content: this.content,
-            config: this.setMarkdownConfig(),
-            plugin: this.setPlugin()
-          })
+        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }.height("100%")
+        } else {
+          Column() {
+            CJMarkdown({
+              content: this.content,
+              isInputEnded: this.isInputEnded,
+              incrementalAnalysis: this.incrementalAnalysis,
+              listScroller: this.markdownScroller,
+              config: this.setMarkdownConfig(),
+              plugin: this.setPlugin()
+            })
+          }
         }
       }
-      .padding({ bottom: 200 })
+      .align(Alignment.TopStart)
+      .layoutWeight(1)
     }
     .alignItems(HorizontalAlign.Center)
   }
@@ -185,25 +278,46 @@ struct AudioDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     config.setAudioCallback(this.audioCallback)
+
     let theme = new MarkdownTheme()
     theme.setAudioIcon($r('app.media.startIcon'))
-    theme.setAudioShadowColor(this.audioShadowColor)
-    theme.setAudioBorderColor(this.audioBorderColor)
+    if (this.audioShadowColor !== undefined) {
+      theme.setAudioShadowColor(this.audioShadowColor)
+    }
+    if (this.audioBorderColor !== undefined) {
+      theme.setAudioBorderColor(this.audioBorderColor)
+    }
     theme.setAudioBorderWidth(this.audioBorderWidth)
     theme.setAudioBorderRadius(this.audioBorderRadius)
-    theme.setAudioButtonBackgroundColor(this.audioButtonBackgroundColor)
-    theme.setAudioButtonTextColor(this.audioButtonTextColor)
+    if (this.audioButtonBackgroundColor !== undefined) {
+      theme.setAudioButtonBackgroundColor(this.audioButtonBackgroundColor)
+    }
+    if (this.audioButtonTextColor !== undefined) {
+      theme.setAudioButtonTextColor(this.audioButtonTextColor)
+    }
     theme.setAudioButtonTextSize(this.audioButtonTextSize)
     theme.setAudioButtonText(this.audioButtonText)
     theme.setAudioButtonBorderRadius(this.audioButtonBorderRadius)
     theme.setAudioTitleTextSize(this.audioTitleTextSize)
-    theme.setAudioTitleTextColor(this.audioTitleTextColor)
+    if (this.audioTitleTextColor !== undefined) {
+      theme.setAudioTitleTextColor(this.audioTitleTextColor)
+    }
     theme.setAudioTitleTextLineHeight(this.audioTitleTextLineHeight)
     theme.setAudioTypeTextSize(this.audioTypeTextSize)
-    theme.setAudioTypeTextColor(this.audioTypeTextColor)
+    if (this.audioTypeTextColor !== undefined) {
+      theme.setAudioTypeTextColor(this.audioTypeTextColor)
+    }
     theme.setAudioTypeTextLineHeight(this.audioTypeTextLineHeight)
     theme.setAudioMarginTop(this.audioMarginTop)
     theme.setAudioMarginBottom(this.audioMarginBottom)
+
+    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
+    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
+    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
+    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
+    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
+    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
+
     config.setMarkdownTheme(theme)
     return config
   }

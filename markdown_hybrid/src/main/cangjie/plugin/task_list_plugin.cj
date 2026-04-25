@@ -27,34 +27,10 @@ public class TaskListItem <: ListItem {
 
 public class TaskListPlugin <: AbstractMarkdownPlugin {
     public static func create(): TaskListPlugin {
-        return TaskListPlugin(0, 0, 0)
+        return TaskListPlugin()
     }
 
-    public static func create(
-        checkedFillColor: UInt32,
-        normalOutlineColor: UInt32,
-        checkMarkColor: UInt32
-    ): TaskListPlugin {
-        return TaskListPlugin(
-            checkedFillColor,
-            normalOutlineColor,
-            checkMarkColor
-        )
-    }
-
-    let checkedFillColor: UInt32
-    let normalOutlineColor: UInt32
-    let checkMarkColor: UInt32
-
-    private init(
-        checkedFillColor: UInt32,
-        normalOutlineColor: UInt32,
-        checkMarkColor: UInt32
-    ) {
-        this.checkedFillColor = checkedFillColor
-        this.normalOutlineColor = normalOutlineColor
-        this.checkMarkColor = checkMarkColor
-    }
+    private init() {}
 
     public func configureParser(builder: ParserBuilder): Unit {
         builder.postProcessor(TaskListPostProcessor())
@@ -64,19 +40,7 @@ public class TaskListPlugin <: AbstractMarkdownPlugin {
         builder.on(
             TaskListItem.typeInfo,
             {
-                visitor, taskListItem =>
-                let view = buildView(taskListItem, true, needProps: true)
-                let taskDepth = if (let Some(Some(dep: Int)) <- taskListItem
-                    .getParent()?
-                    .getView()
-                    .props?
-                    .get(TaskListItem.TASK_DEPTH)) {
-                    dep + 1
-                } else {
-                    0
-                }
-                view.props?.add(TaskListItem.TASK_DEPTH, taskDepth)
-                visitor.visitChildren(taskListItem)
+                visitor, taskListItem => visitor.visitChildren(taskListItem)
             }
         )
     }
@@ -95,9 +59,7 @@ class TaskListVisitor <: AbstractVisitor {
         if (let Some(child: Paragraph) <- listItem.getFirstChild()) {
             if (let Some(textNode: Text) <- child.getFirstChild()) {
                 let text: String = textNode.getLiteral()
-                let matcher: Matcher = REGEX_TASK_LIST_ITEM.matcher(text)
-
-                if (let Some(data) <- matcher.find()) {
+                if (let Some(data) <- REGEX_TASK_LIST_ITEM.find(text, group: true)) {
                     let checked: Byte = text[1]
                     let isChecked: Bool = (checked == b'x') || (checked == b'X')
 
@@ -109,7 +71,7 @@ class TaskListVisitor <: AbstractVisitor {
                     listItem.insertBefore(taskListItem)
 
                     // append the rest of matched text (can be empty)
-                    let restMatchedText: String = if (data.groupNumber() == 1) {
+                    let restMatchedText: String = if (data.groupCount() == 1) {
                         let group2 = data.matchPosition(1)
                         text[group2.start..group2.end]
                     } else {

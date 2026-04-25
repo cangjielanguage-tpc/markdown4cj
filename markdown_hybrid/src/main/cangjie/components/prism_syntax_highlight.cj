@@ -3,8 +3,6 @@
  */
 package markdown.components
 
-import ohos.arkui.state_macro_manage.*
-
 /**
  * prism 句法高亮类
  */
@@ -62,16 +60,18 @@ public class PrismSyntaxHighlight {
     }
 }
 
-@Observed
 public class PrismNodesParseResUI {
-    @Publish
     var types: String = ""
-    @Publish
     var text: String = ""
-    @Publish
     var alias: Option<String> = Option<String>.None
-    @Publish
     var color: Option<Color> = Option<Color>.None
+
+    public init(types!: String, text!: String, alias!: Option<String>, color!: Option<Color>) {
+        this.types = types
+        this.text = text
+        this.alias = alias
+        this.color = color
+    }
 
     /**
      * 获取结果对象类型

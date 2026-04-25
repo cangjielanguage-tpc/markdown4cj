@@ -90,98 +90,74 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
             builder.addDefaultTagHandler(SubHandler())
             builder.addDefaultTagHandler(SupHandler())
             builder.addDefaultTagHandler(UnderlineHandler())
+            builder.addDefaultTagHandler(CardHandler())
         }
         htmlParser = MarkdownHtmlParserImpl.create(_emptyTagReplacement)
         htmlRenderer = builder.build()
     }
 
     public override func configureVisitor(builder: MarkdownVisitorBuilder): Unit {
-        builder
-            .on(
-                "HtmlBlock",
-                {
-                    visitor, node =>
+        builder.on(
+            "HtmlBlock",
+            {
+                visitor, node =>
                     let htmlBlock = (node as HtmlBlock).getOrThrow()
                     visitHtml(visitor, node, htmlBlock.getLiteral())
-                }
-            )
-            .on(
-                "HtmlInline",
-                {
-                    visitor, node =>
+            }
+        ).on(
+            "HtmlInline",
+            {
+                visitor, node =>
                     let htmlInline = (node as HtmlInline).getOrThrow()
                     visitHtmlInline(visitor, htmlInline)
-                }
-            )
-            .on(
-                "ImageHtmlNode",
-                {
-                    visitor, node =>
-                    buildView(node, true)
-                    visitor.visitChildren(node)
-                }
-            )
-            .on(
-                "FontNode",
-                {
-                    visitor, node =>
-                    let view = buildView(node, false, needProps: true)
-                    view.props?.add("FontNode", node)
-                    visitor.visitChildren(node)
-                }
-            )
-            .on(
-                "SpanNode",
-                {
-                    visitor, node =>
-                    let view = buildView(node, false, needProps: true)
-                    view.props?.add("SpanNode", node)
-                    visitor.visitChildren(node)
-                }
-            )
-            .on(
-                "IgnoreBlockNode",
-                {
-                    visitor, node =>
-                    buildView(node, false)
-                    visitor.visitChildren(node)
-                }
-            )
-            .on(
-                "IgnoreInlineNode",
-                {
-                    visitor, node =>
-                    buildView(node, false)
-                    visitor.visitChildren(node)
-                }
-            )
-            .on(
-                "SubHtmlNode",
-                {
-                    visitor, node =>
-                    let view = buildView(node, false, needProps: true)
-                    view.props?.add("SubNode", true)
-                    visitor.visitChildren(node)
-                }
-            )
-            .on(
-                "SupHtmlNode",
-                {
-                    visitor, node =>
-                    let view = buildView(node, false, needProps: true)
-                    view.props?.add("SupNode", true)
-                    visitor.visitChildren(node)
-                }
-            )
-            .on(
-                "UnderlineNode",
-                {
-                    visitor, node =>
-                    let view = buildView(node, false, needProps: true)
-                    view.props?.add("UnderlineNode", true)
-                    visitor.visitChildren(node)
-                }
-            )
+            }
+        ).on(
+            "ImageHtmlNode",
+            {
+                visitor, node => visitor.visitChildren(node)
+            }
+        ).on(
+            "FontNode",
+            {
+                visitor, node => visitor.visitChildren(node)
+            }
+        ).on(
+            "SpanNode",
+            {
+                visitor, node => visitor.visitChildren(node)
+            }
+        ).on(
+            "IgnoreBlockNode",
+            {
+                visitor, node => visitor.visitChildren(node)
+            }
+        ).on(
+            "IgnoreInlineNode",
+            {
+                visitor, node => visitor.visitChildren(node)
+            }
+        ).on(
+            "SubHtmlNode",
+            {
+                visitor, node => visitor.visitChildren(node)
+            }
+        ).on(
+            "SupHtmlNode",
+            {
+                visitor, node => visitor.visitChildren(node)
+            }
+        ).on(
+            "UnderlineNode",
+            {
+                visitor, node => visitor.visitChildren(node)
+            }
+        ).on(
+             "CardNode",
+             {
+                 visitor, node =>
+                 visitor.visitChildren(node)
+             }
+         )
     }
 
     public func visitHtml(visitor: MarkdownVisitor, node: Node, html: String): Unit {
@@ -197,21 +173,29 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
         // HtmlTag ---handler---> CommonMarkNode
         let tagNode = htmlRenderer.getOrThrow().render(visitor, htmlParser, rootTag)
         htmlParser.reset()
+        tagNode.setSourceSpans(node.getSourceSpans())
 
         // replace htmlNode with tagNode
         node.replaceWith(tagNode)
-
-        // CommonMarkNode -> NodeView
-        buildView(tagNode, false)
 
         // visit Children
         visitor.visitChildren(tagNode)
     }
 
     func tagCategory(rootTag: BlockImpl): BlockImpl {
+        let childrenTags = rootTag.getChildren()
+        if (childrenTags.size == 1) {
+            match (childrenTags[0]) {
+                case v: BlockImpl => return v
+                case v =>
+                    let p = BlockImpl.create("p", 0, HashMap<String, String>(), None, None)
+                    p.appendChild(v)
+                    return p
+            }
+        }
         let newRoot = BlockImpl.root()
         var p: ?BlockImpl = None
-        for (tag in rootTag.getChildren()) {
+        for (tag in childrenTags) {
             if (tag.isBlock()) {
                 newRoot.appendChild(tag)
                 p = None
@@ -261,15 +245,15 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
             case htmlInline: HtmlInline =>
                 let htmlString = htmlInline.getLiteral()
                 let tag = htmlParser.processFragmentInline(appender, htmlString, None)
-                match(tag){
-                    case Some(end:EndTag) => 
+                match (tag) {
+                    case Some(end: EndTag) =>
                         if (end.startTag.isSome()) {
                             parentNode = parentNode.getParent().getOrThrow()
                         }
-                    case Some(tag) where tag.isClosed() => 
+                    case Some(tag) where tag.isClosed() =>
                         let tagNode = htmlRenderer.render(visitor, htmlParser, tag)
                         parentNode.appendChild(tagNode)
-                    case Some(tag) where !tag.isClosed() => 
+                    case Some(tag) where !tag.isClosed() =>
                         var tagNode = htmlRenderer.render(visitor, htmlParser, tag)
                         if (!(parentNode is Block) && tagNode is Block) {
                             tagNode = IgnoreInlineNode()
@@ -297,15 +281,14 @@ public class HtmlPlugin <: AbstractMarkdownPlugin {
     }
 
     public override func afterRender(doc: Node, _: MarkdownVisitor): Unit {
-        let docView = doc.getView()
-        for (i in 0..docView.children.size) {
-            let nv = docView.children[i]
-            if(nv.node is Block){
+        for (n in doc.iterateChildren()) {
+            if (n is Block) {
                 continue
             }
-            let pv = NodeView(Paragraph())
-            pv.children.add(nv)
-            docView.children[i] = pv
+            let p = Paragraph()
+            n.insertBefore(p)
+            n.unlink()
+            p.appendChild(n)
         }
     }
 

@@ -18,7 +18,6 @@ public class TocPlugin <: AbstractMarkdownPlugin {
             HeadLink.typeInfo,
             {
                 visitor, node =>
-                buildView(node, true)
                 visitor.visitChildren(node)
             }
         )
@@ -45,7 +44,6 @@ class TocPostProcessor <: PostProcessor {
 
     func buildToc(root: Node): Node {
         let collector = HeadTextCollector()
-        let builder = StringBuilder()
 
         let head0 = HeadTree(Heading(), "0", -1)
         var tree = head0
@@ -151,8 +149,8 @@ class HeadTree <: CustomBlock {
 func deepClone(node: Node): Node {
     let clone: Node = match (node) {
         case v: OrderedList => OrderedList(v.getStartNumber(), v.getDelimiter())
-        case v: ListItem => ListItem()
-        case v: Paragraph => Paragraph()
+        case _: ListItem => ListItem()
+        case _: Paragraph => Paragraph()
         case v: HeadLink => HeadLink(v.headIndex, v.getDestination(), v.getTitle())
         case v: Text => Text(v.getLiteral())
         case _ => throw Exception("unsupport")
@@ -166,15 +164,14 @@ func deepClone(node: Node): Node {
 class TocBlockParserFactory <: BlockParserFactory {
     TocBlockParserFactory(let needReplace: ArrayList<TocBlock>) {}
     public func tryStart(state: ParserState, matchedBlockParser: MatchedBlockParser): Option<BlockStart> {
-        var indent: Int64 = state.getIndent()
         if (state.getIndent() >= Parsing.CODE_BLOCK_INDENT) {
             return BlockStart.none()
         }
-        var line = state.getLine()
+        var line = state.getLine().getContent()
         let index = state.getIndex()
         line = line[index..]
         if (line.replace(' ', '').toAsciiUpper() == "[TOC]") {
-            return BlockStart.of4Cj(TocBlockParser(needReplace))
+            return BlockStart.of(TocBlockParser(needReplace))
         }
         return BlockStart.none()
     }

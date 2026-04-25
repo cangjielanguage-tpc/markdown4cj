@@ -3,18 +3,14 @@
  */
 package markdown
 
-import ohos.base.*
-import kit.ArkUI.*
-import ohos.ark_interop.*
 import ohos.ark_interop_macro.*
-import markdown.components.*
 
 @Interop[ArkTS]
 public class CJMarkdownTheme {
     /**
      * markdown是否同步解析
      */
-     var isMarkdownParserSync: ?Bool = None
+    var isMarkdownParserSync: ?Bool = None
 
     /**
      * 是否打开长按复制粘贴
@@ -60,6 +56,11 @@ public class CJMarkdownTheme {
      * 文本格式链接文字大小
      */
     var linkSize: ?Float64 = None
+
+    /**
+     * 文本格式链接文字行高
+     */
+    var linkLineHeight: ?Float64 = None
 
     /**
      * 文本格式链接背景颜色
@@ -282,44 +283,29 @@ public class CJMarkdownTheme {
     var taskListItemLength: ?Float64 = None
 
     /**
-     * 内联代码是否是图片显示
-     */
-    var isCodeStyle: ?Bool = None
-
-    /**
      * 是否格式化代码块内容
      */
     var isCodeFormat: ?Bool = None
 
     /**
-     * 文本、图片格式内联代码文本颜色
+     * 内联代码文本颜色
      */
     var codeTextColor: ?Color = None
 
     /**
-     * 文本、图片格式内联代码背景颜色
+     * 内联代码背景颜色
      */
     var codeBackgroundColor: ?Color = None
 
     /**
-     * 文本、图片格式内联代码文本大小
+     * 内联代码文本大小
      */
     var codeTextSize: ?Float64 = None
 
     /**
-     * 文本格式内联代码文本字体
+     * 内联代码文本字体
      */
     var codeTypeface: ?String = None
-
-    /**
-     * 图片格式内联代码文本左右边距
-     */
-    var codeLeftAndRightPadding: ?Float64 = None
-
-    /**
-     * 图片格式内联代码文本高度
-     */
-    var codeHeight: ?Float64 = None
 
     /**
      * 围栏代码块代码高亮是否同步解析
@@ -447,11 +433,6 @@ public class CJMarkdownTheme {
     var headingBreakHeight: ?Float64 = None
 
     /**
-     * H1、H2标题下分割线颜色
-     */
-    var headingBreakColor: ?Color = None
-
-    /**
      * 标题文本字体
      */
     var headingTypeface: ?String = None
@@ -467,14 +448,34 @@ public class CJMarkdownTheme {
     var headingBottomMargins: ?Float64 = None
 
     /**
-     * 标题文本大小数组
+     * 一级标题文本大小
      */
-    var headingTextSizeMultipliers: ?Array<Float64> = None
+    var headingTextSize1: ?Float64 = None
 
     /**
-     * 标题文本颜色
+     * 二级标题文本大小
      */
-    var headingTextColor: ?Color = None
+    var headingTextSize2: ?Float64 = None
+
+    /**
+     * 三级标题文本大小
+     */
+    var headingTextSize3: ?Float64 = None
+
+    /**
+     * 四级标题文本大小
+     */
+    var headingTextSize4: ?Float64 = None
+
+    /**
+     * 五级标题文本大小
+     */
+    var headingTextSize5: ?Float64 = None
+
+    /**
+     * 六级标题文本大小
+     */
+    var headingTextSize6: ?Float64 = None
 
     /**
      * 标题文本字间距
@@ -510,6 +511,46 @@ public class CJMarkdownTheme {
      * 六级标题文本行高
      */
     var headingTextLineHeight6: ?Float64 = None
+
+    /**
+     * 一级标题文本颜色
+     */
+    var headingTextColor1: ?Color = None
+
+    /**
+     * H1标题下分割线颜色
+     */
+    var headingBreakColor1: ?Color = None
+
+    /**
+     * 二级标题文本颜色
+     */
+    var headingTextColor2: ?Color = None
+
+    /**
+     * H2标题下分割线颜色
+     */
+    var headingBreakColor2: ?Color = None
+
+    /**
+     * 三级标题文本颜色
+     */
+    var headingTextColor3: ?Color = None
+
+    /**
+     * 四级标题文本颜色
+     */
+    var headingTextColor4: ?Color = None
+
+    /**
+     * 五级标题文本颜色
+     */
+    var headingTextColor5: ?Color = None
+
+    /**
+     * 六级标题文本颜色
+     */
+    var headingTextColor6: ?Color = None
 
     /**
      * 段落模块上间距
@@ -727,6 +768,91 @@ public class CJMarkdownTheme {
     var videoMarginBottom: ?Float64 = None
 
     /**
+     * 视频发布/下载按钮布局是否显示
+     */
+    var isVideoBottomLayout: ?Bool = None
+
+    /**
+     * 视频发布按钮图片宽度和高度
+     */
+    var videoReleaseImageWidthHeight: ?Float64 = None
+
+    /**
+     * 视频发布按钮宽度
+     */
+    var videoReleaseWidth: ?Float64 = None
+
+    /**
+     * 视频发布按钮高度
+     */
+    var videoReleaseHeight: ?Float64 = None
+
+    /**
+     * 视频发布按钮圆角
+     */
+    var videoReleaseRadius: ?Float64 = None
+
+    /**
+     * 视频发布按钮文本内容
+     */
+    var videoReleaseText: ?String = None
+
+    /**
+     * 视频发布按钮文本大小
+     */
+    var videoReleaseTexSize: ?Float64 = None
+
+    /**
+     * 视频发布按钮文本颜色
+     */
+    var videoReleaseTexColor: ?Color = Option<Color>.None
+
+    /**
+     * 视频发布按钮背景颜色
+     */
+    var videoReleaseBackgroundColor: ?Color = Option<Color>.None
+
+    /**
+     * 视频下载按钮图片宽度和高度
+     */
+    var videoDownloadImageWidthHeight: ?Float64 = None
+
+    /**
+     * 视频下载按钮宽度
+     */
+    var videoDownloadWidth: ?Float64 = None
+
+    /**
+     * 视频下载按钮高度
+     */
+    var videoDownloadHeight: ?Float64 = None
+
+    /**
+     * 视频下载按钮圆角
+     */
+    var videoDownloadRadius: ?Float64 = None
+
+    /**
+     * 视频下载按钮文本内容
+     */
+    var videoDownloadText: ?String = None
+
+    /**
+     * 视频下载按钮文本大小
+     */
+    var videoDownloadTexSize: ?Float64 = None
+
+    /**
+     * 视频下载按钮文本颜色
+     */
+    var videoDownloadTexColor: ?Color = Option<Color>.None
+
+    /**
+     * 视频下载按钮背景颜色
+     */
+    var videoDownloadBackgroundColor: ?Color = Option<Color>.None
+
+    /**
      * 图片缩放类型
      */
     var imageFitType: ?ImageFit = Option<ImageFit>.None
@@ -742,9 +868,29 @@ public class CJMarkdownTheme {
     var imageFixedRatioWidth: ?Float64 = None
 
     /**
+     * 图片最大高度
+     */
+    var imageMaxHeight: ?Float64 = None
+
+    /**
+     * 图片最大宽度
+     */
+    var imageMaxWidth: ?Float64 = None
+
+    /**
      * 图片圆角大小
      */
     var imageBorderRadius: ?Float64 = None
+
+    /**
+     * 图片边框宽度
+     */
+    var imageBorderWidth: ?Float64 = None
+
+    /**
+     * 图片边框颜色
+     */
+    var imageBorderColor: ?Color = None
 
     /**
      * 网络图片是否压缩
@@ -760,6 +906,56 @@ public class CJMarkdownTheme {
      * 图片下边距
      */
     var imageMarginBottom: ?Float64 = None
+
+    /**
+     * 图片是否有下载按钮
+     */
+    var isImageDownload: ?Bool = None
+
+    /**
+     * 是否图文混排
+     */
+    var isImageMixedLayout: ?Bool = None
+
+    /**
+     * 图片下载按钮图片宽度和高度
+     */
+    var imageDownloadImageWidthHeight: ?Float64 = None
+
+    /**
+     * 图片下载按钮宽度
+     */
+    var imageDownloadWidth: ?Float64 = None
+
+    /**
+     * 图片下载按钮高度
+     */
+    var imageDownloadHeight: ?Float64 = None
+
+    /**
+     * 图片下载按钮圆角
+     */
+    var imageDownloadRadius: ?Float64 = None
+
+    /**
+     * 图片下载按钮文本内容
+     */
+    var imageDownloadText: ?String = None
+
+    /**
+     * 图片下载按钮文本大小
+     */
+    var imageDownloadTexSize: ?Float64 = None
+
+    /**
+     * 图片下载按钮文本颜色
+     */
+    var imageDownloadTexColor: ?Color = None
+
+    /**
+     * 图片下载按钮背景颜色
+     */
+    var imageDownloadBackgroundColor: ?Color = None
 
     /**
      * 表格内容内边距
@@ -787,9 +983,34 @@ public class CJMarkdownTheme {
     var tableEvenRowBackgroundColor: ?Color = None
 
     /**
-     * 表格头背景色
+     * 表格标题背景色
      */
     var tableHeaderRowBackgroundColor: ?Color = None
+
+    /**
+     * 表格标题文本颜色
+     */
+    var tableTitleTextColor: ?Color = None
+
+    /**
+     * 表格标题文本大小
+     */
+    var tableTitleTextSize: ?Float64 = None
+
+    /**
+     * 表格标题文本行高
+     */
+    var tableTitleLineHeight: ?Float64 = None
+
+    /**
+     * 表格内容文本颜色
+     */
+    var tableContentTextColor: ?Color = None
+
+    /**
+     * 表格内容文本大小
+     */
+    var tableContentTextSize: ?Float64 = None
 
     /**
      * 表格文本行高
@@ -817,6 +1038,16 @@ public class CJMarkdownTheme {
     var tableFirstColumnBold: ?Bool = None
 
     /**
+     * 表格是否显示滚动条
+     */
+    var tableScrollBarShow: ?Bool = None
+
+    /**
+     * 表格滚动条颜色
+     */
+    var tableScrollBarColor: ?Color = None
+
+    /**
      * 代码深浅色模式
      */
     var isDark: ?Bool = None
@@ -825,6 +1056,11 @@ public class CJMarkdownTheme {
      * 删除线颜色
      */
     var strikethroughColor: ?Color = None
+
+    /**
+     * 删除线样式
+     */
+    var strikethroughStyle: ?Int32 = None
 
     /**
      * 定义列表术语和定义行之间间距
@@ -875,6 +1111,26 @@ public class CJMarkdownTheme {
      * 下划线颜色
      */
     var underlineColor: ?Color = None
+
+    /**
+     * 下划线样式
+     */
+    var underlineStyle: ?Int32 = None
+
+    /**
+     * markdown是否支持滚动手势
+     */
+    var openGestureSwipe: ?Bool = None
+
+    /**
+     * codeformat是否用制表符
+     */
+    var useTab: ?Bool = None
+
+    /**
+     * codeformat空格缩进数量，默认4空格
+     */
+    var indentWidth: ?Int64 = None
 
     public init() {}
 
@@ -966,6 +1222,15 @@ public class CJMarkdownTheme {
      */
     public func setLinkSize(linkSize: Float64): Unit {
         this.linkSize = linkSize
+    }
+
+    /**
+     * 设置文本格式链接文字行高
+     *
+     * @param linkLineHeight 文本格式链接文字行高
+     */
+    public func setLinkLineHeight(linkLineHeight: Float64): Unit {
+        this.linkLineHeight = linkLineHeight
     }
 
     /**
@@ -1365,15 +1630,6 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置内联代码是否是图片显示
-     *
-     * @param isCodeStyle 内联代码是否是图片显示 - true：图片化显示；false：不图片化显示。默认false
-     */
-    public func setIsCodeStyle(isCodeStyle: Bool): Unit {
-        this.isCodeStyle = isCodeStyle
-    }
-
-    /**
      * 设置是否格式化代码块内容
      *
      * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
@@ -1383,57 +1639,39 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置文本、图片格式内联代码文本颜色
+     * 设置内联代码文本颜色
      *
-     * @param codeTextColor 文本、图片格式内联代码文本颜色 - 默认OXFF000000
+     * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
      */
     public func setCodeTextColor(codeTextColor: UInt32): Unit {
         this.codeTextColor = transColorForTrasparent(codeTextColor)
     }
 
     /**
-     * 设置文本、图片格式内联代码背景颜色
+     * 设置内联代码背景颜色
      *
-     * @param codeBackgroundColor 文本、图片格式内联代码背景颜色 - 默认OXFF191919
+     * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFF191919
      */
     public func setCodeBackgroundColor(codeBackgroundColor: UInt32): Unit {
         this.codeBackgroundColor = transColorForTrasparent(codeBackgroundColor)
     }
 
     /**
-     * 设置文本、图片格式内联代码文本大小
+     * 设置内联代码文本大小
      *
-     * @param codeTextSize 文本、图片格式内联代码文本大小 - 默认13.0fp
+     * @param codeTextSize 内联代码文本大小 - 默认13.0fp
      */
     public func setCodeTextSize(codeTextSize: Float64): Unit {
         this.codeTextSize = codeTextSize
     }
 
     /**
-     * 设置文本格式内联代码文本字体
+     * 设置内联代码文本字体
      *
-     * @param codeTypeface 文本格式内联代码文本字体 - 默认"HarmonyOS Sans"
+     * @param codeTypeface 内联代码文本字体 - 默认"HarmonyOS Sans"
      */
     public func setCodeTypeface(codeTypeface: String): Unit {
         this.codeTypeface = codeTypeface
-    }
-
-    /**
-     * 设置图片格式内联代码文本左右边距
-     *
-     * @param codeLeftAndRightPadding 图片格式内联代码文本左右边距 - 默认4.0vp
-     */
-    public func setCodeLeftAndRightPadding(codeLeftAndRightPadding: Float64): Unit {
-        this.codeLeftAndRightPadding = codeLeftAndRightPadding
-    }
-
-    /**
-     * 设置图片格式内联代码文本高度
-     *
-     * @param codeHeight 图片格式内联代码文本高度 - 默认20.0vp
-     */
-    public func setCodeHeight(codeHeight: Float64): Unit {
-        this.codeHeight = codeHeight
     }
 
     /**
@@ -1662,15 +1900,6 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置H1、H2标题下分割线颜色
-     *
-     * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0XFF191919
-     */
-    public func setHeadingBreakColor(headingBreakColor: UInt32): Unit {
-        this.headingBreakColor = transColorForTrasparent(headingBreakColor)
-    }
-
-    /**
      * 设置标题文本字体
      *
      * @param headingTypeface 标题文本字体 - 默认"HarmonyOS Sans"
@@ -1698,21 +1927,57 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置标题文本大小数组
+     * 设置一级标题文本大小
      *
-     * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
+     * @param headingTextSize1 一级标题文本大小 - 默认20.0
      */
-    public func setHeadingTextSizeMultipliers(headingTextSizeMultipliers: JSArrayEx<Float64>): Unit {
-        this.headingTextSizeMultipliers = headingTextSizeMultipliers.toArray()
+    public func setHeadingTextSize1(headingTextSize1: Float64): Unit {
+        this.headingTextSize1 = headingTextSize1
     }
 
     /**
-     * 设置标题文本颜色
+     * 设置二级标题文本大小
      *
-     * @param headingTextColor 标题文本颜色 - 默认0XFF191919
+     * @param headingTextSize2 二级标题文本大小 - 默认17.0
      */
-    public func setHeadingTextColor(headingTextColor: UInt32): Unit {
-        this.headingTextColor = transColorForTrasparent(headingTextColor)
+    public func setHeadingTextSize2(headingTextSize2: Float64): Unit {
+        this.headingTextSize2 = headingTextSize2
+    }
+
+    /**
+     * 设置三级标题文本大小
+     *
+     * @param headingTextSize3 三级标题文本大小 - 默认16.0
+     */
+    public func setHeadingTextSize3(headingTextSize3: Float64): Unit {
+        this.headingTextSize3 = headingTextSize3
+    }
+
+    /**
+     * 设置四级标题文本大小
+     *
+     * @param headingTextSize4 四级标题文本大小 - 默认15.0
+     */
+    public func setHeadingTextSize4(headingTextSize4: Float64): Unit {
+        this.headingTextSize4 = headingTextSize4
+    }
+
+    /**
+     * 设置五级标题文本大小
+     *
+     * @param headingTextSize5 五级标题文本大小 - 默认15.0
+     */
+    public func setHeadingTextSize5(headingTextSize5: Float64): Unit {
+        this.headingTextSize5 = headingTextSize5
+    }
+
+    /**
+     * 设置六级标题文本大小
+     *
+     * @param headingTextSize6 六级标题文本大小 - 默认13.0
+     */
+    public func setHeadingTextSize6(headingTextSize6: Float64): Unit {
+        this.headingTextSize6 = headingTextSize6
     }
 
     /**
@@ -1776,6 +2041,78 @@ public class CJMarkdownTheme {
      */
     public func setHeadingTextLineHeight6(headingTextLineHeight6: Float64): Unit {
         this.headingTextLineHeight6 = headingTextLineHeight6
+    }
+
+    /**
+     * 设置一级标题文本颜色
+     *
+     * @param headingTextColor1 一级标题文本颜色
+     */
+    public func setHeadingTextColor1(headingTextColor1: UInt32): Unit {
+        this.headingTextColor1 = transColorForTrasparent(headingTextColor1)
+    }
+
+    /**
+     * 设置H1标题下分割线颜色
+     *
+     * @param headingBreakColor H1标题下分割线颜色 - 默认0XFF191919
+     */
+    public func setHeadingBreakColor1(headingBreakColor1: UInt32): Unit {
+        this.headingBreakColor1 = transColorForTrasparent(headingBreakColor1)
+    }
+
+    /**
+     * 设置二级标题文本颜色
+     *
+     * @param headingTextColor2 二级标题文本颜色
+     */
+    public func setHeadingTextColor2(headingTextColor2: UInt32): Unit {
+        this.headingTextColor2 = transColorForTrasparent(headingTextColor2)
+    }
+
+    /**
+     * 设置H2标题下分割线颜色
+     *
+     * @param headingBreakColor2 H1、H2标题下分割线颜色 - 默认0XFF191919
+     */
+    public func setHeadingBreakColor2(headingBreakColor2: UInt32): Unit {
+        this.headingBreakColor2 = transColorForTrasparent(headingBreakColor2)
+    }
+
+    /**
+     * 设置三级标题文本颜色
+     *
+     * @param headingTextColor3 三级标题文本颜色
+     */
+    public func setHeadingTextColor3(headingTextColor3: UInt32): Unit {
+        this.headingTextColor3 = transColorForTrasparent(headingTextColor3)
+    }
+
+    /**
+     * 设置四级标题文本颜色
+     *
+     * @param headingTextColor4 四级标题文本颜色
+     */
+    public func setHeadingTextColor4(headingTextColor4: UInt32): Unit {
+        this.headingTextColor4 = transColorForTrasparent(headingTextColor4)
+    }
+
+    /**
+     * 设置五级标题文本颜色
+     *
+     * @param headingTextColor5 五级标题文本颜色
+     */
+    public func setHeadingTextColor5(headingTextColor5: UInt32): Unit {
+        this.headingTextColor5 = transColorForTrasparent(headingTextColor5)
+    }
+
+    /**
+     * 设置六级标题文本颜色
+     *
+     * @param headingTextColor6 六级标题文本颜色
+     */
+    public func setHeadingTextColor6(headingTextColor6: UInt32): Unit {
+        this.headingTextColor6 = transColorForTrasparent(headingTextColor6)
     }
 
     /**
@@ -2170,6 +2507,159 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置视频发布/下载按钮布局是否显示
+     *
+     * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默认false不显示
+     */
+    public func setIsVideoBottomLayout(isVideoBottomLayout: Bool): Unit {
+        this.isVideoBottomLayout = isVideoBottomLayout
+    }
+
+    /**
+     * 设置视频发布按钮图片宽度和高度
+     *
+     * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
+     */
+    public func setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: Float64): Unit {
+        this.videoReleaseImageWidthHeight = videoReleaseImageWidthHeight
+    }
+
+    /**
+     * 设置视频发布按钮宽度
+     *
+     * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
+     */
+    public func setVideoReleaseWidth(videoReleaseWidth: Float64): Unit {
+        this.videoReleaseWidth = videoReleaseWidth
+    }
+
+    /**
+     * 设置视频发布按钮高度
+     *
+     * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
+     */
+    public func setVideoReleaseHeight(videoReleaseHeight: Float64): Unit {
+        this.videoReleaseHeight = videoReleaseHeight
+    }
+
+    /**
+     * 设置视频发布按钮圆角
+     *
+     * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
+     */
+    public func setVideoReleaseRadius(videoReleaseRadius: Float64): Unit {
+        this.videoReleaseRadius = videoReleaseRadius
+    }
+
+    /**
+     * 设置视频发布按钮文本内容
+     *
+     * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
+     */
+    public func setVideoReleaseText(videoReleaseText: String): Unit {
+        this.videoReleaseText = videoReleaseText
+    }
+
+    /**
+     * 设置视频发布按钮文本大小
+     *
+     * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
+     */
+    public func setVideoReleaseTexSize(videoReleaseTexSize: Float64): Unit {
+        this.videoReleaseTexSize = videoReleaseTexSize
+    }
+
+    /**
+     * 设置视频发布按钮文本颜色
+     *
+     * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
+     */
+    public func setVideoReleaseTexColor(videoReleaseTexColor: UInt32): Unit {
+        this.videoReleaseTexColor = transColorForTrasparent(videoReleaseTexColor)
+    }
+
+    /**
+     * 设置视频发布按钮背景颜色
+     *
+     * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
+     */
+    public func setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: UInt32): Unit {
+        this.videoReleaseBackgroundColor = transColorForTrasparent(videoReleaseBackgroundColor)
+    }
+
+    /**
+     * 设置视频下载按钮图片宽度和高度
+     *
+     * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
+     */
+    public func setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: Float64): Unit {
+        this.videoDownloadImageWidthHeight = videoDownloadImageWidthHeight
+    }
+
+    /**
+     * 设置视频下载按钮宽度
+     *
+     * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
+     */
+    public func setVideoDownloadWidth(videoDownloadWidth: Float64): Unit {
+        this.videoDownloadWidth = videoDownloadWidth
+    }
+
+    /**
+     * 设置视频下载按钮高度
+     *
+     * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
+     */
+    public func setVideoDownloadHeight(videoDownloadHeight: Float64): Unit {
+        this.videoDownloadHeight = videoDownloadHeight
+    }
+
+    /**
+     * 设置视频下载按钮圆角
+     *
+     * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
+     */
+    public func setVideoDownloadRadius(videoDownloadRadius: Float64): Unit {
+        this.videoDownloadRadius = videoDownloadRadius
+    }
+
+    /**
+     * 设置视频下载按钮文本内容
+     *
+     * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
+     */
+    public func setVideoDownloadText(videoDownloadText: String): Unit {
+        this.videoDownloadText = videoDownloadText
+    }
+
+    /**
+     * 设置视频下载按钮文本大小
+     *
+     * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
+     */
+    public func setVideoDownloadTexSize(videoDownloadTexSize: Float64): Unit {
+        this.videoDownloadTexSize = videoDownloadTexSize
+    }
+
+    /**
+     * 设置视频下载按钮文本颜色
+     *
+     * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
+     */
+    public func setVideoDownloadTexColor(videoDownloadTexColor: UInt32): Unit {
+        this.videoDownloadTexColor = transColorForTrasparent(videoDownloadTexColor)
+    }
+
+    /**
+     * 设置视频下载按钮背景颜色
+     *
+     * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
+     */
+    public func setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: UInt32): Unit {
+        this.videoDownloadBackgroundColor = transColorForTrasparent(videoDownloadBackgroundColor)
+    }
+
+    /**
      * 设置图片缩放类型
      *
      * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
@@ -2202,12 +2692,48 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置图片最大高度
+     *
+     * @param imageMaxHeight 图片最大高度 - 默认None
+     */
+    public func setImageMaxHeight(imageMaxHeight: Float64): Unit {
+        this.imageMaxHeight = imageMaxHeight
+    }
+
+    /**
+     * 设置图片最大宽度
+     *
+     * @param imageMaxWidth 图片最大宽度 - 默认None
+     */
+    public func setImageMaxWidth(imageMaxWidth: Float64): Unit {
+        this.imageMaxWidth = imageMaxWidth
+    }
+
+    /**
      * 设置图片圆角大小
      *
      * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
      */
     public func setImageBorderRadius(imageBorderRadius: Float64): Unit {
         this.imageBorderRadius = imageBorderRadius
+    }
+
+    /**
+     * 设置图片边框宽度
+     *
+     * @param imageBorderWidth 图片边框宽度 - 默认0.0
+     */
+    public func setImageBorderWidth(imageBorderWidth: Float64): Unit {
+        this.imageBorderWidth = imageBorderWidth
+    }
+
+    /**
+     * 设置图片边框颜色
+     *
+     * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
+     */
+    public func setImageBorderColor(imageBorderColor: UInt32): Unit {
+        this.imageBorderColor = transColorForTrasparent(imageBorderColor)
     }
 
     /**
@@ -2235,6 +2761,96 @@ public class CJMarkdownTheme {
      */
     public func setImageMarginBottom(imageMarginBottom: Float64): Unit {
         this.imageMarginBottom = imageMarginBottom
+    }
+
+    /**
+     * 设置图片是否有下载按钮
+     *
+     * @param isImageDownload 图片是否有下载按钮 - 默认false
+     */
+    public func setIsImageDownload(isImageDownload: Bool): Unit {
+        this.isImageDownload = isImageDownload
+    }
+
+    /**
+     * 设置是否图文混排
+     *
+     * @param isImageMixedLayout 是否图文混排 - 默认true
+     */
+    public func setIsImageMixedLayout(isImageMixedLayout: Bool): Unit {
+        this.isImageMixedLayout = isImageMixedLayout
+    }
+
+    /**
+     * 设置图片下载按钮图片宽度和高度
+     *
+     * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
+     */
+    public func setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: Float64): Unit {
+        this.imageDownloadImageWidthHeight = imageDownloadImageWidthHeight
+    }
+
+    /**
+     * 设置图片下载按钮宽度
+     *
+     * @param imageDownloadWidth 图片下载按钮宽度 - 默认296.0
+     */
+    public func setImageDownloadWidth(imageDownloadWidth: Float64): Unit {
+        this.imageDownloadWidth = imageDownloadWidth
+    }
+
+    /**
+     * 设置图片下载按钮高度
+     *
+     * @param imageDownloadHeight 图片下载按钮高度 - 默认44.0
+     */
+    public func setImageDownloadHeight(imageDownloadHeight: Float64): Unit {
+        this.imageDownloadHeight = imageDownloadHeight
+    }
+
+    /**
+     * 设置图片下载按钮圆角
+     *
+     * @param imageDownloadRadius 图片下载按钮圆角 - 默认22.0
+     */
+    public func setImageDownloadRadius(imageDownloadRadius: Float64): Unit {
+        this.imageDownloadRadius = imageDownloadRadius
+    }
+
+    /**
+     * 设置图片下载按钮文本内容
+     *
+     * @param imageDownloadText 图片下载按钮文本内容 - 默认"下载图片"
+     */
+    public func setImageDownloadText(imageDownloadText: String): Unit {
+        this.imageDownloadText = imageDownloadText
+    }
+
+    /**
+     * 设置图片下载按钮文本大小
+     *
+     * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
+     */
+    public func setImageDownloadTexSize(imageDownloadTexSize: Float64): Unit {
+        this.imageDownloadTexSize = imageDownloadTexSize
+    }
+
+    /**
+     * 设置图片下载按钮文本颜色
+     *
+     * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0XE6000000
+     */
+    public func setImageDownloadTexColor(imageDownloadTexColor: UInt32): Unit {
+        this.imageDownloadTexColor = transColorForTrasparent(imageDownloadTexColor)
+    }
+
+    /**
+     * 设置图片下载按钮背景颜色
+     *
+     * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0XFFF5F5F5
+     */
+    public func setImageDownloadBackgroundColor(imageDownloadBackgroundColor: UInt32): Unit {
+        this.imageDownloadBackgroundColor = transColorForTrasparent(imageDownloadBackgroundColor)
     }
 
     /**
@@ -2283,12 +2899,57 @@ public class CJMarkdownTheme {
     }
 
     /**
-     * 设置表格头背景色
+     * 设置表格标题背景色
      *
-     * @param tableHeaderRowBackgroundColor 表格头背景色 - 默认0XFFFFFFFF
+     * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0XFFFFFFFF
      */
     public func setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: UInt32): Unit {
         this.tableHeaderRowBackgroundColor = transColorForTrasparent(tableHeaderRowBackgroundColor)
+    }
+
+    /**
+     * 设置表格标题文本颜色
+     *
+     * @param tableTitleTextColor 表格标题文本颜色 - 默认0XFF191919
+     */
+    public func setTableTitleTextColor(tableTitleTextColor: UInt32): Unit {
+        this.tableTitleTextColor = transColorForTrasparent(tableTitleTextColor)
+    }
+
+    /**
+     * 设置表格标题文本大小
+     *
+     * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
+     */
+    public func setTableTitleTextSize(tableTitleTextSize: Float64): Unit {
+        this.tableTitleTextSize = tableTitleTextSize
+    }
+
+    /**
+     * 设置表格标题文本行高
+     *
+     * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
+     */
+    public func setTableTitleLineHeight(tableTitleLineHeight: Float64): Unit {
+        this.tableTitleLineHeight = tableTitleLineHeight
+    }
+
+    /**
+     * 设置表格内容文本颜色
+     *
+     * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
+     */
+    public func setTableContentTextColor(tableContentTextColor: UInt32): Unit {
+        this.tableContentTextColor = transColorForTrasparent(tableContentTextColor)
+    }
+
+    /**
+     * 设置表格内容文本大小
+     *
+     * @param tableContentTextSize 表格内容文本大小 - 默认14.0vp
+     */
+    public func setTableContentTextSize(tableContentTextSize: Float64): Unit {
+        this.tableContentTextSize = tableContentTextSize
     }
 
     /**
@@ -2337,6 +2998,24 @@ public class CJMarkdownTheme {
     }
 
     /**
+     * 设置表格是否显示滚动条
+     *
+     * @param tableScrollBarShow 表格是否显示滚动条 - true：显示；false：不显示。默认false
+     */
+    public func setTableScrollBarShow(tableScrollBarShow: Bool): Unit {
+        this.tableScrollBarShow = tableScrollBarShow
+    }
+
+    /**
+     * 设置表格滚动条颜色
+     *
+     * @param tableScrollBarColor 表格滚动条颜色
+     */
+    public func setTableScrollBarColor(tableScrollBarColor: UInt32): Unit {
+        this.tableScrollBarColor = transColorForTrasparent(tableScrollBarColor)
+    }
+
+    /**
      * 设置代码块深浅色
      *
      * @param isDark 是否是深色 - true：深色；false：浅色。默认false
@@ -2352,6 +3031,15 @@ public class CJMarkdownTheme {
      */
     public func setStrikethroughColor(strikethroughColor: UInt32): Unit {
         this.strikethroughColor = transColorForTrasparent(strikethroughColor)
+    }
+
+    /**
+     * 设置删除线样式
+     *
+     * @param strikethroughStyle 删除线样式 - 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+     */
+    public func setStrikethroughStyle(strikethroughStyle: Int32): Unit {
+        this.strikethroughStyle = strikethroughStyle
     }
 
     /**
@@ -2442,5 +3130,41 @@ public class CJMarkdownTheme {
      */
     public func setUnderlineColor(underlineColor: UInt32): Unit {
         this.underlineColor = transColorForTrasparent(underlineColor)
+    }
+
+    /**
+     * 设置下划线样式
+     *
+     * @param underlineStyle 下划线样式 - 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
+     */
+    public func setUnderlineStyle(underlineStyle: Int32): Unit {
+        this.underlineStyle = underlineStyle
+    }
+
+    /**
+     * 设置markdown是否支持滚动手势
+     *
+     * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
+     */
+    public func setOpenGestureSwipe(openGestureSwipe: Bool): Unit {
+        this.openGestureSwipe = openGestureSwipe
+    }
+
+    /**
+     * 设置codeformat是否用制表符
+     *
+     * @param useTab true-使用，false-不使用，默认false
+     */
+    public func setUseTab(useTab: Bool): Unit {
+        this.useTab = useTab
+    }
+
+    /**
+     * 设置codeformat空格缩进数量
+     *
+     * @param indentWidth 空格缩进数量，默认4空格
+     */
+    public func setIndentWidth(indentWidth: Int64): Unit {
+        this.indentWidth = indentWidth
     }
 }
