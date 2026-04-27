@@ -8,9 +8,9 @@ func setDefinitionListTheme(definitionListTheme: CJMarkdownDefinitionListTheme):
     if (let Some(v) <- definitionListTheme.definitionListBackgroundColor) {
         theme.setDefinitionListBackgroundColor(v)
     }
-    var definitionListMarginTop: Float64 = 8.0
+    var definitionListMarginTop: Float64 = 0.0
     var definitionListMarginRight: Float64 = 0.0
-    var definitionListMarginBottom: Float64 = 8.0
+    var definitionListMarginBottom: Float64 = 0.0
     var definitionListMarginLeft: Float64 = 0.0
     if (let Some(v) <- definitionListTheme.definitionListMarginTop) { definitionListMarginTop = v }
     if (let Some(v) <- definitionListTheme.definitionListMarginRight) { definitionListMarginRight = v }

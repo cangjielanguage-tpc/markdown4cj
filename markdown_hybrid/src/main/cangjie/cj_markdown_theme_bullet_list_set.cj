@@ -8,10 +8,10 @@ func setBulletListTheme(bulletListTheme: CJMarkdownBulletListTheme): BulletListT
     if (let Some(v) <- bulletListTheme.bulletListBackgroundColor) {
         theme.setBulletListBackgroundColor(v)
     }
-    var bulletListMarginTop: Float64 = 8.0
+    var bulletListMarginTop: Float64 = 0.0
     var bulletListMarginRight: Float64 = 0.0
-    var bulletListMarginBottom: Float64 = 8.0
-    var bulletListMarginLeft: Float64 = 0.0
+    var bulletListMarginBottom: Float64 = 0.0
+    var bulletListMarginLeft: Float64 = 8.0
     if (let Some(v) <- bulletListTheme.bulletListMarginTop) { bulletListMarginTop = v }
     if (let Some(v) <- bulletListTheme.bulletListMarginRight) { bulletListMarginRight = v }
     if (let Some(v) <- bulletListTheme.bulletListMarginBottom) { bulletListMarginBottom = v }

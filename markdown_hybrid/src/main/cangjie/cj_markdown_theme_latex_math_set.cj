@@ -5,9 +5,9 @@ package markdown
 
 func setLatexMathTheme(latexMathTheme: CJMarkdownLatexMathTheme): LatexMathTheme {
     let theme: LatexMathTheme = LatexMathTheme()
-    var latexMathMarginTop: Float64 = 8.0
+    var latexMathMarginTop: Float64 = 0.0
     var latexMathMarginRight: Float64 = 0.0
-    var latexMathMarginBottom: Float64 = 8.0
+    var latexMathMarginBottom: Float64 = 0.0
     var latexMathMarginLeft: Float64 = 0.0
     if (let Some(v) <- latexMathTheme.latexMathMarginTop) { latexMathMarginTop = v }
     if (let Some(v) <- latexMathTheme.latexMathMarginRight) { latexMathMarginRight = v }

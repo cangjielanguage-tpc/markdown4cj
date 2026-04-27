@@ -14,9 +14,9 @@ func setTableTheme(tableTheme: CJMarkdownTableTheme): TableTheme {
     if (let Some(v) <- tableTheme.tableContentEvenRowBackgroundColor) {
         theme.setTableContentEvenRowBackgroundColor(v)
     }
-    var tableMarginTop: Float64 = 8.0
+    var tableMarginTop: Float64 = 0.0
     var tableMarginRight: Float64 = 0.0
-    var tableMarginBottom: Float64 = 8.0
+    var tableMarginBottom: Float64 = 0.0
     var tableMarginLeft: Float64 = 0.0
     if (let Some(v) <- tableTheme.tableMarginTop) { tableMarginTop = v }
     if (let Some(v) <- tableTheme.tableMarginRight) { tableMarginRight = v }

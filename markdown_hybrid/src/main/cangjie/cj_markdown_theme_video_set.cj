@@ -8,9 +8,9 @@ func setVideoTheme(videoTheme: CJMarkdownVideoTheme): VideoTheme {
     if (let Some(v) <- videoTheme.videoBackgroundColor) {
         theme.setVideoBackgroundColor(v)
     }
-    var videoMarginTop: Float64 = 10.0 // 视频上外边距
+    var videoMarginTop: Float64 = 0.0 // 视频上外边距
     var videoMarginRight: Float64 = 0.0 // 视频右外边距
-    var videoMarginBottom: Float64 = 10.0 // 视频下外边距
+    var videoMarginBottom: Float64 = 0.0 // 视频下外边距
     var videoMarginLeft: Float64 = 0.0 // 视频左外边距
     if (let Some(v) <- videoTheme.videoMarginTop) {
         videoMarginTop = v

@@ -14,9 +14,9 @@ func setGlobalTheme(globalTheme: CJMarkdownGlobalTheme): GlobalTheme {
     if (let Some(v) <- globalTheme.isOnCopy) {
         theme.setIsOnCopy(v)
     }
-    var blockMarginTop: Float64 = 8.0 // markdown全局上外边距
+    var blockMarginTop: Float64 = 0.0 // markdown全局上外边距
     var blockMarginRight: Float64 = 0.0 // markdown全局右外边距
-    var blockMarginBottom: Float64 = 8.0 // markdown全局下外边距
+    var blockMarginBottom: Float64 = 0.0 // markdown全局下外边距
     var blockMarginLeft: Float64 = 0.0 // markdown全局左外边距
     if (let Some(v) <- globalTheme.blockMarginTop) {
         blockMarginTop = v

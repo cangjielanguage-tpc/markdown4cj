@@ -7,9 +7,9 @@ func setHeadingTheme(headingTheme: CJMarkdownHeadingTheme): HeadingTheme {
     let theme: HeadingTheme = HeadingTheme()
     // H1
     if (let Some(v) <- headingTheme.heading1BackgroundColor) { theme.setBackgroundColorForDesignateHeading(1, v) }
-    var h1MarginTop: Float64 = 8.0
+    var h1MarginTop: Float64 = 0.0
     var h1MarginRight: Float64 = 0.0
-    var h1MarginBottom: Float64 = 8.0
+    var h1MarginBottom: Float64 = 0.0
     var h1MarginLeft: Float64 = 0.0
     if (let Some(v) <- headingTheme.heading1MarginTop) { h1MarginTop = v }
     if (let Some(v) <- headingTheme.heading1MarginRight) { h1MarginRight = v }
@@ -40,9 +40,9 @@ func setHeadingTheme(headingTheme: CJMarkdownHeadingTheme): HeadingTheme {
 
     // H2
     if (let Some(v) <- headingTheme.heading2BackgroundColor) { theme.setBackgroundColorForDesignateHeading(2, v) }
-    var h2MarginTop: Float64 = 8.0
+    var h2MarginTop: Float64 = 0.0
     var h2MarginRight: Float64 = 0.0
-    var h2MarginBottom: Float64 = 8.0
+    var h2MarginBottom: Float64 = 0.0
     var h2MarginLeft: Float64 = 0.0
     if (let Some(v) <- headingTheme.heading2MarginTop) { h2MarginTop = v }
     if (let Some(v) <- headingTheme.heading2MarginRight) { h2MarginRight = v }
@@ -73,9 +73,9 @@ func setHeadingTheme(headingTheme: CJMarkdownHeadingTheme): HeadingTheme {
 
     // H3
     if (let Some(v) <- headingTheme.heading3BackgroundColor) { theme.setBackgroundColorForDesignateHeading(3, v) }
-    var h3MarginTop: Float64 = 8.0
+    var h3MarginTop: Float64 = 0.0
     var h3MarginRight: Float64 = 0.0
-    var h3MarginBottom: Float64 = 8.0
+    var h3MarginBottom: Float64 = 0.0
     var h3MarginLeft: Float64 = 0.0
     if (let Some(v) <- headingTheme.heading3MarginTop) { h3MarginTop = v }
     if (let Some(v) <- headingTheme.heading3MarginRight) { h3MarginRight = v }
@@ -103,9 +103,9 @@ func setHeadingTheme(headingTheme: CJMarkdownHeadingTheme): HeadingTheme {
 
     // H4
     if (let Some(v) <- headingTheme.heading4BackgroundColor) { theme.setBackgroundColorForDesignateHeading(4, v) }
-    var h4MarginTop: Float64 = 8.0
+    var h4MarginTop: Float64 = 0.0
     var h4MarginRight: Float64 = 0.0
-    var h4MarginBottom: Float64 = 8.0
+    var h4MarginBottom: Float64 = 0.0
     var h4MarginLeft: Float64 = 0.0
     if (let Some(v) <- headingTheme.heading4MarginTop) { h4MarginTop = v }
     if (let Some(v) <- headingTheme.heading4MarginRight) { h4MarginRight = v }
@@ -133,9 +133,9 @@ func setHeadingTheme(headingTheme: CJMarkdownHeadingTheme): HeadingTheme {
 
     // H5
     if (let Some(v) <- headingTheme.heading5BackgroundColor) { theme.setBackgroundColorForDesignateHeading(5, v) }
-    var h5MarginTop: Float64 = 8.0
+    var h5MarginTop: Float64 = 0.0
     var h5MarginRight: Float64 = 0.0
-    var h5MarginBottom: Float64 = 8.0
+    var h5MarginBottom: Float64 = 0.0
     var h5MarginLeft: Float64 = 0.0
     if (let Some(v) <- headingTheme.heading5MarginTop) { h5MarginTop = v }
     if (let Some(v) <- headingTheme.heading5MarginRight) { h5MarginRight = v }
@@ -163,9 +163,9 @@ func setHeadingTheme(headingTheme: CJMarkdownHeadingTheme): HeadingTheme {
 
     // H6
     if (let Some(v) <- headingTheme.heading6BackgroundColor) { theme.setBackgroundColorForDesignateHeading(6, v) }
-    var h6MarginTop: Float64 = 8.0
+    var h6MarginTop: Float64 = 0.0
     var h6MarginRight: Float64 = 0.0
-    var h6MarginBottom: Float64 = 8.0
+    var h6MarginBottom: Float64 = 0.0
     var h6MarginLeft: Float64 = 0.0
     if (let Some(v) <- headingTheme.heading6MarginTop) { h6MarginTop = v }
     if (let Some(v) <- headingTheme.heading6MarginRight) { h6MarginRight = v }

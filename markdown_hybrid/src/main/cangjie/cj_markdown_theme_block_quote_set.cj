@@ -8,9 +8,9 @@ func setBlockQuoteTheme(blockQuoteTheme: CJMarkdownBlockQuoteTheme): BlockQuoteT
     if (let Some(v) <- blockQuoteTheme.blockQuoteBackgroundColor) {
         theme.setBlockQuoteBackgroundColor(v)
     }
-    var blockQuoteMarginTop: Float64 = 8.0
+    var blockQuoteMarginTop: Float64 = 0.0
     var blockQuoteMarginRight: Float64 = 0.0
-    var blockQuoteMarginBottom: Float64 = 8.0
+    var blockQuoteMarginBottom: Float64 = 0.0
     var blockQuoteMarginLeft: Float64 = 8.0
     if (let Some(v) <- blockQuoteTheme.blockQuoteMarginTop) { blockQuoteMarginTop = v }
     if (let Some(v) <- blockQuoteTheme.blockQuoteMarginRight) { blockQuoteMarginRight = v }
@@ -21,7 +21,7 @@ func setBlockQuoteTheme(blockQuoteTheme: CJMarkdownBlockQuoteTheme): BlockQuoteT
     var blockQuotePaddingTop: Float64 = 0.0
     var blockQuotePaddingRight: Float64 = 0.0
     var blockQuotePaddingBottom: Float64 = 0.0
-    var blockQuotePaddingLeft: Float64 = 8.0
+    var blockQuotePaddingLeft: Float64 = 0.0
     if (let Some(v) <- blockQuoteTheme.blockQuotePaddingTop) { blockQuotePaddingTop = v }
     if (let Some(v) <- blockQuoteTheme.blockQuotePaddingRight) { blockQuotePaddingRight = v }
     if (let Some(v) <- blockQuoteTheme.blockQuotePaddingBottom) { blockQuotePaddingBottom = v }

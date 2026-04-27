@@ -2,9 +2,9 @@ package markdown
 
 func setImageTheme(imageTheme: CJMarkdownImageTheme): ImageTheme {
     let theme: ImageTheme = ImageTheme()
-    var imageMarginTop: Float64 = 10.0
+    var imageMarginTop: Float64 = 0.0
     var imageMarginRight: Float64 = 0.0
-    var imageMarginBottom: Float64 = 10.0
+    var imageMarginBottom: Float64 = 0.0
     var imageMarginLeft: Float64 = 0.0
     if (let Some(v) <- imageTheme.imageMarginTop) { imageMarginTop = v }
     if (let Some(v) <- imageTheme.imageMarginRight) { imageMarginRight = v }

@@ -8,9 +8,9 @@ func setOrderedListTheme(orderedListTheme: CJMarkdownOrderedListTheme): OrderedL
     if (let Some(v) <- orderedListTheme.orderedListBackgroundColor) {
         theme.setOrderedListBackgroundColor(v)
     }
-    var orderedListMarginTop: Float64 = 8.0
+    var orderedListMarginTop: Float64 = 0.0
     var orderedListMarginRight: Float64 = 0.0
-    var orderedListMarginBottom: Float64 = 8.0
+    var orderedListMarginBottom: Float64 = 0.0
     var orderedListMarginLeft: Float64 = 8.0
     if (let Some(v) <- orderedListTheme.orderedListMarginTop) { orderedListMarginTop = v }
     if (let Some(v) <- orderedListTheme.orderedListMarginRight) { orderedListMarginRight = v }

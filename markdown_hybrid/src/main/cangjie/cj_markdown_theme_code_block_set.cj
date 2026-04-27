@@ -29,8 +29,8 @@ func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme
 
     var codeBlockPaddingTop: Float64 = 0.0
     var codeBlockPaddingRight: Float64 = 8.0
-    var codeBlockPaddingBottom: Float64 = 0.0
-    var codeBlockPaddingLeft: Float64 = 8.0
+    var codeBlockPaddingBottom: Float64 = 8.0
+    var codeBlockPaddingLeft: Float64 = 0.0
     if (let Some(v) <- codeBlockTheme.codeBlockPaddingTop) { codeBlockPaddingTop = v }
     if (let Some(v) <- codeBlockTheme.codeBlockPaddingRight) { codeBlockPaddingRight = v }
     if (let Some(v) <- codeBlockTheme.codeBlockPaddingBottom) { codeBlockPaddingBottom = v }

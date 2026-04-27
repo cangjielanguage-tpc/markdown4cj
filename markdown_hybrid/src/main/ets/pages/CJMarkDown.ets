@@ -438,9 +438,9 @@ export struct CJMarkdown {
     if (theme.audioBackgroundColor !== undefined) {
       cjMarkdownTheme.setAudioBackgroundColor(theme.audioBackgroundColor)
     }
-    let audioMarginTop: number = 10.0
+    let audioMarginTop: number = 0.0
     let audioMarginRight: number = 0.0
-    let audioMarginBottom: number = 10.0
+    let audioMarginBottom: number = 0.0
     let audioMarginLeft: number = 0.0
     if (theme.audioMarginTop !== undefined) {
       audioMarginTop = theme.audioMarginTop
@@ -456,10 +456,10 @@ export struct CJMarkdown {
     }
     cjMarkdownTheme.setAudioMargin(audioMarginTop, audioMarginRight, audioMarginBottom, audioMarginLeft)
 
-    let audioPaddingTop: number = 0.0
-    let audioPaddingRight: number = 0.0
-    let audioPaddingBottom: number = 0.0
-    let audioPaddingLeft: number = 0.0
+    let audioPaddingTop: number = 12.0
+    let audioPaddingRight: number = 16.0
+    let audioPaddingBottom: number = 12.0
+    let audioPaddingLeft: number = 12.0
     if (theme.audioPaddingTop !== undefined) {
       audioPaddingTop = theme.audioPaddingTop
     }
@@ -529,10 +529,10 @@ export struct CJMarkdown {
     if (theme.audioButtonBorderColor !== undefined) {
       cjMarkdownTheme.setAudioButtonBorderColor(theme.audioButtonBorderColor)
     }
-    let audioButtonRadiusTopLeft: number = 12.0
-    let audioButtonRadiusTopRight: number = 12.0
-    let audioButtonRadiusBottomLeft: number = 12.0
-    let audioButtonRadiusBottomRight: number = 12.0
+    let audioButtonRadiusTopLeft: number = 16.0
+    let audioButtonRadiusTopRight: number = 16.0
+    let audioButtonRadiusBottomLeft: number = 16.0
+    let audioButtonRadiusBottomRight: number = 16.0
     if (theme.audioButtonRadiusTopLeft !== undefined) {
       audioButtonRadiusTopLeft = theme.audioButtonRadiusTopLeft
     }
@@ -573,10 +573,10 @@ export struct CJMarkdown {
     if (theme.audioIconHeight !== undefined) {
       cjMarkdownTheme.setAudioIconHeight(theme.audioIconHeight)
     }
-    let audioIconRadiusTopLeft: number = 12.0
-    let audioIconRadiusTopRight: number = 12.0
-    let audioIconRadiusBottomLeft: number = 12.0
-    let audioIconRadiusBottomRight: number = 12.0
+    let audioIconRadiusTopLeft: number = 8.0
+    let audioIconRadiusTopRight: number = 8.0
+    let audioIconRadiusBottomLeft: number = 8.0
+    let audioIconRadiusBottomRight: number = 8.0
     if (theme.audioIconRadiusTopLeft !== undefined) {
       audioIconRadiusTopLeft = theme.audioIconRadiusTopLeft
     }
@@ -690,7 +690,7 @@ export struct CJMarkdown {
     let blockQuoteMarginTop: number = 0.0
     let blockQuoteMarginRight: number = 0.0
     let blockQuoteMarginBottom: number = 0.0
-    let blockQuoteMarginLeft: number = 0.0
+    let blockQuoteMarginLeft: number = 8.0
     if (theme.blockQuoteMarginTop !== undefined) {
       blockQuoteMarginTop = theme.blockQuoteMarginTop
     }
@@ -795,7 +795,7 @@ export struct CJMarkdown {
     let bulletListMarginTop: number = 0.0
     let bulletListMarginRight: number = 0.0
     let bulletListMarginBottom: number = 0.0
-    let bulletListMarginLeft: number = 0.0
+    let bulletListMarginLeft: number = 8.0
     if (theme.bulletListMarginTop !== undefined) {
       bulletListMarginTop = theme.bulletListMarginTop
     }
@@ -895,9 +895,9 @@ export struct CJMarkdown {
     if (theme.codeBlockBackgroundColor !== undefined) {
       cjMarkdownTheme.setCodeBlockBackgroundColor(theme.codeBlockBackgroundColor)
     }
-    let codeBlockMarginTop: number = 0.0
+    let codeBlockMarginTop: number = 8.0
     let codeBlockMarginRight: number = 0.0
-    let codeBlockMarginBottom: number = 0.0
+    let codeBlockMarginBottom: number = 8.0
     let codeBlockMarginLeft: number = 0.0
     if (theme.codeBlockMarginTop !== undefined) {
       codeBlockMarginTop = theme.codeBlockMarginTop
@@ -914,8 +914,8 @@ export struct CJMarkdown {
     cjMarkdownTheme.setCodeBlockMargin(codeBlockMarginTop, codeBlockMarginRight, codeBlockMarginBottom, codeBlockMarginLeft)
 
     let codeBlockPaddingTop: number = 0.0
-    let codeBlockPaddingRight: number = 0.0
-    let codeBlockPaddingBottom: number = 0.0
+    let codeBlockPaddingRight: number = 8.0
+    let codeBlockPaddingBottom: number = 8.0
     let codeBlockPaddingLeft: number = 0.0
     if (theme.codeBlockPaddingTop !== undefined) {
       codeBlockPaddingTop = theme.codeBlockPaddingTop
@@ -939,10 +939,10 @@ export struct CJMarkdown {
     if (theme.codeBlockBorderColor !== undefined) {
       cjMarkdownTheme.setCodeBlockBorderColor(theme.codeBlockBorderColor)
     }
-    let codeBlockRadiusTopLeft: number = 0.0
-    let codeBlockRadiusTopRight: number = 0.0
-    let codeBlockRadiusBottomLeft: number = 0.0
-    let codeBlockRadiusBottomRight: number = 0.0
+    let codeBlockRadiusTopLeft: number = 8.0
+    let codeBlockRadiusTopRight: number = 8.0
+    let codeBlockRadiusBottomLeft: number = 8.0
+    let codeBlockRadiusBottomRight: number = 8.0
     if (theme.codeBlockRadiusTopLeft !== undefined) {
       codeBlockRadiusTopLeft = theme.codeBlockRadiusTopLeft
     }
@@ -1919,10 +1919,10 @@ export struct CJMarkdown {
     if (theme.imageDownloadButtonHeight !== undefined) {
       cjMarkdownTheme.setImageDownloadButtonHeight(theme.imageDownloadButtonHeight)
     }
-    let imageDownloadButtonRadiusTopLeft: number = 0.0
-    let imageDownloadButtonRadiusTopRight: number = 0.0
-    let imageDownloadButtonRadiusBottomLeft: number = 0.0
-    let imageDownloadButtonRadiusBottomRight: number = 0.0
+    let imageDownloadButtonRadiusTopLeft: number = 22.0
+    let imageDownloadButtonRadiusTopRight: number = 22.0
+    let imageDownloadButtonRadiusBottomLeft: number = 22.0
+    let imageDownloadButtonRadiusBottomRight: number = 22.0
     if (theme.imageDownloadButtonRadiusTopLeft !== undefined) {
       imageDownloadButtonRadiusTopLeft = theme.imageDownloadButtonRadiusTopLeft
     }
@@ -2288,7 +2288,7 @@ export struct CJMarkdown {
     let orderedListMarginTop: number = 0.0
     let orderedListMarginRight: number = 0.0
     let orderedListMarginBottom: number = 0.0
-    let orderedListMarginLeft: number = 0.0
+    let orderedListMarginLeft: number = 8.0
     if (theme.orderedListMarginTop !== undefined) {
       orderedListMarginTop = theme.orderedListMarginTop
     }
@@ -2569,10 +2569,10 @@ export struct CJMarkdown {
     }
     cjMarkdownTheme.setTablePadding(tablePaddingTop, tablePaddingRight, tablePaddingBottom, tablePaddingLeft)
 
-    let tableCellPaddingTop: number = 0.0
-    let tableCellPaddingRight: number = 0.0
-    let tableCellPaddingBottom: number = 0.0
-    let tableCellPaddingLeft: number = 0.0
+    let tableCellPaddingTop: number = 4.0
+    let tableCellPaddingRight: number = 4.0
+    let tableCellPaddingBottom: number = 4.0
+    let tableCellPaddingLeft: number = 4.0
     if (theme.tableCellPaddingTop !== undefined) {
       tableCellPaddingTop = theme.tableCellPaddingTop
     }
@@ -2595,10 +2595,10 @@ export struct CJMarkdown {
     if (theme.tableBorderColor !== undefined) {
       cjMarkdownTheme.setTableBorderColor(theme.tableBorderColor)
     }
-    let tableRadiusTopLeft: number = 0.0
-    let tableRadiusTopRight: number = 0.0
-    let tableRadiusBottomLeft: number = 0.0
-    let tableRadiusBottomRight: number = 0.0
+    let tableRadiusTopLeft: number = 5.0
+    let tableRadiusTopRight: number = 5.0
+    let tableRadiusBottomLeft: number = 5.0
+    let tableRadiusBottomRight: number = 5.0
     if (theme.tableRadiusTopLeft !== undefined) {
       tableRadiusTopLeft = theme.tableRadiusTopLeft
     }
@@ -2716,10 +2716,10 @@ export struct CJMarkdown {
     }
     cjMarkdownTheme.setVideoPadding(videoPaddingTop, videoPaddingRight, videoPaddingBottom, videoPaddingLeft)
 
-    let videoRadiusTopLeft: number = 0.0
-    let videoRadiusTopRight: number = 0.0
-    let videoRadiusBottomLeft: number = 0.0
-    let videoRadiusBottomRight: number = 0.0
+    let videoRadiusTopLeft: number = 10.0
+    let videoRadiusTopRight: number = 10.0
+    let videoRadiusBottomLeft: number = 10.0
+    let videoRadiusBottomRight: number = 10.0
     if (theme.videoRadiusTopLeft !== undefined) {
       videoRadiusTopLeft = theme.videoRadiusTopLeft
     }
@@ -2796,10 +2796,10 @@ export struct CJMarkdown {
     if (theme.videoReleaseButtonHeight !== undefined) {
       cjMarkdownTheme.setVideoReleaseButtonHeight(theme.videoReleaseButtonHeight)
     }
-    let videoReleaseButtonRadiusTopLeft: number = 0.0
-    let videoReleaseButtonRadiusTopRight: number = 0.0
-    let videoReleaseButtonRadiusBottomLeft: number = 0.0
-    let videoReleaseButtonRadiusBottomRight: number = 0.0
+    let videoReleaseButtonRadiusTopLeft: number = 22.0
+    let videoReleaseButtonRadiusTopRight: number = 22.0
+    let videoReleaseButtonRadiusBottomLeft: number = 22.0
+    let videoReleaseButtonRadiusBottomRight: number = 22.0
     if (theme.videoReleaseButtonRadiusTopLeft !== undefined) {
       videoReleaseButtonRadiusTopLeft = theme.videoReleaseButtonRadiusTopLeft
     }
@@ -2860,10 +2860,10 @@ export struct CJMarkdown {
     if (theme.videoDownloadButtonHeight !== undefined) {
       cjMarkdownTheme.setVideoDownloadButtonHeight(theme.videoDownloadButtonHeight)
     }
-    let videoDownloadButtonRadiusTopLeft: number = 0.0
-    let videoDownloadButtonRadiusTopRight: number = 0.0
-    let videoDownloadButtonRadiusBottomLeft: number = 0.0
-    let videoDownloadButtonRadiusBottomRight: number = 0.0
+    let videoDownloadButtonRadiusTopLeft: number = 22.0
+    let videoDownloadButtonRadiusTopRight: number = 22.0
+    let videoDownloadButtonRadiusBottomLeft: number = 22.0
+    let videoDownloadButtonRadiusBottomRight: number = 22.0
     if (theme.videoDownloadButtonRadiusTopLeft !== undefined) {
       videoDownloadButtonRadiusTopLeft = theme.videoDownloadButtonRadiusTopLeft
     }

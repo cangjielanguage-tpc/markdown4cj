@@ -5,9 +5,9 @@ package markdown
 
 func setDividerTheme(dividerTheme: CJMarkdownDividerTheme): DividerTheme {
     let theme: DividerTheme = DividerTheme()
-    var dividerMarginTop: Float64 = 8.0
+    var dividerMarginTop: Float64 = 0.0
     var dividerMarginRight: Float64 = 0.0
-    var dividerMarginBottom: Float64 = 8.0
+    var dividerMarginBottom: Float64 = 0.0
     var dividerMarginLeft: Float64 = 0.0
     if (let Some(v) <- dividerTheme.dividerMarginTop) { dividerMarginTop = v }
     if (let Some(v) <- dividerTheme.dividerMarginRight) { dividerMarginRight = v }

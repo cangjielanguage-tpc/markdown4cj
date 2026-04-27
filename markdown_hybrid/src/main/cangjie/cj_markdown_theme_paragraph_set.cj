@@ -8,9 +8,9 @@ func setParagraphTheme(paragraphTheme: CJMarkdownParagraphTheme): ParagraphTheme
     if (let Some(v) <- paragraphTheme.paragraphBackgroundColor) {
         theme.setParagraphBackgroundColor(v)
     }
-    var paragraphMarginTop: Float64 = 8.0
+    var paragraphMarginTop: Float64 = 0.0
     var paragraphMarginRight: Float64 = 0.0
-    var paragraphMarginBottom: Float64 = 8.0
+    var paragraphMarginBottom: Float64 = 0.0
     var paragraphMarginLeft: Float64 = 0.0
     if (let Some(v) <- paragraphTheme.paragraphMarginTop) {
         paragraphMarginTop = v

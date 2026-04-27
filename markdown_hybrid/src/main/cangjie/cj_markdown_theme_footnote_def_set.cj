@@ -8,9 +8,9 @@ func setFootnoteDefTheme(footnoteDefTheme: CJMarkdownFootnoteDefTheme): Footnote
     if (let Some(v) <- footnoteDefTheme.footnoteDefBackgroundColor) {
         theme.setFootnoteDefBackgroundColor(v)
     }
-    var footnoteDefMarginTop: Float64 = 8.0
+    var footnoteDefMarginTop: Float64 = 0.0
     var footnoteDefMarginRight: Float64 = 0.0
-    var footnoteDefMarginBottom: Float64 = 8.0
+    var footnoteDefMarginBottom: Float64 = 0.0
     var footnoteDefMarginLeft: Float64 = 0.0
     if (let Some(v) <- footnoteDefTheme.footnoteDefMarginTop) { footnoteDefMarginTop = v }
     if (let Some(v) <- footnoteDefTheme.footnoteDefMarginRight) { footnoteDefMarginRight = v }

@@ -8,9 +8,9 @@ func setAudioTheme(audioTheme: CJMarkdownAudioTheme): AudioTheme {
     if (let Some(v) <- audioTheme.audioBackgroundColor) {
         theme.setAudioBackgroundColor(v)
     }
-    var audioMarginTop: Float64 = 10.0
+    var audioMarginTop: Float64 = 0.0
     var audioMarginRight: Float64 = 0.0
-    var audioMarginBottom: Float64 = 10.0
+    var audioMarginBottom: Float64 = 0.0
     var audioMarginLeft: Float64 = 0.0
     if (let Some(v) <- audioTheme.audioMarginTop) { audioMarginTop = v }
     if (let Some(v) <- audioTheme.audioMarginRight) { audioMarginRight = v }
@@ -18,10 +18,10 @@ func setAudioTheme(audioTheme: CJMarkdownAudioTheme): AudioTheme {
     if (let Some(v) <- audioTheme.audioMarginLeft) { audioMarginLeft = v }
     theme.setAudioMargin(top: audioMarginTop, right: audioMarginRight, bottom: audioMarginBottom, left: audioMarginLeft)
 
-    var audioPaddingTop: Float64 = 0.0
-    var audioPaddingRight: Float64 = 0.0
-    var audioPaddingBottom: Float64 = 0.0
-    var audioPaddingLeft: Float64 = 0.0
+    var audioPaddingTop: Float64 = 12.0
+    var audioPaddingRight: Float64 = 16.0
+    var audioPaddingBottom: Float64 = 12.0
+    var audioPaddingLeft: Float64 = 12.0
     if (let Some(v) <- audioTheme.audioPaddingTop) { audioPaddingTop = v }
     if (let Some(v) <- audioTheme.audioPaddingRight) { audioPaddingRight = v }
     if (let Some(v) <- audioTheme.audioPaddingBottom) { audioPaddingBottom = v }
@@ -65,10 +65,10 @@ func setAudioTheme(audioTheme: CJMarkdownAudioTheme): AudioTheme {
     if (let Some(v) <- audioTheme.audioIconHeight) {
         theme.setAudioIconHeight(v)
     }
-    var audioIconRadiusTopLeft: Float64 = 0.0
-    var audioIconRadiusTopRight: Float64 = 0.0
-    var audioIconRadiusBottomLeft: Float64 = 0.0
-    var audioIconRadiusBottomRight: Float64 = 0.0
+    var audioIconRadiusTopLeft: Float64 = 8.0
+    var audioIconRadiusTopRight: Float64 = 8.0
+    var audioIconRadiusBottomLeft: Float64 = 8.0
+    var audioIconRadiusBottomRight: Float64 = 8.0
     if (let Some(v) <- audioTheme.audioIconRadiusTopLeft) { audioIconRadiusTopLeft = v }
     if (let Some(v) <- audioTheme.audioIconRadiusTopRight) { audioIconRadiusTopRight = v }
     if (let Some(v) <- audioTheme.audioIconRadiusBottomLeft) { audioIconRadiusBottomLeft = v }

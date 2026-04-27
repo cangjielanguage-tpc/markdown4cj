@@ -5,9 +5,9 @@ package markdown
 
 func setBannerTheme(bannerTheme: CJMarkdownBannerTheme): BannerTheme {
     let theme: BannerTheme = BannerTheme()
-    var bannerMarginTop: Float64 = 8.0
+    var bannerMarginTop: Float64 = 0.0
     var bannerMarginRight: Float64 = 0.0
-    var bannerMarginBottom: Float64 = 8.0
+    var bannerMarginBottom: Float64 = 0.0
     var bannerMarginLeft: Float64 = 0.0
     if (let Some(v) <- bannerTheme.bannerMarginTop) { bannerMarginTop = v }
     if (let Some(v) <- bannerTheme.bannerMarginRight) { bannerMarginRight = v }
