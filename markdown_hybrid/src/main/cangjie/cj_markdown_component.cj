@@ -219,36 +219,6 @@ class CJMarkdownComponent {
 
     func setTheme(): MarkdownTheme {
         let markdownThemeBuilder: MarkdownThemeBuilder = MarkdownTheme.emptyBuilder()
-        if (let Some(v) <- codeFullScreenIcon) {
-            markdownThemeBuilder.setCodeFullScreenIcon(v) // 设置代码块代码全屏按钮默认图标
-        }
-        if (let Some(v) <- codeCopyIcon) {
-            markdownThemeBuilder.setCodeCopyIcon(v) // 设置代码块代码复制按钮默认图标
-        }
-        if (let Some(v) <- audioIcon) {
-            markdownThemeBuilder.setAudioIcon(v) // 设置音频图标
-        }
-        if (let Some(v) <- videoImage) {
-            markdownThemeBuilder.setVideoImage(v) // 设置视频默认占位图
-        }
-        if (let Some(v) <- playCircleFillIcon) {
-            markdownThemeBuilder.setPlayCircleFillIcon(v) // 设置视频播放按钮默认图标
-        }
-        if (let Some(v) <- bannerImage) {
-            markdownThemeBuilder.setBannerImage(v) // 设置图片banner默认占位图
-        }
-        if (let Some(v) <- imageResource) {
-            markdownThemeBuilder.setImageResource(v) // 设置图片默认占位图
-        }
-        if (let Some(v) <- videoReleaseImage) {
-            markdownThemeBuilder.setVideoReleaseImage(v) // 设置图片默认占位图
-        }
-        if (let Some(v) <- videoDownloadImage) {
-            markdownThemeBuilder.setVideoDownloadImage(v) // 设置图片默认占位图
-        }
-        if (let Some(v) <- imageDownloadImage) {
-            markdownThemeBuilder.setImageDownloadImage(v) // 设置图片下载默认图标
-        }
         if(let Some(w) <- cfg){
             if (let Some(v) <- w.cjMarkdownTheme.cjMarkdownCodeBlockTheme.codeBlockIsDark) {
                 // 设置markdown代码高亮样式

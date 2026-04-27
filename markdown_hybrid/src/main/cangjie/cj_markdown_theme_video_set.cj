@@ -5,6 +5,18 @@ package markdown
 
 func setVideoTheme(videoTheme: CJMarkdownVideoTheme): VideoTheme {
     let theme: VideoTheme = VideoTheme()
+    if (let Some(v) <- videoImage) {
+        theme.setVideoPlaceholder(v) // 设置视频默认占位图
+    }
+    if (let Some(v) <- playCircleFillIcon) {
+        theme.setVideoPlayIcon(v) // 设置视频播放按钮默认图标
+    }
+    if (let Some(v) <- videoReleaseImage) {
+        theme.setVideoReleaseButtonIcon(v) // 视频发布按钮默认图标
+    }
+    if (let Some(v) <- videoDownloadImage) {
+        theme.setVideoDownloadButtonIcon(v) // 视频下载按钮默认图标
+    }
     if (let Some(v) <- videoTheme.videoBackgroundColor) {
         theme.setVideoBackgroundColor(v)
     }

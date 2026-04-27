@@ -5,6 +5,9 @@ package markdown
 
 func setBannerTheme(bannerTheme: CJMarkdownBannerTheme): BannerTheme {
     let theme: BannerTheme = BannerTheme()
+    if (let Some(v) <- bannerImage) {
+        theme.setBannerPlaceholder(v) // 设置图片banner默认占位图
+    }
     var bannerMarginTop: Float64 = 0.0
     var bannerMarginRight: Float64 = 0.0
     var bannerMarginBottom: Float64 = 0.0

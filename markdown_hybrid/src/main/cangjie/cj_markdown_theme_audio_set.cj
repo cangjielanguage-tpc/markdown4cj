@@ -5,6 +5,9 @@ package markdown
 
 func setAudioTheme(audioTheme: CJMarkdownAudioTheme): AudioTheme {
     let theme: AudioTheme = AudioTheme()
+    if (let Some(v) <- audioIcon) {
+        theme.setAudioIcon(v) // 设置音频图标
+    }
     if (let Some(v) <- audioTheme.audioBackgroundColor) {
         theme.setAudioBackgroundColor(v)
     }

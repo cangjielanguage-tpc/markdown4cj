@@ -2,6 +2,12 @@ package markdown
 
 func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme {
     let theme: CodeBlockTheme = CodeBlockTheme()
+    if (let Some(v) <- codeFullScreenIcon) {
+        theme.setCodeBlockFullScreenIcon(v)
+    }
+    if (let Some(v) <- codeCopyIcon) {
+        theme.setCodeBlockCopyIcon(v)
+    }
     if (let Some(v) <- codeBlockTheme.codeBlockIsCodeFormat) {
         theme.setCodeBlockIsCodeFormat(v)
     }

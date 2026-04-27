@@ -2,6 +2,12 @@ package markdown
 
 func setImageTheme(imageTheme: CJMarkdownImageTheme): ImageTheme {
     let theme: ImageTheme = ImageTheme()
+    if (let Some(v) <- imageResource) {
+        theme.setImagePlaceholder(v) // 设置图片默认占位图
+    }
+    if (let Some(v) <- imageDownloadImage) {
+        theme.setImageDownloadButtonIcon(v) // 设置图片下载默认图标
+    }
     var imageMarginTop: Float64 = 0.0
     var imageMarginRight: Float64 = 0.0
     var imageMarginBottom: Float64 = 0.0
