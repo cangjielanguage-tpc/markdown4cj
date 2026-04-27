@@ -379,16 +379,16 @@ export struct CJMarkdown {
           global_customLib.setGlobalContext(undefined)
         }
         global_customLib.getCJResource(
-          this.config.markdownTheme.markdownThemeAudio.audioIcon,
           this.config.markdownTheme.markdownThemeBanner.bannerPlaceholder,
           this.config.markdownTheme.markdownThemeCodeBlock.codeBlockCopyIcon,
           this.config.markdownTheme.markdownThemeCodeBlock.codeBlockFullScreenIcon,
-          this.config.markdownTheme.markdownThemeImage.imagePlaceholder,
-          this.config.markdownTheme.markdownThemeImage.imageDownloadButtonIcon,
+          this.config.markdownTheme.markdownThemeAudio.audioIcon,
           this.config.markdownTheme.markdownThemeVideo.videoPlaceholder,
           this.config.markdownTheme.markdownThemeVideo.videoPlayIcon,
+          this.config.markdownTheme.markdownThemeImage.imagePlaceholder,
           this.config.markdownTheme.markdownThemeVideo.videoReleaseButtonIcon,
           this.config.markdownTheme.markdownThemeVideo.videoDownloadButtonIcon,
+          this.config.markdownTheme.markdownThemeImage.imageDownloadButtonIcon
         )
 
         cjMarkdownTheme.setCJMarkdownGlobalTheme(this.getGlobalTheme(this.config.markdownTheme.markdownThemeGlobal))
@@ -559,7 +559,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setAudioButtonTextFontStyle(theme.audioButtonTextFontStyle)
     }
     if (theme.audioButtonTextFontWeight !== undefined) {
-      cjMarkdownTheme.setAudioButtonTextFontWeight(theme.audioButtonTextFontWeight)
+      cjMarkdownTheme.setAudioButtonTextFontWeight(theme.audioButtonTextFontWeight.toString())
     }
     if (theme.audioButtonTextFontFamily !== undefined) {
       cjMarkdownTheme.setAudioButtonTextFontFamily(theme.audioButtonTextFontFamily)
@@ -604,7 +604,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setAudioTitleTextFontStyle(theme.audioTitleTextFontStyle)
     }
     if (theme.audioTitleTextFontWeight !== undefined) {
-      cjMarkdownTheme.setAudioTitleTextFontWeight(theme.audioTitleTextFontWeight)
+      cjMarkdownTheme.setAudioTitleTextFontWeight(theme.audioTitleTextFontWeight.toString())
     }
     if (theme.audioTitleTextFontFamily !== undefined) {
       cjMarkdownTheme.setAudioTitleTextFontFamily(theme.audioTitleTextFontFamily)
@@ -622,7 +622,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setAudioTypeTextFontStyle(theme.audioTypeTextFontStyle)
     }
     if (theme.audioTypeTextFontWeight !== undefined) {
-      cjMarkdownTheme.setAudioTypeTextFontWeight(theme.audioTypeTextFontWeight)
+      cjMarkdownTheme.setAudioTypeTextFontWeight(theme.audioTypeTextFontWeight.toString())
     }
     if (theme.audioTypeTextFontFamily !== undefined) {
       cjMarkdownTheme.setAudioTypeTextFontFamily(theme.audioTypeTextFontFamily)
@@ -770,7 +770,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setBoldTextFontStyle(theme.boldTextFontStyle)
     }
     if (theme.boldTextFontWeight !== undefined) {
-      cjMarkdownTheme.setBoldTextFontWeight(theme.boldTextFontWeight)
+      cjMarkdownTheme.setBoldTextFontWeight(theme.boldTextFontWeight.toString())
     }
     if (theme.boldTextFontFamily !== undefined) {
       cjMarkdownTheme.setBoldTextFontFamily(theme.boldTextFontFamily)
@@ -849,7 +849,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setBulletListBulletTextFontStyle(theme.bulletListBulletTextFontStyle)
     }
     if (theme.bulletListBulletTextFontWeight !== undefined) {
-      cjMarkdownTheme.setBulletListBulletTextFontWeight(theme.bulletListBulletTextFontWeight)
+      cjMarkdownTheme.setBulletListBulletTextFontWeight(theme.bulletListBulletTextFontWeight.toString())
     }
     if (theme.bulletListBulletTextFontFamily !== undefined) {
       cjMarkdownTheme.setBulletListBulletTextFontFamily(theme.bulletListBulletTextFontFamily)
@@ -975,7 +975,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setCodeBlockTypeTextFontStyle(theme.codeBlockTypeTextFontStyle)
     }
     if (theme.codeBlockTypeTextFontWeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockTypeTextFontWeight(theme.codeBlockTypeTextFontWeight)
+      cjMarkdownTheme.setCodeBlockTypeTextFontWeight(theme.codeBlockTypeTextFontWeight.toString())
     }
     if (theme.codeBlockTypeTextFontFamily !== undefined) {
       cjMarkdownTheme.setCodeBlockTypeTextFontFamily(theme.codeBlockTypeTextFontFamily)
@@ -1014,7 +1014,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setCodeBlockCopyTextFontStyle(theme.codeBlockCopyTextFontStyle)
     }
     if (theme.codeBlockCopyTextFontWeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyTextFontWeight(theme.codeBlockCopyTextFontWeight)
+      cjMarkdownTheme.setCodeBlockCopyTextFontWeight(theme.codeBlockCopyTextFontWeight.toString())
     }
     if (theme.codeBlockCopyTextFontFamily !== undefined) {
       cjMarkdownTheme.setCodeBlockCopyTextFontFamily(theme.codeBlockCopyTextFontFamily)
@@ -1050,7 +1050,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setCodeBlockFullScreenTextFontStyle(theme.codeBlockFullScreenTextFontStyle)
     }
     if (theme.codeBlockFullScreenTextFontWeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockFullScreenTextFontWeight(theme.codeBlockFullScreenTextFontWeight)
+      cjMarkdownTheme.setCodeBlockFullScreenTextFontWeight(theme.codeBlockFullScreenTextFontWeight.toString())
     }
     if (theme.codeBlockFullScreenTextFontFamily !== undefined) {
       cjMarkdownTheme.setCodeBlockFullScreenTextFontFamily(theme.codeBlockFullScreenTextFontFamily)
@@ -1074,7 +1074,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setCodeBlockLineNumberTextFontStyle(theme.codeBlockLineNumberTextFontStyle)
     }
     if (theme.codeBlockLineNumberTextFontWeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockLineNumberTextFontWeight(theme.codeBlockLineNumberTextFontWeight)
+      cjMarkdownTheme.setCodeBlockLineNumberTextFontWeight(theme.codeBlockLineNumberTextFontWeight.toString())
     }
     if (theme.codeBlockLineNumberTextFontFamily !== undefined) {
       cjMarkdownTheme.setCodeBlockLineNumberTextFontFamily(theme.codeBlockLineNumberTextFontFamily)
@@ -1107,7 +1107,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setCodeBlockTextFontStyle(theme.codeBlockTextFontStyle)
     }
     if (theme.codeBlockTextFontWeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockTextFontWeight(theme.codeBlockTextFontWeight)
+      cjMarkdownTheme.setCodeBlockTextFontWeight(theme.codeBlockTextFontWeight.toString())
     }
     if (theme.codeBlockTextFontFamily !== undefined) {
       cjMarkdownTheme.setCodeBlockTextFontFamily(theme.codeBlockTextFontFamily)
@@ -1195,7 +1195,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setDefinitionListTermToDescriptionSpacing(theme.definitionListTermToDescriptionSpacing)
     }
     if (theme.definitionListTermTextFontWeight !== undefined) {
-      cjMarkdownTheme.setDefinitionListTermTextFontWeight(theme.definitionListTermTextFontWeight)
+      cjMarkdownTheme.setDefinitionListTermTextFontWeight(theme.definitionListTermTextFontWeight.toString())
     }
     if (theme.definitionListTermTextFontStyle !== undefined) {
       cjMarkdownTheme.setDefinitionListTermTextFontStyle(theme.definitionListTermTextFontStyle)
@@ -1322,7 +1322,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setFootnoteRefTextFontStyle(theme.footnoteRefTextFontStyle)
     }
     if (theme.footnoteRefTextFontWeight !== undefined) {
-      cjMarkdownTheme.setFootnoteRefTextFontWeight(theme.footnoteRefTextFontWeight)
+      cjMarkdownTheme.setFootnoteRefTextFontWeight(theme.footnoteRefTextFontWeight.toString())
     }
     if (theme.footnoteRefTextFontFamily !== undefined) {
       cjMarkdownTheme.setFootnoteRefTextFontFamily(theme.footnoteRefTextFontFamily)
@@ -1380,6 +1380,9 @@ export struct CJMarkdown {
     }
     if (theme.isOnCopy !== undefined) {
       cjMarkdownTheme.setIsOnCopy(theme.isOnCopy)
+    }
+    if (theme.backgroundColor !== undefined) {
+      cjMarkdownTheme.setBackgroundColor(theme.backgroundColor)
     }
     let blockMarginTop: number = 0.0
     let blockMarginRight: number = 0.0
@@ -1811,7 +1814,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setHtmlUnderlineTextFontStyle(theme.htmlUnderlineTextFontStyle)
     }
     if (theme.htmlUnderlineTextFontWeight !== undefined) {
-      cjMarkdownTheme.setHtmlUnderlineTextFontWeight(theme.htmlUnderlineTextFontWeight)
+      cjMarkdownTheme.setHtmlUnderlineTextFontWeight(theme.htmlUnderlineTextFontWeight.toString())
     }
     if (theme.htmlUnderlineTextFontFamily !== undefined) {
       cjMarkdownTheme.setHtmlUnderlineTextFontFamily(theme.htmlUnderlineTextFontFamily)
@@ -1966,7 +1969,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setImageDownloadButtonTextFontStyle(theme.imageDownloadButtonTextFontStyle)
     }
     if (theme.imageDownloadButtonTextFontWeight !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonTextFontWeight(theme.imageDownloadButtonTextFontWeight)
+      cjMarkdownTheme.setImageDownloadButtonTextFontWeight(theme.imageDownloadButtonTextFontWeight.toString())
     }
     if (theme.imageDownloadButtonTextFontFamily !== undefined) {
       cjMarkdownTheme.setImageDownloadButtonTextFontFamily(theme.imageDownloadButtonTextFontFamily)
@@ -1992,7 +1995,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setInlineCodeTextFontStyle(theme.inlineCodeTextFontStyle)
     }
     if (theme.inlineCodeTextFontWeight !== undefined) {
-      cjMarkdownTheme.setInlineCodeTextFontWeight(theme.inlineCodeTextFontWeight)
+      cjMarkdownTheme.setInlineCodeTextFontWeight(theme.inlineCodeTextFontWeight.toString())
     }
     if (theme.inlineCodeTextFontFamily !== undefined) {
       cjMarkdownTheme.setInlineCodeTextFontFamily(theme.inlineCodeTextFontFamily)
@@ -2043,7 +2046,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setItalicTextFontSize(theme.italicTextFontSize)
     }
     if (theme.italicTextFontWeight !== undefined) {
-      cjMarkdownTheme.setItalicTextFontWeight(theme.italicTextFontWeight)
+      cjMarkdownTheme.setItalicTextFontWeight(theme.italicTextFontWeight.toString())
     }
     if (theme.italicTextFontFamily !== undefined) {
       cjMarkdownTheme.setItalicTextFontFamily(theme.italicTextFontFamily)
@@ -2110,7 +2113,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setLatexMathDefaultTextFontStyle(theme.latexMathDefaultTextFontStyle)
     }
     if (theme.latexMathDefaultTextFontWeight !== undefined) {
-      cjMarkdownTheme.setLatexMathDefaultTextFontWeight(theme.latexMathDefaultTextFontWeight)
+      cjMarkdownTheme.setLatexMathDefaultTextFontWeight(theme.latexMathDefaultTextFontWeight.toString())
     }
     if (theme.latexMathDefaultTextFontFamily !== undefined) {
       cjMarkdownTheme.setLatexMathDefaultTextFontFamily(theme.latexMathDefaultTextFontFamily)
@@ -2157,7 +2160,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setLinkTextFontStyle(theme.linkTextFontStyle)
     }
     if (theme.linkTextFontWeight !== undefined) {
-      cjMarkdownTheme.setLinkTextFontWeight(theme.linkTextFontWeight)
+      cjMarkdownTheme.setLinkTextFontWeight(theme.linkTextFontWeight.toString())
     }
     if (theme.linkTextFontFamily !== undefined) {
       cjMarkdownTheme.setLinkTextFontFamily(theme.linkTextFontFamily)
@@ -2348,7 +2351,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setOrderedListMarkerTextFontStyle(theme.orderedListMarkerTextFontStyle)
     }
     if (theme.orderedListMarkerTextFontWeight !== undefined) {
-      cjMarkdownTheme.setOrderedListMarkerTextFontWeight(theme.orderedListMarkerTextFontWeight)
+      cjMarkdownTheme.setOrderedListMarkerTextFontWeight(theme.orderedListMarkerTextFontWeight.toString())
     }
     if (theme.orderedListMarkerTextFontFamily !== undefined) {
       cjMarkdownTheme.setOrderedListMarkerTextFontFamily(theme.orderedListMarkerTextFontFamily)
@@ -2409,10 +2412,12 @@ export struct CJMarkdown {
       cjMarkdownTheme.setParagraphTextFontSize(theme.paragraphTextFontSize)
     }
     if (theme.paragraphTextFontStyle !== undefined) {
+      console.error("paragraphTextFontStyle-----------------> " + theme.paragraphTextFontStyle)
       cjMarkdownTheme.setParagraphTextFontStyle(theme.paragraphTextFontStyle)
     }
     if (theme.paragraphTextFontWeight !== undefined) {
-      cjMarkdownTheme.setParagraphTextFontWeight(theme.paragraphTextFontWeight)
+      console.error("paragraphTextFontWeight-----------------> " + theme.paragraphTextFontWeight)
+      cjMarkdownTheme.setParagraphTextFontWeight(theme.paragraphTextFontWeight.toString())
     }
     if (theme.paragraphTextFontFamily !== undefined) {
       cjMarkdownTheme.setParagraphTextFontFamily(theme.paragraphTextFontFamily)
@@ -2441,7 +2446,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setStrikethroughTextFontStyle(theme.strikethroughTextFontStyle)
     }
     if (theme.strikethroughTextFontWeight !== undefined) {
-      cjMarkdownTheme.setStrikethroughTextFontWeight(theme.strikethroughTextFontWeight)
+      cjMarkdownTheme.setStrikethroughTextFontWeight(theme.strikethroughTextFontWeight.toString())
     }
     if (theme.strikethroughTextFontFamily !== undefined) {
       cjMarkdownTheme.setStrikethroughTextFontFamily(theme.strikethroughTextFontFamily)
@@ -2476,7 +2481,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setSubTextFontStyle(theme.subTextFontStyle)
     }
     if (theme.subTextFontWeight !== undefined) {
-      cjMarkdownTheme.setSubTextFontWeight(theme.subTextFontWeight)
+      cjMarkdownTheme.setSubTextFontWeight(theme.subTextFontWeight.toString())
     }
     if (theme.subTextFontFamily !== undefined) {
       cjMarkdownTheme.setSubTextFontFamily(theme.subTextFontFamily)
@@ -2505,7 +2510,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setSupTextFontStyle(theme.supTextFontStyle)
     }
     if (theme.supTextFontWeight !== undefined) {
-      cjMarkdownTheme.setSupTextFontWeight(theme.supTextFontWeight)
+      cjMarkdownTheme.setSupTextFontWeight(theme.supTextFontWeight.toString())
     }
     if (theme.supTextFontFamily !== undefined) {
       cjMarkdownTheme.setSupTextFontFamily(theme.supTextFontFamily)
@@ -2637,7 +2642,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setTableTitleTextFontStyle(theme.tableTitleTextFontStyle)
     }
     if (theme.tableTitleTextFontWeight !== undefined) {
-      cjMarkdownTheme.setTableTitleTextFontWeight(theme.tableTitleTextFontWeight)
+      cjMarkdownTheme.setTableTitleTextFontWeight(theme.tableTitleTextFontWeight.toString())
     }
     if (theme.tableTitleTextFontFamily !== undefined) {
       cjMarkdownTheme.setTableTitleTextFontFamily(theme.tableTitleTextFontFamily)
@@ -2658,7 +2663,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setTableContentTextFontStyle(theme.tableContentTextFontStyle)
     }
     if (theme.tableContentTextFontWeight !== undefined) {
-      cjMarkdownTheme.setTableContentTextFontWeight(theme.tableContentTextFontWeight)
+      cjMarkdownTheme.setTableContentTextFontWeight(theme.tableContentTextFontWeight.toString())
     }
     if (theme.tableContentTextFontFamily !== undefined) {
       cjMarkdownTheme.setTableContentTextFontFamily(theme.tableContentTextFontFamily)
@@ -2755,7 +2760,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setVideoTimeTextFontStyle(theme.videoTimeTextFontStyle)
     }
     if (theme.videoTimeTextFontWeight !== undefined) {
-      cjMarkdownTheme.setVideoTimeTextFontWeight(theme.videoTimeTextFontWeight)
+      cjMarkdownTheme.setVideoTimeTextFontWeight(theme.videoTimeTextFontWeight.toString())
     }
     if (theme.videoTimeTextFontFamily !== undefined) {
       cjMarkdownTheme.setVideoTimeTextFontFamily(theme.videoTimeTextFontFamily)
@@ -2840,7 +2845,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setVideoReleaseButtonTextFontStyle(theme.videoReleaseButtonTextFontStyle)
     }
     if (theme.videoReleaseButtonTextFontWeight !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonTextFontWeight(theme.videoReleaseButtonTextFontWeight)
+      cjMarkdownTheme.setVideoReleaseButtonTextFontWeight(theme.videoReleaseButtonTextFontWeight.toString())
     }
     if (theme.videoReleaseButtonTextFontFamily !== undefined) {
       cjMarkdownTheme.setVideoReleaseButtonTextFontFamily(theme.videoReleaseButtonTextFontFamily)
@@ -2904,7 +2909,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setVideoDownloadButtonTextFontStyle(theme.videoDownloadButtonTextFontStyle)
     }
     if (theme.videoDownloadButtonTextFontWeight !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonTextFontWeight(theme.videoDownloadButtonTextFontWeight)
+      cjMarkdownTheme.setVideoDownloadButtonTextFontWeight(theme.videoDownloadButtonTextFontWeight.toString())
     }
     if (theme.videoDownloadButtonTextFontFamily !== undefined) {
       cjMarkdownTheme.setVideoDownloadButtonTextFontFamily(theme.videoDownloadButtonTextFontFamily)

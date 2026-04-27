@@ -453,7 +453,7 @@ public class CJMarkdownTableTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setTableTitleTextFontWeight(weight: Int64): Unit {
+    public func setTableTitleTextFontWeight(weight: String): Unit {
         tableTitleTextFontWeight = convertFontWeight(weight)
     }
 
@@ -516,7 +516,7 @@ public class CJMarkdownTableTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setTableContentTextFontWeight(weight: Int64): Unit {
+    public func setTableContentTextFontWeight(weight: String): Unit {
         tableContentTextFontWeight = convertFontWeight(weight)
     }
 

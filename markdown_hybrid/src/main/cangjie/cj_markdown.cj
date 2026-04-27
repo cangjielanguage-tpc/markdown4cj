@@ -215,23 +215,23 @@ func convertFontStyle(style: Int64): FontStyle {
  * @param weight 字体粗细代码
  * @return FontWeight枚举值
  */
-func convertFontWeight(weight: Int64): FontWeight {
+func convertFontWeight(weight: String): FontWeight {
     match (weight) {
-        case 0 => FontWeight.Lighter
-        case 1 => FontWeight.Normal
-        case 2 => FontWeight.Regular
-        case 3 => FontWeight.Medium
-        case 4 => FontWeight.Bold
-        case 5 => FontWeight.Bolder
-        case 100 => FontWeight.W100
-        case 200 => FontWeight.W200
-        case 300 => FontWeight.W300
-        case 400 => FontWeight.W400
-        case 500 => FontWeight.W500
-        case 600 => FontWeight.W600
-        case 700 => FontWeight.W700
-        case 800 => FontWeight.W800
-        case 900 => FontWeight.W900
+        case "lighter" => FontWeight.Lighter
+        case "normal" => FontWeight.Normal
+        case "regular" => FontWeight.Regular
+        case "medium" => FontWeight.Medium
+        case "bold" => FontWeight.Bold
+        case "bolder" => FontWeight.Bolder
+        case "W100" => FontWeight.W100
+        case "W200" => FontWeight.W200
+        case "W300" => FontWeight.W300
+        case "W400" => FontWeight.W400
+        case "W500" => FontWeight.W500
+        case "W600" => FontWeight.W600
+        case "W700" => FontWeight.W700
+        case "W800" => FontWeight.W800
+        case "W900" => FontWeight.W900
         case _ => FontWeight.Normal
     }
 }

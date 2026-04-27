@@ -87,7 +87,7 @@ public class CJMarkdownHtmlUnderlineTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setHtmlUnderlineTextFontWeight(weight: Int64): Unit {
+    public func setHtmlUnderlineTextFontWeight(weight: String): Unit {
         htmlUnderlineTextFontWeight = convertFontWeight(weight)
     }
 

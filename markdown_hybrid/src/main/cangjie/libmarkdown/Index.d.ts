@@ -682,7 +682,7 @@ export declare class CJMarkdownAudioTheme {
 
   setAudioButtonTextFontStyle(style: number): void
 
-  setAudioButtonTextFontWeight(weight: number): void
+  setAudioButtonTextFontWeight(weight: string): void
 
   setAudioButtonTextFontFamily(family: string): void
 
@@ -694,7 +694,7 @@ export declare class CJMarkdownAudioTheme {
 
   setAudioTitleTextFontStyle(style: number): void
 
-  setAudioTitleTextFontWeight(weight: number): void
+  setAudioTitleTextFontWeight(weight: string): void
 
   setAudioTitleTextFontFamily(family: string): void
 
@@ -706,7 +706,7 @@ export declare class CJMarkdownAudioTheme {
 
   setAudioTypeTextFontStyle(style: number): void
 
-  setAudioTypeTextFontWeight(weight: number): void
+  setAudioTypeTextFontWeight(weight: string): void
 
   setAudioTypeTextFontFamily(family: string): void
 
@@ -754,7 +754,7 @@ export declare class CJMarkdownBoldTheme {
 
   setBoldTextFontStyle(style: number): void
 
-  setBoldTextFontWeight(weight: number): void
+  setBoldTextFontWeight(weight: string): void
 
   setBoldTextFontFamily(family: string): void
 
@@ -788,7 +788,7 @@ export declare class CJMarkdownBulletListTheme {
 
   setBulletListBulletTextFontStyle(style: number): void
 
-  setBulletListBulletTextFontWeight(weight: number): void
+  setBulletListBulletTextFontWeight(weight: string): void
 
   setBulletListBulletTextFontFamily(family: string): void
 
@@ -848,7 +848,7 @@ export declare class CJMarkdownCodeBlockTheme {
 
   setCodeBlockTypeTextFontStyle(style: number): void
 
-  setCodeBlockTypeTextFontWeight(weight: number): void
+  setCodeBlockTypeTextFontWeight(weight: string): void
 
   setCodeBlockTypeTextFontFamily(family: string): void
 
@@ -874,7 +874,7 @@ export declare class CJMarkdownCodeBlockTheme {
 
   setCodeBlockCopyTextFontStyle(style: number): void
 
-  setCodeBlockCopyTextFontWeight(weight: number): void
+  setCodeBlockCopyTextFontWeight(weight: string): void
 
   setCodeBlockCopyTextFontFamily(family: string): void
 
@@ -898,7 +898,7 @@ export declare class CJMarkdownCodeBlockTheme {
 
   setCodeBlockFullScreenTextFontStyle(style: number): void
 
-  setCodeBlockFullScreenTextFontWeight(weight: number): void
+  setCodeBlockFullScreenTextFontWeight(weight: string): void
 
   setCodeBlockFullScreenTextFontFamily(family: string): void
 
@@ -914,7 +914,7 @@ export declare class CJMarkdownCodeBlockTheme {
 
   setCodeBlockLineNumberTextFontStyle(style: number): void
 
-  setCodeBlockLineNumberTextFontWeight(weight: number): void
+  setCodeBlockLineNumberTextFontWeight(weight: string): void
 
   setCodeBlockLineNumberTextFontFamily(family: string): void
 
@@ -936,7 +936,7 @@ export declare class CJMarkdownCodeBlockTheme {
 
   setCodeBlockTextFontStyle(style: number): void
 
-  setCodeBlockTextFontWeight(weight: number): void
+  setCodeBlockTextFontWeight(weight: string): void
 
   setCodeBlockTextFontFamily(family: string): void
 
@@ -976,7 +976,7 @@ export declare class CJMarkdownDefinitionListTheme {
 
   setDefinitionListTermToDescriptionSpacing(spacing: number): void
 
-  setDefinitionListTermTextFontWeight(weight: number): void
+  setDefinitionListTermTextFontWeight(weight: string): void
 
   setDefinitionListTermTextFontStyle(style: number): void
 
@@ -1020,7 +1020,7 @@ export declare class CJMarkdownFootnoteRefTheme {
 
   setFootnoteRefTextFontStyle(style: number): void
 
-  setFootnoteRefTextFontWeight(weight: number): void
+  setFootnoteRefTextFontWeight(weight: string): void
 
   setFootnoteRefTextFontFamily(family: string): void
 
@@ -1134,7 +1134,7 @@ export declare class CJMarkdownHtmlUnderlineTheme {
 
   setHtmlUnderlineTextFontStyle(style: number): void
 
-  setHtmlUnderlineTextFontWeight(weight: number): void
+  setHtmlUnderlineTextFontWeight(weight: string): void
 
   setHtmlUnderlineTextFontFamily(family: string): void
 
@@ -1208,7 +1208,7 @@ export declare class CJMarkdownImageTheme {
 
   setImageDownloadButtonTextFontStyle(style: number): void
 
-  setImageDownloadButtonTextFontWeight(weight: number): void
+  setImageDownloadButtonTextFontWeight(weight: string): void
 
   setImageDownloadButtonTextFontFamily(family: string): void
 
@@ -1222,7 +1222,7 @@ export declare class CJMarkdownInlineCodeTheme {
 
   setInlineCodeTextFontStyle(style: number): void
 
-  setInlineCodeTextFontWeight(weight: number): void
+  setInlineCodeTextFontWeight(weight: string): void
 
   setInlineCodeTextFontFamily(family: string): void
 
@@ -1242,7 +1242,7 @@ export declare class CJMarkdownItalicTheme {
 
   setItalicTextFontSize(size: number): void
 
-  setItalicTextFontWeight(weight: number): void
+  setItalicTextFontWeight(weight: string): void
 
   setItalicTextFontFamily(family: string): void
 
@@ -1260,7 +1260,7 @@ export declare class CJMarkdownLatexMathTheme {
 
   setLatexMathDefaultTextFontStyle(style: number): void
 
-  setLatexMathDefaultTextFontWeight(weight: number): void
+  setLatexMathDefaultTextFontWeight(weight: string): void
 
   setLatexMathDefaultTextFontFamily(family: string): void
 
@@ -1296,7 +1296,7 @@ export declare class CJMarkdownLinkTheme {
 
   setLinkTextFontStyle(style: number): void
 
-  setLinkTextFontWeight(weight: number): void
+  setLinkTextFontWeight(weight: string): void
 
   setLinkTextFontFamily(family: string): void
 
@@ -1388,7 +1388,7 @@ export declare class CJMarkdownOrderedListTheme {
 
   setOrderedListMarkerTextFontStyle(style: number): void
 
-  setOrderedListMarkerTextFontWeight(weight: number): void
+  setOrderedListMarkerTextFontWeight(weight: string): void
 
   setOrderedListMarkerTextFontFamily(family: string): void
 
@@ -1412,7 +1412,7 @@ export declare class CJMarkdownParagraphTheme {
 
   setParagraphTextFontStyle(style: number): void
 
-  setParagraphTextFontWeight(weight: number): void
+  setParagraphTextFontWeight(weight: string): void
 
   setParagraphTextFontFamily(family: string): void
 
@@ -1428,7 +1428,7 @@ export declare class CJMarkdownStrikethroughTheme {
 
   setStrikethroughTextFontStyle(style: number): void
 
-  setStrikethroughTextFontWeight(weight: number): void
+  setStrikethroughTextFontWeight(weight: string): void
 
   setStrikethroughTextFontFamily(family: string): void
 
@@ -1448,7 +1448,7 @@ export declare class CJMarkdownSubTheme {
 
   setSubTextFontStyle(style: number): void
 
-  setSubTextFontWeight(weight: number): void
+  setSubTextFontWeight(weight: string): void
 
   setSubTextFontFamily(family: string): void
 
@@ -1464,7 +1464,7 @@ export declare class CJMarkdownSupTheme {
 
   setSupTextFontStyle(style: number): void
 
-  setSupTextFontWeight(weight: number): void
+  setSupTextFontWeight(weight: string): void
 
   setSupTextFontFamily(family: string): void
 
@@ -1518,7 +1518,7 @@ export declare class CJMarkdownTableTheme {
 
   setTableTitleTextFontStyle(style: number): void
 
-  setTableTitleTextFontWeight(weight: number): void
+  setTableTitleTextFontWeight(weight: string): void
 
   setTableTitleTextFontFamily(family: string): void
 
@@ -1532,7 +1532,7 @@ export declare class CJMarkdownTableTheme {
 
   setTableContentTextFontStyle(style: number): void
 
-  setTableContentTextFontWeight(weight: number): void
+  setTableContentTextFontWeight(weight: string): void
 
   setTableContentTextFontFamily(family: string): void
 
@@ -1570,7 +1570,7 @@ export declare class CJMarkdownVideoTheme {
 
   setVideoTimeTextFontStyle(style: number): void
 
-  setVideoTimeTextFontWeight(weight: number): void
+  setVideoTimeTextFontWeight(weight: string): void
 
   setVideoTimeTextFontFamily(family: string): void
 
@@ -1616,7 +1616,7 @@ export declare class CJMarkdownVideoTheme {
 
   setVideoReleaseButtonTextFontStyle(style: number): void
 
-  setVideoReleaseButtonTextFontWeight(weight: number): void
+  setVideoReleaseButtonTextFontWeight(weight: string): void
 
   setVideoReleaseButtonTextFontFamily(family: string): void
 
@@ -1648,7 +1648,7 @@ export declare class CJMarkdownVideoTheme {
 
   setVideoDownloadButtonTextFontStyle(style: number): void
 
-  setVideoDownloadButtonTextFontWeight(weight: number): void
+  setVideoDownloadButtonTextFontWeight(weight: string): void
 
   setVideoDownloadButtonTextFontFamily(family: string): void
 
@@ -1782,15 +1782,15 @@ export declare interface CustomLib {
   registerImgPreprocessCallback(cb?: (url: string) => Promise<ArrayBuffer|undefined>): void
 
   getCJResource(
-    audioIcon?: resourceManager.Resource,
     bannerPlaceholder?: resourceManager.Resource,
     codeBlockCopyIcon?: resourceManager.Resource,
     codeBlockFullScreenIcon?: resourceManager.Resource,
-    imagePlaceholder?: resourceManager.Resource,
-    imageDownloadButtonIcon?: resourceManager.Resource,
+    audioIcon?: resourceManager.Resource,
     videoPlaceholder?: resourceManager.Resource,
     videoPlayIcon?: resourceManager.Resource,
+    imagePlaceholder?: resourceManager.Resource,
     videoReleaseButtonIcon?: resourceManager.Resource,
-    videoDownloadButtonIcon?: resourceManager.Resource
+    videoDownloadButtonIcon?: resourceManager.Resource,
+    imageDownloadButtonIcon?: resourceManager.Resource
   ): void
 }

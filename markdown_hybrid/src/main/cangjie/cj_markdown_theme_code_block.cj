@@ -647,7 +647,7 @@ public class CJMarkdownCodeBlockTheme {
      *
      * @param weight 代码块类型文本字体粗细
      */
-    public func setCodeBlockTypeTextFontWeight(weight: Int64): Unit {
+    public func setCodeBlockTypeTextFontWeight(weight: String): Unit {
         codeBlockTypeTextFontWeight = convertFontWeight(weight)
     }
 
@@ -764,7 +764,7 @@ public class CJMarkdownCodeBlockTheme {
      *
      * @param weight 代码块代码复制文本字体粗细
      */
-    public func setCodeBlockCopyTextFontWeight(weight: Int64): Unit {
+    public func setCodeBlockCopyTextFontWeight(weight: String): Unit {
         codeBlockCopyTextFontWeight = convertFontWeight(weight)
     }
 
@@ -872,7 +872,7 @@ public class CJMarkdownCodeBlockTheme {
      *
      * @param weight 代码块代码全屏文本字体粗细
      */
-    public func setCodeBlockFullScreenTextFontWeight(weight: Int64): Unit {
+    public func setCodeBlockFullScreenTextFontWeight(weight: String): Unit {
         codeBlockFullScreenTextFontWeight = convertFontWeight(weight)
     }
 
@@ -944,7 +944,7 @@ public class CJMarkdownCodeBlockTheme {
      *
      * @param weight 代码块代码行号文本字体粗细
      */
-    public func setCodeBlockLineNumberTextFontWeight(weight: Int64): Unit {
+    public func setCodeBlockLineNumberTextFontWeight(weight: String): Unit {
         codeBlockLineNumberTextFontWeight = convertFontWeight(weight)
     }
 
@@ -1043,7 +1043,7 @@ public class CJMarkdownCodeBlockTheme {
      *
      * @param weight 代码块文本字体粗细
      */
-    public func setCodeBlockTextFontWeight(weight: Int64): Unit {
+    public func setCodeBlockTextFontWeight(weight: String): Unit {
         codeBlockTextFontWeight = convertFontWeight(weight)
     }
 

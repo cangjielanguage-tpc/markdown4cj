@@ -506,7 +506,7 @@ export class MarkdownTheme {
    * @param blockFirstTopMargin markdown第一个模块上边距 - 默认8.0vp
    */
   setBlockFirstTopMargin(blockFirstTopMargin: number): void {
-    this.markdownThemeGlobal.setGlobalMargin(blockFirstTopMargin, undefined, undefined, undefined)
+    this.markdownThemeGlobal.blockMarginTop = blockFirstTopMargin
   }
 
   /**
@@ -515,7 +515,7 @@ export class MarkdownTheme {
    * @param blockLastBottomMargin markdown最后一个模块下边距 - 默认8.0vp
    */
   setBlockLastBottomMargin(blockLastBottomMargin: number): void {
-    this.markdownThemeGlobal.setGlobalMargin(undefined, undefined, blockLastBottomMargin, undefined)
+    this.markdownThemeGlobal.blockMarginBottom = blockLastBottomMargin
   }
 
   /**
@@ -825,7 +825,7 @@ export class MarkdownTheme {
    * @param blockQuoteLeftMargin 块引用左边距 - 默认8.0vp
    */
   setBlockQuoteLeftMargin(blockQuoteLeftMargin: number): void {
-    this.markdownThemeBlockQuote.setBlockQuoteMargin(undefined, undefined, undefined, blockQuoteLeftMargin)
+    this.markdownThemeBlockQuote.blockQuoteMarginLeft = blockQuoteLeftMargin
   }
 
   /**
@@ -834,7 +834,7 @@ export class MarkdownTheme {
    * @param blockQuoteRightMargin 块引用右边距 - 默认8.0vp
    */
   setBlockQuoteRightMargin(blockQuoteRightMargin: number): void {
-    this.markdownThemeBlockQuote.setBlockQuoteMargin(undefined, blockQuoteRightMargin, undefined, undefined)
+    this.markdownThemeBlockQuote.blockQuoteMarginRight = blockQuoteRightMargin
   }
 
   /**
@@ -889,8 +889,8 @@ export class MarkdownTheme {
    * @param blockLeftMargin 有序列表、无序列表、任务列表左边距 - 默认8.0vp
    */
   setBlockLeftMargin(blockLeftMargin: number): void {
-    this.markdownThemeOrderedList.setOrderedListMargin(undefined, undefined, undefined, blockLeftMargin)
-    this.markdownThemeBulletList.setBulletListMargin(undefined, undefined, undefined, blockLeftMargin)
+    this.markdownThemeOrderedList.orderedListMarginLeft = blockLeftMargin
+    this.markdownThemeBulletList.bulletListMarginLeft = blockLeftMargin
   }
 
   /**
@@ -899,8 +899,8 @@ export class MarkdownTheme {
    * @param blockRightMargin 有序列表、无序列表、任务列表右边距 - 默认8.0vp
    */
   setBlockRightMargin(blockRightMargin: number): void {
-    this.markdownThemeOrderedList.setOrderedListMargin(undefined, blockRightMargin, undefined, undefined)
-    this.markdownThemeBulletList.setBulletListMargin(undefined, blockRightMargin, undefined, undefined)
+    this.markdownThemeOrderedList.orderedListMarginRight = blockRightMargin
+    this.markdownThemeBulletList.bulletListMarginRight = blockRightMargin
   }
 
   /**
@@ -1113,7 +1113,7 @@ export class MarkdownTheme {
    * @param codeMultilineMargin 代码块左边距 - 默认8.0vp
    */
   setCodeMultilineMargin(codeMultilineMargin: number): void {
-    this.markdownThemeCodeBlock.setCodeBlockMargin(undefined, undefined, undefined, codeMultilineMargin)
+    this.markdownThemeCodeBlock.codeBlockMarginLeft = codeMultilineMargin
   }
 
   /**
@@ -1278,7 +1278,12 @@ export class MarkdownTheme {
    * @param headingTopMargins 标题模块上间距 - 默认8.0
    */
   setHeadingTopMargins(headingTopMargins: number): void {
-    this.markdownThemeHeading.setMarginForAllHeadingEachLevel(headingTopMargins, undefined, undefined, undefined)
+    this.markdownThemeHeading.heading1MarginTop = headingTopMargins
+    this.markdownThemeHeading.heading2MarginTop = headingTopMargins
+    this.markdownThemeHeading.heading3MarginTop = headingTopMargins
+    this.markdownThemeHeading.heading4MarginTop = headingTopMargins
+    this.markdownThemeHeading.heading5MarginTop = headingTopMargins
+    this.markdownThemeHeading.heading6MarginTop = headingTopMargins
   }
 
   /**
@@ -1287,7 +1292,12 @@ export class MarkdownTheme {
    * @param headingBottomMargins 标题模块下间距 - 默认8.0
    */
   setHeadingBottomMargins(headingBottomMargins: number): void {
-    this.markdownThemeHeading.setMarginForAllHeadingEachLevel(undefined, undefined, headingBottomMargins, undefined)
+    this.markdownThemeHeading.heading1MarginBottom = headingBottomMargins
+    this.markdownThemeHeading.heading2MarginBottom = headingBottomMargins
+    this.markdownThemeHeading.heading3MarginBottom = headingBottomMargins
+    this.markdownThemeHeading.heading4MarginBottom = headingBottomMargins
+    this.markdownThemeHeading.heading5MarginBottom = headingBottomMargins
+    this.markdownThemeHeading.heading6MarginBottom = headingBottomMargins
   }
 
   /**
@@ -1518,7 +1528,7 @@ export class MarkdownTheme {
    * @param paragraphTopMargins 段落模块上间距 - 默认8.0vp
    */
   setParagraphTopMargins(paragraphTopMargins: number): void {
-    this.markdownThemeParagraph.setParagraphMargin(paragraphTopMargins, undefined, undefined, undefined)
+    this.markdownThemeParagraph.paragraphMarginTop = paragraphTopMargins
   }
 
   /**
@@ -1527,7 +1537,7 @@ export class MarkdownTheme {
    * @param paragraphBottomMargins 段落模块下间距 - 默认8.0vp
    */
   setParagraphBottomMargins(paragraphBottomMargins: number): void {
-    this.markdownThemeParagraph.setParagraphMargin(undefined, undefined, paragraphBottomMargins, undefined)
+    this.markdownThemeParagraph.paragraphMarginBottom = paragraphBottomMargins
   }
 
   /**
@@ -1599,7 +1609,7 @@ export class MarkdownTheme {
    * @param thematicBreakTopMargin 分割线上部外边距 - 默认0.0vp
    */
   setThematicBreakTopMargin(thematicBreakTopMargin: number): void {
-    this.markdownThemeDivider.setDividerMargin(thematicBreakTopMargin, undefined, undefined, undefined)
+    this.markdownThemeDivider.dividerMarginTop = thematicBreakTopMargin
   }
 
   /**
@@ -1608,7 +1618,7 @@ export class MarkdownTheme {
    * @param thematicBreakBottomMargin 分割线下部外边距 - 默认0.0vp
    */
   setThematicBreakBottomMargin(thematicBreakBottomMargin: number): void {
-    this.markdownThemeDivider.setDividerMargin(undefined, undefined, thematicBreakBottomMargin, undefined)
+    this.markdownThemeDivider.dividerMarginBottom = thematicBreakBottomMargin
   }
 
   /**
@@ -1824,7 +1834,7 @@ export class MarkdownTheme {
    * @param audioMarginTop 音频上边距 - 默认10.0vp
    */
   setAudioMarginTop(audioMarginTop: number): void {
-    this.markdownThemeAudio.setAudioMargin(audioMarginTop, undefined, undefined, undefined)
+    this.markdownThemeAudio.audioMarginTop = audioMarginTop
   }
 
   /**
@@ -1833,7 +1843,7 @@ export class MarkdownTheme {
    * @param audioMarginBottom 音频下边距 - 默认10.0vp
    */
   setAudioMarginBottom(audioMarginBottom: number): void {
-    this.markdownThemeAudio.setAudioMargin(undefined, undefined, audioMarginBottom, undefined)
+    this.markdownThemeAudio.audioMarginBottom = audioMarginBottom
   }
 
   /**
@@ -1887,7 +1897,7 @@ export class MarkdownTheme {
    * @param videoMarginTop 视频上边距 - 默认10.0vp
    */
   setVideoMarginTop(videoMarginTop: number): void {
-    this.markdownThemeVideo.setVideoMargin(videoMarginTop, undefined, undefined, undefined)
+    this.markdownThemeVideo.videoMarginTop = videoMarginTop
   }
 
   /**
@@ -1896,7 +1906,7 @@ export class MarkdownTheme {
    * @param videoMarginBottom 视频下边距 - 默认10.0vp
    */
   setVideoMarginBottom(videoMarginBottom: number): void {
-    this.markdownThemeVideo.setVideoMargin(undefined, undefined, videoMarginBottom, undefined)
+    this.markdownThemeVideo.videoMarginBottom = videoMarginBottom
   }
 
   /**
@@ -2141,7 +2151,7 @@ export class MarkdownTheme {
    * @param imageMarginTop 图片上边距 - 默认10.0vp
    */
   setImageMarginTop(imageMarginTop: number): void {
-    this.markdownThemeImage.setImageMargin(imageMarginTop, undefined, undefined, undefined)
+    this.markdownThemeImage.imageMarginTop = imageMarginTop
   }
 
   /**
@@ -2150,7 +2160,7 @@ export class MarkdownTheme {
    * @param imageMarginBottom 图片下边距 - 默认10.0vp
    */
   setImageMarginBottom(imageMarginBottom: number): void {
-    this.markdownThemeImage.setImageMargin(undefined, undefined, imageMarginBottom, undefined)
+    this.markdownThemeImage.imageMarginBottom = imageMarginBottom
   }
 
   /**

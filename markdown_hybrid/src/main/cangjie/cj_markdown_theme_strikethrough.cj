@@ -87,7 +87,7 @@ public class CJMarkdownStrikethroughTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setStrikethroughTextFontWeight(weight: Int64): Unit {
+    public func setStrikethroughTextFontWeight(weight: String): Unit {
         strikethroughTextFontWeight = convertFontWeight(weight)
     }
 

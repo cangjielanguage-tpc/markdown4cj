@@ -5,7 +5,8 @@ import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme,
+  MarkdownThemeParagraph} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import { ParagraphData } from '../model/ParagraphData'
 
