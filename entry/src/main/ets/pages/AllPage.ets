@@ -284,7 +284,7 @@ struct AllPage {
         .padding({ bottom: 100 })
       }
     }
-    .backgroundColor(0xFFEAEAEA)
+    .backgroundColor($r('app.color.page_background'))
     .height("100%")
   }
 }

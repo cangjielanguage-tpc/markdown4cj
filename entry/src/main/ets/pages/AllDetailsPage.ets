@@ -9,6 +9,7 @@ import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { AllData } from '../model/AllData'
+import { ConfigurationConstant } from '@kit.AbilityKit'
 
 @Entry
 @Component
@@ -27,6 +28,12 @@ struct AllDetailsPage {
    */
   @StorageProp('safeTop')
   safeTop: number = 0
+  /**
+   * 深浅色模式
+   */
+  @StorageProp('currentColorMode')
+  @Watch('onColorModeChange')
+  currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
   /**
    * 文件文本
    */
@@ -99,11 +106,34 @@ struct AllDetailsPage {
   isInputEnded: boolean = false
 
   // ---------- 专有
-  /**
-   * 代码深浅色模式
-   */
   @State
-  isDark: boolean = true
+  isDark: boolean = true // 代码深浅色模式
+
+
+  @State
+  markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration() // markdown配置
+  @State
+  markdownTheme: MarkdownTheme = new MarkdownTheme() // markdown主题
+  @State
+  markdownPlugin: MarkdownPlugin = new MarkdownPlugin() // markdown插件
+  @State
+  isRefresh: boolean = true // 刷新标志
+
+  onColorModeChange(): void {
+    // 根据 this.currentColorMode 更新 UI 或状态栏
+    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+      // 浅色模式处理
+      this.markdownTheme.setDefaultTheme()
+      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+      hilog.error(1, 'onColorModeChange', '浅色模式')
+    } else {
+      // 深色模式处理
+      this.markdownTheme.setDarkulaTheme()
+      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+      hilog.error(1, 'onColorModeChange', '深色模式')
+    }
+    this.isRefresh = !this.isRefresh
+  }
 
   aboutToAppear(): void {
     try {
@@ -125,6 +155,10 @@ struct AllDetailsPage {
       this.isDark = allData._isDark
     } catch (e) {
     }
+    this.markdownPlugin = this.setPlugin()
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration = this.setMarkdownConfig()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
   }
 
   build() {
@@ -166,26 +200,51 @@ struct AllDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-          Column() {
-            CJMarkdown({
-              content: this.content,
-              isInputEnded: this.isInputEnded,
-              incrementalAnalysis: this.incrementalAnalysis,
-              listScroller: this.markdownScroller,
-              config: this.setMarkdownConfig(),
-              plugin: this.setPlugin()
-            })
-          }.height("100%")
+        if (this.isRefresh) {
+          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                incrementalAnalysis: this.incrementalAnalysis,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }.height("100%")
+          } else {
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }
+          }
         } else {
-          Column() {
-            CJMarkdown({
-              content: this.content,
-              isInputEnded: this.isInputEnded,
-              listScroller: this.markdownScroller,
-              config: this.setMarkdownConfig(),
-              plugin: this.setPlugin()
-            })
+          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                incrementalAnalysis: this.incrementalAnalysis,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }.height("100%")
+          } else {
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }
           }
         }
       }
@@ -207,8 +266,16 @@ struct AllDetailsPage {
     config.setLatexImageCallback(this.latexCallBack.bind(this))
     config.setTocIndexCallback(this.tocIndexCallback.bind(this))
     config.setFootnoteCallback(this.footnoteCallback.bind(this))
+    return config
+  }
 
+  setMarkdownTheme(): MarkdownTheme {
     let theme = new MarkdownTheme()
+    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+      theme.setDefaultTheme()
+    } else {
+      theme.setDarkulaTheme()
+    }
     theme.setIsDark(this.isDark)
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
@@ -224,9 +291,7 @@ struct AllDetailsPage {
     theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
     theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
     theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
-
-    config.setMarkdownTheme(theme)
-    return config
+    return theme
   }
 
   setPlugin(): MarkdownPlugin {

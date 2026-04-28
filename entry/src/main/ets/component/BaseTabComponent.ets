@@ -96,7 +96,7 @@ export struct BaseTabComponent {
         }
       }
       .width("100%")
-      .backgroundColor(0XFFE0E0E0)
+      .backgroundColor($r('app.color.base_tab_component_background'))
       .padding({
         top: 5,
         bottom: 5,
