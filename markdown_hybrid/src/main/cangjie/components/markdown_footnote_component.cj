@@ -65,7 +65,7 @@ public class MarkdownFootnoteComponent {
                 }
             )
         }
-        .backgroundColor(footnoteBackgroundColor(footnoteMarkdownConfiguration.markdownTheme))
+        .backgroundColor(footnoteBackgroundColor(footnoteMarkdownConfiguration.markdownTheme, footnoteNodeView))
         .listDirection(Axis.Vertical)
         .alignListItem(ListItemAlign.Start)
         .padding(

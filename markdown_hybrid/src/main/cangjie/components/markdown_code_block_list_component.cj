@@ -180,7 +180,7 @@ class MarkdownCodeBlockListComponent {
                     .width(30.percent)
                     .justifyContent(FlexAlign.Start)
                 Row() {
-                    if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome()) {
+                    if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow) {
                         Row() {
                             if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome()) {
                                 Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon())

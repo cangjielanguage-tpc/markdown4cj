@@ -14,7 +14,7 @@ public class ImageTheme <: MarkdownBaseTheme {
     public var imageRadiusBottomRight: Float64 = 0.0 // 图片边框右下圆角
     public var imageBorderStyle: BorderStyle = BorderStyle.Solid // 图片边框样式
     public var imageBorderWidth: Float64 = 0.0 // 图片边框宽度
-    public var imageBorderColor: Color = Color.BLACK // 图片边框颜色
+    public var imageBorderColor: Color = COLOR_BLACK // 图片边框颜色
     public var imagePlaceholder: ?AppResource = None // 图片默认占位图
     public var imageAutoResize: Bool = true // 网络图片是否压缩
     public var isImageMixedLayout: Bool = true // 是否图文混排

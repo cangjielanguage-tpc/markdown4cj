@@ -13,13 +13,13 @@ public class LatexMathTheme <: MarkdownBaseTheme {
     public var latexMathPaddingBottom: Float64 = 0.0 // 块结构数学公式下内边距
     public var latexMathPaddingLeft: Float64 = 0.0 // 块结构数学公式左内边距
     public var latexMathDefaultText: Bool = true // 数学公式未加载状态是否显示文字
-    public var latexMathDefaultTextFontColor: Color = Color.RED // 数学公式未加载状态文本颜色
+    public var latexMathDefaultTextFontColor: Color = COLOR_RED // 数学公式未加载状态文本颜色
     public var latexMathDefaultTextFontSize: Float64 = 16.0 // 数学公式未加载状态文本尺寸
     public var latexMathDefaultTextFontStyle: FontStyle = FontStyle.Normal // 数学公式未加载状态文本字体样式
     public var latexMathDefaultTextFontWeight: FontWeight = FontWeight.W400 // 数学公式未加载状态文本字体粗细
     public var latexMathDefaultTextFontFamily: String = "HarmonyOS Sans" // 数学公式未加载状态文本字体
     public var latexMathTextSize: Float64 = 16.0 // 数学公式文本大小 - 实际使用要转换
-    public var latexMathBackgroundColor: Color = Color.TRANSPARENT // 数学公式背景色
+    public var latexMathBackgroundColor: Color = COLOR_TRANSPARENT // 数学公式背景色
     public var latexMathTextColor: Color = COLOR_BLACK // 数学公式文本颜色
     public var latexMathColorFormat: LatexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888 // 数学公式生成图片格式
     public var latexMathBlockCenter: Bool = false // 块结构的数学公式是否居中

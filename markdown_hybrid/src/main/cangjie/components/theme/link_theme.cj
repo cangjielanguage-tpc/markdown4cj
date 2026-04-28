@@ -21,13 +21,13 @@ public class LinkTheme <: MarkdownBaseTheme {
     public var linkTextBackgroundRadiusTopRight: Float64 = 0.0 // 链接文本背景右上圆角
     public var linkTextBackgroundRadiusBottomLeft: Float64 = 0.0 // 链接文本背景左下圆角
     public var linkTextBackgroundRadiusBottomRight: Float64 = 0.0 // 链接文本背景右下圆角
-    public var linkCircleIconBackgroundColor: Color = Color.TRANSPARENT // 圆形图片格式链接主题背景颜色
+    public var linkCircleIconBackgroundColor: Color = COLOR_TRANSPARENT // 圆形图片格式链接主题背景颜色
     public var linkCircleIconButtonBackgroundColor: Color = COLOR_BLACK // 圆形图片格式链接控件背景颜色
     public var linkCircleIconTextSize: Float64 = 14.0 // 圆形图片格式链接文字大小 - 实际使用要转换
     public var linkCircleIconTextColor: Color = COLOR_WHITE // 圆形图片格式链接文字颜色
     public var linkCircleIconRadius: Float64 = 20.0 // 圆形图片格式链接半径 - 实际使用要转换
     public var linkCircleIconMargin: Float64 = 6.0 // 圆形图片格式链接左右外边距
-    public var linkRectIconBackgroundColor: Color = Color.TRANSPARENT // 圆角矩形图片格式链接主题背景颜色
+    public var linkRectIconBackgroundColor: Color = COLOR_TRANSPARENT // 圆角矩形图片格式链接主题背景颜色
     public var linkRectIconButtonBackgroundColor: Color = COLOR_BLACK // 圆角矩形图片格式链接控件背景颜色
     public var linkRectIconTextSize: Float64 = 14.0 // 圆角矩形图片格式链接文字大小 - 实际使用要转换
     public var linkRectIconTextColor: Color = COLOR_WHITE // 圆角矩形图片格式链接文字颜色
@@ -35,7 +35,7 @@ public class LinkTheme <: MarkdownBaseTheme {
     public var linkRectIconPadding: Float64 = 6.0 // 圆角矩形图片格式链接左右内边距 - 实际使用要转换
     public var linkRectIconRadius: Float64 = 6.0 // 圆角矩形图片格式链接圆角半径 - 实际使用要转换
     public var linkRectIconMargin: Float64 = 6.0 // 圆角矩形图片格式链接左右外边距
-    public var linkRectToolIconBackgroundColor: Color = Color.TRANSPARENT // 空心圆角矩形图片格式链接主题背景颜色
+    public var linkRectToolIconBackgroundColor: Color = COLOR_TRANSPARENT // 空心圆角矩形图片格式链接主题背景颜色
     public var linkRectToolIconButtonBackgroundColor: Color = COLOR_WHITE // 空心圆角矩形图片格式链接控件背景颜色
     public var linkRectToolIconTextSize: Float64 = 14.0 // 空心圆角矩形图片格式链接文字大小 - 实际使用要转换
     public var linkRectToolIconHeight: Float64 = 21.0 // 空心圆角矩形图片格式链接控件高度 - 实际使用要转换

@@ -29,7 +29,7 @@ public class MarkdownTheme {
     protected var strikethroughTheme: StrikethroughTheme = StrikethroughTheme() // 删除线文本样式
     protected var subTheme: SubTheme = SubTheme() // 下标文本样式
     protected var supTheme: SupTheme = SupTheme() // 上标文本样式
-    protected var prismTheme: PrismTheme = PrismThemeDarkula.create() // markdown代码高亮样式
+    protected var prismTheme: PrismTheme = PrismThemeDefault.create() // markdown代码高亮样式
 
     protected init(builder: MarkdownThemeBuilder) {
         this.globalTheme = builder.globalTheme
@@ -140,7 +140,7 @@ public class MarkdownThemeBuilder {
     var strikethroughTheme: StrikethroughTheme = StrikethroughTheme() // 删除线文本样式
     var subTheme: SubTheme = SubTheme() // 下标文本样式
     var supTheme: SupTheme = SupTheme() // 上标文本样式
-    var prismTheme: PrismTheme = PrismThemeDarkula.create() // markdown代码高亮样式
+    var prismTheme: PrismTheme = PrismThemeDefault.create() // markdown代码高亮样式
 
     init() {
     }
@@ -180,6 +180,107 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setDefaultTheme(): MarkdownThemeBuilder {
+        // 浅色主题 - 只切换颜色属性
+
+        // 全局主题
+        this.globalTheme.setBackgroundColor(COLOR_TRANSPARENT) // markdown全局背景颜色
+
+        // 段落主题
+        this.paragraphTheme.setParagraphTextFontColor(COLOR_FF191919) // 段落文本颜色
+
+        // 标题主题
+        this.headingTheme.setTextFontColorForAllHeading(COLOR_FF191919) // 标题文本颜色
+            .setUnderlineColorForAllHeading(COLOR_FF191919) // 标题下划线颜色
+
+        // 表格主题
+        this.tableTheme.setTableBorderColor(COLOR_BLACK) // 表格边框颜色
+            .setTableTitleTextFontColor(COLOR_FF191919) // 表格标题文本颜色
+            .setTableContentTextFontColor(COLOR_FF191919) // 表格内容文本颜色
+            .setTableTitleBackgroundColor(COLOR_WHITE) // 表格标题背景颜色
+            .setTableContentOddRowBackgroundColor(COLOR_FFE0E0E0) // 表格内容奇数行背景颜色
+            .setTableContentEvenRowBackgroundColor(COLOR_WHITE) // 表格内容偶数行背景颜色
+            .setTableScrollBarColor(COLOR_FF191919) // 表格滚动条颜色
+
+        // 分隔线主题
+        this.dividerTheme.setDividerColor(COLOR_FF191919) // 分隔线颜色
+
+        // 引用块主题
+        this.blockQuoteTheme.setBlockQuoteLeftBorderColor(COLOR_FF191919) // 引用块左侧边框颜色
+            .setBlockQuoteBackgroundColor(COLOR_FFEAEAEA) // 引用块背景颜色
+
+        // 有序列表主题
+        this.orderedListTheme.setOrderedListMarkerTextFontColor(COLOR_FF191919) // 有序列表标记文本颜色
+
+        // 无序列表主题
+        this.bulletListTheme.setBulletListBulletTextFontColor(COLOR_FF191919) // 无序列表标记文本颜色
+            .setBulletListCheckboxSelectedColor(COLOR_GRAY) // 无序列表复选框选中颜色
+
+        // 代码块主题
+        this.codeBlockTheme.setCodeBlockBorderColor(COLOR_TRANSPARENT) // 代码块边框颜色
+            .setCodeBlockListTitleSelectTextColor(COLOR_RED) // 列表标题选中文本颜色
+            .setCodeBlockListTitleUnselectTextColor(COLOR_BLACK) // 列表标题未选中文本颜色
+            .setCodeBlockListTitleSelectBackgroundColor(COLOR_GRAY) // 列表标题选中背景颜色
+            .setCodeBlockListTitleUnselectBackgroundColor(COLOR_TRANSPARENT) // 列表标题未选背景颜色
+
+        // 音频主题
+        this.audioTheme.setAudioBackgroundColor(COLOR_TRANSPARENT) // 音频背景颜色
+            .setAudioBorderColor(COLOR_33000000) // 音频边框颜色
+            .setAudioShadowColor(COLOR_1A000000) // 音频阴影颜色
+            .setAudioTitleTextFontColor(COLOR_BLACK) // 音频标题文本颜色
+            .setAudioTypeTextFontColor(COLOR_80000000) // 音频类型文本颜色
+            .setAudioButtonBackgroundColor(COLOR_BLACK) // 音频按钮背景颜色
+            .setAudioButtonBorderColor(COLOR_TRANSPARENT) // 音频按钮边框颜色
+            .setAudioButtonTextFontColor(COLOR_WHITE) // 音频按钮文本颜色
+
+        // 视频主题
+        this.videoTheme.setVideoBackgroundColor(COLOR_TRANSPARENT) // 视频背景颜色
+            .setVideoBorderColor(COLOR_TRANSPARENT) // 视频边框颜色
+            .setVideoTimeTextFontColor(COLOR_WHITE) // 视频时间文本颜色
+            .setVideoReleaseButtonBackgroundColor(COLOR_FFF5F5F5) // 视频发布按钮背景颜色
+            .setVideoReleaseButtonTextFontColor(COLOR_E6000000) // 视频发布按钮文本颜色
+            .setVideoDownloadButtonBackgroundColor(COLOR_FFF5F5F5) // 视频下载按钮背景颜色
+            .setVideoDownloadButtonTextFontColor(COLOR_E6000000) // 视频下载按钮文本颜色
+
+        // 脚注引用主题
+        this.footnoteRefTheme.setFootnoteRefTextFontColor(COLOR_RED) // 脚注引用文本颜色
+            .setFootnoteRefTextDecorationColor(COLOR_RED) // 脚注引用文本下划线颜色
+            .setFootnoteRefTextBackgroundColor(COLOR_TRANSPARENT) // 脚注引用文本背景颜色
+
+        // 行内代码主题
+        this.inlineCodeTheme.setInlineCodeTextBackgroundColor(COLOR_FFEAEAEA) // 行内代码文本背景颜色
+
+        // LaTeX数学公式主题
+        this.latexMathTheme.setLatexMathDefaultTextFontColor(COLOR_RED) // 数学公式未加载状态文本颜色
+            .setLatexMathBackgroundColor(COLOR_TRANSPARENT) // 数学公式背景颜色
+            .setLatexMathTextColor(COLOR_BLACK) // 数学公式文本颜色
+
+        // HTML下划线主题
+        this.htmlUnderlineTheme.setHtmlUnderlineTextDecorationColor(COLOR_FF191919) // HTML下划线文本下划线颜色
+
+        // 图片主题
+        this.imageTheme.setImageBorderColor(COLOR_BLACK) // 图片边框颜色
+            .setImageDownloadButtonBackgroundColor(COLOR_FFF5F5F5) // 图片下载按钮背景颜色
+            .setImageDownloadButtonTextFontColor(COLOR_E6000000) // 图片下载按钮文本颜色
+
+        // 链接主题
+        this.linkTheme.setLinkTextFontColor(COLOR_RED) // 链接文本颜色
+            .setLinkTextDecorationColor(COLOR_RED) // 链接文本下划线颜色
+            .setLinkTextBackgroundColor(COLOR_TRANSPARENT) // 链接文本背景颜色
+            .setLinkCircleIconBackgroundColor(COLOR_TRANSPARENT) // 链接圆形图标背景颜色
+            .setLinkCircleIconButtonBackgroundColor(COLOR_BLACK) // 链接圆形图标按钮背景颜色
+            .setLinkCircleIconTextColor(COLOR_WHITE) // 链接圆形图标按钮文本颜色
+            .setLinkRectIconBackgroundColor(COLOR_TRANSPARENT) // 链接方形图标背景颜色
+            .setLinkRectIconButtonBackgroundColor(COLOR_BLACK) // 链接方形图标按钮背景颜色
+            .setLinkRectIconTextColor(COLOR_WHITE) // 链接方形图标按钮文本颜色
+            .setLinkRectToolIconBackgroundColor(COLOR_TRANSPARENT) // 链接方形图标工具按钮背景颜色
+            .setLinkRectToolIconButtonBackgroundColor(COLOR_WHITE) // 链接方形图标工具按钮背景颜色
+
+        // 删除线主题
+        this.strikethroughTheme.setStrikethroughTextDecorationColor(COLOR_FF191919) // 删除线文本下划线颜色
+
+        // 代码高亮主题
+        this.prismTheme = PrismThemeDefault.create() // 代码高亮主题
+
         return this
     }
 
@@ -189,6 +290,107 @@ public class MarkdownThemeBuilder {
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setDarkulaTheme(): MarkdownThemeBuilder {
+        // 深色主题设计
+
+        // 全局主题
+        this.globalTheme.setBackgroundColor(COLOR_TRANSPARENT) // markdown全局背景颜色
+
+        // 段落主题
+        this.paragraphTheme.setParagraphTextFontColor(COLOR_FFE0E0E0) // 段落文本颜色
+
+        // 标题主题
+        this.headingTheme.setTextFontColorForAllHeading(COLOR_FFE0E0E0) // 标题文本颜色
+            .setUnderlineColorForAllHeading(COLOR_FFE0E0E0) // 标题下划线颜色
+
+        // 表格主题
+        this.tableTheme.setTableBorderColor(COLOR_FF404040) // 表格边框颜色
+            .setTableTitleTextFontColor(COLOR_FFE0E0E0) // 表格标题文本颜色
+            .setTableContentTextFontColor(COLOR_FFE0E0E0) // 表格内容文本颜色
+            .setTableTitleBackgroundColor(COLOR_FF2D2D2D) // 表格标题背景颜色
+            .setTableContentOddRowBackgroundColor(COLOR_FF1E1E1E) // 表格内容奇数行背景颜色
+            .setTableContentEvenRowBackgroundColor(COLOR_FF2D2D2D) // 表格内容偶数行背景颜色
+            .setTableScrollBarColor(COLOR_FFE0E0E0) // 表格滚动条颜色
+
+        // 分隔线主题
+        this.dividerTheme.setDividerColor(COLOR_FFE0E0E0) // 分隔线颜色
+
+        // 引用块主题
+        this.blockQuoteTheme.setBlockQuoteLeftBorderColor(COLOR_FFE0E0E0) // 引用块左侧边框颜色
+            .setBlockQuoteBackgroundColor(COLOR_FF252526) // 引用块背景颜色
+
+        // 有序列表主题
+        this.orderedListTheme.setOrderedListMarkerTextFontColor(COLOR_FFE0E0E0) // 有序列表标记文本颜色
+
+        // 无序列表主题
+        this.bulletListTheme.setBulletListBulletTextFontColor(COLOR_FFE0E0E0) // 无序列表标记文本颜色
+            .setBulletListCheckboxSelectedColor(COLOR_FF4A90E2) // 无序列表复选框选中颜色
+
+        // 代码块主题
+        this.codeBlockTheme.setCodeBlockBorderColor(COLOR_TRANSPARENT) // 代码块边框颜色
+            .setCodeBlockListTitleSelectTextColor(COLOR_FF4A90E2) // 列表标题选中文本颜色
+            .setCodeBlockListTitleUnselectTextColor(COLOR_FFE0E0E0) // 列表标题未选中文本颜色
+            .setCodeBlockListTitleSelectBackgroundColor(COLOR_FF2D2D2D) // 列表标题选中背景颜色
+            .setCodeBlockListTitleUnselectBackgroundColor(COLOR_TRANSPARENT) // 列表标题未选背景颜色
+
+        // 音频主题
+        this.audioTheme.setAudioBackgroundColor(COLOR_FF1E1E1E) // 音频背景颜色
+            .setAudioBorderColor(COLOR_FF404040) // 音频边框颜色
+            .setAudioShadowColor(COLOR_40000000) // 音频阴影颜色
+            .setAudioTitleTextFontColor(COLOR_FFE0E0E0) // 音频标题文本颜色
+            .setAudioTypeTextFontColor(COLOR_FFA0A0A0) // 音频类型文本颜色
+            .setAudioButtonBackgroundColor(COLOR_FF2D2D2D) // 音频按钮背景颜色
+            .setAudioButtonBorderColor(COLOR_FF404040) // 音频按钮边框颜色
+            .setAudioButtonTextFontColor(COLOR_FFE0E0E0) // 音频按钮文本颜色
+
+        // 视频主题
+        this.videoTheme.setVideoBackgroundColor(COLOR_FF1E1E1E) // 视频背景颜色
+            .setVideoBorderColor(COLOR_FF404040) // 视频边框颜色
+            .setVideoTimeTextFontColor(COLOR_FFE0E0E0) // 视频时间文本颜色
+            .setVideoReleaseButtonBackgroundColor(COLOR_FF2D2D2D) // 视频释放按钮背景颜色
+            .setVideoReleaseButtonTextFontColor(COLOR_FFE0E0E0) // 视频释放按钮文本颜色
+            .setVideoDownloadButtonBackgroundColor(COLOR_FF2D2D2D) // 视频下载按钮背景颜色
+            .setVideoDownloadButtonTextFontColor(COLOR_FFE0E0E0) // 视频下载按钮文本颜色
+
+        // 脚注引用主题
+        this.footnoteRefTheme.setFootnoteRefTextFontColor(COLOR_FF4A90E2) // 脚注引用文本颜色
+            .setFootnoteRefTextDecorationColor(COLOR_FF4A90E2) // 脚注引用文本下划线颜色
+            .setFootnoteRefTextBackgroundColor(COLOR_FF1E1E1E) // 脚注引用文本背景颜色
+
+        // 行内代码主题
+        this.inlineCodeTheme.setInlineCodeTextBackgroundColor(COLOR_FF252526) // 行内代码背景颜色
+
+        // LaTeX数学公式主题
+        this.latexMathTheme.setLatexMathDefaultTextFontColor(COLOR_FF4A90E2) // 数学公式未加载状态文本颜色
+            .setLatexMathBackgroundColor(COLOR_TRANSPARENT) // 数学公式背景颜色
+            .setLatexMathTextColor(COLOR_FFE0E0E0) // 数学公式文本颜色
+
+        // HTML下划线主题
+        this.htmlUnderlineTheme.setHtmlUnderlineTextDecorationColor(COLOR_FFE0E0E0) // HTML下划线文本下划线颜色
+
+        // 图片主题
+        this.imageTheme.setImageBorderColor(COLOR_FF404040) // 图片边框颜色
+            .setImageDownloadButtonBackgroundColor(COLOR_FF2D2D2D) // 图片下载按钮背景颜色
+            .setImageDownloadButtonTextFontColor(COLOR_FFE0E0E0) // 图片下载按钮文本颜色
+
+        // 链接主题
+        this.linkTheme.setLinkTextFontColor(COLOR_FF4A90E2) // 链接文本颜色
+            .setLinkTextDecorationColor(COLOR_FF4A90E2) // 链接文本下划线颜色
+            .setLinkTextBackgroundColor(COLOR_TRANSPARENT) // 链接文本背景颜色
+            .setLinkCircleIconBackgroundColor(COLOR_TRANSPARENT) // 链接圆形图标背景颜色
+            .setLinkCircleIconButtonBackgroundColor(COLOR_FF2D2D2D) // 链接圆形图标按钮背景颜色
+            .setLinkCircleIconTextColor(COLOR_FFE0E0E0) // 链接圆形图标按钮文本颜色
+            .setLinkRectIconBackgroundColor(COLOR_TRANSPARENT) // 链接方形图标背景颜色
+            .setLinkRectIconButtonBackgroundColor(COLOR_FF2D2D2D) // 链接方形图标按钮背景颜色
+            .setLinkRectIconTextColor(COLOR_FFE0E0E0) // 链接方形图标按钮文本颜色
+            .setLinkRectToolIconBackgroundColor(COLOR_TRANSPARENT) // 链接方形图标工具按钮背景颜色
+            .setLinkRectToolIconButtonBackgroundColor(COLOR_FF2D2D2D) // 链接方形图标工具图标按钮背景颜色
+
+        // 删除线主题
+        this.strikethroughTheme.setStrikethroughTextDecorationColor(COLOR_FF404040) // 删除线文本装饰线颜色
+
+        // 代码高亮主题
+        this.prismTheme = PrismThemeDarkula.create() // 代码高亮主题
+
         return this
     }
 

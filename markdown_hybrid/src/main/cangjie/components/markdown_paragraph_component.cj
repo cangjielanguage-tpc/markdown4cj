@@ -119,7 +119,7 @@ class MarkdownParagraphComponent {
         .width(100.percent)
         .alignItems(HorizontalAlign.Start)
         .justifyContent(FlexAlign.Center)
-        .backgroundColor(paragraphBackgroundColor(paragraphMarkdownConfiguration.markdownTheme))
+        .backgroundColor(paragraphBackgroundColor(paragraphMarkdownConfiguration.markdownTheme, paragraphNodeView))
         .padding(
             top: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphPaddingTop,
             right: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphPaddingRight,

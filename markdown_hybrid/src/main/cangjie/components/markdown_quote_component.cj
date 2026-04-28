@@ -252,7 +252,6 @@ public class MarkdownQuoteComponent {
         .width(100.percent)
         .listDirection(Axis.Vertical)
         .alignListItem(ListItemAlign.Start)
-        .padding(left: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteBorderContentSpacing)
         .backgroundColor(quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteBackgroundColor)
         .borderRadius(topLeft: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusTopLeft, topRight: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusTopRight, bottomLeft: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusBottomLeft, bottomRight: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusBottomRight)
         .borderWidth(EdgeWidths(left: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteLeftBorderWidth.vp))
@@ -261,7 +260,7 @@ public class MarkdownQuoteComponent {
             top: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingTop,
             right: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingRight,
             bottom: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingBottom,
-            left: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingLeft
+            left: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingLeft + quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteBorderContentSpacing
         )
     }
 

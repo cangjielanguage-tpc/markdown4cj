@@ -132,7 +132,7 @@ class MarkdownCodeFencedBlockComponent {
                     markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockTypeText
                 }, markdownConfiguration)
                 Row() {
-                    if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome()) {
+                    if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyButtonIsShow) {
                         Row() {
                             if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon.isSome()) {
                                 Image(markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockCopyIcon())

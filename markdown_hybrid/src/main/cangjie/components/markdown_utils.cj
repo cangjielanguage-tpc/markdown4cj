@@ -1,31 +1,26 @@
 package markdown.components
 
-let COLOR_191919: Color = Color(0x191919)
-let COLOR_0000FF: Color = Color(0x0000FF)
-let COLOR_FF0000: Color = Color(0xFF0000)
-let COLOR_000000: Color = Color(0x000000)
-let COLOR_FFEAEAEA: Color = Color(0xFFEAEAEA)
-let COLOR_00000000: Color = Color(0x00000000)
-let COLOR_FF000000: Color = Color(0xFF000000)
-let COLOR_FFFFFF: Color = Color(0xFFFFFF)
-let COLOR_FFFFFFFF: Color = Color(0xFFFFFFFF)
-let COLOR_00FFFFFF: Color = Color(0x00FFFFFF)
-let COLOR_E0E0E0: Color = Color(0xE0E0E0)
-let COLOR_FFE0E0E0: Color = Color(0xFFE0E0E0)
-let COLOR_333333: Color = Color(0x333333)
-let COLOR_1A000000: Color = Color(0x1A000000)
-let COLOR_33000000: Color = Color(0x33000000)
-let COLOR_FF0000FF: Color = Color(0xFF0000FF)
+let COLOR_WHITE: Color = Color.WHITE
+let COLOR_RED: Color = Color.RED
+let COLOR_BLACK: Color = Color.BLACK
+let COLOR_TRANSPARENT: Color = Color.TRANSPARENT
+let COLOR_GRAY: Color = Color.GRAY
 let COLOR_FF191919: Color = Color(0xFF191919)
-let COLOR_80000000: Color = Color(0x80000000)
-let COLOR_01000000: Color = Color(0x01000000)
-let COLOR_FF4B4F52: Color = Color(0xFF4B4F52)
-let COLOR_FF2D2D2D: Color = Color(0xFF2D2D2D)
-let COLOR_1AFFFFFF: Color = Color(0x1AFFFFFF)
-let COLOR_33FFFFFF: Color = Color(0x33FFFFFF)
-let COLOR_80FFFFFF: Color = Color(0x80FFFFFF)
+let COLOR_FFEAEAEA: Color = Color(0xFFEAEAEA)
 let COLOR_E6000000: Color = Color(0xE6000000)
 let COLOR_FFF5F5F5: Color = Color(0xFFF5F5F5)
+let COLOR_FFE0E0E0: Color = Color(0xFFE0E0E0)
+let COLOR_33000000: Color = Color(0x33000000)
+let COLOR_1A000000: Color = Color(0x1A000000)
+let COLOR_80000000: Color = Color(0x80000000)
+let COLOR_FF1E1E1E: Color = Color(0xFF1E1E1E)
+let COLOR_FF2D2D2D: Color = Color(0xFF2D2D2D)
+let COLOR_FF404040: Color = Color(0xFF404040)
+let COLOR_FF252526: Color = Color(0xFF252526)
+let COLOR_FF4A90E2: Color = Color(0xFF4A90E2)
+let COLOR_FFA0A0A0: Color = Color(0xFFA0A0A0)
+let COLOR_40000000: Color = Color(0x40000000)
+
 let SECONDS_PER_HOUR: Int64 = 3600
 let SECONDS_PER_MINUTE: Int64 = 60
 
@@ -514,7 +509,7 @@ func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDeco
     if (nodeView.isFootnote) {
         return (markdownTheme.footnoteRefTheme.footnoteRefTextDecorationType, markdownTheme.footnoteRefTheme.footnoteRefTextDecorationColor, markdownTheme.footnoteRefTheme.footnoteRefTextDecorationStyle.toInt32()) // 脚注引用
     }
-    return (TextDecorationType.None, Color.TRANSPARENT, 0) // 其他
+    return (TextDecorationType.None, COLOR_TRANSPARENT, 0) // 其他
 }
 
 /**
@@ -534,7 +529,7 @@ func spanBackgroundColor18(nodeView: NodeView, markdownTheme: MarkdownTheme): (C
     if (nodeView.isFootnote) {
         return (markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundColor, markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusTopLeft, markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusTopRight, markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusBottomLeft, markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusBottomRight) // 脚注引用
     }
-    return (Color.TRANSPARENT, 0.0, 0.0, 0.0, 0.0) // 其他
+    return (COLOR_TRANSPARENT, 0.0, 0.0, 0.0, 0.0) // 其他
 }
 
 /**
@@ -554,7 +549,7 @@ func spanBackgroundColor19(nodeView: NodeView, markdownTheme: MarkdownTheme): Te
     if (nodeView.isFootnote) {
         return TextBackgroundStyle(color: markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundColor, radiusBorder: BorderRadiuses(topLeft: markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusTopLeft.vp, topRight: markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusTopRight.vp, bottomLeft: markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusBottomLeft.vp, bottomRight: markdownTheme.footnoteRefTheme.footnoteRefTextBackgroundRadiusBottomRight.vp)) // 脚注引用
     }
-    return TextBackgroundStyle(color: Color.TRANSPARENT, radiusBorder: BorderRadiuses(topLeft: 0.0.vp, topRight: 0.0.vp, bottomLeft: 0.0.vp, bottomRight: 0.0.vp)) // 其他
+    return TextBackgroundStyle(color: COLOR_TRANSPARENT, radiusBorder: BorderRadiuses(topLeft: 0.0.vp, topRight: 0.0.vp, bottomLeft: 0.0.vp, bottomRight: 0.0.vp)) // 其他
 }
 
 /**
@@ -791,9 +786,13 @@ func headingPaddingLeft(level: Int64, markdownTheme: MarkdownTheme): Float64 {
  *
  * @param level 标题等级
  * @param markdownTheme markdown样式
+ * @param nodeView NodeView
  * @return 标题背景颜色
  */
-func headingBackgroundColor(level: Int64, markdownTheme: MarkdownTheme): Color {
+func headingBackgroundColor(level: Int64, markdownTheme: MarkdownTheme, nodeView: NodeView): Color {
+    if (nodeView.isQuote) {
+        return markdownTheme.blockQuoteTheme.blockQuoteBackgroundColor // 块引用中的标题
+    }
     match (level) {
         case 1 =>
             if (let Some(v) <- markdownTheme.headingTheme.heading1BackgroundColor) {
@@ -828,9 +827,13 @@ func headingBackgroundColor(level: Int64, markdownTheme: MarkdownTheme): Color {
  * 设置段落背景颜色
  *
  * @param markdownTheme MarkdownTheme
+ * @param nodeView NodeView
  * @return 段落背景颜色
  */
-func paragraphBackgroundColor(markdownTheme: MarkdownTheme): Color {
+func paragraphBackgroundColor(markdownTheme: MarkdownTheme, nodeView: NodeView): Color {
+    if (nodeView.isQuote) {
+        return markdownTheme.blockQuoteTheme.blockQuoteBackgroundColor // 块引用中的段落
+    }
     if (let Some(v) <- markdownTheme.paragraphTheme.paragraphBackgroundColor) {
         return v // 段落
     }
@@ -842,9 +845,13 @@ func paragraphBackgroundColor(markdownTheme: MarkdownTheme): Color {
  *
  * @param isBullet 是否是无序列表
  * @param markdownTheme MarkdownTheme
+ * @param nodeView NodeView
  * @return 有序/无序/任务列表背景颜色
  */
-func listBackgroundColor(isBullet: Bool, markdownTheme: MarkdownTheme): Color {
+func listBackgroundColor(isBullet: Bool, markdownTheme: MarkdownTheme, nodeView: NodeView): Color {
+    if (nodeView.isQuote) {
+        return markdownTheme.blockQuoteTheme.blockQuoteBackgroundColor // 块引用中的列表
+    }
     if (isBullet) {
         if (let Some(v) <- markdownTheme.orderedListTheme.orderedListBackgroundColor) {
             return v // 有序列表
@@ -1093,9 +1100,9 @@ func renderTableCellColor(isHeader: Bool, markdownTheme: MarkdownTheme, rowCount
         return markdownTheme.tableTheme.tableTitleBackgroundColor // 表格标题
     }
     if (rowCount % 2 == 0) {
-        return markdownTheme.tableTheme.tableContentOddRowBackgroundColor // 表格内容奇数行
+        return markdownTheme.tableTheme.tableContentEvenRowBackgroundColor // 表格内容奇数行
     }
-    return markdownTheme.tableTheme.tableContentEvenRowBackgroundColor // 表格内容偶数行
+    return markdownTheme.tableTheme.tableContentOddRowBackgroundColor // 表格内容偶数行
 }
 
 /**
@@ -1119,9 +1126,13 @@ func renderTableCellColumnAlign(alignment: ?TableAlignment): HorizontalAlign {
  * 设置脚注背景颜色
  *
  * @param markdownTheme MarkdownTheme
+ * @param nodeView NodeView
  * @return 脚注背景颜色
  */
-func footnoteBackgroundColor(markdownTheme: MarkdownTheme): Color {
+func footnoteBackgroundColor(markdownTheme: MarkdownTheme, nodeView: NodeView): Color {
+    if (nodeView.isQuote) {
+        return markdownTheme.blockQuoteTheme.blockQuoteBackgroundColor // 块引用中的列表
+    }
     if (let Some(v) <- markdownTheme.footnoteDefTheme.footnoteDefBackgroundColor) {
         return v // 脚注
     }

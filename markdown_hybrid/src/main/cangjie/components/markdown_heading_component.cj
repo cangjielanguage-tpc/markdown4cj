@@ -130,7 +130,7 @@ class MarkdownHeadingComponent {
         .width(100.percent)
         .alignItems(HorizontalAlign.Start)
         .justifyContent(FlexAlign.Center)
-        .backgroundColor(headingBackgroundColor(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme))
+        .backgroundColor(headingBackgroundColor(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme, headingNodeView))
         .padding(
             top: headingPaddingTop(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
             right: headingPaddingRight(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
