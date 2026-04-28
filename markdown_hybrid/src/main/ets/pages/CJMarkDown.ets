@@ -424,13 +424,6 @@ export struct CJMarkdown {
             this.config.markdownTheme.markdownThemeCodeBlock.codeBlockIsDark !== undefined) {
           cjMarkdownTheme.setIsDark(this.config.markdownTheme.markdownThemeCodeBlock.codeBlockIsDark)
         }
-        if (this.config.markdownTheme.isDarkulaTheme !== undefined) {
-          if (this.config.markdownTheme.isDarkulaTheme) {
-            cjMarkdownTheme.setDarkulaTheme()
-          } else {
-            cjMarkdownTheme.setDefaultTheme()
-          }
-        }
       }
     }
     return cjMarkdownTheme

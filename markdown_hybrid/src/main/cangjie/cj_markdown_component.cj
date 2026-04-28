@@ -253,13 +253,6 @@ class CJMarkdownComponent {
             markdownThemeBuilder.setStrikethroughTheme(setStrikethroughTheme(w.cjMarkdownTheme.cjMarkdownStrikethroughTheme)) // 删除线文本样式
             markdownThemeBuilder.setSubTheme(setSubTheme(w.cjMarkdownTheme.cjMarkdownSubTheme)) // 下标文本样式
             markdownThemeBuilder.setSupTheme(setSupTheme(w.cjMarkdownTheme.cjMarkdownSupTheme)) // 上标文本样式
-            if (let Some(v) <- w.cjMarkdownTheme.isDarkulaTheme) {
-                if(v){
-                    markdownThemeBuilder.setDarkulaTheme() // 深色
-                }else{
-                    markdownThemeBuilder.setDefaultTheme() // 浅色
-                }
-            }
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()
         return markdownTheme

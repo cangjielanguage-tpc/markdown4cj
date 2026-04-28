@@ -176,14 +176,193 @@ export class MarkdownTheme {
    * 设置浅色主题整体样式
    */
   setDefaultTheme(): void {
-    this.isDarkulaTheme = false
+    // 浅色主题 - 只切换颜色属性
+    // 全局主题
+    this.markdownThemeGlobal.setBackgroundColor(0x00000000) // markdown全局背景颜色
+    // 段落主题
+    this.markdownThemeParagraph.setParagraphTextFontColor(0xFF191919) // 段落文本颜色
+    // 标题主题
+    this.markdownThemeHeading.setTextFontColorForAllHeading(0xFF191919) // 标题文本颜色
+    this.markdownThemeHeading.setUnderlineColorForAllHeading(0xFF191919) // 标题下划线颜色
+    // 表格主题
+    this.markdownThemeTable.setTableBorderColor(0xFF000000) // 表格边框颜色
+    this.markdownThemeTable.setTableTitleTextFontColor(0xFF191919) // 表格标题文本颜色
+    this.markdownThemeTable.setTableContentTextFontColor(0xFF191919) // 表格内容文本颜色
+    this.markdownThemeTable.setTableTitleBackgroundColor(0xFFFFFFFF) // 表格标题背景颜色
+    this.markdownThemeTable.setTableContentOddRowBackgroundColor(0xFFE0E0E0) // 表格内容奇数行背景颜色
+    this.markdownThemeTable.setTableContentEvenRowBackgroundColor(0xFFFFFFFF) // 表格内容偶数行背景颜色
+    this.markdownThemeTable.setTableScrollBarColor(0xFF191919) // 表格滚动条颜色
+    // 分隔线主题
+    this.markdownThemeDivider.setDividerColor(0xFF191919) // 分隔线颜色
+    // 引用块主题
+    this.markdownThemeBlockQuote.setBlockQuoteLeftBorderColor(0xFF191919) // 引用块左侧边框颜色
+    this.markdownThemeBlockQuote.setBlockQuoteBackgroundColor(0xFFEAEAEA) // 引用块背景颜色
+    // 有序列表主题
+    this.markdownThemeOrderedList.setOrderedListMarkerTextFontColor(0xFF191919) // 有序列表标记文本颜色
+    // 无序列表主题
+    this.markdownThemeBulletList.setBulletListBulletTextFontColor(0xFF191919) // 无序列表标记文本颜色
+    this.markdownThemeBulletList.setBulletListCheckboxSelectedColor(0xFF808080) // 无序列表复选框选中颜色
+    // 代码块主题
+    this.markdownThemeCodeBlock.setCodeBlockBorderColor(0x00000000) // 代码块边框颜色
+    this.markdownThemeCodeBlock.setCodeBlockListTitleSelectTextColor(0xFFFF0000) // 列表标题选中文本颜色
+    this.markdownThemeCodeBlock.setCodeBlockListTitleUnselectTextColor(0xFF000000) // 列表标题未选中文本颜色
+    this.markdownThemeCodeBlock.setCodeBlockListTitleSelectBackgroundColor(0xFF808080) // 列表标题选中背景颜色
+    this.markdownThemeCodeBlock.setCodeBlockListTitleUnselectBackgroundColor(0x00000000) // 列表标题未选背景颜色
+    // 音频主题
+    this.markdownThemeAudio.setAudioBackgroundColor(0x00000000) // 音频背景颜色
+    this.markdownThemeAudio.setAudioBorderColor(0x33000000) // 音频边框颜色
+    this.markdownThemeAudio.setAudioShadowColor(0x1A000000) // 音频阴影颜色
+    this.markdownThemeAudio.setAudioTitleTextFontColor(0xFF000000) // 音频标题文本颜色
+    this.markdownThemeAudio.setAudioTypeTextFontColor(0x80000000) // 音频类型文本颜色
+    this.markdownThemeAudio.setAudioButtonBackgroundColor(0xFF000000) // 音频按钮背景颜色
+    this.markdownThemeAudio.setAudioButtonBorderColor(0x00000000) // 音频按钮边框颜色
+    this.markdownThemeAudio.setAudioButtonTextFontColor(0xFFFFFFFF) // 音频按钮文本颜色
+    // 视频主题
+    this.markdownThemeVideo.setVideoBackgroundColor(0x00000000) // 视频背景颜色
+    this.markdownThemeVideo.setVideoBorderColor(0x00000000) // 视频边框颜色
+    this.markdownThemeVideo.setVideoTimeTextFontColor(0xFFFFFFFF) // 视频时间文本颜色
+    this.markdownThemeVideo.setVideoReleaseButtonBackgroundColor(0xFFF5F5F5) // 视频发布按钮背景颜色
+    this.markdownThemeVideo.setVideoReleaseButtonTextFontColor(0x60000000) // 视频发布按钮文本颜色
+    this.markdownThemeVideo.setVideoDownloadButtonBackgroundColor(0xFFF5F5F5) // 视频下载按钮背景颜色
+    this.markdownThemeVideo.setVideoDownloadButtonTextFontColor(0x60000000) // 视频下载按钮文本颜色
+    // 脚注引用主题
+    this.markdownThemeFootnoteRef.setFootnoteRefTextFontColor(0xFFFF0000) // 脚注引用文本颜色
+    this.markdownThemeFootnoteRef.setFootnoteRefTextDecorationColor(0xFFFF0000) // 脚注引用文本下划线颜色
+    this.markdownThemeFootnoteRef.setFootnoteRefTextBackgroundColor(0x00000000) // 脚注引用文本背景颜色
+    // 行内代码主题
+    this.markdownThemeInlineCode.setInlineCodeTextBackgroundColor(0xFFEAEAEA) // 行内代码文本背景颜色
+    // LaTeX数学公式主题
+    this.markdownThemeLatexMath.setLatexMathDefaultTextFontColor(0xFFFF0000) // 数学公式未加载状态文本颜色
+    this.markdownThemeLatexMath.setLatexMathBackgroundColor(0x00000000) // 数学公式背景颜色
+    this.markdownThemeLatexMath.setLatexMathTextColor(0xFF000000) // 数学公式文本颜色
+    // HTML下划线主题
+    this.markdownThemeHtmlUnderline.setHtmlUnderlineTextDecorationColor(0xFF191919) // HTML下划线文本下划线颜色
+    // 图片主题
+    this.markdownThemeImage.setImageBorderColor(0xFF000000) // 图片边框颜色
+    this.markdownThemeImage.setImageDownloadButtonBackgroundColor(0xFFF5F5F5) // 图片下载按钮背景颜色
+    this.markdownThemeImage.setImageDownloadButtonTextFontColor(0xE6000000) // 图片下载按钮文本颜色
+    // 链接主题
+    this.markdownThemeLink.setLinkTextFontColor(0xFFFF0000) // 链接文本颜色
+    this.markdownThemeLink.setLinkTextDecorationColor(0xFFFF0000) // 链接文本下划线颜色
+    this.markdownThemeLink.setLinkTextBackgroundColor(0x00000000) // 链接文本背景颜色
+    this.markdownThemeLink.setLinkCircleIconBackgroundColor(0x00000000) // 链接圆形图标背景颜色
+    this.markdownThemeLink.setLinkCircleIconButtonBackgroundColor(0xFF000000) // 链接圆形图标按钮背景颜色
+    this.markdownThemeLink.setLinkCircleIconTextColor(0xFFFFFFFF) // 链接圆形图标按钮文本颜色
+    this.markdownThemeLink.setLinkRectIconBackgroundColor(0x00000000) // 链接方形图标背景颜色
+    this.markdownThemeLink.setLinkRectIconButtonBackgroundColor(0xFF000000) // 链接方形图标按钮背景颜色
+    this.markdownThemeLink.setLinkRectIconTextColor(0xFFFFFFFF) // 链接方形图标按钮文本颜色
+    this.markdownThemeLink.setLinkRectToolIconBackgroundColor(0x00000000) // 链接方形图标工具按钮背景颜色
+    this.markdownThemeLink.setLinkRectToolIconButtonBackgroundColor(0xFFFFFFFF) // 链接方形图标工具按钮背景颜色
+    // 删除线主题
+    this.markdownThemeStrikethrough.setStrikethroughTextDecorationColor(0xFF191919) // 删除线文本下划线颜色
+    // 代码高亮主题
+    this.markdownThemeCodeBlock.setCodeBlockIsDark(false)
   }
 
   /**
    * 设置浅色主题整体样式
    */
   setDarkulaTheme(): void {
-    this.isDarkulaTheme = true
+    // 深色主题设计
+
+    // 全局主题
+    this.markdownThemeGlobal.setBackgroundColor(0x00000000) // markdown全局背景颜色
+
+    // 段落主题
+    this.markdownThemeParagraph.setParagraphTextFontColor(0xFFE0E0E0) // 段落文本颜色
+
+    // 标题主题
+    this.markdownThemeHeading.setTextFontColorForAllHeading(0xFFE0E0E0) // 标题文本颜色
+    this.markdownThemeHeading.setUnderlineColorForAllHeading(0xFFE0E0E0) // 标题下划线颜色
+
+    // 表格主题
+    this.markdownThemeTable.setTableBorderColor(0xFF404040) // 表格边框颜色
+    this.markdownThemeTable.setTableTitleTextFontColor(0xFFE0E0E0) // 表格标题文本颜色
+    this.markdownThemeTable.setTableContentTextFontColor(0xFFE0E0E0) // 表格内容文本颜色
+    this.markdownThemeTable.setTableTitleBackgroundColor(0xFF2D2D2D) // 表格标题背景颜色
+    this.markdownThemeTable.setTableContentOddRowBackgroundColor(0xFF1E1E1E) // 表格内容奇数行背景颜色
+    this.markdownThemeTable.setTableContentEvenRowBackgroundColor(0xFF2D2D2D) // 表格内容偶数行背景颜色
+    this.markdownThemeTable.setTableScrollBarColor(0xFFE0E0E0) // 表格滚动条颜色
+
+    // 分隔线主题
+    this.markdownThemeDivider.setDividerColor(0xFFE0E0E0) // 分隔线颜色
+
+    // 引用块主题
+    this.markdownThemeBlockQuote.setBlockQuoteLeftBorderColor(0xFFE0E0E0) // 引用块左侧边框颜色
+    this.markdownThemeBlockQuote.setBlockQuoteBackgroundColor(0xFF252526) // 引用块背景颜色
+
+    // 有序列表主题
+    this.markdownThemeOrderedList.setOrderedListMarkerTextFontColor(0xFFE0E0E0) // 有序列表标记文本颜色
+
+    // 无序列表主题
+    this.markdownThemeBulletList.setBulletListBulletTextFontColor(0xFFE0E0E0) // 无序列表标记文本颜色
+    this.markdownThemeBulletList.setBulletListCheckboxSelectedColor(0xFF4A90E2) // 无序列表复选框选中颜色
+
+    // 代码块主题
+    this.markdownThemeCodeBlock.setCodeBlockBorderColor(0x00000000) // 代码块边框颜色
+    this.markdownThemeCodeBlock.setCodeBlockListTitleSelectTextColor(0xFF4A90E2) // 列表标题选中文本颜色
+    this.markdownThemeCodeBlock.setCodeBlockListTitleUnselectTextColor(0xFFE0E0E0) // 列表标题未选中文本颜色
+    this.markdownThemeCodeBlock.setCodeBlockListTitleSelectBackgroundColor(0xFF2D2D2D) // 列表标题选中背景颜色
+    this.markdownThemeCodeBlock.setCodeBlockListTitleUnselectBackgroundColor(0x00000000) // 列表标题未选背景颜色
+
+    // 音频主题
+    this.markdownThemeAudio.setAudioBackgroundColor(0xFF1E1E1E) // 音频背景颜色
+    this.markdownThemeAudio.setAudioBorderColor(0xFF404040) // 音频边框颜色
+    this.markdownThemeAudio.setAudioShadowColor(0x40000000) // 音频阴影颜色
+    this.markdownThemeAudio.setAudioTitleTextFontColor(0xFFE0E0E0) // 音频标题文本颜色
+    this.markdownThemeAudio.setAudioTypeTextFontColor(0xFFA0A0A0) // 音频类型文本颜色
+    this.markdownThemeAudio.setAudioButtonBackgroundColor(0xFF2D2D2D) // 音频按钮背景颜色
+    this.markdownThemeAudio.setAudioButtonBorderColor(0xFF404040) // 音频按钮边框颜色
+    this.markdownThemeAudio.setAudioButtonTextFontColor(0xFFE0E0E0) // 音频按钮文本颜色
+
+    // 视频主题
+    this.markdownThemeVideo.setVideoBackgroundColor(0xFF1E1E1E) // 视频背景颜色
+    this.markdownThemeVideo.setVideoBorderColor(0xFF404040) // 视频边框颜色
+    this.markdownThemeVideo.setVideoTimeTextFontColor(0xFFE0E0E0) // 视频时间文本颜色
+    this.markdownThemeVideo.setVideoReleaseButtonBackgroundColor(0xFF2D2D2D) // 视频释放按钮背景颜色
+    this.markdownThemeVideo.setVideoReleaseButtonTextFontColor(0xFFE0E0E0) // 视频释放按钮文本颜色
+    this.markdownThemeVideo.setVideoDownloadButtonBackgroundColor(0xFF2D2D2D) // 视频下载按钮背景颜色
+    this.markdownThemeVideo.setVideoDownloadButtonTextFontColor(0xFFE0E0E0) // 视频下载按钮文本颜色
+
+    // 脚注引用主题
+    this.markdownThemeFootnoteRef.setFootnoteRefTextFontColor(0xFF4A90E2) // 脚注引用文本颜色
+    this.markdownThemeFootnoteRef.setFootnoteRefTextDecorationColor(0xFF4A90E2) // 脚注引用文本下划线颜色
+    this.markdownThemeFootnoteRef.setFootnoteRefTextBackgroundColor(0xFF1E1E1E) // 脚注引用文本背景颜色
+
+    // 行内代码主题
+    this.markdownThemeInlineCode.setInlineCodeTextBackgroundColor(0xFF252526) // 行内代码背景颜色
+
+    // LaTeX数学公式主题
+    this.markdownThemeLatexMath.setLatexMathDefaultTextFontColor(0xFF4A90E2) // 数学公式未加载状态文本颜色
+    this.markdownThemeLatexMath.setLatexMathBackgroundColor(0x00000000) // 数学公式背景颜色
+    this.markdownThemeLatexMath.setLatexMathTextColor(0xFFE0E0E0) // 数学公式文本颜色
+
+    // HTML下划线主题
+    this.markdownThemeHtmlUnderline.setHtmlUnderlineTextDecorationColor(0xFFE0E0E0) // HTML下划线文本下划线颜色
+
+    // 图片主题
+    this.markdownThemeImage.setImageBorderColor(0xFF404040) // 图片边框颜色
+    this.markdownThemeImage.setImageDownloadButtonBackgroundColor(0xFF2D2D2D) // 图片下载按钮背景颜色
+    this.markdownThemeImage.setImageDownloadButtonTextFontColor(0xFFE0E0E0) // 图片下载按钮文本颜色
+
+    // 链接主题
+    this.markdownThemeLink.setLinkTextFontColor(0xFF4A90E2) // 链接文本颜色
+    this.markdownThemeLink.setLinkTextDecorationColor(0xFF4A90E2) // 链接文本下划线颜色
+    this.markdownThemeLink.setLinkTextBackgroundColor(0x00000000) // 链接文本背景颜色
+    this.markdownThemeLink.setLinkCircleIconBackgroundColor(0x00000000) // 链接圆形图标背景颜色
+    this.markdownThemeLink.setLinkCircleIconButtonBackgroundColor(0xFF2D2D2D) // 链接圆形图标按钮背景颜色
+    this.markdownThemeLink.setLinkCircleIconTextColor(0xFFE0E0E0) // 链接圆形图标按钮文本颜色
+    this.markdownThemeLink.setLinkRectIconBackgroundColor(0x00000000) // 链接方形图标背景颜色
+    this.markdownThemeLink.setLinkRectIconButtonBackgroundColor(0xFF2D2D2D) // 链接方形图标按钮背景颜色
+    this.markdownThemeLink.setLinkRectIconTextColor(0xFFE0E0E0) // 链接方形图标按钮文本颜色
+    this.markdownThemeLink.setLinkRectToolIconBackgroundColor(0x00000000) // 链接方形图标工具按钮背景颜色
+    this.markdownThemeLink.setLinkRectToolIconButtonBackgroundColor(0xFF2D2D2D) // 链接方形图标工具图标按钮背景颜色
+
+    // 删除线主题
+    this.markdownThemeStrikethrough.setStrikethroughTextDecorationColor(0xFF404040) // 删除线文本装饰线颜色
+
+    // 代码高亮主题
+    this.markdownThemeCodeBlock.setCodeBlockIsDark(true)
   }
 
   /**
@@ -567,7 +746,7 @@ export class MarkdownTheme {
   /**
    * 设置文本格式链接文本颜色
    *
-   * @param linkColor 文本格式链接文本颜色 - 默认0XFF0000FF
+   * @param linkColor 文本格式链接文本颜色 - 默认0xFF0000FF
    */
   setLinkColor(linkColor: number): void {
     this.markdownThemeLink.setLinkTextFontColor(linkColor)
@@ -603,7 +782,7 @@ export class MarkdownTheme {
   /**
    * 设置文本格式链接背景颜色
    *
-   * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0XFF000000
+   * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0xFF000000
    */
   setLinkBackGroupColor(linkBackGroupColor: number): void {
     this.markdownThemeLink.setLinkTextBackgroundColor(linkBackGroupColor)
@@ -634,7 +813,7 @@ export class MarkdownTheme {
   /**
    * 设置圆形图片格式链接控件背景颜色
    *
-   * @param linkCircleImageButtonBackGroupColor 圆形图片格式链接控件背景颜色 - 默认0XFF000000
+   * @param linkCircleImageButtonBackGroupColor 圆形图片格式链接控件背景颜色 - 默认0xFF000000
    */
   setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: number): void {
     this.markdownThemeLink.setLinkCircleIconButtonBackgroundColor(linkCircleImageButtonBackGroupColor)
@@ -652,7 +831,7 @@ export class MarkdownTheme {
   /**
    * 设置圆形图片格式链接文字颜色
    *
-   * @param linkCircleImageTextColor 圆形图片格式链接文字颜色 - 默认0XFFFFFFFF
+   * @param linkCircleImageTextColor 圆形图片格式链接文字颜色 - 默认0xFFFFFFFF
    */
   setLinkCircleImageTextColor(linkCircleImageTextColor: number): void {
     this.markdownThemeLink.setLinkCircleIconTextColor(linkCircleImageTextColor)
@@ -688,7 +867,7 @@ export class MarkdownTheme {
   /**
    * 设置圆角矩形图片格式链接控件背景颜色
    *
-   * @param linkRectImageButtonBackGroupColor 圆角矩形图片格式链接控件背景颜色 - 默认0XFF000000
+   * @param linkRectImageButtonBackGroupColor 圆角矩形图片格式链接控件背景颜色 - 默认0xFF000000
    */
   setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: number): void {
     this.markdownThemeLink.setLinkRectIconButtonBackgroundColor(linkRectImageButtonBackGroupColor)
@@ -706,7 +885,7 @@ export class MarkdownTheme {
   /**
    * 设置圆角矩形图片格式链接文字颜色
    *
-   * @param linkRectImageTextColor 圆角矩形图片格式链接文字颜色 - 默认0XFFFFFFFF
+   * @param linkRectImageTextColor 圆角矩形图片格式链接文字颜色 - 默认0xFFFFFFFF
    */
   setLinkRectImageTextColor(linkRectImageTextColor: number): void {
     this.markdownThemeLink.setLinkRectIconTextColor(linkRectImageTextColor)
@@ -868,7 +1047,7 @@ export class MarkdownTheme {
   /**
    * 设置块引用左边线条颜色
    *
-   * @param blockQuoteColor 块引用左边线条颜色 - 默认0XFF191919
+   * @param blockQuoteColor 块引用左边线条颜色 - 默认0xFF191919
    */
   setBlockQuoteColor(blockQuoteColor: number): void {
     this.markdownThemeBlockQuote.setBlockQuoteLeftBorderColor(blockQuoteColor)
@@ -877,7 +1056,7 @@ export class MarkdownTheme {
   /**
    * 设置块引用背景颜色
    *
-   * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0XFFEAEAEA
+   * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0xFFEAEAEA
    */
   setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: number): void {
     this.markdownThemeBlockQuote.setBlockQuoteBackgroundColor(blockQuoteBackGroupColor)
@@ -1389,7 +1568,7 @@ export class MarkdownTheme {
   /**
    * 设置标题文本颜色
    *
-   * @param headingTextColor 标题文本颜色 - 默认0XFF191919
+   * @param headingTextColor 标题文本颜色 - 默认0xFF191919
    * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
    */
   setHeadingTextColor(headingTextColor: number): void {
@@ -1399,7 +1578,7 @@ export class MarkdownTheme {
   /**
    * 设置H1、H2标题下分割线颜色
    *
-   * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0XFF191919
+   * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0xFF191919
    * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
    */
   setHeadingBreakColor(headingBreakColor: number): void {
@@ -1481,7 +1660,7 @@ export class MarkdownTheme {
   /**
    * 设置H1标题下分割线颜色
    *
-   * @param headingBreakColor1 H1标题下分割线颜色 - 默认0XFF191919
+   * @param headingBreakColor1 H1标题下分割线颜色 - 默认0xFF191919
    */
   setHeadingBreakColor1(headingBreakColor1: number): void {
     this.markdownThemeHeading.setUnderlineColorForDesignateHeading(1, headingBreakColor1)
@@ -1499,7 +1678,7 @@ export class MarkdownTheme {
   /**
    * 设置H2标题下分割线颜色
    *
-   * @param headingBreakColor2 H2标题下分割线颜色 - 默认0XFF191919
+   * @param headingBreakColor2 H2标题下分割线颜色 - 默认0xFF191919
    */
   setHeadingBreakColor2(headingBreakColor2: number): void {
     this.markdownThemeHeading.setUnderlineColorForDesignateHeading(2, headingBreakColor2)
@@ -1571,7 +1750,7 @@ export class MarkdownTheme {
   /**
    * 设置段落文本颜色
    *
-   * @param paragraphTextColor 段落文本颜色 - 默认0XFF191919
+   * @param paragraphTextColor 段落文本颜色 - 默认0xFF191919
    */
   setParagraphTextColor(paragraphTextColor: number): void {
     this.markdownThemeParagraph.setParagraphTextFontColor(paragraphTextColor)
@@ -1607,7 +1786,7 @@ export class MarkdownTheme {
   /**
    * 设置分割线颜色
    *
-   * @param thematicBreakColor 分割线颜色 - 默认0XFF191919
+   * @param thematicBreakColor 分割线颜色 - 默认0xFF191919
    */
   setThematicBreakColor(thematicBreakColor: number): void {
     this.markdownThemeDivider.setDividerColor(thematicBreakColor)
@@ -1688,7 +1867,7 @@ export class MarkdownTheme {
   /**
    * 设置数学公式生成图片格式
    *
-   * @param latexMathColorFormat 数学公式生成图片格式 - 默认LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
+   * @param latexMathColorFormat 数学公式生成图片格式 - 默认LatexMathColorFormat.0xFORMAT_BGRA_8888
    */
   setLatexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): void {
     this.markdownThemeLatexMath.setLatexMathColorFormat(latexMathColorFormat)
@@ -2267,7 +2446,7 @@ export class MarkdownTheme {
   /**
    * 设置图片下载按钮背景颜色
    *
-   * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0XFFF5F5F5
+   * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0xFFF5F5F5
    */
   setImageDownloadBackgroundColor(imageDownloadBackgroundColor: number): void {
     this.markdownThemeImage.setImageDownloadButtonBackgroundColor(imageDownloadBackgroundColor)
@@ -2285,7 +2464,7 @@ export class MarkdownTheme {
   /**
    * 设置表格边框颜色
    *
-   * @param tableBorderColor 表格边框颜色 - 默认0XFF000000
+   * @param tableBorderColor 表格边框颜色 - 默认0xFF000000
    */
   setTableBorderColor(tableBorderColor: number): void {
     this.markdownThemeTable.setTableBorderColor(tableBorderColor)
@@ -2303,7 +2482,7 @@ export class MarkdownTheme {
   /**
    * 设置表格奇数行背景色
    *
-   * @param tableOddRowBackgroundColor 表格奇数行背景色 - 默认0XFFFFFFFF
+   * @param tableOddRowBackgroundColor 表格奇数行背景色 - 默认0xFFFFFFFF
    */
   setTableOddRowBackgroundColor(tableOddRowBackgroundColor: number): void {
     this.markdownThemeTable.setTableContentOddRowBackgroundColor(tableOddRowBackgroundColor)
@@ -2312,7 +2491,7 @@ export class MarkdownTheme {
   /**
    * 设置表格偶数行背景色
    *
-   * @param tableEvenRowBackgroundColor 表格偶数行背景色 - 默认0XFFE0E0E0
+   * @param tableEvenRowBackgroundColor 表格偶数行背景色 - 默认0xFFE0E0E0
    */
   setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: number): void {
     this.markdownThemeTable.setTableContentEvenRowBackgroundColor(tableEvenRowBackgroundColor)
@@ -2321,7 +2500,7 @@ export class MarkdownTheme {
   /**
    * 设置表格标题背景色
    *
-   * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0XFFFFFFFF
+   * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0xFFFFFFFF
    */
   setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void {
     this.markdownThemeTable.setTableTitleBackgroundColor(tableHeaderRowBackgroundColor)
@@ -2330,7 +2509,7 @@ export class MarkdownTheme {
   /**
    * 设置表格标题文本颜色
    *
-   * @param tableTitleTextColor 表格标题文本颜色 - 默认0XFF191919
+   * @param tableTitleTextColor 表格标题文本颜色 - 默认0xFF191919
    */
   setTableTitleTextColor(tableTitleTextColor: number): void {
     this.markdownThemeTable.setTableTitleTextFontColor(tableTitleTextColor)
@@ -2367,7 +2546,7 @@ export class MarkdownTheme {
   /**
    * 设置表格内容文本颜色
    *
-   * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
+   * @param tableContentTextColor 表格内容文本颜色 - 默认0xFF191919
    */
   setTableContentTextColor(tableContentTextColor: number): void {
     this.markdownThemeTable.setTableContentTextFontColor(tableContentTextColor)
@@ -2461,7 +2640,7 @@ export class MarkdownTheme {
   /**
    * 设置删除线颜色
    *
-   * @param strikethroughColor 删除线颜色 - 默认0XFF191919
+   * @param strikethroughColor 删除线颜色 - 默认0xFF191919
    */
   setStrikethroughColor(strikethroughColor: number): void {
     this.markdownThemeStrikethrough.setStrikethroughTextDecorationColor(strikethroughColor)
@@ -2506,7 +2685,7 @@ export class MarkdownTheme {
   /**
    * 设置下标字体颜色
    *
-   * @param subTextColor 下标字体颜色 默认0XFF191919
+   * @param subTextColor 下标字体颜色 默认0xFF191919
    */
   setSubTextColor(subTextColor: number): void {
     this.markdownThemeSub.setSubTextFontColor(subTextColor)
@@ -2533,7 +2712,7 @@ export class MarkdownTheme {
   /**
    * 设置上标字体颜色
    *
-   * @param supTextColor 上标字体颜色 默认0XFF191919
+   * @param supTextColor 上标字体颜色 默认0xFF191919
    */
   setSupTextColor(supTextColor: number): void {
     this.markdownThemeSup.setSupTextFontColor(supTextColor)
@@ -2560,7 +2739,7 @@ export class MarkdownTheme {
   /**
    * 设置下划线颜色
    *
-   * @param underlineColor 下划线颜色 默认0XFF191919
+   * @param underlineColor 下划线颜色 默认0xFF191919
    */
   setUnderlineColor(underlineColor: number): void {
     this.markdownThemeHtmlUnderline.setHtmlUnderlineTextDecorationColor(underlineColor)
