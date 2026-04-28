@@ -5,6 +5,11 @@ import ohos.ark_interop_macro.*
 @Interop[ArkTS]
 public class CJMarkdownTheme {
     /**
+     * 是否使用深色主题
+     */
+    var isDarkulaTheme: ?Bool = false
+
+    /**
      * 全局样式
      */
     var cjMarkdownGlobalTheme: CJMarkdownGlobalTheme = CJMarkdownGlobalTheme()
@@ -130,6 +135,20 @@ public class CJMarkdownTheme {
     var cjMarkdownHtmlUnderlineTheme: CJMarkdownHtmlUnderlineTheme = CJMarkdownHtmlUnderlineTheme()
 
     public init() {}
+
+    /**
+     * 设置浅色主题整体样式
+     */
+    public func setDefaultTheme(): Unit {
+        isDarkulaTheme = false
+    }
+
+    /**
+     * 设置深色主题整体样式
+     */
+    public func setDarkulaTheme(): Unit {
+        isDarkulaTheme = true
+    }
 
     /**
      * 设置markdown是否同步解析

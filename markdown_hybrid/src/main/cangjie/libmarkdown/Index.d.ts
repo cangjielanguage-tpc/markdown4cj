@@ -46,6 +46,10 @@ export declare class CJMarkdownPlugin {
 }
 
 export declare class CJMarkdownTheme {
+  setDefaultTheme(): void
+
+  setDarkulaTheme(): void
+
   setMarkdownThemeGlobal(markdownThemeGlobal: CJMarkdownGlobalTheme): void
 
   setMarkdownThemeAudio(markdownThemeAudio: CJMarkdownAudioTheme): void

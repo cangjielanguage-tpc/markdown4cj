@@ -390,7 +390,6 @@ export struct CJMarkdown {
           this.config.markdownTheme.markdownThemeVideo.videoDownloadButtonIcon,
           this.config.markdownTheme.markdownThemeImage.imageDownloadButtonIcon
         )
-
         cjMarkdownTheme.setCJMarkdownGlobalTheme(this.getGlobalTheme(this.config.markdownTheme.markdownThemeGlobal))
         cjMarkdownTheme.setCJMarkdownAudioTheme(this.getAudioTheme(this.config.markdownTheme.markdownThemeAudio))
         cjMarkdownTheme.setCJMarkdownBannerTheme(this.getBannerTheme(this.config.markdownTheme.markdownThemeBanner))
@@ -424,6 +423,13 @@ export struct CJMarkdown {
         if (this.config.markdownTheme.markdownThemeCodeBlock !== undefined &&
             this.config.markdownTheme.markdownThemeCodeBlock.codeBlockIsDark !== undefined) {
           cjMarkdownTheme.setIsDark(this.config.markdownTheme.markdownThemeCodeBlock.codeBlockIsDark)
+        }
+        if (this.config.markdownTheme.isDarkulaTheme !== undefined) {
+          if (this.config.markdownTheme.isDarkulaTheme) {
+            cjMarkdownTheme.setDarkulaTheme()
+          } else {
+            cjMarkdownTheme.setDefaultTheme()
+          }
         }
       }
     }

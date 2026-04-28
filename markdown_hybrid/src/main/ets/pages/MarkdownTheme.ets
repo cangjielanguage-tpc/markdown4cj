@@ -34,6 +34,11 @@ export class MarkdownTheme {
   isLinkSize?: boolean = undefined
 
   /**
+   * 是否使用深色主题
+   */
+  isDarkulaTheme?: boolean = undefined
+
+  /**
    * 全局样式
    */
   markdownThemeGlobal: MarkdownThemeGlobal = new MarkdownThemeGlobal()
@@ -165,6 +170,20 @@ export class MarkdownTheme {
    */
   setContext(context: Context): void {
     this.markdownThemeGlobal.setStageContext(context)
+  }
+
+  /**
+   * 设置浅色主题整体样式
+   */
+  setDefaultTheme(): void {
+    this.isDarkulaTheme = false
+  }
+
+  /**
+   * 设置浅色主题整体样式
+   */
+  setDarkulaTheme(): void {
+    this.isDarkulaTheme = true
   }
 
   /**

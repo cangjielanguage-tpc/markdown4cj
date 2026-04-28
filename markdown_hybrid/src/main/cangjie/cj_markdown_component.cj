@@ -228,7 +228,6 @@ class CJMarkdownComponent {
                     markdownThemeBuilder.setPrismTheme(PrismThemeDefault.create()) // 浅色
                 }
             }
-
             markdownThemeBuilder.setGlobalTheme(setGlobalTheme(w.cjMarkdownTheme.cjMarkdownGlobalTheme)) // 全局样式
             markdownThemeBuilder.setParagraphTheme(setParagraphTheme(w.cjMarkdownTheme.cjMarkdownParagraphTheme)) // 段落样式
             markdownThemeBuilder.setHeadingTheme(setHeadingTheme(w.cjMarkdownTheme.cjMarkdownHeadingTheme)) // 标题样式
@@ -254,6 +253,13 @@ class CJMarkdownComponent {
             markdownThemeBuilder.setStrikethroughTheme(setStrikethroughTheme(w.cjMarkdownTheme.cjMarkdownStrikethroughTheme)) // 删除线文本样式
             markdownThemeBuilder.setSubTheme(setSubTheme(w.cjMarkdownTheme.cjMarkdownSubTheme)) // 下标文本样式
             markdownThemeBuilder.setSupTheme(setSupTheme(w.cjMarkdownTheme.cjMarkdownSupTheme)) // 上标文本样式
+            if (let Some(v) <- w.cjMarkdownTheme.isDarkulaTheme) {
+                if(v){
+                    markdownThemeBuilder.setDarkulaTheme() // 深色
+                }else{
+                    markdownThemeBuilder.setDefaultTheme() // 浅色
+                }
+            }
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()
         return markdownTheme
