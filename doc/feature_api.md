@@ -188,6 +188,16 @@ export class MarkdownTheme {
   setContext(context: Context): void
 
   /**
+   * 设置浅色主题整体样式
+   */
+  setDefaultTheme(): void
+  
+  /**
+   * 设置浅色主题整体样式
+   */
+  setDarkulaTheme(): void
+  
+  /**
    * 设置全局样式
    *
    * @param markdownThemeGlobal 全局样式
