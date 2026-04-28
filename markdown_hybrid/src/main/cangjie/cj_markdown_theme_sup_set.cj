@@ -1,6 +1,3 @@
-/**
- * Created on 2026/4/20
- */
 package markdown
 
 func setSupTheme(supTheme: CJMarkdownSupTheme): SupTheme {

@@ -379,12 +379,12 @@ export struct CJMarkdown {
           global_customLib.setGlobalContext(undefined)
         }
         global_customLib.getCJResource(
-          this.config.markdownTheme.markdownThemeBanner.bannerPlaceholder,
-          this.config.markdownTheme.markdownThemeCodeBlock.codeBlockCopyIcon,
           this.config.markdownTheme.markdownThemeCodeBlock.codeBlockFullScreenIcon,
+          this.config.markdownTheme.markdownThemeCodeBlock.codeBlockCopyIcon,
           this.config.markdownTheme.markdownThemeAudio.audioIcon,
           this.config.markdownTheme.markdownThemeVideo.videoPlaceholder,
           this.config.markdownTheme.markdownThemeVideo.videoPlayIcon,
+          this.config.markdownTheme.markdownThemeBanner.bannerPlaceholder,
           this.config.markdownTheme.markdownThemeImage.imagePlaceholder,
           this.config.markdownTheme.markdownThemeVideo.videoReleaseButtonIcon,
           this.config.markdownTheme.markdownThemeVideo.videoDownloadButtonIcon,

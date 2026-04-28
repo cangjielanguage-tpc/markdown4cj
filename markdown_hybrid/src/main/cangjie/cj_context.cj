@@ -1,12 +1,4 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 package markdown
-
-/**
- * JSContext
- */
-public var ctx: ?JSContext = None
 
 /**
  * 定义一个全局的 Context 获取类，方便后续其他业务使用
@@ -19,7 +11,7 @@ public class GlobalContext {
      *
      * @param context StageContext
      */
-    public static func setContext(context: StageContext): Unit {
+    public static func setContext(context: ?StageContext): Unit {
         _context = context
     }
 
@@ -42,7 +34,7 @@ public class GlobalContext {
  */
 func setGlobalContext(runtime: JSContext, callInfo: JSCallInfo): JSValue {
     if (callInfo[0].typeof() == JSType.UNDEFINED) {
-        ctx = None
+        GlobalContext.setContext(Option<StageContext>.None)
         return runtime.undefined().toJSValue()
     }
     let jsEnv = runtime.getNapiEnv()

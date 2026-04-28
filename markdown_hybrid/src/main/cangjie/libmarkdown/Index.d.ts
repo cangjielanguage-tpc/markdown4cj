@@ -598,8 +598,6 @@ export declare class CJMarkdownTheme {
 }
 
 export declare class CJMarkdownGlobalTheme {
-  setStageContext(context: Context): void
-
   setIsMarkdownParserSync(isSync: boolean): void
 
   setIsOnCopy(onCopy: boolean): void
@@ -1782,15 +1780,15 @@ export declare interface CustomLib {
   registerImgPreprocessCallback(cb?: (url: string) => Promise<ArrayBuffer|undefined>): void
 
   getCJResource(
-    bannerPlaceholder?: resourceManager.Resource,
-    codeBlockCopyIcon?: resourceManager.Resource,
-    codeBlockFullScreenIcon?: resourceManager.Resource,
+    codeFullScreenIcon?: resourceManager.Resource,
+    codeCopyIcon?: resourceManager.Resource,
     audioIcon?: resourceManager.Resource,
-    videoPlaceholder?: resourceManager.Resource,
-    videoPlayIcon?: resourceManager.Resource,
-    imagePlaceholder?: resourceManager.Resource,
-    videoReleaseButtonIcon?: resourceManager.Resource,
-    videoDownloadButtonIcon?: resourceManager.Resource,
-    imageDownloadButtonIcon?: resourceManager.Resource
+    videoImage?: resourceManager.Resource,
+    playCircleFillIcon?: resourceManager.Resource,
+    bannerImage?: resourceManager.Resource,
+    imageResource?: resourceManager.Resource,
+    videoReleaseImage?: resourceManager.Resource,
+    videoDownloadImage?: resourceManager.Resource,
+    imageDownloadImage?: resourceManager.Resource,
   ): void
 }
