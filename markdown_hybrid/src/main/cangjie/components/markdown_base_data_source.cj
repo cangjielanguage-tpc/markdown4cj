@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2024-2025. All rights reserved.
- */
 package markdown.components
 
 /**
@@ -51,9 +48,9 @@ public open class MarkdownBaseDataSource<T> <: IDataSource<T> {
     /**
      * 注销数据改变的监听器。
      *
-     * @param listener 监听器
+     * @param _ 监听器
      */
-    public override func onUnregisterDataChangeListener(listener: DataChangeListener): Unit {
+    public override func onUnregisterDataChangeListener(_: DataChangeListener): Unit {
         this.listener = None
     }
 
@@ -229,9 +226,9 @@ public open class MarkdownBaseListDataSource<T> <: IDataSource<T> {
     /**
      * 注销数据改变的监听器。
      *
-     * @param listener 监听器
+     * @param _ 监听器
      */
-    public override func onUnregisterDataChangeListener(listener: DataChangeListener): Unit {
+    public override func onUnregisterDataChangeListener(_: DataChangeListener): Unit {
         this.listener = None
     }
 
