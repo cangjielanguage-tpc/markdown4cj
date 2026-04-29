@@ -521,7 +521,7 @@ public class CJMarkdownVideoTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setVideoTimeTextFontWeight(weight: String): Unit {
+    public func setVideoTimeTextFontWeight(weight: Int64): Unit {
         videoTimeTextFontWeight = convertFontWeight(weight)
     }
 
@@ -710,7 +710,7 @@ public class CJMarkdownVideoTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setVideoReleaseButtonTextFontWeight(weight: String): Unit {
+    public func setVideoReleaseButtonTextFontWeight(weight: Int64): Unit {
         videoReleaseButtonTextFontWeight = convertFontWeight(weight)
     }
 
@@ -863,7 +863,7 @@ public class CJMarkdownVideoTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setVideoDownloadButtonTextFontWeight(weight: String): Unit {
+    public func setVideoDownloadButtonTextFontWeight(weight: Int64): Unit {
         videoDownloadButtonTextFontWeight = convertFontWeight(weight)
     }
 

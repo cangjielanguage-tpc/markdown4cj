@@ -98,7 +98,7 @@ public class CJMarkdownInlineCodeTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setInlineCodeTextFontWeight(weight: String): Unit {
+    public func setInlineCodeTextFontWeight(weight: Int64): Unit {
         inlineCodeTextFontWeight = convertFontWeight(weight)
     }
 

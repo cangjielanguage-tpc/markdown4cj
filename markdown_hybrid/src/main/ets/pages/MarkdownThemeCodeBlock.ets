@@ -5,432 +5,432 @@ export class MarkdownThemeCodeBlock {
   /**
    * 代码深浅色模式
    */
-  codeBlockIsDark?: boolean = undefined
+  private codeBlockIsDark?: boolean = undefined
 
   /**
    * 是否格式化围栏代码块内容
    */
-  codeBlockIsCodeFormat?: boolean = undefined
+  private codeBlockIsCodeFormat?: boolean = undefined
 
   /**
    * codeformat是否用制表符
    */
-  codeBlockUseTab?: boolean = undefined
+  private codeBlockUseTab?: boolean = undefined
 
   /**
    * codeformat空格缩进数量
    */
-  codeBlockIndentWidth?: number = undefined
+  private codeBlockIndentWidth?: number = undefined
 
   /**
    * 围栏代码块代码高亮是否同步解析
    */
-  codeBlockParserSync?: boolean = undefined
+  private codeBlockParserSync?: boolean = undefined
 
   /**
    * 代码块背景颜色
    */
-  codeBlockBackgroundColor?: number = undefined
+  private codeBlockBackgroundColor?: number = undefined
 
   /**
    * 代码块上外边距
    */
-  codeBlockMarginTop?: number = undefined
+  private codeBlockMarginTop?: number = undefined
 
   /**
    * 代码块右外边距
    */
-  codeBlockMarginRight?: number = undefined
+  private codeBlockMarginRight?: number = undefined
 
   /**
    * 代码块下外边距
    */
-  codeBlockMarginBottom?: number = undefined
+  private codeBlockMarginBottom?: number = undefined
 
   /**
    * 代码块左外边距
    */
-  codeBlockMarginLeft?: number = undefined
+  private codeBlockMarginLeft?: number = undefined
 
   /**
    * 代码块上内边距
    */
-  codeBlockPaddingTop?: number = undefined
+  private codeBlockPaddingTop?: number = undefined
 
   /**
    * 代码块右内边距
    */
-  codeBlockPaddingRight?: number = undefined
+  private codeBlockPaddingRight?: number = undefined
 
   /**
    * 代码块下内边距
    */
-  codeBlockPaddingBottom?: number = undefined
+  private codeBlockPaddingBottom?: number = undefined
 
   /**
    * 代码块左内边距
    */
-  codeBlockPaddingLeft?: number = undefined
+  private codeBlockPaddingLeft?: number = undefined
 
   /**
    * 代码块边框样式
    */
-  codeBlockBorderStyle?: BorderStyle = undefined
+  private codeBlockBorderStyle?: BorderStyle = undefined
 
   /**
    * 代码块边框宽度
    */
-  codeBlockBorderWidth?: number = undefined
+  private codeBlockBorderWidth?: number = undefined
 
   /**
    * 代码块边框颜色
    */
-  codeBlockBorderColor?: number = undefined
+  private codeBlockBorderColor?: number = undefined
 
   /**
    * 代码块边框左上圆角
    */
-  codeBlockRadiusTopLeft?: number = undefined
+  private codeBlockRadiusTopLeft?: number = undefined
 
   /**
    * 代码块边框右上圆角
    */
-  codeBlockRadiusTopRight?: number = undefined
+  private codeBlockRadiusTopRight?: number = undefined
 
   /**
    * 代码块边框左下圆角
    */
-  codeBlockRadiusBottomLeft?: number = undefined
+  private codeBlockRadiusBottomLeft?: number = undefined
 
   /**
    * 代码块边框右下圆角
    */
-  codeBlockRadiusBottomRight?: number = undefined
+  private codeBlockRadiusBottomRight?: number = undefined
 
   /**
    * 代码块类型和代码块内容间距
    */
-  codeBlockTitleLayoutMarginBottom?: number = undefined
+  private codeBlockTitleLayoutMarginBottom?: number = undefined
 
   /**
    * 代码块类型左边距
    */
-  codeBlockTypeTextMarginLeft?: number = undefined
+  private codeBlockTypeTextMarginLeft?: number = undefined
 
   /**
    * 代码块没有代码类型时默认显示文本
    */
-  codeBlockTypeText?: string = undefined
+  private codeBlockTypeText?: string = undefined
 
   /**
    * 代码块类型文本颜色
    */
-  codeBlockTypeTextFontColor?: number = undefined
+  private codeBlockTypeTextFontColor?: number = undefined
 
   /**
    * 代码块类型文本尺寸
    */
-  codeBlockTypeTextFontSize?: number = undefined
+  private codeBlockTypeTextFontSize?: number = undefined
 
   /**
    * 代码块类型文本字体样式
    */
-  codeBlockTypeTextFontStyle?: FontStyle = undefined
+  private codeBlockTypeTextFontStyle?: FontStyle = undefined
 
   /**
    * 代码块类型文本字体粗细
    */
-  codeBlockTypeTextFontWeight?: FontWeight = undefined
+  private codeBlockTypeTextFontWeight?: FontWeight = undefined
 
   /**
    * 代码块类型文本字体
    */
-  codeBlockTypeTextFontFamily?: string = undefined
+  private codeBlockTypeTextFontFamily?: string = undefined
 
   /**
    * 代码块类型文本行高
    */
-  codeBlockTypeTextLineHeight?: number = undefined
+  private codeBlockTypeTextLineHeight?: number = undefined
 
   /**
    * 代码块代码复制和代码全屏间距
    */
-  codeBlockCopyFullScreenSpacing?: number = undefined
+  private codeBlockCopyFullScreenSpacing?: number = undefined
 
   /**
    * 代码块代码复制按钮是否显示
    */
-  codeBlockCopyButtonIsShow?: boolean = undefined
+  private codeBlockCopyButtonIsShow?: boolean = undefined
 
   /**
    * 代码块代码复制文本是否显示
    */
-  codeBlockCopyTextIsShow?: boolean = undefined
+  private codeBlockCopyTextIsShow?: boolean = undefined
 
   /**
    * 代码块代码复制按钮默认图标
    */
-  codeBlockCopyIcon?: Resource = undefined
+  private codeBlockCopyIcon?: Resource = undefined
 
   /**
    * 代码块代码复制图标宽度
    */
-  codeBlockCopyIconWidth?: number = undefined
+  private codeBlockCopyIconWidth?: number = undefined
 
   /**
    * 代码块代码复制图标高度
    */
-  codeBlockCopyIconHeight?: number = undefined
+  private codeBlockCopyIconHeight?: number = undefined
 
   /**
    * 代码块代码复制图标和文本间距
    */
-  codeBlockCopyIconTextSpacing?: number = undefined
+  private codeBlockCopyIconTextSpacing?: number = undefined
 
   /**
    * 代码块代码复制默认文本内容
    */
-  codeBlockCopyText?: string = undefined
+  private codeBlockCopyText?: string = undefined
 
   /**
    * 代码块代码复制文本颜色
    */
-  codeBlockCopyTextFontColor?: number = undefined
+  private codeBlockCopyTextFontColor?: number = undefined
 
   /**
    * 代码块代码复制文本尺寸
    */
-  codeBlockCopyTextFontSize?: number = undefined
+  private codeBlockCopyTextFontSize?: number = undefined
 
   /**
    * 代码块代码复制文本字体样式
    */
-  codeBlockCopyTextFontStyle?: FontStyle = undefined
+  private codeBlockCopyTextFontStyle?: FontStyle = undefined
 
   /**
    * 代码块代码复制文本字体粗细
    */
-  codeBlockCopyTextFontWeight?: FontWeight = undefined
+  private codeBlockCopyTextFontWeight?: FontWeight = undefined
 
   /**
    * 代码块代码复制文本字体
    */
-  codeBlockCopyTextFontFamily?: string = undefined
+  private codeBlockCopyTextFontFamily?: string = undefined
 
   /**
    * 代码块代码复制文本行高
    */
-  codeBlockCopyTextLineHeight?: number = undefined
+  private codeBlockCopyTextLineHeight?: number = undefined
 
   /**
    * 代码块代码全屏按钮是否显示
    */
-  codeBlockFullScreenButtonIsShow?: boolean = undefined
+  private codeBlockFullScreenButtonIsShow?: boolean = undefined
 
   /**
    * 代码块代码全屏文本是否显示
    */
-  codeBlockFullScreenTextIsShow?: boolean = undefined
+  private codeBlockFullScreenTextIsShow?: boolean = undefined
 
   /**
    * 代码块代码全屏按钮默认图标
    */
-  codeBlockFullScreenIcon?: Resource = undefined
+  private codeBlockFullScreenIcon?: Resource = undefined
 
   /**
    * 代码块代码全屏图标宽度
    */
-  codeBlockFullScreenIconWidth?: number = undefined
+  private codeBlockFullScreenIconWidth?: number = undefined
 
   /**
    * 代码块代码全屏图标高度
    */
-  codeBlockFullScreenIconHeight?: number = undefined
+  private codeBlockFullScreenIconHeight?: number = undefined
 
   /**
    * 代码块代码全屏图标和文本间距
    */
-  codeBlockFullScreenIconTextSpacing?: number = undefined
+  private codeBlockFullScreenIconTextSpacing?: number = undefined
 
   /**
    * 代码块代码全屏默认文本内容
    */
-  codeBlockFullScreenText?: string = undefined
+  private codeBlockFullScreenText?: string = undefined
 
   /**
    * 代码块代码全屏文本颜色
    */
-  codeBlockFullScreenTextFontColor?: number = undefined
+  private codeBlockFullScreenTextFontColor?: number = undefined
 
   /**
    * 代码块代码全屏文本尺寸
    */
-  codeBlockFullScreenTextFontSize?: number = undefined
+  private codeBlockFullScreenTextFontSize?: number = undefined
 
   /**
    * 代码块代码全屏文本字体样式
    */
-  codeBlockFullScreenTextFontStyle?: FontStyle = undefined
+  private codeBlockFullScreenTextFontStyle?: FontStyle = undefined
 
   /**
    * 代码块代码全屏文本字体粗细
    */
-  codeBlockFullScreenTextFontWeight?: FontWeight = undefined
+  private codeBlockFullScreenTextFontWeight?: FontWeight = undefined
 
   /**
    * 代码块代码全屏文本字体
    */
-  codeBlockFullScreenTextFontFamily?: string = undefined
+  private codeBlockFullScreenTextFontFamily?: string = undefined
 
   /**
    * 代码块代码全屏文本行高
    */
-  codeBlockFullScreenTextLineHeight?: number = undefined
+  private codeBlockFullScreenTextLineHeight?: number = undefined
 
   /**
    * 代码块代码行号是否显示
    */
-  codeBlockLineNumberIsShow?: boolean = undefined
+  private codeBlockLineNumberIsShow?: boolean = undefined
 
   /**
    * 代码块代码行号左内边距
    */
-  codeBlockLineNumberTextPaddingLeft?: number = undefined
+  private codeBlockLineNumberTextPaddingLeft?: number = undefined
 
   /**
    * 代码块代码行号文本颜色
    */
-  codeBlockLineNumberTextFontColor?: number = undefined
+  private codeBlockLineNumberTextFontColor?: number = undefined
 
   /**
    * 代码块代码行号文本尺寸
    */
-  codeBlockLineNumberTextFontSize?: number = undefined
+  private codeBlockLineNumberTextFontSize?: number = undefined
 
   /**
    * 代码块代码行号文本字体样式
    */
-  codeBlockLineNumberTextFontStyle?: FontStyle = undefined
+  private codeBlockLineNumberTextFontStyle?: FontStyle = undefined
 
   /**
    * 代码块代码行号文本字体粗细
    */
-  codeBlockLineNumberTextFontWeight?: FontWeight = undefined
+  private codeBlockLineNumberTextFontWeight?: FontWeight = undefined
 
   /**
    * 代码块代码行号文本字体
    */
-  codeBlockLineNumberTextFontFamily?: string = undefined
+  private codeBlockLineNumberTextFontFamily?: string = undefined
 
   /**
    * 代码块代码行号文本行高
    */
-  codeBlockLineNumberTextLineHeight?: number = undefined
+  private codeBlockLineNumberTextLineHeight?: number = undefined
 
   /**
    * 代码块代码行号和代码块中间分割线颜色
    */
-  codeBlockDividerColor?: number = undefined
+  private codeBlockDividerColor?: number = undefined
 
   /**
    * 代码块代码行号和代码块中间分割线宽度
    */
-  codeBlockDividerStrokeWidth?: number = undefined
+  private codeBlockDividerStrokeWidth?: number = undefined
 
   /**
    * 代码块代码行号和分割线间距
    */
-  codeBlockLineNumberDividerSpacing?: number = undefined
+  private codeBlockLineNumberDividerSpacing?: number = undefined
 
   /**
    * 代码块文本颜色
    */
-  codeBlockTextFontColor?: number = undefined
+  private codeBlockTextFontColor?: number = undefined
 
   /**
    * 代码块代码文本右外边距
    */
-  codeBlockTextMarginRight?: number = undefined
+  private codeBlockTextMarginRight?: number = undefined
 
   /**
    * 代码块代码文本左外边距
    */
-  codeBlockTextMarginLeft?: number = undefined
+  private codeBlockTextMarginLeft?: number = undefined
 
   /**
    * 代码块文本尺寸
    */
-  codeBlockTextFontSize?: number = undefined
+  private codeBlockTextFontSize?: number = undefined
 
   /**
    * 代码块文本字体样式
    */
-  codeBlockTextFontStyle?: FontStyle = undefined
+  private codeBlockTextFontStyle?: FontStyle = undefined
 
   /**
    * 代码块文本字体粗细
    */
-  codeBlockTextFontWeight?: FontWeight = undefined
+  private codeBlockTextFontWeight?: FontWeight = undefined
 
   /**
    * 代码块文本字体
    */
-  codeBlockTextFontFamily?: string = undefined
+  private codeBlockTextFontFamily?: string = undefined
 
   /**
    * 代码块文本行高
    */
-  codeBlockTextLineHeight?: number = undefined
+  private codeBlockTextLineHeight?: number = undefined
 
   /**
    * 代码块文本字符间距
    */
-  codeBlockTextLetterSpacing?: number = undefined
+  private codeBlockTextLetterSpacing?: number = undefined
 
   /**
    * 组合代码块未选中标题字体大小
    */
-  codeBlockListTitleTextSize?: number = undefined
+  private codeBlockListTitleTextSize?: number = undefined
 
   /**
    * 组合代码块选中标题字体大小
    */
-  codeBlockListTitleSelectTextSize?: number = undefined
+  private codeBlockListTitleSelectTextSize?: number = undefined
 
   /**
    * 组合代码块选中标题文本颜色
    */
-  codeBlockListTitleSelectTextColor?: number = undefined
+  private codeBlockListTitleSelectTextColor?: number = undefined
 
   /**
    * 组合代码块未选中标题文本颜色
    */
-  codeBlockListTitleUnselectTextColor?: number = undefined
+  private codeBlockListTitleUnselectTextColor?: number = undefined
 
   /**
    * 组合代码块选中标题背景颜色
    */
-  codeBlockListTitleSelectBackgroundColor?: number = undefined
+  private codeBlockListTitleSelectBackgroundColor?: number = undefined
 
   /**
    * 组合代码块未选中标题背景颜色
    */
-  codeBlockListTitleUnselectBackgroundColor?: number = undefined
+  private codeBlockListTitleUnselectBackgroundColor?: number = undefined
 
   /**
    * 是否单独代码块显示
    */
-  codeBlockIsSeparate?: boolean = undefined
+  private codeBlockIsSeparate?: boolean = undefined
 
   /**
    * 单独代码块行号宽度
    */
-  codeBlockSeparateWidth?: number = undefined
+  private codeBlockSeparateWidth?: number = undefined
 
   /**
    * 单独代码块是否居底显示
    */
-  codeBlockSeparateIsBottom?: boolean = undefined
+  private codeBlockSeparateIsBottom?: boolean = undefined
 
   /**
    * 设置代码块深浅色
@@ -1177,5 +1177,779 @@ export class MarkdownThemeCodeBlock {
    */
   setCodeBlockSeparateIsBottom(isBottom: boolean): void {
     this.codeBlockSeparateIsBottom = isBottom
+  }
+
+  /**
+   * 获取codeBlockIsDark
+   *
+   * @returns codeBlockIsDark
+   */
+  getCodeBlockIsDark(): boolean | undefined {
+    return this.codeBlockIsDark
+  }
+
+  /**
+   * 获取codeBlockIsCodeFormat
+   *
+   * @returns codeBlockIsCodeFormat
+   */
+  getCodeBlockIsCodeFormat(): boolean | undefined {
+    return this.codeBlockIsCodeFormat
+  }
+
+  /**
+   * 获取codeBlockUseTab
+   *
+   * @returns codeBlockUseTab
+   */
+  getCodeBlockUseTab(): boolean | undefined {
+    return this.codeBlockUseTab
+  }
+
+  /**
+   * 获取codeBlockIndentWidth
+   *
+   * @returns codeBlockIndentWidth
+   */
+  getCodeBlockIndentWidth(): number | undefined {
+    return this.codeBlockIndentWidth
+  }
+
+  /**
+   * 获取codeBlockParserSync
+   *
+   * @returns codeBlockParserSync
+   */
+  getCodeBlockParserSync(): boolean | undefined {
+    return this.codeBlockParserSync
+  }
+
+  /**
+   * 获取codeBlockBackgroundColor
+   *
+   * @returns codeBlockBackgroundColor
+   */
+  getCodeBlockBackgroundColor(): number | undefined {
+    return this.codeBlockBackgroundColor
+  }
+
+  /**
+   * 获取codeBlockMarginTop
+   *
+   * @returns codeBlockMarginTop
+   */
+  getCodeBlockMarginTop(): number | undefined {
+    return this.codeBlockMarginTop
+  }
+
+  /**
+   * 获取codeBlockMarginRight
+   *
+   * @returns codeBlockMarginRight
+   */
+  getCodeBlockMarginRight(): number | undefined {
+    return this.codeBlockMarginRight
+  }
+
+  /**
+   * 获取codeBlockMarginBottom
+   *
+   * @returns codeBlockMarginBottom
+   */
+  getCodeBlockMarginBottom(): number | undefined {
+    return this.codeBlockMarginBottom
+  }
+
+  /**
+   * 获取codeBlockMarginLeft
+   *
+   * @returns codeBlockMarginLeft
+   */
+  getCodeBlockMarginLeft(): number | undefined {
+    return this.codeBlockMarginLeft
+  }
+
+  /**
+   * 获取codeBlockPaddingTop
+   *
+   * @returns codeBlockPaddingTop
+   */
+  getCodeBlockPaddingTop(): number | undefined {
+    return this.codeBlockPaddingTop
+  }
+
+  /**
+   * 获取codeBlockPaddingRight
+   *
+   * @returns codeBlockPaddingRight
+   */
+  getCodeBlockPaddingRight(): number | undefined {
+    return this.codeBlockPaddingRight
+  }
+
+  /**
+   * 获取codeBlockPaddingBottom
+   *
+   * @returns codeBlockPaddingBottom
+   */
+  getCodeBlockPaddingBottom(): number | undefined {
+    return this.codeBlockPaddingBottom
+  }
+
+  /**
+   * 获取codeBlockPaddingLeft
+   *
+   * @returns codeBlockPaddingLeft
+   */
+  getCodeBlockPaddingLeft(): number | undefined {
+    return this.codeBlockPaddingLeft
+  }
+
+  /**
+   * 获取codeBlockBorderStyle
+   *
+   * @returns codeBlockBorderStyle
+   */
+  getCodeBlockBorderStyle(): BorderStyle | undefined {
+    return this.codeBlockBorderStyle
+  }
+
+  /**
+   * 获取codeBlockBorderWidth
+   *
+   * @returns codeBlockBorderWidth
+   */
+  getCodeBlockBorderWidth(): number | undefined {
+    return this.codeBlockBorderWidth
+  }
+
+  /**
+   * 获取codeBlockBorderColor
+   *
+   * @returns codeBlockBorderColor
+   */
+  getCodeBlockBorderColor(): number | undefined {
+    return this.codeBlockBorderColor
+  }
+
+  /**
+   * 获取codeBlockRadiusTopLeft
+   *
+   * @returns codeBlockRadiusTopLeft
+   */
+  getCodeBlockRadiusTopLeft(): number | undefined {
+    return this.codeBlockRadiusTopLeft
+  }
+
+  /**
+   * 获取codeBlockRadiusTopRight
+   *
+   * @returns codeBlockRadiusTopRight
+   */
+  getCodeBlockRadiusTopRight(): number | undefined {
+    return this.codeBlockRadiusTopRight
+  }
+
+  /**
+   * 获取codeBlockRadiusBottomLeft
+   *
+   * @returns codeBlockRadiusBottomLeft
+   */
+  getCodeBlockRadiusBottomLeft(): number | undefined {
+    return this.codeBlockRadiusBottomLeft
+  }
+
+  /**
+   * 获取codeBlockRadiusBottomRight
+   *
+   * @returns codeBlockRadiusBottomRight
+   */
+  getCodeBlockRadiusBottomRight(): number | undefined {
+    return this.codeBlockRadiusBottomRight
+  }
+
+  /**
+   * 获取codeBlockTitleLayoutMarginBottom
+   *
+   * @returns codeBlockTitleLayoutMarginBottom
+   */
+  getCodeBlockTitleLayoutMarginBottom(): number | undefined {
+    return this.codeBlockTitleLayoutMarginBottom
+  }
+
+  /**
+   * 获取codeBlockTypeTextMarginLeft
+   *
+   * @returns codeBlockTypeTextMarginLeft
+   */
+  getCodeBlockTypeTextMarginLeft(): number | undefined {
+    return this.codeBlockTypeTextMarginLeft
+  }
+
+  /**
+   * 获取codeBlockTypeText
+   *
+   * @returns codeBlockTypeText
+   */
+  getCodeBlockTypeText(): string | undefined {
+    return this.codeBlockTypeText
+  }
+
+  /**
+   * 获取codeBlockTypeTextFontColor
+   *
+   * @returns codeBlockTypeTextFontColor
+   */
+  getCodeBlockTypeTextFontColor(): number | undefined {
+    return this.codeBlockTypeTextFontColor
+  }
+
+  /**
+   * 获取codeBlockTypeTextFontSize
+   *
+   * @returns codeBlockTypeTextFontSize
+   */
+  getCodeBlockTypeTextFontSize(): number | undefined {
+    return this.codeBlockTypeTextFontSize
+  }
+
+  /**
+   * 获取codeBlockTypeTextFontStyle
+   *
+   * @returns codeBlockTypeTextFontStyle
+   */
+  getCodeBlockTypeTextFontStyle(): FontStyle | undefined {
+    return this.codeBlockTypeTextFontStyle
+  }
+
+  /**
+   * 获取codeBlockTypeTextFontWeight
+   *
+   * @returns codeBlockTypeTextFontWeight
+   */
+  getCodeBlockTypeTextFontWeight(): FontWeight | undefined {
+    return this.codeBlockTypeTextFontWeight
+  }
+
+  /**
+   * 获取codeBlockTypeTextFontFamily
+   *
+   * @returns codeBlockTypeTextFontFamily
+   */
+  getCodeBlockTypeTextFontFamily(): string | undefined {
+    return this.codeBlockTypeTextFontFamily
+  }
+
+  /**
+   * 获取codeBlockTypeTextLineHeight
+   *
+   * @returns codeBlockTypeTextLineHeight
+   */
+  getCodeBlockTypeTextLineHeight(): number | undefined {
+    return this.codeBlockTypeTextLineHeight
+  }
+
+  /**
+   * 获取codeBlockCopyFullScreenSpacing
+   *
+   * @returns codeBlockCopyFullScreenSpacing
+   */
+  getCodeBlockCopyFullScreenSpacing(): number | undefined {
+    return this.codeBlockCopyFullScreenSpacing
+  }
+
+  /**
+   * 获取codeBlockCopyButtonIsShow
+   *
+   * @returns codeBlockCopyButtonIsShow
+   */
+  getCodeBlockCopyButtonIsShow(): boolean | undefined {
+    return this.codeBlockCopyButtonIsShow
+  }
+
+  /**
+   * 获取codeBlockCopyTextIsShow
+   *
+   * @returns codeBlockCopyTextIsShow
+   */
+  getCodeBlockCopyTextIsShow(): boolean | undefined {
+    return this.codeBlockCopyTextIsShow
+  }
+
+  /**
+   * 获取codeBlockCopyIcon
+   *
+   * @returns codeBlockCopyIcon
+   */
+  getCodeBlockCopyIcon(): Resource | undefined {
+    return this.codeBlockCopyIcon
+  }
+
+  /**
+   * 获取codeBlockCopyIconWidth
+   *
+   * @returns codeBlockCopyIconWidth
+   */
+  getCodeBlockCopyIconWidth(): number | undefined {
+    return this.codeBlockCopyIconWidth
+  }
+
+  /**
+   * 获取codeBlockCopyIconHeight
+   *
+   * @returns codeBlockCopyIconHeight
+   */
+  getCodeBlockCopyIconHeight(): number | undefined {
+    return this.codeBlockCopyIconHeight
+  }
+
+  /**
+   * 获取codeBlockCopyIconTextSpacing
+   *
+   * @returns codeBlockCopyIconTextSpacing
+   */
+  getCodeBlockCopyIconTextSpacing(): number | undefined {
+    return this.codeBlockCopyIconTextSpacing
+  }
+
+  /**
+   * 获取codeBlockCopyText
+   *
+   * @returns codeBlockCopyText
+   */
+  getCodeBlockCopyText(): string | undefined {
+    return this.codeBlockCopyText
+  }
+
+  /**
+   * 获取codeBlockCopyTextFontColor
+   *
+   * @returns codeBlockCopyTextFontColor
+   */
+  getCodeBlockCopyTextFontColor(): number | undefined {
+    return this.codeBlockCopyTextFontColor
+  }
+
+  /**
+   * 获取codeBlockCopyTextFontSize
+   *
+   * @returns codeBlockCopyTextFontSize
+   */
+  getCodeBlockCopyTextFontSize(): number | undefined {
+    return this.codeBlockCopyTextFontSize
+  }
+
+  /**
+   * 获取codeBlockCopyTextFontStyle
+   *
+   * @returns codeBlockCopyTextFontStyle
+   */
+  getCodeBlockCopyTextFontStyle(): FontStyle | undefined {
+    return this.codeBlockCopyTextFontStyle
+  }
+
+  /**
+   * 获取codeBlockCopyTextFontWeight
+   *
+   * @returns codeBlockCopyTextFontWeight
+   */
+  getCodeBlockCopyTextFontWeight(): FontWeight | undefined {
+    return this.codeBlockCopyTextFontWeight
+  }
+
+  /**
+   * 获取codeBlockCopyTextFontFamily
+   *
+   * @returns codeBlockCopyTextFontFamily
+   */
+  getCodeBlockCopyTextFontFamily(): string | undefined {
+    return this.codeBlockCopyTextFontFamily
+  }
+
+  /**
+   * 获取codeBlockCopyTextLineHeight
+   *
+   * @returns codeBlockCopyTextLineHeight
+   */
+  getCodeBlockCopyTextLineHeight(): number | undefined {
+    return this.codeBlockCopyTextLineHeight
+  }
+
+  /**
+   * 获取codeBlockFullScreenButtonIsShow
+   *
+   * @returns codeBlockFullScreenButtonIsShow
+   */
+  getCodeBlockFullScreenButtonIsShow(): boolean | undefined {
+    return this.codeBlockFullScreenButtonIsShow
+  }
+
+  /**
+   * 获取codeBlockFullScreenTextIsShow
+   *
+   * @returns codeBlockFullScreenTextIsShow
+   */
+  getCodeBlockFullScreenTextIsShow(): boolean | undefined {
+    return this.codeBlockFullScreenTextIsShow
+  }
+
+  /**
+   * 获取codeBlockFullScreenIcon
+   *
+   * @returns codeBlockFullScreenIcon
+   */
+  getCodeBlockFullScreenIcon(): Resource | undefined {
+    return this.codeBlockFullScreenIcon
+  }
+
+  /**
+   * 获取codeBlockFullScreenIconWidth
+   *
+   * @returns codeBlockFullScreenIconWidth
+   */
+  getCodeBlockFullScreenIconWidth(): number | undefined {
+    return this.codeBlockFullScreenIconWidth
+  }
+
+  /**
+   * 获取codeBlockFullScreenIconHeight
+   *
+   * @returns codeBlockFullScreenIconHeight
+   */
+  getCodeBlockFullScreenIconHeight(): number | undefined {
+    return this.codeBlockFullScreenIconHeight
+  }
+
+  /**
+   * 获取codeBlockFullScreenIconTextSpacing
+   *
+   * @returns codeBlockFullScreenIconTextSpacing
+   */
+  getCodeBlockFullScreenIconTextSpacing(): number | undefined {
+    return this.codeBlockFullScreenIconTextSpacing
+  }
+
+  /**
+   * 获取codeBlockFullScreenText
+   *
+   * @returns codeBlockFullScreenText
+   */
+  getCodeBlockFullScreenText(): string | undefined {
+    return this.codeBlockFullScreenText
+  }
+
+  /**
+   * 获取codeBlockFullScreenTextFontColor
+   *
+   * @returns codeBlockFullScreenTextFontColor
+   */
+  getCodeBlockFullScreenTextFontColor(): number | undefined {
+    return this.codeBlockFullScreenTextFontColor
+  }
+
+  /**
+   * 获取codeBlockFullScreenTextFontSize
+   *
+   * @returns codeBlockFullScreenTextFontSize
+   */
+  getCodeBlockFullScreenTextFontSize(): number | undefined {
+    return this.codeBlockFullScreenTextFontSize
+  }
+
+  /**
+   * 获取codeBlockFullScreenTextFontStyle
+   *
+   * @returns codeBlockFullScreenTextFontStyle
+   */
+  getCodeBlockFullScreenTextFontStyle(): FontStyle | undefined {
+    return this.codeBlockFullScreenTextFontStyle
+  }
+
+  /**
+   * 获取codeBlockFullScreenTextFontWeight
+   *
+   * @returns codeBlockFullScreenTextFontWeight
+   */
+  getCodeBlockFullScreenTextFontWeight(): FontWeight | undefined {
+    return this.codeBlockFullScreenTextFontWeight
+  }
+
+  /**
+   * 获取codeBlockFullScreenTextFontFamily
+   *
+   * @returns codeBlockFullScreenTextFontFamily
+   */
+  getCodeBlockFullScreenTextFontFamily(): string | undefined {
+    return this.codeBlockFullScreenTextFontFamily
+  }
+
+  /**
+   * 获取codeBlockFullScreenTextLineHeight
+   *
+   * @returns codeBlockFullScreenTextLineHeight
+   */
+  getCodeBlockFullScreenTextLineHeight(): number | undefined {
+    return this.codeBlockFullScreenTextLineHeight
+  }
+
+  /**
+   * 获取codeBlockLineNumberIsShow
+   *
+   * @returns codeBlockLineNumberIsShow
+   */
+  getCodeBlockLineNumberIsShow(): boolean | undefined {
+    return this.codeBlockLineNumberIsShow
+  }
+
+  /**
+   * 获取codeBlockLineNumberTextPaddingLeft
+   *
+   * @returns codeBlockLineNumberTextPaddingLeft
+   */
+  getCodeBlockLineNumberTextPaddingLeft(): number | undefined {
+    return this.codeBlockLineNumberTextPaddingLeft
+  }
+
+  /**
+   * 获取codeBlockLineNumberTextFontColor
+   *
+   * @returns codeBlockLineNumberTextFontColor
+   */
+  getCodeBlockLineNumberTextFontColor(): number | undefined {
+    return this.codeBlockLineNumberTextFontColor
+  }
+
+  /**
+   * 获取codeBlockLineNumberTextFontSize
+   *
+   * @returns codeBlockLineNumberTextFontSize
+   */
+  getCodeBlockLineNumberTextFontSize(): number | undefined {
+    return this.codeBlockLineNumberTextFontSize
+  }
+
+  /**
+   * 获取codeBlockLineNumberTextFontStyle
+   *
+   * @returns codeBlockLineNumberTextFontStyle
+   */
+  getCodeBlockLineNumberTextFontStyle(): FontStyle | undefined {
+    return this.codeBlockLineNumberTextFontStyle
+  }
+
+  /**
+   * 获取codeBlockLineNumberTextFontWeight
+   *
+   * @returns codeBlockLineNumberTextFontWeight
+   */
+  getCodeBlockLineNumberTextFontWeight(): FontWeight | undefined {
+    return this.codeBlockLineNumberTextFontWeight
+  }
+
+  /**
+   * 获取codeBlockLineNumberTextFontFamily
+   *
+   * @returns codeBlockLineNumberTextFontFamily
+   */
+  getCodeBlockLineNumberTextFontFamily(): string | undefined {
+    return this.codeBlockLineNumberTextFontFamily
+  }
+
+  /**
+   * 获取codeBlockLineNumberTextLineHeight
+   *
+   * @returns codeBlockLineNumberTextLineHeight
+   */
+  getCodeBlockLineNumberTextLineHeight(): number | undefined {
+    return this.codeBlockLineNumberTextLineHeight
+  }
+
+  /**
+   * 获取codeBlockDividerColor
+   *
+   * @returns codeBlockDividerColor
+   */
+  getCodeBlockDividerColor(): number | undefined {
+    return this.codeBlockDividerColor
+  }
+
+  /**
+   * 获取codeBlockDividerStrokeWidth
+   *
+   * @returns codeBlockDividerStrokeWidth
+   */
+  getCodeBlockDividerStrokeWidth(): number | undefined {
+    return this.codeBlockDividerStrokeWidth
+  }
+
+  /**
+   * 获取codeBlockLineNumberDividerSpacing
+   *
+   * @returns codeBlockLineNumberDividerSpacing
+   */
+  getCodeBlockLineNumberDividerSpacing(): number | undefined {
+    return this.codeBlockLineNumberDividerSpacing
+  }
+
+  /**
+   * 获取codeBlockTextFontColor
+   *
+   * @returns codeBlockTextFontColor
+   */
+  getCodeBlockTextFontColor(): number | undefined {
+    return this.codeBlockTextFontColor
+  }
+
+  /**
+   * 获取codeBlockTextMarginRight
+   *
+   * @returns codeBlockTextMarginRight
+   */
+  getCodeBlockTextMarginRight(): number | undefined {
+    return this.codeBlockTextMarginRight
+  }
+
+  /**
+   * 获取codeBlockTextMarginLeft
+   *
+   * @returns codeBlockTextMarginLeft
+   */
+  getCodeBlockTextMarginLeft(): number | undefined {
+    return this.codeBlockTextMarginLeft
+  }
+
+  /**
+   * 获取codeBlockTextFontSize
+   *
+   * @returns codeBlockTextFontSize
+   */
+  getCodeBlockTextFontSize(): number | undefined {
+    return this.codeBlockTextFontSize
+  }
+
+  /**
+   * 获取codeBlockTextFontStyle
+   *
+   * @returns codeBlockTextFontStyle
+   */
+  getCodeBlockTextFontStyle(): FontStyle | undefined {
+    return this.codeBlockTextFontStyle
+  }
+
+  /**
+   * 获取codeBlockTextFontWeight
+   *
+   * @returns codeBlockTextFontWeight
+   */
+  getCodeBlockTextFontWeight(): FontWeight | undefined {
+    return this.codeBlockTextFontWeight
+  }
+
+  /**
+   * 获取codeBlockTextFontFamily
+   *
+   * @returns codeBlockTextFontFamily
+   */
+  getCodeBlockTextFontFamily(): string | undefined {
+    return this.codeBlockTextFontFamily
+  }
+
+  /**
+   * 获取codeBlockTextLineHeight
+   *
+   * @returns codeBlockTextLineHeight
+   */
+  getCodeBlockTextLineHeight(): number | undefined {
+    return this.codeBlockTextLineHeight
+  }
+
+  /**
+   * 获取codeBlockTextLetterSpacing
+   *
+   * @returns codeBlockTextLetterSpacing
+   */
+  getCodeBlockTextLetterSpacing(): number | undefined {
+    return this.codeBlockTextLetterSpacing
+  }
+
+  /**
+   * 获取codeBlockListTitleTextSize
+   *
+   * @returns codeBlockListTitleTextSize
+   */
+  getCodeBlockListTitleTextSize(): number | undefined {
+    return this.codeBlockListTitleTextSize
+  }
+
+  /**
+   * 获取codeBlockListTitleSelectTextSize
+   *
+   * @returns codeBlockListTitleSelectTextSize
+   */
+  getCodeBlockListTitleSelectTextSize(): number | undefined {
+    return this.codeBlockListTitleSelectTextSize
+  }
+
+  /**
+   * 获取codeBlockListTitleSelectTextColor
+   *
+   * @returns codeBlockListTitleSelectTextColor
+   */
+  getCodeBlockListTitleSelectTextColor(): number | undefined {
+    return this.codeBlockListTitleSelectTextColor
+  }
+
+  /**
+   * 获取codeBlockListTitleUnselectTextColor
+   *
+   * @returns codeBlockListTitleUnselectTextColor
+   */
+  getCodeBlockListTitleUnselectTextColor(): number | undefined {
+    return this.codeBlockListTitleUnselectTextColor
+  }
+
+  /**
+   * 获取codeBlockListTitleSelectBackgroundColor
+   *
+   * @returns codeBlockListTitleSelectBackgroundColor
+   */
+  getCodeBlockListTitleSelectBackgroundColor(): number | undefined {
+    return this.codeBlockListTitleSelectBackgroundColor
+  }
+
+  /**
+   * 获取codeBlockListTitleUnselectBackgroundColor
+   *
+   * @returns codeBlockListTitleUnselectBackgroundColor
+   */
+  getCodeBlockListTitleUnselectBackgroundColor(): number | undefined {
+    return this.codeBlockListTitleUnselectBackgroundColor
+  }
+
+  /**
+   * 获取codeBlockIsSeparate
+   *
+   * @returns codeBlockIsSeparate
+   */
+  getCodeBlockIsSeparate(): boolean | undefined {
+    return this.codeBlockIsSeparate
+  }
+
+  /**
+   * 获取codeBlockSeparateWidth
+   *
+   * @returns codeBlockSeparateWidth
+   */
+  getCodeBlockSeparateWidth(): number | undefined {
+    return this.codeBlockSeparateWidth
+  }
+
+  /**
+   * 获取codeBlockSeparateIsBottom
+   *
+   * @returns codeBlockSeparateIsBottom
+   */
+  getCodeBlockSeparateIsBottom(): boolean | undefined {
+    return this.codeBlockSeparateIsBottom
   }
 }

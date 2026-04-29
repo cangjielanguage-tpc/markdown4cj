@@ -5,292 +5,292 @@ export class MarkdownThemeAudio {
   /**
    * 音频背景颜色
    */
-  audioBackgroundColor?: number = undefined
+  private audioBackgroundColor?: number = undefined
 
   /**
    * 音频上外边距
    */
-  audioMarginTop?: number = undefined
+  private audioMarginTop?: number = undefined
 
   /**
    * 音频右外边距
    */
-  audioMarginRight?: number = undefined
+  private audioMarginRight?: number = undefined
 
   /**
    * 音频下外边距
    */
-  audioMarginBottom?: number = undefined
+  private audioMarginBottom?: number = undefined
 
   /**
    * 音频左外边距
    */
-  audioMarginLeft?: number = undefined
+  private audioMarginLeft?: number = undefined
 
   /**
    * 音频上内边距
    */
-  audioPaddingTop?: number = undefined
+  private audioPaddingTop?: number = undefined
 
   /**
    * 音频右内边距
    */
-  audioPaddingRight?: number = undefined
+  private audioPaddingRight?: number = undefined
 
   /**
    * 音频下内边距
    */
-  audioPaddingBottom?: number = undefined
+  private audioPaddingBottom?: number = undefined
 
   /**
    * 音频左内边距
    */
-  audioPaddingLeft?: number = undefined
+  private audioPaddingLeft?: number = undefined
 
   /**
    * 音频边框样式
    */
-  audioBorderStyle?: BorderStyle = undefined
+  private audioBorderStyle?: BorderStyle = undefined
 
   /**
    * 音频边框宽度
    */
-  audioBorderWidth?: number = undefined
+  private audioBorderWidth?: number = undefined
 
   /**
    * 音频边框颜色
    */
-  audioBorderColor?: number = undefined
+  private audioBorderColor?: number = undefined
 
   /**
    * 音频边框左上圆角
    */
-  audioRadiusTopLeft?: number = undefined
+  private audioRadiusTopLeft?: number = undefined
 
   /**
    * 音频边框右上圆角
    */
-  audioRadiusTopRight?: number = undefined
+  private audioRadiusTopRight?: number = undefined
 
   /**
    * 音频边框左下圆角
    */
-  audioRadiusBottomLeft?: number = undefined
+  private audioRadiusBottomLeft?: number = undefined
 
   /**
    * 音频边框右下圆角
    */
-  audioRadiusBottomRight?: number = undefined
+  private audioRadiusBottomRight?: number = undefined
 
   /**
    * 音频阴影模糊半径
    */
-  audioShadowRadius?: number = undefined
+  private audioShadowRadius?: number = undefined
 
   /**
    * 音频阴影X轴偏移量
    */
-  audioShadowOffsetX?: number = undefined
+  private audioShadowOffsetX?: number = undefined
 
   /**
    * 音频阴影Y轴偏移量
    */
-  audioShadowOffsetY?: number = undefined
+  private audioShadowOffsetY?: number = undefined
 
   /**
    * 音频图标
    */
-  audioIcon?: Resource = undefined
+  private audioIcon?: Resource = undefined
 
   /**
    * 音频图标宽度
    */
-  audioIconWidth?: number = undefined
+  private audioIconWidth?: number = undefined
 
   /**
    * 音频图标高度
    */
-  audioIconHeight?: number = undefined
+  private audioIconHeight?: number = undefined
 
   /**
    * 音频图标左上圆角
    */
-  audioIconRadiusTopLeft?: number = undefined
+  private audioIconRadiusTopLeft?: number = undefined
 
   /**
    * 音频图标右上圆角
    */
-  audioIconRadiusTopRight?: number = undefined
+  private audioIconRadiusTopRight?: number = undefined
 
   /**
    * 音频图标左下圆角
    */
-  audioIconRadiusBottomLeft?: number = undefined
+  private audioIconRadiusBottomLeft?: number = undefined
 
   /**
    * 音频图标右下圆角
    */
-  audioIconRadiusBottomRight?: number = undefined
+  private audioIconRadiusBottomRight?: number = undefined
 
   /**
    * 音频图标缩放类型
    */
-  audioIconFitType?: ImageFit = undefined
+  private audioIconFitType?: ImageFit = undefined
 
   /**
    * 音频标题文本和类型文本间距
    */
-  audioTitleToTypeSpacing?: number = undefined
+  private audioTitleToTypeSpacing?: number = undefined
 
   /**
    * 音频阴影颜色值
    */
-  audioShadowColor?: number = undefined
+  private audioShadowColor?: number = undefined
 
   /**
    * 音频按钮宽度
    */
-  audioButtonWidth?: number = undefined
+  private audioButtonWidth?: number = undefined
 
   /**
    * 音频按钮高度
    */
-  audioButtonHeight?: number = undefined
+  private audioButtonHeight?: number = undefined
 
   /**
    * 音频按钮背景颜色
    */
-  audioButtonBackgroundColor?: number = undefined
+  private audioButtonBackgroundColor?: number = undefined
 
   /**
    * 音频按钮边框样式
    */
-  audioButtonBorderStyle?: BorderStyle = undefined
+  private audioButtonBorderStyle?: BorderStyle = undefined
 
   /**
    * 音频按钮边框宽度
    */
-  audioButtonBorderWidth?: number = undefined
+  private audioButtonBorderWidth?: number = undefined
 
   /**
    * 音频按钮边框颜色
    */
-  audioButtonBorderColor?: number = undefined
+  private audioButtonBorderColor?: number = undefined
 
   /**
    * 音频按钮边框左上圆角
    */
-  audioButtonRadiusTopLeft?: number = undefined
+  private audioButtonRadiusTopLeft?: number = undefined
 
   /**
    * 音频按钮边框右上圆角
    */
-  audioButtonRadiusTopRight?: number = undefined
+  private audioButtonRadiusTopRight?: number = undefined
 
   /**
    * 音频按钮边框左下圆角
    */
-  audioButtonRadiusBottomLeft?: number = undefined
+  private audioButtonRadiusBottomLeft?: number = undefined
 
   /**
    * 音频按钮边框右下圆角
    */
-  audioButtonRadiusBottomRight?: number = undefined
+  private audioButtonRadiusBottomRight?: number = undefined
 
   /**
    * 音频按钮默认文本内容
    */
-  audioButtonText?: string = undefined
+  private audioButtonText?: string = undefined
 
   /**
    * 音频按钮文本颜色
    */
-  audioButtonTextFontColor?: number = undefined
+  private audioButtonTextFontColor?: number = undefined
 
   /**
    * 音频按钮文本尺寸
    */
-  audioButtonTextFontSize?: number = undefined
+  private audioButtonTextFontSize?: number = undefined
 
   /**
    * 音频按钮文本字体样式
    */
-  audioButtonTextFontStyle?: FontStyle = undefined
+  private audioButtonTextFontStyle?: FontStyle = undefined
 
   /**
    * 音频按钮文本字体粗细
    */
-  audioButtonTextFontWeight?: FontWeight = undefined
+  private audioButtonTextFontWeight?: FontWeight = undefined
 
   /**
    * 音频按钮文本字体
    */
-  audioButtonTextFontFamily?: string = undefined
+  private audioButtonTextFontFamily?: string = undefined
 
   /**
    * 音频按钮文本行高
    */
-  audioButtonTextLineHeight?: number = undefined
+  private audioButtonTextLineHeight?: number = undefined
 
   /**
    * 音频标题文本颜色
    */
-  audioTitleTextFontColor?: number = undefined
+  private audioTitleTextFontColor?: number = undefined
 
   /**
    * 音频标题文本尺寸
    */
-  audioTitleTextFontSize?: number = undefined
+  private audioTitleTextFontSize?: number = undefined
 
   /**
    * 音频标题文本字体样式
    */
-  audioTitleTextFontStyle?: FontStyle = undefined
+  private audioTitleTextFontStyle?: FontStyle = undefined
 
   /**
    * 音频标题文本字体粗细
    */
-  audioTitleTextFontWeight?: FontWeight = undefined
+  private audioTitleTextFontWeight?: FontWeight = undefined
 
   /**
    * 音频标题文本字体
    */
-  audioTitleTextFontFamily?: string = undefined
+  private audioTitleTextFontFamily?: string = undefined
 
   /**
    * 音频标题文本行高
    */
-  audioTitleTextLineHeight?: number = undefined
+  private audioTitleTextLineHeight?: number = undefined
 
   /**
    * 音频类型文本颜色
    */
-  audioTypeTextFontColor?: number = undefined
+  private audioTypeTextFontColor?: number = undefined
 
   /**
    * 音频类型文本尺寸
    */
-  audioTypeTextFontSize?: number = undefined
+  private audioTypeTextFontSize?: number = undefined
 
   /**
    * 音频类型文本字体样式
    */
-  audioTypeTextFontStyle?: FontStyle = undefined
+  private audioTypeTextFontStyle?: FontStyle = undefined
 
   /**
    * 音频类型文本字体粗细
    */
-  audioTypeTextFontWeight?: FontWeight = undefined
+  private audioTypeTextFontWeight?: FontWeight = undefined
 
   /**
    * 音频类型文本字体
    */
-  audioTypeTextFontFamily?: string = undefined
+  private audioTypeTextFontFamily?: string = undefined
 
   /**
    * 音频类型文本行高
    */
-  audioTypeTextLineHeight?: number = undefined
+  private audioTypeTextLineHeight?: number = undefined
 
   /**
    * 设置音频背景颜色
@@ -767,5 +767,527 @@ export class MarkdownThemeAudio {
    */
   setAudioTypeTextLineHeight(height: number): void {
     this.audioTypeTextLineHeight = height
+  }
+
+  /**
+   * 获取音频背景颜色
+   *
+   * @returns 音频背景颜色
+   */
+  getAudioBackgroundColor(): number | undefined {
+    return this.audioBackgroundColor
+  }
+
+  /**
+   * 获取音频上外边距
+   *
+   * @returns 音频上外边距
+   */
+  getAudioMarginTop(): number | undefined {
+    return this.audioMarginTop
+  }
+
+  /**
+   * 获取音频右外边距
+   *
+   * @returns 音频右外边距
+   */
+  getAudioMarginRight(): number | undefined {
+    return this.audioMarginRight
+  }
+
+  /**
+   * 获取音频下外边距
+   *
+   * @returns 音频下外边距
+   */
+  getAudioMarginBottom(): number | undefined {
+    return this.audioMarginBottom
+  }
+
+  /**
+   * 获取音频左外边距
+   *
+   * @returns 音频左外边距
+   */
+  getAudioMarginLeft(): number | undefined {
+    return this.audioMarginLeft
+  }
+
+  /**
+   * 获取音频上内边距
+   *
+   * @returns 音频上内边距
+   */
+  getAudioPaddingTop(): number | undefined {
+    return this.audioPaddingTop
+  }
+
+  /**
+   * 获取音频右内边距
+   *
+   * @returns 音频右内边距
+   */
+  getAudioPaddingRight(): number | undefined {
+    return this.audioPaddingRight
+  }
+
+  /**
+   * 获取音频下内边距
+   *
+   * @returns 音频下内边距
+   */
+  getAudioPaddingBottom(): number | undefined {
+    return this.audioPaddingBottom
+  }
+
+  /**
+   * 获取音频左内边距
+   *
+   * @returns 音频左内边距
+   */
+  getAudioPaddingLeft(): number | undefined {
+    return this.audioPaddingLeft
+  }
+
+  /**
+   * 获取音频边框样式
+   *
+   * @returns 音频边框样式
+   */
+  getAudioBorderStyle(): BorderStyle | undefined {
+    return this.audioBorderStyle
+  }
+
+  /**
+   * 获取音频边框宽度
+   *
+   * @returns 音频边框宽度
+   */
+  getAudioBorderWidth(): number | undefined {
+    return this.audioBorderWidth
+  }
+
+  /**
+   * 获取音频边框颜色
+   *
+   * @returns 音频边框颜色
+   */
+  getAudioBorderColor(): number | undefined {
+    return this.audioBorderColor
+  }
+
+  /**
+   * 获取音频边框左上圆角
+   *
+   * @returns 音频边框左上圆角
+   */
+  getAudioRadiusTopLeft(): number | undefined {
+    return this.audioRadiusTopLeft
+  }
+
+  /**
+   * 获取音频边框右上圆角
+   *
+   * @returns 音频边框右上圆角
+   */
+  getAudioRadiusTopRight(): number | undefined {
+    return this.audioRadiusTopRight
+  }
+
+  /**
+   * 获取音频边框左下圆角
+   *
+   * @returns 音频边框左下圆角
+   */
+  getAudioRadiusBottomLeft(): number | undefined {
+    return this.audioRadiusBottomLeft
+  }
+
+  /**
+   * 获取音频边框右下圆角
+   *
+   * @returns 音频边框右下圆角
+   */
+  getAudioRadiusBottomRight(): number | undefined {
+    return this.audioRadiusBottomRight
+  }
+
+  /**
+   * 获取音频阴影模糊半径
+   *
+   * @returns 音频阴影模糊半径
+   */
+  getAudioShadowRadius(): number | undefined {
+    return this.audioShadowRadius
+  }
+
+  /**
+   * 获取音频阴影X轴偏移量
+   *
+   * @returns 音频阴影X轴偏移量
+   */
+  getAudioShadowOffsetX(): number | undefined {
+    return this.audioShadowOffsetX
+  }
+
+  /**
+   * 获取音频阴影Y轴偏移量
+   *
+   * @returns 音频阴影Y轴偏移量
+   */
+  getAudioShadowOffsetY(): number | undefined {
+    return this.audioShadowOffsetY
+  }
+
+  /**
+   * 获取音频图标
+   *
+   * @returns 音频图标
+   */
+  getAudioIcon(): Resource | undefined {
+    return this.audioIcon
+  }
+
+  /**
+   * 获取音频图标宽度
+   *
+   * @returns 音频图标宽度
+   */
+  getAudioIconWidth(): number | undefined {
+    return this.audioIconWidth
+  }
+
+  /**
+   * 获取音频图标高度
+   *
+   * @returns 音频图标高度
+   */
+  getAudioIconHeight(): number | undefined {
+    return this.audioIconHeight
+  }
+
+  /**
+   * 获取音频图标左上圆角
+   *
+   * @returns 音频图标左上圆角
+   */
+  getAudioIconRadiusTopLeft(): number | undefined {
+    return this.audioIconRadiusTopLeft
+  }
+
+  /**
+   * 获取音频图标右上圆角
+   *
+   * @returns 音频图标右上圆角
+   */
+  getAudioIconRadiusTopRight(): number | undefined {
+    return this.audioIconRadiusTopRight
+  }
+
+  /**
+   * 获取音频图标左下圆角
+   *
+   * @returns 音频图标左下圆角
+   */
+  getAudioIconRadiusBottomLeft(): number | undefined {
+    return this.audioIconRadiusBottomLeft
+  }
+
+  /**
+   * 获取音频图标右下圆角
+   *
+   * @returns 音频图标右下圆角
+   */
+  getAudioIconRadiusBottomRight(): number | undefined {
+    return this.audioIconRadiusBottomRight
+  }
+
+  /**
+   * 获取音频图标缩放类型
+   *
+   * @returns 音频图标缩放类型
+   */
+  getAudioIconFitType(): ImageFit | undefined {
+    return this.audioIconFitType
+  }
+
+  /**
+   * 获取音频标题文本和类型文本间距
+   *
+   * @returns 音频标题文本和类型文本间距
+   */
+  getAudioTitleToTypeSpacing(): number | undefined {
+    return this.audioTitleToTypeSpacing
+  }
+
+  /**
+   * 获取音频阴影颜色值
+   *
+   * @returns 音频阴影颜色值
+   */
+  getAudioShadowColor(): number | undefined {
+    return this.audioShadowColor
+  }
+
+  /**
+   * 获取音频按钮宽度
+   *
+   * @returns 音频按钮宽度
+   */
+  getAudioButtonWidth(): number | undefined {
+    return this.audioButtonWidth
+  }
+
+  /**
+   * 获取音频按钮高度
+   *
+   * @returns 音频按钮高度
+   */
+  getAudioButtonHeight(): number | undefined {
+    return this.audioButtonHeight
+  }
+
+  /**
+   * 获取音频按钮背景颜色
+   *
+   * @returns 音频按钮背景颜色
+   */
+  getAudioButtonBackgroundColor(): number | undefined {
+    return this.audioButtonBackgroundColor
+  }
+
+  /**
+   * 获取音频按钮边框样式
+   *
+   * @returns 音频按钮边框样式
+   */
+  getAudioButtonBorderStyle(): BorderStyle | undefined {
+    return this.audioButtonBorderStyle
+  }
+
+  /**
+   * 获取音频按钮边框宽度
+   *
+   * @returns 音频按钮边框宽度
+   */
+  getAudioButtonBorderWidth(): number | undefined {
+    return this.audioButtonBorderWidth
+  }
+
+  /**
+   * 获取音频按钮边框颜色
+   *
+   * @returns 音频按钮边框颜色
+   */
+  getAudioButtonBorderColor(): number | undefined {
+    return this.audioButtonBorderColor
+  }
+
+  /**
+   * 获取音频按钮边框左上圆角
+   *
+   * @returns 音频按钮边框左上圆角
+   */
+  getAudioButtonRadiusTopLeft(): number | undefined {
+    return this.audioButtonRadiusTopLeft
+  }
+
+  /**
+   * 获取音频按钮边框右上圆角
+   *
+   * @returns 音频按钮边框右上圆角
+   */
+  getAudioButtonRadiusTopRight(): number | undefined {
+    return this.audioButtonRadiusTopRight
+  }
+
+  /**
+   * 获取音频按钮边框左下圆角
+   *
+   * @returns 音频按钮边框左下圆角
+   */
+  getAudioButtonRadiusBottomLeft(): number | undefined {
+    return this.audioButtonRadiusBottomLeft
+  }
+
+  /**
+   * 获取音频按钮边框右下圆角
+   *
+   * @returns 音频按钮边框右下圆角
+   */
+  getAudioButtonRadiusBottomRight(): number | undefined {
+    return this.audioButtonRadiusBottomRight
+  }
+
+  /**
+   * 获取音频按钮默认文本内容
+   *
+   * @returns 音频按钮默认文本内容
+   */
+  getAudioButtonText(): string | undefined {
+    return this.audioButtonText
+  }
+
+  /**
+   * 获取音频按钮文本颜色
+   *
+   * @returns 音频按钮文本颜色
+   */
+  getAudioButtonTextFontColor(): number | undefined {
+    return this.audioButtonTextFontColor
+  }
+
+  /**
+   * 获取音频按钮文本尺寸
+   *
+   * @returns 音频按钮文本尺寸
+   */
+  getAudioButtonTextFontSize(): number | undefined {
+    return this.audioButtonTextFontSize
+  }
+
+  /**
+   * 获取音频按钮文本字体样式
+   *
+   * @returns 音频按钮文本字体样式
+   */
+  getAudioButtonTextFontStyle(): FontStyle | undefined {
+    return this.audioButtonTextFontStyle
+  }
+
+  /**
+   * 获取音频按钮文本字体粗细
+   *
+   * @returns 音频按钮文本字体粗细
+   */
+  getAudioButtonTextFontWeight(): FontWeight | undefined {
+    return this.audioButtonTextFontWeight
+  }
+
+  /**
+   * 获取音频按钮文本字体
+   *
+   * @returns 音频按钮文本字体
+   */
+  getAudioButtonTextFontFamily(): string | undefined {
+    return this.audioButtonTextFontFamily
+  }
+
+  /**
+   * 获取音频按钮文本行高
+   *
+   * @returns 音频按钮文本行高
+   */
+  getAudioButtonTextLineHeight(): number | undefined {
+    return this.audioButtonTextLineHeight
+  }
+
+  /**
+   * 获取音频标题文本颜色
+   *
+   * @returns 音频标题文本颜色
+   */
+  getAudioTitleTextFontColor(): number | undefined {
+    return this.audioTitleTextFontColor
+  }
+
+  /**
+   * 获取音频标题文本尺寸
+   *
+   * @returns 音频标题文本尺寸
+   */
+  getAudioTitleTextFontSize(): number | undefined {
+    return this.audioTitleTextFontSize
+  }
+
+  /**
+   * 获取音频标题文本字体样式
+   *
+   * @returns 音频标题文本字体样式
+   */
+  getAudioTitleTextFontStyle(): FontStyle | undefined {
+    return this.audioTitleTextFontStyle
+  }
+
+  /**
+   * 获取音频标题文本字体粗细
+   *
+   * @returns 音频标题文本字体粗细
+   */
+  getAudioTitleTextFontWeight(): FontWeight | undefined {
+    return this.audioTitleTextFontWeight
+  }
+
+  /**
+   * 获取音频标题文本字体
+   *
+   * @returns 音频标题文本字体
+   */
+  getAudioTitleTextFontFamily(): string | undefined {
+    return this.audioTitleTextFontFamily
+  }
+
+  /**
+   * 获取音频标题文本行高
+   *
+   * @returns 音频标题文本行高
+   */
+  getAudioTitleTextLineHeight(): number | undefined {
+    return this.audioTitleTextLineHeight
+  }
+
+  /**
+   * 获取音频类型文本颜色
+   *
+   * @returns 音频类型文本颜色
+   */
+  getAudioTypeTextFontColor(): number | undefined {
+    return this.audioTypeTextFontColor
+  }
+
+  /**
+   * 获取音频类型文本尺寸
+   *
+   * @returns 音频类型文本尺寸
+   */
+  getAudioTypeTextFontSize(): number | undefined {
+    return this.audioTypeTextFontSize
+  }
+
+  /**
+   * 获取音频类型文本字体样式
+   *
+   * @returns 音频类型文本字体样式
+   */
+  getAudioTypeTextFontStyle(): FontStyle | undefined {
+    return this.audioTypeTextFontStyle
+  }
+
+  /**
+   * 获取音频类型文本字体粗细
+   *
+   * @returns 音频类型文本字体粗细
+   */
+  getAudioTypeTextFontWeight(): FontWeight | undefined {
+    return this.audioTypeTextFontWeight
+  }
+
+  /**
+   * 获取音频类型文本字体
+   *
+   * @returns 音频类型文本字体
+   */
+  getAudioTypeTextFontFamily(): string | undefined {
+    return this.audioTypeTextFontFamily
+  }
+
+  /**
+   * 获取音频类型文本行高
+   *
+   * @returns 音频类型文本行高
+   */
+  getAudioTypeTextLineHeight(): number | undefined {
+    return this.audioTypeTextLineHeight
   }
 }

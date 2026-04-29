@@ -5,207 +5,207 @@ export class MarkdownThemeTable {
   /**
    * 表格标题背景颜色
    */
-  tableTitleBackgroundColor?: number = undefined
+  private tableTitleBackgroundColor?: number = undefined
 
   /**
    * 表格内容奇数行背景颜色
    */
-  tableContentOddRowBackgroundColor?: number = undefined
+  private tableContentOddRowBackgroundColor?: number = undefined
 
   /**
    * 表格内容偶数行背景颜色
    */
-  tableContentEvenRowBackgroundColor?: number = undefined
+  private tableContentEvenRowBackgroundColor?: number = undefined
 
   /**
    * 表格上外边距
    */
-  tableMarginTop?: number = undefined
+  private tableMarginTop?: number = undefined
 
   /**
    * 表格右外边距
    */
-  tableMarginRight?: number = undefined
+  private tableMarginRight?: number = undefined
 
   /**
    * 表格下外边距
    */
-  tableMarginBottom?: number = undefined
+  private tableMarginBottom?: number = undefined
 
   /**
    * 表格左外边距
    */
-  tableMarginLeft?: number = undefined
+  private tableMarginLeft?: number = undefined
 
   /**
    * 表格上内边距
    */
-  tablePaddingTop?: number = undefined
+  private tablePaddingTop?: number = undefined
 
   /**
    * 表格右内边距
    */
-  tablePaddingRight?: number = undefined
+  private tablePaddingRight?: number = undefined
 
   /**
    * 表格下内边距
    */
-  tablePaddingBottom?: number = undefined
+  private tablePaddingBottom?: number = undefined
 
   /**
    * 表格左内边距
    */
-  tablePaddingLeft?: number = undefined
+  private tablePaddingLeft?: number = undefined
 
   /**
    * 表格内容上内边距
    */
-  tableCellPaddingTop?: number = undefined
+  private tableCellPaddingTop?: number = undefined
 
   /**
    * 表格内容右内边距
    */
-  tableCellPaddingRight?: number = undefined
+  private tableCellPaddingRight?: number = undefined
 
   /**
    * 表格内容下内边距
    */
-  tableCellPaddingBottom?: number = undefined
+  private tableCellPaddingBottom?: number = undefined
 
   /**
    * 表格内容左内边距
    */
-  tableCellPaddingLeft?: number = undefined
+  private tableCellPaddingLeft?: number = undefined
 
   /**
    * 表格边框样式
    */
-  tableBorderStyle?: BorderStyle = undefined
+  private tableBorderStyle?: BorderStyle = undefined
 
   /**
    * 表格边框宽度
    */
-  tableBorderWidth?: number = undefined
+  private tableBorderWidth?: number = undefined
 
   /**
    * 表格边框颜色
    */
-  tableBorderColor?: number = undefined
+  private tableBorderColor?: number = undefined
 
   /**
    * 表格边框左上圆角
    */
-  tableRadiusTopLeft?: number = undefined
+  private tableRadiusTopLeft?: number = undefined
 
   /**
    * 表格边框右上圆角
    */
-  tableRadiusTopRight?: number = undefined
+  private tableRadiusTopRight?: number = undefined
 
   /**
    * 表格边框左下圆角
    */
-  tableRadiusBottomLeft?: number = undefined
+  private tableRadiusBottomLeft?: number = undefined
 
   /**
    * 表格边框右下圆角
    */
-  tableRadiusBottomRight?: number = undefined
+  private tableRadiusBottomRight?: number = undefined
 
   /**
    * 表格滚动条状态，默认不显示
    */
-  tableScrollBarState?: BarState = undefined
+  private tableScrollBarState?: BarState = undefined
 
   /**
    * 表格滚动条颜色
    */
-  tableScrollBarColor?: number = undefined
+  private tableScrollBarColor?: number = undefined
 
   /**
    * 表格一格最小宽度
    */
-  tableMinCellWidth?: number = undefined
+  private tableMinCellWidth?: number = undefined
 
   /**
    * 表格一格最大宽度
    */
-  tableMaxCellWidth?: number = undefined
+  private tableMaxCellWidth?: number = undefined
 
   /**
    * 表格第一列是否加粗
    */
-  tableFirstColumnIsBold?: boolean = undefined
+  private tableFirstColumnIsBold?: boolean = undefined
 
   /**
    * 表格标题文本颜色
    */
-  tableTitleTextFontColor?: number = undefined
+  private tableTitleTextFontColor?: number = undefined
 
   /**
    * 表格标题文本尺寸
    */
-  tableTitleTextFontSize?: number = undefined
+  private tableTitleTextFontSize?: number = undefined
 
   /**
    * 表格标题文本字体样式
    */
-  tableTitleTextFontStyle?: FontStyle = undefined
+  private tableTitleTextFontStyle?: FontStyle = undefined
 
   /**
    * 表格标题文本字体粗细
    */
-  tableTitleTextFontWeight?: FontWeight = undefined
+  private tableTitleTextFontWeight?: FontWeight = undefined
 
   /**
    * 表格标题文本字体
    */
-  tableTitleTextFontFamily?: string = undefined
+  private tableTitleTextFontFamily?: string = undefined
 
   /**
    * 表格标题文本行高
    */
-  tableTitleTextLineHeight?: number = undefined
+  private tableTitleTextLineHeight?: number = undefined
 
   /**
    * 表格标题文本字符间距
    */
-  tableTitleTextLetterSpacing?: number = undefined
+  private tableTitleTextLetterSpacing?: number = undefined
 
   /**
    * 表格内容文本颜色
    */
-  tableContentTextFontColor?: number = undefined
+  private tableContentTextFontColor?: number = undefined
 
   /**
    * 表格内容文本尺寸
    */
-  tableContentTextFontSize?: number = undefined
+  private tableContentTextFontSize?: number = undefined
 
   /**
    * 表格内容文本字体样式
    */
-  tableContentTextFontStyle?: FontStyle = undefined
+  private tableContentTextFontStyle?: FontStyle = undefined
 
   /**
    * 表格内容文本字体粗细
    */
-  tableContentTextFontWeight?: FontWeight = undefined
+  private tableContentTextFontWeight?: FontWeight = undefined
 
   /**
    * 表格内容文本字体
    */
-  tableContentTextFontFamily?: string = undefined
+  private tableContentTextFontFamily?: string = undefined
 
   /**
    * 表格内容文本行高
    */
-  tableContentTextLineHeight?: number = undefined
+  private tableContentTextLineHeight?: number = undefined
 
   /**
    * 表格内容文本字符间距
    */
-  tableContentTextLetterSpacing?: number = undefined
+  private tableContentTextLetterSpacing?: number = undefined
 
   /**
    * 设置4个外边距为统一值
@@ -538,5 +538,374 @@ export class MarkdownThemeTable {
    */
   setTableContentTextLetterSpacing(spacing: number): void {
     this.tableContentTextLetterSpacing = spacing
+  }
+
+  /**
+   * 获取tableTitleBackgroundColor
+   *
+   * @returns tableTitleBackgroundColor
+   */
+  getTableTitleBackgroundColor(): number | undefined {
+    return this.tableTitleBackgroundColor
+  }
+
+  /**
+   * 获取tableContentOddRowBackgroundColor
+   *
+   * @returns tableContentOddRowBackgroundColor
+   */
+  getTableContentOddRowBackgroundColor(): number | undefined {
+    return this.tableContentOddRowBackgroundColor
+  }
+
+  /**
+   * 获取tableContentEvenRowBackgroundColor
+   *
+   * @returns tableContentEvenRowBackgroundColor
+   */
+  getTableContentEvenRowBackgroundColor(): number | undefined {
+    return this.tableContentEvenRowBackgroundColor
+  }
+
+  /**
+   * 获取tableMarginTop
+   *
+   * @returns tableMarginTop
+   */
+  getTableMarginTop(): number | undefined {
+    return this.tableMarginTop
+  }
+
+  /**
+   * 获取tableMarginRight
+   *
+   * @returns tableMarginRight
+   */
+  getTableMarginRight(): number | undefined {
+    return this.tableMarginRight
+  }
+
+  /**
+   * 获取tableMarginBottom
+   *
+   * @returns tableMarginBottom
+   */
+  getTableMarginBottom(): number | undefined {
+    return this.tableMarginBottom
+  }
+
+  /**
+   * 获取tableMarginLeft
+   *
+   * @returns tableMarginLeft
+   */
+  getTableMarginLeft(): number | undefined {
+    return this.tableMarginLeft
+  }
+
+  /**
+   * 获取tablePaddingTop
+   *
+   * @returns tablePaddingTop
+   */
+  getTablePaddingTop(): number | undefined {
+    return this.tablePaddingTop
+  }
+
+  /**
+   * 获取tablePaddingRight
+   *
+   * @returns tablePaddingRight
+   */
+  getTablePaddingRight(): number | undefined {
+    return this.tablePaddingRight
+  }
+
+  /**
+   * 获取tablePaddingBottom
+   *
+   * @returns tablePaddingBottom
+   */
+  getTablePaddingBottom(): number | undefined {
+    return this.tablePaddingBottom
+  }
+
+  /**
+   * 获取tablePaddingLeft
+   *
+   * @returns tablePaddingLeft
+   */
+  getTablePaddingLeft(): number | undefined {
+    return this.tablePaddingLeft
+  }
+
+  /**
+   * 获取tableCellPaddingTop
+   *
+   * @returns tableCellPaddingTop
+   */
+  getTableCellPaddingTop(): number | undefined {
+    return this.tableCellPaddingTop
+  }
+
+  /**
+   * 获取tableCellPaddingRight
+   *
+   * @returns tableCellPaddingRight
+   */
+  getTableCellPaddingRight(): number | undefined {
+    return this.tableCellPaddingRight
+  }
+
+  /**
+   * 获取tableCellPaddingBottom
+   *
+   * @returns tableCellPaddingBottom
+   */
+  getTableCellPaddingBottom(): number | undefined {
+    return this.tableCellPaddingBottom
+  }
+
+  /**
+   * 获取tableCellPaddingLeft
+   *
+   * @returns tableCellPaddingLeft
+   */
+  getTableCellPaddingLeft(): number | undefined {
+    return this.tableCellPaddingLeft
+  }
+
+  /**
+   * 获取tableBorderStyle
+   *
+   * @returns tableBorderStyle
+   */
+  getTableBorderStyle(): BorderStyle | undefined {
+    return this.tableBorderStyle
+  }
+
+  /**
+   * 获取tableBorderWidth
+   *
+   * @returns tableBorderWidth
+   */
+  getTableBorderWidth(): number | undefined {
+    return this.tableBorderWidth
+  }
+
+  /**
+   * 获取tableBorderColor
+   *
+   * @returns tableBorderColor
+   */
+  getTableBorderColor(): number | undefined {
+    return this.tableBorderColor
+  }
+
+  /**
+   * 获取tableRadiusTopLeft
+   *
+   * @returns tableRadiusTopLeft
+   */
+  getTableRadiusTopLeft(): number | undefined {
+    return this.tableRadiusTopLeft
+  }
+
+  /**
+   * 获取tableRadiusTopRight
+   *
+   * @returns tableRadiusTopRight
+   */
+  getTableRadiusTopRight(): number | undefined {
+    return this.tableRadiusTopRight
+  }
+
+  /**
+   * 获取tableRadiusBottomLeft
+   *
+   * @returns tableRadiusBottomLeft
+   */
+  getTableRadiusBottomLeft(): number | undefined {
+    return this.tableRadiusBottomLeft
+  }
+
+  /**
+   * 获取tableRadiusBottomRight
+   *
+   * @returns tableRadiusBottomRight
+   */
+  getTableRadiusBottomRight(): number | undefined {
+    return this.tableRadiusBottomRight
+  }
+
+  /**
+   * 获取tableScrollBarState
+   *
+   * @returns tableScrollBarState
+   */
+  getTableScrollBarState(): BarState | undefined {
+    return this.tableScrollBarState
+  }
+
+  /**
+   * 获取tableScrollBarColor
+   *
+   * @returns tableScrollBarColor
+   */
+  getTableScrollBarColor(): number | undefined {
+    return this.tableScrollBarColor
+  }
+
+  /**
+   * 获取tableMinCellWidth
+   *
+   * @returns tableMinCellWidth
+   */
+  getTableMinCellWidth(): number | undefined {
+    return this.tableMinCellWidth
+  }
+
+  /**
+   * 获取tableMaxCellWidth
+   *
+   * @returns tableMaxCellWidth
+   */
+  getTableMaxCellWidth(): number | undefined {
+    return this.tableMaxCellWidth
+  }
+
+  /**
+   * 获取tableFirstColumnIsBold
+   *
+   * @returns tableFirstColumnIsBold
+   */
+  getTableFirstColumnIsBold(): boolean | undefined {
+    return this.tableFirstColumnIsBold
+  }
+
+  /**
+   * 获取tableTitleTextFontColor
+   *
+   * @returns tableTitleTextFontColor
+   */
+  getTableTitleTextFontColor(): number | undefined {
+    return this.tableTitleTextFontColor
+  }
+
+  /**
+   * 获取tableTitleTextFontSize
+   *
+   * @returns tableTitleTextFontSize
+   */
+  getTableTitleTextFontSize(): number | undefined {
+    return this.tableTitleTextFontSize
+  }
+
+  /**
+   * 获取tableTitleTextFontStyle
+   *
+   * @returns tableTitleTextFontStyle
+   */
+  getTableTitleTextFontStyle(): FontStyle | undefined {
+    return this.tableTitleTextFontStyle
+  }
+
+  /**
+   * 获取tableTitleTextFontWeight
+   *
+   * @returns tableTitleTextFontWeight
+   */
+  getTableTitleTextFontWeight(): FontWeight | undefined {
+    return this.tableTitleTextFontWeight
+  }
+
+  /**
+   * 获取tableTitleTextFontFamily
+   *
+   * @returns tableTitleTextFontFamily
+   */
+  getTableTitleTextFontFamily(): string | undefined {
+    return this.tableTitleTextFontFamily
+  }
+
+  /**
+   * 获取tableTitleTextLineHeight
+   *
+   * @returns tableTitleTextLineHeight
+   */
+  getTableTitleTextLineHeight(): number | undefined {
+    return this.tableTitleTextLineHeight
+  }
+
+  /**
+   * 获取tableTitleTextLetterSpacing
+   *
+   * @returns tableTitleTextLetterSpacing
+   */
+  getTableTitleTextLetterSpacing(): number | undefined {
+    return this.tableTitleTextLetterSpacing
+  }
+
+  /**
+   * 获取tableContentTextFontColor
+   *
+   * @returns tableContentTextFontColor
+   */
+  getTableContentTextFontColor(): number | undefined {
+    return this.tableContentTextFontColor
+  }
+
+  /**
+   * 获取tableContentTextFontSize
+   *
+   * @returns tableContentTextFontSize
+   */
+  getTableContentTextFontSize(): number | undefined {
+    return this.tableContentTextFontSize
+  }
+
+  /**
+   * 获取tableContentTextFontStyle
+   *
+   * @returns tableContentTextFontStyle
+   */
+  getTableContentTextFontStyle(): FontStyle | undefined {
+    return this.tableContentTextFontStyle
+  }
+
+  /**
+   * 获取tableContentTextFontWeight
+   *
+   * @returns tableContentTextFontWeight
+   */
+  getTableContentTextFontWeight(): FontWeight | undefined {
+    return this.tableContentTextFontWeight
+  }
+
+  /**
+   * 获取tableContentTextFontFamily
+   *
+   * @returns tableContentTextFontFamily
+   */
+  getTableContentTextFontFamily(): string | undefined {
+    return this.tableContentTextFontFamily
+  }
+
+  /**
+   * 获取tableContentTextLineHeight
+   *
+   * @returns tableContentTextLineHeight
+   */
+  getTableContentTextLineHeight(): number | undefined {
+    return this.tableContentTextLineHeight
+  }
+
+  /**
+   * 获取tableContentTextLetterSpacing
+   *
+   * @returns tableContentTextLetterSpacing
+   */
+  getTableContentTextLetterSpacing(): number | undefined {
+    return this.tableContentTextLetterSpacing
   }
 }

@@ -5,122 +5,122 @@ export class MarkdownThemeBulletList {
   /**
    * 无序/任务背景颜色
    */
-  bulletListBackgroundColor?: number = undefined
+  private bulletListBackgroundColor?: number = undefined
 
   /**
    * 无序/任务上外边距
    */
-  bulletListMarginTop?: number = undefined
+  private bulletListMarginTop?: number = undefined
 
   /**
    * 无序/任务右外边距
    */
-  bulletListMarginRight?: number = undefined
+  private bulletListMarginRight?: number = undefined
 
   /**
    * 无序/任务下外边距
    */
-  bulletListMarginBottom?: number = undefined
+  private bulletListMarginBottom?: number = undefined
 
   /**
    * 无序/任务左外边距
    */
-  bulletListMarginLeft?: number = undefined
+  private bulletListMarginLeft?: number = undefined
 
   /**
    * 无序/任务上内边距
    */
-  bulletListPaddingTop?: number = undefined
+  private bulletListPaddingTop?: number = undefined
 
   /**
    * 无序/任务右内边距
    */
-  bulletListPaddingRight?: number = undefined
+  private bulletListPaddingRight?: number = undefined
 
   /**
    * 无序/任务下内边距
    */
-  bulletListPaddingBottom?: number = undefined
+  private bulletListPaddingBottom?: number = undefined
 
   /**
    * 无序/任务左内边距
    */
-  bulletListPaddingLeft?: number = undefined
+  private bulletListPaddingLeft?: number = undefined
 
   /**
    * 无序/任务子模块上下间距
    */
-  bulletListChildSpacing?: number = undefined
+  private bulletListChildSpacing?: number = undefined
 
   /**
    * 无序/任务子模块中子模块上下间距
    */
-  bulletListChildChildSpacing?: number = undefined
+  private bulletListChildChildSpacing?: number = undefined
 
   /**
    * 无序列表列表符号和列表内容间距
    */
-  bulletListBulletSpacing?: number = undefined
+  private bulletListBulletSpacing?: number = undefined
 
   /**
    * 无序列表列表符号是否全部是实心圆型
    */
-  bulletListBulletIsCircle?: boolean = undefined
+  private bulletListBulletIsCircle?: boolean = undefined
 
   /**
    * 无序列表列表符号文本颜色
    */
-  bulletListBulletTextFontColor?: number = undefined
+  private bulletListBulletTextFontColor?: number = undefined
 
   /**
    * 无序列表列表符号文本尺寸
    */
-  bulletListBulletTextFontSize?: number = undefined
+  private bulletListBulletTextFontSize?: number = undefined
 
   /**
    * 无序列表列表符号文本字体样式
    */
-  bulletListBulletTextFontStyle?: FontStyle = undefined
+  private bulletListBulletTextFontStyle?: FontStyle = undefined
 
   /**
    * 无序列表列表符号文本字体粗细
    */
-  bulletListBulletTextFontWeight?: FontWeight = undefined
+  private bulletListBulletTextFontWeight?: FontWeight = undefined
 
   /**
    * 无序列表列表符号文本字体
    */
-  bulletListBulletTextFontFamily?: string = undefined
+  private bulletListBulletTextFontFamily?: string = undefined
 
   /**
    * 无序列表列表符号文本行高
    */
-  bulletListBulletTextLineHeight?: number = undefined
+  private bulletListBulletTextLineHeight?: number = undefined
 
   /**
    * 任务列表多选框和列表内容间距
    */
-  bulletListCheckboxSpacing?: number = undefined
+  private bulletListCheckboxSpacing?: number = undefined
 
   /**
    * 任务列表多选框宽度
    */
-  bulletListCheckboxWidth?: number = undefined
+  private bulletListCheckboxWidth?: number = undefined
 
   /**
    * 任务列表多选框高度
    */
-  bulletListCheckboxHeight?: number = undefined
+  private bulletListCheckboxHeight?: number = undefined
 
   /**
    * 任务列表多选框选中颜色
    */
-  bulletListCheckboxSelectedColor?: number = undefined
+  private bulletListCheckboxSelectedColor?: number = undefined
 
   /**
    * 任务列表多选框形状
    */
-  bulletListCheckboxShape?: CheckBoxShape = undefined
+  private bulletListCheckboxShape?: CheckBoxShape = undefined
 
   /**
    * 设置无序/任务背景颜色
@@ -318,5 +318,221 @@ export class MarkdownThemeBulletList {
    */
   setBulletListCheckboxShape(shape: CheckBoxShape): void {
     this.bulletListCheckboxShape = shape
+  }
+
+  /**
+   * 获取bulletListBackgroundColor
+   *
+   * @returns bulletListBackgroundColor
+   */
+  getBulletListBackgroundColor(): number | undefined {
+    return this.bulletListBackgroundColor
+  }
+
+  /**
+   * 获取bulletListMarginTop
+   *
+   * @returns bulletListMarginTop
+   */
+  getBulletListMarginTop(): number | undefined {
+    return this.bulletListMarginTop
+  }
+
+  /**
+   * 获取bulletListMarginRight
+   *
+   * @returns bulletListMarginRight
+   */
+  getBulletListMarginRight(): number | undefined {
+    return this.bulletListMarginRight
+  }
+
+  /**
+   * 获取bulletListMarginBottom
+   *
+   * @returns bulletListMarginBottom
+   */
+  getBulletListMarginBottom(): number | undefined {
+    return this.bulletListMarginBottom
+  }
+
+  /**
+   * 获取bulletListMarginLeft
+   *
+   * @returns bulletListMarginLeft
+   */
+  getBulletListMarginLeft(): number | undefined {
+    return this.bulletListMarginLeft
+  }
+
+  /**
+   * 获取bulletListPaddingTop
+   *
+   * @returns bulletListPaddingTop
+   */
+  getBulletListPaddingTop(): number | undefined {
+    return this.bulletListPaddingTop
+  }
+
+  /**
+   * 获取bulletListPaddingRight
+   *
+   * @returns bulletListPaddingRight
+   */
+  getBulletListPaddingRight(): number | undefined {
+    return this.bulletListPaddingRight
+  }
+
+  /**
+   * 获取bulletListPaddingBottom
+   *
+   * @returns bulletListPaddingBottom
+   */
+  getBulletListPaddingBottom(): number | undefined {
+    return this.bulletListPaddingBottom
+  }
+
+  /**
+   * 获取bulletListPaddingLeft
+   *
+   * @returns bulletListPaddingLeft
+   */
+  getBulletListPaddingLeft(): number | undefined {
+    return this.bulletListPaddingLeft
+  }
+
+  /**
+   * 获取bulletListChildSpacing
+   *
+   * @returns bulletListChildSpacing
+   */
+  getBulletListChildSpacing(): number | undefined {
+    return this.bulletListChildSpacing
+  }
+
+  /**
+   * 获取bulletListChildChildSpacing
+   *
+   * @returns bulletListChildChildSpacing
+   */
+  getBulletListChildChildSpacing(): number | undefined {
+    return this.bulletListChildChildSpacing
+  }
+
+  /**
+   * 获取bulletListBulletSpacing
+   *
+   * @returns bulletListBulletSpacing
+   */
+  getBulletListBulletSpacing(): number | undefined {
+    return this.bulletListBulletSpacing
+  }
+
+  /**
+   * 获取bulletListBulletIsCircle
+   *
+   * @returns bulletListBulletIsCircle
+   */
+  getBulletListBulletIsCircle(): boolean | undefined {
+    return this.bulletListBulletIsCircle
+  }
+
+  /**
+   * 获取bulletListBulletTextFontColor
+   *
+   * @returns bulletListBulletTextFontColor
+   */
+  getBulletListBulletTextFontColor(): number | undefined {
+    return this.bulletListBulletTextFontColor
+  }
+
+  /**
+   * 获取bulletListBulletTextFontSize
+   *
+   * @returns bulletListBulletTextFontSize
+   */
+  getBulletListBulletTextFontSize(): number | undefined {
+    return this.bulletListBulletTextFontSize
+  }
+
+  /**
+   * 获取bulletListBulletTextFontStyle
+   *
+   * @returns bulletListBulletTextFontStyle
+   */
+  getBulletListBulletTextFontStyle(): FontStyle | undefined {
+    return this.bulletListBulletTextFontStyle
+  }
+
+  /**
+   * 获取bulletListBulletTextFontWeight
+   *
+   * @returns bulletListBulletTextFontWeight
+   */
+  getBulletListBulletTextFontWeight(): FontWeight | undefined {
+    return this.bulletListBulletTextFontWeight
+  }
+
+  /**
+   * 获取bulletListBulletTextFontFamily
+   *
+   * @returns bulletListBulletTextFontFamily
+   */
+  getBulletListBulletTextFontFamily(): string | undefined {
+    return this.bulletListBulletTextFontFamily
+  }
+
+  /**
+   * 获取bulletListBulletTextLineHeight
+   *
+   * @returns bulletListBulletTextLineHeight
+   */
+  getBulletListBulletTextLineHeight(): number | undefined {
+    return this.bulletListBulletTextLineHeight
+  }
+
+  /**
+   * 获取bulletListCheckboxSpacing
+   *
+   * @returns bulletListCheckboxSpacing
+   */
+  getBulletListCheckboxSpacing(): number | undefined {
+    return this.bulletListCheckboxSpacing
+  }
+
+  /**
+   * 获取bulletListCheckboxWidth
+   *
+   * @returns bulletListCheckboxWidth
+   */
+  getBulletListCheckboxWidth(): number | undefined {
+    return this.bulletListCheckboxWidth
+  }
+
+  /**
+   * 获取bulletListCheckboxHeight
+   *
+   * @returns bulletListCheckboxHeight
+   */
+  getBulletListCheckboxHeight(): number | undefined {
+    return this.bulletListCheckboxHeight
+  }
+
+  /**
+   * 获取bulletListCheckboxSelectedColor
+   *
+   * @returns bulletListCheckboxSelectedColor
+   */
+  getBulletListCheckboxSelectedColor(): number | undefined {
+    return this.bulletListCheckboxSelectedColor
+  }
+
+  /**
+   * 获取bulletListCheckboxShape
+   *
+   * @returns bulletListCheckboxShape
+   */
+  getBulletListCheckboxShape(): CheckBoxShape | undefined {
+    return this.bulletListCheckboxShape
   }
 }

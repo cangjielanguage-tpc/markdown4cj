@@ -181,7 +181,7 @@ public class CJMarkdownParagraphTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setParagraphTextFontWeight(weight: String): Unit {
+    public func setParagraphTextFontWeight(weight: Int64): Unit {
         paragraphTextFontWeight = convertFontWeight(weight)
     }
 

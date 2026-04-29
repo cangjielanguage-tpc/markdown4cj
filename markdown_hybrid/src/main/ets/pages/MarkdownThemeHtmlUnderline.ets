@@ -7,47 +7,47 @@ export class MarkdownThemeHtmlUnderline {
   /**
    * HTML下划线文本颜色
    */
-  htmlUnderlineTextFontColor?: number = undefined
+  private htmlUnderlineTextFontColor?: number = undefined
 
   /**
    * HTML下划线文本尺寸
    */
-  htmlUnderlineTextFontSize?: number = undefined
+  private htmlUnderlineTextFontSize?: number = undefined
 
   /**
    * HTML下划线文本字体样式
    */
-  htmlUnderlineTextFontStyle?: FontStyle = undefined
+  private htmlUnderlineTextFontStyle?: FontStyle = undefined
 
   /**
    * HTML下划线文本字体粗细
    */
-  htmlUnderlineTextFontWeight?: FontWeight = undefined
+  private htmlUnderlineTextFontWeight?: FontWeight = undefined
 
   /**
    * HTML下划线文本字体
    */
-  htmlUnderlineTextFontFamily?: string = undefined
+  private htmlUnderlineTextFontFamily?: string = undefined
 
   /**
    * HTML下划线文本行高
    */
-  htmlUnderlineTextLineHeight?: number = undefined
+  private htmlUnderlineTextLineHeight?: number = undefined
 
   /**
    * HTML下划线文本字符间距
    */
-  htmlUnderlineTextLetterSpacing?: number = undefined
+  private htmlUnderlineTextLetterSpacing?: number = undefined
 
   /**
    * HTML下划线文本装饰线颜色
    */
-  htmlUnderlineTextDecorationColor?: number = undefined
+  private htmlUnderlineTextDecorationColor?: number = undefined
 
   /**
    * HTML下划线文本装饰线样式
    */
-  htmlUnderlineTextDecorationStyle?: MarkdownTextDecorationStyle = undefined
+  private htmlUnderlineTextDecorationStyle?: MarkdownTextDecorationStyle = undefined
 
   /**
    * 设置HTML下划线文本颜色
@@ -128,5 +128,86 @@ export class MarkdownThemeHtmlUnderline {
    */
   setHtmlUnderlineTextDecorationStyle(style: MarkdownTextDecorationStyle): void {
     this.htmlUnderlineTextDecorationStyle = style
+  }
+
+  /**
+   * 获取htmlUnderlineTextFontColor
+   *
+   * @returns htmlUnderlineTextFontColor
+   */
+  getHtmlUnderlineTextFontColor(): number | undefined {
+    return this.htmlUnderlineTextFontColor
+  }
+
+  /**
+   * 获取htmlUnderlineTextFontSize
+   *
+   * @returns htmlUnderlineTextFontSize
+   */
+  getHtmlUnderlineTextFontSize(): number | undefined {
+    return this.htmlUnderlineTextFontSize
+  }
+
+  /**
+   * 获取htmlUnderlineTextFontStyle
+   *
+   * @returns htmlUnderlineTextFontStyle
+   */
+  getHtmlUnderlineTextFontStyle(): FontStyle | undefined {
+    return this.htmlUnderlineTextFontStyle
+  }
+
+  /**
+   * 获取htmlUnderlineTextFontWeight
+   *
+   * @returns htmlUnderlineTextFontWeight
+   */
+  getHtmlUnderlineTextFontWeight(): FontWeight | undefined {
+    return this.htmlUnderlineTextFontWeight
+  }
+
+  /**
+   * 获取htmlUnderlineTextFontFamily
+   *
+   * @returns htmlUnderlineTextFontFamily
+   */
+  getHtmlUnderlineTextFontFamily(): string | undefined {
+    return this.htmlUnderlineTextFontFamily
+  }
+
+  /**
+   * 获取htmlUnderlineTextLineHeight
+   *
+   * @returns htmlUnderlineTextLineHeight
+   */
+  getHtmlUnderlineTextLineHeight(): number | undefined {
+    return this.htmlUnderlineTextLineHeight
+  }
+
+  /**
+   * 获取htmlUnderlineTextLetterSpacing
+   *
+   * @returns htmlUnderlineTextLetterSpacing
+   */
+  getHtmlUnderlineTextLetterSpacing(): number | undefined {
+    return this.htmlUnderlineTextLetterSpacing
+  }
+
+  /**
+   * 获取htmlUnderlineTextDecorationColor
+   *
+   * @returns htmlUnderlineTextDecorationColor
+   */
+  getHtmlUnderlineTextDecorationColor(): number | undefined {
+    return this.htmlUnderlineTextDecorationColor
+  }
+
+  /**
+   * 获取htmlUnderlineTextDecorationStyle
+   *
+   * @returns htmlUnderlineTextDecorationStyle
+   */
+  getHtmlUnderlineTextDecorationStyle(): MarkdownTextDecorationStyle | undefined {
+    return this.htmlUnderlineTextDecorationStyle
   }
 }

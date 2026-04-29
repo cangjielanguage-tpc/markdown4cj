@@ -114,7 +114,7 @@ public class CJMarkdownFootnoteRefTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setFootnoteRefTextFontWeight(weight: String): Unit {
+    public func setFootnoteRefTextFontWeight(weight: Int64): Unit {
         footnoteRefTextFontWeight = convertFontWeight(weight)
     }
 

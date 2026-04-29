@@ -5,62 +5,62 @@ export class MarkdownThemeInlineCode {
   /**
    * 内联代码文本颜色
    */
-  inlineCodeTextFontColor?: number = undefined
+  private inlineCodeTextFontColor?: number = undefined
 
   /**
    * 内联代码文本尺寸
    */
-  inlineCodeTextFontSize?: number = undefined
+  private inlineCodeTextFontSize?: number = undefined
 
   /**
    * 内联代码文本字体样式
    */
-  inlineCodeTextFontStyle?: FontStyle = undefined
+  private inlineCodeTextFontStyle?: FontStyle = undefined
 
   /**
    * 内联代码文本字体粗细
    */
-  inlineCodeTextFontWeight?: FontWeight = undefined
+  private inlineCodeTextFontWeight?: FontWeight = undefined
 
   /**
    * 内联代码文本字体
    */
-  inlineCodeTextFontFamily?: string = undefined
+  private inlineCodeTextFontFamily?: string = undefined
 
   /**
    * 内联代码文本行高
    */
-  inlineCodeTextLineHeight?: number = undefined
+  private inlineCodeTextLineHeight?: number = undefined
 
   /**
    * 内联代码文本字符间距
    */
-  inlineCodeTextLetterSpacing?: number = undefined
+  private inlineCodeTextLetterSpacing?: number = undefined
 
   /**
    * 内联代码文本背景颜色
    */
-  inlineCodeTextBackgroundColor?: number = undefined
+  private inlineCodeTextBackgroundColor?: number = undefined
 
   /**
    * 内联代码文本背景左上圆角
    */
-  inlineCodeTextBackgroundRadiusTopLeft?: number = undefined
+  private inlineCodeTextBackgroundRadiusTopLeft?: number = undefined
 
   /**
    * 内联代码文本背景右上圆角
    */
-  inlineCodeTextBackgroundRadiusTopRight?: number = undefined
+  private inlineCodeTextBackgroundRadiusTopRight?: number = undefined
 
   /**
    * 内联代码文本背景左下圆角
    */
-  inlineCodeTextBackgroundRadiusBottomLeft?: number = undefined
+  private inlineCodeTextBackgroundRadiusBottomLeft?: number = undefined
 
   /**
    * 内联代码文本背景右下圆角
    */
-  inlineCodeTextBackgroundRadiusBottomRight?: number = undefined
+  private inlineCodeTextBackgroundRadiusBottomRight?: number = undefined
 
   /**
    * 设置内联代码文本颜色
@@ -159,5 +159,113 @@ export class MarkdownThemeInlineCode {
     this.inlineCodeTextBackgroundRadiusTopRight = topRight
     this.inlineCodeTextBackgroundRadiusBottomLeft = bottomLeft
     this.inlineCodeTextBackgroundRadiusBottomRight = bottomRight
+  }
+
+  /**
+   * 获取inlineCodeTextFontColor
+   *
+   * @returns inlineCodeTextFontColor
+   */
+  getInlineCodeTextFontColor(): number | undefined {
+    return this.inlineCodeTextFontColor
+  }
+
+  /**
+   * 获取inlineCodeTextFontSize
+   *
+   * @returns inlineCodeTextFontSize
+   */
+  getInlineCodeTextFontSize(): number | undefined {
+    return this.inlineCodeTextFontSize
+  }
+
+  /**
+   * 获取inlineCodeTextFontStyle
+   *
+   * @returns inlineCodeTextFontStyle
+   */
+  getInlineCodeTextFontStyle(): FontStyle | undefined {
+    return this.inlineCodeTextFontStyle
+  }
+
+  /**
+   * 获取inlineCodeTextFontWeight
+   *
+   * @returns inlineCodeTextFontWeight
+   */
+  getInlineCodeTextFontWeight(): FontWeight | undefined {
+    return this.inlineCodeTextFontWeight
+  }
+
+  /**
+   * 获取inlineCodeTextFontFamily
+   *
+   * @returns inlineCodeTextFontFamily
+   */
+  getInlineCodeTextFontFamily(): string | undefined {
+    return this.inlineCodeTextFontFamily
+  }
+
+  /**
+   * 获取inlineCodeTextLineHeight
+   *
+   * @returns inlineCodeTextLineHeight
+   */
+  getInlineCodeTextLineHeight(): number | undefined {
+    return this.inlineCodeTextLineHeight
+  }
+
+  /**
+   * 获取inlineCodeTextLetterSpacing
+   *
+   * @returns inlineCodeTextLetterSpacing
+   */
+  getInlineCodeTextLetterSpacing(): number | undefined {
+    return this.inlineCodeTextLetterSpacing
+  }
+
+  /**
+   * 获取inlineCodeTextBackgroundColor
+   *
+   * @returns inlineCodeTextBackgroundColor
+   */
+  getInlineCodeTextBackgroundColor(): number | undefined {
+    return this.inlineCodeTextBackgroundColor
+  }
+
+  /**
+   * 获取inlineCodeTextBackgroundRadiusTopLeft
+   *
+   * @returns inlineCodeTextBackgroundRadiusTopLeft
+   */
+  getInlineCodeTextBackgroundRadiusTopLeft(): number | undefined {
+    return this.inlineCodeTextBackgroundRadiusTopLeft
+  }
+
+  /**
+   * 获取inlineCodeTextBackgroundRadiusTopRight
+   *
+   * @returns inlineCodeTextBackgroundRadiusTopRight
+   */
+  getInlineCodeTextBackgroundRadiusTopRight(): number | undefined {
+    return this.inlineCodeTextBackgroundRadiusTopRight
+  }
+
+  /**
+   * 获取inlineCodeTextBackgroundRadiusBottomLeft
+   *
+   * @returns inlineCodeTextBackgroundRadiusBottomLeft
+   */
+  getInlineCodeTextBackgroundRadiusBottomLeft(): number | undefined {
+    return this.inlineCodeTextBackgroundRadiusBottomLeft
+  }
+
+  /**
+   * 获取inlineCodeTextBackgroundRadiusBottomRight
+   *
+   * @returns inlineCodeTextBackgroundRadiusBottomRight
+   */
+  getInlineCodeTextBackgroundRadiusBottomRight(): number | undefined {
+    return this.inlineCodeTextBackgroundRadiusBottomRight
   }
 }

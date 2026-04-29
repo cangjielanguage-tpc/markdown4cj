@@ -5,72 +5,72 @@ export class MarkdownThemeDefinitionList {
   /**
    * 定义列表背景颜色
    */
-  definitionListBackgroundColor?: number = undefined
+  private definitionListBackgroundColor?: number = undefined
 
   /**
    * 定义列表上外边距
    */
-  definitionListMarginTop?: number = undefined
+  private definitionListMarginTop?: number = undefined
 
   /**
    * 定义列表右外边距
    */
-  definitionListMarginRight?: number = undefined
+  private definitionListMarginRight?: number = undefined
 
   /**
    * 定义列表下外边距
    */
-  definitionListMarginBottom?: number = undefined
+  private definitionListMarginBottom?: number = undefined
 
   /**
    * 定义列表左外边距
    */
-  definitionListMarginLeft?: number = undefined
+  private definitionListMarginLeft?: number = undefined
 
   /**
    * 定义列表上内边距
    */
-  definitionListPaddingTop?: number = undefined
+  private definitionListPaddingTop?: number = undefined
 
   /**
    * 定义列表右内边距
    */
-  definitionListPaddingRight?: number = undefined
+  private definitionListPaddingRight?: number = undefined
 
   /**
    * 定义列表下内边距
    */
-  definitionListPaddingBottom?: number = undefined
+  private definitionListPaddingBottom?: number = undefined
 
   /**
    * 定义列表左内边距
    */
-  definitionListPaddingLeft?: number = undefined
+  private definitionListPaddingLeft?: number = undefined
 
   /**
    * 定义列表术语和定义行之间间距
    */
-  definitionListTermToDescriptionSpacing?: number = undefined
+  private definitionListTermToDescriptionSpacing?: number = undefined
 
   /**
    * 定义列表术语文本字体粗细
    */
-  definitionListTermTextFontWeight?: FontWeight = undefined
+  private definitionListTermTextFontWeight?: FontWeight = undefined
 
   /**
    * 定义列表术语文本字体样式
    */
-  definitionListTermTextFontStyle?: FontStyle = undefined
+  private definitionListTermTextFontStyle?: FontStyle = undefined
 
   /**
    * 定义列表定义行之间间距
    */
-  definitionListDescriptionItemSpacing?: number = undefined
+  private definitionListDescriptionItemSpacing?: number = undefined
 
   /**
    * 定义列表定义行左缩进距离
    */
-  definitionListDescriptionIndent?: number = undefined
+  private definitionListDescriptionIndent?: number = undefined
 
   /**
    * 设置4个外边距为统一值
@@ -178,5 +178,131 @@ export class MarkdownThemeDefinitionList {
    */
   setDefinitionListDescriptionIndent(indent: number): void {
     this.definitionListDescriptionIndent = indent
+  }
+
+  /**
+   * 获取definitionListBackgroundColor
+   *
+   * @returns definitionListBackgroundColor
+   */
+  getDefinitionListBackgroundColor(): number | undefined {
+    return this.definitionListBackgroundColor
+  }
+
+  /**
+   * 获取definitionListMarginTop
+   *
+   * @returns definitionListMarginTop
+   */
+  getDefinitionListMarginTop(): number | undefined {
+    return this.definitionListMarginTop
+  }
+
+  /**
+   * 获取definitionListMarginRight
+   *
+   * @returns definitionListMarginRight
+   */
+  getDefinitionListMarginRight(): number | undefined {
+    return this.definitionListMarginRight
+  }
+
+  /**
+   * 获取definitionListMarginBottom
+   *
+   * @returns definitionListMarginBottom
+   */
+  getDefinitionListMarginBottom(): number | undefined {
+    return this.definitionListMarginBottom
+  }
+
+  /**
+   * 获取definitionListMarginLeft
+   *
+   * @returns definitionListMarginLeft
+   */
+  getDefinitionListMarginLeft(): number | undefined {
+    return this.definitionListMarginLeft
+  }
+
+  /**
+   * 获取definitionListPaddingTop
+   *
+   * @returns definitionListPaddingTop
+   */
+  getDefinitionListPaddingTop(): number | undefined {
+    return this.definitionListPaddingTop
+  }
+
+  /**
+   * 获取definitionListPaddingRight
+   *
+   * @returns definitionListPaddingRight
+   */
+  getDefinitionListPaddingRight(): number | undefined {
+    return this.definitionListPaddingRight
+  }
+
+  /**
+   * 获取definitionListPaddingBottom
+   *
+   * @returns definitionListPaddingBottom
+   */
+  getDefinitionListPaddingBottom(): number | undefined {
+    return this.definitionListPaddingBottom
+  }
+
+  /**
+   * 获取definitionListPaddingLeft
+   *
+   * @returns definitionListPaddingLeft
+   */
+  getDefinitionListPaddingLeft(): number | undefined {
+    return this.definitionListPaddingLeft
+  }
+
+  /**
+   * 获取definitionListTermToDescriptionSpacing
+   *
+   * @returns definitionListTermToDescriptionSpacing
+   */
+  getDefinitionListTermToDescriptionSpacing(): number | undefined {
+    return this.definitionListTermToDescriptionSpacing
+  }
+
+  /**
+   * 获取definitionListTermTextFontWeight
+   *
+   * @returns definitionListTermTextFontWeight
+   */
+  getDefinitionListTermTextFontWeight(): FontWeight | undefined {
+    return this.definitionListTermTextFontWeight
+  }
+
+  /**
+   * 获取definitionListTermTextFontStyle
+   *
+   * @returns definitionListTermTextFontStyle
+   */
+  getDefinitionListTermTextFontStyle(): FontStyle | undefined {
+    return this.definitionListTermTextFontStyle
+  }
+
+  /**
+   * 获取definitionListDescriptionItemSpacing
+   *
+   * @returns definitionListDescriptionItemSpacing
+   */
+  getDefinitionListDescriptionItemSpacing(): number | undefined {
+    return this.definitionListDescriptionItemSpacing
+  }
+
+  /**
+   * 获取definitionListDescriptionIndent
+   *
+   * @returns definitionListDescriptionIndent
+   */
+  getDefinitionListDescriptionIndent(): number | undefined {
+    return this.definitionListDescriptionIndent
   }
 }

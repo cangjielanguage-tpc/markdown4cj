@@ -7,207 +7,207 @@ export class MarkdownThemeImage {
   /**
    * 图片上外边距
    */
-  imageMarginTop?: number = undefined
+  private imageMarginTop?: number = undefined
 
   /**
    * 图片右外边距
    */
-  imageMarginRight?: number = undefined
+  private imageMarginRight?: number = undefined
 
   /**
    * 图片下外边距
    */
-  imageMarginBottom?: number = undefined
+  private imageMarginBottom?: number = undefined
 
   /**
    * 图片左外边距
    */
-  imageMarginLeft?: number = undefined
+  private imageMarginLeft?: number = undefined
 
   /**
    * 图片边框左上圆角
    */
-  imageRadiusTopLeft?: number = undefined
+  private imageRadiusTopLeft?: number = undefined
 
   /**
    * 图片边框右上圆角
    */
-  imageRadiusTopRight?: number = undefined
+  private imageRadiusTopRight?: number = undefined
 
   /**
    * 图片边框左下圆角
    */
-  imageRadiusBottomLeft?: number = undefined
+  private imageRadiusBottomLeft?: number = undefined
 
   /**
    * 图片边框右下圆角
    */
-  imageRadiusBottomRight?: number = undefined
+  private imageRadiusBottomRight?: number = undefined
 
   /**
    * 图片边框样式
    */
-  imageBorderStyle?: BorderStyle = undefined
+  private imageBorderStyle?: BorderStyle = undefined
 
   /**
    * 图片边框宽度
    */
-  imageBorderWidth?: number = undefined
+  private imageBorderWidth?: number = undefined
 
   /**
    * 图片边框颜色
    */
-  imageBorderColor?: number = undefined
+  private imageBorderColor?: number = undefined
 
   /**
    * 图片默认占位图
    */
-  imagePlaceholder?: Resource = undefined
+  private imagePlaceholder?: Resource = undefined
 
   /**
    * 网络图片是否压缩
    */
-  imageAutoResize?: boolean = undefined
+  private imageAutoResize?: boolean = undefined
 
   /**
    * 是否图文混排
    */
-  isImageMixedLayout?: boolean = undefined
+  private isImageMixedLayout?: boolean = undefined
 
   /**
    * 图片基于自身宽度缩放百分比
    */
-  imageMaximumWidth?: number = undefined
+  private imageMaximumWidth?: number = undefined
 
   /**
    * 图片基于父布局宽度缩放百分比
    */
-  imageFixedRatioWidth?: number = undefined
+  private imageFixedRatioWidth?: number = undefined
 
   /**
    * 图片最大高度
    */
-  imageMaxHeight?: number = undefined
+  private imageMaxHeight?: number = undefined
 
   /**
    * 图片高度
    */
-  imageHeight?: number = undefined
+  private imageHeight?: number = undefined
 
   /**
    * 图片最大宽度
    */
-  imageMaxWidth?: number = undefined
+  private imageMaxWidth?: number = undefined
 
   /**
    * 图片宽度
    */
-  imageWidth?: number = undefined
+  private imageWidth?: number = undefined
 
   /**
    * 图片缩放类型
    */
-  imageFitType?: ImageFitType = undefined
+  private imageFitType?: ImageFitType = undefined
 
   /**
    * 底部布局距离图片上边距
    */
-  imageBottomLayoutMarginTop?: number = undefined
+  private imageBottomLayoutMarginTop?: number = undefined
 
   /**
    * 图片下载按钮是否显示
    */
-  imageDownloadButtonVisible?: boolean = undefined
+  private imageDownloadButtonVisible?: boolean = undefined
 
   /**
    * 图片下载按钮宽度
    */
-  imageDownloadButtonWidth?: number = undefined
+  private imageDownloadButtonWidth?: number = undefined
 
   /**
    * 图片下载按钮高度
    */
-  imageDownloadButtonHeight?: number = undefined
+  private imageDownloadButtonHeight?: number = undefined
 
   /**
    * 图片下载按钮左上圆角
    */
-  imageDownloadButtonRadiusTopLeft?: number = undefined
+  private imageDownloadButtonRadiusTopLeft?: number = undefined
 
   /**
    * 图片下载按钮右上圆角
    */
-  imageDownloadButtonRadiusTopRight?: number = undefined
+  private imageDownloadButtonRadiusTopRight?: number = undefined
 
   /**
    * 图片下载按钮左下圆角
    */
-  imageDownloadButtonRadiusBottomLeft?: number = undefined
+  private imageDownloadButtonRadiusBottomLeft?: number = undefined
 
   /**
    * 图片下载按钮右下圆角
    */
-  imageDownloadButtonRadiusBottomRight?: number = undefined
+  private imageDownloadButtonRadiusBottomRight?: number = undefined
 
   /**
    * 图片下载按钮图标
    */
-  imageDownloadButtonIcon?: Resource = undefined
+  private imageDownloadButtonIcon?: Resource = undefined
 
   /**
    * 图片下载按钮图标宽度
    */
-  imageDownloadButtonIconWidth?: number = undefined
+  private imageDownloadButtonIconWidth?: number = undefined
 
   /**
    * 图片下载按钮图标高度
    */
-  imageDownloadButtonIconHeight?: number = undefined
+  private imageDownloadButtonIconHeight?: number = undefined
 
   /**
    * 图片下载按钮图标和文本间距
    */
-  imageDownloadButtonIconTextGap?: number = undefined
+  private imageDownloadButtonIconTextGap?: number = undefined
 
   /**
    * 图片下载按钮背景颜色
    */
-  imageDownloadButtonBackgroundColor?: number = undefined
+  private imageDownloadButtonBackgroundColor?: number = undefined
 
   /**
    * 图片下载按钮默认文本内容
    */
-  imageDownloadButtonText?: string = undefined
+  private imageDownloadButtonText?: string = undefined
 
   /**
    * 图片下载按钮文本颜色
    */
-  imageDownloadButtonTextFontColor?: number = undefined
+  private imageDownloadButtonTextFontColor?: number = undefined
 
   /**
    * 图片下载按钮文本尺寸
    */
-  imageDownloadButtonTextFontSize?: number = undefined
+  private imageDownloadButtonTextFontSize?: number = undefined
 
   /**
    * 图片下载按钮文本字体样式
    */
-  imageDownloadButtonTextFontStyle?: FontStyle = undefined
+  private imageDownloadButtonTextFontStyle?: FontStyle = undefined
 
   /**
    * 图片下载按钮文本字体粗细
    */
-  imageDownloadButtonTextFontWeight?: FontWeight = undefined
+  private imageDownloadButtonTextFontWeight?: FontWeight = undefined
 
   /**
    * 图片下载按钮文本字体
    */
-  imageDownloadButtonTextFontFamily?: string = undefined
+  private imageDownloadButtonTextFontFamily?: string = undefined
 
   /**
    * 图片下载按钮文本行高
    */
-  imageDownloadButtonTextLineHeight?: number = undefined
+  private imageDownloadButtonTextLineHeight?: number = undefined
 
   /**
    * 设置4个外边距为统一值
@@ -549,5 +549,374 @@ export class MarkdownThemeImage {
    */
   setImageDownloadButtonTextLineHeight(lineHeight: number): void {
     this.imageDownloadButtonTextLineHeight = lineHeight
+  }
+
+  /**
+   * 获取imageMarginTop
+   *
+   * @returns imageMarginTop
+   */
+  getImageMarginTop(): number | undefined {
+    return this.imageMarginTop
+  }
+
+  /**
+   * 获取imageMarginRight
+   *
+   * @returns imageMarginRight
+   */
+  getImageMarginRight(): number | undefined {
+    return this.imageMarginRight
+  }
+
+  /**
+   * 获取imageMarginBottom
+   *
+   * @returns imageMarginBottom
+   */
+  getImageMarginBottom(): number | undefined {
+    return this.imageMarginBottom
+  }
+
+  /**
+   * 获取imageMarginLeft
+   *
+   * @returns imageMarginLeft
+   */
+  getImageMarginLeft(): number | undefined {
+    return this.imageMarginLeft
+  }
+
+  /**
+   * 获取imageRadiusTopLeft
+   *
+   * @returns imageRadiusTopLeft
+   */
+  getImageRadiusTopLeft(): number | undefined {
+    return this.imageRadiusTopLeft
+  }
+
+  /**
+   * 获取imageRadiusTopRight
+   *
+   * @returns imageRadiusTopRight
+   */
+  getImageRadiusTopRight(): number | undefined {
+    return this.imageRadiusTopRight
+  }
+
+  /**
+   * 获取imageRadiusBottomLeft
+   *
+   * @returns imageRadiusBottomLeft
+   */
+  getImageRadiusBottomLeft(): number | undefined {
+    return this.imageRadiusBottomLeft
+  }
+
+  /**
+   * 获取imageRadiusBottomRight
+   *
+   * @returns imageRadiusBottomRight
+   */
+  getImageRadiusBottomRight(): number | undefined {
+    return this.imageRadiusBottomRight
+  }
+
+  /**
+   * 获取imageBorderStyle
+   *
+   * @returns imageBorderStyle
+   */
+  getImageBorderStyle(): BorderStyle | undefined {
+    return this.imageBorderStyle
+  }
+
+  /**
+   * 获取imageBorderWidth
+   *
+   * @returns imageBorderWidth
+   */
+  getImageBorderWidth(): number | undefined {
+    return this.imageBorderWidth
+  }
+
+  /**
+   * 获取imageBorderColor
+   *
+   * @returns imageBorderColor
+   */
+  getImageBorderColor(): number | undefined {
+    return this.imageBorderColor
+  }
+
+  /**
+   * 获取imagePlaceholder
+   *
+   * @returns imagePlaceholder
+   */
+  getImagePlaceholder(): Resource | undefined {
+    return this.imagePlaceholder
+  }
+
+  /**
+   * 获取imageAutoResize
+   *
+   * @returns imageAutoResize
+   */
+  getImageAutoResize(): boolean | undefined {
+    return this.imageAutoResize
+  }
+
+  /**
+   * 获取isImageMixedLayout
+   *
+   * @returns isImageMixedLayout
+   */
+  getIsImageMixedLayout(): boolean | undefined {
+    return this.isImageMixedLayout
+  }
+
+  /**
+   * 获取imageMaximumWidth
+   *
+   * @returns imageMaximumWidth
+   */
+  getImageMaximumWidth(): number | undefined {
+    return this.imageMaximumWidth
+  }
+
+  /**
+   * 获取imageFixedRatioWidth
+   *
+   * @returns imageFixedRatioWidth
+   */
+  getImageFixedRatioWidth(): number | undefined {
+    return this.imageFixedRatioWidth
+  }
+
+  /**
+   * 获取imageMaxHeight
+   *
+   * @returns imageMaxHeight
+   */
+  getImageMaxHeight(): number | undefined {
+    return this.imageMaxHeight
+  }
+
+  /**
+   * 获取imageHeight
+   *
+   * @returns imageHeight
+   */
+  getImageHeight(): number | undefined {
+    return this.imageHeight
+  }
+
+  /**
+   * 获取imageMaxWidth
+   *
+   * @returns imageMaxWidth
+   */
+  getImageMaxWidth(): number | undefined {
+    return this.imageMaxWidth
+  }
+
+  /**
+   * 获取imageWidth
+   *
+   * @returns imageWidth
+   */
+  getImageWidth(): number | undefined {
+    return this.imageWidth
+  }
+
+  /**
+   * 获取imageFitType
+   *
+   * @returns imageFitType
+   */
+  getImageFitType(): ImageFitType | undefined {
+    return this.imageFitType
+  }
+
+  /**
+   * 获取imageBottomLayoutMarginTop
+   *
+   * @returns imageBottomLayoutMarginTop
+   */
+  getImageBottomLayoutMarginTop(): number | undefined {
+    return this.imageBottomLayoutMarginTop
+  }
+
+  /**
+   * 获取imageDownloadButtonVisible
+   *
+   * @returns imageDownloadButtonVisible
+   */
+  getImageDownloadButtonVisible(): boolean | undefined {
+    return this.imageDownloadButtonVisible
+  }
+
+  /**
+   * 获取imageDownloadButtonWidth
+   *
+   * @returns imageDownloadButtonWidth
+   */
+  getImageDownloadButtonWidth(): number | undefined {
+    return this.imageDownloadButtonWidth
+  }
+
+  /**
+   * 获取imageDownloadButtonHeight
+   *
+   * @returns imageDownloadButtonHeight
+   */
+  getImageDownloadButtonHeight(): number | undefined {
+    return this.imageDownloadButtonHeight
+  }
+
+  /**
+   * 获取imageDownloadButtonRadiusTopLeft
+   *
+   * @returns imageDownloadButtonRadiusTopLeft
+   */
+  getImageDownloadButtonRadiusTopLeft(): number | undefined {
+    return this.imageDownloadButtonRadiusTopLeft
+  }
+
+  /**
+   * 获取imageDownloadButtonRadiusTopRight
+   *
+   * @returns imageDownloadButtonRadiusTopRight
+   */
+  getImageDownloadButtonRadiusTopRight(): number | undefined {
+    return this.imageDownloadButtonRadiusTopRight
+  }
+
+  /**
+   * 获取imageDownloadButtonRadiusBottomLeft
+   *
+   * @returns imageDownloadButtonRadiusBottomLeft
+   */
+  getImageDownloadButtonRadiusBottomLeft(): number | undefined {
+    return this.imageDownloadButtonRadiusBottomLeft
+  }
+
+  /**
+   * 获取imageDownloadButtonRadiusBottomRight
+   *
+   * @returns imageDownloadButtonRadiusBottomRight
+   */
+  getImageDownloadButtonRadiusBottomRight(): number | undefined {
+    return this.imageDownloadButtonRadiusBottomRight
+  }
+
+  /**
+   * 获取imageDownloadButtonIcon
+   *
+   * @returns imageDownloadButtonIcon
+   */
+  getImageDownloadButtonIcon(): Resource | undefined {
+    return this.imageDownloadButtonIcon
+  }
+
+  /**
+   * 获取imageDownloadButtonIconWidth
+   *
+   * @returns imageDownloadButtonIconWidth
+   */
+  getImageDownloadButtonIconWidth(): number | undefined {
+    return this.imageDownloadButtonIconWidth
+  }
+
+  /**
+   * 获取imageDownloadButtonIconHeight
+   *
+   * @returns imageDownloadButtonIconHeight
+   */
+  getImageDownloadButtonIconHeight(): number | undefined {
+    return this.imageDownloadButtonIconHeight
+  }
+
+  /**
+   * 获取imageDownloadButtonIconTextGap
+   *
+   * @returns imageDownloadButtonIconTextGap
+   */
+  getImageDownloadButtonIconTextGap(): number | undefined {
+    return this.imageDownloadButtonIconTextGap
+  }
+
+  /**
+   * 获取imageDownloadButtonBackgroundColor
+   *
+   * @returns imageDownloadButtonBackgroundColor
+   */
+  getImageDownloadButtonBackgroundColor(): number | undefined {
+    return this.imageDownloadButtonBackgroundColor
+  }
+
+  /**
+   * 获取imageDownloadButtonText
+   *
+   * @returns imageDownloadButtonText
+   */
+  getImageDownloadButtonText(): string | undefined {
+    return this.imageDownloadButtonText
+  }
+
+  /**
+   * 获取imageDownloadButtonTextFontColor
+   *
+   * @returns imageDownloadButtonTextFontColor
+   */
+  getImageDownloadButtonTextFontColor(): number | undefined {
+    return this.imageDownloadButtonTextFontColor
+  }
+
+  /**
+   * 获取imageDownloadButtonTextFontSize
+   *
+   * @returns imageDownloadButtonTextFontSize
+   */
+  getImageDownloadButtonTextFontSize(): number | undefined {
+    return this.imageDownloadButtonTextFontSize
+  }
+
+  /**
+   * 获取imageDownloadButtonTextFontStyle
+   *
+   * @returns imageDownloadButtonTextFontStyle
+   */
+  getImageDownloadButtonTextFontStyle(): FontStyle | undefined {
+    return this.imageDownloadButtonTextFontStyle
+  }
+
+  /**
+   * 获取imageDownloadButtonTextFontWeight
+   *
+   * @returns imageDownloadButtonTextFontWeight
+   */
+  getImageDownloadButtonTextFontWeight(): FontWeight | undefined {
+    return this.imageDownloadButtonTextFontWeight
+  }
+
+  /**
+   * 获取imageDownloadButtonTextFontFamily
+   *
+   * @returns imageDownloadButtonTextFontFamily
+   */
+  getImageDownloadButtonTextFontFamily(): string | undefined {
+    return this.imageDownloadButtonTextFontFamily
+  }
+
+  /**
+   * 获取imageDownloadButtonTextLineHeight
+   *
+   * @returns imageDownloadButtonTextLineHeight
+   */
+  getImageDownloadButtonTextLineHeight(): number | undefined {
+    return this.imageDownloadButtonTextLineHeight
   }
 }

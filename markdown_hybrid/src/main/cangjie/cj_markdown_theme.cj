@@ -565,9 +565,9 @@ public class CJMarkdownTheme {
      */
     public func setOrderedListItemPrefixBold(orderedListItemPrefixBold: Bool): Unit {
         if (orderedListItemPrefixBold) {
-            this.cjMarkdownOrderedListTheme.setOrderedListMarkerTextFontWeight("blod") // convertFontWeight转换时4表示Blod
+            this.cjMarkdownOrderedListTheme.setOrderedListMarkerTextFontWeight(4) // convertFontWeight转换时4表示Blod
         } else {
-            this.cjMarkdownOrderedListTheme.setOrderedListMarkerTextFontWeight("normal") // convertFontWeight转换时1表示Normal
+            this.cjMarkdownOrderedListTheme.setOrderedListMarkerTextFontWeight(1) // convertFontWeight转换时1表示Normal
         }
     }
 

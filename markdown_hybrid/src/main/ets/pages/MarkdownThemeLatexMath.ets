@@ -7,102 +7,102 @@ export class MarkdownThemeLatexMath {
   /**
    * LaTeX数学公式上外边距
    */
-  latexMathMarginTop?: number = undefined
+  private latexMathMarginTop?: number = undefined
 
   /**
    * LaTeX数学公式右外边距
    */
-  latexMathMarginRight?: number = undefined
+  private latexMathMarginRight?: number = undefined
 
   /**
    * LaTeX数学公式下外边距
    */
-  latexMathMarginBottom?: number = undefined
+  private latexMathMarginBottom?: number = undefined
 
   /**
    * LaTeX数学公式左外边距
    */
-  latexMathMarginLeft?: number = undefined
+  private latexMathMarginLeft?: number = undefined
 
   /**
    * LaTeX数学公式上内边距
    */
-  latexMathPaddingTop?: number = undefined
+  private latexMathPaddingTop?: number = undefined
 
   /**
    * LaTeX数学公式右内边距
    */
-  latexMathPaddingRight?: number = undefined
+  private latexMathPaddingRight?: number = undefined
 
   /**
    * LaTeX数学公式下内边距
    */
-  latexMathPaddingBottom?: number = undefined
+  private latexMathPaddingBottom?: number = undefined
 
   /**
    * LaTeX数学公式左内边距
    */
-  latexMathPaddingLeft?: number = undefined
+  private latexMathPaddingLeft?: number = undefined
 
   /**
    * 数学公式未加载状态是否显示文字
    */
-  latexMathDefaultText?: boolean = undefined
+  private latexMathDefaultText?: boolean = undefined
 
   /**
    * 数学公式未加载状态文本颜色
    */
-  latexMathDefaultTextFontColor?: number = undefined
+  private latexMathDefaultTextFontColor?: number = undefined
 
   /**
    * 数学公式未加载状态文本尺寸
    */
-  latexMathDefaultTextFontSize?: number = undefined
+  private latexMathDefaultTextFontSize?: number = undefined
 
   /**
    * 数学公式未加载状态文本字体样式
    */
-  latexMathDefaultTextFontStyle?: FontStyle = undefined
+  private latexMathDefaultTextFontStyle?: FontStyle = undefined
 
   /**
    * 数学公式未加载状态文本字体粗细
    */
-  latexMathDefaultTextFontWeight?: FontWeight = undefined
+  private latexMathDefaultTextFontWeight?: FontWeight = undefined
 
   /**
    * 数学公式未加载状态文本字体
    */
-  latexMathDefaultTextFontFamily?: string = undefined
+  private latexMathDefaultTextFontFamily?: string = undefined
 
   /**
    * 数学公式文本大小 - 实际使用要转换
    */
-  latexMathTextSize?: number = undefined
+  private latexMathTextSize?: number = undefined
 
   /**
    * 数学公式背景色
    */
-  latexMathBackgroundColor?: number = undefined
+  private latexMathBackgroundColor?: number = undefined
 
   /**
    * 数学公式文本颜色
    */
-  latexMathTextColor?: number = undefined
+  private latexMathTextColor?: number = undefined
 
   /**
    * 数学公式生成图片格式
    */
-  latexMathColorFormat?: LatexMathColorFormat = undefined
+  private latexMathColorFormat?: LatexMathColorFormat = undefined
 
   /**
    * 块结构的数学公式是否居中
    */
-  latexMathBlockCenter?: boolean = undefined
+  private latexMathBlockCenter?: boolean = undefined
 
   /**
    * 数学公式字体路径
    */
-  latexMathResPath?: string = undefined
+  private latexMathResPath?: string = undefined
 
   /**
    * 设置数学公式未加载状态是否显示文字
@@ -264,5 +264,185 @@ export class MarkdownThemeLatexMath {
     this.latexMathPaddingRight = right
     this.latexMathPaddingBottom = bottom
     this.latexMathPaddingLeft = left
+  }
+
+  /**
+   * 获取latexMathMarginTop
+   *
+   * @returns latexMathMarginTop
+   */
+  getLatexMathMarginTop(): number | undefined {
+    return this.latexMathMarginTop
+  }
+
+  /**
+   * 获取latexMathMarginRight
+   *
+   * @returns latexMathMarginRight
+   */
+  getLatexMathMarginRight(): number | undefined {
+    return this.latexMathMarginRight
+  }
+
+  /**
+   * 获取latexMathMarginBottom
+   *
+   * @returns latexMathMarginBottom
+   */
+  getLatexMathMarginBottom(): number | undefined {
+    return this.latexMathMarginBottom
+  }
+
+  /**
+   * 获取latexMathMarginLeft
+   *
+   * @returns latexMathMarginLeft
+   */
+  getLatexMathMarginLeft(): number | undefined {
+    return this.latexMathMarginLeft
+  }
+
+  /**
+   * 获取latexMathPaddingTop
+   *
+   * @returns latexMathPaddingTop
+   */
+  getLatexMathPaddingTop(): number | undefined {
+    return this.latexMathPaddingTop
+  }
+
+  /**
+   * 获取latexMathPaddingRight
+   *
+   * @returns latexMathPaddingRight
+   */
+  getLatexMathPaddingRight(): number | undefined {
+    return this.latexMathPaddingRight
+  }
+
+  /**
+   * 获取latexMathPaddingBottom
+   *
+   * @returns latexMathPaddingBottom
+   */
+  getLatexMathPaddingBottom(): number | undefined {
+    return this.latexMathPaddingBottom
+  }
+
+  /**
+   * 获取latexMathPaddingLeft
+   *
+   * @returns latexMathPaddingLeft
+   */
+  getLatexMathPaddingLeft(): number | undefined {
+    return this.latexMathPaddingLeft
+  }
+
+  /**
+   * 获取latexMathDefaultText
+   *
+   * @returns latexMathDefaultText
+   */
+  getLatexMathDefaultText(): boolean | undefined {
+    return this.latexMathDefaultText
+  }
+
+  /**
+   * 获取latexMathDefaultTextFontColor
+   *
+   * @returns latexMathDefaultTextFontColor
+   */
+  getLatexMathDefaultTextFontColor(): number | undefined {
+    return this.latexMathDefaultTextFontColor
+  }
+
+  /**
+   * 获取latexMathDefaultTextFontSize
+   *
+   * @returns latexMathDefaultTextFontSize
+   */
+  getLatexMathDefaultTextFontSize(): number | undefined {
+    return this.latexMathDefaultTextFontSize
+  }
+
+  /**
+   * 获取latexMathDefaultTextFontStyle
+   *
+   * @returns latexMathDefaultTextFontStyle
+   */
+  getLatexMathDefaultTextFontStyle(): FontStyle | undefined {
+    return this.latexMathDefaultTextFontStyle
+  }
+
+  /**
+   * 获取latexMathDefaultTextFontWeight
+   *
+   * @returns latexMathDefaultTextFontWeight
+   */
+  getLatexMathDefaultTextFontWeight(): FontWeight | undefined {
+    return this.latexMathDefaultTextFontWeight
+  }
+
+  /**
+   * 获取latexMathDefaultTextFontFamily
+   *
+   * @returns latexMathDefaultTextFontFamily
+   */
+  getLatexMathDefaultTextFontFamily(): string | undefined {
+    return this.latexMathDefaultTextFontFamily
+  }
+
+  /**
+   * 获取latexMathTextSize
+   *
+   * @returns latexMathTextSize
+   */
+  getLatexMathTextSize(): number | undefined {
+    return this.latexMathTextSize
+  }
+
+  /**
+   * 获取latexMathBackgroundColor
+   *
+   * @returns latexMathBackgroundColor
+   */
+  getLatexMathBackgroundColor(): number | undefined {
+    return this.latexMathBackgroundColor
+  }
+
+  /**
+   * 获取latexMathTextColor
+   *
+   * @returns latexMathTextColor
+   */
+  getLatexMathTextColor(): number | undefined {
+    return this.latexMathTextColor
+  }
+
+  /**
+   * 获取latexMathColorFormat
+   *
+   * @returns latexMathColorFormat
+   */
+  getLatexMathColorFormat(): LatexMathColorFormat | undefined {
+    return this.latexMathColorFormat
+  }
+
+  /**
+   * 获取latexMathBlockCenter
+   *
+   * @returns latexMathBlockCenter
+   */
+  getLatexMathBlockCenter(): boolean | undefined {
+    return this.latexMathBlockCenter
+  }
+
+  /**
+   * 获取latexMathResPath
+   *
+   * @returns latexMathResPath
+   */
+  getLatexMathResPath(): string | undefined {
+    return this.latexMathResPath
   }
 }

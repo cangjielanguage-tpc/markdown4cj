@@ -5,207 +5,207 @@ export class MarkdownThemeLink {
   /**
    * 链接是否是图片显示
    */
-  linkIsIcon?: boolean = undefined
+  private linkIsIcon?: boolean = undefined
 
   /**
    * 列表中的单行链接是否是图片显示
    */
-  linkListIsIcon?: boolean = undefined
+  private linkListIsIcon?: boolean = undefined
 
   /**
    * 链接文本颜色
    */
-  linkTextFontColor?: number = undefined
+  private linkTextFontColor?: number = undefined
 
   /**
    * 链接文本尺寸
    */
-  linkTextFontSize?: number = undefined
+  private linkTextFontSize?: number = undefined
 
   /**
    * 链接文本字体样式
    */
-  linkTextFontStyle?: FontStyle = undefined
+  private linkTextFontStyle?: FontStyle = undefined
 
   /**
    * 链接文本字体粗细
    */
-  linkTextFontWeight?: FontWeight = undefined
+  private linkTextFontWeight?: FontWeight = undefined
 
   /**
    * 链接文本字体
    */
-  linkTextFontFamily?: string = undefined
+  private linkTextFontFamily?: string = undefined
 
   /**
    * 链接文本行高
    */
-  linkTextLineHeight?: number = undefined
+  private linkTextLineHeight?: number = undefined
 
   /**
    * 链接文本字符间距
    */
-  linkTextLetterSpacing?: number = undefined
+  private linkTextLetterSpacing?: number = undefined
 
   /**
    * 链接文本装饰线类型
    */
-  linkTextDecorationType?: TextDecorationType = undefined
+  private linkTextDecorationType?: TextDecorationType = undefined
 
   /**
    * 链接文本装饰线颜色
    */
-  linkTextDecorationColor?: number = undefined
+  private linkTextDecorationColor?: number = undefined
 
   /**
    * 链接文本装饰线样式
    */
-  linkTextDecorationStyle?: TextDecorationStyle = undefined
+  private linkTextDecorationStyle?: TextDecorationStyle = undefined
 
   /**
    * 链接文本背景颜色
    */
-  linkTextBackgroundColor?: number = undefined
+  private linkTextBackgroundColor?: number = undefined
 
   /**
    * 链接文本背景左上圆角
    */
-  linkTextBackgroundRadiusTopLeft?: number = undefined
+  private linkTextBackgroundRadiusTopLeft?: number = undefined
 
   /**
    * 链接文本背景右上圆角
    */
-  linkTextBackgroundRadiusTopRight?: number = undefined
+  private linkTextBackgroundRadiusTopRight?: number = undefined
 
   /**
    * 链接文本背景左下圆角
    */
-  linkTextBackgroundRadiusBottomLeft?: number = undefined
+  private linkTextBackgroundRadiusBottomLeft?: number = undefined
 
   /**
    * 链接文本背景右下圆角
    */
-  linkTextBackgroundRadiusBottomRight?: number = undefined
+  private linkTextBackgroundRadiusBottomRight?: number = undefined
 
   /**
    * 圆形图片格式链接主题背景颜色
    */
-  linkCircleIconBackgroundColor?: number = undefined
+  private linkCircleIconBackgroundColor?: number = undefined
 
   /**
    * 圆形图片格式链接控件背景颜色
    */
-  linkCircleIconButtonBackgroundColor?: number = undefined
+  private linkCircleIconButtonBackgroundColor?: number = undefined
 
   /**
    * 圆形图片格式链接文字大小
    */
-  linkCircleIconTextSize?: number = undefined
+  private linkCircleIconTextSize?: number = undefined
 
   /**
    * 圆形图片格式链接文字颜色
    */
-  linkCircleIconTextColor?: number = undefined
+  private linkCircleIconTextColor?: number = undefined
 
   /**
    * 圆形图片格式链接半径
    */
-  linkCircleIconRadius?: number = undefined
+  private linkCircleIconRadius?: number = undefined
 
   /**
    * 圆形图片格式链接左右外边距
    */
-  linkCircleIconMargin?: number = undefined
+  private linkCircleIconMargin?: number = undefined
 
   /**
    * 圆角矩形图片格式链接主题背景颜色
    */
-  linkRectIconBackgroundColor?: number = undefined
+  private linkRectIconBackgroundColor?: number = undefined
 
   /**
    * 圆角矩形图片格式链接控件背景颜色
    */
-  linkRectIconButtonBackgroundColor?: number = undefined
+  private linkRectIconButtonBackgroundColor?: number = undefined
 
   /**
    * 圆角矩形图片格式链接文字大小
    */
-  linkRectIconTextSize?: number = undefined
+  private linkRectIconTextSize?: number = undefined
 
   /**
    * 圆角矩形图片格式链接文字颜色
    */
-  linkRectIconTextColor?: number = undefined
+  private linkRectIconTextColor?: number = undefined
 
   /**
    * 圆角矩形图片格式链接控件高度
    */
-  linkRectIconHeight?: number = undefined
+  private linkRectIconHeight?: number = undefined
 
   /**
    * 圆角矩形图片格式链接左右内边距
    */
-  linkRectIconPadding?: number = undefined
+  private linkRectIconPadding?: number = undefined
 
   /**
    * 圆角矩形图片格式链接圆角半径
    */
-  linkRectIconRadius?: number = undefined
+  private linkRectIconRadius?: number = undefined
 
   /**
    * 圆角矩形图片格式链接左右外边距
    */
-  linkRectIconMargin?: number = undefined
+  private linkRectIconMargin?: number = undefined
 
   /**
    * 空心圆角矩形图片格式链接主题背景颜色
    */
-  linkRectToolIconBackgroundColor?: number = undefined
+  private linkRectToolIconBackgroundColor?: number = undefined
 
   /**
    * 空心圆角矩形图片格式链接控件背景颜色
    */
-  linkRectToolIconButtonBackgroundColor?: number = undefined
+  private linkRectToolIconButtonBackgroundColor?: number = undefined
 
   /**
    * 空心圆角矩形图片格式链接文字大小
    */
-  linkRectToolIconTextSize?: number = undefined
+  private linkRectToolIconTextSize?: number = undefined
 
   /**
    * 空心圆角矩形图片格式链接控件高度
    */
-  linkRectToolIconHeight?: number = undefined
+  private linkRectToolIconHeight?: number = undefined
 
   /**
    * 空心圆角矩形图片格式链接左右内边距
    */
-  linkRectToolIconPadding?: number = undefined
+  private linkRectToolIconPadding?: number = undefined
 
   /**
    * 空心圆角矩形图片格式链接边框宽度
    */
-  linkRectToolIconBorderWidth?: number = undefined
+  private linkRectToolIconBorderWidth?: number = undefined
 
   /**
    * 空心圆角矩形图片格式链接分割线宽度
    */
-  linkRectToolIconDividingLineWidth?: number = undefined
+  private linkRectToolIconDividingLineWidth?: number = undefined
 
   /**
    * 空心圆角矩形图片格式链接左右外边距
    */
-  linkRectToolIconMargin?: number = undefined
+  private linkRectToolIconMargin?: number = undefined
 
   /**
    * 空心圆角矩形图片格式分割线和文本左边距
    */
-  linkRectToolIconLineLeftPadding?: number = undefined
+  private linkRectToolIconLineLeftPadding?: number = undefined
 
   /**
    * 空心圆角矩形图片格式分割线和文本右边距
    */
-  linkRectToolIconLineRightPadding?: number = undefined
+  private linkRectToolIconLineRightPadding?: number = undefined
 
   /**
    * 设置链接是否是图片显示
@@ -565,5 +565,374 @@ export class MarkdownThemeLink {
    */
   setLinkRectToolIconLineRightPadding(padding: number): void {
     this.linkRectToolIconLineRightPadding = padding
+  }
+
+  /**
+   * 获取linkIsIcon
+   *
+   * @returns linkIsIcon
+   */
+  getLinkIsIcon(): boolean | undefined {
+    return this.linkIsIcon
+  }
+
+  /**
+   * 获取linkListIsIcon
+   *
+   * @returns linkListIsIcon
+   */
+  getLinkListIsIcon(): boolean | undefined {
+    return this.linkListIsIcon
+  }
+
+  /**
+   * 获取linkTextFontColor
+   *
+   * @returns linkTextFontColor
+   */
+  getLinkTextFontColor(): number | undefined {
+    return this.linkTextFontColor
+  }
+
+  /**
+   * 获取linkTextFontSize
+   *
+   * @returns linkTextFontSize
+   */
+  getLinkTextFontSize(): number | undefined {
+    return this.linkTextFontSize
+  }
+
+  /**
+   * 获取linkTextFontStyle
+   *
+   * @returns linkTextFontStyle
+   */
+  getLinkTextFontStyle(): FontStyle | undefined {
+    return this.linkTextFontStyle
+  }
+
+  /**
+   * 获取linkTextFontWeight
+   *
+   * @returns linkTextFontWeight
+   */
+  getLinkTextFontWeight(): FontWeight | undefined {
+    return this.linkTextFontWeight
+  }
+
+  /**
+   * 获取linkTextFontFamily
+   *
+   * @returns linkTextFontFamily
+   */
+  getLinkTextFontFamily(): string | undefined {
+    return this.linkTextFontFamily
+  }
+
+  /**
+   * 获取linkTextLineHeight
+   *
+   * @returns linkTextLineHeight
+   */
+  getLinkTextLineHeight(): number | undefined {
+    return this.linkTextLineHeight
+  }
+
+  /**
+   * 获取linkTextLetterSpacing
+   *
+   * @returns linkTextLetterSpacing
+   */
+  getLinkTextLetterSpacing(): number | undefined {
+    return this.linkTextLetterSpacing
+  }
+
+  /**
+   * 获取linkTextDecorationType
+   *
+   * @returns linkTextDecorationType
+   */
+  getLinkTextDecorationType(): TextDecorationType | undefined {
+    return this.linkTextDecorationType
+  }
+
+  /**
+   * 获取linkTextDecorationColor
+   *
+   * @returns linkTextDecorationColor
+   */
+  getLinkTextDecorationColor(): number | undefined {
+    return this.linkTextDecorationColor
+  }
+
+  /**
+   * 获取linkTextDecorationStyle
+   *
+   * @returns linkTextDecorationStyle
+   */
+  getLinkTextDecorationStyle(): TextDecorationStyle | undefined {
+    return this.linkTextDecorationStyle
+  }
+
+  /**
+   * 获取linkTextBackgroundColor
+   *
+   * @returns linkTextBackgroundColor
+   */
+  getLinkTextBackgroundColor(): number | undefined {
+    return this.linkTextBackgroundColor
+  }
+
+  /**
+   * 获取linkTextBackgroundRadiusTopLeft
+   *
+   * @returns linkTextBackgroundRadiusTopLeft
+   */
+  getLinkTextBackgroundRadiusTopLeft(): number | undefined {
+    return this.linkTextBackgroundRadiusTopLeft
+  }
+
+  /**
+   * 获取linkTextBackgroundRadiusTopRight
+   *
+   * @returns linkTextBackgroundRadiusTopRight
+   */
+  getLinkTextBackgroundRadiusTopRight(): number | undefined {
+    return this.linkTextBackgroundRadiusTopRight
+  }
+
+  /**
+   * 获取linkTextBackgroundRadiusBottomLeft
+   *
+   * @returns linkTextBackgroundRadiusBottomLeft
+   */
+  getLinkTextBackgroundRadiusBottomLeft(): number | undefined {
+    return this.linkTextBackgroundRadiusBottomLeft
+  }
+
+  /**
+   * 获取linkTextBackgroundRadiusBottomRight
+   *
+   * @returns linkTextBackgroundRadiusBottomRight
+   */
+  getLinkTextBackgroundRadiusBottomRight(): number | undefined {
+    return this.linkTextBackgroundRadiusBottomRight
+  }
+
+  /**
+   * 获取linkCircleIconBackgroundColor
+   *
+   * @returns linkCircleIconBackgroundColor
+   */
+  getLinkCircleIconBackgroundColor(): number | undefined {
+    return this.linkCircleIconBackgroundColor
+  }
+
+  /**
+   * 获取linkCircleIconButtonBackgroundColor
+   *
+   * @returns linkCircleIconButtonBackgroundColor
+   */
+  getLinkCircleIconButtonBackgroundColor(): number | undefined {
+    return this.linkCircleIconButtonBackgroundColor
+  }
+
+  /**
+   * 获取linkCircleIconTextSize
+   *
+   * @returns linkCircleIconTextSize
+   */
+  getLinkCircleIconTextSize(): number | undefined {
+    return this.linkCircleIconTextSize
+  }
+
+  /**
+   * 获取linkCircleIconTextColor
+   *
+   * @returns linkCircleIconTextColor
+   */
+  getLinkCircleIconTextColor(): number | undefined {
+    return this.linkCircleIconTextColor
+  }
+
+  /**
+   * 获取linkCircleIconRadius
+   *
+   * @returns linkCircleIconRadius
+   */
+  getLinkCircleIconRadius(): number | undefined {
+    return this.linkCircleIconRadius
+  }
+
+  /**
+   * 获取linkCircleIconMargin
+   *
+   * @returns linkCircleIconMargin
+   */
+  getLinkCircleIconMargin(): number | undefined {
+    return this.linkCircleIconMargin
+  }
+
+  /**
+   * 获取linkRectIconBackgroundColor
+   *
+   * @returns linkRectIconBackgroundColor
+   */
+  getLinkRectIconBackgroundColor(): number | undefined {
+    return this.linkRectIconBackgroundColor
+  }
+
+  /**
+   * 获取linkRectIconButtonBackgroundColor
+   *
+   * @returns linkRectIconButtonBackgroundColor
+   */
+  getLinkRectIconButtonBackgroundColor(): number | undefined {
+    return this.linkRectIconButtonBackgroundColor
+  }
+
+  /**
+   * 获取linkRectIconTextSize
+   *
+   * @returns linkRectIconTextSize
+   */
+  getLinkRectIconTextSize(): number | undefined {
+    return this.linkRectIconTextSize
+  }
+
+  /**
+   * 获取linkRectIconTextColor
+   *
+   * @returns linkRectIconTextColor
+   */
+  getLinkRectIconTextColor(): number | undefined {
+    return this.linkRectIconTextColor
+  }
+
+  /**
+   * 获取linkRectIconHeight
+   *
+   * @returns linkRectIconHeight
+   */
+  getLinkRectIconHeight(): number | undefined {
+    return this.linkRectIconHeight
+  }
+
+  /**
+   * 获取linkRectIconPadding
+   *
+   * @returns linkRectIconPadding
+   */
+  getLinkRectIconPadding(): number | undefined {
+    return this.linkRectIconPadding
+  }
+
+  /**
+   * 获取linkRectIconRadius
+   *
+   * @returns linkRectIconRadius
+   */
+  getLinkRectIconRadius(): number | undefined {
+    return this.linkRectIconRadius
+  }
+
+  /**
+   * 获取linkRectIconMargin
+   *
+   * @returns linkRectIconMargin
+   */
+  getLinkRectIconMargin(): number | undefined {
+    return this.linkRectIconMargin
+  }
+
+  /**
+   * 获取linkRectToolIconBackgroundColor
+   *
+   * @returns linkRectToolIconBackgroundColor
+   */
+  getLinkRectToolIconBackgroundColor(): number | undefined {
+    return this.linkRectToolIconBackgroundColor
+  }
+
+  /**
+   * 获取linkRectToolIconButtonBackgroundColor
+   *
+   * @returns linkRectToolIconButtonBackgroundColor
+   */
+  getLinkRectToolIconButtonBackgroundColor(): number | undefined {
+    return this.linkRectToolIconButtonBackgroundColor
+  }
+
+  /**
+   * 获取linkRectToolIconTextSize
+   *
+   * @returns linkRectToolIconTextSize
+   */
+  getLinkRectToolIconTextSize(): number | undefined {
+    return this.linkRectToolIconTextSize
+  }
+
+  /**
+   * 获取linkRectToolIconHeight
+   *
+   * @returns linkRectToolIconHeight
+   */
+  getLinkRectToolIconHeight(): number | undefined {
+    return this.linkRectToolIconHeight
+  }
+
+  /**
+   * 获取linkRectToolIconPadding
+   *
+   * @returns linkRectToolIconPadding
+   */
+  getLinkRectToolIconPadding(): number | undefined {
+    return this.linkRectToolIconPadding
+  }
+
+  /**
+   * 获取linkRectToolIconBorderWidth
+   *
+   * @returns linkRectToolIconBorderWidth
+   */
+  getLinkRectToolIconBorderWidth(): number | undefined {
+    return this.linkRectToolIconBorderWidth
+  }
+
+  /**
+   * 获取linkRectToolIconDividingLineWidth
+   *
+   * @returns linkRectToolIconDividingLineWidth
+   */
+  getLinkRectToolIconDividingLineWidth(): number | undefined {
+    return this.linkRectToolIconDividingLineWidth
+  }
+
+  /**
+   * 获取linkRectToolIconMargin
+   *
+   * @returns linkRectToolIconMargin
+   */
+  getLinkRectToolIconMargin(): number | undefined {
+    return this.linkRectToolIconMargin
+  }
+
+  /**
+   * 获取linkRectToolIconLineLeftPadding
+   *
+   * @returns linkRectToolIconLineLeftPadding
+   */
+  getLinkRectToolIconLineLeftPadding(): number | undefined {
+    return this.linkRectToolIconLineLeftPadding
+  }
+
+  /**
+   * 获取linkRectToolIconLineRightPadding
+   *
+   * @returns linkRectToolIconLineRightPadding
+   */
+  getLinkRectToolIconLineRightPadding(): number | undefined {
+    return this.linkRectToolIconLineRightPadding
   }
 }

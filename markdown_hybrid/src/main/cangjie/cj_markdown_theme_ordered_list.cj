@@ -209,7 +209,7 @@ public class CJMarkdownOrderedListTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setOrderedListMarkerTextFontWeight(weight: String): Unit {
+    public func setOrderedListMarkerTextFontWeight(weight: Int64): Unit {
         orderedListMarkerTextFontWeight = convertFontWeight(weight)
     }
 

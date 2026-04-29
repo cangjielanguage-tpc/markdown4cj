@@ -546,7 +546,7 @@ public class CJMarkdownAudioTheme {
      *
      * @param weight 按钮文本字体粗细
      */
-    public func setAudioButtonTextFontWeight(weight: String): Unit {
+    public func setAudioButtonTextFontWeight(weight: Int64): Unit {
         audioButtonTextFontWeight = convertFontWeight(weight)
     }
     /**
@@ -594,7 +594,7 @@ public class CJMarkdownAudioTheme {
      *
      * @param weight 标题文本字体粗细
      */
-    public func setAudioTitleTextFontWeight(weight: String): Unit {
+    public func setAudioTitleTextFontWeight(weight: Int64): Unit {
         audioTitleTextFontWeight = convertFontWeight(weight)
     }
     /**
@@ -642,7 +642,7 @@ public class CJMarkdownAudioTheme {
      *
      * @param weight 类型文本字体粗细
      */
-    public func setAudioTypeTextFontWeight(weight: String): Unit {
+    public func setAudioTypeTextFontWeight(weight: Int64): Unit {
         audioTypeTextFontWeight = convertFontWeight(weight)
     }
     /**

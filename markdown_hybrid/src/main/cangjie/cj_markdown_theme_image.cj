@@ -499,7 +499,7 @@ public class CJMarkdownImageTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setImageDownloadButtonTextFontWeight(weight: String): Unit {
+    public func setImageDownloadButtonTextFontWeight(weight: Int64): Unit {
         imageDownloadButtonTextFontWeight = convertFontWeight(weight)
     }
 

@@ -397,22 +397,22 @@ export struct CJMarkdown {
     if (this.config !== undefined) {
       if (this.config.markdownTheme !== undefined) {
         if (this.config.markdownTheme.markdownThemeGlobal !== undefined &&
-            this.config.markdownTheme.markdownThemeGlobal.stageContext !== undefined) {
-          global_customLib.setGlobalContext(this.config.markdownTheme.markdownThemeGlobal.stageContext)
+            this.config.markdownTheme.markdownThemeGlobal.getStageContext() !== undefined) {
+          global_customLib.setGlobalContext(this.config.markdownTheme.markdownThemeGlobal.getStageContext())
         } else {
           global_customLib.setGlobalContext(undefined)
         }
         global_customLib.getCJResource(
-          this.config.markdownTheme.markdownThemeCodeBlock.codeBlockFullScreenIcon,
-          this.config.markdownTheme.markdownThemeCodeBlock.codeBlockCopyIcon,
-          this.config.markdownTheme.markdownThemeAudio.audioIcon,
-          this.config.markdownTheme.markdownThemeVideo.videoPlaceholder,
-          this.config.markdownTheme.markdownThemeVideo.videoPlayIcon,
-          this.config.markdownTheme.markdownThemeBanner.bannerPlaceholder,
-          this.config.markdownTheme.markdownThemeImage.imagePlaceholder,
-          this.config.markdownTheme.markdownThemeVideo.videoReleaseButtonIcon,
-          this.config.markdownTheme.markdownThemeVideo.videoDownloadButtonIcon,
-          this.config.markdownTheme.markdownThemeImage.imageDownloadButtonIcon
+          this.config.markdownTheme.markdownThemeCodeBlock.getCodeBlockFullScreenIcon(),
+          this.config.markdownTheme.markdownThemeCodeBlock.getCodeBlockCopyIcon(),
+          this.config.markdownTheme.markdownThemeAudio.getAudioIcon(),
+          this.config.markdownTheme.markdownThemeVideo.getVideoPlaceholder(),
+          this.config.markdownTheme.markdownThemeVideo.getVideoPlayIcon(),
+          this.config.markdownTheme.markdownThemeBanner.getBannerPlaceholder(),
+          this.config.markdownTheme.markdownThemeImage.getImagePlaceholder(),
+          this.config.markdownTheme.markdownThemeVideo.getVideoReleaseButtonIcon(),
+          this.config.markdownTheme.markdownThemeVideo.getVideoDownloadButtonIcon(),
+          this.config.markdownTheme.markdownThemeImage.getImageDownloadButtonIcon()
         )
         cjMarkdownTheme.setCJMarkdownGlobalTheme(this.getGlobalTheme(this.config.markdownTheme.markdownThemeGlobal))
         cjMarkdownTheme.setCJMarkdownAudioTheme(this.getAudioTheme(this.config.markdownTheme.markdownThemeAudio))
@@ -445,8 +445,8 @@ export struct CJMarkdown {
         }
 
         if (this.config.markdownTheme.markdownThemeCodeBlock !== undefined &&
-            this.config.markdownTheme.markdownThemeCodeBlock.codeBlockIsDark !== undefined) {
-          cjMarkdownTheme.setIsDark(this.config.markdownTheme.markdownThemeCodeBlock.codeBlockIsDark)
+            this.config.markdownTheme.markdownThemeCodeBlock.getCodeBlockIsDark() !== undefined) {
+          cjMarkdownTheme.setIsDark(this.config.markdownTheme.markdownThemeCodeBlock.getCodeBlockIsDark())
         }
       }
     }
@@ -458,203 +458,146 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownAudioTheme()
-    if (theme.audioBackgroundColor !== undefined) {
-      cjMarkdownTheme.setAudioBackgroundColor(theme.audioBackgroundColor)
+    if (theme.getAudioBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setAudioBackgroundColor(theme.getAudioBackgroundColor())
     }
-    let audioMarginTop: number = 0.0
-    let audioMarginRight: number = 0.0
-    let audioMarginBottom: number = 0.0
-    let audioMarginLeft: number = 0.0
-    if (theme.audioMarginTop !== undefined) {
-      audioMarginTop = theme.audioMarginTop
-    }
-    if (theme.audioMarginRight !== undefined) {
-      audioMarginRight = theme.audioMarginRight
-    }
-    if (theme.audioMarginBottom !== undefined) {
-      audioMarginBottom = theme.audioMarginBottom
-    }
-    if (theme.audioMarginLeft !== undefined) {
-      audioMarginLeft = theme.audioMarginLeft
-    }
+    let audioMarginTop: number = theme.getAudioMarginTop() ?? 0
+    let audioMarginRight: number = theme.getAudioMarginRight() ?? 0
+    let audioMarginBottom: number = theme.getAudioMarginBottom() ?? 0
+    let audioMarginLeft: number = theme.getAudioMarginLeft() ?? 0
     cjMarkdownTheme.setAudioMargin(audioMarginTop, audioMarginRight, audioMarginBottom, audioMarginLeft)
 
-    let audioPaddingTop: number = 12.0
-    let audioPaddingRight: number = 16.0
-    let audioPaddingBottom: number = 12.0
-    let audioPaddingLeft: number = 12.0
-    if (theme.audioPaddingTop !== undefined) {
-      audioPaddingTop = theme.audioPaddingTop
-    }
-    if (theme.audioPaddingRight !== undefined) {
-      audioPaddingRight = theme.audioPaddingRight
-    }
-    if (theme.audioPaddingBottom !== undefined) {
-      audioPaddingBottom = theme.audioPaddingBottom
-    }
-    if (theme.audioPaddingLeft !== undefined) {
-      audioPaddingLeft = theme.audioPaddingLeft
-    }
+    let audioPaddingTop: number = theme.getAudioPaddingTop() ?? 12
+    let audioPaddingRight: number = theme.getAudioPaddingRight() ?? 16
+    let audioPaddingBottom: number = theme.getAudioPaddingBottom() ?? 12
+    let audioPaddingLeft: number = theme.getAudioPaddingLeft() ?? 12
     cjMarkdownTheme.setAudioPadding(audioPaddingTop, audioPaddingRight, audioPaddingBottom, audioPaddingLeft)
-    if (theme.audioBorderStyle !== undefined) {
-      cjMarkdownTheme.setAudioBorderStyle(theme.audioBorderStyle)
+
+    if (theme.getAudioBorderStyle() !== undefined) {
+      cjMarkdownTheme.setAudioBorderStyle(theme.getAudioBorderStyle())
     }
-    if (theme.audioBorderWidth !== undefined) {
-      cjMarkdownTheme.setAudioBorderWidth(theme.audioBorderWidth)
+    if (theme.getAudioBorderWidth() !== undefined) {
+      cjMarkdownTheme.setAudioBorderWidth(theme.getAudioBorderWidth())
     }
-    if (theme.audioBorderColor !== undefined) {
-      cjMarkdownTheme.setAudioBorderColor(theme.audioBorderColor)
+    if (theme.getAudioBorderColor() !== undefined) {
+      cjMarkdownTheme.setAudioBorderColor(theme.getAudioBorderColor())
     }
-    let audioRadiusTopLeft: number = 12.0
-    let audioRadiusTopRight: number = 12.0
-    let audioRadiusBottomLeft: number = 12.0
-    let audioRadiusBottomRight: number = 12.0
-    if (theme.audioRadiusTopLeft !== undefined) {
-      audioRadiusTopLeft = theme.audioRadiusTopLeft
-    }
-    if (theme.audioRadiusTopRight !== undefined) {
-      audioRadiusTopRight = theme.audioRadiusTopRight
-    }
-    if (theme.audioRadiusBottomLeft !== undefined) {
-      audioRadiusBottomLeft = theme.audioRadiusBottomLeft
-    }
-    if (theme.audioRadiusBottomRight !== undefined) {
-      audioRadiusBottomRight = theme.audioRadiusBottomRight
-    }
+    let audioRadiusTopLeft: number = theme.getAudioRadiusTopLeft() ?? 12
+    let audioRadiusTopRight: number = theme.getAudioRadiusTopRight() ?? 12
+    let audioRadiusBottomLeft: number = theme.getAudioRadiusBottomLeft() ?? 12
+    let audioRadiusBottomRight: number = theme.getAudioRadiusBottomRight() ?? 12
     cjMarkdownTheme.setAudioBorderRadius(audioRadiusTopLeft, audioRadiusTopRight, audioRadiusBottomLeft, audioRadiusBottomRight)
-    if (theme.audioShadowRadius !== undefined) {
-      cjMarkdownTheme.setAudioShadowRadius(theme.audioShadowRadius)
+
+    if (theme.getAudioShadowRadius() !== undefined) {
+      cjMarkdownTheme.setAudioShadowRadius(theme.getAudioShadowRadius())
     }
-    if (theme.audioShadowColor !== undefined) {
-      cjMarkdownTheme.setAudioShadowColor(theme.audioShadowColor)
+    if (theme.getAudioShadowColor() !== undefined) {
+      cjMarkdownTheme.setAudioShadowColor(theme.getAudioShadowColor())
     }
-    if (theme.audioShadowOffsetX !== undefined) {
-      cjMarkdownTheme.setAudioShadowOffsetX(theme.audioShadowOffsetX)
+    if (theme.getAudioShadowOffsetX() !== undefined) {
+      cjMarkdownTheme.setAudioShadowOffsetX(theme.getAudioShadowOffsetX())
     }
-    if (theme.audioShadowOffsetY !== undefined) {
-      cjMarkdownTheme.setAudioShadowOffsetY(theme.audioShadowOffsetY)
+    if (theme.getAudioShadowOffsetY() !== undefined) {
+      cjMarkdownTheme.setAudioShadowOffsetY(theme.getAudioShadowOffsetY())
     }
-    if (theme.audioButtonWidth !== undefined) {
-      cjMarkdownTheme.setAudioButtonWidth(theme.audioButtonWidth)
+    if (theme.getAudioButtonWidth() !== undefined) {
+      cjMarkdownTheme.setAudioButtonWidth(theme.getAudioButtonWidth())
     }
-    if (theme.audioButtonHeight !== undefined) {
-      cjMarkdownTheme.setAudioButtonHeight(theme.audioButtonHeight)
+    if (theme.getAudioButtonHeight() !== undefined) {
+      cjMarkdownTheme.setAudioButtonHeight(theme.getAudioButtonHeight())
     }
-    if (theme.audioButtonBackgroundColor !== undefined) {
-      cjMarkdownTheme.setAudioButtonBackgroundColor(theme.audioButtonBackgroundColor)
+    if (theme.getAudioButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setAudioButtonBackgroundColor(theme.getAudioButtonBackgroundColor())
     }
-    if (theme.audioButtonBorderStyle !== undefined) {
-      cjMarkdownTheme.setAudioButtonBorderStyle(theme.audioButtonBorderStyle)
+    if (theme.getAudioButtonBorderStyle() !== undefined) {
+      cjMarkdownTheme.setAudioButtonBorderStyle(theme.getAudioButtonBorderStyle())
     }
-    if (theme.audioButtonBorderWidth !== undefined) {
-      cjMarkdownTheme.setAudioButtonBorderWidth(theme.audioButtonBorderWidth)
+    if (theme.getAudioButtonBorderWidth() !== undefined) {
+      cjMarkdownTheme.setAudioButtonBorderWidth(theme.getAudioButtonBorderWidth())
     }
-    if (theme.audioButtonBorderColor !== undefined) {
-      cjMarkdownTheme.setAudioButtonBorderColor(theme.audioButtonBorderColor)
+    if (theme.getAudioButtonBorderColor() !== undefined) {
+      cjMarkdownTheme.setAudioButtonBorderColor(theme.getAudioButtonBorderColor())
     }
-    let audioButtonRadiusTopLeft: number = 16.0
-    let audioButtonRadiusTopRight: number = 16.0
-    let audioButtonRadiusBottomLeft: number = 16.0
-    let audioButtonRadiusBottomRight: number = 16.0
-    if (theme.audioButtonRadiusTopLeft !== undefined) {
-      audioButtonRadiusTopLeft = theme.audioButtonRadiusTopLeft
-    }
-    if (theme.audioButtonRadiusTopRight !== undefined) {
-      audioButtonRadiusTopRight = theme.audioButtonRadiusTopRight
-    }
-    if (theme.audioButtonRadiusBottomLeft !== undefined) {
-      audioButtonRadiusBottomLeft = theme.audioButtonRadiusBottomLeft
-    }
-    if (theme.audioButtonRadiusBottomRight !== undefined) {
-      audioButtonRadiusBottomRight = theme.audioButtonRadiusBottomRight
-    }
+    let audioButtonRadiusTopLeft: number = theme.getAudioButtonRadiusTopLeft() ?? 16
+    let audioButtonRadiusTopRight: number = theme.getAudioButtonRadiusTopRight() ?? 16
+    let audioButtonRadiusBottomLeft: number = theme.getAudioButtonRadiusBottomLeft() ?? 16
+    let audioButtonRadiusBottomRight: number = theme.getAudioButtonRadiusBottomRight() ?? 16
     cjMarkdownTheme.setAudioButtonRadius(audioButtonRadiusTopLeft, audioButtonRadiusTopRight, audioButtonRadiusBottomLeft, audioButtonRadiusBottomRight)
-    if (theme.audioButtonText !== undefined) {
-      cjMarkdownTheme.setAudioButtonText(theme.audioButtonText)
+
+    if (theme.getAudioButtonText() !== undefined) {
+      cjMarkdownTheme.setAudioButtonText(theme.getAudioButtonText())
     }
-    if (theme.audioButtonTextFontColor !== undefined) {
-      cjMarkdownTheme.setAudioButtonTextFontColor(theme.audioButtonTextFontColor)
+    if (theme.getAudioButtonTextFontColor() !== undefined) {
+      cjMarkdownTheme.setAudioButtonTextFontColor(theme.getAudioButtonTextFontColor())
     }
-    if (theme.audioButtonTextFontSize !== undefined) {
-      cjMarkdownTheme.setAudioButtonTextFontSize(theme.audioButtonTextFontSize)
+    if (theme.getAudioButtonTextFontSize() !== undefined) {
+      cjMarkdownTheme.setAudioButtonTextFontSize(theme.getAudioButtonTextFontSize())
     }
-    if (theme.audioButtonTextFontStyle !== undefined) {
-      cjMarkdownTheme.setAudioButtonTextFontStyle(theme.audioButtonTextFontStyle)
+    if (theme.getAudioButtonTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setAudioButtonTextFontStyle(theme.getAudioButtonTextFontStyle())
     }
-    if (theme.audioButtonTextFontWeight !== undefined) {
-      cjMarkdownTheme.setAudioButtonTextFontWeight(theme.audioButtonTextFontWeight.toString())
+    if (theme.getAudioButtonTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setAudioButtonTextFontWeight(this.convertFontWeight(theme.getAudioButtonTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.audioButtonTextFontFamily !== undefined) {
-      cjMarkdownTheme.setAudioButtonTextFontFamily(theme.audioButtonTextFontFamily)
+    if (theme.getAudioButtonTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setAudioButtonTextFontFamily(theme.getAudioButtonTextFontFamily())
     }
-    if (theme.audioButtonTextLineHeight !== undefined) {
-      cjMarkdownTheme.setAudioButtonTextLineHeight(theme.audioButtonTextLineHeight)
+    if (theme.getAudioButtonTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setAudioButtonTextLineHeight(theme.getAudioButtonTextLineHeight())
     }
-    if (theme.audioIconWidth !== undefined) {
-      cjMarkdownTheme.setAudioIconWidth(theme.audioIconWidth)
+    if (theme.getAudioIconWidth() !== undefined) {
+      cjMarkdownTheme.setAudioIconWidth(theme.getAudioIconWidth())
     }
-    if (theme.audioIconHeight !== undefined) {
-      cjMarkdownTheme.setAudioIconHeight(theme.audioIconHeight)
+    if (theme.getAudioIconHeight() !== undefined) {
+      cjMarkdownTheme.setAudioIconHeight(theme.getAudioIconHeight())
     }
-    let audioIconRadiusTopLeft: number = 8.0
-    let audioIconRadiusTopRight: number = 8.0
-    let audioIconRadiusBottomLeft: number = 8.0
-    let audioIconRadiusBottomRight: number = 8.0
-    if (theme.audioIconRadiusTopLeft !== undefined) {
-      audioIconRadiusTopLeft = theme.audioIconRadiusTopLeft
-    }
-    if (theme.audioIconRadiusTopRight !== undefined) {
-      audioIconRadiusTopRight = theme.audioIconRadiusTopRight
-    }
-    if (theme.audioIconRadiusBottomLeft !== undefined) {
-      audioIconRadiusBottomLeft = theme.audioIconRadiusBottomLeft
-    }
-    if (theme.audioIconRadiusBottomRight !== undefined) {
-      audioIconRadiusBottomRight = theme.audioIconRadiusBottomRight
-    }
+    let audioIconRadiusTopLeft: number = theme.getAudioIconRadiusTopLeft() ?? 8
+    let audioIconRadiusTopRight: number = theme.getAudioIconRadiusTopRight() ?? 8
+    let audioIconRadiusBottomLeft: number = theme.getAudioIconRadiusBottomLeft() ?? 8
+    let audioIconRadiusBottomRight: number = theme.getAudioIconRadiusBottomRight() ?? 8
     cjMarkdownTheme.setAudioIconRadius(audioIconRadiusTopLeft, audioIconRadiusTopRight, audioIconRadiusBottomLeft, audioIconRadiusBottomRight
     )
-    if (theme.audioIconFitType !== undefined) {
-      cjMarkdownTheme.setAudioIconFitType(theme.audioIconFitType)
+    if (theme.getAudioIconFitType() !== undefined) {
+      cjMarkdownTheme.setAudioIconFitType(theme.getAudioIconFitType())
     }
-    if (theme.audioTitleTextFontColor !== undefined) {
-      cjMarkdownTheme.setAudioTitleTextFontColor(theme.audioTitleTextFontColor)
+    if (theme.getAudioTitleTextFontColor() !== undefined) {
+      cjMarkdownTheme.setAudioTitleTextFontColor(theme.getAudioTitleTextFontColor())
     }
-    if (theme.audioTitleTextFontSize !== undefined) {
-      cjMarkdownTheme.setAudioTitleTextFontSize(theme.audioTitleTextFontSize)
+    if (theme.getAudioTitleTextFontSize() !== undefined) {
+      cjMarkdownTheme.setAudioTitleTextFontSize(theme.getAudioTitleTextFontSize())
     }
-    if (theme.audioTitleTextFontStyle !== undefined) {
-      cjMarkdownTheme.setAudioTitleTextFontStyle(theme.audioTitleTextFontStyle)
+    if (theme.getAudioTitleTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setAudioTitleTextFontStyle(theme.getAudioTitleTextFontStyle())
     }
-    if (theme.audioTitleTextFontWeight !== undefined) {
-      cjMarkdownTheme.setAudioTitleTextFontWeight(theme.audioTitleTextFontWeight.toString())
+    if (theme.getAudioTitleTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setAudioTitleTextFontWeight(this.convertFontWeight(theme.getAudioTitleTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.audioTitleTextFontFamily !== undefined) {
-      cjMarkdownTheme.setAudioTitleTextFontFamily(theme.audioTitleTextFontFamily)
+    if (theme.getAudioTitleTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setAudioTitleTextFontFamily(theme.getAudioTitleTextFontFamily())
     }
-    if (theme.audioTitleTextLineHeight !== undefined) {
-      cjMarkdownTheme.setAudioTitleTextLineHeight(theme.audioTitleTextLineHeight)
+    if (theme.getAudioTitleTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setAudioTitleTextLineHeight(theme.getAudioTitleTextLineHeight())
     }
-    if (theme.audioTypeTextFontColor !== undefined) {
-      cjMarkdownTheme.setAudioTypeTextFontColor(theme.audioTypeTextFontColor)
+    if (theme.getAudioTypeTextFontColor() !== undefined) {
+      cjMarkdownTheme.setAudioTypeTextFontColor(theme.getAudioTypeTextFontColor())
     }
-    if (theme.audioTypeTextFontSize !== undefined) {
-      cjMarkdownTheme.setAudioTypeTextFontSize(theme.audioTypeTextFontSize)
+    if (theme.getAudioTypeTextFontSize() !== undefined) {
+      cjMarkdownTheme.setAudioTypeTextFontSize(theme.getAudioTypeTextFontSize())
     }
-    if (theme.audioTypeTextFontStyle !== undefined) {
-      cjMarkdownTheme.setAudioTypeTextFontStyle(theme.audioTypeTextFontStyle)
+    if (theme.getAudioTypeTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setAudioTypeTextFontStyle(theme.getAudioTypeTextFontStyle())
     }
-    if (theme.audioTypeTextFontWeight !== undefined) {
-      cjMarkdownTheme.setAudioTypeTextFontWeight(theme.audioTypeTextFontWeight.toString())
+    if (theme.getAudioTypeTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setAudioTypeTextFontWeight(this.convertFontWeight(theme.getAudioTypeTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.audioTypeTextFontFamily !== undefined) {
-      cjMarkdownTheme.setAudioTypeTextFontFamily(theme.audioTypeTextFontFamily)
+    if (theme.getAudioTypeTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setAudioTypeTextFontFamily(theme.getAudioTypeTextFontFamily())
     }
-    if (theme.audioTypeTextLineHeight !== undefined) {
-      cjMarkdownTheme.setAudioTypeTextLineHeight(theme.audioTypeTextLineHeight)
+    if (theme.getAudioTypeTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setAudioTypeTextLineHeight(theme.getAudioTypeTextLineHeight())
     }
-    if (theme.audioTitleToTypeSpacing !== undefined) {
-      cjMarkdownTheme.setAudioTitleToTypeSpacing(theme.audioTitleToTypeSpacing)
+    if (theme.getAudioTitleToTypeSpacing() !== undefined) {
+      cjMarkdownTheme.setAudioTitleToTypeSpacing(theme.getAudioTitleToTypeSpacing())
     }
     return cjMarkdownTheme
   }
@@ -664,40 +607,16 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownBannerTheme()
-    let bannerMarginTop: number = 0.0
-    let bannerMarginRight: number = 0.0
-    let bannerMarginBottom: number = 0.0
-    let bannerMarginLeft: number = 0.0
-    if (theme.bannerMarginTop !== undefined) {
-      bannerMarginTop = theme.bannerMarginTop
-    }
-    if (theme.bannerMarginRight !== undefined) {
-      bannerMarginRight = theme.bannerMarginRight
-    }
-    if (theme.bannerMarginBottom !== undefined) {
-      bannerMarginBottom = theme.bannerMarginBottom
-    }
-    if (theme.bannerMarginLeft !== undefined) {
-      bannerMarginLeft = theme.bannerMarginLeft
-    }
+    let bannerMarginTop: number = theme.getBannerMarginTop() ?? 0
+    let bannerMarginRight: number = theme.getBannerMarginRight() ?? 0
+    let bannerMarginBottom: number = theme.getBannerMarginBottom() ?? 0
+    let bannerMarginLeft: number = theme.getBannerMarginLeft() ?? 0
     cjMarkdownTheme.setBannerMargin(bannerMarginTop, bannerMarginRight, bannerMarginBottom, bannerMarginLeft)
 
-    let bannerPaddingTop: number = 0.0
-    let bannerPaddingRight: number = 0.0
-    let bannerPaddingBottom: number = 0.0
-    let bannerPaddingLeft: number = 0.0
-    if (theme.bannerPaddingTop !== undefined) {
-      bannerPaddingTop = theme.bannerPaddingTop
-    }
-    if (theme.bannerPaddingRight !== undefined) {
-      bannerPaddingRight = theme.bannerPaddingRight
-    }
-    if (theme.bannerPaddingBottom !== undefined) {
-      bannerPaddingBottom = theme.bannerPaddingBottom
-    }
-    if (theme.bannerPaddingLeft !== undefined) {
-      bannerPaddingLeft = theme.bannerPaddingLeft
-    }
+    let bannerPaddingTop: number = theme.getBannerPaddingTop() ?? 0
+    let bannerPaddingRight: number = theme.getBannerPaddingRight() ?? 0
+    let bannerPaddingBottom: number = theme.getBannerPaddingBottom() ?? 0
+    let bannerPaddingLeft: number = theme.getBannerPaddingLeft() ?? 0
     cjMarkdownTheme.setBannerPadding(bannerPaddingTop, bannerPaddingRight, bannerPaddingBottom, bannerPaddingLeft)
     return cjMarkdownTheme
   }
@@ -707,73 +626,37 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownBlockQuoteTheme()
-    if (theme.blockQuoteBackgroundColor !== undefined) {
-      cjMarkdownTheme.setBlockQuoteBackgroundColor(theme.blockQuoteBackgroundColor)
+    if (theme.getBlockQuoteBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBlockQuoteBackgroundColor(theme.getBlockQuoteBackgroundColor())
     }
-    let blockQuoteMarginTop: number = 0.0
-    let blockQuoteMarginRight: number = 0.0
-    let blockQuoteMarginBottom: number = 0.0
-    let blockQuoteMarginLeft: number = 8.0
-    if (theme.blockQuoteMarginTop !== undefined) {
-      blockQuoteMarginTop = theme.blockQuoteMarginTop
-    }
-    if (theme.blockQuoteMarginRight !== undefined) {
-      blockQuoteMarginRight = theme.blockQuoteMarginRight
-    }
-    if (theme.blockQuoteMarginBottom !== undefined) {
-      blockQuoteMarginBottom = theme.blockQuoteMarginBottom
-    }
-    if (theme.blockQuoteMarginLeft !== undefined) {
-      blockQuoteMarginLeft = theme.blockQuoteMarginLeft
-    }
+    let blockQuoteMarginTop: number = theme.getBlockQuoteMarginTop() ?? 0
+    let blockQuoteMarginRight: number = theme.getBlockQuoteMarginRight() ?? 0
+    let blockQuoteMarginBottom: number = theme.getBlockQuoteMarginBottom() ?? 0
+    let blockQuoteMarginLeft: number = theme.getBlockQuoteMarginLeft() ?? 8
     cjMarkdownTheme.setBlockQuoteMargin(blockQuoteMarginTop, blockQuoteMarginRight, blockQuoteMarginBottom, blockQuoteMarginLeft)
 
-    let blockQuotePaddingTop: number = 0.0
-    let blockQuotePaddingRight: number = 0.0
-    let blockQuotePaddingBottom: number = 0.0
-    let blockQuotePaddingLeft: number = 0.0
-    if (theme.blockQuotePaddingTop !== undefined) {
-      blockQuotePaddingTop = theme.blockQuotePaddingTop
-    }
-    if (theme.blockQuotePaddingRight !== undefined) {
-      blockQuotePaddingRight = theme.blockQuotePaddingRight
-    }
-    if (theme.blockQuotePaddingBottom !== undefined) {
-      blockQuotePaddingBottom = theme.blockQuotePaddingBottom
-    }
-    if (theme.blockQuotePaddingLeft !== undefined) {
-      blockQuotePaddingLeft = theme.blockQuotePaddingLeft
-    }
+    let blockQuotePaddingTop: number = theme.getBlockQuotePaddingTop() ?? 0
+    let blockQuotePaddingRight: number = theme.getBlockQuotePaddingRight() ?? 0
+    let blockQuotePaddingBottom: number = theme.getBlockQuotePaddingBottom() ?? 0
+    let blockQuotePaddingLeft: number = theme.getBlockQuotePaddingLeft() ?? 0
     cjMarkdownTheme.setBlockQuotePadding(blockQuotePaddingTop, blockQuotePaddingRight, blockQuotePaddingBottom, blockQuotePaddingLeft)
 
-    let blockQuoteRadiusTopLeft: number = 0.0
-    let blockQuoteRadiusTopRight: number = 0.0
-    let blockQuoteRadiusBottomLeft: number = 0.0
-    let blockQuoteRadiusBottomRight: number = 0.0
-    if (theme.blockQuoteRadiusTopLeft !== undefined) {
-      blockQuoteRadiusTopLeft = theme.blockQuoteRadiusTopLeft
-    }
-    if (theme.blockQuoteRadiusTopRight !== undefined) {
-      blockQuoteRadiusTopRight = theme.blockQuoteRadiusTopRight
-    }
-    if (theme.blockQuoteRadiusBottomLeft !== undefined) {
-      blockQuoteRadiusBottomLeft = theme.blockQuoteRadiusBottomLeft
-    }
-    if (theme.blockQuoteRadiusBottomRight !== undefined) {
-      blockQuoteRadiusBottomRight = theme.blockQuoteRadiusBottomRight
-    }
+    let blockQuoteRadiusTopLeft: number = theme.getBlockQuoteRadiusTopLeft() ?? 0
+    let blockQuoteRadiusTopRight: number = theme.getBlockQuoteRadiusTopRight() ?? 0
+    let blockQuoteRadiusBottomLeft: number = theme.getBlockQuoteRadiusBottomLeft() ?? 0
+    let blockQuoteRadiusBottomRight: number = theme.getBlockQuoteRadiusBottomRight() ?? 0
     cjMarkdownTheme.setBlockQuoteRadius(blockQuoteRadiusTopLeft, blockQuoteRadiusTopRight, blockQuoteRadiusBottomLeft, blockQuoteRadiusBottomRight)
-    if (theme.blockQuoteLeftBorderWidth !== undefined) {
-      cjMarkdownTheme.setBlockQuoteLeftBorderWidth(theme.blockQuoteLeftBorderWidth)
+    if (theme.getBlockQuoteLeftBorderWidth() !== undefined) {
+      cjMarkdownTheme.setBlockQuoteLeftBorderWidth(theme.getBlockQuoteLeftBorderWidth())
     }
-    if (theme.blockQuoteLeftBorderColor !== undefined) {
-      cjMarkdownTheme.setBlockQuoteLeftBorderColor(theme.blockQuoteLeftBorderColor)
+    if (theme.getBlockQuoteLeftBorderColor() !== undefined) {
+      cjMarkdownTheme.setBlockQuoteLeftBorderColor(theme.getBlockQuoteLeftBorderColor())
     }
-    if (theme.blockQuoteBorderContentSpacing !== undefined) {
-      cjMarkdownTheme.setBlockQuoteBorderContentSpacing(theme.blockQuoteBorderContentSpacing)
+    if (theme.getBlockQuoteBorderContentSpacing() !== undefined) {
+      cjMarkdownTheme.setBlockQuoteBorderContentSpacing(theme.getBlockQuoteBorderContentSpacing())
     }
-    if (theme.blockQuoteChildSpacing !== undefined) {
-      cjMarkdownTheme.setBlockQuoteChildSpacing(theme.blockQuoteChildSpacing)
+    if (theme.getBlockQuoteChildSpacing() !== undefined) {
+      cjMarkdownTheme.setBlockQuoteChildSpacing(theme.getBlockQuoteChildSpacing())
     }
     return cjMarkdownTheme
   }
@@ -783,26 +666,26 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownBoldTheme()
-    if (theme.boldTextFontColor !== undefined) {
-      cjMarkdownTheme.setBoldTextFontColor(theme.boldTextFontColor)
+    if (theme.getBoldTextFontColor() !== undefined) {
+      cjMarkdownTheme.setBoldTextFontColor(theme.getBoldTextFontColor())
     }
-    if (theme.boldTextFontSize !== undefined) {
-      cjMarkdownTheme.setBoldTextFontSize(theme.boldTextFontSize)
+    if (theme.getBoldTextFontSize() !== undefined) {
+      cjMarkdownTheme.setBoldTextFontSize(theme.getBoldTextFontSize())
     }
-    if (theme.boldTextFontStyle !== undefined) {
-      cjMarkdownTheme.setBoldTextFontStyle(theme.boldTextFontStyle)
+    if (theme.getBoldTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setBoldTextFontStyle(theme.getBoldTextFontStyle())
     }
-    if (theme.boldTextFontWeight !== undefined) {
-      cjMarkdownTheme.setBoldTextFontWeight(theme.boldTextFontWeight.toString())
+    if (theme.getBoldTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setBoldTextFontWeight(this.convertFontWeight(theme.getBoldTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.boldTextFontFamily !== undefined) {
-      cjMarkdownTheme.setBoldTextFontFamily(theme.boldTextFontFamily)
+    if (theme.getBoldTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setBoldTextFontFamily(theme.getBoldTextFontFamily())
     }
-    if (theme.boldTextLineHeight !== undefined) {
-      cjMarkdownTheme.setBoldTextLineHeight(theme.boldTextLineHeight)
+    if (theme.getBoldTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setBoldTextLineHeight(theme.getBoldTextLineHeight())
     }
-    if (theme.boldTextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setBoldTextLetterSpacing(theme.boldTextLetterSpacing)
+    if (theme.getBoldTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setBoldTextLetterSpacing(theme.getBoldTextLetterSpacing())
     }
     return cjMarkdownTheme
   }
@@ -812,88 +695,64 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownBulletListTheme()
-    if (theme.bulletListBackgroundColor !== undefined) {
-      cjMarkdownTheme.setBulletListBackgroundColor(theme.bulletListBackgroundColor)
+    if (theme.getBulletListBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBulletListBackgroundColor(theme.getBulletListBackgroundColor())
     }
-    let bulletListMarginTop: number = 0.0
-    let bulletListMarginRight: number = 0.0
-    let bulletListMarginBottom: number = 0.0
-    let bulletListMarginLeft: number = 8.0
-    if (theme.bulletListMarginTop !== undefined) {
-      bulletListMarginTop = theme.bulletListMarginTop
-    }
-    if (theme.bulletListMarginRight !== undefined) {
-      bulletListMarginRight = theme.bulletListMarginRight
-    }
-    if (theme.bulletListMarginBottom !== undefined) {
-      bulletListMarginBottom = theme.bulletListMarginBottom
-    }
-    if (theme.bulletListMarginLeft !== undefined) {
-      bulletListMarginLeft = theme.bulletListMarginLeft
-    }
+    let bulletListMarginTop: number = theme.getBulletListMarginTop() ?? 0
+    let bulletListMarginRight: number = theme.getBulletListMarginRight() ?? 0
+    let bulletListMarginBottom: number = theme.getBulletListMarginBottom() ?? 0
+    let bulletListMarginLeft: number = theme.getBulletListMarginLeft() ?? 8
     cjMarkdownTheme.setBulletListMargin(bulletListMarginTop, bulletListMarginRight, bulletListMarginBottom, bulletListMarginLeft)
 
-    let bulletListPaddingTop: number = 0.0
-    let bulletListPaddingRight: number = 0.0
-    let bulletListPaddingBottom: number = 0.0
-    let bulletListPaddingLeft: number = 0.0
-    if (theme.bulletListPaddingTop !== undefined) {
-      bulletListPaddingTop = theme.bulletListPaddingTop
-    }
-    if (theme.bulletListPaddingRight !== undefined) {
-      bulletListPaddingRight = theme.bulletListPaddingRight
-    }
-    if (theme.bulletListPaddingBottom !== undefined) {
-      bulletListPaddingBottom = theme.bulletListPaddingBottom
-    }
-    if (theme.bulletListPaddingLeft !== undefined) {
-      bulletListPaddingLeft = theme.bulletListPaddingLeft
-    }
+    let bulletListPaddingTop: number = theme.getBulletListPaddingTop() ?? 0
+    let bulletListPaddingRight: number = theme.getBulletListPaddingRight() ?? 0
+    let bulletListPaddingBottom: number = theme.getBulletListPaddingBottom() ?? 0
+    let bulletListPaddingLeft: number = theme.getBulletListPaddingLeft() ?? 0
     cjMarkdownTheme.setBulletListPadding(bulletListPaddingTop, bulletListPaddingRight, bulletListPaddingBottom, bulletListPaddingLeft)
-    if (theme.bulletListChildSpacing !== undefined) {
-      cjMarkdownTheme.setBulletListChildSpacing(theme.bulletListChildSpacing)
+    if (theme.getBulletListChildSpacing() !== undefined) {
+      cjMarkdownTheme.setBulletListChildSpacing(theme.getBulletListChildSpacing())
     }
-    if (theme.bulletListChildChildSpacing !== undefined) {
-      cjMarkdownTheme.setBulletListChildChildSpacing(theme.bulletListChildChildSpacing)
+    if (theme.getBulletListChildChildSpacing() !== undefined) {
+      cjMarkdownTheme.setBulletListChildChildSpacing(theme.getBulletListChildChildSpacing())
     }
-    if (theme.bulletListBulletSpacing !== undefined) {
-      cjMarkdownTheme.setBulletListBulletSpacing(theme.bulletListBulletSpacing)
+    if (theme.getBulletListBulletSpacing() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletSpacing(theme.getBulletListBulletSpacing())
     }
-    if (theme.bulletListBulletIsCircle !== undefined) {
-      cjMarkdownTheme.setBulletListBulletIsCircle(theme.bulletListBulletIsCircle)
+    if (theme.getBulletListBulletIsCircle() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletIsCircle(theme.getBulletListBulletIsCircle())
     }
-    if (theme.bulletListBulletTextFontColor !== undefined) {
-      cjMarkdownTheme.setBulletListBulletTextFontColor(theme.bulletListBulletTextFontColor)
+    if (theme.getBulletListBulletTextFontColor() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletTextFontColor(theme.getBulletListBulletTextFontColor())
     }
-    if (theme.bulletListBulletTextFontSize !== undefined) {
-      cjMarkdownTheme.setBulletListBulletTextFontSize(theme.bulletListBulletTextFontSize)
+    if (theme.getBulletListBulletTextFontSize() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletTextFontSize(theme.getBulletListBulletTextFontSize())
     }
-    if (theme.bulletListBulletTextFontStyle !== undefined) {
-      cjMarkdownTheme.setBulletListBulletTextFontStyle(theme.bulletListBulletTextFontStyle)
+    if (theme.getBulletListBulletTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletTextFontStyle(theme.getBulletListBulletTextFontStyle())
     }
-    if (theme.bulletListBulletTextFontWeight !== undefined) {
-      cjMarkdownTheme.setBulletListBulletTextFontWeight(theme.bulletListBulletTextFontWeight.toString())
+    if (theme.getBulletListBulletTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletTextFontWeight(this.convertFontWeight(theme.getBulletListBulletTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.bulletListBulletTextFontFamily !== undefined) {
-      cjMarkdownTheme.setBulletListBulletTextFontFamily(theme.bulletListBulletTextFontFamily)
+    if (theme.getBulletListBulletTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletTextFontFamily(theme.getBulletListBulletTextFontFamily())
     }
-    if (theme.bulletListBulletTextLineHeight !== undefined) {
-      cjMarkdownTheme.setBulletListBulletTextLineHeight(theme.bulletListBulletTextLineHeight)
+    if (theme.getBulletListBulletTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setBulletListBulletTextLineHeight(theme.getBulletListBulletTextLineHeight())
     }
-    if (theme.bulletListCheckboxSpacing !== undefined) {
-      cjMarkdownTheme.setBulletListCheckboxSpacing(theme.bulletListCheckboxSpacing)
+    if (theme.getBulletListCheckboxSpacing() !== undefined) {
+      cjMarkdownTheme.setBulletListCheckboxSpacing(theme.getBulletListCheckboxSpacing())
     }
-    if (theme.bulletListCheckboxWidth !== undefined) {
-      cjMarkdownTheme.setBulletListCheckboxWidth(theme.bulletListCheckboxWidth)
+    if (theme.getBulletListCheckboxWidth() !== undefined) {
+      cjMarkdownTheme.setBulletListCheckboxWidth(theme.getBulletListCheckboxWidth())
     }
-    if (theme.bulletListCheckboxHeight !== undefined) {
-      cjMarkdownTheme.setBulletListCheckboxHeight(theme.bulletListCheckboxHeight)
+    if (theme.getBulletListCheckboxHeight() !== undefined) {
+      cjMarkdownTheme.setBulletListCheckboxHeight(theme.getBulletListCheckboxHeight())
     }
-    if (theme.bulletListCheckboxSelectedColor !== undefined) {
-      cjMarkdownTheme.setBulletListCheckboxSelectedColor(theme.bulletListCheckboxSelectedColor)
+    if (theme.getBulletListCheckboxSelectedColor() !== undefined) {
+      cjMarkdownTheme.setBulletListCheckboxSelectedColor(theme.getBulletListCheckboxSelectedColor())
     }
-    if (theme.bulletListCheckboxShape !== undefined) {
-      cjMarkdownTheme.setBulletListCheckboxShape(theme.bulletListCheckboxShape)
+    if (theme.getBulletListCheckboxShape() !== undefined) {
+      cjMarkdownTheme.setBulletListCheckboxShape(theme.getBulletListCheckboxShape())
     }
     return cjMarkdownTheme
   }
@@ -903,270 +762,234 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownCodeBlockTheme()
-    if (theme.codeBlockIsCodeFormat !== undefined) {
-      cjMarkdownTheme.setCodeBlockIsCodeFormat(theme.codeBlockIsCodeFormat)
+    if (theme.getCodeBlockIsCodeFormat() !== undefined) {
+      cjMarkdownTheme.setCodeBlockIsCodeFormat(theme.getCodeBlockIsCodeFormat())
     }
-    if (theme.codeBlockUseTab !== undefined) {
-      cjMarkdownTheme.setCodeBlockUseTab(theme.codeBlockUseTab)
+    if (theme.getCodeBlockUseTab() !== undefined) {
+      cjMarkdownTheme.setCodeBlockUseTab(theme.getCodeBlockUseTab())
     }
-    if (theme.codeBlockIndentWidth !== undefined) {
-      cjMarkdownTheme.setCodeBlockIndentWidth(theme.codeBlockIndentWidth)
+    if (theme.getCodeBlockIndentWidth() !== undefined) {
+      cjMarkdownTheme.setCodeBlockIndentWidth(theme.getCodeBlockIndentWidth())
     }
-    if (theme.codeBlockParserSync !== undefined) {
-      cjMarkdownTheme.setCodeBlockParserSync(theme.codeBlockParserSync)
+    if (theme.getCodeBlockParserSync() !== undefined) {
+      cjMarkdownTheme.setCodeBlockParserSync(theme.getCodeBlockParserSync())
     }
-    if (theme.codeBlockBackgroundColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockBackgroundColor(theme.codeBlockBackgroundColor)
+    if (theme.getCodeBlockBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockBackgroundColor(theme.getCodeBlockBackgroundColor())
     }
-    let codeBlockMarginTop: number = 8.0
-    let codeBlockMarginRight: number = 0.0
-    let codeBlockMarginBottom: number = 8.0
-    let codeBlockMarginLeft: number = 0.0
-    if (theme.codeBlockMarginTop !== undefined) {
-      codeBlockMarginTop = theme.codeBlockMarginTop
-    }
-    if (theme.codeBlockMarginRight !== undefined) {
-      codeBlockMarginRight = theme.codeBlockMarginRight
-    }
-    if (theme.codeBlockMarginBottom !== undefined) {
-      codeBlockMarginBottom = theme.codeBlockMarginBottom
-    }
-    if (theme.codeBlockMarginLeft !== undefined) {
-      codeBlockMarginLeft = theme.codeBlockMarginLeft
-    }
+    let codeBlockMarginTop: number = theme.getCodeBlockMarginTop() ?? 8
+    let codeBlockMarginRight: number = theme.getCodeBlockMarginRight() ?? 0
+    let codeBlockMarginBottom: number = theme.getCodeBlockMarginBottom() ?? 8
+    let codeBlockMarginLeft: number = theme.getCodeBlockMarginLeft() ?? 0
     cjMarkdownTheme.setCodeBlockMargin(codeBlockMarginTop, codeBlockMarginRight, codeBlockMarginBottom, codeBlockMarginLeft)
 
-    let codeBlockPaddingTop: number = 0.0
-    let codeBlockPaddingRight: number = 8.0
-    let codeBlockPaddingBottom: number = 8.0
-    let codeBlockPaddingLeft: number = 0.0
-    if (theme.codeBlockPaddingTop !== undefined) {
-      codeBlockPaddingTop = theme.codeBlockPaddingTop
-    }
-    if (theme.codeBlockPaddingRight !== undefined) {
-      codeBlockPaddingRight = theme.codeBlockPaddingRight
-    }
-    if (theme.codeBlockPaddingBottom !== undefined) {
-      codeBlockPaddingBottom = theme.codeBlockPaddingBottom
-    }
-    if (theme.codeBlockPaddingLeft !== undefined) {
-      codeBlockPaddingLeft = theme.codeBlockPaddingLeft
-    }
+    let codeBlockPaddingTop: number = theme.getCodeBlockPaddingTop() ?? 0
+    let codeBlockPaddingRight: number = theme.getCodeBlockPaddingRight() ?? 8
+    let codeBlockPaddingBottom: number = theme.getCodeBlockPaddingBottom() ?? 8
+    let codeBlockPaddingLeft: number = theme.getCodeBlockPaddingLeft() ?? 0
     cjMarkdownTheme.setCodeBlockPadding(codeBlockPaddingTop, codeBlockPaddingRight, codeBlockPaddingBottom, codeBlockPaddingLeft)
-    if (theme.codeBlockBorderStyle !== undefined) {
-      cjMarkdownTheme.setCodeBlockBorderStyle(theme.codeBlockBorderStyle)
+    if (theme.getCodeBlockBorderStyle() !== undefined) {
+      cjMarkdownTheme.setCodeBlockBorderStyle(theme.getCodeBlockBorderStyle())
     }
-    if (theme.codeBlockBorderWidth !== undefined) {
-      cjMarkdownTheme.setCodeBlockBorderWidth(theme.codeBlockBorderWidth)
+    if (theme.getCodeBlockBorderWidth() !== undefined) {
+      cjMarkdownTheme.setCodeBlockBorderWidth(theme.getCodeBlockBorderWidth())
     }
-    if (theme.codeBlockBorderColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockBorderColor(theme.codeBlockBorderColor)
+    if (theme.getCodeBlockBorderColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockBorderColor(theme.getCodeBlockBorderColor())
     }
-    let codeBlockRadiusTopLeft: number = 8.0
-    let codeBlockRadiusTopRight: number = 8.0
-    let codeBlockRadiusBottomLeft: number = 8.0
-    let codeBlockRadiusBottomRight: number = 8.0
-    if (theme.codeBlockRadiusTopLeft !== undefined) {
-      codeBlockRadiusTopLeft = theme.codeBlockRadiusTopLeft
-    }
-    if (theme.codeBlockRadiusTopRight !== undefined) {
-      codeBlockRadiusTopRight = theme.codeBlockRadiusTopRight
-    }
-    if (theme.codeBlockRadiusBottomLeft !== undefined) {
-      codeBlockRadiusBottomLeft = theme.codeBlockRadiusBottomLeft
-    }
-    if (theme.codeBlockRadiusBottomRight !== undefined) {
-      codeBlockRadiusBottomRight = theme.codeBlockRadiusBottomRight
-    }
+    let codeBlockRadiusTopLeft: number = theme.getCodeBlockRadiusTopLeft() ?? 8
+    let codeBlockRadiusTopRight: number = theme.getCodeBlockRadiusTopRight() ?? 8
+    let codeBlockRadiusBottomLeft: number = theme.getCodeBlockRadiusBottomLeft() ?? 8
+    let codeBlockRadiusBottomRight: number = theme.getCodeBlockRadiusBottomRight() ?? 8
     cjMarkdownTheme.setCodeBlockRadius(codeBlockRadiusTopLeft, codeBlockRadiusTopRight, codeBlockRadiusBottomLeft, codeBlockRadiusBottomRight)
-    if (theme.codeBlockTitleLayoutMarginBottom !== undefined) {
-      cjMarkdownTheme.setCodeBlockTitleLayoutMarginBottom(theme.codeBlockTitleLayoutMarginBottom)
+    if (theme.getCodeBlockTitleLayoutMarginBottom() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTitleLayoutMarginBottom(theme.getCodeBlockTitleLayoutMarginBottom())
     }
-    if (theme.codeBlockTypeTextMarginLeft !== undefined) {
-      cjMarkdownTheme.setCodeBlockTypeTextMarginLeft(theme.codeBlockTypeTextMarginLeft)
+    if (theme.getCodeBlockTypeTextMarginLeft() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextMarginLeft(theme.getCodeBlockTypeTextMarginLeft())
     }
-    if (theme.codeBlockTypeText !== undefined) {
-      cjMarkdownTheme.setCodeBlockTypeText(theme.codeBlockTypeText)
+    if (theme.getCodeBlockTypeText() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeText(theme.getCodeBlockTypeText())
     }
-    if (theme.codeBlockTypeTextFontColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockTypeTextFontColor(theme.codeBlockTypeTextFontColor)
+    if (theme.getCodeBlockTypeTextFontColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextFontColor(theme.getCodeBlockTypeTextFontColor())
     }
-    if (theme.codeBlockTypeTextFontSize !== undefined) {
-      cjMarkdownTheme.setCodeBlockTypeTextFontSize(theme.codeBlockTypeTextFontSize)
+    if (theme.getCodeBlockTypeTextFontSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextFontSize(theme.getCodeBlockTypeTextFontSize())
     }
-    if (theme.codeBlockTypeTextFontStyle !== undefined) {
-      cjMarkdownTheme.setCodeBlockTypeTextFontStyle(theme.codeBlockTypeTextFontStyle)
+    if (theme.getCodeBlockTypeTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextFontStyle(theme.getCodeBlockTypeTextFontStyle())
     }
-    if (theme.codeBlockTypeTextFontWeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockTypeTextFontWeight(theme.codeBlockTypeTextFontWeight.toString())
+    if (theme.getCodeBlockTypeTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextFontWeight(this.convertFontWeight(theme.getCodeBlockTypeTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.codeBlockTypeTextFontFamily !== undefined) {
-      cjMarkdownTheme.setCodeBlockTypeTextFontFamily(theme.codeBlockTypeTextFontFamily)
+    if (theme.getCodeBlockTypeTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextFontFamily(theme.getCodeBlockTypeTextFontFamily())
     }
-    if (theme.codeBlockTypeTextLineHeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockTypeTextLineHeight(theme.codeBlockTypeTextLineHeight)
+    if (theme.getCodeBlockTypeTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTypeTextLineHeight(theme.getCodeBlockTypeTextLineHeight())
     }
-    if (theme.codeBlockCopyFullScreenSpacing !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyFullScreenSpacing(theme.codeBlockCopyFullScreenSpacing)
+    if (theme.getCodeBlockCopyFullScreenSpacing() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyFullScreenSpacing(theme.getCodeBlockCopyFullScreenSpacing())
     }
-    if (theme.codeBlockCopyButtonIsShow !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyButtonIsShow(theme.codeBlockCopyButtonIsShow)
+    if (theme.getCodeBlockCopyButtonIsShow() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyButtonIsShow(theme.getCodeBlockCopyButtonIsShow())
     }
-    if (theme.codeBlockCopyTextIsShow !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyTextIsShow(theme.codeBlockCopyTextIsShow)
+    if (theme.getCodeBlockCopyTextIsShow() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextIsShow(theme.getCodeBlockCopyTextIsShow())
     }
-    if (theme.codeBlockCopyIconWidth !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyIconWidth(theme.codeBlockCopyIconWidth)
+    if (theme.getCodeBlockCopyIconWidth() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyIconWidth(theme.getCodeBlockCopyIconWidth())
     }
-    if (theme.codeBlockCopyIconHeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyIconHeight(theme.codeBlockCopyIconHeight)
+    if (theme.getCodeBlockCopyIconHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyIconHeight(theme.getCodeBlockCopyIconHeight())
     }
-    if (theme.codeBlockCopyIconTextSpacing !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyIconTextSpacing(theme.codeBlockCopyIconTextSpacing)
+    if (theme.getCodeBlockCopyIconTextSpacing() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyIconTextSpacing(theme.getCodeBlockCopyIconTextSpacing())
     }
-    if (theme.codeBlockCopyText !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyText(theme.codeBlockCopyText)
+    if (theme.getCodeBlockCopyText() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyText(theme.getCodeBlockCopyText())
     }
-    if (theme.codeBlockCopyTextFontColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyTextFontColor(theme.codeBlockCopyTextFontColor)
+    if (theme.getCodeBlockCopyTextFontColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextFontColor(theme.getCodeBlockCopyTextFontColor())
     }
-    if (theme.codeBlockCopyTextFontSize !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyTextFontSize(theme.codeBlockCopyTextFontSize)
+    if (theme.getCodeBlockCopyTextFontSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextFontSize(theme.getCodeBlockCopyTextFontSize())
     }
-    if (theme.codeBlockCopyTextFontStyle !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyTextFontStyle(theme.codeBlockCopyTextFontStyle)
+    if (theme.getCodeBlockCopyTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextFontStyle(theme.getCodeBlockCopyTextFontStyle())
     }
-    if (theme.codeBlockCopyTextFontWeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyTextFontWeight(theme.codeBlockCopyTextFontWeight.toString())
+    if (theme.getCodeBlockCopyTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextFontWeight(this.convertFontWeight(theme.getCodeBlockCopyTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.codeBlockCopyTextFontFamily !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyTextFontFamily(theme.codeBlockCopyTextFontFamily)
+    if (theme.getCodeBlockCopyTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextFontFamily(theme.getCodeBlockCopyTextFontFamily())
     }
-    if (theme.codeBlockCopyTextLineHeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockCopyTextLineHeight(theme.codeBlockCopyTextLineHeight)
+    if (theme.getCodeBlockCopyTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockCopyTextLineHeight(theme.getCodeBlockCopyTextLineHeight())
     }
-    if (theme.codeBlockFullScreenButtonIsShow !== undefined) {
-      cjMarkdownTheme.setCodeBlockFullScreenButtonIsShow(theme.codeBlockFullScreenButtonIsShow)
+    if (theme.getCodeBlockFullScreenButtonIsShow() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenButtonIsShow(theme.getCodeBlockFullScreenButtonIsShow())
     }
-    if (theme.codeBlockFullScreenTextIsShow !== undefined) {
-      cjMarkdownTheme.setCodeBlockFullScreenTextIsShow(theme.codeBlockFullScreenTextIsShow)
+    if (theme.getCodeBlockFullScreenTextIsShow() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextIsShow(theme.getCodeBlockFullScreenTextIsShow())
     }
-    if (theme.codeBlockFullScreenIconWidth !== undefined) {
-      cjMarkdownTheme.setCodeBlockFullScreenIconWidth(theme.codeBlockFullScreenIconWidth)
+    if (theme.getCodeBlockFullScreenIconWidth() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenIconWidth(theme.getCodeBlockFullScreenIconWidth())
     }
-    if (theme.codeBlockFullScreenIconHeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockFullScreenIconHeight(theme.codeBlockFullScreenIconHeight)
+    if (theme.getCodeBlockFullScreenIconHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenIconHeight(theme.getCodeBlockFullScreenIconHeight())
     }
-    if (theme.codeBlockFullScreenIconTextSpacing !== undefined) {
-      cjMarkdownTheme.setCodeBlockFullScreenIconTextSpacing(theme.codeBlockFullScreenIconTextSpacing)
+    if (theme.getCodeBlockFullScreenIconTextSpacing() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenIconTextSpacing(theme.getCodeBlockFullScreenIconTextSpacing())
     }
-    if (theme.codeBlockFullScreenText !== undefined) {
-      cjMarkdownTheme.setCodeBlockFullScreenText(theme.codeBlockFullScreenText)
+    if (theme.getCodeBlockFullScreenText() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenText(theme.getCodeBlockFullScreenText())
     }
-    if (theme.codeBlockFullScreenTextFontColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockFullScreenTextFontColor(theme.codeBlockFullScreenTextFontColor)
+    if (theme.getCodeBlockFullScreenTextFontColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextFontColor(theme.getCodeBlockFullScreenTextFontColor())
     }
-    if (theme.codeBlockFullScreenTextFontSize !== undefined) {
-      cjMarkdownTheme.setCodeBlockFullScreenTextFontSize(theme.codeBlockFullScreenTextFontSize)
+    if (theme.getCodeBlockFullScreenTextFontSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextFontSize(theme.getCodeBlockFullScreenTextFontSize())
     }
-    if (theme.codeBlockFullScreenTextFontStyle !== undefined) {
-      cjMarkdownTheme.setCodeBlockFullScreenTextFontStyle(theme.codeBlockFullScreenTextFontStyle)
+    if (theme.getCodeBlockFullScreenTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextFontStyle(theme.getCodeBlockFullScreenTextFontStyle())
     }
-    if (theme.codeBlockFullScreenTextFontWeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockFullScreenTextFontWeight(theme.codeBlockFullScreenTextFontWeight.toString())
+    if (theme.getCodeBlockFullScreenTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextFontWeight(this.convertFontWeight(theme.getCodeBlockFullScreenTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.codeBlockFullScreenTextFontFamily !== undefined) {
-      cjMarkdownTheme.setCodeBlockFullScreenTextFontFamily(theme.codeBlockFullScreenTextFontFamily)
+    if (theme.getCodeBlockFullScreenTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextFontFamily(theme.getCodeBlockFullScreenTextFontFamily())
     }
-    if (theme.codeBlockFullScreenTextLineHeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockFullScreenTextLineHeight(theme.codeBlockFullScreenTextLineHeight)
+    if (theme.getCodeBlockFullScreenTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockFullScreenTextLineHeight(theme.getCodeBlockFullScreenTextLineHeight())
     }
-    if (theme.codeBlockLineNumberIsShow !== undefined) {
-      cjMarkdownTheme.setCodeBlockLineNumberIsShow(theme.codeBlockLineNumberIsShow)
+    if (theme.getCodeBlockLineNumberIsShow() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberIsShow(theme.getCodeBlockLineNumberIsShow())
     }
-    if (theme.codeBlockLineNumberTextPaddingLeft !== undefined) {
-      cjMarkdownTheme.setCodeBlockLineNumberTextPaddingLeft(theme.codeBlockLineNumberTextPaddingLeft)
+    if (theme.getCodeBlockLineNumberTextPaddingLeft() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextPaddingLeft(theme.getCodeBlockLineNumberTextPaddingLeft())
     }
-    if (theme.codeBlockLineNumberTextFontColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockLineNumberTextFontColor(theme.codeBlockLineNumberTextFontColor)
+    if (theme.getCodeBlockLineNumberTextFontColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextFontColor(theme.getCodeBlockLineNumberTextFontColor())
     }
-    if (theme.codeBlockLineNumberTextFontSize !== undefined) {
-      cjMarkdownTheme.setCodeBlockLineNumberTextFontSize(theme.codeBlockLineNumberTextFontSize)
+    if (theme.getCodeBlockLineNumberTextFontSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextFontSize(theme.getCodeBlockLineNumberTextFontSize())
     }
-    if (theme.codeBlockLineNumberTextFontStyle !== undefined) {
-      cjMarkdownTheme.setCodeBlockLineNumberTextFontStyle(theme.codeBlockLineNumberTextFontStyle)
+    if (theme.getCodeBlockLineNumberTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextFontStyle(theme.getCodeBlockLineNumberTextFontStyle())
     }
-    if (theme.codeBlockLineNumberTextFontWeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockLineNumberTextFontWeight(theme.codeBlockLineNumberTextFontWeight.toString())
+    if (theme.getCodeBlockLineNumberTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextFontWeight(this.convertFontWeight(theme.getCodeBlockLineNumberTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.codeBlockLineNumberTextFontFamily !== undefined) {
-      cjMarkdownTheme.setCodeBlockLineNumberTextFontFamily(theme.codeBlockLineNumberTextFontFamily)
+    if (theme.getCodeBlockLineNumberTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextFontFamily(theme.getCodeBlockLineNumberTextFontFamily())
     }
-    if (theme.codeBlockLineNumberTextLineHeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockLineNumberTextLineHeight(theme.codeBlockLineNumberTextLineHeight)
+    if (theme.getCodeBlockLineNumberTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberTextLineHeight(theme.getCodeBlockLineNumberTextLineHeight())
     }
-    if (theme.codeBlockDividerColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockDividerColor(theme.codeBlockDividerColor)
+    if (theme.getCodeBlockDividerColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockDividerColor(theme.getCodeBlockDividerColor())
     }
-    if (theme.codeBlockDividerStrokeWidth !== undefined) {
-      cjMarkdownTheme.setCodeBlockDividerStrokeWidth(theme.codeBlockDividerStrokeWidth)
+    if (theme.getCodeBlockDividerStrokeWidth() !== undefined) {
+      cjMarkdownTheme.setCodeBlockDividerStrokeWidth(theme.getCodeBlockDividerStrokeWidth())
     }
-    if (theme.codeBlockLineNumberDividerSpacing !== undefined) {
-      cjMarkdownTheme.setCodeBlockLineNumberDividerSpacing(theme.codeBlockLineNumberDividerSpacing)
+    if (theme.getCodeBlockLineNumberDividerSpacing() !== undefined) {
+      cjMarkdownTheme.setCodeBlockLineNumberDividerSpacing(theme.getCodeBlockLineNumberDividerSpacing())
     }
-    if (theme.codeBlockTextFontColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockTextFontColor(theme.codeBlockTextFontColor)
+    if (theme.getCodeBlockTextFontColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextFontColor(theme.getCodeBlockTextFontColor())
     }
-    if (theme.codeBlockTextMarginRight !== undefined) {
-      cjMarkdownTheme.setCodeBlockTextMarginRight(theme.codeBlockTextMarginRight)
+    if (theme.getCodeBlockTextMarginRight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextMarginRight(theme.getCodeBlockTextMarginRight())
     }
-    if (theme.codeBlockTextMarginLeft !== undefined) {
-      cjMarkdownTheme.setCodeBlockTextMarginLeft(theme.codeBlockTextMarginLeft)
+    if (theme.getCodeBlockTextMarginLeft() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextMarginLeft(theme.getCodeBlockTextMarginLeft())
     }
-    if (theme.codeBlockTextFontSize !== undefined) {
-      cjMarkdownTheme.setCodeBlockTextFontSize(theme.codeBlockTextFontSize)
+    if (theme.getCodeBlockTextFontSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextFontSize(theme.getCodeBlockTextFontSize())
     }
-    if (theme.codeBlockTextFontStyle !== undefined) {
-      cjMarkdownTheme.setCodeBlockTextFontStyle(theme.codeBlockTextFontStyle)
+    if (theme.getCodeBlockTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextFontStyle(theme.getCodeBlockTextFontStyle())
     }
-    if (theme.codeBlockTextFontWeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockTextFontWeight(theme.codeBlockTextFontWeight.toString())
+    if (theme.getCodeBlockTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextFontWeight(this.convertFontWeight(theme.getCodeBlockTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.codeBlockTextFontFamily !== undefined) {
-      cjMarkdownTheme.setCodeBlockTextFontFamily(theme.codeBlockTextFontFamily)
+    if (theme.getCodeBlockTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextFontFamily(theme.getCodeBlockTextFontFamily())
     }
-    if (theme.codeBlockTextLineHeight !== undefined) {
-      cjMarkdownTheme.setCodeBlockTextLineHeight(theme.codeBlockTextLineHeight)
+    if (theme.getCodeBlockTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextLineHeight(theme.getCodeBlockTextLineHeight())
     }
-    if (theme.codeBlockTextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setCodeBlockTextLetterSpacing(theme.codeBlockTextLetterSpacing)
+    if (theme.getCodeBlockTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setCodeBlockTextLetterSpacing(theme.getCodeBlockTextLetterSpacing())
     }
-    if (theme.codeBlockListTitleTextSize !== undefined) {
-      cjMarkdownTheme.setCodeBlockListTitleTextSize(theme.codeBlockListTitleTextSize)
+    if (theme.getCodeBlockListTitleTextSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleTextSize(theme.getCodeBlockListTitleTextSize())
     }
-    if (theme.codeBlockListTitleSelectTextSize !== undefined) {
-      cjMarkdownTheme.setCodeBlockListTitleSelectTextSize(theme.codeBlockListTitleSelectTextSize)
+    if (theme.getCodeBlockListTitleSelectTextSize() !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleSelectTextSize(theme.getCodeBlockListTitleSelectTextSize())
     }
-    if (theme.codeBlockListTitleSelectTextColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockListTitleSelectTextColor(theme.codeBlockListTitleSelectTextColor)
+    if (theme.getCodeBlockListTitleSelectTextColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleSelectTextColor(theme.getCodeBlockListTitleSelectTextColor())
     }
-    if (theme.codeBlockListTitleUnselectTextColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockListTitleUnselectTextColor(theme.codeBlockListTitleUnselectTextColor)
+    if (theme.getCodeBlockListTitleUnselectTextColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleUnselectTextColor(theme.getCodeBlockListTitleUnselectTextColor())
     }
-    if (theme.codeBlockListTitleSelectBackgroundColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockListTitleSelectBackgroundColor(theme.codeBlockListTitleSelectBackgroundColor)
+    if (theme.getCodeBlockListTitleSelectBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleSelectBackgroundColor(theme.getCodeBlockListTitleSelectBackgroundColor())
     }
-    if (theme.codeBlockListTitleUnselectBackgroundColor !== undefined) {
-      cjMarkdownTheme.setCodeBlockListTitleUnselectBackgroundColor(theme.codeBlockListTitleUnselectBackgroundColor)
+    if (theme.getCodeBlockListTitleUnselectBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setCodeBlockListTitleUnselectBackgroundColor(theme.getCodeBlockListTitleUnselectBackgroundColor())
     }
-    if (theme.codeBlockIsSeparate !== undefined) {
-      cjMarkdownTheme.setCodeBlockIsSeparate(theme.codeBlockIsSeparate)
+    if (theme.getCodeBlockIsSeparate() !== undefined) {
+      cjMarkdownTheme.setCodeBlockIsSeparate(theme.getCodeBlockIsSeparate())
     }
-    if (theme.codeBlockSeparateWidth !== undefined) {
-      cjMarkdownTheme.setCodeBlockSeparateWidth(theme.codeBlockSeparateWidth)
+    if (theme.getCodeBlockSeparateWidth() !== undefined) {
+      cjMarkdownTheme.setCodeBlockSeparateWidth(theme.getCodeBlockSeparateWidth())
     }
-    if (theme.codeBlockSeparateIsBottom !== undefined) {
-      cjMarkdownTheme.setCodeBlockSeparateIsBottom(theme.codeBlockSeparateIsBottom)
+    if (theme.getCodeBlockSeparateIsBottom() !== undefined) {
+      cjMarkdownTheme.setCodeBlockSeparateIsBottom(theme.getCodeBlockSeparateIsBottom())
     }
     return cjMarkdownTheme
   }
@@ -1176,58 +999,34 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownDefinitionListTheme()
-    if (theme.definitionListBackgroundColor !== undefined) {
-      cjMarkdownTheme.setDefinitionListBackgroundColor(theme.definitionListBackgroundColor)
+    if (theme.getDefinitionListBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setDefinitionListBackgroundColor(theme.getDefinitionListBackgroundColor())
     }
-    let definitionListMarginTop: number = 0.0
-    let definitionListMarginRight: number = 0.0
-    let definitionListMarginBottom: number = 0.0
-    let definitionListMarginLeft: number = 0.0
-    if (theme.definitionListMarginTop !== undefined) {
-      definitionListMarginTop = theme.definitionListMarginTop
-    }
-    if (theme.definitionListMarginRight !== undefined) {
-      definitionListMarginRight = theme.definitionListMarginRight
-    }
-    if (theme.definitionListMarginBottom !== undefined) {
-      definitionListMarginBottom = theme.definitionListMarginBottom
-    }
-    if (theme.definitionListMarginLeft !== undefined) {
-      definitionListMarginLeft = theme.definitionListMarginLeft
-    }
+    let definitionListMarginTop: number = theme.getDefinitionListMarginTop() ?? 0
+    let definitionListMarginRight: number = theme.getDefinitionListMarginRight() ?? 0
+    let definitionListMarginBottom: number = theme.getDefinitionListMarginBottom() ?? 0
+    let definitionListMarginLeft: number = theme.getDefinitionListMarginLeft() ?? 0
     cjMarkdownTheme.setDefinitionListMargin(definitionListMarginTop, definitionListMarginRight, definitionListMarginBottom, definitionListMarginLeft)
 
-    let definitionListPaddingTop: number = 0.0
-    let definitionListPaddingRight: number = 0.0
-    let definitionListPaddingBottom: number = 0.0
-    let definitionListPaddingLeft: number = 0.0
-    if (theme.definitionListPaddingTop !== undefined) {
-      definitionListPaddingTop = theme.definitionListPaddingTop
-    }
-    if (theme.definitionListPaddingRight !== undefined) {
-      definitionListPaddingRight = theme.definitionListPaddingRight
-    }
-    if (theme.definitionListPaddingBottom !== undefined) {
-      definitionListPaddingBottom = theme.definitionListPaddingBottom
-    }
-    if (theme.definitionListPaddingLeft !== undefined) {
-      definitionListPaddingLeft = theme.definitionListPaddingLeft
-    }
+    let definitionListPaddingTop: number = theme.getDefinitionListPaddingTop() ?? 0
+    let definitionListPaddingRight: number = theme.getDefinitionListPaddingRight() ?? 0
+    let definitionListPaddingBottom: number = theme.getDefinitionListPaddingBottom() ?? 0
+    let definitionListPaddingLeft: number = theme.getDefinitionListPaddingLeft() ?? 0
     cjMarkdownTheme.setDefinitionListPadding(definitionListPaddingTop, definitionListPaddingRight, definitionListPaddingBottom, definitionListPaddingLeft)
-    if (theme.definitionListTermToDescriptionSpacing !== undefined) {
-      cjMarkdownTheme.setDefinitionListTermToDescriptionSpacing(theme.definitionListTermToDescriptionSpacing)
+    if (theme.getDefinitionListTermToDescriptionSpacing() !== undefined) {
+      cjMarkdownTheme.setDefinitionListTermToDescriptionSpacing(theme.getDefinitionListTermToDescriptionSpacing())
     }
-    if (theme.definitionListTermTextFontWeight !== undefined) {
-      cjMarkdownTheme.setDefinitionListTermTextFontWeight(theme.definitionListTermTextFontWeight.toString())
+    if (theme.getDefinitionListTermTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setDefinitionListTermTextFontWeight(this.convertFontWeight(theme.getDefinitionListTermTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.definitionListTermTextFontStyle !== undefined) {
-      cjMarkdownTheme.setDefinitionListTermTextFontStyle(theme.definitionListTermTextFontStyle)
+    if (theme.getDefinitionListTermTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setDefinitionListTermTextFontStyle(theme.getDefinitionListTermTextFontStyle())
     }
-    if (theme.definitionListDescriptionItemSpacing !== undefined) {
-      cjMarkdownTheme.setDefinitionListDescriptionItemSpacing(theme.definitionListDescriptionItemSpacing)
+    if (theme.getDefinitionListDescriptionItemSpacing() !== undefined) {
+      cjMarkdownTheme.setDefinitionListDescriptionItemSpacing(theme.getDefinitionListDescriptionItemSpacing())
     }
-    if (theme.definitionListDescriptionIndent !== undefined) {
-      cjMarkdownTheme.setDefinitionListDescriptionIndent(theme.definitionListDescriptionIndent)
+    if (theme.getDefinitionListDescriptionIndent() !== undefined) {
+      cjMarkdownTheme.setDefinitionListDescriptionIndent(theme.getDefinitionListDescriptionIndent())
     }
     return cjMarkdownTheme
   }
@@ -1237,49 +1036,25 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownDividerTheme()
-    let dividerMarginTop: number = 0.0
-    let dividerMarginRight: number = 0.0
-    let dividerMarginBottom: number = 0.0
-    let dividerMarginLeft: number = 0.0
-    if (theme.dividerMarginTop !== undefined) {
-      dividerMarginTop = theme.dividerMarginTop
-    }
-    if (theme.dividerMarginRight !== undefined) {
-      dividerMarginRight = theme.dividerMarginRight
-    }
-    if (theme.dividerMarginBottom !== undefined) {
-      dividerMarginBottom = theme.dividerMarginBottom
-    }
-    if (theme.dividerMarginLeft !== undefined) {
-      dividerMarginLeft = theme.dividerMarginLeft
-    }
+    let dividerMarginTop: number = theme.getDividerMarginTop() ?? 0
+    let dividerMarginRight: number = theme.getDividerMarginRight() ?? 0
+    let dividerMarginBottom: number = theme.getDividerMarginBottom() ?? 0
+    let dividerMarginLeft: number = theme.getDividerMarginLeft() ?? 0
     cjMarkdownTheme.setDividerMargin(dividerMarginTop, dividerMarginRight, dividerMarginBottom, dividerMarginLeft)
 
-    let dividerPaddingTop: number = 0.0
-    let dividerPaddingRight: number = 0.0
-    let dividerPaddingBottom: number = 0.0
-    let dividerPaddingLeft: number = 0.0
-    if (theme.dividerPaddingTop !== undefined) {
-      dividerPaddingTop = theme.dividerPaddingTop
-    }
-    if (theme.dividerPaddingRight !== undefined) {
-      dividerPaddingRight = theme.dividerPaddingRight
-    }
-    if (theme.dividerPaddingBottom !== undefined) {
-      dividerPaddingBottom = theme.dividerPaddingBottom
-    }
-    if (theme.dividerPaddingLeft !== undefined) {
-      dividerPaddingLeft = theme.dividerPaddingLeft
-    }
+    let dividerPaddingTop: number = theme.getDividerPaddingTop() ?? 0
+    let dividerPaddingRight: number = theme.getDividerPaddingRight() ?? 0
+    let dividerPaddingBottom: number = theme.getDividerPaddingBottom() ?? 0
+    let dividerPaddingLeft: number = theme.getDividerPaddingLeft() ?? 0
     cjMarkdownTheme.setDividerPadding(dividerPaddingTop, dividerPaddingRight, dividerPaddingBottom, dividerPaddingLeft)
-    if (theme.dividerColor !== undefined) {
-      cjMarkdownTheme.setDividerColor(theme.dividerColor)
+    if (theme.getDividerColor() !== undefined) {
+      cjMarkdownTheme.setDividerColor(theme.getDividerColor())
     }
-    if (theme.dividerStrokeWidth !== undefined) {
-      cjMarkdownTheme.setDividerStrokeWidth(theme.dividerStrokeWidth)
+    if (theme.getDividerStrokeWidth() !== undefined) {
+      cjMarkdownTheme.setDividerStrokeWidth(theme.getDividerStrokeWidth())
     }
-    if (theme.dividerStyle !== undefined) {
-      cjMarkdownTheme.setDividerStyle(theme.dividerStyle)
+    if (theme.getDividerStyle() !== undefined) {
+      cjMarkdownTheme.setDividerStyle(theme.getDividerStyle())
     }
     return cjMarkdownTheme
   }
@@ -1289,43 +1064,19 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownFootnoteDefTheme()
-    if (theme.footnoteDefBackgroundColor !== undefined) {
-      cjMarkdownTheme.setFootnoteDefBackgroundColor(theme.footnoteDefBackgroundColor)
+    if (theme.getFootnoteDefBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setFootnoteDefBackgroundColor(theme.getFootnoteDefBackgroundColor())
     }
-    let footnoteDefMarginTop: number = 0.0
-    let footnoteDefMarginRight: number = 0.0
-    let footnoteDefMarginBottom: number = 0.0
-    let footnoteDefMarginLeft: number = 0.0
-    if (theme.footnoteDefMarginTop !== undefined) {
-      footnoteDefMarginTop = theme.footnoteDefMarginTop
-    }
-    if (theme.footnoteDefMarginRight !== undefined) {
-      footnoteDefMarginRight = theme.footnoteDefMarginRight
-    }
-    if (theme.footnoteDefMarginBottom !== undefined) {
-      footnoteDefMarginBottom = theme.footnoteDefMarginBottom
-    }
-    if (theme.footnoteDefMarginLeft !== undefined) {
-      footnoteDefMarginLeft = theme.footnoteDefMarginLeft
-    }
+    let footnoteDefMarginTop: number = theme.getFootnoteDefMarginTop() ?? 0
+    let footnoteDefMarginRight: number = theme.getFootnoteDefMarginRight() ?? 0
+    let footnoteDefMarginBottom: number = theme.getFootnoteDefMarginBottom() ?? 0
+    let footnoteDefMarginLeft: number = theme.getFootnoteDefMarginLeft() ?? 0
     cjMarkdownTheme.setFootnoteDefMargin(footnoteDefMarginTop, footnoteDefMarginRight, footnoteDefMarginBottom, footnoteDefMarginLeft)
 
-    let footnoteDefPaddingTop: number = 0.0
-    let footnoteDefPaddingRight: number = 0.0
-    let footnoteDefPaddingBottom: number = 0.0
-    let footnoteDefPaddingLeft: number = 0.0
-    if (theme.footnoteDefPaddingTop !== undefined) {
-      footnoteDefPaddingTop = theme.footnoteDefPaddingTop
-    }
-    if (theme.footnoteDefPaddingRight !== undefined) {
-      footnoteDefPaddingRight = theme.footnoteDefPaddingRight
-    }
-    if (theme.footnoteDefPaddingBottom !== undefined) {
-      footnoteDefPaddingBottom = theme.footnoteDefPaddingBottom
-    }
-    if (theme.footnoteDefPaddingLeft !== undefined) {
-      footnoteDefPaddingLeft = theme.footnoteDefPaddingLeft
-    }
+    let footnoteDefPaddingTop: number = theme.getFootnoteDefPaddingTop() ?? 0
+    let footnoteDefPaddingRight: number = theme.getFootnoteDefPaddingRight() ?? 0
+    let footnoteDefPaddingBottom: number = theme.getFootnoteDefPaddingBottom() ?? 0
+    let footnoteDefPaddingLeft: number = theme.getFootnoteDefPaddingLeft() ?? 0
     cjMarkdownTheme.setFootnoteDefPadding(footnoteDefPaddingTop, footnoteDefPaddingRight, footnoteDefPaddingBottom, footnoteDefPaddingLeft)
     return cjMarkdownTheme
   }
@@ -1335,55 +1086,43 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownFootnoteRefTheme()
-    if (theme.footnoteRefTextFontColor !== undefined) {
-      cjMarkdownTheme.setFootnoteRefTextFontColor(theme.footnoteRefTextFontColor)
+    if (theme.getFootnoteRefTextFontColor() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextFontColor(theme.getFootnoteRefTextFontColor())
     }
-    if (theme.footnoteRefTextFontSize !== undefined) {
-      cjMarkdownTheme.setFootnoteRefTextFontSize(theme.footnoteRefTextFontSize)
+    if (theme.getFootnoteRefTextFontSize() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextFontSize(theme.getFootnoteRefTextFontSize())
     }
-    if (theme.footnoteRefTextFontStyle !== undefined) {
-      cjMarkdownTheme.setFootnoteRefTextFontStyle(theme.footnoteRefTextFontStyle)
+    if (theme.getFootnoteRefTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextFontStyle(theme.getFootnoteRefTextFontStyle())
     }
-    if (theme.footnoteRefTextFontWeight !== undefined) {
-      cjMarkdownTheme.setFootnoteRefTextFontWeight(theme.footnoteRefTextFontWeight.toString())
+    if (theme.getFootnoteRefTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextFontWeight(this.convertFontWeight(theme.getFootnoteRefTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.footnoteRefTextFontFamily !== undefined) {
-      cjMarkdownTheme.setFootnoteRefTextFontFamily(theme.footnoteRefTextFontFamily)
+    if (theme.getFootnoteRefTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextFontFamily(theme.getFootnoteRefTextFontFamily())
     }
-    if (theme.footnoteRefTextLineHeight !== undefined) {
-      cjMarkdownTheme.setFootnoteRefTextLineHeight(theme.footnoteRefTextLineHeight)
+    if (theme.getFootnoteRefTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextLineHeight(theme.getFootnoteRefTextLineHeight())
     }
-    if (theme.footnoteRefTextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setFootnoteRefTextLetterSpacing(theme.footnoteRefTextLetterSpacing)
+    if (theme.getFootnoteRefTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextLetterSpacing(theme.getFootnoteRefTextLetterSpacing())
     }
-    if (theme.footnoteRefTextDecorationType !== undefined) {
-      cjMarkdownTheme.setFootnoteRefTextDecorationType(theme.footnoteRefTextDecorationType)
+    if (theme.getFootnoteRefTextDecorationType() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextDecorationType(theme.getFootnoteRefTextDecorationType())
     }
-    if (theme.footnoteRefTextDecorationColor !== undefined) {
-      cjMarkdownTheme.setFootnoteRefTextDecorationColor(theme.footnoteRefTextDecorationColor)
+    if (theme.getFootnoteRefTextDecorationColor() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextDecorationColor(theme.getFootnoteRefTextDecorationColor())
     }
-    if (theme.footnoteRefTextDecorationStyle !== undefined) {
-      cjMarkdownTheme.setFootnoteRefTextDecorationStyle(theme.footnoteRefTextDecorationStyle)
+    if (theme.getFootnoteRefTextDecorationStyle() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextDecorationStyle(theme.getFootnoteRefTextDecorationStyle())
     }
-    if (theme.footnoteRefTextBackgroundColor !== undefined) {
-      cjMarkdownTheme.setFootnoteRefTextBackgroundColor(theme.footnoteRefTextBackgroundColor)
+    if (theme.getFootnoteRefTextBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setFootnoteRefTextBackgroundColor(theme.getFootnoteRefTextBackgroundColor())
     }
-    let footnoteRefTextBackgroundRadiusTopLeft: number = 0.0
-    let footnoteRefTextBackgroundRadiusTopRight: number = 0.0
-    let footnoteRefTextBackgroundRadiusBottomLeft: number = 0.0
-    let footnoteRefTextBackgroundRadiusBottomRight: number = 0.0
-    if (theme.footnoteRefTextBackgroundRadiusTopLeft !== undefined) {
-      footnoteRefTextBackgroundRadiusTopLeft = theme.footnoteRefTextBackgroundRadiusTopLeft
-    }
-    if (theme.footnoteRefTextBackgroundRadiusTopRight !== undefined) {
-      footnoteRefTextBackgroundRadiusTopRight = theme.footnoteRefTextBackgroundRadiusTopRight
-    }
-    if (theme.footnoteRefTextBackgroundRadiusBottomLeft !== undefined) {
-      footnoteRefTextBackgroundRadiusBottomLeft = theme.footnoteRefTextBackgroundRadiusBottomLeft
-    }
-    if (theme.footnoteRefTextBackgroundRadiusBottomRight !== undefined) {
-      footnoteRefTextBackgroundRadiusBottomRight = theme.footnoteRefTextBackgroundRadiusBottomRight
-    }
+    let footnoteRefTextBackgroundRadiusTopLeft: number = theme.getFootnoteRefTextBackgroundRadiusTopLeft() ?? 0
+    let footnoteRefTextBackgroundRadiusTopRight: number = theme.getFootnoteRefTextBackgroundRadiusTopRight() ?? 0
+    let footnoteRefTextBackgroundRadiusBottomLeft: number = theme.getFootnoteRefTextBackgroundRadiusBottomLeft() ?? 0
+    let footnoteRefTextBackgroundRadiusBottomRight: number = theme.getFootnoteRefTextBackgroundRadiusBottomRight() ?? 0
     cjMarkdownTheme.setFootnoteRefTextBackgroundRadius(
       footnoteRefTextBackgroundRadiusTopLeft,
       footnoteRefTextBackgroundRadiusTopRight,
@@ -1398,40 +1137,28 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownGlobalTheme()
-    if (theme.isMarkdownParserSync !== undefined) {
-      cjMarkdownTheme.setIsMarkdownParserSync(theme.isMarkdownParserSync)
+    if (theme.getIsMarkdownParserSync() !== undefined) {
+      cjMarkdownTheme.setIsMarkdownParserSync(theme.getIsMarkdownParserSync())
     }
-    if (theme.isOnCopy !== undefined) {
-      cjMarkdownTheme.setIsOnCopy(theme.isOnCopy)
+    if (theme.getIsOnCopy() !== undefined) {
+      cjMarkdownTheme.setIsOnCopy(theme.getIsOnCopy())
     }
-    if (theme.backgroundColor !== undefined) {
-      cjMarkdownTheme.setBackgroundColor(theme.backgroundColor)
+    if (theme.getBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColor(theme.getBackgroundColor())
     }
-    let blockMarginTop: number = 0.0
-    let blockMarginRight: number = 0.0
-    let blockMarginBottom: number = 0.0
-    let blockMarginLeft: number = 0.0
-    if (theme.blockMarginTop !== undefined) {
-      blockMarginTop = theme.blockMarginTop
-    }
-    if (theme.blockMarginRight !== undefined) {
-      blockMarginRight = theme.blockMarginRight
-    }
-    if (theme.blockMarginBottom !== undefined) {
-      blockMarginBottom = theme.blockMarginBottom
-    }
-    if (theme.blockMarginLeft !== undefined) {
-      blockMarginLeft = theme.blockMarginLeft
-    }
+    let blockMarginTop: number = theme.getBlockMarginTop() ?? 0
+    let blockMarginRight: number = theme.getBlockMarginRight() ?? 0
+    let blockMarginBottom: number = theme.getBlockMarginBottom() ?? 0
+    let blockMarginLeft: number = theme.getBlockMarginLeft() ?? 0
     cjMarkdownTheme.setGlobalMargin(blockMarginTop, blockMarginRight, blockMarginBottom, blockMarginLeft)
-    if (theme.markdownBlockSpacing !== undefined) {
-      cjMarkdownTheme.setBlockSpacing(theme.markdownBlockSpacing)
+    if (theme.getMarkdownBlockSpacing() !== undefined) {
+      cjMarkdownTheme.setBlockSpacing(theme.getMarkdownBlockSpacing())
     }
-    if (theme.isLineBreak !== undefined) {
-      cjMarkdownTheme.setIsLineBreak(theme.isLineBreak)
+    if (theme.getIsLineBreak() !== undefined) {
+      cjMarkdownTheme.setIsLineBreak(theme.getIsLineBreak())
     }
-    if (theme.openGestureSwipe !== undefined) {
-      cjMarkdownTheme.setOpenGestureSwipe(theme.openGestureSwipe)
+    if (theme.getOpenGestureSwipe() !== undefined) {
+      cjMarkdownTheme.setOpenGestureSwipe(theme.getOpenGestureSwipe())
     }
     return cjMarkdownTheme
   }
@@ -1442,382 +1169,238 @@ export struct CJMarkdown {
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownHeadingTheme()
     // H1
-    if (theme.heading1BackgroundColor !== undefined) {
-      cjMarkdownTheme.setBackgroundColorForDesignateHeading(1, theme.heading1BackgroundColor)
+    if (theme.getHeading1BackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColorForDesignateHeading(1, theme.getHeading1BackgroundColor())
     }
-    let heading1MarginTop: number = 0.0
-    let heading1MarginRight: number = 0.0
-    let heading1MarginBottom: number = 0.0
-    let heading1MarginLeft: number = 0.0
-    if (theme.heading1MarginTop !== undefined) {
-      heading1MarginTop = theme.heading1MarginTop
-    }
-    if (theme.heading1MarginRight !== undefined) {
-      heading1MarginRight = theme.heading1MarginRight
-    }
-    if (theme.heading1MarginBottom !== undefined) {
-      heading1MarginBottom = theme.heading1MarginBottom
-    }
-    if (theme.heading1MarginLeft !== undefined) {
-      heading1MarginLeft = theme.heading1MarginLeft
-    }
+    let heading1MarginTop: number = theme.getHeading1MarginTop() ?? 0
+    let heading1MarginRight: number = theme.getHeading1MarginRight() ?? 0
+    let heading1MarginBottom: number = theme.getHeading1MarginBottom() ?? 0
+    let heading1MarginLeft: number = theme.getHeading1MarginLeft() ?? 0
     cjMarkdownTheme.setMarginForDesignateHeading(1, heading1MarginTop, heading1MarginRight, heading1MarginBottom, heading1MarginLeft)
 
-    let heading1PaddingTop: number = 0.0
-    let heading1PaddingRight: number = 0.0
-    let heading1PaddingBottom: number = 0.0
-    let heading1PaddingLeft: number = 0.0
-    if (theme.heading1PaddingTop !== undefined) {
-      heading1PaddingTop = theme.heading1PaddingTop
-    }
-    if (theme.heading1PaddingRight !== undefined) {
-      heading1PaddingRight = theme.heading1PaddingRight
-    }
-    if (theme.heading1PaddingBottom !== undefined) {
-      heading1PaddingBottom = theme.heading1PaddingBottom
-    }
-    if (theme.heading1PaddingLeft !== undefined) {
-      heading1PaddingLeft = theme.heading1PaddingLeft
-    }
+    let heading1PaddingTop: number = theme.getHeading1PaddingTop() ?? 0
+    let heading1PaddingRight: number = theme.getHeading1PaddingRight() ?? 0
+    let heading1PaddingBottom: number = theme.getHeading1PaddingBottom() ?? 0
+    let heading1PaddingLeft: number = theme.getHeading1PaddingLeft() ?? 0
     cjMarkdownTheme.setPaddingForDesignateHeading(1, heading1PaddingTop, heading1PaddingRight, heading1PaddingBottom, heading1PaddingLeft)
-    if (theme.heading1TextFontColor !== undefined) {
-      cjMarkdownTheme.setTextFontColorForDesignateHeading(1, theme.heading1TextFontColor)
+    if (theme.getHeading1TextFontColor() !== undefined) {
+      cjMarkdownTheme.setTextFontColorForDesignateHeading(1, theme.getHeading1TextFontColor())
     }
-    if (theme.heading1TextFontSize !== undefined) {
-      cjMarkdownTheme.setTextFontSizeForDesignateHeading(1, theme.heading1TextFontSize)
+    if (theme.getHeading1TextFontSize() !== undefined) {
+      cjMarkdownTheme.setTextFontSizeForDesignateHeading(1, theme.getHeading1TextFontSize())
     }
-    if (theme.heading1TextFontStyle !== undefined) {
-      cjMarkdownTheme.setTextFontStyleForDesignateHeading(1, theme.heading1TextFontStyle)
+    if (theme.getHeading1TextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTextFontStyleForDesignateHeading(1, theme.getHeading1TextFontStyle())
     }
-    if (theme.heading1TextFontWeight !== undefined) {
-      cjMarkdownTheme.setTextFontWeightForDesignateHeading(1, theme.heading1TextFontWeight)
+    if (theme.getHeading1TextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(1, theme.getHeading1TextFontWeight())
     }
-    if (theme.heading1TextFontFamily !== undefined) {
-      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(1, theme.heading1TextFontFamily)
+    if (theme.getHeading1TextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(1, theme.getHeading1TextFontFamily())
     }
-    if (theme.heading1TextLineHeight !== undefined) {
-      cjMarkdownTheme.setTextLineHeightForDesignateHeading(1, theme.heading1TextLineHeight)
+    if (theme.getHeading1TextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTextLineHeightForDesignateHeading(1, theme.getHeading1TextLineHeight())
     }
-    if (theme.heading1TextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(1, theme.heading1TextLetterSpacing)
+    if (theme.getHeading1TextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(1, theme.getHeading1TextLetterSpacing())
     }
-    if (theme.heading1UnderlineHeight !== undefined) {
-      cjMarkdownTheme.setUnderlineHeightForDesignateHeading(1, theme.heading1UnderlineHeight)
+    if (theme.getHeading1UnderlineHeight() !== undefined) {
+      cjMarkdownTheme.setUnderlineHeightForDesignateHeading(1, theme.getHeading1UnderlineHeight())
     }
-    if (theme.heading1UnderlineColor !== undefined) {
-      cjMarkdownTheme.setUnderlineColorForDesignateHeading(1, theme.heading1UnderlineColor)
+    if (theme.getHeading1UnderlineColor() !== undefined) {
+      cjMarkdownTheme.setUnderlineColorForDesignateHeading(1, theme.getHeading1UnderlineColor())
     }
-    if (theme.heading1UnderlineSpacing !== undefined) {
-      cjMarkdownTheme.setUnderlineSpacingForDesignateHeading(1, theme.heading1UnderlineSpacing)
+    if (theme.getHeading1UnderlineSpacing() !== undefined) {
+      cjMarkdownTheme.setUnderlineSpacingForDesignateHeading(1, theme.getHeading1UnderlineSpacing())
     }
     // H2
-    if (theme.heading2BackgroundColor !== undefined) {
-      cjMarkdownTheme.setBackgroundColorForDesignateHeading(2, theme.heading2BackgroundColor)
+    if (theme.getHeading2BackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColorForDesignateHeading(2, theme.getHeading2BackgroundColor())
     }
-    let heading2MarginTop: number = 0.0
-    let heading2MarginRight: number = 0.0
-    let heading2MarginBottom: number = 0.0
-    let heading2MarginLeft: number = 0.0
-    if (theme.heading2MarginTop !== undefined) {
-      heading2MarginTop = theme.heading2MarginTop
-    }
-    if (theme.heading2MarginRight !== undefined) {
-      heading2MarginRight = theme.heading2MarginRight
-    }
-    if (theme.heading2MarginBottom !== undefined) {
-      heading2MarginBottom = theme.heading2MarginBottom
-    }
-    if (theme.heading2MarginLeft !== undefined) {
-      heading2MarginLeft = theme.heading2MarginLeft
-    }
+    let heading2MarginTop: number = theme.getHeading2MarginTop() ?? 0
+    let heading2MarginRight: number = theme.getHeading2MarginRight() ?? 0
+    let heading2MarginBottom: number = theme.getHeading2MarginBottom() ?? 0
+    let heading2MarginLeft: number = theme.getHeading2MarginLeft() ?? 0
     cjMarkdownTheme.setMarginForDesignateHeading(2, heading2MarginTop, heading2MarginRight, heading2MarginBottom, heading2MarginLeft)
 
-    let heading2PaddingTop: number = 0.0
-    let heading2PaddingRight: number = 0.0
-    let heading2PaddingBottom: number = 0.0
-    let heading2PaddingLeft: number = 0.0
-    if (theme.heading2PaddingTop !== undefined) {
-      heading2PaddingTop = theme.heading2PaddingTop
-    }
-    if (theme.heading2PaddingRight !== undefined) {
-      heading2PaddingRight = theme.heading2PaddingRight
-    }
-    if (theme.heading2PaddingBottom !== undefined) {
-      heading2PaddingBottom = theme.heading2PaddingBottom
-    }
-    if (theme.heading2PaddingLeft !== undefined) {
-      heading2PaddingLeft = theme.heading2PaddingLeft
-    }
+    let heading2PaddingTop: number = theme.getHeading2PaddingTop() ?? 0
+    let heading2PaddingRight: number = theme.getHeading2PaddingRight() ?? 0
+    let heading2PaddingBottom: number = theme.getHeading2PaddingBottom() ?? 0
+    let heading2PaddingLeft: number = theme.getHeading2PaddingLeft() ?? 0
     cjMarkdownTheme.setPaddingForDesignateHeading(2, heading2PaddingTop, heading2PaddingRight, heading2PaddingBottom, heading2PaddingLeft)
-    if (theme.heading2TextFontColor !== undefined) {
-      cjMarkdownTheme.setTextFontColorForDesignateHeading(2, theme.heading2TextFontColor)
+    if (theme.getHeading2TextFontColor() !== undefined) {
+      cjMarkdownTheme.setTextFontColorForDesignateHeading(2, theme.getHeading2TextFontColor())
     }
-    if (theme.heading2TextFontSize !== undefined) {
-      cjMarkdownTheme.setTextFontSizeForDesignateHeading(2, theme.heading2TextFontSize)
+    if (theme.getHeading2TextFontSize() !== undefined) {
+      cjMarkdownTheme.setTextFontSizeForDesignateHeading(2, theme.getHeading2TextFontSize())
     }
-    if (theme.heading2TextFontStyle !== undefined) {
-      cjMarkdownTheme.setTextFontStyleForDesignateHeading(2, theme.heading2TextFontStyle)
+    if (theme.getHeading2TextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTextFontStyleForDesignateHeading(2, theme.getHeading2TextFontStyle())
     }
-    if (theme.heading2TextFontWeight !== undefined) {
-      cjMarkdownTheme.setTextFontWeightForDesignateHeading(2, theme.heading2TextFontWeight)
+    if (theme.getHeading2TextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(2, theme.getHeading2TextFontWeight())
     }
-    if (theme.heading2TextFontFamily !== undefined) {
-      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(2, theme.heading2TextFontFamily)
+    if (theme.getHeading2TextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(2, theme.getHeading2TextFontFamily())
     }
-    if (theme.heading2TextLineHeight !== undefined) {
-      cjMarkdownTheme.setTextLineHeightForDesignateHeading(2, theme.heading2TextLineHeight)
+    if (theme.getHeading2TextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTextLineHeightForDesignateHeading(2, theme.getHeading2TextLineHeight())
     }
-    if (theme.heading2TextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(2, theme.heading2TextLetterSpacing)
+    if (theme.getHeading2TextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(2, theme.getHeading2TextLetterSpacing())
     }
-    if (theme.heading2UnderlineHeight !== undefined) {
-      cjMarkdownTheme.setUnderlineHeightForDesignateHeading(2, theme.heading2UnderlineHeight)
+    if (theme.getHeading2UnderlineHeight() !== undefined) {
+      cjMarkdownTheme.setUnderlineHeightForDesignateHeading(2, theme.getHeading2UnderlineHeight())
     }
-    if (theme.heading2UnderlineColor !== undefined) {
-      cjMarkdownTheme.setUnderlineColorForDesignateHeading(2, theme.heading2UnderlineColor)
+    if (theme.getHeading2UnderlineColor() !== undefined) {
+      cjMarkdownTheme.setUnderlineColorForDesignateHeading(2, theme.getHeading2UnderlineColor())
     }
-    if (theme.heading2UnderlineSpacing !== undefined) {
-      cjMarkdownTheme.setUnderlineSpacingForDesignateHeading(2, theme.heading2UnderlineSpacing)
+    if (theme.getHeading2UnderlineSpacing() !== undefined) {
+      cjMarkdownTheme.setUnderlineSpacingForDesignateHeading(2, theme.getHeading2UnderlineSpacing())
     }
     // H3
-    if (theme.heading3BackgroundColor !== undefined) {
-      cjMarkdownTheme.setBackgroundColorForDesignateHeading(3, theme.heading3BackgroundColor)
+    if (theme.getHeading3BackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColorForDesignateHeading(3, theme.getHeading3BackgroundColor())
     }
-    let heading3MarginTop: number = 0.0
-    let heading3MarginRight: number = 0.0
-    let heading3MarginBottom: number = 0.0
-    let heading3MarginLeft: number = 0.0
-    if (theme.heading3MarginTop !== undefined) {
-      heading3MarginTop = theme.heading3MarginTop
-    }
-    if (theme.heading3MarginRight !== undefined) {
-      heading3MarginRight = theme.heading3MarginRight
-    }
-    if (theme.heading3MarginBottom !== undefined) {
-      heading3MarginBottom = theme.heading3MarginBottom
-    }
-    if (theme.heading3MarginLeft !== undefined) {
-      heading3MarginLeft = theme.heading3MarginLeft
-    }
+    let heading3MarginTop: number = theme.getHeading3MarginTop() ?? 0
+    let heading3MarginRight: number = theme.getHeading3MarginRight() ?? 0
+    let heading3MarginBottom: number = theme.getHeading3MarginBottom() ?? 0
+    let heading3MarginLeft: number = theme.getHeading3MarginLeft() ?? 0
     cjMarkdownTheme.setMarginForDesignateHeading(3, heading3MarginTop, heading3MarginRight, heading3MarginBottom, heading3MarginLeft)
 
-    let heading3PaddingTop: number = 0.0
-    let heading3PaddingRight: number = 0.0
-    let heading3PaddingBottom: number = 0.0
-    let heading3PaddingLeft: number = 0.0
-    if (theme.heading3PaddingTop !== undefined) {
-      heading3PaddingTop = theme.heading3PaddingTop
-    }
-    if (theme.heading3PaddingRight !== undefined) {
-      heading3PaddingRight = theme.heading3PaddingRight
-    }
-    if (theme.heading3PaddingBottom !== undefined) {
-      heading3PaddingBottom = theme.heading3PaddingBottom
-    }
-    if (theme.heading3PaddingLeft !== undefined) {
-      heading3PaddingLeft = theme.heading3PaddingLeft
-    }
+    let heading3PaddingTop: number = theme.getHeading3PaddingTop() ?? 0
+    let heading3PaddingRight: number = theme.getHeading3PaddingRight() ?? 0
+    let heading3PaddingBottom: number = theme.getHeading3PaddingBottom() ?? 0
+    let heading3PaddingLeft: number = theme.getHeading3PaddingLeft() ?? 0
     cjMarkdownTheme.setPaddingForDesignateHeading(3, heading3PaddingTop, heading3PaddingRight, heading3PaddingBottom, heading3PaddingLeft)
-    if (theme.heading3TextFontColor !== undefined) {
-      cjMarkdownTheme.setTextFontColorForDesignateHeading(3, theme.heading3TextFontColor)
+    if (theme.getHeading3TextFontColor() !== undefined) {
+      cjMarkdownTheme.setTextFontColorForDesignateHeading(3, theme.getHeading3TextFontColor())
     }
-    if (theme.heading3TextFontSize !== undefined) {
-      cjMarkdownTheme.setTextFontSizeForDesignateHeading(3, theme.heading3TextFontSize)
+    if (theme.getHeading3TextFontSize() !== undefined) {
+      cjMarkdownTheme.setTextFontSizeForDesignateHeading(3, theme.getHeading3TextFontSize())
     }
-    if (theme.heading3TextFontStyle !== undefined) {
-      cjMarkdownTheme.setTextFontStyleForDesignateHeading(3, theme.heading3TextFontStyle)
+    if (theme.getHeading3TextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTextFontStyleForDesignateHeading(3, theme.getHeading3TextFontStyle())
     }
-    if (theme.heading3TextFontWeight !== undefined) {
-      cjMarkdownTheme.setTextFontWeightForDesignateHeading(3, theme.heading3TextFontWeight)
+    if (theme.getHeading3TextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(3, theme.getHeading3TextFontWeight())
     }
-    if (theme.heading3TextFontFamily !== undefined) {
-      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(3, theme.heading3TextFontFamily)
+    if (theme.getHeading3TextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(3, theme.getHeading3TextFontFamily())
     }
-    if (theme.heading3TextLineHeight !== undefined) {
-      cjMarkdownTheme.setTextLineHeightForDesignateHeading(3, theme.heading3TextLineHeight)
+    if (theme.getHeading3TextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTextLineHeightForDesignateHeading(3, theme.getHeading3TextLineHeight())
     }
-    if (theme.heading3TextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(3, theme.heading3TextLetterSpacing)
+    if (theme.getHeading3TextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(3, theme.getHeading3TextLetterSpacing())
     }
     // H4
-    if (theme.heading4BackgroundColor !== undefined) {
-      cjMarkdownTheme.setBackgroundColorForDesignateHeading(4, theme.heading4BackgroundColor)
+    if (theme.getHeading4BackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColorForDesignateHeading(4, theme.getHeading4BackgroundColor())
     }
-    let heading4MarginTop: number = 0.0
-    let heading4MarginRight: number = 0.0
-    let heading4MarginBottom: number = 0.0
-    let heading4MarginLeft: number = 0.0
-    if (theme.heading4MarginTop !== undefined) {
-      heading4MarginTop = theme.heading4MarginTop
-    }
-    if (theme.heading4MarginRight !== undefined) {
-      heading4MarginRight = theme.heading4MarginRight
-    }
-    if (theme.heading4MarginBottom !== undefined) {
-      heading4MarginBottom = theme.heading4MarginBottom
-    }
-    if (theme.heading4MarginLeft !== undefined) {
-      heading4MarginLeft = theme.heading4MarginLeft
-    }
+    let heading4MarginTop: number = theme.getHeading4MarginTop() ?? 0
+    let heading4MarginRight: number = theme.getHeading4MarginRight() ?? 0
+    let heading4MarginBottom: number = theme.getHeading4MarginBottom() ?? 0
+    let heading4MarginLeft: number = theme.getHeading4MarginLeft() ?? 0
     cjMarkdownTheme.setMarginForDesignateHeading(4, heading4MarginTop, heading4MarginRight, heading4MarginBottom, heading4MarginLeft)
 
-    let heading4PaddingTop: number = 0.0
-    let heading4PaddingRight: number = 0.0
-    let heading4PaddingBottom: number = 0.0
-    let heading4PaddingLeft: number = 0.0
-    if (theme.heading4PaddingTop !== undefined) {
-      heading4PaddingTop = theme.heading4PaddingTop
-    }
-    if (theme.heading4PaddingRight !== undefined) {
-      heading4PaddingRight = theme.heading4PaddingRight
-    }
-    if (theme.heading4PaddingBottom !== undefined) {
-      heading4PaddingBottom = theme.heading4PaddingBottom
-    }
-    if (theme.heading4PaddingLeft !== undefined) {
-      heading4PaddingLeft = theme.heading4PaddingLeft
-    }
+    let heading4PaddingTop: number = theme.getHeading4PaddingTop() ?? 0
+    let heading4PaddingRight: number = theme.getHeading4PaddingRight() ?? 0
+    let heading4PaddingBottom: number = theme.getHeading4PaddingBottom() ?? 0
+    let heading4PaddingLeft: number = theme.getHeading4PaddingLeft() ?? 0
     cjMarkdownTheme.setPaddingForDesignateHeading(4, heading4PaddingTop, heading4PaddingRight, heading4PaddingBottom, heading4PaddingLeft)
-    if (theme.heading4TextFontColor !== undefined) {
-      cjMarkdownTheme.setTextFontColorForDesignateHeading(4, theme.heading4TextFontColor)
+    if (theme.getHeading4TextFontColor() !== undefined) {
+      cjMarkdownTheme.setTextFontColorForDesignateHeading(4, theme.getHeading4TextFontColor())
     }
-    if (theme.heading4TextFontSize !== undefined) {
-      cjMarkdownTheme.setTextFontSizeForDesignateHeading(4, theme.heading4TextFontSize)
+    if (theme.getHeading4TextFontSize() !== undefined) {
+      cjMarkdownTheme.setTextFontSizeForDesignateHeading(4, theme.getHeading4TextFontSize())
     }
-    if (theme.heading4TextFontStyle !== undefined) {
-      cjMarkdownTheme.setTextFontStyleForDesignateHeading(4, theme.heading4TextFontStyle)
+    if (theme.getHeading4TextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTextFontStyleForDesignateHeading(4, theme.getHeading4TextFontStyle())
     }
-    if (theme.heading4TextFontWeight !== undefined) {
-      cjMarkdownTheme.setTextFontWeightForDesignateHeading(4, theme.heading4TextFontWeight)
+    if (theme.getHeading4TextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(4, theme.getHeading4TextFontWeight())
     }
-    if (theme.heading4TextFontFamily !== undefined) {
-      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(4, theme.heading4TextFontFamily)
+    if (theme.getHeading4TextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(4, theme.getHeading4TextFontFamily())
     }
-    if (theme.heading4TextLineHeight !== undefined) {
-      cjMarkdownTheme.setTextLineHeightForDesignateHeading(4, theme.heading4TextLineHeight)
+    if (theme.getHeading4TextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTextLineHeightForDesignateHeading(4, theme.getHeading4TextLineHeight())
     }
-    if (theme.heading4TextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(4, theme.heading4TextLetterSpacing)
+    if (theme.getHeading4TextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(4, theme.getHeading4TextLetterSpacing())
     }
     // H5
-    if (theme.heading5BackgroundColor !== undefined) {
-      cjMarkdownTheme.setBackgroundColorForDesignateHeading(5, theme.heading5BackgroundColor)
+    if (theme.getHeading5BackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColorForDesignateHeading(5, theme.getHeading5BackgroundColor())
     }
-    let heading5MarginTop: number = 0.0
-    let heading5MarginRight: number = 0.0
-    let heading5MarginBottom: number = 0.0
-    let heading5MarginLeft: number = 0.0
-    if (theme.heading5MarginTop !== undefined) {
-      heading5MarginTop = theme.heading5MarginTop
-    }
-    if (theme.heading5MarginRight !== undefined) {
-      heading5MarginRight = theme.heading5MarginRight
-    }
-    if (theme.heading5MarginBottom !== undefined) {
-      heading5MarginBottom = theme.heading5MarginBottom
-    }
-    if (theme.heading5MarginLeft !== undefined) {
-      heading5MarginLeft = theme.heading5MarginLeft
-    }
+    let heading5MarginTop: number = theme.getHeading5MarginTop() ?? 0
+    let heading5MarginRight: number = theme.getHeading5MarginRight() ?? 0
+    let heading5MarginBottom: number = theme.getHeading5MarginBottom() ?? 0
+    let heading5MarginLeft: number = theme.getHeading5MarginLeft() ?? 0
     cjMarkdownTheme.setMarginForDesignateHeading(5, heading5MarginTop, heading5MarginRight, heading5MarginBottom, heading5MarginLeft)
 
-    let heading5PaddingTop: number = 0.0
-    let heading5PaddingRight: number = 0.0
-    let heading5PaddingBottom: number = 0.0
-    let heading5PaddingLeft: number = 0.0
-    if (theme.heading5PaddingTop !== undefined) {
-      heading5PaddingTop = theme.heading5PaddingTop
-    }
-    if (theme.heading5PaddingRight !== undefined) {
-      heading5PaddingRight = theme.heading5PaddingRight
-    }
-    if (theme.heading5PaddingBottom !== undefined) {
-      heading5PaddingBottom = theme.heading5PaddingBottom
-    }
-    if (theme.heading5PaddingLeft !== undefined) {
-      heading5PaddingLeft = theme.heading5PaddingLeft
-    }
+    let heading5PaddingTop: number = theme.getHeading5PaddingTop() ?? 0
+    let heading5PaddingRight: number = theme.getHeading5PaddingRight() ?? 0
+    let heading5PaddingBottom: number = theme.getHeading5PaddingBottom() ?? 0
+    let heading5PaddingLeft: number = theme.getHeading5PaddingLeft() ?? 0
     cjMarkdownTheme.setPaddingForDesignateHeading(5, heading5PaddingTop, heading5PaddingRight, heading5PaddingBottom, heading5PaddingLeft)
-    if (theme.heading5TextFontColor !== undefined) {
-      cjMarkdownTheme.setTextFontColorForDesignateHeading(5, theme.heading5TextFontColor)
+    if (theme.getHeading5TextFontColor() !== undefined) {
+      cjMarkdownTheme.setTextFontColorForDesignateHeading(5, theme.getHeading5TextFontColor())
     }
-    if (theme.heading5TextFontSize !== undefined) {
-      cjMarkdownTheme.setTextFontSizeForDesignateHeading(5, theme.heading5TextFontSize)
+    if (theme.getHeading5TextFontSize() !== undefined) {
+      cjMarkdownTheme.setTextFontSizeForDesignateHeading(5, theme.getHeading5TextFontSize())
     }
-    if (theme.heading5TextFontStyle !== undefined) {
-      cjMarkdownTheme.setTextFontStyleForDesignateHeading(5, theme.heading5TextFontStyle)
+    if (theme.getHeading5TextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTextFontStyleForDesignateHeading(5, theme.getHeading5TextFontStyle())
     }
-    if (theme.heading5TextFontWeight !== undefined) {
-      cjMarkdownTheme.setTextFontWeightForDesignateHeading(5, theme.heading5TextFontWeight)
+    if (theme.getHeading5TextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(5, theme.getHeading5TextFontWeight())
     }
-    if (theme.heading5TextFontFamily !== undefined) {
-      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(5, theme.heading5TextFontFamily)
+    if (theme.getHeading5TextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(5, theme.getHeading5TextFontFamily())
     }
-    if (theme.heading5TextLineHeight !== undefined) {
-      cjMarkdownTheme.setTextLineHeightForDesignateHeading(5, theme.heading5TextLineHeight)
+    if (theme.getHeading5TextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTextLineHeightForDesignateHeading(5, theme.getHeading5TextLineHeight())
     }
-    if (theme.heading5TextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(5, theme.heading5TextLetterSpacing)
+    if (theme.getHeading5TextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(5, theme.getHeading5TextLetterSpacing())
     }
     // H6
-    if (theme.heading6BackgroundColor !== undefined) {
-      cjMarkdownTheme.setBackgroundColorForDesignateHeading(6, theme.heading6BackgroundColor)
+    if (theme.getHeading6BackgroundColor() !== undefined) {
+      cjMarkdownTheme.setBackgroundColorForDesignateHeading(6, theme.getHeading6BackgroundColor())
     }
-    let heading6MarginTop: number = 0.0
-    let heading6MarginRight: number = 0.0
-    let heading6MarginBottom: number = 0.0
-    let heading6MarginLeft: number = 0.0
-    if (theme.heading6MarginTop !== undefined) {
-      heading6MarginTop = theme.heading6MarginTop
-    }
-    if (theme.heading6MarginRight !== undefined) {
-      heading6MarginRight = theme.heading6MarginRight
-    }
-    if (theme.heading6MarginBottom !== undefined) {
-      heading6MarginBottom = theme.heading6MarginBottom
-    }
-    if (theme.heading6MarginLeft !== undefined) {
-      heading6MarginLeft = theme.heading6MarginLeft
-    }
+    let heading6MarginTop: number = theme.getHeading6MarginTop() ?? 0
+    let heading6MarginRight: number = theme.getHeading6MarginRight() ?? 0
+    let heading6MarginBottom: number = theme.getHeading6MarginBottom() ?? 0
+    let heading6MarginLeft: number = theme.getHeading6MarginLeft() ?? 0
     cjMarkdownTheme.setMarginForDesignateHeading(6, heading6MarginTop, heading6MarginRight, heading6MarginBottom, heading6MarginLeft)
 
-    let heading6PaddingTop: number = 0.0
-    let heading6PaddingRight: number = 0.0
-    let heading6PaddingBottom: number = 0.0
-    let heading6PaddingLeft: number = 0.0
-    if (theme.heading6PaddingTop !== undefined) {
-      heading6PaddingTop = theme.heading6PaddingTop
-    }
-    if (theme.heading6PaddingRight !== undefined) {
-      heading6PaddingRight = theme.heading6PaddingRight
-    }
-    if (theme.heading6PaddingBottom !== undefined) {
-      heading6PaddingBottom = theme.heading6PaddingBottom
-    }
-    if (theme.heading6PaddingLeft !== undefined) {
-      heading6PaddingLeft = theme.heading6PaddingLeft
-    }
+    let heading6PaddingTop: number = theme.getHeading6PaddingTop() ?? 0
+    let heading6PaddingRight: number = theme.getHeading6PaddingRight() ?? 0
+    let heading6PaddingBottom: number = theme.getHeading6PaddingBottom() ?? 0
+    let heading6PaddingLeft: number = theme.getHeading6PaddingLeft() ?? 0
     cjMarkdownTheme.setPaddingForDesignateHeading(6, heading6PaddingTop, heading6PaddingRight, heading6PaddingBottom, heading6PaddingLeft)
-    if (theme.heading6TextFontColor !== undefined) {
-      cjMarkdownTheme.setTextFontColorForDesignateHeading(6, theme.heading6TextFontColor)
+    if (theme.getHeading6TextFontColor() !== undefined) {
+      cjMarkdownTheme.setTextFontColorForDesignateHeading(6, theme.getHeading6TextFontColor())
     }
-    if (theme.heading6TextFontSize !== undefined) {
-      cjMarkdownTheme.setTextFontSizeForDesignateHeading(6, theme.heading6TextFontSize)
+    if (theme.getHeading6TextFontSize() !== undefined) {
+      cjMarkdownTheme.setTextFontSizeForDesignateHeading(6, theme.getHeading6TextFontSize())
     }
-    if (theme.heading6TextFontStyle !== undefined) {
-      cjMarkdownTheme.setTextFontStyleForDesignateHeading(6, theme.heading6TextFontStyle)
+    if (theme.getHeading6TextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTextFontStyleForDesignateHeading(6, theme.getHeading6TextFontStyle())
     }
-    if (theme.heading6TextFontWeight !== undefined) {
-      cjMarkdownTheme.setTextFontWeightForDesignateHeading(6, theme.heading6TextFontWeight)
+    if (theme.getHeading6TextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(6, theme.getHeading6TextFontWeight())
     }
-    if (theme.heading6TextFontFamily !== undefined) {
-      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(6, theme.heading6TextFontFamily)
+    if (theme.getHeading6TextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTextFontFamilyForDesignateHeading(6, theme.getHeading6TextFontFamily())
     }
-    if (theme.heading6TextLineHeight !== undefined) {
-      cjMarkdownTheme.setTextLineHeightForDesignateHeading(6, theme.heading6TextLineHeight)
+    if (theme.getHeading6TextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTextLineHeightForDesignateHeading(6, theme.getHeading6TextLineHeight())
     }
-    if (theme.heading6TextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(6, theme.heading6TextLetterSpacing)
+    if (theme.getHeading6TextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTextLetterSpacingForDesignateHeading(6, theme.getHeading6TextLetterSpacing())
     }
     return cjMarkdownTheme
   }
@@ -1827,32 +1410,32 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownHtmlUnderlineTheme()
-    if (theme.htmlUnderlineTextFontColor !== undefined) {
-      cjMarkdownTheme.setHtmlUnderlineTextFontColor(theme.htmlUnderlineTextFontColor)
+    if (theme.getHtmlUnderlineTextFontColor() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextFontColor(theme.getHtmlUnderlineTextFontColor())
     }
-    if (theme.htmlUnderlineTextFontSize !== undefined) {
-      cjMarkdownTheme.setHtmlUnderlineTextFontSize(theme.htmlUnderlineTextFontSize)
+    if (theme.getHtmlUnderlineTextFontSize() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextFontSize(theme.getHtmlUnderlineTextFontSize())
     }
-    if (theme.htmlUnderlineTextFontStyle !== undefined) {
-      cjMarkdownTheme.setHtmlUnderlineTextFontStyle(theme.htmlUnderlineTextFontStyle)
+    if (theme.getHtmlUnderlineTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextFontStyle(theme.getHtmlUnderlineTextFontStyle())
     }
-    if (theme.htmlUnderlineTextFontWeight !== undefined) {
-      cjMarkdownTheme.setHtmlUnderlineTextFontWeight(theme.htmlUnderlineTextFontWeight.toString())
+    if (theme.getHtmlUnderlineTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextFontWeight(this.convertFontWeight(theme.getHtmlUnderlineTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.htmlUnderlineTextFontFamily !== undefined) {
-      cjMarkdownTheme.setHtmlUnderlineTextFontFamily(theme.htmlUnderlineTextFontFamily)
+    if (theme.getHtmlUnderlineTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextFontFamily(theme.getHtmlUnderlineTextFontFamily())
     }
-    if (theme.htmlUnderlineTextLineHeight !== undefined) {
-      cjMarkdownTheme.setHtmlUnderlineTextLineHeight(theme.htmlUnderlineTextLineHeight)
+    if (theme.getHtmlUnderlineTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextLineHeight(theme.getHtmlUnderlineTextLineHeight())
     }
-    if (theme.htmlUnderlineTextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setHtmlUnderlineTextLetterSpacing(theme.htmlUnderlineTextLetterSpacing)
+    if (theme.getHtmlUnderlineTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextLetterSpacing(theme.getHtmlUnderlineTextLetterSpacing())
     }
-    if (theme.htmlUnderlineTextDecorationColor !== undefined) {
-      cjMarkdownTheme.setHtmlUnderlineTextDecorationColor(theme.htmlUnderlineTextDecorationColor)
+    if (theme.getHtmlUnderlineTextDecorationColor() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextDecorationColor(theme.getHtmlUnderlineTextDecorationColor())
     }
-    if (theme.htmlUnderlineTextDecorationStyle !== undefined) {
-      cjMarkdownTheme.setHtmlUnderlineTextDecorationStyle(theme.htmlUnderlineTextDecorationStyle)
+    if (theme.getHtmlUnderlineTextDecorationStyle() !== undefined) {
+      cjMarkdownTheme.setHtmlUnderlineTextDecorationStyle(theme.getHtmlUnderlineTextDecorationStyle())
     }
     return cjMarkdownTheme
   }
@@ -1862,143 +1445,107 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownImageTheme()
-    let imageMarginTop: number = 0.0
-    let imageMarginRight: number = 0.0
-    let imageMarginBottom: number = 0.0
-    let imageMarginLeft: number = 0.0
-    if (theme.imageMarginTop !== undefined) {
-      imageMarginTop = theme.imageMarginTop
-    }
-    if (theme.imageMarginRight !== undefined) {
-      imageMarginRight = theme.imageMarginRight
-    }
-    if (theme.imageMarginBottom !== undefined) {
-      imageMarginBottom = theme.imageMarginBottom
-    }
-    if (theme.imageMarginLeft !== undefined) {
-      imageMarginLeft = theme.imageMarginLeft
-    }
+    let imageMarginTop: number = theme.getImageMarginTop() ?? 0
+    let imageMarginRight: number = theme.getImageMarginRight() ?? 0
+    let imageMarginBottom: number = theme.getImageMarginBottom() ?? 0
+    let imageMarginLeft: number = theme.getImageMarginLeft() ?? 0
     cjMarkdownTheme.setImageMargin(imageMarginTop, imageMarginRight, imageMarginBottom, imageMarginLeft)
 
-    let imageRadiusTopLeft: number = 0.0
-    let imageRadiusTopRight: number = 0.0
-    let imageRadiusBottomLeft: number = 0.0
-    let imageRadiusBottomRight: number = 0.0
-    if (theme.imageRadiusTopLeft !== undefined) {
-      imageRadiusTopLeft = theme.imageRadiusTopLeft
-    }
-    if (theme.imageRadiusTopRight !== undefined) {
-      imageRadiusTopRight = theme.imageRadiusTopRight
-    }
-    if (theme.imageRadiusBottomLeft !== undefined) {
-      imageRadiusBottomLeft = theme.imageRadiusBottomLeft
-    }
-    if (theme.imageRadiusBottomRight !== undefined) {
-      imageRadiusBottomRight = theme.imageRadiusBottomRight
-    }
+    let imageRadiusTopLeft: number = theme.getImageRadiusTopLeft() ?? 0
+    let imageRadiusTopRight: number = theme.getImageRadiusTopRight() ?? 0
+    let imageRadiusBottomLeft: number = theme.getImageRadiusBottomLeft() ?? 0
+    let imageRadiusBottomRight: number = theme.getImageRadiusBottomRight() ?? 0
     cjMarkdownTheme.setImageBorderRadius(imageRadiusTopLeft, imageRadiusTopRight, imageRadiusBottomLeft, imageRadiusBottomRight)
-    if (theme.imageBorderStyle !== undefined) {
-      cjMarkdownTheme.setImageBorderStyle(theme.imageBorderStyle)
+    if (theme.getImageBorderStyle() !== undefined) {
+      cjMarkdownTheme.setImageBorderStyle(theme.getImageBorderStyle())
     }
-    if (theme.imageBorderWidth !== undefined) {
-      cjMarkdownTheme.setImageBorderWidth(theme.imageBorderWidth)
+    if (theme.getImageBorderWidth() !== undefined) {
+      cjMarkdownTheme.setImageBorderWidth(theme.getImageBorderWidth())
     }
-    if (theme.imageBorderColor !== undefined) {
-      cjMarkdownTheme.setImageBorderColor(theme.imageBorderColor)
+    if (theme.getImageBorderColor() !== undefined) {
+      cjMarkdownTheme.setImageBorderColor(theme.getImageBorderColor())
     }
-    if (theme.imageAutoResize !== undefined) {
-      cjMarkdownTheme.setImageAutoResize(theme.imageAutoResize)
+    if (theme.getImageAutoResize() !== undefined) {
+      cjMarkdownTheme.setImageAutoResize(theme.getImageAutoResize())
     }
-    if (theme.isImageMixedLayout !== undefined) {
-      cjMarkdownTheme.setIsImageMixedLayout(theme.isImageMixedLayout)
+    if (theme.getIsImageMixedLayout() !== undefined) {
+      cjMarkdownTheme.setIsImageMixedLayout(theme.getIsImageMixedLayout())
     }
-    if (theme.imageMaximumWidth !== undefined) {
-      cjMarkdownTheme.setImageMaximumWidth(theme.imageMaximumWidth)
+    if (theme.getImageMaximumWidth() !== undefined) {
+      cjMarkdownTheme.setImageMaximumWidth(theme.getImageMaximumWidth())
     }
-    if (theme.imageFixedRatioWidth !== undefined) {
-      cjMarkdownTheme.setImageFixedRatioWidth(theme.imageFixedRatioWidth)
+    if (theme.getImageFixedRatioWidth() !== undefined) {
+      cjMarkdownTheme.setImageFixedRatioWidth(theme.getImageFixedRatioWidth())
     }
-    if (theme.imageMaxHeight !== undefined) {
-      cjMarkdownTheme.setImageMaxHeight(theme.imageMaxHeight)
+    if (theme.getImageMaxHeight() !== undefined) {
+      cjMarkdownTheme.setImageMaxHeight(theme.getImageMaxHeight())
     }
-    if (theme.imageHeight !== undefined) {
-      cjMarkdownTheme.setImageHeight(theme.imageHeight)
+    if (theme.getImageHeight() !== undefined) {
+      cjMarkdownTheme.setImageHeight(theme.getImageHeight())
     }
-    if (theme.imageMaxWidth !== undefined) {
-      cjMarkdownTheme.setImageMaxWidth(theme.imageMaxWidth)
+    if (theme.getImageMaxWidth() !== undefined) {
+      cjMarkdownTheme.setImageMaxWidth(theme.getImageMaxWidth())
     }
-    if (theme.imageWidth !== undefined) {
-      cjMarkdownTheme.setImageWidth(theme.imageWidth)
+    if (theme.getImageWidth() !== undefined) {
+      cjMarkdownTheme.setImageWidth(theme.getImageWidth())
     }
-    if (theme.imageFitType !== undefined) {
-      cjMarkdownTheme.setImageFitType(theme.imageFitType)
+    if (theme.getImageFitType() !== undefined) {
+      cjMarkdownTheme.setImageFitType(theme.getImageFitType())
     }
-    if (theme.imageBottomLayoutMarginTop !== undefined) {
-      cjMarkdownTheme.setImageBottomLayoutMarginTop(theme.imageBottomLayoutMarginTop)
+    if (theme.getImageBottomLayoutMarginTop() !== undefined) {
+      cjMarkdownTheme.setImageBottomLayoutMarginTop(theme.getImageBottomLayoutMarginTop())
     }
-    if (theme.imageDownloadButtonVisible !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonVisible(theme.imageDownloadButtonVisible)
+    if (theme.getImageDownloadButtonVisible() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonVisible(theme.getImageDownloadButtonVisible())
     }
-    if (theme.imageDownloadButtonWidth !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonWidth(theme.imageDownloadButtonWidth)
+    if (theme.getImageDownloadButtonWidth() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonWidth(theme.getImageDownloadButtonWidth())
     }
-    if (theme.imageDownloadButtonHeight !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonHeight(theme.imageDownloadButtonHeight)
+    if (theme.getImageDownloadButtonHeight() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonHeight(theme.getImageDownloadButtonHeight())
     }
-    let imageDownloadButtonRadiusTopLeft: number = 22.0
-    let imageDownloadButtonRadiusTopRight: number = 22.0
-    let imageDownloadButtonRadiusBottomLeft: number = 22.0
-    let imageDownloadButtonRadiusBottomRight: number = 22.0
-    if (theme.imageDownloadButtonRadiusTopLeft !== undefined) {
-      imageDownloadButtonRadiusTopLeft = theme.imageDownloadButtonRadiusTopLeft
-    }
-    if (theme.imageDownloadButtonRadiusTopRight !== undefined) {
-      imageDownloadButtonRadiusTopRight = theme.imageDownloadButtonRadiusTopRight
-    }
-    if (theme.imageDownloadButtonRadiusBottomLeft !== undefined) {
-      imageDownloadButtonRadiusBottomLeft = theme.imageDownloadButtonRadiusBottomLeft
-    }
-    if (theme.imageDownloadButtonRadiusBottomRight !== undefined) {
-      imageDownloadButtonRadiusBottomRight = theme.imageDownloadButtonRadiusBottomRight
-    }
+    let imageDownloadButtonRadiusTopLeft: number = theme.getImageDownloadButtonRadiusTopLeft() ?? 22
+    let imageDownloadButtonRadiusTopRight: number = theme.getImageDownloadButtonRadiusTopRight() ?? 22
+    let imageDownloadButtonRadiusBottomLeft: number = theme.getImageDownloadButtonRadiusBottomLeft() ?? 22
+    let imageDownloadButtonRadiusBottomRight: number = theme.getImageDownloadButtonRadiusBottomRight() ?? 22
     cjMarkdownTheme.setImageDownloadButtonRadius(
       imageDownloadButtonRadiusTopLeft,
       imageDownloadButtonRadiusTopRight,
       imageDownloadButtonRadiusBottomLeft,
       imageDownloadButtonRadiusBottomRight
     )
-    if (theme.imageDownloadButtonIconWidth !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonIconWidth(theme.imageDownloadButtonIconWidth)
+    if (theme.getImageDownloadButtonIconWidth() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonIconWidth(theme.getImageDownloadButtonIconWidth())
     }
-    if (theme.imageDownloadButtonIconHeight !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonIconHeight(theme.imageDownloadButtonIconHeight)
+    if (theme.getImageDownloadButtonIconHeight() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonIconHeight(theme.getImageDownloadButtonIconHeight())
     }
-    if (theme.imageDownloadButtonIconTextGap !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonIconTextGap(theme.imageDownloadButtonIconTextGap)
+    if (theme.getImageDownloadButtonIconTextGap() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonIconTextGap(theme.getImageDownloadButtonIconTextGap())
     }
-    if (theme.imageDownloadButtonBackgroundColor !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonBackgroundColor(theme.imageDownloadButtonBackgroundColor)
+    if (theme.getImageDownloadButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonBackgroundColor(theme.getImageDownloadButtonBackgroundColor())
     }
-    if (theme.imageDownloadButtonText !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonText(theme.imageDownloadButtonText)
+    if (theme.getImageDownloadButtonText() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonText(theme.getImageDownloadButtonText())
     }
-    if (theme.imageDownloadButtonTextFontColor !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonTextFontColor(theme.imageDownloadButtonTextFontColor)
+    if (theme.getImageDownloadButtonTextFontColor() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonTextFontColor(theme.getImageDownloadButtonTextFontColor())
     }
-    if (theme.imageDownloadButtonTextFontSize !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonTextFontSize(theme.imageDownloadButtonTextFontSize)
+    if (theme.getImageDownloadButtonTextFontSize() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonTextFontSize(theme.getImageDownloadButtonTextFontSize())
     }
-    if (theme.imageDownloadButtonTextFontStyle !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonTextFontStyle(theme.imageDownloadButtonTextFontStyle)
+    if (theme.getImageDownloadButtonTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonTextFontStyle(theme.getImageDownloadButtonTextFontStyle())
     }
-    if (theme.imageDownloadButtonTextFontWeight !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonTextFontWeight(theme.imageDownloadButtonTextFontWeight.toString())
+    if (theme.getImageDownloadButtonTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonTextFontWeight(this.convertFontWeight(theme.getImageDownloadButtonTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.imageDownloadButtonTextFontFamily !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonTextFontFamily(theme.imageDownloadButtonTextFontFamily)
+    if (theme.getImageDownloadButtonTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonTextFontFamily(theme.getImageDownloadButtonTextFontFamily())
     }
-    if (theme.imageDownloadButtonTextLineHeight !== undefined) {
-      cjMarkdownTheme.setImageDownloadButtonTextLineHeight(theme.imageDownloadButtonTextLineHeight)
+    if (theme.getImageDownloadButtonTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setImageDownloadButtonTextLineHeight(theme.getImageDownloadButtonTextLineHeight())
     }
     return cjMarkdownTheme
   }
@@ -2008,46 +1555,34 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownInlineCodeTheme()
-    if (theme.inlineCodeTextFontColor !== undefined) {
-      cjMarkdownTheme.setInlineCodeTextFontColor(theme.inlineCodeTextFontColor)
+    if (theme.getInlineCodeTextFontColor() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextFontColor(theme.getInlineCodeTextFontColor())
     }
-    if (theme.inlineCodeTextFontSize !== undefined) {
-      cjMarkdownTheme.setInlineCodeTextFontSize(theme.inlineCodeTextFontSize)
+    if (theme.getInlineCodeTextFontSize() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextFontSize(theme.getInlineCodeTextFontSize())
     }
-    if (theme.inlineCodeTextFontStyle !== undefined) {
-      cjMarkdownTheme.setInlineCodeTextFontStyle(theme.inlineCodeTextFontStyle)
+    if (theme.getInlineCodeTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextFontStyle(theme.getInlineCodeTextFontStyle())
     }
-    if (theme.inlineCodeTextFontWeight !== undefined) {
-      cjMarkdownTheme.setInlineCodeTextFontWeight(theme.inlineCodeTextFontWeight.toString())
+    if (theme.getInlineCodeTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextFontWeight(this.convertFontWeight(theme.getInlineCodeTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.inlineCodeTextFontFamily !== undefined) {
-      cjMarkdownTheme.setInlineCodeTextFontFamily(theme.inlineCodeTextFontFamily)
+    if (theme.getInlineCodeTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextFontFamily(theme.getInlineCodeTextFontFamily())
     }
-    if (theme.inlineCodeTextLineHeight !== undefined) {
-      cjMarkdownTheme.setInlineCodeTextLineHeight(theme.inlineCodeTextLineHeight)
+    if (theme.getInlineCodeTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextLineHeight(theme.getInlineCodeTextLineHeight())
     }
-    if (theme.inlineCodeTextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setInlineCodeTextLetterSpacing(theme.inlineCodeTextLetterSpacing)
+    if (theme.getInlineCodeTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextLetterSpacing(theme.getInlineCodeTextLetterSpacing())
     }
-    if (theme.inlineCodeTextBackgroundColor !== undefined) {
-      cjMarkdownTheme.setInlineCodeTextBackgroundColor(theme.inlineCodeTextBackgroundColor)
+    if (theme.getInlineCodeTextBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setInlineCodeTextBackgroundColor(theme.getInlineCodeTextBackgroundColor())
     }
-    let inlineCodeTextBackgroundRadiusTopLeft: number = 0.0
-    let inlineCodeTextBackgroundRadiusTopRight: number = 0.0
-    let inlineCodeTextBackgroundRadiusBottomLeft: number = 0.0
-    let inlineCodeTextBackgroundRadiusBottomRight: number = 0.0
-    if (theme.inlineCodeTextBackgroundRadiusTopLeft !== undefined) {
-      inlineCodeTextBackgroundRadiusTopLeft = theme.inlineCodeTextBackgroundRadiusTopLeft
-    }
-    if (theme.inlineCodeTextBackgroundRadiusTopRight !== undefined) {
-      inlineCodeTextBackgroundRadiusTopRight = theme.inlineCodeTextBackgroundRadiusTopRight
-    }
-    if (theme.inlineCodeTextBackgroundRadiusBottomLeft !== undefined) {
-      inlineCodeTextBackgroundRadiusBottomLeft = theme.inlineCodeTextBackgroundRadiusBottomLeft
-    }
-    if (theme.inlineCodeTextBackgroundRadiusBottomRight !== undefined) {
-      inlineCodeTextBackgroundRadiusBottomRight = theme.inlineCodeTextBackgroundRadiusBottomRight
-    }
+    let inlineCodeTextBackgroundRadiusTopLeft: number = theme.getInlineCodeTextBackgroundRadiusTopLeft() ?? 0
+    let inlineCodeTextBackgroundRadiusTopRight: number = theme.getInlineCodeTextBackgroundRadiusTopRight() ?? 0
+    let inlineCodeTextBackgroundRadiusBottomLeft: number = theme.getInlineCodeTextBackgroundRadiusBottomLeft() ?? 0
+    let inlineCodeTextBackgroundRadiusBottomRight: number = theme.getInlineCodeTextBackgroundRadiusBottomRight() ?? 0
     cjMarkdownTheme.setInlineCodeTextBackgroundRadius(
       inlineCodeTextBackgroundRadiusTopLeft,
       inlineCodeTextBackgroundRadiusTopRight,
@@ -2062,23 +1597,23 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownItalicTheme()
-    if (theme.italicTextFontColor !== undefined) {
-      cjMarkdownTheme.setItalicTextFontColor(theme.italicTextFontColor)
+    if (theme.getItalicTextFontColor() !== undefined) {
+      cjMarkdownTheme.setItalicTextFontColor(theme.getItalicTextFontColor())
     }
-    if (theme.italicTextFontSize !== undefined) {
-      cjMarkdownTheme.setItalicTextFontSize(theme.italicTextFontSize)
+    if (theme.getItalicTextFontSize() !== undefined) {
+      cjMarkdownTheme.setItalicTextFontSize(theme.getItalicTextFontSize())
     }
-    if (theme.italicTextFontWeight !== undefined) {
-      cjMarkdownTheme.setItalicTextFontWeight(theme.italicTextFontWeight.toString())
+    if (theme.getItalicTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setItalicTextFontWeight(this.convertFontWeight(theme.getItalicTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.italicTextFontFamily !== undefined) {
-      cjMarkdownTheme.setItalicTextFontFamily(theme.italicTextFontFamily)
+    if (theme.getItalicTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setItalicTextFontFamily(theme.getItalicTextFontFamily())
     }
-    if (theme.italicTextLineHeight !== undefined) {
-      cjMarkdownTheme.setItalicTextLineHeight(theme.italicTextLineHeight)
+    if (theme.getItalicTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setItalicTextLineHeight(theme.getItalicTextLineHeight())
     }
-    if (theme.italicTextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setItalicTextLetterSpacing(theme.italicTextLetterSpacing)
+    if (theme.getItalicTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setItalicTextLetterSpacing(theme.getItalicTextLetterSpacing())
     }
     return cjMarkdownTheme
   }
@@ -2088,76 +1623,52 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownLatexMathTheme()
-    let latexMathMarginTop: number = 0.0
-    let latexMathMarginRight: number = 0.0
-    let latexMathMarginBottom: number = 0.0
-    let latexMathMarginLeft: number = 0.0
-    if (theme.latexMathMarginTop !== undefined) {
-      latexMathMarginTop = theme.latexMathMarginTop
-    }
-    if (theme.latexMathMarginRight !== undefined) {
-      latexMathMarginRight = theme.latexMathMarginRight
-    }
-    if (theme.latexMathMarginBottom !== undefined) {
-      latexMathMarginBottom = theme.latexMathMarginBottom
-    }
-    if (theme.latexMathMarginLeft !== undefined) {
-      latexMathMarginLeft = theme.latexMathMarginLeft
-    }
+    let latexMathMarginTop: number = theme.getLatexMathMarginTop() ?? 0
+    let latexMathMarginRight: number = theme.getLatexMathMarginRight() ?? 0
+    let latexMathMarginBottom: number = theme.getLatexMathMarginBottom() ?? 0
+    let latexMathMarginLeft: number = theme.getLatexMathMarginLeft() ?? 0
     cjMarkdownTheme.setLatexMathMargin(latexMathMarginTop, latexMathMarginRight, latexMathMarginBottom, latexMathMarginLeft)
 
-    let latexMathPaddingTop: number = 0.0
-    let latexMathPaddingRight: number = 0.0
-    let latexMathPaddingBottom: number = 0.0
-    let latexMathPaddingLeft: number = 0.0
-    if (theme.latexMathPaddingTop !== undefined) {
-      latexMathPaddingTop = theme.latexMathPaddingTop
-    }
-    if (theme.latexMathPaddingRight !== undefined) {
-      latexMathPaddingRight = theme.latexMathPaddingRight
-    }
-    if (theme.latexMathPaddingBottom !== undefined) {
-      latexMathPaddingBottom = theme.latexMathPaddingBottom
-    }
-    if (theme.latexMathPaddingLeft !== undefined) {
-      latexMathPaddingLeft = theme.latexMathPaddingLeft
-    }
+    let latexMathPaddingTop: number = theme.getLatexMathPaddingTop() ?? 0
+    let latexMathPaddingRight: number = theme.getLatexMathPaddingRight() ?? 0
+    let latexMathPaddingBottom: number = theme.getLatexMathPaddingBottom() ?? 0
+    let latexMathPaddingLeft: number = theme.getLatexMathPaddingLeft() ?? 0
     cjMarkdownTheme.setLatexMathPadding(latexMathPaddingTop, latexMathPaddingRight, latexMathPaddingBottom, latexMathPaddingLeft)
-    if (theme.latexMathDefaultText !== undefined) {
-      cjMarkdownTheme.setLatexMathDefaultText(theme.latexMathDefaultText)
+    if (theme.getLatexMathDefaultText() !== undefined) {
+      cjMarkdownTheme.setLatexMathDefaultText(theme.getLatexMathDefaultText())
     }
-    if (theme.latexMathDefaultTextFontColor !== undefined) {
-      cjMarkdownTheme.setLatexMathDefaultTextFontColor(theme.latexMathDefaultTextFontColor)
+    if (theme.getLatexMathDefaultTextFontColor() !== undefined) {
+      cjMarkdownTheme.setLatexMathDefaultTextFontColor(theme.getLatexMathDefaultTextFontColor())
     }
-    if (theme.latexMathDefaultTextFontSize !== undefined) {
-      cjMarkdownTheme.setLatexMathDefaultTextFontSize(theme.latexMathDefaultTextFontSize)
+    if (theme.getLatexMathDefaultTextFontSize() !== undefined) {
+      cjMarkdownTheme.setLatexMathDefaultTextFontSize(theme.getLatexMathDefaultTextFontSize())
     }
-    if (theme.latexMathDefaultTextFontStyle !== undefined) {
-      cjMarkdownTheme.setLatexMathDefaultTextFontStyle(theme.latexMathDefaultTextFontStyle)
+    if (theme.getLatexMathDefaultTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setLatexMathDefaultTextFontStyle(theme.getLatexMathDefaultTextFontStyle())
     }
-    if (theme.latexMathDefaultTextFontWeight !== undefined) {
-      cjMarkdownTheme.setLatexMathDefaultTextFontWeight(theme.latexMathDefaultTextFontWeight.toString())
+    if (theme.getLatexMathDefaultTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setLatexMathDefaultTextFontWeight(this.convertFontWeight(theme.getLatexMathDefaultTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.latexMathDefaultTextFontFamily !== undefined) {
-      cjMarkdownTheme.setLatexMathDefaultTextFontFamily(theme.latexMathDefaultTextFontFamily)
+    if (theme.getLatexMathDefaultTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setLatexMathDefaultTextFontFamily(theme.getLatexMathDefaultTextFontFamily())
     }
-    if (theme.latexMathTextSize !== undefined) {
-      cjMarkdownTheme.setLatexMathTextSize(theme.latexMathTextSize)
+    if (theme.getLatexMathTextSize() !== undefined) {
+      cjMarkdownTheme.setLatexMathTextSize(theme.getLatexMathTextSize())
     }
-    if (theme.latexMathBackgroundColor !== undefined) {
-      cjMarkdownTheme.setLatexMathBackgroundColor(theme.latexMathBackgroundColor)
+    if (theme.getLatexMathBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLatexMathBackgroundColor(theme.getLatexMathBackgroundColor())
     }
-    if (theme.latexMathTextColor !== undefined) {
-      cjMarkdownTheme.setLatexMathTextColor(theme.latexMathTextColor)
+    if (theme.getLatexMathTextColor() !== undefined) {
+      cjMarkdownTheme.setLatexMathTextColor(theme.getLatexMathTextColor())
     }
-    if (theme.latexMathColorFormat !== undefined) {
-      cjMarkdownTheme.setLatexMathColorFormat(theme.latexMathColorFormat)
+    if (theme.getLatexMathColorFormat() !== undefined) {
+      cjMarkdownTheme.setLatexMathColorFormat(theme.getLatexMathColorFormat())
     }
-    if (theme.latexMathBlockCenter !== undefined) {
-      cjMarkdownTheme.setLatexMathBlockCenter(theme.latexMathBlockCenter)
+    if (theme.getLatexMathBlockCenter() !== undefined) {
+      cjMarkdownTheme.setLatexMathBlockCenter(theme.getLatexMathBlockCenter())
     }
-    if (theme.latexMathResPath !== undefined) {
-      cjMarkdownTheme.setLatexMathResPath(theme.latexMathResPath)
+    if (theme.getLatexMathResPath() !== undefined) {
+      cjMarkdownTheme.setLatexMathResPath(theme.getLatexMathResPath())
     }
     return cjMarkdownTheme
   }
@@ -2167,138 +1678,126 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownLinkTheme()
-    if (theme.linkIsIcon !== undefined) {
-      cjMarkdownTheme.setLinkIsIcon(theme.linkIsIcon)
+    if (theme.getLinkIsIcon() !== undefined) {
+      cjMarkdownTheme.setLinkIsIcon(theme.getLinkIsIcon())
     }
-    if (theme.linkListIsIcon !== undefined) {
-      cjMarkdownTheme.setLinkListIsIcon(theme.linkListIsIcon)
+    if (theme.getLinkListIsIcon() !== undefined) {
+      cjMarkdownTheme.setLinkListIsIcon(theme.getLinkListIsIcon())
     }
-    if (theme.linkTextFontColor !== undefined) {
-      cjMarkdownTheme.setLinkTextFontColor(theme.linkTextFontColor)
+    if (theme.getLinkTextFontColor() !== undefined) {
+      cjMarkdownTheme.setLinkTextFontColor(theme.getLinkTextFontColor())
     }
-    if (theme.linkTextFontSize !== undefined) {
-      cjMarkdownTheme.setLinkTextFontSize(theme.linkTextFontSize)
+    if (theme.getLinkTextFontSize() !== undefined) {
+      cjMarkdownTheme.setLinkTextFontSize(theme.getLinkTextFontSize())
     }
-    if (theme.linkTextFontStyle !== undefined) {
-      cjMarkdownTheme.setLinkTextFontStyle(theme.linkTextFontStyle)
+    if (theme.getLinkTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setLinkTextFontStyle(theme.getLinkTextFontStyle())
     }
-    if (theme.linkTextFontWeight !== undefined) {
-      cjMarkdownTheme.setLinkTextFontWeight(theme.linkTextFontWeight.toString())
+    if (theme.getLinkTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setLinkTextFontWeight(this.convertFontWeight(theme.getLinkTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.linkTextFontFamily !== undefined) {
-      cjMarkdownTheme.setLinkTextFontFamily(theme.linkTextFontFamily)
+    if (theme.getLinkTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setLinkTextFontFamily(theme.getLinkTextFontFamily())
     }
-    if (theme.linkTextLineHeight !== undefined) {
-      cjMarkdownTheme.setLinkTextLineHeight(theme.linkTextLineHeight)
+    if (theme.getLinkTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setLinkTextLineHeight(theme.getLinkTextLineHeight())
     }
-    if (theme.linkTextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setLinkTextLetterSpacing(theme.linkTextLetterSpacing)
+    if (theme.getLinkTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setLinkTextLetterSpacing(theme.getLinkTextLetterSpacing())
     }
-    if (theme.linkTextDecorationType !== undefined) {
-      cjMarkdownTheme.setLinkTextDecorationType(theme.linkTextDecorationType)
+    if (theme.getLinkTextDecorationType() !== undefined) {
+      cjMarkdownTheme.setLinkTextDecorationType(theme.getLinkTextDecorationType())
     }
-    if (theme.linkTextDecorationColor !== undefined) {
-      cjMarkdownTheme.setLinkTextDecorationColor(theme.linkTextDecorationColor)
+    if (theme.getLinkTextDecorationColor() !== undefined) {
+      cjMarkdownTheme.setLinkTextDecorationColor(theme.getLinkTextDecorationColor())
     }
-    if (theme.linkTextDecorationStyle !== undefined) {
-      cjMarkdownTheme.setLinkTextDecorationStyle(theme.linkTextDecorationStyle)
+    if (theme.getLinkTextDecorationStyle() !== undefined) {
+      cjMarkdownTheme.setLinkTextDecorationStyle(theme.getLinkTextDecorationStyle())
     }
-    if (theme.linkTextBackgroundColor !== undefined) {
-      cjMarkdownTheme.setLinkTextBackgroundColor(theme.linkTextBackgroundColor)
+    if (theme.getLinkTextBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkTextBackgroundColor(theme.getLinkTextBackgroundColor())
     }
-    let linkTextBackgroundRadiusTopLeft: number = 0.0
-    let linkTextBackgroundRadiusTopRight: number = 0.0
-    let linkTextBackgroundRadiusBottomLeft: number = 0.0
-    let linkTextBackgroundRadiusBottomRight: number = 0.0
-    if (theme.linkTextBackgroundRadiusTopLeft !== undefined) {
-      linkTextBackgroundRadiusTopLeft = theme.linkTextBackgroundRadiusTopLeft
-    }
-    if (theme.linkTextBackgroundRadiusTopRight !== undefined) {
-      linkTextBackgroundRadiusTopRight = theme.linkTextBackgroundRadiusTopRight
-    }
-    if (theme.linkTextBackgroundRadiusBottomLeft !== undefined) {
-      linkTextBackgroundRadiusBottomLeft = theme.linkTextBackgroundRadiusBottomLeft
-    }
-    if (theme.linkTextBackgroundRadiusBottomRight !== undefined) {
-      linkTextBackgroundRadiusBottomRight = theme.linkTextBackgroundRadiusBottomRight
-    }
+    let linkTextBackgroundRadiusTopLeft: number = theme.getLinkTextBackgroundRadiusTopLeft() ?? 0
+    let linkTextBackgroundRadiusTopRight: number = theme.getLinkTextBackgroundRadiusTopRight() ?? 0
+    let linkTextBackgroundRadiusBottomLeft: number = theme.getLinkTextBackgroundRadiusBottomLeft() ?? 0
+    let linkTextBackgroundRadiusBottomRight: number = theme.getLinkTextBackgroundRadiusBottomRight() ?? 0
     cjMarkdownTheme.setLinkTextBackgroundRadius(
       linkTextBackgroundRadiusTopLeft,
       linkTextBackgroundRadiusTopRight,
       linkTextBackgroundRadiusBottomLeft,
       linkTextBackgroundRadiusBottomRight
     )
-    if (theme.linkCircleIconBackgroundColor !== undefined) {
-      cjMarkdownTheme.setLinkCircleIconBackgroundColor(theme.linkCircleIconBackgroundColor)
+    if (theme.getLinkCircleIconBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkCircleIconBackgroundColor(theme.getLinkCircleIconBackgroundColor())
     }
-    if (theme.linkCircleIconButtonBackgroundColor !== undefined) {
-      cjMarkdownTheme.setLinkCircleIconButtonBackgroundColor(theme.linkCircleIconButtonBackgroundColor)
+    if (theme.getLinkCircleIconButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkCircleIconButtonBackgroundColor(theme.getLinkCircleIconButtonBackgroundColor())
     }
-    if (theme.linkCircleIconTextSize !== undefined) {
-      cjMarkdownTheme.setLinkCircleIconTextSize(theme.linkCircleIconTextSize)
+    if (theme.getLinkCircleIconTextSize() !== undefined) {
+      cjMarkdownTheme.setLinkCircleIconTextSize(theme.getLinkCircleIconTextSize())
     }
-    if (theme.linkCircleIconTextColor !== undefined) {
-      cjMarkdownTheme.setLinkCircleIconTextColor(theme.linkCircleIconTextColor)
+    if (theme.getLinkCircleIconTextColor() !== undefined) {
+      cjMarkdownTheme.setLinkCircleIconTextColor(theme.getLinkCircleIconTextColor())
     }
-    if (theme.linkCircleIconRadius !== undefined) {
-      cjMarkdownTheme.setLinkCircleIconRadius(theme.linkCircleIconRadius)
+    if (theme.getLinkCircleIconRadius() !== undefined) {
+      cjMarkdownTheme.setLinkCircleIconRadius(theme.getLinkCircleIconRadius())
     }
-    if (theme.linkCircleIconMargin !== undefined) {
-      cjMarkdownTheme.setLinkCircleIconMargin(theme.linkCircleIconMargin)
+    if (theme.getLinkCircleIconMargin() !== undefined) {
+      cjMarkdownTheme.setLinkCircleIconMargin(theme.getLinkCircleIconMargin())
     }
-    if (theme.linkRectIconBackgroundColor !== undefined) {
-      cjMarkdownTheme.setLinkRectIconBackgroundColor(theme.linkRectIconBackgroundColor)
+    if (theme.getLinkRectIconBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconBackgroundColor(theme.getLinkRectIconBackgroundColor())
     }
-    if (theme.linkRectIconButtonBackgroundColor !== undefined) {
-      cjMarkdownTheme.setLinkRectIconButtonBackgroundColor(theme.linkRectIconButtonBackgroundColor)
+    if (theme.getLinkRectIconButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconButtonBackgroundColor(theme.getLinkRectIconButtonBackgroundColor())
     }
-    if (theme.linkRectIconTextSize !== undefined) {
-      cjMarkdownTheme.setLinkRectIconTextSize(theme.linkRectIconTextSize)
+    if (theme.getLinkRectIconTextSize() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconTextSize(theme.getLinkRectIconTextSize())
     }
-    if (theme.linkRectIconTextColor !== undefined) {
-      cjMarkdownTheme.setLinkRectIconTextColor(theme.linkRectIconTextColor)
+    if (theme.getLinkRectIconTextColor() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconTextColor(theme.getLinkRectIconTextColor())
     }
-    if (theme.linkRectIconHeight !== undefined) {
-      cjMarkdownTheme.setLinkRectIconHeight(theme.linkRectIconHeight)
+    if (theme.getLinkRectIconHeight() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconHeight(theme.getLinkRectIconHeight())
     }
-    if (theme.linkRectIconPadding !== undefined) {
-      cjMarkdownTheme.setLinkRectIconPadding(theme.linkRectIconPadding)
+    if (theme.getLinkRectIconPadding() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconPadding(theme.getLinkRectIconPadding())
     }
-    if (theme.linkRectIconRadius !== undefined) {
-      cjMarkdownTheme.setLinkRectIconRadius(theme.linkRectIconRadius)
+    if (theme.getLinkRectIconRadius() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconRadius(theme.getLinkRectIconRadius())
     }
-    if (theme.linkRectIconMargin !== undefined) {
-      cjMarkdownTheme.setLinkRectIconMargin(theme.linkRectIconMargin)
+    if (theme.getLinkRectIconMargin() !== undefined) {
+      cjMarkdownTheme.setLinkRectIconMargin(theme.getLinkRectIconMargin())
     }
-    if (theme.linkRectToolIconBackgroundColor !== undefined) {
-      cjMarkdownTheme.setLinkRectToolIconBackgroundColor(theme.linkRectToolIconBackgroundColor)
+    if (theme.getLinkRectToolIconBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconBackgroundColor(theme.getLinkRectToolIconBackgroundColor())
     }
-    if (theme.linkRectToolIconButtonBackgroundColor !== undefined) {
-      cjMarkdownTheme.setLinkRectToolIconButtonBackgroundColor(theme.linkRectToolIconButtonBackgroundColor)
+    if (theme.getLinkRectToolIconButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconButtonBackgroundColor(theme.getLinkRectToolIconButtonBackgroundColor())
     }
-    if (theme.linkRectToolIconTextSize !== undefined) {
-      cjMarkdownTheme.setLinkRectToolIconTextSize(theme.linkRectToolIconTextSize)
+    if (theme.getLinkRectToolIconTextSize() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconTextSize(theme.getLinkRectToolIconTextSize())
     }
-    if (theme.linkRectToolIconHeight !== undefined) {
-      cjMarkdownTheme.setLinkRectToolIconHeight(theme.linkRectToolIconHeight)
+    if (theme.getLinkRectToolIconHeight() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconHeight(theme.getLinkRectToolIconHeight())
     }
-    if (theme.linkRectToolIconPadding !== undefined) {
-      cjMarkdownTheme.setLinkRectToolIconPadding(theme.linkRectToolIconPadding)
+    if (theme.getLinkRectToolIconPadding() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconPadding(theme.getLinkRectToolIconPadding())
     }
-    if (theme.linkRectToolIconBorderWidth !== undefined) {
-      cjMarkdownTheme.setLinkRectToolIconBorderWidth(theme.linkRectToolIconBorderWidth)
+    if (theme.getLinkRectToolIconBorderWidth() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconBorderWidth(theme.getLinkRectToolIconBorderWidth())
     }
-    if (theme.linkRectToolIconDividingLineWidth !== undefined) {
-      cjMarkdownTheme.setLinkRectToolIconDividingLineWidth(theme.linkRectToolIconDividingLineWidth)
+    if (theme.getLinkRectToolIconDividingLineWidth() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconDividingLineWidth(theme.getLinkRectToolIconDividingLineWidth())
     }
-    if (theme.linkRectToolIconMargin !== undefined) {
-      cjMarkdownTheme.setLinkRectToolIconMargin(theme.linkRectToolIconMargin)
+    if (theme.getLinkRectToolIconMargin() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconMargin(theme.getLinkRectToolIconMargin())
     }
-    if (theme.linkRectToolIconLineLeftPadding !== undefined) {
-      cjMarkdownTheme.setLinkRectToolIconLineLeftPadding(theme.linkRectToolIconLineLeftPadding)
+    if (theme.getLinkRectToolIconLineLeftPadding() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconLineLeftPadding(theme.getLinkRectToolIconLineLeftPadding())
     }
-    if (theme.linkRectToolIconLineRightPadding !== undefined) {
-      cjMarkdownTheme.setLinkRectToolIconLineRightPadding(theme.linkRectToolIconLineRightPadding)
+    if (theme.getLinkRectToolIconLineRightPadding() !== undefined) {
+      cjMarkdownTheme.setLinkRectToolIconLineRightPadding(theme.getLinkRectToolIconLineRightPadding())
     }
     return cjMarkdownTheme
   }
@@ -2308,79 +1807,55 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownOrderedListTheme()
-    if (theme.orderedListBackgroundColor !== undefined) {
-      cjMarkdownTheme.setOrderedListBackgroundColor(theme.orderedListBackgroundColor)
+    if (theme.getOrderedListBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setOrderedListBackgroundColor(theme.getOrderedListBackgroundColor())
     }
-    let orderedListMarginTop: number = 0.0
-    let orderedListMarginRight: number = 0.0
-    let orderedListMarginBottom: number = 0.0
-    let orderedListMarginLeft: number = 8.0
-    if (theme.orderedListMarginTop !== undefined) {
-      orderedListMarginTop = theme.orderedListMarginTop
-    }
-    if (theme.orderedListMarginRight !== undefined) {
-      orderedListMarginRight = theme.orderedListMarginRight
-    }
-    if (theme.orderedListMarginBottom !== undefined) {
-      orderedListMarginBottom = theme.orderedListMarginBottom
-    }
-    if (theme.orderedListMarginLeft !== undefined) {
-      orderedListMarginLeft = theme.orderedListMarginLeft
-    }
+    let orderedListMarginTop: number = theme.getOrderedListMarginTop() ?? 0
+    let orderedListMarginRight: number = theme.getOrderedListMarginRight() ?? 0
+    let orderedListMarginBottom: number = theme.getOrderedListMarginBottom() ?? 0
+    let orderedListMarginLeft: number = theme.getOrderedListMarginLeft() ?? 8
     cjMarkdownTheme.setOrderedListMargin(
       orderedListMarginTop,
       orderedListMarginRight,
       orderedListMarginBottom,
       orderedListMarginLeft
     )
-    let orderedListPaddingTop: number = 0.0
-    let orderedListPaddingRight: number = 0.0
-    let orderedListPaddingBottom: number = 0.0
-    let orderedListPaddingLeft: number = 0.0
-    if (theme.orderedListPaddingTop !== undefined) {
-      orderedListPaddingTop = theme.orderedListPaddingTop
-    }
-    if (theme.orderedListPaddingRight !== undefined) {
-      orderedListPaddingRight = theme.orderedListPaddingRight
-    }
-    if (theme.orderedListPaddingBottom !== undefined) {
-      orderedListPaddingBottom = theme.orderedListPaddingBottom
-    }
-    if (theme.orderedListPaddingLeft !== undefined) {
-      orderedListPaddingLeft = theme.orderedListPaddingLeft
-    }
+    let orderedListPaddingTop: number = theme.getOrderedListPaddingTop() ?? 0
+    let orderedListPaddingRight: number = theme.getOrderedListPaddingRight() ?? 0
+    let orderedListPaddingBottom: number = theme.getOrderedListPaddingBottom() ?? 0
+    let orderedListPaddingLeft: number = theme.getOrderedListPaddingLeft() ?? 0
     cjMarkdownTheme.setOrderedListPadding(
       orderedListPaddingTop,
       orderedListPaddingRight,
       orderedListPaddingBottom,
       orderedListPaddingLeft
     )
-    if (theme.orderedListChildSpacing !== undefined) {
-      cjMarkdownTheme.setOrderedListChildSpacing(theme.orderedListChildSpacing)
+    if (theme.getOrderedListChildSpacing() !== undefined) {
+      cjMarkdownTheme.setOrderedListChildSpacing(theme.getOrderedListChildSpacing())
     }
-    if (theme.orderedListChildChildSpacing !== undefined) {
-      cjMarkdownTheme.setOrderedListChildChildSpacing(theme.orderedListChildChildSpacing)
+    if (theme.getOrderedListChildChildSpacing() !== undefined) {
+      cjMarkdownTheme.setOrderedListChildChildSpacing(theme.getOrderedListChildChildSpacing())
     }
-    if (theme.orderedListMarkerSpacing !== undefined) {
-      cjMarkdownTheme.setOrderedListMarkerSpacing(theme.orderedListMarkerSpacing)
+    if (theme.getOrderedListMarkerSpacing() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerSpacing(theme.getOrderedListMarkerSpacing())
     }
-    if (theme.orderedListMarkerTextFontColor !== undefined) {
-      cjMarkdownTheme.setOrderedListMarkerTextFontColor(theme.orderedListMarkerTextFontColor)
+    if (theme.getOrderedListMarkerTextFontColor() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontColor(theme.getOrderedListMarkerTextFontColor())
     }
-    if (theme.orderedListMarkerTextFontSize !== undefined) {
-      cjMarkdownTheme.setOrderedListMarkerTextFontSize(theme.orderedListMarkerTextFontSize)
+    if (theme.getOrderedListMarkerTextFontSize() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontSize(theme.getOrderedListMarkerTextFontSize())
     }
-    if (theme.orderedListMarkerTextFontStyle !== undefined) {
-      cjMarkdownTheme.setOrderedListMarkerTextFontStyle(theme.orderedListMarkerTextFontStyle)
+    if (theme.getOrderedListMarkerTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontStyle(theme.getOrderedListMarkerTextFontStyle())
     }
-    if (theme.orderedListMarkerTextFontWeight !== undefined) {
-      cjMarkdownTheme.setOrderedListMarkerTextFontWeight(theme.orderedListMarkerTextFontWeight.toString())
+    if (theme.getOrderedListMarkerTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontWeight(this.convertFontWeight(theme.getOrderedListMarkerTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.orderedListMarkerTextFontFamily !== undefined) {
-      cjMarkdownTheme.setOrderedListMarkerTextFontFamily(theme.orderedListMarkerTextFontFamily)
+    if (theme.getOrderedListMarkerTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextFontFamily(theme.getOrderedListMarkerTextFontFamily())
     }
-    if (theme.orderedListMarkerTextLineHeight !== undefined) {
-      cjMarkdownTheme.setOrderedListMarkerTextLineHeight(theme.orderedListMarkerTextLineHeight)
+    if (theme.getOrderedListMarkerTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setOrderedListMarkerTextLineHeight(theme.getOrderedListMarkerTextLineHeight())
     }
     return cjMarkdownTheme
   }
@@ -2390,66 +1865,40 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownParagraphTheme()
-    if (theme.paragraphBackgroundColor !== undefined) {
-      cjMarkdownTheme.setParagraphBackgroundColor(theme.paragraphBackgroundColor)
+    if (theme.getParagraphBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setParagraphBackgroundColor(theme.getParagraphBackgroundColor())
     }
-    let paragraphMarginTop: number = 0.0
-    let paragraphMarginRight: number = 0.0
-    let paragraphMarginBottom: number = 0.0
-    let paragraphMarginLeft: number = 0.0
-    if (theme.paragraphMarginTop !== undefined) {
-      paragraphMarginTop = theme.paragraphMarginTop
-    }
-    if (theme.paragraphMarginRight !== undefined) {
-      paragraphMarginRight = theme.paragraphMarginRight
-    }
-    if (theme.paragraphMarginBottom !== undefined) {
-      paragraphMarginBottom = theme.paragraphMarginBottom
-    }
-    if (theme.paragraphMarginLeft !== undefined) {
-      paragraphMarginLeft = theme.paragraphMarginLeft
-    }
+    let paragraphMarginTop: number = theme.getParagraphMarginTop() ?? 0
+    let paragraphMarginRight: number = theme.getParagraphMarginRight() ?? 0
+    let paragraphMarginBottom: number = theme.getParagraphMarginBottom() ?? 0
+    let paragraphMarginLeft: number = theme.getParagraphMarginLeft() ?? 0
     cjMarkdownTheme.setParagraphMargin(paragraphMarginTop, paragraphMarginRight, paragraphMarginBottom, paragraphMarginLeft)
 
-    let paragraphPaddingTop: number = 0.0
-    let paragraphPaddingRight: number = 0.0
-    let paragraphPaddingBottom: number = 0.0
-    let paragraphPaddingLeft: number = 0.0
-    if (theme.paragraphPaddingTop !== undefined) {
-      paragraphPaddingTop = theme.paragraphPaddingTop
-    }
-    if (theme.paragraphPaddingRight !== undefined) {
-      paragraphPaddingRight = theme.paragraphPaddingRight
-    }
-    if (theme.paragraphPaddingBottom !== undefined) {
-      paragraphPaddingBottom = theme.paragraphPaddingBottom
-    }
-    if (theme.paragraphPaddingLeft !== undefined) {
-      paragraphPaddingLeft = theme.paragraphPaddingLeft
-    }
+    let paragraphPaddingTop: number = theme.getParagraphPaddingTop() ?? 0
+    let paragraphPaddingRight: number = theme.getParagraphPaddingRight() ?? 0
+    let paragraphPaddingBottom: number = theme.getParagraphPaddingBottom() ?? 0
+    let paragraphPaddingLeft: number = theme.getParagraphPaddingLeft() ?? 0
     cjMarkdownTheme.setParagraphPadding(paragraphPaddingTop, paragraphPaddingRight, paragraphPaddingBottom, paragraphPaddingLeft)
-    if (theme.paragraphTextFontColor !== undefined) {
-      cjMarkdownTheme.setParagraphTextFontColor(theme.paragraphTextFontColor)
+    if (theme.getParagraphTextFontColor() !== undefined) {
+      cjMarkdownTheme.setParagraphTextFontColor(theme.getParagraphTextFontColor())
     }
-    if (theme.paragraphTextFontSize !== undefined) {
-      cjMarkdownTheme.setParagraphTextFontSize(theme.paragraphTextFontSize)
+    if (theme.getParagraphTextFontSize() !== undefined) {
+      cjMarkdownTheme.setParagraphTextFontSize(theme.getParagraphTextFontSize())
     }
-    if (theme.paragraphTextFontStyle !== undefined) {
-      console.error("paragraphTextFontStyle-----------------> " + theme.paragraphTextFontStyle)
-      cjMarkdownTheme.setParagraphTextFontStyle(theme.paragraphTextFontStyle)
+    if (theme.getParagraphTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setParagraphTextFontStyle(theme.getParagraphTextFontStyle())
     }
-    if (theme.paragraphTextFontWeight !== undefined) {
-      console.error("paragraphTextFontWeight-----------------> " + theme.paragraphTextFontWeight)
-      cjMarkdownTheme.setParagraphTextFontWeight(theme.paragraphTextFontWeight.toString())
+    if (theme.getParagraphTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setParagraphTextFontWeight(this.convertFontWeight(theme.getParagraphTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.paragraphTextFontFamily !== undefined) {
-      cjMarkdownTheme.setParagraphTextFontFamily(theme.paragraphTextFontFamily)
+    if (theme.getParagraphTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setParagraphTextFontFamily(theme.getParagraphTextFontFamily())
     }
-    if (theme.paragraphTextLineHeight !== undefined) {
-      cjMarkdownTheme.setParagraphTextLineHeight(theme.paragraphTextLineHeight)
+    if (theme.getParagraphTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setParagraphTextLineHeight(theme.getParagraphTextLineHeight())
     }
-    if (theme.paragraphTextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setParagraphTextLetterSpacing(theme.paragraphTextLetterSpacing)
+    if (theme.getParagraphTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setParagraphTextLetterSpacing(theme.getParagraphTextLetterSpacing())
     }
     return cjMarkdownTheme
   }
@@ -2459,32 +1908,32 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownStrikethroughTheme()
-    if (theme.strikethroughTextFontColor !== undefined) {
-      cjMarkdownTheme.setStrikethroughTextFontColor(theme.strikethroughTextFontColor)
+    if (theme.getStrikethroughTextFontColor() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextFontColor(theme.getStrikethroughTextFontColor())
     }
-    if (theme.strikethroughTextFontSize !== undefined) {
-      cjMarkdownTheme.setStrikethroughTextFontSize(theme.strikethroughTextFontSize)
+    if (theme.getStrikethroughTextFontSize() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextFontSize(theme.getStrikethroughTextFontSize())
     }
-    if (theme.strikethroughTextFontStyle !== undefined) {
-      cjMarkdownTheme.setStrikethroughTextFontStyle(theme.strikethroughTextFontStyle)
+    if (theme.getStrikethroughTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextFontStyle(theme.getStrikethroughTextFontStyle())
     }
-    if (theme.strikethroughTextFontWeight !== undefined) {
-      cjMarkdownTheme.setStrikethroughTextFontWeight(theme.strikethroughTextFontWeight.toString())
+    if (theme.getStrikethroughTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextFontWeight(this.convertFontWeight(theme.getStrikethroughTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.strikethroughTextFontFamily !== undefined) {
-      cjMarkdownTheme.setStrikethroughTextFontFamily(theme.strikethroughTextFontFamily)
+    if (theme.getStrikethroughTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextFontFamily(theme.getStrikethroughTextFontFamily())
     }
-    if (theme.strikethroughTextLineHeight !== undefined) {
-      cjMarkdownTheme.setStrikethroughTextLineHeight(theme.strikethroughTextLineHeight)
+    if (theme.getStrikethroughTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextLineHeight(theme.getStrikethroughTextLineHeight())
     }
-    if (theme.strikethroughTextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setStrikethroughTextLetterSpacing(theme.strikethroughTextLetterSpacing)
+    if (theme.getStrikethroughTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextLetterSpacing(theme.getStrikethroughTextLetterSpacing())
     }
-    if (theme.strikethroughTextDecorationColor !== undefined) {
-      cjMarkdownTheme.setStrikethroughTextDecorationColor(theme.strikethroughTextDecorationColor)
+    if (theme.getStrikethroughTextDecorationColor() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextDecorationColor(theme.getStrikethroughTextDecorationColor())
     }
-    if (theme.strikethroughTextDecorationStyle !== undefined) {
-      cjMarkdownTheme.setStrikethroughTextDecorationStyle(theme.strikethroughTextDecorationStyle)
+    if (theme.getStrikethroughTextDecorationStyle() !== undefined) {
+      cjMarkdownTheme.setStrikethroughTextDecorationStyle(theme.getStrikethroughTextDecorationStyle())
     }
     return cjMarkdownTheme
   }
@@ -2494,26 +1943,26 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownSubTheme()
-    if (theme.subTextFontColor !== undefined) {
-      cjMarkdownTheme.setSubTextFontColor(theme.subTextFontColor)
+    if (theme.getSubTextFontColor() !== undefined) {
+      cjMarkdownTheme.setSubTextFontColor(theme.getSubTextFontColor())
     }
-    if (theme.subTextFontSize !== undefined) {
-      cjMarkdownTheme.setSubTextFontSize(theme.subTextFontSize)
+    if (theme.getSubTextFontSize() !== undefined) {
+      cjMarkdownTheme.setSubTextFontSize(theme.getSubTextFontSize())
     }
-    if (theme.subTextFontStyle !== undefined) {
-      cjMarkdownTheme.setSubTextFontStyle(theme.subTextFontStyle)
+    if (theme.getSubTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setSubTextFontStyle(theme.getSubTextFontStyle())
     }
-    if (theme.subTextFontWeight !== undefined) {
-      cjMarkdownTheme.setSubTextFontWeight(theme.subTextFontWeight.toString())
+    if (theme.getSubTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setSubTextFontWeight(this.convertFontWeight(theme.getSubTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.subTextFontFamily !== undefined) {
-      cjMarkdownTheme.setSubTextFontFamily(theme.subTextFontFamily)
+    if (theme.getSubTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setSubTextFontFamily(theme.getSubTextFontFamily())
     }
-    if (theme.subTextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setSubTextLetterSpacing(theme.subTextLetterSpacing)
+    if (theme.getSubTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setSubTextLetterSpacing(theme.getSubTextLetterSpacing())
     }
-    if (theme.subTextBaselineOffset !== undefined) {
-      cjMarkdownTheme.setSubTextBaselineOffset(theme.subTextBaselineOffset)
+    if (theme.getSubTextBaselineOffset() !== undefined) {
+      cjMarkdownTheme.setSubTextBaselineOffset(theme.getSubTextBaselineOffset())
     }
     return cjMarkdownTheme
   }
@@ -2523,26 +1972,26 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownSupTheme()
-    if (theme.supTextFontColor !== undefined) {
-      cjMarkdownTheme.setSupTextFontColor(theme.supTextFontColor)
+    if (theme.getSupTextFontColor() !== undefined) {
+      cjMarkdownTheme.setSupTextFontColor(theme.getSupTextFontColor())
     }
-    if (theme.supTextFontSize !== undefined) {
-      cjMarkdownTheme.setSupTextFontSize(theme.supTextFontSize)
+    if (theme.getSupTextFontSize() !== undefined) {
+      cjMarkdownTheme.setSupTextFontSize(theme.getSupTextFontSize())
     }
-    if (theme.supTextFontStyle !== undefined) {
-      cjMarkdownTheme.setSupTextFontStyle(theme.supTextFontStyle)
+    if (theme.getSupTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setSupTextFontStyle(theme.getSupTextFontStyle())
     }
-    if (theme.supTextFontWeight !== undefined) {
-      cjMarkdownTheme.setSupTextFontWeight(theme.supTextFontWeight.toString())
+    if (theme.getSupTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setSupTextFontWeight(this.convertFontWeight(theme.getSupTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.supTextFontFamily !== undefined) {
-      cjMarkdownTheme.setSupTextFontFamily(theme.supTextFontFamily)
+    if (theme.getSupTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setSupTextFontFamily(theme.getSupTextFontFamily())
     }
-    if (theme.supTextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setSupTextLetterSpacing(theme.supTextLetterSpacing)
+    if (theme.getSupTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setSupTextLetterSpacing(theme.getSupTextLetterSpacing())
     }
-    if (theme.supTextBaselineOffset !== undefined) {
-      cjMarkdownTheme.setSupTextBaselineOffset(theme.supTextBaselineOffset)
+    if (theme.getSupTextBaselineOffset() !== undefined) {
+      cjMarkdownTheme.setSupTextBaselineOffset(theme.getSupTextBaselineOffset())
     }
     return cjMarkdownTheme
   }
@@ -2552,150 +2001,102 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownTableTheme()
-    if (theme.tableTitleBackgroundColor !== undefined) {
-      cjMarkdownTheme.setTableTitleBackgroundColor(theme.tableTitleBackgroundColor)
+    if (theme.getTableTitleBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setTableTitleBackgroundColor(theme.getTableTitleBackgroundColor())
     }
-    if (theme.tableContentOddRowBackgroundColor !== undefined) {
-      cjMarkdownTheme.setTableContentOddRowBackgroundColor(theme.tableContentOddRowBackgroundColor)
+    if (theme.getTableContentOddRowBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setTableContentOddRowBackgroundColor(theme.getTableContentOddRowBackgroundColor())
     }
-    if (theme.tableContentEvenRowBackgroundColor !== undefined) {
-      cjMarkdownTheme.setTableContentEvenRowBackgroundColor(theme.tableContentEvenRowBackgroundColor)
+    if (theme.getTableContentEvenRowBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setTableContentEvenRowBackgroundColor(theme.getTableContentEvenRowBackgroundColor())
     }
-    let tableMarginTop: number = 0.0
-    let tableMarginRight: number = 0.0
-    let tableMarginBottom: number = 0.0
-    let tableMarginLeft: number = 0.0
-    if (theme.tableMarginTop !== undefined) {
-      tableMarginTop = theme.tableMarginTop
-    }
-    if (theme.tableMarginRight !== undefined) {
-      tableMarginRight = theme.tableMarginRight
-    }
-    if (theme.tableMarginBottom !== undefined) {
-      tableMarginBottom = theme.tableMarginBottom
-    }
-    if (theme.tableMarginLeft !== undefined) {
-      tableMarginLeft = theme.tableMarginLeft
-    }
+    let tableMarginTop: number = theme.getTableMarginTop() ?? 0
+    let tableMarginRight: number = theme.getTableMarginRight() ?? 0
+    let tableMarginBottom: number = theme.getTableMarginBottom() ?? 0
+    let tableMarginLeft: number = theme.getTableMarginLeft() ?? 0
     cjMarkdownTheme.setTableMargin(tableMarginTop, tableMarginRight, tableMarginBottom, tableMarginLeft)
 
-    let tablePaddingTop: number = 0.0
-    let tablePaddingRight: number = 0.0
-    let tablePaddingBottom: number = 0.0
-    let tablePaddingLeft: number = 0.0
-    if (theme.tablePaddingTop !== undefined) {
-      tablePaddingTop = theme.tablePaddingTop
-    }
-    if (theme.tablePaddingRight !== undefined) {
-      tablePaddingRight = theme.tablePaddingRight
-    }
-    if (theme.tablePaddingBottom !== undefined) {
-      tablePaddingBottom = theme.tablePaddingBottom
-    }
-    if (theme.tablePaddingLeft !== undefined) {
-      tablePaddingLeft = theme.tablePaddingLeft
-    }
+    let tablePaddingTop: number = theme.getTablePaddingTop() ?? 0
+    let tablePaddingRight: number = theme.getTablePaddingRight() ?? 0
+    let tablePaddingBottom: number = theme.getTablePaddingBottom() ?? 0
+    let tablePaddingLeft: number = theme.getTablePaddingLeft() ?? 0
     cjMarkdownTheme.setTablePadding(tablePaddingTop, tablePaddingRight, tablePaddingBottom, tablePaddingLeft)
 
-    let tableCellPaddingTop: number = 4.0
-    let tableCellPaddingRight: number = 4.0
-    let tableCellPaddingBottom: number = 4.0
-    let tableCellPaddingLeft: number = 4.0
-    if (theme.tableCellPaddingTop !== undefined) {
-      tableCellPaddingTop = theme.tableCellPaddingTop
-    }
-    if (theme.tableCellPaddingRight !== undefined) {
-      tableCellPaddingRight = theme.tableCellPaddingRight
-    }
-    if (theme.tableCellPaddingBottom !== undefined) {
-      tableCellPaddingBottom = theme.tableCellPaddingBottom
-    }
-    if (theme.tableCellPaddingLeft !== undefined) {
-      tableCellPaddingLeft = theme.tableCellPaddingLeft
-    }
+    let tableCellPaddingTop: number = theme.getTableCellPaddingTop() ?? 4
+    let tableCellPaddingRight: number = theme.getTableCellPaddingRight() ?? 4
+    let tableCellPaddingBottom: number = theme.getTableCellPaddingBottom() ?? 4
+    let tableCellPaddingLeft: number = theme.getTableCellPaddingLeft() ?? 4
     cjMarkdownTheme.setTableCellPadding(tableCellPaddingTop, tableCellPaddingRight, tableCellPaddingBottom, tableCellPaddingLeft)
-    if (theme.tableBorderStyle !== undefined) {
-      cjMarkdownTheme.setTableBorderStyle(theme.tableBorderStyle)
+    if (theme.getTableBorderStyle() !== undefined) {
+      cjMarkdownTheme.setTableBorderStyle(theme.getTableBorderStyle())
     }
-    if (theme.tableBorderWidth !== undefined) {
-      cjMarkdownTheme.setTableBorderWidth(theme.tableBorderWidth)
+    if (theme.getTableBorderWidth() !== undefined) {
+      cjMarkdownTheme.setTableBorderWidth(theme.getTableBorderWidth())
     }
-    if (theme.tableBorderColor !== undefined) {
-      cjMarkdownTheme.setTableBorderColor(theme.tableBorderColor)
+    if (theme.getTableBorderColor() !== undefined) {
+      cjMarkdownTheme.setTableBorderColor(theme.getTableBorderColor())
     }
-    let tableRadiusTopLeft: number = 5.0
-    let tableRadiusTopRight: number = 5.0
-    let tableRadiusBottomLeft: number = 5.0
-    let tableRadiusBottomRight: number = 5.0
-    if (theme.tableRadiusTopLeft !== undefined) {
-      tableRadiusTopLeft = theme.tableRadiusTopLeft
-    }
-    if (theme.tableRadiusTopRight !== undefined) {
-      tableRadiusTopRight = theme.tableRadiusTopRight
-    }
-    if (theme.tableRadiusBottomLeft !== undefined) {
-      tableRadiusBottomLeft = theme.tableRadiusBottomLeft
-    }
-    if (theme.tableRadiusBottomRight !== undefined) {
-      tableRadiusBottomRight = theme.tableRadiusBottomRight
-    }
+    let tableRadiusTopLeft: number = theme.getTableRadiusTopLeft() ?? 5
+    let tableRadiusTopRight: number = theme.getTableRadiusTopRight() ?? 5
+    let tableRadiusBottomLeft: number = theme.getTableRadiusBottomLeft() ?? 5
+    let tableRadiusBottomRight: number = theme.getTableRadiusBottomRight() ?? 5
     cjMarkdownTheme.setTableRadius(tableRadiusTopLeft, tableRadiusTopRight, tableRadiusBottomLeft, tableRadiusBottomRight)
-    if (theme.tableScrollBarState !== undefined) {
-      cjMarkdownTheme.setTableScrollBarState(theme.tableScrollBarState)
+    if (theme.getTableScrollBarState() !== undefined) {
+      cjMarkdownTheme.setTableScrollBarState(theme.getTableScrollBarState())
     }
-    if (theme.tableScrollBarColor !== undefined) {
-      cjMarkdownTheme.setTableScrollBarColor(theme.tableScrollBarColor)
+    if (theme.getTableScrollBarColor() !== undefined) {
+      cjMarkdownTheme.setTableScrollBarColor(theme.getTableScrollBarColor())
     }
-    if (theme.tableMinCellWidth !== undefined) {
-      cjMarkdownTheme.setTableMinCellWidth(theme.tableMinCellWidth)
+    if (theme.getTableMinCellWidth() !== undefined) {
+      cjMarkdownTheme.setTableMinCellWidth(theme.getTableMinCellWidth())
     }
-    if (theme.tableMaxCellWidth !== undefined) {
-      cjMarkdownTheme.setTableMaxCellWidth(theme.tableMaxCellWidth)
+    if (theme.getTableMaxCellWidth() !== undefined) {
+      cjMarkdownTheme.setTableMaxCellWidth(theme.getTableMaxCellWidth())
     }
-    if (theme.tableFirstColumnIsBold !== undefined) {
-      cjMarkdownTheme.setTableFirstColumnIsBold(theme.tableFirstColumnIsBold)
+    if (theme.getTableFirstColumnIsBold() !== undefined) {
+      cjMarkdownTheme.setTableFirstColumnIsBold(theme.getTableFirstColumnIsBold())
     }
-    if (theme.tableTitleTextFontColor !== undefined) {
-      cjMarkdownTheme.setTableTitleTextFontColor(theme.tableTitleTextFontColor)
+    if (theme.getTableTitleTextFontColor() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextFontColor(theme.getTableTitleTextFontColor())
     }
-    if (theme.tableTitleTextFontSize !== undefined) {
-      cjMarkdownTheme.setTableTitleTextFontSize(theme.tableTitleTextFontSize)
+    if (theme.getTableTitleTextFontSize() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextFontSize(theme.getTableTitleTextFontSize())
     }
-    if (theme.tableTitleTextFontStyle !== undefined) {
-      cjMarkdownTheme.setTableTitleTextFontStyle(theme.tableTitleTextFontStyle)
+    if (theme.getTableTitleTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextFontStyle(theme.getTableTitleTextFontStyle())
     }
-    if (theme.tableTitleTextFontWeight !== undefined) {
-      cjMarkdownTheme.setTableTitleTextFontWeight(theme.tableTitleTextFontWeight.toString())
+    if (theme.getTableTitleTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextFontWeight(this.convertFontWeight(theme.getTableTitleTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.tableTitleTextFontFamily !== undefined) {
-      cjMarkdownTheme.setTableTitleTextFontFamily(theme.tableTitleTextFontFamily)
+    if (theme.getTableTitleTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextFontFamily(theme.getTableTitleTextFontFamily())
     }
-    if (theme.tableTitleTextLineHeight !== undefined) {
-      cjMarkdownTheme.setTableTitleTextLineHeight(theme.tableTitleTextLineHeight)
+    if (theme.getTableTitleTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextLineHeight(theme.getTableTitleTextLineHeight())
     }
-    if (theme.tableTitleTextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setTableTitleTextLetterSpacing(theme.tableTitleTextLetterSpacing)
+    if (theme.getTableTitleTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTableTitleTextLetterSpacing(theme.getTableTitleTextLetterSpacing())
     }
-    if (theme.tableContentTextFontColor !== undefined) {
-      cjMarkdownTheme.setTableContentTextFontColor(theme.tableContentTextFontColor)
+    if (theme.getTableContentTextFontColor() !== undefined) {
+      cjMarkdownTheme.setTableContentTextFontColor(theme.getTableContentTextFontColor())
     }
-    if (theme.tableContentTextFontSize !== undefined) {
-      cjMarkdownTheme.setTableContentTextFontSize(theme.tableContentTextFontSize)
+    if (theme.getTableContentTextFontSize() !== undefined) {
+      cjMarkdownTheme.setTableContentTextFontSize(theme.getTableContentTextFontSize())
     }
-    if (theme.tableContentTextFontStyle !== undefined) {
-      cjMarkdownTheme.setTableContentTextFontStyle(theme.tableContentTextFontStyle)
+    if (theme.getTableContentTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setTableContentTextFontStyle(theme.getTableContentTextFontStyle())
     }
-    if (theme.tableContentTextFontWeight !== undefined) {
-      cjMarkdownTheme.setTableContentTextFontWeight(theme.tableContentTextFontWeight.toString())
+    if (theme.getTableContentTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setTableContentTextFontWeight(this.convertFontWeight(theme.getTableContentTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.tableContentTextFontFamily !== undefined) {
-      cjMarkdownTheme.setTableContentTextFontFamily(theme.tableContentTextFontFamily)
+    if (theme.getTableContentTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setTableContentTextFontFamily(theme.getTableContentTextFontFamily())
     }
-    if (theme.tableContentTextLineHeight !== undefined) {
-      cjMarkdownTheme.setTableContentTextLineHeight(theme.tableContentTextLineHeight)
+    if (theme.getTableContentTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setTableContentTextLineHeight(theme.getTableContentTextLineHeight())
     }
-    if (theme.tableContentTextLetterSpacing !== undefined) {
-      cjMarkdownTheme.setTableContentTextLetterSpacing(theme.tableContentTextLetterSpacing)
+    if (theme.getTableContentTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setTableContentTextLetterSpacing(theme.getTableContentTextLetterSpacing())
     }
     return cjMarkdownTheme
   }
@@ -2705,241 +2106,200 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownVideoTheme()
-    if (theme.videoBackgroundColor !== undefined) {
-      cjMarkdownTheme.setVideoBackgroundColor(theme.videoBackgroundColor)
+    if (theme.getVideoBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setVideoBackgroundColor(theme.getVideoBackgroundColor())
     }
-    let videoMarginTop: number = 0.0
-    let videoMarginRight: number = 0.0
-    let videoMarginBottom: number = 0.0
-    let videoMarginLeft: number = 0.0
-    if (theme.videoMarginTop !== undefined) {
-      videoMarginTop = theme.videoMarginTop
-    }
-    if (theme.videoMarginRight !== undefined) {
-      videoMarginRight = theme.videoMarginRight
-    }
-    if (theme.videoMarginBottom !== undefined) {
-      videoMarginBottom = theme.videoMarginBottom
-    }
-    if (theme.videoMarginLeft !== undefined) {
-      videoMarginLeft = theme.videoMarginLeft
-    }
+    let videoMarginTop: number = theme.getVideoMarginTop() ?? 0
+    let videoMarginRight: number = theme.getVideoMarginRight() ?? 0
+    let videoMarginBottom: number = theme.getVideoMarginBottom() ?? 0
+    let videoMarginLeft: number = theme.getVideoMarginLeft() ?? 0
     cjMarkdownTheme.setVideoMargin(videoMarginTop, videoMarginRight, videoMarginBottom, videoMarginLeft)
 
-    let videoPaddingTop: number = 0.0
-    let videoPaddingRight: number = 0.0
-    let videoPaddingBottom: number = 0.0
-    let videoPaddingLeft: number = 0.0
-    if (theme.videoPaddingTop !== undefined) {
-      videoPaddingTop = theme.videoPaddingTop
-    }
-    if (theme.videoPaddingRight !== undefined) {
-      videoPaddingRight = theme.videoPaddingRight
-    }
-    if (theme.videoPaddingBottom !== undefined) {
-      videoPaddingBottom = theme.videoPaddingBottom
-    }
-    if (theme.videoPaddingLeft !== undefined) {
-      videoPaddingLeft = theme.videoPaddingLeft
-    }
+    let videoPaddingTop: number = theme.getVideoPaddingTop() ?? 0
+    let videoPaddingRight: number = theme.getVideoPaddingRight() ?? 0
+    let videoPaddingBottom: number = theme.getVideoPaddingBottom() ?? 0
+    let videoPaddingLeft: number = theme.getVideoPaddingLeft() ?? 0
     cjMarkdownTheme.setVideoPadding(videoPaddingTop, videoPaddingRight, videoPaddingBottom, videoPaddingLeft)
 
-    let videoRadiusTopLeft: number = 10.0
-    let videoRadiusTopRight: number = 10.0
-    let videoRadiusBottomLeft: number = 10.0
-    let videoRadiusBottomRight: number = 10.0
-    if (theme.videoRadiusTopLeft !== undefined) {
-      videoRadiusTopLeft = theme.videoRadiusTopLeft
-    }
-    if (theme.videoRadiusTopRight !== undefined) {
-      videoRadiusTopRight = theme.videoRadiusTopRight
-    }
-    if (theme.videoRadiusBottomLeft !== undefined) {
-      videoRadiusBottomLeft = theme.videoRadiusBottomLeft
-    }
-    if (theme.videoRadiusBottomRight !== undefined) {
-      videoRadiusBottomRight = theme.videoRadiusBottomRight
-    }
+    let videoRadiusTopLeft: number = theme.getVideoRadiusTopLeft() ?? 10
+    let videoRadiusTopRight: number = theme.getVideoRadiusTopRight() ?? 10
+    let videoRadiusBottomLeft: number = theme.getVideoRadiusBottomLeft() ?? 10
+    let videoRadiusBottomRight: number = theme.getVideoRadiusBottomRight() ?? 10
     cjMarkdownTheme.setVideoBorderRadius(videoRadiusTopLeft, videoRadiusTopRight, videoRadiusBottomLeft, videoRadiusBottomRight)
-    if (theme.videoImageFitType !== undefined) {
-      cjMarkdownTheme.setVideoImageFitType(theme.videoImageFitType)
+    if (theme.getVideoImageFitType() !== undefined) {
+      cjMarkdownTheme.setVideoImageFitType(theme.getVideoImageFitType())
     }
-    if (theme.videoBorderStyle !== undefined) {
-      cjMarkdownTheme.setVideoBorderStyle(theme.videoBorderStyle)
+    if (theme.getVideoBorderStyle() !== undefined) {
+      cjMarkdownTheme.setVideoBorderStyle(theme.getVideoBorderStyle())
     }
-    if (theme.videoBorderWidth !== undefined) {
-      cjMarkdownTheme.setVideoBorderWidth(theme.videoBorderWidth)
+    if (theme.getVideoBorderWidth() !== undefined) {
+      cjMarkdownTheme.setVideoBorderWidth(theme.getVideoBorderWidth())
     }
-    if (theme.videoBorderColor !== undefined) {
-      cjMarkdownTheme.setVideoBorderColor(theme.videoBorderColor)
+    if (theme.getVideoBorderColor() !== undefined) {
+      cjMarkdownTheme.setVideoBorderColor(theme.getVideoBorderColor())
     }
-    if (theme.videoTimeTextFontColor !== undefined) {
-      cjMarkdownTheme.setVideoTimeTextFontColor(theme.videoTimeTextFontColor)
+    if (theme.getVideoTimeTextFontColor() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextFontColor(theme.getVideoTimeTextFontColor())
     }
-    if (theme.videoTimeTextFontSize !== undefined) {
-      cjMarkdownTheme.setVideoTimeTextFontSize(theme.videoTimeTextFontSize)
+    if (theme.getVideoTimeTextFontSize() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextFontSize(theme.getVideoTimeTextFontSize())
     }
-    if (theme.videoTimeTextFontStyle !== undefined) {
-      cjMarkdownTheme.setVideoTimeTextFontStyle(theme.videoTimeTextFontStyle)
+    if (theme.getVideoTimeTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextFontStyle(theme.getVideoTimeTextFontStyle())
     }
-    if (theme.videoTimeTextFontWeight !== undefined) {
-      cjMarkdownTheme.setVideoTimeTextFontWeight(theme.videoTimeTextFontWeight.toString())
+    if (theme.getVideoTimeTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextFontWeight(this.convertFontWeight(theme.getVideoTimeTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.videoTimeTextFontFamily !== undefined) {
-      cjMarkdownTheme.setVideoTimeTextFontFamily(theme.videoTimeTextFontFamily)
+    if (theme.getVideoTimeTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextFontFamily(theme.getVideoTimeTextFontFamily())
     }
-    if (theme.videoTimeTextLineHeight !== undefined) {
-      cjMarkdownTheme.setVideoTimeTextLineHeight(theme.videoTimeTextLineHeight)
+    if (theme.getVideoTimeTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextLineHeight(theme.getVideoTimeTextLineHeight())
     }
-    if (theme.videoTimeTextMarginRight !== undefined) {
-      cjMarkdownTheme.setVideoTimeTextMarginRight(theme.videoTimeTextMarginRight)
+    if (theme.getVideoTimeTextMarginRight() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextMarginRight(theme.getVideoTimeTextMarginRight())
     }
-    if (theme.videoTimeTextMarginBottom !== undefined) {
-      cjMarkdownTheme.setVideoTimeTextMarginBottom(theme.videoTimeTextMarginBottom)
+    if (theme.getVideoTimeTextMarginBottom() !== undefined) {
+      cjMarkdownTheme.setVideoTimeTextMarginBottom(theme.getVideoTimeTextMarginBottom())
     }
-    if (theme.videoBottomLayoutVisible !== undefined) {
-      cjMarkdownTheme.setVideoBottomLayoutVisible(theme.videoBottomLayoutVisible)
+    if (theme.getVideoBottomLayoutVisible() !== undefined) {
+      cjMarkdownTheme.setVideoBottomLayoutVisible(theme.getVideoBottomLayoutVisible())
     }
-    if (theme.videoBottomLayoutMarginTop !== undefined) {
-      cjMarkdownTheme.setVideoBottomLayoutMarginTop(theme.videoBottomLayoutMarginTop)
+    if (theme.getVideoBottomLayoutMarginTop() !== undefined) {
+      cjMarkdownTheme.setVideoBottomLayoutMarginTop(theme.getVideoBottomLayoutMarginTop())
     }
-    if (theme.videoPlayIconWidth !== undefined) {
-      cjMarkdownTheme.setVideoPlayIconWidth(theme.videoPlayIconWidth)
+    if (theme.getVideoPlayIconWidth() !== undefined) {
+      cjMarkdownTheme.setVideoPlayIconWidth(theme.getVideoPlayIconWidth())
     }
-    if (theme.videoPlayIconHeight !== undefined) {
-      cjMarkdownTheme.setVideoPlayIconHeight(theme.videoPlayIconHeight)
+    if (theme.getVideoPlayIconHeight() !== undefined) {
+      cjMarkdownTheme.setVideoPlayIconHeight(theme.getVideoPlayIconHeight())
     }
-    if (theme.videoPlayIconFitType !== undefined) {
-      cjMarkdownTheme.setVideoPlayIconFitType(theme.videoPlayIconFitType)
+    if (theme.getVideoPlayIconFitType() !== undefined) {
+      cjMarkdownTheme.setVideoPlayIconFitType(theme.getVideoPlayIconFitType())
     }
-    if (theme.videoReleaseButtonVisible !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonVisible(theme.videoReleaseButtonVisible)
+    if (theme.getVideoReleaseButtonVisible() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonVisible(theme.getVideoReleaseButtonVisible())
     }
-    if (theme.videoReleaseButtonBackgroundColor !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonBackgroundColor(theme.videoReleaseButtonBackgroundColor)
+    if (theme.getVideoReleaseButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonBackgroundColor(theme.getVideoReleaseButtonBackgroundColor())
     }
-    if (theme.videoReleaseButtonWidth !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonWidth(theme.videoReleaseButtonWidth)
+    if (theme.getVideoReleaseButtonWidth() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonWidth(theme.getVideoReleaseButtonWidth())
     }
-    if (theme.videoReleaseButtonHeight !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonHeight(theme.videoReleaseButtonHeight)
+    if (theme.getVideoReleaseButtonHeight() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonHeight(theme.getVideoReleaseButtonHeight())
     }
-    let videoReleaseButtonRadiusTopLeft: number = 22.0
-    let videoReleaseButtonRadiusTopRight: number = 22.0
-    let videoReleaseButtonRadiusBottomLeft: number = 22.0
-    let videoReleaseButtonRadiusBottomRight: number = 22.0
-    if (theme.videoReleaseButtonRadiusTopLeft !== undefined) {
-      videoReleaseButtonRadiusTopLeft = theme.videoReleaseButtonRadiusTopLeft
-    }
-    if (theme.videoReleaseButtonRadiusTopRight !== undefined) {
-      videoReleaseButtonRadiusTopRight = theme.videoReleaseButtonRadiusTopRight
-    }
-    if (theme.videoReleaseButtonRadiusBottomLeft !== undefined) {
-      videoReleaseButtonRadiusBottomLeft = theme.videoReleaseButtonRadiusBottomLeft
-    }
-    if (theme.videoReleaseButtonRadiusBottomRight !== undefined) {
-      videoReleaseButtonRadiusBottomRight = theme.videoReleaseButtonRadiusBottomRight
-    }
+    let videoReleaseButtonRadiusTopLeft: number = theme.getVideoReleaseButtonRadiusTopLeft() ?? 22
+    let videoReleaseButtonRadiusTopRight: number = theme.getVideoReleaseButtonRadiusTopRight() ?? 22
+    let videoReleaseButtonRadiusBottomLeft: number = theme.getVideoReleaseButtonRadiusBottomLeft() ?? 22
+    let videoReleaseButtonRadiusBottomRight: number = theme.getVideoReleaseButtonRadiusBottomRight() ?? 22
     cjMarkdownTheme.setVideoReleaseButtonRadius(
       videoReleaseButtonRadiusTopLeft,
       videoReleaseButtonRadiusTopRight,
       videoReleaseButtonRadiusBottomLeft,
       videoReleaseButtonRadiusBottomRight
     )
-    if (theme.videoReleaseButtonIconWidth !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonIconWidth(theme.videoReleaseButtonIconWidth)
+    if (theme.getVideoReleaseButtonIconWidth() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonIconWidth(theme.getVideoReleaseButtonIconWidth())
     }
-    if (theme.videoReleaseButtonIconHeight !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonIconHeight(theme.videoReleaseButtonIconHeight)
+    if (theme.getVideoReleaseButtonIconHeight() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonIconHeight(theme.getVideoReleaseButtonIconHeight())
     }
-    if (theme.videoReleaseButtonIconTextGap !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonIconTextGap(theme.videoReleaseButtonIconTextGap)
+    if (theme.getVideoReleaseButtonIconTextGap() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonIconTextGap(theme.getVideoReleaseButtonIconTextGap())
     }
-    if (theme.videoReleaseButtonText !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonText(theme.videoReleaseButtonText)
+    if (theme.getVideoReleaseButtonText() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonText(theme.getVideoReleaseButtonText())
     }
-    if (theme.videoReleaseButtonTextFontColor !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonTextFontColor(theme.videoReleaseButtonTextFontColor)
+    if (theme.getVideoReleaseButtonTextFontColor() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonTextFontColor(theme.getVideoReleaseButtonTextFontColor())
     }
-    if (theme.videoReleaseButtonTextFontSize !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonTextFontSize(theme.videoReleaseButtonTextFontSize)
+    if (theme.getVideoReleaseButtonTextFontSize() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonTextFontSize(theme.getVideoReleaseButtonTextFontSize())
     }
-    if (theme.videoReleaseButtonTextFontStyle !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonTextFontStyle(theme.videoReleaseButtonTextFontStyle)
+    if (theme.getVideoReleaseButtonTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonTextFontStyle(theme.getVideoReleaseButtonTextFontStyle())
     }
-    if (theme.videoReleaseButtonTextFontWeight !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonTextFontWeight(theme.videoReleaseButtonTextFontWeight.toString())
+    if (theme.getVideoReleaseButtonTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonTextFontWeight(this.convertFontWeight(theme.getVideoReleaseButtonTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.videoReleaseButtonTextFontFamily !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonTextFontFamily(theme.videoReleaseButtonTextFontFamily)
+    if (theme.getVideoReleaseButtonTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonTextFontFamily(theme.getVideoReleaseButtonTextFontFamily())
     }
-    if (theme.videoReleaseButtonTextLineHeight !== undefined) {
-      cjMarkdownTheme.setVideoReleaseButtonTextLineHeight(theme.videoReleaseButtonTextLineHeight)
+    if (theme.getVideoReleaseButtonTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setVideoReleaseButtonTextLineHeight(theme.getVideoReleaseButtonTextLineHeight())
     }
-    if (theme.videoDownloadButtonVisible !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonVisible(theme.videoDownloadButtonVisible)
+    if (theme.getVideoDownloadButtonVisible() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonVisible(theme.getVideoDownloadButtonVisible())
     }
-    if (theme.videoDownloadButtonBackgroundColor !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonBackgroundColor(theme.videoDownloadButtonBackgroundColor)
+    if (theme.getVideoDownloadButtonBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonBackgroundColor(theme.getVideoDownloadButtonBackgroundColor())
     }
-    if (theme.videoDownloadButtonWidth !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonWidth(theme.videoDownloadButtonWidth)
+    if (theme.getVideoDownloadButtonWidth() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonWidth(theme.getVideoDownloadButtonWidth())
     }
-    if (theme.videoDownloadButtonHeight !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonHeight(theme.videoDownloadButtonHeight)
+    if (theme.getVideoDownloadButtonHeight() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonHeight(theme.getVideoDownloadButtonHeight())
     }
-    let videoDownloadButtonRadiusTopLeft: number = 22.0
-    let videoDownloadButtonRadiusTopRight: number = 22.0
-    let videoDownloadButtonRadiusBottomLeft: number = 22.0
-    let videoDownloadButtonRadiusBottomRight: number = 22.0
-    if (theme.videoDownloadButtonRadiusTopLeft !== undefined) {
-      videoDownloadButtonRadiusTopLeft = theme.videoDownloadButtonRadiusTopLeft
-    }
-    if (theme.videoDownloadButtonRadiusTopRight !== undefined) {
-      videoDownloadButtonRadiusTopRight = theme.videoDownloadButtonRadiusTopRight
-    }
-    if (theme.videoDownloadButtonRadiusBottomLeft !== undefined) {
-      videoDownloadButtonRadiusBottomLeft = theme.videoDownloadButtonRadiusBottomLeft
-    }
-    if (theme.videoDownloadButtonRadiusBottomRight !== undefined) {
-      videoDownloadButtonRadiusBottomRight = theme.videoDownloadButtonRadiusBottomRight
-    }
+    let videoDownloadButtonRadiusTopLeft: number = theme.getVideoDownloadButtonRadiusTopLeft() ?? 22
+    let videoDownloadButtonRadiusTopRight: number = theme.getVideoDownloadButtonRadiusTopRight() ?? 22
+    let videoDownloadButtonRadiusBottomLeft: number = theme.getVideoDownloadButtonRadiusBottomLeft() ?? 22
+    let videoDownloadButtonRadiusBottomRight: number = theme.getVideoDownloadButtonRadiusBottomRight() ?? 22
     cjMarkdownTheme.setVideoDownloadButtonRadius(
       videoDownloadButtonRadiusTopLeft,
       videoDownloadButtonRadiusTopRight,
       videoDownloadButtonRadiusBottomLeft,
       videoDownloadButtonRadiusBottomRight
     )
-    if (theme.videoDownloadButtonIconWidth !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonIconWidth(theme.videoDownloadButtonIconWidth)
+    if (theme.getVideoDownloadButtonIconWidth() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonIconWidth(theme.getVideoDownloadButtonIconWidth())
     }
-    if (theme.videoDownloadButtonIconHeight !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonIconHeight(theme.videoDownloadButtonIconHeight)
+    if (theme.getVideoDownloadButtonIconHeight() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonIconHeight(theme.getVideoDownloadButtonIconHeight())
     }
-    if (theme.videoDownloadButtonIconTextGap !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonIconTextGap(theme.videoDownloadButtonIconTextGap)
+    if (theme.getVideoDownloadButtonIconTextGap() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonIconTextGap(theme.getVideoDownloadButtonIconTextGap())
     }
-    if (theme.videoDownloadButtonText !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonText(theme.videoDownloadButtonText)
+    if (theme.getVideoDownloadButtonText() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonText(theme.getVideoDownloadButtonText())
     }
-    if (theme.videoDownloadButtonTextFontColor !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonTextFontColor(theme.videoDownloadButtonTextFontColor)
+    if (theme.getVideoDownloadButtonTextFontColor() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonTextFontColor(theme.getVideoDownloadButtonTextFontColor())
     }
-    if (theme.videoDownloadButtonTextFontSize !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonTextFontSize(theme.videoDownloadButtonTextFontSize)
+    if (theme.getVideoDownloadButtonTextFontSize() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonTextFontSize(theme.getVideoDownloadButtonTextFontSize())
     }
-    if (theme.videoDownloadButtonTextFontStyle !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonTextFontStyle(theme.videoDownloadButtonTextFontStyle)
+    if (theme.getVideoDownloadButtonTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonTextFontStyle(theme.getVideoDownloadButtonTextFontStyle())
     }
-    if (theme.videoDownloadButtonTextFontWeight !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonTextFontWeight(theme.videoDownloadButtonTextFontWeight.toString())
+    if (theme.getVideoDownloadButtonTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonTextFontWeight(this.convertFontWeight(theme.getVideoDownloadButtonTextFontWeight() ?? FontWeight.Normal))
     }
-    if (theme.videoDownloadButtonTextFontFamily !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonTextFontFamily(theme.videoDownloadButtonTextFontFamily)
+    if (theme.getVideoDownloadButtonTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonTextFontFamily(theme.getVideoDownloadButtonTextFontFamily())
     }
-    if (theme.videoDownloadButtonTextLineHeight !== undefined) {
-      cjMarkdownTheme.setVideoDownloadButtonTextLineHeight(theme.videoDownloadButtonTextLineHeight)
+    if (theme.getVideoDownloadButtonTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setVideoDownloadButtonTextLineHeight(theme.getVideoDownloadButtonTextLineHeight())
     }
     return cjMarkdownTheme
+  }
+
+  convertFontWeight(weight: FontWeight): number {
+    switch (weight) {
+      case FontWeight.Lighter:
+        return 0
+      case FontWeight.Normal:
+        return 1
+      case FontWeight.Regular:
+        return 2
+      case FontWeight.Medium:
+        return 3
+      case FontWeight.Bold:
+        return 4
+      case FontWeight.Bolder:
+        return 5
+      default:
+        return 1
+    }
   }
 }

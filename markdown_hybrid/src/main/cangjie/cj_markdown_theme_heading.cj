@@ -829,7 +829,7 @@ public class CJMarkdownHeadingTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setTextFontWeightForAllHeading(weight: String): Unit {
+    public func setTextFontWeightForAllHeading(weight: Int64): Unit {
         let convertedWeight = convertFontWeight(weight)
         heading1TextFontWeight = convertedWeight
         heading2TextFontWeight = convertedWeight
@@ -845,7 +845,7 @@ public class CJMarkdownHeadingTheme {
      * @param level 标题等级
      * @param weight 文本字体粗细
      */
-    public func setTextFontWeightForDesignateHeading(level: Int64, weight: String): Unit {
+    public func setTextFontWeightForDesignateHeading(level: Int64, weight: Int64): Unit {
         let convertedWeight = convertFontWeight(weight)
         match (level) {
             case 1 => heading1TextFontWeight = convertedWeight

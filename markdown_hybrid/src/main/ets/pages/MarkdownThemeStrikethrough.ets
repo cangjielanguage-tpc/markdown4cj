@@ -7,47 +7,47 @@ export class MarkdownThemeStrikethrough {
   /**
    * 删除线文本颜色
    */
-  strikethroughTextFontColor?: number = undefined
+  private strikethroughTextFontColor?: number = undefined
 
   /**
    * 删除线文本尺寸
    */
-  strikethroughTextFontSize?: number = undefined
+  private strikethroughTextFontSize?: number = undefined
 
   /**
    * 删除线文本字体样式
    */
-  strikethroughTextFontStyle?: FontStyle = undefined
+  private strikethroughTextFontStyle?: FontStyle = undefined
 
   /**
    * 删除线文本字体粗细
    */
-  strikethroughTextFontWeight?: FontWeight = undefined
+  private strikethroughTextFontWeight?: FontWeight = undefined
 
   /**
    * 删除线文本字体
    */
-  strikethroughTextFontFamily?: string = undefined
+  private strikethroughTextFontFamily?: string = undefined
 
   /**
    * 删除线文本行高
    */
-  strikethroughTextLineHeight?: number = undefined
+  private strikethroughTextLineHeight?: number = undefined
 
   /**
    * 删除线文本字符间距
    */
-  strikethroughTextLetterSpacing?: number = undefined
+  private strikethroughTextLetterSpacing?: number = undefined
 
   /**
    * 删除线文本装饰线颜色
    */
-  strikethroughTextDecorationColor?: number = undefined
+  private strikethroughTextDecorationColor?: number = undefined
 
   /**
    * 删除线文本装饰线样式
    */
-  strikethroughTextDecorationStyle?: MarkdownTextDecorationStyle = undefined
+  private strikethroughTextDecorationStyle?: MarkdownTextDecorationStyle = undefined
 
   /**
    * 设置删除线文本颜色
@@ -128,5 +128,86 @@ export class MarkdownThemeStrikethrough {
    */
   setStrikethroughTextDecorationStyle(style: MarkdownTextDecorationStyle): void {
     this.strikethroughTextDecorationStyle = style
+  }
+
+  /**
+   * 获取strikethroughTextFontColor
+   *
+   * @returns strikethroughTextFontColor
+   */
+  getStrikethroughTextFontColor(): number | undefined {
+    return this.strikethroughTextFontColor
+  }
+
+  /**
+   * 获取strikethroughTextFontSize
+   *
+   * @returns strikethroughTextFontSize
+   */
+  getStrikethroughTextFontSize(): number | undefined {
+    return this.strikethroughTextFontSize
+  }
+
+  /**
+   * 获取strikethroughTextFontStyle
+   *
+   * @returns strikethroughTextFontStyle
+   */
+  getStrikethroughTextFontStyle(): FontStyle | undefined {
+    return this.strikethroughTextFontStyle
+  }
+
+  /**
+   * 获取strikethroughTextFontWeight
+   *
+   * @returns strikethroughTextFontWeight
+   */
+  getStrikethroughTextFontWeight(): FontWeight | undefined {
+    return this.strikethroughTextFontWeight
+  }
+
+  /**
+   * 获取strikethroughTextFontFamily
+   *
+   * @returns strikethroughTextFontFamily
+   */
+  getStrikethroughTextFontFamily(): string | undefined {
+    return this.strikethroughTextFontFamily
+  }
+
+  /**
+   * 获取strikethroughTextLineHeight
+   *
+   * @returns strikethroughTextLineHeight
+   */
+  getStrikethroughTextLineHeight(): number | undefined {
+    return this.strikethroughTextLineHeight
+  }
+
+  /**
+   * 获取strikethroughTextLetterSpacing
+   *
+   * @returns strikethroughTextLetterSpacing
+   */
+  getStrikethroughTextLetterSpacing(): number | undefined {
+    return this.strikethroughTextLetterSpacing
+  }
+
+  /**
+   * 获取strikethroughTextDecorationColor
+   *
+   * @returns strikethroughTextDecorationColor
+   */
+  getStrikethroughTextDecorationColor(): number | undefined {
+    return this.strikethroughTextDecorationColor
+  }
+
+  /**
+   * 获取strikethroughTextDecorationStyle
+   *
+   * @returns strikethroughTextDecorationStyle
+   */
+  getStrikethroughTextDecorationStyle(): MarkdownTextDecorationStyle | undefined {
+    return this.strikethroughTextDecorationStyle
   }
 }

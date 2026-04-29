@@ -5,37 +5,37 @@ export class MarkdownThemeSup {
   /**
    * 上标文本颜色
    */
-  supTextFontColor?: number = undefined
+  private supTextFontColor?: number = undefined
 
   /**
    * 上标文本尺寸
    */
-  supTextFontSize?: number = undefined
+  private supTextFontSize?: number = undefined
 
   /**
    * 上标文本字体样式
    */
-  supTextFontStyle?: FontStyle = undefined
+  private supTextFontStyle?: FontStyle = undefined
 
   /**
    * 上标文本字体粗细
    */
-  supTextFontWeight?: FontWeight = undefined
+  private supTextFontWeight?: FontWeight = undefined
 
   /**
    * 上标文本字体
    */
-  supTextFontFamily?: string = undefined
+  private supTextFontFamily?: string = undefined
 
   /**
    * 上标文本字符间距
    */
-  supTextLetterSpacing?: number = undefined
+  private supTextLetterSpacing?: number = undefined
 
   /**
    * 上标文本基线的偏移量
    */
-  supTextBaselineOffset?: number = undefined
+  private supTextBaselineOffset?: number = undefined
 
   /**
    * 设置上标文本颜色
@@ -98,5 +98,68 @@ export class MarkdownThemeSup {
    */
   setSupTextBaselineOffset(offset: number): void {
     this.supTextBaselineOffset = offset
+  }
+
+  /**
+   * 获取supTextFontColor
+   *
+   * @returns supTextFontColor
+   */
+  getSupTextFontColor(): number | undefined {
+    return this.supTextFontColor
+  }
+
+  /**
+   * 获取supTextFontSize
+   *
+   * @returns supTextFontSize
+   */
+  getSupTextFontSize(): number | undefined {
+    return this.supTextFontSize
+  }
+
+  /**
+   * 获取supTextFontStyle
+   *
+   * @returns supTextFontStyle
+   */
+  getSupTextFontStyle(): FontStyle | undefined {
+    return this.supTextFontStyle
+  }
+
+  /**
+   * 获取supTextFontWeight
+   *
+   * @returns supTextFontWeight
+   */
+  getSupTextFontWeight(): FontWeight | undefined {
+    return this.supTextFontWeight
+  }
+
+  /**
+   * 获取supTextFontFamily
+   *
+   * @returns supTextFontFamily
+   */
+  getSupTextFontFamily(): string | undefined {
+    return this.supTextFontFamily
+  }
+
+  /**
+   * 获取supTextLetterSpacing
+   *
+   * @returns supTextLetterSpacing
+   */
+  getSupTextLetterSpacing(): number | undefined {
+    return this.supTextLetterSpacing
+  }
+
+  /**
+   * 获取supTextBaselineOffset
+   *
+   * @returns supTextBaselineOffset
+   */
+  getSupTextBaselineOffset(): number | undefined {
+    return this.supTextBaselineOffset
   }
 }

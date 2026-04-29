@@ -262,7 +262,7 @@ public class CJMarkdownLinkTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setLinkTextFontWeight(weight: String): Unit {
+    public func setLinkTextFontWeight(weight: Int64): Unit {
         linkTextFontWeight = convertFontWeight(weight)
     }
 

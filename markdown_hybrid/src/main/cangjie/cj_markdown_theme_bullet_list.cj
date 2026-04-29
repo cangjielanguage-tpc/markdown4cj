@@ -257,7 +257,7 @@ public class CJMarkdownBulletListTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setBulletListBulletTextFontWeight(weight: String): Unit {
+    public func setBulletListBulletTextFontWeight(weight: Int64): Unit {
         bulletListBulletTextFontWeight = convertFontWeight(weight)
     }
 

@@ -5,37 +5,37 @@ export class MarkdownThemeBold {
   /**
    * 加粗文本颜色
    */
-  boldTextFontColor?: number = undefined
+  private boldTextFontColor?: number = undefined
 
   /**
    * 加粗文本尺寸
    */
-  boldTextFontSize?: number = undefined
+  private boldTextFontSize?: number = undefined
 
   /**
    * 加粗文本字体样式
    */
-  boldTextFontStyle?: FontStyle = undefined
+  private boldTextFontStyle?: FontStyle = undefined
 
   /**
    * 加粗文本字体粗细
    */
-  boldTextFontWeight?: FontWeight = undefined
+  private boldTextFontWeight?: FontWeight = undefined
 
   /**
    * 加粗文本字体
    */
-  boldTextFontFamily?: string = undefined
+  private boldTextFontFamily?: string = undefined
 
   /**
    * 加粗文本行高
    */
-  boldTextLineHeight?: number = undefined
+  private boldTextLineHeight?: number = undefined
 
   /**
    * 加粗文本字符间距
    */
-  boldTextLetterSpacing?: number = undefined
+  private boldTextLetterSpacing?: number = undefined
 
   /**
    * 设置加粗文本颜色
@@ -98,5 +98,68 @@ export class MarkdownThemeBold {
    */
   setBoldTextLetterSpacing(spacing: number): void {
     this.boldTextLetterSpacing = spacing
+  }
+
+  /**
+   * 获取boldTextFontColor
+   *
+   * @returns boldTextFontColor
+   */
+  getBoldTextFontColor(): number | undefined {
+    return this.boldTextFontColor
+  }
+
+  /**
+   * 获取boldTextFontSize
+   *
+   * @returns boldTextFontSize
+   */
+  getBoldTextFontSize(): number | undefined {
+    return this.boldTextFontSize
+  }
+
+  /**
+   * 获取boldTextFontStyle
+   *
+   * @returns boldTextFontStyle
+   */
+  getBoldTextFontStyle(): FontStyle | undefined {
+    return this.boldTextFontStyle
+  }
+
+  /**
+   * 获取boldTextFontWeight
+   *
+   * @returns boldTextFontWeight
+   */
+  getBoldTextFontWeight(): FontWeight | undefined {
+    return this.boldTextFontWeight
+  }
+
+  /**
+   * 获取boldTextFontFamily
+   *
+   * @returns boldTextFontFamily
+   */
+  getBoldTextFontFamily(): string | undefined {
+    return this.boldTextFontFamily
+  }
+
+  /**
+   * 获取boldTextLineHeight
+   *
+   * @returns boldTextLineHeight
+   */
+  getBoldTextLineHeight(): number | undefined {
+    return this.boldTextLineHeight
+  }
+
+  /**
+   * 获取boldTextLetterSpacing
+   *
+   * @returns boldTextLetterSpacing
+   */
+  getBoldTextLetterSpacing(): number | undefined {
+    return this.boldTextLetterSpacing
   }
 }

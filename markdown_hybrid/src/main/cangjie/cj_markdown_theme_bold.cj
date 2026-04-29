@@ -73,7 +73,7 @@ public class CJMarkdownBoldTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setBoldTextFontWeight(weight: String): Unit {
+    public func setBoldTextFontWeight(weight: Int64): Unit {
         boldTextFontWeight = convertFontWeight(weight)
     }
 

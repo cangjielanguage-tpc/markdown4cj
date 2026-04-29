@@ -7,77 +7,77 @@ export class MarkdownThemeFootnoteRef {
   /**
    * 脚注引用文本颜色
    */
-  footnoteRefTextFontColor?: number = undefined
+  private footnoteRefTextFontColor?: number = undefined
 
   /**
    * 脚注引用文本尺寸
    */
-  footnoteRefTextFontSize?: number = undefined
+  private footnoteRefTextFontSize?: number = undefined
 
   /**
    * 脚注引用文本字体样式
    */
-  footnoteRefTextFontStyle?: FontStyle = undefined
+  private footnoteRefTextFontStyle?: FontStyle = undefined
 
   /**
    * 脚注引用文本字体粗细
    */
-  footnoteRefTextFontWeight?: FontWeight = undefined
+  private footnoteRefTextFontWeight?: FontWeight = undefined
 
   /**
    * 脚注引用文本字体
    */
-  footnoteRefTextFontFamily?: string = undefined
+  private footnoteRefTextFontFamily?: string = undefined
 
   /**
    * 脚注引用文本行高
    */
-  footnoteRefTextLineHeight?: number = undefined
+  private footnoteRefTextLineHeight?: number = undefined
 
   /**
    * 脚注引用文本字符间距
    */
-  footnoteRefTextLetterSpacing?: number = undefined
+  private footnoteRefTextLetterSpacing?: number = undefined
 
   /**
    * 脚注引用文本装饰线类型
    */
-  footnoteRefTextDecorationType?: TextDecorationType = undefined
+  private footnoteRefTextDecorationType?: TextDecorationType = undefined
 
   /**
    * 脚注引用文本装饰线颜色
    */
-  footnoteRefTextDecorationColor?: number = undefined
+  private footnoteRefTextDecorationColor?: number = undefined
 
   /**
    * 脚注引用文本装饰线样式
    */
-  footnoteRefTextDecorationStyle?: MarkdownTextDecorationStyle = undefined
+  private footnoteRefTextDecorationStyle?: MarkdownTextDecorationStyle = undefined
 
   /**
    * 脚注引用文本背景颜色
    */
-  footnoteRefTextBackgroundColor?: number = undefined
+  private footnoteRefTextBackgroundColor?: number = undefined
 
   /**
    * 脚注引用文本背景左上圆角
    */
-  footnoteRefTextBackgroundRadiusTopLeft?: number = undefined
+  private footnoteRefTextBackgroundRadiusTopLeft?: number = undefined
 
   /**
    * 脚注引用文本背景右上圆角
    */
-  footnoteRefTextBackgroundRadiusTopRight?: number = undefined
+  private footnoteRefTextBackgroundRadiusTopRight?: number = undefined
 
   /**
    * 脚注引用文本背景左下圆角
    */
-  footnoteRefTextBackgroundRadiusBottomLeft?: number = undefined
+  private footnoteRefTextBackgroundRadiusBottomLeft?: number = undefined
 
   /**
    * 脚注引用文本背景右下圆角
    */
-  footnoteRefTextBackgroundRadiusBottomRight?: number = undefined
+  private footnoteRefTextBackgroundRadiusBottomRight?: number = undefined
 
   /**
    * 设置脚注引用文本颜色
@@ -203,5 +203,140 @@ export class MarkdownThemeFootnoteRef {
     this.footnoteRefTextBackgroundRadiusTopRight = topRight
     this.footnoteRefTextBackgroundRadiusBottomLeft = bottomLeft
     this.footnoteRefTextBackgroundRadiusBottomRight = bottomRight
+  }
+
+  /**
+   * 获取footnoteRefTextFontColor
+   *
+   * @returns footnoteRefTextFontColor
+   */
+  getFootnoteRefTextFontColor(): number | undefined {
+    return this.footnoteRefTextFontColor
+  }
+
+  /**
+   * 获取footnoteRefTextFontSize
+   *
+   * @returns footnoteRefTextFontSize
+   */
+  getFootnoteRefTextFontSize(): number | undefined {
+    return this.footnoteRefTextFontSize
+  }
+
+  /**
+   * 获取footnoteRefTextFontStyle
+   *
+   * @returns footnoteRefTextFontStyle
+   */
+  getFootnoteRefTextFontStyle(): FontStyle | undefined {
+    return this.footnoteRefTextFontStyle
+  }
+
+  /**
+   * 获取footnoteRefTextFontWeight
+   *
+   * @returns footnoteRefTextFontWeight
+   */
+  getFootnoteRefTextFontWeight(): FontWeight | undefined {
+    return this.footnoteRefTextFontWeight
+  }
+
+  /**
+   * 获取footnoteRefTextFontFamily
+   *
+   * @returns footnoteRefTextFontFamily
+   */
+  getFootnoteRefTextFontFamily(): string | undefined {
+    return this.footnoteRefTextFontFamily
+  }
+
+  /**
+   * 获取footnoteRefTextLineHeight
+   *
+   * @returns footnoteRefTextLineHeight
+   */
+  getFootnoteRefTextLineHeight(): number | undefined {
+    return this.footnoteRefTextLineHeight
+  }
+
+  /**
+   * 获取footnoteRefTextLetterSpacing
+   *
+   * @returns footnoteRefTextLetterSpacing
+   */
+  getFootnoteRefTextLetterSpacing(): number | undefined {
+    return this.footnoteRefTextLetterSpacing
+  }
+
+  /**
+   * 获取footnoteRefTextDecorationType
+   *
+   * @returns footnoteRefTextDecorationType
+   */
+  getFootnoteRefTextDecorationType(): TextDecorationType | undefined {
+    return this.footnoteRefTextDecorationType
+  }
+
+  /**
+   * 获取footnoteRefTextDecorationColor
+   *
+   * @returns footnoteRefTextDecorationColor
+   */
+  getFootnoteRefTextDecorationColor(): number | undefined {
+    return this.footnoteRefTextDecorationColor
+  }
+
+  /**
+   * 获取footnoteRefTextDecorationStyle
+   *
+   * @returns footnoteRefTextDecorationStyle
+   */
+  getFootnoteRefTextDecorationStyle(): MarkdownTextDecorationStyle | undefined {
+    return this.footnoteRefTextDecorationStyle
+  }
+
+  /**
+   * 获取footnoteRefTextBackgroundColor
+   *
+   * @returns footnoteRefTextBackgroundColor
+   */
+  getFootnoteRefTextBackgroundColor(): number | undefined {
+    return this.footnoteRefTextBackgroundColor
+  }
+
+  /**
+   * 获取footnoteRefTextBackgroundRadiusTopLeft
+   *
+   * @returns footnoteRefTextBackgroundRadiusTopLeft
+   */
+  getFootnoteRefTextBackgroundRadiusTopLeft(): number | undefined {
+    return this.footnoteRefTextBackgroundRadiusTopLeft
+  }
+
+  /**
+   * 获取footnoteRefTextBackgroundRadiusTopRight
+   *
+   * @returns footnoteRefTextBackgroundRadiusTopRight
+   */
+  getFootnoteRefTextBackgroundRadiusTopRight(): number | undefined {
+    return this.footnoteRefTextBackgroundRadiusTopRight
+  }
+
+  /**
+   * 获取footnoteRefTextBackgroundRadiusBottomLeft
+   *
+   * @returns footnoteRefTextBackgroundRadiusBottomLeft
+   */
+  getFootnoteRefTextBackgroundRadiusBottomLeft(): number | undefined {
+    return this.footnoteRefTextBackgroundRadiusBottomLeft
+  }
+
+  /**
+   * 获取footnoteRefTextBackgroundRadiusBottomRight
+   *
+   * @returns footnoteRefTextBackgroundRadiusBottomRight
+   */
+  getFootnoteRefTextBackgroundRadiusBottomRight(): number | undefined {
+    return this.footnoteRefTextBackgroundRadiusBottomRight
   }
 }

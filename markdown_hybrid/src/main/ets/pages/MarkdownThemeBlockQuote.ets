@@ -5,87 +5,87 @@ export class MarkdownThemeBlockQuote {
   /**
    * 块引用背景颜色
    */
-  blockQuoteBackgroundColor?: number = undefined
+  private blockQuoteBackgroundColor?: number = undefined
 
   /**
    * 块引用上外边距
    */
-  blockQuoteMarginTop?: number = undefined
+  private blockQuoteMarginTop?: number = undefined
 
   /**
    * 块引用右外边距
    */
-  blockQuoteMarginRight?: number = undefined
+  private blockQuoteMarginRight?: number = undefined
 
   /**
    * 块引用下外边距
    */
-  blockQuoteMarginBottom?: number = undefined
+  private blockQuoteMarginBottom?: number = undefined
 
   /**
    * 块引用左外边距
    */
-  blockQuoteMarginLeft?: number = undefined
+  private blockQuoteMarginLeft?: number = undefined
 
   /**
    * 块引用上内边距
    */
-  blockQuotePaddingTop?: number = undefined
+  private blockQuotePaddingTop?: number = undefined
 
   /**
    * 块引用右内边距
    */
-  blockQuotePaddingRight?: number = undefined
+  private blockQuotePaddingRight?: number = undefined
 
   /**
    * 块引用下内边距
    */
-  blockQuotePaddingBottom?: number = undefined
+  private blockQuotePaddingBottom?: number = undefined
 
   /**
    * 块引用左内边距
    */
-  blockQuotePaddingLeft?: number = undefined
+  private blockQuotePaddingLeft?: number = undefined
 
   /**
    * 块引用边框左上圆角
    */
-  blockQuoteRadiusTopLeft?: number = undefined
+  private blockQuoteRadiusTopLeft?: number = undefined
 
   /**
    * 块引用边框右上圆角
    */
-  blockQuoteRadiusTopRight?: number = undefined
+  private blockQuoteRadiusTopRight?: number = undefined
 
   /**
    * 块引用边框左下圆角
    */
-  blockQuoteRadiusBottomLeft?: number = undefined
+  private blockQuoteRadiusBottomLeft?: number = undefined
 
   /**
    * 块引用边框右下圆角
    */
-  blockQuoteRadiusBottomRight?: number = undefined
+  private blockQuoteRadiusBottomRight?: number = undefined
 
   /**
    * 块引用左侧边框宽度
    */
-  blockQuoteLeftBorderWidth?: number = undefined
+  private blockQuoteLeftBorderWidth?: number = undefined
 
   /**
    * 块引用左侧边框颜色
    */
-  blockQuoteLeftBorderColor?: number = undefined
+  private blockQuoteLeftBorderColor?: number = undefined
 
   /**
    * 块引用左侧线条和内容的间距
    */
-  blockQuoteBorderContentSpacing?: number = undefined
+  private blockQuoteBorderContentSpacing?: number = undefined
 
   /**
    * 块引用子模块上下间距
    */
-  blockQuoteChildSpacing?: number = undefined
+  private blockQuoteChildSpacing?: number = undefined
 
   /**
    * 设置块引用背景颜色
@@ -211,5 +211,158 @@ export class MarkdownThemeBlockQuote {
    */
   setBlockQuoteChildSpacing(spacing: number): void {
     this.blockQuoteChildSpacing = spacing
+  }
+
+  /**
+   * 获取blockQuoteBackgroundColor
+   *
+   * @returns blockQuoteBackgroundColor
+   */
+  getBlockQuoteBackgroundColor(): number | undefined {
+    return this.blockQuoteBackgroundColor
+  }
+
+  /**
+   * 获取blockQuoteMarginTop
+   *
+   * @returns blockQuoteMarginTop
+   */
+  getBlockQuoteMarginTop(): number | undefined {
+    return this.blockQuoteMarginTop
+  }
+
+  /**
+   * 获取blockQuoteMarginRight
+   *
+   * @returns blockQuoteMarginRight
+   */
+  getBlockQuoteMarginRight(): number | undefined {
+    return this.blockQuoteMarginRight
+  }
+
+  /**
+   * 获取blockQuoteMarginBottom
+   *
+   * @returns blockQuoteMarginBottom
+   */
+  getBlockQuoteMarginBottom(): number | undefined {
+    return this.blockQuoteMarginBottom
+  }
+
+  /**
+   * 获取blockQuoteMarginLeft
+   *
+   * @returns blockQuoteMarginLeft
+   */
+  getBlockQuoteMarginLeft(): number | undefined {
+    return this.blockQuoteMarginLeft
+  }
+
+  /**
+   * 获取blockQuotePaddingTop
+   *
+   * @returns blockQuotePaddingTop
+   */
+  getBlockQuotePaddingTop(): number | undefined {
+    return this.blockQuotePaddingTop
+  }
+
+  /**
+   * 获取blockQuotePaddingRight
+   *
+   * @returns blockQuotePaddingRight
+   */
+  getBlockQuotePaddingRight(): number | undefined {
+    return this.blockQuotePaddingRight
+  }
+
+  /**
+   * 获取blockQuotePaddingBottom
+   *
+   * @returns blockQuotePaddingBottom
+   */
+  getBlockQuotePaddingBottom(): number | undefined {
+    return this.blockQuotePaddingBottom
+  }
+
+  /**
+   * 获取blockQuotePaddingLeft
+   *
+   * @returns blockQuotePaddingLeft
+   */
+  getBlockQuotePaddingLeft(): number | undefined {
+    return this.blockQuotePaddingLeft
+  }
+
+  /**
+   * 获取blockQuoteRadiusTopLeft
+   *
+   * @returns blockQuoteRadiusTopLeft
+   */
+  getBlockQuoteRadiusTopLeft(): number | undefined {
+    return this.blockQuoteRadiusTopLeft
+  }
+
+  /**
+   * 获取blockQuoteRadiusTopRight
+   *
+   * @returns blockQuoteRadiusTopRight
+   */
+  getBlockQuoteRadiusTopRight(): number | undefined {
+    return this.blockQuoteRadiusTopRight
+  }
+
+  /**
+   * 获取blockQuoteRadiusBottomLeft
+   *
+   * @returns blockQuoteRadiusBottomLeft
+   */
+  getBlockQuoteRadiusBottomLeft(): number | undefined {
+    return this.blockQuoteRadiusBottomLeft
+  }
+
+  /**
+   * 获取blockQuoteRadiusBottomRight
+   *
+   * @returns blockQuoteRadiusBottomRight
+   */
+  getBlockQuoteRadiusBottomRight(): number | undefined {
+    return this.blockQuoteRadiusBottomRight
+  }
+
+  /**
+   * 获取blockQuoteLeftBorderWidth
+   *
+   * @returns blockQuoteLeftBorderWidth
+   */
+  getBlockQuoteLeftBorderWidth(): number | undefined {
+    return this.blockQuoteLeftBorderWidth
+  }
+
+  /**
+   * 获取blockQuoteLeftBorderColor
+   *
+   * @returns blockQuoteLeftBorderColor
+   */
+  getBlockQuoteLeftBorderColor(): number | undefined {
+    return this.blockQuoteLeftBorderColor
+  }
+
+  /**
+   * 获取blockQuoteBorderContentSpacing
+   *
+   * @returns blockQuoteBorderContentSpacing
+   */
+  getBlockQuoteBorderContentSpacing(): number | undefined {
+    return this.blockQuoteBorderContentSpacing
+  }
+
+  /**
+   * 获取blockQuoteChildSpacing
+   *
+   * @returns blockQuoteChildSpacing
+   */
+  getBlockQuoteChildSpacing(): number | undefined {
+    return this.blockQuoteChildSpacing
   }
 }

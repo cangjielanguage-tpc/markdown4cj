@@ -153,7 +153,7 @@ public class CJMarkdownDefinitionListTheme {
      *
      * @param isBold 是否加粗
      */
-    public func setDefinitionListTermTextFontWeight(weight: String): Unit {
+    public func setDefinitionListTermTextFontWeight(weight: Int64): Unit {
         definitionListTermTextFontWeight = convertFontWeight(weight)
     }
 

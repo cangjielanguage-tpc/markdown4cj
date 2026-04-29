@@ -5,57 +5,57 @@ export class MarkdownThemeDivider {
   /**
    * 分割线上外边距
    */
-  dividerMarginTop?: number = undefined
+  private dividerMarginTop?: number = undefined
 
   /**
    * 分割线右外边距
    */
-  dividerMarginRight?: number = undefined
+  private dividerMarginRight?: number = undefined
 
   /**
    * 分割线下外边距
    */
-  dividerMarginBottom?: number = undefined
+  private dividerMarginBottom?: number = undefined
 
   /**
    * 分割线左外边距
    */
-  dividerMarginLeft?: number = undefined
+  private dividerMarginLeft?: number = undefined
 
   /**
    * 分割线上内边距
    */
-  dividerPaddingTop?: number = undefined
+  private dividerPaddingTop?: number = undefined
 
   /**
    * 分割线右内边距
    */
-  dividerPaddingRight?: number = undefined
+  private dividerPaddingRight?: number = undefined
 
   /**
    * 分割线下内边距
    */
-  dividerPaddingBottom?: number = undefined
+  private dividerPaddingBottom?: number = undefined
 
   /**
    * 分割线左内边距
    */
-  dividerPaddingLeft?: number = undefined
+  private dividerPaddingLeft?: number = undefined
 
   /**
    * 分割线颜色
    */
-  dividerColor?: number = undefined
+  private dividerColor?: number = undefined
 
   /**
    * 分割线宽度
    */
-  dividerStrokeWidth?: number = undefined
+  private dividerStrokeWidth?: number = undefined
 
   /**
    * 分割线端点样式
    */
-  dividerStyle?: LineCapStyle = undefined
+  private dividerStyle?: LineCapStyle = undefined
 
   /**
    * 分割线整体外边距
@@ -136,5 +136,104 @@ export class MarkdownThemeDivider {
    */
   setDividerStyle(style: LineCapStyle): void {
     this.dividerStyle = style
+  }
+
+  /**
+   * 获取dividerMarginTop
+   *
+   * @returns dividerMarginTop
+   */
+  getDividerMarginTop(): number | undefined {
+    return this.dividerMarginTop
+  }
+
+  /**
+   * 获取dividerMarginRight
+   *
+   * @returns dividerMarginRight
+   */
+  getDividerMarginRight(): number | undefined {
+    return this.dividerMarginRight
+  }
+
+  /**
+   * 获取dividerMarginBottom
+   *
+   * @returns dividerMarginBottom
+   */
+  getDividerMarginBottom(): number | undefined {
+    return this.dividerMarginBottom
+  }
+
+  /**
+   * 获取dividerMarginLeft
+   *
+   * @returns dividerMarginLeft
+   */
+  getDividerMarginLeft(): number | undefined {
+    return this.dividerMarginLeft
+  }
+
+  /**
+   * 获取dividerPaddingTop
+   *
+   * @returns dividerPaddingTop
+   */
+  getDividerPaddingTop(): number | undefined {
+    return this.dividerPaddingTop
+  }
+
+  /**
+   * 获取dividerPaddingRight
+   *
+   * @returns dividerPaddingRight
+   */
+  getDividerPaddingRight(): number | undefined {
+    return this.dividerPaddingRight
+  }
+
+  /**
+   * 获取dividerPaddingBottom
+   *
+   * @returns dividerPaddingBottom
+   */
+  getDividerPaddingBottom(): number | undefined {
+    return this.dividerPaddingBottom
+  }
+
+  /**
+   * 获取dividerPaddingLeft
+   *
+   * @returns dividerPaddingLeft
+   */
+  getDividerPaddingLeft(): number | undefined {
+    return this.dividerPaddingLeft
+  }
+
+  /**
+   * 获取dividerColor
+   *
+   * @returns dividerColor
+   */
+  getDividerColor(): number | undefined {
+    return this.dividerColor
+  }
+
+  /**
+   * 获取dividerStrokeWidth
+   *
+   * @returns dividerStrokeWidth
+   */
+  getDividerStrokeWidth(): number | undefined {
+    return this.dividerStrokeWidth
+  }
+
+  /**
+   * 获取dividerStyle
+   *
+   * @returns dividerStyle
+   */
+  getDividerStyle(): LineCapStyle | undefined {
+    return this.dividerStyle
   }
 }

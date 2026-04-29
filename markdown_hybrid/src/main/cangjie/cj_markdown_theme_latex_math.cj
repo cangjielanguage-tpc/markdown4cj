@@ -202,7 +202,7 @@ public class CJMarkdownLatexMathTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setLatexMathDefaultTextFontWeight(weight: String): Unit {
+    public func setLatexMathDefaultTextFontWeight(weight: Int64): Unit {
         latexMathDefaultTextFontWeight = convertFontWeight(weight)
     }
 

@@ -73,7 +73,7 @@ public class CJMarkdownSubTheme {
      *
      * @param weight 文本字体粗细
      */
-    public func setSubTextFontWeight(weight: String): Unit {
+    public func setSubTextFontWeight(weight: Int64): Unit {
         subTextFontWeight = convertFontWeight(weight)
     }
 

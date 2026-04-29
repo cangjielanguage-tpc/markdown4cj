@@ -5,92 +5,92 @@ export class MarkdownThemeOrderedList {
   /**
    * 有序列表背景颜色
    */
-  orderedListBackgroundColor?: number = undefined
+  private orderedListBackgroundColor?: number = undefined
 
   /**
    * 有序列表上外边距
    */
-  orderedListMarginTop?: number = undefined
+  private orderedListMarginTop?: number = undefined
 
   /**
    * 有序列表右外边距
    */
-  orderedListMarginRight?: number = undefined
+  private orderedListMarginRight?: number = undefined
 
   /**
    * 有序列表下外边距
    */
-  orderedListMarginBottom?: number = undefined
+  private orderedListMarginBottom?: number = undefined
 
   /**
    * 有序列表左外边距
    */
-  orderedListMarginLeft?: number = undefined
+  private orderedListMarginLeft?: number = undefined
 
   /**
    * 有序列表上内边距
    */
-  orderedListPaddingTop?: number = undefined
+  private orderedListPaddingTop?: number = undefined
 
   /**
    * 有序列表右内边距
    */
-  orderedListPaddingRight?: number = undefined
+  private orderedListPaddingRight?: number = undefined
 
   /**
    * 有序列表下内边距
    */
-  orderedListPaddingBottom?: number = undefined
+  private orderedListPaddingBottom?: number = undefined
 
   /**
    * 有序列表左内边距
    */
-  orderedListPaddingLeft?: number = undefined
+  private orderedListPaddingLeft?: number = undefined
 
   /**
    * 有序列表子模块上下间距
    */
-  orderedListChildSpacing?: number = undefined
+  private orderedListChildSpacing?: number = undefined
 
   /**
    * 有序列表子模块中子模块上下间距
    */
-  orderedListChildChildSpacing?: number = undefined
+  private orderedListChildChildSpacing?: number = undefined
 
   /**
    * 有序列表列表编号和列表内容间距
    */
-  orderedListMarkerSpacing?: number = undefined
+  private orderedListMarkerSpacing?: number = undefined
 
   /**
    * 有序列表列表编号文本颜色
    */
-  orderedListMarkerTextFontColor?: number = undefined
+  private orderedListMarkerTextFontColor?: number = undefined
 
   /**
    * 有序列表列表编号文本尺寸
    */
-  orderedListMarkerTextFontSize?: number = undefined
+  private orderedListMarkerTextFontSize?: number = undefined
 
   /**
    * 有序列表列表编号文本字体样式
    */
-  orderedListMarkerTextFontStyle?: FontStyle = undefined
+  private orderedListMarkerTextFontStyle?: FontStyle = undefined
 
   /**
    * 有序列表列表编号文本字体粗细
    */
-  orderedListMarkerTextFontWeight?: FontWeight = undefined
+  private orderedListMarkerTextFontWeight?: FontWeight = undefined
 
   /**
    * 有序列表列表编号文本字体
    */
-  orderedListMarkerTextFontFamily?: string = undefined
+  private orderedListMarkerTextFontFamily?: string = undefined
 
   /**
    * 有序列表列表编号文本行高
    */
-  orderedListMarkerTextLineHeight?: number = undefined
+  private orderedListMarkerTextLineHeight?: number = undefined
 
   /**
    * 设置有序列表背景颜色
@@ -234,5 +234,167 @@ export class MarkdownThemeOrderedList {
    */
   setOrderedListMarkerTextLineHeight(lineHeight: number): void {
     this.orderedListMarkerTextLineHeight = lineHeight
+  }
+
+  /**
+   * 获取orderedListBackgroundColor
+   *
+   * @returns orderedListBackgroundColor
+   */
+  getOrderedListBackgroundColor(): number | undefined {
+    return this.orderedListBackgroundColor
+  }
+
+  /**
+   * 获取orderedListMarginTop
+   *
+   * @returns orderedListMarginTop
+   */
+  getOrderedListMarginTop(): number | undefined {
+    return this.orderedListMarginTop
+  }
+
+  /**
+   * 获取orderedListMarginRight
+   *
+   * @returns orderedListMarginRight
+   */
+  getOrderedListMarginRight(): number | undefined {
+    return this.orderedListMarginRight
+  }
+
+  /**
+   * 获取orderedListMarginBottom
+   *
+   * @returns orderedListMarginBottom
+   */
+  getOrderedListMarginBottom(): number | undefined {
+    return this.orderedListMarginBottom
+  }
+
+  /**
+   * 获取orderedListMarginLeft
+   *
+   * @returns orderedListMarginLeft
+   */
+  getOrderedListMarginLeft(): number | undefined {
+    return this.orderedListMarginLeft
+  }
+
+  /**
+   * 获取orderedListPaddingTop
+   *
+   * @returns orderedListPaddingTop
+   */
+  getOrderedListPaddingTop(): number | undefined {
+    return this.orderedListPaddingTop
+  }
+
+  /**
+   * 获取orderedListPaddingRight
+   *
+   * @returns orderedListPaddingRight
+   */
+  getOrderedListPaddingRight(): number | undefined {
+    return this.orderedListPaddingRight
+  }
+
+  /**
+   * 获取orderedListPaddingBottom
+   *
+   * @returns orderedListPaddingBottom
+   */
+  getOrderedListPaddingBottom(): number | undefined {
+    return this.orderedListPaddingBottom
+  }
+
+  /**
+   * 获取orderedListPaddingLeft
+   *
+   * @returns orderedListPaddingLeft
+   */
+  getOrderedListPaddingLeft(): number | undefined {
+    return this.orderedListPaddingLeft
+  }
+
+  /**
+   * 获取orderedListChildSpacing
+   *
+   * @returns orderedListChildSpacing
+   */
+  getOrderedListChildSpacing(): number | undefined {
+    return this.orderedListChildSpacing
+  }
+
+  /**
+   * 获取orderedListChildChildSpacing
+   *
+   * @returns orderedListChildChildSpacing
+   */
+  getOrderedListChildChildSpacing(): number | undefined {
+    return this.orderedListChildChildSpacing
+  }
+
+  /**
+   * 获取orderedListMarkerSpacing
+   *
+   * @returns orderedListMarkerSpacing
+   */
+  getOrderedListMarkerSpacing(): number | undefined {
+    return this.orderedListMarkerSpacing
+  }
+
+  /**
+   * 获取orderedListMarkerTextFontColor
+   *
+   * @returns orderedListMarkerTextFontColor
+   */
+  getOrderedListMarkerTextFontColor(): number | undefined {
+    return this.orderedListMarkerTextFontColor
+  }
+
+  /**
+   * 获取orderedListMarkerTextFontSize
+   *
+   * @returns orderedListMarkerTextFontSize
+   */
+  getOrderedListMarkerTextFontSize(): number | undefined {
+    return this.orderedListMarkerTextFontSize
+  }
+
+  /**
+   * 获取orderedListMarkerTextFontStyle
+   *
+   * @returns orderedListMarkerTextFontStyle
+   */
+  getOrderedListMarkerTextFontStyle(): FontStyle | undefined {
+    return this.orderedListMarkerTextFontStyle
+  }
+
+  /**
+   * 获取orderedListMarkerTextFontWeight
+   *
+   * @returns orderedListMarkerTextFontWeight
+   */
+  getOrderedListMarkerTextFontWeight(): FontWeight | undefined {
+    return this.orderedListMarkerTextFontWeight
+  }
+
+  /**
+   * 获取orderedListMarkerTextFontFamily
+   *
+   * @returns orderedListMarkerTextFontFamily
+   */
+  getOrderedListMarkerTextFontFamily(): string | undefined {
+    return this.orderedListMarkerTextFontFamily
+  }
+
+  /**
+   * 获取orderedListMarkerTextLineHeight
+   *
+   * @returns orderedListMarkerTextLineHeight
+   */
+  getOrderedListMarkerTextLineHeight(): number | undefined {
+    return this.orderedListMarkerTextLineHeight
   }
 }

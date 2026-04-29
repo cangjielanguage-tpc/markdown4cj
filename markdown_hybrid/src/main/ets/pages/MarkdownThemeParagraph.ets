@@ -5,82 +5,82 @@ export class MarkdownThemeParagraph {
   /**
    * 段落背景颜色
    */
-  paragraphBackgroundColor?: number = undefined
+  private paragraphBackgroundColor?: number = undefined
 
   /**
    * 段落上外边距
    */
-  paragraphMarginTop?: number = undefined
+  private paragraphMarginTop?: number = undefined
 
   /**
    * 段落右外边距
    */
-  paragraphMarginRight?: number = undefined
+  private paragraphMarginRight?: number = undefined
 
   /**
    * 段落下外边距
    */
-  paragraphMarginBottom?: number = undefined
+  private paragraphMarginBottom?: number = undefined
 
   /**
    * 段落左外边距
    */
-  paragraphMarginLeft?: number = undefined
+  private paragraphMarginLeft?: number = undefined
 
   /**
    * 段落上内边距
    */
-  paragraphPaddingTop?: number = undefined
+  private paragraphPaddingTop?: number = undefined
 
   /**
    * 段落右内边距
    */
-  paragraphPaddingRight?: number = undefined
+  private paragraphPaddingRight?: number = undefined
 
   /**
    * 段落下内边距
    */
-  paragraphPaddingBottom?: number = undefined
+  private paragraphPaddingBottom?: number = undefined
 
   /**
    * 段落左内边距
    */
-  paragraphPaddingLeft?: number = undefined
+  private paragraphPaddingLeft?: number = undefined
 
   /**
    * 段落文本颜色
    */
-  paragraphTextFontColor?: number = undefined
+  private paragraphTextFontColor?: number = undefined
 
   /**
    * 段落文本尺寸
    */
-  paragraphTextFontSize?: number = undefined
+  private paragraphTextFontSize?: number = undefined
 
   /**
    * 段落文本字体样式
    */
-  paragraphTextFontStyle?: FontStyle = undefined
+  private paragraphTextFontStyle?: FontStyle = undefined
 
   /**
    * 段落文本字体粗细
    */
-  paragraphTextFontWeight?: FontWeight = undefined
+  private paragraphTextFontWeight?: FontWeight = undefined
 
   /**
    * 段落文本字体
    */
-  paragraphTextFontFamily?: string = undefined
+  private paragraphTextFontFamily?: string = undefined
 
   /**
    * 段落文本行高
    */
-  paragraphTextLineHeight?: number = undefined
+  private paragraphTextLineHeight?: number = undefined
 
   /**
    * 段落文本字符间距
    */
-  paragraphTextLetterSpacing?: number = undefined
+  private paragraphTextLetterSpacing?: number = undefined
 
   /**
    * 设置段落背景颜色
@@ -206,5 +206,149 @@ export class MarkdownThemeParagraph {
    */
   setParagraphTextLetterSpacing(spacing: number): void {
     this.paragraphTextLetterSpacing = spacing
+  }
+
+  /**
+   * 获取paragraphBackgroundColor
+   *
+   * @returns paragraphBackgroundColor
+   */
+  getParagraphBackgroundColor(): number | undefined {
+    return this.paragraphBackgroundColor
+  }
+
+  /**
+   * 获取paragraphMarginTop
+   *
+   * @returns paragraphMarginTop
+   */
+  getParagraphMarginTop(): number | undefined {
+    return this.paragraphMarginTop
+  }
+
+  /**
+   * 获取paragraphMarginRight
+   *
+   * @returns paragraphMarginRight
+   */
+  getParagraphMarginRight(): number | undefined {
+    return this.paragraphMarginRight
+  }
+
+  /**
+   * 获取paragraphMarginBottom
+   *
+   * @returns paragraphMarginBottom
+   */
+  getParagraphMarginBottom(): number | undefined {
+    return this.paragraphMarginBottom
+  }
+
+  /**
+   * 获取paragraphMarginLeft
+   *
+   * @returns paragraphMarginLeft
+   */
+  getParagraphMarginLeft(): number | undefined {
+    return this.paragraphMarginLeft
+  }
+
+  /**
+   * 获取paragraphPaddingTop
+   *
+   * @returns paragraphPaddingTop
+   */
+  getParagraphPaddingTop(): number | undefined {
+    return this.paragraphPaddingTop
+  }
+
+  /**
+   * 获取paragraphPaddingRight
+   *
+   * @returns paragraphPaddingRight
+   */
+  getParagraphPaddingRight(): number | undefined {
+    return this.paragraphPaddingRight
+  }
+
+  /**
+   * 获取paragraphPaddingBottom
+   *
+   * @returns paragraphPaddingBottom
+   */
+  getParagraphPaddingBottom(): number | undefined {
+    return this.paragraphPaddingBottom
+  }
+
+  /**
+   * 获取paragraphPaddingLeft
+   *
+   * @returns paragraphPaddingLeft
+   */
+  getParagraphPaddingLeft(): number | undefined {
+    return this.paragraphPaddingLeft
+  }
+
+  /**
+   * 获取paragraphTextFontColor
+   *
+   * @returns paragraphTextFontColor
+   */
+  getParagraphTextFontColor(): number | undefined {
+    return this.paragraphTextFontColor
+  }
+
+  /**
+   * 获取paragraphTextFontSize
+   *
+   * @returns paragraphTextFontSize
+   */
+  getParagraphTextFontSize(): number | undefined {
+    return this.paragraphTextFontSize
+  }
+
+  /**
+   * 获取paragraphTextFontStyle
+   *
+   * @returns paragraphTextFontStyle
+   */
+  getParagraphTextFontStyle(): FontStyle | undefined {
+    return this.paragraphTextFontStyle
+  }
+
+  /**
+   * 获取paragraphTextFontWeight
+   *
+   * @returns paragraphTextFontWeight
+   */
+  getParagraphTextFontWeight(): FontWeight | undefined {
+    return this.paragraphTextFontWeight
+  }
+
+  /**
+   * 获取paragraphTextFontFamily
+   *
+   * @returns paragraphTextFontFamily
+   */
+  getParagraphTextFontFamily(): string | undefined {
+    return this.paragraphTextFontFamily
+  }
+
+  /**
+   * 获取paragraphTextLineHeight
+   *
+   * @returns paragraphTextLineHeight
+   */
+  getParagraphTextLineHeight(): number | undefined {
+    return this.paragraphTextLineHeight
+  }
+
+  /**
+   * 获取paragraphTextLetterSpacing
+   *
+   * @returns paragraphTextLetterSpacing
+   */
+  getParagraphTextLetterSpacing(): number | undefined {
+    return this.paragraphTextLetterSpacing
   }
 }

@@ -5,47 +5,47 @@ export class MarkdownThemeBanner {
   /**
    * banner上外边距
    */
-  bannerMarginTop?: number = undefined
+  private bannerMarginTop?: number = undefined
 
   /**
    * banner右外边距
    */
-  bannerMarginRight?: number = undefined
+  private bannerMarginRight?: number = undefined
 
   /**
    * banner下外边距
    */
-  bannerMarginBottom?: number = undefined
+  private bannerMarginBottom?: number = undefined
 
   /**
    * banner左外边距
    */
-  bannerMarginLeft?: number = undefined
+  private bannerMarginLeft?: number = undefined
 
   /**
    * banner上内边距
    */
-  bannerPaddingTop?: number = undefined
+  private bannerPaddingTop?: number = undefined
 
   /**
    * banner右内边距
    */
-  bannerPaddingRight?: number = undefined
+  private bannerPaddingRight?: number = undefined
 
   /**
    * banner下内边距
    */
-  bannerPaddingBottom?: number = undefined
+  private bannerPaddingBottom?: number = undefined
 
   /**
    * banner左内边距
    */
-  bannerPaddingLeft?: number = undefined
+  private bannerPaddingLeft?: number = undefined
 
   /**
    * banner占位图
    */
-  bannerPlaceholder?: Resource = undefined
+  private bannerPlaceholder?: Resource = undefined
 
   /**
    * banner整体外边距
@@ -108,5 +108,86 @@ export class MarkdownThemeBanner {
    */
   setBannerPlaceholder(resource: Resource): void {
     this.bannerPlaceholder = resource
+  }
+
+  /**
+   * 获取bannerMarginTop
+   *
+   * @returns bannerMarginTop
+   */
+  getBannerMarginTop(): number | undefined {
+    return this.bannerMarginTop
+  }
+
+  /**
+   * 获取bannerMarginRight
+   *
+   * @returns bannerMarginRight
+   */
+  getBannerMarginRight(): number | undefined {
+    return this.bannerMarginRight
+  }
+
+  /**
+   * 获取bannerMarginBottom
+   *
+   * @returns bannerMarginBottom
+   */
+  getBannerMarginBottom(): number | undefined {
+    return this.bannerMarginBottom
+  }
+
+  /**
+   * 获取bannerMarginLeft
+   *
+   * @returns bannerMarginLeft
+   */
+  getBannerMarginLeft(): number | undefined {
+    return this.bannerMarginLeft
+  }
+
+  /**
+   * 获取bannerPaddingTop
+   *
+   * @returns bannerPaddingTop
+   */
+  getBannerPaddingTop(): number | undefined {
+    return this.bannerPaddingTop
+  }
+
+  /**
+   * 获取bannerPaddingRight
+   *
+   * @returns bannerPaddingRight
+   */
+  getBannerPaddingRight(): number | undefined {
+    return this.bannerPaddingRight
+  }
+
+  /**
+   * 获取bannerPaddingBottom
+   *
+   * @returns bannerPaddingBottom
+   */
+  getBannerPaddingBottom(): number | undefined {
+    return this.bannerPaddingBottom
+  }
+
+  /**
+   * 获取bannerPaddingLeft
+   *
+   * @returns bannerPaddingLeft
+   */
+  getBannerPaddingLeft(): number | undefined {
+    return this.bannerPaddingLeft
+  }
+
+  /**
+   * 获取bannerPlaceholder
+   *
+   * @returns bannerPlaceholder
+   */
+  getBannerPlaceholder(): Resource | undefined {
+    return this.bannerPlaceholder
   }
 }

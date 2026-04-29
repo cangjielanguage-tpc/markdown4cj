@@ -5,352 +5,352 @@ export class MarkdownThemeVideo {
   /**
    * 视频背景颜色
    */
-  videoBackgroundColor?: number = undefined
+  private videoBackgroundColor?: number = undefined
 
   /**
    * 视频上外边距
    */
-  videoMarginTop?: number = undefined
+  private videoMarginTop?: number = undefined
 
   /**
    * 视频右外边距
    */
-  videoMarginRight?: number = undefined
+  private videoMarginRight?: number = undefined
 
   /**
    * 视频下外边距
    */
-  videoMarginBottom?: number = undefined
+  private videoMarginBottom?: number = undefined
 
   /**
    * 视频左外边距
    */
-  videoMarginLeft?: number = undefined
+  private videoMarginLeft?: number = undefined
 
   /**
    * 视频上内边距
    */
-  videoPaddingTop?: number = undefined
+  private videoPaddingTop?: number = undefined
 
   /**
    * 视频右内边距
    */
-  videoPaddingRight?: number = undefined
+  private videoPaddingRight?: number = undefined
 
   /**
    * 视频下内边距
    */
-  videoPaddingBottom?: number = undefined
+  private videoPaddingBottom?: number = undefined
 
   /**
    * 视频左内边距
    */
-  videoPaddingLeft?: number = undefined
+  private videoPaddingLeft?: number = undefined
 
   /**
    * 视频边框左上圆角
    */
-  videoRadiusTopLeft?: number = undefined
+  private videoRadiusTopLeft?: number = undefined
 
   /**
    * 视频边框右上圆角
    */
-  videoRadiusTopRight?: number = undefined
+  private videoRadiusTopRight?: number = undefined
 
   /**
    * 视频边框左下圆角
    */
-  videoRadiusBottomLeft?: number = undefined
+  private videoRadiusBottomLeft?: number = undefined
 
   /**
    * 视频边框右下圆角
    */
-  videoRadiusBottomRight?: number = undefined
+  private videoRadiusBottomRight?: number = undefined
 
   /**
    * 视频边框样式
    */
-  videoBorderStyle?: BorderStyle = undefined
+  private videoBorderStyle?: BorderStyle = undefined
 
   /**
    * 视频边框宽度
    */
-  videoBorderWidth?: number = undefined
+  private videoBorderWidth?: number = undefined
 
   /**
    * 视频边框颜色
    */
-  videoBorderColor?: number = undefined
+  private videoBorderColor?: number = undefined
 
   /**
    * 视频占位图
    */
-  videoPlaceholder?: Resource = undefined
+  private videoPlaceholder?: Resource = undefined
 
   /**
    * 视频图片缩放类型
    */
-  videoImageFitType?: ImageFit = undefined
+  private videoImageFitType?: ImageFit = undefined
 
   /**
    * 播放按钮默认图片
    */
-  videoPlayIcon?: Resource = undefined
+  private videoPlayIcon?: Resource = undefined
 
   /**
    * 播放按钮图标宽度
    */
-  videoPlayIconWidth?: number = undefined
+  private videoPlayIconWidth?: number = undefined
 
   /**
    * 播放按钮图标高度
    */
-  videoPlayIconHeight?: number = undefined
+  private videoPlayIconHeight?: number = undefined
 
   /**
    * 播放按钮图标缩放类型
    */
-  videoPlayIconFitType?: ImageFit = undefined
+  private videoPlayIconFitType?: ImageFit = undefined
 
   /**
    * 视频时间文本颜色
    */
-  videoTimeTextFontColor?: number = undefined
+  private videoTimeTextFontColor?: number = undefined
 
   /**
    * 视频时间文本尺寸
    */
-  videoTimeTextFontSize?: number = undefined
+  private videoTimeTextFontSize?: number = undefined
 
   /**
    * 视频时间文本字体样式
    */
-  videoTimeTextFontStyle?: FontStyle = undefined
+  private videoTimeTextFontStyle?: FontStyle = undefined
 
   /**
    * 视频时间文本字体粗细
    */
-  videoTimeTextFontWeight?: FontWeight = undefined
+  private videoTimeTextFontWeight?: FontWeight = undefined
 
   /**
    * 视频时间文本字体
    */
-  videoTimeTextFontFamily?: string = undefined
+  private videoTimeTextFontFamily?: string = undefined
 
   /**
    * 视频时间文本行高
    */
-  videoTimeTextLineHeight?: number = undefined
+  private videoTimeTextLineHeight?: number = undefined
 
   /**
    * 视频时间文本居右边距
    */
-  videoTimeTextMarginRight?: number = undefined
+  private videoTimeTextMarginRight?: number = undefined
 
   /**
    * 视频时间文本居底边距
    */
-  videoTimeTextMarginBottom?: number = undefined
+  private videoTimeTextMarginBottom?: number = undefined
 
   /**
    * 底部布局是否显示（视频发布/下载按钮）
    */
-  videoBottomLayoutVisible?: boolean = undefined
+  private videoBottomLayoutVisible?: boolean = undefined
 
   /**
    * 底部布局距离视频上边距
    */
-  videoBottomLayoutMarginTop?: number = undefined
+  private videoBottomLayoutMarginTop?: number = undefined
 
   /**
    * 视频发布按钮是否显示
    */
-  videoReleaseButtonVisible?: boolean = undefined
+  private videoReleaseButtonVisible?: boolean = undefined
 
   /**
    * 视频发布按钮背景颜色
    */
-  videoReleaseButtonBackgroundColor?: number = undefined
+  private videoReleaseButtonBackgroundColor?: number = undefined
 
   /**
    * 视频发布按钮宽度
    */
-  videoReleaseButtonWidth?: number = undefined
+  private videoReleaseButtonWidth?: number = undefined
 
   /**
    * 视频发布按钮高度
    */
-  videoReleaseButtonHeight?: number = undefined
+  private videoReleaseButtonHeight?: number = undefined
 
   /**
    * 视频发布按钮左上圆角
    */
-  videoReleaseButtonRadiusTopLeft?: number = undefined
+  private videoReleaseButtonRadiusTopLeft?: number = undefined
 
   /**
    * 视频发布按钮右上圆角
    */
-  videoReleaseButtonRadiusTopRight?: number = undefined
+  private videoReleaseButtonRadiusTopRight?: number = undefined
 
   /**
    * 视频发布按钮左下圆角
    */
-  videoReleaseButtonRadiusBottomLeft?: number = undefined
+  private videoReleaseButtonRadiusBottomLeft?: number = undefined
 
   /**
    * 视频发布按钮右下圆角
    */
-  videoReleaseButtonRadiusBottomRight?: number = undefined
+  private videoReleaseButtonRadiusBottomRight?: number = undefined
 
   /**
    * 视频发布按钮图标和文本间距
    */
-  videoReleaseButtonIconTextGap?: number = undefined
+  private videoReleaseButtonIconTextGap?: number = undefined
 
   /**
    * 视频发布按钮图标
    */
-  videoReleaseButtonIcon?: Resource = undefined
+  private videoReleaseButtonIcon?: Resource = undefined
 
   /**
    * 视频发布按钮图标宽度
    */
-  videoReleaseButtonIconWidth?: number = undefined
+  private videoReleaseButtonIconWidth?: number = undefined
 
   /**
    * 视频发布按钮图标高度
    */
-  videoReleaseButtonIconHeight?: number = undefined
+  private videoReleaseButtonIconHeight?: number = undefined
 
   /**
    * 视频发布按钮默认文本内容
    */
-  videoReleaseButtonText?: string = undefined
+  private videoReleaseButtonText?: string = undefined
 
   /**
    * 视频发布按钮文本颜色
    */
-  videoReleaseButtonTextFontColor?: number = undefined
+  private videoReleaseButtonTextFontColor?: number = undefined
 
   /**
    * 视频发布按钮文本尺寸
    */
-  videoReleaseButtonTextFontSize?: number = undefined
+  private videoReleaseButtonTextFontSize?: number = undefined
 
   /**
    * 视频发布按钮文本字体样式
    */
-  videoReleaseButtonTextFontStyle?: FontStyle = undefined
+  private videoReleaseButtonTextFontStyle?: FontStyle = undefined
 
   /**
    * 视频发布按钮文本字体粗细
    */
-  videoReleaseButtonTextFontWeight?: FontWeight = undefined
+  private videoReleaseButtonTextFontWeight?: FontWeight = undefined
 
   /**
    * 视频发布按钮文本字体
    */
-  videoReleaseButtonTextFontFamily?: string = undefined
+  private videoReleaseButtonTextFontFamily?: string = undefined
 
   /**
    * 视频发布按钮文本行高
    */
-  videoReleaseButtonTextLineHeight?: number = undefined
+  private videoReleaseButtonTextLineHeight?: number = undefined
 
   /**
    * 视频下载按钮是否显示
    */
-  videoDownloadButtonVisible?: boolean = undefined
+  private videoDownloadButtonVisible?: boolean = undefined
 
   /**
    * 视频下载按钮背景颜色
    */
-  videoDownloadButtonBackgroundColor?: number = undefined
+  private videoDownloadButtonBackgroundColor?: number = undefined
 
   /**
    * 视频下载按钮宽度
    */
-  videoDownloadButtonWidth?: number = undefined
+  private videoDownloadButtonWidth?: number = undefined
 
   /**
    * 视频下载按钮高度
    */
-  videoDownloadButtonHeight?: number = undefined
+  private videoDownloadButtonHeight?: number = undefined
 
   /**
    * 视频下载按钮左上圆角
    */
-  videoDownloadButtonRadiusTopLeft?: number = undefined
+  private videoDownloadButtonRadiusTopLeft?: number = undefined
 
   /**
    * 视频下载按钮右上圆角
    */
-  videoDownloadButtonRadiusTopRight?: number = undefined
+  private videoDownloadButtonRadiusTopRight?: number = undefined
 
   /**
    * 视频下载按钮左下圆角
    */
-  videoDownloadButtonRadiusBottomLeft?: number = undefined
+  private videoDownloadButtonRadiusBottomLeft?: number = undefined
 
   /**
    * 视频下载按钮右下圆角
    */
-  videoDownloadButtonRadiusBottomRight?: number = undefined
+  private videoDownloadButtonRadiusBottomRight?: number = undefined
 
   /**
    * 视频下载按钮图标和文本间距
    */
-  videoDownloadButtonIconTextGap?: number = undefined
+  private videoDownloadButtonIconTextGap?: number = undefined
 
   /**
    * 视频下载按钮图标
    */
-  videoDownloadButtonIcon?: Resource = undefined
+  private videoDownloadButtonIcon?: Resource = undefined
 
   /**
    * 视频下载按钮图标宽度
    */
-  videoDownloadButtonIconWidth?: number = undefined
+  private videoDownloadButtonIconWidth?: number = undefined
 
   /**
    * 视频下载按钮图标高度
    */
-  videoDownloadButtonIconHeight?: number = undefined
+  private videoDownloadButtonIconHeight?: number = undefined
 
   /**
    * 视频下载按钮默认文本内容
    */
-  videoDownloadButtonText?: string = undefined
+  private videoDownloadButtonText?: string = undefined
 
   /**
    * 视频下载按钮文本颜色
    */
-  videoDownloadButtonTextFontColor?: number = undefined
+  private videoDownloadButtonTextFontColor?: number = undefined
 
   /**
    * 视频下载按钮文本尺寸
    */
-  videoDownloadButtonTextFontSize?: number = undefined
+  private videoDownloadButtonTextFontSize?: number = undefined
 
   /**
    * 视频下载按钮文本字体样式
    */
-  videoDownloadButtonTextFontStyle?: FontStyle = undefined
+  private videoDownloadButtonTextFontStyle?: FontStyle = undefined
 
   /**
    * 视频下载按钮文本字体粗细
    */
-  videoDownloadButtonTextFontWeight?: FontWeight = undefined
+  private videoDownloadButtonTextFontWeight?: FontWeight = undefined
 
   /**
    * 视频下载按钮文本字体
    */
-  videoDownloadButtonTextFontFamily?: string = undefined
+  private videoDownloadButtonTextFontFamily?: string = undefined
 
   /**
    * 视频下载按钮文本行高
    */
-  videoDownloadButtonTextLineHeight?: number = undefined
+  private videoDownloadButtonTextLineHeight?: number = undefined
 
   /**
    * 设置视频背景颜色
@@ -935,5 +935,566 @@ export class MarkdownThemeVideo {
    */
   setVideoDownloadButtonTextLineHeight(lineHeight: number): void {
     this.videoDownloadButtonTextLineHeight = lineHeight
+  }
+
+  /**
+   * 获取videoBackgroundColor
+   *
+   * @returns videoBackgroundColor
+   */
+  getVideoBackgroundColor(): number | undefined {
+    return this.videoBackgroundColor
+  }
+  /**
+   * 获取videoMarginTop
+   *
+   * @returns videoMarginTop
+   */
+  getVideoMarginTop(): number | undefined {
+    return this.videoMarginTop
+  }
+  /**
+   * 获取videoMarginRight
+   *
+   * @returns videoMarginRight
+   */
+  getVideoMarginRight(): number | undefined {
+    return this.videoMarginRight
+  }
+  /**
+   * 获取videoMarginBottom
+   *
+   * @returns videoMarginBottom
+   */
+  getVideoMarginBottom(): number | undefined {
+    return this.videoMarginBottom
+  }
+  /**
+   * 获取videoMarginLeft
+   *
+   * @returns videoMarginLeft
+   */
+  getVideoMarginLeft(): number | undefined {
+    return this.videoMarginLeft
+  }
+  /**
+   * 获取videoPaddingTop
+   *
+   * @returns videoPaddingTop
+   */
+  getVideoPaddingTop(): number | undefined {
+    return this.videoPaddingTop
+  }
+  /**
+   * 获取videoPaddingRight
+   *
+   * @returns videoPaddingRight
+   */
+  getVideoPaddingRight(): number | undefined {
+    return this.videoPaddingRight
+  }
+  /**
+   * 获取videoPaddingBottom
+   *
+   * @returns videoPaddingBottom
+   */
+  getVideoPaddingBottom(): number | undefined {
+    return this.videoPaddingBottom
+  }
+  /**
+   * 获取videoPaddingLeft
+   *
+   * @returns videoPaddingLeft
+   */
+  getVideoPaddingLeft(): number | undefined {
+    return this.videoPaddingLeft
+  }
+  /**
+   * 获取videoRadiusTopLeft
+   *
+   * @returns videoRadiusTopLeft
+   */
+  getVideoRadiusTopLeft(): number | undefined {
+    return this.videoRadiusTopLeft
+  }
+  /**
+   * 获取videoRadiusTopRight
+   *
+   * @returns videoRadiusTopRight
+   */
+  getVideoRadiusTopRight(): number | undefined {
+    return this.videoRadiusTopRight
+  }
+  /**
+   * 获取videoRadiusBottomLeft
+   *
+   * @returns videoRadiusBottomLeft
+   */
+  getVideoRadiusBottomLeft(): number | undefined {
+    return this.videoRadiusBottomLeft
+  }
+  /**
+   * 获取videoRadiusBottomRight
+   *
+   * @returns videoRadiusBottomRight
+   */
+  getVideoRadiusBottomRight(): number | undefined {
+    return this.videoRadiusBottomRight
+  }
+  /**
+   * 获取videoBorderStyle
+   *
+   * @returns videoBorderStyle
+   */
+  getVideoBorderStyle(): BorderStyle | undefined {
+    return this.videoBorderStyle
+  }
+  /**
+   * 获取videoBorderWidth
+   *
+   * @returns videoBorderWidth
+   */
+  getVideoBorderWidth(): number | undefined {
+    return this.videoBorderWidth
+  }
+  /**
+   * 获取videoBorderColor
+   *
+   * @returns videoBorderColor
+   */
+  getVideoBorderColor(): number | undefined {
+    return this.videoBorderColor
+  }
+  /**
+   * 获取videoPlaceholder
+   *
+   * @returns videoPlaceholder
+   */
+  getVideoPlaceholder(): Resource | undefined {
+    return this.videoPlaceholder
+  }
+  /**
+   * 获取videoImageFitType
+   *
+   * @returns videoImageFitType
+   */
+  getVideoImageFitType(): ImageFit | undefined {
+    return this.videoImageFitType
+  }
+  /**
+   * 获取videoPlayIcon
+   *
+   * @returns videoPlayIcon
+   */
+  getVideoPlayIcon(): Resource | undefined {
+    return this.videoPlayIcon
+  }
+  /**
+   * 获取videoPlayIconWidth
+   *
+   * @returns videoPlayIconWidth
+   */
+  getVideoPlayIconWidth(): number | undefined {
+    return this.videoPlayIconWidth
+  }
+  /**
+   * 获取videoPlayIconHeight
+   *
+   * @returns videoPlayIconHeight
+   */
+  getVideoPlayIconHeight(): number | undefined {
+    return this.videoPlayIconHeight
+  }
+  /**
+   * 获取videoPlayIconFitType
+   *
+   * @returns videoPlayIconFitType
+   */
+  getVideoPlayIconFitType(): ImageFit | undefined {
+    return this.videoPlayIconFitType
+  }
+  /**
+   * 获取videoTimeTextFontColor
+   *
+   * @returns videoTimeTextFontColor
+   */
+  getVideoTimeTextFontColor(): number | undefined {
+    return this.videoTimeTextFontColor
+  }
+  /**
+   * 获取videoTimeTextFontSize
+   *
+   * @returns videoTimeTextFontSize
+   */
+  getVideoTimeTextFontSize(): number | undefined {
+    return this.videoTimeTextFontSize
+  }
+  /**
+   * 获取videoTimeTextFontStyle
+   *
+   * @returns videoTimeTextFontStyle
+   */
+  getVideoTimeTextFontStyle(): FontStyle | undefined {
+    return this.videoTimeTextFontStyle
+  }
+  /**
+   * 获取videoTimeTextFontWeight
+   *
+   * @returns videoTimeTextFontWeight
+   */
+  getVideoTimeTextFontWeight(): FontWeight | undefined {
+    return this.videoTimeTextFontWeight
+  }
+  /**
+   * 获取videoTimeTextFontFamily
+   *
+   * @returns videoTimeTextFontFamily
+   */
+  getVideoTimeTextFontFamily(): string | undefined {
+    return this.videoTimeTextFontFamily
+  }
+  /**
+   * 获取videoTimeTextLineHeight
+   *
+   * @returns videoTimeTextLineHeight
+   */
+  getVideoTimeTextLineHeight(): number | undefined {
+    return this.videoTimeTextLineHeight
+  }
+  /**
+   * 获取videoTimeTextMarginRight
+   *
+   * @returns videoTimeTextMarginRight
+   */
+  getVideoTimeTextMarginRight(): number | undefined {
+    return this.videoTimeTextMarginRight
+  }
+  /**
+   * 获取videoTimeTextMarginBottom
+   *
+   * @returns videoTimeTextMarginBottom
+   */
+  getVideoTimeTextMarginBottom(): number | undefined {
+    return this.videoTimeTextMarginBottom
+  }
+  /**
+   * 获取videoBottomLayoutVisible
+   *
+   * @returns videoBottomLayoutVisible
+   */
+  getVideoBottomLayoutVisible(): boolean | undefined {
+    return this.videoBottomLayoutVisible
+  }
+  /**
+   * 获取videoBottomLayoutMarginTop
+   *
+   * @returns videoBottomLayoutMarginTop
+   */
+  getVideoBottomLayoutMarginTop(): number | undefined {
+    return this.videoBottomLayoutMarginTop
+  }
+  /**
+   * 获取videoReleaseButtonVisible
+   *
+   * @returns videoReleaseButtonVisible
+   */
+  getVideoReleaseButtonVisible(): boolean | undefined {
+    return this.videoReleaseButtonVisible
+  }
+  /**
+   * 获取videoReleaseButtonBackgroundColor
+   *
+   * @returns videoReleaseButtonBackgroundColor
+   */
+  getVideoReleaseButtonBackgroundColor(): number | undefined {
+    return this.videoReleaseButtonBackgroundColor
+  }
+  /**
+   * 获取videoReleaseButtonWidth
+   *
+   * @returns videoReleaseButtonWidth
+   */
+  getVideoReleaseButtonWidth(): number | undefined {
+    return this.videoReleaseButtonWidth
+  }
+  /**
+   * 获取videoReleaseButtonHeight
+   *
+   * @returns videoReleaseButtonHeight
+   */
+  getVideoReleaseButtonHeight(): number | undefined {
+    return this.videoReleaseButtonHeight
+  }
+  /**
+   * 获取videoReleaseButtonRadiusTopLeft
+   *
+   * @returns videoReleaseButtonRadiusTopLeft
+   */
+  getVideoReleaseButtonRadiusTopLeft(): number | undefined {
+    return this.videoReleaseButtonRadiusTopLeft
+  }
+  /**
+   * 获取videoReleaseButtonRadiusTopRight
+   *
+   * @returns videoReleaseButtonRadiusTopRight
+   */
+  getVideoReleaseButtonRadiusTopRight(): number | undefined {
+    return this.videoReleaseButtonRadiusTopRight
+  }
+  /**
+   * 获取videoReleaseButtonRadiusBottomLeft
+   *
+   * @returns videoReleaseButtonRadiusBottomLeft
+   */
+  getVideoReleaseButtonRadiusBottomLeft(): number | undefined {
+    return this.videoReleaseButtonRadiusBottomLeft
+  }
+  /**
+   * 获取videoReleaseButtonRadiusBottomRight
+   *
+   * @returns videoReleaseButtonRadiusBottomRight
+   */
+  getVideoReleaseButtonRadiusBottomRight(): number | undefined {
+    return this.videoReleaseButtonRadiusBottomRight
+  }
+  /**
+   * 获取videoReleaseButtonIconTextGap
+   *
+   * @returns videoReleaseButtonIconTextGap
+   */
+  getVideoReleaseButtonIconTextGap(): number | undefined {
+    return this.videoReleaseButtonIconTextGap
+  }
+  /**
+   * 获取videoReleaseButtonIcon
+   *
+   * @returns videoReleaseButtonIcon
+   */
+  getVideoReleaseButtonIcon(): Resource | undefined {
+    return this.videoReleaseButtonIcon
+  }
+  /**
+   * 获取videoReleaseButtonIconWidth
+   *
+   * @returns videoReleaseButtonIconWidth
+   */
+  getVideoReleaseButtonIconWidth(): number | undefined {
+    return this.videoReleaseButtonIconWidth
+  }
+  /**
+   * 获取videoReleaseButtonIconHeight
+   *
+   * @returns videoReleaseButtonIconHeight
+   */
+  getVideoReleaseButtonIconHeight(): number | undefined {
+    return this.videoReleaseButtonIconHeight
+  }
+  /**
+   * 获取videoReleaseButtonText
+   *
+   * @returns videoReleaseButtonText
+   */
+  getVideoReleaseButtonText(): string | undefined {
+    return this.videoReleaseButtonText
+  }
+  /**
+   * 获取videoReleaseButtonTextFontColor
+   *
+   * @returns videoReleaseButtonTextFontColor
+   */
+  getVideoReleaseButtonTextFontColor(): number | undefined {
+    return this.videoReleaseButtonTextFontColor
+  }
+  /**
+   * 获取videoReleaseButtonTextFontSize
+   *
+   * @returns videoReleaseButtonTextFontSize
+   */
+  getVideoReleaseButtonTextFontSize(): number | undefined {
+    return this.videoReleaseButtonTextFontSize
+  }
+  /**
+   * 获取videoReleaseButtonTextFontStyle
+   *
+   * @returns videoReleaseButtonTextFontStyle
+   */
+  getVideoReleaseButtonTextFontStyle(): FontStyle | undefined {
+    return this.videoReleaseButtonTextFontStyle
+  }
+  /**
+   * 获取videoReleaseButtonTextFontWeight
+   *
+   * @returns videoReleaseButtonTextFontWeight
+   */
+  getVideoReleaseButtonTextFontWeight(): FontWeight | undefined {
+    return this.videoReleaseButtonTextFontWeight
+  }
+  /**
+   * 获取videoReleaseButtonTextFontFamily
+   *
+   * @returns videoReleaseButtonTextFontFamily
+   */
+  getVideoReleaseButtonTextFontFamily(): string | undefined {
+    return this.videoReleaseButtonTextFontFamily
+  }
+  /**
+   * 获取videoReleaseButtonTextLineHeight
+   *
+   * @returns videoReleaseButtonTextLineHeight
+   */
+  getVideoReleaseButtonTextLineHeight(): number | undefined {
+    return this.videoReleaseButtonTextLineHeight
+  }
+  /**
+   * 获取videoDownloadButtonVisible
+   *
+   * @returns videoDownloadButtonVisible
+   */
+  getVideoDownloadButtonVisible(): boolean | undefined {
+    return this.videoDownloadButtonVisible
+  }
+  /**
+   * 获取videoDownloadButtonBackgroundColor
+   *
+   * @returns videoDownloadButtonBackgroundColor
+   */
+  getVideoDownloadButtonBackgroundColor(): number | undefined {
+    return this.videoDownloadButtonBackgroundColor
+  }
+  /**
+   * 获取videoDownloadButtonWidth
+   *
+   * @returns videoDownloadButtonWidth
+   */
+  getVideoDownloadButtonWidth(): number | undefined {
+    return this.videoDownloadButtonWidth
+  }
+  /**
+   * 获取videoDownloadButtonHeight
+   *
+   * @returns videoDownloadButtonHeight
+   */
+  getVideoDownloadButtonHeight(): number | undefined {
+    return this.videoDownloadButtonHeight
+  }
+  /**
+   * 获取videoDownloadButtonRadiusTopLeft
+   *
+   * @returns videoDownloadButtonRadiusTopLeft
+   */
+  getVideoDownloadButtonRadiusTopLeft(): number | undefined {
+    return this.videoDownloadButtonRadiusTopLeft
+  }
+  /**
+   * 获取videoDownloadButtonRadiusTopRight
+   *
+   * @returns videoDownloadButtonRadiusTopRight
+   */
+  getVideoDownloadButtonRadiusTopRight(): number | undefined {
+    return this.videoDownloadButtonRadiusTopRight
+  }
+  /**
+   * 获取videoDownloadButtonRadiusBottomLeft
+   *
+   * @returns videoDownloadButtonRadiusBottomLeft
+   */
+  getVideoDownloadButtonRadiusBottomLeft(): number | undefined {
+    return this.videoDownloadButtonRadiusBottomLeft
+  }
+  /**
+   * 获取videoDownloadButtonRadiusBottomRight
+   *
+   * @returns videoDownloadButtonRadiusBottomRight
+   */
+  getVideoDownloadButtonRadiusBottomRight(): number | undefined {
+    return this.videoDownloadButtonRadiusBottomRight
+  }
+  /**
+   * 获取videoDownloadButtonIconTextGap
+   *
+   * @returns videoDownloadButtonIconTextGap
+   */
+  getVideoDownloadButtonIconTextGap(): number | undefined {
+    return this.videoDownloadButtonIconTextGap
+  }
+  /**
+   * 获取videoDownloadButtonIcon
+   *
+   * @returns videoDownloadButtonIcon
+   */
+  getVideoDownloadButtonIcon(): Resource | undefined {
+    return this.videoDownloadButtonIcon
+  }
+  /**
+   * 获取videoDownloadButtonIconWidth
+   *
+   * @returns videoDownloadButtonIconWidth
+   */
+  getVideoDownloadButtonIconWidth(): number | undefined {
+    return this.videoDownloadButtonIconWidth
+  }
+  /**
+   * 获取videoDownloadButtonIconHeight
+   *
+   * @returns videoDownloadButtonIconHeight
+   */
+  getVideoDownloadButtonIconHeight(): number | undefined {
+    return this.videoDownloadButtonIconHeight
+  }
+  /**
+   * 获取videoDownloadButtonText
+   *
+   * @returns videoDownloadButtonText
+   */
+  getVideoDownloadButtonText(): string | undefined {
+    return this.videoDownloadButtonText
+  }
+  /**
+   * 获取videoDownloadButtonTextFontColor
+   *
+   * @returns videoDownloadButtonTextFontColor
+   */
+  getVideoDownloadButtonTextFontColor(): number | undefined {
+    return this.videoDownloadButtonTextFontColor
+  }
+  /**
+   * 获取videoDownloadButtonTextFontSize
+   *
+   * @returns videoDownloadButtonTextFontSize
+   */
+  getVideoDownloadButtonTextFontSize(): number | undefined {
+    return this.videoDownloadButtonTextFontSize
+  }
+  /**
+   * 获取videoDownloadButtonTextFontStyle
+   *
+   * @returns videoDownloadButtonTextFontStyle
+   */
+  getVideoDownloadButtonTextFontStyle(): FontStyle | undefined {
+    return this.videoDownloadButtonTextFontStyle
+  }
+  /**
+   * 获取videoDownloadButtonTextFontWeight
+   *
+   * @returns videoDownloadButtonTextFontWeight
+   */
+  getVideoDownloadButtonTextFontWeight(): FontWeight | undefined {
+    return this.videoDownloadButtonTextFontWeight
+  }
+  /**
+   * 获取videoDownloadButtonTextFontFamily
+   *
+   * @returns videoDownloadButtonTextFontFamily
+   */
+  getVideoDownloadButtonTextFontFamily(): string | undefined {
+    return this.videoDownloadButtonTextFontFamily
+  }
+  /**
+   * 获取videoDownloadButtonTextLineHeight
+   *
+   * @returns videoDownloadButtonTextLineHeight
+   */
+  getVideoDownloadButtonTextLineHeight(): number | undefined {
+    return this.videoDownloadButtonTextLineHeight
   }
 }
