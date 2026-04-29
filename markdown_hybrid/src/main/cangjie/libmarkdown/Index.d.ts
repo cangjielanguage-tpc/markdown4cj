@@ -1684,7 +1684,13 @@ export declare class CJMarkdownConfig {
 
   setFootnoteCallback(cb: (funcArg0: number | undefined) => void): void
 
+  setNodeString(nodeString: CJNodeViewStringBuilder): void
+
   setCJMarkdownTheme(cjMarkdownTheme: CJMarkdownTheme): void
+}
+
+export declare class CJNodeViewStringBuilder {
+  toString(): string
 }
 
 export declare class CJMarkdownScroller {
@@ -1716,6 +1722,8 @@ export declare interface CustomLib {
   CJMarkdownConfig: {new (): CJMarkdownConfig}
 
   CJMarkdownPlugin: {new (): CJMarkdownPlugin}
+
+  CJNodeViewStringBuilder: {new (): CJNodeViewStringBuilder}
 
   CJMarkdownScroller: {new (): CJMarkdownScroller}
 

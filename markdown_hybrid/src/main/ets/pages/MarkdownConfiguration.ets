@@ -1,3 +1,5 @@
+// import { MarkdownNodeViewString } from "./MarkdownNodeViewString"
+import { MarkdownNodeViewString } from "./CJMarkDown"
 import { MarkdownTheme } from "./MarkdownTheme"
 
 /**
@@ -68,6 +70,10 @@ export class MarkdownConfiguration {
    * 脚注跳转指定位置
    */
   footnoteCallback?: (funcArg0: number | undefined) => void = undefined
+  /**
+   * 获取全局文本
+   */
+  markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString()
   /**
    * markdown默认样式
    */
@@ -215,6 +221,15 @@ export class MarkdownConfiguration {
    */
   setFootnoteCallback(cb: (funcArg0: number | undefined) => void): void {
     this.footnoteCallback = cb
+  }
+
+  /**
+   * 获取全局文本
+   *
+   * @param nodeString 全局文本对象
+   */
+  setNodeString(nodeString: MarkdownNodeViewString): void{
+    this.markdownNodeViewString = nodeString
   }
 
   /**

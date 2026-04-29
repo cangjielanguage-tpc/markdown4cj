@@ -1,4 +1,4 @@
-export { CJMarkdown, MarkdownScroller } from './src/main/ets/pages/CJMarkDown'
+export { CJMarkdown, MarkdownScroller, MarkdownNodeViewString } from './src/main/ets/pages/CJMarkDown'
 
 export { MarkdownConfiguration } from './src/main/ets/pages/MarkdownConfiguration'
 export { MarkdownTheme,

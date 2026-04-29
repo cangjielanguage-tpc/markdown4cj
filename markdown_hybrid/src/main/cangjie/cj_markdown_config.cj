@@ -79,6 +79,8 @@ public class CJMarkdownConfig {
      */
     var footnoteCallback: ?(Option<Int64>) -> Unit = None
 
+    var nodeString: ?(NodeViewStringBuilder) -> Unit = None // 全部文本
+
     /**
      * markdown默认样式
      */
@@ -225,6 +227,18 @@ public class CJMarkdownConfig {
      */
     public func setFootnoteCallback(cb: (Option<Int64>) -> Unit): Unit {
         this.footnoteCallback = cb
+    }
+
+    /**
+     * 设置获取markdown全部文本
+     *
+     * @param nodeString markdown全部文本对象
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setNodeString(nodeString: CJNodeViewStringBuilder): Unit {
+        this.nodeString = {
+            builder => nodeString.nodeViewStringBuilder = builder
+        }
     }
 
     /**

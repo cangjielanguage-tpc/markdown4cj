@@ -30,7 +30,8 @@ import {
   CJMarkdownParagraphTheme,
   CJMarkdownOrderedListTheme,
   CJMarkdownLinkTheme,
-  CJMarkdownLatexMathTheme
+  CJMarkdownLatexMathTheme,
+  CJNodeViewStringBuilder
 } from 'libark_interop_api_markdown.so'
 import { MarkdownRectResult } from './MarkdownRectResult'
 import { MarkdownPlugin } from './MarkdownPlugin'
@@ -96,6 +97,28 @@ class CJNodeController extends NodeController {
       }
     }
     return this.rootNode
+  }
+}
+
+export class MarkdownNodeViewString {
+  cjNodeViewStringBuilder: CJNodeViewStringBuilder|undefined = undefined
+
+  /**
+   * 构造函数
+   */
+  constructor() {
+    if (global_customLib === undefined) {
+      global_customLib = requireCJLib("libmarkdown.so") as CustomLib
+    }
+    this.cjNodeViewStringBuilder = new global_customLib.CJNodeViewStringBuilder()
+  }
+
+  toString(): string {
+    if (this.cjNodeViewStringBuilder !== undefined) {
+      return this.cjNodeViewStringBuilder.toString()
+    } else{
+      return ""
+    }
   }
 }
 
@@ -329,6 +352,7 @@ export struct CJMarkdown {
       if (this.config.footnoteCallback !== undefined) {
         cjMarkdownConfig.setFootnoteCallback(this.config.footnoteCallback)
       }
+      cjMarkdownConfig.setNodeString(this.config.markdownNodeViewString.cjNodeViewStringBuilder)
       cjMarkdownConfig.setCJMarkdownTheme(this.getTheme())
     }
     return cjMarkdownConfig

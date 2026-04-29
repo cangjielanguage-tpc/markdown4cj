@@ -204,6 +204,9 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.footnoteCallback) {
                 markdownConfigurationBuilder.setFootnoteCallback(v) // 设置脚注跳转指定位置
             }
+            if (let Some(v) <- w.nodeString) {
+                markdownConfigurationBuilder.setNodeString(v) //
+            }
         }
         let markdownConfiguration: MarkdownConfiguration = markdownConfigurationBuilder.build()
         return markdownConfiguration
