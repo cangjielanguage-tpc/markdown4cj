@@ -271,8 +271,23 @@ build() {
 
 ## 约束与限制
 
-当前基于 DevEco Studio for Windows 5.1.1.851 和 DevEco Studio Cangjie Plugin Canary for Windows 5.1.1.851 版本实现的  
-cangjie stdx 版本基于 1.0.1
+在下述版本验证通过:
+
+| 编号 | 依赖构建工具                           | 版本号       |
+|----|----------------------------------|-----------|
+| 1  | **DevEco Studio**                | 5.1.1.851 |
+| 1  | **DevEco Studio Cangjie Plugin** | 5.1.1.851 |
+| 2  | **cjc**                          | v1.0.5    |
+
+markdown依赖三方库：
+
+| 编号 | 依赖三方库         | 版本号      |
+|----|---------------|----------|
+| 1  | stdx          | v1.0.1.1 |
+| 2  | commonmark4cj | v1.1.0   |
+| 3  | prism4cj      | v1.0.4   |
+| 4  | formula       | v1.5.0   |
+| 5  | codeformat    | v1.0.0   |
 
 1. 内联代码/链接文字格式背景色。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
