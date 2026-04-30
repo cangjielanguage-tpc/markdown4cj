@@ -1,32 +1,40 @@
+# 1.4.0
+
+1. 重构markdown样式接口
+2. 新增AudioTheme
+3. 新增BannerTheme
+4. 新增BlockQuoteTheme
+5. 新增BoldTheme
+6. 新增BulletListTheme
+7. 新增CodeBlockTheme
+8. 新增DefinitionListTheme
+9. 新增DividerTheme
+10. 新增FootnoteDefTheme
+11. 新增FootnoteRefTheme
+12. 新增GlobalTheme
+13. 新增HeadingTheme
+14. 新增HtmlUnderlineTheme
+15. 新增ImageTheme
+16. 新增InlineCodeTheme
+17. 新增ItalicTheme
+18. 新增LatexMathTheme
+19. 新增LinkTheme
+20. 新增OrderedListTheme
+21. 新增ParagraphTheme
+22. 新增StrikethroughTheme
+23. 新增SubTheme
+24. 新增SupTheme
+25. 新增TableTheme
+26. 新增VideoTheme
+
 # 1.3.7
+
 1. 新增代码块格式化配置选项，包括是否启用制表符和设置默认缩进空格数量接口
 2. 新增markdown是否允许整体滚动接口
-3. 重构markdown样式接口
-4. 新增AudioTheme
-5. 新增BannerTheme
-6. 新增BlockQuoteTheme
-7. 新增BoldTheme
-8. 新增BulletListTheme
-9. 新增CodeBlockTheme
-10. 新增DefinitionListTheme
-11. 新增DividerTheme
-12. 新增FootnoteDefTheme
-13. 新增FootnoteRefTheme
-14. 新增GlobalTheme
-15. 新增HeadingTheme
-16. 新增HtmlUnderlineTheme
-17. 新增ImageTheme
-18. 新增InlineCodeTheme
-19. 新增ItalicTheme
-20. 新增LatexMathTheme
-21. 新增LinkTheme
-22. 新增OrderedListTheme
-23. 新增ParagraphTheme
-24. 新增StrikethroughTheme
-25. 新增SubTheme
-26. 新增SupTheme
-27. 新增TableTheme
-28. 新增VideoTheme
+3. 修复全量切换markdown文本显示异常
+4. 修复表格图片显示异常
+5. 修复图片替换接口替换之后的图片宽高显示异常
+6. 修复互操作接口封装异常
 
 # 1.3.6
 
