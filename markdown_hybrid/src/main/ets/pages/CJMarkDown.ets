@@ -61,6 +61,7 @@ import { MarkdownThemeParagraph } from './MarkdownThemeParagraph'
 import { MarkdownThemeOrderedList } from './MarkdownThemeOrderedList'
 import { MarkdownThemeLink } from './MarkdownThemeLink'
 import { MarkdownThemeLatexMath } from './MarkdownThemeLatexMath'
+import { MarkdownTheme } from './MarkdownTheme'
 
 export let global_customLib: CustomLib | undefined = undefined
 
@@ -101,7 +102,7 @@ class CJNodeController extends NodeController {
 }
 
 export class MarkdownNodeViewString {
-  cjNodeViewStringBuilder: CJNodeViewStringBuilder|undefined = undefined
+  private cjNodeViewStringBuilder: CJNodeViewStringBuilder|undefined = undefined
 
   /**
    * 构造函数
@@ -111,6 +112,10 @@ export class MarkdownNodeViewString {
       global_customLib = requireCJLib("libmarkdown.so") as CustomLib
     }
     this.cjNodeViewStringBuilder = new global_customLib.CJNodeViewStringBuilder()
+  }
+
+  getCJNodeViewStringBuilder(): CJNodeViewStringBuilder | undefined {
+    return this.cjNodeViewStringBuilder
   }
 
   toString(): string {
@@ -302,57 +307,57 @@ export struct CJMarkdown {
     }
     let cjMarkdownConfig: CJMarkdownConfig = new global_customLib.CJMarkdownConfig()
     if (this.config !== undefined) {
-      if (this.config.linkCallback !== undefined) {
-        cjMarkdownConfig.setLinkCallback(this.config.linkCallback)
+      if (this.config.getLinkCallback() !== undefined) {
+        cjMarkdownConfig.setLinkCallback(this.config.getLinkCallback())
       }
-      if (this.config.textCopyCallback !== undefined) {
-        cjMarkdownConfig.setTextCopyCallback(this.config.textCopyCallback)
+      if (this.config.getTextCopyCallback() !== undefined) {
+        cjMarkdownConfig.setTextCopyCallback(this.config.getTextCopyCallback())
       }
-      if (this.config.imageCallback !== undefined) {
-        cjMarkdownConfig.setImageCallback(this.config.imageCallback)
+      if (this.config.getImageCallback() !== undefined) {
+        cjMarkdownConfig.setImageCallback(this.config.getImageCallback())
       }
-      if (this.config.imageCallbackCallback !== undefined) {
-        global_customLib.registerImgPreprocessCallback(this.config.imageCallbackCallback)
+      if (this.config.getImageCallbackCallback() !== undefined) {
+        global_customLib.registerImgPreprocessCallback(this.config.getImageCallbackCallback())
       } else {
         global_customLib.registerImgPreprocessCallback(undefined)
       }
-      if (this.config.imageDownloadCallback !== undefined) {
-        cjMarkdownConfig.setImageDownloadCallback(this.config.imageDownloadCallback)
+      if (this.config.getImageDownloadCallback() !== undefined) {
+        cjMarkdownConfig.setImageDownloadCallback(this.config.getImageDownloadCallback())
       }
-      if (this.config.audioCallback !== undefined) {
-        cjMarkdownConfig.setAudioCallback(this.config.audioCallback)
+      if (this.config.getAudioCallback() !== undefined) {
+        cjMarkdownConfig.setAudioCallback(this.config.getAudioCallback())
       }
-      if (this.config.videoCallback !== undefined) {
-        cjMarkdownConfig.setVideoCallback(this.config.videoCallback)
+      if (this.config.getVideoCallback() !== undefined) {
+        cjMarkdownConfig.setVideoCallback(this.config.getVideoCallback())
       }
-      if (this.config.videoImageCallback !== undefined) {
-        cjMarkdownConfig.setVideoImageCallback(this.config.videoImageCallback)
+      if (this.config.getVideoImageCallback() !== undefined) {
+        cjMarkdownConfig.setVideoImageCallback(this.config.getVideoImageCallback())
       }
-      if (this.config.videoReleaseCallback !== undefined) {
-        cjMarkdownConfig.setVideoReleaseCallback(this.config.videoReleaseCallback)
+      if (this.config.getVideoReleaseCallback() !== undefined) {
+        cjMarkdownConfig.setVideoReleaseCallback(this.config.getVideoReleaseCallback())
       }
-      if (this.config.videoDownloadCallback !== undefined) {
-        cjMarkdownConfig.setVideoDownloadCallback(this.config.videoDownloadCallback)
+      if (this.config.getVideoDownloadCallback() !== undefined) {
+        cjMarkdownConfig.setVideoDownloadCallback(this.config.getVideoDownloadCallback())
       }
-      if (this.config.codeCopyCallback !== undefined) {
-        cjMarkdownConfig.setCodeCopyCallback(this.config.codeCopyCallback)
+      if (this.config.getCodeCopyCallback() !== undefined) {
+        cjMarkdownConfig.setCodeCopyCallback(this.config.getCodeCopyCallback())
       }
-      if (this.config.codeFullScreenCallback !== undefined) {
-        cjMarkdownConfig.setCodeFullScreenCallback(this.config.codeFullScreenCallback)
+      if (this.config.getCodeFullScreenCallback() !== undefined) {
+        cjMarkdownConfig.setCodeFullScreenCallback(this.config.getCodeFullScreenCallback())
       }
-      if (this.config.latexImageCallback !== undefined) {
-        cjMarkdownConfig.setLatexImageCallback(this.config.latexImageCallback)
+      if (this.config.getLatexImageCallback() !== undefined) {
+        cjMarkdownConfig.setLatexImageCallback(this.config.getLatexImageCallback())
       }
-      if (this.config.latexStrCallback !== undefined) {
-        cjMarkdownConfig.setLatexStrCallback(this.config.latexStrCallback)
+      if (this.config.getLatexStrCallback() !== undefined) {
+        cjMarkdownConfig.setLatexStrCallback(this.config.getLatexStrCallback())
       }
-      if (this.config.tocIndexCallback !== undefined) {
-        cjMarkdownConfig.setTocIndexCallback(this.config.tocIndexCallback)
+      if (this.config.getTocIndexCallback() !== undefined) {
+        cjMarkdownConfig.setTocIndexCallback(this.config.getTocIndexCallback())
       }
-      if (this.config.footnoteCallback !== undefined) {
-        cjMarkdownConfig.setFootnoteCallback(this.config.footnoteCallback)
+      if (this.config.getFootnoteCallback() !== undefined) {
+        cjMarkdownConfig.setFootnoteCallback(this.config.getFootnoteCallback())
       }
-      cjMarkdownConfig.setNodeString(this.config.markdownNodeViewString.cjNodeViewStringBuilder)
+      cjMarkdownConfig.setNodeString(this.config.getMarkdownNodeViewString().getCJNodeViewStringBuilder())
       cjMarkdownConfig.setCJMarkdownTheme(this.getTheme())
     }
     return cjMarkdownConfig
@@ -364,27 +369,27 @@ export struct CJMarkdown {
     }
     let cjMarkdownPlugin: CJMarkdownPlugin = new global_customLib.CJMarkdownPlugin()
     if (this.plugin !== undefined) {
-      cjMarkdownPlugin.setIsBlockAudioPlugin(this.plugin.isBlockAudioPlugin)
-      cjMarkdownPlugin.setIsBlockVideoPlugin(this.plugin.isBlockVideoPlugin)
-      cjMarkdownPlugin.setIsCodeListPlugin(this.plugin.isCodeListPlugin)
-      cjMarkdownPlugin.setIsFootnotePlugin(this.plugin.isFootnotePlugin)
-      cjMarkdownPlugin.setIsHtmlPlugin(this.plugin.isHtmlPlugin)
-      cjMarkdownPlugin.setIsTablePlugin(this.plugin.isTablePlugin)
-      cjMarkdownPlugin.setIsTocPlugin(this.plugin.isTocPlugin)
-      cjMarkdownPlugin.setIsTaskListPlugin(this.plugin.isTaskListPlugin)
-      cjMarkdownPlugin.setIsStrikethroughPlugin(this.plugin.isStrikethroughPlugin)
-      cjMarkdownPlugin.setIsLinkifyPlugin(this.plugin.isLinkifyPlugin, this.plugin.regs)
-      cjMarkdownPlugin.setIsLinkViewPlugin(this.plugin.isLinkViewPlugin)
-      cjMarkdownPlugin.setIsLatexMathPlugin(this.plugin.isLatexMathPlugin)
-      cjMarkdownPlugin.setIsImageStylePlugin(this.plugin.isImageStylePlugin)
-      cjMarkdownPlugin.setIsImageSlidePlugin(this.plugin.isImageSlidePlugin)
-      cjMarkdownPlugin.setIsImageTextMixPlugin(this.plugin.isImageTextMixPlugin)
-      cjMarkdownPlugin.setIsImageCollectPlugin(this.plugin.isImageCollectPlugin)
-      cjMarkdownPlugin.setIsDescListPlugin(this.plugin.isDescListPlugin)
-      cjMarkdownPlugin.setIsHeadIDPlugin(this.plugin.isHeadIDPlugin)
-      cjMarkdownPlugin.setIsSubPlugin(this.plugin.isSubPlugin)
-      cjMarkdownPlugin.setIsSupPlugin(this.plugin.isSupPlugin)
-      cjMarkdownPlugin.setIsEmojiPlugin(this.plugin.isEmojiPlugin, this.plugin.isEmojiLight)
+      cjMarkdownPlugin.setIsBlockAudioPlugin(this.plugin.getIsBlockAudioPlugin())
+      cjMarkdownPlugin.setIsBlockVideoPlugin(this.plugin.getIsBlockVideoPlugin())
+      cjMarkdownPlugin.setIsCodeListPlugin(this.plugin.getIsCodeListPlugin())
+      cjMarkdownPlugin.setIsFootnotePlugin(this.plugin.getIsFootnotePlugin())
+      cjMarkdownPlugin.setIsHtmlPlugin(this.plugin.getIsHtmlPlugin())
+      cjMarkdownPlugin.setIsTablePlugin(this.plugin.getIsTablePlugin())
+      cjMarkdownPlugin.setIsTocPlugin(this.plugin.getIsTocPlugin())
+      cjMarkdownPlugin.setIsTaskListPlugin(this.plugin.getIsTaskListPlugin())
+      cjMarkdownPlugin.setIsStrikethroughPlugin(this.plugin.getIsStrikethroughPlugin())
+      cjMarkdownPlugin.setIsLinkifyPlugin(this.plugin.getIsLinkifyPlugin(), this.plugin.getRegs())
+      cjMarkdownPlugin.setIsLinkViewPlugin(this.plugin.getIsLinkViewPlugin())
+      cjMarkdownPlugin.setIsLatexMathPlugin(this.plugin.getIsLatexMathPlugin())
+      cjMarkdownPlugin.setIsImageStylePlugin(this.plugin.getIsImageStylePlugin())
+      cjMarkdownPlugin.setIsImageSlidePlugin(this.plugin.getIsImageSlidePlugin())
+      cjMarkdownPlugin.setIsImageTextMixPlugin(this.plugin.getIsImageTextMixPlugin())
+      cjMarkdownPlugin.setIsImageCollectPlugin(this.plugin.getIsImageCollectPlugin())
+      cjMarkdownPlugin.setIsDescListPlugin(this.plugin.getIsDescListPlugin())
+      cjMarkdownPlugin.setIsHeadIDPlugin(this.plugin.getIsHeadIDPlugin())
+      cjMarkdownPlugin.setIsSubPlugin(this.plugin.getIsSubPlugin())
+      cjMarkdownPlugin.setIsSupPlugin(this.plugin.getIsSupPlugin())
+      cjMarkdownPlugin.setIsEmojiPlugin(this.plugin.getIsEmojiPlugin(), this.plugin.getIsEmojiLight())
     }
     return cjMarkdownPlugin
   }
@@ -395,58 +400,57 @@ export struct CJMarkdown {
     }
     let cjMarkdownTheme: CJMarkdownTheme = new global_customLib.CJMarkdownTheme()
     if (this.config !== undefined) {
-      if (this.config.markdownTheme !== undefined) {
-        if (this.config.markdownTheme.markdownThemeGlobal !== undefined &&
-            this.config.markdownTheme.markdownThemeGlobal.getStageContext() !== undefined) {
-          global_customLib.setGlobalContext(this.config.markdownTheme.markdownThemeGlobal.getStageContext())
+      let markdownTheme = this.config.getMarkdownTheme()
+      if (markdownTheme !== undefined) {
+        if (markdownTheme.getMarkdownThemeGlobal().getStageContext() !== undefined) {
+          global_customLib.setGlobalContext(markdownTheme.getMarkdownThemeGlobal().getStageContext())
         } else {
           global_customLib.setGlobalContext(undefined)
         }
         global_customLib.getCJResource(
-          this.config.markdownTheme.markdownThemeCodeBlock.getCodeBlockFullScreenIcon(),
-          this.config.markdownTheme.markdownThemeCodeBlock.getCodeBlockCopyIcon(),
-          this.config.markdownTheme.markdownThemeAudio.getAudioIcon(),
-          this.config.markdownTheme.markdownThemeVideo.getVideoPlaceholder(),
-          this.config.markdownTheme.markdownThemeVideo.getVideoPlayIcon(),
-          this.config.markdownTheme.markdownThemeBanner.getBannerPlaceholder(),
-          this.config.markdownTheme.markdownThemeImage.getImagePlaceholder(),
-          this.config.markdownTheme.markdownThemeVideo.getVideoReleaseButtonIcon(),
-          this.config.markdownTheme.markdownThemeVideo.getVideoDownloadButtonIcon(),
-          this.config.markdownTheme.markdownThemeImage.getImageDownloadButtonIcon()
+          markdownTheme.getMarkdownThemeCodeBlock().getCodeBlockFullScreenIcon(),
+          markdownTheme.getMarkdownThemeCodeBlock().getCodeBlockCopyIcon(),
+          markdownTheme.getMarkdownThemeAudio().getAudioIcon(),
+          markdownTheme.getMarkdownThemeVideo().getVideoPlaceholder(),
+          markdownTheme.getMarkdownThemeVideo().getVideoPlayIcon(),
+          markdownTheme.getMarkdownThemeBanner().getBannerPlaceholder(),
+          markdownTheme.getMarkdownThemeImage().getImagePlaceholder(),
+          markdownTheme.getMarkdownThemeVideo().getVideoReleaseButtonIcon(),
+          markdownTheme.getMarkdownThemeVideo().getVideoDownloadButtonIcon(),
+          markdownTheme.getMarkdownThemeImage().getImageDownloadButtonIcon()
         )
-        cjMarkdownTheme.setCJMarkdownGlobalTheme(this.getGlobalTheme(this.config.markdownTheme.markdownThemeGlobal))
-        cjMarkdownTheme.setCJMarkdownAudioTheme(this.getAudioTheme(this.config.markdownTheme.markdownThemeAudio))
-        cjMarkdownTheme.setCJMarkdownBannerTheme(this.getBannerTheme(this.config.markdownTheme.markdownThemeBanner))
-        cjMarkdownTheme.setCJMarkdownBlockQuoteTheme(this.getBlockQuoteTheme(this.config.markdownTheme.markdownThemeBlockQuote))
-        cjMarkdownTheme.setCJMarkdownBoldTheme(this.getBoldTheme(this.config.markdownTheme.markdownThemeBold))
-        cjMarkdownTheme.setCJMarkdownBulletListTheme(this.getBulletListTheme(this.config.markdownTheme.markdownThemeBulletList))
-        cjMarkdownTheme.setCJMarkdownCodeBlockTheme(this.getCodeBlockTheme(this.config.markdownTheme.markdownThemeCodeBlock))
-        cjMarkdownTheme.setCJMarkdownDefinitionListTheme(this.getDefinitionListTheme(this.config.markdownTheme.markdownThemeDefinitionList))
-        cjMarkdownTheme.setCJMarkdownDividerTheme(this.getDividerTheme(this.config.markdownTheme.markdownThemeDivider))
-        cjMarkdownTheme.setCJMarkdownFootnoteDefTheme(this.getFootnoteDefTheme(this.config.markdownTheme.markdownThemeFootnoteDef))
-        cjMarkdownTheme.setCJMarkdownFootnoteRefTheme(this.getFootnoteRefTheme(this.config.markdownTheme.markdownThemeFootnoteRef))
-        cjMarkdownTheme.setCJMarkdownHeadingTheme(this.getHeadingTheme(this.config.markdownTheme.markdownThemeHeading))
-        cjMarkdownTheme.setCJMarkdownHtmlUnderlineTheme(this.getHtmlUnderlineTheme(this.config.markdownTheme.markdownThemeHtmlUnderline))
-        cjMarkdownTheme.setCJMarkdownImageTheme(this.getImageTheme(this.config.markdownTheme.markdownThemeImage))
-        cjMarkdownTheme.setCJMarkdownInlineCodeTheme(this.getInlineCodeTheme(this.config.markdownTheme.markdownThemeInlineCode))
-        cjMarkdownTheme.setCJMarkdownItalicTheme(this.getItalicTheme(this.config.markdownTheme.markdownThemeItalic))
-        cjMarkdownTheme.setCJMarkdownLatexMathTheme(this.getLatexMathTheme(this.config.markdownTheme.markdownThemeLatexMath))
-        cjMarkdownTheme.setCJMarkdownLinkTheme(this.getLinkTheme(this.config.markdownTheme.markdownThemeLink))
-        cjMarkdownTheme.setCJMarkdownOrderedListTheme(this.getOrderedListTheme(this.config.markdownTheme.markdownThemeOrderedList))
-        cjMarkdownTheme.setCJMarkdownParagraphTheme(this.getParagraphTheme(this.config.markdownTheme.markdownThemeParagraph))
-        cjMarkdownTheme.setCJMarkdownStrikethroughTheme(this.getStrikethroughTheme(this.config.markdownTheme.markdownThemeStrikethrough))
-        cjMarkdownTheme.setCJMarkdownSubTheme(this.getSubTheme(this.config.markdownTheme.markdownThemeSub))
-        cjMarkdownTheme.setCJMarkdownSupTheme(this.getSupTheme(this.config.markdownTheme.markdownThemeSup))
-        cjMarkdownTheme.setCJMarkdownTableTheme(this.getTableTheme(this.config.markdownTheme.markdownThemeTable))
-        cjMarkdownTheme.setCJMarkdownVideoTheme(this.getVideoTheme(this.config.markdownTheme.markdownThemeVideo))
+        cjMarkdownTheme.setCJMarkdownGlobalTheme(this.getGlobalTheme(markdownTheme.getMarkdownThemeGlobal()))
+        cjMarkdownTheme.setCJMarkdownAudioTheme(this.getAudioTheme(markdownTheme.getMarkdownThemeAudio()))
+        cjMarkdownTheme.setCJMarkdownBannerTheme(this.getBannerTheme(markdownTheme.getMarkdownThemeBanner()))
+        cjMarkdownTheme.setCJMarkdownBlockQuoteTheme(this.getBlockQuoteTheme(markdownTheme.getMarkdownThemeBlockQuote()))
+        cjMarkdownTheme.setCJMarkdownBoldTheme(this.getBoldTheme(markdownTheme.getMarkdownThemeBold()))
+        cjMarkdownTheme.setCJMarkdownBulletListTheme(this.getBulletListTheme(markdownTheme.getMarkdownThemeBulletList()))
+        cjMarkdownTheme.setCJMarkdownCodeBlockTheme(this.getCodeBlockTheme(markdownTheme.getMarkdownThemeCodeBlock()))
+        cjMarkdownTheme.setCJMarkdownDefinitionListTheme(this.getDefinitionListTheme(markdownTheme.getMarkdownThemeDefinitionList()))
+        cjMarkdownTheme.setCJMarkdownDividerTheme(this.getDividerTheme(markdownTheme.getMarkdownThemeDivider()))
+        cjMarkdownTheme.setCJMarkdownFootnoteDefTheme(this.getFootnoteDefTheme(markdownTheme.getMarkdownThemeFootnoteDef()))
+        cjMarkdownTheme.setCJMarkdownFootnoteRefTheme(this.getFootnoteRefTheme(markdownTheme.getMarkdownThemeFootnoteRef()))
+        cjMarkdownTheme.setCJMarkdownHeadingTheme(this.getHeadingTheme(markdownTheme.getMarkdownThemeHeading()))
+        cjMarkdownTheme.setCJMarkdownHtmlUnderlineTheme(this.getHtmlUnderlineTheme(markdownTheme.getMarkdownThemeHtmlUnderline()))
+        cjMarkdownTheme.setCJMarkdownImageTheme(this.getImageTheme(markdownTheme.getMarkdownThemeImage()))
+        cjMarkdownTheme.setCJMarkdownInlineCodeTheme(this.getInlineCodeTheme(markdownTheme.getMarkdownThemeInlineCode()))
+        cjMarkdownTheme.setCJMarkdownItalicTheme(this.getItalicTheme(markdownTheme.getMarkdownThemeItalic()))
+        cjMarkdownTheme.setCJMarkdownLatexMathTheme(this.getLatexMathTheme(markdownTheme.getMarkdownThemeLatexMath()))
+        cjMarkdownTheme.setCJMarkdownLinkTheme(this.getLinkTheme(markdownTheme.getMarkdownThemeLink()))
+        cjMarkdownTheme.setCJMarkdownOrderedListTheme(this.getOrderedListTheme(markdownTheme.getMarkdownThemeOrderedList()))
+        cjMarkdownTheme.setCJMarkdownParagraphTheme(this.getParagraphTheme(markdownTheme.getMarkdownThemeParagraph()))
+        cjMarkdownTheme.setCJMarkdownStrikethroughTheme(this.getStrikethroughTheme(markdownTheme.getMarkdownThemeStrikethrough()))
+        cjMarkdownTheme.setCJMarkdownSubTheme(this.getSubTheme(markdownTheme.getMarkdownThemeSub()))
+        cjMarkdownTheme.setCJMarkdownSupTheme(this.getSupTheme(markdownTheme.getMarkdownThemeSup()))
+        cjMarkdownTheme.setCJMarkdownTableTheme(this.getTableTheme(markdownTheme.getMarkdownThemeTable()))
+        cjMarkdownTheme.setCJMarkdownVideoTheme(this.getVideoTheme(markdownTheme.getMarkdownThemeVideo()))
 
-        if (this.config.markdownTheme.isLinkSize !== undefined) {
-          cjMarkdownTheme.setIsLinkSize(this.config.markdownTheme.isLinkSize)
+        if (markdownTheme.getIsLinkSize() !== undefined) {
+          cjMarkdownTheme.setIsLinkSize(markdownTheme.getIsLinkSize())
         }
 
-        if (this.config.markdownTheme.markdownThemeCodeBlock !== undefined &&
-            this.config.markdownTheme.markdownThemeCodeBlock.getCodeBlockIsDark() !== undefined) {
-          cjMarkdownTheme.setIsDark(this.config.markdownTheme.markdownThemeCodeBlock.getCodeBlockIsDark())
+        if (markdownTheme.getMarkdownThemeCodeBlock().getCodeBlockIsDark() !== undefined) {
+          cjMarkdownTheme.setIsDark(markdownTheme.getMarkdownThemeCodeBlock().getCodeBlockIsDark())
         }
       }
     }

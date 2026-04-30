@@ -5,95 +5,95 @@ export class MarkdownPlugin {
   /**
    * 是否加载音频解析插件
    */
-  isBlockAudioPlugin: boolean = false
+  private isBlockAudioPlugin: boolean = false
   /**
    * 是否加载视频解析插件
    */
-  isBlockVideoPlugin: boolean = false
+  private isBlockVideoPlugin: boolean = false
   /**
    * 是否加载代码列表解析插件
    */
-  isCodeListPlugin: boolean = false
+  private isCodeListPlugin: boolean = false
   /**
    * 是否加载脚注解析插件
    */
-  isFootnotePlugin: boolean = false
+  private isFootnotePlugin: boolean = false
   /**
    * 是否加载html解析插件
    */
-  isHtmlPlugin: boolean = false
+  private isHtmlPlugin: boolean = false
   /**
    * 是否加载表格解析插件
    */
-  isTablePlugin: boolean = false
+  private isTablePlugin: boolean = false
   /**
    * 是否加载toc解析插件
    */
-  isTocPlugin: boolean = false
+  private isTocPlugin: boolean = false
   /**
    * 是否加载任务列表解析插件
    */
-  isTaskListPlugin: boolean = false
+  private isTaskListPlugin: boolean = false
   /**
    * 是否加载删除线解析插件
    */
-  isStrikethroughPlugin: boolean = false
+  private isStrikethroughPlugin: boolean = false
   /**
    * 是否加载链接自动解析插件
    */
-  isLinkifyPlugin: boolean = false
+  private isLinkifyPlugin: boolean = false
   /**
    * 正则列表
    */
-  regs: Array<string> = []
+  private regs: Array<string> = []
   /**
    * 是否加载链接单独解析插件
    */
-  isLinkViewPlugin: boolean = false
+  private isLinkViewPlugin: boolean = false
   /**
    * 是否加载数学公式解析插件
    */
-  isLatexMathPlugin: boolean = false
+  private isLatexMathPlugin: boolean = false
   /**
    * 是否加载图片自定义样式解析插件
    */
-  isImageStylePlugin: boolean = false
+  private isImageStylePlugin: boolean = false
   /**
    * 是否加载图片banner解析插件
    */
-  isImageSlidePlugin: boolean = false
+  private isImageSlidePlugin: boolean = false
   /**
    * 是否加载图片单独提取到block解析插件
    */
-  isImageTextMixPlugin: boolean = false
+  private isImageTextMixPlugin: boolean = false
   /**
    * 是否加载图片视频列表url集合列表解析插件
    */
-  isImageCollectPlugin: boolean = false
+  private isImageCollectPlugin: boolean = false
   /**
    * 是否加载定义列表解析插件
    */
-  isDescListPlugin: boolean = false
+  private isDescListPlugin: boolean = false
   /**
    * 是否加载标题ID解析插件
    */
-  isHeadIDPlugin: boolean = false
+  private isHeadIDPlugin: boolean = false
   /**
    * 是否加载下标解析插件
    */
-  isSubPlugin: boolean = false
+  private isSubPlugin: boolean = false
   /**
    * 是否加载上标解析插件
    */
-  isSupPlugin: boolean = false
+  private isSupPlugin: boolean = false
   /**
    * 是否加载emoji解析插件
    */
-  isEmojiPlugin: boolean = false
+  private isEmojiPlugin: boolean = false
   /**
    * emoji解析插件是否精简加载
    */
-  isEmojiLight: boolean = false
+  private isEmojiLight: boolean = false
 
   /**
    * 设置音频插件
@@ -286,5 +286,212 @@ export class MarkdownPlugin {
   setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void {
     this.isEmojiPlugin = isEmojiPlugin
     this.isEmojiLight = isEmojiLight
+  }
+
+  /**
+   * 获取是否加载音频解析插件
+   *
+   * @returns 是否加载音频解析插件
+   */
+  getIsBlockAudioPlugin(): boolean {
+    return this.isBlockAudioPlugin
+  }
+
+  /**
+   * 获取是否加载视频解析插件
+   *
+   * @returns 是否加载视频解析插件
+   */
+  getIsBlockVideoPlugin(): boolean {
+    return this.isBlockVideoPlugin
+  }
+
+  /**
+   * 获取是否加载代码列表解析插件
+   *
+   * @returns 是否加载代码列表解析插件
+   */
+  getIsCodeListPlugin(): boolean {
+    return this.isCodeListPlugin
+  }
+
+  /**
+   * 获取是否加载脚注解析插件
+   *
+   * @returns 是否加载脚注解析插件
+   */
+  getIsFootnotePlugin(): boolean {
+    return this.isFootnotePlugin
+  }
+
+  /**
+   * 获取是否加载html解析插件
+   *
+   * @returns 是否加载html解析插件
+   */
+  getIsHtmlPlugin(): boolean {
+    return this.isHtmlPlugin
+  }
+
+  /**
+   * 获取是否加载表格解析插件
+   *
+   * @returns 是否加载表格解析插件
+   */
+  getIsTablePlugin(): boolean {
+    return this.isTablePlugin
+  }
+
+  /**
+   * 获取是否加载toc解析插件
+   *
+   * @returns 是否加载toc解析插件
+   */
+  getIsTocPlugin(): boolean {
+    return this.isTocPlugin
+  }
+
+  /**
+   * 获取是否加载任务列表解析插件
+   *
+   * @returns 是否加载任务列表解析插件
+   */
+  getIsTaskListPlugin(): boolean {
+    return this.isTaskListPlugin
+  }
+
+  /**
+   * 获取是否加载删除线解析插件
+   *
+   * @returns 是否加载删除线解析插件
+   */
+  getIsStrikethroughPlugin(): boolean {
+    return this.isStrikethroughPlugin
+  }
+
+  /**
+   * 获取是否加载链接自动解析插件
+   *
+   * @returns 是否加载链接自动解析插件
+   */
+  getIsLinkifyPlugin(): boolean {
+    return this.isLinkifyPlugin
+  }
+
+  /**
+   * 获取正则列表
+   *
+   * @returns 正则列表
+   */
+  getRegs(): Array<string> {
+    return this.regs
+  }
+
+  /**
+   * 获取是否加载链接单独解析插件
+   *
+   * @returns 是否加载链接单独解析插件
+   */
+  getIsLinkViewPlugin(): boolean {
+    return this.isLinkViewPlugin
+  }
+
+  /**
+   * 获取是否加载数学公式解析插件
+   *
+   * @returns 是否加载数学公式解析插件
+   */
+  getIsLatexMathPlugin(): boolean {
+    return this.isLatexMathPlugin
+  }
+
+  /**
+   * 获取是否加载图片自定义样式解析插件
+   *
+   * @returns 是否加载图片自定义样式解析插件
+   */
+  getIsImageStylePlugin(): boolean {
+    return this.isImageStylePlugin
+  }
+
+  /**
+   * 获取是否加载图片banner解析插件
+   *
+   * @returns 是否加载图片banner解析插件
+   */
+  getIsImageSlidePlugin(): boolean {
+    return this.isImageSlidePlugin
+  }
+
+  /**
+   * 获取是否加载图片单独提取到block解析插件
+   *
+   * @returns 是否加载图片单独提取到block解析插件
+   */
+  getIsImageTextMixPlugin(): boolean {
+    return this.isImageTextMixPlugin
+  }
+
+  /**
+   * 获取是否加载图片视频列表url集合列表解析插件
+   *
+   * @returns 是否加载图片视频列表url集合列表解析插件
+   */
+  getIsImageCollectPlugin(): boolean {
+    return this.isImageCollectPlugin
+  }
+
+  /**
+   * 获取是否加载定义列表解析插件
+   *
+   * @returns 是否加载定义列表解析插件
+   */
+  getIsDescListPlugin(): boolean {
+    return this.isDescListPlugin
+  }
+
+  /**
+   * 获取是否加载标题ID解析插件
+   *
+   * @returns 是否加载标题ID解析插件
+   */
+  getIsHeadIDPlugin(): boolean {
+    return this.isHeadIDPlugin
+  }
+
+  /**
+   * 获取是否加载下标解析插件
+   *
+   * @returns 是否加载下标解析插件
+   */
+  getIsSubPlugin(): boolean {
+    return this.isSubPlugin
+  }
+
+  /**
+   * 获取是否加载上标解析插件
+   *
+   * @returns 是否加载上标解析插件
+   */
+  getIsSupPlugin(): boolean {
+    return this.isSupPlugin
+  }
+
+  /**
+   * 获取是否加载emoji解析插件
+   *
+   * @returns 是否加载emoji解析插件
+   */
+  getIsEmojiPlugin(): boolean {
+    return this.isEmojiPlugin
+  }
+
+  /**
+   * 获取emoji解析插件是否精简加载
+   *
+   * @returns emoji解析插件是否精简加载
+   */
+  getIsEmojiLight(): boolean {
+    return this.isEmojiLight
   }
 }

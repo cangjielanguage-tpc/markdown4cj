@@ -31,137 +31,132 @@ export class MarkdownTheme {
   /**
    * 是否按照链接文本字体大小显示文本
    */
-  isLinkSize?: boolean = undefined
-
-  /**
-   * 是否使用深色主题
-   */
-  isDarkulaTheme?: boolean = undefined
+  private isLinkSize?: boolean = undefined
 
   /**
    * 全局样式
    */
-  markdownThemeGlobal: MarkdownThemeGlobal = new MarkdownThemeGlobal()
+  private markdownThemeGlobal: MarkdownThemeGlobal = new MarkdownThemeGlobal()
 
   /**
    * 音频样式
    */
-  markdownThemeAudio: MarkdownThemeAudio = new MarkdownThemeAudio()
+  private markdownThemeAudio: MarkdownThemeAudio = new MarkdownThemeAudio()
 
   /**
    * Banner样式
    */
-  markdownThemeBanner: MarkdownThemeBanner = new MarkdownThemeBanner()
+  private markdownThemeBanner: MarkdownThemeBanner = new MarkdownThemeBanner()
 
   /**
    * 块引用样式
    */
-  markdownThemeBlockQuote: MarkdownThemeBlockQuote = new MarkdownThemeBlockQuote()
+  private markdownThemeBlockQuote: MarkdownThemeBlockQuote = new MarkdownThemeBlockQuote()
 
   /**
    * 加粗文本样式
    */
-  markdownThemeBold: MarkdownThemeBold = new MarkdownThemeBold()
+  private markdownThemeBold: MarkdownThemeBold = new MarkdownThemeBold()
 
   /**
    * 代码块样式
    */
-  markdownThemeCodeBlock: MarkdownThemeCodeBlock = new MarkdownThemeCodeBlock()
+  private markdownThemeCodeBlock: MarkdownThemeCodeBlock = new MarkdownThemeCodeBlock()
 
   /**
    * 定义列表样式
    */
-  markdownThemeDefinitionList: MarkdownThemeDefinitionList = new MarkdownThemeDefinitionList()
+  private markdownThemeDefinitionList: MarkdownThemeDefinitionList = new MarkdownThemeDefinitionList()
 
   /**
    * 分割线样式
    */
-  markdownThemeDivider: MarkdownThemeDivider = new MarkdownThemeDivider()
+  private markdownThemeDivider: MarkdownThemeDivider = new MarkdownThemeDivider()
 
   /**
    * 脚注定义样式
    */
-  markdownThemeFootnoteDef: MarkdownThemeFootnoteDef = new MarkdownThemeFootnoteDef()
+  private markdownThemeFootnoteDef: MarkdownThemeFootnoteDef = new MarkdownThemeFootnoteDef()
 
   /**
    * 脚注引用样式
    */
-  markdownThemeFootnoteRef: MarkdownThemeFootnoteRef = new MarkdownThemeFootnoteRef()
+  private markdownThemeFootnoteRef: MarkdownThemeFootnoteRef = new MarkdownThemeFootnoteRef()
 
   /**
    * 数学公式样式
    */
-  markdownThemeLatexMath: MarkdownThemeLatexMath = new MarkdownThemeLatexMath()
+  private markdownThemeLatexMath: MarkdownThemeLatexMath = new MarkdownThemeLatexMath()
 
   /**
    * 标题样式
    */
-  markdownThemeHeading: MarkdownThemeHeading = new MarkdownThemeHeading()
+  private markdownThemeHeading: MarkdownThemeHeading = new MarkdownThemeHeading()
 
   /**
    * HTML下划线文本样式
    */
-  markdownThemeHtmlUnderline: MarkdownThemeHtmlUnderline = new MarkdownThemeHtmlUnderline()
+  private markdownThemeHtmlUnderline: MarkdownThemeHtmlUnderline = new MarkdownThemeHtmlUnderline()
 
   /**
    * 图片样式
    */
-  markdownThemeImage: MarkdownThemeImage = new MarkdownThemeImage()
+  private markdownThemeImage: MarkdownThemeImage = new MarkdownThemeImage()
 
   /**
    * 内联代码样式
    */
-  markdownThemeInlineCode: MarkdownThemeInlineCode = new MarkdownThemeInlineCode()
+  private markdownThemeInlineCode: MarkdownThemeInlineCode = new MarkdownThemeInlineCode()
 
   /**
    * 斜体文本样式
    */
-  markdownThemeItalic: MarkdownThemeItalic = new MarkdownThemeItalic()
+  private markdownThemeItalic: MarkdownThemeItalic = new MarkdownThemeItalic()
 
   /**
    * 链接文本样式
    */
-  markdownThemeLink: MarkdownThemeLink = new MarkdownThemeLink()
+  private markdownThemeLink: MarkdownThemeLink = new MarkdownThemeLink()
 
   /**
    * 有序列表样式
    */
-  markdownThemeOrderedList: MarkdownThemeOrderedList = new MarkdownThemeOrderedList()
+  private markdownThemeOrderedList: MarkdownThemeOrderedList = new MarkdownThemeOrderedList()
 
   /**
    * 段落样式
    */
-  markdownThemeParagraph: MarkdownThemeParagraph = new MarkdownThemeParagraph()
+  private markdownThemeParagraph: MarkdownThemeParagraph = new MarkdownThemeParagraph()
 
   /**
    * 删除线文本样式
    */
-  markdownThemeStrikethrough: MarkdownThemeStrikethrough = new MarkdownThemeStrikethrough()
+  private markdownThemeStrikethrough: MarkdownThemeStrikethrough = new MarkdownThemeStrikethrough()
 
   /**
    * 下标文本样式
    */
-  markdownThemeSub: MarkdownThemeSub = new MarkdownThemeSub()
+  private markdownThemeSub: MarkdownThemeSub = new MarkdownThemeSub()
 
   /**
    * 上标文本样式
    */
-  markdownThemeSup: MarkdownThemeSup = new MarkdownThemeSup()
+  private markdownThemeSup: MarkdownThemeSup = new MarkdownThemeSup()
 
   /**
    * 表格样式
    */
-  markdownThemeTable: MarkdownThemeTable = new MarkdownThemeTable()
+  private markdownThemeTable: MarkdownThemeTable = new MarkdownThemeTable()
 
   /**
    * 无序/任务列表样式
    */
-  markdownThemeBulletList: MarkdownThemeBulletList = new MarkdownThemeBulletList()
+  private markdownThemeBulletList: MarkdownThemeBulletList = new MarkdownThemeBulletList()
 
   /**
    * 视频样式
    */
-  markdownThemeVideo: MarkdownThemeVideo = new MarkdownThemeVideo()
+  private markdownThemeVideo: MarkdownThemeVideo = new MarkdownThemeVideo()
 
   /**
    * 设置上下文
@@ -594,7 +589,7 @@ export class MarkdownTheme {
    * 设置代码块全屏图片icon
    *
    * @param codeFullScreenIcon 代码块全屏图片icon
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockFullScreenIcon
    */
   setCodeFullScreenIcon(codeFullScreenIcon: Resource): void {
@@ -605,7 +600,7 @@ export class MarkdownTheme {
    * 设置代码块复制图片icon
    *
    * @param codeCopyIcon 代码块复制图片icon
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockCopyIcon
    */
   setCodeCopyIcon(codeCopyIcon: Resource): void {
@@ -616,7 +611,7 @@ export class MarkdownTheme {
    * 设置音频图片icon
    *
    * @param audioIcon 音频图片icon
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioIcon
    */
   setAudioIcon(audioIcon: Resource): void {
@@ -627,7 +622,7 @@ export class MarkdownTheme {
    * 设置视频默认占位图
    *
    * @param videoImage 视频默认占位图
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoPlaceholder
    */
   setVideoImage(videoImage: Resource): void {
@@ -638,7 +633,7 @@ export class MarkdownTheme {
    * 设置视频播放按钮icon
    *
    * @param playCircleFillIcon 视频播放按钮icon
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoPlayIcon
    */
   setPlayCircleFillIcon(playCircleFillIcon: Resource): void {
@@ -649,7 +644,7 @@ export class MarkdownTheme {
    * 设置banner占位图
    *
    * @param bannerImage banner占位图
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBanner#setBannerPlaceholder
    */
   setBannerImage(bannerImage: Resource): void {
@@ -660,7 +655,7 @@ export class MarkdownTheme {
    * 设置图片占位图
    *
    * @param imageResource 图片占位图
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImagePlaceholder
    */
   setImageResource(imageResource: Resource): void {
@@ -671,7 +666,7 @@ export class MarkdownTheme {
    * 设置视频发布默认图标
    *
    * @param videoReleaseImage 视频发布默认图标
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoReleaseButtonIcon
    */
   setVideoReleaseImage(videoReleaseImage: Resource): void {
@@ -682,7 +677,7 @@ export class MarkdownTheme {
    * 设置视频下载默认图标
    *
    * @param videoDownloadImage 视频下载默认图标
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoDownloadButtonIcon
    */
   setVideoDownloadImage(videoDownloadImage: Resource): void {
@@ -693,7 +688,7 @@ export class MarkdownTheme {
    * 设置图片下载默认图标
    *
    * @param imageDownloadImage 图片下载默认图标
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonIcon
    */
   setImageDownloadImage(imageDownloadImage: Resource): void {
@@ -704,7 +699,7 @@ export class MarkdownTheme {
    * 设置markdown是否同步解析
    *
    * @param isMarkdownParserSync markdown是否同步解析 - 默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeGlobal#setIsMarkdownParserSync
    */
   setIsMarkdownParserSync(isMarkdownParserSync: boolean): void {
@@ -715,7 +710,7 @@ export class MarkdownTheme {
    * 设置是否打开长按复制粘贴
    *
    * @param isOnCopy 是否打开长按复制粘贴 - 默认true
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeGlobal#setIsOnCopy
    */
   setIsOnCopy(isOnCopy: boolean): void {
@@ -726,7 +721,7 @@ export class MarkdownTheme {
    * 设置markdown第一个模块上边距
    *
    * @param blockFirstTopMargin markdown第一个模块上边距 - 默认8.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeGlobal#setGlobalMargin
    */
   setBlockFirstTopMargin(blockFirstTopMargin: number): void {
@@ -740,7 +735,7 @@ export class MarkdownTheme {
    * 设置markdown最后一个模块下边距
    *
    * @param blockLastBottomMargin markdown最后一个模块下边距 - 默认8.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeGlobal#setGlobalMargin
    */
   setBlockLastBottomMargin(blockLastBottomMargin: number): void {
@@ -754,7 +749,7 @@ export class MarkdownTheme {
    * 设置模块间上下间距
    *
    * @param blockTopAndBottomMargins 模块间上下间距 - 默认8.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeGlobal#setBlockSpacing
    */
   setBlockTopAndBottomMargins(blockTopAndBottomMargins: number): void {
@@ -765,7 +760,7 @@ export class MarkdownTheme {
    * 设置链接是否是图片显示
    *
    * @param isLinkStyle 链接是否是图片显示 - true：图片显示；false：文本显示。默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkIsIcon
    */
   setIsLinkStyle(isLinkStyle: boolean): void {
@@ -776,7 +771,7 @@ export class MarkdownTheme {
    * 设置列表中的单行链接是否是图片显示
    *
    * @param isListLinkStyle 列表中的单行链接是否是图片显示 - true：图片显示；false：文本显示。默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkListIsIcon
    */
   setIsListLinkStyle(isListLinkStyle: boolean): void {
@@ -787,7 +782,7 @@ export class MarkdownTheme {
    * 设置文本格式链接文本颜色
    *
    * @param linkColor 文本格式链接文本颜色 - 默认0xFF0000FF
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkTextFontColor
    */
   setLinkColor(linkColor: number): void {
@@ -807,7 +802,7 @@ export class MarkdownTheme {
    * 设置文本格式链接文字大小
    *
    * @param linkSize 文本格式链接文字大小 - 默认14.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkTextFontSize
    */
   setLinkSize(linkSize: number): void {
@@ -818,7 +813,7 @@ export class MarkdownTheme {
    * 设置文本格式链接文字行高
    *
    * @param linkLineHeight 文本格式链接文字行高
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkTextLineHeight
    */
   setLinkLineHeight(linkLineHeight: number): void {
@@ -829,7 +824,7 @@ export class MarkdownTheme {
    * 设置文本格式链接背景颜色
    *
    * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0xFF000000
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkTextBackgroundColor
    */
   setLinkBackGroupColor(linkBackGroupColor: number): void {
@@ -840,7 +835,7 @@ export class MarkdownTheme {
    * 设置文本格式是否显示链接下划线
    *
    * @param isLinkUnderlined 文本格式是否显示链接下划线 - true：显示下划线；false：不显示下划线。默认true
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkTextDecorationType
    */
   setIsLinkUnderlined(isLinkUnderlined: boolean): void {
@@ -855,7 +850,7 @@ export class MarkdownTheme {
    * 设置圆形图片格式链接主题背景颜色
    *
    * @param linkCircleImageBackGroupColor 圆形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkCircleIconBackgroundColor
    */
   setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: number): void {
@@ -866,7 +861,7 @@ export class MarkdownTheme {
    * 设置圆形图片格式链接控件背景颜色
    *
    * @param linkCircleImageButtonBackGroupColor 圆形图片格式链接控件背景颜色 - 默认0xFF000000
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkCircleIconButtonBackgroundColor
    */
   setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: number): void {
@@ -877,7 +872,7 @@ export class MarkdownTheme {
    * 设置圆形图片格式链接文字大小
    *
    * @param linkCircleImageTextSize 圆形图片格式链接文字大小 - 默认14.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkCircleIconTextSize
    */
   setLinkCircleImageTextSize(linkCircleImageTextSize: number): void {
@@ -888,7 +883,7 @@ export class MarkdownTheme {
    * 设置圆形图片格式链接文字颜色
    *
    * @param linkCircleImageTextColor 圆形图片格式链接文字颜色 - 默认0xFFFFFFFF
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkCircleIconTextColor
    */
   setLinkCircleImageTextColor(linkCircleImageTextColor: number): void {
@@ -899,7 +894,7 @@ export class MarkdownTheme {
    * 设置圆形图片格式链接半径
    *
    * @param linkCircleImageRadius 圆形图片格式链接半径 - 默认20.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkCircleIconRadius
    */
   setLinkCircleImageRadius(linkCircleImageRadius: number): void {
@@ -910,7 +905,7 @@ export class MarkdownTheme {
    * 设置圆形图片格式链接左右外边距
    *
    * @param linkCircleImageMargin 圆形图片格式链接左右外边距 - 默认6.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkCircleIconMargin
    */
   setLinkCircleImageMargin(linkCircleImageMargin: number): void {
@@ -921,7 +916,7 @@ export class MarkdownTheme {
    * 设置圆角矩形图片格式链接主题背景颜色
    *
    * @param linkRectImageBackGroupColor 圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectIconBackgroundColor
    */
   setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: number): void {
@@ -932,7 +927,7 @@ export class MarkdownTheme {
    * 设置圆角矩形图片格式链接控件背景颜色
    *
    * @param linkRectImageButtonBackGroupColor 圆角矩形图片格式链接控件背景颜色 - 默认0xFF000000
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectIconButtonBackgroundColor
    */
   setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: number): void {
@@ -943,7 +938,7 @@ export class MarkdownTheme {
    * 圆角矩形图片格式链接文字大小
    *
    * @param linkRectImageTextSize 圆角矩形图片格式链接文字大小 - 默认14.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectIconTextSize
    */
   setLinkRectImageTextSize(linkRectImageTextSize: number): void {
@@ -954,7 +949,7 @@ export class MarkdownTheme {
    * 设置圆角矩形图片格式链接文字颜色
    *
    * @param linkRectImageTextColor 圆角矩形图片格式链接文字颜色 - 默认0xFFFFFFFF
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectIconTextColor
    */
   setLinkRectImageTextColor(linkRectImageTextColor: number): void {
@@ -965,7 +960,7 @@ export class MarkdownTheme {
    * 圆角矩形图片格式链接控件高度
    *
    * @param linkRectImageHeight 圆角矩形图片格式链接控件高度 - 默认20.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectIconHeight
    */
   setLinkRectImageHeight(linkRectImageHeight: number): void {
@@ -976,7 +971,7 @@ export class MarkdownTheme {
    * 圆角矩形图片格式链接左右内边距
    *
    * @param linkRectImagePadding 圆角矩形图片格式链接左右内边距 - 默认6.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectIconPadding
    */
   setLinkRectImagePadding(linkRectImagePadding: number): void {
@@ -987,7 +982,7 @@ export class MarkdownTheme {
    * 圆角矩形图片格式链接圆角半径
    *
    * @param linkRectImageRadius 圆角矩形图片格式链接圆角半径 - 默认6.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectIconRadius
    */
   setLinkRectImageRadius(linkRectImageRadius: number): void {
@@ -998,7 +993,7 @@ export class MarkdownTheme {
    * 圆角矩形图片格式链接左右外边距
    *
    * @param linkRectImageMargin 圆角矩形图片格式链接左右外边距 - 默认6.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectIconMargin
    */
   setLinkRectImageMargin(linkRectImageMargin: number): void {
@@ -1009,7 +1004,7 @@ export class MarkdownTheme {
    * 设置空心圆角矩形图片格式链接主题背景颜色
    *
    * @param linkRectToolImageBackGroupColor 空心圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconBackgroundColor
    */
   setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: number): void {
@@ -1020,7 +1015,7 @@ export class MarkdownTheme {
    * 设置空心圆角矩形图片格式链接控件背景颜色
    *
    * @param linkRectToolImageButtonBackGroupColor 空心圆角矩形图片格式链接控件背景颜色 - 默认OXFFFFFFFF
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconBackgroundColor
    */
   setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: number): void {
@@ -1031,7 +1026,7 @@ export class MarkdownTheme {
    * 设置空心圆角矩形图片格式链接文字大小
    *
    * @param linkRectToolImageTextSize 空心圆角矩形图片格式链接文字大小 - 默认14.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconTextSize
    */
   setLinkRectToolImageTextSize(linkRectToolImageTextSize: number): void {
@@ -1042,7 +1037,7 @@ export class MarkdownTheme {
    * 设置空心圆角矩形图片格式链接控件高度
    *
    * @param linkRectToolImageHeight 空心圆角矩形图片格式链接控件高度 - 默认21.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconHeight
    */
   setLinkRectToolImageHeight(linkRectToolImageHeight: number): void {
@@ -1053,7 +1048,7 @@ export class MarkdownTheme {
    * 设置空心圆角矩形图片格式链接左右内边距
    *
    * @param linkRectToolImagePadding 空心圆角矩形图片格式链接左右内边距 - 默认6.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconPadding
    */
   setLinkRectToolImagePadding(linkRectToolImagePadding: number): void {
@@ -1064,7 +1059,7 @@ export class MarkdownTheme {
    * 设置空心圆角矩形图片格式链接边框宽度
    *
    * @param linkRectToolImageBorderWidth 空心圆角矩形图片格式链接边框宽度 - 默认1.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconBorderWidth
    */
   setLinkRectToolImageBorderWidth(linkRectToolImageBorderWidth: number): void {
@@ -1075,7 +1070,7 @@ export class MarkdownTheme {
    * 设置空心圆角矩形图片格式链接分割线宽度
    *
    * @param linkRectToolImageDividingLineWidth 空心圆角矩形图片格式链接分割线宽度 - 默认1.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconDividingLineWidth
    */
   setLinkRectToolImageDividingLineWidth(linkRectToolImageDividingLineWidth: number): void {
@@ -1086,7 +1081,7 @@ export class MarkdownTheme {
    * 设置空心圆角矩形图片格式链接左右外边距
    *
    * @param linkRectToolImageMargin 空心圆角矩形图片格式链接左右外边距 - 默认6.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconMargin
    */
   setLinkRectToolImageMargin(linkRectToolImageMargin: number): void {
@@ -1097,7 +1092,7 @@ export class MarkdownTheme {
    * 设置空心圆角矩形图片格式分割线和文本左边距
    *
    * @param linkRectToolImageLineLeftPadding 空心圆角矩形图片格式分割线和文本左边距 - 默认3.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconLineLeftPadding
    */
   setLinkRectToolImageLineLeftPadding(linkRectToolImageLineLeftPadding: number): void {
@@ -1108,7 +1103,7 @@ export class MarkdownTheme {
    * 设置空心圆角矩形图片格式分割线和文本右边距
    *
    * @param linkRectToolImageLineRightPadding 空心圆角矩形图片格式分割线和文本右边距 - 默认3.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconLineRightPadding
    */
   setLinkRectToolImageLineRightPadding(linkRectToolImageLineRightPadding: number): void {
@@ -1119,7 +1114,7 @@ export class MarkdownTheme {
    * 设置块引用左边距
    *
    * @param blockQuoteLeftMargin 块引用左边距 - 默认8.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBlockQuote#setBlockQuoteMargin
    */
   setBlockQuoteLeftMargin(blockQuoteLeftMargin: number): void {
@@ -1133,7 +1128,7 @@ export class MarkdownTheme {
    * 设置块引用右边距
    *
    * @param blockQuoteRightMargin 块引用右边距 - 默认8.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBlockQuote#setBlockQuoteMargin
    */
   setBlockQuoteRightMargin(blockQuoteRightMargin: number): void {
@@ -1147,7 +1142,7 @@ export class MarkdownTheme {
    * 设置块引用左边线条宽度
    *
    * @param blockQuoteWidth 块引用左边线条宽度 - 默认1.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBlockQuote#setBlockQuoteLeftBorderWidth
    */
   setBlockQuoteWidth(blockQuoteWidth: number): void {
@@ -1158,7 +1153,7 @@ export class MarkdownTheme {
    * 设置块引用左边线条颜色
    *
    * @param blockQuoteColor 块引用左边线条颜色 - 默认0xFF191919
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBlockQuote#setBlockQuoteLeftBorderColor
    */
   setBlockQuoteColor(blockQuoteColor: number): void {
@@ -1169,7 +1164,7 @@ export class MarkdownTheme {
    * 设置块引用背景颜色
    *
    * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0xFFEAEAEA
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBlockQuote#setBlockQuoteBackgroundColor
    */
   setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: number): void {
@@ -1180,7 +1175,7 @@ export class MarkdownTheme {
    * 设置块引用子模块上下间距
    *
    * @param blockQuoteTopAndBottomMargins 块引用子模块上下间距 - 默认0.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBlockQuote#setBlockQuoteChildSpacing
    */
   setBlockQuoteTopAndBottomMargins(blockQuoteTopAndBottomMargins: number): void {
@@ -1191,7 +1186,7 @@ export class MarkdownTheme {
    * 设置有序列表、无序列表、任务列表子模块上下间距
    *
    * @param blockOrderedAndBulletTopAndBottomMargins 有序列表、无序列表、任务列表子模块上下间距 - 默认0.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeOrderedList#setOrderedListChildSpacing
    *             MarkdownThemeOrderedList#setBulletListChildSpacing
    */
@@ -1204,7 +1199,7 @@ export class MarkdownTheme {
    * 设置有序列表、无序列表、任务列表左边距
    *
    * @param blockLeftMargin 有序列表、无序列表、任务列表左边距 - 默认8.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeOrderedList#setOrderedListMargin
    *             MarkdownThemeOrderedList#setBulletListMargin
    */
@@ -1224,7 +1219,7 @@ export class MarkdownTheme {
    * 设置有序列表、无序列表、任务列表右边距
    *
    * @param blockRightMargin 有序列表、无序列表、任务列表右边距 - 默认8.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeOrderedList#setOrderedListMargin
    *             MarkdownThemeOrderedList#setBulletListMargin
    */
@@ -1244,7 +1239,7 @@ export class MarkdownTheme {
    * 设置有序列表前缀文本是否加粗
    *
    * @param orderedListItemPrefixBold 有序列表前缀文本是否加粗 - true：加粗；false：不加粗。默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeOrderedList#setOrderedListMarkerTextFontWeight
    */
   setOrderedListItemPrefixBold(orderedListItemPrefixBold: boolean): void {
@@ -1259,7 +1254,7 @@ export class MarkdownTheme {
    * 设置有序列表前缀文本颜色
    *
    * @param orderedListItemColor 有序列表前缀文本颜色 - 默认OXFF191919
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeOrderedList#setOrderedListMarkerTextFontColor
    */
   setOrderedListItemColor(orderedListItemColor: number): void {
@@ -1270,7 +1265,7 @@ export class MarkdownTheme {
    * 设置有序列表前缀文本大小
    *
    * @param orderedListItemSize 有序列表前缀文本大小 - 默认14.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeOrderedList#setOrderedListMarkerTextFontSize
    */
   setOrderedListItemSize(orderedListItemSize: number): void {
@@ -1281,7 +1276,7 @@ export class MarkdownTheme {
    * 设置有序列表前缀文本行高
    *
    * @param orderedListItemLineHeight 有序列表前缀文本行高 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeOrderedList#setOrderedListMarkerTextLineHeight
    */
   setOrderedListItemLineHeight(orderedListItemLineHeight: number): void {
@@ -1292,7 +1287,7 @@ export class MarkdownTheme {
    * 设置无序列表前缀是否全部是实心圆型
    *
    * @param bulletListItemCircle 无序列表前缀是否全部是实心圆型 - 默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBulletList#setBulletListBulletIsCircle
    */
   setBulletListItemCircle(bulletListItemCircle: boolean): void {
@@ -1303,7 +1298,7 @@ export class MarkdownTheme {
    * 设置无序列表前缀文本颜色
    *
    * @param bulletListItemColor 无序列表前缀文本颜色 - 默认OXFF191919
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBulletList#setBulletListBulletTextFontColor
    */
   setBulletListItemColor(bulletListItemColor: number): void {
@@ -1314,7 +1309,7 @@ export class MarkdownTheme {
    * 设置无序列表前缀文本大小
    *
    * @param bulletListItemSize 无序列表前缀文本大小 - 默认4.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBulletList#setBulletListBulletTextFontSize
    */
   setBulletListItemSize(bulletListItemSize: number): void {
@@ -1325,7 +1320,7 @@ export class MarkdownTheme {
    * 设置无序列表前缀文本行高
    *
    * @param bulletListItemLineHeight 无序列表前缀文本行高 - 默认18.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBulletList#setBulletListBulletTextLineHeight
    */
   setBulletListItemLineHeight(bulletListItemLineHeight: number): void {
@@ -1336,7 +1331,7 @@ export class MarkdownTheme {
    * 设置任务列表选择框宽高
    *
    * @param taskListItemLength 任务列表选择框宽高 - 默认15.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBulletList#setBulletListCheckboxWidth
    *             MarkdownThemeBulletList#setBulletListCheckboxHeight
    */
@@ -1349,7 +1344,7 @@ export class MarkdownTheme {
    * 设置是否格式化代码块内容
    *
    * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockIsCodeFormat
    */
   setIsCodeFormat(isCodeFormat: boolean): void {
@@ -1360,7 +1355,7 @@ export class MarkdownTheme {
    * 设置内联代码文本颜色
    *
    * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeInlineCode#setInlineCodeTextFontColor
    */
   setCodeTextColor(codeTextColor: number): void {
@@ -1371,7 +1366,7 @@ export class MarkdownTheme {
    * 设置内联代码背景颜色
    *
    * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFFEAEAEA
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeInlineCode#setInlineCodeTextBackgroundColor
    */
   setCodeBackgroundColor(codeBackgroundColor: number): void {
@@ -1382,7 +1377,7 @@ export class MarkdownTheme {
    * 设置内联代码文本大小
    *
    * @param codeTextSize 内联代码文本大小 - 默认13.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeInlineCode#setInlineCodeTextFontSize
    */
   setCodeTextSize(codeTextSize: number): void {
@@ -1393,7 +1388,7 @@ export class MarkdownTheme {
    * 设置内联代码文本字体
    *
    * @param codeTypeface 内联代码文本字体 - 默认"HarmonyOS Sans"
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeInlineCode#setInlineCodeTextFontFamily
    */
   setCodeTypeface(codeTypeface: string): void {
@@ -1404,7 +1399,7 @@ export class MarkdownTheme {
    * 设置围栏代码块代码高亮是否同步解析
    *
    * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockParserSync
    */
   setIsCodeBlockParserSync(isCodeBlockParserSync: boolean): void {
@@ -1415,7 +1410,7 @@ export class MarkdownTheme {
    * 设置代码块代码文本颜色
    *
    * @param codeBlockTextColor 代码块代码文本颜色 - 默认None
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockTextFontColor
    */
   setCodeBlockTextColor(codeBlockTextColor: number): void {
@@ -1426,7 +1421,7 @@ export class MarkdownTheme {
    * 设置代码块代码类型文本颜色
    *
    * @param codeBlockTypeTextColor 代码块代码类型文本颜色 - 默认None
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockTypeTextFontColor
    */
   setCodeBlockTypeTextColor(codeBlockTypeTextColor: number): void {
@@ -1437,7 +1432,7 @@ export class MarkdownTheme {
    * 设置代码块代码类型文本
    *
    * @param codeBlockTypeTextStr 代码块代码类型文本 - 默认""
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockTypeText
    */
   setCodeBlockTypeTextStr(codeBlockTypeTextStr: string): void {
@@ -1448,7 +1443,7 @@ export class MarkdownTheme {
    * 设置代码类型和代码块距离
    *
    * @param codeBlockTypeTextPadding 代码类型和代码块距离 - 默认0.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockTitleLayoutMarginBottom
    */
   setCodeBlockTypeTextPadding(codeBlockTypeTextPadding: number): void {
@@ -1459,7 +1454,7 @@ export class MarkdownTheme {
    * 设置代码块复制、全屏图片文字是否显示
    *
    * @param codeBlockIconTextHide 代码块复制、全屏图片文字是否显示 - true：显示；false：不显示。默认true
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockFullScreenTextIsShow
    *             MarkdownThemeCodeBlock#setCodeBlockCopyTextIsShow
    */
@@ -1472,7 +1467,7 @@ export class MarkdownTheme {
    * 设置代码块代码行号是否显示
    *
    * @param codeBlockLineNumberHide 代码块代码行号是否显示 - true：显示；false：不显示。默认true
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockLineNumberIsShow
    */
   setCodeBlockLineNumberHide(codeBlockLineNumberHide: boolean): void {
@@ -1483,7 +1478,7 @@ export class MarkdownTheme {
    * 设置代码块背景颜色
    *
    * @param codeBlockBackgroundColor 代码块背景颜色 - 默认None
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockBackgroundColor
    */
   setCodeBlockBackgroundColor(codeBlockBackgroundColor: number): void {
@@ -1494,7 +1489,7 @@ export class MarkdownTheme {
    * 设置代码块左边距
    *
    * @param codeMultilineMargin 代码块左边距 - 默认8.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockMargin
    */
   setCodeMultilineMargin(codeMultilineMargin: number): void {
@@ -1508,7 +1503,7 @@ export class MarkdownTheme {
    * 设置代码块字体
    *
    * @param codeBlockTypeface 代码块字体 - 默认"HarmonyOS Sans"
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockTextFontFamily
    */
   setCodeBlockTypeface(codeBlockTypeface: string): void {
@@ -1519,7 +1514,7 @@ export class MarkdownTheme {
    * 设置代码块代码文本大小
    *
    * @param codeBlockTextSize 代码块代码文本大小 -  默认13.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockTextFontSize
    */
   setCodeBlockTextSize(codeBlockTextSize: number): void {
@@ -1530,7 +1525,7 @@ export class MarkdownTheme {
    * 设置代码块代码文本行高
    *
    * @param codeBlockLineHeight 代码块代码文本行高 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockTextLineHeight
    */
   setCodeBlockLineHeight(codeBlockLineHeight: number): void {
@@ -1541,7 +1536,7 @@ export class MarkdownTheme {
    * 设置代码块控件圆角大小
    *
    * @param codeBlockRadius 代码块控件圆角大小 - 默认8.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockAllRadius
    */
   setCodeBlockRadius(codeBlockRadius: number): void {
@@ -1552,7 +1547,7 @@ export class MarkdownTheme {
    * 设置代码块代码全屏按钮是否显示
    *
    * @param isCodeFullScreen 代码块代码全屏按钮是否显示 - true：显示；false：不显示。默认true
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockFullScreenButtonIsShow
    */
   setIsCodeFullScreen(isCodeFullScreen: boolean): void {
@@ -1563,7 +1558,7 @@ export class MarkdownTheme {
    * 设置代码块代码全屏、代码复制按钮宽高
    *
    * @param iconWidthAndHeight 代码块代码全屏、代码复制按钮宽高 - 默认24.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockFullScreenIconHeight
    *             MarkdownThemeCodeBlock#setCodeBlockFullScreenIconWidth
    *             MarkdownThemeCodeBlock#setCodeBlockCopyIconHeight
@@ -1580,7 +1575,7 @@ export class MarkdownTheme {
    * 设置组合代码未选中标题字体大小
    *
    * @param codeListTitleTextSize 组合代码未选中标题字体大小 - 默认13.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleTextSize
    */
   setCodeListTitleTextSize(codeListTitleTextSize: number): void {
@@ -1591,7 +1586,7 @@ export class MarkdownTheme {
    * 设置组合代码选中标题字体大小
    *
    * @param codeListTitleSelectTextSize 组合代码选中标题字体大小 - 默认13.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleSelectTextSize
    */
   setCodeListTitleSelectTextSize(codeListTitleSelectTextSize: number): void {
@@ -1602,7 +1597,7 @@ export class MarkdownTheme {
    * 设置组合代码选中标题文本颜色
    *
    * @param codeListTitleSelectTextColor 组合代码选中标题文本颜色 - 默认Color.RED
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleSelectTextColor
    */
   setCodeListTitleSelectTextColor(codeListTitleSelectTextColor: number): void {
@@ -1613,7 +1608,7 @@ export class MarkdownTheme {
    * 设置组合代码未选中标题文本颜色
    *
    * @param codeListTitleUnSelectTextColor 组合代码未选中标题文本颜色 - 默认Color.BLACK
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleUnselectTextColor
    */
   setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: number): void {
@@ -1624,7 +1619,7 @@ export class MarkdownTheme {
    * 设置组合代码选中标题背景颜色
    *
    * @param codeListTitleSelectBackGroupColor 组合代码选中标题背景颜色 - 默认Color.GRAY
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleSelectBackgroundColor
    */
   setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: number): void {
@@ -1635,7 +1630,7 @@ export class MarkdownTheme {
    * 设置组合代码未选中标题背景颜色
    *
    * @param codeListTitleUnSelectBackGroupColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleUnselectBackgroundColor
    */
   setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: number): void {
@@ -1646,7 +1641,7 @@ export class MarkdownTheme {
    * 设置是否单独代码块显示
    *
    * @param isSeparateCodeBlock 是否单独代码块显示 - true：显示；false：不显示。默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockIsSeparate
    */
   setIsSeparateCodeBlock(isSeparateCodeBlock: boolean): void {
@@ -1657,7 +1652,7 @@ export class MarkdownTheme {
    * 设置单独代码块行号宽度
    *
    * @param separateCodeBlockWidth 单独代码块行号宽度 - 默认50.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockSeparateWidth
    */
   setSeparateCodeBlockWidth(separateCodeBlockWidth: number): void {
@@ -1668,7 +1663,7 @@ export class MarkdownTheme {
    * 设置单独代码块是否居底显示
    *
    * @param separateCodeIsBottom 单独代码块是否居底显示 - 默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockSeparateIsBottom
    */
   setSeparateCodeIsBottom(separateCodeIsBottom: boolean): void {
@@ -1679,7 +1674,7 @@ export class MarkdownTheme {
    * 设置H1、H2标题下分割线高度
    *
    * @param headingBreakHeight H1、H2标题下分割线高度 - 默认0.5vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setUnderlineHeightForAllHeading
    */
   setHeadingBreakHeight(headingBreakHeight: number): void {
@@ -1690,7 +1685,7 @@ export class MarkdownTheme {
    * 设置标题文本字体
    *
    * @param headingTypeface 标题文本字体 - 默认"HarmonyOS Sans"
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontFamilyForAllHeading
    */
   setHeadingTypeface(headingTypeface: string): void {
@@ -1701,7 +1696,7 @@ export class MarkdownTheme {
    * 设置标题模块上间距
    *
    * @param headingTopMargins 标题模块上间距 - 默认8.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setMarginForDesignateHeading
    */
   setHeadingTopMargins(headingTopMargins: number): void {
@@ -1740,7 +1735,7 @@ export class MarkdownTheme {
    * 设置标题模块下间距
    *
    * @param headingBottomMargins 标题模块下间距 - 默认8.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setMarginForDesignateHeading
    */
   setHeadingBottomMargins(headingBottomMargins: number): void {
@@ -1780,7 +1775,7 @@ export class MarkdownTheme {
    *
    * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
    * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontSizeForEachHeading
    */
   setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): void {
@@ -1794,7 +1789,7 @@ export class MarkdownTheme {
    * 设置一级标题文本大小
    *
    * @param headingTextSize1 一级标题文本大小 - 默认20.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontSizeForDesignateHeading
    */
   setHeadingTextSize1(headingTextSize1: number): void {
@@ -1805,7 +1800,7 @@ export class MarkdownTheme {
    * 设置二级标题文本大小
    *
    * @param headingTextSize2 二级标题文本大小 - 默认17.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontSizeForDesignateHeading
    */
   setHeadingTextSize2(headingTextSize2: number): void {
@@ -1816,7 +1811,7 @@ export class MarkdownTheme {
    * 设置三级标题文本大小
    *
    * @param headingTextSize3 三级标题文本大小 - 默认16.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontSizeForDesignateHeading
    */
   setHeadingTextSize3(headingTextSize3: number): void {
@@ -1827,7 +1822,7 @@ export class MarkdownTheme {
    * 设置四级标题文本大小
    *
    * @param headingTextSize4 四级标题文本大小 - 默认15.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontSizeForDesignateHeading
    */
   setHeadingTextSize4(headingTextSize4: number): void {
@@ -1838,7 +1833,7 @@ export class MarkdownTheme {
    * 设置五级标题文本大小
    *
    * @param headingTextSize5 五级标题文本大小 - 默认15.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontSizeForDesignateHeading
    */
   setHeadingTextSize5(headingTextSize5: number): void {
@@ -1849,7 +1844,7 @@ export class MarkdownTheme {
    * 设置六级标题文本大小
    *
    * @param headingTextSize6 六级标题文本大小 - 默认13.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontSizeForDesignateHeading
    */
   setHeadingTextSize6(headingTextSize6: number): void {
@@ -1861,7 +1856,7 @@ export class MarkdownTheme {
    *
    * @param headingTextColor 标题文本颜色 - 默认0xFF191919
    * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontColorForAllHeading
    */
   setHeadingTextColor(headingTextColor: number): void {
@@ -1873,7 +1868,7 @@ export class MarkdownTheme {
    *
    * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0xFF191919
    * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setUnderlineColorForAllHeading
    */
   setHeadingBreakColor(headingBreakColor: number): void {
@@ -1884,7 +1879,7 @@ export class MarkdownTheme {
    * 设置标题文本字间距
    *
    * @param headingTextWordSpace 标题文本字间距 - 默认0.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextLetterSpacingForAllHeading
    */
   setHeadingTextWordSpace(headingTextWordSpace: number): void {
@@ -1895,7 +1890,7 @@ export class MarkdownTheme {
    * 设置一级标题文本行高
    *
    * @param headingTextLineHeight1 一级标题文本行高 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextLineHeightForDesignateHeading
    */
   setHeadingTextLineHeight1(headingTextLineHeight1: number): void {
@@ -1906,7 +1901,7 @@ export class MarkdownTheme {
    * 设置二级标题文本行高
    *
    * @param headingTextLineHeight2 二级标题文本行高 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextLineHeightForDesignateHeading
    */
   setHeadingTextLineHeight2(headingTextLineHeight2: number): void {
@@ -1917,7 +1912,7 @@ export class MarkdownTheme {
    * 设置三级标题文本行高
    *
    * @param headingTextLineHeight3 三级标题文本行高 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextLineHeightForDesignateHeading
    */
   setHeadingTextLineHeight3(headingTextLineHeight3: number): void {
@@ -1928,7 +1923,7 @@ export class MarkdownTheme {
    * 设置四级标题文本行高
    *
    * @param headingTextLineHeight4 四级标题文本行高 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextLineHeightForDesignateHeading
    */
   setHeadingTextLineHeight4(headingTextLineHeight4: number): void {
@@ -1939,7 +1934,7 @@ export class MarkdownTheme {
    * 设置五级标题文本行高
    *
    * @param headingTextLineHeight5 五级标题文本行高 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextLineHeightForDesignateHeading
    */
   setHeadingTextLineHeight5(headingTextLineHeight5: number): void {
@@ -1950,7 +1945,7 @@ export class MarkdownTheme {
    * 设置六级标题文本行高
    *
    * @param headingTextLineHeight6 六级标题文本行高 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextLineHeightForDesignateHeading
    */
   setHeadingTextLineHeight6(headingTextLineHeight6: number): void {
@@ -1961,7 +1956,7 @@ export class MarkdownTheme {
    * 设置一级标题文本颜色
    *
    * @param headingTextColor1 标题文本颜色
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontColorForDesignateHeading
    */
   setHeadingTextColor1(headingTextColor1: number): void {
@@ -1972,7 +1967,7 @@ export class MarkdownTheme {
    * 设置H1标题下分割线颜色
    *
    * @param headingBreakColor1 H1标题下分割线颜色 - 默认0xFF191919
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setUnderlineColorForDesignateHeading
    */
   setHeadingBreakColor1(headingBreakColor1: number): void {
@@ -1983,7 +1978,7 @@ export class MarkdownTheme {
    * 设置二级标题文本颜色
    *
    * @param headingTextColor2 标题文本颜色
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontColorForDesignateHeading
    */
   setHeadingTextColor2(headingTextColor2: number): void {
@@ -1994,7 +1989,7 @@ export class MarkdownTheme {
    * 设置H2标题下分割线颜色
    *
    * @param headingBreakColor2 H2标题下分割线颜色 - 默认0xFF191919
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setUnderlineColorForDesignateHeading
    */
   setHeadingBreakColor2(headingBreakColor2: number): void {
@@ -2005,7 +2000,7 @@ export class MarkdownTheme {
    * 设置三级标题文本颜色
    *
    * @param headingTextColor3 标题文本颜色
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontColorForDesignateHeading
    */
   setHeadingTextColor3(headingTextColor3: number): void {
@@ -2016,7 +2011,7 @@ export class MarkdownTheme {
    * 设置四级标题文本颜色
    *
    * @param headingTextColor4 标题文本颜色
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontColorForDesignateHeading
    */
   setHeadingTextColor4(headingTextColor4: number): void {
@@ -2027,7 +2022,7 @@ export class MarkdownTheme {
    * 设置五级标题文本颜色
    *
    * @param headingTextColor5 标题文本颜色
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontColorForDesignateHeading
    */
   setHeadingTextColor5(headingTextColor5: number): void {
@@ -2038,7 +2033,7 @@ export class MarkdownTheme {
    * 设置六级标题文本颜色
    *
    * @param headingTextColor6 标题文本颜色
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontColorForDesignateHeading
    */
   setHeadingTextColor6(headingTextColor6: number): void {
@@ -2049,7 +2044,7 @@ export class MarkdownTheme {
    * 设置段落模块上间距
    *
    * @param paragraphTopMargins 段落模块上间距 - 默认8.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeParagraph#setParagraphMargin
    */
   setParagraphTopMargins(paragraphTopMargins: number): void {
@@ -2063,7 +2058,7 @@ export class MarkdownTheme {
    * 设置段落模块下间距
    *
    * @param paragraphBottomMargins 段落模块下间距 - 默认8.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeParagraph#setParagraphMargin
    */
   setParagraphBottomMargins(paragraphBottomMargins: number): void {
@@ -2077,7 +2072,7 @@ export class MarkdownTheme {
    * 设置段落文本大小
    *
    * @param paragraphTextSize 段落文本大小 - 默认14.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeParagraph#setParagraphTextFontSize
    */
   setParagraphTextSize(paragraphTextSize: number): void {
@@ -2088,7 +2083,7 @@ export class MarkdownTheme {
    * 设置段落文本颜色
    *
    * @param paragraphTextColor 段落文本颜色 - 默认0xFF191919
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeParagraph#setParagraphTextFontColor
    */
   setParagraphTextColor(paragraphTextColor: number): void {
@@ -2099,7 +2094,7 @@ export class MarkdownTheme {
    * 设置段落文本字间距
    *
    * @param paragraphTextWordSpace 段落文本字间距 - 默认0.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeParagraph#setParagraphTextLetterSpacing
    */
   setParagraphTextWordSpace(paragraphTextWordSpace: number): void {
@@ -2110,7 +2105,7 @@ export class MarkdownTheme {
    * 设置段落文本行高
    *
    * @param paragraphTextLineHeight 段落文本行高 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeParagraph#setParagraphTextLineHeight
    */
   setParagraphTextLineHeight(paragraphTextLineHeight: number): void {
@@ -2121,7 +2116,7 @@ export class MarkdownTheme {
    * 设置段落文本字体
    *
    * @param paragraphTypeface 段落文本字体 - 默认"HarmonyOS Sans"
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeParagraph#setParagraphTextFontFamily
    */
   setParagraphTypeface(paragraphTypeface: string): void {
@@ -2132,7 +2127,7 @@ export class MarkdownTheme {
    * 设置分割线颜色
    *
    * @param thematicBreakColor 分割线颜色 - 默认0xFF191919
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeDivider#setDividerColor
    */
   setThematicBreakColor(thematicBreakColor: number): void {
@@ -2143,7 +2138,7 @@ export class MarkdownTheme {
    * 设置分割线高度
    *
    * @param thematicBreakHeight 分割线高度 - 默认0.5vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeDivider#setDividerStrokeWidth
    */
   setThematicBreakHeight(thematicBreakHeight: number): void {
@@ -2154,7 +2149,7 @@ export class MarkdownTheme {
    * 设置分割线上部外边距
    *
    * @param thematicBreakTopMargin 分割线上部外边距 - 默认0.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeDivider#setDividerMargin
    */
   setThematicBreakTopMargin(thematicBreakTopMargin: number): void {
@@ -2168,7 +2163,7 @@ export class MarkdownTheme {
    * 设置分割线下部外边距
    *
    * @param thematicBreakBottomMargin 分割线下部外边距 - 默认0.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeDivider#setDividerMargin
    */
   setThematicBreakBottomMargin(thematicBreakBottomMargin: number): void {
@@ -2182,7 +2177,7 @@ export class MarkdownTheme {
    * 设置软换行是否换行
    *
    * @param isLineBreak 软换行是否换行 - true：换行；false：不换行。默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeGlobal#setIsLineBreak
    */
   setIsLineBreak(isLineBreak: boolean): void {
@@ -2193,7 +2188,7 @@ export class MarkdownTheme {
    * 设置数学公式未加载状态是否显示文字
    *
    * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLatexMath#setLatexMathDefaultText
    */
   setLatexDefaultText(latexDefaultText: boolean): void {
@@ -2204,7 +2199,7 @@ export class MarkdownTheme {
    * 设置数学公式文本大小
    *
    * @param latexMathTextSize 数学公式文本大小 - 默认16.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLatexMath#setLatexMathDefaultTextFontSize
    */
   setLatexMathTextSize(latexMathTextSize: number): void {
@@ -2215,7 +2210,7 @@ export class MarkdownTheme {
    * 设置数学公式背景色
    *
    * @param latexMathBackGroupColor 数学公式背景色 - 默认Color.TRANSPARENT
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLatexMath#setLatexMathBackgroundColor
    */
   setLatexMathBackGroupColor(latexMathBackGroupColor: number): void {
@@ -2226,7 +2221,7 @@ export class MarkdownTheme {
    * 设置数学公式文本颜色
    *
    * @param latexMathTextColor 数学公式文本颜色 - 默认0xFF000000
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLatexMath#setLatexMathTextColor
    */
   setLatexMathTextColor(latexMathTextColor: number): void {
@@ -2237,7 +2232,7 @@ export class MarkdownTheme {
    * 设置数学公式生成图片格式
    *
    * @param latexMathColorFormat 数学公式生成图片格式 - 默认LatexMathColorFormat.0xFORMAT_BGRA_8888
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLatexMath#setLatexMathColorFormat
    */
   setLatexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): void {
@@ -2248,7 +2243,7 @@ export class MarkdownTheme {
    * 设置块结构的数学公式是否居中
    *
    * @param latexMathBlockCenter 块结构的数学公式是否居中 - true：居中；false：不居中。默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLatexMath#setLatexMathBlockCenter
    */
   setLatexMathBlockCenter(latexMathBlockCenter: boolean): void {
@@ -2259,7 +2254,7 @@ export class MarkdownTheme {
    * 设置数学公式字体路径
    *
    * @param latexMathResStr 数学公式字体路径 默认 "/data/storage/el1/bundle/entry/resources/resfile/res"
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLatexMath#setLatexMathResPath
    */
   setLatexMathResStr(latexMathResStr: string): void {
@@ -2270,7 +2265,7 @@ export class MarkdownTheme {
    * 设置音频阴影颜色值
    *
    * @param audioShadowColor 音频阴影颜色值 - 默认0x1A000000
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioShadowColor
    */
   setAudioShadowColor(audioShadowColor: number): void {
@@ -2281,7 +2276,7 @@ export class MarkdownTheme {
    * 设置音频边框颜色
    *
    * @param audioBorderColor 音频边框颜色 - 默认0x33000000
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioBorderColor
    */
   setAudioBorderColor(audioBorderColor: number): void {
@@ -2292,7 +2287,7 @@ export class MarkdownTheme {
    * 设置音频边框粗细
    *
    * @param audioBorderWidth 音频边框粗细 - 默认0.5vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioBorderWidth
    */
   setAudioBorderWidth(audioBorderWidth: number): void {
@@ -2303,7 +2298,7 @@ export class MarkdownTheme {
    * 设置音频边框圆角
    *
    * @param audioBorderRadius 音频边框圆角 - 默认12.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioBorderAllRadius
    */
   setAudioBorderRadius(audioBorderRadius: number): void {
@@ -2314,7 +2309,7 @@ export class MarkdownTheme {
    * 设置音频按钮背景颜色
    *
    * @param audioButtonBackgroundColor 音频按钮背景颜色- 默认Color.BLACK
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioButtonBackgroundColor
    */
   setAudioButtonBackgroundColor(audioButtonBackgroundColor: number): void {
@@ -2325,7 +2320,7 @@ export class MarkdownTheme {
    * 设置音频按钮文字颜色
    *
    * @param audioButtonTextColor 音频按钮文字颜色 - 默认Color.WHITE
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioButtonTextFontColor
    */
   setAudioButtonTextColor(audioButtonTextColor: number): void {
@@ -2336,7 +2331,7 @@ export class MarkdownTheme {
    * 设置音频按钮文字大小
    *
    * @param audioButtonTextSize 音频按钮文字大小 - 默认14.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioButtonTextFontSize
    */
   setAudioButtonTextSize(audioButtonTextSize: number): void {
@@ -2347,7 +2342,7 @@ export class MarkdownTheme {
    * 设置音频按钮文字内容
    *
    * @param audioButtonText 音频按钮文字内容 - 默认"立即播放"
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioButtonText
    */
   setAudioButtonText(audioButtonText: string): void {
@@ -2358,7 +2353,7 @@ export class MarkdownTheme {
    * 设置音频按钮圆角
    *
    * @param audioButtonBorderRadius 音频按钮圆角 - 默认16.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioButtonAllRadius
    */
   setAudioButtonBorderRadius(audioButtonBorderRadius: number): void {
@@ -2369,7 +2364,7 @@ export class MarkdownTheme {
    * 设置音频标题文字大小
    *
    * @param audioTitleTextSize 音频标题文字大小 - 默认15.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioTitleTextFontSize
    */
   setAudioTitleTextSize(audioTitleTextSize: number): void {
@@ -2380,7 +2375,7 @@ export class MarkdownTheme {
    * 设置音频标题文字颜色
    *
    * @param audioTitleTextColor音频标题文字颜色 - 默认Color.BLACK
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioTitleTextFontColor
    */
   setAudioTitleTextColor(audioTitleTextColor: number): void {
@@ -2391,7 +2386,7 @@ export class MarkdownTheme {
    * 设置音频标题文字行高
    *
    * @param audioTitleTextLineHeight 音频标题文字行高 - 默认20.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioTitleTextLineHeight
    */
   setAudioTitleTextLineHeight(audioTitleTextLineHeight: number): void {
@@ -2402,7 +2397,7 @@ export class MarkdownTheme {
    * 设置音频类型文字大小
    *
    * @param audioTypeTextSize 音频类型文字大小 - 默认11.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioTypeTextFontSize
    */
   setAudioTypeTextSize(audioTypeTextSize: number): void {
@@ -2413,7 +2408,7 @@ export class MarkdownTheme {
    * 设置音频类型文字颜色
    *
    * @param audioTypeTextColor 音频类型文字颜色 - 默认0X80000000
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioTypeTextFontColor
    */
   setAudioTypeTextColor(audioTypeTextColor: number): void {
@@ -2424,7 +2419,7 @@ export class MarkdownTheme {
    * 设置音频类型文字行高
    *
    * @param audioTypeTextLineHeight 音频类型文字行高 - 默认15.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioTypeTextLineHeight
    */
   setAudioTypeTextLineHeight(audioTypeTextLineHeight: number): void {
@@ -2435,7 +2430,7 @@ export class MarkdownTheme {
    * 设置音频上边距
    *
    * @param audioMarginTop 音频上边距 - 默认10.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioMargin
    */
   setAudioMarginTop(audioMarginTop: number): void {
@@ -2449,7 +2444,7 @@ export class MarkdownTheme {
    * 设置音频下边距
    *
    * @param audioMarginBottom 音频下边距 - 默认10.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioMargin
    */
   setAudioMarginBottom(audioMarginBottom: number): void {
@@ -2463,7 +2458,7 @@ export class MarkdownTheme {
    * 设置视频圆角
    *
    * @param videoBorderRadius 视频圆角 - 默认10.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoBorderAllRadius
    */
   setVideoBorderRadius(videoBorderRadius: number): void {
@@ -2474,7 +2469,7 @@ export class MarkdownTheme {
    * 设置视频时间文本颜色
    *
    * @param videoTimeTextColor 视频时间文本颜色 - 默认Color.WHITE
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoTimeTextFontColor
    */
   setVideoTimeTextColor(videoTimeTextColor: number): void {
@@ -2485,7 +2480,7 @@ export class MarkdownTheme {
    * 设置视频时间文本大小
    *
    * @param videoTimeTextSize 视频时间文本大小 - 默认14.0fp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoTimeTextFontSize
    */
   setVideoTimeTextSize(videoTimeTextSize: number): void {
@@ -2496,7 +2491,7 @@ export class MarkdownTheme {
    * 设置视频时间文本居右边距
    *
    * @param videoTimeTextMarginRight 视频时间文本居右边距 - 默认10.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoTimeTextMarginRight
    */
   setVideoTimeTextMarginRight(videoTimeTextMarginRight: number): void {
@@ -2507,7 +2502,7 @@ export class MarkdownTheme {
    * 设置视频时间文本居底边距
    *
    * @param videoTimeTextMarginBottom 视频时间文本居底边距 - 默认10.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoTimeTextMarginBottom
    */
   setVideoTimeTextMarginBottom(videoTimeTextMarginBottom: number): void {
@@ -2518,7 +2513,7 @@ export class MarkdownTheme {
    * 设置视频上边距
    *
    * @param videoMarginTop 视频上边距 - 默认10.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoMargin
    */
   setVideoMarginTop(videoMarginTop: number): void {
@@ -2532,7 +2527,7 @@ export class MarkdownTheme {
    * 设置视频下边距
    *
    * @param videoMarginBottom 视频下边距 - 默认10.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoMargin
    */
   setVideoMarginBottom(videoMarginBottom: number): void {
@@ -2546,7 +2541,7 @@ export class MarkdownTheme {
    * 设置视频发布/下载按钮布局是否显示
    *
    * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默认false不显示
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoBottomLayoutVisible
    */
   setIsVideoBottomLayout(isVideoBottomLayout: boolean): void {
@@ -2557,7 +2552,7 @@ export class MarkdownTheme {
    * 设置视频发布按钮图片宽度和高度
    *
    * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoReleaseButtonIconWidth
    *             MarkdownThemeVideo#setVideoReleaseButtonIconHeight
    */
@@ -2570,7 +2565,7 @@ export class MarkdownTheme {
    * 设置视频发布按钮宽度
    *
    * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoReleaseButtonWidth
    */
   setVideoReleaseWidth(videoReleaseWidth: number): void {
@@ -2581,7 +2576,7 @@ export class MarkdownTheme {
    * 设置视频发布按钮高度
    *
    * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoReleaseButtonHeight
    */
   setVideoReleaseHeight(videoReleaseHeight: number): void {
@@ -2592,7 +2587,7 @@ export class MarkdownTheme {
    * 设置视频发布按钮圆角
    *
    * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoReleaseButtonAllRadius
    */
   setVideoReleaseRadius(videoReleaseRadius: number): void {
@@ -2603,7 +2598,7 @@ export class MarkdownTheme {
    * 设置视频发布按钮文本内容
    *
    * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoReleaseButtonText
    */
   setVideoReleaseText(videoReleaseText: string): void {
@@ -2614,7 +2609,7 @@ export class MarkdownTheme {
    * 设置视频发布按钮文本大小
    *
    * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoReleaseButtonTextFontSize
    */
   setVideoReleaseTexSize(videoReleaseTexSize: number): void {
@@ -2625,7 +2620,7 @@ export class MarkdownTheme {
    * 设置视频发布按钮文本颜色
    *
    * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoReleaseButtonTextFontColor
    */
   setVideoReleaseTexColor(videoReleaseTexColor: number): void {
@@ -2636,7 +2631,7 @@ export class MarkdownTheme {
    * 设置视频发布按钮背景颜色
    *
    * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoReleaseButtonBackgroundColor
    */
   setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: number): void {
@@ -2647,7 +2642,7 @@ export class MarkdownTheme {
    * 设置视频下载按钮图片宽度和高度
    *
    * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoDownloadButtonIconWidth
    *             MarkdownThemeVideo#setVideoDownloadButtonIconHeight
    */
@@ -2660,7 +2655,7 @@ export class MarkdownTheme {
    * 设置视频下载按钮宽度
    *
    * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoDownloadButtonWidth
    */
   setVideoDownloadWidth(videoDownloadWidth: number): void {
@@ -2671,7 +2666,7 @@ export class MarkdownTheme {
    * 设置视频下载按钮高度
    *
    * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoDownloadButtonHeight
    */
   setVideoDownloadHeight(videoDownloadHeight: number): void {
@@ -2682,7 +2677,7 @@ export class MarkdownTheme {
    * 设置视频下载按钮圆角
    *
    * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoDownloadButtonAllRadius
    */
   setVideoDownloadRadius(videoDownloadRadius: number): void {
@@ -2693,7 +2688,7 @@ export class MarkdownTheme {
    * 设置视频下载按钮文本内容
    *
    * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoDownloadButtonText
    */
   setVideoDownloadText(videoDownloadText: string): void {
@@ -2704,7 +2699,7 @@ export class MarkdownTheme {
    * 设置视频下载按钮文本大小
    *
    * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoDownloadButtonTextFontSize
    */
   setVideoDownloadTexSize(videoDownloadTexSize: number): void {
@@ -2715,7 +2710,7 @@ export class MarkdownTheme {
    * 设置视频下载按钮文本颜色
    *
    * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoDownloadButtonTextFontColor
    */
   setVideoDownloadTexColor(videoDownloadTexColor: number): void {
@@ -2726,7 +2721,7 @@ export class MarkdownTheme {
    * 设置视频下载按钮背景颜色
    *
    * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoDownloadButtonBackgroundColor
    */
   setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: number): void {
@@ -2737,7 +2732,7 @@ export class MarkdownTheme {
    * 设置图片缩放类型
    *
    * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageFitType
    */
   setImageFitType(imageFitType: ImageFitType): void {
@@ -2748,7 +2743,7 @@ export class MarkdownTheme {
    * 设置图片基于自身宽度缩放百分比
    *
    * @param imageMaximumWidth 图片基于自身宽度缩放百分比 - 默认1.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageMaximumWidth
    */
   setImageMaximumWidth(imageMaximumWidth: number): void {
@@ -2759,7 +2754,7 @@ export class MarkdownTheme {
    * 设置图片基于父布局宽度缩放百分比
    *
    * @param imageFixedRatioWidth 图片基于父布局宽度缩放百分比 - 默认None
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageFixedRatioWidth
    */
   setImageFixedRatioWidth(imageFixedRatioWidth: number): void {
@@ -2770,7 +2765,7 @@ export class MarkdownTheme {
    * 设置图片最大高度
    *
    * @param imageMaxHeight 图片最大高度 - 默认None
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageMaxHeight
    */
   setImageMaxHeight(imageMaxHeight: number): void {
@@ -2781,7 +2776,7 @@ export class MarkdownTheme {
    * 设置图片最大宽度
    *
    * @param imageMaxWidth 图片最大宽度 - 默认None
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageMaxWidth
    */
   setImageMaxWidth(imageMaxWidth: number): void {
@@ -2792,7 +2787,7 @@ export class MarkdownTheme {
    * 设置图片圆角大小
    *
    * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageBorderAllRadius
    */
   setImageBorderRadius(imageBorderRadius: number): void {
@@ -2803,7 +2798,7 @@ export class MarkdownTheme {
    * 设置图片边框宽度
    *
    * @param imageBorderWidth 图片边框宽度 - 默认0.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageBorderWidth
    */
   setImageBorderWidth(imageBorderWidth: number): void {
@@ -2814,7 +2809,7 @@ export class MarkdownTheme {
    * 设置图片边框颜色
    *
    * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageBorderColor
    */
   setImageBorderColor(imageBorderColor: number): void {
@@ -2825,7 +2820,7 @@ export class MarkdownTheme {
    * 设置网络图片是否压缩
    *
    * @param isAutoResize 网络图片是否压缩 - true：压缩；false：不压缩。默认true
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageAutoResize
    */
   setIsAutoResize(isAutoResize: boolean): void {
@@ -2836,7 +2831,7 @@ export class MarkdownTheme {
    * 设置图片上边距
    *
    * @param imageMarginTop 图片上边距 - 默认10.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageMargin
    */
   setImageMarginTop(imageMarginTop: number): void {
@@ -2850,7 +2845,7 @@ export class MarkdownTheme {
    * 设置图片下边距
    *
    * @param imageMarginBottom 图片下边距 - 默认10.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageMargin
    */
   setImageMarginBottom(imageMarginBottom: number): void {
@@ -2864,7 +2859,7 @@ export class MarkdownTheme {
    * 设置图片是否有下载按钮
    *
    * @param isImageDownload 图片是否有下载按钮 - 默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonVisible
    */
   setIsImageDownload(isImageDownload: boolean): void {
@@ -2875,7 +2870,7 @@ export class MarkdownTheme {
    * 设置是否图文混排
    *
    * @param isImageMixedLayout 是否图文混排 - 默认true
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setIsImageMixedLayout
    */
   setIsImageMixedLayout(isImageMixedLayout: boolean): void {
@@ -2886,7 +2881,7 @@ export class MarkdownTheme {
    * 设置图片下载按钮图片宽度和高度
    *
    * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonIconWidth
    *             MarkdownThemeImage#setImageDownloadButtonIconHeight
    */
@@ -2899,7 +2894,7 @@ export class MarkdownTheme {
    * 设置图片下载按钮宽度
    *
    * @param imageDownloadWidth 图片下载按钮宽度 - 默认296.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonWidth
    */
   setImageDownloadWidth(imageDownloadWidth: number): void {
@@ -2910,7 +2905,7 @@ export class MarkdownTheme {
    * 设置图片下载按钮高度
    *
    * @param imageDownloadHeight 图片下载按钮高度 - 默认44.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonHeight
    */
   setImageDownloadHeight(imageDownloadHeight: number): void {
@@ -2921,7 +2916,7 @@ export class MarkdownTheme {
    * 设置图片下载按钮圆角
    *
    * @param imageDownloadRadius 图片下载按钮圆角 - 默认22.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonAllRadius
    */
   setImageDownloadRadius(imageDownloadRadius: number): void {
@@ -2932,7 +2927,7 @@ export class MarkdownTheme {
    * 设置图片下载按钮文本内容
    *
    * @param imageDownloadText 图片下载按钮文本内容 - 默认"下载图片"
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonText
    */
   setImageDownloadText(imageDownloadText: string): void {
@@ -2943,7 +2938,7 @@ export class MarkdownTheme {
    * 设置图片下载按钮文本大小
    *
    * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonTextFontSize
    */
   setImageDownloadTexSize(imageDownloadTexSize: number): void {
@@ -2954,7 +2949,7 @@ export class MarkdownTheme {
    * 设置图片下载按钮文本颜色
    *
    * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0XE6000000
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonTextFontColor
    */
   setImageDownloadTexColor(imageDownloadTexColor: number): void {
@@ -2965,7 +2960,7 @@ export class MarkdownTheme {
    * 设置图片下载按钮背景颜色
    *
    * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0xFFF5F5F5
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonBackgroundColor
    */
   setImageDownloadBackgroundColor(imageDownloadBackgroundColor: number): void {
@@ -2976,7 +2971,7 @@ export class MarkdownTheme {
    * 设置表格内容内边距
    *
    * @param tableCellPadding 表格内容内边距 - 默认4.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableCellAllPadding
    */
   setTableCellPadding(tableCellPadding: number): void {
@@ -2987,7 +2982,7 @@ export class MarkdownTheme {
    * 设置表格边框颜色
    *
    * @param tableBorderColor 表格边框颜色 - 默认0xFF000000
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableBorderColor
    */
   setTableBorderColor(tableBorderColor: number): void {
@@ -2998,7 +2993,7 @@ export class MarkdownTheme {
    * 设置表格边框宽度
    *
    * @param tableBorderWidth 表格边框宽度 - 默认1.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableBorderWidth
    */
   setTableBorderWidth(tableBorderWidth: number): void {
@@ -3009,7 +3004,7 @@ export class MarkdownTheme {
    * 设置表格奇数行背景色
    *
    * @param tableOddRowBackgroundColor 表格奇数行背景色 - 默认0xFFFFFFFF
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableContentOddRowBackgroundColor
    */
   setTableOddRowBackgroundColor(tableOddRowBackgroundColor: number): void {
@@ -3020,7 +3015,7 @@ export class MarkdownTheme {
    * 设置表格偶数行背景色
    *
    * @param tableEvenRowBackgroundColor 表格偶数行背景色 - 默认0xFFE0E0E0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableContentEvenRowBackgroundColor
    */
   setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: number): void {
@@ -3031,7 +3026,7 @@ export class MarkdownTheme {
    * 设置表格标题背景色
    *
    * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0xFFFFFFFF
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableTitleBackgroundColor
    */
   setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void {
@@ -3042,7 +3037,7 @@ export class MarkdownTheme {
    * 设置表格标题文本颜色
    *
    * @param tableTitleTextColor 表格标题文本颜色 - 默认0xFF191919
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableTitleTextFontColor
    */
   setTableTitleTextColor(tableTitleTextColor: number): void {
@@ -3053,7 +3048,7 @@ export class MarkdownTheme {
    * 设置表格文本行高
    *
    * @param tableTextLineHeight 表格文本行高 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableContentTextLineHeight
    *             MarkdownThemeTable#setTableTitleTextLineHeight
    */
@@ -3066,7 +3061,7 @@ export class MarkdownTheme {
    * 设置表格标题文本大小
    *
    * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableTitleTextFontSize
    */
   setTableTitleTextSize(tableTitleTextSize: number): void {
@@ -3077,7 +3072,7 @@ export class MarkdownTheme {
    * 设置表格标题文本行高
    *
    * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableTitleTextLineHeight
    */
   setTableTitleLineHeight(tableTitleLineHeight: number): void {
@@ -3088,7 +3083,7 @@ export class MarkdownTheme {
    * 设置表格内容文本颜色
    *
    * @param tableContentTextColor 表格内容文本颜色 - 默认0xFF191919
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableContentTextFontColor
    */
   setTableContentTextColor(tableContentTextColor: number): void {
@@ -3099,7 +3094,7 @@ export class MarkdownTheme {
    * 设置表格内容文本大小
    *
    * @param tableContentTextSize 表格内容文本大小 - 默认14.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableContentTextFontSize
    */
   setTableContentTextSize(tableContentTextSize: number): void {
@@ -3110,7 +3105,7 @@ export class MarkdownTheme {
    * 设置表格内容文本行高
    *
    * @param tableTextLineHeight 表格内容文本行高 - 默认22.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableContentTextLineHeight
    */
   setTableContentTextLineHeight(tableTextLineHeight: number): void {
@@ -3121,7 +3116,7 @@ export class MarkdownTheme {
    * 设置表格圆角
    *
    * @param tableRadius 表格圆角 - 默认5.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableAllRadius
    */
   setTableRadius(tableRadius: number): void {
@@ -3132,7 +3127,7 @@ export class MarkdownTheme {
    * 设置表格最小宽度
    *
    * @param tableMinTextWidth 表格最小宽度 - 默认50.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableMinCellWidth
    */
   setTableMinTextWidth(tableMinTextWidth: number): void {
@@ -3143,7 +3138,7 @@ export class MarkdownTheme {
    * 设置表格最大宽度
    *
    * @param tableMaxTextWidth 表格最大宽度- 默认300.0vp
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableMaxCellWidth
    */
   setTableMaxTextWidth(tableMaxTextWidth: number): void {
@@ -3154,7 +3149,7 @@ export class MarkdownTheme {
    * 设置表格第一列是否加粗
    *
    * @param tableFirstColumnBold 表格第一列是否加粗 - true：加粗；false：不加粗。默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableFirstColumnIsBold
    */
   setTableFirstColumnBold(tableFirstColumnBold: boolean): void {
@@ -3165,7 +3160,7 @@ export class MarkdownTheme {
    * 设置表格是否显示滚动条
    *
    * @param tableScrollBarShow 表格是否显示滚动条 - true：显示(auto状态)；false：不显示。默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableScrollBarState
    */
   setTableScrollBarShow(tableScrollBarShow: boolean): void {
@@ -3180,7 +3175,7 @@ export class MarkdownTheme {
    * 设置表格滚动条颜色
    *
    * @param tableScrollBarColor 表格滚动条颜色
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeTable#setTableScrollBarColor
    */
   setTableScrollBarColor(tableScrollBarColor: number): void {
@@ -3191,7 +3186,7 @@ export class MarkdownTheme {
    * 设置代码块深浅色
    *
    * @param isDark 是否是深色 - true：深色；false：浅色。默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockIsDark
    */
   setIsDark(isDark: boolean): void {
@@ -3202,7 +3197,7 @@ export class MarkdownTheme {
    * 设置删除线颜色
    *
    * @param strikethroughColor 删除线颜色 - 默认0xFF191919
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeStrikethrough#setStrikethroughTextDecorationColor
    */
   setStrikethroughColor(strikethroughColor: number): void {
@@ -3213,7 +3208,7 @@ export class MarkdownTheme {
    * 设置删除线样式
    *
    * @param strikethroughStyle 删除线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeStrikethrough#setStrikethroughTextDecorationStyle
    */
   setStrikethroughStyle(strikethroughStyle: MarkdownTextDecorationStyle): void {
@@ -3224,7 +3219,7 @@ export class MarkdownTheme {
    * 设置定义列表术语和定义行之间间距
    *
    * @param descListTermAndDefMargins 定义列表定义行缩进 默认8.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeDefinitionList#setDefinitionListTermToDescriptionSpacing
    */
   setDescListTermAndDefMargins(descListTermAndDefMargins: number): void {
@@ -3235,7 +3230,7 @@ export class MarkdownTheme {
    * 设置定义列表定义行缩进
    *
    * @param descListDefIndentation 定义列表定义行缩进 默认8.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeDefinitionList#setDefinitionListDescriptionIndent
    */
   setDescListDefIndentation(descListDefIndentation: number): void {
@@ -3246,7 +3241,7 @@ export class MarkdownTheme {
    * 设置定义列表定义行间距
    *
    * @param descListDefMargins 定义列表定义行间距 默认8.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeDefinitionList#setDefinitionListDescriptionItemSpacing
    */
   setDescListDefMargins(descListDefMargins: number): void {
@@ -3257,7 +3252,7 @@ export class MarkdownTheme {
    * 设置下标字体颜色
    *
    * @param subTextColor 下标字体颜色 默认0xFF191919
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeSub#setSubTextFontColor
    */
   setSubTextColor(subTextColor: number): void {
@@ -3268,7 +3263,7 @@ export class MarkdownTheme {
    * 设置下标字体大小
    *
    * @param subTextSize 下标字体大小 默认8.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeSub#setSubTextFontSize
    */
   setSubTextSize(subTextSize: number): void {
@@ -3279,7 +3274,7 @@ export class MarkdownTheme {
    * 设置下标偏移距离
    *
    * @param subOffsetDist 下标偏移距离 默认0.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeSub#setSubTextBaselineOffset
    */
   setSubOffsetDist(subOffsetDist: number): void {
@@ -3290,7 +3285,7 @@ export class MarkdownTheme {
    * 设置上标字体颜色
    *
    * @param supTextColor 上标字体颜色 默认0xFF191919
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeSup#setSupTextFontColor
    */
   setSupTextColor(supTextColor: number): void {
@@ -3301,7 +3296,7 @@ export class MarkdownTheme {
    * 设置上标字体大小
    *
    * @param supTextSize 上标字体大小 默认8.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeSup#setSupTextFontSize
    */
   setSupTextSize(supTextSize: number): void {
@@ -3312,7 +3307,7 @@ export class MarkdownTheme {
    * 设置上标偏移距离
    *
    * @param supOffsetDist 上标偏移距离 默认6.0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeSup#setSupTextBaselineOffset
    */
   setSupOffsetDist(supOffsetDist: number): void {
@@ -3323,7 +3318,7 @@ export class MarkdownTheme {
    * 设置下划线颜色
    *
    * @param underlineColor 下划线颜色 默认0xFF191919
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHtmlUnderline#setHtmlUnderlineTextDecorationColor
    */
   setUnderlineColor(underlineColor: number): void {
@@ -3334,7 +3329,7 @@ export class MarkdownTheme {
    * 设置下划线样式
    *
    * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHtmlUnderline#setHtmlUnderlineTextDecorationStyle
    */
   setUnderlineStyle(underlineStyle: MarkdownTextDecorationStyle): void {
@@ -3345,7 +3340,7 @@ export class MarkdownTheme {
    * 设置markdown是否支持滚动手势
    *
    * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeGlobal#setOpenGestureSwipe
    */
   setOpenGestureSwipe(openGestureSwipe: boolean): void {
@@ -3356,7 +3351,7 @@ export class MarkdownTheme {
    * 设置codeformat是否用制表符
    *
    * @param useTab true-使用，false-不使用，默认false
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockUseTab
    */
   setUseTab(useTab: boolean): void {
@@ -3367,11 +3362,245 @@ export class MarkdownTheme {
    * 设置codeformat空格缩进数量
    *
    * @param indentWidth 空格缩进数量，默认4空格
-   * @deprecated since 1.3.7
+   * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockIndentWidth
    */
   setIndentWidth(indentWidth: number): void {
     this.markdownThemeCodeBlock.setCodeBlockIndentWidth(indentWidth)
+  }
+
+  /**
+   * 获取是否按照链接文本字体大小显示文本
+   *
+   * @returns 是否按照链接文本字体大小显示文本
+   */
+  getIsLinkSize(): boolean | undefined {
+    return this.isLinkSize
+  }
+
+  /**
+   * 获取全局样式
+   *
+   * @returns 全局样式对象
+   */
+  getMarkdownThemeGlobal(): MarkdownThemeGlobal {
+    return this.markdownThemeGlobal
+  }
+
+  /**
+   * 获取音频样式
+   *
+   * @returns 音频样式对象
+   */
+  getMarkdownThemeAudio(): MarkdownThemeAudio {
+    return this.markdownThemeAudio
+  }
+
+  /**
+   * 获取Banner样式
+   *
+   * @returns Banner样式对象
+   */
+  getMarkdownThemeBanner(): MarkdownThemeBanner {
+    return this.markdownThemeBanner
+  }
+
+  /**
+   * 获取块引用样式
+   *
+   * @returns 块引用样式对象
+   */
+  getMarkdownThemeBlockQuote(): MarkdownThemeBlockQuote {
+    return this.markdownThemeBlockQuote
+  }
+
+  /**
+   * 获取加粗文本样式
+   *
+   * @returns 加粗文本样式对象
+   */
+  getMarkdownThemeBold(): MarkdownThemeBold {
+    return this.markdownThemeBold
+  }
+
+  /**
+   * 获取代码块样式
+   *
+   * @returns 代码块样式对象
+   */
+  getMarkdownThemeCodeBlock(): MarkdownThemeCodeBlock {
+    return this.markdownThemeCodeBlock
+  }
+
+  /**
+   * 获取定义列表样式
+   *
+   * @returns 定义列表样式对象
+   */
+  getMarkdownThemeDefinitionList(): MarkdownThemeDefinitionList {
+    return this.markdownThemeDefinitionList
+  }
+
+  /**
+   * 获取分割线样式
+   *
+   * @returns 分割线样式对象
+   */
+  getMarkdownThemeDivider(): MarkdownThemeDivider {
+    return this.markdownThemeDivider
+  }
+
+  /**
+   * 获取脚注定义样式
+   *
+   * @returns 脚注定义样式对象
+   */
+  getMarkdownThemeFootnoteDef(): MarkdownThemeFootnoteDef {
+    return this.markdownThemeFootnoteDef
+  }
+
+  /**
+   * 获取脚注引用样式
+   *
+   * @returns 脚注引用样式对象
+   */
+  getMarkdownThemeFootnoteRef(): MarkdownThemeFootnoteRef {
+    return this.markdownThemeFootnoteRef
+  }
+
+  /**
+   * 获取数学公式样式
+   *
+   * @returns 数学公式样式对象
+   */
+  getMarkdownThemeLatexMath(): MarkdownThemeLatexMath {
+    return this.markdownThemeLatexMath
+  }
+
+  /**
+   * 获取标题样式
+   *
+   * @returns 标题样式对象
+   */
+  getMarkdownThemeHeading(): MarkdownThemeHeading {
+    return this.markdownThemeHeading
+  }
+
+  /**
+   * 获取HTML下划线文本样式
+   *
+   * @returns HTML下划线文本样式对象
+   */
+  getMarkdownThemeHtmlUnderline(): MarkdownThemeHtmlUnderline {
+    return this.markdownThemeHtmlUnderline
+  }
+
+  /**
+   * 获取图片样式
+   *
+   * @returns 图片样式对象
+   */
+  getMarkdownThemeImage(): MarkdownThemeImage {
+    return this.markdownThemeImage
+  }
+
+  /**
+   * 获取内联代码样式
+   *
+   * @returns 内联代码样式对象
+   */
+  getMarkdownThemeInlineCode(): MarkdownThemeInlineCode {
+    return this.markdownThemeInlineCode
+  }
+
+  /**
+   * 获取斜体文本样式
+   *
+   * @returns 斜体文本样式对象
+   */
+  getMarkdownThemeItalic(): MarkdownThemeItalic {
+    return this.markdownThemeItalic
+  }
+
+  /**
+   * 获取链接文本样式
+   *
+   * @returns 链接文本样式对象
+   */
+  getMarkdownThemeLink(): MarkdownThemeLink {
+    return this.markdownThemeLink
+  }
+
+  /**
+   * 获取有序列表样式
+   *
+   * @returns 有序列表样式对象
+   */
+  getMarkdownThemeOrderedList(): MarkdownThemeOrderedList {
+    return this.markdownThemeOrderedList
+  }
+
+  /**
+   * 获取段落样式
+   *
+   * @returns 段落样式对象
+   */
+  getMarkdownThemeParagraph(): MarkdownThemeParagraph {
+    return this.markdownThemeParagraph
+  }
+
+  /**
+   * 获取删除线文本样式
+   *
+   * @returns 删除线文本样式对象
+   */
+  getMarkdownThemeStrikethrough(): MarkdownThemeStrikethrough {
+    return this.markdownThemeStrikethrough
+  }
+
+  /**
+   * 获取下标文本样式
+   *
+   * @returns 下标文本样式对象
+   */
+  getMarkdownThemeSub(): MarkdownThemeSub {
+    return this.markdownThemeSub
+  }
+
+  /**
+   * 获取上标文本样式
+   *
+   * @returns 上标文本样式对象
+   */
+  getMarkdownThemeSup(): MarkdownThemeSup {
+    return this.markdownThemeSup
+  }
+
+  /**
+   * 获取表格样式
+   *
+   * @returns 表格样式对象
+   */
+  getMarkdownThemeTable(): MarkdownThemeTable {
+    return this.markdownThemeTable
+  }
+
+  /**
+   * 获取无序/任务列表样式
+   *
+   * @returns 无序/任务列表样式对象
+   */
+  getMarkdownThemeBulletList(): MarkdownThemeBulletList {
+    return this.markdownThemeBulletList
+  }
+
+  /**
+   * 获取视频样式
+   *
+   * @returns 视频样式对象
+   */
+  getMarkdownThemeVideo(): MarkdownThemeVideo {
+    return this.markdownThemeVideo
   }
 }
 

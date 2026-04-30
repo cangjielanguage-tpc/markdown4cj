@@ -9,75 +9,75 @@ export class MarkdownConfiguration {
   /**
    * 链接的点击事件
    */
-  linkCallback?: (funcArg0: string) => void = undefined
+  private linkCallback?: (funcArg0: string) => void = undefined
   /**
    * 文本复制的点击事件
    */
-  textCopyCallback?: (funcArg0: string) => void = undefined
+  private textCopyCallback?: (funcArg0: string) => void = undefined
   /**
    * 图片的点击事件
    */
-  imageCallback?: (funcArg0: string, funcArg1: Array<string>) => void = undefined
+  private imageCallback?: (funcArg0: string, funcArg1: Array<string>) => void = undefined
   /**
    * 图片替换事件
    */
-  imageCallbackCallback?: (funcArg0: string) => Promise<ArrayBuffer | undefined> = undefined
+  private imageCallbackCallback?: (funcArg0: string) => Promise<ArrayBuffer | undefined> = undefined
   /**
    * 图片下载的点击事件
    */
-  imageDownloadCallback?: (funcArg0: string) => void = undefined
+  private imageDownloadCallback?: (funcArg0: string) => void = undefined
   /**
    * 音频的点击事件
    */
-  audioCallback?: (funcArg0: string) => void = undefined
+  private audioCallback?: (funcArg0: string) => void = undefined
   /**
    * 视频的点击事件
    */
-  videoCallback?: (funcArg0: string, funcArg1: Array<string>) => void = undefined
+  private videoCallback?: (funcArg0: string, funcArg1: Array<string>) => void = undefined
   /**
    * 视频的图片替换回调
    */
-  videoImageCallback?: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
+  private videoImageCallback?: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
   /**
    * 视频发布的点击事件
    */
-  videoReleaseCallback?: (funcArg0: string) => void = undefined
+  private videoReleaseCallback?: (funcArg0: string) => void = undefined
   /**
    * 视频下载的点击事件
    */
-  videoDownloadCallback?: (funcArg0: string) => void = undefined
+  private videoDownloadCallback?: (funcArg0: string) => void = undefined
   /**
    * 代码复制按钮的点击事件
    */
-  codeCopyCallback?: (funcArg0: string) => void = undefined
+  private codeCopyCallback?: (funcArg0: string) => void = undefined
   /**
    * 代码全屏按钮的点击事件
    */
-  codeFullScreenCallback?: (funcArg0: string, funcArg1: string | undefined) => void = undefined
+  private codeFullScreenCallback?: (funcArg0: string, funcArg1: string | undefined) => void = undefined
   /**
    * 数学公式图片点击事件
    */
-  latexImageCallback?: (funcArg0: ArrayBuffer, funcArg1: number, funcArg2: number) => void = undefined
+  private latexImageCallback?: (funcArg0: ArrayBuffer, funcArg1: number, funcArg2: number) => void = undefined
   /**
    * 数学公式数据处理事件
    */
-  latexStrCallback?: (funcArg0: string) => string = undefined
+  private latexStrCallback?: (funcArg0: string) => string = undefined
   /**
    * TOC跳转指定位置
    */
-  tocIndexCallback?: (funcArg0: number | undefined) => void = undefined
+  private tocIndexCallback?: (funcArg0: number | undefined) => void = undefined
   /**
    * 脚注跳转指定位置
    */
-  footnoteCallback?: (funcArg0: number | undefined) => void = undefined
+  private footnoteCallback?: (funcArg0: number | undefined) => void = undefined
   /**
    * 获取全局文本
    */
-  markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString()
+  private markdownNodeViewString: MarkdownNodeViewString = new MarkdownNodeViewString()
   /**
    * markdown默认样式
    */
-  markdownTheme?: MarkdownTheme = undefined
+  private markdownTheme?: MarkdownTheme = undefined
 
   /**
    * 设置链接点击回调
@@ -239,5 +239,167 @@ export class MarkdownConfiguration {
    */
   setMarkdownTheme(markdownTheme: MarkdownTheme): void {
     this.markdownTheme = markdownTheme
+  }
+
+  /**
+   * 获取链接的点击事件
+   *
+   * @returns 链接的点击事件回调函数
+   */
+  getLinkCallback(): ((funcArg0: string) => void) | undefined {
+    return this.linkCallback
+  }
+
+  /**
+   * 获取文本复制的点击事件
+   *
+   * @returns 文本复制的点击事件回调函数
+   */
+  getTextCopyCallback(): ((funcArg0: string) => void) | undefined {
+    return this.textCopyCallback
+  }
+
+  /**
+   * 获取图片的点击事件
+   *
+   * @returns 图片的点击事件回调函数
+   */
+  getImageCallback(): ((funcArg0: string, funcArg1: Array<string>) => void) | undefined {
+    return this.imageCallback
+  }
+
+  /**
+   * 获取图片替换事件
+   *
+   * @returns 图片替换事件回调函数
+   */
+  getImageCallbackCallback(): ((funcArg0: string) => Promise<ArrayBuffer | undefined>) | undefined {
+    return this.imageCallbackCallback
+  }
+
+  /**
+   * 获取图片下载的点击事件
+   *
+   * @returns 图片下载的点击事件回调函数
+   */
+  getImageDownloadCallback(): ((funcArg0: string) => void) | undefined {
+    return this.imageDownloadCallback
+  }
+
+  /**
+   * 获取音频的点击事件
+   *
+   * @returns 音频的点击事件回调函数
+   */
+  getAudioCallback(): ((funcArg0: string) => void) | undefined {
+    return this.audioCallback
+  }
+
+  /**
+   * 获取视频的点击事件
+   *
+   * @returns 视频的点击事件回调函数
+   */
+  getVideoCallback(): ((funcArg0: string, funcArg1: Array<string>) => void) | undefined {
+    return this.videoCallback
+  }
+
+  /**
+   * 获取视频的图片替换回调
+   *
+   * @returns 视频的图片替换回调函数
+   */
+  getVideoImageCallback(): ((funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void) | undefined {
+    return this.videoImageCallback
+  }
+
+  /**
+   * 获取视频发布的点击事件
+   *
+   * @returns 视频发布的点击事件回调函数
+   */
+  getVideoReleaseCallback(): ((funcArg0: string) => void) | undefined {
+    return this.videoReleaseCallback
+  }
+
+  /**
+   * 获取视频下载的点击事件
+   *
+   * @returns 视频下载的点击事件回调函数
+   */
+  getVideoDownloadCallback(): ((funcArg0: string) => void) | undefined {
+    return this.videoDownloadCallback
+  }
+
+  /**
+   * 获取代码复制按钮的点击事件
+   *
+   * @returns 代码复制按钮的点击事件回调函数
+   */
+  getCodeCopyCallback(): ((funcArg0: string) => void) | undefined {
+    return this.codeCopyCallback
+  }
+
+  /**
+   * 获取代码全屏按钮的点击事件
+   *
+   * @returns 代码全屏按钮的点击事件回调函数
+   */
+  getCodeFullScreenCallback(): ((funcArg0: string, funcArg1: string | undefined) => void) | undefined {
+    return this.codeFullScreenCallback
+  }
+
+  /**
+   * 获取数学公式图片点击事件
+   *
+   * @returns 数学公式图片点击事件回调函数
+   */
+  getLatexImageCallback(): ((funcArg0: ArrayBuffer, funcArg1: number, funcArg2: number) => void) | undefined {
+    return this.latexImageCallback
+  }
+
+  /**
+   * 获取数学公式数据处理事件
+   *
+   * @returns 数学公式数据处理事件回调函数
+   */
+  getLatexStrCallback(): ((funcArg0: string) => string) | undefined {
+    return this.latexStrCallback
+  }
+
+  /**
+   * 获取TOC跳转指定位置回调
+   *
+   * @returns TOC跳转指定位置回调函数
+   */
+  getTocIndexCallback(): ((funcArg0: number | undefined) => void) | undefined {
+    return this.tocIndexCallback
+  }
+
+  /**
+   * 获取脚注跳转指定位置回调
+   *
+   * @returns 脚注跳转指定位置回调函数
+   */
+  getFootnoteCallback(): ((funcArg0: number | undefined) => void) | undefined {
+    return this.footnoteCallback
+  }
+
+  /**
+   * 获取全局文本对象
+   *
+   * @returns 全局文本对象
+   */
+  getMarkdownNodeViewString(): MarkdownNodeViewString {
+    return this.markdownNodeViewString
+  }
+
+  /**
+   * 获取markdown默认样式
+   *
+   * @returns markdown默认样式对象
+   */
+  getMarkdownTheme(): MarkdownTheme | undefined {
+    return this.markdownTheme
   }
 }
