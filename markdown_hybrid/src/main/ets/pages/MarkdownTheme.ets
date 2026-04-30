@@ -255,7 +255,7 @@ export class MarkdownTheme {
   }
 
   /**
-   * 设置浅色主题整体样式
+   * 设置深色主题整体样式
    */
   setDarkulaTheme(): void {
     // 深色主题设计
