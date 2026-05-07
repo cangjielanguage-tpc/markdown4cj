@@ -3,9 +3,9 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v0.0.1-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.0.0-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v1.0.1-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v1.0.5-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -219,7 +219,21 @@ Heading level 2
 
 ## 约束与限制
 
-当前基于 DevEco Studio for Windows 5.1.1.823 和 DevEco Studio Cangjie Plugin Windows 5.1.1.823 版本实现的
+在下述版本验证通过:
+
+| 编号 | 依赖构建工具                           | 版本号       |
+|----|----------------------------------|-----------|
+| 1  | **DevEco Studio**                | 5.1.1.851 |
+| 2  | **cjc**                          | v1.0.5    |
+
+markdown依赖三方库：
+
+| 编号 | 依赖三方库         | 版本号      |
+|----|---------------|----------|
+| 1  | stdx          | v1.0.1.1 |
+| 2  | commonmark4cj | v1.0.3   |
+| 3  | prism4cj      | v1.0.4   |
+| 4  | formula       | v1.5.0   |
 
 1. 内联代码暂未支持背景色设置
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
