@@ -100,7 +100,7 @@ public class PrismThemeDefault <: PrismThemeBase {
     }
 
     /**
-     * 创建 PrismThemeDarkula 对象的静态方法
+     * 创建 PrismThemeDefault 对象的静态方法
      *
      * @param 传入背景色
      * @return 返回自定义背景色的主题
@@ -167,13 +167,13 @@ public class PrismThemeDefault <: PrismThemeBase {
 /**
  *  prism 暗黑主题类
  */
-public class PrismThemeDarkula <: PrismThemeBase {
+public class PrismThemeDarcula <: PrismThemeBase {
     var bg: Color // 背景颜色
     var colorMap: HashMap<PrismColor, Color> // 颜色存储集合
     var text: Color // 文本颜色
 
     /**
-     * PrismThemeDarkula 构造函数
+     * PrismThemeDarcula 构造函数
      *
      * @param background 背景
      * @param colorMap  颜色存储集合
@@ -186,22 +186,22 @@ public class PrismThemeDarkula <: PrismThemeBase {
     }
 
     /**
-     * 创建 PrismThemeDarkula 对象的静态方法
+     * 创建 PrismThemeDarcula 对象的静态方法
      *
      * @return 返回一个默认背景色的暗黑主题
      */
-    public static func create(): PrismThemeDarkula {
-        return PrismThemeDarkula(Color(0xFF2d2d2d), ColorHashMap().initDarkulaColor(), Color(0xFFa9b7c6))
+    public static func create(): PrismThemeDarcula {
+        return PrismThemeDarcula(Color(0xFF2d2d2d), ColorHashMap().initDarculaColor(), Color(0xFFa9b7c6))
     }
 
     /**
-     * 创建 PrismThemeDarkula 对象的静态方法
+     * 创建 PrismThemeDarcula 对象的静态方法
      *
      * @param 传入背景色
      * @return 返回自定义背景色的暗黑主题
      */
-    static func create(background: Color, text: Color): PrismThemeDarkula {
-        return PrismThemeDarkula(background, ColorHashMap().initDarkulaColor(), text)
+    static func create(background: Color, text: Color): PrismThemeDarcula {
+        return PrismThemeDarcula(background, ColorHashMap().initDarculaColor(), text)
     }
 
     /**
@@ -317,7 +317,7 @@ public class ColorHashMap {
         return this.colorMap
     }
 
-    func initDarkulaColor(): HashMap<PrismColor, Color> {
+    func initDarculaColor(): HashMap<PrismColor, Color> {
         this.colorMap = HashMap<PrismColor, Color>()
         this.colorMap.add(PrismColor.COMMENT, Color(0xFF808080))
         this.colorMap.add(PrismColor.PROLOG, Color(0xFF808080))

@@ -226,7 +226,7 @@ class CJMarkdownComponent {
             if (let Some(v) <- w.cjMarkdownTheme.cjMarkdownCodeBlockTheme.codeBlockIsDark) {
                 // 设置markdown代码高亮样式
                 if(v){
-                    markdownThemeBuilder.setPrismTheme(PrismThemeDarkula.create()) // 深色
+                    markdownThemeBuilder.setPrismTheme(PrismThemeDarcula.create()) // 深色
                 }else{
                     markdownThemeBuilder.setPrismTheme(PrismThemeDefault.create()) // 浅色
                 }

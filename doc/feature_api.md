@@ -317,6 +317,8 @@ export class MarkdownTheme {
    * 设置上下文
    *
    * @param context 上下文
+   * @deprecated since 1.4.0
+   * @useinstead MarkdownThemeGlobal#setStageContext
    */
   setContext(context: Context): void
 
@@ -328,7 +330,7 @@ export class MarkdownTheme {
   /**
    * 设置深色主题整体样式
    */
-  setDarkulaTheme(): void
+  setDarculaTheme(): void
   
   /**
    * 设置全局样式

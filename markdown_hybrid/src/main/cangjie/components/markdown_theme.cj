@@ -85,7 +85,7 @@ public class MarkdownTheme {
      */
     public static func createDefaultBuilder(): MarkdownThemeBuilder {
         let markdownThemeBuilder: MarkdownThemeBuilder = MarkdownThemeBuilder()
-
+        markdownThemeBuilder.setDefaultTheme()
         return markdownThemeBuilder
     }
 
@@ -94,9 +94,9 @@ public class MarkdownTheme {
      *
      * @return MarkdownTheme 创建暗色的MarkdownTheme对象
      */
-    public static func createDarkulaBuilder(): MarkdownThemeBuilder {
+    public static func createDarculaBuilder(): MarkdownThemeBuilder {
         let markdownThemeBuilder: MarkdownThemeBuilder = MarkdownThemeBuilder()
-
+        markdownThemeBuilder.setDarculaTheme()
         return markdownThemeBuilder
     }
 
@@ -289,7 +289,7 @@ public class MarkdownThemeBuilder {
      *
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
-    public func setDarkulaTheme(): MarkdownThemeBuilder {
+    public func setDarculaTheme(): MarkdownThemeBuilder {
         // 深色主题设计
 
         // 全局主题
@@ -389,7 +389,7 @@ public class MarkdownThemeBuilder {
         this.strikethroughTheme.setStrikethroughTextDecorationColor(COLOR_FF404040) // 删除线文本装饰线颜色
 
         // 代码高亮主题
-        this.prismTheme = PrismThemeDarkula.create() // 代码高亮主题
+        this.prismTheme = PrismThemeDarcula.create() // 代码高亮主题
 
         return this
     }
@@ -672,7 +672,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置markdown代码高亮样式
      *
-     * @param PrismTheme markdown代码高亮样式 - 默认PrismThemeDarkula.create()
+     * @param PrismTheme markdown代码高亮样式 - 默认PrismThemeDarcula.create()
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setPrismTheme(prismTheme: PrismTheme): MarkdownThemeBuilder {
