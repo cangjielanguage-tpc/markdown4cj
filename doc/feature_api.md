@@ -11671,6 +11671,8 @@ export class MarkdownScroller {
 }
 ```
 
+### class MarkdownRectResult
+
 子组件的大小和相对于组件的位置
 
 ```ets
@@ -11710,5 +11712,35 @@ export class MarkdownRectResult {
    * @returns 子组件高度
    */
   getItemRectHeight(): number
+}
+```
+
+### class MarkdownNodeViewString
+
+全局文本对象
+
+```ets
+/**
+ * 全局文本对象
+ */
+export class MarkdownNodeViewString {
+  /**
+   * 构造函数
+   */
+  constructor()
+
+  /**
+   * 获取全局文本对象
+   *
+   * @returns 全局文本对象
+   */
+  getCJNodeViewStringBuilder(): CJNodeViewStringBuilder | undefined
+
+  /**
+   * 获取全局文本
+   *
+   * @returns 全局文本
+   */
+  toString(): string
 }
 ```
