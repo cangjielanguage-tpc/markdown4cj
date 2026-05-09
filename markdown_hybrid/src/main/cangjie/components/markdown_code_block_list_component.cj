@@ -46,7 +46,7 @@ class MarkdownCodeBlockListComponent {
                         item: String, idx: Int64 =>
                         Text(item)
                             .fontColor(listCodeTextColor(idxSelect, idx, markdownConfiguration))
-                            .backgroundColor(listCodeBackgroupColor(idxSelect, idx, markdownConfiguration))
+                            .backgroundColor(listCodeBackgroundColor(idxSelect, idx, markdownConfiguration))
                             .maxLines(1)
                             .fontSize(if (idxSelect == idx) { markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockListTitleSelectTextSize } else { markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockListTitleTextSize })
                             .padding(left: 14, right: 14, top: 5, bottom: 5)

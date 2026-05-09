@@ -2066,7 +2066,7 @@ func listCodeTextColor(idxSelect: Int64, idx: Int64, markdownConfiguration: Mark
  * @param markdownConfiguration MarkdownConfiguration
  * @return 切换之后的文本颜色
  */
-func listCodeBackgroupColor(idxSelect: Int64, idx: Int64, markdownConfiguration: MarkdownConfiguration): Color {
+func listCodeBackgroundColor(idxSelect: Int64, idx: Int64, markdownConfiguration: MarkdownConfiguration): Color {
     if (idxSelect == idx) {
         return markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockListTitleSelectBackgroundColor
     } else {
