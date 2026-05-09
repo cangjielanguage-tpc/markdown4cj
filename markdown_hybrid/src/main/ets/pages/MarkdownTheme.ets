@@ -825,12 +825,12 @@ export class MarkdownTheme {
   /**
    * 设置文本格式链接背景颜色
    *
-   * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0xFF000000
+   * @param linkBackgroundColor 文本格式链接背景颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkTextBackgroundColor
    */
-  setLinkBackGroupColor(linkBackGroupColor: number): void {
-    this.markdownThemeLink.setLinkTextBackgroundColor(linkBackGroupColor)
+  setLinkBackgroundColor(linkBackgroundColor: number): void {
+    this.markdownThemeLink.setLinkTextBackgroundColor(linkBackgroundColor)
   }
 
   /**
@@ -851,23 +851,23 @@ export class MarkdownTheme {
   /**
    * 设置圆形图片格式链接主题背景颜色
    *
-   * @param linkCircleImageBackGroupColor 圆形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
+   * @param linkCircleImageBackgroundColor 圆形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkCircleIconBackgroundColor
    */
-  setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: number): void {
-    this.markdownThemeLink.setLinkCircleIconBackgroundColor(linkCircleImageBackGroupColor)
+  setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: number): void {
+    this.markdownThemeLink.setLinkCircleIconBackgroundColor(linkCircleImageBackgroundColor)
   }
 
   /**
    * 设置圆形图片格式链接控件背景颜色
    *
-   * @param linkCircleImageButtonBackGroupColor 圆形图片格式链接控件背景颜色 - 默认0xFF000000
+   * @param linkCircleImageButtonBackgroundColor 圆形图片格式链接控件背景颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkCircleIconButtonBackgroundColor
    */
-  setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: number): void {
-    this.markdownThemeLink.setLinkCircleIconButtonBackgroundColor(linkCircleImageButtonBackGroupColor)
+  setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: number): void {
+    this.markdownThemeLink.setLinkCircleIconButtonBackgroundColor(linkCircleImageButtonBackgroundColor)
   }
 
   /**
@@ -917,23 +917,23 @@ export class MarkdownTheme {
   /**
    * 设置圆角矩形图片格式链接主题背景颜色
    *
-   * @param linkRectImageBackGroupColor 圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
+   * @param linkRectImageBackgroundColor 圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectIconBackgroundColor
    */
-  setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: number): void {
-    this.markdownThemeLink.setLinkRectIconBackgroundColor(linkRectImageBackGroupColor)
+  setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: number): void {
+    this.markdownThemeLink.setLinkRectIconBackgroundColor(linkRectImageBackgroundColor)
   }
 
   /**
    * 设置圆角矩形图片格式链接控件背景颜色
    *
-   * @param linkRectImageButtonBackGroupColor 圆角矩形图片格式链接控件背景颜色 - 默认0xFF000000
+   * @param linkRectImageButtonBackgroundColor 圆角矩形图片格式链接控件背景颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectIconButtonBackgroundColor
    */
-  setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: number): void {
-    this.markdownThemeLink.setLinkRectIconButtonBackgroundColor(linkRectImageButtonBackGroupColor)
+  setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: number): void {
+    this.markdownThemeLink.setLinkRectIconButtonBackgroundColor(linkRectImageButtonBackgroundColor)
   }
 
   /**
@@ -1005,23 +1005,23 @@ export class MarkdownTheme {
   /**
    * 设置空心圆角矩形图片格式链接主题背景颜色
    *
-   * @param linkRectToolImageBackGroupColor 空心圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
+   * @param linkRectToolImageBackgroundColor 空心圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconBackgroundColor
    */
-  setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: number): void {
-    this.markdownThemeLink.setLinkRectToolIconBackgroundColor(linkRectToolImageBackGroupColor)
+  setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: number): void {
+    this.markdownThemeLink.setLinkRectToolIconBackgroundColor(linkRectToolImageBackgroundColor)
   }
 
   /**
    * 设置空心圆角矩形图片格式链接控件背景颜色
    *
-   * @param linkRectToolImageButtonBackGroupColor 空心圆角矩形图片格式链接控件背景颜色 - 默认OXFFFFFFFF
+   * @param linkRectToolImageButtonBackgroundColor 空心圆角矩形图片格式链接控件背景颜色 - 默认OXFFFFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconBackgroundColor
    */
-  setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: number): void {
-    this.markdownThemeLink.setLinkRectToolIconBackgroundColor(linkRectToolImageButtonBackGroupColor)
+  setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: number): void {
+    this.markdownThemeLink.setLinkRectToolIconBackgroundColor(linkRectToolImageButtonBackgroundColor)
   }
 
   /**
@@ -1165,12 +1165,12 @@ export class MarkdownTheme {
   /**
    * 设置块引用背景颜色
    *
-   * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0xFFEAEAEA
+   * @param blockQuoteBackgroundColor 块引用背景颜色 - 默认0xFFEAEAEA
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBlockQuote#setBlockQuoteBackgroundColor
    */
-  setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: number): void {
-    this.markdownThemeBlockQuote.setBlockQuoteBackgroundColor(blockQuoteBackGroupColor)
+  setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: number): void {
+    this.markdownThemeBlockQuote.setBlockQuoteBackgroundColor(blockQuoteBackgroundColor)
   }
 
   /**
@@ -1620,23 +1620,23 @@ export class MarkdownTheme {
   /**
    * 设置组合代码选中标题背景颜色
    *
-   * @param codeListTitleSelectBackGroupColor 组合代码选中标题背景颜色 - 默认Color.GRAY
+   * @param codeListTitleSelectBackgroundColor 组合代码选中标题背景颜色 - 默认Color.GRAY
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleSelectBackgroundColor
    */
-  setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: number): void {
-    this.markdownThemeCodeBlock.setCodeBlockListTitleSelectBackgroundColor(codeListTitleSelectBackGroupColor)
+  setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: number): void {
+    this.markdownThemeCodeBlock.setCodeBlockListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor)
   }
 
   /**
    * 设置组合代码未选中标题背景颜色
    *
-   * @param codeListTitleUnSelectBackGroupColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
+   * @param codeListTitleUnSelectBackgroundColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleUnselectBackgroundColor
    */
-  setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: number): void {
-    this.markdownThemeCodeBlock.setCodeBlockListTitleUnselectBackgroundColor(codeListTitleUnSelectBackGroupColor)
+  setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: number): void {
+    this.markdownThemeCodeBlock.setCodeBlockListTitleUnselectBackgroundColor(codeListTitleUnSelectBackgroundColor)
   }
 
   /**
@@ -2211,12 +2211,12 @@ export class MarkdownTheme {
   /**
    * 设置数学公式背景色
    *
-   * @param latexMathBackGroupColor 数学公式背景色 - 默认Color.TRANSPARENT
+   * @param latexMathBackgroundColor 数学公式背景色 - 默认Color.TRANSPARENT
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLatexMath#setLatexMathBackgroundColor
    */
-  setLatexMathBackGroupColor(latexMathBackGroupColor: number): void {
-    this.markdownThemeLatexMath.setLatexMathBackgroundColor(latexMathBackGroupColor)
+  setLatexMathBackgroundColor(latexMathBackgroundColor: number): void {
+    this.markdownThemeLatexMath.setLatexMathBackgroundColor(latexMathBackgroundColor)
   }
 
   /**
@@ -2621,12 +2621,12 @@ export class MarkdownTheme {
   /**
    * 设置视频发布按钮文本颜色
    *
-   * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
+   * @param videoReleaseTextColor 视频发布按钮文本颜色 - 默认0xE6000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoReleaseButtonTextFontColor
    */
-  setVideoReleaseTexColor(videoReleaseTexColor: number): void {
-    this.markdownThemeVideo.setVideoReleaseButtonTextFontColor(videoReleaseTexColor)
+  setVideoReleaseTextColor(videoReleaseTextColor: number): void {
+    this.markdownThemeVideo.setVideoReleaseButtonTextFontColor(videoReleaseTextColor)
   }
 
   /**
@@ -2711,12 +2711,12 @@ export class MarkdownTheme {
   /**
    * 设置视频下载按钮文本颜色
    *
-   * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
+   * @param videoDownloadTextColor 视频下载按钮文本颜色 - 默认0xE6000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoDownloadButtonTextFontColor
    */
-  setVideoDownloadTexColor(videoDownloadTexColor: number): void {
-    this.markdownThemeVideo.setVideoDownloadButtonTextFontColor(videoDownloadTexColor)
+  setVideoDownloadTextColor(videoDownloadTextColor: number): void {
+    this.markdownThemeVideo.setVideoDownloadButtonTextFontColor(videoDownloadTextColor)
   }
 
   /**
@@ -2950,12 +2950,12 @@ export class MarkdownTheme {
   /**
    * 设置图片下载按钮文本颜色
    *
-   * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0XE6000000
+   * @param imageDownloadTextColor 图片下载按钮文本颜色 - 默认0XE6000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonTextFontColor
    */
-  setImageDownloadTexColor(imageDownloadTexColor: number): void {
-    this.markdownThemeImage.setImageDownloadButtonTextFontColor(imageDownloadTexColor)
+  setImageDownloadTextColor(imageDownloadTextColor: number): void {
+    this.markdownThemeImage.setImageDownloadButtonTextFontColor(imageDownloadTextColor)
   }
 
   /**
