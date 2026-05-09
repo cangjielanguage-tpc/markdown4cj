@@ -869,12 +869,12 @@ public class MarkdownThemeBuilder {
     /**
      * 设置文本格式链接背景颜色
      *
-     * @param linkBackGroupColor 文本格式链接背景颜色 - 默认Color.TRANSPARENT
+     * @param linkBackgroundColor 文本格式链接背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkTextBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkBackGroupColor(linkBackGroupColor: Color): MarkdownThemeBuilder {
-        this.linkTheme.linkTextBackgroundColor = linkBackGroupColor
+    public func setLinkBackgroundColor(linkBackgroundColor: Color): MarkdownThemeBuilder {
+        this.linkTheme.linkTextBackgroundColor = linkBackgroundColor
         return this
     }
 
@@ -895,24 +895,24 @@ public class MarkdownThemeBuilder {
     /**
      * 设置圆形图片格式链接主题背景颜色
      *
-     * @param linkCircleImageBackGroupColor 圆形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
+     * @param linkCircleImageBackgroundColor 圆形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkCircleIconBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: Color): MarkdownThemeBuilder {
-        this.linkTheme.linkCircleIconBackgroundColor = linkCircleImageBackGroupColor
+    public func setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: Color): MarkdownThemeBuilder {
+        this.linkTheme.linkCircleIconBackgroundColor = linkCircleImageBackgroundColor
         return this
     }
 
     /**
      * 设置圆形图片格式链接控件背景颜色
      *
-     * @param linkCircleImageButtonBackGroupColor 圆形图片格式链接控件背景颜色 - 默认Color.BLACK
+     * @param linkCircleImageButtonBackgroundColor 圆形图片格式链接控件背景颜色 - 默认Color.BLACK
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkCircleIconButtonBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: Color): MarkdownThemeBuilder {
-        this.linkTheme.linkCircleIconButtonBackgroundColor = linkCircleImageButtonBackGroupColor
+    public func setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: Color): MarkdownThemeBuilder {
+        this.linkTheme.linkCircleIconButtonBackgroundColor = linkCircleImageButtonBackgroundColor
         return this
     }
 
@@ -967,24 +967,24 @@ public class MarkdownThemeBuilder {
     /**
      * 设置圆角矩形图片格式链接主题背景颜色
      *
-     * @param linkRectImageBackGroupColor 圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
+     * @param linkRectImageBackgroundColor 圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: Color): MarkdownThemeBuilder {
-        this.linkTheme.linkRectIconBackgroundColor = linkRectImageBackGroupColor
+    public func setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: Color): MarkdownThemeBuilder {
+        this.linkTheme.linkRectIconBackgroundColor = linkRectImageBackgroundColor
         return this
     }
 
     /**
      * 设置圆角矩形图片格式链接控件背景颜色
      *
-     * @param linkRectImageButtonBackGroupColor 圆角矩形图片格式链接控件背景颜色 - 默认Color.BLACK
+     * @param linkRectImageButtonBackgroundColor 圆角矩形图片格式链接控件背景颜色 - 默认Color.BLACK
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconButtonBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: Color): MarkdownThemeBuilder {
-        this.linkTheme.linkRectIconButtonBackgroundColor = linkRectImageButtonBackGroupColor
+    public func setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: Color): MarkdownThemeBuilder {
+        this.linkTheme.linkRectIconButtonBackgroundColor = linkRectImageButtonBackgroundColor
         return this
     }
 
@@ -1063,24 +1063,24 @@ public class MarkdownThemeBuilder {
     /**
      * 设置空心圆角矩形图片格式链接主题背景颜色
      *
-     * @param linkRectToolImageBackGroupColor 空心圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
+     * @param linkRectToolImageBackgroundColor 空心圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: Color): MarkdownThemeBuilder {
-        this.linkTheme.linkRectToolIconBackgroundColor = linkRectToolImageBackGroupColor
+    public func setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: Color): MarkdownThemeBuilder {
+        this.linkTheme.linkRectToolIconBackgroundColor = linkRectToolImageBackgroundColor
         return this
     }
 
     /**
      * 设置空心圆角矩形图片格式链接控件背景颜色
      *
-     * @param linkRectToolImageButtonBackGroupColor 空心圆角矩形图片格式链接控件背景颜色 - 默认Color.WHITE
+     * @param linkRectToolImageButtonBackgroundColor 空心圆角矩形图片格式链接控件背景颜色 - 默认Color.WHITE
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconButtonBackgroundColor方法代替", since: "1.4.0"]
-    public func setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: Color): MarkdownThemeBuilder {
-        this.linkTheme.linkRectToolIconButtonBackgroundColor = linkRectToolImageButtonBackGroupColor
+    public func setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: Color): MarkdownThemeBuilder {
+        this.linkTheme.linkRectToolIconButtonBackgroundColor = linkRectToolImageButtonBackgroundColor
         return this
     }
 
@@ -1231,12 +1231,12 @@ public class MarkdownThemeBuilder {
     /**
      * 设置块引用背景颜色
      *
-     * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0xFFEAEAEA
+     * @param blockQuoteBackgroundColor 块引用背景颜色 - 默认0xFFEAEAEA
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用BlockQuoteTheme.setBlockQuoteBackgroundColor方法代替", since: "1.4.0"]
-    public func setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: Color): MarkdownThemeBuilder {
-        this.blockQuoteTheme.blockQuoteBackgroundColor = blockQuoteBackGroupColor
+    public func setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: Color): MarkdownThemeBuilder {
+        this.blockQuoteTheme.blockQuoteBackgroundColor = blockQuoteBackgroundColor
         return this
     }
 
@@ -1760,24 +1760,24 @@ public class MarkdownThemeBuilder {
     /**
      * 设置组合代码选中标题背景颜色
      *
-     * @param codeListTitleSelectBackGroupColor 组合代码选中标题背景颜色 - 默认Color.GRAY
+     * @param codeListTitleSelectBackgroundColor 组合代码选中标题背景颜色 - 默认Color.GRAY
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockListTitleSelectBackgroundColor方法代替", since: "1.4.0"]
-    public func setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: Color): MarkdownThemeBuilder {
-        this.codeBlockTheme.codeBlockListTitleSelectBackgroundColor = codeListTitleSelectBackGroupColor
+    public func setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: Color): MarkdownThemeBuilder {
+        this.codeBlockTheme.codeBlockListTitleSelectBackgroundColor = codeListTitleSelectBackgroundColor
         return this
     }
 
     /**
      * 设置组合代码未选中标题背景颜色
      *
-     * @param codeListTitleUnSelectBackGroupColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
+     * @param codeListTitleUnSelectBackgroundColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockListTitleUnselectBackgroundColor方法代替", since: "1.4.0"]
-    public func setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: Color): MarkdownThemeBuilder {
-        this.codeBlockTheme.codeBlockListTitleUnselectBackgroundColor = codeListTitleUnSelectBackGroupColor
+    public func setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: Color): MarkdownThemeBuilder {
+        this.codeBlockTheme.codeBlockListTitleUnselectBackgroundColor = codeListTitleUnSelectBackgroundColor
         return this
     }
 
@@ -2338,12 +2338,12 @@ public class MarkdownThemeBuilder {
     /**
      * 设置数学公式背景色
      *
-     * @param latexMathBackGroupColor 数学公式背景色 - 默认Color.TRANSPARENT
+     * @param latexMathBackgroundColor 数学公式背景色 - 默认Color.TRANSPARENT
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LatexMathTheme.setLatexMathBackgroundColor方法代替", since: "1.4.0"]
-    public func setLatexMathBackGroupColor(latexMathBackGroupColor: Color): MarkdownThemeBuilder {
-        this.latexMathTheme.latexMathBackgroundColor = latexMathBackGroupColor
+    public func setLatexMathBackgroundColor(latexMathBackgroundColor: Color): MarkdownThemeBuilder {
+        this.latexMathTheme.latexMathBackgroundColor = latexMathBackgroundColor
         return this
     }
 
@@ -2843,12 +2843,12 @@ public class MarkdownThemeBuilder {
     /**
      * 设置视频发布按钮文本颜色
      *
-     * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
+     * @param videoReleaseTextColor 视频发布按钮文本颜色 - 默认0xE6000000
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用VideoTheme.setVideoReleaseButtonTextFontColor方法代替", since: "1.4.0"]
-    public func setVideoReleaseTexColor(videoReleaseTexColor: Color): MarkdownThemeBuilder {
-        this.videoTheme.videoReleaseButtonTextFontColor = videoReleaseTexColor
+    public func setVideoReleaseTextColor(videoReleaseTextColor: Color): MarkdownThemeBuilder {
+        this.videoTheme.videoReleaseButtonTextFontColor = videoReleaseTextColor
         return this
     }
 
@@ -2943,12 +2943,12 @@ public class MarkdownThemeBuilder {
     /**
      * 设置视频下载按钮文本颜色
      *
-     * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
+     * @param videoDownloadTextColor 视频下载按钮文本颜色 - 默认0xE6000000
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用VideoTheme.setVideoDownloadButtonTextFontColor方法代替", since: "1.4.0"]
-    public func setVideoDownloadTexColor(videoDownloadTexColor: Color): MarkdownThemeBuilder {
-        this.videoTheme.videoDownloadButtonTextFontColor = videoDownloadTexColor
+    public func setVideoDownloadTextColor(videoDownloadTextColor: Color): MarkdownThemeBuilder {
+        this.videoTheme.videoDownloadButtonTextFontColor = videoDownloadTextColor
         return this
     }
 
@@ -3238,12 +3238,12 @@ public class MarkdownThemeBuilder {
     /**
      * 设置图片下载按钮文本颜色
      *
-     * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0xE6000000
+     * @param imageDownloadTextColor 图片下载按钮文本颜色 - 默认0xE6000000
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonTextFontColor方法代替", since: "1.4.0"]
-    public func setImageDownloadTexColor(imageDownloadTexColor: Color): MarkdownThemeBuilder {
-        this.imageTheme.imageDownloadButtonTextFontColor = imageDownloadTexColor
+    public func setImageDownloadTextColor(imageDownloadTextColor: Color): MarkdownThemeBuilder {
+        this.imageTheme.imageDownloadButtonTextFontColor = imageDownloadTextColor
         return this
     }
 
