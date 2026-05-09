@@ -26,7 +26,7 @@ public class GlobalContext {
 }
 
 /**
- * 设置StageContext互操作函数
+ * 设置全局StageContext的互操作函数
  *
  * @param runtime JSContext
  * @param callInfo 接口数据

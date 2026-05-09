@@ -1154,35 +1154,35 @@ export declare class CJMarkdownVideoTheme {
 }
 
 export declare class CJMarkdownConfig {
-  setLinkCallback(cb: (funcArg0: string) => void): void
+  setLinkCallback(cb: (url: string) => void): void
 
-  setTextCopyCallback(cb: (funcArg0: string) => void): void
+  setTextCopyCallback(cb: (text: string) => void): void
 
-  setImageCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void
+  setImageCallback(cb: (url: string, urlList: Array<string>) => void): void
 
-  setImageDownloadCallback(cb: (string) => void): void
+  setImageDownloadCallback(cb: (url: string) => void): void
 
-  setAudioCallback(cb: (funcArg0: string) => void): void
+  setAudioCallback(cb: (url: string) => void): void
 
-  setVideoCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void
+  setVideoCallback(cb: (url: string, urlList: Array<string>) => void): void
 
-  setVideoImageCallback(cb: (funcArg0: string, funcArg1: (funcArg0: string, funcArg1: number, funcArg2: number) => void) => void): void
+  setVideoImageCallback(cb: (url: string, coverCallback: (coverUrl: string, aspectRatio: number, duration: number) => void) => void): void
 
-  setVideoReleaseCallback(cb: (funcArg0: string) => void): void
+  setVideoReleaseCallback(cb: (url: string) => void): void
 
-  setVideoDownloadCallback(cb: (funcArg0: string) => void): void
+  setVideoDownloadCallback(cb: (url: string) => void): void
 
-  setCodeCopyCallback(cb: (funcArg0: string) => void): void
+  setCodeCopyCallback(cb: (code: string) => void): void
 
-  setCodeFullScreenCallback(cb: (funcArg0: string, funcArg1: string | undefined) => void): void
+  setCodeFullScreenCallback(cb: (code: string, language: string | undefined) => void): void
 
-  setLatexImageCallback(cb: (funcArg0: ArrayBuffer, funcArg1: number, funcArg2: number) => void): void
+  setLatexImageCallback(cb: (imageData: ArrayBuffer, height: number, width: number) => void): void
 
-  setLatexStrCallback(cb: (funcArg0: string) => string): void
+  setLatexStrCallback(cb: (formula: string) => string): void
 
-  setTocIndexCallback(cb: (funcArg0: number | undefined) => void): void
+  setTocIndexCallback(cb: (offset: number | undefined) => void): void
 
-  setFootnoteCallback(cb: (funcArg0: number | undefined) => void): void
+  setFootnoteCallback(cb: (offset: number | undefined) => void): void
 
   setNodeString(nodeString: CJNodeViewStringBuilder): void
 
