@@ -1201,7 +1201,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setTextFontStyleForDesignateHeading(1, theme.getHeading1TextFontStyle())
     }
     if (theme.getHeading1TextFontWeight() !== undefined) {
-      cjMarkdownTheme.setTextFontWeightForDesignateHeading(1, theme.getHeading1TextFontWeight())
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(1, this.convertFontWeight(theme.getHeading1TextFontWeight() ?? FontWeight.Normal))
     }
     if (theme.getHeading1TextFontFamily() !== undefined) {
       cjMarkdownTheme.setTextFontFamilyForDesignateHeading(1, theme.getHeading1TextFontFamily())
@@ -1246,7 +1246,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setTextFontStyleForDesignateHeading(2, theme.getHeading2TextFontStyle())
     }
     if (theme.getHeading2TextFontWeight() !== undefined) {
-      cjMarkdownTheme.setTextFontWeightForDesignateHeading(2, theme.getHeading2TextFontWeight())
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(2, this.convertFontWeight(theme.getHeading2TextFontWeight() ?? FontWeight.Normal))
     }
     if (theme.getHeading2TextFontFamily() !== undefined) {
       cjMarkdownTheme.setTextFontFamilyForDesignateHeading(2, theme.getHeading2TextFontFamily())
@@ -1291,7 +1291,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setTextFontStyleForDesignateHeading(3, theme.getHeading3TextFontStyle())
     }
     if (theme.getHeading3TextFontWeight() !== undefined) {
-      cjMarkdownTheme.setTextFontWeightForDesignateHeading(3, theme.getHeading3TextFontWeight())
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(3, this.convertFontWeight(theme.getHeading3TextFontWeight() ?? FontWeight.Normal))
     }
     if (theme.getHeading3TextFontFamily() !== undefined) {
       cjMarkdownTheme.setTextFontFamilyForDesignateHeading(3, theme.getHeading3TextFontFamily())
@@ -1327,7 +1327,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setTextFontStyleForDesignateHeading(4, theme.getHeading4TextFontStyle())
     }
     if (theme.getHeading4TextFontWeight() !== undefined) {
-      cjMarkdownTheme.setTextFontWeightForDesignateHeading(4, theme.getHeading4TextFontWeight())
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(4, this.convertFontWeight(theme.getHeading4TextFontWeight() ?? FontWeight.Normal))
     }
     if (theme.getHeading4TextFontFamily() !== undefined) {
       cjMarkdownTheme.setTextFontFamilyForDesignateHeading(4, theme.getHeading4TextFontFamily())
@@ -1363,7 +1363,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setTextFontStyleForDesignateHeading(5, theme.getHeading5TextFontStyle())
     }
     if (theme.getHeading5TextFontWeight() !== undefined) {
-      cjMarkdownTheme.setTextFontWeightForDesignateHeading(5, theme.getHeading5TextFontWeight())
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(5, this.convertFontWeight(theme.getHeading5TextFontWeight() ?? FontWeight.Normal))
     }
     if (theme.getHeading5TextFontFamily() !== undefined) {
       cjMarkdownTheme.setTextFontFamilyForDesignateHeading(5, theme.getHeading5TextFontFamily())
@@ -1399,7 +1399,7 @@ export struct CJMarkdown {
       cjMarkdownTheme.setTextFontStyleForDesignateHeading(6, theme.getHeading6TextFontStyle())
     }
     if (theme.getHeading6TextFontWeight() !== undefined) {
-      cjMarkdownTheme.setTextFontWeightForDesignateHeading(6, theme.getHeading6TextFontWeight())
+      cjMarkdownTheme.setTextFontWeightForDesignateHeading(6, this.convertFontWeight(theme.getHeading6TextFontWeight() ?? FontWeight.Normal))
     }
     if (theme.getHeading6TextFontFamily() !== undefined) {
       cjMarkdownTheme.setTextFontFamilyForDesignateHeading(6, theme.getHeading6TextFontFamily())
