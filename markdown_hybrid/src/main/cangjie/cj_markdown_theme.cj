@@ -143,7 +143,7 @@ public class CJMarkdownTheme {
     /**
      * 设置音频样式
      *
-     * @param cjMarkdownAudioTheme 全局样式
+     * @param cjMarkdownAudioTheme 音频样式
      */
     public func setCJMarkdownAudioTheme(cjMarkdownAudioTheme: CJMarkdownAudioTheme): Unit {
         this.cjMarkdownAudioTheme = cjMarkdownAudioTheme
@@ -152,7 +152,7 @@ public class CJMarkdownTheme {
     /**
      * 设置加粗文本样式
      *
-     * @param cjMarkdownBoldTheme 全局样式
+     * @param cjMarkdownBoldTheme 加粗文本样式
      */
     public func setCJMarkdownBoldTheme(cjMarkdownBoldTheme: CJMarkdownBoldTheme): Unit {
         this.cjMarkdownBoldTheme = cjMarkdownBoldTheme
@@ -170,7 +170,7 @@ public class CJMarkdownTheme {
     /**
      * 设置分割线样式
      *
-     * @param  cjMarkdownDividerTheme分割线样式
+     * @param cjMarkdownDividerTheme 分割线样式
      */
     public func setCJMarkdownDividerTheme(cjMarkdownDividerTheme: CJMarkdownDividerTheme): Unit {
         this.cjMarkdownDividerTheme = cjMarkdownDividerTheme
@@ -251,7 +251,7 @@ public class CJMarkdownTheme {
     /**
      * 设置内联代码样式
      *
-     * @param  内联代码样式
+     * @param cjMarkdownInlineCodeTheme 内联代码样式
      */
     public func setCJMarkdownInlineCodeTheme(cjMarkdownInlineCodeTheme: CJMarkdownInlineCodeTheme): Unit {
         this.cjMarkdownInlineCodeTheme = cjMarkdownInlineCodeTheme

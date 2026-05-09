@@ -1016,7 +1016,7 @@ export class MarkdownTheme {
   /**
    * 设置空心圆角矩形图片格式链接控件背景颜色
    *
-   * @param linkRectToolImageButtonBackgroundColor 空心圆角矩形图片格式链接控件背景颜色 - 默认OXFFFFFFFF
+   * @param linkRectToolImageButtonBackgroundColor 空心圆角矩形图片格式链接控件背景颜色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconBackgroundColor
    */
@@ -1255,7 +1255,7 @@ export class MarkdownTheme {
   /**
    * 设置有序列表前缀文本颜色
    *
-   * @param orderedListItemColor 有序列表前缀文本颜色 - 默认OXFF191919
+   * @param orderedListItemColor 有序列表前缀文本颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeOrderedList#setOrderedListMarkerTextFontColor
    */
@@ -1299,7 +1299,7 @@ export class MarkdownTheme {
   /**
    * 设置无序列表前缀文本颜色
    *
-   * @param bulletListItemColor 无序列表前缀文本颜色 - 默认OXFF191919
+   * @param bulletListItemColor 无序列表前缀文本颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBulletList#setBulletListBulletTextFontColor
    */
@@ -1356,7 +1356,7 @@ export class MarkdownTheme {
   /**
    * 设置内联代码文本颜色
    *
-   * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
+   * @param codeTextColor 内联代码文本颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeInlineCode#setInlineCodeTextFontColor
    */
@@ -1367,7 +1367,7 @@ export class MarkdownTheme {
   /**
    * 设置内联代码背景颜色
    *
-   * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFFEAEAEA
+   * @param codeBackgroundColor 内联代码背景颜色 - 默认0xFFEAEAEA
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeInlineCode#setInlineCodeTextBackgroundColor
    */
