@@ -268,7 +268,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置代码复制按钮的点击事件
      *
-     * @param codeCopyCallback 代码复制点击回调接口 (String:代码内容型)
+     * @param codeCopyCallback 代码复制点击回调接口 (String:代码内容)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setCodeCopyCallback(codeCopyCallback: (String) -> Unit): MarkdownConfigurationBuilder {

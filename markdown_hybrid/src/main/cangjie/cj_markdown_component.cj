@@ -79,70 +79,70 @@ class CJMarkdownComponent {
         mdStr = input
     }
 
-    func setPlugin():Markdown{
+    func setPlugin(): Markdown {
         let markdownBuilder:MarkdownBuilder = Markdown.builder()
-        if(let Some(v) <- plugin){
-            if(v.isBlockAudioPlugin){
+        if (let Some(v) <- plugin) {
+            if (v.isBlockAudioPlugin) {
                 markdownBuilder.usePlugin(BlockAudioPlugin.create())
             }
-            if(v.isBlockVideoPlugin){
+            if (v.isBlockVideoPlugin) {
                 markdownBuilder.usePlugin(BlockVideoPlugin.create())
             }
-            if(v.isCodeListPlugin){
+            if (v.isCodeListPlugin) {
                 markdownBuilder.usePlugin(CodeListPlugin.create())
             }
-            if(v.isHtmlPlugin){
+            if (v.isHtmlPlugin) {
                 markdownBuilder.usePlugin(HtmlPlugin.create())
             }
-            if(v.isTablePlugin){
+            if (v.isTablePlugin) {
                 markdownBuilder.usePlugin(TablePlugin.create())
             }
-            if(v.isTaskListPlugin){
+            if (v.isTaskListPlugin) {
                 markdownBuilder.usePlugin(TaskListPlugin.create())
             }
-            if(v.isStrikethroughPlugin){
+            if (v.isStrikethroughPlugin) {
                 markdownBuilder.usePlugin(StrikethroughPlugin.create())
             }
-            if(v.isLinkifyPlugin){
+            if (v.isLinkifyPlugin) {
                 markdownBuilder.usePlugin(LinkifyPlugin.create(v.regs))
             }
-            if(v.isLinkViewPlugin){
+            if (v.isLinkViewPlugin) {
                 markdownBuilder.usePlugin(LinkViewPlugin.create())
             }
-            if(v.isLatexMathPlugin){
+            if (v.isLatexMathPlugin) {
                 markdownBuilder.usePlugin(LatexMathPluginV2.create())
             }
-            if(v.isImageStylePlugin){
+            if (v.isImageStylePlugin) {
                 markdownBuilder.usePlugin(ImageStylePlugin.create())
             }
-            if(v.isImageSlidePlugin){
+            if (v.isImageSlidePlugin) {
                 markdownBuilder.usePlugin(ImageSlidePlugin.create())
             }
-            if(v.isImageTextMixPlugin){
+            if (v.isImageTextMixPlugin) {
                 markdownBuilder.usePlugin(ImageTextMixPlugin.create())
             }
-            if(v.isDescListPlugin){
+            if (v.isDescListPlugin) {
                 markdownBuilder.usePlugin(DescListPlugin.create())
             }
-            if(v.isHeadIDPlugin){
+            if (v.isHeadIDPlugin) {
                 markdownBuilder.usePlugin(IdHeadingPlugin.create())
             }
-            if(v.isTocPlugin){
+            if (v.isTocPlugin) {
                 markdownBuilder.usePlugin(TocPlugin.create())
             }
-            if(v.isFootnotePlugin){
+            if (v.isFootnotePlugin) {
                 markdownBuilder.usePlugin(FootnotePlugin.create())
             }
-            if(v.isImageCollectPlugin){
+            if (v.isImageCollectPlugin) {
                 markdownBuilder.usePlugin(ImageCollectPlugin.create())
             }
-            if(v.isSubPlugin){
+            if (v.isSubPlugin) {
                 markdownBuilder.usePlugin(SubPlugin.create())
             }
-            if(v.isSupPlugin){
+            if (v.isSupPlugin) {
                 markdownBuilder.usePlugin(SupPlugin.create())
             }
-            if(v.isEmojiPlugin){
+            if (v.isEmojiPlugin) {
                 markdownBuilder.usePlugin(EmojiPlugin.create(v.isEmojiLight))
             }
         }
@@ -158,7 +158,7 @@ class CJMarkdownComponent {
         if (let Some(v) <- arkImgPreprocessFunc) {
             markdownConfigurationBuilder.setImageCallbackCallback(v) // 设置图片替换事件
         }
-        if(let Some(w) <- cfg){
+        if (let Some(w) <- cfg) {
             markdownConfigurationBuilder.setMarkdownTheme(setTheme()) // 设置markdown默认样式
             if (let Some(v) <- w.linkCallback) {
                 markdownConfigurationBuilder.setLinkCallback(v) // 设置链接的点击事件
@@ -223,10 +223,10 @@ class CJMarkdownComponent {
 
     func setTheme(): MarkdownTheme {
         let markdownThemeBuilder: MarkdownThemeBuilder = MarkdownTheme.emptyBuilder()
-        if(let Some(w) <- cfg){
+        if (let Some(w) <- cfg) {
             if (let Some(v) <- w.cjMarkdownTheme.cjMarkdownCodeBlockTheme.codeBlockIsDark) {
                 // 设置markdown代码高亮样式
-                if(v){
+                if (v) {
                     markdownThemeBuilder.setPrismTheme(PrismThemeDarcula.create()) // 深色
                 } else {
                     markdownThemeBuilder.setPrismTheme(PrismThemeDefault.create()) // 浅色
