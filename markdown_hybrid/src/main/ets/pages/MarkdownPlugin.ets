@@ -114,9 +114,9 @@ export class MarkdownPlugin {
   }
 
   /**
-   * 设置组合代码快列表插件
+   * 设置组合代码块列表插件
    *
-   * @param isCodeListPlugin 是否设置组合代码快列表插件 - true：设置组合代码快列表插件；false：不设置组合代码快列表插件。默认false
+   * @param isCodeListPlugin 是否设置组合代码块列表插件 - true：设置组合代码块列表插件；false：不设置组合代码块列表插件。默认false
    */
   setIsCodeListPlugin(isCodeListPlugin: boolean): void {
     this.isCodeListPlugin = isCodeListPlugin
@@ -226,7 +226,7 @@ export class MarkdownPlugin {
   /**
    * 设置图片不混排插件
    *
-   * @param isImageTextMixPlugin 是否图片不混排插件 - true：图片混排；false：图片不混排。默认true
+   * @param isImageTextMixPlugin 是否图片不混排插件 - true：图片不混排；false：图片混排。默认false
    */
   setIsImageTextMixPlugin(isImageTextMixPlugin: boolean): void {
     this.isImageTextMixPlugin = isImageTextMixPlugin
@@ -244,7 +244,7 @@ export class MarkdownPlugin {
   /**
    * 设置是否加载定义列表解析插件
    *
-   * @param isDescListPlugin 是否加载定义列表解析插件 - true：设置加载定义列表解析插件；false：不设置加载定义列表解析插件。默认false
+   * @param isDescListPlugin 是否加载定义列表解析插件 - true：启用定义列表解析插件；false：禁用定义列表解析插件。默认false
    */
   setIsDescListPlugin(isDescListPlugin: boolean): void {
     this.isDescListPlugin = isDescListPlugin
@@ -280,7 +280,7 @@ export class MarkdownPlugin {
   /**
    * 设置是否加载emoji解析插件
    *
-   * @param isEmojiPlugin 是否加载Emoji解析插件 - true：设置加载Emoji解析插件件；false：不设置加载Emoji解析插件。默认false
+   * @param isEmojiPlugin 是否加载Emoji解析插件 - true：设置加载Emoji解析插件；false：不设置加载Emoji解析插件。默认false
    * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
    */
   setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void {

@@ -1,4 +1,3 @@
-// import { MarkdownNodeViewString } from "./MarkdownNodeViewString"
 import { MarkdownNodeViewString } from "./CJMarkDown"
 import { MarkdownTheme } from "./MarkdownTheme"
 
@@ -37,7 +36,7 @@ export class MarkdownConfiguration {
   /**
    * 视频的图片替换回调
    */
-  private videoImageCallback?: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void = undefined
+  private videoImageCallback?: (funcArg0: string, funcArg1: (funcArg0: string, funcArg1: number, funcArg2: number) => void) => void = undefined
   /**
    * 视频发布的点击事件
    */
@@ -100,7 +99,7 @@ export class MarkdownConfiguration {
   /**
    * 设置图片点击回调
    *
-   * @param cb 图片点击回调。 (funcArg0：图片url,funcArg1:所有图片和视频连接集合 --- 需要加载图片视频列表url集合列表解析插件)
+   * @param cb 图片点击回调。 (funcArg0：图片url,funcArg1：所有图片和视频链接集合 --- 需要加载图片视频列表url集合列表解析插件)
    */
   setImageCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void {
     this.imageCallback = cb
@@ -136,7 +135,7 @@ export class MarkdownConfiguration {
   /**
    * 设置视频点击回调
    *
-   * @param cb 视频点击回调。 (funcArg0：视频url,funcArg1:所有图片和视频连接集合 --- 需要加载图片视频列表url集合列表解析插件) --- 需要加载视频解析插件
+   * @param cb 视频点击回调。 (funcArg0：视频url,funcArg1：所有图片和视频链接集合 --- 需要加载图片视频列表url集合列表解析插件) --- 需要加载视频解析插件
    */
   setVideoCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void {
     this.videoCallback = cb
@@ -145,9 +144,9 @@ export class MarkdownConfiguration {
   /**
    * 设置视频占位图和宽高比和视频时长的回调
    *
-   * @param cb 视频视频占位图和宽高比和视频时长回调。 (funcArg0：视频url,funcArg1:视频占位图和宽高比和视频时长回调 (funcArgfuncArg0:视频首帧图,funcArgfuncArg1:图片宽高比,funcArgfuncArg2,视频时长)) --- 需要加载视频解析插件
+   * @param cb 视频占位图和宽高比和视频时长回调。 (funcArg0：视频url,funcArg1：视频占位图和宽高比和视频时长回调 (funcArg0：视频首帧图,funcArg1：图片宽高比,funcArg2：视频时长)) --- 需要加载视频解析插件
    */
-  setVideoImageCallback(cb: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void): void {
+  setVideoImageCallback(cb: (funcArg0: string, funcArg1: (funcArg0: string, funcArg1: number, funcArg2: number) => void) => void): void {
     this.videoImageCallback = cb
   }
 
@@ -190,7 +189,7 @@ export class MarkdownConfiguration {
   /**
    * 设置数学公式点击回调
    *
-   * @param cb 数学公式点击回调(funcArg0：数学公式图片数组数据, funcArg1:图片高度, funcArg2:图片宽度) --- 需要加载数学公式解析插件
+   * @param cb 数学公式点击回调(funcArg0：数学公式图片数组数据, funcArg1：图片高度, funcArg2：图片宽度) --- 需要加载数学公式解析插件
    */
   setLatexImageCallback(cb: (funcArg0: ArrayBuffer, funcArg1: number, funcArg2: number) => void): void {
     this.latexImageCallback = cb
@@ -228,7 +227,7 @@ export class MarkdownConfiguration {
    *
    * @param nodeString 全局文本对象
    */
-  setNodeString(nodeString: MarkdownNodeViewString): void{
+  setNodeString(nodeString: MarkdownNodeViewString): void {
     this.markdownNodeViewString = nodeString
   }
 
@@ -309,7 +308,7 @@ export class MarkdownConfiguration {
    *
    * @returns 视频的图片替换回调函数
    */
-  getVideoImageCallback(): ((funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void) | undefined {
+  getVideoImageCallback(): ((funcArg0: string, funcArg1: (funcArg0: string, funcArg1: number, funcArg2: number) => void) => void) | undefined {
     return this.videoImageCallback
   }
 
