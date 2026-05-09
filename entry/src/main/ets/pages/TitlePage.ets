@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
@@ -23,367 +20,371 @@ import { TitleData } from '../model/TitleData'
 @Component
 struct TitlePage {
   // ---------------- 通用
-  /**
-   * 滑动控制器
-   */
+  // 滑动控制器
   scroller: Scroller = new Scroller()
-  /**
-   * 顶部导航栏高度
-   */
-  @StorageProp('safeTop')
-  safeTop: number = 0
-  /**
-   * rawfile路径
-   */
+  @StorageProp('safeTop') safeTop: number = 0 // 顶部导航栏高度
+  // rawfile路径
   rawFilePath: string = "001_标题"
-  /**
-   * rawfile文件夹列表
-   */
-  @State
-  folderList: Array<string> = new Array<string>()
-  /**
-   * 是否全量加载Markdown文本列表
-   */
+  @State folderList: Array<string> = new Array<string>() // rawfile文件夹列表
+  // 是否全量加载Markdown文本列表
   isFullList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否全量加载Markdown文本
-   */
-  @State
-  isFull: boolean = true
-  /**
-   * 是否增量解析Markdown文本列表
-   */
+  @State isFull: boolean = true // 是否全量加载Markdown文本
+  // 是否增量解析Markdown文本列表
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否增量解析Markdown文本
-   */
-  @State
-  incrementalAnalysis: boolean = false
-  /**
-   * 增量加载每次间隔时间列表
-   */
+  @State incrementalAnalysis: boolean = false // 是否增量解析Markdown文本
+  // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
-  /**
-   * 增量加载每次间隔时间
-   */
-  @State
-  time: number = 50
-  /**
-   * 增量每次增量文本数量列表
-   */
+  @State time: number = 50 // 增量加载每次间隔时间
+  // 增量每次增量文本数量列表
   textNumberList: Array<number> = textNumberListGeneralData
-  /**
-   * 增量每次增量文本数量
-   */
-  @State
-  textNumber: number = 10
-  /**
-   * 是否同步解析Markdown文本列表
-   */
+  @State textNumber: number = 10 // 增量每次增量文本数量
+  // 是否同步解析Markdown文本列表
   isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否同步解析Markdown文本
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴效果列表
-   */
+  @State isMarkdownParserSync: boolean = false // 是否同步解析Markdown文本
+  // 是否打开长按复制粘贴效果列表
   isOnCopyList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否打开长按复制粘贴效果
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * Markdown文本第一个模块上边距列表
-   */
-  blockFirstTopMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * Markdown文本最后一个模块下边距列表
-   */
-  blockLastBottomMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * Markdown文本模块间上下间距列表
-   */
-  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 是否允许markdown控件自身响应滑动列表
-   */
+  @State isOnCopy: boolean = false // 是否打开长按复制粘贴效果
+  // markdown全局上外边距列表
+  blockMarginTopList: Array<number> = marginListGeneralData
+  @State blockMarginTop: number = 0 // markdown全局上外边距
+  // markdown全局右外边距列表
+  blockMarginRightList: Array<number> = marginListGeneralData
+  @State blockMarginRight: number = 0 // markdown全局右外边距
+  // markdown全局下外边距列表
+  blockMarginBottomList: Array<number> = marginListGeneralData
+  @State blockMarginBottom: number = 0 // markdown全局下外边距
+  // markdown全局左外边距列表
+  blockMarginLeftList: Array<number> = marginListGeneralData
+  @State blockMarginLeft: number = 0 // markdown全局左外边距
+  // 模块间上下间距列表
+  markdownBlockSpacingList: Array<number> = marginListGeneralData
+  @State markdownBlockSpacing: number = 8 // 模块间上下间距
+  // 软换行是否换行列表
+  isLineBreakList: Array<boolean> = booleanListGeneralData
+  @State isLineBreak: boolean = false // 软换行是否换行
+  // 背景颜色列表
+  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State globalBackgroundColor: number | undefined = undefined // 背景颜色
+  // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否允许markdown控件自身响应滑动
-   */
-  @State
-  openGestureSwipe: boolean = false
-  /**
-   * 是否开启响应滑动测试列表
-   */
+  @State openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
+  // 是否开启响应滑动测试列表
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否开启响应滑动测试
-   */
-  @State
-  openGestureSwipeTest: boolean = false
+  @State openGestureSwipeTest: boolean = false // 是否开启响应滑动测试
 
   // ---------------- 专有
-  /**
-   * H1、H2下划线高度列表
-   */
-  headingBreakHeightList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  /**
-   * H1、H2下划线高度
-   */
-  @State
-  headingBreakHeight: number = 1
-  /**
-   * H1下划线颜色列表
-   */
-  headingBreakColorList1: Array<number | undefined> = colorListGeneralData
-  /**
-   * H1下划线颜色
-   */
-  @State
-  headingBreakColor1: number | undefined = undefined
-  /**
-   * H2下划线颜色列表
-   */
-  headingBreakColorList2: Array<number | undefined> = colorListGeneralData
-  /**
-   * H2下划线颜色
-   */
-  @State
-  headingBreakColor2: number | undefined = undefined
-  /**
-   * 标题文本字间距列表
-   */
-  headingTextWordSpaceList: Array<number> = textWordSpaceListGeneralData
-  /**
-   * 标题文本字间距
-   */
-  @State
-  headingTextWordSpace: number = 0
-  /**
-   * 一级标题行高列表
-   */
-  headingTextLineHeight1List: Array<number> = textLineHeightListGeneralData
-  /**
-   * 一级标题行高
-   */
-  @State
-  headingTextLineHeight1: number = 22
-  /**
-   * 二级标题行高列表
-   */
-  headingTextLineHeight2List: Array<number> = textLineHeightListGeneralData
-  /**
-   * 二级标题行高
-   */
-  @State
-  headingTextLineHeight2: number = 22
-  /**
-   * 三级标题行高列表
-   */
-  headingTextLineHeight3List: Array<number> = textLineHeightListGeneralData
-  /**
-   * 三级标题行高
-   */
-  @State
-  headingTextLineHeight3: number = 22
-  /**
-   * 四级标题行高列表
-   */
-  headingTextLineHeight4List: Array<number> = textLineHeightListGeneralData
-  /**
-   * 四级标题行高
-   */
-  @State
-  headingTextLineHeight4: number = 22
-  /**
-   * 五级标题行高列表
-   */
-  headingTextLineHeight5List: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
-  /**
-   * 五级标题行高
-   */
-  @State
-  headingTextLineHeight5: number = 22
-  /**
-   * 六级标题行高列表
-   */
-  headingTextLineHeight6List: Array<number> = textLineHeightListGeneralData
-  /**
-   * 六级标题行高
-   */
-  @State
-  headingTextLineHeight6: number = 22
-  /**
-   * 标题文本大小数组1
-   */
-  @State
-  headingTextSizeMultipliersList1: Array<number> = textSizeListGeneralData
-  /**
-   * 标题文本大小1
-   */
-  @State
-  headingTextSizeMultipliers1: number = 20
-  /**
-   * 标题文本大小数组2
-   */
-  @State
-  headingTextSizeMultipliersList2: Array<number> = textSizeListGeneralData
-  /**
-   * 标题文本大小2
-   */
-  @State
-  headingTextSizeMultipliers2: number = 17
-  /**
-   * 标题文本大小数组3
-   */
-  @State
-  headingTextSizeMultipliersList3: Array<number> = textSizeListGeneralData
-  /**
-   * 标题文本大小3
-   */
-  @State
-  headingTextSizeMultipliers3: number = 16
-  /**
-   * 标题文本大小数组4
-   */
-  @State
-  headingTextSizeMultipliersList4: Array<number> = textSizeListGeneralData
-  /**
-   * 标题文本大小4
-   */
-  @State
-  headingTextSizeMultipliers4: number = 15
-  /**
-   * 标题文本大小数组5
-   */
-  @State
-  headingTextSizeMultipliersList5: Array<number> = textSizeListGeneralData
-  /**
-   * 标题文本大小5
-   */
-  @State
-  headingTextSizeMultipliers5: number = 15
-  /**
-   * 标题文本大小数组6
-   */
-  @State
-  headingTextSizeMultipliersList6: Array<number> = textSizeListGeneralData
-  /**
-   * 标题文本大小6
-   */
-  @State
-  headingTextSizeMultipliers6: number = 13
-  /**
-   * 标题文本字体列表
-   */
-  headingTypefaceList: Array<string> = textTypefaceListGeneralData
-  /**
-   * 标题文本字体
-   */
-  @State
-  headingTypeface: string = "HarmonyOS Sans"
-  /**
-   * 标题模块上间距列表
-   */
-  headingTopMarginsList: Array<number> = marginListGeneralData
-  /**
-   * 标题模块上间距
-   */
-  @State
-  headingTopMargins: number = 8
-  /**
-   * 标题模块下间距列表
-   */
-  headingBottomMarginsList: Array<number> = marginListGeneralData
-  /**
-   * 标题模块下间距
-   */
-  @State
-  headingBottomMargins: number = 8
-  /**
-   * 标题文本颜色数组1
-   */
-  @State
-  headingTextColorsList1: Array<number | undefined> = colorListGeneralData
-  /**
-   * 标题文本颜色1
-   */
-  @State
-  headingTextColors1: number | undefined = undefined
-  /**
-   * 标题文本颜色数组2
-   */
-  @State
-  headingTextColorsList2: Array<number | undefined> = colorListGeneralData
-  /**
-   * 标题文本颜色2
-   */
-  @State
-  headingTextColors2: number | undefined = undefined
-  /**
-   * 标题文本颜色数组3
-   */
-  @State
-  headingTextColorsList3: Array<number | undefined> = colorListGeneralData
-  /**
-   * 标题文本颜色3
-   */
-  @State
-  headingTextColors3: number | undefined = undefined
-  /**
-   * 标题文本颜色数组4
-   */
-  @State
-  headingTextColorsList4: Array<number | undefined> = colorListGeneralData
-  /**
-   * 标题文本颜色4
-   */
-  @State
-  headingTextColors4: number | undefined = undefined
-  /**
-   * 标题文本颜色数组5
-   */
-  @State
-  headingTextColorsList5: Array<number | undefined> = colorListGeneralData
-  /**
-   * 标题文本颜色5
-   */
-  @State
-  headingTextColors5: number | undefined = undefined
-  /**
-   * 标题文本颜色数组6
-   */
-  @State
-  headingTextColorsList6: Array<number | undefined> = colorListGeneralData
-  /**
-   * 标题文本颜色6
-   */
-  @State
-  headingTextColors6: number | undefined = undefined
-  /**
-   * 配置数据内容
-   */
-  @State
-  titleData: TitleData = new TitleData()
+  // 一级标题背景颜色列表
+  heading1BackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State heading1BackgroundColor: number | undefined = undefined // 一级标题背景颜色
+  // 一级标题上外边距列表
+  heading1MarginTopList: Array<number> = marginListGeneralData
+  @State heading1MarginTop: number = 8 // 一级标题上外边距
+  // 一级标题右外边距列表
+  heading1MarginRightList: Array<number> = marginListGeneralData
+  @State heading1MarginRight: number = 0 // 一级标题右外边距
+  // 一级标题下外边距列表
+  heading1MarginBottomList: Array<number> = marginListGeneralData
+  @State heading1MarginBottom: number = 8 // 一级标题下外边距
+  // 一级标题左外边距列表
+  heading1MarginLeftList: Array<number> = marginListGeneralData
+  @State heading1MarginLeft: number = 0 // 一级标题左外边距
+  // 一级标题上内边距列表
+  heading1PaddingTopList: Array<number> = marginListGeneralData
+  @State heading1PaddingTop: number = 0 // 一级标题上内边距
+  // 一级标题右内边距列表
+  heading1PaddingRightList: Array<number> = marginListGeneralData
+  @State heading1PaddingRight: number = 0 // 一级标题右内边距
+  // 一级标题下内边距列表
+  heading1PaddingBottomList: Array<number> = marginListGeneralData
+  @State heading1PaddingBottom: number = 0 // 一级标题下内边距
+  // 一级标题左内边距列表
+  heading1PaddingLeftList: Array<number> = marginListGeneralData
+  @State heading1PaddingLeft: number = 0 // 一级标题左内边距
+  // 一级标题文本颜色列表
+  heading1TextFontColorList: Array<number | undefined> = colorListGeneralData
+  @State heading1TextFontColor: number | undefined = undefined // 一级标题文本颜色
+  // 一级标题文本尺寸列表
+  heading1TextFontSizeList: Array<number> = textSizeListGeneralData
+  @State heading1TextFontSize: number = 24 // 一级标题文本尺寸
+  // 一级标题文本字体样式列表
+  heading1TextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  @State heading1TextFontStyle: FontStyle = FontStyle.Normal // 一级标题文本字体样式
+  // 一级标题文本字体粗细列表
+  heading1TextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  @State heading1TextFontWeight: FontWeight = FontWeight.Bold // 一级标题文本字体粗细
+  // 一级标题文本字体列表
+  heading1TextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  @State heading1TextFontFamily: string = 'HarmonyOS Sans' // 一级标题文本字体
+  // 一级标题文本行高列表
+  heading1TextLineHeightList: Array<number> = textLineHeightListGeneralData
+  @State heading1TextLineHeight: number = 32 // 一级标题文本行高
+  // 一级标题文本字符间距列表
+  heading1TextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  @State heading1TextLetterSpacing: number = 0 // 一级标题文本字符间距
+  // 一级标题下划线高度列表
+  heading1UnderlineHeightList: Array<number> = [0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5]
+  @State heading1UnderlineHeight: number = 2 // 一级标题下划线高度
+  // 一级标题下划线颜色列表
+  heading1UnderlineColorList: Array<number | undefined> = colorListGeneralData
+  @State heading1UnderlineColor: number | undefined = undefined // 一级标题下划线颜色
+  // 一级标题距离标题文本间距列表
+  heading1UnderlineSpacingList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  @State heading1UnderlineSpacing: number = 4 // 一级标题距离标题文本间距
+
+  // 二级标题背景颜色列表
+  heading2BackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State heading2BackgroundColor: number | undefined = undefined // 二级标题背景颜色
+  // 二级标题上外边距列表
+  heading2MarginTopList: Array<number> = marginListGeneralData
+  @State heading2MarginTop: number = 8 // 二级标题上外边距
+  // 二级标题右外边距列表
+  heading2MarginRightList: Array<number> = marginListGeneralData
+  @State heading2MarginRight: number = 0 // 二级标题右外边距
+  // 二级标题下外边距列表
+  heading2MarginBottomList: Array<number> = marginListGeneralData
+  @State heading2MarginBottom: number = 8 // 二级标题下外边距
+  // 二级标题左外边距列表
+  heading2MarginLeftList: Array<number> = marginListGeneralData
+  @State heading2MarginLeft: number = 0 // 二级标题左外边距
+  // 二级标题上内边距列表
+  heading2PaddingTopList: Array<number> = marginListGeneralData
+  @State heading2PaddingTop: number = 0 // 二级标题上内边距
+  // 二级标题右内边距列表
+  heading2PaddingRightList: Array<number> = marginListGeneralData
+  @State heading2PaddingRight: number = 0 // 二级标题右内边距
+  // 二级标题下内边距列表
+  heading2PaddingBottomList: Array<number> = marginListGeneralData
+  @State heading2PaddingBottom: number = 0 // 二级标题下内边距
+  // 二级标题左内边距列表
+  heading2PaddingLeftList: Array<number> = marginListGeneralData
+  @State heading2PaddingLeft: number = 0 // 二级标题左内边距
+  // 二级标题文本颜色列表
+  heading2TextFontColorList: Array<number | undefined> = colorListGeneralData
+  @State heading2TextFontColor: number | undefined = undefined // 二级标题文本颜色
+  // 二级标题文本尺寸列表
+  heading2TextFontSizeList: Array<number> = textSizeListGeneralData
+  @State heading2TextFontSize: number = 20 // 二级标题文本尺寸
+  // 二级标题文本字体样式列表
+  heading2TextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  @State heading2TextFontStyle: FontStyle = FontStyle.Normal // 二级标题文本字体样式
+  // 二级标题文本字体粗细列表
+  heading2TextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  @State heading2TextFontWeight: FontWeight = FontWeight.Bold // 二级标题文本字体粗细
+  // 二级标题文本字体列表
+  heading2TextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  @State heading2TextFontFamily: string = 'HarmonyOS Sans' // 二级标题文本字体
+  // 二级标题文本行高列表
+  heading2TextLineHeightList: Array<number> = textLineHeightListGeneralData
+  @State heading2TextLineHeight: number = 28 // 二级标题文本行高
+  // 二级标题文本字符间距列表
+  heading2TextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  @State heading2TextLetterSpacing: number = 0 // 二级标题文本字符间距
+  // 二级标题下划线高度列表
+  heading2UnderlineHeightList: Array<number> = [0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5]
+  @State heading2UnderlineHeight: number = 1.5 // 二级标题下划线高度
+  // 二级标题下划线颜色列表
+  heading2UnderlineColorList: Array<number | undefined> = colorListGeneralData
+  @State heading2UnderlineColor: number | undefined = undefined // 二级标题下划线颜色
+  // 二级标题距离标题文本间距列表
+  heading2UnderlineSpacingList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  @State heading2UnderlineSpacing: number = 3 // 二级标题距离标题文本间距
+
+  // 三级标题背景颜色列表
+  heading3BackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State heading3BackgroundColor: number | undefined = undefined // 三级标题背景颜色
+  // 三级标题上外边距列表
+  heading3MarginTopList: Array<number> = marginListGeneralData
+  @State heading3MarginTop: number = 8 // 三级标题上外边距
+  // 三级标题右外边距列表
+  heading3MarginRightList: Array<number> = marginListGeneralData
+  @State heading3MarginRight: number = 0 // 三级标题右外边距
+  // 三级标题下外边距列表
+  heading3MarginBottomList: Array<number> = marginListGeneralData
+  @State heading3MarginBottom: number = 8 // 三级标题下外边距
+  // 三级标题左外边距列表
+  heading3MarginLeftList: Array<number> = marginListGeneralData
+  @State heading3MarginLeft: number = 0 // 三级标题左外边距
+  // 三级标题上内边距列表
+  heading3PaddingTopList: Array<number> = marginListGeneralData
+  @State heading3PaddingTop: number = 0 // 三级标题上内边距
+  // 三级标题右内边距列表
+  heading3PaddingRightList: Array<number> = marginListGeneralData
+  @State heading3PaddingRight: number = 0 // 三级标题右内边距
+  // 三级标题下内边距列表
+  heading3PaddingBottomList: Array<number> = marginListGeneralData
+  @State heading3PaddingBottom: number = 0 // 三级标题下内边距
+  // 三级标题左内边距列表
+  heading3PaddingLeftList: Array<number> = marginListGeneralData
+  @State heading3PaddingLeft: number = 0 // 三级标题左内边距
+  // 三级标题文本颜色列表
+  heading3TextFontColorList: Array<number | undefined> = colorListGeneralData
+  @State heading3TextFontColor: number | undefined = undefined // 三级标题文本颜色
+  // 三级标题文本尺寸列表
+  heading3TextFontSizeList: Array<number> = textSizeListGeneralData
+  @State heading3TextFontSize: number = 18 // 三级标题文本尺寸
+  // 三级标题文本字体样式列表
+  heading3TextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  @State heading3TextFontStyle: FontStyle = FontStyle.Normal // 三级标题文本字体样式
+  // 三级标题文本字体粗细列表
+  heading3TextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  @State heading3TextFontWeight: FontWeight = FontWeight.Bold // 三级标题文本字体粗细
+  // 三级标题文本字体列表
+  heading3TextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  @State heading3TextFontFamily: string = 'HarmonyOS Sans' // 三级标题文本字体
+  // 三级标题文本行高列表
+  heading3TextLineHeightList: Array<number> = textLineHeightListGeneralData
+  @State heading3TextLineHeight: number = 26 // 三级标题文本行高
+  // 三级标题文本字符间距列表
+  heading3TextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  @State heading3TextLetterSpacing: number = 0 // 三级标题文本字符间距
+
+  // 四级标题背景颜色列表
+  heading4BackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State heading4BackgroundColor: number | undefined = undefined // 四级标题背景颜色
+  // 四级标题上外边距列表
+  heading4MarginTopList: Array<number> = marginListGeneralData
+  @State heading4MarginTop: number = 8 // 四级标题上外边距
+  // 四级标题右外边距列表
+  heading4MarginRightList: Array<number> = marginListGeneralData
+  @State heading4MarginRight: number = 0 // 四级标题右外边距
+  // 四级标题下外边距列表
+  heading4MarginBottomList: Array<number> = marginListGeneralData
+  @State heading4MarginBottom: number = 8 // 四级标题下外边距
+  // 四级标题左外边距列表
+  heading4MarginLeftList: Array<number> = marginListGeneralData
+  @State heading4MarginLeft: number = 0 // 四级标题左外边距
+  // 四级标题上内边距列表
+  heading4PaddingTopList: Array<number> = marginListGeneralData
+  @State heading4PaddingTop: number = 0 // 四级标题上内边距
+  // 四级标题右内边距列表
+  heading4PaddingRightList: Array<number> = marginListGeneralData
+  @State heading4PaddingRight: number = 0 // 四级标题右内边距
+  // 四级标题下内边距列表
+  heading4PaddingBottomList: Array<number> = marginListGeneralData
+  @State heading4PaddingBottom: number = 0 // 四级标题下内边距
+  // 四级标题左内边距列表
+  heading4PaddingLeftList: Array<number> = marginListGeneralData
+  @State heading4PaddingLeft: number = 0 // 四级标题左内边距
+  // 四级标题文本颜色列表
+  heading4TextFontColorList: Array<number | undefined> = colorListGeneralData
+  @State heading4TextFontColor: number | undefined = undefined // 四级标题文本颜色
+  // 四级标题文本尺寸列表
+  heading4TextFontSizeList: Array<number> = textSizeListGeneralData
+  @State heading4TextFontSize: number = 16 // 四级标题文本尺寸
+  // 四级标题文本字体样式列表
+  heading4TextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  @State heading4TextFontStyle: FontStyle = FontStyle.Normal // 四级标题文本字体样式
+  // 四级标题文本字体粗细列表
+  heading4TextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  @State heading4TextFontWeight: FontWeight = FontWeight.Bold // 四级标题文本字体粗细
+  // 四级标题文本字体列表
+  heading4TextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  @State heading4TextFontFamily: string = 'HarmonyOS Sans' // 四级标题文本字体
+  // 四级标题文本行高列表
+  heading4TextLineHeightList: Array<number> = textLineHeightListGeneralData
+  @State heading4TextLineHeight: number = 24 // 四级标题文本行高
+  // 四级标题文本字符间距列表
+  heading4TextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  @State heading4TextLetterSpacing: number = 0 // 四级标题文本字符间距
+
+  // 五级标题背景颜色列表
+  heading5BackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State heading5BackgroundColor: number | undefined = undefined // 五级标题背景颜色
+  // 五级标题上外边距列表
+  heading5MarginTopList: Array<number> = marginListGeneralData
+  @State heading5MarginTop: number = 8 // 五级标题上外边距
+  // 五级标题右外边距列表
+  heading5MarginRightList: Array<number> = marginListGeneralData
+  @State heading5MarginRight: number = 0 // 五级标题右外边距
+  // 五级标题下外边距列表
+  heading5MarginBottomList: Array<number> = marginListGeneralData
+  @State heading5MarginBottom: number = 8 // 五级标题下外边距
+  // 五级标题左外边距列表
+  heading5MarginLeftList: Array<number> = marginListGeneralData
+  @State heading5MarginLeft: number = 0 // 五级标题左外边距
+  // 五级标题上内边距列表
+  heading5PaddingTopList: Array<number> = marginListGeneralData
+  @State heading5PaddingTop: number = 0 // 五级标题上内边距
+  // 五级标题右内边距列表
+  heading5PaddingRightList: Array<number> = marginListGeneralData
+  @State heading5PaddingRight: number = 0 // 五级标题右内边距
+  // 五级标题下内边距列表
+  heading5PaddingBottomList: Array<number> = marginListGeneralData
+  @State heading5PaddingBottom: number = 0 // 五级标题下内边距
+  // 五级标题左内边距列表
+  heading5PaddingLeftList: Array<number> = marginListGeneralData
+  @State heading5PaddingLeft: number = 0 // 五级标题左内边距
+  // 五级标题文本颜色列表
+  heading5TextFontColorList: Array<number | undefined> = colorListGeneralData
+  @State heading5TextFontColor: number | undefined = undefined // 五级标题文本颜色
+  // 五级标题文本尺寸列表
+  heading5TextFontSizeList: Array<number> = textSizeListGeneralData
+  @State heading5TextFontSize: number = 15 // 五级标题文本尺寸
+  // 五级标题文本字体样式列表
+  heading5TextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  @State heading5TextFontStyle: FontStyle = FontStyle.Normal // 五级标题文本字体样式
+  // 五级标题文本字体粗细列表
+  heading5TextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  @State heading5TextFontWeight: FontWeight = FontWeight.Bold // 五级标题文本字体粗细
+  // 五级标题文本字体列表
+  heading5TextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  @State heading5TextFontFamily: string = 'HarmonyOS Sans' // 五级标题文本字体
+  // 五级标题文本行高列表
+  heading5TextLineHeightList: Array<number> = textLineHeightListGeneralData
+  @State heading5TextLineHeight: number = 23 // 五级标题文本行高
+  // 五级标题文本字符间距列表
+  heading5TextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  @State heading5TextLetterSpacing: number = 0 // 五级标题文本字符间距
+
+  // 六级标题背景颜色列表
+  heading6BackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State heading6BackgroundColor: number | undefined = undefined // 六级标题背景颜色
+  // 六级标题上外边距列表
+  heading6MarginTopList: Array<number> = marginListGeneralData
+  @State heading6MarginTop: number = 8 // 六级标题上外边距
+  // 六级标题右外边距列表
+  heading6MarginRightList: Array<number> = marginListGeneralData
+  @State heading6MarginRight: number = 0 // 六级标题右外边距
+  // 六级标题下外边距列表
+  heading6MarginBottomList: Array<number> = marginListGeneralData
+  @State heading6MarginBottom: number = 8 // 六级标题下外边距
+  // 六级标题左外边距列表
+  heading6MarginLeftList: Array<number> = marginListGeneralData
+  @State heading6MarginLeft: number = 0 // 六级标题左外边距
+  // 六级标题上内边距列表
+  heading6PaddingTopList: Array<number> = marginListGeneralData
+  @State heading6PaddingTop: number = 0 // 六级标题上内边距
+  // 六级标题右内边距列表
+  heading6PaddingRightList: Array<number> = marginListGeneralData
+  @State heading6PaddingRight: number = 0 // 六级标题右内边距
+  // 六级标题下内边距列表
+  heading6PaddingBottomList: Array<number> = marginListGeneralData
+  @State heading6PaddingBottom: number = 0 // 六级标题下内边距
+  // 六级标题左内边距列表
+  heading6PaddingLeftList: Array<number> = marginListGeneralData
+  @State heading6PaddingLeft: number = 0 // 六级标题左内边距
+  // 六级标题文本颜色列表
+  heading6TextFontColorList: Array<number | undefined> = colorListGeneralData
+  @State heading6TextFontColor: number | undefined = undefined // 六级标题文本颜色
+  // 六级标题文本尺寸列表
+  heading6TextFontSizeList: Array<number> = textSizeListGeneralData
+  @State heading6TextFontSize: number = 14 // 六级标题文本尺寸
+  // 六级标题文本字体样式列表
+  heading6TextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  @State heading6TextFontStyle: FontStyle = FontStyle.Normal // 六级标题文本字体样式
+  // 六级标题文本字体粗细列表
+  heading6TextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  @State heading6TextFontWeight: FontWeight = FontWeight.Bold // 六级标题文本字体粗细
+  // 六级标题文本字体列表
+  heading6TextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  @State heading6TextFontFamily: string = 'HarmonyOS Sans' // 六级标题文本字体
+  // 六级标题文本行高列表
+  heading6TextLineHeightList: Array<number> = textLineHeightListGeneralData
+  @State heading6TextLineHeight: number = 22 // 六级标题文本行高
+  // 六级标题文本字符间距列表
+  heading6TextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  @State heading6TextLetterSpacing: number = 0 // 六级标题文本字符间距
+  @State titleData: TitleData = new TitleData() // 配置数据内容
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -437,22 +438,46 @@ struct TitlePage {
             allData: this.isOnCopy
           })
           BaseTabComponent({
-            titleStr: "Markdown文本第一个模块上边距 - ",
+            titleStr: "markdown全局上外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockFirstTopMarginList,
-            allData: this.blockFirstTopMargin
+            allListData: this.blockMarginTopList,
+            allData: this.blockMarginTop
           })
           BaseTabComponent({
-            titleStr: "Markdown文本最后一个模块下边距 - ",
+            titleStr: "markdown全局右外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockLastBottomMarginList,
-            allData: this.blockLastBottomMargin
+            allListData: this.blockMarginRightList,
+            allData: this.blockMarginRight
           })
           BaseTabComponent({
-            titleStr: "Markdown文本模块间上下间距 - ",
+            titleStr: "markdown全局下外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockTopAndBottomMarginsList,
-            allData: this.blockTopAndBottomMargins
+            allListData: this.blockMarginBottomList,
+            allData: this.blockMarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "markdown全局左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockMarginLeftList,
+            allData: this.blockMarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.markdownBlockSpacingList,
+            allData: this.markdownBlockSpacing
+          })
+          BaseTabComponent({
+            titleStr: "软换行是否换行 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isLineBreakList,
+            allData: this.isLineBreak
+          })
+          BaseTabComponent({
+            titleStr: "背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.globalBackgroundColorList,
+            allData: this.globalBackgroundColor
           })
           BaseTabComponent({
             titleStr: "是否开启响应滑动测试 - ",
@@ -468,158 +493,623 @@ struct TitlePage {
           })
 
           // ---------------- 专有
+          // 一级标题
           BaseTabComponent({
-            titleStr: "H1、H2下划线高度 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingBreakHeightList,
-            allData: this.headingBreakHeight
-          })
-          BaseTabComponent({
-            titleStr: "H1下划线颜色 - ",
+            titleStr: "一级标题背景颜色 - ",
             typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.headingBreakColorList1,
-            allData: this.headingBreakColor1
+            allListData: this.heading1BackgroundColorList,
+            allData: this.heading1BackgroundColor
           })
           BaseTabComponent({
-            titleStr: "H2下划线颜色 - ",
+            titleStr: "一级标题上外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading1MarginTopList,
+            allData: this.heading1MarginTop
+          })
+          BaseTabComponent({
+            titleStr: "一级标题右外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading1MarginRightList,
+            allData: this.heading1MarginRight
+          })
+          BaseTabComponent({
+            titleStr: "一级标题下外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading1MarginBottomList,
+            allData: this.heading1MarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "一级标题左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading1MarginLeftList,
+            allData: this.heading1MarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "一级标题上内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading1PaddingTopList,
+            allData: this.heading1PaddingTop
+          })
+          BaseTabComponent({
+            titleStr: "一级标题右内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading1PaddingRightList,
+            allData: this.heading1PaddingRight
+          })
+          BaseTabComponent({
+            titleStr: "一级标题下内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading1PaddingBottomList,
+            allData: this.heading1PaddingBottom
+          })
+          BaseTabComponent({
+            titleStr: "一级标题左内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading1PaddingLeftList,
+            allData: this.heading1PaddingLeft
+          })
+          BaseTabComponent({
+            titleStr: "一级标题文本颜色 - ",
             typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.headingBreakColorList2,
-            allData: this.headingBreakColor2
+            allListData: this.heading1TextFontColorList,
+            allData: this.heading1TextFontColor
           })
           BaseTabComponent({
-            titleStr: "标题文本字间距 - ",
+            titleStr: "一级标题文本尺寸 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTextWordSpaceList,
-            allData: this.headingTextWordSpace
+            allListData: this.heading1TextFontSizeList,
+            allData: this.heading1TextFontSize
           })
           BaseTabComponent({
-            titleStr: "一级标题行高 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTextLineHeight1List,
-            allData: this.headingTextLineHeight1
+            titleStr: "一级标题文本字体样式 - ",
+            typeEnum: TypeEnum.IS_FONT_STYLE,
+            allListData: this.heading1TextFontStyleList,
+            allData: this.heading1TextFontStyle
           })
           BaseTabComponent({
-            titleStr: "二级标题行高 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTextLineHeight2List,
-            allData: this.headingTextLineHeight2
+            titleStr: "一级标题文本字体粗细 - ",
+            typeEnum: TypeEnum.IS_FONT_WEIGHT,
+            allListData: this.heading1TextFontWeightList,
+            allData: this.heading1TextFontWeight
           })
           BaseTabComponent({
-            titleStr: "三级标题行高 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTextLineHeight3List,
-            allData: this.headingTextLineHeight3
-          })
-          BaseTabComponent({
-            titleStr: "四级标题行高 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTextLineHeight4List,
-            allData: this.headingTextLineHeight4
-          })
-          BaseTabComponent({
-            titleStr: "五级标题行高 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTextLineHeight5List,
-            allData: this.headingTextLineHeight5
-          })
-          BaseTabComponent({
-            titleStr: "六级标题行高 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTextLineHeight6List,
-            allData: this.headingTextLineHeight6
-          })
-
-          BaseTabComponent({
-            titleStr: "一级标题文本大小 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTextSizeMultipliersList1,
-            allData: this.headingTextSizeMultipliers1
-          })
-          BaseTabComponent({
-            titleStr: "二级标题文本大小 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTextSizeMultipliersList2,
-            allData: this.headingTextSizeMultipliers2
-          })
-          BaseTabComponent({
-            titleStr: "三级标题文本大小 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTextSizeMultipliersList3,
-            allData: this.headingTextSizeMultipliers3
-          })
-          BaseTabComponent({
-            titleStr: "四级标题文本大小 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTextSizeMultipliersList4,
-            allData: this.headingTextSizeMultipliers4
-          })
-          BaseTabComponent({
-            titleStr: "五级标题文本大小 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTextSizeMultipliersList5,
-            allData: this.headingTextSizeMultipliers5
-          })
-          BaseTabComponent({
-            titleStr: "六级标题文本大小 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTextSizeMultipliersList6,
-            allData: this.headingTextSizeMultipliers6
-          })
-
-          BaseTabComponent({
-            titleStr: "一级标题颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.headingTextColorsList1,
-            allData: this.headingTextColors1
-          })
-          BaseTabComponent({
-            titleStr: "二级标题颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.headingTextColorsList2,
-            allData: this.headingTextColors2
-          })
-          BaseTabComponent({
-            titleStr: "三级标题颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.headingTextColorsList3,
-            allData: this.headingTextColors3
-          })
-          BaseTabComponent({
-            titleStr: "四级标题颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.headingTextColorsList4,
-            allData: this.headingTextColors4
-          })
-          BaseTabComponent({
-            titleStr: "五级标题颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.headingTextColorsList5,
-            allData: this.headingTextColors5
-          })
-          BaseTabComponent({
-            titleStr: "六级标题颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.headingTextColorsList6,
-            allData: this.headingTextColors6
-          })
-
-          BaseTabComponent({
-            titleStr: "标题文本字体 - ",
+            titleStr: "一级标题文本字体 - ",
             typeEnum: TypeEnum.IS_STRING,
-            allListData: this.headingTypefaceList,
-            allData: this.headingTypeface
+            allListData: this.heading1TextFontFamilyList,
+            allData: this.heading1TextFontFamily
           })
           BaseTabComponent({
-            titleStr: "标题模块上间距 - ",
+            titleStr: "一级标题文本行高 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingTopMarginsList,
-            allData: this.headingTopMargins
+            allListData: this.heading1TextLineHeightList,
+            allData: this.heading1TextLineHeight
           })
           BaseTabComponent({
-            titleStr: "标题模块下间距 - ",
+            titleStr: "一级标题文本字符间距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.headingBottomMarginsList,
-            allData: this.headingBottomMargins
+            allListData: this.heading1TextLetterSpacingList,
+            allData: this.heading1TextLetterSpacing
+          })
+          BaseTabComponent({
+            titleStr: "一级标题下划线高度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading1UnderlineHeightList,
+            allData: this.heading1UnderlineHeight
+          })
+          BaseTabComponent({
+            titleStr: "一级标题下划线颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.heading1UnderlineColorList,
+            allData: this.heading1UnderlineColor
+          })
+          BaseTabComponent({
+            titleStr: "一级标题距离标题文本间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading1UnderlineSpacingList,
+            allData: this.heading1UnderlineSpacing
+          })
+          // 二级标题
+          BaseTabComponent({
+            titleStr: "二级标题背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.heading2BackgroundColorList,
+            allData: this.heading2BackgroundColor
+          })
+          BaseTabComponent({
+            titleStr: "二级标题上外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading2MarginTopList,
+            allData: this.heading2MarginTop
+          })
+          BaseTabComponent({
+            titleStr: "二级标题右外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading2MarginRightList,
+            allData: this.heading2MarginRight
+          })
+          BaseTabComponent({
+            titleStr: "二级标题下外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading2MarginBottomList,
+            allData: this.heading2MarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "二级标题左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading2MarginLeftList,
+            allData: this.heading2MarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "二级标题上内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading2PaddingTopList,
+            allData: this.heading2PaddingTop
+          })
+          BaseTabComponent({
+            titleStr: "二级标题右内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading2PaddingRightList,
+            allData: this.heading2PaddingRight
+          })
+          BaseTabComponent({
+            titleStr: "二级标题下内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading2PaddingBottomList,
+            allData: this.heading2PaddingBottom
+          })
+          BaseTabComponent({
+            titleStr: "二级标题左内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading2PaddingLeftList,
+            allData: this.heading2PaddingLeft
+          })
+          BaseTabComponent({
+            titleStr: "二级标题文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.heading2TextFontColorList,
+            allData: this.heading2TextFontColor
+          })
+          BaseTabComponent({
+            titleStr: "二级标题文本尺寸 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading2TextFontSizeList,
+            allData: this.heading2TextFontSize
+          })
+          BaseTabComponent({
+            titleStr: "二级标题文本字体样式 - ",
+            typeEnum: TypeEnum.IS_FONT_STYLE,
+            allListData: this.heading2TextFontStyleList,
+            allData: this.heading2TextFontStyle
+          })
+          BaseTabComponent({
+            titleStr: "二级标题文本字体粗细 - ",
+            typeEnum: TypeEnum.IS_FONT_WEIGHT,
+            allListData: this.heading2TextFontWeightList,
+            allData: this.heading2TextFontWeight
+          })
+          BaseTabComponent({
+            titleStr: "二级标题文本字体 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.heading2TextFontFamilyList,
+            allData: this.heading2TextFontFamily
+          })
+          BaseTabComponent({
+            titleStr: "二级标题文本行高 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading2TextLineHeightList,
+            allData: this.heading2TextLineHeight
+          })
+          BaseTabComponent({
+            titleStr: "二级标题文本字符间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading2TextLetterSpacingList,
+            allData: this.heading2TextLetterSpacing
+          })
+          BaseTabComponent({
+            titleStr: "二级标题下划线高度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading2UnderlineHeightList,
+            allData: this.heading2UnderlineHeight
+          })
+          BaseTabComponent({
+            titleStr: "二级标题下划线颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.heading2UnderlineColorList,
+            allData: this.heading2UnderlineColor
+          })
+          BaseTabComponent({
+            titleStr: "二级标题距离标题文本间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading2UnderlineSpacingList,
+            allData: this.heading2UnderlineSpacing
+          })
+          // 三级标题
+          BaseTabComponent({
+            titleStr: "三级标题背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.heading3BackgroundColorList,
+            allData: this.heading3BackgroundColor
+          })
+          BaseTabComponent({
+            titleStr: "三级标题上外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading3MarginTopList,
+            allData: this.heading3MarginTop
+          })
+          BaseTabComponent({
+            titleStr: "三级标题右外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading3MarginRightList,
+            allData: this.heading3MarginRight
+          })
+          BaseTabComponent({
+            titleStr: "三级标题下外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading3MarginBottomList,
+            allData: this.heading3MarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "三级标题左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading3MarginLeftList,
+            allData: this.heading3MarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "三级标题上内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading3PaddingTopList,
+            allData: this.heading3PaddingTop
+          })
+          BaseTabComponent({
+            titleStr: "三级标题右内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading3PaddingRightList,
+            allData: this.heading3PaddingRight
+          })
+          BaseTabComponent({
+            titleStr: "三级标题下内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading3PaddingBottomList,
+            allData: this.heading3PaddingBottom
+          })
+          BaseTabComponent({
+            titleStr: "三级标题左内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading3PaddingLeftList,
+            allData: this.heading3PaddingLeft
+          })
+          BaseTabComponent({
+            titleStr: "三级标题文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.heading3TextFontColorList,
+            allData: this.heading3TextFontColor
+          })
+          BaseTabComponent({
+            titleStr: "三级标题文本尺寸 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading3TextFontSizeList,
+            allData: this.heading3TextFontSize
+          })
+          BaseTabComponent({
+            titleStr: "三级标题文本字体样式 - ",
+            typeEnum: TypeEnum.IS_FONT_STYLE,
+            allListData: this.heading3TextFontStyleList,
+            allData: this.heading3TextFontStyle
+          })
+          BaseTabComponent({
+            titleStr: "三级标题文本字体粗细 - ",
+            typeEnum: TypeEnum.IS_FONT_WEIGHT,
+            allListData: this.heading3TextFontWeightList,
+            allData: this.heading3TextFontWeight
+          })
+          BaseTabComponent({
+            titleStr: "三级标题文本字体 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.heading3TextFontFamilyList,
+            allData: this.heading3TextFontFamily
+          })
+          BaseTabComponent({
+            titleStr: "三级标题文本行高 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading3TextLineHeightList,
+            allData: this.heading3TextLineHeight
+          })
+          BaseTabComponent({
+            titleStr: "三级标题文本字符间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading3TextLetterSpacingList,
+            allData: this.heading3TextLetterSpacing
+          })
+          // 四级标题
+          BaseTabComponent({
+            titleStr: "四级标题背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.heading4BackgroundColorList,
+            allData: this.heading4BackgroundColor
+          })
+          BaseTabComponent({
+            titleStr: "四级标题上外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading4MarginTopList,
+            allData: this.heading4MarginTop
+          })
+          BaseTabComponent({
+            titleStr: "四级标题右外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading4MarginRightList,
+            allData: this.heading4MarginRight
+          })
+          BaseTabComponent({
+            titleStr: "四级标题下外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading4MarginBottomList,
+            allData: this.heading4MarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "四级标题左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading4MarginLeftList,
+            allData: this.heading4MarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "四级标题上内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading4PaddingTopList,
+            allData: this.heading4PaddingTop
+          })
+          BaseTabComponent({
+            titleStr: "四级标题右内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading4PaddingRightList,
+            allData: this.heading4PaddingRight
+          })
+          BaseTabComponent({
+            titleStr: "四级标题下内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading4PaddingBottomList,
+            allData: this.heading4PaddingBottom
+          })
+          BaseTabComponent({
+            titleStr: "四级标题左内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading4PaddingLeftList,
+            allData: this.heading4PaddingLeft
+          })
+          BaseTabComponent({
+            titleStr: "四级标题文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.heading4TextFontColorList,
+            allData: this.heading4TextFontColor
+          })
+          BaseTabComponent({
+            titleStr: "四级标题文本尺寸 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading4TextFontSizeList,
+            allData: this.heading4TextFontSize
+          })
+          BaseTabComponent({
+            titleStr: "四级标题文本字体样式 - ",
+            typeEnum: TypeEnum.IS_FONT_STYLE,
+            allListData: this.heading4TextFontStyleList,
+            allData: this.heading4TextFontStyle
+          })
+          BaseTabComponent({
+            titleStr: "四级标题文本字体粗细 - ",
+            typeEnum: TypeEnum.IS_FONT_WEIGHT,
+            allListData: this.heading4TextFontWeightList,
+            allData: this.heading4TextFontWeight
+          })
+          BaseTabComponent({
+            titleStr: "四级标题文本字体 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.heading4TextFontFamilyList,
+            allData: this.heading4TextFontFamily
+          })
+          BaseTabComponent({
+            titleStr: "四级标题文本行高 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading4TextLineHeightList,
+            allData: this.heading4TextLineHeight
+          })
+          BaseTabComponent({
+            titleStr: "四级标题文本字符间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading4TextLetterSpacingList,
+            allData: this.heading4TextLetterSpacing
+          })
+          // 五级标题
+          BaseTabComponent({
+            titleStr: "五级标题背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.heading5BackgroundColorList,
+            allData: this.heading5BackgroundColor
+          })
+          BaseTabComponent({
+            titleStr: "五级标题上外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading5MarginTopList,
+            allData: this.heading5MarginTop
+          })
+          BaseTabComponent({
+            titleStr: "五级标题右外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading5MarginRightList,
+            allData: this.heading5MarginRight
+          })
+          BaseTabComponent({
+            titleStr: "五级标题下外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading5MarginBottomList,
+            allData: this.heading5MarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "五级标题左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading5MarginLeftList,
+            allData: this.heading5MarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "五级标题上内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading5PaddingTopList,
+            allData: this.heading5PaddingTop
+          })
+          BaseTabComponent({
+            titleStr: "五级标题右内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading5PaddingRightList,
+            allData: this.heading5PaddingRight
+          })
+          BaseTabComponent({
+            titleStr: "五级标题下内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading5PaddingBottomList,
+            allData: this.heading5PaddingBottom
+          })
+          BaseTabComponent({
+            titleStr: "五级标题左内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading5PaddingLeftList,
+            allData: this.heading5PaddingLeft
+          })
+          BaseTabComponent({
+            titleStr: "五级标题文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.heading5TextFontColorList,
+            allData: this.heading5TextFontColor
+          })
+          BaseTabComponent({
+            titleStr: "五级标题文本尺寸 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading5TextFontSizeList,
+            allData: this.heading5TextFontSize
+          })
+          BaseTabComponent({
+            titleStr: "五级标题文本字体样式 - ",
+            typeEnum: TypeEnum.IS_FONT_STYLE,
+            allListData: this.heading5TextFontStyleList,
+            allData: this.heading5TextFontStyle
+          })
+          BaseTabComponent({
+            titleStr: "五级标题文本字体粗细 - ",
+            typeEnum: TypeEnum.IS_FONT_WEIGHT,
+            allListData: this.heading5TextFontWeightList,
+            allData: this.heading5TextFontWeight
+          })
+          BaseTabComponent({
+            titleStr: "五级标题文本字体 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.heading5TextFontFamilyList,
+            allData: this.heading5TextFontFamily
+          })
+          BaseTabComponent({
+            titleStr: "五级标题文本行高 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading5TextLineHeightList,
+            allData: this.heading5TextLineHeight
+          })
+          BaseTabComponent({
+            titleStr: "五级标题文本字符间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading5TextLetterSpacingList,
+            allData: this.heading5TextLetterSpacing
+          })
+          // 六级标题
+          BaseTabComponent({
+            titleStr: "六级标题背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.heading6BackgroundColorList,
+            allData: this.heading6BackgroundColor
+          })
+          BaseTabComponent({
+            titleStr: "六级标题上外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading6MarginTopList,
+            allData: this.heading6MarginTop
+          })
+          BaseTabComponent({
+            titleStr: "六级标题右外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading6MarginRightList,
+            allData: this.heading6MarginRight
+          })
+          BaseTabComponent({
+            titleStr: "六级标题下外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading6MarginBottomList,
+            allData: this.heading6MarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "六级标题左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading6MarginLeftList,
+            allData: this.heading6MarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "六级标题上内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading6PaddingTopList,
+            allData: this.heading6PaddingTop
+          })
+          BaseTabComponent({
+            titleStr: "六级标题右内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading6PaddingRightList,
+            allData: this.heading6PaddingRight
+          })
+          BaseTabComponent({
+            titleStr: "六级标题下内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading6PaddingBottomList,
+            allData: this.heading6PaddingBottom
+          })
+          BaseTabComponent({
+            titleStr: "六级标题左内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading6PaddingLeftList,
+            allData: this.heading6PaddingLeft
+          })
+          BaseTabComponent({
+            titleStr: "六级标题文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.heading6TextFontColorList,
+            allData: this.heading6TextFontColor
+          })
+          BaseTabComponent({
+            titleStr: "六级标题文本尺寸 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading6TextFontSizeList,
+            allData: this.heading6TextFontSize
+          })
+          BaseTabComponent({
+            titleStr: "六级标题文本字体样式 - ",
+            typeEnum: TypeEnum.IS_FONT_STYLE,
+            allListData: this.heading6TextFontStyleList,
+            allData: this.heading6TextFontStyle
+          })
+          BaseTabComponent({
+            titleStr: "六级标题文本字体粗细 - ",
+            typeEnum: TypeEnum.IS_FONT_WEIGHT,
+            allListData: this.heading6TextFontWeightList,
+            allData: this.heading6TextFontWeight
+          })
+          BaseTabComponent({
+            titleStr: "六级标题文本字体 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.heading6TextFontFamilyList,
+            allData: this.heading6TextFontFamily
+          })
+          BaseTabComponent({
+            titleStr: "六级标题文本行高 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading6TextLineHeightList,
+            allData: this.heading6TextLineHeight
+          })
+          BaseTabComponent({
+            titleStr: "六级标题文本字符间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.heading6TextLetterSpacingList,
+            allData: this.heading6TextLetterSpacing
           })
 
           // 列表显示
@@ -643,38 +1133,124 @@ struct TitlePage {
                     this.titleData.textNumber = this.textNumber
                     this.titleData.isMarkdownParserSync = this.isMarkdownParserSync
                     this.titleData.isOnCopy = this.isOnCopy
-                    this.titleData.blockFirstTopMargin = this.blockFirstTopMargin
-                    this.titleData.blockLastBottomMargin = this.blockLastBottomMargin
-                    this.titleData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.titleData.blockMarginTop = this.blockMarginTop
+                    this.titleData.blockMarginRight = this.blockMarginRight
+                    this.titleData.blockMarginBottom = this.blockMarginBottom
+                    this.titleData.blockMarginLeft = this.blockMarginLeft
+                    this.titleData.markdownBlockSpacing = this.markdownBlockSpacing
+                    this.titleData.isLineBreak = this.isLineBreak
+                    this.titleData.backgroundColor = this.globalBackgroundColor
                     this.titleData.openGestureSwipe = this.openGestureSwipe
                     this.titleData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.titleData.pagePath = `${this.rawFilePath}/${item}`
-                    // ---------- 专有
-                    this.titleData.headingBreakHeight = this.headingBreakHeight
-                    this.titleData.headingBreakColor1 = this.headingBreakColor1
-                    this.titleData.headingBreakColor2 = this.headingBreakColor2
-                    this.titleData.headingTextWordSpace = this.headingTextWordSpace
-                    this.titleData.headingTextLineHeight1 = this.headingTextLineHeight1
-                    this.titleData.headingTextLineHeight2 = this.headingTextLineHeight2
-                    this.titleData.headingTextLineHeight3 = this.headingTextLineHeight3
-                    this.titleData.headingTextLineHeight4 = this.headingTextLineHeight4
-                    this.titleData.headingTextLineHeight5 = this.headingTextLineHeight5
-                    this.titleData.headingTextLineHeight6 = this.headingTextLineHeight6
-                    this.titleData.headingTextSizeMultipliers1 = this.headingTextSizeMultipliers1
-                    this.titleData.headingTextSizeMultipliers2 = this.headingTextSizeMultipliers2
-                    this.titleData.headingTextSizeMultipliers3 = this.headingTextSizeMultipliers3
-                    this.titleData.headingTextSizeMultipliers4 = this.headingTextSizeMultipliers4
-                    this.titleData.headingTextSizeMultipliers5 = this.headingTextSizeMultipliers5
-                    this.titleData.headingTextSizeMultipliers6 = this.headingTextSizeMultipliers6
-                    this.titleData.headingTypeface = this.headingTypeface
-                    this.titleData.headingTopMargins = this.headingTopMargins
-                    this.titleData.headingBottomMargins = this.headingBottomMargins
-                    this.titleData.headingTextColors1 = this.headingTextColors1
-                    this.titleData.headingTextColors2 = this.headingTextColors2
-                    this.titleData.headingTextColors3 = this.headingTextColors3
-                    this.titleData.headingTextColors4 = this.headingTextColors4
-                    this.titleData.headingTextColors5 = this.headingTextColors5
-                    this.titleData.headingTextColors6 = this.headingTextColors6
+                    // ---------- 专有 - 一级标题
+                    this.titleData.heading1BackgroundColor = this.heading1BackgroundColor
+                    this.titleData.heading1MarginTop = this.heading1MarginTop
+                    this.titleData.heading1MarginRight = this.heading1MarginRight
+                    this.titleData.heading1MarginBottom = this.heading1MarginBottom
+                    this.titleData.heading1MarginLeft = this.heading1MarginLeft
+                    this.titleData.heading1PaddingTop = this.heading1PaddingTop
+                    this.titleData.heading1PaddingRight = this.heading1PaddingRight
+                    this.titleData.heading1PaddingBottom = this.heading1PaddingBottom
+                    this.titleData.heading1PaddingLeft = this.heading1PaddingLeft
+                    this.titleData.heading1TextFontColor = this.heading1TextFontColor
+                    this.titleData.heading1TextFontSize = this.heading1TextFontSize
+                    this.titleData.heading1TextFontStyle = this.heading1TextFontStyle
+                    this.titleData.heading1TextFontWeight = this.heading1TextFontWeight
+                    this.titleData.heading1TextFontFamily = this.heading1TextFontFamily
+                    this.titleData.heading1TextLineHeight = this.heading1TextLineHeight
+                    this.titleData.heading1TextLetterSpacing = this.heading1TextLetterSpacing
+                    this.titleData.heading1UnderlineHeight = this.heading1UnderlineHeight
+                    this.titleData.heading1UnderlineColor = this.heading1UnderlineColor
+                    this.titleData.heading1UnderlineSpacing = this.heading1UnderlineSpacing
+                    // ---------- 专有 - 二级标题
+                    this.titleData.heading2BackgroundColor = this.heading2BackgroundColor
+                    this.titleData.heading2MarginTop = this.heading2MarginTop
+                    this.titleData.heading2MarginRight = this.heading2MarginRight
+                    this.titleData.heading2MarginBottom = this.heading2MarginBottom
+                    this.titleData.heading2MarginLeft = this.heading2MarginLeft
+                    this.titleData.heading2PaddingTop = this.heading2PaddingTop
+                    this.titleData.heading2PaddingRight = this.heading2PaddingRight
+                    this.titleData.heading2PaddingBottom = this.heading2PaddingBottom
+                    this.titleData.heading2PaddingLeft = this.heading2PaddingLeft
+                    this.titleData.heading2TextFontColor = this.heading2TextFontColor
+                    this.titleData.heading2TextFontSize = this.heading2TextFontSize
+                    this.titleData.heading2TextFontStyle = this.heading2TextFontStyle
+                    this.titleData.heading2TextFontWeight = this.heading2TextFontWeight
+                    this.titleData.heading2TextFontFamily = this.heading2TextFontFamily
+                    this.titleData.heading2TextLineHeight = this.heading2TextLineHeight
+                    this.titleData.heading2TextLetterSpacing = this.heading2TextLetterSpacing
+                    this.titleData.heading2UnderlineHeight = this.heading2UnderlineHeight
+                    this.titleData.heading2UnderlineColor = this.heading2UnderlineColor
+                    this.titleData.heading2UnderlineSpacing = this.heading2UnderlineSpacing
+                    // ---------- 专有 - 三级标题
+                    this.titleData.heading3BackgroundColor = this.heading3BackgroundColor
+                    this.titleData.heading3MarginTop = this.heading3MarginTop
+                    this.titleData.heading3MarginRight = this.heading3MarginRight
+                    this.titleData.heading3MarginBottom = this.heading3MarginBottom
+                    this.titleData.heading3MarginLeft = this.heading3MarginLeft
+                    this.titleData.heading3PaddingTop = this.heading3PaddingTop
+                    this.titleData.heading3PaddingRight = this.heading3PaddingRight
+                    this.titleData.heading3PaddingBottom = this.heading3PaddingBottom
+                    this.titleData.heading3PaddingLeft = this.heading3PaddingLeft
+                    this.titleData.heading3TextFontColor = this.heading3TextFontColor
+                    this.titleData.heading3TextFontSize = this.heading3TextFontSize
+                    this.titleData.heading3TextFontStyle = this.heading3TextFontStyle
+                    this.titleData.heading3TextFontWeight = this.heading3TextFontWeight
+                    this.titleData.heading3TextFontFamily = this.heading3TextFontFamily
+                    this.titleData.heading3TextLineHeight = this.heading3TextLineHeight
+                    this.titleData.heading3TextLetterSpacing = this.heading3TextLetterSpacing
+                    // ---------- 专有 - 四级标题
+                    this.titleData.heading4BackgroundColor = this.heading4BackgroundColor
+                    this.titleData.heading4MarginTop = this.heading4MarginTop
+                    this.titleData.heading4MarginRight = this.heading4MarginRight
+                    this.titleData.heading4MarginBottom = this.heading4MarginBottom
+                    this.titleData.heading4MarginLeft = this.heading4MarginLeft
+                    this.titleData.heading4PaddingTop = this.heading4PaddingTop
+                    this.titleData.heading4PaddingRight = this.heading4PaddingRight
+                    this.titleData.heading4PaddingBottom = this.heading4PaddingBottom
+                    this.titleData.heading4PaddingLeft = this.heading4PaddingLeft
+                    this.titleData.heading4TextFontColor = this.heading4TextFontColor
+                    this.titleData.heading4TextFontSize = this.heading4TextFontSize
+                    this.titleData.heading4TextFontStyle = this.heading4TextFontStyle
+                    this.titleData.heading4TextFontWeight = this.heading4TextFontWeight
+                    this.titleData.heading4TextFontFamily = this.heading4TextFontFamily
+                    this.titleData.heading4TextLineHeight = this.heading4TextLineHeight
+                    this.titleData.heading4TextLetterSpacing = this.heading4TextLetterSpacing
+                    // ---------- 专有 - 五级标题
+                    this.titleData.heading5BackgroundColor = this.heading5BackgroundColor
+                    this.titleData.heading5MarginTop = this.heading5MarginTop
+                    this.titleData.heading5MarginRight = this.heading5MarginRight
+                    this.titleData.heading5MarginBottom = this.heading5MarginBottom
+                    this.titleData.heading5MarginLeft = this.heading5MarginLeft
+                    this.titleData.heading5PaddingTop = this.heading5PaddingTop
+                    this.titleData.heading5PaddingRight = this.heading5PaddingRight
+                    this.titleData.heading5PaddingBottom = this.heading5PaddingBottom
+                    this.titleData.heading5PaddingLeft = this.heading5PaddingLeft
+                    this.titleData.heading5TextFontColor = this.heading5TextFontColor
+                    this.titleData.heading5TextFontSize = this.heading5TextFontSize
+                    this.titleData.heading5TextFontStyle = this.heading5TextFontStyle
+                    this.titleData.heading5TextFontWeight = this.heading5TextFontWeight
+                    this.titleData.heading5TextFontFamily = this.heading5TextFontFamily
+                    this.titleData.heading5TextLineHeight = this.heading5TextLineHeight
+                    this.titleData.heading5TextLetterSpacing = this.heading5TextLetterSpacing
+                    // ---------- 专有 - 六级标题
+                    this.titleData.heading6BackgroundColor = this.heading6BackgroundColor
+                    this.titleData.heading6MarginTop = this.heading6MarginTop
+                    this.titleData.heading6MarginRight = this.heading6MarginRight
+                    this.titleData.heading6MarginBottom = this.heading6MarginBottom
+                    this.titleData.heading6MarginLeft = this.heading6MarginLeft
+                    this.titleData.heading6PaddingTop = this.heading6PaddingTop
+                    this.titleData.heading6PaddingRight = this.heading6PaddingRight
+                    this.titleData.heading6PaddingBottom = this.heading6PaddingBottom
+                    this.titleData.heading6PaddingLeft = this.heading6PaddingLeft
+                    this.titleData.heading6TextFontColor = this.heading6TextFontColor
+                    this.titleData.heading6TextFontSize = this.heading6TextFontSize
+                    this.titleData.heading6TextFontStyle = this.heading6TextFontStyle
+                    this.titleData.heading6TextFontWeight = this.heading6TextFontWeight
+                    this.titleData.heading6TextFontFamily = this.heading6TextFontFamily
+                    this.titleData.heading6TextLineHeight = this.heading6TextLineHeight
+                    this.titleData.heading6TextLetterSpacing = this.heading6TextLetterSpacing
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/TitleDetailsPage", params: this.titleData })
                   })

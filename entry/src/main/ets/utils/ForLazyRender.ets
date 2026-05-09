@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2026-2026. All rights reserved.
- */
 export class GeneralDataSource<T> implements IDataSource {
   private data: Array<T> = []
   private listener?: DataChangeListener

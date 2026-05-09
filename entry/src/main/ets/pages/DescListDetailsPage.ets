@@ -1,117 +1,151 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
-import { titleComponent } from '../component/BaseComponent'
-import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme,
+  MarkdownThemeDefinitionList,
+  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+import { titleComponent } from '../component/BaseComponent'
+import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'
 import { DescListData } from '../model/DescListData'
+import { hilog } from '@kit.PerformanceAnalysisKit'
+import { ConfigurationConstant } from '@kit.AbilityKit'
 
 @Entry
 @Component
 struct DescListDetailsPage {
-  /**
-   * 滑动控制器
-   */
+  // ---------- 通用
+  // 滑动控制器
   scroller: Scroller = new Scroller()
-  /**
-   * Markdown的控制器
-   */
+  // Markdown的控制器
   markdownScroller: MarkdownScroller = new MarkdownScroller()
-  /**
-   * 顶部导航栏高度
-   */
-  @StorageProp('safeTop')
+  @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  /**
-   * 文件文本
-   */
+  @StorageProp('currentColorMode')
+  @Watch('onColorModeChange') // 深浅色模式
+  currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
+  // 文件文本
   @State
   fileStr: string = ""
-  /**
-   * markdown文本
-   */
+  // markdown文本
   @State
   content: string = ""
-  /**
-   * 是否全量加载Markdown文本
-   */
+  // 是否全量加载Markdown文本
   @State
   isFull: boolean = true
-  /**
-   * 是否增量解析Markdown文本
-   */
+  // 是否增量解析Markdown文本
   @State
   incrementalAnalysis: boolean = false
-  /**
-   * 增量加载每次间隔时间
-   */
+  // 增量加载每次间隔时间
   @State
   time: number = 50
-  /**
-   * 增量每次增量文本数量
-   */
+  // 增量每次增量文本数量
   @State
   textNumber: number = 10
-  /**
-   * 是否同步解析Markdown文本
-   */
+  // 是否同步解析Markdown文本
   @State
   isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴效果
-   */
+  // 是否打开长按复制粘贴效果
   @State
   isOnCopy: boolean = false
-  /**
-   * Markdown文本第一个模块上边距
-   */
+  // Markdown块上边距
   @State
-  blockFirstTopMargin: number = 8
-  /**
-   * Markdown文本最后一个模块下边距
-   */
+  blockMarginTop: number = 8
+  // Markdown块右边距
   @State
-  blockLastBottomMargin: number = 8
-  /**
-   * Markdown文本模块间上下间距
-   */
+  blockMarginRight: number = 8
+  // Markdown块下边距
   @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 是否允许markdown控件自身响应滑动
-   */
+  blockMarginBottom: number = 8
+  // Markdown块左边距
+  @State
+  blockMarginLeft: number = 8
+  // Markdown块间距样式字符串
+  @State
+  markdownBlockSpacing: number = 8
+  // 是否换行
+  @State
+  isLineBreak: boolean = false
+  // 全局背景色
+  @State
+  globalBackgroundColor: number | undefined = undefined
+  // 是否允许markdown控件自身响应滑动
   @State
   openGestureSwipe: boolean = false
-  /**
-   * 是否开启响应滑动测试
-   */
+  // 是否开启响应滑动测试
   @State
   openGestureSwipeTest: boolean = false
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
+  // 流式输入是否输入结束(true:结束输入,false:持续输入)
   @State
   isInputEnded: boolean = false
 
   // ---------- 专有
-  /**
-   * 定义列表术语和定义行之间间距
-   */
+  // 定义列表背景颜色
   @State
-  descListTermAndDefMargins: number = 8
-  /**
-   * 定义列表定义行缩进
-   */
+  definitionListBackgroundColor: number | undefined = undefined
+  // 定义列表上外边距
   @State
-  descListDefIndentation: number = 8
-  /**
-   * 定义列表定义行间距
-   */
+  definitionListMarginTop: number = 8
+  // 定义列表右外边距
   @State
-  descListDefMargins: number = 8
+  definitionListMarginRight: number = 0
+  // 定义列表下外边距
+  @State
+  definitionListMarginBottom: number = 8
+  // 定义列表左外边距
+  @State
+  definitionListMarginLeft: number = 0
+  // 定义列表上内边距
+  @State
+  definitionListPaddingTop: number = 0
+  // 定义列表右内边距
+  @State
+  definitionListPaddingRight: number = 0
+  // 定义列表下内边距
+  @State
+  definitionListPaddingBottom: number = 0
+  // 定义列表左内边距
+  @State
+  definitionListPaddingLeft: number = 0
+  // 定义列表术语和定义行之间间距
+  @State
+  definitionListTermToDescriptionSpacing: number = 4
+  // 定义列表术语文本字体粗细
+  @State
+  definitionListTermTextFontWeight: FontWeight = FontWeight.Bold
+  // 定义列表术语文本字体样式
+  @State
+  definitionListTermTextFontStyle: FontStyle = FontStyle.Normal
+  // 定义列表定义行之间间距
+  @State
+  definitionListDescriptionItemSpacing: number = 4
+  // 定义列表定义行左缩进距离
+  @State
+  definitionListDescriptionIndent: number = 16
+
+  @State // markdown配置
+  markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
+  @State // markdown主题
+  markdownTheme: MarkdownTheme = new MarkdownTheme()
+  @State // markdown插件
+  markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
+  @State // 刷新标志
+  isRefresh: boolean = true
+
+  onColorModeChange(): void {
+    // 根据 this.currentColorMode 更新 UI 或状态栏
+    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+      // 浅色模式处理
+      this.markdownTheme.setDefaultTheme()
+      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+      hilog.error(1, 'onColorModeChange', '浅色模式')
+    } else {
+      // 深色模式处理
+      this.markdownTheme.setDarculaTheme()
+      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+      hilog.error(1, 'onColorModeChange', '深色模式')
+    }
+    this.isRefresh = !this.isRefresh
+  }
 
   aboutToAppear(): void {
     try {
@@ -124,17 +158,36 @@ struct DescListDetailsPage {
       this.textNumber = descListData._textNumber
       this.isMarkdownParserSync = descListData._isMarkdownParserSync
       this.isOnCopy = descListData._isOnCopy
-      this.blockFirstTopMargin = descListData._blockFirstTopMargin
-      this.blockLastBottomMargin = descListData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = descListData._blockTopAndBottomMargins
+      this.blockMarginTop = descListData._blockMarginTop
+      this.blockMarginRight = descListData._blockMarginRight
+      this.blockMarginBottom = descListData._blockMarginBottom
+      this.blockMarginLeft = descListData._blockMarginLeft
+      this.markdownBlockSpacing = descListData._markdownBlockSpacing
+      this.isLineBreak = descListData._isLineBreak
+      this.globalBackgroundColor = descListData._backgroundColor
       this.openGestureSwipe = descListData._openGestureSwipe
       this.openGestureSwipeTest = descListData._openGestureSwipeTest
       // ---------- 专有
-      this.descListTermAndDefMargins = descListData._descListTermAndDefMargins
-      this.descListDefIndentation = descListData._descListDefIndentation
-      this.descListDefMargins = descListData._descListDefMargins
+      this.definitionListBackgroundColor = descListData._definitionListBackgroundColor
+      this.definitionListMarginTop = descListData._definitionListMarginTop
+      this.definitionListMarginRight = descListData._definitionListMarginRight
+      this.definitionListMarginBottom = descListData._definitionListMarginBottom
+      this.definitionListMarginLeft = descListData._definitionListMarginLeft
+      this.definitionListPaddingTop = descListData._definitionListPaddingTop
+      this.definitionListPaddingRight = descListData._definitionListPaddingRight
+      this.definitionListPaddingBottom = descListData._definitionListPaddingBottom
+      this.definitionListPaddingLeft = descListData._definitionListPaddingLeft
+      this.definitionListTermToDescriptionSpacing = descListData._definitionListTermToDescriptionSpacing
+      this.definitionListTermTextFontWeight = descListData._definitionListTermTextFontWeight
+      this.definitionListTermTextFontStyle = descListData._definitionListTermTextFontStyle
+      this.definitionListDescriptionItemSpacing = descListData._definitionListDescriptionItemSpacing
+      this.definitionListDescriptionIndent = descListData._definitionListDescriptionIndent
     } catch (e) {
     }
+    this.markdownPlugin = this.setPlugin()
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration = this.setMarkdownConfig()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
   }
 
   build() {
@@ -176,27 +229,51 @@ struct DescListDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-          Column() {
-            CJMarkdown({
-              content: this.content,
-              isInputEnded: this.isInputEnded,
-              incrementalAnalysis: this.incrementalAnalysis,
-              listScroller: this.markdownScroller,
-              config: this.setMarkdownConfig(),
-              plugin: this.setPlugin()
-            })
-          }.height("100%")
+        if (this.isRefresh) {
+          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                incrementalAnalysis: this.incrementalAnalysis,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }.height("100%")
+          } else {
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }
+          }
         } else {
-          Column() {
-            CJMarkdown({
-              content: this.content,
-              isInputEnded: this.isInputEnded,
-              incrementalAnalysis: this.incrementalAnalysis,
-              listScroller: this.markdownScroller,
-              config: this.setMarkdownConfig(),
-              plugin: this.setPlugin()
-            })
+          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                incrementalAnalysis: this.incrementalAnalysis,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }.height("100%")
+          } else {
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }
           }
         }
       }
@@ -208,20 +285,54 @@ struct DescListDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    let theme = new MarkdownTheme()
-    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
-    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
-    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
-    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
-    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
-    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
-
-    theme.setDescListTermAndDefMargins(this.descListTermAndDefMargins) // 定义列表术语和定义行之间间距
-    theme.setDescListDefIndentation(this.descListDefIndentation) // 定义列表定义行缩进
-    theme.setDescListDefMargins(this.descListDefMargins) // 定义列表定义行间距
-
-    config.setMarkdownTheme(theme)
     return config
+  }
+
+  setMarkdownTheme(): MarkdownTheme {
+    let theme = new MarkdownTheme()
+    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+      theme.setDefaultTheme()
+    } else {
+      theme.setDarculaTheme()
+    }
+    // ---------- 通用 - Global
+    let globalTheme = new MarkdownThemeGlobal()
+    if (this.globalBackgroundColor !== undefined) {
+      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+    }
+    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    globalTheme.setIsLineBreak(this.isLineBreak)
+    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    globalTheme.setIsOnCopy(this.isOnCopy)
+    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.setMarkdownThemeGlobal(globalTheme)
+    
+    // ---------- 专有 - DefinitionList
+    let definitionListTheme = new MarkdownThemeDefinitionList()
+    if (this.definitionListBackgroundColor !== undefined) {
+      definitionListTheme.setDefinitionListBackgroundColor(this.definitionListBackgroundColor)
+    }
+    definitionListTheme.setDefinitionListMargin(
+      this.definitionListMarginTop,
+      this.definitionListMarginRight,
+      this.definitionListMarginBottom,
+      this.definitionListMarginLeft
+    )
+    definitionListTheme.setDefinitionListPadding(
+      this.definitionListPaddingTop,
+      this.definitionListPaddingRight,
+      this.definitionListPaddingBottom,
+      this.definitionListPaddingLeft
+    )
+    definitionListTheme.setDefinitionListTermToDescriptionSpacing(this.definitionListTermToDescriptionSpacing)
+    definitionListTheme.setDefinitionListTermTextFontWeight(this.definitionListTermTextFontWeight)
+    definitionListTheme.setDefinitionListTermTextFontStyle(this.definitionListTermTextFontStyle)
+    definitionListTheme.setDefinitionListDescriptionItemSpacing(this.definitionListDescriptionItemSpacing)
+    definitionListTheme.setDefinitionListDescriptionIndent(this.definitionListDescriptionIndent)
+    theme.setMarkdownThemeDefinitionList(definitionListTheme)
+    
+    return theme
   }
 
   setPlugin(): MarkdownPlugin {

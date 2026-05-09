@@ -1,216 +1,222 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme,
+  MarkdownThemeVideo,
+  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { VideoData } from '../model/VideoData'
+import { ConfigurationConstant } from '@kit.AbilityKit'
 
 @Entry
 @Component
 struct VideoDetailsPage {
-  /**
-   * 滑动控制器
-   */
-  scroller: Scroller = new Scroller()
-  /**
-   * Markdown的控制器
-   */
-  markdownScroller: MarkdownScroller = new MarkdownScroller()
-  /**
-   * 顶部导航栏高度
-   */
-  @StorageProp('safeTop')
+  // ---------- 通用
+  scroller: Scroller = new Scroller() // 滑动控制器
+  markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
+  @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  /**
-   * 文件文本
-   */
-  @State
+  @StorageProp('currentColorMode')
+  @Watch('onColorModeChange') // 深浅色模式
+  currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
+  @State // 文件文本
   fileStr: string = ""
-  /**
-   * markdown文本
-   */
-  @State
+  @State // markdown文本
   content: string = ""
-  /**
-   * 是否全量加载Markdown文本
-   */
-  @State
+  @State // 是否全量加载Markdown文本
   isFull: boolean = true
-  /**
-   * 是否增量解析Markdown文本
-   */
-  @State
+  @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
-  /**
-   * 增量加载每次间隔时间
-   */
-  @State
+  @State // 增量加载每次间隔时间
   time: number = 50
-  /**
-   * 增量每次增量文本数量
-   */
-  @State
+  @State // 增量每次增量文本数量
   textNumber: number = 10
-  /**
-   * 是否同步解析Markdown文本
-   */
-  @State
+  @State // 是否同步解析Markdown文本
   isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴效果
-   */
-  @State
+  @State // 是否打开长按复制粘贴效果
   isOnCopy: boolean = false
-  /**
-   * Markdown文本第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * Markdown文本最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * Markdown文本模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 是否允许markdown控件自身响应滑动
-   */
-  @State
+  @State // Markdown块上边距
+  blockMarginTop: number = 8
+  @State // Markdown块右边距
+  blockMarginRight: number = 8
+  @State // Markdown块下边距
+  blockMarginBottom: number = 8
+  @State // Markdown块左边距
+  blockMarginLeft: number = 8
+  @State // Markdown块间距样式
+  markdownBlockSpacing: number = 8
+  @State // 是否换行
+  isLineBreak: boolean = false
+  @State // 全局背景色
+  globalBackgroundColor: number | undefined = undefined
+  @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
-  /**
-   * 是否开启响应滑动测试
-   */
-  @State
+  @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
+  @State // 流式输入是否输入结束(true:结束输入,false:持续输入)
   isInputEnded: boolean = false
 
   // ---------- 专有
-  /**
-   * 视频圆角
-   */
-  videoBorderRadius: number = 10
-  /**
-   * 视频时间文本颜色
-   */
-  videoTimeTextColor: number | undefined = undefined
-  /**
-   * 视频时间文本大小
-   */
-  videoTimeTextSize: number = 14
-  /**
-   * 视频时间文本居右边距
-   */
-  videoTimeTextMarginRight: number = 10
-  /**
-   * 视频时间文本居底边距
-   */
-  videoTimeTextMarginBottom: number = 10
-  /**
-   * 视频上边距
-   */
+  @State // 视频背景颜色
+  videoBackgroundColor: number | undefined = undefined
+  @State // 视频上外边距
   videoMarginTop: number = 10
-  /**
-   * 视频下边距
-   */
+  @State // 视频右外边距
+  videoMarginRight: number = 0
+  @State // 视频下外边距
   videoMarginBottom: number = 10
-  /**
-   * 视频发布/下载按钮布局是否显示
-   */
-  @State
-  isVideoBottomLayout: boolean = false
-  /**
-   * 视频发布按钮图片宽度和高度
-   */
-  @State
-  videoReleaseImageWidthHeight: number = 18
-  /**
-   * 视频发布按钮宽度
-   */
-  @State
-  videoReleaseWidth: number = 144
-  /**
-   * 视频发布按钮高度
-   */
-  @State
-  videoReleaseHeight: number = 44
-  /**
-   * 视频发布按钮圆角
-   */
-  @State
-  videoReleaseRadius: number = 22
-  /**
-   * 视频发布按钮文本内容
-   */
-  @State
-  videoReleaseText: string = "发布视频"
-  /**
-   * 视频发布按钮文本大小
-   */
-  @State
-  videoReleaseTexSize: number = 16
-  /**
-   * 视频发布按钮文本颜色
-   */
-  @State
-  videoReleaseTexColor: number | undefined = undefined
-  /**
-   * 视频发布按钮背景颜色
-   */
-  @State
-  videoReleaseBackgroundColor: number | undefined = undefined
-  /**
-   * 视频下载按钮图片宽度和高度
-   */
-  @State
-  videoDownloadImageWidthHeight: number = 18
-  /**
-   * 视频下载按钮宽度
-   */
-  @State
-  videoDownloadWidth: number = 144
-  /**
-   * 视频下载按钮高度
-   */
-  @State
-  videoDownloadHeight: number = 44
-  /**
-   * 视频下载按钮圆角
-   */
-  @State
-  videoDownloadRadius: number = 22
-  /**
-   * 视频下载按钮文本内容
-   */
-  @State
-  videoDownloadText: string = "下载视频"
-  /**
-   * 视频下载按钮文本大小
-   */
-  @State
-  videoDownloadTexSize: number = 16
-  /**
-   * 视频下载按钮文本颜色
-   */
-  @State
-  videoDownloadTexColor: number | undefined = undefined
-  /**
-   * 视频下载按钮背景颜色
-   */
-  @State
-  videoDownloadBackgroundColor: number | undefined = undefined
+  @State // 视频左外边距
+  videoMarginLeft: number = 0
+  @State // 视频上内边距
+  videoPaddingTop: number = 0
+  @State // 视频右内边距
+  videoPaddingRight: number = 0
+  @State // 视频下内边距
+  videoPaddingBottom: number = 0
+  @State // 视频左内边距
+  videoPaddingLeft: number = 0
+  @State // 视频边框左上圆角
+  videoRadiusTopLeft: number = 10
+  @State // 视频边框右上圆角
+  videoRadiusTopRight: number = 10
+  @State // 视频边框左下圆角
+  videoRadiusBottomLeft: number = 10
+  @State // 视频边框右下圆角
+  videoRadiusBottomRight: number = 10
+  @State // 视频边框样式
+  videoBorderStyle: BorderStyle = BorderStyle.Solid
+  @State // 视频边框宽度
+  videoBorderWidth: number = 0
+  @State // 视频边框颜色
+  videoBorderColor: number | undefined = undefined
+  videoPlaceholder: Resource | undefined = undefined // 视频占位图
+  @State // 视频图片缩放类型
+  videoImageFitType: ImageFit = ImageFit.Contain
+  videoPlayIcon: Resource | undefined = undefined // 播放按钮默认图片
+  @State // 播放按钮图标宽度
+  videoPlayIconWidth: number = 40
+  @State // 播放按钮图标高度
+  videoPlayIconHeight: number = 40
+  @State // 播放按钮图标缩放类型
+  videoPlayIconFitType: ImageFit = ImageFit.Contain
+  @State // 视频时间文本颜色
+  videoTimeTextFontColor: number | undefined = undefined
+  @State // 视频时间文本尺寸
+  videoTimeTextFontSize: number = 14
+  @State // 视频时间文本字体样式
+  videoTimeTextFontStyle: FontStyle = FontStyle.Normal
+  @State // 视频时间文本字体粗细
+  videoTimeTextFontWeight: FontWeight = FontWeight.Normal
+  @State // 视频时间文本字体
+  videoTimeTextFontFamily: string = 'HarmonyOS Sans'
+  @State // 视频时间文本行高
+  videoTimeTextLineHeight: number = 20
+  @State // 视频时间文本居右边距
+  videoTimeTextMarginRight: number = 10
+  @State // 视频时间文本居底边距
+  videoTimeTextMarginBottom: number = 10
+  @State // 底部布局是否显示（视频发布/下载按钮）
+  videoBottomLayoutVisible: boolean = false
+  @State // 底部布局距离视频上边距
+  videoBottomLayoutMarginTop: number = 8
+  @State // 视频发布按钮是否显示
+  videoReleaseButtonVisible: boolean = true
+  @State // 视频发布按钮背景颜色
+  videoReleaseButtonBackgroundColor: number | undefined = undefined
+  @State // 视频发布按钮宽度
+  videoReleaseButtonWidth: number = 144
+  @State // 视频发布按钮高度
+  videoReleaseButtonHeight: number = 44
+  @State // 视频发布按钮左上圆角
+  videoReleaseButtonRadiusTopLeft: number = 22
+  @State // 视频发布按钮右上圆角
+  videoReleaseButtonRadiusTopRight: number = 22
+  @State // 视频发布按钮左下圆角
+  videoReleaseButtonRadiusBottomLeft: number = 22
+  @State // 视频发布按钮右下圆角
+  videoReleaseButtonRadiusBottomRight: number = 22
+  @State // 视频发布按钮图标和文本间距
+  videoReleaseButtonIconTextGap: number = 6
+  videoReleaseButtonIcon: Resource | undefined = undefined // 视频发布按钮图标
+  @State // 视频发布按钮图标宽度
+  videoReleaseButtonIconWidth: number = 18
+  @State // 视频发布按钮图标高度
+  videoReleaseButtonIconHeight: number = 18
+  @State // 视频发布按钮默认文本内容
+  videoReleaseButtonText: string = "发布视频"
+  @State // 视频发布按钮文本颜色
+  videoReleaseButtonTextFontColor: number | undefined = undefined
+  @State // 视频发布按钮文本尺寸
+  videoReleaseButtonTextFontSize: number = 16
+  @State // 视频发布按钮文本字体样式
+  videoReleaseButtonTextFontStyle: FontStyle = FontStyle.Normal
+  @State // 视频发布按钮文本字体粗细
+  videoReleaseButtonTextFontWeight: FontWeight = FontWeight.Normal
+  @State // 视频发布按钮文本字体
+  videoReleaseButtonTextFontFamily: string = 'HarmonyOS Sans'
+  @State // 视频发布按钮文本行高
+  videoReleaseButtonTextLineHeight: number = 20
+  @State // 视频下载按钮是否显示
+  videoDownloadButtonVisible: boolean = true
+  @State // 视频下载按钮背景颜色
+  videoDownloadButtonBackgroundColor: number | undefined = undefined
+  @State // 视频下载按钮宽度
+  videoDownloadButtonWidth: number = 144
+  @State // 视频下载按钮高度
+  videoDownloadButtonHeight: number = 44
+  @State // 视频下载按钮左上圆角
+  videoDownloadButtonRadiusTopLeft: number = 22
+  @State // 视频下载按钮右上圆角
+  videoDownloadButtonRadiusTopRight: number = 22
+  @State // 视频下载按钮左下圆角
+  videoDownloadButtonRadiusBottomLeft: number = 22
+  @State // 视频下载按钮右下圆角
+  videoDownloadButtonRadiusBottomRight: number = 22
+  @State // 视频下载按钮图标和文本间距
+  videoDownloadButtonIconTextGap: number = 6
+  videoDownloadButtonIcon: Resource | undefined = undefined // 视频下载按钮图标
+  @State // 视频下载按钮图标宽度
+  videoDownloadButtonIconWidth: number = 18
+  @State // 视频下载按钮图标高度
+  videoDownloadButtonIconHeight: number = 18
+  @State // 视频下载按钮默认文本内容
+  videoDownloadButtonText: string = "下载视频"
+  @State // 视频下载按钮文本颜色
+  videoDownloadButtonTextFontColor: number | undefined = undefined
+  @State // 视频下载按钮文本尺寸
+  videoDownloadButtonTextFontSize: number = 16
+  @State // 视频下载按钮文本字体样式
+  videoDownloadButtonTextFontStyle: FontStyle = FontStyle.Normal
+  @State // 视频下载按钮文本字体粗细
+  videoDownloadButtonTextFontWeight: FontWeight = FontWeight.Normal
+  @State // 视频下载按钮文本字体
+  videoDownloadButtonTextFontFamily: string = 'HarmonyOS Sans'
+  @State // 视频下载按钮文本行高
+  videoDownloadButtonTextLineHeight: number = 20
+
+  @State // markdown配置
+  markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
+  @State // markdown主题
+  markdownTheme: MarkdownTheme = new MarkdownTheme()
+  @State // markdown插件
+  markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
+  @State // 刷新标志
+  isRefresh: boolean = true
+
+  onColorModeChange(): void {
+    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+      this.markdownTheme.setDefaultTheme()
+      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+      hilog.error(1, 'onColorModeChange', '浅色模式')
+    } else {
+      this.markdownTheme.setDarculaTheme()
+      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+      hilog.error(1, 'onColorModeChange', '深色模式')
+    }
+    this.isRefresh = !this.isRefresh
+  }
 
   aboutToAppear(): void {
     try {
@@ -223,38 +229,92 @@ struct VideoDetailsPage {
       this.textNumber = videoData._textNumber
       this.isMarkdownParserSync = videoData._isMarkdownParserSync
       this.isOnCopy = videoData._isOnCopy
-      this.blockFirstTopMargin = videoData._blockFirstTopMargin
-      this.blockLastBottomMargin = videoData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = videoData._blockTopAndBottomMargins
+      this.blockMarginTop = videoData._blockMarginTop
+      this.blockMarginRight = videoData._blockMarginRight
+      this.blockMarginBottom = videoData._blockMarginBottom
+      this.blockMarginLeft = videoData._blockMarginLeft
+      this.markdownBlockSpacing = videoData._markdownBlockSpacing
+      this.isLineBreak = videoData._isLineBreak
+      this.globalBackgroundColor = videoData._backgroundColor
       this.openGestureSwipe = videoData._openGestureSwipe
       this.openGestureSwipeTest = videoData._openGestureSwipeTest
       // ---------- 专有
-      this.videoBorderRadius = videoData._videoBorderRadius
-      this.videoTimeTextColor = videoData._videoTimeTextColor
-      this.videoTimeTextSize = videoData._videoTimeTextSize
+      this.videoBackgroundColor = videoData._videoBackgroundColor
+      this.videoMarginTop = videoData._videoMarginTop
+      this.videoMarginRight = videoData._videoMarginRight
+      this.videoMarginBottom = videoData._videoMarginBottom
+      this.videoMarginLeft = videoData._videoMarginLeft
+      this.videoPaddingTop = videoData._videoPaddingTop
+      this.videoPaddingRight = videoData._videoPaddingRight
+      this.videoPaddingBottom = videoData._videoPaddingBottom
+      this.videoPaddingLeft = videoData._videoPaddingLeft
+      this.videoRadiusTopLeft = videoData._videoRadiusTopLeft
+      this.videoRadiusTopRight = videoData._videoRadiusTopRight
+      this.videoRadiusBottomLeft = videoData._videoRadiusBottomLeft
+      this.videoRadiusBottomRight = videoData._videoRadiusBottomRight
+      this.videoBorderStyle = videoData._videoBorderStyle
+      this.videoBorderWidth = videoData._videoBorderWidth
+      this.videoBorderColor = videoData._videoBorderColor
+      this.videoPlaceholder = videoData._videoPlaceholder
+      this.videoImageFitType = videoData._videoImageFitType
+      this.videoPlayIcon = videoData._videoPlayIcon
+      this.videoPlayIconWidth = videoData._videoPlayIconWidth
+      this.videoPlayIconHeight = videoData._videoPlayIconHeight
+      this.videoPlayIconFitType = videoData._videoPlayIconFitType
+      this.videoTimeTextFontColor = videoData._videoTimeTextFontColor
+      this.videoTimeTextFontSize = videoData._videoTimeTextFontSize
+      this.videoTimeTextFontStyle = videoData._videoTimeTextFontStyle
+      this.videoTimeTextFontWeight = videoData._videoTimeTextFontWeight
+      this.videoTimeTextFontFamily = videoData._videoTimeTextFontFamily
+      this.videoTimeTextLineHeight = videoData._videoTimeTextLineHeight
       this.videoTimeTextMarginRight = videoData._videoTimeTextMarginRight
       this.videoTimeTextMarginBottom = videoData._videoTimeTextMarginBottom
-      this.videoMarginTop = videoData._videoMarginTop
-      this.videoMarginBottom = videoData._videoMarginBottom
-      this.isVideoBottomLayout = videoData._isVideoBottomLayout
-      this.videoReleaseImageWidthHeight = videoData._videoReleaseImageWidthHeight
-      this.videoReleaseWidth = videoData._videoReleaseWidth
-      this.videoReleaseHeight = videoData._videoReleaseHeight
-      this.videoReleaseRadius = videoData._videoReleaseRadius
-      this.videoReleaseText = videoData._videoReleaseText
-      this.videoReleaseTexSize = videoData._videoReleaseTexSize
-      this.videoReleaseTexColor = videoData._videoReleaseTexColor
-      this.videoReleaseBackgroundColor = videoData._videoReleaseBackgroundColor
-      this.videoDownloadImageWidthHeight = videoData._videoDownloadImageWidthHeight
-      this.videoDownloadWidth = videoData._videoDownloadWidth
-      this.videoDownloadHeight = videoData._videoDownloadHeight
-      this.videoDownloadRadius = videoData._videoDownloadRadius
-      this.videoDownloadText = videoData._videoDownloadText
-      this.videoDownloadTexSize = videoData._videoDownloadTexSize
-      this.videoDownloadTexColor = videoData._videoDownloadTexColor
-      this.videoDownloadBackgroundColor = videoData._videoDownloadBackgroundColor
+      this.videoBottomLayoutVisible = videoData._videoBottomLayoutVisible
+      this.videoBottomLayoutMarginTop = videoData._videoBottomLayoutMarginTop
+      this.videoReleaseButtonVisible = videoData._videoReleaseButtonVisible
+      this.videoReleaseButtonBackgroundColor = videoData._videoReleaseButtonBackgroundColor
+      this.videoReleaseButtonWidth = videoData._videoReleaseButtonWidth
+      this.videoReleaseButtonHeight = videoData._videoReleaseButtonHeight
+      this.videoReleaseButtonRadiusTopLeft = videoData._videoReleaseButtonRadiusTopLeft
+      this.videoReleaseButtonRadiusTopRight = videoData._videoReleaseButtonRadiusTopRight
+      this.videoReleaseButtonRadiusBottomLeft = videoData._videoReleaseButtonRadiusBottomLeft
+      this.videoReleaseButtonRadiusBottomRight = videoData._videoReleaseButtonRadiusBottomRight
+      this.videoReleaseButtonIconTextGap = videoData._videoReleaseButtonIconTextGap
+      this.videoReleaseButtonIcon = videoData._videoReleaseButtonIcon
+      this.videoReleaseButtonIconWidth = videoData._videoReleaseButtonIconWidth
+      this.videoReleaseButtonIconHeight = videoData._videoReleaseButtonIconHeight
+      this.videoReleaseButtonText = videoData._videoReleaseButtonText
+      this.videoReleaseButtonTextFontColor = videoData._videoReleaseButtonTextFontColor
+      this.videoReleaseButtonTextFontSize = videoData._videoReleaseButtonTextFontSize
+      this.videoReleaseButtonTextFontStyle = videoData._videoReleaseButtonTextFontStyle
+      this.videoReleaseButtonTextFontWeight = videoData._videoReleaseButtonTextFontWeight
+      this.videoReleaseButtonTextFontFamily = videoData._videoReleaseButtonTextFontFamily
+      this.videoReleaseButtonTextLineHeight = videoData._videoReleaseButtonTextLineHeight
+      this.videoDownloadButtonVisible = videoData._videoDownloadButtonVisible
+      this.videoDownloadButtonBackgroundColor = videoData._videoDownloadButtonBackgroundColor
+      this.videoDownloadButtonWidth = videoData._videoDownloadButtonWidth
+      this.videoDownloadButtonHeight = videoData._videoDownloadButtonHeight
+      this.videoDownloadButtonRadiusTopLeft = videoData._videoDownloadButtonRadiusTopLeft
+      this.videoDownloadButtonRadiusTopRight = videoData._videoDownloadButtonRadiusTopRight
+      this.videoDownloadButtonRadiusBottomLeft = videoData._videoDownloadButtonRadiusBottomLeft
+      this.videoDownloadButtonRadiusBottomRight = videoData._videoDownloadButtonRadiusBottomRight
+      this.videoDownloadButtonIconTextGap = videoData._videoDownloadButtonIconTextGap
+      this.videoDownloadButtonIcon = videoData._videoDownloadButtonIcon
+      this.videoDownloadButtonIconWidth = videoData._videoDownloadButtonIconWidth
+      this.videoDownloadButtonIconHeight = videoData._videoDownloadButtonIconHeight
+      this.videoDownloadButtonText = videoData._videoDownloadButtonText
+      this.videoDownloadButtonTextFontColor = videoData._videoDownloadButtonTextFontColor
+      this.videoDownloadButtonTextFontSize = videoData._videoDownloadButtonTextFontSize
+      this.videoDownloadButtonTextFontStyle = videoData._videoDownloadButtonTextFontStyle
+      this.videoDownloadButtonTextFontWeight = videoData._videoDownloadButtonTextFontWeight
+      this.videoDownloadButtonTextFontFamily = videoData._videoDownloadButtonTextFontFamily
+      this.videoDownloadButtonTextLineHeight = videoData._videoDownloadButtonTextLineHeight
     } catch (e) {
     }
+    this.markdownPlugin = this.setPlugin()
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration = this.setMarkdownConfig()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
   }
 
   build() {
@@ -266,14 +326,14 @@ struct VideoDetailsPage {
         this.safeTop
       )
       Button("点击加载markdown")
-        .height(40)// 高度
-        .width("80%")// 宽度
-        .type(ButtonType.Capsule)// 圆角
-        .margin({ top: 5, bottom: 5 })// 外边距
-        .fontColor(0xFFFFFFFF)// 文本颜色
-        .backgroundColor(0xFF317AFF)// 背景颜色
-        .align(Alignment.Center)// 内容对齐方式
-        .fontSize(16)// 字体大小
+        .height(40)
+        .width("80%")
+        .type(ButtonType.Capsule)
+        .margin({ top: 5, bottom: 5 })
+        .fontColor(0xFFFFFFFF)
+        .backgroundColor(0xFF317AFF)
+        .align(Alignment.Center)
+        .fontSize(16)
         .onClick(
           () => {
             if (this.isFull) {
@@ -299,27 +359,51 @@ struct VideoDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-          Column() {
-            CJMarkdown({
-              content: this.content,
-              isInputEnded: this.isInputEnded,
-              incrementalAnalysis: this.incrementalAnalysis,
-              listScroller: this.markdownScroller,
-              config: this.setMarkdownConfig(),
-              plugin: this.setPlugin()
-            })
-          }.height("100%")
+        if (this.isRefresh) {
+          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                incrementalAnalysis: this.incrementalAnalysis,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }.height("100%")
+          } else {
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }
+          }
         } else {
-          Column() {
-            CJMarkdown({
-              content: this.content,
-              isInputEnded: this.isInputEnded,
-              incrementalAnalysis: this.incrementalAnalysis,
-              listScroller: this.markdownScroller,
-              config: this.setMarkdownConfig(),
-              plugin: this.setPlugin()
-            })
+          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                incrementalAnalysis: this.incrementalAnalysis,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }.height("100%")
+          } else {
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }
           }
         }
       }
@@ -335,54 +419,111 @@ struct VideoDetailsPage {
     config.setVideoImageCallback(this.videoImageCallback) // 视频占位图和宽高比和视频时长的回调
     config.setVideoReleaseCallback(this.videoReleaseCallback) // 视频发布的点击事件
     config.setVideoDownloadCallback(this.videoDownloadCallback) // 视频下载的点击事件
-    let theme = new MarkdownTheme()
-    theme.setVideoImage($r('app.media.place_holder')) // 视频默认占位图
-    theme.setPlayCircleFillIcon($r('app.media.play_circle_fill')) // 视频播放按钮默认图标
-    theme.setVideoReleaseImage($r('app.media.video_release')) // 视频发布默认图标
-    theme.setVideoDownloadImage($r('app.media.video_download')) // 视频下载默认图标
-    theme.setVideoBorderRadius(this.videoBorderRadius) // 视频圆角
-    if (this.videoTimeTextColor !== undefined) {
-      theme.setVideoTimeTextColor(this.videoTimeTextColor) // 视频时间文本颜色
-    }
-    theme.setVideoTimeTextSize(this.videoTimeTextSize) // 视频时间文本大小
-    theme.setVideoTimeTextMarginRight(this.videoTimeTextMarginRight) // 视频时间文本居右边距
-    theme.setVideoTimeTextMarginBottom(this.videoTimeTextMarginBottom) // 视频时间文本居底边距
-    theme.setVideoMarginTop(this.videoMarginTop) // 视频上边距
-    theme.setVideoMarginBottom(this.videoMarginBottom) // 视频下边距
-    theme.setIsVideoBottomLayout(this.isVideoBottomLayout) // 视频发布/下载按钮布局是否显示
-    theme.setVideoReleaseImageWidthHeight(this.videoReleaseImageWidthHeight) // 视频发布按钮图片宽度和高度
-    theme.setVideoReleaseWidth(this.videoReleaseWidth) // 视频发布按钮宽度
-    theme.setVideoReleaseHeight(this.videoReleaseHeight) // 视频发布按钮高度
-    theme.setVideoReleaseRadius(this.videoReleaseRadius) // 视频发布按钮圆角
-    theme.setVideoReleaseText(this.videoReleaseText) // 视频发布按钮文本内容
-    theme.setVideoReleaseTexSize(this.videoReleaseTexSize) // 视频发布按钮文本大小
-    if (this.videoReleaseTexColor !== undefined) {
-      theme.setVideoReleaseTexColor(this.videoReleaseTexColor) // 视频发布按钮文本颜色
-    }
-    if (this.videoReleaseBackgroundColor !== undefined) {
-      theme.setVideoReleaseBackgroundColor(this.videoReleaseBackgroundColor) // 视频发布按钮背景颜色
-    }
-    theme.setVideoDownloadImageWidthHeight(this.videoDownloadImageWidthHeight) // 视频下载按钮图片宽度和高度
-    theme.setVideoDownloadWidth(this.videoDownloadWidth) // 视频下载按钮宽度
-    theme.setVideoDownloadHeight(this.videoDownloadHeight) // 视频下载按钮高度
-    theme.setVideoDownloadRadius(this.videoDownloadRadius) // 视频下载按钮圆角
-    theme.setVideoDownloadText(this.videoDownloadText) // 视频下载按钮文本内容
-    theme.setVideoDownloadTexSize(this.videoDownloadTexSize) // 视频下载按钮文本大小
-    if (this.videoDownloadTexColor !== undefined) {
-      theme.setVideoDownloadTexColor(this.videoDownloadTexColor) // 视频下载按钮文本颜色
-    }
-    if (this.videoDownloadBackgroundColor !== undefined) {
-      theme.setVideoDownloadBackgroundColor(this.videoDownloadBackgroundColor) // 视频下载按钮背景颜色
-    }
-    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
-    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
-    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
-    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
-    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
-    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
-
-    config.setMarkdownTheme(theme)
     return config
+  }
+
+  setMarkdownTheme(): MarkdownTheme {
+    let theme = new MarkdownTheme()
+    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+      theme.setDefaultTheme()
+    } else {
+      theme.setDarculaTheme()
+    }
+    // ---------- 通用 - Global
+    let globalTheme = new MarkdownThemeGlobal()
+    if (this.globalBackgroundColor !== undefined) {
+      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+    }
+    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    globalTheme.setIsLineBreak(this.isLineBreak)
+    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    globalTheme.setIsOnCopy(this.isOnCopy)
+    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.setMarkdownThemeGlobal(globalTheme)
+    
+    // ---------- 专有 - Video
+    let videoTheme = new MarkdownThemeVideo()
+    if (this.videoBackgroundColor !== undefined) {
+      videoTheme.setVideoBackgroundColor(this.videoBackgroundColor)
+    }
+    videoTheme.setVideoMargin(this.videoMarginTop, this.videoMarginRight, this.videoMarginBottom, this.videoMarginLeft)
+    videoTheme.setVideoPadding(this.videoPaddingTop, this.videoPaddingRight, this.videoPaddingBottom, this.videoPaddingLeft)
+    videoTheme.setVideoBorderRadius(this.videoRadiusTopLeft, this.videoRadiusTopRight, this.videoRadiusBottomLeft, this.videoRadiusBottomRight)
+    videoTheme.setVideoBorderStyle(this.videoBorderStyle)
+    videoTheme.setVideoBorderWidth(this.videoBorderWidth)
+    if (this.videoBorderColor !== undefined) {
+      videoTheme.setVideoBorderColor(this.videoBorderColor)
+    }
+    if (this.videoPlaceholder !== undefined) {
+      videoTheme.setVideoPlaceholder(this.videoPlaceholder)
+    }
+    videoTheme.setVideoImageFitType(this.videoImageFitType)
+    if (this.videoPlayIcon !== undefined) {
+      videoTheme.setVideoPlayIcon(this.videoPlayIcon)
+    }
+    videoTheme.setVideoPlayIconWidth(this.videoPlayIconWidth)
+    videoTheme.setVideoPlayIconHeight(this.videoPlayIconHeight)
+    videoTheme.setVideoPlayIconFitType(this.videoPlayIconFitType)
+    if (this.videoTimeTextFontColor !== undefined) {
+      videoTheme.setVideoTimeTextFontColor(this.videoTimeTextFontColor)
+    }
+    videoTheme.setVideoTimeTextFontSize(this.videoTimeTextFontSize)
+    videoTheme.setVideoTimeTextFontStyle(this.videoTimeTextFontStyle)
+    videoTheme.setVideoTimeTextFontWeight(this.videoTimeTextFontWeight)
+    videoTheme.setVideoTimeTextFontFamily(this.videoTimeTextFontFamily)
+    videoTheme.setVideoTimeTextLineHeight(this.videoTimeTextLineHeight)
+    videoTheme.setVideoTimeTextMarginRight(this.videoTimeTextMarginRight)
+    videoTheme.setVideoTimeTextMarginBottom(this.videoTimeTextMarginBottom)
+    videoTheme.setVideoBottomLayoutVisible(this.videoBottomLayoutVisible)
+    videoTheme.setVideoBottomLayoutMarginTop(this.videoBottomLayoutMarginTop)
+    videoTheme.setVideoReleaseButtonVisible(this.videoReleaseButtonVisible)
+    if (this.videoReleaseButtonBackgroundColor !== undefined) {
+      videoTheme.setVideoReleaseButtonBackgroundColor(this.videoReleaseButtonBackgroundColor)
+    }
+    videoTheme.setVideoReleaseButtonWidth(this.videoReleaseButtonWidth)
+    videoTheme.setVideoReleaseButtonHeight(this.videoReleaseButtonHeight)
+    videoTheme.setVideoReleaseButtonRadius(this.videoReleaseButtonRadiusTopLeft, this.videoReleaseButtonRadiusTopRight, this.videoReleaseButtonRadiusBottomLeft, this.videoReleaseButtonRadiusBottomRight)
+    videoTheme.setVideoReleaseButtonIconTextGap(this.videoReleaseButtonIconTextGap)
+    if (this.videoReleaseButtonIcon !== undefined) {
+      videoTheme.setVideoReleaseButtonIcon(this.videoReleaseButtonIcon)
+    }
+    videoTheme.setVideoReleaseButtonIconWidth(this.videoReleaseButtonIconWidth)
+    videoTheme.setVideoReleaseButtonIconHeight(this.videoReleaseButtonIconHeight)
+    videoTheme.setVideoReleaseButtonText(this.videoReleaseButtonText)
+    if (this.videoReleaseButtonTextFontColor !== undefined) {
+      videoTheme.setVideoReleaseButtonTextFontColor(this.videoReleaseButtonTextFontColor)
+    }
+    videoTheme.setVideoReleaseButtonTextFontSize(this.videoReleaseButtonTextFontSize)
+    videoTheme.setVideoReleaseButtonTextFontStyle(this.videoReleaseButtonTextFontStyle)
+    videoTheme.setVideoReleaseButtonTextFontWeight(this.videoReleaseButtonTextFontWeight)
+    videoTheme.setVideoReleaseButtonTextFontFamily(this.videoReleaseButtonTextFontFamily)
+    videoTheme.setVideoReleaseButtonTextLineHeight(this.videoReleaseButtonTextLineHeight)
+    videoTheme.setVideoDownloadButtonVisible(this.videoDownloadButtonVisible)
+    if (this.videoDownloadButtonBackgroundColor !== undefined) {
+      videoTheme.setVideoDownloadButtonBackgroundColor(this.videoDownloadButtonBackgroundColor)
+    }
+    videoTheme.setVideoDownloadButtonWidth(this.videoDownloadButtonWidth)
+    videoTheme.setVideoDownloadButtonHeight(this.videoDownloadButtonHeight)
+    videoTheme.setVideoDownloadButtonRadius(this.videoDownloadButtonRadiusTopLeft, this.videoDownloadButtonRadiusTopRight, this.videoDownloadButtonRadiusBottomLeft, this.videoDownloadButtonRadiusBottomRight)
+    videoTheme.setVideoDownloadButtonIconTextGap(this.videoDownloadButtonIconTextGap)
+    if (this.videoDownloadButtonIcon !== undefined) {
+      videoTheme.setVideoDownloadButtonIcon(this.videoDownloadButtonIcon)
+    }
+    videoTheme.setVideoDownloadButtonIconWidth(this.videoDownloadButtonIconWidth)
+    videoTheme.setVideoDownloadButtonIconHeight(this.videoDownloadButtonIconHeight)
+    videoTheme.setVideoDownloadButtonText(this.videoDownloadButtonText)
+    if (this.videoDownloadButtonTextFontColor !== undefined) {
+      videoTheme.setVideoDownloadButtonTextFontColor(this.videoDownloadButtonTextFontColor)
+    }
+    videoTheme.setVideoDownloadButtonTextFontSize(this.videoDownloadButtonTextFontSize)
+    videoTheme.setVideoDownloadButtonTextFontStyle(this.videoDownloadButtonTextFontStyle)
+    videoTheme.setVideoDownloadButtonTextFontWeight(this.videoDownloadButtonTextFontWeight)
+    videoTheme.setVideoDownloadButtonTextFontFamily(this.videoDownloadButtonTextFontFamily)
+    videoTheme.setVideoDownloadButtonTextLineHeight(this.videoDownloadButtonTextLineHeight)
+    theme.setMarkdownThemeVideo(videoTheme)
+    
+    return theme
   }
 
   setPlugin(): MarkdownPlugin {

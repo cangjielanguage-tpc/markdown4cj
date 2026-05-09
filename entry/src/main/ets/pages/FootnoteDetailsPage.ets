@@ -1,103 +1,183 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
-import { titleComponent } from '../component/BaseComponent'
-import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTextDecorationStyle,
+  MarkdownTheme,
+  MarkdownThemeFootnoteDef,
+  MarkdownThemeFootnoteRef,
+  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+import { titleComponent } from '../component/BaseComponent'
+import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'
-import hilog from '@ohos.hilog'
 import { FootnoteData } from '../model/FootnoteData'
+import { hilog } from '@kit.PerformanceAnalysisKit'
+import { ConfigurationConstant } from '@kit.AbilityKit'
 
 @Entry
 @Component
 struct FootnoteDetailsPage {
-  /**
-   * 滑动控制器
-   */
+  // ---------- 通用
+  // 滑动控制器
   scroller: Scroller = new Scroller()
-  /**
-   * Markdown的控制器
-   */
+  // Markdown的控制器
   markdownScroller: MarkdownScroller = new MarkdownScroller()
-  /**
-   * 顶部导航栏高度
-   */
-  @StorageProp('safeTop')
+  @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  /**
-   * 文件文本
-   */
+  @StorageProp('currentColorMode')
+  @Watch('onColorModeChange') // 深浅色模式
+  currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
+  // 文件文本
   @State
   fileStr: string = ""
-  /**
-   * markdown文本
-   */
+  // markdown文本
   @State
   content: string = ""
-  /**
-   * 是否全量加载Markdown文本
-   */
+  // 是否全量加载Markdown文本
   @State
   isFull: boolean = true
-  /**
-   * 是否增量解析Markdown文本
-   */
+  // 是否增量解析Markdown文本
   @State
   incrementalAnalysis: boolean = false
-  /**
-   * 增量加载每次间隔时间
-   */
+  // 增量加载每次间隔时间
   @State
   time: number = 50
-  /**
-   * 增量每次增量文本数量
-   */
+  // 增量每次增量文本数量
   @State
   textNumber: number = 10
-  /**
-   * 是否同步解析Markdown文本
-   */
+  // 是否同步解析Markdown文本
   @State
   isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴效果
-   */
+  // 是否打开长按复制粘贴效果
   @State
   isOnCopy: boolean = false
-  /**
-   * Markdown文本第一个模块上边距
-   */
+  // Markdown块上边距
   @State
-  blockFirstTopMargin: number = 8
-  /**
-   * Markdown文本最后一个模块下边距
-   */
+  blockMarginTop: number = 8
+  // Markdown块右边距
   @State
-  blockLastBottomMargin: number = 8
-  /**
-   * Markdown文本模块间上下间距
-   */
+  blockMarginRight: number = 8
+  // Markdown块下边距
   @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 是否允许markdown控件自身响应滑动
-   */
+  blockMarginBottom: number = 8
+  // Markdown块左边距
+  @State
+  blockMarginLeft: number = 8
+  // Markdown块间距样式字符串
+  @State
+  markdownBlockSpacing: number = 8
+  // 是否换行
+  @State
+  isLineBreak: boolean = false
+  // 全局背景色
+  @State
+  globalBackgroundColor: number | undefined = undefined
+  // 是否允许markdown控件自身响应滑动
   @State
   openGestureSwipe: boolean = false
-  /**
-   * 是否开启响应滑动测试
-   */
+  // 是否开启响应滑动测试
   @State
   openGestureSwipeTest: boolean = false
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
+  // 流式输入是否输入结束(true:结束输入,false:持续输入)
   @State
   isInputEnded: boolean = false
 
   // ---------- 专有
+  // 脚注定义背景颜色
+  @State
+  footnoteDefBackgroundColor: number | undefined = undefined
+  // 脚注定义上外边距
+  @State
+  footnoteDefMarginTop: number = 8
+  // 脚注定义右外边距
+  @State
+  footnoteDefMarginRight: number = 0
+  // 脚注定义下外边距
+  @State
+  footnoteDefMarginBottom: number = 8
+  // 脚注定义左外边距
+  @State
+  footnoteDefMarginLeft: number = 0
+  // 脚注定义上内边距
+  @State
+  footnoteDefPaddingTop: number = 0
+  // 脚注定义右内边距
+  @State
+  footnoteDefPaddingRight: number = 0
+  // 脚注定义下内边距
+  @State
+  footnoteDefPaddingBottom: number = 0
+  // 脚注定义左内边距
+  @State
+  footnoteDefPaddingLeft: number = 0
+  // 脚注引用文本颜色
+  @State
+  footnoteRefTextFontColor: number | undefined = undefined
+  // 脚注引用文本尺寸
+  @State
+  footnoteRefTextFontSize: number = 12
+  // 脚注引用文本字体样式
+  @State
+  footnoteRefTextFontStyle: FontStyle = FontStyle.Normal
+  // 脚注引用文本字体粗细
+  @State
+  footnoteRefTextFontWeight: FontWeight = FontWeight.Normal
+  // 脚注引用文本字体
+  @State
+  footnoteRefTextFontFamily: string = 'HarmonyOS Sans'
+  // 脚注引用文本行高
+  @State
+  footnoteRefTextLineHeight: number = 18
+  // 脚注引用文本字符间距
+  @State
+  footnoteRefTextLetterSpacing: number = 0
+  // 脚注引用文本装饰线类型
+  @State
+  footnoteRefTextDecorationType: TextDecorationType = TextDecorationType.None
+  // 脚注引用文本装饰线颜色
+  @State
+  footnoteRefTextDecorationColor: number | undefined = undefined
+  // 脚注引用文本装饰线样式
+  @State
+  footnoteRefTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  // 脚注引用文本背景颜色
+  @State
+  footnoteRefTextBackgroundColor: number | undefined = undefined
+  // 脚注引用文本背景左上圆角
+  @State
+  footnoteRefTextBackgroundRadiusTopLeft: number = 0
+  // 脚注引用文本背景右上圆角
+  @State
+  footnoteRefTextBackgroundRadiusTopRight: number = 0
+  // 脚注引用文本背景左下圆角
+  @State
+  footnoteRefTextBackgroundRadiusBottomLeft: number = 0
+  // 脚注引用文本背景右下圆角
+  @State
+  footnoteRefTextBackgroundRadiusBottomRight: number = 0
+
+  @State // markdown配置
+  markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
+  @State // markdown主题
+  markdownTheme: MarkdownTheme = new MarkdownTheme()
+  @State // markdown插件
+  markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
+  @State // 刷新标志
+  isRefresh: boolean = true
+
+  onColorModeChange(): void {
+    // 根据 this.currentColorMode 更新 UI 或状态栏
+    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+      // 浅色模式处理
+      this.markdownTheme.setDefaultTheme()
+      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+      hilog.error(1, 'onColorModeChange', '浅色模式')
+    } else {
+      // 深色模式处理
+      this.markdownTheme.setDarculaTheme()
+      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+      hilog.error(1, 'onColorModeChange', '深色模式')
+    }
+    this.isRefresh = !this.isRefresh
+  }
 
   aboutToAppear(): void {
     try {
@@ -110,14 +190,46 @@ struct FootnoteDetailsPage {
       this.textNumber = footnoteData._textNumber
       this.isMarkdownParserSync = footnoteData._isMarkdownParserSync
       this.isOnCopy = footnoteData._isOnCopy
-      this.blockFirstTopMargin = footnoteData._blockFirstTopMargin
-      this.blockLastBottomMargin = footnoteData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = footnoteData._blockTopAndBottomMargins
+      this.blockMarginTop = footnoteData._blockMarginTop
+      this.blockMarginRight = footnoteData._blockMarginRight
+      this.blockMarginBottom = footnoteData._blockMarginBottom
+      this.blockMarginLeft = footnoteData._blockMarginLeft
+      this.markdownBlockSpacing = footnoteData._markdownBlockSpacing
+      this.isLineBreak = footnoteData._isLineBreak
+      this.globalBackgroundColor = footnoteData._backgroundColor
       this.openGestureSwipe = footnoteData._openGestureSwipe
       this.openGestureSwipeTest = footnoteData._openGestureSwipeTest
       // ---------- 专有
+      this.footnoteDefBackgroundColor = footnoteData._footnoteDefBackgroundColor
+      this.footnoteDefMarginTop = footnoteData._footnoteDefMarginTop
+      this.footnoteDefMarginRight = footnoteData._footnoteDefMarginRight
+      this.footnoteDefMarginBottom = footnoteData._footnoteDefMarginBottom
+      this.footnoteDefMarginLeft = footnoteData._footnoteDefMarginLeft
+      this.footnoteDefPaddingTop = footnoteData._footnoteDefPaddingTop
+      this.footnoteDefPaddingRight = footnoteData._footnoteDefPaddingRight
+      this.footnoteDefPaddingBottom = footnoteData._footnoteDefPaddingBottom
+      this.footnoteDefPaddingLeft = footnoteData._footnoteDefPaddingLeft
+      this.footnoteRefTextFontColor = footnoteData._footnoteRefTextFontColor
+      this.footnoteRefTextFontSize = footnoteData._footnoteRefTextFontSize
+      this.footnoteRefTextFontStyle = footnoteData._footnoteRefTextFontStyle
+      this.footnoteRefTextFontWeight = footnoteData._footnoteRefTextFontWeight
+      this.footnoteRefTextFontFamily = footnoteData._footnoteRefTextFontFamily
+      this.footnoteRefTextLineHeight = footnoteData._footnoteRefTextLineHeight
+      this.footnoteRefTextLetterSpacing = footnoteData._footnoteRefTextLetterSpacing
+      this.footnoteRefTextDecorationType = footnoteData._footnoteRefTextDecorationType
+      this.footnoteRefTextDecorationColor = footnoteData._footnoteRefTextDecorationColor
+      this.footnoteRefTextDecorationStyle = footnoteData._footnoteRefTextDecorationStyle
+      this.footnoteRefTextBackgroundColor = footnoteData._footnoteRefTextBackgroundColor
+      this.footnoteRefTextBackgroundRadiusTopLeft = footnoteData._footnoteRefTextBackgroundRadiusTopLeft
+      this.footnoteRefTextBackgroundRadiusTopRight = footnoteData._footnoteRefTextBackgroundRadiusTopRight
+      this.footnoteRefTextBackgroundRadiusBottomLeft = footnoteData._footnoteRefTextBackgroundRadiusBottomLeft
+      this.footnoteRefTextBackgroundRadiusBottomRight = footnoteData._footnoteRefTextBackgroundRadiusBottomRight
     } catch (e) {
     }
+    this.markdownPlugin = this.setPlugin()
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration = this.setMarkdownConfig()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
   }
 
   build() {
@@ -159,27 +271,51 @@ struct FootnoteDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-          Column() {
-            CJMarkdown({
-              content: this.content,
-              isInputEnded: this.isInputEnded,
-              incrementalAnalysis: this.incrementalAnalysis,
-              listScroller: this.markdownScroller,
-              config: this.setMarkdownConfig(),
-              plugin: this.setPlugin()
-            })
-          }.height("100%")
+        if (this.isRefresh) {
+          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                incrementalAnalysis: this.incrementalAnalysis,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }.height("100%")
+          } else {
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }
+          }
         } else {
-          Column() {
-            CJMarkdown({
-              content: this.content,
-              isInputEnded: this.isInputEnded,
-              incrementalAnalysis: this.incrementalAnalysis,
-              listScroller: this.markdownScroller,
-              config: this.setMarkdownConfig(),
-              plugin: this.setPlugin()
-            })
+          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                incrementalAnalysis: this.incrementalAnalysis,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }.height("100%")
+          } else {
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }
           }
         }
       }
@@ -191,17 +327,76 @@ struct FootnoteDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    let theme = new MarkdownTheme()
-    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
-    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
-    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
-    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
-    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
-    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
-
-    config.setMarkdownTheme(theme)
-    config.setFootnoteCallback(this.footnoteCallback.bind(this))
     return config
+  }
+
+  setMarkdownTheme(): MarkdownTheme {
+    let theme = new MarkdownTheme()
+    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+      theme.setDefaultTheme()
+    } else {
+      theme.setDarculaTheme()
+    }
+    // ---------- 通用 - Global
+    let globalTheme = new MarkdownThemeGlobal()
+    if (this.globalBackgroundColor !== undefined) {
+      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+    }
+    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    globalTheme.setIsLineBreak(this.isLineBreak)
+    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    globalTheme.setIsOnCopy(this.isOnCopy)
+    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.setMarkdownThemeGlobal(globalTheme)
+    
+    // ---------- 专有 - FootnoteDef
+    let footnoteDefTheme = new MarkdownThemeFootnoteDef()
+    if (this.footnoteDefBackgroundColor !== undefined) {
+      footnoteDefTheme.setFootnoteDefBackgroundColor(this.footnoteDefBackgroundColor)
+    }
+    footnoteDefTheme.setFootnoteDefMargin(
+      this.footnoteDefMarginTop,
+      this.footnoteDefMarginRight,
+      this.footnoteDefMarginBottom,
+      this.footnoteDefMarginLeft
+    )
+    footnoteDefTheme.setFootnoteDefPadding(
+      this.footnoteDefPaddingTop,
+      this.footnoteDefPaddingRight,
+      this.footnoteDefPaddingBottom,
+      this.footnoteDefPaddingLeft
+    )
+    theme.setMarkdownThemeFootnoteDef(footnoteDefTheme)
+    
+    // ---------- 专有 - FootnoteRef
+    let footnoteRefTheme = new MarkdownThemeFootnoteRef()
+    if (this.footnoteRefTextFontColor !== undefined) {
+      footnoteRefTheme.setFootnoteRefTextFontColor(this.footnoteRefTextFontColor)
+    }
+    footnoteRefTheme.setFootnoteRefTextFontSize(this.footnoteRefTextFontSize)
+    footnoteRefTheme.setFootnoteRefTextFontStyle(this.footnoteRefTextFontStyle)
+    footnoteRefTheme.setFootnoteRefTextFontWeight(this.footnoteRefTextFontWeight)
+    footnoteRefTheme.setFootnoteRefTextFontFamily(this.footnoteRefTextFontFamily)
+    footnoteRefTheme.setFootnoteRefTextLineHeight(this.footnoteRefTextLineHeight)
+    footnoteRefTheme.setFootnoteRefTextLetterSpacing(this.footnoteRefTextLetterSpacing)
+    footnoteRefTheme.setFootnoteRefTextDecorationType(this.footnoteRefTextDecorationType)
+    if (this.footnoteRefTextDecorationColor !== undefined) {
+      footnoteRefTheme.setFootnoteRefTextDecorationColor(this.footnoteRefTextDecorationColor)
+    }
+    footnoteRefTheme.setFootnoteRefTextDecorationStyle(this.footnoteRefTextDecorationStyle)
+    if (this.footnoteRefTextBackgroundColor !== undefined) {
+      footnoteRefTheme.setFootnoteRefTextBackgroundColor(this.footnoteRefTextBackgroundColor)
+    }
+    footnoteRefTheme.setFootnoteRefTextBackgroundRadius(
+      this.footnoteRefTextBackgroundRadiusTopLeft,
+      this.footnoteRefTextBackgroundRadiusTopRight,
+      this.footnoteRefTextBackgroundRadiusBottomLeft,
+      this.footnoteRefTextBackgroundRadiusBottomRight
+    )
+    theme.setMarkdownThemeFootnoteRef(footnoteRefTheme)
+    
+    return theme
   }
 
   setPlugin(): MarkdownPlugin {

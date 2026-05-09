@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
@@ -11,7 +8,6 @@ import {
   colorListGeneralData,
   marginListGeneralData,
   textNumberListGeneralData,
-  textWordSpaceListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
 import { SupData } from '../model/SupData'
@@ -20,156 +16,106 @@ import { SupData } from '../model/SupData'
 @Component
 struct SupPage {
   // ---------------- 通用
-  /**
-   * 滑动控制器
-   */
+  // 滑动控制器
   scroller: Scroller = new Scroller()
-  /**
-   * 顶部导航栏高度
-   */
-  @StorageProp('safeTop')
+  @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  /**
-   * rawfile路径
-   */
+  // rawfile路径
   rawFilePath: string = "027_上标"
-  /**
-   * rawfile文件夹列表
-   */
-  @State
+  @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
-  /**
-   * 是否全量加载Markdown文本列表
-   */
+  // 是否全量加载Markdown文本列表
   isFullList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否全量加载Markdown文本
-   */
-  @State
+  @State // 是否全量加载Markdown文本
   isFull: boolean = true
-  /**
-   * 是否增量解析Markdown文本列表
-   */
+  // 是否增量解析Markdown文本列表
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否增量解析Markdown文本
-   */
-  @State
+  @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
-  /**
-   * 增量加载每次间隔时间列表
-   */
+  // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
-  /**
-   * 增量加载每次间隔时间
-   */
-  @State
+  @State // 增量加载每次间隔时间
   time: number = 50
-  /**
-   * 增量每次增量文本数量列表
-   */
+  // 增量每次增量文本数量列表
   textNumberList: Array<number> = textNumberListGeneralData
-  /**
-   * 增量每次增量文本数量
-   */
-  @State
+  @State // 增量每次增量文本数量
   textNumber: number = 10
-  /**
-   * 是否同步解析Markdown文本列表
-   */
+  // 是否同步解析Markdown文本列表
   isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否同步解析Markdown文本
-   */
-  @State
+  @State // 是否同步解析Markdown文本
   isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴效果列表
-   */
+  // 是否打开长按复制粘贴效果列表
   isOnCopyList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否打开长按复制粘贴效果
-   */
-  @State
+  @State // 是否打开长按复制粘贴效果
   isOnCopy: boolean = false
-  /**
-   * Markdown文本第一个模块上边距列表
-   */
-  blockFirstTopMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * Markdown文本最后一个模块下边距列表
-   */
-  blockLastBottomMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * Markdown文本模块间上下间距列表
-   */
-  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 是否允许markdown控件自身响应滑动列表
-   */
+  // markdown全局上外边距列表
+  blockMarginTopList: Array<number> = marginListGeneralData
+  @State // markdown全局上外边距
+  blockMarginTop: number = 0
+  // markdown全局右外边距列表
+  blockMarginRightList: Array<number> = marginListGeneralData
+  @State // markdown全局右外边距
+  blockMarginRight: number = 0
+  // markdown全局下外边距列表
+  blockMarginBottomList: Array<number> = marginListGeneralData
+  @State // markdown全局下外边距
+  blockMarginBottom: number = 0
+  // markdown全局左外边距列表
+  blockMarginLeftList: Array<number> = marginListGeneralData
+  @State // markdown全局左外边距
+  blockMarginLeft: number = 0
+  // 模块间上下间距列表
+  markdownBlockSpacingList: Array<number> = marginListGeneralData
+  @State // 模块间上下间距
+  markdownBlockSpacing: number = 8
+  // 软换行是否换行列表
+  isLineBreakList: Array<boolean> = booleanListGeneralData
+  @State // 软换行是否换行
+  isLineBreak: boolean = false
+  // 背景颜色列表
+  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State // 背景颜色
+  globalBackgroundColor: number | undefined = undefined
+  // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否允许markdown控件自身响应滑动
-   */
-  @State
+  @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
-  /**
-   * 是否开启响应滑动测试列表
-   */
+  // 是否开启响应滑动测试列表
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否开启响应滑动测试
-   */
-  @State
+  @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
 
   // ---------------- 专有
-  /**
-   * 上标字体颜色列表
-   */
-  supTextColorList: Array<number | undefined> = colorListGeneralData
-  /**
-   * 上标字体颜色
-   */
-  @State
-  supTextColor: number | undefined = undefined
-  /**
-   * 上标字体大小列表
-   */
-  supTextSizeList: Array<number> = textWordSpaceListGeneralData
-  /**
-   * 上标字体大小
-   */
-  @State
-  supTextSize: number = 8
-  /**
-   * 上标偏移距离列表
-   */
-  supOffsetDistList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-  /**
-   * 上标偏移距离
-   */
-  @State
-  supOffsetDist: number = 6
-  /**
-   * 配置数据内容
-   */
-  @State
+  // 上标文本颜色列表
+  supTextFontColorList: Array<number | undefined> = colorListGeneralData
+  @State // 上标文本颜色
+  supTextFontColor: number | undefined = undefined
+  // 上标文本尺寸列表
+  supTextFontSizeList: Array<number> = [4, 5, 6, 7, 8, 9, 10, 11, 12]
+  @State // 上标文本尺寸
+  supTextFontSize: number = 8
+  // 上标文本字体样式列表
+  supTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  @State // 上标文本字体样式
+  supTextFontStyle: FontStyle = FontStyle.Normal
+  // 上标文本字体粗细列表
+  supTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  @State // 上标文本字体粗细
+  supTextFontWeight: FontWeight = FontWeight.Normal
+  // 上标文本字体列表
+  supTextFontFamilyList: Array<string> = ["HarmonyOS Sans", "Arial", "Times New Roman"]
+  @State // 上标文本字体
+  supTextFontFamily: string = 'HarmonyOS Sans'
+  // 上标文本字符间距列表
+  supTextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  @State // 上标文本字符间距
+  supTextLetterSpacing: number = 0
+  // 上标文本基线的偏移量列表
+  supTextBaselineOffsetList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  @State // 上标文本基线的偏移量
+  supTextBaselineOffset: number = 6
+
+  @State // 配置数据内容
   supData: SupData = new SupData()
 
   aboutToAppear(): void {
@@ -224,22 +170,46 @@ struct SupPage {
             allData: this.isOnCopy
           })
           BaseTabComponent({
-            titleStr: "Markdown文本第一个模块上边距 - ",
+            titleStr: "markdown全局上外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockFirstTopMarginList,
-            allData: this.blockFirstTopMargin
+            allListData: this.blockMarginTopList,
+            allData: this.blockMarginTop
           })
           BaseTabComponent({
-            titleStr: "Markdown文本最后一个模块下边距 - ",
+            titleStr: "markdown全局右外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockLastBottomMarginList,
-            allData: this.blockLastBottomMargin
+            allListData: this.blockMarginRightList,
+            allData: this.blockMarginRight
           })
           BaseTabComponent({
-            titleStr: "Markdown文本模块间上下间距 - ",
+            titleStr: "markdown全局下外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockTopAndBottomMarginsList,
-            allData: this.blockTopAndBottomMargins
+            allListData: this.blockMarginBottomList,
+            allData: this.blockMarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "markdown全局左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockMarginLeftList,
+            allData: this.blockMarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.markdownBlockSpacingList,
+            allData: this.markdownBlockSpacing
+          })
+          BaseTabComponent({
+            titleStr: "软换行是否换行 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isLineBreakList,
+            allData: this.isLineBreak
+          })
+          BaseTabComponent({
+            titleStr: "背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.globalBackgroundColorList,
+            allData: this.globalBackgroundColor
           })
           BaseTabComponent({
             titleStr: "是否开启响应滑动测试 - ",
@@ -256,22 +226,46 @@ struct SupPage {
 
           // ---------------- 专有
           BaseTabComponent({
-            titleStr: "上标字体颜色 - ",
+            titleStr: "上标文本颜色 - ",
             typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.supTextColorList,
-            allData: this.supTextColor
+            allListData: this.supTextFontColorList,
+            allData: this.supTextFontColor
           })
           BaseTabComponent({
-            titleStr: "上标字体大小 - ",
+            titleStr: "上标文本尺寸 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.supTextSizeList,
-            allData: this.supTextSize
+            allListData: this.supTextFontSizeList,
+            allData: this.supTextFontSize
           })
           BaseTabComponent({
-            titleStr: "上标偏移距离 - ",
+            titleStr: "上标文本字体样式 - ",
+            typeEnum: TypeEnum.IS_FONT_STYLE,
+            allListData: this.supTextFontStyleList,
+            allData: this.supTextFontStyle
+          })
+          BaseTabComponent({
+            titleStr: "上标文本字体粗细 - ",
+            typeEnum: TypeEnum.IS_FONT_WEIGHT,
+            allListData: this.supTextFontWeightList,
+            allData: this.supTextFontWeight
+          })
+          BaseTabComponent({
+            titleStr: "上标文本字体 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.supTextFontFamilyList,
+            allData: this.supTextFontFamily
+          })
+          BaseTabComponent({
+            titleStr: "上标文本字符间距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.supOffsetDistList,
-            allData: this.supOffsetDist
+            allListData: this.supTextLetterSpacingList,
+            allData: this.supTextLetterSpacing
+          })
+          BaseTabComponent({
+            titleStr: "上标文本基线的偏移量 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.supTextBaselineOffsetList,
+            allData: this.supTextBaselineOffset
           })
 
           // 列表显示
@@ -295,16 +289,24 @@ struct SupPage {
                     this.supData.textNumber = this.textNumber
                     this.supData.isMarkdownParserSync = this.isMarkdownParserSync
                     this.supData.isOnCopy = this.isOnCopy
-                    this.supData.blockFirstTopMargin = this.blockFirstTopMargin
-                    this.supData.blockLastBottomMargin = this.blockLastBottomMargin
-                    this.supData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.supData.blockMarginTop = this.blockMarginTop
+                    this.supData.blockMarginRight = this.blockMarginRight
+                    this.supData.blockMarginBottom = this.blockMarginBottom
+                    this.supData.blockMarginLeft = this.blockMarginLeft
+                    this.supData.markdownBlockSpacing = this.markdownBlockSpacing
+                    this.supData.isLineBreak = this.isLineBreak
+                    this.supData.backgroundColor = this.globalBackgroundColor
                     this.supData.openGestureSwipe = this.openGestureSwipe
                     this.supData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.supData.pagePath = `${this.rawFilePath}/${item}`
                     // ---------- 专有
-                    this.supData.supTextColor = this.supTextColor
-                    this.supData.supTextSize = this.supTextSize
-                    this.supData.supOffsetDist = this.supOffsetDist
+                    this.supData.supTextFontColor = this.supTextFontColor
+                    this.supData.supTextFontSize = this.supTextFontSize
+                    this.supData.supTextFontStyle = this.supTextFontStyle
+                    this.supData.supTextFontWeight = this.supTextFontWeight
+                    this.supData.supTextFontFamily = this.supTextFontFamily
+                    this.supData.supTextLetterSpacing = this.supTextLetterSpacing
+                    this.supData.supTextBaselineOffset = this.supTextBaselineOffset
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/SupDetailsPage", params: this.supData })
                   })
@@ -320,4 +322,3 @@ struct SupPage {
     .height("100%")
   }
 }
-

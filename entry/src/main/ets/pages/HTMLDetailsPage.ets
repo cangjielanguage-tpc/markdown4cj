@@ -1,113 +1,137 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
-import { titleComponent } from '../component/BaseComponent'
-import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
   MarkdownTextDecorationStyle,
-  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme,
+  MarkdownThemeHtmlUnderline,
+  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+import { titleComponent } from '../component/BaseComponent'
+import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'
 import { HTMLData } from '../model/HTMLData'
+import { hilog } from '@kit.PerformanceAnalysisKit'
+import { ConfigurationConstant } from '@kit.AbilityKit'
 
 @Entry
 @Component
 struct HTMLDetailsPage {
-  /**
-   * 滑动控制器
-   */
+  // ---------- 通用
+  // 滑动控制器
   scroller: Scroller = new Scroller()
-  /**
-   * Markdown的控制器
-   */
+  // Markdown的控制器
   markdownScroller: MarkdownScroller = new MarkdownScroller()
-  /**
-   * 顶部导航栏高度
-   */
-  @StorageProp('safeTop')
+  @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  /**
-   * 文件文本
-   */
+  @StorageProp('currentColorMode')
+  @Watch('onColorModeChange') // 深浅色模式
+  currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
+  // 文件文本
   @State
   fileStr: string = ""
-  /**
-   * markdown文本
-   */
+  // markdown文本
   @State
   content: string = ""
-  /**
-   * 是否全量加载Markdown文本
-   */
+  // 是否全量加载Markdown文本
   @State
   isFull: boolean = true
-  /**
-   * 是否增量解析Markdown文本
-   */
+  // 是否增量解析Markdown文本
   @State
   incrementalAnalysis: boolean = false
-  /**
-   * 增量加载每次间隔时间
-   */
+  // 增量加载每次间隔时间
   @State
   time: number = 50
-  /**
-   * 增量每次增量文本数量
-   */
+  // 增量每次增量文本数量
   @State
   textNumber: number = 10
-  /**
-   * 是否同步解析Markdown文本
-   */
+  // 是否同步解析Markdown文本
   @State
   isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴效果
-   */
+  // 是否打开长按复制粘贴效果
   @State
   isOnCopy: boolean = false
-  /**
-   * Markdown文本第一个模块上边距
-   */
+  // Markdown块上边距
   @State
-  blockFirstTopMargin: number = 8
-  /**
-   * Markdown文本最后一个模块下边距
-   */
+  blockMarginTop: number = 8
+  // Markdown块右边距
   @State
-  blockLastBottomMargin: number = 8
-  /**
-   * Markdown文本模块间上下间距
-   */
+  blockMarginRight: number = 8
+  // Markdown块下边距
   @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 是否允许markdown控件自身响应滑动
-   */
+  blockMarginBottom: number = 8
+  // Markdown块左边距
+  @State
+  blockMarginLeft: number = 8
+  // Markdown块间距样式字符串
+  @State
+  markdownBlockSpacing: number = 8
+  // 是否换行
+  @State
+  isLineBreak: boolean = false
+  // 全局背景色
+  @State
+  globalBackgroundColor: number | undefined = undefined
+  // 是否允许markdown控件自身响应滑动
   @State
   openGestureSwipe: boolean = false
-  /**
-   * 是否开启响应滑动测试
-   */
+  // 是否开启响应滑动测试
   @State
   openGestureSwipeTest: boolean = false
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
+  // 流式输入是否输入结束(true:结束输入,false:持续输入)
   @State
   isInputEnded: boolean = false
 
   // ---------- 专有
-  /**
-   * 下划线颜色
-   */
+  // HTML下划线文本颜色
   @State
-  underlineColor: number | undefined = undefined
-  /**
-   * 下划线样式
-   */
+  htmlUnderlineTextFontColor: number | undefined = undefined
+  // HTML下划线文本尺寸
   @State
-  underlineStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  htmlUnderlineTextFontSize: number = 14
+  // HTML下划线文本字体样式
+  @State
+  htmlUnderlineTextFontStyle: FontStyle = FontStyle.Normal
+  // HTML下划线文本字体粗细
+  @State
+  htmlUnderlineTextFontWeight: FontWeight = FontWeight.Normal
+  // HTML下划线文本字体
+  @State
+  htmlUnderlineTextFontFamily: string = 'HarmonyOS Sans'
+  // HTML下划线文本行高
+  @State
+  htmlUnderlineTextLineHeight: number = 22
+  // HTML下划线文本字符间距
+  @State
+  htmlUnderlineTextLetterSpacing: number = 0
+  // HTML下划线文本装饰线颜色
+  @State
+  htmlUnderlineTextDecorationColor: number | undefined = undefined
+  // HTML下划线文本装饰线样式
+  @State
+  htmlUnderlineTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+
+  @State // markdown配置
+  markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
+  @State // markdown主题
+  markdownTheme: MarkdownTheme = new MarkdownTheme()
+  @State // markdown插件
+  markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
+  @State // 刷新标志
+  isRefresh: boolean = true
+
+  onColorModeChange(): void {
+    // 根据 this.currentColorMode 更新 UI 或状态栏
+    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+      // 浅色模式处理
+      this.markdownTheme.setDefaultTheme()
+      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+      hilog.error(1, 'onColorModeChange', '浅色模式')
+    } else {
+      // 深色模式处理
+      this.markdownTheme.setDarculaTheme()
+      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+      hilog.error(1, 'onColorModeChange', '深色模式')
+    }
+    this.isRefresh = !this.isRefresh
+  }
 
   aboutToAppear(): void {
     try {
@@ -120,16 +144,31 @@ struct HTMLDetailsPage {
       this.textNumber = htmlData._textNumber
       this.isMarkdownParserSync = htmlData._isMarkdownParserSync
       this.isOnCopy = htmlData._isOnCopy
-      this.blockFirstTopMargin = htmlData._blockFirstTopMargin
-      this.blockLastBottomMargin = htmlData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = htmlData._blockTopAndBottomMargins
+      this.blockMarginTop = htmlData._blockMarginTop
+      this.blockMarginRight = htmlData._blockMarginRight
+      this.blockMarginBottom = htmlData._blockMarginBottom
+      this.blockMarginLeft = htmlData._blockMarginLeft
+      this.markdownBlockSpacing = htmlData._markdownBlockSpacing
+      this.isLineBreak = htmlData._isLineBreak
+      this.globalBackgroundColor = htmlData._backgroundColor
       this.openGestureSwipe = htmlData._openGestureSwipe
       this.openGestureSwipeTest = htmlData._openGestureSwipeTest
       // ---------- 专有
-      this.underlineColor = htmlData._underlineColor
-      this.underlineStyle = htmlData._underlineStyle
+      this.htmlUnderlineTextFontColor = htmlData._htmlUnderlineTextFontColor
+      this.htmlUnderlineTextFontSize = htmlData._htmlUnderlineTextFontSize
+      this.htmlUnderlineTextFontStyle = htmlData._htmlUnderlineTextFontStyle
+      this.htmlUnderlineTextFontWeight = htmlData._htmlUnderlineTextFontWeight
+      this.htmlUnderlineTextFontFamily = htmlData._htmlUnderlineTextFontFamily
+      this.htmlUnderlineTextLineHeight = htmlData._htmlUnderlineTextLineHeight
+      this.htmlUnderlineTextLetterSpacing = htmlData._htmlUnderlineTextLetterSpacing
+      this.htmlUnderlineTextDecorationColor = htmlData._htmlUnderlineTextDecorationColor
+      this.htmlUnderlineTextDecorationStyle = htmlData._htmlUnderlineTextDecorationStyle
     } catch (e) {
     }
+    this.markdownPlugin = this.setPlugin()
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration = this.setMarkdownConfig()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
   }
 
   build() {
@@ -170,27 +209,51 @@ struct HTMLDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-          Column() {
-            CJMarkdown({
-              content: this.content,
-              isInputEnded: this.isInputEnded,
-              incrementalAnalysis: this.incrementalAnalysis,
-              listScroller: this.markdownScroller,
-              config: this.setMarkdownConfig(),
-              plugin: this.setPlugin()
-            })
-          }.height("100%")
+        if (this.isRefresh) {
+          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                incrementalAnalysis: this.incrementalAnalysis,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }.height("100%")
+          } else {
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }
+          }
         } else {
-          Column() {
-            CJMarkdown({
-              content: this.content,
-              isInputEnded: this.isInputEnded,
-              incrementalAnalysis: this.incrementalAnalysis,
-              listScroller: this.markdownScroller,
-              config: this.setMarkdownConfig(),
-              plugin: this.setPlugin()
-            })
+          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                incrementalAnalysis: this.incrementalAnalysis,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }.height("100%")
+          } else {
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }
           }
         }
       }
@@ -202,22 +265,47 @@ struct HTMLDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    let theme = new MarkdownTheme()
-    if (this.underlineColor !== undefined) {
-      theme.setUnderlineColor(this.underlineColor) // 下划线颜色
-    }
-    theme.setUnderlineStyle(this.underlineStyle) // 下划线样式
-    theme.setCodeFullScreenIcon($r('app.media.startIcon'))
-    theme.setCodeCopyIcon($r('app.media.startIcon'))
-    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
-    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
-    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
-    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
-    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
-    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
-
-    config.setMarkdownTheme(theme)
     return config
+  }
+
+  setMarkdownTheme(): MarkdownTheme {
+    let theme = new MarkdownTheme()
+    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+      theme.setDefaultTheme()
+    } else {
+      theme.setDarculaTheme()
+    }
+    // ---------- 通用 - Global
+    let globalTheme = new MarkdownThemeGlobal()
+    if (this.globalBackgroundColor !== undefined) {
+      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+    }
+    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    globalTheme.setIsLineBreak(this.isLineBreak)
+    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    globalTheme.setIsOnCopy(this.isOnCopy)
+    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.setMarkdownThemeGlobal(globalTheme)
+    
+    // ---------- 专有 - HtmlUnderline
+    let htmlUnderlineTheme = new MarkdownThemeHtmlUnderline()
+    if (this.htmlUnderlineTextFontColor !== undefined) {
+      htmlUnderlineTheme.setHtmlUnderlineTextFontColor(this.htmlUnderlineTextFontColor)
+    }
+    htmlUnderlineTheme.setHtmlUnderlineTextFontSize(this.htmlUnderlineTextFontSize)
+    htmlUnderlineTheme.setHtmlUnderlineTextFontStyle(this.htmlUnderlineTextFontStyle)
+    htmlUnderlineTheme.setHtmlUnderlineTextFontWeight(this.htmlUnderlineTextFontWeight)
+    htmlUnderlineTheme.setHtmlUnderlineTextFontFamily(this.htmlUnderlineTextFontFamily)
+    htmlUnderlineTheme.setHtmlUnderlineTextLineHeight(this.htmlUnderlineTextLineHeight)
+    htmlUnderlineTheme.setHtmlUnderlineTextLetterSpacing(this.htmlUnderlineTextLetterSpacing)
+    if (this.htmlUnderlineTextDecorationColor !== undefined) {
+      htmlUnderlineTheme.setHtmlUnderlineTextDecorationColor(this.htmlUnderlineTextDecorationColor)
+    }
+    htmlUnderlineTheme.setHtmlUnderlineTextDecorationStyle(this.htmlUnderlineTextDecorationStyle)
+    theme.setMarkdownThemeHtmlUnderline(htmlUnderlineTheme)
+    
+    return theme
   }
 
   setPlugin(): MarkdownPlugin {

@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
@@ -19,165 +16,122 @@ import { ThematicData } from '../model/ThematicData'
 @Component
 struct ThematicPage {
   // ---------------- 通用
-  /**
-   * 滑动控制器
-   */
+  // 滑动控制器
   scroller: Scroller = new Scroller()
-  /**
-   * 顶部导航栏高度
-   */
-  @StorageProp('safeTop')
+  @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  /**
-   * rawfile路径
-   */
+  // rawfile路径
   rawFilePath: string = "003_分割线"
-  /**
-   * rawfile文件夹列表
-   */
-  @State
+  @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
-  /**
-   * 是否全量加载Markdown文本列表
-   */
+  // 是否全量加载Markdown文本列表
   isFullList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否全量加载Markdown文本
-   */
-  @State
+  @State // 是否全量加载Markdown文本
   isFull: boolean = true
-  /**
-   * 是否增量解析Markdown文本列表
-   */
+  // 是否增量解析Markdown文本列表
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否增量解析Markdown文本
-   */
-  @State
+  @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
-  /**
-   * 增量加载每次间隔时间列表
-   */
+  // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
-  /**
-   * 增量加载每次间隔时间
-   */
-  @State
+  @State // 增量加载每次间隔时间
   time: number = 50
-  /**
-   * 增量每次增量文本数量列表
-   */
+  // 增量每次增量文本数量列表
   textNumberList: Array<number> = textNumberListGeneralData
-  /**
-   * 增量每次增量文本数量
-   */
-  @State
+  @State // 增量每次增量文本数量
   textNumber: number = 10
-  /**
-   * 是否同步解析Markdown文本列表
-   */
+  // 是否同步解析Markdown文本列表
   isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否同步解析Markdown文本
-   */
-  @State
+  @State // 是否同步解析Markdown文本
   isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴效果列表
-   */
+  // 是否打开长按复制粘贴效果列表
   isOnCopyList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否打开长按复制粘贴效果
-   */
-  @State
+  @State // 是否打开长按复制粘贴效果
   isOnCopy: boolean = false
-  /**
-   * Markdown文本第一个模块上边距列表
-   */
-  blockFirstTopMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * Markdown文本最后一个模块下边距列表
-   */
-  blockLastBottomMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * Markdown文本模块间上下间距列表
-   */
-  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 是否允许markdown控件自身响应滑动列表
-   */
+  // markdown全局上外边距列表
+  blockMarginTopList: Array<number> = marginListGeneralData
+  @State // markdown全局上外边距
+  blockMarginTop: number = 0
+  // markdown全局右外边距列表
+  blockMarginRightList: Array<number> = marginListGeneralData
+  @State // markdown全局右外边距
+  blockMarginRight: number = 0
+  // markdown全局下外边距列表
+  blockMarginBottomList: Array<number> = marginListGeneralData
+  @State // markdown全局下外边距
+  blockMarginBottom: number = 0
+  // markdown全局左外边距列表
+  blockMarginLeftList: Array<number> = marginListGeneralData
+  @State // markdown全局左外边距
+  blockMarginLeft: number = 0
+  // 模块间上下间距列表
+  markdownBlockSpacingList: Array<number> = marginListGeneralData
+  @State // 模块间上下间距
+  markdownBlockSpacing: number = 8
+  // 软换行是否换行列表
+  isLineBreakList: Array<boolean> = booleanListGeneralData
+  @State // 软换行是否换行
+  isLineBreak: boolean = false
+  // 背景颜色列表
+  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State // 背景颜色
+  globalBackgroundColor: number | undefined = undefined
+  // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否允许markdown控件自身响应滑动
-   */
-  @State
+  @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
-  /**
-   * 是否开启响应滑动测试列表
-   */
+  // 是否开启响应滑动测试列表
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否开启响应滑动测试
-   */
-  @State
+  @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
 
   // ---------------- 专有
-  /**
-   * 分割线高度列表
-   */
-  thematicBreakHeightList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  /**
-   * 分割线高度
-   */
-  @State
-  thematicBreakHeight: number = 0.5
-  /**
-   * 分割线颜色列表
-   */
-  thematicBreakColorList: Array<number | undefined> = colorListGeneralData
-  /**
-   * 分割线颜色
-   */
-  @State
-  thematicBreakColor: number | undefined = undefined
-  /**
-   * 分割线上部外边距列表
-   */
-  thematicBreakTopMarginList: Array<number> = marginListGeneralData
-  /**
-   * 分割线上部外边距
-   */
-  @State
-  thematicBreakTopMargin: number = 0
-  /**
-   * 分割线下部外边距列表
-   */
-  thematicBreakBottomMarginList: Array<number> = marginListGeneralData
-  /**
-   * 分割线下部外边距
-   */
-  @State
-  thematicBreakBottomMargin: number = 0
-  /**
-   * 配置数据内容
-   */
-  @State
+  // 分割线上外边距列表
+  dividerMarginTopList: Array<number> = marginListGeneralData
+  @State // 分割线上外边距
+  dividerMarginTop: number = 8
+  // 分割线右外边距列表
+  dividerMarginRightList: Array<number> = marginListGeneralData
+  @State // 分割线右外边距
+  dividerMarginRight: number = 0
+  // 分割线下外边距列表
+  dividerMarginBottomList: Array<number> = marginListGeneralData
+  @State // 分割线下外边距
+  dividerMarginBottom: number = 8
+  // 分割线左外边距列表
+  dividerMarginLeftList: Array<number> = marginListGeneralData
+  @State // 分割线左外边距
+  dividerMarginLeft: number = 0
+  // 分割线上内边距列表
+  dividerPaddingTopList: Array<number> = marginListGeneralData
+  @State // 分割线上内边距
+  dividerPaddingTop: number = 0
+  // 分割线右内边距列表
+  dividerPaddingRightList: Array<number> = marginListGeneralData
+  @State // 分割线右内边距
+  dividerPaddingRight: number = 0
+  // 分割线下内边距列表
+  dividerPaddingBottomList: Array<number> = marginListGeneralData
+  @State // 分割线下内边距
+  dividerPaddingBottom: number = 0
+  // 分割线左内边距列表
+  dividerPaddingLeftList: Array<number> = marginListGeneralData
+  @State // 分割线左内边距
+  dividerPaddingLeft: number = 0
+  // 分割线颜色列表
+  dividerColorList: Array<number | undefined> = colorListGeneralData
+  @State // 分割线颜色
+  dividerColor: number | undefined = undefined
+  // 分割线宽度列表
+  dividerStrokeWidthList: Array<number> = [0.5, 1, 2, 3, 4, 5]
+  @State // 分割线宽度
+  dividerStrokeWidth: number = 1
+  // 分割线端点样式列表
+  dividerStyleList: Array<LineCapStyle> = [LineCapStyle.Butt, LineCapStyle.Round, LineCapStyle.Square]
+  @State // 分割线端点样式
+  dividerStyle: LineCapStyle = LineCapStyle.Round
+
+  @State // 配置数据内容
   thematicData: ThematicData = new ThematicData()
 
   aboutToAppear(): void {
@@ -232,22 +186,46 @@ struct ThematicPage {
             allData: this.isOnCopy
           })
           BaseTabComponent({
-            titleStr: "Markdown文本第一个模块上边距 - ",
+            titleStr: "markdown全局上外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockFirstTopMarginList,
-            allData: this.blockFirstTopMargin
+            allListData: this.blockMarginTopList,
+            allData: this.blockMarginTop
           })
           BaseTabComponent({
-            titleStr: "Markdown文本最后一个模块下边距 - ",
+            titleStr: "markdown全局右外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockLastBottomMarginList,
-            allData: this.blockLastBottomMargin
+            allListData: this.blockMarginRightList,
+            allData: this.blockMarginRight
           })
           BaseTabComponent({
-            titleStr: "Markdown文本模块间上下间距 - ",
+            titleStr: "markdown全局下外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockTopAndBottomMarginsList,
-            allData: this.blockTopAndBottomMargins
+            allListData: this.blockMarginBottomList,
+            allData: this.blockMarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "markdown全局左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockMarginLeftList,
+            allData: this.blockMarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.markdownBlockSpacingList,
+            allData: this.markdownBlockSpacing
+          })
+          BaseTabComponent({
+            titleStr: "软换行是否换行 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isLineBreakList,
+            allData: this.isLineBreak
+          })
+          BaseTabComponent({
+            titleStr: "背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.globalBackgroundColorList,
+            allData: this.globalBackgroundColor
           })
           BaseTabComponent({
             titleStr: "是否开启响应滑动测试 - ",
@@ -264,28 +242,70 @@ struct ThematicPage {
 
           // ---------------- 专有
           BaseTabComponent({
-            titleStr: "分割线高度 - ",
+            titleStr: "分割线上外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.thematicBreakHeightList,
-            allData: this.thematicBreakHeight
+            allListData: this.dividerMarginTopList,
+            allData: this.dividerMarginTop
+          })
+          BaseTabComponent({
+            titleStr: "分割线右外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.dividerMarginRightList,
+            allData: this.dividerMarginRight
+          })
+          BaseTabComponent({
+            titleStr: "分割线下外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.dividerMarginBottomList,
+            allData: this.dividerMarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "分割线左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.dividerMarginLeftList,
+            allData: this.dividerMarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "分割线上内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.dividerPaddingTopList,
+            allData: this.dividerPaddingTop
+          })
+          BaseTabComponent({
+            titleStr: "分割线右内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.dividerPaddingRightList,
+            allData: this.dividerPaddingRight
+          })
+          BaseTabComponent({
+            titleStr: "分割线下内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.dividerPaddingBottomList,
+            allData: this.dividerPaddingBottom
+          })
+          BaseTabComponent({
+            titleStr: "分割线左内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.dividerPaddingLeftList,
+            allData: this.dividerPaddingLeft
           })
           BaseTabComponent({
             titleStr: "分割线颜色 - ",
             typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.thematicBreakColorList,
-            allData: this.thematicBreakColor
+            allListData: this.dividerColorList,
+            allData: this.dividerColor
           })
           BaseTabComponent({
-            titleStr: "分割线上部外边距 - ",
+            titleStr: "分割线宽度 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.thematicBreakTopMarginList,
-            allData: this.thematicBreakTopMargin
+            allListData: this.dividerStrokeWidthList,
+            allData: this.dividerStrokeWidth
           })
           BaseTabComponent({
-            titleStr: "分割线下部外边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.thematicBreakBottomMarginList,
-            allData: this.thematicBreakBottomMargin
+            titleStr: "分割线端点样式 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.dividerStyleList,
+            allData: this.dividerStyle
           })
 
           // 列表显示
@@ -309,17 +329,28 @@ struct ThematicPage {
                     this.thematicData.textNumber = this.textNumber
                     this.thematicData.isMarkdownParserSync = this.isMarkdownParserSync
                     this.thematicData.isOnCopy = this.isOnCopy
-                    this.thematicData.blockFirstTopMargin = this.blockFirstTopMargin
-                    this.thematicData.blockLastBottomMargin = this.blockLastBottomMargin
-                    this.thematicData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.thematicData.blockMarginTop = this.blockMarginTop
+                    this.thematicData.blockMarginRight = this.blockMarginRight
+                    this.thematicData.blockMarginBottom = this.blockMarginBottom
+                    this.thematicData.blockMarginLeft = this.blockMarginLeft
+                    this.thematicData.markdownBlockSpacing = this.markdownBlockSpacing
+                    this.thematicData.isLineBreak = this.isLineBreak
+                    this.thematicData.backgroundColor = this.globalBackgroundColor
                     this.thematicData.openGestureSwipe = this.openGestureSwipe
                     this.thematicData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.thematicData.pagePath = `${this.rawFilePath}/${item}`
                     // ---------- 专有
-                    this.thematicData.thematicBreakColor = this.thematicBreakColor
-                    this.thematicData.thematicBreakHeight = this.thematicBreakHeight
-                    this.thematicData.thematicBreakTopMargin = this.thematicBreakTopMargin
-                    this.thematicData.thematicBreakBottomMargin = this.thematicBreakBottomMargin
+                    this.thematicData.dividerMarginTop = this.dividerMarginTop
+                    this.thematicData.dividerMarginRight = this.dividerMarginRight
+                    this.thematicData.dividerMarginBottom = this.dividerMarginBottom
+                    this.thematicData.dividerMarginLeft = this.dividerMarginLeft
+                    this.thematicData.dividerPaddingTop = this.dividerPaddingTop
+                    this.thematicData.dividerPaddingRight = this.dividerPaddingRight
+                    this.thematicData.dividerPaddingBottom = this.dividerPaddingBottom
+                    this.thematicData.dividerPaddingLeft = this.dividerPaddingLeft
+                    this.thematicData.dividerColor = this.dividerColor
+                    this.thematicData.dividerStrokeWidth = this.dividerStrokeWidth
+                    this.thematicData.dividerStyle = this.dividerStyle
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/ThematicDetailsPage", params: this.thematicData })
                   })
@@ -335,5 +366,3 @@ struct ThematicPage {
     .height("100%")
   }
 }
-
-

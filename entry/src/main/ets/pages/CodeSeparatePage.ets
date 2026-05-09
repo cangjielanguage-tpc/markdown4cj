@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
@@ -19,157 +16,89 @@ import { CodeSeparateData } from '../model/CodeSeparateData'
 @Component
 struct CodeSeparatePage {
   // ---------------- 通用
-  /**
-   * 滑动控制器
-   */
+  // 滑动控制器
   scroller: Scroller = new Scroller()
-  /**
-   * 顶部导航栏高度
-   */
-  @StorageProp('safeTop')
+  @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  /**
-   * rawfile路径
-   */
+  // rawfile路径
   rawFilePath: string = "013_单独代码块"
-  /**
-   * rawfile文件夹列表
-   */
-  @State
+  @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
-  /**
-   * 是否全量加载Markdown文本列表
-   */
+  // 是否全量加载Markdown文本列表
   isFullList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否全量加载Markdown文本
-   */
-  @State
+  @State // 是否全量加载Markdown文本
   isFull: boolean = true
-  /**
-   * 是否增量解析Markdown文本列表
-   */
+  // 是否增量解析Markdown文本列表
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否增量解析Markdown文本
-   */
-  @State
+  @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
-  /**
-   * 增量加载每次间隔时间列表
-   */
+  // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
-  /**
-   * 增量加载每次间隔时间
-   */
-  @State
+  @State // 增量加载每次间隔时间
   time: number = 50
-  /**
-   * 增量每次增量文本数量列表
-   */
+  // 增量每次增量文本数量列表
   textNumberList: Array<number> = textNumberListGeneralData
-  /**
-   * 增量每次增量文本数量
-   */
-  @State
+  @State // 增量每次增量文本数量
   textNumber: number = 10
-  /**
-   * 是否同步解析Markdown文本列表
-   */
+  // 是否同步解析Markdown文本列表
   isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否同步解析Markdown文本
-   */
-  @State
+  @State // 是否同步解析Markdown文本
   isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴效果列表
-   */
+  // 是否打开长按复制粘贴效果列表
   isOnCopyList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否打开长按复制粘贴效果
-   */
-  @State
+  @State // 是否打开长按复制粘贴效果
   isOnCopy: boolean = false
-  /**
-   * Markdown文本第一个模块上边距列表
-   */
-  blockFirstTopMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * Markdown文本最后一个模块下边距列表
-   */
-  blockLastBottomMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * Markdown文本模块间上下间距列表
-   */
-  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 是否允许markdown控件自身响应滑动列表
-   */
+  // markdown全局上外边距列表
+  blockMarginTopList: Array<number> = marginListGeneralData
+  @State // markdown全局上外边距
+  blockMarginTop: number = 0
+  // markdown全局右外边距列表
+  blockMarginRightList: Array<number> = marginListGeneralData
+  @State // markdown全局右外边距
+  blockMarginRight: number = 0
+  // markdown全局下外边距列表
+  blockMarginBottomList: Array<number> = marginListGeneralData
+  @State // markdown全局下外边距
+  blockMarginBottom: number = 0
+  // markdown全局左外边距列表
+  blockMarginLeftList: Array<number> = marginListGeneralData
+  @State // markdown全局左外边距
+  blockMarginLeft: number = 0
+  // 模块间上下间距列表
+  markdownBlockSpacingList: Array<number> = marginListGeneralData
+  @State // 模块间上下间距
+  markdownBlockSpacing: number = 8
+  // 软换行是否换行列表
+  isLineBreakList: Array<boolean> = booleanListGeneralData
+  @State // 软换行是否换行
+  isLineBreak: boolean = false
+  // 背景颜色列表
+  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State // 背景颜色
+  globalBackgroundColor: number | undefined = undefined
+  // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否允许markdown控件自身响应滑动
-   */
-  @State
+  @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
-  /**
-   * 是否开启响应滑动测试列表
-   */
+  // 是否开启响应滑动测试列表
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否开启响应滑动测试
-   */
-  @State
+  @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
+  @State codeSeparateData: CodeSeparateData = new CodeSeparateData() // 配置数据内容
 
   // ---------------- 专有
-  /**
-   * 是否单独代码块显示列表
-   */
+  // 是否单独代码块显示列表
   isSeparateCodeBlockList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否单独代码块显示
-   */
-  @State
+  @State // 是否单独代码块显示
   isSeparateCodeBlock: boolean = false
-  /**
-   * 单独代码块行号宽度列表
-   */
-  separateCodeBlockWidthList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40]
-  /**
-   * 单独代码块行号宽度
-   */
-  @State
+  // 单独代码块行号宽度列表
+  separateCodeBlockWidthList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+  @State // 单独代码块行号宽度
   separateCodeBlockWidth: number = 50
-  /**
-   * 是否滑动到底部列表
-   */
+  // 是否滑动到底部列表
   separateCodeIsBottomList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否滑动到底部
-   */
-  @State
+  @State // 是否滑动到底部
   separateCodeIsBottom: boolean = false
-  /**
-   * 配置数据内容
-   */
-  @State
-  codeSeparateData: CodeSeparateData = new CodeSeparateData()
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -223,22 +152,46 @@ struct CodeSeparatePage {
             allData: this.isOnCopy
           })
           BaseTabComponent({
-            titleStr: "Markdown文本第一个模块上边距 - ",
+            titleStr: "markdown全局上外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockFirstTopMarginList,
-            allData: this.blockFirstTopMargin
+            allListData: this.blockMarginTopList,
+            allData: this.blockMarginTop
           })
           BaseTabComponent({
-            titleStr: "Markdown文本最后一个模块下边距 - ",
+            titleStr: "markdown全局右外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockLastBottomMarginList,
-            allData: this.blockLastBottomMargin
+            allListData: this.blockMarginRightList,
+            allData: this.blockMarginRight
           })
           BaseTabComponent({
-            titleStr: "Markdown文本模块间上下间距 - ",
+            titleStr: "markdown全局下外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockTopAndBottomMarginsList,
-            allData: this.blockTopAndBottomMargins
+            allListData: this.blockMarginBottomList,
+            allData: this.blockMarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "markdown全局左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockMarginLeftList,
+            allData: this.blockMarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.markdownBlockSpacingList,
+            allData: this.markdownBlockSpacing
+          })
+          BaseTabComponent({
+            titleStr: "软换行是否换行 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isLineBreakList,
+            allData: this.isLineBreak
+          })
+          BaseTabComponent({
+            titleStr: "背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.globalBackgroundColorList,
+            allData: this.globalBackgroundColor
           })
           BaseTabComponent({
             titleStr: "是否开启响应滑动测试 - ",
@@ -294,9 +247,13 @@ struct CodeSeparatePage {
                     this.codeSeparateData.textNumber = this.textNumber
                     this.codeSeparateData.isMarkdownParserSync = this.isMarkdownParserSync
                     this.codeSeparateData.isOnCopy = this.isOnCopy
-                    this.codeSeparateData.blockFirstTopMargin = this.blockFirstTopMargin
-                    this.codeSeparateData.blockLastBottomMargin = this.blockLastBottomMargin
-                    this.codeSeparateData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.codeSeparateData.blockMarginTop = this.blockMarginTop
+                    this.codeSeparateData.blockMarginRight = this.blockMarginRight
+                    this.codeSeparateData.blockMarginBottom = this.blockMarginBottom
+                    this.codeSeparateData.blockMarginLeft = this.blockMarginLeft
+                    this.codeSeparateData.markdownBlockSpacing = this.markdownBlockSpacing
+                    this.codeSeparateData.isLineBreak = this.isLineBreak
+                    this.codeSeparateData.backgroundColor = this.globalBackgroundColor
                     this.codeSeparateData.openGestureSwipe = this.openGestureSwipe
                     this.codeSeparateData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.codeSeparateData.pagePath = `${this.rawFilePath}/${item}`
@@ -319,5 +276,3 @@ struct CodeSeparatePage {
     .height("100%")
   }
 }
-
-

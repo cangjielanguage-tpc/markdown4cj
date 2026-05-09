@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
@@ -19,139 +16,83 @@ import { EmojiData } from '../model/EmojiData'
 @Component
 struct EmojiPage {
   // ---------------- 通用
-  /**
-   * 滑动控制器
-   */
+  // 滑动控制器
   scroller: Scroller = new Scroller()
-  /**
-   * 顶部导航栏高度
-   */
-  @StorageProp('safeTop')
+  @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  /**
-   * rawfile路径
-   */
+  // rawfile路径
   rawFilePath: string = "028_emoji"
-  /**
-   * rawfile文件夹列表
-   */
-  @State
+  @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
-  /**
-   * 是否全量加载Markdown文本列表
-   */
+  // 是否全量加载Markdown文本列表
   isFullList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否全量加载Markdown文本
-   */
-  @State
+  @State // 是否全量加载Markdown文本
   isFull: boolean = true
-  /**
-   * 是否增量解析Markdown文本列表
-   */
+  // 是否增量解析Markdown文本列表
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否增量解析Markdown文本
-   */
-  @State
+  @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
-  /**
-   * 增量加载每次间隔时间列表
-   */
+  // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
-  /**
-   * 增量加载每次间隔时间
-   */
-  @State
+  @State // 增量加载每次间隔时间
   time: number = 50
-  /**
-   * 增量每次增量文本数量列表
-   */
+  // 增量每次增量文本数量列表
   textNumberList: Array<number> = textNumberListGeneralData
-  /**
-   * 增量每次增量文本数量
-   */
-  @State
+  @State // 增量每次增量文本数量
   textNumber: number = 10
-  /**
-   * 是否同步解析Markdown文本列表
-   */
+  // 是否同步解析Markdown文本列表
   isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否同步解析Markdown文本
-   */
-  @State
+  @State // 是否同步解析Markdown文本
   isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴效果列表
-   */
+  // 是否打开长按复制粘贴效果列表
   isOnCopyList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否打开长按复制粘贴效果
-   */
-  @State
+  @State // 是否打开长按复制粘贴效果
   isOnCopy: boolean = false
-  /**
-   * Markdown文本第一个模块上边距列表
-   */
-  blockFirstTopMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * Markdown文本最后一个模块下边距列表
-   */
-  blockLastBottomMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * Markdown文本模块间上下间距列表
-   */
-  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 是否允许markdown控件自身响应滑动列表
-   */
+  // markdown全局上外边距列表
+  blockMarginTopList: Array<number> = marginListGeneralData
+  @State // markdown全局上外边距
+  blockMarginTop: number = 0
+  // markdown全局右外边距列表
+  blockMarginRightList: Array<number> = marginListGeneralData
+  @State // markdown全局右外边距
+  blockMarginRight: number = 0
+  // markdown全局下外边距列表
+  blockMarginBottomList: Array<number> = marginListGeneralData
+  @State // markdown全局下外边距
+  blockMarginBottom: number = 0
+  // markdown全局左外边距列表
+  blockMarginLeftList: Array<number> = marginListGeneralData
+  @State // markdown全局左外边距
+  blockMarginLeft: number = 0
+  // 模块间上下间距列表
+  markdownBlockSpacingList: Array<number> = marginListGeneralData
+  @State // 模块间上下间距
+  markdownBlockSpacing: number = 8
+  // 软换行是否换行列表
+  isLineBreakList: Array<boolean> = booleanListGeneralData
+  @State // 软换行是否换行
+  isLineBreak: boolean = false
+  // 背景颜色列表
+  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State // 背景颜色
+  globalBackgroundColor: number | undefined = undefined
+  // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否允许markdown控件自身响应滑动
-   */
-  @State
+  @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
-  /**
-   * 是否开启响应滑动测试列表
-   */
+  // 是否开启响应滑动测试列表
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否开启响应滑动测试
-   */
-  @State
+  @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
 
+
   // ---------------- 专有
-  /**
-   * emoji解析插件是否精简加载列表
-   */
+  // emoji解析插件是否精简加载列表
   isEmojiLightList: Array<boolean> = booleanListGeneralData
-  /**
-   * emoji解析插件是否精简加载
-   */
-  @State
+  @State // emoji解析插件是否精简加载
   isEmojiLight: boolean = true
-  /**
-   * 配置数据内容
-   */
   @State
-  emojiData: EmojiData = new EmojiData()
+  emojiData: EmojiData = new EmojiData() // 配置数据内容
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -205,22 +146,46 @@ struct EmojiPage {
             allData: this.isOnCopy
           })
           BaseTabComponent({
-            titleStr: "Markdown文本第一个模块上边距 - ",
+            titleStr: "markdown全局上外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockFirstTopMarginList,
-            allData: this.blockFirstTopMargin
+            allListData: this.blockMarginTopList,
+            allData: this.blockMarginTop
           })
           BaseTabComponent({
-            titleStr: "Markdown文本最后一个模块下边距 - ",
+            titleStr: "markdown全局右外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockLastBottomMarginList,
-            allData: this.blockLastBottomMargin
+            allListData: this.blockMarginRightList,
+            allData: this.blockMarginRight
           })
           BaseTabComponent({
-            titleStr: "Markdown文本模块间上下间距 - ",
+            titleStr: "markdown全局下外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockTopAndBottomMarginsList,
-            allData: this.blockTopAndBottomMargins
+            allListData: this.blockMarginBottomList,
+            allData: this.blockMarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "markdown全局左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockMarginLeftList,
+            allData: this.blockMarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.markdownBlockSpacingList,
+            allData: this.markdownBlockSpacing
+          })
+          BaseTabComponent({
+            titleStr: "软换行是否换行 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isLineBreakList,
+            allData: this.isLineBreak
+          })
+          BaseTabComponent({
+            titleStr: "背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.globalBackgroundColorList,
+            allData: this.globalBackgroundColor
           })
           BaseTabComponent({
             titleStr: "是否开启响应滑动测试 - ",
@@ -264,9 +229,13 @@ struct EmojiPage {
                     this.emojiData.textNumber = this.textNumber
                     this.emojiData.isMarkdownParserSync = this.isMarkdownParserSync
                     this.emojiData.isOnCopy = this.isOnCopy
-                    this.emojiData.blockFirstTopMargin = this.blockFirstTopMargin
-                    this.emojiData.blockLastBottomMargin = this.blockLastBottomMargin
-                    this.emojiData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.emojiData.blockMarginTop = this.blockMarginTop
+                    this.emojiData.blockMarginRight = this.blockMarginRight
+                    this.emojiData.blockMarginBottom = this.blockMarginBottom
+                    this.emojiData.blockMarginLeft = this.blockMarginLeft
+                    this.emojiData.markdownBlockSpacing = this.markdownBlockSpacing
+                    this.emojiData.isLineBreak = this.isLineBreak
+                    this.emojiData.backgroundColor = this.globalBackgroundColor
                     this.emojiData.openGestureSwipe = this.openGestureSwipe
                     this.emojiData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.emojiData.pagePath = `${this.rawFilePath}/${item}`
@@ -287,4 +256,3 @@ struct EmojiPage {
     .height("100%")
   }
 }
-

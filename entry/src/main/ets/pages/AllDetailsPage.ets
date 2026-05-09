@@ -1,11 +1,9 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme,
+  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { AllData } from '../model/AllData'
@@ -15,109 +13,62 @@ import { ConfigurationConstant } from '@kit.AbilityKit'
 @Component
 struct AllDetailsPage {
   // ---------- 通用
-  /**
-   * 滑动控制器
-   */
-  scroller: Scroller = new Scroller()
-  /**
-   * Markdown的控制器
-   */
-  markdownScroller: MarkdownScroller = new MarkdownScroller()
-  /**
-   * 顶部导航栏高度
-   */
-  @StorageProp('safeTop')
+  scroller: Scroller = new Scroller() // 滑动控制器
+  markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
+  @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  /**
-   * 深浅色模式
-   */
   @StorageProp('currentColorMode')
-  @Watch('onColorModeChange')
+  @Watch('onColorModeChange') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
-  /**
-   * 文件文本
-   */
-  @State
+  @State // 文件文本
   fileStr: string = ""
-  /**
-   * markdown文本
-   */
-  @State
+  @State // markdown文本
   content: string = ""
-  /**
-   * 是否全量加载Markdown文本
-   */
-  @State
+  @State // 是否全量加载Markdown文本
   isFull: boolean = true
-  /**
-   * 是否增量解析Markdown文本
-   */
-  @State
+  @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
-  /**
-   * 增量加载每次间隔时间
-   */
-  @State
+  @State // 增量加载每次间隔时间
   time: number = 50
-  /**
-   * 增量每次增量文本数量
-   */
-  @State
+  @State // 增量每次增量文本数量
   textNumber: number = 10
-  /**
-   * 是否同步解析Markdown文本
-   */
-  @State
+  @State // 是否同步解析Markdown文本
   isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴效果
-   */
-  @State
+  @State // 是否打开长按复制粘贴效果
   isOnCopy: boolean = false
-  /**
-   * Markdown文本第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * Markdown文本最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * Markdown文本模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 是否允许markdown控件自身响应滑动
-   */
-  @State
+  @State // Markdown块上边距
+  blockMarginTop: number = 8
+  @State // Markdown块右边距
+  blockMarginRight: number = 8
+  @State // Markdown块下边距
+  blockMarginBottom: number = 8
+  @State // Markdown块左边距
+  blockMarginLeft: number = 8
+  @State // Markdown块间距样式
+  markdownBlockSpacing: number = 8
+  @State // 是否换行
+  isLineBreak: boolean = false
+  @State // 全局背景色
+  globalBackgroundColor: number | undefined = undefined
+  @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
-  /**
-   * 是否开启响应滑动测试
-   */
-  @State
+  @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
+  @State // 流式输入是否输入结束(true:结束输入,false:持续输入)
   isInputEnded: boolean = false
 
   // ---------- 专有
-  @State
-  isDark: boolean = true // 代码深浅色模式
+  @State // 代码深浅色模式
+  isDark: boolean = true
 
-
-  @State
-  markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration() // markdown配置
-  @State
-  markdownTheme: MarkdownTheme = new MarkdownTheme() // markdown主题
-  @State
-  markdownPlugin: MarkdownPlugin = new MarkdownPlugin() // markdown插件
-  @State
-  isRefresh: boolean = true // 刷新标志
+  @State // markdown配置
+  markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
+  @State // markdown主题
+  markdownTheme: MarkdownTheme = new MarkdownTheme()
+  @State // markdown插件
+  markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
+  @State // 刷新标志
+  isRefresh: boolean = true
 
   onColorModeChange(): void {
     // 根据 this.currentColorMode 更新 UI 或状态栏
@@ -128,7 +79,7 @@ struct AllDetailsPage {
       hilog.error(1, 'onColorModeChange', '浅色模式')
     } else {
       // 深色模式处理
-      this.markdownTheme.setDarkulaTheme()
+      this.markdownTheme.setDarculaTheme()
       this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
       hilog.error(1, 'onColorModeChange', '深色模式')
     }
@@ -146,9 +97,13 @@ struct AllDetailsPage {
       this.textNumber = allData._textNumber
       this.isMarkdownParserSync = allData._isMarkdownParserSync
       this.isOnCopy = allData._isOnCopy
-      this.blockFirstTopMargin = allData._blockFirstTopMargin
-      this.blockLastBottomMargin = allData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = allData._blockTopAndBottomMargins
+      this.blockMarginTop = allData._blockMarginTop
+      this.blockMarginRight = allData._blockMarginRight
+      this.blockMarginBottom = allData._blockMarginBottom
+      this.blockMarginLeft = allData._blockMarginLeft
+      this.markdownBlockSpacing = allData._markdownBlockSpacing
+      this.isLineBreak = allData._isLineBreak
+      this.globalBackgroundColor = allData._backgroundColor
       this.openGestureSwipe = allData._openGestureSwipe
       this.openGestureSwipeTest = allData._openGestureSwipeTest
       // ---------- 专有
@@ -274,8 +229,22 @@ struct AllDetailsPage {
     if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
       theme.setDefaultTheme()
     } else {
-      theme.setDarkulaTheme()
+      theme.setDarculaTheme()
     }
+    // ---------- 通用 - Global
+    let globalTheme = new MarkdownThemeGlobal()
+    if (this.globalBackgroundColor !== undefined) {
+      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+    }
+    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    globalTheme.setIsLineBreak(this.isLineBreak)
+    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    globalTheme.setIsOnCopy(this.isOnCopy)
+    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.setMarkdownThemeGlobal(globalTheme)
+    
+    // ---------- 专有
     theme.setIsDark(this.isDark)
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
@@ -284,13 +253,6 @@ struct AllDetailsPage {
     theme.setPlayCircleFillIcon($r('app.media.play_circle_fill'))
     theme.setBannerImage($r('app.media.place_holder'))
     theme.setImageResource($r('app.media.place_holder'))
-
-    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
-    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
-    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
-    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
-    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
-    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
     return theme
   }
 

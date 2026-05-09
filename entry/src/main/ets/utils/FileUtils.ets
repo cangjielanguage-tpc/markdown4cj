@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { baseManager } from '../entryability/EntryAbility'
 import { uint8ArrayToString } from './BaseUtils'
 

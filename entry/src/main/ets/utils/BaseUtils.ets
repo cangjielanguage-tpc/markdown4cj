@@ -1,8 +1,6 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { LatexMathColorFormat } from "@cangjie-tpc/markdown_hybrid";
 import { util } from "@kit.ArkTS";
+import hilog from "@ohos.hilog";
 
 /**
  * 文本颜色需要反转颜色，显示更清楚
@@ -182,6 +180,110 @@ export function enumToString(e: LatexMathColorFormat): string {
     case LatexMathColorFormat.COLOR_FORMAT_BGRA_8888:
       return "COLOR_FORMAT_BGRA_8888"
     default :
+      return "undefined"
+  }
+}
+
+/**
+ * BorderStyle样式转文本
+ */
+export function borderStyleToString(style: BorderStyle): string {
+  hilog.error(0x0000, "BaseUtils.ts", "------------borderStyleToString" + style)
+  switch (style) {
+    case BorderStyle.Solid:
+      hilog.error(0x0000, "BaseUtils.ts", "------------BorderStyle.Solid：" + style)
+      return "实线"
+    case BorderStyle.Dashed:
+      hilog.error(0x0000, "BaseUtils.ts", "------------BorderStyle.Dashed：" + style)
+      return "虚线"
+    case BorderStyle.Dotted:
+      hilog.error(0x0000, "BaseUtils.ts", "------------BorderStyle.Dotted：" + style)
+      return "点线"
+    default:
+      return "undefined"
+  }
+}
+
+/**
+ * FontStyle样式转文本
+ */
+export function fontStyleToString(style: FontStyle): string {
+  switch (style) {
+    case FontStyle.Normal:
+      return "Normal"
+    case FontStyle.Italic:
+      return "Italic"
+    default:
+      return "undefined"
+  }
+}
+
+/**
+ * FontWeight样式转文本
+ */
+export function fontWeightToString(weight: FontWeight): string {
+  switch (weight) {
+    case FontWeight.Normal:
+      return "Normal"
+    case FontWeight.Bold:
+      return "Bold"
+    case FontWeight.Medium:
+      return "Medium"
+    default:
+      return "undefined"
+  }
+}
+
+/**
+ * TextDecorationType样式转文本
+ */
+export function decorationTypeToString(decorationType: TextDecorationType): string {
+  switch (decorationType) {
+    case TextDecorationType.None:
+      return "None"
+    case TextDecorationType.Underline:
+      return "Underline"
+    case TextDecorationType.LineThrough:
+      return "LineThrough"
+    case TextDecorationType.Overline:
+      return "Overline"
+    default:
+      return "undefined"
+  }
+}
+
+/**
+ * ImageFit样式转文本
+ */
+export function imageFitToString(fitType: ImageFit): string {
+  switch (fitType) {
+    case ImageFit.Contain:
+      return "Contain"
+    case ImageFit.Cover:
+      return "Cover"
+    case ImageFit.Fill:
+      return "Fill"
+    case ImageFit.ScaleDown:
+      return "ScaleDown"
+    case ImageFit.None:
+      return "None"
+    default:
+      return "undefined"
+  }
+}
+
+/**
+ * BarState样式转文本
+ */
+export function barStateToString(state: BarState): string {
+  switch (state) {
+    case BarState.Off:
+      return "Off"
+    case BarState.On:
+      return "On"
+    case BarState.Auto:
+      return "Auto"
+    default:
       return "undefined"
   }
 }

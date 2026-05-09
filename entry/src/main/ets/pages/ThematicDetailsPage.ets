@@ -1,122 +1,108 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration,
-  MarkdownPlugin,
-  MarkdownScroller, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+  MarkdownScroller,
+  MarkdownTheme,
+  MarkdownThemeDivider,
+  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
+import hilog from '@ohos.hilog'
 import { ThematicData } from '../model/ThematicData'
+import { ConfigurationConstant } from '@kit.AbilityKit'
 
 @Entry
 @Component
 struct ThematicDetailsPage {
-  /**
-   * 滑动控制器
-   */
-  scroller: Scroller = new Scroller()
-  /**
-   * Markdown的控制器
-   */
-  markdownScroller: MarkdownScroller = new MarkdownScroller()
-  /**
-   * 顶部导航栏高度
-   */
-  @StorageProp('safeTop')
+  // ---------- 通用
+  scroller: Scroller = new Scroller() // 滑动控制器
+  markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
+  @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
-  /**
-   * 文件文本
-   */
-  @State
+  @StorageProp('currentColorMode')
+  @Watch('onColorModeChange') // 深浅色模式
+  currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
+  @State // 文件文本
   fileStr: string = ""
-  /**
-   * markdown文本
-   */
-  @State
+  @State // markdown文本
   content: string = ""
-  /**
-   * 是否全量加载Markdown文本
-   */
-  @State
+  @State // 是否全量加载Markdown文本
   isFull: boolean = true
-  /**
-   * 是否增量解析Markdown文本
-   */
-  @State
+  @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
-  /**
-   * 增量加载每次间隔时间
-   */
-  @State
+  @State // 增量加载每次间隔时间
   time: number = 50
-  /**
-   * 增量每次增量文本数量
-   */
-  @State
+  @State // 增量每次增量文本数量
   textNumber: number = 10
-  /**
-   * 是否同步解析Markdown文本
-   */
-  @State
+  @State // 是否同步解析Markdown文本
   isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴效果
-   */
-  @State
+  @State // 是否打开长按复制粘贴效果
   isOnCopy: boolean = false
-  /**
-   * Markdown文本第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * Markdown文本最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * Markdown文本模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 是否允许markdown控件自身响应滑动
-   */
-  @State
+  @State // Markdown块上边距
+  blockMarginTop: number = 8
+  @State // Markdown块右边距
+  blockMarginRight: number = 8
+  @State // Markdown块下边距
+  blockMarginBottom: number = 8
+  @State // Markdown块左边距
+  blockMarginLeft: number = 8
+  @State // Markdown块间距样式
+  markdownBlockSpacing: number = 8
+  @State // 是否换行
+  isLineBreak: boolean = false
+  @State // 全局背景色
+  globalBackgroundColor: number | undefined = undefined
+  @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
-  /**
-   * 是否开启响应滑动测试
-   */
-  @State
+  @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
-  /**
-   * 流式输入是否输入结束(true:结束输入,false:持续输入)
-   */
-  @State
+  @State // 流式输入是否输入结束(true:结束输入,false:持续输入)
   isInputEnded: boolean = false
 
   // ---------- 专有
-  /**
-   * 分割线颜色
-   */
-  @State
-  thematicBreakColor: number | undefined = undefined
-  /**
-   * 分割线高度
-   */
-  @State
-  thematicBreakHeight: number = 0.5
-  /**
-   * 分割线上部外边距
-   */
-  @State
-  thematicBreakTopMargin: number = 0.0
-  /**
-   * 分割线下部外边距
-   */
-  @State
-  thematicBreakBottomMargin: number = 0.0
+  @State // 分割线上外边距
+  dividerMarginTop: number = 8
+  @State // 分割线右外边距
+  dividerMarginRight: number = 0
+  @State // 分割线下外边距
+  dividerMarginBottom: number = 8
+  @State // 分割线左外边距
+  dividerMarginLeft: number = 0
+  @State // 分割线上内边距
+  dividerPaddingTop: number = 0
+  @State // 分割线右内边距
+  dividerPaddingRight: number = 0
+  @State // 分割线下内边距
+  dividerPaddingBottom: number = 0
+  @State // 分割线左内边距
+  dividerPaddingLeft: number = 0
+  @State // 分割线颜色
+  dividerColor: number | undefined = undefined
+  @State // 分割线宽度
+  dividerStrokeWidth: number = 1
+  @State // 分割线端点样式
+  dividerStyle: LineCapStyle = LineCapStyle.Round
+
+  @State // markdown配置
+  markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
+  @State // markdown主题
+  markdownTheme: MarkdownTheme = new MarkdownTheme()
+  @State // markdown插件
+  markdownPlugin: MarkdownPlugin = new MarkdownPlugin()
+  @State // 刷新标志
+  isRefresh: boolean = true
+
+  onColorModeChange(): void {
+    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+      this.markdownTheme.setDefaultTheme()
+      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+      hilog.error(1, 'onColorModeChange', '浅色模式')
+    } else {
+      this.markdownTheme.setDarculaTheme()
+      this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
+      hilog.error(1, 'onColorModeChange', '深色模式')
+    }
+    this.isRefresh = !this.isRefresh
+  }
 
   aboutToAppear(): void {
     try {
@@ -129,18 +115,33 @@ struct ThematicDetailsPage {
       this.textNumber = thematicData._textNumber
       this.isMarkdownParserSync = thematicData._isMarkdownParserSync
       this.isOnCopy = thematicData._isOnCopy
-      this.blockFirstTopMargin = thematicData._blockFirstTopMargin
-      this.blockLastBottomMargin = thematicData._blockLastBottomMargin
-      this.blockTopAndBottomMargins = thematicData._blockTopAndBottomMargins
+      this.blockMarginTop = thematicData._blockMarginTop
+      this.blockMarginRight = thematicData._blockMarginRight
+      this.blockMarginBottom = thematicData._blockMarginBottom
+      this.blockMarginLeft = thematicData._blockMarginLeft
+      this.markdownBlockSpacing = thematicData._markdownBlockSpacing
+      this.isLineBreak = thematicData._isLineBreak
+      this.globalBackgroundColor = thematicData._backgroundColor
       this.openGestureSwipe = thematicData._openGestureSwipe
       this.openGestureSwipeTest = thematicData._openGestureSwipeTest
       // ---------- 专有
-      this.thematicBreakColor = thematicData._thematicBreakColor
-      this.thematicBreakHeight = thematicData._thematicBreakHeight
-      this.thematicBreakTopMargin = thematicData._thematicBreakTopMargin
-      this.thematicBreakBottomMargin = thematicData._thematicBreakBottomMargin
+      this.dividerMarginTop = thematicData._dividerMarginTop
+      this.dividerMarginRight = thematicData._dividerMarginRight
+      this.dividerMarginBottom = thematicData._dividerMarginBottom
+      this.dividerMarginLeft = thematicData._dividerMarginLeft
+      this.dividerPaddingTop = thematicData._dividerPaddingTop
+      this.dividerPaddingRight = thematicData._dividerPaddingRight
+      this.dividerPaddingBottom = thematicData._dividerPaddingBottom
+      this.dividerPaddingLeft = thematicData._dividerPaddingLeft
+      this.dividerColor = thematicData._dividerColor
+      this.dividerStrokeWidth = thematicData._dividerStrokeWidth
+      this.dividerStyle = thematicData._dividerStyle
     } catch (e) {
     }
+    this.markdownPlugin = this.setPlugin()
+    this.markdownTheme = this.setMarkdownTheme()
+    this.markdownConfiguration = this.setMarkdownConfig()
+    this.markdownConfiguration.setMarkdownTheme(this.markdownTheme)
   }
 
   build() {
@@ -185,27 +186,51 @@ struct ThematicDetailsPage {
           }
         )
       Scroll(this.scroller) {
-        if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
-          Column() {
-            CJMarkdown({
-              content: this.content,
-              isInputEnded: this.isInputEnded,
-              incrementalAnalysis: this.incrementalAnalysis,
-              listScroller: this.markdownScroller,
-              config: this.setMarkdownConfig(),
-              plugin: this.setPlugin()
-            })
-          }.height("100%")
+        if (this.isRefresh) {
+          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                incrementalAnalysis: this.incrementalAnalysis,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }.height("100%")
+          } else {
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }
+          }
         } else {
-          Column() {
-            CJMarkdown({
-              content: this.content,
-              isInputEnded: this.isInputEnded,
-              incrementalAnalysis: this.incrementalAnalysis,
-              listScroller: this.markdownScroller,
-              config: this.setMarkdownConfig(),
-              plugin: this.setPlugin()
-            })
+          if (this.openGestureSwipeTest) { // 允许滑动响应测试，生效前提高度设置为100%
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                incrementalAnalysis: this.incrementalAnalysis,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }.height("100%")
+          } else {
+            Column() {
+              CJMarkdown({
+                content: this.content,
+                isInputEnded: this.isInputEnded,
+                listScroller: this.markdownScroller,
+                config: this.markdownConfiguration,
+                plugin: this.markdownPlugin
+              })
+            }
           }
         }
       }
@@ -217,25 +242,41 @@ struct ThematicDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
-    let theme = new MarkdownTheme()
-    theme.setContext(getContext(this)) // 上下文
-
-    theme.setIsMarkdownParserSync(this.isMarkdownParserSync) // markdown是否同步解析
-    theme.setIsOnCopy(this.isOnCopy) // 是否打开长按复制粘贴
-    theme.setBlockFirstTopMargin(this.blockFirstTopMargin) // markdown第一个模块上边距
-    theme.setBlockLastBottomMargin(this.blockLastBottomMargin) // markdown最后一个模块下边距
-    theme.setBlockTopAndBottomMargins(this.blockTopAndBottomMargins) // 模块间上下间距
-    theme.setOpenGestureSwipe(this.openGestureSwipe) // 是否允许markdown控件自身响应滑动
-
-    if (this.thematicBreakColor !== undefined) {
-      theme.setThematicBreakColor(this.thematicBreakColor) // 分割线颜色
-    }
-    theme.setThematicBreakHeight(this.thematicBreakHeight) // 分割线高度
-    theme.setThematicBreakTopMargin(this.thematicBreakTopMargin) // 分割线上部外边距
-    theme.setThematicBreakBottomMargin(this.thematicBreakBottomMargin) // 分割线下部外边距
-
-    config.setMarkdownTheme(theme)
     return config
+  }
+
+  setMarkdownTheme(): MarkdownTheme {
+    let theme = new MarkdownTheme()
+    if (this.currentColorMode === ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT) {
+      theme.setDefaultTheme()
+    } else {
+      theme.setDarculaTheme()
+    }
+    // ---------- 通用 - Global
+    let globalTheme = new MarkdownThemeGlobal()
+    if (this.globalBackgroundColor !== undefined) {
+      globalTheme.setBackgroundColor(this.globalBackgroundColor)
+    }
+    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setBlockSpacing(this.markdownBlockSpacing)
+    globalTheme.setIsLineBreak(this.isLineBreak)
+    globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
+    globalTheme.setIsOnCopy(this.isOnCopy)
+    globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
+    theme.setMarkdownThemeGlobal(globalTheme)
+    
+    // ---------- 专有 - Divider
+    let dividerTheme = new MarkdownThemeDivider()
+    dividerTheme.setDividerMargin(this.dividerMarginTop, this.dividerMarginRight, this.dividerMarginBottom, this.dividerMarginLeft)
+    dividerTheme.setDividerPadding(this.dividerPaddingTop, this.dividerPaddingRight, this.dividerPaddingBottom, this.dividerPaddingLeft)
+    if (this.dividerColor !== undefined) {
+      dividerTheme.setDividerColor(this.dividerColor)
+    }
+    dividerTheme.setDividerStrokeWidth(this.dividerStrokeWidth)
+    dividerTheme.setDividerStyle(this.dividerStyle)
+    theme.setMarkdownThemeDivider(dividerTheme)
+    
+    return theme
   }
 
   setPlugin(): MarkdownPlugin {

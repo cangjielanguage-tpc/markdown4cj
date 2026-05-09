@@ -1,6 +1,3 @@
-/*
- * Copyright (c) Huawei Technologies Co., Ltd. 2025-2025. All rights reserved.
- */
 import { titleComponent } from '../component/BaseComponent'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
@@ -21,283 +18,234 @@ import { AudioMDData } from '../model/AudioMDData'
 @Component
 struct AudioPage {
   // ---------------- 通用
-  /**
-   * 滑动控制器
-   */
+  // 滑动控制器
   scroller: Scroller = new Scroller()
-  /**
-   * 顶部导航栏高度
-   */
-  @StorageProp('safeTop')
-  safeTop: number = 0
-  /**
-   * rawfile路径
-   */
+  @StorageProp('safeTop') safeTop: number = 0 // 顶部导航栏高度
+  // rawfile路径
   rawFilePath: string = "014_音频"
-  /**
-   * rawfile文件夹列表
-   */
-  @State
-  folderList: Array<string> = new Array<string>()
-  /**
-   * 是否全量加载Markdown文本列表
-   */
+  @State folderList: Array<string> = new Array<string>() // rawfile文件夹列表
+  // 是否全量加载Markdown文本列表
   isFullList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否全量加载Markdown文本
-   */
-  @State
-  isFull: boolean = true
-  /**
-   * 是否增量解析Markdown文本列表
-   */
+  @State isFull: boolean = true // 是否全量加载Markdown文本
+  // 是否增量解析Markdown文本列表
   incrementalAnalysisList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否增量解析Markdown文本
-   */
-  @State
-  incrementalAnalysis: boolean = false
-  /**
-   * 增量加载每次间隔时间列表
-   */
+  @State incrementalAnalysis: boolean = false // 是否增量解析Markdown文本
+  // 增量加载每次间隔时间列表
   timeList: Array<number> = timeListGeneralData
-  /**
-   * 增量加载每次间隔时间
-   */
-  @State
-  time: number = 50
-  /**
-   * 增量每次增量文本数量列表
-   */
+  @State time: number = 50 // 增量加载每次间隔时间
+  // 增量每次增量文本数量列表
   textNumberList: Array<number> = textNumberListGeneralData
-  /**
-   * 增量每次增量文本数量
-   */
-  @State
-  textNumber: number = 10
-  /**
-   * 是否同步解析Markdown文本列表
-   */
+  @State textNumber: number = 10 // 增量每次增量文本数量
+  // 是否同步解析Markdown文本列表
   isMarkdownParserSyncList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否同步解析Markdown文本
-   */
-  @State
-  isMarkdownParserSync: boolean = false
-  /**
-   * 是否打开长按复制粘贴效果列表
-   */
+  @State isMarkdownParserSync: boolean = false // 是否同步解析Markdown文本
+  // 是否打开长按复制粘贴效果列表
   isOnCopyList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否打开长按复制粘贴效果
-   */
-  @State
-  isOnCopy: boolean = false
-  /**
-   * Markdown文本第一个模块上边距列表
-   */
-  blockFirstTopMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本第一个模块上边距
-   */
-  @State
-  blockFirstTopMargin: number = 8
-  /**
-   * Markdown文本最后一个模块下边距列表
-   */
-  blockLastBottomMarginList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本最后一个模块下边距
-   */
-  @State
-  blockLastBottomMargin: number = 8
-  /**
-   * Markdown文本模块间上下间距列表
-   */
-  blockTopAndBottomMarginsList: Array<number> = marginListGeneralData
-  /**
-   * Markdown文本模块间上下间距
-   */
-  @State
-  blockTopAndBottomMargins: number = 8
-  /**
-   * 是否允许markdown控件自身响应滑动列表
-   */
+  @State isOnCopy: boolean = false // 是否打开长按复制粘贴效果
+  // markdown全局上外边距列表
+  blockMarginTopList: Array<number> = marginListGeneralData
+  @State blockMarginTop: number = 0 // markdown全局上外边距
+  // markdown全局右外边距列表
+  blockMarginRightList: Array<number> = marginListGeneralData
+  @State blockMarginRight: number = 0 // markdown全局右外边距
+  // markdown全局下外边距列表
+  blockMarginBottomList: Array<number> = marginListGeneralData
+  @State blockMarginBottom: number = 0 // markdown全局下外边距
+  // markdown全局左外边距列表
+  blockMarginLeftList: Array<number> = marginListGeneralData
+  @State blockMarginLeft: number = 0 // markdown全局左外边距
+  // 模块间上下间距列表
+  markdownBlockSpacingList: Array<number> = marginListGeneralData
+  @State markdownBlockSpacing: number = 8 // 模块间上下间距
+  // 软换行是否换行列表
+  isLineBreakList: Array<boolean> = booleanListGeneralData
+  @State isLineBreak: boolean = false // 软换行是否换行
+  // 背景颜色列表
+  globalBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State globalBackgroundColor: number | undefined = undefined // 背景颜色
+  // 是否允许markdown控件自身响应滑动列表
   openGestureSwipeList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否允许markdown控件自身响应滑动
-   */
-  @State
-  openGestureSwipe: boolean = false
-  /**
-   * 是否开启响应滑动测试列表
-   */
+  @State openGestureSwipe: boolean = false // 是否允许markdown控件自身响应滑动
+  // 是否开启响应滑动测试列表
   openGestureSwipeTestList: Array<boolean> = booleanListGeneralData
-  /**
-   * 是否开启响应滑动测试
-   */
-  @State
-  openGestureSwipeTest: boolean = false
+  @State openGestureSwipeTest: boolean = false // 是否开启响应滑动测试
+  @State audioData: AudioMDData = new AudioMDData() // 配置数据内容
 
   // ---------------- 专有
-  /**
-   * 音频阴影颜色值列表
-   */
-  audioShadowColorList: Array<number | undefined> = colorListGeneralData
-  /**
-   * 音频阴影颜色值
-   */
-  @State
-  audioShadowColor: number | undefined = undefined
-  /**
-   * 音频边框颜色列表
-   */
-  audioBorderColorList: Array<number | undefined> = colorListGeneralData
-  /**
-   * 音频边框颜色
-   */
-  @State
-  audioBorderColor: number | undefined = undefined
-  /**
-   * 音频边框粗细列表
-   */
-  audioBorderWidthList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  /**
-   * 音频边框粗细
-   */
-  @State
-  audioBorderWidth: number = 0.5
-  /**
-   * 音频边框圆角列表
-   */
-  audioBorderRadiusList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
-  /**
-   * 音频边框圆角
-   */
-  @State
-  audioBorderRadius: number = 12
-  /**
-   * 音频按钮背景颜色列表
-   */
-  audioButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  /**
-   * 音频按钮背景颜色
-   */
-  @State
-  audioButtonBackgroundColor: number | undefined = undefined
-  /**
-   * 音频按钮文字颜色列表
-   */
-  audioButtonTextColorList: Array<number | undefined> = colorListGeneralData
-  /**
-   * 音频按钮文字颜色
-   */
-  @State
-  audioButtonTextColor: number | undefined = undefined
-  /**
-   * 音频按钮文字大小列表
-   */
-  audioButtonTextSizeList: Array<number> = textSizeListGeneralData
-  /**
-   * 音频按钮文字大小
-   */
-  @State
-  audioButtonTextSize: number = 14
-  /**
-   * 音频按钮文字内容列表
-   */
-  audioButtonTextList: Array<string> = [`立即播放`, `超长长长长长长长的按钮`]
-  /**
-   * 音频按钮文字内容
-   */
-  @State
-  audioButtonText: string = `立即播放`
-  /**
-   * 音频按钮圆角列表
-   */
-  audioButtonBorderRadiusList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
-  /**
-   * 音频按钮圆角
-   */
-  @State
-  audioButtonBorderRadius: number = 16
-  /**
-   * 音频标题文字大小列表
-   */
-  audioTitleTextSizeList: Array<number> = textSizeListGeneralData
-  /**
-   * 音频标题文字大小
-   */
-  @State
-  audioTitleTextSize: number = 15
-  /**
-   * 音频标题文字颜色列表
-   */
-  audioTitleTextColorList: Array<number | undefined> = colorListGeneralData
-  /**
-   * 音频标题文字颜色
-   */
-  @State
-  audioTitleTextColor: number | undefined = undefined
-  /**
-   * 音频标题文字行高列表
-   */
-  audioTitleTextLineHeightList: Array<number> = textLineHeightListGeneralData
-  /**
-   * 音频标题文字行高
-   */
-  @State
-  audioTitleTextLineHeight: number = 20
-  /**
-   * 音频类型文字大小列表
-   */
-  audioTypeTextSizeList: Array<number> = textSizeListGeneralData
-  /**
-   * 音频类型文字大小
-   */
-  @State
-  audioTypeTextSize: number = 11
-  /**
-   * 音频类型文字颜色列表
-   */
-  audioTypeTextColorList: Array<number | undefined> = colorListGeneralData
-  /**
-   * 音频类型文字颜色
-   */
-  @State
-  audioTypeTextColor: number | undefined = undefined
-  /**
-   * 音频类型文字行高列表
-   */
-  audioTypeTextLineHeightList: Array<number> = textLineHeightListGeneralData
-  /**
-   * 音频类型文字行高
-   */
-  @State
-  audioTypeTextLineHeight: number = 15
-  /**
-   * 音频上边距列表
-   */
+  // 音频背景颜色列表
+  audioBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State audioBackgroundColor: number | undefined = undefined // 音频背景颜色
+  // 音频上外边距列表
   audioMarginTopList: Array<number> = marginListGeneralData
-  /**
-   * 音频上边距
-   */
-  @State
-  audioMarginTop: number = 10
-  /**
-   * 音频下边距列表
-   */
+  @State audioMarginTop: number = 10 // 音频上外边距
+  // 音频右外边距列表
+  audioMarginRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  @State audioMarginRight: number = 0 // 音频右外边距
+  // 音频下外边距列表
   audioMarginBottomList: Array<number> = marginListGeneralData
-  /**
-   * 音频下边距
-   */
-  @State
-  audioMarginBottom: number = 10
-  /**
-   * 配置数据内容
-   */
-  @State
-  audioData: AudioMDData = new AudioMDData()
+  @State audioMarginBottom: number = 10 // 音频下外边距
+  // 音频左外边距列表
+  audioMarginLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  @State audioMarginLeft: number = 0 // 音频左外边距
+  // 音频上内边距列表
+  audioPaddingTopList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  @State audioPaddingTop: number = 0 // 音频上内边距
+  // 音频右内边距列表
+  audioPaddingRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  @State audioPaddingRight: number = 0 // 音频右内边距
+  // 音频下内边距列表
+  audioPaddingBottomList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  @State audioPaddingBottom: number = 0 // 音频下内边距
+  // 音频左内边距列表
+  audioPaddingLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  @State audioPaddingLeft: number = 0 // 音频左内边距
+  // 音频边框样式列表
+  audioBorderStyleList: Array<BorderStyle> = [BorderStyle.Solid, BorderStyle.Dashed, BorderStyle.Dotted]
+  @State audioBorderStyle: BorderStyle = BorderStyle.Solid // 音频边框样式
+  // 音频边框宽度列表
+  audioBorderWidthList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  @State audioBorderWidth: number = 0.5 // 音频边框宽度
+  // 音频边框颜色列表
+  audioBorderColorList: Array<number | undefined> = colorListGeneralData
+  @State audioBorderColor: number | undefined = undefined // 音频边框颜色
+  // 音频边框左上圆角列表
+  audioRadiusTopLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  @State audioRadiusTopLeft: number = 12 // 音频边框左上圆角
+  // 音频边框右上圆角列表
+  audioRadiusTopRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  @State audioRadiusTopRight: number = 12 // 音频边框右上圆角
+  // 音频边框左下圆角列表
+  audioRadiusBottomLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  @State audioRadiusBottomLeft: number = 12 // 音频边框左下圆角
+  // 音频边框右下圆角列表
+  audioRadiusBottomRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  @State audioRadiusBottomRight: number = 12 // 音频边框右下圆角
+  // 音频阴影模糊半径列表
+  audioShadowRadiusList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  @State audioShadowRadius: number = 0 // 音频阴影模糊半径
+  // 音频阴影X轴偏移量列表
+  audioShadowOffsetXList: Array<number> = [-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10]
+  @State audioShadowOffsetX: number = 0 // 音频阴影X轴偏移量
+  // 音频阴影Y轴偏移量列表
+  audioShadowOffsetYList: Array<number> = [-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10]
+  @State audioShadowOffsetY: number = 0 // 音频阴影Y轴偏移量
+  // 音频阴影颜色值列表
+  audioShadowColorList: Array<number | undefined> = colorListGeneralData
+  @State audioShadowColor: number | undefined = undefined // 音频阴影颜色值
+  // 音频图标列表
+  audioIconList: Array<Resource | undefined> = [undefined]
+  @State audioIcon: Resource | undefined = undefined // 音频图标
+  // 音频图标宽度列表
+  audioIconWidthList: Array<number> = [20, 30, 40, 50, 60, 70, 80]
+  @State audioIconWidth: number = 40 // 音频图标宽度
+  // 音频图标高度列表
+  audioIconHeightList: Array<number> = [20, 30, 40, 50, 60, 70, 80]
+  @State audioIconHeight: number = 40 // 音频图标高度
+  // 音频图标左上圆角列表
+  audioIconRadiusTopLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  @State audioIconRadiusTopLeft: number = 0 // 音频图标左上圆角
+  // 音频图标右上圆角列表
+  audioIconRadiusTopRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  @State audioIconRadiusTopRight: number = 0 // 音频图标右上圆角
+  // 音频图标左下圆角列表
+  audioIconRadiusBottomLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  @State audioIconRadiusBottomLeft: number = 0 // 音频图标左下圆角
+  // 音频图标右下圆角列表
+  audioIconRadiusBottomRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  @State audioIconRadiusBottomRight: number = 0 // 音频图标右下圆角
+  // 音频图标缩放类型列表
+  audioIconFitTypeList: Array<ImageFit> = [ImageFit.Contain, ImageFit.Cover, ImageFit.Fill, ImageFit.ScaleDown, ImageFit.None]
+  @State audioIconFitType: ImageFit = ImageFit.Contain // 音频图标缩放类型
+  // 音频标题文本和类型文本间距列表
+  audioTitleToTypeSpacingList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  @State audioTitleToTypeSpacing: number = 8 // 音频标题文本和类型文本间距
+  // 音频按钮宽度列表
+  audioButtonWidthList: Array<number> = [60, 80, 100, 120, 140, 160, 180, 200]
+  @State audioButtonWidth: number = 100 // 音频按钮宽度
+  // 音频按钮高度列表
+  audioButtonHeightList: Array<number> = [24, 28, 32, 36, 40, 44, 48]
+  @State audioButtonHeight: number = 32 // 音频按钮高度
+  // 音频按钮背景颜色列表
+  audioButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
+  @State audioButtonBackgroundColor: number | undefined = undefined // 音频按钮背景颜色
+  // 音频按钮边框样式列表
+  audioButtonBorderStyleList: Array<BorderStyle> = [BorderStyle.Solid, BorderStyle.Dashed, BorderStyle.Dotted]
+  @State audioButtonBorderStyle: BorderStyle = BorderStyle.Solid // 音频按钮边框样式
+  // 音频按钮边框宽度列表
+  audioButtonBorderWidthList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5]
+  @State audioButtonBorderWidth: number = 0 // 音频按钮边框宽度
+  // 音频按钮边框颜色列表
+  audioButtonBorderColorList: Array<number | undefined> = colorListGeneralData
+  @State audioButtonBorderColor: number | undefined = undefined // 音频按钮边框颜色
+  // 音频按钮边框左上圆角列表
+  audioButtonRadiusTopLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  @State audioButtonRadiusTopLeft: number = 16 // 音频按钮边框左上圆角
+  // 音频按钮边框右上圆角列表
+  audioButtonRadiusTopRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  @State audioButtonRadiusTopRight: number = 16 // 音频按钮边框右上圆角
+  // 音频按钮边框左下圆角列表
+  audioButtonRadiusBottomLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  @State audioButtonRadiusBottomLeft: number = 16 // 音频按钮边框左下圆角
+  // 音频按钮边框右下圆角列表
+  audioButtonRadiusBottomRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  @State audioButtonRadiusBottomRight: number = 16 // 音频按钮边框右下圆角
+  // 音频按钮默认文本内容列表
+  audioButtonTextList: Array<string> = ['立即播放', '播放', '超长长长长长长长的按钮']
+  @State audioButtonText: string = '立即播放' // 音频按钮默认文本内容
+  // 音频按钮文本颜色列表
+  audioButtonTextFontColorList: Array<number | undefined> = colorListGeneralData
+  @State audioButtonTextFontColor: number | undefined = undefined // 音频按钮文本颜色
+  // 音频按钮文本尺寸列表
+  audioButtonTextFontSizeList: Array<number> = textSizeListGeneralData
+  @State audioButtonTextFontSize: number = 14 // 音频按钮文本尺寸
+  // 音频按钮文本字体样式列表
+  audioButtonTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  @State audioButtonTextFontStyle: FontStyle = FontStyle.Normal // 音频按钮文本字体样式
+  // 音频按钮文本字体粗细列表
+  audioButtonTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
+  @State audioButtonTextFontWeight: FontWeight = FontWeight.Normal // 音频按钮文本字体粗细
+  // 音频按钮文本字体列表
+  audioButtonTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  @State audioButtonTextFontFamily: string = 'HarmonyOS Sans' // 音频按钮文本字体
+  // 音频按钮文本行高列表
+  audioButtonTextLineHeightList: Array<number> = textLineHeightListGeneralData
+  @State audioButtonTextLineHeight: number = 20 // 音频按钮文本行高
+  // 音频标题文本颜色列表
+  audioTitleTextFontColorList: Array<number | undefined> = colorListGeneralData
+  @State audioTitleTextFontColor: number | undefined = undefined // 音频标题文本颜色
+  // 音频标题文本尺寸列表
+  audioTitleTextFontSizeList: Array<number> = textSizeListGeneralData
+  @State audioTitleTextFontSize: number = 15 // 音频标题文本尺寸
+  // 音频标题文本字体样式列表
+  audioTitleTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  @State audioTitleTextFontStyle: FontStyle = FontStyle.Normal // 音频标题文本字体样式
+  // 音频标题文本字体粗细列表
+  audioTitleTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
+  @State audioTitleTextFontWeight: FontWeight = FontWeight.Normal // 音频标题文本字体粗细
+  // 音频标题文本字体列表
+  audioTitleTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  @State audioTitleTextFontFamily: string = 'HarmonyOS Sans' // 音频标题文本字体
+  // 音频标题文本行高列表
+  audioTitleTextLineHeightList: Array<number> = textLineHeightListGeneralData
+  @State audioTitleTextLineHeight: number = 20 // 音频标题文本行高
+  // 音频类型文本颜色列表
+  audioTypeTextFontColorList: Array<number | undefined> = colorListGeneralData
+  @State audioTypeTextFontColor: number | undefined = undefined // 音频类型文本颜色
+  // 音频类型文本尺寸列表
+  audioTypeTextFontSizeList: Array<number> = textSizeListGeneralData
+  @State audioTypeTextFontSize: number = 11 // 音频类型文本尺寸
+  // 音频类型文本字体样式列表
+  audioTypeTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  @State audioTypeTextFontStyle: FontStyle = FontStyle.Normal // 音频类型文本字体样式
+  // 音频类型文本字体粗细列表
+  audioTypeTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
+  @State audioTypeTextFontWeight: FontWeight = FontWeight.Normal // 音频类型文本字体粗细
+  // 音频类型文本字体列表
+  audioTypeTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  @State audioTypeTextFontFamily: string = 'HarmonyOS Sans' // 音频类型文本字体
+  // 音频类型文本行高列表
+  audioTypeTextLineHeightList: Array<number> = textLineHeightListGeneralData
+  @State audioTypeTextLineHeight: number = 15 // 音频类型文本行高
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
@@ -351,22 +299,46 @@ struct AudioPage {
             allData: this.isOnCopy
           })
           BaseTabComponent({
-            titleStr: "Markdown文本第一个模块上边距 - ",
+            titleStr: "markdown全局上外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockFirstTopMarginList,
-            allData: this.blockFirstTopMargin
+            allListData: this.blockMarginTopList,
+            allData: this.blockMarginTop
           })
           BaseTabComponent({
-            titleStr: "Markdown文本最后一个模块下边距 - ",
+            titleStr: "markdown全局右外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockLastBottomMarginList,
-            allData: this.blockLastBottomMargin
+            allListData: this.blockMarginRightList,
+            allData: this.blockMarginRight
           })
           BaseTabComponent({
-            titleStr: "Markdown文本模块间上下间距 - ",
+            titleStr: "markdown全局下外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockTopAndBottomMarginsList,
-            allData: this.blockTopAndBottomMargins
+            allListData: this.blockMarginBottomList,
+            allData: this.blockMarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "markdown全局左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.blockMarginLeftList,
+            allData: this.blockMarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "模块间上下间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.markdownBlockSpacingList,
+            allData: this.markdownBlockSpacing
+          })
+          BaseTabComponent({
+            titleStr: "软换行是否换行 - ",
+            typeEnum: TypeEnum.IS_BOOLEAN,
+            allListData: this.isLineBreakList,
+            allData: this.isLineBreak
+          })
+          BaseTabComponent({
+            titleStr: "背景颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.globalBackgroundColorList,
+            allData: this.globalBackgroundColor
           })
           BaseTabComponent({
             titleStr: "是否开启响应滑动测试 - ",
@@ -383,10 +355,70 @@ struct AudioPage {
 
           // ---------------- 专有
           BaseTabComponent({
-            titleStr: "音频阴影颜色值 - ",
+            titleStr: "音频背景颜色 - ",
             typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.audioShadowColorList,
-            allData: this.audioShadowColor
+            allListData: this.audioBackgroundColorList,
+            allData: this.audioBackgroundColor
+          })
+          BaseTabComponent({
+            titleStr: "音频上外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioMarginTopList,
+            allData: this.audioMarginTop
+          })
+          BaseTabComponent({
+            titleStr: "音频右外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioMarginRightList,
+            allData: this.audioMarginRight
+          })
+          BaseTabComponent({
+            titleStr: "音频下外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioMarginBottomList,
+            allData: this.audioMarginBottom
+          })
+          BaseTabComponent({
+            titleStr: "音频左外边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioMarginLeftList,
+            allData: this.audioMarginLeft
+          })
+          BaseTabComponent({
+            titleStr: "音频上内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioPaddingTopList,
+            allData: this.audioPaddingTop
+          })
+          BaseTabComponent({
+            titleStr: "音频右内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioPaddingRightList,
+            allData: this.audioPaddingRight
+          })
+          BaseTabComponent({
+            titleStr: "音频下内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioPaddingBottomList,
+            allData: this.audioPaddingBottom
+          })
+          BaseTabComponent({
+            titleStr: "音频左内边距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioPaddingLeftList,
+            allData: this.audioPaddingLeft
+          })
+          BaseTabComponent({
+            titleStr: "音频边框样式 - ",
+            typeEnum: TypeEnum.IS_BORDER_STYLE,
+            allListData: this.audioBorderStyleList,
+            allData: this.audioBorderStyle
+          })
+          BaseTabComponent({
+            titleStr: "音频边框宽度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioBorderWidthList,
+            allData: this.audioBorderWidth
           })
           BaseTabComponent({
             titleStr: "音频边框颜色 - ",
@@ -395,16 +427,118 @@ struct AudioPage {
             allData: this.audioBorderColor
           })
           BaseTabComponent({
-            titleStr: "音频边框粗细 - ",
+            titleStr: "音频边框左上圆角 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.audioBorderWidthList,
-            allData: this.audioBorderWidth
+            allListData: this.audioRadiusTopLeftList,
+            allData: this.audioRadiusTopLeft
           })
           BaseTabComponent({
-            titleStr: "音频边框圆角 - ",
+            titleStr: "音频边框右上圆角 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.audioBorderRadiusList,
-            allData: this.audioBorderRadius
+            allListData: this.audioRadiusTopRightList,
+            allData: this.audioRadiusTopRight
+          })
+          BaseTabComponent({
+            titleStr: "音频边框左下圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioRadiusBottomLeftList,
+            allData: this.audioRadiusBottomLeft
+          })
+          BaseTabComponent({
+            titleStr: "音频边框右下圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioRadiusBottomRightList,
+            allData: this.audioRadiusBottomRight
+          })
+          BaseTabComponent({
+            titleStr: "音频阴影模糊半径 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioShadowRadiusList,
+            allData: this.audioShadowRadius
+          })
+          BaseTabComponent({
+            titleStr: "音频阴影X轴偏移量 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioShadowOffsetXList,
+            allData: this.audioShadowOffsetX
+          })
+          BaseTabComponent({
+            titleStr: "音频阴影Y轴偏移量 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioShadowOffsetYList,
+            allData: this.audioShadowOffsetY
+          })
+          BaseTabComponent({
+            titleStr: "音频阴影颜色值 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.audioShadowColorList,
+            allData: this.audioShadowColor
+          })
+          BaseTabComponent({
+            titleStr: "音频图标 - ",
+            typeEnum: TypeEnum.IS_RESOURCE,
+            allListData: this.audioIconList,
+            allData: this.audioIcon
+          })
+          BaseTabComponent({
+            titleStr: "音频图标宽度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioIconWidthList,
+            allData: this.audioIconWidth
+          })
+          BaseTabComponent({
+            titleStr: "音频图标高度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioIconHeightList,
+            allData: this.audioIconHeight
+          })
+          BaseTabComponent({
+            titleStr: "音频图标左上圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioIconRadiusTopLeftList,
+            allData: this.audioIconRadiusTopLeft
+          })
+          BaseTabComponent({
+            titleStr: "音频图标右上圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioIconRadiusTopRightList,
+            allData: this.audioIconRadiusTopRight
+          })
+          BaseTabComponent({
+            titleStr: "音频图标左下圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioIconRadiusBottomLeftList,
+            allData: this.audioIconRadiusBottomLeft
+          })
+          BaseTabComponent({
+            titleStr: "音频图标右下圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioIconRadiusBottomRightList,
+            allData: this.audioIconRadiusBottomRight
+          })
+          BaseTabComponent({
+            titleStr: "音频图标缩放类型 - ",
+            typeEnum: TypeEnum.IS_IMAGE_FIT,
+            allListData: this.audioIconFitTypeList,
+            allData: this.audioIconFitType
+          })
+          BaseTabComponent({
+            titleStr: "音频标题文本和类型文本间距 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioTitleToTypeSpacingList,
+            allData: this.audioTitleToTypeSpacing
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮宽度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioButtonWidthList,
+            allData: this.audioButtonWidth
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮高度 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioButtonHeightList,
+            allData: this.audioButtonHeight
           })
           BaseTabComponent({
             titleStr: "音频按钮背景颜色 - ",
@@ -413,76 +547,160 @@ struct AudioPage {
             allData: this.audioButtonBackgroundColor
           })
           BaseTabComponent({
-            titleStr: "音频按钮文字颜色 - ",
-            typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.audioButtonTextColorList,
-            allData: this.audioButtonTextColor
+            titleStr: "音频按钮边框样式 - ",
+            typeEnum: TypeEnum.IS_BORDER_STYLE,
+            allListData: this.audioButtonBorderStyleList,
+            allData: this.audioButtonBorderStyle
           })
           BaseTabComponent({
-            titleStr: "音频按钮文字大小 - ",
+            titleStr: "音频按钮边框宽度 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.audioButtonTextSizeList,
-            allData: this.audioButtonTextSize
+            allListData: this.audioButtonBorderWidthList,
+            allData: this.audioButtonBorderWidth
           })
           BaseTabComponent({
-            titleStr: "音频按钮文字内容 - ",
+            titleStr: "音频按钮边框颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.audioButtonBorderColorList,
+            allData: this.audioButtonBorderColor
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮边框左上圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioButtonRadiusTopLeftList,
+            allData: this.audioButtonRadiusTopLeft
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮边框右上圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioButtonRadiusTopRightList,
+            allData: this.audioButtonRadiusTopRight
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮边框左下圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioButtonRadiusBottomLeftList,
+            allData: this.audioButtonRadiusBottomLeft
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮边框右下圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioButtonRadiusBottomRightList,
+            allData: this.audioButtonRadiusBottomRight
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮默认文本内容 - ",
             typeEnum: TypeEnum.IS_STRING,
             allListData: this.audioButtonTextList,
             allData: this.audioButtonText
           })
           BaseTabComponent({
-            titleStr: "音频按钮圆角 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.audioButtonBorderRadiusList,
-            allData: this.audioButtonBorderRadius
-          })
-          BaseTabComponent({
-            titleStr: "音频标题文字大小 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.audioTitleTextSizeList,
-            allData: this.audioTitleTextSize
-          })
-          BaseTabComponent({
-            titleStr: "音频标题文字颜色 - ",
+            titleStr: "音频按钮文本颜色 - ",
             typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.audioTitleTextColorList,
-            allData: this.audioTitleTextColor
+            allListData: this.audioButtonTextFontColorList,
+            allData: this.audioButtonTextFontColor
           })
           BaseTabComponent({
-            titleStr: "音频标题文字行高 - ",
+            titleStr: "音频按钮文本尺寸 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioButtonTextFontSizeList,
+            allData: this.audioButtonTextFontSize
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮文本字体样式 - ",
+            typeEnum: TypeEnum.IS_FONT_STYLE,
+            allListData: this.audioButtonTextFontStyleList,
+            allData: this.audioButtonTextFontStyle
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮文本字体粗细 - ",
+            typeEnum: TypeEnum.IS_FONT_WEIGHT,
+            allListData: this.audioButtonTextFontWeightList,
+            allData: this.audioButtonTextFontWeight
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮文本字体 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.audioButtonTextFontFamilyList,
+            allData: this.audioButtonTextFontFamily
+          })
+          BaseTabComponent({
+            titleStr: "音频按钮文本行高 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioButtonTextLineHeightList,
+            allData: this.audioButtonTextLineHeight
+          })
+          BaseTabComponent({
+            titleStr: "音频标题文本颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.audioTitleTextFontColorList,
+            allData: this.audioTitleTextFontColor
+          })
+          BaseTabComponent({
+            titleStr: "音频标题文本尺寸 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioTitleTextFontSizeList,
+            allData: this.audioTitleTextFontSize
+          })
+          BaseTabComponent({
+            titleStr: "音频标题文本字体样式 - ",
+            typeEnum: TypeEnum.IS_FONT_STYLE,
+            allListData: this.audioTitleTextFontStyleList,
+            allData: this.audioTitleTextFontStyle
+          })
+          BaseTabComponent({
+            titleStr: "音频标题文本字体粗细 - ",
+            typeEnum: TypeEnum.IS_FONT_WEIGHT,
+            allListData: this.audioTitleTextFontWeightList,
+            allData: this.audioTitleTextFontWeight
+          })
+          BaseTabComponent({
+            titleStr: "音频标题文本字体 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.audioTitleTextFontFamilyList,
+            allData: this.audioTitleTextFontFamily
+          })
+          BaseTabComponent({
+            titleStr: "音频标题文本行高 - ",
             typeEnum: TypeEnum.IS_NUMBER,
             allListData: this.audioTitleTextLineHeightList,
             allData: this.audioTitleTextLineHeight
           })
           BaseTabComponent({
-            titleStr: "音频类型文字大小 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.audioTypeTextSizeList,
-            allData: this.audioTypeTextSize
-          })
-          BaseTabComponent({
-            titleStr: "音频类型文字颜色 - ",
+            titleStr: "音频类型文本颜色 - ",
             typeEnum: TypeEnum.IS_COLOR,
-            allListData: this.audioTypeTextColorList,
-            allData: this.audioTypeTextColor
+            allListData: this.audioTypeTextFontColorList,
+            allData: this.audioTypeTextFontColor
           })
           BaseTabComponent({
-            titleStr: "音频类型文字行高 - ",
+            titleStr: "音频类型文本尺寸 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.audioTypeTextFontSizeList,
+            allData: this.audioTypeTextFontSize
+          })
+          BaseTabComponent({
+            titleStr: "音频类型文本字体样式 - ",
+            typeEnum: TypeEnum.IS_FONT_STYLE,
+            allListData: this.audioTypeTextFontStyleList,
+            allData: this.audioTypeTextFontStyle
+          })
+          BaseTabComponent({
+            titleStr: "音频类型文本字体粗细 - ",
+            typeEnum: TypeEnum.IS_FONT_WEIGHT,
+            allListData: this.audioTypeTextFontWeightList,
+            allData: this.audioTypeTextFontWeight
+          })
+          BaseTabComponent({
+            titleStr: "音频类型文本字体 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.audioTypeTextFontFamilyList,
+            allData: this.audioTypeTextFontFamily
+          })
+          BaseTabComponent({
+            titleStr: "音频类型文本行高 - ",
             typeEnum: TypeEnum.IS_NUMBER,
             allListData: this.audioTypeTextLineHeightList,
             allData: this.audioTypeTextLineHeight
-          })
-          BaseTabComponent({
-            titleStr: "音频上边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.audioMarginTopList,
-            allData: this.audioMarginTop
-          })
-          BaseTabComponent({
-            titleStr: "音频下边距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.audioMarginBottomList,
-            allData: this.audioMarginBottom
           })
 
           // 列表显示
@@ -506,30 +724,75 @@ struct AudioPage {
                     this.audioData.textNumber = this.textNumber
                     this.audioData.isMarkdownParserSync = this.isMarkdownParserSync
                     this.audioData.isOnCopy = this.isOnCopy
-                    this.audioData.blockFirstTopMargin = this.blockFirstTopMargin
-                    this.audioData.blockLastBottomMargin = this.blockLastBottomMargin
-                    this.audioData.blockTopAndBottomMargins = this.blockTopAndBottomMargins
+                    this.audioData.blockMarginTop = this.blockMarginTop
+                    this.audioData.blockMarginRight = this.blockMarginRight
+                    this.audioData.blockMarginBottom = this.blockMarginBottom
+                    this.audioData.blockMarginLeft = this.blockMarginLeft
+                    this.audioData.markdownBlockSpacing = this.markdownBlockSpacing
+                    this.audioData.isLineBreak = this.isLineBreak
+                    this.audioData.backgroundColor = this.globalBackgroundColor
                     this.audioData.openGestureSwipe = this.openGestureSwipe
                     this.audioData.openGestureSwipeTest = this.openGestureSwipeTest
                     this.audioData.pagePath = `${this.rawFilePath}/${item}`
                     // ---------- 专有
-                    this.audioData.audioShadowColor = this.audioShadowColor
-                    this.audioData.audioBorderColor = this.audioBorderColor
-                    this.audioData.audioBorderWidth = this.audioBorderWidth
-                    this.audioData.audioBorderRadius = this.audioBorderRadius
-                    this.audioData.audioButtonBackgroundColor = this.audioButtonBackgroundColor
-                    this.audioData.audioButtonTextColor = this.audioButtonTextColor
-                    this.audioData.audioButtonTextSize = this.audioButtonTextSize
-                    this.audioData.audioButtonText = this.audioButtonText
-                    this.audioData.audioButtonBorderRadius = this.audioButtonBorderRadius
-                    this.audioData.audioTitleTextSize = this.audioTitleTextSize
-                    this.audioData.audioTitleTextColor = this.audioTitleTextColor
-                    this.audioData.audioTitleTextLineHeight = this.audioTitleTextLineHeight
-                    this.audioData.audioTypeTextSize = this.audioTypeTextSize
-                    this.audioData.audioTypeTextColor = this.audioTypeTextColor
-                    this.audioData.audioTypeTextLineHeight = this.audioTypeTextLineHeight
+                    this.audioData.audioBackgroundColor = this.audioBackgroundColor
                     this.audioData.audioMarginTop = this.audioMarginTop
+                    this.audioData.audioMarginRight = this.audioMarginRight
                     this.audioData.audioMarginBottom = this.audioMarginBottom
+                    this.audioData.audioMarginLeft = this.audioMarginLeft
+                    this.audioData.audioPaddingTop = this.audioPaddingTop
+                    this.audioData.audioPaddingRight = this.audioPaddingRight
+                    this.audioData.audioPaddingBottom = this.audioPaddingBottom
+                    this.audioData.audioPaddingLeft = this.audioPaddingLeft
+                    this.audioData.audioBorderStyle = this.audioBorderStyle
+                    this.audioData.audioBorderWidth = this.audioBorderWidth
+                    this.audioData.audioBorderColor = this.audioBorderColor
+                    this.audioData.audioRadiusTopLeft = this.audioRadiusTopLeft
+                    this.audioData.audioRadiusTopRight = this.audioRadiusTopRight
+                    this.audioData.audioRadiusBottomLeft = this.audioRadiusBottomLeft
+                    this.audioData.audioRadiusBottomRight = this.audioRadiusBottomRight
+                    this.audioData.audioShadowRadius = this.audioShadowRadius
+                    this.audioData.audioShadowOffsetX = this.audioShadowOffsetX
+                    this.audioData.audioShadowOffsetY = this.audioShadowOffsetY
+                    this.audioData.audioShadowColor = this.audioShadowColor
+                    this.audioData.audioIcon = this.audioIcon
+                    this.audioData.audioIconWidth = this.audioIconWidth
+                    this.audioData.audioIconHeight = this.audioIconHeight
+                    this.audioData.audioIconRadiusTopLeft = this.audioIconRadiusTopLeft
+                    this.audioData.audioIconRadiusTopRight = this.audioIconRadiusTopRight
+                    this.audioData.audioIconRadiusBottomLeft = this.audioIconRadiusBottomLeft
+                    this.audioData.audioIconRadiusBottomRight = this.audioIconRadiusBottomRight
+                    this.audioData.audioIconFitType = this.audioIconFitType
+                    this.audioData.audioTitleToTypeSpacing = this.audioTitleToTypeSpacing
+                    this.audioData.audioButtonWidth = this.audioButtonWidth
+                    this.audioData.audioButtonHeight = this.audioButtonHeight
+                    this.audioData.audioButtonBackgroundColor = this.audioButtonBackgroundColor
+                    this.audioData.audioButtonBorderStyle = this.audioButtonBorderStyle
+                    this.audioData.audioButtonBorderWidth = this.audioButtonBorderWidth
+                    this.audioData.audioButtonBorderColor = this.audioButtonBorderColor
+                    this.audioData.audioButtonRadiusTopLeft = this.audioButtonRadiusTopLeft
+                    this.audioData.audioButtonRadiusTopRight = this.audioButtonRadiusTopRight
+                    this.audioData.audioButtonRadiusBottomLeft = this.audioButtonRadiusBottomLeft
+                    this.audioData.audioButtonRadiusBottomRight = this.audioButtonRadiusBottomRight
+                    this.audioData.audioButtonText = this.audioButtonText
+                    this.audioData.audioButtonTextFontColor = this.audioButtonTextFontColor
+                    this.audioData.audioButtonTextFontSize = this.audioButtonTextFontSize
+                    this.audioData.audioButtonTextFontStyle = this.audioButtonTextFontStyle
+                    this.audioData.audioButtonTextFontWeight = this.audioButtonTextFontWeight
+                    this.audioData.audioButtonTextFontFamily = this.audioButtonTextFontFamily
+                    this.audioData.audioButtonTextLineHeight = this.audioButtonTextLineHeight
+                    this.audioData.audioTitleTextFontColor = this.audioTitleTextFontColor
+                    this.audioData.audioTitleTextFontSize = this.audioTitleTextFontSize
+                    this.audioData.audioTitleTextFontStyle = this.audioTitleTextFontStyle
+                    this.audioData.audioTitleTextFontWeight = this.audioTitleTextFontWeight
+                    this.audioData.audioTitleTextFontFamily = this.audioTitleTextFontFamily
+                    this.audioData.audioTitleTextLineHeight = this.audioTitleTextLineHeight
+                    this.audioData.audioTypeTextFontColor = this.audioTypeTextFontColor
+                    this.audioData.audioTypeTextFontSize = this.audioTypeTextFontSize
+                    this.audioData.audioTypeTextFontStyle = this.audioTypeTextFontStyle
+                    this.audioData.audioTypeTextFontWeight = this.audioTypeTextFontWeight
+                    this.audioData.audioTypeTextFontFamily = this.audioTypeTextFontFamily
+                    this.audioData.audioTypeTextLineHeight = this.audioTypeTextLineHeight
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/AudioDetailsPage", params: this.audioData })
                   })
