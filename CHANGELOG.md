@@ -26,6 +26,20 @@
 24. 新增SupTheme
 25. 新增TableTheme
 26. 新增VideoTheme
+27. MarkdownTheme 中的接口 setLinkBackGroupColor(linkBackGroupColor: number): void 替换成 setLinkBackgroundColor(linkBackgroundColor: number): void
+28. MarkdownTheme 中的接口 setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: number): void 替换成 setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: number): void
+29. MarkdownTheme 中的接口 setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: number): void 替换成 setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: number): void
+30. MarkdownTheme 中的接口 setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: number): void 替换成 setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: number): void
+31. MarkdownTheme 中的接口 setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: number): void 替换成 setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: number): void
+32. MarkdownTheme 中的接口 setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: number): void 替换成 setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: number): void
+33. MarkdownTheme 中的接口 setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: number): void 替换成 setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: number): void
+34. MarkdownTheme 中的接口 setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: number): void 替换成 setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: number): void
+35. MarkdownTheme 中的接口 setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: number): void 替换成 setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: number): void
+36. MarkdownTheme 中的接口 setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: number): void 替换成 setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: number): void
+37. MarkdownTheme 中的接口 setLatexMathBackGroupColor(latexMathBackGroupColor: number): void 替换成 setLatexMathBackgroundColor(latexMathBackgroundColor: number): void
+38. MarkdownTheme 中的接口 setVideoReleaseTexColor(videoReleaseTexColor: number): void 替换成 setVideoReleaseTextColor(videoReleaseTextColor: number): void
+39. MarkdownTheme 中的接口 setVideoDownloadTexColor(videoDownloadTexColor: number): void 替换成 setVideoDownloadTextColor(videoDownloadTextColor: number): void
+40. MarkdownTheme 中的接口 setImageDownloadTexColor(imageDownloadTexColor: number): void 替换成 setImageDownloadTextColor(imageDownloadTextColor: number): void
 
 # 1.3.7
 
