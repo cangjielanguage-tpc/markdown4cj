@@ -178,7 +178,7 @@ func arktsRes2CJResource(ctx: JSContext, value: JSValue): AppResource {
 }
 
 /**
- * 互操作透明色颜色处理
+ * 互操作透明颜色处理
  *
  * @param value 颜色值
  * @return Color Color对象
