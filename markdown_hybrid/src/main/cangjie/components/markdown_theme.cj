@@ -672,7 +672,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置markdown代码高亮样式
      *
-     * @param PrismTheme markdown代码高亮样式 - 默认PrismThemeDarcula.create()
+     * @param PrismTheme markdown代码高亮样式 - 默认PrismThemeDefault.create()
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     public func setPrismTheme(prismTheme: PrismTheme): MarkdownThemeBuilder {
@@ -815,7 +815,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置文本格式链接文本颜色
      *
-     * @param linkColor 文本格式链接文本颜色 - 默认0XFF0000FF
+     * @param linkColor 文本格式链接文本颜色 - 默认Color.RED
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkTextFontColor方法代替", since: "1.4.0"]
@@ -907,7 +907,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置圆形图片格式链接控件背景颜色
      *
-     * @param linkCircleImageButtonBackGroupColor 圆形图片格式链接控件背景颜色 - 默认0XFF000000
+     * @param linkCircleImageButtonBackGroupColor 圆形图片格式链接控件背景颜色 - 默认Color.BLACK
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkCircleIconButtonBackgroundColor方法代替", since: "1.4.0"]
@@ -931,7 +931,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置圆形图片格式链接文字颜色
      *
-     * @param linkCircleImageTextColor 圆形图片格式链接文字颜色 - 默认0XFFFFFFFF
+     * @param linkCircleImageTextColor 圆形图片格式链接文字颜色 - 默认Color.WHITE
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkCircleIconTextColor方法代替", since: "1.4.0"]
@@ -979,7 +979,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置圆角矩形图片格式链接控件背景颜色
      *
-     * @param linkRectImageButtonBackGroupColor 圆角矩形图片格式链接控件背景颜色 - 默认0XFF000000
+     * @param linkRectImageButtonBackGroupColor 圆角矩形图片格式链接控件背景颜色 - 默认Color.BLACK
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconButtonBackgroundColor方法代替", since: "1.4.0"]
@@ -1003,7 +1003,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置圆角矩形图片格式链接文字颜色
      *
-     * @param linkRectImageTextColor 圆角矩形图片格式链接文字颜色 - 默认0XFFFFFFFF
+     * @param linkRectImageTextColor 圆角矩形图片格式链接文字颜色 - 默认Color.WHITE
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconTextColor方法代替", since: "1.4.0"]
@@ -1075,7 +1075,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置空心圆角矩形图片格式链接控件背景颜色
      *
-     * @param linkRectToolImageButtonBackGroupColor 空心圆角矩形图片格式链接控件背景颜色 - 默认0XFFFFFFFF
+     * @param linkRectToolImageButtonBackGroupColor 空心圆角矩形图片格式链接控件背景颜色 - 默认Color.WHITE
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconButtonBackgroundColor方法代替", since: "1.4.0"]
@@ -1219,7 +1219,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置块引用左边线条颜色
      *
-     * @param blockQuoteColor 块引用左边线条颜色 - 默认0XFF191919
+     * @param blockQuoteColor 块引用左边线条颜色 - 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用BlockQuoteTheme.setBlockQuoteLeftBorderColor方法代替", since: "1.4.0"]
@@ -1231,7 +1231,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置块引用背景颜色
      *
-     * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0XFFEAEAEA
+     * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0xFFEAEAEA
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用BlockQuoteTheme.setBlockQuoteBackgroundColor方法代替", since: "1.4.0"]
@@ -1308,7 +1308,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置有序列表前缀文本颜色
      *
-     * @param orderedListItemColor 有序列表前缀文本颜色 - 默认0XFF191919
+     * @param orderedListItemColor 有序列表前缀文本颜色 - 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用OrderedListTheme.setOrderedListMarkerTextFontColor方法代替", since: "1.4.0"]
@@ -1356,7 +1356,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置无序列表前缀文本颜色
      *
-     * @param bulletListItemColor 无序列表前缀文本颜色 - 默认0XFF191919
+     * @param bulletListItemColor 无序列表前缀文本颜色 - 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用BulletListTheme.setBulletListBulletTextFontColor方法代替", since: "1.4.0"]
@@ -1405,7 +1405,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置内联代码文本颜色
      *
-     * @param codeTextColor 内联代码文本颜色 - 默认0XFF000000
+     * @param codeTextColor 内联代码文本颜色 - 默认Color.BLACK
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用InlineCodeTheme.setInlineCodeTextFontColor方法代替", since: "1.4.0"]
@@ -1417,7 +1417,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置内联代码背景颜色
      *
-     * @param codeBackgroundColor 内联代码背景颜色 - 默认0XFFEAEAEA
+     * @param codeBackgroundColor 内联代码背景颜色 - 默认0xFFEAEAEA
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用InlineCodeTheme.setInlineCodeTextBackgroundColor方法代替", since: "1.4.0"]
@@ -1973,7 +1973,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置标题文本颜色
      *
-     * @param headingTextColor 标题文本颜色 - 默认0XFF191919
+     * @param headingTextColor 标题文本颜色 - 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用HeadingTheme.setTextFontColorForAllHeading方法代替", since: "1.4.0"]
@@ -1990,7 +1990,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置H1、H2标题下分割线颜色
      *
-     * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0XFF191919
+     * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用HeadingTheme.setUnderlineColorForAllHeading方法代替", since: "1.4.0"]
@@ -2014,7 +2014,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置H1标题下分割线颜色
      *
-     * @param headingBreakColor H1标题下分割线颜色 - 默认0XFF191919
+     * @param headingBreakColor H1标题下分割线颜色 - 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用HeadingTheme.setUnderlineColorForDesignateHeading方法代替", since: "1.4.0"]
@@ -2037,7 +2037,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置H2标题下分割线颜色
      *
-     * @param headingBreakColor2 H1、H2标题下分割线颜色 - 默认0XFF191919
+     * @param headingBreakColor2 H1、H2标题下分割线颜色 - 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用HeadingTheme.setUnderlineColorForDesignateHeading方法代替", since: "1.4.0"]
@@ -2218,7 +2218,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置段落文本颜色
      *
-     * @param paragraphTextColor 段落文本颜色 - 默认0XFF191919
+     * @param paragraphTextColor 段落文本颜色 - 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用ParagraphTheme.setParagraphTextFontColor方法代替", since: "1.4.0"]
@@ -2266,7 +2266,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置分割线颜色
      *
-     * @param thematicBreakColor 分割线颜色 - 默认0XFF191919
+     * @param thematicBreakColor 分割线颜色 - 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用DividerTheme.setDividerColor方法代替", since: "1.4.0"]
@@ -2350,7 +2350,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置数学公式文本颜色
      *
-     * @param latexMathTextColor 数学公式文本颜色 - 默认0xFF000000
+     * @param latexMathTextColor 数学公式文本颜色 - 默认Color.BLACK
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LatexMathTheme.setLatexMathTextColor方法代替", since: "1.4.0"]
@@ -2572,7 +2572,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置音频类型文字颜色
      *
-     * @param audioTypeTextColor 音频类型文字颜色 - 默认0X80000000
+     * @param audioTypeTextColor 音频类型文字颜色 - 默认0x80000000
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用AudioTheme.setAudioTypeTextFontColor方法代替", since: "1.4.0"]
@@ -3238,7 +3238,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置图片下载按钮文本颜色
      *
-     * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0XE6000000
+     * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0xE6000000
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonTextFontColor方法代替", since: "1.4.0"]
@@ -3250,7 +3250,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置图片下载按钮背景颜色
      *
-     * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0XFFF5F5F5
+     * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0xFFF5F5F5
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonBackgroundColor方法代替", since: "1.4.0"]
@@ -3277,7 +3277,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置表格边框颜色
      *
-     * @param tableBorderColor 表格边框颜色 - 默认0XFF000000
+     * @param tableBorderColor 表格边框颜色 - 默认Color.BLACK
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用TableTheme.setTableBorderColor方法代替", since: "1.4.0"]
@@ -3301,7 +3301,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置表格奇数行背景色
      *
-     * @param tableOddRowBackgroundColor 表格奇数行背景色 - 默认0XFFFFFFFF
+     * @param tableOddRowBackgroundColor 表格奇数行背景色 - 默认Color.WHITE
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用TableTheme.setTableContentOddRowBackgroundColor方法代替", since: "1.4.0"]
@@ -3313,7 +3313,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置表格偶数行背景色
      *
-     * @param tableEvenRowBackgroundColor 表格偶数行背景色 - 默认0XFFE0E0E0
+     * @param tableEvenRowBackgroundColor 表格偶数行背景色 - 默认0xFFE0E0E0
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用TableTheme.setTableContentEvenRowBackgroundColor方法代替", since: "1.4.0"]
@@ -3325,7 +3325,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置表格标题背景色
      *
-     * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0XFFFFFFFF
+     * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认Color.WHITE
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用TableTheme.setTableTitleBackgroundColor方法代替", since: "1.4.0"]
@@ -3337,7 +3337,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置表格标题文本颜色
      *
-     * @param tableTitleTextColor 表格标题文本颜色 - 默认0XFF191919
+     * @param tableTitleTextColor 表格标题文本颜色 - 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用TableTheme.setTableTitleTextFontColor方法代替", since: "1.4.0"]
@@ -3386,7 +3386,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置表格内容文本颜色
      *
-     * @param tableContentTextColor 表格内容文本颜色 - 默认0XFF191919
+     * @param tableContentTextColor 表格内容文本颜色 - 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用TableTheme.setTableContentTextFontColor方法代替", since: "1.4.0"]
@@ -3501,7 +3501,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置删除线颜色
      *
-     * @param strikethroughColor 删除线颜色 默认0XFF191919
+     * @param strikethroughColor 删除线颜色 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用StrikethroughTheme.setStrikethroughTextDecorationColor方法代替", since: "1.4.0"]
@@ -3568,7 +3568,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置下标字体颜色
      *
-     * @param subTextColor 下标字体颜色 默认0XFF191919
+     * @param subTextColor 下标字体颜色 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用SubTheme.setSubTextFontColor方法代替", since: "1.4.0"]
@@ -3604,7 +3604,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置上标字体颜色
      *
-     * @param supTextColor 上标字体颜色 默认0XFF191919
+     * @param supTextColor 上标字体颜色 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用SupTheme.setSupTextFontColor方法代替", since: "1.4.0"]
@@ -3640,7 +3640,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置下划线颜色
      *
-     * @param underlineColor 下划线颜色 默认0XFF191919
+     * @param underlineColor 下划线颜色 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用HtmlUnderlineTheme.setHtmlUnderlineTextDecorationColor方法代替", since: "1.4.0"]
