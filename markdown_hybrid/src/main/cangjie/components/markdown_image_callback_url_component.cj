@@ -112,7 +112,7 @@ public class MarkdownImageCallbackUrlComponent {
                         .onClick {
                             evt => imageSpanOnClick(urlCallbackLink, urlCallbackImageCallback, urlCallbackLinkCallback, urlCallbackLinkUrl, urlCallbackDestination)
                         }
-                }else{
+                } else {
                     if (urlCallbackImageType != 2) {
                         // 加载图片
                         Image(urlCallbackDestination)

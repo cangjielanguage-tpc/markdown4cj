@@ -119,7 +119,7 @@ public class MarkdownImageCallbackRawFileComponent {
                         .onClick {
                             evt => imageSpanOnClick(rawFileCallbackLink, rawFileCallbackImageCallback, rawFileCallbackLinkCallback, rawFileCallbackLinkUrl, rawFileCallbackDestination)
                         }
-                }else{
+                } else {
                     if (rawFileCallbackImageType == 1) {
                         // 加载图片
                         Image(rawFileCallbackImagePixelMap())

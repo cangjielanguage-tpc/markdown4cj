@@ -292,6 +292,7 @@ class MarkdownCodeComponent {
         let refreshNodeViewSize = arr.size // 刷新进来的数据长度
         let dataSourceSize = lineStrArray.totalCount() // 页面缓存的数据长度
         if (refreshNodeViewSize == 0) {
+            lineStrArray.clear()
             return
         }
         if (refreshNodeViewSize > dataSourceSize) {
