@@ -64,11 +64,11 @@ export class MarkdownConfiguration {
   /**
    * TOC跳转指定位置
    */
-  private tocIndexCallback?: (offset: number | undefined) => void = undefined
+  private tocIndexCallback?: (index: number | undefined) => void = undefined
   /**
    * 脚注跳转指定位置
    */
-  private footnoteCallback?: (offset: number | undefined) => void = undefined
+  private footnoteCallback?: (index: number | undefined) => void = undefined
   /**
    * 获取全局文本
    */
@@ -207,18 +207,18 @@ export class MarkdownConfiguration {
   /**
    * 设置TOC点击回调
    *
-   * @param cb TOC点击回调(offset：偏移量) --- 需要加载TOC解析插件
+   * @param cb TOC点击回调(index：第几条数据) --- 需要加载TOC解析插件
    */
-  setTocIndexCallback(cb: (offset: number | undefined) => void): void {
+  setTocIndexCallback(cb: (index: number | undefined) => void): void {
     this.tocIndexCallback = cb
   }
 
   /**
    * 设置脚注点击回调
    *
-   * @param cb 脚注点击回调(offset：偏移量) --- 需要加载脚注解析插件
+   * @param cb 脚注点击回调(index：第几条数据) --- 需要加载脚注解析插件
    */
-  setFootnoteCallback(cb: (offset: number | undefined) => void): void {
+  setFootnoteCallback(cb: (index: number | undefined) => void): void {
     this.footnoteCallback = cb
   }
 
@@ -371,7 +371,7 @@ export class MarkdownConfiguration {
    *
    * @returns TOC跳转指定位置回调函数
    */
-  getTocIndexCallback(): ((offset: number | undefined) => void) | undefined {
+  getTocIndexCallback(): ((index: number | undefined) => void) | undefined {
     return this.tocIndexCallback
   }
 
@@ -380,7 +380,7 @@ export class MarkdownConfiguration {
    *
    * @returns 脚注跳转指定位置回调函数
    */
-  getFootnoteCallback(): ((offset: number | undefined) => void) | undefined {
+  getFootnoteCallback(): ((index: number | undefined) => void) | undefined {
     return this.footnoteCallback
   }
 

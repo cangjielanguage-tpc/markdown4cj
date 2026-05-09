@@ -312,7 +312,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置TOC跳转指定位置
      *
-     * @param tocIndexCallback TOC跳转指定位置接口 (?Float64:位置距离)
+     * @param tocIndexCallback TOC跳转指定位置接口 (?Int64:第几条数据)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setTocIndexCallback(tocIndexCallback: (?Int64) -> Unit): MarkdownConfigurationBuilder {
@@ -323,7 +323,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置脚注跳转指定位置
      *
-     * @param footnoteCallback 脚注跳转指定位置接口 (?Float64:位置距离)
+     * @param footnoteCallback 脚注跳转指定位置接口 (?Int64:第几条数据)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setFootnoteCallback(footnoteCallback: (?Int64) -> Unit): MarkdownConfigurationBuilder {
