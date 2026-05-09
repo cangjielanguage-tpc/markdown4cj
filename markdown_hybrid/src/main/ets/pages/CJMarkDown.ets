@@ -61,7 +61,6 @@ import { MarkdownThemeParagraph } from './MarkdownThemeParagraph'
 import { MarkdownThemeOrderedList } from './MarkdownThemeOrderedList'
 import { MarkdownThemeLink } from './MarkdownThemeLink'
 import { MarkdownThemeLatexMath } from './MarkdownThemeLatexMath'
-import { MarkdownTheme } from './MarkdownTheme'
 
 export let global_customLib: CustomLib | undefined = undefined
 
@@ -101,8 +100,11 @@ class CJNodeController extends NodeController {
   }
 }
 
+/**
+ * 全局文本对象
+ */
 export class MarkdownNodeViewString {
-  private cjNodeViewStringBuilder: CJNodeViewStringBuilder|undefined = undefined
+  private cjNodeViewStringBuilder: CJNodeViewStringBuilder | undefined = undefined
 
   /**
    * 构造函数
@@ -114,14 +116,24 @@ export class MarkdownNodeViewString {
     this.cjNodeViewStringBuilder = new global_customLib.CJNodeViewStringBuilder()
   }
 
+  /**
+   * 获取全局文本对象
+   *
+   * @returns 全局文本对象
+   */
   getCJNodeViewStringBuilder(): CJNodeViewStringBuilder | undefined {
     return this.cjNodeViewStringBuilder
   }
 
+  /**
+   * 获取全局文本
+   *
+   * @returns 全局文本
+   */
   toString(): string {
     if (this.cjNodeViewStringBuilder !== undefined) {
       return this.cjNodeViewStringBuilder.toString()
-    } else{
+    } else {
       return ""
     }
   }
