@@ -146,9 +146,10 @@ class CJMarkdownComponent {
                 markdownBuilder.usePlugin(EmojiPlugin.create(v.isEmojiLight))
             }
         }
-        // 唯一ID标识插件
-        markdownBuilder.usePlugin(NodeIdPlugin.create())
-        markdownBuilder.includeSourceSpans(2) // BLOCKS_AND_INLINES
+        markdownBuilder.usePlugin(NodeIdPlugin.create()) // 唯一ID标识插件
+        if (incrementalAnalysis) {
+            markdownBuilder.includeSourceSpans(2) // BLOCKS_AND_INLINES
+        }
         return markdownBuilder.build()
     }
 
@@ -227,7 +228,7 @@ class CJMarkdownComponent {
                 // 设置markdown代码高亮样式
                 if(v){
                     markdownThemeBuilder.setPrismTheme(PrismThemeDarcula.create()) // 深色
-                }else{
+                } else {
                     markdownThemeBuilder.setPrismTheme(PrismThemeDefault.create()) // 浅色
                 }
             }
