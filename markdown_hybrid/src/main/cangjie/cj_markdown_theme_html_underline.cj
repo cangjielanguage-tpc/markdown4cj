@@ -58,7 +58,7 @@ public class CJMarkdownHtmlUnderlineTheme {
      * @param color 文本颜色
      */
     public func setHtmlUnderlineTextFontColor(color: UInt32): Unit {
-        htmlUnderlineTextFontColor = transColorForTrasparent(color)
+        htmlUnderlineTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -121,7 +121,7 @@ public class CJMarkdownHtmlUnderlineTheme {
      * @param color 装饰线颜色
      */
     public func setHtmlUnderlineTextDecorationColor(color: UInt32): Unit {
-        htmlUnderlineTextDecorationColor = transColorForTrasparent(color)
+        htmlUnderlineTextDecorationColor = transColorForTransparent(color)
     }
 
     /**

@@ -82,7 +82,7 @@ public class CJMarkdownDefinitionListTheme {
      * @param color 背景颜色
      */
     public func setDefinitionListBackgroundColor(color: UInt32): Unit {
-        definitionListBackgroundColor = transColorForTrasparent(color)
+        definitionListBackgroundColor = transColorForTransparent(color)
     }
 
     /**

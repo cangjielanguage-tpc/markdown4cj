@@ -97,7 +97,7 @@ public class CJMarkdownBlockQuoteTheme {
      * @param color 背景颜色
      */
     public func setBlockQuoteBackgroundColor(color: UInt32): Unit {
-        blockQuoteBackgroundColor = transColorForTrasparent(color)
+        blockQuoteBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -196,7 +196,7 @@ public class CJMarkdownBlockQuoteTheme {
      * @param color 边框颜色
      */
     public func setBlockQuoteLeftBorderColor(color: UInt32): Unit {
-        blockQuoteLeftBorderColor = transColorForTrasparent(color)
+        blockQuoteLeftBorderColor = transColorForTransparent(color)
     }
 
     /**

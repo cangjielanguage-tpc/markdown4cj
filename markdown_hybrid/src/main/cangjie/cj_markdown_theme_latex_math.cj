@@ -176,7 +176,7 @@ public class CJMarkdownLatexMathTheme {
      * @param color 文本颜色
      */
     public func setLatexMathDefaultTextFontColor(color: UInt32): Unit {
-        latexMathDefaultTextFontColor = transColorForTrasparent(color)
+        latexMathDefaultTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -230,7 +230,7 @@ public class CJMarkdownLatexMathTheme {
      * @param color 背景颜色
      */
     public func setLatexMathBackgroundColor(color: UInt32): Unit {
-        latexMathBackgroundColor = transColorForTrasparent(color)
+        latexMathBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -239,7 +239,7 @@ public class CJMarkdownLatexMathTheme {
      * @param color 文本颜色
      */
     public func setLatexMathTextColor(color: UInt32): Unit {
-        latexMathTextColor = transColorForTrasparent(color)
+        latexMathTextColor = transColorForTransparent(color)
     }
 
     /**

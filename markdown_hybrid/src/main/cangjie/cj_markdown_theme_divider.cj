@@ -121,7 +121,7 @@ public class CJMarkdownDividerTheme {
      * @param color 分割线颜色
      */
     public func setDividerColor(color: UInt32): Unit {
-        dividerColor = transColorForTrasparent(color)
+        dividerColor = transColorForTransparent(color)
     }
 
     /**

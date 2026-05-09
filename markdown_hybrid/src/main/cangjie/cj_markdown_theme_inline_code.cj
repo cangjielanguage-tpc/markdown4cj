@@ -72,7 +72,7 @@ public class CJMarkdownInlineCodeTheme {
      * @param color 文本颜色
      */
     public func setInlineCodeTextFontColor(color: UInt32): Unit {
-        inlineCodeTextFontColor = transColorForTrasparent(color)
+        inlineCodeTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -135,7 +135,7 @@ public class CJMarkdownInlineCodeTheme {
      * @param color 背景颜色
      */
     public func setInlineCodeTextBackgroundColor(color: UInt32): Unit {
-        inlineCodeTextBackgroundColor = transColorForTrasparent(color)
+        inlineCodeTextBackgroundColor = transColorForTransparent(color)
     }
 
     /**

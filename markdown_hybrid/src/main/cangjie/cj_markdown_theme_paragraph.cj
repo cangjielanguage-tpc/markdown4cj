@@ -92,7 +92,7 @@ public class CJMarkdownParagraphTheme {
      * @param color 背景颜色
      */
     public func setParagraphBackgroundColor(color: UInt32): Unit {
-        paragraphBackgroundColor = transColorForTrasparent(color)
+        paragraphBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -155,7 +155,7 @@ public class CJMarkdownParagraphTheme {
      * @param color 文本颜色
      */
     public func setParagraphTextFontColor(color: UInt32): Unit {
-        paragraphTextFontColor = transColorForTrasparent(color)
+        paragraphTextFontColor = transColorForTransparent(color)
     }
 
     /**

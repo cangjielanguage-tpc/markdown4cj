@@ -47,7 +47,7 @@ public class CJMarkdownBoldTheme {
      * @param color 文本颜色
      */
     public func setBoldTextFontColor(color: UInt32): Unit {
-        boldTextFontColor = transColorForTrasparent(color)
+        boldTextFontColor = transColorForTransparent(color)
     }
 
     /**

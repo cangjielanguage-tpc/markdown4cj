@@ -236,7 +236,7 @@ public class CJMarkdownLinkTheme {
      * @param color 文本颜色
      */
     public func setLinkTextFontColor(color: UInt32): Unit {
-        linkTextFontColor = transColorForTrasparent(color)
+        linkTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -308,7 +308,7 @@ public class CJMarkdownLinkTheme {
      * @param color 装饰线颜色
      */
     public func setLinkTextDecorationColor(color: UInt32): Unit {
-        linkTextDecorationColor = transColorForTrasparent(color)
+        linkTextDecorationColor = transColorForTransparent(color)
     }
 
     /**
@@ -326,7 +326,7 @@ public class CJMarkdownLinkTheme {
      * @param color 背景颜色
      */
     public func setLinkTextBackgroundColor(color: UInt32): Unit {
-        linkTextBackgroundColor = transColorForTrasparent(color)
+        linkTextBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -362,7 +362,7 @@ public class CJMarkdownLinkTheme {
      * @param color 圆形图片格式链接主题背景颜色
      */
     public func setLinkCircleIconBackgroundColor(color: UInt32): Unit {
-        linkCircleIconBackgroundColor = transColorForTrasparent(color)
+        linkCircleIconBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -371,7 +371,7 @@ public class CJMarkdownLinkTheme {
      * @param color 圆形图片格式链接控件背景颜色
      */
     public func setLinkCircleIconButtonBackgroundColor(color: UInt32): Unit {
-        linkCircleIconButtonBackgroundColor = transColorForTrasparent(color)
+        linkCircleIconButtonBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -389,7 +389,7 @@ public class CJMarkdownLinkTheme {
      * @param color 圆形图片格式链接文字颜色
      */
     public func setLinkCircleIconTextColor(color: UInt32): Unit {
-        linkCircleIconTextColor = transColorForTrasparent(color)
+        linkCircleIconTextColor = transColorForTransparent(color)
     }
 
     /**
@@ -416,7 +416,7 @@ public class CJMarkdownLinkTheme {
      * @param color 圆角矩形图片格式链接主题背景颜色
      */
     public func setLinkRectIconBackgroundColor(color: UInt32): Unit {
-        linkRectIconBackgroundColor = transColorForTrasparent(color)
+        linkRectIconBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -425,7 +425,7 @@ public class CJMarkdownLinkTheme {
      * @param color 圆角矩形图片格式链接控件背景颜色
      */
     public func setLinkRectIconButtonBackgroundColor(color: UInt32): Unit {
-        linkRectIconButtonBackgroundColor = transColorForTrasparent(color)
+        linkRectIconButtonBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -443,7 +443,7 @@ public class CJMarkdownLinkTheme {
      * @param color 圆角矩形图片格式链接文字颜色
      */
     public func setLinkRectIconTextColor(color: UInt32): Unit {
-        linkRectIconTextColor = transColorForTrasparent(color)
+        linkRectIconTextColor = transColorForTransparent(color)
     }
 
     /**
@@ -488,7 +488,7 @@ public class CJMarkdownLinkTheme {
      * @param color 空心圆角矩形图片格式链接主题背景颜色
      */
     public func setLinkRectToolIconBackgroundColor(color: UInt32): Unit {
-        linkRectToolIconBackgroundColor = transColorForTrasparent(color)
+        linkRectToolIconBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -497,7 +497,7 @@ public class CJMarkdownLinkTheme {
      * @param color 空心圆角矩形图片格式链接控件背景颜色
      */
     public func setLinkRectToolIconButtonBackgroundColor(color: UInt32): Unit {
-        linkRectToolIconButtonBackgroundColor = transColorForTrasparent(color)
+        linkRectToolIconButtonBackgroundColor = transColorForTransparent(color)
     }
 
     /**

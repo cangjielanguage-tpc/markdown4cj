@@ -279,7 +279,7 @@ public class CJMarkdownImageTheme {
      * @param color 边框颜色
      */
     public func setImageBorderColor(color: UInt32): Unit {
-        imageBorderColor = transColorForTrasparent(color)
+        imageBorderColor = transColorForTransparent(color)
     }
 
     /**
@@ -455,7 +455,7 @@ public class CJMarkdownImageTheme {
      * @param color 背景颜色
      */
     public func setImageDownloadButtonBackgroundColor(color: UInt32): Unit {
-        imageDownloadButtonBackgroundColor = transColorForTrasparent(color)
+        imageDownloadButtonBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -473,7 +473,7 @@ public class CJMarkdownImageTheme {
      * @param color 文本颜色
      */
     public func setImageDownloadButtonTextFontColor(color: UInt32): Unit {
-        imageDownloadButtonTextFontColor = transColorForTrasparent(color)
+        imageDownloadButtonTextFontColor = transColorForTransparent(color)
     }
 
     /**

@@ -57,7 +57,7 @@ public class CJMarkdownFootnoteDefTheme {
      * @param color 背景颜色
      */
     public func setFootnoteDefBackgroundColor(color: UInt32): Unit {
-        footnoteDefBackgroundColor = transColorForTrasparent(color)
+        footnoteDefBackgroundColor = transColorForTransparent(color)
     }
 
     /**

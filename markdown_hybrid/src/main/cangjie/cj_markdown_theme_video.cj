@@ -342,7 +342,7 @@ public class CJMarkdownVideoTheme {
      * @param color 背景颜色
      */
     public func setVideoBackgroundColor(color: UInt32): Unit {
-        videoBackgroundColor = transColorForTrasparent(color)
+        videoBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -450,7 +450,7 @@ public class CJMarkdownVideoTheme {
      * @param color 边框颜色
      */
     public func setVideoBorderColor(color: UInt32): Unit {
-        videoBorderColor = transColorForTrasparent(color)
+        videoBorderColor = transColorForTransparent(color)
     }
 
     /**
@@ -495,7 +495,7 @@ public class CJMarkdownVideoTheme {
      * @param color 文本颜色
      */
     public func setVideoTimeTextFontColor(color: UInt32): Unit {
-        videoTimeTextFontColor = transColorForTrasparent(color)
+        videoTimeTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -594,7 +594,7 @@ public class CJMarkdownVideoTheme {
      * @param color 背景颜色
      */
     public func setVideoReleaseButtonBackgroundColor(color: UInt32): Unit {
-        videoReleaseButtonBackgroundColor = transColorForTrasparent(color)
+        videoReleaseButtonBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -684,7 +684,7 @@ public class CJMarkdownVideoTheme {
      * @param color 文本颜色
      */
     public func setVideoReleaseButtonTextFontColor(color: UInt32): Unit {
-        videoReleaseButtonTextFontColor = transColorForTrasparent(color)
+        videoReleaseButtonTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -747,7 +747,7 @@ public class CJMarkdownVideoTheme {
      * @param color 背景颜色
      */
     public func setVideoDownloadButtonBackgroundColor(color: UInt32): Unit {
-        videoDownloadButtonBackgroundColor = transColorForTrasparent(color)
+        videoDownloadButtonBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -837,7 +837,7 @@ public class CJMarkdownVideoTheme {
      * @param color 文本颜色
      */
     public func setVideoDownloadButtonTextFontColor(color: UInt32): Unit {
-        videoDownloadButtonTextFontColor = transColorForTrasparent(color)
+        videoDownloadButtonTextFontColor = transColorForTransparent(color)
     }
 
     /**

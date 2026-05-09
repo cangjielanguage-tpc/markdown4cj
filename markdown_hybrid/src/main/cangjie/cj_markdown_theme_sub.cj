@@ -47,7 +47,7 @@ public class CJMarkdownSubTheme {
      * @param color 文本颜色
      */
     public func setSubTextFontColor(color: UInt32): Unit {
-        subTextFontColor = transColorForTrasparent(color)
+        subTextFontColor = transColorForTransparent(color)
     }
 
     /**

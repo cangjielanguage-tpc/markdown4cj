@@ -477,7 +477,7 @@ public class CJMarkdownCodeBlockTheme {
      * @param color 代码块背景颜色
      */
     public func setCodeBlockBackgroundColor(color: UInt32): Unit {
-        codeBlockBackgroundColor = transColorForTrasparent(color)
+        codeBlockBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -558,7 +558,7 @@ public class CJMarkdownCodeBlockTheme {
      * @param borderColor 代码块边框颜色
      */
     public func setCodeBlockBorderColor(borderColor: UInt32): Unit {
-        codeBlockBorderColor = transColorForTrasparent(borderColor)
+        codeBlockBorderColor = transColorForTransparent(borderColor)
     }
 
     /**
@@ -621,7 +621,7 @@ public class CJMarkdownCodeBlockTheme {
      * @param color 代码块类型文本颜色
      */
     public func setCodeBlockTypeTextFontColor(color: UInt32): Unit {
-        codeBlockTypeTextFontColor = transColorForTrasparent(color)
+        codeBlockTypeTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -738,7 +738,7 @@ public class CJMarkdownCodeBlockTheme {
      * @param color 代码块代码复制文本颜色
      */
     public func setCodeBlockCopyTextFontColor(color: UInt32): Unit {
-        codeBlockCopyTextFontColor = transColorForTrasparent(color)
+        codeBlockCopyTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -846,7 +846,7 @@ public class CJMarkdownCodeBlockTheme {
      * @param color 代码块代码全屏文本颜色
      */
     public func setCodeBlockFullScreenTextFontColor(color: UInt32): Unit {
-        codeBlockFullScreenTextFontColor = transColorForTrasparent(color)
+        codeBlockFullScreenTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -918,7 +918,7 @@ public class CJMarkdownCodeBlockTheme {
      * @param color 代码块代码行号文本颜色
      */
     public func setCodeBlockLineNumberTextFontColor(color: UInt32): Unit {
-        codeBlockLineNumberTextFontColor = transColorForTrasparent(color)
+        codeBlockLineNumberTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -972,7 +972,7 @@ public class CJMarkdownCodeBlockTheme {
      * @param color 分割线颜色
      */
     public func setCodeBlockDividerColor(color: UInt32): Unit {
-        codeBlockDividerColor = transColorForTrasparent(color)
+        codeBlockDividerColor = transColorForTransparent(color)
     }
 
     /**
@@ -999,7 +999,7 @@ public class CJMarkdownCodeBlockTheme {
      * @param color 代码块文本颜色
      */
     public func setCodeBlockTextFontColor(color: UInt32): Unit {
-        codeBlockTextFontColor = transColorForTrasparent(color)
+        codeBlockTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -1098,7 +1098,7 @@ public class CJMarkdownCodeBlockTheme {
      * @param color 文本颜色
      */
     public func setCodeBlockListTitleSelectTextColor(color: UInt32): Unit {
-        codeBlockListTitleSelectTextColor = transColorForTrasparent(color)
+        codeBlockListTitleSelectTextColor = transColorForTransparent(color)
     }
 
     /**
@@ -1107,7 +1107,7 @@ public class CJMarkdownCodeBlockTheme {
      * @param color 文本颜色
      */
     public func setCodeBlockListTitleUnselectTextColor(color: UInt32): Unit {
-        codeBlockListTitleUnselectTextColor = transColorForTrasparent(color)
+        codeBlockListTitleUnselectTextColor = transColorForTransparent(color)
     }
 
     /**
@@ -1116,7 +1116,7 @@ public class CJMarkdownCodeBlockTheme {
      * @param color 背景颜色
      */
     public func setCodeBlockListTitleSelectBackgroundColor(color: UInt32): Unit {
-        codeBlockListTitleSelectBackgroundColor = transColorForTrasparent(color)
+        codeBlockListTitleSelectBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -1125,7 +1125,7 @@ public class CJMarkdownCodeBlockTheme {
      * @param color 背景颜色
      */
     public func setCodeBlockListTitleUnselectBackgroundColor(color: UInt32): Unit {
-        codeBlockListTitleUnselectBackgroundColor = transColorForTrasparent(color)
+        codeBlockListTitleUnselectBackgroundColor = transColorForTransparent(color)
     }
 
     /**

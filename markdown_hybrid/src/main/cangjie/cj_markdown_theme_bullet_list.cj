@@ -132,7 +132,7 @@ public class CJMarkdownBulletListTheme {
      * @param color 背景颜色
      */
     public func setBulletListBackgroundColor(color: UInt32): Unit {
-        bulletListBackgroundColor = transColorForTrasparent(color)
+        bulletListBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -231,7 +231,7 @@ public class CJMarkdownBulletListTheme {
      * @param color 文本颜色
      */
     public func setBulletListBulletTextFontColor(color: UInt32): Unit {
-        bulletListBulletTextFontColor = transColorForTrasparent(color)
+        bulletListBulletTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -312,7 +312,7 @@ public class CJMarkdownBulletListTheme {
      * @param color 选中颜色
      */
     public func setBulletListCheckboxSelectedColor(color: UInt32): Unit {
-        bulletListCheckboxSelectedColor = transColorForTrasparent(color)
+        bulletListCheckboxSelectedColor = transColorForTransparent(color)
     }
 
     /**

@@ -113,7 +113,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
       在项目中使用markdown项目
 
-      ```arkts
+      ```ets
       import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
       ```
 
@@ -132,7 +132,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
       在项目中使用markdown项目
 
-      ```arkts
+      ```ets
       import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
       ```
 
@@ -228,7 +228,7 @@ build() {
       Column() {
          CJMarkdown({
             content: this.message,
-            isShow: this.useCangjieComponent
+            useCangjieComponent: this.useCangjieComponent
          })
       }
    }
@@ -256,7 +256,7 @@ build() {
       Column() {
          CJMarkdown({
             content: this.message,
-            isShow: this.useCangjieComponent,
+            useCangjieComponent: this.useCangjieComponent,
             customContains: this.showTextBuilder.bind(this)
          })
       }

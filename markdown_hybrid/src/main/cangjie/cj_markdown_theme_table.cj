@@ -217,7 +217,7 @@ public class CJMarkdownTableTheme {
      * @param color 背景颜色
      */
     public func setTableTitleBackgroundColor(color: UInt32): Unit {
-        tableTitleBackgroundColor = transColorForTrasparent(color)
+        tableTitleBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -334,7 +334,7 @@ public class CJMarkdownTableTheme {
      * @param color 背景颜色
      */
     public func setTableContentOddRowBackgroundColor(color: UInt32): Unit {
-        tableContentOddRowBackgroundColor = transColorForTrasparent(color)
+        tableContentOddRowBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -343,7 +343,7 @@ public class CJMarkdownTableTheme {
      * @param color 背景颜色
      */
     public func setTableContentEvenRowBackgroundColor(color: UInt32): Unit {
-        tableContentEvenRowBackgroundColor = transColorForTrasparent(color)
+        tableContentEvenRowBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -370,7 +370,7 @@ public class CJMarkdownTableTheme {
      * @param color 边框颜色
      */
     public func setTableBorderColor(color: UInt32): Unit {
-        tableBorderColor = transColorForTrasparent(color)
+        tableBorderColor = transColorForTransparent(color)
     }
 
     /**
@@ -388,7 +388,7 @@ public class CJMarkdownTableTheme {
      * @param color 滚动条颜色
      */
     public func setTableScrollBarColor(color: UInt32): Unit {
-        tableScrollBarColor = transColorForTrasparent(color)
+        tableScrollBarColor = transColorForTransparent(color)
     }
 
     /**
@@ -424,7 +424,7 @@ public class CJMarkdownTableTheme {
      * @param color 文本颜色
      */
     public func setTableTitleTextFontColor(color: UInt32): Unit {
-        tableTitleTextFontColor = transColorForTrasparent(color)
+        tableTitleTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -487,7 +487,7 @@ public class CJMarkdownTableTheme {
      * @param color 文本颜色
      */
     public func setTableContentTextFontColor(color: UInt32): Unit {
-        tableContentTextFontColor = transColorForTrasparent(color)
+        tableContentTextFontColor = transColorForTransparent(color)
     }
 
     /**

@@ -58,7 +58,7 @@ public class MarkdownComponent {
     @State
     var tableBlockComponentWidth: Float64 = 0.0 // 表格控件宽度 - 单位vp
     let markdownCacheConfiguration: MarkdownCacheConfiguration = MarkdownCacheConfiguration() // 缓存的数据
-    var indexFootnoteHashMap: HashMap<String, Int64> = HashMap<String, Int64>() // 注脚事件回调数据
+    var indexFootnoteHashMap: HashMap<String, Int64> = HashMap<String, Int64>() // 脚注事件回调数据
     var indexTocHashMap: HashMap<Int64, Int64> = HashMap<Int64, Int64>() // toc事件回调数据
     let scroller: Scroller // list控制器
     let scrollerCode: Scroller = Scroller() // 单独代码块list控制器

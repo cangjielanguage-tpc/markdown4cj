@@ -134,6 +134,6 @@ public class CJMarkdownGlobalTheme {
      * @param color 背景颜色
      */
     public func setBackgroundColor(color: UInt32): Unit {
-        backgroundColor = transColorForTrasparent(color)
+        backgroundColor = transColorForTransparent(color)
     }
 }

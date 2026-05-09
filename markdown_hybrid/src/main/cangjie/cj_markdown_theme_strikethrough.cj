@@ -58,7 +58,7 @@ public class CJMarkdownStrikethroughTheme {
      * @param color 文本颜色
      */
     public func setStrikethroughTextFontColor(color: UInt32): Unit {
-        strikethroughTextFontColor = transColorForTrasparent(color)
+        strikethroughTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -121,7 +121,7 @@ public class CJMarkdownStrikethroughTheme {
      * @param color 装饰线颜色
      */
     public func setStrikethroughTextDecorationColor(color: UInt32): Unit {
-        strikethroughTextDecorationColor = transColorForTrasparent(color)
+        strikethroughTextDecorationColor = transColorForTransparent(color)
     }
 
     /**

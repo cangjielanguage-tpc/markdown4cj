@@ -239,7 +239,7 @@ export class MarkdownThemeLink {
    *
    * @param size 链接文本尺寸
    */
-  setLinkTextFontSize(size: number): void {
+  setLinkTextFontSize(size: number | undefined): void {
     this.linkTextFontSize = size
   }
 

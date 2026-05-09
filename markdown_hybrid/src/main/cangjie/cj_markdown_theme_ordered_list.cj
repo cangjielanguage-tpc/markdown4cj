@@ -102,7 +102,7 @@ public class CJMarkdownOrderedListTheme {
      * @param color 背景颜色
      */
     public func setOrderedListBackgroundColor(color: UInt32): Unit {
-        orderedListBackgroundColor = transColorForTrasparent(color)
+        orderedListBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -183,7 +183,7 @@ public class CJMarkdownOrderedListTheme {
      * @param color 文本颜色
      */
     public func setOrderedListMarkerTextFontColor(color: UInt32): Unit {
-        orderedListMarkerTextFontColor = transColorForTrasparent(color)
+        orderedListMarkerTextFontColor = transColorForTransparent(color)
     }
 
     /**

@@ -228,7 +228,7 @@ build() {
       Column() {
          CJMarkdown({
             content: this.message,
-            isShow: this.useCangjieComponent
+            useCangjieComponent: this.useCangjieComponent
          })
       }
    }
@@ -256,7 +256,7 @@ build() {
       Column() {
          CJMarkdown({
             content: this.message,
-            isShow: this.useCangjieComponent,
+            useCangjieComponent: this.useCangjieComponent,
             customContains: this.showTextBuilder.bind(this)
          })
       }
@@ -287,7 +287,7 @@ markdown依赖三方库：
 | 5  | codeformat    | v1.0.0   |
 
 1. 内联代码/链接文字格式背景色。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本
-2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
+2. 链接和删除线同时存在情况，只支持显示删除线的中划线，不显示链接的下划线
 3. 围栏代码块高亮语言支持如下(语言类型不区分大小写，每行如有多个则表示该语言支持别名书写)：
    1. brainfuck
    2. c

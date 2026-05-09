@@ -42,7 +42,7 @@ public class CJMarkdownItalicTheme {
      * @param color 文本颜色
      */
     public func setItalicTextFontColor(color: UInt32): Unit {
-        italicTextFontColor = transColorForTrasparent(color)
+        italicTextFontColor = transColorForTransparent(color)
     }
 
     /**

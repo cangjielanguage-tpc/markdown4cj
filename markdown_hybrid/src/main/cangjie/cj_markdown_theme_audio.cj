@@ -291,7 +291,7 @@ public class CJMarkdownAudioTheme {
      * @param color 音频背景颜色
      */
     public func setAudioBackgroundColor(color: UInt32): Unit {
-        audioBackgroundColor = transColorForTrasparent(color)
+        audioBackgroundColor = transColorForTransparent(color)
     }
     /**
      * 设置音频边框样式
@@ -315,7 +315,7 @@ public class CJMarkdownAudioTheme {
      * @param color 边框颜色
      */
     public func setAudioBorderColor(color: UInt32): Unit {
-        audioBorderColor = transColorForTrasparent(color)
+        audioBorderColor = transColorForTransparent(color)
     }
     /**
      * 设置音频边框4个圆角为统一值
@@ -348,7 +348,7 @@ public class CJMarkdownAudioTheme {
      * @param color 阴影颜色
      */
     public func setAudioShadowColor(color: UInt32): Unit {
-        audioShadowColor = transColorForTrasparent(color)
+        audioShadowColor = transColorForTransparent(color)
     }
     /**
      * 设置音频阴影模糊半径
@@ -458,7 +458,7 @@ public class CJMarkdownAudioTheme {
      * @param color 按钮背景颜色
      */
     public func setAudioButtonBackgroundColor(color: UInt32): Unit {
-        audioButtonBackgroundColor = transColorForTrasparent(color)
+        audioButtonBackgroundColor = transColorForTransparent(color)
     }
     /**
      * 设置音频按钮边框样式
@@ -482,7 +482,7 @@ public class CJMarkdownAudioTheme {
      * @param color 按钮边框颜色
      */
     public func setAudioButtonBorderColor(color: UInt32): Unit {
-        audioButtonBorderColor = transColorForTrasparent(color)
+        audioButtonBorderColor = transColorForTransparent(color)
     }
     /**
      * 设置音频按钮4个圆角为统一值
@@ -523,7 +523,7 @@ public class CJMarkdownAudioTheme {
      * @param color 按钮文本颜色
      */
     public func setAudioButtonTextFontColor(color: UInt32): Unit {
-        audioButtonTextFontColor = transColorForTrasparent(color)
+        audioButtonTextFontColor = transColorForTransparent(color)
     }
     /**
      * 设置音频按钮文本尺寸
@@ -571,7 +571,7 @@ public class CJMarkdownAudioTheme {
      * @param color 标题文本颜色
      */
     public func setAudioTitleTextFontColor(color: UInt32): Unit {
-        audioTitleTextFontColor = transColorForTrasparent(color)
+        audioTitleTextFontColor = transColorForTransparent(color)
     }
     /**
      * 设置音频标题文本尺寸
@@ -619,7 +619,7 @@ public class CJMarkdownAudioTheme {
      * @param color 类型文本颜色
      */
     public func setAudioTypeTextFontColor(color: UInt32): Unit {
-        audioTypeTextFontColor = transColorForTrasparent(color)
+        audioTypeTextFontColor = transColorForTransparent(color)
     }
     /**
      * 设置音频类型文本尺寸

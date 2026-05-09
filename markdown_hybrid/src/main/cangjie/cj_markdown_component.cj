@@ -38,7 +38,7 @@ class CJMarkdownComponent {
     /**
      * 滑动控制器
      */
-    var listscroller: ?CJMarkdownScroller
+    var listScroller: ?CJMarkdownScroller
 
     protected func aboutToAppear(): Unit {
     }
@@ -206,7 +206,7 @@ class CJMarkdownComponent {
                 markdownConfigurationBuilder.setFootnoteCallback(v) // 设置脚注跳转指定位置
             }
             if (let Some(v) <- w.nodeString) {
-                markdownConfigurationBuilder.setNodeString(v) //
+                markdownConfigurationBuilder.setNodeString(v) // 设置全局文本对象
             }
         }
         let markdownConfiguration: MarkdownConfiguration = markdownConfigurationBuilder.build()
@@ -214,7 +214,7 @@ class CJMarkdownComponent {
     }
 
     func setScroller(): Scroller {
-        if (let Some(scroller) <- listscroller) {
+        if (let Some(scroller) <- listScroller) {
             return scroller.scroller
         } else {
             return Scroller()
@@ -253,7 +253,7 @@ class CJMarkdownComponent {
             markdownThemeBuilder.setHtmlUnderlineTheme(setHtmlUnderlineTheme(w.cjMarkdownTheme.cjMarkdownHtmlUnderlineTheme)) // HTML下划线文本样式
             markdownThemeBuilder.setImageTheme(setImageTheme(w.cjMarkdownTheme.cjMarkdownImageTheme)) // 图片样式
             markdownThemeBuilder.setItalicTheme(setItalicTheme(w.cjMarkdownTheme.cjMarkdownItalicTheme)) // 斜体文本样式
-            markdownThemeBuilder.setLinkTheme(setLinkTheme(w.cjMarkdownTheme.cjMarkdownLinkTheme))// 链接文本样式
+            markdownThemeBuilder.setLinkTheme(setLinkTheme(w.cjMarkdownTheme.cjMarkdownLinkTheme)) // 链接文本样式
             markdownThemeBuilder.setStrikethroughTheme(setStrikethroughTheme(w.cjMarkdownTheme.cjMarkdownStrikethroughTheme)) // 删除线文本样式
             markdownThemeBuilder.setSubTheme(setSubTheme(w.cjMarkdownTheme.cjMarkdownSubTheme)) // 下标文本样式
             markdownThemeBuilder.setSupTheme(setSupTheme(w.cjMarkdownTheme.cjMarkdownSupTheme)) // 上标文本样式

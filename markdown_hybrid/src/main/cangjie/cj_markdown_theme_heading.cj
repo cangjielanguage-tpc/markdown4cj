@@ -522,7 +522,7 @@ public class CJMarkdownHeadingTheme {
      * @param color 背景颜色
      */
     public func setBackgroundColorForAllHeading(color: UInt32): Unit {
-        let convertedColor = transColorForTrasparent(color)
+        let convertedColor = transColorForTransparent(color)
         heading1BackgroundColor = convertedColor
         heading2BackgroundColor = convertedColor
         heading3BackgroundColor = convertedColor
@@ -538,7 +538,7 @@ public class CJMarkdownHeadingTheme {
      * @param color 背景颜色
      */
     public func setBackgroundColorForDesignateHeading(level: Int64, color: UInt32): Unit {
-        let convertedColor = transColorForTrasparent(color)
+        let convertedColor = transColorForTransparent(color)
         match (level) {
             case 1 => heading1BackgroundColor = convertedColor
             case 2 => heading2BackgroundColor = convertedColor
@@ -730,7 +730,7 @@ public class CJMarkdownHeadingTheme {
      * @param color 文本颜色
      */
     public func setTextFontColorForAllHeading(color: UInt32): Unit {
-        let convertedColor = transColorForTrasparent(color)
+        let convertedColor = transColorForTransparent(color)
         heading1TextFontColor = convertedColor
         heading2TextFontColor = convertedColor
         heading3TextFontColor = convertedColor
@@ -746,7 +746,7 @@ public class CJMarkdownHeadingTheme {
      * @param color 文本颜色
      */
     public func setTextFontColorForDesignateHeading(level: Int64, color: UInt32): Unit {
-        let convertedColor = transColorForTrasparent(color)
+        let convertedColor = transColorForTransparent(color)
         match (level) {
             case 1 => heading1TextFontColor = convertedColor
             case 2 => heading2TextFontColor = convertedColor
@@ -984,7 +984,7 @@ public class CJMarkdownHeadingTheme {
      * @param color 下划线颜色
      */
     public func setUnderlineColorForAllHeading(color: UInt32): Unit {
-        let convertedColor = transColorForTrasparent(color)
+        let convertedColor = transColorForTransparent(color)
         heading1UnderlineColor = convertedColor
         heading2UnderlineColor = convertedColor
     }
@@ -996,7 +996,7 @@ public class CJMarkdownHeadingTheme {
      * @param color 下划线颜色
      */
     public func setUnderlineColorForDesignateHeading(level: Int64, color: UInt32): Unit {
-        let convertedColor = transColorForTrasparent(color)
+        let convertedColor = transColorForTransparent(color)
         match (level) {
             case 1 => heading1UnderlineColor = convertedColor
             case 2 => heading2UnderlineColor = convertedColor

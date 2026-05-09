@@ -88,7 +88,7 @@ public class CJMarkdownFootnoteRefTheme {
      * @param color 文本颜色
      */
     public func setFootnoteRefTextFontColor(color: UInt32): Unit {
-        footnoteRefTextFontColor = transColorForTrasparent(color)
+        footnoteRefTextFontColor = transColorForTransparent(color)
     }
 
     /**
@@ -151,7 +151,7 @@ public class CJMarkdownFootnoteRefTheme {
      * @param color 背景颜色
      */
     public func setFootnoteRefTextBackgroundColor(color: UInt32): Unit {
-        footnoteRefTextBackgroundColor = transColorForTrasparent(color)
+        footnoteRefTextBackgroundColor = transColorForTransparent(color)
     }
 
     /**
@@ -169,7 +169,7 @@ public class CJMarkdownFootnoteRefTheme {
      * @param color 装饰线颜色
      */
     public func setFootnoteRefTextDecorationColor(color: UInt32): Unit {
-        footnoteRefTextDecorationColor = transColorForTrasparent(color)
+        footnoteRefTextDecorationColor = transColorForTransparent(color)
     }
 
     /**

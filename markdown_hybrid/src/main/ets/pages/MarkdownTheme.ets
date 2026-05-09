@@ -795,9 +795,17 @@ export class MarkdownTheme {
    * 设置是否按照链接文本字体大小显示文本
    *
    * @param isLinkSize 是否按照链接文本字体大小显示文本 - true：显示链接字体文本大小；false：跟随标题段落大小显示。默认true
+   * @deprecated since 1.4.0
+   * @useinstead MarkdownThemeLink#setLinkTextFontSize
    */
   setIsLinkSize(isLinkSize: boolean): void {
-    this.isLinkSize = isLinkSize
+    if (isLinkSize) {
+      if (this.markdownThemeLink.getLinkTextFontSize() == undefined) {
+        this.markdownThemeLink.setLinkTextFontSize(14.0)
+      }
+    } else {
+      this.markdownThemeLink.setLinkTextFontSize(undefined)
+    }
   }
 
   /**

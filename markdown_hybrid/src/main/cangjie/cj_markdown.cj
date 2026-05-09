@@ -42,11 +42,11 @@ public func registerImgPreprocessCallback(context: JSContext, callInfo: JSCallIn
 }
 
 /**
- * 设置markdown属性互操作函数
+ * 获取加载仓颉页面互操作函数
  *
  * @param runtime JSContext
  * @param callInfo 接口数据
- * @return JSValue 返回值
+ * @return JSValue 返回更新函数
  */
 public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
     let mdStr: String = callInfo[0].asString().toString()
@@ -68,12 +68,12 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
             plugin = v.cast<CJMarkdownPlugin>()
         }
     }
-    var listscroller: ?CJMarkdownScroller = None
+    var listScroller: ?CJMarkdownScroller = None
     if (callInfo[5].typeof() != JSType.UNDEFINED) {
         let scrollerObj: JSObject = callInfo[5].asObject()
         let scrollerExt: Option<JSExternal> = scrollerObj.getAttachInfo()
         if (let Some(v) <- scrollerExt) {
-            listscroller = v.cast<CJMarkdownScroller>()
+            listScroller = v.cast<CJMarkdownScroller>()
         }
     }
     let elmetId = ViewStackProcessor.AllocateNewElmetIdForNextComponent()
@@ -85,7 +85,7 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
         incrementalAnalysis: ObservedProperty<Bool>("", incrementalAnalysis),
         cfg: ObservedProperty<Option<CJMarkdownConfig>>("", cfg),
         plugin: ObservedProperty<Option<CJMarkdownPlugin>>("", plugin),
-        listscroller: ObservedProperty<Option<CJMarkdownScroller>>("", listscroller)
+        listScroller: ObservedProperty<Option<CJMarkdownScroller>>("", listScroller)
     )
     CustomView.create(comp)
     ViewStackProcessor.StopGetAccessRecording()
@@ -184,7 +184,7 @@ func arktsRes2CJResource(ctx: JSContext, value: JSValue): AppResource {
  * @return Color Color对象
  *
  */
-func transColorForTrasparent(value: UInt32): Color {
+func transColorForTransparent(value: UInt32): Color {
     if (value >> 24 == 0) {
         Color.TRANSPARENT
     } else {

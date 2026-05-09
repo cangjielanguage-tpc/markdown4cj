@@ -456,14 +456,6 @@ export struct CJMarkdown {
         cjMarkdownTheme.setCJMarkdownSupTheme(this.getSupTheme(markdownTheme.getMarkdownThemeSup()))
         cjMarkdownTheme.setCJMarkdownTableTheme(this.getTableTheme(markdownTheme.getMarkdownThemeTable()))
         cjMarkdownTheme.setCJMarkdownVideoTheme(this.getVideoTheme(markdownTheme.getMarkdownThemeVideo()))
-
-        if (markdownTheme.getIsLinkSize() !== undefined) {
-          cjMarkdownTheme.setIsLinkSize(markdownTheme.getIsLinkSize())
-        }
-
-        if (markdownTheme.getMarkdownThemeCodeBlock().getCodeBlockIsDark() !== undefined) {
-          cjMarkdownTheme.setIsDark(markdownTheme.getMarkdownThemeCodeBlock().getCodeBlockIsDark())
-        }
       }
     }
     return cjMarkdownTheme
