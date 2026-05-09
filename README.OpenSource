@@ -3,7 +3,7 @@
         "Name": " Markwon ",
         "License": " Apache License 2.0 ",
         "License File": " LICENSE ",
-        "Owner": ""
+        "Owner": "",
         "Upstream URL": " https://github.com/noties/Markwon ",
         "Version Number": " v4.6.2 ",
         "Description": " Android markdown library (no WebView) "

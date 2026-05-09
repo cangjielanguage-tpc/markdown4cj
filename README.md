@@ -79,7 +79,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 ### 源码目录
 
 ```shell
-─markdown
+─markdown_hybrid
   └─src
       └─main
           ├─cangjie
@@ -119,7 +119,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
    2. 本地编译安装 - 需要提前安装仓颉插件
 
-      ```git
+      ```bash
       git clone https://gitcode.com/Cangjie-TPC/markdown4cj.git
       git checkout markdown4cj_hybrid_cangjie-plugin_5.1.1
       ```
@@ -139,7 +139,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 ### 使用仓颉组件功能示例
 
 ```ets
-import { CJMarkdown} from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown } from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component
@@ -221,8 +221,7 @@ struct DemoPage {
 ### 使用三方库内置的ArkTS组件功能示例
 
 ```ets
-@State
-useCangjieComponent :boolean = false;  //是否使用cangjie
+@State useCangjieComponent: boolean = false;  // 是否使用cangjie
 
 build() {
    Column() {
@@ -242,8 +241,7 @@ build() {
 ### 使用用户自定义ArkTS组件功能示例
 
 ```ets
-@State
-useCangjieComponent :boolean = false  //是否使用cangjie
+@State useCangjieComponent: boolean = false  // 是否使用cangjie
 
 //用户自定义builder
 @Builder
@@ -289,7 +287,7 @@ markdown依赖三方库：
 | 5  | codeformat    | v1.0.0   |
 
 1. 内联代码/链接文字格式背景色。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本
-2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
+2. 链接和删除线同时存在情况，只支持显示删除线的中划线，不显示链接的下划线
 3. 围栏代码块高亮语言支持如下(语言类型不区分大小写，每行如有多个则表示该语言支持别名书写)：
    1. brainfuck
    2. c
