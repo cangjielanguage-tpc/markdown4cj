@@ -224,7 +224,7 @@ public class MarkdownConfigurationBuilder {
     /**
      * 设置视频的点击事件
      *
-     * @param videoCallback 视频点击回调接口 (String:视频ID，图片和视频链接列表)
+     * @param videoCallback 视频点击回调接口 (String:视频URL，图片和视频链接列表)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
     public func setVideoCallback(videoCallback: (String, ArrayList<String>) -> Unit): MarkdownConfigurationBuilder {

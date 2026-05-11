@@ -20,7 +20,7 @@ public class CJMarkdownScroller {
      * 滑动指定距离
      *
      * @param xOffset 水平方向滚动距离
-     * @param xOffset 竖直方向滚动距离
+     * @param yOffset 竖直方向滚动距离
      */
     public func scrollBy(xOffset: Float64, yOffset: Float64): Unit {
         this.scroller.scrollBy(xOffset: xOffset, yOffset: yOffset)

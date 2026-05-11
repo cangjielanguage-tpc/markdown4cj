@@ -4,10 +4,10 @@ package markdown.components.theme
  * 装饰线样式枚举
  */
 public enum MarkdownTextDecorationStyle <: Equatable<MarkdownTextDecorationStyle> {
-    | SOLID // 实线
-    | DOUBLE // 双线
-    | DOTTED // 虚线
-    | DASHED // 破折线
+    | SOLID // 单实线
+    | DOUBLE // 双实线
+    | DOTTED // 点线
+    | DASHED // 虚线
     | WAVY // 波浪线
 
     public operator func ==(that: MarkdownTextDecorationStyle): Bool {

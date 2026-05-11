@@ -100,7 +100,7 @@ public class CJMarkdownPlugin {
     var isHeadIDPlugin: Bool = false
 
     /**
-     * 是否加载上标解析插件
+     * 是否加载下标解析插件
      */
     var isSubPlugin: Bool = false
 

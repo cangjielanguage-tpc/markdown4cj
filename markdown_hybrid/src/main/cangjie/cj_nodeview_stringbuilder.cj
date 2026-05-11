@@ -14,9 +14,9 @@ public class CJNodeViewStringBuilder {
     }
 
     /**
-     * 设置视频背景颜色
+     * 获取全局文本字符串
      *
-     * @param color 背景颜色
+     * @return 文本字符串，如果未设置则返回空字符串
      */
     public func toString(): String {
         if (let Some(v) <- nodeViewStringBuilder){
