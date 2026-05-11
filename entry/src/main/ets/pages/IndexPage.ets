@@ -266,6 +266,20 @@ struct IndexPage {
               "pages/AIChatPage"
             )
           }
+          ListItem() {
+            itemListComponent(
+              "33、文本全量切换",
+              0xFFFF0000,
+              "pages/SwitchDataPage"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "34、超大数据",
+              0xFFFF0000,
+              "pages/BigDataPage"
+            )
+          }
         }
         // 设置ListItem在List交叉轴方向的布局方式
         .alignListItem(ListItemAlign.Center)

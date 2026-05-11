@@ -63,6 +63,9 @@
     "pages/ItalicPage",
     "pages/ItalicDetailsPage",
     "pages/StrikethroughPage",
-    "pages/StrikethroughDetailsPage"
+    "pages/StrikethroughDetailsPage",
+    "pages/SwitchDataPage",
+    "pages/BigDataPage",
+    "pages/BigDataDetailsPage"
   ]
 }
