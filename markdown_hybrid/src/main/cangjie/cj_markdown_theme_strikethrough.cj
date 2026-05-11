@@ -1,7 +1,6 @@
 package markdown
 
 import ohos.ark_interop_macro.*
-import markdown.components.theme.MarkdownTextDecorationStyle
 
 @Interop[ArkTS]
 public class CJMarkdownStrikethroughTheme {
@@ -130,6 +129,6 @@ public class CJMarkdownStrikethroughTheme {
      * @param style 装饰线样式
      */
     public func setStrikethroughTextDecorationStyle(style: Int64): Unit {
-        strikethroughTextDecorationStyle = convertMarkdownTextDecorationStyle(style)
+        strikethroughTextDecorationStyle = MarkdownTextDecorationStyle.fromInt64(style)
     }
 }

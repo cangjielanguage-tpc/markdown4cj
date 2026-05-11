@@ -280,23 +280,6 @@ func convertTextDecorationType(decorationType: Int64): TextDecorationType {
 }
 
 /**
- * 将Int64转换为MarkdownTextDecorationStyle
- *
- * @param style 文本装饰线类型
- * @return MarkdownTextDecorationStyle枚举值
- */
-func convertMarkdownTextDecorationStyle(style: Int64): MarkdownTextDecorationStyle {
-    match (style) {
-        case 0 => MarkdownTextDecorationStyle.SOLID // 单实线
-        case 1 => MarkdownTextDecorationStyle.DOUBLE // 双实线
-        case 2 => MarkdownTextDecorationStyle.DOTTED // 点线
-        case 3 => MarkdownTextDecorationStyle.DASHED // 虚线
-        case 4 => MarkdownTextDecorationStyle.WAVY // 波浪线
-        case _ => MarkdownTextDecorationStyle.SOLID // 默认实线
-    }
-}
-
-/**
  * 将Int64转换为CheckBoxShape
  *
  * @param style 多选框形状

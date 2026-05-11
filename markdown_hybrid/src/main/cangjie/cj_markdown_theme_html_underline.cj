@@ -1,7 +1,6 @@
 package markdown
 
 import ohos.ark_interop_macro.*
-import markdown.components.theme.MarkdownTextDecorationStyle
 
 @Interop[ArkTS]
 public class CJMarkdownHtmlUnderlineTheme {
@@ -130,6 +129,6 @@ public class CJMarkdownHtmlUnderlineTheme {
      * @param style 装饰线样式
      */
     public func setHtmlUnderlineTextDecorationStyle(style: Int64): Unit {
-        htmlUnderlineTextDecorationStyle = convertMarkdownTextDecorationStyle(style)
+        htmlUnderlineTextDecorationStyle = MarkdownTextDecorationStyle.fromInt64(style)
     }
 }

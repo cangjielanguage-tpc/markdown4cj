@@ -1,7 +1,6 @@
 package markdown
 
 import ohos.ark_interop_macro.*
-import markdown.components.theme.MarkdownTextDecorationStyle
 
 @Interop[ArkTS]
 public class CJMarkdownFootnoteRefTheme {
@@ -178,7 +177,7 @@ public class CJMarkdownFootnoteRefTheme {
      * @param style 装饰线样式
      */
     public func setFootnoteRefTextDecorationStyle(style: Int64): Unit {
-        footnoteRefTextDecorationStyle = convertMarkdownTextDecorationStyle(style)
+        footnoteRefTextDecorationStyle = MarkdownTextDecorationStyle.fromInt64(style)
     }
 
     /**

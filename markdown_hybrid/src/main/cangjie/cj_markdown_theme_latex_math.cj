@@ -1,7 +1,6 @@
 package markdown
 
 import ohos.ark_interop_macro.*
-import markdown.components.theme.LatexMathColorFormat
 
 @Interop[ArkTS]
 public class CJMarkdownLatexMathTheme {
@@ -248,11 +247,7 @@ public class CJMarkdownLatexMathTheme {
      * @param latexMathColorFormat 数学公式生成图片格式 - 默认LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
      */
     public func setLatexMathColorFormat(colorFormat: Int64): Unit {
-        match (colorFormat) {
-            case 0 => latexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_RGB_565
-            case 1 => latexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_BGRA_8888
-            case _ => latexMathColorFormat = LatexMathColorFormat.COLOR_FORMAT_RGB_565
-        }
+        latexMathColorFormat = LatexMathColorFormat.fromInt64(colorFormat)
     }
 
     /**

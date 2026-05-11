@@ -1,7 +1,6 @@
 package markdown
 
 import ohos.ark_interop_macro.*
-import markdown.components.theme.MarkdownTextDecorationStyle
 
 @Interop[ArkTS]
 public class CJMarkdownLinkTheme {
@@ -317,7 +316,7 @@ public class CJMarkdownLinkTheme {
      * @param style 装饰线样式
      */
     public func setLinkTextDecorationStyle(style: Int64): Unit {
-        linkTextDecorationStyle = convertMarkdownTextDecorationStyle(style)
+        linkTextDecorationStyle = MarkdownTextDecorationStyle.fromInt64(style)
     }
 
     /**
