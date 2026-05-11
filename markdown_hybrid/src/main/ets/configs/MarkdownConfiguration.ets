@@ -1,5 +1,5 @@
-import { MarkdownNodeViewString } from "./CJMarkDown"
-import { MarkdownTheme } from "./MarkdownTheme"
+import { MarkdownNodeViewString } from "../pages/CJMarkDown"
+import { MarkdownTheme } from "../themes/MarkdownTheme"
 
 /**
  * markdown配置
