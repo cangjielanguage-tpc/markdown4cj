@@ -40,6 +40,9 @@
 38. MarkdownTheme 中的接口 setVideoReleaseTexColor(videoReleaseTexColor: number): void 替换成 setVideoReleaseTextColor(videoReleaseTextColor: number): void
 39. MarkdownTheme 中的接口 setVideoDownloadTexColor(videoDownloadTexColor: number): void 替换成 setVideoDownloadTextColor(videoDownloadTextColor: number): void
 40. MarkdownTheme 中的接口 setImageDownloadTexColor(imageDownloadTexColor: number): void 替换成 setImageDownloadTextColor(imageDownloadTextColor: number): void
+41. MarkdownTheme 中的接口 setVideoReleaseTexSize(videoReleaseTexSize: number): void 替换成 setVideoReleaseTextSize(videoReleaseTextSize: number): void
+42. MarkdownTheme 中的接口 setVideoDownloadTexSize(videoDownloadTexSize: number): void 替换成 setVideoDownloadTextSize(videoDownloadTextSize: number): void
+43. MarkdownTheme 中的接口 setImageDownloadTexSize(imageDownloadTexSize: number): void 替换成 setImageDownloadTextSize(imageDownloadTextSize: number): void
 
 # 1.3.7
 

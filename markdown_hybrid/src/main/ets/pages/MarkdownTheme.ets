@@ -859,7 +859,7 @@ export class MarkdownTheme {
   /**
    * 设置圆形图片格式链接主题背景颜色
    *
-   * @param linkCircleImageBackgroundColor 圆形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
+   * @param linkCircleImageBackgroundColor 圆形图片格式链接主题背景颜色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkCircleIconBackgroundColor
    */
@@ -925,7 +925,7 @@ export class MarkdownTheme {
   /**
    * 设置圆角矩形图片格式链接主题背景颜色
    *
-   * @param linkRectImageBackgroundColor 圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
+   * @param linkRectImageBackgroundColor 圆角矩形图片格式链接主题背景颜色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectIconBackgroundColor
    */
@@ -1013,7 +1013,7 @@ export class MarkdownTheme {
   /**
    * 设置空心圆角矩形图片格式链接主题背景颜色
    *
-   * @param linkRectToolImageBackgroundColor 空心圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
+   * @param linkRectToolImageBackgroundColor 空心圆角矩形图片格式链接主题背景颜色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconBackgroundColor
    */
@@ -1523,7 +1523,7 @@ export class MarkdownTheme {
   /**
    * 设置代码块代码文本大小
    *
-   * @param codeBlockTextSize 代码块代码文本大小 -  默认13.0fp
+   * @param codeBlockTextSize 代码块代码文本大小 - 默认13.0fp
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockTextFontSize
    */
@@ -1606,7 +1606,7 @@ export class MarkdownTheme {
   /**
    * 设置组合代码选中标题文本颜色
    *
-   * @param codeListTitleSelectTextColor 组合代码选中标题文本颜色 - 默认Color.RED
+   * @param codeListTitleSelectTextColor 组合代码选中标题文本颜色 - 默认0xFFFF0000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleSelectTextColor
    */
@@ -1617,7 +1617,7 @@ export class MarkdownTheme {
   /**
    * 设置组合代码未选中标题文本颜色
    *
-   * @param codeListTitleUnSelectTextColor 组合代码未选中标题文本颜色 - 默认Color.BLACK
+   * @param codeListTitleUnSelectTextColor 组合代码未选中标题文本颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleUnselectTextColor
    */
@@ -1628,7 +1628,7 @@ export class MarkdownTheme {
   /**
    * 设置组合代码选中标题背景颜色
    *
-   * @param codeListTitleSelectBackgroundColor 组合代码选中标题背景颜色 - 默认Color.GRAY
+   * @param codeListTitleSelectBackgroundColor 组合代码选中标题背景颜色 - 默认0xFF808080
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleSelectBackgroundColor
    */
@@ -1639,7 +1639,7 @@ export class MarkdownTheme {
   /**
    * 设置组合代码未选中标题背景颜色
    *
-   * @param codeListTitleUnSelectBackgroundColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
+   * @param codeListTitleUnSelectBackgroundColor 组合代码未选中标题背景颜色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleUnselectBackgroundColor
    */
@@ -2219,7 +2219,7 @@ export class MarkdownTheme {
   /**
    * 设置数学公式背景色
    *
-   * @param latexMathBackgroundColor 数学公式背景色 - 默认Color.TRANSPARENT
+   * @param latexMathBackgroundColor 数学公式背景色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLatexMath#setLatexMathBackgroundColor
    */
@@ -2318,7 +2318,7 @@ export class MarkdownTheme {
   /**
    * 设置音频按钮背景颜色
    *
-   * @param audioButtonBackgroundColor 音频按钮背景颜色- 默认Color.BLACK
+   * @param audioButtonBackgroundColor 音频按钮背景颜色- 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioButtonBackgroundColor
    */
@@ -2329,7 +2329,7 @@ export class MarkdownTheme {
   /**
    * 设置音频按钮文字颜色
    *
-   * @param audioButtonTextColor 音频按钮文字颜色 - 默认Color.WHITE
+   * @param audioButtonTextColor 音频按钮文字颜色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioButtonTextFontColor
    */
@@ -2384,7 +2384,7 @@ export class MarkdownTheme {
   /**
    * 设置音频标题文字颜色
    *
-   * @param audioTitleTextColor音频标题文字颜色 - 默认Color.BLACK
+   * @param audioTitleTextColor音频标题文字颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioTitleTextFontColor
    */
@@ -2478,7 +2478,7 @@ export class MarkdownTheme {
   /**
    * 设置视频时间文本颜色
    *
-   * @param videoTimeTextColor 视频时间文本颜色 - 默认Color.WHITE
+   * @param videoTimeTextColor 视频时间文本颜色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoTimeTextFontColor
    */
@@ -2618,12 +2618,12 @@ export class MarkdownTheme {
   /**
    * 设置视频发布按钮文本大小
    *
-   * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
+   * @param videoReleaseTextSize 视频发布按钮文本大小 - 默认16.0vp
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoReleaseButtonTextFontSize
    */
-  setVideoReleaseTexSize(videoReleaseTexSize: number): void {
-    this.markdownThemeVideo.setVideoReleaseButtonTextFontSize(videoReleaseTexSize)
+  setVideoReleaseTextSize(videoReleaseTextSize: number): void {
+    this.markdownThemeVideo.setVideoReleaseButtonTextFontSize(videoReleaseTextSize)
   }
 
   /**
@@ -2708,12 +2708,12 @@ export class MarkdownTheme {
   /**
    * 设置视频下载按钮文本大小
    *
-   * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
+   * @param videoDownloadTextSize 视频下载按钮文本大小 - 默认16.0vp
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoDownloadButtonTextFontSize
    */
-  setVideoDownloadTexSize(videoDownloadTexSize: number): void {
-    this.markdownThemeVideo.setVideoDownloadButtonTextFontSize(videoDownloadTexSize)
+  setVideoDownloadTextSize(videoDownloadTextSize: number): void {
+    this.markdownThemeVideo.setVideoDownloadButtonTextFontSize(videoDownloadTextSize)
   }
 
   /**
@@ -2818,7 +2818,7 @@ export class MarkdownTheme {
   /**
    * 设置图片边框颜色
    *
-   * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
+   * @param imageBorderColor 图片边框颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageBorderColor
    */
@@ -2947,18 +2947,18 @@ export class MarkdownTheme {
   /**
    * 设置图片下载按钮文本大小
    *
-   * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
+   * @param imageDownloadTextSize 图片下载按钮文本大小 - 默认16.0
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonTextFontSize
    */
-  setImageDownloadTexSize(imageDownloadTexSize: number): void {
-    this.markdownThemeImage.setImageDownloadButtonTextFontSize(imageDownloadTexSize)
+  setImageDownloadTextSize(imageDownloadTextSize: number): void {
+    this.markdownThemeImage.setImageDownloadButtonTextFontSize(imageDownloadTextSize)
   }
 
   /**
    * 设置图片下载按钮文本颜色
    *
-   * @param imageDownloadTextColor 图片下载按钮文本颜色 - 默认0XE6000000
+   * @param imageDownloadTextColor 图片下载按钮文本颜色 - 默认0xE6000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonTextFontColor
    */

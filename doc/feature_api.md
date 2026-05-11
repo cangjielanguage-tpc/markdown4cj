@@ -51,117 +51,117 @@ export class MarkdownConfiguration {
   /**
    * 设置链接点击回调
    *
-   * @param cb 链接点击回调(funcArg0：链接url)
+   * @param cb 链接点击回调(url：链接url)
    */
-  setLinkCallback(cb: (funcArg0: string) => void): void
+  setLinkCallback(cb: (url: string) => void): void
 
   /**
    * 设置文本复制的点击事件
    *
-   * @param cb 文本复制的点击事件(funcArg0：复制的文本)
+   * @param cb 文本复制的点击事件(text：复制的文本)
    */
-  setTextCopyCallback(cb: (funcArg0: string) => void): void
+  setTextCopyCallback(cb: (text: string) => void): void
 
   /**
    * 设置图片点击回调
    *
-   * @param cb 图片点击回调。 (funcArg0：图片url,funcArg1:所有图片和视频连接集合 --- 需要加载图片视频列表url集合列表解析插件)
+   * @param cb 图片点击回调。 (url：图片url,urlList：所有图片和视频链接集合 --- 需要加载图片视频列表url集合列表解析插件)
    */
-  setImageCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void
+  setImageCallback(cb: (url: string, urlList: Array<string>) => void): void
 
   /**
    * 设置图片替换事件
    *
-   * @param cb 图片替换事件。 (funcArg0：图片url 返回值是替换的图片数据)
+   * @param cb 图片替换事件。 (url：图片url 返回值是替换的图片数据)
    */
-  setImageCallbackCallback(cb: (funcArg0: string) => Promise<ArrayBuffer | undefined>): void
+  setImageCallbackCallback(cb: (url: string) => Promise<ArrayBuffer | undefined>): void
 
   /**
    * 设置图片下载的点击事件
    *
-   * @param cb 图片下载的点击事件。 (funcArg0：图片url)
+   * @param cb 图片下载的点击事件。 (url：图片url)
    */
-  setImageDownloadCallback(cb: (funcArg0: string) => void): void
+  setImageDownloadCallback(cb: (url: string) => void): void
 
   /**
    * 设置音频点击回调
    *
-   * @param cb 音频点击回调(funcArg0：音频url) --- 需要加载音频解析插件
+   * @param cb 音频点击回调(url：音频url) --- 需要加载音频解析插件
    */
-  setAudioCallback(cb: (funcArg0: string) => void): void
+  setAudioCallback(cb: (url: string) => void): void
 
   /**
    * 设置视频点击回调
    *
-   * @param cb 视频点击回调。 (funcArg0：视频url,funcArg1:所有图片和视频连接集合 --- 需要加载图片视频列表url集合列表解析插件) --- 需要加载视频解析插件
+   * @param cb 视频点击回调。 (url：视频url,urlList：所有图片和视频链接集合 --- 需要加载图片视频列表url集合列表解析插件) --- 需要加载视频解析插件
    */
-  setVideoCallback(cb: (funcArg0: string, funcArg1: Array<string>) => void): void
+  setVideoCallback(cb: (url: string, urlList: Array<string>) => void): void
 
   /**
    * 设置视频占位图和宽高比和视频时长的回调
    *
-   * @param cb 视频视频占位图和宽高比和视频时长回调。 (funcArg0：视频url,funcArg1:视频占位图和宽高比和视频时长回调 (funcArgfuncArg0:视频首帧图,funcArgfuncArg1:图片宽高比,funcArgfuncArg2,视频时长)) --- 需要加载视频解析插件
+   * @param cb 视频占位图和宽高比和视频时长回调。 (url：视频url,coverCallback：视频占位图和宽高比和视频时长回调 (coverUrl：视频首帧图,aspectRatio：图片宽高比,duration：视频时长)) --- 需要加载视频解析插件
    */
-  setVideoImageCallback(cb: (funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void): void
+  setVideoImageCallback(cb: (url: string, coverCallback: (coverUrl: string, aspectRatio: number, duration: number) => void) => void): void
 
   /**
    * 设置视频发布的点击事件
    *
-   * @param cb 视频发布的点击事件(funcArg0：视频url) --- 需要加载视频解析插件
+   * @param cb 视频发布的点击事件(url：视频url) --- 需要加载视频解析插件
    */
-  setVideoReleaseCallback(cb: (funcArg0: string) => void): void
+  setVideoReleaseCallback(cb: (url: string) => void): void
 
   /**
    * 设置视频下载的点击事件
    *
-   * @param cb 视频下载的点击事件(funcArg0：视频url) --- 需要加载视频解析插件
+   * @param cb 视频下载的点击事件(url：视频url) --- 需要加载视频解析插件
    */
-  setVideoDownloadCallback(cb: (funcArg0: string) => void): void
+  setVideoDownloadCallback(cb: (url: string) => void): void
 
   /**
    * 设置代码复制点击回调
    *
-   * @param cb 代码复制点击回调(funcArg0：代码内容)
+   * @param cb 代码复制点击回调(code：代码内容)
    */
-  setCodeCopyCallback(cb: (funcArg0: string) => void): void
+  setCodeCopyCallback(cb: (code: string) => void): void
 
   /**
    * 设置代码全屏点击回调
    *
-   * @param cb 代码全屏点击回调(funcArg0：代码内容, funcArg1:代码类型)
+   * @param cb 代码全屏点击回调(code：代码内容, language：代码类型)
    */
-  setCodeFullScreenCallback(cb: (funcArg0: string, funcArg1: string | undefined) => void): void
+  setCodeFullScreenCallback(cb: (code: string, language: string | undefined) => void): void
 
   /**
    * 设置数学公式点击回调
    *
-   * @param cb 数学公式点击回调(funcArg0：数学公式图片数组数据, funcArg1:图片高度, funcArg2:图片宽度) --- 需要加载数学公式解析插件
+   * @param cb 数学公式点击回调(imageData：数学公式图片数组数据, height：图片高度, width：图片宽度) --- 需要加载数学公式解析插件
    */
-  setLatexImageCallback(cb: (funcArg0: ArrayBuffer, funcArg1: number, funcArg2: number) => void): void
+  setLatexImageCallback(cb: (imageData: ArrayBuffer, height: number, width: number) => void): void
 
   /**
    * 设置数学公式公式预处理回调
    *
-   * @param cb 数学公式公式预处理回调(funcArg0：数学公式文本内容,return：处理过后的数学公式文本) --- 需要加载数学公式解析插件
+   * @param cb 数学公式公式预处理回调(formula：数学公式文本内容,return：处理过后的数学公式文本) --- 需要加载数学公式解析插件
    */
-  setLatexStrCallback(cb: (funcArg0: string) => string): void
+  setLatexStrCallback(cb: (formula: string) => string): void
 
   /**
    * 设置TOC点击回调
    *
-   * @param cb TOC点击回调(funcArg0：偏移量) --- 需要加载TOC解析插件
+   * @param cb TOC点击回调(index：第几条数据) --- 需要加载TOC解析插件
    */
-  setTocIndexCallback(cb: (funcArg0: number | undefined) => void): void
+  setTocIndexCallback(cb: (index: number | undefined) => void): void
 
   /**
    * 设置脚注点击回调
    *
-   * @param cb 脚注点击回调(funcArg0：偏移量) --- 需要加载脚注解析插件
+   * @param cb 脚注点击回调(index：第几条数据) --- 需要加载脚注解析插件
    */
-  setFootnoteCallback(cb: (funcArg0: number | undefined) => void): void
+  setFootnoteCallback(cb: (index: number | undefined) => void): void
 
   /**
-   * 获取全局文本
+   * 设置全局文本对象
    *
    * @param nodeString 全局文本对象
    */
@@ -179,112 +179,112 @@ export class MarkdownConfiguration {
    *
    * @returns 链接的点击事件回调函数
    */
-  getLinkCallback(): ((funcArg0: string) => void) | undefined
+  getLinkCallback(): ((url: string) => void) | undefined
 
   /**
    * 获取文本复制的点击事件
    *
    * @returns 文本复制的点击事件回调函数
    */
-  getTextCopyCallback(): ((funcArg0: string) => void) | undefined
+  getTextCopyCallback(): ((text: string) => void) | undefined
 
   /**
    * 获取图片的点击事件
    *
    * @returns 图片的点击事件回调函数
    */
-  getImageCallback(): ((funcArg0: string, funcArg1: Array<string>) => void) | undefined
+  getImageCallback(): ((url: string, urlList: Array<string>) => void) | undefined
 
   /**
    * 获取图片替换事件
    *
    * @returns 图片替换事件回调函数
    */
-  getImageCallbackCallback(): ((funcArg0: string) => Promise<ArrayBuffer | undefined>) | undefined
+  getImageCallbackCallback(): ((url: string) => Promise<ArrayBuffer | undefined>) | undefined
 
   /**
    * 获取图片下载的点击事件
    *
    * @returns 图片下载的点击事件回调函数
    */
-  getImageDownloadCallback(): ((funcArg0: string) => void) | undefined
+  getImageDownloadCallback(): ((url: string) => void) | undefined
 
   /**
    * 获取音频的点击事件
    *
    * @returns 音频的点击事件回调函数
    */
-  getAudioCallback(): ((funcArg0: string) => void) | undefined
+  getAudioCallback(): ((url: string) => void) | undefined
 
   /**
    * 获取视频的点击事件
    *
    * @returns 视频的点击事件回调函数
    */
-  getVideoCallback(): ((funcArg0: string, funcArg1: Array<string>) => void) | undefined
+  getVideoCallback(): ((url: string, urlList: Array<string>) => void) | undefined
 
   /**
    * 获取视频的图片替换回调
    *
    * @returns 视频的图片替换回调函数
    */
-  getVideoImageCallback(): ((funcArg0: string, funcArg1: (funcArgfuncArg0: string, funcArgfuncArg1: number, funcArgfuncArg2: number) => void) => void) | undefined
+  getVideoImageCallback(): ((url: string, coverCallback: (coverUrl: string, aspectRatio: number, duration: number) => void) => void) | undefined
 
   /**
    * 获取视频发布的点击事件
    *
    * @returns 视频发布的点击事件回调函数
    */
-  getVideoReleaseCallback(): ((funcArg0: string) => void) | undefined
+  getVideoReleaseCallback(): ((url: string) => void) | undefined
 
   /**
    * 获取视频下载的点击事件
    *
    * @returns 视频下载的点击事件回调函数
    */
-  getVideoDownloadCallback(): ((funcArg0: string) => void) | undefined
+  getVideoDownloadCallback(): ((url: string) => void) | undefined
 
   /**
    * 获取代码复制按钮的点击事件
    *
    * @returns 代码复制按钮的点击事件回调函数
    */
-  getCodeCopyCallback(): ((funcArg0: string) => void) | undefined
+  getCodeCopyCallback(): ((code: string) => void) | undefined
 
   /**
    * 获取代码全屏按钮的点击事件
    *
    * @returns 代码全屏按钮的点击事件回调函数
    */
-  getCodeFullScreenCallback(): ((funcArg0: string, funcArg1: string | undefined) => void) | undefined
+  getCodeFullScreenCallback(): ((code: string, language: string | undefined) => void) | undefined
 
   /**
    * 获取数学公式图片点击事件
    *
    * @returns 数学公式图片点击事件回调函数
    */
-  getLatexImageCallback(): ((funcArg0: ArrayBuffer, funcArg1: number, funcArg2: number) => void) | undefined
+  getLatexImageCallback(): ((imageData: ArrayBuffer, height: number, width: number) => void) | undefined
 
   /**
    * 获取数学公式数据处理事件
    *
    * @returns 数学公式数据处理事件回调函数
    */
-  getLatexStrCallback(): ((funcArg0: string) => string) | undefined
+  getLatexStrCallback(): ((formula: string) => string) | undefined
 
   /**
    * 获取TOC跳转指定位置回调
    *
    * @returns TOC跳转指定位置回调函数
    */
-  getTocIndexCallback(): ((funcArg0: number | undefined) => void) | undefined
+  getTocIndexCallback(): ((index: number | undefined) => void) | undefined
 
   /**
    * 获取脚注跳转指定位置回调
    *
    * @returns 脚注跳转指定位置回调函数
    */
-  getFootnoteCallback(): ((funcArg0: number | undefined) => void) | undefined
+  getFootnoteCallback(): ((index: number | undefined) => void) | undefined
 
   /**
    * 获取全局文本对象
@@ -697,11 +697,11 @@ export class MarkdownTheme {
   /**
    * 设置文本格式链接背景颜色
    *
-   * @param linkBackGroupColor 文本格式链接背景颜色 - 默认0xFF000000
+   * @param linkBackgroundColor 文本格式链接背景颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkTextBackgroundColor
    */
-  setLinkBackGroupColor(linkBackGroupColor: number): void
+  setLinkBackgroundColor(linkBackgroundColor: number): void
 
   /**
    * 设置文本格式是否显示链接下划线
@@ -715,20 +715,20 @@ export class MarkdownTheme {
   /**
    * 设置圆形图片格式链接主题背景颜色
    *
-   * @param linkCircleImageBackGroupColor 圆形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
+   * @param linkCircleImageBackgroundColor 圆形图片格式链接主题背景颜色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkCircleIconBackgroundColor
    */
-  setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: number): void
+  setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: number): void
 
   /**
    * 设置圆形图片格式链接控件背景颜色
    *
-   * @param linkCircleImageButtonBackGroupColor 圆形图片格式链接控件背景颜色 - 默认0xFF000000
+   * @param linkCircleImageButtonBackgroundColor 圆形图片格式链接控件背景颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkCircleIconButtonBackgroundColor
    */
-  setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: number): void
+  setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: number): void
 
   /**
    * 设置圆形图片格式链接文字大小
@@ -769,20 +769,20 @@ export class MarkdownTheme {
   /**
    * 设置圆角矩形图片格式链接主题背景颜色
    *
-   * @param linkRectImageBackGroupColor 圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
+   * @param linkRectImageBackgroundColor 圆角矩形图片格式链接主题背景颜色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectIconBackgroundColor
    */
-  setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: number): void
+  setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: number): void
 
   /**
    * 设置圆角矩形图片格式链接控件背景颜色
    *
-   * @param linkRectImageButtonBackGroupColor 圆角矩形图片格式链接控件背景颜色 - 默认0xFF000000
+   * @param linkRectImageButtonBackgroundColor 圆角矩形图片格式链接控件背景颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectIconButtonBackgroundColor
    */
-  setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: number): void
+  setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: number): void
 
   /**
    * 圆角矩形图片格式链接文字大小
@@ -841,20 +841,20 @@ export class MarkdownTheme {
   /**
    * 设置空心圆角矩形图片格式链接主题背景颜色
    *
-   * @param linkRectToolImageBackGroupColor 空心圆角矩形图片格式链接主题背景颜色 - 默认Color.TRANSPARENT
+   * @param linkRectToolImageBackgroundColor 空心圆角矩形图片格式链接主题背景颜色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconBackgroundColor
    */
-  setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: number): void
+  setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: number): void
 
   /**
    * 设置空心圆角矩形图片格式链接控件背景颜色
    *
-   * @param linkRectToolImageButtonBackGroupColor 空心圆角矩形图片格式链接控件背景颜色 - 默认OXFFFFFFFF
+   * @param linkRectToolImageButtonBackgroundColor 空心圆角矩形图片格式链接控件背景颜色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLink#setLinkRectToolIconBackgroundColor
    */
-  setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: number): void
+  setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: number): void
 
   /**
    * 设置空心圆角矩形图片格式链接文字大小
@@ -967,11 +967,11 @@ export class MarkdownTheme {
   /**
    * 设置块引用背景颜色
    *
-   * @param blockQuoteBackGroupColor 块引用背景颜色 - 默认0xFFEAEAEA
+   * @param blockQuoteBackgroundColor 块引用背景颜色 - 默认0xFFEAEAEA
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBlockQuote#setBlockQuoteBackgroundColor
    */
-  setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: number): void
+  setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: number): void
 
   /**
    * 设置块引用子模块上下间距
@@ -1024,7 +1024,7 @@ export class MarkdownTheme {
   /**
    * 设置有序列表前缀文本颜色
    *
-   * @param orderedListItemColor 有序列表前缀文本颜色 - 默认OXFF191919
+   * @param orderedListItemColor 有序列表前缀文本颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeOrderedList#setOrderedListMarkerTextFontColor
    */
@@ -1060,7 +1060,7 @@ export class MarkdownTheme {
   /**
    * 设置无序列表前缀文本颜色
    *
-   * @param bulletListItemColor 无序列表前缀文本颜色 - 默认OXFF191919
+   * @param bulletListItemColor 无序列表前缀文本颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeBulletList#setBulletListBulletTextFontColor
    */
@@ -1106,7 +1106,7 @@ export class MarkdownTheme {
   /**
    * 设置内联代码文本颜色
    *
-   * @param codeTextColor 内联代码文本颜色 - 默认OXFF000000
+   * @param codeTextColor 内联代码文本颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeInlineCode#setInlineCodeTextFontColor
    */
@@ -1115,7 +1115,7 @@ export class MarkdownTheme {
   /**
    * 设置内联代码背景颜色
    *
-   * @param codeBackgroundColor 内联代码背景颜色 - 默认OXFFEAEAEA
+   * @param codeBackgroundColor 内联代码背景颜色 - 默认0xFFEAEAEA
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeInlineCode#setInlineCodeTextBackgroundColor
    */
@@ -1233,7 +1233,7 @@ export class MarkdownTheme {
   /**
    * 设置代码块代码文本大小
    *
-   * @param codeBlockTextSize 代码块代码文本大小 -  默认13.0fp
+   * @param codeBlockTextSize 代码块代码文本大小 - 默认13.0fp
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockTextFontSize
    */
@@ -1299,7 +1299,7 @@ export class MarkdownTheme {
   /**
    * 设置组合代码选中标题文本颜色
    *
-   * @param codeListTitleSelectTextColor 组合代码选中标题文本颜色 - 默认Color.RED
+   * @param codeListTitleSelectTextColor 组合代码选中标题文本颜色 - 默认0xFFFF0000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleSelectTextColor
    */
@@ -1308,7 +1308,7 @@ export class MarkdownTheme {
   /**
    * 设置组合代码未选中标题文本颜色
    *
-   * @param codeListTitleUnSelectTextColor 组合代码未选中标题文本颜色 - 默认Color.BLACK
+   * @param codeListTitleUnSelectTextColor 组合代码未选中标题文本颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleUnselectTextColor
    */
@@ -1317,20 +1317,20 @@ export class MarkdownTheme {
   /**
    * 设置组合代码选中标题背景颜色
    *
-   * @param codeListTitleSelectBackGroupColor 组合代码选中标题背景颜色 - 默认Color.GRAY
+   * @param codeListTitleSelectBackgroundColor 组合代码选中标题背景颜色 - 默认0xFF808080
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleSelectBackgroundColor
    */
-  setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: number): void
+  setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: number): void
 
   /**
    * 设置组合代码未选中标题背景颜色
    *
-   * @param codeListTitleUnSelectBackGroupColor 组合代码未选中标题背景颜色 - 默认Color.TRANSPARENT
+   * @param codeListTitleUnSelectBackgroundColor 组合代码未选中标题背景颜色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleUnselectBackgroundColor
    */
-  setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: number): void
+  setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: number): void
 
   /**
    * 设置是否单独代码块显示
@@ -1399,7 +1399,6 @@ export class MarkdownTheme {
    * 设置标题文本大小数组
    *
    * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
-   * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontSizeForEachHeading
    */
@@ -1463,7 +1462,6 @@ export class MarkdownTheme {
    * 设置标题文本颜色
    *
    * @param headingTextColor 标题文本颜色 - 默认0xFF191919
-   * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setTextFontColorForAllHeading
    */
@@ -1473,7 +1471,6 @@ export class MarkdownTheme {
    * 设置H1、H2标题下分割线颜色
    *
    * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0xFF191919
-   * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeHeading#setUnderlineColorForAllHeading
    */
@@ -1743,11 +1740,11 @@ export class MarkdownTheme {
   /**
    * 设置数学公式背景色
    *
-   * @param latexMathBackGroupColor 数学公式背景色 - 默认Color.TRANSPARENT
+   * @param latexMathBackgroundColor 数学公式背景色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeLatexMath#setLatexMathBackgroundColor
    */
-  setLatexMathBackGroupColor(latexMathBackGroupColor: number): void
+  setLatexMathBackgroundColor(latexMathBackgroundColor: number): void
 
   /**
    * 设置数学公式文本颜色
@@ -1824,7 +1821,7 @@ export class MarkdownTheme {
   /**
    * 设置音频按钮背景颜色
    *
-   * @param audioButtonBackgroundColor 音频按钮背景颜色- 默认Color.BLACK
+   * @param audioButtonBackgroundColor 音频按钮背景颜色- 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioButtonBackgroundColor
    */
@@ -1833,7 +1830,7 @@ export class MarkdownTheme {
   /**
    * 设置音频按钮文字颜色
    *
-   * @param audioButtonTextColor 音频按钮文字颜色 - 默认Color.WHITE
+   * @param audioButtonTextColor 音频按钮文字颜色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioButtonTextFontColor
    */
@@ -1878,7 +1875,7 @@ export class MarkdownTheme {
   /**
    * 设置音频标题文字颜色
    *
-   * @param audioTitleTextColor音频标题文字颜色 - 默认Color.BLACK
+   * @param audioTitleTextColor 音频标题文字颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioTitleTextFontColor
    */
@@ -1905,7 +1902,7 @@ export class MarkdownTheme {
   /**
    * 设置音频类型文字颜色
    *
-   * @param audioTypeTextColor 音频类型文字颜色 - 默认0X80000000
+   * @param audioTypeTextColor 音频类型文字颜色 - 默认0x80000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeAudio#setAudioTypeTextFontColor
    */
@@ -1950,7 +1947,7 @@ export class MarkdownTheme {
   /**
    * 设置视频时间文本颜色
    *
-   * @param videoTimeTextColor 视频时间文本颜色 - 默认Color.WHITE
+   * @param videoTimeTextColor 视频时间文本颜色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoTimeTextFontColor
    */
@@ -2059,20 +2056,20 @@ export class MarkdownTheme {
   /**
    * 设置视频发布按钮文本大小
    *
-   * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
+   * @param videoReleaseTextSize 视频发布按钮文本大小 - 默认16.0vp
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoReleaseButtonTextFontSize
    */
-  setVideoReleaseTexSize(videoReleaseTexSize: number): void
+  setVideoReleaseTextSize(videoReleaseTextSize: number): void
 
   /**
    * 设置视频发布按钮文本颜色
    *
-   * @param videoReleaseTexColor 视频发布按钮文本颜色 - 默认0xE6000000
+   * @param videoReleaseTextColor 视频发布按钮文本颜色 - 默认0xE6000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoReleaseButtonTextFontColor
    */
-  setVideoReleaseTexColor(videoReleaseTexColor: number): void
+  setVideoReleaseTextColor(videoReleaseTextColor: number): void
 
   /**
    * 设置视频发布按钮背景颜色
@@ -2132,20 +2129,20 @@ export class MarkdownTheme {
   /**
    * 设置视频下载按钮文本大小
    *
-   * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
+   * @param videoDownloadTextSize 视频下载按钮文本大小 - 默认16.0vp
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoDownloadButtonTextFontSize
    */
-  setVideoDownloadTexSize(videoDownloadTexSize: number): void
+  setVideoDownloadTextSize(videoDownloadTextSize: number): void
 
   /**
    * 设置视频下载按钮文本颜色
    *
-   * @param videoDownloadTexColor 视频下载按钮文本颜色 - 默认0xE6000000
+   * @param videoDownloadTextColor 视频下载按钮文本颜色 - 默认0xE6000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeVideo#setVideoDownloadButtonTextFontColor
    */
-  setVideoDownloadTexColor(videoDownloadTexColor: number): void
+  setVideoDownloadTextColor(videoDownloadTextColor: number): void
 
   /**
    * 设置视频下载按钮背景颜色
@@ -2222,7 +2219,7 @@ export class MarkdownTheme {
   /**
    * 设置图片边框颜色
    *
-   * @param imageBorderColor 图片边框颜色 - 默认Color.BLACK
+   * @param imageBorderColor 图片边框颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageBorderColor
    */
@@ -2322,20 +2319,20 @@ export class MarkdownTheme {
   /**
    * 设置图片下载按钮文本大小
    *
-   * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
+   * @param imageDownloadTextSize 图片下载按钮文本大小 - 默认16.0
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonTextFontSize
    */
-  setImageDownloadTexSize(imageDownloadTexSize: number): void
+  setImageDownloadTextSize(imageDownloadTextSize: number): void
 
   /**
    * 设置图片下载按钮文本颜色
    *
-   * @param imageDownloadTexColor 图片下载按钮文本颜色 - 默认0XE6000000
+   * @param imageDownloadTextColor 图片下载按钮文本颜色 - 默认0xE6000000
    * @deprecated since 1.4.0
    * @useinstead MarkdownThemeImage#setImageDownloadButtonTextFontColor
    */
-  setImageDownloadTexColor(imageDownloadTexColor: number): void
+  setImageDownloadTextColor(imageDownloadTextColor: number): void
 
   /**
    * 设置图片下载按钮背景颜色
@@ -11309,9 +11306,9 @@ export class MarkdownPlugin {
   setIsBlockVideoPlugin(isBlockVideoPlugin: boolean): void
 
   /**
-   * 设置组合代码快列表插件
+   * 设置组合代码块列表插件
    *
-   * @param isCodeListPlugin 是否设置组合代码快列表插件 - true：设置组合代码快列表插件；false：不设置组合代码快列表插件。默认false
+   * @param isCodeListPlugin 是否设置组合代码块列表插件 - true：设置组合代码块列表插件；false：不设置组合代码块列表插件。默认false
    */
   setIsCodeListPlugin(isCodeListPlugin: boolean): void
 
@@ -11438,7 +11435,7 @@ export class MarkdownPlugin {
   /**
    * 设置是否加载emoji解析插件
    *
-   * @param isEmojiPlugin 是否加载Emoji解析插件 - true：设置加载Emoji解析插件件；false：不设置加载Emoji解析插件。默认false
+   * @param isEmojiPlugin 是否加载Emoji解析插件 - true：设置加载Emoji解析插件；false：不设置加载Emoji解析插件。默认false
    * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
    */
   setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void

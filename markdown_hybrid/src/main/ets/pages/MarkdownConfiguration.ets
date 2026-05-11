@@ -180,7 +180,7 @@ export class MarkdownConfiguration {
   /**
    * 设置代码全屏点击回调
    *
-   * @param cb 代码全屏点击回调(code：代码内容, language:代码类型)
+   * @param cb 代码全屏点击回调(code：代码内容, language：代码类型)
    */
   setCodeFullScreenCallback(cb: (code: string, language: string | undefined) => void): void {
     this.codeFullScreenCallback = cb
@@ -223,7 +223,7 @@ export class MarkdownConfiguration {
   }
 
   /**
-   * 获取全局文本
+   * 设置全局文本对象
    *
    * @param nodeString 全局文本对象
    */

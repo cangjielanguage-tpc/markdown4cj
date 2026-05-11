@@ -2831,12 +2831,12 @@ public class MarkdownThemeBuilder {
     /**
      * 设置视频发布按钮文本大小
      *
-     * @param videoReleaseTexSize 视频发布按钮文本大小 - 默认16.0vp
+     * @param videoReleaseTextSize 视频发布按钮文本大小 - 默认16.0vp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用VideoTheme.setVideoReleaseButtonTextFontSize方法代替", since: "1.4.0"]
-    public func setVideoReleaseTexSize(videoReleaseTexSize: Float64): MarkdownThemeBuilder {
-        this.videoTheme.videoReleaseButtonTextFontSize = videoReleaseTexSize
+    public func setVideoReleaseTextSize(videoReleaseTextSize: Float64): MarkdownThemeBuilder {
+        this.videoTheme.videoReleaseButtonTextFontSize = videoReleaseTextSize
         return this
     }
 
@@ -2931,12 +2931,12 @@ public class MarkdownThemeBuilder {
     /**
      * 设置视频下载按钮文本大小
      *
-     * @param videoDownloadTexSize 视频下载按钮文本大小 - 默认16.0vp
+     * @param videoDownloadTextSize 视频下载按钮文本大小 - 默认16.0vp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用VideoTheme.setVideoDownloadButtonTextFontSize方法代替", since: "1.4.0"]
-    public func setVideoDownloadTexSize(videoDownloadTexSize: Float64): MarkdownThemeBuilder {
-        this.videoTheme.videoDownloadButtonTextFontSize = videoDownloadTexSize
+    public func setVideoDownloadTextSize(videoDownloadTextSize: Float64): MarkdownThemeBuilder {
+        this.videoTheme.videoDownloadButtonTextFontSize = videoDownloadTextSize
         return this
     }
 
@@ -3226,12 +3226,12 @@ public class MarkdownThemeBuilder {
     /**
      * 设置图片下载按钮文本大小
      *
-     * @param imageDownloadTexSize 图片下载按钮文本大小 - 默认16.0
+     * @param imageDownloadTextSize 图片下载按钮文本大小 - 默认16.0
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用ImageTheme.setImageDownloadButtonTextFontSize方法代替", since: "1.4.0"]
-    public func setImageDownloadTexSize(imageDownloadTexSize: Float64): MarkdownThemeBuilder {
-        this.imageTheme.imageDownloadButtonTextFontSize = imageDownloadTexSize
+    public func setImageDownloadTextSize(imageDownloadTextSize: Float64): MarkdownThemeBuilder {
+        this.imageTheme.imageDownloadButtonTextFontSize = imageDownloadTextSize
         return this
     }
 
