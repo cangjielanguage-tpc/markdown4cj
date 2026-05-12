@@ -16,7 +16,7 @@ func stringToResLists(nodeView: NodeView, markdownConfiguration: MarkdownConfigu
         }
         var prismNodesParseResLists: ArrayList<ArrayList<PrismNodesParseResUI>> = ArrayList<ArrayList<PrismNodesParseResUI>>()
         try {
-            for(node in nodeView.children){
+            for (node in nodeView.children) {
                 if (node.nodeType == "FencedCodeBlock") {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
@@ -30,9 +30,9 @@ func stringToResLists(nodeView: NodeView, markdownConfiguration: MarkdownConfigu
                 }
             }
         } catch (e: Exception) {
-            for(str in  strText){
-                let prismNodesParseResList:ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
-                let prismNodesParseRes:PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: str, alias: Option<String>.None, color: Option<Color>.None)
+            for (str in  strText) {
+                let prismNodesParseResList: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
+                let prismNodesParseRes: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: str, alias: Option<String>.None, color: Option<Color>.None)
                 prismNodesParseResList.add(prismNodesParseRes)
                 prismNodesParseResLists.add(prismNodesParseResList)
             }

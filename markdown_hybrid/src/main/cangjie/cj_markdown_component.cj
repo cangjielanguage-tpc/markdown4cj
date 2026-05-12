@@ -80,7 +80,7 @@ class CJMarkdownComponent {
     }
 
     func setPlugin(): Markdown {
-        let markdownBuilder:MarkdownBuilder = Markdown.builder()
+        let markdownBuilder: MarkdownBuilder = Markdown.builder()
         if (let Some(v) <- plugin) {
             if (v.isBlockAudioPlugin) {
                 markdownBuilder.usePlugin(BlockAudioPlugin.create())

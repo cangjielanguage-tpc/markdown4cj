@@ -4,7 +4,7 @@ import ohos.ark_interop_macro.*
 
 @Interop[ArkTS]
 public class CJNodeViewStringBuilder {
-    var nodeViewStringBuilder: ?NodeViewStringBuilder =None
+    var nodeViewStringBuilder: ?NodeViewStringBuilder = None
 
     public init() {}
 
@@ -19,7 +19,7 @@ public class CJNodeViewStringBuilder {
      * @return 文本字符串，如果未设置则返回空字符串
      */
     public func toString(): String {
-        if (let Some(v) <- nodeViewStringBuilder){
+        if (let Some(v) <- nodeViewStringBuilder) {
             return v.toString()
         } else {
             return ""

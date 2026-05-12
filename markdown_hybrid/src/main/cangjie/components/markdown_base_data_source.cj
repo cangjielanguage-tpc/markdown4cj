@@ -282,7 +282,7 @@ public open class MarkdownBaseListDataSource<T> <: IDataSource<T> {
      * @param datas 列表
      */
     public func addDatas(datas: ObservedArrayList<T>): Unit {
-        for(i in 0..datas.size){
+        for (i in 0..datas.size) {
             addData(datas[i])
         }
     }

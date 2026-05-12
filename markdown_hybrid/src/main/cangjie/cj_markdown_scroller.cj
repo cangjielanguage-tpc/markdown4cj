@@ -84,7 +84,7 @@ public class CJRectResult {
     var width: Float64
     var height: Float64
 
-    public init(x: Float64,y: Float64,width: Float64,height: Float64){
+    public init(x: Float64,y: Float64,width: Float64,height: Float64) {
         this.x = x
         this.y = y
         this.width = width

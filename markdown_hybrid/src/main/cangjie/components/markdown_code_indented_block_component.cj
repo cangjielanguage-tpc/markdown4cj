@@ -204,14 +204,14 @@ class MarkdownCodeIndentedBlockComponent {
 }
 
 func copyTextFontSize(config: MarkdownConfiguration): Float64{
-    if(let Some(v) <- config.markdownTheme.codeBlockTheme.codeBlockCopyTextFontSize){
+    if (let Some(v) <- config.markdownTheme.codeBlockTheme.codeBlockCopyTextFontSize) {
         return v
     }
     return config.markdownTheme.codeBlockTheme.codeBlockTextFontSize
 }
 
 func fullScreenTextFontSize(config: MarkdownConfiguration): Float64{
-    if(let Some(v) <- config.markdownTheme.codeBlockTheme.codeBlockFullScreenTextFontSize){
+    if (let Some(v) <- config.markdownTheme.codeBlockTheme.codeBlockFullScreenTextFontSize) {
         return v
     }
     return config.markdownTheme.codeBlockTheme.codeBlockTextFontSize

@@ -85,7 +85,7 @@ public class IncreaseParser {
         if (continueBlock1 is TableBlock || continueBlock1 is ListBlock || continueBlock1 is FencedCodeBlockListBlock) {
             this.firstDirtyBlock = continueBlock1
             deepth = 2
-        }else if (firstDirtyBlock is TableBlock || firstDirtyBlock is ListBlock) {
+        } else if (firstDirtyBlock is TableBlock || firstDirtyBlock is ListBlock) {
             deepth = 1
         }
         while (firstDirtyBlock.getSourceSpans().isEmpty()) {

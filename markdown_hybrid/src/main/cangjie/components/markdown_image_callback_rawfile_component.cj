@@ -103,8 +103,8 @@ public class MarkdownImageCallbackRawFileComponent {
     }
 
     func build() {
-        Column(){
-             Column(){
+        Column() {
+             Column() {
                 if (rawFileCallbackReplaceImageType == 1) {
                     // 替换之后的图片
                     Image(rawFileCallbackReplaceImagePixelMap())
@@ -153,7 +153,7 @@ public class MarkdownImageCallbackRawFileComponent {
                 }
             }
             .alignItems(rawFileCallbackHorizontalAlign)
-            if(rawFileCallbackMarkdownTheme.imageTheme.imageDownloadButtonVisible){
+            if (rawFileCallbackMarkdownTheme.imageTheme.imageDownloadButtonVisible) {
                 MarkdownImageDownloadComponent(
                     markdownTheme: rawFileCallbackMarkdownTheme,
                     destination: rawFileCallbackDestination,

@@ -513,11 +513,11 @@ func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDeco
 }
 
 /**
- * 设置文字背景颜色及圆角
+ * 设置文本背景颜色及圆角
  *
  * @param nodeView NodeView
  * @param markdownTheme markdown样式
- * @return 文字背景颜色及圆角
+ * @return 文本背景颜色及圆角
  */
 func spanBackgroundColor18(nodeView: NodeView, markdownTheme: MarkdownTheme): (Color, Float64, Float64, Float64, Float64) {
     if (nodeView.isInLineCode) {
@@ -533,11 +533,11 @@ func spanBackgroundColor18(nodeView: NodeView, markdownTheme: MarkdownTheme): (C
 }
 
 /**
- * 设置文字背景颜色及圆角
+ * 设置文本背景颜色及圆角
  *
  * @param nodeView NodeView
  * @param markdownTheme markdown样式
- * @return 文字背景颜色及圆角
+ * @return 文本背景颜色及圆角
  */
 func spanBackgroundColor19(nodeView: NodeView, markdownTheme: MarkdownTheme): TextBackgroundStyle {
     if (nodeView.isInLineCode) {
@@ -570,11 +570,11 @@ func spanBaselineOffset(nodeView: NodeView, markdownTheme: MarkdownTheme): Float
 }
 
 /**
- * 设置文本的文本行高
+ * 设置文本行高
  *
  * @param nodeView NodeView
  * @param markdownTheme markdown样式
- * @return 文本的文本行高
+ * @return 文本行高
  */
 func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
     if (nodeView.isInLineCode && markdownTheme.inlineCodeTheme.inlineCodeTextLineHeight.isSome()) {
@@ -611,11 +611,11 @@ func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
 }
 
 /**
- * 设置标题文本的文本行高
+ * 设置标题文本行高
  *
  * @param level 标题等级
  * @param markdownTheme markdown样式
- * @return 标题文本的文本行高
+ * @return 标题文本行高
  */
 func headLineHeight(level: Int64, markdownTheme: MarkdownTheme): Float64 {
     return match (level) {
@@ -872,9 +872,9 @@ func listBackgroundColor(isBullet: Bool, markdownTheme: MarkdownTheme, nodeView:
  * @return 列表子模块上下间距
  */
 func listChildSpacing(markdownTheme: MarkdownTheme, nodeView: NodeView): Int64 {
-    if (nodeView.nodeType == "BulletList"){
+    if (nodeView.nodeType == "BulletList") {
         return markdownTheme.bulletListTheme.bulletListChildSpacing
-    } else if (nodeView.nodeType == "OrderedList"){
+    } else if (nodeView.nodeType == "OrderedList") {
         return markdownTheme.orderedListTheme.orderedListChildSpacing
     }
     return 0
@@ -888,9 +888,9 @@ func listChildSpacing(markdownTheme: MarkdownTheme, nodeView: NodeView): Int64 {
  * @return 列表子模块上下间距
  */
 func listChildChildSpacing(markdownTheme: MarkdownTheme, nodeView: NodeView): Int64 {
-    if (nodeView.isBulletList){
+    if (nodeView.isBulletList) {
         return markdownTheme.bulletListTheme.bulletListChildChildSpacing
-    } else if (nodeView.isOrderedList){
+    } else if (nodeView.isOrderedList) {
         return markdownTheme.orderedListTheme.orderedListChildChildSpacing
     }
     return 0
@@ -1068,7 +1068,7 @@ func listPrefixSpacing(isBullet: Bool, markdownTheme: MarkdownTheme): Float64 {
  * @return 定义行间距
  */
 func descDefItemSpacing(idx: Int64, markdownTheme: MarkdownTheme): Float64 {
-    if(idx == 1){
+    if (idx == 1) {
         return 0.0
     }
     return markdownTheme.definitionListTheme.definitionListDescriptionItemSpacing
@@ -1238,7 +1238,7 @@ func strToLength(str: ?String): ?Length {
  * @return (左上圆角, 右上圆角, 左下圆角, 右下圆角)
  */
 func imageSpanBorderRadius(radius: Option<Length>, imageBorderRadiusTopLeft: Float64, imageBorderRadiusTopRight: Float64, imageBorderRadiusBottomLeft: Float64, imageBorderRadiusBottomRight: Float64): (Float64, Float64, Float64, Float64) {
-    if (let Some(v) <- radius){
+    if (let Some(v) <- radius) {
         let r = length2Float(v)
         return (r, r, r, r)
     }
@@ -1522,16 +1522,16 @@ func codeBackgroundColor(markdownTheme: MarkdownTheme, prismTheme: PrismTheme): 
 }
 
 /**
- * 代码块代码默认文字颜色 -- 代码高亮
+ * 代码块代码默认文本字体颜色 -- 代码高亮
  *
  * @param item PrismNodesParseResUI
  * @param markdownTheme markdown基础样式
  * @param prismTheme 代码高亮样式
- * @return 文字颜色
+ * @return 文本字体颜色
  */
 func codeTextColor(item: PrismNodesParseResUI, markdownTheme: MarkdownTheme): Color {
     let color: ?Color = item.getColor()
-    if (let Some(v) <- color){
+    if (let Some(v) <- color) {
         return v
     }
     if (let Some(v) <- markdownTheme.codeBlockTheme.codeBlockTextFontColor) {
@@ -1541,11 +1541,11 @@ func codeTextColor(item: PrismNodesParseResUI, markdownTheme: MarkdownTheme): Co
 }
 
 /**
- * 代码块代码默认文字颜色
+ * 代码块代码默认文本字体颜色
  *
  * @param markdownTheme markdown基础样式
  * @param prismTheme 代码高亮样式
- * @return 文字颜色
+ * @return 文本字体颜色
  */
 func indentedCodeTextColor(markdownTheme: MarkdownTheme): Color {
     if (let Some(color) <- markdownTheme.codeBlockTheme.codeBlockTextFontColor) {

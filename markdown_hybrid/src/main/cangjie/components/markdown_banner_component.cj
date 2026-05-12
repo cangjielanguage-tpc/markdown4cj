@@ -15,7 +15,7 @@ class MarkdownBannerComponent {
     var bannerNodeViewList: ObservedArrayList<NodeView> = ObservedArrayList<NodeView>() // 数据源
 
     protected override func aboutToAppear(): Unit {
-        for (item in nodeView.children){
+        for (item in nodeView.children) {
             bannerNodeViewList.append(item)
         }
     }

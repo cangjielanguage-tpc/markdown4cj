@@ -4,7 +4,7 @@
 package markdown.plugin.emoji
 
 // Generated, don't edit
-public let EMOJI_DATA_FULL:HashMap<String,String> = HashMap(
+public let EMOJI_DATA_FULL: HashMap<String,String> = HashMap(
   ("100", "💯"),
   ("1234", "🔢"),
   ("grinning", "😀"),

@@ -114,7 +114,7 @@ class HeadTree <: CustomBlock {
     var item_list_v: ?OrderedList = None
     prop item_list: OrderedList {
         get() {
-            if (let Some(v) <- item_list_v){
+            if (let Some(v) <- item_list_v) {
                 return v
             }  else {
                 let v = OrderedList(1, r'.')

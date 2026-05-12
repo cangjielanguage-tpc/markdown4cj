@@ -299,7 +299,7 @@ class MarkdownCodeComponent {
             // 新数据大于页面数据
             // 循环判断历史数据有没有做过修改
             for (i in 0..dataSourceSize) {
-                if(lineStrArray.getData(i) != arr[i]){
+                if (lineStrArray.getData(i) != arr[i]) {
                     // 最后一条数据通过页面缓存刷新
                     lineStrArray.replaceData(i, arr[i])
                     lineInt64Array.replaceData(i, arr[i])
@@ -318,7 +318,7 @@ class MarkdownCodeComponent {
             // 新数据等于页面数据
             let indexItem: Int64 = dataSourceSize
             for (i in 0..indexItem) {
-                if(lineStrArray.getData(i) != arr[i]){
+                if (lineStrArray.getData(i) != arr[i]) {
                     // 最后一条数据通过页面缓存刷新
                     lineStrArray.replaceData(i, arr[i])
                     lineInt64Array.replaceData(i, arr[i])
@@ -332,7 +332,7 @@ class MarkdownCodeComponent {
             // 新数据小于页面数据
             // 循环判断历史数据有没有做过修改
             for (i in 0..refreshNodeViewSize) {
-                if(lineStrArray.getData(i) != arr[i]){
+                if (lineStrArray.getData(i) != arr[i]) {
                     // 最后一条数据通过页面缓存刷新
                     lineStrArray.replaceData(i, arr[i])
                     lineInt64Array.replaceData(i, arr[i])

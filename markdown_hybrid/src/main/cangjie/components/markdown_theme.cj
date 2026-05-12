@@ -832,8 +832,8 @@ public class MarkdownThemeBuilder {
      */
     @Deprecated["用LinkTheme.setLinkTextFontSize方法代替", since: "1.4.0"]
     public func setIsLinkSize(isLinkSize: Bool): MarkdownThemeBuilder {
-        if(isLinkSize){
-            if(this.linkTheme.linkTextFontSize.isNone()){
+        if (isLinkSize) {
+            if (this.linkTheme.linkTextFontSize.isNone()) {
                 this.linkTheme.linkTextFontSize = 14.0
             }
         } else {
@@ -843,9 +843,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置文本格式链接文字大小
+     * 设置文本格式链接文本大小
      *
-     * @param linkSize 文本格式链接文字大小 - 默认14.0fp
+     * @param linkSize 文本格式链接文本大小 - 默认14.0fp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkTextFontSize方法代替", since: "1.4.0"]
@@ -855,9 +855,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置文本格式链接文字行高
+     * 设置文本格式链接文本行高
      *
-     * @param linkLineHeight 文本格式链接文字行高
+     * @param linkLineHeight 文本格式链接文本行高
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkTextLineHeight方法代替", since: "1.4.0"]
@@ -886,7 +886,7 @@ public class MarkdownThemeBuilder {
      */
     @Deprecated["用LinkTheme.setLinkTextDecorationType方法代替", since: "1.4.0"]
     public func setIsLinkUnderlined(isLinkUnderlined: Bool): MarkdownThemeBuilder {
-        if(!isLinkUnderlined){
+        if (!isLinkUnderlined) {
             this.linkTheme.linkTextDecorationType = TextDecorationType.None
         }
         return this
@@ -917,9 +917,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置圆形图片格式链接文字大小
+     * 设置圆形图片格式链接文本大小
      *
-     * @param linkCircleImageTextSize 圆形图片格式链接文字大小 - 默认14.0fp
+     * @param linkCircleImageTextSize 圆形图片格式链接文本大小 - 默认14.0fp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkCircleIconTextSize方法代替", since: "1.4.0"]
@@ -929,9 +929,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置圆形图片格式链接文字颜色
+     * 设置圆形图片格式链接文本颜色
      *
-     * @param linkCircleImageTextColor 圆形图片格式链接文字颜色 - 默认Color.WHITE
+     * @param linkCircleImageTextColor 圆形图片格式链接文本颜色 - 默认Color.WHITE
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkCircleIconTextColor方法代替", since: "1.4.0"]
@@ -989,9 +989,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 圆角矩形图片格式链接文字大小
+     * 圆角矩形图片格式链接文本大小
      *
-     * @param linkRectImageTextSize 圆角矩形图片格式链接文字大小 - 默认14.0fp
+     * @param linkRectImageTextSize 圆角矩形图片格式链接文本大小 - 默认14.0fp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconTextSize方法代替", since: "1.4.0"]
@@ -1001,9 +1001,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置圆角矩形图片格式链接文字颜色
+     * 设置圆角矩形图片格式链接文本颜色
      *
-     * @param linkRectImageTextColor 圆角矩形图片格式链接文字颜色 - 默认Color.WHITE
+     * @param linkRectImageTextColor 圆角矩形图片格式链接文本颜色 - 默认Color.WHITE
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkRectIconTextColor方法代替", since: "1.4.0"]
@@ -1085,9 +1085,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置空心圆角矩形图片格式链接文字大小
+     * 设置空心圆角矩形图片格式链接文本大小
      *
-     * @param linkRectToolImageTextSize 空心圆角矩形图片格式链接文字大小 - 默认14.0fp
+     * @param linkRectToolImageTextSize 空心圆角矩形图片格式链接文本大小 - 默认14.0fp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LinkTheme.setLinkRectToolIconTextSize方法代替", since: "1.4.0"]
@@ -1299,7 +1299,7 @@ public class MarkdownThemeBuilder {
      */
     @Deprecated["用OrderedListTheme.setOrderedListMarkerTextFontWeight方法代替", since: "1.4.0"]
     public func setOrderedListItemPrefixBold(orderedListItemPrefixBold: Bool): MarkdownThemeBuilder {
-        if(orderedListItemPrefixBold){
+        if (orderedListItemPrefixBold) {
             this.orderedListTheme.orderedListMarkerTextFontWeight = FontWeight.W600
         }
         return this
@@ -1535,9 +1535,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置代码块复制、全屏图片文字是否显示
+     * 设置代码块复制、全屏图片文本是否显示
      *
-     * @param codeBlockIconTextHide 代码块复制、全屏图片文字是否显示 - true:显示;false:不显示。默认true
+     * @param codeBlockIconTextHide 代码块复制、全屏图片文本是否显示 - true:显示;false:不显示。默认true
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用CodeBlockTheme.setCodeBlockCopyTextIsShow和setCodeBlockFullScreenTextIsShow方法代替", since: "1.4.0"]
@@ -2312,9 +2312,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置数学公式未加载状态是否显示文字
+     * 设置数学公式未加载状态是否显示文本
      *
-     * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
+     * @param latexDefaultText 数学公式未加载状态是否显示文本 - 默认true
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用LatexMathTheme.setLatexMathDefaultText方法代替", since: "1.4.0"]
@@ -2471,9 +2471,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置音频按钮文字颜色
+     * 设置音频按钮文本颜色
      *
-     * @param audioButtonTextColor 音频按钮文字颜色 - 默认Color.WHITE
+     * @param audioButtonTextColor 音频按钮文本颜色 - 默认Color.WHITE
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用AudioTheme.setAudioButtonTextFontColor方法代替", since: "1.4.0"]
@@ -2483,9 +2483,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置音频按钮文字大小
+     * 设置音频按钮文本大小
      *
-     * @param audioButtonTextSize 音频按钮文字大小 - 默认14.0fp
+     * @param audioButtonTextSize 音频按钮文本大小 - 默认14.0fp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用AudioTheme.setAudioButtonTextFontSize方法代替", since: "1.4.0"]
@@ -2495,9 +2495,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置音频按钮文字内容
+     * 设置音频按钮文本内容
      *
-     * @param audioButtonText 音频按钮文字内容 - 默认"立即播放"
+     * @param audioButtonText 音频按钮文本内容 - 默认"立即播放"
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用AudioTheme.setAudioButtonText方法代替", since: "1.4.0"]
@@ -2522,9 +2522,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置音频标题文字大小
+     * 设置音频标题文本大小
      *
-     * @param audioTitleTextSize 音频标题文字大小 - 默认15.0fp
+     * @param audioTitleTextSize 音频标题文本大小 - 默认15.0fp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用AudioTheme.setAudioTitleTextFontSize方法代替", since: "1.4.0"]
@@ -2534,9 +2534,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置音频标题文字颜色
+     * 设置音频标题文本颜色
      *
-     * @param audioTitleTextColor音频标题文字颜色 - 默认Color.BLACK
+     * @param audioTitleTextColor 音频标题文本颜色 - 默认Color.BLACK
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用AudioTheme.setAudioTitleTextFontColor方法代替", since: "1.4.0"]
@@ -2546,9 +2546,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置音频标题文字行高
+     * 设置音频标题文本行高
      *
-     * @param audioTitleTextLineHeight 音频标题文字行高 - 默认20.0vp
+     * @param audioTitleTextLineHeight 音频标题文本行高 - 默认20.0vp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用AudioTheme.setAudioTitleTextLineHeight方法代替", since: "1.4.0"]
@@ -2558,9 +2558,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置音频类型文字大小
+     * 设置音频类型文本大小
      *
-     * @param audioTypeTextSize 音频类型文字大小 - 默认11.0fp
+     * @param audioTypeTextSize 音频类型文本大小 - 默认11.0fp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用AudioTheme.setAudioTypeTextFontSize方法代替", since: "1.4.0"]
@@ -2570,9 +2570,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置音频类型文字颜色
+     * 设置音频类型文本颜色
      *
-     * @param audioTypeTextColor 音频类型文字颜色 - 默认0x80000000
+     * @param audioTypeTextColor 音频类型文本颜色 - 默认0x80000000
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用AudioTheme.setAudioTypeTextFontColor方法代替", since: "1.4.0"]
@@ -2582,9 +2582,9 @@ public class MarkdownThemeBuilder {
     }
 
     /**
-     * 设置音频类型文字行高
+     * 设置音频类型文本行高
      *
-     * @param audioTypeTextLineHeight 音频类型文字行高 - 默认15.0vp
+     * @param audioTypeTextLineHeight 音频类型文本行高 - 默认15.0vp
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用AudioTheme.setAudioTypeTextLineHeight方法代替", since: "1.4.0"]
@@ -3478,9 +3478,9 @@ public class MarkdownThemeBuilder {
      */
     @Deprecated["用TableTheme.setTableScrollBarState方法代替", since: "1.4.0"]
     public func setTableScrollBarShow(tableScrollBarShow: Bool): MarkdownThemeBuilder {
-        if(tableScrollBarShow){
+        if (tableScrollBarShow) {
             this.tableTheme.tableScrollBarState = BarState.On
-        }else {
+        } else {
             this.tableTheme.tableScrollBarState = BarState.Off
         }
         return this

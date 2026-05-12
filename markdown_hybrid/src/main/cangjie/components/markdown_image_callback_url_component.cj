@@ -80,7 +80,7 @@ public class MarkdownImageCallbackUrlComponent {
             urlCallbackComponentImageWidth * 9.0 / 16.0 * urlCallbackMarkdownTheme.imageTheme.imageMaximumWidth
         }
         // 图片对齐
-        urlCallbackHorizontalAlign = if(urlCallbackImageAlign.isSome()){
+        urlCallbackHorizontalAlign = if (urlCallbackImageAlign.isSome()) {
             urlCallbackImageAlign()
         } else {
             HorizontalAlign.Start
@@ -96,8 +96,8 @@ public class MarkdownImageCallbackUrlComponent {
     }
 
     func build() {
-         Column(){
-             Column(){
+         Column() {
+             Column() {
                 if (urlCallbackReplaceImageType == 1) {
                     // 替换之后的图片
                     Image(urlCallbackReplaceImagePixelMap())
@@ -166,7 +166,7 @@ public class MarkdownImageCallbackUrlComponent {
                 }
             }
             .alignItems(urlCallbackHorizontalAlign)
-            if(urlCallbackMarkdownTheme.imageTheme.imageDownloadButtonVisible){
+            if (urlCallbackMarkdownTheme.imageTheme.imageDownloadButtonVisible) {
                 MarkdownImageDownloadComponent(
                     markdownTheme: urlCallbackMarkdownTheme,
                     destination: urlCallbackDestination,

@@ -70,7 +70,7 @@ public class MarkdownImageUrlComponent {
             urlComponentImageWidth * 9.0 / 16.0 * urlMarkdownTheme.imageTheme.imageMaximumWidth
         }
         // 图片对齐
-        urlHorizontalAlign = if(urlImageAlign.isSome()){
+        urlHorizontalAlign = if (urlImageAlign.isSome()) {
             urlImageAlign()
         } else {
             HorizontalAlign.Start
@@ -78,8 +78,8 @@ public class MarkdownImageUrlComponent {
     }
 
     func build() {
-        Column(){
-            Column(){
+        Column() {
+            Column() {
                 if (urlImageType != 2) {
                     // 加载图片
                     Image(urlDestination)
@@ -132,7 +132,7 @@ public class MarkdownImageUrlComponent {
                 }
             }
             .alignItems(urlHorizontalAlign)
-            if(urlMarkdownTheme.imageTheme.imageDownloadButtonVisible){
+            if (urlMarkdownTheme.imageTheme.imageDownloadButtonVisible) {
                 MarkdownImageDownloadComponent(
                     markdownTheme: urlMarkdownTheme,
                     destination: urlDestination,

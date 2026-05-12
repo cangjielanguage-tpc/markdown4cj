@@ -73,7 +73,7 @@ public class MarkdownImageRawFileComponent {
             rawFileComponentImageWidth * 9.0 / 16.0 * rawFileMarkdownTheme.imageTheme.imageMaximumWidth
         }
         // 图片对齐
-        rawFileHorizontalAlign = if(rawFileImageAlign.isSome()){
+        rawFileHorizontalAlign = if (rawFileImageAlign.isSome()) {
             rawFileImageAlign()
         } else {
             HorizontalAlign.Start
@@ -89,8 +89,8 @@ public class MarkdownImageRawFileComponent {
     }
 
     func build() {
-        Column(){
-            Column(){
+        Column() {
+            Column() {
                 if (rawFileImageType == 1) {
                     // 加载图片
                     Image(rawFileImagePixelMap())
@@ -123,7 +123,7 @@ public class MarkdownImageRawFileComponent {
                 }
             }
             .alignItems(rawFileHorizontalAlign)
-            if(rawFileMarkdownTheme.imageTheme.imageDownloadButtonVisible){
+            if (rawFileMarkdownTheme.imageTheme.imageDownloadButtonVisible) {
                 MarkdownImageDownloadComponent(
                     markdownTheme: rawFileMarkdownTheme,
                     destination: rawFileDestination,
