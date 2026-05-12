@@ -332,10 +332,10 @@ public class MarkdownComponent {
                     ListItem() {
                         if (item.isLatexMathBlockClose) {
                              MarkdownLatexMathBlockComponent(
-                                 markdownTheme:markdownConfiguration.markdownTheme,
-                                 latexMathBlockStr:item.nodeText,
-                                 latexImageCallback:markdownConfiguration.latexImageCallback,
-                                 latexStrCallback:markdownConfiguration.latexStrCallback,
+                                 markdownTheme: markdownConfiguration.markdownTheme,
+                                 latexMathBlockStr: item.nodeText,
+                                 latexImageCallback: markdownConfiguration.latexImageCallback,
+                                 latexStrCallback: markdownConfiguration.latexStrCallback,
                              )
                          } else if (markdownConfiguration.markdownTheme.latexMathTheme.latexMathDefaultText) {
                              Text(item.nodeText)
@@ -356,15 +356,15 @@ public class MarkdownComponent {
                     // 表格
                     ListItem() {
                         MarkdownTableBlockComponent(
-                            tableBlockMarkdownConfiguration:markdownConfiguration,
-                            tableBlockNodeView:item,
-                            tableBlockComponentWidth:tableBlockComponentWidth,
-                            tableComponents:markdownCacheConfiguration.tableComponents,
-                            tableRowComponents:markdownCacheConfiguration.tableRowComponents,
-                            tableCellComponents:markdownCacheConfiguration.tableCellComponents,
-                            tableBlockCustomTableLineBuilder:customTableLineBuilder,
-                            tableBlockImageCallback:imageCallback,
-                            tableBlockFootnoteCallback:footnoteCallback
+                            tableBlockMarkdownConfiguration: markdownConfiguration,
+                            tableBlockNodeView: item,
+                            tableBlockComponentWidth: tableBlockComponentWidth,
+                            tableComponents: markdownCacheConfiguration.tableComponents,
+                            tableRowComponents: markdownCacheConfiguration.tableRowComponents,
+                            tableCellComponents: markdownCacheConfiguration.tableCellComponents,
+                            tableBlockCustomTableLineBuilder: customTableLineBuilder,
+                            tableBlockImageCallback: imageCallback,
+                            tableBlockFootnoteCallback: footnoteCallback
                         )
                     }
                     .margin(
@@ -390,14 +390,14 @@ public class MarkdownComponent {
                     // 脚注
                     ListItem() {
                         MarkdownFootnoteComponent(
-                            footnoteMarkdownConfiguration:markdownConfiguration,
-                            footnoteNodeView:item,
-                            footnoteComponentWidth:componentWidth,
-                            footnoteMarkdownCacheConfiguration:markdownCacheConfiguration,
-                            footnoteCustomParagraphLineBuilder:customParagraphLineBuilder,
-                            footnoteTocListOnClick:tocListOnClick,
-                            footnoteImageCallback:imageCallback,
-                            footnoteFootnoteCallback:footnoteCallback
+                            footnoteMarkdownConfiguration: markdownConfiguration,
+                            footnoteNodeView: item,
+                            footnoteComponentWidth: componentWidth,
+                            footnoteMarkdownCacheConfiguration: markdownCacheConfiguration,
+                            footnoteCustomParagraphLineBuilder: customParagraphLineBuilder,
+                            footnoteTocListOnClick: tocListOnClick,
+                            footnoteImageCallback: imageCallback,
+                            footnoteFootnoteCallback: footnoteCallback
                         )
                     }
                     .margin(
@@ -410,14 +410,14 @@ public class MarkdownComponent {
                     // 定义列表
                     ListItem() {
                         MarkdownDescListComponent(
-                            descListMarkdownConfiguration:markdownConfiguration,
-                            descListNodeView:item,
-                            descListComponentWidth:componentWidth,
-                            descListMarkdownCacheConfiguration:markdownCacheConfiguration,
-                            descListCustomParagraphLineBuilder:customParagraphLineBuilder,
-                            descListTocListOnClick:tocListOnClick,
-                            descListImageCallback:imageCallback,
-                            descListFootnoteCallback:footnoteCallback
+                            descListMarkdownConfiguration: markdownConfiguration,
+                            descListNodeView: item,
+                            descListComponentWidth: componentWidth,
+                            descListMarkdownCacheConfiguration: markdownCacheConfiguration,
+                            descListCustomParagraphLineBuilder: customParagraphLineBuilder,
+                            descListTocListOnClick: tocListOnClick,
+                            descListImageCallback: imageCallback,
+                            descListFootnoteCallback: footnoteCallback
                         )
                     }
                     .margin(

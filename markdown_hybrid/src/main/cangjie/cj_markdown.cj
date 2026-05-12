@@ -76,8 +76,8 @@ public func getLoadCJPage(ctx: JSContext, callInfo: JSCallInfo): JSValue {
             listScroller = v.cast<CJMarkdownScroller>()
         }
     }
-    let elmetId = ViewStackProcessor.AllocateNewElmetIdForNextComponent()
-    ViewStackProcessor.StartGetAccessRecordingFor(elmetId)
+    let elementId = ViewStackProcessor.AllocateNewElmetIdForNextComponent()
+    ViewStackProcessor.StartGetAccessRecordingFor(elementId)
     let comp = CJMarkdownComponent(
         Option<CustomView>.None,
         mdStr: ObservedProperty<String>("", mdStr),

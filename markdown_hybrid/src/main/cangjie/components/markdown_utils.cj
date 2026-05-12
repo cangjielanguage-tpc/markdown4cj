@@ -62,11 +62,11 @@ func spanOnClick(markdownConfiguration: MarkdownConfiguration, nodeView: NodeVie
 }
 
 /**
- * 设置字体样式列表
+ * 设置文本字体族
  *
  * @param nodeView NodeView
  * @param markdownTheme markdown样式
- * @return 字体样式列表
+ * @return 文本字体族
  */
 func spanFontFamily(nodeView: NodeView, markdownTheme: MarkdownTheme): String {
     if (nodeView.isSubNode && markdownTheme.subTheme.subTextFontFamily.isSome()) {
@@ -109,11 +109,11 @@ func spanFontFamily(nodeView: NodeView, markdownTheme: MarkdownTheme): String {
 }
 
 /**
- * 设置不同等级标题文本字体样式列表
+ * 设置不同等级标题文本字体族
  *
  * @param level 标题等级
  * @param markdownTheme markdown样式
- * @return 标题文本字体样式列表
+ * @return 标题文本字体族
  */
 func headingFontFamily(level: Int64, markdownTheme: MarkdownTheme): String {
     return match (level) {
@@ -128,11 +128,11 @@ func headingFontFamily(level: Int64, markdownTheme: MarkdownTheme): String {
 }
 
 /**
- * 设置文字字体大小
+ * 设置文本字体大小
  *
  * @param nodeView NodeView
  * @param markdownTheme markdown样式
- * @return 文字字体大小
+ * @return 文本字体大小
  */
 func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
     if (nodeView.isSubNode) {
@@ -185,11 +185,11 @@ func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
 }
 
 /**
- * 设置不同等级标题文本大小
+ * 设置不同等级标题文本字体大小
  *
  * @param level 标题等级
  * @param markdownTheme markdown样式
- * @return 标题文本大小
+ * @return 标题文本字体大小
  */
 func headingTextSize(level: Int64, markdownTheme: MarkdownTheme): Float64 {
     return match (level) {
@@ -204,12 +204,12 @@ func headingTextSize(level: Int64, markdownTheme: MarkdownTheme): Float64 {
 }
 
 /**
- * 设置文字样式加粗
+ * 设置文本的字体粗细
  *
  * @param nodeView NodeView
  * @param isTableFirst 表格第一列是否加粗
  * @param markdownTheme markdown样式
- * @return 文字样式加粗
+ * @return 文本的字体粗细
  */
 func spanFontWeight(nodeView: NodeView, isTableFirst: Bool, markdownTheme: MarkdownTheme): FontWeight {
     if (nodeView.isSpanNode) {
@@ -260,11 +260,11 @@ func spanFontWeight(nodeView: NodeView, isTableFirst: Bool, markdownTheme: Markd
 }
 
 /**
- * 设置不同等级标题文本文字样式加粗
+ * 设置不同等级标题文本的字体粗细
  *
  * @param level 标题等级
  * @param markdownTheme markdown样式
- * @return 标题文本文字样式加粗
+ * @return 标题文本的字体粗细
  */
 func headingFontWeight(level: Int64, markdownTheme: MarkdownTheme): FontWeight {
     return match (level) {
@@ -279,11 +279,11 @@ func headingFontWeight(level: Int64, markdownTheme: MarkdownTheme): FontWeight {
 }
 
 /**
- * 设置文字样式斜体
+ * 设置文本字体样式
  *
  * @param nodeView NodeView
  * @param markdownTheme markdown样式
- * @return 文字样式斜体
+ * @return 文本字体样式
  */
 func spanFontStyle(nodeView: NodeView, markdownTheme: MarkdownTheme): FontStyle {
     if (nodeView.isSubNode && markdownTheme.subTheme.subTextFontStyle.isSome()) {
@@ -329,11 +329,11 @@ func spanFontStyle(nodeView: NodeView, markdownTheme: MarkdownTheme): FontStyle 
 }
 
 /**
- * 设置不同等级标题文本文字样式加粗
+ * 设置不同等级标题文本字体样式
  *
  * @param level 标题等级
  * @param markdownTheme markdown样式
- * @return 标题文本文字样式斜体
+ * @return 标题文本字体样式
  */
 func headingFontStyle(level: Int64, markdownTheme: MarkdownTheme): FontStyle {
     return match (level) {
@@ -405,11 +405,11 @@ func spanFontColor(nodeView: NodeView, markdownTheme: MarkdownTheme): Color {
 }
 
 /**
- * 设置不同等级标题颜色
+ * 设置不同等级标题文本字体颜色
  *
  * @param level 标题等级
  * @param markdownTheme markdown样式
- * @return 标题颜色
+ * @return 标题文本字体颜色
  */
 func headColor(level: Int64, markdownTheme: MarkdownTheme): Color {
     return match (level) {
@@ -428,7 +428,7 @@ func headColor(level: Int64, markdownTheme: MarkdownTheme): Color {
  *
  * @param nodeView NodeView
  * @param markdownTheme markdown样式
- * @return 文本基线的偏移量
+ * @return 文本字符间距
  */
 func spanLetterSpacing(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
     if (nodeView.isSubNode && markdownTheme.subTheme.subTextLetterSpacing.isSome()) {
@@ -490,11 +490,11 @@ func headLetterSpacing(level: Int64, markdownTheme: MarkdownTheme): Float64 {
 }
 
 /**
- * 设置文本下划线中划线
+ * 设置文本装饰线样式及其颜色
  *
  * @param nodeView NodeView
  * @param markdownTheme markdown样式
- * @return 文本下划线中划线
+ * @return 文本装饰线样式及其颜色
  */
 func spanDecoration(nodeView: NodeView, markdownTheme: MarkdownTheme): (TextDecorationType, Color, Int32) {
     if (nodeView.isStrikethrough) {
@@ -570,11 +570,11 @@ func spanBaselineOffset(nodeView: NodeView, markdownTheme: MarkdownTheme): Float
 }
 
 /**
- * 设置文本行高
+ * 设置文本的文本行高
  *
  * @param nodeView NodeView
  * @param markdownTheme markdown样式
- * @return 文本行高
+ * @return 文本的文本行高
  */
 func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
     if (nodeView.isInLineCode && markdownTheme.inlineCodeTheme.inlineCodeTextLineHeight.isSome()) {
@@ -611,11 +611,11 @@ func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
 }
 
 /**
- * 设置标题行高
+ * 设置标题文本的文本行高
  *
  * @param level 标题等级
  * @param markdownTheme markdown样式
- * @return 标题行高
+ * @return 标题文本的文本行高
  */
 func headLineHeight(level: Int64, markdownTheme: MarkdownTheme): Float64 {
     return match (level) {
@@ -1657,93 +1657,6 @@ func codeDividerColor(markdownTheme: MarkdownTheme): Color {
     }
     return markdownTheme.prismTheme.textColor()
 }
-//
-///**
-// * 代码块代码类型文本颜色
-// *
-// * @param markdownTheme markdown基础样式
-// * @param prismTheme 代码高亮样式
-// * @return 码类型文本颜色
-// */
-//func codeTypeTextFontColor(markdownTheme: MarkdownTheme): Color {
-//    if (let Some(color) <- markdownTheme.codeBlockTheme.codeBlockTypeTextFontColor) {
-//        return color
-//    }
-//    if (let Some(color) <- markdownTheme.codeBlockTheme.codeBlockTextFontColor) {
-//        return color
-//    }
-//    return markdownTheme.prismTheme.textColor()
-//}
-//
-///**
-// * 代码块代码类型文本尺寸
-// *
-// * @param markdownTheme markdown基础样式
-// * @param prismTheme 代码高亮样式
-// * @return 代码类型文本尺寸
-// */
-//func codeTypeTextFontSize(markdownTheme: MarkdownTheme): Float64 {
-//    if (let Some(v) <- markdownTheme.codeBlockTheme.codeBlockTypeTextFontSize) {
-//        return v
-//    }
-//    return markdownTheme.codeBlockTheme.codeBlockTextFontSize
-//}
-//
-///**
-// * 代码块代码类型文本字体样式
-// *
-// * @param markdownTheme markdown基础样式
-// * @param prismTheme 代码高亮样式
-// * @return 代码类型文本字体样式
-// */
-//func codeTypeTextFontStyle(markdownTheme: MarkdownTheme): FontStyle {
-//    if (let Some(v) <- markdownTheme.codeBlockTheme.codeBlockTypeTextFontStyle) {
-//        return v
-//    }
-//    return markdownTheme.codeBlockTheme.codeBlockTextFontStyle
-//}
-//
-///**
-// * 代码块代码类型文本字体粗细
-// *
-// * @param markdownTheme markdown基础样式
-// * @param prismTheme 代码高亮样式
-// * @return 代码类型文本字体粗细
-// */
-//func codeTypeTextFontWeight(markdownTheme: MarkdownTheme): FontWeight {
-//    if (let Some(v) <- markdownTheme.codeBlockTheme.codeBlockTypeTextFontWeight) {
-//        return v
-//    }
-//    return markdownTheme.codeBlockTheme.codeBlockTextFontWeight
-//}
-//
-///**
-// * 代码块代码行号文本字体
-// *
-// * @param markdownTheme markdown基础样式
-// * @param prismTheme 代码高亮样式
-// * @return 行号文本字体
-// */
-//func codeTypeTextFontFamily(markdownTheme: MarkdownTheme): String {
-//    if (let Some(v) <- markdownTheme.codeBlockTheme.codeBlockTypeTextFontFamily) {
-//        return v
-//    }
-//    return markdownTheme.codeBlockTheme.codeBlockTextFontFamily
-//}
-//
-///**
-// * 代码块代码类型文本文本行高
-// *
-// * @param markdownTheme markdown基础样式
-// * @param prismTheme 代码高亮样式
-// * @return 代码类型文本文本行高
-// */
-//func codeTypeTextLineHeight(markdownTheme: MarkdownTheme): Float64 {
-//    if (let Some(v) <- markdownTheme.codeBlockTheme.codeBlockTypeTextLineHeight) {
-//        return v
-//    }
-//    return markdownTheme.codeBlockTheme.codeBlockTextLineHeight
-//}
 
 /**
  * 代码块代码类型文本颜色

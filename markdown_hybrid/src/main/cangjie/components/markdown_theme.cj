@@ -2037,7 +2037,7 @@ public class MarkdownThemeBuilder {
     /**
      * 设置H2标题下分割线颜色
      *
-     * @param headingBreakColor2 H1、H2标题下分割线颜色 - 默认0xFF191919
+     * @param headingBreakColor2 H2标题下分割线颜色 - 默认0xFF191919
      * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
      */
     @Deprecated["用HeadingTheme.setUnderlineColorForDesignateHeading方法代替", since: "1.4.0"]

@@ -32,7 +32,7 @@ public func jsObjApiCall(obj: JSObject, funcName: String): Unit {
     try {
         obj.callMethod(funcName)
     } catch (e: JSCodeError) {
-        throw BusinessException(10000, "Cannot excute the ${funcName} function")
+        throw BusinessException(10000, "Cannot execute the ${funcName} function")
     }
 }
 
@@ -387,25 +387,25 @@ public class CJBorderRadiuses <: InteropObjectBase {
         setProp("bottomRight", bottomRight.toJSValue(getCtx()))
     }
 
-    public prop width: Float64 {
+    public prop topLeft: Float64 {
         get() {
             Float64.fromJSValue(getCtx(), getProp("topLeft"))
         }
     }
 
-    public prop height: Float64 {
+    public prop topRight: Float64 {
         get() {
             Float64.fromJSValue(getCtx(), getProp("topRight"))
         }
     }
 
-    public prop position: Float64 {
+    public prop bottomLeft: Float64 {
         get() {
             Float64.fromJSValue(getCtx(), getProp("bottomLeft"))
         }
     }
 
-    public prop globalPosition: Float64 {
+    public prop bottomRight: Float64 {
         get() {
             Float64.fromJSValue(getCtx(), getProp("bottomRight"))
         }
@@ -413,10 +413,10 @@ public class CJBorderRadiuses <: InteropObjectBase {
 
     public static func fromJSValue(context: JSContext, input: JSValue): CJBorderRadiuses {
         let topLeft = Float64.fromJSValue(context, input.getProperty(context, "topLeft"))
-        let height = Float64.fromJSValue(context, input.getProperty(context, "topRight"))
+        let topRight = Float64.fromJSValue(context, input.getProperty(context, "topRight"))
         let bottomLeft = Float64.fromJSValue(context, input.getProperty(context, "bottomLeft"))
         let bottomRight = Float64.fromJSValue(context, input.getProperty(context, "bottomRight"))
-        CJBorderRadiuses(topLeft, height, bottomLeft, bottomRight)
+        CJBorderRadiuses(topLeft, topRight, bottomLeft, bottomRight)
     }
 }
 
