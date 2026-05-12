@@ -61,10 +61,10 @@ public class CJMarkdownScroller {
     public func getItemRect(index: Int64): CJRectResult {
         if (DeviceInfo.sdkApiVersion >= 19) {
             let rect = this.scroller.getItemRect(Int32(index))
-            return CJRectResult(rect.x,rect.y,rect.width,rect.height)
+            return CJRectResult(rect.x, rect.y, rect.width, rect.height)
         } else {
             let rect = this.scroller.interopGetItemRect(index)
-            return CJRectResult(rect.x,rect.y,rect.width,rect.height)
+            return CJRectResult(rect.x, rect.y, rect.width, rect.height)
         }
     }
 
@@ -84,7 +84,7 @@ public class CJRectResult {
     var width: Float64
     var height: Float64
 
-    public init(x: Float64,y: Float64,width: Float64,height: Float64) {
+    public init(x: Float64, y: Float64, width: Float64, height: Float64) {
         this.x = x
         this.y = y
         this.width = width
