@@ -199,7 +199,7 @@ export class MarkdownScroller {
    * @returns 是否滚动到底部
    */
   isAtEnd(): boolean {
-    return this.scroller?.isAtEnd() || false
+    return this.scroller?.isAtEnd() ?? false
   }
 
   /**
@@ -208,7 +208,7 @@ export class MarkdownScroller {
    * @returns 当前y轴偏移量
    */
   currentYOffset(): number {
-    return this.scroller?.currentYOffset() || 0
+    return this.scroller?.currentYOffset() ?? 0
   }
 
   /**
@@ -221,7 +221,7 @@ export class MarkdownScroller {
     if (global_customLib === undefined) {
       return new MarkdownRectResult(0, 0, 0, 0)
     }
-    let rect = this.scroller?.getItemRect(index) || new global_customLib.CJRectResult(0, 0, 0, 0)
+    let rect = this.scroller?.getItemRect(index) ?? new global_customLib.CJRectResult(0, 0, 0, 0)
     return new MarkdownRectResult(rect.getItemRectX(), rect.getItemRectY(), rect.getItemRectWidth(), rect.getItemRectHeight())
   }
 
