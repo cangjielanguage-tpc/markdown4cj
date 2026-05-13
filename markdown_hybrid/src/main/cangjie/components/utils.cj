@@ -3,34 +3,6 @@ package markdown.components
 import ohos.state_macro_manage.*
 
 /**
- * 扩展Option，getOrThrow()方法直接用()
- */
-extend<T> Option<T> {
-    operator func ()(): T {
-        this.getOrThrow()
-    }
-}
-
-/**
- * 扩展Option，实现Option类型直接使用==和!=
- */
-extend<T> Option<T> where T <: Equatable<T> {
-    operator func ==(other: T): Bool {
-        match (this) {
-            case Some(v) => v == other
-            case _ => false
-        }
-    }
-
-    operator func !=(other: T): Bool {
-        match (this) {
-            case Some(v) => v != other
-            case _ => true
-        }
-    }
-}
-
-/**
  * 获取prop数据
  *
  * @param commonmarkNode Node

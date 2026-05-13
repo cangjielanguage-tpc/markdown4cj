@@ -99,9 +99,9 @@ public class ImgVideo <: Image {
         return "text=${text},dest=${getDestination()},title=${getTitle()}"
     }
     public func getNodeType(): String {
-        typeinfo
+        typeInfo
     }
-    static let typeinfo = "ImgVideo"
+    static let typeInfo = "ImgVideo"
     static let reg = Regex("[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")
     static func isImgVideo(dest: String): Bool {
         reg.matches(dest)

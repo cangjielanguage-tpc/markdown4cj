@@ -13,11 +13,12 @@ public func registerImgPreprocessCallback(context: JSContext, callInfo: JSCallIn
         return context.undefined().toJSValue()
     }
     let arktsCB = callInfo[0].asFunction(context)
-    arkImgPreprocessFunc = {
-        url =>
-            let ret: cbRet = cbRet()
-            ret.sem.acquire()
-            ctx.getOrThrow().postJSTask {
+    if (let Some(c) <- ctx) {
+        arkImgPreprocessFunc = {
+            url =>
+                let ret: cbRet = cbRet()
+                ret.sem.acquire()
+                c.postJSTask {
                     newScope(context) {
                         let _url = url.toJSValue(context)
                         let _ret = arktsCB.call([_url]).asPromise()
@@ -33,10 +34,13 @@ public func registerImgPreprocessCallback(context: JSContext, callInfo: JSCallIn
                         _ret.then(onFulfilled)
                     }
                 }
-            ret.sem.acquire()
-            let retValue = ret.value
-            ret.sem.release()
-            retValue
+                ret.sem.acquire()
+                let retValue = ret.value
+                ret.sem.release()
+                retValue
+        }
+    } else {
+        arkImgPreprocessFunc = None
     }
     context.undefined().toJSValue()
 }

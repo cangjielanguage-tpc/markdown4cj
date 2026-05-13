@@ -3,18 +3,18 @@ package markdown.plugin
 public class TaskListItem <: ListItem {
     public static let TASK_DEPTH: String = "TaskDepth"
     static let typeInfo: String = "TaskListItem"
-    private let isdone: Bool
+    private let done: Bool
 
     public init(isDone: Bool) {
-        this.isdone = isDone
+        this.done = isDone
     }
 
     public func isDone(): Bool {
-        return isdone
+        return done
     }
 
     public func toString(): String {
-        return "TaskListItem{isDone=${isdone}}"
+        return "TaskListItem{isDone=${done}}"
     }
 
     public func getNodeType(): String {
