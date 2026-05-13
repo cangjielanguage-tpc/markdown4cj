@@ -2852,6 +2852,7 @@ export class MarkdownTheme {
 
 }
 ```
+
 ### class MarkdownThemeGlobal
 
 Markdown用户可设置的样式-全局样式
@@ -11743,3 +11744,61 @@ export class MarkdownNodeViewString {
   toString(): string
 }
 ```
+
+### class MarkdownCardComponent
+
+Markdown卡片自定义控件，支持在Markdown文档中通过`<card>`HTML标签嵌入ArkTS自定义组件。
+
+```ets
+/**
+ * Markdown卡片自定义控件
+ */
+export class MarkdownCardComponent {
+  /**
+   * 构造函数
+   *
+   * @param markdownConfiguration Markdown配置
+   * @param nodeView 卡片节点视图
+   * @param cardName 卡片名称，对应ArkTS端注册的组件类名
+   * @param cardData 卡片数据，JSON字符串，将传递给组件的data属性
+   */
+  constructor(
+    markdownConfiguration: MarkdownConfiguration,
+    nodeView: NodeView,
+    cardName: string,
+    cardData: string
+  )
+}
+```
+
+#### 卡片功能使用说明
+
+卡片功能允许用户在Markdown文档中通过HTML `<card>` 标签嵌入任意的ArkTS自定义组件。
+
+**Markdown语法**
+
+在Markdown文档中使用 `<card>` HTML标签：
+
+```html
+<card name="MyCardComponent" data='{"title":"示例","content":"卡片内容"}'></card>
+```
+
+- `name`（必填）：ArkTS端注册的组件类名，CardWrapper将通过该名称在全局上下文中查找并动态实例化对应组件
+- `data`（可选）：JSON字符串，将作为 `param["data"]` 传递给组件的data属性
+
+**前置条件**
+
+1. 需要启用HTML插件（`setIsHtmlPlugin(true)`），卡片标签通过HtmlPlugin的CardHandler解析。如果未启用HtmlPlugin，`<card>`标签会被当作普通HTML文本忽略
+2. `<card>`标签必须包含`name`属性，否则CardHandler会忽略该标签（返回IgnoreBlockNode）
+3. ArkTS端需将自定义组件类注册到全局上下文中（如`globalThis.XXX = XXXComponent`），确保CardWrapper能通过 `globalCtx.global[cardName]` 查找到组件类
+4. 如果手动创建HtmlPlugin实例，不能调用`excludeDefaults(true)`，否则CardHandler不会被注册
+
+**数据流**
+
+1. Markdown文档中的 `<card name="XXX" data="{...}"/>` 标签被HtmlPlugin解析
+2. CardHandler从标签属性提取 `name` 和 `data`，创建CardNode（CustomBlock子类）
+3. MarkdownVisitor遍历CardNode，nodeToNodeView()转换为NodeView（nodeType="CardNode"）
+4. MarkdownComponent渲染时匹配"CardNode"，实例化MarkdownCardComponent
+5. MarkdownCardComponent.build()创建CardWrapper，传入cardName和cardData
+6. CardWrapper通过JS互操作机制动态实例化cardName对应的ArkTS组件，将cardData作为data参数传入
+
