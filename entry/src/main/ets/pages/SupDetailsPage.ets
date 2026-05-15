@@ -40,13 +40,13 @@ struct SupDetailsPage {
   @State // 是否打开长按复制粘贴效果
   isOnCopy: boolean = false
   @State // Markdown块上边距
-  blockMarginTop: number = 8
+  blockMarginTop: number = 0
   @State // Markdown块右边距
-  blockMarginRight: number = 8
+  blockMarginRight: number = 0
   @State // Markdown块下边距
-  blockMarginBottom: number = 8
+  blockMarginBottom: number = 0
   @State // Markdown块左边距
-  blockMarginLeft: number = 8
+  blockMarginLeft: number = 0
   @State // Markdown块间距样式
   markdownBlockSpacing: number = 8
   @State // 是否换行

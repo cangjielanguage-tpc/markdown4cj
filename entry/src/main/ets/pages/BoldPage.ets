@@ -7,10 +7,14 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
   marginListGeneralData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
   textSizeListGeneralData,
+  textTypefaceListGeneralData,
+  textWordSpaceListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
 import { BoldData } from '../model/BoldData'
@@ -98,27 +102,27 @@ struct BoldPage {
   // 加粗文本尺寸列表
   boldTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 加粗文本尺寸
-  boldTextFontSize: number = 16
+  boldTextFontSize: number | undefined = undefined
   // 加粗文本字体样式列表
-  boldTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  boldTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 加粗文本字体样式
-  boldTextFontStyle: FontStyle = FontStyle.Normal
+  boldTextFontStyle: FontStyle | undefined = undefined
   // 加粗文本字体粗细列表
-  boldTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
+  boldTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 加粗文本字体粗细
   boldTextFontWeight: FontWeight = FontWeight.Bold
   // 加粗文本字体列表
-  boldTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  boldTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 加粗文本字体
-  boldTextFontFamily: string = 'HarmonyOS Sans'
+  boldTextFontFamily: string | undefined = undefined
   // 加粗文本行高列表
   boldTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 加粗文本行高
-  boldTextLineHeight: number = 20
+  boldTextLineHeight: number | undefined = undefined
   // 加粗文本字符间距列表
-  boldTextLetterSpacingList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  boldTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 加粗文本字符间距
-  boldTextLetterSpacing: number = 0
+  boldTextLetterSpacing: number | undefined = undefined
 
   build() {
     Column() {

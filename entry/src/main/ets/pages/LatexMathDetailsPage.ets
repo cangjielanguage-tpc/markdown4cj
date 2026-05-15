@@ -67,13 +67,13 @@ struct LatexMathDetailsPage {
 
   // ---------- 专有
   @State // LaTeX数学公式上外边距
-  latexMathMarginTop: number = 8
+  latexMathMarginTop: number = 0
   @State // LaTeX数学公式右外边距
-  latexMathMarginRight: number = 8
+  latexMathMarginRight: number = 0
   @State // LaTeX数学公式下外边距
-  latexMathMarginBottom: number = 8
+  latexMathMarginBottom: number = 0
   @State // LaTeX数学公式左外边距
-  latexMathMarginLeft: number = 8
+  latexMathMarginLeft: number = 0
   @State // LaTeX数学公式上内边距
   latexMathPaddingTop: number = 0
   @State // LaTeX数学公式右内边距

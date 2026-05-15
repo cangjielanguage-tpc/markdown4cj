@@ -6,12 +6,16 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
   marginListGeneralData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
   textSizeListGeneralData,
+  textTypefaceListGeneralData,
   textWordSpaceListGeneralData,
-  timeListGeneralData
+  timeListGeneralData,
+  widthOrHeightListGeneralData
 } from '../model/GeneralData'
 import { ListData } from '../model/ListData'
 
@@ -96,7 +100,7 @@ struct ListPage {
   // 有序列表上外边距列表
   orderedListMarginTopList: Array<number> = marginListGeneralData
   @State // 有序列表上外边距
-  orderedListMarginTop: number = 8
+  orderedListMarginTop: number = 0
   // 有序列表右外边距列表
   orderedListMarginRightList: Array<number> = marginListGeneralData
   @State // 有序列表右外边距
@@ -104,11 +108,11 @@ struct ListPage {
   // 有序列表下外边距列表
   orderedListMarginBottomList: Array<number> = marginListGeneralData
   @State // 有序列表下外边距
-  orderedListMarginBottom: number = 8
+  orderedListMarginBottom: number = 0
   // 有序列表左外边距列表
   orderedListMarginLeftList: Array<number> = marginListGeneralData
   @State // 有序列表左外边距
-  orderedListMarginLeft: number = 0
+  orderedListMarginLeft: number = 8
   // 有序列表上内边距列表
   orderedListPaddingTopList: Array<number> = marginListGeneralData
   @State // 有序列表上内边距
@@ -128,11 +132,11 @@ struct ListPage {
   // 有序列表子模块上下间距列表
   orderedListChildSpacingList: Array<number> = marginListGeneralData
   @State // 有序列表子模块上下间距
-  orderedListChildSpacing: number = 4
+  orderedListChildSpacing: number = 8
   // 有序列表子模块中子模块上下间距列表
   orderedListChildChildSpacingList: Array<number> = marginListGeneralData
   @State // 有序列表子模块中子模块上下间距
-  orderedListChildChildSpacing: number = 4
+  orderedListChildChildSpacing: number = 8
   // 有序列表列表编号和列表内容间距列表
   orderedListMarkerSpacingList: Array<number> = marginListGeneralData
   @State // 有序列表列表编号和列表内容间距
@@ -146,15 +150,15 @@ struct ListPage {
   @State // 有序列表列表编号文本尺寸
   orderedListMarkerTextFontSize: number = 14
   // 有序列表列表编号文本字体样式列表
-  orderedListMarkerTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  orderedListMarkerTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 有序列表列表编号文本字体样式
   orderedListMarkerTextFontStyle: FontStyle = FontStyle.Normal
   // 有序列表列表编号文本字体粗细列表
-  orderedListMarkerTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  orderedListMarkerTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 有序列表列表编号文本字体粗细
   orderedListMarkerTextFontWeight: FontWeight = FontWeight.Normal
   // 有序列表列表编号文本字体列表
-  orderedListMarkerTextFontFamilyList: Array<string> = ["HarmonyOS Sans", "Arial", "Times New Roman"]
+  orderedListMarkerTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 有序列表列表编号文本字体
   orderedListMarkerTextFontFamily: string = 'HarmonyOS Sans'
   // 有序列表列表编号文本行高列表
@@ -168,7 +172,7 @@ struct ListPage {
   // 无序/任务上外边距列表
   bulletListMarginTopList: Array<number> = marginListGeneralData
   @State // 无序/任务上外边距
-  bulletListMarginTop: number = 8
+  bulletListMarginTop: number = 0
   // 无序/任务右外边距列表
   bulletListMarginRightList: Array<number> = marginListGeneralData
   @State // 无序/任务右外边距
@@ -176,11 +180,11 @@ struct ListPage {
   // 无序/任务下外边距列表
   bulletListMarginBottomList: Array<number> = marginListGeneralData
   @State // 无序/任务下外边距
-  bulletListMarginBottom: number = 8
+  bulletListMarginBottom: number = 0
   // 无序/任务左外边距列表
   bulletListMarginLeftList: Array<number> = marginListGeneralData
   @State // 无序/任务左外边距
-  bulletListMarginLeft: number = 0
+  bulletListMarginLeft: number = 8
   // 无序/任务上内边距列表
   bulletListPaddingTopList: Array<number> = marginListGeneralData
   @State // 无序/任务上内边距
@@ -200,11 +204,11 @@ struct ListPage {
   // 无序/任务子模块上下间距列表
   bulletListChildSpacingList: Array<number> = marginListGeneralData
   @State // 无序/任务子模块上下间距
-  bulletListChildSpacing: number = 4
+  bulletListChildSpacing: number = 8
   // 无序/任务子模块中子模块上下间距列表
   bulletListChildChildSpacingList: Array<number> = marginListGeneralData
   @State // 无序/任务子模块中子模块上下间距
-  bulletListChildChildSpacing: number = 4
+  bulletListChildChildSpacing: number = 8
   // 无序列表列表符号和列表内容间距列表
   bulletListBulletSpacingList: Array<number> = marginListGeneralData
   @State // 无序列表列表符号和列表内容间距
@@ -220,33 +224,33 @@ struct ListPage {
   // 无序列表列表符号文本尺寸列表
   bulletListBulletTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 无序列表列表符号文本尺寸
-  bulletListBulletTextFontSize: number = 14
+  bulletListBulletTextFontSize: number = 4
   // 无序列表列表符号文本字体样式列表
-  bulletListBulletTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  bulletListBulletTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 无序列表列表符号文本字体样式
   bulletListBulletTextFontStyle: FontStyle = FontStyle.Normal
   // 无序列表列表符号文本字体粗细列表
-  bulletListBulletTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  bulletListBulletTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 无序列表列表符号文本字体粗细
   bulletListBulletTextFontWeight: FontWeight = FontWeight.Normal
   // 无序列表列表符号文本字体列表
-  bulletListBulletTextFontFamilyList: Array<string> = ["HarmonyOS Sans", "Arial", "Times New Roman"]
+  bulletListBulletTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 无序列表列表符号文本字体
   bulletListBulletTextFontFamily: string = 'HarmonyOS Sans'
   // 无序列表列表符号文本行高列表
   bulletListBulletTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 无序列表列表符号文本行高
-  bulletListBulletTextLineHeight: number = 22
+  bulletListBulletTextLineHeight: number = 18
   // 任务列表多选框和列表内容间距列表
   bulletListCheckboxSpacingList: Array<number> = marginListGeneralData
   @State // 任务列表多选框和列表内容间距
   bulletListCheckboxSpacing: number = 8
   // 任务列表多选框宽度列表
-  bulletListCheckboxWidthList: Array<number> = [10, 12, 14, 15, 16, 18, 20]
+  bulletListCheckboxWidthList: Array<number> = widthOrHeightListGeneralData
   @State // 任务列表多选框宽度
   bulletListCheckboxWidth: number = 15
   // 任务列表多选框高度列表
-  bulletListCheckboxHeightList: Array<number> = [10, 12, 14, 15, 16, 18, 20]
+  bulletListCheckboxHeightList: Array<number> = widthOrHeightListGeneralData
   @State // 任务列表多选框高度
   bulletListCheckboxHeight: number = 15
   // 任务列表多选框选中颜色列表

@@ -5,13 +5,20 @@ import { BaseTabComponent } from '../component/BaseTabComponent'
 import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
+  borderStyleListGeneraData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
+  lineOrBorderWidthListGeneraData,
   marginListGeneralData,
+  radiusListGeneraData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
   textSizeListGeneralData,
+  textTypefaceListGeneralData,
   textWordSpaceListGeneralData,
-  timeListGeneralData
+  timeListGeneralData,
+  widthOrHeightListGeneralData
 } from '../model/GeneralData'
 import { TableData } from '../model/TableData'
 
@@ -104,19 +111,19 @@ struct TablePage {
   // 表格上外边距列表
   tableMarginTopList: Array<number> = marginListGeneralData
   @State // 表格上外边距
-  tableMarginTop: number = 8
+  tableMarginTop: number = 0
   // 表格右外边距列表
   tableMarginRightList: Array<number> = marginListGeneralData
   @State // 表格右外边距
-  tableMarginRight: number = 8
+  tableMarginRight: number = 0
   // 表格下外边距列表
   tableMarginBottomList: Array<number> = marginListGeneralData
   @State // 表格下外边距
-  tableMarginBottom: number = 8
+  tableMarginBottom: number = 0
   // 表格左外边距列表
   tableMarginLeftList: Array<number> = marginListGeneralData
   @State // 表格左外边距
-  tableMarginLeft: number = 8
+  tableMarginLeft: number = 0
   // 表格上内边距列表
   tablePaddingTopList: Array<number> = marginListGeneralData
   @State // 表格上内边距
@@ -150,11 +157,11 @@ struct TablePage {
   @State // 表格内容左内边距
   tableCellPaddingLeft: number = 4
   // 表格边框样式列表
-  tableBorderStyleList: Array<BorderStyle> = [BorderStyle.Solid, BorderStyle.Dotted, BorderStyle.Dashed]
+  tableBorderStyleList: Array<BorderStyle> = borderStyleListGeneraData
   @State // 表格边框样式
   tableBorderStyle: BorderStyle = BorderStyle.Solid
   // 表格边框宽度列表
-  tableBorderWidthList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  tableBorderWidthList: Array<number> = lineOrBorderWidthListGeneraData
   @State // 表格边框宽度
   tableBorderWidth: number = 1
   // 表格边框颜色列表
@@ -162,19 +169,19 @@ struct TablePage {
   @State // 表格边框颜色
   tableBorderColor: number | undefined = undefined
   // 表格边框左上圆角列表
-  tableRadiusTopLeftList: Array<number> = [0, 1, 2, 5, 10, 15, 20, 25, 30]
+  tableRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State // 表格边框左上圆角
   tableRadiusTopLeft: number = 5
   // 表格边框右上圆角列表
-  tableRadiusTopRightList: Array<number> = [0, 1, 2, 5, 10, 15, 20, 25, 30]
+  tableRadiusTopRightList: Array<number> = radiusListGeneraData
   @State // 表格边框右上圆角
   tableRadiusTopRight: number = 5
   // 表格边框左下圆角列表
-  tableRadiusBottomLeftList: Array<number> = [0, 1, 2, 5, 10, 15, 20, 25, 30]
+  tableRadiusBottomLeftList: Array<number> = radiusListGeneraData
   @State // 表格边框左下圆角
   tableRadiusBottomLeft: number = 5
   // 表格边框右下圆角列表
-  tableRadiusBottomRightList: Array<number> = [0, 1, 2, 5, 10, 15, 20, 25, 30]
+  tableRadiusBottomRightList: Array<number> = radiusListGeneraData
   @State // 表格边框右下圆角
   tableRadiusBottomRight: number = 5
   // 表格滚动条状态列表
@@ -186,11 +193,11 @@ struct TablePage {
   @State // 表格滚动条颜色
   tableScrollBarColor: number | undefined = undefined
   // 表格一格最小宽度列表
-  tableMinCellWidthList: Array<number> = [30, 50, 80, 100, 150, 200, 250, 300, 350, 400]
+  tableMinCellWidthList: Array<number> = widthOrHeightListGeneralData
   @State // 表格一格最小宽度
   tableMinCellWidth: number = 50
   // 表格一格最大宽度列表
-  tableMaxCellWidthList: Array<number> = [100, 150, 200, 250, 300, 350, 400, 450, 500]
+  tableMaxCellWidthList: Array<number> = widthOrHeightListGeneralData
   @State // 表格一格最大宽度
   tableMaxCellWidth: number = 300
   // 表格第一列是否加粗列表
@@ -206,15 +213,15 @@ struct TablePage {
   @State // 表格标题文本尺寸
   tableTitleTextFontSize: number = 14
   // 表格标题文本字体样式列表
-  tableTitleTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  tableTitleTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 表格标题文本字体样式
   tableTitleTextFontStyle: FontStyle = FontStyle.Normal
   // 表格标题文本字体粗细列表
-  tableTitleTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  tableTitleTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 表格标题文本字体粗细
-  tableTitleTextFontWeight: FontWeight = FontWeight.Normal
+  tableTitleTextFontWeight: FontWeight = FontWeight.Bold
   // 表格标题文本字体列表
-  tableTitleTextFontFamilyList: Array<string> = ["HarmonyOS Sans", "Arial", "Times New Roman"]
+  tableTitleTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 表格标题文本字体
   tableTitleTextFontFamily: string = 'HarmonyOS Sans'
   // 表格标题文本行高列表
@@ -222,7 +229,7 @@ struct TablePage {
   @State // 表格标题文本行高
   tableTitleTextLineHeight: number = 22
   // 表格标题文本字符间距列表
-  tableTitleTextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  tableTitleTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 表格标题文本字符间距
   tableTitleTextLetterSpacing: number = 0
   // 表格内容文本颜色列表
@@ -234,15 +241,15 @@ struct TablePage {
   @State // 表格内容文本尺寸
   tableContentTextFontSize: number = 14
   // 表格内容文本字体样式列表
-  tableContentTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  tableContentTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 表格内容文本字体样式
   tableContentTextFontStyle: FontStyle = FontStyle.Normal
   // 表格内容文本字体粗细列表
-  tableContentTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  tableContentTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 表格内容文本字体粗细
   tableContentTextFontWeight: FontWeight = FontWeight.Normal
   // 表格内容文本字体列表
-  tableContentTextFontFamilyList: Array<string> = ["HarmonyOS Sans", "Arial", "Times New Roman"]
+  tableContentTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 表格内容文本字体
   tableContentTextFontFamily: string = 'HarmonyOS Sans'
   // 表格内容文本行高列表
@@ -250,7 +257,7 @@ struct TablePage {
   @State // 表格内容文本行高
   tableContentTextLineHeight: number = 22
   // 表格内容文本字符间距列表
-  tableContentTextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  tableContentTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 表格内容文本字符间距
   tableContentTextLetterSpacing: number = 0
   @State // 配置数据内容

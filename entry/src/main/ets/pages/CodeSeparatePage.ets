@@ -8,7 +8,8 @@ import {
   colorListGeneralData,
   marginListGeneralData,
   textNumberListGeneralData,
-  timeListGeneralData
+  timeListGeneralData,
+  widthOrHeightListGeneralData
 } from '../model/GeneralData'
 import { CodeSeparateData } from '../model/CodeSeparateData'
 
@@ -92,7 +93,7 @@ struct CodeSeparatePage {
   @State // 是否单独代码块显示
   isSeparateCodeBlock: boolean = false
   // 单独代码块行号宽度列表
-  separateCodeBlockWidthList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+  separateCodeBlockWidthList: Array<number> = widthOrHeightListGeneralData
   @State // 单独代码块行号宽度
   separateCodeBlockWidth: number = 50
   // 是否滑动到底部列表

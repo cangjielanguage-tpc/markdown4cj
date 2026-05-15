@@ -5,14 +5,25 @@ import { BaseTabComponent } from '../component/BaseTabComponent'
 import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
+  borderStyleListGeneraData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
+  imageFitListData,
+  imageFitTypeListData,
+  lineOrBorderWidthListGeneraData,
   marginListGeneralData,
+  radiusListGeneraData,
+  spaceListGeneralData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
   textSizeListGeneralData,
-  timeListGeneralData
+  textTypefaceListGeneralData,
+  timeListGeneralData,
+  widthOrHeightListGeneralData
 } from '../model/GeneralData'
 import { VideoData } from '../model/VideoData'
+import { ImageFitType } from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component
@@ -76,13 +87,13 @@ struct VideoPage {
   @State videoBackgroundColor: number | undefined = undefined // 视频背景颜色
   // 视频上外边距列表
   videoMarginTopList: Array<number> = marginListGeneralData
-  @State videoMarginTop: number = 10 // 视频上外边距
+  @State videoMarginTop: number = 0 // 视频上外边距
   // 视频右外边距列表
   videoMarginRightList: Array<number> = marginListGeneralData
   @State videoMarginRight: number = 0 // 视频右外边距
   // 视频下外边距列表
   videoMarginBottomList: Array<number> = marginListGeneralData
-  @State videoMarginBottom: number = 10 // 视频下外边距
+  @State videoMarginBottom: number = 0 // 视频下外边距
   // 视频左外边距列表
   videoMarginLeftList: Array<number> = marginListGeneralData
   @State videoMarginLeft: number = 0 // 视频左外边距
@@ -99,22 +110,22 @@ struct VideoPage {
   videoPaddingLeftList: Array<number> = marginListGeneralData
   @State videoPaddingLeft: number = 0 // 视频左内边距
   // 视频边框左上圆角列表
-  videoRadiusTopLeftList: Array<number> = [0, 5, 10, 15, 20, 25, 30]
+  videoRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State videoRadiusTopLeft: number = 10 // 视频边框左上圆角
   // 视频边框右上圆角列表
-  videoRadiusTopRightList: Array<number> = [0, 5, 10, 15, 20, 25, 30]
+  videoRadiusTopRightList: Array<number> = radiusListGeneraData
   @State videoRadiusTopRight: number = 10 // 视频边框右上圆角
   // 视频边框左下圆角列表
-  videoRadiusBottomLeftList: Array<number> = [0, 5, 10, 15, 20, 25, 30]
+  videoRadiusBottomLeftList: Array<number> = radiusListGeneraData
   @State videoRadiusBottomLeft: number = 10 // 视频边框左下圆角
   // 视频边框右下圆角列表
-  videoRadiusBottomRightList: Array<number> = [0, 5, 10, 15, 20, 25, 30]
+  videoRadiusBottomRightList: Array<number> = radiusListGeneraData
   @State videoRadiusBottomRight: number = 10 // 视频边框右下圆角
   // 视频边框样式列表
-  videoBorderStyleList: Array<BorderStyle> = [BorderStyle.Solid, BorderStyle.Dotted, BorderStyle.Dashed]
+  videoBorderStyleList: Array<BorderStyle> = borderStyleListGeneraData
   @State videoBorderStyle: BorderStyle = BorderStyle.Solid // 视频边框样式
   // 视频边框宽度列表
-  videoBorderWidthList: Array<number> = [0, 1, 2, 3, 4, 5]
+  videoBorderWidthList: Array<number> = lineOrBorderWidthListGeneraData
   @State videoBorderWidth: number = 0 // 视频边框宽度
   // 视频边框颜色列表
   videoBorderColorList: Array<number | undefined> = colorListGeneralData
@@ -122,18 +133,18 @@ struct VideoPage {
   // 视频占位图
   videoPlaceholder: Resource | undefined = undefined
   // 视频图片缩放类型列表
-  videoImageFitTypeList: Array<ImageFit> = [ImageFit.Contain, ImageFit.Cover, ImageFit.Fill]
+  videoImageFitTypeList: Array<ImageFit> = imageFitListData
   @State videoImageFitType: ImageFit = ImageFit.Contain // 视频图片缩放类型
   // 播放按钮默认图片
   videoPlayIcon: Resource | undefined = undefined
   // 播放按钮图标宽度列表
-  videoPlayIconWidthList: Array<number> = [20, 30, 40, 50, 60]
-  @State videoPlayIconWidth: number = 40 // 播放按钮图标宽度
+  videoPlayIconWidthList: Array<number> = widthOrHeightListGeneralData
+  @State videoPlayIconWidth: number = 60 // 播放按钮图标宽度
   // 播放按钮图标高度列表
-  videoPlayIconHeightList: Array<number> = [20, 30, 40, 50, 60]
-  @State videoPlayIconHeight: number = 40 // 播放按钮图标高度
+  videoPlayIconHeightList: Array<number> = widthOrHeightListGeneralData
+  @State videoPlayIconHeight: number = 60 // 播放按钮图标高度
   // 播放按钮图标缩放类型列表
-  videoPlayIconFitTypeList: Array<ImageFit> = [ImageFit.Contain, ImageFit.Cover, ImageFit.Fill]
+  videoPlayIconFitTypeList: Array<ImageFit> = imageFitListData
   @State videoPlayIconFitType: ImageFit = ImageFit.Contain // 播放按钮图标缩放类型
   // 视频时间文本颜色列表
   videoTimeTextFontColorList: Array<number | undefined> = colorListGeneralData
@@ -142,17 +153,17 @@ struct VideoPage {
   videoTimeTextFontSizeList: Array<number> = textSizeListGeneralData
   @State videoTimeTextFontSize: number = 14 // 视频时间文本尺寸
   // 视频时间文本字体样式列表
-  videoTimeTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  videoTimeTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State videoTimeTextFontStyle: FontStyle = FontStyle.Normal // 视频时间文本字体样式
   // 视频时间文本字体粗细列表
-  videoTimeTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  videoTimeTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State videoTimeTextFontWeight: FontWeight = FontWeight.Normal // 视频时间文本字体粗细
   // 视频时间文本字体列表
-  videoTimeTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  videoTimeTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State videoTimeTextFontFamily: string = 'HarmonyOS Sans' // 视频时间文本字体
   // 视频时间文本行高列表
   videoTimeTextLineHeightList: Array<number> = textLineHeightListGeneralData
-  @State videoTimeTextLineHeight: number = 20 // 视频时间文本行高
+  @State videoTimeTextLineHeight: number = 22 // 视频时间文本行高
   // 视频时间文本居右边距列表
   videoTimeTextMarginRightList: Array<number> = marginListGeneralData
   @State videoTimeTextMarginRight: number = 10 // 视频时间文本居右边距
@@ -164,7 +175,7 @@ struct VideoPage {
   @State videoBottomLayoutVisible: boolean = false // 底部布局是否显示
   // 底部布局距离视频上边距列表
   videoBottomLayoutMarginTopList: Array<number> = marginListGeneralData
-  @State videoBottomLayoutMarginTop: number = 8 // 底部布局距离视频上边距
+  @State videoBottomLayoutMarginTop: number = 14 // 底部布局距离视频上边距
   // 视频发布按钮是否显示列表
   videoReleaseButtonVisibleList: Array<boolean> = booleanListGeneralData
   @State videoReleaseButtonVisible: boolean = true // 视频发布按钮是否显示
@@ -172,33 +183,33 @@ struct VideoPage {
   videoReleaseButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
   @State videoReleaseButtonBackgroundColor: number | undefined = undefined // 视频发布按钮背景颜色
   // 视频发布按钮宽度列表
-  videoReleaseButtonWidthList: Array<number> = [100, 120, 144, 150, 160, 180, 200]
+  videoReleaseButtonWidthList: Array<number> = widthOrHeightListGeneralData
   @State videoReleaseButtonWidth: number = 144 // 视频发布按钮宽度
   // 视频发布按钮高度列表
-  videoReleaseButtonHeightList: Array<number> = [30, 40, 44, 50, 60]
+  videoReleaseButtonHeightList: Array<number> = widthOrHeightListGeneralData
   @State videoReleaseButtonHeight: number = 44 // 视频发布按钮高度
   // 视频发布按钮左上圆角列表
-  videoReleaseButtonRadiusTopLeftList: Array<number> = [0, 10, 15, 20, 22, 25, 30]
+  videoReleaseButtonRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State videoReleaseButtonRadiusTopLeft: number = 22 // 视频发布按钮左上圆角
   // 视频发布按钮右上圆角列表
-  videoReleaseButtonRadiusTopRightList: Array<number> = [0, 10, 15, 20, 22, 25, 30]
+  videoReleaseButtonRadiusTopRightList: Array<number> = radiusListGeneraData
   @State videoReleaseButtonRadiusTopRight: number = 22 // 视频发布按钮右上圆角
   // 视频发布按钮左下圆角列表
-  videoReleaseButtonRadiusBottomLeftList: Array<number> = [0, 10, 15, 20, 22, 25, 30]
+  videoReleaseButtonRadiusBottomLeftList: Array<number> = radiusListGeneraData
   @State videoReleaseButtonRadiusBottomLeft: number = 22 // 视频发布按钮左下圆角
   // 视频发布按钮右下圆角列表
-  videoReleaseButtonRadiusBottomRightList: Array<number> = [0, 10, 15, 20, 22, 25, 30]
+  videoReleaseButtonRadiusBottomRightList: Array<number> = radiusListGeneraData
   @State videoReleaseButtonRadiusBottomRight: number = 22 // 视频发布按钮右下圆角
   // 视频发布按钮图标和文本间距列表
-  videoReleaseButtonIconTextGapList: Array<number> = [0, 2, 4, 6, 8, 10]
+  videoReleaseButtonIconTextGapList: Array<number> = spaceListGeneralData
   @State videoReleaseButtonIconTextGap: number = 6 // 视频发布按钮图标和文本间距
   // 视频发布按钮图标
   videoReleaseButtonIcon: Resource | undefined = undefined
   // 视频发布按钮图标宽度列表
-  videoReleaseButtonIconWidthList: Array<number> = [10, 15, 18, 20, 25]
+  videoReleaseButtonIconWidthList: Array<number> = widthOrHeightListGeneralData
   @State videoReleaseButtonIconWidth: number = 18 // 视频发布按钮图标宽度
   // 视频发布按钮图标高度列表
-  videoReleaseButtonIconHeightList: Array<number> = [10, 15, 18, 20, 25]
+  videoReleaseButtonIconHeightList: Array<number> = widthOrHeightListGeneralData
   @State videoReleaseButtonIconHeight: number = 18 // 视频发布按钮图标高度
   // 视频发布按钮默认文本内容列表
   videoReleaseButtonTextList: Array<string> = ['发布视频', '发布', '提交']
@@ -210,17 +221,17 @@ struct VideoPage {
   videoReleaseButtonTextFontSizeList: Array<number> = textSizeListGeneralData
   @State videoReleaseButtonTextFontSize: number = 16 // 视频发布按钮文本尺寸
   // 视频发布按钮文本字体样式列表
-  videoReleaseButtonTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  videoReleaseButtonTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State videoReleaseButtonTextFontStyle: FontStyle = FontStyle.Normal // 视频发布按钮文本字体样式
   // 视频发布按钮文本字体粗细列表
-  videoReleaseButtonTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
-  @State videoReleaseButtonTextFontWeight: FontWeight = FontWeight.Normal // 视频发布按钮文本字体粗细
+  videoReleaseButtonTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
+  @State videoReleaseButtonTextFontWeight: FontWeight = FontWeight.Medium // 视频发布按钮文本字体粗细
   // 视频发布按钮文本字体列表
-  videoReleaseButtonTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  videoReleaseButtonTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State videoReleaseButtonTextFontFamily: string = 'HarmonyOS Sans' // 视频发布按钮文本字体
   // 视频发布按钮文本行高列表
   videoReleaseButtonTextLineHeightList: Array<number> = textLineHeightListGeneralData
-  @State videoReleaseButtonTextLineHeight: number = 20 // 视频发布按钮文本行高
+  @State videoReleaseButtonTextLineHeight: number = 22 // 视频发布按钮文本行高
   // 视频下载按钮是否显示列表
   videoDownloadButtonVisibleList: Array<boolean> = booleanListGeneralData
   @State videoDownloadButtonVisible: boolean = true // 视频下载按钮是否显示
@@ -228,33 +239,33 @@ struct VideoPage {
   videoDownloadButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
   @State videoDownloadButtonBackgroundColor: number | undefined = undefined // 视频下载按钮背景颜色
   // 视频下载按钮宽度列表
-  videoDownloadButtonWidthList: Array<number> = [100, 120, 144, 150, 160, 180, 200]
+  videoDownloadButtonWidthList: Array<number> = widthOrHeightListGeneralData
   @State videoDownloadButtonWidth: number = 144 // 视频下载按钮宽度
   // 视频下载按钮高度列表
-  videoDownloadButtonHeightList: Array<number> = [30, 40, 44, 50, 60]
+  videoDownloadButtonHeightList: Array<number> = widthOrHeightListGeneralData
   @State videoDownloadButtonHeight: number = 44 // 视频下载按钮高度
   // 视频下载按钮左上圆角列表
-  videoDownloadButtonRadiusTopLeftList: Array<number> = [0, 10, 15, 20, 22, 25, 30]
+  videoDownloadButtonRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State videoDownloadButtonRadiusTopLeft: number = 22 // 视频下载按钮左上圆角
   // 视频下载按钮右上圆角列表
-  videoDownloadButtonRadiusTopRightList: Array<number> = [0, 10, 15, 20, 22, 25, 30]
+  videoDownloadButtonRadiusTopRightList: Array<number> = radiusListGeneraData
   @State videoDownloadButtonRadiusTopRight: number = 22 // 视频下载按钮右上圆角
   // 视频下载按钮左下圆角列表
-  videoDownloadButtonRadiusBottomLeftList: Array<number> = [0, 10, 15, 20, 22, 25, 30]
+  videoDownloadButtonRadiusBottomLeftList: Array<number> = radiusListGeneraData
   @State videoDownloadButtonRadiusBottomLeft: number = 22 // 视频下载按钮左下圆角
   // 视频下载按钮右下圆角列表
-  videoDownloadButtonRadiusBottomRightList: Array<number> = [0, 10, 15, 20, 22, 25, 30]
+  videoDownloadButtonRadiusBottomRightList: Array<number> = radiusListGeneraData
   @State videoDownloadButtonRadiusBottomRight: number = 22 // 视频下载按钮右下圆角
   // 视频下载按钮图标和文本间距列表
-  videoDownloadButtonIconTextGapList: Array<number> = [0, 2, 4, 6, 8, 10]
+  videoDownloadButtonIconTextGapList: Array<number> = spaceListGeneralData
   @State videoDownloadButtonIconTextGap: number = 6 // 视频下载按钮图标和文本间距
   // 视频下载按钮图标
   videoDownloadButtonIcon: Resource | undefined = undefined
   // 视频下载按钮图标宽度列表
-  videoDownloadButtonIconWidthList: Array<number> = [10, 15, 18, 20, 25]
+  videoDownloadButtonIconWidthList: Array<number> = widthOrHeightListGeneralData
   @State videoDownloadButtonIconWidth: number = 18 // 视频下载按钮图标宽度
   // 视频下载按钮图标高度列表
-  videoDownloadButtonIconHeightList: Array<number> = [10, 15, 18, 20, 25]
+  videoDownloadButtonIconHeightList: Array<number> = widthOrHeightListGeneralData
   @State videoDownloadButtonIconHeight: number = 18 // 视频下载按钮图标高度
   // 视频下载按钮默认文本内容列表
   videoDownloadButtonTextList: Array<string> = ['下载视频', '下载', '保存']
@@ -266,17 +277,17 @@ struct VideoPage {
   videoDownloadButtonTextFontSizeList: Array<number> = textSizeListGeneralData
   @State videoDownloadButtonTextFontSize: number = 16 // 视频下载按钮文本尺寸
   // 视频下载按钮文本字体样式列表
-  videoDownloadButtonTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  videoDownloadButtonTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State videoDownloadButtonTextFontStyle: FontStyle = FontStyle.Normal // 视频下载按钮文本字体样式
   // 视频下载按钮文本字体粗细列表
-  videoDownloadButtonTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
-  @State videoDownloadButtonTextFontWeight: FontWeight = FontWeight.Normal // 视频下载按钮文本字体粗细
+  videoDownloadButtonTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
+  @State videoDownloadButtonTextFontWeight: FontWeight = FontWeight.Medium // 视频下载按钮文本字体粗细
   // 视频下载按钮文本字体列表
-  videoDownloadButtonTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  videoDownloadButtonTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State videoDownloadButtonTextFontFamily: string = 'HarmonyOS Sans' // 视频下载按钮文本字体
   // 视频下载按钮文本行高列表
   videoDownloadButtonTextLineHeightList: Array<number> = textLineHeightListGeneralData
-  @State videoDownloadButtonTextLineHeight: number = 20 // 视频下载按钮文本行高
+  @State videoDownloadButtonTextLineHeight: number = 22 // 视频下载按钮文本行高
   @State videoData: VideoData = new VideoData() // 配置数据内容
 
   aboutToAppear(): void {

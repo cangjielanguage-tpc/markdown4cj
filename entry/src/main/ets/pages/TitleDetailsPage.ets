@@ -62,11 +62,11 @@ struct TitleDetailsPage {
   @State // 一级标题背景颜色
   heading1BackgroundColor: number | undefined = undefined
   @State // 一级标题上外边距
-  heading1MarginTop: number = 8
+  heading1MarginTop: number = 0
   @State // 一级标题右外边距
   heading1MarginRight: number = 0
   @State // 一级标题下外边距
-  heading1MarginBottom: number = 8
+  heading1MarginBottom: number = 0
   @State // 一级标题左外边距
   heading1MarginLeft: number = 0
   @State // 一级标题上内边距
@@ -80,7 +80,7 @@ struct TitleDetailsPage {
   @State // 一级标题文本颜色
   heading1TextFontColor: number | undefined = undefined
   @State // 一级标题文本尺寸
-  heading1TextFontSize: number = 24
+  heading1TextFontSize: number = 20
   @State // 一级标题文本字体样式
   heading1TextFontStyle: FontStyle = FontStyle.Normal
   @State // 一级标题文本字体粗细
@@ -88,24 +88,24 @@ struct TitleDetailsPage {
   @State // 一级标题文本字体
   heading1TextFontFamily: string = 'HarmonyOS Sans'
   @State // 一级标题文本行高
-  heading1TextLineHeight: number = 32
+  heading1TextLineHeight: number = 22
   @State // 一级标题文本字符间距
   heading1TextLetterSpacing: number = 0
   @State // 一级标题下划线高度
-  heading1UnderlineHeight: number = 2
+  heading1UnderlineHeight: number = 0.5
   @State // 一级标题下划线颜色
   heading1UnderlineColor: number | undefined = undefined
   @State // 一级标题距离标题文本间距
-  heading1UnderlineSpacing: number = 4
+  heading1UnderlineSpacing: number = 0
 
   @State // 二级标题背景颜色
   heading2BackgroundColor: number | undefined = undefined
   @State // 二级标题上外边距
-  heading2MarginTop: number = 8
+  heading2MarginTop: number = 0
   @State // 二级标题右外边距
   heading2MarginRight: number = 0
   @State // 二级标题下外边距
-  heading2MarginBottom: number = 8
+  heading2MarginBottom: number = 0
   @State // 二级标题左外边距
   heading2MarginLeft: number = 0
   @State // 二级标题上内边距
@@ -119,7 +119,7 @@ struct TitleDetailsPage {
   @State // 二级标题文本颜色
   heading2TextFontColor: number | undefined = undefined
   @State // 二级标题文本尺寸
-  heading2TextFontSize: number = 20
+  heading2TextFontSize: number = 17
   @State // 二级标题文本字体样式
   heading2TextFontStyle: FontStyle = FontStyle.Normal
   @State // 二级标题文本字体粗细
@@ -127,24 +127,24 @@ struct TitleDetailsPage {
   @State // 二级标题文本字体
   heading2TextFontFamily: string = 'HarmonyOS Sans'
   @State // 二级标题文本行高
-  heading2TextLineHeight: number = 28
+  heading2TextLineHeight: number = 22
   @State // 二级标题文本字符间距
   heading2TextLetterSpacing: number = 0
   @State // 二级标题下划线高度
-  heading2UnderlineHeight: number = 1.5
+  heading2UnderlineHeight: number = 0.5
   @State // 二级标题下划线颜色
   heading2UnderlineColor: number | undefined = undefined
   @State // 二级标题距离标题文本间距
-  heading2UnderlineSpacing: number = 3
+  heading2UnderlineSpacing: number = 0
 
   @State // 三级标题背景颜色
   heading3BackgroundColor: number | undefined = undefined
   @State // 三级标题上外边距
-  heading3MarginTop: number = 8
+  heading3MarginTop: number = 0
   @State // 三级标题右外边距
   heading3MarginRight: number = 0
   @State // 三级标题下外边距
-  heading3MarginBottom: number = 8
+  heading3MarginBottom: number = 0
   @State // 三级标题左外边距
   heading3MarginLeft: number = 0
   @State // 三级标题上内边距
@@ -158,7 +158,7 @@ struct TitleDetailsPage {
   @State // 三级标题文本颜色
   heading3TextFontColor: number | undefined = undefined
   @State // 三级标题文本尺寸
-  heading3TextFontSize: number = 18
+  heading3TextFontSize: number = 16
   @State // 三级标题文本字体样式
   heading3TextFontStyle: FontStyle = FontStyle.Normal
   @State // 三级标题文本字体粗细
@@ -166,18 +166,18 @@ struct TitleDetailsPage {
   @State // 三级标题文本字体
   heading3TextFontFamily: string = 'HarmonyOS Sans'
   @State // 三级标题文本行高
-  heading3TextLineHeight: number = 26
+  heading3TextLineHeight: number = 22
   @State // 三级标题文本字符间距
   heading3TextLetterSpacing: number = 0
 
   @State // 四级标题背景颜色
   heading4BackgroundColor: number | undefined = undefined
   @State // 四级标题上外边距
-  heading4MarginTop: number = 8
+  heading4MarginTop: number = 0
   @State // 四级标题右外边距
   heading4MarginRight: number = 0
   @State // 四级标题下外边距
-  heading4MarginBottom: number = 8
+  heading4MarginBottom: number = 0
   @State // 四级标题左外边距
   heading4MarginLeft: number = 0
   @State // 四级标题上内边距
@@ -191,7 +191,7 @@ struct TitleDetailsPage {
   @State // 四级标题文本颜色
   heading4TextFontColor: number | undefined = undefined
   @State // 四级标题文本尺寸
-  heading4TextFontSize: number = 16
+  heading4TextFontSize: number = 15
   @State // 四级标题文本字体样式
   heading4TextFontStyle: FontStyle = FontStyle.Normal
   @State // 四级标题文本字体粗细
@@ -199,18 +199,18 @@ struct TitleDetailsPage {
   @State // 四级标题文本字体
   heading4TextFontFamily: string = 'HarmonyOS Sans'
   @State // 四级标题文本行高
-  heading4TextLineHeight: number = 24
+  heading4TextLineHeight: number = 22
   @State // 四级标题文本字符间距
   heading4TextLetterSpacing: number = 0
 
   @State // 五级标题背景颜色
   heading5BackgroundColor: number | undefined = undefined
   @State // 五级标题上外边距
-  heading5MarginTop: number = 8
+  heading5MarginTop: number = 0
   @State // 五级标题右外边距
   heading5MarginRight: number = 0
   @State // 五级标题下外边距
-  heading5MarginBottom: number = 8
+  heading5MarginBottom: number = 0
   @State // 五级标题左外边距
   heading5MarginLeft: number = 0
   @State // 五级标题上内边距
@@ -224,7 +224,7 @@ struct TitleDetailsPage {
   @State // 五级标题文本颜色
   heading5TextFontColor: number | undefined = undefined
   @State // 五级标题文本尺寸
-  heading5TextFontSize: number = 15
+  heading5TextFontSize: number = 14
   @State // 五级标题文本字体样式
   heading5TextFontStyle: FontStyle = FontStyle.Normal
   @State // 五级标题文本字体粗细
@@ -232,18 +232,18 @@ struct TitleDetailsPage {
   @State // 五级标题文本字体
   heading5TextFontFamily: string = 'HarmonyOS Sans'
   @State // 五级标题文本行高
-  heading5TextLineHeight: number = 23
+  heading5TextLineHeight: number = 22
   @State // 五级标题文本字符间距
   heading5TextLetterSpacing: number = 0
 
   @State // 六级标题背景颜色
   heading6BackgroundColor: number | undefined = undefined
   @State // 六级标题上外边距
-  heading6MarginTop: number = 8
+  heading6MarginTop: number = 0
   @State // 六级标题右外边距
   heading6MarginRight: number = 0
   @State // 六级标题下外边距
-  heading6MarginBottom: number = 8
+  heading6MarginBottom: number = 0
   @State // 六级标题左外边距
   heading6MarginLeft: number = 0
   @State // 六级标题上内边距
@@ -257,7 +257,7 @@ struct TitleDetailsPage {
   @State // 六级标题文本颜色
   heading6TextFontColor: number | undefined = undefined
   @State // 六级标题文本尺寸
-  heading6TextFontSize: number = 14
+  heading6TextFontSize: number = 13
   @State // 六级标题文本字体样式
   heading6TextFontStyle: FontStyle = FontStyle.Normal
   @State // 六级标题文本字体粗细

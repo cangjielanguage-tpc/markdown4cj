@@ -6,9 +6,15 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
   marginListGeneralData,
+  textDecorationStyleListGeneralData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
+  textSizeListGeneralData,
+  textTypefaceListGeneralData,
+  textWordSpaceListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
 import { StrikethroughData } from '../model/StrikethroughData'
@@ -93,35 +99,35 @@ struct StrikethroughPage {
   @State // 删除线文本颜色
   strikethroughTextFontColor: number | undefined = undefined
   // 删除线文本尺寸列表
-  strikethroughTextFontSizeList: Array<number> = [12, 13, 14, 15, 16, 17, 18, 19, 20]
+  strikethroughTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 删除线文本尺寸
-  strikethroughTextFontSize: number = 16
+  strikethroughTextFontSize: number | undefined = undefined
   // 删除线文本字体样式列表
-  strikethroughTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  strikethroughTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 删除线文本字体样式
-  strikethroughTextFontStyle: FontStyle = FontStyle.Normal
+  strikethroughTextFontStyle: FontStyle | undefined = undefined
   // 删除线文本字体粗细列表
-  strikethroughTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  strikethroughTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 删除线文本字体粗细
-  strikethroughTextFontWeight: FontWeight = FontWeight.Normal
+  strikethroughTextFontWeight: FontWeight | undefined = undefined
   // 删除线文本字体列表
-  strikethroughTextFontFamilyList: Array<string> = ["HarmonyOS Sans", "Arial", "Times New Roman"]
+  strikethroughTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 删除线文本字体
-  strikethroughTextFontFamily: string = 'HarmonyOS Sans'
+  strikethroughTextFontFamily: string | undefined = undefined
   // 删除线文本行高列表
   strikethroughTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 删除线文本行高
-  strikethroughTextLineHeight: number = 20
+  strikethroughTextLineHeight: number | undefined = undefined
   // 删除线文本字符间距列表
-  strikethroughTextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  strikethroughTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 删除线文本字符间距
-  strikethroughTextLetterSpacing: number = 0
+  strikethroughTextLetterSpacing: number | undefined = undefined
   // 删除线文本装饰线颜色列表
   strikethroughTextDecorationColorList: Array<number | undefined> = colorListGeneralData
   @State // 删除线文本装饰线颜色
   strikethroughTextDecorationColor: number | undefined = undefined
   // 删除线文本装饰线样式列表
-  strikethroughTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = [MarkdownTextDecorationStyle.SOLID, MarkdownTextDecorationStyle.DOUBLE, MarkdownTextDecorationStyle.DOTTED, MarkdownTextDecorationStyle.DASHED, MarkdownTextDecorationStyle.WAVY]
+  strikethroughTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = textDecorationStyleListGeneralData
   @State // 删除线文本装饰线样式
   strikethroughTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
 

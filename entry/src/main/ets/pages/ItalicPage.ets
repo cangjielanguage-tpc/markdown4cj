@@ -6,8 +6,13 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontWeightListGeneraData,
   marginListGeneralData,
+  textLineHeightListGeneralData,
   textNumberListGeneralData,
+  textSizeListGeneralData,
+  textTypefaceListGeneralData,
+  textWordSpaceListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
 import { ItalicData } from '../model/ItalicData'
@@ -93,25 +98,25 @@ struct ItalicPage {
   @State // 斜体文本颜色
   italicTextFontColor: number | undefined = undefined
   // 斜体文本尺寸列表
-  italicTextFontSizeList: Array<number> = [12, 13, 14, 15, 16, 17, 18, 19, 20]
+  italicTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 斜体文本尺寸
-  italicTextFontSize: number = 16
+  italicTextFontSize: number | undefined = undefined
   // 斜体文本字体粗细列表
-  italicTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
+  italicTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 斜体文本字体粗细
-  italicTextFontWeight: FontWeight = FontWeight.Normal
+  italicTextFontWeight: FontWeight | undefined = undefined
   // 斜体文本字体列表
-  italicTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  italicTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 斜体文本字体
-  italicTextFontFamily: string = 'HarmonyOS Sans'
+  italicTextFontFamily: string | undefined = undefined
   // 斜体文本行高列表
-  italicTextLineHeightList: Array<number> = [16, 18, 20, 22, 24, 26, 28, 30]
+  italicTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 斜体文本行高
-  italicTextLineHeight: number = 20
+  italicTextLineHeight: number | undefined = undefined
   // 斜体文本字符间距列表
-  italicTextLetterSpacingList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  italicTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 斜体文本字符间距
-  italicTextLetterSpacing: number = 0
+  italicTextLetterSpacing: number | undefined = undefined
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)

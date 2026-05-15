@@ -5,12 +5,21 @@ import { BaseTabComponent } from '../component/BaseTabComponent'
 import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
+  borderStyleListGeneraData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
+  lineOrBorderWidthListGeneraData,
   marginListGeneralData,
+  paddingListGeneralData,
+  radiusListGeneraData,
+  spaceListGeneralData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
   textSizeListGeneralData,
-  timeListGeneralData
+  textTypefaceListGeneralData,
+  timeListGeneralData,
+  widthOrHeightListGeneralData
 } from '../model/GeneralData'
 import { CodeBlockData } from '../model/CodeBlockData'
 
@@ -23,7 +32,7 @@ struct CodeBlockPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "011_代码块"
+  rawFilePath: string = "011_CodeBlock"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
@@ -115,7 +124,7 @@ struct CodeBlockPage {
   // 代码块上外边距列表
   codeBlockMarginTopList: Array<number> = marginListGeneralData
   @State // 代码块上外边距
-  codeBlockMarginTop: number = 8
+  codeBlockMarginTop: number = 0
   // 代码块右外边距列表
   codeBlockMarginRightList: Array<number> = marginListGeneralData
   @State // 代码块右外边距
@@ -123,33 +132,33 @@ struct CodeBlockPage {
   // 代码块下外边距列表
   codeBlockMarginBottomList: Array<number> = marginListGeneralData
   @State // 代码块下外边距
-  codeBlockMarginBottom: number = 8
+  codeBlockMarginBottom: number = 0
   // 代码块左外边距列表
   codeBlockMarginLeftList: Array<number> = marginListGeneralData
   @State // 代码块左外边距
   codeBlockMarginLeft: number = 0
   // 代码块上内边距列表
-  codeBlockPaddingTopList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  codeBlockPaddingTopList: Array<number> = paddingListGeneralData
   @State // 代码块上内边距
-  codeBlockPaddingTop: number = 12
+  codeBlockPaddingTop: number = 0
   // 代码块右内边距列表
-  codeBlockPaddingRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  codeBlockPaddingRightList: Array<number> = paddingListGeneralData
   @State // 代码块右内边距
-  codeBlockPaddingRight: number = 12
+  codeBlockPaddingRight: number = 8
   // 代码块下内边距列表
-  codeBlockPaddingBottomList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  codeBlockPaddingBottomList: Array<number> = paddingListGeneralData
   @State // 代码块下内边距
-  codeBlockPaddingBottom: number = 12
+  codeBlockPaddingBottom: number = 8
   // 代码块左内边距列表
-  codeBlockPaddingLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  codeBlockPaddingLeftList: Array<number> = paddingListGeneralData
   @State // 代码块左内边距
-  codeBlockPaddingLeft: number = 12
+  codeBlockPaddingLeft: number = 0
   // 代码块边框样式列表
-  codeBlockBorderStyleList: Array<BorderStyle> = [BorderStyle.Solid, BorderStyle.Dashed, BorderStyle.Dotted]
+  codeBlockBorderStyleList: Array<BorderStyle> = borderStyleListGeneraData
   @State // 代码块边框样式
   codeBlockBorderStyle: BorderStyle = BorderStyle.Solid
   // 代码块边框宽度列表
-  codeBlockBorderWidthList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5]
+  codeBlockBorderWidthList: Array<number> = lineOrBorderWidthListGeneraData
   @State // 代码块边框宽度
   codeBlockBorderWidth: number = 0
   // 代码块边框颜色列表
@@ -157,25 +166,25 @@ struct CodeBlockPage {
   @State // 代码块边框颜色
   codeBlockBorderColor: number | undefined = undefined
   // 代码块边框左上圆角列表
-  codeBlockRadiusTopLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  codeBlockRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State // 代码块边框左上圆角
   codeBlockRadiusTopLeft: number = 8
   // 代码块边框右上圆角列表
-  codeBlockRadiusTopRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  codeBlockRadiusTopRightList: Array<number> = radiusListGeneraData
   @State // 代码块边框右上圆角
   codeBlockRadiusTopRight: number = 8
   // 代码块边框左下圆角列表
-  codeBlockRadiusBottomLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  codeBlockRadiusBottomLeftList: Array<number> = radiusListGeneraData
   @State // 代码块边框左下圆角
   codeBlockRadiusBottomLeft: number = 8
   // 代码块边框右下圆角列表
-  codeBlockRadiusBottomRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  codeBlockRadiusBottomRightList: Array<number> = radiusListGeneraData
   @State // 代码块边框右下圆角
   codeBlockRadiusBottomRight: number = 8
   // 代码块类型和代码块内容间距列表
   codeBlockTitleLayoutMarginBottomList: Array<number> = marginListGeneralData
   @State // 代码块类型和代码块内容间距
-  codeBlockTitleLayoutMarginBottom: number = 8
+  codeBlockTitleLayoutMarginBottom: number = 0
   // 代码块类型左边距列表
   codeBlockTypeTextMarginLeftList: Array<number> = marginListGeneralData
   @State // 代码块类型左边距
@@ -191,27 +200,27 @@ struct CodeBlockPage {
   // 代码块类型文本尺寸列表
   codeBlockTypeTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 代码块类型文本尺寸
-  codeBlockTypeTextFontSize: number = 14
+  codeBlockTypeTextFontSize: number | undefined = undefined
   // 代码块类型文本字体样式列表
-  codeBlockTypeTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  codeBlockTypeTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 代码块类型文本字体样式
-  codeBlockTypeTextFontStyle: FontStyle = FontStyle.Normal
+  codeBlockTypeTextFontStyle: FontStyle | undefined = undefined
   // 代码块类型文本字体粗细列表
-  codeBlockTypeTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
+  codeBlockTypeTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 代码块类型文本字体粗细
-  codeBlockTypeTextFontWeight: FontWeight = FontWeight.Normal
+  codeBlockTypeTextFontWeight: FontWeight | undefined = undefined
   // 代码块类型文本字体列表
-  codeBlockTypeTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  codeBlockTypeTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 代码块类型文本字体
-  codeBlockTypeTextFontFamily: string = 'HarmonyOS Sans'
+  codeBlockTypeTextFontFamily: string | undefined = undefined
   // 代码块类型文本行高列表
   codeBlockTypeTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 代码块类型文本行高
-  codeBlockTypeTextLineHeight: number = 20
+  codeBlockTypeTextLineHeight: number | undefined = undefined
   // 代码块代码复制和代码全屏间距列表
-  codeBlockCopyFullScreenSpacingList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  codeBlockCopyFullScreenSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块代码复制和代码全屏间距
-  codeBlockCopyFullScreenSpacing: number = 8
+  codeBlockCopyFullScreenSpacing: number = 5
   // 代码块代码复制按钮是否显示列表
   codeBlockCopyButtonIsShowList: Array<boolean> = booleanListGeneralData
   @State // 代码块代码复制按钮是否显示
@@ -221,21 +230,21 @@ struct CodeBlockPage {
   @State // 代码块代码复制文本是否显示
   codeBlockCopyTextIsShow: boolean = true
   // 代码块代码复制按钮默认图标列表
-  codeBlockCopyIconList: Array<Resource | undefined> = [undefined]
+  codeBlockCopyIconList: Array<Resource | undefined> = [undefined, $r('app.media.startIcon')]
   @State // 代码块代码复制按钮默认图标
   codeBlockCopyIcon: Resource | undefined = undefined
   // 代码块代码复制图标宽度列表
-  codeBlockCopyIconWidthList: Array<number> = [10, 12, 14, 16, 18, 20, 22, 24]
+  codeBlockCopyIconWidthList: Array<number> = widthOrHeightListGeneralData
   @State // 代码块代码复制图标宽度
-  codeBlockCopyIconWidth: number = 18
+  codeBlockCopyIconWidth: number = 24
   // 代码块代码复制图标高度列表
-  codeBlockCopyIconHeightList: Array<number> = [10, 12, 14, 16, 18, 20, 22, 24]
+  codeBlockCopyIconHeightList: Array<number> = widthOrHeightListGeneralData
   @State // 代码块代码复制图标高度
-  codeBlockCopyIconHeight: number = 18
+  codeBlockCopyIconHeight: number = 24
   // 代码块代码复制图标和文本间距列表
-  codeBlockCopyIconTextSpacingList: Array<number> = [0, 2, 4, 6, 8, 10]
+  codeBlockCopyIconTextSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块代码复制图标和文本间距
-  codeBlockCopyIconTextSpacing: number = 4
+  codeBlockCopyIconTextSpacing: number = 5
   // 代码块代码复制默认文本内容列表
   codeBlockCopyTextList: Array<string> = ['Copy', '复制', '']
   @State // 代码块代码复制默认文本内容
@@ -247,23 +256,23 @@ struct CodeBlockPage {
   // 代码块代码复制文本尺寸列表
   codeBlockCopyTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 代码块代码复制文本尺寸
-  codeBlockCopyTextFontSize: number = 14
+  codeBlockCopyTextFontSize: number | undefined = undefined
   // 代码块代码复制文本字体样式列表
-  codeBlockCopyTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  codeBlockCopyTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 代码块代码复制文本字体样式
-  codeBlockCopyTextFontStyle: FontStyle = FontStyle.Normal
+  codeBlockCopyTextFontStyle: FontStyle | undefined = undefined
   // 代码块代码复制文本字体粗细列表
-  codeBlockCopyTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
+  codeBlockCopyTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 代码块代码复制文本字体粗细
-  codeBlockCopyTextFontWeight: FontWeight = FontWeight.Normal
+  codeBlockCopyTextFontWeight: FontWeight | undefined = undefined
   // 代码块代码复制文本字体列表
-  codeBlockCopyTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  codeBlockCopyTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 代码块代码复制文本字体
-  codeBlockCopyTextFontFamily: string = 'HarmonyOS Sans'
+  codeBlockCopyTextFontFamily: string | undefined = undefined
   // 代码块代码复制文本行高列表
   codeBlockCopyTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 代码块代码复制文本行高
-  codeBlockCopyTextLineHeight: number = 20
+  codeBlockCopyTextLineHeight: number | undefined = undefined
   // 代码块代码全屏按钮是否显示列表
   codeBlockFullScreenButtonIsShowList: Array<boolean> = booleanListGeneralData
   @State // 代码块代码全屏按钮是否显示
@@ -273,21 +282,21 @@ struct CodeBlockPage {
   @State // 代码块代码全屏文本是否显示
   codeBlockFullScreenTextIsShow: boolean = true
   // 代码块代码全屏按钮默认图标列表
-  codeBlockFullScreenIconList: Array<Resource | undefined> = [undefined]
+  codeBlockFullScreenIconList: Array<Resource | undefined> = [undefined, $r('app.media.startIcon')]
   @State // 代码块代码全屏按钮默认图标
   codeBlockFullScreenIcon: Resource | undefined = undefined
   // 代码块代码全屏图标宽度列表
-  codeBlockFullScreenIconWidthList: Array<number> = [10, 12, 14, 16, 18, 20, 22, 24]
+  codeBlockFullScreenIconWidthList: Array<number> = widthOrHeightListGeneralData
   @State // 代码块代码全屏图标宽度
-  codeBlockFullScreenIconWidth: number = 18
+  codeBlockFullScreenIconWidth: number = 24
   // 代码块代码全屏图标高度列表
-  codeBlockFullScreenIconHeightList: Array<number> = [10, 12, 14, 16, 18, 20, 22, 24]
+  codeBlockFullScreenIconHeightList: Array<number> = widthOrHeightListGeneralData
   @State // 代码块代码全屏图标高度
-  codeBlockFullScreenIconHeight: number = 18
+  codeBlockFullScreenIconHeight: number = 24
   // 代码块代码全屏图标和文本间距列表
-  codeBlockFullScreenIconTextSpacingList: Array<number> = [0, 2, 4, 6, 8, 10]
+  codeBlockFullScreenIconTextSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块代码全屏图标和文本间距
-  codeBlockFullScreenIconTextSpacing: number = 4
+  codeBlockFullScreenIconTextSpacing: number = 5
   // 代码块代码全屏默认文本内容列表
   codeBlockFullScreenTextList: Array<string> = ['Full Screen', '全屏', '']
   @State // 代码块代码全屏默认文本内容
@@ -299,29 +308,29 @@ struct CodeBlockPage {
   // 代码块代码全屏文本尺寸列表
   codeBlockFullScreenTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 代码块代码全屏文本尺寸
-  codeBlockFullScreenTextFontSize: number = 14
+  codeBlockFullScreenTextFontSize: number | undefined = undefined
   // 代码块代码全屏文本字体样式列表
-  codeBlockFullScreenTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  codeBlockFullScreenTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 代码块代码全屏文本字体样式
-  codeBlockFullScreenTextFontStyle: FontStyle = FontStyle.Normal
+  codeBlockFullScreenTextFontStyle: FontStyle | undefined = undefined
   // 代码块代码全屏文本字体粗细列表
-  codeBlockFullScreenTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
+  codeBlockFullScreenTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 代码块代码全屏文本字体粗细
-  codeBlockFullScreenTextFontWeight: FontWeight = FontWeight.Normal
+  codeBlockFullScreenTextFontWeight: FontWeight | undefined = undefined
   // 代码块代码全屏文本字体列表
-  codeBlockFullScreenTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  codeBlockFullScreenTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 代码块代码全屏文本字体
-  codeBlockFullScreenTextFontFamily: string = 'HarmonyOS Sans'
+  codeBlockFullScreenTextFontFamily: string | undefined = undefined
   // 代码块代码全屏文本行高列表
   codeBlockFullScreenTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 代码块代码全屏文本行高
-  codeBlockFullScreenTextLineHeight: number = 20
+  codeBlockFullScreenTextLineHeight: number | undefined = undefined
   // 代码块代码行号是否显示列表
   codeBlockLineNumberIsShowList: Array<boolean> = booleanListGeneralData
   @State // 代码块代码行号是否显示
-  codeBlockLineNumberIsShow: boolean = false
+  codeBlockLineNumberIsShow: boolean = true
   // 代码块代码行号左内边距列表
-  codeBlockLineNumberTextPaddingLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  codeBlockLineNumberTextPaddingLeftList: Array<number> = spaceListGeneralData
   @State // 代码块代码行号左内边距
   codeBlockLineNumberTextPaddingLeft: number = 8
   // 代码块代码行号文本颜色列表
@@ -331,33 +340,33 @@ struct CodeBlockPage {
   // 代码块代码行号文本尺寸列表
   codeBlockLineNumberTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 代码块代码行号文本尺寸
-  codeBlockLineNumberTextFontSize: number = 13
+  codeBlockLineNumberTextFontSize: number | undefined = undefined
   // 代码块代码行号文本字体样式列表
-  codeBlockLineNumberTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  codeBlockLineNumberTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 代码块代码行号文本字体样式
-  codeBlockLineNumberTextFontStyle: FontStyle = FontStyle.Normal
+  codeBlockLineNumberTextFontStyle: FontStyle | undefined = undefined
   // 代码块代码行号文本字体粗细列表
-  codeBlockLineNumberTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
+  codeBlockLineNumberTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 代码块代码行号文本字体粗细
-  codeBlockLineNumberTextFontWeight: FontWeight = FontWeight.Normal
+  codeBlockLineNumberTextFontWeight: FontWeight | undefined = undefined
   // 代码块代码行号文本字体列表
-  codeBlockLineNumberTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  codeBlockLineNumberTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 代码块代码行号文本字体
-  codeBlockLineNumberTextFontFamily: string = 'HarmonyOS Sans'
+  codeBlockLineNumberTextFontFamily: string | undefined = undefined
   // 代码块代码行号文本行高列表
   codeBlockLineNumberTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 代码块代码行号文本行高
-  codeBlockLineNumberTextLineHeight: number = 22
+  codeBlockLineNumberTextLineHeight: number | undefined = undefined
   // 代码块代码行号和代码块中间分割线颜色列表
   codeBlockDividerColorList: Array<number | undefined> = colorListGeneralData
   @State // 代码块代码行号和代码块中间分割线颜色
   codeBlockDividerColor: number | undefined = undefined
   // 代码块代码行号和代码块中间分割线宽度列表
-  codeBlockDividerStrokeWidthList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5]
+  codeBlockDividerStrokeWidthList: Array<number> = lineOrBorderWidthListGeneraData
   @State // 代码块代码行号和代码块中间分割线宽度
-  codeBlockDividerStrokeWidth: number = 1
+  codeBlockDividerStrokeWidth: number = 0.5
   // 代码块代码行号和分割线间距列表
-  codeBlockLineNumberDividerSpacingList: Array<number> = [0, 2, 4, 6, 8, 10]
+  codeBlockLineNumberDividerSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块代码行号和分割线间距
   codeBlockLineNumberDividerSpacing: number = 8
   // 代码块文本颜色列表
@@ -367,43 +376,43 @@ struct CodeBlockPage {
   // 代码块代码文本右外边距列表
   codeBlockTextMarginRightList: Array<number> = marginListGeneralData
   @State // 代码块代码文本右外边距
-  codeBlockTextMarginRight: number = 0
+  codeBlockTextMarginRight: number = 8
   // 代码块代码文本左外边距列表
   codeBlockTextMarginLeftList: Array<number> = marginListGeneralData
   @State // 代码块代码文本左外边距
-  codeBlockTextMarginLeft: number = 0
+  codeBlockTextMarginLeft: number = 8
   // 代码块文本尺寸列表
   codeBlockTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 代码块文本尺寸
-  codeBlockTextFontSize: number = 13
+  codeBlockTextFontSize: number | undefined = undefined
   // 代码块文本字体样式列表
-  codeBlockTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  codeBlockTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 代码块文本字体样式
-  codeBlockTextFontStyle: FontStyle = FontStyle.Normal
+  codeBlockTextFontStyle: FontStyle | undefined = undefined
   // 代码块文本字体粗细列表
-  codeBlockTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
+  codeBlockTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 代码块文本字体粗细
-  codeBlockTextFontWeight: FontWeight = FontWeight.Normal
+  codeBlockTextFontWeight: FontWeight | undefined = undefined
   // 代码块文本字体列表
-  codeBlockTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  codeBlockTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 代码块文本字体
-  codeBlockTextFontFamily: string = 'HarmonyOS Sans'
+  codeBlockTextFontFamily: string | undefined = undefined
   // 代码块文本行高列表
   codeBlockTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 代码块文本行高
-  codeBlockTextLineHeight: number = 22
+  codeBlockTextLineHeight: number | undefined = undefined
   // 代码块文本字符间距列表
-  codeBlockTextLetterSpacingList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  codeBlockTextLetterSpacingList: Array<number> = spaceListGeneralData
   @State // 代码块文本字符间距
   codeBlockTextLetterSpacing: number = 0
   // 组合代码块未选中标题字体大小列表
   codeBlockListTitleTextSizeList: Array<number> = textSizeListGeneralData
   @State // 组合代码块未选中标题字体大小
-  codeBlockListTitleTextSize: number = 14
+  codeBlockListTitleTextSize: number = 13
   // 组合代码块选中标题字体大小列表
   codeBlockListTitleSelectTextSizeList: Array<number> = textSizeListGeneralData
   @State // 组合代码块选中标题字体大小
-  codeBlockListTitleSelectTextSize: number = 15
+  codeBlockListTitleSelectTextSize: number = 13
   // 组合代码块选中标题文本颜色列表
   codeBlockListTitleSelectTextColorList: Array<number | undefined> = colorListGeneralData
   @State // 组合代码块选中标题文本颜色
@@ -425,9 +434,9 @@ struct CodeBlockPage {
   @State // 是否单独代码块显示
   codeBlockIsSeparate: boolean = false
   // 单独代码块行号宽度列表
-  codeBlockSeparateWidthList: Array<number> = [0, 5, 8, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60]
+  codeBlockSeparateWidthList: Array<number> = widthOrHeightListGeneralData
   @State // 单独代码块行号宽度
-  codeBlockSeparateWidth: number = 60
+  codeBlockSeparateWidth: number = 50
   // 单独代码块是否居底显示列表
   codeBlockSeparateIsBottomList: Array<boolean> = booleanListGeneralData
   @State // 单独代码块是否居底显示

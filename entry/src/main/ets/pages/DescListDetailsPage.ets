@@ -49,16 +49,16 @@ struct DescListDetailsPage {
   isOnCopy: boolean = false
   // Markdown块上边距
   @State
-  blockMarginTop: number = 8
+  blockMarginTop: number = 0
   // Markdown块右边距
   @State
-  blockMarginRight: number = 8
+  blockMarginRight: number = 0
   // Markdown块下边距
   @State
-  blockMarginBottom: number = 8
+  blockMarginBottom: number = 0
   // Markdown块左边距
   @State
-  blockMarginLeft: number = 8
+  blockMarginLeft: number = 0
   // Markdown块间距样式字符串
   @State
   markdownBlockSpacing: number = 8

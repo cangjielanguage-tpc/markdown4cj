@@ -4,11 +4,11 @@ export class LinkData extends BaseMDData {
   _linkIsIcon: boolean = false // 链接是否是图片显示
   _linkListIsIcon: boolean = false // 列表中的单行链接是否是图片显示
   _linkTextFontColor: number | undefined = undefined // 链接文本颜色
-  _linkTextFontSize: number = 14 // 链接文本尺寸
+  _linkTextFontSize: number | undefined = undefined // 链接文本尺寸
   _linkTextFontStyle: FontStyle = FontStyle.Normal // 链接文本字体样式
   _linkTextFontWeight: FontWeight = FontWeight.Normal // 链接文本字体粗细
   _linkTextFontFamily: string = 'HarmonyOS Sans' // 链接文本字体
-  _linkTextLineHeight: number = 22 // 链接文本行高
+  _linkTextLineHeight: number | undefined = undefined // 链接文本行高
   _linkTextLetterSpacing: number = 0 // 链接文本字符间距
   _linkTextDecorationType: TextDecorationType = TextDecorationType.None // 链接文本装饰线类型
   _linkTextDecorationColor: number | undefined = undefined // 链接文本装饰线颜色
@@ -55,7 +55,7 @@ export class LinkData extends BaseMDData {
     this._linkTextFontColor = value
   }
 
-  public set linkTextFontSize(value: number) {
+  public set linkTextFontSize(value: number | undefined) {
     this._linkTextFontSize = value
   }
 
@@ -71,7 +71,7 @@ export class LinkData extends BaseMDData {
     this._linkTextFontFamily = value
   }
 
-  public set linkTextLineHeight(value: number) {
+  public set linkTextLineHeight(value: number | undefined) {
     this._linkTextLineHeight = value
   }
 

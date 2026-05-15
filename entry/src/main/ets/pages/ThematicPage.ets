@@ -6,6 +6,7 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  lineOrBorderWidthListGeneraData,
   marginListGeneralData,
   textNumberListGeneralData,
   timeListGeneralData
@@ -89,7 +90,7 @@ struct ThematicPage {
   // 分割线上外边距列表
   dividerMarginTopList: Array<number> = marginListGeneralData
   @State // 分割线上外边距
-  dividerMarginTop: number = 8
+  dividerMarginTop: number = 0
   // 分割线右外边距列表
   dividerMarginRightList: Array<number> = marginListGeneralData
   @State // 分割线右外边距
@@ -97,7 +98,7 @@ struct ThematicPage {
   // 分割线下外边距列表
   dividerMarginBottomList: Array<number> = marginListGeneralData
   @State // 分割线下外边距
-  dividerMarginBottom: number = 8
+  dividerMarginBottom: number = 0
   // 分割线左外边距列表
   dividerMarginLeftList: Array<number> = marginListGeneralData
   @State // 分割线左外边距
@@ -123,13 +124,13 @@ struct ThematicPage {
   @State // 分割线颜色
   dividerColor: number | undefined = undefined
   // 分割线宽度列表
-  dividerStrokeWidthList: Array<number> = [0.5, 1, 2, 3, 4, 5]
+  dividerStrokeWidthList: Array<number> = lineOrBorderWidthListGeneraData
   @State // 分割线宽度
-  dividerStrokeWidth: number = 1
+  dividerStrokeWidth: number = 0.5
   // 分割线端点样式列表
   dividerStyleList: Array<LineCapStyle> = [LineCapStyle.Butt, LineCapStyle.Round, LineCapStyle.Square]
   @State // 分割线端点样式
-  dividerStyle: LineCapStyle = LineCapStyle.Round
+  dividerStyle: LineCapStyle = LineCapStyle.Butt
 
   @State // 配置数据内容
   thematicData: ThematicData = new ThematicData()

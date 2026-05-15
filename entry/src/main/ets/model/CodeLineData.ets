@@ -2,12 +2,12 @@ import { BaseMDData } from "./BaseMDData"
 
 export class CodeLineData extends BaseMDData {
   _inlineCodeTextFontColor: number | undefined = undefined // 内联代码文本颜色
-  _inlineCodeTextFontSize: number = 13 // 内联代码文本尺寸
-  _inlineCodeTextFontStyle: FontStyle = FontStyle.Normal // 内联代码文本字体样式
-  _inlineCodeTextFontWeight: FontWeight = FontWeight.Normal // 内联代码文本字体粗细
-  _inlineCodeTextFontFamily: string = 'HarmonyOS Sans' // 内联代码文本字体
-  _inlineCodeTextLineHeight: number = 20 // 内联代码文本行高
-  _inlineCodeTextLetterSpacing: number = 0 // 内联代码文本字符间距
+  _inlineCodeTextFontSize: number | undefined = undefined // 内联代码文本尺寸
+  _inlineCodeTextFontStyle: FontStyle | undefined = undefined // 内联代码文本字体样式
+  _inlineCodeTextFontWeight: FontWeight | undefined = undefined // 内联代码文本字体粗细
+  _inlineCodeTextFontFamily: string | undefined = undefined // 内联代码文本字体
+  _inlineCodeTextLineHeight: number | undefined = undefined // 内联代码文本行高
+  _inlineCodeTextLetterSpacing: number | undefined = undefined // 内联代码文本字符间距
   _inlineCodeTextBackgroundColor: number | undefined = undefined // 内联代码文本背景颜色
   _inlineCodeTextBackgroundRadiusTopLeft: number = 4 // 内联代码文本背景左上圆角
   _inlineCodeTextBackgroundRadiusTopRight: number = 4 // 内联代码文本背景右上圆角
@@ -18,27 +18,27 @@ export class CodeLineData extends BaseMDData {
     this._inlineCodeTextFontColor = value
   }
 
-  public set inlineCodeTextFontSize(value: number) {
+  public set inlineCodeTextFontSize(value: number | undefined) {
     this._inlineCodeTextFontSize = value
   }
 
-  public set inlineCodeTextFontStyle(value: FontStyle) {
+  public set inlineCodeTextFontStyle(value: FontStyle | undefined) {
     this._inlineCodeTextFontStyle = value
   }
 
-  public set inlineCodeTextFontWeight(value: FontWeight) {
+  public set inlineCodeTextFontWeight(value: FontWeight | undefined) {
     this._inlineCodeTextFontWeight = value
   }
 
-  public set inlineCodeTextFontFamily(value: string) {
+  public set inlineCodeTextFontFamily(value: string | undefined) {
     this._inlineCodeTextFontFamily = value
   }
 
-  public set inlineCodeTextLineHeight(value: number) {
+  public set inlineCodeTextLineHeight(value: number | undefined) {
     this._inlineCodeTextLineHeight = value
   }
 
-  public set inlineCodeTextLetterSpacing(value: number) {
+  public set inlineCodeTextLetterSpacing(value: number | undefined) {
     this._inlineCodeTextLetterSpacing = value
   }
 

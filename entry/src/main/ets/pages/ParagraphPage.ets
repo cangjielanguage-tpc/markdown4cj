@@ -6,8 +6,14 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
   marginListGeneralData,
+  textLineHeightListGeneralData,
   textNumberListGeneralData,
+  textSizeListGeneralData,
+  textTypefaceListGeneralData,
+  textWordSpaceListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
 import { ParagraphData } from '../model/ParagraphData'
@@ -93,19 +99,19 @@ struct ParagraphPage {
   // 段落上外边距列表
   paragraphMarginTopList: Array<number> = marginListGeneralData
   @State // 段落上外边距
-  paragraphMarginTop: number = 8
+  paragraphMarginTop: number = 0
   // 段落右外边距列表
   paragraphMarginRightList: Array<number> = marginListGeneralData
   @State // 段落右外边距
-  paragraphMarginRight: number = 8
+  paragraphMarginRight: number = 0
   // 段落下外边距列表
   paragraphMarginBottomList: Array<number> = marginListGeneralData
   @State // 段落下外边距
-  paragraphMarginBottom: number = 8
+  paragraphMarginBottom: number = 0
   // 段落左外边距列表
   paragraphMarginLeftList: Array<number> = marginListGeneralData
   @State // 段落左外边距
-  paragraphMarginLeft: number = 8
+  paragraphMarginLeft: number = 0
   // 段落上内边距列表
   paragraphPaddingTopList: Array<number> = marginListGeneralData
   @State // 段落上内边距
@@ -127,27 +133,27 @@ struct ParagraphPage {
   @State // 段落文本颜色
   paragraphTextFontColor: number | undefined = undefined
   // 段落文本尺寸列表
-  paragraphTextFontSizeList: Array<number> = [12, 13, 14, 15, 16, 17, 18, 19, 20]
+  paragraphTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 段落文本尺寸
   paragraphTextFontSize: number = 14
   // 段落文本字体样式列表
-  paragraphTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  paragraphTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 段落文本字体样式
   paragraphTextFontStyle: FontStyle = FontStyle.Normal
   // 段落文本字体粗细列表
-  paragraphTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  paragraphTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 段落文本字体粗细
   paragraphTextFontWeight: FontWeight = FontWeight.Normal
   // 段落文本字体列表
-  paragraphTextFontFamilyList: Array<string> = ["HarmonyOS Sans", "Arial", "Times New Roman"]
+  paragraphTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 段落文本字体
   paragraphTextFontFamily: string = 'HarmonyOS Sans'
   // 段落文本行高列表
-  paragraphTextLineHeightList: Array<number> = [18, 19, 20, 21, 22, 23, 24, 25, 26]
+  paragraphTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 段落文本行高
   paragraphTextLineHeight: number = 22
   // 段落文本字符间距列表
-  paragraphTextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  paragraphTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 段落文本字符间距
   paragraphTextLetterSpacing: number = 0
 

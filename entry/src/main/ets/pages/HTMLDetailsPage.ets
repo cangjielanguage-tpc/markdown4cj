@@ -85,22 +85,22 @@ struct HTMLDetailsPage {
   htmlUnderlineTextFontColor: number | undefined = undefined
   // HTML下划线文本尺寸
   @State
-  htmlUnderlineTextFontSize: number = 14
+  htmlUnderlineTextFontSize: number | undefined = undefined
   // HTML下划线文本字体样式
   @State
-  htmlUnderlineTextFontStyle: FontStyle = FontStyle.Normal
+  htmlUnderlineTextFontStyle: FontStyle | undefined = undefined
   // HTML下划线文本字体粗细
   @State
-  htmlUnderlineTextFontWeight: FontWeight = FontWeight.Normal
+  htmlUnderlineTextFontWeight: FontWeight | undefined = undefined
   // HTML下划线文本字体
   @State
-  htmlUnderlineTextFontFamily: string = 'HarmonyOS Sans'
+  htmlUnderlineTextFontFamily: string | undefined = undefined
   // HTML下划线文本行高
   @State
-  htmlUnderlineTextLineHeight: number = 22
+  htmlUnderlineTextLineHeight: number | undefined = undefined
   // HTML下划线文本字符间距
   @State
-  htmlUnderlineTextLetterSpacing: number = 0
+  htmlUnderlineTextLetterSpacing: number | undefined = undefined
   // HTML下划线文本装饰线颜色
   @State
   htmlUnderlineTextDecorationColor: number | undefined = undefined
@@ -293,12 +293,24 @@ struct HTMLDetailsPage {
     if (this.htmlUnderlineTextFontColor !== undefined) {
       htmlUnderlineTheme.setHtmlUnderlineTextFontColor(this.htmlUnderlineTextFontColor)
     }
-    htmlUnderlineTheme.setHtmlUnderlineTextFontSize(this.htmlUnderlineTextFontSize)
-    htmlUnderlineTheme.setHtmlUnderlineTextFontStyle(this.htmlUnderlineTextFontStyle)
-    htmlUnderlineTheme.setHtmlUnderlineTextFontWeight(this.htmlUnderlineTextFontWeight)
-    htmlUnderlineTheme.setHtmlUnderlineTextFontFamily(this.htmlUnderlineTextFontFamily)
-    htmlUnderlineTheme.setHtmlUnderlineTextLineHeight(this.htmlUnderlineTextLineHeight)
-    htmlUnderlineTheme.setHtmlUnderlineTextLetterSpacing(this.htmlUnderlineTextLetterSpacing)
+    if (this.htmlUnderlineTextFontSize !== undefined) {
+      htmlUnderlineTheme.setHtmlUnderlineTextFontSize(this.htmlUnderlineTextFontSize)
+    }
+    if (this.htmlUnderlineTextFontStyle !== undefined) {
+      htmlUnderlineTheme.setHtmlUnderlineTextFontStyle(this.htmlUnderlineTextFontStyle)
+    }
+    if (this.htmlUnderlineTextFontWeight !== undefined) {
+      htmlUnderlineTheme.setHtmlUnderlineTextFontWeight(this.htmlUnderlineTextFontWeight)
+    }
+    if (this.htmlUnderlineTextFontFamily !== undefined) {
+      htmlUnderlineTheme.setHtmlUnderlineTextFontFamily(this.htmlUnderlineTextFontFamily)
+    }
+    if (this.htmlUnderlineTextLineHeight !== undefined) {
+      htmlUnderlineTheme.setHtmlUnderlineTextLineHeight(this.htmlUnderlineTextLineHeight)
+    }
+    if (this.htmlUnderlineTextLetterSpacing !== undefined) {
+      htmlUnderlineTheme.setHtmlUnderlineTextLetterSpacing(this.htmlUnderlineTextLetterSpacing)
+    }
     if (this.htmlUnderlineTextDecorationColor !== undefined) {
       htmlUnderlineTheme.setHtmlUnderlineTextDecorationColor(this.htmlUnderlineTextDecorationColor)
     }

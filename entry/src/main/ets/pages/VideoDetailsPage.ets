@@ -4,7 +4,8 @@ import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
   MarkdownTheme,
   MarkdownThemeVideo,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownThemeGlobal,
+  ImageFitType} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { VideoData } from '../model/VideoData'
@@ -98,7 +99,7 @@ struct VideoDetailsPage {
   @State // 播放按钮图标宽度
   videoPlayIconWidth: number = 40
   @State // 播放按钮图标高度
-  videoPlayIconHeight: number = 40
+  videoPlayIconHeight: number = 60
   @State // 播放按钮图标缩放类型
   videoPlayIconFitType: ImageFit = ImageFit.Contain
   @State // 视频时间文本颜色
@@ -112,7 +113,7 @@ struct VideoDetailsPage {
   @State // 视频时间文本字体
   videoTimeTextFontFamily: string = 'HarmonyOS Sans'
   @State // 视频时间文本行高
-  videoTimeTextLineHeight: number = 20
+  videoTimeTextLineHeight: number = 22
   @State // 视频时间文本居右边距
   videoTimeTextMarginRight: number = 10
   @State // 视频时间文本居底边距
@@ -120,7 +121,7 @@ struct VideoDetailsPage {
   @State // 底部布局是否显示（视频发布/下载按钮）
   videoBottomLayoutVisible: boolean = false
   @State // 底部布局距离视频上边距
-  videoBottomLayoutMarginTop: number = 8
+  videoBottomLayoutMarginTop: number = 14
   @State // 视频发布按钮是否显示
   videoReleaseButtonVisible: boolean = true
   @State // 视频发布按钮背景颜色
@@ -153,11 +154,11 @@ struct VideoDetailsPage {
   @State // 视频发布按钮文本字体样式
   videoReleaseButtonTextFontStyle: FontStyle = FontStyle.Normal
   @State // 视频发布按钮文本字体粗细
-  videoReleaseButtonTextFontWeight: FontWeight = FontWeight.Normal
+  videoReleaseButtonTextFontWeight: FontWeight = FontWeight.Medium
   @State // 视频发布按钮文本字体
   videoReleaseButtonTextFontFamily: string = 'HarmonyOS Sans'
   @State // 视频发布按钮文本行高
-  videoReleaseButtonTextLineHeight: number = 20
+  videoReleaseButtonTextLineHeight: number = 22
   @State // 视频下载按钮是否显示
   videoDownloadButtonVisible: boolean = true
   @State // 视频下载按钮背景颜色
@@ -190,11 +191,11 @@ struct VideoDetailsPage {
   @State // 视频下载按钮文本字体样式
   videoDownloadButtonTextFontStyle: FontStyle = FontStyle.Normal
   @State // 视频下载按钮文本字体粗细
-  videoDownloadButtonTextFontWeight: FontWeight = FontWeight.Normal
+  videoDownloadButtonTextFontWeight: FontWeight = FontWeight.Medium
   @State // 视频下载按钮文本字体
   videoDownloadButtonTextFontFamily: string = 'HarmonyOS Sans'
   @State // 视频下载按钮文本行高
-  videoDownloadButtonTextLineHeight: number = 20
+  videoDownloadButtonTextLineHeight: number = 22
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -458,13 +459,17 @@ struct VideoDetailsPage {
     if (this.videoPlaceholder !== undefined) {
       videoTheme.setVideoPlaceholder(this.videoPlaceholder)
     }
-    videoTheme.setVideoImageFitType(this.videoImageFitType)
+    if (this.videoImageFitType !== undefined) {
+      videoTheme.setVideoImageFitType(this.videoImageFitType)
+    }
     if (this.videoPlayIcon !== undefined) {
       videoTheme.setVideoPlayIcon(this.videoPlayIcon)
     }
     videoTheme.setVideoPlayIconWidth(this.videoPlayIconWidth)
     videoTheme.setVideoPlayIconHeight(this.videoPlayIconHeight)
-    videoTheme.setVideoPlayIconFitType(this.videoPlayIconFitType)
+    if (this.videoPlayIconFitType !== undefined) {
+      videoTheme.setVideoPlayIconFitType(this.videoPlayIconFitType)
+    }
     if (this.videoTimeTextFontColor !== undefined) {
       videoTheme.setVideoTimeTextFontColor(this.videoTimeTextFontColor)
     }

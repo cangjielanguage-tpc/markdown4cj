@@ -26,11 +26,11 @@ export class CodeBlockData extends BaseMDData {
   _codeBlockTypeTextMarginLeft: number = 8 // 代码块类型左边距
   _codeBlockTypeText: string = "Code" // 代码块没有代码类型时默认显示文本
   _codeBlockTypeTextFontColor: number | undefined = undefined // 代码块类型文本颜色
-  _codeBlockTypeTextFontSize: number = 14 // 代码块类型文本尺寸
-  _codeBlockTypeTextFontStyle: FontStyle = FontStyle.Normal // 代码块类型文本字体样式
-  _codeBlockTypeTextFontWeight: FontWeight = FontWeight.Normal // 代码块类型文本字体粗细
-  _codeBlockTypeTextFontFamily: string = 'HarmonyOS Sans' // 代码块类型文本字体
-  _codeBlockTypeTextLineHeight: number = 20 // 代码块类型文本行高
+  _codeBlockTypeTextFontSize: number | undefined = undefined // 代码块类型文本尺寸
+  _codeBlockTypeTextFontStyle: FontStyle | undefined = undefined // 代码块类型文本字体样式
+  _codeBlockTypeTextFontWeight: FontWeight | undefined = undefined // 代码块类型文本字体粗细
+  _codeBlockTypeTextFontFamily: string | undefined = undefined // 代码块类型文本字体
+  _codeBlockTypeTextLineHeight: number | undefined = undefined // 代码块类型文本行高
   _codeBlockCopyFullScreenSpacing: number = 8 // 代码块代码复制和代码全屏间距
   _codeBlockCopyButtonIsShow: boolean = true // 代码块代码复制按钮是否显示
   _codeBlockCopyTextIsShow: boolean = true // 代码块代码复制文本是否显示
@@ -40,11 +40,11 @@ export class CodeBlockData extends BaseMDData {
   _codeBlockCopyIconTextSpacing: number = 4 // 代码块代码复制图标和文本间距
   _codeBlockCopyText: string = "Copy" // 代码块代码复制默认文本内容
   _codeBlockCopyTextFontColor: number | undefined = undefined // 代码块代码复制文本颜色
-  _codeBlockCopyTextFontSize: number = 14 // 代码块代码复制文本尺寸
-  _codeBlockCopyTextFontStyle: FontStyle = FontStyle.Normal // 代码块代码复制文本字体样式
-  _codeBlockCopyTextFontWeight: FontWeight = FontWeight.Normal // 代码块代码复制文本字体粗细
-  _codeBlockCopyTextFontFamily: string = 'HarmonyOS Sans' // 代码块代码复制文本字体
-  _codeBlockCopyTextLineHeight: number = 20 // 代码块代码复制文本行高
+  _codeBlockCopyTextFontSize: number | undefined = undefined // 代码块代码复制文本尺寸
+  _codeBlockCopyTextFontStyle: FontStyle | undefined = undefined // 代码块代码复制文本字体样式
+  _codeBlockCopyTextFontWeight: FontWeight | undefined = undefined // 代码块代码复制文本字体粗细
+  _codeBlockCopyTextFontFamily: string | undefined = undefined // 代码块代码复制文本字体
+  _codeBlockCopyTextLineHeight: number | undefined = undefined // 代码块代码复制文本行高
   _codeBlockFullScreenButtonIsShow: boolean = true // 代码块代码全屏按钮是否显示
   _codeBlockFullScreenTextIsShow: boolean = true // 代码块代码全屏文本是否显示
   _codeBlockFullScreenIcon: Resource | undefined = undefined // 代码块代码全屏按钮默认图标
@@ -53,30 +53,30 @@ export class CodeBlockData extends BaseMDData {
   _codeBlockFullScreenIconTextSpacing: number = 4 // 代码块代码全屏图标和文本间距
   _codeBlockFullScreenText: string = "Full Screen" // 代码块代码全屏默认文本内容
   _codeBlockFullScreenTextFontColor: number | undefined = undefined // 代码块代码全屏文本颜色
-  _codeBlockFullScreenTextFontSize: number = 14 // 代码块代码全屏文本尺寸
-  _codeBlockFullScreenTextFontStyle: FontStyle = FontStyle.Normal // 代码块代码全屏文本字体样式
-  _codeBlockFullScreenTextFontWeight: FontWeight = FontWeight.Normal // 代码块代码全屏文本字体粗细
-  _codeBlockFullScreenTextFontFamily: string = 'HarmonyOS Sans' // 代码块代码全屏文本字体
-  _codeBlockFullScreenTextLineHeight: number = 20 // 代码块代码全屏文本行高
+  _codeBlockFullScreenTextFontSize: number | undefined = undefined // 代码块代码全屏文本尺寸
+  _codeBlockFullScreenTextFontStyle: FontStyle | undefined = undefined // 代码块代码全屏文本字体样式
+  _codeBlockFullScreenTextFontWeight: FontWeight | undefined = undefined // 代码块代码全屏文本字体粗细
+  _codeBlockFullScreenTextFontFamily: string | undefined = undefined // 代码块代码全屏文本字体
+  _codeBlockFullScreenTextLineHeight: number | undefined = undefined // 代码块代码全屏文本行高
   _codeBlockLineNumberIsShow: boolean = false // 代码块代码行号是否显示
   _codeBlockLineNumberTextPaddingLeft: number = 8 // 代码块代码行号左内边距
   _codeBlockLineNumberTextFontColor: number | undefined = undefined // 代码块代码行号文本颜色
-  _codeBlockLineNumberTextFontSize: number = 13 // 代码块代码行号文本尺寸
-  _codeBlockLineNumberTextFontStyle: FontStyle = FontStyle.Normal // 代码块代码行号文本字体样式
-  _codeBlockLineNumberTextFontWeight: FontWeight = FontWeight.Normal // 代码块代码行号文本字体粗细
-  _codeBlockLineNumberTextFontFamily: string = 'HarmonyOS Sans' // 代码块代码行号文本字体
-  _codeBlockLineNumberTextLineHeight: number = 22 // 代码块代码行号文本行高
+  _codeBlockLineNumberTextFontSize: number | undefined = undefined // 代码块代码行号文本尺寸
+  _codeBlockLineNumberTextFontStyle: FontStyle | undefined = undefined // 代码块代码行号文本字体样式
+  _codeBlockLineNumberTextFontWeight: FontWeight | undefined = undefined // 代码块代码行号文本字体粗细
+  _codeBlockLineNumberTextFontFamily: string | undefined = undefined // 代码块代码行号文本字体
+  _codeBlockLineNumberTextLineHeight: number | undefined = undefined // 代码块代码行号文本行高
   _codeBlockDividerColor: number | undefined = undefined // 代码块代码行号和代码块中间分割线颜色
   _codeBlockDividerStrokeWidth: number = 1 // 代码块代码行号和代码块中间分割线宽度
   _codeBlockLineNumberDividerSpacing: number = 8 // 代码块代码行号和分割线间距
   _codeBlockTextFontColor: number | undefined = undefined // 代码块文本颜色
   _codeBlockTextMarginRight: number = 0 // 代码块代码文本右外边距
   _codeBlockTextMarginLeft: number = 0 // 代码块代码文本左外边距
-  _codeBlockTextFontSize: number = 13 // 代码块文本尺寸
-  _codeBlockTextFontStyle: FontStyle = FontStyle.Normal // 代码块文本字体样式
-  _codeBlockTextFontWeight: FontWeight = FontWeight.Normal // 代码块文本字体粗细
-  _codeBlockTextFontFamily: string = 'HarmonyOS Sans' // 代码块文本字体
-  _codeBlockTextLineHeight: number = 22 // 代码块文本行高
+  _codeBlockTextFontSize: number | undefined = undefined // 代码块文本尺寸
+  _codeBlockTextFontStyle: FontStyle | undefined = undefined // 代码块文本字体样式
+  _codeBlockTextFontWeight: FontWeight | undefined = undefined // 代码块文本字体粗细
+  _codeBlockTextFontFamily: string | undefined = undefined // 代码块文本字体
+  _codeBlockTextLineHeight: number | undefined = undefined // 代码块文本行高
   _codeBlockTextLetterSpacing: number = 0 // 代码块文本字符间距
   _codeBlockListTitleTextSize: number = 14 // 组合代码块未选中标题字体大小
   _codeBlockListTitleSelectTextSize: number = 15 // 组合代码块选中标题字体大小
@@ -188,23 +188,23 @@ export class CodeBlockData extends BaseMDData {
     this._codeBlockTypeTextFontColor = value
   }
 
-  public set codeBlockTypeTextFontSize(value: number) {
+  public set codeBlockTypeTextFontSize(value: number | undefined) {
     this._codeBlockTypeTextFontSize = value
   }
 
-  public set codeBlockTypeTextFontStyle(value: FontStyle) {
+  public set codeBlockTypeTextFontStyle(value: FontStyle | undefined) {
     this._codeBlockTypeTextFontStyle = value
   }
 
-  public set codeBlockTypeTextFontWeight(value: FontWeight) {
+  public set codeBlockTypeTextFontWeight(value: FontWeight | undefined) {
     this._codeBlockTypeTextFontWeight = value
   }
 
-  public set codeBlockTypeTextFontFamily(value: string) {
+  public set codeBlockTypeTextFontFamily(value: string | undefined) {
     this._codeBlockTypeTextFontFamily = value
   }
 
-  public set codeBlockTypeTextLineHeight(value: number) {
+  public set codeBlockTypeTextLineHeight(value: number | undefined) {
     this._codeBlockTypeTextLineHeight = value
   }
 
@@ -244,23 +244,23 @@ export class CodeBlockData extends BaseMDData {
     this._codeBlockCopyTextFontColor = value
   }
 
-  public set codeBlockCopyTextFontSize(value: number) {
+  public set codeBlockCopyTextFontSize(value: number | undefined) {
     this._codeBlockCopyTextFontSize = value
   }
 
-  public set codeBlockCopyTextFontStyle(value: FontStyle) {
+  public set codeBlockCopyTextFontStyle(value: FontStyle | undefined) {
     this._codeBlockCopyTextFontStyle = value
   }
 
-  public set codeBlockCopyTextFontWeight(value: FontWeight) {
+  public set codeBlockCopyTextFontWeight(value: FontWeight | undefined) {
     this._codeBlockCopyTextFontWeight = value
   }
 
-  public set codeBlockCopyTextFontFamily(value: string) {
+  public set codeBlockCopyTextFontFamily(value: string | undefined) {
     this._codeBlockCopyTextFontFamily = value
   }
 
-  public set codeBlockCopyTextLineHeight(value: number) {
+  public set codeBlockCopyTextLineHeight(value: number | undefined) {
     this._codeBlockCopyTextLineHeight = value
   }
 
@@ -296,23 +296,23 @@ export class CodeBlockData extends BaseMDData {
     this._codeBlockFullScreenTextFontColor = value
   }
 
-  public set codeBlockFullScreenTextFontSize(value: number) {
+  public set codeBlockFullScreenTextFontSize(value: number | undefined) {
     this._codeBlockFullScreenTextFontSize = value
   }
 
-  public set codeBlockFullScreenTextFontStyle(value: FontStyle) {
+  public set codeBlockFullScreenTextFontStyle(value: FontStyle | undefined) {
     this._codeBlockFullScreenTextFontStyle = value
   }
 
-  public set codeBlockFullScreenTextFontWeight(value: FontWeight) {
+  public set codeBlockFullScreenTextFontWeight(value: FontWeight | undefined) {
     this._codeBlockFullScreenTextFontWeight = value
   }
 
-  public set codeBlockFullScreenTextFontFamily(value: string) {
+  public set codeBlockFullScreenTextFontFamily(value: string | undefined) {
     this._codeBlockFullScreenTextFontFamily = value
   }
 
-  public set codeBlockFullScreenTextLineHeight(value: number) {
+  public set codeBlockFullScreenTextLineHeight(value: number | undefined) {
     this._codeBlockFullScreenTextLineHeight = value
   }
 
@@ -328,23 +328,23 @@ export class CodeBlockData extends BaseMDData {
     this._codeBlockLineNumberTextFontColor = value
   }
 
-  public set codeBlockLineNumberTextFontSize(value: number) {
+  public set codeBlockLineNumberTextFontSize(value: number | undefined) {
     this._codeBlockLineNumberTextFontSize = value
   }
 
-  public set codeBlockLineNumberTextFontStyle(value: FontStyle) {
+  public set codeBlockLineNumberTextFontStyle(value: FontStyle | undefined) {
     this._codeBlockLineNumberTextFontStyle = value
   }
 
-  public set codeBlockLineNumberTextFontWeight(value: FontWeight) {
+  public set codeBlockLineNumberTextFontWeight(value: FontWeight | undefined) {
     this._codeBlockLineNumberTextFontWeight = value
   }
 
-  public set codeBlockLineNumberTextFontFamily(value: string) {
+  public set codeBlockLineNumberTextFontFamily(value: string | undefined) {
     this._codeBlockLineNumberTextFontFamily = value
   }
 
-  public set codeBlockLineNumberTextLineHeight(value: number) {
+  public set codeBlockLineNumberTextLineHeight(value: number | undefined) {
     this._codeBlockLineNumberTextLineHeight = value
   }
 
@@ -372,23 +372,23 @@ export class CodeBlockData extends BaseMDData {
     this._codeBlockTextMarginLeft = value
   }
 
-  public set codeBlockTextFontSize(value: number) {
+  public set codeBlockTextFontSize(value: number | undefined) {
     this._codeBlockTextFontSize = value
   }
 
-  public set codeBlockTextFontStyle(value: FontStyle) {
+  public set codeBlockTextFontStyle(value: FontStyle | undefined) {
     this._codeBlockTextFontStyle = value
   }
 
-  public set codeBlockTextFontWeight(value: FontWeight) {
+  public set codeBlockTextFontWeight(value: FontWeight | undefined) {
     this._codeBlockTextFontWeight = value
   }
 
-  public set codeBlockTextFontFamily(value: string) {
+  public set codeBlockTextFontFamily(value: string | undefined) {
     this._codeBlockTextFontFamily = value
   }
 
-  public set codeBlockTextLineHeight(value: number) {
+  public set codeBlockTextLineHeight(value: number | undefined) {
     this._codeBlockTextLineHeight = value
   }
 

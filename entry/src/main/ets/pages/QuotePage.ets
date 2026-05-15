@@ -6,7 +6,9 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  lineOrBorderWidthListGeneraData,
   marginListGeneralData,
+  radiusListGeneraData,
   textNumberListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
@@ -93,15 +95,15 @@ struct QuotePage {
   // 块引用上外边距列表
   blockQuoteMarginTopList: Array<number> = marginListGeneralData
   @State // 块引用上外边距
-  blockQuoteMarginTop: number = 8
+  blockQuoteMarginTop: number = 0
   // 块引用右外边距列表
   blockQuoteMarginRightList: Array<number> = marginListGeneralData
   @State // 块引用右外边距
-  blockQuoteMarginRight: number = 8
+  blockQuoteMarginRight: number = 0
   // 块引用下外边距列表
   blockQuoteMarginBottomList: Array<number> = marginListGeneralData
   @State // 块引用下外边距
-  blockQuoteMarginBottom: number = 8
+  blockQuoteMarginBottom: number = 0
   // 块引用左外边距列表
   blockQuoteMarginLeftList: Array<number> = marginListGeneralData
   @State // 块引用左外边距
@@ -109,39 +111,39 @@ struct QuotePage {
   // 块引用上内边距列表
   blockQuotePaddingTopList: Array<number> = marginListGeneralData
   @State // 块引用上内边距
-  blockQuotePaddingTop: number = 8
+  blockQuotePaddingTop: number = 0
   // 块引用右内边距列表
   blockQuotePaddingRightList: Array<number> = marginListGeneralData
   @State // 块引用右内边距
-  blockQuotePaddingRight: number = 8
+  blockQuotePaddingRight: number = 0
   // 块引用下内边距列表
   blockQuotePaddingBottomList: Array<number> = marginListGeneralData
   @State // 块引用下内边距
-  blockQuotePaddingBottom: number = 8
+  blockQuotePaddingBottom: number = 0
   // 块引用左内边距列表
   blockQuotePaddingLeftList: Array<number> = marginListGeneralData
   @State // 块引用左内边距
-  blockQuotePaddingLeft: number = 8
+  blockQuotePaddingLeft: number = 0
   // 块引用边框左上圆角列表
-  blockQuoteRadiusTopLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  blockQuoteRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State // 块引用边框左上圆角
   blockQuoteRadiusTopLeft: number = 0
   // 块引用边框右上圆角列表
-  blockQuoteRadiusTopRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  blockQuoteRadiusTopRightList: Array<number> = radiusListGeneraData
   @State // 块引用边框右上圆角
   blockQuoteRadiusTopRight: number = 0
   // 块引用边框左下圆角列表
-  blockQuoteRadiusBottomLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  blockQuoteRadiusBottomLeftList: Array<number> = radiusListGeneraData
   @State // 块引用边框左下圆角
   blockQuoteRadiusBottomLeft: number = 0
   // 块引用边框右下圆角列表
-  blockQuoteRadiusBottomRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  blockQuoteRadiusBottomRightList: Array<number> = radiusListGeneraData
   @State // 块引用边框右下圆角
   blockQuoteRadiusBottomRight: number = 0
   // 块引用左侧边框宽度列表
-  blockQuoteLeftBorderWidthList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8]
+  blockQuoteLeftBorderWidthList: Array<number> = lineOrBorderWidthListGeneraData
   @State // 块引用左侧边框宽度
-  blockQuoteLeftBorderWidth: number = 4
+  blockQuoteLeftBorderWidth: number = 1
   // 块引用左侧边框颜色列表
   blockQuoteLeftBorderColorList: Array<number | undefined> = colorListGeneralData
   @State // 块引用左侧边框颜色
@@ -153,7 +155,7 @@ struct QuotePage {
   // 块引用子模块上下间距列表
   blockQuoteChildSpacingList: Array<number> = marginListGeneralData
   @State // 块引用子模块上下间距
-  blockQuoteChildSpacing: number = 4
+  blockQuoteChildSpacing: number = 8
 
   @State // 配置数据内容
   quoteData: QuoteData = new QuoteData()

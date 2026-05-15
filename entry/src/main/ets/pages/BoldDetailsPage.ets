@@ -65,17 +65,17 @@ struct BoldDetailsPage {
   @State // 加粗文本颜色
   boldTextFontColor: number | undefined = undefined
   @State // 加粗文本尺寸
-  boldTextFontSize: number = 16
+  boldTextFontSize: number | undefined = undefined
   @State // 加粗文本字体样式
-  boldTextFontStyle: FontStyle = FontStyle.Normal
+  boldTextFontStyle: FontStyle | undefined = undefined
   @State // 加粗文本字体粗细
   boldTextFontWeight: FontWeight = FontWeight.Bold
   @State // 加粗文本字体
-  boldTextFontFamily: string = 'HarmonyOS Sans'
+  boldTextFontFamily: string | undefined = undefined
   @State // 加粗文本行高
-  boldTextLineHeight: number = 20
+  boldTextLineHeight: number | undefined = undefined
   @State // 加粗文本字符间距
-  boldTextLetterSpacing: number = 0
+  boldTextLetterSpacing: number | undefined = undefined
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -262,12 +262,22 @@ struct BoldDetailsPage {
     if (this.boldTextFontColor !== undefined) {
       boldTheme.setBoldTextFontColor(this.boldTextFontColor)
     }
-    boldTheme.setBoldTextFontSize(this.boldTextFontSize)
-    boldTheme.setBoldTextFontStyle(this.boldTextFontStyle)
+    if (this.boldTextFontSize !== undefined) {
+      boldTheme.setBoldTextFontSize(this.boldTextFontSize)
+    }
+    if (this.boldTextFontStyle !== undefined) {
+      boldTheme.setBoldTextFontStyle(this.boldTextFontStyle)
+    }
     boldTheme.setBoldTextFontWeight(this.boldTextFontWeight)
-    boldTheme.setBoldTextFontFamily(this.boldTextFontFamily)
-    boldTheme.setBoldTextLineHeight(this.boldTextLineHeight)
-    boldTheme.setBoldTextLetterSpacing(this.boldTextLetterSpacing)
+    if (this.boldTextFontFamily !== undefined) {
+      boldTheme.setBoldTextFontFamily(this.boldTextFontFamily)
+    }
+    if (this.boldTextLineHeight !== undefined) {
+      boldTheme.setBoldTextLineHeight(this.boldTextLineHeight)
+    }
+    if (this.boldTextLetterSpacing !== undefined) {
+      boldTheme.setBoldTextLetterSpacing(this.boldTextLetterSpacing)
+    }
     theme.setMarkdownThemeBold(boldTheme)
 
     return theme

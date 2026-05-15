@@ -6,9 +6,12 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
   marginListGeneralData,
   textNumberListGeneralData,
   textSizeListGeneralData,
+  textTypefaceListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
 import { LatexMathData } from '../model/LatexMathData'
@@ -91,19 +94,19 @@ struct LatexMathPage {
   // LaTeX数学公式上外边距列表
   latexMathMarginTopList: Array<number> = marginListGeneralData
   @State // LaTeX数学公式上外边距
-  latexMathMarginTop: number = 8
+  latexMathMarginTop: number = 0
   // LaTeX数学公式右外边距列表
   latexMathMarginRightList: Array<number> = marginListGeneralData
   @State // LaTeX数学公式右外边距
-  latexMathMarginRight: number = 8
+  latexMathMarginRight: number = 0
   // LaTeX数学公式下外边距列表
   latexMathMarginBottomList: Array<number> = marginListGeneralData
   @State // LaTeX数学公式下外边距
-  latexMathMarginBottom: number = 8
+  latexMathMarginBottom: number = 0
   // LaTeX数学公式左外边距列表
   latexMathMarginLeftList: Array<number> = marginListGeneralData
   @State // LaTeX数学公式左外边距
-  latexMathMarginLeft: number = 8
+  latexMathMarginLeft: number = 0
   // LaTeX数学公式上内边距列表
   latexMathPaddingTopList: Array<number> = marginListGeneralData
   @State // LaTeX数学公式上内边距
@@ -131,17 +134,17 @@ struct LatexMathPage {
   // 数学公式未加载状态文本尺寸列表
   latexMathDefaultTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 数学公式未加载状态文本尺寸
-  latexMathDefaultTextFontSize: number = 14
+  latexMathDefaultTextFontSize: number = 16
   // 数学公式未加载状态文本字体样式列表
-  latexMathDefaultTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  latexMathDefaultTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 数学公式未加载状态文本字体样式
   latexMathDefaultTextFontStyle: FontStyle = FontStyle.Normal
   // 数学公式未加载状态文本字体粗细列表
-  latexMathDefaultTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
+  latexMathDefaultTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 数学公式未加载状态文本字体粗细
   latexMathDefaultTextFontWeight: FontWeight = FontWeight.Normal
   // 数学公式未加载状态文本字体列表
-  latexMathDefaultTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  latexMathDefaultTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 数学公式未加载状态文本字体
   latexMathDefaultTextFontFamily: string = 'HarmonyOS Sans'
   // 数学公式文本大小列表
@@ -394,12 +397,12 @@ struct LatexMathPage {
             allListData: this.latexMathBlockCenterList,
             allData: this.latexMathBlockCenter
           })
-          BaseTabComponent({
-            titleStr: "数学公式字体路径 - ",
-            typeEnum: TypeEnum.IS_STRING,
-            allListData: this.latexMathResPathList,
-            allData: this.latexMathResPath
-          })
+          // BaseTabComponent({
+          //   titleStr: "数学公式字体路径 - ",
+          //   typeEnum: TypeEnum.IS_STRING,
+          //   allListData: this.latexMathResPathList,
+          //   allData: this.latexMathResPath
+          // })
 
           // 列表显示
           List() {

@@ -6,12 +6,15 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  lineOrBorderWidthListGeneraData,
   marginListGeneralData,
+  radiusListGeneraData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
   textSizeListGeneralData,
   textWordSpaceListGeneralData,
-  timeListGeneralData
+  timeListGeneralData,
+  widthOrHeightListGeneralData
 } from '../model/GeneralData'
 import { LinkData } from '../model/LinkData'
 
@@ -104,7 +107,7 @@ struct LinkPage {
   // 文本格式链接文字大小列表
   linkTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 文本格式链接文字大小
-  linkTextFontSize: number = 14
+  linkTextFontSize: number | undefined = undefined
   // 文本格式链接背景颜色列表
   linkTextBackgroundColorList: Array<number | undefined> = colorListGeneralData
   @State // 文本格式链接背景颜色
@@ -126,7 +129,7 @@ struct LinkPage {
   @State // 圆形图片格式链接文字颜色
   linkCircleIconTextColor: number | undefined = undefined
   // 圆形图片格式链接半径列表
-  linkCircleIconRadiusList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  linkCircleIconRadiusList: Array<number> = radiusListGeneraData
   @State // 圆形图片格式链接半径
   linkCircleIconRadius: number = 20
   // 圆形图片格式链接左右外边距列表
@@ -150,7 +153,7 @@ struct LinkPage {
   @State // 圆角矩形图片格式链接文字颜色
   linkRectIconTextColor: number | undefined = undefined
   // 圆角矩形图片格式链接控件高度列表
-  linkRectIconHeightList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  linkRectIconHeightList: Array<number> = widthOrHeightListGeneralData
   @State // 圆角矩形图片格式链接控件高度
   linkRectIconHeight: number = 20
   // 圆角矩形图片格式链接左右内边距列表
@@ -158,7 +161,7 @@ struct LinkPage {
   @State // 圆角矩形图片格式链接左右内边距
   linkRectIconPadding: number = 6
   // 圆角矩形图片格式链接圆角半径列表
-  linkRectIconRadiusList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  linkRectIconRadiusList: Array<number> = radiusListGeneraData
   @State // 圆角矩形图片格式链接圆角半径
   linkRectIconRadius: number = 6
   // 圆角矩形图片格式链接左右外边距列表
@@ -178,7 +181,7 @@ struct LinkPage {
   @State // 空心圆角矩形图片格式链接文字大小
   linkRectToolIconTextSize: number = 14
   // 空心圆角矩形图片格式链接控件高度列表
-  linkRectToolIconHeightList: Array<number> = [12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36]
+  linkRectToolIconHeightList: Array<number> = widthOrHeightListGeneralData
   @State // 空心圆角矩形图片格式链接控件高度
   linkRectToolIconHeight: number = 21
   // 空心圆角矩形图片格式链接左右内边距列表
@@ -186,11 +189,11 @@ struct LinkPage {
   @State // 空心圆角矩形图片格式链接左右内边距
   linkRectToolIconPadding: number = 6
   // 空心圆角矩形图片格式链接边框宽度列表
-  linkRectToolIconBorderWidthList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  linkRectToolIconBorderWidthList: Array<number> = lineOrBorderWidthListGeneraData
   @State // 空心圆角矩形图片格式链接边框宽度
   linkRectToolIconBorderWidth: number = 1
   // 空心圆角矩形图片格式链接分割线宽度列表
-  linkRectToolIconDividingLineWidthList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+  linkRectToolIconDividingLineWidthList: Array<number> = lineOrBorderWidthListGeneraData
   @State // 空心圆角矩形图片格式链接分割线宽度
   linkRectToolIconDividingLineWidth: number = 1
   // 空心圆角矩形图片格式链接左右外边距列表
@@ -208,7 +211,7 @@ struct LinkPage {
   // 文本格式链接文字行高列表
   linkTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 文本格式链接文字行高
-  linkTextLineHeight: number = 22
+  linkTextLineHeight: number | undefined = undefined
   @State linkData: LinkData = new LinkData() // 配置数据内容
 
   aboutToAppear(): void {

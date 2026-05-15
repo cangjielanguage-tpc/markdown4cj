@@ -105,7 +105,7 @@ struct ImageDetailsPage {
   @State // 图片缩放类型
   imageFitType: ImageFitType = ImageFitType.Contain
   @State // 底部布局距离图片上边距
-  imageBottomLayoutMarginTop: number = 8
+  imageBottomLayoutMarginTop: number = 14
   @State // 图片下载按钮是否显示
   imageDownloadButtonVisible: boolean = true
   @State // 图片下载按钮宽度
@@ -139,11 +139,11 @@ struct ImageDetailsPage {
   @State // 图片下载按钮文本字体样式
   imageDownloadButtonTextFontStyle: FontStyle = FontStyle.Normal
   @State // 图片下载按钮文本字体粗细
-  imageDownloadButtonTextFontWeight: FontWeight = FontWeight.Normal
+  imageDownloadButtonTextFontWeight: FontWeight = FontWeight.Medium
   @State // 图片下载按钮文本字体
   imageDownloadButtonTextFontFamily: string = 'HarmonyOS Sans'
   @State // 图片下载按钮文本行高
-  imageDownloadButtonTextLineHeight: number = 20
+  imageDownloadButtonTextLineHeight: number = 22
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()

@@ -6,10 +6,15 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
   marginListGeneralData,
+  radiusListGeneraData,
+  textLineHeightListGeneralData,
   textNumberListGeneralData,
   textSizeListGeneralData,
   textTypefaceListGeneralData,
+  textWordSpaceListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
 import { CodeLineData } from '../model/CodeLineData'
@@ -96,47 +101,47 @@ struct CodeLinePage {
   // 内联代码文本尺寸列表
   inlineCodeTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 内联代码文本尺寸
-  inlineCodeTextFontSize: number = 13
+  inlineCodeTextFontSize: number | undefined = undefined
   // 内联代码文本字体样式列表
-  inlineCodeTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  inlineCodeTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 内联代码文本字体样式
-  inlineCodeTextFontStyle: FontStyle = FontStyle.Normal
+  inlineCodeTextFontStyle: FontStyle | undefined = undefined
   // 内联代码文本字体粗细列表
-  inlineCodeTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
+  inlineCodeTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 内联代码文本字体粗细
-  inlineCodeTextFontWeight: FontWeight = FontWeight.Normal
+  inlineCodeTextFontWeight: FontWeight | undefined = undefined
   // 内联代码文本字体列表
-  inlineCodeTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  inlineCodeTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 内联代码文本字体
-  inlineCodeTextFontFamily: string = 'HarmonyOS Sans'
+  inlineCodeTextFontFamily: string | undefined = undefined
   // 内联代码文本行高列表
-  inlineCodeTextLineHeightList: Array<number> = [16, 18, 20, 22, 24, 26, 28, 30]
+  inlineCodeTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 内联代码文本行高
-  inlineCodeTextLineHeight: number = 20
+  inlineCodeTextLineHeight: number | undefined = undefined
   // 内联代码文本字符间距列表
-  inlineCodeTextLetterSpacingList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  inlineCodeTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 内联代码文本字符间距
-  inlineCodeTextLetterSpacing: number = 0
+  inlineCodeTextLetterSpacing: number | undefined = undefined
   // 内联代码文本背景颜色列表
   inlineCodeTextBackgroundColorList: Array<number | undefined> = colorListGeneralData
   @State // 内联代码文本背景颜色
   inlineCodeTextBackgroundColor: number | undefined = undefined
   // 内联代码文本背景左上圆角列表
-  inlineCodeTextBackgroundRadiusTopLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  inlineCodeTextBackgroundRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State // 内联代码文本背景左上圆角
-  inlineCodeTextBackgroundRadiusTopLeft: number = 4
+  inlineCodeTextBackgroundRadiusTopLeft: number = 0
   // 内联代码文本背景右上圆角列表
-  inlineCodeTextBackgroundRadiusTopRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  inlineCodeTextBackgroundRadiusTopRightList: Array<number> = radiusListGeneraData
   @State // 内联代码文本背景右上圆角
-  inlineCodeTextBackgroundRadiusTopRight: number = 4
+  inlineCodeTextBackgroundRadiusTopRight: number = 0
   // 内联代码文本背景左下圆角列表
-  inlineCodeTextBackgroundRadiusBottomLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  inlineCodeTextBackgroundRadiusBottomLeftList: Array<number> = radiusListGeneraData
   @State // 内联代码文本背景左下圆角
-  inlineCodeTextBackgroundRadiusBottomLeft: number = 4
+  inlineCodeTextBackgroundRadiusBottomLeft: number = 0
   // 内联代码文本背景右下圆角列表
-  inlineCodeTextBackgroundRadiusBottomRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  inlineCodeTextBackgroundRadiusBottomRightList: Array<number> = radiusListGeneraData
   @State // 内联代码文本背景右下圆角
-  inlineCodeTextBackgroundRadiusBottomRight: number = 4
+  inlineCodeTextBackgroundRadiusBottomRight: number = 0
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)
