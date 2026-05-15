@@ -81,18 +81,18 @@ public class IncreaseParser {
     func detectDirtyBlocks(): Int {
         this.firstDirtyBlock = currentDocument.getLastChild() ?? return -1
         let continueBlock1 = firstDirtyBlock.getPrevious() ?? return -1
-        var deepth = 1
+        var depth = 1
         if (continueBlock1 is TableBlock || continueBlock1 is ListBlock || continueBlock1 is FencedCodeBlockListBlock) {
             this.firstDirtyBlock = continueBlock1
-            deepth = 2
+            depth = 2
         } else if (firstDirtyBlock is TableBlock || firstDirtyBlock is ListBlock) {
-            deepth = 1
+            depth = 1
         }
         while (firstDirtyBlock.getSourceSpans().isEmpty()) {
             this.firstDirtyBlock = firstDirtyBlock.getPrevious() ?? return -1
-            deepth++
+            depth++
         }
-        return deepth
+        return depth
     }
 
     /**

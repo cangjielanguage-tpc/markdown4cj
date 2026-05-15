@@ -124,7 +124,7 @@ public class CorePlugin <: AbstractMarkdownPlugin {
         )
     }
 
-    // his method is moved from ImagesPlugin. Alternative implementations must set SpanFactory
+    // This method is moved from ImagesPlugin. Alternative implementations must set SpanFactory
     // for Image node in order for this visitor to function
     private static func image(builder: MarkdownVisitorBuilder): Unit {
         builder.on(

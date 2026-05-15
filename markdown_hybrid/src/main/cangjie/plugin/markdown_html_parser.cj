@@ -13,8 +13,8 @@ public abstract class MarkdownHtmlParser {
     public func processFragment(output: Appendable, htmlFragment: String, parent: HtmlTag): Unit
 
     /**
-     * After this method exists a {@link MarkdownHtmlParser} will clear internal state for stored tags.
-     * If you wish to process them further after this method exists create own copy of supplied
+     * After this method exits a {@link MarkdownHtmlParser} will clear internal state for stored tags.
+     * If you wish to process them further after this method exits create own copy of supplied
      * collection.
      *
      * @param documentLength known document length. This value is used to close all non-closed tags.
@@ -25,8 +25,8 @@ public abstract class MarkdownHtmlParser {
      */
 
     /**
-     * After this method exists a {@link MarkdownHtmlParser} will clear internal state for stored tags.
-     * If you wish to process them further after this method exists create own copy of supplied
+     * After this method exits a {@link MarkdownHtmlParser} will clear internal state for stored tags.
+     * If you wish to process them further after this method exits create own copy of supplied
      * collection.
      *
      * @param documentLength known document length. This value is used to close all non-closed tags.
