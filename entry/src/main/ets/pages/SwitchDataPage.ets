@@ -21,7 +21,7 @@ struct SwitchDataPage {
   @State markdownTheme: MarkdownTheme = new MarkdownTheme() // markdown主题
   @State markdownPlugin: MarkdownPlugin = new MarkdownPlugin() // markdown插件
   @State isRefresh: boolean = true // 刷新标志
-  rawFilePath: string = "033_文本全量切换" // rawfile路径
+  rawFilePath: string = "033_FullTextSwitch" // rawfile路径
   @State folderList: Array<string> = new Array<string>() // rawfile文件夹列表
   @State mdList: Array<string> = new Array<string>() // markdown文档列表
   @State content: string = "" // markdown文本

@@ -30,7 +30,7 @@ struct BigDataPage {
   /**
    * rawfile路径
    */
-  rawFilePath: string = "034_超大数据"
+  rawFilePath: string = "034_LargeData"
   /**
    * rawfile文件夹列表
    */

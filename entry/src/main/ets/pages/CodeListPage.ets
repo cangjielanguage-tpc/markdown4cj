@@ -22,7 +22,7 @@ struct CodeListPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "012_组合代码块"
+  rawFilePath: string = "012_CodeGroup"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表

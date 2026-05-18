@@ -176,6 +176,22 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
+              "17、加粗",
+              0xFFFF0000,
+              "pages/BoldPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "18、斜体",
+              0xFFFF0000,
+              "pages/ItalicPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
               "19、删除线",
               0xFFFF0000,
               "pages/StrikethroughPage"
