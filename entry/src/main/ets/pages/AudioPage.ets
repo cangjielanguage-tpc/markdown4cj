@@ -5,14 +5,27 @@ import { BaseTabComponent } from '../component/BaseTabComponent'
 import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
+  borderStyleListGeneraData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
+  imageFitListData,
+  imageFitTypeListData,
+  lineOrBorderWidthListGeneraData,
   marginListGeneralData,
+  offsetListGeneralData,
+  paddingListGeneralData,
+  radiusListGeneraData,
+  spaceListGeneralData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
   textSizeListGeneralData,
-  timeListGeneralData
+  textTypefaceListGeneralData,
+  timeListGeneralData,
+  widthOrHeightListGeneralData
 } from '../model/GeneralData'
 import { AudioMDData } from '../model/AudioMDData'
+import { ImageFitType } from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component
@@ -77,117 +90,117 @@ struct AudioPage {
   @State audioBackgroundColor: number | undefined = undefined // 音频背景颜色
   // 音频上外边距列表
   audioMarginTopList: Array<number> = marginListGeneralData
-  @State audioMarginTop: number = 10 // 音频上外边距
+  @State audioMarginTop: number = 0 // 音频上外边距
   // 音频右外边距列表
-  audioMarginRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  audioMarginRightList: Array<number> = marginListGeneralData
   @State audioMarginRight: number = 0 // 音频右外边距
   // 音频下外边距列表
   audioMarginBottomList: Array<number> = marginListGeneralData
-  @State audioMarginBottom: number = 10 // 音频下外边距
+  @State audioMarginBottom: number = 0 // 音频下外边距
   // 音频左外边距列表
-  audioMarginLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
+  audioMarginLeftList: Array<number> = marginListGeneralData
   @State audioMarginLeft: number = 0 // 音频左外边距
   // 音频上内边距列表
-  audioPaddingTopList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
-  @State audioPaddingTop: number = 0 // 音频上内边距
+  audioPaddingTopList: Array<number> = paddingListGeneralData
+  @State audioPaddingTop: number = 12 // 音频上内边距
   // 音频右内边距列表
-  audioPaddingRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
-  @State audioPaddingRight: number = 0 // 音频右内边距
+  audioPaddingRightList: Array<number> = paddingListGeneralData
+  @State audioPaddingRight: number = 16 // 音频右内边距
   // 音频下内边距列表
-  audioPaddingBottomList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
-  @State audioPaddingBottom: number = 0 // 音频下内边距
+  audioPaddingBottomList: Array<number> = paddingListGeneralData
+  @State audioPaddingBottom: number = 12 // 音频下内边距
   // 音频左内边距列表
-  audioPaddingLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
-  @State audioPaddingLeft: number = 0 // 音频左内边距
+  audioPaddingLeftList: Array<number> = paddingListGeneralData
+  @State audioPaddingLeft: number = 12 // 音频左内边距
   // 音频边框样式列表
-  audioBorderStyleList: Array<BorderStyle> = [BorderStyle.Solid, BorderStyle.Dashed, BorderStyle.Dotted]
+  audioBorderStyleList: Array<BorderStyle> = borderStyleListGeneraData
   @State audioBorderStyle: BorderStyle = BorderStyle.Solid // 音频边框样式
   // 音频边框宽度列表
-  audioBorderWidthList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  audioBorderWidthList: Array<number> = lineOrBorderWidthListGeneraData
   @State audioBorderWidth: number = 0.5 // 音频边框宽度
   // 音频边框颜色列表
   audioBorderColorList: Array<number | undefined> = colorListGeneralData
-  @State audioBorderColor: number | undefined = undefined // 音频边框颜色
+  @State audioBorderColor: number | undefined = 0x33000000 // 音频边框颜色
   // 音频边框左上圆角列表
-  audioRadiusTopLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  audioRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State audioRadiusTopLeft: number = 12 // 音频边框左上圆角
   // 音频边框右上圆角列表
-  audioRadiusTopRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  audioRadiusTopRightList: Array<number> = radiusListGeneraData
   @State audioRadiusTopRight: number = 12 // 音频边框右上圆角
   // 音频边框左下圆角列表
-  audioRadiusBottomLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  audioRadiusBottomLeftList: Array<number> = radiusListGeneraData
   @State audioRadiusBottomLeft: number = 12 // 音频边框左下圆角
   // 音频边框右下圆角列表
-  audioRadiusBottomRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  audioRadiusBottomRightList: Array<number> = radiusListGeneraData
   @State audioRadiusBottomRight: number = 12 // 音频边框右下圆角
   // 音频阴影模糊半径列表
-  audioShadowRadiusList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
-  @State audioShadowRadius: number = 0 // 音频阴影模糊半径
+  audioShadowRadiusList: Array<number> = radiusListGeneraData
+  @State audioShadowRadius: number = 12 // 音频阴影模糊半径
   // 音频阴影X轴偏移量列表
-  audioShadowOffsetXList: Array<number> = [-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10]
+  audioShadowOffsetXList: Array<number> = offsetListGeneralData
   @State audioShadowOffsetX: number = 0 // 音频阴影X轴偏移量
   // 音频阴影Y轴偏移量列表
-  audioShadowOffsetYList: Array<number> = [-10, -8, -6, -4, -2, 0, 2, 4, 6, 8, 10]
-  @State audioShadowOffsetY: number = 0 // 音频阴影Y轴偏移量
+  audioShadowOffsetYList: Array<number> = offsetListGeneralData
+  @State audioShadowOffsetY: number = 2 // 音频阴影Y轴偏移量
   // 音频阴影颜色值列表
   audioShadowColorList: Array<number | undefined> = colorListGeneralData
-  @State audioShadowColor: number | undefined = undefined // 音频阴影颜色值
+  @State audioShadowColor: number | undefined = 0x1A000000 // 音频阴影颜色值
   // 音频图标列表
   audioIconList: Array<Resource | undefined> = [undefined]
   @State audioIcon: Resource | undefined = undefined // 音频图标
   // 音频图标宽度列表
-  audioIconWidthList: Array<number> = [20, 30, 40, 50, 60, 70, 80]
+  audioIconWidthList: Array<number> = widthOrHeightListGeneralData
   @State audioIconWidth: number = 40 // 音频图标宽度
   // 音频图标高度列表
-  audioIconHeightList: Array<number> = [20, 30, 40, 50, 60, 70, 80]
+  audioIconHeightList: Array<number> = widthOrHeightListGeneralData
   @State audioIconHeight: number = 40 // 音频图标高度
   // 音频图标左上圆角列表
-  audioIconRadiusTopLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
-  @State audioIconRadiusTopLeft: number = 0 // 音频图标左上圆角
+  audioIconRadiusTopLeftList: Array<number> = radiusListGeneraData
+  @State audioIconRadiusTopLeft: number = 8 // 音频图标左上圆角
   // 音频图标右上圆角列表
-  audioIconRadiusTopRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
-  @State audioIconRadiusTopRight: number = 0 // 音频图标右上圆角
+  audioIconRadiusTopRightList: Array<number> = radiusListGeneraData
+  @State audioIconRadiusTopRight: number = 8 // 音频图标右上圆角
   // 音频图标左下圆角列表
-  audioIconRadiusBottomLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
-  @State audioIconRadiusBottomLeft: number = 0 // 音频图标左下圆角
+  audioIconRadiusBottomLeftList: Array<number> = radiusListGeneraData
+  @State audioIconRadiusBottomLeft: number = 8 // 音频图标左下圆角
   // 音频图标右下圆角列表
-  audioIconRadiusBottomRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
-  @State audioIconRadiusBottomRight: number = 0 // 音频图标右下圆角
+  audioIconRadiusBottomRightList: Array<number> = radiusListGeneraData
+  @State audioIconRadiusBottomRight: number = 8 // 音频图标右下圆角
   // 音频图标缩放类型列表
-  audioIconFitTypeList: Array<ImageFit> = [ImageFit.Contain, ImageFit.Cover, ImageFit.Fill, ImageFit.ScaleDown, ImageFit.None]
+  audioIconFitTypeList: Array<ImageFit> = imageFitListData
   @State audioIconFitType: ImageFit = ImageFit.Contain // 音频图标缩放类型
   // 音频标题文本和类型文本间距列表
-  audioTitleToTypeSpacingList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16]
-  @State audioTitleToTypeSpacing: number = 8 // 音频标题文本和类型文本间距
+  audioTitleToTypeSpacingList: Array<number> = spaceListGeneralData
+  @State audioTitleToTypeSpacing: number = 2 // 音频标题文本和类型文本间距
   // 音频按钮宽度列表
-  audioButtonWidthList: Array<number> = [60, 80, 100, 120, 140, 160, 180, 200]
-  @State audioButtonWidth: number = 100 // 音频按钮宽度
+  audioButtonWidthList: Array<number> = widthOrHeightListGeneralData
+  @State audioButtonWidth: number = 84 // 音频按钮宽度
   // 音频按钮高度列表
-  audioButtonHeightList: Array<number> = [24, 28, 32, 36, 40, 44, 48]
+  audioButtonHeightList: Array<number> = widthOrHeightListGeneralData
   @State audioButtonHeight: number = 32 // 音频按钮高度
   // 音频按钮背景颜色列表
   audioButtonBackgroundColorList: Array<number | undefined> = colorListGeneralData
-  @State audioButtonBackgroundColor: number | undefined = undefined // 音频按钮背景颜色
+  @State audioButtonBackgroundColor: number | undefined = 0xFF000000 // 音频按钮背景颜色
   // 音频按钮边框样式列表
-  audioButtonBorderStyleList: Array<BorderStyle> = [BorderStyle.Solid, BorderStyle.Dashed, BorderStyle.Dotted]
+  audioButtonBorderStyleList: Array<BorderStyle> = borderStyleListGeneraData
   @State audioButtonBorderStyle: BorderStyle = BorderStyle.Solid // 音频按钮边框样式
   // 音频按钮边框宽度列表
-  audioButtonBorderWidthList: Array<number> = [0, 0.5, 1, 2, 3, 4, 5]
+  audioButtonBorderWidthList: Array<number> = lineOrBorderWidthListGeneraData
   @State audioButtonBorderWidth: number = 0 // 音频按钮边框宽度
   // 音频按钮边框颜色列表
   audioButtonBorderColorList: Array<number | undefined> = colorListGeneralData
   @State audioButtonBorderColor: number | undefined = undefined // 音频按钮边框颜色
   // 音频按钮边框左上圆角列表
-  audioButtonRadiusTopLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  audioButtonRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State audioButtonRadiusTopLeft: number = 16 // 音频按钮边框左上圆角
   // 音频按钮边框右上圆角列表
-  audioButtonRadiusTopRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  audioButtonRadiusTopRightList: Array<number> = radiusListGeneraData
   @State audioButtonRadiusTopRight: number = 16 // 音频按钮边框右上圆角
   // 音频按钮边框左下圆角列表
-  audioButtonRadiusBottomLeftList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  audioButtonRadiusBottomLeftList: Array<number> = radiusListGeneraData
   @State audioButtonRadiusBottomLeft: number = 16 // 音频按钮边框左下圆角
   // 音频按钮边框右下圆角列表
-  audioButtonRadiusBottomRightList: Array<number> = [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20]
+  audioButtonRadiusBottomRightList: Array<number> = radiusListGeneraData
   @State audioButtonRadiusBottomRight: number = 16 // 音频按钮边框右下圆角
   // 音频按钮默认文本内容列表
   audioButtonTextList: Array<string> = ['立即播放', '播放', '超长长长长长长长的按钮']
@@ -199,17 +212,17 @@ struct AudioPage {
   audioButtonTextFontSizeList: Array<number> = textSizeListGeneralData
   @State audioButtonTextFontSize: number = 14 // 音频按钮文本尺寸
   // 音频按钮文本字体样式列表
-  audioButtonTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  audioButtonTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State audioButtonTextFontStyle: FontStyle = FontStyle.Normal // 音频按钮文本字体样式
   // 音频按钮文本字体粗细列表
-  audioButtonTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
-  @State audioButtonTextFontWeight: FontWeight = FontWeight.Normal // 音频按钮文本字体粗细
+  audioButtonTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
+  @State audioButtonTextFontWeight: FontWeight = FontWeight.Medium // 音频按钮文本字体粗细
   // 音频按钮文本字体列表
-  audioButtonTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  audioButtonTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State audioButtonTextFontFamily: string = 'HarmonyOS Sans' // 音频按钮文本字体
   // 音频按钮文本行高列表
   audioButtonTextLineHeightList: Array<number> = textLineHeightListGeneralData
-  @State audioButtonTextLineHeight: number = 20 // 音频按钮文本行高
+  @State audioButtonTextLineHeight: number = 22 // 音频按钮文本行高
   // 音频标题文本颜色列表
   audioTitleTextFontColorList: Array<number | undefined> = colorListGeneralData
   @State audioTitleTextFontColor: number | undefined = undefined // 音频标题文本颜色
@@ -217,31 +230,31 @@ struct AudioPage {
   audioTitleTextFontSizeList: Array<number> = textSizeListGeneralData
   @State audioTitleTextFontSize: number = 15 // 音频标题文本尺寸
   // 音频标题文本字体样式列表
-  audioTitleTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  audioTitleTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State audioTitleTextFontStyle: FontStyle = FontStyle.Normal // 音频标题文本字体样式
   // 音频标题文本字体粗细列表
-  audioTitleTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
-  @State audioTitleTextFontWeight: FontWeight = FontWeight.Normal // 音频标题文本字体粗细
+  audioTitleTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
+  @State audioTitleTextFontWeight: FontWeight = FontWeight.Bold // 音频标题文本字体粗细
   // 音频标题文本字体列表
-  audioTitleTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  audioTitleTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State audioTitleTextFontFamily: string = 'HarmonyOS Sans' // 音频标题文本字体
   // 音频标题文本行高列表
   audioTitleTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State audioTitleTextLineHeight: number = 20 // 音频标题文本行高
   // 音频类型文本颜色列表
   audioTypeTextFontColorList: Array<number | undefined> = colorListGeneralData
-  @State audioTypeTextFontColor: number | undefined = undefined // 音频类型文本颜色
+  @State audioTypeTextFontColor: number | undefined = 0x80000000 // 音频类型文本颜色
   // 音频类型文本尺寸列表
   audioTypeTextFontSizeList: Array<number> = textSizeListGeneralData
   @State audioTypeTextFontSize: number = 11 // 音频类型文本尺寸
   // 音频类型文本字体样式列表
-  audioTypeTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  audioTypeTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State audioTypeTextFontStyle: FontStyle = FontStyle.Normal // 音频类型文本字体样式
   // 音频类型文本字体粗细列表
-  audioTypeTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Medium]
+  audioTypeTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State audioTypeTextFontWeight: FontWeight = FontWeight.Normal // 音频类型文本字体粗细
   // 音频类型文本字体列表
-  audioTypeTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  audioTypeTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State audioTypeTextFontFamily: string = 'HarmonyOS Sans' // 音频类型文本字体
   // 音频类型文本行高列表
   audioTypeTextLineHeightList: Array<number> = textLineHeightListGeneralData

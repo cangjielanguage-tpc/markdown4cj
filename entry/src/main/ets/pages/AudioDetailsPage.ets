@@ -1,4 +1,6 @@
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  ImageFitType,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
   MarkdownTheme,
   MarkdownThemeAudio,
@@ -147,11 +149,11 @@ struct AudioDetailsPage {
   @State // 音频按钮文本字体样式
   audioButtonTextFontStyle: FontStyle = FontStyle.Normal
   @State // 音频按钮文本字体粗细
-  audioButtonTextFontWeight: FontWeight = FontWeight.Normal
+  audioButtonTextFontWeight: FontWeight = FontWeight.Medium
   @State // 音频按钮文本字体
   audioButtonTextFontFamily: string = 'HarmonyOS Sans'
   @State // 音频按钮文本行高
-  audioButtonTextLineHeight: number = 20
+  audioButtonTextLineHeight: number = 22
   @State // 音频标题文本颜色
   audioTitleTextFontColor: number | undefined = undefined
   @State // 音频标题文本尺寸
@@ -432,7 +434,9 @@ struct AudioDetailsPage {
     audioTheme.setAudioIconWidth(this.audioIconWidth)
     audioTheme.setAudioIconHeight(this.audioIconHeight)
     audioTheme.setAudioIconRadius(this.audioIconRadiusTopLeft, this.audioIconRadiusTopRight, this.audioIconRadiusBottomLeft, this.audioIconRadiusBottomRight)
-    audioTheme.setAudioIconFitType(this.audioIconFitType)
+    if (this.audioIconFitType !== undefined) {
+      audioTheme.setAudioIconFitType(this.audioIconFitType)
+    }
     audioTheme.setAudioTitleToTypeSpacing(this.audioTitleToTypeSpacing)
     audioTheme.setAudioButtonWidth(this.audioButtonWidth)
     audioTheme.setAudioButtonHeight(this.audioButtonHeight)

@@ -118,9 +118,9 @@ export function numberToColorString(color: number | undefined): string {
     case 0xFF8B0000:
       return "深红"
     case 0x00000000:
-      return "透明色"
+      return "透明"
     case undefined:
-      return "undefined"
+      return "null"
   }
   return ""
 }
@@ -166,7 +166,7 @@ export function styleToString(style: TextDecorationStyle): string {
     case TextDecorationStyle.WAVY:
       return "波浪线"
     default :
-      return "undefined"
+      return "null"
   }
 }
 
@@ -180,7 +180,7 @@ export function enumToString(e: LatexMathColorFormat): string {
     case LatexMathColorFormat.COLOR_FORMAT_BGRA_8888:
       return "COLOR_FORMAT_BGRA_8888"
     default :
-      return "undefined"
+      return "null"
   }
 }
 
@@ -188,19 +188,15 @@ export function enumToString(e: LatexMathColorFormat): string {
  * BorderStyle样式转文本
  */
 export function borderStyleToString(style: BorderStyle): string {
-  hilog.error(0x0000, "BaseUtils.ts", "------------borderStyleToString" + style)
   switch (style) {
     case BorderStyle.Solid:
-      hilog.error(0x0000, "BaseUtils.ts", "------------BorderStyle.Solid：" + style)
       return "实线"
     case BorderStyle.Dashed:
-      hilog.error(0x0000, "BaseUtils.ts", "------------BorderStyle.Dashed：" + style)
       return "虚线"
     case BorderStyle.Dotted:
-      hilog.error(0x0000, "BaseUtils.ts", "------------BorderStyle.Dotted：" + style)
       return "点线"
     default:
-      return "undefined"
+      return "null"
   }
 }
 
@@ -210,11 +206,11 @@ export function borderStyleToString(style: BorderStyle): string {
 export function fontStyleToString(style: FontStyle): string {
   switch (style) {
     case FontStyle.Normal:
-      return "Normal"
+      return "正常"
     case FontStyle.Italic:
-      return "Italic"
+      return "斜体"
     default:
-      return "undefined"
+      return "正常"
   }
 }
 
@@ -224,13 +220,19 @@ export function fontStyleToString(style: FontStyle): string {
 export function fontWeightToString(weight: FontWeight): string {
   switch (weight) {
     case FontWeight.Normal:
-      return "Normal"
-    case FontWeight.Bold:
-      return "Bold"
+      return "正常"
+    case FontWeight.Lighter:
+      return "较细"
     case FontWeight.Medium:
-      return "Medium"
+      return "适中"
+    case FontWeight.Regular:
+      return "稍粗"
+    case FontWeight.Bold:
+      return "加粗"
+    case FontWeight.Bolder:
+      return "非常粗"
     default:
-      return "undefined"
+      return "正常"
   }
 }
 
@@ -240,15 +242,15 @@ export function fontWeightToString(weight: FontWeight): string {
 export function decorationTypeToString(decorationType: TextDecorationType): string {
   switch (decorationType) {
     case TextDecorationType.None:
-      return "None"
+      return "无"
     case TextDecorationType.Underline:
-      return "Underline"
+      return "下划线"
     case TextDecorationType.LineThrough:
-      return "LineThrough"
+      return "删除线"
     case TextDecorationType.Overline:
-      return "Overline"
+      return "上划线"
     default:
-      return "undefined"
+      return "无"
   }
 }
 
@@ -268,7 +270,7 @@ export function imageFitToString(fitType: ImageFit): string {
     case ImageFit.None:
       return "None"
     default:
-      return "undefined"
+      return "Contain"
   }
 }
 
@@ -284,6 +286,14 @@ export function barStateToString(state: BarState): string {
     case BarState.Auto:
       return "Auto"
     default:
-      return "undefined"
+      return "Off"
+  }
+}
+
+export function resToString(item: Resource | undefined): string {
+  if (item !== undefined) {
+    return item.moduleName
+  } else {
+    return "null"
   }
 }

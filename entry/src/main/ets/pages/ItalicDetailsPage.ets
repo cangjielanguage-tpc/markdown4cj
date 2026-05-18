@@ -64,15 +64,15 @@ struct ItalicDetailsPage {
   @State // 斜体文本颜色
   italicTextFontColor: number | undefined = undefined
   @State // 斜体文本尺寸
-  italicTextFontSize: number = 16
+  italicTextFontSize: number | undefined = undefined
   @State // 斜体文本字体粗细
-  italicTextFontWeight: FontWeight = FontWeight.Normal
+  italicTextFontWeight: FontWeight | undefined = undefined
   @State // 斜体文本字体
-  italicTextFontFamily: string = 'HarmonyOS Sans'
+  italicTextFontFamily: string | undefined = undefined
   @State // 斜体文本行高
-  italicTextLineHeight: number = 20
+  italicTextLineHeight: number | undefined = undefined
   @State // 斜体文本字符间距
-  italicTextLetterSpacing: number = 0
+  italicTextLetterSpacing: number | undefined = undefined
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -260,11 +260,21 @@ struct ItalicDetailsPage {
     if (this.italicTextFontColor !== undefined) {
       italicTheme.setItalicTextFontColor(this.italicTextFontColor)
     }
-    italicTheme.setItalicTextFontSize(this.italicTextFontSize)
-    italicTheme.setItalicTextFontWeight(this.italicTextFontWeight)
-    italicTheme.setItalicTextFontFamily(this.italicTextFontFamily)
-    italicTheme.setItalicTextLineHeight(this.italicTextLineHeight)
-    italicTheme.setItalicTextLetterSpacing(this.italicTextLetterSpacing)
+    if (this.italicTextFontSize !== undefined) {
+      italicTheme.setItalicTextFontSize(this.italicTextFontSize)
+    }
+    if (this.italicTextFontWeight !== undefined) {
+      italicTheme.setItalicTextFontWeight(this.italicTextFontWeight)
+    }
+    if (this.italicTextFontFamily !== undefined) {
+      italicTheme.setItalicTextFontFamily(this.italicTextFontFamily)
+    }
+    if (this.italicTextLineHeight !== undefined) {
+      italicTheme.setItalicTextLineHeight(this.italicTextLineHeight)
+    }
+    if (this.italicTextLetterSpacing !== undefined) {
+      italicTheme.setItalicTextLetterSpacing(this.italicTextLetterSpacing)
+    }
     theme.setMarkdownThemeItalic(italicTheme)
     
     return theme

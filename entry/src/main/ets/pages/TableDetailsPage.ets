@@ -66,13 +66,13 @@ struct TableDetailsPage {
   @State // 表格内容偶数行背景颜色
   tableContentEvenRowBackgroundColor: number | undefined = undefined
   @State // 表格上外边距
-  tableMarginTop: number = 8
+  tableMarginTop: number = 0
   @State // 表格右外边距
-  tableMarginRight: number = 8
+  tableMarginRight: number = 0
   @State // 表格下外边距
-  tableMarginBottom: number = 8
+  tableMarginBottom: number = 0
   @State // 表格左外边距
-  tableMarginLeft: number = 8
+  tableMarginLeft: number = 0
   @State // 表格上内边距
   tablePaddingTop: number = 0
   @State // 表格右内边距

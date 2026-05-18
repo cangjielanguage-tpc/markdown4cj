@@ -2,6 +2,7 @@ import { titleComponent } from '../component/BaseComponent'
 import { booleanToString, stringToBoolean } from '../utils/BaseUtils'
 import { getFileListStr } from '../utils/FileUtils'
 import { router } from '@kit.ArkUI'
+import { booleanListGeneralData, textNumberListGeneralData, timeListGeneralData } from '../model/GeneralData'
 
 @Entry
 @Component
@@ -35,7 +36,7 @@ struct ABCustomPage {
   /**
    * markdown是否增量解析列表
    */
-  incrementalAnalysisList: Array<boolean> = [true, false]
+  incrementalAnalysisList: Array<boolean> = booleanListGeneralData
   /**
    * markdown是否增量解析(true:增量解析,false:全量解析)
    */
@@ -44,7 +45,7 @@ struct ABCustomPage {
   /**
    * 增量加载每次间隔时间列表
    */
-  timeList: Array<number> = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 200, 300, 400, 500]
+  timeList: Array<number> = timeListGeneralData
   /**
    * 增量加载每次间隔时间 - 毫秒
    */
@@ -53,7 +54,7 @@ struct ABCustomPage {
   /**
    * 增量每次增量文本数量列表
    */
-  textNumberList: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50, 100, 150, 200]
+  textNumberList: Array<number> = textNumberListGeneralData
   /**
    * 增量每次增量文本数量
    */
@@ -62,7 +63,7 @@ struct ABCustomPage {
   /**
    * 是否使用ArkUI方案列表
    */
-  isABLoadList: Array<boolean> = [true, false]
+  isABLoadList: Array<boolean> = booleanListGeneralData
   /**
    * 是否使用ArkUI方案
    */
@@ -71,7 +72,7 @@ struct ABCustomPage {
   /**
    * 使用ArkUI方案，是否传入容器布局列表
    */
-  isABLoadCustomList: Array<boolean> = [true, false]
+  isABLoadCustomList: Array<boolean> = booleanListGeneralData
   /**
    * 使用ArkUI方案，是否传入容器布局
    */

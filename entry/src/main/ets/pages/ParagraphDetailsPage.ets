@@ -64,13 +64,13 @@ struct ParagraphDetailsPage {
   @State // 段落背景颜色
   paragraphBackgroundColor: number | undefined = undefined
   @State // 段落上外边距
-  paragraphMarginTop: number = 8
+  paragraphMarginTop: number = 0
   @State // 段落右外边距
-  paragraphMarginRight: number = 8
+  paragraphMarginRight: number = 0
   @State // 段落下外边距
-  paragraphMarginBottom: number = 8
+  paragraphMarginBottom: number = 0
   @State // 段落左外边距
-  paragraphMarginLeft: number = 8
+  paragraphMarginLeft: number = 0
   @State // 段落上内边距
   paragraphPaddingTop: number = 0
   @State // 段落右内边距

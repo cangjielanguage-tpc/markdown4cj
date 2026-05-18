@@ -64,21 +64,21 @@ struct QuoteDetailsPage {
   @State // 块引用背景颜色
   blockQuoteBackgroundColor: number | undefined = undefined
   @State // 块引用上外边距
-  blockQuoteMarginTop: number = 8
+  blockQuoteMarginTop: number = 0
   @State // 块引用右外边距
-  blockQuoteMarginRight: number = 8
+  blockQuoteMarginRight: number = 0
   @State // 块引用下外边距
-  blockQuoteMarginBottom: number = 8
+  blockQuoteMarginBottom: number = 0
   @State // 块引用左外边距
   blockQuoteMarginLeft: number = 8
   @State // 块引用上内边距
-  blockQuotePaddingTop: number = 8
+  blockQuotePaddingTop: number = 0
   @State // 块引用右内边距
-  blockQuotePaddingRight: number = 8
+  blockQuotePaddingRight: number = 0
   @State // 块引用下内边距
-  blockQuotePaddingBottom: number = 8
+  blockQuotePaddingBottom: number = 0
   @State // 块引用左内边距
-  blockQuotePaddingLeft: number = 8
+  blockQuotePaddingLeft: number = 0
   @State // 块引用边框左上圆角
   blockQuoteRadiusTopLeft: number = 0
   @State // 块引用边框右上圆角

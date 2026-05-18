@@ -1,6 +1,7 @@
 import { ImageFitType, MarkdownTextDecorationStyle } from "@cangjie-tpc/markdown_hybrid"
 import { TypeEnum } from "../model/TypeEnum"
-import { borderStyleToString, barStateToString, colorSwitch, colorSwitch1, decorationTypeToString, enumToString, fontStyleToString, fontWeightToString, imageFitToString, numberToColorString, styleToString } from "../utils/BaseUtils"
+import { borderStyleToString, barStateToString, colorSwitch, colorSwitch1, decorationTypeToString, enumToString, fontStyleToString, fontWeightToString, imageFitToString, numberToColorString, styleToString,
+  resToString } from "../utils/BaseUtils"
 
 /**
  * 自定义选项卡
@@ -66,7 +67,7 @@ export struct BaseTabComponent {
           }
         } else if (this.typeEnum == TypeEnum.IS_RESOURCE) {
           if (this.allData !== undefined) {
-            Text(`${(this.allData as Resource).id}`)
+            Text(resToString(this.allData as Resource))
               .fontSize(16)
               .textAlign(TextAlign.Start)
           } else {
@@ -279,7 +280,7 @@ export struct BaseTabComponent {
         } else if (this.typeEnum == TypeEnum.IS_RESOURCE) {
           ForEach(this.allListData, (item: string | number | boolean | Resource | BorderStyle | FontStyle | FontWeight | TextDecorationType | MarkdownTextDecorationStyle | ImageFit | ImageFitType | BarState | undefined, _: number) => {
             if (item !== undefined) {
-              Button(`${(item as Resource).id}`)
+              Button(resToString(item as Resource))
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)

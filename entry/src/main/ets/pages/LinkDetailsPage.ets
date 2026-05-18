@@ -68,17 +68,17 @@ struct LinkDetailsPage {
   @State // 链接文本颜色
   linkTextFontColor: number | undefined = undefined
   @State // 链接文本尺寸
-  linkTextFontSize: number = 14
+  linkTextFontSize: number | undefined = undefined
   @State // 链接文本字体样式
-  linkTextFontStyle: FontStyle = FontStyle.Normal
+  linkTextFontStyle: FontStyle | undefined = undefined
   @State // 链接文本字体粗细
-  linkTextFontWeight: FontWeight = FontWeight.Normal
+  linkTextFontWeight: FontWeight | undefined = undefined
   @State // 链接文本字体
-  linkTextFontFamily: string = 'HarmonyOS Sans'
+  linkTextFontFamily: string | undefined = undefined
   @State // 链接文本行高
-  linkTextLineHeight: number = 22
+  linkTextLineHeight: number | undefined = undefined
   @State // 链接文本字符间距
-  linkTextLetterSpacing: number = 0
+  linkTextLetterSpacing: number | undefined = undefined
   @State // 链接文本装饰线类型
   linkTextDecorationType: TextDecorationType = TextDecorationType.None
   @State // 链接文本装饰线颜色
@@ -368,12 +368,24 @@ struct LinkDetailsPage {
     if (this.linkTextFontColor !== undefined) {
       linkTheme.setLinkTextFontColor(this.linkTextFontColor)
     }
-    linkTheme.setLinkTextFontSize(this.linkTextFontSize)
-    linkTheme.setLinkTextFontStyle(this.linkTextFontStyle)
-    linkTheme.setLinkTextFontWeight(this.linkTextFontWeight)
-    linkTheme.setLinkTextFontFamily(this.linkTextFontFamily)
-    linkTheme.setLinkTextLineHeight(this.linkTextLineHeight)
-    linkTheme.setLinkTextLetterSpacing(this.linkTextLetterSpacing)
+    if (this.linkTextFontSize !== undefined) {
+      linkTheme.setLinkTextFontSize(this.linkTextFontSize)
+    }
+    if (this.linkTextFontStyle !== undefined) {
+      linkTheme.setLinkTextFontStyle(this.linkTextFontStyle)
+    }
+    if (this.linkTextFontWeight !== undefined) {
+      linkTheme.setLinkTextFontWeight(this.linkTextFontWeight)
+    }
+    if (this.linkTextFontFamily !== undefined) {
+      linkTheme.setLinkTextFontFamily(this.linkTextFontFamily)
+    }
+    if (this.linkTextLineHeight !== undefined) {
+      linkTheme.setLinkTextLineHeight(this.linkTextLineHeight)
+    }
+    if (this.linkTextLetterSpacing !== undefined) {
+      linkTheme.setLinkTextLetterSpacing(this.linkTextLetterSpacing)
+    }
     linkTheme.setLinkTextDecorationType(this.linkTextDecorationType)
     if (this.linkTextDecorationColor !== undefined) {
       linkTheme.setLinkTextDecorationColor(this.linkTextDecorationColor)

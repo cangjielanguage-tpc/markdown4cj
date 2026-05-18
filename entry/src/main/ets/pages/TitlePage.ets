@@ -6,7 +6,11 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
+  lineOrBorderWidthListGeneraData,
   marginListGeneralData,
+  spaceListGeneralData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
   textSizeListGeneralData,
@@ -78,13 +82,13 @@ struct TitlePage {
   @State heading1BackgroundColor: number | undefined = undefined // 一级标题背景颜色
   // 一级标题上外边距列表
   heading1MarginTopList: Array<number> = marginListGeneralData
-  @State heading1MarginTop: number = 8 // 一级标题上外边距
+  @State heading1MarginTop: number = 0 // 一级标题上外边距
   // 一级标题右外边距列表
   heading1MarginRightList: Array<number> = marginListGeneralData
   @State heading1MarginRight: number = 0 // 一级标题右外边距
   // 一级标题下外边距列表
   heading1MarginBottomList: Array<number> = marginListGeneralData
-  @State heading1MarginBottom: number = 8 // 一级标题下外边距
+  @State heading1MarginBottom: number = 0 // 一级标题下外边距
   // 一级标题左外边距列表
   heading1MarginLeftList: Array<number> = marginListGeneralData
   @State heading1MarginLeft: number = 0 // 一级标题左外边距
@@ -105,44 +109,44 @@ struct TitlePage {
   @State heading1TextFontColor: number | undefined = undefined // 一级标题文本颜色
   // 一级标题文本尺寸列表
   heading1TextFontSizeList: Array<number> = textSizeListGeneralData
-  @State heading1TextFontSize: number = 24 // 一级标题文本尺寸
+  @State heading1TextFontSize: number = 20 // 一级标题文本尺寸
   // 一级标题文本字体样式列表
-  heading1TextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  heading1TextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State heading1TextFontStyle: FontStyle = FontStyle.Normal // 一级标题文本字体样式
   // 一级标题文本字体粗细列表
-  heading1TextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  heading1TextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State heading1TextFontWeight: FontWeight = FontWeight.Bold // 一级标题文本字体粗细
   // 一级标题文本字体列表
-  heading1TextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  heading1TextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State heading1TextFontFamily: string = 'HarmonyOS Sans' // 一级标题文本字体
   // 一级标题文本行高列表
   heading1TextLineHeightList: Array<number> = textLineHeightListGeneralData
-  @State heading1TextLineHeight: number = 32 // 一级标题文本行高
+  @State heading1TextLineHeight: number = 22 // 一级标题文本行高
   // 一级标题文本字符间距列表
-  heading1TextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  heading1TextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State heading1TextLetterSpacing: number = 0 // 一级标题文本字符间距
   // 一级标题下划线高度列表
-  heading1UnderlineHeightList: Array<number> = [0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5]
-  @State heading1UnderlineHeight: number = 2 // 一级标题下划线高度
+  heading1UnderlineHeightList: Array<number> = lineOrBorderWidthListGeneraData
+  @State heading1UnderlineHeight: number = 0.5 // 一级标题下划线高度
   // 一级标题下划线颜色列表
   heading1UnderlineColorList: Array<number | undefined> = colorListGeneralData
   @State heading1UnderlineColor: number | undefined = undefined // 一级标题下划线颜色
   // 一级标题距离标题文本间距列表
-  heading1UnderlineSpacingList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  @State heading1UnderlineSpacing: number = 4 // 一级标题距离标题文本间距
+  heading1UnderlineSpacingList: Array<number> = spaceListGeneralData
+  @State heading1UnderlineSpacing: number = 0 // 一级标题距离标题文本间距
 
   // 二级标题背景颜色列表
   heading2BackgroundColorList: Array<number | undefined> = colorListGeneralData
   @State heading2BackgroundColor: number | undefined = undefined // 二级标题背景颜色
   // 二级标题上外边距列表
   heading2MarginTopList: Array<number> = marginListGeneralData
-  @State heading2MarginTop: number = 8 // 二级标题上外边距
+  @State heading2MarginTop: number = 0 // 二级标题上外边距
   // 二级标题右外边距列表
   heading2MarginRightList: Array<number> = marginListGeneralData
   @State heading2MarginRight: number = 0 // 二级标题右外边距
   // 二级标题下外边距列表
   heading2MarginBottomList: Array<number> = marginListGeneralData
-  @State heading2MarginBottom: number = 8 // 二级标题下外边距
+  @State heading2MarginBottom: number = 0 // 二级标题下外边距
   // 二级标题左外边距列表
   heading2MarginLeftList: Array<number> = marginListGeneralData
   @State heading2MarginLeft: number = 0 // 二级标题左外边距
@@ -163,44 +167,44 @@ struct TitlePage {
   @State heading2TextFontColor: number | undefined = undefined // 二级标题文本颜色
   // 二级标题文本尺寸列表
   heading2TextFontSizeList: Array<number> = textSizeListGeneralData
-  @State heading2TextFontSize: number = 20 // 二级标题文本尺寸
+  @State heading2TextFontSize: number = 17 // 二级标题文本尺寸
   // 二级标题文本字体样式列表
-  heading2TextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  heading2TextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State heading2TextFontStyle: FontStyle = FontStyle.Normal // 二级标题文本字体样式
   // 二级标题文本字体粗细列表
-  heading2TextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  heading2TextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State heading2TextFontWeight: FontWeight = FontWeight.Bold // 二级标题文本字体粗细
   // 二级标题文本字体列表
-  heading2TextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  heading2TextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State heading2TextFontFamily: string = 'HarmonyOS Sans' // 二级标题文本字体
   // 二级标题文本行高列表
   heading2TextLineHeightList: Array<number> = textLineHeightListGeneralData
-  @State heading2TextLineHeight: number = 28 // 二级标题文本行高
+  @State heading2TextLineHeight: number = 22 // 二级标题文本行高
   // 二级标题文本字符间距列表
-  heading2TextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  heading2TextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State heading2TextLetterSpacing: number = 0 // 二级标题文本字符间距
   // 二级标题下划线高度列表
-  heading2UnderlineHeightList: Array<number> = [0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 5]
-  @State heading2UnderlineHeight: number = 1.5 // 二级标题下划线高度
+  heading2UnderlineHeightList: Array<number> = lineOrBorderWidthListGeneraData
+  @State heading2UnderlineHeight: number = 0.5 // 二级标题下划线高度
   // 二级标题下划线颜色列表
   heading2UnderlineColorList: Array<number | undefined> = colorListGeneralData
   @State heading2UnderlineColor: number | undefined = undefined // 二级标题下划线颜色
   // 二级标题距离标题文本间距列表
-  heading2UnderlineSpacingList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-  @State heading2UnderlineSpacing: number = 3 // 二级标题距离标题文本间距
+  heading2UnderlineSpacingList: Array<number> = spaceListGeneralData
+  @State heading2UnderlineSpacing: number = 0 // 二级标题距离标题文本间距
 
   // 三级标题背景颜色列表
   heading3BackgroundColorList: Array<number | undefined> = colorListGeneralData
   @State heading3BackgroundColor: number | undefined = undefined // 三级标题背景颜色
   // 三级标题上外边距列表
   heading3MarginTopList: Array<number> = marginListGeneralData
-  @State heading3MarginTop: number = 8 // 三级标题上外边距
+  @State heading3MarginTop: number = 0 // 三级标题上外边距
   // 三级标题右外边距列表
   heading3MarginRightList: Array<number> = marginListGeneralData
   @State heading3MarginRight: number = 0 // 三级标题右外边距
   // 三级标题下外边距列表
   heading3MarginBottomList: Array<number> = marginListGeneralData
-  @State heading3MarginBottom: number = 8 // 三级标题下外边距
+  @State heading3MarginBottom: number = 0 // 三级标题下外边距
   // 三级标题左外边距列表
   heading3MarginLeftList: Array<number> = marginListGeneralData
   @State heading3MarginLeft: number = 0 // 三级标题左外边距
@@ -221,21 +225,21 @@ struct TitlePage {
   @State heading3TextFontColor: number | undefined = undefined // 三级标题文本颜色
   // 三级标题文本尺寸列表
   heading3TextFontSizeList: Array<number> = textSizeListGeneralData
-  @State heading3TextFontSize: number = 18 // 三级标题文本尺寸
+  @State heading3TextFontSize: number = 16 // 三级标题文本尺寸
   // 三级标题文本字体样式列表
-  heading3TextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  heading3TextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State heading3TextFontStyle: FontStyle = FontStyle.Normal // 三级标题文本字体样式
   // 三级标题文本字体粗细列表
-  heading3TextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  heading3TextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State heading3TextFontWeight: FontWeight = FontWeight.Bold // 三级标题文本字体粗细
   // 三级标题文本字体列表
-  heading3TextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  heading3TextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State heading3TextFontFamily: string = 'HarmonyOS Sans' // 三级标题文本字体
   // 三级标题文本行高列表
   heading3TextLineHeightList: Array<number> = textLineHeightListGeneralData
-  @State heading3TextLineHeight: number = 26 // 三级标题文本行高
+  @State heading3TextLineHeight: number = 22 // 三级标题文本行高
   // 三级标题文本字符间距列表
-  heading3TextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  heading3TextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State heading3TextLetterSpacing: number = 0 // 三级标题文本字符间距
 
   // 四级标题背景颜色列表
@@ -243,13 +247,13 @@ struct TitlePage {
   @State heading4BackgroundColor: number | undefined = undefined // 四级标题背景颜色
   // 四级标题上外边距列表
   heading4MarginTopList: Array<number> = marginListGeneralData
-  @State heading4MarginTop: number = 8 // 四级标题上外边距
+  @State heading4MarginTop: number = 0 // 四级标题上外边距
   // 四级标题右外边距列表
   heading4MarginRightList: Array<number> = marginListGeneralData
   @State heading4MarginRight: number = 0 // 四级标题右外边距
   // 四级标题下外边距列表
   heading4MarginBottomList: Array<number> = marginListGeneralData
-  @State heading4MarginBottom: number = 8 // 四级标题下外边距
+  @State heading4MarginBottom: number = 0 // 四级标题下外边距
   // 四级标题左外边距列表
   heading4MarginLeftList: Array<number> = marginListGeneralData
   @State heading4MarginLeft: number = 0 // 四级标题左外边距
@@ -270,21 +274,21 @@ struct TitlePage {
   @State heading4TextFontColor: number | undefined = undefined // 四级标题文本颜色
   // 四级标题文本尺寸列表
   heading4TextFontSizeList: Array<number> = textSizeListGeneralData
-  @State heading4TextFontSize: number = 16 // 四级标题文本尺寸
+  @State heading4TextFontSize: number = 15 // 四级标题文本尺寸
   // 四级标题文本字体样式列表
-  heading4TextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  heading4TextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State heading4TextFontStyle: FontStyle = FontStyle.Normal // 四级标题文本字体样式
   // 四级标题文本字体粗细列表
-  heading4TextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  heading4TextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State heading4TextFontWeight: FontWeight = FontWeight.Bold // 四级标题文本字体粗细
   // 四级标题文本字体列表
-  heading4TextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  heading4TextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State heading4TextFontFamily: string = 'HarmonyOS Sans' // 四级标题文本字体
   // 四级标题文本行高列表
   heading4TextLineHeightList: Array<number> = textLineHeightListGeneralData
-  @State heading4TextLineHeight: number = 24 // 四级标题文本行高
+  @State heading4TextLineHeight: number = 22 // 四级标题文本行高
   // 四级标题文本字符间距列表
-  heading4TextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  heading4TextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State heading4TextLetterSpacing: number = 0 // 四级标题文本字符间距
 
   // 五级标题背景颜色列表
@@ -292,13 +296,13 @@ struct TitlePage {
   @State heading5BackgroundColor: number | undefined = undefined // 五级标题背景颜色
   // 五级标题上外边距列表
   heading5MarginTopList: Array<number> = marginListGeneralData
-  @State heading5MarginTop: number = 8 // 五级标题上外边距
+  @State heading5MarginTop: number = 0 // 五级标题上外边距
   // 五级标题右外边距列表
   heading5MarginRightList: Array<number> = marginListGeneralData
   @State heading5MarginRight: number = 0 // 五级标题右外边距
   // 五级标题下外边距列表
   heading5MarginBottomList: Array<number> = marginListGeneralData
-  @State heading5MarginBottom: number = 8 // 五级标题下外边距
+  @State heading5MarginBottom: number = 0 // 五级标题下外边距
   // 五级标题左外边距列表
   heading5MarginLeftList: Array<number> = marginListGeneralData
   @State heading5MarginLeft: number = 0 // 五级标题左外边距
@@ -321,19 +325,19 @@ struct TitlePage {
   heading5TextFontSizeList: Array<number> = textSizeListGeneralData
   @State heading5TextFontSize: number = 15 // 五级标题文本尺寸
   // 五级标题文本字体样式列表
-  heading5TextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  heading5TextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State heading5TextFontStyle: FontStyle = FontStyle.Normal // 五级标题文本字体样式
   // 五级标题文本字体粗细列表
-  heading5TextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  heading5TextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State heading5TextFontWeight: FontWeight = FontWeight.Bold // 五级标题文本字体粗细
   // 五级标题文本字体列表
-  heading5TextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  heading5TextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State heading5TextFontFamily: string = 'HarmonyOS Sans' // 五级标题文本字体
   // 五级标题文本行高列表
   heading5TextLineHeightList: Array<number> = textLineHeightListGeneralData
-  @State heading5TextLineHeight: number = 23 // 五级标题文本行高
+  @State heading5TextLineHeight: number = 22 // 五级标题文本行高
   // 五级标题文本字符间距列表
-  heading5TextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  heading5TextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State heading5TextLetterSpacing: number = 0 // 五级标题文本字符间距
 
   // 六级标题背景颜色列表
@@ -341,13 +345,13 @@ struct TitlePage {
   @State heading6BackgroundColor: number | undefined = undefined // 六级标题背景颜色
   // 六级标题上外边距列表
   heading6MarginTopList: Array<number> = marginListGeneralData
-  @State heading6MarginTop: number = 8 // 六级标题上外边距
+  @State heading6MarginTop: number = 0 // 六级标题上外边距
   // 六级标题右外边距列表
   heading6MarginRightList: Array<number> = marginListGeneralData
   @State heading6MarginRight: number = 0 // 六级标题右外边距
   // 六级标题下外边距列表
   heading6MarginBottomList: Array<number> = marginListGeneralData
-  @State heading6MarginBottom: number = 8 // 六级标题下外边距
+  @State heading6MarginBottom: number = 0 // 六级标题下外边距
   // 六级标题左外边距列表
   heading6MarginLeftList: Array<number> = marginListGeneralData
   @State heading6MarginLeft: number = 0 // 六级标题左外边距
@@ -368,21 +372,21 @@ struct TitlePage {
   @State heading6TextFontColor: number | undefined = undefined // 六级标题文本颜色
   // 六级标题文本尺寸列表
   heading6TextFontSizeList: Array<number> = textSizeListGeneralData
-  @State heading6TextFontSize: number = 14 // 六级标题文本尺寸
+  @State heading6TextFontSize: number = 13 // 六级标题文本尺寸
   // 六级标题文本字体样式列表
-  heading6TextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  heading6TextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State heading6TextFontStyle: FontStyle = FontStyle.Normal // 六级标题文本字体样式
   // 六级标题文本字体粗细列表
-  heading6TextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  heading6TextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State heading6TextFontWeight: FontWeight = FontWeight.Bold // 六级标题文本字体粗细
   // 六级标题文本字体列表
-  heading6TextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman']
+  heading6TextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State heading6TextFontFamily: string = 'HarmonyOS Sans' // 六级标题文本字体
   // 六级标题文本行高列表
   heading6TextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State heading6TextLineHeight: number = 22 // 六级标题文本行高
   // 六级标题文本字符间距列表
-  heading6TextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  heading6TextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State heading6TextLetterSpacing: number = 0 // 六级标题文本字符间距
   @State titleData: TitleData = new TitleData() // 配置数据内容
 

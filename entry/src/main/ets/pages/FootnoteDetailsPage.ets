@@ -86,13 +86,13 @@ struct FootnoteDetailsPage {
   footnoteDefBackgroundColor: number | undefined = undefined
   // 脚注定义上外边距
   @State
-  footnoteDefMarginTop: number = 8
+  footnoteDefMarginTop: number = 0
   // 脚注定义右外边距
   @State
   footnoteDefMarginRight: number = 0
   // 脚注定义下外边距
   @State
-  footnoteDefMarginBottom: number = 8
+  footnoteDefMarginBottom: number = 0
   // 脚注定义左外边距
   @State
   footnoteDefMarginLeft: number = 0

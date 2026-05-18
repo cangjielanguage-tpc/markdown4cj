@@ -112,15 +112,15 @@ struct CodeBlockDetailsPage {
   @State // 代码块类型文本颜色
   codeBlockTypeTextFontColor: number | undefined = undefined
   @State // 代码块类型文本尺寸
-  codeBlockTypeTextFontSize: number = 14
+  codeBlockTypeTextFontSize: number | undefined = undefined
   @State // 代码块类型文本字体样式
-  codeBlockTypeTextFontStyle: FontStyle = FontStyle.Normal
+  codeBlockTypeTextFontStyle: FontStyle | undefined = undefined
   @State // 代码块类型文本字体粗细
-  codeBlockTypeTextFontWeight: FontWeight = FontWeight.Normal
+  codeBlockTypeTextFontWeight: FontWeight | undefined = undefined
   @State // 代码块类型文本字体
-  codeBlockTypeTextFontFamily: string = 'HarmonyOS Sans'
+  codeBlockTypeTextFontFamily: string | undefined = undefined
   @State // 代码块类型文本行高
-  codeBlockTypeTextLineHeight: number = 20
+  codeBlockTypeTextLineHeight: number | undefined = undefined
   @State // 代码块代码复制和代码全屏间距
   codeBlockCopyFullScreenSpacing: number = 8
   @State // 代码块代码复制按钮是否显示
@@ -139,15 +139,15 @@ struct CodeBlockDetailsPage {
   @State // 代码块代码复制文本颜色
   codeBlockCopyTextFontColor: number | undefined = undefined
   @State // 代码块代码复制文本尺寸
-  codeBlockCopyTextFontSize: number = 14
+  codeBlockCopyTextFontSize: number | undefined = undefined
   @State // 代码块代码复制文本字体样式
-  codeBlockCopyTextFontStyle: FontStyle = FontStyle.Normal
+  codeBlockCopyTextFontStyle: FontStyle | undefined = undefined
   @State // 代码块代码复制文本字体粗细
-  codeBlockCopyTextFontWeight: FontWeight = FontWeight.Normal
+  codeBlockCopyTextFontWeight: FontWeight | undefined = undefined
   @State // 代码块代码复制文本字体
-  codeBlockCopyTextFontFamily: string = 'HarmonyOS Sans'
+  codeBlockCopyTextFontFamily: string | undefined = undefined
   @State // 代码块代码复制文本行高
-  codeBlockCopyTextLineHeight: number = 20
+  codeBlockCopyTextLineHeight: number | undefined = undefined
   @State // 代码块代码全屏按钮是否显示
   codeBlockFullScreenButtonIsShow: boolean = true
   @State // 代码块代码全屏文本是否显示
@@ -164,15 +164,15 @@ struct CodeBlockDetailsPage {
   @State // 代码块代码全屏文本颜色
   codeBlockFullScreenTextFontColor: number | undefined = undefined
   @State // 代码块代码全屏文本尺寸
-  codeBlockFullScreenTextFontSize: number = 14
+  codeBlockFullScreenTextFontSize: number | undefined = undefined
   @State // 代码块代码全屏文本字体样式
-  codeBlockFullScreenTextFontStyle: FontStyle = FontStyle.Normal
+  codeBlockFullScreenTextFontStyle: FontStyle | undefined = undefined
   @State // 代码块代码全屏文本字体粗细
-  codeBlockFullScreenTextFontWeight: FontWeight = FontWeight.Normal
+  codeBlockFullScreenTextFontWeight: FontWeight | undefined = undefined
   @State // 代码块代码全屏文本字体
-  codeBlockFullScreenTextFontFamily: string = 'HarmonyOS Sans'
+  codeBlockFullScreenTextFontFamily: string | undefined = undefined
   @State // 代码块代码全屏文本行高
-  codeBlockFullScreenTextLineHeight: number = 20
+  codeBlockFullScreenTextLineHeight: number | undefined = undefined
   @State // 代码块代码行号是否显示
   codeBlockLineNumberIsShow: boolean = false
   @State // 代码块代码行号左内边距
@@ -180,15 +180,15 @@ struct CodeBlockDetailsPage {
   @State // 代码块代码行号文本颜色
   codeBlockLineNumberTextFontColor: number | undefined = undefined
   @State // 代码块代码行号文本尺寸
-  codeBlockLineNumberTextFontSize: number = 13
+  codeBlockLineNumberTextFontSize: number | undefined = undefined
   @State // 代码块代码行号文本字体样式
-  codeBlockLineNumberTextFontStyle: FontStyle = FontStyle.Normal
+  codeBlockLineNumberTextFontStyle: FontStyle | undefined = undefined
   @State // 代码块代码行号文本字体粗细
-  codeBlockLineNumberTextFontWeight: FontWeight = FontWeight.Normal
+  codeBlockLineNumberTextFontWeight: FontWeight | undefined = undefined
   @State // 代码块代码行号文本字体
-  codeBlockLineNumberTextFontFamily: string = 'HarmonyOS Sans'
+  codeBlockLineNumberTextFontFamily: string | undefined = undefined
   @State // 代码块代码行号文本行高
-  codeBlockLineNumberTextLineHeight: number = 22
+  codeBlockLineNumberTextLineHeight: number | undefined = undefined
   @State // 代码块代码行号和代码块中间分割线颜色
   codeBlockDividerColor: number | undefined = undefined
   @State // 代码块代码行号和代码块中间分割线宽度
@@ -202,15 +202,15 @@ struct CodeBlockDetailsPage {
   @State // 代码块代码文本左外边距
   codeBlockTextMarginLeft: number = 0
   @State // 代码块文本尺寸
-  codeBlockTextFontSize: number = 13
+  codeBlockTextFontSize: number | undefined = undefined
   @State // 代码块文本字体样式
-  codeBlockTextFontStyle: FontStyle = FontStyle.Normal
+  codeBlockTextFontStyle: FontStyle | undefined = undefined
   @State // 代码块文本字体粗细
-  codeBlockTextFontWeight: FontWeight = FontWeight.Normal
+  codeBlockTextFontWeight: FontWeight | undefined = undefined
   @State // 代码块文本字体
-  codeBlockTextFontFamily: string = 'HarmonyOS Sans'
+  codeBlockTextFontFamily: string | undefined = undefined
   @State // 代码块文本行高
-  codeBlockTextLineHeight: number = 22
+  codeBlockTextLineHeight: number | undefined = undefined
   @State // 代码块文本字符间距
   codeBlockTextLetterSpacing: number = 0
 
@@ -490,11 +490,21 @@ struct CodeBlockDetailsPage {
     if (this.codeBlockTypeTextFontColor !== undefined) {
       codeBlockTheme.setCodeBlockTypeTextFontColor(this.codeBlockTypeTextFontColor)
     }
-    codeBlockTheme.setCodeBlockTypeTextFontSize(this.codeBlockTypeTextFontSize)
-    codeBlockTheme.setCodeBlockTypeTextFontStyle(this.codeBlockTypeTextFontStyle)
-    codeBlockTheme.setCodeBlockTypeTextFontWeight(this.codeBlockTypeTextFontWeight)
-    codeBlockTheme.setCodeBlockTypeTextFontFamily(this.codeBlockTypeTextFontFamily)
-    codeBlockTheme.setCodeBlockTypeTextLineHeight(this.codeBlockTypeTextLineHeight)
+    if (this.codeBlockTypeTextFontSize !== undefined) {
+      codeBlockTheme.setCodeBlockTypeTextFontSize(this.codeBlockTypeTextFontSize)
+    }
+    if (this.codeBlockTypeTextFontStyle !== undefined) {
+      codeBlockTheme.setCodeBlockTypeTextFontStyle(this.codeBlockTypeTextFontStyle)
+    }
+    if (this.codeBlockTypeTextFontWeight !== undefined) {
+      codeBlockTheme.setCodeBlockTypeTextFontWeight(this.codeBlockTypeTextFontWeight)
+    }
+    if (this.codeBlockTypeTextFontFamily !== undefined) {
+      codeBlockTheme.setCodeBlockTypeTextFontFamily(this.codeBlockTypeTextFontFamily)
+    }
+    if (this.codeBlockTypeTextLineHeight !== undefined) {
+      codeBlockTheme.setCodeBlockTypeTextLineHeight(this.codeBlockTypeTextLineHeight)
+    }
     codeBlockTheme.setCodeBlockCopyFullScreenSpacing(this.codeBlockCopyFullScreenSpacing)
     codeBlockTheme.setCodeBlockCopyButtonIsShow(this.codeBlockCopyButtonIsShow)
     codeBlockTheme.setCodeBlockCopyTextIsShow(this.codeBlockCopyTextIsShow)
@@ -508,15 +518,28 @@ struct CodeBlockDetailsPage {
     if (this.codeBlockCopyTextFontColor !== undefined) {
       codeBlockTheme.setCodeBlockCopyTextFontColor(this.codeBlockCopyTextFontColor)
     }
-    codeBlockTheme.setCodeBlockCopyTextFontSize(this.codeBlockCopyTextFontSize)
-    codeBlockTheme.setCodeBlockCopyTextFontStyle(this.codeBlockCopyTextFontStyle)
-    codeBlockTheme.setCodeBlockCopyTextFontWeight(this.codeBlockCopyTextFontWeight)
-    codeBlockTheme.setCodeBlockCopyTextFontFamily(this.codeBlockCopyTextFontFamily)
-    codeBlockTheme.setCodeBlockCopyTextLineHeight(this.codeBlockCopyTextLineHeight)
+    if (this.codeBlockCopyTextFontSize !== undefined) {
+      codeBlockTheme.setCodeBlockCopyTextFontSize(this.codeBlockCopyTextFontSize)
+    }
+    if (this.codeBlockCopyTextFontStyle !== undefined) {
+      codeBlockTheme.setCodeBlockCopyTextFontStyle(this.codeBlockCopyTextFontStyle)
+    }
+    if (this.codeBlockCopyTextFontWeight !== undefined) {
+      codeBlockTheme.setCodeBlockCopyTextFontWeight(this.codeBlockCopyTextFontWeight)
+    }
+    if (this.codeBlockCopyTextFontFamily !== undefined) {
+      codeBlockTheme.setCodeBlockCopyTextFontFamily(this.codeBlockCopyTextFontFamily)
+    }
+    if (this.codeBlockCopyTextLineHeight !== undefined) {
+      codeBlockTheme.setCodeBlockCopyTextLineHeight(this.codeBlockCopyTextLineHeight)
+    }
     codeBlockTheme.setCodeBlockFullScreenButtonIsShow(this.codeBlockFullScreenButtonIsShow)
     codeBlockTheme.setCodeBlockFullScreenTextIsShow(this.codeBlockFullScreenTextIsShow)
+    hilog.error(1, 'codeBlockCopyIcon', '-----------0')
     if (this.codeBlockFullScreenIcon !== undefined) {
+      hilog.error(1, 'codeBlockCopyIcon', '-----------0')
       codeBlockTheme.setCodeBlockFullScreenIcon(this.codeBlockFullScreenIcon)
+      hilog.error(1, 'codeBlockCopyIcon', '-----------2')
     }
     codeBlockTheme.setCodeBlockFullScreenIconWidth(this.codeBlockFullScreenIconWidth)
     codeBlockTheme.setCodeBlockFullScreenIconHeight(this.codeBlockFullScreenIconHeight)
@@ -525,21 +548,41 @@ struct CodeBlockDetailsPage {
     if (this.codeBlockFullScreenTextFontColor !== undefined) {
       codeBlockTheme.setCodeBlockFullScreenTextFontColor(this.codeBlockFullScreenTextFontColor)
     }
-    codeBlockTheme.setCodeBlockFullScreenTextFontSize(this.codeBlockFullScreenTextFontSize)
-    codeBlockTheme.setCodeBlockFullScreenTextFontStyle(this.codeBlockFullScreenTextFontStyle)
-    codeBlockTheme.setCodeBlockFullScreenTextFontWeight(this.codeBlockFullScreenTextFontWeight)
-    codeBlockTheme.setCodeBlockFullScreenTextFontFamily(this.codeBlockFullScreenTextFontFamily)
-    codeBlockTheme.setCodeBlockFullScreenTextLineHeight(this.codeBlockFullScreenTextLineHeight)
+    if (this.codeBlockFullScreenTextFontSize !== undefined) {
+      codeBlockTheme.setCodeBlockFullScreenTextFontSize(this.codeBlockFullScreenTextFontSize)
+    }
+    if (this.codeBlockFullScreenTextFontStyle !== undefined) {
+      codeBlockTheme.setCodeBlockFullScreenTextFontStyle(this.codeBlockFullScreenTextFontStyle)
+    }
+    if (this.codeBlockFullScreenTextFontWeight !== undefined) {
+      codeBlockTheme.setCodeBlockFullScreenTextFontWeight(this.codeBlockFullScreenTextFontWeight)
+    }
+    if (this.codeBlockFullScreenTextFontFamily !== undefined) {
+      codeBlockTheme.setCodeBlockFullScreenTextFontFamily(this.codeBlockFullScreenTextFontFamily)
+    }
+    if (this.codeBlockFullScreenTextLineHeight !== undefined) {
+      codeBlockTheme.setCodeBlockFullScreenTextLineHeight(this.codeBlockFullScreenTextLineHeight)
+    }
     codeBlockTheme.setCodeBlockLineNumberIsShow(this.codeBlockLineNumberIsShow)
     codeBlockTheme.setCodeBlockLineNumberTextPaddingLeft(this.codeBlockLineNumberTextPaddingLeft)
     if (this.codeBlockLineNumberTextFontColor !== undefined) {
       codeBlockTheme.setCodeBlockLineNumberTextFontColor(this.codeBlockLineNumberTextFontColor)
     }
-    codeBlockTheme.setCodeBlockLineNumberTextFontSize(this.codeBlockLineNumberTextFontSize)
-    codeBlockTheme.setCodeBlockLineNumberTextFontStyle(this.codeBlockLineNumberTextFontStyle)
-    codeBlockTheme.setCodeBlockLineNumberTextFontWeight(this.codeBlockLineNumberTextFontWeight)
-    codeBlockTheme.setCodeBlockLineNumberTextFontFamily(this.codeBlockLineNumberTextFontFamily)
-    codeBlockTheme.setCodeBlockLineNumberTextLineHeight(this.codeBlockLineNumberTextLineHeight)
+    if (this.codeBlockLineNumberTextFontSize !== undefined) {
+      codeBlockTheme.setCodeBlockLineNumberTextFontSize(this.codeBlockLineNumberTextFontSize)
+    }
+    if (this.codeBlockLineNumberTextFontStyle !== undefined) {
+      codeBlockTheme.setCodeBlockLineNumberTextFontStyle(this.codeBlockLineNumberTextFontStyle)
+    }
+    if (this.codeBlockLineNumberTextFontWeight !== undefined) {
+      codeBlockTheme.setCodeBlockLineNumberTextFontWeight(this.codeBlockLineNumberTextFontWeight)
+    }
+    if (this.codeBlockLineNumberTextFontFamily !== undefined) {
+      codeBlockTheme.setCodeBlockLineNumberTextFontFamily(this.codeBlockLineNumberTextFontFamily)
+    }
+    if (this.codeBlockLineNumberTextLineHeight !== undefined) {
+      codeBlockTheme.setCodeBlockLineNumberTextLineHeight(this.codeBlockLineNumberTextLineHeight)
+    }
     if (this.codeBlockDividerColor !== undefined) {
       codeBlockTheme.setCodeBlockDividerColor(this.codeBlockDividerColor)
     }
@@ -550,11 +593,21 @@ struct CodeBlockDetailsPage {
     }
     codeBlockTheme.setCodeBlockTextMarginRight(this.codeBlockTextMarginRight)
     codeBlockTheme.setCodeBlockTextMarginLeft(this.codeBlockTextMarginLeft)
-    codeBlockTheme.setCodeBlockTextFontSize(this.codeBlockTextFontSize)
-    codeBlockTheme.setCodeBlockTextFontStyle(this.codeBlockTextFontStyle)
-    codeBlockTheme.setCodeBlockTextFontWeight(this.codeBlockTextFontWeight)
-    codeBlockTheme.setCodeBlockTextFontFamily(this.codeBlockTextFontFamily)
-    codeBlockTheme.setCodeBlockTextLineHeight(this.codeBlockTextLineHeight)
+    if (this.codeBlockTextFontSize !== undefined) {
+      codeBlockTheme.setCodeBlockTextFontSize(this.codeBlockTextFontSize)
+    }
+    if (this.codeBlockTextFontStyle !== undefined) {
+      codeBlockTheme.setCodeBlockTextFontStyle(this.codeBlockTextFontStyle)
+    }
+    if (this.codeBlockTextFontWeight !== undefined) {
+      codeBlockTheme.setCodeBlockTextFontWeight(this.codeBlockTextFontWeight)
+    }
+    if (this.codeBlockTextFontFamily !== undefined) {
+      codeBlockTheme.setCodeBlockTextFontFamily(this.codeBlockTextFontFamily)
+    }
+    if (this.codeBlockTextLineHeight !== undefined) {
+      codeBlockTheme.setCodeBlockTextLineHeight(this.codeBlockTextLineHeight)
+    }
     codeBlockTheme.setCodeBlockTextLetterSpacing(this.codeBlockTextLetterSpacing)
     theme.setMarkdownThemeCodeBlock(codeBlockTheme)
     return theme

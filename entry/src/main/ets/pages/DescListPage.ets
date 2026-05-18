@@ -6,6 +6,8 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
   marginListGeneralData,
   textNumberListGeneralData,
   timeListGeneralData
@@ -94,7 +96,7 @@ struct DescListPage {
   // 定义列表上外边距列表
   definitionListMarginTopList: Array<number> = marginListGeneralData
   @State // 定义列表上外边距
-  definitionListMarginTop: number = 8
+  definitionListMarginTop: number = 0
   // 定义列表右外边距列表
   definitionListMarginRightList: Array<number> = marginListGeneralData
   @State // 定义列表右外边距
@@ -102,7 +104,7 @@ struct DescListPage {
   // 定义列表下外边距列表
   definitionListMarginBottomList: Array<number> = marginListGeneralData
   @State // 定义列表下外边距
-  definitionListMarginBottom: number = 8
+  definitionListMarginBottom: number = 0
   // 定义列表左外边距列表
   definitionListMarginLeftList: Array<number> = marginListGeneralData
   @State // 定义列表左外边距
@@ -126,23 +128,23 @@ struct DescListPage {
   // 定义列表术语和定义行之间间距列表
   definitionListTermToDescriptionSpacingList: Array<number> = marginListGeneralData
   @State // 定义列表术语和定义行之间间距
-  definitionListTermToDescriptionSpacing: number = 4
+  definitionListTermToDescriptionSpacing: number = 8
   // 定义列表术语文本字体粗细列表
-  definitionListTermTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  definitionListTermTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 定义列表术语文本字体粗细
   definitionListTermTextFontWeight: FontWeight = FontWeight.Bold
   // 定义列表术语文本字体样式列表
-  definitionListTermTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  definitionListTermTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 定义列表术语文本字体样式
-  definitionListTermTextFontStyle: FontStyle = FontStyle.Normal
+  definitionListTermTextFontStyle: FontStyle = FontStyle.Italic
   // 定义列表定义行之间间距列表
   definitionListDescriptionItemSpacingList: Array<number> = marginListGeneralData
   @State // 定义列表定义行之间间距
-  definitionListDescriptionItemSpacing: number = 4
+  definitionListDescriptionItemSpacing: number = 8
   // 定义列表定义行左缩进距离列表
   definitionListDescriptionIndentList: Array<number> = marginListGeneralData
   @State // 定义列表定义行左缩进距离
-  definitionListDescriptionIndent: number = 16
+  definitionListDescriptionIndent: number = 8
 
   aboutToAppear(): void {
     this.folderList = getFileListStr(`${this.rawFilePath}/`)

@@ -6,8 +6,15 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
   marginListGeneralData,
+  textDecorationStyleListGeneralData,
+  textLineHeightListGeneralData,
   textNumberListGeneralData,
+  textSizeListGeneralData,
+  textTypefaceListGeneralData,
+  textWordSpaceListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
 import { HTMLData } from '../model/HTMLData'
@@ -93,35 +100,35 @@ struct HTMLPage {
   @State // HTML下划线文本颜色
   htmlUnderlineTextFontColor: number | undefined = undefined
   // HTML下划线文本尺寸列表
-  htmlUnderlineTextFontSizeList: Array<number> = [12, 14, 16, 18, 20]
+  htmlUnderlineTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // HTML下划线文本尺寸
-  htmlUnderlineTextFontSize: number = 14
+  htmlUnderlineTextFontSize: number | undefined = undefined
   // HTML下划线文本字体样式列表
-  htmlUnderlineTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  htmlUnderlineTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // HTML下划线文本字体样式
-  htmlUnderlineTextFontStyle: FontStyle = FontStyle.Normal
+  htmlUnderlineTextFontStyle: FontStyle | undefined = undefined
   // HTML下划线文本字体粗细列表
-  htmlUnderlineTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold, FontWeight.Bolder, FontWeight.Lighter]
+  htmlUnderlineTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // HTML下划线文本字体粗细
-  htmlUnderlineTextFontWeight: FontWeight = FontWeight.Normal
+  htmlUnderlineTextFontWeight: FontWeight | undefined = undefined
   // HTML下划线文本字体列表
-  htmlUnderlineTextFontFamilyList: Array<string> = ['HarmonyOS Sans', 'Arial', 'Times New Roman', 'Courier New']
+  htmlUnderlineTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // HTML下划线文本字体
-  htmlUnderlineTextFontFamily: string = 'HarmonyOS Sans'
+  htmlUnderlineTextFontFamily: string | undefined = undefined
   // HTML下划线文本行高列表
-  htmlUnderlineTextLineHeightList: Array<number> = [20, 22, 24, 26, 28]
+  htmlUnderlineTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // HTML下划线文本行高
-  htmlUnderlineTextLineHeight: number = 22
+  htmlUnderlineTextLineHeight: number | undefined = undefined
   // HTML下划线文本字符间距列表
-  htmlUnderlineTextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2]
+  htmlUnderlineTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // HTML下划线文本字符间距
-  htmlUnderlineTextLetterSpacing: number = 0
+  htmlUnderlineTextLetterSpacing: number | undefined = undefined
   // HTML下划线文本装饰线颜色列表
   htmlUnderlineTextDecorationColorList: Array<number | undefined> = colorListGeneralData
   @State // HTML下划线文本装饰线颜色
   htmlUnderlineTextDecorationColor: number | undefined = undefined
   // HTML下划线文本装饰线样式列表
-  htmlUnderlineTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = [MarkdownTextDecorationStyle.SOLID, MarkdownTextDecorationStyle.DOUBLE, MarkdownTextDecorationStyle.DOTTED, MarkdownTextDecorationStyle.DASHED, MarkdownTextDecorationStyle.WAVY]
+  htmlUnderlineTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = textDecorationStyleListGeneralData
   @State // HTML下划线文本装饰线样式
   htmlUnderlineTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
   @State htmlData: HTMLData = new HTMLData() // 配置数据内容

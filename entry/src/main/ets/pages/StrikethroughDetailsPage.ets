@@ -65,21 +65,21 @@ struct StrikethroughDetailsPage {
   @State // 删除线文本颜色
   strikethroughTextFontColor: number | undefined = undefined
   @State // 删除线文本尺寸
-  strikethroughTextFontSize: number = 16
+  strikethroughTextFontSize: number | undefined = undefined
   @State // 删除线文本字体样式
-  strikethroughTextFontStyle: FontStyle = FontStyle.Normal
+  strikethroughTextFontStyle: FontStyle | undefined = undefined
   @State // 删除线文本字体粗细
-  strikethroughTextFontWeight: FontWeight = FontWeight.Normal
+  strikethroughTextFontWeight: FontWeight | undefined = undefined
   @State // 删除线文本字体
-  strikethroughTextFontFamily: string = 'HarmonyOS Sans'
+  strikethroughTextFontFamily: string | undefined = undefined
   @State // 删除线文本行高
-  strikethroughTextLineHeight: number = 20
+  strikethroughTextLineHeight: number | undefined = undefined
   @State // 删除线文本字符间距
-  strikethroughTextLetterSpacing: number = 0
+  strikethroughTextLetterSpacing: number | undefined = undefined
   @State // 删除线文本装饰线颜色
   strikethroughTextDecorationColor: number | undefined = undefined
   @State // 删除线文本装饰线样式
-  strikethroughTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
+  strikethroughTextDecorationStyle: MarkdownTextDecorationStyle | undefined = undefined
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -270,16 +270,30 @@ struct StrikethroughDetailsPage {
     if (this.strikethroughTextFontColor !== undefined) {
       strikethroughTheme.setStrikethroughTextFontColor(this.strikethroughTextFontColor)
     }
-    strikethroughTheme.setStrikethroughTextFontSize(this.strikethroughTextFontSize)
-    strikethroughTheme.setStrikethroughTextFontStyle(this.strikethroughTextFontStyle)
-    strikethroughTheme.setStrikethroughTextFontWeight(this.strikethroughTextFontWeight)
-    strikethroughTheme.setStrikethroughTextFontFamily(this.strikethroughTextFontFamily)
-    strikethroughTheme.setStrikethroughTextLineHeight(this.strikethroughTextLineHeight)
-    strikethroughTheme.setStrikethroughTextLetterSpacing(this.strikethroughTextLetterSpacing)
+    if (this.strikethroughTextFontSize !== undefined) {
+      strikethroughTheme.setStrikethroughTextFontSize(this.strikethroughTextFontSize)
+    }
+    if (this.strikethroughTextFontStyle !== undefined) {
+      strikethroughTheme.setStrikethroughTextFontStyle(this.strikethroughTextFontStyle)
+    }
+    if (this.strikethroughTextFontWeight !== undefined) {
+      strikethroughTheme.setStrikethroughTextFontWeight(this.strikethroughTextFontWeight)
+    }
+    if (this.strikethroughTextFontFamily !== undefined) {
+      strikethroughTheme.setStrikethroughTextFontFamily(this.strikethroughTextFontFamily)
+    }
+    if (this.strikethroughTextLineHeight !== undefined) {
+      strikethroughTheme.setStrikethroughTextLineHeight(this.strikethroughTextLineHeight)
+    }
+    if (this.strikethroughTextLetterSpacing !== undefined) {
+      strikethroughTheme.setStrikethroughTextLetterSpacing(this.strikethroughTextLetterSpacing)
+    }
     if (this.strikethroughTextDecorationColor !== undefined) {
       strikethroughTheme.setStrikethroughTextDecorationColor(this.strikethroughTextDecorationColor)
     }
-    strikethroughTheme.setStrikethroughTextDecorationStyle(this.strikethroughTextDecorationStyle)
+    if (this.strikethroughTextDecorationStyle !== undefined) {
+      strikethroughTheme.setStrikethroughTextDecorationStyle(this.strikethroughTextDecorationStyle)
+    }
     theme.setMarkdownThemeStrikethrough(strikethroughTheme)
     
     return theme

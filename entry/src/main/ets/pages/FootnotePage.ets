@@ -7,8 +7,17 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
   marginListGeneralData,
+  radiusListGeneraData,
+  textDecorationStyleListGeneralData,
+  textDecorationTypeListGeneralData,
+  textLineHeightListGeneralData,
   textNumberListGeneralData,
+  textSizeListGeneralData,
+  textTypefaceListGeneralData,
+  textWordSpaceListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
 import { FootnoteData } from '../model/FootnoteData'
@@ -96,7 +105,7 @@ struct FootnotePage {
   // 脚注定义上外边距列表
   footnoteDefMarginTopList: Array<number> = marginListGeneralData
   @State // 脚注定义上外边距
-  footnoteDefMarginTop: number = 8
+  footnoteDefMarginTop: number = 0
   // 脚注定义右外边距列表
   footnoteDefMarginRightList: Array<number> = marginListGeneralData
   @State // 脚注定义右外边距
@@ -104,7 +113,7 @@ struct FootnotePage {
   // 脚注定义下外边距列表
   footnoteDefMarginBottomList: Array<number> = marginListGeneralData
   @State // 脚注定义下外边距
-  footnoteDefMarginBottom: number = 8
+  footnoteDefMarginBottom: number = 0
   // 脚注定义左外边距列表
   footnoteDefMarginLeftList: Array<number> = marginListGeneralData
   @State // 脚注定义左外边距
@@ -130,39 +139,39 @@ struct FootnotePage {
   @State // 脚注引用文本颜色
   footnoteRefTextFontColor: number | undefined = undefined
   // 脚注引用文本尺寸列表
-  footnoteRefTextFontSizeList: Array<number> = [10, 11, 12, 13, 14, 15, 16]
+  footnoteRefTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 脚注引用文本尺寸
   footnoteRefTextFontSize: number = 12
   // 脚注引用文本字体样式列表
-  footnoteRefTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  footnoteRefTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 脚注引用文本字体样式
   footnoteRefTextFontStyle: FontStyle = FontStyle.Normal
   // 脚注引用文本字体粗细列表
-  footnoteRefTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  footnoteRefTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 脚注引用文本字体粗细
   footnoteRefTextFontWeight: FontWeight = FontWeight.Normal
   // 脚注引用文本字体列表
-  footnoteRefTextFontFamilyList: Array<string> = ["HarmonyOS Sans", "Arial", "Times New Roman"]
+  footnoteRefTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 脚注引用文本字体
   footnoteRefTextFontFamily: string = 'HarmonyOS Sans'
   // 脚注引用文本行高列表
-  footnoteRefTextLineHeightList: Array<number> = [14, 15, 16, 17, 18, 19, 20]
+  footnoteRefTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 脚注引用文本行高
   footnoteRefTextLineHeight: number = 18
   // 脚注引用文本字符间距列表
-  footnoteRefTextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  footnoteRefTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 脚注引用文本字符间距
   footnoteRefTextLetterSpacing: number = 0
   // 脚注引用文本装饰线类型列表
-  footnoteRefTextDecorationTypeList: Array<TextDecorationType> = [TextDecorationType.None, TextDecorationType.Underline, TextDecorationType.Overline, TextDecorationType.LineThrough]
+  footnoteRefTextDecorationTypeList: Array<TextDecorationType> = textDecorationTypeListGeneralData
   @State // 脚注引用文本装饰线类型
-  footnoteRefTextDecorationType: TextDecorationType = TextDecorationType.None
+  footnoteRefTextDecorationType: TextDecorationType = TextDecorationType.Underline
   // 脚注引用文本装饰线颜色列表
   footnoteRefTextDecorationColorList: Array<number | undefined> = colorListGeneralData
   @State // 脚注引用文本装饰线颜色
   footnoteRefTextDecorationColor: number | undefined = undefined
   // 脚注引用文本装饰线样式列表
-  footnoteRefTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = [MarkdownTextDecorationStyle.SOLID, MarkdownTextDecorationStyle.DOUBLE, MarkdownTextDecorationStyle.DOTTED, MarkdownTextDecorationStyle.DASHED, MarkdownTextDecorationStyle.WAVY]
+  footnoteRefTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = textDecorationStyleListGeneralData
   @State // 脚注引用文本装饰线样式
   footnoteRefTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
   // 脚注引用文本背景颜色列表
@@ -170,19 +179,19 @@ struct FootnotePage {
   @State // 脚注引用文本背景颜色
   footnoteRefTextBackgroundColor: number | undefined = undefined
   // 脚注引用文本背景左上圆角列表
-  footnoteRefTextBackgroundRadiusTopLeftList: Array<number> = [0, 2, 4, 6, 8, 10]
+  footnoteRefTextBackgroundRadiusTopLeftList: Array<number> = radiusListGeneraData
   @State // 脚注引用文本背景左上圆角
   footnoteRefTextBackgroundRadiusTopLeft: number = 0
   // 脚注引用文本背景右上圆角列表
-  footnoteRefTextBackgroundRadiusTopRightList: Array<number> = [0, 2, 4, 6, 8, 10]
+  footnoteRefTextBackgroundRadiusTopRightList: Array<number> = radiusListGeneraData
   @State // 脚注引用文本背景右上圆角
   footnoteRefTextBackgroundRadiusTopRight: number = 0
   // 脚注引用文本背景左下圆角列表
-  footnoteRefTextBackgroundRadiusBottomLeftList: Array<number> = [0, 2, 4, 6, 8, 10]
+  footnoteRefTextBackgroundRadiusBottomLeftList: Array<number> = radiusListGeneraData
   @State // 脚注引用文本背景左下圆角
   footnoteRefTextBackgroundRadiusBottomLeft: number = 0
   // 脚注引用文本背景右下圆角列表
-  footnoteRefTextBackgroundRadiusBottomRightList: Array<number> = [0, 2, 4, 6, 8, 10]
+  footnoteRefTextBackgroundRadiusBottomRightList: Array<number> = radiusListGeneraData
   @State // 脚注引用文本背景右下圆角
   footnoteRefTextBackgroundRadiusBottomRight: number = 0
 

@@ -86,22 +86,22 @@ struct CodeLineDetailsPage {
   inlineCodeTextFontColor: number | undefined = undefined
   // 内联代码文本尺寸
   @State
-  inlineCodeTextFontSize: number = 13
+  inlineCodeTextFontSize: number | undefined = undefined
   // 内联代码文本字体样式
   @State
-  inlineCodeTextFontStyle: FontStyle = FontStyle.Normal
+  inlineCodeTextFontStyle: FontStyle | undefined = undefined
   // 内联代码文本字体粗细
   @State
-  inlineCodeTextFontWeight: FontWeight = FontWeight.Normal
+  inlineCodeTextFontWeight: FontWeight | undefined = undefined
   // 内联代码文本字体
   @State
-  inlineCodeTextFontFamily: string = 'HarmonyOS Sans'
+  inlineCodeTextFontFamily: string | undefined = undefined
   // 内联代码文本行高
   @State
-  inlineCodeTextLineHeight: number = 20
+  inlineCodeTextLineHeight: number | undefined = undefined
   // 内联代码文本字符间距
   @State
-  inlineCodeTextLetterSpacing: number = 0
+  inlineCodeTextLetterSpacing: number | undefined = undefined
   // 内联代码文本背景颜色
   @State
   inlineCodeTextBackgroundColor: number | undefined = undefined
@@ -313,12 +313,24 @@ struct CodeLineDetailsPage {
     if (this.inlineCodeTextFontColor !== undefined) {
       inlineCodeTheme.setInlineCodeTextFontColor(this.inlineCodeTextFontColor)
     }
-    inlineCodeTheme.setInlineCodeTextFontSize(this.inlineCodeTextFontSize)
-    inlineCodeTheme.setInlineCodeTextFontStyle(this.inlineCodeTextFontStyle)
-    inlineCodeTheme.setInlineCodeTextFontWeight(this.inlineCodeTextFontWeight)
-    inlineCodeTheme.setInlineCodeTextFontFamily(this.inlineCodeTextFontFamily)
-    inlineCodeTheme.setInlineCodeTextLineHeight(this.inlineCodeTextLineHeight)
-    inlineCodeTheme.setInlineCodeTextLetterSpacing(this.inlineCodeTextLetterSpacing)
+    if (this.inlineCodeTextFontSize !== undefined) {
+      inlineCodeTheme.setInlineCodeTextFontSize(this.inlineCodeTextFontSize)
+    }
+    if (this.inlineCodeTextFontStyle !== undefined) {
+      inlineCodeTheme.setInlineCodeTextFontStyle(this.inlineCodeTextFontStyle)
+    }
+    if (this.inlineCodeTextFontWeight !== undefined) {
+      inlineCodeTheme.setInlineCodeTextFontWeight(this.inlineCodeTextFontWeight)
+    }
+    if (this.inlineCodeTextFontFamily !== undefined) {
+      inlineCodeTheme.setInlineCodeTextFontFamily(this.inlineCodeTextFontFamily)
+    }
+    if (this.inlineCodeTextLineHeight !== undefined) {
+      inlineCodeTheme.setInlineCodeTextLineHeight(this.inlineCodeTextLineHeight)
+    }
+    if (this.inlineCodeTextLetterSpacing !== undefined) {
+      inlineCodeTheme.setInlineCodeTextLetterSpacing(this.inlineCodeTextLetterSpacing)
+    }
     if (this.inlineCodeTextBackgroundColor !== undefined) {
       inlineCodeTheme.setInlineCodeTextBackgroundColor(this.inlineCodeTextBackgroundColor)
     }

@@ -6,8 +6,14 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
   marginListGeneralData,
+  offsetListGeneralData,
   textNumberListGeneralData,
+  textSizeListGeneralData,
+  textTypefaceListGeneralData,
+  textWordSpaceListGeneralData,
   timeListGeneralData
 } from '../model/GeneralData'
 import { SupData } from '../model/SupData'
@@ -91,27 +97,27 @@ struct SupPage {
   @State // 上标文本颜色
   supTextFontColor: number | undefined = undefined
   // 上标文本尺寸列表
-  supTextFontSizeList: Array<number> = [4, 5, 6, 7, 8, 9, 10, 11, 12]
+  supTextFontSizeList: Array<number> = textSizeListGeneralData
   @State // 上标文本尺寸
   supTextFontSize: number = 8
   // 上标文本字体样式列表
-  supTextFontStyleList: Array<FontStyle> = [FontStyle.Normal, FontStyle.Italic]
+  supTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
   @State // 上标文本字体样式
   supTextFontStyle: FontStyle = FontStyle.Normal
   // 上标文本字体粗细列表
-  supTextFontWeightList: Array<FontWeight> = [FontWeight.Normal, FontWeight.Bold]
+  supTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
   @State // 上标文本字体粗细
   supTextFontWeight: FontWeight = FontWeight.Normal
   // 上标文本字体列表
-  supTextFontFamilyList: Array<string> = ["HarmonyOS Sans", "Arial", "Times New Roman"]
+  supTextFontFamilyList: Array<string> = textTypefaceListGeneralData
   @State // 上标文本字体
   supTextFontFamily: string = 'HarmonyOS Sans'
   // 上标文本字符间距列表
-  supTextLetterSpacingList: Array<number> = [-2, -1, 0, 1, 2, 3, 4, 5]
+  supTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
   @State // 上标文本字符间距
   supTextLetterSpacing: number = 0
   // 上标文本基线的偏移量列表
-  supTextBaselineOffsetList: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  supTextBaselineOffsetList: Array<number> = offsetListGeneralData
   @State // 上标文本基线的偏移量
   supTextBaselineOffset: number = 6
 
