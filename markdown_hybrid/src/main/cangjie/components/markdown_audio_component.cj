@@ -100,5 +100,11 @@ public class MarkdownAudioComponent {
             bottom: markdownTheme.audioTheme.audioPaddingBottom,
             left: markdownTheme.audioTheme.audioPaddingLeft
         )
+        .margin(
+            top: markdownTheme.audioTheme.audioMarginTop,
+            right: markdownTheme.audioTheme.audioMarginRight,
+            bottom: markdownTheme.audioTheme.audioMarginBottom,
+            left: markdownTheme.audioTheme.audioMarginLeft
+        )
     }
 }

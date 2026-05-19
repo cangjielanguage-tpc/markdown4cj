@@ -140,10 +140,16 @@ public class MarkdownListComponent {
         .listDirection(Axis.Vertical)
         .width(100.percent)
         .padding(
-            top: listMarkdownConfiguration.markdownTheme.bulletListTheme.bulletListPaddingTop,
-            right: listMarkdownConfiguration.markdownTheme.bulletListTheme.bulletListPaddingRight,
-            bottom: listMarkdownConfiguration.markdownTheme.bulletListTheme.bulletListPaddingBottom,
-            left: listMarkdownConfiguration.markdownTheme.bulletListTheme.bulletListPaddingLeft
+            top: listPaddingTop(isOrdered, listMarkdownConfiguration.markdownTheme),
+            right: listPaddingRight(isOrdered, listMarkdownConfiguration.markdownTheme),
+            bottom: listPaddingBottom(isOrdered, listMarkdownConfiguration.markdownTheme),
+            left: listPaddingLeft(isOrdered, listMarkdownConfiguration.markdownTheme)
+        )
+        .margin(
+            top: listMarginTop(isOrdered, listMarkdownConfiguration.markdownTheme),
+            right: listMarginRight(isOrdered, listMarkdownConfiguration.markdownTheme),
+            bottom: listMarginBottom(isOrdered, listMarkdownConfiguration.markdownTheme),
+            left: listMarginLeft(isOrdered, listMarkdownConfiguration.markdownTheme)
         )
     }
 

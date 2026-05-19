@@ -91,6 +91,12 @@ class MarkdownTableBlockComponent {
             bottom: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tablePaddingBottom,
             left: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tablePaddingLeft
         )
+        .margin(
+            top: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableMarginTop,
+            right: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableMarginRight,
+            bottom: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableMarginBottom,
+            left: tableBlockMarkdownConfiguration.markdownTheme.tableTheme.tableMarginLeft
+        )
     }
 
     /**

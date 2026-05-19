@@ -165,12 +165,6 @@ public class MarkdownComponent {
                             paragraphFootnoteCallback: footnoteCallback
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginTop,
-                        right: markdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginBottom,
-                        left: markdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginLeft
-                    )
                 } else if (item.nodeType == "Heading" || item.nodeType == "IdHeading") {
                     // 标题/标题ID
                     ListItem() {
@@ -184,12 +178,6 @@ public class MarkdownComponent {
                             headingFootnoteCallback: footnoteCallback
                         )
                     }
-                    .margin(
-                        top: headingMarginTop(item.headingLevel, markdownConfiguration.markdownTheme),
-                        right: headingMarginRight(item.headingLevel, markdownConfiguration.markdownTheme),
-                        bottom: headingMarginBottom(item.headingLevel, markdownConfiguration.markdownTheme),
-                        left: headingMarginLeft(item.headingLevel, markdownConfiguration.markdownTheme)
-                    )
                 } else if (item.nodeType == "FencedCodeBlockListBlock") {
                     // 围栏代码块列表
                     ListItem() {
@@ -199,12 +187,6 @@ public class MarkdownComponent {
                             toCodeList(item)
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginTop,
-                        right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginBottom,
-                        left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginLeft
-                    )
                 } else if (item.nodeType == "FencedCodeBlock") {
                     // 围栏代码块
                     ListItem() {
@@ -216,12 +198,6 @@ public class MarkdownComponent {
                             fencedCodeComponents: markdownCacheConfiguration.fencedCodeComponents
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginTop,
-                        right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginBottom,
-                        left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginLeft
-                    )
                 } else if (item.nodeType == "IndentedCodeBlock") {
                     // 缩进代码块
                     ListItem() {
@@ -232,12 +208,6 @@ public class MarkdownComponent {
                             indentedCodeComponents: markdownCacheConfiguration.indentedCodeComponents
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginTop,
-                        right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginBottom,
-                        left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginLeft
-                    )
                 } else if (item.nodeType == "BulletList") {
                     // 无序/任务列表
                     ListItem() {
@@ -262,12 +232,6 @@ public class MarkdownComponent {
                             listDepth: 0
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.bulletListTheme.bulletListMarginTop,
-                        right: markdownConfiguration.markdownTheme.bulletListTheme.bulletListMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.bulletListTheme.bulletListMarginBottom,
-                        left: markdownConfiguration.markdownTheme.bulletListTheme.bulletListMarginLeft
-                    )
                 } else if (item.nodeType == "OrderedList") {
                     // 有序列表
                     ListItem() {
@@ -292,12 +256,6 @@ public class MarkdownComponent {
                             listDepth: 0
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.orderedListTheme.orderedListMarginTop,
-                        right: markdownConfiguration.markdownTheme.orderedListTheme.orderedListMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.orderedListTheme.orderedListMarginBottom,
-                        left: markdownConfiguration.markdownTheme.orderedListTheme.orderedListMarginLeft
-                    )
                 } else if (item.nodeType == "BlockQuote") {
                     // 块引用
                     ListItem() {
@@ -321,12 +279,6 @@ public class MarkdownComponent {
                             quoteDepth: 0
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteMarginTop,
-                        right: markdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteMarginBottom,
-                        left: markdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteMarginLeft
-                    )
                 } else if (item.nodeType == "LatexMathBlock") {
                     // 数学公式块
                     ListItem() {
@@ -344,14 +296,20 @@ public class MarkdownComponent {
                                 .fontWeight(markdownConfiguration.markdownTheme.latexMathTheme.latexMathDefaultTextFontWeight)
                                 .fontStyle(markdownConfiguration.markdownTheme.latexMathTheme.latexMathDefaultTextFontStyle)
                                 .fontColor(markdownConfiguration.markdownTheme.latexMathTheme.latexMathDefaultTextFontColor)
+                                .padding(
+                                    top: markdownConfiguration.markdownTheme.latexMathTheme.latexMathPaddingTop,
+                                    right: markdownConfiguration.markdownTheme.latexMathTheme.latexMathPaddingRight,
+                                    bottom: markdownConfiguration.markdownTheme.latexMathTheme.latexMathPaddingBottom,
+                                    left: markdownConfiguration.markdownTheme.latexMathTheme.latexMathPaddingLeft
+                                )
+                                .margin(
+                                    top: markdownConfiguration.markdownTheme.latexMathTheme.latexMathMarginTop,
+                                    right: markdownConfiguration.markdownTheme.latexMathTheme.latexMathMarginRight,
+                                    bottom: markdownConfiguration.markdownTheme.latexMathTheme.latexMathMarginBottom,
+                                    left: markdownConfiguration.markdownTheme.latexMathTheme.latexMathMarginLeft
+                                )
                          }
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.latexMathTheme.latexMathMarginTop,
-                        right: markdownConfiguration.markdownTheme.latexMathTheme.latexMathMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.latexMathTheme.latexMathMarginBottom,
-                        left: markdownConfiguration.markdownTheme.latexMathTheme.latexMathMarginLeft
-                    )
                 } else if (item.nodeType == "TableBlock") {
                     // 表格
                     ListItem() {
@@ -367,12 +325,6 @@ public class MarkdownComponent {
                             tableBlockFootnoteCallback: footnoteCallback
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.tableTheme.tableMarginTop,
-                        right: markdownConfiguration.markdownTheme.tableTheme.tableMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.tableTheme.tableMarginBottom,
-                        left: markdownConfiguration.markdownTheme.tableTheme.tableMarginLeft
-                    )
                 } else if (item.nodeType == "ThematicBreak") {
                     // 分割线
                     ListItem() {
@@ -380,12 +332,6 @@ public class MarkdownComponent {
                             markdownTheme: markdownConfiguration.markdownTheme
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.dividerTheme.dividerMarginTop,
-                        right: markdownConfiguration.markdownTheme.dividerTheme.dividerMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.dividerTheme.dividerMarginBottom,
-                        left: markdownConfiguration.markdownTheme.dividerTheme.dividerMarginLeft
-                    )
                 } else if (item.nodeType == "FootnoteBlock") {
                     // 脚注
                     ListItem() {
@@ -400,12 +346,6 @@ public class MarkdownComponent {
                             footnoteFootnoteCallback: footnoteCallback
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefMarginTop,
-                        right: markdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefMarginBottom,
-                        left: markdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefMarginLeft
-                    )
                 } else if (item.nodeType == "DescList") {
                     // 定义列表
                     ListItem() {
@@ -420,12 +360,6 @@ public class MarkdownComponent {
                             descListFootnoteCallback: footnoteCallback
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.definitionListTheme.definitionListMarginTop,
-                        right: markdownConfiguration.markdownTheme.definitionListTheme.definitionListMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.definitionListTheme.definitionListMarginBottom,
-                        left: markdownConfiguration.markdownTheme.definitionListTheme.definitionListMarginLeft
-                    )
                 } else if (item.nodeType == "SlideBlock") {
                     // 图片幻灯片
                     ListItem() {
@@ -435,12 +369,6 @@ public class MarkdownComponent {
                             imageCallback:imageCallback
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.bannerTheme.bannerMarginTop,
-                        right: markdownConfiguration.markdownTheme.bannerTheme.bannerMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.bannerTheme.bannerMarginBottom,
-                        left: markdownConfiguration.markdownTheme.bannerTheme.bannerMarginLeft
-                    )
                 } else if (item.nodeType == "BlockVideo") {
                     // 视频
                     ListItem() {
@@ -453,12 +381,6 @@ public class MarkdownComponent {
                             markdownConfiguration.videoDownloadCallback
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.videoTheme.videoMarginTop,
-                        right: markdownConfiguration.markdownTheme.videoTheme.videoMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.videoTheme.videoMarginBottom,
-                        left: markdownConfiguration.markdownTheme.videoTheme.videoMarginLeft
-                    )
                 } else if (item.nodeType == "BlockAudio") {
                     // 音频
                     ListItem() {
@@ -468,12 +390,6 @@ public class MarkdownComponent {
                             markdownConfiguration.audioCallback
                         )
                     }
-                    .margin(
-                        top: markdownConfiguration.markdownTheme.audioTheme.audioMarginTop,
-                        right: markdownConfiguration.markdownTheme.audioTheme.audioMarginRight,
-                        bottom: markdownConfiguration.markdownTheme.audioTheme.audioMarginBottom,
-                        left: markdownConfiguration.markdownTheme.audioTheme.audioMarginLeft
-                    )
                 } else if (item.nodeType == "BlockAD") {
                     // 广告
                     ListItem() {

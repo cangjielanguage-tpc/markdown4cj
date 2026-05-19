@@ -68,6 +68,12 @@ public class MarkdownVideoComponent {
             bottom: markdownTheme.videoTheme.videoPaddingBottom,
             left: markdownTheme.videoTheme.videoPaddingLeft
         )
+        .margin(
+            top: markdownTheme.videoTheme.videoMarginTop,
+            right: markdownTheme.videoTheme.videoMarginRight,
+            bottom: markdownTheme.videoTheme.videoMarginBottom,
+            left: markdownTheme.videoTheme.videoMarginLeft
+        )
     }
 
     /**

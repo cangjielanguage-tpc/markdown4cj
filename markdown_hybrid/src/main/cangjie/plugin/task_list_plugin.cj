@@ -48,15 +48,25 @@ public class TaskListPlugin <: AbstractMarkdownPlugin {
 }
 
 class TaskListVisitor <: AbstractVisitor {
-    private static let REGEX_TASK_LIST_ITEM: Regex = Regex(#"^\[[xX\s]\]\s+(.*)"#)
-
     public func visit(listItem: ListItem): Unit {
         // Takes first child and checks if it is Text (we are looking for exact `[xX\s]` without any formatting)
         // check if it is paragraph (can contain text)
         if (let Some(child: Paragraph) <- listItem.getFirstChild()) {
             if (let Some(textNode: Text) <- child.getFirstChild()) {
                 let text: String = textNode.getLiteral()
-                if (let Some(data) <- REGEX_TASK_LIST_ITEM.find(text, group: true)) {
+                if (text.size >= 3 && text[0] == b'[' && (text[1] == b'x' || text[1] == b'X' || text[1] == b' ') &&
+                    text[2] == b']') {
+                    // append the rest of matched text (can be empty)
+                    let restMatchedText: String = match (text.get(3)) {
+                        case None => ""
+                        case Some(" ") =>
+                            if (text.size == 4) {
+                                ""
+                            } else {
+                                text[4..]
+                            }
+                        case _ => return
+                    }
                     let checked: Byte = text[1]
                     let isChecked: Bool = (checked == b'x') || (checked == b'X')
 
@@ -67,13 +77,6 @@ class TaskListVisitor <: AbstractVisitor {
                     // insert before list item (directly before inside parent)
                     listItem.insertBefore(taskListItem)
 
-                    // append the rest of matched text (can be empty)
-                    let restMatchedText: String = if (data.groupCount() == 1) {
-                        let group2 = data.matchPosition(1)
-                        text[group2.start..group2.end]
-                    } else {
-                        ""
-                    }
                     if (restMatchedText.size != 0) {
                         paragraph.appendChild(Text(restMatchedText))
                     }

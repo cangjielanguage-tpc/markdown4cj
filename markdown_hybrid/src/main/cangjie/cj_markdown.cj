@@ -291,8 +291,8 @@ func convertTextDecorationType(decorationType: Int64): TextDecorationType {
  */
 func convertCheckBoxShape(style: Int64): CheckBoxShape {
     match (style) {
-        case 0 => CheckBoxShape.ROUNDED_SQUARE
-        case 1 => CheckBoxShape.CIRCLE
+        case 0 => CheckBoxShape.CIRCLE
+        case 1 => CheckBoxShape.ROUNDED_SQUARE
         case _ => CheckBoxShape.ROUNDED_SQUARE
     }
 }

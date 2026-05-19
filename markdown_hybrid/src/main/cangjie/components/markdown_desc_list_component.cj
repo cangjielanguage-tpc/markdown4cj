@@ -89,6 +89,12 @@ public class MarkdownDescListComponent {
             bottom: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListPaddingBottom,
             left: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListPaddingLeft
         )
+        .margin(
+            top: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListMarginTop,
+            right: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListMarginRight,
+            bottom: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListMarginBottom,
+            left: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListMarginLeft
+        )
     }
 
     /**

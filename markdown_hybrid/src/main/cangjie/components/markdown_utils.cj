@@ -841,18 +841,130 @@ func paragraphBackgroundColor(markdownTheme: MarkdownTheme, nodeView: NodeView):
 }
 
 /**
+ * 设置有序/无序/任务列表上外边距
+ *
+ * @param isOrdered 是否是有序列表
+ * @param markdownTheme MarkdownTheme
+ * @return 上外边距
+ */
+func listMarginTop(isOrdered: Bool, markdownTheme: MarkdownTheme): Float64 {
+    if (isOrdered) {
+        return markdownTheme.orderedListTheme.orderedListMarginTop // 有序列表
+    }
+    return markdownTheme.bulletListTheme.bulletListMarginTop // 无序列表
+}
+
+/**
+ * 设置有序/无序/任务列表右外边距
+ *
+ * @param isOrdered 是否是有序列表
+ * @param markdownTheme MarkdownTheme
+ * @return 右外边距
+ */
+func listMarginRight(isOrdered: Bool, markdownTheme: MarkdownTheme): Float64 {
+    if (isOrdered) {
+        return markdownTheme.orderedListTheme.orderedListMarginRight // 有序列表
+    }
+    return markdownTheme.bulletListTheme.bulletListMarginRight // 无序列表
+}
+
+/**
+ * 设置有序/无序/任务列表下外边距
+ *
+ * @param isOrdered 是否是有序列表
+ * @param markdownTheme MarkdownTheme
+ * @return 下外边距
+ */
+func listMarginBottom(isOrdered: Bool, markdownTheme: MarkdownTheme): Float64 {
+    if (isOrdered) {
+        return markdownTheme.orderedListTheme.orderedListMarginBottom// 有序列表
+    }
+    return markdownTheme.bulletListTheme.bulletListMarginBottom // 无序列表
+}
+
+/**
+ * 设置有序/无序/任务列表左外边距
+ *
+ * @param isOrdered 是否是有序列表
+ * @param markdownTheme MarkdownTheme
+ * @return 左外边距
+ */
+func listMarginLeft(isOrdered: Bool, markdownTheme: MarkdownTheme): Float64 {
+    if (isOrdered) {
+        return markdownTheme.orderedListTheme.orderedListMarginLeft // 有序列表
+    }
+    return markdownTheme.bulletListTheme.bulletListMarginLeft // 无序列表
+}
+
+/**
+ * 设置有序/无序/任务列表上内边距
+ *
+ * @param isOrdered 是否是有序列表
+ * @param markdownTheme MarkdownTheme
+ * @return 上内边距
+ */
+func listPaddingTop(isOrdered: Bool, markdownTheme: MarkdownTheme): Float64 {
+    if (isOrdered) {
+        return markdownTheme.orderedListTheme.orderedListPaddingTop // 有序列表
+    }
+    return markdownTheme.bulletListTheme.bulletListPaddingTop // 无序列表
+}
+
+/**
+ * 设置有序/无序/任务列表右内边距
+ *
+ * @param isOrdered 是否是有序列表
+ * @param markdownTheme MarkdownTheme
+ * @return 右内边距
+ */
+func listPaddingRight(isOrdered: Bool, markdownTheme: MarkdownTheme): Float64 {
+    if (isOrdered) {
+        return markdownTheme.orderedListTheme.orderedListPaddingRight // 有序列表
+    }
+    return markdownTheme.bulletListTheme.bulletListPaddingRight // 无序列表
+}
+
+/**
+ * 设置有序/无序/任务列表下内边距
+ *
+ * @param isOrdered 是否是有序列表
+ * @param markdownTheme MarkdownTheme
+ * @return 下内边距
+ */
+func listPaddingBottom(isOrdered: Bool, markdownTheme: MarkdownTheme): Float64 {
+    if (isOrdered) {
+        return markdownTheme.orderedListTheme.orderedListPaddingBottom// 有序列表
+    }
+    return markdownTheme.bulletListTheme.bulletListPaddingBottom // 无序列表
+}
+
+/**
+ * 设置有序/无序/任务列表左内边距
+ *
+ * @param isOrdered 是否是有序列表
+ * @param markdownTheme MarkdownTheme
+ * @return 左内边距
+ */
+func listPaddingLeft(isOrdered: Bool, markdownTheme: MarkdownTheme): Float64 {
+    if (isOrdered) {
+        return markdownTheme.orderedListTheme.orderedListPaddingLeft // 有序列表
+    }
+    return markdownTheme.bulletListTheme.bulletListPaddingLeft // 无序列表
+}
+
+/**
  * 设置有序/无序/任务列表背景颜色
  *
- * @param isBullet 是否是无序列表
+ * @param isOrdered 是否是有序列表
  * @param markdownTheme MarkdownTheme
  * @param nodeView NodeView
  * @return 有序/无序/任务列表背景颜色
  */
-func listBackgroundColor(isBullet: Bool, markdownTheme: MarkdownTheme, nodeView: NodeView): Color {
+func listBackgroundColor(isOrdered: Bool, markdownTheme: MarkdownTheme, nodeView: NodeView): Color {
     if (nodeView.isQuote) {
         return markdownTheme.blockQuoteTheme.blockQuoteBackgroundColor // 块引用中的列表
     }
-    if (isBullet) {
+    if (isOrdered) {
         if (let Some(v) <- markdownTheme.orderedListTheme.orderedListBackgroundColor) {
             return v // 有序列表
         }
@@ -1095,8 +1207,11 @@ func definitionListBackgroundColor(markdownTheme: MarkdownTheme): Color {
  * @param rowCount 第几行
  * @return 表格格子背景颜色
  */
-func renderTableCellColor(isHeader: Bool, markdownTheme: MarkdownTheme, rowCount: Int64): Color {
-    if (isHeader) {
+func renderTableCellColor(nodeView: NodeView, markdownTheme: MarkdownTheme, rowCount: Int64): Color {
+    if (nodeView.isQuote) {
+        return markdownTheme.blockQuoteTheme.blockQuoteBackgroundColor // 引用
+    }
+    if (nodeView.isTableHead) {
         return markdownTheme.tableTheme.tableTitleBackgroundColor // 表格标题
     }
     if (rowCount % 2 == 0) {

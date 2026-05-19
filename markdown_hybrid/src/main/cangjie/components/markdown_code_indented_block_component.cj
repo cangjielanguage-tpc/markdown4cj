@@ -81,6 +81,12 @@ class MarkdownCodeIndentedBlockComponent {
             bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingBottom,
             left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockPaddingLeft
         )
+        .margin(
+            top: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginTop,
+            right: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginRight,
+            bottom: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginBottom,
+            left: markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockMarginLeft
+        )
     }
 
     /**

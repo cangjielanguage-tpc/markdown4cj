@@ -44,7 +44,7 @@ class DescListParser <: AbstractBlockParser {
         let line = sline.getContent()
         let lineTrim = line.trimStart()
         if (lineTrim.size > 2 && lineTrim.startsWith(": ")) {
-            ddstr.add(SourceLines.of(sline.substring(line.size - lineTrim.size - 2, line.size)))
+            ddstr.add(SourceLines.of(sline.substring(line.size - lineTrim.size + 2, line.size)))
         } else if (!line.isBlank()) {
             ddstr.last?.addLine(sline)
         }

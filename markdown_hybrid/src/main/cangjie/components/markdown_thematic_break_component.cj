@@ -24,5 +24,11 @@ class MarkdownThematicBreakComponent {
             bottom: markdownTheme.dividerTheme.dividerPaddingBottom,
             left: markdownTheme.dividerTheme.dividerPaddingLeft
         )
+        .margin(
+            top: markdownTheme.dividerTheme.dividerMarginTop,
+            right: markdownTheme.dividerTheme.dividerMarginRight,
+            bottom: markdownTheme.dividerTheme.dividerMarginBottom,
+            left: markdownTheme.dividerTheme.dividerMarginLeft
+        )
     }
 }
