@@ -74,6 +74,12 @@ public class MarkdownFootnoteComponent {
             bottom: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefPaddingBottom,
             left: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefPaddingLeft
         )
+        .margin(
+            top: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefMarginTop,
+            right: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefMarginRight,
+            bottom: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefMarginBottom,
+            left: footnoteMarkdownConfiguration.markdownTheme.footnoteDefTheme.footnoteDefMarginLeft
+        )
     }
 
     /**

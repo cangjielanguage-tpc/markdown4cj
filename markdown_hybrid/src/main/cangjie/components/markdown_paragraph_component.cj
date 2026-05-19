@@ -126,6 +126,12 @@ class MarkdownParagraphComponent {
             bottom: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphPaddingBottom,
             left: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphPaddingLeft
         )
+        .margin(
+            top: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginTop,
+            right: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginRight,
+            bottom: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginBottom,
+            left: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphMarginLeft
+        )
     }
 
     /**

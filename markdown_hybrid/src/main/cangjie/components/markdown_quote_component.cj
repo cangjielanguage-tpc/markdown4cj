@@ -262,6 +262,12 @@ public class MarkdownQuoteComponent {
             bottom: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingBottom,
             left: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingLeft + quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteBorderContentSpacing
         )
+        .margin(
+            top: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteMarginTop,
+            right: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteMarginRight,
+            bottom: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteMarginBottom,
+            left: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteMarginLeft
+        )
     }
 
     /**

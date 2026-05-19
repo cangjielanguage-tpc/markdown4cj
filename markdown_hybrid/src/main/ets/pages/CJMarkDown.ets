@@ -770,6 +770,9 @@ export struct CJMarkdown {
       return undefined
     }
     let cjMarkdownTheme = new global_customLib.CJMarkdownCodeBlockTheme()
+    if (theme.getCodeBlockIsDark() !== undefined) {
+      cjMarkdownTheme.setCodeBlockIsDark(theme.getCodeBlockIsDark())
+    }
     if (theme.getCodeBlockIsCodeFormat() !== undefined) {
       cjMarkdownTheme.setCodeBlockIsCodeFormat(theme.getCodeBlockIsCodeFormat())
     }

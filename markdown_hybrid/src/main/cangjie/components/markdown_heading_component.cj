@@ -137,6 +137,12 @@ class MarkdownHeadingComponent {
             bottom: headingPaddingBottom(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
             left: headingPaddingLeft(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme)
         )
+        .margin(
+            top: headingMarginTop(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
+            right: headingMarginRight(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
+            bottom: headingMarginBottom(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),
+            left: headingMarginLeft(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme)
+        )
     }
 
     /**

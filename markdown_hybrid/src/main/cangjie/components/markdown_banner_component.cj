@@ -42,6 +42,12 @@ class MarkdownBannerComponent {
             bottom: markdownTheme.bannerTheme.bannerPaddingBottom,
             left: markdownTheme.bannerTheme.bannerPaddingLeft
         )
+        .margin(
+            top: markdownTheme.bannerTheme.bannerMarginTop,
+            right: markdownTheme.bannerTheme.bannerMarginRight,
+            bottom: markdownTheme.bannerTheme.bannerMarginBottom,
+            left: markdownTheme.bannerTheme.bannerMarginLeft
+        )
     }
 
     /**

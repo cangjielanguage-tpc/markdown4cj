@@ -57,6 +57,12 @@ class MarkdownLatexMathBlockComponent {
                     bottom: markdownTheme.latexMathTheme.latexMathPaddingBottom,
                     left: markdownTheme.latexMathTheme.latexMathPaddingLeft
                 )
+                .margin(
+                    top: markdownTheme.latexMathTheme.latexMathMarginTop,
+                    right: markdownTheme.latexMathTheme.latexMathMarginRight,
+                    bottom: markdownTheme.latexMathTheme.latexMathMarginBottom,
+                    left: markdownTheme.latexMathTheme.latexMathMarginLeft
+                )
             } else {
                 Text(latexMathBlockStr)
                     .fontFamily(markdownTheme.latexMathTheme.latexMathDefaultTextFontFamily)
@@ -69,6 +75,12 @@ class MarkdownLatexMathBlockComponent {
                         right: markdownTheme.latexMathTheme.latexMathPaddingRight,
                         bottom: markdownTheme.latexMathTheme.latexMathPaddingBottom,
                         left: markdownTheme.latexMathTheme.latexMathPaddingLeft
+                    )
+                    .margin(
+                        top: markdownTheme.latexMathTheme.latexMathMarginTop,
+                        right: markdownTheme.latexMathTheme.latexMathMarginRight,
+                        bottom: markdownTheme.latexMathTheme.latexMathMarginBottom,
+                        left: markdownTheme.latexMathTheme.latexMathMarginLeft
                     )
             }
         } else {
@@ -84,6 +96,12 @@ class MarkdownLatexMathBlockComponent {
                         right: markdownTheme.latexMathTheme.latexMathPaddingRight,
                         bottom: markdownTheme.latexMathTheme.latexMathPaddingBottom,
                         left: markdownTheme.latexMathTheme.latexMathPaddingLeft
+                    )
+                    .margin(
+                        top: markdownTheme.latexMathTheme.latexMathMarginTop,
+                        right: markdownTheme.latexMathTheme.latexMathMarginRight,
+                        bottom: markdownTheme.latexMathTheme.latexMathMarginBottom,
+                        left: markdownTheme.latexMathTheme.latexMathMarginLeft
                     )
             }
         }
