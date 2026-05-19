@@ -21,7 +21,7 @@ struct AllPage {
   scroller: Scroller = new Scroller()
   @StorageProp('safeTop') safeTop: number = 0 // 顶部导航栏高度
   // rawfile路径
-  rawFilePath: string = "029_综合"
+  rawFilePath: string = "029_Comprehensive"
   @State folderList: Array<string> = new Array<string>() // rawfile文件夹列表
   // 是否全量加载Markdown文本列表
   isFullList: Array<boolean> = booleanListGeneralData

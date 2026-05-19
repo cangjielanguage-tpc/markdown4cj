@@ -18,7 +18,7 @@ struct ABCustomPage {
   /**
    * rawfile路径
    */
-  rawFilePath: string = "031_AB方案"
+  rawFilePath: string = "031_ABPlan"
   /**
    * rawfile标题文件夹列表
    */

@@ -21,7 +21,7 @@ struct LineBreakPage {
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   // rawfile路径
-  rawFilePath: string = "004_软换行"
+  rawFilePath: string = "004_SoftLineBreak"
   @State // rawfile文件夹列表
   folderList: Array<string> = new Array<string>()
   // 是否全量加载Markdown文本列表
