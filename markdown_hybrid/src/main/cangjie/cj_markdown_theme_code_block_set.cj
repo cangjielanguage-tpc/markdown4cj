@@ -234,7 +234,7 @@ func setCodeBlockTheme(codeBlockTheme: CJMarkdownCodeBlockTheme): CodeBlockTheme
         theme.setCodeBlockListTitleSelectTextColor(v)
     }
     if (let Some(v) <- codeBlockTheme.codeBlockListTitleUnselectTextColor) {
-        theme.setCodeBlockListTitleUnselectBackgroundColor(v)
+        theme.setCodeBlockListTitleUnselectTextColor(v)
     }
     if (let Some(v) <- codeBlockTheme.codeBlockListTitleSelectBackgroundColor) {
         theme.setCodeBlockListTitleSelectBackgroundColor(v)
