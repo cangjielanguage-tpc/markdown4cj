@@ -298,6 +298,38 @@ markdown依赖三方库：
 
 当前三方库默认通过静态链接方式，如果有动态链接需求可以通过修改库代码中的cjpm.toml文件链接到stdx动态链接库目录，
 
+```
+[target]
+  [target.aarch64-linux-ohos]
+  	  ...
+      path-option = [ "${AARCH64_LIBS}", "${AARCH64_MACRO_LIBS}", "${AARCH64_KIT_LIBS}", "../stdx_bin/linux_ohos_aarch64_llvm/static/stdx" ]
+      [target.aarch64-linux-ohos.bin-dependencies.package-option]
+  [target.x86_64-linux-ohos]
+      ...
+      path-option = [ "${X86_64_OHOS_LIBS}", "${X86_64_OHOS_MACRO_LIBS}", "${X86_64_OHOS_KIT_LIBS}", "../stdx_bin/linux_ohos_x86_64_llvm/static/stdx" ]
+  [target.x86_64-unknown-windows-gnu]
+    [target.x86_64-unknown-windows-gnu.bin-dependencies]
+      path-option = [ "${X86_64_LIBS}", "${X86_64_MACRO_LIBS}", "../stdx_bin/windows_x86_64_llvm/static/stdx" ]
+      [target.x86_64-unknown-windows-gnu.bin-dependencies.package-option]
+```
+
+修改如下：
+
+```
+[target]
+  [target.aarch64-linux-ohos]
+      ...
+      path-option = [ "${AARCH64_LIBS}", "${AARCH64_MACRO_LIBS}", "${AARCH64_KIT_LIBS}", "../stdx_bin/linux_ohos_aarch64_llvm/dynamic/stdx" ]
+      [target.aarch64-linux-ohos.bin-dependencies.package-option]
+  [target.x86_64-linux-ohos]
+      ...
+      path-option = [ "${X86_64_OHOS_LIBS}", "${X86_64_OHOS_MACRO_LIBS}", "${X86_64_OHOS_KIT_LIBS}", "../stdx_bin/linux_ohos_x86_64_llvm/dynamic/stdx" ]
+  [target.x86_64-unknown-windows-gnu]
+    [target.x86_64-unknown-windows-gnu.bin-dependencies]
+      path-option = [ "${X86_64_LIBS}", "${X86_64_MACRO_LIBS}", "../stdx_bin/windows_x86_64_llvm/dynamic/stdx" ]
+      [target.x86_64-unknown-windows-gnu.bin-dependencies.package-option]
+```
+
 1. 内联代码/链接文字格式背景色。纯仓颉项目支持API19及以上版本。互操作项目支持API12及以上版本
 2. 链接和删除线同时存在情况，只支持显示删除线的中划线，不显示链接的下划线
 3. 围栏代码块高亮语言支持如下(语言类型不区分大小写，每行如有多个则表示该语言支持别名书写)：
