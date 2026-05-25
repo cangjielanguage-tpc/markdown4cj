@@ -37,30 +37,30 @@ public class MarkdownVideoComponent {
     }
 
     func build() {
-        Column() {
-            Stack(Alignment.BottomEnd) {
-                Stack(Alignment.Center) {
-                    imgVideoComponent()
+        Row() {
+            Column() {
+                Stack(Alignment.BottomEnd) {
+                    Stack(Alignment.Center) {
+                        imgVideoComponent()
+                    }
+                    Text(time)
+                        .fontFamily(markdownTheme.videoTheme.videoTimeTextFontFamily)
+                        .fontSize(markdownTheme.videoTheme.videoTimeTextFontSize)
+                        .fontWeight(markdownTheme.videoTheme.videoTimeTextFontWeight)
+                        .fontStyle(markdownTheme.videoTheme.videoTimeTextFontStyle)
+                        .fontColor(markdownTheme.videoTheme.videoTimeTextFontColor)
+                        .lineHeight(markdownTheme.videoTheme.videoTimeTextLineHeight)
+                        .margin(right: markdownTheme.videoTheme.videoTimeTextMarginRight, bottom: markdownTheme.videoTheme.videoTimeTextMarginBottom)
                 }
-                .width(100.percent)
-                Text(time)
-                    .fontFamily(markdownTheme.videoTheme.videoTimeTextFontFamily)
-                    .fontSize(markdownTheme.videoTheme.videoTimeTextFontSize)
-                    .fontWeight(markdownTheme.videoTheme.videoTimeTextFontWeight)
-                    .fontStyle(markdownTheme.videoTheme.videoTimeTextFontStyle)
-                    .fontColor(markdownTheme.videoTheme.videoTimeTextFontColor)
-                    .lineHeight(markdownTheme.videoTheme.videoTimeTextLineHeight)
-                    .margin(right: markdownTheme.videoTheme.videoTimeTextMarginRight, bottom: markdownTheme.videoTheme.videoTimeTextMarginBottom)
+                .onClick {
+                    evt => videoCallback(imageVideoUrl)
+                }
+                if (markdownTheme.videoTheme.videoBottomLayoutVisible) {
+                    imgVideoButtonComponent()
+                }
             }
-            .width(100.percent)
-            .onClick {
-                evt => videoCallback(imageVideoUrl)
-            }
-            if (markdownTheme.videoTheme.videoBottomLayoutVisible) {
-                imgVideoButtonComponent()
-            }
+            .layoutWeight(1)
         }
-        .width(100.percent)
         .backgroundColor(markdownTheme.videoTheme.videoBackgroundColor)
         .padding(
             top: markdownTheme.videoTheme.videoPaddingTop,
