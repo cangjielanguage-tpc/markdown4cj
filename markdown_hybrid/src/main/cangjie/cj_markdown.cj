@@ -276,8 +276,8 @@ func convertLineCapStyle(style: Int64): LineCapStyle {
 func convertTextDecorationType(decorationType: Int64): TextDecorationType {
     match (decorationType) {
         case 0 => TextDecorationType.None // 无装饰线
-        case 1 => TextDecorationType.Overline // 上划线
-        case 2 => TextDecorationType.Underline // 下划线
+        case 1 => TextDecorationType.Underline // 上划线
+        case 2 => TextDecorationType.Overline // 下划线
         case 3 => TextDecorationType.LineThrough // 中划线
         case _ => TextDecorationType.None // 默认无装饰线
     }
@@ -305,9 +305,9 @@ func convertCheckBoxShape(style: Int64): CheckBoxShape {
  */
 func convertBarState(style: Int64): BarState {
     match (style) {
-        case 0 => BarState.On
-        case 1 => BarState.Off
-        case 2 => BarState.Auto
+        case 0 => BarState.Off
+        case 1 => BarState.Auto
+        case 2 => BarState.On
         case _ => BarState.Off
     }
 }
