@@ -242,7 +242,7 @@ struct LinkDetailsPage {
   build() {
     Column() {
       titleComponent(
-        "标题测试用例",
+        "链接配置详情",
         0xFF317AFF,
         true,
         this.safeTop

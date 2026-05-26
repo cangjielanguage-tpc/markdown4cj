@@ -544,7 +544,7 @@ struct VideoDetailsPage {
 
   videoImageCallback(url: string, cb: (imageUrl: string, aspectRatio: number, time: number) => void): void {
     hilog.error(1, "1", `---url:${url}`)
-    cb("https://markdown.com.cn/images/blue.jpg", 16 / 9, 200)
+    cb("https://markdown.com.cn/images/philly-magic-garden.jpg", 16 / 9, 200)
   }
 
   videoReleaseCallback(url: string): void {

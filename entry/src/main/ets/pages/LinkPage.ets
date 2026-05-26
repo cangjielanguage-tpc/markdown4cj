@@ -6,17 +6,23 @@ import { TypeEnum } from '../model/TypeEnum'
 import {
   booleanListGeneralData,
   colorListGeneralData,
+  fontStyleListGeneraData,
+  fontWeightListGeneraData,
   lineOrBorderWidthListGeneraData,
   marginListGeneralData,
   radiusListGeneraData,
+  textDecorationStyleListGeneralData,
+  textDecorationTypeListGeneralData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
   textSizeListGeneralData,
+  textTypefaceListGeneralData,
   textWordSpaceListGeneralData,
   timeListGeneralData,
   widthOrHeightListGeneralData
 } from '../model/GeneralData'
 import { LinkData } from '../model/LinkData'
+import { MarkdownTextDecorationStyle } from '@cangjie-tpc/markdown_hybrid'
 
 @Entry
 @Component
@@ -212,6 +218,50 @@ struct LinkPage {
   linkTextLineHeightList: Array<number> = textLineHeightListGeneralData
   @State // 文本格式链接文字行高
   linkTextLineHeight: number | undefined = undefined
+  // 链接文本字体样式列表
+  linkTextFontStyleList: Array<FontStyle> = fontStyleListGeneraData
+  @State // 链接文本字体样式
+  linkTextFontStyle: FontStyle = FontStyle.Normal
+  // 链接文本字体粗细列表
+  linkTextFontWeightList: Array<FontWeight> = fontWeightListGeneraData
+  @State // 链接文本字体粗细
+  linkTextFontWeight: FontWeight = FontWeight.Normal
+  // 链接文本字体列表
+  linkTextFontFamilyList: Array<string> = textTypefaceListGeneralData
+  @State // 链接文本字体
+  linkTextFontFamily: string = 'HarmonyOS Sans'
+  // 链接文本字符间距列表
+  linkTextLetterSpacingList: Array<number> = textWordSpaceListGeneralData
+  @State // 链接文本字符间距
+  linkTextLetterSpacing: number = 0
+  // 链接文本装饰线类型列表
+  linkTextDecorationTypeList: Array<TextDecorationType> = textDecorationTypeListGeneralData
+  @State // 链接文本装饰线类型
+  linkTextDecorationType: TextDecorationType = TextDecorationType.None
+  // 链接文本装饰线颜色列表
+  linkTextDecorationColorList: Array<number | undefined> = colorListGeneralData
+  @State // 链接文本装饰线颜色
+  linkTextDecorationColor: number | undefined = undefined
+  // 链接文本装饰线样式列表
+  linkTextDecorationStyleList: Array<TextDecorationStyle> = textDecorationStyleListGeneralData
+  @State // 链接文本装饰线样式
+  linkTextDecorationStyle: TextDecorationStyle = TextDecorationStyle.SOLID
+  // 链接文本背景左上圆角列表
+  linkTextBackgroundRadiusTopLeftList: Array<number> = radiusListGeneraData
+  @State // 链接文本背景左上圆角
+  linkTextBackgroundRadiusTopLeft: number = 0
+  // 链接文本背景右上圆角列表
+  linkTextBackgroundRadiusTopRightList: Array<number> = radiusListGeneraData
+  @State // 链接文本背景右上圆角
+  linkTextBackgroundRadiusTopRight: number = 0
+  // 链接文本背景左下圆角列表
+  linkTextBackgroundRadiusBottomLeftList: Array<number> = radiusListGeneraData
+  @State // 链接文本背景左下圆角
+  linkTextBackgroundRadiusBottomLeft: number = 0
+  // 链接文本背景右下圆角列表
+  linkTextBackgroundRadiusBottomRightList: Array<number> = radiusListGeneraData
+  @State // 链接文本背景右下圆角
+  linkTextBackgroundRadiusBottomRight: number = 0
   @State linkData: LinkData = new LinkData() // 配置数据内容
 
   aboutToAppear(): void {
@@ -502,10 +552,70 @@ struct LinkPage {
             allData: this.linkTextLineHeight
           })
           BaseTabComponent({
-            titleStr: "文本格式链接文字行高 - ",
+            titleStr: "链接文本字体样式 - ",
+            typeEnum: TypeEnum.IS_FONT_STYLE,
+            allListData: this.linkTextFontStyleList,
+            allData: this.linkTextFontStyle
+          })
+          BaseTabComponent({
+            titleStr: "链接文本字体粗细 - ",
+            typeEnum: TypeEnum.IS_FONT_WEIGHT,
+            allListData: this.linkTextFontWeightList,
+            allData: this.linkTextFontWeight
+          })
+          BaseTabComponent({
+            titleStr: "链接文本字体 - ",
+            typeEnum: TypeEnum.IS_STRING,
+            allListData: this.linkTextFontFamilyList,
+            allData: this.linkTextFontFamily
+          })
+          BaseTabComponent({
+            titleStr: "链接文本字符间距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.linkTextLineHeightList,
-            allData: this.linkTextLineHeight
+            allListData: this.linkTextLetterSpacingList,
+            allData: this.linkTextLetterSpacing
+          })
+          BaseTabComponent({
+            titleStr: "链接文本装饰线类型 - ",
+            typeEnum: TypeEnum.IS_DECORATION_TYPE,
+            allListData: this.linkTextDecorationTypeList,
+            allData: this.linkTextDecorationType
+          })
+          BaseTabComponent({
+            titleStr: "链接文本装饰线颜色 - ",
+            typeEnum: TypeEnum.IS_COLOR,
+            allListData: this.linkTextDecorationColorList,
+            allData: this.linkTextDecorationColor
+          })
+          BaseTabComponent({
+            titleStr: "链接文本装饰线样式 - ",
+            typeEnum: TypeEnum.IS_DECORATION_STYLE,
+            allListData: this.linkTextDecorationStyleList,
+            allData: this.linkTextDecorationStyle
+          })
+          BaseTabComponent({
+            titleStr: "链接文本背景左上圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.linkTextBackgroundRadiusTopLeftList,
+            allData: this.linkTextBackgroundRadiusTopLeft
+          })
+          BaseTabComponent({
+            titleStr: "链接文本背景右上圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.linkTextBackgroundRadiusTopRightList,
+            allData: this.linkTextBackgroundRadiusTopRight
+          })
+          BaseTabComponent({
+            titleStr: "链接文本背景左下圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.linkTextBackgroundRadiusBottomLeftList,
+            allData: this.linkTextBackgroundRadiusBottomLeft
+          })
+          BaseTabComponent({
+            titleStr: "链接文本背景右下圆角 - ",
+            typeEnum: TypeEnum.IS_NUMBER,
+            allListData: this.linkTextBackgroundRadiusBottomRightList,
+            allData: this.linkTextBackgroundRadiusBottomRight
           })
 
           // 列表显示
@@ -570,6 +680,17 @@ struct LinkPage {
                     this.linkData.linkRectToolIconLineLeftPadding = this.linkRectToolIconLineLeftPadding
                     this.linkData.linkRectToolIconLineRightPadding = this.linkRectToolIconLineRightPadding
                     this.linkData.linkTextLineHeight = this.linkTextLineHeight
+                    this.linkData.linkTextFontStyle = this.linkTextFontStyle
+                    this.linkData.linkTextFontWeight = this.linkTextFontWeight
+                    this.linkData.linkTextFontFamily = this.linkTextFontFamily
+                    this.linkData.linkTextLetterSpacing = this.linkTextLetterSpacing
+                    this.linkData.linkTextDecorationType = this.linkTextDecorationType
+                    this.linkData.linkTextDecorationColor = this.linkTextDecorationColor
+                    this.linkData.linkTextDecorationStyle = this.linkTextDecorationStyle
+                    this.linkData.linkTextBackgroundRadiusTopLeft = this.linkTextBackgroundRadiusTopLeft
+                    this.linkData.linkTextBackgroundRadiusTopRight = this.linkTextBackgroundRadiusTopRight
+                    this.linkData.linkTextBackgroundRadiusBottomLeft = this.linkTextBackgroundRadiusBottomLeft
+                    this.linkData.linkTextBackgroundRadiusBottomRight = this.linkTextBackgroundRadiusBottomRight
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/LinkDetailsPage", params: this.linkData })
                   })

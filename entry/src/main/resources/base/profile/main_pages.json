@@ -66,6 +66,27 @@
     "pages/StrikethroughDetailsPage",
     "pages/SwitchDataPage",
     "pages/BigDataPage",
-    "pages/BigDataDetailsPage"
+    "pages/BigDataDetailsPage",
+    "pages/BannerPage",
+    "pages/BannerDetailsPage",
+    "pages/ImageStylePage",
+    "pages/ImageStyleDetailsPage",
+    "pages/TocPage",
+    "pages/TocDetailsPage",
+    "pages/deprecated/Deprecated0Page",
+    "pages/deprecated/Deprecated0DetailsPage",
+    "pages/deprecated/Deprecated1Page",
+    "pages/deprecated/Deprecated1DetailsPage",
+    "pages/deprecated/Deprecated2Page",
+    "pages/deprecated/Deprecated2DetailsPage",
+    "pages/deprecated/Deprecated3Page",
+    "pages/deprecated/Deprecated3DetailsPage",
+    "pages/deprecated/Deprecated4Page",
+    "pages/deprecated/Deprecated4DetailsPage",
+    "pages/deprecated/Deprecated5Page",
+    "pages/deprecated/Deprecated5DetailsPage",
+    "pages/deprecated/Deprecated6Page",
+    "pages/deprecated/Deprecated6DetailsPage",
+    "pages/deprecated/DeprecatedIndexPage"
   ]
 }

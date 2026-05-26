@@ -182,7 +182,7 @@ export struct BaseTabComponent {
                   this.allData = item as string
                 })
             } else {
-              Button("undefined")
+              Button("null")
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)
@@ -209,7 +209,7 @@ export struct BaseTabComponent {
                   this.allData = item as number
                 })
             } else {
-              Button("undefined")
+              Button("null")
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)
@@ -236,7 +236,7 @@ export struct BaseTabComponent {
                   this.allData = item as boolean
                 })
             } else {
-              Button("undefined")
+              Button("null")
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)
@@ -264,7 +264,7 @@ export struct BaseTabComponent {
                   this.allData = item as number
                 })
             } else {
-              Button("undefined")
+              Button("null")
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)
@@ -291,7 +291,7 @@ export struct BaseTabComponent {
                   this.allData = item as Resource
                 })
             } else {
-              Button("undefined")
+              Button("null")
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)
@@ -318,7 +318,7 @@ export struct BaseTabComponent {
                   this.allData = item as number
                 })
             } else {
-              Button("undefined")
+              Button("null")
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)
@@ -344,7 +344,7 @@ export struct BaseTabComponent {
                   this.allData = item as number
                 })
             } else {
-              Button("undefined")
+              Button("null")
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)
@@ -370,7 +370,7 @@ export struct BaseTabComponent {
                   this.allData = item as TextDecorationType
                 })
             } else {
-              Button("undefined")
+              Button("null")
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)
@@ -396,7 +396,7 @@ export struct BaseTabComponent {
                   this.allData = item as ImageFit
                 })
             } else {
-              Button("undefined")
+              Button("null")
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)
@@ -422,7 +422,7 @@ export struct BaseTabComponent {
                   this.allData = item as BarState
                 })
             } else {
-              Button("undefined")
+              Button("null")
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)
@@ -448,7 +448,7 @@ export struct BaseTabComponent {
                   this.allData = item as BorderStyle
                 })
             } else {
-              Button("undefined")
+              Button("null")
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)
@@ -474,7 +474,7 @@ export struct BaseTabComponent {
                   this.allData = item as FontStyle
                 })
             } else {
-              Button("undefined")
+              Button("null")
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)
@@ -500,7 +500,7 @@ export struct BaseTabComponent {
                   this.allData = item as FontWeight
                 })
             } else {
-              Button("undefined")
+              Button("null")
                 .type(ButtonType.Capsule)
                 .stateEffect(true)
                 .height(25)

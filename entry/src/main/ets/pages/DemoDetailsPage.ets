@@ -13,68 +13,48 @@ import { ConfigurationConstant } from '@kit.AbilityKit'
 @Component
 struct DemoDetailsPage {
   // ---------- 通用
-  // 滑动控制器
-  scroller: Scroller = new Scroller()
-  // Markdown的控制器
-  markdownScroller: MarkdownScroller = new MarkdownScroller()
+  scroller: Scroller = new Scroller() // 滑动控制器
+  markdownScroller: MarkdownScroller = new MarkdownScroller() // Markdown的控制器
   @StorageProp('safeTop') // 顶部导航栏高度
   safeTop: number = 0
   @StorageProp('currentColorMode')
   @Watch('onColorModeChange') // 深浅色模式
   currentColorMode: ConfigurationConstant.ColorMode = ConfigurationConstant.ColorMode.COLOR_MODE_LIGHT
-  // 文件文本
-  @State
+  @State // 文件文本
   fileStr: string = ""
-  // markdown文本
-  @State
+  @State // markdown文本
   content: string = ""
-  // 是否全量加载Markdown文本
-  @State
+  @State // 是否全量加载Markdown文本
   isFull: boolean = true
-  // 是否增量解析Markdown文本
-  @State
+  @State // 是否增量解析Markdown文本
   incrementalAnalysis: boolean = false
-  // 增量加载每次间隔时间
-  @State
+  @State // 增量加载每次间隔时间
   time: number = 50
-  // 增量每次增量文本数量
-  @State
+  @State // 增量每次增量文本数量
   textNumber: number = 10
-  // 是否同步解析Markdown文本
-  @State
+  @State // 是否同步解析Markdown文本
   isMarkdownParserSync: boolean = false
-  // 是否打开长按复制粘贴效果
-  @State
+  @State // 是否打开长按复制粘贴效果
   isOnCopy: boolean = false
-  // Markdown块上边距
-  @State
+  @State // Markdown块上边距
   blockMarginTop: number = 8
-  // Markdown块右边距
-  @State
+  @State // Markdown块右边距
   blockMarginRight: number = 8
-  // Markdown块下边距
-  @State
+  @State // Markdown块下边距
   blockMarginBottom: number = 8
-  // Markdown块左边距
-  @State
+  @State // Markdown块左边距
   blockMarginLeft: number = 8
-  // Markdown块间距样式字符串
-  @State
+  @State // Markdown块间距样式
   markdownBlockSpacing: number = 8
-  // 是否换行
-  @State
+  @State // 是否换行
   isLineBreak: boolean = false
-  // 全局背景色
-  @State
+  @State // 全局背景色
   globalBackgroundColor: number | undefined = undefined
-  // 是否允许markdown控件自身响应滑动
-  @State
+  @State // 是否允许markdown控件自身响应滑动
   openGestureSwipe: boolean = false
-  // 是否开启响应滑动测试
-  @State
+  @State // 是否开启响应滑动测试
   openGestureSwipeTest: boolean = false
-  // 流式输入是否输入结束(true:结束输入,false:持续输入)
-  @State
+  @State // 流式输入是否输入结束(true:结束输入,false:持续输入)
   isInputEnded: boolean = false
 
   // ---------- 专有
@@ -231,6 +211,16 @@ struct DemoDetailsPage {
 
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
+    config.setLinkCallback(this.linkCallBack.bind(this))
+    config.setImageCallback(this.imageCallback.bind(this))
+    config.setAudioCallback(this.audioCallback.bind(this))
+    config.setVideoCallback(this.videoCallback.bind(this))
+    config.setVideoImageCallback(this.videoImageCallback.bind(this))
+    config.setCodeCopyCallback(this.codeCopyCallback.bind(this))
+    config.setCodeFullScreenCallback(this.codeFullScreenCallback.bind(this))
+    config.setLatexImageCallback(this.latexCallBack.bind(this))
+    config.setTocIndexCallback(this.tocIndexCallback.bind(this))
+    config.setFootnoteCallback(this.footnoteCallback.bind(this))
     return config
   }
 
@@ -253,7 +243,14 @@ struct DemoDetailsPage {
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
     theme.setMarkdownThemeGlobal(globalTheme)
-    
+    // ---------- 专有
+    theme.setCodeFullScreenIcon($r('app.media.startIcon'))
+    theme.setCodeCopyIcon($r('app.media.startIcon'))
+    theme.setAudioIcon($r('app.media.startIcon'))
+    theme.setVideoImage($r('app.media.place_holder'))
+    theme.setPlayCircleFillIcon($r('app.media.play_circle_fill'))
+    theme.setBannerImage($r('app.media.place_holder'))
+    theme.setImageResource($r('app.media.place_holder'))
     return theme
   }
 
@@ -278,5 +275,54 @@ struct DemoDetailsPage {
     plugin.setIsDescListPlugin(true) // 定义列表解析插件
     plugin.setIsHeadIDPlugin(true) // 标题ID解析插件
     return plugin
+  }
+
+  linkCallBack(url: string): void {
+    hilog.error(1, "1", `---url:${url}`)
+  }
+
+  imageCallback(url: string, urlList: Array<string>): void {
+    hilog.error(1, "1", `---url:${url},urlList:${urlList}`)
+  }
+
+  audioCallback(url: string): void {
+    hilog.error(1, "1", `---url:${url}`)
+  }
+
+  videoCallback(url: string, urlList: Array<string>): void {
+    hilog.error(1, "1", `---url:${url},urlList:${urlList}`)
+  }
+
+  videoImageCallback(url: string, cb: (imageUrl: string, aspectRatio: number, time: number) => void): void {
+    hilog.error(1, "1", `---url:${url}`)
+    cb("https://markdown.com.cn/images/philly-magic-garden.jpg", 16 / 9, 200)
+  }
+
+  codeCopyCallback(code: string): void {
+    hilog.error(1, "1", `---code:${code}`)
+  }
+
+  codeFullScreenCallback(code: string, type: string | undefined): void {
+    hilog.error(1, "1", `---code:${code},type:${type}`)
+  }
+
+  latexCallBack(data: ArrayBuffer, heightNumber: number, widthNumber: number): void {
+    hilog.error(1, "1", `---data.size:${data.byteLength},heightNumber:${heightNumber},widthNumber:${widthNumber}`)
+  }
+
+  tocIndexCallback(y: number | undefined): void {
+    if(y !==undefined){
+      hilog.error(1, "1", `---y:${y}`)
+      let rect = this.markdownScroller.getItemRect(y)
+      this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
+    }
+  }
+
+  footnoteCallback(y: number | undefined): void {
+    if(y !==undefined){
+      hilog.error(1, "1", `---y:${y}`)
+      let rect = this.markdownScroller.getItemRect(y)
+      this.scroller.scrollTo({xOffset:0, yOffset: rect.getItemRectY()})
+    }
   }
 }

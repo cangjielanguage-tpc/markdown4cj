@@ -200,6 +200,22 @@ struct IndexPage {
 
           ListItem() {
             itemListComponent(
+              "20、图片style",
+              0xFFFF0000,
+              "pages/ImageStylePage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "21、Toc目录",
+              0xFFFF0000,
+              "pages/TocPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
               "22、脚注",
               0xFFFF0000,
               "pages/FootnotePage"
@@ -263,9 +279,9 @@ struct IndexPage {
           }
           ListItem() {
             itemListComponent(
-              "30、card",
+              "30、Banner",
               0xFFFF0000,
-              "pages/CardPage"
+              "pages/BannerPage"
             )
           }
           ListItem() {
@@ -294,6 +310,21 @@ struct IndexPage {
               "34、超大数据",
               0xFFFF0000,
               "pages/BigDataPage"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "35、card",
+              0xFFFF0000,
+              "pages/CardPage"
+            )
+          }
+
+          ListItem() {
+            itemListComponent(
+              "【已废弃接口】",
+              0xFFFF0000,
+              "pages/deprecated/DeprecatedIndexPage"
             )
           }
         }

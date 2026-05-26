@@ -26,6 +26,7 @@ import {
 } from '../model/GeneralData'
 import { AudioMDData } from '../model/AudioMDData'
 import { ImageFitType } from '@cangjie-tpc/markdown_hybrid'
+import hilog from '@ohos.hilog'
 
 @Entry
 @Component
@@ -144,9 +145,9 @@ struct AudioPage {
   @State audioShadowOffsetY: number = 2 // 音频阴影Y轴偏移量
   // 音频阴影颜色值列表
   audioShadowColorList: Array<number | undefined> = colorListGeneralData
-  @State audioShadowColor: number | undefined = 0x1A000000 // 音频阴影颜色值
+  @State audioShadowColor: number | undefined = undefined // 音频阴影颜色值
   // 音频图标列表
-  audioIconList: Array<Resource | undefined> = [undefined]
+  audioIconList: Array<Resource | undefined> = [undefined, $r('app.media.startIcon'), $r('app.media.app_icon')]
   @State audioIcon: Resource | undefined = undefined // 音频图标
   // 音频图标宽度列表
   audioIconWidthList: Array<number> = widthOrHeightListGeneralData

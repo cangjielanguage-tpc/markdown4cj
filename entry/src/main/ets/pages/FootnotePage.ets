@@ -10,6 +10,7 @@ import {
   fontStyleListGeneraData,
   fontWeightListGeneraData,
   marginListGeneralData,
+  markdownTextDecorationStyleListGeneralData,
   radiusListGeneraData,
   textDecorationStyleListGeneralData,
   textDecorationTypeListGeneralData,
@@ -171,7 +172,7 @@ struct FootnotePage {
   @State // 脚注引用文本装饰线颜色
   footnoteRefTextDecorationColor: number | undefined = undefined
   // 脚注引用文本装饰线样式列表
-  footnoteRefTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = textDecorationStyleListGeneralData
+  footnoteRefTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = markdownTextDecorationStyleListGeneralData
   @State // 脚注引用文本装饰线样式
   footnoteRefTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
   // 脚注引用文本背景颜色列表

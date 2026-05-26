@@ -9,6 +9,7 @@ import {
   fontStyleListGeneraData,
   fontWeightListGeneraData,
   marginListGeneralData,
+  markdownTextDecorationStyleListGeneralData,
   textDecorationStyleListGeneralData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
@@ -128,7 +129,7 @@ struct HTMLPage {
   @State // HTML下划线文本装饰线颜色
   htmlUnderlineTextDecorationColor: number | undefined = undefined
   // HTML下划线文本装饰线样式列表
-  htmlUnderlineTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = textDecorationStyleListGeneralData
+  htmlUnderlineTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = markdownTextDecorationStyleListGeneralData
   @State // HTML下划线文本装饰线样式
   htmlUnderlineTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
   @State htmlData: HTMLData = new HTMLData() // 配置数据内容

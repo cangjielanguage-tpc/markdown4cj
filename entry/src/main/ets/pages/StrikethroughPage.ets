@@ -9,6 +9,7 @@ import {
   fontStyleListGeneraData,
   fontWeightListGeneraData,
   marginListGeneralData,
+  markdownTextDecorationStyleListGeneralData,
   textDecorationStyleListGeneralData,
   textLineHeightListGeneralData,
   textNumberListGeneralData,
@@ -127,7 +128,7 @@ struct StrikethroughPage {
   @State // 删除线文本装饰线颜色
   strikethroughTextDecorationColor: number | undefined = undefined
   // 删除线文本装饰线样式列表
-  strikethroughTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = textDecorationStyleListGeneralData
+  strikethroughTextDecorationStyleList: Array<MarkdownTextDecorationStyle> = markdownTextDecorationStyleListGeneralData
   @State // 删除线文本装饰线样式
   strikethroughTextDecorationStyle: MarkdownTextDecorationStyle = MarkdownTextDecorationStyle.SOLID
 

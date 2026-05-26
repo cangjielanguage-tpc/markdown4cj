@@ -292,7 +292,7 @@ export function barStateToString(state: BarState): string {
 
 export function resToString(item: Resource | undefined): string {
   if (item !== undefined) {
-    return item.moduleName
+    return item.id.toString()
   } else {
     return "null"
   }
