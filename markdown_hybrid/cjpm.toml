@@ -21,7 +21,7 @@
     tag = "v1.0.4"
     git = "https://gitcode.com/Cangjie-TPC/prism4cj.git"
   [dependencies.formula]
-    tag = "v1.5.0"
+    tag = "v1.5.1"
     git = "https://gitcode.com/Cangjie-TPC/formula-ffi.git"
   [dependencies.codeformat]
     tag = "v1.0.0"

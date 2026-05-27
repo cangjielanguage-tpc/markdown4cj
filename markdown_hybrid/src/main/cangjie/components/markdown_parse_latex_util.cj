@@ -35,26 +35,33 @@ class MarkdownParseLatexUtil {
                     }
                     var latex: LaTeX = LaTeX(markdownTheme.latexMathResStr)
                     if (Thread.currentThread.hasPendingCancellation) {
+                        latex.release()
                         return
                     }
                     var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownTheme.latexMathTextSize), Float32(10), markdownTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
+                        r.finalize()
+                        latex.release()
                         return
                     }
                     var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
+                        g2.release()
+                        r.finalize()
+                        latex.release()
                         return
                     }
                     r.draw(g2, markdownTheme.latexMathBackGroupColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
+                        g2.release()
+                        r.finalize()
+                        latex.release()
                         return
                     }
                     arr = r.toBitmap(g2)
-                    latex.release()
+                    g2.release()
                     r.finalize()
-                    unsafe {
-                        LibC.free(g2.getG2())
-                    }
+                    latex.release()
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -110,26 +117,33 @@ class MarkdownParseLatexUtil {
                     }
                     var latex: LaTeX = LaTeX(markdownTheme.latexMathResStr)
                     if (Thread.currentThread.hasPendingCancellation) {
+                        latex.release()
                         return
                     }
                     var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(markdownTheme.latexMathTextSize), Float32(10), markdownTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
+                        r.finalize()
+                        latex.release()
                         return
                     }
                     var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
+                        g2.release()
+                        r.finalize()
+                        latex.release()
                         return
                     }
                     r.draw(g2, markdownTheme.latexMathBackGroupColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
+                        g2.release()
+                        r.finalize()
+                        latex.release()
                         return
                     }
                     arr = r.toBitmap(g2)
-                    latex.release()
+                    g2.release()
                     r.finalize()
-                    unsafe {
-                        LibC.free(g2.getG2())
-                    }
+                    latex.release()
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
