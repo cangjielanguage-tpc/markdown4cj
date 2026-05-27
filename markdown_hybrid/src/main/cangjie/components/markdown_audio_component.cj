@@ -28,65 +28,67 @@ public class MarkdownAudioComponent {
     }
 
     func build() {
-        Row(10) {
-            if (markdownTheme.audioTheme.audioIcon.isSome()) {
-                Image(markdownTheme.audioTheme.audioIcon())
-                    .width(markdownTheme.audioTheme.audioIconWidth)
-                    .height(markdownTheme.audioTheme.audioIconHeight)
-                    .borderRadius(topLeft: markdownTheme.audioTheme.audioIconRadiusTopLeft, topRight: markdownTheme.audioTheme.audioIconRadiusTopRight, bottomLeft: markdownTheme.audioTheme.audioIconRadiusBottomLeft, bottomRight: markdownTheme.audioTheme.audioIconRadiusBottomRight)
-                    .objectFit(markdownTheme.audioTheme.audioIconFitType)
-            } else {
-                Blank()
-                    .width(markdownTheme.audioTheme.audioIconWidth)
-                    .height(markdownTheme.audioTheme.audioIconHeight)
-            }
-            Column(markdownTheme.audioTheme.audioTitleToTypeSpacing) {
-                Text(audioTitle)
-                    .fontFamily(markdownTheme.audioTheme.audioTitleTextFontFamily)
-                    .fontSize(markdownTheme.audioTheme.audioTitleTextFontSize)
-                    .fontWeight(markdownTheme.audioTheme.audioTitleTextFontWeight)
-                    .fontStyle(markdownTheme.audioTheme.audioTitleTextFontStyle)
-                    .fontColor(markdownTheme.audioTheme.audioTitleTextFontColor)
-                    .lineHeight(markdownTheme.audioTheme.audioTitleTextLineHeight)
+        Row() {
+            Row(10) {
+                if (markdownTheme.audioTheme.audioIcon.isSome()) {
+                    Image(markdownTheme.audioTheme.audioIcon())
+                        .width(markdownTheme.audioTheme.audioIconWidth)
+                        .height(markdownTheme.audioTheme.audioIconHeight)
+                        .borderRadius(topLeft: markdownTheme.audioTheme.audioIconRadiusTopLeft, topRight: markdownTheme.audioTheme.audioIconRadiusTopRight, bottomLeft: markdownTheme.audioTheme.audioIconRadiusBottomLeft, bottomRight: markdownTheme.audioTheme.audioIconRadiusBottomRight)
+                        .objectFit(markdownTheme.audioTheme.audioIconFitType)
+                } else {
+                    Blank()
+                        .width(markdownTheme.audioTheme.audioIconWidth)
+                        .height(markdownTheme.audioTheme.audioIconHeight)
+                }
+                Column(markdownTheme.audioTheme.audioTitleToTypeSpacing) {
+                    Text(audioTitle)
+                        .fontFamily(markdownTheme.audioTheme.audioTitleTextFontFamily)
+                        .fontSize(markdownTheme.audioTheme.audioTitleTextFontSize)
+                        .fontWeight(markdownTheme.audioTheme.audioTitleTextFontWeight)
+                        .fontStyle(markdownTheme.audioTheme.audioTitleTextFontStyle)
+                        .fontColor(markdownTheme.audioTheme.audioTitleTextFontColor)
+                        .lineHeight(markdownTheme.audioTheme.audioTitleTextLineHeight)
+                        .maxLines(1)
+                        .textOverflow(TextOverflow.Ellipsis)
+                    Text(audioType)
+                        .fontFamily(markdownTheme.audioTheme.audioTypeTextFontFamily)
+                        .fontSize(markdownTheme.audioTheme.audioTypeTextFontSize)
+                        .fontWeight(markdownTheme.audioTheme.audioTypeTextFontWeight)
+                        .fontStyle(markdownTheme.audioTheme.audioTypeTextFontStyle)
+                        .fontColor(markdownTheme.audioTheme.audioTypeTextFontColor)
+                        .lineHeight(markdownTheme.audioTheme.audioTypeTextLineHeight)
+                        .maxLines(1)
+                        .textOverflow(TextOverflow.Ellipsis)
+                }
+                .alignItems(HorizontalAlign.Start)
+                .layoutWeight(1)
+                Text(markdownTheme.audioTheme.audioButtonText)
+                    .fontFamily(markdownTheme.audioTheme.audioButtonTextFontFamily)
+                    .fontSize(markdownTheme.audioTheme.audioButtonTextFontSize)
+                    .fontWeight(markdownTheme.audioTheme.audioButtonTextFontWeight)
+                    .fontStyle(markdownTheme.audioTheme.audioButtonTextFontStyle)
+                    .fontColor(markdownTheme.audioTheme.audioButtonTextFontColor)
+                    .lineHeight(markdownTheme.audioTheme.audioButtonTextLineHeight)
+                    .width(markdownTheme.audioTheme.audioButtonWidth)
+                    .height(markdownTheme.audioTheme.audioButtonHeight)
+                    .backgroundColor(markdownTheme.audioTheme.audioButtonBackgroundColor)
+                    .borderRadius(topLeft: markdownTheme.audioTheme.audioButtonRadiusTopLeft, topRight: markdownTheme.audioTheme.audioButtonRadiusTopRight, bottomLeft: markdownTheme.audioTheme.audioButtonRadiusBottomLeft, bottomRight: markdownTheme.audioTheme.audioButtonRadiusBottomRight)
+                    .borderWidth(markdownTheme.audioTheme.audioButtonBorderWidth)
+                    .borderColor(markdownTheme.audioTheme.audioButtonBorderColor)
+                    .borderStyle(markdownTheme.audioTheme.audioButtonBorderStyle)
                     .maxLines(1)
                     .textOverflow(TextOverflow.Ellipsis)
-                Text(audioType)
-                    .fontFamily(markdownTheme.audioTheme.audioTypeTextFontFamily)
-                    .fontSize(markdownTheme.audioTheme.audioTypeTextFontSize)
-                    .fontWeight(markdownTheme.audioTheme.audioTypeTextFontWeight)
-                    .fontStyle(markdownTheme.audioTheme.audioTypeTextFontStyle)
-                    .fontColor(markdownTheme.audioTheme.audioTypeTextFontColor)
-                    .lineHeight(markdownTheme.audioTheme.audioTypeTextLineHeight)
-                    .maxLines(1)
-                    .textOverflow(TextOverflow.Ellipsis)
+                    .textAlign(TextAlign.Center)
+                    .align(Alignment.Center)
+                    .onClick({
+                        event => if (let Some(v) <- audioCallback) {
+                            v(imageAudioUrl)
+                        }
+                    })
             }
-            .alignItems(HorizontalAlign.Start)
-            .layoutWeight(1)
-            Text(markdownTheme.audioTheme.audioButtonText)
-                .fontFamily(markdownTheme.audioTheme.audioButtonTextFontFamily)
-                .fontSize(markdownTheme.audioTheme.audioButtonTextFontSize)
-                .fontWeight(markdownTheme.audioTheme.audioButtonTextFontWeight)
-                .fontStyle(markdownTheme.audioTheme.audioButtonTextFontStyle)
-                .fontColor(markdownTheme.audioTheme.audioButtonTextFontColor)
-                .lineHeight(markdownTheme.audioTheme.audioButtonTextLineHeight)
-                .width(markdownTheme.audioTheme.audioButtonWidth)
-                .height(markdownTheme.audioTheme.audioButtonHeight)
-                .backgroundColor(markdownTheme.audioTheme.audioButtonBackgroundColor)
-                .borderRadius(topLeft: markdownTheme.audioTheme.audioButtonRadiusTopLeft, topRight: markdownTheme.audioTheme.audioButtonRadiusTopRight, bottomLeft: markdownTheme.audioTheme.audioButtonRadiusBottomLeft, bottomRight: markdownTheme.audioTheme.audioButtonRadiusBottomRight)
-                .borderWidth(markdownTheme.audioTheme.audioButtonBorderWidth)
-                .borderColor(markdownTheme.audioTheme.audioButtonBorderColor)
-                .borderStyle(markdownTheme.audioTheme.audioButtonBorderStyle)
-                .maxLines(1)
-                .textOverflow(TextOverflow.Ellipsis)
-                .textAlign(TextAlign.Center)
-                .align(Alignment.Center)
-                .onClick({
-                    event => if (let Some(v) <- audioCallback) {
-                        v(imageAudioUrl)
-                    }
-                })
+            .width(100.percent)
         }
-        .width(100.percent)
         .backgroundColor(markdownTheme.audioTheme.audioBackgroundColor)
         .shadow(radius: markdownTheme.audioTheme.audioShadowRadius, offsetX: markdownTheme.audioTheme.audioShadowOffsetX, offsetY: markdownTheme.audioTheme.audioShadowOffsetY, color: markdownTheme.audioTheme.audioShadowColor)
         .borderRadius(topLeft: markdownTheme.audioTheme.audioRadiusTopLeft, topRight: markdownTheme.audioTheme.audioRadiusTopRight, bottomLeft: markdownTheme.audioTheme.audioRadiusBottomLeft, bottomRight: markdownTheme.audioTheme.audioRadiusBottomRight)
