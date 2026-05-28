@@ -266,6 +266,7 @@ struct CodeListDetailsPage {
     if (this.codeBlockListTitleUnselectBackgroundColor !== undefined) {
       codeBlockTheme.setCodeBlockListTitleUnselectBackgroundColor(this.codeBlockListTitleUnselectBackgroundColor)
     }
+    theme.setMarkdownThemeCodeBlock(codeBlockTheme)
     return theme
   }
 

@@ -11,16 +11,16 @@ export const colorListGeneralData: Array<number | undefined> = [
   0xFF00FF00, // 绿
   0xFF0000FF, // 蓝
   // 0xFFE0E0E0, // 银灰
-  // 0xFF808080, // 中灰
+  0xFF808080, // 中灰
   // 0xFF2196F3, // 天蓝
   // 0xFF00F5FF, // 绿松石
   // 0xFF32CD32, // 酸橙绿
   // 0xFF191919, // 炭黑
-  // 0xFFFA8072, // 肉粉
-  // 0xFFFFD700, // 金
-  // 0xFFEE82EE, // 紫罗兰
+  0xFFFA8072, // 肉粉
+  0xFFFFD700, // 金
+  0xFFEE82EE, // 紫罗兰
   // 0xFFFFC107, // 橙黄
-  // 0xFF7EC0EE, // 天空蓝
+  0xFF7EC0EE, // 天空蓝
   0x00000000// 透明色
 ]
 
@@ -32,13 +32,13 @@ export const booleanListGeneralData: Array<boolean> = [true, false]
 /**
  * 通用文本大小列表
  */
-export const textSizeListGeneralData: Array<number> = [10, 12, 14, 16, 20, 24, 32, 36]
+export const textSizeListGeneralData: Array<number> = [10, 12, 14, 16, 20, 24, 36]
   // [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 28, 30, 32, 34, 36]
 
 /**
  * 通用文本行高列表
  */
-export const textLineHeightListGeneralData: Array<number> = [10, 12, 14, 16, 20, 24, 32, 36]
+export const textLineHeightListGeneralData: Array<number> = [10, 12, 14, 16, 20, 24, 36]
   // [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 26, 28, 30, 32, 34, 36]
 
 /**
@@ -117,7 +117,12 @@ export const textDecorationTypeListGeneralData: Array<TextDecorationType> = [Tex
 /**
  * 通用文本装饰线样式列表
  */
-export const textDecorationStyleListGeneralData: Array<MarkdownTextDecorationStyle> = [MarkdownTextDecorationStyle.SOLID, MarkdownTextDecorationStyle.DOUBLE, MarkdownTextDecorationStyle.DOTTED, MarkdownTextDecorationStyle.DASHED, MarkdownTextDecorationStyle.WAVY]
+export const markdownTextDecorationStyleListGeneralData: Array<MarkdownTextDecorationStyle> = [MarkdownTextDecorationStyle.SOLID, MarkdownTextDecorationStyle.DOUBLE, MarkdownTextDecorationStyle.DOTTED, MarkdownTextDecorationStyle.DASHED, MarkdownTextDecorationStyle.WAVY]
+
+/**
+ * 通用文本装饰线样式列表
+ */
+export const textDecorationStyleListGeneralData: Array<TextDecorationStyle> = [TextDecorationStyle.SOLID, TextDecorationStyle.DOUBLE, TextDecorationStyle.DOTTED, TextDecorationStyle.DASHED, TextDecorationStyle.WAVY]
 
 /**
  * 通用偏移量列表

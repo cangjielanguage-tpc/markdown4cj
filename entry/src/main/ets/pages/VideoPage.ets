@@ -130,13 +130,15 @@ struct VideoPage {
   // 视频边框颜色列表
   videoBorderColorList: Array<number | undefined> = colorListGeneralData
   @State videoBorderColor: number | undefined = undefined // 视频边框颜色
-  // 视频占位图
-  videoPlaceholder: Resource | undefined = undefined
+  // 视频占位图列表
+  videoPlaceholderList: Array<Resource | undefined> = [undefined, $r('app.media.background'), $r('app.media.you')]
+  @State videoPlaceholder: Resource | undefined = undefined // 视频占位图
   // 视频图片缩放类型列表
   videoImageFitTypeList: Array<ImageFit> = imageFitListData
   @State videoImageFitType: ImageFit = ImageFit.Contain // 视频图片缩放类型
-  // 播放按钮默认图片
-  videoPlayIcon: Resource | undefined = undefined
+  // 播放按钮图标列表
+  videoPlayIconList: Array<Resource | undefined> = [undefined, $r('app.media.startIcon'), $r('app.media.app_icon')]
+  @State videoPlayIcon: Resource | undefined = undefined // 播放按钮图标
   // 播放按钮图标宽度列表
   videoPlayIconWidthList: Array<number> = widthOrHeightListGeneralData
   @State videoPlayIconWidth: number = 60 // 播放按钮图标宽度
@@ -203,8 +205,9 @@ struct VideoPage {
   // 视频发布按钮图标和文本间距列表
   videoReleaseButtonIconTextGapList: Array<number> = spaceListGeneralData
   @State videoReleaseButtonIconTextGap: number = 6 // 视频发布按钮图标和文本间距
-  // 视频发布按钮图标
-  videoReleaseButtonIcon: Resource | undefined = undefined
+  // 视频发布按钮图标列表
+  videoReleaseButtonIconList: Array<Resource | undefined> = [undefined, $r('app.media.startIcon'), $r('app.media.app_icon')]
+  @State videoReleaseButtonIcon: Resource | undefined = undefined // 视频发布按钮图标
   // 视频发布按钮图标宽度列表
   videoReleaseButtonIconWidthList: Array<number> = widthOrHeightListGeneralData
   @State videoReleaseButtonIconWidth: number = 18 // 视频发布按钮图标宽度
@@ -259,8 +262,9 @@ struct VideoPage {
   // 视频下载按钮图标和文本间距列表
   videoDownloadButtonIconTextGapList: Array<number> = spaceListGeneralData
   @State videoDownloadButtonIconTextGap: number = 6 // 视频下载按钮图标和文本间距
-  // 视频下载按钮图标
-  videoDownloadButtonIcon: Resource | undefined = undefined
+  // 视频下载按钮图标列表
+  videoDownloadButtonIconList: Array<Resource | undefined> = [undefined, $r('app.media.startIcon'), $r('app.media.app_icon')]
+  @State videoDownloadButtonIcon: Resource | undefined = undefined // 视频下载按钮图标
   // 视频下载按钮图标宽度列表
   videoDownloadButtonIconWidthList: Array<number> = widthOrHeightListGeneralData
   @State videoDownloadButtonIconWidth: number = 18 // 视频下载按钮图标宽度
@@ -404,6 +408,18 @@ struct VideoPage {
             allData: this.videoBackgroundColor
           })
           BaseTabComponent({
+            titleStr: "视频占位图 - ",
+            typeEnum: TypeEnum.IS_RESOURCE,
+            allListData: this.videoPlaceholderList,
+            allData: this.videoPlaceholder
+          })
+          BaseTabComponent({
+            titleStr: "视频图片缩放类型 - ",
+            typeEnum: TypeEnum.IS_IMAGE_FIT,
+            allListData: this.videoImageFitTypeList,
+            allData: this.videoImageFitType
+          })
+          BaseTabComponent({
             titleStr: "视频上外边距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
             allListData: this.videoMarginTopList,
@@ -494,10 +510,10 @@ struct VideoPage {
             allData: this.videoBorderColor
           })
           BaseTabComponent({
-            titleStr: "视频图片缩放类型 - ",
-            typeEnum: TypeEnum.IS_IMAGE_FIT,
-            allListData: this.videoImageFitTypeList,
-            allData: this.videoImageFitType
+            titleStr: "播放按钮图标 - ",
+            typeEnum: TypeEnum.IS_RESOURCE,
+            allListData: this.videoPlayIconList,
+            allData: this.videoPlayIcon
           })
           BaseTabComponent({
             titleStr: "播放按钮图标宽度 - ",
@@ -582,6 +598,12 @@ struct VideoPage {
             typeEnum: TypeEnum.IS_BOOLEAN,
             allListData: this.videoReleaseButtonVisibleList,
             allData: this.videoReleaseButtonVisible
+          })
+          BaseTabComponent({
+            titleStr: "视频发布按钮图标 - ",
+            typeEnum: TypeEnum.IS_RESOURCE,
+            allListData: this.videoReleaseButtonIconList,
+            allData: this.videoReleaseButtonIcon
           })
           BaseTabComponent({
             titleStr: "视频发布按钮背景颜色 - ",
@@ -690,6 +712,12 @@ struct VideoPage {
             typeEnum: TypeEnum.IS_BOOLEAN,
             allListData: this.videoDownloadButtonVisibleList,
             allData: this.videoDownloadButtonVisible
+          })
+          BaseTabComponent({
+            titleStr: "视频下载按钮图标 - ",
+            typeEnum: TypeEnum.IS_RESOURCE,
+            allListData: this.videoDownloadButtonIconList,
+            allData: this.videoDownloadButtonIcon
           })
           BaseTabComponent({
             titleStr: "视频下载按钮背景颜色 - ",
