@@ -91,8 +91,6 @@ struct QuoteDetailsPage {
   blockQuoteLeftBorderWidth: number = 4
   @State // 块引用左侧边框颜色
   blockQuoteLeftBorderColor: number | undefined = undefined
-  @State // 块引用左侧线条和内容的间距
-  blockQuoteBorderContentSpacing: number = 8
   @State // 块引用子模块上下间距
   blockQuoteChildSpacing: number = 4
 
@@ -157,7 +155,6 @@ struct QuoteDetailsPage {
       this.blockQuoteRadiusBottomRight = quoteData._blockQuoteRadiusBottomRight
       this.blockQuoteLeftBorderWidth = quoteData._blockQuoteLeftBorderWidth
       this.blockQuoteLeftBorderColor = quoteData._blockQuoteLeftBorderColor
-      this.blockQuoteBorderContentSpacing = quoteData._blockQuoteBorderContentSpacing
       this.blockQuoteChildSpacing = quoteData._blockQuoteChildSpacing
     } catch (e) {
     }
@@ -300,7 +297,6 @@ struct QuoteDetailsPage {
     if (this.blockQuoteLeftBorderColor !== undefined) {
       blockQuoteTheme.setBlockQuoteLeftBorderColor(this.blockQuoteLeftBorderColor)
     }
-    blockQuoteTheme.setBlockQuoteBorderContentSpacing(this.blockQuoteBorderContentSpacing)
     blockQuoteTheme.setBlockQuoteChildSpacing(this.blockQuoteChildSpacing)
     theme.setMarkdownThemeBlockQuote(blockQuoteTheme)
     

@@ -148,10 +148,6 @@ struct QuotePage {
   blockQuoteLeftBorderColorList: Array<number | undefined> = colorListGeneralData
   @State // 块引用左侧边框颜色
   blockQuoteLeftBorderColor: number | undefined = undefined
-  // 块引用左侧线条和内容的间距列表
-  blockQuoteBorderContentSpacingList: Array<number> = marginListGeneralData
-  @State // 块引用左侧线条和内容的间距
-  blockQuoteBorderContentSpacing: number = 8
   // 块引用子模块上下间距列表
   blockQuoteChildSpacingList: Array<number> = marginListGeneralData
   @State // 块引用子模块上下间距
@@ -358,12 +354,6 @@ struct QuotePage {
             allData: this.blockQuoteLeftBorderColor
           })
           BaseTabComponent({
-            titleStr: "块引用左侧线条和内容的间距 - ",
-            typeEnum: TypeEnum.IS_NUMBER,
-            allListData: this.blockQuoteBorderContentSpacingList,
-            allData: this.blockQuoteBorderContentSpacing
-          })
-          BaseTabComponent({
             titleStr: "块引用子模块上下间距 - ",
             typeEnum: TypeEnum.IS_NUMBER,
             allListData: this.blockQuoteChildSpacingList,
@@ -417,7 +407,6 @@ struct QuotePage {
                     this.quoteData.blockQuoteRadiusBottomRight = this.blockQuoteRadiusBottomRight
                     this.quoteData.blockQuoteLeftBorderWidth = this.blockQuoteLeftBorderWidth
                     this.quoteData.blockQuoteLeftBorderColor = this.blockQuoteLeftBorderColor
-                    this.quoteData.blockQuoteBorderContentSpacing = this.blockQuoteBorderContentSpacing
                     this.quoteData.blockQuoteChildSpacing = this.blockQuoteChildSpacing
                     // ---------- 跳转到详情
                     router.pushUrl({ url: "pages/QuoteDetailsPage", params: this.quoteData })

@@ -16,7 +16,6 @@ export class QuoteData extends BaseMDData {
   _blockQuoteRadiusBottomRight: number = 0 // 块引用边框右下圆角
   _blockQuoteLeftBorderWidth: number = 4 // 块引用左侧边框宽度
   _blockQuoteLeftBorderColor: number | undefined = undefined // 块引用左侧边框颜色
-  _blockQuoteBorderContentSpacing: number = 8 // 块引用左侧线条和内容的间距
   _blockQuoteChildSpacing: number = 4 // 块引用子模块上下间距
 
   public set blockQuoteBackgroundColor(value: number | undefined) {
@@ -77,10 +76,6 @@ export class QuoteData extends BaseMDData {
 
   public set blockQuoteLeftBorderColor(value: number | undefined) {
     this._blockQuoteLeftBorderColor = value
-  }
-
-  public set blockQuoteBorderContentSpacing(value: number) {
-    this._blockQuoteBorderContentSpacing = value
   }
 
   public set blockQuoteChildSpacing(value: number) {

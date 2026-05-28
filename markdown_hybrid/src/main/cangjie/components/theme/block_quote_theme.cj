@@ -12,14 +12,13 @@ public class BlockQuoteTheme <: MarkdownBaseTheme {
     public var blockQuotePaddingTop: Float64 = 0.0 // 块引用上内边距
     public var blockQuotePaddingRight: Float64 = 0.0 // 块引用右内边距
     public var blockQuotePaddingBottom: Float64 = 0.0 // 块引用下内边距
-    public var blockQuotePaddingLeft: Float64 = 0.0 // 块引用左内边距
+    public var blockQuotePaddingLeft: Float64 = 8.0 // 块引用左内边距
     public var blockQuoteRadiusTopLeft: Float64 = 0.0 // 块引用边框左上圆角
     public var blockQuoteRadiusTopRight: Float64 = 0.0 // 块引用边框右上圆角
     public var blockQuoteRadiusBottomLeft: Float64 = 0.0 // 块引用边框左下圆角
     public var blockQuoteRadiusBottomRight: Float64 = 0.0 // 块引用边框右下圆角
     public var blockQuoteLeftBorderWidth: Float64 = 1.0 // 块引用左侧边框宽度
     public var blockQuoteLeftBorderColor: Color = COLOR_FF191919 // 块引用左侧边框颜色
-    public var blockQuoteBorderContentSpacing: Float64 = 8.0 // 块引用左侧线条和内容的间距
     public var blockQuoteChildSpacing: Int64 = 8 // 块引用子模块间距
 
     /**
@@ -87,7 +86,7 @@ public class BlockQuoteTheme <: MarkdownBaseTheme {
      * @param left 左内边距 命名参数
      * @return 当前BlockQuoteTheme对象
      */
-    public func setBlockQuotePadding(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 0.0): BlockQuoteTheme {
+    public func setBlockQuotePadding(top!: Float64 = 0.0, right!: Float64 = 0.0, bottom!: Float64 = 0.0, left!: Float64 = 8.0): BlockQuoteTheme {
         this.blockQuotePaddingTop = top
         this.blockQuotePaddingRight = right
         this.blockQuotePaddingBottom = bottom
@@ -145,17 +144,6 @@ public class BlockQuoteTheme <: MarkdownBaseTheme {
      */
     public func setBlockQuoteLeftBorderColor(color: Color): BlockQuoteTheme {
         this.blockQuoteLeftBorderColor = color
-        return this
-    }
-
-    /**
-     * 设置块引用左侧线条和内容的间距
-     *
-     * @param space 块引用左侧线条和内容的间距
-     * @return 当前BlockQuoteTheme对象
-     */
-    public func setBlockQuoteBorderContentSpacing(space: Float64): BlockQuoteTheme {
-        this.blockQuoteBorderContentSpacing = space
         return this
     }
 
