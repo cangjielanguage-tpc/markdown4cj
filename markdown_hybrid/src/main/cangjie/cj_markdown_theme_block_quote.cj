@@ -80,11 +80,6 @@ public class CJMarkdownBlockQuoteTheme {
     var blockQuoteLeftBorderColor: ?Color = None
 
     /**
-     * 块引用左侧线条和内容的间距
-     */
-    var blockQuoteBorderContentSpacing: ?Float64 = None
-
-    /**
      * 块引用子模块上下间距
      */
     var blockQuoteChildSpacing: ?Float64 = None
@@ -197,16 +192,6 @@ public class CJMarkdownBlockQuoteTheme {
      */
     public func setBlockQuoteLeftBorderColor(color: UInt32): Unit {
         blockQuoteLeftBorderColor = transColorForTransparent(color)
-    }
-
-    /**
-     * 设置块引用左侧线条和内容的间距
-     *
-     * @param space 块引用左侧线条和内容的间距
-     * @return 当前BlockQuoteTheme对象
-     */
-    public func setBlockQuoteBorderContentSpacing(space: Float64): Unit {
-        blockQuoteBorderContentSpacing = space
     }
 
     /**

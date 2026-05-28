@@ -294,6 +294,6 @@ export function resToString(item: Resource | undefined): string {
   if (item !== undefined) {
     return item.id.toString()
   } else {
-    return "null"
+    return "undefined"
   }
 }

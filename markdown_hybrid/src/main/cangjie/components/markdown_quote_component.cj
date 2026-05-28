@@ -249,18 +249,22 @@ public class MarkdownQuoteComponent {
                 }
             )
         }
-        .width(100.percent)
         .listDirection(Axis.Vertical)
         .alignListItem(ListItemAlign.Start)
         .backgroundColor(quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteBackgroundColor)
-        .borderRadius(topLeft: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusTopLeft, topRight: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusTopRight, bottomLeft: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusBottomLeft, bottomRight: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusBottomRight)
+        .borderRadius(
+            topLeft: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusTopLeft,
+            topRight: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusTopRight,
+            bottomLeft: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusBottomLeft,
+            bottomRight: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteRadiusBottomRight
+        )
         .borderWidth(EdgeWidths(left: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteLeftBorderWidth.vp))
         .borderColor(quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteLeftBorderColor)
         .padding(
             top: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingTop,
             right: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingRight,
             bottom: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingBottom,
-            left: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingLeft + quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteBorderContentSpacing
+            left: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuotePaddingLeft
         )
         .margin(
             top: quoteMarkdownConfiguration.markdownTheme.blockQuoteTheme.blockQuoteMarginTop,

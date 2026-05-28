@@ -41,9 +41,6 @@ func setBlockQuoteTheme(blockQuoteTheme: CJMarkdownBlockQuoteTheme): BlockQuoteT
     if (let Some(v) <- blockQuoteTheme.blockQuoteLeftBorderColor) {
         theme.setBlockQuoteLeftBorderColor(v)
     }
-    if (let Some(v) <- blockQuoteTheme.blockQuoteBorderContentSpacing) {
-        theme.setBlockQuoteBorderContentSpacing(v)
-    }
     if (let Some(v) <- blockQuoteTheme.blockQuoteChildSpacing) {
         theme.setBlockQuoteChildSpacing(Int64(v))
     }

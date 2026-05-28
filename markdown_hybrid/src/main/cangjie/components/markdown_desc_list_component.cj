@@ -82,7 +82,6 @@ public class MarkdownDescListComponent {
         .backgroundColor(definitionListBackgroundColor(descListMarkdownConfiguration.markdownTheme))
         .listDirection(Axis.Vertical)
         .alignListItem(ListItemAlign.Start)
-        .width(100.percent)
         .padding(
             top: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListPaddingTop,
             right: descListMarkdownConfiguration.markdownTheme.definitionListTheme.definitionListPaddingRight,

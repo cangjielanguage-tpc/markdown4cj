@@ -78,11 +78,6 @@ export class MarkdownThemeBlockQuote {
   private blockQuoteLeftBorderColor?: number = undefined
 
   /**
-   * 块引用左侧线条和内容的间距
-   */
-  private blockQuoteBorderContentSpacing?: number = undefined
-
-  /**
    * 块引用子模块上下间距
    */
   private blockQuoteChildSpacing?: number = undefined
@@ -193,15 +188,6 @@ export class MarkdownThemeBlockQuote {
    */
   setBlockQuoteLeftBorderColor(color: number): void {
     this.blockQuoteLeftBorderColor = color
-  }
-
-  /**
-   * 设置块引用左侧线条和内容的间距
-   *
-   * @param spacing 块引用左侧线条和内容的间距
-   */
-  setBlockQuoteBorderContentSpacing(spacing: number): void {
-    this.blockQuoteBorderContentSpacing = spacing
   }
 
   /**
@@ -346,15 +332,6 @@ export class MarkdownThemeBlockQuote {
    */
   getBlockQuoteLeftBorderColor(): number | undefined {
     return this.blockQuoteLeftBorderColor
-  }
-
-  /**
-   * 获取blockQuoteBorderContentSpacing
-   *
-   * @returns blockQuoteBorderContentSpacing
-   */
-  getBlockQuoteBorderContentSpacing(): number | undefined {
-    return this.blockQuoteBorderContentSpacing
   }
 
   /**

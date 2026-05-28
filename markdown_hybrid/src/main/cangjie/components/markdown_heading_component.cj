@@ -42,94 +42,96 @@ class MarkdownHeadingComponent {
     }
 
     func build() {
-        Column() {
-            if (!headingMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && headingNodeViewList.size == 1 && (headingNodeViewList[0].nodeType == "Image" || headingNodeViewList[0].nodeType == "StyleImage" || headingNodeViewList[0].nodeType == "ImageHtmlNode")) {
-                if (headingMarkdownConfiguration.imageCallbackCallback.isNone()) {
-                    if (headingNodeViewList[0].imageUrl().startsWith("./")) {
-                        MarkdownImageRawFileComponent(
-                            rawFileMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
-                            rawFileDestination: headingNodeViewList[0].imageUrl(),
-                            rawFileComponentWidth: headingComponentWidth,
-                            rawFileImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
-                            rawFileImageCallback: headingImageCallback,
-                            rawFileLinkCallback: headingMarkdownConfiguration.linkCallback,
-                            rawFileLink: headingNodeViewList[0].isLink,
-                            rawFileLinkUrl: headingNodeViewList[0].linkUrl,
-                            rawFileImageWidth: headingNodeViewList[0].imageWidth,
-                            rawFileImageHeight: headingNodeViewList[0].imageHeight,
-                            rawFileImageRadius: headingNodeViewList[0].imageRadius,
-                            rawFileImageAlign: headingNodeViewList[0].imageAlign
-                        )
+        Row() {
+            Column() {
+                if (!headingMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && headingNodeViewList.size == 1 && (headingNodeViewList[0].nodeType == "Image" || headingNodeViewList[0].nodeType == "StyleImage" || headingNodeViewList[0].nodeType == "ImageHtmlNode")) {
+                    if (headingMarkdownConfiguration.imageCallbackCallback.isNone()) {
+                        if (headingNodeViewList[0].imageUrl().startsWith("./")) {
+                            MarkdownImageRawFileComponent(
+                                rawFileMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
+                                rawFileDestination: headingNodeViewList[0].imageUrl(),
+                                rawFileComponentWidth: headingComponentWidth,
+                                rawFileImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
+                                rawFileImageCallback: headingImageCallback,
+                                rawFileLinkCallback: headingMarkdownConfiguration.linkCallback,
+                                rawFileLink: headingNodeViewList[0].isLink,
+                                rawFileLinkUrl: headingNodeViewList[0].linkUrl,
+                                rawFileImageWidth: headingNodeViewList[0].imageWidth,
+                                rawFileImageHeight: headingNodeViewList[0].imageHeight,
+                                rawFileImageRadius: headingNodeViewList[0].imageRadius,
+                                rawFileImageAlign: headingNodeViewList[0].imageAlign
+                            )
+                        } else {
+                            MarkdownImageUrlComponent(
+                                urlMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
+                                urlDestination: headingNodeViewList[0].imageUrl(),
+                                urlComponentWidth: headingComponentWidth,
+                                urlImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
+                                urlImageCallback: headingImageCallback,
+                                urlLinkCallback: headingMarkdownConfiguration.linkCallback,
+                                urlLink: headingNodeViewList[0].isLink,
+                                urlLinkUrl: headingNodeViewList[0].linkUrl,
+                                urlImageWidth: headingNodeViewList[0].imageWidth,
+                                urlImageHeight: headingNodeViewList[0].imageHeight,
+                                urlImageRadius: headingNodeViewList[0].imageRadius,
+                                urlImageAlign: headingNodeViewList[0].imageAlign
+                            )
+                        }
                     } else {
-                        MarkdownImageUrlComponent(
-                            urlMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
-                            urlDestination: headingNodeViewList[0].imageUrl(),
-                            urlComponentWidth: headingComponentWidth,
-                            urlImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
-                            urlImageCallback: headingImageCallback,
-                            urlLinkCallback: headingMarkdownConfiguration.linkCallback,
-                            urlLink: headingNodeViewList[0].isLink,
-                            urlLinkUrl: headingNodeViewList[0].linkUrl,
-                            urlImageWidth: headingNodeViewList[0].imageWidth,
-                            urlImageHeight: headingNodeViewList[0].imageHeight,
-                            urlImageRadius: headingNodeViewList[0].imageRadius,
-                            urlImageAlign: headingNodeViewList[0].imageAlign
-                        )
+                        if (headingNodeViewList[0].imageUrl().startsWith("./")) {
+                            MarkdownImageCallbackRawFileComponent(
+                                rawFileCallbackMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
+                                rawFileCallbackDestination: headingNodeViewList[0].imageUrl(),
+                                rawFileCallbackComponentWidth: headingComponentWidth,
+                                rawFileCallbackImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
+                                rawFileCallbackImageCallbackCallback: headingMarkdownConfiguration.imageCallbackCallback(),
+                                rawFileCallbackImageCallback: headingImageCallback,
+                                rawFileCallbackLinkCallback: headingMarkdownConfiguration.linkCallback,
+                                rawFileCallbackLink: headingNodeViewList[0].isLink,
+                                rawFileCallbackLinkUrl: headingNodeViewList[0].linkUrl,
+                                rawFileCallbackImageWidth: headingNodeViewList[0].imageWidth,
+                                rawFileCallbackImageHeight: headingNodeViewList[0].imageHeight,
+                                rawFileCallbackImageRadius: headingNodeViewList[0].imageRadius,
+                                rawFileCallbackImageAlign: headingNodeViewList[0].imageAlign
+                            )
+                        } else {
+                            MarkdownImageCallbackUrlComponent(
+                                urlCallbackMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
+                                urlCallbackDestination: headingNodeViewList[0].imageUrl(),
+                                urlCallbackComponentWidth: headingComponentWidth,
+                                urlCallbackImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
+                                urlCallbackImageCallbackCallback: headingMarkdownConfiguration.imageCallbackCallback(),
+                                urlCallbackImageCallback: headingImageCallback,
+                                urlCallbackLinkCallback: headingMarkdownConfiguration.linkCallback,
+                                urlCallbackLink: headingNodeViewList[0].isLink,
+                                urlCallbackLinkUrl: headingNodeViewList[0].linkUrl,
+                                urlCallbackImageWidth: headingNodeViewList[0].imageWidth,
+                                urlCallbackImageHeight: headingNodeViewList[0].imageHeight,
+                                urlCallbackImageRadius: headingNodeViewList[0].imageRadius,
+                                urlCallbackImageAlign: headingNodeViewList[0].imageAlign
+                            )
+                        }
                     }
                 } else {
-                    if (headingNodeViewList[0].imageUrl().startsWith("./")) {
-                        MarkdownImageCallbackRawFileComponent(
-                            rawFileCallbackMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
-                            rawFileCallbackDestination: headingNodeViewList[0].imageUrl(),
-                            rawFileCallbackComponentWidth: headingComponentWidth,
-                            rawFileCallbackImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
-                            rawFileCallbackImageCallbackCallback: headingMarkdownConfiguration.imageCallbackCallback(),
-                            rawFileCallbackImageCallback: headingImageCallback,
-                            rawFileCallbackLinkCallback: headingMarkdownConfiguration.linkCallback,
-                            rawFileCallbackLink: headingNodeViewList[0].isLink,
-                            rawFileCallbackLinkUrl: headingNodeViewList[0].linkUrl,
-                            rawFileCallbackImageWidth: headingNodeViewList[0].imageWidth,
-                            rawFileCallbackImageHeight: headingNodeViewList[0].imageHeight,
-                            rawFileCallbackImageRadius: headingNodeViewList[0].imageRadius,
-                            rawFileCallbackImageAlign: headingNodeViewList[0].imageAlign
-                        )
-                    } else {
-                        MarkdownImageCallbackUrlComponent(
-                            urlCallbackMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
-                            urlCallbackDestination: headingNodeViewList[0].imageUrl(),
-                            urlCallbackComponentWidth: headingComponentWidth,
-                            urlCallbackImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
-                            urlCallbackImageCallbackCallback: headingMarkdownConfiguration.imageCallbackCallback(),
-                            urlCallbackImageCallback: headingImageCallback,
-                            urlCallbackLinkCallback: headingMarkdownConfiguration.linkCallback,
-                            urlCallbackLink: headingNodeViewList[0].isLink,
-                            urlCallbackLinkUrl: headingNodeViewList[0].linkUrl,
-                            urlCallbackImageWidth: headingNodeViewList[0].imageWidth,
-                            urlCallbackImageHeight: headingNodeViewList[0].imageHeight,
-                            urlCallbackImageRadius: headingNodeViewList[0].imageRadius,
-                            urlCallbackImageAlign: headingNodeViewList[0].imageAlign
-                        )
-                    }
+                    headingTitleComponent()
                 }
-            } else {
-                headingTitleComponent()
+                // 一级二级标题是否显示下划线
+                if (headingNodeView.headingLevel == 1 && headingMarkdownConfiguration.markdownTheme.headingTheme.heading1UnderlineHeight > 0.0) {
+                    Divider()
+                        .color(headingMarkdownConfiguration.markdownTheme.headingTheme.heading1UnderlineColor)
+                        .strokeWidth(headingMarkdownConfiguration.markdownTheme.headingTheme.heading1UnderlineHeight)
+                        .margin(top: headingMarkdownConfiguration.markdownTheme.headingTheme.heading1UnderlineSpacing)
+                } else if (headingNodeView.headingLevel == 2 && headingMarkdownConfiguration.markdownTheme.headingTheme.heading2UnderlineHeight > 0.0) {
+                    Divider()
+                        .color(headingMarkdownConfiguration.markdownTheme.headingTheme.heading2UnderlineColor)
+                        .strokeWidth(headingMarkdownConfiguration.markdownTheme.headingTheme.heading2UnderlineHeight)
+                        .margin(top: headingMarkdownConfiguration.markdownTheme.headingTheme.heading2UnderlineSpacing)
+                }
             }
-            // 一级二级标题是否显示下划线
-            if (headingNodeView.headingLevel == 1 && headingMarkdownConfiguration.markdownTheme.headingTheme.heading1UnderlineHeight > 0.0) {
-                Divider()
-                    .color(headingMarkdownConfiguration.markdownTheme.headingTheme.heading1UnderlineColor)
-                    .strokeWidth(headingMarkdownConfiguration.markdownTheme.headingTheme.heading1UnderlineHeight)
-                    .margin(top: headingMarkdownConfiguration.markdownTheme.headingTheme.heading1UnderlineSpacing)
-            } else if (headingNodeView.headingLevel == 2 && headingMarkdownConfiguration.markdownTheme.headingTheme.heading2UnderlineHeight > 0.0) {
-                Divider()
-                    .color(headingMarkdownConfiguration.markdownTheme.headingTheme.heading2UnderlineColor)
-                    .strokeWidth(headingMarkdownConfiguration.markdownTheme.headingTheme.heading2UnderlineHeight)
-                    .margin(top: headingMarkdownConfiguration.markdownTheme.headingTheme.heading2UnderlineSpacing)
-            }
+            .alignItems(HorizontalAlign.Start)
+            .justifyContent(FlexAlign.Center)
+            .layoutWeight(1)
         }
-        .width(100.percent)
-        .alignItems(HorizontalAlign.Start)
-        .justifyContent(FlexAlign.Center)
         .backgroundColor(headingBackgroundColor(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme, headingNodeView))
         .padding(
             top: headingPaddingTop(headingNodeView.headingLevel, headingMarkdownConfiguration.markdownTheme),

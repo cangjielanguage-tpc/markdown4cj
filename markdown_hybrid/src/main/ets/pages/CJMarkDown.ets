@@ -660,9 +660,6 @@ export struct CJMarkdown {
     if (theme.getBlockQuoteLeftBorderColor() !== undefined) {
       cjMarkdownTheme.setBlockQuoteLeftBorderColor(theme.getBlockQuoteLeftBorderColor())
     }
-    if (theme.getBlockQuoteBorderContentSpacing() !== undefined) {
-      cjMarkdownTheme.setBlockQuoteBorderContentSpacing(theme.getBlockQuoteBorderContentSpacing())
-    }
     if (theme.getBlockQuoteChildSpacing() !== undefined) {
       cjMarkdownTheme.setBlockQuoteChildSpacing(theme.getBlockQuoteChildSpacing())
     }
