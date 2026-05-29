@@ -138,7 +138,6 @@ public class MarkdownListComponent {
         .backgroundColor(listBackgroundColor(isOrdered, listMarkdownConfiguration.markdownTheme, listNodeView))
         .alignListItem(ListItemAlign.Start)
         .listDirection(Axis.Vertical)
-        .width(100.percent)
         .padding(
             top: listPaddingTop(isOrdered, listMarkdownConfiguration.markdownTheme),
             right: listPaddingRight(isOrdered, listMarkdownConfiguration.markdownTheme),

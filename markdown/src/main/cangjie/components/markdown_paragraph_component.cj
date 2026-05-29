@@ -43,82 +43,84 @@ class MarkdownParagraphComponent {
     }
 
     func build() {
-        Column() {
-            if (!paragraphMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage" || paragraphNodeViewList[0].nodeType == "ImageHtmlNode")) {
-                if (paragraphMarkdownConfiguration.imageCallbackCallback.isNone()) {
-                    if (paragraphNodeViewList[0].imageUrl().startsWith("./")) {
-                        MarkdownImageRawFileComponent(
-                            rawFileMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
-                            rawFileDestination: paragraphNodeViewList[0].imageUrl(),
-                            rawFileComponentWidth: paragraphComponentWidth,
-                            rawFileImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
-                            rawFileImageCallback: paragraphImageCallback,
-                            rawFileLinkCallback: paragraphMarkdownConfiguration.linkCallback,
-                            rawFileLink: paragraphNodeViewList[0].isLink,
-                            rawFileLinkUrl: paragraphNodeViewList[0].linkUrl,
-                            rawFileImageWidth: paragraphNodeViewList[0].imageWidth,
-                            rawFileImageHeight: paragraphNodeViewList[0].imageHeight,
-                            rawFileImageRadius: paragraphNodeViewList[0].imageRadius,
-                            rawFileImageAlign: paragraphNodeViewList[0].imageAlign
-                        )
+        Row() {
+            Column() {
+                if (!paragraphMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage" || paragraphNodeViewList[0].nodeType == "ImageHtmlNode")) {
+                    if (paragraphMarkdownConfiguration.imageCallbackCallback.isNone()) {
+                        if (paragraphNodeViewList[0].imageUrl().startsWith("./")) {
+                            MarkdownImageRawFileComponent(
+                                rawFileMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
+                                rawFileDestination: paragraphNodeViewList[0].imageUrl(),
+                                rawFileComponentWidth: paragraphComponentWidth,
+                                rawFileImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
+                                rawFileImageCallback: paragraphImageCallback,
+                                rawFileLinkCallback: paragraphMarkdownConfiguration.linkCallback,
+                                rawFileLink: paragraphNodeViewList[0].isLink,
+                                rawFileLinkUrl: paragraphNodeViewList[0].linkUrl,
+                                rawFileImageWidth: paragraphNodeViewList[0].imageWidth,
+                                rawFileImageHeight: paragraphNodeViewList[0].imageHeight,
+                                rawFileImageRadius: paragraphNodeViewList[0].imageRadius,
+                                rawFileImageAlign: paragraphNodeViewList[0].imageAlign
+                            )
+                        } else {
+                            MarkdownImageUrlComponent(
+                                urlMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
+                                urlDestination: paragraphNodeViewList[0].imageUrl(),
+                                urlComponentWidth: paragraphComponentWidth,
+                                urlImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
+                                urlImageCallback: paragraphImageCallback,
+                                urlLinkCallback: paragraphMarkdownConfiguration.linkCallback,
+                                urlLink: paragraphNodeViewList[0].isLink,
+                                urlLinkUrl: paragraphNodeViewList[0].linkUrl,
+                                urlImageWidth: paragraphNodeViewList[0].imageWidth,
+                                urlImageHeight: paragraphNodeViewList[0].imageHeight,
+                                urlImageRadius: paragraphNodeViewList[0].imageRadius,
+                                urlImageAlign: paragraphNodeViewList[0].imageAlign
+                            )
+                        }
                     } else {
-                        MarkdownImageUrlComponent(
-                            urlMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
-                            urlDestination: paragraphNodeViewList[0].imageUrl(),
-                            urlComponentWidth: paragraphComponentWidth,
-                            urlImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
-                            urlImageCallback: paragraphImageCallback,
-                            urlLinkCallback: paragraphMarkdownConfiguration.linkCallback,
-                            urlLink: paragraphNodeViewList[0].isLink,
-                            urlLinkUrl: paragraphNodeViewList[0].linkUrl,
-                            urlImageWidth: paragraphNodeViewList[0].imageWidth,
-                            urlImageHeight: paragraphNodeViewList[0].imageHeight,
-                            urlImageRadius: paragraphNodeViewList[0].imageRadius,
-                            urlImageAlign: paragraphNodeViewList[0].imageAlign
-                        )
+                        if (paragraphNodeViewList[0].imageUrl().startsWith("./")) {
+                            MarkdownImageCallbackRawFileComponent(
+                                rawFileCallbackMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
+                                rawFileCallbackDestination: paragraphNodeViewList[0].imageUrl(),
+                                rawFileCallbackComponentWidth: paragraphComponentWidth,
+                                rawFileCallbackImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
+                                rawFileCallbackImageCallbackCallback: paragraphMarkdownConfiguration.imageCallbackCallback(),
+                                rawFileCallbackImageCallback: paragraphImageCallback,
+                                rawFileCallbackLinkCallback: paragraphMarkdownConfiguration.linkCallback,
+                                rawFileCallbackLink: paragraphNodeViewList[0].isLink,
+                                rawFileCallbackLinkUrl: paragraphNodeViewList[0].linkUrl,
+                                rawFileCallbackImageWidth: paragraphNodeViewList[0].imageWidth,
+                                rawFileCallbackImageHeight: paragraphNodeViewList[0].imageHeight,
+                                rawFileCallbackImageRadius: paragraphNodeViewList[0].imageRadius,
+                                rawFileCallbackImageAlign: paragraphNodeViewList[0].imageAlign
+                            )
+                        } else {
+                            MarkdownImageCallbackUrlComponent(
+                                urlCallbackMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
+                                urlCallbackDestination: paragraphNodeViewList[0].imageUrl(),
+                                urlCallbackComponentWidth: paragraphComponentWidth,
+                                urlCallbackImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
+                                urlCallbackImageCallbackCallback: paragraphMarkdownConfiguration.imageCallbackCallback(),
+                                urlCallbackImageCallback: paragraphImageCallback,
+                                urlCallbackLinkCallback: paragraphMarkdownConfiguration.linkCallback,
+                                urlCallbackLink: paragraphNodeViewList[0].isLink,
+                                urlCallbackLinkUrl: paragraphNodeViewList[0].linkUrl,
+                                urlCallbackImageWidth: paragraphNodeViewList[0].imageWidth,
+                                urlCallbackImageHeight: paragraphNodeViewList[0].imageHeight,
+                                urlCallbackImageRadius: paragraphNodeViewList[0].imageRadius,
+                                urlCallbackImageAlign: paragraphNodeViewList[0].imageAlign
+                            )
+                        }
                     }
                 } else {
-                    if (paragraphNodeViewList[0].imageUrl().startsWith("./")) {
-                        MarkdownImageCallbackRawFileComponent(
-                            rawFileCallbackMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
-                            rawFileCallbackDestination: paragraphNodeViewList[0].imageUrl(),
-                            rawFileCallbackComponentWidth: paragraphComponentWidth,
-                            rawFileCallbackImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
-                            rawFileCallbackImageCallbackCallback: paragraphMarkdownConfiguration.imageCallbackCallback(),
-                            rawFileCallbackImageCallback: paragraphImageCallback,
-                            rawFileCallbackLinkCallback: paragraphMarkdownConfiguration.linkCallback,
-                            rawFileCallbackLink: paragraphNodeViewList[0].isLink,
-                            rawFileCallbackLinkUrl: paragraphNodeViewList[0].linkUrl,
-                            rawFileCallbackImageWidth: paragraphNodeViewList[0].imageWidth,
-                            rawFileCallbackImageHeight: paragraphNodeViewList[0].imageHeight,
-                            rawFileCallbackImageRadius: paragraphNodeViewList[0].imageRadius,
-                            rawFileCallbackImageAlign: paragraphNodeViewList[0].imageAlign
-                        )
-                    } else {
-                        MarkdownImageCallbackUrlComponent(
-                            urlCallbackMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
-                            urlCallbackDestination: paragraphNodeViewList[0].imageUrl(),
-                            urlCallbackComponentWidth: paragraphComponentWidth,
-                            urlCallbackImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
-                            urlCallbackImageCallbackCallback: paragraphMarkdownConfiguration.imageCallbackCallback(),
-                            urlCallbackImageCallback: paragraphImageCallback,
-                            urlCallbackLinkCallback: paragraphMarkdownConfiguration.linkCallback,
-                            urlCallbackLink: paragraphNodeViewList[0].isLink,
-                            urlCallbackLinkUrl: paragraphNodeViewList[0].linkUrl,
-                            urlCallbackImageWidth: paragraphNodeViewList[0].imageWidth,
-                            urlCallbackImageHeight: paragraphNodeViewList[0].imageHeight,
-                            urlCallbackImageRadius: paragraphNodeViewList[0].imageRadius,
-                            urlCallbackImageAlign: paragraphNodeViewList[0].imageAlign
-                        )
-                    }
+                    paragraphComponent()
                 }
-            } else {
-                paragraphComponent()
             }
+            .alignItems(HorizontalAlign.Start)
+            .justifyContent(FlexAlign.Center)
+            .layoutWeight(1)
         }
-        .width(100.percent)
-        .alignItems(HorizontalAlign.Start)
-        .justifyContent(FlexAlign.Center)
         .backgroundColor(paragraphBackgroundColor(paragraphMarkdownConfiguration.markdownTheme, paragraphNodeView))
         .padding(
             top: paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphPaddingTop,
