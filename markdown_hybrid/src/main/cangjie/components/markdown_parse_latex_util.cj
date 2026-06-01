@@ -30,26 +30,33 @@ class MarkdownParseLatexUtil {
                     }
                     var latex: LaTeX = LaTeX(markdownTheme.latexMathTheme.latexMathResPath)
                     if (Thread.currentThread.hasPendingCancellation) {
+                        latex.release()
                         return
                     }
                     var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(latexMathTextSize), Float32(10), markdownTheme.latexMathTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
+                        r.finalize()
+                        latex.release()
                         return
                     }
                     var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
+                        g2.release()
+                        r.finalize()
+                        latex.release()
                         return
                     }
                     r.draw(g2, markdownTheme.latexMathTheme.latexMathBackgroundColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
+                        g2.release()
+                        r.finalize()
+                        latex.release()
                         return
                     }
                     arr = r.toBitmap(g2)
-                    latex.release()
+                    g2.release()
                     r.finalize()
-                    unsafe {
-                        LibC.free(g2.getG2())
-                    }
+                    latex.release()
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
@@ -107,26 +114,33 @@ class MarkdownParseLatexUtil {
                     }
                     var latex: LaTeX = LaTeX(markdownTheme.latexMathTheme.latexMathResPath)
                     if (Thread.currentThread.hasPendingCancellation) {
+                        latex.release()
                         return
                     }
                     var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(latexMathTextSize), Float32(10), markdownTheme.latexMathTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
+                        r.finalize()
+                        latex.release()
                         return
                     }
                     var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathTheme.latexMathColorFormat))
                     if (Thread.currentThread.hasPendingCancellation) {
+                        g2.release()
+                        r.finalize()
+                        latex.release()
                         return
                     }
                     r.draw(g2, markdownTheme.latexMathTheme.latexMathBackgroundColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
+                        g2.release()
+                        r.finalize()
+                        latex.release()
                         return
                     }
                     arr = r.toBitmap(g2)
-                    latex.release()
+                    g2.release()
                     r.finalize()
-                    unsafe {
-                        LibC.free(g2.getG2())
-                    }
+                    latex.release()
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
