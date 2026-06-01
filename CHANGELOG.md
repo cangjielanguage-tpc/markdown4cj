@@ -1,31 +1,31 @@
 # 1.4.0
 
 1. 重构markdown样式接口
-2. 新增AudioTheme
-3. 新增BannerTheme
-4. 新增BlockQuoteTheme
-5. 新增BoldTheme
-6. 新增BulletListTheme
-7. 新增CodeBlockTheme
-8. 新增DefinitionListTheme
-9. 新增DividerTheme
-10. 新增FootnoteDefTheme
-11. 新增FootnoteRefTheme
-12. 新增GlobalTheme
-13. 新增HeadingTheme
-14. 新增HtmlUnderlineTheme
-15. 新增ImageTheme
-16. 新增InlineCodeTheme
-17. 新增ItalicTheme
-18. 新增LatexMathTheme
-19. 新增LinkTheme
-20. 新增OrderedListTheme
-21. 新增ParagraphTheme
-22. 新增StrikethroughTheme
-23. 新增SubTheme
-24. 新增SupTheme
-25. 新增TableTheme
-26. 新增VideoTheme
+2. 新增MarkdownThemeAudio
+3. 新增MarkdownThemeBanner
+4. 新增MarkdownThemeBlockQuote
+5. 新增MarkdownThemeBold
+6. 新增MarkdownThemeBulletList
+7. 新增MarkdownThemeCodeBlock
+8. 新增MarkdownThemeDefinitionList
+9. 新增MarkdownThemeDivider
+10. 新增MarkdownThemeFootnoteDef
+11. 新增MarkdownThemeFootnoteRef
+12. 新增MarkdownThemeGlobal
+13. 新增MarkdownThemeHeading
+14. 新增MarkdownThemeHtmlUnderline
+15. 新增MarkdownThemeImage
+16. 新增MarkdownThemeInlineCode
+17. 新增MarkdownThemeItalic
+18. 新增MarkdownThemeLatexMath
+19. 新增MarkdownThemeLink
+20. 新增MarkdownThemeOrderedList
+21. 新增MarkdownThemeParagraph
+22. 新增MarkdownThemeStrikethrough
+23. 新增MarkdownThemeSub
+24. 新增MarkdownThemeSup
+25. 新增MarkdownThemeTable
+26. 新增MarkdownThemeVideo
 27. MarkdownTheme 中的接口 setLinkBackGroupColor(linkBackGroupColor: number): void 替换成 setLinkBackgroundColor(linkBackgroundColor: number): void
 28. MarkdownTheme 中的接口 setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: number): void 替换成 setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: number): void
 29. MarkdownTheme 中的接口 setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: number): void 替换成 setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: number): void
