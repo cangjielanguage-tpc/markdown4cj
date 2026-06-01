@@ -309,8 +309,7 @@ class MarkdownCodeFencedBlockComponent {
                 }
             }
         }
-
-        future = stringToResList(str, info, callback)
+        future = MarkdownParseCodeUtil.stringToResList(str, info, markdownConfiguration, formatConfig, psh, callback)
     }
 
     /**
@@ -331,41 +330,5 @@ class MarkdownCodeFencedBlockComponent {
                 lineArray.remove(i)
             }
         }
-    }
-
-    /**
-     * 通过异步的方式将代码转换成带有颜色的列表 - 围栏代码、缩进代码
-     *
-     * @param code 传入代码内容
-     * @param info 传入代码类型
-     * @param callback PrismNodesParseRes列表回调接口
-     */
-    func stringToResList(code: String, info: ?String, callback: (ArrayList<PrismNodesParseResUI>, Int64) -> Unit): Future<Unit> {
-        let fut: Future<Unit> = spawn {
-            let codeTextStr = if (markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsCodeFormat) {
-                codeFormat(info, code, formatConfig)
-            } else {
-                code
-            }
-            if (Thread.currentThread.hasPendingCancellation) {
-                return
-            }
-
-            let arr = codeTextStr.split("\n") // 代码块数据分割
-            let lines = arr.size
-            var prismNodesParseResUIList: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
-            try {
-                if (Thread.currentThread.hasPendingCancellation) {
-                    return
-                }
-                prismNodesParseResUIList = psh().highlight(info, codeTextStr)
-                callback(prismNodesParseResUIList, lines)
-            } catch (e: Exception) {
-                let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeTextStr, alias: Option<String>.None, color: Option<Color>.None)
-                prismNodesParseResUIList.add(prismNodesParseResUI)
-                callback(prismNodesParseResUIList, lines)
-            }
-        }
-        return fut
     }
 }

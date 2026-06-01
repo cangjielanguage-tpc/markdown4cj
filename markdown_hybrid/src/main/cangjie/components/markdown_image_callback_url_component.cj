@@ -201,7 +201,7 @@ public class MarkdownImageCallbackUrlComponent {
                 }
             }
         }
-        urlCallbackReplaceFut = callbackToPixelmap(
+        urlCallbackReplaceFut = MarkdownParseImageUtil.callbackToPixelmap(
             urlCallbackDestination,
             urlCallbackImageCallbackCallback,
             callback

@@ -20,9 +20,16 @@ class MarkdownCodeBlockListComponent {
     var lineArray: ObservedArrayList<Int64> = ObservedArrayList<Int64>() // 代码行数显示数据列表
     @State
     var arrayLists: ArrayList<ArrayList<PrismNodesParseResUI>> = ArrayList<ArrayList<PrismNodesParseResUI>>() // 所有数据
+    var future: ?Future<Unit> = Option<Future<Unit>>.None // 子线程
+    var psh: ?PrismSyntaxHighlight = Option<PrismSyntaxHighlight>.None // 代码高亮
 
     protected override func aboutToAppear(): Unit {
+        psh = PrismSyntaxHighlight.create(prism, markdownConfiguration.markdownTheme.prismTheme)
         stringCodeToResLists()
+    }
+
+    protected override func aboutToDisappear(): Unit {
+        future?.cancel()
     }
 
     func build() {
@@ -268,6 +275,6 @@ class MarkdownCodeBlockListComponent {
         }
         lines = strText[idxSelect].lines().count()
         lineArray.set(Array<Int64>(lines, repeat: 0))
-        stringToResLists(nodeView, markdownConfiguration, strText, callback)
+        future = MarkdownParseCodeUtil.stringToResLists(nodeView, markdownConfiguration, strText, psh, callback)
     }
 }

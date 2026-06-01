@@ -11,9 +11,15 @@ class MarkdownParseLatexUtil {
      * @param latexMathTextSize 数学公式文本大小 - 单位px
      * @param latexStrCallback 数学公式文本替换接口 旧文本 -> 新文本
      * @param callback 数学公式图片回调接口 - PixelMap图片、图片高度、图片宽度、图片数组数据
-     * @return Future
+     * @return 线程
      */
-    static func latexMathStrToPixelMap(strLatexMath: String, markdownTheme: MarkdownTheme, latexMathTextSize: Float64, latexStrCallback: (String) -> String, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func latexMathStrToPixelMap(
+        strLatexMath: String,
+        markdownTheme: MarkdownTheme,
+        latexMathTextSize: Float64,
+        latexStrCallback: (String) -> String,
+        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit
+    ): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 if (Thread.currentThread.hasPendingCancellation) {
@@ -23,6 +29,7 @@ class MarkdownParseLatexUtil {
                 var imageHeight: ?Float64 = Option<Float64>.None
                 var imageWidth: ?Float64 = Option<Float64>.None
                 var arr: ?Array<UInt8> = Option<Array<UInt8>>.None
+                var imageSource: ?ImageSource = Option<ImageSource>.None
                 try {
                     let strLatexMathNew = latexStrCallback(strLatexMath)
                     if (Thread.currentThread.hasPendingCancellation) {
@@ -60,26 +67,25 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var imageSource: ImageSource = createImageSource(arr())
+                    imageSource = createImageSource(arr())
                     if (Thread.currentThread.hasPendingCancellation) {
-                        imageSource.Release()
+                        imageSource?.Release()
                         return
                     }
-                    pixelMap = imageSource.createPixelMap()
-                    imageSource.Release()
+                    pixelMap = imageSource?.createPixelMap()
+                    imageSource?.Release()
+                    imageSource = Option<ImageSource>.None
                     var size: Size = pixelMap().getImageInfo().size
                     imageWidth = Float64(size.width)
                     imageHeight = Float64(size.height)
                 } catch (e: Exception) {
+                    imageSource?.Release() // createPixelMap 异常情况
                 } finally {
-                    try {
-                        if (Thread.currentThread.hasPendingCancellation) {
-                            pixelMap?.Release()
-                            return
-                        }
-                        callback(pixelMap, imageHeight, imageWidth, arr)
-                    } catch (_) {
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        pixelMap?.Release()
+                        return
                     }
+                    callback(pixelMap, imageHeight, imageWidth, arr)
                 }
             }
         }
@@ -97,7 +103,14 @@ class MarkdownParseLatexUtil {
      * @param callback 数学公式图片回调接口 - PixelMap图片、图片高度、图片宽度、图片数组数据
      * @return Future
      */
-    static func latexMathStrToPixelMapRow(strLatexMath: String, markdownTheme: MarkdownTheme, latexMathTextSize: Float64, componentWidth: Float64, latexStrCallback: (String) -> String, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func latexMathStrToPixelMapRow(
+        strLatexMath: String,
+        markdownTheme: MarkdownTheme,
+        latexMathTextSize: Float64,
+        componentWidth: Float64,
+        latexStrCallback: (String) -> String,
+        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit
+    ): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 if (Thread.currentThread.hasPendingCancellation) {
@@ -107,6 +120,7 @@ class MarkdownParseLatexUtil {
                 var height: ?Float64 = Option<Float64>.None
                 var width: ?Float64 = Option<Float64>.None
                 var arr: ?Array<UInt8> = Option<Array<UInt8>>.None
+                var imageSource: ?ImageSource = Option<ImageSource>.None
                 try {
                     let strLatexMathNew = latexStrCallback(strLatexMath)
                     if (Thread.currentThread.hasPendingCancellation) {
@@ -144,13 +158,14 @@ class MarkdownParseLatexUtil {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var imageSource: ImageSource = createImageSource(arr())
+                    imageSource = createImageSource(arr())
                     if (Thread.currentThread.hasPendingCancellation) {
-                        imageSource.Release()
+                        imageSource?.Release()
                         return
                     }
-                    pixelMap = imageSource.createPixelMap()
-                    imageSource.Release()
+                    pixelMap = imageSource?.createPixelMap()
+                    imageSource?.Release()
+                    imageSource = Option<ImageSource>.None
                     var size: Size = pixelMap().getImageInfo().size
                     var sizeWidth: Float64 = Float64(size.width)
                     var sizeHeight: Float64 = Float64(size.height)
@@ -167,15 +182,13 @@ class MarkdownParseLatexUtil {
                     }
                     pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
                 } catch (e: Exception) {
+                    imageSource?.Release() // createPixelMap 异常情况
                 } finally {
-                    try {
-                        if (Thread.currentThread.hasPendingCancellation) {
-                            pixelMap?.Release()
-                            return
-                        }
-                        callback(pixelMap, height, width, arr)
-                    } catch (_) {
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        pixelMap?.Release()
+                        return
                     }
+                    callback(pixelMap, height, width, arr)
                 }
             }
         }
