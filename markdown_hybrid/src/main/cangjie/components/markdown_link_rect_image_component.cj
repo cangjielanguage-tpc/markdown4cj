@@ -3,7 +3,7 @@ package markdown.components
 import ohos.state_macro_manage.*
 
 /**
- * 行内链接
+ * 圆角图片链接
  */
 @Component
 public class MarkdownLinkRectImageComponent {
@@ -16,12 +16,12 @@ public class MarkdownLinkRectImageComponent {
     var imageWidth: ?Float64 = Option<Float64>.None // 链接宽度
     @State
     var imagePixelMap: ?PixelMap = Option<PixelMap>.None // 链接图片信息
-    var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None // 链接数组信息
     var maxWidth: Length = 100.percent // 图片最大宽度
     var linkRectIconTextSize: Float64 = 0.0 // 圆角矩形图片格式链接文字大小 - 单位px
     var linkRectIconHeight: Float64 = 0.0 // 圆角矩形图片格式链接控件高度 - 单位px
     var linkRectIconPadding: Float64 = 0.0 // 圆角矩形图片格式链接左右内边距 - 单位px
     var linkRectIconRadius: Float64 = 0.0 // 圆角矩形图片格式链接圆角半径 - 单位px
+    var fut: ?Future<Unit> = Option<Future<Unit>>.None // 解析子线程
 
     protected override func aboutToAppear(): Unit {
         linkRectIconTextSize = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectIconTextSize.vp)().value
@@ -35,7 +35,7 @@ public class MarkdownLinkRectImageComponent {
         // 清除缓存
         imagePixelMap?.Release()
         imagePixelMap = Option<PixelMap>.None
-        arrayUint8 = Option<Array<UInt8>>.None
+        fut?.cancel()
     }
 
     func build() {
@@ -59,15 +59,14 @@ public class MarkdownLinkRectImageComponent {
      * 链接数据处理
      */
     func linkImagePixelmap(): Unit {
-        let callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit = {
-            pixelMap, height, width, arr => launch {
+        let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
+            pixelMap, height, width => launch {
                 imageHeight = height
                 imageWidth = width
                 imagePixelMap = pixelMap
-                arrayUint8 = arr
             }
         }
         // 解析链接
-        MarkdownParseLinkUtil.linkStrToRectPixelMap(strText, linkRectIconTextSize, linkRectIconHeight, linkRectIconPadding, linkRectIconRadius, markdownConfiguration, callback)
+        fut = MarkdownParseLinkUtil.linkStrToRectPixelMap(strText, linkRectIconTextSize, linkRectIconHeight, linkRectIconPadding, linkRectIconRadius, markdownConfiguration, callback)
     }
 }

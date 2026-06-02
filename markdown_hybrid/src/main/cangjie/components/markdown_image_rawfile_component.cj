@@ -161,7 +161,7 @@ public class MarkdownImageRawFileComponent {
                 }
             }
         }
-        rawFileFut = rawfileToPixelmap1(
+        rawFileFut = MarkdownParseImageUtil.rawfileToPixelmap(
             rawFileDestination,
             rawFileMarkdownTheme.globalTheme.uiAbilityContext,
             rawFileMarkdownTheme.globalTheme.stageContext,

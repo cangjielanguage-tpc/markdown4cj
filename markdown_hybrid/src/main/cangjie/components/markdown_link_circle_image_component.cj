@@ -3,7 +3,7 @@ package markdown.components
 import ohos.state_macro_manage.*
 
 /**
- * 行内链接
+ * 圆形图片链接
  */
 @Component
 public class MarkdownLinkCircleImageComponent {
@@ -16,10 +16,10 @@ public class MarkdownLinkCircleImageComponent {
     var imageWidth: ?Float64 = Option<Float64>.None // 链接宽度
     @State
     var imagePixelMap: ?PixelMap = Option<PixelMap>.None // 链接图片信息
-    var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None // 链接数组信息
     var maxWidth: Length = 100.percent // 图片最大宽度
     var linkCircleIconTextSize: Float64 = 0.0 // 圆形图片格式链接文字大小 - 单位px
     var linkCircleIconRadius: Float64 = 0.0 // 圆形图片格式链接半径 - 单位px
+    var fut: ?Future<Unit> = Option<Future<Unit>>.None // 解析子线程
 
     protected override func aboutToAppear(): Unit {
         linkCircleIconTextSize = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkCircleIconTextSize.vp)().value
@@ -31,7 +31,7 @@ public class MarkdownLinkCircleImageComponent {
         // 清除缓存
         imagePixelMap?.Release()
         imagePixelMap = Option<PixelMap>.None
-        arrayUint8 = Option<Array<UInt8>>.None
+        fut?.cancel()
     }
 
     func build() {
@@ -55,15 +55,14 @@ public class MarkdownLinkCircleImageComponent {
      * 链接数据处理
      */
     func linkImagePixelmap(): Unit {
-        let callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit = {
-            pixelMap, height, width, arr => launch {
+        let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
+            pixelMap, height, width => launch {
                 imageHeight = height
                 imageWidth = width
                 imagePixelMap = pixelMap
-                arrayUint8 = arr
             }
         }
         // 解析链接
-        MarkdownParseLinkUtil.linkStrToCirclePixelMap(strText, linkCircleIconTextSize, linkCircleIconRadius, markdownConfiguration, callback)
+        fut = MarkdownParseLinkUtil.linkStrToCirclePixelMap(strText, linkCircleIconTextSize, linkCircleIconRadius, markdownConfiguration, callback)
     }
 }

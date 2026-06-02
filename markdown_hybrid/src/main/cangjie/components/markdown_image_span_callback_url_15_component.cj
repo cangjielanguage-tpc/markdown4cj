@@ -189,7 +189,7 @@ public class MarkdownSpanImageCallbackUrl15Component {
                 }
             }
         }
-        url15CallbackReplaceFut = callbackToPixelmap(
+        url15CallbackReplaceFut = MarkdownParseImageUtil.callbackToPixelmap(
             url15CallbackDestination,
             url15CallbackImageCallbackCallback,
             callback
