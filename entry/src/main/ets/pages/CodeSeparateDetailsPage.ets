@@ -246,6 +246,7 @@ struct CodeSeparateDetailsPage {
     codeBlockTheme.setCodeBlockIsSeparate(this.codeBlockIsSeparate)
     codeBlockTheme.setCodeBlockSeparateWidth(this.codeBlockSeparateWidth)
     codeBlockTheme.setCodeBlockSeparateIsBottom(this.codeBlockSeparateIsBottom)
+    theme.setMarkdownThemeCodeBlock(codeBlockTheme)
 
     theme.setCodeFullScreenIcon($r('app.media.startIcon'))
     theme.setCodeCopyIcon($r('app.media.startIcon'))
