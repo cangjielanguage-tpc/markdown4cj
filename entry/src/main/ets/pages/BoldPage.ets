@@ -124,10 +124,14 @@ struct BoldPage {
   @State // 加粗文本字符间距
   boldTextLetterSpacing: number | undefined = undefined
 
+  aboutToAppear(): void {
+    this.folderList = getFileListStr(`${this.rawFilePath}/`)
+  }
+
   build() {
     Column() {
       titleComponent(
-        "演示样例配置页面",
+        "加粗配置页面",
         0xFF317AFF,
         true,
         this.safeTop

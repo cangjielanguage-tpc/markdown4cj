@@ -355,6 +355,10 @@ struct ImageDetailsPage {
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
+    const hostContext = this.getUIContext().getHostContext()
+    if (hostContext != undefined) {
+      globalTheme.setStageContext(hostContext)
+    }
     globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
