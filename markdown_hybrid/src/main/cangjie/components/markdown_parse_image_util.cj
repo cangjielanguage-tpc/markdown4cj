@@ -43,29 +43,33 @@ class MarkdownParseImageUtil {
                     }
                     imageSource = createImageSource(arrayUInt8)
                     if (Thread.currentThread.hasPendingCancellation) {
-                        imageSource?.Release()
                         return
                     }
                     pixelMap = imageSource?.createPixelMap()
-                    imageSource?.Release()
-                    imageSource = Option<ImageSource>.None
                     if (Thread.currentThread.hasPendingCancellation) {
                         pixelMap?.Release()
+                        pixelMap = Option<PixelMap>.None
                         return
                     }
-                    var size = pixelMap().getImageInfo().size
-                    width = Float64(size.width)
-                    height = Float64(size.height)
+                    if (let Some(p) <- pixelMap) {
+                        var size = p.getImageInfo().size
+                        width = Float64(size.width)
+                        height = Float64(size.height)
+                    }
                 }
             } catch (e: Exception) {
-                imageSource?.Release() // createPixelMap 异常情况
+                pixelMap?.Release()
+                pixelMap = Option<PixelMap>.None
             } finally {
+                imageSource?.Release()
+                imageSource = Option<ImageSource>.None
                 if (Thread.currentThread.hasPendingCancellation) {
                     pixelMap?.Release()
+                    pixelMap = Option<PixelMap>.None
                     return
                 }
-                callback(pixelMap, width, height)
             }
+            callback(pixelMap, width, height)
         }
         return fut
     }
@@ -99,29 +103,103 @@ class MarkdownParseImageUtil {
                     }
                     imageSource = createImageSource(v)
                     if (Thread.currentThread.hasPendingCancellation) {
-                        imageSource?.Release()
                         return
                     }
                     pixelMap = imageSource?.createPixelMap()
-                    imageSource?.Release()
-                    imageSource = Option<ImageSource>.None
                     if (Thread.currentThread.hasPendingCancellation) {
                         pixelMap?.Release()
+                        pixelMap = Option<PixelMap>.None
                         return
                     }
-                    var size = pixelMap().getImageInfo().size
-                    width = Float64(size.width)
-                    height = Float64(size.height)
+                    if (let Some(p) <- pixelMap) {
+                        var size = p.getImageInfo().size
+                        width = Float64(size.width)
+                        height = Float64(size.height)
+                    }
                 }
             } catch (e: Exception) {
-                imageSource?.Release() // createPixelMap 异常情况
+                pixelMap?.Release()
+                pixelMap = Option<PixelMap>.None
             } finally {
+                imageSource?.Release()
+                imageSource = Option<ImageSource>.None
                 if (Thread.currentThread.hasPendingCancellation) {
                     pixelMap?.Release()
+                    pixelMap = Option<PixelMap>.None
                     return
                 }
-                callback(pixelMap, width, height)
             }
+            callback(pixelMap, width, height)
+        }
+        return fut
+    }
+
+    /**
+     * AppResource占位图转换成PixelMap
+     *
+     * @param imagePlaceholder 占位图图片
+     * @param uiAbilityContext UIAbilityContext
+     * @param stageContext StageContext
+     * @param callback PixelMap图片、图片高度、图片宽度
+     * @return Future<Unit> 线程
+     */
+    static func resourceToPixelmap(
+        imagePlaceholder: AppResource,
+        uiAbilityContext: ?UIAbilityContext,
+        stageContext: ?StageContext,
+        callback: (?PixelMap, ?Float64, ?Float64) -> Unit
+    ): Future<Unit> {
+        let fut: Future<Unit> = spawn {
+            var pixelMap: ?PixelMap = Option<PixelMap>.None
+            var height: ?Float64 = Option<Float64>.None
+            var width: ?Float64 = Option<Float64>.None
+            var imageSource: ?ImageSource = Option<ImageSource>.None
+            try (imageLoadLimiter = ImageLoadLimiter()) {
+                var resourceManager: ?ResourceManager = None
+                if (let Some(v) <- uiAbilityContext) {
+                    resourceManager = ResourceManager.getResourceManager(getStageContext(v))
+                } else {
+                    if (let Some(v) <- stageContext) {
+                        resourceManager = ResourceManager.getResourceManager(v)
+                    }
+                }
+                if (let Some(v) <- resourceManager) {
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
+                    var arrayUInt8: Array<UInt8> = v.getMediaContent(imagePlaceholder, 0)
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
+                    imageSource = createImageSource(arrayUInt8)
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
+                    pixelMap = imageSource?.createPixelMap()
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        pixelMap?.Release()
+                        pixelMap = Option<PixelMap>.None
+                        return
+                    }
+                    if (let Some(p) <- pixelMap) {
+                        var size = p.getImageInfo().size
+                        width = Float64(size.width)
+                        height = Float64(size.height)
+                    }
+                }
+            } catch (e: Exception) {
+                pixelMap?.Release()
+                pixelMap = Option<PixelMap>.None
+            } finally {
+                imageSource?.Release()
+                imageSource = Option<ImageSource>.None
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap?.Release()
+                    pixelMap = Option<PixelMap>.None
+                    return
+                }
+            }
+            callback(pixelMap, width, height)
         }
         return fut
     }
