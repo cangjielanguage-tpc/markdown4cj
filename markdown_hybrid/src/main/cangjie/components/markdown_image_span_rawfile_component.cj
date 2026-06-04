@@ -85,7 +85,7 @@ public class MarkdownSpanImageRawFileComponent {
                 // 加载图片
                 ImageSpan(rawFileImagePixelMap())
                     .margin(top: rawFileMarkdownTheme.imageTheme.imageMarginTop, right: rawFileMarkdownTheme.imageTheme.imageMarginRight, bottom: rawFileMarkdownTheme.imageTheme.imageMarginBottom, left: rawFileMarkdownTheme.imageTheme.imageMarginLeft)
-                    .interopBorderRadius(rawFileRadiusTopLeft, rawFileRadiusTopRight, rawFileRadiusBottomLeft, rawFileRadiusBottomRight)
+                    .borderRadius(topLeft: rawFileRadiusTopLeft, topRight: rawFileRadiusTopRight, bottomLeft: rawFileRadiusBottomLeft, bottomRight: rawFileRadiusBottomRight)
                     .borderWidth(rawFileMarkdownTheme.imageTheme.imageBorderWidth)
                     .borderColor(rawFileMarkdownTheme.imageTheme.imageBorderColor)
                     .borderStyle(rawFileMarkdownTheme.imageTheme.imageBorderStyle)

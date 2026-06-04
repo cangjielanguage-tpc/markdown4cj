@@ -59,13 +59,8 @@ public class CJMarkdownScroller {
      * 获取子组件的大小及相对容器组件的位置
      */
     public func getItemRect(index: Int64): CJRectResult {
-        if (DeviceInfo.sdkApiVersion >= 19) {
-            let rect = this.scroller.getItemRect(Int32(index))
-            return CJRectResult(rect.x, rect.y, rect.width, rect.height)
-        } else {
-            let rect = this.scroller.interopGetItemRect(index)
-            return CJRectResult(rect.x, rect.y, rect.width, rect.height)
-        }
+        let rect = this.scroller.getItemRect(Int32(index))
+        return CJRectResult(rect.x, rect.y, rect.width, rect.height)
     }
 
     /**

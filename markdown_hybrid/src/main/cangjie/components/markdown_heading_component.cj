@@ -152,49 +152,6 @@ class MarkdownHeadingComponent {
      */
     @Builder
     func headingTitleComponent() {
-        if (DeviceInfo.sdkApiVersion >= 19) {
-            headingTitleComponent19()
-        } else {
-            headingTitleComponent18()
-        }
-    }
-
-    /**
-     * 标题文字内容
-     */
-    @Builder
-    func headingTitleComponent18() {
-        Text() {
-            if (isRefresh) {
-                markdownSpanListComponent(
-                    headingNodeViewList,
-                    headingMarkdownConfiguration,
-                    headingComponentWidth,
-                    Option<(Int64) -> Unit>.None,
-                    headingImageCallback,
-                    headingFootnoteCallback
-                )
-            }
-        }
-        .textAlign(TextAlign.Start)
-        .interopHalfLeading(true)
-        .interopCopyOption(if (headingMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
-            true
-        } else {
-            false
-        })
-        .interopOnCopy({
-            str => if (let Some(v) <- headingMarkdownConfiguration.textCopyCallback) {
-                v(str)
-            }
-        })
-    }
-
-    /**
-     * 标题文字内容
-     */
-    @Builder
-    func headingTitleComponent19() {
         Text() {
             if (isRefresh) {
                 markdownSpanListComponent(

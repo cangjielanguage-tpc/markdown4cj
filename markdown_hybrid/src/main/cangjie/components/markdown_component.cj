@@ -84,35 +84,18 @@ public class MarkdownComponent {
 
     func build() {
         if (!markdownConfiguration.markdownTheme.codeBlockTheme.codeBlockIsSeparate) {
-            if (DeviceInfo.sdkApiVersion >= 19) {
-                List(scroller: scroller, space: markdownConfiguration.markdownTheme.globalTheme.markdownBlockSpacing) {
-                    baseMarkdownList()
-                }
-                .margin(top: markdownConfiguration.markdownTheme.globalTheme.blockMarginTop, right: markdownConfiguration.markdownTheme.globalTheme.blockMarginRight, bottom: markdownConfiguration.markdownTheme.globalTheme.blockMarginBottom, left: markdownConfiguration.markdownTheme.globalTheme.blockMarginLeft)
-                .backgroundColor(markdownConfiguration.markdownTheme.globalTheme.backgroundColor)
-                .listDirection(Axis.Vertical)
-                .alignListItem(ListItemAlign.Start)
-                .scrollBar(BarState.Off)
-                .enableScrollInteraction(markdownConfiguration.markdownTheme.globalTheme.openGestureSwipe)
-                .interopOnSizeChange {
-                    old, new => if (componentWidth != new.width) {
-                        componentWidth = new.width
-                    }
-                }
-            } else {
-                List(scroller: scroller, space: markdownConfiguration.markdownTheme.globalTheme.markdownBlockSpacing) {
-                    baseMarkdownList()
-                }
-                .margin(top: markdownConfiguration.markdownTheme.globalTheme.blockMarginTop, right: markdownConfiguration.markdownTheme.globalTheme.blockMarginRight, bottom: markdownConfiguration.markdownTheme.globalTheme.blockMarginBottom, left: markdownConfiguration.markdownTheme.globalTheme.blockMarginLeft)
-                .backgroundColor(markdownConfiguration.markdownTheme.globalTheme.backgroundColor)
-                .listDirection(Axis.Vertical)
-                .alignListItem(ListItemAlign.Start)
-                .scrollBar(BarState.Off)
-                .interopEnableScrollInteraction(markdownConfiguration.markdownTheme.globalTheme.openGestureSwipe)
-                .interopOnSizeChange {
-                    old, new => if (componentWidth != new.width) {
-                        componentWidth = new.width
-                    }
+            List(scroller: scroller, space: markdownConfiguration.markdownTheme.globalTheme.markdownBlockSpacing) {
+                baseMarkdownList()
+            }
+            .margin(top: markdownConfiguration.markdownTheme.globalTheme.blockMarginTop, right: markdownConfiguration.markdownTheme.globalTheme.blockMarginRight, bottom: markdownConfiguration.markdownTheme.globalTheme.blockMarginBottom, left: markdownConfiguration.markdownTheme.globalTheme.blockMarginLeft)
+            .backgroundColor(markdownConfiguration.markdownTheme.globalTheme.backgroundColor)
+            .listDirection(Axis.Vertical)
+            .alignListItem(ListItemAlign.Start)
+            .scrollBar(BarState.Off)
+            .enableScrollInteraction(markdownConfiguration.markdownTheme.globalTheme.openGestureSwipe)
+            .interopOnSizeChange {
+                old, new => if (componentWidth != new.width) {
+                    componentWidth = new.width
                 }
             }
         } else {

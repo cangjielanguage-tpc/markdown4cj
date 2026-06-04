@@ -539,7 +539,7 @@ func spanBackgroundColor18(nodeView: NodeView, markdownTheme: MarkdownTheme): (C
  * @param markdownTheme markdown样式
  * @return 文本背景颜色及圆角
  */
-func spanBackgroundColor19(nodeView: NodeView, markdownTheme: MarkdownTheme): TextBackgroundStyle {
+func spanBackgroundColor(nodeView: NodeView, markdownTheme: MarkdownTheme): TextBackgroundStyle {
     if (nodeView.isInLineCode) {
         return TextBackgroundStyle(color: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundColor, radiusBorder: BorderRadiuses(topLeft: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusTopLeft.vp, topRight: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusTopRight.vp, bottomLeft: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusBottomLeft.vp, bottomRight: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusBottomRight.vp)) // 内联代码
     }

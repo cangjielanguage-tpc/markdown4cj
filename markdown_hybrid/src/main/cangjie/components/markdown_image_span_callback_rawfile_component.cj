@@ -99,7 +99,12 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                 // 替换之后的图片
                 ImageSpan(rawFileCallbackReplaceImagePixelMap())
                     .margin(top: rawFileCallbackMarkdownTheme.imageTheme.imageMarginTop, right: rawFileCallbackMarkdownTheme.imageTheme.imageMarginRight, bottom: rawFileCallbackMarkdownTheme.imageTheme.imageMarginBottom, left: rawFileCallbackMarkdownTheme.imageTheme.imageMarginLeft)
-                    .interopBorderRadius(rawFileCallbackRadiusTopLeft, rawFileCallbackRadiusTopRight, rawFileCallbackRadiusBottomLeft, rawFileCallbackRadiusBottomRight)
+                    .borderRadius(
+                        topLeft: rawFileCallbackRadiusTopLeft,
+                        topRight: rawFileCallbackRadiusTopRight,
+                        bottomLeft: rawFileCallbackRadiusBottomLeft,
+                        bottomRight: rawFileCallbackRadiusBottomRight
+                    )
                     .borderWidth(rawFileCallbackMarkdownTheme.imageTheme.imageBorderWidth)
                     .borderColor(rawFileCallbackMarkdownTheme.imageTheme.imageBorderColor)
                     .borderStyle(rawFileCallbackMarkdownTheme.imageTheme.imageBorderStyle)
@@ -116,7 +121,12 @@ public class MarkdownSpanImageCallbackRawFileComponent {
                     // 加载图片
                     ImageSpan(rawFileCallbackImagePixelMap())
                         .margin(top: rawFileCallbackMarkdownTheme.imageTheme.imageMarginTop, right: rawFileCallbackMarkdownTheme.imageTheme.imageMarginRight, bottom: rawFileCallbackMarkdownTheme.imageTheme.imageMarginBottom, left: rawFileCallbackMarkdownTheme.imageTheme.imageMarginLeft)
-                        .interopBorderRadius(rawFileCallbackRadiusTopLeft, rawFileCallbackRadiusTopRight, rawFileCallbackRadiusBottomLeft, rawFileCallbackRadiusBottomRight)
+                        .borderRadius(
+                            topLeft: rawFileCallbackRadiusTopLeft,
+                            topRight: rawFileCallbackRadiusTopRight,
+                            bottomLeft: rawFileCallbackRadiusBottomLeft,
+                            bottomRight: rawFileCallbackRadiusBottomRight
+                        )
                         .borderWidth(rawFileCallbackMarkdownTheme.imageTheme.imageBorderWidth)
                         .borderColor(rawFileCallbackMarkdownTheme.imageTheme.imageBorderColor)
                         .borderStyle(rawFileCallbackMarkdownTheme.imageTheme.imageBorderStyle)

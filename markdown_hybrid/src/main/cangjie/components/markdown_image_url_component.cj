@@ -3,7 +3,7 @@ package markdown.components
 import ohos.state_macro_manage.*
 
 /**
- * URL入参API大于等于15的图片
+ * URL
  */
 @Component
 public class MarkdownImageUrlComponent {
