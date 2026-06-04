@@ -3,9 +3,9 @@
 </div>
 
 <p align="center">
-<img alt="" src="https://img.shields.io/badge/release-v1.0.0-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/release-v1.0.1-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/build-pass-brightgreen" style="display: inline-block;" />
-<img alt="" src="https://img.shields.io/badge/cjc-v1.1.0-brightgreen" style="display: inline-block;" />
+<img alt="" src="https://img.shields.io/badge/cjc-v1.1.3-brightgreen" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/cjcov-NA-red" style="display: inline-block;" />
 <img alt="" src="https://img.shields.io/badge/project-open-brightgreen" style="display: inline-block;" />
 </p>
@@ -220,21 +220,22 @@ Heading level 2
 
 在下述版本验证通过:
 
-| 编号 | 依赖构建工具                                       | 版本号            |
-|----|----------------------------------------------|----------------|
-| 1  | **DevEco Studio 6.0.2 Release**              | 6.0.2.640      |
-| 2  | **cjc**                                      | v1.1.0-beta.10 |
-| 2  | **DevEco Studio-Cangjie Plugin 6.0.2 Beta2** | 6.0.2.640      |
-| 2  | **compatibility-sdk-6.0.2.636**              | 6.0.2.636      |
+| 编号 | 依赖构建工具                                       | 版本号       |
+|----|----------------------------------------------|-----------|
+| 1  | **DevEco Studio**                            | 6.1.1.280 |
+| 2  | **cjc**                                      | v1.1.3    |
+| 3  | **DevEco Studio-Cangjie Plugin 6.1.1 Beta1** | 6.1.1.280 |
+| 4  | **compatibility-sdk-6.1.1.280**              | 6.1.1.280 |
+
 
 markdown依赖三方库：
 
-| 编号 | 依赖三方库         | 版本号              |
-|----|---------------|------------------|
-| 1  | stdx          | v1.1.0-beta.10.1 |
-| 2  | commonmark4cj | v1.0.3           |
-| 3  | prism4cj      | v1.0.4           |
-| 4  | formula       | v1.5.0           |
+| 编号 | 依赖三方库         | 版本号      |
+|----|---------------|----------|
+| 1  | stdx          | v1.1.3.1 |
+| 2  | commonmark4cj | v1.0.3   |
+| 3  | prism4cj      | v1.0.6   |
+| 4  | formula       | v1.5.2   |
 
 1. 内联代码暂未支持背景色设置
 2. 链接和删除线同时存在情况，只支持显示删除线的的中划线，不显示链接的下划线
