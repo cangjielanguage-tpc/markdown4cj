@@ -82,48 +82,6 @@ class MarkdownTableBlockCellComponent {
      */
     @Builder
     func tableBlockCellComponent() {
-        if (DeviceInfo.sdkApiVersion >= 19) {
-            tableBlockCellComponent19()
-        } else {
-            tableBlockCellComponent18()
-        }
-    }
-
-    /**
-     * 表格文字内容
-     */
-    @Builder
-    func tableBlockCellComponent18() {
-        Text() {
-            if (isRefresh) {
-                markdownSpanListComponent(
-                    tableBlockCellNodeViewList,
-                    tableBlockCellMarkdownConfiguration,
-                    tableBlockCellComponentWidth,
-                    Option<(Int64) -> Unit>.None,
-                    tableBlockCellImageCallback,
-                    tableBlockCellFootnoteCallback
-                )
-            }
-        }
-        .interopHalfLeading(true)
-        .interopCopyOption(if (tableBlockCellMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
-            true
-        } else {
-            false
-        })
-        .interopOnCopy({
-            str => if (let Some(v) <- tableBlockCellMarkdownConfiguration.textCopyCallback) {
-                v(str)
-            }
-        })
-    }
-
-    /**
-     * 表格文字内容
-     */
-    @Builder
-    func tableBlockCellComponent19() {
         Text() {
             if (isRefresh) {
                 markdownSpanListComponent(

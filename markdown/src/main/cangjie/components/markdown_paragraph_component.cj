@@ -141,57 +141,6 @@ class MarkdownParagraphComponent {
      */
     @Builder
     func paragraphComponent() {
-        if (DeviceInfo.sdkApiVersion >= 19) {
-            paragraphComponent19()
-        } else {
-            paragraphComponent18()
-        }
-    }
-
-    /**
-     * 段落文字内容
-     */
-    @Builder
-    func paragraphComponent18() {
-        Text() {
-            if (paragraphNodeView.footnoteID.isSome()) {
-                Span("[^${paragraphNodeView.footnoteID()}]: ")
-                    .fontFamily(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontFamily)
-                    .fontSize(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontSize)
-                    .fontWeight(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontWeight)
-                    .fontStyle(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontStyle)
-                    .fontColor(paragraphMarkdownConfiguration.markdownTheme.paragraphTheme.paragraphTextFontColor)
-            }
-            if (isRefresh) {
-                markdownSpanListComponent(
-                    paragraphNodeViewList,
-                    paragraphMarkdownConfiguration,
-                    paragraphComponentWidth,
-                    paragraphTocListOnClick,
-                    paragraphImageCallback,
-                    paragraphFootnoteCallback
-                )
-            }
-        }
-        .textAlign(TextAlign.Start)
-        .interopHalfLeading(true)
-        .interopCopyOption(if (paragraphMarkdownConfiguration.markdownTheme.globalTheme.isOnCopy) {
-            true
-        } else {
-            false
-        })
-        .interopOnCopy({
-            str => if (let Some(v) <- paragraphMarkdownConfiguration.textCopyCallback) {
-                v(str)
-            }
-        })
-    }
-
-    /**
-     * 段落文字内容
-     */
-    @Builder
-    func paragraphComponent19() {
         Text() {
             if (paragraphNodeView.footnoteID.isSome()) {
                 Span("[^${paragraphNodeView.footnoteID()}]: ")

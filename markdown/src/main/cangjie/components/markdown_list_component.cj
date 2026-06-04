@@ -157,35 +157,6 @@ public class MarkdownListComponent {
      */
     @Builder
     func listPrefixTextINCComponent(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration, listDepth: Int64) {
-        if (DeviceInfo.sdkApiVersion >= 19) {
-            listPrefixTextINCComponent19(item, isBullet, markdownConfiguration, listDepth)
-        } else {
-            listPrefixTextINCComponent18(item, isBullet, markdownConfiguration, listDepth)
-        }
-    }
-
-    /**
-     * 无序/有序列表的前缀文本
-     */
-    @Builder
-    func listPrefixTextINCComponent18(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration, listDepth: Int64) {
-        Text(listPrefixStr(item, listDepth, isBullet, markdownConfiguration.markdownTheme))
-            .fontFamily(listPrefixFontFamily(isBullet, markdownConfiguration.markdownTheme))
-            .fontSize(listPrefixSize(isBullet, markdownConfiguration.markdownTheme))
-            .fontWeight(listPrefixFontWeight(isBullet, markdownConfiguration.markdownTheme))
-            .fontStyle(listPrefixFontStyle(isBullet, markdownConfiguration.markdownTheme))
-            .fontColor(listPrefixColor(isBullet, markdownConfiguration.markdownTheme))
-            .lineHeight(listPrefixLineHeight(isBullet, markdownConfiguration.markdownTheme))
-            .margin(right: listPrefixSpacing(isBullet, markdownConfiguration.markdownTheme))
-            .interopHalfLeading(true)
-            .textAlign(TextAlign.Center)
-    }
-
-    /**
-     * 无序/有序列表的前缀文本
-     */
-    @Builder
-    func listPrefixTextINCComponent19(item: NodeView, isBullet: Bool, markdownConfiguration: MarkdownConfiguration, listDepth: Int64) {
         Text(listPrefixStr(item, listDepth, isBullet, markdownConfiguration.markdownTheme))
             .fontFamily(listPrefixFontFamily(isBullet, markdownConfiguration.markdownTheme))
             .fontSize(listPrefixSize(isBullet, markdownConfiguration.markdownTheme))

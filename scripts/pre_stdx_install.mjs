@@ -8,12 +8,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 
 // stdx configuration for download
-const ARM64_ZIP_URL = 'https://gitcode.com/Cangjie/cangjie-stdx-bin/releases/download/v1.0.1.1/cangjie-stdx-ohos-aarch64-1.0.1.1.zip';
-const ARM64_ZIP_FILENAME = 'cangjie-stdx-ohos-aarch64-1.0.1.1.zip';
+const ARM64_ZIP_URL = 'https://gitcode.com/Cangjie/cangjie_stdx/releases/download/v1.1.3.1/cangjie-stdx-ohos-aarch64-1.1.3.1.zip';
+const ARM64_ZIP_FILENAME = 'cangjie-stdx-ohos-aarch64-1.1.3.1.zip';
 const ARM64_ZIP_TEMP_PATH = path.join(PROJECT_ROOT, ARM64_ZIP_FILENAME);
 
-const X64_ZIP_URL = 'https://gitcode.com/Cangjie/cangjie-stdx-bin/releases/download/v1.0.1.1/cangjie-stdx-ohos-x64-1.0.1.1.zip';
-const X64_ZIP_FILENAME = 'cangjie-stdx-linux-x64-1.0.1.1.zip';
+const X64_ZIP_URL = 'https://gitcode.com/Cangjie/cangjie_stdx/releases/download/v1.1.3.1/cangjie-stdx-ohos-x64-1.1.3.1.zip';
+const X64_ZIP_FILENAME = 'cangjie-stdx-linux-x64-1.1.3.1.zip';
 const X64_ZIP_TEMP_PATH = path.join(PROJECT_ROOT, X64_ZIP_FILENAME);
 
 const EXTRACT_PATH = path.join(PROJECT_ROOT, 'stdx_bin');

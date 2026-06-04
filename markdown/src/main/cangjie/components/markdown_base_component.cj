@@ -123,7 +123,7 @@ func imageSpanPlaceholderComponent(
 ) {
     ImageSpan(imageResource)
         .margin(top: imageMarginTop, right: imageMarginRight, bottom: imageMarginBottom, left: imageMarginLeft)
-        .interopBorderRadius(placeholderRadiusTopLeft, placeholderRadiusTopRight, placeholderRadiusBottomLeft, placeholderRadiusBottomRight)
+        .borderRadius(topLeft: placeholderRadiusTopLeft, topRight: placeholderRadiusTopRight, bottomLeft: placeholderRadiusBottomLeft, bottomRight: placeholderRadiusBottomRight)
         .borderWidth(imageBorderWidth)
         .borderColor(imageBorderColor)
         .borderStyle(imageBorderStyle)
@@ -286,52 +286,20 @@ func spanImageComponent(
                 rawFileImageAlign: spanListNodeView.imageAlign
             )
         } else {
-            if (DeviceInfo.sdkApiVersion >= 19) {
-                // API大于等于19
-                MarkdownSpanImageUrl19Component(
-                    url19MarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                    url19Destination: spanListNodeView.imageUrl(),
-                    url19ComponentWidth: spanListComponentWidth,
-                    url19ImageCallback: spanListImageCallback,
-                    url19LinkCallback: spanListMarkdownConfiguration.linkCallback,
-                    url19Link: spanListNodeView.isLink,
-                    url19LinkUrl: spanListNodeView.linkUrl,
-                    url19ImageWidth: spanListNodeView.imageWidth,
-                    url19ImageHeight: spanListNodeView.imageHeight,
-                    url19ImageRadius: spanListNodeView.imageRadius,
-                    url19ImageAlign: spanListNodeView.imageAlign
-                )
-            } else if (DeviceInfo.sdkApiVersion >= 15) {
-                // API大于等于15
-                MarkdownSpanImageUrl15Component(
-                    url15MarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                    url15Destination: spanListNodeView.imageUrl(),
-                    url15ComponentWidth: spanListComponentWidth,
-                    url15ImageCallback: spanListImageCallback,
-                    url15LinkCallback: spanListMarkdownConfiguration.linkCallback,
-                    url15Link: spanListNodeView.isLink,
-                    url15LinkUrl: spanListNodeView.linkUrl,
-                    url15ImageWidth: spanListNodeView.imageWidth,
-                    url15ImageHeight: spanListNodeView.imageHeight,
-                    url15ImageRadius: spanListNodeView.imageRadius,
-                    url15ImageAlign: spanListNodeView.imageAlign
-                )
-            } else {
-                // API小于15
-                MarkdownSpanImageUrl14Component(
-                    url14MarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                    url14Destination: spanListNodeView.imageUrl(),
-                    url14ComponentWidth: spanListComponentWidth,
-                    url14ImageCallback: spanListImageCallback,
-                    url14LinkCallback: spanListMarkdownConfiguration.linkCallback,
-                    url14Link: spanListNodeView.isLink,
-                    url14LinkUrl: spanListNodeView.linkUrl,
-                    url14ImageWidth: spanListNodeView.imageWidth,
-                    url14ImageHeight: spanListNodeView.imageHeight,
-                    url14ImageRadius: spanListNodeView.imageRadius,
-                    url14ImageAlign: spanListNodeView.imageAlign
-                )
-            }
+            // url
+            MarkdownSpanImageUrlComponent(
+                urlMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
+                urlDestination: spanListNodeView.imageUrl(),
+                urlComponentWidth: spanListComponentWidth,
+                urlImageCallback: spanListImageCallback,
+                urlLinkCallback: spanListMarkdownConfiguration.linkCallback,
+                urlLink: spanListNodeView.isLink,
+                urlLinkUrl: spanListNodeView.linkUrl,
+                urlImageWidth: spanListNodeView.imageWidth,
+                urlImageHeight: spanListNodeView.imageHeight,
+                urlImageRadius: spanListNodeView.imageRadius,
+                urlImageAlign: spanListNodeView.imageAlign
+            )
         }
     } else {
         // 有图片替换回调接口
@@ -352,55 +320,21 @@ func spanImageComponent(
                 rawFileCallbackImageAlign: spanListNodeView.imageAlign
             )
         } else {
-            if (DeviceInfo.sdkApiVersion >= 19) {
-                // API大于等于19
-                MarkdownSpanImageCallbackUrl19Component(
-                    url19CallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                    url19CallbackDestination: spanListNodeView.imageUrl(),
-                    url19CallbackComponentWidth: spanListComponentWidth,
-                    url19CallbackImageCallbackCallback: spanListMarkdownConfiguration.imageCallbackCallback(),
-                    url19CallbackImageCallback: spanListImageCallback,
-                    url19CallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                    url19CallbackLink: spanListNodeView.isLink,
-                    url19CallbackLinkUrl: spanListNodeView.linkUrl,
-                    url19CallbackImageWidth: spanListNodeView.imageWidth,
-                    url19CallbackImageHeight: spanListNodeView.imageHeight,
-                    url19CallbackImageRadius: spanListNodeView.imageRadius,
-                    url19CallbackImageAlign: spanListNodeView.imageAlign
-                )
-            } else if (DeviceInfo.sdkApiVersion >= 15) {
-                // API大于等于15
-                MarkdownSpanImageCallbackUrl15Component(
-                    url15CallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                    url15CallbackDestination: spanListNodeView.imageUrl(),
-                    url15CallbackComponentWidth: spanListComponentWidth,
-                    url15CallbackImageCallbackCallback: spanListMarkdownConfiguration.imageCallbackCallback(),
-                    url15CallbackImageCallback: spanListImageCallback,
-                    url15CallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                    url15CallbackLink: spanListNodeView.isLink,
-                    url15CallbackLinkUrl: spanListNodeView.linkUrl,
-                    url15CallbackImageWidth: spanListNodeView.imageWidth,
-                    url15CallbackImageHeight: spanListNodeView.imageHeight,
-                    url15CallbackImageRadius: spanListNodeView.imageRadius,
-                    url15CallbackImageAlign: spanListNodeView.imageAlign
-                )
-            } else {
-                // API小于15
-                MarkdownSpanImageCallbackUrl14Component(
-                    url14CallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
-                    url14CallbackDestination: spanListNodeView.imageUrl(),
-                    url14CallbackComponentWidth: spanListComponentWidth,
-                    url14CallbackImageCallbackCallback: spanListMarkdownConfiguration.imageCallbackCallback(),
-                    url14CallbackImageCallback: spanListImageCallback,
-                    url14CallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
-                    url14CallbackLink: spanListNodeView.isLink,
-                    url14CallbackLinkUrl: spanListNodeView.linkUrl,
-                    url14CallbackImageWidth: spanListNodeView.imageWidth,
-                    url14CallbackImageHeight: spanListNodeView.imageHeight,
-                    url14CallbackImageRadius: spanListNodeView.imageRadius,
-                    url14CallbackImageAlign: spanListNodeView.imageAlign
-                )
-            }
+            // url
+            MarkdownSpanImageCallbackUrlComponent(
+                urlCallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
+                urlCallbackDestination: spanListNodeView.imageUrl(),
+                urlCallbackComponentWidth: spanListComponentWidth,
+                urlCallbackImageCallbackCallback: spanListMarkdownConfiguration.imageCallbackCallback(),
+                urlCallbackImageCallback: spanListImageCallback,
+                urlCallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
+                urlCallbackLink: spanListNodeView.isLink,
+                urlCallbackLinkUrl: spanListNodeView.linkUrl,
+                urlCallbackImageWidth: spanListNodeView.imageWidth,
+                urlCallbackImageHeight: spanListNodeView.imageHeight,
+                urlCallbackImageRadius: spanListNodeView.imageRadius,
+                urlCallbackImageAlign: spanListNodeView.imageAlign
+            )
         }
     }
 }
