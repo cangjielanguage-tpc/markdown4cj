@@ -46,8 +46,8 @@ class MarkdownParseCodeUtil {
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                callback(prismNodesParseResLists)
             }
+            callback(prismNodesParseResLists)
         }
         return fut
     }
@@ -100,8 +100,8 @@ class MarkdownParseCodeUtil {
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                callback(prismNodesParseResUIList, lines)
             }
+            callback(prismNodesParseResUIList, lines)
         }
         return fut
     }
@@ -137,8 +137,8 @@ class MarkdownParseCodeUtil {
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                callback(prismNodesParseResUIList)
             }
+            callback(prismNodesParseResUIList)
         }
         return fut
     }

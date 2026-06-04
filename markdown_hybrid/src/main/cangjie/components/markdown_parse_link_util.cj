@@ -41,24 +41,32 @@ class MarkdownParseLinkUtil {
                 }
                 imageSource = createImageSource(arr)
                 if (Thread.currentThread.hasPendingCancellation) {
-                    imageSource?.Release()
                     return
                 }
                 pixelMap = imageSource?.createPixelMap()
-                imageSource?.Release()
-                imageSource = Option<ImageSource>.None
-                var size: Size = pixelMap().getImageInfo().size
-                imageWidth = Float64(size.width)
-                imageHeight = Float64(size.height)
-            } catch (e: Exception) {
-                imageSource?.Release() // createPixelMap 异常情况
-            } finally {
                 if (Thread.currentThread.hasPendingCancellation) {
                     pixelMap?.Release()
+                    pixelMap = Option<PixelMap>.None
                     return
                 }
-                callback(pixelMap, imageHeight, imageWidth)
+                if (let Some(p) <- pixelMap) {
+                    var size: Size = p.getImageInfo().size
+                    imageWidth = Float64(size.width)
+                    imageHeight = Float64(size.height)
+                }
+            } catch (e: Exception) {
+                pixelMap?.Release()
+                pixelMap = Option<PixelMap>.None
+            } finally {
+                imageSource?.Release()
+                imageSource = Option<ImageSource>.None
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap?.Release()
+                    pixelMap = Option<PixelMap>.None
+                    return
+                }
             }
+            callback(pixelMap, imageHeight, imageWidth)
         }
         return fut
     }
@@ -110,24 +118,32 @@ class MarkdownParseLinkUtil {
                 }
                 imageSource = createImageSource(arr)
                 if (Thread.currentThread.hasPendingCancellation) {
-                    imageSource?.Release()
                     return
                 }
                 pixelMap = imageSource?.createPixelMap()
-                imageSource?.Release()
-                imageSource = Option<ImageSource>.None
-                var size: Size = pixelMap().getImageInfo().size
-                imageWidth = Float64(size.width)
-                imageHeight = Float64(size.height)
-            } catch (e: Exception) {
-                imageSource?.Release() // createPixelMap 异常情况
-            } finally {
                 if (Thread.currentThread.hasPendingCancellation) {
                     pixelMap?.Release()
+                    pixelMap = Option<PixelMap>.None
                     return
                 }
-                callback(pixelMap, imageHeight, imageWidth)
+                if (let Some(p) <- pixelMap) {
+                    var size: Size = p.getImageInfo().size
+                    imageWidth = Float64(size.width)
+                    imageHeight = Float64(size.height)
+                }
+            } catch (e: Exception) {
+                pixelMap?.Release()
+                pixelMap = Option<PixelMap>.None
+            } finally {
+                imageSource?.Release()
+                imageSource = Option<ImageSource>.None
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap?.Release()
+                    pixelMap = Option<PixelMap>.None
+                    return
+                }
             }
+            callback(pixelMap, imageHeight, imageWidth)
         }
         return fut
     }
@@ -194,24 +210,32 @@ class MarkdownParseLinkUtil {
                 }
                 imageSource = createImageSource(arr)
                 if (Thread.currentThread.hasPendingCancellation) {
-                    imageSource?.Release()
                     return
                 }
                 pixelMap = imageSource?.createPixelMap()
-                imageSource?.Release()
-                imageSource = Option<ImageSource>.None
-                var size: Size = pixelMap().getImageInfo().size
-                imageWidth = Float64(size.width)
-                imageHeight = Float64(size.height)
-            } catch (e: Exception) {
-                imageSource?.Release() // createPixelMap 异常情况
-            } finally {
                 if (Thread.currentThread.hasPendingCancellation) {
                     pixelMap?.Release()
+                    pixelMap = Option<PixelMap>.None
                     return
                 }
-                callback(pixelMap, imageHeight, imageWidth)
+                if (let Some(p) <- pixelMap) {
+                    var size: Size = p.getImageInfo().size
+                    imageWidth = Float64(size.width)
+                    imageHeight = Float64(size.height)
+                }
+            } catch (e: Exception) {
+                pixelMap?.Release()
+                pixelMap = Option<PixelMap>.None
+            } finally {
+                imageSource?.Release()
+                imageSource = Option<ImageSource>.None
+                if (Thread.currentThread.hasPendingCancellation) {
+                    pixelMap?.Release()
+                    pixelMap = Option<PixelMap>.None
+                    return
+                }
             }
+            callback(pixelMap, imageHeight, imageWidth)
         }
         return fut
     }
