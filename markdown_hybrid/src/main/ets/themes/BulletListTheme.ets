@@ -1,7 +1,9 @@
+import { MarkdownMarginOptions, MarkdownPaddingOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-无序/任务列表样式
  */
-export class MarkdownThemeBulletList {
+export class BulletListTheme {
   /**
    * 无序/任务背景颜色
    */
@@ -132,57 +134,61 @@ export class MarkdownThemeBulletList {
   }
 
   /**
-   * 统一设置无序/任务外边距
+   * 设置无序/任务外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setBulletListAllMargin(margin: number): void {
-    this.bulletListMarginTop = margin
-    this.bulletListMarginRight = margin
-    this.bulletListMarginBottom = margin
-    this.bulletListMarginLeft = margin
+  setBulletListMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === "number") {
+      this.bulletListMarginTop = options
+      this.bulletListMarginRight = options
+      this.bulletListMarginBottom = options
+      this.bulletListMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.bulletListMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.bulletListMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.bulletListMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.bulletListMarginLeft = options.left
+      }
+    }
   }
 
   /**
-   * 分别设置无序/任务四个外边距
+   * 设置无序/任务内边距
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setBulletListMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.bulletListMarginTop = top
-    this.bulletListMarginRight = right
-    this.bulletListMarginBottom = bottom
-    this.bulletListMarginLeft = left
-  }
-
-  /**
-   * 统一设置无序/任务内边距
-   *
-   * @param padding 内边距
-   */
-  setBulletListAllPadding(padding: number): void {
-    this.bulletListPaddingTop = padding
-    this.bulletListPaddingRight = padding
-    this.bulletListPaddingBottom = padding
-    this.bulletListPaddingLeft = padding
-  }
-
-  /**
-   * 分别设置无序/任务四个内边距
-   *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
-   */
-  setBulletListPadding(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.bulletListPaddingTop = top
-    this.bulletListPaddingRight = right
-    this.bulletListPaddingBottom = bottom
-    this.bulletListPaddingLeft = left
+  setBulletListPadding(options: MarkdownPaddingOptions | number): void {
+    if (typeof options === "number") {
+      this.bulletListPaddingTop = options
+      this.bulletListPaddingRight = options
+      this.bulletListPaddingBottom = options
+      this.bulletListPaddingLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.bulletListPaddingTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.bulletListPaddingRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.bulletListPaddingBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.bulletListPaddingLeft = options.left
+      }
+    }
   }
 
   /**

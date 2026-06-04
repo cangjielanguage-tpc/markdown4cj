@@ -161,7 +161,7 @@ struct BigDataDetailsPage {
     plugin.setIsLatexMathPlugin(true) // 数学公式插件
     plugin.setIsStrikethroughPlugin(true) // 删除线插件
     plugin.setIsTaskListPlugin(true) // 任务列表插件
-    plugin.setIsLinkifyPlugin(true, []) // 自动链接插件
+    plugin.setIsLinkifyPlugin(true) // 自动链接插件
     plugin.setIsBlockAudioPlugin(true) // 音频插件
     plugin.setIsBlockVideoPlugin(true) // 视频插件
     plugin.setIsImageCollectPlugin(true) // 图片视频列表url集合列表解析插件

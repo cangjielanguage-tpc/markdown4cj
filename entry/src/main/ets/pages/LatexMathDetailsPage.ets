@@ -2,13 +2,13 @@ import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import {
   CJMarkdown,
+  GlobalTheme,
   LatexMathColorFormat,
+  LatexMathTheme,
   MarkdownConfiguration,
   MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme,
-  MarkdownThemeLatexMath,
-  MarkdownThemeGlobal
+  MarkdownTheme
 } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
@@ -291,22 +291,22 @@ struct LatexMathDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - LatexMath
-    let latexMathTheme = new MarkdownThemeLatexMath()
-    latexMathTheme.setLatexMathMargin(this.latexMathMarginTop, this.latexMathMarginRight, this.latexMathMarginBottom, this.latexMathMarginLeft)
-    latexMathTheme.setLatexMathPadding(this.latexMathPaddingTop, this.latexMathPaddingRight, this.latexMathPaddingBottom, this.latexMathPaddingLeft)
+    let latexMathTheme = new LatexMathTheme()
+    latexMathTheme.setLatexMathMargin({top: this.latexMathMarginTop, right: this.latexMathMarginRight, bottom: this.latexMathMarginBottom, left: this.latexMathMarginLeft})
+    latexMathTheme.setLatexMathPadding({top: this.latexMathPaddingTop, right: this.latexMathPaddingRight, bottom: this.latexMathPaddingBottom, left: this.latexMathPaddingLeft})
     latexMathTheme.setLatexMathDefaultText(this.latexMathDefaultText)
     if (this.latexMathDefaultTextFontColor !== undefined) {
       latexMathTheme.setLatexMathDefaultTextFontColor(this.latexMathDefaultTextFontColor)
@@ -325,7 +325,7 @@ struct LatexMathDetailsPage {
     latexMathTheme.setLatexMathColorFormat(this.latexMathColorFormat)
     latexMathTheme.setLatexMathBlockCenter(this.latexMathBlockCenter)
     latexMathTheme.setLatexMathResPath(this.latexMathResPath)
-    theme.setMarkdownThemeLatexMath(latexMathTheme)
+    theme.setLatexMathTheme(latexMathTheme)
     
     return theme
   }

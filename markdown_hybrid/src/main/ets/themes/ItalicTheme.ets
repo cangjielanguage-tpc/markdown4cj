@@ -1,7 +1,7 @@
 /**
  * Markdown用户可设置的样式-斜体文本样式
  */
-export class MarkdownThemeItalic {
+export class ItalicTheme {
   /**
    * 斜体文本颜色
    */

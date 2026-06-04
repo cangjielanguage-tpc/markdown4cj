@@ -1,11 +1,13 @@
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import {
+  BulletListTheme,
+  CJMarkdown,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
   MarkdownTheme,
-  MarkdownThemeBulletList,
-  MarkdownThemeOrderedList,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  OrderedListTheme} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { ListData } from '../model/ListData'
@@ -360,25 +362,25 @@ struct ListDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - OrderedList
-    let orderedListTheme = new MarkdownThemeOrderedList()
+    let orderedListTheme = new OrderedListTheme()
     if (this.orderedListBackgroundColor !== undefined) {
       orderedListTheme.setOrderedListBackgroundColor(this.orderedListBackgroundColor)
     }
-    orderedListTheme.setOrderedListMargin(this.orderedListMarginTop, this.orderedListMarginRight, this.orderedListMarginBottom, this.orderedListMarginLeft)
-    orderedListTheme.setOrderedListPadding(this.orderedListPaddingTop, this.orderedListPaddingRight, this.orderedListPaddingBottom, this.orderedListPaddingLeft)
+    orderedListTheme.setOrderedListMargin({top: this.orderedListMarginTop, right: this.orderedListMarginRight, bottom: this.orderedListMarginBottom, left: this.orderedListMarginLeft})
+    orderedListTheme.setOrderedListPadding({top: this.orderedListPaddingTop, right: this.orderedListPaddingRight, bottom: this.orderedListPaddingBottom, left: this.orderedListPaddingLeft})
     orderedListTheme.setOrderedListChildSpacing(this.orderedListChildSpacing)
     orderedListTheme.setOrderedListChildChildSpacing(this.orderedListChildChildSpacing)
     orderedListTheme.setOrderedListMarkerSpacing(this.orderedListMarkerSpacing)
@@ -390,15 +392,15 @@ struct ListDetailsPage {
     orderedListTheme.setOrderedListMarkerTextFontWeight(this.orderedListMarkerTextFontWeight)
     orderedListTheme.setOrderedListMarkerTextFontFamily(this.orderedListMarkerTextFontFamily)
     orderedListTheme.setOrderedListMarkerTextLineHeight(this.orderedListMarkerTextLineHeight)
-    theme.setMarkdownThemeOrderedList(orderedListTheme)
+    theme.setOrderedListTheme(orderedListTheme)
     
     // ---------- 专有 - BulletList
-    let bulletListTheme = new MarkdownThemeBulletList()
+    let bulletListTheme = new BulletListTheme()
     if (this.bulletListBackgroundColor !== undefined) {
       bulletListTheme.setBulletListBackgroundColor(this.bulletListBackgroundColor)
     }
-    bulletListTheme.setBulletListMargin(this.bulletListMarginTop, this.bulletListMarginRight, this.bulletListMarginBottom, this.bulletListMarginLeft)
-    bulletListTheme.setBulletListPadding(this.bulletListPaddingTop, this.bulletListPaddingRight, this.bulletListPaddingBottom, this.bulletListPaddingLeft)
+    bulletListTheme.setBulletListMargin({top: this.bulletListMarginTop, right: this.bulletListMarginRight, bottom: this.bulletListMarginBottom, left: this.bulletListMarginLeft})
+    bulletListTheme.setBulletListPadding({top: this.bulletListPaddingTop, right: this.bulletListPaddingRight, bottom: this.bulletListPaddingBottom, left: this.bulletListPaddingLeft})
     bulletListTheme.setBulletListChildSpacing(this.bulletListChildSpacing)
     bulletListTheme.setBulletListChildChildSpacing(this.bulletListChildChildSpacing)
     bulletListTheme.setBulletListBulletSpacing(this.bulletListBulletSpacing)
@@ -418,7 +420,7 @@ struct ListDetailsPage {
       bulletListTheme.setBulletListCheckboxSelectedColor(this.bulletListCheckboxSelectedColor)
     }
     bulletListTheme.setBulletListCheckboxShape(this.bulletListCheckboxShape)
-    theme.setMarkdownThemeBulletList(bulletListTheme)
+    theme.setBulletListTheme(bulletListTheme)
     
     return theme
   }
@@ -429,7 +431,7 @@ struct ListDetailsPage {
     plugin.setIsLatexMathPlugin(true) // 数学公式插件
     plugin.setIsStrikethroughPlugin(true) // 删除线插件
     plugin.setIsTaskListPlugin(true) // 任务列表插件
-    plugin.setIsLinkifyPlugin(true, []) // 自动链接插件
+    plugin.setIsLinkifyPlugin(true) // 自动链接插件
     plugin.setIsBlockAudioPlugin(true) // 音频插件
     plugin.setIsBlockVideoPlugin(true) // 视频插件
     plugin.setIsImageCollectPlugin(true) // 图片视频列表url集合列表解析插件

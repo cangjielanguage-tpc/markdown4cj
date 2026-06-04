@@ -1,10 +1,11 @@
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
   MarkdownTheme,
-  MarkdownThemeTable,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  TableTheme} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { TableData } from '../model/TableData'
@@ -346,20 +347,20 @@ struct TableDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Table
-    let tableTheme = new MarkdownThemeTable()
+    let tableTheme = new TableTheme()
     if (this.tableTitleBackgroundColor !== undefined) {
       tableTheme.setTableTitleBackgroundColor(this.tableTitleBackgroundColor)
     }
@@ -369,15 +370,15 @@ struct TableDetailsPage {
     if (this.tableContentEvenRowBackgroundColor !== undefined) {
       tableTheme.setTableContentEvenRowBackgroundColor(this.tableContentEvenRowBackgroundColor)
     }
-    tableTheme.setTableMargin(this.tableMarginTop, this.tableMarginRight, this.tableMarginBottom, this.tableMarginLeft)
-    tableTheme.setTablePadding(this.tablePaddingTop, this.tablePaddingRight, this.tablePaddingBottom, this.tablePaddingLeft)
-    tableTheme.setTableCellPadding(this.tableCellPaddingTop, this.tableCellPaddingRight, this.tableCellPaddingBottom, this.tableCellPaddingLeft)
+    tableTheme.setTableMargin({top: this.tableMarginTop, right: this.tableMarginRight, bottom: this.tableMarginBottom, left: this.tableMarginLeft})
+    tableTheme.setTablePadding({top: this.tablePaddingTop, right: this.tablePaddingRight, bottom: this.tablePaddingBottom, left: this.tablePaddingLeft})
+    tableTheme.setTableCellPadding({top: this.tableCellPaddingTop, right: this.tableCellPaddingRight, bottom: this.tableCellPaddingBottom, left: this.tableCellPaddingLeft})
     tableTheme.setTableBorderStyle(this.tableBorderStyle)
     tableTheme.setTableBorderWidth(this.tableBorderWidth)
     if (this.tableBorderColor !== undefined) {
       tableTheme.setTableBorderColor(this.tableBorderColor)
     }
-    tableTheme.setTableRadius(this.tableRadiusTopLeft, this.tableRadiusTopRight, this.tableRadiusBottomLeft, this.tableRadiusBottomRight)
+    tableTheme.setTableRadius({topLeft: this.tableRadiusTopLeft, topRight: this.tableRadiusTopRight, bottomLeft: this.tableRadiusBottomLeft, bottomRight: this.tableRadiusBottomRight})
     tableTheme.setTableScrollBarState(this.tableScrollBarState)
     if (this.tableScrollBarColor !== undefined) {
       tableTheme.setTableScrollBarColor(this.tableScrollBarColor)
@@ -403,7 +404,7 @@ struct TableDetailsPage {
     tableTheme.setTableContentTextFontFamily(this.tableContentTextFontFamily)
     tableTheme.setTableContentTextLineHeight(this.tableContentTextLineHeight)
     tableTheme.setTableContentTextLetterSpacing(this.tableContentTextLetterSpacing)
-    theme.setMarkdownThemeTable(tableTheme)
+    theme.setTableTheme(tableTheme)
     
     return theme
   }

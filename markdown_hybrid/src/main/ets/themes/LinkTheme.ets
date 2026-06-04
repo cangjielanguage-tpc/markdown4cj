@@ -1,7 +1,9 @@
+import { MarkdownRadiusOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-链接文本样式
  */
-export class MarkdownThemeLink {
+export class LinkTheme {
   /**
    * 链接是否是图片显示
    */
@@ -325,30 +327,32 @@ export class MarkdownThemeLink {
   }
 
   /**
-   * 统一设置链接文本背景四个圆角
+   * 设置圆角
    *
-   * @param radius 统一圆角半径，同时赋值给四个角
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setLinkTextBackgroundAllRadius(radius: number): void {
-    this.linkTextBackgroundRadiusTopLeft = radius
-    this.linkTextBackgroundRadiusTopRight = radius
-    this.linkTextBackgroundRadiusBottomLeft = radius
-    this.linkTextBackgroundRadiusBottomRight = radius
-  }
-
-  /**
-   * 分别设置4个圆角
-   *
-   * @param topLeft 左上圆角
-   * @param topRight 右上圆角
-   * @param bottomLeft 左下圆角
-   * @param bottomRight 右下圆角
-   */
-  setLinkTextBackgroundRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
-    this.linkTextBackgroundRadiusTopLeft = topLeft
-    this.linkTextBackgroundRadiusTopRight = topRight
-    this.linkTextBackgroundRadiusBottomLeft = bottomLeft
-    this.linkTextBackgroundRadiusBottomRight = bottomRight
+  setLinkTextBackgroundRadius(options: MarkdownRadiusOptions | number): void {
+    if (typeof options === 'number') {
+      this.linkTextBackgroundRadiusTopLeft = options
+      this.linkTextBackgroundRadiusTopRight = options
+      this.linkTextBackgroundRadiusBottomLeft = options
+      this.linkTextBackgroundRadiusBottomRight = options
+    } else {
+      if (options.topLeft !== undefined) {
+        this.linkTextBackgroundRadiusTopLeft = options.topLeft
+      }
+      if (options.topRight !== undefined) {
+        this.linkTextBackgroundRadiusTopRight = options.topRight
+      }
+      if (options.bottomLeft !== undefined) {
+        this.linkTextBackgroundRadiusBottomLeft = options.bottomLeft
+      }
+      if (options.bottomRight !== undefined) {
+        this.linkTextBackgroundRadiusBottomRight = options.bottomRight
+      }
+    }
   }
 
   /**

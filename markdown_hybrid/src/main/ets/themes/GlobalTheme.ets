@@ -1,7 +1,9 @@
+import { MarkdownMarginOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-全局样式
  */
-export class MarkdownThemeGlobal {
+export class GlobalTheme {
   /**
    * markdown上下文 - 互操作
    */
@@ -85,30 +87,32 @@ export class MarkdownThemeGlobal {
   }
 
   /**
-   * 设置4个外边距为统一值
+   * 设置外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setGlobalAllMargin(margin: number): void {
-    this.blockMarginTop = margin
-    this.blockMarginRight = margin
-    this.blockMarginBottom = margin
-    this.blockMarginLeft = margin
-  }
-
-  /**
-   * 分别设置4个外边距
-   *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
-   */
-  setGlobalMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.blockMarginTop = top
-    this.blockMarginRight = right
-    this.blockMarginBottom = bottom
-    this.blockMarginLeft = left
+  setGlobalMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === "number") {
+      this.blockMarginTop = options
+      this.blockMarginRight = options
+      this.blockMarginBottom = options
+      this.blockMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.blockMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.blockMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.blockMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.blockMarginLeft = options.left
+      }
+    }
   }
 
   /**

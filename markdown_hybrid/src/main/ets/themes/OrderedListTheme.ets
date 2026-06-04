@@ -1,7 +1,9 @@
+import { MarkdownMarginOptions, MarkdownPaddingOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-有序列表样式
  */
-export class MarkdownThemeOrderedList {
+export class OrderedListTheme {
   /**
    * 有序列表背景颜色
    */
@@ -102,57 +104,61 @@ export class MarkdownThemeOrderedList {
   }
 
   /**
-   * 设置4个外边距为统一值
+   * 设置外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setOrderedListAllMargin(margin: number): void {
-    this.orderedListMarginTop = margin
-    this.orderedListMarginRight = margin
-    this.orderedListMarginBottom = margin
-    this.orderedListMarginLeft = margin
+  setOrderedListMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === "number") {
+      this.orderedListMarginTop = options
+      this.orderedListMarginRight = options
+      this.orderedListMarginBottom = options
+      this.orderedListMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.orderedListMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.orderedListMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.orderedListMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.orderedListMarginLeft = options.left
+      }
+    }
   }
 
   /**
-   * 分别设置4个外边距
+   * 设置内边距
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setOrderedListMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.orderedListMarginTop = top
-    this.orderedListMarginRight = right
-    this.orderedListMarginBottom = bottom
-    this.orderedListMarginLeft = left
-  }
-
-  /**
-   * 设置4个内边距为统一值
-   *
-   * @param padding 内边距
-   */
-  setOrderedListAllPadding(padding: number): void {
-    this.orderedListPaddingTop = padding
-    this.orderedListPaddingRight = padding
-    this.orderedListPaddingBottom = padding
-    this.orderedListPaddingLeft = padding
-  }
-
-  /**
-   * 分别设置4个内边距
-   *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
-   */
-  setOrderedListPadding(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.orderedListPaddingTop = top
-    this.orderedListPaddingRight = right
-    this.orderedListPaddingBottom = bottom
-    this.orderedListPaddingLeft = left
+  setOrderedListPadding(options: MarkdownPaddingOptions | number): void {
+    if (typeof options === "number") {
+      this.orderedListPaddingTop = options
+      this.orderedListPaddingRight = options
+      this.orderedListPaddingBottom = options
+      this.orderedListPaddingLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.orderedListPaddingTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.orderedListPaddingRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.orderedListPaddingBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.orderedListPaddingLeft = options.left
+      }
+    }
   }
 
   /**

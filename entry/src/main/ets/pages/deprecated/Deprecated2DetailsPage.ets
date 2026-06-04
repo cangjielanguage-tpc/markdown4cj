@@ -1,9 +1,10 @@
 import { titleComponent } from '../../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { DeprecatedData } from '../../model/DeprecatedData'
@@ -346,13 +347,13 @@ struct Deprecated2DetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
-    globalTheme.setGlobalMargin(this.blockFirstTopMargin, 8, this.blockLastBottomMargin, 8)
+    let globalTheme: GlobalTheme = new GlobalTheme()
+    globalTheme.setGlobalMargin({top: this.blockTopAndBottomMargins, bottom: this.blockTopAndBottomMargins})
     globalTheme.setBlockSpacing(this.blockTopAndBottomMargins)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 资源图标配置
     if (this.audioIcon !== undefined) {
@@ -425,7 +426,7 @@ struct Deprecated2DetailsPage {
     plugin.setIsLatexMathPlugin(true)
     plugin.setIsStrikethroughPlugin(true)
     plugin.setIsTaskListPlugin(true)
-    plugin.setIsLinkifyPlugin(true, [])
+    plugin.setIsLinkifyPlugin(true)
     plugin.setIsBlockAudioPlugin(true)
     plugin.setIsBlockVideoPlugin(true)
     plugin.setIsImageCollectPlugin(true)

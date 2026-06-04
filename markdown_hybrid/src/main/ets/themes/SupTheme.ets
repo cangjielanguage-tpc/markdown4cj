@@ -1,7 +1,7 @@
 /**
  * Markdown用户可设置的样式-上标文本样式
  */
-export class MarkdownThemeSup {
+export class SupTheme {
   /**
    * 上标文本颜色
    */

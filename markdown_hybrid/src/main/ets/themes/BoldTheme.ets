@@ -1,7 +1,7 @@
 /**
  * Markdown用户可设置的样式-加粗文本样式
  */
-export class MarkdownThemeBold {
+export class BoldTheme {
   /**
    * 加粗文本颜色
    */

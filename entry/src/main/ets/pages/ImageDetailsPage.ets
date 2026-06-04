@@ -3,9 +3,9 @@ import { router } from '@kit.ArkUI'
 import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
   MarkdownTheme,
-  MarkdownThemeImage,
-  MarkdownThemeGlobal,
-  ImageFitType } from '@cangjie-tpc/markdown_hybrid'
+  ImageFitType,
+  GlobalTheme,
+  ImageTheme} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextArr, getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { ImageDataMD } from '../model/ImageDataMD'
@@ -62,6 +62,8 @@ struct ImageDetailsPage {
   isInputEnded: boolean = false
 
   // ---------- 专有
+  @State // 图片是否替换
+  imageReplace: boolean = true
   @State // 网络图片是否压缩
   imageAutoResize: boolean = true
   @State // 图片默认占位图
@@ -191,6 +193,7 @@ struct ImageDetailsPage {
       this.openGestureSwipe = imageDataMD._openGestureSwipe
       this.openGestureSwipeTest = imageDataMD._openGestureSwipeTest
       // ---------- 专有
+      this.imageReplace = imageDataMD._imageReplace
       this.imageAutoResize = imageDataMD._imageAutoResize
       this.imagePlaceholder = imageDataMD._imagePlaceholder
       this.isImageMixedLayout = imageDataMD._isImageMixedLayout
@@ -339,6 +342,9 @@ struct ImageDetailsPage {
   setMarkdownConfig(): MarkdownConfiguration {
     let config = new MarkdownConfiguration()
     config.setImageCallback(this.setImageCallback) // 图片点击回调
+    if (this.imageReplace) {
+      config.setImageCallbackCallback(this.setImageReplaceCallback) // 图片替换事件
+    }
     config.setImageDownloadCallback(this.setImageDownloadCallback) // 图片下载的点击事件
     return config
   }
@@ -351,7 +357,7 @@ struct ImageDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
@@ -359,23 +365,23 @@ struct ImageDetailsPage {
     if (hostContext != undefined) {
       globalTheme.setStageContext(hostContext)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Image
-    let imageTheme = new MarkdownThemeImage()
+    let imageTheme: ImageTheme = new ImageTheme()
     if (this.imagePlaceholder !== undefined) {
       imageTheme.setImagePlaceholder(this.imagePlaceholder)
     }
     imageTheme.setImageAutoResize(this.imageAutoResize)
     imageTheme.setIsImageMixedLayout(this.isImageMixedLayout)
-    imageTheme.setImageMargin(this.imageMarginTop, this.imageMarginRight, this.imageMarginBottom, this.imageMarginLeft)
-    imageTheme.setImageBorderRadius(this.imageRadiusTopLeft, this.imageRadiusTopRight, this.imageRadiusBottomLeft, this.imageRadiusBottomRight)
+    imageTheme.setImageMargin({top: this.imageMarginTop, right: this.imageMarginRight, bottom: this.imageMarginBottom, left: this.imageMarginLeft})
+    imageTheme.setImageBorderRadius({topLeft: this.imageRadiusTopLeft, topRight: this.imageRadiusTopRight, bottomLeft: this.imageRadiusBottomLeft, bottomRight: this.imageRadiusBottomRight})
     imageTheme.setImageBorderStyle(this.imageBorderStyle)
     imageTheme.setImageBorderWidth(this.imageBorderWidth)
     if (this.imageBorderColor !== undefined) {
@@ -402,7 +408,7 @@ struct ImageDetailsPage {
     imageTheme.setImageDownloadButtonVisible(this.imageDownloadButtonVisible)
     imageTheme.setImageDownloadButtonWidth(this.imageDownloadButtonWidth)
     imageTheme.setImageDownloadButtonHeight(this.imageDownloadButtonHeight)
-    imageTheme.setImageDownloadButtonRadius(this.imageDownloadButtonRadiusTopLeft, this.imageDownloadButtonRadiusTopRight, this.imageDownloadButtonRadiusBottomLeft, this.imageDownloadButtonRadiusBottomRight)
+    imageTheme.setImageDownloadButtonRadius({topLeft: this.imageDownloadButtonRadiusTopLeft, topRight: this.imageDownloadButtonRadiusTopRight, bottomLeft: this.imageDownloadButtonRadiusBottomLeft, bottomRight: this.imageDownloadButtonRadiusBottomRight})
     if (this.imageDownloadButtonIcon !== undefined) {
       imageTheme.setImageDownloadButtonIcon(this.imageDownloadButtonIcon)
     }
@@ -421,7 +427,7 @@ struct ImageDetailsPage {
     imageTheme.setImageDownloadButtonTextFontWeight(this.imageDownloadButtonTextFontWeight)
     imageTheme.setImageDownloadButtonTextFontFamily(this.imageDownloadButtonTextFontFamily)
     imageTheme.setImageDownloadButtonTextLineHeight(this.imageDownloadButtonTextLineHeight)
-    theme.setMarkdownThemeImage(imageTheme)
+    theme.setImageTheme(imageTheme)
     
     return theme
   }
@@ -441,7 +447,7 @@ struct ImageDetailsPage {
     hilog.error(1, "1", `-------------funcArg0:${funcArg0},funcArg1:${funcArg1}`)
   }
 
-  async setImageCallbackCallback(funcArg0: string): Promise<ArrayBuffer | undefined> {
+  async setImageReplaceCallback(funcArg0: string): Promise<ArrayBuffer | undefined> {
     hilog.error(1, "1", `-------------funcArg0:${funcArg0}`)
     return getFileContextArr("app_icon.png")
   }

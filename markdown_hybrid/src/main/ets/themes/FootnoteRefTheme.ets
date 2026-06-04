@@ -1,9 +1,9 @@
-import { MarkdownTextDecorationStyle } from "./MarkdownTheme"
+import { MarkdownRadiusOptions, MarkdownTextDecorationStyle } from "./MarkdownTheme"
 
 /**
  * Markdown用户可设置的样式-脚注引用样式
  */
-export class MarkdownThemeFootnoteRef {
+export class FootnoteRefTheme {
   /**
    * 脚注引用文本颜色
    */
@@ -179,30 +179,32 @@ export class MarkdownThemeFootnoteRef {
   }
 
   /**
-   * 统一设置脚注引用文本背景四个圆角
+   * 设置圆角
    *
-   * @param radius 统一圆角半径，同时赋值给四个角
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setFootnoteRefTextBackgroundAllRadius(radius: number): void {
-    this.footnoteRefTextBackgroundRadiusTopLeft = radius
-    this.footnoteRefTextBackgroundRadiusTopRight = radius
-    this.footnoteRefTextBackgroundRadiusBottomLeft = radius
-    this.footnoteRefTextBackgroundRadiusBottomRight = radius
-  }
-
-  /**
-   * 分别设置4个圆角
-   *
-   * @param topLeft 左上圆角
-   * @param topRight 右上圆角
-   * @param bottomLeft 左下圆角
-   * @param bottomRight 右下圆角
-   */
-  setFootnoteRefTextBackgroundRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
-    this.footnoteRefTextBackgroundRadiusTopLeft = topLeft
-    this.footnoteRefTextBackgroundRadiusTopRight = topRight
-    this.footnoteRefTextBackgroundRadiusBottomLeft = bottomLeft
-    this.footnoteRefTextBackgroundRadiusBottomRight = bottomRight
+  setFootnoteRefTextBackgroundRadius(options: MarkdownRadiusOptions | number): void {
+    if (typeof options === "number") {
+      this.footnoteRefTextBackgroundRadiusTopLeft = options
+      this.footnoteRefTextBackgroundRadiusTopRight = options
+      this.footnoteRefTextBackgroundRadiusBottomLeft = options
+      this.footnoteRefTextBackgroundRadiusBottomRight = options
+    } else {
+      if (options.topLeft !== undefined) {
+        this.footnoteRefTextBackgroundRadiusTopLeft = options.topLeft
+      }
+      if (options.topRight !== undefined) {
+        this.footnoteRefTextBackgroundRadiusTopRight = options.topRight
+      }
+      if (options.bottomLeft !== undefined) {
+        this.footnoteRefTextBackgroundRadiusBottomLeft = options.bottomLeft
+      }
+      if (options.bottomRight !== undefined) {
+        this.footnoteRefTextBackgroundRadiusBottomRight = options.bottomRight
+      }
+    }
   }
 
   /**

@@ -1,8 +1,10 @@
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import {
+  BoldTheme,
+  CJMarkdown,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme,
-  MarkdownThemeBold,
-  MarkdownThemeGlobal} from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'
@@ -246,19 +248,19 @@ struct BoldDetailsPage {
     } else {
       theme.setDarculaTheme()
     }
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
 
-    let boldTheme = new MarkdownThemeBold()
+    let boldTheme = new BoldTheme()
     if (this.boldTextFontColor !== undefined) {
       boldTheme.setBoldTextFontColor(this.boldTextFontColor)
     }
@@ -278,7 +280,7 @@ struct BoldDetailsPage {
     if (this.boldTextLetterSpacing !== undefined) {
       boldTheme.setBoldTextLetterSpacing(this.boldTextLetterSpacing)
     }
-    theme.setMarkdownThemeBold(boldTheme)
+    theme.setBoldTheme(boldTheme)
 
     return theme
   }

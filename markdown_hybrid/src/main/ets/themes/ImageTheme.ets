@@ -1,9 +1,9 @@
-import { ImageFitType } from "./MarkdownTheme"
+import { ImageFitType, MarkdownMarginOptions, MarkdownRadiusOptions } from "./MarkdownTheme"
 
 /**
  * Markdown用户可设置的样式-图片样式
  */
-export class MarkdownThemeImage {
+export class ImageTheme {
   /**
    * 图片上外边距
    */
@@ -210,57 +210,61 @@ export class MarkdownThemeImage {
   private imageDownloadButtonTextLineHeight?: number = undefined
 
   /**
-   * 设置4个外边距为统一值
+   * 设置外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setImageAllMargin(margin: number): void {
-    this.imageMarginTop = margin
-    this.imageMarginRight = margin
-    this.imageMarginBottom = margin
-    this.imageMarginLeft = margin
+  setImageMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === "number") {
+      this.imageMarginTop = options
+      this.imageMarginRight = options
+      this.imageMarginBottom = options
+      this.imageMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.imageMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.imageMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.imageMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.imageMarginLeft = options.left
+      }
+    }
   }
 
   /**
-   * 分别设置4个外边距
+   * 设置圆角
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setImageMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.imageMarginTop = top
-    this.imageMarginRight = right
-    this.imageMarginBottom = bottom
-    this.imageMarginLeft = left
-  }
-
-  /**
-   * 设置4个圆角为统一值
-   *
-   * @param radius 圆角
-   */
-  setImageBorderAllRadius(radius: number): void {
-    this.imageRadiusTopLeft = radius
-    this.imageRadiusTopRight = radius
-    this.imageRadiusBottomLeft = radius
-    this.imageRadiusBottomRight = radius
-  }
-
-  /**
-   * 分别设置4个圆角
-   *
-   * @param topLeft 左上圆角
-   * @param topRight 右上圆角
-   * @param bottomLeft 左下圆角
-   * @param bottomRight 右下圆角
-   */
-  setImageBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
-    this.imageRadiusTopLeft = topLeft
-    this.imageRadiusTopRight = topRight
-    this.imageRadiusBottomLeft = bottomLeft
-    this.imageRadiusBottomRight = bottomRight
+  setImageBorderRadius(options: MarkdownRadiusOptions | number): void {
+    if (typeof options === "number") {
+      this.imageRadiusTopLeft = options
+      this.imageRadiusTopRight = options
+      this.imageRadiusBottomLeft = options
+      this.imageRadiusBottomRight = options
+    } else {
+      if (options.topLeft !== undefined) {
+        this.imageRadiusTopLeft = options.topLeft
+      }
+      if (options.topRight !== undefined) {
+        this.imageRadiusTopRight = options.topRight
+      }
+      if (options.bottomLeft !== undefined) {
+        this.imageRadiusBottomLeft = options.bottomLeft
+      }
+      if (options.bottomRight !== undefined) {
+        this.imageRadiusBottomRight = options.bottomRight
+      }
+    }
   }
 
   /**
@@ -417,30 +421,32 @@ export class MarkdownThemeImage {
   }
 
   /**
-   * 设置图片下载按钮4个圆角为统一值
+   * 设置图片下载按钮圆角
    *
-   * @param radius 圆角
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setImageDownloadButtonAllRadius(radius: number): void {
-    this.imageDownloadButtonRadiusTopLeft = radius
-    this.imageDownloadButtonRadiusTopRight = radius
-    this.imageDownloadButtonRadiusBottomLeft = radius
-    this.imageDownloadButtonRadiusBottomRight = radius
-  }
-
-  /**
-   * 分别设置图片下载按钮4个圆角
-   *
-   * @param topLeft 左上圆角
-   * @param topRight 右上圆角
-   * @param bottomLeft 左下圆角
-   * @param bottomRight 右下圆角
-   */
-  setImageDownloadButtonRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
-    this.imageDownloadButtonRadiusTopLeft = topLeft
-    this.imageDownloadButtonRadiusTopRight = topRight
-    this.imageDownloadButtonRadiusBottomLeft = bottomLeft
-    this.imageDownloadButtonRadiusBottomRight = bottomRight
+  setImageDownloadButtonRadius(options: MarkdownRadiusOptions | number): void {
+    if (typeof options === 'number') {
+      this.imageDownloadButtonRadiusTopLeft = options
+      this.imageDownloadButtonRadiusTopRight = options
+      this.imageDownloadButtonRadiusBottomLeft = options
+      this.imageDownloadButtonRadiusBottomRight = options
+    } else {
+      if (options.topLeft !== undefined) {
+        this.imageDownloadButtonRadiusTopLeft = options.topLeft
+      }
+      if (options.topRight !== undefined) {
+        this.imageDownloadButtonRadiusTopRight = options.topRight
+      }
+      if (options.bottomLeft !== undefined) {
+        this.imageDownloadButtonRadiusBottomLeft = options.bottomLeft
+      }
+      if (options.bottomRight !== undefined) {
+        this.imageDownloadButtonRadiusBottomRight = options.bottomRight
+      }
+    }
   }
 
   /**

@@ -1,8 +1,9 @@
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  DefinitionListTheme,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme,
-  MarkdownThemeDefinitionList,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'
@@ -296,41 +297,41 @@ struct DescListDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - DefinitionList
-    let definitionListTheme = new MarkdownThemeDefinitionList()
+    let definitionListTheme = new DefinitionListTheme()
     if (this.definitionListBackgroundColor !== undefined) {
       definitionListTheme.setDefinitionListBackgroundColor(this.definitionListBackgroundColor)
     }
-    definitionListTheme.setDefinitionListMargin(
-      this.definitionListMarginTop,
-      this.definitionListMarginRight,
-      this.definitionListMarginBottom,
-      this.definitionListMarginLeft
-    )
-    definitionListTheme.setDefinitionListPadding(
-      this.definitionListPaddingTop,
-      this.definitionListPaddingRight,
-      this.definitionListPaddingBottom,
-      this.definitionListPaddingLeft
-    )
+    definitionListTheme.setDefinitionListMargin({
+      top: this.definitionListMarginTop,
+      right: this.definitionListMarginRight,
+      bottom: this.definitionListMarginBottom,
+      left: this.definitionListMarginLeft
+    })
+    definitionListTheme.setDefinitionListPadding({
+      top: this.definitionListPaddingTop,
+      right: this.definitionListPaddingRight,
+      bottom: this.definitionListPaddingBottom,
+      left: this.definitionListPaddingLeft
+    })
     definitionListTheme.setDefinitionListTermToDescriptionSpacing(this.definitionListTermToDescriptionSpacing)
     definitionListTheme.setDefinitionListTermTextFontWeight(this.definitionListTermTextFontWeight)
     definitionListTheme.setDefinitionListTermTextFontStyle(this.definitionListTermTextFontStyle)
     definitionListTheme.setDefinitionListDescriptionItemSpacing(this.definitionListDescriptionItemSpacing)
     definitionListTheme.setDefinitionListDescriptionIndent(this.definitionListDescriptionIndent)
-    theme.setMarkdownThemeDefinitionList(definitionListTheme)
+    theme.setDefinitionListTheme(definitionListTheme)
     
     return theme
   }

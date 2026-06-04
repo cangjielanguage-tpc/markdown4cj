@@ -1,10 +1,11 @@
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  FootnoteDefTheme,
+  FootnoteRefTheme,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
   MarkdownTextDecorationStyle,
-  MarkdownTheme,
-  MarkdownThemeFootnoteDef,
-  MarkdownThemeFootnoteRef,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'
@@ -338,39 +339,29 @@ struct FootnoteDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - FootnoteDef
-    let footnoteDefTheme = new MarkdownThemeFootnoteDef()
+    let footnoteDefTheme = new FootnoteDefTheme()
     if (this.footnoteDefBackgroundColor !== undefined) {
       footnoteDefTheme.setFootnoteDefBackgroundColor(this.footnoteDefBackgroundColor)
     }
-    footnoteDefTheme.setFootnoteDefMargin(
-      this.footnoteDefMarginTop,
-      this.footnoteDefMarginRight,
-      this.footnoteDefMarginBottom,
-      this.footnoteDefMarginLeft
-    )
-    footnoteDefTheme.setFootnoteDefPadding(
-      this.footnoteDefPaddingTop,
-      this.footnoteDefPaddingRight,
-      this.footnoteDefPaddingBottom,
-      this.footnoteDefPaddingLeft
-    )
-    theme.setMarkdownThemeFootnoteDef(footnoteDefTheme)
+    footnoteDefTheme.setFootnoteDefMargin({top: this.footnoteDefMarginTop, right: this.footnoteDefMarginRight, bottom: this.footnoteDefMarginBottom, left: this.footnoteDefMarginLeft})
+    footnoteDefTheme.setFootnoteDefPadding({top: this.footnoteDefPaddingTop, right: this.footnoteDefPaddingRight, bottom: this.footnoteDefPaddingBottom, left: this.footnoteDefPaddingLeft})
+    theme.setFootnoteDefTheme(footnoteDefTheme)
     
     // ---------- 专有 - FootnoteRef
-    let footnoteRefTheme = new MarkdownThemeFootnoteRef()
+    let footnoteRefTheme = new FootnoteRefTheme()
     if (this.footnoteRefTextFontColor !== undefined) {
       footnoteRefTheme.setFootnoteRefTextFontColor(this.footnoteRefTextFontColor)
     }
@@ -388,13 +379,13 @@ struct FootnoteDetailsPage {
     if (this.footnoteRefTextBackgroundColor !== undefined) {
       footnoteRefTheme.setFootnoteRefTextBackgroundColor(this.footnoteRefTextBackgroundColor)
     }
-    footnoteRefTheme.setFootnoteRefTextBackgroundRadius(
-      this.footnoteRefTextBackgroundRadiusTopLeft,
-      this.footnoteRefTextBackgroundRadiusTopRight,
-      this.footnoteRefTextBackgroundRadiusBottomLeft,
-      this.footnoteRefTextBackgroundRadiusBottomRight
-    )
-    theme.setMarkdownThemeFootnoteRef(footnoteRefTheme)
+    footnoteRefTheme.setFootnoteRefTextBackgroundRadius({
+      topLeft: this.footnoteRefTextBackgroundRadiusTopLeft,
+      topRight: this.footnoteRefTextBackgroundRadiusTopRight,
+      bottomLeft: this.footnoteRefTextBackgroundRadiusBottomLeft,
+      bottomRight: this.footnoteRefTextBackgroundRadiusBottomRight
+    })
+    theme.setFootnoteRefTheme(footnoteRefTheme)
     
     return theme
   }

@@ -1,7 +1,9 @@
+import { MarkdownMarginOptions, MarkdownPaddingOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-段落样式
  */
-export class MarkdownThemeParagraph {
+export class ParagraphTheme {
   /**
    * 段落背景颜色
    */
@@ -92,57 +94,61 @@ export class MarkdownThemeParagraph {
   }
 
   /**
-   * 设置4个外边距为统一值
+   * 设置外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setParagraphAllMargin(margin: number): void {
-    this.paragraphMarginTop = margin
-    this.paragraphMarginRight = margin
-    this.paragraphMarginBottom = margin
-    this.paragraphMarginLeft = margin
+  setParagraphMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === "number") {
+      this.paragraphMarginTop = options
+      this.paragraphMarginRight = options
+      this.paragraphMarginBottom = options
+      this.paragraphMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.paragraphMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.paragraphMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.paragraphMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.paragraphMarginLeft = options.left
+      }
+    }
   }
 
   /**
-   * 分别设置4个外边距
+   * 设置内边距
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setParagraphMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.paragraphMarginTop = top
-    this.paragraphMarginRight = right
-    this.paragraphMarginBottom = bottom
-    this.paragraphMarginLeft = left
-  }
-
-  /**
-   * 设置4个内边距为统一值
-   *
-   * @param padding 内边距
-   */
-  setParagraphAllPadding(padding: number): void {
-    this.paragraphPaddingTop = padding
-    this.paragraphPaddingRight = padding
-    this.paragraphPaddingBottom = padding
-    this.paragraphPaddingLeft = padding
-  }
-
-  /**
-   * 分别设置4个内边距
-   *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
-   */
-  setParagraphPadding(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.paragraphPaddingTop = top
-    this.paragraphPaddingRight = right
-    this.paragraphPaddingBottom = bottom
-    this.paragraphPaddingLeft = left
+  setParagraphPadding(options: MarkdownPaddingOptions | number): void {
+    if (typeof options === "number") {
+      this.paragraphPaddingTop = options
+      this.paragraphPaddingRight = options
+      this.paragraphPaddingBottom = options
+      this.paragraphPaddingLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.paragraphPaddingTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.paragraphPaddingRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.paragraphPaddingBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.paragraphPaddingLeft = options.left
+      }
+    }
   }
 
   /**

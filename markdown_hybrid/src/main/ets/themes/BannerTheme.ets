@@ -1,7 +1,9 @@
+import { MarkdownMarginOptions, MarkdownPaddingOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-Banner样式
  */
-export class MarkdownThemeBanner {
+export class BannerTheme {
   /**
    * banner上外边距
    */
@@ -48,57 +50,61 @@ export class MarkdownThemeBanner {
   private bannerPlaceholder?: Resource = undefined
 
   /**
-   * banner整体外边距
+   * banner设置外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setBannerAllMargin(margin: number): void {
-    this.bannerMarginTop = margin
-    this.bannerMarginRight = margin
-    this.bannerMarginBottom = margin
-    this.bannerMarginLeft = margin
+  setBannerMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === "number") {
+      this.bannerMarginTop = options
+      this.bannerMarginRight = options
+      this.bannerMarginBottom = options
+      this.bannerMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.bannerMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.bannerMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.bannerMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.bannerMarginLeft = options.left
+      }
+    }
   }
 
   /**
-   * banner分别设置四个外边距
+   * banner设置内边距
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setBannerMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.bannerMarginTop = top
-    this.bannerMarginRight = right
-    this.bannerMarginBottom = bottom
-    this.bannerMarginLeft = left
-  }
-
-  /**
-   * banner整体内边距
-   *
-   * @param padding 内边距
-   */
-  setBannerAllPadding(padding: number): void {
-    this.bannerPaddingTop = padding
-    this.bannerPaddingRight = padding
-    this.bannerPaddingBottom = padding
-    this.bannerPaddingLeft = padding
-  }
-
-  /**
-   * banner分别设置四个内边距
-   *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
-   */
-  setBannerPadding(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.bannerPaddingTop = top
-    this.bannerPaddingRight = right
-    this.bannerPaddingBottom = bottom
-    this.bannerPaddingLeft = left
+  setBannerPadding(options: MarkdownPaddingOptions | number): void {
+    if (typeof options === 'number') {
+      this.bannerPaddingTop = options
+      this.bannerPaddingRight = options
+      this.bannerPaddingBottom = options
+      this.bannerPaddingLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.bannerPaddingTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.bannerPaddingRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.bannerPaddingBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.bannerPaddingLeft = options.left
+      }
+    }
   }
 
   /**

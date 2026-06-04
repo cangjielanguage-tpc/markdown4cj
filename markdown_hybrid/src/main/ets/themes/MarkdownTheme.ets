@@ -1,28 +1,29 @@
-import { MarkdownThemeGlobal } from "./MarkdownThemeGlobal"
-import { MarkdownThemeAudio } from "./MarkdownThemeAudio"
-import { MarkdownThemeBanner } from "./MarkdownThemeBanner"
-import { MarkdownThemeBlockQuote } from "./MarkdownThemeBlockQuote"
-import { MarkdownThemeBold } from "./MarkdownThemeBold"
-import { MarkdownThemeCodeBlock } from "./MarkdownThemeCodeBlock"
-import { MarkdownThemeDefinitionList } from "./MarkdownThemeDefinitionList"
-import { MarkdownThemeDivider } from "./MarkdownThemeDivider"
-import { MarkdownThemeFootnoteDef } from "./MarkdownThemeFootnoteDef"
-import { MarkdownThemeFootnoteRef } from "./MarkdownThemeFootnoteRef"
-import { MarkdownThemeLatexMath } from "./MarkdownThemeLatexMath"
-import { MarkdownThemeHeading } from "./MarkdownThemeHeading"
-import { MarkdownThemeHtmlUnderline } from "./MarkdownThemeHtmlUnderline"
-import { MarkdownThemeImage } from "./MarkdownThemeImage"
-import { MarkdownThemeInlineCode } from "./MarkdownThemeInlineCode"
-import { MarkdownThemeItalic } from "./MarkdownThemeItalic"
-import { MarkdownThemeLink } from "./MarkdownThemeLink"
-import { MarkdownThemeOrderedList } from "./MarkdownThemeOrderedList"
-import { MarkdownThemeParagraph } from "./MarkdownThemeParagraph"
-import { MarkdownThemeStrikethrough } from "./MarkdownThemeStrikethrough"
-import { MarkdownThemeSub } from "./MarkdownThemeSub"
-import { MarkdownThemeSup } from "./MarkdownThemeSup"
-import { MarkdownThemeTable } from "./MarkdownThemeTable"
-import { MarkdownThemeVideo } from "./MarkdownThemeVideo"
-import { MarkdownThemeBulletList } from "./MarkdownThemeBulletList"
+import { AudioTheme } from "./AudioTheme"
+import { BannerTheme } from "./BannerTheme"
+import { BlockQuoteTheme } from "./BlockQuoteTheme"
+import { BoldTheme } from "./BoldTheme"
+import { BulletListTheme } from "./BulletListTheme"
+import { CodeBlockTheme } from "./CodeBlockTheme"
+import { DefinitionListTheme } from "./DefinitionListTheme"
+import { DividerTheme } from "./DividerTheme"
+import { FootnoteDefTheme } from "./FootnoteDefTheme"
+import { FootnoteRefTheme } from "./FootnoteRefTheme"
+import { GlobalTheme } from "./GlobalTheme"
+import { HeadingTheme } from "./HeadingTheme"
+import { HtmlUnderlineTheme } from "./HtmlUnderlineTheme"
+import { ImageTheme } from "./ImageTheme"
+import { InlineCodeTheme } from "./InlineCodeTheme"
+import { ItalicTheme } from "./ItalicTheme"
+import { LatexMathTheme } from "./LatexMathTheme"
+import { LinkTheme } from "./LinkTheme"
+import { OrderedListTheme } from "./OrderedListTheme"
+import { ParagraphTheme } from "./ParagraphTheme"
+import { StrikethroughTheme } from "./StrikethroughTheme"
+import { SubTheme } from "./SubTheme"
+import { SupTheme } from "./SupTheme"
+import { TableTheme } from "./TableTheme"
+import { VideoTheme } from "./VideoTheme"
+
 
 /**
  * Markdown用户可设置的样式
@@ -36,134 +37,134 @@ export class MarkdownTheme {
   /**
    * 全局样式
    */
-  private markdownThemeGlobal: MarkdownThemeGlobal = new MarkdownThemeGlobal()
+  private markdownThemeGlobal: GlobalTheme = new GlobalTheme()
 
   /**
    * 音频样式
    */
-  private markdownThemeAudio: MarkdownThemeAudio = new MarkdownThemeAudio()
+  private markdownThemeAudio: AudioTheme = new AudioTheme()
 
   /**
    * Banner样式
    */
-  private markdownThemeBanner: MarkdownThemeBanner = new MarkdownThemeBanner()
+  private markdownThemeBanner: BannerTheme = new BannerTheme()
 
   /**
    * 块引用样式
    */
-  private markdownThemeBlockQuote: MarkdownThemeBlockQuote = new MarkdownThemeBlockQuote()
+  private markdownThemeBlockQuote: BlockQuoteTheme = new BlockQuoteTheme()
 
   /**
    * 加粗文本样式
    */
-  private markdownThemeBold: MarkdownThemeBold = new MarkdownThemeBold()
+  private markdownThemeBold: BoldTheme = new BoldTheme()
 
   /**
    * 代码块样式
    */
-  private markdownThemeCodeBlock: MarkdownThemeCodeBlock = new MarkdownThemeCodeBlock()
+  private markdownThemeCodeBlock: CodeBlockTheme = new CodeBlockTheme()
 
   /**
    * 定义列表样式
    */
-  private markdownThemeDefinitionList: MarkdownThemeDefinitionList = new MarkdownThemeDefinitionList()
+  private markdownThemeDefinitionList: DefinitionListTheme = new DefinitionListTheme()
 
   /**
    * 分割线样式
    */
-  private markdownThemeDivider: MarkdownThemeDivider = new MarkdownThemeDivider()
+  private markdownThemeDivider: DividerTheme = new DividerTheme()
 
   /**
    * 脚注定义样式
    */
-  private markdownThemeFootnoteDef: MarkdownThemeFootnoteDef = new MarkdownThemeFootnoteDef()
+  private markdownThemeFootnoteDef: FootnoteDefTheme = new FootnoteDefTheme()
 
   /**
    * 脚注引用样式
    */
-  private markdownThemeFootnoteRef: MarkdownThemeFootnoteRef = new MarkdownThemeFootnoteRef()
+  private markdownThemeFootnoteRef: FootnoteRefTheme = new FootnoteRefTheme()
 
   /**
    * 数学公式样式
    */
-  private markdownThemeLatexMath: MarkdownThemeLatexMath = new MarkdownThemeLatexMath()
+  private markdownThemeLatexMath: LatexMathTheme = new LatexMathTheme()
 
   /**
    * 标题样式
    */
-  private markdownThemeHeading: MarkdownThemeHeading = new MarkdownThemeHeading()
+  private markdownThemeHeading: HeadingTheme = new HeadingTheme()
 
   /**
    * HTML下划线文本样式
    */
-  private markdownThemeHtmlUnderline: MarkdownThemeHtmlUnderline = new MarkdownThemeHtmlUnderline()
+  private markdownThemeHtmlUnderline: HtmlUnderlineTheme = new HtmlUnderlineTheme()
 
   /**
    * 图片样式
    */
-  private markdownThemeImage: MarkdownThemeImage = new MarkdownThemeImage()
+  private markdownThemeImage: ImageTheme = new ImageTheme()
 
   /**
    * 内联代码样式
    */
-  private markdownThemeInlineCode: MarkdownThemeInlineCode = new MarkdownThemeInlineCode()
+  private markdownThemeInlineCode: InlineCodeTheme = new InlineCodeTheme()
 
   /**
    * 斜体文本样式
    */
-  private markdownThemeItalic: MarkdownThemeItalic = new MarkdownThemeItalic()
+  private markdownThemeItalic: ItalicTheme = new ItalicTheme()
 
   /**
    * 链接文本样式
    */
-  private markdownThemeLink: MarkdownThemeLink = new MarkdownThemeLink()
+  private markdownThemeLink: LinkTheme = new LinkTheme()
 
   /**
    * 有序列表样式
    */
-  private markdownThemeOrderedList: MarkdownThemeOrderedList = new MarkdownThemeOrderedList()
+  private markdownThemeOrderedList: OrderedListTheme = new OrderedListTheme()
 
   /**
    * 段落样式
    */
-  private markdownThemeParagraph: MarkdownThemeParagraph = new MarkdownThemeParagraph()
+  private markdownThemeParagraph: ParagraphTheme = new ParagraphTheme()
 
   /**
    * 删除线文本样式
    */
-  private markdownThemeStrikethrough: MarkdownThemeStrikethrough = new MarkdownThemeStrikethrough()
+  private markdownThemeStrikethrough: StrikethroughTheme = new StrikethroughTheme()
 
   /**
    * 下标文本样式
    */
-  private markdownThemeSub: MarkdownThemeSub = new MarkdownThemeSub()
+  private markdownThemeSub: SubTheme = new SubTheme()
 
   /**
    * 上标文本样式
    */
-  private markdownThemeSup: MarkdownThemeSup = new MarkdownThemeSup()
+  private markdownThemeSup: SupTheme = new SupTheme()
 
   /**
    * 表格样式
    */
-  private markdownThemeTable: MarkdownThemeTable = new MarkdownThemeTable()
+  private markdownThemeTable: TableTheme = new TableTheme()
 
   /**
    * 无序/任务列表样式
    */
-  private markdownThemeBulletList: MarkdownThemeBulletList = new MarkdownThemeBulletList()
+  private markdownThemeBulletList: BulletListTheme = new BulletListTheme()
 
   /**
    * 视频样式
    */
-  private markdownThemeVideo: MarkdownThemeVideo = new MarkdownThemeVideo()
+  private markdownThemeVideo: VideoTheme = new VideoTheme()
 
   /**
    * 设置上下文
    *
    * @param context 上下文
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeGlobal#setStageContext
+   * @useinstead GlobalTheme#setStageContext
    */
   setContext(context: Context): void {
     this.markdownThemeGlobal.setStageContext(context)
@@ -367,7 +368,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeGlobal 全局样式
    */
-  setMarkdownThemeGlobal(markdownThemeGlobal: MarkdownThemeGlobal): void {
+  setGlobalTheme(markdownThemeGlobal: GlobalTheme): void {
     this.markdownThemeGlobal = markdownThemeGlobal
   }
 
@@ -376,7 +377,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeAudio 音频样式
    */
-  setMarkdownThemeAudio(markdownThemeAudio: MarkdownThemeAudio): void {
+  setAudioTheme(markdownThemeAudio: AudioTheme): void {
     this.markdownThemeAudio = markdownThemeAudio
   }
 
@@ -385,7 +386,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeBanner Banner样式
    */
-  setMarkdownThemeBanner(markdownThemeBanner: MarkdownThemeBanner): void {
+  setBannerTheme(markdownThemeBanner: BannerTheme): void {
     this.markdownThemeBanner = markdownThemeBanner
   }
 
@@ -394,7 +395,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeBlockQuote 块引用样式
    */
-  setMarkdownThemeBlockQuote(markdownThemeBlockQuote: MarkdownThemeBlockQuote): void {
+  setBlockQuoteTheme(markdownThemeBlockQuote: BlockQuoteTheme): void {
     this.markdownThemeBlockQuote = markdownThemeBlockQuote
   }
 
@@ -403,7 +404,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeBold 加粗文本样式
    */
-  setMarkdownThemeBold(markdownThemeBold: MarkdownThemeBold): void {
+  setBoldTheme(markdownThemeBold: BoldTheme): void {
     this.markdownThemeBold = markdownThemeBold
   }
 
@@ -412,7 +413,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeCodeBlock 代码块样式
    */
-  setMarkdownThemeCodeBlock(markdownThemeCodeBlock: MarkdownThemeCodeBlock): void {
+  setCodeBlockTheme(markdownThemeCodeBlock: CodeBlockTheme): void {
     this.markdownThemeCodeBlock = markdownThemeCodeBlock
   }
 
@@ -421,7 +422,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeDefinitionList 定义列表样式
    */
-  setMarkdownThemeDefinitionList(markdownThemeDefinitionList: MarkdownThemeDefinitionList): void {
+  setDefinitionListTheme(markdownThemeDefinitionList: DefinitionListTheme): void {
     this.markdownThemeDefinitionList = markdownThemeDefinitionList
   }
 
@@ -430,7 +431,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeDivider 分割线样式
    */
-  setMarkdownThemeDivider(markdownThemeDivider: MarkdownThemeDivider): void {
+  setDividerTheme(markdownThemeDivider: DividerTheme): void {
     this.markdownThemeDivider = markdownThemeDivider
   }
 
@@ -439,7 +440,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeFootnoteDef 脚注定义样式
    */
-  setMarkdownThemeFootnoteDef(markdownThemeFootnoteDef: MarkdownThemeFootnoteDef): void {
+  setFootnoteDefTheme(markdownThemeFootnoteDef: FootnoteDefTheme): void {
     this.markdownThemeFootnoteDef = markdownThemeFootnoteDef
   }
 
@@ -448,7 +449,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeFootnoteRef 脚注引用样式
    */
-  setMarkdownThemeFootnoteRef(markdownThemeFootnoteRef: MarkdownThemeFootnoteRef): void {
+  setFootnoteRefTheme(markdownThemeFootnoteRef: FootnoteRefTheme): void {
     this.markdownThemeFootnoteRef = markdownThemeFootnoteRef
   }
 
@@ -457,7 +458,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeLatexMath 数学公式样式
    */
-  setMarkdownThemeLatexMath(markdownThemeLatexMath: MarkdownThemeLatexMath): void {
+  setLatexMathTheme(markdownThemeLatexMath: LatexMathTheme): void {
     this.markdownThemeLatexMath = markdownThemeLatexMath
   }
 
@@ -466,7 +467,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeHeading 标题样式
    */
-  setMarkdownThemeHeading(markdownThemeHeading: MarkdownThemeHeading): void {
+  setHeadingTheme(markdownThemeHeading: HeadingTheme): void {
     this.markdownThemeHeading = markdownThemeHeading
   }
 
@@ -475,7 +476,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeHtmlUnderline HTML下划线文本样式
    */
-  setMarkdownThemeHtmlUnderline(markdownThemeHtmlUnderline: MarkdownThemeHtmlUnderline): void {
+  setHtmlUnderlineTheme(markdownThemeHtmlUnderline: HtmlUnderlineTheme): void {
     this.markdownThemeHtmlUnderline = markdownThemeHtmlUnderline
   }
 
@@ -484,7 +485,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeImage 图片样式
    */
-  setMarkdownThemeImage(markdownThemeImage: MarkdownThemeImage): void {
+  setImageTheme(markdownThemeImage: ImageTheme): void {
     this.markdownThemeImage = markdownThemeImage
   }
 
@@ -493,7 +494,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeInlineCode 内联代码样式
    */
-  setMarkdownThemeInlineCode(markdownThemeInlineCode: MarkdownThemeInlineCode): void {
+  setInlineCodeTheme(markdownThemeInlineCode: InlineCodeTheme): void {
     this.markdownThemeInlineCode = markdownThemeInlineCode
   }
 
@@ -502,7 +503,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeItalic 斜体文本样式
    */
-  setMarkdownThemeItalic(markdownThemeItalic: MarkdownThemeItalic): void {
+  setItalicTheme(markdownThemeItalic: ItalicTheme): void {
     this.markdownThemeItalic = markdownThemeItalic
   }
 
@@ -511,7 +512,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeLink 链接文本样式
    */
-  setMarkdownThemeLink(markdownThemeLink: MarkdownThemeLink): void {
+  setLinkTheme(markdownThemeLink: LinkTheme): void {
     this.markdownThemeLink = markdownThemeLink
   }
 
@@ -520,7 +521,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeOrderedList 有序列表样式
    */
-  setMarkdownThemeOrderedList(markdownThemeOrderedList: MarkdownThemeOrderedList): void {
+  setOrderedListTheme(markdownThemeOrderedList: OrderedListTheme): void {
     this.markdownThemeOrderedList = markdownThemeOrderedList
   }
 
@@ -529,7 +530,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeParagraph 段落样式
    */
-  setMarkdownThemeParagraph(markdownThemeParagraph: MarkdownThemeParagraph): void {
+  setParagraphTheme(markdownThemeParagraph: ParagraphTheme): void {
     this.markdownThemeParagraph = markdownThemeParagraph
   }
 
@@ -538,7 +539,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeStrikethrough 删除线文本样式
    */
-  setMarkdownThemeStrikethrough(markdownThemeStrikethrough: MarkdownThemeStrikethrough): void {
+  setStrikethroughTheme(markdownThemeStrikethrough: StrikethroughTheme): void {
     this.markdownThemeStrikethrough = markdownThemeStrikethrough
   }
 
@@ -547,7 +548,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeSub 下标文本样式
    */
-  setMarkdownThemeSub(markdownThemeSub: MarkdownThemeSub): void {
+  setSubTheme(markdownThemeSub: SubTheme): void {
     this.markdownThemeSub = markdownThemeSub
   }
 
@@ -556,7 +557,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeSup 上标文本样式
    */
-  setMarkdownThemeSup(markdownThemeSup: MarkdownThemeSup): void {
+  setSupTheme(markdownThemeSup: SupTheme): void {
     this.markdownThemeSup = markdownThemeSup
   }
 
@@ -565,7 +566,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeTable 表格样式
    */
-  setMarkdownThemeTable(markdownThemeTable: MarkdownThemeTable): void {
+  setTableTheme(markdownThemeTable: TableTheme): void {
     this.markdownThemeTable = markdownThemeTable
   }
 
@@ -574,7 +575,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeBulletList 无序/任务列表样式
    */
-  setMarkdownThemeBulletList(markdownThemeBulletList: MarkdownThemeBulletList): void {
+  setBulletListTheme(markdownThemeBulletList: BulletListTheme): void {
     this.markdownThemeBulletList = markdownThemeBulletList
   }
 
@@ -583,7 +584,7 @@ export class MarkdownTheme {
    *
    * @param markdownThemeVideo 视频样式
    */
-  setMarkdownThemeVideo(markdownThemeVideo: MarkdownThemeVideo): void {
+  setVideoTheme(markdownThemeVideo: VideoTheme): void {
     this.markdownThemeVideo = markdownThemeVideo
   }
 
@@ -592,7 +593,7 @@ export class MarkdownTheme {
    *
    * @param codeFullScreenIcon 代码块全屏图片icon
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockFullScreenIcon
+   * @useinstead CodeBlockTheme#setCodeBlockFullScreenIcon
    */
   setCodeFullScreenIcon(codeFullScreenIcon: Resource): void {
     this.markdownThemeCodeBlock.setCodeBlockFullScreenIcon(codeFullScreenIcon)
@@ -603,7 +604,7 @@ export class MarkdownTheme {
    *
    * @param codeCopyIcon 代码块复制图片icon
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockCopyIcon
+   * @useinstead CodeBlockTheme#setCodeBlockCopyIcon
    */
   setCodeCopyIcon(codeCopyIcon: Resource): void {
     this.markdownThemeCodeBlock.setCodeBlockCopyIcon(codeCopyIcon)
@@ -614,7 +615,7 @@ export class MarkdownTheme {
    *
    * @param audioIcon 音频图片icon
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioIcon
+   * @useinstead AudioTheme#setAudioIcon
    */
   setAudioIcon(audioIcon: Resource): void {
     this.markdownThemeAudio.setAudioIcon(audioIcon)
@@ -625,7 +626,7 @@ export class MarkdownTheme {
    *
    * @param videoImage 视频默认占位图
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoPlaceholder
+   * @useinstead VideoTheme#setVideoPlaceholder
    */
   setVideoImage(videoImage: Resource): void {
     this.markdownThemeVideo.setVideoPlaceholder(videoImage)
@@ -636,7 +637,7 @@ export class MarkdownTheme {
    *
    * @param playCircleFillIcon 视频播放按钮icon
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoPlayIcon
+   * @useinstead VideoTheme#setVideoPlayIcon
    */
   setPlayCircleFillIcon(playCircleFillIcon: Resource): void {
     this.markdownThemeVideo.setVideoPlayIcon(playCircleFillIcon)
@@ -647,7 +648,7 @@ export class MarkdownTheme {
    *
    * @param bannerImage banner占位图
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeBanner#setBannerPlaceholder
+   * @useinstead BannerTheme#setBannerPlaceholder
    */
   setBannerImage(bannerImage: Resource): void {
     this.markdownThemeBanner.setBannerPlaceholder(bannerImage)
@@ -658,7 +659,7 @@ export class MarkdownTheme {
    *
    * @param imageResource 图片占位图
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImagePlaceholder
+   * @useinstead ImageTheme#setImagePlaceholder
    */
   setImageResource(imageResource: Resource): void {
     this.markdownThemeImage.setImagePlaceholder(imageResource)
@@ -669,7 +670,7 @@ export class MarkdownTheme {
    *
    * @param videoReleaseImage 视频发布默认图标
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoReleaseButtonIcon
+   * @useinstead VideoTheme#setVideoReleaseButtonIcon
    */
   setVideoReleaseImage(videoReleaseImage: Resource): void {
     this.markdownThemeVideo.setVideoReleaseButtonIcon(videoReleaseImage)
@@ -680,7 +681,7 @@ export class MarkdownTheme {
    *
    * @param videoDownloadImage 视频下载默认图标
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoDownloadButtonIcon
+   * @useinstead VideoTheme#setVideoDownloadButtonIcon
    */
   setVideoDownloadImage(videoDownloadImage: Resource): void {
     this.markdownThemeVideo.setVideoDownloadButtonIcon(videoDownloadImage)
@@ -691,7 +692,7 @@ export class MarkdownTheme {
    *
    * @param imageDownloadImage 图片下载默认图标
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageDownloadButtonIcon
+   * @useinstead ImageTheme#setImageDownloadButtonIcon
    */
   setImageDownloadImage(imageDownloadImage: Resource): void {
     this.markdownThemeImage.setImageDownloadButtonIcon(imageDownloadImage)
@@ -702,7 +703,7 @@ export class MarkdownTheme {
    *
    * @param isMarkdownParserSync markdown是否同步解析 - 默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeGlobal#setIsMarkdownParserSync
+   * @useinstead GlobalTheme#setIsMarkdownParserSync
    */
   setIsMarkdownParserSync(isMarkdownParserSync: boolean): void {
     this.markdownThemeGlobal.setIsMarkdownParserSync(isMarkdownParserSync)
@@ -713,7 +714,7 @@ export class MarkdownTheme {
    *
    * @param isOnCopy 是否打开长按复制粘贴 - 默认true
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeGlobal#setIsOnCopy
+   * @useinstead GlobalTheme#setIsOnCopy
    */
   setIsOnCopy(isOnCopy: boolean): void {
     this.markdownThemeGlobal.setIsOnCopy(isOnCopy)
@@ -724,13 +725,10 @@ export class MarkdownTheme {
    *
    * @param blockFirstTopMargin markdown第一个模块上边距 - 默认8.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeGlobal#setGlobalMargin
+   * @useinstead GlobalTheme#setGlobalMargin
    */
   setBlockFirstTopMargin(blockFirstTopMargin: number): void {
-    let blockMarginRight = this.markdownThemeGlobal.getBlockMarginRight()
-    let blockMarginBottom = this.markdownThemeGlobal.getBlockMarginBottom()
-    let blockMarginLeft = this.markdownThemeGlobal.getBlockMarginLeft()
-    this.markdownThemeGlobal.setGlobalMargin(blockFirstTopMargin, blockMarginRight, blockMarginBottom, blockMarginLeft)
+    this.markdownThemeGlobal.setGlobalMargin({top: blockFirstTopMargin})
   }
 
   /**
@@ -738,13 +736,10 @@ export class MarkdownTheme {
    *
    * @param blockLastBottomMargin markdown最后一个模块下边距 - 默认8.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeGlobal#setGlobalMargin
+   * @useinstead GlobalTheme#setGlobalMargin
    */
   setBlockLastBottomMargin(blockLastBottomMargin: number): void {
-    let blockMarginTop = this.markdownThemeGlobal.getBlockMarginTop()
-    let blockMarginRight = this.markdownThemeGlobal.getBlockMarginRight()
-    let blockMarginLeft = this.markdownThemeGlobal.getBlockMarginLeft()
-    this.markdownThemeGlobal.setGlobalMargin(blockMarginTop, blockMarginRight, blockLastBottomMargin, blockMarginLeft)
+    this.markdownThemeGlobal.setGlobalMargin({bottom: blockLastBottomMargin})
   }
 
   /**
@@ -752,7 +747,7 @@ export class MarkdownTheme {
    *
    * @param blockTopAndBottomMargins 模块间上下间距 - 默认8.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeGlobal#setBlockSpacing
+   * @useinstead GlobalTheme#setBlockSpacing
    */
   setBlockTopAndBottomMargins(blockTopAndBottomMargins: number): void {
     this.markdownThemeGlobal.setBlockSpacing(blockTopAndBottomMargins)
@@ -763,7 +758,7 @@ export class MarkdownTheme {
    *
    * @param isLinkStyle 链接是否是图片显示 - true：图片显示；false：文本显示。默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkIsIcon
+   * @useinstead LinkTheme#setLinkIsIcon
    */
   setIsLinkStyle(isLinkStyle: boolean): void {
     this.markdownThemeLink.setLinkIsIcon(isLinkStyle)
@@ -774,7 +769,7 @@ export class MarkdownTheme {
    *
    * @param isListLinkStyle 列表中的单行链接是否是图片显示 - true：图片显示；false：文本显示。默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkListIsIcon
+   * @useinstead LinkTheme#setLinkListIsIcon
    */
   setIsListLinkStyle(isListLinkStyle: boolean): void {
     this.markdownThemeLink.setLinkListIsIcon(isListLinkStyle)
@@ -785,7 +780,7 @@ export class MarkdownTheme {
    *
    * @param linkColor 文本格式链接文本颜色 - 默认0xFF0000FF
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkTextFontColor
+   * @useinstead LinkTheme#setLinkTextFontColor
    */
   setLinkColor(linkColor: number): void {
     this.markdownThemeLink.setLinkTextFontColor(linkColor)
@@ -796,7 +791,7 @@ export class MarkdownTheme {
    *
    * @param isLinkSize 是否按照链接文本字体大小显示文本 - true：显示链接字体文本大小；false：跟随标题段落大小显示。默认true
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkTextFontSize
+   * @useinstead LinkTheme#setLinkTextFontSize
    */
   setIsLinkSize(isLinkSize: boolean): void {
     if (isLinkSize) {
@@ -813,7 +808,7 @@ export class MarkdownTheme {
    *
    * @param linkSize 文本格式链接文字大小 - 默认14.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkTextFontSize
+   * @useinstead LinkTheme#setLinkTextFontSize
    */
   setLinkSize(linkSize: number): void {
     this.markdownThemeLink.setLinkTextFontSize(linkSize)
@@ -824,7 +819,7 @@ export class MarkdownTheme {
    *
    * @param linkLineHeight 文本格式链接文字行高
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkTextLineHeight
+   * @useinstead LinkTheme#setLinkTextLineHeight
    */
   setLinkLineHeight(linkLineHeight: number): void {
     this.markdownThemeLink.setLinkTextLineHeight(linkLineHeight)
@@ -835,7 +830,7 @@ export class MarkdownTheme {
    *
    * @param linkBackgroundColor 文本格式链接背景颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkTextBackgroundColor
+   * @useinstead LinkTheme#setLinkTextBackgroundColor
    */
   setLinkBackgroundColor(linkBackgroundColor: number): void {
     this.markdownThemeLink.setLinkTextBackgroundColor(linkBackgroundColor)
@@ -846,7 +841,7 @@ export class MarkdownTheme {
    *
    * @param isLinkUnderlined 文本格式是否显示链接下划线 - true：显示下划线；false：不显示下划线。默认true
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkTextDecorationType
+   * @useinstead LinkTheme#setLinkTextDecorationType
    */
   setIsLinkUnderlined(isLinkUnderlined: boolean): void {
     if (isLinkUnderlined) { // 显示下划线
@@ -861,7 +856,7 @@ export class MarkdownTheme {
    *
    * @param linkCircleImageBackgroundColor 圆形图片格式链接主题背景颜色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkCircleIconBackgroundColor
+   * @useinstead LinkTheme#setLinkCircleIconBackgroundColor
    */
   setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: number): void {
     this.markdownThemeLink.setLinkCircleIconBackgroundColor(linkCircleImageBackgroundColor)
@@ -872,7 +867,7 @@ export class MarkdownTheme {
    *
    * @param linkCircleImageButtonBackgroundColor 圆形图片格式链接控件背景颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkCircleIconButtonBackgroundColor
+   * @useinstead LinkTheme#setLinkCircleIconButtonBackgroundColor
    */
   setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: number): void {
     this.markdownThemeLink.setLinkCircleIconButtonBackgroundColor(linkCircleImageButtonBackgroundColor)
@@ -883,7 +878,7 @@ export class MarkdownTheme {
    *
    * @param linkCircleImageTextSize 圆形图片格式链接文字大小 - 默认14.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkCircleIconTextSize
+   * @useinstead LinkTheme#setLinkCircleIconTextSize
    */
   setLinkCircleImageTextSize(linkCircleImageTextSize: number): void {
     this.markdownThemeLink.setLinkCircleIconTextSize(linkCircleImageTextSize)
@@ -894,7 +889,7 @@ export class MarkdownTheme {
    *
    * @param linkCircleImageTextColor 圆形图片格式链接文字颜色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkCircleIconTextColor
+   * @useinstead LinkTheme#setLinkCircleIconTextColor
    */
   setLinkCircleImageTextColor(linkCircleImageTextColor: number): void {
     this.markdownThemeLink.setLinkCircleIconTextColor(linkCircleImageTextColor)
@@ -905,7 +900,7 @@ export class MarkdownTheme {
    *
    * @param linkCircleImageRadius 圆形图片格式链接半径 - 默认20.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkCircleIconRadius
+   * @useinstead LinkTheme#setLinkCircleIconRadius
    */
   setLinkCircleImageRadius(linkCircleImageRadius: number): void {
     this.markdownThemeLink.setLinkCircleIconRadius(linkCircleImageRadius)
@@ -916,7 +911,7 @@ export class MarkdownTheme {
    *
    * @param linkCircleImageMargin 圆形图片格式链接左右外边距 - 默认6.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkCircleIconMargin
+   * @useinstead LinkTheme#setLinkCircleIconMargin
    */
   setLinkCircleImageMargin(linkCircleImageMargin: number): void {
     this.markdownThemeLink.setLinkCircleIconMargin(linkCircleImageMargin)
@@ -927,7 +922,7 @@ export class MarkdownTheme {
    *
    * @param linkRectImageBackgroundColor 圆角矩形图片格式链接主题背景颜色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectIconBackgroundColor
+   * @useinstead LinkTheme#setLinkRectIconBackgroundColor
    */
   setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: number): void {
     this.markdownThemeLink.setLinkRectIconBackgroundColor(linkRectImageBackgroundColor)
@@ -938,7 +933,7 @@ export class MarkdownTheme {
    *
    * @param linkRectImageButtonBackgroundColor 圆角矩形图片格式链接控件背景颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectIconButtonBackgroundColor
+   * @useinstead LinkTheme#setLinkRectIconButtonBackgroundColor
    */
   setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: number): void {
     this.markdownThemeLink.setLinkRectIconButtonBackgroundColor(linkRectImageButtonBackgroundColor)
@@ -949,7 +944,7 @@ export class MarkdownTheme {
    *
    * @param linkRectImageTextSize 圆角矩形图片格式链接文字大小 - 默认14.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectIconTextSize
+   * @useinstead LinkTheme#setLinkRectIconTextSize
    */
   setLinkRectImageTextSize(linkRectImageTextSize: number): void {
     this.markdownThemeLink.setLinkRectIconTextSize(linkRectImageTextSize)
@@ -960,7 +955,7 @@ export class MarkdownTheme {
    *
    * @param linkRectImageTextColor 圆角矩形图片格式链接文字颜色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectIconTextColor
+   * @useinstead LinkTheme#setLinkRectIconTextColor
    */
   setLinkRectImageTextColor(linkRectImageTextColor: number): void {
     this.markdownThemeLink.setLinkRectIconTextColor(linkRectImageTextColor)
@@ -971,7 +966,7 @@ export class MarkdownTheme {
    *
    * @param linkRectImageHeight 圆角矩形图片格式链接控件高度 - 默认20.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectIconHeight
+   * @useinstead LinkTheme#setLinkRectIconHeight
    */
   setLinkRectImageHeight(linkRectImageHeight: number): void {
     this.markdownThemeLink.setLinkRectIconHeight(linkRectImageHeight)
@@ -982,7 +977,7 @@ export class MarkdownTheme {
    *
    * @param linkRectImagePadding 圆角矩形图片格式链接左右内边距 - 默认6.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectIconPadding
+   * @useinstead LinkTheme#setLinkRectIconPadding
    */
   setLinkRectImagePadding(linkRectImagePadding: number): void {
     this.markdownThemeLink.setLinkRectIconPadding(linkRectImagePadding)
@@ -993,7 +988,7 @@ export class MarkdownTheme {
    *
    * @param linkRectImageRadius 圆角矩形图片格式链接圆角半径 - 默认6.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectIconRadius
+   * @useinstead LinkTheme#setLinkRectIconRadius
    */
   setLinkRectImageRadius(linkRectImageRadius: number): void {
     this.markdownThemeLink.setLinkRectIconRadius(linkRectImageRadius)
@@ -1004,7 +999,7 @@ export class MarkdownTheme {
    *
    * @param linkRectImageMargin 圆角矩形图片格式链接左右外边距 - 默认6.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectIconMargin
+   * @useinstead LinkTheme#setLinkRectIconMargin
    */
   setLinkRectImageMargin(linkRectImageMargin: number): void {
     this.markdownThemeLink.setLinkRectIconMargin(linkRectImageMargin)
@@ -1015,7 +1010,7 @@ export class MarkdownTheme {
    *
    * @param linkRectToolImageBackgroundColor 空心圆角矩形图片格式链接主题背景颜色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectToolIconBackgroundColor
+   * @useinstead LinkTheme#setLinkRectToolIconBackgroundColor
    */
   setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: number): void {
     this.markdownThemeLink.setLinkRectToolIconBackgroundColor(linkRectToolImageBackgroundColor)
@@ -1026,7 +1021,7 @@ export class MarkdownTheme {
    *
    * @param linkRectToolImageButtonBackgroundColor 空心圆角矩形图片格式链接控件背景颜色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectToolIconBackgroundColor
+   * @useinstead LinkTheme#setLinkRectToolIconBackgroundColor
    */
   setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: number): void {
     this.markdownThemeLink.setLinkRectToolIconBackgroundColor(linkRectToolImageButtonBackgroundColor)
@@ -1037,7 +1032,7 @@ export class MarkdownTheme {
    *
    * @param linkRectToolImageTextSize 空心圆角矩形图片格式链接文字大小 - 默认14.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectToolIconTextSize
+   * @useinstead LinkTheme#setLinkRectToolIconTextSize
    */
   setLinkRectToolImageTextSize(linkRectToolImageTextSize: number): void {
     this.markdownThemeLink.setLinkRectToolIconTextSize(linkRectToolImageTextSize)
@@ -1048,7 +1043,7 @@ export class MarkdownTheme {
    *
    * @param linkRectToolImageHeight 空心圆角矩形图片格式链接控件高度 - 默认21.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectToolIconHeight
+   * @useinstead LinkTheme#setLinkRectToolIconHeight
    */
   setLinkRectToolImageHeight(linkRectToolImageHeight: number): void {
     this.markdownThemeLink.setLinkRectToolIconHeight(linkRectToolImageHeight)
@@ -1059,7 +1054,7 @@ export class MarkdownTheme {
    *
    * @param linkRectToolImagePadding 空心圆角矩形图片格式链接左右内边距 - 默认6.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectToolIconPadding
+   * @useinstead LinkTheme#setLinkRectToolIconPadding
    */
   setLinkRectToolImagePadding(linkRectToolImagePadding: number): void {
     this.markdownThemeLink.setLinkRectToolIconPadding(linkRectToolImagePadding)
@@ -1070,7 +1065,7 @@ export class MarkdownTheme {
    *
    * @param linkRectToolImageBorderWidth 空心圆角矩形图片格式链接边框宽度 - 默认1.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectToolIconBorderWidth
+   * @useinstead LinkTheme#setLinkRectToolIconBorderWidth
    */
   setLinkRectToolImageBorderWidth(linkRectToolImageBorderWidth: number): void {
     this.markdownThemeLink.setLinkRectToolIconBorderWidth(linkRectToolImageBorderWidth)
@@ -1081,7 +1076,7 @@ export class MarkdownTheme {
    *
    * @param linkRectToolImageDividingLineWidth 空心圆角矩形图片格式链接分割线宽度 - 默认1.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectToolIconDividingLineWidth
+   * @useinstead LinkTheme#setLinkRectToolIconDividingLineWidth
    */
   setLinkRectToolImageDividingLineWidth(linkRectToolImageDividingLineWidth: number): void {
     this.markdownThemeLink.setLinkRectToolIconDividingLineWidth(linkRectToolImageDividingLineWidth)
@@ -1092,7 +1087,7 @@ export class MarkdownTheme {
    *
    * @param linkRectToolImageMargin 空心圆角矩形图片格式链接左右外边距 - 默认6.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectToolIconMargin
+   * @useinstead LinkTheme#setLinkRectToolIconMargin
    */
   setLinkRectToolImageMargin(linkRectToolImageMargin: number): void {
     this.markdownThemeLink.setLinkRectToolIconMargin(linkRectToolImageMargin)
@@ -1103,7 +1098,7 @@ export class MarkdownTheme {
    *
    * @param linkRectToolImageLineLeftPadding 空心圆角矩形图片格式分割线和文本左边距 - 默认3.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectToolIconLineLeftPadding
+   * @useinstead LinkTheme#setLinkRectToolIconLineLeftPadding
    */
   setLinkRectToolImageLineLeftPadding(linkRectToolImageLineLeftPadding: number): void {
     this.markdownThemeLink.setLinkRectToolIconLineLeftPadding(linkRectToolImageLineLeftPadding)
@@ -1114,7 +1109,7 @@ export class MarkdownTheme {
    *
    * @param linkRectToolImageLineRightPadding 空心圆角矩形图片格式分割线和文本右边距 - 默认3.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLink#setLinkRectToolIconLineRightPadding
+   * @useinstead LinkTheme#setLinkRectToolIconLineRightPadding
    */
   setLinkRectToolImageLineRightPadding(linkRectToolImageLineRightPadding: number): void {
     this.markdownThemeLink.setLinkRectToolIconLineRightPadding(linkRectToolImageLineRightPadding)
@@ -1125,13 +1120,10 @@ export class MarkdownTheme {
    *
    * @param blockQuoteLeftMargin 块引用左边距 - 默认8.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeBlockQuote#setBlockQuoteMargin
+   * @useinstead BlockQuoteTheme#setBlockQuoteMargin
    */
   setBlockQuoteLeftMargin(blockQuoteLeftMargin: number): void {
-    let blockQuoteMarginTop = this.markdownThemeBlockQuote.getBlockQuoteMarginTop()
-    let blockQuoteMarginRight = this.markdownThemeBlockQuote.getBlockQuoteMarginRight()
-    let blockQuoteMarginBottom = this.markdownThemeBlockQuote.getBlockQuoteMarginBottom()
-    this.markdownThemeBlockQuote.setBlockQuoteMargin(blockQuoteMarginTop, blockQuoteMarginRight, blockQuoteMarginBottom, blockQuoteLeftMargin)
+    this.markdownThemeBlockQuote.setBlockQuoteMargin({left: blockQuoteLeftMargin})
   }
 
   /**
@@ -1139,13 +1131,10 @@ export class MarkdownTheme {
    *
    * @param blockQuoteRightMargin 块引用右边距 - 默认8.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeBlockQuote#setBlockQuoteMargin
+   * @useinstead BlockQuoteTheme#setBlockQuoteMargin
    */
   setBlockQuoteRightMargin(blockQuoteRightMargin: number): void {
-    let blockQuoteMarginTop = this.markdownThemeBlockQuote.getBlockQuoteMarginTop()
-    let blockQuoteMarginBottom = this.markdownThemeBlockQuote.getBlockQuoteMarginBottom()
-    let blockQuoteMarginLeft = this.markdownThemeBlockQuote.getBlockQuoteMarginLeft()
-    this.markdownThemeBlockQuote.setBlockQuoteMargin(blockQuoteMarginTop, blockQuoteRightMargin, blockQuoteMarginBottom, blockQuoteMarginLeft)
+    this.markdownThemeBlockQuote.setBlockQuoteMargin({right: blockQuoteRightMargin})
   }
 
   /**
@@ -1153,7 +1142,7 @@ export class MarkdownTheme {
    *
    * @param blockQuoteWidth 块引用左边线条宽度 - 默认1.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeBlockQuote#setBlockQuoteLeftBorderWidth
+   * @useinstead BlockQuoteTheme#setBlockQuoteLeftBorderWidth
    */
   setBlockQuoteWidth(blockQuoteWidth: number): void {
     this.markdownThemeBlockQuote.setBlockQuoteLeftBorderWidth(blockQuoteWidth)
@@ -1164,7 +1153,7 @@ export class MarkdownTheme {
    *
    * @param blockQuoteColor 块引用左边线条颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeBlockQuote#setBlockQuoteLeftBorderColor
+   * @useinstead BlockQuoteTheme#setBlockQuoteLeftBorderColor
    */
   setBlockQuoteColor(blockQuoteColor: number): void {
     this.markdownThemeBlockQuote.setBlockQuoteLeftBorderColor(blockQuoteColor)
@@ -1175,7 +1164,7 @@ export class MarkdownTheme {
    *
    * @param blockQuoteBackgroundColor 块引用背景颜色 - 默认0xFFEAEAEA
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeBlockQuote#setBlockQuoteBackgroundColor
+   * @useinstead BlockQuoteTheme#setBlockQuoteBackgroundColor
    */
   setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: number): void {
     this.markdownThemeBlockQuote.setBlockQuoteBackgroundColor(blockQuoteBackgroundColor)
@@ -1186,7 +1175,7 @@ export class MarkdownTheme {
    *
    * @param blockQuoteTopAndBottomMargins 块引用子模块上下间距 - 默认0.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeBlockQuote#setBlockQuoteChildSpacing
+   * @useinstead BlockQuoteTheme#setBlockQuoteChildSpacing
    */
   setBlockQuoteTopAndBottomMargins(blockQuoteTopAndBottomMargins: number): void {
     this.markdownThemeBlockQuote.setBlockQuoteChildSpacing(blockQuoteTopAndBottomMargins)
@@ -1197,8 +1186,8 @@ export class MarkdownTheme {
    *
    * @param blockOrderedAndBulletTopAndBottomMargins 有序列表、无序列表、任务列表子模块上下间距 - 默认0.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeOrderedList#setOrderedListChildSpacing
-   *             MarkdownThemeOrderedList#setBulletListChildSpacing
+   * @useinstead OrderedListTheme#setOrderedListChildSpacing
+   *             MarkdownThemeOrderedListTheme#setBulletListChildSpacing
    */
   setBlockOrderedAndBulletTopAndBottomMargins(blockOrderedAndBulletTopAndBottomMargins: number): void {
     this.markdownThemeOrderedList.setOrderedListChildSpacing(blockOrderedAndBulletTopAndBottomMargins)
@@ -1210,19 +1199,12 @@ export class MarkdownTheme {
    *
    * @param blockLeftMargin 有序列表、无序列表、任务列表左边距 - 默认8.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeOrderedList#setOrderedListMargin
-   *             MarkdownThemeOrderedList#setBulletListMargin
+   * @useinstead OrderedListTheme#setOrderedListMargin
+   *             MarkdownThemeOrderedListTheme#setBulletListMargin
    */
   setBlockLeftMargin(blockLeftMargin: number): void {
-    let orderedListMarginTop = this.markdownThemeOrderedList.getOrderedListMarginTop()
-    let orderedListMarginRight = this.markdownThemeOrderedList.getOrderedListMarginRight()
-    let orderedListMarginBottom = this.markdownThemeOrderedList.getOrderedListMarginBottom()
-    this.markdownThemeOrderedList.setOrderedListMargin(orderedListMarginTop, orderedListMarginRight, orderedListMarginBottom, blockLeftMargin)
-
-    let bulletListMarginTop = this.markdownThemeBulletList.getBulletListMarginTop()
-    let bulletListMarginRight = this.markdownThemeBulletList.getBulletListMarginRight()
-    let bulletListMarginBottom = this.markdownThemeBulletList.getBulletListMarginBottom()
-    this.markdownThemeBulletList.setBulletListMargin(bulletListMarginTop, bulletListMarginRight, bulletListMarginBottom, blockLeftMargin)
+    this.markdownThemeOrderedList.setOrderedListMargin({left: blockLeftMargin})
+    this.markdownThemeBulletList.setBulletListMargin({left: blockLeftMargin})
   }
 
   /**
@@ -1230,19 +1212,12 @@ export class MarkdownTheme {
    *
    * @param blockRightMargin 有序列表、无序列表、任务列表右边距 - 默认8.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeOrderedList#setOrderedListMargin
-   *             MarkdownThemeOrderedList#setBulletListMargin
+   * @useinstead OrderedListTheme#setOrderedListMargin
+   *             MarkdownThemeOrderedListTheme#setBulletListMargin
    */
   setBlockRightMargin(blockRightMargin: number): void {
-    let orderedListMarginTop = this.markdownThemeOrderedList.getOrderedListMarginTop()
-    let orderedListMarginBottom = this.markdownThemeOrderedList.getOrderedListMarginBottom()
-    let orderedListMarginLeft = this.markdownThemeOrderedList.getOrderedListMarginLeft()
-    this.markdownThemeOrderedList.setOrderedListMargin(orderedListMarginTop, blockRightMargin, orderedListMarginBottom, orderedListMarginLeft)
-
-    let bulletListMarginTop = this.markdownThemeBulletList.getBulletListMarginTop()
-    let bulletListMarginBottom = this.markdownThemeBulletList.getBulletListMarginBottom()
-    let bulletListMarginLeft = this.markdownThemeBulletList.getBulletListMarginLeft()
-    this.markdownThemeBulletList.setBulletListMargin(bulletListMarginTop, blockRightMargin, bulletListMarginBottom, bulletListMarginLeft)
+    this.markdownThemeOrderedList.setOrderedListMargin({right: blockRightMargin})
+    this.markdownThemeBulletList.setBulletListMargin({right: blockRightMargin})
   }
 
   /**
@@ -1250,7 +1225,7 @@ export class MarkdownTheme {
    *
    * @param orderedListItemPrefixBold 有序列表前缀文本是否加粗 - true：加粗；false：不加粗。默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeOrderedList#setOrderedListMarkerTextFontWeight
+   * @useinstead OrderedListTheme#setOrderedListMarkerTextFontWeight
    */
   setOrderedListItemPrefixBold(orderedListItemPrefixBold: boolean): void {
     if (orderedListItemPrefixBold) {
@@ -1265,7 +1240,7 @@ export class MarkdownTheme {
    *
    * @param orderedListItemColor 有序列表前缀文本颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeOrderedList#setOrderedListMarkerTextFontColor
+   * @useinstead OrderedListTheme#setOrderedListMarkerTextFontColor
    */
   setOrderedListItemColor(orderedListItemColor: number): void {
     this.markdownThemeOrderedList.setOrderedListMarkerTextFontColor(orderedListItemColor)
@@ -1276,7 +1251,7 @@ export class MarkdownTheme {
    *
    * @param orderedListItemSize 有序列表前缀文本大小 - 默认14.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeOrderedList#setOrderedListMarkerTextFontSize
+   * @useinstead OrderedListTheme#setOrderedListMarkerTextFontSize
    */
   setOrderedListItemSize(orderedListItemSize: number): void {
     this.markdownThemeOrderedList.setOrderedListMarkerTextFontSize(orderedListItemSize)
@@ -1287,7 +1262,7 @@ export class MarkdownTheme {
    *
    * @param orderedListItemLineHeight 有序列表前缀文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeOrderedList#setOrderedListMarkerTextLineHeight
+   * @useinstead OrderedListTheme#setOrderedListMarkerTextLineHeight
    */
   setOrderedListItemLineHeight(orderedListItemLineHeight: number): void {
     this.markdownThemeOrderedList.setOrderedListMarkerTextLineHeight(orderedListItemLineHeight)
@@ -1298,7 +1273,7 @@ export class MarkdownTheme {
    *
    * @param bulletListItemCircle 无序列表前缀是否全部是实心圆型 - 默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeBulletList#setBulletListBulletIsCircle
+   * @useinstead BulletListTheme#setBulletListBulletIsCircle
    */
   setBulletListItemCircle(bulletListItemCircle: boolean): void {
     this.markdownThemeBulletList.setBulletListBulletIsCircle(bulletListItemCircle)
@@ -1309,7 +1284,7 @@ export class MarkdownTheme {
    *
    * @param bulletListItemColor 无序列表前缀文本颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeBulletList#setBulletListBulletTextFontColor
+   * @useinstead BulletListTheme#setBulletListBulletTextFontColor
    */
   setBulletListItemColor(bulletListItemColor: number): void {
     this.markdownThemeBulletList.setBulletListBulletTextFontColor(bulletListItemColor)
@@ -1320,7 +1295,7 @@ export class MarkdownTheme {
    *
    * @param bulletListItemSize 无序列表前缀文本大小 - 默认4.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeBulletList#setBulletListBulletTextFontSize
+   * @useinstead BulletListTheme#setBulletListBulletTextFontSize
    */
   setBulletListItemSize(bulletListItemSize: number): void {
     this.markdownThemeBulletList.setBulletListBulletTextFontSize(bulletListItemSize)
@@ -1331,7 +1306,7 @@ export class MarkdownTheme {
    *
    * @param bulletListItemLineHeight 无序列表前缀文本行高 - 默认18.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeBulletList#setBulletListBulletTextLineHeight
+   * @useinstead BulletListTheme#setBulletListBulletTextLineHeight
    */
   setBulletListItemLineHeight(bulletListItemLineHeight: number): void {
     this.markdownThemeBulletList.setBulletListBulletTextLineHeight(bulletListItemLineHeight)
@@ -1342,8 +1317,8 @@ export class MarkdownTheme {
    *
    * @param taskListItemLength 任务列表选择框宽高 - 默认15.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeBulletList#setBulletListCheckboxWidth
-   *             MarkdownThemeBulletList#setBulletListCheckboxHeight
+   * @useinstead BulletListTheme#setBulletListCheckboxWidth
+   *             MarkdownThemeBulletListTheme#setBulletListCheckboxHeight
    */
   setTaskListItemLength(taskListItemLength: number): void {
     this.markdownThemeBulletList.setBulletListCheckboxWidth(taskListItemLength)
@@ -1355,7 +1330,7 @@ export class MarkdownTheme {
    *
    * @param isCodeFormat 是否格式化代码块内容 - true：格式化代码块内容；false：不格式化代码块内容。默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockIsCodeFormat
+   * @useinstead CodeBlockTheme#setCodeBlockIsCodeFormat
    */
   setIsCodeFormat(isCodeFormat: boolean): void {
     this.markdownThemeCodeBlock.setCodeBlockIsCodeFormat(isCodeFormat)
@@ -1366,7 +1341,7 @@ export class MarkdownTheme {
    *
    * @param codeTextColor 内联代码文本颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeInlineCode#setInlineCodeTextFontColor
+   * @useinstead InlineCodeTheme#setInlineCodeTextFontColor
    */
   setCodeTextColor(codeTextColor: number): void {
     this.markdownThemeInlineCode.setInlineCodeTextFontColor(codeTextColor)
@@ -1377,7 +1352,7 @@ export class MarkdownTheme {
    *
    * @param codeBackgroundColor 内联代码背景颜色 - 默认0xFFEAEAEA
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeInlineCode#setInlineCodeTextBackgroundColor
+   * @useinstead InlineCodeTheme#setInlineCodeTextBackgroundColor
    */
   setCodeBackgroundColor(codeBackgroundColor: number): void {
     this.markdownThemeInlineCode.setInlineCodeTextBackgroundColor(codeBackgroundColor)
@@ -1388,7 +1363,7 @@ export class MarkdownTheme {
    *
    * @param codeTextSize 内联代码文本大小 - 默认13.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeInlineCode#setInlineCodeTextFontSize
+   * @useinstead InlineCodeTheme#setInlineCodeTextFontSize
    */
   setCodeTextSize(codeTextSize: number): void {
     this.markdownThemeInlineCode.setInlineCodeTextFontSize(codeTextSize)
@@ -1399,7 +1374,7 @@ export class MarkdownTheme {
    *
    * @param codeTypeface 内联代码文本字体 - 默认"HarmonyOS Sans"
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeInlineCode#setInlineCodeTextFontFamily
+   * @useinstead InlineCodeTheme#setInlineCodeTextFontFamily
    */
   setCodeTypeface(codeTypeface: string): void {
     this.markdownThemeInlineCode.setInlineCodeTextFontFamily(codeTypeface)
@@ -1410,7 +1385,7 @@ export class MarkdownTheme {
    *
    * @param isCodeBlockParserSync 围栏代码块代码高亮是否同步解析 - 默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockParserSync
+   * @useinstead CodeBlockTheme#setCodeBlockParserSync
    */
   setIsCodeBlockParserSync(isCodeBlockParserSync: boolean): void {
     this.markdownThemeCodeBlock.setCodeBlockParserSync(isCodeBlockParserSync)
@@ -1421,7 +1396,7 @@ export class MarkdownTheme {
    *
    * @param codeBlockTextColor 代码块代码文本颜色 - 默认None
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockTextFontColor
+   * @useinstead CodeBlockTheme#setCodeBlockTextFontColor
    */
   setCodeBlockTextColor(codeBlockTextColor: number): void {
     this.markdownThemeCodeBlock.setCodeBlockTextFontColor(codeBlockTextColor)
@@ -1432,7 +1407,7 @@ export class MarkdownTheme {
    *
    * @param codeBlockTypeTextColor 代码块代码类型文本颜色 - 默认None
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockTypeTextFontColor
+   * @useinstead CodeBlockTheme#setCodeBlockTypeTextFontColor
    */
   setCodeBlockTypeTextColor(codeBlockTypeTextColor: number): void {
     this.markdownThemeCodeBlock.setCodeBlockTypeTextFontColor(codeBlockTypeTextColor)
@@ -1443,7 +1418,7 @@ export class MarkdownTheme {
    *
    * @param codeBlockTypeTextStr 代码块代码类型文本 - 默认""
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockTypeText
+   * @useinstead CodeBlockTheme#setCodeBlockTypeText
    */
   setCodeBlockTypeTextStr(codeBlockTypeTextStr: string): void {
     this.markdownThemeCodeBlock.setCodeBlockTypeText(codeBlockTypeTextStr)
@@ -1454,7 +1429,7 @@ export class MarkdownTheme {
    *
    * @param codeBlockTypeTextPadding 代码类型和代码块距离 - 默认0.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockTitleLayoutMarginBottom
+   * @useinstead CodeBlockTheme#setCodeBlockTitleLayoutMarginBottom
    */
   setCodeBlockTypeTextPadding(codeBlockTypeTextPadding: number): void {
     this.markdownThemeCodeBlock.setCodeBlockTitleLayoutMarginBottom(codeBlockTypeTextPadding)
@@ -1465,8 +1440,8 @@ export class MarkdownTheme {
    *
    * @param codeBlockIconTextHide 代码块复制、全屏图片文字是否显示 - true：显示；false：不显示。默认true
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockFullScreenTextIsShow
-   *             MarkdownThemeCodeBlock#setCodeBlockCopyTextIsShow
+   * @useinstead CodeBlockTheme#setCodeBlockFullScreenTextIsShow
+   *             MarkdownThemeCodeBlockTheme#setCodeBlockCopyTextIsShow
    */
   setCodeBlockIconTextHide(codeBlockIconTextHide: boolean): void {
     this.markdownThemeCodeBlock.setCodeBlockFullScreenTextIsShow(codeBlockIconTextHide)
@@ -1478,7 +1453,7 @@ export class MarkdownTheme {
    *
    * @param codeBlockLineNumberHide 代码块代码行号是否显示 - true：显示；false：不显示。默认true
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockLineNumberIsShow
+   * @useinstead CodeBlockTheme#setCodeBlockLineNumberIsShow
    */
   setCodeBlockLineNumberHide(codeBlockLineNumberHide: boolean): void {
     this.markdownThemeCodeBlock.setCodeBlockLineNumberIsShow(codeBlockLineNumberHide)
@@ -1489,7 +1464,7 @@ export class MarkdownTheme {
    *
    * @param codeBlockBackgroundColor 代码块背景颜色 - 默认None
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockBackgroundColor
+   * @useinstead CodeBlockTheme#setCodeBlockBackgroundColor
    */
   setCodeBlockBackgroundColor(codeBlockBackgroundColor: number): void {
     this.markdownThemeCodeBlock.setCodeBlockBackgroundColor(codeBlockBackgroundColor)
@@ -1500,13 +1475,10 @@ export class MarkdownTheme {
    *
    * @param codeMultilineMargin 代码块左边距 - 默认8.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockMargin
+   * @useinstead CodeBlockTheme#setCodeBlockMargin
    */
   setCodeMultilineMargin(codeMultilineMargin: number): void {
-    let codeBlockMarginTop = this.markdownThemeCodeBlock.getCodeBlockMarginTop()
-    let codeBlockMarginRight = this.markdownThemeCodeBlock.getCodeBlockMarginRight()
-    let codeBlockMarginBottom = this.markdownThemeCodeBlock.getCodeBlockMarginBottom()
-    this.markdownThemeCodeBlock.setCodeBlockMargin(codeBlockMarginTop, codeBlockMarginRight, codeBlockMarginBottom, codeMultilineMargin)
+    this.markdownThemeCodeBlock.setCodeBlockMargin({left: codeMultilineMargin})
   }
 
   /**
@@ -1514,7 +1486,7 @@ export class MarkdownTheme {
    *
    * @param codeBlockTypeface 代码块字体 - 默认"HarmonyOS Sans"
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockTextFontFamily
+   * @useinstead CodeBlockTheme#setCodeBlockTextFontFamily
    */
   setCodeBlockTypeface(codeBlockTypeface: string): void {
     this.markdownThemeCodeBlock.setCodeBlockTextFontFamily(codeBlockTypeface)
@@ -1525,7 +1497,7 @@ export class MarkdownTheme {
    *
    * @param codeBlockTextSize 代码块代码文本大小 - 默认13.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockTextFontSize
+   * @useinstead CodeBlockTheme#setCodeBlockTextFontSize
    */
   setCodeBlockTextSize(codeBlockTextSize: number): void {
     this.markdownThemeCodeBlock.setCodeBlockTextFontSize(codeBlockTextSize)
@@ -1536,7 +1508,7 @@ export class MarkdownTheme {
    *
    * @param codeBlockLineHeight 代码块代码文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockTextLineHeight
+   * @useinstead CodeBlockTheme#setCodeBlockTextLineHeight
    */
   setCodeBlockLineHeight(codeBlockLineHeight: number): void {
     this.markdownThemeCodeBlock.setCodeBlockTextLineHeight(codeBlockLineHeight)
@@ -1547,10 +1519,10 @@ export class MarkdownTheme {
    *
    * @param codeBlockRadius 代码块控件圆角大小 - 默认8.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockAllRadius
+   * @useinstead CodeBlockTheme#setCodeBlockRadius
    */
   setCodeBlockRadius(codeBlockRadius: number): void {
-    this.markdownThemeCodeBlock.setCodeBlockAllRadius(codeBlockRadius)
+    this.markdownThemeCodeBlock.setCodeBlockRadius(codeBlockRadius)
   }
 
   /**
@@ -1558,7 +1530,7 @@ export class MarkdownTheme {
    *
    * @param isCodeFullScreen 代码块代码全屏按钮是否显示 - true：显示；false：不显示。默认true
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockFullScreenButtonIsShow
+   * @useinstead CodeBlockTheme#setCodeBlockFullScreenButtonIsShow
    */
   setIsCodeFullScreen(isCodeFullScreen: boolean): void {
     this.markdownThemeCodeBlock.setCodeBlockFullScreenButtonIsShow(isCodeFullScreen)
@@ -1569,10 +1541,10 @@ export class MarkdownTheme {
    *
    * @param iconWidthAndHeight 代码块代码全屏、代码复制按钮宽高 - 默认24.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockFullScreenIconHeight
-   *             MarkdownThemeCodeBlock#setCodeBlockFullScreenIconWidth
-   *             MarkdownThemeCodeBlock#setCodeBlockCopyIconHeight
-   *             MarkdownThemeCodeBlock#setCodeBlockCopyIconWidth
+   * @useinstead CodeBlockTheme#setCodeBlockFullScreenIconHeight
+   *             MarkdownThemeCodeBlockTheme#setCodeBlockFullScreenIconWidth
+   *             MarkdownThemeCodeBlockTheme#setCodeBlockCopyIconHeight
+   *             MarkdownThemeCodeBlockTheme#setCodeBlockCopyIconWidth
    */
   setIconWidthAndHeight(iconWidthAndHeight: number): void {
     this.markdownThemeCodeBlock.setCodeBlockFullScreenIconHeight(iconWidthAndHeight)
@@ -1586,7 +1558,7 @@ export class MarkdownTheme {
    *
    * @param codeListTitleTextSize 组合代码未选中标题字体大小 - 默认13.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleTextSize
+   * @useinstead CodeBlockTheme#setCodeBlockListTitleTextSize
    */
   setCodeListTitleTextSize(codeListTitleTextSize: number): void {
     this.markdownThemeCodeBlock.setCodeBlockListTitleTextSize(codeListTitleTextSize)
@@ -1597,7 +1569,7 @@ export class MarkdownTheme {
    *
    * @param codeListTitleSelectTextSize 组合代码选中标题字体大小 - 默认13.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleSelectTextSize
+   * @useinstead CodeBlockTheme#setCodeBlockListTitleSelectTextSize
    */
   setCodeListTitleSelectTextSize(codeListTitleSelectTextSize: number): void {
     this.markdownThemeCodeBlock.setCodeBlockListTitleSelectTextSize(codeListTitleSelectTextSize)
@@ -1608,7 +1580,7 @@ export class MarkdownTheme {
    *
    * @param codeListTitleSelectTextColor 组合代码选中标题文本颜色 - 默认0xFFFF0000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleSelectTextColor
+   * @useinstead CodeBlockTheme#setCodeBlockListTitleSelectTextColor
    */
   setCodeListTitleSelectTextColor(codeListTitleSelectTextColor: number): void {
     this.markdownThemeCodeBlock.setCodeBlockListTitleSelectTextColor(codeListTitleSelectTextColor)
@@ -1619,7 +1591,7 @@ export class MarkdownTheme {
    *
    * @param codeListTitleUnSelectTextColor 组合代码未选中标题文本颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleUnselectTextColor
+   * @useinstead CodeBlockTheme#setCodeBlockListTitleUnselectTextColor
    */
   setCodeListTitleUnSelectTextColor(codeListTitleUnSelectTextColor: number): void {
     this.markdownThemeCodeBlock.setCodeBlockListTitleUnselectTextColor(codeListTitleUnSelectTextColor)
@@ -1630,7 +1602,7 @@ export class MarkdownTheme {
    *
    * @param codeListTitleSelectBackgroundColor 组合代码选中标题背景颜色 - 默认0xFF808080
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleSelectBackgroundColor
+   * @useinstead CodeBlockTheme#setCodeBlockListTitleSelectBackgroundColor
    */
   setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: number): void {
     this.markdownThemeCodeBlock.setCodeBlockListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor)
@@ -1641,7 +1613,7 @@ export class MarkdownTheme {
    *
    * @param codeListTitleUnSelectBackgroundColor 组合代码未选中标题背景颜色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockListTitleUnselectBackgroundColor
+   * @useinstead CodeBlockTheme#setCodeBlockListTitleUnselectBackgroundColor
    */
   setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: number): void {
     this.markdownThemeCodeBlock.setCodeBlockListTitleUnselectBackgroundColor(codeListTitleUnSelectBackgroundColor)
@@ -1652,7 +1624,7 @@ export class MarkdownTheme {
    *
    * @param isSeparateCodeBlock 是否单独代码块显示 - true：显示；false：不显示。默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockIsSeparate
+   * @useinstead CodeBlockTheme#setCodeBlockIsSeparate
    */
   setIsSeparateCodeBlock(isSeparateCodeBlock: boolean): void {
     this.markdownThemeCodeBlock.setCodeBlockIsSeparate(isSeparateCodeBlock)
@@ -1663,7 +1635,7 @@ export class MarkdownTheme {
    *
    * @param separateCodeBlockWidth 单独代码块行号宽度 - 默认50.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockSeparateWidth
+   * @useinstead CodeBlockTheme#setCodeBlockSeparateWidth
    */
   setSeparateCodeBlockWidth(separateCodeBlockWidth: number): void {
     this.markdownThemeCodeBlock.setCodeBlockSeparateWidth(separateCodeBlockWidth)
@@ -1674,7 +1646,7 @@ export class MarkdownTheme {
    *
    * @param separateCodeIsBottom 单独代码块是否居底显示 - 默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockSeparateIsBottom
+   * @useinstead CodeBlockTheme#setCodeBlockSeparateIsBottom
    */
   setSeparateCodeIsBottom(separateCodeIsBottom: boolean): void {
     this.markdownThemeCodeBlock.setCodeBlockSeparateIsBottom(separateCodeIsBottom)
@@ -1685,7 +1657,7 @@ export class MarkdownTheme {
    *
    * @param headingBreakHeight H1、H2标题下分割线高度 - 默认0.5vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setUnderlineHeightForAllHeading
+   * @useinstead HeadingTheme#setUnderlineHeightForAllHeading
    */
   setHeadingBreakHeight(headingBreakHeight: number): void {
     this.markdownThemeHeading.setUnderlineHeightForAllHeading(headingBreakHeight)
@@ -1696,7 +1668,7 @@ export class MarkdownTheme {
    *
    * @param headingTypeface 标题文本字体 - 默认"HarmonyOS Sans"
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontFamilyForAllHeading
+   * @useinstead HeadingTheme#setTextFontFamilyForAllHeading
    */
   setHeadingTypeface(headingTypeface: string): void {
     this.markdownThemeHeading.setTextFontFamilyForAllHeading(headingTypeface)
@@ -1707,38 +1679,10 @@ export class MarkdownTheme {
    *
    * @param headingTopMargins 标题模块上间距 - 默认8.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setMarginForDesignateHeading
+   * @useinstead HeadingTheme#setMarginForAllHeadingEachLevel
    */
   setHeadingTopMargins(headingTopMargins: number): void {
-    let heading1MarginRight = this.markdownThemeHeading.getHeading1MarginRight()
-    let heading1MarginBottom = this.markdownThemeHeading.getHeading1MarginBottom()
-    let heading1MarginLeft = this.markdownThemeHeading.getHeading1MarginLeft()
-    this.markdownThemeHeading.setMarginForDesignateHeading(1, headingTopMargins, heading1MarginRight, heading1MarginBottom, heading1MarginLeft)
-
-    let heading2MarginRight = this.markdownThemeHeading.getHeading2MarginRight()
-    let heading2MarginBottom = this.markdownThemeHeading.getHeading2MarginBottom()
-    let heading2MarginLeft = this.markdownThemeHeading.getHeading2MarginLeft()
-    this.markdownThemeHeading.setMarginForDesignateHeading(2, headingTopMargins, heading2MarginRight, heading2MarginBottom, heading2MarginLeft)
-
-    let heading3MarginRight = this.markdownThemeHeading.getHeading3MarginRight()
-    let heading3MarginBottom = this.markdownThemeHeading.getHeading3MarginBottom()
-    let heading3MarginLeft = this.markdownThemeHeading.getHeading3MarginLeft()
-    this.markdownThemeHeading.setMarginForDesignateHeading(3, headingTopMargins, heading3MarginRight, heading3MarginBottom, heading3MarginLeft)
-
-    let heading4MarginRight = this.markdownThemeHeading.getHeading4MarginRight()
-    let heading4MarginBottom = this.markdownThemeHeading.getHeading4MarginBottom()
-    let heading4MarginLeft = this.markdownThemeHeading.getHeading4MarginLeft()
-    this.markdownThemeHeading.setMarginForDesignateHeading(4, headingTopMargins, heading4MarginRight, heading4MarginBottom, heading4MarginLeft)
-
-    let heading5MarginRight = this.markdownThemeHeading.getHeading5MarginRight()
-    let heading5MarginBottom = this.markdownThemeHeading.getHeading5MarginBottom()
-    let heading5MarginLeft = this.markdownThemeHeading.getHeading5MarginLeft()
-    this.markdownThemeHeading.setMarginForDesignateHeading(5, headingTopMargins, heading5MarginRight, heading5MarginBottom, heading5MarginLeft)
-
-    let heading6MarginRight = this.markdownThemeHeading.getHeading6MarginRight()
-    let heading6MarginBottom = this.markdownThemeHeading.getHeading6MarginBottom()
-    let heading6MarginLeft = this.markdownThemeHeading.getHeading6MarginLeft()
-    this.markdownThemeHeading.setMarginForDesignateHeading(6, headingTopMargins, heading6MarginRight, heading6MarginBottom, heading6MarginLeft)
+    this.markdownThemeHeading.setMarginForAllHeadingEachLevel({top: headingTopMargins})
   }
 
   /**
@@ -1746,38 +1690,10 @@ export class MarkdownTheme {
    *
    * @param headingBottomMargins 标题模块下间距 - 默认8.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setMarginForDesignateHeading
+   * @useinstead HeadingTheme#setMarginForAllHeadingEachLevel
    */
   setHeadingBottomMargins(headingBottomMargins: number): void {
-    let heading1MarginTop = this.markdownThemeHeading.getHeading1MarginTop()
-    let heading1MarginRight = this.markdownThemeHeading.getHeading1MarginRight()
-    let heading1MarginLeft = this.markdownThemeHeading.getHeading1MarginLeft()
-    this.markdownThemeHeading.setMarginForDesignateHeading(1, heading1MarginTop, heading1MarginRight, headingBottomMargins, heading1MarginLeft)
-
-    let heading2MarginTop = this.markdownThemeHeading.getHeading2MarginTop()
-    let heading2MarginRight = this.markdownThemeHeading.getHeading2MarginRight()
-    let heading2MarginLeft = this.markdownThemeHeading.getHeading2MarginLeft()
-    this.markdownThemeHeading.setMarginForDesignateHeading(2, heading2MarginTop, heading2MarginRight, headingBottomMargins, heading2MarginLeft)
-
-    let heading3MarginTop = this.markdownThemeHeading.getHeading3MarginTop()
-    let heading3MarginRight = this.markdownThemeHeading.getHeading3MarginRight()
-    let heading3MarginLeft = this.markdownThemeHeading.getHeading3MarginLeft()
-    this.markdownThemeHeading.setMarginForDesignateHeading(3, heading3MarginTop, heading3MarginRight, headingBottomMargins, heading3MarginLeft)
-
-    let heading4MarginTop = this.markdownThemeHeading.getHeading4MarginTop()
-    let heading4MarginRight = this.markdownThemeHeading.getHeading4MarginRight()
-    let heading4MarginLeft = this.markdownThemeHeading.getHeading4MarginLeft()
-    this.markdownThemeHeading.setMarginForDesignateHeading(4, heading4MarginTop, heading4MarginRight, headingBottomMargins, heading4MarginLeft)
-
-    let heading5MarginTop = this.markdownThemeHeading.getHeading5MarginTop()
-    let heading5MarginRight = this.markdownThemeHeading.getHeading5MarginRight()
-    let heading5MarginLeft = this.markdownThemeHeading.getHeading5MarginLeft()
-    this.markdownThemeHeading.setMarginForDesignateHeading(5, heading5MarginTop, heading5MarginRight, headingBottomMargins, heading5MarginLeft)
-
-    let heading6MarginTop = this.markdownThemeHeading.getHeading6MarginTop()
-    let heading6MarginRight = this.markdownThemeHeading.getHeading6MarginRight()
-    let heading6MarginLeft = this.markdownThemeHeading.getHeading6MarginLeft()
-    this.markdownThemeHeading.setMarginForDesignateHeading(6, heading6MarginTop, heading6MarginRight, headingBottomMargins, heading6MarginLeft)
+    this.markdownThemeHeading.setMarginForAllHeadingEachLevel({bottom: headingBottomMargins})
   }
 
   /**
@@ -1786,7 +1702,7 @@ export class MarkdownTheme {
    * @param headingTextSizeMultipliers 标题文本大小数组 - 默认[20.0, 17.0, 16.0, 15.0, 15.0, 13.0]
    * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontSizeForEachHeading
+   * @useinstead HeadingTheme#setTextFontSizeForEachHeading
    */
   setHeadingTextSizeMultipliers(headingTextSizeMultipliers: Array<number>): void {
     if (headingTextSizeMultipliers.length != 6) {
@@ -1800,7 +1716,7 @@ export class MarkdownTheme {
    *
    * @param headingTextSize1 一级标题文本大小 - 默认20.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontSizeForDesignateHeading
+   * @useinstead HeadingTheme#setTextFontSizeForDesignateHeading
    */
   setHeadingTextSize1(headingTextSize1: number): void {
     this.markdownThemeHeading.setTextFontSizeForDesignateHeading(1, headingTextSize1)
@@ -1811,7 +1727,7 @@ export class MarkdownTheme {
    *
    * @param headingTextSize2 二级标题文本大小 - 默认17.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontSizeForDesignateHeading
+   * @useinstead HeadingTheme#setTextFontSizeForDesignateHeading
    */
   setHeadingTextSize2(headingTextSize2: number): void {
     this.markdownThemeHeading.setTextFontSizeForDesignateHeading(2, headingTextSize2)
@@ -1822,7 +1738,7 @@ export class MarkdownTheme {
    *
    * @param headingTextSize3 三级标题文本大小 - 默认16.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontSizeForDesignateHeading
+   * @useinstead HeadingTheme#setTextFontSizeForDesignateHeading
    */
   setHeadingTextSize3(headingTextSize3: number): void {
     this.markdownThemeHeading.setTextFontSizeForDesignateHeading(3, headingTextSize3)
@@ -1833,7 +1749,7 @@ export class MarkdownTheme {
    *
    * @param headingTextSize4 四级标题文本大小 - 默认15.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontSizeForDesignateHeading
+   * @useinstead HeadingTheme#setTextFontSizeForDesignateHeading
    */
   setHeadingTextSize4(headingTextSize4: number): void {
     this.markdownThemeHeading.setTextFontSizeForDesignateHeading(4, headingTextSize4)
@@ -1844,7 +1760,7 @@ export class MarkdownTheme {
    *
    * @param headingTextSize5 五级标题文本大小 - 默认15.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontSizeForDesignateHeading
+   * @useinstead HeadingTheme#setTextFontSizeForDesignateHeading
    */
   setHeadingTextSize5(headingTextSize5: number): void {
     this.markdownThemeHeading.setTextFontSizeForDesignateHeading(5, headingTextSize5)
@@ -1855,7 +1771,7 @@ export class MarkdownTheme {
    *
    * @param headingTextSize6 六级标题文本大小 - 默认13.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontSizeForDesignateHeading
+   * @useinstead HeadingTheme#setTextFontSizeForDesignateHeading
    */
   setHeadingTextSize6(headingTextSize6: number): void {
     this.markdownThemeHeading.setTextFontSizeForDesignateHeading(6, headingTextSize6)
@@ -1867,7 +1783,7 @@ export class MarkdownTheme {
    * @param headingTextColor 标题文本颜色 - 默认0xFF191919
    * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontColorForAllHeading
+   * @useinstead HeadingTheme#setTextFontColorForAllHeading
    */
   setHeadingTextColor(headingTextColor: number): void {
     this.markdownThemeHeading.setTextFontColorForAllHeading(headingTextColor)
@@ -1879,7 +1795,7 @@ export class MarkdownTheme {
    * @param headingBreakColor H1、H2标题下分割线颜色 - 默认0xFF191919
    * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setUnderlineColorForAllHeading
+   * @useinstead HeadingTheme#setUnderlineColorForAllHeading
    */
   setHeadingBreakColor(headingBreakColor: number): void {
     this.markdownThemeHeading.setUnderlineColorForAllHeading(headingBreakColor)
@@ -1890,7 +1806,7 @@ export class MarkdownTheme {
    *
    * @param headingTextWordSpace 标题文本字间距 - 默认0.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextLetterSpacingForAllHeading
+   * @useinstead HeadingTheme#setTextLetterSpacingForAllHeading
    */
   setHeadingTextWordSpace(headingTextWordSpace: number): void {
     this.markdownThemeHeading.setTextLetterSpacingForAllHeading(headingTextWordSpace)
@@ -1901,7 +1817,7 @@ export class MarkdownTheme {
    *
    * @param headingTextLineHeight1 一级标题文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextLineHeightForDesignateHeading
+   * @useinstead HeadingTheme#setTextLineHeightForDesignateHeading
    */
   setHeadingTextLineHeight1(headingTextLineHeight1: number): void {
     this.markdownThemeHeading.setTextLineHeightForDesignateHeading(1, headingTextLineHeight1)
@@ -1912,7 +1828,7 @@ export class MarkdownTheme {
    *
    * @param headingTextLineHeight2 二级标题文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextLineHeightForDesignateHeading
+   * @useinstead HeadingTheme#setTextLineHeightForDesignateHeading
    */
   setHeadingTextLineHeight2(headingTextLineHeight2: number): void {
     this.markdownThemeHeading.setTextLineHeightForDesignateHeading(2, headingTextLineHeight2)
@@ -1923,7 +1839,7 @@ export class MarkdownTheme {
    *
    * @param headingTextLineHeight3 三级标题文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextLineHeightForDesignateHeading
+   * @useinstead HeadingTheme#setTextLineHeightForDesignateHeading
    */
   setHeadingTextLineHeight3(headingTextLineHeight3: number): void {
     this.markdownThemeHeading.setTextLineHeightForDesignateHeading(3, headingTextLineHeight3)
@@ -1934,7 +1850,7 @@ export class MarkdownTheme {
    *
    * @param headingTextLineHeight4 四级标题文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextLineHeightForDesignateHeading
+   * @useinstead HeadingTheme#setTextLineHeightForDesignateHeading
    */
   setHeadingTextLineHeight4(headingTextLineHeight4: number): void {
     this.markdownThemeHeading.setTextLineHeightForDesignateHeading(4, headingTextLineHeight4)
@@ -1945,7 +1861,7 @@ export class MarkdownTheme {
    *
    * @param headingTextLineHeight5 五级标题文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextLineHeightForDesignateHeading
+   * @useinstead HeadingTheme#setTextLineHeightForDesignateHeading
    */
   setHeadingTextLineHeight5(headingTextLineHeight5: number): void {
     this.markdownThemeHeading.setTextLineHeightForDesignateHeading(5, headingTextLineHeight5)
@@ -1956,7 +1872,7 @@ export class MarkdownTheme {
    *
    * @param headingTextLineHeight6 六级标题文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextLineHeightForDesignateHeading
+   * @useinstead HeadingTheme#setTextLineHeightForDesignateHeading
    */
   setHeadingTextLineHeight6(headingTextLineHeight6: number): void {
     this.markdownThemeHeading.setTextLineHeightForDesignateHeading(6, headingTextLineHeight6)
@@ -1967,7 +1883,7 @@ export class MarkdownTheme {
    *
    * @param headingTextColor1 标题文本颜色
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontColorForDesignateHeading
+   * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
   setHeadingTextColor1(headingTextColor1: number): void {
     this.markdownThemeHeading.setTextFontColorForDesignateHeading(1, headingTextColor1)
@@ -1978,7 +1894,7 @@ export class MarkdownTheme {
    *
    * @param headingBreakColor1 H1标题下分割线颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setUnderlineColorForDesignateHeading
+   * @useinstead HeadingTheme#setUnderlineColorForDesignateHeading
    */
   setHeadingBreakColor1(headingBreakColor1: number): void {
     this.markdownThemeHeading.setUnderlineColorForDesignateHeading(1, headingBreakColor1)
@@ -1989,7 +1905,7 @@ export class MarkdownTheme {
    *
    * @param headingTextColor2 标题文本颜色
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontColorForDesignateHeading
+   * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
   setHeadingTextColor2(headingTextColor2: number): void {
     this.markdownThemeHeading.setTextFontColorForDesignateHeading(2, headingTextColor2)
@@ -2000,7 +1916,7 @@ export class MarkdownTheme {
    *
    * @param headingBreakColor2 H2标题下分割线颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setUnderlineColorForDesignateHeading
+   * @useinstead HeadingTheme#setUnderlineColorForDesignateHeading
    */
   setHeadingBreakColor2(headingBreakColor2: number): void {
     this.markdownThemeHeading.setUnderlineColorForDesignateHeading(2, headingBreakColor2)
@@ -2011,7 +1927,7 @@ export class MarkdownTheme {
    *
    * @param headingTextColor3 标题文本颜色
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontColorForDesignateHeading
+   * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
   setHeadingTextColor3(headingTextColor3: number): void {
     this.markdownThemeHeading.setTextFontColorForDesignateHeading(3, headingTextColor3)
@@ -2022,7 +1938,7 @@ export class MarkdownTheme {
    *
    * @param headingTextColor4 标题文本颜色
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontColorForDesignateHeading
+   * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
   setHeadingTextColor4(headingTextColor4: number): void {
     this.markdownThemeHeading.setTextFontColorForDesignateHeading(4, headingTextColor4)
@@ -2033,7 +1949,7 @@ export class MarkdownTheme {
    *
    * @param headingTextColor5 标题文本颜色
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontColorForDesignateHeading
+   * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
   setHeadingTextColor5(headingTextColor5: number): void {
     this.markdownThemeHeading.setTextFontColorForDesignateHeading(5, headingTextColor5)
@@ -2044,7 +1960,7 @@ export class MarkdownTheme {
    *
    * @param headingTextColor6 标题文本颜色
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHeading#setTextFontColorForDesignateHeading
+   * @useinstead HeadingTheme#setTextFontColorForDesignateHeading
    */
   setHeadingTextColor6(headingTextColor6: number): void {
     this.markdownThemeHeading.setTextFontColorForDesignateHeading(6, headingTextColor6)
@@ -2055,13 +1971,10 @@ export class MarkdownTheme {
    *
    * @param paragraphTopMargins 段落模块上间距 - 默认8.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeParagraph#setParagraphMargin
+   * @useinstead ParagraphTheme#setParagraphMargin
    */
   setParagraphTopMargins(paragraphTopMargins: number): void {
-    let paragraphMarginRight = this.markdownThemeParagraph.getParagraphMarginRight()
-    let paragraphMarginBottom = this.markdownThemeParagraph.getParagraphMarginBottom()
-    let paragraphMarginLeft = this.markdownThemeParagraph.getParagraphMarginLeft()
-    this.markdownThemeParagraph.setParagraphMargin(paragraphTopMargins, paragraphMarginRight, paragraphMarginBottom, paragraphMarginLeft)
+    this.markdownThemeParagraph.setParagraphMargin({top: paragraphTopMargins})
   }
 
   /**
@@ -2069,13 +1982,10 @@ export class MarkdownTheme {
    *
    * @param paragraphBottomMargins 段落模块下间距 - 默认8.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeParagraph#setParagraphMargin
+   * @useinstead ParagraphTheme#setParagraphMargin
    */
   setParagraphBottomMargins(paragraphBottomMargins: number): void {
-    let paragraphMarginTop = this.markdownThemeParagraph.getParagraphMarginTop()
-    let paragraphMarginRight = this.markdownThemeParagraph.getParagraphMarginRight()
-    let paragraphMarginLeft = this.markdownThemeParagraph.getParagraphMarginLeft()
-    this.markdownThemeParagraph.setParagraphMargin(paragraphMarginTop, paragraphMarginRight, paragraphBottomMargins, paragraphMarginLeft)
+    this.markdownThemeParagraph.setParagraphMargin({bottom: paragraphBottomMargins})
   }
 
   /**
@@ -2083,7 +1993,7 @@ export class MarkdownTheme {
    *
    * @param paragraphTextSize 段落文本大小 - 默认14.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeParagraph#setParagraphTextFontSize
+   * @useinstead ParagraphTheme#setParagraphTextFontSize
    */
   setParagraphTextSize(paragraphTextSize: number): void {
     this.markdownThemeParagraph.setParagraphTextFontSize(paragraphTextSize)
@@ -2094,7 +2004,7 @@ export class MarkdownTheme {
    *
    * @param paragraphTextColor 段落文本颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeParagraph#setParagraphTextFontColor
+   * @useinstead ParagraphTheme#setParagraphTextFontColor
    */
   setParagraphTextColor(paragraphTextColor: number): void {
     this.markdownThemeParagraph.setParagraphTextFontColor(paragraphTextColor)
@@ -2105,7 +2015,7 @@ export class MarkdownTheme {
    *
    * @param paragraphTextWordSpace 段落文本字间距 - 默认0.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeParagraph#setParagraphTextLetterSpacing
+   * @useinstead ParagraphTheme#setParagraphTextLetterSpacing
    */
   setParagraphTextWordSpace(paragraphTextWordSpace: number): void {
     this.markdownThemeParagraph.setParagraphTextLetterSpacing(paragraphTextWordSpace)
@@ -2116,7 +2026,7 @@ export class MarkdownTheme {
    *
    * @param paragraphTextLineHeight 段落文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeParagraph#setParagraphTextLineHeight
+   * @useinstead ParagraphTheme#setParagraphTextLineHeight
    */
   setParagraphTextLineHeight(paragraphTextLineHeight: number): void {
     this.markdownThemeParagraph.setParagraphTextLineHeight(paragraphTextLineHeight)
@@ -2127,7 +2037,7 @@ export class MarkdownTheme {
    *
    * @param paragraphTypeface 段落文本字体 - 默认"HarmonyOS Sans"
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeParagraph#setParagraphTextFontFamily
+   * @useinstead ParagraphTheme#setParagraphTextFontFamily
    */
   setParagraphTypeface(paragraphTypeface: string): void {
     this.markdownThemeParagraph.setParagraphTextFontFamily(paragraphTypeface)
@@ -2138,7 +2048,7 @@ export class MarkdownTheme {
    *
    * @param thematicBreakColor 分割线颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeDivider#setDividerColor
+   * @useinstead DividerTheme#setDividerColor
    */
   setThematicBreakColor(thematicBreakColor: number): void {
     this.markdownThemeDivider.setDividerColor(thematicBreakColor)
@@ -2149,7 +2059,7 @@ export class MarkdownTheme {
    *
    * @param thematicBreakHeight 分割线高度 - 默认0.5vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeDivider#setDividerStrokeWidth
+   * @useinstead DividerTheme#setDividerStrokeWidth
    */
   setThematicBreakHeight(thematicBreakHeight: number): void {
     this.markdownThemeDivider.setDividerStrokeWidth(thematicBreakHeight)
@@ -2160,13 +2070,10 @@ export class MarkdownTheme {
    *
    * @param thematicBreakTopMargin 分割线上部外边距 - 默认0.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeDivider#setDividerMargin
+   * @useinstead DividerTheme#setDividerMargin
    */
   setThematicBreakTopMargin(thematicBreakTopMargin: number): void {
-    let dividerMarginRight = this.markdownThemeDivider.getDividerMarginRight()
-    let dividerMarginBottom = this.markdownThemeDivider.getDividerMarginBottom()
-    let dividerMarginLeft = this.markdownThemeDivider.getDividerMarginLeft()
-    this.markdownThemeDivider.setDividerMargin(thematicBreakTopMargin, dividerMarginRight, dividerMarginBottom, dividerMarginLeft)
+    this.markdownThemeDivider.setDividerMargin({top: thematicBreakTopMargin})
   }
 
   /**
@@ -2174,13 +2081,10 @@ export class MarkdownTheme {
    *
    * @param thematicBreakBottomMargin 分割线下部外边距 - 默认0.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeDivider#setDividerMargin
+   * @useinstead DividerTheme#setDividerMargin
    */
   setThematicBreakBottomMargin(thematicBreakBottomMargin: number): void {
-    let dividerMarginTop = this.markdownThemeDivider.getDividerMarginTop()
-    let dividerMarginRight = this.markdownThemeDivider.getDividerMarginRight()
-    let dividerMarginLeft = this.markdownThemeDivider.getDividerMarginLeft()
-    this.markdownThemeDivider.setDividerMargin(dividerMarginTop, dividerMarginRight, thematicBreakBottomMargin, dividerMarginLeft)
+    this.markdownThemeDivider.setDividerMargin({bottom: thematicBreakBottomMargin})
   }
 
   /**
@@ -2188,7 +2092,7 @@ export class MarkdownTheme {
    *
    * @param isLineBreak 软换行是否换行 - true：换行；false：不换行。默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeGlobal#setIsLineBreak
+   * @useinstead GlobalTheme#setIsLineBreak
    */
   setIsLineBreak(isLineBreak: boolean): void {
     this.markdownThemeGlobal.setIsLineBreak(isLineBreak)
@@ -2199,7 +2103,7 @@ export class MarkdownTheme {
    *
    * @param latexDefaultText 数学公式未加载状态是否显示文字 - 默认true
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLatexMath#setLatexMathDefaultText
+   * @useinstead LatexMathTheme#setLatexMathDefaultText
    */
   setLatexDefaultText(latexDefaultText: boolean): void {
     this.markdownThemeLatexMath.setLatexMathDefaultText(latexDefaultText)
@@ -2210,7 +2114,7 @@ export class MarkdownTheme {
    *
    * @param latexMathTextSize 数学公式文本大小 - 默认16.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLatexMath#setLatexMathDefaultTextFontSize
+   * @useinstead LatexMathTheme#setLatexMathDefaultTextFontSize
    */
   setLatexMathTextSize(latexMathTextSize: number): void {
     this.markdownThemeLatexMath.setLatexMathDefaultTextFontSize(latexMathTextSize)
@@ -2221,7 +2125,7 @@ export class MarkdownTheme {
    *
    * @param latexMathBackgroundColor 数学公式背景色 - 默认0x00FFFFFF
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLatexMath#setLatexMathBackgroundColor
+   * @useinstead LatexMathTheme#setLatexMathBackgroundColor
    */
   setLatexMathBackgroundColor(latexMathBackgroundColor: number): void {
     this.markdownThemeLatexMath.setLatexMathBackgroundColor(latexMathBackgroundColor)
@@ -2232,7 +2136,7 @@ export class MarkdownTheme {
    *
    * @param latexMathTextColor 数学公式文本颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLatexMath#setLatexMathTextColor
+   * @useinstead LatexMathTheme#setLatexMathTextColor
    */
   setLatexMathTextColor(latexMathTextColor: number): void {
     this.markdownThemeLatexMath.setLatexMathTextColor(latexMathTextColor)
@@ -2243,7 +2147,7 @@ export class MarkdownTheme {
    *
    * @param latexMathColorFormat 数学公式生成图片格式 - 默认LatexMathColorFormat.0xFORMAT_BGRA_8888
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLatexMath#setLatexMathColorFormat
+   * @useinstead LatexMathTheme#setLatexMathColorFormat
    */
   setLatexMathColorFormat(latexMathColorFormat: LatexMathColorFormat): void {
     this.markdownThemeLatexMath.setLatexMathColorFormat(latexMathColorFormat)
@@ -2254,7 +2158,7 @@ export class MarkdownTheme {
    *
    * @param latexMathBlockCenter 块结构的数学公式是否居中 - true：居中；false：不居中。默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLatexMath#setLatexMathBlockCenter
+   * @useinstead LatexMathTheme#setLatexMathBlockCenter
    */
   setLatexMathBlockCenter(latexMathBlockCenter: boolean): void {
     this.markdownThemeLatexMath.setLatexMathBlockCenter(latexMathBlockCenter)
@@ -2265,7 +2169,7 @@ export class MarkdownTheme {
    *
    * @param latexMathResStr 数学公式字体路径 默认 "/data/storage/el1/bundle/entry/resources/resfile/res"
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeLatexMath#setLatexMathResPath
+   * @useinstead LatexMathTheme#setLatexMathResPath
    */
   setLatexMathResStr(latexMathResStr: string): void {
     this.markdownThemeLatexMath.setLatexMathResPath(latexMathResStr)
@@ -2276,7 +2180,7 @@ export class MarkdownTheme {
    *
    * @param audioShadowColor 音频阴影颜色值 - 默认0x1A000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioShadowColor
+   * @useinstead AudioTheme#setAudioShadowColor
    */
   setAudioShadowColor(audioShadowColor: number): void {
     this.markdownThemeAudio.setAudioShadowColor(audioShadowColor)
@@ -2287,7 +2191,7 @@ export class MarkdownTheme {
    *
    * @param audioBorderColor 音频边框颜色 - 默认0x33000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioBorderColor
+   * @useinstead AudioTheme#setAudioBorderColor
    */
   setAudioBorderColor(audioBorderColor: number): void {
     this.markdownThemeAudio.setAudioBorderColor(audioBorderColor)
@@ -2298,7 +2202,7 @@ export class MarkdownTheme {
    *
    * @param audioBorderWidth 音频边框粗细 - 默认0.5vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioBorderWidth
+   * @useinstead AudioTheme#setAudioBorderWidth
    */
   setAudioBorderWidth(audioBorderWidth: number): void {
     this.markdownThemeAudio.setAudioBorderWidth(audioBorderWidth)
@@ -2309,10 +2213,10 @@ export class MarkdownTheme {
    *
    * @param audioBorderRadius 音频边框圆角 - 默认12.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioBorderAllRadius
+   * @useinstead AudioTheme#setAudioBorderRadius
    */
   setAudioBorderRadius(audioBorderRadius: number): void {
-    this.markdownThemeAudio.setAudioBorderAllRadius(audioBorderRadius)
+    this.markdownThemeAudio.setAudioBorderRadius(audioBorderRadius)
   }
 
   /**
@@ -2320,7 +2224,7 @@ export class MarkdownTheme {
    *
    * @param audioButtonBackgroundColor 音频按钮背景颜色- 默认0xFF000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioButtonBackgroundColor
+   * @useinstead AudioTheme#setAudioButtonBackgroundColor
    */
   setAudioButtonBackgroundColor(audioButtonBackgroundColor: number): void {
     this.markdownThemeAudio.setAudioButtonBackgroundColor(audioButtonBackgroundColor)
@@ -2331,7 +2235,7 @@ export class MarkdownTheme {
    *
    * @param audioButtonTextColor 音频按钮文字颜色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioButtonTextFontColor
+   * @useinstead AudioTheme#setAudioButtonTextFontColor
    */
   setAudioButtonTextColor(audioButtonTextColor: number): void {
     this.markdownThemeAudio.setAudioButtonTextFontColor(audioButtonTextColor)
@@ -2342,7 +2246,7 @@ export class MarkdownTheme {
    *
    * @param audioButtonTextSize 音频按钮文字大小 - 默认14.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioButtonTextFontSize
+   * @useinstead AudioTheme#setAudioButtonTextFontSize
    */
   setAudioButtonTextSize(audioButtonTextSize: number): void {
     this.markdownThemeAudio.setAudioButtonTextFontSize(audioButtonTextSize)
@@ -2353,7 +2257,7 @@ export class MarkdownTheme {
    *
    * @param audioButtonText 音频按钮文字内容 - 默认"立即播放"
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioButtonText
+   * @useinstead AudioTheme#setAudioButtonText
    */
   setAudioButtonText(audioButtonText: string): void {
     this.markdownThemeAudio.setAudioButtonText(audioButtonText)
@@ -2364,10 +2268,10 @@ export class MarkdownTheme {
    *
    * @param audioButtonBorderRadius 音频按钮圆角 - 默认16.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioButtonAllRadius
+   * @useinstead AudioTheme#setAudioButtonRadius
    */
   setAudioButtonBorderRadius(audioButtonBorderRadius: number): void {
-    this.markdownThemeAudio.setAudioButtonAllRadius(audioButtonBorderRadius)
+    this.markdownThemeAudio.setAudioButtonRadius(audioButtonBorderRadius)
   }
 
   /**
@@ -2375,7 +2279,7 @@ export class MarkdownTheme {
    *
    * @param audioTitleTextSize 音频标题文字大小 - 默认15.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioTitleTextFontSize
+   * @useinstead AudioTheme#setAudioTitleTextFontSize
    */
   setAudioTitleTextSize(audioTitleTextSize: number): void {
     this.markdownThemeAudio.setAudioTitleTextFontSize(audioTitleTextSize)
@@ -2386,7 +2290,7 @@ export class MarkdownTheme {
    *
    * @param audioTitleTextColor音频标题文字颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioTitleTextFontColor
+   * @useinstead AudioTheme#setAudioTitleTextFontColor
    */
   setAudioTitleTextColor(audioTitleTextColor: number): void {
     this.markdownThemeAudio.setAudioTitleTextFontColor(audioTitleTextColor)
@@ -2397,7 +2301,7 @@ export class MarkdownTheme {
    *
    * @param audioTitleTextLineHeight 音频标题文字行高 - 默认20.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioTitleTextLineHeight
+   * @useinstead AudioTheme#setAudioTitleTextLineHeight
    */
   setAudioTitleTextLineHeight(audioTitleTextLineHeight: number): void {
     this.markdownThemeAudio.setAudioTitleTextLineHeight(audioTitleTextLineHeight)
@@ -2408,7 +2312,7 @@ export class MarkdownTheme {
    *
    * @param audioTypeTextSize 音频类型文字大小 - 默认11.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioTypeTextFontSize
+   * @useinstead AudioTheme#setAudioTypeTextFontSize
    */
   setAudioTypeTextSize(audioTypeTextSize: number): void {
     this.markdownThemeAudio.setAudioTypeTextFontSize(audioTypeTextSize)
@@ -2419,7 +2323,7 @@ export class MarkdownTheme {
    *
    * @param audioTypeTextColor 音频类型文字颜色 - 默认0X80000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioTypeTextFontColor
+   * @useinstead AudioTheme#setAudioTypeTextFontColor
    */
   setAudioTypeTextColor(audioTypeTextColor: number): void {
     this.markdownThemeAudio.setAudioTypeTextFontColor(audioTypeTextColor)
@@ -2430,7 +2334,7 @@ export class MarkdownTheme {
    *
    * @param audioTypeTextLineHeight 音频类型文字行高 - 默认15.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioTypeTextLineHeight
+   * @useinstead AudioTheme#setAudioTypeTextLineHeight
    */
   setAudioTypeTextLineHeight(audioTypeTextLineHeight: number): void {
     this.markdownThemeAudio.setAudioTypeTextLineHeight(audioTypeTextLineHeight)
@@ -2441,13 +2345,10 @@ export class MarkdownTheme {
    *
    * @param audioMarginTop 音频上边距 - 默认10.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioMargin
+   * @useinstead AudioTheme#setAudioMargin
    */
   setAudioMarginTop(audioMarginTop: number): void {
-    let audioMarginRight = this.markdownThemeAudio.getAudioMarginRight()
-    let audioMarginBottom = this.markdownThemeAudio.getAudioMarginBottom()
-    let audioMarginLeft = this.markdownThemeAudio.getAudioMarginLeft()
-    this.markdownThemeAudio.setAudioMargin(audioMarginTop, audioMarginRight, audioMarginBottom, audioMarginLeft)
+    this.markdownThemeAudio.setAudioMargin({top: audioMarginTop})
   }
 
   /**
@@ -2455,13 +2356,10 @@ export class MarkdownTheme {
    *
    * @param audioMarginBottom 音频下边距 - 默认10.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeAudio#setAudioMargin
+   * @useinstead AudioTheme#setAudioMargin
    */
   setAudioMarginBottom(audioMarginBottom: number): void {
-    let audioMarginTop = this.markdownThemeAudio.getAudioMarginTop()
-    let audioMarginRight = this.markdownThemeAudio.getAudioMarginRight()
-    let audioMarginLeft = this.markdownThemeAudio.getAudioMarginLeft()
-    this.markdownThemeAudio.setAudioMargin(audioMarginTop, audioMarginRight, audioMarginBottom, audioMarginLeft)
+    this.markdownThemeAudio.setAudioMargin({bottom: audioMarginBottom})
   }
 
   /**
@@ -2469,10 +2367,10 @@ export class MarkdownTheme {
    *
    * @param videoBorderRadius 视频圆角 - 默认10.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoBorderAllRadius
+   * @useinstead VideoTheme#setVideoBorderRadius
    */
   setVideoBorderRadius(videoBorderRadius: number): void {
-    this.markdownThemeVideo.setVideoBorderAllRadius(videoBorderRadius)
+    this.markdownThemeVideo.setVideoBorderRadius(videoBorderRadius)
   }
 
   /**
@@ -2480,7 +2378,7 @@ export class MarkdownTheme {
    *
    * @param videoTimeTextColor 视频时间文本颜色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoTimeTextFontColor
+   * @useinstead VideoTheme#setVideoTimeTextFontColor
    */
   setVideoTimeTextColor(videoTimeTextColor: number): void {
     this.markdownThemeVideo.setVideoTimeTextFontColor(videoTimeTextColor)
@@ -2491,7 +2389,7 @@ export class MarkdownTheme {
    *
    * @param videoTimeTextSize 视频时间文本大小 - 默认14.0fp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoTimeTextFontSize
+   * @useinstead VideoTheme#setVideoTimeTextFontSize
    */
   setVideoTimeTextSize(videoTimeTextSize: number): void {
     this.markdownThemeVideo.setVideoTimeTextFontSize(videoTimeTextSize)
@@ -2502,7 +2400,7 @@ export class MarkdownTheme {
    *
    * @param videoTimeTextMarginRight 视频时间文本居右边距 - 默认10.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoTimeTextMarginRight
+   * @useinstead VideoTheme#setVideoTimeTextMarginRight
    */
   setVideoTimeTextMarginRight(videoTimeTextMarginRight: number): void {
     this.markdownThemeVideo.setVideoTimeTextMarginRight(videoTimeTextMarginRight)
@@ -2513,7 +2411,7 @@ export class MarkdownTheme {
    *
    * @param videoTimeTextMarginBottom 视频时间文本居底边距 - 默认10.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoTimeTextMarginBottom
+   * @useinstead VideoTheme#setVideoTimeTextMarginBottom
    */
   setVideoTimeTextMarginBottom(videoTimeTextMarginBottom: number): void {
     this.markdownThemeVideo.setVideoTimeTextMarginBottom(videoTimeTextMarginBottom)
@@ -2524,13 +2422,10 @@ export class MarkdownTheme {
    *
    * @param videoMarginTop 视频上边距 - 默认10.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoMargin
+   * @useinstead VideoTheme#setVideoMargin
    */
   setVideoMarginTop(videoMarginTop: number): void {
-    let videoMarginRight = this.markdownThemeVideo.getVideoMarginRight()
-    let videoMarginBottom = this.markdownThemeVideo.getVideoMarginBottom()
-    let videoMarginLeft = this.markdownThemeVideo.getVideoMarginLeft()
-    this.markdownThemeVideo.setVideoMargin(videoMarginTop, videoMarginRight, videoMarginBottom, videoMarginLeft)
+    this.markdownThemeVideo.setVideoMargin({top: videoMarginTop})
   }
 
   /**
@@ -2538,13 +2433,10 @@ export class MarkdownTheme {
    *
    * @param videoMarginBottom 视频下边距 - 默认10.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoMargin
+   * @useinstead VideoTheme#setVideoMargin
    */
   setVideoMarginBottom(videoMarginBottom: number): void {
-    let videoMarginTop = this.markdownThemeVideo.getVideoMarginTop()
-    let videoMarginRight = this.markdownThemeVideo.getVideoMarginRight()
-    let videoMarginLeft = this.markdownThemeVideo.getVideoMarginLeft()
-    this.markdownThemeVideo.setVideoMargin(videoMarginTop, videoMarginRight, videoMarginBottom, videoMarginLeft)
+    this.markdownThemeVideo.setVideoMargin({bottom: videoMarginBottom})
   }
 
   /**
@@ -2552,7 +2444,7 @@ export class MarkdownTheme {
    *
    * @param isVideoBottomLayout 视频发布/下载按钮布局是否显示 - 默认false不显示
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoBottomLayoutVisible
+   * @useinstead VideoTheme#setVideoBottomLayoutVisible
    */
   setIsVideoBottomLayout(isVideoBottomLayout: boolean): void {
     this.markdownThemeVideo.setVideoBottomLayoutVisible(isVideoBottomLayout)
@@ -2563,8 +2455,8 @@ export class MarkdownTheme {
    *
    * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoReleaseButtonIconWidth
-   *             MarkdownThemeVideo#setVideoReleaseButtonIconHeight
+   * @useinstead VideoTheme#setVideoReleaseButtonIconWidth
+   *             MarkdownThemeVideoTheme#setVideoReleaseButtonIconHeight
    */
   setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: number): void {
     this.markdownThemeVideo.setVideoReleaseButtonIconWidth(videoReleaseImageWidthHeight)
@@ -2576,7 +2468,7 @@ export class MarkdownTheme {
    *
    * @param videoReleaseWidth 视频发布按钮宽度 - 默认144.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoReleaseButtonWidth
+   * @useinstead VideoTheme#setVideoReleaseButtonWidth
    */
   setVideoReleaseWidth(videoReleaseWidth: number): void {
     this.markdownThemeVideo.setVideoReleaseButtonWidth(videoReleaseWidth)
@@ -2587,7 +2479,7 @@ export class MarkdownTheme {
    *
    * @param videoReleaseHeight 视频发布按钮高度 - 默认44.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoReleaseButtonHeight
+   * @useinstead VideoTheme#setVideoReleaseButtonHeight
    */
   setVideoReleaseHeight(videoReleaseHeight: number): void {
     this.markdownThemeVideo.setVideoReleaseButtonHeight(videoReleaseHeight)
@@ -2598,10 +2490,10 @@ export class MarkdownTheme {
    *
    * @param videoReleaseRadius 视频发布按钮圆角 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoReleaseButtonAllRadius
+   * @useinstead VideoTheme#setVideoReleaseButtonRadius
    */
   setVideoReleaseRadius(videoReleaseRadius: number): void {
-    this.markdownThemeVideo.setVideoReleaseButtonAllRadius(videoReleaseRadius)
+    this.markdownThemeVideo.setVideoReleaseButtonRadius(videoReleaseRadius)
   }
 
   /**
@@ -2609,7 +2501,7 @@ export class MarkdownTheme {
    *
    * @param videoReleaseText 视频发布按钮文本内容 - 默认"发布视频"
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoReleaseButtonText
+   * @useinstead VideoTheme#setVideoReleaseButtonText
    */
   setVideoReleaseText(videoReleaseText: string): void {
     this.markdownThemeVideo.setVideoReleaseButtonText(videoReleaseText)
@@ -2620,7 +2512,7 @@ export class MarkdownTheme {
    *
    * @param videoReleaseTextSize 视频发布按钮文本大小 - 默认16.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoReleaseButtonTextFontSize
+   * @useinstead VideoTheme#setVideoReleaseButtonTextFontSize
    */
   setVideoReleaseTextSize(videoReleaseTextSize: number): void {
     this.markdownThemeVideo.setVideoReleaseButtonTextFontSize(videoReleaseTextSize)
@@ -2631,7 +2523,7 @@ export class MarkdownTheme {
    *
    * @param videoReleaseTextColor 视频发布按钮文本颜色 - 默认0xE6000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoReleaseButtonTextFontColor
+   * @useinstead VideoTheme#setVideoReleaseButtonTextFontColor
    */
   setVideoReleaseTextColor(videoReleaseTextColor: number): void {
     this.markdownThemeVideo.setVideoReleaseButtonTextFontColor(videoReleaseTextColor)
@@ -2642,7 +2534,7 @@ export class MarkdownTheme {
    *
    * @param videoReleaseBackgroundColor 视频发布按钮背景颜色 - 默认0xFFF5F5F5
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoReleaseButtonBackgroundColor
+   * @useinstead VideoTheme#setVideoReleaseButtonBackgroundColor
    */
   setVideoReleaseBackgroundColor(videoReleaseBackgroundColor: number): void {
     this.markdownThemeVideo.setVideoReleaseButtonBackgroundColor(videoReleaseBackgroundColor)
@@ -2653,8 +2545,8 @@ export class MarkdownTheme {
    *
    * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoDownloadButtonIconWidth
-   *             MarkdownThemeVideo#setVideoDownloadButtonIconHeight
+   * @useinstead VideoTheme#setVideoDownloadButtonIconWidth
+   *             MarkdownThemeVideoTheme#setVideoDownloadButtonIconHeight
    */
   setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: number): void {
     this.markdownThemeVideo.setVideoDownloadButtonIconWidth(videoDownloadImageWidthHeight)
@@ -2666,7 +2558,7 @@ export class MarkdownTheme {
    *
    * @param videoDownloadWidth 视频下载按钮宽度 - 默认144.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoDownloadButtonWidth
+   * @useinstead VideoTheme#setVideoDownloadButtonWidth
    */
   setVideoDownloadWidth(videoDownloadWidth: number): void {
     this.markdownThemeVideo.setVideoDownloadButtonWidth(videoDownloadWidth)
@@ -2677,7 +2569,7 @@ export class MarkdownTheme {
    *
    * @param videoDownloadHeight 视频下载按钮高度 - 默认44.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoDownloadButtonHeight
+   * @useinstead VideoTheme#setVideoDownloadButtonHeight
    */
   setVideoDownloadHeight(videoDownloadHeight: number): void {
     this.markdownThemeVideo.setVideoDownloadButtonHeight(videoDownloadHeight)
@@ -2688,10 +2580,10 @@ export class MarkdownTheme {
    *
    * @param videoDownloadRadius 视频下载按钮圆角 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoDownloadButtonAllRadius
+   * @useinstead VideoTheme#setVideoDownloadButtonRadius
    */
   setVideoDownloadRadius(videoDownloadRadius: number): void {
-    this.markdownThemeVideo.setVideoDownloadButtonAllRadius(videoDownloadRadius)
+    this.markdownThemeVideo.setVideoDownloadButtonRadius(videoDownloadRadius)
   }
 
   /**
@@ -2699,7 +2591,7 @@ export class MarkdownTheme {
    *
    * @param videoDownloadText 视频下载按钮文本内容 - 默认"下载视频"
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoDownloadButtonText
+   * @useinstead VideoTheme#setVideoDownloadButtonText
    */
   setVideoDownloadText(videoDownloadText: string): void {
     this.markdownThemeVideo.setVideoDownloadButtonText(videoDownloadText)
@@ -2710,7 +2602,7 @@ export class MarkdownTheme {
    *
    * @param videoDownloadTextSize 视频下载按钮文本大小 - 默认16.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoDownloadButtonTextFontSize
+   * @useinstead VideoTheme#setVideoDownloadButtonTextFontSize
    */
   setVideoDownloadTextSize(videoDownloadTextSize: number): void {
     this.markdownThemeVideo.setVideoDownloadButtonTextFontSize(videoDownloadTextSize)
@@ -2721,7 +2613,7 @@ export class MarkdownTheme {
    *
    * @param videoDownloadTextColor 视频下载按钮文本颜色 - 默认0xE6000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoDownloadButtonTextFontColor
+   * @useinstead VideoTheme#setVideoDownloadButtonTextFontColor
    */
   setVideoDownloadTextColor(videoDownloadTextColor: number): void {
     this.markdownThemeVideo.setVideoDownloadButtonTextFontColor(videoDownloadTextColor)
@@ -2732,7 +2624,7 @@ export class MarkdownTheme {
    *
    * @param videoDownloadBackgroundColor 视频下载按钮背景颜色 - 默认0xFFF5F5F5
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeVideo#setVideoDownloadButtonBackgroundColor
+   * @useinstead VideoTheme#setVideoDownloadButtonBackgroundColor
    */
   setVideoDownloadBackgroundColor(videoDownloadBackgroundColor: number): void {
     this.markdownThemeVideo.setVideoDownloadButtonBackgroundColor(videoDownloadBackgroundColor)
@@ -2743,7 +2635,7 @@ export class MarkdownTheme {
    *
    * @param imageFitType 图片缩放类型 - 默认ImageFit.Contain
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageFitType
+   * @useinstead ImageTheme#setImageFitType
    */
   setImageFitType(imageFitType: ImageFitType): void {
     this.markdownThemeImage.setImageFitType(imageFitType)
@@ -2754,7 +2646,7 @@ export class MarkdownTheme {
    *
    * @param imageMaximumWidth 图片基于自身宽度缩放百分比 - 默认1.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageMaximumWidth
+   * @useinstead ImageTheme#setImageMaximumWidth
    */
   setImageMaximumWidth(imageMaximumWidth: number): void {
     this.markdownThemeImage.setImageMaximumWidth(imageMaximumWidth)
@@ -2765,7 +2657,7 @@ export class MarkdownTheme {
    *
    * @param imageFixedRatioWidth 图片基于父布局宽度缩放百分比 - 默认None
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageFixedRatioWidth
+   * @useinstead ImageTheme#setImageFixedRatioWidth
    */
   setImageFixedRatioWidth(imageFixedRatioWidth: number): void {
     this.markdownThemeImage.setImageFixedRatioWidth(imageFixedRatioWidth)
@@ -2776,7 +2668,7 @@ export class MarkdownTheme {
    *
    * @param imageMaxHeight 图片最大高度 - 默认None
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageMaxHeight
+   * @useinstead ImageTheme#setImageMaxHeight
    */
   setImageMaxHeight(imageMaxHeight: number): void {
     this.markdownThemeImage.setImageMaxHeight(imageMaxHeight)
@@ -2787,7 +2679,7 @@ export class MarkdownTheme {
    *
    * @param imageMaxWidth 图片最大宽度 - 默认None
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageMaxWidth
+   * @useinstead ImageTheme#setImageMaxWidth
    */
   setImageMaxWidth(imageMaxWidth: number): void {
     this.markdownThemeImage.setImageMaxWidth(imageMaxWidth)
@@ -2798,10 +2690,10 @@ export class MarkdownTheme {
    *
    * @param imageBorderRadius 图片圆角大小 - 默认0.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageBorderAllRadius
+   * @useinstead ImageTheme#setImageBorderRadius
    */
   setImageBorderRadius(imageBorderRadius: number): void {
-    this.markdownThemeImage.setImageBorderAllRadius(imageBorderRadius)
+    this.markdownThemeImage.setImageBorderRadius(imageBorderRadius)
   }
 
   /**
@@ -2809,7 +2701,7 @@ export class MarkdownTheme {
    *
    * @param imageBorderWidth 图片边框宽度 - 默认0.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageBorderWidth
+   * @useinstead ImageTheme#setImageBorderWidth
    */
   setImageBorderWidth(imageBorderWidth: number): void {
     this.markdownThemeImage.setImageBorderWidth(imageBorderWidth)
@@ -2820,7 +2712,7 @@ export class MarkdownTheme {
    *
    * @param imageBorderColor 图片边框颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageBorderColor
+   * @useinstead ImageTheme#setImageBorderColor
    */
   setImageBorderColor(imageBorderColor: number): void {
     this.markdownThemeImage.setImageBorderColor(imageBorderColor)
@@ -2831,7 +2723,7 @@ export class MarkdownTheme {
    *
    * @param isAutoResize 网络图片是否压缩 - true：压缩；false：不压缩。默认true
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageAutoResize
+   * @useinstead ImageTheme#setImageAutoResize
    */
   setIsAutoResize(isAutoResize: boolean): void {
     this.markdownThemeImage.setImageAutoResize(isAutoResize)
@@ -2842,13 +2734,10 @@ export class MarkdownTheme {
    *
    * @param imageMarginTop 图片上边距 - 默认10.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageMargin
+   * @useinstead ImageTheme#setImageMargin
    */
   setImageMarginTop(imageMarginTop: number): void {
-    let imageMarginRight = this.markdownThemeImage.getImageMarginRight()
-    let imageMarginBottom = this.markdownThemeImage.getImageMarginBottom()
-    let imageMarginLeft = this.markdownThemeImage.getImageMarginLeft()
-    this.markdownThemeImage.setImageMargin(imageMarginTop, imageMarginRight, imageMarginBottom, imageMarginLeft)
+    this.markdownThemeImage.setImageMargin({top: imageMarginTop})
   }
 
   /**
@@ -2856,13 +2745,10 @@ export class MarkdownTheme {
    *
    * @param imageMarginBottom 图片下边距 - 默认10.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageMargin
+   * @useinstead ImageTheme#setImageMargin
    */
   setImageMarginBottom(imageMarginBottom: number): void {
-    let imageMarginTop = this.markdownThemeImage.getImageMarginTop()
-    let imageMarginRight = this.markdownThemeImage.getImageMarginRight()
-    let imageMarginLeft = this.markdownThemeImage.getImageMarginLeft()
-    this.markdownThemeImage.setImageMargin(imageMarginTop, imageMarginRight, imageMarginBottom, imageMarginLeft)
+    this.markdownThemeImage.setImageMargin({bottom: imageMarginBottom})
   }
 
   /**
@@ -2870,7 +2756,7 @@ export class MarkdownTheme {
    *
    * @param isImageDownload 图片是否有下载按钮 - 默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageDownloadButtonVisible
+   * @useinstead ImageTheme#setImageDownloadButtonVisible
    */
   setIsImageDownload(isImageDownload: boolean): void {
     this.markdownThemeImage.setImageDownloadButtonVisible(isImageDownload)
@@ -2881,7 +2767,7 @@ export class MarkdownTheme {
    *
    * @param isImageMixedLayout 是否图文混排 - 默认true
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setIsImageMixedLayout
+   * @useinstead ImageTheme#setIsImageMixedLayout
    */
   setIsImageMixedLayout(isImageMixedLayout: boolean): void {
     this.markdownThemeImage.setIsImageMixedLayout(isImageMixedLayout)
@@ -2892,8 +2778,8 @@ export class MarkdownTheme {
    *
    * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageDownloadButtonIconWidth
-   *             MarkdownThemeImage#setImageDownloadButtonIconHeight
+   * @useinstead ImageTheme#setImageDownloadButtonIconWidth
+   *             MarkdownThemeImageTheme#setImageDownloadButtonIconHeight
    */
   setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: number): void {
     this.markdownThemeImage.setImageDownloadButtonIconWidth(imageDownloadImageWidthHeight)
@@ -2905,7 +2791,7 @@ export class MarkdownTheme {
    *
    * @param imageDownloadWidth 图片下载按钮宽度 - 默认296.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageDownloadButtonWidth
+   * @useinstead ImageTheme#setImageDownloadButtonWidth
    */
   setImageDownloadWidth(imageDownloadWidth: number): void {
     this.markdownThemeImage.setImageDownloadButtonWidth(imageDownloadWidth)
@@ -2916,7 +2802,7 @@ export class MarkdownTheme {
    *
    * @param imageDownloadHeight 图片下载按钮高度 - 默认44.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageDownloadButtonHeight
+   * @useinstead ImageTheme#setImageDownloadButtonHeight
    */
   setImageDownloadHeight(imageDownloadHeight: number): void {
     this.markdownThemeImage.setImageDownloadButtonHeight(imageDownloadHeight)
@@ -2927,10 +2813,10 @@ export class MarkdownTheme {
    *
    * @param imageDownloadRadius 图片下载按钮圆角 - 默认22.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageDownloadButtonAllRadius
+   * @useinstead ImageTheme#setImageDownloadButtonRadius
    */
   setImageDownloadRadius(imageDownloadRadius: number): void {
-    this.markdownThemeImage.setImageDownloadButtonAllRadius(imageDownloadRadius)
+    this.markdownThemeImage.setImageDownloadButtonRadius(imageDownloadRadius)
   }
 
   /**
@@ -2938,7 +2824,7 @@ export class MarkdownTheme {
    *
    * @param imageDownloadText 图片下载按钮文本内容 - 默认"下载图片"
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageDownloadButtonText
+   * @useinstead ImageTheme#setImageDownloadButtonText
    */
   setImageDownloadText(imageDownloadText: string): void {
     this.markdownThemeImage.setImageDownloadButtonText(imageDownloadText)
@@ -2949,7 +2835,7 @@ export class MarkdownTheme {
    *
    * @param imageDownloadTextSize 图片下载按钮文本大小 - 默认16.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageDownloadButtonTextFontSize
+   * @useinstead ImageTheme#setImageDownloadButtonTextFontSize
    */
   setImageDownloadTextSize(imageDownloadTextSize: number): void {
     this.markdownThemeImage.setImageDownloadButtonTextFontSize(imageDownloadTextSize)
@@ -2960,7 +2846,7 @@ export class MarkdownTheme {
    *
    * @param imageDownloadTextColor 图片下载按钮文本颜色 - 默认0xE6000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageDownloadButtonTextFontColor
+   * @useinstead ImageTheme#setImageDownloadButtonTextFontColor
    */
   setImageDownloadTextColor(imageDownloadTextColor: number): void {
     this.markdownThemeImage.setImageDownloadButtonTextFontColor(imageDownloadTextColor)
@@ -2971,7 +2857,7 @@ export class MarkdownTheme {
    *
    * @param imageDownloadBackgroundColor 图片下载按钮背景颜色 - 默认0xFFF5F5F5
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeImage#setImageDownloadButtonBackgroundColor
+   * @useinstead ImageTheme#setImageDownloadButtonBackgroundColor
    */
   setImageDownloadBackgroundColor(imageDownloadBackgroundColor: number): void {
     this.markdownThemeImage.setImageDownloadButtonBackgroundColor(imageDownloadBackgroundColor)
@@ -2982,10 +2868,10 @@ export class MarkdownTheme {
    *
    * @param tableCellPadding 表格内容内边距 - 默认4.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableCellAllPadding
+   * @useinstead TableTheme#setTableCellPadding
    */
   setTableCellPadding(tableCellPadding: number): void {
-    this.markdownThemeTable.setTableCellAllPadding(tableCellPadding)
+    this.markdownThemeTable.setTableCellPadding(tableCellPadding)
   }
 
   /**
@@ -2993,7 +2879,7 @@ export class MarkdownTheme {
    *
    * @param tableBorderColor 表格边框颜色 - 默认0xFF000000
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableBorderColor
+   * @useinstead TableTheme#setTableBorderColor
    */
   setTableBorderColor(tableBorderColor: number): void {
     this.markdownThemeTable.setTableBorderColor(tableBorderColor)
@@ -3004,7 +2890,7 @@ export class MarkdownTheme {
    *
    * @param tableBorderWidth 表格边框宽度 - 默认1.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableBorderWidth
+   * @useinstead TableTheme#setTableBorderWidth
    */
   setTableBorderWidth(tableBorderWidth: number): void {
     this.markdownThemeTable.setTableBorderWidth(tableBorderWidth)
@@ -3015,7 +2901,7 @@ export class MarkdownTheme {
    *
    * @param tableOddRowBackgroundColor 表格奇数行背景色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableContentOddRowBackgroundColor
+   * @useinstead TableTheme#setTableContentOddRowBackgroundColor
    */
   setTableOddRowBackgroundColor(tableOddRowBackgroundColor: number): void {
     this.markdownThemeTable.setTableContentOddRowBackgroundColor(tableOddRowBackgroundColor)
@@ -3026,7 +2912,7 @@ export class MarkdownTheme {
    *
    * @param tableEvenRowBackgroundColor 表格偶数行背景色 - 默认0xFFE0E0E0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableContentEvenRowBackgroundColor
+   * @useinstead TableTheme#setTableContentEvenRowBackgroundColor
    */
   setTableEvenRowBackgroundColor(tableEvenRowBackgroundColor: number): void {
     this.markdownThemeTable.setTableContentEvenRowBackgroundColor(tableEvenRowBackgroundColor)
@@ -3037,7 +2923,7 @@ export class MarkdownTheme {
    *
    * @param tableHeaderRowBackgroundColor 表格标题背景色 - 默认0xFFFFFFFF
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableTitleBackgroundColor
+   * @useinstead TableTheme#setTableTitleBackgroundColor
    */
   setTableHeaderRowBackgroundColor(tableHeaderRowBackgroundColor: number): void {
     this.markdownThemeTable.setTableTitleBackgroundColor(tableHeaderRowBackgroundColor)
@@ -3048,7 +2934,7 @@ export class MarkdownTheme {
    *
    * @param tableTitleTextColor 表格标题文本颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableTitleTextFontColor
+   * @useinstead TableTheme#setTableTitleTextFontColor
    */
   setTableTitleTextColor(tableTitleTextColor: number): void {
     this.markdownThemeTable.setTableTitleTextFontColor(tableTitleTextColor)
@@ -3059,8 +2945,8 @@ export class MarkdownTheme {
    *
    * @param tableTextLineHeight 表格文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableContentTextLineHeight
-   *             MarkdownThemeTable#setTableTitleTextLineHeight
+   * @useinstead TableTheme#setTableContentTextLineHeight
+   *             MarkdownThemeTableTheme#setTableTitleTextLineHeight
    */
   setTableTextLineHeight(tableTextLineHeight: number): void {
     this.markdownThemeTable.setTableContentTextLineHeight(tableTextLineHeight)
@@ -3072,7 +2958,7 @@ export class MarkdownTheme {
    *
    * @param tableTitleTextSize 表格标题文本大小 - 默认14.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableTitleTextFontSize
+   * @useinstead TableTheme#setTableTitleTextFontSize
    */
   setTableTitleTextSize(tableTitleTextSize: number): void {
     this.markdownThemeTable.setTableTitleTextFontSize(tableTitleTextSize)
@@ -3083,7 +2969,7 @@ export class MarkdownTheme {
    *
    * @param tableTitleLineHeight 表格标题文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableTitleTextLineHeight
+   * @useinstead TableTheme#setTableTitleTextLineHeight
    */
   setTableTitleLineHeight(tableTitleLineHeight: number): void {
     this.markdownThemeTable.setTableTitleTextLineHeight(tableTitleLineHeight)
@@ -3094,7 +2980,7 @@ export class MarkdownTheme {
    *
    * @param tableContentTextColor 表格内容文本颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableContentTextFontColor
+   * @useinstead TableTheme#setTableContentTextFontColor
    */
   setTableContentTextColor(tableContentTextColor: number): void {
     this.markdownThemeTable.setTableContentTextFontColor(tableContentTextColor)
@@ -3105,7 +2991,7 @@ export class MarkdownTheme {
    *
    * @param tableContentTextSize 表格内容文本大小 - 默认14.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableContentTextFontSize
+   * @useinstead TableTheme#setTableContentTextFontSize
    */
   setTableContentTextSize(tableContentTextSize: number): void {
     this.markdownThemeTable.setTableContentTextFontSize(tableContentTextSize)
@@ -3116,7 +3002,7 @@ export class MarkdownTheme {
    *
    * @param tableTextLineHeight 表格内容文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableContentTextLineHeight
+   * @useinstead TableTheme#setTableContentTextLineHeight
    */
   setTableContentTextLineHeight(tableTextLineHeight: number): void {
     this.markdownThemeTable.setTableContentTextLineHeight(tableTextLineHeight)
@@ -3127,10 +3013,10 @@ export class MarkdownTheme {
    *
    * @param tableRadius 表格圆角 - 默认5.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableAllRadius
+   * @useinstead TableTheme#setTableRadius
    */
   setTableRadius(tableRadius: number): void {
-    this.markdownThemeTable.setTableAllRadius(tableRadius)
+    this.markdownThemeTable.setTableRadius(tableRadius)
   }
 
   /**
@@ -3138,7 +3024,7 @@ export class MarkdownTheme {
    *
    * @param tableMinTextWidth 表格最小宽度 - 默认50.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableMinCellWidth
+   * @useinstead TableTheme#setTableMinCellWidth
    */
   setTableMinTextWidth(tableMinTextWidth: number): void {
     this.markdownThemeTable.setTableMinCellWidth(tableMinTextWidth)
@@ -3149,7 +3035,7 @@ export class MarkdownTheme {
    *
    * @param tableMaxTextWidth 表格最大宽度- 默认300.0vp
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableMaxCellWidth
+   * @useinstead TableTheme#setTableMaxCellWidth
    */
   setTableMaxTextWidth(tableMaxTextWidth: number): void {
     this.markdownThemeTable.setTableMaxCellWidth(tableMaxTextWidth)
@@ -3160,7 +3046,7 @@ export class MarkdownTheme {
    *
    * @param tableFirstColumnBold 表格第一列是否加粗 - true：加粗；false：不加粗。默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableFirstColumnIsBold
+   * @useinstead TableTheme#setTableFirstColumnIsBold
    */
   setTableFirstColumnBold(tableFirstColumnBold: boolean): void {
     this.markdownThemeTable.setTableFirstColumnIsBold(tableFirstColumnBold)
@@ -3171,7 +3057,7 @@ export class MarkdownTheme {
    *
    * @param tableScrollBarShow 表格是否显示滚动条 - true：显示(auto状态)；false：不显示。默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableScrollBarState
+   * @useinstead TableTheme#setTableScrollBarState
    */
   setTableScrollBarShow(tableScrollBarShow: boolean): void {
     if (tableScrollBarShow) {
@@ -3186,7 +3072,7 @@ export class MarkdownTheme {
    *
    * @param tableScrollBarColor 表格滚动条颜色
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeTable#setTableScrollBarColor
+   * @useinstead TableTheme#setTableScrollBarColor
    */
   setTableScrollBarColor(tableScrollBarColor: number): void {
     this.markdownThemeTable.setTableScrollBarColor(tableScrollBarColor)
@@ -3197,7 +3083,7 @@ export class MarkdownTheme {
    *
    * @param isDark 是否是深色 - true：深色；false：浅色。默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockIsDark
+   * @useinstead CodeBlockTheme#setCodeBlockIsDark
    */
   setIsDark(isDark: boolean): void {
     this.markdownThemeCodeBlock.setCodeBlockIsDark(isDark)
@@ -3208,7 +3094,7 @@ export class MarkdownTheme {
    *
    * @param strikethroughColor 删除线颜色 - 默认0xFF191919
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeStrikethrough#setStrikethroughTextDecorationColor
+   * @useinstead StrikethroughTheme#setStrikethroughTextDecorationColor
    */
   setStrikethroughColor(strikethroughColor: number): void {
     this.markdownThemeStrikethrough.setStrikethroughTextDecorationColor(strikethroughColor)
@@ -3219,7 +3105,7 @@ export class MarkdownTheme {
    *
    * @param strikethroughStyle 删除线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeStrikethrough#setStrikethroughTextDecorationStyle
+   * @useinstead StrikethroughTheme#setStrikethroughTextDecorationStyle
    */
   setStrikethroughStyle(strikethroughStyle: MarkdownTextDecorationStyle): void {
     this.markdownThemeStrikethrough.setStrikethroughTextDecorationStyle(strikethroughStyle)
@@ -3230,7 +3116,7 @@ export class MarkdownTheme {
    *
    * @param descListTermAndDefMargins 定义列表定义行缩进 默认8.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeDefinitionList#setDefinitionListTermToDescriptionSpacing
+   * @useinstead DefinitionListTheme#setDefinitionListTermToDescriptionSpacing
    */
   setDescListTermAndDefMargins(descListTermAndDefMargins: number): void {
     this.markdownThemeDefinitionList.setDefinitionListTermToDescriptionSpacing(descListTermAndDefMargins)
@@ -3241,7 +3127,7 @@ export class MarkdownTheme {
    *
    * @param descListDefIndentation 定义列表定义行缩进 默认8.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeDefinitionList#setDefinitionListDescriptionIndent
+   * @useinstead DefinitionListTheme#setDefinitionListDescriptionIndent
    */
   setDescListDefIndentation(descListDefIndentation: number): void {
     this.markdownThemeDefinitionList.setDefinitionListDescriptionIndent(descListDefIndentation)
@@ -3252,7 +3138,7 @@ export class MarkdownTheme {
    *
    * @param descListDefMargins 定义列表定义行间距 默认8.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeDefinitionList#setDefinitionListDescriptionItemSpacing
+   * @useinstead DefinitionListTheme#setDefinitionListDescriptionItemSpacing
    */
   setDescListDefMargins(descListDefMargins: number): void {
     this.markdownThemeDefinitionList.setDefinitionListDescriptionItemSpacing(descListDefMargins)
@@ -3263,7 +3149,7 @@ export class MarkdownTheme {
    *
    * @param subTextColor 下标字体颜色 默认0xFF191919
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeSub#setSubTextFontColor
+   * @useinstead SubTheme#setSubTextFontColor
    */
   setSubTextColor(subTextColor: number): void {
     this.markdownThemeSub.setSubTextFontColor(subTextColor)
@@ -3274,7 +3160,7 @@ export class MarkdownTheme {
    *
    * @param subTextSize 下标字体大小 默认8.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeSub#setSubTextFontSize
+   * @useinstead SubTheme#setSubTextFontSize
    */
   setSubTextSize(subTextSize: number): void {
     this.markdownThemeSub.setSubTextFontSize(subTextSize)
@@ -3285,7 +3171,7 @@ export class MarkdownTheme {
    *
    * @param subOffsetDist 下标偏移距离 默认0.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeSub#setSubTextBaselineOffset
+   * @useinstead SubTheme#setSubTextBaselineOffset
    */
   setSubOffsetDist(subOffsetDist: number): void {
     this.markdownThemeSub.setSubTextBaselineOffset(subOffsetDist)
@@ -3296,7 +3182,7 @@ export class MarkdownTheme {
    *
    * @param supTextColor 上标字体颜色 默认0xFF191919
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeSup#setSupTextFontColor
+   * @useinstead SupTheme#setSupTextFontColor
    */
   setSupTextColor(supTextColor: number): void {
     this.markdownThemeSup.setSupTextFontColor(supTextColor)
@@ -3307,7 +3193,7 @@ export class MarkdownTheme {
    *
    * @param supTextSize 上标字体大小 默认8.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeSup#setSupTextFontSize
+   * @useinstead SupTheme#setSupTextFontSize
    */
   setSupTextSize(supTextSize: number): void {
     this.markdownThemeSup.setSupTextFontSize(supTextSize)
@@ -3318,7 +3204,7 @@ export class MarkdownTheme {
    *
    * @param supOffsetDist 上标偏移距离 默认6.0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeSup#setSupTextBaselineOffset
+   * @useinstead SupTheme#setSupTextBaselineOffset
    */
   setSupOffsetDist(supOffsetDist: number): void {
     this.markdownThemeSup.setSupTextBaselineOffset(supOffsetDist)
@@ -3329,7 +3215,7 @@ export class MarkdownTheme {
    *
    * @param underlineColor 下划线颜色 默认0xFF191919
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHtmlUnderline#setHtmlUnderlineTextDecorationColor
+   * @useinstead HtmlUnderlineTheme#setHtmlUnderlineTextDecorationColor
    */
   setUnderlineColor(underlineColor: number): void {
     this.markdownThemeHtmlUnderline.setHtmlUnderlineTextDecorationColor(underlineColor)
@@ -3340,7 +3226,7 @@ export class MarkdownTheme {
    *
    * @param underlineStyle 下划线样式 0-SOLID-单实线 1-DOUBLE-双实线 2-DOTTED-点线 3-DASHED-虚线 4-WAVY-波浪线 默认0
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeHtmlUnderline#setHtmlUnderlineTextDecorationStyle
+   * @useinstead HtmlUnderlineTheme#setHtmlUnderlineTextDecorationStyle
    */
   setUnderlineStyle(underlineStyle: MarkdownTextDecorationStyle): void {
     this.markdownThemeHtmlUnderline.setHtmlUnderlineTextDecorationStyle(underlineStyle)
@@ -3351,7 +3237,7 @@ export class MarkdownTheme {
    *
    * @param openGestureSwipe true-支持滚动手势，false-不支持滚动手势，默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeGlobal#setOpenGestureSwipe
+   * @useinstead GlobalTheme#setOpenGestureSwipe
    */
   setOpenGestureSwipe(openGestureSwipe: boolean): void {
     this.markdownThemeGlobal.setOpenGestureSwipe(openGestureSwipe)
@@ -3362,7 +3248,7 @@ export class MarkdownTheme {
    *
    * @param useTab true-使用，false-不使用，默认false
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockUseTab
+   * @useinstead CodeBlockTheme#setCodeBlockUseTab
    */
   setUseTab(useTab: boolean): void {
     this.markdownThemeCodeBlock.setCodeBlockUseTab(useTab)
@@ -3373,7 +3259,7 @@ export class MarkdownTheme {
    *
    * @param indentWidth 空格缩进数量，默认4空格
    * @deprecated since 1.4.0
-   * @useinstead MarkdownThemeCodeBlock#setCodeBlockIndentWidth
+   * @useinstead CodeBlockTheme#setCodeBlockIndentWidth
    */
   setIndentWidth(indentWidth: number): void {
     this.markdownThemeCodeBlock.setCodeBlockIndentWidth(indentWidth)
@@ -3393,7 +3279,7 @@ export class MarkdownTheme {
    *
    * @returns 全局样式对象
    */
-  getMarkdownThemeGlobal(): MarkdownThemeGlobal {
+  getGlobalTheme(): GlobalTheme {
     return this.markdownThemeGlobal
   }
 
@@ -3402,7 +3288,7 @@ export class MarkdownTheme {
    *
    * @returns 音频样式对象
    */
-  getMarkdownThemeAudio(): MarkdownThemeAudio {
+  getAudioTheme(): AudioTheme {
     return this.markdownThemeAudio
   }
 
@@ -3411,7 +3297,7 @@ export class MarkdownTheme {
    *
    * @returns Banner样式对象
    */
-  getMarkdownThemeBanner(): MarkdownThemeBanner {
+  getBannerTheme(): BannerTheme {
     return this.markdownThemeBanner
   }
 
@@ -3420,7 +3306,7 @@ export class MarkdownTheme {
    *
    * @returns 块引用样式对象
    */
-  getMarkdownThemeBlockQuote(): MarkdownThemeBlockQuote {
+  getBlockQuoteTheme(): BlockQuoteTheme {
     return this.markdownThemeBlockQuote
   }
 
@@ -3429,7 +3315,7 @@ export class MarkdownTheme {
    *
    * @returns 加粗文本样式对象
    */
-  getMarkdownThemeBold(): MarkdownThemeBold {
+  getBoldTheme(): BoldTheme {
     return this.markdownThemeBold
   }
 
@@ -3438,7 +3324,7 @@ export class MarkdownTheme {
    *
    * @returns 代码块样式对象
    */
-  getMarkdownThemeCodeBlock(): MarkdownThemeCodeBlock {
+  getCodeBlockTheme(): CodeBlockTheme {
     return this.markdownThemeCodeBlock
   }
 
@@ -3447,7 +3333,7 @@ export class MarkdownTheme {
    *
    * @returns 定义列表样式对象
    */
-  getMarkdownThemeDefinitionList(): MarkdownThemeDefinitionList {
+  getDefinitionListTheme(): DefinitionListTheme {
     return this.markdownThemeDefinitionList
   }
 
@@ -3456,7 +3342,7 @@ export class MarkdownTheme {
    *
    * @returns 分割线样式对象
    */
-  getMarkdownThemeDivider(): MarkdownThemeDivider {
+  getDividerTheme(): DividerTheme {
     return this.markdownThemeDivider
   }
 
@@ -3465,7 +3351,7 @@ export class MarkdownTheme {
    *
    * @returns 脚注定义样式对象
    */
-  getMarkdownThemeFootnoteDef(): MarkdownThemeFootnoteDef {
+  getFootnoteDefTheme(): FootnoteDefTheme {
     return this.markdownThemeFootnoteDef
   }
 
@@ -3474,7 +3360,7 @@ export class MarkdownTheme {
    *
    * @returns 脚注引用样式对象
    */
-  getMarkdownThemeFootnoteRef(): MarkdownThemeFootnoteRef {
+  getFootnoteRefTheme(): FootnoteRefTheme {
     return this.markdownThemeFootnoteRef
   }
 
@@ -3483,7 +3369,7 @@ export class MarkdownTheme {
    *
    * @returns 数学公式样式对象
    */
-  getMarkdownThemeLatexMath(): MarkdownThemeLatexMath {
+  getLatexMathTheme(): LatexMathTheme {
     return this.markdownThemeLatexMath
   }
 
@@ -3492,7 +3378,7 @@ export class MarkdownTheme {
    *
    * @returns 标题样式对象
    */
-  getMarkdownThemeHeading(): MarkdownThemeHeading {
+  getHeadingTheme(): HeadingTheme {
     return this.markdownThemeHeading
   }
 
@@ -3501,7 +3387,7 @@ export class MarkdownTheme {
    *
    * @returns HTML下划线文本样式对象
    */
-  getMarkdownThemeHtmlUnderline(): MarkdownThemeHtmlUnderline {
+  getHtmlUnderlineTheme(): HtmlUnderlineTheme {
     return this.markdownThemeHtmlUnderline
   }
 
@@ -3510,7 +3396,7 @@ export class MarkdownTheme {
    *
    * @returns 图片样式对象
    */
-  getMarkdownThemeImage(): MarkdownThemeImage {
+  getImageTheme(): ImageTheme {
     return this.markdownThemeImage
   }
 
@@ -3519,7 +3405,7 @@ export class MarkdownTheme {
    *
    * @returns 内联代码样式对象
    */
-  getMarkdownThemeInlineCode(): MarkdownThemeInlineCode {
+  getInlineCodeTheme(): InlineCodeTheme {
     return this.markdownThemeInlineCode
   }
 
@@ -3528,7 +3414,7 @@ export class MarkdownTheme {
    *
    * @returns 斜体文本样式对象
    */
-  getMarkdownThemeItalic(): MarkdownThemeItalic {
+  getItalicTheme(): ItalicTheme {
     return this.markdownThemeItalic
   }
 
@@ -3537,7 +3423,7 @@ export class MarkdownTheme {
    *
    * @returns 链接文本样式对象
    */
-  getMarkdownThemeLink(): MarkdownThemeLink {
+  getLinkTheme(): LinkTheme {
     return this.markdownThemeLink
   }
 
@@ -3546,7 +3432,7 @@ export class MarkdownTheme {
    *
    * @returns 有序列表样式对象
    */
-  getMarkdownThemeOrderedList(): MarkdownThemeOrderedList {
+  getOrderedListTheme(): OrderedListTheme {
     return this.markdownThemeOrderedList
   }
 
@@ -3555,7 +3441,7 @@ export class MarkdownTheme {
    *
    * @returns 段落样式对象
    */
-  getMarkdownThemeParagraph(): MarkdownThemeParagraph {
+  getParagraphTheme(): ParagraphTheme {
     return this.markdownThemeParagraph
   }
 
@@ -3564,7 +3450,7 @@ export class MarkdownTheme {
    *
    * @returns 删除线文本样式对象
    */
-  getMarkdownThemeStrikethrough(): MarkdownThemeStrikethrough {
+  getStrikethroughTheme(): StrikethroughTheme {
     return this.markdownThemeStrikethrough
   }
 
@@ -3573,7 +3459,7 @@ export class MarkdownTheme {
    *
    * @returns 下标文本样式对象
    */
-  getMarkdownThemeSub(): MarkdownThemeSub {
+  getSubTheme(): SubTheme {
     return this.markdownThemeSub
   }
 
@@ -3582,7 +3468,7 @@ export class MarkdownTheme {
    *
    * @returns 上标文本样式对象
    */
-  getMarkdownThemeSup(): MarkdownThemeSup {
+  getSupTheme(): SupTheme {
     return this.markdownThemeSup
   }
 
@@ -3591,7 +3477,7 @@ export class MarkdownTheme {
    *
    * @returns 表格样式对象
    */
-  getMarkdownThemeTable(): MarkdownThemeTable {
+  getTableTheme(): TableTheme {
     return this.markdownThemeTable
   }
 
@@ -3600,7 +3486,7 @@ export class MarkdownTheme {
    *
    * @returns 无序/任务列表样式对象
    */
-  getMarkdownThemeBulletList(): MarkdownThemeBulletList {
+  getBulletListTheme(): BulletListTheme {
     return this.markdownThemeBulletList
   }
 
@@ -3609,7 +3495,7 @@ export class MarkdownTheme {
    *
    * @returns 视频样式对象
    */
-  getMarkdownThemeVideo(): MarkdownThemeVideo {
+  getVideoTheme(): VideoTheme {
     return this.markdownThemeVideo
   }
 }
@@ -3670,4 +3556,34 @@ export enum MarkdownTextDecorationStyle {
    * 波浪线
    */
   WAVY = 4
+}
+
+/**
+ * 通用外边距配置
+ */
+export interface MarkdownMarginOptions {
+  top?: number
+  right?: number
+  bottom?: number
+  left?: number
+}
+
+/**
+ * 通用内边距配置
+ */
+export interface MarkdownPaddingOptions {
+  top?: number
+  right?: number
+  bottom?: number
+  left?: number
+}
+
+/**
+ * 通用圆角配置
+ */
+export interface MarkdownRadiusOptions {
+  topLeft?: number
+  topRight?: number
+  bottomLeft?: number
+  bottomRight?: number
 }

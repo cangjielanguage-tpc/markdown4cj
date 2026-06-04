@@ -3,7 +3,7 @@ import { MarkdownTextDecorationStyle } from "./MarkdownTheme"
 /**
  * Markdown用户可设置的样式-删除线文本样式
  */
-export class MarkdownThemeStrikethrough {
+export class StrikethroughTheme {
   /**
    * 删除线文本颜色
    */
