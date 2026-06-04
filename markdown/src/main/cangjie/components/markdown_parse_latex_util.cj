@@ -11,9 +11,15 @@ class MarkdownParseLatexUtil {
      * @param latexMathTextSize 数学公式文本大小 - 单位px
      * @param latexStrCallback 数学公式文本替换接口 旧文本 -> 新文本
      * @param callback 数学公式图片回调接口 - PixelMap图片、图片高度、图片宽度、图片数组数据
-     * @return Future
+     * @return 线程
      */
-    static func latexMathStrToPixelMap(strLatexMath: String, markdownTheme: MarkdownTheme, latexMathTextSize: Float64, latexStrCallback: (String) -> String, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func latexMathStrToPixelMap(
+        strLatexMath: String,
+        markdownTheme: MarkdownTheme,
+        latexMathTextSize: Float64,
+        latexStrCallback: (String) -> String,
+        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit
+    ): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 if (Thread.currentThread.hasPendingCancellation) {
@@ -23,64 +29,79 @@ class MarkdownParseLatexUtil {
                 var imageHeight: ?Float64 = Option<Float64>.None
                 var imageWidth: ?Float64 = Option<Float64>.None
                 var arr: ?Array<UInt8> = Option<Array<UInt8>>.None
+                var imageSource: ?ImageSource = Option<ImageSource>.None
+                var latex: ?LaTeX = Option<LaTeX>.None
+                var r: ?Render = Option<Render>.None
+                var g2: ?Graphic2D = Option<Graphic2D>.None
                 try {
                     let strLatexMathNew = latexStrCallback(strLatexMath)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex: LaTeX = LaTeX(markdownTheme.latexMathTheme.latexMathResPath)
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        latex.release()
-                        return
-                    }
-                    var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(latexMathTextSize), Float32(10), markdownTheme.latexMathTheme.latexMathTextColor.toUInt32())
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        r.finalize()
-                        latex.release()
-                        return
-                    }
-                    var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathTheme.latexMathColorFormat))
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        g2.release()
-                        r.finalize()
-                        latex.release()
-                        return
-                    }
-                    r.draw(g2, markdownTheme.latexMathTheme.latexMathBackgroundColor.toUInt32())
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        g2.release()
-                        r.finalize()
-                        latex.release()
-                        return
-                    }
-                    arr = r.toBitmap(g2)
-                    g2.release()
-                    r.finalize()
-                    latex.release()
+                    latex = LaTeX(markdownTheme.latexMathTheme.latexMathResPath)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var imageSource: ImageSource = createImageSource(arr())
+                    r = latex?.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(latexMathTextSize), Float32(10), markdownTheme.latexMathTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
-                        imageSource.Release()
                         return
                     }
-                    pixelMap = imageSource.createPixelMap()
-                    imageSource.Release()
-                    var size: Size = pixelMap().getImageInfo().size
-                    imageWidth = Float64(size.width)
-                    imageHeight = Float64(size.height)
-                } catch (e: Exception) {
-                } finally {
-                    try {
+                    g2 = if (let Some(v) <- r) {
+                        Graphic2D(v, latexMathColorFormat(markdownTheme.latexMathTheme.latexMathColorFormat))
+                    } else {
+                        Option<Graphic2D>.None
+                    }
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
+                    if (let Some(v) <- g2) {
+                        r?.draw(v, markdownTheme.latexMathTheme.latexMathBackgroundColor.toUInt32())
+                    }
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
+                    if (let Some(v) <- g2) {
+                        arr = r?.toBitmap(v)
+                    }
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
+                    if (let Some(v) <- arr) {
+                        imageSource = createImageSource(v)
                         if (Thread.currentThread.hasPendingCancellation) {
-                            pixelMap?.Release()
                             return
                         }
-                        callback(pixelMap, imageHeight, imageWidth, arr)
-                    } catch (_) {
+                        pixelMap = imageSource?.createPixelMap()
+                        if (Thread.currentThread.hasPendingCancellation) {
+                            pixelMap?.Release()
+                            pixelMap = Option<PixelMap>.None
+                            return
+                        }
+                        if (let Some(p) <- pixelMap) {
+                            var size: Size = p.getImageInfo().size
+                            imageWidth = Float64(size.width)
+                            imageHeight = Float64(size.height)
+                        }
+                    }
+                } catch (e: Exception) {
+                    pixelMap?.Release()
+                    pixelMap = Option<PixelMap>.None
+                } finally {
+                    imageSource?.Release()
+                    imageSource = Option<ImageSource>.None
+                    g2?.release()
+                    g2 = Option<Graphic2D>.None
+                    r?.finalize()
+                    r = Option<Render>.None
+                    latex?.release()
+                    latex = Option<LaTeX>.None
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        pixelMap?.Release()
+                        pixelMap = Option<PixelMap>.None
+                        return
                     }
                 }
+                callback(pixelMap, imageHeight, imageWidth, arr)
             }
         }
         return fut
@@ -97,7 +118,14 @@ class MarkdownParseLatexUtil {
      * @param callback 数学公式图片回调接口 - PixelMap图片、图片高度、图片宽度、图片数组数据
      * @return Future
      */
-    static func latexMathStrToPixelMapRow(strLatexMath: String, markdownTheme: MarkdownTheme, latexMathTextSize: Float64, componentWidth: Float64, latexStrCallback: (String) -> String, callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit): Future<Unit> {
+    static func latexMathStrToPixelMapRow(
+        strLatexMath: String,
+        markdownTheme: MarkdownTheme,
+        latexMathTextSize: Float64,
+        componentWidth: Float64,
+        latexStrCallback: (String) -> String,
+        callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit
+    ): Future<Unit> {
         let fut: Future<Unit> = spawn {
             synchronized(latexReentrantMutex) {
                 if (Thread.currentThread.hasPendingCancellation) {
@@ -107,76 +135,87 @@ class MarkdownParseLatexUtil {
                 var height: ?Float64 = Option<Float64>.None
                 var width: ?Float64 = Option<Float64>.None
                 var arr: ?Array<UInt8> = Option<Array<UInt8>>.None
+                var imageSource: ?ImageSource = Option<ImageSource>.None
+                var latex: ?LaTeX = Option<LaTeX>.None
+                var r: ?Render = Option<Render>.None
+                var g2: ?Graphic2D = Option<Graphic2D>.None
                 try {
                     let strLatexMathNew = latexStrCallback(strLatexMath)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var latex: LaTeX = LaTeX(markdownTheme.latexMathTheme.latexMathResPath)
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        latex.release()
-                        return
-                    }
-                    var r: Render = latex.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(latexMathTextSize), Float32(10), markdownTheme.latexMathTheme.latexMathTextColor.toUInt32())
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        r.finalize()
-                        latex.release()
-                        return
-                    }
-                    var g2: Graphic2D = Graphic2D(r, latexMathColorFormat(markdownTheme.latexMathTheme.latexMathColorFormat))
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        g2.release()
-                        r.finalize()
-                        latex.release()
-                        return
-                    }
-                    r.draw(g2, markdownTheme.latexMathTheme.latexMathBackgroundColor.toUInt32())
-                    if (Thread.currentThread.hasPendingCancellation) {
-                        g2.release()
-                        r.finalize()
-                        latex.release()
-                        return
-                    }
-                    arr = r.toBitmap(g2)
-                    g2.release()
-                    r.finalize()
-                    latex.release()
+                    latex = LaTeX(markdownTheme.latexMathTheme.latexMathResPath)
                     if (Thread.currentThread.hasPendingCancellation) {
                         return
                     }
-                    var imageSource: ImageSource = createImageSource(arr())
+                    r = latex?.parse(strLatexMathNew, getLatexmathWidth(strLatexMathNew), Float32(latexMathTextSize), Float32(10), markdownTheme.latexMathTheme.latexMathTextColor.toUInt32())
                     if (Thread.currentThread.hasPendingCancellation) {
-                        imageSource.Release()
                         return
                     }
-                    pixelMap = imageSource.createPixelMap()
-                    imageSource.Release()
-                    var size: Size = pixelMap().getImageInfo().size
-                    var sizeWidth: Float64 = Float64(size.width)
-                    var sizeHeight: Float64 = Float64(size.height)
-                    var aspectRatio: Float64 = sizeHeight / sizeWidth
-                    width = if (componentWidth > sizeWidth) {
-                        sizeWidth
+                    g2 = if (let Some(v) <- r) {
+                        Graphic2D(v, latexMathColorFormat(markdownTheme.latexMathTheme.latexMathColorFormat))
                     } else {
-                        componentWidth
+                        Option<Graphic2D>.None
                     }
-                    height = width() * aspectRatio
                     if (Thread.currentThread.hasPendingCancellation) {
-                        pixelMap?.Release()
                         return
                     }
-                    pixelMap?.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
-                } catch (e: Exception) {
-                } finally {
-                    try {
+                    if (let Some(v) <- g2) {
+                        r?.draw(v, markdownTheme.latexMathTheme.latexMathBackgroundColor.toUInt32())
+                    }
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
+                    if (let Some(v) <- g2) {
+                        arr = r?.toBitmap(v)
+                    }
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        return
+                    }
+                    if (let Some(v) <- arr) {
+                        imageSource = createImageSource(v)
                         if (Thread.currentThread.hasPendingCancellation) {
-                            pixelMap?.Release()
                             return
                         }
-                        callback(pixelMap, height, width, arr)
-                    } catch (_) {
+                        pixelMap = imageSource?.createPixelMap()
+                        if (Thread.currentThread.hasPendingCancellation) {
+                            pixelMap?.Release()
+                            pixelMap = Option<PixelMap>.None
+                            return
+                        }
+                        if (let Some(p) <- pixelMap) {
+                            var size: Size = p.getImageInfo().size
+                            var sizeWidth: Float64 = Float64(size.width)
+                            var sizeHeight: Float64 = Float64(size.height)
+                            var aspectRatio: Float64 = sizeHeight / sizeWidth
+                            width = if (componentWidth > sizeWidth) {
+                                sizeWidth
+                            } else {
+                                componentWidth
+                            }
+                            height = width() * aspectRatio
+                            p.scale(Float32(width() / sizeWidth), Float32(height() / sizeHeight))
+                        }
+                    }
+                } catch (e: Exception) {
+                    pixelMap?.Release()
+                    pixelMap = Option<PixelMap>.None
+                } finally {
+                    imageSource?.Release()
+                    imageSource = Option<ImageSource>.None
+                    g2?.release()
+                    g2 = Option<Graphic2D>.None
+                    r?.finalize()
+                    r = Option<Render>.None
+                    latex?.release()
+                    latex = Option<LaTeX>.None
+                    if (Thread.currentThread.hasPendingCancellation) {
+                        pixelMap?.Release()
+                        pixelMap = Option<PixelMap>.None
+                        return
                     }
                 }
+                callback(pixelMap, height, width, arr)
             }
         }
         return fut

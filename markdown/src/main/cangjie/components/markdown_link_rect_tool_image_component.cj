@@ -3,7 +3,7 @@ package markdown.components
 import ohos.state_macro_manage.*
 
 /**
- * 行内链接
+ * 空心圆角图片链接
  */
 @Component
 public class MarkdownLinkRectToolImageComponent {
@@ -17,7 +17,6 @@ public class MarkdownLinkRectToolImageComponent {
     var imageWidth: ?Float64 = Option<Float64>.None // 链接宽度
     @State
     var imagePixelMap: ?PixelMap = Option<PixelMap>.None // 链接图片信息
-    var arrayUint8: ?Array<UInt8> = Option<Array<UInt8>>.None // 链接数组信息
     var maxWidth: Length = 100.percent // 图片最大宽度
     var linkRectToolIconTextSize: Float64 = 0.0 // 空心圆角矩形图片格式链接文字大小 - 单位px
     var linkRectToolIconHeight: Float64 = 0.0 // 空心圆角矩形图片格式链接控件高度 - 单位px
@@ -26,6 +25,7 @@ public class MarkdownLinkRectToolImageComponent {
     var linkRectToolIconDividingLineWidth: Float64 = 0.0 // 空心圆角矩形图片格式链接分割线宽度 - 单位px
     var linkRectToolIconLineLeftPadding: Float64 = 0.0 // 空心圆角矩形图片格式分割线和文本左边距 - 单位px
     var linkRectToolIconLineRightPadding: Float64 = 0.0 // 空心圆角矩形图片格式分割线和文本右边距 - 单位px
+    var fut: ?Future<Unit> = Option<Future<Unit>>.None // 解析子线程
 
     protected override func aboutToAppear(): Unit {
         linkRectToolIconTextSize = vp2px(markdownConfiguration.markdownTheme.linkTheme.linkRectToolIconTextSize.vp)().value
@@ -42,7 +42,7 @@ public class MarkdownLinkRectToolImageComponent {
         // 清除缓存
         imagePixelMap?.Release()
         imagePixelMap = Option<PixelMap>.None
-        arrayUint8 = Option<Array<UInt8>>.None
+        fut?.cancel()
     }
 
     func build() {
@@ -67,16 +67,15 @@ public class MarkdownLinkRectToolImageComponent {
      * 链接数据处理 - 行内链接
      */
     func latexMathImagePixelmap(): Unit {
-        let callback: (?PixelMap, ?Float64, ?Float64, ?Array<UInt8>) -> Unit = {
-            pixelMap, height, width, arr => launch {
+        let callback: (?PixelMap, ?Float64, ?Float64) -> Unit = {
+            pixelMap, height, width => launch {
                 imageHeight = height
                 imageWidth = width
                 imagePixelMap = pixelMap
-                arrayUint8 = arr
             }
         }
         // 解析链接
-        MarkdownParseLinkUtil.linkStrToRectToolPixelMap(strText, strType, linkRectToolIconTextSize, linkRectToolIconHeight, linkRectToolIconPadding, linkRectToolIconBorderWidth, linkRectToolIconDividingLineWidth, linkRectToolIconLineLeftPadding, linkRectToolIconLineRightPadding, markdownConfiguration, callback)
+        fut = MarkdownParseLinkUtil.linkStrToRectToolPixelMap(strText, strType, linkRectToolIconTextSize, linkRectToolIconHeight, linkRectToolIconPadding, linkRectToolIconBorderWidth, linkRectToolIconDividingLineWidth, linkRectToolIconLineLeftPadding, linkRectToolIconLineRightPadding, markdownConfiguration, callback)
     }
 }
 

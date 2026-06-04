@@ -188,7 +188,7 @@ public class MarkdownImageCallbackRawFileComponent {
                 }
             }
         }
-        rawFileCallbackReplaceFut = callbackToPixelmap(
+        rawFileCallbackReplaceFut = MarkdownParseImageUtil.callbackToPixelmap(
             rawFileCallbackDestination,
             rawFileCallbackImageCallbackCallback,
             callback
@@ -222,7 +222,7 @@ public class MarkdownImageCallbackRawFileComponent {
                 }
             }
         }
-        rawFileCallbackFut = rawfileToPixelmap1(
+        rawFileCallbackFut = MarkdownParseImageUtil.rawfileToPixelmap(
             rawFileCallbackDestination,
             rawFileCallbackMarkdownTheme.globalTheme.uiAbilityContext,
             rawFileCallbackMarkdownTheme.globalTheme.stageContext,

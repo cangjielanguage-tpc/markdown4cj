@@ -286,7 +286,22 @@ func spanImageComponent(
                 rawFileImageAlign: spanListNodeView.imageAlign
             )
         } else {
-            if (DeviceInfo.sdkApiVersion >= 15) {
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                // API大于等于19
+                MarkdownSpanImageUrl19Component(
+                    url19MarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
+                    url19Destination: spanListNodeView.imageUrl(),
+                    url19ComponentWidth: spanListComponentWidth,
+                    url19ImageCallback: spanListImageCallback,
+                    url19LinkCallback: spanListMarkdownConfiguration.linkCallback,
+                    url19Link: spanListNodeView.isLink,
+                    url19LinkUrl: spanListNodeView.linkUrl,
+                    url19ImageWidth: spanListNodeView.imageWidth,
+                    url19ImageHeight: spanListNodeView.imageHeight,
+                    url19ImageRadius: spanListNodeView.imageRadius,
+                    url19ImageAlign: spanListNodeView.imageAlign
+                )
+            } else if (DeviceInfo.sdkApiVersion >= 15) {
                 // API大于等于15
                 MarkdownSpanImageUrl15Component(
                     url15MarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
@@ -337,7 +352,23 @@ func spanImageComponent(
                 rawFileCallbackImageAlign: spanListNodeView.imageAlign
             )
         } else {
-            if (DeviceInfo.sdkApiVersion >= 15) {
+            if (DeviceInfo.sdkApiVersion >= 19) {
+                // API大于等于19
+                MarkdownSpanImageCallbackUrl19Component(
+                    url19CallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
+                    url19CallbackDestination: spanListNodeView.imageUrl(),
+                    url19CallbackComponentWidth: spanListComponentWidth,
+                    url19CallbackImageCallbackCallback: spanListMarkdownConfiguration.imageCallbackCallback(),
+                    url19CallbackImageCallback: spanListImageCallback,
+                    url19CallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
+                    url19CallbackLink: spanListNodeView.isLink,
+                    url19CallbackLinkUrl: spanListNodeView.linkUrl,
+                    url19CallbackImageWidth: spanListNodeView.imageWidth,
+                    url19CallbackImageHeight: spanListNodeView.imageHeight,
+                    url19CallbackImageRadius: spanListNodeView.imageRadius,
+                    url19CallbackImageAlign: spanListNodeView.imageAlign
+                )
+            } else if (DeviceInfo.sdkApiVersion >= 15) {
                 // API大于等于15
                 MarkdownSpanImageCallbackUrl15Component(
                     url15CallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,

@@ -107,7 +107,7 @@ class MarkdownCodeTextComponent {
                 refreshCodeDatas(prismNodesParseResLists)
             }
         }
-        future = stringToResList(this.codeText, this.info, callback)
+        future = MarkdownParseCodeUtil.stringToResList(this.codeText, this.info, psh, callback)
     }
 
     /**
@@ -147,29 +147,5 @@ class MarkdownCodeTextComponent {
                 arrayList.remove(i)
             }
         }
-    }
-
-    /**
-     * 异步解析
-     */
-    func stringToResList(codeText: String, info: ?String, callback: (ArrayList<PrismNodesParseResUI>) -> Unit): Future<Unit> {
-        let fut: Future<Unit> = spawn {
-            if (Thread.currentThread.hasPendingCancellation) {
-                return
-            }
-            var prismNodesParseResUIList: ArrayList<PrismNodesParseResUI> = ArrayList<PrismNodesParseResUI>()
-            try {
-                if (Thread.currentThread.hasPendingCancellation) {
-                    return
-                }
-                prismNodesParseResUIList = psh().highlight(info, codeText)
-                callback(prismNodesParseResUIList)
-            } catch (e: Exception) {
-                let prismNodesParseResUI: PrismNodesParseResUI = PrismNodesParseResUI(types: "", text: codeText, alias: Option<String>.None, color: Option<Color>.None)
-                prismNodesParseResUIList.add(prismNodesParseResUI)
-                callback(prismNodesParseResUIList)
-            }
-        }
-        return fut
     }
 }
