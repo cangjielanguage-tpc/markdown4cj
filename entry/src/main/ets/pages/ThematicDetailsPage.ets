@@ -1,10 +1,11 @@
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  DividerTheme,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme,
-  MarkdownThemeDivider,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { ThematicData } from '../model/ThematicData'
@@ -253,28 +254,28 @@ struct ThematicDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Divider
-    let dividerTheme = new MarkdownThemeDivider()
-    dividerTheme.setDividerMargin(this.dividerMarginTop, this.dividerMarginRight, this.dividerMarginBottom, this.dividerMarginLeft)
-    dividerTheme.setDividerPadding(this.dividerPaddingTop, this.dividerPaddingRight, this.dividerPaddingBottom, this.dividerPaddingLeft)
+    let dividerTheme = new DividerTheme()
+    dividerTheme.setDividerMargin({top: this.dividerMarginTop, right: this.dividerMarginRight, bottom: this.dividerMarginBottom, left: this.dividerMarginLeft})
+    dividerTheme.setDividerPadding({top: this.dividerPaddingTop, right: this.dividerPaddingRight, bottom: this.dividerPaddingBottom, left: this.dividerPaddingLeft})
     if (this.dividerColor !== undefined) {
       dividerTheme.setDividerColor(this.dividerColor)
     }
     dividerTheme.setDividerStrokeWidth(this.dividerStrokeWidth)
     dividerTheme.setDividerStyle(this.dividerStyle)
-    theme.setMarkdownThemeDivider(dividerTheme)
+    theme.setDividerTheme(dividerTheme)
     
     return theme
   }
@@ -285,7 +286,7 @@ struct ThematicDetailsPage {
     plugin.setIsLatexMathPlugin(true) // 数学公式插件
     plugin.setIsStrikethroughPlugin(true) // 删除线插件
     plugin.setIsTaskListPlugin(true) // 任务列表插件
-    plugin.setIsLinkifyPlugin(true, []) // 自动链接插件
+    plugin.setIsLinkifyPlugin(true) // 自动链接插件
     plugin.setIsBlockAudioPlugin(true) // 音频插件
     plugin.setIsBlockVideoPlugin(true) // 视频插件
     plugin.setIsImageCollectPlugin(true) // 图片视频列表url集合列表解析插件

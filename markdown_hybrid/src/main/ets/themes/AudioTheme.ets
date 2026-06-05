@@ -1,7 +1,9 @@
+import { MarkdownMarginOptions, MarkdownPaddingOptions, MarkdownRadiusOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-音频样式
  */
-export class MarkdownThemeAudio {
+export class AudioTheme {
   /**
    * 音频背景颜色
    */
@@ -302,57 +304,61 @@ export class MarkdownThemeAudio {
   }
 
   /**
-   * 音频整体外边距
+   * 音频设置外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setAudioAllMargin(margin: number): void {
-    this.audioMarginTop = margin
-    this.audioMarginRight = margin
-    this.audioMarginBottom = margin
-    this.audioMarginLeft = margin
+  setAudioMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === 'number') {
+      this.audioMarginTop = options
+      this.audioMarginRight = options
+      this.audioMarginBottom = options
+      this.audioMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.audioMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.audioMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.audioMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.audioMarginLeft = options.left
+      }
+    }
   }
 
   /**
-   * 音频分别设置四个外边距
+   * 音频设置内边距
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setAudioMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.audioMarginTop = top
-    this.audioMarginRight = right
-    this.audioMarginBottom = bottom
-    this.audioMarginLeft = left
-  }
-
-  /**
-   * 音频整体内边距
-   *
-   * @param padding 内边距
-   */
-  setAudioAllPadding(padding: number): void {
-    this.audioPaddingTop = padding
-    this.audioPaddingRight = padding
-    this.audioPaddingBottom = padding
-    this.audioPaddingLeft = padding
-  }
-
-  /**
-   * 音频分别设置四个内边距
-   *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
-   */
-  setAudioPadding(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.audioPaddingTop = top
-    this.audioPaddingRight = right
-    this.audioPaddingBottom = bottom
-    this.audioPaddingLeft = left
+  setAudioPadding(options: MarkdownPaddingOptions | number): void {
+    if (typeof options === 'number') {
+      this.audioPaddingTop = options
+      this.audioPaddingRight = options
+      this.audioPaddingBottom = options
+      this.audioPaddingLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.audioPaddingTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.audioPaddingRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.audioPaddingBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.audioPaddingLeft = options.left
+      }
+    }
   }
 
   /**
@@ -383,30 +389,32 @@ export class MarkdownThemeAudio {
   }
 
   /**
-   * 音频整体圆角
+   * 音频设置圆角
    *
-   * @param radius 圆角
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setAudioBorderAllRadius(radius: number): void {
-    this.audioRadiusTopLeft = radius
-    this.audioRadiusTopRight = radius
-    this.audioRadiusBottomLeft = radius
-    this.audioRadiusBottomRight = radius
-  }
-
-  /**
-   * 音频分别设置四个圆角
-   *
-   * @param topLeft 左上圆角
-   * @param topRight 右上圆角
-   * @param bottomLeft 左下圆角
-   * @param bottomRight 右下圆角
-   */
-  setAudioBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
-    this.audioRadiusTopLeft = topLeft
-    this.audioRadiusTopRight = topRight
-    this.audioRadiusBottomLeft = bottomLeft
-    this.audioRadiusBottomRight = bottomRight
+  setAudioBorderRadius(options: MarkdownRadiusOptions | number): void {
+    if (typeof options === 'number') {
+      this.audioRadiusTopLeft = options
+      this.audioRadiusTopRight = options
+      this.audioRadiusBottomLeft = options
+      this.audioRadiusBottomRight = options
+    } else {
+      if (options.topLeft !== undefined) {
+        this.audioRadiusTopLeft = options.topLeft
+      }
+      if (options.topRight !== undefined) {
+        this.audioRadiusTopRight = options.topRight
+      }
+      if (options.bottomLeft !== undefined) {
+        this.audioRadiusBottomLeft = options.bottomLeft
+      }
+      if (options.bottomRight !== undefined) {
+        this.audioRadiusBottomRight = options.bottomRight
+      }
+    }
   }
 
   /**
@@ -464,30 +472,32 @@ export class MarkdownThemeAudio {
   }
 
   /**
-   * 音频图标整体圆角
+   * 音频图标设置圆角
    *
-   * @param radius 圆角
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setAudioIconAllRadius(radius: number): void {
-    this.audioIconRadiusTopLeft = radius
-    this.audioIconRadiusTopRight = radius
-    this.audioIconRadiusBottomLeft = radius
-    this.audioIconRadiusBottomRight = radius
-  }
-
-  /**
-   * 音频图标分别设置四个圆角
-   *
-   * @param topLeft 左上圆角
-   * @param topRight 右上圆角
-   * @param bottomLeft 左下圆角
-   * @param bottomRight 右下圆角
-   */
-  setAudioIconRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
-    this.audioIconRadiusTopLeft = topLeft
-    this.audioIconRadiusTopRight = topRight
-    this.audioIconRadiusBottomLeft = bottomLeft
-    this.audioIconRadiusBottomRight = bottomRight
+  setAudioIconRadius(options: MarkdownRadiusOptions | number): void {
+    if (typeof options === 'number') {
+      this.audioIconRadiusTopLeft = options
+      this.audioIconRadiusTopRight = options
+      this.audioIconRadiusBottomLeft = options
+      this.audioIconRadiusBottomRight = options
+    } else {
+      if (options.topLeft !== undefined) {
+        this.audioIconRadiusTopLeft = options.topLeft
+      }
+      if (options.topRight !== undefined) {
+        this.audioIconRadiusTopRight = options.topRight
+      }
+      if (options.bottomLeft !== undefined) {
+        this.audioIconRadiusBottomLeft = options.bottomLeft
+      }
+      if (options.bottomRight !== undefined) {
+        this.audioIconRadiusBottomRight = options.bottomRight
+      }
+    }
   }
 
   /**
@@ -572,30 +582,32 @@ export class MarkdownThemeAudio {
   }
 
   /**
-   * 音频按钮整体圆角
+   * 音频按钮设置圆角
    *
-   * @param radius 圆角
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setAudioButtonAllRadius(radius: number): void {
-    this.audioButtonRadiusTopLeft = radius
-    this.audioButtonRadiusTopRight = radius
-    this.audioButtonRadiusBottomLeft = radius
-    this.audioButtonRadiusBottomRight = radius
-  }
-
-  /**
-   * 音频按钮分别设置四个圆角
-   *
-   * @param topLeft 左上圆角
-   * @param topRight 右上圆角
-   * @param bottomLeft 左下圆角
-   * @param bottomRight 右下圆角
-   */
-  setAudioButtonRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
-    this.audioButtonRadiusTopLeft = topLeft
-    this.audioButtonRadiusTopRight = topRight
-    this.audioButtonRadiusBottomLeft = bottomLeft
-    this.audioButtonRadiusBottomRight = bottomRight
+  setAudioButtonRadius(options: MarkdownRadiusOptions | number): void {
+    if (typeof options === 'number') {
+      this.audioButtonRadiusTopLeft = options
+      this.audioButtonRadiusTopRight = options
+      this.audioButtonRadiusBottomLeft = options
+      this.audioButtonRadiusBottomRight = options
+    } else {
+      if (options.topLeft !== undefined) {
+        this.audioButtonRadiusTopLeft = options.topLeft
+      }
+      if (options.topRight !== undefined) {
+        this.audioButtonRadiusTopRight = options.topRight
+      }
+      if (options.bottomLeft !== undefined) {
+        this.audioButtonRadiusBottomLeft = options.bottomLeft
+      }
+      if (options.bottomRight !== undefined) {
+        this.audioButtonRadiusBottomRight = options.bottomRight
+      }
+    }
   }
 
   /**

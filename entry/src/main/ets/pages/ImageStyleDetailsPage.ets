@@ -1,9 +1,10 @@
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { ImageStyle } from '../model/ImageStyle'
@@ -217,14 +218,14 @@ struct ImageStyleDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    let globalTheme: GlobalTheme = new GlobalTheme()
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     return theme
   }
@@ -235,7 +236,7 @@ struct ImageStyleDetailsPage {
     plugin.setIsLatexMathPlugin(true)
     plugin.setIsStrikethroughPlugin(true)
     plugin.setIsTaskListPlugin(true)
-    plugin.setIsLinkifyPlugin(true, [])
+    plugin.setIsLinkifyPlugin(true)
     plugin.setIsBlockAudioPlugin(true)
     plugin.setIsBlockVideoPlugin(true)
     plugin.setIsImageCollectPlugin(true)

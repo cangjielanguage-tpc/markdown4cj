@@ -20,7 +20,7 @@ export class MarkdownConfiguration {
   /**
    * 图片替换事件
    */
-  private imageCallbackCallback?: (url: string) => Promise<ArrayBuffer | undefined> = undefined
+  private imageReplaceCallback?: (url: string) => Promise<ArrayBuffer | undefined> = undefined
   /**
    * 图片下载的点击事件
    */
@@ -109,9 +109,19 @@ export class MarkdownConfiguration {
    * 设置图片替换事件
    *
    * @param cb 图片替换事件。 (url：图片url 返回值是替换的图片数据)
+   * @useinstead MarkdownConfiguration#setImageReplaceCallback
    */
   setImageCallbackCallback(cb: (url: string) => Promise<ArrayBuffer | undefined>): void {
-    this.imageCallbackCallback = cb
+    this.setImageReplaceCallback(cb)
+  }
+
+  /**
+   * 设置图片替换事件
+   *
+   * @param cb 图片替换事件。 (url：图片url 返回值是替换的图片数据)
+   */
+  setImageReplaceCallback(cb: (url: string) => Promise<ArrayBuffer | undefined>): void {
+    this.imageReplaceCallback = cb
   }
 
   /**
@@ -272,8 +282,8 @@ export class MarkdownConfiguration {
    *
    * @returns 图片替换事件回调函数
    */
-  getImageCallbackCallback(): ((url: string) => Promise<ArrayBuffer | undefined>) | undefined {
-    return this.imageCallbackCallback
+  getImageReplaceCallback(): ((url: string) => Promise<ArrayBuffer | undefined>) | undefined {
+    return this.imageReplaceCallback
   }
 
   /**

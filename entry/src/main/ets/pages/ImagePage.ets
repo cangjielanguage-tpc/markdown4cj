@@ -100,9 +100,9 @@ struct ImagePage {
 
   // ---------------- 专有
   // 是否触发图片替换事件列表
-  callbackList: Array<boolean> = booleanListGeneralData
+  imageReplaceList: Array<boolean> = booleanListGeneralData
   @State // 是否触发图片替换事件
-  callback: boolean = false
+  imageReplace: boolean = false
   // 网络图片是否压缩列表
   imageAutoResizeList: Array<boolean> = booleanListGeneralData
   @State // 网络图片是否压缩
@@ -381,8 +381,8 @@ struct ImagePage {
           BaseTabComponent({
             titleStr: "是否触发图片替换事件 - ",
             typeEnum: TypeEnum.IS_BOOLEAN,
-            allListData: this.callbackList,
-            allData: this.callback
+            allListData: this.imageReplaceList,
+            allData: this.imageReplace
           })
           BaseTabComponent({
             titleStr: "网络图片是否压缩 - ",
@@ -663,6 +663,7 @@ struct ImagePage {
                     this.imageDataMD.openGestureSwipeTest = this.openGestureSwipeTest
                     this.imageDataMD.pagePath = `${this.rawFilePath}/${item}`
                     // ---------- 专有
+                    this.imageDataMD.imageReplace = this.imageReplace
                     this.imageDataMD.imageAutoResize = this.imageAutoResize
                     this.imageDataMD.imagePlaceholder = this.imagePlaceholder
                     this.imageDataMD.isImageMixedLayout = this.isImageMixedLayout

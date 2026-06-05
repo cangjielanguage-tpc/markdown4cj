@@ -14,6 +14,7 @@ export class ImageDataMD extends BaseMDData {
   _imageBorderWidth: number = 0 // 图片边框宽度
   _imageBorderColor: number | undefined = undefined // 图片边框颜色
   _imagePlaceholder: Resource | undefined = undefined // 图片默认占位图
+  _imageReplace: boolean = true // 图片是否替换
   _imageAutoResize: boolean = true // 网络图片是否压缩
   _isImageMixedLayout: boolean = true // 是否图文混排
   _imageMaximumWidth: number = 1.0 // 图片基于自身宽度缩放百分比
@@ -90,6 +91,10 @@ export class ImageDataMD extends BaseMDData {
 
   public set imagePlaceholder(value: Resource | undefined) {
     this._imagePlaceholder = value
+  }
+
+  public set imageReplace(value: boolean) {
+    this._imageReplace = value
   }
 
   public set imageAutoResize(value: boolean) {

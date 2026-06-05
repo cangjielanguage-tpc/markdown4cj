@@ -1,7 +1,9 @@
+import { MarkdownMarginOptions, MarkdownPaddingOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-脚注定义样式
  */
-export class MarkdownThemeFootnoteDef {
+export class FootnoteDefTheme {
   /**
    * 脚注定义背景颜色
    */
@@ -57,57 +59,61 @@ export class MarkdownThemeFootnoteDef {
   }
 
   /**
-   * 设置4个外边距为统一值
+   * 设置外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setFootnoteDefAllMargin(margin: number): void {
-    this.footnoteDefMarginTop = margin
-    this.footnoteDefMarginRight = margin
-    this.footnoteDefMarginBottom = margin
-    this.footnoteDefMarginLeft = margin
+  setFootnoteDefMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === "number") {
+      this.footnoteDefMarginTop = options
+      this.footnoteDefMarginRight = options
+      this.footnoteDefMarginBottom = options
+      this.footnoteDefMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.footnoteDefMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.footnoteDefMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.footnoteDefMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.footnoteDefMarginLeft = options.left
+      }
+    }
   }
 
   /**
-   * 分别设置4个外边距
+   * 设置内边距
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setFootnoteDefMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.footnoteDefMarginTop = top
-    this.footnoteDefMarginRight = right
-    this.footnoteDefMarginBottom = bottom
-    this.footnoteDefMarginLeft = left
-  }
-
-  /**
-   * 设置4个内边距为统一值
-   *
-   * @param padding 内边距
-   */
-  setFootnoteDefAllPadding(padding: number): void {
-    this.footnoteDefPaddingTop = padding
-    this.footnoteDefPaddingRight = padding
-    this.footnoteDefPaddingBottom = padding
-    this.footnoteDefPaddingLeft = padding
-  }
-
-  /**
-   * 分别设置4个内边距
-   *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
-   */
-  setFootnoteDefPadding(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.footnoteDefPaddingTop = top
-    this.footnoteDefPaddingRight = right
-    this.footnoteDefPaddingBottom = bottom
-    this.footnoteDefPaddingLeft = left
+  setFootnoteDefPadding(options: MarkdownPaddingOptions | number): void {
+    if (typeof options === "number") {
+      this.footnoteDefPaddingTop = options
+      this.footnoteDefPaddingRight = options
+      this.footnoteDefPaddingBottom = options
+      this.footnoteDefPaddingLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.footnoteDefPaddingTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.footnoteDefPaddingRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.footnoteDefPaddingBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.footnoteDefPaddingLeft = options.left
+      }
+    }
   }
 
   /**

@@ -1,7 +1,9 @@
+import { MarkdownMarginOptions, MarkdownPaddingOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-分割线样式
  */
-export class MarkdownThemeDivider {
+export class DividerTheme {
   /**
    * 分割线上外边距
    */
@@ -58,57 +60,61 @@ export class MarkdownThemeDivider {
   private dividerStyle?: LineCapStyle = undefined
 
   /**
-   * 分割线整体外边距
+   * 分割线设置外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setDividerAllMargin(margin: number): void {
-    this.dividerMarginTop = margin
-    this.dividerMarginRight = margin
-    this.dividerMarginBottom = margin
-    this.dividerMarginLeft = margin
+  setDividerMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === "number") {
+      this.dividerMarginTop = options
+      this.dividerMarginRight = options
+      this.dividerMarginBottom = options
+      this.dividerMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.dividerMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.dividerMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.dividerMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.dividerMarginLeft = options.left
+      }
+    }
   }
 
   /**
-   * 分割线分别设置四个外边距
+   * 分割线设置内边距
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setDividerMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.dividerMarginTop = top
-    this.dividerMarginRight = right
-    this.dividerMarginBottom = bottom
-    this.dividerMarginLeft = left
-  }
-
-  /**
-   * 分割线整体内边距
-   *
-   * @param padding 内边距
-   */
-  setDividerAllPadding(padding: number): void {
-    this.dividerPaddingTop = padding
-    this.dividerPaddingRight = padding
-    this.dividerPaddingBottom = padding
-    this.dividerPaddingLeft = padding
-  }
-
-  /**
-   * 分割线分别设置四个内边距
-   *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
-   */
-  setDividerPadding(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.dividerPaddingTop = top
-    this.dividerPaddingRight = right
-    this.dividerPaddingBottom = bottom
-    this.dividerPaddingLeft = left
+  setDividerPadding(options: MarkdownPaddingOptions | number): void {
+    if (typeof options === "number") {
+      this.dividerPaddingTop = options
+      this.dividerPaddingRight = options
+      this.dividerPaddingBottom = options
+      this.dividerPaddingLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.dividerPaddingTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.dividerPaddingRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.dividerPaddingBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.dividerPaddingLeft = options.left
+      }
+    }
   }
 
   /**

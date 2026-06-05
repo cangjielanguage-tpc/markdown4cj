@@ -3,7 +3,7 @@ import { MarkdownTextDecorationStyle } from "./MarkdownTheme"
 /**
  * Markdown用户可设置的样式-HTML下划线文本样式
  */
-export class MarkdownThemeHtmlUnderline {
+export class HtmlUnderlineTheme {
   /**
    * HTML下划线文本颜色
    */

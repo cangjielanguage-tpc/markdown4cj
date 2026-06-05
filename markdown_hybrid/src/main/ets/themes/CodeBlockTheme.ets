@@ -1,7 +1,9 @@
+import { MarkdownMarginOptions, MarkdownPaddingOptions, MarkdownRadiusOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-代码块样式
  */
-export class MarkdownThemeCodeBlock {
+export class CodeBlockTheme {
   /**
    * 代码深浅色模式
    */
@@ -487,57 +489,61 @@ export class MarkdownThemeCodeBlock {
   }
 
   /**
-   * 代码块整体外边距
+   * 代码块设置外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setCodeBlockAllMargin(margin: number): void {
-    this.codeBlockMarginTop = margin
-    this.codeBlockMarginRight = margin
-    this.codeBlockMarginBottom = margin
-    this.codeBlockMarginLeft = margin
+  setCodeBlockMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === 'number') {
+      this.codeBlockMarginTop = options
+      this.codeBlockMarginRight = options
+      this.codeBlockMarginBottom = options
+      this.codeBlockMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.codeBlockMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.codeBlockMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.codeBlockMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.codeBlockMarginLeft = options.left
+      }
+    }
   }
 
   /**
-   * 代码块分别设置四个外边距
+   * 代码块设置内边距
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setCodeBlockMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.codeBlockMarginTop = top
-    this.codeBlockMarginRight = right
-    this.codeBlockMarginBottom = bottom
-    this.codeBlockMarginLeft = left
-  }
-
-  /**
-   * 代码块整体内边距
-   *
-   * @param padding 内边距
-   */
-  setCodeBlockAllPadding(padding: number): void {
-    this.codeBlockPaddingTop = padding
-    this.codeBlockPaddingRight = padding
-    this.codeBlockPaddingBottom = padding
-    this.codeBlockPaddingLeft = padding
-  }
-
-  /**
-   * 代码块分别设置四个内边距
-   *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
-   */
-  setCodeBlockPadding(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.codeBlockPaddingTop = top
-    this.codeBlockPaddingRight = right
-    this.codeBlockPaddingBottom = bottom
-    this.codeBlockPaddingLeft = left
+  setCodeBlockPadding(options: MarkdownPaddingOptions | number): void {
+    if (typeof options === 'number') {
+      this.codeBlockPaddingTop = options
+      this.codeBlockPaddingRight = options
+      this.codeBlockPaddingBottom = options
+      this.codeBlockPaddingLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.codeBlockPaddingTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.codeBlockPaddingRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.codeBlockPaddingBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.codeBlockPaddingLeft = options.left
+      }
+    }
   }
 
   /**
@@ -568,30 +574,32 @@ export class MarkdownThemeCodeBlock {
   }
 
   /**
-   * 代码块整体圆角
+   * 代码块设置圆角
    *
-   * @param radius 圆角
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setCodeBlockAllRadius(radius: number): void {
-    this.codeBlockRadiusTopLeft = radius
-    this.codeBlockRadiusTopRight = radius
-    this.codeBlockRadiusBottomLeft = radius
-    this.codeBlockRadiusBottomRight = radius
-  }
-
-  /**
-   * 代码块分别设置四个圆角
-   *
-   * @param topLeft 左上圆角
-   * @param topRight 右上圆角
-   * @param bottomLeft 左下圆角
-   * @param bottomRight 右下圆角
-   */
-  setCodeBlockRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
-    this.codeBlockRadiusTopLeft = topLeft
-    this.codeBlockRadiusTopRight = topRight
-    this.codeBlockRadiusBottomLeft = bottomLeft
-    this.codeBlockRadiusBottomRight = bottomRight
+  setCodeBlockRadius(options: MarkdownRadiusOptions | number): void {
+    if (typeof options === 'number') {
+      this.codeBlockRadiusTopLeft = options
+      this.codeBlockRadiusTopRight = options
+      this.codeBlockRadiusBottomLeft = options
+      this.codeBlockRadiusBottomRight = options
+    } else {
+      if (options.topLeft !== undefined) {
+        this.codeBlockRadiusTopLeft = options.topLeft
+      }
+      if (options.topRight !== undefined) {
+        this.codeBlockRadiusTopRight = options.topRight
+      }
+      if (options.bottomLeft !== undefined) {
+        this.codeBlockRadiusBottomLeft = options.bottomLeft
+      }
+      if (options.bottomRight !== undefined) {
+        this.codeBlockRadiusBottomRight = options.bottomRight
+      }
+    }
   }
 
   /**

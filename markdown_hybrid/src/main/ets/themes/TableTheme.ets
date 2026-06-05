@@ -1,7 +1,9 @@
+import { MarkdownMarginOptions, MarkdownPaddingOptions, MarkdownRadiusOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-表格样式
  */
-export class MarkdownThemeTable {
+export class TableTheme {
   /**
    * 表格标题背景颜色
    */
@@ -208,84 +210,90 @@ export class MarkdownThemeTable {
   private tableContentTextLetterSpacing?: number = undefined
 
   /**
-   * 设置4个外边距为统一值
+   * 设置外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setTableAllMargin(margin: number): void {
-    this.tableMarginTop = margin
-    this.tableMarginRight = margin
-    this.tableMarginBottom = margin
-    this.tableMarginLeft = margin
+  setTableMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === "number") {
+      this.tableMarginTop = options
+      this.tableMarginRight = options
+      this.tableMarginBottom = options
+      this.tableMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.tableMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.tableMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.tableMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.tableMarginLeft = options.left
+      }
+    }
   }
 
   /**
-   * 分别设置4个外边距
+   * 设置内边距
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setTableMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.tableMarginTop = top
-    this.tableMarginRight = right
-    this.tableMarginBottom = bottom
-    this.tableMarginLeft = left
-  }
-
-  /**
-   * 设置4个内边距为统一值
-   *
-   * @param padding 内边距
-   */
-  setTableAllPadding(padding: number): void {
-    this.tablePaddingTop = padding
-    this.tablePaddingRight = padding
-    this.tablePaddingBottom = padding
-    this.tablePaddingLeft = padding
-  }
-
-  /**
-   * 分别设置4个内边距
-   *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
-   */
-  setTablePadding(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.tablePaddingTop = top
-    this.tablePaddingRight = right
-    this.tablePaddingBottom = bottom
-    this.tablePaddingLeft = left
-  }
-
-  /**
-   * 设置表格内容内边距
-   *
-   * @param padding 内边距
-   */
-  setTableCellAllPadding(padding: number): void {
-    this.tableCellPaddingTop = padding
-    this.tableCellPaddingRight = padding
-    this.tableCellPaddingBottom = padding
-    this.tableCellPaddingLeft = padding
+  setTablePadding(options: MarkdownPaddingOptions | number): void {
+    if (typeof options === "number") {
+      this.tablePaddingTop = options
+      this.tablePaddingRight = options
+      this.tablePaddingBottom = options
+      this.tablePaddingLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.tablePaddingTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.tablePaddingRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.tablePaddingBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.tablePaddingLeft = options.left
+      }
+    }
   }
 
   /**
    * 设置表格内容内边距
    *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setTableCellPadding(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.tableCellPaddingTop = top
-    this.tableCellPaddingRight = right
-    this.tableCellPaddingBottom = bottom
-    this.tableCellPaddingLeft = left
+  setTableCellPadding(options: MarkdownPaddingOptions | number): void {
+    if (typeof options === "number") {
+      this.tableCellPaddingTop = options
+      this.tableCellPaddingRight = options
+      this.tableCellPaddingBottom = options
+      this.tableCellPaddingLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.tableCellPaddingTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.tableCellPaddingRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.tableCellPaddingBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.tableCellPaddingLeft = options.left
+      }
+    }
   }
 
   /**
@@ -343,30 +351,32 @@ export class MarkdownThemeTable {
   }
 
   /**
-   * 设置表格边框4个圆角为统一值
-   *
-   * @param radius 圆角半径
-   */
-  setTableAllRadius(radius: number): void {
-    this.tableRadiusTopLeft = radius
-    this.tableRadiusTopRight = radius
-    this.tableRadiusBottomLeft = radius
-    this.tableRadiusBottomRight = radius
-  }
-
-  /**
    * 分别设置表格边框4个圆角
    *
-   * @param topLeft 左上圆角
-   * @param topRight 右上圆角
-   * @param bottomLeft 左下圆角
-   * @param bottomRight 右下圆角
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setTableRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
-    this.tableRadiusTopLeft = topLeft
-    this.tableRadiusTopRight = topRight
-    this.tableRadiusBottomLeft = bottomLeft
-    this.tableRadiusBottomRight = bottomRight
+  setTableRadius(options: MarkdownRadiusOptions | number): void {
+    if (typeof options === "number") {
+      this.tableRadiusTopLeft = options
+      this.tableRadiusTopRight = options
+      this.tableRadiusBottomLeft = options
+      this.tableRadiusBottomRight = options
+    } else {
+      if (options.topLeft !== undefined) {
+        this.tableRadiusTopLeft = options.topLeft
+      }
+      if (options.topRight !== undefined) {
+        this.tableRadiusTopRight = options.topRight
+      }
+      if (options.bottomLeft !== undefined) {
+        this.tableRadiusBottomLeft = options.bottomLeft
+      }
+      if (options.bottomRight !== undefined) {
+        this.tableRadiusBottomRight = options.bottomRight
+      }
+    }
   }
 
   /**

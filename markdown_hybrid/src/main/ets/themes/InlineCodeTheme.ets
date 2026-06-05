@@ -1,7 +1,9 @@
+import { MarkdownRadiusOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-内联代码样式
  */
-export class MarkdownThemeInlineCode {
+export class InlineCodeTheme {
   /**
    * 内联代码文本颜色
    */
@@ -135,30 +137,32 @@ export class MarkdownThemeInlineCode {
   }
 
   /**
-   * 统一设置内联代码文本背景四个圆角
+   * 设置圆角
    *
-   * @param radius 统一圆角半径，同时赋值给四个角
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setInlineCodeTextBackgroundAllRadius(radius: number): void {
-    this.inlineCodeTextBackgroundRadiusTopLeft = radius
-    this.inlineCodeTextBackgroundRadiusTopRight = radius
-    this.inlineCodeTextBackgroundRadiusBottomLeft = radius
-    this.inlineCodeTextBackgroundRadiusBottomRight = radius
-  }
-
-  /**
-   * 分别设置4个圆角
-   *
-   * @param topLeft 左上圆角
-   * @param topRight 右上圆角
-   * @param bottomLeft 左下圆角
-   * @param bottomRight 右下圆角
-   */
-  setInlineCodeTextBackgroundRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
-    this.inlineCodeTextBackgroundRadiusTopLeft = topLeft
-    this.inlineCodeTextBackgroundRadiusTopRight = topRight
-    this.inlineCodeTextBackgroundRadiusBottomLeft = bottomLeft
-    this.inlineCodeTextBackgroundRadiusBottomRight = bottomRight
+  setInlineCodeTextBackgroundRadius(options: MarkdownRadiusOptions | number): void {
+    if (typeof options === "number") {
+      this.inlineCodeTextBackgroundRadiusTopLeft = options
+      this.inlineCodeTextBackgroundRadiusTopRight = options
+      this.inlineCodeTextBackgroundRadiusBottomLeft = options
+      this.inlineCodeTextBackgroundRadiusBottomRight = options
+    } else {
+      if (options.topLeft !== undefined) {
+        this.inlineCodeTextBackgroundRadiusTopLeft = options.topLeft
+      }
+      if (options.topRight !== undefined) {
+        this.inlineCodeTextBackgroundRadiusTopRight = options.topRight
+      }
+      if (options.bottomLeft !== undefined) {
+        this.inlineCodeTextBackgroundRadiusBottomLeft = options.bottomLeft
+      }
+      if (options.bottomRight !== undefined) {
+        this.inlineCodeTextBackgroundRadiusBottomRight = options.bottomRight
+      }
+    }
   }
 
   /**

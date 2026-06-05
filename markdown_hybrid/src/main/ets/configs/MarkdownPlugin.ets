@@ -182,9 +182,12 @@ export class MarkdownPlugin {
    * @param isLinkifyPlugin 是否设置链接自动加载插件 - true：设置链接自动加载插件；false：不设置链接自动加载插件。默认false
    * @param regs 正则列表
    */
-  setIsLinkifyPlugin(isLinkifyPlugin: boolean, regs: Array<string>): void {
+  setIsLinkifyPlugin(isLinkifyPlugin: boolean, regs?: Array<string>): void {
     this.isLinkifyPlugin = isLinkifyPlugin
-    this.regs = regs
+    // 判断是否传入了 regs 参数
+    if (regs !== undefined) {
+      this.regs = regs
+    }
   }
 
   /**

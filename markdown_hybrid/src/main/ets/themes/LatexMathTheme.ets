@@ -1,9 +1,9 @@
-import { LatexMathColorFormat } from "./MarkdownTheme"
+import { LatexMathColorFormat, MarkdownMarginOptions, MarkdownPaddingOptions } from "./MarkdownTheme"
 
 /**
  * Markdown用户可设置的样式-数学公式样式
  */
-export class MarkdownThemeLatexMath {
+export class LatexMathTheme {
   /**
    * LaTeX数学公式上外边距
    */
@@ -213,57 +213,61 @@ export class MarkdownThemeLatexMath {
   }
 
   /**
-   * 统一设置LaTeX数学公式外边距
+   * 设置LaTeX数学公式外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setLatexMathAllMargin(margin: number): void {
-    this.latexMathMarginTop = margin
-    this.latexMathMarginRight = margin
-    this.latexMathMarginBottom = margin
-    this.latexMathMarginLeft = margin
+  setLatexMathMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === "number") {
+      this.latexMathMarginTop = options
+      this.latexMathMarginRight = options
+      this.latexMathMarginBottom = options
+      this.latexMathMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.latexMathMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.latexMathMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.latexMathMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.latexMathMarginLeft = options.left
+      }
+    }
   }
 
   /**
-   * 分别设置LaTeX数学公式四个外边距
+   * 设置LaTeX数学公式内边距
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setLatexMathMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.latexMathMarginTop = top
-    this.latexMathMarginRight = right
-    this.latexMathMarginBottom = bottom
-    this.latexMathMarginLeft = left
-  }
-
-  /**
-   * 统一设置LaTeX数学公式内边距
-   *
-   * @param padding 内边距
-   */
-  setLatexMathAllPadding(padding: number): void {
-    this.latexMathPaddingTop = padding
-    this.latexMathPaddingRight = padding
-    this.latexMathPaddingBottom = padding
-    this.latexMathPaddingLeft = padding
-  }
-
-  /**
-   * 分别设置LaTeX数学公式四个内边距
-   *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
-   */
-  setLatexMathPadding(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.latexMathPaddingTop = top
-    this.latexMathPaddingRight = right
-    this.latexMathPaddingBottom = bottom
-    this.latexMathPaddingLeft = left
+  setLatexMathPadding(options: MarkdownPaddingOptions | number): void {
+    if (typeof options === "number") {
+      this.latexMathPaddingTop = options
+      this.latexMathPaddingRight = options
+      this.latexMathPaddingBottom = options
+      this.latexMathPaddingLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.latexMathPaddingTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.latexMathPaddingRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.latexMathPaddingBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.latexMathPaddingLeft = options.left
+      }
+    }
   }
 
   /**

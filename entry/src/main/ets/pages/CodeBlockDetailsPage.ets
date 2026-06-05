@@ -1,8 +1,10 @@
-import { CJMarkdown, MarkdownConfiguration,
+import { CJMarkdown,
+  CodeBlockTheme,
+  GlobalTheme,
+  MarkdownConfiguration,
   MarkdownPlugin,
-  MarkdownScroller, MarkdownTheme,
-  MarkdownThemeCodeBlock,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownScroller,
+  MarkdownTheme} from '@cangjie-tpc/markdown_hybrid'
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'
@@ -454,20 +456,20 @@ struct CodeBlockDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - CodeBlock
-    let codeBlockTheme = new MarkdownThemeCodeBlock()
+    let codeBlockTheme = new CodeBlockTheme()
     codeBlockTheme.setCodeBlockIsDark(this.codeBlockIsDark)
     codeBlockTheme.setCodeBlockIsCodeFormat(this.codeBlockIsCodeFormat)
     codeBlockTheme.setCodeBlockUseTab(this.codeBlockUseTab)
@@ -476,14 +478,14 @@ struct CodeBlockDetailsPage {
     if (this.codeBlockBackgroundColor !== undefined) {
       codeBlockTheme.setCodeBlockBackgroundColor(this.codeBlockBackgroundColor)
     }
-    codeBlockTheme.setCodeBlockMargin(this.codeBlockMarginTop, this.codeBlockMarginRight, this.codeBlockMarginBottom, this.codeBlockMarginLeft)
-    codeBlockTheme.setCodeBlockPadding(this.codeBlockPaddingTop, this.codeBlockPaddingRight, this.codeBlockPaddingBottom, this.codeBlockPaddingLeft)
+    codeBlockTheme.setCodeBlockMargin({top: this.codeBlockMarginTop, right: this.codeBlockMarginRight, bottom: this.codeBlockMarginBottom, left: this.codeBlockMarginLeft})
+    codeBlockTheme.setCodeBlockPadding({top: this.codeBlockPaddingTop, right: this.codeBlockPaddingRight, bottom: this.codeBlockPaddingBottom, left: this.codeBlockPaddingLeft})
     codeBlockTheme.setCodeBlockBorderStyle(this.codeBlockBorderStyle)
     codeBlockTheme.setCodeBlockBorderWidth(this.codeBlockBorderWidth)
     if (this.codeBlockBorderColor !== undefined) {
       codeBlockTheme.setCodeBlockBorderColor(this.codeBlockBorderColor)
     }
-    codeBlockTheme.setCodeBlockRadius(this.codeBlockRadiusTopLeft, this.codeBlockRadiusTopRight, this.codeBlockRadiusBottomLeft, this.codeBlockRadiusBottomRight)
+    codeBlockTheme.setCodeBlockRadius({topLeft: this.codeBlockRadiusTopLeft, topRight: this.codeBlockRadiusTopRight, bottomLeft: this.codeBlockRadiusBottomLeft, bottomRight: this.codeBlockRadiusBottomRight})
     codeBlockTheme.setCodeBlockTitleLayoutMarginBottom(this.codeBlockTitleLayoutMarginBottom)
     codeBlockTheme.setCodeBlockTypeTextMarginLeft(this.codeBlockTypeTextMarginLeft)
     codeBlockTheme.setCodeBlockTypeText(this.codeBlockTypeText)
@@ -535,11 +537,8 @@ struct CodeBlockDetailsPage {
     }
     codeBlockTheme.setCodeBlockFullScreenButtonIsShow(this.codeBlockFullScreenButtonIsShow)
     codeBlockTheme.setCodeBlockFullScreenTextIsShow(this.codeBlockFullScreenTextIsShow)
-    hilog.error(1, 'codeBlockCopyIcon', '-----------0')
     if (this.codeBlockFullScreenIcon !== undefined) {
-      hilog.error(1, 'codeBlockCopyIcon', '-----------0')
       codeBlockTheme.setCodeBlockFullScreenIcon(this.codeBlockFullScreenIcon)
-      hilog.error(1, 'codeBlockCopyIcon', '-----------2')
     }
     codeBlockTheme.setCodeBlockFullScreenIconWidth(this.codeBlockFullScreenIconWidth)
     codeBlockTheme.setCodeBlockFullScreenIconHeight(this.codeBlockFullScreenIconHeight)
@@ -609,7 +608,7 @@ struct CodeBlockDetailsPage {
       codeBlockTheme.setCodeBlockTextLineHeight(this.codeBlockTextLineHeight)
     }
     codeBlockTheme.setCodeBlockTextLetterSpacing(this.codeBlockTextLetterSpacing)
-    theme.setMarkdownThemeCodeBlock(codeBlockTheme)
+    theme.setCodeBlockTheme(codeBlockTheme)
     return theme
   }
 
@@ -619,7 +618,7 @@ struct CodeBlockDetailsPage {
     plugin.setIsLatexMathPlugin(true) // 数学公式插件
     plugin.setIsStrikethroughPlugin(true) // 删除线插件
     plugin.setIsTaskListPlugin(true) // 任务列表插件
-    plugin.setIsLinkifyPlugin(true, []) // 自动链接插件
+    plugin.setIsLinkifyPlugin(true) // 自动链接插件
     plugin.setIsBlockAudioPlugin(true) // 音频插件
     plugin.setIsBlockVideoPlugin(true) // 视频插件
     plugin.setIsImageCollectPlugin(true) // 图片视频列表url集合列表解析插件

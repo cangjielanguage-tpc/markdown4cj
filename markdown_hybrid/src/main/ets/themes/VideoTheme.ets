@@ -1,7 +1,9 @@
+import { MarkdownMarginOptions, MarkdownPaddingOptions, MarkdownRadiusOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-视频样式
  */
-export class MarkdownThemeVideo {
+export class VideoTheme {
   /**
    * 视频背景颜色
    */
@@ -362,84 +364,90 @@ export class MarkdownThemeVideo {
   }
 
   /**
-   * 设置4个外边距为统一值
+   * 设置外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setVideoAllMargin(margin: number): void {
-    this.videoMarginTop = margin
-    this.videoMarginRight = margin
-    this.videoMarginBottom = margin
-    this.videoMarginLeft = margin
+  setVideoMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === 'number') {
+      this.videoMarginTop = options
+      this.videoMarginRight = options
+      this.videoMarginBottom = options
+      this.videoMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.videoMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.videoMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.videoMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.videoMarginLeft = options.left
+      }
+    }
   }
 
   /**
-   * 分别设置4个外边距
+   * 设置内边距
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setVideoMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.videoMarginTop = top
-    this.videoMarginRight = right
-    this.videoMarginBottom = bottom
-    this.videoMarginLeft = left
+  setVideoPadding(options: MarkdownPaddingOptions | number): void {
+    if (typeof options === 'number') {
+      this.videoPaddingTop = options
+      this.videoPaddingRight = options
+      this.videoPaddingBottom = options
+      this.videoPaddingLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.videoPaddingTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.videoPaddingRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.videoPaddingBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.videoPaddingLeft = options.left
+      }
+    }
   }
 
   /**
-   * 设置4个内边距为统一值
+   * 设置圆角
    *
-   * @param padding 内边距
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setVideoAllPadding(padding: number): void {
-    this.videoPaddingTop = padding
-    this.videoPaddingRight = padding
-    this.videoPaddingBottom = padding
-    this.videoPaddingLeft = padding
-  }
-
-  /**
-   * 分别设置4个内边距
-   *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
-   */
-  setVideoPadding(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.videoPaddingTop = top
-    this.videoPaddingRight = right
-    this.videoPaddingBottom = bottom
-    this.videoPaddingLeft = left
-  }
-
-  /**
-   * 统一设置视频背景四个圆角
-   *
-   * @param radius 统一圆角半径，同时赋值给四个角
-   */
-  setVideoBorderAllRadius(radius: number): void {
-    this.videoRadiusTopLeft = radius
-    this.videoRadiusTopRight = radius
-    this.videoRadiusBottomLeft = radius
-    this.videoRadiusBottomRight = radius
-  }
-
-  /**
-   * 分别设置4个圆角
-   *
-   * @param topLeft 左上圆角
-   * @param topRight 右上圆角
-   * @param bottomLeft 左下圆角
-   * @param bottomRight 右下圆角
-   */
-  setVideoBorderRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
-    this.videoRadiusTopLeft = topLeft
-    this.videoRadiusTopRight = topRight
-    this.videoRadiusBottomLeft = bottomLeft
-    this.videoRadiusBottomRight = bottomRight
+  setVideoBorderRadius(options: MarkdownRadiusOptions | number): void {
+    if (typeof options === 'number') {
+      this.videoRadiusTopLeft = options
+      this.videoRadiusTopRight = options
+      this.videoRadiusBottomLeft = options
+      this.videoRadiusBottomRight = options
+    } else {
+      if (options.topLeft !== undefined) {
+        this.videoRadiusTopLeft = options.topLeft
+      }
+      if (options.topRight !== undefined) {
+        this.videoRadiusTopRight = options.topRight
+      }
+      if (options.bottomLeft !== undefined) {
+        this.videoRadiusBottomLeft = options.bottomLeft
+      }
+      if (options.bottomRight !== undefined) {
+        this.videoRadiusBottomRight = options.bottomRight
+      }
+    }
   }
 
   /**
@@ -650,30 +658,32 @@ export class MarkdownThemeVideo {
   }
 
   /**
-   * 统一设置视频发布按钮四个圆角
+   * 设置视频发布按钮圆角
    *
-   * @param radius 统一圆角半径，同时赋值给四个角
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setVideoReleaseButtonAllRadius(radius: number): void {
-    this.videoReleaseButtonRadiusTopLeft = radius
-    this.videoReleaseButtonRadiusTopRight = radius
-    this.videoReleaseButtonRadiusBottomLeft = radius
-    this.videoReleaseButtonRadiusBottomRight = radius
-  }
-
-  /**
-   * 分别设置视频发布按钮4个圆角
-   *
-   * @param topLeft 左上圆角
-   * @param topRight 右上圆角
-   * @param bottomLeft 左下圆角
-   * @param bottomRight 右下圆角
-   */
-  setVideoReleaseButtonRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
-    this.videoReleaseButtonRadiusTopLeft = topLeft
-    this.videoReleaseButtonRadiusTopRight = topRight
-    this.videoReleaseButtonRadiusBottomLeft = bottomLeft
-    this.videoReleaseButtonRadiusBottomRight = bottomRight
+  setVideoReleaseButtonRadius(options: MarkdownRadiusOptions | number): void {
+    if (typeof options === 'number') {
+      this.videoReleaseButtonRadiusTopLeft = options
+      this.videoReleaseButtonRadiusTopRight = options
+      this.videoReleaseButtonRadiusBottomLeft = options
+      this.videoReleaseButtonRadiusBottomRight = options
+    } else {
+      if (options.topLeft !== undefined) {
+        this.videoReleaseButtonRadiusTopLeft = options.topLeft
+      }
+      if (options.topRight !== undefined) {
+        this.videoReleaseButtonRadiusTopRight = options.topRight
+      }
+      if (options.bottomLeft !== undefined) {
+        this.videoReleaseButtonRadiusBottomLeft = options.bottomLeft
+      }
+      if (options.bottomRight !== undefined) {
+        this.videoReleaseButtonRadiusBottomRight = options.bottomRight
+      }
+    }
   }
 
   /**
@@ -812,30 +822,32 @@ export class MarkdownThemeVideo {
   }
 
   /**
-   * 统一设置视频下载按钮四个圆角
+   * 设置视频下载按钮圆角
    *
-   * @param radius 统一圆角半径，同时赋值给四个角
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
    */
-  setVideoDownloadButtonAllRadius(radius: number): void {
-    this.videoDownloadButtonRadiusTopLeft = radius
-    this.videoDownloadButtonRadiusTopRight = radius
-    this.videoDownloadButtonRadiusBottomLeft = radius
-    this.videoDownloadButtonRadiusBottomRight = radius
-  }
-
-  /**
-   * 分别设置视频下载按钮4个圆角
-   *
-   * @param topLeft 左上圆角
-   * @param topRight 右上圆角
-   * @param bottomLeft 左下圆角
-   * @param bottomRight 右下圆角
-   */
-  setVideoDownloadButtonRadius(topLeft?: number, topRight?: number, bottomLeft?: number, bottomRight?: number): void {
-    this.videoDownloadButtonRadiusTopLeft = topLeft
-    this.videoDownloadButtonRadiusTopRight = topRight
-    this.videoDownloadButtonRadiusBottomLeft = bottomLeft
-    this.videoDownloadButtonRadiusBottomRight = bottomRight
+  setVideoDownloadButtonRadius(options: MarkdownRadiusOptions | number): void {
+    if (typeof options === 'number') {
+      this.videoDownloadButtonRadiusTopLeft = options
+      this.videoDownloadButtonRadiusTopRight = options
+      this.videoDownloadButtonRadiusBottomLeft = options
+      this.videoDownloadButtonRadiusBottomRight = options
+    } else {
+      if (options.topLeft !== undefined) {
+        this.videoDownloadButtonRadiusTopLeft = options.topLeft
+      }
+      if (options.topRight !== undefined) {
+        this.videoDownloadButtonRadiusTopRight = options.topRight
+      }
+      if (options.bottomLeft !== undefined) {
+        this.videoDownloadButtonRadiusBottomLeft = options.bottomLeft
+      }
+      if (options.bottomRight !== undefined) {
+        this.videoDownloadButtonRadiusBottomRight = options.bottomRight
+      }
+    }
   }
 
   /**

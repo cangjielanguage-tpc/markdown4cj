@@ -36,31 +36,31 @@ import {
 import { MarkdownRectResult } from '../configs/MarkdownRectResult'
 import { MarkdownPlugin } from '../configs/MarkdownPlugin'
 import { MarkdownConfiguration } from '../configs/MarkdownConfiguration'
-import { MarkdownThemeAudio } from '../themes/MarkdownThemeAudio'
-import { MarkdownThemeBanner } from '../themes/MarkdownThemeBanner'
-import { MarkdownThemeBlockQuote } from '../themes/MarkdownThemeBlockQuote'
-import { MarkdownThemeBold } from '../themes/MarkdownThemeBold'
-import { MarkdownThemeBulletList } from '../themes/MarkdownThemeBulletList'
-import { MarkdownThemeCodeBlock } from '../themes/MarkdownThemeCodeBlock'
-import { MarkdownThemeDefinitionList } from '../themes/MarkdownThemeDefinitionList'
-import { MarkdownThemeFootnoteDef } from '../themes/MarkdownThemeFootnoteDef'
-import { MarkdownThemeDivider } from '../themes/MarkdownThemeDivider'
-import { MarkdownThemeFootnoteRef } from '../themes/MarkdownThemeFootnoteRef'
-import { MarkdownThemeGlobal } from '../themes/MarkdownThemeGlobal'
-import { MarkdownThemeHeading } from '../themes/MarkdownThemeHeading'
-import { MarkdownThemeHtmlUnderline } from '../themes/MarkdownThemeHtmlUnderline'
-import { MarkdownThemeImage } from '../themes/MarkdownThemeImage'
-import { MarkdownThemeInlineCode } from '../themes/MarkdownThemeInlineCode'
-import { MarkdownThemeItalic } from '../themes/MarkdownThemeItalic'
-import { MarkdownThemeVideo } from '../themes/MarkdownThemeVideo'
-import { MarkdownThemeTable } from '../themes/MarkdownThemeTable'
-import { MarkdownThemeSup } from '../themes/MarkdownThemeSup'
-import { MarkdownThemeSub } from '../themes/MarkdownThemeSub'
-import { MarkdownThemeStrikethrough } from '../themes/MarkdownThemeStrikethrough'
-import { MarkdownThemeParagraph } from '../themes/MarkdownThemeParagraph'
-import { MarkdownThemeOrderedList } from '../themes/MarkdownThemeOrderedList'
-import { MarkdownThemeLink } from '../themes/MarkdownThemeLink'
-import { MarkdownThemeLatexMath } from '../themes/MarkdownThemeLatexMath'
+import { AudioTheme } from '../themes/AudioTheme'
+import { BannerTheme } from '../themes/BannerTheme'
+import { BlockQuoteTheme } from '../themes/BlockQuoteTheme'
+import { BoldTheme } from '../themes/BoldTheme'
+import { BulletListTheme } from '../themes/BulletListTheme'
+import { CodeBlockTheme } from '../themes/CodeBlockTheme'
+import { DefinitionListTheme } from '../themes/DefinitionListTheme'
+import { FootnoteDefTheme } from '../themes/FootnoteDefTheme'
+import { DividerTheme } from '../themes/DividerTheme'
+import { FootnoteRefTheme } from '../themes/FootnoteRefTheme'
+import { GlobalTheme } from '../themes/GlobalTheme'
+import { HeadingTheme } from '../themes/HeadingTheme'
+import { HtmlUnderlineTheme } from '../themes/HtmlUnderlineTheme'
+import { ImageTheme } from '../themes/ImageTheme'
+import { InlineCodeTheme } from '../themes/InlineCodeTheme'
+import { ItalicTheme } from '../themes/ItalicTheme'
+import { VideoTheme } from '../themes/VideoTheme'
+import { TableTheme } from '../themes/TableTheme'
+import { SupTheme } from '../themes/SupTheme'
+import { SubTheme } from '../themes/SubTheme'
+import { StrikethroughTheme } from '../themes/StrikethroughTheme'
+import { ParagraphTheme } from '../themes/ParagraphTheme'
+import { OrderedListTheme } from '../themes/OrderedListTheme'
+import { LinkTheme } from '../themes/LinkTheme'
+import { LatexMathTheme } from '../themes/LatexMathTheme'
 
 export let global_customLib: CustomLib | undefined = undefined
 
@@ -328,8 +328,8 @@ export struct CJMarkdown {
       if (this.config.getImageCallback() !== undefined) {
         cjMarkdownConfig.setImageCallback(this.config.getImageCallback())
       }
-      if (this.config.getImageCallbackCallback() !== undefined) {
-        global_customLib.registerImgPreprocessCallback(this.config.getImageCallbackCallback())
+      if (this.config.getImageReplaceCallback() !== undefined) {
+        global_customLib.registerImgPreprocessCallback(this.config.getImageReplaceCallback())
       } else {
         global_customLib.registerImgPreprocessCallback(undefined)
       }
@@ -414,54 +414,54 @@ export struct CJMarkdown {
     if (this.config !== undefined) {
       let markdownTheme = this.config.getMarkdownTheme()
       if (markdownTheme !== undefined) {
-        if (markdownTheme.getMarkdownThemeGlobal().getStageContext() !== undefined) {
-          global_customLib.setGlobalContext(markdownTheme.getMarkdownThemeGlobal().getStageContext())
+        if (markdownTheme.getGlobalTheme().getStageContext() !== undefined) {
+          global_customLib.setGlobalContext(markdownTheme.getGlobalTheme().getStageContext())
         } else {
           global_customLib.setGlobalContext(undefined)
         }
         global_customLib.getCJResource(
-          markdownTheme.getMarkdownThemeCodeBlock().getCodeBlockFullScreenIcon(),
-          markdownTheme.getMarkdownThemeCodeBlock().getCodeBlockCopyIcon(),
-          markdownTheme.getMarkdownThemeAudio().getAudioIcon(),
-          markdownTheme.getMarkdownThemeVideo().getVideoPlaceholder(),
-          markdownTheme.getMarkdownThemeVideo().getVideoPlayIcon(),
-          markdownTheme.getMarkdownThemeBanner().getBannerPlaceholder(),
-          markdownTheme.getMarkdownThemeImage().getImagePlaceholder(),
-          markdownTheme.getMarkdownThemeVideo().getVideoReleaseButtonIcon(),
-          markdownTheme.getMarkdownThemeVideo().getVideoDownloadButtonIcon(),
-          markdownTheme.getMarkdownThemeImage().getImageDownloadButtonIcon()
+          markdownTheme.getCodeBlockTheme().getCodeBlockFullScreenIcon(),
+          markdownTheme.getCodeBlockTheme().getCodeBlockCopyIcon(),
+          markdownTheme.getAudioTheme().getAudioIcon(),
+          markdownTheme.getVideoTheme().getVideoPlaceholder(),
+          markdownTheme.getVideoTheme().getVideoPlayIcon(),
+          markdownTheme.getBannerTheme().getBannerPlaceholder(),
+          markdownTheme.getImageTheme().getImagePlaceholder(),
+          markdownTheme.getVideoTheme().getVideoReleaseButtonIcon(),
+          markdownTheme.getVideoTheme().getVideoDownloadButtonIcon(),
+          markdownTheme.getImageTheme().getImageDownloadButtonIcon()
         )
-        cjMarkdownTheme.setCJMarkdownGlobalTheme(this.getGlobalTheme(markdownTheme.getMarkdownThemeGlobal()))
-        cjMarkdownTheme.setCJMarkdownAudioTheme(this.getAudioTheme(markdownTheme.getMarkdownThemeAudio()))
-        cjMarkdownTheme.setCJMarkdownBannerTheme(this.getBannerTheme(markdownTheme.getMarkdownThemeBanner()))
-        cjMarkdownTheme.setCJMarkdownBlockQuoteTheme(this.getBlockQuoteTheme(markdownTheme.getMarkdownThemeBlockQuote()))
-        cjMarkdownTheme.setCJMarkdownBoldTheme(this.getBoldTheme(markdownTheme.getMarkdownThemeBold()))
-        cjMarkdownTheme.setCJMarkdownBulletListTheme(this.getBulletListTheme(markdownTheme.getMarkdownThemeBulletList()))
-        cjMarkdownTheme.setCJMarkdownCodeBlockTheme(this.getCodeBlockTheme(markdownTheme.getMarkdownThemeCodeBlock()))
-        cjMarkdownTheme.setCJMarkdownDefinitionListTheme(this.getDefinitionListTheme(markdownTheme.getMarkdownThemeDefinitionList()))
-        cjMarkdownTheme.setCJMarkdownDividerTheme(this.getDividerTheme(markdownTheme.getMarkdownThemeDivider()))
-        cjMarkdownTheme.setCJMarkdownFootnoteDefTheme(this.getFootnoteDefTheme(markdownTheme.getMarkdownThemeFootnoteDef()))
-        cjMarkdownTheme.setCJMarkdownFootnoteRefTheme(this.getFootnoteRefTheme(markdownTheme.getMarkdownThemeFootnoteRef()))
-        cjMarkdownTheme.setCJMarkdownHeadingTheme(this.getHeadingTheme(markdownTheme.getMarkdownThemeHeading()))
-        cjMarkdownTheme.setCJMarkdownHtmlUnderlineTheme(this.getHtmlUnderlineTheme(markdownTheme.getMarkdownThemeHtmlUnderline()))
-        cjMarkdownTheme.setCJMarkdownImageTheme(this.getImageTheme(markdownTheme.getMarkdownThemeImage()))
-        cjMarkdownTheme.setCJMarkdownInlineCodeTheme(this.getInlineCodeTheme(markdownTheme.getMarkdownThemeInlineCode()))
-        cjMarkdownTheme.setCJMarkdownItalicTheme(this.getItalicTheme(markdownTheme.getMarkdownThemeItalic()))
-        cjMarkdownTheme.setCJMarkdownLatexMathTheme(this.getLatexMathTheme(markdownTheme.getMarkdownThemeLatexMath()))
-        cjMarkdownTheme.setCJMarkdownLinkTheme(this.getLinkTheme(markdownTheme.getMarkdownThemeLink()))
-        cjMarkdownTheme.setCJMarkdownOrderedListTheme(this.getOrderedListTheme(markdownTheme.getMarkdownThemeOrderedList()))
-        cjMarkdownTheme.setCJMarkdownParagraphTheme(this.getParagraphTheme(markdownTheme.getMarkdownThemeParagraph()))
-        cjMarkdownTheme.setCJMarkdownStrikethroughTheme(this.getStrikethroughTheme(markdownTheme.getMarkdownThemeStrikethrough()))
-        cjMarkdownTheme.setCJMarkdownSubTheme(this.getSubTheme(markdownTheme.getMarkdownThemeSub()))
-        cjMarkdownTheme.setCJMarkdownSupTheme(this.getSupTheme(markdownTheme.getMarkdownThemeSup()))
-        cjMarkdownTheme.setCJMarkdownTableTheme(this.getTableTheme(markdownTheme.getMarkdownThemeTable()))
-        cjMarkdownTheme.setCJMarkdownVideoTheme(this.getVideoTheme(markdownTheme.getMarkdownThemeVideo()))
+        cjMarkdownTheme.setCJMarkdownGlobalTheme(this.getGlobalTheme(markdownTheme.getGlobalTheme()))
+        cjMarkdownTheme.setCJMarkdownAudioTheme(this.getAudioTheme(markdownTheme.getAudioTheme()))
+        cjMarkdownTheme.setCJMarkdownBannerTheme(this.getBannerTheme(markdownTheme.getBannerTheme()))
+        cjMarkdownTheme.setCJMarkdownBlockQuoteTheme(this.getBlockQuoteTheme(markdownTheme.getBlockQuoteTheme()))
+        cjMarkdownTheme.setCJMarkdownBoldTheme(this.getBoldTheme(markdownTheme.getBoldTheme()))
+        cjMarkdownTheme.setCJMarkdownBulletListTheme(this.getBulletListTheme(markdownTheme.getBulletListTheme()))
+        cjMarkdownTheme.setCJMarkdownCodeBlockTheme(this.getCodeBlockTheme(markdownTheme.getCodeBlockTheme()))
+        cjMarkdownTheme.setCJMarkdownDefinitionListTheme(this.getDefinitionListTheme(markdownTheme.getDefinitionListTheme()))
+        cjMarkdownTheme.setCJMarkdownDividerTheme(this.getDividerTheme(markdownTheme.getDividerTheme()))
+        cjMarkdownTheme.setCJMarkdownFootnoteDefTheme(this.getFootnoteDefTheme(markdownTheme.getFootnoteDefTheme()))
+        cjMarkdownTheme.setCJMarkdownFootnoteRefTheme(this.getFootnoteRefTheme(markdownTheme.getFootnoteRefTheme()))
+        cjMarkdownTheme.setCJMarkdownHeadingTheme(this.getHeadingTheme(markdownTheme.getHeadingTheme()))
+        cjMarkdownTheme.setCJMarkdownHtmlUnderlineTheme(this.getHtmlUnderlineTheme(markdownTheme.getHtmlUnderlineTheme()))
+        cjMarkdownTheme.setCJMarkdownImageTheme(this.getImageTheme(markdownTheme.getImageTheme()))
+        cjMarkdownTheme.setCJMarkdownInlineCodeTheme(this.getInlineCodeTheme(markdownTheme.getInlineCodeTheme()))
+        cjMarkdownTheme.setCJMarkdownItalicTheme(this.getItalicTheme(markdownTheme.getItalicTheme()))
+        cjMarkdownTheme.setCJMarkdownLatexMathTheme(this.getLatexMathTheme(markdownTheme.getLatexMathTheme()))
+        cjMarkdownTheme.setCJMarkdownLinkTheme(this.getLinkTheme(markdownTheme.getLinkTheme()))
+        cjMarkdownTheme.setCJMarkdownOrderedListTheme(this.getOrderedListTheme(markdownTheme.getOrderedListTheme()))
+        cjMarkdownTheme.setCJMarkdownParagraphTheme(this.getParagraphTheme(markdownTheme.getParagraphTheme()))
+        cjMarkdownTheme.setCJMarkdownStrikethroughTheme(this.getStrikethroughTheme(markdownTheme.getStrikethroughTheme()))
+        cjMarkdownTheme.setCJMarkdownSubTheme(this.getSubTheme(markdownTheme.getSubTheme()))
+        cjMarkdownTheme.setCJMarkdownSupTheme(this.getSupTheme(markdownTheme.getSupTheme()))
+        cjMarkdownTheme.setCJMarkdownTableTheme(this.getTableTheme(markdownTheme.getTableTheme()))
+        cjMarkdownTheme.setCJMarkdownVideoTheme(this.getVideoTheme(markdownTheme.getVideoTheme()))
       }
     }
     return cjMarkdownTheme
   }
 
-  getAudioTheme(theme: MarkdownThemeAudio): CJMarkdownAudioTheme | undefined {
+  getAudioTheme(theme: AudioTheme): CJMarkdownAudioTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -610,7 +610,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getBannerTheme(theme: MarkdownThemeBanner): CJMarkdownBannerTheme | undefined {
+  getBannerTheme(theme: BannerTheme): CJMarkdownBannerTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -629,7 +629,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getBlockQuoteTheme(theme: MarkdownThemeBlockQuote): CJMarkdownBlockQuoteTheme | undefined {
+  getBlockQuoteTheme(theme: BlockQuoteTheme): CJMarkdownBlockQuoteTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -666,7 +666,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getBoldTheme(theme: MarkdownThemeBold): CJMarkdownBoldTheme | undefined {
+  getBoldTheme(theme: BoldTheme): CJMarkdownBoldTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -695,7 +695,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getBulletListTheme(theme: MarkdownThemeBulletList): CJMarkdownBulletListTheme | undefined {
+  getBulletListTheme(theme: BulletListTheme): CJMarkdownBulletListTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -762,7 +762,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getCodeBlockTheme(theme: MarkdownThemeCodeBlock): CJMarkdownCodeBlockTheme | undefined {
+  getCodeBlockTheme(theme: CodeBlockTheme): CJMarkdownCodeBlockTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1002,7 +1002,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getDefinitionListTheme(theme: MarkdownThemeDefinitionList): CJMarkdownDefinitionListTheme | undefined {
+  getDefinitionListTheme(theme: DefinitionListTheme): CJMarkdownDefinitionListTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1039,7 +1039,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getDividerTheme(theme: MarkdownThemeDivider): CJMarkdownDividerTheme | undefined {
+  getDividerTheme(theme: DividerTheme): CJMarkdownDividerTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1067,7 +1067,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getFootnoteDefTheme(theme: MarkdownThemeFootnoteDef): CJMarkdownFootnoteDefTheme | undefined {
+  getFootnoteDefTheme(theme: FootnoteDefTheme): CJMarkdownFootnoteDefTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1089,7 +1089,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getFootnoteRefTheme(theme: MarkdownThemeFootnoteRef): CJMarkdownFootnoteRefTheme | undefined {
+  getFootnoteRefTheme(theme: FootnoteRefTheme): CJMarkdownFootnoteRefTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1140,7 +1140,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getGlobalTheme(theme: MarkdownThemeGlobal): CJMarkdownGlobalTheme | undefined {
+  getGlobalTheme(theme: GlobalTheme): CJMarkdownGlobalTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1171,7 +1171,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getHeadingTheme(theme: MarkdownThemeHeading): CJMarkdownHeadingTheme | undefined {
+  getHeadingTheme(theme: HeadingTheme): CJMarkdownHeadingTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1413,7 +1413,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getHtmlUnderlineTheme(theme: MarkdownThemeHtmlUnderline): CJMarkdownHtmlUnderlineTheme | undefined {
+  getHtmlUnderlineTheme(theme: HtmlUnderlineTheme): CJMarkdownHtmlUnderlineTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1448,7 +1448,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getImageTheme(theme: MarkdownThemeImage): CJMarkdownImageTheme | undefined {
+  getImageTheme(theme: ImageTheme): CJMarkdownImageTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1558,7 +1558,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getInlineCodeTheme(theme: MarkdownThemeInlineCode): CJMarkdownInlineCodeTheme | undefined {
+  getInlineCodeTheme(theme: InlineCodeTheme): CJMarkdownInlineCodeTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1600,7 +1600,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getItalicTheme(theme: MarkdownThemeItalic): CJMarkdownItalicTheme | undefined {
+  getItalicTheme(theme: ItalicTheme): CJMarkdownItalicTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1626,7 +1626,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getLatexMathTheme(theme: MarkdownThemeLatexMath): CJMarkdownLatexMathTheme | undefined {
+  getLatexMathTheme(theme: LatexMathTheme): CJMarkdownLatexMathTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1681,7 +1681,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getLinkTheme(theme: MarkdownThemeLink): CJMarkdownLinkTheme | undefined {
+  getLinkTheme(theme: LinkTheme): CJMarkdownLinkTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1810,7 +1810,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getOrderedListTheme(theme: MarkdownThemeOrderedList): CJMarkdownOrderedListTheme | undefined {
+  getOrderedListTheme(theme: OrderedListTheme): CJMarkdownOrderedListTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1868,7 +1868,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getParagraphTheme(theme: MarkdownThemeParagraph): CJMarkdownParagraphTheme | undefined {
+  getParagraphTheme(theme: ParagraphTheme): CJMarkdownParagraphTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1911,7 +1911,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getStrikethroughTheme(theme: MarkdownThemeStrikethrough): CJMarkdownStrikethroughTheme | undefined {
+  getStrikethroughTheme(theme: StrikethroughTheme): CJMarkdownStrikethroughTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1946,7 +1946,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getSubTheme(theme: MarkdownThemeSub): CJMarkdownSubTheme | undefined {
+  getSubTheme(theme: SubTheme): CJMarkdownSubTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -1975,7 +1975,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getSupTheme(theme: MarkdownThemeSup): CJMarkdownSupTheme | undefined {
+  getSupTheme(theme: SupTheme): CJMarkdownSupTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -2004,7 +2004,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getTableTheme(theme: MarkdownThemeTable): CJMarkdownTableTheme | undefined {
+  getTableTheme(theme: TableTheme): CJMarkdownTableTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }
@@ -2109,7 +2109,7 @@ export struct CJMarkdown {
     return cjMarkdownTheme
   }
 
-  getVideoTheme(theme: MarkdownThemeVideo): CJMarkdownVideoTheme | undefined {
+  getVideoTheme(theme: VideoTheme): CJMarkdownVideoTheme | undefined {
     if (global_customLib === undefined) {
       return undefined
     }

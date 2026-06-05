@@ -1,10 +1,11 @@
 import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin,
+import { CJMarkdown,
+  GlobalTheme,
+  LinkTheme,
+  MarkdownConfiguration, MarkdownPlugin,
   MarkdownScroller,
-  MarkdownTheme,
-  MarkdownThemeLink,
-  MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+  MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { LinkData } from '../model/LinkData'
@@ -349,20 +350,20 @@ struct LinkDetailsPage {
       theme.setDarculaTheme()
     }
     // ---------- 通用 - Global
-    let globalTheme = new MarkdownThemeGlobal()
+    let globalTheme: GlobalTheme = new GlobalTheme()
     if (this.globalBackgroundColor !== undefined) {
       globalTheme.setBackgroundColor(this.globalBackgroundColor)
     }
-    globalTheme.setGlobalMargin(this.blockMarginTop, this.blockMarginRight, this.blockMarginBottom, this.blockMarginLeft)
+    globalTheme.setGlobalMargin({top: this.blockMarginTop, right: this.blockMarginRight, bottom: this.blockMarginBottom, left: this.blockMarginLeft})
     globalTheme.setBlockSpacing(this.markdownBlockSpacing)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     // ---------- 专有 - Link
-    let linkTheme = new MarkdownThemeLink()
+    let linkTheme = new LinkTheme()
     linkTheme.setLinkIsIcon(this.linkIsIcon)
     linkTheme.setLinkListIsIcon(this.linkListIsIcon)
     if (this.linkTextFontColor !== undefined) {
@@ -394,7 +395,7 @@ struct LinkDetailsPage {
     if (this.linkTextBackgroundColor !== undefined) {
       linkTheme.setLinkTextBackgroundColor(this.linkTextBackgroundColor)
     }
-    linkTheme.setLinkTextBackgroundRadius(this.linkTextBackgroundRadiusTopLeft, this.linkTextBackgroundRadiusTopRight, this.linkTextBackgroundRadiusBottomLeft, this.linkTextBackgroundRadiusBottomRight)
+    linkTheme.setLinkTextBackgroundRadius({topLeft: this.linkTextBackgroundRadiusTopLeft, topRight: this.linkTextBackgroundRadiusTopRight, bottomLeft: this.linkTextBackgroundRadiusBottomLeft, bottomRight: this.linkTextBackgroundRadiusBottomRight})
     if (this.linkCircleIconBackgroundColor !== undefined) {
       linkTheme.setLinkCircleIconBackgroundColor(this.linkCircleIconBackgroundColor)
     }
@@ -435,7 +436,7 @@ struct LinkDetailsPage {
     linkTheme.setLinkRectToolIconMargin(this.linkRectToolIconMargin)
     linkTheme.setLinkRectToolIconLineLeftPadding(this.linkRectToolIconLineLeftPadding)
     linkTheme.setLinkRectToolIconLineRightPadding(this.linkRectToolIconLineRightPadding)
-    theme.setMarkdownThemeLink(linkTheme)
+    theme.setLinkTheme(linkTheme)
     
     return theme
   }
@@ -445,7 +446,7 @@ struct LinkDetailsPage {
     if (this.linkIsIcon) {
       plugin.setIsLinkViewPlugin(true) // 链接块状化插件
     } else {
-      plugin.setIsLinkifyPlugin(true, []) // 链接自动加载插件
+      plugin.setIsLinkifyPlugin(true) // 链接自动加载插件
     }
     plugin.setIsTablePlugin(true) // 表格插件
     plugin.setIsTaskListPlugin(true) // 任务列表插件

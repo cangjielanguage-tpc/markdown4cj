@@ -1,7 +1,7 @@
 /**
  * Markdown用户可设置的样式-下标文本样式
  */
-export class MarkdownThemeSub {
+export class SubTheme {
   /**
    * 下标文本颜色
    */

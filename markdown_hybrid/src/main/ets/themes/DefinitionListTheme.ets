@@ -1,7 +1,9 @@
+import { MarkdownMarginOptions, MarkdownPaddingOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-定义列表样式
  */
-export class MarkdownThemeDefinitionList {
+export class DefinitionListTheme {
   /**
    * 定义列表背景颜色
    */
@@ -73,57 +75,61 @@ export class MarkdownThemeDefinitionList {
   private definitionListDescriptionIndent?: number = undefined
 
   /**
-   * 设置4个外边距为统一值
+   * 设置外边距
    *
-   * @param margin 外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setDefinitionListAllMargin(margin: number): void {
-    this.definitionListMarginTop = margin
-    this.definitionListMarginRight = margin
-    this.definitionListMarginBottom = margin
-    this.definitionListMarginLeft = margin
+  setDefinitionListMargin(options: MarkdownMarginOptions | number): void {
+    if (typeof options === "number") {
+      this.definitionListMarginTop = options
+      this.definitionListMarginRight = options
+      this.definitionListMarginBottom = options
+      this.definitionListMarginLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.definitionListMarginTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.definitionListMarginRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.definitionListMarginBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.definitionListMarginLeft = options.left
+      }
+    }
   }
 
   /**
-   * 分别设置4个外边距
+   * 设置内边距
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setDefinitionListMargin(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.definitionListMarginTop = top
-    this.definitionListMarginRight = right
-    this.definitionListMarginBottom = bottom
-    this.definitionListMarginLeft = left
-  }
-
-  /**
-   * 设置4个内边距为统一值
-   *
-   * @param padding 内边距
-   */
-  setDefinitionListAllPadding(padding: number): void {
-    this.definitionListPaddingTop = padding
-    this.definitionListPaddingRight = padding
-    this.definitionListPaddingBottom = padding
-    this.definitionListPaddingLeft = padding
-  }
-
-  /**
-   * 分别设置4个内边距
-   *
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
-   */
-  setDefinitionListPadding(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.definitionListPaddingTop = top
-    this.definitionListPaddingRight = right
-    this.definitionListPaddingBottom = bottom
-    this.definitionListPaddingLeft = left
+  setDefinitionListPadding(options: MarkdownPaddingOptions | number): void {
+    if (typeof options === "number") {
+      this.definitionListPaddingTop = options
+      this.definitionListPaddingRight = options
+      this.definitionListPaddingBottom = options
+      this.definitionListPaddingLeft = options
+    } else {
+      if (options.top !== undefined) {
+        this.definitionListPaddingTop = options.top
+      }
+      if (options.right !== undefined) {
+        this.definitionListPaddingRight = options.right
+      }
+      if (options.bottom !== undefined) {
+        this.definitionListPaddingBottom = options.bottom
+      }
+      if (options.left !== undefined) {
+        this.definitionListPaddingLeft = options.left
+      }
+    }
   }
 
   /**

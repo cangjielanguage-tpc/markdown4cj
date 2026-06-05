@@ -1,7 +1,9 @@
+import { MarkdownMarginOptions, MarkdownPaddingOptions } from "./MarkdownTheme"
+
 /**
  * Markdown用户可设置的样式-标题样式
  */
-export class MarkdownThemeHeading {
+export class HeadingTheme {
   /**
    * 一级标题背景颜色
    */
@@ -571,52 +573,19 @@ export class MarkdownThemeHeading {
   }
 
   /**
-   * 设置标题的4个外边距：设置H1-H6级标题所有4个外边距为统一值
-   *
-   * @param margin 外边距
-   */
-  setAllMarginForAllHeading(margin: number): void {
-    this.heading1MarginTop = margin
-    this.heading1MarginRight = margin
-    this.heading1MarginBottom = margin
-    this.heading1MarginLeft = margin
-    this.heading2MarginTop = margin
-    this.heading2MarginRight = margin
-    this.heading2MarginBottom = margin
-    this.heading2MarginLeft = margin
-    this.heading3MarginTop = margin
-    this.heading3MarginRight = margin
-    this.heading3MarginBottom = margin
-    this.heading3MarginLeft = margin
-    this.heading4MarginTop = margin
-    this.heading4MarginRight = margin
-    this.heading4MarginBottom = margin
-    this.heading4MarginLeft = margin
-    this.heading5MarginTop = margin
-    this.heading5MarginRight = margin
-    this.heading5MarginBottom = margin
-    this.heading5MarginLeft = margin
-    this.heading6MarginTop = margin
-    this.heading6MarginRight = margin
-    this.heading6MarginBottom = margin
-    this.heading6MarginLeft = margin
-  }
-
-  /**
    * 设置标题的4个外边距：设置H1-H6级标题，所有等级的某一个外边距为统一值
    *
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时所有外边距设为相同值
+   *                  入参 MarkdownMarginOptions 类型时设置H1-H6级的top（right, bottom, left）外边距为统一值
    */
-  setMarginForAllHeadingEachLevel(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.setMarginForDesignateHeading(1, top, right, bottom, left)
-    this.setMarginForDesignateHeading(2, top, right, bottom, left)
-    this.setMarginForDesignateHeading(3, top, right, bottom, left)
-    this.setMarginForDesignateHeading(4, top, right, bottom, left)
-    this.setMarginForDesignateHeading(5, top, right, bottom, left)
-    this.setMarginForDesignateHeading(6, top, right, bottom, left)
+  setMarginForAllHeadingEachLevel(options: MarkdownMarginOptions | number): void {
+    this.setMarginForDesignateHeading(1, options)
+    this.setMarginForDesignateHeading(2, options)
+    this.setMarginForDesignateHeading(3, options)
+    this.setMarginForDesignateHeading(4, options)
+    this.setMarginForDesignateHeading(5, options)
+    this.setMarginForDesignateHeading(6, options)
   }
 
   /**
@@ -627,19 +596,9 @@ export class MarkdownThemeHeading {
   setMarginForEachHeading(marginList: number[]): void {
     let level = 1
     for (const margin of marginList) {
-      this.setAllMarginForDesignateHeading(level, margin)
+      this.setMarginForDesignateHeading(level, margin)
       level += 1
     }
-  }
-
-  /**
-   * 设置标题的4个外边距：指定标题等级，设置标题的4个外边距为统一值
-   *
-   * @param level 标题等级
-   * @param margin 外边距
-   */
-  setAllMarginForDesignateHeading(level: number, margin: number): void {
-    this.setMarginForDesignateHeading(level, margin, margin, margin, margin)
   }
 
   /**
@@ -652,16 +611,16 @@ export class MarkdownThemeHeading {
    */
   setMarginForEachHeadingDetail(top: number[], right: number[], bottom: number[], left: number[]): void {
     for (let index = 0; index < top.length; index++) {
-      this.setMarginForDesignateHeading((index + 1), top[index], undefined, undefined, undefined)
+      this.setMarginForDesignateHeading((index + 1), {top: top[index]})
     }
     for (let index = 0; index < right.length; index++) {
-      this.setMarginForDesignateHeading((index + 1), undefined, right[index], undefined, undefined)
+      this.setMarginForDesignateHeading((index + 1), {right: right[index]})
     }
     for (let index = 0; index < bottom.length; index++) {
-      this.setMarginForDesignateHeading((index + 1), undefined, undefined, bottom[index], undefined)
+      this.setMarginForDesignateHeading((index + 1), {bottom: bottom[index]})
     }
     for (let index = 0; index < left.length; index++) {
-      this.setMarginForDesignateHeading((index + 1), undefined, undefined, undefined, left[index])
+      this.setMarginForDesignateHeading((index + 1), {left: left[index]})
     }
   }
 
@@ -669,48 +628,89 @@ export class MarkdownThemeHeading {
    * 设置标题的4个外边距：指定标题等级，分别设置该标题的每个外边距
    *
    * @param level 标题等级
-   * @param top 上外边距
-   * @param right 右外边距
-   * @param bottom 下外边距
-   * @param left 左外边距
+   * @param options MarkdownMarginOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownMarginOptions 类型时分别设置
    */
-  setMarginForDesignateHeading(level: number, top?: number, right?: number, bottom?: number, left?: number): void {
+  setMarginForDesignateHeading(level: number, options: MarkdownMarginOptions | number): void {
     switch (level) {
       case 1:
-        if (top !== undefined) this.heading1MarginTop = top
-        if (right !== undefined) this.heading1MarginRight = right
-        if (bottom !== undefined) this.heading1MarginBottom = bottom
-        if (left !== undefined) this.heading1MarginLeft = left
+        if (typeof options === 'number') {
+          this.heading1MarginTop = options
+          this.heading1MarginRight = options
+          this.heading1MarginBottom = options
+          this.heading1MarginLeft = options
+        } else {
+          if (options.top !== undefined) this.heading1MarginTop = options.top
+          if (options.right !== undefined) this.heading1MarginRight = options.right
+          if (options.bottom !== undefined) this.heading1MarginBottom = options.bottom
+          if (options.left !== undefined) this.heading1MarginLeft = options.left
+        }
         break
       case 2:
-        if (top !== undefined) this.heading2MarginTop = top
-        if (right !== undefined) this.heading2MarginRight = right
-        if (bottom !== undefined) this.heading2MarginBottom = bottom
-        if (left !== undefined) this.heading2MarginLeft = left
+        if (typeof options === 'number') {
+          this.heading2MarginTop = options
+          this.heading2MarginRight = options
+          this.heading2MarginBottom = options
+          this.heading2MarginLeft = options
+        } else {
+          if (options.top !== undefined) this.heading2MarginTop = options.top
+          if (options.right !== undefined) this.heading2MarginRight = options.right
+          if (options.bottom !== undefined) this.heading2MarginBottom = options.bottom
+          if (options.left !== undefined) this.heading2MarginLeft = options.left
+        }
         break
       case 3:
-        if (top !== undefined) this.heading3MarginTop = top
-        if (right !== undefined) this.heading3MarginRight = right
-        if (bottom !== undefined) this.heading3MarginBottom = bottom
-        if (left !== undefined) this.heading3MarginLeft = left
+        if (typeof options === 'number') {
+          this.heading3MarginTop = options
+          this.heading3MarginRight = options
+          this.heading3MarginBottom = options
+          this.heading3MarginLeft = options
+        } else {
+          if (options.top !== undefined) this.heading3MarginTop = options.top
+          if (options.right !== undefined) this.heading3MarginRight = options.right
+          if (options.bottom !== undefined) this.heading3MarginBottom = options.bottom
+          if (options.left !== undefined) this.heading3MarginLeft = options.left
+        }
         break
       case 4:
-        if (top !== undefined) this.heading4MarginTop = top
-        if (right !== undefined) this.heading4MarginRight = right
-        if (bottom !== undefined) this.heading4MarginBottom = bottom
-        if (left !== undefined) this.heading4MarginLeft = left
+        if (typeof options === 'number') {
+          this.heading4MarginTop = options
+          this.heading4MarginRight = options
+          this.heading4MarginBottom = options
+          this.heading4MarginLeft = options
+        } else {
+          if (options.top !== undefined) this.heading4MarginTop = options.top
+          if (options.right !== undefined) this.heading4MarginRight = options.right
+          if (options.bottom !== undefined) this.heading4MarginBottom = options.bottom
+          if (options.left !== undefined) this.heading4MarginLeft = options.left
+        }
         break
       case 5:
-        if (top !== undefined) this.heading5MarginTop = top
-        if (right !== undefined) this.heading5MarginRight = right
-        if (bottom !== undefined) this.heading5MarginBottom = bottom
-        if (left !== undefined) this.heading5MarginLeft = left
+        if (typeof options === 'number') {
+          this.heading5MarginTop = options
+          this.heading5MarginRight = options
+          this.heading5MarginBottom = options
+          this.heading5MarginLeft = options
+        } else {
+          if (options.top !== undefined) this.heading5MarginTop = options.top
+          if (options.right !== undefined) this.heading5MarginRight = options.right
+          if (options.bottom !== undefined) this.heading5MarginBottom = options.bottom
+          if (options.left !== undefined) this.heading5MarginLeft = options.left
+        }
         break
       case 6:
-        if (top !== undefined) this.heading6MarginTop = top
-        if (right !== undefined) this.heading6MarginRight = right
-        if (bottom !== undefined) this.heading6MarginBottom = bottom
-        if (left !== undefined) this.heading6MarginLeft = left
+        if (typeof options === 'number') {
+          this.heading6MarginTop = options
+          this.heading6MarginRight = options
+          this.heading6MarginBottom = options
+          this.heading6MarginLeft = options
+        } else {
+          if (options.top !== undefined) this.heading6MarginTop = options.top
+          if (options.right !== undefined) this.heading6MarginRight = options.right
+          if (options.bottom !== undefined) this.heading6MarginBottom = options.bottom
+          if (options.left !== undefined) this.heading6MarginLeft = options.left
+        }
         break
       default:
         break
@@ -718,52 +718,19 @@ export class MarkdownThemeHeading {
   }
 
   /**
-   * 设置标题的4个内边距：设置H1-H6级标题所有4个内边距为统一值
+   * 设置标题的4个内边距：设置H1-H6级标题，所有等级的内边距为统一值，或某一个内边距6个级别为统一值
    *
-   * @param padding 内边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时所有内边距设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时设置H1-H6级的top（right, bottom, left）内边距为统一值
    */
-  setAllPaddingForAllHeading(padding: number): void {
-    this.heading1PaddingTop = padding
-    this.heading1PaddingRight = padding
-    this.heading1PaddingBottom = padding
-    this.heading1PaddingLeft = padding
-    this.heading2PaddingTop = padding
-    this.heading2PaddingRight = padding
-    this.heading2PaddingBottom = padding
-    this.heading2PaddingLeft = padding
-    this.heading3PaddingTop = padding
-    this.heading3PaddingRight = padding
-    this.heading3PaddingBottom = padding
-    this.heading3PaddingLeft = padding
-    this.heading4PaddingTop = padding
-    this.heading4PaddingRight = padding
-    this.heading4PaddingBottom = padding
-    this.heading4PaddingLeft = padding
-    this.heading5PaddingTop = padding
-    this.heading5PaddingRight = padding
-    this.heading5PaddingBottom = padding
-    this.heading5PaddingLeft = padding
-    this.heading6PaddingTop = padding
-    this.heading6PaddingRight = padding
-    this.heading6PaddingBottom = padding
-    this.heading6PaddingLeft = padding
-  }
-
-  /**
-   * 设置标题的4个内边距：设置H1-H6级标题，所有等级的某一个内边距为统一值
-   *
-   * @param top 上内边距集合
-   * @param right 右内边距集合
-   * @param bottom 下内边距集合
-   * @param left 左内边距集合
-   */
-  setPaddingForAllHeadingEachLevel(top?: number, right?: number, bottom?: number, left?: number): void {
-    this.setPaddingForDesignateHeading(1, top, right, bottom, left)
-    this.setPaddingForDesignateHeading(2, top, right, bottom, left)
-    this.setPaddingForDesignateHeading(3, top, right, bottom, left)
-    this.setPaddingForDesignateHeading(4, top, right, bottom, left)
-    this.setPaddingForDesignateHeading(5, top, right, bottom, left)
-    this.setPaddingForDesignateHeading(6, top, right, bottom, left)
+  setPaddingForAllHeadingEachLevel(options: MarkdownPaddingOptions | number): void {
+    this.setPaddingForDesignateHeading(1, options)
+    this.setPaddingForDesignateHeading(2, options)
+    this.setPaddingForDesignateHeading(3, options)
+    this.setPaddingForDesignateHeading(4, options)
+    this.setPaddingForDesignateHeading(5, options)
+    this.setPaddingForDesignateHeading(6, options)
   }
 
   /**
@@ -774,19 +741,9 @@ export class MarkdownThemeHeading {
   setPaddingForEachHeading(paddingList: number[]): void {
     let level = 1
     for (const padding of paddingList) {
-      this.setAllPaddingForDesignateHeading(level, padding)
+      this.setPaddingForDesignateHeading(level, padding)
       level += 1
     }
-  }
-
-  /**
-   * 设置标题的4个内边距：指定标题等级，设置标题的4个内边距为统一值
-   *
-   * @param level 标题等级
-   * @param padding 内边距
-   */
-  setAllPaddingForDesignateHeading(level: number, padding: number): void {
-    this.setPaddingForDesignateHeading(level, padding, padding, padding, padding)
   }
 
   /**
@@ -799,16 +756,16 @@ export class MarkdownThemeHeading {
    */
   setPaddingForEachHeadingDetail(top: number[], right: number[], bottom: number[], left: number[]): void {
     for (let index = 0; index < top.length; index++) {
-      this.setPaddingForDesignateHeading((index + 1), top[index], undefined, undefined, undefined)
+      this.setPaddingForDesignateHeading((index + 1), {top:top[index]})
     }
     for (let index = 0; index < right.length; index++) {
-      this.setPaddingForDesignateHeading((index + 1), undefined, right[index], undefined, undefined)
+      this.setPaddingForDesignateHeading((index + 1), {right:right[index]})
     }
     for (let index = 0; index < bottom.length; index++) {
-      this.setPaddingForDesignateHeading((index + 1), undefined, undefined, bottom[index], undefined)
+      this.setPaddingForDesignateHeading((index + 1), {bottom:bottom[index]})
     }
     for (let index = 0; index < left.length; index++) {
-      this.setPaddingForDesignateHeading((index + 1), undefined, undefined, undefined, left[index])
+      this.setPaddingForDesignateHeading((index + 1), {left:left[index]})
     }
   }
 
@@ -816,48 +773,89 @@ export class MarkdownThemeHeading {
    * 设置标题的4个内边距：指定标题等级，分别设置该标题的每个内边距
    *
    * @param level 标题等级
-   * @param top 上内边距
-   * @param right 右内边距
-   * @param bottom 下内边距
-   * @param left 左内边距
+   * @param options MarkdownPaddingOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownPaddingOptions 类型时分别设置
    */
-  setPaddingForDesignateHeading(level: number, top?: number, right?: number, bottom?: number, left?: number): void {
+  setPaddingForDesignateHeading(level: number, options: MarkdownPaddingOptions | number): void {
     switch (level) {
       case 1:
-        if (top !== undefined) this.heading1PaddingTop = top
-        if (right !== undefined) this.heading1PaddingRight = right
-        if (bottom !== undefined) this.heading1PaddingBottom = bottom
-        if (left !== undefined) this.heading1PaddingLeft = left
+        if (typeof options === 'number') {
+          this.heading1PaddingTop = options
+          this.heading1PaddingRight = options
+          this.heading1PaddingBottom = options
+          this.heading1PaddingLeft = options
+        } else {
+          if (options.top !== undefined) this.heading1PaddingTop = options.top
+          if (options.right !== undefined) this.heading1PaddingRight = options.right
+          if (options.bottom !== undefined) this.heading1PaddingBottom = options.bottom
+          if (options.left !== undefined) this.heading1PaddingLeft = options.left
+        }
         break
       case 2:
-        if (top !== undefined) this.heading2PaddingTop = top
-        if (right !== undefined) this.heading2PaddingRight = right
-        if (bottom !== undefined) this.heading2PaddingBottom = bottom
-        if (left !== undefined) this.heading2PaddingLeft = left
+        if (typeof options === 'number') {
+          this.heading2PaddingTop = options
+          this.heading2PaddingRight = options
+          this.heading2PaddingBottom = options
+          this.heading2PaddingLeft = options
+        } else {
+          if (options.top !== undefined) this.heading2PaddingTop = options.top
+          if (options.right !== undefined) this.heading2PaddingRight = options.right
+          if (options.bottom !== undefined) this.heading2PaddingBottom = options.bottom
+          if (options.left !== undefined) this.heading2PaddingLeft = options.left
+        }
         break
       case 3:
-        if (top !== undefined) this.heading3PaddingTop = top
-        if (right !== undefined) this.heading3PaddingRight = right
-        if (bottom !== undefined) this.heading3PaddingBottom = bottom
-        if (left !== undefined) this.heading3PaddingLeft = left
+        if (typeof options === 'number') {
+          this.heading3PaddingTop = options
+          this.heading3PaddingRight = options
+          this.heading3PaddingBottom = options
+          this.heading3PaddingLeft = options
+        } else {
+          if (options.top !== undefined) this.heading3PaddingTop = options.top
+          if (options.right !== undefined) this.heading3PaddingRight = options.right
+          if (options.bottom !== undefined) this.heading3PaddingBottom = options.bottom
+          if (options.left !== undefined) this.heading3PaddingLeft = options.left
+        }
         break
       case 4:
-        if (top !== undefined) this.heading4PaddingTop = top
-        if (right !== undefined) this.heading4PaddingRight = right
-        if (bottom !== undefined) this.heading4PaddingBottom = bottom
-        if (left !== undefined) this.heading4PaddingLeft = left
+        if (typeof options === 'number') {
+          this.heading4PaddingTop = options
+          this.heading4PaddingRight = options
+          this.heading4PaddingBottom = options
+          this.heading4PaddingLeft = options
+        } else {
+          if (options.top !== undefined) this.heading4PaddingTop = options.top
+          if (options.right !== undefined) this.heading4PaddingRight = options.right
+          if (options.bottom !== undefined) this.heading4PaddingBottom = options.bottom
+          if (options.left !== undefined) this.heading4PaddingLeft = options.left
+        }
         break
       case 5:
-        if (top !== undefined) this.heading5PaddingTop = top
-        if (right !== undefined) this.heading5PaddingRight = right
-        if (bottom !== undefined) this.heading5PaddingBottom = bottom
-        if (left !== undefined) this.heading5PaddingLeft = left
+        if (typeof options === 'number') {
+          this.heading5PaddingTop = options
+          this.heading5PaddingRight = options
+          this.heading5PaddingBottom = options
+          this.heading5PaddingLeft = options
+        } else {
+          if (options.top !== undefined) this.heading5PaddingTop = options.top
+          if (options.right !== undefined) this.heading5PaddingRight = options.right
+          if (options.bottom !== undefined) this.heading5PaddingBottom = options.bottom
+          if (options.left !== undefined) this.heading5PaddingLeft = options.left
+        }
         break
       case 6:
-        if (top !== undefined) this.heading6PaddingTop = top
-        if (right !== undefined) this.heading6PaddingRight = right
-        if (bottom !== undefined) this.heading6PaddingBottom = bottom
-        if (left !== undefined) this.heading6PaddingLeft = left
+        if (typeof options === 'number') {
+          this.heading6PaddingTop = options
+          this.heading6PaddingRight = options
+          this.heading6PaddingBottom = options
+          this.heading6PaddingLeft = options
+        } else {
+          if (options.top !== undefined) this.heading6PaddingTop = options.top
+          if (options.right !== undefined) this.heading6PaddingRight = options.right
+          if (options.bottom !== undefined) this.heading6PaddingBottom = options.bottom
+          if (options.left !== undefined) this.heading6PaddingLeft = options.left
+        }
         break
       default:
         break

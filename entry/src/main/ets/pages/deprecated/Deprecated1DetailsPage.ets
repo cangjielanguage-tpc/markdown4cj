@@ -1,6 +1,8 @@
 import { titleComponent } from '../../component/BaseComponent'
 import { router } from '@kit.ArkUI'
-import { CJMarkdown, MarkdownConfiguration, MarkdownPlugin, MarkdownScroller, MarkdownTextDecorationStyle, MarkdownTheme, MarkdownThemeGlobal } from '@cangjie-tpc/markdown_hybrid'
+import { CJMarkdown,
+  GlobalTheme,
+  MarkdownConfiguration, MarkdownPlugin, MarkdownScroller, MarkdownTextDecorationStyle, MarkdownTheme } from '@cangjie-tpc/markdown_hybrid'
 import { getFileContextStr } from '../../utils/FileUtils'
 import hilog from '@ohos.hilog'
 import { DeprecatedData } from '../../model/DeprecatedData'
@@ -215,14 +217,14 @@ struct Deprecated1DetailsPage {
     } else {
       theme.setDarculaTheme()
     }
-    let globalTheme = new MarkdownThemeGlobal()
-    globalTheme.setGlobalMargin(this.blockFirstTopMargin, 8, this.blockLastBottomMargin, 8)
+    let globalTheme: GlobalTheme = new GlobalTheme()
+    globalTheme.setGlobalMargin({top: this.blockTopAndBottomMargins, bottom: this.blockTopAndBottomMargins})
     globalTheme.setBlockSpacing(this.blockTopAndBottomMargins)
     globalTheme.setIsLineBreak(this.isLineBreak)
     globalTheme.setIsMarkdownParserSync(this.isMarkdownParserSync)
     globalTheme.setIsOnCopy(this.isOnCopy)
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
-    theme.setMarkdownThemeGlobal(globalTheme)
+    theme.setGlobalTheme(globalTheme)
     
     if (this.bannerImage !== undefined) {
       theme.setBannerImage(this.bannerImage)
@@ -273,7 +275,7 @@ struct Deprecated1DetailsPage {
     plugin.setIsLatexMathPlugin(true)
     plugin.setIsStrikethroughPlugin(true)
     plugin.setIsTaskListPlugin(true)
-    plugin.setIsLinkifyPlugin(true, [])
+    plugin.setIsLinkifyPlugin(true)
     plugin.setIsBlockAudioPlugin(true)
     plugin.setIsBlockVideoPlugin(true)
     plugin.setIsImageCollectPlugin(true)
