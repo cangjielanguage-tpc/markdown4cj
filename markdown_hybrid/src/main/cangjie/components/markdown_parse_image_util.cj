@@ -78,13 +78,13 @@ class MarkdownParseImageUtil {
      * 图片替换
      *
      * @param destination 图片路径
-     * @param imageCallbackCallback 替换接口
+     * @param imageReplaceCallback 替换接口
      * @param callback PixelMap图片、图片高度、图片宽度
      * @return Future<Unit> 线程
      */
     static func callbackToPixelmap(
         destination: String,
-        imageCallbackCallback: (String) -> ?Array<UInt8>,
+        imageReplaceCallback: (String) -> ?Array<UInt8>,
         callback: (?PixelMap, ?Float64, ?Float64) -> Unit
     ): Future<Unit> {
         let fut: Future<Unit> = spawn {
@@ -96,7 +96,7 @@ class MarkdownParseImageUtil {
                 if (Thread.currentThread.hasPendingCancellation) {
                     return
                 }
-                let data: ?Array<UInt8> = imageCallbackCallback(destination)
+                let data: ?Array<UInt8> = imageReplaceCallback(destination)
                 if (let Some(v) <- data) {
                     if (Thread.currentThread.hasPendingCancellation) {
                         return

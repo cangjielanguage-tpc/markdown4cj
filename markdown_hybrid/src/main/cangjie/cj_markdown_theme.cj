@@ -129,6 +129,11 @@ public class CJMarkdownTheme {
      */
     var cjMarkdownHtmlUnderlineTheme: CJMarkdownHtmlUnderlineTheme = CJMarkdownHtmlUnderlineTheme()
 
+    /**
+     * 高亮样式
+     */
+    var cjMarkdownHighlightTheme: CJMarkdownHighlightTheme = CJMarkdownHighlightTheme()
+
     public init() {}
 
     /**
@@ -210,6 +215,15 @@ public class CJMarkdownTheme {
      */
     public func setCJMarkdownHtmlUnderlineTheme(cjMarkdownHtmlUnderlineTheme: CJMarkdownHtmlUnderlineTheme): Unit {
         this.cjMarkdownHtmlUnderlineTheme = cjMarkdownHtmlUnderlineTheme
+    }
+
+    /**
+     * 设置高亮样式
+     *
+     * @param cjMarkdownHighlightTheme 高亮样式
+     */
+    public func setCJMarkdownHighlightTheme(cjMarkdownHighlightTheme: CJMarkdownHighlightTheme): Unit {
+        this.cjMarkdownHighlightTheme = cjMarkdownHighlightTheme
     }
 
     /**

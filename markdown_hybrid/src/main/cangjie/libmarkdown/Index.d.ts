@@ -43,6 +43,10 @@ export declare class CJMarkdownPlugin {
   setIsSupPlugin(isSupPlugin: boolean): void
 
   setIsEmojiPlugin(isSupPlugin: boolean, isEmojiLight: boolean): void
+
+  setIsHighlightPlugin(isHighlightPlugin: boolean): void
+
+  setIsWhitelistPlugin(isWhitelistPlugin: boolean, mode: number, whitelist: Array<string>): void
 }
 
 export declare class CJMarkdownTheme {
@@ -65,6 +69,8 @@ export declare class CJMarkdownTheme {
   setCJMarkdownLatexMathTheme(cjMarkdownLatexMathTheme: CJMarkdownLatexMathTheme): void
 
   setCJMarkdownHtmlUnderlineTheme(cjMarkdownHtmlUnderlineTheme: CJMarkdownHtmlUnderlineTheme): void
+
+  setCJMarkdownHighlightTheme(cjMarkdownHighlightTheme: CJMarkdownHighlightTheme): void
 
   setCJMarkdownItalicTheme(cjMarkdownItalicTheme: CJMarkdownItalicTheme): void
 
@@ -1153,6 +1159,28 @@ export declare class CJMarkdownVideoTheme {
   setVideoDownloadButtonTextLineHeight(lineHeight: number): void
 }
 
+export declare class CJMarkdownHighlightTheme {
+  setHighlightTextFontColor(color: number): void
+
+  setHighlightTextFontSize(size: number): void
+
+  setHighlightTextFontStyle(style: number): void
+
+  setHighlightTextFontWeight(weight: number): void
+
+  setHighlightTextFontFamily(family: string): void
+
+  setHighlightTextLineHeight(lineHeight: number): void
+
+  setHighlightTextLetterSpacing(spacing: number): void
+
+  setHighlightTextBackgroundColor(color: number): void
+
+  setHighlightTextBackgroundAllRadius(radius: number): void
+
+  setHighlightTextBackgroundRadius(topLeft: number, topRight: number, bottomLeft: number, bottomRight: number): void
+}
+
 export declare class CJMarkdownConfig {
   setLinkCallback(cb: (url: string) => void): void
 
@@ -1280,6 +1308,8 @@ export declare interface CustomLib {
   CJMarkdownTableTheme: {new (): CJMarkdownTableTheme}
 
   CJMarkdownVideoTheme: {new (): CJMarkdownVideoTheme}
+
+  CJMarkdownHighlightTheme: {new (): CJMarkdownHighlightTheme}
 
   setGlobalContext(context?: Context): void
 

@@ -10,6 +10,7 @@ import { FootnoteDefTheme } from "./FootnoteDefTheme"
 import { FootnoteRefTheme } from "./FootnoteRefTheme"
 import { GlobalTheme } from "./GlobalTheme"
 import { HeadingTheme } from "./HeadingTheme"
+import { HighlightTheme } from "./HighlightTheme"
 import { HtmlUnderlineTheme } from "./HtmlUnderlineTheme"
 import { ImageTheme } from "./ImageTheme"
 import { InlineCodeTheme } from "./InlineCodeTheme"
@@ -158,6 +159,11 @@ export class MarkdownTheme {
    * 视频样式
    */
   private markdownThemeVideo: VideoTheme = new VideoTheme()
+
+  /**
+   * 高亮样式
+   */
+  private markdownHighlightTheme: HighlightTheme = new HighlightTheme()
 
   /**
    * 设置上下文
@@ -586,6 +592,15 @@ export class MarkdownTheme {
    */
   setVideoTheme(markdownThemeVideo: VideoTheme): void {
     this.markdownThemeVideo = markdownThemeVideo
+  }
+
+  /**
+   * 设置高亮样式
+   *
+   * @param markdownHighlightTheme 高亮样式
+   */
+  setHighlightTheme(markdownHighlightTheme: HighlightTheme): void {
+    this.markdownHighlightTheme = markdownHighlightTheme
   }
 
   /**
@@ -3497,6 +3512,15 @@ export class MarkdownTheme {
    */
   getVideoTheme(): VideoTheme {
     return this.markdownThemeVideo
+  }
+
+  /**
+   * 获取高亮样式
+   *
+   * @returns 高亮样式对象
+   */
+  getHighlightTheme(): HighlightTheme {
+    return this.markdownHighlightTheme
   }
 }
 

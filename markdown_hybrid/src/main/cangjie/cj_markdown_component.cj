@@ -145,6 +145,12 @@ class CJMarkdownComponent {
             if (v.isEmojiPlugin) {
                 markdownBuilder.usePlugin(EmojiPlugin.create(v.isEmojiLight))
             }
+            if (v.isHighlightPlugin) {
+                markdownBuilder.usePlugin(HighlightDelimeterPlugin.create())
+            }
+            if (v.isWhitelistPlugin) {
+                markdownBuilder.usePlugin(WhitelistLooseDelimiterPlugin.create(v.mode))
+            }
         }
         markdownBuilder.usePlugin(NodeIdPlugin.create()) // 唯一ID标识插件
         if (incrementalAnalysis) {
@@ -156,7 +162,7 @@ class CJMarkdownComponent {
     func setConfig(): MarkdownConfiguration {
         let markdownConfigurationBuilder: MarkdownConfigurationBuilder = MarkdownConfiguration.emptyBuilder()
         if (let Some(v) <- arkImgPreprocessFunc) {
-            markdownConfigurationBuilder.setImageCallbackCallback(v) // 设置图片替换事件
+            markdownConfigurationBuilder.setImageReplaceCallback(v) // 设置图片替换事件
         }
         if (let Some(w) <- cfg) {
             markdownConfigurationBuilder.setMarkdownTheme(setTheme()) // 设置markdown默认样式
@@ -194,7 +200,7 @@ class CJMarkdownComponent {
                 markdownConfigurationBuilder.setCodeFullScreenCallback(v) // 设置代码全屏按钮的点击事件
             }
             if (let Some(v) <- w.latexImageCallback) {
-                markdownConfigurationBuilder.setLatexImageCallbackCallback(v) // 设置数学公式图片点击事件
+                markdownConfigurationBuilder.setLatexImageCallback(v) // 设置数学公式图片点击事件
             }
             if (let Some(v) <- w.latexStrCallback) {
                 markdownConfigurationBuilder.setLatexStrCallback(v) // 设置数学公式数据处理事件
@@ -257,6 +263,7 @@ class CJMarkdownComponent {
             markdownThemeBuilder.setStrikethroughTheme(setStrikethroughTheme(w.cjMarkdownTheme.cjMarkdownStrikethroughTheme)) // 删除线文本样式
             markdownThemeBuilder.setSubTheme(setSubTheme(w.cjMarkdownTheme.cjMarkdownSubTheme)) // 下标文本样式
             markdownThemeBuilder.setSupTheme(setSupTheme(w.cjMarkdownTheme.cjMarkdownSupTheme)) // 上标文本样式
+            markdownThemeBuilder.setHighlightTheme(setHighlightTheme(w.cjMarkdownTheme.cjMarkdownHighlightTheme)) // 高亮文本样式
         }
         let markdownTheme: MarkdownTheme = markdownThemeBuilder.build()
         return markdownTheme

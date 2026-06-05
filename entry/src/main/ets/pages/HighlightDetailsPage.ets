@@ -1,5 +1,5 @@
 import {
-  BoldTheme,
+  HighlightTheme,
   CJMarkdown,
   DelimiterFilterMode,
   GlobalTheme,
@@ -10,13 +10,13 @@ import { titleComponent } from '../component/BaseComponent'
 import { router } from '@kit.ArkUI'
 import { getFileContextStr } from '../utils/FileUtils'
 import { BaseMDData } from '../model/BaseMDData'
-import { BoldData } from '../model/BoldData'
+import { HighlightData } from '../model/HighlightData'
 import { hilog } from '@kit.PerformanceAnalysisKit'
 import { ConfigurationConstant } from '@kit.AbilityKit'
 
 @Entry
 @Component
-struct BoldDetailsPage {
+struct HighlightDetailsPage {
   // ---------- 通用
   // 滑动控制器
   scroller: Scroller = new Scroller()
@@ -65,20 +65,30 @@ struct BoldDetailsPage {
   isInputEnded: boolean = false
 
   // ---------- 专有
-  @State // 加粗文本颜色
-  boldTextFontColor: number | undefined = undefined
-  @State // 加粗文本尺寸
-  boldTextFontSize: number | undefined = undefined
-  @State // 加粗文本字体样式
-  boldTextFontStyle: FontStyle | undefined = undefined
-  @State // 加粗文本字体粗细
-  boldTextFontWeight: FontWeight = FontWeight.Bold
-  @State // 加粗文本字体
-  boldTextFontFamily: string | undefined = undefined
-  @State // 加粗文本行高
-  boldTextLineHeight: number | undefined = undefined
-  @State // 加粗文本字符间距
-  boldTextLetterSpacing: number | undefined = undefined
+  @State // 高亮文本颜色
+  highlightTextFontColor: number | undefined = undefined
+  @State // 高亮文本尺寸
+  highlightTextFontSize: number | undefined = undefined
+  @State // 高亮文本字体样式
+  highlightTextFontStyle: FontStyle | undefined = undefined
+  @State // 高亮文本字体粗细
+  highlightTextFontWeight: FontWeight = FontWeight.Bold
+  @State // 高亮文本字体
+  highlightTextFontFamily: string | undefined = undefined
+  @State // 高亮文本行高
+  highlightTextLineHeight: number | undefined = undefined
+  @State // 高亮文本字符间距
+  highlightTextLetterSpacing: number | undefined = undefined
+  @State // 高亮文本背景颜色
+  highlightTextBackgroundColor: number | undefined = undefined
+  @State // 高亮文本背景左上圆角
+  highlightTextBackgroundRadiusTopLeft: number | undefined = undefined
+  @State // 高亮文本背景右上圆角
+  highlightTextBackgroundRadiusTopRight: number | undefined = undefined
+  @State // 高亮文本背景左下圆角
+  highlightTextBackgroundRadiusBottomLeft: number | undefined = undefined
+  @State // 高亮文本背景右下圆角
+  highlightTextBackgroundRadiusBottomRight: number | undefined = undefined
 
   @State // markdown配置
   markdownConfiguration: MarkdownConfiguration = new MarkdownConfiguration()
@@ -107,32 +117,37 @@ struct BoldDetailsPage {
 
   aboutToAppear(): void {
     try {
-      let boldData: BoldData = router.getParams() as BoldData
-      this.fileStr = getFileContextStr(boldData._pagePath)
+      let highlightData: HighlightData = router.getParams() as HighlightData
+      this.fileStr = getFileContextStr(highlightData._pagePath)
       // ---------- 通用
-      this.isFull = boldData._isFull
-      this.incrementalAnalysis = boldData._incrementalAnalysis
-      this.time = boldData._time
-      this.textNumber = boldData._textNumber
-      this.isMarkdownParserSync = boldData._isMarkdownParserSync
-      this.isOnCopy = boldData._isOnCopy
-      this.blockMarginTop = boldData._blockMarginTop
-      this.blockMarginRight = boldData._blockMarginRight
-      this.blockMarginBottom = boldData._blockMarginBottom
-      this.blockMarginLeft = boldData._blockMarginLeft
-      this.markdownBlockSpacing = boldData._markdownBlockSpacing
-      this.isLineBreak = boldData._isLineBreak
-      this.globalBackgroundColor = boldData._backgroundColor
-      this.openGestureSwipe = boldData._openGestureSwipe
-      this.openGestureSwipeTest = boldData._openGestureSwipeTest
+      this.isFull = highlightData._isFull
+      this.incrementalAnalysis = highlightData._incrementalAnalysis
+      this.time = highlightData._time
+      this.textNumber = highlightData._textNumber
+      this.isMarkdownParserSync = highlightData._isMarkdownParserSync
+      this.isOnCopy = highlightData._isOnCopy
+      this.blockMarginTop = highlightData._blockMarginTop
+      this.blockMarginRight = highlightData._blockMarginRight
+      this.blockMarginBottom = highlightData._blockMarginBottom
+      this.blockMarginLeft = highlightData._blockMarginLeft
+      this.markdownBlockSpacing = highlightData._markdownBlockSpacing
+      this.isLineBreak = highlightData._isLineBreak
+      this.globalBackgroundColor = highlightData._backgroundColor
+      this.openGestureSwipe = highlightData._openGestureSwipe
+      this.openGestureSwipeTest = highlightData._openGestureSwipeTest
       // ---------- 专有
-      this.boldTextFontColor = boldData._boldTextFontColor
-      this.boldTextFontSize = boldData._boldTextFontSize
-      this.boldTextFontStyle = boldData._boldTextFontStyle
-      this.boldTextFontWeight = boldData._boldTextFontWeight
-      this.boldTextFontFamily = boldData._boldTextFontFamily
-      this.boldTextLineHeight = boldData._boldTextLineHeight
-      this.boldTextLetterSpacing = boldData._boldTextLetterSpacing
+      this.highlightTextFontColor = highlightData._highlightTextFontColor
+      this.highlightTextFontSize = highlightData._highlightTextFontSize
+      this.highlightTextFontStyle = highlightData._highlightTextFontStyle
+      this.highlightTextFontWeight = highlightData._highlightTextFontWeight
+      this.highlightTextFontFamily = highlightData._highlightTextFontFamily
+      this.highlightTextLineHeight = highlightData._highlightTextLineHeight
+      this.highlightTextLetterSpacing = highlightData._highlightTextLetterSpacing
+      this.highlightTextBackgroundColor = highlightData._highlightTextBackgroundColor
+      this.highlightTextBackgroundRadiusTopLeft = highlightData._highlightTextBackgroundRadiusTopLeft
+      this.highlightTextBackgroundRadiusTopRight = highlightData._highlightTextBackgroundRadiusTopRight
+      this.highlightTextBackgroundRadiusBottomLeft = highlightData._highlightTextBackgroundRadiusBottomLeft
+      this.highlightTextBackgroundRadiusBottomRight = highlightData._highlightTextBackgroundRadiusBottomRight
     } catch (e) {
     }
     this.markdownPlugin = this.setPlugin()
@@ -144,7 +159,7 @@ struct BoldDetailsPage {
   build() {
     Column() {
       titleComponent(
-        "加粗测试用例",
+        "高亮测试用例",
         0xFF317AFF,
         true,
         this.safeTop
@@ -261,27 +276,43 @@ struct BoldDetailsPage {
     globalTheme.setOpenGestureSwipe(this.openGestureSwipe)
     theme.setGlobalTheme(globalTheme)
 
-    let boldTheme = new BoldTheme()
-    if (this.boldTextFontColor !== undefined) {
-      boldTheme.setBoldTextFontColor(this.boldTextFontColor)
+    let highlightTheme = new HighlightTheme()
+    if (this.highlightTextFontColor !== undefined) {
+      highlightTheme.setHighlightTextFontColor(this.highlightTextFontColor)
     }
-    if (this.boldTextFontSize !== undefined) {
-      boldTheme.setBoldTextFontSize(this.boldTextFontSize)
+    if (this.highlightTextFontSize !== undefined) {
+      highlightTheme.setHighlightTextFontSize(this.highlightTextFontSize)
     }
-    if (this.boldTextFontStyle !== undefined) {
-      boldTheme.setBoldTextFontStyle(this.boldTextFontStyle)
+    if (this.highlightTextFontStyle !== undefined) {
+      highlightTheme.setHighlightTextFontStyle(this.highlightTextFontStyle)
     }
-    boldTheme.setBoldTextFontWeight(this.boldTextFontWeight)
-    if (this.boldTextFontFamily !== undefined) {
-      boldTheme.setBoldTextFontFamily(this.boldTextFontFamily)
+    if (this.highlightTextFontWeight !== undefined) {
+      highlightTheme.setHighlightTextFontWeight(this.highlightTextFontWeight)
     }
-    if (this.boldTextLineHeight !== undefined) {
-      boldTheme.setBoldTextLineHeight(this.boldTextLineHeight)
+    if (this.highlightTextFontFamily !== undefined) {
+      highlightTheme.setHighlightTextFontFamily(this.highlightTextFontFamily)
     }
-    if (this.boldTextLetterSpacing !== undefined) {
-      boldTheme.setBoldTextLetterSpacing(this.boldTextLetterSpacing)
+    if (this.highlightTextLineHeight !== undefined) {
+      highlightTheme.setHighlightTextLineHeight(this.highlightTextLineHeight)
     }
-    theme.setBoldTheme(boldTheme)
+    if (this.highlightTextLetterSpacing !== undefined) {
+      highlightTheme.setHighlightTextLetterSpacing(this.highlightTextLetterSpacing)
+    }
+    if (this.highlightTextBackgroundColor !== undefined) {
+      highlightTheme.setHighlightTextBackgroundColor(this.highlightTextBackgroundColor)
+    }
+    if (this.highlightTextBackgroundRadiusTopLeft !== undefined ||
+        this.highlightTextBackgroundRadiusTopRight !== undefined ||
+        this.highlightTextBackgroundRadiusBottomLeft !== undefined ||
+        this.highlightTextBackgroundRadiusBottomRight !== undefined) {
+      highlightTheme.setHighlightTextBackgroundRadius({
+        topLeft: this.highlightTextBackgroundRadiusTopLeft,
+        topRight: this.highlightTextBackgroundRadiusTopRight,
+        bottomLeft: this.highlightTextBackgroundRadiusBottomLeft,
+        bottomRight: this.highlightTextBackgroundRadiusBottomRight
+      })
+    }
+    theme.setHighlightTheme(highlightTheme)
 
     return theme
   }
@@ -297,6 +328,7 @@ struct BoldDetailsPage {
     plugin.setIsBlockVideoPlugin(true) // 视频插件
     plugin.setIsCodeListPlugin(true) // 组合代码快列表插件
     plugin.setIsWhitelistPlugin(DelimiterFilterMode.Permissive) // 白名单宽松分隔符插件
+    plugin.setIsHighlightPlugin(true) // 高亮插件
     return plugin
   }
 }

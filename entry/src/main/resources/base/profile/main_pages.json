@@ -71,6 +71,8 @@
     "pages/BannerDetailsPage",
     "pages/ImageStylePage",
     "pages/ImageStyleDetailsPage",
+    "pages/HighlightPage",
+    "pages/HighlightDetailsPage",
     "pages/TocPage",
     "pages/TocDetailsPage",
     "pages/deprecated/Deprecated0Page",
