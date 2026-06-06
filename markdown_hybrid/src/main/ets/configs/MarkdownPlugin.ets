@@ -96,6 +96,26 @@ export class MarkdownPlugin {
   private isEmojiLight: boolean = false
 
   /**
+   * 是否加载高亮解析插件
+   */
+  private isHighlightPlugin: boolean = false
+
+  /**
+   * 是否加载白名单宽松分隔符插件
+   */
+  private isWhitelistPlugin: boolean = false
+
+  /**
+   * 分隔符过滤模式
+   */
+  private mode: DelimiterFilterMode = DelimiterFilterMode.Permissive
+
+  /**
+   * 白名单列表
+   */
+  private whitelist: Array<string> = []
+
+  /**
    * 设置音频插件
    *
    * @param isBlockAudioPlugin 是否设置音频插件 - true：设置音频插件；false：不设置音频插件。默认false
@@ -289,6 +309,34 @@ export class MarkdownPlugin {
   setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void {
     this.isEmojiPlugin = isEmojiPlugin
     this.isEmojiLight = isEmojiLight
+  }
+
+  /**
+   * 设置是否加载高亮解析插件
+   *
+   * @param isHighlightPlugin 是否加载高亮解析插件 - true：设置加载高亮解析插件；false：不设置加载高亮解析插件。默认false
+   */
+  setIsHighlightPlugin(isHighlightPlugin: boolean): void {
+    this.isHighlightPlugin = isHighlightPlugin
+  }
+
+  /**
+   * 设置是否加载白名单宽松分隔符插件
+   *
+   * @param mode 加载模式。 - undefined：不加载插件。DelimiterFilterMode：(0:宽松模式，1：严格模式)。Array<string>：白名单模式
+   */
+  setIsWhitelistPlugin(mode: undefined | DelimiterFilterMode | Array<string>): void {
+    if (mode ===  undefined) {
+      this.isWhitelistPlugin = false
+      return
+    }
+    this.isWhitelistPlugin = true
+    if (Array.isArray(mode)) {
+      this.whitelist = mode
+      this.mode = 2
+    } else {
+      this.mode = mode
+    }
   }
 
   /**
@@ -497,4 +545,45 @@ export class MarkdownPlugin {
   getIsEmojiLight(): boolean {
     return this.isEmojiLight
   }
+
+  /**
+   * 获取是否加载高亮解析插件
+   *
+   * @returns 是否加载高亮解析插件
+   */
+  getIsHighlightPlugin(): boolean {
+    return this.isHighlightPlugin
+  }
+
+  /**
+   * 获取是否加载白名单宽松分隔符插件
+   *
+   * @returns 是否加载白名单宽松分隔符插件
+   */
+  getIsWhitelistPlugin(): boolean {
+    return this.isWhitelistPlugin
+  }
+
+  /**
+   * 获取分隔符过滤模式
+   *
+   * @returns 分隔符过滤模式
+   */
+  getMode(): DelimiterFilterMode {
+    return this.mode
+  }
+
+  /**
+   * 获取白名单列表
+   *
+   * @returns 白名单列表
+   */
+  getWhitelist(): Array<string> {
+    return this.whitelist
+  }
+}
+
+export enum DelimiterFilterMode{
+   Permissive,  // 宽松模式（全部允许）
+   Strict     // 严格模式（全部禁止）
 }

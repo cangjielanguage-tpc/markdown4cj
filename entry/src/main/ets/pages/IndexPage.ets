@@ -314,7 +314,14 @@ struct IndexPage {
           }
           ListItem() {
             itemListComponent(
-              "35、card",
+              "35、高亮文本",
+              0xFFFF0000,
+              "pages/HighlightPage"
+            )
+          }
+          ListItem() {
+            itemListComponent(
+              "36、card",
               0xFFFF0000,
               "pages/CardPage"
             )

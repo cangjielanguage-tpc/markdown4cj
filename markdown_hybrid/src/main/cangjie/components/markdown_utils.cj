@@ -20,6 +20,8 @@ let COLOR_FF252526: Color = Color(0xFF252526)
 let COLOR_FF4A90E2: Color = Color(0xFF4A90E2)
 let COLOR_FFA0A0A0: Color = Color(0xFFA0A0A0)
 let COLOR_40000000: Color = Color(0x40000000)
+let COLOR_FFFFF59D: Color = Color(0xFFFFF59D)
+let COLOR_FF6E6000: Color = Color(0xFF6E6000)
 
 let SECONDS_PER_HOUR: Int64 = 3600
 let SECONDS_PER_MINUTE: Int64 = 60
@@ -86,6 +88,9 @@ func spanFontFamily(nodeView: NodeView, markdownTheme: MarkdownTheme): String {
     }
     if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextFontFamily.isSome()) {
         return markdownTheme.strikethroughTheme.strikethroughTextFontFamily() // 删除线
+    }
+    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextFontFamily.isSome()) {
+        return markdownTheme.highlightTheme.highlightTextFontFamily() // 高亮
     }
     if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontFamily.isSome()) {
         return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontFamily() // 下划线
@@ -163,6 +168,9 @@ func spanFontSize(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
     if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextFontSize.isSome()) {
         return markdownTheme.strikethroughTheme.strikethroughTextFontSize() // 删除线
     }
+    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextFontSize.isSome()) {
+        return markdownTheme.highlightTheme.highlightTextFontSize() // 高亮
+    }
     if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontSize.isSome()) {
         return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontSize() // 下划线
     }
@@ -235,6 +243,9 @@ func spanFontWeight(nodeView: NodeView, isTableFirst: Bool, markdownTheme: Markd
     if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextFontWeight.isSome()) {
         return markdownTheme.strikethroughTheme.strikethroughTextFontWeight() // 删除线
     }
+    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextFontWeight.isSome()) {
+        return markdownTheme.highlightTheme.highlightTextFontWeight() // 高亮
+    }
     if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontWeight.isSome()) {
         return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontWeight() // 下划线
     }
@@ -303,6 +314,9 @@ func spanFontStyle(nodeView: NodeView, markdownTheme: MarkdownTheme): FontStyle 
     }
     if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextFontStyle.isSome()) {
         return markdownTheme.strikethroughTheme.strikethroughTextFontStyle() // 删除线
+    }
+    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextFontStyle.isSome()) {
+        return markdownTheme.highlightTheme.highlightTextFontStyle() // 高亮
     }
     if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontStyle.isSome()) {
         return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontStyle() // 下划线
@@ -383,6 +397,9 @@ func spanFontColor(nodeView: NodeView, markdownTheme: MarkdownTheme): Color {
     if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextFontColor.isSome()) {
         return markdownTheme.strikethroughTheme.strikethroughTextFontColor() // 删除线
     }
+    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextFontColor.isSome()) {
+        return markdownTheme.highlightTheme.highlightTextFontColor() // 高亮
+    }
     if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontColor.isSome()) {
         return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextFontColor() // 下划线
     }
@@ -448,6 +465,9 @@ func spanLetterSpacing(nodeView: NodeView, markdownTheme: MarkdownTheme): Float6
     }
     if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextLetterSpacing.isSome()) {
         return markdownTheme.strikethroughTheme.strikethroughTextLetterSpacing() // 删除线
+    }
+    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextLetterSpacing.isSome()) {
+        return markdownTheme.highlightTheme.highlightTextLetterSpacing() // 高亮
     }
     if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextLetterSpacing.isSome()) {
         return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextLetterSpacing() // 下划线
@@ -523,6 +543,9 @@ func spanBackgroundColor18(nodeView: NodeView, markdownTheme: MarkdownTheme): (C
     if (nodeView.isInLineCode) {
         return (markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundColor, markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusTopLeft, markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusTopRight, markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusBottomLeft, markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusBottomRight) // 内联代码
     }
+    if (nodeView.isHighlight) {
+        return (markdownTheme.highlightTheme.highlightTextBackgroundColor, markdownTheme.highlightTheme.highlightTextBackgroundRadiusTopLeft, markdownTheme.highlightTheme.highlightTextBackgroundRadiusTopRight, markdownTheme.highlightTheme.highlightTextBackgroundRadiusBottomLeft, markdownTheme.highlightTheme.highlightTextBackgroundRadiusBottomRight) // 高亮
+    }
     if (nodeView.isLink) {
         return (markdownTheme.linkTheme.linkTextBackgroundColor, markdownTheme.linkTheme.linkTextBackgroundRadiusTopLeft, markdownTheme.linkTheme.linkTextBackgroundRadiusTopRight, markdownTheme.linkTheme.linkTextBackgroundRadiusBottomLeft, markdownTheme.linkTheme.linkTextBackgroundRadiusBottomRight) // 链接
     }
@@ -542,6 +565,9 @@ func spanBackgroundColor18(nodeView: NodeView, markdownTheme: MarkdownTheme): (C
 func spanBackgroundColor19(nodeView: NodeView, markdownTheme: MarkdownTheme): TextBackgroundStyle {
     if (nodeView.isInLineCode) {
         return TextBackgroundStyle(color: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundColor, radiusBorder: BorderRadiuses(topLeft: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusTopLeft.vp, topRight: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusTopRight.vp, bottomLeft: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusBottomLeft.vp, bottomRight: markdownTheme.inlineCodeTheme.inlineCodeTextBackgroundRadiusBottomRight.vp)) // 内联代码
+    }
+    if (nodeView.isHighlight) {
+        return TextBackgroundStyle(color: markdownTheme.highlightTheme.highlightTextBackgroundColor, radiusBorder: BorderRadiuses(topLeft: markdownTheme.highlightTheme.highlightTextBackgroundRadiusTopLeft.vp, topRight: markdownTheme.highlightTheme.highlightTextBackgroundRadiusTopRight.vp, bottomLeft: markdownTheme.highlightTheme.highlightTextBackgroundRadiusBottomLeft.vp, bottomRight: markdownTheme.highlightTheme.highlightTextBackgroundRadiusBottomRight.vp)) // 高亮
     }
     if (nodeView.isLink) {
         return TextBackgroundStyle(color: markdownTheme.linkTheme.linkTextBackgroundColor, radiusBorder: BorderRadiuses(topLeft: markdownTheme.linkTheme.linkTextBackgroundRadiusTopLeft.vp, topRight: markdownTheme.linkTheme.linkTextBackgroundRadiusTopRight.vp, bottomLeft: markdownTheme.linkTheme.linkTextBackgroundRadiusBottomLeft.vp, bottomRight: markdownTheme.linkTheme.linkTextBackgroundRadiusBottomRight.vp)) // 链接
@@ -588,6 +614,9 @@ func spanLineHeight(nodeView: NodeView, markdownTheme: MarkdownTheme): Float64 {
     }
     if (nodeView.isStrikethrough && markdownTheme.strikethroughTheme.strikethroughTextLineHeight.isSome()) {
         return markdownTheme.strikethroughTheme.strikethroughTextLineHeight() // 删除线
+    }
+    if (nodeView.isHighlight && markdownTheme.highlightTheme.highlightTextLineHeight.isSome()) {
+        return markdownTheme.highlightTheme.highlightTextLineHeight() // 高亮
     }
     if (nodeView.isUnderlineNode && markdownTheme.htmlUnderlineTheme.htmlUnderlineTextLineHeight.isSome()) {
         return markdownTheme.htmlUnderlineTheme.htmlUnderlineTextLineHeight() // 下划线

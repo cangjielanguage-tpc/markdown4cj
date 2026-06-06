@@ -11,7 +11,7 @@ public class MarkdownSpanImageCallbackRawFileComponent {
     var rawFileCallbackDestination: String // 图片链接
     @Prop
     var rawFileCallbackComponentWidth: Float64 // 控件宽度 - 单位vp
-    var rawFileCallbackImageCallbackCallback: (String) -> ?Array<UInt8> // 图片替换事件
+    var rawFileCallbackImageReplaceCallback: (String) -> ?Array<UInt8> // 图片替换事件
     var rawFileCallbackImageCallback: (String) -> Unit // 图片点击事件
     var rawFileCallbackLinkCallback: ?(String) -> Unit // 链接点击事件
     var rawFileCallbackLink: Bool // 是否是链接
@@ -178,7 +178,7 @@ public class MarkdownSpanImageCallbackRawFileComponent {
         }
         rawFileCallbackReplaceFut = MarkdownParseImageUtil.callbackToPixelmap(
             rawFileCallbackDestination,
-            rawFileCallbackImageCallbackCallback,
+            rawFileCallbackImageReplaceCallback,
             callback
         )
     }

@@ -31,7 +31,8 @@ import {
   CJMarkdownOrderedListTheme,
   CJMarkdownLinkTheme,
   CJMarkdownLatexMathTheme,
-  CJNodeViewStringBuilder
+  CJNodeViewStringBuilder,
+  CJMarkdownHighlightTheme
 } from 'libark_interop_api_markdown.so'
 import { MarkdownRectResult } from '../configs/MarkdownRectResult'
 import { MarkdownPlugin } from '../configs/MarkdownPlugin'
@@ -61,6 +62,7 @@ import { ParagraphTheme } from '../themes/ParagraphTheme'
 import { OrderedListTheme } from '../themes/OrderedListTheme'
 import { LinkTheme } from '../themes/LinkTheme'
 import { LatexMathTheme } from '../themes/LatexMathTheme'
+import { HighlightTheme } from '../themes/HighlightTheme'
 
 export let global_customLib: CustomLib | undefined = undefined
 
@@ -402,6 +404,8 @@ export struct CJMarkdown {
       cjMarkdownPlugin.setIsSubPlugin(this.plugin.getIsSubPlugin())
       cjMarkdownPlugin.setIsSupPlugin(this.plugin.getIsSupPlugin())
       cjMarkdownPlugin.setIsEmojiPlugin(this.plugin.getIsEmojiPlugin(), this.plugin.getIsEmojiLight())
+      cjMarkdownPlugin.setIsHighlightPlugin(this.plugin.getIsHighlightPlugin())
+      cjMarkdownPlugin.setIsWhitelistPlugin(this.plugin.getIsWhitelistPlugin(), this.plugin.getMode(), this.plugin.getWhitelist())
     }
     return cjMarkdownPlugin
   }
@@ -456,6 +460,7 @@ export struct CJMarkdown {
         cjMarkdownTheme.setCJMarkdownSupTheme(this.getSupTheme(markdownTheme.getSupTheme()))
         cjMarkdownTheme.setCJMarkdownTableTheme(this.getTableTheme(markdownTheme.getTableTheme()))
         cjMarkdownTheme.setCJMarkdownVideoTheme(this.getVideoTheme(markdownTheme.getVideoTheme()))
+        cjMarkdownTheme.setCJMarkdownHighlightTheme(this.getHighlightTheme(markdownTheme.getHighlightTheme()))
       }
     }
     return cjMarkdownTheme
@@ -2289,6 +2294,44 @@ export struct CJMarkdown {
     if (theme.getVideoDownloadButtonTextLineHeight() !== undefined) {
       cjMarkdownTheme.setVideoDownloadButtonTextLineHeight(theme.getVideoDownloadButtonTextLineHeight())
     }
+    return cjMarkdownTheme
+  }
+
+  getHighlightTheme(theme: HighlightTheme): CJMarkdownHighlightTheme | undefined {
+    if (global_customLib === undefined) {
+      return undefined
+    }
+    let cjMarkdownTheme = new global_customLib.CJMarkdownHighlightTheme()
+    if (theme.getHighlightTextFontColor() !== undefined) {
+      cjMarkdownTheme.setHighlightTextFontColor(theme.getHighlightTextFontColor())
+    }
+    if (theme.getHighlightTextFontSize() !== undefined) {
+      cjMarkdownTheme.setHighlightTextFontSize(theme.getHighlightTextFontSize())
+    }
+    if (theme.getHighlightTextFontStyle() !== undefined) {
+      cjMarkdownTheme.setHighlightTextFontStyle(theme.getHighlightTextFontStyle())
+    }
+    if (theme.getHighlightTextFontWeight() !== undefined) {
+      cjMarkdownTheme.setHighlightTextFontWeight(this.convertFontWeight(theme.getHighlightTextFontWeight() ?? FontWeight.Normal))
+    }
+    if (theme.getHighlightTextFontFamily() !== undefined) {
+      cjMarkdownTheme.setHighlightTextFontFamily(theme.getHighlightTextFontFamily())
+    }
+    if (theme.getHighlightTextLineHeight() !== undefined) {
+      cjMarkdownTheme.setHighlightTextLineHeight(theme.getHighlightTextLineHeight())
+    }
+    if (theme.getHighlightTextLetterSpacing() !== undefined) {
+      cjMarkdownTheme.setHighlightTextLetterSpacing(theme.getHighlightTextLetterSpacing())
+    }
+    if (theme.getHighlightTextBackgroundColor() !== undefined) {
+      cjMarkdownTheme.setHighlightTextBackgroundColor(theme.getHighlightTextBackgroundColor())
+    }
+    let highlightTextBackgroundRadiusTopLeft: number = theme.getHighlightTextBackgroundRadiusTopLeft() ?? 0
+    let highlightTextBackgroundRadiusTopRight: number = theme.getHighlightTextBackgroundRadiusTopRight() ?? 0
+    let highlightTextBackgroundRadiusBottomLeft: number = theme.getHighlightTextBackgroundRadiusBottomLeft() ?? 0
+    let highlightTextBackgroundRadiusBottomRight: number = theme.getHighlightTextBackgroundRadiusBottomRight() ?? 0
+    cjMarkdownTheme.setHighlightTextBackgroundRadius(highlightTextBackgroundRadiusTopLeft, highlightTextBackgroundRadiusTopRight, highlightTextBackgroundRadiusBottomLeft, highlightTextBackgroundRadiusBottomRight)
+
     return cjMarkdownTheme
   }
 

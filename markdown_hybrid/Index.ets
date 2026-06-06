@@ -11,6 +11,7 @@ export { MarkdownTheme,
 } from './src/main/ets/themes/MarkdownTheme'
 
 export { MarkdownPlugin } from './src/main/ets/configs/MarkdownPlugin'
+export { DelimiterFilterMode } from './src/main/ets/configs/MarkdownPlugin'
 export { MarkdownRectResult } from './src/main/ets/configs/MarkdownRectResult'
 export { AudioTheme } from './src/main/ets/themes/AudioTheme'
 export { BannerTheme } from './src/main/ets/themes/BannerTheme'
@@ -37,3 +38,4 @@ export { SubTheme } from './src/main/ets/themes/SubTheme'
 export { SupTheme } from './src/main/ets/themes/SupTheme'
 export { TableTheme } from './src/main/ets/themes/TableTheme'
 export { VideoTheme } from './src/main/ets/themes/VideoTheme'
+export { HighlightTheme } from './src/main/ets/themes/HighlightTheme'
