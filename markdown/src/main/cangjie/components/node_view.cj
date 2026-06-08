@@ -39,6 +39,7 @@ public class NodeView {
     var isStrongEmphasis: Bool = false // 粗体
     var isUnderlineNode: Bool = false // 下划线
     var isStrikethrough: Bool = false // 删除线
+    var isHighlight: Bool = false // 高亮文本
     var isSubNode: Bool = false // 下标
     var isSupNode: Bool = false // 上标
     var isInLineCode: Bool = false // 内联代码
@@ -107,6 +108,7 @@ public func nodeToNodeView(
                     childrenNodeView.isStrongEmphasis = childrenNewNodeView.isStrongEmphasis
                     childrenNodeView.isUnderlineNode = childrenNewNodeView.isUnderlineNode
                     childrenNodeView.isStrikethrough = childrenNewNodeView.isStrikethrough
+                    childrenNodeView.isHighlight = childrenNewNodeView.isHighlight
                     childrenNodeView.isSubNode = childrenNewNodeView.isSubNode
                     childrenNodeView.isSupNode = childrenNewNodeView.isSupNode
                     childrenNodeView.isInLineCode = childrenNewNodeView.isInLineCode
@@ -264,6 +266,10 @@ public func nodeToNodeView(
                     } else if (nodeType == "Strikethrough") {
                         // 删除线
                         childrenNodeView.isStrikethrough = true
+                        nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
+                    } else if (nodeType == "HighlightNode") {
+                        // 高亮文本
+                        childrenNodeView.isHighlight = true
                         nodeToNodeView(commonmarkChildrenNode, parentNewNodeView, childrenNodeView, isLinkStyle)
                     } else if (nodeType == "Paragraph") {
                         // 段落

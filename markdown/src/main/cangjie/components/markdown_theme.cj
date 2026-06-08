@@ -27,6 +27,7 @@ public class MarkdownTheme {
     protected var italicTheme: ItalicTheme = ItalicTheme() // 斜体文本样式
     protected var linkTheme: LinkTheme = LinkTheme() // 链接文本样式
     protected var strikethroughTheme: StrikethroughTheme = StrikethroughTheme() // 删除线文本样式
+    protected var highlightTheme: HighlightTheme = HighlightTheme() // 高亮样式
     protected var subTheme: SubTheme = SubTheme() // 下标文本样式
     protected var supTheme: SupTheme = SupTheme() // 上标文本样式
     protected var prismTheme: PrismTheme = PrismThemeDefault.create() // markdown代码高亮样式
@@ -55,6 +56,7 @@ public class MarkdownTheme {
         this.italicTheme = builder.italicTheme
         this.linkTheme = builder.linkTheme
         this.strikethroughTheme = builder.strikethroughTheme
+        this.highlightTheme = builder.highlightTheme
         this.subTheme = builder.subTheme
         this.supTheme = builder.supTheme
         this.prismTheme = builder.prismTheme
@@ -138,6 +140,7 @@ public class MarkdownThemeBuilder {
     var italicTheme: ItalicTheme = ItalicTheme() // 斜体文本样式
     var linkTheme: LinkTheme = LinkTheme() // 链接文本样式
     var strikethroughTheme: StrikethroughTheme = StrikethroughTheme() // 删除线文本样式
+    var highlightTheme: HighlightTheme = HighlightTheme() // 高亮样式
     var subTheme: SubTheme = SubTheme() // 下标文本样式
     var supTheme: SupTheme = SupTheme() // 上标文本样式
     var prismTheme: PrismTheme = PrismThemeDefault.create() // markdown代码高亮样式
@@ -169,6 +172,7 @@ public class MarkdownThemeBuilder {
         this.italicTheme = theme.italicTheme
         this.linkTheme = theme.linkTheme
         this.strikethroughTheme = theme.strikethroughTheme
+        this.highlightTheme = theme.highlightTheme
         this.subTheme = theme.subTheme
         this.supTheme = theme.supTheme
         this.prismTheme = theme.prismTheme
@@ -277,6 +281,9 @@ public class MarkdownThemeBuilder {
 
         // 删除线主题
         this.strikethroughTheme.setStrikethroughTextDecorationColor(COLOR_FF191919) // 删除线文本下划线颜色
+
+        // 高亮主题
+        this.highlightTheme.setHighlightTextBackgroundColor(COLOR_FFFFF59D) // 高亮文本背景颜色
 
         // 代码高亮主题
         this.prismTheme = PrismThemeDefault.create() // 代码高亮主题
@@ -387,6 +394,9 @@ public class MarkdownThemeBuilder {
 
         // 删除线主题
         this.strikethroughTheme.setStrikethroughTextDecorationColor(COLOR_FF404040) // 删除线文本装饰线颜色
+
+        // 高亮主题
+        this.highlightTheme.setHighlightTextBackgroundColor(COLOR_FF6E6000) // 高亮文本背景颜色
 
         // 代码高亮主题
         this.prismTheme = PrismThemeDarcula.create() // 代码高亮主题
@@ -644,6 +654,17 @@ public class MarkdownThemeBuilder {
      */
     public func setStrikethroughTheme(strikethroughTheme: StrikethroughTheme): MarkdownThemeBuilder {
         this.strikethroughTheme = strikethroughTheme
+        return this
+    }
+
+    /**
+     * 设置高亮样式
+     *
+     * @param highlightTheme 高亮样式 - 默认HighlightTheme()
+     * @return MarkdownThemeBuilder MarkdownThemeBuilder对象
+     */
+    public func setHighlightTheme(highlightTheme: HighlightTheme): MarkdownThemeBuilder {
+        this.highlightTheme = highlightTheme
         return this
     }
 

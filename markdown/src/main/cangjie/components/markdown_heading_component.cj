@@ -45,7 +45,7 @@ class MarkdownHeadingComponent {
         Row() {
             Column() {
                 if (!headingMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && headingNodeViewList.size == 1 && (headingNodeViewList[0].nodeType == "Image" || headingNodeViewList[0].nodeType == "StyleImage" || headingNodeViewList[0].nodeType == "ImageHtmlNode")) {
-                    if (headingMarkdownConfiguration.imageCallbackCallback.isNone()) {
+                    if (headingMarkdownConfiguration.imageReplaceCallback.isNone()) {
                         if (headingNodeViewList[0].imageUrl().startsWith("./")) {
                             MarkdownImageRawFileComponent(
                                 rawFileMarkdownTheme: headingMarkdownConfiguration.markdownTheme,
@@ -84,7 +84,7 @@ class MarkdownHeadingComponent {
                                 rawFileCallbackDestination: headingNodeViewList[0].imageUrl(),
                                 rawFileCallbackComponentWidth: headingComponentWidth,
                                 rawFileCallbackImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
-                                rawFileCallbackImageCallbackCallback: headingMarkdownConfiguration.imageCallbackCallback(),
+                                rawFileCallbackImageReplaceCallback: headingMarkdownConfiguration.imageReplaceCallback(),
                                 rawFileCallbackImageCallback: headingImageCallback,
                                 rawFileCallbackLinkCallback: headingMarkdownConfiguration.linkCallback,
                                 rawFileCallbackLink: headingNodeViewList[0].isLink,
@@ -100,7 +100,7 @@ class MarkdownHeadingComponent {
                                 urlCallbackDestination: headingNodeViewList[0].imageUrl(),
                                 urlCallbackComponentWidth: headingComponentWidth,
                                 urlCallbackImageDownloadCallback: headingMarkdownConfiguration.imageDownloadCallback,
-                                urlCallbackImageCallbackCallback: headingMarkdownConfiguration.imageCallbackCallback(),
+                                urlCallbackImageReplaceCallback: headingMarkdownConfiguration.imageReplaceCallback(),
                                 urlCallbackImageCallback: headingImageCallback,
                                 urlCallbackLinkCallback: headingMarkdownConfiguration.linkCallback,
                                 urlCallbackLink: headingNodeViewList[0].isLink,

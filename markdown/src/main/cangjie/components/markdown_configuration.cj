@@ -10,7 +10,7 @@ public class MarkdownConfiguration {
     protected var textCopyCallback: ?(String) -> Unit = None // 文本复制的点击事件
     protected var linkCallback: ?(String) -> Unit = None // 链接的点击事件
     protected var imageCallback: ?(String, ArrayList<String>) -> Unit = None // 图片的点击事件
-    protected var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None // 图片替换事件
+    protected var imageReplaceCallback: ?(String) -> ?Array<UInt8> = None // 图片替换事件
     protected var imageDownloadCallback: ?(String) -> Unit = None // 图片下载的点击事件
     protected var audioCallback: ?(String) -> Unit = None // 音频的点击事件
     protected var videoCallback: ?(String, ArrayList<String>) -> Unit = None // 视频的点击事件
@@ -41,7 +41,7 @@ public class MarkdownConfiguration {
         this.textCopyCallback = builder.textCopyCallback
         this.linkCallback = builder.linkCallback
         this.imageCallback = builder.imageCallback
-        this.imageCallbackCallback = builder.imageCallbackCallback
+        this.imageReplaceCallback = builder.imageReplaceCallback
         this.imageDownloadCallback = builder.imageDownloadCallback
         this.audioCallback = builder.audioCallback
         this.videoCallback = builder.videoCallback
@@ -94,7 +94,7 @@ public class MarkdownConfigurationBuilder {
     var textCopyCallback: ?(String) -> Unit = None // 文本复制的点击事件
     var linkCallback: ?(String) -> Unit = None // 链接的点击事件
     var imageCallback: ?(String, ArrayList<String>) -> Unit = None // 图片的点击事件
-    var imageCallbackCallback: ?(String) -> ?Array<UInt8> = None // 图片替换事件
+    var imageReplaceCallback: ?(String) -> ?Array<UInt8> = None // 图片替换事件
     var imageDownloadCallback: ?(String) -> Unit = None // 图片下载的点击事件
     var audioCallback: ?(String) -> Unit = None // 音频的点击事件
     var videoCallback: ?(String, ArrayList<String>) -> Unit = None // 视频的点击事件
@@ -128,7 +128,7 @@ public class MarkdownConfigurationBuilder {
         this.textCopyCallback = configuration.textCopyCallback
         this.linkCallback = configuration.linkCallback
         this.imageCallback = configuration.imageCallback
-        this.imageCallbackCallback = configuration.imageCallbackCallback
+        this.imageReplaceCallback = configuration.imageReplaceCallback
         this.imageDownloadCallback = configuration.imageDownloadCallback
         this.audioCallback = configuration.audioCallback
         this.videoCallback = configuration.videoCallback
@@ -194,8 +194,20 @@ public class MarkdownConfigurationBuilder {
      * @param imageCallbackCallback 图片替换回调接口 (String:图片链接 -> ?Array<UInt8>:图片数据)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
+    @Deprecated["用MarkdownConfigurationBuilder.setImageReplaceCallback方法代替", since: "1.4.0"]
     public func setImageCallbackCallback(imageCallbackCallback: (String) -> ?Array<UInt8>): MarkdownConfigurationBuilder {
-        this.imageCallbackCallback = imageCallbackCallback
+        setImageReplaceCallback(imageCallbackCallback)
+        return this
+    }
+
+    /**
+     * 设置图片替换事件
+     *
+     * @param imageReplaceCallback 图片替换回调接口 (String:图片链接 -> ?Array<UInt8>:图片数据)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setImageReplaceCallback(imageReplaceCallback: (String) -> ?Array<UInt8>): MarkdownConfigurationBuilder {
+        this.imageReplaceCallback = imageReplaceCallback
         return this
     }
 
@@ -293,10 +305,23 @@ public class MarkdownConfigurationBuilder {
      * @param latexImageCallback 数学公式图片点击回调接口 (Array<UInt8>:图片数据,Length:高度,Length:宽度)
      * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
      */
+    @Deprecated["用MarkdownConfigurationBuilder.setLatexImageCallback方法代替", since: "1.4.0"]
     public func setLatexImageCallbackCallback(latexImageCallback: (Array<UInt8>, Length, Length) -> Unit): MarkdownConfigurationBuilder {
+        setLatexImageCallback(latexImageCallback)
+        return this
+    }
+
+    /**
+     * 设置数学公式图片点击事件
+     *
+     * @param latexImageCallback 数学公式图片点击回调接口 (Array<UInt8>:图片数据,Length:高度,Length:宽度)
+     * @return MarkdownConfigurationBuilder MarkdownConfigurationBuilder对象
+     */
+    public func setLatexImageCallback(latexImageCallback: (Array<UInt8>, Length, Length) -> Unit): MarkdownConfigurationBuilder {
         this.latexImageCallback = latexImageCallback
         return this
     }
+
 
     /**
      * 设置数学公式数据处理事件

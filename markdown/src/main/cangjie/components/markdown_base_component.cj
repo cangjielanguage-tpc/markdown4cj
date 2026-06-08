@@ -268,7 +268,7 @@ func spanImageComponent(
     spanListComponentWidth: Float64,
     spanListImageCallback: (String) -> Unit
 ) {
-    if (spanListMarkdownConfiguration.imageCallbackCallback.isNone()) {
+    if (spanListMarkdownConfiguration.imageReplaceCallback.isNone()) {
         // 没有图片替换回调接口
         if (spanListNodeView.imageUrl().startsWith("./")) {
             // 本地图片
@@ -309,7 +309,7 @@ func spanImageComponent(
                 rawFileCallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
                 rawFileCallbackDestination: spanListNodeView.imageUrl(),
                 rawFileCallbackComponentWidth: spanListComponentWidth,
-                rawFileCallbackImageCallbackCallback: spanListMarkdownConfiguration.imageCallbackCallback(),
+                rawFileCallbackImageReplaceCallback: spanListMarkdownConfiguration.imageReplaceCallback(),
                 rawFileCallbackImageCallback: spanListImageCallback,
                 rawFileCallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
                 rawFileCallbackLink: spanListNodeView.isLink,
@@ -325,7 +325,7 @@ func spanImageComponent(
                 urlCallbackMarkdownTheme: spanListMarkdownConfiguration.markdownTheme,
                 urlCallbackDestination: spanListNodeView.imageUrl(),
                 urlCallbackComponentWidth: spanListComponentWidth,
-                urlCallbackImageCallbackCallback: spanListMarkdownConfiguration.imageCallbackCallback(),
+                urlCallbackImageReplaceCallback: spanListMarkdownConfiguration.imageReplaceCallback(),
                 urlCallbackImageCallback: spanListImageCallback,
                 urlCallbackLinkCallback: spanListMarkdownConfiguration.linkCallback,
                 urlCallbackLink: spanListNodeView.isLink,
