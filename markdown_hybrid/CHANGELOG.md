@@ -1,48 +1,50 @@
 # 1.4.0
 
 1. 重构markdown样式接口
-2. 新增MarkdownThemeAudio
-3. 新增MarkdownThemeBanner
-4. 新增MarkdownThemeBlockQuote
-5. 新增MarkdownThemeBold
-6. 新增MarkdownThemeBulletList
-7. 新增MarkdownThemeCodeBlock
-8. 新增MarkdownThemeDefinitionList
-9. 新增MarkdownThemeDivider
-10. 新增MarkdownThemeFootnoteDef
-11. 新增MarkdownThemeFootnoteRef
-12. 新增MarkdownThemeGlobal
-13. 新增MarkdownThemeHeading
-14. 新增MarkdownThemeHtmlUnderline
-15. 新增MarkdownThemeImage
-16. 新增MarkdownThemeInlineCode
-17. 新增MarkdownThemeItalic
-18. 新增MarkdownThemeLatexMath
-19. 新增MarkdownThemeLink
-20. 新增MarkdownThemeOrderedList
-21. 新增MarkdownThemeParagraph
-22. 新增MarkdownThemeStrikethrough
-23. 新增MarkdownThemeSub
-24. 新增MarkdownThemeSup
-25. 新增MarkdownThemeTable
-26. 新增MarkdownThemeVideo
-27. MarkdownTheme 中的接口 setLinkBackGroupColor(linkBackGroupColor: number): void 替换成 setLinkBackgroundColor(linkBackgroundColor: number): void
-28. MarkdownTheme 中的接口 setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: number): void 替换成 setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: number): void
-29. MarkdownTheme 中的接口 setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: number): void 替换成 setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: number): void
-30. MarkdownTheme 中的接口 setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: number): void 替换成 setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: number): void
-31. MarkdownTheme 中的接口 setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: number): void 替换成 setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: number): void
-32. MarkdownTheme 中的接口 setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: number): void 替换成 setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: number): void
-33. MarkdownTheme 中的接口 setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: number): void 替换成 setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: number): void
-34. MarkdownTheme 中的接口 setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: number): void 替换成 setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: number): void
-35. MarkdownTheme 中的接口 setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: number): void 替换成 setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: number): void
-36. MarkdownTheme 中的接口 setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: number): void 替换成 setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: number): void
-37. MarkdownTheme 中的接口 setLatexMathBackGroupColor(latexMathBackGroupColor: number): void 替换成 setLatexMathBackgroundColor(latexMathBackgroundColor: number): void
-38. MarkdownTheme 中的接口 setVideoReleaseTexColor(videoReleaseTexColor: number): void 替换成 setVideoReleaseTextColor(videoReleaseTextColor: number): void
-39. MarkdownTheme 中的接口 setVideoDownloadTexColor(videoDownloadTexColor: number): void 替换成 setVideoDownloadTextColor(videoDownloadTextColor: number): void
-40. MarkdownTheme 中的接口 setImageDownloadTexColor(imageDownloadTexColor: number): void 替换成 setImageDownloadTextColor(imageDownloadTextColor: number): void
-41. MarkdownTheme 中的接口 setVideoReleaseTexSize(videoReleaseTexSize: number): void 替换成 setVideoReleaseTextSize(videoReleaseTextSize: number): void
-42. MarkdownTheme 中的接口 setVideoDownloadTexSize(videoDownloadTexSize: number): void 替换成 setVideoDownloadTextSize(videoDownloadTextSize: number): void
-43. MarkdownTheme 中的接口 setImageDownloadTexSize(imageDownloadTexSize: number): void 替换成 setImageDownloadTextSize(imageDownloadTextSize: number): void
+2. 新增AudioTheme
+3. 新增BannerTheme
+4. 新增BlockQuoteTheme
+5. 新增BoldTheme
+6. 新增BulletListTheme
+7. 新增CodeBlockTheme
+8. 新增DefinitionListTheme
+9. 新增DividerTheme
+10. 新增FootnoteDefTheme
+11. 新增FootnoteRefTheme
+12. 新增GlobalTheme
+13. 新增HeadingTheme
+14. 新增HighlightTheme
+15. 新增HtmlUnderlineTheme
+16. 新增ImageTheme
+17. 新增InlineCodeTheme
+18. 新增ItalicTheme
+19. 新增LatexMathTheme
+20. 新增LinkTheme
+21. 新增OrderedListTheme
+22. 新增ParagraphTheme
+23. 新增StrikethroughTheme
+24. 新增SubTheme
+25. 新增SupTheme
+26. 新增TableTheme
+27. 新增VideoTheme
+28. MarkdownTheme 中的接口 setLinkBackGroupColor(linkBackGroupColor: number): void 替换成 setLinkBackgroundColor(linkBackgroundColor: number): void
+29. MarkdownTheme 中的接口 setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: number): void 替换成 setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: number): void
+30. MarkdownTheme 中的接口 setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: number): void 替换成 setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: number): void
+31. MarkdownTheme 中的接口 setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: number): void 替换成 setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: number): void
+32. MarkdownTheme 中的接口 setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: number): void 替换成 setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: number): void
+33. MarkdownTheme 中的接口 setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: number): void 替换成 setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: number): void
+34. MarkdownTheme 中的接口 setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: number): void 替换成 setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: number): void
+35. MarkdownTheme 中的接口 setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: number): void 替换成 setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: number): void
+36. MarkdownTheme 中的接口 setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: number): void 替换成 setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: number): void
+37. MarkdownTheme 中的接口 setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: number): void 替换成 setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: number): void
+38. MarkdownTheme 中的接口 setLatexMathBackGroupColor(latexMathBackGroupColor: number): void 替换成 setLatexMathBackgroundColor(latexMathBackgroundColor: number): void
+39. MarkdownTheme 中的接口 setVideoReleaseTexColor(videoReleaseTexColor: number): void 替换成 setVideoReleaseTextColor(videoReleaseTextColor: number): void
+40. MarkdownTheme 中的接口 setVideoDownloadTexColor(videoDownloadTexColor: number): void 替换成 setVideoDownloadTextColor(videoDownloadTextColor: number): void
+41. MarkdownTheme 中的接口 setImageDownloadTexColor(imageDownloadTexColor: number): void 替换成 setImageDownloadTextColor(imageDownloadTextColor: number): void
+42. MarkdownTheme 中的接口 setVideoReleaseTexSize(videoReleaseTexSize: number): void 替换成 setVideoReleaseTextSize(videoReleaseTextSize: number): void
+43. MarkdownTheme 中的接口 setVideoDownloadTexSize(videoDownloadTexSize: number): void 替换成 setVideoDownloadTextSize(videoDownloadTextSize: number): void
+44. MarkdownTheme 中的接口 setImageDownloadTexSize(imageDownloadTexSize: number): void 替换成 setImageDownloadTextSize(imageDownloadTextSize: number): void
+45. 支持宽松/严格/白名单限定符设置
 
 # 1.3.7
 

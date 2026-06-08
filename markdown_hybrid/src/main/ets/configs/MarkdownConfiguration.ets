@@ -109,6 +109,7 @@ export class MarkdownConfiguration {
    * 设置图片替换事件
    *
    * @param cb 图片替换事件。 (url：图片url 返回值是替换的图片数据)
+   * @deprecated since 1.4.0
    * @useinstead MarkdownConfiguration#setImageReplaceCallback
    */
   setImageCallbackCallback(cb: (url: string) => Promise<ArrayBuffer | undefined>): void {

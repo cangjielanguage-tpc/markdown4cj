@@ -61,20 +61,22 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 35. 支持上标语法
 36. 支持下标语法
 37. 支持emoji语法
-38. 支持围栏代码块高亮功能
-39. 支持列表嵌套功能
-40. 支持文本样式设置
-41. 支持表格样式设置
-42. 支持超链接图片化设置
-43. 支持单独代码块设置
-44. 支持深浅主题色设置
-45. 支持文本长按选中复制粘贴
-46. 支持图文混排和图文不混排功能
-47. 支持自定义正则实现自定义自动链接
+38. 支持文本高亮语法
+39. 支持围栏代码块高亮功能
+40. 支持列表嵌套功能
+41. 支持文本样式设置
+42. 支持表格样式设置
+43. 支持超链接图片化设置
+44. 支持单独代码块设置
+45. 支持深浅主题色设置
+46. 支持文本长按选中复制粘贴
+47. 支持图文混排和图文不混排功能
+48. 支持自定义正则实现自定义自动链接
+49. 支持宽松/严格/白名单限定符设置
 
 ## 软件架构
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin_5.1.1/doc/assets/img.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin-5.1.1/doc/assets/img.png)
 
 ### 源码目录
 
@@ -98,7 +100,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
 ### 接口说明
 
-主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin_5.1.1/doc/feature_api.md)
+主要类和函数接口说明详见 [API](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin-5.1.1/doc/feature_api.md)
 
 ## 使用说明
 
@@ -121,7 +123,7 @@ Markdown4cj是一个用仓颉语言编写的适用于鸿蒙系统的Markdown库�
 
       ```bash
       git clone https://gitcode.com/Cangjie-TPC/markdown4cj.git
-      git checkout markdown4cj_hybrid_cangjie-plugin_5.1.1
+      git checkout markdown4cj_hybrid_cangjie-plugin-5.1.1
       ```
 
       编译markdown
@@ -216,7 +218,7 @@ struct DemoPage {
 
 ### 显示效果
 
-![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin_5.1.1/doc/assets/img1.png)
+![](https://raw.gitcode.com/Cangjie-TPC/markdown4cj/raw/markdown4cj_hybrid_cangjie-plugin-5.1.1/doc/assets/img1.png)
 
 ### 使用三方库内置的ArkTS组件功能示例
 
@@ -412,7 +414,7 @@ markdown依赖三方库：
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin_5.1.1/LICENSE) ，请自由的享受和参与开源。
+本项目基于 [Apache License 2.0](https://gitcode.com/Cangjie-TPC/markdown4cj/blob/markdown4cj_hybrid_cangjie-plugin-5.1.1/LICENSE) ，请自由的享受和参与开源。
 
 ## 参与贡献
 
