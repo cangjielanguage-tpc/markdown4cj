@@ -46,7 +46,7 @@ class MarkdownParagraphComponent {
         Row() {
             Column() {
                 if (!paragraphMarkdownConfiguration.markdownTheme.imageTheme.isImageMixedLayout && paragraphNodeViewList.size == 1 && (paragraphNodeViewList[0].nodeType == "Image" || paragraphNodeViewList[0].nodeType == "StyleImage" || paragraphNodeViewList[0].nodeType == "ImageHtmlNode")) {
-                    if (paragraphMarkdownConfiguration.imageCallbackCallback.isNone()) {
+                    if (paragraphMarkdownConfiguration.imageReplaceCallback.isNone()) {
                         if (paragraphNodeViewList[0].imageUrl().startsWith("./")) {
                             MarkdownImageRawFileComponent(
                                 rawFileMarkdownTheme: paragraphMarkdownConfiguration.markdownTheme,
@@ -85,7 +85,7 @@ class MarkdownParagraphComponent {
                                 rawFileCallbackDestination: paragraphNodeViewList[0].imageUrl(),
                                 rawFileCallbackComponentWidth: paragraphComponentWidth,
                                 rawFileCallbackImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
-                                rawFileCallbackImageCallbackCallback: paragraphMarkdownConfiguration.imageCallbackCallback(),
+                                rawFileCallbackImageReplaceCallback: paragraphMarkdownConfiguration.imageReplaceCallback(),
                                 rawFileCallbackImageCallback: paragraphImageCallback,
                                 rawFileCallbackLinkCallback: paragraphMarkdownConfiguration.linkCallback,
                                 rawFileCallbackLink: paragraphNodeViewList[0].isLink,
@@ -101,7 +101,7 @@ class MarkdownParagraphComponent {
                                 urlCallbackDestination: paragraphNodeViewList[0].imageUrl(),
                                 urlCallbackComponentWidth: paragraphComponentWidth,
                                 urlCallbackImageDownloadCallback: paragraphMarkdownConfiguration.imageDownloadCallback,
-                                urlCallbackImageCallbackCallback: paragraphMarkdownConfiguration.imageCallbackCallback(),
+                                urlCallbackImageReplaceCallback: paragraphMarkdownConfiguration.imageReplaceCallback(),
                                 urlCallbackImageCallback: paragraphImageCallback,
                                 urlCallbackLinkCallback: paragraphMarkdownConfiguration.linkCallback,
                                 urlCallbackLink: paragraphNodeViewList[0].isLink,

@@ -26,23 +26,25 @@
 24. 新增SupTheme
 25. 新增TableTheme
 26. 新增VideoTheme
-27. MarkdownTheme 中的接口 setLinkBackGroupColor(linkBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkBackgroundColor(linkBackgroundColor: Color): MarkdownThemeBuilder
-28. MarkdownTheme 中的接口 setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: Color): MarkdownThemeBuilder
-29. MarkdownTheme 中的接口 setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: Color): MarkdownThemeBuilder
-30. MarkdownTheme 中的接口 setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: Color): MarkdownThemeBuilder
-31. MarkdownTheme 中的接口 setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: Color): MarkdownThemeBuilder
-32. MarkdownTheme 中的接口 setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: Color): MarkdownThemeBuilder
-33. MarkdownTheme 中的接口 setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: Color): MarkdownThemeBuilder
-34. MarkdownTheme 中的接口 setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: Color): MarkdownThemeBuilder 替换成 setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: Color): MarkdownThemeBuilder
-35. MarkdownTheme 中的接口 setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: Color): MarkdownThemeBuilder 替换成 setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: Color): MarkdownThemeBuilder
-36. MarkdownTheme 中的接口 setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: Color): MarkdownThemeBuilder 替换成 setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: Color): MarkdownThemeBuilder
-37. MarkdownTheme 中的接口 setLatexMathBackGroupColor(latexMathBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLatexMathBackgroundColor(latexMathBackgroundColor: Color): MarkdownThemeBuilder
-38. MarkdownTheme 中的接口 setVideoReleaseTexColor(videoReleaseTexColor: Color): MarkdownThemeBuilder 替换成 setVideoReleaseTextColor(videoReleaseTextColor: Color): MarkdownThemeBuilder
-39. MarkdownTheme 中的接口 setVideoDownloadTexColor(videoDownloadTexColor: Color): MarkdownThemeBuilder 替换成 setVideoDownloadTextColor(videoDownloadTextColor: Color): MarkdownThemeBuilder
-40. MarkdownTheme 中的接口 setImageDownloadTexColor(imageDownloadTexColor: Color): MarkdownThemeBuilder 替换成 setImageDownloadTextColor(imageDownloadTextColor: Color): MarkdownThemeBuilder
-41. MarkdownTheme 中的接口 setVideoReleaseTexSize(videoReleaseTexSize: Float64): MarkdownThemeBuilder 替换成 setVideoReleaseTextSize(videoReleaseTextSize: Float64): MarkdownThemeBuilder
-42. MarkdownTheme 中的接口 setVideoDownloadTexSize(videoDownloadTexSize: Float64): MarkdownThemeBuilder 替换成 setVideoDownloadTextSize(videoDownloadTextSize: Float64): MarkdownThemeBuilder
-43. MarkdownTheme 中的接口 setImageDownloadTexSize(imageDownloadTexSize: Float64): MarkdownThemeBuilder 替换成 setImageDownloadTextSize(imageDownloadTextSize: Float64): MarkdownThemeBuilder
+27. 新增HighlightTheme
+28. MarkdownTheme 中的接口 setLinkBackGroupColor(linkBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkBackgroundColor(linkBackgroundColor: Color): MarkdownThemeBuilder
+29. MarkdownTheme 中的接口 setLinkCircleImageBackGroupColor(linkCircleImageBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkCircleImageBackgroundColor(linkCircleImageBackgroundColor: Color): MarkdownThemeBuilder
+30. MarkdownTheme 中的接口 setLinkCircleImageButtonBackGroupColor(linkCircleImageButtonBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkCircleImageButtonBackgroundColor(linkCircleImageButtonBackgroundColor: Color): MarkdownThemeBuilder
+31. MarkdownTheme 中的接口 setLinkRectImageBackGroupColor(linkRectImageBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkRectImageBackgroundColor(linkRectImageBackgroundColor: Color): MarkdownThemeBuilder
+32. MarkdownTheme 中的接口 setLinkRectImageButtonBackGroupColor(linkRectImageButtonBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkRectImageButtonBackgroundColor(linkRectImageButtonBackgroundColor: Color): MarkdownThemeBuilder
+33. MarkdownTheme 中的接口 setLinkRectToolImageBackGroupColor(linkRectToolImageBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkRectToolImageBackgroundColor(linkRectToolImageBackgroundColor: Color): MarkdownThemeBuilder
+34. MarkdownTheme 中的接口 setLinkRectToolImageButtonBackGroupColor(linkRectToolImageButtonBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLinkRectToolImageButtonBackgroundColor(linkRectToolImageButtonBackgroundColor: Color): MarkdownThemeBuilder
+35. MarkdownTheme 中的接口 setBlockQuoteBackGroupColor(blockQuoteBackGroupColor: Color): MarkdownThemeBuilder 替换成 setBlockQuoteBackgroundColor(blockQuoteBackgroundColor: Color): MarkdownThemeBuilder
+36. MarkdownTheme 中的接口 setCodeListTitleSelectBackGroupColor(codeListTitleSelectBackGroupColor: Color): MarkdownThemeBuilder 替换成 setCodeListTitleSelectBackgroundColor(codeListTitleSelectBackgroundColor: Color): MarkdownThemeBuilder
+37. MarkdownTheme 中的接口 setCodeListTitleUnSelectBackGroupColor(codeListTitleUnSelectBackGroupColor: Color): MarkdownThemeBuilder 替换成 setCodeListTitleUnSelectBackgroundColor(codeListTitleUnSelectBackgroundColor: Color): MarkdownThemeBuilder
+38. MarkdownTheme 中的接口 setLatexMathBackGroupColor(latexMathBackGroupColor: Color): MarkdownThemeBuilder 替换成 setLatexMathBackgroundColor(latexMathBackgroundColor: Color): MarkdownThemeBuilder
+39. MarkdownTheme 中的接口 setVideoReleaseTexColor(videoReleaseTexColor: Color): MarkdownThemeBuilder 替换成 setVideoReleaseTextColor(videoReleaseTextColor: Color): MarkdownThemeBuilder
+40. MarkdownTheme 中的接口 setVideoDownloadTexColor(videoDownloadTexColor: Color): MarkdownThemeBuilder 替换成 setVideoDownloadTextColor(videoDownloadTextColor: Color): MarkdownThemeBuilder
+41. MarkdownTheme 中的接口 setImageDownloadTexColor(imageDownloadTexColor: Color): MarkdownThemeBuilder 替换成 setImageDownloadTextColor(imageDownloadTextColor: Color): MarkdownThemeBuilder
+42. MarkdownTheme 中的接口 setVideoReleaseTexSize(videoReleaseTexSize: Float64): MarkdownThemeBuilder 替换成 setVideoReleaseTextSize(videoReleaseTextSize: Float64): MarkdownThemeBuilder
+43. MarkdownTheme 中的接口 setVideoDownloadTexSize(videoDownloadTexSize: Float64): MarkdownThemeBuilder 替换成 setVideoDownloadTextSize(videoDownloadTextSize: Float64): MarkdownThemeBuilder
+44. MarkdownTheme 中的接口 setImageDownloadTexSize(imageDownloadTexSize: Float64): MarkdownThemeBuilder 替换成 setImageDownloadTextSize(imageDownloadTextSize: Float64): MarkdownThemeBuilder 
+45. 支持宽松/严格/白名单限定符设置
 
 # 1.3.3
 

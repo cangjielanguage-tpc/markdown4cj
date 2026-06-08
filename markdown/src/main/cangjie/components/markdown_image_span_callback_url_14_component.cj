@@ -11,7 +11,7 @@ public class MarkdownSpanImageCallbackUrl14Component {
     var url14CallbackDestination: String // 图片链接
     @Prop
     var url14CallbackComponentWidth: Float64 // 控件宽度 - 单位vp
-    var url14CallbackImageCallbackCallback: (String) -> ?Array<UInt8> // 图片替换事件
+    var url14CallbackImageReplaceCallback: (String) -> ?Array<UInt8> // 图片替换事件
     var url14CallbackImageCallback: (String) -> Unit // 图片点击事件
     var url14CallbackLinkCallback: ?(String) -> Unit // 链接点击事件
     var url14CallbackLink: Bool // 是否是链接
@@ -191,7 +191,7 @@ public class MarkdownSpanImageCallbackUrl14Component {
         }
         url14CallbackReplaceFut = MarkdownParseImageUtil.callbackToPixelmap(
             url14CallbackDestination,
-            url14CallbackImageCallbackCallback,
+            url14CallbackImageReplaceCallback,
             callback
         )
     }
