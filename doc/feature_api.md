@@ -220,175 +220,175 @@ export class MarkdownTheme {
    *
    * @param markdownThemeGlobal 全局样式
    */
-  setMarkdownThemeGlobal(markdownThemeGlobal: MarkdownThemeGlobal): void
+  setGlobalTheme(markdownThemeGlobal: GlobalTheme): void
 
   /**
    * 设置音频样式
    *
    * @param markdownThemeAudio 音频样式
    */
-  setMarkdownThemeAudio(markdownThemeAudio: MarkdownThemeAudio): void
+  setAudioTheme(markdownThemeAudio: AudioTheme): void
 
   /**
    * 设置Banner样式
    *
    * @param markdownThemeBanner Banner样式
    */
-  setMarkdownThemeBanner(markdownThemeBanner: MarkdownThemeBanner): void
+  setBannerTheme(markdownThemeBanner: BannerTheme): void 
 
   /**
    * 设置块引用样式
    *
    * @param markdownThemeBlockQuote 块引用样式
    */
-  setMarkdownThemeBlockQuote(markdownThemeBlockQuote: MarkdownThemeBlockQuote): void
+  setBlockQuoteTheme(markdownThemeBlockQuote: BlockQuoteTheme): void 
 
   /**
    * 设置加粗文本样式
    *
    * @param markdownThemeBold 加粗文本样式
    */
-  setMarkdownThemeBold(markdownThemeBold: MarkdownThemeBold): void
+  setBoldTheme(markdownThemeBold: BoldTheme): void
 
   /**
    * 设置代码块样式
    *
    * @param markdownThemeCodeBlock 代码块样式
    */
-  setMarkdownThemeCodeBlock(markdownThemeCodeBlock: MarkdownThemeCodeBlock): void
+  setCodeBlockTheme(markdownThemeCodeBlock: CodeBlockTheme): void
 
   /**
    * 设置定义列表样式
    *
    * @param markdownThemeDefinitionList 定义列表样式
    */
-  setMarkdownThemeDefinitionList(markdownThemeDefinitionList: MarkdownThemeDefinitionList): void
+  setDefinitionListTheme(markdownThemeDefinitionList: DefinitionListTheme): void 
 
   /**
    * 设置分割线样式
    *
    * @param markdownThemeDivider 分割线样式
    */
-  setMarkdownThemeDivider(markdownThemeDivider: MarkdownThemeDivider): void
+  setDividerTheme(markdownThemeDivider: DividerTheme): void
 
   /**
    * 设置脚注定义样式
    *
    * @param markdownThemeFootnoteDef 脚注定义样式
    */
-  setMarkdownThemeFootnoteDef(markdownThemeFootnoteDef: MarkdownThemeFootnoteDef): void
+  setFootnoteDefTheme(markdownThemeFootnoteDef: FootnoteDefTheme): void
 
   /**
    * 设置脚注引用样式
    *
    * @param markdownThemeFootnoteRef 脚注引用样式
    */
-  setMarkdownThemeFootnoteRef(markdownThemeFootnoteRef: MarkdownThemeFootnoteRef): void
+  setFootnoteRefTheme(markdownThemeFootnoteRef: FootnoteRefTheme): void 
 
   /**
    * 设置数学公式样式
    *
    * @param markdownThemeLatexMath 数学公式样式
    */
-  setMarkdownThemeLatexMath(markdownThemeLatexMath: MarkdownThemeLatexMath): void
+  setLatexMathTheme(markdownThemeLatexMath: LatexMathTheme): void
 
   /**
    * 设置标题样式
    *
    * @param markdownThemeHeading 标题样式
    */
-  setMarkdownThemeHeading(markdownThemeHeading: MarkdownThemeHeading): void
+  setHeadingTheme(markdownThemeHeading: HeadingTheme): void
 
   /**
    * 设置HTML下划线文本样式
    *
    * @param markdownThemeHtmlUnderline HTML下划线文本样式
    */
-  setMarkdownThemeHtmlUnderline(markdownThemeHtmlUnderline: MarkdownThemeHtmlUnderline): void
+  setHtmlUnderlineTheme(markdownThemeHtmlUnderline: HtmlUnderlineTheme): void
 
   /**
    * 设置图片样式
    *
    * @param markdownThemeImage 图片样式
    */
-  setMarkdownThemeImage(markdownThemeImage: MarkdownThemeImage): void
+  setImageTheme(markdownThemeImage: ImageTheme): void 
 
   /**
    * 设置内联代码样式
    *
    * @param markdownThemeInlineCode 内联代码样式
    */
-  setMarkdownThemeInlineCode(markdownThemeInlineCode: MarkdownThemeInlineCode): void
+  setInlineCodeTheme(markdownThemeInlineCode: InlineCodeTheme): void
 
   /**
    * 设置斜体文本样式
    *
    * @param markdownThemeItalic 斜体文本样式
    */
-  setMarkdownThemeItalic(markdownThemeItalic: MarkdownThemeItalic): void
+  setItalicTheme(markdownThemeItalic: ItalicTheme): void
 
   /**
    * 设置链接文本样式
    *
    * @param markdownThemeLink 链接文本样式
    */
-  setMarkdownThemeLink(markdownThemeLink: MarkdownThemeLink): void
+  setLinkTheme(markdownThemeLink: LinkTheme): void
 
   /**
    * 设置有序列表样式
    *
    * @param markdownThemeOrderedList 有序列表样式
    */
-  setMarkdownThemeOrderedList(markdownThemeOrderedList: MarkdownThemeOrderedList): void
+  setOrderedListTheme(markdownThemeOrderedList: OrderedListTheme): void
 
   /**
    * 设置段落样式
    *
    * @param markdownThemeParagraph 段落样式
    */
-  setMarkdownThemeParagraph(markdownThemeParagraph: MarkdownThemeParagraph): void
+  setParagraphTheme(markdownThemeParagraph: ParagraphTheme): void 
 
   /**
    * 设置删除线文本样式
    *
    * @param markdownThemeStrikethrough 删除线文本样式
    */
-  setMarkdownThemeStrikethrough(markdownThemeStrikethrough: MarkdownThemeStrikethrough): void
+  setStrikethroughTheme(markdownThemeStrikethrough: StrikethroughTheme): void 
 
   /**
    * 设置下标文本样式
    *
    * @param markdownThemeSub 下标文本样式
    */
-  setMarkdownThemeSub(markdownThemeSub: MarkdownThemeSub): void
+  setSubTheme(markdownThemeSub: SubTheme): void 
 
   /**
    * 设置上标文本样式
    *
    * @param markdownThemeSup 上标文本样式
    */
-  setMarkdownThemeSup(markdownThemeSup: MarkdownThemeSup): void
+  setSupTheme(markdownThemeSup: SupTheme): void 
 
   /**
    * 设置表格样式
    *
    * @param markdownThemeTable 表格样式
    */
-  setMarkdownThemeTable(markdownThemeTable: MarkdownThemeTable): void
+  setTableTheme(markdownThemeTable: TableTheme): void 
 
   /**
    * 设置无序/任务列表样式
    *
    * @param markdownThemeBulletList 无序/任务列表样式
    */
-  setMarkdownThemeBulletList(markdownThemeBulletList: MarkdownThemeBulletList): void
+  setBulletListTheme(markdownThemeBulletList: BulletListTheme): void
 
   /**
    * 设置视频样式
    *
    * @param markdownThemeVideo 视频样式
    */
-  setMarkdownThemeVideo(markdownThemeVideo: MarkdownThemeVideo): void
+  setVideoTheme(markdownThemeVideo: VideoTheme): void 
 
   /**
    * 设置高亮样式
@@ -878,7 +878,7 @@ export class MarkdownTheme {
    * @param blockOrderedAndBulletTopAndBottomMargins 有序列表、无序列表、任务列表子模块上下间距 - 默认0.0vp
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListChildSpacing
-   *             MarkdownThemeOrderedListTheme#setBulletListChildSpacing
+   *             OrderedListTheme#setBulletListChildSpacing
    */
   setBlockOrderedAndBulletTopAndBottomMargins(blockOrderedAndBulletTopAndBottomMargins: number): void
 
@@ -888,7 +888,7 @@ export class MarkdownTheme {
    * @param blockLeftMargin 有序列表、无序列表、任务列表左边距 - 默认8.0vp
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListMargin
-   *             MarkdownThemeOrderedListTheme#setBulletListMargin
+   *             OrderedListTheme#setBulletListMargin
    */
   setBlockLeftMargin(blockLeftMargin: number): void
 
@@ -898,7 +898,7 @@ export class MarkdownTheme {
    * @param blockRightMargin 有序列表、无序列表、任务列表右边距 - 默认8.0vp
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListMargin
-   *             MarkdownThemeOrderedListTheme#setBulletListMargin
+   *             OrderedListTheme#setBulletListMargin
    */
   setBlockRightMargin(blockRightMargin: number): void
 
@@ -980,7 +980,7 @@ export class MarkdownTheme {
    * @param taskListItemLength 任务列表选择框宽高 - 默认15.0vp
    * @deprecated since 1.4.0
    * @useinstead BulletListTheme#setBulletListCheckboxWidth
-   *             MarkdownThemeBulletListTheme#setBulletListCheckboxHeight
+   *             BulletListTheme#setBulletListCheckboxHeight
    */
   setTaskListItemLength(taskListItemLength: number): void
 
@@ -1080,7 +1080,7 @@ export class MarkdownTheme {
    * @param codeBlockIconTextHide 代码块复制、全屏图片文字是否显示 - true：显示；false：不显示。默认true
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockFullScreenTextIsShow
-   *             MarkdownThemeCodeBlockTheme#setCodeBlockCopyTextIsShow
+   *             CodeBlockTheme#setCodeBlockCopyTextIsShow
    */
   setCodeBlockIconTextHide(codeBlockIconTextHide: boolean): void
 
@@ -1162,9 +1162,9 @@ export class MarkdownTheme {
    * @param iconWidthAndHeight 代码块代码全屏、代码复制按钮宽高 - 默认24.0vp
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockFullScreenIconHeight
-   *             MarkdownThemeCodeBlockTheme#setCodeBlockFullScreenIconWidth
-   *             MarkdownThemeCodeBlockTheme#setCodeBlockCopyIconHeight
-   *             MarkdownThemeCodeBlockTheme#setCodeBlockCopyIconWidth
+   *             CodeBlockTheme#setCodeBlockFullScreenIconWidth
+   *             CodeBlockTheme#setCodeBlockCopyIconHeight
+   *             CodeBlockTheme#setCodeBlockCopyIconWidth
    */
   setIconWidthAndHeight(iconWidthAndHeight: number): void
 
@@ -1824,6 +1824,15 @@ export class MarkdownTheme {
    * @useinstead AudioTheme#setAudioMargin
    */
   setAudioMarginBottom(audioMarginBottom: number): void
+  
+  /**
+   * 设置视频圆角
+   *
+   * @param videoBorderRadius 视频圆角 - 默认10.0vp
+   * @deprecated since 1.4.0
+   * @useinstead VideoTheme#setVideoBorderRadius
+   */
+  setVideoBorderRadius(videoBorderRadius: number): void
 
   /**
    * 设置视频时间文本颜色
@@ -1894,7 +1903,7 @@ export class MarkdownTheme {
    * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoReleaseButtonIconWidth
-   *             MarkdownThemeVideoTheme#setVideoReleaseButtonIconHeight
+   *             VideoTheme#setVideoReleaseButtonIconHeight
    */
   setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: number): void
 
@@ -1967,7 +1976,7 @@ export class MarkdownTheme {
    * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoDownloadButtonIconWidth
-   *             MarkdownThemeVideoTheme#setVideoDownloadButtonIconHeight
+   *             VideoTheme#setVideoDownloadButtonIconHeight
    */
   setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: number): void
 
@@ -2157,7 +2166,7 @@ export class MarkdownTheme {
    * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonIconWidth
-   *             MarkdownThemeImageTheme#setImageDownloadButtonIconHeight
+   *             ImageTheme#setImageDownloadButtonIconHeight
    */
   setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: number): void
 
@@ -2293,7 +2302,7 @@ export class MarkdownTheme {
    * @param tableTextLineHeight 表格文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableContentTextLineHeight
-   *             MarkdownThemeTableTheme#setTableTitleTextLineHeight
+   *             TableTheme#setTableTitleTextLineHeight
    */
   setTableTextLineHeight(tableTextLineHeight: number): void
 
@@ -2593,7 +2602,7 @@ export enum MarkdownTextDecorationStyle {
 }
 ```
 
-### interface MarkdownMarginOptions
+### interface MarkdownMarginOptions / MarkdownMarginArrayOptions
 ```ets
 /**
  * 通用外边距配置
@@ -2604,9 +2613,18 @@ export interface MarkdownMarginOptions {
     bottom?: number
     left?: number
 }
+/**
+ * 通用外边距数组配置
+ */
+export interface MarkdownMarginArrayOptions {
+  top?: number[]
+  right?: number[]
+  bottom?: number[]
+  left?: number[]
+}
 ```
 
-### interface MarkdownPaddingOptions
+### interface MarkdownPaddingOptions / MarkdownPaddingArrayOptions
 ```ets
 /**
  * 通用内边距配置
@@ -2616,6 +2634,15 @@ export interface MarkdownPaddingOptions {
     right?: number
     bottom?: number
     left?: number
+}
+/**
+ * 通用内边距数组配置
+ */
+export interface MarkdownPaddingArrayOptions {
+  top?: number[]
+  right?: number[]
+  bottom?: number[]
+  left?: number[]
 }
 ```
 
@@ -2632,12 +2659,12 @@ export interface MarkdownRadiusOptions {
 }
 ```
 
-### class MarkdownThemeGlobal
+### class GlobalTheme
 
 Markdown用户可设置的样式-全局样式
 
 ```ets
-export class MarkdownThemeGlobal {
+export class GlobalTheme {
   /**
    * 设置markdown是否同步解析
    *
@@ -2691,12 +2718,12 @@ export class MarkdownThemeGlobal {
 }
 ```
 
-### class MarkdownThemeItalic
+### class ItalicTheme
 
 Markdown用户可设置的样式-斜体文本样式
 
 ```ets
-export class MarkdownThemeItalic {
+export class ItalicTheme {
   /**
    * 设置斜体文本尺寸
    *
@@ -2734,12 +2761,12 @@ export class MarkdownThemeItalic {
 }
 ```
 
-### class MarkdownThemeStrikethrough
+### class StrikethroughTheme
 
 Markdown用户可设置的样式-删除线文本样式
 
 ```ets
-export class MarkdownThemeStrikethrough {
+export class StrikethroughTheme {
   /**
    * 设置删除线文本尺寸
    *
@@ -2798,12 +2825,12 @@ export class MarkdownThemeStrikethrough {
 }
 ```
 
-### class MarkdownThemeSub
+### class SubTheme
 
 Markdown用户可设置的样式-下标文本样式
 
 ```ets
-export class MarkdownThemeSub {
+export class SubTheme {
   /**
    * 设置下标文本尺寸
    *
@@ -2848,12 +2875,12 @@ export class MarkdownThemeSub {
 }
 ```
 
-### class MarkdownThemeSup
+### class SupTheme
 
 Markdown用户可设置的样式-上标文本样式
 
 ```ets
-export class MarkdownThemeSup {
+export class SupTheme {
   /**
    * 设置上标文本尺寸
    *
@@ -2898,12 +2925,12 @@ export class MarkdownThemeSup {
 }
 ```
 
-### class MarkdownThemeHtmlUnderline
+### class HtmlUnderlineTheme
 
 Markdown用户可设置的样式-HTML下划线文本样式
 
 ```ets
-export class MarkdownThemeHtmlUnderline {
+export class HtmlUnderlineTheme {
   /**
    * 设置HTML下划线文本尺寸
    *
@@ -2962,12 +2989,12 @@ export class MarkdownThemeHtmlUnderline {
 }
 ```
 
-### class MarkdownThemeLink
+### class LinkTheme
 
 Markdown用户可设置的样式-链接文本样式
 
 ```ets
-export class MarkdownThemeLink {
+export class LinkTheme {
   /**
    * 设置列表中的单行链接是否是图片显示
    *
@@ -3231,12 +3258,12 @@ export class MarkdownThemeLink {
 }
 ```
 
-### class MarkdownThemeParagraph
+### class ParagraphTheme
 
 Markdown用户可设置的样式-段落样式
 
 ```ets
-export class MarkdownThemeParagraph {
+export class ParagraphTheme {
   /**
    * 设置外边距
    *
@@ -3306,12 +3333,12 @@ export class MarkdownThemeParagraph {
 }
 ```
 
-### class MarkdownThemeInlineCode
+### class InlineCodeTheme
 
 Markdown用户可设置的样式-内联代码样式
 
 ```ets
-export class MarkdownThemeInlineCode {
+export class InlineCodeTheme {
   /**
    * 设置内联代码文本尺寸
    *
@@ -3372,12 +3399,12 @@ export class MarkdownThemeInlineCode {
 }
 ```
 
-### class MarkdownThemeTable
+### class TableTheme
 
 Markdown用户可设置的样式-表格样式
 
 ```ets
-export class MarkdownThemeTable {
+export class TableTheme {
   /**
    * 设置外边距
    *
@@ -3591,12 +3618,12 @@ export class MarkdownThemeTable {
 }
 ```
 
-### class MarkdownThemeLatexMath
+### class LatexMathTheme
 
 Markdown用户可设置的样式-数学公式样式
 
 ```ets
-export class MarkdownThemeLatexMath {
+export class LatexMathTheme {
   /**
    * 设置数学公式未加载状态文本颜色
    *
@@ -3694,12 +3721,12 @@ export class MarkdownThemeLatexMath {
 }
 ```
 
-### class MarkdownThemeFootnoteRef
+### class FootnoteRefTheme
 
 Markdown用户可设置的样式-脚注引用样式
 
 ```ets
-export class MarkdownThemeFootnoteRef {
+export class FootnoteRefTheme {
   /**
    * 设置脚注引用文本尺寸
    *
@@ -3781,12 +3808,12 @@ export class MarkdownThemeFootnoteRef {
 }
 ```
 
-### class MarkdownThemeFootnoteDef
+### class FootnoteDefTheme
 
 Markdown用户可设置的样式-脚注定义样式
 
 ```ets
-export class MarkdownThemeFootnoteDef {
+export class FootnoteDefTheme {
   /**
    * 设置外边距
    *
@@ -3807,12 +3834,12 @@ export class MarkdownThemeFootnoteDef {
 }
 ```
 
-### class MarkdownThemeDefinitionList
+### class DefinitionListTheme
 
 Markdown用户可设置的样式-定义列表样式
 
 ```ets
-export class MarkdownThemeDefinitionList {
+export class DefinitionListTheme {
   /**
    * 设置外边距
    *
@@ -3875,12 +3902,12 @@ export class MarkdownThemeDefinitionList {
 }
 ```
 
-### class MarkdownThemeOrderedList
+### class OrderedListTheme
 
 Markdown用户可设置的样式-有序列表样式
 
 ```ets
-export class MarkdownThemeOrderedList {
+export class OrderedListTheme {
   /**
    * 设置外边距
    *
@@ -3964,12 +3991,12 @@ export class MarkdownThemeOrderedList {
 }
 ```
 
-### class MarkdownThemeBulletList
+### class BulletListTheme
 
 Markdown用户可设置的样式-无序/任务列表样式
 
 ```ets
-export class MarkdownThemeBulletList {
+export class BulletListTheme {
   /**
    * 设置无序/任务外边距
    *
@@ -4095,12 +4122,12 @@ export class MarkdownThemeBulletList {
 }
 ```
 
-### class MarkdownThemeImage
+### class ImageTheme
 
 Markdown用户可设置的样式-图片样式
 
 ```ets
-export class MarkdownThemeImage {
+export class ImageTheme {
   /**
    * 设置外边距
    *
@@ -4333,12 +4360,12 @@ export class MarkdownThemeImage {
 }
 ```
 
-### class MarkdownThemeAudio
+### class AudioTheme
 
 Markdown用户可设置的样式-音频样式
 
 ```ets
-export class MarkdownThemeAudio {
+export class AudioTheme {
   /**
    * 音频设置外边距
    *
@@ -4645,12 +4672,12 @@ export class MarkdownThemeAudio {
 }
 ```
 
-### class MarkdownThemeVideo
+### class VideoTheme
 
 Markdown用户可设置的样式-视频样式
 
 ```ets
-export class MarkdownThemeVideo {
+export class VideoTheme {
   /**
    * 设置外边距
    *
@@ -5041,12 +5068,12 @@ export class MarkdownThemeVideo {
 }
 ```
 
-### class MarkdownThemeCodeBlock
+### class CodeBlockTheme
 
 Markdown用户可设置的样式-代码块样式
 
 ```ets
-export class MarkdownThemeCodeBlock {
+export class CodeBlockTheme {
   /**
    * 设置是否格式化围栏代码块内容
    *
@@ -5587,12 +5614,12 @@ export class MarkdownThemeCodeBlock {
 }
 ```
 
-### class MarkdownThemeHeading
+### class HeadingTheme
 
 Markdown用户可设置的样式-标题样式
 
 ```ets
-export class MarkdownThemeHeading {
+export class HeadingTheme {
   /**
    * 设置标题的背景颜色：通过集合的方式，分别设置每级标题的背景颜色
    *
@@ -5627,12 +5654,9 @@ export class MarkdownThemeHeading {
   /**
    * 设置标题的4个外边距：分别设置H1-H6每级标题的每个外边距
    *
-   * @param top 上外边距集合
-   * @param right 右外边距集合
-   * @param bottom 下外边距集合
-   * @param left 左外边距集合
+   * @param options MarkdownMarginArrayOptions 类型，包含四个外边距的H1-H6的数值集合
    */
-  setMarginForEachHeadingDetail(top: number[], right: number[], bottom: number[], left: number[]): void
+  setMarginForEachHeadingDetail(options: MarkdownMarginArrayOptions): void 
 
   /**
    * 设置标题的4个外边距：指定标题等级，分别设置该标题的每个外边距
@@ -5663,12 +5687,9 @@ export class MarkdownThemeHeading {
   /**
    * 设置标题的4个内边距：分别设置H1-H6每级标题的每个内边距
    *
-   * @param top 上内边距集合
-   * @param right 右内边距集合
-   * @param bottom 下内边距集合
-   * @param left 左内边距集合
+   * @param options MarkdownPaddingArrayOptions 类型，包含四个内边距的H1-H6的数值集合
    */
-  setPaddingForEachHeadingDetail(top: number[], right: number[], bottom: number[], left: number[]): void
+  setPaddingForEachHeadingDetail(options: MarkdownPaddingArrayOptions): void
 
   /**
    * 设置标题的4个内边距：指定标题等级，分别设置该标题的每个内边距
@@ -5881,12 +5902,12 @@ export class MarkdownThemeHeading {
 }
 ```
 
-### class MarkdownThemeBanner
+### class BannerTheme
 
 Markdown用户可设置的样式-Banner样式
 
 ```ets
-export class MarkdownThemeBanner {
+export class BannerTheme {
   /**
    * banner设置外边距
    *
@@ -5914,12 +5935,12 @@ export class MarkdownThemeBanner {
 }
 ```
 
-### class MarkdownThemeBlockQuote
+### class BlockQuoteTheme
 
 Markdown用户可设置的样式-块引用样式
 
 ```ets
-export class MarkdownThemeBlockQuote {
+export class BlockQuoteTheme {
   /**
    * 块引用设置外边距
    *
@@ -5970,12 +5991,12 @@ export class MarkdownThemeBlockQuote {
 }
 ```
 
-### class MarkdownThemeBold
+### class BoldTheme
 
 Markdown用户可设置的样式-加粗文本样式
 
 ```ets
-export class MarkdownThemeBold {
+export class BoldTheme {
   /**
    * 设置加粗文本尺寸
    *
@@ -6020,12 +6041,12 @@ export class MarkdownThemeBold {
 }
 ```
 
-### class MarkdownThemeDivider
+### class DividerTheme
 
 Markdown用户可设置的样式-分割线样式
 
 ```ets
-export class MarkdownThemeDivider {
+export class DividerTheme {
   /**
    * 分割线设置外边距
    *
