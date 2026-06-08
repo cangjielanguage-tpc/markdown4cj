@@ -73,6 +73,7 @@ export class MarkdownConfiguration {
    * 设置图片替换事件
    *
    * @param cb 图片替换事件。 (url：图片url 返回值是替换的图片数据)
+   * @deprecated since 1.4.0
    * @useinstead MarkdownConfiguration#setImageReplaceCallback
    */
   setImageCallbackCallback(cb: (url: string) => Promise<ArrayBuffer | undefined>): void
@@ -388,6 +389,13 @@ export class MarkdownTheme {
    * @param markdownThemeVideo 视频样式
    */
   setMarkdownThemeVideo(markdownThemeVideo: MarkdownThemeVideo): void
+
+  /**
+   * 设置高亮样式
+   *
+   * @param markdownHighlightTheme 高亮样式
+   */
+  setHighlightTheme(markdownHighlightTheme: HighlightTheme): void
 
   /**
    * 设置代码块全屏图片icon
@@ -6059,6 +6067,79 @@ export class MarkdownThemeDivider {
 }
 ```
 
+### class HighlightTheme
+
+Markdown用户可设置的样式-高亮样式
+
+```ets
+export class HighlightTheme {
+  /**
+   * 设置高亮文本颜色
+   *
+   * @param color 高亮文本颜色
+   */
+  setHighlightTextFontColor(color: number): void
+
+  /**
+   * 设置高亮文本尺寸
+   *
+   * @param size 高亮文本尺寸
+   */
+  setHighlightTextFontSize(size: number): void
+
+  /**
+   * 设置高亮文本字体样式
+   *
+   * @param style 高亮文本字体样式
+   */
+  setHighlightTextFontStyle(style: FontStyle): void
+
+  /**
+   * 设置高亮文本字体粗细
+   *
+   * @param weight 高亮文本字体粗细
+   */
+  setHighlightTextFontWeight(weight: FontWeight): void
+
+  /**
+   * 设置高亮文本字体
+   *
+   * @param family 高亮文本字体
+   */
+  setHighlightTextFontFamily(family: string): void
+
+  /**
+   * 设置高亮文本行高
+   *
+   * @param lineHeight 高亮文本行高
+   */
+  setHighlightTextLineHeight(lineHeight: number): void
+
+  /**
+   * 设置高亮文本字符间距
+   *
+   * @param spacing 高亮文本字符间距
+   */
+  setHighlightTextLetterSpacing(spacing: number): void
+
+  /**
+   * 设置高亮文本背景颜色
+   *
+   * @param color 高亮文本背景颜色
+   */
+  setHighlightTextBackgroundColor(color: number): void
+
+  /**
+   * 高亮文本背景设置圆角
+   *
+   * @param options MarkdownRadiusOptions | number 类型
+   *                  入参 number 类型时四个设为相同值
+   *                  入参 MarkdownRadiusOptions 类型时分别设置
+   */
+  setHighlightTextBackgroundRadius(options: MarkdownRadiusOptions | number): void
+}
+```
+
 ### class MarkdownPlugin
 
 Markdown插件配置
@@ -6216,6 +6297,20 @@ export class MarkdownPlugin {
    * @param isEmojiLight 是否加载精简emoji表情 - true：加载精简emoji表情；false：不加载精简emoji表情。默认true
    */
   setIsEmojiPlugin(isEmojiPlugin: boolean, isEmojiLight: boolean): void
+
+  /**
+   * 设置是否加载高亮解析插件
+   *
+   * @param isHighlightPlugin 是否加载高亮解析插件 - true：设置加载高亮解析插件；false：不设置加载高亮解析插件。默认false
+   */
+  setIsHighlightPlugin(isHighlightPlugin: boolean): void
+
+  /**
+   * 设置是否加载白名单宽松分隔符插件
+   *
+   * @param mode 加载模式。 - undefined：不加载插件。DelimiterFilterMode：(0:宽松模式，1：严格模式)。Array<string>：白名单模式
+   */
+  setIsWhitelistPlugin(mode: undefined | DelimiterFilterMode | Array<string>): void
 }
 ```
 
