@@ -283,9 +283,9 @@ markdown依赖三方库：
 | 编号 | 依赖三方库         | 版本号      |
 |----|---------------|----------|
 | 1  | stdx          | v1.0.1.1 |
-| 2  | commonmark4cj | v1.1.0   |
+| 2  | commonmark4cj | v1.1.1   |
 | 3  | prism4cj      | v1.0.4   |
-| 4  | formula       | v1.5.0   |
+| 4  | formula       | v1.5.1   |
 | 5  | codeformat    | v1.0.0   |
 
 1、三方库静态链接和动态链接区别

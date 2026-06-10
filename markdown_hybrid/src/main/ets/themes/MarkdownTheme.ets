@@ -1202,7 +1202,7 @@ export class MarkdownTheme {
    * @param blockOrderedAndBulletTopAndBottomMargins 有序列表、无序列表、任务列表子模块上下间距 - 默认0.0vp
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListChildSpacing
-   *             MarkdownThemeOrderedListTheme#setBulletListChildSpacing
+   *             OrderedListTheme#setBulletListChildSpacing
    */
   setBlockOrderedAndBulletTopAndBottomMargins(blockOrderedAndBulletTopAndBottomMargins: number): void {
     this.markdownThemeOrderedList.setOrderedListChildSpacing(blockOrderedAndBulletTopAndBottomMargins)
@@ -1215,7 +1215,7 @@ export class MarkdownTheme {
    * @param blockLeftMargin 有序列表、无序列表、任务列表左边距 - 默认8.0vp
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListMargin
-   *             MarkdownThemeOrderedListTheme#setBulletListMargin
+   *             OrderedListTheme#setBulletListMargin
    */
   setBlockLeftMargin(blockLeftMargin: number): void {
     this.markdownThemeOrderedList.setOrderedListMargin({left: blockLeftMargin})
@@ -1228,7 +1228,7 @@ export class MarkdownTheme {
    * @param blockRightMargin 有序列表、无序列表、任务列表右边距 - 默认8.0vp
    * @deprecated since 1.4.0
    * @useinstead OrderedListTheme#setOrderedListMargin
-   *             MarkdownThemeOrderedListTheme#setBulletListMargin
+   *             OrderedListTheme#setBulletListMargin
    */
   setBlockRightMargin(blockRightMargin: number): void {
     this.markdownThemeOrderedList.setOrderedListMargin({right: blockRightMargin})
@@ -1333,7 +1333,7 @@ export class MarkdownTheme {
    * @param taskListItemLength 任务列表选择框宽高 - 默认15.0vp
    * @deprecated since 1.4.0
    * @useinstead BulletListTheme#setBulletListCheckboxWidth
-   *             MarkdownThemeBulletListTheme#setBulletListCheckboxHeight
+   *             BulletListTheme#setBulletListCheckboxHeight
    */
   setTaskListItemLength(taskListItemLength: number): void {
     this.markdownThemeBulletList.setBulletListCheckboxWidth(taskListItemLength)
@@ -1456,7 +1456,7 @@ export class MarkdownTheme {
    * @param codeBlockIconTextHide 代码块复制、全屏图片文字是否显示 - true：显示；false：不显示。默认true
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockFullScreenTextIsShow
-   *             MarkdownThemeCodeBlockTheme#setCodeBlockCopyTextIsShow
+   *             CodeBlockTheme#setCodeBlockCopyTextIsShow
    */
   setCodeBlockIconTextHide(codeBlockIconTextHide: boolean): void {
     this.markdownThemeCodeBlock.setCodeBlockFullScreenTextIsShow(codeBlockIconTextHide)
@@ -1557,9 +1557,9 @@ export class MarkdownTheme {
    * @param iconWidthAndHeight 代码块代码全屏、代码复制按钮宽高 - 默认24.0vp
    * @deprecated since 1.4.0
    * @useinstead CodeBlockTheme#setCodeBlockFullScreenIconHeight
-   *             MarkdownThemeCodeBlockTheme#setCodeBlockFullScreenIconWidth
-   *             MarkdownThemeCodeBlockTheme#setCodeBlockCopyIconHeight
-   *             MarkdownThemeCodeBlockTheme#setCodeBlockCopyIconWidth
+   *             CodeBlockTheme#setCodeBlockFullScreenIconWidth
+   *             CodeBlockTheme#setCodeBlockCopyIconHeight
+   *             CodeBlockTheme#setCodeBlockCopyIconWidth
    */
   setIconWidthAndHeight(iconWidthAndHeight: number): void {
     this.markdownThemeCodeBlock.setCodeBlockFullScreenIconHeight(iconWidthAndHeight)
@@ -2471,7 +2471,7 @@ export class MarkdownTheme {
    * @param videoReleaseImageWidthHeight 视频发布按钮图片宽度和高度 - 默认18.0vp
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoReleaseButtonIconWidth
-   *             MarkdownThemeVideoTheme#setVideoReleaseButtonIconHeight
+   *             VideoTheme#setVideoReleaseButtonIconHeight
    */
   setVideoReleaseImageWidthHeight(videoReleaseImageWidthHeight: number): void {
     this.markdownThemeVideo.setVideoReleaseButtonIconWidth(videoReleaseImageWidthHeight)
@@ -2561,7 +2561,7 @@ export class MarkdownTheme {
    * @param videoDownloadImageWidthHeight 视频下载按钮图片宽度和高度 - 默认18.0vp
    * @deprecated since 1.4.0
    * @useinstead VideoTheme#setVideoDownloadButtonIconWidth
-   *             MarkdownThemeVideoTheme#setVideoDownloadButtonIconHeight
+   *             VideoTheme#setVideoDownloadButtonIconHeight
    */
   setVideoDownloadImageWidthHeight(videoDownloadImageWidthHeight: number): void {
     this.markdownThemeVideo.setVideoDownloadButtonIconWidth(videoDownloadImageWidthHeight)
@@ -2794,7 +2794,7 @@ export class MarkdownTheme {
    * @param imageDownloadImageWidthHeight 图片下载按钮图片宽度和高度 - 默认18.0
    * @deprecated since 1.4.0
    * @useinstead ImageTheme#setImageDownloadButtonIconWidth
-   *             MarkdownThemeImageTheme#setImageDownloadButtonIconHeight
+   *             ImageTheme#setImageDownloadButtonIconHeight
    */
   setImageDownloadImageWidthHeight(imageDownloadImageWidthHeight: number): void {
     this.markdownThemeImage.setImageDownloadButtonIconWidth(imageDownloadImageWidthHeight)
@@ -2961,7 +2961,7 @@ export class MarkdownTheme {
    * @param tableTextLineHeight 表格文本行高 - 默认22.0vp
    * @deprecated since 1.4.0
    * @useinstead TableTheme#setTableContentTextLineHeight
-   *             MarkdownThemeTableTheme#setTableTitleTextLineHeight
+   *             TableTheme#setTableTitleTextLineHeight
    */
   setTableTextLineHeight(tableTextLineHeight: number): void {
     this.markdownThemeTable.setTableContentTextLineHeight(tableTextLineHeight)
@@ -3600,6 +3600,26 @@ export interface MarkdownPaddingOptions {
   right?: number
   bottom?: number
   left?: number
+}
+
+/**
+ * 通用外边距数组配置
+ */
+export interface MarkdownMarginArrayOptions {
+  top?: number[]
+  right?: number[]
+  bottom?: number[]
+  left?: number[]
+}
+
+/**
+ * 通用内边距数组配置
+ */
+export interface MarkdownPaddingArrayOptions {
+  top?: number[]
+  right?: number[]
+  bottom?: number[]
+  left?: number[]
 }
 
 /**

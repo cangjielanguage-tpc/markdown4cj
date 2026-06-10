@@ -6,7 +6,9 @@ export { MarkdownTheme,
   ImageFitType,
   MarkdownTextDecorationStyle,
   MarkdownMarginOptions,
+  MarkdownMarginArrayOptions,
   MarkdownPaddingOptions,
+  MarkdownPaddingArrayOptions,
   MarkdownRadiusOptions
 } from './src/main/ets/themes/MarkdownTheme'
 

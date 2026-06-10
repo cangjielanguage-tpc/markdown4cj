@@ -1,4 +1,6 @@
-import { MarkdownMarginOptions, MarkdownPaddingOptions } from "./MarkdownTheme"
+import {
+  MarkdownMarginArrayOptions,
+  MarkdownMarginOptions, MarkdownPaddingArrayOptions, MarkdownPaddingOptions } from "./MarkdownTheme"
 
 /**
  * Markdown用户可设置的样式-标题样式
@@ -604,23 +606,28 @@ export class HeadingTheme {
   /**
    * 设置标题的4个外边距：分别设置H1-H6每级标题的每个外边距
    *
-   * @param top 上外边距集合
-   * @param right 右外边距集合
-   * @param bottom 下外边距集合
-   * @param left 左外边距集合
+   * @param options MarkdownMarginArrayOptions 类型，包含四个外边距的H1-H6的数值集合
    */
-  setMarginForEachHeadingDetail(top: number[], right: number[], bottom: number[], left: number[]): void {
-    for (let index = 0; index < top.length; index++) {
-      this.setMarginForDesignateHeading((index + 1), {top: top[index]})
+  setMarginForEachHeadingDetail(options: MarkdownMarginArrayOptions): void {
+    if (options.top !== undefined) {
+      for (let index = 0; index < options.top.length; index++) {
+        this.setMarginForDesignateHeading((index + 1), {top: options.top[index]})
+      }
     }
-    for (let index = 0; index < right.length; index++) {
-      this.setMarginForDesignateHeading((index + 1), {right: right[index]})
+    if (options.right !== undefined) {
+      for (let index = 0; index < options.right.length; index++) {
+        this.setMarginForDesignateHeading((index + 1), {right: options.right[index]})
+      }
     }
-    for (let index = 0; index < bottom.length; index++) {
-      this.setMarginForDesignateHeading((index + 1), {bottom: bottom[index]})
+    if (options.bottom !== undefined) {
+      for (let index = 0; index < options.bottom.length; index++) {
+        this.setMarginForDesignateHeading((index + 1), {bottom: options.bottom[index]})
+      }
     }
-    for (let index = 0; index < left.length; index++) {
-      this.setMarginForDesignateHeading((index + 1), {left: left[index]})
+    if (options.left !== undefined) {
+      for (let index = 0; index < options.left.length; index++) {
+        this.setMarginForDesignateHeading((index + 1), {left: options.left[index]})
+      }
     }
   }
 
@@ -749,23 +756,28 @@ export class HeadingTheme {
   /**
    * 设置标题的4个内边距：分别设置H1-H6每级标题的每个内边距
    *
-   * @param top 上内边距集合
-   * @param right 右内边距集合
-   * @param bottom 下内边距集合
-   * @param left 左内边距集合
+   * @param options MarkdownPaddingArrayOptions 类型，包含四个内边距的H1-H6的数值集合
    */
-  setPaddingForEachHeadingDetail(top: number[], right: number[], bottom: number[], left: number[]): void {
-    for (let index = 0; index < top.length; index++) {
-      this.setPaddingForDesignateHeading((index + 1), {top:top[index]})
+  setPaddingForEachHeadingDetail(options: MarkdownPaddingArrayOptions): void {
+    if (options.top !== undefined) {
+      for (let index = 0; index < options.top.length; index++) {
+        this.setPaddingForDesignateHeading((index + 1), {top: options.top[index]})
+      }
     }
-    for (let index = 0; index < right.length; index++) {
-      this.setPaddingForDesignateHeading((index + 1), {right:right[index]})
+    if (options.right !== undefined) {
+      for (let index = 0; index < options.right.length; index++) {
+        this.setPaddingForDesignateHeading((index + 1), {right: options.right[index]})
+      }
     }
-    for (let index = 0; index < bottom.length; index++) {
-      this.setPaddingForDesignateHeading((index + 1), {bottom:bottom[index]})
+    if (options.bottom !== undefined) {
+      for (let index = 0; index < options.bottom.length; index++) {
+        this.setPaddingForDesignateHeading((index + 1), {bottom: options.bottom[index]})
+      }
     }
-    for (let index = 0; index < left.length; index++) {
-      this.setPaddingForDesignateHeading((index + 1), {left:left[index]})
+    if (options.left !== undefined) {
+      for (let index = 0; index < options.left.length; index++) {
+        this.setPaddingForDesignateHeading((index + 1), {left: options.left[index]})
+      }
     }
   }
 
